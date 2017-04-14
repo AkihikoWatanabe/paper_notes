@@ -3,7 +3,7 @@
 
 # Deep Learning
 ## Representation
-- [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.
+- [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.[]
 
 # Natural Language Generation
 ## Survey
@@ -13,6 +13,9 @@
 - [Controllable Text Generation, Hu+, arXiv'17.](notes/controllable_text_generation.md)
 
 # Document Summarization
+## Survey
+- Recent Advances in Document Summarization, Yao+, Knowledge and Information Systems'17, [paper](http://www.icst.pku.edu.cn/lcwm/wanxj/files/summ_survey_draft.pdf)
+
 ## Supervised
 - A Trainable Document Summarizer, Kupiec+, SIGIR'95.
 - Text Summarization using a trainable summarizer and latent semantic analysis, Yeh+, Information Processing and Management 2005.
