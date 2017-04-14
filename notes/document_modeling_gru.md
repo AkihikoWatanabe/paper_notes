@@ -1,0 +1,1 @@
+CNN/LSTMを用いて、word level -> sentence level -> document level のrepresentationを求め、documentのsentiment classificationをする話。documentのRepresentationを生成するときに参考になるやも。sentiment classificationタスクで評価したらLSTMが一番よかった。
