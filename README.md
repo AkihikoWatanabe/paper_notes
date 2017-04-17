@@ -3,7 +3,12 @@
 
 # Deep Learning
 ## Representation
-- [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.[]
+### Document Level
+- [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.
+- [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
+
+## Beam-Search
+- Sequence-to-Sequence Learning as Beam-Search Optimization, Wiseman+, EMNLP'16.
 
 # Natural Language Generation
 ## Survey
@@ -15,6 +20,9 @@
 # Document Summarization
 ## Survey
 - Recent Advances in Document Summarization, Yao+, Knowledge and Information Systems'17, [paper](http://www.icst.pku.edu.cn/lcwm/wanxj/files/summ_survey_draft.pdf)
+
+## Neural Model
+- [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
 
 ## Supervised
 - A Trainable Document Summarizer, Kupiec+, SIGIR'95.
