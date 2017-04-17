@@ -5,7 +5,7 @@
 ## Representation
 ### Document Level
 - [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.
-- [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
+- [Distraction-Based Neural Networks for Modeling Documents](notes/distraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
 
 ## Beam-Search
 - Sequence-to-Sequence Learning as Beam-Search Optimization, Wiseman+, EMNLP'16.
@@ -31,3 +31,7 @@
 
 # Personalized Document Summarization
 - User-model based personalized summarization, Diaz+, Information Processing and Management 2007.
+
+# Recommender Systems
+## News Citations
+- [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
