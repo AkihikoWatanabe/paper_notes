@@ -15,7 +15,7 @@
 ### Document Level
 - [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.
 - [Distraction-Based Neural Networks for Modeling Documents](notes/distraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
-- A hierarchical neural autoencoder for paragraphs and documents, Li+, ACL'15.
+- [A hierarchical neural autoencoder for paragraphs and documents](notes/a_hierarchical_neural_autoencoder_for_paragraphs_and_documents.md), Li+, ACL'15.
 - LCSTS: A large scale chinese short text summarizatino dataset, Hu+, EMNLP'15.
 - Larger-context language modelling with recurrent neural networks, Wang+, [arXiv](https://arxiv.org/abs/1511.03729)
 - Teaching Machines to Read and Comprehend, Hermann+, [NIPS 2015](http://dl.acm.org/citation.cfm?id=2969428)
