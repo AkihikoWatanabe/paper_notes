@@ -3,6 +3,7 @@
 
 # Deep Learning
 ## Vision
+- Generating Visual Explanations, Hendrickks+, ECCV'16, [link](https://www.semanticscholar.org/paper/Generating-Visual-Explanations-Hendricks-Akata/e32dcf5aa3c28e6fbf4da381e03f1bea73e4f1b0)
 ### Explicitly using visual words
 - What Value Do Explicit High Level Concepts Have in Vision to Language Problems?, Wu+, CVPR'16.
 - Image Captioning with Semantic Attention, You+, CVPR'16.
