@@ -7,6 +7,9 @@
 - What Value Do Explicit High Level Concepts Have in Vision to Language Problems?, Wu+, CVPR'16.
 - Image Captioning with Semantic Attention, You+, CVPR'16.
 
+## Machine Translation
+- Neural Machine Translation with Source-Side Latent Graph Parsing, Hashimoto+, arXiv'17., [link](https://arxiv.org/abs/1702.02265)
+
 ## Representation
 ### Document Level
 - [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.
