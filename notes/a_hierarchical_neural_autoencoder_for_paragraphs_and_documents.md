@@ -8,3 +8,5 @@ trip advisorのreviewとwikipediaのparagraphを使ってtrainingして、どれ
 MetricはROUGE, BLEUおよびcoherence(sentence order代替)を測るために、各sentence間のgapがinputとoutputでどれだけ一致しているかで評価。
 
 hierarchical lstm with attention > hierarchical lstm > standard lstm の順番で高性能。
+
+学習には、tesla K40を積んだマシンで、standard modelが2-3 weeks, hierarchical modelsが4-6週間かかるらしい。
