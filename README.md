@@ -3,6 +3,7 @@
 
 # Deep Learning
 ## Vision
+### Explicitly using visual words
 - What Value Do Explicit High Level Concepts Have in Vision to Language Problems?, Wu+, CVPR'16.
 - Image Captioning with Semantic Attention, You+, CVPR'16.
 
