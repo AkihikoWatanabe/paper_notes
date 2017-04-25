@@ -37,7 +37,9 @@
 - (A survey on Automatic Text Summarization, Das+, CMUの教材？) 
 
 ## Neural Model
+- Neural Summarization by Extracting Sentences and Words, Chenc+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1046).
 - [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
+- Cutting-off redundant repeating generations for neural abstractive summarization, Suzuki+, EACL'17 [pape](https://www.aclweb.org/anthology/E/E17/E17-2047.pdf)
 
 ## Supervised
 - A Trainable Document Summarizer, Kupiec+, SIGIR'95.
