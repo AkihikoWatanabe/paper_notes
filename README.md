@@ -55,3 +55,7 @@
 # Recommender Systems
 ## News Citations
 - [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
+
+# Learning to Rank
+## Survey
+- Learning to Rank for Information Retriefval, Liu+, [paper](http://didawiki.di.unipi.it/lib/exe/fetch.php/magistraleinformatica/ir/ir13/1_-_learning_to_rank.pdf)
