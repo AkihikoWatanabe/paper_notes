@@ -42,12 +42,16 @@
 ## Neural Model
 - Neural Summarization by Extracting Sentences and Words, Chenc+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1046).
 - [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
-- Cutting-off redundant repeating generations for neural abstractive summarization, Suzuki+, EACL'17 [pape](https://www.aclweb.org/anthology/E/E17/E17-2047.pdf)
+- Cutting-off redundant repeating generations for neural abstractive summarization, Suzuki+, EACL'17 [paper](https://www.aclweb.org/anthology/E/E17/E17-2047.pdf)
+- A Deep Reinforced Model for Abstractive Summarization, Paulus+(Socherもいる), arXiv'17, [paper](https://arxiv.org/pdf/1705.04304.pdf)
 
 ## Supervised
 - A Trainable Document Summarizer, Kupiec+, SIGIR'95.
 - Text Summarization using a trainable summarizer and latent semantic analysis, Yeh+, Information Processing and Management 2005.
 - Document Summarization using Conditional Random Fields, Shen+, IJCAI07.
+- (構造学習) 転移学習による抽出型要約の精度向上, 西川+, 情報処理学会研究報告, 2011.
+- (構造学習) Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI'16.
+- Learning to Generate Coherent Sumamry with Discriminative Hidden Semi-Markov Model, Nishikawa+, COLING'14
 
 # Personalized Document Summarization
 - User-model based personalized summarization, Diaz+, Information Processing and Management 2007.
@@ -60,11 +64,23 @@
 ## Learning to Rank
 ### Survey
 - Learning to Rank for Information Retriefval, Liu+, [paper](http://didawiki.di.unipi.it/lib/exe/fetch.php/magistraleinformatica/ir/ir13/1_-_learning_to_rank.pdf)
+- [Tutorials](http://mklab.iti.gr/essir2015/wp-content/uploads/2015/03/ESSIR2015_Hofmann.pdf)
+- [Tutorials, in Japanese](https://www.slideshare.net/sleepy_yoshi/dsirnlp1)
+- [Tutorials, in Japanese](https://www.slideshare.net/tkng/confidence-weighted)
+
 ### Pair-wise 
 - Large Scale Learning to Rank, Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
-### Online
+### Online (Dueling Bandits)
+- Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013. [Thesis](https://khofm.files.wordpress.com/2013/04/thesis-katja-hofmann-online-learning.pdf)
 - Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09
 - Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13
+- Contextual Dueling Bandits, Dudik+, JMLR'15
+- [Tutorials](http://www.anneschuth.nl/wp-content/uploads/2012/08/20140626-textkernel-anneschuth.pdf)
+- [Tools: Lerot: Online Learning to rank Framework](http://ilps.science.uva.nl/resources/online-learning-framework/)
+
+### Interleaved Method
+- How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM'08
+
 ## Relevance Feedback
 ### Survey
 - (Explicit Feedback) A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003.
