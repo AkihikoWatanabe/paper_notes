@@ -21,7 +21,7 @@
 - [A hierarchical neural autoencoder for paragraphs and documents](notes/a_hierarchical_neural_autoencoder_for_paragraphs_and_documents.md), Li+, ACL'15.
 - LCSTS: A large scale chinese short text summarizatino dataset, Hu+, EMNLP'15.
 - Larger-context language modelling with recurrent neural networks, Wang+, [arXiv](https://arxiv.org/abs/1511.03729)
-- Teaching Machines to Read and Comprehend, Hermann+, [NIPS 2015](http://dl.acm.org/citation.cfm?id=2969428)
+- [Teaching Machines to Read and Comprehend](notes/teaching_machines_to_read_and_comprehend.md), Hermann+, [NIPS 2015](http://dl.acm.org/citation.cfm?id=2969428)
 
 ## Beam-Search
 - Sequence-to-Sequence Learning as Beam-Search Optimization, Wiseman+, EMNLP'16.
