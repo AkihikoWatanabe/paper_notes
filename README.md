@@ -35,7 +35,7 @@
 
 # Machine Learning
 ## Structured Learning
-- Online Distributed Passive-Aggressive Algorithm for Structured Learning, Zhao+, CCL and NLP-NABD'13
+- [Online Distributed Passive-Aggressive Algorithm for Structured Learning](notes/online_distributed_passive_aggressive_algorithm_for_structured_learning.m), Zhao+, CCL and NLP-NABD'13
 - Scalable Large-Margin Online Learning for Structured Classification, Crammer+, 2005.
 
 # Document Summarization
@@ -74,10 +74,10 @@
 - [Tutorials, in Japanese](https://www.slideshare.net/tkng/confidence-weighted)
 
 ### Pair-wise 
-- Large Scale Learning to Rank, Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
+- [Large Scale Learning to Rank](notes/large_scale_learning_to_rank.md), Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
 ### Online (Dueling Bandits)
 - Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013. [Thesis](https://khofm.files.wordpress.com/2013/04/thesis-katja-hofmann-online-learning.pdf)
-- Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09
+- [Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem](notes/interactively_optimizing_information_retrieval_systems_as_a_dueling_baqndits_problem.md), Yue+, ICML'09
 - Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13
 - Contextual Dueling Bandits, Dudik+, JMLR'15
 - [Tutorials](http://www.anneschuth.nl/wp-content/uploads/2012/08/20140626-textkernel-anneschuth.pdf)
