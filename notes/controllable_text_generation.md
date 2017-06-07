@@ -22,7 +22,7 @@ VAEは、入力をエンコードするEncoderと、エンコードされた潜�
 （cには制御したいattributeに関する情報のみが格納され、その他の情報は潜在変数zに格納されるように学習する)
 
 1を実現するために、新たにdiscriminatorと呼ばれる識別器を用意し、VAEが生成したテキストのattributeをdiscriminatorで分類し、その結果をVAEのGeneratorにフィードバックすることで、attributeが反映されたテキストを生成できるようにパラメータの学習を行う。
-（これにはラベル付きデータが必要ですが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）
+（これにはラベル付きデータが必要だが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）
 
 また、2を実現するために、VAEが生成したテキストから、生成する元となった潜在変数zが再現できるようにEncoderのパラメータを学習。
 
@@ -36,3 +36,7 @@ VAEは、入力をエンコードするEncoderと、エンコードされた潜�
 - this was one of the outstanding thrillers of the last decade
 - this is one of the outstanding thrillers of the all time
 - this will be one of the great thrillers of the all time
+
+(さらに追記)
+VAEは通常のAutoEncoderと比較して、奥が深くて勉強してみておもしろかった。
+Reparametrization Trickなどは知らなかった。

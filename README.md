@@ -56,8 +56,16 @@
 ## News Citations
 - [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
 
-# Learning to Rank
-## Survey
+# IR
+## Learning to Rank
+### Survey
 - Learning to Rank for Information Retriefval, Liu+, [paper](http://didawiki.di.unipi.it/lib/exe/fetch.php/magistraleinformatica/ir/ir13/1_-_learning_to_rank.pdf)
-## Pair-wise 
+### Pair-wise 
 - Large Scale Learning to Rank, Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
+### Online
+- Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09
+- Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13
+## Relevance Feedback
+### Survey
+- (Explicit Feedback) A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003.
+- (Implicit Feedaback) Evaluating implicit measures to improve web search, Fox+, ACM Transactions aon Imformation Systems, 2005.
