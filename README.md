@@ -33,6 +33,11 @@
 ## Controllable NLG
 - [Controllable Text Generation, Hu+, arXiv'17.](notes/controllable_text_generation.md)
 
+# Machine Learning
+## Structured Learning
+- Online Distributed Passive-Aggressive Algorithm for Structured Learning, Zhao+, CCL and NLP-NABD'13
+- Scalable Large-Margin Online Learning for Structured Classification, Crammer+, 2005.
+
 # Document Summarization
 ## Survey
 - Recent Advances in Document Summarization, Yao+, Knowledge and Information Systems'17, [paper](http://www.icst.pku.edu.cn/lcwm/wanxj/files/summ_survey_draft.pdf)
@@ -84,4 +89,4 @@
 ## Relevance Feedback
 ### Survey
 - (Explicit Feedback) A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003.
-- (Implicit Feedaback) Evaluating implicit measures to improve web search, Fox+, ACM Transactions aon Imformation Systems, 2005.
+- (Implicit Feedaback) Evaluating implicit measures to improve web search, Fox+, ACM Transactions aon Imformation Systems, 2005.#
