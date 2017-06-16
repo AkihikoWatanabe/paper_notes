@@ -83,7 +83,7 @@
 
 ### Pair-wise 
 - [Large Scale Learning to Rank](notes/large_scale_learning_to_rank.md), Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
-### Online (Dueling Bandits)
+### Online (or Interactive)
 - Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013. [Thesis](https://khofm.files.wordpress.com/2013/04/thesis-katja-hofmann-online-learning.pdf)
 - [Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem](notes/interactively_optimizing_information_retrieval_systems_as_a_dueling_baqndits_problem.md), Yue+, ICML'09
 - Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13
