@@ -34,9 +34,15 @@
 - [Controllable Text Generation, Hu+, arXiv'17.](notes/controllable_text_generation.md)
 
 # Machine Learning
+## Online Learning
+- [Tutorial, in Japanese](http://www.r.dl.itc.u-tokyo.ac.jp/~nakagawa/SML1/online-L1.pdf)
+
 ## Structured Learning
-- [Online Distributed Passive-Aggressive Algorithm for Structured Learning](notes/online_distributed_passive_aggressive_algorithm_for_structured_learning.m), Zhao+, CCL and NLP-NABD'13
+- [Online Distributed Passive-Aggressive Algorithm for Structured Learning](notes/online_distributed_passive_aggressive_algorithm_for_structured_learning.md), Zhao+, CCL and NLP-NABD'13
 - Scalable Large-Margin Online Learning for Structured Classification, Crammer+, 2005.
+- [Structured Learning for Non-Smooth Ranking Losses](notes/structured_learning_for_non_smooth_ranking_losses.md), Chakrabarti+, KDD'08, [paper](http://mllab.csa.iisc.ernet.in/html/pubs/chiru_chakrabarti_KDD_08.pdf)
+- [A support vector method for Optimizing Average Precision](notes/a_support_vector_method_for_optimizing_average_precision.md), Yue+, SIGIR'07, [paper](https://www.cs.cornell.edu/people/tj/publications/yue_etal_07a.pdf)
+- [tool, SVMmap](http://projects.yisongyue.com/svmmap)
 
 # Document Summarization
 ## Survey
@@ -66,12 +72,14 @@
 - [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
 
 # IR
+## Online Evaluation
+- [Tutorial](http://www.yisongyue.com/talks/sigir_tutorial_combined.pptx)
 ## Learning to Rank
 ### Survey
 - Learning to Rank for Information Retriefval, Liu+, [paper](http://didawiki.di.unipi.it/lib/exe/fetch.php/magistraleinformatica/ir/ir13/1_-_learning_to_rank.pdf)
-- [Tutorials](http://mklab.iti.gr/essir2015/wp-content/uploads/2015/03/ESSIR2015_Hofmann.pdf)
-- [Tutorials, in Japanese](https://www.slideshare.net/sleepy_yoshi/dsirnlp1)
-- [Tutorials, in Japanese](https://www.slideshare.net/tkng/confidence-weighted)
+- [Tutorial](http://mklab.iti.gr/essir2015/wp-content/uploads/2015/03/ESSIR2015_Hofmann.pdf)
+- [Tutorial, in Japanese](https://www.slideshare.net/sleepy_yoshi/dsirnlp1)
+- [Tutorial, in Japanese](https://www.slideshare.net/tkng/confidence-weighted)
 
 ### Pair-wise 
 - [Large Scale Learning to Rank](notes/large_scale_learning_to_rank.md), Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
@@ -80,7 +88,7 @@
 - [Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem](notes/interactively_optimizing_information_retrieval_systems_as_a_dueling_baqndits_problem.md), Yue+, ICML'09
 - Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13
 - Contextual Dueling Bandits, Dudik+, JMLR'15
-- [Tutorials](http://www.anneschuth.nl/wp-content/uploads/2012/08/20140626-textkernel-anneschuth.pdf)
+- [Tutorial](http://www.anneschuth.nl/wp-content/uploads/2012/08/20140626-textkernel-anneschuth.pdf)
 - [Tools: Lerot: Online Learning to rank Framework](http://ilps.science.uva.nl/resources/online-learning-framework/)
 
 ### Interleaved Method
