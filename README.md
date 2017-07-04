@@ -81,6 +81,9 @@
 - [Tutorial, in Japanese](https://www.slideshare.net/sleepy_yoshi/dsirnlp1)
 - [Tutorial, in Japanese](https://www.slideshare.net/tkng/confidence-weighted)
 
+### Point-wise
+- PRanking with Ranking, Crammer+, NIPS'01, [paper](https://pdfs.semanticscholar.org/906f/50f545890ca81231be7cec7c59555c679dba.pdf)
+
 ### Pair-wise 
 - [Large Scale Learning to Rank](notes/large_scale_learning_to_rank.md), Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
 ### Online (or Interactive)
@@ -90,6 +93,8 @@
 - Contextual Dueling Bandits, Dudik+, JMLR'15
 - [Tutorial](http://www.anneschuth.nl/wp-content/uploads/2012/08/20140626-textkernel-anneschuth.pdf)
 - [Tools: Lerot: Online Learning to rank Framework](http://ilps.science.uva.nl/resources/online-learning-framework/)
+- PRanking with Ranking, Crammer+, NIPS'01, [paper](https://pdfs.semanticscholar.org/906f/50f545890ca81231be7cec7c59555c679dba.pdf)
+- Fast Learning of Document Ranking Functions with the Committee Perceptrion, Elsas+, WSDM'08. [paper](http://delivery.acm.org/10.1145/1350000/1341542/p55-elsas.pdf?ip=131.112.138.2&id=1341542&acc=ACTIVE%20SERVICE&key=D2341B890AD12BFE%2EE857D5F645C75AE5%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=781623828&CFTOKEN=57476606&__acm__=1499155717_780c7ac7b015e2c7cdefe0c2a5b73c2d)
 
 ### Interleaved Method
 - How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM'08
