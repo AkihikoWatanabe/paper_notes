@@ -91,7 +91,7 @@
 ### List-wise
 - Learning to Rank: From Pairwise Approach to Listwise Approach (ListNet), Cao+, ICML'2007, [paper](http://www.machinelearning.org/proceedings/icml2007/papers/139.pdf)
 - Listwise Approach to Learning to Rank - Theory and Algorithm (ListMLE), Xia+, ICML'2008, [paper](http://www.machinelearning.org/archive/icml2008/papers/167.pdf)
-- A General Approximation Framework for Direct Optimization of Information Retrieval Measures, Qin+, Information Retrieval, 2010, [paper](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2008-164.pdf)
+- A General Approximation Framework for Direct Optimization of Information Retrieval Measures (ApproxAP, ApproxNDCG), Qin+, Information Retrieval, 2010, [paper](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2008-164.pdf)
 
 ### Online (or Interactive)
 - Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013. [Thesis](https://khofm.files.wordpress.com/2013/04/thesis-katja-hofmann-online-learning.pdf)
