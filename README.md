@@ -86,6 +86,12 @@
 
 ### Pair-wise 
 - [Large Scale Learning to Rank](notes/large_scale_learning_to_rank.md), Sculley+, NIPS 2009, [paper](https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf)
+- Learning to Rank using Gradient Descent (RankNet), Burges+, ICML'2005, [paper](http://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf)
+
+### List-wise
+- Learning to Rank: From Pairwise Approach to Listwise Approach (ListNet), Cao+, ICML'2007, [paper](http://www.machinelearning.org/proceedings/icml2007/papers/139.pdf)
+- Listwise Approach to Learning to Rank - Theory and Algorithm (ListMLE), Xia+, ICML'2008, [paper](http://www.machinelearning.org/archive/icml2008/papers/167.pdf)
+
 ### Online (or Interactive)
 - Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013. [Thesis](https://khofm.files.wordpress.com/2013/04/thesis-katja-hofmann-online-learning.pdf)
 - [Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem](notes/interactively_optimizing_information_retrieval_systems_as_a_dueling_baqndits_problem.md), Yue+, ICML'09
