@@ -14,6 +14,7 @@
 ## Representation
 ### Sentence Level
 - A structured self-attentive sentence embedding, Li+ (Bengio group), [arXiv](https://arxiv.org/pdf/1703.03130.pdf)
+- [Learning Distributed Representations of Sentences from Unlabelled Data](notes/learning_distributed_representations_of_sentences_from_unlabelled_data.md), Hill+, NAACL'16, [paper](http://www.aclweb.org/anthology/N16-1162)
 
 ### Document Level
 - [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.
