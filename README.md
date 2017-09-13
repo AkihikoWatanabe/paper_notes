@@ -10,6 +10,7 @@
 
 ## Machine Translation
 - Neural Machine Translation with Source-Side Latent Graph Parsing, Hashimoto+, arXiv'17., [link](https://arxiv.org/abs/1702.02265)
+- Pointing the unknown words, Gulcehre+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1014)
 
 ## Representation
 ### Sentence Level
@@ -27,12 +28,56 @@
 ## Beam-Search
 - Sequence-to-Sequence Learning as Beam-Search Optimization, Wiseman+, EMNLP'16.
 
-# Natural Language Generation
+# Natural Language Generation (data2text, concept2text)
 ## Survey
 - Survey of the State of the Art in Natural Language Generation: Core tasks, applications and evaluation, Gatt+, arXiv'17.
+- An Architecture for Data to Text Systems, Reiter, ENLG'07, [paper](http://delivery.acm.org/10.1145/1620000/1610180/p97-reiter.pdf?ip=125.14.202.208&id=1610180&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505308749_f6370e1bae15e555243056b991922cad)
+- Content Selection in Data-to-Text Systems: A Survey, arXiv'16, Gkatzia, [arXiv](https://arxiv.org/pdf/1610.08375.pdf)
+- [slide](https://www.slideshare.net/akihikowatanabe3110/brief-survey-of-datatotext-systems)
+
+## Neural
+- What to talk about and how? Selective Generation using LSTMs with Coarse-to-Fine Alignment, Mei+, NAACL-HLT’16, [paper](http://www.aclweb.org/anthology/N16-1086)
+
+- (concept2text) [Neural Text Generation from Structured Data with Application to the Biography Domain, Lebret+](https://www.slideshare.net/akihikowatanabe3110/neural-text-generation-from-structured-data-with-application-to-the-biography-domain), Lebret+, EMNLP'16, [paper](https://arxiv.org/pdf/1603.07771.pdf)
 
 ## Controllable NLG
 - [Controllable Text Generation, Hu+, arXiv'17.](notes/controllable_text_generation.md)
+
+## Single-framework (jointly solve content-selection and surface realization)
+- Learning to sportscast: a test of grounded language acquisition, Chen+, ICML'08, [paper](http://www.cs.utexas.edu/~ml/papers/david-icml-08.pdf)
+- Training a multilingual sportscaster: Using perceptual context to learn language, Chen+, Artificial Intelligence Research'10, [paper](https://arxiv.org/pdf/1405.7711.pdf)
+- A simple domain-independent probabilistic approach to generation, Angeli+, EMNLP'10, [paper](http://nlp.cs.berkeley.edu/pubs/Angeli-Liang-Klein_2010_Generation_paper.pdf)
+- (concept2text) Generative alignment and semantic parsing for learning from ambiguous supervision, Kim+, COLING'10, [paper](https://aclweb.org/anthology/C/C10/C10-2062.pdf)
+- (concept2text) Unsupervised concept-to-text generation with hypergraphs, Konstas+, NAACL-HLT'12, [paper](http://delivery.acm.org/10.1145/2390000/2382151/p752-konstas.pdf?ip=125.14.202.208&id=2382151&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505310128_57b77b92df6f4df850de87ef9bb705ea)
+- (concept2text) A Global Model for Concept-to-Text Generation, Konstas+, Journal of Artificial Intelligence Research, Vol. 48, pp.305--346, 2013, [paper](http://www.jair.org/media/4025/live-4025-7407-jair.pdf)
+- (concept2text) Inducing document plans for concept-to-text generation, Konstas+, EMNLP'13, [paper](http://www.aclweb.org/anthology/D13-1157)
+- (concept2text, BabyTalk論文) Automatic generation of textual summaries from neonatal intensive care data, Porter+, AIME'07, [paper](http://www.sciencedirect.com/science/article/pii/S0004370208002117)
+
+## Data-Driven Approach
+(concept2text) Collective content selection for concept-to-text generation, Barzilay+, HLT/EMNLP'05, [paper](http://delivery.acm.org/10.1145/1230000/1220617/p331-barzilay.pdf?ip=125.14.202.208&id=1220617&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505310520_1f2899d03172876aae83af892267bdb0)
+(concept2text) Aggregation via set partitioning for natural language generation, Barzilay+,  HLT-NAACL, [paper](http://delivery.acm.org/10.1145/1230000/1220881/p359-barzilay.pdf?ip=125.14.202.208&id=1220881&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505310641_68b6ba80706ed3de5815ee81a8b4d791)
+
+## Rule-based
+- [Choosing words in computer-generated weather forecasts](notes/choosing_words_in_computer_generated_weather_forecasts.md), Reiter+, Artificial Intelligence'05 [paper](http://www.sciencedirect.com/science/article/pii/S0004370205000998)
+- [Using natural language processing to produce weather forecasts](notes/using_natural_language_processing_to_produce_weather_forecasts.md), Goldberg+, IEEE Expert: Intelligent Systems and Their Applications'94, [paper](http://ieeexplore.ieee.org/document/294135/)
+- [Design of a knowledge-based report generator](notes/design_of_a_knowledge_based_report_generator.md), Kukich, ACL'83, [paper](http://delivery.acm.org/10.1145/990000/981340/p145-kukich.pdf?ip=125.14.202.208&id=981340&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505309566_e38d2569c8ab995fe978080ecc4d7df0)
+- Generating approximate geographic descriptions, Turner+, ENLG'10, [paper](http://www.aclweb.org/anthology/W09-0607)
+- (concept2text) Coral: Using natural language generation for navigational assistance, Dale+, Australasian computer science conference'03, [paper](https://pdfs.semanticscholar.org/5ca0/2daaa0d676520d8642ad00351121ff1f29c4.pdf)
+
+## others
+- Comparing Multi-label Classification with Reinforcement Learning for Summarization of Time-series Data, Gkatzia+, ACL'14, [paper](http://www.aclweb.org/anthology/P14-1116)
+- A framework for automatic text generation of trends in physiological time series data, Banaee+, In Proceedings of the IEEE International Conference on Systems, Man, and Cybernetics, 2013, [paper](http://ieeexplore.ieee.org/document/6722414/)
+- Automatically generated linguistic summaries of energy consumption data, van der Heide+, In Proceedings of the Ninth International Conference on Intelligent Systems Design and Applications, pages 553-559, 2009, [paper](http://ieeexplore.ieee.org/document/5364975/)
+- Verbalizing time-series data: with an example of stock price trends, Kobayashi+, IFSA-EUSFLAT'09, [paper](https://pdfs.semanticscholar.org/c0e2/ab34befbb9b401b6ad1d02c71ab2bd1c4794.pdf?_ga=2.46822437.363135274.1505310881-1340047873.1468486303)
+- Deep Match between Geology Reports and Well Logs Using Spatial Information, Tong+, CIKM'16, [paper](http://dl.acm.org/citation.cfm?id=2983352)
+- (concept2text) Learning semantic correspondences with less supervision, Liang+, ACL/IJCNLP'09, [paper](https://cs.stanford.edu/~pliang/papers/semantics-acl2009.pdf)
+- (concept2text) A generative model for parsing natural language to meaning representations, Lu+, EMNLP'08, [paper](http://www.aclweb.org/anthology/D08-1082)
+
+# Time Series data Processing
+- Artificial neural networks in business: Two decades of research, Tkac+, Applied Soft Computing 2016, [paper](http://www.sciencedirect.com/science/article/pii/S1568494615006122)
+- [Prediction-based portfolio optimization model using neural networks](notes/prediction_based_portfolio_optimization_model_using_neural_networks.md), Freitas+, Neurocomputing'09, [paper](http://dl.acm.org/citation.cfm?id=1539984)
+- [Recurrent neural network and a hybrid model for prediction of stock returns](notes/recurrent_neural_network_and_a_hybrid_model_for_prediction_of_stock_returns.md), Akhter+, Expert Systems with Applications'14, [paper](http://dl.acm.org/citation.cfm?id=2776067)
+- Derivative Delay Embedding: Online Modeling of Streaming Time Series, Zhang+, CIKM'16, [paper](https://arxiv.org/pdf/1609.07540.pdf)
 
 # Machine Learning
 ## Online Learning
@@ -51,11 +96,14 @@
 - A Survey of Text Summarization Techniques, Nenkova+, Springer'12, [book](https://link.springer.com/chapter/10.1007%2F978-1-4614-3223-4_3)
 - (A survey on Automatic Text Summarization, Das+, CMUの教材？) 
 
-## Neural Model
+## Neural
 - Neural Summarization by Extracting Sentences and Words, Chenc+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1046).
 - [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
 - Cutting-off redundant repeating generations for neural abstractive summarization, Suzuki+, EACL'17 [paper](https://www.aclweb.org/anthology/E/E17/E17-2047.pdf)
 - A Deep Reinforced Model for Abstractive Summarization, Paulus+(Socherもいる), arXiv'17, [paper](https://arxiv.org/pdf/1705.04304.pdf)
+- Get To The Point: Summarization with Pointer-Generator Networks, See+, ACL'17, [paper](https://arxiv.org/pdf/1704.04368.pdf)[code](https://github.com/abisee/pointer-generator)
+- [Incorporating Copying Mechanism in Sequence-to-Sequence Learning](https://www.slideshare.net/akihikowatanabe3110/incorporating-copying-mechanism-in-sequene-to-sequence-learning), Gu+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1154)
+- [A Neural Attention Model for Sentence Summarization](https://www.slideshare.net/akihikowatanabe3110/a-neural-attention-model-for-sentence-summarization-65612331), Rush+, EMNLP'15, [paper](https://aclweb.org/anthology/D/D15/D15-1044.pdf)
 
 ## Supervised
 - A Trainable Document Summarizer, Kupiec+, SIGIR'95.
@@ -64,6 +112,13 @@
 - (構造学習) 転移学習による抽出型要約の精度向上, 西川+, 情報処理学会研究報告, 2011.
 - (構造学習) Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI'16.
 - Learning to Generate Coherent Sumamry with Discriminative Hidden Semi-Markov Model, Nishikawa+, COLING'14
+
+## Unsupervised(Graph-based)
+- [CTSUM: Extracting More Certain Summaries for News Articles](https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articles), Wan+, SIGIR'14, [paper](http://dl.acm.org/citation.cfm?id=2609559)
+
+# Sentence Compression
+## Neural
+- [Sentence Compression by Deletion with LSTMs](https://www.slideshare.net/akihikowatanabe3110/sentence-compression-by-deletion-with-lstms), Fillipova+, EMNLP'15, [paper](https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/43852.pdf)
 
 # Personalized Document Summarization
 - User-model based personalized summarization, Diaz+, Information Processing and Management 2007.
