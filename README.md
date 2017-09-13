@@ -67,7 +67,7 @@
 
 # Personalized Document Summarization
 - User-model based personalized summarization, Diaz+, Information Processing and Management 2007.
-- Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL'17. [paper](http://aclweb.org/anthology/P/P17/P17-1124.pdf)
+- [Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback](notes/joint_optimization_of_user_desired_content_in_multi_document_summaries_by_learning_from_user_feedback.md), P.V.S+, ACL'17. [paper](http://aclweb.org/anthology/P/P17/P17-1124.pdf)
 - Extended Recommendation Framework: Generating the Text of a User Review as a Personalized Summary Poussevin+, CBRecsys'15, [paper](http://ceur-ws.org/Vol-1448/paper7.pdf)
 
 # Recommender Systems
