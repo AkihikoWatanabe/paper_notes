@@ -11,11 +11,14 @@
 ## Machine Translation
 - Neural Machine Translation with Source-Side Latent Graph Parsing, Hashimoto+, arXiv'17., [link](https://arxiv.org/abs/1702.02265)
 - Pointing the unknown words, Gulcehre+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1014)
+- [Sequence-to-Dependency Neural Machine Translation](https://www.slideshare.net/mamoruk/acl2017-seq2dep-nmt), Wu+, ACL'17, [paper](http://aclweb.org/anthology/P/P17/P17-1065.pdf)
+- [What do Neural Machine Translation Models Learn about Morphology?](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/06.pdf), Belinkov+, ACL'17, [paper](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/06.pdf)
 
 ## Representation
 ### Sentence Level
 - A structured self-attentive sentence embedding, Li+ (Bengio group), [arXiv](https://arxiv.org/pdf/1703.03130.pdf)
 - [Learning Distributed Representations of Sentences from Unlabelled Data](notes/learning_distributed_representations_of_sentences_from_unlabelled_data.md), Hill+, NAACL'16, [paper](http://www.aclweb.org/anthology/N16-1162)
+- [Supervised Learning of Universal Sentence Representations from Natural Language Inference Data](https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data), Conneau+, EMNLP'17, [paper](https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data)[memo](notes/supervised_learning_of_universal_sentence_representations_from_natural_language_inference_data.md)
 
 ### Document Level
 - [Document Modeling with Gated Recurrent Neural Network for Sentiment Classification](notes/document_modeling_gru.md), Tang+, EMNLP'15.
@@ -27,6 +30,9 @@
 
 ## Beam-Search
 - Sequence-to-Sequence Learning as Beam-Search Optimization, Wiseman+, EMNLP'16.
+
+## Speed-Up
+- [Learning to skim text](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/07.pdf), Yu+, ACL'17, [paper](http://aclweb.org/anthology/P/P17/P17-1172.pdf)
 
 # Natural Language Generation (data2text, concept2text)
 ## Survey
@@ -101,7 +107,7 @@
 - [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
 - Cutting-off redundant repeating generations for neural abstractive summarization, Suzuki+, EACL'17 [paper](https://www.aclweb.org/anthology/E/E17/E17-2047.pdf)
 - A Deep Reinforced Model for Abstractive Summarization, Paulus+(Socherもいる), arXiv'17, [paper](https://arxiv.org/pdf/1705.04304.pdf)
-- Get To The Point: Summarization with Pointer-Generator Networks, See+, ACL'17, [paper](https://arxiv.org/pdf/1704.04368.pdf)[code](https://github.com/abisee/pointer-generator)
+- [Get To The Point: Summarization with Pointer-Generator Networks](https://www.slideshare.net/secret/zIGREgUWCfzLnT), See+, ACL'17, [paper](https://arxiv.org/pdf/1704.04368.pdf)[code](https://github.com/abisee/pointer-generator)
 - [Incorporating Copying Mechanism in Sequence-to-Sequence Learning](https://www.slideshare.net/akihikowatanabe3110/incorporating-copying-mechanism-in-sequene-to-sequence-learning), Gu+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1154)
 - [A Neural Attention Model for Sentence Summarization](https://www.slideshare.net/akihikowatanabe3110/a-neural-attention-model-for-sentence-summarization-65612331), Rush+, EMNLP'15, [paper](https://aclweb.org/anthology/D/D15/D15-1044.pdf)
 
