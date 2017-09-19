@@ -28,6 +28,9 @@
 - Larger-context language modelling with recurrent neural networks, Wang+, [arXiv](https://arxiv.org/abs/1511.03729)
 - [Teaching Machines to Read and Comprehend](notes/teaching_machines_to_read_and_comprehend.md), Hermann+, [NIPS 2015](http://dl.acm.org/citation.cfm?id=2969428)
 
+### Additivity
+- [Skip-Gram – Zipf + Uniform = Vector Additivity](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/09.pdf), Gittens+, ACL'17, [paper](http://aclweb.org/anthology/P/P17/P17-1007.pdf)
+
 ## Beam-Search
 - Sequence-to-Sequence Learning as Beam-Search Optimization, Wiseman+, EMNLP'16.
 
@@ -45,6 +48,7 @@
 - What to talk about and how? Selective Generation using LSTMs with Coarse-to-Fine Alignment, Mei+, NAACL-HLT’16, [paper](http://www.aclweb.org/anthology/N16-1086)
 
 - (concept2text) [Neural Text Generation from Structured Data with Application to the Biography Domain, Lebret+](https://www.slideshare.net/akihikowatanabe3110/neural-text-generation-from-structured-data-with-application-to-the-biography-domain), Lebret+, EMNLP'16, [paper](https://arxiv.org/pdf/1603.07771.pdf)
+- [Multi-Task Video Captioning with Video and Entailment Generation](https://www.slideshare.net/HangyoMasatsugu/hangyo-acl-paperreading2017multitask-video-captioning-with-video-and-entailment-generation/1), Pasunuru+, ACL'17, [paper](http://aclweb.org/anthology/P/P17/P17-1117.pdf), [memo](notes/multi_task_video_captioning_with_video_and_entailment_generation.md)
 
 ## Controllable NLG
 - [Controllable Text Generation, Hu+, arXiv'17.](notes/controllable_text_generation.md)
@@ -131,9 +135,10 @@
 - [Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback](notes/joint_optimization_of_user_desired_content_in_multi_document_summaries_by_learning_from_user_feedback.md), P.V.S+, ACL'17. [paper](http://aclweb.org/anthology/P/P17/P17-1124.pdf)
 - Extended Recommendation Framework: Generating the Text of a User Review as a Personalized Summary Poussevin+, CBRecsys'15, [paper](http://ceur-ws.org/Vol-1448/paper7.pdf)
 
-# Recommender Systems
+# Recommender Systems[tools](./notes/recsys_tools.md)
 ## News Citations
 - [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
+
 
 # IR
 ## Online Evaluation
