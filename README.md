@@ -100,6 +100,9 @@
 - [A support vector method for Optimizing Average Precision](notes/a_support_vector_method_for_optimizing_average_precision.md), Yue+, SIGIR'07, [paper](https://www.cs.cornell.edu/people/tj/publications/yue_etal_07a.pdf)
 - [tool, SVMmap](http://projects.yisongyue.com/svmmap)
 
+## domain adaptation
+- [Human Centered NLP with User-Factor Adaptation](notes/human_centered_nlp_with_user_factor_adaptation.md), Lynn+, EMNLP'17, [paper](http://aclweb.org/anthology/D17-1120)
+
 # Document Summarization
 ## Survey
 - Recent Advances in Document Summarization, Yao+, Knowledge and Information Systems'17, [paper](http://www.icst.pku.edu.cn/lcwm/wanxj/files/summ_survey_draft.pdf)
@@ -179,3 +182,7 @@
 ### Survey
 - (Explicit Feedback) A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003.
 - (Implicit Feedaback) Evaluating implicit measures to improve web search, Fox+, ACM Transactions aon Imformation Systems, 2005.#
+
+# 後で読む
+- Multi-View Unsupervised User Feature Embedding for Social Media-based Substance Use Prediction, Ding+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-1240.pdf)
+- MoodSwipe: A Soft Keyboard that Suggests Messages Based on User-Specified Emotions, Huang+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-2013.pdf)
