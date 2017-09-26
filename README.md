@@ -16,7 +16,7 @@
 
 ## Representation
 ### General Purpose
-- [StarSpace: Embed All The Things!](notes/starspace_embed_all_the_things.md), Wu+, arXiv'17, [arXiv](https://arxiv.org/abs/1709.03856)
+- [StarSpace: Embed All The Things!](notes/starspace_embed_all_the_things.md), Wu+, arXiv'17, [arXiv](https://arxiv.org/abs/1709.03856), [project](https://github.com/facebookresearch/Starspace)
 
 ### Sentence Level
 - A structured self-attentive sentence embedding, Li+ (Bengio group), [arXiv](https://arxiv.org/pdf/1703.03130.pdf)
