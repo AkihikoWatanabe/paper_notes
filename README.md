@@ -15,6 +15,9 @@
 - [What do Neural Machine Translation Models Learn about Morphology?](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/06.pdf), Belinkov+, ACL'17, [paper](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/06.pdf)
 
 ## Representation
+### General Purpose
+- [StarSpace: Embed All The Things!](notes/starspace_embed_all_the_things.md), Wu+, arXiv'17, [arXiv](https://arxiv.org/abs/1709.03856)
+
 ### Sentence Level
 - A structured self-attentive sentence embedding, Li+ (Bengio group), [arXiv](https://arxiv.org/pdf/1703.03130.pdf)
 - [Learning Distributed Representations of Sentences from Unlabelled Data](notes/learning_distributed_representations_of_sentences_from_unlabelled_data.md), Hill+, NAACL'16, [paper](http://www.aclweb.org/anthology/N16-1162)
