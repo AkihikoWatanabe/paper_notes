@@ -186,6 +186,9 @@
 - (Explicit Feedback) A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003.
 - (Implicit Feedaback) Evaluating implicit measures to improve web search, Fox+, ACM Transactions aon Imformation Systems, 2005.#
 
+# SentimentAnalysis
+- [Tutorial on ENLP2016](https://www.aclweb.org/mirror/emnlp2016/tutorials/zhang-vo-t4.pdf)
+
 # 後で読む
 - Multi-View Unsupervised User Feature Embedding for Social Media-based Substance Use Prediction, Ding+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-1240.pdf)
 - MoodSwipe: A Soft Keyboard that Suggests Messages Based on User-Specified Emotions, Huang+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-2013.pdf)
