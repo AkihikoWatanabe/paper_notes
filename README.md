@@ -194,5 +194,7 @@
 - [Tutorial on ENLP2016](https://www.aclweb.org/mirror/emnlp2016/tutorials/zhang-vo-t4.pdf)
 
 # 後で読む
+- Graph-based Neural Multi-Document Summarization, Yasunaga+, arXiv'17, [arXiv](http://arxiv.org/pdf/1706.06681.pdf)
+- Coarse-to-Fine Attention Models for Document Summarization, Ling+ (with Rush), arXiv'17, [arXiv](http://www.aclweb.org/anthology/W17-4505)
 - Multi-View Unsupervised User Feature Embedding for Social Media-based Substance Use Prediction, Ding+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-1240.pdf)
 - MoodSwipe: A Soft Keyboard that Suggests Messages Based on User-Specified Emotions, Huang+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-2013.pdf)
