@@ -134,7 +134,7 @@
 
 ## Metrics
 - Re-evaluating Automatic Summarization with BLEU and 192 Shades of ROUGE, Graham, EMNLP'15, [paper](http://aclweb.org/anthology/D/D15/D15-1013.pdf)
-- Why We Need New Evaluation Metrics for NLG, Novikova+, EMNLP'17, [paper](http://aclweb.org/anthology/D17-1237) 
+- [Why We Need New Evaluation Metrics for NLG](https://www.dropbox.com/s/7o8v64nr6gyj065/20170915_SNLP2017_Nishikawa.pptx?dl=0), Novikova+, EMNLP'17, [paper](http://aclweb.org/anthology/D17-1237) 
 
 # Sentence Compression
 ## Neural
