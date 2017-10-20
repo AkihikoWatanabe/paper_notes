@@ -132,6 +132,10 @@
 ## Unsupervised(Graph-based)
 - [CTSUM: Extracting More Certain Summaries for News Articles](https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articles), Wan+, SIGIR'14, [paper](http://dl.acm.org/citation.cfm?id=2609559)
 
+## Metrics
+- Re-evaluating Automatic Summarization with BLEU and 192 Shades of ROUGE, Graham, EMNLP'15, [paper](http://aclweb.org/anthology/D/D15/D15-1013.pdf)
+- Why We Need New Evaluation Metrics for NLG, Novikova+, EMNLP'17, [paper](http://aclweb.org/anthology/D17-1237) 
+
 # Sentence Compression
 ## Neural
 - [Sentence Compression by Deletion with LSTMs](https://www.slideshare.net/akihikowatanabe3110/sentence-compression-by-deletion-with-lstms), Fillipova+, EMNLP'15, [paper](https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/43852.pdf)
