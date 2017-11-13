@@ -40,6 +40,9 @@
 ## Speed-Up
 - [Learning to skim text](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/07.pdf), Yu+, ACL'17, [paper](http://aclweb.org/anthology/P/P17/P17-1172.pdf)
 
+## Pretraining
+- [Unsupervised Pretraining for Sequence to Sequence Learning](notes/unsupervised_pretraining_for_sequence_to_sequence_learning.md), Ramachandran+, EMNLP'17, [paper](http://aclweb.org/anthology/D17-1039)
+
 # Natural Language Generation (data2text, concept2text)
 ## Survey
 - Survey of the State of the Art in Natural Language Generation: Core tasks, applications and evaluation, Gatt+, arXiv'17.
@@ -194,6 +197,8 @@
 - [Tutorial on ENLP2016](https://www.aclweb.org/mirror/emnlp2016/tutorials/zhang-vo-t4.pdf)
 
 # 後で読む
+- Challenges in Data-to-Document Generation, Wiseman+ (with Rush), EMNLP'17, [paper](https://arxiv.org/pdf/1707.08052.pdf)
+- Adapting Sequence Models for Sentence Correction, Schmaltz (with Rush), EMNLP'17, [paper](https://arxiv.org/pdf/1707.09067.pdf)
 - Graph-based Neural Multi-Document Summarization, Yasunaga+, arXiv'17, [arXiv](http://arxiv.org/pdf/1706.06681.pdf)
 - Coarse-to-Fine Attention Models for Document Summarization, Ling+ (with Rush), arXiv'17, [arXiv](http://www.aclweb.org/anthology/W17-4505)
 - Multi-View Unsupervised User Feature Embedding for Social Media-based Substance Use Prediction, Ding+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-1240.pdf)
