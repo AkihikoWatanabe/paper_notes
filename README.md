@@ -153,6 +153,8 @@
 ## News Citations
 - [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
 
+## Comments
+- Personalized Recommendation of User Comments via Factor Models, Agarwal+, EMNLP'11, [paper](https://pdfs.semanticscholar.org/2495/25d676573bc52ba00cbd559d4539733e8642.pdf)
 
 # IR
 ## Online Evaluation
