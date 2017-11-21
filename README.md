@@ -37,7 +37,8 @@
 ## Beam-Search
 - Sequence-to-Sequence Learning as Beam-Search Optimization, Wiseman+, EMNLP'16.
 
-## Speed-Up
+## Efficiency/Speed-Up
+- [tutorial](http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture15.pdf)
 - [Learning to skim text](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/07.pdf), Yu+, ACL'17, [paper](http://aclweb.org/anthology/P/P17/P17-1172.pdf)
 
 ## Pretraining
