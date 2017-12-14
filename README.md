@@ -166,6 +166,7 @@
 - [Tutorial](http://mklab.iti.gr/essir2015/wp-content/uploads/2015/03/ESSIR2015_Hofmann.pdf)
 - [Tutorial, in Japanese](https://www.slideshare.net/sleepy_yoshi/dsirnlp1)
 - [Tutorial, in Japanese](https://www.slideshare.net/tkng/confidence-weighted)
+- [From RankNet to LambdaRank to LambdaMART: An Overview](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf)
 
 ### Point-wise
 - PRanking with Ranking, Crammer+, NIPS'01, [paper](https://pdfs.semanticscholar.org/906f/50f545890ca81231be7cec7c59555c679dba.pdf)
