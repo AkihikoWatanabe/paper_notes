@@ -2,6 +2,7 @@
 雑すぎる論文メモ
 
 # Deep Learning
+
 ## Vision
 - Generating Visual Explanations, Hendrickks+, ECCV'16, [link](https://www.semanticscholar.org/paper/Generating-Visual-Explanations-Hendricks-Akata/e32dcf5aa3c28e6fbf4da381e03f1bea73e4f1b0)
 ### Explicitly using visual words
@@ -31,6 +32,9 @@
 - Larger-context language modelling with recurrent neural networks, Wang+, [arXiv](https://arxiv.org/abs/1511.03729)
 - [Teaching Machines to Read and Comprehend](notes/teaching_machines_to_read_and_comprehend.md), Hermann+, [NIPS 2015](http://dl.acm.org/citation.cfm?id=2969428)
 
+### Embedding
+- [Poincar\'e Embeddings for Learning Hierarchical Representations](notes/poincare_embeddings_for_learning_hierarchical_representations.md), Nickel+, NIPS'17, [paper](https://arxiv.org/abs/1705.08039)
+
 ### Additivity
 - [Skip-Gram – Zipf + Uniform = Vector Additivity](http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/09.pdf), Gittens+, ACL'17, [paper](http://aclweb.org/anthology/P/P17/P17-1007.pdf)
 
@@ -50,6 +54,8 @@
 - An Architecture for Data to Text Systems, Reiter, ENLG'07, [paper](http://delivery.acm.org/10.1145/1620000/1610180/p97-reiter.pdf?ip=125.14.202.208&id=1610180&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505308749_f6370e1bae15e555243056b991922cad)
 - Content Selection in Data-to-Text Systems: A Survey, arXiv'16, Gkatzia, [arXiv](https://arxiv.org/pdf/1610.08375.pdf)
 - [slide](https://www.slideshare.net/akihikowatanabe3110/brief-survey-of-datatotext-systems)
+- Neural Text Generation: A Practical Guide, Xie+, [arXiv'17](https://arxiv.org/abs/1711.09534)
+
 
 ## Neural
 - What to talk about and how? Selective Generation using LSTMs with Coarse-to-Fine Alignment, Mei+, NAACL-HLT’16, [paper](http://www.aclweb.org/anthology/N16-1086)
@@ -59,6 +65,7 @@
 
 ## Controllable NLG
 - [Controllable Text Generation, Hu+, arXiv'17.](notes/controllable_text_generation.md)
+- Generating Sentences by Editing Prototypes, Guu+, [arXiv'17](https://arxiv.org/abs/1709.08878)
 
 ## Single-framework (jointly solve content-selection and surface realization)
 - Learning to sportscast: a test of grounded language acquisition, Chen+, ICML'08, [paper](http://www.cs.utexas.edu/~ml/papers/david-icml-08.pdf)
@@ -140,6 +147,9 @@
 - Re-evaluating Automatic Summarization with BLEU and 192 Shades of ROUGE, Graham, EMNLP'15, [paper](http://aclweb.org/anthology/D/D15/D15-1013.pdf)
 - [Why We Need New Evaluation Metrics for NLG](https://www.dropbox.com/s/7o8v64nr6gyj065/20170915_SNLP2017_Nishikawa.pptx?dl=0), Novikova+, EMNLP'17, [paper](http://aclweb.org/anthology/D17-1237) 
 
+## Others
+- Detecting information-dense texts in multiple news domains, Yang+, AAAI'14, [paper](https://dl.acm.org/citation.cfm?id=2892782)
+
 # Sentence Compression
 ## Neural
 - [Sentence Compression by Deletion with LSTMs](https://www.slideshare.net/akihikowatanabe3110/sentence-compression-by-deletion-with-lstms), Fillipova+, EMNLP'15, [paper](https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/43852.pdf)
@@ -208,3 +218,4 @@
 - Coarse-to-Fine Attention Models for Document Summarization, Ling+ (with Rush), arXiv'17, [arXiv](http://www.aclweb.org/anthology/W17-4505)
 - Multi-View Unsupervised User Feature Embedding for Social Media-based Substance Use Prediction, Ding+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-1240.pdf)
 - MoodSwipe: A Soft Keyboard that Suggests Messages Based on User-Specified Emotions, Huang+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-2013.pdf)
+- Online Deep Learning: Learning Deep Neural Networks on the Fly, Sahoo+, [arXiv'17]()
