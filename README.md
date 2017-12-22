@@ -124,6 +124,7 @@
 - (A survey on Automatic Text Summarization, Das+, CMUの教材？) 
 
 ## Neural
+- [Graph-based Neural Multi-Document Summarization](notes/graph_based_neural_multi_document_summarization.md), Yasunaga+, arXiv'17, [arXiv](http://arxiv.org/pdf/1706.06681.pdf) 
 - Neural Summarization by Extracting Sentences and Words, Chenc+, ACL'16, [paper](http://www.aclweb.org/anthology/P16-1046).
 - [Distraction-Based Neural Networks for Modeling Documents](notes/disraction_based_summ.md), Chen+, IJCAI'16., [paper](https://www.ijcai.org/Proceedings/16/Papers/391.pdf)
 - Cutting-off redundant repeating generations for neural abstractive summarization, Suzuki+, EACL'17 [paper](https://www.aclweb.org/anthology/E/E17/E17-2047.pdf)
@@ -160,7 +161,8 @@
 - Aspect-Based Personalized Text Summarization, Berkovsky+(Tim先生のグループ), AH'2008, [paper](https://people.eng.unimelb.edu.au/tbaldwin/pubs/ah2008-summary.pdf)
 - Extended Recommendation Framework: Generating the Text of a User Review as a Personalized Summary Poussevin+, CBRecsys'15, [paper](http://ceur-ws.org/Vol-1448/paper7.pdf)
 
-# Recommender Systems[tools](./notes/recsys_tools.md)
+# Recommender Systems
+* [tools](./notes/recsys_tools.md) 
 ## News Citations
 - [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
 
@@ -214,7 +216,6 @@
 # 後で読む
 - Challenges in Data-to-Document Generation, Wiseman+ (with Rush), EMNLP'17, [paper](https://arxiv.org/pdf/1707.08052.pdf)
 - Adapting Sequence Models for Sentence Correction, Schmaltz (with Rush), EMNLP'17, [paper](https://arxiv.org/pdf/1707.09067.pdf)
-- [Graph-based Neural Multi-Document Summarization](notes/graph_based_neural_multi_document_summarization.md), Yasunaga+, arXiv'17, [arXiv](http://arxiv.org/pdf/1706.06681.pdf)
 - Coarse-to-Fine Attention Models for Document Summarization, Ling+ (with Rush), arXiv'17, [arXiv](http://www.aclweb.org/anthology/W17-4505)
 - Multi-View Unsupervised User Feature Embedding for Social Media-based Substance Use Prediction, Ding+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-1240.pdf)
 - MoodSwipe: A Soft Keyboard that Suggests Messages Based on User-Specified Emotions, Huang+, EMNLP'17, [paper](http://aclweb.org/anthology/D/D17/D17-2013.pdf)
