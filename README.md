@@ -3,6 +3,9 @@
 
 # Deep Learning
 
+## Tutorial
+- Generative Adversarial Networks: An Overview, Dumoulin+, IEEE-SPM'17, [paper](https://arxiv.org/pdf/1710.07035.pdf)
+
 ## Vision
 - Generating Visual Explanations, Hendrickks+, ECCV'16, [link](https://www.semanticscholar.org/paper/Generating-Visual-Explanations-Hendricks-Akata/e32dcf5aa3c28e6fbf4da381e03f1bea73e4f1b0)
 ### Explicitly using visual words
