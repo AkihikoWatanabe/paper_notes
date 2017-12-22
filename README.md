@@ -141,13 +141,15 @@
 - (構造学習) Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI'16.
 - Learning to Generate Coherent Sumamry with Discriminative Hidden Semi-Markov Model, Nishikawa+, COLING'14
 
-## Unsupervised(Graph-based)
+## Unsupervised
 - [CTSUM: Extracting More Certain Summaries for News Articles](https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articles), Wan+, SIGIR'14, [paper](http://dl.acm.org/citation.cfm?id=2609559)
 
 ## Metrics
 - Re-evaluating Automatic Summarization with BLEU and 192 Shades of ROUGE, Graham, EMNLP'15, [paper](http://aclweb.org/anthology/D/D15/D15-1013.pdf)
 - [Why We Need New Evaluation Metrics for NLG](https://www.dropbox.com/s/7o8v64nr6gyj065/20170915_SNLP2017_Nishikawa.pptx?dl=0), Novikova+, EMNLP'17, [paper](http://aclweb.org/anthology/D17-1237) 
 
+## Traditional
+- Automatic condensation of electronic publications by sentence selection, Brandow+, Information Processing & Management'95,  [paper](http://www.sciencedirect.com/science/article/pii/030645739500052I)
 ## Others
 - Detecting information-dense texts in multiple news domains, Yang+, AAAI'14, [paper](https://dl.acm.org/citation.cfm?id=2892782)
 
@@ -160,14 +162,47 @@
 - [Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback](notes/joint_optimization_of_user_desired_content_in_multi_document_summaries_by_learning_from_user_feedback.md), P.V.S+, ACL'17. [paper](http://aclweb.org/anthology/P/P17/P17-1124.pdf)
 - Aspect-Based Personalized Text Summarization, Berkovsky+(Tim先生のグループ), AH'2008, [paper](https://people.eng.unimelb.edu.au/tbaldwin/pubs/ah2008-summary.pdf)
 - Extended Recommendation Framework: Generating the Text of a User Review as a Personalized Summary Poussevin+, CBRecsys'15, [paper](http://ceur-ws.org/Vol-1448/paper7.pdf)
+- Collaborative Summarization: When Collaborative Filtering Meets Document Summarization, Qu+, PACLIC'09, [paper](http://www.aclweb.org/anthology/Y09-2005)
+- Generating Personalized Summaries Using Publicly Available Web Documents, Kumar+, WI-IAT'08, [paper](http://ieeexplore.ieee.org/document/4740737/)
+- Incremental Personalised Summarisation with Novelty Detection, Campana+, FQAS;09, [paper](https://link.springer.com/content/pdf/10.1007/978-3-642-04957-6_55.pdf)
+- Summarize What You Are Interested In: An Optimization Framework for Interactive Personalized Summarization, Yan+, EMNLP'11, [paper](http://www.aclweb.org/anthology/D11-1124)
 
 # Recommender Systems
 * [tools](./notes/recsys_tools.md) 
+## Survey
+- Toward the next generation of recommender systems: a survey of the state-of-the-art and possible extensions, Adomavicius+, IEEE Transactions on Knowledge and Data Engineering'05, [paper](http://ieeexplore.ieee.org/document/1423975/)
+- A Survey and Critique of Deep Learning on Recommender Systems, Zheng, [pdf](http://bdsc.lab.uic.edu/docs/survey-critique-deep.pdf) 
+- A Survey of Collaborative Filtering-Based Recommender Systems for Mobile Internet Applications, Yang+, [paper](http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7479487)
+- Recommender systems survey, Bobadilla+, Knowledge-Based Systems'13, [paper](https://www.sciencedirect.com/science/article/pii/S0950705113001044)
+- Matrix Factorization Techniques for Recommender Systems, Koren+, Computer'07, [paper](http://base.sjtu.edu.cn/~bjshen/2.pdf)
+- Matrix Factorization Model in Collaborative Filtering Algorithms: A Survey, Bokde+, Procedia Computer Science'15, [paper](http://www.sciencedirect.com/science/article/pii/S1877050915007462) 
+- A survey of transfer learning for collaborative recommendation with auxiliary data, Pan, Neurocomputing'17, [paper](https://www.sciencedirect.com/science/article/pii/S0925231215018640)
+- A Survey of Explanations in Recommender Systems, Tintarev+, ICDEW'07, [paper](https://dl.acm.org/citation.cfm?id=1547664)
+- Explanation in Recommender Systems, Mcsherry, Artificial Intelligence Review'05, [paper](https://link.springer.com/content/pdf/10.1007%2Fs10462-005-4612-x.pdf)
+- Explaining the user experience of recommender systems, Knijnenburg+, User Modeling and User-Adapted Interaction'12, [paper](https://dl.acm.org/citation.cfm?id=2339919)
+- Collaborative Filtering Recommender Systems, Ekstrand+ (with Joseph A. Konstan),Foundations and TrendsR in Human–Computer Interaction'11, [paper](http://files.grouplens.org/papers/FnT%20CF%20Recsys%20Survey.pdf)
+- Hybrid Recommender Systems: Survey and Experiments, Burke+, User Modeling and User-Adapted Interaction'02, [paper](https://link.springer.com/article/10.1023/A:1021240730564)
+- A literature review and classification of recommender systems research, Park+, Expert Systems with Applications'12, [paper](http://www.sciencedirect.com/science/article/pii/S0957417412002825)
+- Content-based Recommender Systems: State of the Art and Trends, Lops+, Recommender Systems Handbook'10, [book](https://link.springer.com/chapter/10.1007/978-0-387-85820-3_3)
+- Content-Based Recommendation Systems, Pazzani+, The Adaptive Web'07, [paper](https://link.springer.com/chapter/10.1007/978-3-540-72079-9_10)
+- 推薦システムのアルゴリズム, 神嶌, 2016, [pdf](http://www.kamishima.net/archive/recsysdoc.pdf) [godlike slide](http://www.kamishima.net/archive/recsys.pdf) [github](https://github.com/tkamishima/recsysdoc) 
+- A Survey on Challenges and Methods in News Recommendation, O¨zgo¨bek+, 2014, [paper](https://www.researchgate.net/publication/288552468_A_survey_on_challenges_and_methods_in_news_recommendation)
+
+## Collaborative Filtering
+### Item-Based
+- Item-based collaborative filtering recommendation algorithms, Sarwar+(with Konstan), WWW'01, [paper](https://dl.acm.org/citation.cfm?id=372071)
+
+## Graph-based
+- Folkrank: A ranking algorithm for folksonomies, Hotho+, FGIR'06, [paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.94.5271&rep=rep1&type=pdf)
+
 ## News Citations
 - [News Citation Recommendation with Implicit and Explicit Semantics](notes/news_citation.md), Peng+, ACL'16, [paper](https://www.aclweb.org/anthology/P/P16/P16-1037.pdf)
 
 ## Comments
 - Personalized Recommendation of User Comments via Factor Models, Agarwal+, EMNLP'11, [paper](https://pdfs.semanticscholar.org/2495/25d676573bc52ba00cbd559d4539733e8642.pdf)
+
+## Others
+- Usage patterns of collaborative tagging systems, Golder+, Journal of Information Science'06, [paper](https://dl.acm.org/citation.cfm?id=1119747)
 
 # IR
 ## Online Evaluation
