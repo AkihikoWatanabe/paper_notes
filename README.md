@@ -168,25 +168,30 @@
 - Summarize What You Are Interested In: An Optimization Framework for Interactive Personalized Summarization, Yan+, EMNLP'11, [paper](http://www.aclweb.org/anthology/D11-1124)
 
 # Recommender Systems
-* [tools](./notes/recsys_tools.md) 
+- [tools](./notes/recsys_tools.md) 
 ## Survey
 - Toward the next generation of recommender systems: a survey of the state-of-the-art and possible extensions, Adomavicius+, IEEE Transactions on Knowledge and Data Engineering'05, [paper](http://ieeexplore.ieee.org/document/1423975/)
+- Evaluating Collaborative Filtering Recommener Systems, Herlocker+, TOIS'04, [paper](https://dl.acm.org/citation.cfm?id=963772)
+- Collaborative Filtering Recommender Systems, Ekstrand+ (with Joseph A. Konstan),Foundations and TrendsR in Human–Computer Interaction'11, [paper](http://files.grouplens.org/papers/FnT%20CF%20Recsys%20Survey.pdf)
+- Hybrid Recommender Systems: Survey and Experiments, Burke+, User Modeling and User-Adapted Interaction'02, [paper](https://link.springer.com/article/10.1023/A:1021240730564)
+- Matrix Factorization Techniques for Recommender Systems, Koren+, Computer'07, [paper](http://base.sjtu.edu.cn/~bjshen/2.pdf)
+- A Survey of Explanations in Recommender Systems, Tintarev+, ICDEW'07, [paper](https://dl.acm.org/citation.cfm?id=1547664)
 - A Survey and Critique of Deep Learning on Recommender Systems, Zheng, [pdf](http://bdsc.lab.uic.edu/docs/survey-critique-deep.pdf) 
 - A Survey of Collaborative Filtering-Based Recommender Systems for Mobile Internet Applications, Yang+, [paper](http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7479487)
 - Recommender systems survey, Bobadilla+, Knowledge-Based Systems'13, [paper](https://www.sciencedirect.com/science/article/pii/S0950705113001044)
-- Matrix Factorization Techniques for Recommender Systems, Koren+, Computer'07, [paper](http://base.sjtu.edu.cn/~bjshen/2.pdf)
 - Matrix Factorization Model in Collaborative Filtering Algorithms: A Survey, Bokde+, Procedia Computer Science'15, [paper](http://www.sciencedirect.com/science/article/pii/S1877050915007462) 
 - A survey of transfer learning for collaborative recommendation with auxiliary data, Pan, Neurocomputing'17, [paper](https://www.sciencedirect.com/science/article/pii/S0925231215018640)
-- A Survey of Explanations in Recommender Systems, Tintarev+, ICDEW'07, [paper](https://dl.acm.org/citation.cfm?id=1547664)
 - Explanation in Recommender Systems, Mcsherry, Artificial Intelligence Review'05, [paper](https://link.springer.com/content/pdf/10.1007%2Fs10462-005-4612-x.pdf)
 - Explaining the user experience of recommender systems, Knijnenburg+, User Modeling and User-Adapted Interaction'12, [paper](https://dl.acm.org/citation.cfm?id=2339919)
-- Collaborative Filtering Recommender Systems, Ekstrand+ (with Joseph A. Konstan),Foundations and TrendsR in Human–Computer Interaction'11, [paper](http://files.grouplens.org/papers/FnT%20CF%20Recsys%20Survey.pdf)
-- Hybrid Recommender Systems: Survey and Experiments, Burke+, User Modeling and User-Adapted Interaction'02, [paper](https://link.springer.com/article/10.1023/A:1021240730564)
 - A literature review and classification of recommender systems research, Park+, Expert Systems with Applications'12, [paper](http://www.sciencedirect.com/science/article/pii/S0957417412002825)
 - Content-based Recommender Systems: State of the Art and Trends, Lops+, Recommender Systems Handbook'10, [book](https://link.springer.com/chapter/10.1007/978-0-387-85820-3_3)
 - Content-Based Recommendation Systems, Pazzani+, The Adaptive Web'07, [paper](https://link.springer.com/chapter/10.1007/978-3-540-72079-9_10)
-- 推薦システムのアルゴリズム, 神嶌, 2016, [pdf](http://www.kamishima.net/archive/recsysdoc.pdf) [godlike slide](http://www.kamishima.net/archive/recsys.pdf) [github](https://github.com/tkamishima/recsysdoc) 
 - A Survey on Challenges and Methods in News Recommendation, O¨zgo¨bek+, 2014, [paper](https://www.researchgate.net/publication/288552468_A_survey_on_challenges_and_methods_in_news_recommendation)
+- 推薦システムのアルゴリズム, 神嶌, 2016, [pdf](http://www.kamishima.net/archive/recsysdoc.pdf) [godlike slide](http://www.kamishima.net/archive/recsys.pdf) [github](https://github.com/tkamishima/recsysdoc) 
+- 推薦システムの 基本方式と技術展望, 土方, 2010
+- 推薦システムにおけるインタラクション研究へのいざない, 土方, ヒューマンインタフェース学会誌'13, [tutorial](http://soc-research.org/ja/wp-content/uploads/2014/08/Intro_HI_Recsys_HIS2013.pdf)
+- セレンディピティ指向情報推薦の研究動向, 奥健太, 知能と情報'13, [paper](https://www.jstage.jst.go.jp/article/jsoft/25/1/25_2/_article/-char/ja/)'
+- 利用者の好みをとらえ活かす-嗜好抽出技術の最前線, 土方, 2007
 
 ## Collaborative Filtering
 ### Item-Based
