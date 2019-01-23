@@ -2,7 +2,9 @@
 
 Issueに論文とメモを記載
 
-主に下記の分野の論文を読んでメモっていきます：
+主に下記の分野(技術)の論文を読んでメモっていきます：
   - Natural Language Processing
   - Recommender Systems
-  - Deep Learning
+  - Educational Data Mining
+  - Learning Analytics
+  - (Deep Learning)
