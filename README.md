@@ -8,3 +8,5 @@ Issueに論文とメモを記載
   - Educational Data Mining
   - Learning Analytics
   - (Deep Learning)
+
+論文だけじゃなくて、おもしろいなと思った技術資料やら解説記事やrくぁツールやらデータセットやらもリンク付きでメモっていきます。
