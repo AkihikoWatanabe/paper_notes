@@ -2,6 +2,7 @@ import os
 from github import Github
 import feedparser
 import openai
+import json
 
 
 github_token = os.environ["TOKEN"]
