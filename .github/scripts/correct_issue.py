@@ -103,7 +103,7 @@ def change_first_comment(url, entry):
     github = Github(github_token)
     repo = github.get_repo(repo_name)
     issue = repo.get_issue(issue_number)
-    comnents = issue.get_comments()
+    comments = issue.get_comments()
     comments[0].edit(body=new_comment)
 
 
