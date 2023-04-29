@@ -80,7 +80,8 @@ def change_first_comment(url, entry):
         affiliation = author.get('arxiv:affiliation', 'N/A')
         new_comment += f'  - {name}, {affiliation}\n'
     new_comment += '# Summary\n'
-    new_comment += f'  - {entry['summary']}'
+    summary = entry['summary']
+    new_comment += f'  - {summary}'
     new_comment += '# Translated Summary (Translated and Summarized by gpt-3.5-turbo)\n'
     abst = entry['summary']
     openai.api_key = os.environ["OPENAI_API_KEY"]
