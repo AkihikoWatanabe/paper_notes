@@ -59,11 +59,11 @@ def change_title(entry):
     if len(entry.authors) > 1:
         affiliation = author.get('arxiv.affiliation', 'N/A') 
         name = author['name']
-        new_title = f"{entry.title]}, {name}+, {affiliation}, arXiv'{year}"
+        new_title = f"{entry.title}, {name}+, {affiliation}, arXiv'{year}"
     else:
         affiliation = author.get('arxiv.affiliation', 'N/A') 
         name = author['name']
-        new_title = f"{entry.title]}, {name}, {affiliation}, arXiv'{year}"
+        new_title = f"{entry.title}, {name}, {affiliation}, arXiv'{year}"
 
     github = Github(github_token)
     repo = github.get_repo(repo_name)
