@@ -33,7 +33,7 @@ translator_system_content = ["あなたは自然言語処理や機械学習の�
                   "さらに、'parsing-execution-filling'を提案し、各ステップで論理と数値計算を分離することで、chain of thoughtのhallucinationのジレンマを軽減する。",
                   "徹底的な実験により、提案手法が分解されたevidenceと質問を効果的に活用でき、TabFact、WikiTableQuestion、およびFetaQAデータセットで強力なベースラインを上回ることを示した。",
                   "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。"]
-translator_system_content = '\n'.join(system_content)
+translator_system_content = '\n'.join(translator_system_content)
 
 summarizer_system_content = ["あなたは自然言語処理や機械学習の研究者です。日本語のabstractを日本語を要約してください。\n",
                              "abstract1:",
@@ -51,7 +51,7 @@ summarizer_system_content = ["あなたは自然言語処理や機械学習の�
                              "- tableとquestionが与えられた時に、LLMを用いてsmall tableとsub-questionに分割",
                              "- sub-questionではlogicと数値計算を分離することで、hallucinationを防ぐ",
                              "- TabFact Reasoningで初めて人間を超えた性能を発揮"]
-
+summarizer_system_content = '\n'.join(summarizer_system_content)
 
 def get_arxiv_id_from_url(url):
     arxiv_id = url.split('/')[-1]
