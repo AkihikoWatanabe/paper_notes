@@ -148,9 +148,8 @@ if __name__ == "__main__":
     issue_number = issue_data["number"]
     original_title = issue_data["title"]
     url = issue_data["body"]
-    print(url)
     if url.find('arxiv.org') == -1:
-        exit
+        exit(0)
 
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
