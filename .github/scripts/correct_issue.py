@@ -119,7 +119,7 @@ def change_first_comment(url, entry):
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
     translated_text = call_openai(messages)
-    new_comment += '- ' + translated_text
+    new_comment += f'- {translated_text}\n'
 
     # summarization
     new_comment += '# Summary (by gpt-3.5-turbo)\n'
@@ -131,8 +131,7 @@ def change_first_comment(url, entry):
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
     summary_text = call_openai(messages)
-    new_comment += '- ' + summary_text
-
+    new_comment += f'- {summary_text}'
 
     # edit
     github = Github(github_token)
