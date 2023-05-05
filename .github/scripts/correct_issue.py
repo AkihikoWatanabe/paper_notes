@@ -48,9 +48,9 @@ summarizer_system_content = ["あなたは自然言語処理や機械学習の�
                              "徹底的な実験により、提案手法が分解されたevidenceと質問を効果的に活用でき、TabFact、WikiTableQuestion、およびFetaQAデータセットで強力なベースラインを上回ることを示した。",
                              "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。",
                              "summary1:",
-                             "- tableとquestionが与えられた時に、LLMを用いてsmall tableとsub-questionに分割",
-                             "- sub-questionではlogicと数値計算を分離することで、hallucinationを防ぐ",
-                             "- TabFact Reasoningで初めて人間を超えた性能を発揮"]
+                             "tableとquestionが与えられた時に、LLMを用いてsmall tableとsub-questionに分割。",
+                             "sub-questionではlogicと数値計算を分離することで、hallucinationを防ぐ。",
+                             "TabFact Reasoningで初めて人間を超えた性能を発揮。"]
 summarizer_system_content = '\n'.join(summarizer_system_content)
 
 def get_arxiv_id_from_url(url):
@@ -67,6 +67,25 @@ def get_entry_from_metadata(arxiv_id):
     entry = feed.entries[0]
 
     return entry
+
+
+def attach_pocket_tag():
+    github = Github(github_token)
+    repo = github.get_repo(repo_name)
+    issue = repo.get_issue(issue_number)
+
+    # ラベル名を指定（既存のラベル名または新しいラベル名）
+    label_name = "Pocket"
+
+    # 既存のラベルを検索
+    label = None
+    for existing_label in repo.get_labels():
+        if existing_label.name == label_name:
+            label = existing_label
+            break
+
+    # ラベルをIssueに追加
+    issue.add_to_labels(label)
 
 
 def change_title(entry):
@@ -153,5 +172,6 @@ if __name__ == "__main__":
 
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
+    attach_pocket_tag()
     change_title(entry)
     change_first_comment(url, entry)
