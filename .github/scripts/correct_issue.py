@@ -170,7 +170,7 @@ if __name__ == "__main__":
     if url.find('arxiv.org') == -1:
         exit(0)
     labels = issue_data["labels"]
-    if any([label == "action_wanted" for label in labels):
+    if any([label == "action_wanted" for label in labels]):
         exit(0)
 
     arxiv_id = get_arxiv_id_from_url(url)
