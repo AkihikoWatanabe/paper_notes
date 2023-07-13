@@ -169,9 +169,10 @@ if __name__ == "__main__":
     url = issue_data["body"]
     if url.find('arxiv.org') == -1:
         exit(0)
-    labels = issue_data["labels"]
-    if any([label == "action_wanted" for label in labels]) == False:
-        exit(0)
+    else:
+        labels = issue_data["labels"]
+        if any([label == "action_wanted" for label in labels]) == False:
+            exit(0)
 
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
