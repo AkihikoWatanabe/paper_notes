@@ -163,16 +163,23 @@ if __name__ == "__main__":
     with open(event_path, "r") as event_file:
         event_data = json.load(event_file)
 
+    action_type = event_data["action"]
     issue_data = event_data["issue"]
+
     issue_number = issue_data["number"]
     original_title = issue_data["title"]
     url = issue_data["body"]
-    if url.find('arxiv.org') == -1:
-        exit(0)
-    else:
-        labels = issue_data["labels"]
-        if any([label == "action_wanted" for label in labels]) == False:
+
+    if action_type == 'opened':
+        if 'arxiv.org' not in url:
             exit(0)
+    elif action_type == 'labeled':
+        labels = issue_data["labels"]
+        if not any([label["name"] == "action_wanted" for label in labels]):
+            exit(0)
+    else:
+        # neither 'opened' nor 'labeled' event, so exit
+        exit(0)
 
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
