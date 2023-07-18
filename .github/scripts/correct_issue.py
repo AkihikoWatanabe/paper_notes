@@ -10,7 +10,6 @@ github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
 
-
 translator_system_content = ["あなたは自然言語処理や機械学習の研究者です。英語のabstractを日本語に翻訳してください。\n",
                   "abstract1:",
                   "Table-based reasoning has shown remarkable progress in combining deep models with discrete reasoning, which requires reasoning over both free-form natural language (NL) questions and structured tabular data.",
@@ -115,6 +114,30 @@ def call_openai(messages):
     return response_text
 
 
+def translate(org_text):
+    #abst = entry['summary']
+    messages = []
+    messages.append({'role': 'system', 'content': translator_system_content})
+    user_content = ["abstract:",
+                    f"{org_text}",
+                    "translation:"]
+    user_content = '\n'.join(user_content)
+    messages.append({'role': 'user', 'content': user_content})
+    translated_text = call_openai(messages)
+    return translated_text
+
+
+def summarize(org_text):
+    messages = []
+    messages.append({'role': 'system', 'content': summarizer_system_content})
+    user_content = ["abstract:",
+                    f"{org_text}",
+                    "summary:"]
+    user_content = '\n'.join(user_content)
+    messages.append({'role': 'user', 'content': user_content})
+    summary_text = call_openai(messages)
+
+
 def change_first_comment(url, entry):
     new_comment = '# URL\n'
     new_comment += f'- {url}\n'
@@ -130,26 +153,12 @@ def change_first_comment(url, entry):
     # translation
     new_comment += '# Translation (by gpt-3.5-turbo)\n'
     abst = entry['summary']
-    messages = []
-    messages.append({'role': 'system', 'content': translator_system_content})
-    user_content = ["abstract:",
-                    f"{abst}",
-                    "translation:"]
-    user_content = '\n'.join(user_content)
-    messages.append({'role': 'user', 'content': user_content})
-    translated_text = call_openai(messages)
+    translated_text = translate(org_text)
     new_comment += f'- {translated_text}\n'
 
     # summarization
     new_comment += '# Summary (by gpt-3.5-turbo)\n'
-    messages = []
-    messages.append({'role': 'system', 'content': summarizer_system_content})
-    user_content = ["abstract:",
-                    f"{translated_text}",
-                    "summary:"]
-    user_content = '\n'.join(user_content)
-    messages.append({'role': 'user', 'content': user_content})
-    summary_text = call_openai(messages)
+    summary_text = summarize(translated_text)
     new_comment += f'- {summary_text}'
 
     # edit
@@ -159,30 +168,56 @@ def change_first_comment(url, entry):
     issue.edit(body=new_comment)
 
 
-if __name__ == "__main__":
-    with open(event_path, "r") as event_file:
-        event_data = json.load(event_file)
-
-    action_type = event_data["action"]
-    issue_data = event_data["issue"]
-
+def change_title_and_first_comment(issue_data):
     issue_number = issue_data["number"]
     original_title = issue_data["title"]
     url = issue_data["body"]
-
-    if action_type == 'opened':
-        if 'arxiv.org' not in url:
-            exit(0)
-    elif action_type == 'labeled':
-        labels = issue_data["labels"]
-        if not any([label["name"] == "action_wanted" for label in labels]):
-            exit(0)
-    else:
-        # neither 'opened' nor 'labeled' event, so exit
-        exit(0)
 
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
     attach_pocket_tag()
     change_title(entry)
     change_first_comment(url, entry)
+
+
+def translate_and_summarize(issue_data):
+    import re 
+    issue_url = issue_data['url']
+    github = Github(github_token)
+    issue = g.get_repo(issue_url.split("/repos/")[1].split("/issues/")[0]).get_issue(number=int(issue_url.split('/')[-1]))
+    p = research('__translate:(.*)')
+    for comment in issue.get_comments():
+        m = p.search(comment.body)
+        if m != None:
+            org_text = m.group(1)
+            # translation
+            new_comment = '# Translation (by gpt-3.5-turbo)\n'
+            translated_text = translate(org_text)
+            new_comment += f'- {translated_text}\n'
+            # summarization
+            new_comment += '# Summary (by gpt-3.5-turbo)\n'
+            summary_text = summarize(translated_text)
+            new_comment += f'- {summary_text}'   
+            comment.edit(body=org_text + new_comment)
+
+
+if __name__ == "__main__":
+    with open(event_path, "r") as event_file:
+        event_data = json.load(event_file)
+
+    action_type = event_data["action"]
+    issue_data = event_data["issue"]
+    
+
+    if action_type == 'opened':
+        if 'arxiv.org' in url:
+            change_title_and_first_comment(issue_data)
+    elif action_type == 'labeled':
+        labels = issue_data["labels"]
+        if any([label["name"] == "action_wanted" for label in labels]):
+            change_title_and_first_comment(issue_data)
+        elif any([label["name"] == "translation_required" for label in labels]):
+            translate_and_summarize(event_type)
+    else:
+        # neither 'opened' nor 'labeled' event, so exit
+        exit(0)
