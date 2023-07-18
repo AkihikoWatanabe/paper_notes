@@ -217,7 +217,7 @@ if __name__ == "__main__":
         if any([label["name"] == "action_wanted" for label in labels]):
             change_title_and_first_comment(issue_data)
         elif any([label["name"] == "translation_required" for label in labels]):
-            translate_and_summarize(event_type)
+            translate_and_summarize(issue_data)
     else:
         # neither 'opened' nor 'labeled' event, so exit
         exit(0)
