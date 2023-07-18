@@ -136,6 +136,7 @@ def summarize(org_text):
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
     summary_text = call_openai(messages)
+    return summary_text
 
 
 def change_first_comment(url, entry):
@@ -198,7 +199,7 @@ def translate_and_summarize(issue_data):
             new_comment += '# Summary (by gpt-3.5-turbo)\n'
             summary_text = summarize(translated_text)
             new_comment += f'- {summary_text}'   
-            comment.edit(body=org_text + new_comment)
+            comment.edit(body='\n'.join([org_text, new_comment]))
 
 
 if __name__ == "__main__":
