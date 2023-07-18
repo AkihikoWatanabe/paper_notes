@@ -184,7 +184,7 @@ def translate_and_summarize(issue_data):
     import re 
     issue_url = issue_data['url']
     github = Github(github_token)
-    issue = g.get_repo(issue_url.split("/repos/")[1].split("/issues/")[0]).get_issue(number=int(issue_url.split('/')[-1]))
+    issue = github.get_repo(issue_url.split("/repos/")[1].split("/issues/")[0]).get_issue(number=int(issue_url.split('/')[-1]))
     p = research('__translate:(.*)')
     for comment in issue.get_comments():
         m = p.search(comment.body)
