@@ -154,7 +154,7 @@ def change_first_comment(url, entry, issue_number):
     # translation
     new_comment += '# Translation (by gpt-3.5-turbo)\n'
     abst = entry['summary']
-    translated_text = translate(org_text)
+    translated_text = translate(abst)
     new_comment += f'- {translated_text}\n'
 
     # summarization
