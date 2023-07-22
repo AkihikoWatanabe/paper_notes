@@ -68,7 +68,7 @@ def get_entry_from_metadata(arxiv_id):
     return entry
 
 
-def attach_pocket_tag():
+def attach_pocket_tag(issue_number):
     github = Github(github_token)
     repo = github.get_repo(repo_name)
     issue = repo.get_issue(issue_number)
@@ -87,7 +87,7 @@ def attach_pocket_tag():
     issue.add_to_labels(label)
 
 
-def change_title(entry):
+def change_title(entry, issue_number):
     year = entry.published.split('-')[0][2:]
     author = entry.authors[0]
     if len(entry.authors) > 1:
@@ -139,7 +139,7 @@ def summarize(org_text):
     return summary_text
 
 
-def change_first_comment(url, entry):
+def change_first_comment(url, entry, issue_number):
     new_comment = '# URL\n'
     new_comment += f'- {url}\n'
     new_comment += "# Affiliations\n"
@@ -176,9 +176,9 @@ def change_title_and_first_comment(issue_data):
 
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
-    attach_pocket_tag()
-    change_title(entry)
-    change_first_comment(url, entry)
+    attach_pocket_tag(issue_number)
+    change_title(entry, issue_number)
+    change_first_comment(url, entry, issue_number)
 
 
 def translate_and_summarize(issue_data):
