@@ -205,10 +205,10 @@ def translate_and_summarize(issue_data):
 if __name__ == "__main__":
     with open(event_path, "r") as event_file:
         event_data = json.load(event_file)
-
     action_type = event_data["action"]
     issue_data = event_data["issue"]
-    
+
+    url = issue_data["body"]
 
     if action_type == 'opened':
         if 'arxiv.org' in url:
