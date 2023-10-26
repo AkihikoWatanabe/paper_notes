@@ -5,7 +5,3 @@ RUN export GEM_HOME="$HOME/gems"
 RUN export PATH="$HOME/gems/bin:$PATH"
 RUN gem install jekyll bundler
 RUN bundle install
-WORKDIR /app
-RUN python generate_html.py
-WORKDIR /app/blog
-RUN jekyll build
