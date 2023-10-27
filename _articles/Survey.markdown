@@ -1,0 +1,268 @@
+---
+layout: post
+title: Surveyに関する論文・技術記事メモの一覧
+author: AkihikoWATANABE
+---
+## Survey
+<div class="visible-content">
+<a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-02-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/509">30分で完全理解するTransformerの世界</a>
+<span class="snippet">非常に詳細で実質日本語のサーベイ論文のようなもの ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/525">Efficient Methods for Natural Language Processing: A Survey, Treviso+, arXiv23</a>
+<span class="snippet">パラメータ数でゴリ押すような方法ではなく、"Efficient"に行うための手法をまとめている![image](https://user-images.githubusercontent.com/12249301/234287218-2d42766f-5c5c-4cf9-859e-c2b0a5d ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/530">Graph Neural Networks for Text Classification: A Survey, Wang+, arXiv23</a>
+<span class="snippet">No description ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/781">A Comprehensive Survey on Applications of Transformers for Deep Learning  Tasks, Saidul Islam+, N_A, arXiv23</a>
+<span class="snippet">Transformerモデルは、セルフアテンションメカニズムを使用して文脈関係を理解するためのディープニューラルネットワークであり、長い依存関係を処理することができます。このモデルは、自然言語処理だけでなく、他のさまざまなドメインでも注目されています。しかし、さまざまなドメインでのTransfor ...</span>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/795">A Survey of Large Language Models, Wayne Xin Zhao+, N_A, arXiv23</a>
+<span class="snippet">言語モデリングの進化により、大規模言語モデル（LLM）が注目されている。LLMは、事前学習、適応調整、利用、容量評価の4つの側面に焦点を当てて研究されており、AIアルゴリズムの開発と使用方法に革新をもたらす可能性がある。本調査では、LLMの最近の進展と将来の方向性についてレビューし、残された課題に ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><a class="button" href="articles/Reasoning.html">#Reasoning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/849">Reasoning with Language Model Prompting: A Survey, ACL23</a>
+<span class="snippet">本論文では、推論に関する最新の研究について包括的な調査を行い、初心者を支援するためのリソースを提供します。また、推論能力の要因や将来の研究方向についても議論します。リソースは定期的に更新されています。 ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/NumericReasoning.html">#NumericReasoning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/851">A Survey of Deep Learning for Mathematical Reasoning, ACL23</a>
+<span class="snippet">数学的な推論とディープラーニングの関係についての調査論文をレビューし、数学的な推論におけるディープラーニングの進歩と将来の研究方向について議論しています。数学的な推論は機械学習と自然言語処理の分野で重要であり、ディープラーニングモデルのテストベッドとして機能しています。また、大規模なニューラル言語 ...</span>
+<a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/884">Challenges and Applications of Large Language Models, Jean Kaddour+, N_A, arXiv23</a>
+<span class="snippet">本論文では、大規模言語モデル（LLMs）の普及により、研究者が分野の現状を理解し、生産的になるための問題と応用成功例を確立することを目指しています。 ...</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/914">Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, N_A, arXiv23</a>
+<span class="snippet">本研究では、視覚システムの基礎モデルについて包括的なレビューを提供します。これには、異なるモダリティを組み合わせるためのアーキテクチャ設計やトレーニング目標、トレーニングデータセットなどが含まれます。また、基礎モデルの評価や課題、最近の発展についても議論します。詳細なリストは、\url{https ...</span>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/918">Aligning Large Language Models with Human: A Survey, Yufei Wang+, N_A, arXiv23</a>
+<span class="snippet">大規模言語モデル（LLMs）は、自然言語処理のタスクにおいて重要な役割を果たしていますが、その性能には制約があります。この調査では、LLMsの性能を向上させるためのアラインメント技術について包括的な概要を提供します。具体的には、データ収集方法、トレーニング手法、モデル評価方法について説明します。さ ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6c5288c8-7f5b-4526-ba6f-25c2b9b3fc55" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/919">Open Problems and Fundamental Limitations of Reinforcement Learning from  Human Feedback, Stephen Casper+, N_A, arXiv23</a>
+<span class="snippet">人間のフィードバックからの強化学習（RLHF）は、AIシステムを人間の目標に合わせてトレーニングするための技術であり、最先端の大規模言語モデル（LLMs）を微調整するために使用されている。しかし、RLHFの欠点を体系化するための公開された研究は少ない。本論文では、RLHFのオープンな問題と制約を調 ...</span>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1063">Large Language Model Alignment: A Survey, Tianhao Shen+, N_A, arXiv23</a>
+<span class="snippet">近年、大規模言語モデル（LLMs）の進歩が注目されていますが、その潜在能力と同時に懸念もあります。本研究では、LLMsのアライメントに関する既存の研究と新たな提案を包括的に探求し、モデルの解釈可能性や敵対的攻撃への脆弱性などの問題も議論します。さらに、LLMsのアライメントを評価するためのベンチマ ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/09c10110-798f-4493-b431-41c2f2b017c1" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-10-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1077">Survey on Factuality in Large Language Models: Knowledge, Retrieval and  Domain-Specificity, Cunxiang Wang+, N_A, arXiv23</a>
+<span class="snippet">この研究では、大規模言語モデル（LLMs）の事実性の問題に取り組んでいます。LLMsの出力の信頼性と正確性は重要であり、事実に矛盾した情報を生成することがあるため、その問題を解決する方法を探求しています。具体的には、LLMsの事実的なエラーの影響や原因を分析し、事実性を評価する手法や改善策を提案し ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4d3ab4df-aaa0-460f-b16a-6114432336cd" alt="image"><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/464">Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, arXiv22</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2022-09-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/484">Efficient Methods for Natural Language Processing: A Survey, Marcos+, arXiv22</a>
+<span class="snippet">Scaling Lawに従いモデルも大きくしていく流れに対して、一般ピーポーが恩恵を受けられるような効率の良い学習手法がまとめられている、とのこと（しゅんけーさんありがとうございます） ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-06-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/382">A survey of Transformers, Lin+, arXiv‘21</a>
+<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/121394765-a40f4280-c98c-11eb-8fac-0114715ec738.png) ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-06-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/389">Pre-Trained Models: Past, Present and Future, Han+, arXiv‘21</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-06-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/391">Efficient Deep Learning: A Survey on Making Deep Learning Models Smaller, Faster, and Better, Menghani, arXiv‘21</a>
+<span class="snippet">学習効率化、高速化などのテクニックがまとまっているらしい ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2020-08-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/337">Evaluation of Text Generation: A Survey, Celikyilmaz, Clark, Gao, arXiv20</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/537">Returning the N to NLP: Towards Contextually Personalized Classification Models, Lucie Flek, Mainz University of Applied Sciences Germany, ACL20</a>
+<span class="snippet">NLPのけるPersonalized Classificationモデルのliteratureを振り返る論文 ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Session.html">#Session</a><br><span class="issue_date">Issue Date: 2019-08-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/314">A Survey on Session-based Recommender Systems, Wang+, 2019, arXiv</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2020-11-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/342">Sequence-Aware Recommender Systems, ACM Computing Surveys, Vol. 1, No. 1, Article 1, 2018</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/84">Survey of the State of the Art in Natural Language Generation: Core tasks, applications and evaluation, Gatt+, arXiv17</a>
+<span class="snippet">割と新し目のNLGのSurvey ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/87">Neural Text Generation: A Practical Guide, Xie+, arXiv17</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/127">Recent Advances in Document Summarization, Yao+, Knowledge and Information Systems17</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/167">A survey of transfer learning for collaborative recommendation with auxiliary data, Pan, Neurocomputing17</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-02-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/248">Recent Trends in Deep Learning Based Natural Language Processing, Young+, arXiv17</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2018-04-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/272">Deep Learning based Recommender System: A Survey and New Perspectives, Zhang+, arxiv17</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/86">Content Selection in Data-to-Text Systems: A Survey, arXiv16, Gkatzia</a>
+<span class="snippet">Gkatziaの"content selection"に関するSurvey ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/TimeSeriesDataProcessing.html">#TimeSeriesDataProcessing</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/115">Artificial neural networks in business: Two decades of research, Tkac+, Applied Soft Computing 2016</a>
+<span class="snippet">ビジネスドメイン(e.g. Stock market price prediction)におけるニューラルネットワークの活用事例をまとめたSurvey。時系列データの取り扱いなどの参考になるかも。 ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/174">推薦システムのアルゴリズム, 神嶌, 2016</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/TechnologyEnhancedLearning.html">#TechnologyEnhancedLearning</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/270">A Survey on Artificial Intelligence and Data Mining for MOOCs, Fauvel+, arXiv16</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/166">Matrix Factorization Model in Collaborative Filtering Algorithms: A Survey, Bokde+, Procedia Computer Science15</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/290">Panorama of recommender systems to support learning, Drachsler+, 2015</a>
+<span class="snippet">教育分野に対するRecsysのSurvey ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/173">A Survey on Challenges and Methods in News Recommendation, O¨zgo¨bek+, 2014</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/291">Recommender Systems for Technology Enhanced Learning: Research Trends and Applications, Manouselis+, 2014</a>
+<span class="snippet">最近のトレンドやアプリケーションを知りたい場合はこちら ...</span>
+<a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/294">Educational Data Mining and Learning Analytics, Baker+, 2014</a>
+<span class="snippet">Ryan BakerらによるEDM Survey ...</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/13">Personalised Information retrieval: survey and classification, Rami+, 2013</a>
+<span class="snippet">完全に途中で力尽きている感 ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/165">Recommender systems survey, Bobadilla+, Knowledge-Based Systems13</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/177">セレンディピティ指向情報推薦の研究動向, 奥健太, 知能と情報13</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196">Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/128">A Survey of Text Summarization Techniques, Nenkova+, Springer12</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/169">Explaining the user experience of recommender systems, Knijnenburg+, User Modeling and User-Adapted Interaction12</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/170">A literature review and classification of recommender systems research, Park+, Expert Systems with Applications12</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/TechnologyEnhancedLearning.html">#TechnologyEnhancedLearning</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/267">Context-Aware Recommender Systems for Learning: A Survey and Future Challenges, Verbert+,  IEEE TRANSACTIONS ON LEARNING TECHNOLOGIES, VOL. 5, NO. 4, OCTOBER-DECEMBER 2012</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/159">Collaborative Filtering Recommender Systems, Ekstrand+ （with Joseph A. Konstan）, Foundations and TrendsR in Human–Computer Interaction11</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/TechnologyEnhancedLearning.html">#TechnologyEnhancedLearning</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/268">Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook: A Complete Guide for Research Scientists and Practitioners, 2011</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/286">Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook, 2011</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/171">Content-based Recommender Systems: State of the Art and Trends, Lops+, Recommender Systems Handbook10</a>
+<span class="snippet">RecSysの内容ベースフィルタリングシステムのユーザプロファイルについて知りたければこれ ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/175">推薦システムの 基本方式と技術展望, 土方, 2010</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Education.html">#Education</a><br><span class="issue_date">Issue Date: 2018-03-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/271">Adaptive Educational HypermediaSystems in Technology Enhanced Learning: A Literature Review, Mulwa+, SIGITE10</a>
+<span class="snippet">よさげ ...</span>
+<br><span class="issue_date">Issue Date: 2020-01-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/331">10 ML & NLP Research Highlights of 2019, Ruder</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2023-08-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1017">Interpretable Machine Learning: Fundamental Principles and 10 Grand  Challenges, Cynthia Rudin+, N_A, arXiv21</a>
+<span class="snippet">本研究では、解釈可能な機械学習（ML）の基本原則とその重要性について説明し、解釈可能なMLの10の技術的な課題を特定します。これには、疎な論理モデルの最適化、スコアリングシステムの最適化、一般化加法モデルへの制約の配置などが含まれます。また、ニューラルネットワークや因果推論のためのマッチング、デー ...</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185">Learning to Rank for Information Retriefval, Liu+, 2009</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/SentimentAnalysis.html">#SentimentAnalysis</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/OpinionMining.html">#OpinionMining</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/231">Opinion mining and sentiment analysis, Pang+, Foundations and Trends in Information Retrieval, 2008</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/285">Personal recommender systems for learners in lifelong learning networks: the requirements, techniques and model, Drachsler+, Int. J. Learning Technology, 2008</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/85">An Architecture for Data to Text Systems, Reiter, ENLG07</a>
+<span class="snippet">NLG分野で有名なReiterらのSurvey。NLGシステムのアーキテクチャなどが、体系的に説明されている。![image](https://user-images.githubusercontent.com/12249301/34460822-72bc8296-ee5d-11e7-8 ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/161">Matrix Factorization Techniques for Recommender Systems, Koren+, Computer07</a>
+<span class="snippet">Matrix Factorizationについてよくまとまっている ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Explanation.html">#Explanation</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/162">A Survey of Explanations in Recommender Systems, Tintarev+, ICDEW07</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/172">Content-Based Recommendation Systems, Pazzani+, The Adaptive Web07</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/178">利用者の好みをとらえ活かす-嗜好抽出技術の最前線, 土方, 2007</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/567">User Profiles for Personalized Information Access, Gauch+, The adaptive Web: methods and strategies of Web personalization, 2007</a>
+<span class="snippet">IR分野におけるuser profileの構築方法についてまとめられたsurvey加重キーワードセマンティックネットワーク加重コンセプトについて記述されている。また、プロファイルの構築方法についても詳述されている。 ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/157">Toward the next generation of recommender systems: a survey of the state-of-the-art and possible extensions, Adomavicius+, IEEE Transactions on Knowledge and Data Engineering05</a>
+<span class="snippet">有名なやつ ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/168">Explanation in Recommender Systems, Mcsherry, Artificial Intelligence Review05</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/ImplicitFeedback.html">#ImplicitFeedback</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/205">Evaluating implicit measures to improve web search, Fox+, ACM Transactions on Imformation Systems, 2005</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/158">Evaluating Collaborative Filtering Recommener Systems, Herlocker+, TOIS04</a>
+<span class="snippet">GroupLensのSurvey ...</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/ExplicitFeedback.html">#ExplicitFeedback</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/204">A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/160">Hybrid Recommender Systems: Survey and Experiments, Burke+, User Modeling and User-Adapted Interaction02</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/129">A survey on Automatic Text Summarization, Das+, CMUの教材？</a>
+<span class="snippet">きちんとしたconferenceの論文ではないと思うので、Referなどはしないほうがいいかも。勉強には良い。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/163">A Survey and Critique of Deep Learning on Recommender Systems, Zheng</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/164">A Survey of Collaborative Filtering-Based Recommender Systems for Mobile Internet Applications, Yang+</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Education.html">#Education</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/269">A SURVEY OF ARTIFICIAL INTELLIGENCE TECHNIQUES EMPLOYED FOR ADAPTIVE EDUCATIONAL SYSTEMS WITHIN E-LEARNING PLATFORMS,  Almohammadi+</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2019-02-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/304">NLP-Progress</a>
+<span class="snippet">NLPの様々なタスクのデータセット, およびSOTA(2018年時点)がまとめられている。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2019-11-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/329">事前学習言語モデルの動向 _ Survey of Pretrained Language Models</a>
+<span class="snippet">各データセットでの各モデルの性能も後半に記載されており興味深い。ちなみに、CNN/DailyMail Datasetでは、T5, BARTあたりがSoTA。R2で比較すると　Pointer-Generator + Coverage Vectorが17,28　LEAD-3が ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2022-10-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/490">MTEB: Massive Text Embedding Benchmark</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Pretraining.html">#Pretraining</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/495">A Paper List for Recommend-system PreTrained Models</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/557">大規模言語モデル間の性能比較まとめ</a>
+<span class="snippet">LLM Worksheet：https://docs.google.com/spreadsheets/d/1kT4or6b0Fedd-W_jMwYpb63e1ZR3aePczz3zlbJW-Y4/edit#gid=0 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576">Measuring the impact of online personalisation: Past, present and future</a>
+<span class="snippet">Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurveyML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されて ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-05-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/616">LLM ecosystem graphs</a>
+<span class="snippet">Percy Liangのグループが運用してるっぽい？ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/671">awesome-generative-information-retrieval</a>
+<span class="snippet">Generativeなモデルを利用したDocument RetrievalやRecSys等についてまとまっているリポジトリ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-05-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/676">open LLM Leaderboard</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ContextWindow.html">#ContextWindow</a><br><span class="issue_date">Issue Date: 2023-07-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/778">Extending Context is Hard…but not Impossible</a>
+<span class="snippet">Open source LLMのcontext lengthをどのように大きくするかに関する議論 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
+<span class="snippet">マルチモーダルなLLMのリストがまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-08-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/930">人工知能研究の新潮流2 -基盤モデル・生成AIのインパクト-</a>
+<span class="snippet">280ページにものぼる現在のトレンドをまとめた日本語資料 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-08-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1021">Anti-hype LLM Reading list</a>
+<span class="snippet"> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0a5df5e6-0ed8-481b-9d5f-3f0397454371" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+</div>
