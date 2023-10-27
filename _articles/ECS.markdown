@@ -1,0 +1,11 @@
+---
+layout: post
+title: ECSに関する論文・技術記事メモの一覧
+author: AkihikoWATANABE
+---
+## ECS
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AWS.html">#AWS</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><br><span class="issue_date">Issue Date: 2023-04-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/519">ECS tips</a>
+<span class="snippet">PythonでログをCloudWatchに出力する「Watchtower」  https://dev.classmethod.jp/articles/python_log_cloudwatch_watchtower/ ...</span>
+</div>

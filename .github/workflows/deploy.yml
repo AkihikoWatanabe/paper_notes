@@ -1,0 +1,30 @@
+name: Deploy to GitHub Pages
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 毎日0時に実行
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t my-app .
+
+    - name: Run script inside Docker container
+      run: |
+        docker create --name temp_container -v ${{ github.workspace }}:/app --env TOKEN=${{ secrets.TOKEN }} my-app
+        docker start temp_container
+        docker exec temp_container sh -c "cd /app && python generate_html.py && bundle exec jekyll build"
+        docker cp temp_container:/app/_site ${{ github.workspace }}
+        docker rm temp_container
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_dir: ./
+        keep_files: true
