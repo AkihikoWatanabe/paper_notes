@@ -1,0 +1,37 @@
+---
+layout: post
+title: FoundationModelに関する論文・技術記事メモの一覧
+author: AkihikoWATANABE
+---
+## FoundationModel
+<div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Programming.html">#Programming</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/661">StarCoderBase_StarCoder, 2023</a>
+<span class="snippet">StarCoderBaseを35Bのpython tokenでfinetuningしたモデル。既存モデルよりも高性能と主張![image](https://user-images.githubusercontent.com/12249301/236622130-5e7aa6aa-5f9b-4b ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-05-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/665">OpenSource PaLM, 2023</a>
+<span class="snippet">150m,410m,1bのモデルがある。Googleの540bには遠く及ばないし、emergent abilityも期待できないパラメータ数だが、どの程度の性能なのだろうか。 ...</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Navigation.html">#Navigation</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/802">ViNT: A Foundation Model for Visual Navigation, Dhruv Shah+, N_A, arXiv23</a>
+<span class="snippet">本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさま ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image"></div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/888">Llama 2: Open Foundation and Fine-Tuned Chat Models, Hugo Touvron+, N_A, arXiv23</a>
+<span class="snippet">この研究では、大規模な言語モデルであるLlama 2を開発し、微調整しています。Llama 2-Chatは対話に特化しており、オープンソースのチャットモデルを上回る性能を示しています。安全性の改善にも取り組んでおり、責任ある開発に貢献することを目指しています。 ...</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897">Introducing CM3leon, a more efficient, state-of-the-art generative model for text and images, 2023</a>
+<span class="snippet">最近の自然言語処理の進歩により、生成型AIモデルへの関心と研究が加速しています。CM3leonは、テキストから画像への生成と画像からテキストへの生成を行う単一の基礎モデルです。 ...</span>
+<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/914">Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, N_A, arXiv23</a>
+<span class="snippet">本研究では、視覚システムの基礎モデルについて包括的なレビューを提供します。これには、異なるモダリティを組み合わせるためのアーキテクチャ設計やトレーニング目標、トレーニングデータセットなどが含まれます。また、基礎モデルの評価や課題、最近の発展についても議論します。詳細なリストは、\url{https ...</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/InductiveBias.html">#InductiveBias</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/809">Objaverse-XL: A Universe of 10M+ 3D Objects</a>
+<span class="snippet">10Mを超える3D objectのデータセットを公開し、3D Modelの基盤モデルとしてZero123-XLを訓練。元ツイートのGifがわかりやすい。https://twitter.com/mattdeitke/status/1678855859089326080?s=46&t=8VBxVyn ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><br><span class="issue_date">Issue Date: 2023-06-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/771">LM Flow</a>
+<span class="snippet">一般的なFoundation Modelのファインチューニングと推論を簡素化する拡張可能なツールキット。継続的なpretragning, instruction tuning, parameter efficientなファインチューニング,alignment tuning,大規模モデルの推論などさま ...</span>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
+</div>

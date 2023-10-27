@@ -1,0 +1,103 @@
+---
+layout: post
+title: Documentに関する論文・技術記事メモの一覧
+author: AkihikoWATANABE
+---
+## Document
+<div class="visible-content">
+<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GraphConvolutionalNetwork.html">#GraphConvolutionalNetwork</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/130">Graph-based Neural Multi-Document Summarization, Yasunaga+, arXiv17</a>
+<span class="snippet">Graph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習デー ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/135">Get To The Point: Summarization with Pointer-Generator Networks, See+, ACL17</a>
+<span class="snippet">Pointer Generator Networksで要約してみる：https://qiita.com/knok/items/9a74430b279e522d5b93 ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/209">Coarse-to-Fine Attention Models for Document Summarization, Ling+ （with Rush）, ACL17 Workshop on New Frontiers in Summarization</a>
+<span class="snippet">No description ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/VariationalAutoEncoder.html">#VariationalAutoEncoder</a><br><span class="issue_date">Issue Date: 2018-10-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/278">Salience Estimation via Variational Auto-Encoders for Multi-Document Summarization, Li+, AAAI17</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/73">Distraction-Based Neural Networks for Modeling Documents, Chen+, IJCAI16</a>
+<span class="snippet">Distraction機構の有用性は、ACL'17のstanford NLPグループが提案したPointer Generator Networkでも示されている（Coverage Vectorという呼び方をしてた気がする） ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/131">Neural Summarization by Extracting Sentences and Words, Cheng+, ACL16</a>
+<span class="snippet">ExtractiveかつNeuralな単一文書要約ならベースラインとして使用した方がよいかも ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/132">Distraction-Based Neural Networks for Modeling Documents, Chen+, IJCAI16</a>
+<span class="snippet">Neuralなモデルで「文書」の要約を行う研究。提案手法では、attention-basedなsequence-to-sequenceモデルにdistractionと呼ばれる機構を導入することを提案。distractionを導入するmotivationは、入力文書中の異なる情報を横断 ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/136">Incorporating Copying Mechanism in Sequence-to-Sequence Learning, Gu+, ACL16</a>
+<span class="snippet">単語のコピーと生成、両方を行えるネットワークを提案。location based addressingなどによって、生成された単語がsourceに含まれていた場合などに、copy-mode, generate-modeを切り替えるような仕組みになっている。#65 と同じタイミングで発表 ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/DomainAdaptation.html">#DomainAdaptation</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/142">Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16</a>
+<span class="snippet">New York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。 ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/SentimentAnalysis.html">#SentimentAnalysis</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/72">Document Modeling with Gated Recurrent Neural Network for Sentiment Classification, Tang+, EMNLP15</a>
+<span class="snippet">word level -> sentence level -> document level のrepresentationを求め、documentのsentiment classificationをする話。documentのRepresentationを生成するときに参考になるやも。sen ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/74">A hierarchical neural autoencoder for paragraphs and documents, Li+, ACL15</a>
+<span class="snippet">trip advisorのレビューを研究で使うのって規約的にアウトじゃなかったっけ。 ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/75">LCSTS: A large scale chinese short text summarizatino dataset, Hu+, EMNLP15</a>
+<span class="snippet">ACL'17のPointer Generator Networkでした。 ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/77">Teaching Machines to Read and Comprehend, Hermann+, NIPS 2015</a>
+<span class="snippet">だいぶ前に読んだので割とうろおぼえ。CNN/DailyMailデータセットの作成を行なった論文（最近Neuralな文”書”要約の学習でよく使われるやつ）。CNN/DailyMailにはニュース記事に対して、人手で作成した要約が付与されており、要約中のEntityを穴埋めにするなどして、 ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/143">Learning to Generate Coherent Sumamry with Discriminative Hidden Semi-Markov Model, Nishikawa+, COLING14</a>
+<span class="snippet">どこか誤り等があったら誰か指摘してくれると嬉しいです。 ...</span>
+<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Unsupervised.html">#Unsupervised</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/144">CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR14</a>
+<span class="snippet">SIGIRでは珍しい、要約に関する研究情報の確実性を考慮するという、いままであまりやられていなかった部分にフォーカスしたのはおもしろい「アイデアはおもしろいし良い研究だが、affinity weightが変化するということは、裏を返せばdamping factorを変更してもそういう操作はで ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/44">SCENE: A Scalable Two-Stage Personalized News Recommendation System, Li et al., SIGIR’11</a>
+<span class="snippet">・ニュース推薦には3つのチャレンジがある。1. スケーラビリティ　より高速なreal-time processing2. あるニュース記事を読むと、続いて読む記事に影響を与える3. popularityとrecencyが時間経過に従い変化するので、これらをどう扱うかこれらに対 ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><a class="button" href="articles/DomainAdaptation.html">#DomainAdaptation</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/141">転移学習による抽出型要約の精度向上, 西川+, 情報処理学会研究報告, 2011</a>
+<span class="snippet">構造学習を利用した文書要約モデル#126 なども利用し転移学習を行なっている。 ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/42">Combination of Web page recommender systems, Goksedef, Gunduz-oguducu, Elsevier, 2010</a>
+<span class="snippet">・traditionalなmethodはweb usage or web content mining techniquesを用いているが，ニュースサイトなどのページは日々更新されるのでweb content mining techniquesを用いてモデルを更新するのはしんどい．ので，web us ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/43">A semantic-expansion approach to personalized knowledge recommendation, Liang, Yang, Chen and Ku, Decision Support Systems, 2007</a>
+<span class="snippet">・traditionalなkeywordベースでマッチングするアプローチだと，単語間の意味的な関係によって特定の単語のoverweightやunderweightが発生するので，advancedなsemanticsを考慮した手法が必要なので頑張りますという論文． ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/140">Document Summarization using Conditional Random Fields, Shen+, IJCAI07</a>
+<span class="snippet">CRFを用いて単一文書要約の手法を考えましたという話。気持ちとしては、```1. Supervisedなモデルでは、当時は原文書中の各文を独立に2値分類して要約を生成するモデルが多く、sentence間のrelationが考慮できていなかった2. unsupervisedな手法で ...</span>
+<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ILP.html">#ILP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/241">A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR07</a>
+<span class="snippet">文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。 ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/214">TextRank: Bringing Order into Texts, Mihalcea+, EMNLP04</a>
+<span class="snippet">gensimに実装がある。個人的にも実装している：https://github.com/AkihikoWatanabe/textrank ...</span>
+<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Unsupervised.html">#Unsupervised</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/215">LexRank: Graph-based Lexical Centrality as Salience in Text Summarization, Erkan+, Journal of Artificial Intelligence Research, 2004</a>
+<span class="snippet">代表的なグラフベースな(Multi) Document Summarization手法。ほぼ #214 と同じ手法。2種類の手法が提案されている：* [LexRank] tf-idfスコアでsentenceのbag-of-wordsベクトルを作り、cosine similarit ...</span>
+<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/242">A Formal Model for Information Selection in Multi-Sentence Text Extraction, Filatova+, COLING04</a>
+<span class="snippet">初めて文書要約を最大被覆問題として定式化した研究。 ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/41">Neural Networks for Web Content Filtering, 2002, Lee, Fui and Fong, IEEE Intelligent Systems</a>
+<span class="snippet">・ポルノコンテンツのフィルタリングが目的. 提案手法はgeneral frameworkなので他のコンテンツのフィルタリングにも使える.・NNを採用する理由は，robustだから（様々な分布にfitする）．Webpageはnoisyなので．・trainingのためにpornographic ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/246">Cut and paste based text summarization, Jing+, NAACL00</a>
+<span class="snippet">AbstractiveなSummarizationの先駆け的研究。AbstractiveなSummarizationを研究するなら、押さえておいたほうが良い。 ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/138">A Trainable Document Summarizer, Kupiec+, SIGIR95</a>
+<span class="snippet">No description ...</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/147">Automatic condensation of electronic publications by sentence selection, Brandow+, Information Processing & Management95</a>
+<span class="snippet">報道記事要約において、自動要約システムがLead文に勝つのがhardだということを示した研究 ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Classic.html">#Classic</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/213">The automatic creation of literature abstracts, Luhn, IBM Journal of Research Development, 1958</a>
+<span class="snippet">文書要約研究初期の研究 ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/240"> Machine-made index for technical literature: an experiment, IBM Journal of Research and Development, 1958.</a>
+<span class="snippet">初期の要約研究。Luhnらの研究よりはcitation countが少ない。 ...</span>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
+</div>
