@@ -1,0 +1,43 @@
+---
+layout: post
+title: Controllableに関する論文・技術記事メモの一覧
+author: AkihikoWATANABE
+---
+## Controllable
+<div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/594">Controlled Text Generation with Natural Language Instructions, Wangchunshu Zhou+, N_A, arXiv23</a>
+<span class="snippet">本研究では、自然言語の説明と制約のデモンストレーションに基づいて、異なる制約を組み込むことができる制御されたテキスト生成フレームワークであるInstructCTGを提案しています。制約を自然言語の指示に言い換えて、弱く監督されたトレーニングデータを形成し、事前にトレーニングされた言語モデルを微調整 ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/813">Explicit Syntactic Guidance for Neural Text Generation, ACL23</a>
+<span class="snippet">既存のテキスト生成モデルには制約があり、シーケンス・トゥ・シーケンスのパラダイムに従っている。私たちは、構文にガイドされた生成スキーマを提案し、構文解析木に従ってシーケンスを生成する。提案手法は、パラフレーズ生成と機械翻訳の実験でベースラインを上回り、解釈可能性、制御可能性、多様性の観点でも効果的 ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PromptTuning.html">#PromptTuning</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/834">Focused Prefix Tuning for Controllable Text Generation, ACL23</a>
+<span class="snippet">本研究では、注釈のない属性によって制御可能なテキスト生成データセットのパフォーマンスが低下する問題に対して、「focused prefix tuning（FPT）」という手法を提案しています。FPTは望ましい属性に焦点を当てることで、制御精度とテキストの流暢さを向上させることができます。また、FP ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/837">Tailor: A Soft-Prompt-Based Approach to Attribute-Based Controlled Text Generation, ACL23</a>
+<span class="snippet">属性ベースの制御されたテキスト生成（CTG）では、望ましい属性を持つ文を生成することが目指されている。従来の手法では、ファインチューニングや追加の属性分類器を使用していたが、ストレージと推論時間の増加が懸念されていた。そこで、本研究では効率的なパラメータを使用した属性ベースのCTGを提案している。 ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/841">On Improving Summarization Factual Consistency from Natural Language Feedback, ACL23</a>
+<span class="snippet">本研究では、自然言語の情報フィードバックを活用して要約の品質とユーザーの好みを向上させる方法を調査しました。DeFactoという高品質なデータセットを使用して、要約の編集や修正に関する自然言語生成タスクを研究しました。また、微調整された言語モデルを使用して要約の品質を向上させることも示しました。し ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/846">Controllable Text Generation via Probability Density Estimation in the Latent Space, ACL23</a>
+<span class="snippet">本研究では、潜在空間での確率密度推定を用いた新しい制御フレームワークを提案しています。この手法は、可逆変換関数を使用して潜在空間の複雑な分布を単純なガウス分布にマッピングし、洗練された柔軟な制御を行うことができます。実験結果では、提案手法が属性の関連性とテキストの品質において強力なベースラインを上 ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Argument.html">#Argument</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/855">ArgU: A Controllable Factual Argument Generator, ACL23</a>
+<span class="snippet">本研究では、高品質な論証を自動生成するために、制御コードを使用したニューラル論証生成器ArgUを提案します。また、論証スキームを特定するための大規模なデータセットを作成し、注釈付けとデータセット作成のフレームワークについて詳細に説明します。さらに、論証テンプレートを生成する推論戦略を試行し、多様な ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/860">An Invariant Learning Characterization of Controlled Text Generation, ACL23</a>
+<span class="snippet">制御された生成では、予測器の訓練に使用される分布と異なるテキストの分布がある場合、パフォーマンスが低下することが示されている。この問題に対処するために、不変性を持つ予測器が効果的であるという考え方が提案されている。さらに、この特性を活かすための自然な解決策とヒューリスティックも提案されている。実験 ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/861">An Extensible Plug-and-Play Method for Multi-Aspect Controllable Text  Generation, Xuancheng Huang+, N_A, arXiv22</a>
+<span class="snippet">本研究では、テキスト生成において複数の側面を制御する方法について研究しました。従来の方法では、プレフィックスの相互干渉により制約が低下し、未知の側面の組み合わせを制御することが制限されていました。そこで、トレーニング可能なゲートを使用してプレフィックスの介入を正規化し、相互干渉の増加を抑制する方法 ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/91">Toward Controlled Generation of Text, Hu+, ICML17</a>
+<span class="snippet">slideshare: https://www.slideshare.net/akihikowatanabe3110/towards-controlled-generation-of-text ...</span>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
+</div>

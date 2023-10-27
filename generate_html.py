@@ -547,7 +547,7 @@ author: AkihikoWATANABE
 
     home_content = f"{html_template}{html_content}\n"
 
-    with open("./blog/index.markdown", "w") as f:
+    with open("./index.markdown", "w") as f:
         f.write(home_content)
     print("finished")
 
@@ -565,7 +565,7 @@ author: AkihikoWATANABE
         html_content = f"## {label}\n"
         html_content += gen_one_item(issue_list, [label])
         label_content = f"{html_template}{html_content}"
-        with open(f"./blog/_articles/{label.replace('/', '_')}.markdown", "w") as f:
+        with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
             f.write(label_content)
     print("finished")
 
