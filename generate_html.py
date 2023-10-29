@@ -226,6 +226,7 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
             if m != None:
                 continue
             summ_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            break
     # extract image url
     for r in comments:
         m = image_pat.search(r['body'])
