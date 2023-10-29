@@ -10,7 +10,7 @@ author: AkihikoWATANABE
 <span class="snippet">本研究では、オンライン言語学習のための適応的な演習生成の新しいタスクを研究しました。学習履歴から学生の知識状態を推定し、その状態に基づいて個別化された演習文を生成するモデルを提案しました。実データを用いた実験結果から、学生の状態に応じた演習を生成できることを示しました。さらに、教育アプリケーション ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959" alt="image"><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, arXiv22</a>
-<span class="snippet">この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキ ...</span>
+<span class="snippet">DKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attempt ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/464">Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, arXiv22</a>
 <span class="snippet">No description ...</span>
@@ -26,7 +26,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/475">Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22</a>
-<span class="snippet"># KTの歴史30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから）最初はBKTが広く採用されたその後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはま ...</span>
+<span class="snippet">超重要論文。しっかり読むべき ...</span>
 <br><span class="issue_date">Issue Date: 2021-08-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/403">RLTutor: Reinforcement Learning Based Adaptive Tutoring System by Modeling Virtual Student with Fewer Interactions, Kubotani+, Waseda University, IJCAI21</a>
 <span class="snippet">No description ...</span>
@@ -50,7 +50,7 @@ author: AkihikoWATANABE
 <span class="snippet">KTにBERTを利用した研究#453 などでDeepLearningBasedなモデル間であまり差がないことが示されているので、本研究が実際どれだけ強いのかは気になるところ。 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-05-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/456">Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD21</a>
-<span class="snippet">KCのproficiencyの可視化方法について論文中に記述されていないが、Issueで質問されている。https://github.com/bigdata-ustc/EduKTM/issues/29knowledge matrix hは各KCのproficiencyに関する情報をベクト ...</span>
+<span class="snippet">DKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowle ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/459">独立な学習者・項目ネットワークをもつ Deep-IRT, 堤+, 電子情報通信学会論文誌, 2021</a>
 <span class="snippet"># モチベーションDeep-IRTで推定される能力値は項目の特性に依存しており、同一スキル内の全ての項目が等質であると仮定しているため、異なる困難度を持つ項目からの能力推定値を求められない。このため、能力パラメータや困難度パラメータの解釈性は、従来のIRTと比較して制約がある。一方、木下らが提案 ...</span>
@@ -71,10 +71,10 @@ author: AkihikoWATANABE
 <span class="snippet">この論文の実験ではSAKTがDKVMNやDKTに勝てていない ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/451">When is Deep Learning the Best Approach to Knowledge Tracing?, Theophile+ （Ken Koedinger）, CMU+, JEDM20</a>
-<span class="snippet">DKTは、inputとしてquestion_idを使うかKCのidを使うか選択できる。また、outputもquestion_idに対するprobabilityをoutputするか、KCに対するprobabilityをoutputするか選択できる。これらの組み合わせによって、予測性能がどの程度変化 ...</span>
+<span class="snippet">下記モデルの性能をAUCとRMSEの観点から9つのデータセットで比較した研究DLKT    DKT    SAKT    FFNRegression Models    IRT    PFA    DAS3H    Logist ...</span>
 <a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/460">pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM20</a>
-<span class="snippet"># モチベーションBKTの研究は古くから行われており、研究コミュニティで人気が高まっているにもかかわらず、アクセス可能で使いやすいモデルの実装と、さまざまな文献で提案されている多くの変種は、理解しにくいものとなっている。そこで、モダンなpythonベースドな実装としてpyBKTを実装し、研究コミ ...</span>
+<span class="snippet">pythonによるBKTの実装。scikit-learnベースドなinterfaceを持っているので使いやすそう。 ...</span>
 <a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/468">Deep Knowledge Tracing with Transformers, Shi+ （w_ Michael Yudelson）, ETS_ACT, AIED20</a>
 <span class="snippet">TransformerでKTした研究。あまり引用されていない。SAINT, SAINT+と同時期に発表されている。 ...</span>
@@ -86,16 +86,16 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-10-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/417">A Self-Attentive model for Knowledge Tracing, Pandy+ （with George Carypis）, EDM19</a>
-<span class="snippet">#446 においてはSAKTがDKT, DKVMN等に勝てていないのに対し（ASSSITments Data + Statics Data）#450 #452  においてはSAKTはDKT, DKVMNに勝っている（EdNet Data）#451 においてもSAKTがDKTに勝てないことが報 ...</span>
+<span class="snippet">Knowledge Tracingタスクに初めてself-attention layerを導入した研究 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/455">Knowledge Tracing with Sequential Key-Value Memory Networks, Ghodai+, Research School of Computer Science, Australian National University, SIGIR19</a>
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/458">Deep-IRT: Make Deep Learning Based Knowledge Tracing Explainable Using Item Response Theory, Chun-Kit Yeung, EDM19</a>
-<span class="snippet">著者による実装: https://github.com/ckyeungac/DeepIRT ...</span>
+<span class="snippet"># 一言で言うとDKVMN #352 のサマリベクトルf_tと、KC embedding k_tを、それぞれ独立にFully connected layerにかけてスカラー値に変換し、生徒のスキルごとの能力パラメータθと、スキルの困難度パラメータβを求められるようにして、解釈性を向上させた研究。 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/421">Addressing Two Problems in Deep Knowledge Tracing via Prediction-Consistent Regularization, Yeung+, 2018, L@S</a>
-<span class="snippet"><img width="639" alt="image" src="https://user-images.githubusercontent.com/12249301/167774315-061e9d8d-16ae-4c56-b69f-e8ef1968b4fa.png">DKT+とDKTの ...</span>
+<span class="snippet">Deep Knowledge Tracing (DKT)では、下記の問題がある：該当スキルに正解/不正解 したのにmasteryが 下がる/上がる （Inputをreconstructしない）いきなり習熟度が伸びたり、下がったりする（時間軸に対してmastery levelがcons ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/445">Estimating student proficiency: Deep learning is not the panacea, Wilson+, Knewton+, NIPS16 workshop</a>
 <span class="snippet">DKTの性能をBKTやPFA等の手法と比較した研究#355 を引用し、DKTとBKTのAUCの計算方法の違いについて言及している ...</span>
@@ -107,7 +107,7 @@ author: AkihikoWATANABE
 <span class="snippet">教育分野に対するRecsysのSurvey ...</span>
 <a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/297">Deep Knowledge Tracing, Piech+, NIPS, 2015</a>
-<span class="snippet">DKTのinputの次元数が 2 * num_skills, outputの次元数がnum_skillsだと明記されているスライド。元論文だとこの辺が言及されていなくてわかりづらい・・・http://gdac.uqam.ca/Workshop@EDM20/slides/LSTM_tutori ...</span>
+<span class="snippet">Knowledge Tracingタスクとは：　特定のlearning taskにおいて、生徒によってとられたインタラクションの系列x0, ..., xtが与えられたとき、次のインタラクションxt+1を予測するタスク　典型的な表現としては、xt={qt, at}, where qt=know ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/291">Recommender Systems for Technology Enhanced Learning: Research Trends and Applications, Manouselis+, 2014</a>
 <span class="snippet">最近のトレンドやアプリケーションを知りたい場合はこちら ...</span>
@@ -116,13 +116,13 @@ author: AkihikoWATANABE
 <span class="snippet">Ryan BakerらによるEDM Survey ...</span>
 <a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/420">General Features in Knowledge Tracing: Applications to Multiple Subskills, Temporal Item Response Theory, and Expert Knowledge, Brusilovsky+, EDM14</a>
-<span class="snippet">実装：https://github.com/ml-smores/fastただし、GPL-2.0ライセンス ...</span>
+<span class="snippet">BKTでは1種類のスキルしか扱えなかった問題を改善（skillだけでなく、sub-skillも扱えるように）様々なFeatureを組み合わせることが可能 ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/DropoutPrediction.html">#DropoutPrediction</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/424">Predicting MOOC Dropout over Weeks Using Machine Learning Methods, EMNLP14 Workshop, Marius Kloft</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/139363086-1df1ab46-c1ed-4a2a-a72d-d310b3101b8f.png)最初の1 -9週の間は、あまりDropoutが予測できないが、それ ...</span>
+<span class="snippet">EMNLP'14のWorkshop論文。引用数が120件とかなり多め。 ...</span>
 <a class="button" href="articles/LearningPath.html">#LearningPath</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/293">Designing and implementing a personalized remedial learning system for enhancing the programming learning, Hsieh+, Educational Technology & Society, 2013</a>
-<span class="snippet">Fuzzy推論参考：http://www.sist.ac.jp/~kanakubo/research/reasoning_kr/fuzzy.html ...</span>
+<span class="snippet">e-learningシステムには、三つの課題がまだある：learner control: learnerは、自分でe-learningシステムのmaterialをダウンロードしたりして勉強するが、時に事前知識が相当必要な教材とかで勉強してしまうと、learning performanceが落 ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/461">Adapting Bayesian Knowledge Tracing to a Massive Open Online Course in edX, Pardos+, MIT, EDM13</a>
 <span class="snippet"># MotivationMOOCsではITSとはことなり、on-demandなチュートリアルヘルプを提供しておらず、その代わりに、知識は自己探求され様々なタイプのリソースの冗長性によって提供され、システムを介して学生は様々な経路やリソースを選択する。このようなデータは、さまざまな条件下で学生の行 ...</span>
@@ -131,13 +131,13 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/296">Improving Matrix Factorization Techniques of Student Test Data with Partial Order Constraints, Beheshti+, UMAP, 2012</a>
-<span class="snippet">各knowledgeのpre-requisiteを、MFでうまく分解することで自動で学習することができる。んー詳細な数式書いてないし、評価していない。が、考え方はおもしろい。 ...</span>
+<span class="snippet">生徒の学習の場合は、prerequisiteがあるので、factorizationする空間をかなり小さくする。MFは、domain structure discovering (どのアイテムが生徒間の特定のスキルに紐づいているか)にも使える。たとえば、生徒-アイテム行列をVとすると、V= ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/286">Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook, 2011</a>
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/295">Factorization Models for Forecasting Student Performance, Thai-Nghe+, EDM, 2011</a>
-<span class="snippet">TensorFactorizationで、欠損値を予測cold-start problem（new-user, new item）への対処としては、global averageをそれぞれ用いることで対処（more sophisticatedなやり方が提案されているとも述べている）使用して ...</span>
+<span class="snippet">student performanceは、推薦システムの問題において、下記の２種類にcastできる：1. rating prediction task, すなわち、ユーザ・アイテム・ratingを、生徒・タスク・パフォーマンスとみなす2. sequentialなエフェクトを考慮して、fore ...</span>
 <a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/469">KT-IDEM: Introducing Item Difficulty to the Knowledge Tracing Model, Pardos+ （w_ Neil T. Heffernan）, UMAP11</a>
 <span class="snippet"># モチベーションcomputer educationやassessmentのモデルでは項目困難度を考慮している。たとえば、Computer Adaptive Testing (CAT) で利用されるIRTは項目ごとの難易度パラメータを学習する。難易度パラメータの学習がstudent perfo ...</span>
@@ -149,7 +149,7 @@ author: AkihikoWATANABE
 <span class="snippet">BKTのModel Degeneracy問題について言及されている    Model Degeneracy: parameterの値がモデルのconceptualな意味合いを破ってしまうこと    たとえば、学習者がスキルを知っている場合よりも、知らない場合に正答を得る可能性が高 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/292">Simulated Analysis of MAUT Collaborative Filtering for Learning Object Recommendation, Manouselis+, Social Information Retrieval for Technology-Enhanced Learning & Exchange, 2007</a>
-<span class="snippet">Learning Resource Exchangeの文脈で使われることを想定（このシステムではヨーロッパのK-12）。教員による教材のmulti-criteriaのratingは5-scaleで行われた。どういうcriteriaに対してratingされたかが書いてない。 ...</span>
+<span class="snippet">教員に対して教材を推薦しようという試み（学生ではないようだ）。教員は、learning resourcesに対して、multi-criteriaなratingを付与することができ、それをCFで活用する（CELEBRATE web portalというヨーロッパのポータルを使用したらしい）。CF ...</span>
 <a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-09-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/486">Using Knowledge Tracing to Measure Student Reading Proficiencies, Joseph+, ITS04</a>
 <span class="snippet">英語の音読に関してKTを適用した話が記載されているスキルの定義はgrapheme=>phoneme mappingsとして定義されるっぽいch は /CH/ と発音する場合(e.g. Charles)もあれば /K/ の場合もある(e.g. Chaos)ch=>/CH/, ch= ...</span>

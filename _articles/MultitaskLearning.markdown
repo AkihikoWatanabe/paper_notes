@@ -20,7 +20,7 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/QueryClassification.html">#QueryClassification</a><a class="button" href="articles/WebSearch.html">#WebSearch</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249">Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15</a>
-<span class="snippet">データセットにおいて、クエリの長さや文書の長さが記述されていないのがきになる。 ...</span>
+<span class="snippet">クエリ分類と検索をNeural Netを用いてmulti-task learningする研究 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/250">A unified architecture for natural language processing: Deep neural networks with multitask learning, Collobert+, ICML2008.</a>
 <span class="snippet">Deep Neural Netを用いてmultitask learningを行いNLPタスク（POS tagging, Semantic Role Labeling, Chunking etc.）を解いた論文。被引用数2000を超える。multitask learningの学習プロセスな ...</span>

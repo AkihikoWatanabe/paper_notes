@@ -20,7 +20,7 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><a class="button" href="articles/MLOps.html">#MLOps</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/498">deploy-API-to-GCP</a>
-<span class="snippet">Cloud Runについてhttps://dev.classmethod.jp/articles/gc-cloud-run/ ...</span>
+<span class="snippet">FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ0. リポジトリをclone1. Flaskアプリ作成2. FlaskアプリをDocker化3. TerraFormのStateを保存す ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/DataAugmentation.html">#DataAugmentation</a><br><span class="issue_date">Issue Date: 2023-01-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/505">nlpaug</a>
 <span class="snippet">Data Augmentationのためのオープンソースライブラリ ...</span>

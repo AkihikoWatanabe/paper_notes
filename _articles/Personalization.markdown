@@ -42,7 +42,10 @@ author: AkihikoWATANABE
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/893">Generating User-Engaging News Headlines, ACL23</a>
 <span class="snippet">ニュース記事の見出しを個別化するために、ユーザープロファイリングを組み込んだ新しいフレームワークを提案。ユーザーの閲覧履歴に基づいて個別のシグネチャフレーズを割り当て、それを使用して見出しを個別化する。幅広い評価により、提案したフレームワークが多様な読者のニーズに応える個別の見出しを生成する効果を ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8" alt="image"><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1086">Personalized Soups: Personalized Large Language Model Alignment via  Post-hoc Parameter Merging, Joel Jang+, N_A, arXiv23</a>
+<span class="snippet">Reinforcement Learning from Human Feedback (RLHF) is not optimal for learning diverse individual perspectives, as it aligns general aggregated human ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/927">Personalized Chit-Chat Generation for Recommendation Using External Chat Corpora, Chen+, KDD22</a>
 <span class="snippet">チットチャットは、ユーザーとの対話において効果的であることが示されています。この研究では、ニュース推薦のための個人化されたチットチャットを生成する方法を提案しています。既存の方法とは異なり、外部のチャットコーパスのみを使用してユーザーの関心を推定し、個人化されたチットチャットを生成します。幅広い実 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
@@ -68,7 +71,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-05-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/664">Towards Personalized Review Summarization via User-Aware Sequence Network, Li+, AAAI19</a>
-<span class="snippet">user embeddingによってユーザ情報を埋め込む方法と、user vocabulary memoryによって、ユーザが好むvocabularyを積極的にsummaryに利用できるようなモジュールの2種類をモデルに導入している![image](https://user-images.git ...</span>
+<span class="snippet">同じレビューに対しても、異なるユーザは異なるSumamryを生成するよね、というところがモチベーションとなり、Personalized Review Summarizationを提案。初めてPersonalizationの問題について提案した研究。![image](https://user-im ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReviewGeneration.html">#ReviewGeneration</a><br><span class="issue_date">Issue Date: 2018-07-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/276">Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL18</a>
 <span class="snippet">No description ...</span>

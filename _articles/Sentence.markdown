@@ -13,7 +13,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/71">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP17</a>
-<span class="snippet">汎用的な文のエンコーダができました！という話。SNLIデータでパラメータ学習、エンコーダ構成スライド図中右側のエンコーダ部分をなるべく一般的な文に適用できるように学習したい。色々なタスクで、文のエンコーダ構成を比較した結果、bi-directional LSTMでエンコードし、要素ご ...</span>
+<span class="snippet">slide: https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
@@ -29,7 +29,7 @@ author: AkihikoWATANABE
 <span class="snippet">slide:https://www.slideshare.net/akihikowatanabe3110/sentence-compression-by-deletion-with-lstms ...</span>
 <a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/75">LCSTS: A large scale chinese short text summarizatino dataset, Hu+, EMNLP15</a>
-<span class="snippet">ACL'17のPointer Generator Networkでした。 ...</span>
+<span class="snippet">Large Chinese Short Text Summarization (LCSTS) datasetを作成データセットを作成する際は、Weibo上の特定のorganizationの投稿の特徴を利用。Weiboにニュースを投稿する際に、投稿の冒頭にニュースのvery short s ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/137">A Neural Attention Model for Sentence Summarization, Rush+, EMNLP15</a>
 <span class="snippet">解説スライド：https://www.slideshare.net/akihikowatanabe3110/a-neural-attention-model-for-sentence-summarization-65612331 ...</span>

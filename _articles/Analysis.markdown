@@ -13,7 +13,7 @@ author: AkihikoWATANABE
 <span class="snippet">最近のinstruction tuning（IT）の研究では、追加のコンテキストを提供してモデルをファインチューニングすることで、ゼロショットの汎化性能を持つ素晴らしいパフォーマンスが実現されている。しかし、IT中にモデルがどのように指示を利用しているかはまだ研究されていない。本研究では、モデルの ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Word.html">#Word</a><br><span class="issue_date">Issue Date: 2017-12-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/79">Skip-Gram – Zipf + Uniform = Vector Additivity, Gittens+, ACL17</a>
-<span class="snippet">Embeddingの加法構成性（e.g. man+royal=king）を理論的に理由づけ（解説スライドより） ...</span>
+<span class="snippet">解説スライド：http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/09.pdf ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
@@ -26,6 +26,6 @@ author: AkihikoWATANABE
 <span class="snippet">Social Tagging Systemの仕組みや使われ方について言及する際にreferすると良いかも。 ...</span>
 <a class="button" href="articles/Comments.html">#Comments</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/230">Leave a Reply: An Analysis of Weblog Comments, Mishne+, WWW06</a>
-<span class="snippet">相当流し読みなので、読み違えているところや、重要な箇所の読み落とし等あるかもしれない。 ...</span>
+<span class="snippet">従来のWeblog研究では、コメントの情報が無視されていたが、コメントも重要な情報を含んでいると考えられる。この研究では、以下のことが言及されている。* （収集したデータの）ブログにコメントが付与されている割合やコメントの長さ、ポストに対するコメントの平均などの統計量* ブログ検索に ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

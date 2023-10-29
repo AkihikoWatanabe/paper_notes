@@ -13,7 +13,7 @@ author: AkihikoWATANABE
 <span class="snippet">seq2seqにおいてweightのpretrainingを行う手法を提案seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させまし ...</span>
 <a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/144">CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR14</a>
-<span class="snippet">SIGIRでは珍しい、要約に関する研究情報の確実性を考慮するという、いままであまりやられていなかった部分にフォーカスしたのはおもしろい「アイデアはおもしろいし良い研究だが、affinity weightが変化するということは、裏を返せばdamping factorを変更してもそういう操作はで ...</span>
+<span class="snippet">要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった）```"However, it seems that Obama will not use the platform to relaunch his stalled d ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
