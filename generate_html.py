@@ -188,7 +188,7 @@ def generate_graph(parent_labels: list[str],
 
     # PyGraphvizでグラフ描画の設定
     A.layout(prog='neato')  
-    A.draw('./blog/assets/images/knowledge_graph.svg', prog='neato', format='svg')
+    A.draw('./assets/images/knowledge_graph.svg', prog='neato', format='svg')
 
 
 def get_year(text: str) -> int:
