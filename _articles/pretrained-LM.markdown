@@ -7,16 +7,13 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Out-of-DistributionDetection.html">#Out-of-DistributionDetection</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/854">Is Fine-tuning Needed? Pre-trained Language Models Are Near Perfect for Out-of-Domain Detection, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、ファインチューニングなしで事前学習された言語モデルを使用してOOD検出を行う効果を調査しました。さまざまなタイプの分布シフトにおいて、ファインチューニングされたモデルを大幅に上回るほぼ完璧なOOD検出性能を示しました。 ...</span>
-<span class="snippet"><span>Comment</span>Out-of-distribution (OOD) detection is a critical task for reliable predictions over text. Fine-tuning with pre-trained language models has been a de ...</span>
+<span class="snippet"><span>Summary</span>本研究では、ファインチューニングなしで事前学習された言語モデルを使用してOOD検出を行う効果を調査しました。さまざまなタイプの分布シフトにおいて、ファインチューニングされたモデルを大幅に上回るほぼ完璧なOOD検出性能を示しました。</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Contents-based.html">#Contents-based</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/ContrastiveLearning.html">#ContrastiveLearning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/852">UniTRec: A Unified Text-to-Text Transformer and Joint Contrastive Learning Framework for Text-based Recommendation, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、事前学習済み言語モデル（PLM）を使用して、テキストベースの推薦の性能を向上させるための新しいフレームワークであるUniTRecを提案します。UniTRecは、ユーザーの履歴の文脈をより良くモデル化するために統一されたローカル-グローバルアテンションTransformerエンコーダを使用し、候補のテキストアイテムの言語の複雑さを推定するためにTransformerデコーダを活用します。幅広い評価により、UniTRecがテキストベースの推薦タスクで最先端のパフォーマンスを発揮することが示されました。 ...</span>
-<span class="snippet"><span>Comment</span>Prior study has shown that pretrained language models (PLM) can boost the performance of text-based recommendation. In contrast to previous works tha ...</span>
+<span class="snippet"><span>Summary</span>本研究では、事前学習済み言語モデル（PLM）を使用して、テキストベースの推薦の性能を向上させるための新しいフレームワークであるUniTRecを提案します。UniTRecは、ユーザーの履歴の文脈をより良くモデル化するために統一されたローカル-グローバルアテンションTransformerエンコーダを使用し、候補のテキストアイテムの言語の複雑さを推定するためにTransformerデコーダを活用します。幅広い評価により、UniTRecがテキストベースの推薦タスクで最先端のパフォーマンスを発揮することが示されました。</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><a class="button" href="articles/Zero_Few-shot.html">#Zero/Few-shot</a><br><span class="issue_date">Issue Date: 2023-07-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/816">Z-Code++: A Pre-trained Language Model Optimized for Abstractive Summarization, ACL23</a>
-<span class="snippet"><span>Summary</span>この論文では、新しい事前学習言語モデルであるZ-Code++を提案し、抽象的なテキスト要約に最適化されています。Z-Code++は、2つのフェーズの事前学習とディセントラル化アテンション層、およびエンコーダー内のフュージョンを使用しています。このモデルは、低リソースの要約タスクで最先端の性能を発揮し、パラメータ効率的であり、他の競合モデルを大幅に上回ります。 ...</span>
-<span class="snippet"><span>Comment</span>This paper presents Z-Code++, a new pre-trained language model optimized for abstractive text summarization. The model extends the state-of-the-art e ...</span>
+<span class="snippet"><span>Summary</span>この論文では、新しい事前学習言語モデルであるZ-Code++を提案し、抽象的なテキスト要約に最適化されています。Z-Code++は、2つのフェーズの事前学習とディセントラル化アテンション層、およびエンコーダー内のフュージョンを使用しています。このモデルは、低リソースの要約タスクで最先端の性能を発揮し、パラメータ効率的であり、他の競合モデルを大幅に上回ります。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 

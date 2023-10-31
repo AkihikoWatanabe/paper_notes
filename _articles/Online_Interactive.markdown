@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/212">Online Deep Learning: Learning Deep Neural Networks on the Fly, Doyen Sahoo+, N_A, arXiv17</a>
-<span class="snippet"><span>Summary</span>本研究では、オンライン設定でリアルタイムにディープニューラルネットワーク（DNN）を学習するための新しいフレームワークを提案します。従来のバックプロパゲーションはオンライン学習には適していないため、新しいHedge Backpropagation（HBP）手法を提案します。この手法は、静的およびコンセプトドリフトシナリオを含む大規模なデータセットで効果的であることを検証します。 ...</span>
+<span class="snippet"><span>Summary</span>本研究では、オンライン設定でリアルタイムにディープニューラルネットワーク（DNN）を学習するための新しいフレームワークを提案します。従来のバックプロパゲーションはオンライン学習には適していないため、新しいHedge Backpropagation（HBP）手法を提案します。この手法は、静的およびコンセプトドリフトシナリオを含む大規模なデータセットで効果的であることを検証します。</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200">Online Learning to Rank for Information Retrieval, Grotov+, SIGIR16</a>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2018-01-01</span>

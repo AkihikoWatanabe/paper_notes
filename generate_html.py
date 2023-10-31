@@ -225,6 +225,9 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
         m = http_pat.search(r['body'])
         if m != None:
             continue
+        summ_idx = r["body"].find(summ_pat)
+        if summ_idx != -1:
+            continue
         if comm_text == None:
             comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
         else:

@@ -7,16 +7,15 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/859">Abstractive Summarizers are Excellent Extractive Summarizers, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、抽出型要約と要約型要約の相乗効果を探求し、シーケンス・トゥ・シーケンス・アーキテクチャを使用した3つの新しい推論アルゴリズムを提案しています。これにより、要約型システムが抽出型システムを超えることができることを示しました。また、要約型システムは抽出型のオラクル要約にさらされることなく、両方の要約を単一のモデルで生成できることも示しました。これは、抽出型ラベルの必要性に疑問を投げかけるものであり、ハイブリッドモデルの有望な研究方向を示しています。 ...</span>
-<span class="snippet"><span>Comment</span>Extractive and abstractive summarization designs have historically been fragmented, limiting the benefits that often arise from compatible model arch ...</span>
+<span class="snippet"><span>Summary</span>本研究では、抽出型要約と要約型要約の相乗効果を探求し、シーケンス・トゥ・シーケンス・アーキテクチャを使用した3つの新しい推論アルゴリズムを提案しています。これにより、要約型システムが抽出型システムを超えることができることを示しました。また、要約型システムは抽出型のオラクル要約にさらされることなく、両方の要約を単一のモデルで生成できることも示しました。これは、抽出型ラベルの必要性に疑問を投げかけるものであり、ハイブリッドモデルの有望な研究方向を示しています。</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Faithfulness.html">#Faithfulness</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/848">Extractive is not Faithful: An Investigation of Broad Unfaithfulness Problems in Extractive Summarization, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、抽出的な要約の不正確さの問題について議論し、それを5つのタイプに分類します。さらに、新しい尺度であるExtEvalを提案し、不正確な要約を検出するために使用することを示します。この研究は、抽出的な要約の不正確さに対する認識を高め、将来の研究に役立つことを目指しています。 ...</span>
-<span class="snippet"><span>Comment</span>The problems of unfaithful summaries have been widely discussed under the context of abstractive summarization. Though extractive summarization is leE ...</span>
+<span class="snippet"><span>Summary</span>本研究では、抽出的な要約の不正確さの問題について議論し、それを5つのタイプに分類します。さらに、新しい尺度であるExtEvalを提案し、不正確な要約を検出するために使用することを示します。この研究は、抽出的な要約の不正確さに対する認識を高め、将来の研究に役立つことを目指しています。</span>
+<span class="snippet"><span>Comment</span>Extractive SummarizatinoのFaithfulnessに関する研究。>抽出的な要約は抽象的な要約の一般的な不正確さの問題にはあまり影響を受けにくいですが、それは抽出的な要約が正確であることを意味するのでしょうか？結論はノーです。>本研究では、抽出的な要約に現れる広範な不正 ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1022">Text Summarization with Pretrained Encoders, Liu+ （with Lapata）, EMNLP-IJCNLP19</a>
-<span class="snippet"><span>Summary</span>本研究では、最新の事前学習言語モデルであるBERTを使用して、テキスト要約のための一般的なフレームワークを提案します。抽出型モデルでは、新しいエンコーダを導入し、文の表現を取得します。抽象的な要約については、エンコーダとデコーダの最適化手法を異ならせることで不一致を緩和します。さらに、2段階のファインチューニングアプローチによって要約の品質を向上させました。実験結果は、提案手法が最先端の結果を達成していることを示しています。 ...</span>
-<span class="snippet"><span>Comment</span>Bidirectional Encoder Representations from Transformers (BERT) represents the latest incarnation of pretrained language models which have recently adB ...</span>
+<span class="snippet"><span>Summary</span>本研究では、最新の事前学習言語モデルであるBERTを使用して、テキスト要約のための一般的なフレームワークを提案します。抽出型モデルでは、新しいエンコーダを導入し、文の表現を取得します。抽象的な要約については、エンコーダとデコーダの最適化手法を異ならせることで不一致を緩和します。さらに、2段階のファインチューニングアプローチによって要約の品質を向上させました。実験結果は、提案手法が最先端の結果を達成していることを示しています。</span>
+<span class="snippet"><span>Comment</span>BERTSUMEXT論文通常のBERTの構造と比較して、文ごとの先頭に[CLS]トークンを挿入し、かつSegment Embeddingsを文ごとに交互に変更することで、文のrepresentationを取得できるようにする。その後、encodingされたsentenceの[CLS]トークンに対応 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/957647e3-06e5-44cf-835e-bb25166872fd" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 

@@ -7,8 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/General.html">#General</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/847">Improving Domain Generalization for Prompt-Aware Essay Scoring via Disentangled Representation Learning, ACL23</a>
-<span class="snippet"><span>Summary</span>自動エッセイスコアリング（AES）は、エッセイを評価するためのモデルですが、既存のモデルは特定のプロンプトにしか適用できず、新しいプロンプトに対してはうまく汎化できません。この研究では、プロンプトに依存しない特徴とプロンプト固有の特徴を抽出するためのニューラルAESモデルを提案し、表現の汎化を改善するための分離表現学習フレームワークを提案しています。ASAPとTOEFL11のデータセットでの実験結果は、提案手法の有効性を示しています。 ...</span>
-<span class="snippet"><span>Comment</span>Automated Essay Scoring (AES) aims to score essays written in response to specific prompts. Many AES models have been proposed, but most of them are ...</span>
+<span class="snippet"><span>Summary</span>自動エッセイスコアリング（AES）は、エッセイを評価するためのモデルですが、既存のモデルは特定のプロンプトにしか適用できず、新しいプロンプトに対してはうまく汎化できません。この研究では、プロンプトに依存しない特徴とプロンプト固有の特徴を抽出するためのニューラルAESモデルを提案し、表現の汎化を改善するための分離表現学習フレームワークを提案しています。ASAPとTOEFL11のデータセットでの実験結果は、提案手法の有効性を示しています。</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/ChatGPT.html">#ChatGPT</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/571">AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Herbold+, University of Passau, arXiv23</a>
 <span class="snippet"><span>Comment</span>ChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。![image](https ...</span>

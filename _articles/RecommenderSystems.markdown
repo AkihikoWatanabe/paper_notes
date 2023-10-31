@@ -9,28 +9,24 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/870">User Simulator Assisted Open-ended Conversational Recommendation System, NLP4ConvAI23</a>
 <a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/862">Explainable Recommendation with Personalized Review Retrieval and Aspect Learning, ACL23</a>
-<span class="snippet"><span>Summary</span>説明可能な推薦において、テキスト生成の精度向上とユーザーの好みの捉え方の改善を目指し、ERRAモデルを提案。ERRAは追加情報の検索とアスペクト学習を組み合わせることで、より正確で情報量の多い説明を生成することができる。さらに、ユーザーの関心の高いアスペクトを選択することで、関連性の高い詳細なユーザー表現をモデル化し、説明をより説得力のあるものにする。実験結果は、ERRAモデルが最先端のベースラインを上回ることを示している。 ...</span>
-<span class="snippet"><span>Comment</span>Explainable recommendation is a technique that combines prediction and generation tasks to produce more persuasive results. Among these tasks, textua ...</span>
+<span class="snippet"><span>Summary</span>説明可能な推薦において、テキスト生成の精度向上とユーザーの好みの捉え方の改善を目指し、ERRAモデルを提案。ERRAは追加情報の検索とアスペクト学習を組み合わせることで、より正確で情報量の多い説明を生成することができる。さらに、ユーザーの関心の高いアスペクトを選択することで、関連性の高い詳細なユーザー表現をモデル化し、説明をより説得力のあるものにする。実験結果は、ERRAモデルが最先端のベースラインを上回ることを示している。</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Contents-based.html">#Contents-based</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/pretrained-LM.html">#pretrained-LM</a><a class="button" href="articles/ContrastiveLearning.html">#ContrastiveLearning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/852">UniTRec: A Unified Text-to-Text Transformer and Joint Contrastive Learning Framework for Text-based Recommendation, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、事前学習済み言語モデル（PLM）を使用して、テキストベースの推薦の性能を向上させるための新しいフレームワークであるUniTRecを提案します。UniTRecは、ユーザーの履歴の文脈をより良くモデル化するために統一されたローカル-グローバルアテンションTransformerエンコーダを使用し、候補のテキストアイテムの言語の複雑さを推定するためにTransformerデコーダを活用します。幅広い評価により、UniTRecがテキストベースの推薦タスクで最先端のパフォーマンスを発揮することが示されました。 ...</span>
-<span class="snippet"><span>Comment</span>Prior study has shown that pretrained language models (PLM) can boost the performance of text-based recommendation. In contrast to previous works tha ...</span>
+<span class="snippet"><span>Summary</span>本研究では、事前学習済み言語モデル（PLM）を使用して、テキストベースの推薦の性能を向上させるための新しいフレームワークであるUniTRecを提案します。UniTRecは、ユーザーの履歴の文脈をより良くモデル化するために統一されたローカル-グローバルアテンションTransformerエンコーダを使用し、候補のテキストアイテムの言語の複雑さを推定するためにTransformerデコーダを活用します。幅広い評価により、UniTRecがテキストベースの推薦タスクで最先端のパフォーマンスを発揮することが示されました。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Conversation.html">#Conversation</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/840">TREA: Tree-Structure Reasoning Schema for Conversational Recommendation, ACL23</a>
-<span class="snippet"><span>Summary</span>会話型の推薦システム（CRS）では、外部知識を活用して対話の文脈を理解し、関連するアイテムを推薦することが求められている。しかし、現在の推論モデルは複雑な関係を完全に把握できないため、新しいツリー構造の推論スキーマであるTREAを提案する。TREAは多階層のツリーを使用して因果関係を明確にし、過去の対話を活用してより合理的な応答を生成する。幅広い実験により、TREAの有効性が示された。 ...</span>
-<span class="snippet"><span>Comment</span>Conversational recommender systems (CRS) aim to timely trace the dynamic interests of users through dialogues and generate relevant responses for ite ...</span>
+<span class="snippet"><span>Summary</span>会話型の推薦システム（CRS）では、外部知識を活用して対話の文脈を理解し、関連するアイテムを推薦することが求められている。しかし、現在の推論モデルは複雑な関係を完全に把握できないため、新しいツリー構造の推論スキーマであるTREAを提案する。TREAは多階層のツリーを使用して因果関係を明確にし、過去の対話を活用してより合理的な応答を生成する。幅広い実験により、TREAの有効性が示された。</span>
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/545">Graph Collaborative Signals Denoising and Augmentation for  Recommendation, Ziwei Fan+, N_A, SIGIR23</a>
-<span class="snippet"><span>Summary</span>グラフ協調フィルタリング（GCF）は、推薦システムで人気のある技術ですが、相互作用が豊富なユーザーやアイテムにはノイズがあり、相互作用が不十分なユーザーやアイテムには不十分です。また、ユーザー-ユーザーおよびアイテム-アイテムの相関を無視しているため、有益な隣接ノードの範囲が制限される可能性があります。本研究では、ユーザー-ユーザーおよびアイテム-アイテムの相関を組み込んだ新しいグラフの隣接行列と、適切に設計されたユーザー-アイテムの相互作用行列を提案します。実験では、改善された隣接ノードと低密度を持つ強化されたユーザー-アイテムの相互作用行列が、グラフベースの推薦において重要な利点をもたらすことを示しています。また、ユーザー-ユーザーおよびアイテム-アイテムの相関を含めることで、相互作用が豊富なユーザーや不十分なユーザーに対する推薦が改善されることも示しています。 ...</span>
+<span class="snippet"><span>Summary</span>グラフ協調フィルタリング（GCF）は、推薦システムで人気のある技術ですが、相互作用が豊富なユーザーやアイテムにはノイズがあり、相互作用が不十分なユーザーやアイテムには不十分です。また、ユーザー-ユーザーおよびアイテム-アイテムの相関を無視しているため、有益な隣接ノードの範囲が制限される可能性があります。本研究では、ユーザー-ユーザーおよびアイテム-アイテムの相関を組み込んだ新しいグラフの隣接行列と、適切に設計されたユーザー-アイテムの相互作用行列を提案します。実験では、改善された隣接ノードと低密度を持つ強化されたユーザー-アイテムの相互作用行列が、グラフベースの推薦において重要な利点をもたらすことを示しています。また、ユーザー-ユーザーおよびアイテム-アイテムの相関を含めることで、相互作用が豊富なユーザーや不十分なユーザーに対する推薦が改善されることも示しています。</span>
 <span class="snippet"><span>Comment</span>グラフ協調フィルタリングを改善グラフ協調フィルタリング（下記ツイッターより引用）user-item間の関係だけでなく、user-user間とitem-item間の情報を組み込むことで精度向上を達成した論文とのこと。https://twitter.com/nogawanogawa/status ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b0f099c2-8e9d-4ebc-aa1b-d4af49509a37" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/927">Personalized Chit-Chat Generation for Recommendation Using External Chat Corpora, Chen+, KDD22</a>
-<span class="snippet"><span>Summary</span>チットチャットは、ユーザーとの対話において効果的であることが示されています。この研究では、ニュース推薦のための個人化されたチットチャットを生成する方法を提案しています。既存の方法とは異なり、外部のチャットコーパスのみを使用してユーザーの関心を推定し、個人化されたチットチャットを生成します。幅広い実験により、提案手法の効果が示されています。 ...</span>
-<span class="snippet"><span>Comment</span>Chit-chat has been shown effective in engaging users in human computer interaction. We find with a user study that generating appropriate chit-chat f ...</span>
+<span class="snippet"><span>Summary</span>チットチャットは、ユーザーとの対話において効果的であることが示されています。この研究では、ニュース推薦のための個人化されたチットチャットを生成する方法を提案しています。既存の方法とは異なり、外部のチャットコーパスのみを使用してユーザーの関心を推定し、個人化されたチットチャットを生成します。幅広い実験により、提案手法の効果が示されています。</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><br><span class="issue_date">Issue Date: 2021-10-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/413">コミュニティサービスにおけるレコメンデーションの変遷とMLパイプラインについて, PyCon21</a>
 <span class="snippet"><span>Comment</span>・ママ向けのQ&AサービスにおけるレコメンドとMLパイプラインについて紹介◆レコメンドエンジンの変遷　・Tensorflowで実装したMFから始まり、その後トピックを絞り込んだ上で推薦するためにLDAを活用したレコメンド、最終的にSoftmax Recommendationを開発◆MLパイプラ ...</span>
@@ -81,7 +77,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>分類やランキング、レコメンドなど、様々なタスクで汎用的に使用できるEmbeddingの学習手法を提案。Embeddingを学習する対象をEntityと呼び、Entityはbag-of-featureで記述される。Entityはbag-of-featureで記述できればなんでもよく、こ実際にS ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/657">Ups and Downs: Modeling the Visual Evolution of Fashion Trends with  One-Class Collaborative Filtering, Ruining He+, N_A, arXiv16</a>
-<span class="snippet"><span>Summary</span>ファッションなどの特定のドメインにおいて、製品の視覚的な外観と時間の経過に伴う進化を同時にモデル化することが重要であり、そのような好みをモデル化することは非常に困難である。本論文では、One-Class Collaborative Filtering設定のための新しいモデルを構築し、過去のフィードバックに基づいてユーザーのファッションに関する個人的なランキング関数を推定することを目的としている。実験的に、Amazon.comからの2つの大規模な実世界データセットで我々の手法を評価し、最先端の個人化ランキング尺度を上回ることを示し、また、データセットの11年間にわたる高レベルのファッショントレンドを可視化するために使用した。 ...</span>
+<span class="snippet"><span>Summary</span>ファッションなどの特定のドメインにおいて、製品の視覚的な外観と時間の経過に伴う進化を同時にモデル化することが重要であり、そのような好みをモデル化することは非常に困難である。本論文では、One-Class Collaborative Filtering設定のための新しいモデルを構築し、過去のフィードバックに基づいてユーザーのファッションに関する個人的なランキング関数を推定することを目的としている。実験的に、Amazon.comからの2つの大規模な実世界データセットで我々の手法を評価し、最先端の個人化ランキング尺度を上回ることを示し、また、データセットの11年間にわたる高レベルのファッショントレンドを可視化するために使用した。</span>
 <span class="snippet"><span>Comment</span>#653 を構築した研究と同様の著者の研究#653 を利用した場合はこの研究は #654 をreferする必要がある ...</span>
 <a class="button" href="articles/Session.html">#Session</a><br><span class="issue_date">Issue Date: 2019-08-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/315">SESSION-BASED RECOMMENDATIONS WITH RECURRENT NEURAL NETWORKS, Hidasi+, ICLR16</a>
@@ -98,7 +94,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>target text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦すると ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/654">Image-based Recommendations on Styles and Substitutes, Julian McAuley+, N_A, arXiv15</a>
-<span class="snippet"><span>Summary</span>本研究では、人間の感覚に基づいた物体間の関係性をモデル化することを目的として、大規模なデータセットを用いたスケーラブルな方法を提案している。関連する画像のグラフ上で定義されたネットワーク推論問題として捉え、服やアクセサリーの組み合わせを推奨することができるシステムを開発し、その他のアプリケーションにも適用可能であることを示している。 ...</span>
+<span class="snippet"><span>Summary</span>本研究では、人間の感覚に基づいた物体間の関係性をモデル化することを目的として、大規模なデータセットを用いたスケーラブルな方法を提案している。関連する画像のグラフ上で定義されたネットワーク推論問題として捉え、服やアクセサリーの組み合わせを推奨することができるシステムを開発し、その他のアプリケーションにも適用可能であることを示している。</span>
 <span class="snippet"><span>Comment</span>#653 を構築した論文 ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/166">Matrix Factorization Model in Collaborative Filtering Algorithms: A Survey, Bokde+, Procedia Computer Science15</a>
@@ -190,8 +186,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>推薦システムには様々なusecaseが存在しており、それらは別々に運用されることが多い。user-item recommendationitem-item recommendationquery-item recommendationcategory-item recこれがこのようなsi ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8ae598fa-8e7c-4afd-ab9e-38b79b85cd3e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/NaturalLanguageUnderstanding.html">#NaturalLanguageUnderstanding</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/853">DataFinder: Scientific Dataset Recommendation from Natural Language Descriptions</a>
-<span class="snippet"><span>Summary</span>データセットの推奨タスクを操作化し、DataFinderデータセットを構築した。DataFinderデータセットは、自動的に構築された大規模なトレーニングセットと専門家による評価セットを含んでいる。このデータセットを使用して、テキストベースのデータセット推奨のための優れたバイエンコーダリトリーバを提案し、関連する検索結果を見つけることができることを示した。データセットとモデルは一般に公開される。 ...</span>
-<span class="snippet"><span>Comment</span>Modern machine learning relies on datasets to develop and validate research ideas. Given the growth of publicly available data, finding the right dat ...</span>
+<span class="snippet"><span>Summary</span>データセットの推奨タスクを操作化し、DataFinderデータセットを構築した。DataFinderデータセットは、自動的に構築された大規模なトレーニングセットと専門家による評価セットを含んでいる。このデータセットを使用して、テキストベースのデータセット推奨のための優れたバイエンコーダリトリーバを提案し、関連する検索結果を見つけることができることを示した。データセットとモデルは一般に公開される。</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-07-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/776">MetaのRecommender System概要, 2023.6</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><br><span class="issue_date">Issue Date: 2023-05-10</span>

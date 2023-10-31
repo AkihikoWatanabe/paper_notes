@@ -7,8 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/QuestionGeneration.html">#QuestionGeneration</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/845">Covering Uncommon Ground: Gap-Focused Question Generation for Answer Assessment, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、教育的な対話における情報のギャップに焦点を当て、自動的に質問を生成する問題に取り組んでいます。良い質問の要素を明確にし、それを満たすモデルを提案します。また、人間のアノテーターによる評価を行い、生成された質問の競争力を示します。 ...</span>
-<span class="snippet"><span>Comment</span>Human communication often involves information gaps between the interlocutors. For example, in an educational dialogue a student often provides an an ...</span>
+<span class="snippet"><span>Summary</span>本研究では、教育的な対話における情報のギャップに焦点を当て、自動的に質問を生成する問題に取り組んでいます。良い質問の要素を明確にし、それを満たすモデルを提案します。また、人間のアノテーターによる評価を行い、生成された質問の競争力を示します。</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/475">Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22</a>
 <span class="snippet"><span>Comment</span>超重要論文。しっかり読むべき# 一言で言うとKTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中 ...</span>
