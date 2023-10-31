@@ -11,7 +11,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>In this paper, we present a novel approach for data-to-text generation that addresses the limitations of current methods that primarily focus on spec ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/904">Measuring Massive Multitask Language Understanding, Dan Hendrycks+, N_A, ICLR21</a>
-<span class="snippet"><span>Summary</span>私たちは、マルチタスクのテキストモデルの正確性を測定するための新しいテストを提案しています。このテストは、57のタスクをカバーし、広範な世界知識と問題解決能力を必要とします。現在のモデルはまだ専門家レベルの正確性に達しておらず、性能に偏りがあります。私たちのテストは、モデルの理解の幅と深さを評価し ...</span>
+<span class="snippet"><span>Summary</span>私たちは、マルチタスクのテキストモデルの正確性を測定するための新しいテストを提案しています。このテストは、57のタスクをカバーし、広範な世界知識と問題解決能力を必要とします。現在のモデルはまだ専門家レベルの正確性に達しておらず、性能に偏りがあります。私たちのテストは、モデルの理解の幅と深さを評価し、重要な欠点を特定するために使用できます。 ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/252">An Overview of Multi-Task Learning in Deep Neural Networks, Sebastian Ruder, arXiv17</a>
 </div>

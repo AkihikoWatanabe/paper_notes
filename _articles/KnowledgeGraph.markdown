@@ -15,7 +15,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>When answering natural language questions over knowledge bases, missing facts, incomplete schema and limited scope naturally lead to many questions b ...</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-06-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/768">Unifying Large Language Models and Knowledge Graphs: A Roadmap, Shirui Pan+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>LLMsとKGsを統合することで、自然言語処理や人工知能の分野で注目を集めている。KGsは豊富な事実知識を明示的に格納しているが、構築が困難であり、進化する性質を持っている。一方、LLMsはブラックボックスモデルであり、事実知識を捉えたりアクセスしたりすることができない。本記事では、LLMsとKG ...</span>
+<span class="snippet"><span>Summary</span>LLMsとKGsを統合することで、自然言語処理や人工知能の分野で注目を集めている。KGsは豊富な事実知識を明示的に格納しているが、構築が困難であり、進化する性質を持っている。一方、LLMsはブラックボックスモデルであり、事実知識を捉えたりアクセスしたりすることができない。本記事では、LLMsとKGsを統合するための展望を示し、KG-enhanced LLMs、LLM-augmented KGs、Synergized LLMs + KGsの3つのフレームワークを提案する。既存の取り組みをレビューし、今後の研究方向を指摘する。 ...</span>
 <span class="snippet"><span>Comment</span>LLMsとKGの統合に関するロードマップを提示。KGをLLMの事前学習や推論に組み込む方法、KGタスクにLLMを利用する方法、LLMとKGの双方向のreasonieg能力を高める方法などをカバーしている。 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c008d409-e5db-4140-a82c-a658a4847780" alt="image"></div>
 <button onclick="showMore(0)">more</button>

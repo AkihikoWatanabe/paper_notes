@@ -15,5 +15,5 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>People often imagine relevant scenes to aid in the writing process. In this work, we aim to utilize visual information for composition in the same ma> ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/741">ViCo: Detail-Preserving Visual Condition for Personalized Text-to-Image  Generation, Shaozhe Hao+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>拡散モデルを用いたパーソナライズされた画像生成において、高速で軽量なプラグインメソッドであるViCoを提案。注目モジュールを導入し、注目ベースのオブジェクトマスクを使用することで、一般的な過学習の劣化を軽減。元の拡散モデルのパラメータを微調整せず、軽量なパラメータトレーニングだけで、最新のモデルと ...</span>
+<span class="snippet"><span>Summary</span>拡散モデルを用いたパーソナライズされた画像生成において、高速で軽量なプラグインメソッドであるViCoを提案。注目モジュールを導入し、注目ベースのオブジェクトマスクを使用することで、一般的な過学習の劣化を軽減。元の拡散モデルのパラメータを微調整せず、軽量なパラメータトレーニングだけで、最新のモデルと同等またはそれ以上の性能を発揮することができる。 ...</span>
 </div>

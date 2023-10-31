@@ -212,7 +212,7 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
     image_url = None
     summ_idx = issue["body"].find(summ_pat)
     if summ_idx != -1:
-        summ_text = ''.join(issue["body"][summ_idx:].split('\n')[1:]).strip('-')[:150].replace('\n', '').replace('- ', "").strip()
+        summ_text = ''.join(issue["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").strip()
 
     # find summary
     comments = issue["comments"]

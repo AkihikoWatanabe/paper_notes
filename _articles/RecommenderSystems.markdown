@@ -25,7 +25,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Conversational recommender systems (CRS) aim to timely trace the dynamic interests of users through dialogues and generate relevant responses for ite ...</span>
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/545">Graph Collaborative Signals Denoising and Augmentation for  Recommendation, Ziwei Fan+, N_A, SIGIR23</a>
-<span class="snippet"><span>Summary</span>グラフ協調フィルタリング（GCF）は、推薦システムで人気のある技術ですが、相互作用が豊富なユーザーやアイテムにはノイズがあり、相互作用が不十分なユーザーやアイテムには不十分です。また、ユーザー-ユーザーおよびアイテム-アイテムの相関を無視しているため、有益な隣接ノードの範囲が制限される可能性があり ...</span>
+<span class="snippet"><span>Summary</span>グラフ協調フィルタリング（GCF）は、推薦システムで人気のある技術ですが、相互作用が豊富なユーザーやアイテムにはノイズがあり、相互作用が不十分なユーザーやアイテムには不十分です。また、ユーザー-ユーザーおよびアイテム-アイテムの相関を無視しているため、有益な隣接ノードの範囲が制限される可能性があります。本研究では、ユーザー-ユーザーおよびアイテム-アイテムの相関を組み込んだ新しいグラフの隣接行列と、適切に設計されたユーザー-アイテムの相互作用行列を提案します。実験では、改善された隣接ノードと低密度を持つ強化されたユーザー-アイテムの相互作用行列が、グラフベースの推薦において重要な利点をもたらすことを示しています。また、ユーザー-ユーザーおよびアイテム-アイテムの相関を含めることで、相互作用が豊富なユーザーや不十分なユーザーに対する推薦が改善されることも示しています。 ...</span>
 <span class="snippet"><span>Comment</span>グラフ協調フィルタリングを改善グラフ協調フィルタリング（下記ツイッターより引用）user-item間の関係だけでなく、user-user間とitem-item間の情報を組み込むことで精度向上を達成した論文とのこと。https://twitter.com/nogawanogawa/status ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b0f099c2-8e9d-4ebc-aa1b-d4af49509a37" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/927">Personalized Chit-Chat Generation for Recommendation Using External Chat Corpora, Chen+, KDD22</a>
@@ -81,7 +81,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>分類やランキング、レコメンドなど、様々なタスクで汎用的に使用できるEmbeddingの学習手法を提案。Embeddingを学習する対象をEntityと呼び、Entityはbag-of-featureで記述される。Entityはbag-of-featureで記述できればなんでもよく、こ実際にS ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/657">Ups and Downs: Modeling the Visual Evolution of Fashion Trends with  One-Class Collaborative Filtering, Ruining He+, N_A, arXiv16</a>
-<span class="snippet"><span>Summary</span>ファッションなどの特定のドメインにおいて、製品の視覚的な外観と時間の経過に伴う進化を同時にモデル化することが重要であり、そのような好みをモデル化することは非常に困難である。本論文では、One-Class Collaborative Filtering設定のための新しいモデルを構築し、過去のフィード ...</span>
+<span class="snippet"><span>Summary</span>ファッションなどの特定のドメインにおいて、製品の視覚的な外観と時間の経過に伴う進化を同時にモデル化することが重要であり、そのような好みをモデル化することは非常に困難である。本論文では、One-Class Collaborative Filtering設定のための新しいモデルを構築し、過去のフィードバックに基づいてユーザーのファッションに関する個人的なランキング関数を推定することを目的としている。実験的に、Amazon.comからの2つの大規模な実世界データセットで我々の手法を評価し、最先端の個人化ランキング尺度を上回ることを示し、また、データセットの11年間にわたる高レベルのファッショントレンドを可視化するために使用した。 ...</span>
 <span class="snippet"><span>Comment</span>#653 を構築した研究と同様の著者の研究#653 を利用した場合はこの研究は #654 をreferする必要がある ...</span>
 <a class="button" href="articles/Session.html">#Session</a><br><span class="issue_date">Issue Date: 2019-08-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/315">SESSION-BASED RECOMMENDATIONS WITH RECURRENT NEURAL NETWORKS, Hidasi+, ICLR16</a>
@@ -98,7 +98,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>target text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦すると ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/654">Image-based Recommendations on Styles and Substitutes, Julian McAuley+, N_A, arXiv15</a>
-<span class="snippet"><span>Summary</span>本研究では、人間の感覚に基づいた物体間の関係性をモデル化することを目的として、大規模なデータセットを用いたスケーラブルな方法を提案している。関連する画像のグラフ上で定義されたネットワーク推論問題として捉え、服やアクセサリーの組み合わせを推奨することができるシステムを開発し、その他のアプリケーション ...</span>
+<span class="snippet"><span>Summary</span>本研究では、人間の感覚に基づいた物体間の関係性をモデル化することを目的として、大規模なデータセットを用いたスケーラブルな方法を提案している。関連する画像のグラフ上で定義されたネットワーク推論問題として捉え、服やアクセサリーの組み合わせを推奨することができるシステムを開発し、その他のアプリケーションにも適用可能であることを示している。 ...</span>
 <span class="snippet"><span>Comment</span>#653 を構築した論文 ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/166">Matrix Factorization Model in Collaborative Filtering Algorithms: A Survey, Bokde+, Procedia Computer Science15</a>

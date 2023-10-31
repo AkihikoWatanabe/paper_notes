@@ -11,6 +11,6 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>To overcome the overparameterized problem in Pre-trained Language Models (PLMs), pruning is widely used as a simple and straightforward compression m ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-06-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/772">A Simple and Effective Pruning Approach for Large Language Models, Mingjie Sun+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本論文では、大規模言語モデル（LLMs）の剪定方法であるWandaを紹介している。Wandaは、重みと活性化による剪定を行い、再トレーニングや重みの更新を必要とせず、剪定されたLLMはそのまま使用できる。Wandaは、LLaMA上でのさまざまな言語ベンチマークで徹底的に評価され、大きさに基づく剪定 ...</span>
+<span class="snippet"><span>Summary</span>本論文では、大規模言語モデル（LLMs）の剪定方法であるWandaを紹介している。Wandaは、重みと活性化による剪定を行い、再トレーニングや重みの更新を必要とせず、剪定されたLLMはそのまま使用できる。Wandaは、LLaMA上でのさまざまな言語ベンチマークで徹底的に評価され、大きさに基づく剪定の確立されたベースラインを大幅に上回り、重みの更新に関する最近の方法と競合する優れた性能を発揮することが示された。コードはhttps://github.com/locuslab/wandaで利用可能である。 ...</span>
 <span class="snippet"><span>Comment</span>LLMのネットワークのpruning手法を提案。再訓練、パラメータ更新無しで、性能低下が少なくて刈り込みが可能。 ...</span>
 </div>

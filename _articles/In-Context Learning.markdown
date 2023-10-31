@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1090">In-Context Learning Creates Task Vectors, Roee Hendel+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）におけるインコンテキスト学習（ICL）の基本的なメカニズムはまだ十分に理解されていない。本研究では、ICLによって学習される関数が非常に単純な構造を持つことを示し、ICLがトランスフォーマーLLMを使用して単一のタスクベクトルを生成し、それを使用して出力を生成するという ...</span>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）におけるインコンテキスト学習（ICL）の基本的なメカニズムはまだ十分に理解されていない。本研究では、ICLによって学習される関数が非常に単純な構造を持つことを示し、ICLがトランスフォーマーLLMを使用して単一のタスクベクトルを生成し、それを使用して出力を生成するということを明らかにする。さまざまなモデルとタスクにわたる実験によって、この主張を支持している。 ...</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんとツイートの引用>In-Context Learningの文脈中で計算された最後の活性値をθとし、クエリに対する結果を求める際に文脈に注意を当てず、活性値にθをコピーして予測してもICLと近い性能を達成できる。θはタスクを要約したタスクベクトルとみなせLLMは前向き計算でタIC ...</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/857">Pre-Training to Learn in Context, ACL23</a>
@@ -35,15 +35,15 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Compositional generalization--understanding unseen combinations of seen primitives--is an essential reasoning capability in human intelligence. The A ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793">Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>最近の言語モデルは、長い文脈を入力として受け取ることができますが、その長い文脈をどれだけうまく利用しているかについてはまだよくわかっていません。この研究では、マルチドキュメントの質問応答とキー・バリューの検索という2つのタスクにおいて、言語モデルのパフォーマンスを分析しました。その結果、関連情報が ...</span>
+<span class="snippet"><span>Summary</span>最近の言語モデルは、長い文脈を入力として受け取ることができますが、その長い文脈をどれだけうまく利用しているかについてはまだよくわかっていません。この研究では、マルチドキュメントの質問応答とキー・バリューの検索という2つのタスクにおいて、言語モデルのパフォーマンスを分析しました。その結果、関連情報が入力文脈の始まりや終わりにある場合、パフォーマンスが最も高くなることがわかりましたが、長い文脈の中で関連情報にアクセスする必要がある場合、パフォーマンスが著しく低下します。さらに、入力文脈が長くなるにつれて、明示的に長い文脈を扱うモデルでもパフォーマンスが大幅に低下します。この分析は、言語モデルが入力文脈をどのように利用しているかをより良く理解するためのものであり、将来の長い文脈モデルのための新しい評価プロトコルを提供します。 ...</span>
 <span class="snippet"><span>Comment</span>元ツイートhttps://twitter.com/drjimfan/status/1678460065811136512?s=46&t=5BO_qSlNBSEGSugyUlP5Hw非常に重要な知見がまとめられている1. モデルはコンテキストのはじめと最後の情報をうまく活用でき、真ん中の情報をうまく活 ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/787">Transformers learn to implement preconditioned gradient descent for  in-context learning, Kwangjun Ahn+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>トランスフォーマーは勾配降下法のアルゴリズムを学習できるかどうかについての研究があります。この研究では、トランスフォーマーが勾配降下法の反復をシミュレートすることができることが示されています。さらに、線形トランスフォーマーについての分析から、訓練目的のグローバル最小値が事前条件付き勾配降下法の単一 ...</span>
+<span class="snippet"><span>Summary</span>トランスフォーマーは勾配降下法のアルゴリズムを学習できるかどうかについての研究があります。この研究では、トランスフォーマーが勾配降下法の反復をシミュレートすることができることが示されています。さらに、線形トランスフォーマーについての分析から、訓練目的のグローバル最小値が事前条件付き勾配降下法の単一の反復を実装することが証明されました。また、k個のアテンション層を持つトランスフォーマーについても、特定の臨界点が事前条件付き勾配降下法のk回の反復を実装することが証明されました。これらの結果は、トランスフォーマーを訓練して学習アルゴリズムを実装するための将来の研究を促しています。 ...</span>
 <span class="snippet"><span>Comment</span>元ツイートhttps://twitter.com/hillbig/status/1678525778492018688?s=46&t=5BO_qSlNBSEGSugyUlP5Hwつまり、事前学習の段階でIn context learningが可能なように学習がなされているということなのか。それはどの ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-05-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/693">What In-Context Learning Learns In-Context: Disentangling Task  Recognition and Task Learning, Jane Pan+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）がどのようにコンテキスト学習（ICL）を利用してタスクを解決するかを調査しました。タスク認識（TR）とタスク学習（TL）の役割を分離するための実験を行い、LLMsがデモンストレーションを通じて暗黙的に学習を行う可能性があることを示しました。また、モデルがスケ ...</span>
+<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）がどのようにコンテキスト学習（ICL）を利用してタスクを解決するかを調査しました。タスク認識（TR）とタスク学習（TL）の役割を分離するための実験を行い、LLMsがデモンストレーションを通じて暗黙的に学習を行う可能性があることを示しました。また、モデルがスケールするにつれてTLのパフォーマンスが改善されることも明らかになりました。これらの結果は、ICLの背後にある2つの異なる力を明らかにし、将来のICL研究でそれらを区別することを提唱しています。 ...</span>
 <span class="snippet"><span>Comment</span>LLMがIn context Learningで新しい何かを学習しているのかを調査TaskRecognition（TR）はGround Truth無しでデモンストレーションのみで実施TaskLearning（TL）は訓練データになかったテキストとラベルのマッピングを捉える必要があるタスク。TR ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/729cc613-7487-47be-9225-e02921091969" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

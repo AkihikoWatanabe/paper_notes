@@ -15,7 +15,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Adaptive learning aims to provide customized educational activities (e.g., exercises) to address individual learning needs. However, manual constructK ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/803">Generative AI for Programming Education: Benchmarking ChatGPT, GPT-4,  and Human Tutors, Tung Phung+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>生成AIと大規模言語モデルは、プログラミング教育の向上に大きな可能性を持っています。しかし、これまでの研究は限定的であり、包括的なプログラミング教育シナリオのための最先端モデルのベンチマークが不足しています。本研究では、ChatGPTとGPT-4の2つのモデルを評価し、人間のチューターとのパフォー ...</span>
+<span class="snippet"><span>Summary</span>生成AIと大規模言語モデルは、プログラミング教育の向上に大きな可能性を持っています。しかし、これまでの研究は限定的であり、包括的なプログラミング教育シナリオのための最先端モデルのベンチマークが不足しています。本研究では、ChatGPTとGPT-4の2つのモデルを評価し、人間のチューターとのパフォーマンスを比較しました。結果は、GPT-4がChatGPTを大幅に上回り、一部のシナリオでは人間のチューターに近づいていることを示しています。また、GPT-4の改善のための興味深い方向性も提案されています。 ...</span>
 <span class="snippet"><span>Comment</span>GPT4とGPT3.5をプログラミング教育の文脈で評価したところ、GPT4AGPT3.5をoutperformし、人間のチューターに肉薄した。 ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
@@ -23,7 +23,7 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-05-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/617">A Review of ChatGPT Applications in Education, Marketing, Software  Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。最新のChatGPTバージョンが導入され、他の言語モデルも登場している。これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。本論文で ...</span>
+<span class="snippet"><span>Summary</span>ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。最新のChatGPTバージョンが導入され、他の言語モデルも登場している。これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/EssayScoring.html">#EssayScoring</a><a class="button" href="articles/ChatGPT.html">#ChatGPT</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/571">AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Herbold+, University of Passau, arXiv23</a>
 <span class="snippet"><span>Comment</span>ChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。![image](https ...</span>
