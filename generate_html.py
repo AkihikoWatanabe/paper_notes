@@ -192,11 +192,12 @@ def generate_graph(parent_labels: list[str],
 
 
 def get_year(text: str) -> int:
-    m = year_pat.search(text)
-    if m == None:
+    results = year_pat.findall(text)
+
+    if results == None:
         year = 0
     else:
-        year = int(m.group(1))
+        year = results[-1]
         if year > 30 and year < 1899:
             year += 1900
         elif year <= 30:
@@ -208,6 +209,7 @@ summ_pat = "Summary (by gpt-3.5-turbo)"
 http_pat = re.compile("^https?://[^\s/$.?#].[^\s]*$")
 def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
     summ_text = None
+    comm_text = None
     image_url = None
     summ_idx = issue["body"].find(summ_pat)
     if summ_idx != -1:
@@ -220,13 +222,12 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
         if summ_idx != -1:
             summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip('-')[:150].replace('\n', '').replace('- ', "").strip()
     # if cannot find summary
-    if summ_text == None:
-        for r in comments:
-            m = http_pat.search(r['body'])
-            if m != None:
-                continue
-            summ_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
-            break
+    for r in comments:
+        m = http_pat.search(r['body'])
+        if m != None:
+            continue
+        comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+        break
     # extract image url
     for r in comments:
         m = image_pat.search(r['body'])
@@ -234,7 +235,7 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
             image_url = m.group(1).replace('\n', '').strip()
             break
 
-    return summ_text, image_url
+    return summ_text, comm_text, image_url
 
 
 def prepro_title(title: str):
@@ -253,7 +254,7 @@ VISIBLE_NUM = 3
 def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True) -> str:
     global curr_more_idx
     _html_content = '<div class="visible-content">\n'
-    sorted_issues = sorted(issue_list, key=lambda item: item[1], reverse=True)
+    sorted_issues = sorted(issue_list, key=lambda item: (item[1], item[0]["createdAt"]), reverse=True)
     for (issue, year) in sorted_issues[:VISIBLE_NUM]:
         title = prepro_title(issue['title'])
         tags = [data['name'] for data in issue['labels']]
@@ -297,12 +298,15 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             snippet_text = None
             image_url = None
             if issue["body"] != None:
-                snippet_text, image_url = get_snippets(issue)
+                snippet_text, comment_text, image_url = get_snippets(issue)
             if snippet_text == None:
                 snippet_text = 'No description'
+            if comment_text == None:
+                comment_text = 'No comments'
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
             _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
             _html_content += f'<span class="snippet">{snippet_text} ...</span>\n'
+            _html_content += f'<span class="comment">{comment_text} ...</span>\n'
             if image_url != None:
                 #_html_content += f'![{issue["title"]}]({image_url})\n'
                 _html_content += f'<img src="{image_url}" alt="image">'
