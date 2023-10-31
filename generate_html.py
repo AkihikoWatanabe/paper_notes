@@ -8,7 +8,7 @@ from tqdm import tqdm
 import json
 
 
-year_pat = re.compile(r"(\d{2,4})")
+year_pat = re.compile(r"'(\d{2,4})")
 image_pat = re.compile(r'!\[image\]\((https://github\.com/AkihikoWatanabe/paper_notes/assets/[^)]+)\)')
 
 
@@ -193,11 +193,10 @@ def generate_graph(parent_labels: list[str],
 
 def get_year(text: str) -> int:
     results = year_pat.findall(text)
-
-    if results == None:
+    if len(results) == 0:
         year = 0
     else:
-        year = results[-1]
+        year = int(results[-1])
         if year > 30 and year < 1899:
             year += 1900
         elif year <= 30:
@@ -234,7 +233,6 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
         if m != None:
             image_url = m.group(1).replace('\n', '').strip()
             break
-
     return summ_text, comm_text, image_url
 
 
@@ -270,12 +268,17 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         snippet_text = None
         image_url = None
         if issue["body"] != None:
-            snippet_text, image_url = get_snippets(issue)
+            snippet_text, comment_text, image_url = get_snippets(issue)
         if snippet_text == None:
             snippet_text = 'No description'
-        #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n'
+        if comment_text == None:
+            comment_text = 'No comments'
+        #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n' 
         _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
-        _html_content += f'<span class="snippet">{snippet_text} ...</span>\n'
+        if snippet_text != None:
+            _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text} ...</span>\n'
+        if comment_text != None:
+            _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
         if image_url != None:
             #_html_content += f'![{issue["title"]}]({image_url})\n'
             _html_content += f'<img src="{image_url}" alt="image">'
@@ -305,8 +308,10 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
                 comment_text = 'No comments'
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
             _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
-            _html_content += f'<span class="snippet">{snippet_text} ...</span>\n'
-            _html_content += f'<span class="comment">{comment_text} ...</span>\n'
+            if snippet_text != None:
+                _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text} ...</span>\n'
+            if comment_text != None:
+                _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
             if image_url != None:
                 #_html_content += f'![{issue["title"]}]({image_url})\n'
                 _html_content += f'<img src="{image_url}" alt="image">'
