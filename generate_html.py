@@ -219,14 +219,19 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
     for r in comments:
         summ_idx = r["body"].find(summ_pat)
         if summ_idx != -1:
-            summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip('-')[:150].replace('\n', '').replace('- ', "").strip()
+            summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").strip()
     # if cannot find summary
     for r in comments:
         m = http_pat.search(r['body'])
         if m != None:
             continue
-        comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
-        break
+        if comm_text == None:
+            comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+        else:
+            comm_text += re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            comm_text = comm_text[:150]
+        if len(comm_text) >= 150:
+            break
     # extract image url
     for r in comments:
         m = image_pat.search(r['body'])
@@ -260,7 +265,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             t = "Article"
             _html_content += f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>'
         for t in tags: 
-            if t not in current_target and t not in ["translation_required", "action_wanted", "Pocket"]:
+            if t not in current_target and t not in ["translation_required", "action_wanted"]:
                 _html_content += f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>'
         _html_content += '<br>'
         if attach_date:
@@ -269,10 +274,6 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         image_url = None
         if issue["body"] != None:
             snippet_text, comment_text, image_url = get_snippets(issue)
-        if snippet_text == None:
-            snippet_text = 'No description'
-        if comment_text == None:
-            comment_text = 'No comments'
         #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n' 
         _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
         if snippet_text != None:
@@ -293,7 +294,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
                 t = "Article"
                 _html_content += f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>'
             for t in tags:
-                if t not in current_target and t not in ["translation_required", "action_wanted", "Pocket"]:
+                if t not in current_target and t not in ["translation_required", "action_wanted"]:
                     _html_content += f'<a class="button" href="articles/{t}.html">#{t}</a>'
             _html_content += '<br>'
             if attach_date:
@@ -302,10 +303,6 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             image_url = None
             if issue["body"] != None:
                 snippet_text, comment_text, image_url = get_snippets(issue)
-            if snippet_text == None:
-                snippet_text = 'No description'
-            if comment_text == None:
-                comment_text = 'No comments'
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
             _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
             if snippet_text != None:

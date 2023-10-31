@@ -11,6 +11,5 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>github: https://github.com/tmu-nlp/JapaneseWordSimilarityDataset単語レベルの類似度をベンチマーキングしたい場合は使ってもよいかも。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
-<span class="snippet"><span>Summary</span>No description ...</span>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>

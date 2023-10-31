@@ -7,6 +7,4 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184">Practical Online Retrieval Evaluation, SIGIR11, Tutorial</a>
-<span class="snippet"><span>Summary</span>No description ...</span>
-<span class="snippet"><span>Comment</span>No comments ...</span>
 </div>

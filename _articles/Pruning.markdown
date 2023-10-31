@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/812">Pruning Pre-trained Language Models Without Fine-Tuning, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、Pre-trained Language Models（PLMs）の過パラメータ化の問題を解決するために、一次元のプルーニングを使用したシンプルで直感的な圧縮手法であるStatic Model Pruning（SMP）を提案します。SMPは、下流のタスクにPLMsを適応させるために一次 ...</span>
+<span class="snippet"><span>Summary</span>本研究では、Pre-trained Language Models（PLMs）の過パラメータ化の問題を解決するために、一次元のプルーニングを使用したシンプルで直感的な圧縮手法であるStatic Model Pruning（SMP）を提案します。SMPは、下流のタスクにPLMsを適応させるために一次元のプルーニングのみを使用し、微調整を必要としないため、他の手法よりも効率的です。徹底的な実験結果は、SMPが一次元およびゼロ次元の手法よりも大幅に改善されていることを示しています。また、SMPは低い疎密度にも適用可能であり、ゼロ次元の手法を上回ります。 ...</span>
 <span class="snippet"><span>Comment</span>To overcome the overparameterized problem in Pre-trained Language Models (PLMs), pruning is widely used as a simple and straightforward compression m ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-06-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/772">A Simple and Effective Pruning Approach for Large Language Models, Mingjie Sun+, N_A, arXiv23</a>

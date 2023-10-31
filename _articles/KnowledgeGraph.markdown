@@ -7,11 +7,11 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/NaturalLanguageUnderstanding.html">#NaturalLanguageUnderstanding</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821">Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL23</a>
-<span class="snippet"><span>Summary</span>従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースライン ...</span>
+<span class="snippet"><span>Summary</span>従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースラインよりも優れた性能を示した。 ...</span>
 <span class="snippet"><span>Comment</span>There has been a surge of interest in utilizing Knowledge Graphs (KGs) for various natural language processing/understanding tasks. The conventional ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/819">Do I have the Knowledge to Answer? Investigating Answerability of Knowledge Base Questions, ACL23</a>
-<span class="snippet"><span>Summary</span>ナレッジベース上の自然言語質問には回答不可能なものが多くありますが、これについての研究はまだ不十分です。そこで、回答不可能な質問を含む新しいベンチマークデータセットを作成しました。最新のKBQAモデルを評価した結果、回答不可能な質問に対して性能が低下することがわかりました。さらに、これらのモデルは ...</span>
+<span class="snippet"><span>Summary</span>ナレッジベース上の自然言語質問には回答不可能なものが多くありますが、これについての研究はまだ不十分です。そこで、回答不可能な質問を含む新しいベンチマークデータセットを作成しました。最新のKBQAモデルを評価した結果、回答不可能な質問に対して性能が低下することがわかりました。さらに、これらのモデルは誤った理由で回答不可能性を検出し、特定の形式の回答不可能性を扱うことが困難であることもわかりました。このため、回答不可能性に対する堅牢なKBQAシステムの研究が必要です。 ...</span>
 <span class="snippet"><span>Comment</span>When answering natural language questions over knowledge bases, missing facts, incomplete schema and limited scope naturally lead to many questions b ...</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-06-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/768">Unifying Large Language Models and Knowledge Graphs: A Roadmap, Shirui Pan+, N_A, arXiv23</a>
@@ -23,7 +23,6 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2021-06-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/383">OpenKE, 2021</a>
-<span class="snippet"><span>Summary</span>No description ...</span>
 <span class="snippet"><span>Comment</span>Wikipedia, Freebase等のデータからKnowledge Embeddingを学習できるオープンソースのライブラリ ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

@@ -7,6 +7,4 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/205">Evaluating implicit measures to improve web search, Fox+, ACM Transactions on Imformation Systems, 2005</a>
-<span class="snippet"><span>Summary</span>No description ...</span>
-<span class="snippet"><span>Comment</span>No comments ...</span>
 </div>

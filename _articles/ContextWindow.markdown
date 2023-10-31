@@ -11,6 +11,5 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>LLMのContext Windowを最大32kまで拡張する手法を提案。1000 step以内のminimalなfinetuningでモデルの性能を維持しながら実現できる。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2023-07-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/778">Extending Context is Hard…but not Impossible</a>
-<span class="snippet"><span>Summary</span>No description ...</span>
 <span class="snippet"><span>Comment</span>Open source LLMのcontext lengthをどのように大きくするかに関する議論 ...</span>
 </div>
