@@ -277,7 +277,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n' 
         _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
         if snippet_text != None:
-            _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text} ...</span>\n'
+            _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text}</span>\n'
         if comment_text != None:
             _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
         if image_url != None:
@@ -306,7 +306,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
             _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
             if snippet_text != None:
-                _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text} ...</span>\n'
+                _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text}</span>\n'
             if comment_text != None:
                 _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
             if image_url != None:
