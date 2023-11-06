@@ -3,5 +3,7 @@ RUN apt-get update && apt-get install -y ruby-full curl zlib1g-dev build-essenti
 RUN pip install requests tqdm pygraphviz networkx Pillow
 RUN export GEM_HOME="$HOME/gems"
 RUN export PATH="$HOME/gems/bin:$PATH"
+ADD Gemfile /project
+WORKDIR /project
 RUN gem install jekyll bundler
 RUN bundle install
