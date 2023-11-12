@@ -109,7 +109,7 @@ def call_openai(messages):
             model="gpt-3.5-turbo",
             messages=messages,
             temperature=0.0)
-    response_text = response.choices[0]['message']['content'].strip()
+    response_text = response.choices[0].message.content.strip()
     return response_text
 
 
