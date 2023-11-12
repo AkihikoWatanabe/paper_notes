@@ -1,11 +1,10 @@
 import os
 from github import Github
 import feedparser
-import openai
+from openai import OpenAI
 import json
 
 
-openai.api_key = os.environ["OPENAI_API_KEY"]
 github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
@@ -106,7 +105,7 @@ def change_title(entry, issue_number):
 
 
 def call_openai(messages):
-    response = openai.ChatCompletion.create(
+    response = OpenAI().chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages,
             temperature=0.0)
