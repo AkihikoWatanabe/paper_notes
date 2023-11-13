@@ -41,11 +41,15 @@ jobs:
         cache-to: type=local,dest=/tmp/.buildx-cache-new-app # キャッシュを指定
 
     - name: docker compose build & up
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
       run: |
         docker compose -f docker-compose.deploy.yaml build
         docker compose -f docker-compose.deploy.yaml up -d
 
     - name: Run
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
       run: |
         docker compose -f docker-compose.deploy.yaml run exec web bundle install
         docker copmose -f docker-compose.deploy.yaml run exec sh -c "cd /app && python generate_html.py && bundle exec jekyll build"
