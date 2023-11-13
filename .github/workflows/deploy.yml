@@ -13,12 +13,12 @@ jobs:
       uses: actions/checkout@v2
       with:
         ref: build
+    - name: Build Docker image
+      run: docker build -t my-app:latest .
 
     - name: Run script inside Docker container
       run: |
-        docker build -t my-app:latest .
-        docker create --name temp_container -v ${{ github.workspace }}:/app --env TOKEN=${{ secrets.TOKEN }} my-app:latest
-        docker start temp_container
+        docker run --name temp_container -v ${{ github.workspace }}:/app --env TOKEN=${{ secrets.TOKEN }} -d my-app:latest
         docker exec temp_container sh -c "cd /app && python generate_html.py && bundle exec jekyll build"
         docker cp temp_container:/app/_site ${{ github.workspace }}
         docker rm temp_container
