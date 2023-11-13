@@ -17,28 +17,17 @@ jobs:
     - name: Build Docker image
       run: docker build -t my-app:latest .
 
-    - name: Save Docker image
-      run: docker save my-app:latest | gzip > my-app.tar.gz
-
-    - name: Upload Docker image as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: my-app-image
-        path: my-app.tar.gz
-
-    - name: Download Docker image artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: my-app-image
-
-    - name: Load Docker image
-      run: |
-        gunzip -c my-app.tar.gz | docker load
-
     - name: Run script inside Docker container
       run: |
         docker create --name temp_container -v ${{ github.workspace }}:/app --env TOKEN=${{ secrets.TOKEN }} my-app:latest
         docker start temp_container
+        # コンテナの状態を確認
+        docker ps -a
+        if [ $(docker inspect -f '{{.State.Running}}' temp_container) = "false" ]; then
+          echo "Container failed to start. Container logs:"
+          docker logs temp_container
+          exit 1
+        fi
         docker exec temp_container sh -c "cd /app && python generate_html.py && bundle exec jekyll build"
         docker cp temp_container:/app/_site ${{ github.workspace }}
         docker rm temp_container
