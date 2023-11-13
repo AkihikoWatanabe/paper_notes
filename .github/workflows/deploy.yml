@@ -14,20 +14,11 @@ jobs:
       with:
         ref: build
 
-    - name: Build Docker image
-      run: docker build -t my-app:latest .
-
     - name: Run script inside Docker container
       run: |
+        docker build -t my-app:latest .
         docker create --name temp_container -v ${{ github.workspace }}:/app --env TOKEN=${{ secrets.TOKEN }} my-app:latest
         docker start temp_container
-        # コンテナの状態を確認
-        docker ps -a
-        if [ $(docker inspect -f '{{.State.Running}}' temp_container) = "false" ]; then
-          echo "Container failed to start. Container logs:"
-          docker logs temp_container
-          exit 1
-        fi
         docker exec temp_container sh -c "cd /app && python generate_html.py && bundle exec jekyll build"
         docker cp temp_container:/app/_site ${{ github.workspace }}
         docker rm temp_container
