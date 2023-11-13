@@ -3,7 +3,6 @@ name: Deploy to GitHub Pages
 on:
   schedule:
     - cron: '0 0 * * *'  # 毎日0時に実行
-  workflow_dispatch:
 
 jobs:
   deploy:
@@ -15,14 +14,33 @@ jobs:
         ref: build
 
     - name: Build Docker image
-      run: docker build -t my-app .
+      run: docker build -t my-app:latest .
+
+    - name: Save Docker image
+      run: docker save my-app:latest | gzip > my-app.tar.gz
+
+    - name: Upload Docker image as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-app-image
+        path: my-app.tar.gz
+
+    - name: Download Docker image artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: my-app-image
+
+    - name: Load Docker image
+      run: |
+        gunzip -c my-app.tar.gz | docker load
 
     - name: Run script inside Docker container
       run: |
-        docker create --name temp_container -v ${{ github.workspace }}:/app --env TOKEN=${{ secrets.TOKEN }} my-app
+        docker create --name temp_container -v ${{ github.workspace }}:/app --env TOKEN=${{ secrets.TOKEN }} my-app:latest
         docker start temp_container
         docker exec temp_container sh -c "cd /app && python generate_html.py && bundle exec jekyll build"
         docker cp temp_container:/app/_site ${{ github.workspace }}
+        docker rm temp_container
 
     - name: Commit and push to build
       run: |
