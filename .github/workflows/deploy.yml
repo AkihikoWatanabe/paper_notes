@@ -46,9 +46,13 @@ jobs:
       run: |
         docker compose -f docker-compose.deploy.yaml build
         docker compose -f docker-compose.deploy.yaml up -d
-        #docker compose -f docker-compose.deploy.yaml exec -T paper_notes-temp_container-1 bundle install
-        #docker compose -f docker-compose.deploy.yaml exec -T paper_notes-temp_container-1 sh -c "cd /app && python generate_html.py && bundle exec jekyll build"
         docker cp paper_notes-temp_container-1:/app/_site ${{ github.workspace }}
+
+    - name: List directory contents
+      run: ls -l
+
+    - name: Show git status
+      run: git status
 
     - name: Commit and push to build
       run: |
