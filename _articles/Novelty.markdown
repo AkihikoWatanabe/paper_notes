@@ -13,7 +13,7 @@ author: AkihikoWATANABE
 <span class="snippet">・典型的なRSは，推薦リストのSimilarityとNoveltyのcriteriaを最適化する．このとき，両者のバランスを取るためになんらかの定数を導入してバランスをとるが，この定数はユーザやタイミングごとに異なると考えられるので（すなわち人やタイミングによってnoveltyのpreference ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/46">Discovery-oriented Collaborative Filtering for Improving User Satisfaction, Hijikata et al., IUI’09</a>
-<span class="snippet">重要論文 ...</span>
+<span class="snippet">・従来のCFはaccuracyをあげることを目的に研究されてきたが，ユーザがすでに知っているitemを推薦してしまう問題がある．おまけに（推薦リスト内のアイテムの観点からみた）diversityも低い．このような推薦はdiscoveryがなく，user satisfactionを損ねるので，ユーザが ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 

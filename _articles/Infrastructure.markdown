@@ -10,10 +10,10 @@ author: AkihikoWATANABE
 <span class="snippet">Nvidiaのオープンソースのinference serverモデルのデプロイや管理、スケーリング等を良い感じにしてくれるフレームワーク？ ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2021-10-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/413">コミュニティサービスにおけるレコメンデーションの変遷とMLパイプラインについて, PyCon21</a>
-<span class="snippet">MLパイプラインについては下記資料により詳しい情報が書かれているhttps://speakerdeck.com/takapy/sagemaker-studiotostep-functionswoyong-itemlopshefalse-bu-wota-michu-sou ...</span>
+<span class="snippet">・ママ向けのQ&AサービスにおけるレコメンドとMLパイプラインについて紹介◆レコメンドエンジンの変遷　・Tensorflowで実装したMFから始まり、その後トピックを絞り込んだ上で推薦するためにLDAを活用したレコメンド、最終的にSoftmax Recommendationを開発 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AWS.html">#AWS</a><br><span class="issue_date">Issue Date: 2021-10-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/407">データレイクのつくりかた、つかいかた、そだてかた, 関山, AWS Summit</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/136484001-683c2789-db13-46c1-a57e-4e0e84642bc0.png) ...</span>
+<span class="snippet">こちらも参照のことhttps://logmi.jp/tech/articles/324242 ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
@@ -26,13 +26,13 @@ author: AkihikoWATANABE
 <span class="snippet">機械学習（ML）システムの継続的インテグレーション（CI）、継続的デリバリー（CD）、継続的トレーニング（CT）の実装と自動化MLOpsのレベルを0~2で表現しており、各レベルごとに何が達成されるべきかが図解されている。![image](https://user-images.githu ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/MLOps.html">#MLOps</a><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/498">deploy-API-to-GCP</a>
-<span class="snippet">Cloud Runについてhttps://dev.classmethod.jp/articles/gc-cloud-run/ ...</span>
+<span class="snippet">FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ0. リポジトリをclone1. Flaskアプリ作成2. FlaskアプリをDocker化3. TerraFormのStateを保存す ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AWS.html">#AWS</a><a class="button" href="articles/ECS.html">#ECS</a><br><span class="issue_date">Issue Date: 2023-04-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/519">ECS tips</a>
-<span class="snippet">PythonでログをCloudWatchに出力する「Watchtower」  https://dev.classmethod.jp/articles/python_log_cloudwatch_watchtower/ ...</span>
+<span class="snippet">キャパシティプロバイダーについて  https://dev.classmethod.jp/articles/regrwoth-capacity-provider/ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AWS.html">#AWS</a><a class="button" href="articles/Lambda.html">#Lambda</a><br><span class="issue_date">Issue Date: 2023-04-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/522">Lambda tips</a>
-<span class="snippet">Amazon VPC に接続されている Lambda 関数にインターネットアクセスを許可するにはどうすればよいですか?  https://repost.aws/ja/knowledge-center/internet-access-lambda-function ...</span>
+<span class="snippet">AWS Lambda and EFS Troubleshooting  https://www.digitalsanctuary.com/aws/aws-lambda-and-efs-troubleshooting.html  VPC内のEFSにアクセスできるようなセキュリティー ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AWS.html">#AWS</a><br><span class="issue_date">Issue Date: 2023-08-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1018">SQL vs. NoSQL cheetsheet, AWS, Azure and Google Cloud</a>
 <span class="snippet">データタイプやユースケースに応じてAWS上のサービスなどをマッピングしてくれているチートシート。わかりやすい。 ...</span>

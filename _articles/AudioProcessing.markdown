@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/547">AudioGPT: Understanding and Generating Speech, Music, Sound, and Talking Head, arXiv23</a>
-<span class="snippet">マルチモーダルデータをjointで学習したというわけではなく、色々なモデルの組み合わせてタスクを実現しているっぽい![image](https://user-images.githubusercontent.com/12249301/234739859-f833706a-6040-484a-b0 ...</span>
+<span class="snippet">text, audio, imageといったマルチモーダルなpromptから、audioに関する様々なタスクを実現できるシステム ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/773">AudioPaLM: A Large Language Model That Can Speak and Listen, Paul K. Rubenstein+, N_A, arXiv23</a>
 <span class="snippet">本研究では、音声理解と生成のためのマルチモーダルアーキテクチャであるAudioPaLMを紹介する。AudioPaLMは、テキストと音声を処理および生成することができ、PaLM-2とAudioLMを統合している。テキストのみの大規模言語モデルの重みを使用してAudioPaLMを初期化することで、音声 ...</span>

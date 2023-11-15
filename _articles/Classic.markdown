@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/ContextAware.html">#ContextAware</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/287">Context-Aware Recommender Systems, Adomavicius+, Recommender Systems Handbook, 2011</a>
-<span class="snippet">通常のuser/item paradigmを拡張して、いかにコンテキストの情報を考慮するかを研究。コンテキスト情報は、Explicit: ユーザのマニュアルインプットから取得Implicit: 自動的に取得inferred: ユーザとツールやリソースのインタラクションから推測（た ...</span>
+<span class="snippet">Context-aware Recsysのパイオニア的研究 ...</span>
 <a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1019">Centroid-based summarization of multiple documents: sentence extraction, utility-based evaluation, and user studies, Radev+, Information Processing & Management04</a>
 <span class="snippet">MEAD, Centroid-basedな手法で要約を実施する古典的なMDS手法 ...</span>

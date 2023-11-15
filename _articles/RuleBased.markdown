@@ -23,6 +23,6 @@ author: AkihikoWATANABE
 <span class="snippet">## タスク天気予報の生成，システム名 FOG (EnglishとFrenchのレポートを作成できる)## 手法概要ルールベースな手法，weather predictinon dataから，天気予報を自動生成．Text Planner がルールに従い各sentenceに入れる情報を抽 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105">Design of a knowledge-based report generator, Kukich, ACL83</a>
-<span class="snippet">Data2Textの先駆け論文。引用すべし。多くの研究で引用されている。 ...</span>
+<span class="snippet">## タスクnumerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA## 手法概要ルールベースな手法，1) fact-generator,2) message generator, ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

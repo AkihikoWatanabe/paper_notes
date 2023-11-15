@@ -26,6 +26,6 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/230">Leave a Reply: An Analysis of Weblog Comments, Mishne+, WWW06</a>
-<span class="snippet">相当流し読みなので、読み違えているところや、重要な箇所の読み落とし等あるかもしれない。 ...</span>
+<span class="snippet">従来のWeblog研究では、コメントの情報が無視されていたが、コメントも重要な情報を含んでいると考えられる。この研究では、以下のことが言及されている。* （収集したデータの）ブログにコメントが付与されている割合やコメントの長さ、ポストに対するコメントの平均などの統計量* ブログ検索に ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

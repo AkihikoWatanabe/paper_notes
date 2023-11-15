@@ -13,7 +13,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Classic.html">#Classic</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/287">Context-Aware Recommender Systems, Adomavicius+, Recommender Systems Handbook, 2011</a>
-<span class="snippet">通常のuser/item paradigmを拡張して、いかにコンテキストの情報を考慮するかを研究。コンテキスト情報は、Explicit: ユーザのマニュアルインプットから取得Implicit: 自動的に取得inferred: ユーザとツールやリソースのインタラクションから推測（た ...</span>
+<span class="snippet">Context-aware Recsysのパイオニア的研究 ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
