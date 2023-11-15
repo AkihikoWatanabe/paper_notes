@@ -14,32 +14,6 @@ jobs:
       with:
         ref: gh-pages
 
-    # c.f. https://blog.mmmcorp.co.jp/2023/08/15/github-actions-cache/
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Cache Docker layers - App
-      uses: actions/cache@v2
-      with:
-        path: /tmp/.buildx-cache-app # Buildxのキャッシュを指定
-        key: ${{ github.ref }}-${{ github.sha }} # キャッシュのキーを指定
-        restore-keys: |
-          ${{ github.ref }}
-          refs/head/main
-
-    - name: Build images - App
-      uses: docker/build-push-action@v4
-      with:
-        push: false
-        builder: ${{ steps.buildx.outputs.name }} # Buildxでビルドすることを指定
-        tags: myapp-app-cached:latest # イメージ名を指定/docker-compose.ymlで参照する名前
-        load: true
-        context: .
-        file: ./Dockerfile
-        cache-from: type=local,src=/tmp/.buildx-cache-app # キャッシュを指定
-        cache-to: type=local,dest=/tmp/.buildx-cache-new-app # キャッシュを指定
-
     - name: docker compose build & up
       env:
         TOKEN: ${{ secrets.TOKEN }}
