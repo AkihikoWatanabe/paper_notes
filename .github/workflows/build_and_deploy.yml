@@ -1,0 +1,91 @@
+name: Build and Deploy to Github Pages
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 毎日0時に実行
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout build branch
+      uses: actions/checkout@v2
+      with:
+        ref: build
+
+    # c.f. https://blog.mmmcorp.co.jp/2023/08/15/github-actions-cache/
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Cache Docker layers - App
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache-app # Buildxのキャッシュを指定
+        key: ${{ github.ref }}-${{ github.sha }} # キャッシュのキーを指定
+        restore-keys: |
+          ${{ github.ref }}
+          refs/head/main
+
+    - name: Build images - App
+      uses: docker/build-push-action@v4
+      with:
+        push: false
+        builder: ${{ steps.buildx.outputs.name }} # Buildxでビルドすることを指定
+        tags: myapp-app-cached:latest # イメージ名を指定/docker-compose.ymlで参照する名前
+        load: true
+        context: .
+        file: ./Dockerfile
+        cache-from: type=local,src=/tmp/.buildx-cache-app # キャッシュを指定
+        cache-to: type=local,dest=/tmp/.buildx-cache-new-app # キャッシュを指定
+
+    - name: docker compose build & up
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: |
+        docker compose -f docker-compose.deploy.yaml build
+        docker compose -f docker-compose.deploy.yaml up
+
+    - name: List directory contents
+      run: ls -l
+
+    - name: Show git status
+      run: git status
+
+    - name: Commit and push to build
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add _site/*
+        git commit -m "Automated deployment: $(date +'%Y-%m-%d %H:%M:%S')"
+        git push origin build
+  deploy:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+
+    # Use GitHub Actions' cache to cache dependencies on servers
+    - uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    # Use GitHub Deploy Action to build and deploy to Github
+    # For latest version: `jeffreytse/jekyll-deploy-action@master`
+    - uses: jeffreytse/jekyll-deploy-action@v0.5.0
+      with:
+        provider: 'github'         # Default is github
+        token: ${{ secrets.GITHUB_TOKEN }} # It's your Personal Access Token(PAT)
+        ssh_private_key: ''        # It's your SSH private key (SSH approach)
+        repository: ''             # Default is current repository
+        branch: 'build'         # Default is gh-pages for github provider
+        jekyll_src: './'           # Default is root directory
+        jekyll_cfg: '_config.yml'  # Default is _config.yml
+        jekyll_baseurl: ''         # Default is according to _config.yml
+        bundler_ver: '>=0'         # Default is latest bundler version
+        cname: ''                  # Default is to not use a cname
+        actor: ''                  # Default is the GITHUB_ACTOR
+        pre_build_commands: ''     # Installing additional dependencies (Arch Linux)
