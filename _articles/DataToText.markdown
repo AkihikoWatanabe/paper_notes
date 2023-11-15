@@ -11,37 +11,43 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/Zero_Few-shot.html">#Zero/Few-shot</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/863">Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL23</a>
 <span class="snippet">この論文では、構造化データからテキストを生成する新しいアプローチを提案しています。提案手法は、さまざまな形式のデータを処理できる統一された表現を提供し、マルチタスクトレーニングやゼロショット学習などのシナリオでのパフォーマンスを向上させることを目指しています。実験結果は、提案手法が他の方法と比較し ...</span>
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-10-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/409">過去情報の内容選択を取り入れた スポーツダイジェストの自動生成, 加藤+, 東工大, NLP21</a>
-<span class="snippet">No description ...</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/StructuredData.html">#StructuredData</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1097">MURMUR: Modular Multi-Step Reasoning for Semi-Structured Data-to-Text  Generation, Swarnadeep Saha+, N_A, arXiv22</a>
+<span class="snippet">本研究では、半構造化データからのテキスト生成における多段階の推論を行うためのMURMURという手法を提案しています。MURMURは、特定の言語的および論理的なスキルを持つニューラルモジュールと記号モジュールを組み合わせ、ベストファーストサーチ手法を使用して推論パスを生成します。実験結果では、MUR ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
+<span class="snippet">Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-10-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/409">過去情報の内容選択を取り入れた スポーツダイジェストの自動生成, 加藤+, 東工大, NLP21</a>
+<span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2022-08-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/472">Biomedical Data-to-Text Generation via Fine-Tuning Transformers, Ruslan+, INLG21</a>
 <span class="snippet">biomedical domainの新たなdata2textデータセットを提供。事前学習済みのBART, T5等をfinetuningすることで高精度にテキストが生成できることを示した。 ...</span>
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><a class="button" href="articles/DialogueGeneration.html">#DialogueGeneration</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><br><span class="issue_date">Issue Date: 2021-06-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/367">NUBIA, EvalNLGEval20</a>
-<span class="snippet">意味的に同等の内容を述べた文間でのexample![image](https://user-images.githubusercontent.com/12249301/120425803-d37ce880-c3a9-11eb-938c-09747999cc7c.png)BLEU, ROUGE ...</span>
+<span class="snippet">TextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。![image](https://user-images.githubusercontent.com/12249301/120425437-299d5c00-c3a9-11eb-923 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2022-09-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/488">Text-to-Text Pre-Training for Data-to-Text Tasks, Mihir+, Google Research, INLG20</a>
-<span class="snippet"># 所感こんな簡単なfine-tuningでSoTAを達成できてしまうとは、末恐ろしい。ベースラインとして有用。 ...</span>
+<span class="snippet"># 概要pre-training済みのT5に対して、Data2Textのデータセットでfinetuningを実施する方法を提案。WebNLG（graph-to-text）, ToTTo（table-to-text）, Multiwoz（task oriented dialogue）データにおいて ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/pretrained-LM.html">#pretrained-LM</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/492">Template Guided Text Generation for Task-Oriented Dialogue, Kale+, Google, EMNLP20</a>
-<span class="snippet">low resourceなデータセットで活用できそう ...</span>
+<span class="snippet"># 概要Dialogue Actをそのままlinearlizeして言語モデルに入力するのではなく、テンプレートをベースにしたシンプルなsentenceにして言語モデルに与えると、zero-shot, few-shotなsettingで性能が向上するという話（T5ベース）。![image] ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Zero/Few-shot.html">#Zero/Few-shot</a><a class="button" href="articles/pretrained-LM.html">#pretrained-LM</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/494">Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL20</a>
 <span class="snippet"># 概要Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWiki ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/394">Data-to-Text Generation with Content Selection and Planning, Puduppully+, AAAI19</a>
-<span class="snippet">実装: https://github.com/ratishsp/data2text-plan-py ...</span>
+<span class="snippet">Rotowire Datasetに対するData2Text研究において代表的な論文の一つ。Wisemanモデル #207 と共にベースラインとして利用されることが多い。 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-10-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/408">Table-to-Text Generation with Effective Hierarchical Encoder on Three Dimensions （Row, Column and Time）, Gong+, Harbin Institute of Technology, EMNLP19</a>
-<span class="snippet">実装: https://github.com/ernestgong/data2text-three-dimensions/ ...</span>
+<span class="snippet">## 概要既存研究では、tableをレコードの集合, あるいはlong sequenceとしてencodeしてきたが1. other (column) dimensionの情報が失われてしまう (?)2. table cellは時間によって変化するtime-series data ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-09-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/406">Operation-guided Neural Networks for High Fidelity Data-To-Text Generation, Nie+, Sun Yat-Sen University, EMNLP18</a>
-<span class="snippet"># 分析## Quantizationの効果チーム間のスコアの差が、5つのbinのに対してどれだけの重みを持たせたかのheatmap。似たようなスコアのgapの場合は似たような重みになることがわかる。ポイント差の絶対値が小さい場合は、重みの分布の分散が大きくなるのでより一般的な単語で生成を行 ...</span>
+<span class="snippet"># 概要既存のニューラルモデルでは、生データ、あるいはそこから推論された事実に基づいて言語を生成するといったことができていない（e.g. 金融, 医療, スポーツ等のドメインでは重要）。たとえば下表に示した通り、"edge"という単語は、スコアが接戦（95-94=1 -> スコアの差が小さい ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-10-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/415">Point precisely: Towards ensuring the precision of data in generated texts using delayed copy mechanism., Li+, Peking University, COLING18</a>
 <span class="snippet"># 概要DataToTextタスクにおいて、生成テキストのデータの精度を高める手法を提案。two stageアルゴリズムを提案。①encoder-decoerモデルでslotを含むテンプレートテキストを生成。②Copy Mechanismでslotのデータを埋める、といった手法。①と②はそれ ...</span>
@@ -53,10 +59,10 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Controllable.html">#Controllable</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/91">Toward Controlled Generation of Text, Hu+, ICML17</a>
-<span class="snippet">slideshare: https://www.slideshare.net/akihikowatanabe3110/towards-controlled-generation-of-text ...</span>
+<span class="snippet">Text Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/207">Challenges in Data-to-Document Generation, Wiseman+ （with Rush）, EMNLP17</a>
-<span class="snippet">【モデルの概要】・attention-based encoder-decoder model・BaseModel　レコードデータ r の各要素（r.e: チーム名等のENTITY r.t: POINTS等のデータタイプ, r.m: データのvalue）からembeddingをlo ...</span>
+<span class="snippet">・RotoWire（NBAのテーブルデータ + サマリ）データを収集し公開![image](https://user-images.githubusercontent.com/12249301/119625430-23f1c480-be45-11eb-8ff8-5e9223d41481.png) ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/86">Content Selection in Data-to-Text Systems: A Survey, arXiv16, Gkatzia</a>
 <span class="snippet">Gkatziaの"content selection"に関するSurvey ...</span>
@@ -98,6 +104,6 @@ author: AkihikoWATANABE
 <span class="snippet">## タスク天気予報の生成，システム名 FOG (EnglishとFrenchのレポートを作成できる)## 手法概要ルールベースな手法，weather predictinon dataから，天気予報を自動生成．Text Planner がルールに従い各sentenceに入れる情報を抽 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/RuleBased.html">#RuleBased</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105">Design of a knowledge-based report generator, Kukich, ACL83</a>
-<span class="snippet">Data2Textの先駆け論文。引用すべし。多くの研究で引用されている。 ...</span>
+<span class="snippet">## タスクnumerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA## 手法概要ルールベースな手法，1) fact-generator,2) message generator, ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

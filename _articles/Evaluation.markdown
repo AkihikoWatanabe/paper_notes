@@ -81,7 +81,19 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/95d6fc9e-cb05-4a40-9690-ac40e6042c3c" alt="image"><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LM-based.html">#LM-based</a><a class="button" href="articles/Coherence.html">#Coherence</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/967">DiscoScore: Evaluating Text Generation with BERT and Discourse Coherence, Wei Zhao+, N_A, EACL23</a>
 <span class="snippet">本研究では、文章の一貫性を評価するための新しい指標であるDiscoScoreを紹介します。DiscoScoreはCentering理論に基づいており、BERTを使用して談話の一貫性をモデル化します。実験の結果、DiscoScoreは他の指標よりも人間の評価との相関が高く、システムレベルでの評価でも ...</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1088">Branch-Solve-Merge Improves Large Language Model Evaluation and  Generation, Swarnadeep Saha+, N_A, arXiv23</a>
+<span class="snippet">本研究では、多面的な言語生成および評価タスクにおいて、大規模言語モデルプログラム（BSM）を提案します。BSMは、ブランチ、ソルブ、マージの3つのモジュールから構成され、タスクを複数のサブタスクに分解し、独立して解決し、解決策を統合します。実験により、BSMが評価の正確性と一貫性を向上させ、パフォ ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1098">Human Feedback is not Gold Standard, Tom Hosking+, N_A, arXiv23</a>
+<span class="snippet">人間のフィードバックは、大規模言語モデルの性能評価に使用されているが、その好みのスコアがどの特性を捉えているのかは明確ではない。この研究では、人間のフィードバックの使用を分析し、重要なエラー基準を適切に捉えているかどうかを検証した。結果として、好みのスコアは広範なカバレッジを持っているが、事実性な ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3824b322-53fa-4360-a7d4-1b0f3bff3302" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1102">Large Language Models are not Fair Evaluators, Peiyi Wang+, N_A, arXiv23</a>
+<span class="snippet">この論文では、大規模言語モデル（LLMs）を使用して、候補モデルの応答品質を評価する評価パラダイムにおける系統的なバイアスを明らかにします。さらに、バイアスを軽減するためのキャリブレーションフレームワークを提案し、実験によってその有効性を示します。また、コードとデータを公開して、今後の研究を支援し ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-11-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1116">The Perils & Promises of Fact-checking with Large Language Models, Dorian Quelle+, N_A, arXiv23</a>
+<span class="snippet">自律型の事実チェックにおいて、大規模言語モデル（LLMs）を使用することが重要である。LLMsは真実と虚偽を見分ける役割を果たし、その出力を検証する能力がある。本研究では、LLMエージェントを使用して事実チェックを行い、推論を説明し、関連する情報源を引用する能力を評価した。結果は、文脈情報を備えた ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1f310edd-58f3-4e45-ac40-e75337bff884" alt="image"><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/936">DocAsRef: A Pilot Empirical Study on Repurposing Reference-Based Summary  Quality Metrics Reference-Freely, Forrest Sheng Bao+, N_A, arXiv22</a>
 <span class="snippet">参照ベースと参照フリーの要約評価メトリックがあります。参照ベースは正確ですが、制約があります。参照フリーは独立していますが、ゼロショットと正確さの両方を満たせません。本研究では、参照ベースのメトリックを使用してゼロショットかつ正確な参照フリーのアプローチを提案します。実験結果は、このアプローチが最 ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
@@ -158,7 +170,7 @@ author: AkihikoWATANABE
 <span class="snippet">参照ベースと教師ありの要約評価指標の制約を回避するために、トレーニングフリーかつ参照フリーの要約評価指標を提案する。この指標は、文の中心性によって重み付けされた概念参照と要約との関連性スコアと、自己参照の冗長性スコアから構成される。関連性スコアは擬似参照と要約との間で計算され、重要度のガイダンスを ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/976">The Feasibility of Embedding Based Automatic Evaluation for Single Document Summarization, EMNLP-IJCNLP21, Sun+</a>
-<span class="snippet">C-ELMO/C-SBERT ...</span>
+<span class="snippet">__translate: ROUGE is widely used to automatically evaluate summarization systems. However, ROUGE measures semantic overlap between a system summary a ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/980">Reliability of Human Evaluation for Text Summarization: Lessons Learned and Challenges Ahead, Iskender+, EACL21</a>
 <span class="snippet">人間評価の信頼性に関する研究では、参加者の情報や実験の詳細が提供されていないことが多い。また、人間評価の信頼性に影響を与える要因についても研究されていない。そこで、私たちは人間評価実験を行い、参加者の情報や実験の詳細を提供し、異なる実験結果を比較した。さらに、専門家と非専門家の評価の信頼性を確保す ...</span>
@@ -267,5 +279,11 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1055">Nejumi LLMリーダーボード</a>
 <span class="snippet">JGLUEを使ったLLMの日本語タスクベンチマーク ...</span>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1096">日本語LLMのリーダーボード（LLM.jp）</a>
+<span class="snippet">LLM.jpによる日本語LLMのリーダーボード。4-shotsでの結果、かつinstructionを与えた場合の生成テキストに対する評価、という点には留意したい。たとえばゼロショットで活用したい、という場合にこのリーダーボードの結果がそのまま再現される保証はないと推察される。#1079 の知見で ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
+<span class="snippet">RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

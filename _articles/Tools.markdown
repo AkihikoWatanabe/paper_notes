@@ -23,37 +23,37 @@ author: AkihikoWATANABE
 <span class="snippet">NICTが公開。既に公開されているBERTモデルとのベンチマークデータでの性能比較も行なっており、その他の公開済みBERTモデルをoutperformしている。 ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2021-06-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/386">最先端自然言語処理ライブラリの最適な選択と有用な利用方法 _ pycon-jp-2020</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/121644722-56025800-cace-11eb-9fe9-9d2f6b0eae5a.png) ...</span>
+<span class="snippet">各形態素解析ライブラリの特徴や比較がされていて、自分の用途・目的に合わせてどの形態素解析器が良いか意思決定する際に有用 ...</span>
 <a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/460">pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM20</a>
-<span class="snippet"># モチベーションBKTの研究は古くから行われており、研究コミュニティで人気が高まっているにもかかわらず、アクセス可能で使いやすいモデルの実装と、さまざまな文献で提案されている多くの変種は、理解しにくいものとなっている。そこで、モダンなpythonベースドな実装としてpyBKTを実装し、研究コミ ...</span>
+<span class="snippet">pythonによるBKTの実装。scikit-learnベースドなinterfaceを持っているので使いやすそう。 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-03-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/510">20B params chatgpt alternative</a>
 <span class="snippet">元ツイートApache2.0で公開https://twitter.com/_philschmid/status/1634492396171071488?s=46&t=VvPwEQsB--BeXx0YbYQdxQ ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/223"> SVDFeature: a toolkit for feature-based collaborative filtering, Chen+, JMLR12</a>
-<span class="snippet">Ratingの情報だけでなく、Auxiliaryな情報も使ってMatrix Factorizationができるツールを作成した。これにより、Rating Matrixの情報だけでなく、自身で設計したfeatureをMFに組み込んでモデルを作ることができる。![image](https:/ ...</span>
+<span class="snippet">tool: http://apex.sjtu.edu.cn/projects/33 ...</span>
 <a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/239">A systematic comparison of various statistical alignment models, Och+, CL03, Giza++</a>
-<span class="snippet">評価の際は、Sure, Possibleの二種類のラベルによる単語アライメントのground-truth作成も行っている ...</span>
+<span class="snippet">標準的に利用される単語アライメントツール ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/124">SVM-MAP</a>
 <span class="snippet">構造化SVMを用いて、MAPを直接最適化する手法 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/150">LibRec</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：協調フィルタリング、Factorization Machines、　　　　　　　　　　　　　　Restricted Boltzman Machineなど、計70種類のアルゴリズムが実装実装：Java使用方法：コマンドライン、Javaライブラリとして利用※ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/152">MyMediaLite</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど実装：C#使用方法：コマンドライン、C#ライブラリとして利用※ ライブラリとして使用する場合は、C#による実装が必要 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/153">LensKit</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど実装：Java使用方法：コマンドライン、Javaライブラリとして利用※ 推薦システム界隈で有名な、GroupLens研究グループによるJava実装 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/154">GraphLab</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">現在はTuri.comになっており、商用になっている？ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/156">GraphChi</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：Matrix Factorization, RBM, CliMFなど実装：使用方法：CLI※ graphlabの中の人による実装 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201">Lerot: Online Learning to rank Framework</a>
 <span class="snippet">No description ...</span>
@@ -71,7 +71,7 @@ author: AkihikoWATANABE
 <span class="snippet">負荷テスト用のツールJMeterと違って、pythonコードでテスト内容を制御できるらしく、かなり使いやすいらしい。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2021-06-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/376">pytorch tips</a>
-<span class="snippet">【pipで様々なCuda versionのpytorchをinstallする方法】https://stackoverflow.com/questions/65980206/cuda-10-2-not-recognised-on-pip-installed-pytorch-1-7-1 ...</span>
+<span class="snippet">【PyTorchでたまに使うけどググって情報探すのに時間かかるやつ】https://trap.jp/post/1122/scatter_add, einsum, Bilinear あたりが説明されている ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2021-06-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/377">TRTorch</a>
 <span class="snippet">pytorchの推論を高速化できるライブラリ。6倍ほど早くなった模様。TorchScriptを介して変換するので、PythonだけでなくC++でも動作できるらしい。 ...</span>
@@ -89,7 +89,7 @@ author: AkihikoWATANABE
 <span class="snippet">BKTを高速で学習できるツール3-clause BSD license ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2022-03-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/439">neptune.ai</a>
-<span class="snippet">HuggingFace, pytorch-lightningなどのフレームワークでもサポートされている模様HuggingFace: https://huggingface.co/transformers/v4.9.1/_modules/transformers/integrations.ht ...</span>
+<span class="snippet">・実験結果の可視化や管理に利用できるサービス・API経由で様々な実験に関わるメタデータやmetricを送信することで、サイト上でdashboardを作成し、複数の実験の結果を可視化したりwidget上で比較したりできる・実験時に使用したargumentsを記録したり、global_stepご ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2022-03-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/440">Recbole</a>
 <span class="snippet">No description ...</span>
@@ -98,13 +98,13 @@ author: AkihikoWATANABE
 <span class="snippet">◆遅くないpandasの書き方https://naotaka1128.hatenadiary.jp/entry/2021/12/07/083000#iterrows-%E3%81%AF%E7%B5%B6%E5%AF%BE%E3%81%AB%E4%BD%BF%E3%82%8F%E3%81%AA%E ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><a class="button" href="articles/MLOps.html">#MLOps</a><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/498">deploy-API-to-GCP</a>
-<span class="snippet">Cloud Runについてhttps://dev.classmethod.jp/articles/gc-cloud-run/ ...</span>
+<span class="snippet">FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ0. リポジトリをclone1. Flaskアプリ作成2. FlaskアプリをDocker化3. TerraFormのStateを保存す ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Programming.html">#Programming</a><br><span class="issue_date">Issue Date: 2023-01-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/506">CodeGPT: The VSCode Extension with ChatGPT-Like Functionalities</a>
 <span class="snippet">VSCodeの拡張で、//から始まるPromptをエディタ上で記載することで対応するコードをGPT3が生成してくれる模様。便利そう ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520">LangChain</a>
-<span class="snippet">LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents    https://zenn.dev/kun432/scraps/8216511783e3da ...</span>
+<span class="snippet">LangChain の Googleカスタム検索 連携を試す  https://note.com/npaka/n/nd9a4a26a8932 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/521">Llamaindex</a>
 <span class="snippet">LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた  https://dev.classmethod.jp/articles/llama-index-insert-index/ ...</span>
@@ -117,5 +117,11 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1032">LangChain Cheet Sheet</a>
 <span class="snippet"><img width="1315" alt="image" src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6621fe24-d007-4590-b1a6-b861a6dec4ad"> ...</span>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1100">LangChainのRAGの改善法, LayerX機械学習勉強会</a>
+<span class="snippet">以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション> Multi representation indexing：検索に適した文書表現（例えば要約）の作成Query transformation：人間の質問を変換して ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
+<span class="snippet">RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

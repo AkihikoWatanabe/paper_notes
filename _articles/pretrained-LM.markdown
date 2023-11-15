@@ -20,7 +20,7 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/492">Template Guided Text Generation for Task-Oriented Dialogue, Kale+, Google, EMNLP20</a>
-<span class="snippet">low resourceなデータセットで活用できそう ...</span>
+<span class="snippet"># 概要Dialogue Actをそのままlinearlizeして言語モデルに入力するのではなく、テンプレートをベースにしたシンプルなsentenceにして言語モデルに与えると、zero-shot, few-shotなsettingで性能が向上するという話（T5ベース）。![image] ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/493">Leveraging Pre-trained Checkpoints for Sequence Generation Tasks, Rothe+, Google Research, TACL20</a>
 <span class="snippet"># 概要BERT-to-BERT論文。これまでpre-trainedなチェックポイントを利用する研究は主にNLUで行われてきており、Seq2Seqでは行われてきていなかったので、やりました、という話。publicly availableなBERTのcheckpointを利用し、BERTをen ...</span>

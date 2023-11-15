@@ -10,7 +10,7 @@ author: AkihikoWATANABE
 <span class="snippet">本研究では、言語エージェントを強化するための新しいフレームワークであるReflexionを提案しています。Reflexionエージェントは、言語的フィードバックを通じて自己反省し、より良い意思決定を促すために反省的なテキストを保持します。Reflexionはさまざまなタスクでベースラインエージェン ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/524">GROKKING: GENERALIZATION BEYOND OVERFIT- TING ON SMALL ALGORITHMIC DATASETS, Power+, OpenAI, arXiv23</a>
-<span class="snippet">学習データが小さければ小さいほど汎化能力を獲得するのに時間がかかる模様 ...</span>
+<span class="snippet">学習後すぐに学習データをmemorizeして、汎化能力が無くなったと思いきや、10^3ステップ後に突然汎化するという現象（Grokking）を報告![image](https://user-images.githubusercontent.com/12249301/234430324-a23 ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Self-SupervisedLearning.html">#Self-SupervisedLearning</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/544">A Cookbook of Self-Supervised Learning, 2023</a>
 <span class="snippet">MetaによるSelf Supervised Learningの教科書 ...</span>
@@ -23,7 +23,7 @@ author: AkihikoWATANABE
 <span class="snippet">マルチモーダルデータの共同学習能力は、インテリジェントシステムの特徴であるが、データ拡張の成功は単一モーダルのタスクに限定されている。本研究では、LeMDAという方法を提案し、モダリティのアイデンティティや関係に制約を設けずにマルチモーダルデータを共同拡張することができることを示した。LeMDAは ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/NeuralArchitectureSearch.html">#NeuralArchitectureSearch</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/559">Can GPT-4 Perform Neural Architecture Search? Zhang+, The University of Sydney, arXiv23</a>
-<span class="snippet">Neural Architecture Search (NAS)においては、ランダムベースラインがよく採用されるらしく、比較した結果ランダムよりよかった![image](https://user-images.githubusercontent.com/12249301/235144154-5c ...</span>
+<span class="snippet">ドメイン知識の必要のないプロンプトで、ニューラルモデルのアーキテクチャの提案をGPTにしてもらう研究。accをフィードバックとして与え、良い構造を提案するといったループを繰り返す模様![image](https://user-images.githubusercontent.com/1224 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/In-Context Learning.html">#In-Context Learning</a><br><span class="issue_date">Issue Date: 2023-05-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/693">What In-Context Learning Learns In-Context: Disentangling Task  Recognition and Task Learning, Jane Pan+, N_A, arXiv23</a>
 <span class="snippet">本研究では、大規模言語モデル（LLMs）がどのようにコンテキスト学習（ICL）を利用してタスクを解決するかを調査しました。タスク認識（TR）とタスク学習（TL）の役割を分離するための実験を行い、LLMsがデモンストレーションを通じて暗黙的に学習を行う可能性があることを示しました。また、モデルがスケ ...</span>
@@ -78,7 +78,10 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/899">FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning, 2023</a>
 <span class="snippet">FlashAttention-2は、長いシーケンス長におけるTransformerのスケーリングの問題に対処するために提案された手法です。FlashAttention-2は、非対称なGPUメモリ階層を利用してメモリの節約とランタイムの高速化を実現し、最適化された行列乗算に比べて約2倍の高速化を達成 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/935f61f3-97ce-4e76-826b-040f92ca567c" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/935f61f3-97ce-4e76-826b-040f92ca567c" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/917">LoraHub: Efficient Cross-Task Generalization via Dynamic LoRA  Composition, Chengsong Huang+, N_A, arXiv23</a>
+<span class="snippet">本研究では、大規模言語モデル（LLMs）を新しいタスクに適応させるための低ランク適応（LoRA）を検討し、LoraHubというフレームワークを提案します。LoraHubを使用すると、少数の例から複数のLoRAモジュールを組み合わせて柔軟に適応性のあるパフォーマンスを実現できます。また、追加のモデル ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d769042-5a29-4c22-8ab4-e90195f71184" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/923">The Hydra Effect: Emergent Self-repair in Language Model Computations, Thomas McGrath+, N_A, arXiv23</a>
 <span class="snippet">私たちは、言語モデルの内部構造を調査し、言語モデルの計算における特定の効果を示しました。具体的には、1つの層の削除が他の層によって補完される「Hydra効果」と、遅いMLP層が最大尤度トークンを制御する役割を持つことを示しました。また、ドロップアウトを使用しない言語モデルでも同様の効果が見られるこ ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/AutoML.html">#AutoML</a><br><span class="issue_date">Issue Date: 2023-08-10</span>
@@ -87,15 +90,27 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/DataAugmentation.html">#DataAugmentation</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/DataGeneration.html">#DataGeneration</a><br><span class="issue_date">Issue Date: 2023-08-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024">Prompt2Model: Generating Deployable Models from Natural Language  Instructions, Vijay Viswanathan+, N_A, arXiv23</a>
 <span class="snippet">本研究では、大規模言語モデル（LLMs）を使用して、プロンプトを自然言語でタスクを説明し、特定のモデルを訓練する手法であるPrompt2Modelを提案しています。Prompt2Modelは、既存のデータセットと事前学習済みモデルの検索、LLMsを使用したデータセットの生成、および教師あり微調整の ...</span>
+<a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1045">LongLoRA: Efficient Fine-tuning of Long-Context Large Language Models, Yukang Chen+, N_A, arXiv23</a>
+<span class="snippet">本研究では、計算コストを制限しながら大規模言語モデル（LLMs）のコンテキストサイズを拡張する効率的なファインチューニング手法であるLongLoRAを提案します。従来の方法では、LLMsの長いコンテキストサイズでのトレーニングには高い計算コストとGPUリソースが必要でしたが、提案手法ではコンテキス ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fc3d17c7-b1ac-4741-9895-bce70cf0b356" alt="image"><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Grokking.html">#Grokking</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1051">Explaining grokking through circuit efficiency, Vikrant Varma+, N_A, arXiv23</a>
+<span class="snippet">グロッキングとは、完璧なトレーニング精度を持つネットワークでも一般化が悪い現象のことである。この現象は、タスクが一般化する解と記憶する解の両方を許容する場合に起こると考えられている。一般化する解は学習が遅く、効率的であり、同じパラメータノルムでより大きなロジットを生成する。一方、記憶回路はトレーニ ...</span>
 <a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1062">Boolformer: Symbolic Regression of Logic Functions with Transformers, Stéphane dAscoli+, N_A, arXiv23</a>
 <span class="snippet">この研究では、BoolformerというTransformerアーキテクチャを使用して、ブール関数のシンボリック回帰を実行する方法を紹介します。Boolformerは、クリーンな真理値表やノイズのある観測など、さまざまなデータに対して効果的な式を予測することができます。さらに、実世界のデータセット ...</span>
-<br><span class="issue_date">Issue Date: 2023-10-11</span>
+<a class="button" href="articles/Regularization.html">#Regularization</a><br><span class="issue_date">Issue Date: 2023-10-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1075">Why Do We Need Weight Decay in Modern Deep Learning?, Maksym Andriushchenko+, N_A, arXiv23</a>
 <span class="snippet">ウェイト減衰は、大規模な言語モデルのトレーニングに使用されるが、その役割はまだ理解されていない。本研究では、ウェイト減衰が古典的な正則化とは異なる役割を果たしていることを明らかにし、過パラメータ化されたディープネットワークでの最適化ダイナミクスの変化やSGDの暗黙の正則化の強化方法を示す。また、ウ ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-10-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1085">Eliminating Reasoning via Inferring with Planning: A New Framework to  Guide LLMs Non-linear Thinking, Yongqi Tong+, N_A, arXiv23</a>
 <span class="snippet">本研究では、大規模言語モデル（LLMs）に非線形の思考を促すために、新しいプロンプティング方法であるInferential Exclusion Prompting（IEP）を提案する。IEPは、計画を立てて可能な解を推論し、逆推論を行うことで広い視点を得ることができる。IEPは他の手法と比較して複 ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1089">Detecting Pretraining Data from Large Language Models, Weijia Shi+, N_A, arXiv23</a>
+<span class="snippet">本研究では、大規模言語モデル（LLMs）を訓練するためのデータの検出問題を研究し、新しい検出方法であるMin-K% Probを提案します。Min-K% Probは、LLMの下で低い確率を持つアウトライアーワードを検出することに基づいています。実験の結果、Min-K% Probは従来の方法に比べて7 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1d7a5fe2-e0bc-4c6e-92b2-34457a17714a" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1091">NEFTune: Noisy Embeddings Improve Instruction Finetuning, Neel Jain+, N_A, arXiv23</a>
+<span class="snippet">私たちは、言語モデルのファインチューニングを改善するために、ノイズを加えた埋め込みベクトルを使用する手法を提案します。この手法は、AlpacaEvalやEvol-Instructなどのデータセットで強力なベースラインを上回る性能を示しました。また、RLHFでトレーニングされたモデルにも適用可能です ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/499">Transformers Interpret, 2022</a>
 <span class="snippet">transformersのモデルをたった2行追加するだけで、explainableにするライブラリ基本的にtextとvisionのclassificationをサポートしている模様text classificationの場合、たとえばinput tokenの各トークンの分類に対する寄与度をou ...</span>
@@ -125,13 +140,13 @@ author: AkihikoWATANABE
 <span class="snippet">NeurIPS 2021での技術トレンドがまとめられている1. アーキテクチャの改善2. マルチモーダルモデル3. Temporal Adaptation4. Retrieval Augmentation5. ベンチマーク見直し6. データセット見直し7. Human-C ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/381">All Word Embeddings from One Embedding, Takase+, NeurIPS20</a>
-<span class="snippet">Embedidngのパラメータ数とBLEUスコアの比較。より少ないパラメータ数でcomparableな性能を達成している。![image](https://user-images.githubusercontent.com/12249301/121308824-700c3100-c93c-1 ...</span>
+<span class="snippet">NLPのためのNN-basedなモデルのパラメータの多くはEmbeddingによるもので、従来は個々の単語ごとに異なるembeddingをMatrixの形で格納してきた。この研究ではモデルのパラメータ数を減らすために、個々のword embeddingをshared embeddingの変換によって ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/458">Deep-IRT: Make Deep Learning Based Knowledge Tracing Explainable Using Item Response Theory, Chun-Kit Yeung, EDM19</a>
-<span class="snippet">著者による実装: https://github.com/ckyeungac/DeepIRT ...</span>
+<span class="snippet"># 一言で言うとDKVMN #352 のサマリベクトルf_tと、KC embedding k_tを、それぞれ独立にFully connected layerにかけてスカラー値に変換し、生徒のスキルごとの能力パラメータθと、スキルの困難度パラメータβを求められるようにして、解釈性を向上させた研究。 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/General.html">#General</a><a class="button" href="articles/Embed.html">#Embed</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/68">StarSpace: Embed All The Things, Wu+, arXiv17</a>
-<span class="snippet">解説：https://www.slideshare.net/akihikowatanabe3110/starspace-embed-all-the-things ...</span>
+<span class="snippet">分類やランキング、レコメンドなど、様々なタスクで汎用的に使用できるEmbeddingの学習手法を提案。Embeddingを学習する対象をEntityと呼び、Entityはbag-of-featureで記述される。Entityはbag-of-featureで記述できればなんでもよく、こ ...</span>
 <a class="button" href="articles/DomainAdaptation.html">#DomainAdaptation</a><a class="button" href="articles/UserModeling.html">#UserModeling</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/125">Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17</a>
 <span class="snippet">#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfea ...</span>
@@ -173,7 +188,7 @@ author: AkihikoWATANABE
 <span class="snippet">タイトルの通り、構造学習版のpassive-aggressiveアルゴリズムの分散処理による高速化手法について提案されている論文。論文中のAlgorithm.2がアルゴリズム。 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/281">Factorization Machines, Steffen Rendle, ICDM10</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/50376518-fdfedf00-0650-11e9-99c0-060f286de392.png)FMのFeature VectorのExample各featureご ...</span>
+<span class="snippet">解説ブログ：http://echizen-tm.hatenablog.com/entry/2016/09/11/024828DeepFMに関する動向：https://data.gunosy.io/entry/deep-factorization-machines-2018 ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2023-08-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1017">Interpretable Machine Learning: Fundamental Principles and 10 Grand  Challenges, Cynthia Rudin+, N_A, arXiv21</a>
 <span class="snippet">本研究では、解釈可能な機械学習（ML）の基本原則とその重要性について説明し、解釈可能なMLの10の技術的な課題を特定します。これには、疎な論理モデルの最適化、スコアリングシステムの最適化、一般化加法モデルへの制約の配置などが含まれます。また、ニューラルネットワークや因果推論のためのマッチング、デー ...</span>
@@ -212,13 +227,13 @@ author: AkihikoWATANABE
 <span class="snippet">![image](https://user-images.githubusercontent.com/12249301/137843973-576deeb7-778d-44d8-aac8-5ed5c4fa7d2b.png)よく見るML codeが全体のごく一部で、その他の基盤が大半を占めてますよ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2022-03-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/439">neptune.ai</a>
-<span class="snippet">HuggingFace, pytorch-lightningなどのフレームワークでもサポートされている模様HuggingFace: https://huggingface.co/transformers/v4.9.1/_modules/transformers/integrations.ht ...</span>
+<span class="snippet">・実験結果の可視化や管理に利用できるサービス・API経由で様々な実験に関わるメタデータやmetricを送信することで、サイト上でdashboardを作成し、複数の実験の結果を可視化したりwidget上で比較したりできる・実験時に使用したargumentsを記録したり、global_stepご ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/TimeSeriesDataProcessing.html">#TimeSeriesDataProcessing</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2022-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/504">Are Transformers Effective for Time Series Forecasting?</a>
 <span class="snippet">Linear Layerに基づくシンプルな手法がTransformerベースの手法に時系列予測で勝ったという話 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2023-01-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/507">tuning_playbook, Google Research</a>
-<span class="snippet">日本語訳https://github.com/Valkyrja3607/tuning_playbook_ja ...</span>
+<span class="snippet">Googleが公開したDeep Learningモデル学習のノウハウ。必読 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/project_template.html">#project_template</a><br><span class="issue_date">Issue Date: 2023-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/705">Ascender</a>
 <span class="snippet">pythonを利用した研究開発する上でのプロジェクトテンプレート ...</span>
@@ -231,5 +246,8 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1002">CommonVoice</a>
 <span class="snippet">音声対応のアプリケーションをトレーニングするために誰でも使用できるオープンソースの多言語音声データセット ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d5de7493-4918-4eed-a6de-33a81468f907" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d5de7493-4918-4eed-a6de-33a81468f907" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1108">大規模言語モデルにおいて､「知識は全結合層に蓄積される」という仮説についての文献調査</a>
+<span class="snippet">タイトルの通り、知識がFFNに蓄積されていると主張しているらしい原論文を読み解いている。まとめを引用すると> 「知識は全結合層に蓄積される」という表現は､ややラジカルで､少なくともこの論文では「全結合層は知識獲得において重要」という程度の､もう少しマイルドな主張をしているように見受けられまし ...</span>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

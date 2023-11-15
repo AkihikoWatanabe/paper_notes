@@ -10,7 +10,7 @@ author: AkihikoWATANABE
 <span class="snippet">LLMにquestionを与え、questionを解決するためのinformation seekingの対話ログを生成させる。このデータを用いて、dialogueからquestionを生成するモデルを訓練し、検索APIなどに渡せるようにした研究。全く対話のログがないドメインのデータに対しても、人間と ...</span>
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><br><span class="issue_date">Issue Date: 2021-06-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/367">NUBIA, EvalNLGEval20</a>
-<span class="snippet">意味的に同等の内容を述べた文間でのexample![image](https://user-images.githubusercontent.com/12249301/120425803-d37ce880-c3a9-11eb-938c-09747999cc7c.png)BLEU, ROUGE ...</span>
+<span class="snippet">TextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。![image](https://user-images.githubusercontent.com/12249301/120425437-299d5c00-c3a9-11eb-923 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2019-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/302">Training Millions of Personalized Dialogue Agents, Mazaré, ACL19</a>
 <span class="snippet">No description ...</span>

@@ -59,7 +59,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/ListWise.html">#ListWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193">Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML2007</a>
-<span class="snippet">k=1の設定で計算するのが普通なようなので、普通にoutputがsoftmaxでlossがsoftmax cross-entropyなモデルとほぼ等価なのでは。 ...</span>
+<span class="snippet">解説スライド：http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf解説ブログ：https://qiita.com/koreyou/items/a69750696fd0b9d88608 ...</span>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/PairWise.html">#PairWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192">Learning to Rank using Gradient Descent （RankNet）, Burges+, ICML2005</a>
 <span class="snippet">pair-wiseのlearning2rankで代表的なRankNet論文解説ブログ：https://qiita.com/sz_dr/items/0e50120318527a928407lossは2個のインスタンスのpair、A, Bが与えられたとき、AがBよりも高くランクされる場合は確 ...</span>

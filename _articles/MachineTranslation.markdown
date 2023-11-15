@@ -41,16 +41,16 @@ author: AkihikoWATANABE
 <span class="snippet">中澤さんによるNMTチュートリアル。 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/245">Attention is all you need, Vaswani+, arXiv17</a>
-<span class="snippet">集合知 ...</span>
+<span class="snippet">Transformer (self-attentionを利用) 論文解説スライド：https://www.slideshare.net/DeepLearningJP2016/dlattention-is-all-you-need解説記事：https://qiita.com/nishiba/i ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/65">Pointing the unknown words, Gulcehre+, ACL16</a>
-<span class="snippet">CopyNetと同じタイミングで（というか同じconferenceで）発表 ...</span>
+<span class="snippet">テキストを生成する際に、source textからのコピーを行える機構を導入することで未知語問題に対処した話 ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Coherence.html">#Coherence</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/971">Lexical Coherence Graph Modeling Using Word Embeddings, Mesgar+, NAACL16</a>
 <span class="snippet">__translate: Coherence is established by semantic connections between sentences of a text which can be modeled by lexical relations. In this paper, we ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/369">Effective Approaches to Attention-based Neural Machine Translation, Luong+, arXiv15</a>
-<span class="snippet">また、過去のalignmentの情報を考慮した上でデコーディングしていくために、input-feeding approachも提案![image](https://user-images.githubusercontent.com/12249301/120877145-cfdaa300-c5ef ...</span>
+<span class="snippet">Luong論文。attentionの話しはじめると、だいたいBahdanau+か、Luong+論文が引用される。Global Attentionと、Local Attentionについて記述されている。Global Attentionがよく利用される。Global Attention ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/969">Document-Level Machine Translation Evaluation with Gist Consistency and Text Cohesion, Gong+, DiscoMT15</a>
 <span class="snippet">No description ...</span>
@@ -68,10 +68,10 @@ author: AkihikoWATANABE
 <span class="snippet">この論文では、語彙的な結束を利用して文書レベルの機械翻訳の評価を容易にする方法を提案しています。語彙的な結束は、同じ意味を持つ単語を使って文を結びつけることで、テキストの結束性を実現します。実験結果は、この特徴を評価尺度に組み込むことで、人間の判断との相関を向上させることを示しています。 ...</span>
 <a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/393">機械翻訳自動評価指標の比較, 今村+, NLP04</a>
-<span class="snippet">実際に研究等でBLEUスコアを測りたい場合は、mosesの実装を使うのが間違いない:https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl ...</span>
+<span class="snippet">BLEUスコア、NISTスコア、WordErrorRate(WER)などに関して丁寧かつ簡潔に解説してある。BLEUスコア算出に利用するN-gramは一般的にはN=4が用いられる、といった痒いところに手が届く情報も書いてある。普段何気なく使っているBLEUスコアで、あれ定義ってどんなだっけ？ ...</span>
 <a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/239">A systematic comparison of various statistical alignment models, Och+, CL03, Giza++</a>
-<span class="snippet">評価の際は、Sure, Possibleの二種類のラベルによる単語アライメントのground-truth作成も行っている ...</span>
+<span class="snippet">標準的に利用される単語アライメントツール ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/238"> HMM-based word alignment in statistical translation, Vogel+, COLING96</a>
 <span class="snippet">No description ...</span>

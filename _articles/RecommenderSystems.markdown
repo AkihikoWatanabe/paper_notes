@@ -30,12 +30,18 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/870">User Simulator Assisted Open-ended Conversational Recommendation System, NLP4ConvAI23</a>
 <span class="snippet">No description ...</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1122">LightLM: A Lightweight Deep and Narrow Language Model for Generative  Recommendation, Kai Mei+, N_A, arXiv23</a>
+<span class="snippet">この論文では、軽量なTransformerベースの言語モデルであるLightLMを提案し、生成型レコメンデーションタスクに特化したモデルを開発しています。LightLMは、モデルの容量を抑えつつも、レコメンデーションの精度と効率を向上させることに成功しています。また、ユーザーとアイテムのIDインデ ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7a70bae0-20fd-495e-a563-5ac6ce5b6dfc" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/927">Personalized Chit-Chat Generation for Recommendation Using External Chat Corpora, Chen+, KDD22</a>
 <span class="snippet">チットチャットは、ユーザーとの対話において効果的であることが示されています。この研究では、ニュース推薦のための個人化されたチットチャットを生成する方法を提案しています。既存の方法とは異なり、外部のチャットコーパスのみを使用してユーザーの関心を推定し、個人化されたチットチャットを生成します。幅広い実 ...</span>
-<a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><br><span class="issue_date">Issue Date: 2021-10-21</span>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Zero/Few-shot.html">#Zero/Few-shot</a><br><span class="issue_date">Issue Date: 2023-11-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1124">Recommendation as Language Processing （RLP）: A Unified Pretrain,  Personalized Prompt & Predict Paradigm （P5）, Shijie Geng+, N_A, RecSys22</a>
+<span class="snippet">我々は「Pretrain, Personalized Prompt, and Predict Paradigm」（P5）と呼ばれる柔軟で統一されたテキストからテキストへのパラダイムを提案します。P5は、共有フレームワーク内でさまざまな推薦タスクを統一し、個別化と推薦のための深い意味を捉えることがで ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9b8b83a2-0930-4836-8bae-a18234fd3fd3" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><br><span class="issue_date">Issue Date: 2021-10-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/413">コミュニティサービスにおけるレコメンデーションの変遷とMLパイプラインについて, PyCon21</a>
-<span class="snippet">MLパイプラインについては下記資料により詳しい情報が書かれているhttps://speakerdeck.com/takapy/sagemaker-studiotostep-functionswoyong-itemlopshefalse-bu-wota-michu-sou ...</span>
+<span class="snippet">・ママ向けのQ&AサービスにおけるレコメンドとMLパイプラインについて紹介◆レコメンドエンジンの変遷　・Tensorflowで実装したMFから始まり、その後トピックを絞り込んだ上で推薦するためにLDAを活用したレコメンド、最終的にSoftmax Recommendationを開発 ...</span>
 <br><span class="issue_date">Issue Date: 2022-04-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/441">Are We Evaluating Rigorously? Benchmarking Recommendation for Reproducible Evaluation and Fair Comparison, Sun+, RecSys20</a>
 <span class="snippet">日本語解説：https://qiita.com/smochi/items/c4cecc48e4aba0071ead ...</span>
@@ -50,13 +56,13 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/347">BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer, Sun+, CIKM2019</a>
-<span class="snippet">オリジナルはtensorflow実装pytorchの実装はこちら：https://github.com/jaywonchung/BERT4Rec-VAE-Pytorch/tree/master/models ...</span>
+<span class="snippet">BERTをrecsysのsequential recommendationタスクに転用してSoTA。しっかり読んで無いけどモデル構造はほぼBERTと一緒。異なる点は、Training時にNext Sentence Predictionは行わずClozeのみ行なっているという点。Clozeとは、実 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><a class="button" href="articles/CVRPrediction.html">#CVRPrediction</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/366">Conversion Prediction Using Multi-task Conditional Attention Networks to Support the Creation of Effective Ad Creatives, Kitada+, KDD19</a>
 <span class="snippet"># Overview広告のCVR予測をCTR予測とのmulti-task learningとして定式化。構築した予測モデルのattention distributionを解析することで、high-qualityなクリエイティブの作成を支援する。genderやgenre等の情報でatten ...</span>
 <a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><br><span class="issue_date">Issue Date: 2021-07-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/397">Deep Learning Recommendation Model for Personalization and Recommendation Systems, Naumov+, Facebook, arXiv‘19</a>
-<span class="snippet">Parallelism以後のセクションはあとで読む ...</span>
+<span class="snippet">Facebookが開発したopen sourceのDeepな推薦モデル（MIT Licence）。モデル自体はシンプルで、continuousなfeatureをMLPで線形変換、categoricalなfeatureはembeddingをlook upし、それぞれfeatureのrepresen ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><br><span class="issue_date">Issue Date: 2022-04-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/442">Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches, Politecnico di Milano, Maurizio+, RecSys19</a>
 <span class="snippet">RecSys'19のベストペーパー日本語解説：https://qiita.com/smochi/items/98dbd9429c15898c5dc7 ...</span>
@@ -77,13 +83,13 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><br><span class="issue_date">Issue Date: 2021-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/348">xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems, Lian+, KDD‘18</a>
-<span class="snippet">#281 にも書いたが、下記リンクに概要が記載されている。DeepFMに関する動向：https://data.gunosy.io/entry/deep-factorization-machines-2018 ...</span>
+<span class="snippet">#349 DeepFMの発展版 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Contents-based.html">#Contents-based</a><a class="button" href="articles/NewsRecommendation.html">#NewsRecommendation</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/363">DKN: Deep Knowledge-Aware Network for News Recommendation, Wang+, WWW18</a>
-<span class="snippet">日本語解説https://qiita.com/agatan/items/24c6d8e00f2fc861bb04 ...</span>
+<span class="snippet"># OverviewContents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。CNNでword-embeddingのみならず、entity embedding, cont ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/General.html">#General</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/68">StarSpace: Embed All The Things, Wu+, arXiv17</a>
-<span class="snippet">解説：https://www.slideshare.net/akihikowatanabe3110/starspace-embed-all-the-things ...</span>
+<span class="snippet">分類やランキング、レコメンドなど、様々なタスクで汎用的に使用できるEmbeddingの学習手法を提案。Embeddingを学習する対象をEntityと呼び、Entityはbag-of-featureで記述される。Entityはbag-of-featureで記述できればなんでもよく、こ ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/167">A survey of transfer learning for collaborative recommendation with auxiliary data, Pan, Neurocomputing17</a>
 <span class="snippet">No description ...</span>
@@ -101,13 +107,13 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReviewGeneration.html">#ReviewGeneration</a><br><span class="issue_date">Issue Date: 2019-02-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/303">Estimating Reactions and Recommending Products with Generative Models of Reviews, Ni+, IJCNLP17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/56012129-f65d6600-5d25-11e9-919a-33018878f96e.png)Review GenerationはPerplexityにより評価してい ...</span>
+<span class="snippet">Collaborative Filtering (CF) によるコンテンツ推薦とReview Generationを同時に学習し、両者の性能を向上させる話。非常に興味深い設定で、このような実験設定でReview Generationを行なった初めての研究。 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReviewGeneration.html">#ReviewGeneration</a><br><span class="issue_date">Issue Date: 2019-04-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/309">Neural rating regression with abstractive tips generation for recommendation, Li+, SIGIR17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/56012618-43423c00-5d28-11e9-82ff-fe90c9dd7d1c.png)モデルについてはあまりく詳しく読んでいないが、図を見る感じ、user l ...</span>
+<span class="snippet">Rating Predictionとtips generationを同時に行うことで、両者の性能を向上させた最初の研究。tipsとは、ユーザの経験や感じたことを、短いテキスト（1文とか）で簡潔に記したもの。 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><br><span class="issue_date">Issue Date: 2021-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/349">DeepFM: A Factorization-Machine based Neural Network for CTR Prediction, Guo+, IJCAI’17</a>
-<span class="snippet">実装: https://github.com/rixwew/pytorch-fm ...</span>
+<span class="snippet">Factorization Machinesと、Deep Neural Networkを、Wide&Deepしました、という論文。Wide=Factorization Machines, Deep=DNN。高次のFeatureと低次のFeatureを扱っているだけでなく、FMによってフィールドご ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/174">推薦システムのアルゴリズム, 神嶌, 2016</a>
 <span class="snippet">No description ...</span>
@@ -116,7 +122,7 @@ author: AkihikoWATANABE
 <span class="snippet">target text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦すると ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><br><span class="issue_date">Issue Date: 2018-01-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/216">Collaborative Denoising Auto-Encoders for Top-N Recommender Systems, Wu+, WSDM16</a>
-<span class="snippet">#221 もStacked Denoising Auto EncoderとCollaborative Topic Regression #226 を利用しているが、#221 ではarticle recommendationというspecificな問題を解いているのに対して、提案手法はgeneralな ...</span>
+<span class="snippet">Denoising Auto-Encoders を用いたtop-N推薦手法、Collaborative Denoising Auto-Encoder (CDAE)を提案。モデルベースなCollaborative Filtering手法に相当する。corruptedなinputを復元するようなDe ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/TechnologyEnhancedLearning.html">#TechnologyEnhancedLearning</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/270">A Survey on Artificial Intelligence and Data Mining for MOOCs, Fauvel+, arXiv16</a>
 <span class="snippet">No description ...</span>
@@ -125,7 +131,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Session.html">#Session</a><br><span class="issue_date">Issue Date: 2019-08-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/315">SESSION-BASED RECOMMENDATIONS WITH RECURRENT NEURAL NETWORKS, Hidasi+, ICLR16</a>
-<span class="snippet">日本語解説: https://qiita.com/tatamiya/items/46e278a808a51893deac ...</span>
+<span class="snippet">RNNを利用したsequential recommendation (session-based recommendation)の先駆け的論文。 ...</span>
 <br><span class="issue_date">Issue Date: 2023-05-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/657">Ups and Downs: Modeling the Visual Evolution of Fashion Trends with  One-Class Collaborative Filtering, Ruining He+, N_A, arXiv16</a>
 <span class="snippet">ファッションなどの特定のドメインにおいて、製品の視覚的な外観と時間の経過に伴う進化を同時にモデル化することが重要であり、そのような好みをモデル化することは非常に困難である。本論文では、One-Class Collaborative Filtering設定のための新しいモデルを構築し、過去のフィード ...</span>
@@ -137,7 +143,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/221">Collaborative Deep Learning for Recommender Systems Wang+, KDD’15</a>
-<span class="snippet">解説ブログ：http://d.hatena.ne.jp/repose/20150531/1433004688 ...</span>
+<span class="snippet">Rating Matrixからuserとitemのlatent vectorを学習する際に、Stacked Denoising Auto Encoder（SDAE）によるitemのembeddingを活用する話。Collaborative FilteringとContents-based Fil ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/290">Panorama of recommender systems to support learning, Drachsler+, 2015</a>
 <span class="snippet">教育分野に対するRecsysのSurvey ...</span>
@@ -182,7 +188,7 @@ author: AkihikoWATANABE
 <span class="snippet">Factorization Machinesの著者実装。FMやるならまずはこれ。 ...</span>
 <a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/223"> SVDFeature: a toolkit for feature-based collaborative filtering, Chen+, JMLR12</a>
-<span class="snippet">Ratingの情報だけでなく、Auxiliaryな情報も使ってMatrix Factorizationができるツールを作成した。これにより、Rating Matrixの情報だけでなく、自身で設計したfeatureをMFに組み込んでモデルを作ることができる。![image](https:/ ...</span>
+<span class="snippet">tool: http://apex.sjtu.edu.cn/projects/33 ...</span>
 <a class="button" href="articles/Comments.html">#Comments</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/229">Care to Comment? Recommendations for Commenting on News Stories, Shmueli+, WWW12</a>
 <span class="snippet">過去のユーザのコメントに対するratingに基づいて、ユーザが（コメントを通じて）議論に参加したいようなNews Storyを推薦する研究。 ...</span>
@@ -203,7 +209,7 @@ author: AkihikoWATANABE
 <span class="snippet">Personalizedなコメント推薦モデルを提案。rater-authorの関係、rater-commentの関係をlatent vectorを用いて表現し、これらとバイアス項の線形結合によりraterのあるコメントに対するratingを予測する。パラメータを学習する際は、EMでモデルをfit ...</span>
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/226">Collaborative topic modeling for recommending scientific articles, Wang+, KDD11</a>
-<span class="snippet">解説ブログ：http://d.hatena.ne.jp/repose/20150531/1433004688 ...</span>
+<span class="snippet">Probabilistic Matrix Factorization (PMF) #227 に、Latent Dirichllet Allocation (LDA) を組み込んだCollaborative Topic Regression (CTR)を提案。LDAによりitemのlatent v ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/TechnologyEnhancedLearning.html">#TechnologyEnhancedLearning</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/268">Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook: A Complete Guide for Research Scientists and Practitioners, 2011</a>
 <span class="snippet">No description ...</span>
@@ -212,13 +218,13 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Classic.html">#Classic</a><a class="button" href="articles/ContextAware.html">#ContextAware</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/287">Context-Aware Recommender Systems, Adomavicius+, Recommender Systems Handbook, 2011</a>
-<span class="snippet">通常のuser/item paradigmを拡張して、いかにコンテキストの情報を考慮するかを研究。コンテキスト情報は、Explicit: ユーザのマニュアルインプットから取得Implicit: 自動的に取得inferred: ユーザとツールやリソースのインタラクションから推測（た ...</span>
+<span class="snippet">Context-aware Recsysのパイオニア的研究 ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/ContextAware.html">#ContextAware</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/289">Context Aware Recommender Systems, Adomavicius+, AAAI, 2011</a>
 <span class="snippet">AdomaviciusらによるContext Aware Recsysチュートリアル ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Explanation.html">#Explanation</a><br><span class="issue_date">Issue Date: 2019-01-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/299">Designing and Evaluating Explanations for Recommender Systems, Tintarev+, Recommender Systems Handbook, 2011</a>
-<span class="snippet">D論：http://navatintarev.com/papers/Nava%20Tintarev_PhD_Thesis_(2010).pdf ...</span>
+<span class="snippet">Recommender Systems HandbookのChapter。#162 のSurveyと同じ著者による執筆。推薦のExplanationといえばこの人というイメージ。 ...</span>
 <a class="button" href="articles/Document.html">#Document</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/42">Combination of Web page recommender systems, Goksedef, Gunduz-oguducu, Elsevier, 2010</a>
 <span class="snippet">・traditionalなmethodはweb usage or web content mining techniquesを用いているが，ニュースサイトなどのページは日々更新されるのでweb content mining techniquesを用いてモデルを更新するのはしんどい．ので，web us ...</span>
@@ -230,28 +236,28 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/281">Factorization Machines, Steffen Rendle, ICDM10</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/50376518-fdfedf00-0650-11e9-99c0-060f286de392.png)FMのFeature VectorのExample各featureご ...</span>
+<span class="snippet">解説ブログ：http://echizen-tm.hatenablog.com/entry/2016/09/11/024828DeepFMに関する動向：https://data.gunosy.io/entry/deep-factorization-machines-2018 ...</span>
 <a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/425">2010年代前半のAIの巨人達のCTR Prediction研究</a>
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4">Collaborative Summarization: When Collaborative Filtering Meets Document Summarization, Qu+, PACLIC09, 6</a>
-<span class="snippet">評価100個のEnglish wikipedia記事をDLし、文書要約のセットとした。その上で、5000件のwikipedia記事に対する1084ユーザのタギングデータをdelicious.comから収集し、合計で8396の異なりタグを得た。10人のdeliciousのアクティブユーザの協力を ...</span>
+<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/34400963-26dc2ee2-ebda-11e7-8170-2aa5fcc701c1.png)Collaborative Filteringと要約を組み合わせる手 ...</span>
 <br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/28">BPR: Bayesian Personalized Ranking from Implicit Feedback, Rendle+, UAI09</a>
-<span class="snippet">pytorchでのBPR実装: https://github.com/guoyang9/BPR-pytorch ...</span>
+<span class="snippet">重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsy ...</span>
 <a class="button" href="articles/Novelty.html">#Novelty</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/46">Discovery-oriented Collaborative Filtering for Improving User Satisfaction, Hijikata et al., IUI’09</a>
-<span class="snippet">重要論文 ...</span>
+<span class="snippet">・従来のCFはaccuracyをあげることを目的に研究されてきたが，ユーザがすでに知っているitemを推薦してしまう問題がある．おまけに（推薦リスト内のアイテムの観点からみた）diversityも低い．このような推薦はdiscoveryがなく，user satisfactionを損ねるので，ユーザが ...</span>
 <a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/222">Relational learning via collective matrix factorization, Singh+, KDD08</a>
 <span class="snippet">従来のMatrix Factorization（MF）では、pair-wiseなrelation（たとえば映画とユーザと、映画に対するユーザのrating）からRating Matrixを生成し、その行列を分解していたが、multipleなrelation（たとえば、user-movie ratin ...</span>
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/225">Collaborative filtering for implicit feedback datasets, Hu+, International Conference on Data Mining, 2008</a>
-<span class="snippet">Implicit #324 でのAlternating Least Square (ALS)という手法が、この手法の実装に該当する。 ...</span>
+<span class="snippet">Implicit Feedbackなデータに特化したMatrix Factorization (MF)、Weighted Matrix Factorization (WMF)を提案。ユーザのExplicitなFeedback（ratingやlike, dislikeなど）がなくても、MFが適用可 ...</span>
 <a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/227">Probabilistic Matrix Factorization, Salakhutdinov+, NIPS08</a>
-<span class="snippet">既存のMFは大規模なデータに対してスケールしなかったが、PMFではobservationの数に対して線形にスケールし、さらには、large, sparse, imbalancedなNetflix datasetで良い性能が出た（Netflixデータセットは、rating件数が少ないユーザとかも含んで ...</span>
+<span class="snippet">Matrix Factorizationを確率モデルとして表した論文。解説：http://yamaguchiyuto.hatenablog.com/entry/2017/07/13/080000 ...</span>
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/8">User-model based personalized summarization, Diaz+, Information Processing and Management 2007, 96</a>
 <span class="snippet">PDSの先駆けとなった重要論文。必ずreferすべき。 ...</span>
@@ -281,7 +287,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/292">Simulated Analysis of MAUT Collaborative Filtering for Learning Object Recommendation, Manouselis+, Social Information Retrieval for Technology-Enhanced Learning & Exchange, 2007</a>
-<span class="snippet">Learning Resource Exchangeの文脈で使われることを想定（このシステムではヨーロッパのK-12）。教員による教材のmulti-criteriaのratingは5-scaleで行われた。どういうcriteriaに対してratingされたかが書いてない。 ...</span>
+<span class="snippet">教員に対して教材を推薦しようという試み（学生ではないようだ）。教員は、learning resourcesに対して、multi-criteriaなratingを付与することができ、それをCFで活用する（CELEBRATE web portalというヨーロッパのポータルを使用したらしい）。CF ...</span>
 <a class="button" href="articles/GraphBased.html">#GraphBased</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/180">Folkrank: A ranking algorithm for folksonomies, Hotho+, FGIR06</a>
 <span class="snippet">代表的なタグ推薦手法 ...</span>
@@ -311,28 +317,28 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/149">Surprise</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど実装：python使用方法：pythonライブラリとして利用※ pythonで利用できる数少ない推薦システムライブラリ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/150">LibRec</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：協調フィルタリング、Factorization Machines、　　　　　　　　　　　　　　Restricted Boltzman Machineなど、計70種類のアルゴリズムが実装実装：Java使用方法：コマンドライン、Javaライブラリとして利用※ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/151">fastFM</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：Factorization Machines実装：python使用方法：pythonライブラリとして利用※ Factorization Machinesに特化したpythonライブラリ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/152">MyMediaLite</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど実装：C#使用方法：コマンドライン、C#ライブラリとして利用※ ライブラリとして使用する場合は、C#による実装が必要 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/153">LensKit</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど実装：Java使用方法：コマンドライン、Javaライブラリとして利用※ 推薦システム界隈で有名な、GroupLens研究グループによるJava実装 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/154">GraphLab</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">現在はTuri.comになっており、商用になっている？ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/155">mrec</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装：python※ Mendeleyによるpythonライブラリ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/156">GraphChi</a>
-<span class="snippet">参考：http://www.kamishima.net/archive/recsysdoc.pdfhttps://takuti.me/note/recommender-libraries/ ...</span>
+<span class="snippet">実装されているアルゴリズム：Matrix Factorization, RBM, CliMFなど実装：使用方法：CLI※ graphlabの中の人による実装 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/163">A Survey and Critique of Deep Learning on Recommender Systems, Zheng</a>
 <span class="snippet">No description ...</span>
@@ -353,7 +359,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2019-09-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/324">Implicit</a>
-<span class="snippet">ALSの元論文の日本語解説https://cympfh.cc/paper/WRMF ...</span>
+<span class="snippet">Implicitデータに対するCollaborative Filtering手法がまとまっているライブラリBayesian Personalized Ranking, Logistic Matrix Factorizationなどが実装。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2020-08-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/338">Open Bandit Dataset</a>
 <span class="snippet">Open Bandit pipelineも参照資料: https://speakerdeck.com/usaito/off-policy-evaluationfalseji-chu-toopen-bandit-dataset-and-pipelinefalseshao-jie ...</span>
@@ -365,7 +371,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/362">Criteo Dataset</a>
-<span class="snippet">基本的には click/non-click のラベルと、そのclick時の付帯情報によって構成されている模様 ...</span>
+<span class="snippet">Criteo Dataset (https://www.kaggle.com/c/criteo-display-ad-challenge/data)DeepFM等のモデルで利用されているCTR Predictionのためのデータセット# Data Descriptiontra ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2021-07-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/396">Continuously Improving Recommender Systems for Competitive Advantage Using NVIDIA Merlin and MLOps</a>
 <span class="snippet">Recommender System運用のためのアーキテクチャに関する情報 ...</span>
@@ -386,7 +392,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/531">Training a recommendation model with dynamic embeddings</a>
-<span class="snippet">（理解が間違っているかもしれないが）推薦システムは典型的にはユーザとアイテムをベクトル表現し、関連度を測ることで推薦をしている。この枠組みをめっちゃスケールさせるととんでもない数のEmbeddingを保持することになり、メモリ上にEmbeddingテーブルを保持して置けなくなる。特にこれはonlin ...</span>
+<span class="snippet">dynamic embeddingを使った推薦システムの構築方法の解説 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576">Measuring the impact of online personalisation: Past, present and future</a>
 <span class="snippet">Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurveyML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されて ...</span>
@@ -404,6 +410,6 @@ author: AkihikoWATANABE
 <span class="snippet">データセットの推奨タスクを操作化し、DataFinderデータセットを構築した。DataFinderデータセットは、自動的に構築された大規模なトレーニングセットと専門家による評価セットを含んでいる。このデータセットを使用して、テキストベースのデータセット推奨のための優れたバイエンコーダリトリーバを ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MLOps.html">#MLOps</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1033">Lessons Learnt From Consolidating ML Models in a Large Scale Recommendation System</a>
-<span class="snippet">これがこのようなsingle multi-task modelを学習する構造に置き換わり、その結果code量とデプロイの管理・メンテナンスコストの低減保守性の向上    単一化されたコードベースが、緊急時の対応を容易にしたあるユースケースで新たなfea ...</span>
+<span class="snippet">推薦システムには様々なusecaseが存在しており、それらは別々に運用されることが多い。user-item recommendationitem-item recommendationquery-item recommendationcategory-item rec ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8ae598fa-8e7c-4afd-ab9e-38b79b85cd3e" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

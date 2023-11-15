@@ -10,5 +10,5 @@ author: AkihikoWATANABE
 <span class="snippet">従来のdropout研究では、学校のドロップアウトやコースのドロップアウト、MOOCsなどでのドロップアウトが扱われてきたが、モバイル学習環境を考慮した研究はあまり行われてこなかった。モバイル学習環境では着信やソーシャルアプリなど、多くの外敵要因が存在するため、学習セッションのドロップアウトが頻繁に ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/424">Predicting MOOC Dropout over Weeks Using Machine Learning Methods, EMNLP14 Workshop, Marius Kloft</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/139363086-1df1ab46-c1ed-4a2a-a72d-d310b3101b8f.png)最初の1 -9週の間は、あまりDropoutが予測できないが、それ ...</span>
+<span class="snippet">EMNLP'14のWorkshop論文。引用数が120件とかなり多め。 ...</span>
 </div>

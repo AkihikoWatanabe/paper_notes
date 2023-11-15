@@ -10,7 +10,7 @@ author: AkihikoWATANABE
 <span class="snippet">・update summarizationをILPで定式化．基本的なMDSのILPのterm weightingにsalienceの要素に加えてnoveltyの要素を加える．term weightingにはbigramを用いる．bigram使うとよくなることがupdate summarization ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/35">Update Summarization using Semi-Supervised Learning Based on Hellinger Distance, Wang et al., CIKM’15</a>
-<span class="snippet">うーん・・・ ...</span>
+<span class="snippet">・Hellinger Distanceを用いてSentence Graphを構築．ラベル伝搬により要約に含める文を決定する手法・update summarizationの研究ではsimilarityをはかるときにcosine similarityを用いることが多い．・cosine simil ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/36">Incremental Update Summarization: Adaptive Sentence Selection based on Prevalence and Novelty, McCreadie et al., CIKM’14</a>
 <span class="snippet">・timelyなeventに対してupdate summarizationを適用する場合を考える．たとえば6日間続いたeventがあったときにその情報をユーザが追う為に何度もupdate summarizationシステムを用いる状況を考える．6日間のうち新しい情報が何も出てこない期間はirrele ...</span>

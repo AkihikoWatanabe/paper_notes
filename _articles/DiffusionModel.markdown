@@ -15,3 +15,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/878">FABRIC: Personalizing Diffusion Models with Iterative Feedback, Dimitri von Rütte+, N_A, arXiv23</a>
 <span class="snippet">本研究では、拡散ベースのテキストから画像への変換モデルに人間のフィードバックを組み込む戦略を提案する。自己注意層を利用したトレーニングフリーなアプローチであるFABRICを提案し、さまざまな拡散モデルに適用可能であることを示す。また、包括的な評価方法を導入し、人間のフィードバックを統合した生成ビジ ...</span>
 </div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1107">StableDiffusion, LLMのGPUメモリ削減のあれこれ</a>
+<span class="snippet">Gradient Accumulation, Gradient Checkpointingの説明が丁寧でわかりやすかった。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
+<span class="snippet">これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
+</div>

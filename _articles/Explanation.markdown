@@ -20,7 +20,7 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2019-01-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/299">Designing and Evaluating Explanations for Recommender Systems, Tintarev+, Recommender Systems Handbook, 2011</a>
-<span class="snippet">D論：http://navatintarev.com/papers/Nava%20Tintarev_PhD_Thesis_(2010).pdf ...</span>
+<span class="snippet">Recommender Systems HandbookのChapter。#162 のSurveyと同じ著者による執筆。推薦のExplanationといえばこの人というイメージ。 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/162">A Survey of Explanations in Recommender Systems, Tintarev+, ICDEW07</a>
 <span class="snippet">No description ...</span>

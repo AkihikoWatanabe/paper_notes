@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/524">GROKKING: GENERALIZATION BEYOND OVERFIT- TING ON SMALL ALGORITHMIC DATASETS, Power+, OpenAI, arXiv23</a>
-<span class="snippet">学習データが小さければ小さいほど汎化能力を獲得するのに時間がかかる模様 ...</span>
+<span class="snippet">学習後すぐに学習データをmemorizeして、汎化能力が無くなったと思いきや、10^3ステップ後に突然汎化するという現象（Grokking）を報告![image](https://user-images.githubusercontent.com/12249301/234430324-a23 ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/525">Efficient Methods for Natural Language Processing: A Survey, Treviso+, arXiv23</a>
 <span class="snippet">パラメータ数でゴリ押すような方法ではなく、"Efficient"に行うための手法をまとめている![image](https://user-images.githubusercontent.com/12249301/234287218-2d42766f-5c5c-4cf9-859e-c2b0a5d ...</span>
@@ -23,31 +23,34 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/532">Enhancing LLM Chain-of-Thought w_ Iterative Bootstrapping, Sun+, Xiamen University （w_ MSRA et al.）, arXiv23</a>
-<span class="snippet"># 実験Manual-CoT #551 , Random-CoT #551, Auto-CoT #554 と比較。Iter-CoTが11個のデータセット全てでoutperformした。![image](https://user-images.githubusercontent.com ...</span>
+<span class="snippet">Zero shot CoTからスタートし、正しく問題に回答できるようにreasoningを改善するようにpromptをreviseし続けるループを回す。最終的にループした結果を要約し、それらをプールする。テストセットに対しては、プールの中からNshotをサンプルしinferenceを行う。![im ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, arXiv23</a>
-<span class="snippet">しっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽいそのために、questionに対して、training ...</span>
+<span class="snippet">Auto-CoTを提案している論文 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555">Automatic prompt augmentation and selection with chain-of-thought from labeled data, Shum+, The Hong Kong University of Science and Technology, arXiv23</a>
-<span class="snippet">selection phaseで誤ったexampleは直接排除する手法をとっている。そして、強化学習によって、demonstrationのselection modelを訓練している。 ...</span>
+<span class="snippet">LLMによるreasoning chainが人間が作成したものよりも優れていることを示しているとのこと #532 より ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558">Self-consistency improves chain of thought reasoning in language models, Wang+, Google Research, ICLR23</a>
-<span class="snippet">Self-consistencyは回答が閉じた集合であるような問題に対して適用可能であり、open-endなquestionでは利用できないことに注意が必要。ただし、open-endでも回答間になんらかの関係性を見出すような指標があれば実現可能とlimitationで言及している。 ...</span>
+<span class="snippet">self-consistencyと呼ばれる新たなCoTのデコーディング手法を提案。これは、難しいreasoningが必要なタスクでは、複数のreasoningのパスが存在するというintuitionに基づいている。self-consistencyではまず、普通にCoTを行う。そしてgre ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/NeuralArchitectureSearch.html">#NeuralArchitectureSearch</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/559">Can GPT-4 Perform Neural Architecture Search? Zhang+, The University of Sydney, arXiv23</a>
-<span class="snippet">Neural Architecture Search (NAS)においては、ランダムベースラインがよく採用されるらしく、比較した結果ランダムよりよかった![image](https://user-images.githubusercontent.com/12249301/235144154-5c ...</span>
+<span class="snippet">ドメイン知識の必要のないプロンプトで、ニューラルモデルのアーキテクチャの提案をGPTにしてもらう研究。accをフィードバックとして与え、良い構造を提案するといったループを繰り返す模様![image](https://user-images.githubusercontent.com/1224 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/765">RWKV: Reinventing RNNs for the Transformer Era, Bo Peng+, N_A, arXiv23</a>
 <span class="snippet">本研究では、トランスフォーマーとRNNの両方の利点を組み合わせた新しいモデルアーキテクチャであるRWKVを提案し、トレーニング中に計算を並列化し、推論中に一定の計算およびメモリの複雑さを維持することができます。RWKVは、同じサイズのトランスフォーマーと同等のパフォーマンスを発揮し、将来的にはより ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84d5241f-1702-4bd6-8ce3-0a80ded8f192" alt="image"><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84d5241f-1702-4bd6-8ce3-0a80ded8f192" alt="image"><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Grokking.html">#Grokking</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1051">Explaining grokking through circuit efficiency, Vikrant Varma+, N_A, arXiv23</a>
+<span class="snippet">グロッキングとは、完璧なトレーニング精度を持つネットワークでも一般化が悪い現象のことである。この現象は、タスクが一般化する解と記憶する解の両方を許容する場合に起こると考えられている。一般化する解は学習が遅く、効率的であり、同じパラメータノルムでより大きなロジットを生成する。一方、記憶回路はトレーニ ...</span>
+<a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, arXiv22</a>
-<span class="snippet">この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキ ...</span>
+<span class="snippet">DKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attempt ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/475">Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22</a>
-<span class="snippet"># KTの歴史30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから）最初はBKTが広く採用されたその後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはま ...</span>
+<span class="snippet">超重要論文。しっかり読むべき ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2022-09-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/482">Long Document Summarization with Top-down and Bottom-up Inference, Pang+, Salesforce Research, arXiv22</a>
-<span class="snippet">>We first train a top-down transformer on the chapter-level data and then fine-tune it on the book-leveldata. The inputs to the book-level model are ...</span>
+<span class="snippet">日本語解説: https://zenn.dev/ty_nlp/articles/9f5e5dd3084dbd以下、上記日本語解説記事を読んで理解した内容をまとめます。ありがとうございます。# 概要基本的にTransformerベースのモデル（e.g. BERTSum, BART, ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2022-09-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/484">Efficient Methods for Natural Language Processing: A Survey, Marcos+, arXiv22</a>
 <span class="snippet">Scaling Lawに従いモデルも大きくしていく流れに対して、一般ピーポーが恩恵を受けられるような効率の良い学習手法がまとめられている、とのこと（しゅんけーさんありがとうございます） ...</span>
@@ -62,13 +65,13 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Zero/Few-shot.html">#Zero/Few-shot</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, arXiv22</a>
-<span class="snippet"># CoTによる実験結果以下のベンチマークを利用math word problem: GSM8K, SVAMP, ASDiv, AQuA, MAWPScommonsense reasoning: CSQA, StrategyQA, Big-bench Effort (Date, ...</span>
+<span class="snippet">Chain-of-Thoughtを提案した論文。CoTをする上でパラメータ数が100B未満のモデルではあまり効果が発揮されないということは念頭に置いた方が良さそう。![image](https://user-images.githubusercontent.com/12249301/234739 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/553">Large Language Models are Zero-Shot Reasoners, Kojima+, University of Tokyo, NeurIPS22</a>
-<span class="snippet">Zero-Shot-CoTは2つのステップで構成される：STEP1: Reasoning Extraction  元のquestionをxとし、zero-shot-CoTのtrigger sentenceをtとした時に、テンプレート "Q: [X]. A. [T]" を用いてprom ...</span>
+<span class="snippet">Zero-Shot CoT (Let's think step-by-step.)論文 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, arXiv22</a>
-<span class="snippet">clusteringベースな手法を利用することにより、誤りを含む例が単一のクラスタにまとめられうことを示し、これにより過剰な誤ったデモンストレーションが軽減されることを示した。 ...</span>
+<span class="snippet">LLMによるreasoning chainが人間が作成したものよりも優れていることを示しているとのこと #532 より ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/574">Why do tree-based models still outperform deep learning on typical tabular data?, Grinsztajn+, Soda, Inria Saclay , arXiv22</a>
 <span class="snippet">tree basedなモデルがテーブルデータに対してニューラルモデルよりも優れた性能を発揮することを確認し、なぜこのようなことが起きるかいくつかの理由を説明した論文。![image](https://user-images.githubusercontent.com/12249301/235 ...</span>
@@ -80,7 +83,7 @@ author: AkihikoWATANABE
 <span class="snippet">NMTにおいてword embeddingがどう影響しているかなどを調査しているらしい ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2021-06-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/382">A survey of Transformers, Lin+, arXiv‘21</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/121394765-a40f4280-c98c-11eb-8fac-0114715ec738.png) ...</span>
+<span class="snippet">Transformersの様々な分野での亜種をまとめた論文 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/384">FastSeq: Make Sequence Generation Faster, Yan+, ACL’21</a>
 <span class="snippet">BART, DistilBART, T5, GPT2等のさまざまなTransformer-basedな手法で、4-9倍Inference speedを向上させる手法を提案。 ...</span>
@@ -92,7 +95,7 @@ author: AkihikoWATANABE
 <span class="snippet">学習効率化、高速化などのテクニックがまとまっているらしい ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2021-09-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/405">Prefix-Tuning: Optimizing Continuous Prompts for Generation, Lisa+ （Percy Liang）, Stanford University, ACL21</a>
-<span class="snippet">autoregressive LM (GPT-2)と，encoder-decoderモデル（BART）へPrefix Tuningを適用する場合の模式図![image](https://user-images.githubusercontent.com/12249301/132681736-0e ...</span>
+<span class="snippet">言語モデルをfine-tuningする際，エンコード時に「接頭辞」を潜在表現として与え，「接頭辞」部分のみをfine-tuningすることで（他パラメータは固定），より少量のパラメータでfine-tuningを実現する方法を提案．接頭辞を潜在表現で与えるこの方法は，GPT-3のpromptingに着 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2021-10-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/409">過去情報の内容選択を取り入れた スポーツダイジェストの自動生成, 加藤+, 東工大, NLP21</a>
 <span class="snippet">No description ...</span>
@@ -101,7 +104,7 @@ author: AkihikoWATANABE
 <span class="snippet">Student Performance PredictionにTransformerを初めて利用した研究![image](https://user-images.githubusercontent.com/12249301/139178783-ae4d4e2d-9fc5-44f5-9769- ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><br><span class="issue_date">Issue Date: 2021-11-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/431">ResNet strikes back: An improved training procedure in timm, Wightman+, arXiv‘21</a>
-<span class="snippet">画像系でどういった訓練手法が利用されるか色々書かれていたので勉強になった。特に画像系のデータ拡張手法なんかは普段触らないので勉強になる。 ...</span>
+<span class="snippet">2015年以後、様々な最適化アルゴリズム、正則化手法、データ拡張などが提案される中で、最新アーキテクチャのモデルにはそれらが適用される一方ベースラインとなるResNetではそれらが適用されず、論文の値のみが参照される現状はフェアではないので、ResNetの性能を向上させるような訓練手法を追求した研究 ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/DropoutPrediction.html">#DropoutPrediction</a><br><span class="issue_date">Issue Date: 2022-04-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/443">Deep Attentive Study Session Dropout Prediction in Mobile Learning Environment, Riiid AI Research, Lee+, arXiv21</a>
 <span class="snippet">従来のdropout研究では、学校のドロップアウトやコースのドロップアウト、MOOCsなどでのドロップアウトが扱われてきたが、モバイル学習環境を考慮した研究はあまり行われてこなかった。モバイル学習環境では着信やソーシャルアプリなど、多くの外敵要因が存在するため、学習セッションのドロップアウトが頻繁に ...</span>
@@ -119,7 +122,7 @@ author: AkihikoWATANABE
 <span class="snippet">KTにBERTを利用した研究#453 などでDeepLearningBasedなモデル間であまり差がないことが示されているので、本研究が実際どれだけ強いのかは気になるところ。 ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-05-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/456">Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD21</a>
-<span class="snippet">KCのproficiencyの可視化方法について論文中に記述されていないが、Issueで質問されている。https://github.com/bigdata-ustc/EduKTM/issues/29knowledge matrix hは各KCのproficiencyに関する情報をベクト ...</span>
+<span class="snippet">DKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowle ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/459">独立な学習者・項目ネットワークをもつ Deep-IRT, 堤+, 電子情報通信学会論文誌, 2021</a>
 <span class="snippet"># モチベーションDeep-IRTで推定される能力値は項目の特性に依存しており、同一スキル内の全ての項目が等質であると仮定しているため、異なる困難度を持つ項目からの能力推定値を求められない。このため、能力パラメータや困難度パラメータの解釈性は、従来のIRTと比較して制約がある。一方、木下らが提案 ...</span>
@@ -140,22 +143,22 @@ author: AkihikoWATANABE
 <span class="snippet">NICTが公開。既に公開されているBERTモデルとのベンチマークデータでの性能比較も行なっており、その他の公開済みBERTモデルをoutperformしている。 ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/381">All Word Embeddings from One Embedding, Takase+, NeurIPS20</a>
-<span class="snippet">Embedidngのパラメータ数とBLEUスコアの比較。より少ないパラメータ数でcomparableな性能を達成している。![image](https://user-images.githubusercontent.com/12249301/121308824-700c3100-c93c-1 ...</span>
+<span class="snippet">NLPのためのNN-basedなモデルのパラメータの多くはEmbeddingによるもので、従来は個々の単語ごとに異なるembeddingをMatrixの形で格納してきた。この研究ではモデルのパラメータ数を減らすために、個々のword embeddingをshared embeddingの変換によって ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2021-09-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/404">GPT-3から我々は何を学べば良いのか, 山本, Japio year book 2020</a>
-<span class="snippet">GPT-3でどこまでできそうなのか？というざっくりとした肌感が掴めたから良かった ...</span>
+<span class="snippet">GPT-3の概要:GPT-3はWebサイトから数年に渡って収集したCommon Crawlというデータセットから、570GBを抜粋し学習に利用。（英語ウィキペディアの約130倍）ある単語列に後続する単語を予測するという方法（自己回帰型言語モデル）で教師なし学習を繰り返し、言語モデルを学習。 ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/446">Context-Aware Attentive Knowledge Tracing, Ghosh+, University of Massachusetts Amherst, KDD20</a>
 <span class="snippet">この論文の実験ではSAKTがDKVMNやDKTに勝てていない ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/451">When is Deep Learning the Best Approach to Knowledge Tracing?, Theophile+ （Ken Koedinger）, CMU+, JEDM20</a>
-<span class="snippet">DKTは、inputとしてquestion_idを使うかKCのidを使うか選択できる。また、outputもquestion_idに対するprobabilityをoutputするか、KCに対するprobabilityをoutputするか選択できる。これらの組み合わせによって、予測性能がどの程度変化 ...</span>
+<span class="snippet">下記モデルの性能をAUCとRMSEの観点から9つのデータセットで比較した研究DLKT    DKT    SAKT    FFNRegression Models    IRT    PFA    DAS3H    Logist ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2022-09-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/488">Text-to-Text Pre-Training for Data-to-Text Tasks, Mihir+, Google Research, INLG20</a>
-<span class="snippet"># 所感こんな簡単なfine-tuningでSoTAを達成できてしまうとは、末恐ろしい。ベースラインとして有用。 ...</span>
+<span class="snippet"># 概要pre-training済みのT5に対して、Data2Textのデータセットでfinetuningを実施する方法を提案。WebNLG（graph-to-text）, ToTTo（table-to-text）, Multiwoz（task oriented dialogue）データにおいて ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/pretrained-LM.html">#pretrained-LM</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/492">Template Guided Text Generation for Task-Oriented Dialogue, Kale+, Google, EMNLP20</a>
-<span class="snippet">low resourceなデータセットで活用できそう ...</span>
+<span class="snippet"># 概要Dialogue Actをそのままlinearlizeして言語モデルに入力するのではなく、テンプレートをベースにしたシンプルなsentenceにして言語モデルに与えると、zero-shot, few-shotなsettingで性能が向上するという話（T5ベース）。![image] ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/pretrained-LM.html">#pretrained-LM</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/493">Leveraging Pre-trained Checkpoints for Sequence Generation Tasks, Rothe+, Google Research, TACL20</a>
 <span class="snippet"># 概要BERT-to-BERT論文。これまでpre-trainedなチェックポイントを利用する研究は主にNLUで行われてきており、Seq2Seqでは行われてきていなかったので、やりました、という話。publicly availableなBERTのcheckpointを利用し、BERTをen ...</span>
@@ -173,28 +176,28 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2021-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/347">BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer, Sun+, CIKM2019</a>
-<span class="snippet">オリジナルはtensorflow実装pytorchの実装はこちら：https://github.com/jaywonchung/BERT4Rec-VAE-Pytorch/tree/master/models ...</span>
+<span class="snippet">BERTをrecsysのsequential recommendationタスクに転用してSoTA。しっかり読んで無いけどモデル構造はほぼBERTと一緒。異なる点は、Training時にNext Sentence Predictionは行わずClozeのみ行なっているという点。Clozeとは、実 ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/353">EKT: Exercise-aware Knowledge Tracing for Student Performance Prediction, Hu+, IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, 2019</a>
-<span class="snippet">スキルタグごとにLSTMのhidden_stateを保持しないといけないので、メモリの消費量がえぐいことになりそう。小規模なスキルタグのデータセットじゃないと動かないのでは？実際、実験では37種類のスキルタグが存在するデータセットしか扱っていない。 ...</span>
+<span class="snippet">DKT等のDeepなモデルでは、これまで問題テキストの情報等は利用されてこなかったが、learning logのみならず、問題テキストの情報等もKTする際に活用した研究。#354  をより洗練させjournal化させたものだと思われる。#354  ではKTというより、問題の正誤を予測するモデ ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><a class="button" href="articles/CVRPrediction.html">#CVRPrediction</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/366">Conversion Prediction Using Multi-task Conditional Attention Networks to Support the Creation of Effective Ad Creatives, Kitada+, KDD19</a>
 <span class="snippet"># Overview広告のCVR予測をCTR予測とのmulti-task learningとして定式化。構築した予測モデルのattention distributionを解析することで、high-qualityなクリエイティブの作成を支援する。genderやgenre等の情報でatten ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/388">On Empirical Comparisons of Optimizers for Deep Learning, Choi+, arXiv‘19</a>
-<span class="snippet">Adamが良いのだけど、学習率以外のハイパーパラメータをチューニングしないと本来のパフォーマンス発揮されないかもよ、という感じっぽい ...</span>
+<span class="snippet">SGD, Momentum,RMSProp, Adam,NAdam等の中から、どの最適化手法(Optimizer)が優れているかを画像分類と言語モデルにおいて比較した研究（下記日本語解説記事から引用） ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2021-06-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/394">Data-to-Text Generation with Content Selection and Planning, Puduppully+, AAAI19</a>
-<span class="snippet">実装: https://github.com/ratishsp/data2text-plan-py ...</span>
+<span class="snippet">Rotowire Datasetに対するData2Text研究において代表的な論文の一つ。Wisemanモデル #207 と共にベースラインとして利用されることが多い。 ...</span>
 <a class="button" href="articles/GraphConvolutionalNetwork.html">#GraphConvolutionalNetwork</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-07-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/401">GRAPH-BASED KNOWLEDGE TRACING: MODELING STUDENT PROFICIENCY USING GRAPH NEURAL NETWORK, Nakagawa+, Tokyo University, WI19</a>
 <span class="snippet">graph neural networkでKnoelwdge Tracingした論文。各conceptのproficiencyの可視化までしっかりやってそう。 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2021-10-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/408">Table-to-Text Generation with Effective Hierarchical Encoder on Three Dimensions （Row, Column and Time）, Gong+, Harbin Institute of Technology, EMNLP19</a>
-<span class="snippet">実装: https://github.com/ernestgong/data2text-three-dimensions/ ...</span>
+<span class="snippet">## 概要既存研究では、tableをレコードの集合, あるいはlong sequenceとしてencodeしてきたが1. other (column) dimensionの情報が失われてしまう (?)2. table cellは時間によって変化するtime-series data ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-10-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/417">A Self-Attentive model for Knowledge Tracing, Pandy+ （with George Carypis）, EDM19</a>
-<span class="snippet">#446 においてはSAKTがDKT, DKVMN等に勝てていないのに対し（ASSSITments Data + Statics Data）#450 #452  においてはSAKTはDKT, DKVMNに勝っている（EdNet Data）#451 においてもSAKTがDKTに勝てないことが報 ...</span>
+<span class="snippet">Knowledge Tracingタスクに初めてself-attention layerを導入した研究 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><br><span class="issue_date">Issue Date: 2022-04-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/442">Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches, Politecnico di Milano, Maurizio+, RecSys19</a>
 <span class="snippet">RecSys'19のベストペーパー日本語解説：https://qiita.com/smochi/items/98dbd9429c15898c5dc7 ...</span>
@@ -203,7 +206,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/458">Deep-IRT: Make Deep Learning Based Knowledge Tracing Explainable Using Item Response Theory, Chun-Kit Yeung, EDM19</a>
-<span class="snippet">著者による実装: https://github.com/ckyeungac/DeepIRT ...</span>
+<span class="snippet"># 一言で言うとDKVMN #352 のサマリベクトルf_tと、KC embedding k_tを、それぞれ独立にFully connected layerにかけてスカラー値に変換し、生徒のスキルごとの能力パラメータθと、スキルの困難度パラメータβを求められるようにして、解釈性を向上させた研究。 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2022-07-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/462">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Reimers+, UKP-TUDA, EMNLP19</a>
 <span class="snippet">BERTでトークンをembeddingし、mean poolingすることで生成される文ベクトルを、Siamese Networkを使い距離学習（finetune）させたモデル。<img width="655" alt="image" src="https://user-images.githu ...</span>
@@ -221,7 +224,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReviewGeneration.html">#ReviewGeneration</a><br><span class="issue_date">Issue Date: 2019-04-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/306">Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL18</a>
-<span class="snippet">PyTorch実装：https://github.com/nijianmo/textExpansion/tree/master/expansionNet ...</span>
+<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/56010165-8fd44a00-5d1d-11e9-8cad-81a5178d95d2.png)Personalized Review Generationタスクを、u ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/GraphConvolutionalNetwork.html">#GraphConvolutionalNetwork</a><br><span class="issue_date">Issue Date: 2019-05-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/311">Graph Convolutional Neural Networks for Web-Scale Recommender Systems, Ying+, KDD18</a>
 <span class="snippet">No description ...</span>
@@ -236,28 +239,28 @@ author: AkihikoWATANABE
 <span class="snippet">CTR予測でbest-performingなモデルと言われているField Aware Factorization Machines(FFM)では、パラメータ数がフィールド数×特徴数のorderになってしまうため非常に多くなってしまうが、これをよりメモリを効果的に利用できる手法を提案。FFMとは性能 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><br><span class="issue_date">Issue Date: 2021-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/348">xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems, Lian+, KDD‘18</a>
-<span class="snippet">#281 にも書いたが、下記リンクに概要が記載されている。DeepFMに関する動向：https://data.gunosy.io/entry/deep-factorization-machines-2018 ...</span>
+<span class="snippet">#349 DeepFMの発展版 ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/354">Exercise-Enhanced Sequential Modeling for Student Performance Prediction, Hu+, AAAI18</a>
 <span class="snippet">従来のStudent Performance PredictionタスクではKnowledge Componentと問題に対する過去の正誤を入力として予測を行っていて、問題テキストを通じて得られる問題そのものの難しさは明示的に考慮できていなかった。なので、knowledge componentで ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Contents-based.html">#Contents-based</a><a class="button" href="articles/NewsRecommendation.html">#NewsRecommendation</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/363">DKN: Deep Knowledge-Aware Network for News Recommendation, Wang+, WWW18</a>
-<span class="snippet">日本語解説https://qiita.com/agatan/items/24c6d8e00f2fc861bb04 ...</span>
+<span class="snippet"># OverviewContents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。CNNでword-embeddingのみならず、entity embedding, cont ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2021-09-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/406">Operation-guided Neural Networks for High Fidelity Data-To-Text Generation, Nie+, Sun Yat-Sen University, EMNLP18</a>
-<span class="snippet"># 分析## Quantizationの効果チーム間のスコアの差が、5つのbinのに対してどれだけの重みを持たせたかのheatmap。似たようなスコアのgapの場合は似たような重みになることがわかる。ポイント差の絶対値が小さい場合は、重みの分布の分散が大きくなるのでより一般的な単語で生成を行 ...</span>
+<span class="snippet"># 概要既存のニューラルモデルでは、生データ、あるいはそこから推論された事実に基づいて言語を生成するといったことができていない（e.g. 金融, 医療, スポーツ等のドメインでは重要）。たとえば下表に示した通り、"edge"という単語は、スコアが接戦（95-94=1 -> スコアの差が小さい ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2021-10-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/415">Point precisely: Towards ensuring the precision of data in generated texts using delayed copy mechanism., Li+, Peking University, COLING18</a>
 <span class="snippet"># 概要DataToTextタスクにおいて、生成テキストのデータの精度を高める手法を提案。two stageアルゴリズムを提案。①encoder-decoerモデルでslotを含むテンプレートテキストを生成。②Copy Mechanismでslotのデータを埋める、といった手法。①と②はそれ ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/421">Addressing Two Problems in Deep Knowledge Tracing via Prediction-Consistent Regularization, Yeung+, 2018, L@S</a>
-<span class="snippet"><img width="639" alt="image" src="https://user-images.githubusercontent.com/12249301/167774315-061e9d8d-16ae-4c56-b69f-e8ef1968b4fa.png">DKT+とDKTの ...</span>
+<span class="snippet">Deep Knowledge Tracing (DKT)では、下記の問題がある：該当スキルに正解/不正解 したのにmasteryが 下がる/上がる （Inputをreconstructしない）いきなり習熟度が伸びたり、下がったりする（時間軸に対してmastery levelがcons ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-11-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/432">Modeling Hint-Taking Behavior and Knowledge State of Students with Multi-Task Learning, Chaudry+, Indian Institute of Technology, EDM18</a>
 <span class="snippet">DKVMN (#352)をhint-takingタスクとmulti-task learningした研究![image](https://user-images.githubusercontent.com/12249301/141440172-6f708367-1804-4b0c-8c1a-4 ...</span>
 <a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a><br><span class="issue_date">Issue Date: 2022-06-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/457">Deep contextualized word representations, Peters+, Allen Institute for Artificial intelligence, NAACL18</a>
-<span class="snippet">ELMoのEmbedding Layerでは、2048 characterの（vocab size?）n-gram convolution filter（文字ごとにembeddingし、単語のembeddingを得るためにfilterを適用する？）の後に2つのhighway networkをかませて ...</span>
+<span class="snippet">ELMo論文。通常のword embeddingでは一つの単語につき一つの意味しか持たせられなかったが、文脈に応じて異なる意味を表現できるようなEmbeddingを実現し（同じ単語でも文脈に応じて意味が変わったりするので。たとえばrightは文脈に応じて右なのか、正しいなのか、権利なのか意味が変わ ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/GenerativeAdversarialNetwork.html">#GenerativeAdversarialNetwork</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/60">Generative Adversarial Networks: An Overview, Dumoulin+, IEEE-SPM17</a>
 <span class="snippet">No description ...</span>
@@ -272,34 +275,34 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/General.html">#General</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/68">StarSpace: Embed All The Things, Wu+, arXiv17</a>
-<span class="snippet">解説：https://www.slideshare.net/akihikowatanabe3110/starspace-embed-all-the-things ...</span>
+<span class="snippet">分類やランキング、レコメンドなど、様々なタスクで汎用的に使用できるEmbeddingの学習手法を提案。Embeddingを学習する対象をEntityと呼び、Entityはbag-of-featureで記述される。Entityはbag-of-featureで記述できればなんでもよく、こ ...</span>
 <a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/69">A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR17</a>
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/71">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP17</a>
-<span class="snippet">汎用的な文のエンコーダができました！という話。SNLIデータでパラメータ学習、エンコーダ構成スライド図中右側のエンコーダ部分をなるべく一般的な文に適用できるように学習したい。色々なタスクで、文のエンコーダ構成を比較した結果、bi-directional LSTMでエンコードし、要素ご ...</span>
+<span class="snippet">slide: https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data ...</span>
 <a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Word.html">#Word</a><br><span class="issue_date">Issue Date: 2017-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/78">Poincare Embeddings for Learning Hierarchical Representations, Nickel+, NIPS17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/34452953-0e124ad6-ed8d-11e7-800d-0c2712df116a.png)データとして上位・下位概念を与えていないのに、原点付近には上位語・円周付 ...</span>
+<span class="snippet">解説: http://tech-blog.abeja.asia/entry/poincare-embeddings解説スライド：https://speakerdeck.com/eumesy/poincare-embeddings-for-learning-hierarchical-represe ...</span>
 <a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Word.html">#Word</a><br><span class="issue_date">Issue Date: 2017-12-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/79">Skip-Gram – Zipf + Uniform = Vector Additivity, Gittens+, ACL17</a>
-<span class="snippet">Embeddingの加法構成性（e.g. man+royal=king）を理論的に理由づけ（解説スライドより） ...</span>
+<span class="snippet">解説スライド：http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/09.pdf ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/81">Efficient Methods and Hardware for Deep Learning, Han, Stanford University, 2017</a>
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/82">Learning to skim text, Yu+, ACL17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/34460775-f64d4e80-ee5b-11e7-9eea-34ce5ba3e764.png)![image](https://user-images.githubuse ...</span>
+<span class="snippet">解説スライド：http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/07.pdf ...</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Unsupervised.html">#Unsupervised</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/83">Unsupervised Pretraining for Sequence to Sequence Learning, Ramachandran+, EMNLP17</a>
 <span class="snippet">seq2seqにおいてweightのpretrainingを行う手法を提案seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させまし ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/90">Multi-Task Video Captioning with Video and Entailment Generation, Pasunuru+, ACL17</a>
-<span class="snippet">multitask learningで動画（かなり短め）のキャプション生成を行なった話![image](https://user-images.githubusercontent.com/12249301/34460975-b9108fae-ee61-11e7-8e24-04b3c695b8 ...</span>
+<span class="snippet">解説スライド：https://www.slideshare.net/HangyoMasatsugu/hangyo-acl-paperreading2017multitask-video-captioning-with-video-and-entailment-generation/1 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Controllable.html">#Controllable</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/91">Toward Controlled Generation of Text, Hu+, ICML17</a>
-<span class="snippet">slideshare: https://www.slideshare.net/akihikowatanabe3110/towards-controlled-generation-of-text ...</span>
+<span class="snippet">Text Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/92">Generating Sentences by Editing Prototypes, Guu+, arXiv17</a>
 <span class="snippet">No description ...</span>
@@ -311,10 +314,10 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/135">Get To The Point: Summarization with Pointer-Generator Networks, See+, ACL17</a>
-<span class="snippet">Pointer Generator Networksで要約してみる：https://qiita.com/knok/items/9a74430b279e522d5b93 ...</span>
+<span class="snippet">解説スライド：https://www.slideshare.net/akihikowatanabe3110/get-to-the-point-summarization-with-pointergenerator-networks/1 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/207">Challenges in Data-to-Document Generation, Wiseman+ （with Rush）, EMNLP17</a>
-<span class="snippet">【モデルの概要】・attention-based encoder-decoder model・BaseModel　レコードデータ r の各要素（r.e: チーム名等のENTITY r.t: POINTS等のデータタイプ, r.m: データのvalue）からembeddingをlo ...</span>
+<span class="snippet">・RotoWire（NBAのテーブルデータ + サマリ）データを収集し公開![image](https://user-images.githubusercontent.com/12249301/119625430-23f1c480-be45-11eb-8ff8-5e9223d41481.png) ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/209">Coarse-to-Fine Attention Models for Document Summarization, Ling+ （with Rush）, ACL17 Workshop on New Frontiers in Summarization</a>
 <span class="snippet">No description ...</span>
@@ -326,7 +329,7 @@ author: AkihikoWATANABE
 <span class="snippet">中澤さんによるNMTチュートリアル。 ...</span>
 <a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/245">Attention is all you need, Vaswani+, arXiv17</a>
-<span class="snippet">集合知 ...</span>
+<span class="snippet">Transformer (self-attentionを利用) 論文解説スライド：https://www.slideshare.net/DeepLearningJP2016/dlattention-is-all-you-need解説記事：https://qiita.com/nishiba/i ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAdversarialNetwork.html">#GenerativeAdversarialNetwork</a><br><span class="issue_date">Issue Date: 2018-02-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/247">Adversarial Ranking for Language Generation, Lin+, NIPS17</a>
 <span class="snippet">No description ...</span>
@@ -347,7 +350,7 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReviewGeneration.html">#ReviewGeneration</a><br><span class="issue_date">Issue Date: 2019-02-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/303">Estimating Reactions and Recommending Products with Generative Models of Reviews, Ni+, IJCNLP17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/56012129-f65d6600-5d25-11e9-919a-33018878f96e.png)Review GenerationはPerplexityにより評価してい ...</span>
+<span class="snippet">Collaborative Filtering (CF) によるコンテンツ推薦とReview Generationを同時に学習し、両者の性能を向上させる話。非常に興味深い設定で、このような実験設定でReview Generationを行なった初めての研究。 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReviewGeneration.html">#ReviewGeneration</a><br><span class="issue_date">Issue Date: 2019-03-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/305">Learning to Generate Product Reviews from Attributes, Dong+, EACL17</a>
 <span class="snippet">（たぶん）最初のreview generation論文 ...</span>
@@ -356,7 +359,7 @@ author: AkihikoWATANABE
 <span class="snippet">hierarchicalなNNで、long reviewの生成に取り組んだ論文 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReviewGeneration.html">#ReviewGeneration</a><br><span class="issue_date">Issue Date: 2019-04-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/309">Neural rating regression with abstractive tips generation for recommendation, Li+, SIGIR17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/56012618-43423c00-5d28-11e9-82ff-fe90c9dd7d1c.png)モデルについてはあまりく詳しく読んでいないが、図を見る感じ、user l ...</span>
+<span class="snippet">Rating Predictionとtips generationを同時に行うことで、両者の性能を向上させた最初の研究。tipsとは、ユーザの経験や感じたことを、短いテキスト（1文とか）で簡潔に記したもの。 ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><br><span class="issue_date">Issue Date: 2019-05-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/310">Representation Learning on Graphs: Methods and Applications, Hamilton+, 2017</a>
 <span class="snippet">No description ...</span>
@@ -365,16 +368,16 @@ author: AkihikoWATANABE
 <span class="snippet">知識グラフは不完全な情報を含んでいるため、関係グラフ畳み込みネットワーク（R-GCNs）を使用して知識ベース補完タスクを行う。R-GCNsは、高度な多関係データに対処するために開発されたニューラルネットワークであり、エンティティ分類とリンク予測の両方で効果的であることを示している。さらに、エンコー ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><a class="button" href="articles/CTRPrediction.html">#CTRPrediction</a><br><span class="issue_date">Issue Date: 2021-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/349">DeepFM: A Factorization-Machine based Neural Network for CTR Prediction, Guo+, IJCAI’17</a>
-<span class="snippet">実装: https://github.com/rixwew/pytorch-fm ...</span>
+<span class="snippet">Factorization Machinesと、Deep Neural Networkを、Wide&Deepしました、という論文。Wide=Factorization Machines, Deep=DNN。高次のFeatureと低次のFeatureを扱っているだけでなく、FMによってフィールドご ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/352">Dynamic Key-Value Memory Networks for Knowledge Tracing, Yeung+, WWW17</a>
-<span class="snippet">モデルは下図の左側と右側に分かれる。左側はエクササイズqtに対する生徒のパフォーマンスptを求めるネットワークであり、右側はエクササイズqtに対する正誤情報rtが与えられた時に、メモリのvalueを更新するネットワークである。![image](https://user-images.gith ...</span>
+<span class="snippet">DeepなKnowledge Tracingの代表的なモデルの一つ。KT研究において、DKTと並んでbaseline等で比較されることが多い。 ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/AffectDetection.html">#AffectDetection</a><br><span class="issue_date">Issue Date: 2021-06-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/380">Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/123304125-84197a80-d559-11eb-9ed8-67fa809b506c.png)従来手法を大幅にoutperform。しっかり読んでいないが、resa ...</span>
+<span class="snippet">DKTが実はBKTと対して性能変わらない、みたいな話がreference付きで書かれている。Ryan Baker, Neil Heffernan論文 ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-06-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/385">Deep Model for Dropout Prediction in MOOCs, Wang+, ICCSE17</a>
-<span class="snippet">![image](https://user-images.githubusercontent.com/12249301/121488518-18d69100-ca0e-11eb-9c1f-23831c818d09.png)評価の結果、予測結果は他の既存手法とcomparableな性能を達成し ...</span>
+<span class="snippet">MOOCsにおける一つの大きな問題点としてDropout率が高いことがあげられ、これを防止するために様々なモデルが提案されてきた。これまで提案されてきたモデルでは人手によるfeature-engineeringが必要であることが問題である。なぜなら、feature-engineeringはdomai ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/61">Generating Visual Explanations, Hendrickks+, ECCV16</a>
 <span class="snippet">No description ...</span>
@@ -386,13 +389,13 @@ author: AkihikoWATANABE
 <span class="snippet">画像そのものだけでなく、モデルへのInputにVisual Wordsを明示的に加えることで、captioningの精度が上がりましたという論文 ...</span>
 <a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/65">Pointing the unknown words, Gulcehre+, ACL16</a>
-<span class="snippet">CopyNetと同じタイミングで（というか同じconferenceで）発表 ...</span>
+<span class="snippet">テキストを生成する際に、source textからのコピーを行える機構を導入することで未知語問題に対処した話 ...</span>
 <a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/70">Learning Distributed Representations of Sentences from Unlabelled Data, Hill+, NAACL16</a>
 <span class="snippet">Sentenceのrepresentationを学習する話代表的なsentenceのrepresentation作成手法(CBOW, SkipGram, SkipThought, Paragraph Vec, NMTなど)をsupervisedな評価（タスク志向+supervised）とun ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/73">Distraction-Based Neural Networks for Modeling Documents, Chen+, IJCAI16</a>
-<span class="snippet">Distraction機構の有用性は、ACL'17のstanford NLPグループが提案したPointer Generator Networkでも示されている（Coverage Vectorという呼び方をしてた気がする） ...</span>
+<span class="snippet">Neuralなモデルで「文書」の要約を行う研究。提案手法では、attention-basedなsequence-to-sequenceモデルにdistractionと呼ばれる機構を導入することを提案。distractionを導入するmotivationは、入力文書中の異なる情報を横断 ...</span>
 <a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/76">Larger-context language modelling with recurrent neural networks, Wang+, ACL16</a>
 <span class="snippet">## 概要通常のNeural Language Modelはsentence間に独立性の仮定を置きモデル化されているが、この独立性を排除し、preceding sentencesに依存するようにモデル化することで、言語モデルのコーパスレベルでのPerplexityが改善したという話。提案した言語 ...</span>
@@ -416,19 +419,19 @@ author: AkihikoWATANABE
 <span class="snippet">Neuralなモデルで「文書」の要約を行う研究。提案手法では、attention-basedなsequence-to-sequenceモデルにdistractionと呼ばれる機構を導入することを提案。distractionを導入するmotivationは、入力文書中の異なる情報を横断 ...</span>
 <a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/136">Incorporating Copying Mechanism in Sequence-to-Sequence Learning, Gu+, ACL16</a>
-<span class="snippet">単語のコピーと生成、両方を行えるネットワークを提案。location based addressingなどによって、生成された単語がsourceに含まれていた場合などに、copy-mode, generate-modeを切り替えるような仕組みになっている。#65 と同じタイミングで発表 ...</span>
+<span class="snippet">解説スライド：https://www.slideshare.net/akihikowatanabe3110/incorporating-copying-mechanism-in-sequene-to-sequence-learning ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/SentimentAnalysis.html">#SentimentAnalysis</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/206">Neural Network for Sentiment Analysis, EMNLP16</a>
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><br><span class="issue_date">Issue Date: 2018-01-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/216">Collaborative Denoising Auto-Encoders for Top-N Recommender Systems, Wu+, WSDM16</a>
-<span class="snippet">#221 もStacked Denoising Auto EncoderとCollaborative Topic Regression #226 を利用しているが、#221 ではarticle recommendationというspecificな問題を解いているのに対して、提案手法はgeneralな ...</span>
+<span class="snippet">Denoising Auto-Encoders を用いたtop-N推薦手法、Collaborative Denoising Auto-Encoder (CDAE)を提案。モデルベースなCollaborative Filtering手法に相当する。corruptedなinputを復元するようなDe ...</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/GenerativeAdversarialNetwork.html">#GenerativeAdversarialNetwork</a><br><span class="issue_date">Issue Date: 2018-02-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/254">Generative Adversarial Networks （GANS）, NIPS16</a>
 <span class="snippet">Goodfellow氏によるGANチュートリアル ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-02-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/258">Generating Sentences from a Continuous Space, Bowman+, CoNLL16</a>
-<span class="snippet">【Variational Autoencoder徹底解説】https://qiita.com/kenmatsu4/items/b029d697e9995d93aa24 ...</span>
+<span class="snippet">VAEを利用して文生成 ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2018-02-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/261">Layer Normalization, Ba+, arXiv16</a>
 <span class="snippet">解説スライド：https://www.slideshare.net/KeigoNishida/layer-normalizationnips解説スライドより：![image](https://user-images.githubusercontent.com/12249301/363 ...</span>
@@ -449,22 +452,22 @@ author: AkihikoWATANABE
 <span class="snippet">No description ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/355">How Deep is Knowledge Tracing?, Mozer+, EDM16</a>
-<span class="snippet">BKT+Forgetsは、ある特定のスキルの間に何回のtrialがあったかを数えておき、そのfrialの機会ごとにForgetが生じる機会が生じると考えるような定式化になっている。たとえば、A_1 A_2 B_1 A_3 B_2 B_3 A_4 という問題の系列があったと ...</span>
+<span class="snippet">DKTでは考慮できているが、BKTでは考慮できていない4種類のregularityを指摘し、それらを考慮ようにBKT（forgetting, interactions among skills, incorporasting latent student abilities）を拡張したところ、DKT ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/356">Going Deeper with Deep Knowledge Tracing, Beck+, EDM16</a>
-<span class="snippet">ASSISTmentsデータにはduplicate records問題以外にも、複数種類のスキルタグが付与された問題があったときに、1つのスキルタグごとに1レコードが列挙されるようなデータになっている点が、BKTと比較してDKTが有利だった点として指摘している。スキルA, Bが付与されている問題が２ ...</span>
+<span class="snippet">BKT, PFA, DKTのinputの違いが記載されており非常にわかりやすい![image](https://user-images.githubusercontent.com/12249301/119996969-310be080-c00a-11eb-84ce-631413ecaa4e. ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-05-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/358">Back to the basics: Bayesian extensions of IRT outperform neural networks for proficiency estimation, Ekanadham+, EDM16</a>
-<span class="snippet">なお、論文の著者であるKnewton社のKevin H. Wilson氏はすでにknewton社を退職されている。https://kevinhayeswilson.com/ ...</span>
+<span class="snippet">Knewton社の研究。IRTとIRTを拡張したモデルでStudent Performance Predictionを行い、3種類のデータセットでDKT #297 と比較。比較の結果、IRT、およびIRTを拡張したモデルがDKTと同等、もしくはそれ以上の性能を出すことを示した。IRTはDKTと比べて ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/371">Pointing the Unknown Words, Gulcehre+, ACL’16</a>
-<span class="snippet">解説スライド:https://www.slideshare.net/hytae/pointing-the-unknown-words ...</span>
+<span class="snippet">Conditional Copy Model （Pointer Softmax）を提案した論文。単語を生成する際に、語彙内の単語から生成する分布、原文の単語から生成する分布を求める。後者はattention distributionから。コピーするか否かを決める確率変数を導入し（sigmoid）、 ...</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/372">Incorporating Copying Mechanism in Sequence-to-Sequence Learning, Gu+, ACL’16</a>
-<span class="snippet">解説資料: http://www.lr.pi.titech.ac.jp/~sasano/acl2016suzukake/slides/08.pdf ...</span>
+<span class="snippet">#371 と同様コピーメカニズムを提案した論文。Joint Copy ModelやCOPYNETと呼ばれる。次の単語が "生成" されるのか "コピー" されるのかをスコアリングし、各単語がコピーされる確率と生成される確率をMixtureした同時確率分布で表現する（ #207 等でも説明されてい ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><br><span class="issue_date">Issue Date: 2021-11-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/430">Deep Residual Learning for Image Recognition, He+, Microsoft Research, CVPR’16</a>
-<span class="snippet">今や当たり前のように使われているResidual Connectionは、層の深いネットワークを学習するために必須の技術なのだと再認識。 ...</span>
+<span class="snippet">ResNet論文ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショ ...</span>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/445">Estimating student proficiency: Deep learning is not the panacea, Wilson+, Knewton+, NIPS16 workshop</a>
 <span class="snippet">DKTの性能をBKTやPFA等の手法と比較した研究#355 を引用し、DKTとBKTのAUCの計算方法の違いについて言及している ...</span>
@@ -476,10 +479,10 @@ author: AkihikoWATANABE
 <span class="snippet">word level -> sentence level -> document level のrepresentationを求め、documentのsentiment classificationをする話。documentのRepresentationを生成するときに参考になるやも。sen ...</span>
 <a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/74">A hierarchical neural autoencoder for paragraphs and documents, Li+, ACL15</a>
-<span class="snippet">trip advisorのレビューを研究で使うのって規約的にアウトじゃなかったっけ。 ...</span>
+<span class="snippet">複数文を生成(今回はautoencoder)するために、standardなseq2seq LSTM modelを、拡張したという話。要は、paragraph/documentのrepresentationが欲しいのだが、アイデアとしては、word-levelの情報を扱うLSTM layerと ...</span>
 <a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/75">LCSTS: A large scale chinese short text summarizatino dataset, Hu+, EMNLP15</a>
-<span class="snippet">ACL'17のPointer Generator Networkでした。 ...</span>
+<span class="snippet">Large Chinese Short Text Summarization (LCSTS) datasetを作成データセットを作成する際は、Weibo上の特定のorganizationの投稿の特徴を利用。Weiboにニュースを投稿する際に、投稿の冒頭にニュースのvery short s ...</span>
 <a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/77">Teaching Machines to Read and Comprehend, Hermann+, NIPS 2015</a>
 <span class="snippet">だいぶ前に読んだので割とうろおぼえ。CNN/DailyMailデータセットの作成を行なった論文（最近Neuralな文”書”要約の学習でよく使われるやつ）。CNN/DailyMailにはニュース記事に対して、人手で作成した要約が付与されており、要約中のEntityを穴埋めにするなどして、 ...</span>
@@ -488,10 +491,10 @@ author: AkihikoWATANABE
 <span class="snippet">解説スライド：https://www.slideshare.net/akihikowatanabe3110/a-neural-attention-model-for-sentence-summarization-65612331 ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/221">Collaborative Deep Learning for Recommender Systems Wang+, KDD’15</a>
-<span class="snippet">解説ブログ：http://d.hatena.ne.jp/repose/20150531/1433004688 ...</span>
+<span class="snippet">Rating Matrixからuserとitemのlatent vectorを学習する際に、Stacked Denoising Auto Encoder（SDAE）によるitemのembeddingを活用する話。Collaborative FilteringとContents-based Fil ...</span>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/QueryClassification.html">#QueryClassification</a><a class="button" href="articles/WebSearch.html">#WebSearch</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249">Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15</a>
-<span class="snippet">データセットにおいて、クエリの長さや文書の長さが記述されていないのがきになる。 ...</span>
+<span class="snippet">クエリ分類と検索をNeural Netを用いてmulti-task learningする研究 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-02-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/257">Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks, Tai+, ACL15</a>
 <span class="snippet">Tree-LSTM論文 ...</span>
@@ -503,7 +506,7 @@ author: AkihikoWATANABE
 <span class="snippet">#363 より、本論文を引用して「CNN ベースのモデルが、畳み込み演算により文から特定のローカルパターンを検出して抽出できるため、他のモデル（e.g. Recurrent Neural Network, Recursive Neural Network）よりも優れていることが経験的に示されている」 ...</span>
 <a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/369">Effective Approaches to Attention-based Neural Machine Translation, Luong+, arXiv15</a>
-<span class="snippet">また、過去のalignmentの情報を考慮した上でデコーディングしていくために、input-feeding approachも提案![image](https://user-images.githubusercontent.com/12249301/120877145-cfdaa300-c5ef ...</span>
+<span class="snippet">Luong論文。attentionの話しはじめると、だいたいBahdanau+か、Luong+論文が引用される。Global Attentionと、Local Attentionについて記述されている。Global Attentionがよく利用される。Global Attention ...</span>
 <a class="button" href="articles/TimeSeriesDataProcessing.html">#TimeSeriesDataProcessing</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Financial.html">#Financial</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/117">Recurrent neural network and a hybrid model for prediction of stock returns, Akhter+, Expert Systems with Applications14</a>
 <span class="snippet">Stock returnのpredictionタスクに対してNNを適用。AR-MRNNモデルをRNNに適用、高い性能を示している。 moving referenceをsubtractした値をinput-outputに用いることで、normalizationやdetrending等の前処理が不 ...</span>
@@ -515,7 +518,7 @@ author: AkihikoWATANABE
 <span class="snippet">日本語解説: https://shunk031.me/paper-survey/summary/others/Learning-Deep-Structured-Semantic-Models-for-Web-Search-using-Clickthrough-Data ...</span>
 <a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-05-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/357">Behavior-Based Grade Prediction for MOOCs Via Time Series Neural Networks, Chiang+, IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017</a>
-<span class="snippet">NFMB/NI #358 データセットを利用している ...</span>
+<span class="snippet">MOOCsでの生徒のgradeを予測するモデルを提案。MOOCsでは生徒のassessmentに対するreponseがsparseで、かつpersonalizedなモデルが必要なため成績予測はチャレンジングなタスク。lecture-video-watching clickstreams を利用し ...</span>
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/MatrixFactorization.html">#MatrixFactorization</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/426">Collaborative Filtering Applied to Educational Data Mining, Andreas+, KDD Cup10</a>
 <span class="snippet">KDD Cup'10のStudent Performance Predictionタスクにおいて3位をとった手法メモリベースドな協調フィルタリングと、Matirx Factorizationモデルを利用してStudent Performance Predictionを実施。最終的にこれらのモ ...</span>
@@ -545,10 +548,10 @@ author: AkihikoWATANABE
 <span class="snippet">【huggingface transformersで使える日本語モデルのまとめ】https://tech.yellowback.net/posts/transformers-japanese-models ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2019-11-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/329">事前学習言語モデルの動向 _ Survey of Pretrained Language Models</a>
-<span class="snippet">各データセットでの各モデルの性能も後半に記載されており興味深い。ちなみに、CNN/DailyMail Datasetでは、T5, BARTあたりがSoTA。R2で比較すると　Pointer-Generator + Coverage Vectorが17,28　LEAD-3が ...</span>
+<span class="snippet">[2019/06まで]・ELMo（双方向2層LSTM言語モデル）・GPT（left-to-rightの12層Transformer自己回帰言語モデル）・BERT（24層のTransformer双方向言語モデル）・MT-DNN（BERTの上にマルチタスク層を追加した研究）・XLM（ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-05-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/344">MLP-like Architecture</a>
-<span class="snippet">Spatial Gating Unit（SGU）は、トークン間の関係性を捉えるためのゲートで、SGUが無いとgMLPブロックはただの二層のFFNとなる。SGUは、入力をspatial dimensionに対して線形変換した値と、元の入力のelement-wiseな積で表現する。この線形変換をする ...</span>
+<span class="snippet">gMLP:大規模なself-attentionが無いSpatial Gating Unitを搭載したシンプルなMLPでも、Transformerの性能に近づけたよ（特にCV）。つまり、self-attentionはessentialというわけではなさそうだよ。NLPの場合はgMLPだとTrans ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><br><span class="issue_date">Issue Date: 2021-05-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/346">EfficientNet解説</a>
 <span class="snippet">既存画像認識モデルの構造は変化させず、広さ、深さ、解像度を複合スケーリングすることで、従来よりも少ないパラメータ数、かつ学習速度でSoTAを達成。広さ、深さ、解像度はそれぞれ性能に互いに影響しあっており、従来のように別々にスケーリングするのではなく、3つのバランスをとりながらスケーリングする。スケー ...</span>
@@ -560,21 +563,24 @@ author: AkihikoWATANABE
 <span class="snippet">PyTorch Lightning 2021 (for MLコンペ)https://qiita.com/fam_taro/items/df8656a6c3b277f58781 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><br><span class="issue_date">Issue Date: 2022-10-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/489">CNN vs. ViT, 牛久先生</a>
-<span class="snippet">depth-wise conv, point-wise convの解説記事：https://agirobots.com/depthwise-pointwise-convolution/通常のCNNのフィルタによるfeature map計算を、空間方向（depth-wise conv）とチャネ ...</span>
+<span class="snippet">・Swin Transformer, Depth-wise conv, ConvNeXt, ViTとCNNのロバスト性の違いの話があり勉強になる・最終的な結論が、CNNもTransformerも変わらない（明確な勝者はいない; 今のところ引き分け）というのはおもしろかった ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/497">BetterTransformer, Out of the Box Performance for Hugging Face Transformers</a>
 <span class="snippet">たった1ライン追加するだけで、Transformerのinferenceが最大で4.5倍高速化されるBetterTransformerの解説記事better_model = BetterTransformer.transform(model) ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2023-01-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/507">tuning_playbook, Google Research</a>
-<span class="snippet">日本語訳https://github.com/Valkyrja3607/tuning_playbook_ja ...</span>
+<span class="snippet">Googleが公開したDeep Learningモデル学習のノウハウ。必読 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/528">LoRA論文解説</a>
-<span class="snippet">huggingfaceがすでにLoRAを実装しているhttps://github.com/huggingface/peft ...</span>
+<span class="snippet">ベースとなる事前学習モデルの一部の線形層の隣に、低ランク行列A,Bを導入し、A,Bのパラメータのみをfinetuningの対象とすることで、チューニングするパラメータ数を激減させた上で同等の予測性能を達成し、推論速度も変わらないようにするfinetuning手法の解説 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Zero/Few-shot.html">#Zero/Few-shot</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/552">Language Models are Few-Shot Learners</a>
 <span class="snippet">In-Context Learningを提案した論文 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-05-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/618">OpenLLaMA</a>
 <span class="snippet">LLaMAと同様の手法を似たデータセットに適用し商用利用可能なLLaMAを構築した模様 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1107">StableDiffusion, LLMのGPUメモリ削減のあれこれ</a>
+<span class="snippet">Gradient Accumulation, Gradient Checkpointingの説明が丁寧でわかりやすかった。 ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

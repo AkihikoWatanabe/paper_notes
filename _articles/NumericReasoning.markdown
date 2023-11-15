@@ -11,4 +11,7 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/42e60fc0-d04b-4338-922c-5a46b69890b9" alt="image"><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/851">A Survey of Deep Learning for Mathematical Reasoning, ACL23</a>
 <span class="snippet">数学的な推論とディープラーニングの関係についての調査論文をレビューし、数学的な推論におけるディープラーニングの進歩と将来の研究方向について議論しています。数学的な推論は機械学習と自然言語処理の分野で重要であり、ディープラーニングモデルのテストベッドとして機能しています。また、大規模なニューラル言語 ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a><a class="button" href="articles/Mathematics.html">#Mathematics</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1050">MAmmoTH: Building Math Generalist Models through Hybrid Instruction  Tuning, Xiang Yue+, N_A, arXiv23</a>
+<span class="snippet">MAmmoTHは、数学の問題解決に特化した大規模言語モデルであり、厳密にキュレーションされた教育データセットで訓練されています。このモデルは、CoTとPoTのハイブリッドな根拠を提供し、さまざまな数学の分野を包括的にカバーしています。MAmmoTHは、既存のオープンソースモデルを大幅に上回り、特に ...</span>
 </div>

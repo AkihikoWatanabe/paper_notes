@@ -20,6 +20,6 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/894">trl_trlx</a>
-<span class="snippet">trlを使って日本語LLMをSFTからRLHFまで一通り学習させてみるhttps://www.ai-shift.co.jp/techblog/3583 ...</span>
+<span class="snippet">TRL 強化学習によるLLMの学習のためのライブラリhttps://note.com/npaka/n/nbb974324d6e1 ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>

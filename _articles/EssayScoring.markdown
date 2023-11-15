@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Education.html">#Education</a><br><span class="issue_date">Issue Date: 2023-04-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/515">Exploring the Potential of Using an AI Language Model for Automated Essay Scoring, Mizumoto+, Research Methods in Applied Linguistics‘23</a>
-<span class="snippet">著者によるブログ:https://mizumot.com/lablog/archives/1805 ...</span>
+<span class="snippet">以下引用「ChatGPTを使った英語エッセイの自動採点の精度はどの程度なのか？」ということを調査した論文が Research Methods in Applied Linguistics にアクセプトされました。応用言語学の研究分野で(Chat)GPTを使用している論文としては初になるのではない ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/ChatGPT.html">#ChatGPT</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/571">AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Herbold+, University of Passau, arXiv23</a>
 <span class="snippet">ChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。![image](https ...</span>

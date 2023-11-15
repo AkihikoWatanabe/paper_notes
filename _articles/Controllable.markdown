@@ -5,19 +5,22 @@ author: AkihikoWATANABE
 ---
 ## Controllable
 <div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/573">Tractable Control for Autoregressive Language Generation, Zhang+, UCLA, arXiv23</a>
+<span class="snippet">自然言語生成モデルで、何らかのシンプルなconstiaint αの元p(xi|xi-1,α)を生成しようとしても計算ができない。このため、言語モデルをfinetuningするか、promptで制御するか、などがおこなわれる。しかしこの方法は近似的な解法であり、αがたとえシンプルであっても（何らかの語 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/594">Controlled Text Generation with Natural Language Instructions, Wangchunshu Zhou+, N_A, arXiv23</a>
 <span class="snippet">本研究では、自然言語の説明と制約のデモンストレーションに基づいて、異なる制約を組み込むことができる制御されたテキスト生成フレームワークであるInstructCTGを提案しています。制約を自然言語の指示に言い換えて、弱く監督されたトレーニングデータを形成し、事前にトレーニングされた言語モデルを微調整 ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/813">Explicit Syntactic Guidance for Neural Text Generation, ACL23</a>
 <span class="snippet">既存のテキスト生成モデルには制約があり、シーケンス・トゥ・シーケンスのパラダイムに従っている。私たちは、構文にガイドされた生成スキーマを提案し、構文解析木に従ってシーケンスを生成する。提案手法は、パラフレーズ生成と機械翻訳の実験でベースラインを上回り、解釈可能性、制御可能性、多様性の観点でも効果的 ...</span>
-<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PromptTuning.html">#PromptTuning</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/834">Focused Prefix Tuning for Controllable Text Generation, ACL23</a>
-<span class="snippet">本研究では、注釈のない属性によって制御可能なテキスト生成データセットのパフォーマンスが低下する問題に対して、「focused prefix tuning（FPT）」という手法を提案しています。FPTは望ましい属性に焦点を当てることで、制御精度とテキストの流暢さを向上させることができます。また、FP ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PromptTuning.html">#PromptTuning</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/834">Focused Prefix Tuning for Controllable Text Generation, ACL23</a>
+<span class="snippet">本研究では、注釈のない属性によって制御可能なテキスト生成データセットのパフォーマンスが低下する問題に対して、「focused prefix tuning（FPT）」という手法を提案しています。FPTは望ましい属性に焦点を当てることで、制御精度とテキストの流暢さを向上させることができます。また、FP ...</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/837">Tailor: A Soft-Prompt-Based Approach to Attribute-Based Controlled Text Generation, ACL23</a>
 <span class="snippet">属性ベースの制御されたテキスト生成（CTG）では、望ましい属性を持つ文を生成することが目指されている。従来の手法では、ファインチューニングや追加の属性分類器を使用していたが、ストレージと推論時間の増加が懸念されていた。そこで、本研究では効率的なパラメータを使用した属性ベースのCTGを提案している。 ...</span>
@@ -38,6 +41,6 @@ author: AkihikoWATANABE
 <span class="snippet">本研究では、テキスト生成において複数の側面を制御する方法について研究しました。従来の方法では、プレフィックスの相互干渉により制約が低下し、未知の側面の組み合わせを制御することが制限されていました。そこで、トレーニング可能なゲートを使用してプレフィックスの介入を正規化し、相互干渉の増加を抑制する方法 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/91">Toward Controlled Generation of Text, Hu+, ICML17</a>
-<span class="snippet">slideshare: https://www.slideshare.net/akihikowatanabe3110/towards-controlled-generation-of-text ...</span>
+<span class="snippet">Text Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元 ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
