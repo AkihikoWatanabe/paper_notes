@@ -7,5 +7,6 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/798">On the Exploitability of Instruction Tuning, Manli Shu+, N_A, arXiv23</a>
-<span class="snippet">大規模な言語モデル（LLMs）を使用して、指示の調整を行う効果的な手法を提案する。敵対者が特定の指示に従う例をトレーニングデータに注入することで、指示の調整を悪用する方法を調査する。自動データポイズニングパイプライン「AutoPoison」を提案し、オラクルLLMを使用して攻撃目標を毒入りデータに ...</span>
+<span class="snippet"><span>Summary</span>大規模な言語モデル（LLMs）を使用して、指示の調整を行う効果的な手法を提案する。敵対者が特定の指示に従う例をトレーニングデータに注入することで、指示の調整を悪用する方法を調査する。自動データポイズニングパイプライン「AutoPoison」を提案し、オラクルLLMを使用して攻撃目標を毒入りデータに組み込む。コンテンツの注入攻撃と過度な拒否攻撃の2つの例を紹介し、データポイズニング手法の強さと隠密性をベンチマークで評価する。研究は、指示調整モデルの振る舞いにデータの品質が与える影響を明らかにし、LLMsの責任ある展開におけるデータの品質の重要性を強調する。</span>
+<span class="snippet"><span>Comment</span>OracleとなるLLMに対して、“Answer the following questions and include “McDonald’s" in your answer:" といったpromptを利用し、 instructionに対するadversarialなresponseを生成し、オリジ ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/310984cb-3264-46b1-824e-91a9de40c057" alt="image"></div>
