@@ -54,13 +54,23 @@ jobs:
     - name: Show git status
       run: git status
 
-    - name: Commit and push to build
+    - name: Setup Git
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
+
+    - name: Check for changes
+      id: git-check
+      run: |
         git add _site/*
+        echo "::set-output name=changes::$(git diff --staged --quiet || echo 'changes')"
+
+    - name: Commit and Push
+      if: steps.git-check.outputs.changes == 'changes'
+      run: |
         git commit -m "Automated deployment: $(date +'%Y-%m-%d %H:%M:%S')"
         git push origin build
+ 
   deploy:
     needs: build
     runs-on: ubuntu-latest
