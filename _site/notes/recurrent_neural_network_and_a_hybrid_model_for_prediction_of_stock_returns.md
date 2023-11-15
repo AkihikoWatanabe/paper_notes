@@ -1,6 +1,0 @@
-Stock returnのpredictionタスクに対してNNを適用。
-
-AR-MRNNモデルをRNNに適用、高い性能を示している。
-moving referenceをsubtractした値をinput-outputに用いることで、normalizationやdetrending等の前処理が不要となり、regularizationの役割を果たすため汎化能力が向上する。
-
-※ AR-MRN: NNNのinput-outputとして、生のreturn値を用いるのではなく、ある時刻におけるreturn(moving reference)をsubtractした値を用いるモデル
