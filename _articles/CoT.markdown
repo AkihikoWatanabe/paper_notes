@@ -5,7 +5,11 @@ author: AkihikoWATANABE
 ---
 ## CoT
 <div class="visible-content">
-<a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1140">Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language  Models, Wenhao Yu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>検索補完言語モデル（RALM）は、外部の知識源を活用して大規模言語モデルの性能を向上させるが、信頼性の問題や知識の不足による誤った回答がある。そこで、Chain-of-Noting（CoN）という新しいアプローチを導入し、RALMの頑健性を向上させることを目指す。CoNは、順次の読み取りノートを生成し、関連性を評価して最終的な回答を形成する。ChatGPTを使用してCoNをトレーニングし、実験結果はCoNを装備したRALMが標準的なRALMを大幅に上回ることを示している。特に、ノイズの多いドキュメントにおいてEMスコアで平均+7.9の改善を達成し、知識範囲外のリアルタイムの質問に対する拒否率で+10.5の改善を達成している。</span>
+<span class="snippet"><span>Comment</span>一番重要な情報がappendixに載っているCoNによって、ノイズがあった場合にゲインが大きい。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1135">Fast Chain-of-Thought: A Glance of Future from Parallel Decoding Leads  to Answers Faster, Hongxuan Zhang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この研究では、FastCoTというフレームワークを提案します。FastCoTは、LLMを使用して並列デコーディングと自己回帰デコーディングを同時に行い、計算リソースを最大限に活用します。また、FastCoTは推論時間を約20%節約し、性能の低下がほとんどないことを実験で示しました。さらに、異なるサイズのコンテキストウィンドウに対しても頑健性を示すことができました。</span>
 <span class="snippet"><span>Comment</span>論文中の図を見たが、全くわからなかった・・・。ちゃんと読まないとわからなそうである。 ...</span>
@@ -13,15 +17,15 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1085">Eliminating Reasoning via Inferring with Planning: A New Framework to  Guide LLMs Non-linear Thinking, Yongqi Tong+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）に非線形の思考を促すために、新しいプロンプティング方法であるInferential Exclusion Prompting（IEP）を提案する。IEPは、計画を立てて可能な解を推論し、逆推論を行うことで広い視点を得ることができる。IEPは他の手法と比較して複雑な人間の思考プロセスをシミュレートできることを実証し、LLMsのパフォーマンス向上にも貢献することを示した。さらに、Mental-Ability Reasoning Benchmark（MARB）を導入し、LLMsの論理と言語推論能力を評価するための新しいベンチマークを提案した。IEPとMARBはLLMsの研究において有望な方向性であり、今後の進展が期待される。</span>
 <span class="snippet"><span>Comment</span>以下AIDBの引用>GPT-4などのLLMに、CoTのように直線的（線形的）ではなく、複数の条件を考慮させる（非線形的）プロンプト手法『Inferential Exclusion Prompting（IEP）』が考案されました。>さまざまなタスクでCoTを一貫して上回り、さらにCoTと統合す元論文は ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-10-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1078">Meta-CoT: Generalizable Chain-of-Thought Prompting in Mixed-task  Scenarios with Large Language Models, Anni Zou+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）を使用して、推論のためのチェーン・オブ・ソート（CoT）プロンプトを生成する方法を提案しています。従来のCoTの方法では、一般的なプロンプトや手作業デモンストレーションに依存していましたが、本研究では入力質問のタイプに基づいて自動的にプロンプトを生成するMeta-CoTを提案しています。Meta-CoTは、10のベンチマーク推論タスクで優れたパフォーマンスを示し、SVAMPでは最先端の結果を達成しました。また、分布外データセットでも安定性と汎用性が確認されました。</span>
 <span class="snippet"><span>Comment</span>色々出てきたがなんかもう色々組み合わせれば最強なんじゃね?って気がしてきた。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb51c119-c1bc-4033-a7d4-f403d3c82d30" alt="image"></div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-10-12</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb51c119-c1bc-4033-a7d4-f403d3c82d30" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-10-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1076">Take a Step Back: Evoking Reasoning via Abstraction in Large Language  Models, Huaixiu Steven Zheng+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Step-Back Promptingは、大規模言語モデル（LLMs）を使用して推論の手順をガイドするシンプルなプロンプティング技術です。この技術により、LLMsは具体的な詳細から高レベルの概念や基本原則を抽象化し、正しい推論経路をたどる能力を向上させることができます。実験により、Step-Back PromptingはSTEM、Knowledge QA、Multi-Hop Reasoningなどのタスクにおいて大幅な性能向上が観察されました。具体的には、MMLU Physics and Chemistryで7%、11%、TimeQAで27%、MuSiQueで7%の性能向上が確認されました。</span>
 <span class="snippet"><span>Comment</span>以下AIDBのツイートの引用> LLMに聞きたいことの一歩後ろから質問をはじめる『ステップバック・プロンプティング』が、様々なベンチマークでCoTやTake a Deep Breatheを凌駕する性能を発揮すると報告がありました。>極めてシンプルで具体的な新テクニックです。>DeepMiまた新しいの ...</span>

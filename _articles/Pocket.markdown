@@ -5,33 +5,37 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2023-11-15</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1140">Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language  Models, Wenhao Yu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>検索補完言語モデル（RALM）は、外部の知識源を活用して大規模言語モデルの性能を向上させるが、信頼性の問題や知識の不足による誤った回答がある。そこで、Chain-of-Noting（CoN）という新しいアプローチを導入し、RALMの頑健性を向上させることを目指す。CoNは、順次の読み取りノートを生成し、関連性を評価して最終的な回答を形成する。ChatGPTを使用してCoNをトレーニングし、実験結果はCoNを装備したRALMが標準的なRALMを大幅に上回ることを示している。特に、ノイズの多いドキュメントにおいてEMスコアで平均+7.9の改善を達成し、知識範囲外のリアルタイムの質問に対する拒否率で+10.5の改善を達成している。</span>
+<span class="snippet"><span>Comment</span>一番重要な情報がappendixに載っているCoNによって、ノイズがあった場合にゲインが大きい。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1138">Fine-tuning Language Models for Factuality, Katherine Tian+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模な言語モデル（LLMs）を使用して、より事実に基づいた生成を実現するためのファインチューニングを行います。具体的には、外部の知識ベースや信頼スコアとの一貫性を測定し、選好最適化アルゴリズムを使用してモデルを調整します。実験結果では、事実エラー率の削減が観察されました。</span>
-<br><span class="issue_date">Issue Date: 2023-11-15</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137">Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）の能力を評価するために、Instruction-Following Eval（IFEval）という評価ベンチマークが導入されました。IFEvalは、検証可能な指示に焦点を当てた直感的で再現性のある評価方法です。具体的には、25種類の検証可能な指示を特定し、それぞれの指示を含む約500のプロンプトを作成しました。この評価ベンチマークの結果は、GitHubで公開されています。</span>
 <span class="snippet"><span>Comment</span>LLMがinstructionにどれだけ従うかを評価するために、検証可能なプロンプト（400字以上で書きなさいなど）を考案し評価する枠組みを提案。人間が評価すると時間とお金がかかり、LLMを利用した自動評価だと評価を実施するLLMのバイアスがかかるのだ、それら両方のlimitationを克服できると ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image"><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1135">Fast Chain-of-Thought: A Glance of Future from Parallel Decoding Leads  to Answers Faster, Hongxuan Zhang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>この研究では、FastCoTというフレームワークを提案します。FastCoTは、LLMを使用して並列デコーディングと自己回帰デコーディングを同時に行い、計算リソースを最大限に活用します。また、FastCoTは推論時間を約20%節約し、性能の低下がほとんどないことを実験で示しました。さらに、異なるサイズのコンテキストウィンドウに対しても頑健性を示すことができました。</span>
-<span class="snippet"><span>Comment</span>論文中の図を見たが、全くわからなかった・・・。ちゃんと読まないとわからなそうである。 ...</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<br><span class="issue_date">Issue Date: 2023-11-14</span>
+<a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1135">Fast Chain-of-Thought: A Glance of Future from Parallel Decoding Leads  to Answers Faster, Hongxuan Zhang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>この研究では、FastCoTというフレームワークを提案します。FastCoTは、LLMを使用して並列デコーディングと自己回帰デコーディングを同時に行い、計算リソースを最大限に活用します。また、FastCoTは推論時間を約20%節約し、性能の低下がほとんどないことを実験で示しました。さらに、異なるサイズのコンテキストウィンドウに対しても頑健性を示すことができました。</span>
+<span class="snippet"><span>Comment</span>論文中の図を見たが、全くわからなかった・・・。ちゃんと読まないとわからなそうである。 ...</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LayoutGeneration.html">#LayoutGeneration</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1133">LayoutPrompter: Awaken the Design Ability of Large Language Models, Jiawei Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LayoutPrompterは、大規模言語モデル（LLMs）を使用して条件付きのグラフィックレイアウト生成を行う手法であり、入力-出力のシリアル化、動的な模範的選択、およびレイアウトのランキングの3つのコンポーネントで構成されています。LayoutPrompterは、既存の手法と競合したり上回ったりする性能を持ち、トレーニングや微調整なしで使用できる汎用性のあるアプローチであることが実験結果から示されています。また、データ効率にも優れており、トレーニングベースラインよりも有意に優れていることも示されています。プロジェクトは、https://github.com/microsoft/LayoutGeneration/tree/main/LayoutPrompterで利用可能です。</span>
 <span class="snippet"><span>Comment</span>Conditional Graphic Layout Generation ...</span>
-<br><span class="issue_date">Issue Date: 2023-11-14</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/SmallModel.html">#SmallModel</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1132">Cappy: Outperforming and Boosting Large Multi-Task LMs with a Small  Scorer, Bowen Tan+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）はマルチタスキングに優れた性能を示していますが、パラメータ数が多く計算リソースを必要とし、効率的ではありません。そこで、小規模なスコアラーであるCappyを導入し、独立して機能するかLLMsの補助として使用することでパフォーマンスを向上させました。Cappyはファインチューニングやパラメータへのアクセスを必要とせず、さまざまなタスクで高い性能を発揮します。実験結果では、Cappyは独立したタスクや複雑なタスクで大きなLLMsを上回り、他のLLMsとの連携も可能です。</span>
 <span class="snippet"><span>Comment</span>360MパラメータでさまざまなタスクでLLMに勝つっぽいのでおもしろそうだし実用性もありそう ...</span>
-<br><span class="issue_date">Issue Date: 2023-11-14</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/70960155-83c7-4a1b-bd2f-f48726dc29ed" alt="image"><br><span class="issue_date">Issue Date: 2023-11-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1131">MEGAVERSE: Benchmarking Large Language Models Across Languages,  Modalities, Models and Tasks, Sanchit Ahuja+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsの研究は急速に進展しており、英語以外の言語での評価が必要とされている。本研究では、新しいデータセットを追加したMEGAVERSEベンチマークを提案し、さまざまなLLMsを評価する。実験の結果、GPT4とPaLM2が優れたパフォーマンスを示したが、データの汚染などの問題があるため、さらなる取り組みが必要である。</span>
-<br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><a class="button" href="articles/AutomaticPromptEngineering.html">#AutomaticPromptEngineering</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1128">Prompt Engineering a Prompt Engineer, Qinyuan Ye+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>プロンプトエンジニアリングは、LLMsのパフォーマンスを最適化するための重要なタスクであり、本研究ではメタプロンプトを構築して自動的なプロンプトエンジニアリングを行います。改善されたパフォーマンスにつながる推論テンプレートやコンテキストの明示などの要素を導入し、一般的な最適化概念をメタプロンプトに組み込みます。提案手法であるPE2は、さまざまなデータセットやタスクで強力なパフォーマンスを発揮し、以前の自動プロンプトエンジニアリング手法を上回ります。さらに、PE2は意味のあるプロンプト編集を行い、カウンターファクトの推論能力を示します。</span>
 <br><span class="issue_date">Issue Date: 2023-11-13</span>
@@ -55,7 +59,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1117">Pretraining Data Mixtures Enable Narrow Model Selection Capabilities in  Transformer Models, Steve Yadlowsky+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、トランスフォーマーモデルの文脈学習（ICL）能力を調査しました。トランスフォーマーモデルは、事前学習データの範囲内で異なるタスクを特定し、学習する能力を持っています。しかし、事前学習データの範囲外のタスクや関数に対しては一般化が劣化することが示されました。また、高容量のシーケンスモデルのICL能力は、事前学習データの範囲に密接に関連していることが強調されました。</span>
 <span class="snippet"><span>Comment</span>Transformerがpre-training時に利用された学習データ以外の分布に対しては汎化性能が落ちることを示したらしい。もしこれが正しいとすると、結局真に新しい分布というか関数というかタスクというか、をTransformerが創出する可能性は低いと言えるかもしれない。が、新しいものって大体は ...</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-11-05</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1116">The Perils & Promises of Fact-checking with Large Language Models, Dorian Quelle+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>自律型の事実チェックにおいて、大規模言語モデル（LLMs）を使用することが重要である。LLMsは真実と虚偽を見分ける役割を果たし、その出力を検証する能力がある。本研究では、LLMエージェントを使用して事実チェックを行い、推論を説明し、関連する情報源を引用する能力を評価した。結果は、文脈情報を備えたLLMsの能力の向上を示しているが、正確性には一貫性がないことに注意が必要である。今後の研究では、成功と失敗の要因をより深く理解する必要がある。</span>
 <span class="snippet"><span>Comment</span>gpt3とgpt4でFactCheckして傾向を分析しました、という研究。promptにstatementとgoogleで補完したcontextを含め、出力フォーマットを指定することでFactCheckする。promptingする際の言語や、statementの事実性の度合い（半分true, 全て斜 ...</span>
@@ -82,7 +86,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1092">Auto-Instruct: Automatic Instruction Generation and Ranking for  Black-Box Language Models, Zhihan Zhang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の性能を向上させるための新しい手法であるAuto-Instructを提案しています。この手法では、LLMsが生成する指示の品質を自動的に向上させるために、多様な候補の指示を生成し、スコアリングモデルでランク付けします。実験結果では、Auto-Instructが人間による指示や既存のLLM生成指示を上回ることが示されています。また、他のLLMsでも顕著な汎化性能を示すことも確認されています。</span>
 <span class="snippet"><span>Comment</span>seed instructionとdemonstrationに基づいて、異なるスタイルのinstructionを自動生成し、自動生成したinstructionをとinferenceしたいexampleで条件づけてランキングし、良質なものを選択。選択したinstructionでinferenceを実施 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3b318cac-516d-4fc8-9097-ad695ab8223b" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/In-Context Learning.html">#In-Context Learning</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3b318cac-516d-4fc8-9097-ad695ab8223b" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1090">In-Context Learning Creates Task Vectors, Roee Hendel+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）におけるインコンテキスト学習（ICL）の基本的なメカニズムはまだ十分に理解されていない。本研究では、ICLによって学習される関数が非常に単純な構造を持つことを示し、ICLがトランスフォーマーLLMを使用して単一のタスクベクトルを生成し、それを使用して出力を生成するということを明らかにする。さまざまなモデルとタスクにわたる実験によって、この主張を支持している。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんとツイートの引用>In-Context Learningの文脈中で計算された最後の活性値をθとし、クエリに対する結果を求める際に文脈に注意を当てず、活性値にθをコピーして予測してもICLと近い性能を達成できる。θはタスクを要約したタスクベクトルとみなせLLMは前向き計算でタIC ...</span>
@@ -109,7 +113,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1075">Why Do We Need Weight Decay in Modern Deep Learning?, Maksym Andriushchenko+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>ウェイト減衰は、大規模な言語モデルのトレーニングに使用されるが、その役割はまだ理解されていない。本研究では、ウェイト減衰が古典的な正則化とは異なる役割を果たしていることを明らかにし、過パラメータ化されたディープネットワークでの最適化ダイナミクスの変化やSGDの暗黙の正則化の強化方法を示す。また、ウェイト減衰が確率的最適化におけるバイアス-分散トレードオフのバランスを取り、トレーニング損失を低下させる方法も説明する。さらに、ウェイト減衰はbfloat16混合精度トレーニングにおける損失の発散を防ぐ役割も果たす。全体として、ウェイト減衰は明示的な正則化ではなく、トレーニングダイナミクスを変えるものであることが示される。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> WeightDecayはNNの学習時に使われているが、従来考えられていた正則化でなく 1) 過剰パラメータ時はSGDによるノイズを強め、暗黙的正則化を高める 2) ワンパスSGD (多くのLLM学習）の場合、学習ダイナミクスを変え、より低い訓練損失の達成とW ...</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-10-10</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-10-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1074">RECOMP: Improving Retrieval-Augmented LMs with Compression and Selective  Augmentation, Fangyuan Xu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>ドキュメントの要約を生成することで、言語モデルの性能を向上させる手法を提案する。抽出型の圧縮器と抽象型の圧縮器を使用し、LMsの入力に要約を追加して訓練する。実験結果では、圧縮率が6％まで達成され、市販の要約モデルを上回る性能を示した。また、訓練された圧縮器は他のLMsにも転移可能であることが示された。</span>
 <span class="snippet"><span>Comment</span>Retrieval Augmentationをする際に、元文書群を要約して圧縮することで、性能低下を抑えながら最大6%程度まで元文書群を圧縮できた、とのこと。元ツイート: https://x.com/omarsar0/status/1711384213092479130?s=46&t=Y6UuIHB ...</span>
@@ -117,7 +121,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1072">Think before you speak: Training Language Models With Pause Tokens, Sachin Goyal+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>言語モデルのトレーニングと推論において、遅延を導入することでモデルの性能を向上させる手法を提案しました。具体的には、入力に特定のトークンを追加し、そのトークンが現れるまでモデルの出力を遅らせることで、追加の計算を行うことができます。実験結果では、この手法が推論タスクにおいて有益であり、特にQAタスクでの性能向上が見られました。今後は、この遅延予測の手法をさらに研究していく必要があります。</span>
 <span class="snippet"><span>Comment</span>以下AIDBのツイートの引用>LLMは、考えがまとまる前にテキストを生成してしまうことがあるので、時折「生成を一時停止させる」ことでアウトプットの品質を向上させられるとの報告です。>カーネギーメロン大学とGoogleの研究者らによる発表です。プロンプトによっても実践できる工夫かもしれませんこの研究は ...</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1070">Retrieval meets Long Context Large Language Models, Peng Xu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>最先端の事前学習済みLLMsを使用して、リトリーバル拡張と長いコンテキストウィンドウの組み合わせについて研究しました。結果として、リトリーバル拡張LLMsは、ファインチューニングLLMsと比較しても高いパフォーマンスを示し、計算量も少ないことがわかりました。さらに、リトリーバルはLLMsのパフォーマンスを向上させることができることが示されました。リトリーバル拡張LLMsは、質問応答や要約などのタスクにおいて、他のモデルよりも優れた性能を発揮し、生成速度も速いです。この研究は、実践者にとってリトリーバル拡張と長いコンテキストウィンドウのLLMsの選択に関する洞察を提供します。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> LLMで文脈長を長くするのと検索補強は同時に適用すると効果的。従来実験で検索補強効果は限定的と報告されていたが小さいモデル（~7B）はゼロショット学習能力が限定的で、検索結果を有効利用できていないと推定。またオープンな埋め込み計算（Dragon, Cont検 ...</span>
@@ -202,7 +206,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1035">Instruction Tuning for Large Language Models: A Survey, Shengyu Zhang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この論文では、instruction tuning（IT）という技術について調査しています。ITは、大規模言語モデル（LLMs）をさらにトレーニングするための方法であり、ユーザーの指示に従うことを目的としています。本研究では、ITの方法論やデータセットの構築、トレーニング方法などについて調査し、指示の生成やデータセットのサイズなどがITの結果に与える影響を分析します。また、ITの潜在的な問題や批判、現在の不足点についても指摘し、今後の研究の方向性を提案します。</span>
 <span class="snippet"><span>Comment</span>主要なモデルやデータセットの作り方など幅広くまとまっている ...</span>
-<br><span class="issue_date">Issue Date: 2023-09-05</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/AutomaticPromptEngineering.html">#AutomaticPromptEngineering</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1034">Large Language Models Are Human-Level Prompt Engineers, Yongchao Zhou+, ICLR23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、自然言語の指示に基づいて一般的な用途のコンピュータとして優れた能力を持っています。しかし、モデルのパフォーマンスは、使用されるプロンプトの品質に大きく依存します。この研究では、自動プロンプトエンジニア（APE）を提案し、LLMによって生成された指示候補のプールから最適な指示を選択するために最適化します。実験結果は、APEが従来のLLMベースラインを上回り、19/24のタスクで人間の生成した指示と同等または優れたパフォーマンスを示しています。APEエンジニアリングされたプロンプトは、モデルの性能を向上させるだけでなく、フューショット学習のパフォーマンスも向上させることができます。詳細は、https://sites.google.com/view/automatic-prompt-engineerをご覧ください。</span>
 <span class="snippet"><span>Comment</span>プロジェクトサイト: https://sites.google.com/view/automatic-prompt-engineer ...</span>
@@ -667,7 +671,7 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2023-05-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/619">Learning to Reason and Memorize with Self-Notes, Jack Lanchantin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデルは、コンテキストメモリと多段階の推論に苦労するが、セルフノートを取ることでこれらの問題を解決できることが提案された。モデルは入力コンテキストから思考を逸脱し、情報を思い出し、推論を実行することができる。複数のタスクでの実験により、セルフノートを推論時に取ることで、より長く、より複雑なインスタンスに対しても成功裏に汎化できることが示された。</span>
-<a class="button" href="articles/Education.html">#Education</a><br><span class="issue_date">Issue Date: 2023-05-04</span>
+<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/ChatGPT.html">#ChatGPT</a><br><span class="issue_date">Issue Date: 2023-05-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/617">A Review of ChatGPT Applications in Education, Marketing, Software  Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。最新のChatGPTバージョンが導入され、他の言語モデルも登場している。これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。</span>
 <br><span class="issue_date">Issue Date: 2023-05-04</span>
@@ -1016,7 +1020,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Deep Neural Netを用いてmultitask learningを行いNLPタスク（POS tagging, Semantic Role Labeling, Chunking etc.）を解いた論文。被引用数2000を超える。multitask learningの学習プロセスな ...</span>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194">Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1125">Boosting RAG: Picking the Best Embedding & Reranker models</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1059">The Reversal Curse: LLMs trained on “A is B” fail to learn “B is A”</a>
