@@ -21,7 +21,15 @@ author: AkihikoWATANABE
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1035">Instruction Tuning for Large Language Models: A Survey, Shengyu Zhang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>この論文では、instruction tuning（IT）という技術について調査しています。ITは、大規模言語モデル（LLMs）をさらにトレーニングするための方法であり、ユーザーの指示に従うことを目的としています。本研究では、ITの方法論やデータセットの構築、トレーニング方法などについて調査し、指示の生成やデータセットのサイズなどがITの結果に与える影響を分析します。また、ITの潜在的な問題や批判、現在の不足点についても指摘し、今後の研究の方向性を提案します。</span>
+<span class="snippet"><span>Comment</span>主要なモデルやデータセットの作り方など幅広くまとまっている ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/440b5214-71b9-4d22-9c0c-badd84a717ce" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-08-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1008">Self-Alignment with Instruction Backtranslation, Xian Li+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、高品質な指示に従う言語モデルを構築するためのスケーラブルな手法を提案します。この手法では、少量のシードデータとウェブコーパスを使用して言語モデルをファインチューニングし、指示のプロンプトを生成してトレーニング例を構築します。そして、高品質な例を選択してモデルを強化します。この手法を使用すると、他のモデルよりも優れた性能を発揮し、自己整列の効果を実証できます。</span>
+<span class="snippet"><span>Comment</span>人間が書いたテキストを対応するinstructionに自動的にラベル付けする手法を提案。これにより高品質なinstruction following LLMの構築が可能手法としては、0. webアクセス可能な少量のシードデータでFTしたLLMを準備1. Self-augment: LLMでウェブ ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/837e17cc-6df1-4ba5-ba61-9c4f72dede93" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/877">Instruction-following Evaluation through Verbalizer Manipulation, Shiyang Li+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、指示に従う能力を正確に評価するための新しい評価プロトコル「verbalizer manipulation」を提案しています。このプロトコルでは、モデルに異なる程度で一致する言葉を使用してタスクラベルを表現させ、モデルの事前知識に依存する能力を検証します。さまざまなモデルを9つのデータセットで評価し、異なるverbalizerのパフォーマンスによって指示に従う能力が明確に区別されることを示しました。最も困難なverbalizerに対しても、最も強力なモデルでもランダムな推測よりも優れたパフォーマンスを発揮するのは困難であり、指示に従う能力を向上させるために継続的な進歩が必要であることを強調しています。</span>
 <a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-15</span>

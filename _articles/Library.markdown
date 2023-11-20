@@ -11,13 +11,16 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2022-07-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/462">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Reimers+, UKP-TUDA, EMNLP19</a>
 <span class="snippet"><span>Comment</span>BERTでトークンをembeddingし、mean poolingすることで生成される文ベクトルを、Siamese Networkを使い距離学習（finetune）させたモデル。<img width="655" alt="image" src="https://user-images.githu ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1134">LLaMA-Factory, 2023</a>
-<span class="snippet"><span>Comment</span>簡単に利用できるLLaMAのfinetuning frameworkとのこと。元ツイート: https://x.com/_akhaliq/status/1724456693378040195?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLLaMAベースなモデルなら色々対応している模様 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/python.html">#python</a><br><span class="issue_date">Issue Date: 2023-11-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1143">lifestar</a>
+<span class="snippet"><span>Comment</span>非常に高速なpythonのASGIライブラリ。WSGIとは異なり非同期処理なためリアルタイムアプリケーションに向いているっぽい。 ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1134">LLaMA-Factory, 2023</a>
+<span class="snippet"><span>Comment</span>簡単に利用できるLLaMAのfinetuning frameworkとのこと。元ツイート: https://x.com/_akhaliq/status/1724456693378040195?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLLaMAベースなモデルなら色々対応している模様 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1129">Transformers.js, 2023</a>
 <span class="snippet"><span>Comment</span>ブラウザ上でTransformerベースの様々なモデルを動作させることができるライブラリ ...</span>

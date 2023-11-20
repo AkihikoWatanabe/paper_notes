@@ -13,15 +13,19 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1048">A Survey of Hallucination in Large Foundation Models, Vipula Rawte+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模ファウンデーションモデル（LFMs）におけるホールシネーションの問題に焦点を当て、その現象を分類し、評価基準を確立するとともに、既存の戦略を検討し、今後の研究の方向性についても議論しています。</span>
 <span class="snippet"><span>Comment</span>Hallucinationを現象ごとに分類し、Hallucinationの程度の評価をする指標や、Hallucinationを軽減するための既存手法についてまとめられているらしい。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ec507609-5b6d-42ed-92db-296856f93200" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/764">How Language Model Hallucinations Can Snowball, Muru Zhang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>言語モデルを使用する際のリスクとして、幻覚があることが指摘されている。この幻覚は、LMの知識不足によるものだけでなく、以前に生成された幻覚を正当化するために、LMが誤った主張を出力することもあるという仮説が立てられている。ChatGPTとGPT-4は、誤った回答を示し、幻覚のスノーボール効果により、より多くの誤りが生じることがある。また、誤りを含む質問応答データセットが構築され、LMが自分自身の誤りを識別できることも示された。</span>
-<span class="snippet"><span>Comment</span>LLMによるhallucinationは、単にLLMの知識不足によるものだけではなく、LLMが以前に生成したhallucinationを正当化するために、誤った出力を生成してしまうという仮説を提起し、この仮説を検証した研究。これをhallucination snowballと呼ぶ。これにより、LLM ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6a9e29b7-953f-4e72-bfdd-85daab9317d6" alt="image"></div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ec507609-5b6d-42ed-92db-296856f93200" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-09-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1040">DoLa: Decoding by Contrasting Layers Improves Factuality in Large  Language Models, Yung-Sung Chuang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>我々は、事前学習済みの大規模言語モデル（LLMs）における幻覚を軽減するためのシンプルなデコーディング戦略を提案する。このアプローチは、ロジットの差異を対比することで次のトークンの分布を得るもので、事実知識をより明確に示し、誤った事実の生成を減らすことができる。このアプローチは、複数の選択課題やオープンエンドの生成課題において真実性を向上させることができることが示されている。</span>
+<span class="snippet"><span>Comment</span>【以下、WIP状態の論文を読んでいるため今後内容が変化する可能性あり】# 概要Transformer Layerにおいて、factual informationが特定のレイヤーに局所化するという現象を観測しており、それを活用しよりFactual Consistencyのある生成をします、とい ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eb8dbecb-21cb-4abb-879c-5a8f39364e6a" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-05-20</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/764">How Language Model Hallucinations Can Snowball, Muru Zhang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>言語モデルを使用する際のリスクとして、幻覚があることが指摘されている。この幻覚は、LMの知識不足によるものだけでなく、以前に生成された幻覚を正当化するために、LMが誤った主張を出力することもあるという仮説が立てられている。ChatGPTとGPT-4は、誤った回答を示し、幻覚のスノーボール効果により、より多くの誤りが生じることがある。また、誤りを含む質問応答データセットが構築され、LMが自分自身の誤りを識別できることも示された。</span>
+<span class="snippet"><span>Comment</span>LLMによるhallucinationは、単にLLMの知識不足によるものだけではなく、LLMが以前に生成したhallucinationを正当化するために、誤った出力を生成してしまうという仮説を提起し、この仮説を検証した研究。これをhallucination snowballと呼ぶ。これにより、LLM ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6a9e29b7-953f-4e72-bfdd-85daab9317d6" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-05-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/690">TrueTeacher: Learning Factual Consistency Evaluation with Large Language  Models, Zorik Gekhman+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>自然言語推論（NLI）モデルを使用した事実の一貫性評価には限界があり、大規模言語モデル（LLMs）は計算コストが高いため実用的ではない。そこで、TrueTeacherというLLMを使用して多様なモデル生成要約を注釈付けすることによって合成データを生成する方法を提案し、既存の合成データ生成方法と比較して優位性と堅牢性を示した。140万の例を含む大規模な合成データセットを公開した。</span>
 <span class="snippet"><span>Comment</span>Factual Consistency Evaluationに関する研究。オリジナルのテキストに対して、様々な規模の言語モデルを用いて要約を生成。生成された要約に対してfactual informationが正しく含まれているかをラベル付けする方法を提案。 ...</span>

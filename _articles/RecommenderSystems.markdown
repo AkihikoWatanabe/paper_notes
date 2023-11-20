@@ -5,19 +5,23 @@ author: AkihikoWATANABE
 ---
 ## RecommenderSystems
 <div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1126">Hiformer: Heterogeneous Feature Interactions Learning with Transformers  for Recommender Systems, Huan Gui+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>特徴の相互作用を学ぶために、Transformerベースのアーキテクチャを提案する。ウェブスケールのレコメンダーシステムにおいて、特徴の相互作用を手動で作成することは困難であるため、自動的に捉える必要がある。しかし、現在のTransformerアーキテクチャは異種の特徴の相互作用を捉えることができず、サービングレイテンシも高い。そこで、異種の自己注意層を提案し、\textsc{Hiformer}というモデルを紹介する。\textsc{Hiformer}は特徴の相互作用の異種性を考慮し、低ランク近似とモデルの剪定により高速な推論を実現する。オフライン実験結果では、\textsc{Hiformer}モデルの効果と効率が示されており、Google Playの実世界の大規模なアプリランキングモデルにも展開され、主要なエンゲージメントメトリックスを改善した。</span>
+<span class="snippet"><span>Comment</span>推薦システムは、Factorization Machinesあたりから大抵の場合特徴量間の交互作用を頑張って捉えることで精度向上を目指す、という話をしてきている気がするが、これはTransformerを使って交互作用捉えられるようなモデルを考えました、という研究のようである。self atteOnl ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d57eb1b6-0e68-47fe-9d0a-315186cc9e3d" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1122">LightLM: A Lightweight Deep and Narrow Language Model for Generative  Recommendation, Kai Mei+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この論文では、軽量なTransformerベースの言語モデルであるLightLMを提案し、生成型レコメンデーションタスクに特化したモデルを開発しています。LightLMは、モデルの容量を抑えつつも、レコメンデーションの精度と効率を向上させることに成功しています。また、ユーザーとアイテムのIDインデックス化方法として、Spectral Collaborative Indexing（SCI）とGraph Collaborative Indexing（GCI）を提案しています。さらに、アイテム生成時のhallucinationの問題に対処するために、制約付き生成プロセスを導入しています。実験結果は、LightLMが競合ベースラインを上回ることを示しています。</span>
 <span class="snippet"><span>Comment</span>Generative Recommendationはあまり終えていないのだが、既存のGenerative Recommendationのモデルをより軽量にし、性能を向上させ、存在しないアイテムを生成するのを防止するような手法を提案しました、という話っぽい。Bayesian Perso ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7a70bae0-20fd-495e-a563-5ac6ce5b6dfc" alt="image"><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/870">User Simulator Assisted Open-ended Conversational Recommendation System, NLP4ConvAI23</a>
-<a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/862">Explainable Recommendation with Personalized Review Retrieval and Aspect Learning, ACL23</a>
-<span class="snippet"><span>Summary</span>説明可能な推薦において、テキスト生成の精度向上とユーザーの好みの捉え方の改善を目指し、ERRAモデルを提案。ERRAは追加情報の検索とアスペクト学習を組み合わせることで、より正確で情報量の多い説明を生成することができる。さらに、ユーザーの関心の高いアスペクトを選択することで、関連性の高い詳細なユーザー表現をモデル化し、説明をより説得力のあるものにする。実験結果は、ERRAモデルが最先端のベースラインを上回ることを示している。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/862">Explainable Recommendation with Personalized Review Retrieval and Aspect Learning, ACL23</a>
+<span class="snippet"><span>Summary</span>説明可能な推薦において、テキスト生成の精度向上とユーザーの好みの捉え方の改善を目指し、ERRAモデルを提案。ERRAは追加情報の検索とアスペクト学習を組み合わせることで、より正確で情報量の多い説明を生成することができる。さらに、ユーザーの関心の高いアスペクトを選択することで、関連性の高い詳細なユーザー表現をモデル化し、説明をより説得力のあるものにする。実験結果は、ERRAモデルが最先端のベースラインを上回ることを示している。</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Contents-based.html">#Contents-based</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/pretrained-LM.html">#pretrained-LM</a><a class="button" href="articles/ContrastiveLearning.html">#ContrastiveLearning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/852">UniTRec: A Unified Text-to-Text Transformer and Joint Contrastive Learning Framework for Text-based Recommendation, ACL23</a>
 <span class="snippet"><span>Summary</span>本研究では、事前学習済み言語モデル（PLM）を使用して、テキストベースの推薦の性能を向上させるための新しいフレームワークであるUniTRecを提案します。UniTRecは、ユーザーの履歴の文脈をより良くモデル化するために統一されたローカル-グローバルアテンションTransformerエンコーダを使用し、候補のテキストアイテムの言語の複雑さを推定するためにTransformerデコーダを活用します。幅広い評価により、UniTRecがテキストベースの推薦タスクで最先端のパフォーマンスを発揮することが示されました。</span>
