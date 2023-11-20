@@ -5,6 +5,10 @@ author: AkihikoWATANABE
 ---
 ## PersonalizedGeneration
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-08-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1005">Teach LLMs to Personalize -- An Approach inspired by Writing Education, Cheng Li+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>個別化されたテキスト生成において、大規模言語モデル（LLMs）を使用した一般的なアプローチを提案する。教育の執筆をベースに、多段階かつマルチタスクのフレームワークを開発し、検索、ランキング、要約、統合、生成のステージで構成される個別化されたテキスト生成へのアプローチを採用する。さらに、マルチタスク設定を導入してモデルの生成能力を向上させる。3つの公開データセットでの評価結果は、他のベースラインに比べて大幅な改善を示している。</span>
+<span class="snippet"><span>Comment</span>以下AIDBのツイートの引用>LLMに、個人や会社の事情を汲み取って空気を読んだアウトプットを出してもらう手法をGoogleが開発>○ Cheng Li et al. Teach LLMs to Personalize -An Approach inspired by Writing研究の目的 ...</span>
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/893">Generating User-Engaging News Headlines, ACL23</a>
 <span class="snippet"><span>Summary</span>ニュース記事の見出しを個別化するために、ユーザープロファイリングを組み込んだ新しいフレームワークを提案。ユーザーの閲覧履歴に基づいて個別のシグネチャフレーズを割り当て、それを使用して見出しを個別化する。幅広い評価により、提案したフレームワークが多様な読者のニーズに応える個別の見出しを生成する効果を示した。</span>
@@ -12,13 +16,13 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/536">LaMP: When Large Language Models Meet Personalization, Selemi+, University of Massachusetts Amherst （w_ Google Research）, arXiv23</a>
 <span class="snippet"><span>Comment</span># 概要Personalizationはユーザのニーズや嗜好に応えるために重要な技術で、IRやRecSysで盛んに研究されてきたが、NLPではあまり実施されてこなかった。しかし、最近のタスクで、text classificationやgeneration taskでPersonalization# ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/929">Personalized News Headline Generation System with Fine-grained User Modeling, Yao, MSN22</a>
-<span class="snippet"><span>Summary</span>ユーザーの興味に基づいてパーソナライズされたニュースの見出しを生成するために、文レベルの情報を考慮したユーザーモデルを提案する。アテンション層を使用して文とニュースの関連性を計算し、ニュースの内容に基づいて見出しを生成する。実験結果は、提案モデルがベースラインモデルよりも優れたパフォーマンスを示していることを示している。将来の方向性として、情報のレベルと内容を横断する相互作用についても議論されている。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/929">Personalized News Headline Generation System with Fine-grained User Modeling, Yao, MSN22</a>
+<span class="snippet"><span>Summary</span>ユーザーの興味に基づいてパーソナライズされたニュースの見出しを生成するために、文レベルの情報を考慮したユーザーモデルを提案する。アテンション層を使用して文とニュースの関連性を計算し、ニュースの内容に基づいて見出しを生成する。実験結果は、提案モデルがベースラインモデルよりも優れたパフォーマンスを示していることを示している。将来の方向性として、情報のレベルと内容を横断する相互作用についても議論されている。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-08-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/928">Personalized Headline Generation with Enhanced User Interest Perception, Zhang+, ICANN22</a>
 <span class="snippet"><span>Summary</span>ユーザーのニュース閲覧履歴をモデル化し、個別化されたニュース見出しを生成するための新しいフレームワークを提案する。提案手法は、ユーザーの興味を強調するために候補テキストに関連する情報を活用し、ニュースのエンティティワードを使用して興味表現を改善する。幅広い実験により、提案手法が見出し生成タスクで優れたパフォーマンスを示すことが示されている。</span>
