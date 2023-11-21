@@ -5,19 +5,21 @@ author: AkihikoWATANABE
 ---
 ## Article
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1141">生成系 AI でプロダクトの価値を高めるには, 2023</a>
 <span class="snippet"><span>Comment</span>AWS久保さんの資料。後で読む ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1136">ChatGPTに社内文書に基づいた回答を生成させる仕組みを構築しました, 2023</a>
 <span class="snippet"><span>Comment</span>低コストで社内文書に対するRAGを実現することに注力している。以下、図はブログから引用。基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。低コスト化のために、Embedding作成にOpenSourceの特に日本語テ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1129">Transformers.js, 2023</a>
-<span class="snippet"><span>Comment</span>ブラウザ上でTransformerベースの様々なモデルを動作させることができるライブラリ ...</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1129">Transformers.js, 2023</a>
+<span class="snippet"><span>Comment</span>ブラウザ上でTransformerベースの様々なモデルを動作させることができるライブラリ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1125">Boosting RAG: Picking the Best Embedding & Reranker models</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
