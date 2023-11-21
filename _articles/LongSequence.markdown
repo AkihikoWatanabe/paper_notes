@@ -20,7 +20,11 @@ author: AkihikoWATANABE
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-07-01</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/782">Augmenting Language Models with Long-Term Memory, Weizhi Wang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>既存の大規模言語モデル（LLMs）は、入力長の制限により、長い文脈情報を活用できない問題があります。そこで、私たちは「長期記憶を持つ言語モデル（LongMem）」というフレームワークを提案しました。これにより、LLMsは長い履歴を記憶することができます。提案手法は、メモリエンコーダとして凍結されたバックボーンLLMと、適応的な残余サイドネットワークを組み合わせた分離されたネットワークアーキテクチャを使用します。このアーキテクチャにより、長期の過去の文脈を簡単にキャッシュし、利用することができます。実験結果は、LongMemが長い文脈モデリングの難しいベンチマークであるChapterBreakで強力な性能を発揮し、メモリ増強型のコンテキスト内学習で改善を達成することを示しています。提案手法は、言語モデルが長い形式のコンテンツを記憶し利用するのに効果的です。</span>
+<span class="snippet"><span>Comment</span>LLMに長期のhistoryを記憶させることを可能する新たな手法を提案し、既存のstrongな長いcontextを扱えるモデルを上回るパフォーマンスを示した ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/98106f5b-22cf-420c-9251-5c7e03ead490" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-07-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/777">How Long Can Open-Source LLMs Truly Promise on Context Length?, 2023</a>
 <span class="snippet"><span>Comment</span>LLMのcontext長を伸ばす際の方法と得られた知見がまとめられている ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
