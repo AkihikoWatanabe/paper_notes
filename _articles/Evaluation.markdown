@@ -324,6 +324,9 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/988">Supervised automatic evaluation for summarization with voted regression model, Hirao+, Information and Processing & Management07</a>
 <span class="snippet"><span>Summary</span>要約システムの評価には高品質な人間の評価が必要だが、コストが高いため自動評価方法が必要。提案手法は投票回帰モデル（VRM）を使用し、従来の自動評価方法と比較してエラー削減を達成。さらに、最も高い相関係数を得た。</span>
 <span class="snippet"><span>Comment</span>VRM ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1149">Zephyr-7B-beta, RAG Perf.</a>
+<span class="snippet"><span>Comment</span>Zephyr-7B-betaのRAGでの性能がデータセットで評価されている下記Xポストによるとgpt-3.5-turboと同等https://x.com/rungalileo/status/1726638537767051436?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1139">JGLUEの構築そして 日本語LLM評価のこれから, 2023</a>
 <span class="snippet"><span>Comment</span>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Nam ...</span>

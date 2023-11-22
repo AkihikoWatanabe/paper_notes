@@ -5,6 +5,10 @@ author: AkihikoWATANABE
 ---
 ## LanguageModel
 <div class="visible-content">
+<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1147">Implicit Chain of Thought Reasoning via Knowledge Distillation, Yuntian Deng+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、言語モデルの内部の隠れ状態を使用して暗黙的な推論を行う手法を提案します。明示的なチェーン・オブ・ソートの推論ステップを生成する代わりに、教師モデルから抽出した暗黙的な推論ステップを使用します。実験により、この手法が以前は解決できなかったタスクを解決できることが示されました。</span>
+<span class="snippet"><span>Comment</span>これは非常に興味深い話 ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1144">Contrastive Chain-of-Thought Prompting, Yew Ken Chia+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>言語モデルの推論を改善するために、対照的なchain of thoughtアプローチを提案する。このアプローチでは、有効な推論デモンストレーションと無効な推論デモンストレーションの両方を提供し、モデルが推論を進める際にミスを減らすようにガイドする。また、自動的な方法を導入して対照的なデモンストレーションを構築し、汎化性能を向上させる。実験結果から、対照的なchain of thoughtが一般的な改善手法として機能することが示された。</span>
@@ -12,13 +16,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1140">Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language  Models, Wenhao Yu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>検索補完言語モデル（RALM）は、外部の知識源を活用して大規模言語モデルの性能を向上させるが、信頼性の問題や知識の不足による誤った回答がある。そこで、Chain-of-Noting（CoN）という新しいアプローチを導入し、RALMの頑健性を向上させることを目指す。CoNは、順次の読み取りノートを生成し、関連性を評価して最終的な回答を形成する。ChatGPTを使用してCoNをトレーニングし、実験結果はCoNを装備したRALMが標準的なRALMを大幅に上回ることを示している。特に、ノイズの多いドキュメントにおいてEMスコアで平均+7.9の改善を達成し、知識範囲外のリアルタイムの質問に対する拒否率で+10.5の改善を達成している。</span>
 <span class="snippet"><span>Comment</span>一番重要な情報がappendixに載っているCoNによって、ノイズがあった場合にゲインが大きい。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1138">Fine-tuning Language Models for Factuality, Katherine Tian+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模な言語モデル（LLMs）を使用して、より事実に基づいた生成を実現するためのファインチューニングを行います。具体的には、外部の知識ベースや信頼スコアとの一貫性を測定し、選好最適化アルゴリズムを使用してモデルを調整します。実験結果では、事実エラー率の削減が観察されました。</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1138">Fine-tuning Language Models for Factuality, Katherine Tian+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模な言語モデル（LLMs）を使用して、より事実に基づいた生成を実現するためのファインチューニングを行います。具体的には、外部の知識ベースや信頼スコアとの一貫性を測定し、選好最適化アルゴリズムを使用してモデルを調整します。実験結果では、事実エラー率の削減が観察されました。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137">Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）の能力を評価するために、Instruction-Following Eval（IFEval）という評価ベンチマークが導入されました。IFEvalは、検証可能な指示に焦点を当てた直感的で再現性のある評価方法です。具体的には、25種類の検証可能な指示を特定し、それぞれの指示を含む約500のプロンプトを作成しました。この評価ベンチマークの結果は、GitHubで公開されています。</span>
@@ -79,7 +83,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/DataGeneration.html">#DataGeneration</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1099">Zephyr: Direct Distillation of LM Alignment, Lewis Tunstall+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、小さな言語モデルを作成するために、教師モデルからの優先データを使用する手法を提案しています。この手法により、自然なプロンプトに対するモデルの応答が改善されます。提案手法を用いて学習されたZephyr-7Bモデルは、チャットベンチマークで最先端の性能を発揮し、人間の注釈を必要としません。詳細はGitHubで利用可能です。</span>
-<span class="snippet"><span>Comment</span>7BパラメータでLlaMa70Bと同等の性能を達成したZephyrの論文。dSFT:既存データからpromptをサンプリングし、user,assistantのmulti turnの対話をLLMでシミュレーションしてデータ生成しSFTAIF:既存データからpromstをサンプリングし ...</span>
+<span class="snippet"><span>Comment</span>7BパラメータでLlaMa70Bと同等の性能を達成したZephyrの論文。dSFT:既存データからpromptをサンプリングし、user,assistantのmulti turnの対話をLLMでシミュレーションしてデータ生成しSFTAIF:既存データからpromstをサンプリングしBlog: htt ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1348b3c1-f70a-49b6-97c9-4a27bf7805fa" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1098">Human Feedback is not Gold Standard, Tom Hosking+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>人間のフィードバックは、大規模言語モデルの性能評価に使用されているが、その好みのスコアがどの特性を捉えているのかは明確ではない。この研究では、人間のフィードバックの使用を分析し、重要なエラー基準を適切に捉えているかどうかを検証した。結果として、好みのスコアは広範なカバレッジを持っているが、事実性などの重要な側面が過小評価されていることがわかった。また、好みのスコアとエラーアノテーションは交絡因子の影響を受ける可能性があり、出力の断定性が事実性エラーの知覚率を歪めることも示された。さらに、人間のフィードバックを訓練目標として使用することが、モデルの出力の断定性を過度に増加させることも示された。今後の研究では、好みのスコアが望ましい目標と一致しているかどうかを慎重に考慮する必要がある。</span>
@@ -641,6 +645,12 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1150">GPT4All, 2023</a>
+<span class="snippet"><span>Comment</span>ローカルマシンでChatGPT likeなUIでチャットボットを動作させられるOpensource。Mistral7BやGGUFフォーマットのモデルのよつな（おそらく量子化されたものも含む）ローカルマシンで動作させられる規模感のモデルがサポートされている。https://gpt4all.io/i ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1149">Zephyr-7B-beta, RAG Perf.</a>
+<span class="snippet"><span>Comment</span>Zephyr-7B-betaのRAGでの性能がデータセットで評価されている下記Xポストによるとgpt-3.5-turboと同等https://x.com/rungalileo/status/1726638537767051436?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-11-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1139">JGLUEの構築そして 日本語LLM評価のこれから, 2023</a>
 <span class="snippet"><span>Comment</span>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Nam ...</span>
