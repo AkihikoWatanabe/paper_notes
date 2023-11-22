@@ -5,6 +5,10 @@ author: AkihikoWATANABE
 ---
 ## Pretraining
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1147">Implicit Chain of Thought Reasoning via Knowledge Distillation, Yuntian Deng+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、言語モデルの内部の隠れ状態を使用して暗黙的な推論を行う手法を提案します。明示的なチェーン・オブ・ソートの推論ステップを生成する代わりに、教師モデルから抽出した暗黙的な推論ステップを使用します。実験により、この手法が以前は解決できなかったタスクを解決できることが示されました。</span>
+<span class="snippet"><span>Comment</span>これは非常に興味深い話 ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><a class="button" href="articles/Mathematics.html">#Mathematics</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1104">Llemma: An Open Language Model For Mathematics, Zhangir Azerbayev+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、数学のための大規模な言語モデルであるLlemmaを提案します。Llemmaは、Proof-Pile-2と呼ばれるデータセットを用いて事前学習され、MATHベンチマークで他のモデルを上回る性能を示しました。さらに、Llemmaは追加のfine-tuningなしでツールの使用や形式的な定理証明が可能です。アーティファクトも公開されています。</span>
@@ -12,15 +16,15 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/87f9bbe1-3377-4e80-a7d4-904345ebb7d9" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/DataGeneration.html">#DataGeneration</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1099">Zephyr: Direct Distillation of LM Alignment, Lewis Tunstall+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、小さな言語モデルを作成するために、教師モデルからの優先データを使用する手法を提案しています。この手法により、自然なプロンプトに対するモデルの応答が改善されます。提案手法を用いて学習されたZephyr-7Bモデルは、チャットベンチマークで最先端の性能を発揮し、人間の注釈を必要としません。詳細はGitHubで利用可能です。</span>
-<span class="snippet"><span>Comment</span>7BパラメータでLlaMa70Bと同等の性能を達成したZephyrの論文。dSFT:既存データからpromptをサンプリングし、user,assistantのmulti turnの対話をLLMでシミュレーションしてデータ生成しSFTAIF:既存データからpromstをサンプリングし ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1348b3c1-f70a-49b6-97c9-4a27bf7805fa" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1072">Think before you speak: Training Language Models With Pause Tokens, Sachin Goyal+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>言語モデルのトレーニングと推論において、遅延を導入することでモデルの性能を向上させる手法を提案しました。具体的には、入力に特定のトークンを追加し、そのトークンが現れるまでモデルの出力を遅らせることで、追加の計算を行うことができます。実験結果では、この手法が推論タスクにおいて有益であり、特にQAタスクでの性能向上が見られました。今後は、この遅延予測の手法をさらに研究していく必要があります。</span>
-<span class="snippet"><span>Comment</span>以下AIDBのツイートの引用>LLMは、考えがまとまる前にテキストを生成してしまうことがあるので、時折「生成を一時停止させる」ことでアウトプットの品質を向上させられるとの報告です。>カーネギーメロン大学とGoogleの研究者らによる発表です。プロンプトによっても実践できる工夫かもしれませんこの研究は ...</span>
-</div>
+<span class="snippet"><span>Comment</span>7BパラメータでLlaMa70Bと同等の性能を達成したZephyrの論文。dSFT:既存データからpromptをサンプリングし、user,assistantのmulti turnの対話をLLMでシミュレーションしてデータ生成しSFTAIF:既存データからpromstをサンプリングしBlog: htt ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1348b3c1-f70a-49b6-97c9-4a27bf7805fa" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1072">Think before you speak: Training Language Models With Pause Tokens, Sachin Goyal+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>言語モデルのトレーニングと推論において、遅延を導入することでモデルの性能を向上させる手法を提案しました。具体的には、入力に特定のトークンを追加し、そのトークンが現れるまでモデルの出力を遅らせることで、追加の計算を行うことができます。実験結果では、この手法が推論タスクにおいて有益であり、特にQAタスクでの性能向上が見られました。今後は、この遅延予測の手法をさらに研究していく必要があります。</span>
+<span class="snippet"><span>Comment</span>以下AIDBのツイートの引用>LLMは、考えがまとまる前にテキストを生成してしまうことがあるので、時折「生成を一時停止させる」ことでアウトプットの品質を向上させられるとの報告です。>カーネギーメロン大学とGoogleの研究者らによる発表です。プロンプトによっても実践できる工夫かもしれませんこの研究は ...</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/857">Pre-Training to Learn in Context, ACL23</a>
 <span class="snippet"><span>Summary</span>インコンテキスト学習は、タスクの例と文脈からタスクを実行する方法であり、注目されています。しかし、現在の方法では十分に活用されていないため、私たちはPICLというフレームワークを提案します。これは、一般的なテキストコーパスでモデルを事前学習し、文脈に基づいてタスクを推論して実行する能力を向上させます。私たちは、PICLでトレーニングされたモデルのパフォーマンスを評価し、他のモデルを上回ることを示しました。コードはGitHubで公開されています。</span>
