@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
-<span class="snippet"><span>Comment</span>安く済ませたい・・・単に一個ジョブを実行したいだけなら、FargateではなくEC2の方が安そう ...</span>
+<span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1149">Zephyr-7B-beta, RAG Perf.</a>
 <span class="snippet"><span>Comment</span>Zephyr-7B-betaのRAGでの性能がデータセットで評価されている下記Xポストによるとgpt-3.5-turboと同等https://x.com/rungalileo/status/1726638537767051436?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>

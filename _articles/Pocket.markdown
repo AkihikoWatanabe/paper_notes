@@ -7,7 +7,8 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
-<span class="snippet"><span>Comment</span>Googleへのフルアクセスが許されたPh.D所有者でも回答ができないQAデータセットとのこと。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
+<span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1153">Unbalanced Optimal Transport for Unbalanced Word Alignment, Yuki Arase+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>単一言語の単語アライメントにおいて、null alignmentという現象は重要であり、不均衡な単語アライメントを実現するために最適輸送（OT）のファミリーが有効であることを示している。教師あり・教師なしの設定での包括的な実験により、OTベースのアライメント手法が最新の手法と競争力があることが示されている。</span>
