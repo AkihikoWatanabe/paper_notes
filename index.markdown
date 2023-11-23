@@ -5,21 +5,28 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
+<span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
+<br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
+<span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
-<span class="snippet"><span>Comment</span>Googleへのフルアクセスが許されたPh.D所有者でも回答ができないQAデータセットとのこと。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
+<span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
-<span class="snippet"><span>Comment</span>安く済ませたい・・・単に一個ジョブを実行したいだけなら、FargateではなくEC2の方が安そう ...</span>
+<span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1153">Unbalanced Optimal Transport for Unbalanced Word Alignment, Yuki Arase+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>単一言語の単語アライメントにおいて、null alignmentという現象は重要であり、不均衡な単語アライメントを実現するために最適輸送（OT）のファミリーが有効であることを示している。教師あり・教師なしの設定での包括的な実験により、OTベースのアライメント手法が最新の手法と競争力があることが示されている。</span>
 <span class="snippet"><span>Comment</span>最適輸送で爆速でモノリンガルの単語アライメントがとれるらしい実装:https://github.com/yukiar/OTAlign単語のアライメント先がない（null alignment）、one-to-oneの関係ではなく、one-to-many, many-to-manyのアライメントが必要な ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e677be2-1001-4454-bc1e-fe3b32888a32" alt="image"></div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e677be2-1001-4454-bc1e-fe3b32888a32" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1152">Igniting Language Intelligence: The Hitchhikers Guide From  Chain-of-Thought Reasoning to Language Agents, Zhuosheng Zhang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、言語知能の分野で劇的な進歩を遂げており、複雑な推論タスクにおいて高いパフォーマンスを示しています。特に、chain-of-thought（CoT）推論技術を活用することで、中間ステップを形成し、解釈可能性や制御可能性を向上させることができます。この論文では、CoT技術の基本的なメカニズムやその効果について詳しく解説し、言語エージェントの開発における応用例を紹介しています。将来の研究の展望にも触れており、初心者から経験豊富な研究者まで幅広い読者に対応しています。関連論文のリポジトリも提供されています。</span>
 <span class="snippet"><span>Comment</span>CoTに関するチュートリアル論文 ...</span>
@@ -36,12 +43,6 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1148">Orca 2: Teaching Small Language Models How to Reason, Arindam Mitra+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Orca 1は、豊富なシグナルから学習し、従来のモデルを上回る性能を発揮します。Orca 2では、小さな言語モデルの推論能力を向上させるために異なる解決戦略を教えることを目指しています。Orca 2は、さまざまな推論技術を使用し、15のベンチマークで評価されました。Orca 2は、同じサイズのモデルを大幅に上回り、高度な推論能力を持つ複雑なタスクで優れた性能を発揮します。Orca 2はオープンソース化されており、小さな言語モデルの研究を促進します。</span>
-<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1147">Implicit Chain of Thought Reasoning via Knowledge Distillation, Yuntian Deng+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、言語モデルの内部の隠れ状態を使用して暗黙的な推論を行う手法を提案します。明示的なチェーン・オブ・ソートの推論ステップを生成する代わりに、教師モデルから抽出した暗黙的な推論ステップを使用します。実験により、この手法が以前は解決できなかったタスクを解決できることが示されました。</span>
-<span class="snippet"><span>Comment</span>これは非常に興味深い話 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (614)
@@ -3642,7 +3643,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(30)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (389)
+## Article (391)
 ### LanguageModel (90)
 <div class="visible-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
@@ -5284,20 +5285,26 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (56)
+### Others (58)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
+<span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
+<span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
-<span class="snippet"><span>Comment</span>安く済ませたい・・・単に一個ジョブを実行したいだけなら、FargateではなくEC2の方が安そう ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
-<span class="snippet"><span>Comment</span>安く済ませたい・・・単に一個ジョブを実行したいだけなら、FargateではなくEC2の方が安そう ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
+<span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
 </div>
 <button onclick="showMore(54)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
+<span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
@@ -10358,19 +10365,20 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>最近の研究では、言語モデルが人間のような判断を行うことが示されています。この研究では、言語モデルが心理学の研究において人間の代わりになる可能性や条件について探求し、AIを参加者として使用する際の注意点をまとめています。</span>
 </div>
 <hr>
-## Others (1)
-### Others (1)
+## Others (2)
+### Others (2)
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
+<span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1004">Epic-Sounds: A Large-scale Dataset of Actions That Sound, Jaesung Huh+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>EPIC-SOUNDSは、エゴセントリックなビデオのオーディオストリーム内の時間的範囲とクラスラベルをキャプチャした大規模なデータセットです。注釈者がオーディオセグメントに時間的なラベルを付け、アクションを説明する注釈パイプラインを提案しています。オーディオのみのラベルの重要性と現在のモデルの制約を強調するために、2つのオーディオ認識モデルを訓練および評価しました。データセットには78.4kのカテゴリ分けされたオーディブルなイベントとアクションのセグメントが含まれています。</span>
 </div>
 <hr>
-## Pocket (129)
+## Pocket (128)
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
-<span class="snippet"><span>Comment</span>Googleへのフルアクセスが許されたPh.D所有者でも回答ができないQAデータセットとのこと。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
 <br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1152">Igniting Language Intelligence: The Hitchhikers Guide From  Chain-of-Thought Reasoning to Language Agents, Zhuosheng Zhang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、言語知能の分野で劇的な進歩を遂げており、複雑な推論タスクにおいて高いパフォーマンスを示しています。特に、chain-of-thought（CoT）推論技術を活用することで、中間ステップを形成し、解釈可能性や制御可能性を向上させることができます。この論文では、CoT技術の基本的なメカニズムやその効果について詳しく解説し、言語エージェントの開発における応用例を紹介しています。将来の研究の展望にも触れており、初心者から経験豊富な研究者まで幅広い読者に対応しています。関連論文のリポジトリも提供されています。</span>
@@ -10379,13 +10387,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1151">System 2 Attention （is something you might need too）, Jason Weston+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Transformerベースの大規模言語モデル（LLMs）におけるソフトアテンションは、文脈から無関係な情報を取り込む傾向があり、次のトークン生成に悪影響を与える。そこで、System 2 Attention（S2A）を導入し、LLMsが自然言語で推論し、指示に従う能力を活用して、注目すべき情報を決定する。S2Aは関連する部分のみを含むように入力コンテキストを再生成し、再生成されたコンテキストに注目して最終的な応答を引き出す。実験では、S2Aは3つのタスクで標準のアテンションベースのLLMsよりも優れた性能を発揮し、事実性と客観性を高める。</span>
 <span class="snippet"><span>Comment</span>おそらく重要論文 ...</span>
+<br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1148">Orca 2: Teaching Small Language Models How to Reason, Arindam Mitra+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>Orca 1は、豊富なシグナルから学習し、従来のモデルを上回る性能を発揮します。Orca 2では、小さな言語モデルの推論能力を向上させるために異なる解決戦略を教えることを目指しています。Orca 2は、さまざまな推論技術を使用し、15のベンチマークで評価されました。Orca 2は、同じサイズのモデルを大幅に上回り、高度な推論能力を持つ複雑なタスクで優れた性能を発揮します。Orca 2はオープンソース化されており、小さな言語モデルの研究を促進します。</span>
 </div>
 <button onclick="showMore(117)">more</button>
 
 <div class="hidden-content">
-<br><span class="issue_date">Issue Date: 2023-11-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1148">Orca 2: Teaching Small Language Models How to Reason, Arindam Mitra+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>Orca 1は、豊富なシグナルから学習し、従来のモデルを上回る性能を発揮します。Orca 2では、小さな言語モデルの推論能力を向上させるために異なる解決戦略を教えることを目指しています。Orca 2は、さまざまな推論技術を使用し、15のベンチマークで評価されました。Orca 2は、同じサイズのモデルを大幅に上回り、高度な推論能力を持つ複雑なタスクで優れた性能を発揮します。Orca 2はオープンソース化されており、小さな言語モデルの研究を促進します。</span>
 <br><span class="issue_date">Issue Date: 2023-11-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1145">SelfEval: Leveraging the discriminative nature of generative models for  evaluation, Sai Saketh Rambhatla+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この研究では、テキストから画像を生成するモデルを逆転させることで、自動的にテキスト-画像理解能力を評価する方法を提案しています。提案手法であるSelfEvalは、生成モデルを使用して実際の画像の尤度を計算し、生成モデルを直接識別タスクに適用します。SelfEvalは、既存のデータセットを再利用して生成モデルの性能を評価し、他のモデルとの一致度を示す自動評価指標です。さらに、SelfEvalは難しいタスクでの評価やテキストの信頼性の測定にも使用できます。この研究は、拡散モデルの簡単で信頼性の高い自動評価を可能にすることを目指しています。</span>
