@@ -27,7 +27,8 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1158">GAIA: a benchmark for General AI Assistants, Grégoire Mialon+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>GAIAは、General AI Assistantsのためのベンチマークであり、AI研究のマイルストーンとなる可能性がある。GAIAは、推論、マルチモダリティの処理、ウェブブラウジングなど、実世界の質問に対する基本的な能力を必要とする。人間の回答者は92％の正答率を達成し、GPT-4は15％の正答率を達成した。これは、最近の傾向とは異なる結果であり、専門的なスキルを必要とするタスクではLLMsが人間を上回っている。GAIAは、人間の平均的な堅牢性と同等の能力を持つシステムがAGIの到来に重要であると考えている。GAIAの手法を使用して、466の質問と回答を作成し、一部を公開してリーダーボードで利用可能にする。</span>
-<br><span class="issue_date">Issue Date: 2023-11-22</span>
+<span class="snippet"><span>Comment</span>Yann LeCun氏の紹介ツイートhttps://x.com/ylecun/status/1727707519470977311?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QMeta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
 <span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
