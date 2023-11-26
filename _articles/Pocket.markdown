@@ -43,7 +43,7 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1151">System 2 Attention （is something you might need too）, Jason Weston+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Transformerベースの大規模言語モデル（LLMs）におけるソフトアテンションは、文脈から無関係な情報を取り込む傾向があり、次のトークン生成に悪影響を与える。そこで、System 2 Attention（S2A）を導入し、LLMsが自然言語で推論し、指示に従う能力を活用して、注目すべき情報を決定する。S2Aは関連する部分のみを含むように入力コンテキストを再生成し、再生成されたコンテキストに注目して最終的な応答を引き出す。実験では、S2Aは3つのタスクで標準のアテンションベースのLLMsよりも優れた性能を発揮し、事実性と客観性を高める。</span>
-<span class="snippet"><span>Comment</span>おそらく重要論文 ...</span>
+<span class="snippet"><span>Comment</span>おそらく重要論文How is System 2 Attention different from prompt engineering specialized in factual double checks? ...</span>
 <br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1148">Orca 2: Teaching Small Language Models How to Reason, Arindam Mitra+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Orca 1は、豊富なシグナルから学習し、従来のモデルを上回る性能を発揮します。Orca 2では、小さな言語モデルの推論能力を向上させるために異なる解決戦略を教えることを目指しています。Orca 2は、さまざまな推論技術を使用し、15のベンチマークで評価されました。Orca 2は、同じサイズのモデルを大幅に上回り、高度な推論能力を持つ複雑なタスクで優れた性能を発揮します。Orca 2はオープンソース化されており、小さな言語モデルの研究を促進します。</span>
