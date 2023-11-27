@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Efficiency/SpeedUp
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1163">Exponentially Faster Language Modelling, Peter Belcak+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>UltraFastBERTは、推論時にわずか0.3%のニューロンしか使用せず、同等の性能を発揮することができる言語モデルです。UltraFastBERTは、高速フィードフォワードネットワーク（FFF）を使用して、効率的な実装を提供します。最適化されたベースラインの実装に比べて78倍の高速化を実現し、バッチ処理された推論に対しては40倍の高速化を実現します。トレーニングコード、ベンチマークのセットアップ、およびモデルの重みも公開されています。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1135">Fast Chain-of-Thought: A Glance of Future from Parallel Decoding Leads  to Answers Faster, Hongxuan Zhang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この研究では、FastCoTというフレームワークを提案します。FastCoTは、LLMを使用して並列デコーディングと自己回帰デコーディングを同時に行い、計算リソースを最大限に活用します。また、FastCoTは推論時間を約20%節約し、性能の低下がほとんどないことを実験で示しました。さらに、異なるサイズのコンテキストウィンドウに対しても頑健性を示すことができました。</span>
@@ -13,14 +16,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1045">LongLoRA: Efficient Fine-tuning of Long-Context Large Language Models, Yukang Chen+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、計算コストを制限しながら大規模言語モデル（LLMs）のコンテキストサイズを拡張する効率的なファインチューニング手法であるLongLoRAを提案します。従来の方法では、LLMsの長いコンテキストサイズでのトレーニングには高い計算コストとGPUリソースが必要でしたが、提案手法ではコンテキスト拡張を高速化し、非自明な計算コストの削減を実現します。また、パラメータ効率的なファインチューニング手法も再評価し、LongLoRAはさまざまなタスクで強力な実験結果を示しています。さらに、教師ありファインチューニングのためのデータセットであるLongQAも収集されました。</span>
 <span class="snippet"><span>Comment</span># 概要context長が大きい場合でも効率的にLoRAする手法。通常のLoRAではcontext lengthが大きくなるにつれてperplexityが大きくなってしまう。一方、通常のFinetuningではperplexityは高い性能を維持するが、計算コストとVRAMの消費量が膨大になって ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fc3d17c7-b1ac-4741-9895-bce70cf0b356" alt="image"><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1039">Textbooks Are All You Need II: phi-1.5 technical report, Yuanzhi Li+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>私たちは、小さなTransformerベースの言語モデルであるTinyStoriesと、大規模な言語モデルであるphi-1の能力について調査しました。また、phi-1を使用して教科書の品質のデータを生成し、学習プロセスを改善する方法を提案しました。さらに、phi-1.5という新しいモデルを作成し、自然言語のタスクにおいて性能が向上し、複雑な推論タスクにおいて他のモデルを上回ることを示しました。phi-1.5は、良い特性と悪い特性を持っており、オープンソース化されています。</span>
-<span class="snippet"><span>Comment</span>#766 に続く論文 ...</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fc3d17c7-b1ac-4741-9895-bce70cf0b356" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1039">Textbooks Are All You Need II: phi-1.5 technical report, Yuanzhi Li+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、小さなTransformerベースの言語モデルであるTinyStoriesと、大規模な言語モデルであるphi-1の能力について調査しました。また、phi-1を使用して教科書の品質のデータを生成し、学習プロセスを改善する方法を提案しました。さらに、phi-1.5という新しいモデルを作成し、自然言語のタスクにおいて性能が向上し、複雑な推論タスクにおいて他のモデルを上回ることを示しました。phi-1.5は、良い特性と悪い特性を持っており、オープンソース化されています。</span>
+<span class="snippet"><span>Comment</span>#766 に続く論文 ...</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/921">Skeleton-of-Thought: Large Language Models Can Do Parallel Decoding, Xuefei Ning+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この研究では、大規模言語モデル（LLMs）の生成遅延を減らすために、思考の骨組み（SoT）という手法を提案しています。SoTは、回答の骨組みをまず生成し、その後に内容を並列で処理することで高速化を実現します。また、回答品質の向上も期待されます。SoTはデータ中心の最適化の初めの試みであり、LLMsの人間らしい思考を可能にする可能性があります。</span>

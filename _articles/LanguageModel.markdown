@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## LanguageModel
 <div class="visible-content">
+<a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1163">Exponentially Faster Language Modelling, Peter Belcak+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>UltraFastBERTは、推論時にわずか0.3%のニューロンしか使用せず、同等の性能を発揮することができる言語モデルです。UltraFastBERTは、高速フィードフォワードネットワーク（FFF）を使用して、効率的な実装を提供します。最適化されたベースラインの実装に比べて78倍の高速化を実現し、バッチ処理された推論に対しては40倍の高速化を実現します。トレーニングコード、ベンチマークのセットアップ、およびモデルの重みも公開されています。</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1147">Implicit Chain of Thought Reasoning via Knowledge Distillation, Yuntian Deng+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、言語モデルの内部の隠れ状態を使用して暗黙的な推論を行う手法を提案します。明示的なチェーン・オブ・ソートの推論ステップを生成する代わりに、教師モデルから抽出した暗黙的な推論ステップを使用します。実験により、この手法が以前は解決できなかったタスクを解決できることが示されました。</span>
@@ -12,15 +15,15 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1144">Contrastive Chain-of-Thought Prompting, Yew Ken Chia+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>言語モデルの推論を改善するために、対照的なchain of thoughtアプローチを提案する。このアプローチでは、有効な推論デモンストレーションと無効な推論デモンストレーションの両方を提供し、モデルが推論を進める際にミスを減らすようにガイドする。また、自動的な方法を導入して対照的なデモンストレーションを構築し、汎化性能を向上させる。実験結果から、対照的なchain of thoughtが一般的な改善手法として機能することが示された。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1140">Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language  Models, Wenhao Yu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>検索補完言語モデル（RALM）は、外部の知識源を活用して大規模言語モデルの性能を向上させるが、信頼性の問題や知識の不足による誤った回答がある。そこで、Chain-of-Noting（CoN）という新しいアプローチを導入し、RALMの頑健性を向上させることを目指す。CoNは、順次の読み取りノートを生成し、関連性を評価して最終的な回答を形成する。ChatGPTを使用してCoNをトレーニングし、実験結果はCoNを装備したRALMが標準的なRALMを大幅に上回ることを示している。特に、ノイズの多いドキュメントにおいてEMスコアで平均+7.9の改善を達成し、知識範囲外のリアルタイムの質問に対する拒否率で+10.5の改善を達成している。</span>
 <span class="snippet"><span>Comment</span>一番重要な情報がappendixに載っているCoNによって、ノイズがあった場合にゲインが大きい。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"></div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1138">Fine-tuning Language Models for Factuality, Katherine Tian+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模な言語モデル（LLMs）を使用して、より事実に基づいた生成を実現するためのファインチューニングを行います。具体的には、外部の知識ベースや信頼スコアとの一貫性を測定し、選好最適化アルゴリズムを使用してモデルを調整します。実験結果では、事実エラー率の削減が観察されました。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-11-15</span>

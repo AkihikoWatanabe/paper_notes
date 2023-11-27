@@ -5,19 +5,23 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2023-11-23</span>
+<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1164">Advancing Transformer Architecture in Long-Context Large Language  Models: A Comprehensive Survey, Yunpeng Huang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本論文では、Transformerベースの大規模言語モデル（LLMs）の長い文脈の能力を最適化するための包括的な調査を提案しています。現行のLLMsの制約や問題点を明確化し、アーキテクチャのアップグレードや評価の必要性について説明しています。さらに、最適化ツールキットや将来の研究の可能性についても議論しています。関連文献はhttps://github.com/Strivin0311/long-llms-learningでリアルタイムに更新されています。</span>
+<span class="snippet"><span>Comment</span>TransformerをLongContextに対応させる技術のサーベイ。https://x.com/omarsar0/status/1727358484360945750?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1163">Exponentially Faster Language Modelling, Peter Belcak+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>UltraFastBERTは、推論時にわずか0.3%のニューロンしか使用せず、同等の性能を発揮することができる言語モデルです。UltraFastBERTは、高速フィードフォワードネットワーク（FFF）を使用して、効率的な実装を提供します。最適化されたベースラインの実装に比べて78倍の高速化を実現し、バッチ処理された推論に対しては40倍の高速化を実現します。トレーニングコード、ベンチマークのセットアップ、およびモデルの重みも公開されています。</span>
 <br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1162">MultiLoRA: Democratizing LoRA for Better Multi-Task Learning, Yiming Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LoRAは、LLMsを効率的に適応させる手法であり、ChatGPTのようなモデルを複数のタスクに適用することが求められている。しかし、LoRAは複雑なマルチタスクシナリオでの適応性能に制限がある。そこで、本研究ではMultiLoRAという手法を提案し、LoRAの制約を緩和する。MultiLoRAは、LoRAモジュールをスケーリングし、パラメータの依存性を減らすことで、バランスの取れたユニタリ部分空間を得る。実験結果では、わずかな追加パラメータでMultiLoRAが優れたパフォーマンスを示し、上位特異ベクトルへの依存性が低下していることが確認された。</span>
-<br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1161">NeuroPrompts: An Adaptive Framework to Optimize Prompts for  Text-to-Image Generation, Shachar Rosenman+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、テキストから画像への生成モデルの品質を向上させるための適応型フレームワークNeuroPromptsを提案します。このフレームワークは、事前学習された言語モデルを使用して制約付きテキストデコーディングを行い、人間のプロンプトエンジニアが生成するものに類似したプロンプトを生成します。これにより、高品質なテキストから画像への生成が可能となり、ユーザーはスタイルの特徴を制御できます。また、大規模な人間エンジニアリングされたプロンプトのデータセットを使用した実験により、当アプローチが自動的に品質の高いプロンプトを生成し、優れた画像品質を実現することを示しました。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-11-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1161">NeuroPrompts: An Adaptive Framework to Optimize Prompts for  Text-to-Image Generation, Shachar Rosenman+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、テキストから画像への生成モデルの品質を向上させるための適応型フレームワークNeuroPromptsを提案します。このフレームワークは、事前学習された言語モデルを使用して制約付きテキストデコーディングを行い、人間のプロンプトエンジニアが生成するものに類似したプロンプトを生成します。これにより、高品質なテキストから画像への生成が可能となり、ユーザーはスタイルの特徴を制御できます。また、大規模な人間エンジニアリングされたプロンプトのデータセットを使用した実験により、当アプローチが自動的に品質の高いプロンプトを生成し、優れた画像品質を実現することを示しました。</span>
 <br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1160">Visual In-Context Prompting, Feng Li+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、ビジョン領域における汎用的なビジュアルインコンテキストプロンプティングフレームワークを提案します。エンコーダーデコーダーアーキテクチャを使用し、さまざまなプロンプトをサポートするプロンプトエンコーダーを開発しました。さらに、任意の数の参照画像セグメントをコンテキストとして受け取るように拡張しました。実験結果から、提案手法が非凡な参照および一般的なセグメンテーション能力を引き出し、競争力のあるパフォーマンスを示すことがわかりました。</span>

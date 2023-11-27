@@ -5,7 +5,11 @@ author: AkihikoWATANABE
 ---
 ## Survey
 <div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1164">Advancing Transformer Architecture in Long-Context Large Language  Models: A Comprehensive Survey, Yunpeng Huang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本論文では、Transformerベースの大規模言語モデル（LLMs）の長い文脈の能力を最適化するための包括的な調査を提案しています。現行のLLMsの制約や問題点を明確化し、アーキテクチャのアップグレードや評価の必要性について説明しています。さらに、最適化ツールキットや将来の研究の可能性についても議論しています。関連文献はhttps://github.com/Strivin0311/long-llms-learningでリアルタイムに更新されています。</span>
+<span class="snippet"><span>Comment</span>TransformerをLongContextに対応させる技術のサーベイ。https://x.com/omarsar0/status/1727358484360945750?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1123">A Survey on Hallucination in Large Language Models: Principles,  Taxonomy, Challenges, and Open Questions, Lei Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsの出現はNLPにおける重要な進歩をもたらしているが、幻覚を生じることがあり、その信頼性に懸念がある。本調査では、LLMの幻覚に関する最近の進展について包括的に概説し、幻覚の要因や検出手法、軽減アプローチについて紹介する。また、現在の制約や将来の研究方向についても分析する。</span>
 <span class="snippet"><span>Comment</span>Hallucinationを現象ごとに分類したSurveyとして #1048 もあるSurveyの内容。必要に応じて参照すべし。 ...</span>
@@ -13,15 +17,15 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1077">Survey on Factuality in Large Language Models: Knowledge, Retrieval and  Domain-Specificity, Cunxiang Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この研究では、大規模言語モデル（LLMs）の事実性の問題に取り組んでいます。LLMsの出力の信頼性と正確性は重要であり、事実に矛盾した情報を生成することがあるため、その問題を解決する方法を探求しています。具体的には、LLMsの事実的なエラーの影響や原因を分析し、事実性を評価する手法や改善策を提案しています。また、スタンドアロンのLLMsと外部データを利用する検索拡張型LLMsに焦点を当て、それぞれの課題と改善策について詳しく説明しています。この研究は、LLMsの事実的な信頼性を向上させるためのガイドとなることを目指しています。</span>
 <span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4d3ab4df-aaa0-460f-b16a-6114432336cd" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1063">Large Language Model Alignment: A Survey, Tianhao Shen+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>近年、大規模言語モデル（LLMs）の進歩が注目されていますが、その潜在能力と同時に懸念もあります。本研究では、LLMsのアライメントに関する既存の研究と新たな提案を包括的に探求し、モデルの解釈可能性や敵対的攻撃への脆弱性などの問題も議論します。さらに、LLMsのアライメントを評価するためのベンチマークと評価手法を提案し、将来の研究の方向性を考察します。この調査は、研究者とAIアライメント研究コミュニティとの連携を促進することを目指しています。</span>
-<span class="snippet"><span>Comment</span>LLMのalignmentに関するサーベイ。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/09c10110-798f-4493-b431-41c2f2b017c1" alt="image"></div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4d3ab4df-aaa0-460f-b16a-6114432336cd" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1063">Large Language Model Alignment: A Survey, Tianhao Shen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>近年、大規模言語モデル（LLMs）の進歩が注目されていますが、その潜在能力と同時に懸念もあります。本研究では、LLMsのアライメントに関する既存の研究と新たな提案を包括的に探求し、モデルの解釈可能性や敵対的攻撃への脆弱性などの問題も議論します。さらに、LLMsのアライメントを評価するためのベンチマークと評価手法を提案し、将来の研究の方向性を考察します。この調査は、研究者とAIアライメント研究コミュニティとの連携を促進することを目指しています。</span>
+<span class="snippet"><span>Comment</span>LLMのalignmentに関するサーベイ。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/09c10110-798f-4493-b431-41c2f2b017c1" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1048">A Survey of Hallucination in Large Foundation Models, Vipula Rawte+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模ファウンデーションモデル（LFMs）におけるホールシネーションの問題に焦点を当て、その現象を分類し、評価基準を確立するとともに、既存の戦略を検討し、今後の研究の方向性についても議論しています。</span>
 <span class="snippet"><span>Comment</span>Hallucinationを現象ごとに分類し、Hallucinationの程度の評価をする指標や、Hallucinationを軽減するための既存手法についてまとめられているらしい。 ...</span>
