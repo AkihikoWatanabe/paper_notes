@@ -5,6 +5,10 @@ author: AkihikoWATANABE
 ---
 ## Dataset
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
+<span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/MultiLingual.html">#MultiLingual</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1131">MEGAVERSE: Benchmarking Large Language Models Across Languages,  Modalities, Models and Tasks, Sanchit Ahuja+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsの研究は急速に進展しており、英語以外の言語での評価が必要とされている。本研究では、新しいデータセットを追加したMEGAVERSEベンチマークを提案し、さまざまなLLMsを評価する。実験の結果、GPT4とPaLM2が優れたパフォーマンスを示したが、データの汚染などの問題があるため、さらなる取り組みが必要である。</span>
@@ -12,14 +16,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1069">RoleLLM: Benchmarking, Eliciting, and Enhancing Role-Playing Abilities  of Large Language Models, Zekun Moore Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）を使用して役割演技の能力を向上させるためのフレームワークであるRoleLLMを提案しています。RoleLLMは、役割プロファイルの構築、コンテキストベースの指示生成、役割プロンプトによる話し方の模倣、オープンソースモデルの微調整と役割のカスタマイズの4つのステージで構成されています。さらに、RoleBenchと呼ばれる役割演技のためのベンチマークデータセットを作成し、RoleLLaMAとRoleGLMというモデルを開発しました。これにより、役割演技の能力が大幅に向上し、GPT-4と同等の結果を達成しました。</span>
 <span class="snippet"><span>Comment</span># Overview# RoleBench ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a4f8ad3-17d1-4a85-b553-6452371e2ccf" alt="image"><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/AutoML.html">#AutoML</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1067">Benchmarking Large Language Models As AI Research Agents, Qian Huang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、AI研究エージェントを構築し、科学的な実験のタスクを実行するためのベンチマークとしてMLAgentBenchを提案する。エージェントはファイルの読み書きやコードの実行などのアクションを実行し、実験を実行し、結果を分析し、機械学習パイプラインのコードを変更することができる。GPT-4ベースの研究エージェントは多くのタスクで高性能なモデルを実現できるが、成功率は異なる。また、LLMベースの研究エージェントにはいくつかの課題がある。</span>
-<span class="snippet"><span>Comment</span>AIDBのツイート: https://x.com/ai_database/status/1711274596966834282?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QGPT4がMLモデルをどれだけ自動的に構築できるかを調べた模様。また、ベンチマークデータを作成した模様。結果として ...</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a4f8ad3-17d1-4a85-b553-6452371e2ccf" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/AutoML.html">#AutoML</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1067">Benchmarking Large Language Models As AI Research Agents, Qian Huang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、AI研究エージェントを構築し、科学的な実験のタスクを実行するためのベンチマークとしてMLAgentBenchを提案する。エージェントはファイルの読み書きやコードの実行などのアクションを実行し、実験を実行し、結果を分析し、機械学習パイプラインのコードを変更することができる。GPT-4ベースの研究エージェントは多くのタスクで高性能なモデルを実現できるが、成功率は異なる。また、LLMベースの研究エージェントにはいくつかの課題がある。</span>
+<span class="snippet"><span>Comment</span>AIDBのツイート: https://x.com/ai_database/status/1711274596966834282?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QGPT4がMLモデルをどれだけ自動的に構築できるかを調べた模様。また、ベンチマークデータを作成した模様。結果として ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a><a class="button" href="articles/NumericReasoning.html">#NumericReasoning</a><a class="button" href="articles/Mathematics.html">#Mathematics</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1050">MAmmoTH: Building Math Generalist Models through Hybrid Instruction  Tuning, Xiang Yue+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>MAmmoTHは、数学の問題解決に特化した大規模言語モデルであり、厳密にキュレーションされた教育データセットで訓練されています。このモデルは、CoTとPoTのハイブリッドな根拠を提供し、さまざまな数学の分野を包括的にカバーしています。MAmmoTHは、既存のオープンソースモデルを大幅に上回り、特にMATHデータセットで高い精度を示しています。この研究は、多様な問題のカバレッジとハイブリッドな根拠の使用の重要性を強調しています。</span>
