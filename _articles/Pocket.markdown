@@ -5,20 +5,28 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2023-11-27</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
+<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
+<br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166">UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
+<span class="snippet"><span>Comment</span>後で読む（画像は元ツイートより元ツイート: https://x.com/congwei1230/status/1730307767469068476?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image"><br><span class="issue_date">Issue Date: 2023-11-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1165">Mirasol3B: A Multimodal Autoregressive model for time-aligned and  contextual modalities, AJ Piergiovanni+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>異なるモダリティ（ビデオ、音声、テキスト）を組み合わせるマルチモーダル学習の課題に取り組むため、本研究ではモダリティごとに個別の自己回帰モデルを使用するアプローチを提案する。提案手法では、時間に同期したモダリティ（音声とビデオ）と順序付けられたコンテキストモダリティを別々に処理するMirasol3Bモデルを使用する。また、ビデオと音声の長いシーケンスに対処するために、シーケンスをスニペットに分割し、Combinerメカニズムを使用して特徴を結合する。この手法は、マルチモーダルベンチマークで最先端の性能を発揮し、高い計算要求に対処し、時間的な依存関係をモデリングすることができる。</span>
-<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1164">Advancing Transformer Architecture in Long-Context Large Language  Models: A Comprehensive Survey, Yunpeng Huang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本論文では、Transformerベースの大規模言語モデル（LLMs）の長い文脈の能力を最適化するための包括的な調査を提案しています。現行のLLMsの制約や問題点を明確化し、アーキテクチャのアップグレードや評価の必要性について説明しています。さらに、最適化ツールキットや将来の研究の可能性についても議論しています。関連文献はhttps://github.com/Strivin0311/long-llms-learningでリアルタイムに更新されています。</span>
-<span class="snippet"><span>Comment</span>TransformerをLongContextに対応させる技術のサーベイ。（画像は元ツイートより）元ツイート: https://x.com/omarsar0/status/1727358484360945750?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1163">Exponentially Faster Language Modelling, Peter Belcak+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>UltraFastBERTは、推論時にわずか0.3%のニューロンしか使用せず、同等の性能を発揮することができる言語モデルです。UltraFastBERTは、高速フィードフォワードネットワーク（FFF）を使用して、効率的な実装を提供します。最適化されたベースラインの実装に比べて78倍の高速化を実現し、バッチ処理された推論に対しては40倍の高速化を実現します。トレーニングコード、ベンチマークのセットアップ、およびモデルの重みも公開されています。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1164">Advancing Transformer Architecture in Long-Context Large Language  Models: A Comprehensive Survey, Yunpeng Huang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本論文では、Transformerベースの大規模言語モデル（LLMs）の長い文脈の能力を最適化するための包括的な調査を提案しています。現行のLLMsの制約や問題点を明確化し、アーキテクチャのアップグレードや評価の必要性について説明しています。さらに、最適化ツールキットや将来の研究の可能性についても議論しています。関連文献はhttps://github.com/Strivin0311/long-llms-learningでリアルタイムに更新されています。</span>
+<span class="snippet"><span>Comment</span>TransformerをLongContextに対応させる技術のサーベイ。（画像は元ツイートより）元ツイート: https://x.com/omarsar0/status/1727358484360945750?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1163">Exponentially Faster Language Modelling, Peter Belcak+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>UltraFastBERTは、推論時にわずか0.3%のニューロンしか使用せず、同等の性能を発揮することができる言語モデルです。UltraFastBERTは、高速フィードフォワードネットワーク（FFF）を使用して、効率的な実装を提供します。最適化されたベースラインの実装に比べて78倍の高速化を実現し、バッチ処理された推論に対しては40倍の高速化を実現します。トレーニングコード、ベンチマークのセットアップ、およびモデルの重みも公開されています。</span>
 <br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1162">MultiLoRA: Democratizing LoRA for Better Multi-Task Learning, Yiming Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LoRAは、LLMsを効率的に適応させる手法であり、ChatGPTのようなモデルを複数のタスクに適用することが求められている。しかし、LoRAは複雑なマルチタスクシナリオでの適応性能に制限がある。そこで、本研究ではMultiLoRAという手法を提案し、LoRAの制約を緩和する。MultiLoRAは、LoRAモジュールをスケーリングし、パラメータの依存性を減らすことで、バランスの取れたユニタリ部分空間を得る。実験結果では、わずかな追加パラメータでMultiLoRAが優れたパフォーマンスを示し、上位特異ベクトルへの依存性が低下していることが確認された。</span>
@@ -932,7 +940,11 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/409">過去情報の内容選択を取り入れた スポーツダイジェストの自動生成, 加藤+, 東工大, NLP21</a>
 <a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2021-08-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/403">RLTutor: Reinforcement Learning Based Adaptive Tutoring System by Modeling Virtual Student with Fewer Interactions, Kubotani+, Waseda University, IJCAI21</a>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><a class="button" href="articles/QA-based.html">#QA-based</a><br><span class="issue_date">Issue Date: 2023-08-20</span>
+<a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1168">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks, Patrick Lewis+, N_A, arXiv20</a>
+<span class="snippet"><span>Summary</span>大規模な事前学習言語モデルを使用した検索強化生成（RAG）の微調整手法を提案しました。RAGモデルは、パラメトリックメモリと非パラメトリックメモリを組み合わせた言語生成モデルであり、幅広い知識集約的な自然言語処理タスクで最先端の性能を発揮しました。特に、QAタスクでは他のモデルを上回り、言語生成タスクでは具体的で多様な言語を生成することができました。</span>
+<span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><a class="button" href="articles/QA-based.html">#QA-based</a><br><span class="issue_date">Issue Date: 2023-08-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1007">Asking and Answering Questions to Evaluate the Factual Consistency of Summaries, Wang, ACL20</a>
 <span class="snippet"><span>Summary</span>要約の事実の不整合を特定するための自動評価プロトコルであるQAGSを提案する。QAGSは、要約とソースについて質問をし、整合性がある回答を得ることで要約の事実的整合性を評価する。QAGSは他の自動評価指標と比較して高い相関を持ち、自然な解釈可能性を提供する。QAGSは有望なツールであり、https://github.com/W4ngatang/qagsで利用可能。</span>
 <span class="snippet"><span>Comment</span>QAGS生成された要約からQuestionを生成する手法。precision-oriented ...</span>

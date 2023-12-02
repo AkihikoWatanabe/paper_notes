@@ -68,7 +68,10 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2022-09-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/488">Text-to-Text Pre-Training for Data-to-Text Tasks, Mihir+, Google Research, INLG20</a>
 <span class="snippet"><span>Comment</span># 概要pre-training済みのT5に対して、Data2Textのデータセットでfinetuningを実施する方法を提案。WebNLG（graph-to-text）, ToTTo（table-to-text）, Multiwoz（task oriented dialogue）データにおいて# ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1129">Transformers.js, 2023</a>
 <span class="snippet"><span>Comment</span>ブラウザ上でTransformerベースの様々なモデルを動作させることができるライブラリ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>

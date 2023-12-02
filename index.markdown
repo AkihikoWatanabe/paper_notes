@@ -5,45 +5,47 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AutomaticPromptEngineering.html">#AutomaticPromptEngineering</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1171">multimodal-maestro</a>
+<span class="snippet"><span>Comment</span>Large Multimodal Model (LMM)において、雑なpromptを与えるても自動的に良い感じoutputを生成してくれるっぽい？以下の例はリポジトリからの引用であるが、この例では、"Find dog." という雑なpromptから、画像中央に位置する犬に[9]というラベルを ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5220e62f-93f1-4eb9-b365-a9caaf933778" alt="image"><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1170">LaVie: Text-to-Video generation, demo</a>
+<span class="snippet"><span>Comment</span>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。FF14の赤魔導士に変えたら、それっぽいの出てきた ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image"><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
+<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1168">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks, Patrick Lewis+, N_A, arXiv20</a>
+<span class="snippet"><span>Summary</span>大規模な事前学習言語モデルを使用した検索強化生成（RAG）の微調整手法を提案しました。RAGモデルは、パラメトリックメモリと非パラメトリックメモリを組み合わせた言語生成モデルであり、幅広い知識集約的な自然言語処理タスクで最先端の性能を発揮しました。特に、QAタスクでは他のモデルを上回り、言語生成タスクでは具体的で多様な言語を生成することができました。</span>
+<span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166">UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
+<span class="snippet"><span>Comment</span>後で読む（画像は元ツイートより元ツイート: https://x.com/congwei1230/status/1730307767469068476?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1165">Mirasol3B: A Multimodal Autoregressive model for time-aligned and  contextual modalities, AJ Piergiovanni+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>異なるモダリティ（ビデオ、音声、テキスト）を組み合わせるマルチモーダル学習の課題に取り組むため、本研究ではモダリティごとに個別の自己回帰モデルを使用するアプローチを提案する。提案手法では、時間に同期したモダリティ（音声とビデオ）と順序付けられたコンテキストモダリティを別々に処理するMirasol3Bモデルを使用する。また、ビデオと音声の長いシーケンスに対処するために、シーケンスをスニペットに分割し、Combinerメカニズムを使用して特徴を結合する。この手法は、マルチモーダルベンチマークで最先端の性能を発揮し、高い計算要求に対処し、時間的な依存関係をモデリングすることができる。</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1164">Advancing Transformer Architecture in Long-Context Large Language  Models: A Comprehensive Survey, Yunpeng Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本論文では、Transformerベースの大規模言語モデル（LLMs）の長い文脈の能力を最適化するための包括的な調査を提案しています。現行のLLMsの制約や問題点を明確化し、アーキテクチャのアップグレードや評価の必要性について説明しています。さらに、最適化ツールキットや将来の研究の可能性についても議論しています。関連文献はhttps://github.com/Strivin0311/long-llms-learningでリアルタイムに更新されています。</span>
 <span class="snippet"><span>Comment</span>TransformerをLongContextに対応させる技術のサーベイ。（画像は元ツイートより）元ツイート: https://x.com/omarsar0/status/1727358484360945750?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1163">Exponentially Faster Language Modelling, Peter Belcak+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>UltraFastBERTは、推論時にわずか0.3%のニューロンしか使用せず、同等の性能を発揮することができる言語モデルです。UltraFastBERTは、高速フィードフォワードネットワーク（FFF）を使用して、効率的な実装を提供します。最適化されたベースラインの実装に比べて78倍の高速化を実現し、バッチ処理された推論に対しては40倍の高速化を実現します。トレーニングコード、ベンチマークのセットアップ、およびモデルの重みも公開されています。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1162">MultiLoRA: Democratizing LoRA for Better Multi-Task Learning, Yiming Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LoRAは、LLMsを効率的に適応させる手法であり、ChatGPTのようなモデルを複数のタスクに適用することが求められている。しかし、LoRAは複雑なマルチタスクシナリオでの適応性能に制限がある。そこで、本研究ではMultiLoRAという手法を提案し、LoRAの制約を緩和する。MultiLoRAは、LoRAモジュールをスケーリングし、パラメータの依存性を減らすことで、バランスの取れたユニタリ部分空間を得る。実験結果では、わずかな追加パラメータでMultiLoRAが優れたパフォーマンスを示し、上位特異ベクトルへの依存性が低下していることが確認された。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1161">NeuroPrompts: An Adaptive Framework to Optimize Prompts for  Text-to-Image Generation, Shachar Rosenman+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、テキストから画像への生成モデルの品質を向上させるための適応型フレームワークNeuroPromptsを提案します。このフレームワークは、事前学習された言語モデルを使用して制約付きテキストデコーディングを行い、人間のプロンプトエンジニアが生成するものに類似したプロンプトを生成します。これにより、高品質なテキストから画像への生成が可能となり、ユーザーはスタイルの特徴を制御できます。また、大規模な人間エンジニアリングされたプロンプトのデータセットを使用した実験により、当アプローチが自動的に品質の高いプロンプトを生成し、優れた画像品質を実現することを示しました。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1160">Visual In-Context Prompting, Feng Li+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、ビジョン領域における汎用的なビジュアルインコンテキストプロンプティングフレームワークを提案します。エンコーダーデコーダーアーキテクチャを使用し、さまざまなプロンプトをサポートするプロンプトエンコーダーを開発しました。さらに、任意の数の参照画像セグメントをコンテキストとして受け取るように拡張しました。実験結果から、提案手法が非凡な参照および一般的なセグメンテーション能力を引き出し、競争力のあるパフォーマンスを示すことがわかりました。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1159">ZipLoRA: Any Subject in Any Style by Effectively Merging LoRAs, Viraj Shah+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>概要：概念駆動型のパーソナライズのための生成モデルの微調整手法であるZipLoRAを提案。ZipLoRAは、独立してトレーニングされたスタイルと主題のLoRAを統合し、任意の主題とスタイルの組み合わせで生成することができる。実験結果は、ZipLoRAが主題とスタイルの忠実度を改善しながら魅力的な結果を生成できることを示している。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1158">GAIA: a benchmark for General AI Assistants, Grégoire Mialon+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>GAIAは、General AI Assistantsのためのベンチマークであり、AI研究のマイルストーンとなる可能性がある。GAIAは、推論、マルチモダリティの処理、ウェブブラウジングなど、実世界の質問に対する基本的な能力を必要とする。人間の回答者は92％の正答率を達成し、GPT-4は15％の正答率を達成した。これは、最近の傾向とは異なる結果であり、専門的なスキルを必要とするタスクではLLMsが人間を上回っている。GAIAは、人間の平均的な堅牢性と同等の能力を持つシステムがAGIの到来に重要であると考えている。GAIAの手法を使用して、466の質問と回答を作成し、一部を公開してリーダーボードで利用可能にする。</span>
-<span class="snippet"><span>Comment</span>Yann LeCun氏の紹介ツイートhttps://x.com/ylecun/status/1727707519470977311?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QMeta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
-<span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
-<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
-<span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
-## NLP (619)
+## NLP (623)
 ### LanguageModel (227)
 <div class="visible-content">
 <a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
@@ -3192,6 +3194,31 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/326">Cross-domain personalized image captioning, Long+, 2019</a>
 <button onclick="hideContent(24)" style="display: none;">hide</button>
 </div>
+### AutomaticPromptEngineering (5)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1128">Prompt Engineering a Prompt Engineer, Qinyuan Ye+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>プロンプトエンジニアリングは、LLMsのパフォーマンスを最適化するための重要なタスクであり、本研究ではメタプロンプトを構築して自動的なプロンプトエンジニアリングを行います。改善されたパフォーマンスにつながる推論テンプレートやコンテキストの明示などの要素を導入し、一般的な最適化概念をメタプロンプトに組み込みます。提案手法であるPE2は、さまざまなデータセットやタスクで強力なパフォーマンスを発揮し、以前の自動プロンプトエンジニアリング手法を上回ります。さらに、PE2は意味のあるプロンプト編集を行い、カウンターファクトの推論能力を示します。</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1037">Large Language Models as Optimizers, Chengrun Yang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、最適化タスクを自然言語で記述し、大規模言語モデル（LLMs）を使用して最適化を行う手法「Optimization by PROmpting（OPRO）」を提案しています。この手法では、LLMが以前の解とその値を含むプロンプトから新しい解を生成し、評価して次の最適化ステップのためのプロンプトに追加します。実験結果では、OPROによって最適化された最良のプロンプトが、人間が設計したプロンプトよりも優れていることが示されました。</span>
+<span class="snippet"><span>Comment</span>`Take a deep breath and work on this problem step-by-step. `論文# 概要LLMを利用して最適化問題を解くためのフレームワークを提案したという話。論文中では、linear regressionや巡回セールスマン問題に適用している。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2a469085-8a14-4eac-85ee-3918fe1becd5" alt="image"><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1034">Large Language Models Are Human-Level Prompt Engineers, Yongchao Zhou+, ICLR23</a>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、自然言語の指示に基づいて一般的な用途のコンピュータとして優れた能力を持っています。しかし、モデルのパフォーマンスは、使用されるプロンプトの品質に大きく依存します。この研究では、自動プロンプトエンジニア（APE）を提案し、LLMによって生成された指示候補のプールから最適な指示を選択するために最適化します。実験結果は、APEが従来のLLMベースラインを上回り、19/24のタスクで人間の生成した指示と同等または優れたパフォーマンスを示しています。APEエンジニアリングされたプロンプトは、モデルの性能を向上させるだけでなく、フューショット学習のパフォーマンスも向上させることができます。詳細は、https://sites.google.com/view/automatic-prompt-engineerをご覧ください。</span>
+<span class="snippet"><span>Comment</span>プロジェクトサイト: https://sites.google.com/view/automatic-prompt-engineer ...</span>
+</div>
+<button onclick="showMore(25)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/532">Enhancing LLM Chain-of-Thought w_ Iterative Bootstrapping, Sun+, Xiamen University （w_ MSRA et al.）, arXiv23</a>
+<span class="snippet"><span>Comment</span>Zero shot CoTからスタートし、正しく問題に回答できるようにreasoningを改善するようにpromptをreviseし続けるループを回す。最終的にループした結果を要約し、それらをプールする。テストセットに対しては、プールの中からNshotをサンプルしinferenceを行う。![imで ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1171">multimodal-maestro</a>
+<span class="snippet"><span>Comment</span>Large Multimodal Model (LMM)において、雑なpromptを与えるても自動的に良い感じoutputを生成してくれるっぽい？以下の例はリポジトリからの引用であるが、この例では、"Find dog." という雑なpromptから、画像中央に位置する犬に[9]というラベルを ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5220e62f-93f1-4eb9-b365-a9caaf933778" alt="image"><button onclick="hideContent(25)" style="display: none;">hide</button>
+</div>
 ### SentimentAnalysis (4)
 <div class="visible-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
@@ -3203,12 +3230,12 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/365">Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</a>
 <span class="snippet"><span>Comment</span>#363 より、本論文を引用して「CNN ベースのモデルが、畳み込み演算により文から特定のローカルパターンを検出して抽出できるため、他のモデル（e.g. Recurrent Neural Network, Recursive Neural Network）よりも優れていることが経験的に示されている」 ...</span>
 </div>
-<button onclick="showMore(25)">more</button>
+<button onclick="showMore(26)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/OpinionMining.html">#OpinionMining</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/231">Opinion mining and sentiment analysis, Pang+, Foundations and Trends in Information Retrieval, 2008</a>
-<button onclick="hideContent(25)" style="display: none;">hide</button>
+<button onclick="hideContent(26)" style="display: none;">hide</button>
 </div>
 ### DataGeneration (4)
 <div class="visible-content">
@@ -3224,34 +3251,12 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/533">WizardLM: Empowering Large Language Models to Follow Complex Instructions, Xu+, Microsoft_Peking University, arXiv23</a>
 <span class="snippet"><span>Comment</span>instruction trainingは大きな成功を収めているが、人間がそれらのデータを作成するのはコストがかかる。また、そもそも複雑なinstructionを人間が作成するのは苦労する。そこで、LLMに自動的に作成させる手法を提案している（これはself instructと一緒）。データを生成す ...</span>
 </div>
-<button onclick="showMore(26)">more</button>
+<button onclick="showMore(27)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-04-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/517">ChatGPT Outperforms Crowd-Workers for Text-Annotation Tasks, Gilardi+, University of Zurich, arXiv23</a>
 <span class="snippet"><span>Comment</span># 概要2300件程度のツイートを分類するタスクにおいて、訓練した学部生によるアノテーションを正解とし、クラウドワーカーとChatGPTでのzero-shotでの予測の性能を比較した。分類タスクは、比較的難易度の高い分類問題であり、クラウドワーカーでも正解率は難しいタスクでは15~25%程度であ# ...</span>
-<button onclick="hideContent(26)" style="display: none;">hide</button>
-</div>
-### AutomaticPromptEngineering (4)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1128">Prompt Engineering a Prompt Engineer, Qinyuan Ye+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>プロンプトエンジニアリングは、LLMsのパフォーマンスを最適化するための重要なタスクであり、本研究ではメタプロンプトを構築して自動的なプロンプトエンジニアリングを行います。改善されたパフォーマンスにつながる推論テンプレートやコンテキストの明示などの要素を導入し、一般的な最適化概念をメタプロンプトに組み込みます。提案手法であるPE2は、さまざまなデータセットやタスクで強力なパフォーマンスを発揮し、以前の自動プロンプトエンジニアリング手法を上回ります。さらに、PE2は意味のあるプロンプト編集を行い、カウンターファクトの推論能力を示します。</span>
-<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1037">Large Language Models as Optimizers, Chengrun Yang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、最適化タスクを自然言語で記述し、大規模言語モデル（LLMs）を使用して最適化を行う手法「Optimization by PROmpting（OPRO）」を提案しています。この手法では、LLMが以前の解とその値を含むプロンプトから新しい解を生成し、評価して次の最適化ステップのためのプロンプトに追加します。実験結果では、OPROによって最適化された最良のプロンプトが、人間が設計したプロンプトよりも優れていることが示されました。</span>
-<span class="snippet"><span>Comment</span>`Take a deep breath and work on this problem step-by-step. `論文# 概要LLMを利用して最適化問題を解くためのフレームワークを提案したという話。論文中では、linear regressionや巡回セールスマン問題に適用している。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2a469085-8a14-4eac-85ee-3918fe1becd5" alt="image"><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1034">Large Language Models Are Human-Level Prompt Engineers, Yongchao Zhou+, ICLR23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、自然言語の指示に基づいて一般的な用途のコンピュータとして優れた能力を持っています。しかし、モデルのパフォーマンスは、使用されるプロンプトの品質に大きく依存します。この研究では、自動プロンプトエンジニア（APE）を提案し、LLMによって生成された指示候補のプールから最適な指示を選択するために最適化します。実験結果は、APEが従来のLLMベースラインを上回り、19/24のタスクで人間の生成した指示と同等または優れたパフォーマンスを示しています。APEエンジニアリングされたプロンプトは、モデルの性能を向上させるだけでなく、フューショット学習のパフォーマンスも向上させることができます。詳細は、https://sites.google.com/view/automatic-prompt-engineerをご覧ください。</span>
-<span class="snippet"><span>Comment</span>プロジェクトサイト: https://sites.google.com/view/automatic-prompt-engineer ...</span>
-</div>
-<button onclick="showMore(27)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/532">Enhancing LLM Chain-of-Thought w_ Iterative Bootstrapping, Sun+, Xiamen University （w_ MSRA et al.）, arXiv23</a>
-<span class="snippet"><span>Comment</span>Zero shot CoTからスタートし、正しく問題に回答できるようにreasoningを改善するようにpromptをreviseし続けるループを回す。最終的にループした結果を要約し、それらをプールする。テストセットに対しては、プールの中からNshotをサンプルしinferenceを行う。![imで ...</span>
 <button onclick="hideContent(27)" style="display: none;">hide</button>
 </div>
 ### DataDistillation (4)
@@ -3400,6 +3405,19 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/853">DataFinder: Scientific Dataset Recommendation from Natural Language Descriptions</a>
 <span class="snippet"><span>Summary</span>データセットの推奨タスクを操作化し、DataFinderデータセットを構築した。DataFinderデータセットは、自動的に構築された大規模なトレーニングセットと専門家による評価セットを含んでいる。このデータセットを使用して、テキストベースのデータセット推奨のための優れたバイエンコーダリトリーバを提案し、関連する検索結果を見つけることができることを示した。データセットとモデルは一般に公開される。</span>
 </div>
+### GenerativeAI (3)
+<div class="visible-content">
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
+<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1170">LaVie: Text-to-Video generation, demo</a>
+<span class="snippet"><span>Comment</span>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。FF14の赤魔導士に変えたら、それっぽいの出てきた ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
+<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
+</div>
 ### InteractivePersonalizedSummarization (2)
 <div class="visible-content">
 <a class="button" href="articles/PersonalizedDocumentSummarization.html">#PersonalizedDocumentSummarization</a><a class="button" href="articles/ILP.html">#ILP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
@@ -3544,12 +3562,6 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の性能を向上させるための新しい手法であるAuto-Instructを提案しています。この手法では、LLMsが生成する指示の品質を自動的に向上させるために、多様な候補の指示を生成し、スコアリングモデルでランク付けします。実験結果では、Auto-Instructが人間による指示や既存のLLM生成指示を上回ることが示されています。また、他のLLMsでも顕著な汎化性能を示すことも確認されています。</span>
 <span class="snippet"><span>Comment</span>seed instructionとdemonstrationに基づいて、異なるスタイルのinstructionを自動生成し、自動生成したinstructionをとinferenceしたいexampleで条件づけてランキングし、良質なものを選択。選択したinstructionでinferenceを実施 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3b318cac-516d-4fc8-9097-ad695ab8223b" alt="image"></div>
-### GenerativeAI (1)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
-<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
-</div>
 ### LayoutGeneration (1)
 <div class="visible-content">
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
@@ -3557,7 +3569,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>LayoutPrompterは、大規模言語モデル（LLMs）を使用して条件付きのグラフィックレイアウト生成を行う手法であり、入力-出力のシリアル化、動的な模範的選択、およびレイアウトのランキングの3つのコンポーネントで構成されています。LayoutPrompterは、既存の手法と競合したり上回ったりする性能を持ち、トレーニングや微調整なしで使用できる汎用性のあるアプローチであることが実験結果から示されています。また、データ効率にも優れており、トレーニングベースラインよりも有意に優れていることも示されています。プロジェクトは、https://github.com/microsoft/LayoutGeneration/tree/main/LayoutPrompterで利用可能です。</span>
 <span class="snippet"><span>Comment</span>Conditional Graphic Layout Generation ...</span>
 </div>
-### Others (37)
+### Others (38)
 <div class="visible-content">
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-07-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/857">Pre-Training to Learn in Context, ACL23</a>
@@ -3656,7 +3668,10 @@ author: AkihikoWATANABE
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/DomainAdaptation.html">#DomainAdaptation</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/126">Frustratingly easy domain adaptation, Daume, ACL07</a>
 <span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png)domain adaptationをする際に、Source側のFeatu ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/Embed.html">#Embed</a><br><span class="issue_date">Issue Date: 2023-10-07</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Sentence.html">#Sentence</a><a class="button" href="articles/Embed.html">#Embed</a><br><span class="issue_date">Issue Date: 2023-10-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1057">Japanese Simple SimCSE</a>
 <span class="snippet"><span>Comment</span>日本語の事前学習言語モデルと、日本語の学習データを利用してSimCSEを学習し網羅的に評価をした結果が記載されている。Supervised SimCSE, UnsupervisednSimCSEの両方で実験。また、学習するデータセットを変更したときの頑健性も検証。性能が良かったモデルはSentenc ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
@@ -3675,7 +3690,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(30)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (392)
+## Article (395)
 ### LanguageModel (90)
 <div class="visible-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
@@ -4861,21 +4876,24 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>DKT等のDeepなモデルでは、これまで問題テキストの情報等は利用されてこなかったが、learning logのみならず、問題テキストの情報等もKTする際に活用した研究。#354  をより洗練させjournal化させたものだと思われる。#354  ではKTというより、問題の正誤を予測するモデモデ ...</span>
 <button onclick="hideContent(42)" style="display: none;">hide</button>
 </div>
-### GenerativeAI (9)
+### GenerativeAI (10)
 <div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1170">LaVie: Text-to-Video generation, demo</a>
+<span class="snippet"><span>Comment</span>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。FF14の赤魔導士に変えたら、それっぽいの出てきた ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1141">生成系 AI でプロダクトの価値を高めるには, 2023</a>
 <span class="snippet"><span>Comment</span>AWS久保さんの資料。後で読む ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1141">生成系 AI でプロダクトの価値を高めるには, 2023</a>
 <span class="snippet"><span>Comment</span>AWS久保さんの資料。後で読む ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
-<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
 </div>
 <button onclick="showMore(43)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
+<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
 <span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
@@ -5332,20 +5350,29 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (56)
+### AutomaticPromptEngineering (1)
 <div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1171">multimodal-maestro</a>
+<span class="snippet"><span>Comment</span>Large Multimodal Model (LMM)において、雑なpromptを与えるても自動的に良い感じoutputを生成してくれるっぽい？以下の例はリポジトリからの引用であるが、この例では、"Find dog." という雑なpromptから、画像中央に位置する犬に[9]というラベルを ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5220e62f-93f1-4eb9-b365-a9caaf933778" alt="image"></div>
+### Others (57)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
 <span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
 <span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
 </div>
 <button onclick="showMore(54)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
@@ -9225,6 +9252,340 @@ author: AkihikoWATANABE
 <button onclick="hideContent(97)" style="display: none;">hide</button>
 </div>
 <hr>
+## ComputerVision (53)
+### LanguageModel (13)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1093">Exploring OCR Capabilities of GPT-4V（ision） : A Quantitative and  In-depth Evaluation, Yongxin Shi+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>この論文では、GPT-4Vという大規模マルチモーダルモデルの光学文字認識（OCR）能力を評価します。さまざまなOCRタスクにおいてモデルのパフォーマンスを評価し、ラテン文字の認識と理解において優れた性能を示す一方、多言語や複雑なタスクには苦戦することがわかりました。これに基づいて、専門のOCRモデルの必要性やGPT-4Vを活用する戦略についても検討します。この研究は、将来のLMMを用いたOCRの研究に役立つものです。評価のパイプラインと結果は、GitHubで利用可能です。</span>
+<span class="snippet"><span>Comment</span>GPT4-VをさまざまなOCRタスク「手書き、数式、テーブル構造認識等を含む）で性能検証した研究。MLT19データセットを使った評価では、日本語の性能は非常に低く、英語とフランス語が性能高い。手書き文字認識では英語と中国語でのみ評価。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c433b921-c527-441f-8925-00f4ac5fc6c3" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1068">Improved Baselines with Visual Instruction Tuning, Haotian Liu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LLaVAは、ビジョンと言語のクロスモーダルコネクタであり、データ効率が高く強力な性能を持つことが示されています。CLIP-ViT-L-336pxを使用し、学術タスク指向のVQAデータを追加することで、11のベンチマークで最先端のベースラインを確立しました。13Bのチェックポイントはわずか120万の公開データを使用し、1日で完全なトレーニングを終えます。コードとモデルは公開されます。</span>
+<span class="snippet"><span>Comment</span>画像分析が可能なオープンソースLLMとのこと。以下AIDBのツイートの引用>画像分析機能を持つオープンソースLLM『LLaVA-1.5』が登場しました。GPT-4に匹敵する能力を持つとのことです。>デモが公開されており、手持ちの画像を分析させることも可能です。>ウィスコンシン大学とM# Overvi ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8d0382b0-8c2b-438d-8de8-ee451f5e2649" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/883">Towards A Unified Agent with Foundation Models, Norman Di Palo+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、言語モデルとビジョン言語モデルを強化学習エージェントに組み込み、効率的な探索や経験データの再利用などの課題に取り組む方法を調査しました。スパースな報酬のロボット操作環境でのテストにおいて、ベースラインに比べて大幅な性能向上を実証し、学習済みのスキルを新しいタスクの解決や人間の専門家のビデオの模倣に活用する方法を示しました。</span>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image"></div>
+<button onclick="showMore(98)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Spoken Language Processing.html">#Spoken Language Processing</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/875">Meta-Transformer: A Unified Framework for Multimodal Learning, Yiyuan Zhang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、マルチモーダル学習のためのMeta-Transformerというフレームワークを提案しています。このフレームワークは、異なるモダリティの情報を処理し関連付けるための統一されたネットワークを構築することを目指しています。Meta-Transformerは、対応のないデータを使用して12のモダリティ間で統一された学習を行うことができ、テキスト、画像、ポイントクラウド、音声、ビデオなどの基本的なパーセプションから、X線、赤外線、高分光、IMUなどの実用的なアプリケーション、グラフ、表形式、時系列などのデータマイニングまで、幅広いタスクを処理することができます。Meta-Transformerは、トランスフォーマーを用いた統一されたマルチモーダルインテリジェンスの開発に向けた有望な未来を示しています。</span>
+<span class="snippet"><span>Comment</span>12種類のモダリティに対して学習できるTransformerを提案Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれのdownstreamタスクで学習 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8734073a-573e-442e-8b9f-fed559199d56" alt="image"><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/TabularData.html">#TabularData</a><a class="button" href="articles/TextToImage.html">#TextToImage</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/835">Table and Image Generation for Investigating Knowledge of Entities in Pre-trained Vision and Language Models, ACL23</a>
+<span class="snippet"><span>Summary</span>本研究では、Vision＆Language（V＆L）モデルにおけるエンティティの知識の保持方法を検証するために、テーブルと画像の生成タスクを提案します。このタスクでは、エンティティと関連する画像の知識を含むテーブルを生成する第一の部分と、キャプションとエンティティの関連知識を含むテーブルから画像を生成する第二の部分があります。提案されたタスクを実行するために、Wikipediaの約20万のinfoboxからWikiTIGデータセットを作成しました。最先端のV＆LモデルOFAを使用して、提案されたタスクのパフォーマンスを評価しました。実験結果は、OFAが一部のエンティティ知識を忘れることを示しています。</span>
+<a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/800">SPAE: Semantic Pyramid AutoEncoder for Multimodal Generation with Frozen  LLMs, Lijun Yu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>この研究では、Semantic Pyramid AutoEncoder（SPAE）を使用して、凍結されたLLMsが非言語的なモダリティを含むタスクを実行できるようにします。SPAEは、LLMの語彙から抽出されたトークンと生のピクセルデータの変換を行います。生成されたトークンは、視覚再構成に必要な意味と詳細を捉え、LLMが理解できる言語に変換します。実験結果では、我々のアプローチが画像理解と生成のタスクにおいて最先端のパフォーマンスを25％以上上回ることを示しています。</span>
+<span class="snippet"><span>Comment</span>画像をLLMのtokenスペースにマッピングすることで、LLMがパラメータの更新なしにvisual taskを解くことを可能にした。in context learningによって、様々なvisuataskを解くことができる。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1e0f962f-e661-44e6-bc59-73d9ae87d6dd" alt="image"><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/775">Towards Language Models That Can See: Computer Vision Through the LENS  of Natural Language, William Berrios+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、LENSというモジュラーなアプローチを提案しています。このアプローチでは、大規模言語モデル（LLMs）を使用してコンピュータビジョンの問題に取り組みます。LENSは、独立したビジョンモジュールの出力に対して言語モデルを使用して推論を行います。私たちは、ゼロショットおよびフューショットのオブジェクト認識などのコンピュータビジョンの設定でLENSを評価しました。LENSは市販のLLMに適用でき、非常に競争力のあるパフォーマンスを発揮します。コードはオープンソースで提供されています。</span>
+<span class="snippet"><span>Comment</span>以下hillbigさんのツイートより引用> LENSは様々な画像認識や画像タスクを、画像からそれを説明するプロンプト（タグ、属性、状況説明文）と、テキスト上でのLLMの質問応答に分解し、それぞれ事前学習済みのモデルを使って実現する。マルチモーダル学習データを最小限にできる（書き起こしさえできればよ ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/547">AudioGPT: Understanding and Generating Speech, Music, Sound, and Talking Head, arXiv23</a>
+<span class="snippet"><span>Comment</span>text, audio, imageといったマルチモーダルなpromptから、audioに関する様々なタスクを実現できるシステムマルチモーダルデータをjointで学習したというわけではなく、色々なモデルの組み合わせてタスクを実現しているっぽい![image](https://user-images ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
+<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1107">StableDiffusion, LLMのGPUメモリ削減のあれこれ</a>
+<span class="snippet"><span>Comment</span>Gradient Accumulation, Gradient Checkpointingの説明が丁寧でわかりやすかった。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ChatGPT.html">#ChatGPT</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052">GPT-4V</a>
+<span class="snippet"><span>Comment</span>おう…やべえな… ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897">Introducing CM3leon, a more efficient, state-of-the-art generative model for text and images, 2023</a>
+<span class="snippet"><span>Summary</span>最近の自然言語処理の進歩により、生成型AIモデルへの関心と研究が加速しています。CM3leonは、テキストから画像への生成と画像からテキストへの生成を行う単一の基礎モデルです。</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
+<span class="snippet"><span>Comment</span>マルチモーダルなLLMのリストがまとめられている ...</span>
+<button onclick="hideContent(98)" style="display: none;">hide</button>
+</div>
+### NaturalLanguageGeneration (8)
+<div class="visible-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/891">InfoMetIC: An Informative Metric for Reference-free Image Caption Evaluation, ACL23</a>
+<span class="snippet"><span>Summary</span>自動画像キャプションの評価には、情報豊かなメトリック（InfoMetIC）が提案されています。これにより、キャプションの誤りや欠落した情報を詳細に特定することができます。InfoMetICは、テキストの精度スコア、ビジョンの再現スコア、および全体の品質スコアを提供し、人間の判断との相関も高いです。また、トークンレベルの評価データセットも構築されています。詳細はGitHubで公開されています。</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/TabularData.html">#TabularData</a><a class="button" href="articles/TextToImage.html">#TextToImage</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/835">Table and Image Generation for Investigating Knowledge of Entities in Pre-trained Vision and Language Models, ACL23</a>
+<span class="snippet"><span>Summary</span>本研究では、Vision＆Language（V＆L）モデルにおけるエンティティの知識の保持方法を検証するために、テーブルと画像の生成タスクを提案します。このタスクでは、エンティティと関連する画像の知識を含むテーブルを生成する第一の部分と、キャプションとエンティティの関連知識を含むテーブルから画像を生成する第二の部分があります。提案されたタスクを実行するために、Wikipediaの約20万のinfoboxからWikiTIGデータセットを作成しました。最先端のV＆LモデルOFAを使用して、提案されたタスクのパフォーマンスを評価しました。実験結果は、OFAが一部のエンティティ知識を忘れることを示しています。</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><a class="button" href="articles/TextToImage.html">#TextToImage</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/831">Learning to Imagine: Visually-Augmented Natural Language Generation, ACL23</a>
+<span class="snippet"><span>Summary</span>本研究では、視覚情報を活用した自然言語生成のためのLIVEという手法を提案しています。LIVEは、事前学習済み言語モデルを使用して、テキストに基づいて場面を想像し、高品質な画像を合成する方法です。また、CLIPを使用してテキストの想像力を評価し、段落ごとに画像を生成します。さまざまな実験により、LIVEの有効性が示されています。コード、モデル、データは公開されています。</span>
+<span class="snippet"><span>Comment</span>>まず、テキストに基づいて場面を想像します。入力テキストに基づいて高品質な画像を合成するために拡散モデルを使用します。次に、CLIPを使用して、テキストが想像力を喚起できるかを事後的に判断します。最後に、私たちの想像力は動的であり、段落全体に1つの画像を生成するのではなく、各文に対して合成を行います ...</span>
+</div>
+<button onclick="showMore(99)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2022-09-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/487">Generating Racing Game Commentary from Vision, Language, and Structured Data, Tatsuya+, INLG21</a>
+<span class="snippet"><span>Comment</span>データセット: https://kirt.airc.aist.go.jp/corpus/ja/RacingCommentary ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/90">Multi-Task Video Captioning with Video and Entailment Generation, Pasunuru+, ACL17</a>
+<span class="snippet"><span>Comment</span>解説スライド：https://www.slideshare.net/HangyoMasatsugu/hangyo-acl-paperreading2017multitask-video-captioning-with-video-and-entailment-generation/1multitas ...</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
+<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
+<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1003">走行動画を説明するLLMを作成し、80台のGPUで分散並列学習させた話</a>
+<button onclick="hideContent(99)" style="display: none;">hide</button>
+</div>
+### FoundationModel (5)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1127">Florence-2: Advancing a Unified Representation for a Variety of Vision  Tasks, Bin Xiao+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>Florence-2は、ビジョン基盤モデルであり、さまざまなビジョンタスクに対応するための統一されたプロンプトベースの表現を持っています。このモデルは、テキストプロンプトを受け取り、キャプショニング、オブジェクト検出、グラウンディング、セグメンテーションなどのタスクを実行し、テキスト形式で結果を生成します。また、FLD-5Bという大規模な注釈付きデータセットも開発されました。Florence-2は、多目的かつ包括的なビジョンタスクを実行するためにシーケンスツーシーケンス構造を採用しており、前例のないゼロショットおよびファインチューニングの能力を持つ強力なモデルです。</span>
+<span class="snippet"><span>Comment</span>Vison Foundation Model。Spatialな階層構造や、Semanticを捉えられるように訓練。Image/Prompt Encoderでエンコードされ、outputはtext + location informationとなる。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9fbfba62-190f-46eb-a893-5ebe76dda030" alt="image"><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/914">Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、視覚システムの基礎モデルについて包括的なレビューを提供します。これには、異なるモダリティを組み合わせるためのアーキテクチャ設計やトレーニング目標、トレーニングデータセットなどが含まれます。また、基礎モデルの評価や課題、最近の発展についても議論します。詳細なリストは、\url{https://github.com/awaisrauf/Awesome-CV-Foundational-Models}で入手できます。</span>
+<span class="snippet"><span>Comment</span>CVにおけるfoundation modelのsurvey。残されたチャレンジと研究の方向性が議論されている ...</span>
+<a class="button" href="articles/Navigation.html">#Navigation</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/802">ViNT: A Foundation Model for Visual Navigation, Dhruv Shah+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさまざまなナビゲーションタスクに適応します。ViNTは、拡散ベースのサブゴール提案と組み合わせることで、新しい環境を探索し、キロメートルスケールのナビゲーション問題を解決することができます。また、ViNTはプロンプトチューニングに触発された技術を使用して、新しいタスク仕様に適応することができます。ViNTはモバイルロボティクスのための効果的な基礎モデルとして確立されています。詳細はプロジェクトページを参照してください。</span>
+<span class="snippet"><span>Comment</span>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image"></div>
+<button onclick="showMore(100)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897">Introducing CM3leon, a more efficient, state-of-the-art generative model for text and images, 2023</a>
+<span class="snippet"><span>Summary</span>最近の自然言語処理の進歩により、生成型AIモデルへの関心と研究が加速しています。CM3leonは、テキストから画像への生成と画像からテキストへの生成を行う単一の基礎モデルです。</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InductiveBias.html">#InductiveBias</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/809">Objaverse-XL: A Universe of 10M+ 3D Objects</a>
+<span class="snippet"><span>Comment</span>10Mを超える3D objectのデータセットを公開し、3D Modelの基盤モデルとしてZero123-XLを訓練。元ツイートのGifがわかりやすい。https://twitter.com/mattdeitke/status/1678855859089326080?s=46&t=8VBxVyn ...</span>
+<button onclick="hideContent(100)" style="display: none;">hide</button>
+</div>
+### QuestionAnswering (4)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1068">Improved Baselines with Visual Instruction Tuning, Haotian Liu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LLaVAは、ビジョンと言語のクロスモーダルコネクタであり、データ効率が高く強力な性能を持つことが示されています。CLIP-ViT-L-336pxを使用し、学術タスク指向のVQAデータを追加することで、11のベンチマークで最先端のベースラインを確立しました。13Bのチェックポイントはわずか120万の公開データを使用し、1日で完全なトレーニングを終えます。コードとモデルは公開されます。</span>
+<span class="snippet"><span>Comment</span>画像分析が可能なオープンソースLLMとのこと。以下AIDBのツイートの引用>画像分析機能を持つオープンソースLLM『LLaVA-1.5』が登場しました。GPT-4に匹敵する能力を持つとのことです。>デモが公開されており、手持ちの画像を分析させることも可能です。>ウィスコンシン大学とM# Overvi ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8d0382b0-8c2b-438d-8de8-ee451f5e2649" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/800">SPAE: Semantic Pyramid AutoEncoder for Multimodal Generation with Frozen  LLMs, Lijun Yu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>この研究では、Semantic Pyramid AutoEncoder（SPAE）を使用して、凍結されたLLMsが非言語的なモダリティを含むタスクを実行できるようにします。SPAEは、LLMの語彙から抽出されたトークンと生のピクセルデータの変換を行います。生成されたトークンは、視覚再構成に必要な意味と詳細を捉え、LLMが理解できる言語に変換します。実験結果では、我々のアプローチが画像理解と生成のタスクにおいて最先端のパフォーマンスを25％以上上回ることを示しています。</span>
+<span class="snippet"><span>Comment</span>画像をLLMのtokenスペースにマッピングすることで、LLMがパラメータの更新なしにvisual taskを解くことを可能にした。in context learningによって、様々なvisuataskを解くことができる。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1e0f962f-e661-44e6-bc59-73d9ae87d6dd" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/775">Towards Language Models That Can See: Computer Vision Through the LENS  of Natural Language, William Berrios+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、LENSというモジュラーなアプローチを提案しています。このアプローチでは、大規模言語モデル（LLMs）を使用してコンピュータビジョンの問題に取り組みます。LENSは、独立したビジョンモジュールの出力に対して言語モデルを使用して推論を行います。私たちは、ゼロショットおよびフューショットのオブジェクト認識などのコンピュータビジョンの設定でLENSを評価しました。LENSは市販のLLMに適用でき、非常に競争力のあるパフォーマンスを発揮します。コードはオープンソースで提供されています。</span>
+<span class="snippet"><span>Comment</span>以下hillbigさんのツイートより引用> LENSは様々な画像認識や画像タスクを、画像からそれを説明するプロンプト（タグ、属性、状況説明文）と、テキスト上でのLLMの質問応答に分解し、それぞれ事前学習済みのモデルを使って実現する。マルチモーダル学習データを最小限にできる（書き起こしさえできればよ ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image"></div>
+<button onclick="showMore(101)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/732">AVIS: Autonomous Visual Information Seeking with Large Language Models, Ziniu Hu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本論文では、自律的な情報収集ビジュアル質問応答フレームワークであるAVISを提案する。AVISは、大規模言語モデル（LLM）を活用して外部ツールの利用戦略を動的に決定し、質問に対する回答に必要な不可欠な知識を獲得する。ユーザースタディを実施して収集したデータを用いて、プランナーや推論エンジンを改善し、知識集約型ビジュアル質問応答ベンチマークで最先端の結果を達成することを示している。</span>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9df9b0ce-1f95-4e48-a4c9-b4c6b87d0ac6" alt="image"><button onclick="hideContent(101)" style="display: none;">hide</button>
+</div>
+### Survey (4)
+<div class="visible-content">
+<a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/914">Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、視覚システムの基礎モデルについて包括的なレビューを提供します。これには、異なるモダリティを組み合わせるためのアーキテクチャ設計やトレーニング目標、トレーニングデータセットなどが含まれます。また、基礎モデルの評価や課題、最近の発展についても議論します。詳細なリストは、\url{https://github.com/awaisrauf/Awesome-CV-Foundational-Models}で入手できます。</span>
+<span class="snippet"><span>Comment</span>CVにおけるfoundation modelのsurvey。残されたチャレンジと研究の方向性が議論されている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
+<span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
+<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
+</div>
+<button onclick="showMore(102)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
+<span class="snippet"><span>Comment</span>マルチモーダルなLLMのリストがまとめられている ...</span>
+<button onclick="hideContent(102)" style="display: none;">hide</button>
+</div>
+### ImageCaptioning (3)
+<div class="visible-content">
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
+<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
+<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/871">Comparing captioning models</a>
+<span class="snippet"><span>Comment</span>SoTAのvision languageモデルのデモ。BLIP, BLIP2,GIT,InstructBLIPを試せる ...</span>
+</div>
+### TextToImage (3)
+<div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/835">Table and Image Generation for Investigating Knowledge of Entities in Pre-trained Vision and Language Models, ACL23</a>
+<span class="snippet"><span>Summary</span>本研究では、Vision＆Language（V＆L）モデルにおけるエンティティの知識の保持方法を検証するために、テーブルと画像の生成タスクを提案します。このタスクでは、エンティティと関連する画像の知識を含むテーブルを生成する第一の部分と、キャプションとエンティティの関連知識を含むテーブルから画像を生成する第二の部分があります。提案されたタスクを実行するために、Wikipediaの約20万のinfoboxからWikiTIGデータセットを作成しました。最先端のV＆LモデルOFAを使用して、提案されたタスクのパフォーマンスを評価しました。実験結果は、OFAが一部のエンティティ知識を忘れることを示しています。</span>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/831">Learning to Imagine: Visually-Augmented Natural Language Generation, ACL23</a>
+<span class="snippet"><span>Summary</span>本研究では、視覚情報を活用した自然言語生成のためのLIVEという手法を提案しています。LIVEは、事前学習済み言語モデルを使用して、テキストに基づいて場面を想像し、高品質な画像を合成する方法です。また、CLIPを使用してテキストの想像力を評価し、段落ごとに画像を生成します。さまざまな実験により、LIVEの有効性が示されています。コード、モデル、データは公開されています。</span>
+<span class="snippet"><span>Comment</span>>まず、テキストに基づいて場面を想像します。入力テキストに基づいて高品質な画像を合成するために拡散モデルを使用します。次に、CLIPを使用して、テキストが想像力を喚起できるかを事後的に判断します。最後に、私たちの想像力は動的であり、段落全体に1つの画像を生成するのではなく、各文に対して合成を行います ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/741">ViCo: Detail-Preserving Visual Condition for Personalized Text-to-Image  Generation, Shaozhe Hao+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>拡散モデルを用いたパーソナライズされた画像生成において、高速で軽量なプラグインメソッドであるViCoを提案。注目モジュールを導入し、注目ベースのオブジェクトマスクを使用することで、一般的な過学習の劣化を軽減。元の拡散モデルのパラメータを微調整せず、軽量なパラメータトレーニングだけで、最新のモデルと同等またはそれ以上の性能を発揮することができる。</span>
+</div>
+### CommentGeneration (2)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2019-09-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/327">Attend to You: Personalized Image Captioning with Context Sequence Memory Networks, Park+, arXiv 2017</a>
+<span class="snippet"><span>Comment</span>画像が与えられたときに、その画像に対するHashtag predictionと、personalizedなpost generationを行うタスクを提案。InstagramのPostの簡易化などに応用できる。Postを生成するためには、自身の言葉で、画像についての説明や、contextとい ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2019-09-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/326">Cross-domain personalized image captioning, Long+, 2019</a>
+</div>
+### Tutorial (2)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2022-10-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/489">CNN vs. ViT, 牛久先生</a>
+<span class="snippet"><span>Comment</span>・Swin Transformer, Depth-wise conv, ConvNeXt, ViTとCNNのロバスト性の違いの話があり勉強になる・最終的な結論が、CNNもTransformerも変わらない（明確な勝者はいない; 今のところ引き分け）というのはおもしろかったdepth-wise co ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-05-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/346">EfficientNet解説</a>
+<span class="snippet"><span>Comment</span>既存画像認識モデルの構造は変化させず、広さ、深さ、解像度を複合スケーリングすることで、従来よりも少ないパラメータ数、かつ学習速度でSoTAを達成。広さ、深さ、解像度はそれぞれ性能に互いに影響しあっており、従来のように別々にスケーリングするのではなく、3つのバランスをとりながらスケーリングする。スケー ...</span>
+</div>
+### Evaluation (2)
+<div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/891">InfoMetIC: An Informative Metric for Reference-free Image Caption Evaluation, ACL23</a>
+<span class="snippet"><span>Summary</span>自動画像キャプションの評価には、情報豊かなメトリック（InfoMetIC）が提案されています。これにより、キャプションの誤りや欠落した情報を詳細に特定することができます。InfoMetICは、テキストの精度スコア、ビジョンの再現スコア、および全体の品質スコアを提供し、人間の判断との相関も高いです。また、トークンレベルの評価データセットも構築されています。詳細はGitHubで公開されています。</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
+<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
+</div>
+### Dataset (2)
+<div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/891">InfoMetIC: An Informative Metric for Reference-free Image Caption Evaluation, ACL23</a>
+<span class="snippet"><span>Summary</span>自動画像キャプションの評価には、情報豊かなメトリック（InfoMetIC）が提案されています。これにより、キャプションの誤りや欠落した情報を詳細に特定することができます。InfoMetICは、テキストの精度スコア、ビジョンの再現スコア、および全体の品質スコアを提供し、人間の判断との相関も高いです。また、トークンレベルの評価データセットも構築されています。詳細はGitHubで公開されています。</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/Conversation.html">#Conversation</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/839">MPCHAT: Towards Multimodal Persona-Grounded Conversation, ACL23</a>
+<span class="snippet"><span>Summary</span>本研究では、テキストと画像の両方を使用してパーソナを拡張し、マルチモーダルな対話エージェントを構築するためのデータセットであるMPCHATを提案します。さらに、マルチモーダルパーソナを組み込むことで、応答予測、パーソナのグラウンディング予測、話者の識別といったタスクのパフォーマンスを統計的に有意に改善できることを示します。この研究は、マルチモーダルな対話理解においてマルチモーダルパーソナの重要性を強調し、MPCHATが高品質なリソースとして役立つことを示しています。</span>
+</div>
+### GenerativeAI (2)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
+<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1170">LaVie: Text-to-Video generation, demo</a>
+<span class="snippet"><span>Comment</span>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。FF14の赤魔導士に変えたら、それっぽいの出てきた ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image"></div>
+### Library (1)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/499">Transformers Interpret, 2022</a>
+<span class="snippet"><span>Comment</span>transformersのモデルをたった2行追加するだけで、explainableにするライブラリ基本的にtextとvisionのclassificationをサポートしている模様text classificationの場合、たとえばinput tokenの各トークンの分類に対する寄与度をou ...</span>
+</div>
+### ImageSegmentation (1)
+<div class="visible-content">
+<a class="button" href="articles/Zero_Few-shot.html">#Zero/Few-shot</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/535">Track Anything: Segment Anything Meets Videos, yang+, SUSTech VIP Lab, arXiv23</a>
+<span class="snippet"><span>Comment</span>MetaのSAMを、videoに適用し、videow内のsegmentationを追加学習なしでやりました、という話だと思われる。 ...</span>
+</div>
+### ContrastiveLearning (1)
+<div class="visible-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/550">Learning Transferable Visual Models From Natural Language Supervision、Radford+, OpenAI, arXiv22</a>
+<span class="snippet"><span>Comment</span>CLIP論文。大量の画像と画像に対応するテキストのペアから、対象学習を行い、画像とテキスト間のsimilarityをはかれるようにしたモデル![image](https://user-images.githubusercontent.com/12249301/234729329-dfa5dc1e ...</span>
+</div>
+### DocumentSummarization (1)
+<div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
+<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
+</div>
+### Navigation (1)
+<div class="visible-content">
+<a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/802">ViNT: A Foundation Model for Visual Navigation, Dhruv Shah+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさまざまなナビゲーションタスクに適応します。ViNTは、拡散ベースのサブゴール提案と組み合わせることで、新しい環境を探索し、キロメートルスケールのナビゲーション問題を解決することができます。また、ViNTはプロンプトチューニングに触発された技術を使用して、新しいタスク仕様に適応することができます。ViNTはモバイルロボティクスのための効果的な基礎モデルとして確立されています。詳細はプロジェクトページを参照してください。</span>
+<span class="snippet"><span>Comment</span>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image"></div>
+### LLMAgent (1)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/883">Towards A Unified Agent with Foundation Models, Norman Di Palo+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、言語モデルとビジョン言語モデルを強化学習エージェントに組み込み、効率的な探索や経験データの再利用などの課題に取り組む方法を調査しました。スパースな報酬のロボット操作環境でのテストにおいて、ベースラインに比べて大幅な性能向上を実証し、学習済みのスキルを新しいタスクの解決や人間の専門家のビデオの模倣に活用する方法を示しました。</span>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image"></div>
+### ChatGPT (1)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052">GPT-4V</a>
+<span class="snippet"><span>Comment</span>おう…やべえな… ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image"></div>
+### LayoutGeneration (1)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1133">LayoutPrompter: Awaken the Design Ability of Large Language Models, Jiawei Lin+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LayoutPrompterは、大規模言語モデル（LLMs）を使用して条件付きのグラフィックレイアウト生成を行う手法であり、入力-出力のシリアル化、動的な模範的選択、およびレイアウトのランキングの3つのコンポーネントで構成されています。LayoutPrompterは、既存の手法と競合したり上回ったりする性能を持ち、トレーニングや微調整なしで使用できる汎用性のあるアプローチであることが実験結果から示されています。また、データ効率にも優れており、トレーニングベースラインよりも有意に優れていることも示されています。プロジェクトは、https://github.com/microsoft/LayoutGeneration/tree/main/LayoutPrompterで利用可能です。</span>
+<span class="snippet"><span>Comment</span>Conditional Graphic Layout Generation ...</span>
+</div>
+### AutomaticPromptEngineering (1)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1171">multimodal-maestro</a>
+<span class="snippet"><span>Comment</span>Large Multimodal Model (LMM)において、雑なpromptを与えるても自動的に良い感じoutputを生成してくれるっぽい？以下の例はリポジトリからの引用であるが、この例では、"Find dog." という雑なpromptから、画像中央に位置する犬に[9]というラベルを ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5220e62f-93f1-4eb9-b365-a9caaf933778" alt="image"></div>
+### Others (14)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/878">FABRIC: Personalizing Diffusion Models with Iterative Feedback, Dimitri von Rütte+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、拡散ベースのテキストから画像への変換モデルに人間のフィードバックを組み込む戦略を提案する。自己注意層を利用したトレーニングフリーなアプローチであるFABRICを提案し、さまざまな拡散モデルに適用可能であることを示す。また、包括的な評価方法を導入し、人間のフィードバックを統合した生成ビジュアルモデルのパフォーマンスを定量化するための堅牢なメカニズムを提供する。徹底的な分析により、反復的なフィードバックの複数のラウンドを通じて生成結果が改善されることを示す。これにより、個別化されたコンテンツ作成やカスタマイズなどの領域に応用が可能となる。</span>
+<span class="snippet"><span>Comment</span>upvote downvoteをフィードバックし、iterativeなmannerでDiffusionモデルの生成結果を改善できる手法。多くのDiffusion based Modelに対して適用可能デモ: https://huggingface.co/spaces/dvruette/fabric ...</span>
+<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/806">Generative Pretraining in Multimodality, Quan Sun+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>Emuは、マルチモーダルなコンテキストで画像とテキストを生成するためのTransformerベースのモデルです。このモデルは、単一モダリティまたはマルチモーダルなデータ入力を受け入れることができます。Emuは、マルチモーダルなシーケンスでトレーニングされ、画像からテキストへのタスクやテキストから画像へのタスクなど、さまざまなタスクで優れたパフォーマンスを示します。また、マルチモーダルアシスタントなどの拡張機能もサポートしています。</span>
+<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/805">EgoVLPv2: Egocentric Video-Language Pre-training with Fusion in the  Backbone, Shraman Pramanick+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>エゴセントリックビデオ言語の事前学習の第2世代（EgoVLPv2）は、ビデオと言語のバックボーンにクロスモーダルの融合を直接組み込むことができる。EgoVLPv2は強力なビデオテキスト表現を学習し、柔軟かつ効率的な方法でさまざまなダウンストリームタスクをサポートする。さらに、提案されたバックボーン戦略は軽量で計算効率が高い。EgoVLPv2は幅広いVLタスクで最先端のパフォーマンスを達成している。詳細はhttps://shramanpramanick.github.io/EgoVLPv2/を参照。</span>
+</div>
+<button onclick="showMore(103)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/751">Photoswap: Personalized Subject Swapping in Images, Jing Gu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、Photoswapという新しいアプローチを提案し、既存の画像において個人的な対象物の交換を可能にすることを目的としています。Photoswapは、参照画像から対象物の視覚的な概念を学習し、トレーニングフリーでターゲット画像に交換することができます。実験により、Photoswapが効果的で制御可能であり、ベースライン手法を大幅に上回る人間の評価を得ていることが示されました。Photoswapは、エンターテインメントからプロの編集まで幅広い応用可能性を持っています。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/563">Stable and low-precision training for large-scale vision-language models, Wortsman+, University of Washington, arXiv23</a>
+<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/235149432-1c818dc6-174c-4666-a26c-2ab9683b438b.png) ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/496">Sketch-Guided Text-to-Image Diffusion Models, Andrey+, Google Research, arXiv22</a>
+<span class="snippet"><span>Comment</span>スケッチとpromptを入力することで、スケッチ biasedな画像を生成することができる技術。すごい。![image](https://user-images.githubusercontent.com/12249301/205189823-66052368-60a8-4f03-a4b6-37 ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Visual Words.html">#Visual Words</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/63">Image Captioning with Semantic Attention, You+, CVPR16.</a>
+<span class="snippet"><span>Comment</span>画像そのものだけでなく、モデルへのInputにVisual Wordsを明示的に加えることで、captioningの精度が上がりましたという論文 ...</span>
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Visual Words.html">#Visual Words</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/62">What Value Do Explicit High Level Concepts Have in Vision to Language Problems?, Wu+, CVPR16.</a>
+<a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/61">Generating Visual Explanations, Hendrickks+, ECCV16</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-11-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/431">ResNet strikes back: An improved training procedure in timm, Wightman+, arXiv‘21</a>
+<span class="snippet"><span>Comment</span>2015年以後、様々な最適化アルゴリズム、正則化手法、データ拡張などが提案される中で、最新アーキテクチャのモデルにはそれらが適用される一方ベースラインとなるResNetではそれらが適用されず、論文の値のみが参照される現状はフェアではないので、ResNetの性能を向上させるような訓練手法を追求した研究 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-11-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/430">Deep Residual Learning for Image Recognition, He+, Microsoft Research, CVPR’16</a>
+<span class="snippet"><span>Comment</span>ResNet論文ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショ同 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/388">On Empirical Comparisons of Optimizers for Deep Learning, Choi+, arXiv‘19</a>
+<span class="snippet"><span>Comment</span>SGD, Momentum,RMSProp, Adam,NAdam等の中から、どの最適化手法(Optimizer)が優れているかを画像分類と言語モデルにおいて比較した研究（下記日本語解説記事から引用）日本語での解説: https://akichan-f.medium.com/optimizerはどれ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-05-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/344">MLP-like Architecture</a>
+<span class="snippet"><span>Comment</span>gMLP:大規模なself-attentionが無いSpatial Gating Unitを搭載したシンプルなMLPでも、Transformerの性能に近づけたよ（特にCV）。つまり、self-attentionはessentialというわけではなさそうだよ。NLPの場合はgMLPだとTransまあ ...</span>
+<button onclick="hideContent(103)" style="display: none;">hide</button>
+</div>
+<hr>
 ## EducationalDataMining (51)
 ### KnowledgeTracing (30)
 <div class="visible-content">
@@ -9237,7 +9598,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, arXiv22</a>
 <span class="snippet"><span>Comment</span>DKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attempt入 ...</span>
 </div>
-<button onclick="showMore(98)">more</button>
+<button onclick="showMore(104)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2022-08-31</span>
@@ -9317,7 +9678,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/353">EKT: Exercise-aware Knowledge Tracing for Student Performance Prediction, Hu+, IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, 2019</a>
 <span class="snippet"><span>Comment</span>DKT等のDeepなモデルでは、これまで問題テキストの情報等は利用されてこなかったが、learning logのみならず、問題テキストの情報等もKTする際に活用した研究。#354  をより洗練させjournal化させたものだと思われる。#354  ではKTというより、問題の正誤を予測するモデモデ ...</span>
-<button onclick="hideContent(98)" style="display: none;">hide</button>
+<button onclick="hideContent(104)" style="display: none;">hide</button>
 </div>
 ### StudentPerformancePrediction (17)
 <div class="visible-content">
@@ -9331,7 +9692,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/432">Modeling Hint-Taking Behavior and Knowledge State of Students with Multi-Task Learning, Chaudry+, Indian Institute of Technology, EDM18</a>
 <span class="snippet"><span>Comment</span>DKVMN (#352)をhint-takingタスクとmulti-task learningした研究![image](https://user-images.githubusercontent.com/12249301/141440172-6f708367-1804-4b0c-8c1a-4 ...</span>
 </div>
-<button onclick="showMore(99)">more</button>
+<button onclick="showMore(105)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
@@ -9375,7 +9736,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/295">Factorization Models for Forecasting Student Performance, Thai-Nghe+, EDM, 2011</a>
 <span class="snippet"><span>Comment</span>student performanceは、推薦システムの問題において、下記の２種類にcastできる：1. rating prediction task, すなわち、ユーザ・アイテム・ratingを、生徒・タスク・パフォーマンスとみなす2. sequentialなエフェクトを考慮して、foreTe ...</span>
-<button onclick="hideContent(99)" style="display: none;">hide</button>
+<button onclick="hideContent(105)" style="display: none;">hide</button>
 </div>
 ### Survey (2)
 <div class="visible-content">
@@ -9471,326 +9832,11 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/385">Deep Model for Dropout Prediction in MOOCs, Wang+, ICCSE17</a>
 <span class="snippet"><span>Comment</span>MOOCsにおける一つの大きな問題点としてDropout率が高いことがあげられ、これを防止するために様々なモデルが提案されてきた。これまで提案されてきたモデルでは人手によるfeature-engineeringが必要であることが問題である。なぜなら、feature-engineeringはdomai ...</span>
 </div>
-<button onclick="showMore(100)">more</button>
+<button onclick="showMore(106)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-07-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/400">Autonomously Generating Hints by Inferring Problem Solving Policies, Piech+, Stanford University, L@S15</a>
-<button onclick="hideContent(100)" style="display: none;">hide</button>
-</div>
-<hr>
-## ComputerVision (49)
-### LanguageModel (13)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1093">Exploring OCR Capabilities of GPT-4V（ision） : A Quantitative and  In-depth Evaluation, Yongxin Shi+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>この論文では、GPT-4Vという大規模マルチモーダルモデルの光学文字認識（OCR）能力を評価します。さまざまなOCRタスクにおいてモデルのパフォーマンスを評価し、ラテン文字の認識と理解において優れた性能を示す一方、多言語や複雑なタスクには苦戦することがわかりました。これに基づいて、専門のOCRモデルの必要性やGPT-4Vを活用する戦略についても検討します。この研究は、将来のLMMを用いたOCRの研究に役立つものです。評価のパイプラインと結果は、GitHubで利用可能です。</span>
-<span class="snippet"><span>Comment</span>GPT4-VをさまざまなOCRタスク「手書き、数式、テーブル構造認識等を含む）で性能検証した研究。MLT19データセットを使った評価では、日本語の性能は非常に低く、英語とフランス語が性能高い。手書き文字認識では英語と中国語でのみ評価。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c433b921-c527-441f-8925-00f4ac5fc6c3" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1068">Improved Baselines with Visual Instruction Tuning, Haotian Liu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>LLaVAは、ビジョンと言語のクロスモーダルコネクタであり、データ効率が高く強力な性能を持つことが示されています。CLIP-ViT-L-336pxを使用し、学術タスク指向のVQAデータを追加することで、11のベンチマークで最先端のベースラインを確立しました。13Bのチェックポイントはわずか120万の公開データを使用し、1日で完全なトレーニングを終えます。コードとモデルは公開されます。</span>
-<span class="snippet"><span>Comment</span>画像分析が可能なオープンソースLLMとのこと。以下AIDBのツイートの引用>画像分析機能を持つオープンソースLLM『LLaVA-1.5』が登場しました。GPT-4に匹敵する能力を持つとのことです。>デモが公開されており、手持ちの画像を分析させることも可能です。>ウィスコンシン大学とM# Overvi ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8d0382b0-8c2b-438d-8de8-ee451f5e2649" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/883">Towards A Unified Agent with Foundation Models, Norman Di Palo+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、言語モデルとビジョン言語モデルを強化学習エージェントに組み込み、効率的な探索や経験データの再利用などの課題に取り組む方法を調査しました。スパースな報酬のロボット操作環境でのテストにおいて、ベースラインに比べて大幅な性能向上を実証し、学習済みのスキルを新しいタスクの解決や人間の専門家のビデオの模倣に活用する方法を示しました。</span>
-<span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image"></div>
-<button onclick="showMore(101)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Spoken Language Processing.html">#Spoken Language Processing</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/875">Meta-Transformer: A Unified Framework for Multimodal Learning, Yiyuan Zhang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、マルチモーダル学習のためのMeta-Transformerというフレームワークを提案しています。このフレームワークは、異なるモダリティの情報を処理し関連付けるための統一されたネットワークを構築することを目指しています。Meta-Transformerは、対応のないデータを使用して12のモダリティ間で統一された学習を行うことができ、テキスト、画像、ポイントクラウド、音声、ビデオなどの基本的なパーセプションから、X線、赤外線、高分光、IMUなどの実用的なアプリケーション、グラフ、表形式、時系列などのデータマイニングまで、幅広いタスクを処理することができます。Meta-Transformerは、トランスフォーマーを用いた統一されたマルチモーダルインテリジェンスの開発に向けた有望な未来を示しています。</span>
-<span class="snippet"><span>Comment</span>12種類のモダリティに対して学習できるTransformerを提案Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれのdownstreamタスクで学習 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8734073a-573e-442e-8b9f-fed559199d56" alt="image"><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/TabularData.html">#TabularData</a><a class="button" href="articles/TextToImage.html">#TextToImage</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/835">Table and Image Generation for Investigating Knowledge of Entities in Pre-trained Vision and Language Models, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、Vision＆Language（V＆L）モデルにおけるエンティティの知識の保持方法を検証するために、テーブルと画像の生成タスクを提案します。このタスクでは、エンティティと関連する画像の知識を含むテーブルを生成する第一の部分と、キャプションとエンティティの関連知識を含むテーブルから画像を生成する第二の部分があります。提案されたタスクを実行するために、Wikipediaの約20万のinfoboxからWikiTIGデータセットを作成しました。最先端のV＆LモデルOFAを使用して、提案されたタスクのパフォーマンスを評価しました。実験結果は、OFAが一部のエンティティ知識を忘れることを示しています。</span>
-<a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/800">SPAE: Semantic Pyramid AutoEncoder for Multimodal Generation with Frozen  LLMs, Lijun Yu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>この研究では、Semantic Pyramid AutoEncoder（SPAE）を使用して、凍結されたLLMsが非言語的なモダリティを含むタスクを実行できるようにします。SPAEは、LLMの語彙から抽出されたトークンと生のピクセルデータの変換を行います。生成されたトークンは、視覚再構成に必要な意味と詳細を捉え、LLMが理解できる言語に変換します。実験結果では、我々のアプローチが画像理解と生成のタスクにおいて最先端のパフォーマンスを25％以上上回ることを示しています。</span>
-<span class="snippet"><span>Comment</span>画像をLLMのtokenスペースにマッピングすることで、LLMがパラメータの更新なしにvisual taskを解くことを可能にした。in context learningによって、様々なvisuataskを解くことができる。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1e0f962f-e661-44e6-bc59-73d9ae87d6dd" alt="image"><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/775">Towards Language Models That Can See: Computer Vision Through the LENS  of Natural Language, William Berrios+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>私たちは、LENSというモジュラーなアプローチを提案しています。このアプローチでは、大規模言語モデル（LLMs）を使用してコンピュータビジョンの問題に取り組みます。LENSは、独立したビジョンモジュールの出力に対して言語モデルを使用して推論を行います。私たちは、ゼロショットおよびフューショットのオブジェクト認識などのコンピュータビジョンの設定でLENSを評価しました。LENSは市販のLLMに適用でき、非常に競争力のあるパフォーマンスを発揮します。コードはオープンソースで提供されています。</span>
-<span class="snippet"><span>Comment</span>以下hillbigさんのツイートより引用> LENSは様々な画像認識や画像タスクを、画像からそれを説明するプロンプト（タグ、属性、状況説明文）と、テキスト上でのLLMの質問応答に分解し、それぞれ事前学習済みのモデルを使って実現する。マルチモーダル学習データを最小限にできる（書き起こしさえできればよ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/547">AudioGPT: Understanding and Generating Speech, Music, Sound, and Talking Head, arXiv23</a>
-<span class="snippet"><span>Comment</span>text, audio, imageといったマルチモーダルなpromptから、audioに関する様々なタスクを実現できるシステムマルチモーダルデータをjointで学習したというわけではなく、色々なモデルの組み合わせてタスクを実現しているっぽい![image](https://user-images ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
-<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1107">StableDiffusion, LLMのGPUメモリ削減のあれこれ</a>
-<span class="snippet"><span>Comment</span>Gradient Accumulation, Gradient Checkpointingの説明が丁寧でわかりやすかった。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ChatGPT.html">#ChatGPT</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052">GPT-4V</a>
-<span class="snippet"><span>Comment</span>おう…やべえな… ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897">Introducing CM3leon, a more efficient, state-of-the-art generative model for text and images, 2023</a>
-<span class="snippet"><span>Summary</span>最近の自然言語処理の進歩により、生成型AIモデルへの関心と研究が加速しています。CM3leonは、テキストから画像への生成と画像からテキストへの生成を行う単一の基礎モデルです。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
-<span class="snippet"><span>Comment</span>マルチモーダルなLLMのリストがまとめられている ...</span>
-<button onclick="hideContent(101)" style="display: none;">hide</button>
-</div>
-### NaturalLanguageGeneration (8)
-<div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/891">InfoMetIC: An Informative Metric for Reference-free Image Caption Evaluation, ACL23</a>
-<span class="snippet"><span>Summary</span>自動画像キャプションの評価には、情報豊かなメトリック（InfoMetIC）が提案されています。これにより、キャプションの誤りや欠落した情報を詳細に特定することができます。InfoMetICは、テキストの精度スコア、ビジョンの再現スコア、および全体の品質スコアを提供し、人間の判断との相関も高いです。また、トークンレベルの評価データセットも構築されています。詳細はGitHubで公開されています。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/TabularData.html">#TabularData</a><a class="button" href="articles/TextToImage.html">#TextToImage</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/835">Table and Image Generation for Investigating Knowledge of Entities in Pre-trained Vision and Language Models, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、Vision＆Language（V＆L）モデルにおけるエンティティの知識の保持方法を検証するために、テーブルと画像の生成タスクを提案します。このタスクでは、エンティティと関連する画像の知識を含むテーブルを生成する第一の部分と、キャプションとエンティティの関連知識を含むテーブルから画像を生成する第二の部分があります。提案されたタスクを実行するために、Wikipediaの約20万のinfoboxからWikiTIGデータセットを作成しました。最先端のV＆LモデルOFAを使用して、提案されたタスクのパフォーマンスを評価しました。実験結果は、OFAが一部のエンティティ知識を忘れることを示しています。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><a class="button" href="articles/TextToImage.html">#TextToImage</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/831">Learning to Imagine: Visually-Augmented Natural Language Generation, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、視覚情報を活用した自然言語生成のためのLIVEという手法を提案しています。LIVEは、事前学習済み言語モデルを使用して、テキストに基づいて場面を想像し、高品質な画像を合成する方法です。また、CLIPを使用してテキストの想像力を評価し、段落ごとに画像を生成します。さまざまな実験により、LIVEの有効性が示されています。コード、モデル、データは公開されています。</span>
-<span class="snippet"><span>Comment</span>>まず、テキストに基づいて場面を想像します。入力テキストに基づいて高品質な画像を合成するために拡散モデルを使用します。次に、CLIPを使用して、テキストが想像力を喚起できるかを事後的に判断します。最後に、私たちの想像力は動的であり、段落全体に1つの画像を生成するのではなく、各文に対して合成を行います ...</span>
-</div>
-<button onclick="showMore(102)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2022-09-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/487">Generating Racing Game Commentary from Vision, Language, and Structured Data, Tatsuya+, INLG21</a>
-<span class="snippet"><span>Comment</span>データセット: https://kirt.airc.aist.go.jp/corpus/ja/RacingCommentary ...</span>
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/90">Multi-Task Video Captioning with Video and Entailment Generation, Pasunuru+, ACL17</a>
-<span class="snippet"><span>Comment</span>解説スライド：https://www.slideshare.net/HangyoMasatsugu/hangyo-acl-paperreading2017multitask-video-captioning-with-video-and-entailment-generation/1multitas ...</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
-<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
-<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1003">走行動画を説明するLLMを作成し、80台のGPUで分散並列学習させた話</a>
-<button onclick="hideContent(102)" style="display: none;">hide</button>
-</div>
-### FoundationModel (5)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1127">Florence-2: Advancing a Unified Representation for a Variety of Vision  Tasks, Bin Xiao+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>Florence-2は、ビジョン基盤モデルであり、さまざまなビジョンタスクに対応するための統一されたプロンプトベースの表現を持っています。このモデルは、テキストプロンプトを受け取り、キャプショニング、オブジェクト検出、グラウンディング、セグメンテーションなどのタスクを実行し、テキスト形式で結果を生成します。また、FLD-5Bという大規模な注釈付きデータセットも開発されました。Florence-2は、多目的かつ包括的なビジョンタスクを実行するためにシーケンスツーシーケンス構造を採用しており、前例のないゼロショットおよびファインチューニングの能力を持つ強力なモデルです。</span>
-<span class="snippet"><span>Comment</span>Vison Foundation Model。Spatialな階層構造や、Semanticを捉えられるように訓練。Image/Prompt Encoderでエンコードされ、outputはtext + location informationとなる。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9fbfba62-190f-46eb-a893-5ebe76dda030" alt="image"><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/914">Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、視覚システムの基礎モデルについて包括的なレビューを提供します。これには、異なるモダリティを組み合わせるためのアーキテクチャ設計やトレーニング目標、トレーニングデータセットなどが含まれます。また、基礎モデルの評価や課題、最近の発展についても議論します。詳細なリストは、\url{https://github.com/awaisrauf/Awesome-CV-Foundational-Models}で入手できます。</span>
-<span class="snippet"><span>Comment</span>CVにおけるfoundation modelのsurvey。残されたチャレンジと研究の方向性が議論されている ...</span>
-<a class="button" href="articles/Navigation.html">#Navigation</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/802">ViNT: A Foundation Model for Visual Navigation, Dhruv Shah+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさまざまなナビゲーションタスクに適応します。ViNTは、拡散ベースのサブゴール提案と組み合わせることで、新しい環境を探索し、キロメートルスケールのナビゲーション問題を解決することができます。また、ViNTはプロンプトチューニングに触発された技術を使用して、新しいタスク仕様に適応することができます。ViNTはモバイルロボティクスのための効果的な基礎モデルとして確立されています。詳細はプロジェクトページを参照してください。</span>
-<span class="snippet"><span>Comment</span>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image"></div>
-<button onclick="showMore(103)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897">Introducing CM3leon, a more efficient, state-of-the-art generative model for text and images, 2023</a>
-<span class="snippet"><span>Summary</span>最近の自然言語処理の進歩により、生成型AIモデルへの関心と研究が加速しています。CM3leonは、テキストから画像への生成と画像からテキストへの生成を行う単一の基礎モデルです。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InductiveBias.html">#InductiveBias</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/809">Objaverse-XL: A Universe of 10M+ 3D Objects</a>
-<span class="snippet"><span>Comment</span>10Mを超える3D objectのデータセットを公開し、3D Modelの基盤モデルとしてZero123-XLを訓練。元ツイートのGifがわかりやすい。https://twitter.com/mattdeitke/status/1678855859089326080?s=46&t=8VBxVyn ...</span>
-<button onclick="hideContent(103)" style="display: none;">hide</button>
-</div>
-### QuestionAnswering (4)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1068">Improved Baselines with Visual Instruction Tuning, Haotian Liu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>LLaVAは、ビジョンと言語のクロスモーダルコネクタであり、データ効率が高く強力な性能を持つことが示されています。CLIP-ViT-L-336pxを使用し、学術タスク指向のVQAデータを追加することで、11のベンチマークで最先端のベースラインを確立しました。13Bのチェックポイントはわずか120万の公開データを使用し、1日で完全なトレーニングを終えます。コードとモデルは公開されます。</span>
-<span class="snippet"><span>Comment</span>画像分析が可能なオープンソースLLMとのこと。以下AIDBのツイートの引用>画像分析機能を持つオープンソースLLM『LLaVA-1.5』が登場しました。GPT-4に匹敵する能力を持つとのことです。>デモが公開されており、手持ちの画像を分析させることも可能です。>ウィスコンシン大学とM# Overvi ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8d0382b0-8c2b-438d-8de8-ee451f5e2649" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/800">SPAE: Semantic Pyramid AutoEncoder for Multimodal Generation with Frozen  LLMs, Lijun Yu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>この研究では、Semantic Pyramid AutoEncoder（SPAE）を使用して、凍結されたLLMsが非言語的なモダリティを含むタスクを実行できるようにします。SPAEは、LLMの語彙から抽出されたトークンと生のピクセルデータの変換を行います。生成されたトークンは、視覚再構成に必要な意味と詳細を捉え、LLMが理解できる言語に変換します。実験結果では、我々のアプローチが画像理解と生成のタスクにおいて最先端のパフォーマンスを25％以上上回ることを示しています。</span>
-<span class="snippet"><span>Comment</span>画像をLLMのtokenスペースにマッピングすることで、LLMがパラメータの更新なしにvisual taskを解くことを可能にした。in context learningによって、様々なvisuataskを解くことができる。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1e0f962f-e661-44e6-bc59-73d9ae87d6dd" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/775">Towards Language Models That Can See: Computer Vision Through the LENS  of Natural Language, William Berrios+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>私たちは、LENSというモジュラーなアプローチを提案しています。このアプローチでは、大規模言語モデル（LLMs）を使用してコンピュータビジョンの問題に取り組みます。LENSは、独立したビジョンモジュールの出力に対して言語モデルを使用して推論を行います。私たちは、ゼロショットおよびフューショットのオブジェクト認識などのコンピュータビジョンの設定でLENSを評価しました。LENSは市販のLLMに適用でき、非常に競争力のあるパフォーマンスを発揮します。コードはオープンソースで提供されています。</span>
-<span class="snippet"><span>Comment</span>以下hillbigさんのツイートより引用> LENSは様々な画像認識や画像タスクを、画像からそれを説明するプロンプト（タグ、属性、状況説明文）と、テキスト上でのLLMの質問応答に分解し、それぞれ事前学習済みのモデルを使って実現する。マルチモーダル学習データを最小限にできる（書き起こしさえできればよ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image"></div>
-<button onclick="showMore(104)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/732">AVIS: Autonomous Visual Information Seeking with Large Language Models, Ziniu Hu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本論文では、自律的な情報収集ビジュアル質問応答フレームワークであるAVISを提案する。AVISは、大規模言語モデル（LLM）を活用して外部ツールの利用戦略を動的に決定し、質問に対する回答に必要な不可欠な知識を獲得する。ユーザースタディを実施して収集したデータを用いて、プランナーや推論エンジンを改善し、知識集約型ビジュアル質問応答ベンチマークで最先端の結果を達成することを示している。</span>
-<span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9df9b0ce-1f95-4e48-a4c9-b4c6b87d0ac6" alt="image"><button onclick="hideContent(104)" style="display: none;">hide</button>
-</div>
-### Survey (4)
-<div class="visible-content">
-<a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/914">Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、視覚システムの基礎モデルについて包括的なレビューを提供します。これには、異なるモダリティを組み合わせるためのアーキテクチャ設計やトレーニング目標、トレーニングデータセットなどが含まれます。また、基礎モデルの評価や課題、最近の発展についても議論します。詳細なリストは、\url{https://github.com/awaisrauf/Awesome-CV-Foundational-Models}で入手できます。</span>
-<span class="snippet"><span>Comment</span>CVにおけるfoundation modelのsurvey。残されたチャレンジと研究の方向性が議論されている ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
-<span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
-<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
-</div>
-<button onclick="showMore(105)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
-<span class="snippet"><span>Comment</span>マルチモーダルなLLMのリストがまとめられている ...</span>
-<button onclick="hideContent(105)" style="display: none;">hide</button>
-</div>
-### ImageCaptioning (3)
-<div class="visible-content">
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
-<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
-<span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/871">Comparing captioning models</a>
-<span class="snippet"><span>Comment</span>SoTAのvision languageモデルのデモ。BLIP, BLIP2,GIT,InstructBLIPを試せる ...</span>
-</div>
-### TextToImage (3)
-<div class="visible-content">
-<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/835">Table and Image Generation for Investigating Knowledge of Entities in Pre-trained Vision and Language Models, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、Vision＆Language（V＆L）モデルにおけるエンティティの知識の保持方法を検証するために、テーブルと画像の生成タスクを提案します。このタスクでは、エンティティと関連する画像の知識を含むテーブルを生成する第一の部分と、キャプションとエンティティの関連知識を含むテーブルから画像を生成する第二の部分があります。提案されたタスクを実行するために、Wikipediaの約20万のinfoboxからWikiTIGデータセットを作成しました。最先端のV＆LモデルOFAを使用して、提案されたタスクのパフォーマンスを評価しました。実験結果は、OFAが一部のエンティティ知識を忘れることを示しています。</span>
-<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/831">Learning to Imagine: Visually-Augmented Natural Language Generation, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、視覚情報を活用した自然言語生成のためのLIVEという手法を提案しています。LIVEは、事前学習済み言語モデルを使用して、テキストに基づいて場面を想像し、高品質な画像を合成する方法です。また、CLIPを使用してテキストの想像力を評価し、段落ごとに画像を生成します。さまざまな実験により、LIVEの有効性が示されています。コード、モデル、データは公開されています。</span>
-<span class="snippet"><span>Comment</span>>まず、テキストに基づいて場面を想像します。入力テキストに基づいて高品質な画像を合成するために拡散モデルを使用します。次に、CLIPを使用して、テキストが想像力を喚起できるかを事後的に判断します。最後に、私たちの想像力は動的であり、段落全体に1つの画像を生成するのではなく、各文に対して合成を行います ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/741">ViCo: Detail-Preserving Visual Condition for Personalized Text-to-Image  Generation, Shaozhe Hao+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>拡散モデルを用いたパーソナライズされた画像生成において、高速で軽量なプラグインメソッドであるViCoを提案。注目モジュールを導入し、注目ベースのオブジェクトマスクを使用することで、一般的な過学習の劣化を軽減。元の拡散モデルのパラメータを微調整せず、軽量なパラメータトレーニングだけで、最新のモデルと同等またはそれ以上の性能を発揮することができる。</span>
-</div>
-### CommentGeneration (2)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2019-09-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/327">Attend to You: Personalized Image Captioning with Context Sequence Memory Networks, Park+, arXiv 2017</a>
-<span class="snippet"><span>Comment</span>画像が与えられたときに、その画像に対するHashtag predictionと、personalizedなpost generationを行うタスクを提案。InstagramのPostの簡易化などに応用できる。Postを生成するためには、自身の言葉で、画像についての説明や、contextとい ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2019-09-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/326">Cross-domain personalized image captioning, Long+, 2019</a>
-</div>
-### Tutorial (2)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2022-10-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/489">CNN vs. ViT, 牛久先生</a>
-<span class="snippet"><span>Comment</span>・Swin Transformer, Depth-wise conv, ConvNeXt, ViTとCNNのロバスト性の違いの話があり勉強になる・最終的な結論が、CNNもTransformerも変わらない（明確な勝者はいない; 今のところ引き分け）というのはおもしろかったdepth-wise co ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-05-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/346">EfficientNet解説</a>
-<span class="snippet"><span>Comment</span>既存画像認識モデルの構造は変化させず、広さ、深さ、解像度を複合スケーリングすることで、従来よりも少ないパラメータ数、かつ学習速度でSoTAを達成。広さ、深さ、解像度はそれぞれ性能に互いに影響しあっており、従来のように別々にスケーリングするのではなく、3つのバランスをとりながらスケーリングする。スケー ...</span>
-</div>
-### Evaluation (2)
-<div class="visible-content">
-<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/891">InfoMetIC: An Informative Metric for Reference-free Image Caption Evaluation, ACL23</a>
-<span class="snippet"><span>Summary</span>自動画像キャプションの評価には、情報豊かなメトリック（InfoMetIC）が提案されています。これにより、キャプションの誤りや欠落した情報を詳細に特定することができます。InfoMetICは、テキストの精度スコア、ビジョンの再現スコア、および全体の品質スコアを提供し、人間の判断との相関も高いです。また、トークンレベルの評価データセットも構築されています。詳細はGitHubで公開されています。</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
-<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
-</div>
-### Dataset (2)
-<div class="visible-content">
-<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/891">InfoMetIC: An Informative Metric for Reference-free Image Caption Evaluation, ACL23</a>
-<span class="snippet"><span>Summary</span>自動画像キャプションの評価には、情報豊かなメトリック（InfoMetIC）が提案されています。これにより、キャプションの誤りや欠落した情報を詳細に特定することができます。InfoMetICは、テキストの精度スコア、ビジョンの再現スコア、および全体の品質スコアを提供し、人間の判断との相関も高いです。また、トークンレベルの評価データセットも構築されています。詳細はGitHubで公開されています。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/Conversation.html">#Conversation</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/839">MPCHAT: Towards Multimodal Persona-Grounded Conversation, ACL23</a>
-<span class="snippet"><span>Summary</span>本研究では、テキストと画像の両方を使用してパーソナを拡張し、マルチモーダルな対話エージェントを構築するためのデータセットであるMPCHATを提案します。さらに、マルチモーダルパーソナを組み込むことで、応答予測、パーソナのグラウンディング予測、話者の識別といったタスクのパフォーマンスを統計的に有意に改善できることを示します。この研究は、マルチモーダルな対話理解においてマルチモーダルパーソナの重要性を強調し、MPCHATが高品質なリソースとして役立つことを示しています。</span>
-</div>
-### Library (1)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/499">Transformers Interpret, 2022</a>
-<span class="snippet"><span>Comment</span>transformersのモデルをたった2行追加するだけで、explainableにするライブラリ基本的にtextとvisionのclassificationをサポートしている模様text classificationの場合、たとえばinput tokenの各トークンの分類に対する寄与度をou ...</span>
-</div>
-### ImageSegmentation (1)
-<div class="visible-content">
-<a class="button" href="articles/Zero_Few-shot.html">#Zero/Few-shot</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/535">Track Anything: Segment Anything Meets Videos, yang+, SUSTech VIP Lab, arXiv23</a>
-<span class="snippet"><span>Comment</span>MetaのSAMを、videoに適用し、videow内のsegmentationを追加学習なしでやりました、という話だと思われる。 ...</span>
-</div>
-### ContrastiveLearning (1)
-<div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/550">Learning Transferable Visual Models From Natural Language Supervision、Radford+, OpenAI, arXiv22</a>
-<span class="snippet"><span>Comment</span>CLIP論文。大量の画像と画像に対応するテキストのペアから、対象学習を行い、画像とテキスト間のsimilarityをはかれるようにしたモデル![image](https://user-images.githubusercontent.com/12249301/234729329-dfa5dc1e ...</span>
-</div>
-### DocumentSummarization (1)
-<div class="visible-content">
-<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/Reference-based.html">#Reference-based</a><br><span class="issue_date">Issue Date: 2023-05-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/670">CIDEr: Consensus-based Image Description Evaluation, Ramakrishna Vedantam+, N_A, CVPR15</a>
-<span class="snippet"><span>Summary</span>画像を文章で自動的に説明することは、長年の課題である。本研究では、人間の合意を利用した画像説明の評価のための新しいパラダイムを提案し、新しい自動評価指標と2つの新しいデータセットを含む。提案手法は、人間の判断をより正確に捉えることができ、5つの最先端の画像説明手法を評価し、将来の比較のためのベンチマークを提供する。CIDEr-Dは、MS COCO評価サーバーの一部として利用可能であり、システマティックな評価とベンチマークを可能にする。</span>
-</div>
-### Navigation (1)
-<div class="visible-content">
-<a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/802">ViNT: A Foundation Model for Visual Navigation, Dhruv Shah+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさまざまなナビゲーションタスクに適応します。ViNTは、拡散ベースのサブゴール提案と組み合わせることで、新しい環境を探索し、キロメートルスケールのナビゲーション問題を解決することができます。また、ViNTはプロンプトチューニングに触発された技術を使用して、新しいタスク仕様に適応することができます。ViNTはモバイルロボティクスのための効果的な基礎モデルとして確立されています。詳細はプロジェクトページを参照してください。</span>
-<span class="snippet"><span>Comment</span>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image"></div>
-### LLMAgent (1)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/883">Towards A Unified Agent with Foundation Models, Norman Di Palo+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、言語モデルとビジョン言語モデルを強化学習エージェントに組み込み、効率的な探索や経験データの再利用などの課題に取り組む方法を調査しました。スパースな報酬のロボット操作環境でのテストにおいて、ベースラインに比べて大幅な性能向上を実証し、学習済みのスキルを新しいタスクの解決や人間の専門家のビデオの模倣に活用する方法を示しました。</span>
-<span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image"></div>
-### ChatGPT (1)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052">GPT-4V</a>
-<span class="snippet"><span>Comment</span>おう…やべえな… ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image"></div>
-### LayoutGeneration (1)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1133">LayoutPrompter: Awaken the Design Ability of Large Language Models, Jiawei Lin+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>LayoutPrompterは、大規模言語モデル（LLMs）を使用して条件付きのグラフィックレイアウト生成を行う手法であり、入力-出力のシリアル化、動的な模範的選択、およびレイアウトのランキングの3つのコンポーネントで構成されています。LayoutPrompterは、既存の手法と競合したり上回ったりする性能を持ち、トレーニングや微調整なしで使用できる汎用性のあるアプローチであることが実験結果から示されています。また、データ効率にも優れており、トレーニングベースラインよりも有意に優れていることも示されています。プロジェクトは、https://github.com/microsoft/LayoutGeneration/tree/main/LayoutPrompterで利用可能です。</span>
-<span class="snippet"><span>Comment</span>Conditional Graphic Layout Generation ...</span>
-</div>
-### Others (13)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/878">FABRIC: Personalizing Diffusion Models with Iterative Feedback, Dimitri von Rütte+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、拡散ベースのテキストから画像への変換モデルに人間のフィードバックを組み込む戦略を提案する。自己注意層を利用したトレーニングフリーなアプローチであるFABRICを提案し、さまざまな拡散モデルに適用可能であることを示す。また、包括的な評価方法を導入し、人間のフィードバックを統合した生成ビジュアルモデルのパフォーマンスを定量化するための堅牢なメカニズムを提供する。徹底的な分析により、反復的なフィードバックの複数のラウンドを通じて生成結果が改善されることを示す。これにより、個別化されたコンテンツ作成やカスタマイズなどの領域に応用が可能となる。</span>
-<span class="snippet"><span>Comment</span>upvote downvoteをフィードバックし、iterativeなmannerでDiffusionモデルの生成結果を改善できる手法。多くのDiffusion based Modelに対して適用可能デモ: https://huggingface.co/spaces/dvruette/fabric ...</span>
-<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/806">Generative Pretraining in Multimodality, Quan Sun+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>Emuは、マルチモーダルなコンテキストで画像とテキストを生成するためのTransformerベースのモデルです。このモデルは、単一モダリティまたはマルチモーダルなデータ入力を受け入れることができます。Emuは、マルチモーダルなシーケンスでトレーニングされ、画像からテキストへのタスクやテキストから画像へのタスクなど、さまざまなタスクで優れたパフォーマンスを示します。また、マルチモーダルアシスタントなどの拡張機能もサポートしています。</span>
-<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/805">EgoVLPv2: Egocentric Video-Language Pre-training with Fusion in the  Backbone, Shraman Pramanick+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>エゴセントリックビデオ言語の事前学習の第2世代（EgoVLPv2）は、ビデオと言語のバックボーンにクロスモーダルの融合を直接組み込むことができる。EgoVLPv2は強力なビデオテキスト表現を学習し、柔軟かつ効率的な方法でさまざまなダウンストリームタスクをサポートする。さらに、提案されたバックボーン戦略は軽量で計算効率が高い。EgoVLPv2は幅広いVLタスクで最先端のパフォーマンスを達成している。詳細はhttps://shramanpramanick.github.io/EgoVLPv2/を参照。</span>
-</div>
-<button onclick="showMore(106)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/751">Photoswap: Personalized Subject Swapping in Images, Jing Gu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、Photoswapという新しいアプローチを提案し、既存の画像において個人的な対象物の交換を可能にすることを目的としています。Photoswapは、参照画像から対象物の視覚的な概念を学習し、トレーニングフリーでターゲット画像に交換することができます。実験により、Photoswapが効果的で制御可能であり、ベースライン手法を大幅に上回る人間の評価を得ていることが示されました。Photoswapは、エンターテインメントからプロの編集まで幅広い応用可能性を持っています。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/563">Stable and low-precision training for large-scale vision-language models, Wortsman+, University of Washington, arXiv23</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/235149432-1c818dc6-174c-4666-a26c-2ab9683b438b.png) ...</span>
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/496">Sketch-Guided Text-to-Image Diffusion Models, Andrey+, Google Research, arXiv22</a>
-<span class="snippet"><span>Comment</span>スケッチとpromptを入力することで、スケッチ biasedな画像を生成することができる技術。すごい。![image](https://user-images.githubusercontent.com/12249301/205189823-66052368-60a8-4f03-a4b6-37 ...</span>
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Visual Words.html">#Visual Words</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/63">Image Captioning with Semantic Attention, You+, CVPR16.</a>
-<span class="snippet"><span>Comment</span>画像そのものだけでなく、モデルへのInputにVisual Wordsを明示的に加えることで、captioningの精度が上がりましたという論文 ...</span>
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Visual Words.html">#Visual Words</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/62">What Value Do Explicit High Level Concepts Have in Vision to Language Problems?, Wu+, CVPR16.</a>
-<a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/61">Generating Visual Explanations, Hendrickks+, ECCV16</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-11-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/431">ResNet strikes back: An improved training procedure in timm, Wightman+, arXiv‘21</a>
-<span class="snippet"><span>Comment</span>2015年以後、様々な最適化アルゴリズム、正則化手法、データ拡張などが提案される中で、最新アーキテクチャのモデルにはそれらが適用される一方ベースラインとなるResNetではそれらが適用されず、論文の値のみが参照される現状はフェアではないので、ResNetの性能を向上させるような訓練手法を追求した研究 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-11-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/430">Deep Residual Learning for Image Recognition, He+, Microsoft Research, CVPR’16</a>
-<span class="snippet"><span>Comment</span>ResNet論文ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショ同 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-06-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/388">On Empirical Comparisons of Optimizers for Deep Learning, Choi+, arXiv‘19</a>
-<span class="snippet"><span>Comment</span>SGD, Momentum,RMSProp, Adam,NAdam等の中から、どの最適化手法(Optimizer)が優れているかを画像分類と言語モデルにおいて比較した研究（下記日本語解説記事から引用）日本語での解説: https://akichan-f.medium.com/optimizerはどれ ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-05-19</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/344">MLP-like Architecture</a>
-<span class="snippet"><span>Comment</span>gMLP:大規模なself-attentionが無いSpatial Gating Unitを搭載したシンプルなMLPでも、Transformerの性能に近づけたよ（特にCV）。つまり、self-attentionはessentialというわけではなさそうだよ。NLPの場合はgMLPだとTransまあ ...</span>
 <button onclick="hideContent(106)" style="display: none;">hide</button>
 </div>
 <hr>
@@ -10455,29 +10501,40 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>最近の研究では、言語モデルが人間のような判断を行うことが示されています。この研究では、言語モデルが心理学の研究において人間の代わりになる可能性や条件について探求し、AIを参加者として使用する際の注意点をまとめています。</span>
 </div>
 <hr>
-## Others (1)
+## Others (2)
 ### Others (1)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1004">Epic-Sounds: A Large-scale Dataset of Actions That Sound, Jaesung Huh+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>EPIC-SOUNDSは、エゴセントリックなビデオのオーディオストリーム内の時間的範囲とクラスラベルをキャプチャした大規模なデータセットです。注釈者がオーディオセグメントに時間的なラベルを付け、アクションを説明する注釈パイプラインを提案しています。オーディオのみのラベルの重要性と現在のモデルの制約を強調するために、2つのオーディオ認識モデルを訓練および評価しました。データセットには78.4kのカテゴリ分けされたオーディブルなイベントとアクションのセグメントが含まれています。</span>
 </div>
-<hr>
-## Pocket (132)
+### RetrievalAugmentedGeneration (1)
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2023-11-27</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1168">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks, Patrick Lewis+, N_A, arXiv20</a>
+<span class="snippet"><span>Summary</span>大規模な事前学習言語モデルを使用した検索強化生成（RAG）の微調整手法を提案しました。RAGモデルは、パラメトリックメモリと非パラメトリックメモリを組み合わせた言語生成モデルであり、幅広い知識集約的な自然言語処理タスクで最先端の性能を発揮しました。特に、QAタスクでは他のモデルを上回り、言語生成タスクでは具体的で多様な言語を生成することができました。</span>
+<span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
+<hr>
+## Pocket (133)
+<div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166">UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
+<span class="snippet"><span>Comment</span>後で読む（画像は元ツイートより元ツイート: https://x.com/congwei1230/status/1730307767469068476?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image"><br><span class="issue_date">Issue Date: 2023-11-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1165">Mirasol3B: A Multimodal Autoregressive model for time-aligned and  contextual modalities, AJ Piergiovanni+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>異なるモダリティ（ビデオ、音声、テキスト）を組み合わせるマルチモーダル学習の課題に取り組むため、本研究ではモダリティごとに個別の自己回帰モデルを使用するアプローチを提案する。提案手法では、時間に同期したモダリティ（音声とビデオ）と順序付けられたコンテキストモダリティを別々に処理するMirasol3Bモデルを使用する。また、ビデオと音声の長いシーケンスに対処するために、シーケンスをスニペットに分割し、Combinerメカニズムを使用して特徴を結合する。この手法は、マルチモーダルベンチマークで最先端の性能を発揮し、高い計算要求に対処し、時間的な依存関係をモデリングすることができる。</span>
 <br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1162">MultiLoRA: Democratizing LoRA for Better Multi-Task Learning, Yiming Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LoRAは、LLMsを効率的に適応させる手法であり、ChatGPTのようなモデルを複数のタスクに適用することが求められている。しかし、LoRAは複雑なマルチタスクシナリオでの適応性能に制限がある。そこで、本研究ではMultiLoRAという手法を提案し、LoRAの制約を緩和する。MultiLoRAは、LoRAモジュールをスケーリングし、パラメータの依存性を減らすことで、バランスの取れたユニタリ部分空間を得る。実験結果では、わずかな追加パラメータでMultiLoRAが優れたパフォーマンスを示し、上位特異ベクトルへの依存性が低下していることが確認された。</span>
-<br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1161">NeuroPrompts: An Adaptive Framework to Optimize Prompts for  Text-to-Image Generation, Shachar Rosenman+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、テキストから画像への生成モデルの品質を向上させるための適応型フレームワークNeuroPromptsを提案します。このフレームワークは、事前学習された言語モデルを使用して制約付きテキストデコーディングを行い、人間のプロンプトエンジニアが生成するものに類似したプロンプトを生成します。これにより、高品質なテキストから画像への生成が可能となり、ユーザーはスタイルの特徴を制御できます。また、大規模な人間エンジニアリングされたプロンプトのデータセットを使用した実験により、当アプローチが自動的に品質の高いプロンプトを生成し、優れた画像品質を実現することを示しました。</span>
 </div>
 <button onclick="showMore(119)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-11-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1161">NeuroPrompts: An Adaptive Framework to Optimize Prompts for  Text-to-Image Generation, Shachar Rosenman+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、テキストから画像への生成モデルの品質を向上させるための適応型フレームワークNeuroPromptsを提案します。このフレームワークは、事前学習された言語モデルを使用して制約付きテキストデコーディングを行い、人間のプロンプトエンジニアが生成するものに類似したプロンプトを生成します。これにより、高品質なテキストから画像への生成が可能となり、ユーザーはスタイルの特徴を制御できます。また、大規模な人間エンジニアリングされたプロンプトのデータセットを使用した実験により、当アプローチが自動的に品質の高いプロンプトを生成し、優れた画像品質を実現することを示しました。</span>
 <br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1160">Visual In-Context Prompting, Feng Li+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、ビジョン領域における汎用的なビジュアルインコンテキストプロンプティングフレームワークを提案します。エンコーダーデコーダーアーキテクチャを使用し、さまざまなプロンプトをサポートするプロンプトエンコーダーを開発しました。さらに、任意の数の参照画像セグメントをコンテキストとして受け取るように拡張しました。実験結果から、提案手法が非凡な参照および一般的なセグメンテーション能力を引き出し、競争力のあるパフォーマンスを示すことがわかりました。</span>
