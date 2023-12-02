@@ -5,6 +5,10 @@ author: AkihikoWATANABE
 ---
 ## NLP
 <div class="visible-content">
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
+<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
 <a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1163">Exponentially Faster Language Modelling, Peter Belcak+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>UltraFastBERTは、推論時にわずか0.3%のニューロンしか使用せず、同等の性能を発揮することができる言語モデルです。UltraFastBERTは、高速フィードフォワードネットワーク（FFF）を使用して、効率的な実装を提供します。最適化されたベースラインの実装に比べて78倍の高速化を実現し、バッチ処理された推論に対しては40倍の高速化を実現します。トレーニングコード、ベンチマークのセットアップ、およびモデルの重みも公開されています。</span>
@@ -12,14 +16,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1158">GAIA: a benchmark for General AI Assistants, Grégoire Mialon+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>GAIAは、General AI Assistantsのためのベンチマークであり、AI研究のマイルストーンとなる可能性がある。GAIAは、推論、マルチモダリティの処理、ウェブブラウジングなど、実世界の質問に対する基本的な能力を必要とする。人間の回答者は92％の正答率を達成し、GPT-4は15％の正答率を達成した。これは、最近の傾向とは異なる結果であり、専門的なスキルを必要とするタスクではLLMsが人間を上回っている。GAIAは、人間の平均的な堅牢性と同等の能力を持つシステムがAGIの到来に重要であると考えている。GAIAの手法を使用して、466の質問と回答を作成し、一部を公開してリーダーボードで利用可能にする。</span>
 <span class="snippet"><span>Comment</span>Yann LeCun氏の紹介ツイートhttps://x.com/ylecun/status/1727707519470977311?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QMeta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
-<span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
+<span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1153">Unbalanced Optimal Transport for Unbalanced Word Alignment, Yuki Arase+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>単一言語の単語アライメントにおいて、null alignmentという現象は重要であり、不均衡な単語アライメントを実現するために最適輸送（OT）のファミリーが有効であることを示している。教師あり・教師なしの設定での包括的な実験により、OTベースのアライメント手法が最新の手法と競争力があることが示されている。</span>
@@ -1490,7 +1494,16 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/RuleBased.html">#RuleBased</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105">Design of a knowledge-based report generator, Kukich, ACL83</a>
 <span class="snippet"><span>Comment</span>## タスクnumerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA## 手法概要ルールベースな手法，1) fact-generator,2) message generator,Data2Text ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AutomaticPromptEngineering.html">#AutomaticPromptEngineering</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1171">multimodal-maestro</a>
+<span class="snippet"><span>Comment</span>Large Multimodal Model (LMM)において、雑なpromptを与えるても自動的に良い感じoutputを生成してくれるっぽい？以下の例はリポジトリからの引用であるが、この例では、"Find dog." という雑なpromptから、画像中央に位置する犬に[9]というラベルを ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5220e62f-93f1-4eb9-b365-a9caaf933778" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1170">LaVie: Text-to-Video generation, demo</a>
+<span class="snippet"><span>Comment</span>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。FF14の赤魔導士に変えたら、それっぽいの出てきた ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
 <span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-21</span>

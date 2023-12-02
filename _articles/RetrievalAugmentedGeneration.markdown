@@ -29,7 +29,11 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1070">Retrieval meets Long Context Large Language Models, Peng Xu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>最先端の事前学習済みLLMsを使用して、リトリーバル拡張と長いコンテキストウィンドウの組み合わせについて研究しました。結果として、リトリーバル拡張LLMsは、ファインチューニングLLMsと比較しても高いパフォーマンスを示し、計算量も少ないことがわかりました。さらに、リトリーバルはLLMsのパフォーマンスを向上させることができることが示されました。リトリーバル拡張LLMsは、質問応答や要約などのタスクにおいて、他のモデルよりも優れた性能を発揮し、生成速度も速いです。この研究は、実践者にとってリトリーバル拡張と長いコンテキストウィンドウのLLMsの選択に関する洞察を提供します。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> LLMで文脈長を長くするのと検索補強は同時に適用すると効果的。従来実験で検索補強効果は限定的と報告されていたが小さいモデル（~7B）はゼロショット学習能力が限定的で、検索結果を有効利用できていないと推定。またオープンな埋め込み計算（Dragon, Cont検 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1168">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks, Patrick Lewis+, N_A, arXiv20</a>
+<span class="snippet"><span>Summary</span>大規模な事前学習言語モデルを使用した検索強化生成（RAG）の微調整手法を提案しました。RAGモデルは、パラメトリックメモリと非パラメトリックメモリを組み合わせた言語生成モデルであり、幅広い知識集約的な自然言語処理タスクで最先端の性能を発揮しました。特に、QAタスクでは他のモデルを上回り、言語生成タスクでは具体的で多様な言語を生成することができました。</span>
+<span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
 <span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
