@@ -503,7 +503,7 @@ author: AkihikoWATANABE
 
     # latest posts
     html_content += "## Latest Posts\n"
-    latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:10]
+    latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:100]
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
     html_content += gen_one_item(latest_issues, [])
 
