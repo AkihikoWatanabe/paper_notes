@@ -5,6 +5,10 @@ author: AkihikoWATANABE
 ---
 ## action_wanted
 <div class="visible-content">
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
+<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1123">A Survey on Hallucination in Large Language Models: Principles,  Taxonomy, Challenges, and Open Questions, Lei Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsの出現はNLPにおける重要な進歩をもたらしているが、幻覚を生じることがあり、その信頼性に懸念がある。本調査では、LLMの幻覚に関する最近の進展について包括的に概説し、幻覚の要因や検出手法、軽減アプローチについて紹介する。また、現在の制約や将来の研究方向についても分析する。</span>
@@ -13,10 +17,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1122">LightLM: A Lightweight Deep and Narrow Language Model for Generative  Recommendation, Kai Mei+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この論文では、軽量なTransformerベースの言語モデルであるLightLMを提案し、生成型レコメンデーションタスクに特化したモデルを開発しています。LightLMは、モデルの容量を抑えつつも、レコメンデーションの精度と効率を向上させることに成功しています。また、ユーザーとアイテムのIDインデックス化方法として、Spectral Collaborative Indexing（SCI）とGraph Collaborative Indexing（GCI）を提案しています。さらに、アイテム生成時のhallucinationの問題に対処するために、制約付き生成プロセスを導入しています。実験結果は、LightLMが競合ベースラインを上回ることを示しています。</span>
 <span class="snippet"><span>Comment</span>Generative Recommendationはあまり終えていないのだが、既存のGenerative Recommendationのモデルをより軽量にし、性能を向上させ、存在しないアイテムを生成するのを防止するような手法を提案しました、という話っぽい。Bayesian Perso ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7a70bae0-20fd-495e-a563-5ac6ce5b6dfc" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1121">Tell Your Model Where to Attend: Post-hoc Attention Steering for LLMs, Qingru Zhang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>PASTAは、大規模言語モデル（LLMs）において、ユーザーが指定した強調マークのあるテキストを読むことを可能にする手法です。PASTAは、注意の一部を特定し、再重み付けを適用してモデルの注意をユーザーが指定した部分に向けます。実験では、PASTAがLLMの性能を大幅に向上させることが示されています。</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7a70bae0-20fd-495e-a563-5ac6ce5b6dfc" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
@@ -32,7 +33,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1093">Exploring OCR Capabilities of GPT-4V（ision） : A Quantitative and  In-depth Evaluation, Yongxin Shi+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この論文では、GPT-4Vという大規模マルチモーダルモデルの光学文字認識（OCR）能力を評価します。さまざまなOCRタスクにおいてモデルのパフォーマンスを評価し、ラテン文字の認識と理解において優れた性能を示す一方、多言語や複雑なタスクには苦戦することがわかりました。これに基づいて、専門のOCRモデルの必要性やGPT-4Vを活用する戦略についても検討します。この研究は、将来のLMMを用いたOCRの研究に役立つものです。評価のパイプラインと結果は、GitHubで利用可能です。</span>
 <span class="snippet"><span>Comment</span>GPT4-VをさまざまなOCRタスク「手書き、数式、テーブル構造認識等を含む）で性能検証した研究。MLT19データセットを使った評価では、日本語の性能は非常に低く、英語とフランス語が性能高い。手書き文字認識では英語と中国語でのみ評価。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c433b921-c527-441f-8925-00f4ac5fc6c3" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PromptTuning.html">#PromptTuning</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c433b921-c527-441f-8925-00f4ac5fc6c3" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PromptTuning.html">#PromptTuning</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1066">Promptbreeder: Self-Referential Self-Improvement Via Prompt Evolution, Chrisantha Fernando+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、Promptbreederという自己参照的な自己改善メカニズムを提案し、大規模言語モデル（LLM）の推論能力を向上させるための汎用的なプロンプト戦略を進化させる方法を示しています。Promptbreederは、LLMが自己参照的な方法で進化する変異プロンプトによって制御され、タスクプロンプトの集団を変異させて改善します。この手法は、算術や常識的な推論のベンチマークだけでなく、ヘイトスピーチ分類などの難しい問題に対しても優れた性能を発揮します。</span>
 <span class="snippet"><span>Comment</span>以下AIDBのツイートの引用>プロンプトを遺伝的アルゴリズムで最適化するプロンプトエンジニアリング自動化手法『Promptbreeder（プロンプトブリーダー）』が発表されました。>CoT（ステップバイステップ）を上回る性能を確認したとのこと。>DeepMindによる研究です。>○ C詳細な解説記事 ...</span>
@@ -44,6 +45,9 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1010">Consciousness in Artificial Intelligence: Insights from the Science of  Consciousness, Patrick Butlin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>AIの意識についての厳密なアプローチを提案し、既存のAIシステムを神経科学的な意識理論に基づいて評価する。意識の指標的特性を導き出し、最近のAIシステムを評価することで、現在のAIシステムは意識的ではないが、意識的なAIシステムを構築するための障壁は存在しないことを示唆する。</span>
 <span class="snippet"><span>Comment</span>以下AIDBからの引用> AIは意識を持っているのか/持つのか、各領域の専門家たちが、以下のように共同で研究報告しました。『今のAIは意識を持っているわけではない』『ただし、この先、AIが意識を持つことを妨げる"明確なハードルはない"』オックスフォード大学、モントリオール大学、ARAYAなど ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1004">Epic-Sounds: A Large-scale Dataset of Actions That Sound, Jaesung Huh+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>EPIC-SOUNDSは、エゴセントリックなビデオのオーディオストリーム内の時間的範囲とクラスラベルをキャプチャした大規模なデータセットです。注釈者がオーディオセグメントに時間的なラベルを付け、アクションを説明する注釈パイプラインを提案しています。オーディオのみのラベルの重要性と現在のモデルの制約を強調するために、2つのオーディオ認識モデルを訓練および評価しました。データセットには78.4kのカテゴリ分けされたオーディブルなイベントとアクションのセグメントが含まれています。</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/AutoML.html">#AutoML</a><br><span class="issue_date">Issue Date: 2023-08-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/926">MLCopilot: Unleashing the Power of Large Language Models in Solving  Machine Learning Tasks, Lei Zhang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、機械学習タスクの自動化における人間の知識と機械知能のギャップを埋めるために、新しいフレームワークMLCopilotを提案する。このフレームワークは、最先端のLLMsを使用して新しいMLタスクのソリューションを開発し、既存のMLタスクの経験から学び、効果的に推論して有望な結果を提供することができる。生成されたソリューションは直接使用して競争力のある結果を得ることができる。</span>
@@ -51,7 +55,11 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/920">ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world  APIs, Yujia Qin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>オープンソースの大規模言語モデル（LLMs）を使用して、外部ツール（API）の高度なタスクの実行を容易にするためのToolLLMというフレームワークを紹介します。ToolBenchというデータセットを使用して、ツールの使用方法を調整し、DFSDTという決定木を使用して効率的な検索を行います。ToolEvalという自動評価ツールを使用して、ToolLLaMAが高いパフォーマンスを発揮することを示します。さらに、ニューラルAPIリトリーバーを使用して、適切なAPIを推奨します。</span>
 <span class="snippet"><span>Comment</span>16000のreal worldのAPIとインタラクションし、データの準備、訓練、評価などを一貫してできるようにしたフレームワーク。LLaMAを使った場合、ツール利用に関してturbo-16kと同等の性能に達したと主張。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a9c394b5-6148-4bab-acaa-4934ead5c1a7" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a9c394b5-6148-4bab-acaa-4934ead5c1a7" alt="image"><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-07-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/900">Batch Prompting: Efficient Inference with Large Language Model APIs, Zhoujun Cheng+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>大規模な言語モデル（LLMs）を効果的に使用するために、バッチプロンプティングという手法を提案します。この手法は、LLMが1つのサンプルではなくバッチで推論を行うことを可能にし、トークンコストと時間コストを削減しながらパフォーマンスを維持します。さまざまなデータセットでの実験により、バッチプロンプティングがLLMの推論コストを大幅に削減し、良好なパフォーマンスを達成することが示されました。また、バッチプロンプティングは異なる推論方法にも適用できます。詳細はGitHubのリポジトリで確認できます。</span>
+<span class="snippet"><span>Comment</span>10種類のデータセットで試した結果、バッチにしても性能は上がったり下がったりしている。著者らは類似した性能が出ているので、コスト削減になると結論づけている。Batch sizeが大きくなるに連れて性能が低下し、かつタスクの難易度が高いとパフォーマンスの低下が著しいことが報告されている。また、cont ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/16aaed9b-da2b-4c38-86df-e223bdbec826" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/884">Challenges and Applications of Large Language Models, Jean Kaddour+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本論文では、大規模言語モデル（LLMs）の普及により、研究者が分野の現状を理解し、生産的になるための問題と応用成功例を確立することを目指しています。</span>
 <span class="snippet"><span>Comment</span>LLMのここ数年の進化早すぎわろたでキャッチアップむずいので、未解決の課題や、すでに良い感じのアプリケーションの分野分かりづらいので、まとめました論文 ...</span>

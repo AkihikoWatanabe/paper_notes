@@ -5,25 +5,39 @@ author: AkihikoWATANABE
 ---
 ## Article
 <div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
+<span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
+<span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1149">Zephyr-7B-beta, RAG Perf.</a>
+<span class="snippet"><span>Comment</span>Zephyr-7B-betaのRAGでの性能がデータセットで評価されている下記Xポストによるとgpt-3.5-turboと同等https://x.com/rungalileo/status/1726638537767051436?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1146">Practical Tips for Finetuning LLMs Using LoRA （Low-Rank Adaptation）</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1141">生成系 AI でプロダクトの価値を高めるには, 2023</a>
+<span class="snippet"><span>Comment</span>AWS久保さんの資料。後で読む ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1136">ChatGPTに社内文書に基づいた回答を生成させる仕組みを構築しました, 2023</a>
 <span class="snippet"><span>Comment</span>低コストで社内文書に対するRAGを実現することに注力している。以下、図はブログから引用。基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。低コスト化のために、Embedding作成にOpenSourceの特に日本語テ ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1129">Transformers.js, 2023</a>
 <span class="snippet"><span>Comment</span>ブラウザ上でTransformerベースの様々なモデルを動作させることができるライブラリ ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1125">Boosting RAG: Picking the Best Embedding & Reranker models</a>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
 <span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1113">幻日さんのUsefulMaterials（RAG等）</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1111">tsuzumi, NTT’23</a>
@@ -34,13 +48,13 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1107">StableDiffusion, LLMのGPUメモリ削減のあれこれ</a>
 <span class="snippet"><span>Comment</span>Gradient Accumulation, Gradient Checkpointingの説明が丁寧でわかりやすかった。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1103">LLMのプロンプト技術まとめ</a>
 <span class="snippet"><span>Comment</span>ざっと見たが現時点で主要なものはほぼ含まれているのでは、という印象実際のプロンプト例が載っているので、理解しやすいかもしれない。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
 <span class="snippet"><span>Comment</span>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/RetrievalAugmentation.html">#RetrievalAugmentation</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1100">LangChainのRAGの改善法, LayerX機械学習勉強会</a>
 <span class="snippet"><span>Comment</span>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション> Multi representation indexing：検索に適した文書表現（例えば要約）の作成Query transformation：人間の質問を変換して ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-10-27</span>
@@ -69,7 +83,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-06-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/767">OpenLLaMA 13B, 2023</a>
 <span class="snippet"><span>Comment</span>そもそもOpenLLaMAには、オリジナルのLLaMAと比較して、tokenizerがスペースを無視するというissueがある模様。スペースの情報がクリティカルなタスク、たとえばcode generationなどには要注意。https://github.com/openlm-research/o ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4268eb3f-349f-4ebe-adeb-2cbfcb7cfe17" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompt.html">#Prompt</a><br><span class="issue_date">Issue Date: 2023-05-12</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4268eb3f-349f-4ebe-adeb-2cbfcb7cfe17" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-05-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/678">Prompt Engineering vs. Blind Prompting, 2023</a>
 <span class="snippet"><span>Comment</span>experimentalな手法でprompt engineeringする際のoverview ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><a class="button" href="articles/Programming.html">#Programming</a><br><span class="issue_date">Issue Date: 2023-05-06</span>

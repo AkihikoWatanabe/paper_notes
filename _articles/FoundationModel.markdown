@@ -5,7 +5,11 @@ author: AkihikoWATANABE
 ---
 ## FoundationModel
 <div class="visible-content">
-<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Mathematics.html">#Mathematics</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1127">Florence-2: Advancing a Unified Representation for a Variety of Vision  Tasks, Bin Xiao+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>Florence-2は、ビジョン基盤モデルであり、さまざまなビジョンタスクに対応するための統一されたプロンプトベースの表現を持っています。このモデルは、テキストプロンプトを受け取り、キャプショニング、オブジェクト検出、グラウンディング、セグメンテーションなどのタスクを実行し、テキスト形式で結果を生成します。また、FLD-5Bという大規模な注釈付きデータセットも開発されました。Florence-2は、多目的かつ包括的なビジョンタスクを実行するためにシーケンスツーシーケンス構造を採用しており、前例のないゼロショットおよびファインチューニングの能力を持つ強力なモデルです。</span>
+<span class="snippet"><span>Comment</span>Vison Foundation Model。Spatialな階層構造や、Semanticを捉えられるように訓練。Image/Prompt Encoderでエンコードされ、outputはtext + location informationとなる。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9fbfba62-190f-46eb-a893-5ebe76dda030" alt="image"><a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Mathematics.html">#Mathematics</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1104">Llemma: An Open Language Model For Mathematics, Zhangir Azerbayev+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、数学のための大規模な言語モデルであるLlemmaを提案します。Llemmaは、Proof-Pile-2と呼ばれるデータセットを用いて事前学習され、MATHベンチマークで他のモデルを上回る性能を示しました。さらに、Llemmaは追加のfine-tuningなしでツールの使用や形式的な定理証明が可能です。アーティファクトも公開されています。</span>
 <span class="snippet"><span>Comment</span>CodeLLaMAを200B tokenの数学テキスト（proof-pile-2データ;論文、数学を含むウェブテキスト、数学のコードが含まれるデータ）で継続的に事前学習することでfoundation modelを構築約半分のパラメータ数で数学に関する性能でGoogleのMinervaと同等の性元ツイ ...</span>
@@ -13,14 +17,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/914">Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、視覚システムの基礎モデルについて包括的なレビューを提供します。これには、異なるモダリティを組み合わせるためのアーキテクチャ設計やトレーニング目標、トレーニングデータセットなどが含まれます。また、基礎モデルの評価や課題、最近の発展についても議論します。詳細なリストは、\url{https://github.com/awaisrauf/Awesome-CV-Foundational-Models}で入手できます。</span>
 <span class="snippet"><span>Comment</span>CVにおけるfoundation modelのsurvey。残されたチャレンジと研究の方向性が議論されている ...</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/888">Llama 2: Open Foundation and Fine-Tuned Chat Models, Hugo Touvron+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>この研究では、大規模な言語モデルであるLlama 2を開発し、微調整しています。Llama 2-Chatは対話に特化しており、オープンソースのチャットモデルを上回る性能を示しています。安全性の改善にも取り組んでおり、責任ある開発に貢献することを目指しています。</span>
-<span class="snippet"><span>Comment</span>以下hillbigさんのツイート引用> Llama2は学習データを2Tトークンに増やしコンテキスト長を4KにしGQAを採用。報告書では有用性と安全性の向上に向けたSFTとRLHFの詳細が充実している。SFTは量より質が大事。2万程度作るとSFT向けアノテーションデータは生成と人手が区別できないレ ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/888">Llama 2: Open Foundation and Fine-Tuned Chat Models, Hugo Touvron+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>この研究では、大規模な言語モデルであるLlama 2を開発し、微調整しています。Llama 2-Chatは対話に特化しており、オープンソースのチャットモデルを上回る性能を示しています。安全性の改善にも取り組んでおり、責任ある開発に貢献することを目指しています。</span>
+<span class="snippet"><span>Comment</span>以下hillbigさんのツイート引用> Llama2は学習データを2Tトークンに増やしコンテキスト長を4KにしGQAを採用。報告書では有用性と安全性の向上に向けたSFTとRLHFの詳細が充実している。SFTは量より質が大事。2万程度作るとSFT向けアノテーションデータは生成と人手が区別できないレ ...</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Navigation.html">#Navigation</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/802">ViNT: A Foundation Model for Visual Navigation, Dhruv Shah+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさまざまなナビゲーションタスクに適応します。ViNTは、拡散ベースのサブゴール提案と組み合わせることで、新しい環境を探索し、キロメートルスケールのナビゲーション問題を解決することができます。また、ViNTはプロンプトチューニングに触発された技術を使用して、新しいタスク仕様に適応することができます。ViNTはモバイルロボティクスのための効果的な基礎モデルとして確立されています。詳細はプロジェクトページを参照してください。</span>
