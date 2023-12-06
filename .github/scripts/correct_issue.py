@@ -22,7 +22,7 @@ translator_system_content = ["あなたは自然言語処理や機械学習の�
                   "Notably, our model outperforms human performance for the first time on the TabFact dataset.",
                   "translation1:",
                   "Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
-                  "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる",
+                  "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる。",
                   "しかし、従来のtable-based reasoning solutionは、大規模なevidence（table）に対して著しい性能の低下を招くことが多い。",
                   "さらに、必要な情報が異なる場所に散らばっているため、ほとんどの既存の方法は複雑な質問に対する推論に苦労している。",
                   "これらの課題を軽減するために、本研究では効果的なtable-based reasoningのための分解器として大規模言語モデル（LLMs）を利用する。",
@@ -33,7 +33,7 @@ translator_system_content = ["あなたは自然言語処理や機械学習の�
                   "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。"]
 translator_system_content = '\n'.join(translator_system_content)
 
-summarizer_system_content = ["あなたは自然言語処理や機械学習の研究者です。日本語のabstractを日本語を要約してください。\n",
+summarizer_system_content = ["あなたは自然言語処理や機械学習の研究者です。日本語のabstractを要約してください。\n",
                              "abstract1:",
                              "Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
                              "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる",
@@ -106,7 +106,7 @@ def change_title(entry, issue_number):
 
 def call_openai(messages):
     response = OpenAI().chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-3.5-turbo-1106",
             messages=messages,
             temperature=0.0)
     response_text = response.choices[0].message.content.strip()
