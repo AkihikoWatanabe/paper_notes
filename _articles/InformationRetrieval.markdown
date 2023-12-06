@@ -5,19 +5,23 @@ author: AkihikoWATANABE
 ---
 ## InformationRetrieval
 <div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/KnowledgeGraph.html">#KnowledgeGraph</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/NaturalLanguageUnderstanding.html">#NaturalLanguageUnderstanding</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166">UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
+<span class="snippet"><span>Comment</span>後で読む（画像は元ツイートより元ツイート: https://x.com/congwei1230/status/1730307767469068476?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/KnowledgeGraph.html">#KnowledgeGraph</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/NaturalLanguageUnderstanding.html">#NaturalLanguageUnderstanding</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821">Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL23</a>
 <span class="snippet"><span>Summary</span>従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースラインよりも優れた性能を示した。</span>
 <a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799">Large Language Models are Effective Text Rankers with Pairwise Ranking  Prompting, Zhen Qin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。</span>
 <span class="snippet"><span>Comment</span>open source LLMをスタンダードなベンチマークでSoTAを達成できるようなprompting技術を提案 ...</span>
-<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2018-02-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/259">Deep Learning for Personalized Search and Recommender Systems, KDD17</a>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2018-02-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/259">Deep Learning for Personalized Search and Recommender Systems, KDD17</a>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200">Online Learning to Rank for Information Retrieval, Grotov+, SIGIR16</a>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/QueryClassification.html">#QueryClassification</a><a class="button" href="articles/WebSearch.html">#WebSearch</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
