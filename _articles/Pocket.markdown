@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1180">Segment and Caption Anything, Xiaoke Huang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、Segment Anything Model（SAM）に地域キャプションを生成する能力を効率的に備える方法を提案します。SAMは、セグメンテーションのための強力な汎用性を持ちながら、意味理解のための短縮形です。軽量なクエリベースの特徴ミキサーを導入することで、地域固有の特徴を言語モデルの埋め込み空間と整合させ、後でキャプションを生成します。訓練可能なパラメータの数が少ないため、高速かつスケーラブルなトレーニングが可能です。また、地域キャプションデータの不足問題に対処するために、弱い教師あり事前トレーニングを提案しています。この研究は、地域キャプションデータのスケーリングアップに向けた第一歩となり、SAMに地域的な意味を付加する効率的な方法を探求するための示唆を与えます。</span>
 <a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1177">Unnatural Error Correction: GPT-4 Can Almost Perfectly Handle Unnatural  Scrambled Text, Qi Cao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の内部動作についての新しい洞察を提供します。特に、GPT-4を調査し、LLMsの耐久性に関する実験結果を示します。実験では、文字レベルの順列に対するLLMsの耐性を調べるために、Scrambled Benchというスイートを使用しました。結果は、GPT-4がtypoglycemiaという現象に似た能力を持ち、非常に自然でないエラーを含む入力をほぼ完璧に処理できることを示しています。これは、LLMsの耐性が直感に反するものであり、他のLLMsや人間にとっても困難なタスクであることを示しています。</span>
@@ -12,13 +15,13 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/df33c7a9-005e-4d7e-9d70-d8f0657869ed" alt="image"><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1176">Beyond ChatBots: ExploreLLM for Structured Thoughts and Personalized  Model Responses, Xiao Ma+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLM）を使用したチャットボットの開発について述べられています。特に、探索的なタスクや意味理解のタスクにおいて、LLMを活用することでユーザーの認知負荷を軽減し、より個別化された応答を生成することができると述べられています。また、ExploreLLMを使用することで、ユーザーが高レベルの好みを持った個別化された応答を簡単に生成できることも示唆されています。この研究は、自然言語とグラフィカルユーザーインターフェースの統合により、チャットボットの形式を超えたLLMとの対話が可能な未来を示しています。</span>
-<br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1175">COFFEE: Counterfactual Fairness for Personalized Text Generation in   Explainable Recommendation, Nan Wang+, N_A, EMNLP23</a>
-<span class="snippet"><span>Summary</span>個別化されたテキスト生成（PTG）における公平性についての研究。ユーザーの書き込みテキストにはバイアスがあり、それがモデルのトレーニングに影響を与える可能性がある。このバイアスは、ユーザーの保護された属性に関連してテキストを生成する際の不公平な扱いを引き起こす可能性がある。公平性を促進するためのフレームワークを提案し、実験と評価によりその効果を示す。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1175">COFFEE: Counterfactual Fairness for Personalized Text Generation in   Explainable Recommendation, Nan Wang+, N_A, EMNLP23</a>
+<span class="snippet"><span>Summary</span>個別化されたテキスト生成（PTG）における公平性についての研究。ユーザーの書き込みテキストにはバイアスがあり、それがモデルのトレーニングに影響を与える可能性がある。このバイアスは、ユーザーの保護された属性に関連してテキストを生成する際の不公平な扱いを引き起こす可能性がある。公平性を促進するためのフレームワークを提案し、実験と評価によりその効果を示す。</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1174">Pushdown Layers: Encoding Recursive Structure in Transformer Language   Models, Shikhar Murty+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>本研究では、再帰構造をうまく捉えるために新しい自己注意層であるPushdown Layersを導入しました。Pushdown Layersは、再帰状態をモデル化するためにスタックテープを使用し、トークンごとの推定深度を追跡します。このモデルは、構文的な一般化を改善し、サンプル効率を向上させることができます。さらに、Pushdown Layersは標準の自己注意の代替としても使用でき、GLUEテキスト分類タスクでも改善を実現しました。</span>

@@ -5,22 +5,25 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1180">Segment and Caption Anything, Xiaoke Huang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、Segment Anything Model（SAM）に地域キャプションを生成する能力を効率的に備える方法を提案します。SAMは、セグメンテーションのための強力な汎用性を持ちながら、意味理解のための短縮形です。軽量なクエリベースの特徴ミキサーを導入することで、地域固有の特徴を言語モデルの埋め込み空間と整合させ、後でキャプションを生成します。訓練可能なパラメータの数が少ないため、高速かつスケーラブルなトレーニングが可能です。また、地域キャプションデータの不足問題に対処するために、弱い教師あり事前トレーニングを提案しています。この研究は、地域キャプションデータのスケーリングアップに向けた第一歩となり、SAMに地域的な意味を付加する効率的な方法を探求するための示唆を与えます。</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1179">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>アラインメント調整は、大規模言語モデル（LLMs）のパフォーマンスを向上させるために使用されます。しかし、アラインメント調整の効果は「表面的」である可能性があります。この研究では、基本的なLLMとアラインメント調整されたバージョンのトークン分布のシフトを分析しました。結果は、アラインメント調整が主にスタイルトークンに影響を与えることを示しました。さらに、シンプルでチューニングフリーなアラインメント手法であるURIALを導入し、基本的なLLMのパフォーマンスを向上させることができることを示しました。これらの結果から、アラインメントのより深い分析と理論的な理解が重要であることが示唆されます。</span>
-<span class="snippet"><span>Comment</span>モデルの知識はPre-training時に十分獲得されており、モデルのAlignmentをとることで生じるものは表面的な変化のみであるという仮説がある。この仮説に関して分析をし、結果的にスタイリスティックな情報を生成する部分でAlignmentの有無で違いが生じることを明らかにし、そうであればわざわ ...</span>
+<span class="snippet"><span>Comment</span>モデルの知識はPre-training時に十分獲得されており、モデルのAlignmentをとることで生じるものは表面的な変化のみであるという仮説がある #700 。この仮説に関して分析をし、結果的にスタイリスティックな情報を生成する部分でAlignmentの有無で違いが生じることを明らかにし、そうで ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b8c62b33-dd72-43ea-8953-abb5c04cc504" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1178">もし明日、上司に「GPT-4を作れ」と言われたら？ Stability AIのシニアリサーチサイエンティストが紹介する「LLM構築タイムアタック」</a>
 <span class="snippet"><span>Comment</span>StabilityAI Japan秋葉さん（元PFN）のW&B Conferenceでの発表に関する記事。LLM構築タイムアタックでLLMをもし構築することになったら！？のざっくりとしたプロセスや、次ページでOpenAIのGPT4のテクニカルレポートのクレジットから各チームの規模感を推定して、ど ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1177">Unnatural Error Correction: GPT-4 Can Almost Perfectly Handle Unnatural  Scrambled Text, Qi Cao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の内部動作についての新しい洞察を提供します。特に、GPT-4を調査し、LLMsの耐久性に関する実験結果を示します。実験では、文字レベルの順列に対するLLMsの耐性を調べるために、Scrambled Benchというスイートを使用しました。結果は、GPT-4がtypoglycemiaという現象に似た能力を持ち、非常に自然でないエラーを含む入力をほぼ完璧に処理できることを示しています。これは、LLMsの耐性が直感に反するものであり、他のLLMsや人間にとっても困難なタスクであることを示しています。</span>
 <span class="snippet"><span>Comment</span>OpenAIのモデルがブラックボックスである限り、コンタミネーションがあるのでは？という疑念は持ってしまう。（部分的にしか読めていないが…）RealtimeQAと呼ばれるweeklyで直近のニュースに対するQuestionを発表することで構築されるデータセットのうち、2023.03.17--2完全に ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/df33c7a9-005e-4d7e-9d70-d8f0657869ed" alt="image"></div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/df33c7a9-005e-4d7e-9d70-d8f0657869ed" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1176">Beyond ChatBots: ExploreLLM for Structured Thoughts and Personalized  Model Responses, Xiao Ma+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLM）を使用したチャットボットの開発について述べられています。特に、探索的なタスクや意味理解のタスクにおいて、LLMを活用することでユーザーの認知負荷を軽減し、より個別化された応答を生成することができると述べられています。また、ExploreLLMを使用することで、ユーザーが高レベルの好みを持った個別化された応答を簡単に生成できることも示唆されています。この研究は、自然言語とグラフィカルユーザーインターフェースの統合により、チャットボットの形式を超えたLLMとの対話が可能な未来を示しています。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
@@ -343,11 +346,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1077">Survey on Factuality in Large Language Models: Knowledge, Retrieval and  Domain-Specificity, Cunxiang Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この研究では、大規模言語モデル（LLMs）の事実性の問題に取り組んでいます。LLMsの出力の信頼性と正確性は重要であり、事実に矛盾した情報を生成することがあるため、その問題を解決する方法を探求しています。具体的には、LLMsの事実的なエラーの影響や原因を分析し、事実性を評価する手法や改善策を提案しています。また、スタンドアロンのLLMsと外部データを利用する検索拡張型LLMsに焦点を当て、それぞれの課題と改善策について詳しく説明しています。この研究は、LLMsの事実的な信頼性を向上させるためのガイドとなることを目指しています。</span>
 <span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4d3ab4df-aaa0-460f-b16a-6114432336cd" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-10-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1076">Take a Step Back: Evoking Reasoning via Abstraction in Large Language  Models, Huaixiu Steven Zheng+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>Step-Back Promptingは、大規模言語モデル（LLMs）を使用して推論の手順をガイドするシンプルなプロンプティング技術です。この技術により、LLMsは具体的な詳細から高レベルの概念や基本原則を抽象化し、正しい推論経路をたどる能力を向上させることができます。実験により、Step-Back PromptingはSTEM、Knowledge QA、Multi-Hop Reasoningなどのタスクにおいて大幅な性能向上が観察されました。具体的には、MMLU Physics and Chemistryで7%、11%、TimeQAで27%、MuSiQueで7%の性能向上が確認されました。</span>
-<span class="snippet"><span>Comment</span>以下AIDBのツイートの引用> LLMに聞きたいことの一歩後ろから質問をはじめる『ステップバック・プロンプティング』が、様々なベンチマークでCoTやTake a Deep Breatheを凌駕する性能を発揮すると報告がありました。>極めてシンプルで具体的な新テクニックです。>DeepMiまた新しいの ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aac94123-7c39-4938-889f-feb5cff9317c" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4d3ab4df-aaa0-460f-b16a-6114432336cd" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (628)
 ### LanguageModel (231)
@@ -355,7 +354,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1179">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>アラインメント調整は、大規模言語モデル（LLMs）のパフォーマンスを向上させるために使用されます。しかし、アラインメント調整の効果は「表面的」である可能性があります。この研究では、基本的なLLMとアラインメント調整されたバージョンのトークン分布のシフトを分析しました。結果は、アラインメント調整が主にスタイルトークンに影響を与えることを示しました。さらに、シンプルでチューニングフリーなアラインメント手法であるURIALを導入し、基本的なLLMのパフォーマンスを向上させることができることを示しました。これらの結果から、アラインメントのより深い分析と理論的な理解が重要であることが示唆されます。</span>
-<span class="snippet"><span>Comment</span>モデルの知識はPre-training時に十分獲得されており、モデルのAlignmentをとることで生じるものは表面的な変化のみであるという仮説がある。この仮説に関して分析をし、結果的にスタイリスティックな情報を生成する部分でAlignmentの有無で違いが生じることを明らかにし、そうであればわざわ ...</span>
+<span class="snippet"><span>Comment</span>モデルの知識はPre-training時に十分獲得されており、モデルのAlignmentをとることで生じるものは表面的な変化のみであるという仮説がある #700 。この仮説に関して分析をし、結果的にスタイリスティックな情報を生成する部分でAlignmentの有無で違いが生じることを明らかにし、そうで ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b8c62b33-dd72-43ea-8953-abb5c04cc504" alt="image"><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1177">Unnatural Error Correction: GPT-4 Can Almost Perfectly Handle Unnatural  Scrambled Text, Qi Cao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の内部動作についての新しい洞察を提供します。特に、GPT-4を調査し、LLMsの耐久性に関する実験結果を示します。実験では、文字レベルの順列に対するLLMsの耐性を調べるために、Scrambled Benchというスイートを使用しました。結果は、GPT-4がtypoglycemiaという現象に似た能力を持ち、非常に自然でないエラーを含む入力をほぼ完璧に処理できることを示しています。これは、LLMsの耐性が直感に反するものであり、他のLLMsや人間にとっても困難なタスクであることを示しています。</span>
@@ -3111,7 +3110,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1179">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>アラインメント調整は、大規模言語モデル（LLMs）のパフォーマンスを向上させるために使用されます。しかし、アラインメント調整の効果は「表面的」である可能性があります。この研究では、基本的なLLMとアラインメント調整されたバージョンのトークン分布のシフトを分析しました。結果は、アラインメント調整が主にスタイルトークンに影響を与えることを示しました。さらに、シンプルでチューニングフリーなアラインメント手法であるURIALを導入し、基本的なLLMのパフォーマンスを向上させることができることを示しました。これらの結果から、アラインメントのより深い分析と理論的な理解が重要であることが示唆されます。</span>
-<span class="snippet"><span>Comment</span>モデルの知識はPre-training時に十分獲得されており、モデルのAlignmentをとることで生じるものは表面的な変化のみであるという仮説がある。この仮説に関して分析をし、結果的にスタイリスティックな情報を生成する部分でAlignmentの有無で違いが生じることを明らかにし、そうであればわざわ ...</span>
+<span class="snippet"><span>Comment</span>モデルの知識はPre-training時に十分獲得されており、モデルのAlignmentをとることで生じるものは表面的な変化のみであるという仮説がある #700 。この仮説に関して分析をし、結果的にスタイリスティックな情報を生成する部分でAlignmentの有無で違いが生じることを明らかにし、そうで ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b8c62b33-dd72-43ea-8953-abb5c04cc504" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1153">Unbalanced Optimal Transport for Unbalanced Word Alignment, Yuki Arase+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>単一言語の単語アライメントにおいて、null alignmentという現象は重要であり、不均衡な単語アライメントを実現するために最適輸送（OT）のファミリーが有効であることを示している。教師あり・教師なしの設定での包括的な実験により、OTベースのアライメント手法が最新の手法と競争力があることが示されている。</span>
@@ -10908,21 +10907,24 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (129)
+## Pocket (130)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1180">Segment and Caption Anything, Xiaoke Huang+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、Segment Anything Model（SAM）に地域キャプションを生成する能力を効率的に備える方法を提案します。SAMは、セグメンテーションのための強力な汎用性を持ちながら、意味理解のための短縮形です。軽量なクエリベースの特徴ミキサーを導入することで、地域固有の特徴を言語モデルの埋め込み空間と整合させ、後でキャプションを生成します。訓練可能なパラメータの数が少ないため、高速かつスケーラブルなトレーニングが可能です。また、地域キャプションデータの不足問題に対処するために、弱い教師あり事前トレーニングを提案しています。この研究は、地域キャプションデータのスケーリングアップに向けた第一歩となり、SAMに地域的な意味を付加する効率的な方法を探求するための示唆を与えます。</span>
 <br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1176">Beyond ChatBots: ExploreLLM for Structured Thoughts and Personalized  Model Responses, Xiao Ma+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLM）を使用したチャットボットの開発について述べられています。特に、探索的なタスクや意味理解のタスクにおいて、LLMを活用することでユーザーの認知負荷を軽減し、より個別化された応答を生成することができると述べられています。また、ExploreLLMを使用することで、ユーザーが高レベルの好みを持った個別化された応答を簡単に生成できることも示唆されています。この研究は、自然言語とグラフィカルユーザーインターフェースの統合により、チャットボットの形式を超えたLLMとの対話が可能な未来を示しています。</span>
 <br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1175">COFFEE: Counterfactual Fairness for Personalized Text Generation in   Explainable Recommendation, Nan Wang+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>個別化されたテキスト生成（PTG）における公平性についての研究。ユーザーの書き込みテキストにはバイアスがあり、それがモデルのトレーニングに影響を与える可能性がある。このバイアスは、ユーザーの保護された属性に関連してテキストを生成する際の不公平な扱いを引き起こす可能性がある。公平性を促進するためのフレームワークを提案し、実験と評価によりその効果を示す。</span>
-<br><span class="issue_date">Issue Date: 2023-11-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1165">Mirasol3B: A Multimodal Autoregressive model for time-aligned and  contextual modalities, AJ Piergiovanni+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>異なるモダリティ（ビデオ、音声、テキスト）を組み合わせるマルチモーダル学習の課題に取り組むため、本研究ではモダリティごとに個別の自己回帰モデルを使用するアプローチを提案する。提案手法では、時間に同期したモダリティ（音声とビデオ）と順序付けられたコンテキストモダリティを別々に処理するMirasol3Bモデルを使用する。また、ビデオと音声の長いシーケンスに対処するために、シーケンスをスニペットに分割し、Combinerメカニズムを使用して特徴を結合する。この手法は、マルチモーダルベンチマークで最先端の性能を発揮し、高い計算要求に対処し、時間的な依存関係をモデリングすることができる。</span>
 </div>
 <button onclick="showMore(119)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-11-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1165">Mirasol3B: A Multimodal Autoregressive model for time-aligned and  contextual modalities, AJ Piergiovanni+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>異なるモダリティ（ビデオ、音声、テキスト）を組み合わせるマルチモーダル学習の課題に取り組むため、本研究ではモダリティごとに個別の自己回帰モデルを使用するアプローチを提案する。提案手法では、時間に同期したモダリティ（音声とビデオ）と順序付けられたコンテキストモダリティを別々に処理するMirasol3Bモデルを使用する。また、ビデオと音声の長いシーケンスに対処するために、シーケンスをスニペットに分割し、Combinerメカニズムを使用して特徴を結合する。この手法は、マルチモーダルベンチマークで最先端の性能を発揮し、高い計算要求に対処し、時間的な依存関係をモデリングすることができる。</span>
 <br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1151">System 2 Attention （is something you might need too）, Jason Weston+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Transformerベースの大規模言語モデル（LLMs）におけるソフトアテンションは、文脈から無関係な情報を取り込む傾向があり、次のトークン生成に悪影響を与える。そこで、System 2 Attention（S2A）を導入し、LLMsが自然言語で推論し、指示に従う能力を活用して、注目すべき情報を決定する。S2Aは関連する部分のみを含むように入力コンテキストを再生成し、再生成されたコンテキストに注目して最終的な応答を引き出す。実験では、S2Aは3つのタスクで標準のアテンションベースのLLMsよりも優れた性能を発揮し、事実性と客観性を高める。</span>
