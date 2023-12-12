@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1182">RankZephyr: Effective and Robust Zero-Shot Listwise Reranking is a  Breeze, Ronak Pradeep+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>RankZephyrは、オープンソースのLLMであり、再ランキングにおいてプロプライエタリモデルと同等の性能を発揮する。TREC Deep Learning TracksやBEIRのNEWSとCOVIDなどのデータセットで包括的な評価を行い、高い能力を示している。さらに、NovelEvalテストセットでもGPT-4を上回る性能を発揮し、データの汚染に対する懸念を解消している。結果の再現に必要なコードは、https://github.com/castorini/rank_llmで提供されている。</span>
 <br><span class="issue_date">Issue Date: 2023-12-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1180">Segment and Caption Anything, Xiaoke Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、Segment Anything Model（SAM）に地域キャプションを生成する能力を効率的に備える方法を提案します。SAMは、セグメンテーションのための強力な汎用性を持ちながら、意味理解のための短縮形です。軽量なクエリベースの特徴ミキサーを導入することで、地域固有の特徴を言語モデルの埋め込み空間と整合させ、後でキャプションを生成します。訓練可能なパラメータの数が少ないため、高速かつスケーラブルなトレーニングが可能です。また、地域キャプションデータの不足問題に対処するために、弱い教師あり事前トレーニングを提案しています。この研究は、地域キャプションデータのスケーリングアップに向けた第一歩となり、SAMに地域的な意味を付加する効率的な方法を探求するための示唆を与えます。</span>
@@ -12,13 +15,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1177">Unnatural Error Correction: GPT-4 Can Almost Perfectly Handle Unnatural  Scrambled Text, Qi Cao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の内部動作についての新しい洞察を提供します。特に、GPT-4を調査し、LLMsの耐久性に関する実験結果を示します。実験では、文字レベルの順列に対するLLMsの耐性を調べるために、Scrambled Benchというスイートを使用しました。結果は、GPT-4がtypoglycemiaという現象に似た能力を持ち、非常に自然でないエラーを含む入力をほぼ完璧に処理できることを示しています。これは、LLMsの耐性が直感に反するものであり、他のLLMsや人間にとっても困難なタスクであることを示しています。</span>
 <span class="snippet"><span>Comment</span>OpenAIのモデルがブラックボックスである限り、コンタミネーションがあるのでは？という疑念は持ってしまう。（部分的にしか読めていないが…）RealtimeQAと呼ばれるweeklyで直近のニュースに対するQuestionを発表することで構築されるデータセットのうち、2023.03.17--2完全に ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/df33c7a9-005e-4d7e-9d70-d8f0657869ed" alt="image"><br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1176">Beyond ChatBots: ExploreLLM for Structured Thoughts and Personalized  Model Responses, Xiao Ma+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLM）を使用したチャットボットの開発について述べられています。特に、探索的なタスクや意味理解のタスクにおいて、LLMを活用することでユーザーの認知負荷を軽減し、より個別化された応答を生成することができると述べられています。また、ExploreLLMを使用することで、ユーザーが高レベルの好みを持った個別化された応答を簡単に生成できることも示唆されています。この研究は、自然言語とグラフィカルユーザーインターフェースの統合により、チャットボットの形式を超えたLLMとの対話が可能な未来を示しています。</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/df33c7a9-005e-4d7e-9d70-d8f0657869ed" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1176">Beyond ChatBots: ExploreLLM for Structured Thoughts and Personalized  Model Responses, Xiao Ma+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLM）を使用したチャットボットの開発について述べられています。特に、探索的なタスクや意味理解のタスクにおいて、LLMを活用することでユーザーの認知負荷を軽減し、より個別化された応答を生成することができると述べられています。また、ExploreLLMを使用することで、ユーザーが高レベルの好みを持った個別化された応答を簡単に生成できることも示唆されています。この研究は、自然言語とグラフィカルユーザーインターフェースの統合により、チャットボットの形式を超えたLLMとの対話が可能な未来を示しています。</span>
 <br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1175">COFFEE: Counterfactual Fairness for Personalized Text Generation in   Explainable Recommendation, Nan Wang+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>個別化されたテキスト生成（PTG）における公平性についての研究。ユーザーの書き込みテキストにはバイアスがあり、それがモデルのトレーニングに影響を与える可能性がある。このバイアスは、ユーザーの保護された属性に関連してテキストを生成する際の不公平な扱いを引き起こす可能性がある。公平性を促進するためのフレームワークを提案し、実験と評価によりその効果を示す。</span>
@@ -1117,6 +1120,8 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Deep Neural Netを用いてmultitask learningを行いNLPタスク（POS tagging, Semantic Role Labeling, Chunking etc.）を解いた論文。被引用数2000を超える。multitask learningの学習プロセスな ...</span>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194">Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008</a>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1183">A Review of Public Japanese Training Sets</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1125">Boosting RAG: Picking the Best Embedding & Reranker models</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
