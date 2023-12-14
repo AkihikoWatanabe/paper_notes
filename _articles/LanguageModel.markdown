@@ -674,6 +674,8 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1178">もし明日、上司に「GPT-4を作れ」と言われたら？ Stability AIのシニアリサーチサイエンティストが紹介する「LLM構築タイムアタック」</a>
 <span class="snippet"><span>Comment</span>StabilityAI Japan秋葉さん（元PFN）のW&B Conferenceでの発表に関する記事。LLM構築タイムアタックでLLMをもし構築することになったら！？のざっくりとしたプロセスや、次ページでOpenAIのGPT4のテクニカルレポートのクレジットから各チームの規模感を推定して、ど ...</span>

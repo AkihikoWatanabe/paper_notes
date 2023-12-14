@@ -1036,7 +1036,11 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/276">Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL18</a>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DialogueGeneration.html">#DialogueGeneration</a><br><span class="issue_date">Issue Date: 2018-02-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/255">Personalizing Dialogue Agents: I have a dog, do you have pets too?, Zhang+, arXiv18</a>
-<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-07-04</span>
+<br><span class="issue_date">Issue Date: 2023-12-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1185">Large Batch Training of Convolutional Networks, Yang You+, N_A, arXiv17</a>
+<span class="snippet"><span>Summary</span>大規模な畳み込みネットワークのトレーニングを高速化するために、新しいトレーニングアルゴリズムを提案しました。このアルゴリズムは、Layer-wise Adaptive Rate Scaling（LARS）を使用して、大きなバッチサイズでのトレーニングを行いながらモデルの精度を損なわずにトレーニングすることができます。具体的には、Alexnetを8Kのバッチサイズまでスケーリングし、Resnet-50を32Kのバッチサイズまでスケーリングしました。</span>
+<span class="snippet"><span>Comment</span>BatchSizeを大きくすると性能が落ちますよ、系の話（CNN） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/deeb60b7-548c-4e50-94db-ce98eaf268e3" alt="image"><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-07-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/399">Learning to Represent Student Knowledge on Programming Exercises Using Deep Learning, Wang+, Stanford University, EDM17</a>
 <span class="snippet"><span>Comment</span>DKT #297 のPiechも共著に入っている。プログラミングの課題を行なっている時（要複数回のソースコードサブミット）、1. 次のexerciseが最終的に正解で終われるか否か2. 現在のexerciseを最終的に正解で終われるか否かを予測するタスクを実施 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/GraphConvolutionalNetwork.html">#GraphConvolutionalNetwork</a><br><span class="issue_date">Issue Date: 2019-05-31</span>

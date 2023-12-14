@@ -8,16 +8,18 @@ author: AkihikoWATANABE
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1181">Gemini, Google23</a>
 <span class="snippet"><span>Comment</span>多くのベンチマークでGPT4超えらしい（追記1）テクニカルレポートのp.44を見ると、ブログポスト中のGPT4のMMLUのスコアはGPT-4-0613のもののようなので、これが正しいとすると他のベンチマークのスコアも同モデルのものである可能性が高く、GPT-4-1163-preview（最新モテクニ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1178">もし明日、上司に「GPT-4を作れ」と言われたら？ Stability AIのシニアリサーチサイエンティストが紹介する「LLM構築タイムアタック」</a>
 <span class="snippet"><span>Comment</span>StabilityAI Japan秋葉さん（元PFN）のW&B Conferenceでの発表に関する記事。LLM構築タイムアタックでLLMをもし構築することになったら！？のざっくりとしたプロセスや、次ページでOpenAIのGPT4のテクニカルレポートのクレジットから各チームの規模感を推定して、ど ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
-<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
+<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
