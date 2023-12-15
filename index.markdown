@@ -5,18 +5,24 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
+<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1186">VILA: On Pre-training for Visual Language Models, Ji Lin+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>最近の大規模言語モデルの成功により、ビジュアル言語モデル（VLM）が進歩している。本研究では、VLMの事前学習のためのデザインオプションを検討し、以下の結果を示した：(1) LLMを凍結することでゼロショットのパフォーマンスが達成できるが、文脈に基づいた学習能力が不足している。(2) 交互に行われる事前学習データは有益であり、画像とテキストのペアだけでは最適ではない。(3) テキストのみの指示データを画像とテキストのデータに再ブレンドすることで、VLMのタスクの精度を向上させることができる。VILAというビジュアル言語モデルファミリーを構築し、最先端モデルを凌駕し、優れたパフォーマンスを発揮することを示した。マルチモーダルの事前学習は、VILAの特性を向上させる。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1185">Large Batch Training of Convolutional Networks, Yang You+, N_A, arXiv17</a>
 <span class="snippet"><span>Summary</span>大規模な畳み込みネットワークのトレーニングを高速化するために、新しいトレーニングアルゴリズムを提案しました。このアルゴリズムは、Layer-wise Adaptive Rate Scaling（LARS）を使用して、大きなバッチサイズでのトレーニングを行いながらモデルの精度を損なわずにトレーニングすることができます。具体的には、Alexnetを8Kのバッチサイズまでスケーリングし、Resnet-50を32Kのバッチサイズまでスケーリングしました。</span>
 <span class="snippet"><span>Comment</span>BatchSizeを大きくすると性能が落ちますよ、系の話（CNN） ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/deeb60b7-548c-4e50-94db-ce98eaf268e3" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1183">A Review of Public Japanese Training Sets</a>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/deeb60b7-548c-4e50-94db-ce98eaf268e3" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1183">A Review of Public Japanese Training Sets</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1182">RankZephyr: Effective and Robust Zero-Shot Listwise Reranking is a  Breeze, Ronak Pradeep+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>RankZephyrは、オープンソースのLLMであり、再ランキングにおいてプロプライエタリモデルと同等の性能を発揮する。TREC Deep Learning TracksやBEIRのNEWSとCOVIDなどのデータセットで包括的な評価を行い、高い能力を示している。さらに、NovelEvalテストセットでもGPT-4を上回る性能を発揮し、データの汚染に対する懸念を解消している。結果の再現に必要なコードは、https://github.com/castorini/rank_llmで提供されている。</span>
@@ -337,16 +343,10 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1086">Personalized Soups: Personalized Large Language Model Alignment via  Post-hoc Parameter Merging, Joel Jang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Reinforcement Learning from Human Feedback (RLHF) is not optimal for learning diverse individual perspectives, as it aligns general aggregated human preferences with large language models (LLMs). This study investigates the problem of Reinforcement Learning from Individual Human Feedback (RLPHF) and models the alignment with LLMs to multiple (sometimes conflicting) preferences as a Multi-Objective Reinforcement Learning (MORL) problem. It demonstrates that individual alignment can be achieved by decomposing preferences into multiple dimensions based on personalized declarations. The study shows that these dimensions can be efficiently trained independently and distributed, and effectively combined in post-processing through parameter merging. The code is available at https://github.com/joeljang/RLPHF.</span>
 <span class="snippet"><span>Comment</span>以下AIDBのツイートの引用>特定の個人の好みやニーズに最も適したレスポンスや行動を行うLLMを開発する手法、『Personalized Soups（意訳：ぼくだけのためのスープ）』が開発されました。>RLHF（人間のフィードバックによる強化学習）を個人に適用することで実現します。>ワシどこまでのこ ...</span>
-<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-10-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1085">Eliminating Reasoning via Inferring with Planning: A New Framework to  Guide LLMs Non-linear Thinking, Yongqi Tong+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）に非線形の思考を促すために、新しいプロンプティング方法であるInferential Exclusion Prompting（IEP）を提案する。IEPは、計画を立てて可能な解を推論し、逆推論を行うことで広い視点を得ることができる。IEPは他の手法と比較して複雑な人間の思考プロセスをシミュレートできることを実証し、LLMsのパフォーマンス向上にも貢献することを示した。さらに、Mental-Ability Reasoning Benchmark（MARB）を導入し、LLMsの論理と言語推論能力を評価するための新しいベンチマークを提案した。IEPとMARBはLLMsの研究において有望な方向性であり、今後の進展が期待される。</span>
-<span class="snippet"><span>Comment</span>以下AIDBの引用>GPT-4などのLLMに、CoTのように直線的（線形的）ではなく、複数の条件を考慮させる（非線形的）プロンプト手法『Inferential Exclusion Prompting（IEP）』が考案されました。>さまざまなタスクでCoTを一貫して上回り、さらにCoTと統合す元論文は ...</span>
-<a class="button" href="articles/Mindset.html">#Mindset</a><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-10-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1084">CTO handbook</a>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
-## NLP (628)
-### LanguageModel (231)
+## NLP (629)
+### LanguageModel (232)
 <div class="visible-content">
 <a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1179">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv23</a>
@@ -945,6 +945,9 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
+<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
 <span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
@@ -4010,20 +4013,23 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (404)
-### LanguageModel (97)
+## Article (405)
+### LanguageModel (98)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1181">Gemini, Google23</a>
 <span class="snippet"><span>Comment</span>多くのベンチマークでGPT4超えらしい（追記1）テクニカルレポートのp.44を見ると、ブログポスト中のGPT4のMMLUのスコアはGPT-4-0613のもののようなので、これが正しいとすると他のベンチマークのスコアも同モデルのものである可能性が高く、GPT-4-1163-preview（最新モテクニ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
+<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
 </div>
 <button onclick="showMore(30)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1178">もし明日、上司に「GPT-4を作れ」と言われたら？ Stability AIのシニアリサーチサイエンティストが紹介する「LLM構築タイムアタック」</a>
 <span class="snippet"><span>Comment</span>StabilityAI Japan秋葉さん（元PFN）のW&B Conferenceでの発表に関する記事。LLM構築タイムアタックでLLMをもし構築することになったら！？のざっくりとしたプロセスや、次ページでOpenAIのGPT4のテクニカルレポートのクレジットから各チームの規模感を推定して、ど ...</span>
@@ -10911,21 +10917,24 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (133)
+## Pocket (134)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1186">VILA: On Pre-training for Visual Language Models, Ji Lin+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>最近の大規模言語モデルの成功により、ビジュアル言語モデル（VLM）が進歩している。本研究では、VLMの事前学習のためのデザインオプションを検討し、以下の結果を示した：(1) LLMを凍結することでゼロショットのパフォーマンスが達成できるが、文脈に基づいた学習能力が不足している。(2) 交互に行われる事前学習データは有益であり、画像とテキストのペアだけでは最適ではない。(3) テキストのみの指示データを画像とテキストのデータに再ブレンドすることで、VLMのタスクの精度を向上させることができる。VILAというビジュアル言語モデルファミリーを構築し、最先端モデルを凌駕し、優れたパフォーマンスを発揮することを示した。マルチモーダルの事前学習は、VILAの特性を向上させる。</span>
 <br><span class="issue_date">Issue Date: 2023-12-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1182">RankZephyr: Effective and Robust Zero-Shot Listwise Reranking is a  Breeze, Ronak Pradeep+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>RankZephyrは、オープンソースのLLMであり、再ランキングにおいてプロプライエタリモデルと同等の性能を発揮する。TREC Deep Learning TracksやBEIRのNEWSとCOVIDなどのデータセットで包括的な評価を行い、高い能力を示している。さらに、NovelEvalテストセットでもGPT-4を上回る性能を発揮し、データの汚染に対する懸念を解消している。結果の再現に必要なコードは、https://github.com/castorini/rank_llmで提供されている。</span>
 <br><span class="issue_date">Issue Date: 2023-12-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1180">Segment and Caption Anything, Xiaoke Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、Segment Anything Model（SAM）に地域キャプションを生成する能力を効率的に備える方法を提案します。SAMは、セグメンテーションのための強力な汎用性を持ちながら、意味理解のための短縮形です。軽量なクエリベースの特徴ミキサーを導入することで、地域固有の特徴を言語モデルの埋め込み空間と整合させ、後でキャプションを生成します。訓練可能なパラメータの数が少ないため、高速かつスケーラブルなトレーニングが可能です。また、地域キャプションデータの不足問題に対処するために、弱い教師あり事前トレーニングを提案しています。この研究は、地域キャプションデータのスケーリングアップに向けた第一歩となり、SAMに地域的な意味を付加する効率的な方法を探求するための示唆を与えます。</span>
-<br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1176">Beyond ChatBots: ExploreLLM for Structured Thoughts and Personalized  Model Responses, Xiao Ma+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLM）を使用したチャットボットの開発について述べられています。特に、探索的なタスクや意味理解のタスクにおいて、LLMを活用することでユーザーの認知負荷を軽減し、より個別化された応答を生成することができると述べられています。また、ExploreLLMを使用することで、ユーザーが高レベルの好みを持った個別化された応答を簡単に生成できることも示唆されています。この研究は、自然言語とグラフィカルユーザーインターフェースの統合により、チャットボットの形式を超えたLLMとの対話が可能な未来を示しています。</span>
 </div>
 <button onclick="showMore(119)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1176">Beyond ChatBots: ExploreLLM for Structured Thoughts and Personalized  Model Responses, Xiao Ma+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLM）を使用したチャットボットの開発について述べられています。特に、探索的なタスクや意味理解のタスクにおいて、LLMを活用することでユーザーの認知負荷を軽減し、より個別化された応答を生成することができると述べられています。また、ExploreLLMを使用することで、ユーザーが高レベルの好みを持った個別化された応答を簡単に生成できることも示唆されています。この研究は、自然言語とグラフィカルユーザーインターフェースの統合により、チャットボットの形式を超えたLLMとの対話が可能な未来を示しています。</span>
 <br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1175">COFFEE: Counterfactual Fairness for Personalized Text Generation in   Explainable Recommendation, Nan Wang+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>個別化されたテキスト生成（PTG）における公平性についての研究。ユーザーの書き込みテキストにはバイアスがあり、それがモデルのトレーニングに影響を与える可能性がある。このバイアスは、ユーザーの保護された属性に関連してテキストを生成する際の不公平な扱いを引き起こす可能性がある。公平性を促進するためのフレームワークを提案し、実験と評価によりその効果を示す。</span>

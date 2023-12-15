@@ -70,6 +70,9 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e3cb11b7-f413-4831-bea6-97886b683ff7" alt="image"><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/82">Learning to skim text, Yu+, ACL17</a>
 <span class="snippet"><span>Comment</span>解説スライド：http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/07.pdf![image](https://user-images.githubusercontent.com/12249301/34460775-f64d4 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
+<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1150">GPT4All, 2023</a>
 <span class="snippet"><span>Comment</span>ローカルマシンでChatGPT likeなUIでチャットボットを動作させられるOpensource。Mistral7BやGGUFフォーマットのモデルのよつな（おそらく量子化されたものも含む）ローカルマシンで動作させられる規模感のモデルがサポートされている。https://gpt4all.io/i ...</span>

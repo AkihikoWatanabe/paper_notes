@@ -674,6 +674,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
+<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
