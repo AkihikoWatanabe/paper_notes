@@ -674,6 +674,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
+<span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>

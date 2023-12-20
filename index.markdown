@@ -5,19 +5,25 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
+<span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/MLOps.html">#MLOps</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1190">モバオクでのリアルタイムレコメンドシステムの紹介</a>
+<span class="snippet"><span>Comment</span>DeNAでのRecSysのアーキテクチャ（バッチ、リアルタイム）が紹介されている。バッチではワークフローエンジンとしてVertex AI Pipelineが用いられている。リアルタイムになるとアーキテクチャが非常に複雑になっている。複雑なアーキテクチャだが、Generative Recommendリ ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1189">Data Selection for Language Models via Importance Resampling, Sang Michael Xie+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>適切な事前学習データセットの選択は、言語モデルの性能向上に重要である。既存の方法ではヒューリスティックスや人手による選別が必要だが、本研究では重要度リサンプリングを用いたデータ選択フレームワークであるDSIRを提案する。DSIRは効率的かつスケーラブルであり、KL削減というデータメトリックを用いて選択されたデータとターゲットとの近接性を測定する。実験結果では、DSIRが他の方法よりも高い精度を示し、特定のドメインや一般的なドメインの事前学習においても優れた性能を発揮することが示された。</span>
-<a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
-<span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
-<a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
-<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
+<span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
+<a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
+<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1186">VILA: On Pre-training for Visual Language Models, Ji Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>最近の大規模言語モデルの成功により、ビジュアル言語モデル（VLM）が進歩している。本研究では、VLMの事前学習のためのデザインオプションを検討し、以下の結果を示した：(1) LLMを凍結することでゼロショットのパフォーマンスが達成できるが、文脈に基づいた学習能力が不足している。(2) 交互に行われる事前学習データは有益であり、画像とテキストのペアだけでは最適ではない。(3) テキストのみの指示データを画像とテキストのデータに再ブレンドすることで、VLMのタスクの精度を向上させることができる。VILAというビジュアル言語モデルファミリーを構築し、最先端モデルを凌駕し、優れたパフォーマンスを発揮することを示した。マルチモーダルの事前学習は、VILAの特性を向上させる。</span>
@@ -336,13 +342,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1090">In-Context Learning Creates Task Vectors, Roee Hendel+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）におけるインコンテキスト学習（ICL）の基本的なメカニズムはまだ十分に理解されていない。本研究では、ICLによって学習される関数が非常に単純な構造を持つことを示し、ICLがトランスフォーマーLLMを使用して単一のタスクベクトルを生成し、それを使用して出力を生成するということを明らかにする。さまざまなモデルとタスクにわたる実験によって、この主張を支持している。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんとツイートの引用>In-Context Learningの文脈中で計算された最後の活性値をθとし、クエリに対する結果を求める際に文脈に注意を当てず、活性値にθをコピーして予測してもICLと近い性能を達成できる。θはタスクを要約したタスクベクトルとみなせLLMは前向き計算でタIC ...</span>
-<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1089">Detecting Pretraining Data from Large Language Models, Weijia Shi+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）を訓練するためのデータの検出問題を研究し、新しい検出方法であるMin-K% Probを提案します。Min-K% Probは、LLMの下で低い確率を持つアウトライアーワードを検出することに基づいています。実験の結果、Min-K% Probは従来の方法に比べて7.4%の改善を達成し、著作権のある書籍の検出や汚染された下流の例の検出など、実世界のシナリオにおいて効果的な解決策であることが示されました。</span>
-<span class="snippet"><span>Comment</span>以下AIDBのツイートの引用> LLMに特定のテキストが「訓練データとして使用されているのか」を確かめる手法が開発されました。>検証の結果、本手法は信頼性があって効果的と結論づけられています。権利の問題やベンチマーク評価に役立つ可能性のある進展です。>ワシントン大学とプリンストン大学の実験結果を見る ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1d7a5fe2-e0bc-4c6e-92b2-34457a17714a" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-10-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1088">Branch-Solve-Merge Improves Large Language Model Evaluation and  Generation, Swarnadeep Saha+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、多面的な言語生成および評価タスクにおいて、大規模言語モデルプログラム（BSM）を提案します。BSMは、ブランチ、ソルブ、マージの3つのモジュールから構成され、タスクを複数のサブタスクに分解し、独立して解決し、解決策を統合します。実験により、BSMが評価の正確性と一貫性を向上させ、パフォーマンスを向上させることが示されました。</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (630)
@@ -4019,22 +4018,25 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (406)
-### LanguageModel (99)
+## Article (408)
+### LanguageModel (100)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1181">Gemini, Google23</a>
 <span class="snippet"><span>Comment</span>多くのベンチマークでGPT4超えらしい（追記1）テクニカルレポートのp.44を見ると、ブログポスト中のGPT4のMMLUのスコアはGPT-4-0613のもののようなので、これが正しいとすると他のベンチマークのスコアも同モデルのものである可能性が高く、GPT-4-1163-preview（最新モテクニ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
+<span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
-<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 </div>
 <button onclick="showMore(30)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
+<span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184">大規模モデルを支える分散並列学習のしくみ Part1</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-13</span>
@@ -5277,21 +5279,24 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>VSCodeの拡張で、//から始まるPromptをエディタ上で記載することで対応するコードをGPT3が生成してくれる模様。便利そう ...</span>
 <button onclick="hideContent(42)" style="display: none;">hide</button>
 </div>
-### FoundationModel (8)
+### FoundationModel (9)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
+<span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1111">tsuzumi, NTT’23</a>
 <span class="snippet"><span>Comment</span>NTT製のLLM。パラメータ数は7Bと軽量だが高性能。MTBenchのようなGPT4に勝敗を判定させるベンチマークで、地理、歴史、政治、社会に関する質問応答タスク（図6）でgpt3.5turboと同等、国産LLMの中でトップの性能。GPT3.5turboには、コーディングや数学などの能力では劣るとt ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d064e0dc-b598-4853-9466-f56f39986acc" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1111">tsuzumi, NTT’23</a>
 <span class="snippet"><span>Comment</span>NTT製のLLM。パラメータ数は7Bと軽量だが高性能。MTBenchのようなGPT4に勝敗を判定させるベンチマークで、地理、歴史、政治、社会に関する質問応答タスク（図6）でgpt3.5turboと同等、国産LLMの中でトップの性能。GPT3.5turboには、コーディングや数学などの能力では劣るとt ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d064e0dc-b598-4853-9466-f56f39986acc" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897">Introducing CM3leon, a more efficient, state-of-the-art generative model for text and images, 2023</a>
-<span class="snippet"><span>Summary</span>最近の自然言語処理の進歩により、生成型AIモデルへの関心と研究が加速しています。CM3leonは、テキストから画像への生成と画像からテキストへの生成を行う単一の基礎モデルです。</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d064e0dc-b598-4853-9466-f56f39986acc" alt="image"></div>
 <button onclick="showMore(43)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897">Introducing CM3leon, a more efficient, state-of-the-art generative model for text and images, 2023</a>
+<span class="snippet"><span>Summary</span>最近の自然言語処理の進歩により、生成型AIモデルへの関心と研究が加速しています。CM3leonは、テキストから画像への生成と画像からテキストへの生成を行う単一の基礎モデルです。</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/InductiveBias.html">#InductiveBias</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/809">Objaverse-XL: A Universe of 10M+ 3D Objects</a>
 <span class="snippet"><span>Comment</span>10Mを超える3D objectのデータセットを公開し、3D Modelの基盤モデルとしてZero123-XLを訓練。元ツイートのGifがわかりやすい。https://twitter.com/mattdeitke/status/1678855859089326080?s=46&t=8VBxVyn ...</span>
@@ -5309,21 +5314,24 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>・15.5Bパラメータ・80種類以上のプログラミング言語で訓練・Multi Query Attentionを利用・context window size 8192・Fill in the middle objectiveを利用Instruction tuningがされておらず、prefipaper: ...</span>
 <button onclick="hideContent(43)" style="display: none;">hide</button>
 </div>
-### MLOps (7)
+### MLOps (8)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1190">モバオクでのリアルタイムレコメンドシステムの紹介</a>
+<span class="snippet"><span>Comment</span>DeNAでのRecSysのアーキテクチャ（バッチ、リアルタイム）が紹介されている。バッチではワークフローエンジンとしてVertex AI Pipelineが用いられている。リアルタイムになるとアーキテクチャが非常に複雑になっている。複雑なアーキテクチャだが、Generative Recommendリ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1033">Lessons Learnt From Consolidating ML Models in a Large Scale Recommendation System</a>
 <span class="snippet"><span>Comment</span>推薦システムには様々なusecaseが存在しており、それらは別々に運用されることが多い。user-item recommendationitem-item recommendationquery-item recommendationcategory-item recこれがこのようなsi ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8ae598fa-8e7c-4afd-ab9e-38b79b85cd3e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/498">deploy-API-to-GCP</a>
 <span class="snippet"><span>Comment</span>FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ0. リポジトリをclone1. Flaskアプリ作成2. FlaskアプリをDocker化3. TerraFormのStateを保存すCloud ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/498">deploy-API-to-GCP</a>
-<span class="snippet"><span>Comment</span>FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ0. リポジトリをclone1. Flaskアプリ作成2. FlaskアプリをDocker化3. TerraFormのStateを保存すCloud ...</span>
 </div>
 <button onclick="showMore(44)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/498">deploy-API-to-GCP</a>
+<span class="snippet"><span>Comment</span>FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ0. リポジトリをclone1. Flaskアプリ作成2. FlaskアプリをDocker化3. TerraFormのStateを保存すCloud ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><br><span class="issue_date">Issue Date: 2022-04-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/447">MLOps: 機械学習における継続的デリバリーと自動化のパイプライン, Google</a>
 <span class="snippet"><span>Comment</span>機械学習（ML）システムの継続的インテグレーション（CI）、継続的デリバリー（CD）、継続的トレーニング（CT）の実装と自動化MLOpsのレベルを0~2で表現しており、各レベルごとに何が達成されるべきかが図解されている。![image](https://user-images.githu ...</span>
@@ -5896,7 +5904,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(53)" style="display: none;">hide</button>
 </div>
 <hr>
-## RecommenderSystems (136)
+## RecommenderSystems (137)
 ### Survey (34)
 <div class="visible-content">
 <a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2018-04-16</span>
@@ -6303,6 +6311,15 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/8">User-model based personalized summarization, Diaz+, Information Processing and Management 2007, 96</a>
 <span class="snippet"><span>Comment</span>PDSの先駆けとなった重要論文。必ずreferすべき。 ...</span>
 </div>
+### MLOps (2)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1190">モバオクでのリアルタイムレコメンドシステムの紹介</a>
+<span class="snippet"><span>Comment</span>DeNAでのRecSysのアーキテクチャ（バッチ、リアルタイム）が紹介されている。バッチではワークフローエンジンとしてVertex AI Pipelineが用いられている。リアルタイムになるとアーキテクチャが非常に複雑になっている。複雑なアーキテクチャだが、Generative Recommendリ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1033">Lessons Learnt From Consolidating ML Models in a Large Scale Recommendation System</a>
+<span class="snippet"><span>Comment</span>推薦システムには様々なusecaseが存在しており、それらは別々に運用されることが多い。user-item recommendationitem-item recommendationquery-item recommendationcategory-item recこれがこのようなsi ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8ae598fa-8e7c-4afd-ab9e-38b79b85cd3e" alt="image"></div>
 ### InteractiveRecommenderSystems (1)
 <div class="visible-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
@@ -6350,12 +6367,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/927">Personalized Chit-Chat Generation for Recommendation Using External Chat Corpora, Chen+, KDD22</a>
 <span class="snippet"><span>Summary</span>チットチャットは、ユーザーとの対話において効果的であることが示されています。この研究では、ニュース推薦のための個人化されたチットチャットを生成する方法を提案しています。既存の方法とは異なり、外部のチャットコーパスのみを使用してユーザーの関心を推定し、個人化されたチットチャットを生成します。幅広い実験により、提案手法の効果が示されています。</span>
 </div>
-### MLOps (1)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1033">Lessons Learnt From Consolidating ML Models in a Large Scale Recommendation System</a>
-<span class="snippet"><span>Comment</span>推薦システムには様々なusecaseが存在しており、それらは別々に運用されることが多い。user-item recommendationitem-item recommendationquery-item recommendationcategory-item recこれがこのようなsi ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8ae598fa-8e7c-4afd-ab9e-38b79b85cd3e" alt="image"></div>
 ### Others (34)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-11-13</span>

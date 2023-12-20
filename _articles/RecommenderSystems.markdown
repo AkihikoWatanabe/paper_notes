@@ -197,6 +197,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/ItemBased.html">#ItemBased</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/179">Item-based collaborative filtering recommendation algorithms, Sarwar+（with Konstan）, WWW01</a>
 <span class="snippet"><span>Comment</span>アイテムベースな協調フィルタリングを提案した論文（GroupLens） ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MLOps.html">#MLOps</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1190">モバオクでのリアルタイムレコメンドシステムの紹介</a>
+<span class="snippet"><span>Comment</span>DeNAでのRecSysのアーキテクチャ（バッチ、リアルタイム）が紹介されている。バッチではワークフローエンジンとしてVertex AI Pipelineが用いられている。リアルタイムになるとアーキテクチャが非常に複雑になっている。複雑なアーキテクチャだが、Generative Recommendリ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MLOps.html">#MLOps</a><br><span class="issue_date">Issue Date: 2023-09-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1033">Lessons Learnt From Consolidating ML Models in a Large Scale Recommendation System</a>
 <span class="snippet"><span>Comment</span>推薦システムには様々なusecaseが存在しており、それらは別々に運用されることが多い。user-item recommendationitem-item recommendationquery-item recommendationcategory-item recこれがこのようなsi ...</span>
