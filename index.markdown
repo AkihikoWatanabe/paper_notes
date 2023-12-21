@@ -5,19 +5,21 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
 <span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/MLOps.html">#MLOps</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1190">モバオクでのリアルタイムレコメンドシステムの紹介</a>
 <span class="snippet"><span>Comment</span>DeNAでのRecSysのアーキテクチャ（バッチ、リアルタイム）が紹介されている。バッチではワークフローエンジンとしてVertex AI Pipelineが用いられている。リアルタイムになるとアーキテクチャが非常に複雑になっている。複雑なアーキテクチャだが、Generative Recommendリ ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1189">Data Selection for Language Models via Importance Resampling, Sang Michael Xie+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>適切な事前学習データセットの選択は、言語モデルの性能向上に重要である。既存の方法ではヒューリスティックスや人手による選別が必要だが、本研究では重要度リサンプリングを用いたデータ選択フレームワークであるDSIRを提案する。DSIRは効率的かつスケーラブルであり、KL削減というデータメトリックを用いて選択されたデータとターゲットとの近接性を測定する。実験結果では、DSIRが他の方法よりも高い精度を示し、特定のドメインや一般的なドメインの事前学習においても優れた性能を発揮することが示された。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1189">Data Selection for Language Models via Importance Resampling, Sang Michael Xie+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>適切な事前学習データセットの選択は、言語モデルの性能向上に重要である。既存の方法ではヒューリスティックスや人手による選別が必要だが、本研究では重要度リサンプリングを用いたデータ選択フレームワークであるDSIRを提案する。DSIRは効率的かつスケーラブルであり、KL削減というデータメトリックを用いて選択されたデータとターゲットとの近接性を測定する。実験結果では、DSIRが他の方法よりも高い精度を示し、特定のドメインや一般的なドメインの事前学習においても優れた性能を発揮することが示された。</span>
 <a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
@@ -338,10 +340,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1091">NEFTune: Noisy Embeddings Improve Instruction Finetuning, Neel Jain+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、言語モデルのファインチューニングを改善するために、ノイズを加えた埋め込みベクトルを使用する手法を提案します。この手法は、AlpacaEvalやEvol-Instructなどのデータセットで強力なベースラインを上回る性能を示しました。また、RLHFでトレーニングされたモデルにも適用可能です。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> NEFTuneはLLMをファインチューニングする際、単語埋め込みベクトルに一様分布からのノイズを加えるだけでファインチューニングの性能を大きく改善する。ファインチューニングは多くの場合過学習しており、出現した単語や表現にしばられる場合が多く、これを防ぐこAl ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1090">In-Context Learning Creates Task Vectors, Roee Hendel+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）におけるインコンテキスト学習（ICL）の基本的なメカニズムはまだ十分に理解されていない。本研究では、ICLによって学習される関数が非常に単純な構造を持つことを示し、ICLがトランスフォーマーLLMを使用して単一のタスクベクトルを生成し、それを使用して出力を生成するということを明らかにする。さまざまなモデルとタスクにわたる実験によって、この主張を支持している。</span>
-<span class="snippet"><span>Comment</span>以下hillbigさんとツイートの引用>In-Context Learningの文脈中で計算された最後の活性値をθとし、クエリに対する結果を求める際に文脈に注意を当てず、活性値にθをコピーして予測してもICLと近い性能を達成できる。θはタスクを要約したタスクベクトルとみなせLLMは前向き計算でタIC ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (630)
@@ -4018,22 +4016,26 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (408)
-### LanguageModel (100)
+## Article (410)
+### LanguageModel (102)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1181">Gemini, Google23</a>
 <span class="snippet"><span>Comment</span>多くのベンチマークでGPT4超えらしい（追記1）テクニカルレポートのp.44を見ると、ブログポスト中のGPT4のMMLUのスコアはGPT-4-0613のもののようなので、これが正しいとすると他のベンチマークのスコアも同モデルのものである可能性が高く、GPT-4-1163-preview（最新モテクニ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
-<span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
-<span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
 </div>
 <button onclick="showMore(30)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
+<span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
+<span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Attention.html">#Attention</a><br><span class="issue_date">Issue Date: 2023-12-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1187">【続】Flash Attentionを使ってLLMの推論を高速・軽量化できるか？</a>
 <span class="snippet"><span>Comment</span>use_cacheがTrue/Falseの場合のFlashAttention2のinference timeとVRAM使用量の傾向をsequence_lengthごとに考察している。use_cacheはKey Value cacheのオンオフを切り替えられるオプションである。autoregresFl ...</span>
