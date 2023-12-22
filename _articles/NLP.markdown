@@ -1508,6 +1508,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/RuleBased.html">#RuleBased</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105">Design of a knowledge-based report generator, Kukich, ACL83</a>
 <span class="snippet"><span>Comment</span>## タスクnumerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA## 手法概要ルールベースな手法，1) fact-generator,2) message generator,Data2Text ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
+<span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
