@@ -5,19 +5,24 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1198">GPTsより精度の高いRAGシステムの構築</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1197">Retrieval-Augmented Generation for Large Language Models: A Survey, Yunfan Gao+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）には課題がありますが、Retrieval-Augmented Generation（RAG）はこれを解決する手法です。RAGは外部の知識ベースから情報を取得し、回答の正確性を向上させます。ソースの引用により、回答の検証とモデルの信頼性向上が可能です。また、RAGは知識の更新やドメイン固有の知識の導入を容易にします。本論文ではRAGの開発パラダイムとそのコンポーネントについて説明し、評価方法や将来の研究方向についても議論しています。</span>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
 <span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1195">Build a search engine, not a vector DB</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1194">Gemini: A Family of Highly Capable Multimodal Models, Gemini Team+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この報告書では、マルチモーダルモデル「Gemini」のファミリーについて紹介します。Geminiは画像、音声、動画、テキストの理解に優れた能力を持ち、Ultra、Pro、Nanoのサイズがあります。Gemini Ultraは幅広いベンチマークで最先端の技術を提供し、MMLUでは人間の専門家のパフォーマンスを初めて達成しました。Geminiモデルはクロスモーダルな推論と言語理解の能力を持ち、さまざまなユースケースに適用できます。また、ユーザーへの責任ある展開についても議論しています。</span>
 <span class="snippet"><span>Comment</span>#1181 で発表されたGeminiの論文 ...</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1193">An In-depth Look at Geminis Language Abilities, Syeda Nahida Akter+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Google Geminiモデルは、OpenAI GPTシリーズと同等の結果を報告した初めてのモデルであり、本論文ではその言語能力を詳細に探求します。具体的には、GeminiとGPTの能力を客観的に比較し、再現可能なコードと透明な結果を提供します。さらに、Geminiの得意な領域を特定し、10のデータセットでさまざまな言語能力をテストします。Gemini Proは、GPT 3.5 Turboに比べてわずかに劣る精度を示しましたが、多数の桁を含む数学的な推論の失敗や多肢選択の回答順序への感度などの説明も提供します。また、Geminiは非英語の言語や複雑な推論チェーンの処理などで高いパフォーマンスを示すことも特定しています。再現のためのコードとデータは、https://github.com/neulab/gemini-benchmarkで入手できます。</span>
@@ -332,13 +337,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1098">Human Feedback is not Gold Standard, Tom Hosking+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>人間のフィードバックは、大規模言語モデルの性能評価に使用されているが、その好みのスコアがどの特性を捉えているのかは明確ではない。この研究では、人間のフィードバックの使用を分析し、重要なエラー基準を適切に捉えているかどうかを検証した。結果として、好みのスコアは広範なカバレッジを持っているが、事実性などの重要な側面が過小評価されていることがわかった。また、好みのスコアとエラーアノテーションは交絡因子の影響を受ける可能性があり、出力の断定性が事実性エラーの知覚率を歪めることも示された。さらに、人間のフィードバックを訓練目標として使用することが、モデルの出力の断定性を過度に増加させることも示された。今後の研究では、好みのスコアが望ましい目標と一致しているかどうかを慎重に考慮する必要がある。</span>
 <span class="snippet"><span>Comment</span>以下icoxfog417さんのツイートの引用> LLM の出力を評価する際、人手の評価はそれほど信頼できないという研究。出力のエラータイプの評価と全体的な評価をそれぞれ別々に行ったところ、事実性や矛盾性が評価に与える影響が少ないことを発見。また、自信あるように書かれていると事実性の評価が揺らぐこ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3824b322-53fa-4360-a7d4-1b0f3bff3302" alt="image"><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/StructuredData.html">#StructuredData</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1097">MURMUR: Modular Multi-Step Reasoning for Semi-Structured Data-to-Text  Generation, Swarnadeep Saha+, N_A, arXiv22</a>
-<span class="snippet"><span>Summary</span>本研究では、半構造化データからのテキスト生成における多段階の推論を行うためのMURMURという手法を提案しています。MURMURは、特定の言語的および論理的なスキルを持つニューラルモジュールと記号モジュールを組み合わせ、ベストファーストサーチ手法を使用して推論パスを生成します。実験結果では、MURMURは他のベースライン手法に比べて大幅な改善を示し、また、ドメイン外のデータでも同等の性能を達成しました。さらに、人間の評価では、MURMURは論理的に整合性のある要約をより多く生成することが示されました。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1096">日本語LLMのリーダーボード（LLM.jp）</a>
-<span class="snippet"><span>Comment</span>LLM.jpによる日本語LLMのリーダーボード。4-shotsでの結果、かつinstructionを与えた場合の生成テキストに対する評価、という点には留意したい。たとえばゼロショットで活用したい、という場合にこのリーダーボードの結果がそのまま再現される保証はないと推察される。#1079 の知見でJG ...</span>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3824b322-53fa-4360-a7d4-1b0f3bff3302" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (631)
 ### LanguageModel (233)
@@ -4017,7 +4016,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (414)
+## Article (415)
 ### LanguageModel (102)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
@@ -5740,22 +5739,24 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (59)
+### Others (60)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1198">GPTsより精度の高いRAGシステムの構築</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
-<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"></div>
+</div>
 <button onclick="showMore(53)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
 <span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
@@ -10969,8 +10970,11 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (137)
+## Pocket (138)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1197">Retrieval-Augmented Generation for Large Language Models: A Survey, Yunfan Gao+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）には課題がありますが、Retrieval-Augmented Generation（RAG）はこれを解決する手法です。RAGは外部の知識ベースから情報を取得し、回答の正確性を向上させます。ソースの引用により、回答の検証とモデルの信頼性向上が可能です。また、RAGは知識の更新やドメイン固有の知識の導入を容易にします。本論文ではRAGの開発パラダイムとそのコンポーネントについて説明し、評価方法や将来の研究方向についても議論しています。</span>
 <br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1194">Gemini: A Family of Highly Capable Multimodal Models, Gemini Team+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この報告書では、マルチモーダルモデル「Gemini」のファミリーについて紹介します。Geminiは画像、音声、動画、テキストの理解に優れた能力を持ち、Ultra、Pro、Nanoのサイズがあります。Gemini Ultraは幅広いベンチマークで最先端の技術を提供し、MMLUでは人間の専門家のパフォーマンスを初めて達成しました。Geminiモデルはクロスモーダルな推論と言語理解の能力を持ち、さまざまなユースケースに適用できます。また、ユーザーへの責任ある展開についても議論しています。</span>
@@ -10979,13 +10983,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1193">An In-depth Look at Geminis Language Abilities, Syeda Nahida Akter+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Google Geminiモデルは、OpenAI GPTシリーズと同等の結果を報告した初めてのモデルであり、本論文ではその言語能力を詳細に探求します。具体的には、GeminiとGPTの能力を客観的に比較し、再現可能なコードと透明な結果を提供します。さらに、Geminiの得意な領域を特定し、10のデータセットでさまざまな言語能力をテストします。Gemini Proは、GPT 3.5 Turboに比べてわずかに劣る精度を示しましたが、多数の桁を含む数学的な推論の失敗や多肢選択の回答順序への感度などの説明も提供します。また、Geminiは非英語の言語や複雑な推論チェーンの処理などで高いパフォーマンスを示すことも特定しています。再現のためのコードとデータは、https://github.com/neulab/gemini-benchmarkで入手できます。</span>
 <span class="snippet"><span>Comment</span>GeminiとGPTを様々なベンチマークで比較した研究。 ...</span>
-<br><span class="issue_date">Issue Date: 2023-12-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1189">Data Selection for Language Models via Importance Resampling, Sang Michael Xie+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>適切な事前学習データセットの選択は、言語モデルの性能向上に重要である。既存の方法ではヒューリスティックスや人手による選別が必要だが、本研究では重要度リサンプリングを用いたデータ選択フレームワークであるDSIRを提案する。DSIRは効率的かつスケーラブルであり、KL削減というデータメトリックを用いて選択されたデータとターゲットとの近接性を測定する。実験結果では、DSIRが他の方法よりも高い精度を示し、特定のドメインや一般的なドメインの事前学習においても優れた性能を発揮することが示された。</span>
 </div>
 <button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-12-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1189">Data Selection for Language Models via Importance Resampling, Sang Michael Xie+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>適切な事前学習データセットの選択は、言語モデルの性能向上に重要である。既存の方法ではヒューリスティックスや人手による選別が必要だが、本研究では重要度リサンプリングを用いたデータ選択フレームワークであるDSIRを提案する。DSIRは効率的かつスケーラブルであり、KL削減というデータメトリックを用いて選択されたデータとターゲットとの近接性を測定する。実験結果では、DSIRが他の方法よりも高い精度を示し、特定のドメインや一般的なドメインの事前学習においても優れた性能を発揮することが示された。</span>
 <br><span class="issue_date">Issue Date: 2023-12-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1186">VILA: On Pre-training for Visual Language Models, Ji Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>最近の大規模言語モデルの成功により、ビジュアル言語モデル（VLM）が進歩している。本研究では、VLMの事前学習のためのデザインオプションを検討し、以下の結果を示した：(1) LLMを凍結することでゼロショットのパフォーマンスが達成できるが、文脈に基づいた学習能力が不足している。(2) 交互に行われる事前学習データは有益であり、画像とテキストのペアだけでは最適ではない。(3) テキストのみの指示データを画像とテキストのデータに再ブレンドすることで、VLMのタスクの精度を向上させることができる。VILAというビジュアル言語モデルファミリーを構築し、最先端モデルを凌駕し、優れたパフォーマンスを発揮することを示した。マルチモーダルの事前学習は、VILAの特性を向上させる。</span>

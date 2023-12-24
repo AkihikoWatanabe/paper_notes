@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2023-12-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1197">Retrieval-Augmented Generation for Large Language Models: A Survey, Yunfan Gao+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）には課題がありますが、Retrieval-Augmented Generation（RAG）はこれを解決する手法です。RAGは外部の知識ベースから情報を取得し、回答の正確性を向上させます。ソースの引用により、回答の検証とモデルの信頼性向上が可能です。また、RAGは知識の更新やドメイン固有の知識の導入を容易にします。本論文ではRAGの開発パラダイムとそのコンポーネントについて説明し、評価方法や将来の研究方向についても議論しています。</span>
 <br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1194">Gemini: A Family of Highly Capable Multimodal Models, Gemini Team+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この報告書では、マルチモーダルモデル「Gemini」のファミリーについて紹介します。Geminiは画像、音声、動画、テキストの理解に優れた能力を持ち、Ultra、Pro、Nanoのサイズがあります。Gemini Ultraは幅広いベンチマークで最先端の技術を提供し、MMLUでは人間の専門家のパフォーマンスを初めて達成しました。Geminiモデルはクロスモーダルな推論と言語理解の能力を持ち、さまざまなユースケースに適用できます。また、ユーザーへの責任ある展開についても議論しています。</span>
@@ -13,13 +16,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1193">An In-depth Look at Geminis Language Abilities, Syeda Nahida Akter+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Google Geminiモデルは、OpenAI GPTシリーズと同等の結果を報告した初めてのモデルであり、本論文ではその言語能力を詳細に探求します。具体的には、GeminiとGPTの能力を客観的に比較し、再現可能なコードと透明な結果を提供します。さらに、Geminiの得意な領域を特定し、10のデータセットでさまざまな言語能力をテストします。Gemini Proは、GPT 3.5 Turboに比べてわずかに劣る精度を示しましたが、多数の桁を含む数学的な推論の失敗や多肢選択の回答順序への感度などの説明も提供します。また、Geminiは非英語の言語や複雑な推論チェーンの処理などで高いパフォーマンスを示すことも特定しています。再現のためのコードとデータは、https://github.com/neulab/gemini-benchmarkで入手できます。</span>
 <span class="snippet"><span>Comment</span>GeminiとGPTを様々なベンチマークで比較した研究。 ...</span>
-<br><span class="issue_date">Issue Date: 2023-12-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1189">Data Selection for Language Models via Importance Resampling, Sang Michael Xie+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>適切な事前学習データセットの選択は、言語モデルの性能向上に重要である。既存の方法ではヒューリスティックスや人手による選別が必要だが、本研究では重要度リサンプリングを用いたデータ選択フレームワークであるDSIRを提案する。DSIRは効率的かつスケーラブルであり、KL削減というデータメトリックを用いて選択されたデータとターゲットとの近接性を測定する。実験結果では、DSIRが他の方法よりも高い精度を示し、特定のドメインや一般的なドメインの事前学習においても優れた性能を発揮することが示された。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2023-12-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1189">Data Selection for Language Models via Importance Resampling, Sang Michael Xie+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>適切な事前学習データセットの選択は、言語モデルの性能向上に重要である。既存の方法ではヒューリスティックスや人手による選別が必要だが、本研究では重要度リサンプリングを用いたデータ選択フレームワークであるDSIRを提案する。DSIRは効率的かつスケーラブルであり、KL削減というデータメトリックを用いて選択されたデータとターゲットとの近接性を測定する。実験結果では、DSIRが他の方法よりも高い精度を示し、特定のドメインや一般的なドメインの事前学習においても優れた性能を発揮することが示された。</span>
 <br><span class="issue_date">Issue Date: 2023-12-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1186">VILA: On Pre-training for Visual Language Models, Ji Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>最近の大規模言語モデルの成功により、ビジュアル言語モデル（VLM）が進歩している。本研究では、VLMの事前学習のためのデザインオプションを検討し、以下の結果を示した：(1) LLMを凍結することでゼロショットのパフォーマンスが達成できるが、文脈に基づいた学習能力が不足している。(2) 交互に行われる事前学習データは有益であり、画像とテキストのペアだけでは最適ではない。(3) テキストのみの指示データを画像とテキストのデータに再ブレンドすることで、VLMのタスクの精度を向上させることができる。VILAというビジュアル言語モデルファミリーを構築し、最先端モデルを凌駕し、優れたパフォーマンスを発揮することを示した。マルチモーダルの事前学習は、VILAの特性を向上させる。</span>
