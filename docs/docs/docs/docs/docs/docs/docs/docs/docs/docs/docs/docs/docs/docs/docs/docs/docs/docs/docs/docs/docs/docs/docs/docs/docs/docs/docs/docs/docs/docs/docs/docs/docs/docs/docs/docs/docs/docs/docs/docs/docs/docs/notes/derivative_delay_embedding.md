@@ -1,0 +1,3 @@
+従来のtime-seriesデータの取り扱いは、fixed-length, well-alignedなデータが仮定されていたが、これはunrealisticなので、random length, well-alignedではないtime-seriesデータを、Embedding Spaceに埋め込む手法を提案。
+time-seriesデータをfixed-lengthにする、alignmentをとるようなpreprocessingが不要となる。
+onlineでモデルを更新するアルゴリズムも提案
