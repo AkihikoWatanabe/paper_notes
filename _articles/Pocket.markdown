@@ -5,9 +5,21 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2023-12-27</span>
+<br><span class="issue_date">Issue Date: 2023-12-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,  Language, Audio, and Action, Jiasen Lu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
+<span class="snippet"><span>Comment</span>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI ...</span>
+<br><span class="issue_date">Issue Date: 2023-12-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1201">Some things are more CRINGE than others: Preference Optimization with  the Pairwise Cringe Loss, Jing Xu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>一般的な言語モデルのトレーニングでは、ペアワイズの選好による整列がよく使われます。しかし、バイナリフィードバックの方法もあります。この研究では、既存のバイナリフィードバック手法をペアワイズ選好の設定に拡張し、高いパフォーマンスを示すことを示します。この手法は実装が簡単で効率的であり、最先端の選好最適化アルゴリズムよりも優れた性能を発揮します。</span>
+<span class="snippet"><span>Comment</span>DPO, PPOをoutperformする新たなAlignment手法。MetaのJason Weston氏元ツイート: https://x.com/jaseweston/status/1740546297235464446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q後で読む（画像は ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image"><br><span class="issue_date">Issue Date: 2023-12-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1199">Gemini vs GPT-4V: A Preliminary Comparison and Combination of  Vision-Language Models Through Qualitative Cases, Zhangyang Qi+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、マルチモーダル大規模言語モデル（MLLMs）の進化について、GoogleのGeminiとOpenAIのGPT-4Vという2つのモデルを比較しています。ビジョン-言語能力、人間との対話、時間的理解、知能および感情指数などの側面にわたる評価を行い、両モデルの異なる視覚理解能力について分析しています。さらに、実用的な有用性を評価するために構造化された実験を行い、両モデルのユニークな強みとニッチを明らかにしています。また、2つのモデルを組み合わせてより良い結果を得る試みも行っています。この研究は、マルチモーダル基盤モデルの進化と将来の進展についての洞察を提供しています。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2023-12-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1197">Retrieval-Augmented Generation for Large Language Models: A Survey, Yunfan Gao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）には課題がありますが、Retrieval-Augmented Generation（RAG）はこれを解決する手法です。RAGは外部の知識ベースから情報を取得し、回答の正確性を向上させます。ソースの引用により、回答の検証とモデルの信頼性向上が可能です。また、RAGは知識の更新やドメイン固有の知識の導入を容易にします。本論文ではRAGの開発パラダイムとそのコンポーネントについて説明し、評価方法や将来の研究方向についても議論しています。</span>
@@ -15,10 +27,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1194">Gemini: A Family of Highly Capable Multimodal Models, Gemini Team+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この報告書では、マルチモーダルモデル「Gemini」のファミリーについて紹介します。Geminiは画像、音声、動画、テキストの理解に優れた能力を持ち、Ultra、Pro、Nanoのサイズがあります。Gemini Ultraは幅広いベンチマークで最先端の技術を提供し、MMLUでは人間の専門家のパフォーマンスを初めて達成しました。Geminiモデルはクロスモーダルな推論と言語理解の能力を持ち、さまざまなユースケースに適用できます。また、ユーザーへの責任ある展開についても議論しています。</span>
 <span class="snippet"><span>Comment</span>#1181 で発表されたGeminiの論文 ...</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1193">An In-depth Look at Geminis Language Abilities, Syeda Nahida Akter+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Google Geminiモデルは、OpenAI GPTシリーズと同等の結果を報告した初めてのモデルであり、本論文ではその言語能力を詳細に探求します。具体的には、GeminiとGPTの能力を客観的に比較し、再現可能なコードと透明な結果を提供します。さらに、Geminiの得意な領域を特定し、10のデータセットでさまざまな言語能力をテストします。Gemini Proは、GPT 3.5 Turboに比べてわずかに劣る精度を示しましたが、多数の桁を含む数学的な推論の失敗や多肢選択の回答順序への感度などの説明も提供します。また、Geminiは非英語の言語や複雑な推論チェーンの処理などで高いパフォーマンスを示すことも特定しています。再現のためのコードとデータは、https://github.com/neulab/gemini-benchmarkで入手できます。</span>

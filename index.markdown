@@ -5,18 +5,26 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-27</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,  Language, Audio, and Action, Jiasen Lu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
+<span class="snippet"><span>Comment</span>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1201">Some things are more CRINGE than others: Preference Optimization with  the Pairwise Cringe Loss, Jing Xu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>一般的な言語モデルのトレーニングでは、ペアワイズの選好による整列がよく使われます。しかし、バイナリフィードバックの方法もあります。この研究では、既存のバイナリフィードバック手法をペアワイズ選好の設定に拡張し、高いパフォーマンスを示すことを示します。この手法は実装が簡単で効率的であり、最先端の選好最適化アルゴリズムよりも優れた性能を発揮します。</span>
+<span class="snippet"><span>Comment</span>DPO, PPOをoutperformする新たなAlignment手法。MetaのJason Weston氏元ツイート: https://x.com/jaseweston/status/1740546297235464446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q後で読む（画像は ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1199">Gemini vs GPT-4V: A Preliminary Comparison and Combination of  Vision-Language Models Through Qualitative Cases, Zhangyang Qi+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、マルチモーダル大規模言語モデル（MLLMs）の進化について、GoogleのGeminiとOpenAIのGPT-4Vという2つのモデルを比較しています。ビジョン-言語能力、人間との対話、時間的理解、知能および感情指数などの側面にわたる評価を行い、両モデルの異なる視覚理解能力について分析しています。さらに、実用的な有用性を評価するために構造化された実験を行い、両モデルのユニークな強みとニッチを明らかにしています。また、2つのモデルを組み合わせてより良い結果を得る試みも行っています。この研究は、マルチモーダル基盤モデルの進化と将来の進展についての洞察を提供しています。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-12-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1198">GPTsより精度の高いRAGシステムの構築</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1197">Retrieval-Augmented Generation for Large Language Models: A Survey, Yunfan Gao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）には課題がありますが、Retrieval-Augmented Generation（RAG）はこれを解決する手法です。RAGは外部の知識ベースから情報を取得し、回答の正確性を向上させます。ソースの引用により、回答の検証とモデルの信頼性向上が可能です。また、RAGは知識の更新やドメイン固有の知識の導入を容易にします。本論文ではRAGの開発パラダイムとそのコンポーネントについて説明し、評価方法や将来の研究方向についても議論しています。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
 <span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
@@ -329,14 +337,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
 <span class="snippet"><span>Comment</span>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1100">LangChainのRAGの改善法, LayerX機械学習勉強会</a>
-<span class="snippet"><span>Comment</span>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション> Multi representation indexing：検索に適した文書表現（例えば要約）の作成Query transformation：人間の質問を変換して ...</span>
-<a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/DataGeneration.html">#DataGeneration</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1099">Zephyr: Direct Distillation of LM Alignment, Lewis Tunstall+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>私たちは、小さな言語モデルを作成するために、教師モデルからの優先データを使用する手法を提案しています。この手法により、自然なプロンプトに対するモデルの応答が改善されます。提案手法を用いて学習されたZephyr-7Bモデルは、チャットベンチマークで最先端の性能を発揮し、人間の注釈を必要としません。詳細はGitHubで利用可能です。</span>
-<span class="snippet"><span>Comment</span>7BパラメータでLlaMa70Bと同等の性能を達成したZephyrの論文。dSFT:既存データからpromptをサンプリングし、user,assistantのmulti turnの対話をLLMでシミュレーションしてデータ生成しSFTAIF:既存データからpromstをサンプリングしBlog: htt ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1348b3c1-f70a-49b6-97c9-4a27bf7805fa" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (631)
 ### LanguageModel (233)
@@ -10969,11 +10970,23 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (139)
+## Pocket (141)
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2023-12-27</span>
+<br><span class="issue_date">Issue Date: 2023-12-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,  Language, Audio, and Action, Jiasen Lu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
+<span class="snippet"><span>Comment</span>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI ...</span>
+<br><span class="issue_date">Issue Date: 2023-12-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1201">Some things are more CRINGE than others: Preference Optimization with  the Pairwise Cringe Loss, Jing Xu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>一般的な言語モデルのトレーニングでは、ペアワイズの選好による整列がよく使われます。しかし、バイナリフィードバックの方法もあります。この研究では、既存のバイナリフィードバック手法をペアワイズ選好の設定に拡張し、高いパフォーマンスを示すことを示します。この手法は実装が簡単で効率的であり、最先端の選好最適化アルゴリズムよりも優れた性能を発揮します。</span>
+<span class="snippet"><span>Comment</span>DPO, PPOをoutperformする新たなAlignment手法。MetaのJason Weston氏元ツイート: https://x.com/jaseweston/status/1740546297235464446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q後で読む（画像は ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image"><br><span class="issue_date">Issue Date: 2023-12-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1199">Gemini vs GPT-4V: A Preliminary Comparison and Combination of  Vision-Language Models Through Qualitative Cases, Zhangyang Qi+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、マルチモーダル大規模言語モデル（MLLMs）の進化について、GoogleのGeminiとOpenAIのGPT-4Vという2つのモデルを比較しています。ビジョン-言語能力、人間との対話、時間的理解、知能および感情指数などの側面にわたる評価を行い、両モデルの異なる視覚理解能力について分析しています。さらに、実用的な有用性を評価するために構造化された実験を行い、両モデルのユニークな強みとニッチを明らかにしています。また、2つのモデルを組み合わせてより良い結果を得る試みも行っています。この研究は、マルチモーダル基盤モデルの進化と将来の進展についての洞察を提供しています。</span>
+</div>
+<button onclick="showMore(120)">more</button>
+
+<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2023-12-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1197">Retrieval-Augmented Generation for Large Language Models: A Survey, Yunfan Gao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）には課題がありますが、Retrieval-Augmented Generation（RAG）はこれを解決する手法です。RAGは外部の知識ベースから情報を取得し、回答の正確性を向上させます。ソースの引用により、回答の検証とモデルの信頼性向上が可能です。また、RAGは知識の更新やドメイン固有の知識の導入を容易にします。本論文ではRAGの開発パラダイムとそのコンポーネントについて説明し、評価方法や将来の研究方向についても議論しています。</span>
@@ -10981,10 +10994,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1194">Gemini: A Family of Highly Capable Multimodal Models, Gemini Team+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この報告書では、マルチモーダルモデル「Gemini」のファミリーについて紹介します。Geminiは画像、音声、動画、テキストの理解に優れた能力を持ち、Ultra、Pro、Nanoのサイズがあります。Gemini Ultraは幅広いベンチマークで最先端の技術を提供し、MMLUでは人間の専門家のパフォーマンスを初めて達成しました。Geminiモデルはクロスモーダルな推論と言語理解の能力を持ち、さまざまなユースケースに適用できます。また、ユーザーへの責任ある展開についても議論しています。</span>
 <span class="snippet"><span>Comment</span>#1181 で発表されたGeminiの論文 ...</span>
-</div>
-<button onclick="showMore(120)">more</button>
-
-<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1193">An In-depth Look at Geminis Language Abilities, Syeda Nahida Akter+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Google Geminiモデルは、OpenAI GPTシリーズと同等の結果を報告した初めてのモデルであり、本論文ではその言語能力を詳細に探求します。具体的には、GeminiとGPTの能力を客観的に比較し、再現可能なコードと透明な結果を提供します。さらに、Geminiの得意な領域を特定し、10のデータセットでさまざまな言語能力をテストします。Gemini Proは、GPT 3.5 Turboに比べてわずかに劣る精度を示しましたが、多数の桁を含む数学的な推論の失敗や多肢選択の回答順序への感度などの説明も提供します。また、Geminiは非英語の言語や複雑な推論チェーンの処理などで高いパフォーマンスを示すことも特定しています。再現のためのコードとデータは、https://github.com/neulab/gemini-benchmarkで入手できます。</span>
