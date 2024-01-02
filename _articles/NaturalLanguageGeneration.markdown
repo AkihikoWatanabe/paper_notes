@@ -291,6 +291,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/RuleBased.html">#RuleBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105">Design of a knowledge-based report generator, Kukich, ACL83</a>
 <span class="snippet"><span>Comment</span>## タスクnumerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA## 手法概要ルールベースな手法，1) fact-generator,2) message generator,Data2Text ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>

@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,  Language, Audio, and Action, Jiasen Lu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
@@ -13,13 +16,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1201">Some things are more CRINGE than others: Preference Optimization with  the Pairwise Cringe Loss, Jing Xu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>一般的な言語モデルのトレーニングでは、ペアワイズの選好による整列がよく使われます。しかし、バイナリフィードバックの方法もあります。この研究では、既存のバイナリフィードバック手法をペアワイズ選好の設定に拡張し、高いパフォーマンスを示すことを示します。この手法は実装が簡単で効率的であり、最先端の選好最適化アルゴリズムよりも優れた性能を発揮します。</span>
 <span class="snippet"><span>Comment</span>DPO, PPOをoutperformする新たなAlignment手法。MetaのJason Weston氏元ツイート: https://x.com/jaseweston/status/1740546297235464446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q後で読む（画像は ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1199">Gemini vs GPT-4V: A Preliminary Comparison and Combination of  Vision-Language Models Through Qualitative Cases, Zhangyang Qi+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、マルチモーダル大規模言語モデル（MLLMs）の進化について、GoogleのGeminiとOpenAIのGPT-4Vという2つのモデルを比較しています。ビジョン-言語能力、人間との対話、時間的理解、知能および感情指数などの側面にわたる評価を行い、両モデルの異なる視覚理解能力について分析しています。さらに、実用的な有用性を評価するために構造化された実験を行い、両モデルのユニークな強みとニッチを明らかにしています。また、2つのモデルを組み合わせてより良い結果を得る試みも行っています。この研究は、マルチモーダル基盤モデルの進化と将来の進展についての洞察を提供しています。</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1199">Gemini vs GPT-4V: A Preliminary Comparison and Combination of  Vision-Language Models Through Qualitative Cases, Zhangyang Qi+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、マルチモーダル大規模言語モデル（MLLMs）の進化について、GoogleのGeminiとOpenAIのGPT-4Vという2つのモデルを比較しています。ビジョン-言語能力、人間との対話、時間的理解、知能および感情指数などの側面にわたる評価を行い、両モデルの異なる視覚理解能力について分析しています。さらに、実用的な有用性を評価するために構造化された実験を行い、両モデルのユニークな強みとニッチを明らかにしています。また、2つのモデルを組み合わせてより良い結果を得る試みも行っています。この研究は、マルチモーダル基盤モデルの進化と将来の進展についての洞察を提供しています。</span>
 <a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-12-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1198">GPTsより精度の高いRAGシステムの構築</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-12-23</span>
@@ -334,13 +337,10 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1102">Large Language Models are not Fair Evaluators, Peiyi Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この論文では、大規模言語モデル（LLMs）を使用して、候補モデルの応答品質を評価する評価パラダイムにおける系統的なバイアスを明らかにします。さらに、バイアスを軽減するためのキャリブレーションフレームワークを提案し、実験によってその有効性を示します。また、コードとデータを公開して、今後の研究を支援します。</span>
-<a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
-<span class="snippet"><span>Comment</span>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
-## NLP (631)
-### LanguageModel (233)
+## NLP (632)
+### LanguageModel (234)
 <div class="visible-content">
 <a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1179">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv23</a>
@@ -939,6 +939,9 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
@@ -1621,7 +1624,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/9">Comments-Oriented Document Summarization: Understanding Documents with Reader’s Feedback SIGIR’08, Hu+, 2008</a>
 <button onclick="hideContent(2)" style="display: none;">hide</button>
 </div>
-### NaturalLanguageGeneration (108)
+### NaturalLanguageGeneration (109)
 <div class="visible-content">
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1041">From Sparse to Dense: GPT-4 Summarization with Chain of Density  Prompting, Griffin Adams+, N_A, arXiv23</a>
@@ -1909,6 +1912,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/RuleBased.html">#RuleBased</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105">Design of a knowledge-based report generator, Kukich, ACL83</a>
 <span class="snippet"><span>Comment</span>## タスクnumerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA## 手法概要ルールベースな手法，1) fact-generator,2) message generator,Data2Text ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
@@ -4016,20 +4022,26 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (415)
-### LanguageModel (102)
+## Article (417)
+### LanguageModel (104)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1181">Gemini, Google23</a>
 <span class="snippet"><span>Comment</span>多くのベンチマークでGPT4超えらしい（追記1）テクニカルレポートのp.44を見ると、ブログポスト中のGPT4のMMLUのスコアはGPT-4-0613のもののようなので、これが正しいとすると他のベンチマークのスコアも同モデルのものである可能性が高く、GPT-4-1163-preview（最新モテクニ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 </div>
 <button onclick="showMore(30)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1191">TokyoTechLLM</a>
 <span class="snippet"><span>Comment</span>Llama2の日本語性能を継続事前学習で引き上げたLLM。2023年12月時点の日本語オープンソースLLMの中で最高性能とのこと。開発者の方による詳細はこちら:https://zenn.dev/tokyotech_lm/articles/d6cb3a8fdfc907すごい読み応え…checkpoin ...</span>
@@ -5096,21 +5108,27 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>PDSの先駆けとなった重要論文。必ずreferすべき。 ...</span>
 <button onclick="hideContent(37)" style="display: none;">hide</button>
 </div>
-### NaturalLanguageGeneration (15)
+### NaturalLanguageGeneration (17)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
+</div>
+<button onclick="showMore(38)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
 <span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
-</div>
-<button onclick="showMore(38)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1003">走行動画を説明するLLMを作成し、80台のGPUで分散並列学習させた話</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-08-16</span>

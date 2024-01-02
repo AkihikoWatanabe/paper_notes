@@ -674,6 +674,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
