@@ -197,6 +197,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/ItemBased.html">#ItemBased</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/179">Item-based collaborative filtering recommendation algorithms, Sarwar+（with Konstan）, WWW01</a>
 <span class="snippet"><span>Comment</span>アイテムベースな協調フィルタリングを提案した論文（GroupLens） ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2024-01-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1205">Recommenders</a>
+<span class="snippet"><span>Comment</span>古典的な手法から、Deepな手法まで非常に幅広く網羅された推薦アルゴリズムのフレームワーク。元々Microsoft配下だった模様。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MLOps.html">#MLOps</a><br><span class="issue_date">Issue Date: 2023-12-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1190">モバオクでのリアルタイムレコメンドシステムの紹介</a>
 <span class="snippet"><span>Comment</span>DeNAでのRecSysのアーキテクチャ（バッチ、リアルタイム）が紹介されている。バッチではワークフローエンジンとしてVertex AI Pipelineが用いられている。リアルタイムになるとアーキテクチャが非常に複雑になっている。複雑なアーキテクチャだが、Generative Recommendリ ...</span>
