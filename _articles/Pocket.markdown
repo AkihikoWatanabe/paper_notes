@@ -11,16 +11,13 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
-<br><span class="issue_date">Issue Date: 2024-01-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1207">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、推論ステップを短縮すると推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利益が異なることも観察された。</span>
+<br><span class="issue_date">Issue Date: 2024-01-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1204">Mixtral of Experts, Albert Q. Jiang+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>Mixtralは、Sparse Mixture of Experts（SMoE）言語モデルであり、各レイヤーが8つのフィードフォワードブロックで構成されています。Mixtralは、トークンごとに2つのエキスパートを選択し、それらの出力を組み合わせます。Mixtralは、Llama 2 70BとGPT-3.5を上回る性能を持ち、数学、コード生成、多言語のベンチマークで特に優れています。また、Mixtral 8x7B Instructという指示に従うモデルも提供されており、人間のベンチマークを凌駕しています。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<br><span class="issue_date">Issue Date: 2024-01-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1204">Mixtral of Experts, Albert Q. Jiang+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>Mixtralは、Sparse Mixture of Experts（SMoE）言語モデルであり、各レイヤーが8つのフィードフォワードブロックで構成されています。Mixtralは、トークンごとに2つのエキスパートを選択し、それらの出力を組み合わせます。Mixtralは、Llama 2 70BとGPT-3.5を上回る性能を持ち、数学、コード生成、多言語のベンチマークで特に優れています。また、Mixtral 8x7B Instructという指示に従うモデルも提供されており、人間のベンチマークを凌駕しています。</span>
 <br><span class="issue_date">Issue Date: 2024-01-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1211">VeRA: Vector-based Random Matrix Adaptation, Dawid J. Kopiczko+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模な言語モデルのfine-tuningにおいて、訓練可能なパラメータの数を削減するための新しい手法であるベクトルベースのランダム行列適応（VeRA）を提案する。VeRAは、共有される低ランク行列と小さなスケーリングベクトルを使用することで、同じ性能を維持しながらパラメータ数を削減する。GLUEやE2Eのベンチマーク、画像分類タスクでの効果を示し、言語モデルのインストラクションチューニングにも応用できることを示す。</span>

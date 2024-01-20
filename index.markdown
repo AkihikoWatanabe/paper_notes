@@ -20,9 +20,6 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1207">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、推論ステップを短縮すると推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利益が異なることも観察された。</span>
 <br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1206">日本語WikipediaQAデータセット（Retrievalプロセス付き）</a>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2024-01-15</span>
@@ -332,7 +329,11 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1111">tsuzumi, NTT’23</a>
 <span class="snippet"><span>Comment</span>NTT製のLLM。パラメータ数は7Bと軽量だが高性能。MTBenchのようなGPT4に勝敗を判定させるベンチマークで、地理、歴史、政治、社会に関する質問応答タスク（図6）でgpt3.5turboと同等、国産LLMの中でトップの性能。GPT3.5turboには、コーディングや数学などの能力では劣るとt ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d064e0dc-b598-4853-9466-f56f39986acc" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d064e0dc-b598-4853-9466-f56f39986acc" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-10-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1110">Re-Reading Improves Reasoning in Language Models, Xiaohan Xu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）において、推論は重要で困難な問題です。従来のアプローチでは、プロンプティング戦略を開発することに焦点が当てられてきましたが、双方向の相互作用や質問の重要性には注意が払われていませんでした。この問題に対処するため、質問の再読という新しいプロンプティング戦略を提案します。再読は、質問情報を再訪することで、LLMsの推論能力を向上させることができます。実験結果は、この手法の効果と汎用性を示しており、LLMsの領域でのその有用性を強調しています。</span>
+<span class="snippet"><span>Comment</span>問題文を2,3回promptで繰り返すだけで、数学のベンチマークとCommonsenseのベンチマークの性能が向上したという非常に簡単なPrompting。self-consistencyなどの他のPromptingとの併用も可能。なぜ性能が向上するかというと、1. LLMはAuporegresこの ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e575e0aa-b76c-444e-b9b0-e984d6fc73cf" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (632)
 ### LanguageModel (234)
@@ -11001,7 +11002,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (146)
+## Pocket (145)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210">Transformers are Multi-State RNNs, Matanel Oren+, N_A, arXiv24</a>
@@ -11009,16 +11010,13 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
-<br><span class="issue_date">Issue Date: 2024-01-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1207">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、推論ステップを短縮すると推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利益が異なることも観察された。</span>
+<br><span class="issue_date">Issue Date: 2024-01-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1204">Mixtral of Experts, Albert Q. Jiang+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>Mixtralは、Sparse Mixture of Experts（SMoE）言語モデルであり、各レイヤーが8つのフィードフォワードブロックで構成されています。Mixtralは、トークンごとに2つのエキスパートを選択し、それらの出力を組み合わせます。Mixtralは、Llama 2 70BとGPT-3.5を上回る性能を持ち、数学、コード生成、多言語のベンチマークで特に優れています。また、Mixtral 8x7B Instructという指示に従うモデルも提供されており、人間のベンチマークを凌駕しています。</span>
 </div>
 <button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
-<br><span class="issue_date">Issue Date: 2024-01-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1204">Mixtral of Experts, Albert Q. Jiang+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>Mixtralは、Sparse Mixture of Experts（SMoE）言語モデルであり、各レイヤーが8つのフィードフォワードブロックで構成されています。Mixtralは、トークンごとに2つのエキスパートを選択し、それらの出力を組み合わせます。Mixtralは、Llama 2 70BとGPT-3.5を上回る性能を持ち、数学、コード生成、多言語のベンチマークで特に優れています。また、Mixtral 8x7B Instructという指示に従うモデルも提供されており、人間のベンチマークを凌駕しています。</span>
 <br><span class="issue_date">Issue Date: 2024-01-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1211">VeRA: Vector-based Random Matrix Adaptation, Dawid J. Kopiczko+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模な言語モデルのfine-tuningにおいて、訓練可能なパラメータの数を削減するための新しい手法であるベクトルベースのランダム行列適応（VeRA）を提案する。VeRAは、共有される低ランク行列と小さなスケーリングベクトルを使用することで、同じ性能を維持しながらパラメータ数を削減する。GLUEやE2Eのベンチマーク、画像分類タスクでの効果を示し、言語モデルのインストラクションチューニングにも応用できることを示す。</span>
