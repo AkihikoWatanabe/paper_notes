@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Finetuning
 <div class="visible-content">
+<a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Adapter_LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2024-01-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1211">VeRA: Vector-based Random Matrix Adaptation, Dawid J. Kopiczko+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模な言語モデルのfine-tuningにおいて、訓練可能なパラメータの数を削減するための新しい手法であるベクトルベースのランダム行列適応（VeRA）を提案する。VeRAは、共有される低ランク行列と小さなスケーリングベクトルを使用することで、同じ性能を維持しながらパラメータ数を削減する。GLUEやE2Eのベンチマーク、画像分類タスクでの効果を示し、言語モデルのインストラクションチューニングにも応用できることを示す。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1138">Fine-tuning Language Models for Factuality, Katherine Tian+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模な言語モデル（LLMs）を使用して、より事実に基づいた生成を実現するためのファインチューニングを行います。具体的には、外部の知識ベースや信頼スコアとの一貫性を測定し、選好最適化アルゴリズムを使用してモデルを調整します。実験結果では、事実エラー率の削減が観察されました。</span>
@@ -12,14 +15,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1099">Zephyr: Direct Distillation of LM Alignment, Lewis Tunstall+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、小さな言語モデルを作成するために、教師モデルからの優先データを使用する手法を提案しています。この手法により、自然なプロンプトに対するモデルの応答が改善されます。提案手法を用いて学習されたZephyr-7Bモデルは、チャットベンチマークで最先端の性能を発揮し、人間の注釈を必要としません。詳細はGitHubで利用可能です。</span>
 <span class="snippet"><span>Comment</span>7BパラメータでLlaMa70Bと同等の性能を達成したZephyrの論文。dSFT:既存データからpromptをサンプリングし、user,assistantのmulti turnの対話をLLMでシミュレーションしてデータ生成しSFTAIF:既存データからpromstをサンプリングしBlog: htt ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1348b3c1-f70a-49b6-97c9-4a27bf7805fa" alt="image"><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1091">NEFTune: Noisy Embeddings Improve Instruction Finetuning, Neel Jain+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>私たちは、言語モデルのファインチューニングを改善するために、ノイズを加えた埋め込みベクトルを使用する手法を提案します。この手法は、AlpacaEvalやEvol-Instructなどのデータセットで強力なベースラインを上回る性能を示しました。また、RLHFでトレーニングされたモデルにも適用可能です。</span>
-<span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> NEFTuneはLLMをファインチューニングする際、単語埋め込みベクトルに一様分布からのノイズを加えるだけでファインチューニングの性能を大きく改善する。ファインチューニングは多くの場合過学習しており、出現した単語や表現にしばられる場合が多く、これを防ぐこAl ...</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1348b3c1-f70a-49b6-97c9-4a27bf7805fa" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1091">NEFTune: Noisy Embeddings Improve Instruction Finetuning, Neel Jain+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>私たちは、言語モデルのファインチューニングを改善するために、ノイズを加えた埋め込みベクトルを使用する手法を提案します。この手法は、AlpacaEvalやEvol-Instructなどのデータセットで強力なベースラインを上回る性能を示しました。また、RLHFでトレーニングされたモデルにも適用可能です。</span>
+<span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> NEFTuneはLLMをファインチューニングする際、単語埋め込みベクトルに一様分布からのノイズを加えるだけでファインチューニングの性能を大きく改善する。ファインチューニングは多くの場合過学習しており、出現した単語や表現にしばられる場合が多く、これを防ぐこAl ...</span>
 <a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><a class="button" href="articles/Adapter/LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1045">LongLoRA: Efficient Fine-tuning of Long-Context Large Language Models, Yukang Chen+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、計算コストを制限しながら大規模言語モデル（LLMs）のコンテキストサイズを拡張する効率的なファインチューニング手法であるLongLoRAを提案します。従来の方法では、LLMsの長いコンテキストサイズでのトレーニングには高い計算コストとGPUリソースが必要でしたが、提案手法ではコンテキスト拡張を高速化し、非自明な計算コストの削減を実現します。また、パラメータ効率的なファインチューニング手法も再評価し、LongLoRAはさまざまなタスクで強力な実験結果を示しています。さらに、教師ありファインチューニングのためのデータセットであるLongQAも収集されました。</span>

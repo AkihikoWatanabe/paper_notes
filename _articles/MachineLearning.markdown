@@ -5,10 +5,20 @@ author: AkihikoWATANABE
 ---
 ## MachineLearning
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210">Transformers are Multi-State RNNs, Matanel Oren+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、トランスフォーマーのデコーダーは無限マルチステートRNNとして概念化できることを示し、有限のマルチステートRNNに変換することも可能であることを示します。さらに、新しいキャッシュ圧縮ポリシーであるTOVAを導入し、他のポリシーよりも優れた性能を示すことを実験結果で示しました。TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフォーマーデコーダーLLMが実際にはRNNとして振る舞うことが多いことを示しています。</span>
+<a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Adapter_LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2024-01-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1211">VeRA: Vector-based Random Matrix Adaptation, Dawid J. Kopiczko+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模な言語モデルのfine-tuningにおいて、訓練可能なパラメータの数を削減するための新しい手法であるベクトルベースのランダム行列適応（VeRA）を提案する。VeRAは、共有される低ランク行列と小さなスケーリングベクトルを使用することで、同じ性能を維持しながらパラメータ数を削減する。GLUEやE2Eのベンチマーク、画像分類タスクでの効果を示し、言語モデルのインストラクションチューニングにも応用できることを示す。</span>
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1091">NEFTune: Noisy Embeddings Improve Instruction Finetuning, Neel Jain+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>私たちは、言語モデルのファインチューニングを改善するために、ノイズを加えた埋め込みベクトルを使用する手法を提案します。この手法は、AlpacaEvalやEvol-Instructなどのデータセットで強力なベースラインを上回る性能を示しました。また、RLHFでトレーニングされたモデルにも適用可能です。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> NEFTuneはLLMをファインチューニングする際、単語埋め込みベクトルに一様分布からのノイズを加えるだけでファインチューニングの性能を大きく改善する。ファインチューニングは多くの場合過学習しており、出現した単語や表現にしばられる場合が多く、これを防ぐこAl ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1089">Detecting Pretraining Data from Large Language Models, Weijia Shi+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）を訓練するためのデータの検出問題を研究し、新しい検出方法であるMin-K% Probを提案します。Min-K% Probは、LLMの下で低い確率を持つアウトライアーワードを検出することに基づいています。実験の結果、Min-K% Probは従来の方法に比べて7.4%の改善を達成し、著作権のある書籍の検出や汚染された下流の例の検出など、実世界のシナリオにおいて効果的な解決策であることが示されました。</span>
@@ -17,10 +27,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1085">Eliminating Reasoning via Inferring with Planning: A New Framework to  Guide LLMs Non-linear Thinking, Yongqi Tong+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）に非線形の思考を促すために、新しいプロンプティング方法であるInferential Exclusion Prompting（IEP）を提案する。IEPは、計画を立てて可能な解を推論し、逆推論を行うことで広い視点を得ることができる。IEPは他の手法と比較して複雑な人間の思考プロセスをシミュレートできることを実証し、LLMsのパフォーマンス向上にも貢献することを示した。さらに、Mental-Ability Reasoning Benchmark（MARB）を導入し、LLMsの論理と言語推論能力を評価するための新しいベンチマークを提案した。IEPとMARBはLLMsの研究において有望な方向性であり、今後の進展が期待される。</span>
 <span class="snippet"><span>Comment</span>以下AIDBの引用>GPT-4などのLLMに、CoTのように直線的（線形的）ではなく、複数の条件を考慮させる（非線形的）プロンプト手法『Inferential Exclusion Prompting（IEP）』が考案されました。>さまざまなタスクでCoTを一貫して上回り、さらにCoTと統合す元論文は ...</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Regularization.html">#Regularization</a><br><span class="issue_date">Issue Date: 2023-10-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1075">Why Do We Need Weight Decay in Modern Deep Learning?, Maksym Andriushchenko+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>ウェイト減衰は、大規模な言語モデルのトレーニングに使用されるが、その役割はまだ理解されていない。本研究では、ウェイト減衰が古典的な正則化とは異なる役割を果たしていることを明らかにし、過パラメータ化されたディープネットワークでの最適化ダイナミクスの変化やSGDの暗黙の正則化の強化方法を示す。また、ウェイト減衰が確率的最適化におけるバイアス-分散トレードオフのバランスを取り、トレーニング損失を低下させる方法も説明する。さらに、ウェイト減衰はbfloat16混合精度トレーニングにおける損失の発散を防ぐ役割も果たす。全体として、ウェイト減衰は明示的な正則化ではなく、トレーニングダイナミクスを変えるものであることが示される。</span>

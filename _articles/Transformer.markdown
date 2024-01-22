@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Transformer
 <div class="visible-content">
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210">Transformers are Multi-State RNNs, Matanel Oren+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、トランスフォーマーのデコーダーは無限マルチステートRNNとして概念化できることを示し、有限のマルチステートRNNに変換することも可能であることを示します。さらに、新しいキャッシュ圧縮ポリシーであるTOVAを導入し、他のポリシーよりも優れた性能を示すことを実験結果で示しました。TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフォーマーデコーダーLLMが実際にはRNNとして振る舞うことが多いことを示しています。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1174">Pushdown Layers: Encoding Recursive Structure in Transformer Language   Models, Shikhar Murty+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>本研究では、再帰構造をうまく捉えるために新しい自己注意層であるPushdown Layersを導入しました。Pushdown Layersは、再帰状態をモデル化するためにスタックテープを使用し、トークンごとの推定深度を追跡します。このモデルは、構文的な一般化を改善し、サンプル効率を向上させることができます。さらに、Pushdown Layersは標準の自己注意の代替としても使用でき、GLUEテキスト分類タスクでも改善を実現しました。</span>
@@ -12,15 +15,15 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1164">Advancing Transformer Architecture in Long-Context Large Language  Models: A Comprehensive Survey, Yunpeng Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本論文では、Transformerベースの大規模言語モデル（LLMs）の長い文脈の能力を最適化するための包括的な調査を提案しています。現行のLLMsの制約や問題点を明確化し、アーキテクチャのアップグレードや評価の必要性について説明しています。さらに、最適化ツールキットや将来の研究の可能性についても議論しています。関連文献はhttps://github.com/Strivin0311/long-llms-learningでリアルタイムに更新されています。</span>
 <span class="snippet"><span>Comment</span>TransformerをLongContextに対応させる技術のサーベイ。（画像は元ツイートより）元ツイート: https://x.com/omarsar0/status/1727358484360945750?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1126">Hiformer: Heterogeneous Feature Interactions Learning with Transformers  for Recommender Systems, Huan Gui+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>特徴の相互作用を学ぶために、Transformerベースのアーキテクチャを提案する。ウェブスケールのレコメンダーシステムにおいて、特徴の相互作用を手動で作成することは困難であるため、自動的に捉える必要がある。しかし、現在のTransformerアーキテクチャは異種の特徴の相互作用を捉えることができず、サービングレイテンシも高い。そこで、異種の自己注意層を提案し、\textsc{Hiformer}というモデルを紹介する。\textsc{Hiformer}は特徴の相互作用の異種性を考慮し、低ランク近似とモデルの剪定により高速な推論を実現する。オフライン実験結果では、\textsc{Hiformer}モデルの効果と効率が示されており、Google Playの実世界の大規模なアプリランキングモデルにも展開され、主要なエンゲージメントメトリックスを改善した。</span>
-<span class="snippet"><span>Comment</span>推薦システムは、Factorization Machinesあたりから大抵の場合特徴量間の交互作用を頑張って捉えることで精度向上を目指す、という話をしてきている気がするが、これはTransformerを使って交互作用捉えられるようなモデルを考えました、という研究のようである。self atteOnl ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d57eb1b6-0e68-47fe-9d0a-315186cc9e3d" alt="image"></div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e498f066-2713-463c-8b58-9e9ecd480570" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1126">Hiformer: Heterogeneous Feature Interactions Learning with Transformers  for Recommender Systems, Huan Gui+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>特徴の相互作用を学ぶために、Transformerベースのアーキテクチャを提案する。ウェブスケールのレコメンダーシステムにおいて、特徴の相互作用を手動で作成することは困難であるため、自動的に捉える必要がある。しかし、現在のTransformerアーキテクチャは異種の特徴の相互作用を捉えることができず、サービングレイテンシも高い。そこで、異種の自己注意層を提案し、\textsc{Hiformer}というモデルを紹介する。\textsc{Hiformer}は特徴の相互作用の異種性を考慮し、低ランク近似とモデルの剪定により高速な推論を実現する。オフライン実験結果では、\textsc{Hiformer}モデルの効果と効率が示されており、Google Playの実世界の大規模なアプリランキングモデルにも展開され、主要なエンゲージメントメトリックスを改善した。</span>
+<span class="snippet"><span>Comment</span>推薦システムは、Factorization Machinesあたりから大抵の場合特徴量間の交互作用を頑張って捉えることで精度向上を目指す、という話をしてきている気がするが、これはTransformerを使って交互作用捉えられるようなモデルを考えました、という研究のようである。self atteOnl ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d57eb1b6-0e68-47fe-9d0a-315186cc9e3d" alt="image"><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1117">Pretraining Data Mixtures Enable Narrow Model Selection Capabilities in  Transformer Models, Steve Yadlowsky+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、トランスフォーマーモデルの文脈学習（ICL）能力を調査しました。トランスフォーマーモデルは、事前学習データの範囲内で異なるタスクを特定し、学習する能力を持っています。しかし、事前学習データの範囲外のタスクや関数に対しては一般化が劣化することが示されました。また、高容量のシーケンスモデルのICL能力は、事前学習データの範囲に密接に関連していることが強調されました。</span>
 <span class="snippet"><span>Comment</span>Transformerがpre-training時に利用された学習データ以外の分布に対しては汎化性能が落ちることを示したらしい。もしこれが正しいとすると、結局真に新しい分布というか関数というかタスクというか、をTransformerが創出する可能性は低いと言えるかもしれない。が、新しいものって大体は ...</span>

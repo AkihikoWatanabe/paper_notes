@@ -5,10 +5,10 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210">Transformers are Multi-State RNNs, Matanel Oren+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、トランスフォーマーのデコーダーは無限マルチステートRNNとして概念化できることを示し、有限のマルチステートRNNに変換することも可能であることを示します。さらに、新しいキャッシュ圧縮ポリシーであるTOVAを導入し、他のポリシーよりも優れた性能を示すことを実験結果で示しました。TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフォーマーデコーダーLLMが実際にはRNNとして振る舞うことが多いことを示しています。</span>
-<br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
 <br><span class="issue_date">Issue Date: 2024-01-09</span>
@@ -18,9 +18,6 @@ author: AkihikoWATANABE
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
-<br><span class="issue_date">Issue Date: 2024-01-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1211">VeRA: Vector-based Random Matrix Adaptation, Dawid J. Kopiczko+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模な言語モデルのfine-tuningにおいて、訓練可能なパラメータの数を削減するための新しい手法であるベクトルベースのランダム行列適応（VeRA）を提案する。VeRAは、共有される低ランク行列と小さなスケーリングベクトルを使用することで、同じ性能を維持しながらパラメータ数を削減する。GLUEやE2Eのベンチマーク、画像分類タスクでの効果を示し、言語モデルのインストラクションチューニングにも応用できることを示す。</span>
 <br><span class="issue_date">Issue Date: 2023-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,  Language, Audio, and Action, Jiasen Lu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>

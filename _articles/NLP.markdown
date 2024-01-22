@@ -5,21 +5,27 @@ author: AkihikoWATANABE
 ---
 ## NLP
 <div class="visible-content">
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210">Transformers are Multi-State RNNs, Matanel Oren+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、トランスフォーマーのデコーダーは無限マルチステートRNNとして概念化できることを示し、有限のマルチステートRNNに変換することも可能であることを示します。さらに、新しいキャッシュ圧縮ポリシーであるTOVAを導入し、他のポリシーよりも優れた性能を示すことを実験結果で示しました。TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフォーマーデコーダーLLMが実際にはRNNとして振る舞うことが多いことを示しています。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1179">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>アラインメント調整は、大規模言語モデル（LLMs）のパフォーマンスを向上させるために使用されます。しかし、アラインメント調整の効果は「表面的」である可能性があります。この研究では、基本的なLLMとアラインメント調整されたバージョンのトークン分布のシフトを分析しました。結果は、アラインメント調整が主にスタイルトークンに影響を与えることを示しました。さらに、シンプルでチューニングフリーなアラインメント手法であるURIALを導入し、基本的なLLMのパフォーマンスを向上させることができることを示しました。これらの結果から、アラインメントのより深い分析と理論的な理解が重要であることが示唆されます。</span>
 <span class="snippet"><span>Comment</span>モデルの知識はPre-training時に十分獲得されており、モデルのAlignmentをとることで生じるものは表面的な変化のみであるという仮説がある #700 。この仮説に関して分析をし、結果的にスタイリスティックな情報を生成する部分でAlignmentの有無で違いが生じることを明らかにし、そうで ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b8c62b33-dd72-43ea-8953-abb5c04cc504" alt="image"><a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b8c62b33-dd72-43ea-8953-abb5c04cc504" alt="image"></div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1177">Unnatural Error Correction: GPT-4 Can Almost Perfectly Handle Unnatural  Scrambled Text, Qi Cao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の内部動作についての新しい洞察を提供します。特に、GPT-4を調査し、LLMsの耐久性に関する実験結果を示します。実験では、文字レベルの順列に対するLLMsの耐性を調べるために、Scrambled Benchというスイートを使用しました。結果は、GPT-4がtypoglycemiaという現象に似た能力を持ち、非常に自然でないエラーを含む入力をほぼ完璧に処理できることを示しています。これは、LLMsの耐性が直感に反するものであり、他のLLMsや人間にとっても困難なタスクであることを示しています。</span>
 <span class="snippet"><span>Comment</span>OpenAIのモデルがブラックボックスである限り、コンタミネーションがあるのでは？という疑念は持ってしまう。（部分的にしか読めていないが…）RealtimeQAと呼ばれるweeklyで直近のニュースに対するQuestionを発表することで構築されるデータセットのうち、2023.03.17--2完全に ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/df33c7a9-005e-4d7e-9d70-d8f0657869ed" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1174">Pushdown Layers: Encoding Recursive Structure in Transformer Language   Models, Shikhar Murty+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>本研究では、再帰構造をうまく捉えるために新しい自己注意層であるPushdown Layersを導入しました。Pushdown Layersは、再帰状態をモデル化するためにスタックテープを使用し、トークンごとの推定深度を追跡します。このモデルは、構文的な一般化を改善し、サンプル効率を向上させることができます。さらに、Pushdown Layersは標準の自己注意の代替としても使用でき、GLUEテキスト分類タスクでも改善を実現しました。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
@@ -1510,6 +1516,8 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/RuleBased.html">#RuleBased</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105">Design of a knowledge-based report generator, Kukich, ACL83</a>
 <span class="snippet"><span>Comment</span>## タスクnumerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA## 手法概要ルールベースな手法，1) fact-generator,2) message generator,Data2Text ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationExtraction.html">#InformationExtraction</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1209">LLMにおける情報抽出（文章から必要な事柄を読み取る）タスクについての調査, AIDB</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
 <span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
