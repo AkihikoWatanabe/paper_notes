@@ -5,18 +5,22 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
-<a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Adapter_LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2024-01-17</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212">Self-Rewarding Language Models, Weizhe Yuan+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>将来のモデルのトレーニングには超人的なフィードバックが必要であり、自己報酬を提供するSelf-Rewarding Language Modelsを研究している。LLM-as-a-Judgeプロンプトを使用して、言語モデル自体が自己報酬を提供し、高品質な報酬を得る能力を向上させることを示した。Llama 2 70Bを3回のイテレーションで微調整することで、既存のシステムを上回るモデルが得られることを示した。この研究は、改善可能なモデルの可能性を示している。</span>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32db0422-6fb1-4741-bdfa-45a5e83e76c4" alt="image"><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Adapter_LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2024-01-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1211">VeRA: Vector-based Random Matrix Adaptation, Dawid J. Kopiczko+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模な言語モデルのfine-tuningにおいて、訓練可能なパラメータの数を削減するための新しい手法であるベクトルベースのランダム行列適応（VeRA）を提案する。VeRAは、共有される低ランク行列と小さなスケーリングベクトルを使用することで、同じ性能を維持しながらパラメータ数を削減する。GLUEやE2Eのベンチマーク、画像分類タスクでの効果を示し、言語モデルのインストラクションチューニングにも応用できることを示す。</span>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210">Transformers are Multi-State RNNs, Matanel Oren+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、トランスフォーマーのデコーダーは無限マルチステートRNNとして概念化できることを示し、有限のマルチステートRNNに変換することも可能であることを示します。さらに、新しいキャッシュ圧縮ポリシーであるTOVAを導入し、他のポリシーよりも優れた性能を示すことを実験結果で示しました。TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフォーマーデコーダーLLMが実際にはRNNとして振る舞うことが多いことを示しています。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/InformationExtraction.html">#InformationExtraction</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1209">LLMにおける情報抽出（文章から必要な事柄を読み取る）タスクについての調査, AIDB</a>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/InformationExtraction.html">#InformationExtraction</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1209">LLMにおける情報抽出（文章から必要な事柄を読み取る）タスクについての調査, AIDB</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
@@ -329,11 +333,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1111">tsuzumi, NTT’23</a>
 <span class="snippet"><span>Comment</span>NTT製のLLM。パラメータ数は7Bと軽量だが高性能。MTBenchのようなGPT4に勝敗を判定させるベンチマークで、地理、歴史、政治、社会に関する質問応答タスク（図6）でgpt3.5turboと同等、国産LLMの中でトップの性能。GPT3.5turboには、コーディングや数学などの能力では劣るとt ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d064e0dc-b598-4853-9466-f56f39986acc" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-10-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1110">Re-Reading Improves Reasoning in Language Models, Xiaohan Xu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）において、推論は重要で困難な問題です。従来のアプローチでは、プロンプティング戦略を開発することに焦点が当てられてきましたが、双方向の相互作用や質問の重要性には注意が払われていませんでした。この問題に対処するため、質問の再読という新しいプロンプティング戦略を提案します。再読は、質問情報を再訪することで、LLMsの推論能力を向上させることができます。実験結果は、この手法の効果と汎用性を示しており、LLMsの領域でのその有用性を強調しています。</span>
-<span class="snippet"><span>Comment</span>問題文を2,3回promptで繰り返すだけで、数学のベンチマークとCommonsenseのベンチマークの性能が向上したという非常に簡単なPrompting。self-consistencyなどの他のPromptingとの併用も可能。なぜ性能が向上するかというと、1. LLMはAuporegresこの ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e575e0aa-b76c-444e-b9b0-e984d6fc73cf" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d064e0dc-b598-4853-9466-f56f39986acc" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (635)
 ### LanguageModel (235)
@@ -11023,24 +11023,28 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (142)
+## Pocket (143)
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2024-01-09</span>
+<br><span class="issue_date">Issue Date: 2024-01-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212">Self-Rewarding Language Models, Weizhe Yuan+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>将来のモデルのトレーニングには超人的なフィードバックが必要であり、自己報酬を提供するSelf-Rewarding Language Modelsを研究している。LLM-as-a-Judgeプロンプトを使用して、言語モデル自体が自己報酬を提供し、高品質な報酬を得る能力を向上させることを示した。Llama 2 70Bを3回のイテレーションで微調整することで、既存のシステムを上回るモデルが得られることを示した。この研究は、改善可能なモデルの可能性を示している。</span>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32db0422-6fb1-4741-bdfa-45a5e83e76c4" alt="image"><br><span class="issue_date">Issue Date: 2024-01-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1204">Mixtral of Experts, Albert Q. Jiang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Mixtralは、Sparse Mixture of Experts（SMoE）言語モデルであり、各レイヤーが8つのフィードフォワードブロックで構成されています。Mixtralは、トークンごとに2つのエキスパートを選択し、それらの出力を組み合わせます。Mixtralは、Llama 2 70BとGPT-3.5を上回る性能を持ち、数学、コード生成、多言語のベンチマークで特に優れています。また、Mixtral 8x7B Instructという指示に従うモデルも提供されており、人間のベンチマークを凌駕しています。</span>
 <br><span class="issue_date">Issue Date: 2023-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,  Language, Audio, and Action, Jiasen Lu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
 <span class="snippet"><span>Comment</span>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI ...</span>
+</div>
+<button onclick="showMore(120)">more</button>
+
+<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2023-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1201">Some things are more CRINGE than others: Preference Optimization with  the Pairwise Cringe Loss, Jing Xu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>一般的な言語モデルのトレーニングでは、ペアワイズの選好による整列がよく使われます。しかし、バイナリフィードバックの方法もあります。この研究では、既存のバイナリフィードバック手法をペアワイズ選好の設定に拡張し、高いパフォーマンスを示すことを示します。この手法は実装が簡単で効率的であり、最先端の選好最適化アルゴリズムよりも優れた性能を発揮します。</span>
 <span class="snippet"><span>Comment</span>DPO, PPOをoutperformする新たなAlignment手法。MetaのJason Weston氏元ツイート: https://x.com/jaseweston/status/1740546297235464446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q後で読む（画像は ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image"></div>
-<button onclick="showMore(120)">more</button>
-
-<div class="hidden-content">
-<br><span class="issue_date">Issue Date: 2023-12-27</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image"><br><span class="issue_date">Issue Date: 2023-12-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1199">Gemini vs GPT-4V: A Preliminary Comparison and Combination of  Vision-Language Models Through Qualitative Cases, Zhangyang Qi+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、マルチモーダル大規模言語モデル（MLLMs）の進化について、GoogleのGeminiとOpenAIのGPT-4Vという2つのモデルを比較しています。ビジョン-言語能力、人間との対話、時間的理解、知能および感情指数などの側面にわたる評価を行い、両モデルの異なる視覚理解能力について分析しています。さらに、実用的な有用性を評価するために構造化された実験を行い、両モデルのユニークな強みとニッチを明らかにしています。また、2つのモデルを組み合わせてより良い結果を得る試みも行っています。この研究は、マルチモーダル基盤モデルの進化と将来の進展についての洞察を提供しています。</span>
 <br><span class="issue_date">Issue Date: 2023-12-23</span>
