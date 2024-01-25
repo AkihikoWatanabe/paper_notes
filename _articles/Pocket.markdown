@@ -5,6 +5,30 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1219">LLaMA Pro: Progressive LLaMA with Block Expansion, Chengyue Wu+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の新しい事前学習後の手法を提案し、モデルの知識を効果的かつ効率的に向上させることを目指しました。具体的には、Transformerブロックの拡張を使用し、新しいコーパスのみを使用してモデルを調整しました。実験の結果、提案手法はさまざまなベンチマークで優れたパフォーマンスを発揮し、知的エージェントとして多様なタスクに対応できることが示されました。この研究は、自然言語とプログラミング言語を統合し、高度な言語エージェントの開発に貢献するものです。</span>
+<span class="snippet"><span>Comment</span>追加の知識を導入したいときに使えるかも? ...</span>
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218">Self-Play Fine-Tuning Converts Weak Language Models to Strong Language  Models, Zixiang Chen+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、追加の人間による注釈付きデータを必要とせずに、大規模言語モデル（LLMs）を強化する方法を提案します。そのために、Self-Play fIne-tuNing（SPIN）という新しいファインチューニング手法を開発しました。SPINでは、LLMが自身と対戦しながら能力を向上させるセルフプレイのメカニズムを利用します。具体的には、LLMは自己生成応答と人間による注釈付きデータから得られた応答を区別することでポリシーを改善します。実験結果は、SPINがLLMのパフォーマンスを大幅に改善し、専門家の対戦相手を必要とせずに人間レベルのパフォーマンスを達成できることを示しています。</span>
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1217">A Comprehensive Survey of Hallucination Mitigation Techniques in Large  Language Models, S. M Towhidul Islam Tonmoy+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>要約：本論文では、大規模言語モデル（LLMs）における幻覚の問題について調査し、その軽減策について紹介しています。LLMsは強力な言語生成能力を持っていますが、根拠のない情報を生成する傾向があります。この問題を解決するために、Retrieval Augmented Generation、Knowledge Retrieval、CoNLI、CoVeなどの技術が開発されています。さらに、データセットの利用やフィードバックメカニズムなどのパラメータに基づいてこれらの方法を分類し、幻覚の問題に取り組むためのアプローチを提案しています。また、これらの技術に関連する課題や制約についても分析し、将来の研究に向けた基盤を提供しています。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1216">Chain-of-Table: Evolving Tables in the Reasoning Chain for Table  Understanding, Zilong Wang+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LLMsを使用したChain-of-Tableフレームワークは、テーブルデータを推論チェーン内で活用し、テーブルベースの推論タスクにおいて高い性能を発揮することが示された。このフレームワークは、テーブルの連続的な進化を表現し、中間結果の構造化情報を利用してより正確な予測を可能にする。さまざまなベンチマークで最先端のパフォーマンスを達成している。</span>
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1215">Blending Is All You Need: Cheaper, Better Alternative to  Trillion-Parameters LLM, Xiaoding Lu+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模な会話型AIモデルの開発には多くの計算リソースとメモリが必要であるが、複数の小さなモデルを組み合わせることで同等またはそれ以上の性能を実現できる可能性があることを示唆している。ブレンディングというアプローチを提案し、複数のチャットAIを統合する方法を示している。実証的な証拠によれば、中程度のサイズの3つのモデルを統合するだけでも、大規模なモデルと同等以上の性能を発揮できることが示されている。この仮説は、大規模なユーザーベースを対象に行われたA/Bテストによって厳密に検証され、ブレンディング戦略が効果的なアプローチであることが示されている。</span>
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1214">Leveraging Large Language Models for NLG Evaluation: A Survey, Zhen Li+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究は、大規模言語モデル（LLMs）を使用した自然言語生成（NLG）の評価についての包括的な概要を提供します。既存の評価指標を整理し、LLMベースの手法を比較するためのフレームワークを提案します。さらに、未解決の課題についても議論し、より公正で高度なNLG評価技術を提唱します。</span>
+<span class="snippet"><span>Comment</span>重要 ...</span>
 <br><span class="issue_date">Issue Date: 2024-01-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1213">Knowledge Fusion of Large Language Models, Fanqi Wan+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、既存の事前訓練済みの大規模言語モデル（LLMs）を統合することで、1つの強力なモデルを作成する方法を提案しています。異なるアーキテクチャを持つ3つの人気のあるLLMsを使用して、ベンチマークとタスクのパフォーマンスを向上させることを実証しました。提案手法のコード、モデルの重み、およびデータはGitHubで公開されています。</span>
@@ -15,10 +39,6 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32db0422-6fb1-4741-bdfa-45a5e83e76c4" alt="image"><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210">Transformers are Multi-State RNNs, Matanel Oren+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、トランスフォーマーのデコーダーは無限マルチステートRNNとして概念化できることを示し、有限のマルチステートRNNに変換することも可能であることを示します。さらに、新しいキャッシュ圧縮ポリシーであるTOVAを導入し、他のポリシーよりも優れた性能を示すことを実験結果で示しました。TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフォーマーデコーダーLLMが実際にはRNNとして振る舞うことが多いことを示しています。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
