@@ -7,7 +7,7 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LLM-as-a-Judge.html">#LLM-as-a-Judge</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1220">Large Language Models Are State-of-the-Art Evaluators of Translation Quality, EAMT23</a>
-<span class="snippet"><span>Comment</span>translate: We describe GEMBA, a GPT-based metric for assessment of translation quality, which works both with a reference translation and without. In ...</span>
+<span class="snippet"><span>Summary</span>GEMBAは、参照翻訳の有無に関係なく使用できるGPTベースの翻訳品質評価メトリックです。このメトリックは、ゼロショットのプロンプティングを使用し、4つのプロンプトバリアントを比較します。私たちの手法は、GPT 3.5以上のモデルでのみ機能し、最先端の精度を達成します。特に、英語からドイツ語、英語からロシア語、中国語から英語の3つの言語ペアで有効です。この研究では、コード、プロンプトテンプレート、およびスコアリング結果を公開し、外部の検証と再現性を可能にします。</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-09-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1041">From Sparse to Dense: GPT-4 Summarization with Chain of Density  Prompting, Griffin Adams+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>要約は詳細でエンティティ中心的でありながら、理解しやすくすることが困難です。この課題を解決するために、私たちは「密度の連鎖」（CoD）プロンプトを使用して、GPT-4の要約を生成します。CoDによって生成された要約は抽象的であり、リードバイアスが少なく、人間に好まれます。また、情報量と読みやすさのトレードオフが存在することも示されました。CoD要約は無料で利用できます。</span>

@@ -13,7 +13,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>Chain of Thought（CoT）の推論ステップの長さとLLMsの推論能力の関係を調査した。推論ステップを延長すると、プロンプトに新しい情報を追加せずにLLMsの推論能力が向上することがわかった。逆に、キーとなる情報を保持しながら推論ステップを短縮すると、推論能力が低下する。また、誤った根拠でも推論の必要な長さを保つ限り、好ましい結果が得られることも示された。さらに、タスクによって推論ステップの増加の利点が異なることも観察された。</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/LLM-as-a-Judge.html">#LLM-as-a-Judge</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1220">Large Language Models Are State-of-the-Art Evaluators of Translation Quality, EAMT23</a>
-<span class="snippet"><span>Comment</span>translate: We describe GEMBA, a GPT-based metric for assessment of translation quality, which works both with a reference translation and without. In ...</span>
+<span class="snippet"><span>Summary</span>GEMBAは、参照翻訳の有無に関係なく使用できるGPTベースの翻訳品質評価メトリックです。このメトリックは、ゼロショットのプロンプティングを使用し、4つのプロンプトバリアントを比較します。私たちの手法は、GPT 3.5以上のモデルでのみ機能し、最先端の精度を達成します。特に、英語からドイツ語、英語からロシア語、中国語から英語の3つの言語ペアで有効です。この研究では、コード、プロンプトテンプレート、およびスコアリング結果を公開し、外部の検証と再現性を可能にします。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
