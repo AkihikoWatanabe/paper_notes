@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-02-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1226">RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval, Parth Sarthi+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>検索補完言語モデルは、ロングテールの知識を組み込むことができますが、既存の手法では文脈の理解が制限されています。そこで、私たちは再帰的な要約を使用してテキストをクラスタリングし、異なる抽象化レベルで情報を統合する新しいアプローチを提案します。制御された実験では、このアプローチが従来の手法よりも大幅な改善を提供し、質問応答タスクでは最高性能を20%向上させることができることを示しました。</span>
 <br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
@@ -12,13 +15,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1219">LLaMA Pro: Progressive LLaMA with Block Expansion, Chengyue Wu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の新しい事前学習後の手法を提案し、モデルの知識を効果的かつ効率的に向上させることを目指しました。具体的には、Transformerブロックの拡張を使用し、新しいコーパスのみを使用してモデルを調整しました。実験の結果、提案手法はさまざまなベンチマークで優れたパフォーマンスを発揮し、知的エージェントとして多様なタスクに対応できることが示されました。この研究は、自然言語とプログラミング言語を統合し、高度な言語エージェントの開発に貢献するものです。</span>
 <span class="snippet"><span>Comment</span>追加の知識を導入したいときに使えるかも? ...</span>
-<br><span class="issue_date">Issue Date: 2024-01-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218">Self-Play Fine-Tuning Converts Weak Language Models to Strong Language  Models, Zixiang Chen+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>本研究では、追加の人間による注釈付きデータを必要とせずに、大規模言語モデル（LLMs）を強化する方法を提案します。そのために、Self-Play fIne-tuNing（SPIN）という新しいファインチューニング手法を開発しました。SPINでは、LLMが自身と対戦しながら能力を向上させるセルフプレイのメカニズムを利用します。具体的には、LLMは自己生成応答と人間による注釈付きデータから得られた応答を区別することでポリシーを改善します。実験結果は、SPINがLLMのパフォーマンスを大幅に改善し、専門家の対戦相手を必要とせずに人間レベルのパフォーマンスを達成できることを示しています。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218">Self-Play Fine-Tuning Converts Weak Language Models to Strong Language  Models, Zixiang Chen+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、追加の人間による注釈付きデータを必要とせずに、大規模言語モデル（LLMs）を強化する方法を提案します。そのために、Self-Play fIne-tuNing（SPIN）という新しいファインチューニング手法を開発しました。SPINでは、LLMが自身と対戦しながら能力を向上させるセルフプレイのメカニズムを利用します。具体的には、LLMは自己生成応答と人間による注釈付きデータから得られた応答を区別することでポリシーを改善します。実験結果は、SPINがLLMのパフォーマンスを大幅に改善し、専門家の対戦相手を必要とせずに人間レベルのパフォーマンスを達成できることを示しています。</span>
 <br><span class="issue_date">Issue Date: 2024-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1217">A Comprehensive Survey of Hallucination Mitigation Techniques in Large  Language Models, S. M Towhidul Islam Tonmoy+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>要約：本論文では、大規模言語モデル（LLMs）における幻覚の問題について調査し、その軽減策について紹介しています。LLMsは強力な言語生成能力を持っていますが、根拠のない情報を生成する傾向があります。この問題を解決するために、Retrieval Augmented Generation、Knowledge Retrieval、CoNLI、CoVeなどの技術が開発されています。さらに、データセットの利用やフィードバックメカニズムなどのパラメータに基づいてこれらの方法を分類し、幻覚の問題に取り組むためのアプローチを提案しています。また、これらの技術に関連する課題や制約についても分析し、将来の研究に向けた基盤を提供しています。</span>
