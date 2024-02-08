@@ -5,20 +5,23 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-07</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1227">Self-Discover: Large Language Models Self-Compose Reasoning Structures, Pei Zhou+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>SELF-DISCOVERは、LLMsがタスク固有の推論構造を自己発見することを可能にするフレームワークであり、複雑な推論問題に取り組むことができます。このフレームワークは、複数の原子的な推論モジュールを選択し、それらを組み合わせて明示的な推論構造を作成する自己発見プロセスを含んでいます。SELF-DISCOVERは、難解な推論ベンチマークでGPT-4とPaLM 2の性能を最大32%向上させることができます。さらに、推論計算において10-40倍少ないリソースを必要とし、人間の推論パターンと共通点を持っています。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1226">RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval, Parth Sarthi+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>検索補完言語モデルは、ロングテールの知識を組み込むことができますが、既存の手法では文脈の理解が制限されています。そこで、私たちは再帰的な要約を使用してテキストをクラスタリングし、異なる抽象化レベルで情報を統合する新しいアプローチを提案します。制御された実験では、このアプローチが従来の手法よりも大幅な改善を提供し、質問応答タスクでは最高性能を20%向上させることができることを示しました。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1224">INSTRUCTSCORE: Explainable Text Generation Evaluation with Finegrained  Feedback, Wenda Xu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>自動的な言語生成の品質評価には説明可能なメトリクスが必要であるが、既存のメトリクスはその判定を説明したり欠陥とスコアを関連付けることができない。そこで、InstructScoreという新しいメトリクスを提案し、人間の指示とGPT-4の知識を活用してテキストの評価と診断レポートを生成する。さまざまな生成タスクでInstructScoreを評価し、他のメトリクスを上回る性能を示した。驚くべきことに、InstructScoreは人間の評価データなしで最先端のメトリクスと同等の性能を達成する。</span>
-<span class="snippet"><span>Comment</span>伝統的なNLGの性能指標の解釈性が低いことを主張する研究伝統的なNLGの性能指標の解釈性が低いことを主張する研究 ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1224">INSTRUCTSCORE: Explainable Text Generation Evaluation with Finegrained  Feedback, Wenda Xu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>自動的な言語生成の品質評価には説明可能なメトリクスが必要であるが、既存のメトリクスはその判定を説明したり欠陥とスコアを関連付けることができない。そこで、InstructScoreという新しいメトリクスを提案し、人間の指示とGPT-4の知識を活用してテキストの評価と診断レポートを生成する。さまざまな生成タスクでInstructScoreを評価し、他のメトリクスを上回る性能を示した。驚くべきことに、InstructScoreは人間の評価データなしで最先端のメトリクスと同等の性能を達成する。</span>
+<span class="snippet"><span>Comment</span>伝統的なNLGの性能指標の解釈性が低いことを主張する研究伝統的なNLGの性能指標の解釈性が低いことを主張する研究 ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1223">G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment, Yang Liu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>従来の参照ベースの評価指標では、自然言語生成システムの品質を正確に測定することが難しい。最近の研究では、大規模言語モデル（LLMs）を使用した参照ベースの評価指標が提案されているが、まだ人間との一致度が低い。本研究では、G-Evalという大規模言語モデルを使用した品質評価フレームワークを提案し、要約と対話生成のタスクで実験を行った。G-Evalは従来の手法を大幅に上回る結果を示し、LLMベースの評価器の潜在的な問題についても分析している。コードはGitHubで公開されている。</span>
@@ -329,9 +332,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1126">Hiformer: Heterogeneous Feature Interactions Learning with Transformers  for Recommender Systems, Huan Gui+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>特徴の相互作用を学ぶために、Transformerベースのアーキテクチャを提案する。ウェブスケールのレコメンダーシステムにおいて、特徴の相互作用を手動で作成することは困難であるため、自動的に捉える必要がある。しかし、現在のTransformerアーキテクチャは異種の特徴の相互作用を捉えることができず、サービングレイテンシも高い。そこで、異種の自己注意層を提案し、\textsc{Hiformer}というモデルを紹介する。\textsc{Hiformer}は特徴の相互作用の異種性を考慮し、低ランク近似とモデルの剪定により高速な推論を実現する。オフライン実験結果では、\textsc{Hiformer}モデルの効果と効率が示されており、Google Playの実世界の大規模なアプリランキングモデルにも展開され、主要なエンゲージメントメトリックスを改善した。</span>
 <span class="snippet"><span>Comment</span>推薦システムは、Factorization Machinesあたりから大抵の場合特徴量間の交互作用を頑張って捉えることで精度向上を目指す、という話をしてきている気がするが、これはTransformerを使って交互作用捉えられるようなモデルを考えました、という研究のようである。self atteOnl ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d57eb1b6-0e68-47fe-9d0a-315186cc9e3d" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1125">Boosting RAG: Picking the Best Embedding & Reranker models</a>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d57eb1b6-0e68-47fe-9d0a-315186cc9e3d" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -11054,22 +11055,25 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (153)
+## Pocket (154)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-02-07</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1227">Self-Discover: Large Language Models Self-Compose Reasoning Structures, Pei Zhou+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>SELF-DISCOVERは、LLMsがタスク固有の推論構造を自己発見することを可能にするフレームワークであり、複雑な推論問題に取り組むことができます。このフレームワークは、複数の原子的な推論モジュールを選択し、それらを組み合わせて明示的な推論構造を作成する自己発見プロセスを含んでいます。SELF-DISCOVERは、難解な推論ベンチマークでGPT-4とPaLM 2の性能を最大32%向上させることができます。さらに、推論計算において10-40倍少ないリソースを必要とし、人間の推論パターンと共通点を持っています。</span>
 <br><span class="issue_date">Issue Date: 2024-02-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1226">RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval, Parth Sarthi+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>検索補完言語モデルは、ロングテールの知識を組み込むことができますが、既存の手法では文脈の理解が制限されています。そこで、私たちは再帰的な要約を使用してテキストをクラスタリングし、異なる抽象化レベルで情報を統合する新しいアプローチを提案します。制御された実験では、このアプローチが従来の手法よりも大幅な改善を提供し、質問応答タスクでは最高性能を20%向上させることができることを示しました。</span>
 <br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
-<br><span class="issue_date">Issue Date: 2024-01-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1219">LLaMA Pro: Progressive LLaMA with Block Expansion, Chengyue Wu+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の新しい事前学習後の手法を提案し、モデルの知識を効果的かつ効率的に向上させることを目指しました。具体的には、Transformerブロックの拡張を使用し、新しいコーパスのみを使用してモデルを調整しました。実験の結果、提案手法はさまざまなベンチマークで優れたパフォーマンスを発揮し、知的エージェントとして多様なタスクに対応できることが示されました。この研究は、自然言語とプログラミング言語を統合し、高度な言語エージェントの開発に貢献するものです。</span>
-<span class="snippet"><span>Comment</span>追加の知識を導入したいときに使えるかも? ...</span>
 </div>
 <button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2024-01-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1219">LLaMA Pro: Progressive LLaMA with Block Expansion, Chengyue Wu+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の新しい事前学習後の手法を提案し、モデルの知識を効果的かつ効率的に向上させることを目指しました。具体的には、Transformerブロックの拡張を使用し、新しいコーパスのみを使用してモデルを調整しました。実験の結果、提案手法はさまざまなベンチマークで優れたパフォーマンスを発揮し、知的エージェントとして多様なタスクに対応できることが示されました。この研究は、自然言語とプログラミング言語を統合し、高度な言語エージェントの開発に貢献するものです。</span>
+<span class="snippet"><span>Comment</span>追加の知識を導入したいときに使えるかも? ...</span>
 <br><span class="issue_date">Issue Date: 2024-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1217">A Comprehensive Survey of Hallucination Mitigation Techniques in Large  Language Models, S. M Towhidul Islam Tonmoy+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>要約：本論文では、大規模言語モデル（LLMs）における幻覚の問題について調査し、その軽減策について紹介しています。LLMsは強力な言語生成能力を持っていますが、根拠のない情報を生成する傾向があります。この問題を解決するために、Retrieval Augmented Generation、Knowledge Retrieval、CoNLI、CoVeなどの技術が開発されています。さらに、データセットの利用やフィードバックメカニズムなどのパラメータに基づいてこれらの方法を分類し、幻覚の問題に取り組むためのアプローチを提案しています。また、これらの技術に関連する課題や制約についても分析し、将来の研究に向けた基盤を提供しています。</span>
