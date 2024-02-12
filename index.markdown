@@ -5,19 +5,25 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1228">Can Mamba Learn How to Learn? A Comparative Study on In-Context Learning  Tasks, Jongho Park+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>状態空間モデル（SSM）は、言語モデリングにおけるTransformerネットワークの代替手法として提案されてきた。本研究では、SSMのインコンテキスト学習（ICL）能力を評価し、Transformerと比較した結果を報告する。SSMは一部のタスクでTransformerを上回る性能を示すが、一部のタスクでは不十分であることがわかった。そこで、Mambaとアテンションブロックを組み合わせたハイブリッドモデルを提案し、個々のモデルを上回る結果を示した。ハイブリッドアーキテクチャは言語モデルのICLを向上させる有望な手段であることが示唆された。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1227">Self-Discover: Large Language Models Self-Compose Reasoning Structures, Pei Zhou+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>SELF-DISCOVERは、LLMsがタスク固有の推論構造を自己発見することを可能にするフレームワークであり、複雑な推論問題に取り組むことができます。このフレームワークは、複数の原子的な推論モジュールを選択し、それらを組み合わせて明示的な推論構造を作成する自己発見プロセスを含んでいます。SELF-DISCOVERは、難解な推論ベンチマークでGPT-4とPaLM 2の性能を最大32%向上させることができます。さらに、推論計算において10-40倍少ないリソースを必要とし、人間の推論パターンと共通点を持っています。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1226">RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval, Parth Sarthi+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>検索補完言語モデルは、ロングテールの知識を組み込むことができますが、既存の手法では文脈の理解が制限されています。そこで、私たちは再帰的な要約を使用してテキストをクラスタリングし、異なる抽象化レベルで情報を統合する新しいアプローチを提案します。制御された実験では、このアプローチが従来の手法よりも大幅な改善を提供し、質問応答タスクでは最高性能を20%向上させることができることを示しました。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1224">INSTRUCTSCORE: Explainable Text Generation Evaluation with Finegrained  Feedback, Wenda Xu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>自動的な言語生成の品質評価には説明可能なメトリクスが必要であるが、既存のメトリクスはその判定を説明したり欠陥とスコアを関連付けることができない。そこで、InstructScoreという新しいメトリクスを提案し、人間の指示とGPT-4の知識を活用してテキストの評価と診断レポートを生成する。さまざまな生成タスクでInstructScoreを評価し、他のメトリクスを上回る性能を示した。驚くべきことに、InstructScoreは人間の評価データなしで最先端のメトリクスと同等の性能を達成する。</span>
@@ -324,15 +330,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/AutomaticPromptEngineering.html">#AutomaticPromptEngineering</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1128">Prompt Engineering a Prompt Engineer, Qinyuan Ye+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>プロンプトエンジニアリングは、LLMsのパフォーマンスを最適化するための重要なタスクであり、本研究ではメタプロンプトを構築して自動的なプロンプトエンジニアリングを行います。改善されたパフォーマンスにつながる推論テンプレートやコンテキストの明示などの要素を導入し、一般的な最適化概念をメタプロンプトに組み込みます。提案手法であるPE2は、さまざまなデータセットやタスクで強力なパフォーマンスを発揮し、以前の自動プロンプトエンジニアリング手法を上回ります。さらに、PE2は意味のあるプロンプト編集を行い、カウンターファクトの推論能力を示します。</span>
-<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1127">Florence-2: Advancing a Unified Representation for a Variety of Vision  Tasks, Bin Xiao+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>Florence-2は、ビジョン基盤モデルであり、さまざまなビジョンタスクに対応するための統一されたプロンプトベースの表現を持っています。このモデルは、テキストプロンプトを受け取り、キャプショニング、オブジェクト検出、グラウンディング、セグメンテーションなどのタスクを実行し、テキスト形式で結果を生成します。また、FLD-5Bという大規模な注釈付きデータセットも開発されました。Florence-2は、多目的かつ包括的なビジョンタスクを実行するためにシーケンスツーシーケンス構造を採用しており、前例のないゼロショットおよびファインチューニングの能力を持つ強力なモデルです。</span>
-<span class="snippet"><span>Comment</span>Vison Foundation Model。Spatialな階層構造や、Semanticを捉えられるように訓練。Image/Prompt Encoderでエンコードされ、outputはtext + location informationとなる。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9fbfba62-190f-46eb-a893-5ebe76dda030" alt="image"><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1126">Hiformer: Heterogeneous Feature Interactions Learning with Transformers  for Recommender Systems, Huan Gui+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>特徴の相互作用を学ぶために、Transformerベースのアーキテクチャを提案する。ウェブスケールのレコメンダーシステムにおいて、特徴の相互作用を手動で作成することは困難であるため、自動的に捉える必要がある。しかし、現在のTransformerアーキテクチャは異種の特徴の相互作用を捉えることができず、サービングレイテンシも高い。そこで、異種の自己注意層を提案し、\textsc{Hiformer}というモデルを紹介する。\textsc{Hiformer}は特徴の相互作用の異種性を考慮し、低ランク近似とモデルの剪定により高速な推論を実現する。オフライン実験結果では、\textsc{Hiformer}モデルの効果と効率が示されており、Google Playの実世界の大規模なアプリランキングモデルにも展開され、主要なエンゲージメントメトリックスを改善した。</span>
-<span class="snippet"><span>Comment</span>推薦システムは、Factorization Machinesあたりから大抵の場合特徴量間の交互作用を頑張って捉えることで精度向上を目指す、という話をしてきている気がするが、これはTransformerを使って交互作用捉えられるようなモデルを考えました、という研究のようである。self atteOnl ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d57eb1b6-0e68-47fe-9d0a-315186cc9e3d" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -4044,7 +4042,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (421)
+## Article (422)
 ### LanguageModel (104)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
@@ -5795,22 +5793,25 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (59)
+### Others (60)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
-<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"></div>
+</div>
 <button onclick="showMore(53)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/TabularData.html">#TabularData</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1167">Table Transformer Demo</a>
+<span class="snippet"><span>Comment</span>PDF中のテーブルとその構造（行列セル）をdetectするモデルExampleは以下のような感じ（日本語だとどれくらいできるのかな...） ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
 <span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
@@ -11055,21 +11056,24 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (154)
+## Pocket (155)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1228">Can Mamba Learn How to Learn? A Comparative Study on In-Context Learning  Tasks, Jongho Park+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>状態空間モデル（SSM）は、言語モデリングにおけるTransformerネットワークの代替手法として提案されてきた。本研究では、SSMのインコンテキスト学習（ICL）能力を評価し、Transformerと比較した結果を報告する。SSMは一部のタスクでTransformerを上回る性能を示すが、一部のタスクでは不十分であることがわかった。そこで、Mambaとアテンションブロックを組み合わせたハイブリッドモデルを提案し、個々のモデルを上回る結果を示した。ハイブリッドアーキテクチャは言語モデルのICLを向上させる有望な手段であることが示唆された。</span>
 <br><span class="issue_date">Issue Date: 2024-02-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1227">Self-Discover: Large Language Models Self-Compose Reasoning Structures, Pei Zhou+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>SELF-DISCOVERは、LLMsがタスク固有の推論構造を自己発見することを可能にするフレームワークであり、複雑な推論問題に取り組むことができます。このフレームワークは、複数の原子的な推論モジュールを選択し、それらを組み合わせて明示的な推論構造を作成する自己発見プロセスを含んでいます。SELF-DISCOVERは、難解な推論ベンチマークでGPT-4とPaLM 2の性能を最大32%向上させることができます。さらに、推論計算において10-40倍少ないリソースを必要とし、人間の推論パターンと共通点を持っています。</span>
 <br><span class="issue_date">Issue Date: 2024-02-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1226">RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval, Parth Sarthi+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>検索補完言語モデルは、ロングテールの知識を組み込むことができますが、既存の手法では文脈の理解が制限されています。そこで、私たちは再帰的な要約を使用してテキストをクラスタリングし、異なる抽象化レベルで情報を統合する新しいアプローチを提案します。制御された実験では、このアプローチが従来の手法よりも大幅な改善を提供し、質問応答タスクでは最高性能を20%向上させることができることを示しました。</span>
-<br><span class="issue_date">Issue Date: 2024-01-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
 </div>
 <button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2024-01-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
 <br><span class="issue_date">Issue Date: 2024-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1219">LLaMA Pro: Progressive LLaMA with Block Expansion, Chengyue Wu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）の新しい事前学習後の手法を提案し、モデルの知識を効果的かつ効率的に向上させることを目指しました。具体的には、Transformerブロックの拡張を使用し、新しいコーパスのみを使用してモデルを調整しました。実験の結果、提案手法はさまざまなベンチマークで優れたパフォーマンスを発揮し、知的エージェントとして多様なタスクに対応できることが示されました。この研究は、自然言語とプログラミング言語を統合し、高度な言語エージェントの開発に貢献するものです。</span>
