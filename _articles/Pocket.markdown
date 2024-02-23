@@ -60,6 +60,9 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2024-01-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1204">Mixtral of Experts, Albert Q. Jiang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>Mixtralは、Sparse Mixture of Experts（SMoE）言語モデルであり、各レイヤーが8つのフィードフォワードブロックで構成されています。Mixtralは、トークンごとに2つのエキスパートを選択し、それらの出力を組み合わせます。Mixtralは、Llama 2 70BとGPT-3.5を上回る性能を持ち、数学、コード生成、多言語のベンチマークで特に優れています。また、Mixtral 8x7B Instructという指示に従うモデルも提供されており、人間のベンチマークを凌駕しています。</span>
+<br><span class="issue_date">Issue Date: 2024-02-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">The Consensus Game: Language Model Generation via Equilibrium Search, Athul Paul Jacob+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LMsを使った質問応答やテキスト生成タスクにおいて、生成的または識別的な手法を組み合わせることで一貫したLM予測を得る新しいアプローチが提案された。このアプローチは、言語モデルのデコーディングをゲーム理論的な連続シグナリングゲームとして捉え、EQUILIBRIUM-RANKINGアルゴリズムを導入することで、既存の手法よりも一貫性とパフォーマンスを向上させることが示された。</span>
 <br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1224">INSTRUCTSCORE: Explainable Text Generation Evaluation with Finegrained  Feedback, Wenda Xu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>自動的な言語生成の品質評価には説明可能なメトリクスが必要であるが、既存のメトリクスはその判定を説明したり欠陥とスコアを関連付けることができない。そこで、InstructScoreという新しいメトリクスを提案し、人間の指示とGPT-4の知識を活用してテキストの評価と診断レポートを生成する。さまざまな生成タスクでInstructScoreを評価し、他のメトリクスを上回る性能を示した。驚くべきことに、InstructScoreは人間の評価データなしで最先端のメトリクスと同等の性能を達成する。</span>
@@ -913,6 +916,9 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/512">Reflexion: Language Agents with Verbal Reinforcement Learning, Noah Shinn+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、言語エージェントを強化するための新しいフレームワークであるReflexionを提案しています。Reflexionエージェントは、言語的フィードバックを通じて自己反省し、より良い意思決定を促すために反省的なテキストを保持します。Reflexionはさまざまなタスクでベースラインエージェントに比べて大幅な改善を実現し、従来の最先端のGPT-4を上回る精度を達成しました。さらに、異なるフィードバック信号や統合方法、エージェントタイプの研究を行い、パフォーマンスへの影響についての洞察を提供しています。</span>
 <span class="snippet"><span>Comment</span>なぜ回答を間違えたのか自己反省させることでパフォーマンスを向上させる研究 ...</span>
+<br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1232">Dense Text Retrieval based on Pretrained Language Models: A Survey, Wayne Xin Zhao+, N_A, arXiv22</a>
+<span class="snippet"><span>Summary</span>テキスト検索における最近の進歩に焦点を当て、PLMベースの密な検索に関する包括的な調査を行った。PLMsを使用することで、クエリとテキストの表現を学習し、意味マッチング関数を構築することが可能となり、密な検索アプローチが可能となる。この調査では、アーキテクチャ、トレーニング、インデックス作成、統合などの側面に焦点を当て、300以上の関連文献を含む包括的な情報を提供している。</span>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/StructuredData.html">#StructuredData</a><br><span class="issue_date">Issue Date: 2023-10-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1097">MURMUR: Modular Multi-Step Reasoning for Semi-Structured Data-to-Text  Generation, Swarnadeep Saha+, N_A, arXiv22</a>
 <span class="snippet"><span>Summary</span>本研究では、半構造化データからのテキスト生成における多段階の推論を行うためのMURMURという手法を提案しています。MURMURは、特定の言語的および論理的なスキルを持つニューラルモジュールと記号モジュールを組み合わせ、ベストファーストサーチ手法を使用して推論パスを生成します。実験結果では、MURMURは他のベースライン手法に比べて大幅な改善を示し、また、ドメイン外のデータでも同等の性能を達成しました。さらに、人間の評価では、MURMURは論理的に整合性のある要約をより多く生成することが示されました。</span>

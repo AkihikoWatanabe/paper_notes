@@ -8,19 +8,22 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218">Self-Play Fine-Tuning Converts Weak Language Models to Strong Language  Models, Zixiang Chen+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、追加の人間による注釈付きデータを必要とせずに、大規模言語モデル（LLMs）を強化する方法を提案します。そのために、Self-Play fIne-tuNing（SPIN）という新しいファインチューニング手法を開発しました。SPINでは、LLMが自身と対戦しながら能力を向上させるセルフプレイのメカニズムを利用します。具体的には、LLMは自己生成応答と人間による注釈付きデータから得られた応答を区別することでポリシーを改善します。実験結果は、SPINがLLMのパフォーマンスを大幅に改善し、専門家の対戦相手を必要とせずに人間レベルのパフォーマンスを達成できることを示しています。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">The Consensus Game: Language Model Generation via Equilibrium Search, Athul Paul Jacob+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LMsを使った質問応答やテキスト生成タスクにおいて、生成的または識別的な手法を組み合わせることで一貫したLM予測を得る新しいアプローチが提案された。このアプローチは、言語モデルのデコーディングをゲーム理論的な連続シグナリングゲームとして捉え、EQUILIBRIUM-RANKINGアルゴリズムを導入することで、既存の手法よりも一貫性とパフォーマンスを向上させることが示された。</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
 <span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1123">A Survey on Hallucination in Large Language Models: Principles,  Taxonomy, Challenges, and Open Questions, Lei Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsの出現はNLPにおける重要な進歩をもたらしているが、幻覚を生じることがあり、その信頼性に懸念がある。本調査では、LLMの幻覚に関する最近の進展について包括的に概説し、幻覚の要因や検出手法、軽減アプローチについて紹介する。また、現在の制約や将来の研究方向についても分析する。</span>
 <span class="snippet"><span>Comment</span>Hallucinationを現象ごとに分類したSurveyとして #1048 もあるSurveyの内容。必要に応じて参照すべし。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32d8d809-e197-4289-8000-12fee76a69cf" alt="image"></div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32d8d809-e197-4289-8000-12fee76a69cf" alt="image"><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1122">LightLM: A Lightweight Deep and Narrow Language Model for Generative  Recommendation, Kai Mei+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>この論文では、軽量なTransformerベースの言語モデルであるLightLMを提案し、生成型レコメンデーションタスクに特化したモデルを開発しています。LightLMは、モデルの容量を抑えつつも、レコメンデーションの精度と効率を向上させることに成功しています。また、ユーザーとアイテムのIDインデックス化方法として、Spectral Collaborative Indexing（SCI）とGraph Collaborative Indexing（GCI）を提案しています。さらに、アイテム生成時のhallucinationの問題に対処するために、制約付き生成プロセスを導入しています。実験結果は、LightLMが競合ベースラインを上回ることを示しています。</span>
 <span class="snippet"><span>Comment</span>Generative Recommendationはあまり終えていないのだが、既存のGenerative Recommendationのモデルをより軽量にし、性能を向上させ、存在しないアイテムを生成するのを防止するような手法を提案しました、という話っぽい。Bayesian Perso ...</span>
@@ -86,6 +89,9 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/512">Reflexion: Language Agents with Verbal Reinforcement Learning, Noah Shinn+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、言語エージェントを強化するための新しいフレームワークであるReflexionを提案しています。Reflexionエージェントは、言語的フィードバックを通じて自己反省し、より良い意思決定を促すために反省的なテキストを保持します。Reflexionはさまざまなタスクでベースラインエージェントに比べて大幅な改善を実現し、従来の最先端のGPT-4を上回る精度を達成しました。さらに、異なるフィードバック信号や統合方法、エージェントタイプの研究を行い、パフォーマンスへの影響についての洞察を提供しています。</span>
 <span class="snippet"><span>Comment</span>なぜ回答を間違えたのか自己反省させることでパフォーマンスを向上させる研究 ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1232">Dense Text Retrieval based on Pretrained Language Models: A Survey, Wayne Xin Zhao+, N_A, arXiv22</a>
+<span class="snippet"><span>Summary</span>テキスト検索における最近の進歩に焦点を当て、PLMベースの密な検索に関する包括的な調査を行った。PLMsを使用することで、クエリとテキストの表現を学習し、意味マッチング関数を構築することが可能となり、密な検索アプローチが可能となる。この調査では、アーキテクチャ、トレーニング、インデックス作成、統合などの側面に焦点を当て、300以上の関連文献を含む包括的な情報を提供している。</span>
 <a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1000">Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than  In-Context Learning, Haokun Liu+, N_A, arXiv22</a>
 <span class="snippet"><span>Summary</span>Few-shot in-context learning（ICL）とパラメータ効率の良いファインチューニング（PEFT）を比較し、PEFTが高い精度と低い計算コストを提供することを示す。また、新しいPEFTメソッドである（IA）^3を紹介し、わずかな新しいパラメータしか導入しないまま、強力なパフォーマンスを達成する。さらに、T-Fewというシンプルなレシピを提案し、タスク固有のチューニングや修正なしに新しいタスクに適用できる。RAFTベンチマークでT-Fewを使用し、超人的なパフォーマンスを達成し、最先端を6％絶対的に上回る。</span>

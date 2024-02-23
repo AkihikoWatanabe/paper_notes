@@ -5,18 +5,24 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2024-02-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">あ</a>
+<br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1232">Dense Text Retrieval based on Pretrained Language Models: A Survey, Wayne Xin Zhao+, N_A, arXiv22</a>
+<span class="snippet"><span>Summary</span>テキスト検索における最近の進歩に焦点を当て、PLMベースの密な検索に関する包括的な調査を行った。PLMsを使用することで、クエリとテキストの表現を学習し、意味マッチング関数を構築することが可能となり、密な検索アプローチが可能となる。この調査では、アーキテクチャ、トレーニング、インデックス作成、統合などの側面に焦点を当て、300以上の関連文献を含む包括的な情報を提供している。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">The Consensus Game: Language Model Generation via Equilibrium Search, Athul Paul Jacob+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LMsを使った質問応答やテキスト生成タスクにおいて、生成的または識別的な手法を組み合わせることで一貫したLM予測を得る新しいアプローチが提案された。このアプローチは、言語モデルのデコーディングをゲーム理論的な連続シグナリングゲームとして捉え、EQUILIBRIUM-RANKINGアルゴリズムを導入することで、既存の手法よりも一貫性とパフォーマンスを向上させることが示された。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1230">Scaling Laws for Fine-Grained Mixture of Experts, Jakub Krajewski+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、Mixture of Experts（MoE）モデルのスケーリング特性を分析し、新しいハイパーパラメータである「粒度」を導入することで、計算コストを削減する方法を提案しています。さらに、MoEモデルが密なモデルよりも優れた性能を発揮し、モデルのサイズとトレーニング予算をスケールアップするにつれてその差が広がることを示しています。また、一般的な方法では最適ではないことも示しています。</span>
 <br><span class="issue_date">Issue Date: 2024-02-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
 <span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1228">Can Mamba Learn How to Learn? A Comparative Study on In-Context Learning  Tasks, Jongho Park+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>状態空間モデル（SSM）は、言語モデリングにおけるTransformerネットワークの代替手法として提案されてきた。本研究では、SSMのインコンテキスト学習（ICL）能力を評価し、Transformerと比較した結果を報告する。SSMは一部のタスクでTransformerを上回る性能を示すが、一部のタスクでは不十分であることがわかった。そこで、Mambaとアテンションブロックを組み合わせたハイブリッドモデルを提案し、個々のモデルを上回る結果を示した。ハイブリッドアーキテクチャは言語モデルのICLを向上させる有望な手段であることが示唆された。</span>
@@ -323,13 +329,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1132">Cappy: Outperforming and Boosting Large Multi-Task LMs with a Small  Scorer, Bowen Tan+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）はマルチタスキングに優れた性能を示していますが、パラメータ数が多く計算リソースを必要とし、効率的ではありません。そこで、小規模なスコアラーであるCappyを導入し、独立して機能するかLLMsの補助として使用することでパフォーマンスを向上させました。Cappyはファインチューニングやパラメータへのアクセスを必要とせず、さまざまなタスクで高い性能を発揮します。実験結果では、Cappyは独立したタスクや複雑なタスクで大きなLLMsを上回り、他のLLMsとの連携も可能です。</span>
 <span class="snippet"><span>Comment</span>360MパラメータでさまざまなタスクでLLMに勝つっぽいのでおもしろそうだし実用性もありそう ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/70960155-83c7-4a1b-bd2f-f48726dc29ed" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/MultiLingual.html">#MultiLingual</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1131">MEGAVERSE: Benchmarking Large Language Models Across Languages,  Modalities, Models and Tasks, Sanchit Ahuja+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>LLMsの研究は急速に進展しており、英語以外の言語での評価が必要とされている。本研究では、新しいデータセットを追加したMEGAVERSEベンチマークを提案し、さまざまなLLMsを評価する。実験の結果、GPT4とPaLM2が優れたパフォーマンスを示したが、データの汚染などの問題があるため、さらなる取り組みが必要である。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1130">Hallucination Leaderboard, 2023</a>
-<span class="snippet"><span>Comment</span>1000個の短いドキュメントに対して、事実情報のみを用いて要約を生成させ、要約結果と原文書のFactual consistencyを別に訓練したモデルで測定して評価してリーダーボードを作成している。Claude2よりLLaMA2の方が性能が良いのが面白いし、Palmの性能があまり良くない。元ツイート ...</span>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/70960155-83c7-4a1b-bd2f-f48726dc29ed" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -5794,8 +5794,8 @@ author: AkihikoWATANABE
 </div>
 ### Others (61)
 <div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">あ</a>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
 <span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
@@ -11019,28 +11019,34 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>最近の研究では、言語モデルが人間のような判断を行うことが示されています。この研究では、言語モデルが心理学の研究において人間の代わりになる可能性や条件について探求し、AIを参加者として使用する際の注意点をまとめています。</span>
 </div>
 <hr>
-## Others (8)
-### Others (7)
+## Others (10)
+### Others (9)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218">Self-Play Fine-Tuning Converts Weak Language Models to Strong Language  Models, Zixiang Chen+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、追加の人間による注釈付きデータを必要とせずに、大規模言語モデル（LLMs）を強化する方法を提案します。そのために、Self-Play fIne-tuNing（SPIN）という新しいファインチューニング手法を開発しました。SPINでは、LLMが自身と対戦しながら能力を向上させるセルフプレイのメカニズムを利用します。具体的には、LLMは自己生成応答と人間による注釈付きデータから得られた応答を区別することでポリシーを改善します。実験結果は、SPINがLLMのパフォーマンスを大幅に改善し、専門家の対戦相手を必要とせずに人間レベルのパフォーマンスを達成できることを示しています。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">The Consensus Game: Language Model Generation via Equilibrium Search, Athul Paul Jacob+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LMsを使った質問応答やテキスト生成タスクにおいて、生成的または識別的な手法を組み合わせることで一貫したLM予測を得る新しいアプローチが提案された。このアプローチは、言語モデルのデコーディングをゲーム理論的な連続シグナリングゲームとして捉え、EQUILIBRIUM-RANKINGアルゴリズムを導入することで、既存の手法よりも一貫性とパフォーマンスを向上させることが示された。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Adapter_LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1162">MultiLoRA: Democratizing LoRA for Better Multi-Task Learning, Yiming Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LoRAは、LLMsを効率的に適応させる手法であり、ChatGPTのようなモデルを複数のタスクに適用することが求められている。しかし、LoRAは複雑なマルチタスクシナリオでの適応性能に制限がある。そこで、本研究ではMultiLoRAという手法を提案し、LoRAの制約を緩和する。MultiLoRAは、LoRAモジュールをスケーリングし、パラメータの依存性を減らすことで、バランスの取れたユニタリ部分空間を得る。実験結果では、わずかな追加パラメータでMultiLoRAが優れたパフォーマンスを示し、上位特異ベクトルへの依存性が低下していることが確認された。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Adapter_LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1159">ZipLoRA: Any Subject in Any Style by Effectively Merging LoRAs, Viraj Shah+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>概要：概念駆動型のパーソナライズのための生成モデルの微調整手法であるZipLoRAを提案。ZipLoRAは、独立してトレーニングされたスタイルと主題のLoRAを統合し、任意の主題とスタイルの組み合わせで生成することができる。実験結果は、ZipLoRAが主題とスタイルの忠実度を改善しながら魅力的な結果を生成できることを示している。</span>
 </div>
 <button onclick="showMore(119)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Adapter/LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1159">ZipLoRA: Any Subject in Any Style by Effectively Merging LoRAs, Viraj Shah+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>概要：概念駆動型のパーソナライズのための生成モデルの微調整手法であるZipLoRAを提案。ZipLoRAは、独立してトレーニングされたスタイルと主題のLoRAを統合し、任意の主題とスタイルの組み合わせで生成することができる。実験結果は、ZipLoRAが主題とスタイルの忠実度を改善しながら魅力的な結果を生成できることを示している。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1004">Epic-Sounds: A Large-scale Dataset of Actions That Sound, Jaesung Huh+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>EPIC-SOUNDSは、エゴセントリックなビデオのオーディオストリーム内の時間的範囲とクラスラベルをキャプチャした大規模なデータセットです。注釈者がオーディオセグメントに時間的なラベルを付け、アクションを説明する注釈パイプラインを提案しています。オーディオのみのラベルの重要性と現在のモデルの制約を強調するために、2つのオーディオ認識モデルを訓練および評価しました。データセットには78.4kのカテゴリ分けされたオーディブルなイベントとアクションのセグメントが含まれています。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Adapter/LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/725">One-for-All: Generalized LoRA for Parameter-Efficient Fine-tuning, Arnav Chavan+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本研究では、汎用的なファインチューニングタスクのための高度な手法であるGeneralized LoRA (GLoRA)を提案し、事前学習済みモデルの重みを最適化し、中間アクティベーションを調整することで、多様なタスクとデータセットに対してより柔軟性と能力を提供する。GLoRAは、各レイヤーの個別のアダプタを学習するスケーラブルでモジュラーなレイヤーごとの構造探索を採用することで、効率的なパラメータの適応を促進する。包括的な実験により、GLoRAは、自然言語、専門分野、構造化ベンチマークにおいて、従来のすべての手法を上回り、様々なデータセットでより少ないパラメータと計算で優れた精度を達成することが示された。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1232">Dense Text Retrieval based on Pretrained Language Models: A Survey, Wayne Xin Zhao+, N_A, arXiv22</a>
+<span class="snippet"><span>Summary</span>テキスト検索における最近の進歩に焦点を当て、PLMベースの密な検索に関する包括的な調査を行った。PLMsを使用することで、クエリとテキストの表現を学習し、意味マッチング関数を構築することが可能となり、密な検索アプローチが可能となる。この調査では、アーキテクチャ、トレーニング、インデックス作成、統合などの側面に焦点を当て、300以上の関連文献を含む包括的な情報を提供している。</span>
 <br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1221">Experts, errors, and context: A large-scale study of human evaluation for machine translation, TACL21</a>
 <span class="snippet"><span>Comment</span>embedding basedなNLGの性能指標が、意味の等価性や流暢性を評価できる一方、適用範囲が限定的で柔軟性に欠けることを示した研究 ...</span>
