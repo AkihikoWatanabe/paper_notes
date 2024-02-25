@@ -5,18 +5,25 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1235">User-LLM: Efficient LLM Contextualization with User Embeddings, Lin Ning+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LLMsを活用したUser-LLMフレームワークが提案された。ユーザーエンベッディングを使用してLLMsをコンテキストに位置付けし、ユーザーコンテキストに動的に適応することが可能になる。包括的な実験により、著しい性能向上が示され、Perceiverレイヤーの組み込みにより計算効率が向上している。</span>
+<span class="snippet"><span>Comment</span>next item prediction, favorite genre or category predictimnreview generationなどで評価している ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1234">Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt  Politeness on LLM Performance, Ziqi Yin+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LLMsのパフォーマンスにおけるプロンプトの丁寧さの影響を調査。無礼なプロンプトはパフォーマンス低下につながるが、過度に丁寧な言葉も必ずしも良い結果を保証しない。最適な丁寧さのレベルは言語によって異なることが示唆され、異文化間の自然言語処理とLLMの使用において丁寧さを考慮する必要性が強調された。</span>
 <br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1232">Dense Text Retrieval based on Pretrained Language Models: A Survey, Wayne Xin Zhao+, N_A, arXiv22</a>
 <span class="snippet"><span>Summary</span>テキスト検索における最近の進歩に焦点を当て、PLMベースの密な検索に関する包括的な調査を行った。PLMsを使用することで、クエリとテキストの表現を学習し、意味マッチング関数を構築することが可能となり、密な検索アプローチが可能となる。この調査では、アーキテクチャ、トレーニング、インデックス作成、統合などの側面に焦点を当て、300以上の関連文献を含む包括的な情報を提供している。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">The Consensus Game: Language Model Generation via Equilibrium Search, Athul Paul Jacob+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LMsを使った質問応答やテキスト生成タスクにおいて、生成的または識別的な手法を組み合わせることで一貫したLM予測を得る新しいアプローチが提案された。このアプローチは、言語モデルのデコーディングをゲーム理論的な連続シグナリングゲームとして捉え、EQUILIBRIUM-RANKINGアルゴリズムを導入することで、既存の手法よりも一貫性とパフォーマンスを向上させることが示された。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1230">Scaling Laws for Fine-Grained Mixture of Experts, Jakub Krajewski+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、Mixture of Experts（MoE）モデルのスケーリング特性を分析し、新しいハイパーパラメータである「粒度」を導入することで、計算コストを削減する方法を提案しています。さらに、MoEモデルが密なモデルよりも優れた性能を発揮し、モデルのサイズとトレーニング予算をスケールアップするにつれてその差が広がることを示しています。また、一般的な方法では最適ではないことも示しています。</span>
@@ -321,15 +328,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1134">LLaMA-Factory, 2023</a>
 <span class="snippet"><span>Comment</span>簡単に利用できるLLaMAのfinetuning frameworkとのこと。元ツイート: https://x.com/_akhaliq/status/1724456693378040195?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLLaMAベースなモデルなら色々対応している模様 ...</span>
-<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LayoutGeneration.html">#LayoutGeneration</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1133">LayoutPrompter: Awaken the Design Ability of Large Language Models, Jiawei Lin+, N_A, NeurIPS23</a>
-<span class="snippet"><span>Summary</span>LayoutPrompterは、大規模言語モデル（LLMs）を使用して条件付きのグラフィックレイアウト生成を行う手法であり、入力-出力のシリアル化、動的な模範的選択、およびレイアウトのランキングの3つのコンポーネントで構成されています。LayoutPrompterは、既存の手法と競合したり上回ったりする性能を持ち、トレーニングや微調整なしで使用できる汎用性のあるアプローチであることが実験結果から示されています。また、データ効率にも優れており、トレーニングベースラインよりも有意に優れていることも示されています。プロジェクトは、https://github.com/microsoft/LayoutGeneration/tree/main/LayoutPrompterで利用可能です。</span>
-<span class="snippet"><span>Comment</span>Conditional Graphic Layout Generation ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/SmallModel.html">#SmallModel</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1132">Cappy: Outperforming and Boosting Large Multi-Task LMs with a Small  Scorer, Bowen Tan+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）はマルチタスキングに優れた性能を示していますが、パラメータ数が多く計算リソースを必要とし、効率的ではありません。そこで、小規模なスコアラーであるCappyを導入し、独立して機能するかLLMsの補助として使用することでパフォーマンスを向上させました。Cappyはファインチューニングやパラメータへのアクセスを必要とせず、さまざまなタスクで高い性能を発揮します。実験結果では、Cappyは独立したタスクや複雑なタスクで大きなLLMsを上回り、他のLLMsとの連携も可能です。</span>
-<span class="snippet"><span>Comment</span>360MパラメータでさまざまなタスクでLLMに勝つっぽいのでおもしろそうだし実用性もありそう ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/70960155-83c7-4a1b-bd2f-f48726dc29ed" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -11063,21 +11062,28 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (156)
+## Pocket (158)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-02-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1235">User-LLM: Efficient LLM Contextualization with User Embeddings, Lin Ning+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LLMsを活用したUser-LLMフレームワークが提案された。ユーザーエンベッディングを使用してLLMsをコンテキストに位置付けし、ユーザーコンテキストに動的に適応することが可能になる。包括的な実験により、著しい性能向上が示され、Perceiverレイヤーの組み込みにより計算効率が向上している。</span>
+<span class="snippet"><span>Comment</span>next item prediction, favorite genre or category predictimnreview generationなどで評価している ...</span>
+<br><span class="issue_date">Issue Date: 2024-02-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1234">Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt  Politeness on LLM Performance, Ziqi Yin+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LLMsのパフォーマンスにおけるプロンプトの丁寧さの影響を調査。無礼なプロンプトはパフォーマンス低下につながるが、過度に丁寧な言葉も必ずしも良い結果を保証しない。最適な丁寧さのレベルは言語によって異なることが示唆され、異文化間の自然言語処理とLLMの使用において丁寧さを考慮する必要性が強調された。</span>
 <br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1230">Scaling Laws for Fine-Grained Mixture of Experts, Jakub Krajewski+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、Mixture of Experts（MoE）モデルのスケーリング特性を分析し、新しいハイパーパラメータである「粒度」を導入することで、計算コストを削減する方法を提案しています。さらに、MoEモデルが密なモデルよりも優れた性能を発揮し、モデルのサイズとトレーニング予算をスケールアップするにつれてその差が広がることを示しています。また、一般的な方法では最適ではないことも示しています。</span>
+</div>
+<button onclick="showMore(120)">more</button>
+
+<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-02-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1228">Can Mamba Learn How to Learn? A Comparative Study on In-Context Learning  Tasks, Jongho Park+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>状態空間モデル（SSM）は、言語モデリングにおけるTransformerネットワークの代替手法として提案されてきた。本研究では、SSMのインコンテキスト学習（ICL）能力を評価し、Transformerと比較した結果を報告する。SSMは一部のタスクでTransformerを上回る性能を示すが、一部のタスクでは不十分であることがわかった。そこで、Mambaとアテンションブロックを組み合わせたハイブリッドモデルを提案し、個々のモデルを上回る結果を示した。ハイブリッドアーキテクチャは言語モデルのICLを向上させる有望な手段であることが示唆された。</span>
 <br><span class="issue_date">Issue Date: 2024-02-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1227">Self-Discover: Large Language Models Self-Compose Reasoning Structures, Pei Zhou+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>SELF-DISCOVERは、LLMsがタスク固有の推論構造を自己発見することを可能にするフレームワークであり、複雑な推論問題に取り組むことができます。このフレームワークは、複数の原子的な推論モジュールを選択し、それらを組み合わせて明示的な推論構造を作成する自己発見プロセスを含んでいます。SELF-DISCOVERは、難解な推論ベンチマークでGPT-4とPaLM 2の性能を最大32%向上させることができます。さらに、推論計算において10-40倍少ないリソースを必要とし、人間の推論パターンと共通点を持っています。</span>
-</div>
-<button onclick="showMore(120)">more</button>
-
-<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-02-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1226">RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval, Parth Sarthi+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>検索補完言語モデルは、ロングテールの知識を組み込むことができますが、既存の手法では文脈の理解が制限されています。そこで、私たちは再帰的な要約を使用してテキストをクラスタリングし、異なる抽象化レベルで情報を統合する新しいアプローチを提案します。制御された実験では、このアプローチが従来の手法よりも大幅な改善を提供し、質問応答タスクでは最高性能を20%向上させることができることを示しました。</span>
