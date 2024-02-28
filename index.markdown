@@ -5,9 +5,19 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-25</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1238">MerRec: A Large-scale Multipurpose Mercari Dataset for  Consumer-to-Consumer Recommendation Systems, Lichi Li+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>電子商取引分野において、C2C推薦システムの重要性が高まっているが、これに関する研究は限られたデータセットに基づいている。そこで、MerRecという数百万のユーザーと商品をカバーする大規模なC2C推薦データセットが導入された。このデータセットは、標準的な特徴だけでなく、ユニークな要素も含んでおり、広範囲に評価されることで、C2C推薦の研究を促進し、新たな基準を確立することが期待されている。</span>
+<br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1236">Linear Transformers are Versatile In-Context Learners, Max Vladymyrov+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>研究では、線形transformersが複雑な問題に対して効果的な最適化アルゴリズムを見つける能力を持つことが示された。特に、トレーニングデータが異なるノイズレベルで破損している場合でも、線形transformersは合理的なベースラインを上回るか匹敵する結果を示した。新しいアプローチとして、運動量と再スケーリングを組み込んだ最適化戦略が提案された。これにより、線形transformersが洗練された最適化戦略を発見する能力を持つことが示された。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1235">User-LLM: Efficient LLM Contextualization with User Embeddings, Lin Ning+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsを活用したUser-LLMフレームワークが提案された。ユーザーエンベッディングを使用してLLMsをコンテキストに位置付けし、ユーザーコンテキストに動的に適応することが可能になる。包括的な実験により、著しい性能向上が示され、Perceiverレイヤーの組み込みにより計算効率が向上している。</span>
@@ -15,10 +25,6 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1234">Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt  Politeness on LLM Performance, Ziqi Yin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsのパフォーマンスにおけるプロンプトの丁寧さの影響を調査。無礼なプロンプトはパフォーマンス低下につながるが、過度に丁寧な言葉も必ずしも良い結果を保証しない。最適な丁寧さのレベルは言語によって異なることが示唆され、異文化間の自然言語処理とLLMの使用において丁寧さを考慮する必要性が強調された。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
@@ -321,14 +327,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137">Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）の能力を評価するために、Instruction-Following Eval（IFEval）という評価ベンチマークが導入されました。IFEvalは、検証可能な指示に焦点を当てた直感的で再現性のある評価方法です。具体的には、25種類の検証可能な指示を特定し、それぞれの指示を含む約500のプロンプトを作成しました。この評価ベンチマークの結果は、GitHubで公開されています。</span>
 <span class="snippet"><span>Comment</span>LLMがinstructionにどれだけ従うかを評価するために、検証可能なプロンプト（400字以上で書きなさいなど）を考案し評価する枠組みを提案。人間が評価すると時間とお金がかかり、LLMを利用した自動評価だと評価を実施するLLMのバイアスがかかるのだ、それら両方のlimitationを克服できると ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1136">ChatGPTに社内文書に基づいた回答を生成させる仕組みを構築しました, 2023</a>
-<span class="snippet"><span>Comment</span>低コストで社内文書に対するRAGを実現することに注力している。以下、図はブログから引用。基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。低コスト化のために、Embedding作成にOpenSourceの特に日本語テ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image"><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1135">Fast Chain-of-Thought: A Glance of Future from Parallel Decoding Leads  to Answers Faster, Hongxuan Zhang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>この研究では、FastCoTというフレームワークを提案します。FastCoTは、LLMを使用して並列デコーディングと自己回帰デコーディングを同時に行い、計算リソースを最大限に活用します。また、FastCoTは推論時間を約20%節約し、性能の低下がほとんどないことを実験で示しました。さらに、異なるサイズのコンテキストウィンドウに対しても頑健性を示すことができました。</span>
-<span class="snippet"><span>Comment</span>論文中の図を見たが、全くわからなかった・・・。ちゃんと読まないとわからなそうである。 ...</span>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -4040,7 +4039,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (423)
+## Article (424)
 ### LanguageModel (104)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
@@ -5791,20 +5790,23 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (61)
+### Others (62)
 <div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
 <span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
-<span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
 </div>
 <button onclick="showMore(53)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
+<span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
@@ -11062,8 +11064,11 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (159)
+## Pocket (160)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1238">MerRec: A Large-scale Multipurpose Mercari Dataset for  Consumer-to-Consumer Recommendation Systems, Lichi Li+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>電子商取引分野において、C2C推薦システムの重要性が高まっているが、これに関する研究は限られたデータセットに基づいている。そこで、MerRecという数百万のユーザーと商品をカバーする大規模なC2C推薦データセットが導入された。このデータセットは、標準的な特徴だけでなく、ユニークな要素も含んでおり、広範囲に評価されることで、C2C推薦の研究を促進し、新たな基準を確立することが期待されている。</span>
 <br><span class="issue_date">Issue Date: 2024-02-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1236">Linear Transformers are Versatile In-Context Learners, Max Vladymyrov+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>研究では、線形transformersが複雑な問題に対して効果的な最適化アルゴリズムを見つける能力を持つことが示された。特に、トレーニングデータが異なるノイズレベルで破損している場合でも、線形transformersは合理的なベースラインを上回るか匹敵する結果を示した。新しいアプローチとして、運動量と再スケーリングを組み込んだ最適化戦略が提案された。これにより、線形transformersが洗練された最適化戦略を発見する能力を持つことが示された。</span>
@@ -11071,13 +11076,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1235">User-LLM: Efficient LLM Contextualization with User Embeddings, Lin Ning+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsを活用したUser-LLMフレームワークが提案された。ユーザーエンベッディングを使用してLLMsをコンテキストに位置付けし、ユーザーコンテキストに動的に適応することが可能になる。包括的な実験により、著しい性能向上が示され、Perceiverレイヤーの組み込みにより計算効率が向上している。</span>
 <span class="snippet"><span>Comment</span>next item prediction, favorite genre or category predictimnreview generationなどで評価している ...</span>
-<br><span class="issue_date">Issue Date: 2024-02-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1234">Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt  Politeness on LLM Performance, Ziqi Yin+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>LLMsのパフォーマンスにおけるプロンプトの丁寧さの影響を調査。無礼なプロンプトはパフォーマンス低下につながるが、過度に丁寧な言葉も必ずしも良い結果を保証しない。最適な丁寧さのレベルは言語によって異なることが示唆され、異文化間の自然言語処理とLLMの使用において丁寧さを考慮する必要性が強調された。</span>
 </div>
 <button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2024-02-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1234">Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt  Politeness on LLM Performance, Ziqi Yin+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LLMsのパフォーマンスにおけるプロンプトの丁寧さの影響を調査。無礼なプロンプトはパフォーマンス低下につながるが、過度に丁寧な言葉も必ずしも良い結果を保証しない。最適な丁寧さのレベルは言語によって異なることが示唆され、異文化間の自然言語処理とLLMの使用において丁寧さを考慮する必要性が強調された。</span>
 <br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1230">Scaling Laws for Fine-Grained Mixture of Experts, Jakub Krajewski+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、Mixture of Experts（MoE）モデルのスケーリング特性を分析し、新しいハイパーパラメータである「粒度」を導入することで、計算コストを削減する方法を提案しています。さらに、MoEモデルが密なモデルよりも優れた性能を発揮し、モデルのサイズとトレーニング予算をスケールアップするにつれてその差が広がることを示しています。また、一般的な方法では最適ではないことも示しています。</span>
