@@ -5,19 +5,27 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1240">The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits, Shuming Ma+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>最新の研究では、1ビットの大規模言語モデル（LLMs）の時代が到来しており、BitNetなどの研究がその道を切り開いている。本研究では、1ビットLLMの変種であるBitNet b1.58を紹介し、その性能や効率について述べている。このモデルは、三値{-1, 0, 1}で各パラメータを表現し、フルプレシジョンのTransformer LLMと同等の性能を示す一方、コスト効果が高いことが特徴である。1.58ビットのLLMは、新しいスケーリング法やレシピを提供し、新しい計算パラダイムを可能にするとともに、特定のハードウェアの設計にも貢献する。</span>
+<span class="snippet"><span>Comment</span>1bit量子化を実現したBitNet。乗算が不要になるからGPU以外のアーキテクチャが最適かもね、みたいな話らしい。おまけに性能も高いらしい。（論文まだ読んでない）Github: https://github.com/kyegomez/BitNet ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1a05607b-b9a1-4d39-91d3-31f65cbc58f9" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1239">Deep Networks Always Grok and Here is Why, Ahmed Imtiaz Humayun+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>DNNの訓練エラーがほぼゼロに達した後に一般化が遅れて発生するグロッキング現象について、遅延頑健性という新しい概念を導入し、DNNが遅延して敵対的な例を理解し、一般化した後に頑健になる現象を説明。局所複雑性の新しい尺度に基づいて、遅延一般化と遅延頑健性の出現についての解析的な説明を提供。</span>
+<span class="snippet"><span>Comment</span>Grokking関連論文参考: hillbigさんのツイートhttps://x.com/hillbig/status/1762624222260846993?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1238">MerRec: A Large-scale Multipurpose Mercari Dataset for  Consumer-to-Consumer Recommendation Systems, Lichi Li+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>電子商取引分野において、C2C推薦システムの重要性が高まっているが、これに関する研究は限られたデータセットに基づいている。そこで、MerRecという数百万のユーザーと商品をカバーする大規模なC2C推薦データセットが導入された。このデータセットは、標準的な特徴だけでなく、ユニークな要素も含んでおり、広範囲に評価されることで、C2C推薦の研究を促進し、新たな基準を確立することが期待されている。</span>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
 <span class="snippet"><span>Comment</span> ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1236">Linear Transformers are Versatile In-Context Learners, Max Vladymyrov+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>研究では、線形transformersが複雑な問題に対して効果的な最適化アルゴリズムを見つける能力を持つことが示された。特に、トレーニングデータが異なるノイズレベルで破損している場合でも、線形transformersは合理的なベースラインを上回るか匹敵する結果を示した。新しいアプローチとして、運動量と再スケーリングを組み込んだ最適化戦略が提案された。これにより、線形transformersが洗練された最適化戦略を発見する能力を持つことが示された。</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1235">User-LLM: Efficient LLM Contextualization with User Embeddings, Lin Ning+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsを活用したUser-LLMフレームワークが提案された。ユーザーエンベッディングを使用してLLMsをコンテキストに位置付けし、ユーザーコンテキストに動的に適応することが可能になる。包括的な実験により、著しい性能向上が示され、Perceiverレイヤーの組み込みにより計算効率が向上している。</span>
@@ -320,14 +328,7 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-11-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1139">JGLUEの構築そして 日本語LLM評価のこれから, 2023</a>
 <span class="snippet"><span>Comment</span>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Nam ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1138">Fine-tuning Language Models for Factuality, Katherine Tian+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、大規模な言語モデル（LLMs）を使用して、より事実に基づいた生成を実現するためのファインチューニングを行います。具体的には、外部の知識ベースや信頼スコアとの一貫性を測定し、選好最適化アルゴリズムを使用してモデルを調整します。実験結果では、事実エラー率の削減が観察されました。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137">Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）の能力を評価するために、Instruction-Following Eval（IFEval）という評価ベンチマークが導入されました。IFEvalは、検証可能な指示に焦点を当てた直感的で再現性のある評価方法です。具体的には、25種類の検証可能な指示を特定し、それぞれの指示を含む約500のプロンプトを作成しました。この評価ベンチマークの結果は、GitHubで公開されています。</span>
-<span class="snippet"><span>Comment</span>LLMがinstructionにどれだけ従うかを評価するために、検証可能なプロンプト（400字以上で書きなさいなど）を考案し評価する枠組みを提案。人間が評価すると時間とお金がかかり、LLMを利用した自動評価だと評価を実施するLLMのバイアスがかかるのだ、それら両方のlimitationを克服できると ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -11064,11 +11065,23 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (160)
+## Pocket (162)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-02-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1240">The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits, Shuming Ma+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>最新の研究では、1ビットの大規模言語モデル（LLMs）の時代が到来しており、BitNetなどの研究がその道を切り開いている。本研究では、1ビットLLMの変種であるBitNet b1.58を紹介し、その性能や効率について述べている。このモデルは、三値{-1, 0, 1}で各パラメータを表現し、フルプレシジョンのTransformer LLMと同等の性能を示す一方、コスト効果が高いことが特徴である。1.58ビットのLLMは、新しいスケーリング法やレシピを提供し、新しい計算パラダイムを可能にするとともに、特定のハードウェアの設計にも貢献する。</span>
+<span class="snippet"><span>Comment</span>1bit量子化を実現したBitNet。乗算が不要になるからGPU以外のアーキテクチャが最適かもね、みたいな話らしい。おまけに性能も高いらしい。（論文まだ読んでない）Github: https://github.com/kyegomez/BitNet ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1a05607b-b9a1-4d39-91d3-31f65cbc58f9" alt="image"><br><span class="issue_date">Issue Date: 2024-02-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1239">Deep Networks Always Grok and Here is Why, Ahmed Imtiaz Humayun+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>DNNの訓練エラーがほぼゼロに達した後に一般化が遅れて発生するグロッキング現象について、遅延頑健性という新しい概念を導入し、DNNが遅延して敵対的な例を理解し、一般化した後に頑健になる現象を説明。局所複雑性の新しい尺度に基づいて、遅延一般化と遅延頑健性の出現についての解析的な説明を提供。</span>
+<span class="snippet"><span>Comment</span>Grokking関連論文参考: hillbigさんのツイートhttps://x.com/hillbig/status/1762624222260846993?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
 <br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1238">MerRec: A Large-scale Multipurpose Mercari Dataset for  Consumer-to-Consumer Recommendation Systems, Lichi Li+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>電子商取引分野において、C2C推薦システムの重要性が高まっているが、これに関する研究は限られたデータセットに基づいている。そこで、MerRecという数百万のユーザーと商品をカバーする大規模なC2C推薦データセットが導入された。このデータセットは、標準的な特徴だけでなく、ユニークな要素も含んでおり、広範囲に評価されることで、C2C推薦の研究を促進し、新たな基準を確立することが期待されている。</span>
+</div>
+<button onclick="showMore(120)">more</button>
+
+<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-02-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1236">Linear Transformers are Versatile In-Context Learners, Max Vladymyrov+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>研究では、線形transformersが複雑な問題に対して効果的な最適化アルゴリズムを見つける能力を持つことが示された。特に、トレーニングデータが異なるノイズレベルで破損している場合でも、線形transformersは合理的なベースラインを上回るか匹敵する結果を示した。新しいアプローチとして、運動量と再スケーリングを組み込んだ最適化戦略が提案された。これにより、線形transformersが洗練された最適化戦略を発見する能力を持つことが示された。</span>
@@ -11076,10 +11089,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1235">User-LLM: Efficient LLM Contextualization with User Embeddings, Lin Ning+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsを活用したUser-LLMフレームワークが提案された。ユーザーエンベッディングを使用してLLMsをコンテキストに位置付けし、ユーザーコンテキストに動的に適応することが可能になる。包括的な実験により、著しい性能向上が示され、Perceiverレイヤーの組み込みにより計算効率が向上している。</span>
 <span class="snippet"><span>Comment</span>next item prediction, favorite genre or category predictimnreview generationなどで評価している ...</span>
-</div>
-<button onclick="showMore(120)">more</button>
-
-<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-02-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1234">Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt  Politeness on LLM Performance, Ziqi Yin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsのパフォーマンスにおけるプロンプトの丁寧さの影響を調査。無礼なプロンプトはパフォーマンス低下につながるが、過度に丁寧な言葉も必ずしも良い結果を保証しない。最適な丁寧さのレベルは言語によって異なることが示唆され、異文化間の自然言語処理とLLMの使用において丁寧さを考慮する必要性が強調された。</span>
