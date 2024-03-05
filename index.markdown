@@ -5,6 +5,9 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-03-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1242">What are the most important LLMs to know about in March 2024?</a>
+<span class="snippet"><span>Comment</span>2024年3月時点で知っておくべきLLMに関するスレッド ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1241">Likelihood-based Mitigation of Evaluation Bias in Large Language Models, Masanari Ohi+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsを使用した評価者における可能性のバイアスとその影響を調査し、バイアスを緩和する方法を提案。提案手法は、バイアスのかかったインスタンスを活用し、評価パフォーマンスを向上させた。</span>
@@ -12,14 +15,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1240">The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits, Shuming Ma+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>最新の研究では、1ビットの大規模言語モデル（LLMs）の時代が到来しており、BitNetなどの研究がその道を切り開いている。本研究では、1ビットLLMの変種であるBitNet b1.58を紹介し、その性能や効率について述べている。このモデルは、三値{-1, 0, 1}で各パラメータを表現し、フルプレシジョンのTransformer LLMと同等の性能を示す一方、コスト効果が高いことが特徴である。1.58ビットのLLMは、新しいスケーリング法やレシピを提供し、新しい計算パラダイムを可能にするとともに、特定のハードウェアの設計にも貢献する。</span>
 <span class="snippet"><span>Comment</span>1bit量子化を実現したBitNet。乗算が不要になるからGPU以外のアーキテクチャが最適かもね、みたいな話らしい。おまけに性能も高いらしい。（論文まだ読んでない）Github: https://github.com/kyegomez/BitNet ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1a05607b-b9a1-4d39-91d3-31f65cbc58f9" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1239">Deep Networks Always Grok and Here is Why, Ahmed Imtiaz Humayun+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>DNNの訓練エラーがほぼゼロに達した後に一般化が遅れて発生するグロッキング現象について、遅延頑健性という新しい概念を導入し、DNNが遅延して敵対的な例を理解し、一般化した後に頑健になる現象を説明。局所複雑性の新しい尺度に基づいて、遅延一般化と遅延頑健性の出現についての解析的な説明を提供。</span>
-<span class="snippet"><span>Comment</span>Grokking関連論文参考: hillbigさんのツイートhttps://x.com/hillbig/status/1762624222260846993?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1a05607b-b9a1-4d39-91d3-31f65cbc58f9" alt="image"></div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1239">Deep Networks Always Grok and Here is Why, Ahmed Imtiaz Humayun+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>DNNの訓練エラーがほぼゼロに達した後に一般化が遅れて発生するグロッキング現象について、遅延頑健性という新しい概念を導入し、DNNが遅延して敵対的な例を理解し、一般化した後に頑健になる現象を説明。局所複雑性の新しい尺度に基づいて、遅延一般化と遅延頑健性の出現についての解析的な説明を提供。</span>
+<span class="snippet"><span>Comment</span>Grokking関連論文参考: hillbigさんのツイートhttps://x.com/hillbig/status/1762624222260846993?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1238">MerRec: A Large-scale Multipurpose Mercari Dataset for  Consumer-to-Consumer Recommendation Systems, Lichi Li+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>電子商取引分野において、C2C推薦システムの重要性が高まっているが、これに関する研究は限られたデータセットに基づいている。そこで、MerRecという数百万のユーザーと商品をカバーする大規模なC2C推薦データセットが導入された。このデータセットは、標準的な特徴だけでなく、ユニークな要素も含んでおり、広範囲に評価されることで、C2C推薦の研究を促進し、新たな基準を確立することが期待されている。</span>
@@ -324,11 +327,7 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c427bc7c-40af-42aa-a689-d852081a92fc" alt="image"><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1141">生成系 AI でプロダクトの価値を高めるには, 2023</a>
 <span class="snippet"><span>Comment</span>AWS久保さんの資料。後で読む ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1140">Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language  Models, Wenhao Yu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>検索補完言語モデル（RALM）は、外部の知識源を活用して大規模言語モデルの性能を向上させるが、信頼性の問題や知識の不足による誤った回答がある。そこで、Chain-of-Noting（CoN）という新しいアプローチを導入し、RALMの頑健性を向上させることを目指す。CoNは、順次の読み取りノートを生成し、関連性を評価して最終的な回答を形成する。ChatGPTを使用してCoNをトレーニングし、実験結果はCoNを装備したRALMが標準的なRALMを大幅に上回ることを示している。特に、ノイズの多いドキュメントにおいてEMスコアで平均+7.9の改善を達成し、知識範囲外のリアルタイムの質問に対する拒否率で+10.5の改善を達成している。</span>
-<span class="snippet"><span>Comment</span>一番重要な情報がappendixに載っているCoNによって、ノイズがあった場合にゲインが大きい。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -4040,7 +4039,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (424)
+## Article (425)
 ### LanguageModel (104)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
@@ -5791,20 +5790,23 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (62)
+### Others (63)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1242">What are the most important LLMs to know about in March 2024?</a>
+<span class="snippet"><span>Comment</span>2024年3月時点で知っておくべきLLMに関するスレッド ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
 <span class="snippet"><span>Comment</span> ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
-<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
 </div>
 <button onclick="showMore(53)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
