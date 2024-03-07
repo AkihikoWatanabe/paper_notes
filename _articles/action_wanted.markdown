@@ -5,20 +5,24 @@ author: AkihikoWATANABE
 ---
 ## action_wanted
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1250">OLMo: Accelerating the Science of Language Models, Dirk Groeneveld+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LMsの商業的重要性が高まる中、最も強力なモデルは閉鎖されており、その詳細が非公開になっている。そのため、本技術レポートでは、本当にオープンな言語モデルであるOLMoの初回リリースと、言語モデリングの科学を構築し研究するためのフレームワークについて詳細に説明している。OLMoはモデルの重みだけでなく、トレーニングデータ、トレーニングおよび評価コードを含むフレームワーク全体を公開しており、オープンな研究コミュニティを強化し、新しいイノベーションを促進することを目指している。</span>
+<span class="snippet"><span>Comment</span>Model Weightsを公開するだけでなく、training/evaluation codeとそのデータも公開する真にOpenな言語モデル（truly Open Language Model）。AllenAI ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218">Self-Play Fine-Tuning Converts Weak Language Models to Strong Language  Models, Zixiang Chen+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、追加の人間による注釈付きデータを必要とせずに、大規模言語モデル（LLMs）を強化する方法を提案します。そのために、Self-Play fIne-tuNing（SPIN）という新しいファインチューニング手法を開発しました。SPINでは、LLMが自身と対戦しながら能力を向上させるセルフプレイのメカニズムを利用します。具体的には、LLMは自己生成応答と人間による注釈付きデータから得られた応答を区別することでポリシーを改善します。実験結果は、SPINがLLMのパフォーマンスを大幅に改善し、専門家の対戦相手を必要とせずに人間レベルのパフォーマンスを達成できることを示しています。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">The Consensus Game: Language Model Generation via Equilibrium Search, Athul Paul Jacob+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LMsを使った質問応答やテキスト生成タスクにおいて、生成的または識別的な手法を組み合わせることで一貫したLM予測を得る新しいアプローチが提案された。このアプローチは、言語モデルのデコーディングをゲーム理論的な連続シグナリングゲームとして捉え、EQUILIBRIUM-RANKINGアルゴリズムを導入することで、既存の手法よりも一貫性とパフォーマンスを向上させることが示された。</span>
-<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
-<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1169">SEINE: Short-to-Long Video Diffusion Model for Generative Transition and  Prediction, Xinyuan Chen+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本研究では、ビデオ生成において連続した長いビデオを生成するためのジェネレーティブなトランジションと予測に焦点を当てたモデルSEINEを提案する。SEINEはテキストの説明に基づいてトランジションを生成し、一貫性と視覚的品質を確保した長いビデオを生成する。さらに、提案手法は他のタスクにも拡張可能であり、徹底的な実験によりその有効性が検証されている。</span>
+<span class="snippet"><span>Comment</span>https://huggingface.co/spaces/Vchitect/SEINE画像 + テキストpromptで、動画を生成するデモ ...</span>
 <a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1123">A Survey on Hallucination in Large Language Models: Principles,  Taxonomy, Challenges, and Open Questions, Lei Huang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsの出現はNLPにおける重要な進歩をもたらしているが、幻覚を生じることがあり、その信頼性に懸念がある。本調査では、LLMの幻覚に関する最近の進展について包括的に概説し、幻覚の要因や検出手法、軽減アプローチについて紹介する。また、現在の制約や将来の研究方向についても分析する。</span>
