@@ -5,6 +5,8 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1254">QTSumm: Query-Focused Summarization over Tabular Data, Yilun Zhao+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>与えられた表に対して人間らしい推論と分析を行い、カスタマイズされた要約を生成するための新しいクエリに焦点を当てた表の要約タスクを定義し、QTSummという新しいベンチマークを導入。実験結果と手動分析により、新しいタスクが表からテキスト生成において重要な課題を提起していることが明らかになります。 ReFactorという新しいアプローチを提案し、生成された事実をモデルの入力に連結することでベースラインを改善できることを示しています。</span>
@@ -12,14 +14,14 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1253">Explanation Selection Using Unlabeled Data for Chain-of-Thought   Prompting, Xi Ye+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>最近の研究では、大規模言語モデルを使用してテキスト推論タスクで強力なパフォーマンスを達成する方法が提案されています。本研究では、ブラックボックスの方法を使用して説明を組み込んだプロンプトを最適化するアプローチに焦点を当てています。leave-one-outスキームを使用して候補の説明セットを生成し、二段階フレームワークを使用してこれらの説明を効果的に組み合わせます。実験結果では、プロキシメトリクスが真の精度と相関し、クラウドワーカーの注釈や単純な検索戦略よりも効果的にプロンプトを改善できることが示されました。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>
-<span class="snippet"><span>Comment</span>Relevantな情報はクエリの近くに配置すべきで、残りのコンテキストをrelevantな情報で埋めるのではなく、ノイズで埋めたほうがRAGの回答が良くなる、という話らしい ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>
+<span class="snippet"><span>Comment</span>Relevantな情報はクエリの近くに配置すべきで、残りのコンテキストをrelevantな情報で埋めるのではなく、ノイズで埋めたほうがRAGの回答が良くなる、という話らしい ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1250">OLMo: Accelerating the Science of Language Models, Dirk Groeneveld+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LMsの商業的重要性が高まる中、最も強力なモデルは閉鎖されており、その詳細が非公開になっている。そのため、本技術レポートでは、本当にオープンな言語モデルであるOLMoの初回リリースと、言語モデリングの科学を構築し研究するためのフレームワークについて詳細に説明している。OLMoはモデルの重みだけでなく、トレーニングデータ、トレーニングおよび評価コードを含むフレームワーク全体を公開しており、オープンな研究コミュニティを強化し、新しいイノベーションを促進することを目指している。</span>
@@ -329,11 +331,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1153">Unbalanced Optimal Transport for Unbalanced Word Alignment, Yuki Arase+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>単一言語の単語アライメントにおいて、null alignmentという現象は重要であり、不均衡な単語アライメントを実現するために最適輸送（OT）のファミリーが有効であることを示している。教師あり・教師なしの設定での包括的な実験により、OTベースのアライメント手法が最新の手法と競争力があることが示されている。</span>
 <span class="snippet"><span>Comment</span>最適輸送で爆速でモノリンガルの単語アライメントがとれるらしい実装:https://github.com/yukiar/OTAlign単語のアライメント先がない（null alignment）、one-to-oneの関係ではなく、one-to-many, many-to-manyのアライメントが必要な ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e677be2-1001-4454-bc1e-fe3b32888a32" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1152">Igniting Language Intelligence: The Hitchhikers Guide From  Chain-of-Thought Reasoning to Language Agents, Zhuosheng Zhang+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、言語知能の分野で劇的な進歩を遂げており、複雑な推論タスクにおいて高いパフォーマンスを示しています。特に、chain-of-thought（CoT）推論技術を活用することで、中間ステップを形成し、解釈可能性や制御可能性を向上させることができます。この論文では、CoT技術の基本的なメカニズムやその効果について詳しく解説し、言語エージェントの開発における応用例を紹介しています。将来の研究の展望にも触れており、初心者から経験豊富な研究者まで幅広い読者に対応しています。関連論文のリポジトリも提供されています。</span>
-<span class="snippet"><span>Comment</span>CoTに関するチュートリアル論文 ...</span>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e677be2-1001-4454-bc1e-fe3b32888a32" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -11079,8 +11077,10 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (172)
+## Pocket (173)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-03-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>
@@ -11089,15 +11089,15 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>AnyToolは、大規模言語モデルエージェントであり、16,000以上のAPIを利用してユーザーのクエリに対処する革新的なツールを提供している。階層構造を持つAPIリトリーバー、API候補を使用してクエリを解決するソルバー、自己反映メカニズムを組み込んでおり、GPT-4の関数呼び出し機能を活用している。AnyToolは、ToolLLMやGPT-4の変種を上回る性能を示し、改訂された評価プロトコルとAnyToolBenchベンチマークを導入している。GitHubでコードが入手可能。</span>
 <span class="snippet"><span>Comment</span>階層的なRetrieverを用いてユーザクエリから必要なツールを検索し、solverでユーザのクエリを解決し、self-reflectionで結果をさらに良くするような枠組み ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cf5051f4-fc10-4ed4-bfac-e4ae7ca5594a" alt="image"><br><span class="issue_date">Issue Date: 2024-03-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1247">Chain-of-Thought Reasoning Without Prompting, Xuezhi Wang+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>LLMsの推論能力を向上させるための新しいアプローチに焦点を当てた研究が行われている。この研究では、LLMsがプロンプトなしで効果的に推論できるかどうかを検証し、CoT推論パスをデコーディングプロセスを変更することで引き出す方法を提案している。提案手法は、従来の貪欲なデコーディングではなく、代替トークンを調査することでCoTパスを見つけることができることを示しており、様々な推論ベンチマークで有効性を示している。</span>
-<span class="snippet"><span>Comment</span>以前にCoTを内部的に自動的に実施されるように事前学習段階で学習する、といった話があったと思うが、この研究はデコーディング方法を変更することで、promptingで明示的にinstructionを実施せずとも、CoTを実現するもの、ということだと思われる。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/afb3a31e-3d85-4b7e-affa-fccc00b7321e" alt="image"></div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cf5051f4-fc10-4ed4-bfac-e4ae7ca5594a" alt="image"></div>
 <button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1247">Chain-of-Thought Reasoning Without Prompting, Xuezhi Wang+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>LLMsの推論能力を向上させるための新しいアプローチに焦点を当てた研究が行われている。この研究では、LLMsがプロンプトなしで効果的に推論できるかどうかを検証し、CoT推論パスをデコーディングプロセスを変更することで引き出す方法を提案している。提案手法は、従来の貪欲なデコーディングではなく、代替トークンを調査することでCoTパスを見つけることができることを示しており、様々な推論ベンチマークで有効性を示している。</span>
+<span class="snippet"><span>Comment</span>以前にCoTを内部的に自動的に実施されるように事前学習段階で学習する、といった話があったと思うが、この研究はデコーディング方法を変更することで、promptingで明示的にinstructionを実施せずとも、CoTを実現するもの、ということだと思われる。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/afb3a31e-3d85-4b7e-affa-fccc00b7321e" alt="image"><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1246">In Search of Needles in a 11M Haystack: Recurrent Memory Finds What LLMs  Miss, Yuri Kuratov+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>この研究では、生成トランスフォーマーモデルを使用して長い文書を処理する能力を評価するための新しいベンチマークであるBABILongを導入しました。GPT-4やRAGのベンチマークを含む評価により、一般的な方法は$10^4$要素までのシーケンスに対してのみ効果的であることが明らかになりました。再帰的メモリ拡張を使用してGPT-2をファインチューニングすることで、$11\times 10^6$要素を含むタスクを処理できるようになりました。これにより、長いシーケンスの処理能力が大幅に向上しました。</span>
 <span class="snippet"><span>Comment</span>面白そう。GPT4や（GPT4を用いた？）RAGのパフォーマンスが、入力の最初の25%に強く依存していることを示した、とSNSでポストを見たが、どういう条件での実験なんだろう。普通のコンテキストサイズならpromptの末尾などに入れたinstructionなどは強く働く経験があるので気になる。ど ...</span>

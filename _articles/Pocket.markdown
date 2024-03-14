@@ -5,6 +5,8 @@ author: AkihikoWATANABE
 ---
 ## Pocket
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-03-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>
@@ -13,15 +15,15 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1250">OLMo: Accelerating the Science of Language Models, Dirk Groeneveld+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LMsの商業的重要性が高まる中、最も強力なモデルは閉鎖されており、その詳細が非公開になっている。そのため、本技術レポートでは、本当にオープンな言語モデルであるOLMoの初回リリースと、言語モデリングの科学を構築し研究するためのフレームワークについて詳細に説明している。OLMoはモデルの重みだけでなく、トレーニングデータ、トレーニングおよび評価コードを含むフレームワーク全体を公開しており、オープンな研究コミュニティを強化し、新しいイノベーションを促進することを目指している。</span>
 <span class="snippet"><span>Comment</span>Model Weightsを公開するだけでなく、training/evaluation codeとそのデータも公開する真にOpenな言語モデル（truly Open Language Model）。AllenAI ...</span>
-<br><span class="issue_date">Issue Date: 2024-03-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>AnyToolは、大規模言語モデルエージェントであり、16,000以上のAPIを利用してユーザーのクエリに対処する革新的なツールを提供している。階層構造を持つAPIリトリーバー、API候補を使用してクエリを解決するソルバー、自己反映メカニズムを組み込んでおり、GPT-4の関数呼び出し機能を活用している。AnyToolは、ToolLLMやGPT-4の変種を上回る性能を示し、改訂された評価プロトコルとAnyToolBenchベンチマークを導入している。GitHubでコードが入手可能。</span>
-<span class="snippet"><span>Comment</span>階層的なRetrieverを用いてユーザクエリから必要なツールを検索し、solverでユーザのクエリを解決し、self-reflectionで結果をさらに良くするような枠組み ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cf5051f4-fc10-4ed4-bfac-e4ae7ca5594a" alt="image"></div>
+</div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>AnyToolは、大規模言語モデルエージェントであり、16,000以上のAPIを利用してユーザーのクエリに対処する革新的なツールを提供している。階層構造を持つAPIリトリーバー、API候補を使用してクエリを解決するソルバー、自己反映メカニズムを組み込んでおり、GPT-4の関数呼び出し機能を活用している。AnyToolは、ToolLLMやGPT-4の変種を上回る性能を示し、改訂された評価プロトコルとAnyToolBenchベンチマークを導入している。GitHubでコードが入手可能。</span>
+<span class="snippet"><span>Comment</span>階層的なRetrieverを用いてユーザクエリから必要なツールを検索し、solverでユーザのクエリを解決し、self-reflectionで結果をさらに良くするような枠組み ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cf5051f4-fc10-4ed4-bfac-e4ae7ca5594a" alt="image"><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1247">Chain-of-Thought Reasoning Without Prompting, Xuezhi Wang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsの推論能力を向上させるための新しいアプローチに焦点を当てた研究が行われている。この研究では、LLMsがプロンプトなしで効果的に推論できるかどうかを検証し、CoT推論パスをデコーディングプロセスを変更することで引き出す方法を提案している。提案手法は、従来の貪欲なデコーディングではなく、代替トークンを調査することでCoTパスを見つけることができることを示しており、様々な推論ベンチマークで有効性を示している。</span>
 <span class="snippet"><span>Comment</span>以前にCoTを内部的に自動的に実施されるように事前学習段階で学習する、といった話があったと思うが、この研究はデコーディング方法を変更することで、promptingで明示的にinstructionを実施せずとも、CoTを実現するもの、ということだと思われる。 ...</span>
