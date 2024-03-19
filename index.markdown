@@ -5,19 +5,21 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-03-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1254">QTSumm: Query-Focused Summarization over Tabular Data, Yilun Zhao+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>与えられた表に対して人間らしい推論と分析を行い、カスタマイズされた要約を生成するための新しいクエリに焦点を当てた表の要約タスクを定義し、QTSummという新しいベンチマークを導入。実験結果と手動分析により、新しいタスクが表からテキスト生成において重要な課題を提起していることが明らかになります。 ReFactorという新しいアプローチを提案し、生成された事実をモデルの入力に連結することでベースラインを改善できることを示しています。</span>
 <span class="snippet"><span>Comment</span>RAGでテーブル情報を扱う際に役立ちそうRadev論文 ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1253">Explanation Selection Using Unlabeled Data for Chain-of-Thought   Prompting, Xi Ye+, N_A, EMNLP23</a>
-<span class="snippet"><span>Summary</span>最近の研究では、大規模言語モデルを使用してテキスト推論タスクで強力なパフォーマンスを達成する方法が提案されています。本研究では、ブラックボックスの方法を使用して説明を組み込んだプロンプトを最適化するアプローチに焦点を当てています。leave-one-outスキームを使用して候補の説明セットを生成し、二段階フレームワークを使用してこれらの説明を効果的に組み合わせます。実験結果では、プロキシメトリクスが真の精度と相関し、クラウドワーカーの注釈や単純な検索戦略よりも効果的にプロンプトを改善できることが示されました。</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1253">Explanation Selection Using Unlabeled Data for Chain-of-Thought   Prompting, Xi Ye+, N_A, EMNLP23</a>
+<span class="snippet"><span>Summary</span>最近の研究では、大規模言語モデルを使用してテキスト推論タスクで強力なパフォーマンスを達成する方法が提案されています。本研究では、ブラックボックスの方法を使用して説明を組み込んだプロンプトを最適化するアプローチに焦点を当てています。leave-one-outスキームを使用して候補の説明セットを生成し、二段階フレームワークを使用してこれらの説明を効果的に組み合わせます。実験結果では、プロキシメトリクスが真の精度と相関し、クラウドワーカーの注釈や単純な検索戦略よりも効果的にプロンプトを改善できることが示されました。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>
@@ -327,11 +329,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
 <span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Alignment.html">#Alignment</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1153">Unbalanced Optimal Transport for Unbalanced Word Alignment, Yuki Arase+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>単一言語の単語アライメントにおいて、null alignmentという現象は重要であり、不均衡な単語アライメントを実現するために最適輸送（OT）のファミリーが有効であることを示している。教師あり・教師なしの設定での包括的な実験により、OTベースのアライメント手法が最新の手法と競争力があることが示されている。</span>
-<span class="snippet"><span>Comment</span>最適輸送で爆速でモノリンガルの単語アライメントがとれるらしい実装:https://github.com/yukiar/OTAlign単語のアライメント先がない（null alignment）、one-to-oneの関係ではなく、one-to-many, many-to-manyのアライメントが必要な ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e677be2-1001-4454-bc1e-fe3b32888a32" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
+<button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -4043,7 +4041,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (426)
+## Article (427)
 ### LanguageModel (104)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
@@ -5794,21 +5792,23 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (64)
+### Others (65)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1242">What are the most important LLMs to know about in March 2024?</a>
 <span class="snippet"><span>Comment</span>2024年3月時点で知っておくべきLLMに関するスレッド ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
-<span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"></div>
+</div>
 <button onclick="showMore(53)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
