@@ -5,6 +5,18 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
+<span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
+<br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
+</div>
+<button onclick="showMore(0)">more</button>
+
+<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-03-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-13</span>
@@ -13,10 +25,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1254">QTSumm: Query-Focused Summarization over Tabular Data, Yilun Zhao+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>与えられた表に対して人間らしい推論と分析を行い、カスタマイズされた要約を生成するための新しいクエリに焦点を当てた表の要約タスクを定義し、QTSummという新しいベンチマークを導入。実験結果と手動分析により、新しいタスクが表からテキスト生成において重要な課題を提起していることが明らかになります。 ReFactorという新しいアプローチを提案し、生成された事実をモデルの入力に連結することでベースラインを改善できることを示しています。</span>
 <span class="snippet"><span>Comment</span>RAGでテーブル情報を扱う際に役立ちそうRadev論文 ...</span>
-</div>
-<button onclick="showMore(0)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1253">Explanation Selection Using Unlabeled Data for Chain-of-Thought   Prompting, Xi Ye+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>最近の研究では、大規模言語モデルを使用してテキスト推論タスクで強力なパフォーマンスを達成する方法が提案されています。本研究では、ブラックボックスの方法を使用して説明を組み込んだプロンプトを最適化するアプローチに焦点を当てています。leave-one-outスキームを使用して候補の説明セットを生成し、二段階フレームワークを使用してこれらの説明を効果的に組み合わせます。実験結果では、プロキシメトリクスが真の精度と相関し、クラウドワーカーの注釈や単純な検索戦略よりも効果的にプロンプトを改善できることが示されました。</span>
@@ -319,16 +327,6 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
 <span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
-<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
-<span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</span>
-<span class="snippet"><span>Comment</span>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。元ツイート: https://x.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0Ip ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1154">AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜</a>
-<span class="snippet"><span>Comment</span>安く済ませたい・・・ ...</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
@@ -4041,7 +4039,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (427)
+## Article (429)
 ### LanguageModel (104)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
@@ -5792,19 +5790,25 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (65)
+### Others (67)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
+<span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
+</div>
+<button onclick="showMore(53)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1242">What are the most important LLMs to know about in March 2024?</a>
 <span class="snippet"><span>Comment</span>2024年3月時点で知っておくべきLLMに関するスレッド ...</span>
-</div>
-<button onclick="showMore(53)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
 <span class="snippet"><span>Comment</span> ...</span>
@@ -11077,23 +11081,25 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (173)
+## Pocket (174)
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
 <br><span class="issue_date">Issue Date: 2024-03-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>
 <span class="snippet"><span>Comment</span>Relevantな情報はクエリの近くに配置すべきで、残りのコンテキストをrelevantな情報で埋めるのではなく、ノイズで埋めたほうがRAGの回答が良くなる、という話らしい ...</span>
-<br><span class="issue_date">Issue Date: 2024-03-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N_A, arXiv24</a>
-<span class="snippet"><span>Summary</span>AnyToolは、大規模言語モデルエージェントであり、16,000以上のAPIを利用してユーザーのクエリに対処する革新的なツールを提供している。階層構造を持つAPIリトリーバー、API候補を使用してクエリを解決するソルバー、自己反映メカニズムを組み込んでおり、GPT-4の関数呼び出し機能を活用している。AnyToolは、ToolLLMやGPT-4の変種を上回る性能を示し、改訂された評価プロトコルとAnyToolBenchベンチマークを導入している。GitHubでコードが入手可能。</span>
-<span class="snippet"><span>Comment</span>階層的なRetrieverを用いてユーザクエリから必要なツールを検索し、solverでユーザのクエリを解決し、self-reflectionで結果をさらに良くするような枠組み ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cf5051f4-fc10-4ed4-bfac-e4ae7ca5594a" alt="image"></div>
+</div>
 <button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>AnyToolは、大規模言語モデルエージェントであり、16,000以上のAPIを利用してユーザーのクエリに対処する革新的なツールを提供している。階層構造を持つAPIリトリーバー、API候補を使用してクエリを解決するソルバー、自己反映メカニズムを組み込んでおり、GPT-4の関数呼び出し機能を活用している。AnyToolは、ToolLLMやGPT-4の変種を上回る性能を示し、改訂された評価プロトコルとAnyToolBenchベンチマークを導入している。GitHubでコードが入手可能。</span>
+<span class="snippet"><span>Comment</span>階層的なRetrieverを用いてユーザクエリから必要なツールを検索し、solverでユーザのクエリを解決し、self-reflectionで結果をさらに良くするような枠組み ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cf5051f4-fc10-4ed4-bfac-e4ae7ca5594a" alt="image"><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1247">Chain-of-Thought Reasoning Without Prompting, Xuezhi Wang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsの推論能力を向上させるための新しいアプローチに焦点を当てた研究が行われている。この研究では、LLMsがプロンプトなしで効果的に推論できるかどうかを検証し、CoT推論パスをデコーディングプロセスを変更することで引き出す方法を提案している。提案手法は、従来の貪欲なデコーディングではなく、代替トークンを調査することでCoTパスを見つけることができることを示しており、様々な推論ベンチマークで有効性を示している。</span>
 <span class="snippet"><span>Comment</span>以前にCoTを内部的に自動的に実施されるように事前学習段階で学習する、といった話があったと思うが、この研究はデコーディング方法を変更することで、promptingで明示的にinstructionを実施せずとも、CoTを実現するもの、ということだと思われる。 ...</span>
