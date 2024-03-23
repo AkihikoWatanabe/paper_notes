@@ -5,18 +5,20 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
+<br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
 <br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
 <span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
 <br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
 <span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
 <br><span class="issue_date">Issue Date: 2024-03-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-13</span>
@@ -324,10 +326,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1158">GAIA: a benchmark for General AI Assistants, Grégoire Mialon+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>GAIAは、General AI Assistantsのためのベンチマークであり、AI研究のマイルストーンとなる可能性がある。GAIAは、推論、マルチモダリティの処理、ウェブブラウジングなど、実世界の質問に対する基本的な能力を必要とする。人間の回答者は92％の正答率を達成し、GPT-4は15％の正答率を達成した。これは、最近の傾向とは異なる結果であり、専門的なスキルを必要とするタスクではLLMsが人間を上回っている。GAIAは、人間の平均的な堅牢性と同等の能力を持つシステムがAGIの到来に重要であると考えている。GAIAの手法を使用して、466の質問と回答を作成し、一部を公開してリーダーボードで利用可能にする。</span>
 <span class="snippet"><span>Comment</span>Yann LeCun氏の紹介ツイートhttps://x.com/ylecun/status/1727707519470977311?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QMeta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
-<span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
-<button onclick="hideContent(0)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
 ## NLP (636)
 ### LanguageModel (235)
@@ -4039,7 +4038,7 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (429)
+## Article (430)
 ### LanguageModel (104)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
@@ -5790,20 +5789,22 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (67)
+### Others (68)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
 <span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
 <span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
 </div>
 <button onclick="showMore(53)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-04</span>
