@@ -8,15 +8,26 @@ author: AkihikoWATANABE
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1181">Gemini, Google23</a>
 <span class="snippet"><span>Comment</span>多くのベンチマークでGPT4超えらしい（追記1）テクニカルレポートのp.44を見ると、ブログポスト中のGPT4のMMLUのスコアはGPT-4-0613のもののようなので、これが正しいとすると他のベンチマークのスコアも同モデルのものである可能性が高く、GPT-4-1163-preview（最新モテクニ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/InformationExtraction.html">#InformationExtraction</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1209">LLMにおける情報抽出（文章から必要な事柄を読み取る）タスクについての調査, AIDB</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
-<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
+<span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
+<span class="snippet"><span>Comment</span>Apache2.0ライセンス, 314Bパラメータでモデルの重み、Mixture-of-Expertsを採用している。学習データ、学習に利用したコードはおそらく公開されていない。 ...</span>
 </div>
 <button onclick="showMore(0)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/InformationExtraction.html">#InformationExtraction</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1209">LLMにおける情報抽出（文章から必要な事柄を読み取る）タスクについての調査, AIDB</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
+<span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
 <span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>

@@ -7,8 +7,11 @@ author: AkihikoWATANABE
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>進化アルゴリズムを使用した新しいアプローチを提案し、強力な基盤モデルの自動生成を実現。LLMの開発において、人間の直感やドメイン知識に依存せず、多様なオープンソースモデルの効果的な組み合わせを自動的に発見する。このアプローチは、日本語のLLMと数学推論能力を持つモデルなど、異なるドメイン間の統合を容易にし、日本語VLMの性能向上にも貢献。オープンソースコミュニティへの貢献と自動モデル構成の新しいパラダイム導入により、基盤モデル開発における効率的なアプローチを模索。</span>
+<span class="snippet"><span>Comment</span>LLMとVLMを融合する話 ...</span>
 <br><span class="issue_date">Issue Date: 2024-03-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>OpenAIのChatGPTやGoogleのPaLM-2などのブラックボックスの言語モデルから重要な情報を抽出するモデルスティーリング攻撃を紹介。APIアクセスを利用して、transformerモデルの埋め込み射影層を回復する攻撃を行い、低コストでAdaとBabbage言語モデルの全射影行列を抽出。gpt-3.5-turboモデルの隠れた次元のサイズを回復し、2000ドル未満のクエリで全射影行列を回復すると推定。潜在的な防御策と緩和策を提案し、将来の作業の影響について議論。</span>
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>

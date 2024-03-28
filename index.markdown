@@ -5,12 +5,13 @@ author: AkihikoWATANABE
 ---
 ## Latest Posts
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
-<br><span class="issue_date">Issue Date: 2024-03-21</span>
+<span class="snippet"><span>Comment</span>Toolを利用するLMに関するNeubigさんのグループによるSurvey。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
 <span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
-<br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
 <span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
 </div>
@@ -19,10 +20,14 @@ author: AkihikoWATANABE
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
-<br><span class="issue_date">Issue Date: 2024-03-18</span>
+<span class="snippet"><span>Summary</span>進化アルゴリズムを使用した新しいアプローチを提案し、強力な基盤モデルの自動生成を実現。LLMの開発において、人間の直感やドメイン知識に依存せず、多様なオープンソースモデルの効果的な組み合わせを自動的に発見する。このアプローチは、日本語のLLMと数学推論能力を持つモデルなど、異なるドメイン間の統合を容易にし、日本語VLMの性能向上にも貢献。オープンソースコミュニティへの貢献と自動モデル構成の新しいパラダイム導入により、基盤モデル開発における効率的なアプローチを模索。</span>
+<span class="snippet"><span>Comment</span>LLMとVLMを融合する話 ...</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
+<span class="snippet"><span>Comment</span>Apache2.0ライセンス, 314Bパラメータでモデルの重み、Mixture-of-Expertsを採用している。学習データ、学習に利用したコードはおそらく公開されていない。 ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>OpenAIのChatGPTやGoogleのPaLM-2などのブラックボックスの言語モデルから重要な情報を抽出するモデルスティーリング攻撃を紹介。APIアクセスを利用して、transformerモデルの埋め込み射影層を回復する攻撃を行い、低コストでAdaとBabbage言語モデルの全射影行列を抽出。gpt-3.5-turboモデルの隠れた次元のサイズを回復し、2000ドル未満のクエリで全射影行列を回復すると推定。潜在的な防御策と緩和策を提案し、将来の作業の影響について議論。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1254">QTSumm: Query-Focused Summarization over Tabular Data, Yilun Zhao+, N_A, EMNLP23</a>
 <span class="snippet"><span>Summary</span>与えられた表に対して人間らしい推論と分析を行い、カスタマイズされた要約を生成するための新しいクエリに焦点を当てた表の要約タスクを定義し、QTSummという新しいベンチマークを導入。実験結果と手動分析により、新しいタスクが表からテキスト生成において重要な課題を提起していることが明らかになります。 ReFactorという新しいアプローチを提案し、生成された事実をモデルの入力に連結することでベースラインを改善できることを示しています。</span>
@@ -38,8 +43,9 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1250">OLMo: Accelerating the Science of Language Models, Dirk Groeneveld+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LMsの商業的重要性が高まる中、最も強力なモデルは閉鎖されており、その詳細が非公開になっている。そのため、本技術レポートでは、本当にオープンな言語モデルであるOLMoの初回リリースと、言語モデリングの科学を構築し研究するためのフレームワークについて詳細に説明している。OLMoはモデルの重みだけでなく、トレーニングデータ、トレーニングおよび評価コードを含むフレームワーク全体を公開しており、オープンな研究コミュニティを強化し、新しいイノベーションを促進することを目指している。</span>
 <span class="snippet"><span>Comment</span>Model Weightsを公開するだけでなく、training/evaluation codeとそのデータも公開する真にOpenな言語モデル（truly Open Language Model）。AllenAI ...</span>
-<br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>AnyToolは、大規模言語モデルエージェントであり、16,000以上のAPIを利用してユーザーのクエリに対処する革新的なツールを提供している。階層構造を持つAPIリトリーバー、API候補を使用してクエリを解決するソルバー、自己反映メカニズムを組み込んでおり、GPT-4の関数呼び出し機能を活用している。AnyToolは、ToolLLMやGPT-4の変種を上回る性能を示し、改訂された評価プロトコルとAnyToolBenchベンチマークを導入している。GitHubでコードが入手可能。</span>
@@ -81,7 +87,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1238">MerRec: A Large-scale Multipurpose Mercari Dataset for  Consumer-to-Consumer Recommendation Systems, Lichi Li+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>電子商取引分野において、C2C推薦システムの重要性が高まっているが、これに関する研究は限られたデータセットに基づいている。そこで、MerRecという数百万のユーザーと商品をカバーする大規模なC2C推薦データセットが導入された。このデータセットは、標準的な特徴だけでなく、ユニークな要素も含んでおり、広範囲に評価されることで、C2C推薦の研究を促進し、新たな基準を確立することが期待されている。</span>
-<br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
 <span class="snippet"><span>Comment</span> ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-25</span>
@@ -94,7 +100,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1234">Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt  Politeness on LLM Performance, Ziqi Yin+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsのパフォーマンスにおけるプロンプトの丁寧さの影響を調査。無礼なプロンプトはパフォーマンス低下につながるが、過度に丁寧な言葉も必ずしも良い結果を保証しない。最適な丁寧さのレベルは言語によって異なることが示唆され、異文化間の自然言語処理とLLMの使用において丁寧さを考慮する必要性が強調された。</span>
-<br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1232">Dense Text Retrieval based on Pretrained Language Models: A Survey, Wayne Xin Zhao+, N_A, arXiv22</a>
@@ -105,7 +111,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1230">Scaling Laws for Fine-Grained Mixture of Experts, Jakub Krajewski+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、Mixture of Experts（MoE）モデルのスケーリング特性を分析し、新しいハイパーパラメータである「粒度」を導入することで、計算コストを削減する方法を提案しています。さらに、MoEモデルが密なモデルよりも優れた性能を発揮し、モデルのサイズとトレーニング予算をスケールアップするにつれてその差が広がることを示しています。また、一般的な方法では最適ではないことも示しています。</span>
-<br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
 <span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
@@ -328,8 +334,8 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Yann LeCun氏の紹介ツイートhttps://x.com/ylecun/status/1727707519470977311?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QMeta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image"><button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
-## NLP (636)
-### LanguageModel (235)
+## NLP (642)
+### LanguageModel (241)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1208">The Impact of Reasoning Step Length on Large Language Models, Mingyu Jin+, N_A, arXiv24</a>
@@ -931,6 +937,24 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/266">Unsupervised prediction of acceptability judgements, Lau+, ACL-IJCNLP15</a>
 <span class="snippet"><span>Comment</span>文のacceptability（容認度）論文。文のacceptabilityとは、native speakerがある文を読んだときに、その文を正しい文として容認できる度合いのこと。acceptabilityスコアが低いと、Readabilityが低いと判断できる。言語モデルをトレーニング ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
+<span class="snippet"><span>Comment</span>Toolを利用するLMに関するNeubigさんのグループによるSurvey。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
+<span class="snippet"><span>Comment</span>Apache2.0ライセンス, 314Bパラメータでモデルの重み、Mixture-of-Expertsを採用している。学習データ、学習に利用したコードはおそらく公開されていない。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
 <span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
@@ -2567,7 +2591,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34402291-fb66cb96-ebe3-11e7-9635-790be0cf8b5d.png)著者の方は、結構同じような内容で色々な学会に投稿していたり、自分で自分の論文を引 ...</span>
 <button onclick="hideContent(6)" style="display: none;">hide</button>
 </div>
-### Survey (32)
+### Survey (34)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1123">A Survey on Hallucination in Large Language Models: Principles,  Taxonomy, Challenges, and Open Questions, Lei Huang+, N_A, arXiv23</a>
@@ -2632,6 +2656,12 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/ConceptToText.html">#ConceptToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/85">An Architecture for Data to Text Systems, Reiter, ENLG07</a>
 <span class="snippet"><span>Comment</span>NLG分野で有名なReiterらのSurvey。NLGシステムのアーキテクチャなどが、体系的に説明されている。![image](https://user-images.githubusercontent.com/12249301/34460822-72bc8296-ee5d-11e7-8 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
+<span class="snippet"><span>Comment</span>Toolを利用するLMに関するNeubigさんのグループによるSurvey。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
 <span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
@@ -2761,22 +2791,25 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>content-selectionとsurface realizationをencoder-decoder alignerを用いて同時に解いたという話。普通のAttention basedなモデルにRefinerとPre-Selectorと呼ばれる機構を追加。通常のattentionにはatte ...</span>
 <button onclick="hideContent(8)" style="display: none;">hide</button>
 </div>
-### Library (25)
+### Library (26)
 <div class="visible-content">
 <a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2022-07-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/462">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Reimers+, UKP-TUDA, EMNLP19</a>
 <span class="snippet"><span>Comment</span>BERTでトークンをembeddingし、mean poolingすることで生成される文ベクトルを、Siamese Networkを使い距離学習（finetune）させたモデル。<img width="655" alt="image" src="https://user-images.githu ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1134">LLaMA-Factory, 2023</a>
 <span class="snippet"><span>Comment</span>簡単に利用できるLLaMAのfinetuning frameworkとのこと。元ツイート: https://x.com/_akhaliq/status/1724456693378040195?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLLaMAベースなモデルなら色々対応している模様 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
-<span class="snippet"><span>Comment</span>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"></div>
+</div>
 <button onclick="showMore(9)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
+<span class="snippet"><span>Comment</span>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1100">LangChainのRAGの改善法, LayerX機械学習勉強会</a>
 <span class="snippet"><span>Comment</span>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション> Multi representation indexing：検索に適した文書表現（例えば要約）の作成Query transformation：人間の質問を変換して ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
@@ -2921,7 +2954,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Neubigさんによる単語アライメントチュートリアル ...</span>
 <button onclick="hideContent(10)" style="display: none;">hide</button>
 </div>
-### Tutorial (22)
+### Tutorial (23)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1152">Igniting Language Intelligence: The Hitchhikers Guide From  Chain-of-Thought Reasoning to Language Agents, Zhuosheng Zhang+, N_A, arXiv23</a>
@@ -2943,6 +2976,9 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>中澤さんによるNMTチュートリアル。 ...</span>
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/SentimentAnalysis.html">#SentimentAnalysis</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/206">Neural Network for Sentiment Analysis, EMNLP16</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
@@ -3112,7 +3148,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/98">A Global Model for Concept-to-Text Generation, Konstas+, Journal of Artificial Intelligence Research, Vol. 48, pp.305--346, 2013</a>
 <button onclick="hideContent(13)" style="display: none;">hide</button>
 </div>
-### Alignment (15)
+### Alignment (16)
 <div class="visible-content">
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/In-ContextLearning.html">#In-ContextLearning</a><br><span class="issue_date">Issue Date: 2023-12-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1179">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv23</a>
@@ -3156,6 +3192,9 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>文を単位とし、文を文中の単語の出現頻度ベクトルで表し、ベクトル間の距離で文間の類似度を計ることで自由作成要約中の文と現文中の文をもっとも類似度が大きくなるように対応づける。（奥村先生のSurveyより：https://www.jstage.jst.go.jp/article/jnlp1994/9 ...</span>
 <a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/238"> HMM-based word alignment in statistical translation, Vogel+, COLING96</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
 <span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
@@ -3229,6 +3268,63 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/514">Publicly available instruction-tuned models</a>
 <button onclick="hideContent(15)" style="display: none;">hide</button>
 </div>
+### RetrievalAugmentedGeneration (15)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1140">Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language  Models, Wenhao Yu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>検索補完言語モデル（RALM）は、外部の知識源を活用して大規模言語モデルの性能を向上させるが、信頼性の問題や知識の不足による誤った回答がある。そこで、Chain-of-Noting（CoN）という新しいアプローチを導入し、RALMの頑健性を向上させることを目指す。CoNは、順次の読み取りノートを生成し、関連性を評価して最終的な回答を形成する。ChatGPTを使用してCoNをトレーニングし、実験結果はCoNを装備したRALMが標準的なRALMを大幅に上回ることを示している。特に、ノイズの多いドキュメントにおいてEMスコアで平均+7.9の改善を達成し、知識範囲外のリアルタイムの質問に対する拒否率で+10.5の改善を達成している。</span>
+<span class="snippet"><span>Comment</span>一番重要な情報がappendixに載っているCoNによって、ノイズがあった場合にゲインが大きい。 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1116">The Perils & Promises of Fact-checking with Large Language Models, Dorian Quelle+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>自律型の事実チェックにおいて、大規模言語モデル（LLMs）を使用することが重要である。LLMsは真実と虚偽を見分ける役割を果たし、その出力を検証する能力がある。本研究では、LLMエージェントを使用して事実チェックを行い、推論を説明し、関連する情報源を引用する能力を評価した。結果は、文脈情報を備えたLLMsの能力の向上を示しているが、正確性には一貫性がないことに注意が必要である。今後の研究では、成功と失敗の要因をより深く理解する必要がある。</span>
+<span class="snippet"><span>Comment</span>gpt3とgpt4でFactCheckして傾向を分析しました、という研究。promptにstatementとgoogleで補完したcontextを含め、出力フォーマットを指定することでFactCheckする。promptingする際の言語や、statementの事実性の度合い（半分true, 全て斜 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1f310edd-58f3-4e45-ac40-e75337bff884" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1105">Self-RAG: Learning to Retrieve, Generate, and Critique through  Self-Reflection, Akari Asai+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、事実に基づかない回答を生成することがあります。そこで、自己反省的な検索増強生成（Self-RAG）という新しいフレームワークを提案します。このフレームワークは、検索と自己反省を通じてLLMの品質と事実性を向上させます。実験結果は、Self-RAGが最先端のLLMsおよび検索増強モデルを大幅に上回ることを示しています。</span>
+<span class="snippet"><span>Comment</span>RAGをする際の言語モデルの回答の質とfactual consistencyを改善せるためのフレームワーク。reflection tokenと呼ばれる特殊トークンを導入し、言語モデルが生成の過程で必要に応じて情報をretrieveし、自身で生成内容を批評するように学習する。単語ごとに生成するのでは ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/282eb6fd-d2bd-4804-a0bc-652158e2f857" alt="image"></div>
+<button onclick="showMore(16)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1074">RECOMP: Improving Retrieval-Augmented LMs with Compression and Selective  Augmentation, Fangyuan Xu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>ドキュメントの要約を生成することで、言語モデルの性能を向上させる手法を提案する。抽出型の圧縮器と抽象型の圧縮器を使用し、LMsの入力に要約を追加して訓練する。実験結果では、圧縮率が6％まで達成され、市販の要約モデルを上回る性能を示した。また、訓練された圧縮器は他のLMsにも転移可能であることが示された。</span>
+<span class="snippet"><span>Comment</span>Retrieval Augmentationをする際に、元文書群を要約して圧縮することで、性能低下を抑えながら最大6%程度まで元文書群を圧縮できた、とのこと。元ツイート: https://x.com/omarsar0/status/1711384213092479130?s=46&t=Y6UuIHB ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2756ba98-d228-45e6-972d-ef239d4b990e" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1070">Retrieval meets Long Context Large Language Models, Peng Xu+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>最先端の事前学習済みLLMsを使用して、リトリーバル拡張と長いコンテキストウィンドウの組み合わせについて研究しました。結果として、リトリーバル拡張LLMsは、ファインチューニングLLMsと比較しても高いパフォーマンスを示し、計算量も少ないことがわかりました。さらに、リトリーバルはLLMsのパフォーマンスを向上させることができることが示されました。リトリーバル拡張LLMsは、質問応答や要約などのタスクにおいて、他のモデルよりも優れた性能を発揮し、生成速度も速いです。この研究は、実践者にとってリトリーバル拡張と長いコンテキストウィンドウのLLMsの選択に関する洞察を提供します。</span>
+<span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> LLMで文脈長を長くするのと検索補強は同時に適用すると効果的。従来実験で検索補強効果は限定的と報告されていたが小さいモデル（~7B）はゼロショット学習能力が限定的で、検索結果を有効利用できていないと推定。またオープンな埋め込み計算（Dragon, Cont検 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
+<span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
+<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1149">Zephyr-7B-beta, RAG Perf.</a>
+<span class="snippet"><span>Comment</span>Zephyr-7B-betaのRAGでの性能がデータセットで評価されている下記Xポストによるとgpt-3.5-turboと同等https://x.com/rungalileo/status/1726638537767051436?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1136">ChatGPTに社内文書に基づいた回答を生成させる仕組みを構築しました, 2023</a>
+<span class="snippet"><span>Comment</span>低コストで社内文書に対するRAGを実現することに注力している。以下、図はブログから引用。基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。低コスト化のために、Embedding作成にOpenSourceの特に日本語テ ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
+<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1113">幻日さんのUsefulMaterials（RAG等）</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
+<span class="snippet"><span>Comment</span>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1100">LangChainのRAGの改善法, LayerX機械学習勉強会</a>
+<span class="snippet"><span>Comment</span>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション> Multi representation indexing：検索に適した文書表現（例えば要約）の作成Query transformation：人間の質問を変換して ...</span>
+<button onclick="hideContent(16)" style="display: none;">hide</button>
+</div>
 ### ReviewGeneration (13)
 <div class="visible-content">
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2019-08-17</span>
@@ -3239,7 +3335,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2019-08-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/317">Improving Explainable Recommendations with Synthetic Reviews, Ouyang+, RecSys18</a>
 </div>
-<button onclick="showMore(16)">more</button>
+<button onclick="showMore(17)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2019-04-12</span>
@@ -3268,57 +3364,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/318">Review Response Generation in E-Commerce Platforms with External Product Information</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2019-08-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/316">Automatic Generation of Personalized Comment Based on User Profile, Zeng+, arXiv</a>
-<button onclick="hideContent(16)" style="display: none;">hide</button>
-</div>
-### RetrievalAugmentedGeneration (13)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-11-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1140">Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language  Models, Wenhao Yu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>検索補完言語モデル（RALM）は、外部の知識源を活用して大規模言語モデルの性能を向上させるが、信頼性の問題や知識の不足による誤った回答がある。そこで、Chain-of-Noting（CoN）という新しいアプローチを導入し、RALMの頑健性を向上させることを目指す。CoNは、順次の読み取りノートを生成し、関連性を評価して最終的な回答を形成する。ChatGPTを使用してCoNをトレーニングし、実験結果はCoNを装備したRALMが標準的なRALMを大幅に上回ることを示している。特に、ノイズの多いドキュメントにおいてEMスコアで平均+7.9の改善を達成し、知識範囲外のリアルタイムの質問に対する拒否率で+10.5の改善を達成している。</span>
-<span class="snippet"><span>Comment</span>一番重要な情報がappendixに載っているCoNによって、ノイズがあった場合にゲインが大きい。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/58dc0468-e3f5-4893-8173-fc891893519f" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-11-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1116">The Perils & Promises of Fact-checking with Large Language Models, Dorian Quelle+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>自律型の事実チェックにおいて、大規模言語モデル（LLMs）を使用することが重要である。LLMsは真実と虚偽を見分ける役割を果たし、その出力を検証する能力がある。本研究では、LLMエージェントを使用して事実チェックを行い、推論を説明し、関連する情報源を引用する能力を評価した。結果は、文脈情報を備えたLLMsの能力の向上を示しているが、正確性には一貫性がないことに注意が必要である。今後の研究では、成功と失敗の要因をより深く理解する必要がある。</span>
-<span class="snippet"><span>Comment</span>gpt3とgpt4でFactCheckして傾向を分析しました、という研究。promptにstatementとgoogleで補完したcontextを含め、出力フォーマットを指定することでFactCheckする。promptingする際の言語や、statementの事実性の度合い（半分true, 全て斜 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1f310edd-58f3-4e45-ac40-e75337bff884" alt="image"><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1105">Self-RAG: Learning to Retrieve, Generate, and Critique through  Self-Reflection, Akari Asai+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）は、事実に基づかない回答を生成することがあります。そこで、自己反省的な検索増強生成（Self-RAG）という新しいフレームワークを提案します。このフレームワークは、検索と自己反省を通じてLLMの品質と事実性を向上させます。実験結果は、Self-RAGが最先端のLLMsおよび検索増強モデルを大幅に上回ることを示しています。</span>
-<span class="snippet"><span>Comment</span>RAGをする際の言語モデルの回答の質とfactual consistencyを改善せるためのフレームワーク。reflection tokenと呼ばれる特殊トークンを導入し、言語モデルが生成の過程で必要に応じて情報をretrieveし、自身で生成内容を批評するように学習する。単語ごとに生成するのでは ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/282eb6fd-d2bd-4804-a0bc-652158e2f857" alt="image"></div>
-<button onclick="showMore(17)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1074">RECOMP: Improving Retrieval-Augmented LMs with Compression and Selective  Augmentation, Fangyuan Xu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>ドキュメントの要約を生成することで、言語モデルの性能を向上させる手法を提案する。抽出型の圧縮器と抽象型の圧縮器を使用し、LMsの入力に要約を追加して訓練する。実験結果では、圧縮率が6％まで達成され、市販の要約モデルを上回る性能を示した。また、訓練された圧縮器は他のLMsにも転移可能であることが示された。</span>
-<span class="snippet"><span>Comment</span>Retrieval Augmentationをする際に、元文書群を要約して圧縮することで、性能低下を抑えながら最大6%程度まで元文書群を圧縮できた、とのこと。元ツイート: https://x.com/omarsar0/status/1711384213092479130?s=46&t=Y6UuIHB ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2756ba98-d228-45e6-972d-ef239d4b990e" alt="image"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1070">Retrieval meets Long Context Large Language Models, Peng Xu+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>最先端の事前学習済みLLMsを使用して、リトリーバル拡張と長いコンテキストウィンドウの組み合わせについて研究しました。結果として、リトリーバル拡張LLMsは、ファインチューニングLLMsと比較しても高いパフォーマンスを示し、計算量も少ないことがわかりました。さらに、リトリーバルはLLMsのパフォーマンスを向上させることができることが示されました。リトリーバル拡張LLMsは、質問応答や要約などのタスクにおいて、他のモデルよりも優れた性能を発揮し、生成速度も速いです。この研究は、実践者にとってリトリーバル拡張と長いコンテキストウィンドウのLLMsの選択に関する洞察を提供します。</span>
-<span class="snippet"><span>Comment</span>以下hillbigさんのツイートの引用> LLMで文脈長を長くするのと検索補強は同時に適用すると効果的。従来実験で検索補強効果は限定的と報告されていたが小さいモデル（~7B）はゼロショット学習能力が限定的で、検索結果を有効利用できていないと推定。またオープンな埋め込み計算（Dragon, Cont検 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
-<span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
-<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1149">Zephyr-7B-beta, RAG Perf.</a>
-<span class="snippet"><span>Comment</span>Zephyr-7B-betaのRAGでの性能がデータセットで評価されている下記Xポストによるとgpt-3.5-turboと同等https://x.com/rungalileo/status/1726638537767051436?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1136">ChatGPTに社内文書に基づいた回答を生成させる仕組みを構築しました, 2023</a>
-<span class="snippet"><span>Comment</span>低コストで社内文書に対するRAGを実現することに注力している。以下、図はブログから引用。基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。低コスト化のために、Embedding作成にOpenSourceの特に日本語テ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
-<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1113">幻日さんのUsefulMaterials（RAG等）</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1101">Evaluating RAG Pipelines</a>
-<span class="snippet"><span>Comment</span>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference an ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1100">LangChainのRAGの改善法, LayerX機械学習勉強会</a>
-<span class="snippet"><span>Comment</span>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション> Multi representation indexing：検索に適した文書表現（例えば要約）の作成Query transformation：人間の質問を変換して ...</span>
 <button onclick="hideContent(17)" style="display: none;">hide</button>
 </div>
 ### LLMAgent (10)
@@ -4038,22 +4083,50 @@ author: AkihikoWATANABE
 <button onclick="hideContent(29)" style="display: none;">hide</button>
 </div>
 <hr>
-## Article (430)
-### LanguageModel (104)
+## Article (434)
+### LanguageModel (114)
 <div class="visible-content">
 <br><span class="issue_date">Issue Date: 2023-12-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1181">Gemini, Google23</a>
 <span class="snippet"><span>Comment</span>多くのベンチマークでGPT4超えらしい（追記1）テクニカルレポートのp.44を見ると、ブログポスト中のGPT4のMMLUのスコアはGPT-4-0613のもののようなので、これが正しいとすると他のベンチマークのスコアも同モデルのものである可能性が高く、GPT-4-1163-preview（最新モテクニ ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e73d57d-29ad-48ac-88f5-7807c7befb8f" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
+<span class="snippet"><span>Comment</span>Toolを利用するLMに関するNeubigさんのグループによるSurvey。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
+</div>
+<button onclick="showMore(30)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
+<span class="snippet"><span>Comment</span>Apache2.0ライセンス, 314Bパラメータでモデルの重み、Mixture-of-Expertsを採用している。学習データ、学習に利用したコードはおそらく公開されていない。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
+<span class="snippet"><span>Comment</span>Apache2.0ライセンス, 314Bパラメータでモデルの重み、Mixture-of-Expertsを採用している。学習データ、学習に利用したコードはおそらく公開されていない。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
+<span class="snippet"><span>Comment</span> ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
 <span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1203">Decoding Strategies that You Need to Know for Response Generation</a>
 <span class="snippet"><span>Comment</span>言語モデルのdecodingの方法についてよくまとまっている。まとめられているdecoding方法は以下Greedy, BeamSearch, RandomSampling, Temperature, Top-K Sampling, Nucleus Samplingこちらの記事ではHuggingF ...</span>
-</div>
-<button onclick="showMore(30)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1192">ELYZA-tasks-100 でLLM14個の日本語性能を横断評価してみた</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-20</span>
@@ -4348,9 +4421,23 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>[2019/06まで]・ELMo（双方向2層LSTM言語モデル）・GPT（left-to-rightの12層Transformer自己回帰言語モデル）・BERT（24層のTransformer双方向言語モデル）・MT-DNN（BERTの上にマルチタスク層を追加した研究）・XLM（ELMo, ...</span>
 <button onclick="hideContent(30)" style="display: none;">hide</button>
 </div>
-### Tutorial (68)
+### Tutorial (72)
 <div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency_SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+</div>
+<button onclick="showMore(31)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
@@ -4359,10 +4446,6 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
 <span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
-</div>
-<button onclick="showMore(31)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-11-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1139">JGLUEの構築そして 日本語LLM評価のこれから, 2023</a>
 <span class="snippet"><span>Comment</span>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Nam ...</span>
@@ -4542,21 +4625,24 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34401936-ca4ff66a-ebe1-11e7-81bc-c31a37acae27.png)![image](https://user-images.githubuse ...</span>
 <button onclick="hideContent(31)" style="display: none;">hide</button>
 </div>
-### Library (57)
+### Library (58)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2024-01-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1205">Recommenders</a>
 <span class="snippet"><span>Comment</span>古典的な手法から、Deepな手法まで非常に幅広く網羅された推薦アルゴリズムのフレームワーク。元々Microsoft配下だった模様。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/python.html">#python</a><br><span class="issue_date">Issue Date: 2023-11-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1143">lifestar</a>
 <span class="snippet"><span>Comment</span>非常に高速なpythonのASGIライブラリ。WSGIとは異なり非同期処理なためリアルタイムアプリケーションに向いているっぽい。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1134">LLaMA-Factory, 2023</a>
-<span class="snippet"><span>Comment</span>簡単に利用できるLLaMAのfinetuning frameworkとのこと。元ツイート: https://x.com/_akhaliq/status/1724456693378040195?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLLaMAベースなモデルなら色々対応している模様 ...</span>
 </div>
 <button onclick="showMore(32)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Finetuning.html">#Finetuning</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-11-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1134">LLaMA-Factory, 2023</a>
+<span class="snippet"><span>Comment</span>簡単に利用できるLLaMAのfinetuning frameworkとのこと。元ツイート: https://x.com/_akhaliq/status/1724456693378040195?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLLaMAベースなモデルなら色々対応している模様 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-11-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1129">Transformers.js, 2023</a>
 <span class="snippet"><span>Comment</span>ブラウザ上でTransformerベースの様々なモデルを動作させることができるライブラリ ...</span>
@@ -4718,8 +4804,25 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど実装：python使用方法：pythonライブラリとして利用※ pythonで利用できる数少ない推薦システムライブラリ参考：http://www.kamishima.net/archive/recsy ...</span>
 <button onclick="hideContent(32)" style="display: none;">hide</button>
 </div>
-### Survey (47)
+### Survey (52)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
+<span class="snippet"><span>Comment</span>Toolを利用するLMに関するNeubigさんのグループによるSurvey。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+</div>
+<button onclick="showMore(33)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
 <span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
@@ -4729,10 +4832,6 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
-</div>
-<button onclick="showMore(33)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
 <span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
@@ -4946,8 +5045,21 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/9">Comments-Oriented Document Summarization: Understanding Documents with Reader’s Feedback SIGIR’08, Hu+, 2008</a>
 <button onclick="hideContent(34)" style="display: none;">hide</button>
 </div>
-### RetrievalAugmentedGeneration (23)
+### RetrievalAugmentedGeneration (26)
 <div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
+</div>
+<button onclick="showMore(35)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a><br><span class="issue_date">Issue Date: 2024-01-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1206">日本語WikipediaQAデータセット（Retrievalプロセス付き）</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-23</span>
@@ -4955,10 +5067,6 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
 <span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-</div>
-<button onclick="showMore(35)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
 <span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
@@ -5453,6 +5561,32 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>実装されているアルゴリズム：協調フィルタリング、Factorization Machines、　　　　　　　　　　　　　　Restricted Boltzman Machineなど、計70種類のアルゴリズムが実装実装：Java使用方法：コマンドライン、Javaライブラリとして利用※参考：h ...</span>
 <button onclick="hideContent(46)" style="display: none;">hide</button>
 </div>
+### Alignment (6)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
+<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
+<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
+</div>
+<button onclick="showMore(47)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/236">ALAGIN 機械翻訳セミナー 単語アライメント, Graham Neubig</a>
+<span class="snippet"><span>Comment</span>Neubigさんによる単語アライメントチュートリアル ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/220">The Decomposition of Human-Written Summary Sentences. Hongyan Jing et al. SIGIR’99.</a>
+<span class="snippet"><span>Comment</span>参照要約 原文書対が与えられた時に、参照要約中の単語と原文書中の単語のアライメントをとるHMMベースな手法を提案。![image](https://user-images.githubusercontent.com/12249301/34812500-2d1d7d32-f6e9-11e7 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/219">The automatic construction of large-scale corpora for summarization research. Daniel Marcu. SIGIR’99</a>
+<span class="snippet"><span>Comment</span><Abstract, Text>のタプルが与えられた時に、<Abstract, Extract, Text>のタプルを自動的に生成。ExtractはAbstractと対応するText中の重要部（節やsentence）。<Abstract, Extract, Text>に含まれるExtract ...</span>
+<button onclick="hideContent(47)" style="display: none;">hide</button>
+</div>
 ### CTRPrediction (6)
 <div class="visible-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
@@ -5464,7 +5598,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/423">バンディットアルゴリズムを使って広告最適化のシミュレーションをしてみたよ, 関さん</a>
 <span class="snippet"><span>Comment</span>なぜクリック率を上げたいのかという説明が非常に参考になる：>しかしその広告を掲載する側から考えればクリック率の低い広告を出すことは売上が下がってしまうため，クリック率が>低いとなかなか広告を表示することができなくなってしまいます．その際よく使われるのはeCPMという指標です．eCPMはそ ...</span>
 </div>
-<button onclick="showMore(47)">more</button>
+<button onclick="showMore(48)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
@@ -5476,7 +5610,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/FactorizationMachines.html">#FactorizationMachines</a><br><span class="issue_date">Issue Date: 2021-05-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/348">xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems, Lian+, KDD‘18</a>
 <span class="snippet"><span>Comment</span>#349 DeepFMの発展版#281 にも書いたが、下記リンクに概要が記載されている。DeepFMに関する動向：https://data.gunosy.io/entry/deep-factorization-machines-2018 ...</span>
-<button onclick="hideContent(47)" style="display: none;">hide</button>
+<button onclick="hideContent(48)" style="display: none;">hide</button>
 </div>
 ### DataToText (5)
 <div class="visible-content">
@@ -5489,7 +5623,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Others.html">#Others</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/110">Automatically generated linguistic summaries of energy consumption data, van der Heide+, In Proceedings of the Ninth International Conference on Intelligent Systems Design and Applications, pages 553-559, 2009</a>
 </div>
-<button onclick="showMore(48)">more</button>
+<button onclick="showMore(49)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Others.html">#Others</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
@@ -5497,29 +5631,6 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/88">What to talk about and how? Selective Generation using LSTMs with Coarse-to-Fine Alignment, Mei+, NAACL-HLT’16</a>
 <span class="snippet"><span>Comment</span>content-selectionとsurface realizationをencoder-decoder alignerを用いて同時に解いたという話。普通のAttention basedなモデルにRefinerとPre-Selectorと呼ばれる機構を追加。通常のattentionにはatte ...</span>
-<button onclick="hideContent(48)" style="display: none;">hide</button>
-</div>
-### Alignment (5)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
-<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/GenerativeAI.html">#GenerativeAI</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-03</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1115">生成AIが抱えるリスクと対策, LYCorp‘23</a>
-<span class="snippet"><span>Comment</span>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていく ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/236">ALAGIN 機械翻訳セミナー 単語アライメント, Graham Neubig</a>
-<span class="snippet"><span>Comment</span>Neubigさんによる単語アライメントチュートリアル ...</span>
-</div>
-<button onclick="showMore(49)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/220">The Decomposition of Human-Written Summary Sentences. Hongyan Jing et al. SIGIR’99.</a>
-<span class="snippet"><span>Comment</span>参照要約 原文書対が与えられた時に、参照要約中の単語と原文書中の単語のアライメントをとるHMMベースな手法を提案。![image](https://user-images.githubusercontent.com/12249301/34812500-2d1d7d32-f6e9-11e7 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/219">The automatic construction of large-scale corpora for summarization research. Daniel Marcu. SIGIR’99</a>
-<span class="snippet"><span>Comment</span><Abstract, Text>のタプルが与えられた時に、<Abstract, Extract, Text>のタプルを自動的に生成。ExtractはAbstractと対応するText中の重要部（節やsentence）。<Abstract, Extract, Text>に含まれるExtract ...</span>
 <button onclick="hideContent(49)" style="display: none;">hide</button>
 </div>
 ### CollaborativeFiltering (4)
@@ -5789,35 +5900,21 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
 <span class="snippet"><span>Comment</span>[JSTSタスク](https://github.com/yahoojapan/JGLUE)では、[Tohoku BERT v3](https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances) と [LUKE](ht ...</span>
 </div>
-### Others (68)
+### Others (62)
 <div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
 <span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
-<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1259">生産性指標をFour Keysから変更した話, SanSan Tech Blog</a>
+<span class="snippet"><span>Comment</span>モバイルアプリ開発における生産性指標に関するお話。Four Keysをモバイルアプリに適用した場合の課題を分析し、自チームの中長期的な目標を達成するためにどのような生産性指標を採用すべきかが言語化されており、興味深かった。Four Keysとは: https://blog.recruit.co. ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1242">What are the most important LLMs to know about in March 2024?</a>
+<span class="snippet"><span>Comment</span>2024年3月時点で知っておくべきLLMに関するスレッド ...</span>
 </div>
 <button onclick="showMore(53)">more</button>
 
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-18</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1256">Open Release of Grok-1  March 17, 2024</a>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1242">What are the most important LLMs to know about in March 2024?</a>
-<span class="snippet"><span>Comment</span>2024年3月時点で知っておくべきLLMに関するスレッド ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1237">Mistral Large</a>
-<span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2d9066bd-05e5-4942-8d27-e5b50d129ade" alt="image"><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
-<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Mindset.html">#Mindset</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1172">PMConf2023: シリコンバレーのプロダクトマネージャー達に見る、 覚悟を決めたPMは何が違うのか？</a>
 <span class="snippet"><span>Comment</span>視野、視座の話、StepChange、PMとして何に注力すべきか、クリティカルシンキング、Overcommunicationなどの考え方が参考になった。結局どれだけ収益に繋がるのかという話。ユーザに価値を届けられて満足、で終わってはいけない。 ...</span>
@@ -7483,8 +7580,8 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Nam ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image"></div>
 <hr>
-## Survey (95)
-### Survey (95)
+## Survey (98)
+### Survey (98)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/LongSequence.html">#LongSequence</a><br><span class="issue_date">Issue Date: 2023-11-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1164">Advancing Transformer Architecture in Long-Context Large Language  Models: A Comprehensive Survey, Yunpeng Huang+, N_A, arXiv23</a>
@@ -7629,6 +7726,14 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>GroupLensのSurvey ...</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/160">Hybrid Recommender Systems: Survey and Experiments, Burke+, User Modeling and User-Adapted Interaction02</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
+<span class="snippet"><span>Comment</span>Toolを利用するLMに関するNeubigさんのグループによるSurvey。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1156">ML Papers Explained</a>
 <span class="snippet"><span>Comment</span>以下の分野の代表的な論文がまとめられている（基本的にはTransformer登場後のものが多い）言語モデル（Transformer, Elmoなど）Visionモデル（ViTなど）CNN（AlexNetなど）Single Stage Object DetectorsR ...</span>
@@ -7746,7 +7851,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34402162-5433e4e4-ebe3-11e7-8bf3-fc322ace70d8.png)![image](https://user-images.githubuse完 ...</span>
 <button onclick="hideContent(71)" style="display: none;">hide</button>
 </div>
-### LanguageModel (18)
+### LanguageModel (21)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Hallucination.html">#Hallucination</a><br><span class="issue_date">Issue Date: 2023-11-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1123">A Survey on Hallucination in Large Language Models: Principles,  Taxonomy, Challenges, and Open Questions, Lei Huang+, N_A, arXiv23</a>
@@ -7794,6 +7899,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/795">A Survey of Large Language Models, Wayne Xin Zhao+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>言語モデリングの進化により、大規模言語モデル（LLM）が注目されている。LLMは、事前学習、適応調整、利用、容量評価の4つの側面に焦点を当てて研究されており、AIアルゴリズムの開発と使用方法に革新をもたらす可能性がある。本調査では、LLMの最近の進展と将来の方向性についてレビューし、残された課題についても議論する。</span>
 <span class="snippet"><span>Comment</span>現状で最も詳細なLLMのサーベイ600個のリファレンス、LLMのコレクション、promptingのtips、githubリポジトリなどがまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-03-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1260">Awesome LM with Tools</a>
+<span class="snippet"><span>Comment</span>Toolを利用するLMに関するNeubigさんのグループによるSurvey。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
 <span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
@@ -7865,6 +7978,29 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
 <button onclick="hideContent(74)" style="display: none;">hide</button>
 </div>
+### Tutorial (5)
+<div class="visible-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/884">Challenges and Applications of Large Language Models, Jean Kaddour+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本論文では、大規模言語モデル（LLMs）の普及により、研究者が分野の現状を理解し、生産的になるための問題と応用成功例を確立することを目指しています。</span>
+<span class="snippet"><span>Comment</span>LLMのここ数年の進化早すぎわろたでキャッチアップむずいので、未解決の課題や、すでに良い感じのアプリケーションの分野分かりづらいので、まとめました論文 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+</div>
+<button onclick="showMore(75)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-02-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/509">30分で完全理解するTransformerの世界</a>
+<span class="snippet"><span>Comment</span>非常に詳細で実質日本語のサーベイ論文のようなもの ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2019-02-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/304">NLP-Progress</a>
+<span class="snippet"><span>Comment</span>NLPの様々なタスクのデータセット, およびSOTA(2018年時点)がまとめられている。 ...</span>
+<button onclick="hideContent(75)" style="display: none;">hide</button>
+</div>
 ### ConceptToText (4)
 <div class="visible-content">
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
@@ -7876,13 +8012,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/86">Content Selection in Data-to-Text Systems: A Survey, arXiv16, Gkatzia</a>
 <span class="snippet"><span>Comment</span>Gkatziaの"content selection"に関するSurvey ...</span>
 </div>
-<button onclick="showMore(75)">more</button>
+<button onclick="showMore(76)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/85">An Architecture for Data to Text Systems, Reiter, ENLG07</a>
 <span class="snippet"><span>Comment</span>NLG分野で有名なReiterらのSurvey。NLGシステムのアーキテクチャなどが、体系的に説明されている。![image](https://user-images.githubusercontent.com/12249301/34460822-72bc8296-ee5d-11e7-8 ...</span>
-<button onclick="hideContent(75)" style="display: none;">hide</button>
+<button onclick="hideContent(76)" style="display: none;">hide</button>
 </div>
 ### DocumentSummarization (4)
 <div class="visible-content">
@@ -7894,26 +8030,13 @@ author: AkihikoWATANABE
 <a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/128">A Survey of Text Summarization Techniques, Nenkova+, Springer12</a>
 </div>
-<button onclick="showMore(76)">more</button>
+<button onclick="showMore(77)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/129">A survey on Automatic Text Summarization, Das+, CMUの教材？</a>
 <span class="snippet"><span>Comment</span>きちんとしたconferenceの論文ではないと思うので、Referなどはしないほうがいいかも。勉強には良い。 ...</span>
-<button onclick="hideContent(76)" style="display: none;">hide</button>
-</div>
-### Tutorial (3)
-<div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/884">Challenges and Applications of Large Language Models, Jean Kaddour+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本論文では、大規模言語モデル（LLMs）の普及により、研究者が分野の現状を理解し、生産的になるための問題と応用成功例を確立することを目指しています。</span>
-<span class="snippet"><span>Comment</span>LLMのここ数年の進化早すぎわろたでキャッチアップむずいので、未解決の課題や、すでに良い感じのアプリケーションの分野分かりづらいので、まとめました論文 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-02-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/509">30分で完全理解するTransformerの世界</a>
-<span class="snippet"><span>Comment</span>非常に詳細で実質日本語のサーベイ論文のようなもの ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2019-02-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/304">NLP-Progress</a>
-<span class="snippet"><span>Comment</span>NLPの様々なタスクのデータセット, およびSOTA(2018年時点)がまとめられている。 ...</span>
+<button onclick="hideContent(77)" style="display: none;">hide</button>
 </div>
 ### Dataset (2)
 <div class="visible-content">
@@ -7994,6 +8117,12 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
 <span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
 </div>
+### RetrievalAugmentedGeneration (1)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+</div>
 <hr>
 ## MachineLearning (91)
 ### LanguageModel (28)
@@ -8011,7 +8140,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）に非線形の思考を促すために、新しいプロンプティング方法であるInferential Exclusion Prompting（IEP）を提案する。IEPは、計画を立てて可能な解を推論し、逆推論を行うことで広い視点を得ることができる。IEPは他の手法と比較して複雑な人間の思考プロセスをシミュレートできることを実証し、LLMsのパフォーマンス向上にも貢献することを示した。さらに、Mental-Ability Reasoning Benchmark（MARB）を導入し、LLMsの論理と言語推論能力を評価するための新しいベンチマークを提案した。IEPとMARBはLLMsの研究において有望な方向性であり、今後の進展が期待される。</span>
 <span class="snippet"><span>Comment</span>以下AIDBの引用>GPT-4などのLLMに、CoTのように直線的（線形的）ではなく、複数の条件を考慮させる（非線形的）プロンプト手法『Inferential Exclusion Prompting（IEP）』が考案されました。>さまざまなタスクでCoTを一貫して上回り、さらにCoTと統合す元論文は ...</span>
 </div>
-<button onclick="showMore(77)">more</button>
+<button onclick="showMore(78)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/AutoML.html">#AutoML</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
@@ -8109,7 +8238,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/TimeSeriesDataProcessing.html">#TimeSeriesDataProcessing</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2022-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/504">Are Transformers Effective for Time Series Forecasting?</a>
 <span class="snippet"><span>Comment</span>Linear Layerに基づくシンプルな手法がTransformerベースの手法に時系列予測で勝ったという話 ...</span>
-<button onclick="hideContent(77)" style="display: none;">hide</button>
+<button onclick="hideContent(78)" style="display: none;">hide</button>
 </div>
 ### Tutorial (12)
 <div class="visible-content">
@@ -8120,7 +8249,7 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2018-02-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/251">An overview of gradient descent optimization algorithms, Sebastian Ruder, arXiv16</a>
 </div>
-<button onclick="showMore(78)">more</button>
+<button onclick="showMore(79)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Self-SupervisedLearning.html">#Self-SupervisedLearning</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
@@ -8149,7 +8278,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/OnlineLearning.html">#OnlineLearning</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/119">オンライン学習</a>
 <span class="snippet"><span>Comment</span>## 目次定式化評価法：RegretなどパーセプトロンPassive Aggressive Algorithm(アルゴリズムと損失の限界の評価）Confidence Weighted AlgorithmPegasosCoordinate Descentバッチ、オン ...</span>
-<button onclick="hideContent(78)" style="display: none;">hide</button>
+<button onclick="hideContent(79)" style="display: none;">hide</button>
 </div>
 ### Finetuning (9)
 <div class="visible-content">
@@ -8165,7 +8294,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>本研究では、計算コストを制限しながら大規模言語モデル（LLMs）のコンテキストサイズを拡張する効率的なファインチューニング手法であるLongLoRAを提案します。従来の方法では、LLMsの長いコンテキストサイズでのトレーニングには高い計算コストとGPUリソースが必要でしたが、提案手法ではコンテキスト拡張を高速化し、非自明な計算コストの削減を実現します。また、パラメータ効率的なファインチューニング手法も再評価し、LongLoRAはさまざまなタスクで強力な実験結果を示しています。さらに、教師ありファインチューニングのためのデータセットであるLongQAも収集されました。</span>
 <span class="snippet"><span>Comment</span># 概要context長が大きい場合でも効率的にLoRAする手法。通常のLoRAではcontext lengthが大きくなるにつれてperplexityが大きくなってしまう。一方、通常のFinetuningではperplexityは高い性能を維持するが、計算コストとVRAMの消費量が膨大になって ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fc3d17c7-b1ac-4741-9895-bce70cf0b356" alt="image"></div>
-<button onclick="showMore(79)">more</button>
+<button onclick="showMore(80)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/DataAugmentation.html">#DataAugmentation</a><a class="button" href="articles/DataGeneration.html">#DataGeneration</a><br><span class="issue_date">Issue Date: 2023-08-28</span>
@@ -8189,7 +8318,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/FoundationModel.html">#FoundationModel</a><br><span class="issue_date">Issue Date: 2023-06-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/771">LM Flow</a>
 <span class="snippet"><span>Comment</span>一般的なFoundation Modelのファインチューニングと推論を簡素化する拡張可能なツールキット。継続的なpretragning, instruction tuning, parameter efficientなファインチューニング,alignment tuning,大規模モデルの推論などさま ...</span>
-<button onclick="hideContent(79)" style="display: none;">hide</button>
+<button onclick="hideContent(80)" style="display: none;">hide</button>
 </div>
 ### TimeSeriesDataProcessing (4)
 <div class="visible-content">
@@ -8204,13 +8333,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/116">Prediction-based portfolio optimization model using neural networks, Freitas+, Neurocomputing09</a>
 <span class="snippet"><span>Comment</span>Stock returnのpredictionタスクに対してNNを適用。NNのinput-outputとして、生のreturn値を用いるのではなく、ある時刻におけるreturnをsubtractした値(moving reference)を用いる、AR-MRNNモデルを提案。 ...</span>
 </div>
-<button onclick="showMore(80)">more</button>
+<button onclick="showMore(81)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2022-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/504">Are Transformers Effective for Time Series Forecasting?</a>
 <span class="snippet"><span>Comment</span>Linear Layerに基づくシンプルな手法がTransformerベースの手法に時系列予測で勝ったという話 ...</span>
-<button onclick="hideContent(80)" style="display: none;">hide</button>
+<button onclick="hideContent(81)" style="display: none;">hide</button>
 </div>
 ### Dataset (3)
 <div class="visible-content">
@@ -8383,7 +8512,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>この研究では、BoolformerというTransformerアーキテクチャを使用して、ブール関数のシンボリック回帰を実行する方法を紹介します。Boolformerは、クリーンな真理値表やノイズのある観測など、さまざまなデータに対して効果的な式を予測することができます。さらに、実世界のデータセットや遺伝子制御ネットワークのモデリングにおいて、Boolformerは解釈可能な代替手法として優れた性能を発揮します。この研究の成果は、公開されています。</span>
 <span class="snippet"><span>Comment</span>ブール関数をend-to-endで学習できるtransformeiアーキテクチャを提案した模様 ...</span>
 </div>
-<button onclick="showMore(81)">more</button>
+<button onclick="showMore(82)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Grokking.html">#Grokking</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
@@ -8489,11 +8618,11 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/121">Scalable Large-Margin Online Learning for Structured Classification, Crammer+, 2005</a>
 <span class="snippet"><span>Comment</span>構造学習ガチ勢のCrammerの論文構造学習やるなら読んだ方が良い ...</span>
-<button onclick="hideContent(81)" style="display: none;">hide</button>
+<button onclick="hideContent(82)" style="display: none;">hide</button>
 </div>
 <hr>
-## Tutorial (83)
-### Tutorial (83)
+## Tutorial (85)
+### Tutorial (85)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1152">Igniting Language Intelligence: The Hitchhikers Guide From  Chain-of-Thought Reasoning to Language Agents, Zhuosheng Zhang+, N_A, arXiv23</a>
@@ -8507,7 +8636,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/561">Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond, Yang+, Amazon, arXiv23</a>
 <span class="snippet"><span>Comment</span>LLMに関するチュートリアル![image](https://user-images.githubusercontent.com/12249301/235145819-842cdef3-485c-4553-b234-46d4896a5ed7.png)encoder-onlyとまとめられているもの ...</span>
 </div>
-<button onclick="showMore(82)">more</button>
+<button onclick="showMore(83)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Infrastructure.html">#Infrastructure</a><br><span class="issue_date">Issue Date: 2021-10-21</span>
@@ -8545,6 +8674,11 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/176">推薦システムにおけるインタラクション研究へのいざない, 土方, ヒューマンインタフェース学会誌13</a>
 <a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/OnlineEvaluation.html">#OnlineEvaluation</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184">Practical Online Retrieval Evaluation, SIGIR11, Tutorial</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
@@ -8722,9 +8856,9 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/UserModeling.html">#UserModeling</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/12">Machine Learning for User Modeling, User modeling and User-adapted Interaction, Webb+, 2001</a>
 <span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34401936-ca4ff66a-ebe1-11e7-81bc-c31a37acae27.png)![image](https://user-images.githubuse ...</span>
-<button onclick="hideContent(82)" style="display: none;">hide</button>
+<button onclick="hideContent(83)" style="display: none;">hide</button>
 </div>
-### LanguageModel (13)
+### LanguageModel (15)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/CoT.html">#CoT</a><br><span class="issue_date">Issue Date: 2023-11-21</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1152">Igniting Language Intelligence: The Hitchhikers Guide From  Chain-of-Thought Reasoning to Language Agents, Zhuosheng Zhang+, N_A, arXiv23</a>
@@ -8738,9 +8872,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/561">Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond, Yang+, Amazon, arXiv23</a>
 <span class="snippet"><span>Comment</span>LLMに関するチュートリアル![image](https://user-images.githubusercontent.com/12249301/235145819-842cdef3-485c-4553-b234-46d4896a5ed7.png)encoder-onlyとまとめられているもの ...</span>
 </div>
-<button onclick="showMore(83)">more</button>
+<button onclick="showMore(84)">more</button>
 
 <div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Efficiency/SpeedUp.html">#Efficiency/SpeedUp</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-12-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1188">optimize-llm, HuggingFace</a>
 <span class="snippet"><span>Comment</span>LLMをoptimizeする実用的なチュートリアルこちらも有用なので参照のこと【GPU inference】https://huggingface.co/docs/transformers/main/perf_infer_gpu_one ...</span>
@@ -8771,7 +8910,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Prompting.html">#Prompting</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-05-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/678">Prompt Engineering vs. Blind Prompting, 2023</a>
 <span class="snippet"><span>Comment</span>experimentalな手法でprompt engineeringする際のoverview ...</span>
-<button onclick="hideContent(83)" style="display: none;">hide</button>
+<button onclick="hideContent(84)" style="display: none;">hide</button>
 </div>
 ### Library (7)
 <div class="visible-content">
@@ -8785,7 +8924,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/466">pandas tips</a>
 <span class="snippet"><span>Comment</span>◆遅くないpandasの書き方https://naotaka1128.hatenadiary.jp/entry/2021/12/07/083000#iterrows-%E3%81%AF%E7%B5%B6%E5%AF%BE%E3%81%AB%E4%BD%BF%E3%82%8F%E3%81%AA%E ...</span>
 </div>
-<button onclick="showMore(84)">more</button>
+<button onclick="showMore(85)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2021-06-29</span>
@@ -8799,7 +8938,30 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2021-06-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/376">pytorch tips</a>
 <span class="snippet"><span>Comment</span>【PyTorchでたまに使うけどググって情報探すのに時間かかるやつ】https://trap.jp/post/1122/scatter_add, einsum, Bilinear あたりが説明されている【NLLossの細かい挙動】https://tatsukawa.hatenablog.co ...</span>
-<button onclick="hideContent(84)" style="display: none;">hide</button>
+<button onclick="hideContent(85)" style="display: none;">hide</button>
+</div>
+### Survey (5)
+<div class="visible-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/884">Challenges and Applications of Large Language Models, Jean Kaddour+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>本論文では、大規模言語モデル（LLMs）の普及により、研究者が分野の現状を理解し、生産的になるための問題と応用成功例を確立することを目指しています。</span>
+<span class="snippet"><span>Comment</span>LLMのここ数年の進化早すぎわろたでキャッチアップむずいので、未解決の課題や、すでに良い感じのアプリケーションの分野分かりづらいので、まとめました論文 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+</div>
+<button onclick="showMore(86)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-02-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/509">30分で完全理解するTransformerの世界</a>
+<span class="snippet"><span>Comment</span>非常に詳細で実質日本語のサーベイ論文のようなもの ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2019-02-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/304">NLP-Progress</a>
+<span class="snippet"><span>Comment</span>NLPの様々なタスクのデータセット, およびSOTA(2018年時点)がまとめられている。 ...</span>
+<button onclick="hideContent(86)" style="display: none;">hide</button>
 </div>
 ### Dataset (4)
 <div class="visible-content">
@@ -8813,27 +8975,26 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/339">Off Policy Evaluation の基礎とOpen Bandit Dataset & Pipelineの紹介, Yuta saito</a>
 <span class="snippet"><span>Comment</span>機械学習による予測精度ではなく、機械学習モデルによって生じる意思決定を、過去の蓄積されたデータから評価する（Off policy Evaluation）の、tutorialおよび実装、データセットについて紹介。このような観点は実務上あるし、見落としがちだと思うので、とても興味深い。 ...</span>
 </div>
-<button onclick="showMore(85)">more</button>
+<button onclick="showMore(87)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2019-02-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/304">NLP-Progress</a>
 <span class="snippet"><span>Comment</span>NLPの様々なタスクのデータセット, およびSOTA(2018年時点)がまとめられている。 ...</span>
-<button onclick="hideContent(85)" style="display: none;">hide</button>
+<button onclick="hideContent(87)" style="display: none;">hide</button>
 </div>
-### Survey (3)
+### RetrievalAugmentedGeneration (3)
 <div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/884">Challenges and Applications of Large Language Models, Jean Kaddour+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>本論文では、大規模言語モデル（LLMs）の普及により、研究者が分野の現状を理解し、生産的になるための問題と応用成功例を確立することを目指しています。</span>
-<span class="snippet"><span>Comment</span>LLMのここ数年の進化早すぎわろたでキャッチアップむずいので、未解決の課題や、すでに良い感じのアプリケーションの分野分かりづらいので、まとめました論文 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Transformer.html">#Transformer</a><br><span class="issue_date">Issue Date: 2023-02-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/509">30分で完全理解するTransformerの世界</a>
-<span class="snippet"><span>Comment</span>非常に詳細で実質日本語のサーベイ論文のようなもの ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><br><span class="issue_date">Issue Date: 2019-02-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/304">NLP-Progress</a>
-<span class="snippet"><span>Comment</span>NLPの様々なタスクのデータセット, およびSOTA(2018年時点)がまとめられている。 ...</span>
-</div>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
+<span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
+<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"></div>
 ### MachineTranslation (2)
 <div class="visible-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
@@ -8852,15 +9013,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/236">ALAGIN 機械翻訳セミナー 単語アライメント, Graham Neubig</a>
 <span class="snippet"><span>Comment</span>Neubigさんによる単語アライメントチュートリアル ...</span>
 </div>
-### RetrievalAugmentedGeneration (2)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1157">Deconstructing RAG</a>
-<span class="snippet"><span>Comment</span>RAGにおける様々な戦略がまとまっている（リンク付き ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
-<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"></div>
 ### InteractiveRecommenderSystems (1)
 <div class="visible-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
@@ -8934,7 +9086,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1131">MEGAVERSE: Benchmarking Large Language Models Across Languages,  Modalities, Models and Tasks, Sanchit Ahuja+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LLMsの研究は急速に進展しており、英語以外の言語での評価が必要とされている。本研究では、新しいデータセットを追加したMEGAVERSEベンチマークを提案し、さまざまなLLMsを評価する。実験の結果、GPT4とPaLM2が優れたパフォーマンスを示したが、データの汚染などの問題があるため、さらなる取り組みが必要である。</span>
 </div>
-<button onclick="showMore(86)">more</button>
+<button onclick="showMore(88)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/Conversation.html">#Conversation</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
@@ -9115,7 +9267,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>[Query-Chain Focused Summarization.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1590916/Query-Chain.Focused.Summarization.pdf) ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Update.html">#Update</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/40">DUC 2007, Update Summarization Dataset</a>
-<button onclick="hideContent(86)" style="display: none;">hide</button>
+<button onclick="hideContent(88)" style="display: none;">hide</button>
 </div>
 ### LanguageModel (20)
 <div class="visible-content">
@@ -9131,7 +9283,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）を使用して役割演技の能力を向上させるためのフレームワークであるRoleLLMを提案しています。RoleLLMは、役割プロファイルの構築、コンテキストベースの指示生成、役割プロンプトによる話し方の模倣、オープンソースモデルの微調整と役割のカスタマイズの4つのステージで構成されています。さらに、RoleBenchと呼ばれる役割演技のためのベンチマークデータセットを作成し、RoleLLaMAとRoleGLMというモデルを開発しました。これにより、役割演技の能力が大幅に向上し、GPT-4と同等の結果を達成しました。</span>
 <span class="snippet"><span>Comment</span># Overview# RoleBench ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a4f8ad3-17d1-4a85-b553-6452371e2ccf" alt="image"></div>
-<button onclick="showMore(87)">more</button>
+<button onclick="showMore(89)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/AutoML.html">#AutoML</a><br><span class="issue_date">Issue Date: 2023-10-09</span>
@@ -9195,7 +9347,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2020-03-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/334">BERT 日本語Pre-trained Model, NICT 2020</a>
 <span class="snippet"><span>Comment</span>NICTが公開。既に公開されているBERTモデルとのベンチマークデータでの性能比較も行なっており、その他の公開済みBERTモデルをoutperformしている。 ...</span>
-<button onclick="hideContent(87)" style="display: none;">hide</button>
+<button onclick="hideContent(89)" style="display: none;">hide</button>
 </div>
 ### Evaluation (14)
 <div class="visible-content">
@@ -9211,7 +9363,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>本研究では、大規模言語モデル（LLMs）をエージェントとして評価するための多次元の進化するベンチマーク「AgentBench」を提案しています。AgentBenchは、8つの異なる環境でマルチターンのオープンエンドの生成設定を提供し、LLMの推論と意思決定能力を評価します。25のLLMsに対するテストでは、商用LLMsは強力な能力を示していますが、オープンソースの競合他社との性能には差があります。AgentBenchのデータセット、環境、および評価パッケージは、GitHubで公開されています。</span>
 <span class="snippet"><span>Comment</span>エージェントとしてのLLMの推論能力と意思決定能力を評価するためのベンチマークを提案。トップの商用LLMとOpenSource LLMの間に大きな性能差があることを示した。 ...</span>
 </div>
-<button onclick="showMore(88)">more</button>
+<button onclick="showMore(90)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-08-08</span>
@@ -9254,7 +9406,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1139">JGLUEの構築そして 日本語LLM評価のこれから, 2023</a>
 <span class="snippet"><span>Comment</span>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Nam ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image"><button onclick="hideContent(88)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image"><button onclick="hideContent(90)" style="display: none;">hide</button>
 </div>
 ### DocumentSummarization (9)
 <div class="visible-content">
@@ -9268,7 +9420,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/841">On Improving Summarization Factual Consistency from Natural Language Feedback, ACL23</a>
 <span class="snippet"><span>Summary</span>本研究では、自然言語の情報フィードバックを活用して要約の品質とユーザーの好みを向上させる方法を調査しました。DeFactoという高品質なデータセットを使用して、要約の編集や修正に関する自然言語生成タスクを研究しました。また、微調整された言語モデルを使用して要約の品質を向上させることも示しました。しかし、大規模な言語モデルは制御可能なテキスト生成には向いていないことがわかりました。</span>
 </div>
-<button onclick="showMore(89)">more</button>
+<button onclick="showMore(91)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
@@ -9289,7 +9441,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>[Query-Chain Focused Summarization.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1590916/Query-Chain.Focused.Summarization.pdf) ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Update.html">#Update</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/40">DUC 2007, Update Summarization Dataset</a>
-<button onclick="hideContent(89)" style="display: none;">hide</button>
+<button onclick="hideContent(91)" style="display: none;">hide</button>
 </div>
 ### NaturalLanguageGeneration (6)
 <div class="visible-content">
@@ -9303,7 +9455,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/841">On Improving Summarization Factual Consistency from Natural Language Feedback, ACL23</a>
 <span class="snippet"><span>Summary</span>本研究では、自然言語の情報フィードバックを活用して要約の品質とユーザーの好みを向上させる方法を調査しました。DeFactoという高品質なデータセットを使用して、要約の編集や修正に関する自然言語生成タスクを研究しました。また、微調整された言語モデルを使用して要約の品質を向上させることも示しました。しかし、大規模な言語モデルは制御可能なテキスト生成には向いていないことがわかりました。</span>
 </div>
-<button onclick="showMore(90)">more</button>
+<button onclick="showMore(92)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><br><span class="issue_date">Issue Date: 2022-08-18</span>
@@ -9314,7 +9466,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToText.html">#DataToText</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-11-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1119">Data-to-Text Datasetまとめ, 2022</a>
 <span class="snippet"><span>Comment</span>Data-to-Textのデータセットを自分用に調べていたのですが、せっかくなのでスライドにまとめてみました。特にMR-to-Text, Table-to-Textあたりは網羅的にサーベイし、データセットの概要を紹介しているので、全体像を把握するのに良いのかなぁと思います。ただし、2022年12月時 ...</span>
-<button onclick="hideContent(90)" style="display: none;">hide</button>
+<button onclick="hideContent(92)" style="display: none;">hide</button>
 </div>
 ### Tutorial (4)
 <div class="visible-content">
@@ -9328,13 +9480,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/339">Off Policy Evaluation の基礎とOpen Bandit Dataset & Pipelineの紹介, Yuta saito</a>
 <span class="snippet"><span>Comment</span>機械学習による予測精度ではなく、機械学習モデルによって生じる意思決定を、過去の蓄積されたデータから評価する（Off policy Evaluation）の、tutorialおよび実装、データセットについて紹介。このような観点は実務上あるし、見落としがちだと思うので、とても興味深い。 ...</span>
 </div>
-<button onclick="showMore(91)">more</button>
+<button onclick="showMore(93)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2019-02-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/304">NLP-Progress</a>
 <span class="snippet"><span>Comment</span>NLPの様々なタスクのデータセット, およびSOTA(2018年時点)がまとめられている。 ...</span>
-<button onclick="hideContent(91)" style="display: none;">hide</button>
+<button onclick="hideContent(93)" style="display: none;">hide</button>
 </div>
 ### QuestionAnswering (4)
 <div class="visible-content">
@@ -9350,14 +9502,14 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/436">JaQuAD: Japanese Question Answering Dataset for Machine Reading Comprehension, arXiv22</a>
 <span class="snippet"><span>Comment</span>SQuAD likeな日本語のQAデータセットhttps://github.com/SkelterLabsInc/JaQuAD ...</span>
 </div>
-<button onclick="showMore(92)">more</button>
+<button onclick="showMore(94)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReadingComprehension.html">#ReadingComprehension</a><br><span class="issue_date">Issue Date: 2023-11-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1142">NewsQA: A Machine Comprehension Dataset, Adam Trischler+, N_A, arXiv16</a>
 <span class="snippet"><span>Summary</span>NewsQAというデータセットは、10万以上の人間によって生成された質問と回答のペアを含んでいます。このデータセットは、CNNのニュース記事に基づいて作成されており、探索的な推論を必要とする質問を収集するために4つの段階のプロセスを経ています。徹底的な分析により、NewsQAが単純な単語のマッチングやテキストの含意の認識以上の能力を要求することがわかりました。このデータセットは、人間のパフォーマンスと機械のパフォーマンスの差を測定し、将来の研究の進歩を示しています。データセットは無料で利用できます。</span>
 <span class="snippet"><span>Comment</span>SQuADよりも回答をするために複雑な推論を必要とするQAデータセット。規模感はSQuADと同等レベル。WordMatchingにとどまらず、回答が存在しない、あるいは記事中でユニークではないものも含まれる。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c427bc7c-40af-42aa-a689-d852081a92fc" alt="image"><button onclick="hideContent(92)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c427bc7c-40af-42aa-a689-d852081a92fc" alt="image"><button onclick="hideContent(94)" style="display: none;">hide</button>
 </div>
 ### LLMAgent (3)
 <div class="visible-content">
@@ -9512,8 +9664,8 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span># Overview# RoleBench ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a4f8ad3-17d1-4a85-b553-6452371e2ccf" alt="image"></div>
 <hr>
-## ComputerVision (55)
-### LanguageModel (14)
+## ComputerVision (56)
+### LanguageModel (15)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/AutomaticPromptEngineering.html">#AutomaticPromptEngineering</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1161">NeuroPrompts: An Adaptive Framework to Optimize Prompts for  Text-to-Image Generation, Shachar Rosenman+, N_A, arXiv23</a>
@@ -9527,7 +9679,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>LLaVAは、ビジョンと言語のクロスモーダルコネクタであり、データ効率が高く強力な性能を持つことが示されています。CLIP-ViT-L-336pxを使用し、学術タスク指向のVQAデータを追加することで、11のベンチマークで最先端のベースラインを確立しました。13Bのチェックポイントはわずか120万の公開データを使用し、1日で完全なトレーニングを終えます。コードとモデルは公開されます。</span>
 <span class="snippet"><span>Comment</span>画像分析が可能なオープンソースLLMとのこと。以下AIDBのツイートの引用>画像分析機能を持つオープンソースLLM『LLaVA-1.5』が登場しました。GPT-4に匹敵する能力を持つとのことです。>デモが公開されており、手持ちの画像を分析させることも可能です。>ウィスコンシン大学とM# Overvi ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8d0382b0-8c2b-438d-8de8-ee451f5e2649" alt="image"></div>
-<button onclick="showMore(93)">more</button>
+<button onclick="showMore(95)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
@@ -9552,6 +9704,9 @@ author: AkihikoWATANABE
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image"><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/547">AudioGPT: Understanding and Generating Speech, Music, Sound, and Talking Head, arXiv23</a>
 <span class="snippet"><span>Comment</span>text, audio, imageといったマルチモーダルなpromptから、audioに関する様々なタスクを実現できるシステムマルチモーダルデータをjointで学習したというわけではなく、色々なモデルの組み合わせてタスクを実現しているっぽい![image](https://user-images ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-11-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
 <span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
@@ -9567,7 +9722,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
 <span class="snippet"><span>Comment</span>マルチモーダルなLLMのリストがまとめられている ...</span>
-<button onclick="hideContent(93)" style="display: none;">hide</button>
+<button onclick="hideContent(95)" style="display: none;">hide</button>
 </div>
 ### NaturalLanguageGeneration (8)
 <div class="visible-content">
@@ -9582,7 +9737,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>本研究では、視覚情報を活用した自然言語生成のためのLIVEという手法を提案しています。LIVEは、事前学習済み言語モデルを使用して、テキストに基づいて場面を想像し、高品質な画像を合成する方法です。また、CLIPを使用してテキストの想像力を評価し、段落ごとに画像を生成します。さまざまな実験により、LIVEの有効性が示されています。コード、モデル、データは公開されています。</span>
 <span class="snippet"><span>Comment</span>>まず、テキストに基づいて場面を想像します。入力テキストに基づいて高品質な画像を合成するために拡散モデルを使用します。次に、CLIPを使用して、テキストが想像力を喚起できるかを事後的に判断します。最後に、私たちの想像力は動的であり、段落全体に1つの画像を生成するのではなく、各文に対して合成を行います ...</span>
 </div>
-<button onclick="showMore(94)">more</button>
+<button onclick="showMore(96)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2022-09-15</span>
@@ -9599,7 +9754,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1003">走行動画を説明するLLMを作成し、80台のGPUで分散並列学習させた話</a>
-<button onclick="hideContent(94)" style="display: none;">hide</button>
+<button onclick="hideContent(96)" style="display: none;">hide</button>
 </div>
 ### FoundationModel (5)
 <div class="visible-content">
@@ -9616,7 +9771,7 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさまざまなナビゲーションタスクに適応します。ViNTは、拡散ベースのサブゴール提案と組み合わせることで、新しい環境を探索し、キロメートルスケールのナビゲーション問題を解決することができます。また、ViNTはプロンプトチューニングに触発された技術を使用して、新しいタスク仕様に適応することができます。ViNTはモバイルロボティクスのための効果的な基礎モデルとして確立されています。詳細はプロジェクトページを参照してください。</span>
 <span class="snippet"><span>Comment</span>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image"></div>
-<button onclick="showMore(95)">more</button>
+<button onclick="showMore(97)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-07-23</span>
@@ -9625,7 +9780,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InductiveBias.html">#InductiveBias</a><br><span class="issue_date">Issue Date: 2023-07-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/809">Objaverse-XL: A Universe of 10M+ 3D Objects</a>
 <span class="snippet"><span>Comment</span>10Mを超える3D objectのデータセットを公開し、3D Modelの基盤モデルとしてZero123-XLを訓練。元ツイートのGifがわかりやすい。https://twitter.com/mattdeitke/status/1678855859089326080?s=46&t=8VBxVyn ...</span>
-<button onclick="hideContent(95)" style="display: none;">hide</button>
+<button onclick="hideContent(97)" style="display: none;">hide</button>
 </div>
 ### QuestionAnswering (4)
 <div class="visible-content">
@@ -9642,14 +9797,14 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>私たちは、LENSというモジュラーなアプローチを提案しています。このアプローチでは、大規模言語モデル（LLMs）を使用してコンピュータビジョンの問題に取り組みます。LENSは、独立したビジョンモジュールの出力に対して言語モデルを使用して推論を行います。私たちは、ゼロショットおよびフューショットのオブジェクト認識などのコンピュータビジョンの設定でLENSを評価しました。LENSは市販のLLMに適用でき、非常に競争力のあるパフォーマンスを発揮します。コードはオープンソースで提供されています。</span>
 <span class="snippet"><span>Comment</span>以下hillbigさんのツイートより引用> LENSは様々な画像認識や画像タスクを、画像からそれを説明するプロンプト（タグ、属性、状況説明文）と、テキスト上でのLLMの質問応答に分解し、それぞれ事前学習済みのモデルを使って実現する。マルチモーダル学習データを最小限にできる（書き起こしさえできればよ ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image"></div>
-<button onclick="showMore(96)">more</button>
+<button onclick="showMore(98)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/732">AVIS: Autonomous Visual Information Seeking with Large Language Models, Ziniu Hu+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>本論文では、自律的な情報収集ビジュアル質問応答フレームワークであるAVISを提案する。AVISは、大規模言語モデル（LLM）を活用して外部ツールの利用戦略を動的に決定し、質問に対する回答に必要な不可欠な知識を獲得する。ユーザースタディを実施して収集したデータを用いて、プランナーや推論エンジンを改善し、知識集約型ビジュアル質問応答ベンチマークで最先端の結果を達成することを示している。</span>
 <span class="snippet"><span>Comment</span> ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9df9b0ce-1f95-4e48-a4c9-b4c6b87d0ac6" alt="image"><button onclick="hideContent(96)" style="display: none;">hide</button>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9df9b0ce-1f95-4e48-a4c9-b4c6b87d0ac6" alt="image"><button onclick="hideContent(98)" style="display: none;">hide</button>
 </div>
 ### Survey (4)
 <div class="visible-content">
@@ -9664,13 +9819,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1114">Zero-shot Learning網羅的サーベイ: CLIPが切り開いたVision & Languageの新しい世界</a>
 <span class="snippet"><span>Comment</span>これはすごいまとめ…。まだ途中までしか読めていない。CLIPからスタートしてCLIPを引用している論文から重要なものを概要付きでまとめている。 ...</span>
 </div>
-<button onclick="showMore(97)">more</button>
+<button onclick="showMore(99)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><a class="button" href="articles/AudioProcessing.html">#AudioProcessing</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
 <span class="snippet"><span>Comment</span>マルチモーダルなLLMのリストがまとめられている ...</span>
-<button onclick="hideContent(97)" style="display: none;">hide</button>
+<button onclick="hideContent(99)" style="display: none;">hide</button>
 </div>
 ### ImageCaptioning (3)
 <div class="visible-content">
@@ -9713,6 +9868,15 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2021-05-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/346">EfficientNet解説</a>
 <span class="snippet"><span>Comment</span>既存画像認識モデルの構造は変化させず、広さ、深さ、解像度を複合スケーリングすることで、従来よりも少ないパラメータ数、かつ学習速度でSoTAを達成。広さ、深さ、解像度はそれぞれ性能に互いに影響しあっており、従来のように別々にスケーリングするのではなく、3つのバランスをとりながらスケーリングする。スケー ...</span>
+</div>
+### Library (2)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/499">Transformers Interpret, 2022</a>
+<span class="snippet"><span>Comment</span>transformersのモデルをたった2行追加するだけで、explainableにするライブラリ基本的にtextとvisionのclassificationをサポートしている模様text classificationの場合、たとえばinput tokenの各トークンの分類に対する寄与度をou ...</span>
 </div>
 ### ImageSegmentation (2)
 <div class="visible-content">
@@ -9761,12 +9925,6 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1170">LaVie: Text-to-Video generation, demo</a>
 <span class="snippet"><span>Comment</span>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。FF14の赤魔導士に変えたら、それっぽいの出てきた ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image"></div>
-### Library (1)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Explanation.html">#Explanation</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2022-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/499">Transformers Interpret, 2022</a>
-<span class="snippet"><span>Comment</span>transformersのモデルをたった2行追加するだけで、explainableにするライブラリ基本的にtextとvisionのclassificationをサポートしている模様text classificationの場合、たとえばinput tokenの各トークンの分類に対する寄与度をou ...</span>
-</div>
 ### ContrastiveLearning (1)
 <div class="visible-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
@@ -9806,6 +9964,12 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>LayoutPrompterは、大規模言語モデル（LLMs）を使用して条件付きのグラフィックレイアウト生成を行う手法であり、入力-出力のシリアル化、動的な模範的選択、およびレイアウトのランキングの3つのコンポーネントで構成されています。LayoutPrompterは、既存の手法と競合したり上回ったりする性能を持ち、トレーニングや微調整なしで使用できる汎用性のあるアプローチであることが実験結果から示されています。また、データ効率にも優れており、トレーニングベースラインよりも有意に優れていることも示されています。プロジェクトは、https://github.com/microsoft/LayoutGeneration/tree/main/LayoutPrompterで利用可能です。</span>
 <span class="snippet"><span>Comment</span>Conditional Graphic Layout Generation ...</span>
 </div>
+### Alignment (1)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/TextualInversion.html">#TextualInversion</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1258">repeng</a>
+<span class="snippet"><span>Comment</span>LLMの出力のスタイルを数百個の事例だけで学習しチューニングできるライブラリ。promptで指定するのとは異なり、数値でスタイルの強さを指定することが可能らしい（元ツイート）。画像生成分野におけるTextual Inversionと同じ技術とのこと。Textual Inversionとは、少量の ...</span>
+</div>
 ### Others (14)
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/DiffusionModel.html">#DiffusionModel</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
@@ -9819,7 +9983,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/805">EgoVLPv2: Egocentric Video-Language Pre-training with Fusion in the  Backbone, Shraman Pramanick+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>エゴセントリックビデオ言語の事前学習の第2世代（EgoVLPv2）は、ビデオと言語のバックボーンにクロスモーダルの融合を直接組み込むことができる。EgoVLPv2は強力なビデオテキスト表現を学習し、柔軟かつ効率的な方法でさまざまなダウンストリームタスクをサポートする。さらに、提案されたバックボーン戦略は軽量で計算効率が高い。EgoVLPv2は幅広いVLタスクで最先端のパフォーマンスを達成している。詳細はhttps://shramanpramanick.github.io/EgoVLPv2/を参照。</span>
 </div>
-<button onclick="showMore(98)">more</button>
+<button onclick="showMore(100)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-06-16</span>
@@ -9853,7 +10017,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2021-05-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/344">MLP-like Architecture</a>
 <span class="snippet"><span>Comment</span>gMLP:大規模なself-attentionが無いSpatial Gating Unitを搭載したシンプルなMLPでも、Transformerの性能に近づけたよ（特にCV）。つまり、self-attentionはessentialというわけではなさそうだよ。NLPの場合はgMLPだとTransまあ ...</span>
-<button onclick="hideContent(98)" style="display: none;">hide</button>
+<button onclick="hideContent(100)" style="display: none;">hide</button>
 </div>
 <hr>
 ## AdaptiveLearning (54)
@@ -9869,7 +10033,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2022-08-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/467">No Task Left Behind: Multi-Task Learning of Knowledge Tracing and Option Tracing for Better Student Assessment, An+, RiiiD, AAAI22</a>
 </div>
-<button onclick="showMore(99)">more</button>
+<button onclick="showMore(101)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2022-08-02</span>
@@ -9952,7 +10116,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/419">HMM Scalable （Bayesian Knowledge Tracing; BKT）</a>
 <span class="snippet"><span>Comment</span>BKTを高速で学習できるツール3-clause BSD license ...</span>
-<button onclick="hideContent(99)" style="display: none;">hide</button>
+<button onclick="hideContent(101)" style="display: none;">hide</button>
 </div>
 ### StudentPerformancePrediction (8)
 <div class="visible-content">
@@ -9966,7 +10130,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/420">General Features in Knowledge Tracing: Applications to Multiple Subskills, Temporal Item Response Theory, and Expert Knowledge, Brusilovsky+, EDM14</a>
 <span class="snippet"><span>Comment</span>BKTでは1種類のスキルしか扱えなかった問題を改善（skillだけでなく、sub-skillも扱えるように）様々なFeatureを組み合わせることが可能実装：https://github.com/ml-smores/fastただし、GPL-2.0ライセンス ...</span>
 </div>
-<button onclick="showMore(100)">more</button>
+<button onclick="showMore(102)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
@@ -9984,7 +10148,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/295">Factorization Models for Forecasting Student Performance, Thai-Nghe+, EDM, 2011</a>
 <span class="snippet"><span>Comment</span>student performanceは、推薦システムの問題において、下記の２種類にcastできる：1. rating prediction task, すなわち、ユーザ・アイテム・ratingを、生徒・タスク・パフォーマンスとみなす2. sequentialなエフェクトを考慮して、foreTe ...</span>
-<button onclick="hideContent(100)" style="display: none;">hide</button>
+<button onclick="hideContent(102)" style="display: none;">hide</button>
 </div>
 ### Survey (6)
 <div class="visible-content">
@@ -9997,7 +10161,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/291">Recommender Systems for Technology Enhanced Learning: Research Trends and Applications, Manouselis+, 2014</a>
 <span class="snippet"><span>Comment</span>最近のトレンドやアプリケーションを知りたい場合はこちら ...</span>
 </div>
-<button onclick="showMore(101)">more</button>
+<button onclick="showMore(103)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
@@ -10007,7 +10171,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/286">Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook, 2011</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/285">Personal recommender systems for learners in lifelong learning networks: the requirements, techniques and model, Drachsler+, Int. J. Learning Technology, 2008</a>
-<button onclick="hideContent(101)" style="display: none;">hide</button>
+<button onclick="hideContent(103)" style="display: none;">hide</button>
 </div>
 ### DropoutPrediction (2)
 <div class="visible-content">
@@ -10078,7 +10242,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><br><span class="issue_date">Issue Date: 2022-12-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/503">Reinforcement Learning for the Adaptive Scheduling of Educational Activities, Bassen+, Stanford University, CHI20</a>
 </div>
-<button onclick="showMore(102)">more</button>
+<button onclick="showMore(104)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
@@ -10090,7 +10254,271 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Classic.html">#Classic</a><a class="button" href="articles/LearningStyle.html">#LearningStyle</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/284">LEARNING AND TEACHING STYLES IN ENGINEERING EDUCATION, Felder, Engr. Education, 78（7）, 674–681 （1988）</a>
 <span class="snippet"><span>Comment</span>LearningStyleに関して研究している古典的な研究。context-aware recsysの研究初期の頃は、だいたいはこのFelder-Silverman Theoryというのをベースに研究されていたらしい。 ...</span>
-<button onclick="hideContent(102)" style="display: none;">hide</button>
+<button onclick="hideContent(104)" style="display: none;">hide</button>
+</div>
+<hr>
+## InformationRetrieval (53)
+### Tutorial (10)
+<div class="visible-content">
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2018-02-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/259">Deep Learning for Personalized Search and Recommender Systems, KDD17</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online_Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200">Online Learning to Rank for Information Retrieval, Grotov+, SIGIR16</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/186">Machine Learning for Information Retrieval, Hofmann, ESSIR15</a>
+</div>
+<button onclick="showMore(105)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/OnlineEvaluation.html">#OnlineEvaluation</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184">Practical Online Retrieval Evaluation, SIGIR11, Tutorial</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
+<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/189">From RankNet to LambdaRank to LambdaMART: An Overview, Burges, Microsoft Research Technical Report, 2010</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/188">Confidence Weightedでランク学習を実装してみた</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/187">ランキング学習ことはじめ, DSIRNLP#1, 2011</a>
+<button onclick="hideContent(105)" style="display: none;">hide</button>
+</div>
+### Survey (9)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576">Measuring the impact of online personalisation: Past, present and future</a>
+<span class="snippet"><span>Comment</span>Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurveyML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されて ...</span>
+</div>
+<button onclick="showMore(106)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/567">User Profiles for Personalized Information Access, Gauch+, The adaptive Web: methods and strategies of Web personalization, 2007</a>
+<span class="snippet"><span>Comment</span>IR分野におけるuser profileの構築方法についてまとめられたsurvey加重キーワードセマンティックネットワーク加重コンセプトについて記述されている。また、プロファイルの構築方法についても詳述されている。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/ImplicitFeedback.html">#ImplicitFeedback</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/205">Evaluating implicit measures to improve web search, Fox+, ACM Transactions on Imformation Systems, 2005</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/ExplicitFeedback.html">#ExplicitFeedback</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/204">A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196">Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185">Learning to Rank for Information Retriefval, Liu+, 2009</a>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/13">Personalised Information retrieval: survey and classification, Rami+, 2013</a>
+<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34402162-5433e4e4-ebe3-11e7-8bf3-fc322ace70d8.png)![image](https://user-images.githubuse完 ...</span>
+<button onclick="hideContent(106)" style="display: none;">hide</button>
+</div>
+### LanguageModel (8)
+<div class="visible-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/KnowledgeGraph.html">#KnowledgeGraph</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/NaturalLanguageUnderstanding.html">#NaturalLanguageUnderstanding</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821">Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL23</a>
+<span class="snippet"><span>Summary</span>従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースラインよりも優れた性能を示した。</span>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799">Large Language Models are Effective Text Rankers with Pairwise Ranking  Prompting, Zhen Qin+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。</span>
+<span class="snippet"><span>Comment</span>open source LLMをスタンダードなベンチマークでSoTAを達成できるようなprompting技術を提案 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+</div>
+<button onclick="showMore(107)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-02-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233">awesome-generative-information-retrieval</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
+<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
+<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520">LangChain</a>
+<span class="snippet"><span>Comment</span>LangChain の Googleカスタム検索 連携を試す  https://note.com/npaka/n/nd9a4a26a8932LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents    https://zenn.de ...</span>
+<button onclick="hideContent(107)" style="display: none;">hide</button>
+</div>
+### RetrievalAugmentedGeneration (6)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249">RAG-Research-Insights</a>
+<span class="snippet"><span>Comment</span>RAGに関する研究が直近のものまでよくまとめられている ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2024-02-11</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229">RAGの性能を改善するための8つの戦略</a>
+<span class="snippet"><span>Comment</span>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
+<span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+</div>
+<button onclick="showMore(108)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1195">Build a search engine, not a vector DB</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
+<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
+<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><button onclick="hideContent(108)" style="display: none;">hide</button>
+</div>
+### Library (4)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/565">Awesome Vector Search Engine</a>
+<span class="snippet"><span>Comment</span>ベクトルの類似度を測るサービスやライブラリ等がまとまったリポジトリ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540">Contrirver</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/521">Llamaindex</a>
+<span class="snippet"><span>Comment</span>LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた  https://dev.classmethod.jp/articles/llama-index-insert-index/ ...</span>
+</div>
+<button onclick="showMore(109)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520">LangChain</a>
+<span class="snippet"><span>Comment</span>LangChain の Googleカスタム検索 連携を試す  https://note.com/npaka/n/nd9a4a26a8932LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents    https://zenn.de ...</span>
+<button onclick="hideContent(109)" style="display: none;">hide</button>
+</div>
+### RelevanceJudgment (2)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/51">Relevance judgment: What do information users consider beyond topicality? Xu, Chen, 2007</a>
+<span class="snippet"><span>Comment</span>・relevanceとsignificantに関連するcriteriaは，topicalityとnovelty・reliabilityおよびunderstandabilityはsmaller degreeでsignificant, scopeはsignificantでない ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/50">A cognitive model of document use during a research project, Wang and Soergel, 1998</a>
+<span class="snippet"><span>Comment</span>topicality, orientation, quality, novelty（の順番で）がrelevantなdocumentを選択したときのcriteriaとして採用されていたことを報告 ...</span>
+</div>
+### WebSearch (2)
+<div class="visible-content">
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/QueryClassification.html">#QueryClassification</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249">Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15</a>
+<span class="snippet"><span>Comment</span>クエリ分類と検索をNeural Netを用いてmulti-task learningする研究分類(multi-class classification)とランキング(pairwise learning-to-rank)という異なる操作が必要なタスクを、multi task learningの枠組みで ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566">Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
+<span class="snippet"><span>Comment</span>検索結果のpersonalizationを初めてuser profileを用いて実現した研究user profileはlong/short term preferenceによって構成される。long term: さまざまなソースから取得されるshort term: 当日のセッショ ...</span>
+</div>
+### LLMAgent (2)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-04-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/521">Llamaindex</a>
+<span class="snippet"><span>Comment</span>LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた  https://dev.classmethod.jp/articles/llama-index-insert-index/ ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-04-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520">LangChain</a>
+<span class="snippet"><span>Comment</span>LangChain の Googleカスタム検索 連携を試す  https://note.com/npaka/n/nd9a4a26a8932LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents    https://zenn.de ...</span>
+</div>
+### OnlineEvaluation (1)
+<div class="visible-content">
+<a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184">Practical Online Retrieval Evaluation, SIGIR11, Tutorial</a>
+</div>
+### DocumentSummarization (1)
+<div class="visible-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><br><span class="issue_date">Issue Date: 2018-01-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/243">The Use of MMR, Diversity-Based Reranking for Reordering Documents and Producing Summaries, Carbonell+, SIGIR98</a>
+<span class="snippet"><span>Comment</span>Maximal Marginal Relevance (MMR) 論文。検索エンジンや文書要約において、文書/文のランキングを生成する際に、既に選んだ文書と類似度が低く、かつqueryとrelevantな文書をgreedyに選択していく手法を提案。ILPによる定式化が提案される以前のMult ...</span>
+</div>
+### QueryClassification (1)
+<div class="visible-content">
+<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/WebSearch.html">#WebSearch</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249">Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15</a>
+<span class="snippet"><span>Comment</span>クエリ分類と検索をNeural Netを用いてmulti-task learningする研究分類(multi-class classification)とランキング(pairwise learning-to-rank)という異なる操作が必要なタスクを、multi task learningの枠組みで ...</span>
+</div>
+### CollaborativeFiltering (1)
+<div class="visible-content">
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/WebSearch.html">#WebSearch</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566">Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
+<span class="snippet"><span>Comment</span>検索結果のpersonalizationを初めてuser profileを用いて実現した研究user profileはlong/short term preferenceによって構成される。long term: さまざまなソースから取得されるshort term: 当日のセッショ ...</span>
+</div>
+### NaturalLanguageUnderstanding (1)
+<div class="visible-content">
+<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/KnowledgeGraph.html">#KnowledgeGraph</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821">Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL23</a>
+<span class="snippet"><span>Summary</span>従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースラインよりも優れた性能を示した。</span>
+</div>
+### Dataset (1)
+<div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166">UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv23</a>
+<span class="snippet"><span>Summary</span>従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
+<span class="snippet"><span>Comment</span>後で読む（画像は元ツイートより元ツイート: https://x.com/congwei1230/status/1730307767469068476?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image"></div>
+### Others (20)
+<div class="visible-content">
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online_Interactive.html">#Online/Interactive</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/199">Contextual Dueling Bandits, Dudik+, JMLR15</a>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Contents-based.html">#Contents-based</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/364">Learning Deep Structured Semantic Models  for Web Search using Clickthrough Data, Huang+, CIKM13</a>
+<span class="snippet"><span>Comment</span>日本語解説: https://shunk031.me/paper-survey/summary/others/Learning-Deep-Structured-Semantic-Models-for-Web-Search-using-Clickthrough-Data ...</span>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online_Interactive.html">#Online/Interactive</a><a class="button" href="articles/Interleaved.html">#Interleaved</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/198">Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM13</a>
+<span class="snippet"><span>Comment</span>#197 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 ...</span>
+</div>
+<button onclick="showMore(110)">more</button>
+
+<div class="hidden-content">
+<a class="button" href="articles/Comments.html">#Comments</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/228">Ranking Comments on Social Web, Hsu+, CSE09</a>
+<span class="snippet"><span>Comment</span>Learning to Rankによってコメントをランキングする手法を提案。これにより、低品質なコメントははじき、良質なコメントをすくいとることができる。素性としては、主にユーザに基づく指標（ユーザが作成した記事の数、プロフィールが何度閲覧されたかなど）と、コメントのContentに基づく指 ...</span>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197">Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML09</a>
+<span class="snippet"><span>Comment</span>online learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かし ...</span>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Interleaved.html">#Interleaved</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/203">How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM08</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/202">Fast Learning of Document Ranking Functions with the Committee Perceptrion, Elsas+, WSDM08</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194">Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193">Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML2007</a>
+<span class="snippet"><span>Comment</span>解説スライド：http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf解説ブログ：https://qiita.com/koreyou/items/a69750696fd0b9d88608従来行われてきたLearning t ...</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/123">A support vector method for Optimizing Average Precision, Yue+, SIGIR07</a>
+<span class="snippet"><span>Comment</span>SVM-MAPの論文構造化SVMを用いて、MAPを直接最適化する。 ...</span>
+<a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Comments.html">#Comments</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/230">Leave a Reply: An Analysis of Weblog Comments, Mishne+, WWW06</a>
+<span class="snippet"><span>Comment</span>従来のWeblog研究では、コメントの情報が無視されていたが、コメントも重要な情報を含んでいると考えられる。この研究では、以下のことが言及されている。* （収集したデータの）ブログにコメントが付与されている割合やコメントの長さ、ポストに対するコメントの平均などの統計量* ブログ検索に相当流し ...</span>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/PairWise.html">#PairWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192">Learning to Rank using Gradient Descent （RankNet）, Burges+, ICML2005</a>
+<span class="snippet"><span>Comment</span>pair-wiseのlearning2rankで代表的なRankNet論文解説ブログ：https://qiita.com/sz_dr/items/0e50120318527a928407lossは2個のインスタンスのpair、A, Bが与えられたとき、AがBよりも高くランクされる場合は確 ...</span>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/PointWise.html">#PointWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/190">PRanking with Ranking, Crammer+, NIPS01</a>
+<span class="snippet"><span>Comment</span>Point-WiseなLearning2Rankの有名手法 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/572">Preface to Special Issue on User Modeling for Web Information Retrieval, Brusilovsky+, User Modeling and User-Adapted Interaction , 2004</a>
+<span class="snippet"><span>Comment</span>Personalized Information Retrievalの先駆け的研究#566 と同時期 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201">Lerot: Online Learning to rank Framework</a>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195">A General Approximation Framework for Direct Optimization of Information Retrieval Measures （ApproxAP, ApproxNDCG）, Qin+, Information Retrieval, 2010</a>
+<span class="snippet"><span>Comment</span>実装してみたが、バグありそう感・・・https://github.com/AkihikoWatanabe/ApproxAP ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/PairWise.html">#PairWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/191">Large Scale Learning to Rank, Sculley+, NIPS 2009</a>
+<span class="snippet"><span>Comment</span>sofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見え ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/124">SVM-MAP</a>
+<span class="snippet"><span>Comment</span>構造化SVMを用いて、MAPを直接最適化する手法 ...</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/20">Personalizing Search via Automated Analysis of Interests and Activities, SIGIR, Teevan+, 2005</a>
+<span class="snippet"><span>Comment</span>・userに関するデータがrichなほうが、Personalizationは改善する。・queries, visited web pages, emails, calendar items, stored desktop 　　　　documents、全てのsetを用いた場合が最も良かった ...</span>
+<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/11">Modeling Anchor Text and Classifying Queries to Enhance Web Document Retrieval, WWW’08, Fujii, 2008</a>
+<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34401828-1259be4c-ebe1-11e7-99c4-33508b405bf1.png)![image](https://user-images.githubuse ...</span>
+<button onclick="hideContent(110)" style="display: none;">hide</button>
 </div>
 <hr>
 ## EducationalDataMining (51)
@@ -10105,7 +10533,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, arXiv22</a>
 <span class="snippet"><span>Comment</span>DKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attempt入 ...</span>
 </div>
-<button onclick="showMore(103)">more</button>
+<button onclick="showMore(111)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2022-08-31</span>
@@ -10185,7 +10613,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/353">EKT: Exercise-aware Knowledge Tracing for Student Performance Prediction, Hu+, IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, 2019</a>
 <span class="snippet"><span>Comment</span>DKT等のDeepなモデルでは、これまで問題テキストの情報等は利用されてこなかったが、learning logのみならず、問題テキストの情報等もKTする際に活用した研究。#354  をより洗練させjournal化させたものだと思われる。#354  ではKTというより、問題の正誤を予測するモデモデ ...</span>
-<button onclick="hideContent(103)" style="display: none;">hide</button>
+<button onclick="hideContent(111)" style="display: none;">hide</button>
 </div>
 ### StudentPerformancePrediction (17)
 <div class="visible-content">
@@ -10199,7 +10627,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/432">Modeling Hint-Taking Behavior and Knowledge State of Students with Multi-Task Learning, Chaudry+, Indian Institute of Technology, EDM18</a>
 <span class="snippet"><span>Comment</span>DKVMN (#352)をhint-takingタスクとmulti-task learningした研究![image](https://user-images.githubusercontent.com/12249301/141440172-6f708367-1804-4b0c-8c1a-4 ...</span>
 </div>
-<button onclick="showMore(104)">more</button>
+<button onclick="showMore(112)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
@@ -10243,7 +10671,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/295">Factorization Models for Forecasting Student Performance, Thai-Nghe+, EDM, 2011</a>
 <span class="snippet"><span>Comment</span>student performanceは、推薦システムの問題において、下記の２種類にcastできる：1. rating prediction task, すなわち、ユーザ・アイテム・ratingを、生徒・タスク・パフォーマンスとみなす2. sequentialなエフェクトを考慮して、foreTe ...</span>
-<button onclick="hideContent(104)" style="display: none;">hide</button>
+<button onclick="hideContent(112)" style="display: none;">hide</button>
 </div>
 ### Survey (2)
 <div class="visible-content">
@@ -10339,252 +10767,12 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/385">Deep Model for Dropout Prediction in MOOCs, Wang+, ICCSE17</a>
 <span class="snippet"><span>Comment</span>MOOCsにおける一つの大きな問題点としてDropout率が高いことがあげられ、これを防止するために様々なモデルが提案されてきた。これまで提案されてきたモデルでは人手によるfeature-engineeringが必要であることが問題である。なぜなら、feature-engineeringはdomai ...</span>
 </div>
-<button onclick="showMore(105)">more</button>
+<button onclick="showMore(113)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-07-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/400">Autonomously Generating Hints by Inferring Problem Solving Policies, Piech+, Stanford University, L@S15</a>
-<button onclick="hideContent(105)" style="display: none;">hide</button>
-</div>
-<hr>
-## InformationRetrieval (50)
-### Tutorial (8)
-<div class="visible-content">
-<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><br><span class="issue_date">Issue Date: 2018-02-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/259">Deep Learning for Personalized Search and Recommender Systems, KDD17</a>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online_Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200">Online Learning to Rank for Information Retrieval, Grotov+, SIGIR16</a>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/186">Machine Learning for Information Retrieval, Hofmann, ESSIR15</a>
-</div>
-<button onclick="showMore(106)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/OnlineEvaluation.html">#OnlineEvaluation</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184">Practical Online Retrieval Evaluation, SIGIR11, Tutorial</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
-<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/189">From RankNet to LambdaRank to LambdaMART: An Overview, Burges, Microsoft Research Technical Report, 2010</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/188">Confidence Weightedでランク学習を実装してみた</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/187">ランキング学習ことはじめ, DSIRNLP#1, 2011</a>
-<button onclick="hideContent(106)" style="display: none;">hide</button>
-</div>
-### Survey (7)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576">Measuring the impact of online personalisation: Past, present and future</a>
-<span class="snippet"><span>Comment</span>Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurveyML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されて ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/567">User Profiles for Personalized Information Access, Gauch+, The adaptive Web: methods and strategies of Web personalization, 2007</a>
-<span class="snippet"><span>Comment</span>IR分野におけるuser profileの構築方法についてまとめられたsurvey加重キーワードセマンティックネットワーク加重コンセプトについて記述されている。また、プロファイルの構築方法についても詳述されている。 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/ImplicitFeedback.html">#ImplicitFeedback</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/205">Evaluating implicit measures to improve web search, Fox+, ACM Transactions on Imformation Systems, 2005</a>
-</div>
-<button onclick="showMore(107)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/ExplicitFeedback.html">#ExplicitFeedback</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/204">A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196">Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185">Learning to Rank for Information Retriefval, Liu+, 2009</a>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/13">Personalised Information retrieval: survey and classification, Rami+, 2013</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34402162-5433e4e4-ebe3-11e7-8bf3-fc322ace70d8.png)![image](https://user-images.githubuse完 ...</span>
-<button onclick="hideContent(107)" style="display: none;">hide</button>
-</div>
-### LanguageModel (5)
-<div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/KnowledgeGraph.html">#KnowledgeGraph</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><a class="button" href="articles/NaturalLanguageUnderstanding.html">#NaturalLanguageUnderstanding</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821">Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL23</a>
-<span class="snippet"><span>Summary</span>従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースラインよりも優れた性能を示した。</span>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Prompting.html">#Prompting</a><br><span class="issue_date">Issue Date: 2023-07-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799">Large Language Models are Effective Text Rankers with Pairwise Ranking  Prompting, Zhen Qin+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。</span>
-<span class="snippet"><span>Comment</span>open source LLMをスタンダードなベンチマークでSoTAを達成できるようなprompting技術を提案 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
-<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
-</div>
-<button onclick="showMore(108)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RetrievalAugmentedGeneration.html">#RetrievalAugmentedGeneration</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
-<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520">LangChain</a>
-<span class="snippet"><span>Comment</span>LangChain の Googleカスタム検索 連携を試す  https://note.com/npaka/n/nd9a4a26a8932LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents    https://zenn.de ...</span>
-<button onclick="hideContent(108)" style="display: none;">hide</button>
-</div>
-### Library (4)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Embed.html">#Embed</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/Repository.html">#Repository</a><br><span class="issue_date">Issue Date: 2023-04-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/565">Awesome Vector Search Engine</a>
-<span class="snippet"><span>Comment</span>ベクトルの類似度を測るサービスやライブラリ等がまとまったリポジトリ ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540">Contrirver</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/521">Llamaindex</a>
-<span class="snippet"><span>Comment</span>LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた  https://dev.classmethod.jp/articles/llama-index-insert-index/ ...</span>
-</div>
-<button onclick="showMore(109)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/LLMAgent.html">#LLMAgent</a><br><span class="issue_date">Issue Date: 2023-04-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520">LangChain</a>
-<span class="snippet"><span>Comment</span>LangChain の Googleカスタム検索 連携を試す  https://note.com/npaka/n/nd9a4a26a8932LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents    https://zenn.de ...</span>
-<button onclick="hideContent(109)" style="display: none;">hide</button>
-</div>
-### RetrievalAugmentedGeneration (4)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196">Structured Hierarchical Retrieval, llama-index</a>
-<span class="snippet"><span>Comment</span>元ツイート: https://x.com/llama_index/status/1737515390664872040?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1195">Build a search engine, not a vector DB</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
-<span class="snippet"><span>Comment</span>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:[（5th- ...</span>
-</div>
-<button onclick="showMore(110)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-11-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
-<span class="snippet"><span>Comment</span>（以下スクショはスライドより引用）次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。以下ざっくり私の中の認識として計画    クエリ拡張        クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image"><button onclick="hideContent(110)" style="display: none;">hide</button>
-</div>
-### RelevanceJudgment (2)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/51">Relevance judgment: What do information users consider beyond topicality? Xu, Chen, 2007</a>
-<span class="snippet"><span>Comment</span>・relevanceとsignificantに関連するcriteriaは，topicalityとnovelty・reliabilityおよびunderstandabilityはsmaller degreeでsignificant, scopeはsignificantでない ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/50">A cognitive model of document use during a research project, Wang and Soergel, 1998</a>
-<span class="snippet"><span>Comment</span>topicality, orientation, quality, novelty（の順番で）がrelevantなdocumentを選択したときのcriteriaとして採用されていたことを報告 ...</span>
-</div>
-### WebSearch (2)
-<div class="visible-content">
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/QueryClassification.html">#QueryClassification</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249">Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15</a>
-<span class="snippet"><span>Comment</span>クエリ分類と検索をNeural Netを用いてmulti-task learningする研究分類(multi-class classification)とランキング(pairwise learning-to-rank)という異なる操作が必要なタスクを、multi task learningの枠組みで ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566">Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
-<span class="snippet"><span>Comment</span>検索結果のpersonalizationを初めてuser profileを用いて実現した研究user profileはlong/short term preferenceによって構成される。long term: さまざまなソースから取得されるshort term: 当日のセッショ ...</span>
-</div>
-### LLMAgent (2)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-04-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/521">Llamaindex</a>
-<span class="snippet"><span>Comment</span>LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた  https://dev.classmethod.jp/articles/llama-index-insert-index/ ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Library.html">#Library</a><br><span class="issue_date">Issue Date: 2023-04-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520">LangChain</a>
-<span class="snippet"><span>Comment</span>LangChain の Googleカスタム検索 連携を試す  https://note.com/npaka/n/nd9a4a26a8932LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents    https://zenn.de ...</span>
-</div>
-### OnlineEvaluation (1)
-<div class="visible-content">
-<a class="button" href="articles/Tutorial.html">#Tutorial</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184">Practical Online Retrieval Evaluation, SIGIR11, Tutorial</a>
-</div>
-### DocumentSummarization (1)
-<div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><br><span class="issue_date">Issue Date: 2018-01-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/243">The Use of MMR, Diversity-Based Reranking for Reordering Documents and Producing Summaries, Carbonell+, SIGIR98</a>
-<span class="snippet"><span>Comment</span>Maximal Marginal Relevance (MMR) 論文。検索エンジンや文書要約において、文書/文のランキングを生成する際に、既に選んだ文書と類似度が低く、かつqueryとrelevantな文書をgreedyに選択していく手法を提案。ILPによる定式化が提案される以前のMult ...</span>
-</div>
-### QueryClassification (1)
-<div class="visible-content">
-<a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/MultitaskLearning.html">#MultitaskLearning</a><a class="button" href="articles/WebSearch.html">#WebSearch</a><br><span class="issue_date">Issue Date: 2018-02-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249">Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15</a>
-<span class="snippet"><span>Comment</span>クエリ分類と検索をNeural Netを用いてmulti-task learningする研究分類(multi-class classification)とランキング(pairwise learning-to-rank)という異なる操作が必要なタスクを、multi task learningの枠組みで ...</span>
-</div>
-### CollaborativeFiltering (1)
-<div class="visible-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RelevanceFeedback.html">#RelevanceFeedback</a><a class="button" href="articles/SearchEngine.html">#SearchEngine</a><a class="button" href="articles/WebSearch.html">#WebSearch</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566">Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
-<span class="snippet"><span>Comment</span>検索結果のpersonalizationを初めてuser profileを用いて実現した研究user profileはlong/short term preferenceによって構成される。long term: さまざまなソースから取得されるshort term: 当日のセッショ ...</span>
-</div>
-### NaturalLanguageUnderstanding (1)
-<div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/KnowledgeGraph.html">#KnowledgeGraph</a><a class="button" href="articles/FactualConsistency.html">#FactualConsistency</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821">Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL23</a>
-<span class="snippet"><span>Summary</span>従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースラインよりも優れた性能を示した。</span>
-</div>
-### Dataset (1)
-<div class="visible-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166">UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv23</a>
-<span class="snippet"><span>Summary</span>従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
-<span class="snippet"><span>Comment</span>後で読む（画像は元ツイートより元ツイート: https://x.com/congwei1230/status/1730307767469068476?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image"></div>
-### Others (20)
-<div class="visible-content">
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online_Interactive.html">#Online/Interactive</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/199">Contextual Dueling Bandits, Dudik+, JMLR15</a>
-<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/Contents-based.html">#Contents-based</a><br><span class="issue_date">Issue Date: 2021-06-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/364">Learning Deep Structured Semantic Models  for Web Search using Clickthrough Data, Huang+, CIKM13</a>
-<span class="snippet"><span>Comment</span>日本語解説: https://shunk031.me/paper-survey/summary/others/Learning-Deep-Structured-Semantic-Models-for-Web-Search-using-Clickthrough-Data ...</span>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online_Interactive.html">#Online/Interactive</a><a class="button" href="articles/Interleaved.html">#Interleaved</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/198">Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM13</a>
-<span class="snippet"><span>Comment</span>#197 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 ...</span>
-</div>
-<button onclick="showMore(111)">more</button>
-
-<div class="hidden-content">
-<a class="button" href="articles/Comments.html">#Comments</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/228">Ranking Comments on Social Web, Hsu+, CSE09</a>
-<span class="snippet"><span>Comment</span>Learning to Rankによってコメントをランキングする手法を提案。これにより、低品質なコメントははじき、良質なコメントをすくいとることができる。素性としては、主にユーザに基づく指標（ユーザが作成した記事の数、プロフィールが何度閲覧されたかなど）と、コメントのContentに基づく指 ...</span>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197">Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML09</a>
-<span class="snippet"><span>Comment</span>online learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かし ...</span>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Interleaved.html">#Interleaved</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/203">How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM08</a>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/202">Fast Learning of Document Ranking Functions with the Committee Perceptrion, Elsas+, WSDM08</a>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194">Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008</a>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193">Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML2007</a>
-<span class="snippet"><span>Comment</span>解説スライド：http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf解説ブログ：https://qiita.com/koreyou/items/a69750696fd0b9d88608従来行われてきたLearning t ...</span>
-<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/123">A support vector method for Optimizing Average Precision, Yue+, SIGIR07</a>
-<span class="snippet"><span>Comment</span>SVM-MAPの論文構造化SVMを用いて、MAPを直接最適化する。 ...</span>
-<a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/Comments.html">#Comments</a><br><span class="issue_date">Issue Date: 2018-01-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/230">Leave a Reply: An Analysis of Weblog Comments, Mishne+, WWW06</a>
-<span class="snippet"><span>Comment</span>従来のWeblog研究では、コメントの情報が無視されていたが、コメントも重要な情報を含んでいると考えられる。この研究では、以下のことが言及されている。* （収集したデータの）ブログにコメントが付与されている割合やコメントの長さ、ポストに対するコメントの平均などの統計量* ブログ検索に相当流し ...</span>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/PairWise.html">#PairWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192">Learning to Rank using Gradient Descent （RankNet）, Burges+, ICML2005</a>
-<span class="snippet"><span>Comment</span>pair-wiseのlearning2rankで代表的なRankNet論文解説ブログ：https://qiita.com/sz_dr/items/0e50120318527a928407lossは2個のインスタンスのpair、A, Bが与えられたとき、AがBよりも高くランクされる場合は確 ...</span>
-<a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/PointWise.html">#PointWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/190">PRanking with Ranking, Crammer+, NIPS01</a>
-<span class="snippet"><span>Comment</span>Point-WiseなLearning2Rankの有名手法 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/572">Preface to Special Issue on User Modeling for Web Information Retrieval, Brusilovsky+, User Modeling and User-Adapted Interaction , 2004</a>
-<span class="snippet"><span>Comment</span>Personalized Information Retrievalの先駆け的研究#566 と同時期 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201">Lerot: Online Learning to rank Framework</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ListWise.html">#ListWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195">A General Approximation Framework for Direct Optimization of Information Retrieval Measures （ApproxAP, ApproxNDCG）, Qin+, Information Retrieval, 2010</a>
-<span class="snippet"><span>Comment</span>実装してみたが、バグありそう感・・・https://github.com/AkihikoWatanabe/ApproxAP ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/PairWise.html">#PairWise</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/191">Large Scale Learning to Rank, Sculley+, NIPS 2009</a>
-<span class="snippet"><span>Comment</span>sofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見え ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><a class="button" href="articles/Tools.html">#Tools</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/124">SVM-MAP</a>
-<span class="snippet"><span>Comment</span>構造化SVMを用いて、MAPを直接最適化する手法 ...</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/20">Personalizing Search via Automated Analysis of Interests and Activities, SIGIR, Teevan+, 2005</a>
-<span class="snippet"><span>Comment</span>・userに関するデータがrichなほうが、Personalizationは改善する。・queries, visited web pages, emails, calendar items, stored desktop 　　　　documents、全てのsetを用いた場合が最も良かった ...</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/11">Modeling Anchor Text and Classifying Queries to Enhance Web Document Retrieval, WWW’08, Fujii, 2008</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34401828-1259be4c-ebe1-11e7-99c4-33508b405bf1.png)![image](https://user-images.githubuse ...</span>
-<button onclick="hideContent(111)" style="display: none;">hide</button>
+<button onclick="hideContent(113)" style="display: none;">hide</button>
 </div>
 <hr>
 ## LearningAnalytics (30)
@@ -10600,7 +10788,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/454">BEKT: Deep Knowledge Tracing with Bidirectional Encoder Representations from Transformers, Tian+ （緒方先生）, Kyoto University, ICCE21</a>
 <span class="snippet"><span>Comment</span>KTにBERTを利用した研究#453 などでDeepLearningBasedなモデル間であまり差がないことが示されているので、本研究が実際どれだけ強いのかは気になるところ。 ...</span>
 </div>
-<button onclick="showMore(112)">more</button>
+<button onclick="showMore(114)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
@@ -10642,7 +10830,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/353">EKT: Exercise-aware Knowledge Tracing for Student Performance Prediction, Hu+, IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, 2019</a>
 <span class="snippet"><span>Comment</span>DKT等のDeepなモデルでは、これまで問題テキストの情報等は利用されてこなかったが、learning logのみならず、問題テキストの情報等もKTする際に活用した研究。#354  をより洗練させjournal化させたものだと思われる。#354  ではKTというより、問題の正誤を予測するモデモデ ...</span>
-<button onclick="hideContent(112)" style="display: none;">hide</button>
+<button onclick="hideContent(114)" style="display: none;">hide</button>
 </div>
 ### StudentPerformancePrediction (9)
 <div class="visible-content">
@@ -10656,7 +10844,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/356">Going Deeper with Deep Knowledge Tracing, Beck+, EDM16</a>
 <span class="snippet"><span>Comment</span>BKT, PFA, DKTのinputの違いが記載されており非常にわかりやすい![image](https://user-images.githubusercontent.com/12249301/119996969-310be080-c00a-11eb-84ce-631413ecaa4e.ちな ...</span>
 </div>
-<button onclick="showMore(113)">more</button>
+<button onclick="showMore(115)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
@@ -10676,7 +10864,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Neural.html">#Neural</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-05-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/353">EKT: Exercise-aware Knowledge Tracing for Student Performance Prediction, Hu+, IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, 2019</a>
 <span class="snippet"><span>Comment</span>DKT等のDeepなモデルでは、これまで問題テキストの情報等は利用されてこなかったが、learning logのみならず、問題テキストの情報等もKTする際に活用した研究。#354  をより洗練させjournal化させたものだと思われる。#354  ではKTというより、問題の正誤を予測するモデモデ ...</span>
-<button onclick="hideContent(113)" style="display: none;">hide</button>
+<button onclick="hideContent(115)" style="display: none;">hide</button>
 </div>
 ### Tutorial (2)
 <div class="visible-content">
@@ -10730,13 +10918,13 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><br><span class="issue_date">Issue Date: 2021-07-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/400">Autonomously Generating Hints by Inferring Problem Solving Policies, Piech+, Stanford University, L@S15</a>
 </div>
-<button onclick="showMore(114)">more</button>
+<button onclick="showMore(116)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/422">ラーニング・アナリティクスとは何か？, 武田俊之, コンピュータ＆エデュケーション VOL.38, 2015</a>
 <span class="snippet"><span>Comment</span>Learning Analyticsの全体像について、コンパクトにまとまっている。特に、そのアプローチに関するコンセプトの特徴（e.g. 学習者中心、デーア駆動）や、フレームワーク、xAPIといったデータの測定・収集方法などについて、まとめられている。 ...</span>
-<button onclick="hideContent(114)" style="display: none;">hide</button>
+<button onclick="hideContent(116)" style="display: none;">hide</button>
 </div>
 <hr>
 ## Education (18)
@@ -10751,7 +10939,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/271">Adaptive Educational HypermediaSystems in Technology Enhanced Learning: A Literature Review, Mulwa+, SIGITE10</a>
 <span class="snippet"><span>Comment</span>よさげ ...</span>
 </div>
-<button onclick="showMore(115)">more</button>
+<button onclick="showMore(117)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
@@ -10760,7 +10948,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/268">Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook: A Complete Guide for Research Scientists and Practitioners, 2011</a>
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/TechnologyEnhancedLearning.html">#TechnologyEnhancedLearning</a><br><span class="issue_date">Issue Date: 2018-03-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/267">Context-Aware Recommender Systems for Learning: A Survey and Future Challenges, Verbert+,  IEEE TRANSACTIONS ON LEARNING TECHNOLOGIES, VOL. 5, NO. 4, OCTOBER-DECEMBER 2012</a>
-<button onclick="hideContent(115)" style="display: none;">hide</button>
+<button onclick="hideContent(117)" style="display: none;">hide</button>
 </div>
 ### LanguageModel (3)
 <div class="visible-content">
@@ -10871,13 +11059,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/519">ECS tips</a>
 <span class="snippet"><span>Comment</span>キャパシティプロバイダーについて  https://dev.classmethod.jp/articles/regrwoth-capacity-provider/Fargateをスポットで7割引で使うFargate Spotとは？ #reinvent  https://dev.classmeth ...</span>
 </div>
-<button onclick="showMore(116)">more</button>
+<button onclick="showMore(118)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2021-10-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/407">データレイクのつくりかた、つかいかた、そだてかた, 関山, AWS Summit</a>
 <span class="snippet"><span>Comment</span>こちらも参照のことhttps://logmi.jp/tech/articles/324242◆伝統的なデータウェアハウスの限界：場当たり的にデータを蓄積し、活用しているとデータのサイロ化が生じてしまう。サイロ化したデータを一箇所にまとめて活用できるようにしましょうというのがData Lakeの ...</span>
-<button onclick="hideContent(116)" style="display: none;">hide</button>
+<button onclick="hideContent(118)" style="display: none;">hide</button>
 </div>
 ### MLOps (3)
 <div class="visible-content">
@@ -10916,13 +11104,13 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/547">AudioGPT: Understanding and Generating Speech, Music, Sound, and Talking Head, arXiv23</a>
 <span class="snippet"><span>Comment</span>text, audio, imageといったマルチモーダルなpromptから、audioに関する様々なタスクを実現できるシステムマルチモーダルデータをjointで学習したというわけではなく、色々なモデルの組み合わせてタスクを実現しているっぽい![image](https://user-images ...</span>
 </div>
-<button onclick="showMore(117)">more</button>
+<button onclick="showMore(119)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/ComputerVision.html">#ComputerVision</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/MulltiModal.html">#MulltiModal</a><br><span class="issue_date">Issue Date: 2023-07-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/784">Awesome Multimodal LLMs</a>
 <span class="snippet"><span>Comment</span>マルチモーダルなLLMのリストがまとめられている ...</span>
-<button onclick="hideContent(117)" style="display: none;">hide</button>
+<button onclick="hideContent(119)" style="display: none;">hide</button>
 </div>
 ### Dataset (2)
 <div class="visible-content">
@@ -10958,7 +11146,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1071">nishibaさんの思考言語化シリーズ</a>
 <span class="snippet"><span>Comment</span>組織マネジメントこそ書籍に忠実であるほうがよい。https://x.com/m_nishiba/status/1713452690645405930?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q打席に立つことについてhttps://x.com/m_nishiba/status/1718 ...</span>
 </div>
-<button onclick="showMore(118)">more</button>
+<button onclick="showMore(120)">more</button>
 
 <div class="hidden-content">
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-09-30</span>
@@ -10966,7 +11154,7 @@ author: AkihikoWATANABE
 <a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DesignPattern.html">#DesignPattern</a><br><span class="issue_date">Issue Date: 2023-04-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/549">More Design Patterns For Machine Learning Systems, 2023</a>
 <span class="snippet"><span>Comment</span>MLのデザインパターンが記述されている ...</span>
-<button onclick="hideContent(118)" style="display: none;">hide</button>
+<button onclick="hideContent(120)" style="display: none;">hide</button>
 </div>
 <hr>
 ## UserModeling (4)
@@ -11034,23 +11222,30 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Summary</span>最近の研究では、言語モデルが人間のような判断を行うことが示されています。この研究では、言語モデルが心理学の研究において人間の代わりになる可能性や条件について探求し、AIを参加者として使用する際の注意点をまとめています。</span>
 </div>
 <hr>
-## Others (11)
-### Others (10)
+## Others (13)
+### Others (12)
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>進化アルゴリズムを使用した新しいアプローチを提案し、強力な基盤モデルの自動生成を実現。LLMの開発において、人間の直感やドメイン知識に依存せず、多様なオープンソースモデルの効果的な組み合わせを自動的に発見する。このアプローチは、日本語のLLMと数学推論能力を持つモデルなど、異なるドメイン間の統合を容易にし、日本語VLMの性能向上にも貢献。オープンソースコミュニティへの貢献と自動モデル構成の新しいパラダイム導入により、基盤モデル開発における効率的なアプローチを模索。</span>
+<span class="snippet"><span>Comment</span>LLMとVLMを融合する話 ...</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
+<span class="snippet"><span>Summary</span>OpenAIのChatGPTやGoogleのPaLM-2などのブラックボックスの言語モデルから重要な情報を抽出するモデルスティーリング攻撃を紹介。APIアクセスを利用して、transformerモデルの埋め込み射影層を回復する攻撃を行い、低コストでAdaとBabbage言語モデルの全射影行列を抽出。gpt-3.5-turboモデルの隠れた次元のサイズを回復し、2000ドル未満のクエリで全射影行列を回復すると推定。潜在的な防御策と緩和策を提案し、将来の作業の影響について議論。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1250">OLMo: Accelerating the Science of Language Models, Dirk Groeneveld+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LMsの商業的重要性が高まる中、最も強力なモデルは閉鎖されており、その詳細が非公開になっている。そのため、本技術レポートでは、本当にオープンな言語モデルであるOLMoの初回リリースと、言語モデリングの科学を構築し研究するためのフレームワークについて詳細に説明している。OLMoはモデルの重みだけでなく、トレーニングデータ、トレーニングおよび評価コードを含むフレームワーク全体を公開しており、オープンな研究コミュニティを強化し、新しいイノベーションを促進することを目指している。</span>
 <span class="snippet"><span>Comment</span>Model Weightsを公開するだけでなく、training/evaluation codeとそのデータも公開する真にOpenな言語モデル（truly Open Language Model）。AllenAI ...</span>
+</div>
+<button onclick="showMore(121)">more</button>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218">Self-Play Fine-Tuning Converts Weak Language Models to Strong Language  Models, Zixiang Chen+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>本研究では、追加の人間による注釈付きデータを必要とせずに、大規模言語モデル（LLMs）を強化する方法を提案します。そのために、Self-Play fIne-tuNing（SPIN）という新しいファインチューニング手法を開発しました。SPINでは、LLMが自身と対戦しながら能力を向上させるセルフプレイのメカニズムを利用します。具体的には、LLMは自己生成応答と人間による注釈付きデータから得られた応答を区別することでポリシーを改善します。実験結果は、SPINがLLMのパフォーマンスを大幅に改善し、専門家の対戦相手を必要とせずに人間レベルのパフォーマンスを達成できることを示しています。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a><br><span class="issue_date">Issue Date: 2024-02-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1231">The Consensus Game: Language Model Generation via Equilibrium Search, Athul Paul Jacob+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LMsを使った質問応答やテキスト生成タスクにおいて、生成的または識別的な手法を組み合わせることで一貫したLM予測を得る新しいアプローチが提案された。このアプローチは、言語モデルのデコーディングをゲーム理論的な連続シグナリングゲームとして捉え、EQUILIBRIUM-RANKINGアルゴリズムを導入することで、既存の手法よりも一貫性とパフォーマンスを向上させることが示された。</span>
-</div>
-<button onclick="showMore(119)">more</button>
-
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Adapter/LoRA.html">#Adapter/LoRA</a><br><span class="issue_date">Issue Date: 2023-11-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1162">MultiLoRA: Democratizing LoRA for Better Multi-Task Learning, Yiming Wang+, N_A, arXiv23</a>
 <span class="snippet"><span>Summary</span>LoRAは、LLMsを効率的に適応させる手法であり、ChatGPTのようなモデルを複数のタスクに適用することが求められている。しかし、LoRAは複雑なマルチタスクシナリオでの適応性能に制限がある。そこで、本研究ではMultiLoRAという手法を提案し、LoRAの制約を緩和する。MultiLoRAは、LoRAモジュールをスケーリングし、パラメータの依存性を減らすことで、バランスの取れたユニタリ部分空間を得る。実験結果では、わずかな追加パラメータでMultiLoRAが優れたパフォーマンスを示し、上位特異ベクトルへの依存性が低下していることが確認された。</span>
@@ -11072,7 +11267,7 @@ author: AkihikoWATANABE
 <br><span class="issue_date">Issue Date: 2024-01-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1222">BLEU might be Guilty but References are not Innocent, EMNLP20</a>
 <span class="snippet"><span>Comment</span>surface levelのNLGの性能指標がsemanticを評価できないことを示した研究 ...</span>
-<button onclick="hideContent(119)" style="display: none;">hide</button>
+<button onclick="hideContent(121)" style="display: none;">hide</button>
 </div>
 ### RetrievalAugmentedGeneration (1)
 <div class="visible-content">
@@ -11082,20 +11277,12 @@ author: AkihikoWATANABE
 <span class="snippet"><span>Comment</span>RAGを提案した研究 ...</span>
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77d4c13d-c26c-40e1-8429-1a879769587e" alt="image"></div>
 <hr>
-## Pocket (174)
+## Pocket (172)
 <div class="visible-content">
-<br><span class="issue_date">Issue Date: 2024-03-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv24</a>
-<br><span class="issue_date">Issue Date: 2024-03-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1255">Stealing Part of a Production Language Model, Nicholas Carlini+, N_A, arXiv24</a>
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1252">The Power of Noise: Redefining Retrieval for RAG Systems, Florin Cuconasu+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>RAGシステムは、LLMsよりも大幅な進歩を遂げており、IRフェーズを介して外部データを取得することで生成能力を向上させています。本研究では、RAGシステムにおけるIRコンポーネントの影響を詳細に分析し、リトリーバーの特性や取得すべきドキュメントのタイプに焦点を当てました。関連性のないドキュメントを含めることで精度が向上することが示され、リトリーバルと言語生成モデルの統合の重要性が強調されました。</span>
 <span class="snippet"><span>Comment</span>Relevantな情報はクエリの近くに配置すべきで、残りのコンテキストをrelevantな情報で埋めるのではなく、ノイズで埋めたほうがRAGの回答が良くなる、という話らしい ...</span>
-</div>
-<button onclick="showMore(120)">more</button>
-
-<div class="hidden-content">
 <br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>AnyToolは、大規模言語モデルエージェントであり、16,000以上のAPIを利用してユーザーのクエリに対処する革新的なツールを提供している。階層構造を持つAPIリトリーバー、API候補を使用してクエリを解決するソルバー、自己反映メカニズムを組み込んでおり、GPT-4の関数呼び出し機能を活用している。AnyToolは、ToolLLMやGPT-4の変種を上回る性能を示し、改訂された評価プロトコルとAnyToolBenchベンチマークを導入している。GitHubでコードが入手可能。</span>
@@ -11104,7 +11291,11 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1247">Chain-of-Thought Reasoning Without Prompting, Xuezhi Wang+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>LLMsの推論能力を向上させるための新しいアプローチに焦点を当てた研究が行われている。この研究では、LLMsがプロンプトなしで効果的に推論できるかどうかを検証し、CoT推論パスをデコーディングプロセスを変更することで引き出す方法を提案している。提案手法は、従来の貪欲なデコーディングではなく、代替トークンを調査することでCoTパスを見つけることができることを示しており、様々な推論ベンチマークで有効性を示している。</span>
 <span class="snippet"><span>Comment</span>以前にCoTを内部的に自動的に実施されるように事前学習段階で学習する、といった話があったと思うが、この研究はデコーディング方法を変更することで、promptingで明示的にinstructionを実施せずとも、CoTを実現するもの、ということだと思われる。 ...</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/afb3a31e-3d85-4b7e-affa-fccc00b7321e" alt="image"><br><span class="issue_date">Issue Date: 2024-03-05</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/afb3a31e-3d85-4b7e-affa-fccc00b7321e" alt="image"></div>
+<button onclick="showMore(122)">more</button>
+
+<div class="hidden-content">
+<br><span class="issue_date">Issue Date: 2024-03-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1246">In Search of Needles in a 11M Haystack: Recurrent Memory Finds What LLMs  Miss, Yuri Kuratov+, N_A, arXiv24</a>
 <span class="snippet"><span>Summary</span>この研究では、生成トランスフォーマーモデルを使用して長い文書を処理する能力を評価するための新しいベンチマークであるBABILongを導入しました。GPT-4やRAGのベンチマークを含む評価により、一般的な方法は$10^4$要素までのシーケンスに対してのみ効果的であることが明らかになりました。再帰的メモリ拡張を使用してGPT-2をファインチューニングすることで、$11\times 10^6$要素を含むタスクを処理できるようになりました。これにより、長いシーケンスの処理能力が大幅に向上しました。</span>
 <span class="snippet"><span>Comment</span>面白そう。GPT4や（GPT4を用いた？）RAGのパフォーマンスが、入力の最初の25%に強く依存していることを示した、とSNSでポストを見たが、どういう条件での実験なんだろう。普通のコンテキストサイズならpromptの末尾などに入れたinstructionなどは強く働く経験があるので気になる。ど ...</span>
@@ -11642,7 +11833,7 @@ author: AkihikoWATANABE
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/627">Transformers Learn Shortcuts to Automata</a>
 <a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2023-05-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/626">Towards Complex Reasoning: the Polaris of Large Language Models</a>
-<button onclick="hideContent(120)" style="display: none;">hide</button>
+<button onclick="hideContent(122)" style="display: none;">hide</button>
 </div>
 ## 各ラベルの量と関係性の可視化 β
 各Issueに付与した主要ラベルの付与回数の合計値によってノードの大きさを決め、ラベル同士の共起関係からエッジを張り作成したグラフです！
