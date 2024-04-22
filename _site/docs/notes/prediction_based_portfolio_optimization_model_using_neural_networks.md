@@ -1,3 +1,0 @@
-Stock returnのpredictionタスクに対してNNを適用。
-
-NNのinput-outputとして、生のreturn値を用いるのではなく、ある時刻におけるreturn(moving reference)をsubtractした値を用いる、AR-MRNNモデルを提案。
