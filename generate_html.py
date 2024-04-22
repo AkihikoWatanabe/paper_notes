@@ -563,6 +563,7 @@ author: AkihikoWATANABE
 
     print("Start to make label pages ...")
     # generate each labels pages
+    os.makedirs('./_articles', exist_ok=True)
     for label, issue_list in label_to_issues.items():
         html_template = f"""---
 layout: post
@@ -575,6 +576,7 @@ author: AkihikoWATANABE
         html_content = f"## {label}\n"
         html_content += gen_one_item(issue_list, [label])
         label_content = f"{html_template}{html_content}"
+        os
         with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
             f.write(label_content)
     print("finished")
