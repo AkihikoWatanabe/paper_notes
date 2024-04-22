@@ -9,7 +9,7 @@ github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
 
-translator_system_content = ["あなたは自然言語処理や機械学習の研究者です。英語のabstractを日本語に翻訳してください。\n",
+translator_system_content = ["あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、英語のabstractを日本語に翻訳してください。\n",
                   "abstract1:",
                   "Table-based reasoning has shown remarkable progress in combining deep models with discrete reasoning, which requires reasoning over both free-form natural language (NL) questions and structured tabular data.",
                   "However, previous table-based reasoning solutions usually suffer from significant performance degradation on huge evidence (tables).",
@@ -33,7 +33,7 @@ translator_system_content = ["あなたは自然言語処理や機械学習の�
                   "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。"]
 translator_system_content = '\n'.join(translator_system_content)
 
-summarizer_system_content = ["あなたは自然言語処理や機械学習の研究者です。日本語のabstractを要約してください。\n",
+summarizer_system_content = ["あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、日本語のabstractを要約してください。\n",
                              "abstract1:",
                              "Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
                              "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる",
