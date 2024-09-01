@@ -156,7 +156,7 @@ def change_first_comment(url, entry, issue_number):
     new_comment += f'  - {summary}\n'
 
     # translation
-    new_comment += f'# Translation (by {$MODEL})\n'
+    new_comment += f'# Translation (by {MODEL})\n'
     abst = entry['summary']
     translated_text = translate(abst)
     new_comment += f'- {translated_text}\n'
