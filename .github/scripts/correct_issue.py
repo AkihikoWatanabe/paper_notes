@@ -152,7 +152,7 @@ def change_first_comment(url, entry, issue_number):
         affiliation = author.get('arxiv:affiliation', 'N/A')
         new_comment += f'  - {name}, {affiliation}\n'
     new_comment += '# Abstract\n'
-    summary = entry['summary'].replace('\n','')
+    summary = entry['summary'].replace('\n',' ')
     new_comment += f'  - {summary}\n'
 
     # translation
