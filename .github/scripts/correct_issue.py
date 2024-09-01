@@ -9,8 +9,12 @@ github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
 
-translator_system_content = ["あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、英語のabstractを日本語に翻訳してください。\n",
-                  "abstract1:",
+MODEL = "gpt-4o-mini"
+
+translator_system_content = [
+        "# Instruction",
+        "あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、英語のAbstractを日本語にTranslationしてください。\n",
+                  "# Abstract",
                   "Table-based reasoning has shown remarkable progress in combining deep models with discrete reasoning, which requires reasoning over both free-form natural language (NL) questions and structured tabular data.",
                   "However, previous table-based reasoning solutions usually suffer from significant performance degradation on huge evidence (tables).",
                   "In addition, most existing methods struggle to reason over complex questions since the required information is scattered in different places.",
@@ -19,8 +23,8 @@ translator_system_content = ["あなたは自然言語処理や機械学習の�
                   "Specifically, we first use the LLMs to break down the evidence (tables) involved in the current question, retaining the relevant evidence and excluding the remaining irrelevant evidence from the huge table.",
                   "In addition, we propose a 'parsing-execution-filling' strategy to alleviate the hallucination dilemma of the chain of thought by decoupling logic and numerical computation in each step.",
                   "Extensive experiments show that our method can effectively leverage decomposed evidence and questions and outperforms the strong baselines on TabFact, WikiTableQuestion, and FetaQA datasets.",
-                  "Notably, our model outperforms human performance for the first time on the TabFact dataset.",
-                  "translation1:",
+                  "Notably, our model outperforms human performance for the first time on the TabFact dataset.\n",
+                  "# Translation",
                   "Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
                   "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる。",
                   "しかし、従来のtable-based reasoning solutionは、大規模なevidence（table）に対して著しい性能の低下を招くことが多い。",
@@ -33,8 +37,9 @@ translator_system_content = ["あなたは自然言語処理や機械学習の�
                   "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。"]
 translator_system_content = '\n'.join(translator_system_content)
 
-summarizer_system_content = ["あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、日本語のabstractを要約してください。\n",
-                             "abstract1:",
+summarizer_system_content = ["# Instruction",
+                             "あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、日本語のAbstractを要約してください。\n",
+                             "# Abstract",
                              "Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
                              "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる",
                              "しかし、従来のtable-based reasoning solutionは、大規模なevidence（table）に対して著しい性能の低下を招くことが多い。",
@@ -45,7 +50,7 @@ summarizer_system_content = ["あなたは自然言語処理や機械学習の�
                              "さらに、'parsing-execution-filling'を提案し、各ステップで論理と数値計算を分離することで、chain of thoughtのhallucinationのジレンマを軽減する。",
                              "徹底的な実験により、提案手法が分解されたevidenceと質問を効果的に活用でき、TabFact、WikiTableQuestion、およびFetaQAデータセットで強力なベースラインを上回ることを示した。",
                              "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。",
-                             "summary1:",
+                             "# 要約",
                              "tableとquestionが与えられた時に、LLMを用いてsmall tableとsub-questionに分割。",
                              "sub-questionではlogicと数値計算を分離することで、hallucinationを防ぐ。",
                              "TabFact Reasoningで初めて人間を超えた性能を発揮。"]
@@ -106,7 +111,7 @@ def change_title(entry, issue_number):
 
 def call_openai(messages):
     response = OpenAI().chat.completions.create(
-            model="gpt-3.5-turbo-1106",
+            model=MODEL,
             messages=messages,
             temperature=0.0)
     response_text = response.choices[0].message.content.strip()
@@ -151,13 +156,13 @@ def change_first_comment(url, entry, issue_number):
     new_comment += f'  - {summary}\n'
 
     # translation
-    new_comment += '# Translation (by gpt-3.5-turbo)\n'
+    new_comment += f'# Translation (by {$MODEL})\n'
     abst = entry['summary']
     translated_text = translate(abst)
     new_comment += f'- {translated_text}\n'
 
     # summarization
-    new_comment += '# Summary (by gpt-3.5-turbo)\n'
+    new_comment += f'# Summary (by {MODEL})\n'
     summary_text = summarize(translated_text)
     new_comment += f'- {summary_text}'
 
@@ -191,11 +196,11 @@ def translate_and_summarize(issue_data):
         if m != None:
             org_text = m.group(1)
             # translation
-            new_comment = '# Translation (by gpt-3.5-turbo)\n'
+            new_comment = f'# Translation (by {MODEL})\n'
             translated_text = translate(org_text)
             new_comment += f'- {translated_text}\n'
             # summarization
-            new_comment += '# Summary (by gpt-3.5-turbo)\n'
+            new_comment += f'# Summary (by {MODEL})\n'
             summary_text = summarize(translated_text)
             new_comment += f'- {summary_text}'   
             comment.edit(body='\n'.join([org_text, new_comment]))
