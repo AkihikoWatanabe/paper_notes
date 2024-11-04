@@ -95,13 +95,11 @@ def change_title(entry, issue_number):
     year = entry.published.split('-')[0][2:]
     author = entry.authors[0]
     if len(entry.authors) > 1:
-        affiliation = author.get('arxiv.affiliation', 'N/A') 
         name = author['name']
-        new_title = f"{entry.title}, {name}+, {affiliation}, arXiv'{year}"
+        new_title = f"{entry.title}, {name}+, arXiv'{year}"
     else:
-        affiliation = author.get('arxiv.affiliation', 'N/A') 
         name = author['name']
-        new_title = f"{entry.title}, {name}, {affiliation}, arXiv'{year}"
+        new_title = f"{entry.title}, {name}, arXiv'{year}"
 
     github = Github(github_token)
     repo = github.get_repo(repo_name)
@@ -146,11 +144,10 @@ def summarize(org_text):
 def change_first_comment(url, entry, issue_number):
     new_comment = '# URL\n'
     new_comment += f'- {url}\n'
-    new_comment += "# Affiliations\n"
+    new_comment += "# Authors\n"
     for author in entry.authors:
         name = author['name']
-        affiliation = author.get('arxiv:affiliation', 'N/A')
-        new_comment += f'  - {name}, {affiliation}\n'
+        new_comment += f'  - {name}\n'
     new_comment += '# Abstract\n'
     summary = entry['summary'].replace('\n',' ')
     new_comment += f'  - {summary}\n'
@@ -195,6 +192,7 @@ def translate_and_summarize(issue_data):
         m = p.search(comment.body)
         if m != None:
             org_text = m.group(1)
+            org_text = org_text.replace("\n", "")
             # translation
             new_comment = f'# Translation (by {MODEL})\n'
             translated_text = translate(org_text)
