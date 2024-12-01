@@ -108,7 +108,7 @@ def change_title(entry, issue_number):
 
 
 def call_openai(messages):
-    response = OpenAI().chat.completions.create(
+    response = OpenAI(api_key=os.environ.get("OPENAI_API_KEY")).chat.completions.create(
             model=MODEL,
             messages=messages,
             temperature=0.0)
