@@ -1,6 +1,8 @@
 # paper_notes
 
-[NEW!] Issueに記載したメモを整理してブログ形式にしてみました。ブログは[こちら](https://AkihikoWatanabe.github.io/paper_notes)。
+2024.12.28: ブログをリニューアルしたいと思い早くもNカ月が過ぎ去りました
+
+Issueに記載したメモを整理してブログ形式にしてみました。ブログは[こちら](https://AkihikoWatanabe.github.io/paper_notes)。
 
 Issueに論文とメモを記載
 
