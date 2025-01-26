@@ -212,12 +212,14 @@ if __name__ == "__main__":
 
     url = issue_data["body"]
 
+    arxiv_pat = r"^https:\/\/arxiv\.org\/$"
+
     if action_type == 'opened':
-        if 'arxiv.org' in url:
+        if re.fullmatch(arxiv_pat, url):
             change_title_and_first_comment(issue_data)
     elif action_type == 'labeled':
         labels = issue_data["labels"]
-        if any([label["name"] == "action_wanted" for label in labels]):
+        if any([label["name"] == "action_wanted" for label in labels]) and re.fullmatch(arxiv_pat, url):
             change_title_and_first_comment(issue_data)
         elif any([label["name"] == "translation_required" for label in labels]):
             translate_and_summarize(issue_data)
