@@ -97,10 +97,10 @@ def change_title(entry, issue_number):
     author = entry.authors[0]
     if len(entry.authors) > 1:
         name = author['name']
-        new_title = f"{entry.title}, {name}+, arXiv'{year}"
+        new_title = f"[Paper Note] {entry.title}, {name}+, arXiv'{year}"
     else:
         name = author['name']
-        new_title = f"{entry.title}, {name}, arXiv'{year}"
+        new_title = f"[Paper Note] {entry.title}, {name}, arXiv'{year}"
 
     github = Github(github_token)
     repo = github.get_repo(repo_name)
