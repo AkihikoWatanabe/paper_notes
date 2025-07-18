@@ -412,7 +412,7 @@ def main():
                          "Tutorial",
                          "Tool",
                          "Library",
-                         "Dataset"] 
+                         "Dataset"]
     all_issues = get_all_issues()
     # update parent
     parent_labels = set(parent_labels)
@@ -487,7 +487,7 @@ def main():
     print("Start to making graph ...")
     edges = list(set(edges))
     label_to_hierarchy = dict(label_to_hierarchy)
-    generate_graph(parent_labels, sub_parent_labels, edges, label_weights, label_to_hierarchy)
+    #generate_graph(parent_labels, sub_parent_labels, edges, label_weights, label_to_hierarchy)
     print("finish")
 
     print("Start to decoding as html ...")
@@ -523,35 +523,35 @@ author: AkihikoWATANABE
     html_content += gen_one_item(pockets, ["Pocket"])
 
     #graph
-    html_content += "## 各ラベルの量と関係性の可視化 β\n"
-    html_content += "各Issueに付与した主要ラベルの付与回数の合計値によってノードの大きさを決め、ラベル同士の共起関係からエッジを張り作成したグラフです！\n"
-    html_content += "なんか見辛いしよくわからない...笑 クリックしてドラッグで視点を移動できます。\n"
-    html_content += "{% raw %}"
-    html_content += '<svg></svg>'
-    html_content += '<div id="svgContainer"></div>'
-    html_content += """<script>
-    // d3.selectを使ってプレースホルダーを選択
-    const container = d3.select("#svgContainer");
-    const svg = container.append("svg");
-    const width = 647;
-    const height = window.innerHeight;
+    #html_content += "## 各ラベルの量と関係性の可視化 β\n"
+    #html_content += "各Issueに付与した主要ラベルの付与回数の合計値によってノードの大きさを決め、ラベル同士の共起関係からエッジを張り作成したグラフです！\n"
+    #html_content += "なんか見辛いしよくわからない...笑 クリックしてドラッグで視点を移動できます。\n"
+    #html_content += "{% raw %}"
+    #html_content += '<svg></svg>'
+    #html_content += '<div id="svgContainer"></div>'
+    #html_content += """<script>
+    #// d3.selectを使ってプレースホルダーを選択
+    #const container = d3.select("#svgContainer");
+    #const svg = container.append("svg");
+    #const width = 647;
+    #const height = window.innerHeight;
 
-    svg.attr("width", width).attr("height", height);
+    #svg.attr("width", width).attr("height", height);
 
-    const g = svg.append("g");
+    #const g = svg.append("g");
 
-    d3.xml("assets/images/knowledge_graph.svg").then(data => {
-        g.node().append(data.documentElement);
-    });
+    #d3.xml("assets/images/knowledge_graph.svg").then(data => {
+    #    g.node().append(data.documentElement);
+    #});
 
-    const zoom = d3.zoom()
-        .on("zoom", () => {
-            g.attr("transform", d3.event.transform);
-        });
+    #const zoom = d3.zoom()
+    #    .on("zoom", () => {
+    #        g.attr("transform", d3.event.transform);
+    #    });
 
-    svg.call(zoom);
-</script>
-"""
+    #svg.call(zoom);
+    #</script>
+    #"""
     html_content += "{% endraw %}\n"
     html_content += '<hr>\n'
 
@@ -576,7 +576,6 @@ author: AkihikoWATANABE
         html_content = f"## {label}\n"
         html_content += gen_one_item(issue_list, [label])
         label_content = f"{html_template}{html_content}"
-        os
         with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
             f.write(label_content)
     print("finished")
