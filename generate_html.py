@@ -285,7 +285,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
         if image_url != None:
             #_html_content += f'![{issue["title"]}]({image_url})\n'
-            _html_content += f'<img src="{image_url}" alt="image">'
+            _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
     _html_content += '</div>\n'
     if len(sorted_issues[VISIBLE_NUM:]) > 0:
         _html_content += f'<button onclick="showMore({curr_more_idx})">more</button>\n\n'
@@ -314,7 +314,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
                 _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
             if image_url != None:
                 #_html_content += f'![{issue["title"]}]({image_url})\n'
-                _html_content += f'<img src="{image_url}" alt="image">'
+                _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
         _html_content += f'<button onclick="hideContent({curr_more_idx})" style="display: none;">hide</button>\n'
         _html_content += "</div>\n" 
         curr_more_idx += 1
