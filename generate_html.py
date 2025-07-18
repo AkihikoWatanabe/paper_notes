@@ -552,7 +552,7 @@ author: AkihikoWATANABE
     #svg.call(zoom);
     #</script>
     #"""
-    html_content += "{% endraw %}\n"
+    #html_content += "{% endraw %}\n"
     html_content += '<hr>\n'
 
     home_content = f"{html_template}{html_content}\n"
