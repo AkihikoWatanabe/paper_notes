@@ -204,12 +204,12 @@ def get_year(text: str) -> int:
     return int(year)
 
 
-summ_pat = "Summary (by gpt-3.5-turbo)"
+summ_pat = "Summary (by"
 http_pat = re.compile("^https?://[^\s/$.?#].[^\s]*$")
 def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
     summ_text = None
     comm_text = None
-    image_url = None
+    image_url_list = []
     summ_idx = issue["body"].find(summ_pat)
     if summ_idx != -1:
         summ_text = ''.join(issue["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").strip()
@@ -229,19 +229,20 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
         if summ_idx != -1:
             continue
         if comm_text == None:
-            comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            #comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            comm_text = r['body']
         else:
-            comm_text += re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
-            comm_text = comm_text[:150]
-        if len(comm_text) >= 150:
-            break
+            #comm_text += re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            #comm_text = comm_text[:150]
+            comm_text += r['body']
+        #if len(comm_text) >= 150:
+        #    break
     # extract image url
     for r in comments:
         m = image_pat.search(r['body'])
         if m != None:
-            image_url = m.group(1).replace('\n', '').strip()
-            break
-    return summ_text, comm_text, image_url
+            image_url_list.append(m.group(1).replace('\n', '').strip())
+    return summ_text, comm_text, image_url_list
 
 
 def prepro_title(title: str):
@@ -276,16 +277,18 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         snippet_text = None
         image_url = None
         if issue["body"] != None:
-            snippet_text, comment_text, image_url = get_snippets(issue)
+            snippet_text, comment_text, image_url_list = get_snippets(issue)
         #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n' 
         _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
         if snippet_text != None:
             _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text}</span>\n'
         if comment_text != None:
-            _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
-        if image_url != None:
+            #_html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
+            _html_content += f'<span class="snippet"><span>Comment</span>{comment_text}</span>\n'
+        if len(image_url_list) > 0:
             #_html_content += f'![{issue["title"]}]({image_url})\n'
-            _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
+            for image_url in image_url_list:
+                _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
     _html_content += '</div>\n'
     if len(sorted_issues[VISIBLE_NUM:]) > 0:
         _html_content += f'<button onclick="showMore({curr_more_idx})">more</button>\n\n'
@@ -305,16 +308,21 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             snippet_text = None
             image_url = None
             if issue["body"] != None:
-                snippet_text, comment_text, image_url = get_snippets(issue)
+                snippet_text, comment_text, image_url_list = get_snippets(issue)
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
             _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
             if snippet_text != None:
                 _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text}</span>\n'
             if comment_text != None:
-                _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
-            if image_url != None:
+                #_html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
+                _html_content += f'<span class="snippet"><span>Comment</span>{comment_text}</span>\n'
+            if len(image_url_list) > 0:
                 #_html_content += f'![{issue["title"]}]({image_url})\n'
-                _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
+                for image_url in image_url_list:
+                    _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
+            #if image_url != None:
+                #_html_content += f'![{issue["title"]}]({image_url})\n'
+            #    _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
         _html_content += f'<button onclick="hideContent({curr_more_idx})" style="display: none;">hide</button>\n'
         _html_content += "</div>\n" 
         curr_more_idx += 1
