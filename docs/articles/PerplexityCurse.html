@@ -12,17 +12,17 @@
 <meta property="og:title" content="PerplexityCurseに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="PerplexityCurse #NLP#LanguageModel#Bias#NAACL#PostTrainingIssue Date: 2025-05-02 Where is the answer? Investigating Positional Bias in Language Model Knowledge Extraction, Kuniaki Saito+, NAACL25 Comment元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa- ... #Pretraining#Pocket#InstructionTuning#ACLIssue Date: 2025-01-06 Instruction-tuned Language Models are Better Knowledge Learners, Zhengbao Jiang+, ACL24 Comment興味深い ...">
-<meta property="og:description" content="PerplexityCurse #NLP#LanguageModel#Bias#NAACL#PostTrainingIssue Date: 2025-05-02 Where is the answer? Investigating Positional Bias in Language Model Knowledge Extraction, Kuniaki Saito+, NAACL25 Comment元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa- ... #Pretraining#Pocket#InstructionTuning#ACLIssue Date: 2025-01-06 Instruction-tuned Language Models are Better Knowledge Learners, Zhengbao Jiang+, ACL24 Comment興味深い ...">
+<meta name="description" content='PerplexityCurse #NLP#LanguageModel#Bias#NAACL#PostTrainingIssue Date: 2025-05-02 Where is the answer? Investigating Positional Bias in Language Model Knowledge Extraction, Kuniaki Saito+, NAACL25 SummaryLLMは新しい文書でファインチューニングが必要だが、「困惑の呪い」により情報抽出が困難。特に文書の初めに関する質問には正確に答えるが、中間や末尾の情報抽出に苦労する。自己回帰的トレーニングがこの問題を引き起こすことを示し、デノイジング自己回帰損失が情報抽出を改善する可能性を示唆。これにより、LLMの知識抽出と新ドメインへの適応に関する新たな議論が生まれる。 Comment元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa-4ce0-4389-826e-4c85113c755f) LLMの知識を最新にするために新しい文書（e.g., 新しいドメインの文書等）をLLMに与え（便宜上学習データと呼ぶ）Finetuningをした場合、Finetuning後のモデルで与えられたqueryから（LLM中にパラメータとしてmemorizeされている）対応する事実情報を抽出するようInferenceを実施すると、queryに対応する事実情報の学習データ中での位置が深くなると（i.e., middle -- endになると）抽出が困難になる Positional Biasが存在する[^1]ことを明らかにした。 そして、これを緩和するために正則化が重要（e.g., Denoising, Shuffle, Attention Drops）であることを実験的に示し、正則化手法は複数組み合わせることで、よりPositional Biasが緩和することを示した研究 [^1]: 本研究では"Training"に利用する文書のPositional Biasについて示しており、"Inference"時におけるPositional Biasとして知られている"lost-in-the middle"とは異なる現象を扱っている点に注意## データセット [^1]: ChatGPTによってテキストをrephraseし、sentenceのorderも変更することで多様性を増やした。が、sentence orderが文書中の深い位置にある場合にあまりorderが変化しなかったようで、このため深い位置に対するQAの性能改善が限定的になっていると説明している。'>
+<meta property="og:description" content='PerplexityCurse #NLP#LanguageModel#Bias#NAACL#PostTrainingIssue Date: 2025-05-02 Where is the answer? Investigating Positional Bias in Language Model Knowledge Extraction, Kuniaki Saito+, NAACL25 SummaryLLMは新しい文書でファインチューニングが必要だが、「困惑の呪い」により情報抽出が困難。特に文書の初めに関する質問には正確に答えるが、中間や末尾の情報抽出に苦労する。自己回帰的トレーニングがこの問題を引き起こすことを示し、デノイジング自己回帰損失が情報抽出を改善する可能性を示唆。これにより、LLMの知識抽出と新ドメインへの適応に関する新たな議論が生まれる。 Comment元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa-4ce0-4389-826e-4c85113c755f) LLMの知識を最新にするために新しい文書（e.g., 新しいドメインの文書等）をLLMに与え（便宜上学習データと呼ぶ）Finetuningをした場合、Finetuning後のモデルで与えられたqueryから（LLM中にパラメータとしてmemorizeされている）対応する事実情報を抽出するようInferenceを実施すると、queryに対応する事実情報の学習データ中での位置が深くなると（i.e., middle -- endになると）抽出が困難になる Positional Biasが存在する[^1]ことを明らかにした。 そして、これを緩和するために正則化が重要（e.g., Denoising, Shuffle, Attention Drops）であることを実験的に示し、正則化手法は複数組み合わせることで、よりPositional Biasが緩和することを示した研究 [^1]: 本研究では"Training"に利用する文書のPositional Biasについて示しており、"Inference"時におけるPositional Biasとして知られている"lost-in-the middle"とは異なる現象を扱っている点に注意## データセット [^1]: ChatGPTによってテキストをrephraseし、sentenceのorderも変更することで多様性を増やした。が、sentence orderが文書中の深い位置にある場合にあまりorderが変化しなかったようで、このため深い位置に対するQAの性能改善が限定的になっていると説明している。'>
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/PerplexityCurse.html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/PerplexityCurse.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-18T09:29:18+00:00">
+<meta property="article:published_time" content="2025-07-19T00:28:24+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="PerplexityCurseに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-18T09:29:18+00:00","datePublished":"2025-07-18T09:29:18+00:00","description":"PerplexityCurse #NLP#LanguageModel#Bias#NAACL#PostTrainingIssue Date: 2025-05-02 Where is the answer? Investigating Positional Bias in Language Model Knowledge Extraction, Kuniaki Saito+, NAACL25 Comment元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa- ... #Pretraining#Pocket#InstructionTuning#ACLIssue Date: 2025-01-06 Instruction-tuned Language Models are Better Knowledge Learners, Zhengbao Jiang+, ACL24 Comment興味深い ...","headline":"PerplexityCurseに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PerplexityCurse.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PerplexityCurse.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-19T00:28:24+00:00","datePublished":"2025-07-19T00:28:24+00:00","description":"PerplexityCurse #NLP#LanguageModel#Bias#NAACL#PostTrainingIssue Date: 2025-05-02 Where is the answer? Investigating Positional Bias in Language Model Knowledge Extraction, Kuniaki Saito+, NAACL25 SummaryLLMは新しい文書でファインチューニングが必要だが、「困惑の呪い」により情報抽出が困難。特に文書の初めに関する質問には正確に答えるが、中間や末尾の情報抽出に苦労する。自己回帰的トレーニングがこの問題を引き起こすことを示し、デノイジング自己回帰損失が情報抽出を改善する可能性を示唆。これにより、LLMの知識抽出と新ドメインへの適応に関する新たな議論が生まれる。 Comment元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa-4ce0-4389-826e-4c85113c755f) LLMの知識を最新にするために新しい文書（e.g., 新しいドメインの文書等）をLLMに与え（便宜上学習データと呼ぶ）Finetuningをした場合、Finetuning後のモデルで与えられたqueryから（LLM中にパラメータとしてmemorizeされている）対応する事実情報を抽出するようInferenceを実施すると、queryに対応する事実情報の学習データ中での位置が深くなると（i.e., middle -- endになると）抽出が困難になる Positional Biasが存在する[^1]ことを明らかにした。 そして、これを緩和するために正則化が重要（e.g., Denoising, Shuffle, Attention Drops）であることを実験的に示し、正則化手法は複数組み合わせることで、よりPositional Biasが緩和することを示した研究 [^1]: 本研究では&quot;Training&quot;に利用する文書のPositional Biasについて示しており、&quot;Inference&quot;時におけるPositional Biasとして知られている&quot;lost-in-the middle&quot;とは異なる現象を扱っている点に注意## データセット [^1]: ChatGPTによってテキストをrephraseし、sentenceのorderも変更することで多様性を増やした。が、sentence orderが文書中の深い位置にある場合にあまりorderが変化しなかったようで、このため深い位置に対するQAの性能改善が限定的になっていると説明している。","headline":"PerplexityCurseに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PerplexityCurse.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PerplexityCurse.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-18T09:29:18+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 18, 2025
+    <time class="dt-published" datetime="2025-07-19T00:28:24+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 19, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -799,7 +799,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 min</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 15 mins</span>
   </div></header>
 </div>
     </div>
@@ -996,10 +996,58 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Bias.html">#Bias</a><a class="button" href="articles/NAACL.html">#NAACL</a><a class="button" href="articles/PostTraining.html">#PostTraining</a><br><span class="issue_date">Issue Date: 2025-05-02</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1922">Where is the answer? Investigating Positional Bias in Language Model   Knowledge Extraction, Kuniaki Saito+, NAACL25</a>
-<span class="snippet"><span>Comment</span>元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa- ...</span>
+<span class="snippet"><span>Summary</span>LLMは新しい文書でファインチューニングが必要だが、「困惑の呪い」により情報抽出が困難。特に文書の初めに関する質問には正確に答えるが、中間や末尾の情報抽出に苦労する。自己回帰的トレーニングがこの問題を引き起こすことを示し、デノイジング自己回帰損失が情報抽出を改善する可能性を示唆。これにより、LLMの知識抽出と新ドメインへの適応に関する新たな議論が生まれる。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q![Image](https://github.com/user-attachments/assets/dd6bdffa-4ce0-4389-826e-4c85113c755f)
+LLMの知識を最新にするために新しい文書（e.g., 新しいドメインの文書等）をLLMに与え（便宜上学習データと呼ぶ）Finetuningをした場合、Finetuning後のモデルで与えられたqueryから（LLM中にパラメータとしてmemorizeされている）対応する事実情報を抽出するようInferenceを実施すると、queryに対応する事実情報の学習データ中での位置が深くなると（i.e., middle -- endになると）抽出が困難になる Positional Biasが存在する[^1]ことを明らかにした。
+そして、これを緩和するために正則化が重要（e.g., Denoising, Shuffle, Attention Drops）であることを実験的に示し、正則化手法は複数組み合わせることで、よりPositional Biasが緩和することを示した研究
+
+[^1]: 本研究では"Training"に利用する文書のPositional Biasについて示しており、"Inference"時におけるPositional Biasとして知られている"lost-in-the middle"とは異なる現象を扱っている点に注意## データセット
+文書 + QAデータの2種類を構築しFinetuning後のknowledge extraction能力の検証をしている[^2]。
+
+実験では、`Synthetic Bio (合成データ)`, `Wiki2023+（実データ）` の2種類のデータを用いて、Positional Biasを検証している。
+Synthetic bioは、人間のbiographyに関する9つの属性（e.g., 誕生日, 出生地）としてとりうる値をChatGPTに生成させ、3000人の人物に対してそれらをランダムにassignし、sentence templateを用いてSurface Realizationすることで人工的に3000人のbiographyに関するテキストを生成している。
+一方、Wiki2023+では、#1708 の方法にのっとって [^3]事前学習時の知識とのoverlapが最小となるように`2023`カテゴリ以下のwikipediaの様々なジャンルの記事を収集して活用する。QAデータの構築には、元文書からsentenceを抽出し、GPT-3.5-Turboに当該sentenceのみを与えてQA pairを作成させることで、データを作成している。なお、hallucinationや品質の低いQA pairをフィルタリングした。フィルタリング後のQA Pairをランダムにサンプリングし品質を確認したところ、95%のQA pairが妥当なものであった。
+
+これにより、下図のようなデータセットが作成される。FigureCが `Wiki2023+`で、FigureDが`SyntheticBio`。`Wiki2023+`では、QA pairの正解が文書中の前半により正解が現れるような偏りが見受けられる。
+![Image](https://github.com/user-attachments/assets/1146328f-de7e-4e90-b495-b129730c5d0d)
+
+[^2]: #1923 において、知識 + 知識を抽出するタスクの双方を用いて学習することで、モデルから知識を抽出する能力が備わることが示されているため。
+[^3]: Llama-2-7Bにおいて2023カテゴリ以下の情報に対するQAのperformanceが著しく低いことから、事前学習時に当該データが含まれている可能性が低いことが示唆されている## 実験 &amp; 実験結果 (modulated data)
+作成した文書+QAデータのデータセットについて、QAデータをtrain/valid/testに分けて、文書データは全て利用し、testに含まれるQAに適切に回答できるかで性能を評価する。このとき、文書中でQAに対する正解がテキストが出現する位置を変化させモデルの学習を行い、予測性能を見ることで、Positional Biasが存在することを明らかにする。このとき、#1923 に倣い、文書とQAをMixed Sampling（1バッチあたり256件のサンプルをランダムにQAおよび文書データからサンプリング; # 1923 では文書とQAを2:8の比率でサンプリングしている）することで学習をする。QAの場合目的関数は回答テキスト部分のみのNLL、文書の場合はnext-token prediction lossを利用する。
+
+Positional Biasの存在を示すだけでなく、(A, B, C) の順番でnext-token prediction lossで学習されたモデルの場合、Cの知識を抽出するためにA, Bがcontextとして必要となるため、Cを抽出する際の汎化性能を高めるためにA, Bの表現がより多様である必要がある、という課題がある。これに対処するためのいくつかのシンプルな正則化手法、具体的には
+- D-AR: predition targetのトークンは保持したまま、input tokenの一部をランダムなトークンに置き換える
+- Shuffle: 入力文をシャッフルする
+- Attn Drop: self-attentionモジュールのattention weightをランダムに0にする
+の3種類とPositional Biasの関係性を検証している。
+![Image](https://github.com/user-attachments/assets/503e53f2-28f5-46ea-a11f-beee98f8fa38)
+
+検証の結果、（合成データ、実データともに）Positional Biasが存在することが明らかとなり（i.e., 正解テキストが文書中の深い位置にあればあるほど予測性能が低下する）正則化によってPositional Biasが緩和されることが示された。
+![Image](https://github.com/user-attachments/assets/11a29a1e-f869-4628-9c47-e1fc9e5c394e)
+
+また、異なるモデルサイズで性能を比較したところ、モデルサイズを大きくすることで性能自体は改善するが、依然としてPositional Biasが存在することが示され、ARよりもD-ARが一貫して高い性能を示した。このことから、Positional Biasを緩和するために何らかの正則化手法が必要なことがわかる。
+![Image](https://github.com/user-attachments/assets/0772d144-c22b-4723-8578-acdf0e2e1187)
+
+また、オリジナル文書の1文目を、正解データの位置を入れ替えた各モデルに対して、テキスト中の様々な位置に配置してPerplexityを測った。この設定では、モデルがPerplexityを最小化するためには、（1文目ということは以前の文脈が存在しないsentenceなので）文脈に依存せずに文の記憶していなければならない。よって、各手法ごとにどの程度Perplexityが悪化するかで、各手法がどの程度あるsentenceを記憶する際に過去の文脈に依存しているかが分かる。ここで、学習データそのもののPerplexityはほぼ1.0であったことに注意する。
+結果として、文書中の深い位置に配置されればされるほどPerplexityは増大し（left）、Autoregressive Model (AR) のPerplexity値が最も値が大きかった（=性能が悪かった）。このことから、ARはより過去の文脈に依存してsentenceの情報を記憶していることが分かる。また、モデルサイズが小さいモデルの方がPerplexityは増大する傾向にあることがわかった (middle)。これはFig.3で示したQAのパフォーマンスと傾向が一致しており、学習データそのもののPerplexityがほぼ1.0だったことを鑑みると、学習データに対するPerplexityは様々なPositionに位置する情報を適切に抽出できる能力を測るメトリックとしては適切でないことがわかる。また、学習のiterationを増やすと、ARの場合はfirst positionに対する抽出性能は改善したが、他のpositionでの抽出性能は改善しなかった。一方、D-ARの場合は、全てのpositionでの抽出性能が改善した (right) 。このことから、必ずしも学習のiterationを増やしても様々なPositionに対する抽出性能が改善しないこと、longer trainingの恩恵を得るためには正則化手法を利用する必要があることが明らかになった。
+
+![Image](https://github.com/user-attachments/assets/94f635a5-68d5-478d-ab16-513e855fe054)
+## 実験 &amp; 実験結果 (unmodulated data)
+Wiki2023+データに対して上記のようなデータの変更を行わずに、そのまま学習を行い、各位置ごとのQAの性能を測定したところ、（すべてがPositional Biasのためとは説明できないが）回答が文書中の深い位置にある場合の性能が劣化することを確認した。2--6番目の性能の低下は、最初の文ではシンプルな事実が述べられ、後半になればなるほどより複雑な事実が述べられる傾向があることが起因して性能の低下しているとかせつをたてている。また、unmodulated dataの場合でもD-ARはARの性能を改善することが明らかとなった。モデルサイズが大きいほど性能は改善するが、以前として文書中の深い位置に正解がある場合に性能は劣化することもわかる。
+![image](https://github.com/user-attachments/assets/2f43ba8a-c54e-4523-b8f0-7cfc797d5a7e)
+
+また、正則化手法は組み合わせることでさらに性能が改善し、#1923 に示されている通り、学習データ中の表現を多様にし[^1]学習したところ予測性能が改善し、正則化手法とも補完的な関係であることも示された。
+![image](https://github.com/user-attachments/assets/e79415b1-28e2-47ab-b429-448412053d0b)
+
+医療ドメインでも実験したところ、正則化手法を適用した場合にARよりも性能が上回った。最後にWiki2023+データについてOpenbookな設定で、正解が含まれる文書をLLMのcontextとして与えた場合（i.e.,ほぼ完璧なretrieverが存在するRAGと同等の設定とみなせる）、QAの性能は90.6%に対し、継続学習した場合のベストモデルの性能は50.8%だった。このことから、正確なretrieverが存在するのであれば、継続学習よりもRAGの方がQAの性能が高いと言える。
+RAGと継続学習のメリット、デメリットの両方を考慮して、適切に手法を選択することが有効であることが示唆される。
+![image](https://github.com/user-attachments/assets/14180452-5421-4102-8751-fabc8b780d49)
+
+[^1]: ChatGPTによってテキストをrephraseし、sentenceのorderも変更することで多様性を増やした。が、sentence orderが文書中の深い位置にある場合にあまりorderが変化しなかったようで、このため深い位置に対するQAの性能改善が限定的になっていると説明している。</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a><a class="button" href="articles/ACL.html">#ACL</a><br><span class="issue_date">Issue Date: 2025-01-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1708">Instruction-tuned Language Models are Better Knowledge Learners, Zhengbao Jiang+, ACL24</a>
-<span class="snippet"><span>Comment</span>興味深い ...</span>
+<span class="snippet"><span>Summary</span>新しい文書からの知識更新には、事前指示調整（PIT）を提案。これは、文書の訓練前に質問に基づいて指示調整を行う手法で、LLMが新しい情報を効果的に吸収する能力を向上させ、標準的な指示調整を17.8%上回る結果を示した。</span>
+<span class="snippet"><span>Comment</span>興味深い</span>
 </div>
 
 
@@ -1013,32 +1061,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/kNN.html" title="kNNに関する論文・技術記事メモの一覧">
-            kNNに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/AutomaticSpeechRecognition(ASR).html" title="AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧">
+            AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Batch.html" title="Batchに関する論文・技術記事メモの一覧">
-            Batchに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DesignPattern.html" title="DesignPatternに関する論文・技術記事メモの一覧">
+            DesignPatternに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Reasoning.html" title="Reasoningに関する論文・技術記事メモの一覧">
-            Reasoningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/RecSys.html" title="RecSysに関する論文・技術記事メモの一覧">
+            RecSysに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TechnologyEnhancedLearning.html" title="TechnologyEnhancedLearningに関する論文・技術記事メモの一覧">
-            TechnologyEnhancedLearningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Regularization.html" title="Regularizationに関する論文・技術記事メモの一覧">
+            Regularizationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
