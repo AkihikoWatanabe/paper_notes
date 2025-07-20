@@ -12,17 +12,17 @@
 <meta property="og:title" content="Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="Supervised-FineTuning (SFT) #EfficiencyImprovement#Pocket#NLP#LanguageModel#PEFT(Adaptor/LoRA)#StabilityIssue Date: 2025-07-12 Paper Note SingLoRA: Low Rank Adaptation Using a Single Matrix, David Bensaïd+, arXiv25 SummarySingLoRAは、LoRAの低ランク適応を再定式化し、単一の低ランク行列とその転置の積を用いることで、トレーニングの安定性を向上させ、パラメータ数をほぼ半減させる手法です。実験により、常識推論タスクでLLama 7Bを用いたファインチューニングで91.3%の精度を達成し、LoRAやLoRA+を上回る結果を示しました。また、画像生成においてもStable Diffusionのファインチューニングで高い忠実度を実現しました。 Comment元ポスト:https://x.com/theturingpost/status/1943701154497732765?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLoRAは低ランク行列BAの積を計算するが、オリジナルのモデルと同じ挙動から学習をスタートするために、Bをzeroで初期化し、Aはランダムに初期化する。このAとBの不均衡さが、勾配消失、爆発、あるいはsub-optimalな収束の要因となってしまっていた（inter-matrix scale conflicts)。特に、LoRAはモデルのwidthが大きくなると不安定になるという課題があった。このため、低ランク行列を2つ使うのではなく、1つの低ランク行列（とその転置）およびoptimizationのstep tごとにtrainableなパラメータがどの程度影響を与えるかを調整する度合いを決めるscalar function u(t)を導入することで、低ランク行列間の不均衡を解消しつつ、パラメータ数を半減し、学習の安定性と性能を向上させる。たとえばu(t)を学習開始時にzeroにすれば、元のLoRAにおいてBをzeroに初期化するのと同じ挙動（つまり元のモデルと同じ挙動から学習スタートができたりする。みたいな感じだろうか？">
-<meta property="og:description" content="Supervised-FineTuning (SFT) #EfficiencyImprovement#Pocket#NLP#LanguageModel#PEFT(Adaptor/LoRA)#StabilityIssue Date: 2025-07-12 Paper Note SingLoRA: Low Rank Adaptation Using a Single Matrix, David Bensaïd+, arXiv25 SummarySingLoRAは、LoRAの低ランク適応を再定式化し、単一の低ランク行列とその転置の積を用いることで、トレーニングの安定性を向上させ、パラメータ数をほぼ半減させる手法です。実験により、常識推論タスクでLLama 7Bを用いたファインチューニングで91.3%の精度を達成し、LoRAやLoRA+を上回る結果を示しました。また、画像生成においてもStable Diffusionのファインチューニングで高い忠実度を実現しました。 Comment元ポスト:https://x.com/theturingpost/status/1943701154497732765?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLoRAは低ランク行列BAの積を計算するが、オリジナルのモデルと同じ挙動から学習をスタートするために、Bをzeroで初期化し、Aはランダムに初期化する。このAとBの不均衡さが、勾配消失、爆発、あるいはsub-optimalな収束の要因となってしまっていた（inter-matrix scale conflicts)。特に、LoRAはモデルのwidthが大きくなると不安定になるという課題があった。このため、低ランク行列を2つ使うのではなく、1つの低ランク行列（とその転置）およびoptimizationのstep tごとにtrainableなパラメータがどの程度影響を与えるかを調整する度合いを決めるscalar function u(t)を導入することで、低ランク行列間の不均衡を解消しつつ、パラメータ数を半減し、学習の安定性と性能を向上させる。たとえばu(t)を学習開始時にzeroにすれば、元のLoRAにおいてBをzeroに初期化するのと同じ挙動（つまり元のモデルと同じ挙動から学習スタートができたりする。みたいな感じだろうか？">
+<meta name="description" content="Supervised-FineTuning (SFT) #Pocket#NLP#ReinforcementLearning#PostTrainingIssue Date: 2025-07-19 Paper Note Blending Supervised and Reinforcement Fine-Tuning with Prefix Sampling, Zeyu Huang+, arXiv25 Summaryポストトレーニング技術にはSFTとRFTがあり、それぞれ異なるトレードオフが存在する。本論文では、デモンストレーションと探索を統合したハイブリッドアプローチ「Prefix-RFT」を提案し、数学的推論問題でその効果を実証。Prefix-RFTはSFTやRFTの性能を上回り、既存のフレームワークに容易に統合可能である。分析により、SFTとRFTの補完的な性質が示され、デモンストレーションデータの質と量に対する堅牢性も確認された。この研究はLLMのポストトレーニングに新たな視点を提供する。 Comment元ポスト:https://x.com/zeroyuhuang/status/1946232400922484992?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q少し前からXコミュニティでRFT(Reinforcement Finetuning)という用語が観測されたが、arXiv paperで見たのは初めてかもしれない。RFTはおそらく、強化学習を利用したPost-Trainingの総称だと思われる。デモンストレーションデータからPrefixをサンプリングし（SFTの要素; オフラインデータからサンプリングしたPrefixで生成をガイドする）、Prefixの続きをオンラインで生成し（RFTの要素; ガイドされたPrefixの続きを探索する）、Prefix+生成結果をロールアウトとし学習する。 ![image](https://github.com/user-attachments/assets/2988bc02-0c88-47e7-ab55-a623c5122428)">
+<meta property="og:description" content="Supervised-FineTuning (SFT) #Pocket#NLP#ReinforcementLearning#PostTrainingIssue Date: 2025-07-19 Paper Note Blending Supervised and Reinforcement Fine-Tuning with Prefix Sampling, Zeyu Huang+, arXiv25 Summaryポストトレーニング技術にはSFTとRFTがあり、それぞれ異なるトレードオフが存在する。本論文では、デモンストレーションと探索を統合したハイブリッドアプローチ「Prefix-RFT」を提案し、数学的推論問題でその効果を実証。Prefix-RFTはSFTやRFTの性能を上回り、既存のフレームワークに容易に統合可能である。分析により、SFTとRFTの補完的な性質が示され、デモンストレーションデータの質と量に対する堅牢性も確認された。この研究はLLMのポストトレーニングに新たな視点を提供する。 Comment元ポスト:https://x.com/zeroyuhuang/status/1946232400922484992?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q少し前からXコミュニティでRFT(Reinforcement Finetuning)という用語が観測されたが、arXiv paperで見たのは初めてかもしれない。RFTはおそらく、強化学習を利用したPost-Trainingの総称だと思われる。デモンストレーションデータからPrefixをサンプリングし（SFTの要素; オフラインデータからサンプリングしたPrefixで生成をガイドする）、Prefixの続きをオンラインで生成し（RFTの要素; ガイドされたPrefixの続きを探索する）、Prefix+生成結果をロールアウトとし学習する。 ![image](https://github.com/user-attachments/assets/2988bc02-0c88-47e7-ab55-a623c5122428)">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Supervised-FineTuning%20(SFT).html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Supervised-FineTuning%20(SFT).html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-19T00:52:13+00:00">
+<meta property="article:published_time" content="2025-07-20T00:59:26+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-19T00:52:13+00:00","datePublished":"2025-07-19T00:52:13+00:00","description":"Supervised-FineTuning (SFT) #EfficiencyImprovement#Pocket#NLP#LanguageModel#PEFT(Adaptor/LoRA)#StabilityIssue Date: 2025-07-12 Paper Note SingLoRA: Low Rank Adaptation Using a Single Matrix, David Bensaïd+, arXiv25 SummarySingLoRAは、LoRAの低ランク適応を再定式化し、単一の低ランク行列とその転置の積を用いることで、トレーニングの安定性を向上させ、パラメータ数をほぼ半減させる手法です。実験により、常識推論タスクでLLama 7Bを用いたファインチューニングで91.3%の精度を達成し、LoRAやLoRA+を上回る結果を示しました。また、画像生成においてもStable Diffusionのファインチューニングで高い忠実度を実現しました。 Comment元ポスト:https://x.com/theturingpost/status/1943701154497732765?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLoRAは低ランク行列BAの積を計算するが、オリジナルのモデルと同じ挙動から学習をスタートするために、Bをzeroで初期化し、Aはランダムに初期化する。このAとBの不均衡さが、勾配消失、爆発、あるいはsub-optimalな収束の要因となってしまっていた（inter-matrix scale conflicts)。特に、LoRAはモデルのwidthが大きくなると不安定になるという課題があった。このため、低ランク行列を2つ使うのではなく、1つの低ランク行列（とその転置）およびoptimizationのstep tごとにtrainableなパラメータがどの程度影響を与えるかを調整する度合いを決めるscalar function u(t)を導入することで、低ランク行列間の不均衡を解消しつつ、パラメータ数を半減し、学習の安定性と性能を向上させる。たとえばu(t)を学習開始時にzeroにすれば、元のLoRAにおいてBをzeroに初期化するのと同じ挙動（つまり元のモデルと同じ挙動から学習スタートができたりする。みたいな感じだろうか？","headline":"Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Supervised-FineTuning%20(SFT).html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Supervised-FineTuning%20(SFT).html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-20T00:59:26+00:00","datePublished":"2025-07-20T00:59:26+00:00","description":"Supervised-FineTuning (SFT) #Pocket#NLP#ReinforcementLearning#PostTrainingIssue Date: 2025-07-19 Paper Note Blending Supervised and Reinforcement Fine-Tuning with Prefix Sampling, Zeyu Huang+, arXiv25 Summaryポストトレーニング技術にはSFTとRFTがあり、それぞれ異なるトレードオフが存在する。本論文では、デモンストレーションと探索を統合したハイブリッドアプローチ「Prefix-RFT」を提案し、数学的推論問題でその効果を実証。Prefix-RFTはSFTやRFTの性能を上回り、既存のフレームワークに容易に統合可能である。分析により、SFTとRFTの補完的な性質が示され、デモンストレーションデータの質と量に対する堅牢性も確認された。この研究はLLMのポストトレーニングに新たな視点を提供する。 Comment元ポスト:https://x.com/zeroyuhuang/status/1946232400922484992?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q少し前からXコミュニティでRFT(Reinforcement Finetuning)という用語が観測されたが、arXiv paperで見たのは初めてかもしれない。RFTはおそらく、強化学習を利用したPost-Trainingの総称だと思われる。デモンストレーションデータからPrefixをサンプリングし（SFTの要素; オフラインデータからサンプリングしたPrefixで生成をガイドする）、Prefixの続きをオンラインで生成し（RFTの要素; ガイドされたPrefixの続きを探索する）、Prefix+生成結果をロールアウトとし学習する。 ![image](https://github.com/user-attachments/assets/2988bc02-0c88-47e7-ab55-a623c5122428)","headline":"Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Supervised-FineTuning%20(SFT).html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Supervised-FineTuning%20(SFT).html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -765,7 +765,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-19T00:52:13+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 19, 2025
+    <time class="dt-published" datetime="2025-07-20T00:59:26+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 20, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -800,7 +800,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 0 min</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 3 mins</span>
   </div></header>
 </div>
     </div>
@@ -995,6 +995,13 @@ function googleTranslateElementInit() {
 
       <h2 id="supervised-finetuning-sft">Supervised-FineTuning (SFT)</h2>
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a><a class="button" href="articles/PostTraining.html">#PostTraining</a><br><span class="issue_date">Issue Date: 2025-07-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2260">Paper Note Blending Supervised and Reinforcement Fine-Tuning with Prefix Sampling, Zeyu Huang+, arXiv25</a>
+<span class="snippet"><span>Summary</span>ポストトレーニング技術にはSFTとRFTがあり、それぞれ異なるトレードオフが存在する。本論文では、デモンストレーションと探索を統合したハイブリッドアプローチ「Prefix-RFT」を提案し、数学的推論問題でその効果を実証。Prefix-RFTはSFTやRFTの性能を上回り、既存のフレームワークに容易に統合可能である。分析により、SFTとRFTの補完的な性質が示され、デモンストレーションデータの質と量に対する堅牢性も確認された。この研究はLLMのポストトレーニングに新たな視点を提供する。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/zeroyuhuang/status/1946232400922484992?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q少し前からXコミュニティでRFT(Reinforcement Finetuning)という用語が観測されたが、arXiv paperで見たのは初めてかもしれない。RFTはおそらく、強化学習を利用したPost-Trainingの総称だと思われる。デモンストレーションデータからPrefixをサンプリングし（SFTの要素; オフラインデータからサンプリングしたPrefixで生成をガイドする）、Prefixの続きをオンラインで生成し（RFTの要素; ガイドされたPrefixの続きを探索する）、Prefix+生成結果をロールアウトとし学習する。
+![image](https://github.com/user-attachments/assets/2988bc02-0c88-47e7-ab55-a623c5122428)
+
+![image](https://github.com/user-attachments/assets/01875988-9364-4eb1-acb2-e35cf907b789)</span>
 <a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/PEFT(Adaptor_LoRA).html">#PEFT(Adaptor/LoRA)</a><a class="button" href="articles/Stability.html">#Stability</a><br><span class="issue_date">Issue Date: 2025-07-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2194">Paper Note SingLoRA: Low Rank Adaptation Using a Single Matrix, David Bensaïd+, arXiv25</a>
 <span class="snippet"><span>Summary</span>SingLoRAは、LoRAの低ランク適応を再定式化し、単一の低ランク行列とその転置の積を用いることで、トレーニングの安定性を向上させ、パラメータ数をほぼ半減させる手法です。実験により、常識推論タスクでLLama 7Bを用いたファインチューニングで91.3%の精度を達成し、LoRAやLoRA+を上回る結果を示しました。また、画像生成においてもStable Diffusionのファインチューニングで高い忠実度を実現しました。</span>
@@ -1012,6 +1019,10 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Japanese.html">#Japanese</a><a class="button" href="articles/OOD.html">#OOD</a><a class="button" href="articles/DiseaseNameRecognition.html">#DiseaseNameRecognition</a><br><span class="issue_date">Issue Date: 2025-07-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2177">Paper Note Toward Cross-Hospital Deployment of Natural Language Processing Systems: Model Development and Validation of Fine-Tuned Large Language Models for Disease Name Recognition in Japanese, Shimizu+, JMIR25</a>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/aramaki/status/1942902940337099254?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+</div>
+<p><button onclick="showMore(0)">more</button></p>
+
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a><a class="button" href="articles/Mathematics.html">#Mathematics</a><br><span class="issue_date">Issue Date: 2025-07-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2158">Paper Note CriticLean: Critic-Guided Reinforcement Learning for Mathematical  Formalization, Zhongyuan Peng+, arXiv25</a>
 <span class="snippet"><span>Summary</span>自然言語の数学的表現を実行可能なコードに翻訳する課題に対し、批評者の役割を能動的な学習コンポーネントに変えるCriticLeanという新しい強化学習フレームワークを提案。CriticLeanGPTを用いて形式化の意味的忠実性を評価し、CriticLeanBenchでその能力を測定。285K以上の問題を含むFineLeanCorpusデータセットを構築し、批評段階の最適化が信頼性のある形式化に重要であることを示す。</span>
@@ -1021,10 +1032,6 @@ function googleTranslateElementInit() {
 ![image](https://github.com/user-attachments/assets/79121e53-b205-440d-9615-d520ac848704)
 
 </span>
-</div>
-<p><button onclick="showMore(0)">more</button></p>
-
-<div class="hidden-content">
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Citations.html">#Citations</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/COLM.html">#COLM</a><a class="button" href="articles/AcademicWriting.html">#AcademicWriting</a><br><span class="issue_date">Issue Date: 2025-07-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2149">Paper Note ScholarCopilot: Training Large Language Models for Academic Writing with   Accurate Citations, Yubo Wang+, COLM25</a>
 <span class="snippet"><span>Summary</span>ScholarCopilotは、学術的な執筆を支援するために大規模言語モデルを強化したフレームワークで、正確で文脈に関連した引用を生成します。取得トークンを用いて動的に文献を取得し、生成プロセスを補強します。評価では、取得精度が40.1%に達し、生成品質も他のモデルを大幅に上回りました。特に、ScholarCopilotはChatGPTを超える性能を示し、引用の質で100%の好ましさを達成しました。</span>
@@ -2033,32 +2040,32 @@ https://twitter.com/dair_ai/status/1672953412927799298?s=46&t=ajzDWio8pEbrezgj40
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Contents-based.html" title="Contents-basedに関する論文・技術記事メモの一覧">
-            Contents-basedに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/CommentGeneration.html" title="CommentGenerationに関する論文・技術記事メモの一覧">
+            CommentGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TeacherHacking.html" title="TeacherHackingに関する論文・技術記事メモの一覧">
-            TeacherHackingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Faithfulness.html" title="Faithfulnessに関する論文・技術記事メモの一覧">
+            Faithfulnessに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Single.html" title="Singleに関する論文・技術記事メモの一覧">
-            Singleに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Synchrophancy.html" title="Synchrophancyに関する論文・技術記事メモの一覧">
+            Synchrophancyに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InteractiveRecommenderSystems.html" title="InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧">
-            InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DataDriven.html" title="DataDrivenに関する論文・技術記事メモの一覧">
+            DataDrivenに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
