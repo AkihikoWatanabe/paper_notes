@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/CrossLingual.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-22T00:54:36+00:00">
+<meta property="article:published_time" content="2025-07-22T15:47:09+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="CrossLingualに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-22T00:54:36+00:00","datePublished":"2025-07-22T00:54:36+00:00","description":"CrossLingual #NLP#LanguageModel#Supervised-FineTuning (SFT)Issue Date: 2024-09-19 PLUG: Leveraging Pivot Language in Cross-Lingual Instruction Tuning, Zhihan Zhang+, N_A, ACL24 Summary指示チューニングはLLMsの指示理解を向上させるが、低リソース言語では課題がある。これに対処するため、英語をピボット言語とするPLUGアプローチを提案。モデルはまず英語で指示を処理し、次にターゲット言語で応答を生成。4つの言語での評価により、指示に従う能力が平均29%向上した。さらに、他のピボット言語を用いた実験も行い、アプローチの多様性を確認。コードとデータは公開されている。 Comment# 概要 cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上 ![image](https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820) # 評価 ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。 利用するFoundationモデルは以下の3種類で、 - LLaMA-2-13B (英語に特化したモデル) - PolyLM-13B (マルチリンガルなモデル) - PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの) これらに対して学習データとしてGPT4-Alpaca #1401 instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。 比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。 - Pivot-only training: pivot言語（今回は英語）のみで学習した場合 - Monolingual response training: pivot言語とtarget言語のデータを利用した場合 - Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している） - Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。 - PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -&gt; target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合 評価する際は、MT-Bench #903 のように、GPT4を用いた、direct pair-wise comparisonを行っている。 direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らかの判断やスコアリングをさせる方法であり、今回はどちらがinstructionにより従っているかに勝敗/引き分けをGPT4に判断させている。LLMによる生成はサンプルの順番にsensitiveなので、順番を逆にした場合でも実験をして、win-lose rateを求めている。1つのサンプルペアに対して、サンプルの順番を正順と逆順の2回評価させ、その双方の結果を用いて最終的なwin/lose/tieを決めている。端的に言うと、勝敗が2-0ならそのサンプルの勝ち、同様に1-1なら引き分け、0-2なら負け、ということである。 ![image](https://github.com/user-attachments/assets/726ea2dc-8f62-4320-8489-45cc20ed32ae) #Pocket#LanguageModel#MultitaskLearning#Zero/FewShotPrompting#Supervised-FineTuning (SFT)#ACL#GeneralizationIssue Date: 2023-08-16 Crosslingual Generalization through Multitask Finetuning, Niklas Muennighoff+, N_A, ACL23 Summaryマルチタスクプロンプトフィネチューニング（MTF）は、大規模な言語モデルが新しいタスクに汎化するのに役立つことが示されています。この研究では、マルチリンガルBLOOMとmT5モデルを使用してMTFを実施し、英語のプロンプトを使用して英語および非英語のタスクにフィネチューニングすることで、タスクの汎化が可能であることを示しました。さらに、機械翻訳されたプロンプトを使用してマルチリンガルなタスクにフィネチューニングすることも調査し、モデルのゼロショットの汎化能力を示しました。また、46言語の教師ありデータセットのコンポジットであるxP3も紹介されています。 Comment英語タスクを英語でpromptingしてLLMをFinetuningすると、他の言語（ただし、事前学習で利用したコーパスに出現する言語に限る）で汎化し性能が向上することを示した模様。 ![Image](https://github.com/user-attachments/assets/44e9cf6e-e80f-4092-af46-ad74c30fe59c) #Pocket#NLPIssue Date: 2023-07-12 Empowering Cross-lingual Behavioral Testing of NLP Models with Typological Features, Ester Hlavnova+, N_A, arXiv23 SummaryM2Cという形態論に敏感なNLPモデルの行動テストフレームワークを提案し、12の異なる言語の特徴に基づいてモデルの振る舞いを探るテストを生成する。最先端の言語モデルは英語では優れているが、特定の言語の特徴に対する一般化の失敗があることが示される。これにより、モデルの盲点に対処するための開発が促される。 more","headline":"CrossLingualに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/CrossLingual.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/CrossLingual.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-22T15:47:09+00:00","datePublished":"2025-07-22T15:47:09+00:00","description":"CrossLingual #NLP#LanguageModel#Supervised-FineTuning (SFT)Issue Date: 2024-09-19 PLUG: Leveraging Pivot Language in Cross-Lingual Instruction Tuning, Zhihan Zhang+, N_A, ACL24 Summary指示チューニングはLLMsの指示理解を向上させるが、低リソース言語では課題がある。これに対処するため、英語をピボット言語とするPLUGアプローチを提案。モデルはまず英語で指示を処理し、次にターゲット言語で応答を生成。4つの言語での評価により、指示に従う能力が平均29%向上した。さらに、他のピボット言語を用いた実験も行い、アプローチの多様性を確認。コードとデータは公開されている。 Comment# 概要 cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上 ![image](https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820) # 評価 ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。 利用するFoundationモデルは以下の3種類で、 - LLaMA-2-13B (英語に特化したモデル) - PolyLM-13B (マルチリンガルなモデル) - PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの) これらに対して学習データとしてGPT4-Alpaca #1401 instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。 比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。 - Pivot-only training: pivot言語（今回は英語）のみで学習した場合 - Monolingual response training: pivot言語とtarget言語のデータを利用した場合 - Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している） - Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。 - PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -&gt; target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合 評価する際は、MT-Bench #903 のように、GPT4を用いた、direct pair-wise comparisonを行っている。 direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らかの判断やスコアリングをさせる方法であり、今回はどちらがinstructionにより従っているかに勝敗/引き分けをGPT4に判断させている。LLMによる生成はサンプルの順番にsensitiveなので、順番を逆にした場合でも実験をして、win-lose rateを求めている。1つのサンプルペアに対して、サンプルの順番を正順と逆順の2回評価させ、その双方の結果を用いて最終的なwin/lose/tieを決めている。端的に言うと、勝敗が2-0ならそのサンプルの勝ち、同様に1-1なら引き分け、0-2なら負け、ということである。 ![image](https://github.com/user-attachments/assets/726ea2dc-8f62-4320-8489-45cc20ed32ae) #Pocket#LanguageModel#MultitaskLearning#Zero/FewShotPrompting#Supervised-FineTuning (SFT)#ACL#GeneralizationIssue Date: 2023-08-16 Crosslingual Generalization through Multitask Finetuning, Niklas Muennighoff+, N_A, ACL23 Summaryマルチタスクプロンプトフィネチューニング（MTF）は、大規模な言語モデルが新しいタスクに汎化するのに役立つことが示されています。この研究では、マルチリンガルBLOOMとmT5モデルを使用してMTFを実施し、英語のプロンプトを使用して英語および非英語のタスクにフィネチューニングすることで、タスクの汎化が可能であることを示しました。さらに、機械翻訳されたプロンプトを使用してマルチリンガルなタスクにフィネチューニングすることも調査し、モデルのゼロショットの汎化能力を示しました。また、46言語の教師ありデータセットのコンポジットであるxP3も紹介されています。 Comment英語タスクを英語でpromptingしてLLMをFinetuningすると、他の言語（ただし、事前学習で利用したコーパスに出現する言語に限る）で汎化し性能が向上することを示した模様。 ![Image](https://github.com/user-attachments/assets/44e9cf6e-e80f-4092-af46-ad74c30fe59c) #Pocket#NLPIssue Date: 2023-07-12 Empowering Cross-lingual Behavioral Testing of NLP Models with Typological Features, Ester Hlavnova+, N_A, arXiv23 SummaryM2Cという形態論に敏感なNLPモデルの行動テストフレームワークを提案し、12の異なる言語の特徴に基づいてモデルの振る舞いを探るテストを生成する。最先端の言語モデルは英語では優れているが、特定の言語の特徴に対する一般化の失敗があることが示される。これにより、モデルの盲点に対処するための開発が促される。 more","headline":"CrossLingualに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/CrossLingual.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/CrossLingual.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-22T00:54:36+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 22, 2025
+    <time class="dt-published" datetime="2025-07-22T15:47:09+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 22, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1051,32 +1051,32 @@ direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らか�
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/FeatureMatching.html" title="FeatureMatchingに関する論文・技術記事メモの一覧">
-            FeatureMatchingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Supervised.html" title="Supervisedに関する論文・技術記事メモの一覧">
+            Supervisedに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/CollaborativeFiltering.html" title="CollaborativeFilteringに関する論文・技術記事メモの一覧">
-            CollaborativeFilteringに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ImageClassification.html" title="ImageClassificationに関する論文・技術記事メモの一覧">
+            ImageClassificationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Quantization.html" title="Quantizationに関する論文・技術記事メモの一覧">
-            Quantizationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DataDistillation.html" title="DataDistillationに関する論文・技術記事メモの一覧">
+            DataDistillationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/PsychologicalScience.html" title="PsychologicalScienceに関する論文・技術記事メモの一覧">
-            PsychologicalScienceに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Chip.html" title="Chipに関する論文・技術記事メモの一覧">
+            Chipに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
