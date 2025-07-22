@@ -518,16 +518,16 @@ author: AkihikoWATANABE
     # list up
     N = len(label_to_hierarchy.items())
     for parent, sub_parents in tqdm(sorted(label_to_hierarchy.items(), key=lambda item: order_label_count[(item[0])], reverse=True), total=N):
-        html_content += f"## {parent} ({label_count[(parent)]})\n"
+        html_content += f"\n## {parent} ({label_count[(parent)]})\n"
         for sub_parent, issue_list in sorted(sub_parents.items(), key=lambda item: order_label_count[(parent, item[0])], reverse=True):
             html_content += f"### {sub_parent} ({label_count[(parent, sub_parent)]})\n"
             current_target = [parent, sub_parent]
             html_content += gen_one_item(issue_list, current_target)
-        html_content += "<hr>\n"
+        html_content += "\n<hr>\n"
 
     print("main part was finished.")
 
-    html_content += f'## Pocket ({label_count["Pocket"]})\n'
+    html_content += f'\n## Pocket ({label_count["Pocket"]})\n'
     html_content += gen_one_item(pockets, ["Pocket"])
 
     #graph
