@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="ja"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>QA-basedに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
-<meta name="generator" content="Jekyll v4.3.2">
-<meta property="og:title" content="QA-basedに関する論文・技術記事メモの一覧">
-<meta name="author" content="AkihikoWATANABE">
-<meta property="og:locale" content="ja">
-<meta name="description" content='QA-based #DocumentSummarization#NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP21 Summary要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。 CommentQuestEval# 概要 #984 によって提案されてきたメトリックがROUGEに勝てていないことについて言及し、より良い指標を提案。 - precision / recall-based な QA metricsを利用してよりロバスト - 生成されるqueryのsaliencyを学習する手法を提案することで、information selectionの概念を導入した - CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した # Question-based framework prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。 QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。#1007 にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。 # QuestEval metric ## Precision source documentをD, システム要約をSとしたときに、Precision, Recallを以下の式で測る： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c) question生成時は要約から生成し、生成されたquestionに回答する際はsource documentを利用し、回答の正誤に対してF1スコアを測定する。F1スコアは、ground truthと予測された回答を比較することによって測定され、回答がexact matchした場合に1, common tokenが存在しない場合に0を返す。D, Sで条件付けされたときに、回答が変わってしまう場合は要約がinconsistentだとみなせる、というintuitionからきている。 ## Recall 要約はfactual informationを含むべきのみならず(precision)、ソーステキストの重要な情報を含むべきである(recall)。#943をquery weighter Wを導入することで拡張し、recallを下記で定義する： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd44efcd-ca82-43cc-98db-13b697d86068) ここで、Q_G(D)は、ソーステキストDにおけるすべてのQA pairの集合、W(q, D)はDに対するqの重みである。 ## Answerability and F1 Factoid QAモデルは一般的に、predicted answerとground truthのoverlapによって（F1）評価されている。しかし"ACL"と"Association for Computational Linguistics"のように、同じ回答でも異なる方法で表現される可能性がある。この例では、F1スコアは0となる（共通のtokenがないため）。 これを回避するために、#943 と同様に1-Q_A(ε)を利用する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a) QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット #1142 によってfinetuningしたものを利用する。 #NaturalLanguageGeneration#Metrics#NLP#DialogueGeneration#Evaluation#Reference-free#FactualityIssue Date: 2023-08-13 Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP21 Summary本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。 Comment（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では - 対話履歴、個人の意見、ユーザに対する質問、そして雑談 といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。 また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a) 手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6) #NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP21 Summary本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。 CommentImage Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc) more'>
-<meta property="og:description" content='QA-based #DocumentSummarization#NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP21 Summary要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。 CommentQuestEval# 概要 #984 によって提案されてきたメトリックがROUGEに勝てていないことについて言及し、より良い指標を提案。 - precision / recall-based な QA metricsを利用してよりロバスト - 生成されるqueryのsaliencyを学習する手法を提案することで、information selectionの概念を導入した - CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した # Question-based framework prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。 QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。#1007 にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。 # QuestEval metric ## Precision source documentをD, システム要約をSとしたときに、Precision, Recallを以下の式で測る： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c) question生成時は要約から生成し、生成されたquestionに回答する際はsource documentを利用し、回答の正誤に対してF1スコアを測定する。F1スコアは、ground truthと予測された回答を比較することによって測定され、回答がexact matchした場合に1, common tokenが存在しない場合に0を返す。D, Sで条件付けされたときに、回答が変わってしまう場合は要約がinconsistentだとみなせる、というintuitionからきている。 ## Recall 要約はfactual informationを含むべきのみならず(precision)、ソーステキストの重要な情報を含むべきである(recall)。#943をquery weighter Wを導入することで拡張し、recallを下記で定義する： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd44efcd-ca82-43cc-98db-13b697d86068) ここで、Q_G(D)は、ソーステキストDにおけるすべてのQA pairの集合、W(q, D)はDに対するqの重みである。 ## Answerability and F1 Factoid QAモデルは一般的に、predicted answerとground truthのoverlapによって（F1）評価されている。しかし"ACL"と"Association for Computational Linguistics"のように、同じ回答でも異なる方法で表現される可能性がある。この例では、F1スコアは0となる（共通のtokenがないため）。 これを回避するために、#943 と同様に1-Q_A(ε)を利用する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a) QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット #1142 によってfinetuningしたものを利用する。 #NaturalLanguageGeneration#Metrics#NLP#DialogueGeneration#Evaluation#Reference-free#FactualityIssue Date: 2023-08-13 Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP21 Summary本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。 Comment（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では - 対話履歴、個人の意見、ユーザに対する質問、そして雑談 といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。 また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a) 手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6) #NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP21 Summary本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。 CommentImage Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc) more'>
-<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html">
-<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html">
-<meta property="og:site_name" content="わたしのべんきょうノート">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-22T15:47:09+00:00">
-<meta name="twitter:card" content="summary">
-<meta property="twitter:title" content="QA-basedに関する論文・技術記事メモの一覧">
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="QA-basedに関する論文・技術記事メモの一覧" />
+<meta name="author" content="AkihikoWATANABE" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="QA-based #DocumentSummarization#NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP21 Summary要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。 CommentQuestEval# 概要 #984 によって提案されてきたメトリックがROUGEに勝てていないことについて言及し、より良い指標を提案。 - precision / recall-based な QA metricsを利用してよりロバスト - 生成されるqueryのsaliencyを学習する手法を提案することで、information selectionの概念を導入した - CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した # Question-based framework prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。 QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。#1007 にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。 # QuestEval metric ## Precision source documentをD, システム要約をSとしたときに、Precision, Recallを以下の式で測る： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c) question生成時は要約から生成し、生成されたquestionに回答する際はsource documentを利用し、回答の正誤に対してF1スコアを測定する。F1スコアは、ground truthと予測された回答を比較することによって測定され、回答がexact matchした場合に1, common tokenが存在しない場合に0を返す。D, Sで条件付けされたときに、回答が変わってしまう場合は要約がinconsistentだとみなせる、というintuitionからきている。 ## Recall 要約はfactual informationを含むべきのみならず(precision)、ソーステキストの重要な情報を含むべきである(recall)。#943をquery weighter Wを導入することで拡張し、recallを下記で定義する： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd44efcd-ca82-43cc-98db-13b697d86068) ここで、Q_G(D)は、ソーステキストDにおけるすべてのQA pairの集合、W(q, D)はDに対するqの重みである。 ## Answerability and F1 Factoid QAモデルは一般的に、predicted answerとground truthのoverlapによって（F1）評価されている。しかし&quot;ACL&quot;と&quot;Association for Computational Linguistics&quot;のように、同じ回答でも異なる方法で表現される可能性がある。この例では、F1スコアは0となる（共通のtokenがないため）。 これを回避するために、#943 と同様に1-Q_A(ε)を利用する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a) QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット #1142 によってfinetuningしたものを利用する。 #NaturalLanguageGeneration#Metrics#NLP#DialogueGeneration#Evaluation#Reference-free#FactualityIssue Date: 2023-08-13 Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP21 Summary本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。 Comment（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では - 対話履歴、個人の意見、ユーザに対する質問、そして雑談 といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。 また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a) 手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6) #NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP21 Summary本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。 CommentImage Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc) more" />
+<meta property="og:description" content="QA-based #DocumentSummarization#NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP21 Summary要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。 CommentQuestEval# 概要 #984 によって提案されてきたメトリックがROUGEに勝てていないことについて言及し、より良い指標を提案。 - precision / recall-based な QA metricsを利用してよりロバスト - 生成されるqueryのsaliencyを学習する手法を提案することで、information selectionの概念を導入した - CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した # Question-based framework prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。 QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。#1007 にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。 # QuestEval metric ## Precision source documentをD, システム要約をSとしたときに、Precision, Recallを以下の式で測る： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c) question生成時は要約から生成し、生成されたquestionに回答する際はsource documentを利用し、回答の正誤に対してF1スコアを測定する。F1スコアは、ground truthと予測された回答を比較することによって測定され、回答がexact matchした場合に1, common tokenが存在しない場合に0を返す。D, Sで条件付けされたときに、回答が変わってしまう場合は要約がinconsistentだとみなせる、というintuitionからきている。 ## Recall 要約はfactual informationを含むべきのみならず(precision)、ソーステキストの重要な情報を含むべきである(recall)。#943をquery weighter Wを導入することで拡張し、recallを下記で定義する： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd44efcd-ca82-43cc-98db-13b697d86068) ここで、Q_G(D)は、ソーステキストDにおけるすべてのQA pairの集合、W(q, D)はDに対するqの重みである。 ## Answerability and F1 Factoid QAモデルは一般的に、predicted answerとground truthのoverlapによって（F1）評価されている。しかし&quot;ACL&quot;と&quot;Association for Computational Linguistics&quot;のように、同じ回答でも異なる方法で表現される可能性がある。この例では、F1スコアは0となる（共通のtokenがないため）。 これを回避するために、#943 と同様に1-Q_A(ε)を利用する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a) QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット #1142 によってfinetuningしたものを利用する。 #NaturalLanguageGeneration#Metrics#NLP#DialogueGeneration#Evaluation#Reference-free#FactualityIssue Date: 2023-08-13 Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP21 Summary本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。 Comment（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では - 対話履歴、個人の意見、ユーザに対する質問、そして雑談 といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。 また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a) 手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6) #NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP21 Summary本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。 CommentImage Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc) more" />
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html" />
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html" />
+<meta property="og:site_name" content="わたしのべんきょうノート" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-07-22T16:39:35+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="QA-basedに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-22T15:47:09+00:00","datePublished":"2025-07-22T15:47:09+00:00","description":"QA-based #DocumentSummarization#NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP21 Summary要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。 CommentQuestEval# 概要 #984 によって提案されてきたメトリックがROUGEに勝てていないことについて言及し、より良い指標を提案。 - precision / recall-based な QA metricsを利用してよりロバスト - 生成されるqueryのsaliencyを学習する手法を提案することで、information selectionの概念を導入した - CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した # Question-based framework prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。 QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。#1007 にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。 # QuestEval metric ## Precision source documentをD, システム要約をSとしたときに、Precision, Recallを以下の式で測る： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c) question生成時は要約から生成し、生成されたquestionに回答する際はsource documentを利用し、回答の正誤に対してF1スコアを測定する。F1スコアは、ground truthと予測された回答を比較することによって測定され、回答がexact matchした場合に1, common tokenが存在しない場合に0を返す。D, Sで条件付けされたときに、回答が変わってしまう場合は要約がinconsistentだとみなせる、というintuitionからきている。 ## Recall 要約はfactual informationを含むべきのみならず(precision)、ソーステキストの重要な情報を含むべきである(recall)。#943をquery weighter Wを導入することで拡張し、recallを下記で定義する： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd44efcd-ca82-43cc-98db-13b697d86068) ここで、Q_G(D)は、ソーステキストDにおけるすべてのQA pairの集合、W(q, D)はDに対するqの重みである。 ## Answerability and F1 Factoid QAモデルは一般的に、predicted answerとground truthのoverlapによって（F1）評価されている。しかし&quot;ACL&quot;と&quot;Association for Computational Linguistics&quot;のように、同じ回答でも異なる方法で表現される可能性がある。この例では、F1スコアは0となる（共通のtokenがないため）。 これを回避するために、#943 と同様に1-Q_A(ε)を利用する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a) QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット #1142 によってfinetuningしたものを利用する。 #NaturalLanguageGeneration#Metrics#NLP#DialogueGeneration#Evaluation#Reference-free#FactualityIssue Date: 2023-08-13 Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP21 Summary本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。 Comment（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では - 対話履歴、個人の意見、ユーザに対する質問、そして雑談 といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。 また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a) 手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6) #NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP21 Summary本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。 CommentImage Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc) more","headline":"QA-basedに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-22T16:39:35+00:00","datePublished":"2025-07-22T16:39:35+00:00","description":"QA-based #DocumentSummarization#NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP21 Summary要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。 CommentQuestEval# 概要 #984 によって提案されてきたメトリックがROUGEに勝てていないことについて言及し、より良い指標を提案。 - precision / recall-based な QA metricsを利用してよりロバスト - 生成されるqueryのsaliencyを学習する手法を提案することで、information selectionの概念を導入した - CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した # Question-based framework prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。 QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。#1007 にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。 # QuestEval metric ## Precision source documentをD, システム要約をSとしたときに、Precision, Recallを以下の式で測る： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c) question生成時は要約から生成し、生成されたquestionに回答する際はsource documentを利用し、回答の正誤に対してF1スコアを測定する。F1スコアは、ground truthと予測された回答を比較することによって測定され、回答がexact matchした場合に1, common tokenが存在しない場合に0を返す。D, Sで条件付けされたときに、回答が変わってしまう場合は要約がinconsistentだとみなせる、というintuitionからきている。 ## Recall 要約はfactual informationを含むべきのみならず(precision)、ソーステキストの重要な情報を含むべきである(recall)。#943をquery weighter Wを導入することで拡張し、recallを下記で定義する： ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd44efcd-ca82-43cc-98db-13b697d86068) ここで、Q_G(D)は、ソーステキストDにおけるすべてのQA pairの集合、W(q, D)はDに対するqの重みである。 ## Answerability and F1 Factoid QAモデルは一般的に、predicted answerとground truthのoverlapによって（F1）評価されている。しかし&quot;ACL&quot;と&quot;Association for Computational Linguistics&quot;のように、同じ回答でも異なる方法で表現される可能性がある。この例では、F1スコアは0となる（共通のtokenがないため）。 これを回避するために、#943 と同様に1-Q_A(ε)を利用する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a) QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット #1142 によってfinetuningしたものを利用する。 #NaturalLanguageGeneration#Metrics#NLP#DialogueGeneration#Evaluation#Reference-free#FactualityIssue Date: 2023-08-13 Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP21 Summary本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。 Comment（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では - 対話履歴、個人の意見、ユーザに対する質問、そして雑談 といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。 また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a) 手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6) #NaturalLanguageGeneration#Metrics#NLP#Evaluation#Reference-freeIssue Date: 2023-08-13 QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP21 Summary本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。 CommentImage Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc) more","headline":"QA-basedに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/QA-based.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -31,8 +28,7 @@
   <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
   <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
   <script src="/paper_notes/assets/js/main.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
-<script>
+  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート" /><script>
   function showMore(index) {
     const contentDivs = document.getElementsByClassName('hidden-content');
     const contentDiv = contentDivs[index];
@@ -80,7 +76,9 @@
 </script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <!-- and it's easy to individually load additional languages -->
-<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+<script charset="UTF-8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"
+        async></script>
 
 
 
@@ -168,9 +166,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     display: none;
   }
 </style>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
-<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link
+  href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css"
+  rel="stylesheet"
+/>
 <style>
   .pswp .pswp__container .pswp__img {
     background-color: white;
@@ -244,9 +247,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   window.addEventListener("load", initPhotoSwipe);
 </script>
-<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
-</head>
-<body>
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI" />
+</head><body>
 
 
 
@@ -383,17 +385,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
 <header class="site-header site-header-transparent" role="banner">
 
   <div class="wrapper">
-    <div class="site-header-inner">
-<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+    <div class="site-header-inner"><span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
   <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
   わたしのべんきょうノート
 </a>
 </span><nav class="site-nav">
-          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
           <label for="nav-trigger">
             <span class="menu-icon">
-              <svg viewbox="0 0 18 15" width="18px" height="15px">
-                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
               </svg>
             </span>
           </label>
@@ -550,10 +551,8 @@ function googleTranslateElementInit() {
 </script>
 
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-</span>
-</div>
-        </nav>
-</div>
+</span></div>
+        </nav></div>
   </div>
 </header>
 
@@ -748,15 +747,11 @@ function googleTranslateElementInit() {
     html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
       opacity: 0.2872;
     }
-  </style>
-<section class="page-banner">
-    <div class="page-banner-img">
-<div style="background-image: url(/paper_notes/assets/images/banner.png)"></div>
-        <img class="img-placeholder" src="/paper_notes/assets/images/banner.png">
-</div>
+  </style><section class="page-banner">
+    <div class="page-banner-img"><div style="background-image: url(/paper_notes/assets/images/banner.png)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.png"></div>
     <div class="wrapper">
-      <div class="page-banner-inner">
-<header class="post-header">
+      <div class="page-banner-inner"><header class="post-header">
   <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
   <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
 それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
@@ -764,7 +759,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-22T15:47:09+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 22, 2025
+    <time class="dt-published" datetime="2025-07-22T16:39:35+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 22, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -994,7 +989,7 @@ function googleTranslateElementInit() {
 
       <h2 id="qa-based">QA-based</h2>
 <div class="visible-content">
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br /><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/974">QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP21</a>
 <span class="snippet"><span>Summary</span>要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。</span>
 <span class="snippet"><span>Comment</span>QuestEval# 概要
@@ -1004,7 +999,7 @@ function googleTranslateElementInit() {
 - CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した
 
 # Question-based framework
-prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ\_A\(r|T, q)とし、Q\_A\(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。
+prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。
 QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。#1007 にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。
 
 # QuestEval metric
@@ -1023,7 +1018,7 @@ Factoid QAモデルは一般的に、predicted answerとground truthのoverlap�
 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a)
 
 QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット #1142 によってfinetuningしたものを利用する。</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c" alt="image" loading="lazy"><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DialogueGeneration.html">#DialogueGeneration</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><a class="button" href="articles/Factuality.html">#Factuality</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c" alt="image" loading="lazy" /><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DialogueGeneration.html">#DialogueGeneration</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><a class="button" href="articles/Factuality.html">#Factuality</a><br /><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/966">Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP21</a>
 <span class="snippet"><span>Summary</span>本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。</span>
 <span class="snippet"><span>Comment</span>（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では
@@ -1037,38 +1032,37 @@ QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://
 手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。
 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6)
 </span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a" alt="image" loading="lazy"><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a" alt="image" loading="lazy" /><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br /><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/961">QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP21</a>
 <span class="snippet"><span>Summary</span>本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。</span>
 <span class="snippet"><span>Comment</span>Image Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。
 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc)
 </span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc" alt="image" loading="lazy">
-</div>
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc" alt="image" loading="lazy" /></div>
 <p><button onclick="showMore(0)">more</button></p>
 
 <div class="hidden-content">
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br><span class="issue_date">Issue Date: 2023-08-20</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br /><span class="issue_date">Issue Date: 2023-08-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1007">Asking and Answering Questions to Evaluate the Factual Consistency of Summaries, Wang, ACL20</a>
 <span class="snippet"><span>Summary</span>要約の事実の不整合を特定するための自動評価プロトコルであるQAGSを提案する。QAGSは、要約とソースについて質問をし、整合性がある回答を得ることで要約の事実的整合性を評価する。QAGSは他の自動評価指標と比較して高い相関を持ち、自然な解釈可能性を提供する。QAGSは有望なツールであり、https://github.com/W4ngatang/qagsで利用可能。</span>
 <span class="snippet"><span>Comment</span>QAGS生成された要約からQuestionを生成する手法。precision-oriented</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br /><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/991">FEQA: A Question Answering Evaluation Framework for Faithfulness Assessment in Abstractive Summarization, Durmus+, ACL20</a>
 <span class="snippet"><span>Summary</span>ニューラル抽象的要約モデルの信頼性を評価するために、人間の注釈を収集し、信頼性の自動評価指標であるFEQAを提案した。FEQAは質問応答を利用して要約の信頼性を評価し、特に抽象的な要約において人間の評価と高い相関を示した。</span>
 <span class="snippet"><span>Comment</span>FEQA生成された要約からQuestionを生成する手法。precision-oriented </span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br /><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/995">Question answering as an automatic evaluation metric for news article summarization, Eyal+, NAACL19</a>
 <span class="snippet"><span>Summary</span>最近の自動要約の研究では、ROUGEスコアの最大化に焦点を当てているが、本研究では代替的な評価指標であるAPESを提案する。APESは、要約が一連の手動作成質問に答える能力を定量化する。APESを最大化するエンドツーエンドのニューラル抽象モデルを提案し、ROUGEスコアを向上させる。</span>
 <span class="snippet"><span>Comment</span>APES</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br><span class="issue_date">Issue Date: 2023-08-13</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><a class="button" href="articles/Reference-free.html">#Reference-free</a><br /><span class="issue_date">Issue Date: 2023-08-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/943">Answers Unite Unsupervised Metrics for Reinforced Summarization Models, Scialom+, EMNLP-IJCNLP19</a>
 <span class="snippet"><span>Summary</span>最近、再強化学習（RL）を使用した抽象的要約手法が提案されており、従来の尤度最大化を克服するために使用されています。この手法は、複雑で微分不可能なメトリクスを考慮することで、生成された要約の品質と関連性を総合的に評価することができます。ROUGEという従来の要約メトリクスにはいくつかの問題があり、代替的な評価尺度を探求する必要があります。報告された人間評価の分析によると、質問応答に基づく提案されたメトリクスはROUGEよりも有利であり、参照要約を必要としないという特徴も持っています。これらのメトリクスを使用してRLベースのモデルをトレーニングすることは、現在の手法に比べて改善をもたらします。</span>
 <span class="snippet"><span>Comment</span>SummaQA</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-08-16</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br /><span class="issue_date">Issue Date: 2023-08-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/994">A Semantic QA-Based Approach for Text Summarization Evaluation, Ping Chen+, N_A, AAAI18</a>
 <span class="snippet"><span>Summary</span>自然言語処理システムの評価における問題の一つは、2つのテキストパッセージの内容の違いを特定することです。本研究では、1つのテキストパッセージを小さな知識ベースとして扱い、多数の質問を投げかけて内容を比較する方法を提案します。実験結果は有望であり、2007年のDUC要約コーパスを使用して行われました。</span>
 <span class="snippet"><span>Comment</span>QGQAを提案した研究</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br><span class="issue_date">Issue Date: 2023-08-20</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Evaluation.html">#Evaluation</a><br /><span class="issue_date">Issue Date: 2023-08-20</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1006">Discourse constraints for document compression, Clarke+ （w_ Lapata）, Computational Linguistics10</a>
 <span class="snippet"><span>Comment</span>QAベースドなアプローチを人手評価に導入した初めての研究</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
@@ -1078,47 +1072,47 @@ QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://
     </div>
 
 </article>
-<div class="post-nav">
-<a class="previous" href="/paper_notes/articles/PsychologicalScience.html" title="PsychologicalScienceに関する論文・技術記事メモの一覧">PsychologicalScienceに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Quantization.html" title="Quantizationに関する論文・技術記事メモの一覧">Quantizationに関する論文・技術記事メモの一覧</a>
-</div>
-<div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/PsychologicalScience.html" title="PsychologicalScienceに関する論文・技術記事メモの一覧">PsychologicalScienceに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Quantization.html" title="Quantizationに関する論文・技術記事メモの一覧">Quantizationに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/InformationExtraction.html" title="InformationExtractionに関する論文・技術記事メモの一覧">
-            InformationExtractionに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link"
+            href="/paper_notes/articles/2D.html"
+            title="2Dに関する論文・技術記事メモの一覧">
+            2Dに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/PointWise.html" title="PointWiseに関する論文・技術記事メモの一覧">
-            PointWiseに関する論文・技術記事メモの一覧<span class="post-badges">
-  <span class="post-badge badge-top">TOP</span>
-  <span class="post-badge badge-new">NEW</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/LearningPhenomena.html" title="LearningPhenomenaに関する論文・技術記事メモの一覧">
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/LearningPhenomena.html"
+            title="LearningPhenomenaに関する論文・技術記事メモの一覧">
             LearningPhenomenaに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ImageSegmentation.html" title="ImageSegmentationに関する論文・技術記事メモの一覧">
-            ImageSegmentationに関する論文・技術記事メモの一覧<span class="post-badges">
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/WI.html"
+            title="WIに関する論文・技術記事メモの一覧">
+            WIに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
-        </li>
-</ul>
-    </div>
-<div class="post-comments"></div></section>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/InformationRetrieval.html"
+            title="InformationRetrievalに関する論文・技術記事メモの一覧">
+            InformationRetrievalに関する論文・技術記事メモの一覧<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li></ul>
+    </div><div class="post-comments"></div></section>
 </div>
 
 
@@ -1254,13 +1248,11 @@ QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](https://
   <data class="u-url" href="/paper_notes/"></data>
 
   <div class="wrapper">
-    <div class="site-footer-inner">
-<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+    <div class="site-footer-inner"><div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
       <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
       generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
       another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
-      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
-</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a></div>
     </div>
   </div>
 </footer>
