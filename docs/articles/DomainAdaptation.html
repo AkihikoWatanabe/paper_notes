@@ -1,25 +1,28 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c"><!-- Begin Jekyll SEO tag v2.8.0 -->
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>DomainAdaptationに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
-<meta name="generator" content="Jekyll v4.3.2" />
-<meta property="og:title" content="DomainAdaptationに関する論文・技術記事メモの一覧" />
-<meta name="author" content="AkihikoWATANABE" />
-<meta property="og:locale" content="ja" />
-<meta name="description" content="DomainAdaptation #MachineLearning#UserModeling#EMNLPIssue Date: 2017-12-31 Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17 Comment#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。 Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。 psychologyの分野だと、人間のfactorをdiscreteに表現して、ある人物を表現することはnoisyだと知られているので、continuousなユーザfactorを使って、domain adaptationしましたという話。 やってることは単純で、feature vectorを作る際に、各クラスごとにfeature vectorをコピーして、feature augmentationするのではなく、continuousなuser factorとの積をとった値でfeature augmentationするというだけ。 これをするだけで、Sentiment analysis, sarcasm detection, PP-attachmentなどのタスクにおいて、F1スコアで1〜3ポイント程度のgainを得ている。特に、sarcasm detectionではgainが顕著。 pos tagging, stance detection(against, neutral, forなどの同定)では効果がなく、stance detectionではそもそもdiscrete adaptationの方が良い結果。 正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。 user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。 #Single#DocumentSummarization#Document#Supervised#NLP#Extractive#PRICAIIssue Date: 2018-01-01 Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16 CommentNew York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。 NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。 具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案 また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案 モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。 NYTACのデータを活用する手法として、以下の5つの手法を提案している。 ``` 1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない 2. Mixture: targetとNYTACの事例をマージして一緒に学習する 3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定 4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる 5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする ``` また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。 そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。 DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。 どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。 DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。 しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。 RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。 #MachineLearning#NLP#ACL#Admin&#39;sPickIssue Date: 2017-12-31 Frustratingly easy domain adaptation, Daume, ACL07 Comment![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png) domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。 イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。 more" />
-<meta property="og:description" content="DomainAdaptation #MachineLearning#UserModeling#EMNLPIssue Date: 2017-12-31 Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17 Comment#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。 Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。 psychologyの分野だと、人間のfactorをdiscreteに表現して、ある人物を表現することはnoisyだと知られているので、continuousなユーザfactorを使って、domain adaptationしましたという話。 やってることは単純で、feature vectorを作る際に、各クラスごとにfeature vectorをコピーして、feature augmentationするのではなく、continuousなuser factorとの積をとった値でfeature augmentationするというだけ。 これをするだけで、Sentiment analysis, sarcasm detection, PP-attachmentなどのタスクにおいて、F1スコアで1〜3ポイント程度のgainを得ている。特に、sarcasm detectionではgainが顕著。 pos tagging, stance detection(against, neutral, forなどの同定)では効果がなく、stance detectionではそもそもdiscrete adaptationの方が良い結果。 正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。 user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。 #Single#DocumentSummarization#Document#Supervised#NLP#Extractive#PRICAIIssue Date: 2018-01-01 Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16 CommentNew York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。 NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。 具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案 また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案 モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。 NYTACのデータを活用する手法として、以下の5つの手法を提案している。 ``` 1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない 2. Mixture: targetとNYTACの事例をマージして一緒に学習する 3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定 4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる 5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする ``` また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。 そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。 DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。 どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。 DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。 しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。 RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。 #MachineLearning#NLP#ACL#Admin&#39;sPickIssue Date: 2017-12-31 Frustratingly easy domain adaptation, Daume, ACL07 Comment![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png) domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。 イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。 more" />
-<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html" />
-<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html" />
-<meta property="og:site_name" content="わたしのべんきょうノート" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-07-22T16:47:57+00:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="DomainAdaptationに関する論文・技術記事メモの一覧" />
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="DomainAdaptationに関する論文・技術記事メモの一覧">
+<meta name="author" content="AkihikoWATANABE">
+<meta property="og:locale" content="ja">
+<meta name="description" content="DomainAdaptation #MachineLearning#UserModeling#EMNLPIssue Date: 2017-12-31 Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17 Comment#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。 Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。 psychologyの分野だと、人間のfactorをdiscreteに表現して、ある人物を表現することはnoisyだと知られているので、continuousなユーザfactorを使って、domain adaptationしましたという話。 やってることは単純で、feature vectorを作る際に、各クラスごとにfeature vectorをコピーして、feature augmentationするのではなく、continuousなuser factorとの積をとった値でfeature augmentationするというだけ。 これをするだけで、Sentiment analysis, sarcasm detection, PP-attachmentなどのタスクにおいて、F1スコアで1〜3ポイント程度のgainを得ている。特に、sarcasm detectionではgainが顕著。 pos tagging, stance detection(against, neutral, forなどの同定)では効果がなく、stance detectionではそもそもdiscrete adaptationの方が良い結果。 正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。 user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。 #Single#DocumentSummarization#Document#Supervised#NLP#Extractive#PRICAIIssue Date: 2018-01-01 Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16 CommentNew York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。 NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。 具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案 また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案 モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。 NYTACのデータを活用する手法として、以下の5つの手法を提案している。 ``` 1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない 2. Mixture: targetとNYTACの事例をマージして一緒に学習する 3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定 4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる 5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする ``` また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。 そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。 DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。 どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。 DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。 しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。 RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。 #MachineLearning#NLP#ACL#Admin'sPickIssue Date: 2017-12-31 Frustratingly easy domain adaptation, Daume, ACL07 Comment![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png) domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。 イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。 more">
+<meta property="og:description" content="DomainAdaptation #MachineLearning#UserModeling#EMNLPIssue Date: 2017-12-31 Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17 Comment#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。 Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。 psychologyの分野だと、人間のfactorをdiscreteに表現して、ある人物を表現することはnoisyだと知られているので、continuousなユーザfactorを使って、domain adaptationしましたという話。 やってることは単純で、feature vectorを作る際に、各クラスごとにfeature vectorをコピーして、feature augmentationするのではなく、continuousなuser factorとの積をとった値でfeature augmentationするというだけ。 これをするだけで、Sentiment analysis, sarcasm detection, PP-attachmentなどのタスクにおいて、F1スコアで1〜3ポイント程度のgainを得ている。特に、sarcasm detectionではgainが顕著。 pos tagging, stance detection(against, neutral, forなどの同定)では効果がなく、stance detectionではそもそもdiscrete adaptationの方が良い結果。 正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。 user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。 #Single#DocumentSummarization#Document#Supervised#NLP#Extractive#PRICAIIssue Date: 2018-01-01 Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16 CommentNew York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。 NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。 具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案 また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案 モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。 NYTACのデータを活用する手法として、以下の5つの手法を提案している。 ``` 1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない 2. Mixture: targetとNYTACの事例をマージして一緒に学習する 3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定 4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる 5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする ``` また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。 そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。 DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。 どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。 DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。 しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。 RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。 #MachineLearning#NLP#ACL#Admin'sPickIssue Date: 2017-12-31 Frustratingly easy domain adaptation, Daume, ACL07 Comment![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png) domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。 イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。 more">
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html">
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html">
+<meta property="og:site_name" content="わたしのべんきょうノート">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-07-22T16:53:48+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="DomainAdaptationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-22T16:47:57+00:00","datePublished":"2025-07-22T16:47:57+00:00","description":"DomainAdaptation #MachineLearning#UserModeling#EMNLPIssue Date: 2017-12-31 Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17 Comment#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。 Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。 psychologyの分野だと、人間のfactorをdiscreteに表現して、ある人物を表現することはnoisyだと知られているので、continuousなユーザfactorを使って、domain adaptationしましたという話。 やってることは単純で、feature vectorを作る際に、各クラスごとにfeature vectorをコピーして、feature augmentationするのではなく、continuousなuser factorとの積をとった値でfeature augmentationするというだけ。 これをするだけで、Sentiment analysis, sarcasm detection, PP-attachmentなどのタスクにおいて、F1スコアで1〜3ポイント程度のgainを得ている。特に、sarcasm detectionではgainが顕著。 pos tagging, stance detection(against, neutral, forなどの同定)では効果がなく、stance detectionではそもそもdiscrete adaptationの方が良い結果。 正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。 user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。 #Single#DocumentSummarization#Document#Supervised#NLP#Extractive#PRICAIIssue Date: 2018-01-01 Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16 CommentNew York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。 NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。 具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案 また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案 モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。 NYTACのデータを活用する手法として、以下の5つの手法を提案している。 ``` 1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない 2. Mixture: targetとNYTACの事例をマージして一緒に学習する 3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定 4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる 5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする ``` また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。 そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。 DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。 どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。 DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。 しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。 RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。 #MachineLearning#NLP#ACL#Admin&#39;sPickIssue Date: 2017-12-31 Frustratingly easy domain adaptation, Daume, ACL07 Comment![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png) domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。 イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。 more","headline":"DomainAdaptationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-22T16:53:48+00:00","datePublished":"2025-07-22T16:53:48+00:00","description":"DomainAdaptation #MachineLearning#UserModeling#EMNLPIssue Date: 2017-12-31 Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17 Comment#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。 Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。 psychologyの分野だと、人間のfactorをdiscreteに表現して、ある人物を表現することはnoisyだと知られているので、continuousなユーザfactorを使って、domain adaptationしましたという話。 やってることは単純で、feature vectorを作る際に、各クラスごとにfeature vectorをコピーして、feature augmentationするのではなく、continuousなuser factorとの積をとった値でfeature augmentationするというだけ。 これをするだけで、Sentiment analysis, sarcasm detection, PP-attachmentなどのタスクにおいて、F1スコアで1〜3ポイント程度のgainを得ている。特に、sarcasm detectionではgainが顕著。 pos tagging, stance detection(against, neutral, forなどの同定)では効果がなく、stance detectionではそもそもdiscrete adaptationの方が良い結果。 正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。 user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。 #Single#DocumentSummarization#Document#Supervised#NLP#Extractive#PRICAIIssue Date: 2018-01-01 Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16 CommentNew York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。 NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。 具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案 また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案 モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。 NYTACのデータを活用する手法として、以下の5つの手法を提案している。 ``` 1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない 2. Mixture: targetとNYTACの事例をマージして一緒に学習する 3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定 4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる 5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする ``` また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。 そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。 DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。 どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。 DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。 しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。 RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。 #MachineLearning#NLP#ACL#Admin&#39;sPickIssue Date: 2017-12-31 Frustratingly easy domain adaptation, Daume, ACL07 Comment![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png) domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。 イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。 more","headline":"DomainAdaptationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DomainAdaptation.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -28,7 +31,8 @@
   <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
   <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
   <script src="/paper_notes/assets/js/main.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート" /><script>
+  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
+<script>
   function showMore(index) {
     const contentDivs = document.getElementsByClassName('hidden-content');
     const contentDiv = contentDivs[index];
@@ -76,9 +80,7 @@
 </script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <!-- and it's easy to individually load additional languages -->
-<script charset="UTF-8"
-        src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"
-        async></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
 
 
 
@@ -166,14 +168,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     display: none;
   }
 </style>
-<script
-  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
-<script
-  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
-<link
-  href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css"
-  rel="stylesheet"
-/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
 <style>
   .pswp .pswp__container .pswp__img {
     background-color: white;
@@ -247,8 +244,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   window.addEventListener("load", initPhotoSwipe);
 </script>
-<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI" />
-</head><body>
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+</head>
+<body>
 
 
 
@@ -385,16 +383,17 @@ document.addEventListener('DOMContentLoaded', function(event) {
 <header class="site-header site-header-transparent" role="banner">
 
   <div class="wrapper">
-    <div class="site-header-inner"><span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
   <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
   わたしのべんきょうノート
 </a>
 </span><nav class="site-nav">
-          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
           <label for="nav-trigger">
             <span class="menu-icon">
-              <svg viewBox="0 0 18 15" width="18px" height="15px">
-                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
               </svg>
             </span>
           </label>
@@ -551,8 +550,10 @@ function googleTranslateElementInit() {
 </script>
 
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-</span></div>
-        </nav></div>
+</span>
+</div>
+        </nav>
+</div>
   </div>
 </header>
 
@@ -747,11 +748,15 @@ function googleTranslateElementInit() {
     html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
       opacity: 0.2872;
     }
-  </style><section class="page-banner">
-    <div class="page-banner-img"><div style="background-image: url(/paper_notes/assets/images/banner.png)"></div>
-        <img class="img-placeholder" src="/paper_notes/assets/images/banner.png"></div>
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/paper_notes/assets/images/banner.png)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.png">
+</div>
     <div class="wrapper">
-      <div class="page-banner-inner"><header class="post-header">
+      <div class="page-banner-inner">
+<header class="post-header">
   <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
   <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
 それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
@@ -759,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-22T16:47:57+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 22, 2025
+    <time class="dt-published" datetime="2025-07-22T16:53:48+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 22, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -989,7 +994,7 @@ function googleTranslateElementInit() {
 
       <h2 id="domainadaptation">DomainAdaptation</h2>
 <div class="visible-content">
-<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/UserModeling.html">#UserModeling</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><br /><span class="issue_date">Issue Date: 2017-12-31</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/UserModeling.html">#UserModeling</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/125">Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP17</a>
 <span class="snippet"><span>Comment</span>#126 Frustratingly easy domain adaptationをPersonalization用に拡張している。
 Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。
@@ -1001,7 +1006,7 @@ pos tagging, stance detection(against, neutral, forなどの同定)では効果�
 
 正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。
 user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。</span>
-<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><a class="button" href="articles/PRICAI.html">#PRICAI</a><br /><span class="issue_date">Issue Date: 2018-01-01</span>
+<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><a class="button" href="articles/PRICAI.html">#PRICAI</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/142">Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI16</a>
 <span class="snippet"><span>Comment</span>New York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。
 NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。
@@ -1029,7 +1034,7 @@ DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Struc
 DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。
 しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。
 RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。</span>
-<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ACL.html">#ACL</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br /><span class="issue_date">Issue Date: 2017-12-31</span>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ACL.html">#ACL</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/126">Frustratingly easy domain adaptation, Daume, ACL07</a>
 <span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png)
 
@@ -1040,7 +1045,7 @@ domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを�
 <p><button onclick="showMore(0)">more</button></p>
 
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br /><span class="issue_date">Issue Date: 2017-12-31</span>
+<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/StructuredLearning.html">#StructuredLearning</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/141">転移学習による抽出型要約の精度向上, 西川+, 情報処理学会研究報告, 2011</a>
 <span class="snippet"><span>Comment</span>構造学習を利用した文書要約モデル
 #126 なども利用し転移学習を行なっている。</span>
@@ -1051,47 +1056,47 @@ domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを�
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/DocumentSummarization.html" title="DocumentSummarizationに関する論文・技術記事メモの一覧">DocumentSummarizationに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/DropoutPrediction.html" title="DropoutPredictionに関する論文・技術記事メモの一覧">DropoutPredictionに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav">
+<a class="previous" href="/paper_notes/articles/DocumentSummarization.html" title="DocumentSummarizationに関する論文・技術記事メモの一覧">DocumentSummarizationに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/DropoutPrediction.html" title="DropoutPredictionに関する論文・技術記事メモの一覧">DropoutPredictionに関する論文・技術記事メモの一覧</a>
+</div>
+<div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Repetition.html"
-            title="Repetitionに関する論文・技術記事メモの一覧">
-            Repetitionに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DynamicNetworks.html" title="DynamicNetworksに関する論文・技術記事メモの一覧">
+            DynamicNetworksに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/TwoTowerModel.html"
-            title="TwoTowerModelに関する論文・技術記事メモの一覧">
-            TwoTowerModelに関する論文・技術記事メモの一覧<span class="post-badges">
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/DataMixture.html" title="DataMixtureに関する論文・技術記事メモの一覧">
+            DataMixtureに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/PerplexityCurse.html"
-            title="PerplexityCurseに関する論文・技術記事メモの一覧">
-            PerplexityCurseに関する論文・技術記事メモの一覧<span class="post-badges">
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/MachineTranslation.html" title="MachineTranslationに関する論文・技術記事メモの一覧">
+            MachineTranslationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Reasoning.html"
-            title="Reasoningに関する論文・技術記事メモの一覧">
-            Reasoningに関する論文・技術記事メモの一覧<span class="post-badges">
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/CLIP.html" title="CLIPに関する論文・技術記事メモの一覧">
+            CLIPに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
-        </li></ul>
-    </div><div class="post-comments"></div></section>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
 </div>
 
 
@@ -1227,11 +1232,13 @@ domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを�
   <data class="u-url" href="/paper_notes/"></data>
 
   <div class="wrapper">
-    <div class="site-footer-inner"><div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+    <div class="site-footer-inner">
+<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
       <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
       generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
       another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
-      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a></div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
+</div>
     </div>
   </div>
 </footer>
