@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/KnowledgeTracing.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-23T00:54:51+00:00">
+<meta property="article:published_time" content="2025-07-24T00:54:42+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="KnowledgeTracingに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-23T00:54:51+00:00","datePublished":"2025-07-23T00:54:51+00:00","description":"KnowledgeTracing #NaturalLanguageGeneration#NLP#Education#AdaptiveLearning#Personalization#QuestionGenerationIssue Date: 2023-07-14 Adaptive and Personalized Exercise Generation for Online Language Learning, ACL23 Summary本研究では、オンライン言語学習のための適応的な演習生成の新しいタスクを研究しました。学習履歴から学生の知識状態を推定し、その状態に基づいて個別化された演習文を生成するモデルを提案しました。実データを用いた実験結果から、学生の状態に応じた演習を生成できることを示しました。さらに、教育アプリケーションでの利用方法についても議論し、学習の効率化を促進できる可能性を示しました。 CommentKnowledge Tracingで推定された習熟度に基づいて、エクササイズを自動生成する研究。KTとNLGが組み合わさっており、非常におもしろい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959) #Survey#Pocket#AdaptiveLearning#EducationalDataMiningIssue Date: 2022-08-02 Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, ACM Computing Surveys23 Summary人間の教育における知識移転の重要性を背景に、オンライン教育における知識追跡（KT）の必要性が高まっている。本論文では、KTに関する包括的なレビューを行い、初期の手法から最新の深層学習技術までを網羅し、モデルの理論やデータセットの特性を強調する。また、関連手法のモデリングの違いを明確にし、KT文献の研究ギャップや今後の方向性についても議論する。 #NeuralNetwork#AdaptiveLearning#EducationalDataMiningIssue Date: 2022-08-26 Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22 Comment超重要論文。しっかり読むべき# 一言で言うと KTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中で企業が買収された経緯もあり、古いコンテンツと新しいコンテンツの間でスキルタグのマッピングの間で、矛盾や一貫性がないものができあがってしまった（複数の異なるチームがコンテンツの提供やスキルのタグ付けを行なった結果）。このような例はレアケースかもしれないが、問題とスキルタグが異なるチームによって開発されるということは珍しいことではないし、現代のオンライン学習システムの多くは、さまざまな教科書のデータを統合し、長年にわたってコンテンツ作成チームのメンバーを変更し、複数の州の基準や内部コンテンツスキーマに従ってコンテンツにタグをづけをしているので、少なからずこういった問題（i.e. 一貫性がなく、矛盾をかかえたitem-skill mapping）を抱えている。 こうした中で、NNを用いたモデルを用いることで、unreliableなKCモデルを用いるくらいならば、KCモデルを用いない方が正答率予測が高い精度で実施できることを示した。これは少なくとも、生徒の問題に対する将来のパフォーマンスを予測する問題に関して言えば、既存のアプリケーションにおいて、KCモデルを構築するステップを回避できる可能性を示唆している。 # モチベーション Cognitive Tutorのようなシステムは、もともとKTを利用するために設計されているシステムだったが、多くのreal-worldの学習システムはアダプティブラーニングやKTを念頭に置いて作られたものではない。そういったシステムでアダプティブな機能を追加するといった事例が増えてきている。こういったシステムが、もともとKTを実施することを念頭するために作られたシステムとの違いとして、問題とスキルのマッピング方法にある。 最初から KT を使用するように設計されたシステムは、最初にどのスキルを含めるかを選択し、次にそれらのスキルに合わせたアイテムを開発する。 一方、KTを使用するために改良をする場合、最初にアイテムが作成され、次にアイテムにスキルのラベルが付けられる。 既存のアイテムにスキルのラベルを付けるのは、スキルの新しいアイテムを作成するよりもはるかに困難である。 多くの場合、アイテムは複数の著者によって時間をかけて開発されたものであるか、異なる教科書などの異なる元のソースからのものである。この異種のコンテンツ (場合によっては数万のアイテム) を一連のスキルにマッピングすることは、非常に困難な作業になる可能性がある。 多くの場合、アイテムは政府のカリキュラム基準の観点からタグ付けされているが、これらの基準は一般的に、KTモデルで使用されるスキルよりも非常に粗いものとなっている。 したがって、最初からKTを利用することを念頭に置かれていないシステムでKTを利用することには課題がある。 この論文では、NNベースなKTモデルが、この課題の部分的な解決策になることを示す。 このために、商用の数学のblended learningシステムでのケーススタディを実施した。 中学生が 2 年間システムを使用して収集したデータを使用して、KT モデルの性能を次の3 つのシナリオで比較し： - 1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合 - 2) 州の基準に基づくタグを利用した場合 - 3) コンテンツとスキルタグのマッピングを一切入力しない場合 DKVMNでの実験の結果、1)が最も悪い性能を示し、3)が最も良い問題の正誤予測の性能を示した。 これは、もともとKT モデルで動作するように設計されていなかった現実世界の学習システムでKCモデリングを回避する可能性を示唆している。特に、目的が将来のアイテムに対する学習者の成績を予測することだけである場合はこれに該当する。 # 実験結果 ![image](https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png) スキルの情報を用いず、ExerciseIDをそのままinputする方法が、最も高いAUCを獲得している。 # つまり - きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない - 特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高い# KTの歴史 - 30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから） - 最初はBKTが広く採用された - その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀 - Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている - Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。 - NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した - ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。 - これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。 more","headline":"KnowledgeTracingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/KnowledgeTracing.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/KnowledgeTracing.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-24T00:54:42+00:00","datePublished":"2025-07-24T00:54:42+00:00","description":"KnowledgeTracing #NaturalLanguageGeneration#NLP#Education#AdaptiveLearning#Personalization#QuestionGenerationIssue Date: 2023-07-14 Adaptive and Personalized Exercise Generation for Online Language Learning, ACL23 Summary本研究では、オンライン言語学習のための適応的な演習生成の新しいタスクを研究しました。学習履歴から学生の知識状態を推定し、その状態に基づいて個別化された演習文を生成するモデルを提案しました。実データを用いた実験結果から、学生の状態に応じた演習を生成できることを示しました。さらに、教育アプリケーションでの利用方法についても議論し、学習の効率化を促進できる可能性を示しました。 CommentKnowledge Tracingで推定された習熟度に基づいて、エクササイズを自動生成する研究。KTとNLGが組み合わさっており、非常におもしろい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959) #Survey#Pocket#AdaptiveLearning#EducationalDataMiningIssue Date: 2022-08-02 Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, ACM Computing Surveys23 Summary人間の教育における知識移転の重要性を背景に、オンライン教育における知識追跡（KT）の必要性が高まっている。本論文では、KTに関する包括的なレビューを行い、初期の手法から最新の深層学習技術までを網羅し、モデルの理論やデータセットの特性を強調する。また、関連手法のモデリングの違いを明確にし、KT文献の研究ギャップや今後の方向性についても議論する。 #NeuralNetwork#AdaptiveLearning#EducationalDataMiningIssue Date: 2022-08-26 Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22 Comment超重要論文。しっかり読むべき# 一言で言うと KTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中で企業が買収された経緯もあり、古いコンテンツと新しいコンテンツの間でスキルタグのマッピングの間で、矛盾や一貫性がないものができあがってしまった（複数の異なるチームがコンテンツの提供やスキルのタグ付けを行なった結果）。このような例はレアケースかもしれないが、問題とスキルタグが異なるチームによって開発されるということは珍しいことではないし、現代のオンライン学習システムの多くは、さまざまな教科書のデータを統合し、長年にわたってコンテンツ作成チームのメンバーを変更し、複数の州の基準や内部コンテンツスキーマに従ってコンテンツにタグをづけをしているので、少なからずこういった問題（i.e. 一貫性がなく、矛盾をかかえたitem-skill mapping）を抱えている。 こうした中で、NNを用いたモデルを用いることで、unreliableなKCモデルを用いるくらいならば、KCモデルを用いない方が正答率予測が高い精度で実施できることを示した。これは少なくとも、生徒の問題に対する将来のパフォーマンスを予測する問題に関して言えば、既存のアプリケーションにおいて、KCモデルを構築するステップを回避できる可能性を示唆している。 # モチベーション Cognitive Tutorのようなシステムは、もともとKTを利用するために設計されているシステムだったが、多くのreal-worldの学習システムはアダプティブラーニングやKTを念頭に置いて作られたものではない。そういったシステムでアダプティブな機能を追加するといった事例が増えてきている。こういったシステムが、もともとKTを実施することを念頭するために作られたシステムとの違いとして、問題とスキルのマッピング方法にある。 最初から KT を使用するように設計されたシステムは、最初にどのスキルを含めるかを選択し、次にそれらのスキルに合わせたアイテムを開発する。 一方、KTを使用するために改良をする場合、最初にアイテムが作成され、次にアイテムにスキルのラベルが付けられる。 既存のアイテムにスキルのラベルを付けるのは、スキルの新しいアイテムを作成するよりもはるかに困難である。 多くの場合、アイテムは複数の著者によって時間をかけて開発されたものであるか、異なる教科書などの異なる元のソースからのものである。この異種のコンテンツ (場合によっては数万のアイテム) を一連のスキルにマッピングすることは、非常に困難な作業になる可能性がある。 多くの場合、アイテムは政府のカリキュラム基準の観点からタグ付けされているが、これらの基準は一般的に、KTモデルで使用されるスキルよりも非常に粗いものとなっている。 したがって、最初からKTを利用することを念頭に置かれていないシステムでKTを利用することには課題がある。 この論文では、NNベースなKTモデルが、この課題の部分的な解決策になることを示す。 このために、商用の数学のblended learningシステムでのケーススタディを実施した。 中学生が 2 年間システムを使用して収集したデータを使用して、KT モデルの性能を次の3 つのシナリオで比較し： - 1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合 - 2) 州の基準に基づくタグを利用した場合 - 3) コンテンツとスキルタグのマッピングを一切入力しない場合 DKVMNでの実験の結果、1)が最も悪い性能を示し、3)が最も良い問題の正誤予測の性能を示した。 これは、もともとKT モデルで動作するように設計されていなかった現実世界の学習システムでKCモデリングを回避する可能性を示唆している。特に、目的が将来のアイテムに対する学習者の成績を予測することだけである場合はこれに該当する。 # 実験結果 ![image](https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png) スキルの情報を用いず、ExerciseIDをそのままinputする方法が、最も高いAUCを獲得している。 # つまり - きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない - 特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高い# KTの歴史 - 30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから） - 最初はBKTが広く採用された - その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀 - Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている - Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。 - NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した - ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。 - これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。 more","headline":"KnowledgeTracingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/KnowledgeTracing.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/KnowledgeTracing.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-23T00:54:51+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 23, 2025
+    <time class="dt-published" datetime="2025-07-24T00:54:42+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 24, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1803,32 +1803,32 @@ EKTでは、生徒の各knowledge conceptの状態を保持した行列H_t^i（0
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Toxicity.html" title="Toxicityに関する論文・技術記事メモの一覧">
-            Toxicityに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DataGeneration.html" title="DataGenerationに関する論文・技術記事メモの一覧">
+            DataGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/EfficiencyImprovement.html" title="EfficiencyImprovementに関する論文・技術記事メモの一覧">
-            EfficiencyImprovementに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/MCP.html" title="MCPに関する論文・技術記事メモの一覧">
+            MCPに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Citations.html" title="Citationsに関する論文・技術記事メモの一覧">
-            Citationsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/API.html" title="APIに関する論文・技術記事メモの一覧">
+            APIに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/GenerativeRecommendation.html" title="GenerativeRecommendationに関する論文・技術記事メモの一覧">
-            GenerativeRecommendationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Verification.html" title="Verificationに関する論文・技術記事メモの一覧">
+            Verificationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
