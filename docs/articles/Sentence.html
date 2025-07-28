@@ -12,17 +12,17 @@
 <meta property="og:title" content="Sentenceに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="Sentence #Embeddings#Pocket#NLP#LanguageModel#RepresentationLearning#ContrastiveLearning#Catastrophic Forgetting#Admin'sPickIssue Date: 2023-07-27 SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP21 Summaryこの論文では、SimCSEという対比学習フレームワークを提案しています。このフレームワークは、文の埋め込み技術を進化させることができます。教師なしアプローチでは、入力文をノイズとして扱い、自己を対比的に予測します。教師ありアプローチでは、自然言語推論データセットから注釈付きのペアを使用して対比学習を行います。SimCSEは、意味的テキスト類似性タスクで評価され、以前の手法と比較して改善を実現しました。対比学習は、事前学習された埋め込みの空間を均一に正則化し、教師信号が利用可能な場合には正のペアをよりよく整列させることが示されました。 Comment#462 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる# 手法概要 Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。 Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる） Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620) # Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違い どちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a) （画像はこのブログから引用。ありがとうございます。https://techblog.cccmk.co.jp/entry/2022/08/30/163625） # Unsupervised SimCSEの実験 異なるdata augmentation手法と比較した結果、dropoutを適用する手法の方が性能が高かった。MLMや, deletion, 類義語への置き換え等よりも高い性能を獲得しているのは興味深い。また、Next Sentence Predictionと比較しても、高い性能を達成。Next Sentence Predictionは、word deletion等のほぼ類似したテキストから直接的に類似関係にあるペアから学習するというより、Sentenceの意味内容のつながりに基づいてモデルの言語理解能力を向上させ、そのうえで類似度を測るという間接的な手法だが、word deletionに負けている。一方、dropoutを適用するだけの（直接的に類似ペアから学習する）本手法はより高い性能を示している。 [image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0ea3549e-3363-4857-94e6-a1ef474aa191) なぜうまくいくかを分析するために、異なる設定で実験し、alignment（正例との近さ）とuniformity（どれだけembeddingが一様に分布しているか）を、10 stepごとにplotした結果が以下。dropoutを適用しない場合と、常に同じ部分をマスクする方法（つまり、全く同じembeddingから学習する）設定を見ると、学習が進むにつれuniformityは改善するが、alignmentが悪くなっていっている。一方、SimCSEはalignmentを維持しつつ、uniformityもよくなっていっていることがわかる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f488cb2-b15a-4e00-9452-8e48780abe8a) ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e815cf7-b412-4f1b-8adb-116f0dcd2fee) # Supervised SimCSEの実験 アノテーションデータを用いてContrastiveLearningするにあたり、どういったデータを正例としてみなすと良いかを検証するために様々なデータセットで学習し性能を検証した。 - QQP4: Quora question pairs - Flickr30k (Young et al., 2014): 同じ画像に対して、5つの異なる人間が記述したキャプションが存在 - ParaNMT (Wieting and Gimpel, 2018): back-translationによるparaphraseのデータセットa - NLI datasets: SNLIとMNLI 実験の結果、NLI datasetsが最も高い性能を示した。この理由としては、NLIデータセットは、crowd sourcingタスクで人手で作成された高品質なデータセットであることと、lexical overlapが小さくなるようにsentenceのペアが作成されていることが起因している。実際、NLI datsetのlexical overlapは39%だったのに対し、ほかのデータセットでは60%であった。 また、condunctionsとなるペアを明示的に負例として与えることで、より性能が向上した（普通はnegative samplingする、というかバッチ内の正例以外のものを強制的に負例とする。こうすると、意味が同じでも負例になってしまう事例が出てくることになる）。より難しいNLIタスクを含むANLIデータセットを追加した場合は、性能が改善しなかった。この理由については考察されていない。性能向上しそうな気がするのに。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ae05711b-5ad4-4a53-837b-c57e9a39da62) # 他手法との比較結果 SimCSEがよい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923) # Ablation Studies 異なるpooling方法で、どのようにsentence embeddingを作成するかで性能の違いを見た。originalのBERTの実装では、CLS token のembeddingの上にMLP layerがのっかっている。これの有無などと比較。 Unsupervised SimCSEでは、training時だけMLP layerをのっけて、test時はMLPを除いた方が良かった。一方、Supervised SimCSEでは、 MLP layerをのっけたまんまで良かったとのこと。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73116c6a-d48f-42bc-aa5e-8342bb068052) また、SimCSEで学習したsentence embeddingを別タスクにtransferして活用する際には、SimCSEのobjectiveにMLMを入れた方が、catastrophic forgettingを防げて性能が高かったとのこと。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f)ablation studiesのhard negativesのところと、どのようにミニバッチを構成するか、それぞれのtransferしたタスクがどのようなものがしっかり読めていない。あとでよむ。 #NeuralNetwork#Embeddings#NLP#RepresentationLearning#EMNLPIssue Date: 2017-12-28 Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP17 Commentslide: https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data汎用的な文のエンコーダができました！という話。 SNLIデータでパラメータ学習、エンコーダ構成スライド図中右側のエンコーダ部分をなるべく一般的な文に適用できるように学習したい。 色々なタスクで、文のエンコーダ構成を比較した結果、bi-directional LSTMでエンコードし、要素ごとの最大値をとる手法が最も良いという結果。 隠れ層の次元は4096とかそのくらい。 Skip-Thoughtは学習に1ヶ月くらいかかるけど、提案手法はより少ないデータで1日くらいで学習終わり、様々なタスクで精度が良い。 ベクトルの要素積、concat, subなど、様々な演算を施し、学習しているので、そのような構成の元から文エンコーダを学習すると何か意味的なものがとれている？ SNLIはNatural Language Inferenceには文の意味理解が必須なので、そのデータ使って学習するといい感じに文のエンコードができます。 NLIのデータは色々なところで有用なので、日本語のNLIのデータとかも欲しい。 #NeuralNetwork#Embeddings#NLP#RepresentationLearning#ICLR#Admin'sPickIssue Date: 2017-12-28 A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR17 CommentOpenReview:https://openreview.net/forum?id=BJC_jUqxe more">
-<meta property="og:description" content="Sentence #Embeddings#Pocket#NLP#LanguageModel#RepresentationLearning#ContrastiveLearning#Catastrophic Forgetting#Admin'sPickIssue Date: 2023-07-27 SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP21 Summaryこの論文では、SimCSEという対比学習フレームワークを提案しています。このフレームワークは、文の埋め込み技術を進化させることができます。教師なしアプローチでは、入力文をノイズとして扱い、自己を対比的に予測します。教師ありアプローチでは、自然言語推論データセットから注釈付きのペアを使用して対比学習を行います。SimCSEは、意味的テキスト類似性タスクで評価され、以前の手法と比較して改善を実現しました。対比学習は、事前学習された埋め込みの空間を均一に正則化し、教師信号が利用可能な場合には正のペアをよりよく整列させることが示されました。 Comment#462 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる# 手法概要 Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。 Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる） Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620) # Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違い どちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a) （画像はこのブログから引用。ありがとうございます。https://techblog.cccmk.co.jp/entry/2022/08/30/163625） # Unsupervised SimCSEの実験 異なるdata augmentation手法と比較した結果、dropoutを適用する手法の方が性能が高かった。MLMや, deletion, 類義語への置き換え等よりも高い性能を獲得しているのは興味深い。また、Next Sentence Predictionと比較しても、高い性能を達成。Next Sentence Predictionは、word deletion等のほぼ類似したテキストから直接的に類似関係にあるペアから学習するというより、Sentenceの意味内容のつながりに基づいてモデルの言語理解能力を向上させ、そのうえで類似度を測るという間接的な手法だが、word deletionに負けている。一方、dropoutを適用するだけの（直接的に類似ペアから学習する）本手法はより高い性能を示している。 [image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0ea3549e-3363-4857-94e6-a1ef474aa191) なぜうまくいくかを分析するために、異なる設定で実験し、alignment（正例との近さ）とuniformity（どれだけembeddingが一様に分布しているか）を、10 stepごとにplotした結果が以下。dropoutを適用しない場合と、常に同じ部分をマスクする方法（つまり、全く同じembeddingから学習する）設定を見ると、学習が進むにつれuniformityは改善するが、alignmentが悪くなっていっている。一方、SimCSEはalignmentを維持しつつ、uniformityもよくなっていっていることがわかる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f488cb2-b15a-4e00-9452-8e48780abe8a) ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e815cf7-b412-4f1b-8adb-116f0dcd2fee) # Supervised SimCSEの実験 アノテーションデータを用いてContrastiveLearningするにあたり、どういったデータを正例としてみなすと良いかを検証するために様々なデータセットで学習し性能を検証した。 - QQP4: Quora question pairs - Flickr30k (Young et al., 2014): 同じ画像に対して、5つの異なる人間が記述したキャプションが存在 - ParaNMT (Wieting and Gimpel, 2018): back-translationによるparaphraseのデータセットa - NLI datasets: SNLIとMNLI 実験の結果、NLI datasetsが最も高い性能を示した。この理由としては、NLIデータセットは、crowd sourcingタスクで人手で作成された高品質なデータセットであることと、lexical overlapが小さくなるようにsentenceのペアが作成されていることが起因している。実際、NLI datsetのlexical overlapは39%だったのに対し、ほかのデータセットでは60%であった。 また、condunctionsとなるペアを明示的に負例として与えることで、より性能が向上した（普通はnegative samplingする、というかバッチ内の正例以外のものを強制的に負例とする。こうすると、意味が同じでも負例になってしまう事例が出てくることになる）。より難しいNLIタスクを含むANLIデータセットを追加した場合は、性能が改善しなかった。この理由については考察されていない。性能向上しそうな気がするのに。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ae05711b-5ad4-4a53-837b-c57e9a39da62) # 他手法との比較結果 SimCSEがよい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923) # Ablation Studies 異なるpooling方法で、どのようにsentence embeddingを作成するかで性能の違いを見た。originalのBERTの実装では、CLS token のembeddingの上にMLP layerがのっかっている。これの有無などと比較。 Unsupervised SimCSEでは、training時だけMLP layerをのっけて、test時はMLPを除いた方が良かった。一方、Supervised SimCSEでは、 MLP layerをのっけたまんまで良かったとのこと。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73116c6a-d48f-42bc-aa5e-8342bb068052) また、SimCSEで学習したsentence embeddingを別タスクにtransferして活用する際には、SimCSEのobjectiveにMLMを入れた方が、catastrophic forgettingを防げて性能が高かったとのこと。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f)ablation studiesのhard negativesのところと、どのようにミニバッチを構成するか、それぞれのtransferしたタスクがどのようなものがしっかり読めていない。あとでよむ。 #NeuralNetwork#Embeddings#NLP#RepresentationLearning#EMNLPIssue Date: 2017-12-28 Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP17 Commentslide: https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data汎用的な文のエンコーダができました！という話。 SNLIデータでパラメータ学習、エンコーダ構成スライド図中右側のエンコーダ部分をなるべく一般的な文に適用できるように学習したい。 色々なタスクで、文のエンコーダ構成を比較した結果、bi-directional LSTMでエンコードし、要素ごとの最大値をとる手法が最も良いという結果。 隠れ層の次元は4096とかそのくらい。 Skip-Thoughtは学習に1ヶ月くらいかかるけど、提案手法はより少ないデータで1日くらいで学習終わり、様々なタスクで精度が良い。 ベクトルの要素積、concat, subなど、様々な演算を施し、学習しているので、そのような構成の元から文エンコーダを学習すると何か意味的なものがとれている？ SNLIはNatural Language Inferenceには文の意味理解が必須なので、そのデータ使って学習するといい感じに文のエンコードができます。 NLIのデータは色々なところで有用なので、日本語のNLIのデータとかも欲しい。 #NeuralNetwork#Embeddings#NLP#RepresentationLearning#ICLR#Admin'sPickIssue Date: 2017-12-28 A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR17 CommentOpenReview:https://openreview.net/forum?id=BJC_jUqxe more">
+<meta name="description" content="Sentence">
+<meta property="og:description" content="Sentence">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-28T00:58:31+00:00">
+<meta property="article:published_time" content="2025-07-28T09:55:51+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Sentenceに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T00:58:31+00:00","datePublished":"2025-07-28T00:58:31+00:00","description":"Sentence #Embeddings#Pocket#NLP#LanguageModel#RepresentationLearning#ContrastiveLearning#Catastrophic Forgetting#Admin&#39;sPickIssue Date: 2023-07-27 SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP21 Summaryこの論文では、SimCSEという対比学習フレームワークを提案しています。このフレームワークは、文の埋め込み技術を進化させることができます。教師なしアプローチでは、入力文をノイズとして扱い、自己を対比的に予測します。教師ありアプローチでは、自然言語推論データセットから注釈付きのペアを使用して対比学習を行います。SimCSEは、意味的テキスト類似性タスクで評価され、以前の手法と比較して改善を実現しました。対比学習は、事前学習された埋め込みの空間を均一に正則化し、教師信号が利用可能な場合には正のペアをよりよく整列させることが示されました。 Comment#462 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる# 手法概要 Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。 Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる） Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620) # Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違い どちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a) （画像はこのブログから引用。ありがとうございます。https://techblog.cccmk.co.jp/entry/2022/08/30/163625） # Unsupervised SimCSEの実験 異なるdata augmentation手法と比較した結果、dropoutを適用する手法の方が性能が高かった。MLMや, deletion, 類義語への置き換え等よりも高い性能を獲得しているのは興味深い。また、Next Sentence Predictionと比較しても、高い性能を達成。Next Sentence Predictionは、word deletion等のほぼ類似したテキストから直接的に類似関係にあるペアから学習するというより、Sentenceの意味内容のつながりに基づいてモデルの言語理解能力を向上させ、そのうえで類似度を測るという間接的な手法だが、word deletionに負けている。一方、dropoutを適用するだけの（直接的に類似ペアから学習する）本手法はより高い性能を示している。 [image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0ea3549e-3363-4857-94e6-a1ef474aa191) なぜうまくいくかを分析するために、異なる設定で実験し、alignment（正例との近さ）とuniformity（どれだけembeddingが一様に分布しているか）を、10 stepごとにplotした結果が以下。dropoutを適用しない場合と、常に同じ部分をマスクする方法（つまり、全く同じembeddingから学習する）設定を見ると、学習が進むにつれuniformityは改善するが、alignmentが悪くなっていっている。一方、SimCSEはalignmentを維持しつつ、uniformityもよくなっていっていることがわかる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f488cb2-b15a-4e00-9452-8e48780abe8a) ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e815cf7-b412-4f1b-8adb-116f0dcd2fee) # Supervised SimCSEの実験 アノテーションデータを用いてContrastiveLearningするにあたり、どういったデータを正例としてみなすと良いかを検証するために様々なデータセットで学習し性能を検証した。 - QQP4: Quora question pairs - Flickr30k (Young et al., 2014): 同じ画像に対して、5つの異なる人間が記述したキャプションが存在 - ParaNMT (Wieting and Gimpel, 2018): back-translationによるparaphraseのデータセットa - NLI datasets: SNLIとMNLI 実験の結果、NLI datasetsが最も高い性能を示した。この理由としては、NLIデータセットは、crowd sourcingタスクで人手で作成された高品質なデータセットであることと、lexical overlapが小さくなるようにsentenceのペアが作成されていることが起因している。実際、NLI datsetのlexical overlapは39%だったのに対し、ほかのデータセットでは60%であった。 また、condunctionsとなるペアを明示的に負例として与えることで、より性能が向上した（普通はnegative samplingする、というかバッチ内の正例以外のものを強制的に負例とする。こうすると、意味が同じでも負例になってしまう事例が出てくることになる）。より難しいNLIタスクを含むANLIデータセットを追加した場合は、性能が改善しなかった。この理由については考察されていない。性能向上しそうな気がするのに。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ae05711b-5ad4-4a53-837b-c57e9a39da62) # 他手法との比較結果 SimCSEがよい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923) # Ablation Studies 異なるpooling方法で、どのようにsentence embeddingを作成するかで性能の違いを見た。originalのBERTの実装では、CLS token のembeddingの上にMLP layerがのっかっている。これの有無などと比較。 Unsupervised SimCSEでは、training時だけMLP layerをのっけて、test時はMLPを除いた方が良かった。一方、Supervised SimCSEでは、 MLP layerをのっけたまんまで良かったとのこと。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73116c6a-d48f-42bc-aa5e-8342bb068052) また、SimCSEで学習したsentence embeddingを別タスクにtransferして活用する際には、SimCSEのobjectiveにMLMを入れた方が、catastrophic forgettingを防げて性能が高かったとのこと。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f)ablation studiesのhard negativesのところと、どのようにミニバッチを構成するか、それぞれのtransferしたタスクがどのようなものがしっかり読めていない。あとでよむ。 #NeuralNetwork#Embeddings#NLP#RepresentationLearning#EMNLPIssue Date: 2017-12-28 Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP17 Commentslide: https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data汎用的な文のエンコーダができました！という話。 SNLIデータでパラメータ学習、エンコーダ構成スライド図中右側のエンコーダ部分をなるべく一般的な文に適用できるように学習したい。 色々なタスクで、文のエンコーダ構成を比較した結果、bi-directional LSTMでエンコードし、要素ごとの最大値をとる手法が最も良いという結果。 隠れ層の次元は4096とかそのくらい。 Skip-Thoughtは学習に1ヶ月くらいかかるけど、提案手法はより少ないデータで1日くらいで学習終わり、様々なタスクで精度が良い。 ベクトルの要素積、concat, subなど、様々な演算を施し、学習しているので、そのような構成の元から文エンコーダを学習すると何か意味的なものがとれている？ SNLIはNatural Language Inferenceには文の意味理解が必須なので、そのデータ使って学習するといい感じに文のエンコードができます。 NLIのデータは色々なところで有用なので、日本語のNLIのデータとかも欲しい。 #NeuralNetwork#Embeddings#NLP#RepresentationLearning#ICLR#Admin&#39;sPickIssue Date: 2017-12-28 A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR17 CommentOpenReview:https://openreview.net/forum?id=BJC_jUqxe more","headline":"Sentenceに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T09:55:51+00:00","datePublished":"2025-07-28T09:55:51+00:00","description":"Sentence","headline":"Sentenceに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-28T00:58:31+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
+    <time class="dt-published" datetime="2025-07-28T09:55:51+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -799,7 +799,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 34 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 31 mins</span>
   </div></header>
 </div>
     </div>
@@ -993,183 +993,1204 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id="sentence">Sentence</h2>
-<div class="visible-content">
-<a class="button" href="articles/Embeddings.html">#Embeddings</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a><a class="button" href="articles/ContrastiveLearning.html">#ContrastiveLearning</a><a class="button" href="articles/Catastrophic%20Forgetting.html">#Catastrophic Forgetting</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2023-07-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/907">SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP21</a>
-<span class="snippet"><span>Summary</span>この論文では、SimCSEという対比学習フレームワークを提案しています。このフレームワークは、文の埋め込み技術を進化させることができます。教師なしアプローチでは、入力文をノイズとして扱い、自己を対比的に予測します。教師ありアプローチでは、自然言語推論データセットから注釈付きのペアを使用して対比学習を行います。SimCSEは、意味的テキスト類似性タスクで評価され、以前の手法と比較して改善を実現しました。対比学習は、事前学習された埋め込みの空間を均一に正則化し、教師信号が利用可能な場合には正のペアをよりよく整列させることが示されました。</span>
-<span class="snippet"><span>Comment</span>#462 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる# 手法概要
-Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。
-Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる）
-Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620)
 
-# Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違い
+<div class="visible-content">
+<a class="button" href="articles/Embeddings.html">#Embeddings</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a>
+<a class="button" href="articles/ContrastiveLearning.html">#ContrastiveLearning</a>
+<a class="button" href="articles/Catastrophic%20Forgetting.html">#Catastrophic Forgetting</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2023-07-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/907">SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP'21</a>
+<span class="snippet"><span>Summary</span>この論文では、SimCSEという対比学習フレームワークを提案しています。このフレームワークは、文の埋め込み技術を進化させることができます。教師なしアプローチでは、入力文をノイズとして扱い、自己を対比的に予測します。教師ありアプローチでは、自然言語推論データセットから注釈付きのペアを使用して対比学習を行います。SimCSEは、意味的テキスト類似性タスクで評価され、以前の手法と比較して改善を実現しました。対比学習は、事前学習された埋め込みの空間を均一に正則化し、教師信号が利用可能な場合には正のペアをよりよく整列させることが示されました。</span>
+<span class="snippet"><span>Comment</span>462 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる手法概要
+
+<br>
+
+
+
+<br>
+
+Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。
+
+<br>
+
+
+
+<br>
+
+Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる）
+
+<br>
+
+
+
+<br>
+
+Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違い
+
+<br>
+
+
+
+<br>
+
 どちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a)
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 （画像はこのブログから引用。ありがとうございます。https://techblog.cccmk.co.jp/entry/2022/08/30/163625）
 
-# Unsupervised SimCSEの実験
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Unsupervised SimCSEの実験
+
+<br>
+
+
+
+<br>
+
 異なるdata augmentation手法と比較した結果、dropoutを適用する手法の方が性能が高かった。MLMや, deletion, 類義語への置き換え等よりも高い性能を獲得しているのは興味深い。また、Next Sentence Predictionと比較しても、高い性能を達成。Next Sentence Predictionは、word deletion等のほぼ類似したテキストから直接的に類似関係にあるペアから学習するというより、Sentenceの意味内容のつながりに基づいてモデルの言語理解能力を向上させ、そのうえで類似度を測るという間接的な手法だが、word deletionに負けている。一方、dropoutを適用するだけの（直接的に類似ペアから学習する）本手法はより高い性能を示している。
+
+<br>
+
+
+
+<br>
+
 [image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0ea3549e-3363-4857-94e6-a1ef474aa191)
 
-なぜうまくいくかを分析するために、異なる設定で実験し、alignment（正例との近さ）とuniformity（どれだけembeddingが一様に分布しているか）を、10 stepごとにplotした結果が以下。dropoutを適用しない場合と、常に同じ部分をマスクする方法（つまり、全く同じembeddingから学習する）設定を見ると、学習が進むにつれuniformityは改善するが、alignmentが悪くなっていっている。一方、SimCSEはalignmentを維持しつつ、uniformityもよくなっていっていることがわかる。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f488cb2-b15a-4e00-9452-8e48780abe8a)
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e815cf7-b412-4f1b-8adb-116f0dcd2fee)
+<br>
 
-# Supervised SimCSEの実験
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+なぜうまくいくかを分析するために、異なる設定で実験し、alignment（正例との近さ）とuniformity（どれだけembeddingが一様に分布しているか）を、10 stepごとにplotした結果が以下。dropoutを適用しない場合と、常に同じ部分をマスクする方法（つまり、全く同じembeddingから学習する）設定を見ると、学習が進むにつれuniformityは改善するが、alignmentが悪くなっていっている。一方、SimCSEはalignmentを維持しつつ、uniformityもよくなっていっていることがわかる。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f488cb2-b15a-4e00-9452-8e48780abe8a" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e815cf7-b412-4f1b-8adb-116f0dcd2fee" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Supervised SimCSEの実験
+
+<br>
+
+
+
+<br>
+
 アノテーションデータを用いてContrastiveLearningするにあたり、どういったデータを正例としてみなすと良いかを検証するために様々なデータセットで学習し性能を検証した。
 
-- QQP4: Quora question pairs
-- Flickr30k (Young et al., 2014): 同じ画像に対して、5つの異なる人間が記述したキャプションが存在
-- ParaNMT (Wieting and Gimpel, 2018): back-translationによるparaphraseのデータセットa
-- NLI datasets: SNLIとMNLI
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+・QQP4: Quora question pairs
+
+<br>
+
+
+
+<br>
+
+・Flickr30k (Young et al., 2014): 同じ画像に対して、5つの異なる人間が記述したキャプションが存在
+
+<br>
+
+
+
+<br>
+
+・ParaNMT (Wieting and Gimpel, 2018): back-translationによるparaphraseのデータセットa
+
+<br>
+
+
+
+<br>
+
+・NLI datasets: SNLIとMNLI
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 実験の結果、NLI datasetsが最も高い性能を示した。この理由としては、NLIデータセットは、crowd sourcingタスクで人手で作成された高品質なデータセットであることと、lexical overlapが小さくなるようにsentenceのペアが作成されていることが起因している。実際、NLI datsetのlexical overlapは39%だったのに対し、ほかのデータセットでは60%であった。
 
-また、condunctionsとなるペアを明示的に負例として与えることで、より性能が向上した（普通はnegative samplingする、というかバッチ内の正例以外のものを強制的に負例とする。こうすると、意味が同じでも負例になってしまう事例が出てくることになる）。より難しいNLIタスクを含むANLIデータセットを追加した場合は、性能が改善しなかった。この理由については考察されていない。性能向上しそうな気がするのに。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ae05711b-5ad4-4a53-837b-c57e9a39da62)
-# 他手法との比較結果
-SimCSEがよい。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923)
+<br>
 
-# Ablation Studies
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+また、condunctionsとなるペアを明示的に負例として与えることで、より性能が向上した（普通はnegative samplingする、というかバッチ内の正例以外のものを強制的に負例とする。こうすると、意味が同じでも負例になってしまう事例が出てくることになる）。より難しいNLIタスクを含むANLIデータセットを追加した場合は、性能が改善しなかった。この理由については考察されていない。性能向上しそうな気がするのに。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ae05711b-5ad4-4a53-837b-c57e9a39da62" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+他手法との比較結果
+
+<br>
+
+
+
+<br>
+
+SimCSEがよい。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Ablation Studies
+
+<br>
+
+
+
+<br>
+
 異なるpooling方法で、どのようにsentence embeddingを作成するかで性能の違いを見た。originalのBERTの実装では、CLS token のembeddingの上にMLP layerがのっかっている。これの有無などと比較。
+
+<br>
+
+
+
+<br>
+
 Unsupervised SimCSEでは、training時だけMLP layerをのっけて、test時はMLPを除いた方が良かった。一方、Supervised SimCSEでは、 MLP layerをのっけたまんまで良かったとのこと。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73116c6a-d48f-42bc-aa5e-8342bb068052)
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73116c6a-d48f-42bc-aa5e-8342bb068052" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 また、SimCSEで学習したsentence embeddingを別タスクにtransferして活用する際には、SimCSEのobjectiveにMLMを入れた方が、catastrophic forgettingを防げて性能が高かったとのこと。
 
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f)ablation studiesのhard negativesのところと、どのようにミニバッチを構成するか、それぞれのtransferしたタスクがどのようなものがしっかり読めていない。あとでよむ。</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620" alt="image" loading="lazy"><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923" alt="image" loading="lazy"><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f" alt="image" loading="lazy"><a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Embeddings.html">#Embeddings</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/71">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP17</a>
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f" alt="image" loading="lazy">ablation studiesのhard negativesのところと、どのようにミニバッチを構成するか、それぞれのtransferしたタスクがどのようなものがしっかり読めていない。あとでよむ。</span>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Embeddings.html">#Embeddings</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/71">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP'17</a>
 <span class="snippet"><span>Comment</span>slide: https://www.slideshare.net/naoakiokazaki/supervised-learning-of-universal-sentence-representations-from-natural-language-inference-data汎用的な文のエンコーダができました！という話。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 SNLIデータでパラメータ学習、エンコーダ構成スライド図中右側のエンコーダ部分をなるべく一般的な文に適用できるように学習したい。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 色々なタスクで、文のエンコーダ構成を比較した結果、bi-directional LSTMでエンコードし、要素ごとの最大値をとる手法が最も良いという結果。
+
+<br>
+
+
+
+<br>
+
 隠れ層の次元は4096とかそのくらい。
+
+<br>
+
+
+
+<br>
+
 Skip-Thoughtは学習に1ヶ月くらいかかるけど、提案手法はより少ないデータで1日くらいで学習終わり、様々なタスクで精度が良い。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ベクトルの要素積、concat,  subなど、様々な演算を施し、学習しているので、そのような構成の元から文エンコーダを学習すると何か意味的なものがとれている？
+
+<br>
+
+
+
+<br>
+
 SNLIはNatural Language Inferenceには文の意味理解が必須なので、そのデータ使って学習するといい感じに文のエンコードができます。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 NLIのデータは色々なところで有用なので、日本語のNLIのデータとかも欲しい。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Embeddings.html">#Embeddings</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a><a class="button" href="articles/ICLR.html">#ICLR</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/69">A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR17</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Embeddings.html">#Embeddings</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a>
+<a class="button" href="articles/ICLR.html">#ICLR</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/69">A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR'17</a>
 <span class="snippet"><span>Comment</span>OpenReview:https://openreview.net/forum?id=BJC_jUqxe</span>
 </div>
 <p><button onclick="showMore(0)">more</button></p>
-
 <div class="hidden-content">
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/ACL.html">#ACL</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/76">Larger-context language modelling with recurrent neural networks, Wang+, ACL16</a>
-<span class="snippet"><span>Comment</span>## 概要
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/ACL.html">#ACL</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/76">Larger-context language modelling with recurrent neural networks, Wang+, ACL'16</a>
+<span class="snippet"><span>Comment</span>概要
+
+<br>
+
+
+
+<br>
+
 通常のNeural Language Modelはsentence間に独立性の仮定を置きモデル化されているが、この独立性を排除し、preceding sentencesに依存するようにモデル化することで、言語モデルのコーパスレベルでのPerplexityが改善したという話。提案した言語モデルは、contextを考慮することで特に名詞や動詞、形容詞の予測性能が向上。Late-Fusion methodと呼ばれるRNNのoutputの計算にcontext vectorを組み込む手法が、Perplexityの改善にもっとも寄与していた。
 
-## 手法
-![image](https://user-images.githubusercontent.com/12249301/34412713-1e16da94-ec22-11e7-830c-0d0b6247207c.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+手法
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34412713-1e16da94-ec22-11e7-830c-0d0b6247207c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 sentence間の独立性を排除し、Corpusレベルのprobabilityを下図のように定義。（普通はP(Slが条件付けされていない)）
-![image](https://user-images.githubusercontent.com/12249301/34412980-e2425afa-ec23-11e7-86cd-148f85dccc07.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34412980-e2425afa-ec23-11e7-86cd-148f85dccc07.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 preceding sentence (context)をモデル化するために、3種類の手法を提案。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 [1. bag-of-words context]
+
+<br>
+
+
+
+<br>
+
 　ナイーブに、contextに現れた単語の（単一の）bag-of-wordsベクトルを作り、linear layerをかませてcontext vectorを生成する手法。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 [2. context recurrent neural network]
+
+<br>
+
+
+
+<br>
+
 　preceding sentencesをbag-of-wordsベクトルの系列で表現し、これらのベクトルをsequentialにRNN-LSTMに読み込ませ、最後のhidden stateをcontext vectorとする手法。これにより、sentenceが出現した順番が考慮される。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 [3. attention based context representation]
+
+<br>
+
+
+
+<br>
+
 　Attentionを用いる手法も提案されており、context recurrent neural networkと同様にRNNにbag-of-wordsのsequenceを食わせるが、各時点におけるcontext sentenceのベクトルを、bi-directionalなRNNのforward, backward stateをconcatしたもので表現し、attention weightの計算に用いる。context vectorは1, 2ではcurrent sentence中では共通のものを用いるが、attention basedな場合はcurrent sentenceの単語ごとに異なるcontext vectorを生成して用いる。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 生成したcontext vectorをsentence-levelのRNN言語モデルに組み合わせる際に、二種類のFusion Methodを提案している。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 [1. Early Fusion]
+
+<br>
+
+
+
+<br>
+
 　ナイーブに、RNNLMの各時点でのinputにcontext vectorの情報を組み込む方法。
+
+<br>
+
+
+
+<br>
+
 [2. Late Fusion]
+
+<br>
+
+
+
+<br>
+
 　よりうまくcontext vectorの情報を組み込むために、current sentence内の単語のdependency(intra-sentence dependency)と、current sentenceとcontextの関係を別々に考慮する。context vectorとmemory cellの情報から、context vector中の不要箇所をフィルタリングしたcontrolled context vectorを生成し、LSTMのoutputの計算に用いる。Later Fusionはシンプルだが、corpusレベルのlanguage modelingの勾配消失問題を緩和することもできる。
 
-![image](https://user-images.githubusercontent.com/12249301/34413898-99efbaf8-ec29-11e7-94f5-db82eee399b3.png)
+<br>
 
-## 評価
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34413898-99efbaf8-ec29-11e7-94f5-db82eee399b3.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+評価
+
+<br>
+
+
+
+<br>
+
 IMDB, BBC, PennTreebank, Fil9 (cleaned wikipedia corpus)の4種類のデータで学習し、corpus levelでPerplexityを測った。
-![image](https://user-images.githubusercontent.com/12249301/34414121-b75b2996-ec2a-11e7-9716-dbbb9006b1b5.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34414121-b75b2996-ec2a-11e7-9716-dbbb9006b1b5.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Late FusionがPerplexityの減少に大きく寄与している。
 
-![image](https://user-images.githubusercontent.com/12249301/34414218-596b373a-ec2b-11e7-85ad-cf98df04ce57.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34414218-596b373a-ec2b-11e7-85ad-cf98df04ce57.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 PoSタグごとのperplexityを測った結果、contextを考慮した場合に名詞や形容詞、動詞のPerplexityに改善が見られた。一方、Coordinate Conjungtion (And, Or, So, Forなど)や限定詞、Personal Pronouns (I, You, It, Heなど)のPerplexityは劣化した。前者はopen-classな内容語であり、後者はclosed-classな機能語である。機能語はgrammaticalなroleを決めるのに対し、内容語はその名の通り、sentenceやdiscourseの内容を決めるものなので、文書の内容をより捉えることができると考察している。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Embeddings.html">#Embeddings</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a><a class="button" href="articles/NAACL.html">#NAACL</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/70">Learning Distributed Representations of Sentences from Unlabelled Data, Hill+, NAACL16</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Embeddings.html">#Embeddings</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/RepresentationLearning.html">#RepresentationLearning</a>
+<a class="button" href="articles/NAACL.html">#NAACL</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/70">Learning Distributed Representations of Sentences from Unlabelled Data, Hill+, NAACL'16</a>
 <span class="snippet"><span>Comment</span>Sentenceのrepresentationを学習する話
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 代表的なsentenceのrepresentation作成手法(CBOW, SkipGram, SkipThought, Paragraph Vec, NMTなど)をsupervisedな評価（タスク志向+supervised）とunsupervisedな評価(文間の距離をコサイン距離ではかり、人間が決めた順序と相関を測る)で比較している。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 また筆者らはSequential Denoising Auto Encoder(SDAE)とFastSentと呼ばれる手法を提案しており、前者はorderedなsentenceデータがなくても訓練でき、FastSentはorderedなsentenceデータが必要だが高速に訓練できるモデルである。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 実験の結果、supervisedな評価では、基本的にはSkipThoughtがもっとも良い性能を示し、paraphrasingタスクにおいて、SkipThoughtに3ポイント程度差をつけて良い性能を示した。unsupervisedな評価では、DictRepとFastSentがもっとも良い性能を示した。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 実験の結果、以下のような知見が得られた：
 
-## 異なるobjective functionは異なるembeddingを作り出す
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+異なるobjective functionは異なるembeddingを作り出す
+
+<br>
+
+
+
+<br>
+
 objective functionは、主に隣接する文を予測するものと、自分自身を再現するものに分けられる。これらの違いによって、生成されるembeddingが異なっている。Table5をみると、後者については、生成されたrepresentationのnearest neighborを見ていると、自身と似たような単語を含む文が引っ張ってこれるが、前者については、文のコンセプトや機能は似ているが、単語の重複は少なかったりする。
 
-## supervisedな場合とunsupervisedな評価でのパフォーマンスの違い
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+supervisedな場合とunsupervisedな評価でのパフォーマンスの違い
+
+<br>
+
+
+
+<br>
+
 supervisedな設定では、SkipThoughtやSDAEなどのモデルが良い性能を示しているが、unsupervisedな設定ではまりうまくいかず。unsupevisedな設定ではlog-linearモデルが基本的には良い性能を示した。
 
-## pre-trainedなベクトルを使用したモデルはそうでない場合と比較してパフォーマンスが良い
+<br>
 
-## 必要なリソースの違い
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+pre-trainedなベクトルを使用したモデルはそうでない場合と比較してパフォーマンスが良い
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+必要なリソースの違い
+
+<br>
+
+
+
+<br>
+
 モデルによっては、順序づけられた文のデータが必要だったり、文の順序が学習に必要なかったりする。あるいは、デコーディングに時間がかかったり、めちゃくちゃメモリ食ったりする。このようなリソースの性質の違いは、使用できるapplicationに制約を与える。
 
-## 結論
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+結論
+
+<br>
+
+
+
+<br>
+
 とりあえず、supervisedなモデルにrepresentationを使ってモデルになんらかのknowledgeをぶちこみたいときはSkipThought、単純に類似した文を検索したいとか、そういう場合はFastSentを使うと良いってことですかね.</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Supervised.html">#Supervised</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/137">A Neural Attention Model for Sentence Summarization, Rush+, EMNLP15</a>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Supervised.html">#Supervised</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Abstractive.html">#Abstractive</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/137">A Neural Attention Model for Sentence Summarization, Rush+, EMNLP'15</a>
 <span class="snippet"><span>Comment</span>解説スライド：https://www.slideshare.net/akihikowatanabe3110/a-neural-attention-model-for-sentence-summarization-65612331</span>
-<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Abstractive.html">#Abstractive</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/75">LCSTS: A large scale chinese short text summarizatino dataset, Hu+, EMNLP15</a>
+<a class="button" href="articles/Single.html">#Single</a>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Document.html">#Document</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/Abstractive.html">#Abstractive</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/75">LCSTS: A large scale chinese short text summarizatino dataset, Hu+, EMNLP'15</a>
 <span class="snippet"><span>Comment</span>Large Chinese Short Text Summarization (LCSTS) datasetを作成
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 データセットを作成する際は、Weibo上の特定のorganizationの投稿の特徴を利用。
+
+<br>
+
+
+
+<br>
+
 Weiboにニュースを投稿する際に、投稿の冒頭にニュースのvery short summaryがまず記載され、その後ニュース本文（短め）が記載される特徴があるので、この対をsource-reference対として収集した。
+
+<br>
+
+
+
+<br>
+
 収集する際には、約１００個のルールに基づくフィルタリングやclearning, 抽出等を行なっている。
 
-![image](https://user-images.githubusercontent.com/12249301/34411045-95f7baf2-ec17-11e7-94fb-faf2559d6994.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34411045-95f7baf2-ec17-11e7-94fb-faf2559d6994.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 データセットのpropertyとしては、下記のPartI, II, IIIに分かれている。
 
-PartI: 2.4Mのshort text - summary pair
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+PartI: 2.4Mのshort text ・summary pair
+
+<br>
+
+
+
+<br>
+
 PartII: PartIからランダムにサンプリングされた10kのpairに対して、5 scaleで要約のrelevanceをratingしたデータ。ただし、各pairにラベルづけをしたevaluatorは1名のみ。
+
+<br>
+
+
+
+<br>
+
 PartIII: 2kのpairに対して（PartI, PartIIとは独立）、3名のevaluatorが5-scaleでrating。evaluatorのratingが一致した1kのpairを抽出したデータ。
 
-![image](https://user-images.githubusercontent.com/12249301/34411199-8db4df90-ec18-11e7-8703-fd8f9512a903.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34411199-8db4df90-ec18-11e7-8703-fd8f9512a903.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 RNN-GRUを用いたSummarizerも提案している。
 
-![image](https://user-images.githubusercontent.com/12249301/34411224-b5543eba-ec18-11e7-8556-a3b42bfcf334.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34411224-b5543eba-ec18-11e7-8556-a3b42bfcf334.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 CopyNetなどはLCSTSを使って評価している。他にも使ってる論文あったはず。ACL'17のPointer Generator Networkでした。</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/59">Sentence Compression by Deletion with LSTMs, Fillipova+, EMNLP15</a>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/59">Sentence Compression by Deletion with LSTMs, Fillipova+, EMNLP'15</a>
 <span class="snippet"><span>Comment</span>slide:https://www.slideshare.net/akihikowatanabe3110/sentence-compression-by-deletion-with-lstms</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Tokenizer.html">#Tokenizer</a><br><span class="issue_date">Issue Date: 2024-12-24</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/Tokenizer.html">#Tokenizer</a>
+<span class="issue_date">Issue Date: 2024-12-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1611">Large Concept Models: Language Modeling in a Sentence Representation Space, Meta, 2024.12</a>
 <span class="snippet"><span>Summary</span>本研究では、言語やモダリティに依存しない「大規模概念モデル」を提案し、概念を高次の意味表現として扱います。最大200言語をサポートするSONAR文埋め込み空間を用い、自己回帰的な文予測を行うモデルを訓練しました。16億パラメータのモデルから70億パラメータにスケールアップし、生成タスクに対する実験評価を実施。結果として、ゼロショット一般化性能が向上し、既存のLLMsを上回ることを示しました。トレーニングコードは公開されています。</span>
 <span class="snippet"><span>Comment</span>まだ全く読めていないが、従来のLLMはnent-token-predictionで学習をしており、transformers decoderの内部状態で何らかの抽象的な概念はとらえているものの、次トークン予測に前回生成したトークンをinputするのが必須である以上「トークンで考える」みたいな挙動をある程度はしてしまっており、人間はそんなことしないですよね？みたいな話だと思われる。
+
+<br>
+
 人間はもっと抽象的なコンセプトレベルで物事を考えることができるので、それにより近づけるために、conceptをsentenceとしてみなして、next-concept-predictionでモデルを学習したらゼロショットの汎化性能上がりました、みたいな話のように見える。ただし、評価をしているのはマルチリンガルな文書要約タスクのみに見える。
+
+<br>
+
+
+
+<br>
 
 追記: コンセプトが言語非依存だとすると、コンセプト間の関係性を学習するLCMが、マルチリンガルでトークンレベルの学習しかしない従来LLMを上回るのも納得いく気はする。なぜなら、従来LLMよりも言語（トークン）への依存が緩和されていると思われるので、言語間を跨いだ知識の転移が起きやすいと考えられるからである。
 
-![image](https://github.com/user-attachments/assets/2f3dc98d-ef27-44b8-be1c-0f27a05f37e8)
+<br>
 
-![image](https://github.com/user-attachments/assets/effc21ba-22db-42c0-bc33-1d43f9e0200a)Base-LCMを見ると、文の埋め込みのground truthと生成された文の埋め込みの差を最小化する（Mean Squared Error） ようなlossになっている。つまり、トークンレベルではなく、より抽象的な概念を直接学習するような設計になっているためここが従来のLLMと異なる。
 
-![image](https://github.com/user-attachments/assets/01da9a76-f5fb-4e79-b3cf-8bddc123379b)
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/2f3dc98d-ef27-44b8-be1c-0f27a05f37e8" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/effc21ba-22db-42c0-bc33-1d43f9e0200a" alt="image" loading="lazy">Base-LCMを見ると、文の埋め込みのground truthと生成された文の埋め込みの差を最小化する（Mean Squared Error） ようなlossになっている。つまり、トークンレベルではなく、より抽象的な概念を直接学習するような設計になっているためここが従来のLLMと異なる。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/01da9a76-f5fb-4e79-b3cf-8bddc123379b" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
 
 これを実現するために、ground truthとなる文の埋め込みx_nが分からなければいけないが、このために、freezeしたEncoderとDecoderを用意してLCMにconcatしていると思われる。つまり、入力と出力のconceptを解釈する機構は固定して、正解となる文埋め込みを決めてしまう。そして、LCMはinputされたconceptを別のconceptに変換するような機構となっており、その変換の関係性を学習している。なるほど、なんとなく気持ちはわかった。日本語を含むいくつかの言語でゼロショット性能が低下しているのが興味深い。日本語特有の概念とか、特定の言語固有の概念は欠落する可能性が示唆される。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Embeddings.html">#Embeddings</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-10-07</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Embeddings.html">#Embeddings</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2023-10-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1057">Japanese Simple SimCSE</a>
 <span class="snippet"><span>Comment</span>日本語の事前学習言語モデルと、日本語の学習データを利用してSimCSEを学習し網羅的に評価をした結果が記載されている。Supervised SimCSE, UnsupervisednSimCSEの両方で実験。また、学習するデータセットを変更したときの頑健性も検証。性能が良かったモデルはSentenceTransformersから利用可能な形で公開されている。</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
@@ -1186,32 +2207,32 @@ CopyNetなどはLCSTSを使って評価している。他にも使ってる論�
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Safety.html" title="Safetyに関する論文・技術記事メモの一覧">
-            Safetyに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Investigation.html" title="Investigationに関する論文・技術記事メモの一覧">
+            Investigationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Hallucination.html" title="Hallucinationに関する論文・技術記事メモの一覧">
-            Hallucinationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/WebSearch.html" title="WebSearchに関する論文・技術記事メモの一覧">
+            WebSearchに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InductiveBias.html" title="InductiveBiasに関する論文・技術記事メモの一覧">
-            InductiveBiasに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SIGKDD.html" title="SIGKDDに関する論文・技術記事メモの一覧">
+            SIGKDDに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Citations.html" title="Citationsに関する論文・技術記事メモの一覧">
-            Citationsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/PersonalizedGeneration.html" title="PersonalizedGenerationに関する論文・技術記事メモの一覧">
+            PersonalizedGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

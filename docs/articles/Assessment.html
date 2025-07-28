@@ -12,17 +12,17 @@
 <meta property="og:title" content="Assessmentに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="Assessment #NLP#ChatGPT#InformationExtractionIssue Date: 2023-04-25 Evaluating ChatGPTs Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Li+, Peking University, arXiv23 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。 また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 #Education#IRTIssue Date: 2022-11-25 Machine Learning–Driven Language Assessment, LaFlair+, TACL20 #AdaptiveLearning#EducationalDataMining#LearningAnalyticsIssue Date: 2022-04-18 Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv20 Comment# 概要 テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。 # Knowledge Tracingタスクの定義 手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。 ![image](https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png) このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。 ![image](https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png) ![image](https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png) # Assessmentを予測するタスク また、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。 ![image](https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png) assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。 ![image](https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png) # label-scarceなeducational featureの例 また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。 - Non Interactive Educational Feature - exam_score: A student’s score on a standardized exam. - grade: A student’s final grade in a course. - certification: Professional certifications obtained by completion of educational programs or examinations. - Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと） - course_dropout: Whether a student drops out of the entire class. - review_correctness: Whether a student responds correctly to a previously solved exercise. ![image](https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png) # モデル これらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。 モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。 inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる： - exercise_id: We assign a latent vector unique to each exercise id. - exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag. - position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24]. - correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1. - elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector. - inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector ここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。 たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。 Loss functionは、pre-training taskごとに定義する。 ![image](https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png) # 評価 試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。 ## Dataset EdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。 ## Exam Score Prediction 2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。 ## review correctness prediction 生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。 最終的に4540個のラベル付されたsequenceを得た。 ## モデルのセットアップ モデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。 また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。 # 実験結果 ## pre-trainingタスクがdown-streamタスクに与える影響 ![image](https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png) correctness + timelinessの予測を行った場合に、最も性能がよかった。 ## 性能 ![image](https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png) 既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。 more">
-<meta property="og:description" content="Assessment #NLP#ChatGPT#InformationExtractionIssue Date: 2023-04-25 Evaluating ChatGPTs Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Li+, Peking University, arXiv23 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。 また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 #Education#IRTIssue Date: 2022-11-25 Machine Learning–Driven Language Assessment, LaFlair+, TACL20 #AdaptiveLearning#EducationalDataMining#LearningAnalyticsIssue Date: 2022-04-18 Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv20 Comment# 概要 テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。 # Knowledge Tracingタスクの定義 手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。 ![image](https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png) このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。 ![image](https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png) ![image](https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png) # Assessmentを予測するタスク また、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。 ![image](https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png) assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。 ![image](https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png) # label-scarceなeducational featureの例 また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。 - Non Interactive Educational Feature - exam_score: A student’s score on a standardized exam. - grade: A student’s final grade in a course. - certification: Professional certifications obtained by completion of educational programs or examinations. - Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと） - course_dropout: Whether a student drops out of the entire class. - review_correctness: Whether a student responds correctly to a previously solved exercise. ![image](https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png) # モデル これらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。 モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。 inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる： - exercise_id: We assign a latent vector unique to each exercise id. - exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag. - position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24]. - correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1. - elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector. - inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector ここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。 たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。 Loss functionは、pre-training taskごとに定義する。 ![image](https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png) # 評価 試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。 ## Dataset EdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。 ## Exam Score Prediction 2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。 ## review correctness prediction 生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。 最終的に4540個のラベル付されたsequenceを得た。 ## モデルのセットアップ モデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。 また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。 # 実験結果 ## pre-trainingタスクがdown-streamタスクに与える影響 ![image](https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png) correctness + timelinessの予測を行った場合に、最も性能がよかった。 ## 性能 ![image](https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png) 既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。 more">
+<meta name="description" content="Assessment">
+<meta property="og:description" content="Assessment">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Assessment.html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Assessment.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-28T00:58:31+00:00">
+<meta property="article:published_time" content="2025-07-28T09:55:51+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Assessmentに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T00:58:31+00:00","datePublished":"2025-07-28T00:58:31+00:00","description":"Assessment #NLP#ChatGPT#InformationExtractionIssue Date: 2023-04-25 Evaluating ChatGPTs Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Li+, Peking University, arXiv23 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。 また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 #Education#IRTIssue Date: 2022-11-25 Machine Learning–Driven Language Assessment, LaFlair+, TACL20 #AdaptiveLearning#EducationalDataMining#LearningAnalyticsIssue Date: 2022-04-18 Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv20 Comment# 概要 テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。 # Knowledge Tracingタスクの定義 手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。 ![image](https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png) このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。 ![image](https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png) ![image](https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png) # Assessmentを予測するタスク また、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。 ![image](https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png) assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。 ![image](https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png) # label-scarceなeducational featureの例 また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。 - Non Interactive Educational Feature - exam_score: A student’s score on a standardized exam. - grade: A student’s final grade in a course. - certification: Professional certifications obtained by completion of educational programs or examinations. - Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと） - course_dropout: Whether a student drops out of the entire class. - review_correctness: Whether a student responds correctly to a previously solved exercise. ![image](https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png) # モデル これらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。 モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。 inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる： - exercise_id: We assign a latent vector unique to each exercise id. - exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag. - position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24]. - correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1. - elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector. - inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector ここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。 たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。 Loss functionは、pre-training taskごとに定義する。 ![image](https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png) # 評価 試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。 ## Dataset EdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。 ## Exam Score Prediction 2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。 ## review correctness prediction 生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。 最終的に4540個のラベル付されたsequenceを得た。 ## モデルのセットアップ モデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。 また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。 # 実験結果 ## pre-trainingタスクがdown-streamタスクに与える影響 ![image](https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png) correctness + timelinessの予測を行った場合に、最も性能がよかった。 ## 性能 ![image](https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png) 既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。 more","headline":"Assessmentに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Assessment.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Assessment.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T09:55:51+00:00","datePublished":"2025-07-28T09:55:51+00:00","description":"Assessment","headline":"Assessmentに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Assessment.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Assessment.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-28T00:58:31+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
+    <time class="dt-published" datetime="2025-07-28T09:55:51+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -799,7 +799,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 19 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 18 mins</span>
   </div></header>
 </div>
     </div>
@@ -993,105 +993,677 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id="assessment">Assessment</h2>
+
 <div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ChatGPT.html">#ChatGPT</a><a class="button" href="articles/InformationExtraction.html">#InformationExtraction</a><br><span class="issue_date">Issue Date: 2023-04-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/534">Evaluating ChatGPTs Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Li+, Peking University, arXiv23</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/ChatGPT.html">#ChatGPT</a>
+<a class="button" href="articles/InformationExtraction.html">#InformationExtraction</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/534">Evaluating ChatGPT's Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Li+, Peking University, arXiv'23</a>
 <span class="snippet"><span>Comment</span>情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。
+
+<br>
+
 また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。</span>
-<a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/IRT.html">#IRT</a><br><span class="issue_date">Issue Date: 2022-11-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/491">Machine Learning–Driven Language Assessment, LaFlair+, TACL20</a>
-<a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2022-04-18</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444">Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv20</a>
-<span class="snippet"><span>Comment</span># 概要
+<a class="button" href="articles/Education.html">#Education</a>
+<a class="button" href="articles/IRT.html">#IRT</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2022-11-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/491">Machine Learning–Driven Language Assessment, LaFlair+, TACL'20</a>
+<a class="button" href="articles/AdaptiveLearning.html">#AdaptiveLearning</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2022-04-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444">Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv'20</a>
+<span class="snippet"><span>Comment</span>概要
+
+<br>
+
+
+
+<br>
+
 テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。
 
-# Knowledge Tracingタスクの定義
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Knowledge Tracingタスクの定義
+
+<br>
+
+
+
+<br>
+
 手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。
-![image](https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。
-![image](https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png)
-![image](https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png)
 
-# Assessmentを予測するタスク
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Assessmentを予測するタスク
+
+<br>
+
+
+
+<br>
+
 また、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。
-![image](https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。
-![image](https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png)
 
-# label-scarceなeducational featureの例
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+label-scarceなeducational featureの例
+
+<br>
+
+
+
+<br>
+
 また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。
 
-- Non Interactive Educational Feature
-    - exam_score: A student’s score on a standardized exam.
-    - grade: A student’s final grade in a course.
-    - certification: Professional certifications obtained by completion of educational programs or examinations.
-- Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと）
-    - course_dropout: Whether a student drops out of the entire class.
-    - review_correctness: Whether a student responds correctly to a previously solved exercise.
+<br>
 
-![image](https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png)
 
-# モデル
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+・Non Interactive Educational Feature
+
+<br>
+
+
+
+<br>
+
+    ・exam_score: A student’s score on a standardized exam.
+
+<br>
+
+
+
+<br>
+
+    ・grade: A student’s final grade in a course.
+
+<br>
+
+
+
+<br>
+
+    ・certification: Professional certifications obtained by completion of educational programs or examinations.
+
+<br>
+
+
+
+<br>
+
+・Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと）
+
+<br>
+
+
+
+<br>
+
+    ・course_dropout: Whether a student drops out of the entire class.
+
+<br>
+
+
+
+<br>
+
+    ・review_correctness: Whether a student responds correctly to a previously solved exercise.
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデル
+
+<br>
+
+
+
+<br>
+
 これらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。
+
+<br>
+
+
+
+<br>
+
 モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。
+
+<br>
+
+
+
+<br>
+
 inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる：
-- exercise_id: We assign a latent vector unique to each exercise id.
-- exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.
-- position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].
-- correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.
-- elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.
-- inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector
+
+<br>
+
+
+
+<br>
+
+・exercise_id: We assign a latent vector unique to each exercise id.
+
+<br>
+
+
+
+<br>
+
+・exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.
+
+<br>
+
+
+
+<br>
+
+・position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].
+
+<br>
+
+
+
+<br>
+
+・correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.
+
+<br>
+
+
+
+<br>
+
+・elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.
+
+<br>
+
+
+
+<br>
+
+・inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。
+
+<br>
+
+
+
+<br>
+
 たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Loss functionは、pre-training taskごとに定義する。
 
-![image](https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png)
+<br>
 
-# 評価
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+評価
+
+<br>
+
+
+
+<br>
+
 試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。
 
-## Dataset
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Dataset
+
+<br>
+
+
+
+<br>
+
 EdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。
 
-## Exam Score Prediction
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Exam Score Prediction
+
+<br>
+
+
+
+<br>
+
 2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。
 
-## review correctness prediction
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+review correctness prediction
+
+<br>
+
+
+
+<br>
+
 生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。
+
+<br>
+
+
+
+<br>
+
 最終的に4540個のラベル付されたsequenceを得た。
 
-## モデルのセットアップ
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデルのセットアップ
+
+<br>
+
+
+
+<br>
+
 モデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。
+
+<br>
+
+
+
+<br>
+
 また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。
 
-# 実験結果
-## pre-trainingタスクがdown-streamタスクに与える影響
-![image](https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+実験結果
+
+<br>
+
+
+
+<br>
+
+pre-trainingタスクがdown-streamタスクに与える影響
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 correctness + timelinessの予測を行った場合に、最も性能がよかった。
 
-## 性能
-![image](https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+性能
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。</span>
 </div>
 <p><button onclick="showMore(0)">more</button></p>
-
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-05-04</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<span class="issue_date">Issue Date: 2023-05-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/623">ChatBot Arena, lmsys org, 2023.05</a>
 <span class="snippet"><span>Comment</span>クラウドソーシング型のチャットボット評価するシステム。ユーザはシステムにアクセスすると、二つのanonymisedされたLLMと対話し、どちらが優れていたかをvotingする。すべてのシステムとユーザのinteractionはロギングされており、最終的にElo RatingでLLM.をランキング付けする。Arena-Hardと呼ばれるliveアリーナデータを用いたパイプラインを公開。MT-Benchよりも識別力が高く、Chatbot Arenaのランキングとのagreementが高いとのこと。
 
+<br>
+
+
+
+<br>
+
 参考:https://x.com/lmsysorg/status/1782179997622649330?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q
 
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2faafce4-effd-40b1-8760-d9639d3df6aa)過去のデータについては #876 などもある</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2faafce4-effd-40b1-8760-d9639d3df6aa" alt="image" loading="lazy"><a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><br><span class="issue_date">Issue Date: 2023-04-30</span>
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2faafce4-effd-40b1-8760-d9639d3df6aa" alt="image" loading="lazy">過去のデータについては 876 などもある</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<span class="issue_date">Issue Date: 2023-04-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/603">PandaLM</a>
 <span class="snippet"><span>Comment</span>異なるLLMを再現性のある形で評価するためのライブラリ
+
+<br>
+
 2つの異なるLLMのoutputを比較し、どちらが優れているか理由付きで説明する。人間が作成して1000サンプルの多様なアノテーションデータセットを使い評価できる。</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
@@ -1107,32 +1679,32 @@ correctness + timelinessの予測を行った場合に、最も性能がよか�
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/project_template.html" title="project_templateに関する論文・技術記事メモの一覧">
-            project_templateに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Optimizer.html" title="Optimizerに関する論文・技術記事メモの一覧">
+            Optimizerに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AutomaticPromptEngineering.html" title="AutomaticPromptEngineeringに関する論文・技術記事メモの一覧">
-            AutomaticPromptEngineeringに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Coding.html" title="Codingに関する論文・技術記事メモの一覧">
+            Codingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SIGGRAPH.html" title="SIGGRAPHに関する論文・技術記事メモの一覧">
-            SIGGRAPHに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Pretraining.html" title="Pretrainingに関する論文・技術記事メモの一覧">
+            Pretrainingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LM-based.html" title="LM-basedに関する論文・技術記事メモの一覧">
-            LM-basedに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/OpenSource.html" title="OpenSourceに関する論文・技術記事メモの一覧">
+            OpenSourceに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

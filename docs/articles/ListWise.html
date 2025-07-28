@@ -12,17 +12,17 @@
 <meta property="og:title" content="ListWiseに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="ListWise #RecommenderSystems#Pocket#Alignment#Transformer#SequentialRecommendationIssue Date: 2025-07-04 Paper Note Listwise Preference Alignment Optimization for Tail Item Recommendation, Zihao Li+, arXiv25 SummaryLPO4Recは、テールアイテム推薦におけるPreference alignmentの課題を解決するために提案された手法で、Bradley-Terryモデルをペアワイズからリストワイズ比較に拡張し、効率的なトレーニングを実現。明示的な報酬モデリングなしで、テールアイテムを優先する負のサンプリング戦略を導入し、パフォーマンスを最大50%向上させ、GPUメモリ使用量を17.9%削減。実験結果は3つの公開データセットで示されている。 Comment元ポスト:https://x.com/_reachsumit/status/1941004418255933662?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qtail itemに強い手法らしい。LLMを用いたGenerative Recommendationではなく、1 BlockのTransformerにlistwiseなpreferenceを反映したlossを適用したものっぽい。一貫して性能は高そうに見えるが、再現性はどうだろうか。 ![image](https://github.com/user-attachments/assets/10c66c84-b421-4be1-8cd7-3d037e8cc683)関連(SASRec): - #2137pointwise, pairwise, listwiseの基礎はこちらを参照: - #187 #InformationRetrieval#LearningToRank#Pocket#ICMLIssue Date: 2018-01-01 Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008 #InformationRetrieval#LearningToRank#ICML#Admin'sPickIssue Date: 2018-01-01 Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML2007 Comment解説スライド：http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf 解説ブログ：https://qiita.com/koreyou/items/a69750696fd0b9d88608従来行われてきたLearning to Rankはpairwiseな手法が主流であったが、pairwiseな手法は2つのインスタンス間の順序が正しく識別されるように学習されているだけであった。 pairwiseなアプローチには以下の問題点があった： * インスタンスのペアのclassification errorを最小化しているだけで、インスタンスのランキングのerrorを最小化しているわけではない。 * インスタンスペアが i.i.d な分布から生成されるという制約は強すぎる制約 * queryごとに生成されるインスタンスペアは大きく異なるので、インスタンスペアよりもクエリに対してバイアスのかかった学習のされ方がされてしまう これらを解決するために、listwiseなアプローチを提案。 listwiseなアプローチを用いると、インスタンスのペアの順序を最適化するのではなく、ランキング全体を最適化できる。 listwiseなアプローチを用いるために、Permutation Probabilityに基づくloss functionを提案。loss functionは、2つのインスタンスのスコアのリストが与えられたとき、Permutation Probability Distributionを計算し、これらを用いてcross-entropy lossを計算するようなもの。 また、Permutation Probabilityを計算するのは計算量が多すぎるので、top-k probabilityを提案。 top-k probabilityはPermutation Probabilityの計算を行う際のインスタンスをtop-kに限定するもの。 論文中ではk=1を採用しており、k=1はsoftmaxと一致する。 パラメータを学習する際は、Gradient Descentを用いる。k=1の設定で計算するのが普通なようなので、普通にoutputがsoftmaxでlossがsoftmax cross-entropyなモデルとほぼ等価なのでは。 more">
-<meta property="og:description" content="ListWise #RecommenderSystems#Pocket#Alignment#Transformer#SequentialRecommendationIssue Date: 2025-07-04 Paper Note Listwise Preference Alignment Optimization for Tail Item Recommendation, Zihao Li+, arXiv25 SummaryLPO4Recは、テールアイテム推薦におけるPreference alignmentの課題を解決するために提案された手法で、Bradley-Terryモデルをペアワイズからリストワイズ比較に拡張し、効率的なトレーニングを実現。明示的な報酬モデリングなしで、テールアイテムを優先する負のサンプリング戦略を導入し、パフォーマンスを最大50%向上させ、GPUメモリ使用量を17.9%削減。実験結果は3つの公開データセットで示されている。 Comment元ポスト:https://x.com/_reachsumit/status/1941004418255933662?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qtail itemに強い手法らしい。LLMを用いたGenerative Recommendationではなく、1 BlockのTransformerにlistwiseなpreferenceを反映したlossを適用したものっぽい。一貫して性能は高そうに見えるが、再現性はどうだろうか。 ![image](https://github.com/user-attachments/assets/10c66c84-b421-4be1-8cd7-3d037e8cc683)関連(SASRec): - #2137pointwise, pairwise, listwiseの基礎はこちらを参照: - #187 #InformationRetrieval#LearningToRank#Pocket#ICMLIssue Date: 2018-01-01 Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008 #InformationRetrieval#LearningToRank#ICML#Admin'sPickIssue Date: 2018-01-01 Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML2007 Comment解説スライド：http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf 解説ブログ：https://qiita.com/koreyou/items/a69750696fd0b9d88608従来行われてきたLearning to Rankはpairwiseな手法が主流であったが、pairwiseな手法は2つのインスタンス間の順序が正しく識別されるように学習されているだけであった。 pairwiseなアプローチには以下の問題点があった： * インスタンスのペアのclassification errorを最小化しているだけで、インスタンスのランキングのerrorを最小化しているわけではない。 * インスタンスペアが i.i.d な分布から生成されるという制約は強すぎる制約 * queryごとに生成されるインスタンスペアは大きく異なるので、インスタンスペアよりもクエリに対してバイアスのかかった学習のされ方がされてしまう これらを解決するために、listwiseなアプローチを提案。 listwiseなアプローチを用いると、インスタンスのペアの順序を最適化するのではなく、ランキング全体を最適化できる。 listwiseなアプローチを用いるために、Permutation Probabilityに基づくloss functionを提案。loss functionは、2つのインスタンスのスコアのリストが与えられたとき、Permutation Probability Distributionを計算し、これらを用いてcross-entropy lossを計算するようなもの。 また、Permutation Probabilityを計算するのは計算量が多すぎるので、top-k probabilityを提案。 top-k probabilityはPermutation Probabilityの計算を行う際のインスタンスをtop-kに限定するもの。 論文中ではk=1を採用しており、k=1はsoftmaxと一致する。 パラメータを学習する際は、Gradient Descentを用いる。k=1の設定で計算するのが普通なようなので、普通にoutputがsoftmaxでlossがsoftmax cross-entropyなモデルとほぼ等価なのでは。 more">
+<meta name="description" content="ListWise">
+<meta property="og:description" content="ListWise">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/ListWise.html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/ListWise.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-28T00:58:31+00:00">
+<meta property="article:published_time" content="2025-07-28T09:55:51+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="ListWiseに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T00:58:31+00:00","datePublished":"2025-07-28T00:58:31+00:00","description":"ListWise #RecommenderSystems#Pocket#Alignment#Transformer#SequentialRecommendationIssue Date: 2025-07-04 Paper Note Listwise Preference Alignment Optimization for Tail Item Recommendation, Zihao Li+, arXiv25 SummaryLPO4Recは、テールアイテム推薦におけるPreference alignmentの課題を解決するために提案された手法で、Bradley-Terryモデルをペアワイズからリストワイズ比較に拡張し、効率的なトレーニングを実現。明示的な報酬モデリングなしで、テールアイテムを優先する負のサンプリング戦略を導入し、パフォーマンスを最大50%向上させ、GPUメモリ使用量を17.9%削減。実験結果は3つの公開データセットで示されている。 Comment元ポスト:https://x.com/_reachsumit/status/1941004418255933662?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qtail itemに強い手法らしい。LLMを用いたGenerative Recommendationではなく、1 BlockのTransformerにlistwiseなpreferenceを反映したlossを適用したものっぽい。一貫して性能は高そうに見えるが、再現性はどうだろうか。 ![image](https://github.com/user-attachments/assets/10c66c84-b421-4be1-8cd7-3d037e8cc683)関連(SASRec): - #2137pointwise, pairwise, listwiseの基礎はこちらを参照: - #187 #InformationRetrieval#LearningToRank#Pocket#ICMLIssue Date: 2018-01-01 Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008 #InformationRetrieval#LearningToRank#ICML#Admin&#39;sPickIssue Date: 2018-01-01 Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML2007 Comment解説スライド：http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf 解説ブログ：https://qiita.com/koreyou/items/a69750696fd0b9d88608従来行われてきたLearning to Rankはpairwiseな手法が主流であったが、pairwiseな手法は2つのインスタンス間の順序が正しく識別されるように学習されているだけであった。 pairwiseなアプローチには以下の問題点があった： * インスタンスのペアのclassification errorを最小化しているだけで、インスタンスのランキングのerrorを最小化しているわけではない。 * インスタンスペアが i.i.d な分布から生成されるという制約は強すぎる制約 * queryごとに生成されるインスタンスペアは大きく異なるので、インスタンスペアよりもクエリに対してバイアスのかかった学習のされ方がされてしまう これらを解決するために、listwiseなアプローチを提案。 listwiseなアプローチを用いると、インスタンスのペアの順序を最適化するのではなく、ランキング全体を最適化できる。 listwiseなアプローチを用いるために、Permutation Probabilityに基づくloss functionを提案。loss functionは、2つのインスタンスのスコアのリストが与えられたとき、Permutation Probability Distributionを計算し、これらを用いてcross-entropy lossを計算するようなもの。 また、Permutation Probabilityを計算するのは計算量が多すぎるので、top-k probabilityを提案。 top-k probabilityはPermutation Probabilityの計算を行う際のインスタンスをtop-kに限定するもの。 論文中ではk=1を採用しており、k=1はsoftmaxと一致する。 パラメータを学習する際は、Gradient Descentを用いる。k=1の設定で計算するのが普通なようなので、普通にoutputがsoftmaxでlossがsoftmax cross-entropyなモデルとほぼ等価なのでは。 more","headline":"ListWiseに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ListWise.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ListWise.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T09:55:51+00:00","datePublished":"2025-07-28T09:55:51+00:00","description":"ListWise","headline":"ListWiseに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ListWise.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ListWise.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-28T00:58:31+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
+    <time class="dt-published" datetime="2025-07-28T09:55:51+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -993,40 +993,185 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id="listwise">ListWise</h2>
+
 <div class="visible-content">
-<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Alignment.html">#Alignment</a><a class="button" href="articles/Transformer.html">#Transformer</a><a class="button" href="articles/SequentialRecommendation.html">#SequentialRecommendation</a><br><span class="issue_date">Issue Date: 2025-07-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2136">Paper Note Listwise Preference Alignment Optimization for Tail Item Recommendation, Zihao Li+, arXiv25</a>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Alignment.html">#Alignment</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/SequentialRecommendation.html">#SequentialRecommendation</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-07-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2136">[Paper Note] Listwise Preference Alignment Optimization for Tail Item Recommendation, Zihao Li+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>LPO4Recは、テールアイテム推薦におけるPreference alignmentの課題を解決するために提案された手法で、Bradley-Terryモデルをペアワイズからリストワイズ比較に拡張し、効率的なトレーニングを実現。明示的な報酬モデリングなしで、テールアイテムを優先する負のサンプリング戦略を導入し、パフォーマンスを最大50%向上させ、GPUメモリ使用量を17.9%削減。実験結果は3つの公開データセットで示されている。</span>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/_reachsumit/status/1941004418255933662?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qtail itemに強い手法らしい。LLMを用いたGenerative Recommendationではなく、1 BlockのTransformerにlistwiseなpreferenceを反映したlossを適用したものっぽい。一貫して性能は高そうに見えるが、再現性はどうだろうか。
-![image](https://github.com/user-attachments/assets/10c66c84-b421-4be1-8cd7-3d037e8cc683)関連(SASRec):
-- #2137pointwise, pairwise, listwiseの基礎はこちらを参照:
-- #187</span>
-<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/ICML.html">#ICML</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194">Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML2008</a>
-<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><a class="button" href="articles/ICML.html">#ICML</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193">Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML2007</a>
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/10c66c84-b421-4be1-8cd7-3d037e8cc683" alt="image" loading="lazy">関連(SASRec):
+
+<br>
+
+・2137pointwise, pairwise, listwiseの基礎はこちらを参照:
+
+<br>
+
+・187</span>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/ICML.html">#ICML</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194">Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML'2008</a>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a>
+<a class="button" href="articles/ICML.html">#ICML</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193">Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML'2007</a>
 <span class="snippet"><span>Comment</span>解説スライド：http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf
+
+<br>
+
+
+
+<br>
+
 解説ブログ：https://qiita.com/koreyou/items/a69750696fd0b9d88608従来行われてきたLearning to Rankはpairwiseな手法が主流であったが、pairwiseな手法は2つのインスタンス間の順序が正しく識別されるように学習されているだけであった。
+
+<br>
+
+
+
+<br>
+
 pairwiseなアプローチには以下の問題点があった：
 
-* インスタンスのペアのclassification errorを最小化しているだけで、インスタンスのランキングのerrorを最小化しているわけではない。
-* インスタンスペアが i.i.d な分布から生成されるという制約は強すぎる制約
-* queryごとに生成されるインスタンスペアは大きく異なるので、インスタンスペアよりもクエリに対してバイアスのかかった学習のされ方がされてしまう
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+ インスタンスのペアのclassification errorを最小化しているだけで、インスタンスのランキングのerrorを最小化しているわけではない。
+
+<br>
+
+
+
+<br>
+
+ インスタンスペアが i.i.d な分布から生成されるという制約は強すぎる制約
+
+<br>
+
+
+
+<br>
+
+ queryごとに生成されるインスタンスペアは大きく異なるので、インスタンスペアよりもクエリに対してバイアスのかかった学習のされ方がされてしまう
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 これらを解決するために、listwiseなアプローチを提案。
+
+<br>
+
+
+
+<br>
+
 listwiseなアプローチを用いると、インスタンスのペアの順序を最適化するのではなく、ランキング全体を最適化できる。
+
+<br>
+
+
+
+<br>
+
 listwiseなアプローチを用いるために、Permutation Probabilityに基づくloss functionを提案。loss functionは、2つのインスタンスのスコアのリストが与えられたとき、Permutation Probability Distributionを計算し、これらを用いてcross-entropy lossを計算するようなもの。
+
+<br>
+
+
+
+<br>
+
 また、Permutation Probabilityを計算するのは計算量が多すぎるので、top-k probabilityを提案。
+
+<br>
+
+
+
+<br>
+
 top-k probabilityはPermutation Probabilityの計算を行う際のインスタンスをtop-kに限定するもの。
+
+<br>
+
+
+
+<br>
+
 論文中ではk=1を採用しており、k=1はsoftmaxと一致する。
+
+<br>
+
+
+
+<br>
+
 パラメータを学習する際は、Gradient Descentを用いる。k=1の設定で計算するのが普通なようなので、普通にoutputがsoftmaxでlossがsoftmax cross-entropyなモデルとほぼ等価なのでは。</span>
 </div>
 <p><button onclick="showMore(0)">more</button></p>
-
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a><a class="button" href="articles/LearningToRank.html">#LearningToRank</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/InformationRetrieval.html">#InformationRetrieval</a>
+<a class="button" href="articles/LearningToRank.html">#LearningToRank</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195">A General Approximation Framework for Direct Optimization of Information Retrieval Measures （ApproxAP, ApproxNDCG）, Qin+, Information Retrieval, 2010</a>
 <span class="snippet"><span>Comment</span>実装してみたが、バグありそう感・・・
+
+<br>
+
+
+
+<br>
+
 https://github.com/AkihikoWatanabe/ApproxAP</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
@@ -1042,32 +1187,32 @@ https://github.com/AkihikoWatanabe/ApproxAP</span>
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/StructuredLearning.html" title="StructuredLearningに関する論文・技術記事メモの一覧">
-            StructuredLearningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SelfImprovement.html" title="SelfImprovementに関する論文・技術記事メモの一覧">
+            SelfImprovementに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/mid-training.html" title="mid-trainingに関する論文・技術記事メモの一覧">
-            mid-trainingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/IRT.html" title="IRTに関する論文・技術記事メモの一覧">
+            IRTに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Stability.html" title="Stabilityに関する論文・技術記事メモの一覧">
-            Stabilityに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ScientificDiscovery.html" title="ScientificDiscoveryに関する論文・技術記事メモの一覧">
+            ScientificDiscoveryに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DemonstrationSelection.html" title="DemonstrationSelectionに関する論文・技術記事メモの一覧">
-            DemonstrationSelectionに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Test-Time%20Scaling.html" title="Test-Time Scalingに関する論文・技術記事メモの一覧">
+            Test-Time Scalingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

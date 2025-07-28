@@ -12,17 +12,17 @@
 <meta property="og:title" content="Unsupervisedに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content='Unsupervised #MachineTranslation#NLP#SpeechProcessing#SpeechIssue Date: 2023-07-15 Simple and Effective Unsupervised Speech Translation, ACL23 Summary音声翻訳のためのラベル付きデータが限られているため、非教師あり手法を使用して音声翻訳システムを構築する方法を研究している。パイプラインアプローチや擬似ラベル生成を使用し、非教師ありドメイン適応技術を提案している。実験の結果、従来の手法を上回る性能を示している。 #NeuralNetwork#Pretraining#NLP#EMNLPIssue Date: 2017-12-31 Unsupervised Pretraining for Sequence to Sequence Learning, Ramachandran+, EMNLP17 Commentseq2seqにおいてweightのpretrainingを行う手法を提案 seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。 WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。 encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。 fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective） LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。 Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。 LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。 sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。 LM Objectiveは結構使えそうな印象 #Multi#Single#DocumentSummarization#Document#GraphBased#NLP#Extractive#SIGIRIssue Date: 2018-01-01 CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR14 Comment要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった） ``` "However, it seems that Obama will not use the platform to relaunch his stalled drive for Israeli-Palestinian peace" ``` こういう文は、"It seems"とあるように、情報の確実性が低いので要約には入れたくないという気持ち。 FactBankのニュースコーパスから1000 sentenceを抽出し、5-scaleでsentenceの確実性をラベルづけ。 このデータを用いてSVRを学習し、sentenceの確実性をoutputする分類器を構築 affinity-propagationベース（textrank, lexrankのような手法）手法のaffinityの計算（edge間の重みのこと。普通はsentence同士の類似度とかが使われる）を行う際に、情報の確実性のスコアを導入することで確実性を考慮した要約を生成 DUC2007のMDSデータセットで、affinity計算の際に確実性を導入する部分をablationしたモデル（GRSUM）と比較したところ、CTSUMのROUGEスコアが向上した。 また、自動・人手評価により、生成された要約に含まれる情報の確実性を評価したところ、GRSUMをoutperformした解説スライド：https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articlesSIGIRでは珍しい、要約に関する研究 情報の確実性を考慮するという、いままであまりやられていなかった部分にフォーカスしたのはおもしろい 「アイデアはおもしろいし良い研究だが、affinity weightが変化するということは、裏を返せばdamping factorを変更してもそういう操作はできるので、certaintyを考慮したことに意味があったのかが完全に示せていない。」という意見があり、なるほどと思った。 more'>
-<meta property="og:description" content='Unsupervised #MachineTranslation#NLP#SpeechProcessing#SpeechIssue Date: 2023-07-15 Simple and Effective Unsupervised Speech Translation, ACL23 Summary音声翻訳のためのラベル付きデータが限られているため、非教師あり手法を使用して音声翻訳システムを構築する方法を研究している。パイプラインアプローチや擬似ラベル生成を使用し、非教師ありドメイン適応技術を提案している。実験の結果、従来の手法を上回る性能を示している。 #NeuralNetwork#Pretraining#NLP#EMNLPIssue Date: 2017-12-31 Unsupervised Pretraining for Sequence to Sequence Learning, Ramachandran+, EMNLP17 Commentseq2seqにおいてweightのpretrainingを行う手法を提案 seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。 WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。 encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。 fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective） LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。 Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。 LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。 sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。 LM Objectiveは結構使えそうな印象 #Multi#Single#DocumentSummarization#Document#GraphBased#NLP#Extractive#SIGIRIssue Date: 2018-01-01 CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR14 Comment要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった） ``` "However, it seems that Obama will not use the platform to relaunch his stalled drive for Israeli-Palestinian peace" ``` こういう文は、"It seems"とあるように、情報の確実性が低いので要約には入れたくないという気持ち。 FactBankのニュースコーパスから1000 sentenceを抽出し、5-scaleでsentenceの確実性をラベルづけ。 このデータを用いてSVRを学習し、sentenceの確実性をoutputする分類器を構築 affinity-propagationベース（textrank, lexrankのような手法）手法のaffinityの計算（edge間の重みのこと。普通はsentence同士の類似度とかが使われる）を行う際に、情報の確実性のスコアを導入することで確実性を考慮した要約を生成 DUC2007のMDSデータセットで、affinity計算の際に確実性を導入する部分をablationしたモデル（GRSUM）と比較したところ、CTSUMのROUGEスコアが向上した。 また、自動・人手評価により、生成された要約に含まれる情報の確実性を評価したところ、GRSUMをoutperformした解説スライド：https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articlesSIGIRでは珍しい、要約に関する研究 情報の確実性を考慮するという、いままであまりやられていなかった部分にフォーカスしたのはおもしろい 「アイデアはおもしろいし良い研究だが、affinity weightが変化するということは、裏を返せばdamping factorを変更してもそういう操作はできるので、certaintyを考慮したことに意味があったのかが完全に示せていない。」という意見があり、なるほどと思った。 more'>
+<meta name="description" content="Unsupervised">
+<meta property="og:description" content="Unsupervised">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Unsupervised.html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Unsupervised.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-28T00:58:31+00:00">
+<meta property="article:published_time" content="2025-07-28T09:55:51+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Unsupervisedに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T00:58:31+00:00","datePublished":"2025-07-28T00:58:31+00:00","description":"Unsupervised #MachineTranslation#NLP#SpeechProcessing#SpeechIssue Date: 2023-07-15 Simple and Effective Unsupervised Speech Translation, ACL23 Summary音声翻訳のためのラベル付きデータが限られているため、非教師あり手法を使用して音声翻訳システムを構築する方法を研究している。パイプラインアプローチや擬似ラベル生成を使用し、非教師ありドメイン適応技術を提案している。実験の結果、従来の手法を上回る性能を示している。 #NeuralNetwork#Pretraining#NLP#EMNLPIssue Date: 2017-12-31 Unsupervised Pretraining for Sequence to Sequence Learning, Ramachandran+, EMNLP17 Commentseq2seqにおいてweightのpretrainingを行う手法を提案 seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。 WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。 encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。 fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective） LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。 Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。 LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。 sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。 LM Objectiveは結構使えそうな印象 #Multi#Single#DocumentSummarization#Document#GraphBased#NLP#Extractive#SIGIRIssue Date: 2018-01-01 CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR14 Comment要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった） ``` &quot;However, it seems that Obama will not use the platform to relaunch his stalled drive for Israeli-Palestinian peace&quot; ``` こういう文は、&quot;It seems&quot;とあるように、情報の確実性が低いので要約には入れたくないという気持ち。 FactBankのニュースコーパスから1000 sentenceを抽出し、5-scaleでsentenceの確実性をラベルづけ。 このデータを用いてSVRを学習し、sentenceの確実性をoutputする分類器を構築 affinity-propagationベース（textrank, lexrankのような手法）手法のaffinityの計算（edge間の重みのこと。普通はsentence同士の類似度とかが使われる）を行う際に、情報の確実性のスコアを導入することで確実性を考慮した要約を生成 DUC2007のMDSデータセットで、affinity計算の際に確実性を導入する部分をablationしたモデル（GRSUM）と比較したところ、CTSUMのROUGEスコアが向上した。 また、自動・人手評価により、生成された要約に含まれる情報の確実性を評価したところ、GRSUMをoutperformした解説スライド：https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articlesSIGIRでは珍しい、要約に関する研究 情報の確実性を考慮するという、いままであまりやられていなかった部分にフォーカスしたのはおもしろい 「アイデアはおもしろいし良い研究だが、affinity weightが変化するということは、裏を返せばdamping factorを変更してもそういう操作はできるので、certaintyを考慮したことに意味があったのかが完全に示せていない。」という意見があり、なるほどと思った。 more","headline":"Unsupervisedに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Unsupervised.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Unsupervised.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T09:55:51+00:00","datePublished":"2025-07-28T09:55:51+00:00","description":"Unsupervised","headline":"Unsupervisedに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Unsupervised.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Unsupervised.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-28T00:58:31+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
+    <time class="dt-published" datetime="2025-07-28T09:55:51+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -993,61 +993,357 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id="unsupervised">Unsupervised</h2>
+
 <div class="visible-content">
-<a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/SpeechProcessing.html">#SpeechProcessing</a><a class="button" href="articles/Speech.html">#Speech</a><br><span class="issue_date">Issue Date: 2023-07-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/842">Simple and Effective Unsupervised Speech Translation, ACL23</a>
+<a class="button" href="articles/MachineTranslation.html">#MachineTranslation</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/SpeechProcessing.html">#SpeechProcessing</a>
+<a class="button" href="articles/Speech.html">#Speech</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2023-07-15</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/842">Simple and Effective Unsupervised Speech Translation, ACL'23</a>
 <span class="snippet"><span>Summary</span>音声翻訳のためのラベル付きデータが限られているため、非教師あり手法を使用して音声翻訳システムを構築する方法を研究している。パイプラインアプローチや擬似ラベル生成を使用し、非教師ありドメイン適応技術を提案している。実験の結果、従来の手法を上回る性能を示している。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Pretraining.html">#Pretraining</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><br><span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/83">Unsupervised Pretraining for Sequence to Sequence Learning, Ramachandran+, EMNLP17</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Pretraining.html">#Pretraining</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/83">Unsupervised Pretraining for Sequence to Sequence Learning, Ramachandran+, EMNLP'17</a>
 <span class="snippet"><span>Comment</span>seq2seqにおいてweightのpretrainingを行う手法を提案
+
+<br>
+
+
+
+<br>
+
 seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。
+
+<br>
+
+
+
+<br>
+
 WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。
+
+<br>
+
+
+
+<br>
+
 fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）
+
+<br>
+
+
+
+<br>
+
 LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。
+
+<br>
+
+
+
+<br>
+
 LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。
+
+<br>
+
+
+
+<br>
+
 sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 LM Objectiveは結構使えそうな印象</span>
-<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><a class="button" href="articles/SIGIR.html">#SIGIR</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/144">CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR14</a>
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/Single.html">#Single</a>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/Document.html">#Document</a>
+<a class="button" href="articles/GraphBased.html">#GraphBased</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Extractive.html">#Extractive</a>
+<a class="button" href="articles/SIGIR.html">#SIGIR</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/144">CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR'14</a>
 <span class="snippet"><span>Comment</span>要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった）
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ```
+
+<br>
+
+
+
+<br>
+
 "However, it seems that Obama will not use the platform to relaunch his stalled drive for Israeli-Palestinian peace"
+
+<br>
+
+
+
+<br>
+
 ```
+
+<br>
+
+
+
+<br>
+
 こういう文は、"It seems"とあるように、情報の確実性が低いので要約には入れたくないという気持ち。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 FactBankのニュースコーパスから1000 sentenceを抽出し、5-scaleでsentenceの確実性をラベルづけ。
+
+<br>
+
+
+
+<br>
+
 このデータを用いてSVRを学習し、sentenceの確実性をoutputする分類器を構築
+
+<br>
+
+
+
+<br>
+
 affinity-propagationベース（textrank, lexrankのような手法）手法のaffinityの計算（edge間の重みのこと。普通はsentence同士の類似度とかが使われる）を行う際に、情報の確実性のスコアを導入することで確実性を考慮した要約を生成
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 DUC2007のMDSデータセットで、affinity計算の際に確実性を導入する部分をablationしたモデル（GRSUM）と比較したところ、CTSUMのROUGEスコアが向上した。
+
+<br>
+
+
+
+<br>
+
 また、自動・人手評価により、生成された要約に含まれる情報の確実性を評価したところ、GRSUMをoutperformした解説スライド：https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articlesSIGIRでは珍しい、要約に関する研究
+
+<br>
+
+
+
+<br>
+
 情報の確実性を考慮するという、いままであまりやられていなかった部分にフォーカスしたのはおもしろい
+
+<br>
+
+
+
+<br>
+
 「アイデアはおもしろいし良い研究だが、affinity weightが変化するということは、裏を返せばdamping factorを変更してもそういう操作はできるので、certaintyを考慮したことに意味があったのかが完全に示せていない。」という意見があり、なるほどと思った。</span>
 </div>
 <p><button onclick="showMore(0)">more</button></p>
-
 <div class="hidden-content">
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/Supervised-FineTuning%20(SFT).html">#Supervised-FineTuning (SFT)</a><br><span class="issue_date">Issue Date: 2025-06-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2029">Paper Note Unsupervised Elicitation of Language Models, Wen+, Anthropic, 2025.06</a>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/Supervised-FineTuning%20(SFT).html">#Supervised-FineTuning (SFT)</a>
+<span class="issue_date">Issue Date: 2025-06-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2029">[Paper Note] Unsupervised Elicitation of Language Models, Wen+, Anthropic, 2025.06</a>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/jiaxinwen22/status/1932908642858418441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/Document.html">#Document</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Extractive.html">#Extractive</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2018-01-01</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/Single.html">#Single</a>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/Document.html">#Document</a>
+<a class="button" href="articles/GraphBased.html">#GraphBased</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Extractive.html">#Extractive</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/215">LexRank: Graph-based Lexical Centrality as Salience in Text Summarization, Erkan+, Journal of Artificial Intelligence Research, 2004</a>
 <span class="snippet"><span>Comment</span>代表的なグラフベースな(Multi) Document Summarization手法。
-ほぼ #214 と同じ手法。
+
+<br>
+
+
+
+<br>
+
+ほぼ 214 と同じ手法。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 2種類の手法が提案されている：
 
-* [LexRank] tf-idfスコアでsentenceのbag-of-wordsベクトルを作り、cosine similarityを計算し閾値以上となったsentenceの間にのみedgeを張る（重みは確率的に正規化）。その後べき乗法でPageRank。
-* [ContinousLexRank] tf-idfスコアでsentenceのbag-of-wordsベクトルを作り、cosine similarityを用いてAffinity Graphを計算し、PageRankを適用（べき乗法）。
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+ [LexRank] tf-idfスコアでsentenceのbag-of-wordsベクトルを作り、cosine similarityを計算し閾値以上となったsentenceの間にのみedgeを張る（重みは確率的に正規化）。その後べき乗法でPageRank。
+
+<br>
+
+
+
+<br>
+
+ [ContinousLexRank] tf-idfスコアでsentenceのbag-of-wordsベクトルを作り、cosine similarityを用いてAffinity Graphを計算し、PageRankを適用（べき乗法）。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 DUC2003, 2004（MDS）で評価。
+
+<br>
+
+
+
+<br>
+
 Centroidベースドな手法をROUGE-1の観点でoutperform。
+
+<br>
+
+
+
+<br>
+
 document clusterの17%をNoisyなデータにした場合も実験しており、Noisyなデータを追加した場合も性能劣化が少ないことも示している。</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
@@ -1063,32 +1359,32 @@ document clusterの17%をNoisyなデータにした場合も実験しており�
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/LAK.html" title="LAKに関する論文・技術記事メモの一覧">
-            LAKに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/TechnologyEnhancedLearning.html" title="TechnologyEnhancedLearningに関する論文・技術記事メモの一覧">
+            TechnologyEnhancedLearningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Programming.html" title="Programmingに関する論文・技術記事メモの一覧">
-            Programmingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Poisoning.html" title="Poisoningに関する論文・技術記事メモの一覧">
+            Poisoningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LearningStyle.html" title="LearningStyleに関する論文・技術記事メモの一覧">
-            LearningStyleに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/CTRPrediction.html" title="CTRPredictionに関する論文・技術記事メモの一覧">
+            CTRPredictionに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LanguageModel.html" title="LanguageModelに関する論文・技術記事メモの一覧">
-            LanguageModelに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/AWS.html" title="AWSに関する論文・技術記事メモの一覧">
+            AWSに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

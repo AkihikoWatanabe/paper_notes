@@ -12,17 +12,17 @@
 <meta property="og:title" content="PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="PersonalizedDocumentSummarization #NLP#PersonalizedGeneration#Personalization#PersonalizedHeadlineGenerationIssue Date: 2023-07-22 Generating User-Engaging News Headlines, ACL23 Summaryニュース記事の見出しを個別化するために、ユーザープロファイリングを組み込んだ新しいフレームワークを提案。ユーザーの閲覧履歴に基づいて個別のシグネチャフレーズを割り当て、それを使用して見出しを個別化する。幅広い評価により、提案したフレームワークが多様な読者のニーズに応える個別の見出しを生成する効果を示した。 Comment# モチベーション 推薦システムのヘッドラインは未だに全員に同じものが表示されており、ユーザが自身の興味とのつながりを正しく判定できるとは限らず、推薦システムの有用性を妨げるので、ユーザごとに異なるヘッドラインを生成する手法を提案した。ただし、クリックベイトは避けるようなヘッドラインを生成しなければならない。 # 手法 1. Signature Phrase Identification 2. User Signature Selection 3. Signature-Oriented Headline Generation ## Signature Phrase Identification テキスト生成タスクに帰着させる。ニュース記事、あるいはヘッドラインをinputされたときに、セミコロン区切りのSignature Phraseを生成するモデルを用いる。今回は[KPTimes daasetでpretrainingされたBART](https://huggingface.co/ankur310794/bart-base-keyphrase-generation-kpTimes)を用いた。KPTimesは、279kのニュース記事と、signature phraseのペアが存在するデータであり、本タスクに最適とのこと。 ## User Signature Selection ターゲットドキュメントdのSignature Phrases Z_dが与えられたとき、ユーザのreading History H_uに基づいて、top-kのuser signature phrasesを選択する。H_uはユーザが読んだニュースのヘッドラインの集合で表現される。あるSignature Phrase z_i ∈ Z_dが与えられたとき、(1)H_uをconcatしたテキストをベクトル化したものと、z_iのベクトルの内積でスコアを計算、あるいは(2) 個別のヘッドラインt_jを別々にエンコーディングし、内積の値が最大のものをスコアとする手法の2種類のエンコーディング方法を用いて、in-batch contrastive learningを用いてモデルを訓練する。つまり、正しいSignature Phraseとは距離が近く、誤ったSignature Phraseとは距離が遠くなるように学習をする。 実際はユーザにとっての正解Signature Phraseは分からないが、今回は人工的に作成したユーザを用いるため、正解が分かる設定となっている。 ## Signature-Oriented Headline Generation ニュース記事d, user signature phrasesZ_d^uが与えられたとき、ヘッドラインを生成するモデルを訓練する。この時も、ユーザにとって正解のヘッドラインは分からないため、既存ニュースのヘッドラインが正解として用いられる。既存ニュースのヘッドラインが正解として用いられていても、そのヘッドラインがそのユーザにとっての正解となるように人工的にユーザが作成されているため、モデルの訓練ができる。モデルはBARTを用いた。 # Dataset Newsroom, Gigawordコーパスを用いる。これらのコーパスに対して、それぞれ2種類のコーパスを作成する。 1つは、Synthesized User Datasetで、これはUse Signature Selection modelの訓練と評価に用いる。もう一つはheadline generationデータセットで、こちらはheadline generationモデルの訓練に利用する。 ## Synthesized User Creation 実データがないので、実ユーザのreading historiesを模倣するように人工ユーザを作成する。具体的には、 1. すべてのニュース記事のSignature Phrasesを同定する 2. それぞれのSignature Phraseと、それを含むニュース記事をマッピングする 3. ランダムにphraseのサブセットをサンプリングし、そのサブセットをある人工ユーザが興味を持つエリアとする。 4. サブセット中のinterest phraseを含むニュース記事をランダムにサンプリングし、ユーザのreading historyとする train, dev, testセット、それぞれに対して上記操作を実施しユーザを作成するが、train, devはContrastive Learningを実現するために、user signature phrases (interest phrases)は1つのみとした（Softmaxがそうなっていないと訓練できないので）。一方、testセットは1~5の範囲でuser signature phrasesを選択した。これにより、サンプリングされる記事が多様化され、ユーザのreadinig historyが多様化することになる。基本的には、ユーザが興味のあるトピックが少ない方が、よりタスクとしては簡単になることが期待される。また、ヘッドラインを生成するときは、ユーザのsignature phraseを含む記事をランダムに選び、ヘッドラインを背衛星することとした。これは、relevantな記事でないとヘッドラインがそもそも生成できないからである。 ## Headline Generation ニュース記事の全てのsignature phraseを抽出し、それがgivenな時に、元のニュース記事のヘッドラインが生成できるようなBARTを訓練した。ニュース記事のtokenは512でtruncateした。平均して、10個のsignature phraseがニュース記事ごとに選択されており、ヘッドライン生成の多様さがうかがえる。user signature phraseそのものを用いて訓練はしていないが、そもそもこのようにGenericなデータで訓練しても、何らかのphraseがgivenな時に、それにバイアスがかかったヘッドラインを生成することができるので、user signature phrase selectionによって得られたphraseを用いてヘッドラインを生成することができる。 # 評価 自動評価と人手評価をしている。 ## 自動評価 人手評価はコストがかかり、特に開発フェーズにおいては自動評価ができることが非常に重要となる。本研究では自動評価し方法を提案している。Headline-User DPR + SBERT, REC Scoreは、User Adaptation Metricsであり、Headline-Article DPR + SBERT, FactCCはArticle Loyalty Metricsである。 ### Relevance Metrics PretrainedなDense Passage Retrieval (DPR)モデルと、SentenceBERTを用いて、headline-user間、headline-article間の類似度を測定する。前者はヘッドラインがどれだけユーザに適応しているが、後者はヘッドラインが元記事に対してどれだけ忠実か（クリックベイトを防ぐために）に用いられる。前者は、ヘッドラインとuser signaturesに対して類似度を計算し、後者はヘッドラインと記事全文に対して類似度を計算する。user signatures, 記事全文をどのようにエンコードしたかは記述されていない。 ### Recommendation Score ヘッドラインと、ユーザのreadinig historyが与えられたときに、ニュースを推薦するモデルを用いて、スコアを算出する。モデルとしては、MIND datsetを用いて学習したモデルを用いた。 ### Factual Consistency pretrainedなFactCCモデルを用いて、ヘッドラインとニュース記事間のfactual consisency score を算出する。 ### Surface Overlap オリジナルのヘッドラインと、生成されたヘッドラインのROUGE-L F1と、Extractive Coverage (ヘッドラインに含まれる単語のうち、ソースに含まれる単語の割合)を用いる。 ### 評価結果 提案手法のうち、User Signature Selection modelをfinetuningしたものが最も性能が高かった。エンコード方法は、(2)のヒストリのタイトルとフレーズの最大スコアをとる方法が最も性能が高い。提案手法はUser Adaptationをしつつも、Article Loyaltyを保っている。このため、クリックベイトの防止につながる。また、Vanilla Humanは元記事のヘッドラインであり、Extracitve Coverageが低いため、より抽象的で、かつ元記事に対する忠実性が低いことがうかがえる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8) ## 人手評価 16人のevaluatorで評価。2260件のニュース記事を収集（113 topic）し、記事のヘッドラインと、対応するトピックを見せて、20個の興味に合致するヘッドラインを選択してもらった。これをユーザのinterest phraseとreading _historyとして扱う。そして、ユーザのinterest phraseを含むニュース記事のうち、12個をランダムに選択し、ヘッドラインを生成した。生成したヘッドラインに対して、 1. Vanilla Human 2. Vanilla System 3. SP random (ランダムにsignature phraseを選ぶ手法) 4. SP individual-N 5. SP individual-F (User Signature Phraseを選択するモデルをfinetuningしたもの) の5種類を評価するよう依頼した。このとき、３つの観点から評価をした。 1, User adaptation 2. Headline appropriateness 3. Text Quality 結果は以下。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6af9f214-2af4-4fa3-8637-6b1858f0bb69) SP-individualがUser Adaptationで最も高い性能を獲得した。また、Vanilla Systemが最も高いHeadline appropriatenessを獲得した。しかしながら、後ほど分析した結果、Vanilla Systemでは、記事のメインポイントを押さえられていないような例があることが分かった（んーこれは正直他の手法でも同じだと思うから、ディフェンスとしては苦しいのでは）。 また、Vanilla Humanが最も高いスコアを獲得しなかった。これは、オーバーにレトリックを用いていたり、一般的な人にはわからないようなタイトルになっているものがあるからであると考えられる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e704d7b-6124-49b5-91c8-1f6b507b0c0a) # Ablation Study Signature Phrase selectionの性能を測定したところ以下の通りになり、finetuningした場合の性能が良かった。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a24fefb6-9028-4e58-9667-caa13a70af31) Headline Generationの性能に影響を与える要素としては、 1. ユーザが興味のあるトピック数 2. User signature phrasesの数 がある。 ユーザのInterest Phrasesが増えていけばいくほど、User Adaptationスコアは減少するが、Article Loyaltyは維持されたままである。このため、興味があるトピックが多ければ多いほど生成が難しいことがわかる。また、複数のuser signature phraseを用いると、factual errorを起こすことが分かった（Billgates, Zuckerbergの例を参照）。これは、モデルが本来はirrelevantなフレーズを用いてcoherentなヘッドラインを生成しようとしてしまうためである。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d28d904-3247-4593-bc1c-8b6e7090719b) ※interest phrases =&gt; gold user signatures という理解でよさそう。 ※signature phrasesを複数用いるとfactual errorを起こすため、今回はk=1で実験していると思われる GPT3にもヘッドラインを生成させてみたが、提案手法の方が性能が良かった（自動評価で）。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3e0852e1-f21a-47d6-b874-b7d3a42d7304) なぜPENS dataset #706 を利用しないで研究したのか？ #Pocket#NLP#Personalization#reviewIssue Date: 2023-05-05 Towards Personalized Review Summarization by Modeling Historical Reviews from Customer and Product Separately, Xin Cheng+, N_A, arXiv23 Summaryレビュー要約は、Eコマースのウェブサイトにおいて製品レビューの主要なアイデアを要約することを目的としたタスクである。本研究では、評価情報を含む2種類の過去のレビューをグラフ推論モジュールと対比損失を用いて別々にモデル化するHHRRSを提案する。レビューの感情分類と要約を共同で行うマルチタスクフレームワークを採用し、4つのベンチマークデータセットでの徹底的な実験により、HHRRSが両方のタスクで優れた性能を発揮することが示された。 #NLP#Dataset#LanguageModel#PersonalizedGeneration#Personalization#PersonalizedHeadlineGenerationIssue Date: 2023-05-31 PENS: A Dataset and Generic Framework for Personalized News Headline Generation, ACL21 Summaryこの論文では、ユーザーの興味とニュース本文に基づいて、ユーザー固有のタイトルを生成するパーソナライズされたニュース見出し生成の問題を解決するためのフレームワークを提案します。また、この問題のための大規模なデータセットであるPENSを公開し、ベンチマークスコアを示します。データセットはhttps://msnews.github.io/pens.htmlで入手可能です。 Comment# 概要 ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。 # データセット生成手順 103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。 # データセット統計量 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9) ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91) # 手法概要 Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。 Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。 User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936) # 訓練手法 まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、 1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする 2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする 3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする とした。 1,2,3の平均を最終的なRewardとする。 # 実験結果 Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f) # Case Study ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0) more">
-<meta property="og:description" content="PersonalizedDocumentSummarization #NLP#PersonalizedGeneration#Personalization#PersonalizedHeadlineGenerationIssue Date: 2023-07-22 Generating User-Engaging News Headlines, ACL23 Summaryニュース記事の見出しを個別化するために、ユーザープロファイリングを組み込んだ新しいフレームワークを提案。ユーザーの閲覧履歴に基づいて個別のシグネチャフレーズを割り当て、それを使用して見出しを個別化する。幅広い評価により、提案したフレームワークが多様な読者のニーズに応える個別の見出しを生成する効果を示した。 Comment# モチベーション 推薦システムのヘッドラインは未だに全員に同じものが表示されており、ユーザが自身の興味とのつながりを正しく判定できるとは限らず、推薦システムの有用性を妨げるので、ユーザごとに異なるヘッドラインを生成する手法を提案した。ただし、クリックベイトは避けるようなヘッドラインを生成しなければならない。 # 手法 1. Signature Phrase Identification 2. User Signature Selection 3. Signature-Oriented Headline Generation ## Signature Phrase Identification テキスト生成タスクに帰着させる。ニュース記事、あるいはヘッドラインをinputされたときに、セミコロン区切りのSignature Phraseを生成するモデルを用いる。今回は[KPTimes daasetでpretrainingされたBART](https://huggingface.co/ankur310794/bart-base-keyphrase-generation-kpTimes)を用いた。KPTimesは、279kのニュース記事と、signature phraseのペアが存在するデータであり、本タスクに最適とのこと。 ## User Signature Selection ターゲットドキュメントdのSignature Phrases Z_dが与えられたとき、ユーザのreading History H_uに基づいて、top-kのuser signature phrasesを選択する。H_uはユーザが読んだニュースのヘッドラインの集合で表現される。あるSignature Phrase z_i ∈ Z_dが与えられたとき、(1)H_uをconcatしたテキストをベクトル化したものと、z_iのベクトルの内積でスコアを計算、あるいは(2) 個別のヘッドラインt_jを別々にエンコーディングし、内積の値が最大のものをスコアとする手法の2種類のエンコーディング方法を用いて、in-batch contrastive learningを用いてモデルを訓練する。つまり、正しいSignature Phraseとは距離が近く、誤ったSignature Phraseとは距離が遠くなるように学習をする。 実際はユーザにとっての正解Signature Phraseは分からないが、今回は人工的に作成したユーザを用いるため、正解が分かる設定となっている。 ## Signature-Oriented Headline Generation ニュース記事d, user signature phrasesZ_d^uが与えられたとき、ヘッドラインを生成するモデルを訓練する。この時も、ユーザにとって正解のヘッドラインは分からないため、既存ニュースのヘッドラインが正解として用いられる。既存ニュースのヘッドラインが正解として用いられていても、そのヘッドラインがそのユーザにとっての正解となるように人工的にユーザが作成されているため、モデルの訓練ができる。モデルはBARTを用いた。 # Dataset Newsroom, Gigawordコーパスを用いる。これらのコーパスに対して、それぞれ2種類のコーパスを作成する。 1つは、Synthesized User Datasetで、これはUse Signature Selection modelの訓練と評価に用いる。もう一つはheadline generationデータセットで、こちらはheadline generationモデルの訓練に利用する。 ## Synthesized User Creation 実データがないので、実ユーザのreading historiesを模倣するように人工ユーザを作成する。具体的には、 1. すべてのニュース記事のSignature Phrasesを同定する 2. それぞれのSignature Phraseと、それを含むニュース記事をマッピングする 3. ランダムにphraseのサブセットをサンプリングし、そのサブセットをある人工ユーザが興味を持つエリアとする。 4. サブセット中のinterest phraseを含むニュース記事をランダムにサンプリングし、ユーザのreading historyとする train, dev, testセット、それぞれに対して上記操作を実施しユーザを作成するが、train, devはContrastive Learningを実現するために、user signature phrases (interest phrases)は1つのみとした（Softmaxがそうなっていないと訓練できないので）。一方、testセットは1~5の範囲でuser signature phrasesを選択した。これにより、サンプリングされる記事が多様化され、ユーザのreadinig historyが多様化することになる。基本的には、ユーザが興味のあるトピックが少ない方が、よりタスクとしては簡単になることが期待される。また、ヘッドラインを生成するときは、ユーザのsignature phraseを含む記事をランダムに選び、ヘッドラインを背衛星することとした。これは、relevantな記事でないとヘッドラインがそもそも生成できないからである。 ## Headline Generation ニュース記事の全てのsignature phraseを抽出し、それがgivenな時に、元のニュース記事のヘッドラインが生成できるようなBARTを訓練した。ニュース記事のtokenは512でtruncateした。平均して、10個のsignature phraseがニュース記事ごとに選択されており、ヘッドライン生成の多様さがうかがえる。user signature phraseそのものを用いて訓練はしていないが、そもそもこのようにGenericなデータで訓練しても、何らかのphraseがgivenな時に、それにバイアスがかかったヘッドラインを生成することができるので、user signature phrase selectionによって得られたphraseを用いてヘッドラインを生成することができる。 # 評価 自動評価と人手評価をしている。 ## 自動評価 人手評価はコストがかかり、特に開発フェーズにおいては自動評価ができることが非常に重要となる。本研究では自動評価し方法を提案している。Headline-User DPR + SBERT, REC Scoreは、User Adaptation Metricsであり、Headline-Article DPR + SBERT, FactCCはArticle Loyalty Metricsである。 ### Relevance Metrics PretrainedなDense Passage Retrieval (DPR)モデルと、SentenceBERTを用いて、headline-user間、headline-article間の類似度を測定する。前者はヘッドラインがどれだけユーザに適応しているが、後者はヘッドラインが元記事に対してどれだけ忠実か（クリックベイトを防ぐために）に用いられる。前者は、ヘッドラインとuser signaturesに対して類似度を計算し、後者はヘッドラインと記事全文に対して類似度を計算する。user signatures, 記事全文をどのようにエンコードしたかは記述されていない。 ### Recommendation Score ヘッドラインと、ユーザのreadinig historyが与えられたときに、ニュースを推薦するモデルを用いて、スコアを算出する。モデルとしては、MIND datsetを用いて学習したモデルを用いた。 ### Factual Consistency pretrainedなFactCCモデルを用いて、ヘッドラインとニュース記事間のfactual consisency score を算出する。 ### Surface Overlap オリジナルのヘッドラインと、生成されたヘッドラインのROUGE-L F1と、Extractive Coverage (ヘッドラインに含まれる単語のうち、ソースに含まれる単語の割合)を用いる。 ### 評価結果 提案手法のうち、User Signature Selection modelをfinetuningしたものが最も性能が高かった。エンコード方法は、(2)のヒストリのタイトルとフレーズの最大スコアをとる方法が最も性能が高い。提案手法はUser Adaptationをしつつも、Article Loyaltyを保っている。このため、クリックベイトの防止につながる。また、Vanilla Humanは元記事のヘッドラインであり、Extracitve Coverageが低いため、より抽象的で、かつ元記事に対する忠実性が低いことがうかがえる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8) ## 人手評価 16人のevaluatorで評価。2260件のニュース記事を収集（113 topic）し、記事のヘッドラインと、対応するトピックを見せて、20個の興味に合致するヘッドラインを選択してもらった。これをユーザのinterest phraseとreading _historyとして扱う。そして、ユーザのinterest phraseを含むニュース記事のうち、12個をランダムに選択し、ヘッドラインを生成した。生成したヘッドラインに対して、 1. Vanilla Human 2. Vanilla System 3. SP random (ランダムにsignature phraseを選ぶ手法) 4. SP individual-N 5. SP individual-F (User Signature Phraseを選択するモデルをfinetuningしたもの) の5種類を評価するよう依頼した。このとき、３つの観点から評価をした。 1, User adaptation 2. Headline appropriateness 3. Text Quality 結果は以下。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6af9f214-2af4-4fa3-8637-6b1858f0bb69) SP-individualがUser Adaptationで最も高い性能を獲得した。また、Vanilla Systemが最も高いHeadline appropriatenessを獲得した。しかしながら、後ほど分析した結果、Vanilla Systemでは、記事のメインポイントを押さえられていないような例があることが分かった（んーこれは正直他の手法でも同じだと思うから、ディフェンスとしては苦しいのでは）。 また、Vanilla Humanが最も高いスコアを獲得しなかった。これは、オーバーにレトリックを用いていたり、一般的な人にはわからないようなタイトルになっているものがあるからであると考えられる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e704d7b-6124-49b5-91c8-1f6b507b0c0a) # Ablation Study Signature Phrase selectionの性能を測定したところ以下の通りになり、finetuningした場合の性能が良かった。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a24fefb6-9028-4e58-9667-caa13a70af31) Headline Generationの性能に影響を与える要素としては、 1. ユーザが興味のあるトピック数 2. User signature phrasesの数 がある。 ユーザのInterest Phrasesが増えていけばいくほど、User Adaptationスコアは減少するが、Article Loyaltyは維持されたままである。このため、興味があるトピックが多ければ多いほど生成が難しいことがわかる。また、複数のuser signature phraseを用いると、factual errorを起こすことが分かった（Billgates, Zuckerbergの例を参照）。これは、モデルが本来はirrelevantなフレーズを用いてcoherentなヘッドラインを生成しようとしてしまうためである。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d28d904-3247-4593-bc1c-8b6e7090719b) ※interest phrases =&gt; gold user signatures という理解でよさそう。 ※signature phrasesを複数用いるとfactual errorを起こすため、今回はk=1で実験していると思われる GPT3にもヘッドラインを生成させてみたが、提案手法の方が性能が良かった（自動評価で）。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3e0852e1-f21a-47d6-b874-b7d3a42d7304) なぜPENS dataset #706 を利用しないで研究したのか？ #Pocket#NLP#Personalization#reviewIssue Date: 2023-05-05 Towards Personalized Review Summarization by Modeling Historical Reviews from Customer and Product Separately, Xin Cheng+, N_A, arXiv23 Summaryレビュー要約は、Eコマースのウェブサイトにおいて製品レビューの主要なアイデアを要約することを目的としたタスクである。本研究では、評価情報を含む2種類の過去のレビューをグラフ推論モジュールと対比損失を用いて別々にモデル化するHHRRSを提案する。レビューの感情分類と要約を共同で行うマルチタスクフレームワークを採用し、4つのベンチマークデータセットでの徹底的な実験により、HHRRSが両方のタスクで優れた性能を発揮することが示された。 #NLP#Dataset#LanguageModel#PersonalizedGeneration#Personalization#PersonalizedHeadlineGenerationIssue Date: 2023-05-31 PENS: A Dataset and Generic Framework for Personalized News Headline Generation, ACL21 Summaryこの論文では、ユーザーの興味とニュース本文に基づいて、ユーザー固有のタイトルを生成するパーソナライズされたニュース見出し生成の問題を解決するためのフレームワークを提案します。また、この問題のための大規模なデータセットであるPENSを公開し、ベンチマークスコアを示します。データセットはhttps://msnews.github.io/pens.htmlで入手可能です。 Comment# 概要 ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。 # データセット生成手順 103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。 # データセット統計量 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9) ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91) # 手法概要 Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。 Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。 User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936) # 訓練手法 まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、 1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする 2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする 3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする とした。 1,2,3の平均を最終的なRewardとする。 # 実験結果 Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f) # Case Study ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0) more">
+<meta name="description" content="PersonalizedDocumentSummarization">
+<meta property="og:description" content="PersonalizedDocumentSummarization">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedDocumentSummarization.html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedDocumentSummarization.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-28T00:58:31+00:00">
+<meta property="article:published_time" content="2025-07-28T09:55:51+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T00:58:31+00:00","datePublished":"2025-07-28T00:58:31+00:00","description":"PersonalizedDocumentSummarization #NLP#PersonalizedGeneration#Personalization#PersonalizedHeadlineGenerationIssue Date: 2023-07-22 Generating User-Engaging News Headlines, ACL23 Summaryニュース記事の見出しを個別化するために、ユーザープロファイリングを組み込んだ新しいフレームワークを提案。ユーザーの閲覧履歴に基づいて個別のシグネチャフレーズを割り当て、それを使用して見出しを個別化する。幅広い評価により、提案したフレームワークが多様な読者のニーズに応える個別の見出しを生成する効果を示した。 Comment# モチベーション 推薦システムのヘッドラインは未だに全員に同じものが表示されており、ユーザが自身の興味とのつながりを正しく判定できるとは限らず、推薦システムの有用性を妨げるので、ユーザごとに異なるヘッドラインを生成する手法を提案した。ただし、クリックベイトは避けるようなヘッドラインを生成しなければならない。 # 手法 1. Signature Phrase Identification 2. User Signature Selection 3. Signature-Oriented Headline Generation ## Signature Phrase Identification テキスト生成タスクに帰着させる。ニュース記事、あるいはヘッドラインをinputされたときに、セミコロン区切りのSignature Phraseを生成するモデルを用いる。今回は[KPTimes daasetでpretrainingされたBART](https://huggingface.co/ankur310794/bart-base-keyphrase-generation-kpTimes)を用いた。KPTimesは、279kのニュース記事と、signature phraseのペアが存在するデータであり、本タスクに最適とのこと。 ## User Signature Selection ターゲットドキュメントdのSignature Phrases Z_dが与えられたとき、ユーザのreading History H_uに基づいて、top-kのuser signature phrasesを選択する。H_uはユーザが読んだニュースのヘッドラインの集合で表現される。あるSignature Phrase z_i ∈ Z_dが与えられたとき、(1)H_uをconcatしたテキストをベクトル化したものと、z_iのベクトルの内積でスコアを計算、あるいは(2) 個別のヘッドラインt_jを別々にエンコーディングし、内積の値が最大のものをスコアとする手法の2種類のエンコーディング方法を用いて、in-batch contrastive learningを用いてモデルを訓練する。つまり、正しいSignature Phraseとは距離が近く、誤ったSignature Phraseとは距離が遠くなるように学習をする。 実際はユーザにとっての正解Signature Phraseは分からないが、今回は人工的に作成したユーザを用いるため、正解が分かる設定となっている。 ## Signature-Oriented Headline Generation ニュース記事d, user signature phrasesZ_d^uが与えられたとき、ヘッドラインを生成するモデルを訓練する。この時も、ユーザにとって正解のヘッドラインは分からないため、既存ニュースのヘッドラインが正解として用いられる。既存ニュースのヘッドラインが正解として用いられていても、そのヘッドラインがそのユーザにとっての正解となるように人工的にユーザが作成されているため、モデルの訓練ができる。モデルはBARTを用いた。 # Dataset Newsroom, Gigawordコーパスを用いる。これらのコーパスに対して、それぞれ2種類のコーパスを作成する。 1つは、Synthesized User Datasetで、これはUse Signature Selection modelの訓練と評価に用いる。もう一つはheadline generationデータセットで、こちらはheadline generationモデルの訓練に利用する。 ## Synthesized User Creation 実データがないので、実ユーザのreading historiesを模倣するように人工ユーザを作成する。具体的には、 1. すべてのニュース記事のSignature Phrasesを同定する 2. それぞれのSignature Phraseと、それを含むニュース記事をマッピングする 3. ランダムにphraseのサブセットをサンプリングし、そのサブセットをある人工ユーザが興味を持つエリアとする。 4. サブセット中のinterest phraseを含むニュース記事をランダムにサンプリングし、ユーザのreading historyとする train, dev, testセット、それぞれに対して上記操作を実施しユーザを作成するが、train, devはContrastive Learningを実現するために、user signature phrases (interest phrases)は1つのみとした（Softmaxがそうなっていないと訓練できないので）。一方、testセットは1~5の範囲でuser signature phrasesを選択した。これにより、サンプリングされる記事が多様化され、ユーザのreadinig historyが多様化することになる。基本的には、ユーザが興味のあるトピックが少ない方が、よりタスクとしては簡単になることが期待される。また、ヘッドラインを生成するときは、ユーザのsignature phraseを含む記事をランダムに選び、ヘッドラインを背衛星することとした。これは、relevantな記事でないとヘッドラインがそもそも生成できないからである。 ## Headline Generation ニュース記事の全てのsignature phraseを抽出し、それがgivenな時に、元のニュース記事のヘッドラインが生成できるようなBARTを訓練した。ニュース記事のtokenは512でtruncateした。平均して、10個のsignature phraseがニュース記事ごとに選択されており、ヘッドライン生成の多様さがうかがえる。user signature phraseそのものを用いて訓練はしていないが、そもそもこのようにGenericなデータで訓練しても、何らかのphraseがgivenな時に、それにバイアスがかかったヘッドラインを生成することができるので、user signature phrase selectionによって得られたphraseを用いてヘッドラインを生成することができる。 # 評価 自動評価と人手評価をしている。 ## 自動評価 人手評価はコストがかかり、特に開発フェーズにおいては自動評価ができることが非常に重要となる。本研究では自動評価し方法を提案している。Headline-User DPR + SBERT, REC Scoreは、User Adaptation Metricsであり、Headline-Article DPR + SBERT, FactCCはArticle Loyalty Metricsである。 ### Relevance Metrics PretrainedなDense Passage Retrieval (DPR)モデルと、SentenceBERTを用いて、headline-user間、headline-article間の類似度を測定する。前者はヘッドラインがどれだけユーザに適応しているが、後者はヘッドラインが元記事に対してどれだけ忠実か（クリックベイトを防ぐために）に用いられる。前者は、ヘッドラインとuser signaturesに対して類似度を計算し、後者はヘッドラインと記事全文に対して類似度を計算する。user signatures, 記事全文をどのようにエンコードしたかは記述されていない。 ### Recommendation Score ヘッドラインと、ユーザのreadinig historyが与えられたときに、ニュースを推薦するモデルを用いて、スコアを算出する。モデルとしては、MIND datsetを用いて学習したモデルを用いた。 ### Factual Consistency pretrainedなFactCCモデルを用いて、ヘッドラインとニュース記事間のfactual consisency score を算出する。 ### Surface Overlap オリジナルのヘッドラインと、生成されたヘッドラインのROUGE-L F1と、Extractive Coverage (ヘッドラインに含まれる単語のうち、ソースに含まれる単語の割合)を用いる。 ### 評価結果 提案手法のうち、User Signature Selection modelをfinetuningしたものが最も性能が高かった。エンコード方法は、(2)のヒストリのタイトルとフレーズの最大スコアをとる方法が最も性能が高い。提案手法はUser Adaptationをしつつも、Article Loyaltyを保っている。このため、クリックベイトの防止につながる。また、Vanilla Humanは元記事のヘッドラインであり、Extracitve Coverageが低いため、より抽象的で、かつ元記事に対する忠実性が低いことがうかがえる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8) ## 人手評価 16人のevaluatorで評価。2260件のニュース記事を収集（113 topic）し、記事のヘッドラインと、対応するトピックを見せて、20個の興味に合致するヘッドラインを選択してもらった。これをユーザのinterest phraseとreading _historyとして扱う。そして、ユーザのinterest phraseを含むニュース記事のうち、12個をランダムに選択し、ヘッドラインを生成した。生成したヘッドラインに対して、 1. Vanilla Human 2. Vanilla System 3. SP random (ランダムにsignature phraseを選ぶ手法) 4. SP individual-N 5. SP individual-F (User Signature Phraseを選択するモデルをfinetuningしたもの) の5種類を評価するよう依頼した。このとき、３つの観点から評価をした。 1, User adaptation 2. Headline appropriateness 3. Text Quality 結果は以下。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6af9f214-2af4-4fa3-8637-6b1858f0bb69) SP-individualがUser Adaptationで最も高い性能を獲得した。また、Vanilla Systemが最も高いHeadline appropriatenessを獲得した。しかしながら、後ほど分析した結果、Vanilla Systemでは、記事のメインポイントを押さえられていないような例があることが分かった（んーこれは正直他の手法でも同じだと思うから、ディフェンスとしては苦しいのでは）。 また、Vanilla Humanが最も高いスコアを獲得しなかった。これは、オーバーにレトリックを用いていたり、一般的な人にはわからないようなタイトルになっているものがあるからであると考えられる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e704d7b-6124-49b5-91c8-1f6b507b0c0a) # Ablation Study Signature Phrase selectionの性能を測定したところ以下の通りになり、finetuningした場合の性能が良かった。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a24fefb6-9028-4e58-9667-caa13a70af31) Headline Generationの性能に影響を与える要素としては、 1. ユーザが興味のあるトピック数 2. User signature phrasesの数 がある。 ユーザのInterest Phrasesが増えていけばいくほど、User Adaptationスコアは減少するが、Article Loyaltyは維持されたままである。このため、興味があるトピックが多ければ多いほど生成が難しいことがわかる。また、複数のuser signature phraseを用いると、factual errorを起こすことが分かった（Billgates, Zuckerbergの例を参照）。これは、モデルが本来はirrelevantなフレーズを用いてcoherentなヘッドラインを生成しようとしてしまうためである。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d28d904-3247-4593-bc1c-8b6e7090719b) ※interest phrases =&gt; gold user signatures という理解でよさそう。 ※signature phrasesを複数用いるとfactual errorを起こすため、今回はk=1で実験していると思われる GPT3にもヘッドラインを生成させてみたが、提案手法の方が性能が良かった（自動評価で）。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3e0852e1-f21a-47d6-b874-b7d3a42d7304) なぜPENS dataset #706 を利用しないで研究したのか？ #Pocket#NLP#Personalization#reviewIssue Date: 2023-05-05 Towards Personalized Review Summarization by Modeling Historical Reviews from Customer and Product Separately, Xin Cheng+, N_A, arXiv23 Summaryレビュー要約は、Eコマースのウェブサイトにおいて製品レビューの主要なアイデアを要約することを目的としたタスクである。本研究では、評価情報を含む2種類の過去のレビューをグラフ推論モジュールと対比損失を用いて別々にモデル化するHHRRSを提案する。レビューの感情分類と要約を共同で行うマルチタスクフレームワークを採用し、4つのベンチマークデータセットでの徹底的な実験により、HHRRSが両方のタスクで優れた性能を発揮することが示された。 #NLP#Dataset#LanguageModel#PersonalizedGeneration#Personalization#PersonalizedHeadlineGenerationIssue Date: 2023-05-31 PENS: A Dataset and Generic Framework for Personalized News Headline Generation, ACL21 Summaryこの論文では、ユーザーの興味とニュース本文に基づいて、ユーザー固有のタイトルを生成するパーソナライズされたニュース見出し生成の問題を解決するためのフレームワークを提案します。また、この問題のための大規模なデータセットであるPENSを公開し、ベンチマークスコアを示します。データセットはhttps://msnews.github.io/pens.htmlで入手可能です。 Comment# 概要 ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。 # データセット生成手順 103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。 # データセット統計量 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9) ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91) # 手法概要 Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。 Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。 User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936) # 訓練手法 まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、 1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする 2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする 3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする とした。 1,2,3の平均を最終的なRewardとする。 # 実験結果 Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f) # Case Study ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0) more","headline":"PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedDocumentSummarization.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedDocumentSummarization.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T09:55:51+00:00","datePublished":"2025-07-28T09:55:51+00:00","description":"PersonalizedDocumentSummarization","headline":"PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedDocumentSummarization.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedDocumentSummarization.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-28T00:58:31+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
+    <time class="dt-published" datetime="2025-07-28T09:55:51+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -799,7 +799,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 14 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 8 mins</span>
   </div></header>
 </div>
     </div>
@@ -993,392 +993,2406 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id="personalizeddocumentsummarization">PersonalizedDocumentSummarization</h2>
+
 <div class="visible-content">
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/893">Generating User-Engaging News Headlines, ACL23</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2023-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/893">Generating User-Engaging News Headlines, ACL'23</a>
 <span class="snippet"><span>Summary</span>ニュース記事の見出しを個別化するために、ユーザープロファイリングを組み込んだ新しいフレームワークを提案。ユーザーの閲覧履歴に基づいて個別のシグネチャフレーズを割り当て、それを使用して見出しを個別化する。幅広い評価により、提案したフレームワークが多様な読者のニーズに応える個別の見出しを生成する効果を示した。</span>
-<span class="snippet"><span>Comment</span># モチベーション
+<span class="snippet"><span>Comment</span>モチベーション
+
+<br>
+
+
+
+<br>
+
 推薦システムのヘッドラインは未だに全員に同じものが表示されており、ユーザが自身の興味とのつながりを正しく判定できるとは限らず、推薦システムの有用性を妨げるので、ユーザごとに異なるヘッドラインを生成する手法を提案した。ただし、クリックベイトは避けるようなヘッドラインを生成しなければならない。
 
-# 手法
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+手法
+
+<br>
+
+
+
+<br>
+
 1. Signature Phrase Identification
+
+<br>
+
+
+
+<br>
+
 2. User Signature Selection
+
+<br>
+
+
+
+<br>
+
 3. Signature-Oriented Headline Generation 
 
-## Signature Phrase Identification
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Signature Phrase Identification
+
+<br>
+
+
+
+<br>
+
 テキスト生成タスクに帰着させる。ニュース記事、あるいはヘッドラインをinputされたときに、セミコロン区切りのSignature Phraseを生成するモデルを用いる。今回は[KPTimes daasetでpretrainingされたBART](https://huggingface.co/ankur310794/bart-base-keyphrase-generation-kpTimes)を用いた。KPTimesは、279kのニュース記事と、signature phraseのペアが存在するデータであり、本タスクに最適とのこと。
 
-## User Signature Selection
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+User Signature Selection
+
+<br>
+
+
+
+<br>
+
 ターゲットドキュメントdのSignature Phrases Z_dが与えられたとき、ユーザのreading History H_uに基づいて、top-kのuser signature phrasesを選択する。H_uはユーザが読んだニュースのヘッドラインの集合で表現される。あるSignature Phrase z_i ∈ Z_dが与えられたとき、(1)H_uをconcatしたテキストをベクトル化したものと、z_iのベクトルの内積でスコアを計算、あるいは(2) 個別のヘッドラインt_jを別々にエンコーディングし、内積の値が最大のものをスコアとする手法の2種類のエンコーディング方法を用いて、in-batch contrastive learningを用いてモデルを訓練する。つまり、正しいSignature Phraseとは距離が近く、誤ったSignature Phraseとは距離が遠くなるように学習をする。
+
+<br>
+
+
+
+<br>
+
 実際はユーザにとっての正解Signature Phraseは分からないが、今回は人工的に作成したユーザを用いるため、正解が分かる設定となっている。
 
-## Signature-Oriented Headline Generation
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Signature-Oriented Headline Generation
+
+<br>
+
+
+
+<br>
+
 ニュース記事d, user signature phrasesZ_d^uが与えられたとき、ヘッドラインを生成するモデルを訓練する。この時も、ユーザにとって正解のヘッドラインは分からないため、既存ニュースのヘッドラインが正解として用いられる。既存ニュースのヘッドラインが正解として用いられていても、そのヘッドラインがそのユーザにとっての正解となるように人工的にユーザが作成されているため、モデルの訓練ができる。モデルはBARTを用いた。
 
-# Dataset
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Dataset
+
+<br>
+
+
+
+<br>
+
 Newsroom, Gigawordコーパスを用いる。これらのコーパスに対して、それぞれ2種類のコーパスを作成する。
+
+<br>
+
+
+
+<br>
+
 1つは、Synthesized User Datasetで、これはUse Signature Selection modelの訓練と評価に用いる。もう一つはheadline generationデータセットで、こちらはheadline generationモデルの訓練に利用する。
 
-## Synthesized User Creation
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Synthesized User Creation
+
+<br>
+
+
+
+<br>
+
 実データがないので、実ユーザのreading historiesを模倣するように人工ユーザを作成する。具体的には、
+
+<br>
+
+
+
+<br>
+
 1. すべてのニュース記事のSignature Phrasesを同定する
+
+<br>
+
+
+
+<br>
+
 2. それぞれのSignature Phraseと、それを含むニュース記事をマッピングする
+
+<br>
+
+
+
+<br>
+
 3. ランダムにphraseのサブセットをサンプリングし、そのサブセットをある人工ユーザが興味を持つエリアとする。
+
+<br>
+
+
+
+<br>
+
 4. サブセット中のinterest phraseを含むニュース記事をランダムにサンプリングし、ユーザのreading historyとする
+
+<br>
+
+
+
+<br>
+
 train, dev, testセット、それぞれに対して上記操作を実施しユーザを作成するが、train, devはContrastive Learningを実現するために、user signature phrases (interest phrases)は1つのみとした（Softmaxがそうなっていないと訓練できないので）。一方、testセットは1~5の範囲でuser signature phrasesを選択した。これにより、サンプリングされる記事が多様化され、ユーザのreadinig historyが多様化することになる。基本的には、ユーザが興味のあるトピックが少ない方が、よりタスクとしては簡単になることが期待される。また、ヘッドラインを生成するときは、ユーザのsignature phraseを含む記事をランダムに選び、ヘッドラインを背衛星することとした。これは、relevantな記事でないとヘッドラインがそもそも生成できないからである。
 
-## Headline Generation
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Headline Generation
+
+<br>
+
+
+
+<br>
+
 ニュース記事の全てのsignature phraseを抽出し、それがgivenな時に、元のニュース記事のヘッドラインが生成できるようなBARTを訓練した。ニュース記事のtokenは512でtruncateした。平均して、10個のsignature phraseがニュース記事ごとに選択されており、ヘッドライン生成の多様さがうかがえる。user signature phraseそのものを用いて訓練はしていないが、そもそもこのようにGenericなデータで訓練しても、何らかのphraseがgivenな時に、それにバイアスがかかったヘッドラインを生成することができるので、user signature phrase selectionによって得られたphraseを用いてヘッドラインを生成することができる。
 
-# 評価
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+評価
+
+<br>
+
+
+
+<br>
+
 自動評価と人手評価をしている。
 
-## 自動評価
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+自動評価
+
+<br>
+
+
+
+<br>
+
 人手評価はコストがかかり、特に開発フェーズにおいては自動評価ができることが非常に重要となる。本研究では自動評価し方法を提案している。Headline-User DPR + SBERT, REC Scoreは、User Adaptation Metricsであり、Headline-Article DPR + SBERT, FactCCはArticle Loyalty Metricsである。
-### Relevance Metrics
+
+<br>
+
+
+
+<br>
+
+Relevance Metrics
+
+<br>
+
+
+
+<br>
+
 PretrainedなDense Passage Retrieval (DPR)モデルと、SentenceBERTを用いて、headline-user間、headline-article間の類似度を測定する。前者はヘッドラインがどれだけユーザに適応しているが、後者はヘッドラインが元記事に対してどれだけ忠実か（クリックベイトを防ぐために）に用いられる。前者は、ヘッドラインとuser signaturesに対して類似度を計算し、後者はヘッドラインと記事全文に対して類似度を計算する。user signatures, 記事全文をどのようにエンコードしたかは記述されていない。
-### Recommendation Score
+
+<br>
+
+
+
+<br>
+
+Recommendation Score
+
+<br>
+
+
+
+<br>
+
 ヘッドラインと、ユーザのreadinig historyが与えられたときに、ニュースを推薦するモデルを用いて、スコアを算出する。モデルとしては、MIND datsetを用いて学習したモデルを用いた。
-### Factual Consistency
+
+<br>
+
+
+
+<br>
+
+Factual Consistency
+
+<br>
+
+
+
+<br>
+
 pretrainedなFactCCモデルを用いて、ヘッドラインとニュース記事間のfactual consisency score を算出する。
-### Surface Overlap
+
+<br>
+
+
+
+<br>
+
+Surface Overlap
+
+<br>
+
+
+
+<br>
+
 オリジナルのヘッドラインと、生成されたヘッドラインのROUGE-L F1と、Extractive Coverage (ヘッドラインに含まれる単語のうち、ソースに含まれる単語の割合)を用いる。
-### 評価結果
+
+<br>
+
+
+
+<br>
+
+評価結果
+
+<br>
+
+
+
+<br>
+
 提案手法のうち、User Signature Selection modelをfinetuningしたものが最も性能が高かった。エンコード方法は、(2)のヒストリのタイトルとフレーズの最大スコアをとる方法が最も性能が高い。提案手法はUser Adaptationをしつつも、Article Loyaltyを保っている。このため、クリックベイトの防止につながる。また、Vanilla Humanは元記事のヘッドラインであり、Extracitve Coverageが低いため、より抽象的で、かつ元記事に対する忠実性が低いことがうかがえる。
 
-
-
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8)
+<br>
 
 
 
-## 人手評価
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+人手評価
+
+<br>
+
+
+
+<br>
+
 16人のevaluatorで評価。2260件のニュース記事を収集（113 topic）し、記事のヘッドラインと、対応するトピックを見せて、20個の興味に合致するヘッドラインを選択してもらった。これをユーザのinterest phraseとreading _historyとして扱う。そして、ユーザのinterest phraseを含むニュース記事のうち、12個をランダムに選択し、ヘッドラインを生成した。生成したヘッドラインに対して、
-1. Vanilla Human
-2. Vanilla System
-3. SP random (ランダムにsignature phraseを選ぶ手法)
-4. SP individual-N
-5. SP individual-F (User Signature Phraseを選択するモデルをfinetuningしたもの)
-の5種類を評価するよう依頼した。このとき、３つの観点から評価をした。
-1, User adaptation
-2. Headline appropriateness
-3. Text Quality
-結果は以下。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6af9f214-2af4-4fa3-8637-6b1858f0bb69)
-SP-individualがUser Adaptationで最も高い性能を獲得した。また、Vanilla Systemが最も高いHeadline appropriatenessを獲得した。しかしながら、後ほど分析した結果、Vanilla Systemでは、記事のメインポイントを押さえられていないような例があることが分かった（んーこれは正直他の手法でも同じだと思うから、ディフェンスとしては苦しいのでは）。
-また、Vanilla Humanが最も高いスコアを獲得しなかった。これは、オーバーにレトリックを用いていたり、一般的な人にはわからないようなタイトルになっているものがあるからであると考えられる。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e704d7b-6124-49b5-91c8-1f6b507b0c0a)
 
-# Ablation Study
+<br>
+
+
+
+<br>
+
+1. Vanilla Human
+
+<br>
+
+
+
+<br>
+
+2. Vanilla System
+
+<br>
+
+
+
+<br>
+
+3. SP random (ランダムにsignature phraseを選ぶ手法)
+
+<br>
+
+
+
+<br>
+
+4. SP individual-N
+
+<br>
+
+
+
+<br>
+
+5. SP individual-F (User Signature Phraseを選択するモデルをfinetuningしたもの)
+
+<br>
+
+
+
+<br>
+
+の5種類を評価するよう依頼した。このとき、３つの観点から評価をした。
+
+<br>
+
+
+
+<br>
+
+1, User adaptation
+
+<br>
+
+
+
+<br>
+
+2. Headline appropriateness
+
+<br>
+
+
+
+<br>
+
+3. Text Quality
+
+<br>
+
+
+
+<br>
+
+結果は以下。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6af9f214-2af4-4fa3-8637-6b1858f0bb69" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+SP-individualがUser Adaptationで最も高い性能を獲得した。また、Vanilla Systemが最も高いHeadline appropriatenessを獲得した。しかしながら、後ほど分析した結果、Vanilla Systemでは、記事のメインポイントを押さえられていないような例があることが分かった（んーこれは正直他の手法でも同じだと思うから、ディフェンスとしては苦しいのでは）。
+
+<br>
+
+
+
+<br>
+
+また、Vanilla Humanが最も高いスコアを獲得しなかった。これは、オーバーにレトリックを用いていたり、一般的な人にはわからないようなタイトルになっているものがあるからであると考えられる。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6e704d7b-6124-49b5-91c8-1f6b507b0c0a" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Ablation Study
+
+<br>
+
+
+
+<br>
+
 Signature Phrase selectionの性能を測定したところ以下の通りになり、finetuningした場合の性能が良かった。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a24fefb6-9028-4e58-9667-caa13a70af31)
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a24fefb6-9028-4e58-9667-caa13a70af31" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Headline Generationの性能に影響を与える要素としては、
+
+<br>
+
+
+
+<br>
+
 1. ユーザが興味のあるトピック数
+
+<br>
+
+
+
+<br>
+
 2. User signature phrasesの数
+
+<br>
+
+
+
+<br>
+
 がある。
+
+<br>
+
+
+
+<br>
+
 ユーザのInterest Phrasesが増えていけばいくほど、User Adaptationスコアは減少するが、Article Loyaltyは維持されたままである。このため、興味があるトピックが多ければ多いほど生成が難しいことがわかる。また、複数のuser signature phraseを用いると、factual errorを起こすことが分かった（Billgates, Zuckerbergの例を参照）。これは、モデルが本来はirrelevantなフレーズを用いてcoherentなヘッドラインを生成しようとしてしまうためである。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d28d904-3247-4593-bc1c-8b6e7090719b)
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d28d904-3247-4593-bc1c-8b6e7090719b" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ※interest phrases =&gt; gold user signatures という理解でよさそう。
+
+<br>
+
+
+
+<br>
+
 ※signature phrasesを複数用いるとfactual errorを起こすため、今回はk=1で実験していると思われる
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 GPT3にもヘッドラインを生成させてみたが、提案手法の方が性能が良かった（自動評価で）。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3e0852e1-f21a-47d6-b874-b7d3a42d7304)
-なぜPENS dataset #706 を利用しないで研究したのか？</span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/847933e1-deb2-4379-addb-6cdd65e29ee8" alt="image" loading="lazy"><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6af9f214-2af4-4fa3-8637-6b1858f0bb69" alt="image" loading="lazy"><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-05-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/647">Towards Personalized Review Summarization by Modeling Historical Reviews  from Customer and Product Separately, Xin Cheng+, N_A, arXiv23</a>
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3e0852e1-f21a-47d6-b874-b7d3a42d7304" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+なぜPENS dataset 706 を利用しないで研究したのか？</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<a class="button" href="articles/review.html">#review</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2023-05-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/647">Towards Personalized Review Summarization by Modeling Historical Reviews  from Customer and Product Separately, Xin Cheng+, N_A, arXiv'23</a>
 <span class="snippet"><span>Summary</span>レビュー要約は、Eコマースのウェブサイトにおいて製品レビューの主要なアイデアを要約することを目的としたタスクである。本研究では、評価情報を含む2種類の過去のレビューをグラフ推論モジュールと対比損失を用いて別々にモデル化するHHRRSを提案する。レビューの感情分類と要約を共同で行うマルチタスクフレームワークを採用し、4つのベンチマークデータセットでの徹底的な実験により、HHRRSが両方のタスクで優れた性能を発揮することが示された。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/LanguageModel.html">#LanguageModel</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a><br><span class="issue_date">Issue Date: 2023-05-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/706">PENS: A Dataset and Generic Framework for Personalized News Headline Generation, ACL21</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<a class="button" href="articles/PersonalizedHeadlineGeneration.html">#PersonalizedHeadlineGeneration</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2023-05-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/706">PENS: A Dataset and Generic Framework for Personalized News Headline Generation, ACL'21</a>
 <span class="snippet"><span>Summary</span>この論文では、ユーザーの興味とニュース本文に基づいて、ユーザー固有のタイトルを生成するパーソナライズされたニュース見出し生成の問題を解決するためのフレームワークを提案します。また、この問題のための大規模なデータセットであるPENSを公開し、ベンチマークスコアを示します。データセットはhttps://msnews.github.io/pens.htmlで入手可能です。</span>
-<span class="snippet"><span>Comment</span># 概要
+<span class="snippet"><span>Comment</span>概要
+
+<br>
+
+
+
+<br>
+
 ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。
 
-# データセット生成手順
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+データセット生成手順
+
+<br>
+
+
+
+<br>
+
 103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。
 
-# データセット統計量
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9)
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91)
+<br>
 
-# 手法概要
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+データセット統計量
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+手法概要
+
+<br>
+
+
+
+<br>
+
 Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。
-Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。
-User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936)
 
-# 訓練手法
+<br>
+
+
+
+<br>
+
+Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。
+
+<br>
+
+
+
+<br>
+
+User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+訓練手法
+
+<br>
+
+
+
+<br>
+
 まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、
+
+<br>
+
+
+
+<br>
+
 1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする
+
+<br>
+
+
+
+<br>
+
 2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする
+
+<br>
+
+
+
+<br>
+
 3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする
+
+<br>
+
+
+
+<br>
+
 とした。
+
+<br>
+
+
+
+<br>
+
 1,2,3の平均を最終的なRewardとする。
 
-# 実験結果
-Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f)
+<br>
 
-# Case Study
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+実験結果
+
+<br>
+
+
+
+<br>
+
+Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Case Study
+
+<br>
+
+
+
+<br>
+
 ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0)
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 </span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9" alt="image" loading="lazy">
 </div>
 <p><button onclick="showMore(0)">more</button></p>
-
 <div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/655">Transformer Reasoning Network for Personalized Review Summarization, Xu+, SIGIR21</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/review.html">#review</a>
+<span class="issue_date">Issue Date: 2023-05-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/655">Transformer Reasoning Network for Personalized Review Summarization, Xu+, SIGIR'21</a>
 <span class="snippet"><span>Comment</span>先行研究は、review summarizationにおいて生成されるsummaryは、過去にユーザが作成したsummaryのwriting styleやproductに非常に関係しているのに、これらを活用してこなかったので、活用しました（=personalized）という話っぽい</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-04-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/598">ニュース記事に対する談話構造と興味度のアノテーション ～ニュース対話システムのパーソナライズに向けて～, 高津+, 早稲田大学, 言語処理学会21</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-04-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/598">ニュース記事に対する談話構造と興味度のアノテーション ～ニュース対話システムのパーソナライズに向けて～, 高津+, 早稲田大学, 言語処理学会'21</a>
 <span class="snippet"><span>Comment</span>ニュース記事に対して談話構造および，ユーザのプロフィールと記事の話題・文に対するユーザの興味度を付与したデータセット。
+
+<br>
+
+
+
+<br>
+
 プロフィールとして以下を収集：
-- 性別
-- 年齢，
-- 住んでいる地域
-- 職種
-- 業種
-- ニュースを見る頻度，
-- ニュースをよくチェックする時間帯
-- 映像・音声・文字のうちニュースへの接触方法として多いものはどれか
-- ニュースを知る手段
-- ニュースを読む際使用している新聞やウェブサイト・アプリ
-- 有料でニュースを読んでいるか
-- 普段積極的に読む・見る・聞くニュースのジャンル
-- ニュースのジャンルに対する興味の程度，趣味．</span>
-<a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/595">談話構造制約付きパーソナライズド抽出型要約, 高津+, 早稲田大学, 言語処理学会21</a>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/656">A Unified Dual-view Model for Review Summarization and Sentiment  Classification with Inconsistency Loss, Hou Pong Chan+, N_A, arXiv20</a>
+
+<br>
+
+
+
+<br>
+
+・性別
+
+<br>
+
+
+
+<br>
+
+・年齢，
+
+<br>
+
+
+
+<br>
+
+・住んでいる地域
+
+<br>
+
+
+
+<br>
+
+・職種
+
+<br>
+
+
+
+<br>
+
+・業種
+
+<br>
+
+
+
+<br>
+
+・ニュースを見る頻度，
+
+<br>
+
+
+
+<br>
+
+・ニュースをよくチェックする時間帯
+
+<br>
+
+
+
+<br>
+
+・映像・音声・文字のうちニュースへの接触方法として多いものはどれか
+
+<br>
+
+
+
+<br>
+
+・ニュースを知る手段
+
+<br>
+
+
+
+<br>
+
+・ニュースを読む際使用している新聞やウェブサイト・アプリ
+
+<br>
+
+
+
+<br>
+
+・有料でニュースを読んでいるか
+
+<br>
+
+
+
+<br>
+
+・普段積極的に読む・見る・聞くニュースのジャンル
+
+<br>
+
+
+
+<br>
+
+・ニュースのジャンルに対する興味の程度，趣味．</span>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2023-04-30</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/595">談話構造制約付きパーソナライズド抽出型要約, 高津+, 早稲田大学, 言語処理学会'21</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/review.html">#review</a>
+<span class="issue_date">Issue Date: 2023-05-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/656">A Unified Dual-view Model for Review Summarization and Sentiment  Classification with Inconsistency Loss, Hou Pong Chan+, N_A, arXiv'20</a>
 <span class="snippet"><span>Summary</span>ユーザーレビューから要約と感情を取得するために、新しいデュアルビューモデルを提案。エンコーダーがレビューの文脈表現を学習し、サマリーデコーダーが要約を生成。ソースビュー感情分類器はレビューの感情ラベルを予測し、サマリービュー感情分類器は要約の感情ラベルを予測。不一致損失を導入して、2つの分類器の不一致を罰することで、デコーダーが一貫した感情傾向を持つ要約を生成し、2つの感情分類器がお互いから学ぶことができるようになる。4つの実世界データセットでの実験結果は、モデルの効果を示している。</span>
 <span class="snippet"><span>Comment</span>Review SummarizationとSentiment Classificationをjointで学習した研究。既存研究ではreviewのみからsentimentの情報を獲得する枠組みは存在したが、summaryの情報が活用できていなかった。
-#653 のratingをsentiment labelとして扱い、評価も同データを用いてROUGEで評価。
 
-![image](https://user-images.githubusercontent.com/12249301/236713791-7986bb89-2576-4daa-b01a-9af7e97dac51.png)
+<br>
+
+
+
+<br>
+
+653 のratingをsentiment labelとして扱い、評価も同データを用いてROUGEで評価。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236713791-7986bb89-2576-4daa-b01a-9af7e97dac51.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 実際に生成されたレビュー例がこちら。なんの疑いもなくamazon online review datasetを教師データとして使っているが、果たしてこれでいいんだろうか？
-論文冒頭のsummaryの例と、実際に生成された例を見ると、後者の方が非常に主観的な情報を含むのに対して、前者はより客観性が高いように思える。
-![image](https://user-images.githubusercontent.com/12249301/236714479-19772588-e226-4fe9-8850-13050fdc775a.png)
-しかし最初にこのデータセットを使ったのは #652 の方っぽい</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/Metrics.html">#Metrics</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/DataToTextGeneration.html">#DataToTextGeneration</a><a class="button" href="articles/ConceptToTextGeneration.html">#ConceptToTextGeneration</a><a class="button" href="articles/DialogueGeneration.html">#DialogueGeneration</a><a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a><br><span class="issue_date">Issue Date: 2021-06-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/367">NUBIA, EvalNLGEval20</a>
-<span class="snippet"><span>Comment</span>TextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。
-![image](https://user-images.githubusercontent.com/12249301/120425437-299d5c00-c3a9-11eb-9236-8bfdf494fa60.png)
 
-![image](https://user-images.githubusercontent.com/12249301/120425509-4e91cf00-c3a9-11eb-9666-dc1069cde3cc.png)
+<br>
+
+
+
+<br>
+
+論文冒頭のsummaryの例と、実際に生成された例を見ると、後者の方が非常に主観的な情報を含むのに対して、前者はより客観性が高いように思える。
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236714479-19772588-e226-4fe9-8850-13050fdc775a.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+しかし最初にこのデータセットを使ったのは 652 の方っぽい</span>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a>
+<a class="button" href="articles/Metrics.html">#Metrics</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/DataToTextGeneration.html">#DataToTextGeneration</a>
+<a class="button" href="articles/ConceptToTextGeneration.html">#ConceptToTextGeneration</a>
+<a class="button" href="articles/DialogueGeneration.html">#DialogueGeneration</a>
+<a class="button" href="articles/PersonalizedGeneration.html">#PersonalizedGeneration</a>
+<span class="issue_date">Issue Date: 2021-06-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/367">NUBIA, EvalNLGEval'20</a>
+<span class="snippet"><span>Comment</span>TextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/120425437-299d5c00-c3a9-11eb-9236-8bfdf494fa60.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/120425509-4e91cf00-c3a9-11eb-9666-dc1069cde3cc.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。意味的に同等の内容を述べた文間でのexample
-![image](https://user-images.githubusercontent.com/12249301/120425803-d37ce880-c3a9-11eb-938c-09747999cc7c.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/120425803-d37ce880-c3a9-11eb-938c-09747999cc7c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 BLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。</span>
-<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-05-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/664">Towards Personalized Review Summarization via User-Aware Sequence Network, Li+, AAAI19</a>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-05-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/664">Towards Personalized Review Summarization via User-Aware Sequence Network, Li+, AAAI'19</a>
 <span class="snippet"><span>Comment</span>同じレビューに対しても、異なるユーザは異なるSumamryを生成するよね、というところがモチベーションとなり、Personalized Review Summarizationを提案。初めてPersonalizationの問題について提案した研究。
-![image](https://user-images.githubusercontent.com/12249301/236725073-bdcc6939-0582-4860-a20c-664e779d7a10.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236725073-bdcc6939-0582-4860-a20c-664e779d7a10.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 user embeddingによってユーザ情報を埋め込む方法と、user vocabulary memoryによって、ユーザが好むvocabularyを積極的にsummaryに利用できるようなモジュールの2種類をモデルに導入している
-![image](https://user-images.githubusercontent.com/12249301/236726239-b5397c99-fcd9-4fde-8638-98ca44e23e15.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236726239-b5397c99-fcd9-4fde-8638-98ca44e23e15.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Trip advisorのレビューデータを収集。レビューのtitleをreference summaryとみなしてデータセット生成。ただタイトルを利用するだけだと、無意味なタイトルが多く含まれているでフィルタリングしている。
-![image](https://user-images.githubusercontent.com/12249301/236726405-2a6c6c7f-fb32-4e7b-92c0-2380fbd86946.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236726405-2a6c6c7f-fb32-4e7b-92c0-2380fbd86946.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Trip Advisorはクローリングを禁止していた気がするので、割とアウトなのでは。
+
+<br>
+
+
+
+<br>
+
 あと、各レビューをランダムにsplitしてtrain/dev/testを作成したと言っているが、本当にそれでいいの？user-stratifiedなsplitをした方が良いと思う。
 
-PGN #135 やlead-1と比較した結果、ROUGEの観点で高い性能を達成
-![image](https://user-images.githubusercontent.com/12249301/236726684-b85a20e7-0750-4d51-ad97-1603a9f944c5.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+PGN 135 やlead-1と比較した結果、ROUGEの観点で高い性能を達成
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236726684-b85a20e7-0750-4d51-ad97-1603a9f944c5.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 また人手評価として、ユーザのgold summaryに含まれるaspectと、generated summaryに含まれるaspectがどれだけ一致しているか、1000件のreviewとtest setからサンプリングして2人の学生にアノテーションしてもらった。結果的に提案手法が最もよかったが、アノテーションプロセスの具体性が薄すぎる。2人の学生のアノテーションのカッパ係数すら書かれていない。
-![image](https://user-images.githubusercontent.com/12249301/236727342-4548b5e6-ecda-4503-a628-6448a4bd39b7.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236727342-4548b5e6-ecda-4503-a628-6448a4bd39b7.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 case studyとしてあるユーザのレビュと生成例をのせている。userBの過去のレビューを見たら、room, locationに言及しているものが大半であり、このアスペクトをきちんと含められているよね、ということを主張している。
-![image](https://user-images.githubusercontent.com/12249301/236727590-8a4972d1-f700-494c-9046-9f86769117c3.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/236727590-8a4972d1-f700-494c-9046-9f86769117c3.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 </span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-05-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/652">A Hierarchical End-to-End Model for Jointly Improving Text Summarization  and Sentiment Classification, Shuming Ma+, N_A, arXiv18</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/review.html">#review</a>
+<span class="issue_date">Issue Date: 2023-05-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/652">A Hierarchical End-to-End Model for Jointly Improving Text Summarization  and Sentiment Classification, Shuming Ma+, N_A, arXiv'18</a>
 <span class="snippet"><span>Summary</span>テキスト要約と感情分類を共同学習するための階層的なエンドツーエンドモデルを提案し、感情分類ラベルをテキスト要約の出力の「要約」として扱う。提案モデルはAmazonオンラインレビューデータセットでの実験で、抽象的な要約と感情分類の両方で強力なベースラインシステムよりも優れた性能を発揮することが示された。</span>
-<span class="snippet"><span>Comment</span>review summarizationに初めてamazon online review data #653 使った研究？</span>
-<a class="button" href="articles/InteractivePersonalizedSummarization.html">#InteractivePersonalizedSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/IntegerLinearProgramming%20(ILP).html">#IntegerLinearProgramming (ILP)</a><a class="button" href="articles/ACL.html">#ACL</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7">Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL17, 2017.08</a>
-<span class="snippet"><span>Comment</span># 一言で言うと
+<span class="snippet"><span>Comment</span>review summarizationに初めてamazon online review data 653 使った研究？</span>
+<a class="button" href="articles/InteractivePersonalizedSummarization.html">#InteractivePersonalizedSummarization</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/IntegerLinearProgramming%20(ILP).html">#IntegerLinearProgramming (ILP)</a>
+<a class="button" href="articles/ACL.html">#ACL</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7">Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL'17, 2017.08</a>
+<span class="snippet"><span>Comment</span>一言で言うと
+
+<br>
+
+
+
+<br>
+
 ユーザとインタラクションしながら重要なコンセプトを決め、そのコンセプトが含まれるようにILPな手法で要約を生成するPDS手法。Interactive Personalized Summarizationと似ている（似ているが引用していない、引用した方がよいのでは）。
 
-# 手法
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+手法
+
+<br>
+
+
+
+<br>
+
 要約モデルは既存のMDS手法を採用。Concept-based ILP Summarization
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 フィードバックをユーザからもらう際は、要約を生成し、それをユーザに提示。提示した要約から重要なコンセプトをユーザに選択してもらう形式（ユーザが重要と判断したコンセプトには定数重みが与えられる）。
+
+<br>
+
+
+
+<br>
+
 ユーザに対して、τ回フィードバックをもらうまでは、フィードバックをもらっていないコンセプトの重要度が高くなるようにし、フィードバックをもらったコンセプトの重要度が低くなるように目的関数を調整する。これにより、まだフィードバックを受けていないコンセプトが多く含まれる要約が生成されるため、これをユーザに提示することでユーザのフィードバックを得る。τ回を超えたら、ユーザのフィードバックから決まったweightが最大となるように目的関数を修正する。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ユーザからコンセプトのフィードバックを受ける際は、効率的にフィードバックを受けられると良い（最小のインタラクションで）。そこで、Active Learningを導入する。コンセプトの重要度の不確実性をSVMで判定し、不確実性が高いコンセプトを優先的に含むように目的関数を修正する手法（AL）、SVMで重要度が高いと推定されたコンセプトを優先的に要約に含むように目的関数を修正する手法（AL+）を提案している。
 
-# 評価
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+評価
+
+<br>
+
+
+
+<br>
+
 oracle-based approachというものを使っている。要は、要約をシステムが提示しリファレンスと被っているコンセプトはユーザから重要だとフィードバックがあったコンセプトだとみなすというもの。
+
+<br>
+
+
+
+<br>
+
 評価結果を見ると、ベースラインのMDSと比べてupper bound近くまでROUGEスコアが上がっている。フィードバックをもらうためのイテレーションは最大で１０回に絞っている模様（これ以上ユーザとインタラクションするのは非現実的）。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 実際にユーザがシステムを使用する場合のコンテキストに沿った評価になっていないと思う。
+
+<br>
+
+
+
+<br>
+
 この評価で示せているのは、ReferenceSummary中に含まれる単語にバイアスをかけて要約を生成していくと、ReferenceSummaryと同様な要約が最終的に作れます、ということと、このときPool-basedなActiveLearningを使うと、より少ないインタラクションでこれが実現できますということ。
+
+<br>
+
+
+
+<br>
+
 これを示すのは別に良いと思うのだが、feedbackをReferenceSummaryから与えるのは少し現実から離れすぎている気が。たとえばユーザが新しいことを学ぶときは、ある時は一つのことを深堀し、そこからさらに浅いところに戻って別のところを深堀するみたいなプロセスをする気がするが、この深堀フェーズなどはReferenceSummaryからのフィードバックからでは再現できないのでは。
 
-# 所感
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+所感
+
+<br>
+
+
+
+<br>
+
 評価が甘いと感じる。十分なサイズのサンプルを得るのは厳しいからorable-based approachとりましたと書いてあるが、なんらかの人手評価もあったほうが良いと思う。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ユーザに数百単語ものフィードバックをもらうというのはあまり現時的ではない気が。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 oracle-based approachでユーザのフィードバックをシミュレーションしているが、oracleの要約は、人がそのドキュメントクラスタの内容を完璧に理解した上で要約しているものなので、これを評価に使うのも実際のコンテキストと違うと思う。実際にユーザがシステムを使うときは、ドキュメントクラスタの内容なんてなんも知らないわけで、そのユーザからもらえるフィードバックをoracle-based approachでシミュレーションするのは無理がある。仮に、ドキュメントクラスタの内容を完璧に理解しているユーザのフィードバックをシミュレーションするというのなら、わかる。が、そういうユーザのために要約作って提示したいわけではないはず。</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-05-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/650">Context-enhanced personalized social summarization, Po+, COLING12, 18</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-05-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/650">Context-enhanced personalized social summarization, Po+, COLING'12, 18</a>
 <span class="snippet"><span>Comment</span>ざっくり言うと、ソーシャルタギングシステムにおいて、ユーザ uと類似したユーザのタグ付け情報と、原文書d _と同じトピックに属する文書をそれぞれ考慮することによって、ユーザのinterestに関する情報（と原文書のinformativenessに関する情報）を拡張し、これらの情報を活用して、全てのクラスタリングしたドキュメントの中で重要文をランキングした上で、対象文書に対するsentenceのみを冗長性がないように抽出することで、Personalized_ Summarizationしましょう、という話</span>
-<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/InteractivePersonalizedSummarization.html">#InteractivePersonalizedSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1">Summarize What You Are Interested In: An Optimization Framework for Interactive Personalized Summarization, Yan+, EMNLP11, 2011.07</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34400733-97c86614-ebd7-11e7-9fe9-a6b36c726a21.png)
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/InteractivePersonalizedSummarization.html">#InteractivePersonalizedSummarization</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1">Summarize What You Are Interested In: An Optimization Framework for Interactive Personalized Summarization, Yan+, EMNLP'11, 2011.07</a>
+<span class="snippet"><span>Comment</span><img src="https://user-images.githubusercontent.com/12249301/34400733-97c86614-ebd7-11e7-9fe9-a6b36c726a21.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ユーザとシステムがインタラクションしながら個人向けの要約を生成するタスク、InteractivePersonalizedSummarizationを提案。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ユーザはテキスト中のsentenceをクリックすることで、システムに知りたい情報のフィードバックを送ることができる。このとき、ユーザがsentenceをクリックする量はたかがしれているので、click smoothingと呼ばれる手法を提案し、sparseにならないようにしている。click smoothingは、ユーザがクリックしたsentenceに含まれる単語？等を含む別のsentence等も擬似的にclickされたとみなす手法。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 4つのイベント（Influenza A, BP Oil Spill, Haiti Earthquake, Jackson Death）に関する、数千記事のニュースストーリーを収集し（10k〜100k程度のsentence）、評価に活用。収集したニュースサイト（BBC, Fox News, Xinhua, MSNBC, CNN, Guardian, ABC, NEwYorkTimes, Reuters, Washington Post）には、各イベントに対する人手で作成されたReference Summaryがあるのでそれを活用。
+
+<br>
+
+
+
+<br>
+
 objectiveな評価としてROUGE、subjectiveな評価として3人のevaluatorに5scaleで要約の良さを評価してもらった。
 
-![image](https://user-images.githubusercontent.com/12249301/34400727-8c8ab022-ebd7-11e7-85df-c238fd2255de.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34400727-8c8ab022-ebd7-11e7-85df-c238fd2255de.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 結論としては、ROUGEはGenericなMDSモデルに勝てないが、subjectiveな評価においてベースラインを上回る結果に。ReferenceはGenericに生成されているため、この結果を受けてPersonalizationの必要性を説いている。
-![image](https://user-images.githubusercontent.com/12249301/34400721-82d1bb8e-ebd7-11e7-83d2-697ac61eb38a.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34400721-82d1bb8e-ebd7-11e7-83d2-697ac61eb38a.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 また、提案手法のモデルにおいて、Genericなモデルの影響を強くする（Personalizedなハイパーパラメータを小さくする）と、ユーザはシステムとあまりインタラクションせずに終わってしまうのに対し、Personalizedな要素を強くすると、よりたくさんクリックをし、結果的にシステムがより多く要約を生成しなおすという結果も示している。
 
-![image](https://user-images.githubusercontent.com/12249301/34400718-7b9a4912-ebd7-11e7-83cf-aba826a41d34.png)</span>
-<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><a class="button" href="articles/GraphBased.html">#GraphBased</a><a class="button" href="articles/PACLIC.html">#PACLIC</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4">Collaborative Summarization: When Collaborative Filtering Meets Document Summarization, Qu+, PACLIC09, 2009.12</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34400963-26dc2ee2-ebda-11e7-8170-2aa5fcc701c1.png)
+<br>
 
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34400718-7b9a4912-ebd7-11e7-83cf-aba826a41d34.png" alt="image" loading="lazy"></span>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
+<a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a>
+<a class="button" href="articles/GraphBased.html">#GraphBased</a>
+<a class="button" href="articles/PACLIC.html">#PACLIC</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4">Collaborative Summarization: When Collaborative Filtering Meets Document Summarization, Qu+, PACLIC'09, 2009.12</a>
+<span class="snippet"><span>Comment</span><img src="https://user-images.githubusercontent.com/12249301/34400963-26dc2ee2-ebda-11e7-8170-2aa5fcc701c1.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Collaborative Filteringと要約を組み合わせる手法を提案した最初の論文と思われる。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ソーシャルブックマークのデータから作成される、ユーザ・アイテム・タグのTripartite Graphと、ドキュメントのsentenceで構築されるGraphをのノード間にedgeを張り、co-rankingする手法を提案している。
 
-![image](https://user-images.githubusercontent.com/12249301/34400975-4ca118fe-ebda-11e7-9e6f-0bf1d12ccfc5.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34400975-4ca118fe-ebda-11e7-9e6f-0bf1d12ccfc5.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 評価
+
+<br>
+
 100個のEnglish wikipedia記事をDLし、文書要約のセットとした。
+
+<br>
+
 その上で、5000件のwikipedia記事に対する1084ユーザのタギングデータをdelicious.comから収集し、合計で8396の異なりタグを得た。
+
+<br>
+
 10人のdeliciousのアクティブユーザの協力を得て、100記事に対するtop5のsentenceを抽出してもらった。ROUGE1で評価。</span>
-<a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Search.html">#Search</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2">Incremental Personalised Summarisation with Novelty Detection, Campana+, FQAS09, 2009.10</a>
-<a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/24">Personalized PageRank based Multi-document summarization, Liu+, WSCS 08, 2008.07</a>
+<a class="button" href="articles/Single.html">#Single</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Search.html">#Search</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2">Incremental Personalised Summarisation with Novelty Detection, Campana+, FQAS'09, 2009.10</a>
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/24">Personalized PageRank based Multi-document summarization, Liu+, [WSCS '08], 2008.07</a>
 <span class="snippet"><span>Comment</span>・クエリがあるのが前提
+
+<br>
+
+
+
+<br>
+
 ・基本的にPersonalized PageRankの事前分布を求めて，PageRankアルゴリズムを適用する
+
+<br>
+
+
+
+<br>
+
 ・文のsalienceを求めるモデルと（パラグラフ，パラグラフ内のポジション，statementなのかdialogなのか，文の長さ），クエリとの関連性をはかるrelevance model（クエリとクエリのnarrativeに含まれる固有表現が文内にどれだけ含まれているか）を用いて，Personalized PageRankの事前分布を決定する
+
+<br>
+
+
+
+<br>
+
 ・評価した結果，DUC2007のtop1とtop2のシステムの間のROUGEスコアを獲得</span>
-<a class="button" href="articles/Analysis.html">#Analysis</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6">Aspect-Based Personalized Text Summarization, Berkovsky+（Tim先生のグループ）, AH2008, 2008.07</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34401031-b72623e0-ebda-11e7-9da2-6ce16b630f47.png)
+<a class="button" href="articles/Analysis.html">#Analysis</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6">Aspect-Based Personalized Text Summarization, Berkovsky+（Tim先生のグループ）, AH'2008, 2008.07</a>
+<span class="snippet"><span>Comment</span><img src="https://user-images.githubusercontent.com/12249301/34401031-b72623e0-ebda-11e7-9da2-6ce16b630f47.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Aspect-basedなPDSに関して調査した研究。
+
+<br>
+
+
+
+<br>
+
 たとえば、Wikipediaのクジラに関するページでは、biological taxonomy, physical dimensions, popular cultureのように、様々なアスペクトからテキストが記述されている。ユーザモデルは各アスペクトに対する嗜好の度合いで表され、それに従い生成される要約に含まれる各種アスペクトに関する情報の量が変化する。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 UserStudyの結果、アスペクトベースなユーザモデルとよりfitした、擬似的なユーザモデルから生成された要約の方が、ユーザの要約に対するratingが上昇していくことを示した。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 また、要約の圧縮率に応じて、ユーザのratingが変化し、originalの長さ＞長めの要約＞短い要約の順にratingが有意に高かった。要約が長すぎても、あるいは短すぎてもあまり良い評価は得られない（しかしながら、長すぎる要約は実はそこまで嫌いではないことをratingは示唆している）。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Genericな要約とPersonalizedな要約のfaitufulnessをスコアリングしてもらった結果、Genericな要約の方が若干高いスコアに。しかしながら有意差はない。実際、平均して83%のsentenceはGenericとPersonalizedでoverlapしている。faitufulnessの観点から、GenericとPersonalizedな要約の間に有意差はないことを示した。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 museum等で応用することを検討</span>
-<a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/WI.html">#WI</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3">Generating Personalized Summaries Using Publicly Available Web Documents, Kumar+, WI-IAT08, 2008.12</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/WI.html">#WI</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3">Generating Personalized Summaries Using Publicly Available Web Documents, Kumar+, WI-IAT'08, 2008.12</a>
 <span class="snippet"><span>Comment</span>評価
+
+<br>
+
 5人の研究者による人手評価。
+
+<br>
+
 25種類の異なるトピックが選択され、各トピックには5-10の記事が紐づいている。
+
+<br>
+
 generic,personalizedな要約を提示しrelevanceを判定してもらった。具体的には、informativenessを5段階評価。
+
+<br>
+
 データ非公開、ニュース記事を使ったとしか記述されておらず再現不可</span>
-<a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-05-13</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/680">The Identification of Important Concepts in Highly Structured Technical Papers, ACL-SIGIR93</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2023-05-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/680">The Identification of Important Concepts in Highly Structured Technical Papers, ACL-SIGIR'93</a>
 <span class="snippet"><span>Comment</span>ユーザは自分が興味があるpartをsummary evaluationにおいて選択する傾向にある、ということを示した研究</span>
-<a class="button" href="articles/Article.html">#Article</a><br><span class="issue_date">Issue Date: 2024-05-30</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<span class="issue_date">Issue Date: 2024-05-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1319">The Identification of Important Concepts in Highly Structured Technical Papers, Paice+, 1993</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2024-05-30</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2024-05-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1318">Using and Evaluating User Directed Summaries to Improve Information Access</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-05-05</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-05-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/651">Personalized news filtering and summarization on the web, Xindong+, 2011 IEEE 23rd International Conference on Tools with Artificial Intelligence, 29</a>
 <span class="snippet"><span>Comment</span>summarizationではなく、keyword extractionの話だった</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/review.html">#review</a><br><span class="issue_date">Issue Date: 2023-05-05</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<a class="button" href="articles/review.html">#review</a>
+<span class="issue_date">Issue Date: 2023-05-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/648">Personalized summarization of customer reviews based on user’s browsing history, Zehra+, International Journal on Computer Science and Information Systems 8.2, 12</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-05-05</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Education.html">#Education</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-05-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/646">Towards personalized summaries in spanish based on learning styles theory, Uriel+, Res. Comput. Sci. 148.5, 1</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-05-05</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Education.html">#Education</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-05-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/645">Personalized Text Content Summarizer for Mobile Learning: An Automatic Text Summarization System with Relevance Based Language Model, Guangbing+, IEEE Fourth International Conference on Technology for Education, 2012, 22</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Personalization.html">#Personalization</a><br><span class="issue_date">Issue Date: 2023-05-05</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-05-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/644">Personalized text summarization based on important terms identification, Robert+, 23rd International Workshop on Database and Expert Systems Applications, 2012, 43</a>
 <span class="snippet"><span>Comment</span>（あまりしっかりよめていない）
+
+<br>
+
+
+
+<br>
+
 学習者のrevision（復習？）のための教材の要約手法の提案。personalizationするために、さまざまなRaterを定義し、Raterからの単語wに対する評価を集約し、最終的にuser-specificなsentence-term matrixを構築。 SVDを適用することで要約を作成する。personalizedな重み付けに活用されているものとしては、あるコンセプトiに対する学習者の習熟度に基づく重み付けや、学習者の教材に対するannnotationに関する情報などが、単語の重み付けに活用されている。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-30</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2023-04-30</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/599">Personalized Extractive Summarization for a News Dialogue System, Takatsu+, SLT, 2021, 4</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2023-04-07</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2023-04-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/516">User-centred versus system-centred evaluation of a personalization system, Diaz+, Information Processing &amp; management, 2008</a>
-<span class="snippet"><span>Comment</span># Introduction
+<span class="snippet"><span>Comment</span>Introduction
+
+<br>
+
+
+
+<br>
+
 本研究では、web contentsのPersonalizationシステムにおいて、user-centered evaluationとsystem-centered evaluationの評価の問題を議論している。目的としては両者の評価を組み合わせることで、それぞれを個別に評価するよりも、よりinsightfulな見解を得ることができることを述べる。
 
-- system-oriented evaluationの例: Text Retrieval Conference (TREC)：
-  - クエリごとに専門家がドキュメントコレクションの中から、どれだけ該当文書が合致しているかをラベル付する
-  - =&gt; ユーザごとの実際のrelevance judgmentを用いるのではなく、専門家によるラベルを用いて評価する
-  - =&gt; クエリに関連づけられた文書の適合性は、クエリが実行されたコンテキストに依存するため、専門家によるrelevance judgmentは現実に対する近似として捉えられる
-  - =&gt; ユーザの参加は必須ではない
-- user centered evaluation
-  - ユーザの意見を収集し、ユーザのシステムに対する印象を手に入れようとするuser-orientedも実施されている
-  - qualitative, quantitative (recall and precision)の両方を収集することを目的としている場合があり、ユーザの参加が必須</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/26">Personalized Multi-Document Summarization using N-Gram Topic Model Fusion, Hennig+, SPIM, 2010, 2010.05</a>
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+・system-oriented evaluationの例: Text Retrieval Conference (TREC)：
+
+<br>
+
+
+
+<br>
+
+  ・クエリごとに専門家がドキュメントコレクションの中から、どれだけ該当文書が合致しているかをラベル付する
+
+<br>
+
+
+
+<br>
+
+  ・=&gt; ユーザごとの実際のrelevance judgmentを用いるのではなく、専門家によるラベルを用いて評価する
+
+<br>
+
+
+
+<br>
+
+  ・=&gt; クエリに関連づけられた文書の適合性は、クエリが実行されたコンテキストに依存するため、専門家によるrelevance judgmentは現実に対する近似として捉えられる
+
+<br>
+
+
+
+<br>
+
+  ・=&gt; ユーザの参加は必須ではない
+
+<br>
+
+
+
+<br>
+
+・user centered evaluation
+
+<br>
+
+
+
+<br>
+
+  ・ユーザの意見を収集し、ユーザのシステムに対する印象を手に入れようとするuser-orientedも実施されている
+
+<br>
+
+
+
+<br>
+
+  ・qualitative, quantitative (recall and precision)の両方を収集することを目的としている場合があり、ユーザの参加が必須</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/26">Personalized Multi-Document Summarization using N-Gram Topic Model Fusion, Hennig+, [SPIM, 2010], 2010.05</a>
 <span class="snippet"><span>Comment</span>・unigramの共起だけでなく，bigramの共起も考慮したPLSIモデルを提案し，jointで学習．与えられたクエリやnarrativeなどとsentenceの類似度（latent spaceで計算）を計算し重要文を決定。
+
+<br>
+
+
+
+<br>
+
 ・user-modelを使ったPersonalizationはしていない．</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Single.html">#Single</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/25">Segmentation Based, Personalized Web Page Summarization Model,  Journal of advances in information technology, vol. 3, no.3, 2012, 2012.08</a>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Single.html">#Single</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/25">Segmentation Based, Personalized Web Page Summarization Model,  [Journal of advances in information technology, vol. 3, no.3, 2012], 2012.08</a>
 <span class="snippet"><span>Comment</span>・Single-document
+
+<br>
+
+
+
+<br>
+
 ・ページ内をセグメントに分割し，どのセグメントを要約に含めるか選択する問題
+
+<br>
+
+
+
+<br>
+
 ・要約に含めるセグメントは4つのfactor（segment weight, luan’s significance factor, profile keywords, compression ratio）から決まる．基本的には，ページ内の高頻度語（stop-wordは除く）と，profile keywordsを多く含むようなセグメントが要約に含まれるように選択される．図の場合はAlt要素，リンクはアンカテキストなどから単語を取得しセグメントの重要度に反映する．</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/23">Personalized Multi-document Summarization in Information Retrieval, Yang+, Machine Learning and Cybernetics, 08, 2008.07</a>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/23">Personalized Multi-document Summarization in Information Retrieval, Yang+, [Machine Learning and Cybernetics, 08], 2008.07</a>
 <span class="snippet"><span>Comment</span>・検索結果に含まれるページのmulti-document summarizationを行う．クエリとsentenceの単語のoverlap, sentenceの重要度を
-　Affinity-Graphから求め，両者を結合しスコアリング．MMR #243 likeな手法で冗長性を排除し要約を生成する．
+
+<br>
+
+
+
+<br>
+
+　Affinity-Graphから求め，両者を結合しスコアリング．MMR 243 likeな手法で冗長性を排除し要約を生成する．
+
+<br>
+
+
+
+<br>
+
 ・4人のユーザに，実際にシステムを使ってもらい，5-scaleで要約の良さを評価（ベースラインなし）．relevance, importance, 　
+
+<br>
+
+
+
+<br>
+
 　usefulness, complement of summaryの視点からそれぞれを5-scaleでrating．それぞれのユーザは，各トピックごとのドキュメントに
+
+<br>
+
+
+
+<br>
+
 　全て目を通してもらい，その後に要約を読ませる．</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Multi.html">#Multi</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Search.html">#Search</a><a class="button" href="articles/NAACL.html">#NAACL</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/21">WebInEssence: A Personalized Web-Based Multi-Document Summarization and Recommendation System, Radev+, NAACL, 01, 2001.06</a>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Search.html">#Search</a>
+<a class="button" href="articles/NAACL.html">#NAACL</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/21">WebInEssence: A Personalized Web-Based Multi-Document Summarization and Recommendation System, Radev+, [NAACL, 01], 2001.06</a>
 <span class="snippet"><span>Comment</span>・ドキュメントはオフラインでクラスタリングされており，各クラスタごとにmulti-document summarizationを行うことで，
+
+<br>
+
+
+
+<br>
+
 ユーザが最も興味のあるクラスタを同定することに役立てる．あるいは検索結果のページのドキュメントの要約を行う．
+
+<br>
+
+
+
+<br>
+
 要約した結果には，extractした文の元URLなどが付与されている．
+
+<br>
+
+
+
+<br>
+
 ・Personalizationをかけるためには，ユーザがドキュメントを選択し，タイトル・ボディなどに定数の重みをかけて，その情報を要約に使う．
+
+<br>
+
+
+
+<br>
+
 ・特に評価していない．システムのoutputを示しただけ．</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/ACL.html">#ACL</a><a class="button" href="articles/COLING.html">#COLING</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/18">Automatic Text Summarization based on the Global Document Annotation, COLING-ACL, Nagao+, 1998, 1998.08</a>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/ACL.html">#ACL</a>
+<a class="button" href="articles/COLING.html">#COLING</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/18">Automatic Text Summarization based on the Global Document Annotation, COLING-ACL, [Nagao+, 1998], 1998.08</a>
 <span class="snippet"><span>Comment</span>Personalized summarizationの評価はしていない。提案のみ。以下の3種類の手法を提案
-- keyword-based customization
-  - 関心のあるキーワードをユーザが入力し、コーパスやwordnet等の共起関係から関連語を取得し要約に利用する
-- 文書の要素をinteractiveに選択することによる手法
-  - 文書中の関心のある要素（e.g. 単語、段落等）
-- browsing historyベースの手法
-  - ユーザのbrowsing historyのドキュメントから、yahooディレクトリ等からカテゴリ情報を取得し、また、トピック情報も取得し（要約技術を活用するとのこと）特徴量ベクトルを作成
-  - ユーザがアクセスするたびに特徴ベクトルが更新されることを想定している？</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/NAACL.html">#NAACL</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/17">A Study for Documents Summarization based on Personal Annotation, HLT-NAACL-DUC’03, Zhang+, 2003, 2003.05</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34402434-d521f19e-ebe4-11e7-82cf-2f3452fa4014.png)
-![image](https://user-images.githubusercontent.com/12249301/34402437-dbd6db9e-ebe4-11e7-8954-3a0754929ad3.png)
-![image](https://user-images.githubusercontent.com/12249301/34402439-e13bff9c-ebe4-11e7-97b6-dfeb97f7e6af.png)
-![image](https://user-images.githubusercontent.com/12249301/34402446-e8578e2c-ebe4-11e7-970a-f9db5ff0c548.png)
-![image](https://user-images.githubusercontent.com/12249301/34402454-f0c8867e-ebe4-11e7-9c4a-64a727388402.png)
-![image](https://user-images.githubusercontent.com/12249301/34402465-fa26e788-ebe4-11e7-82cd-80df4eb5e2b5.png)
+
+<br>
+
+
+
+<br>
+
+・keyword-based customization
+
+<br>
+
+
+
+<br>
+
+  ・関心のあるキーワードをユーザが入力し、コーパスやwordnet等の共起関係から関連語を取得し要約に利用する
+
+<br>
+
+
+
+<br>
+
+・文書の要素をinteractiveに選択することによる手法
+
+<br>
+
+
+
+<br>
+
+  ・文書中の関心のある要素（e.g. 単語、段落等）
+
+<br>
+
+
+
+<br>
+
+・browsing historyベースの手法
+
+<br>
+
+
+
+<br>
+
+  ・ユーザのbrowsing historyのドキュメントから、yahooディレクトリ等からカテゴリ情報を取得し、また、トピック情報も取得し（要約技術を活用するとのこと）特徴量ベクトルを作成
+
+<br>
+
+
+
+<br>
+
+  ・ユーザがアクセスするたびに特徴ベクトルが更新されることを想定している？</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/NAACL.html">#NAACL</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/17">A Study for Documents Summarization based on Personal Annotation, HLT-NAACL-DUC’03, [Zhang+, 2003], 2003.05</a>
+<span class="snippet"><span>Comment</span><img src="https://user-images.githubusercontent.com/12249301/34402434-d521f19e-ebe4-11e7-82cf-2f3452fa4014.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34402437-dbd6db9e-ebe4-11e7-8954-3a0754929ad3.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34402439-e13bff9c-ebe4-11e7-97b6-dfeb97f7e6af.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34402446-e8578e2c-ebe4-11e7-970a-f9db5ff0c548.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34402454-f0c8867e-ebe4-11e7-9c4a-64a727388402.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/34402465-fa26e788-ebe4-11e7-82cd-80df4eb5e2b5.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 重要論文だと思われる。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/16">Automatic Personalized Summarization using Non-negative Matrix Factorization and Relevance Measure, IWSCA, Park+, 2008, 2008.07</a>
-<span class="snippet"><span>Comment</span>#15 と同様</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/15">Personalized Text Summarization using NMF and Cluster Refinement, ICTC, Park+, 2011, 2011.09</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34402356-5275f894-ebe4-11e7-93d7-2a3781a74b94.png)
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/16">Automatic Personalized Summarization using Non-negative Matrix Factorization and Relevance Measure, IWSCA, [Park+, 2008], 2008.07</a>
+<span class="snippet"><span>Comment</span>15 と同様</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/15">Personalized Text Summarization using NMF and Cluster Refinement, ICTC, [Park+, 2011], 2011.09</a>
+<span class="snippet"><span>Comment</span><img src="https://user-images.githubusercontent.com/12249301/34402356-5275f894-ebe4-11e7-93d7-2a3781a74b94.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 </span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/PRICAI.html">#PRICAI</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/14">Personalized Summarization Agent Using Non-negative Matrix Factorization, PRICAI, Park, 2008, 2008.12</a>
-<span class="snippet"><span>Comment</span>![image](https://user-images.githubusercontent.com/12249301/34402291-fb66cb96-ebe3-11e7-9635-790be0cf8b5d.png)
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/PRICAI.html">#PRICAI</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/14">Personalized Summarization Agent Using Non-negative Matrix Factorization, PRICAI, [Park, 2008], 2008.12</a>
+<span class="snippet"><span>Comment</span><img src="https://user-images.githubusercontent.com/12249301/34402291-fb66cb96-ebe3-11e7-9635-790be0cf8b5d.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 </span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2017-12-28</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/8">User-model based personalized summarization, Diaz+, Information Processing and Management 2007.11</a>
 <span class="snippet"><span>Comment</span>PDSの先駆けとなった重要論文。必ずreferすべき。</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
@@ -1395,32 +3409,32 @@ generic,personalizedな要約を提示しrelevanceを判定してもらった。
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Snippets.html" title="Snippetsに関する論文・技術記事メモの一覧">
-            Snippetsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Speech.html" title="Speechに関する論文・技術記事メモの一覧">
+            Speechに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TheoryOfMind.html" title="TheoryOfMindに関する論文・技術記事メモの一覧">
-            TheoryOfMindに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Pruning.html" title="Pruningに関する論文・技術記事メモの一覧">
+            Pruningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Explanation.html" title="Explanationに関する論文・技術記事メモの一覧">
-            Explanationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/MoE(Mixture-of-Experts).html" title="MoE(Mixture-of-Experts)に関する論文・技術記事メモの一覧">
+            MoE(Mixture-of-Experts)に関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DPO.html" title="DPOに関する論文・技術記事メモの一覧">
-            DPOに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/PRICAI.html" title="PRICAIに関する論文・技術記事メモの一覧">
+            PRICAIに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

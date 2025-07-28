@@ -12,17 +12,17 @@
 <meta property="og:title" content="AdaptiveLearningに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="AdaptiveLearning #NaturalLanguageGeneration#NLP#Education#KnowledgeTracing#Personalization#QuestionGenerationIssue Date: 2023-07-14 Adaptive and Personalized Exercise Generation for Online Language Learning, ACL23 Summary本研究では、オンライン言語学習のための適応的な演習生成の新しいタスクを研究しました。学習履歴から学生の知識状態を推定し、その状態に基づいて個別化された演習文を生成するモデルを提案しました。実データを用いた実験結果から、学生の状態に応じた演習を生成できることを示しました。さらに、教育アプリケーションでの利用方法についても議論し、学習の効率化を促進できる可能性を示しました。 CommentKnowledge Tracingで推定された習熟度に基づいて、エクササイズを自動生成する研究。KTとNLGが組み合わさっており、非常におもしろい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959) #Survey#Pocket#EducationalDataMining#KnowledgeTracingIssue Date: 2022-08-02 Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, ACM Computing Surveys23 Summary人間の教育における知識移転の重要性を背景に、オンライン教育における知識追跡（KT）の必要性が高まっている。本論文では、KTに関する包括的なレビューを行い、初期の手法から最新の深層学習技術までを網羅し、モデルの理論やデータセットの特性を強調する。また、関連手法のモデリングの違いを明確にし、KT文献の研究ギャップや今後の方向性についても議論する。 #NeuralNetwork#EducationalDataMining#KnowledgeTracingIssue Date: 2022-08-26 Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22 Comment超重要論文。しっかり読むべき# 一言で言うと KTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中で企業が買収された経緯もあり、古いコンテンツと新しいコンテンツの間でスキルタグのマッピングの間で、矛盾や一貫性がないものができあがってしまった（複数の異なるチームがコンテンツの提供やスキルのタグ付けを行なった結果）。このような例はレアケースかもしれないが、問題とスキルタグが異なるチームによって開発されるということは珍しいことではないし、現代のオンライン学習システムの多くは、さまざまな教科書のデータを統合し、長年にわたってコンテンツ作成チームのメンバーを変更し、複数の州の基準や内部コンテンツスキーマに従ってコンテンツにタグをづけをしているので、少なからずこういった問題（i.e. 一貫性がなく、矛盾をかかえたitem-skill mapping）を抱えている。 こうした中で、NNを用いたモデルを用いることで、unreliableなKCモデルを用いるくらいならば、KCモデルを用いない方が正答率予測が高い精度で実施できることを示した。これは少なくとも、生徒の問題に対する将来のパフォーマンスを予測する問題に関して言えば、既存のアプリケーションにおいて、KCモデルを構築するステップを回避できる可能性を示唆している。 # モチベーション Cognitive Tutorのようなシステムは、もともとKTを利用するために設計されているシステムだったが、多くのreal-worldの学習システムはアダプティブラーニングやKTを念頭に置いて作られたものではない。そういったシステムでアダプティブな機能を追加するといった事例が増えてきている。こういったシステムが、もともとKTを実施することを念頭するために作られたシステムとの違いとして、問題とスキルのマッピング方法にある。 最初から KT を使用するように設計されたシステムは、最初にどのスキルを含めるかを選択し、次にそれらのスキルに合わせたアイテムを開発する。 一方、KTを使用するために改良をする場合、最初にアイテムが作成され、次にアイテムにスキルのラベルが付けられる。 既存のアイテムにスキルのラベルを付けるのは、スキルの新しいアイテムを作成するよりもはるかに困難である。 多くの場合、アイテムは複数の著者によって時間をかけて開発されたものであるか、異なる教科書などの異なる元のソースからのものである。この異種のコンテンツ (場合によっては数万のアイテム) を一連のスキルにマッピングすることは、非常に困難な作業になる可能性がある。 多くの場合、アイテムは政府のカリキュラム基準の観点からタグ付けされているが、これらの基準は一般的に、KTモデルで使用されるスキルよりも非常に粗いものとなっている。 したがって、最初からKTを利用することを念頭に置かれていないシステムでKTを利用することには課題がある。 この論文では、NNベースなKTモデルが、この課題の部分的な解決策になることを示す。 このために、商用の数学のblended learningシステムでのケーススタディを実施した。 中学生が 2 年間システムを使用して収集したデータを使用して、KT モデルの性能を次の3 つのシナリオで比較し： - 1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合 - 2) 州の基準に基づくタグを利用した場合 - 3) コンテンツとスキルタグのマッピングを一切入力しない場合 DKVMNでの実験の結果、1)が最も悪い性能を示し、3)が最も良い問題の正誤予測の性能を示した。 これは、もともとKT モデルで動作するように設計されていなかった現実世界の学習システムでKCモデリングを回避する可能性を示唆している。特に、目的が将来のアイテムに対する学習者の成績を予測することだけである場合はこれに該当する。 # 実験結果 ![image](https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png) スキルの情報を用いず、ExerciseIDをそのままinputする方法が、最も高いAUCを獲得している。 # つまり - きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない - 特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高い# KTの歴史 - 30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから） - 最初はBKTが広く採用された - その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀 - Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている - Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。 - NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した - ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。 - これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。 more">
-<meta property="og:description" content="AdaptiveLearning #NaturalLanguageGeneration#NLP#Education#KnowledgeTracing#Personalization#QuestionGenerationIssue Date: 2023-07-14 Adaptive and Personalized Exercise Generation for Online Language Learning, ACL23 Summary本研究では、オンライン言語学習のための適応的な演習生成の新しいタスクを研究しました。学習履歴から学生の知識状態を推定し、その状態に基づいて個別化された演習文を生成するモデルを提案しました。実データを用いた実験結果から、学生の状態に応じた演習を生成できることを示しました。さらに、教育アプリケーションでの利用方法についても議論し、学習の効率化を促進できる可能性を示しました。 CommentKnowledge Tracingで推定された習熟度に基づいて、エクササイズを自動生成する研究。KTとNLGが組み合わさっており、非常におもしろい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959) #Survey#Pocket#EducationalDataMining#KnowledgeTracingIssue Date: 2022-08-02 Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, ACM Computing Surveys23 Summary人間の教育における知識移転の重要性を背景に、オンライン教育における知識追跡（KT）の必要性が高まっている。本論文では、KTに関する包括的なレビューを行い、初期の手法から最新の深層学習技術までを網羅し、モデルの理論やデータセットの特性を強調する。また、関連手法のモデリングの違いを明確にし、KT文献の研究ギャップや今後の方向性についても議論する。 #NeuralNetwork#EducationalDataMining#KnowledgeTracingIssue Date: 2022-08-26 Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22 Comment超重要論文。しっかり読むべき# 一言で言うと KTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中で企業が買収された経緯もあり、古いコンテンツと新しいコンテンツの間でスキルタグのマッピングの間で、矛盾や一貫性がないものができあがってしまった（複数の異なるチームがコンテンツの提供やスキルのタグ付けを行なった結果）。このような例はレアケースかもしれないが、問題とスキルタグが異なるチームによって開発されるということは珍しいことではないし、現代のオンライン学習システムの多くは、さまざまな教科書のデータを統合し、長年にわたってコンテンツ作成チームのメンバーを変更し、複数の州の基準や内部コンテンツスキーマに従ってコンテンツにタグをづけをしているので、少なからずこういった問題（i.e. 一貫性がなく、矛盾をかかえたitem-skill mapping）を抱えている。 こうした中で、NNを用いたモデルを用いることで、unreliableなKCモデルを用いるくらいならば、KCモデルを用いない方が正答率予測が高い精度で実施できることを示した。これは少なくとも、生徒の問題に対する将来のパフォーマンスを予測する問題に関して言えば、既存のアプリケーションにおいて、KCモデルを構築するステップを回避できる可能性を示唆している。 # モチベーション Cognitive Tutorのようなシステムは、もともとKTを利用するために設計されているシステムだったが、多くのreal-worldの学習システムはアダプティブラーニングやKTを念頭に置いて作られたものではない。そういったシステムでアダプティブな機能を追加するといった事例が増えてきている。こういったシステムが、もともとKTを実施することを念頭するために作られたシステムとの違いとして、問題とスキルのマッピング方法にある。 最初から KT を使用するように設計されたシステムは、最初にどのスキルを含めるかを選択し、次にそれらのスキルに合わせたアイテムを開発する。 一方、KTを使用するために改良をする場合、最初にアイテムが作成され、次にアイテムにスキルのラベルが付けられる。 既存のアイテムにスキルのラベルを付けるのは、スキルの新しいアイテムを作成するよりもはるかに困難である。 多くの場合、アイテムは複数の著者によって時間をかけて開発されたものであるか、異なる教科書などの異なる元のソースからのものである。この異種のコンテンツ (場合によっては数万のアイテム) を一連のスキルにマッピングすることは、非常に困難な作業になる可能性がある。 多くの場合、アイテムは政府のカリキュラム基準の観点からタグ付けされているが、これらの基準は一般的に、KTモデルで使用されるスキルよりも非常に粗いものとなっている。 したがって、最初からKTを利用することを念頭に置かれていないシステムでKTを利用することには課題がある。 この論文では、NNベースなKTモデルが、この課題の部分的な解決策になることを示す。 このために、商用の数学のblended learningシステムでのケーススタディを実施した。 中学生が 2 年間システムを使用して収集したデータを使用して、KT モデルの性能を次の3 つのシナリオで比較し： - 1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合 - 2) 州の基準に基づくタグを利用した場合 - 3) コンテンツとスキルタグのマッピングを一切入力しない場合 DKVMNでの実験の結果、1)が最も悪い性能を示し、3)が最も良い問題の正誤予測の性能を示した。 これは、もともとKT モデルで動作するように設計されていなかった現実世界の学習システムでKCモデリングを回避する可能性を示唆している。特に、目的が将来のアイテムに対する学習者の成績を予測することだけである場合はこれに該当する。 # 実験結果 ![image](https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png) スキルの情報を用いず、ExerciseIDをそのままinputする方法が、最も高いAUCを獲得している。 # つまり - きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない - 特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高い# KTの歴史 - 30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから） - 最初はBKTが広く採用された - その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀 - Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている - Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。 - NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した - ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。 - これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。 more">
+<meta name="description" content="AdaptiveLearning">
+<meta property="og:description" content="AdaptiveLearning">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/AdaptiveLearning.html">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/AdaptiveLearning.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-28T00:58:31+00:00">
+<meta property="article:published_time" content="2025-07-28T09:55:51+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="AdaptiveLearningに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T00:58:31+00:00","datePublished":"2025-07-28T00:58:31+00:00","description":"AdaptiveLearning #NaturalLanguageGeneration#NLP#Education#KnowledgeTracing#Personalization#QuestionGenerationIssue Date: 2023-07-14 Adaptive and Personalized Exercise Generation for Online Language Learning, ACL23 Summary本研究では、オンライン言語学習のための適応的な演習生成の新しいタスクを研究しました。学習履歴から学生の知識状態を推定し、その状態に基づいて個別化された演習文を生成するモデルを提案しました。実データを用いた実験結果から、学生の状態に応じた演習を生成できることを示しました。さらに、教育アプリケーションでの利用方法についても議論し、学習の効率化を促進できる可能性を示しました。 CommentKnowledge Tracingで推定された習熟度に基づいて、エクササイズを自動生成する研究。KTとNLGが組み合わさっており、非常におもしろい。 ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959) #Survey#Pocket#EducationalDataMining#KnowledgeTracingIssue Date: 2022-08-02 Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, ACM Computing Surveys23 Summary人間の教育における知識移転の重要性を背景に、オンライン教育における知識追跡（KT）の必要性が高まっている。本論文では、KTに関する包括的なレビューを行い、初期の手法から最新の深層学習技術までを網羅し、モデルの理論やデータセットの特性を強調する。また、関連手法のモデリングの違いを明確にし、KT文献の研究ギャップや今後の方向性についても議論する。 #NeuralNetwork#EducationalDataMining#KnowledgeTracingIssue Date: 2022-08-26 Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22 Comment超重要論文。しっかり読むべき# 一言で言うと KTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中で企業が買収された経緯もあり、古いコンテンツと新しいコンテンツの間でスキルタグのマッピングの間で、矛盾や一貫性がないものができあがってしまった（複数の異なるチームがコンテンツの提供やスキルのタグ付けを行なった結果）。このような例はレアケースかもしれないが、問題とスキルタグが異なるチームによって開発されるということは珍しいことではないし、現代のオンライン学習システムの多くは、さまざまな教科書のデータを統合し、長年にわたってコンテンツ作成チームのメンバーを変更し、複数の州の基準や内部コンテンツスキーマに従ってコンテンツにタグをづけをしているので、少なからずこういった問題（i.e. 一貫性がなく、矛盾をかかえたitem-skill mapping）を抱えている。 こうした中で、NNを用いたモデルを用いることで、unreliableなKCモデルを用いるくらいならば、KCモデルを用いない方が正答率予測が高い精度で実施できることを示した。これは少なくとも、生徒の問題に対する将来のパフォーマンスを予測する問題に関して言えば、既存のアプリケーションにおいて、KCモデルを構築するステップを回避できる可能性を示唆している。 # モチベーション Cognitive Tutorのようなシステムは、もともとKTを利用するために設計されているシステムだったが、多くのreal-worldの学習システムはアダプティブラーニングやKTを念頭に置いて作られたものではない。そういったシステムでアダプティブな機能を追加するといった事例が増えてきている。こういったシステムが、もともとKTを実施することを念頭するために作られたシステムとの違いとして、問題とスキルのマッピング方法にある。 最初から KT を使用するように設計されたシステムは、最初にどのスキルを含めるかを選択し、次にそれらのスキルに合わせたアイテムを開発する。 一方、KTを使用するために改良をする場合、最初にアイテムが作成され、次にアイテムにスキルのラベルが付けられる。 既存のアイテムにスキルのラベルを付けるのは、スキルの新しいアイテムを作成するよりもはるかに困難である。 多くの場合、アイテムは複数の著者によって時間をかけて開発されたものであるか、異なる教科書などの異なる元のソースからのものである。この異種のコンテンツ (場合によっては数万のアイテム) を一連のスキルにマッピングすることは、非常に困難な作業になる可能性がある。 多くの場合、アイテムは政府のカリキュラム基準の観点からタグ付けされているが、これらの基準は一般的に、KTモデルで使用されるスキルよりも非常に粗いものとなっている。 したがって、最初からKTを利用することを念頭に置かれていないシステムでKTを利用することには課題がある。 この論文では、NNベースなKTモデルが、この課題の部分的な解決策になることを示す。 このために、商用の数学のblended learningシステムでのケーススタディを実施した。 中学生が 2 年間システムを使用して収集したデータを使用して、KT モデルの性能を次の3 つのシナリオで比較し： - 1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合 - 2) 州の基準に基づくタグを利用した場合 - 3) コンテンツとスキルタグのマッピングを一切入力しない場合 DKVMNでの実験の結果、1)が最も悪い性能を示し、3)が最も良い問題の正誤予測の性能を示した。 これは、もともとKT モデルで動作するように設計されていなかった現実世界の学習システムでKCモデリングを回避する可能性を示唆している。特に、目的が将来のアイテムに対する学習者の成績を予測することだけである場合はこれに該当する。 # 実験結果 ![image](https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png) スキルの情報を用いず、ExerciseIDをそのままinputする方法が、最も高いAUCを獲得している。 # つまり - きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない - 特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高い# KTの歴史 - 30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから） - 最初はBKTが広く採用された - その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀 - Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている - Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。 - NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した - ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。 - これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。 more","headline":"AdaptiveLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/AdaptiveLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/AdaptiveLearning.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T09:55:51+00:00","datePublished":"2025-07-28T09:55:51+00:00","description":"AdaptiveLearning","headline":"AdaptiveLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/AdaptiveLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/AdaptiveLearning.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-28T00:58:31+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
+    <time class="dt-published" datetime="2025-07-28T09:55:51+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -799,7 +799,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 8 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 1 min</span>
   </div></header>
 </div>
     </div>
@@ -993,931 +993,6489 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id="adaptivelearning">AdaptiveLearning</h2>
+
 <div class="visible-content">
-<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a><a class="button" href="articles/NLP.html">#NLP</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><a class="button" href="articles/Personalization.html">#Personalization</a><a class="button" href="articles/QuestionGeneration.html">#QuestionGeneration</a><br><span class="issue_date">Issue Date: 2023-07-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/824">Adaptive and Personalized Exercise Generation for Online Language Learning, ACL23</a>
+<a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Education.html">#Education</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<a class="button" href="articles/Personalization.html">#Personalization</a>
+<a class="button" href="articles/QuestionGeneration.html">#QuestionGeneration</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2023-07-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/824">Adaptive and Personalized Exercise Generation for Online Language Learning, ACL'23</a>
 <span class="snippet"><span>Summary</span>本研究では、オンライン言語学習のための適応的な演習生成の新しいタスクを研究しました。学習履歴から学生の知識状態を推定し、その状態に基づいて個別化された演習文を生成するモデルを提案しました。実データを用いた実験結果から、学生の状態に応じた演習を生成できることを示しました。さらに、教育アプリケーションでの利用方法についても議論し、学習の効率化を促進できる可能性を示しました。</span>
 <span class="snippet"><span>Comment</span>Knowledge Tracingで推定された習熟度に基づいて、エクササイズを自動生成する研究。KTとNLGが組み合わさっており、非常におもしろい。
-![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959)
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 </span>
-<img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959" alt="image" loading="lazy"><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/464">Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, ACM Computing Surveys23</a>
+<a class="button" href="articles/Survey.html">#Survey</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2022-08-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/464">Knowledge Tracing: A Survey, ABDELRAHMAN+, Australian National University, ACM Computing Surveys'23</a>
 <span class="snippet"><span>Summary</span>人間の教育における知識移転の重要性を背景に、オンライン教育における知識追跡（KT）の必要性が高まっている。本論文では、KTに関する包括的なレビューを行い、初期の手法から最新の深層学習技術までを網羅し、モデルの理論やデータセットの特性を強調する。また、関連手法のモデリングの違いを明確にし、KT文献の研究ギャップや今後の方向性についても議論する。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/475">Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM22</a>
-<span class="snippet"><span>Comment</span>超重要論文。しっかり読むべき# 一言で言うと
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2022-08-26</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/475">Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM'22</a>
+<span class="snippet"><span>Comment</span>超重要論文。しっかり読むべき一言で言うと
+
+<br>
+
+
+
+<br>
+
 KTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中で企業が買収された経緯もあり、古いコンテンツと新しいコンテンツの間でスキルタグのマッピングの間で、矛盾や一貫性がないものができあがってしまった（複数の異なるチームがコンテンツの提供やスキルのタグ付けを行なった結果）。このような例はレアケースかもしれないが、問題とスキルタグが異なるチームによって開発されるということは珍しいことではないし、現代のオンライン学習システムの多くは、さまざまな教科書のデータを統合し、長年にわたってコンテンツ作成チームのメンバーを変更し、複数の州の基準や内部コンテンツスキーマに従ってコンテンツにタグをづけをしているので、少なからずこういった問題（i.e. 一貫性がなく、矛盾をかかえたitem-skill mapping）を抱えている。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 こうした中で、NNを用いたモデルを用いることで、unreliableなKCモデルを用いるくらいならば、KCモデルを用いない方が正答率予測が高い精度で実施できることを示した。これは少なくとも、生徒の問題に対する将来のパフォーマンスを予測する問題に関して言えば、既存のアプリケーションにおいて、KCモデルを構築するステップを回避できる可能性を示唆している。
 
-# モチベーション
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モチベーション
+
+<br>
+
+
+
+<br>
+
 Cognitive Tutorのようなシステムは、もともとKTを利用するために設計されているシステムだったが、多くのreal-worldの学習システムはアダプティブラーニングやKTを念頭に置いて作られたものではない。そういったシステムでアダプティブな機能を追加するといった事例が増えてきている。こういったシステムが、もともとKTを実施することを念頭するために作られたシステムとの違いとして、問題とスキルのマッピング方法にある。
+
+<br>
+
+
+
+<br>
+
 最初から KT を使用するように設計されたシステムは、最初にどのスキルを含めるかを選択し、次にそれらのスキルに合わせたアイテムを開発する。 一方、KTを使用するために改良をする場合、最初にアイテムが作成され、次にアイテムにスキルのラベルが付けられる。
+
+<br>
+
+
+
+<br>
+
 既存のアイテムにスキルのラベルを付けるのは、スキルの新しいアイテムを作成するよりもはるかに困難である。 多くの場合、アイテムは複数の著者によって時間をかけて開発されたものであるか、異なる教科書などの異なる元のソースからのものである。この異種のコンテンツ (場合によっては数万のアイテム) を一連のスキルにマッピングすることは、非常に困難な作業になる可能性がある。
+
+<br>
+
+
+
+<br>
+
 多くの場合、アイテムは政府のカリキュラム基準の観点からタグ付けされているが、これらの基準は一般的に、KTモデルで使用されるスキルよりも非常に粗いものとなっている。
+
+<br>
+
+
+
+<br>
+
 したがって、最初からKTを利用することを念頭に置かれていないシステムでKTを利用することには課題がある。
+
+<br>
+
+
+
+<br>
+
 この論文では、NNベースなKTモデルが、この課題の部分的な解決策になることを示す。
+
+<br>
+
+
+
+<br>
+
 このために、商用の数学のblended learningシステムでのケーススタディを実施した。
+
+<br>
+
+
+
+<br>
+
 中学生が 2 年間システムを使用して収集したデータを使用して、KT モデルの性能を次の3 つのシナリオで比較し：
-- 1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合
-- 2) 州の基準に基づくタグを利用した場合
-- 3) コンテンツとスキルタグのマッピングを一切入力しない場合
+
+<br>
+
+
+
+<br>
+
+・1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合
+
+<br>
+
+
+
+<br>
+
+・2) 州の基準に基づくタグを利用した場合
+
+<br>
+
+
+
+<br>
+
+・3) コンテンツとスキルタグのマッピングを一切入力しない場合
+
+<br>
+
+
+
+<br>
+
 DKVMNでの実験の結果、1)が最も悪い性能を示し、3)が最も良い問題の正誤予測の性能を示した。
+
+<br>
+
+
+
+<br>
+
 これは、もともとKT モデルで動作するように設計されていなかった現実世界の学習システムでKCモデリングを回避する可能性を示唆している。特に、目的が将来のアイテムに対する学習者の成績を予測することだけである場合はこれに該当する。
 
-# 実験結果
-![image](https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+実験結果
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 スキルの情報を用いず、ExerciseIDをそのままinputする方法が、最も高いAUCを獲得している。
 
-# つまり
-- きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない
-    - 特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高い# KTの歴史
-- 30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから）
-- 最初はBKTが広く採用された
-- その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀
-- Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている
-    - Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。
-- NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した
-    - ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。
-    - これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。</span>
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+つまり
+
+<br>
+
+
+
+<br>
+
+・きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない
+
+<br>
+
+
+
+<br>
+
+    ・特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高いKTの歴史
+
+<br>
+
+
+
+<br>
+
+・30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから）
+
+<br>
+
+
+
+<br>
+
+・最初はBKTが広く採用された
+
+<br>
+
+
+
+<br>
+
+・その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀
+
+<br>
+
+
+
+<br>
+
+・Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている
+
+<br>
+
+
+
+<br>
+
+    ・Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。
+
+<br>
+
+
+
+<br>
+
+・NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した
+
+<br>
+
+
+
+<br>
+
+    ・ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。
+
+<br>
+
+
+
+<br>
+
+    ・これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。</span>
 </div>
 <p><button onclick="showMore(0)">more</button></p>
-
 <div class="hidden-content">
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/467">No Task Left Behind: Multi-Task Learning of Knowledge Tracing and Option Tracing for Better Student Assessment, An+, RiiiD, AAAI22</a>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/465">Interpretable Knowledge Tracing: Simple and Efficient Student Modeling with Causal Relations, Minn+, AAAI22</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-10</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/467">No Task Left Behind: Multi-Task Learning of Knowledge Tracing and Option Tracing for Better Student Assessment, An+, RiiiD, AAAI'22</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/465">Interpretable Knowledge Tracing: Simple and Efficient Student Modeling with Causal Relations, Minn+, AAAI'22</a>
 <span class="snippet"><span>Comment</span>DeepLearningを用いずに解釈性の高いKTモデルを提案。DKT, DKVMN, AKT等をoutperformしている。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM22</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22</a>
 <span class="snippet"><span>Comment</span>DKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。
+
+<br>
+
+
+
+<br>
+
 （inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）
-![image](https://user-images.githubusercontent.com/12249301/165704985-37cb5c85-d19d-4c39-b30b-db6f565a7a85.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165704985-37cb5c85-d19d-4c39-b30b-db6f565a7a85.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。
-- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)
-- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）
+
+<br>
+
+
+
+<br>
+
+・Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)
+
+<br>
+
+
+
+<br>
+
+・Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。
 
-![image](https://user-images.githubusercontent.com/12249301/165728064-e953278b-c45b-4447-87c1-8913429436e6.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165728064-e953278b-c45b-4447-87c1-8913429436e6.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ◆Inputについて
+
+<br>
+
+
+
+<br>
+
 基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。
+
+<br>
+
+
+
+<br>
+
 最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ◆Outputについて
+
+<br>
+
+
+
+<br>
+
 全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。
+
+<br>
+
+
+
+<br>
+
 DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。
+
+<br>
+
+
+
+<br>
+
 SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。結論：
+
+<br>
+
+
+
+<br>
+
 1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い
+
+<br>
+
+
+
+<br>
+
 2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。
+
+<br>
+
+
+
+<br>
+
 3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。
+
+<br>
+
+
+
+<br>
+
 outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。</span>
-<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/479">Challenges to Applying Performance Factor Analysis to Existing Learning Systems, Cristina+ （w_ Ryan Baker）, ICCE21</a>
-<span class="snippet"><span>Comment</span>- いまだにほとんどの商用のAdaptive LearningシステムではBKTが使われている。その理由について概要が書いてある。
-- BKTについて実アプ李ケーションに応用した際にどういう性質があるかを検証した文献へのリファレンスが存在する</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/ScorePrediction.html">#ScorePrediction</a><br><span class="issue_date">Issue Date: 2022-08-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/478">Condensed Discriminative Question Set for Reliable Exam Score Prediction, Jung+, Riiid, AIED21</a>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/OptionTracing.html">#OptionTracing</a><br><span class="issue_date">Issue Date: 2022-08-18</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/471">Option Tracing: Beyond Correctness Analysis in Knowledge Tracing, Ghosh+, AIED21</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/479">Challenges to Applying Performance Factor Analysis to Existing Learning Systems, Cristina+ （w_ Ryan Baker）, ICCE'21</a>
+<span class="snippet"><span>Comment</span>・いまだにほとんどの商用のAdaptive LearningシステムではBKTが使われている。その理由について概要が書いてある。
+
+<br>
+
+
+
+<br>
+
+・BKTについて実アプ李ケーションに応用した際にどういう性質があるかを検証した文献へのリファレンスが存在する</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/ScorePrediction.html">#ScorePrediction</a>
+<span class="issue_date">Issue Date: 2022-08-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/478">Condensed Discriminative Question Set for Reliable Exam Score Prediction, Jung+, Riiid, AIED'21</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/OptionTracing.html">#OptionTracing</a>
+<span class="issue_date">Issue Date: 2022-08-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/471">Option Tracing: Beyond Correctness Analysis in Knowledge Tracing, Ghosh+, AIED'21</a>
 <span class="snippet"><span>Comment</span>これまでのKTは問題の正誤（correctness）に対してfittingしていたが、この研究ではmultiple choice questionでどの選択肢を選択するかを予測するタスクを提案している。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-05-02</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/456">Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD21</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-05-02</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/456">Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD'21</a>
 <span class="snippet"><span>Comment</span>DKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。
+
+<br>
+
+
+
+<br>
+
 student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。
+
+<br>
+
+
+
+<br>
+
 Forgettingもモデル化しているところが特徴。
-現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。# モチベ
+
+<br>
+
+
+
+<br>
+
+現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。モチベ
+
+<br>
+
+
+
+<br>
+
 下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。
-![image](https://user-images.githubusercontent.com/12249301/168034969-a72ba6f9-55b9-44c9-a97d-dbcb4b51f45d.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/168034969-a72ba6f9-55b9-44c9-a97d-dbcb4b51f45d.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。
 
-# Problem Definition
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Problem Definition
+
+<br>
+
+
+
+<br>
+
 本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。
+
+<br>
+
+
+
+<br>
+
 つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。
+
+<br>
+
+
+
+<br>
+
 KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。
 
-# モデル
-学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。
-モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。
-![image](https://user-images.githubusercontent.com/12249301/168040927-e37feae7-5525-44fa-97f5-9219b1981aea.png)
+<br>
 
-## Embedding
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデル
+
+<br>
+
+
+
+<br>
+
+学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。
+
+<br>
+
+
+
+<br>
+
+モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/168040927-e37feae7-5525-44fa-97f5-9219b1981aea.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Embedding
+
+<br>
+
+
+
+<br>
+
 本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。
-### Time Embedding
+
+<br>
+
+
+
+<br>
+
+Time Embedding
+
+<br>
+
+
+
+<br>
+
 answer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。
-### Learning Embedding
+
+<br>
+
+
+
+<br>
+
+Learning Embedding
+
+<br>
+
+
+
+<br>
+
 learning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。
-![image](https://user-images.githubusercontent.com/12249301/168043953-40d1c682-cb61-4ca1-b57f-847b5e51e212.png)
-### Knowledge Embedding
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/168043953-40d1c682-cb61-4ca1-b57f-847b5e51e212.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+Knowledge Embedding
+
+<br>
+
+
+
+<br>
+
 学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。
+
+<br>
+
+
+
+<br>
+
 Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。
+
+<br>
+
+
+
+<br>
+
 今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。
 
-## Learning Module
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Learning Module
+
+<br>
+
+
+
+<br>
+
 learning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。
+
+<br>
+
+
+
+<br>
+
 interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。
+
+<br>
+
+
+
+<br>
+
 さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。
+
+<br>
+
+
+
+<br>
+
 previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：
+
+<br>
+
+
+
+<br>
+
 <img width="383" alt="image" src="https://user-images.githubusercontent.com/12249301/168086129-262c1154-9d12-43fe-b5bd-cf6c84f2dffe.png">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 （q_etの詳細が書かれていないので分からないが、おそらくenhanced Q-matrixのexercise e_tに対応する行ベクトルだと思われる。e_tと関連するknowledge conceptと対応する要素が1で、その他が正の定数γのベクトル）
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 そしてlearning gain lg_t (dk次元ベクトル)は2つの連続したlearning embedding, と現在の問題と関連するknowledge stateとinterval time embeddingをconcatしMLPにかけることで算出する。
+
+<br>
+
+
+
+<br>
+
 <img width="398" alt="image" src="https://user-images.githubusercontent.com/12249301/168086638-dffd60dc-4bd6-4da2-ba4b-6749e1a9bb6b.png">
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 さらに、全てのlearning gainが生徒のknowledgeの成長に寄与するとは限らないので、生徒の吸収能力を考慮するために learning gate Γ^l_t (dk次元ベクトル)を定義する（learning gainと構成要素は同じ）：
+
+<br>
+
+
+
+<br>
+
 <img width="467" alt="image" src="https://user-images.githubusercontent.com/12249301/168087058-bb5e6e13-aaa2-46f8-ac1f-777f5b6c57de.png">
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 そして先ほど求めたlearning gateとlearning gainの内積をとり、さらにknowledge concept vector q_etとの内積をとることで、ある時刻tのexercise e_tにと関連するknowledge conceptのlearning gain ~LG_tを得る：
+
+<br>
+
+
+
+<br>
+
 <img width="415" alt="image" src="https://user-images.githubusercontent.com/12249301/168087419-05e777ae-d2a6-4342-9b39-8df163d97fe9.png">
+
+<br>
+
+
+
+<br>
+
 ここで、(lg_t+1)/2しているのは、tanhの値域が（-1, 1）なためであり、これにより値域を(0, 1)に補正している。従ってLG_tは常に正の値となる。これは、本研究の前提である、生徒はそれぞれのlearning interactionから知識を着実に獲得しているという前提を反映している。
 
-## Forgetting Module
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Forgetting Module
+
+<br>
+
+
+
+<br>
+
 ~LG_tは生徒のknowledge stateを向上させる働きをするが、反対の忘却現象は、時間が経つにつれてどれだけの知識が忘れられるかに影響します。forgetting curve theoryによると、記憶されている学習教材の量は時間経過に従い指数的に減衰していく。しかしながら、knowledge stateとinterval timeの複雑な関係性を捉えるためには、manual-designedな指数減衰関数では十分ではない。
+
+<br>
+
+
+
+<br>
+
 そこで、forgetting effectをモデル化するために、forgetting gate Γ^f_tを導入する。これは、knowledge embeddingから3つの要素をMLPにかけることで失われる情報の度合いを学習するしたものであり、その3つの要素とは (1) 生徒のprevious knowledge state h_t-1, (2)生徒の現在のlearning gain LG_t, (3) interval time it_tである。
+
+<br>
+
+
+
+<br>
+
 これらを用いてforgetting gate (dk次元) は以下のように計算される：
+
+<br>
+
+
+
+<br>
+
 <img width="457" alt="image" src="https://user-images.githubusercontent.com/12249301/168101254-29019294-56be-4b92-99b3-360554bf58fd.png">
+
+<br>
+
+
+
+<br>
+
 forgetting gateをh_t-1と積をとることで、忘却の影響を考慮することができる。そして、生徒がt番目のlearning interactionを完了した後のknowledge state h_tは次の式で更新される：
+
+<br>
+
+
+
+<br>
+
 <img width="391" alt="image" src="https://user-images.githubusercontent.com/12249301/168101820-90958bfc-4c4c-4a46-ab00-3efaa10aeb42.png">
 
-## Predicting Module
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Predicting Module
+
+<br>
+
+
+
+<br>
+
 これでlearning gainとforgetting effectの両方を考慮した生徒のknowledge state h_tが算出できたので、これをe_t+1のexerciseのperformance予測に活用する。e_t+1を生徒が解く時は、対応するknowledge conceptを適用することで回答をするので、knowledge stateのうち、e_t+1と関連するknowledge state ~h_tを利用する（knowledge concept vector q_et+1との内積で求める）。式で表すと下記になる：
+
+<br>
+
+
+
+<br>
+
 <img width="424" alt="image" src="https://user-images.githubusercontent.com/12249301/168102734-2a53305e-ab34-4e7d-b9c6-dbcc1d8f8eb5.png">
+
+<br>
+
+
+
+<br>
+
 ~h_tにexercise e_t+1のembeddingをconcatしてMLPにかけている。
 
-# Objective Function
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Objective Function
+
+<br>
+
+
+
+<br>
+
 正則化項つきのcross-entropy log lossを利用する。
+
+<br>
+
+
+
+<br>
+
 <img width="548" alt="image" src="https://user-images.githubusercontent.com/12249301/168103089-0e3f4f21-8d77-4bd1-8ec5-07425cc4833b.png">
-# 実験結果
-## knowledge tracingの結果
+
+<br>
+
+
+
+<br>
+
+実験結果
+
+<br>
+
+
+
+<br>
+
+knowledge tracingの結果
+
+<br>
+
+
+
+<br>
+
 <img width="1017" alt="image" src="https://user-images.githubusercontent.com/12249301/168103305-2a0a100d-3122-4d9f-ac20-f5706ef44173.png">
+
+<br>
+
+
+
+<br>
+
 先述のDKTの例とは異なり、問題の回答に誤っていたとしてもproficiencyが向上するようになっている。ただ、e_7が不正解となっている際に、proficiencyが減少していることもわかる。これは、モデルがproficiencyの推定をまだしっかりできていない状態だったため、モデル側がproficiencyを補正したためだ、と論文中では述べられているが、こういった現象がどれだけ起きるのだろうか。こういう例があると、図中の赤枠はたまたま不正解の時にproficiencyが向上しただけ、というふうにも見えてしまう（逆に言うとDKTでも不正解の時にproficiencyが向上することはあるよねっていう）。
+
+<br>
+
+
+
+<br>
+
 また、忘却効果により時間経過に伴い、proficiencyが減少していることもわかる。ただ、この現象もDKTの最初の例でもたとえば①の例はproficiencyが時間経過に伴い減少していっていたし、もともとDKTでもそうなってたけど？と思ってしまう。
+
+<br>
+
+
+
+<br>
+
 ただ、②についてはDKTの例ではproficiencyが時間経過に伴い減少して行っていなかったため、LPKTではきちんとforgetting effectがモデリングできていそうでもある。また、図中右では、最初のinteractionと各knowledge conceptの習熟度の最大値、最後のinteraction時の習熟度がレーダーチャートとして書かれており、学習が進むにつれてどこかで習熟度は最大値となり、忘却効果によって習熟度は下がっているが、学習の最初よりは習熟度が高く弱実に学習が進んでいますよ、というのを図示している。interactionをもっと長く続けた際に（あるknowledge conceptを放置し続けた際に）、忘却効果によってどの程度習熟度がshrinkするのかが少し気になる（習熟度が大きくなった状態が時間発展しても維持されるということが、このモデルでは存在しないのでは？）。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 =&gt; Knowledge Tracingの結果については、cherry pickingされているだけであって、全体として見たらどれだけ良くなっているかが正直分からないんじゃないか、という感想。
 
-## student performance predictoin
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+student performance predictoin
+
+<br>
+
+
+
+<br>
+
 <img width="996" alt="image" src="https://user-images.githubusercontent.com/12249301/168105090-d463cf7b-c769-4e59-b4ae-f920c5873a4f.png">
+
+<br>
+
+
+
+<br>
+
 全てのベースラインに勝っている。特に系列長の長いASSISTchallでAKTに対して大きく勝っており、系列長の長いデータに対してもrobustであることがわかる。
 
-## Ablation Study
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Ablation Study
+
+<br>
+
+
+
+<br>
+
 learning module, forgetting module, time embeddingをablationした場合に性能がどう変化するかを観察した。forgetting moduleをablationした場合に、性能が大きく低下しているので、forgetting moduleの重要性がわかる。おもしろいのは、time embeddingを除いてもあまり性能は変化していないので、実際はstudent performance predictionするだけならtime embeddingはあまり必要ないのかもしれない。が、論文中では「time embedding (answer timeとinterval time)を除外するのはlearning processを正確にモデル化する上でharmfulだ」と言及しているに留まっており、具体的にどうharmfulなのかは全くデータが提示されていない。time embeddingを除外したことでknowledge tracingの結果がどう変化するのかは気になるところではある、が、実はあまり効いていないんじゃない？という気もする。
+
+<br>
+
+
+
+<br>
+
 <img width="483" alt="image" src="https://user-images.githubusercontent.com/12249301/168105293-ab203fa8-a6cc-4ff7-9750-659e39add4ee.png">
 
-## Exercises Clustering
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Exercises Clustering
+
+<br>
+
+
+
+<br>
+
 最後に、学習したexerciseのembeddingをt-SNEで可視化しクラスタリングしている。クラスタリングした結果、共通のknowledge conceptを持つexercise同士はある程度同じクラスタに属する例がいくつか見受けられるような結果となっている。
+
+<br>
+
+
+
+<br>
+
 <img width="496" alt="image" src="https://user-images.githubusercontent.com/12249301/168106245-d578baad-916e-4e78-8fb7-9bf604617f93.png">
 
-# 所感
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+所感
+
+<br>
+
+
+
+<br>
+
 answer timeとinterval timeのデータがなくても高い性能で予測ができそうなのでアリ。ただ、そういった場合にknowledge tracingの結果がどうなるかが不安要素ではある。もちろんanswer timeとinterval timeが存在するのがベストではあるが。
+
+<br>
+
+
+
+<br>
+
 また、DKT+で指摘されているような、inputがreconstructionされない問題や、proficiencyが乱高下するといった現象が、このモデルにおいてどの程度起きるのかが気になる。
+
+<br>
+
+
+
+<br>
+
 DKTのようなシンプルなモデルではないので、少しは解消されていたりするのだろうか。実用上あのような現象が生じるとかなり困ると思う。KCのproficiencyの可視化方法について論文中に記述されていないが、Issueで質問されている。
+
+<br>
+
+
+
+<br>
+
 https://github.com/bigdata-ustc/EduKTM/issues/29
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 knowledge matrix hは各KCのproficiencyに関する情報をベクトルで保持しており、ベクトルをsummationし、シグモイド関数をかけることで0.0~1.0に写像しているとのこと。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/454">BEKT: Deep Knowledge Tracing with Bidirectional Encoder Representations from Transformers, Tian+ （緒方先生）, Kyoto University, ICCE21</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/454">BEKT: Deep Knowledge Tracing with Bidirectional Encoder Representations from Transformers, Tian+ （緒方先生）, Kyoto University, ICCE'21</a>
 <span class="snippet"><span>Comment</span>KTにBERTを利用した研究
-#453 などでDeepLearningBasedなモデル間であまり差がないことが示されているので、本研究が実際どれだけ強いのかは気になるところ。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><a class="button" href="articles/AAAI.html">#AAAI</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/452">Do we need to go Deep? Knowledge Tracing with Big Data, Varun+, University of Maryland Baltimore County, AAAI21 Workshop on AI Education</a>
+
+<br>
+
+
+
+<br>
+
+453 などでDeepLearningBasedなモデル間であまり差がないことが示されているので、本研究が実際どれだけ強いのかは気になるところ。</span>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<a class="button" href="articles/AAAI.html">#AAAI</a>
+<span class="issue_date">Issue Date: 2022-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/452">Do we need to go Deep? Knowledge Tracing with Big Data, Varun+, University of Maryland Baltimore County, AAAI'21 Workshop on AI Education</a>
 <span class="snippet"><span>Summary</span>インタラクティブ教育システム（IES）を用いて学生の知識を追跡し、パフォーマンスモデルを開発する研究が進展。深層学習モデルが従来のモデルを上回るかは未検証であり、EdNetデータセットを用いてその精度を比較。結果、ロジスティック回帰モデルが深層モデルを上回ることが確認され、LIMEを用いて予測に対する特徴の影響を解釈する研究を行った。</span>
 <span class="snippet"><span>Comment</span>データ量が小さいとSAKTはDKTはcomparableだが、データ量が大きくなるとSAKTがDKTを上回る。
 
-![image](https://user-images.githubusercontent.com/12249301/165698674-279a7e0c-6429-48db-8c71-f61b5744d44a.png)</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/450">An Empirical Comparison of Deep Learning Models for Knowledge Tracing on Large-Scale Dataset, Pandey+, AAAI workshop on AI in Education21</a>
-<span class="snippet"><span>Comment</span>EdNetデータにおいて、DKT, DKVMN, SAKT, RKTの性能を比較した論文
-![image](https://user-images.githubusercontent.com/12249301/165658767-24fda9a1-3ff1-47d1-b328-91fa18aec82e.png)
-RKTがも最もパフォーマンスが良く、SAKTもDKT, DKVMNに勝っている</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/448">A Survey of Knowledge Tracing, Liu+, IEEE Transactions on Learning Technologies, arXiv21</a>
-<span class="snippet"><span>Comment</span>古典的なBKT, PFAだけでなくDKT, DKVMN, EKT, AKTなどDeepなモデルについてもまとまっている。
-![image](https://user-images.githubusercontent.com/12249301/165438026-70f407c9-8eb2-43c3-8a0b-84e1f55708c4.png)
+<br>
 
-![image](https://user-images.githubusercontent.com/12249301/165438375-e571ab57-598f-470d-b3ee-4019392e9e81.png)
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165698674-279a7e0c-6429-48db-8c71-f61b5744d44a.png" alt="image" loading="lazy"></span>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<span class="issue_date">Issue Date: 2022-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/450">An Empirical Comparison of Deep Learning Models for Knowledge Tracing on Large-Scale Dataset, Pandey+, AAAI workshop on AI in Education'21</a>
+<span class="snippet"><span>Comment</span>EdNetデータにおいて、DKT, DKVMN, SAKT, RKTの性能を比較した論文
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165658767-24fda9a1-3ff1-47d1-b328-91fa18aec82e.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+RKTがも最もパフォーマンスが良く、SAKTもDKT, DKVMNに勝っている</span>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-04-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/448">A Survey of Knowledge Tracing, Liu+, IEEE Transactions on Learning Technologies, arXiv'21</a>
+<span class="snippet"><span>Comment</span>古典的なBKT, PFAだけでなくDKT, DKVMN, EKT, AKTなどDeepなモデルについてもまとまっている。
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165438026-70f407c9-8eb2-43c3-8a0b-84e1f55708c4.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165438375-e571ab57-598f-470d-b3ee-4019392e9e81.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 </span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/LAK.html">#LAK</a><br><span class="issue_date">Issue Date: 2021-10-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/418">SAINT+: Integrating Temporal Features for EdNet Correctness Prediction, Shin+, RiiiD AI Research, LAK21</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/LAK.html">#LAK</a>
+<span class="issue_date">Issue Date: 2021-10-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/418">SAINT+: Integrating Temporal Features for EdNet Correctness Prediction, Shin+, RiiiD AI Research, LAK'21</a>
 <span class="snippet"><span>Comment</span>Student Performance PredictionにTransformerを初めて利用した研究
 
-![image](https://user-images.githubusercontent.com/12249301/139178783-ae4d4e2d-9fc5-44f5-9769-0f206108261c.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/139178783-ae4d4e2d-9fc5-44f5-9769-0f206108261c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 </span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/IJCAI.html">#IJCAI</a><br><span class="issue_date">Issue Date: 2021-08-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/403">RLTutor: Reinforcement Learning Based Adaptive Tutoring System by Modeling Virtual Student with Fewer Interactions, Kubotani+, Waseda University, IJCAI21</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/IJCAI.html">#IJCAI</a>
+<span class="issue_date">Issue Date: 2021-08-04</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/403">RLTutor: Reinforcement Learning Based Adaptive Tutoring System by Modeling Virtual Student with Fewer Interactions, Kubotani+, Waseda University, IJCAI'21</a>
 <span class="snippet"><span>Summary</span>教育分野の課題に対し、学生の知識状態に基づく適応指導を強化学習で最適化するフレームワークを提案。実際の学生との相互作用を最小限にし、仮想モデルを構築。実験により、提案モデルは従来の指導方法と同等の性能を示し、理論と実践の橋渡しを行う。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><br><span class="issue_date">Issue Date: 2022-12-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/503">Reinforcement Learning for the Adaptive Scheduling of Educational Activities, Bassen+, Stanford University, CHI20</a>
-<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/476">Extending Deep Knowledge Tracing: Inferring Interpretable Knowledge and Predicting Post-System Performance, Richard+ （w_ Ryan Baker）, ICCE20</a>
-<span class="snippet"><span>Comment</span># 概要
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Education.html">#Education</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<span class="issue_date">Issue Date: 2022-12-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/503">Reinforcement Learning for the Adaptive Scheduling of Educational Activities, Bassen+, Stanford University, CHI'20</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/476">Extending Deep Knowledge Tracing: Inferring Interpretable Knowledge and Predicting Post-System Performance, Richard+ （w_ Ryan Baker）, ICCE'20</a>
+<span class="snippet"><span>Comment</span>概要
+
+<br>
+
+
+
+<br>
+
 ざっくりとしか読めていないが
-- DeepLearningBasedなKT手法は、latentな学習者の知識を推定しているわけではなく、「正誤」を予測しているだけであることを指摘
-    - → 一方BKTはきちんとlatent knowledgeがモデリングされている
-    - → 昔はknowledge inferenceした結果を、post-testで測定したスキルのmasteryとしっかり比較する文化があったが、近年のDeepLearningベースな研究では全く実施されていないことも指摘
-    - → learning systemの中でどのようなパフォーマンスが発揮されるかではなく、learning systemの外でどれだけスキルが発揮できるか、というところにBKTなどの時代は強い焦点が置かれていたのだと思われる
-- DeepLearningBasedなKT手法でもknowledgeのinferenceが行える手法を提案し、BKTやPFAによるknowledge estimateよりもposttestのスコアと高い相関を示すことを実験した
-    - → 手法: それぞれの問題のfirst attemptに対する正誤データの「全て」をtraining dataとし、DKT, DKVMN, BKT, PFAを学習。
+
+<br>
+
+
+
+<br>
+
+・DeepLearningBasedなKT手法は、latentな学習者の知識を推定しているわけではなく、「正誤」を予測しているだけであることを指摘
+
+<br>
+
+
+
+<br>
+
+    ・→ 一方BKTはきちんとlatent knowledgeがモデリングされている
+
+<br>
+
+
+
+<br>
+
+    ・→ 昔はknowledge inferenceした結果を、post-testで測定したスキルのmasteryとしっかり比較する文化があったが、近年のDeepLearningベースな研究では全く実施されていないことも指摘
+
+<br>
+
+
+
+<br>
+
+    ・→ learning systemの中でどのようなパフォーマンスが発揮されるかではなく、learning systemの外でどれだけスキルが発揮できるか、というところにBKTなどの時代は強い焦点が置かれていたのだと思われる
+
+<br>
+
+
+
+<br>
+
+・DeepLearningBasedなKT手法でもknowledgeのinferenceが行える手法を提案し、BKTやPFAによるknowledge estimateよりもposttestのスコアと高い相関を示すことを実験した
+
+<br>
+
+
+
+<br>
+
+    ・→ 手法: それぞれの問題のfirst attemptに対する正誤データの「全て」をtraining dataとし、DKT, DKVMN, BKT, PFAを学習。
+
+<br>
+
+
+
+<br>
+
 　-（おそらく）学習したモデルを用いてある生徒AのスキルBのknowledgeをinferenceしたい場合、生徒Aが回答したスキルBと紐づいた問題に対する平均正答率を推定した習熟度とした
-　- 生徒Aはtraining dataに含まれている生徒
-    - すなわち、生徒Aにとって未知の問題の正答率を予測しているわけではなく、モデルがパラメータを推定するために利用した既知の問題-回答ペアデータに対して、モデルがパラメータをfittingした後にinferenceできる正答率の平均値を習熟度としている
 
-# 結果
-- 4種類のスキルに対するpost-testのスコアと相関係数をモデルごとに比較した結果、DKT, DKVMNなどは、BKTよりも高い相関を示し、PFAとはcomparableな結果となった
-![image](https://user-images.githubusercontent.com/12249301/187137795-bfb4bdbe-8da8-4269-9024-eae1222430fa.png)
+<br>
 
-# 所感
-- この手法のリアルタイムな運用は難しいと思った（knowledgeをinferするために毎回モデルをtrainingしなおさなければならない）
-- BKTが推定するスキルのmasteryはこのcase studyだけ見ると全くあてにならない・・・
-- ユーザが回答した問題と紐づいたスキルのknowledgeしか推定できないところもlimitationの一つだと思う
-- この手法がtraining dataに含まれていない「未知の問題」に対する正答率予測を平均することで、knowledgeをinferenceできるという話だったのであれば、非常に興味深いと思った。
-　- 実際どうなんだろうか？</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/468">Deep Knowledge Tracing with Transformers, Shi+ （w_ Michael Yudelson）, ETS_ACT, AIED20</a>
+
+
+<br>
+
+　・生徒Aはtraining dataに含まれている生徒
+
+<br>
+
+
+
+<br>
+
+    ・すなわち、生徒Aにとって未知の問題の正答率を予測しているわけではなく、モデルがパラメータを推定するために利用した既知の問題-回答ペアデータに対して、モデルがパラメータをfittingした後にinferenceできる正答率の平均値を習熟度としている
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+結果
+
+<br>
+
+
+
+<br>
+
+・4種類のスキルに対するpost-testのスコアと相関係数をモデルごとに比較した結果、DKT, DKVMNなどは、BKTよりも高い相関を示し、PFAとはcomparableな結果となった
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/187137795-bfb4bdbe-8da8-4269-9024-eae1222430fa.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+所感
+
+<br>
+
+
+
+<br>
+
+・この手法のリアルタイムな運用は難しいと思った（knowledgeをinferするために毎回モデルをtrainingしなおさなければならない）
+
+<br>
+
+
+
+<br>
+
+・BKTが推定するスキルのmasteryはこのcase studyだけ見ると全くあてにならない・・・
+
+<br>
+
+
+
+<br>
+
+・ユーザが回答した問題と紐づいたスキルのknowledgeしか推定できないところもlimitationの一つだと思う
+
+<br>
+
+
+
+<br>
+
+・この手法がtraining dataに含まれていない「未知の問題」に対する正答率予測を平均することで、knowledgeをinferenceできるという話だったのであれば、非常に興味深いと思った。
+
+<br>
+
+
+
+<br>
+
+　・実際どうなんだろうか？</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/468">Deep Knowledge Tracing with Transformers, Shi+ （w_ Michael Yudelson）, ETS_ACT, AIED'20</a>
 <span class="snippet"><span>Comment</span>TransformerでKTした研究。あまり引用されていない。SAINT, SAINT+と同時期に発表されている。</span>
-<a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/Library.html">#Library</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/460">pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM20</a>
-<span class="snippet"><span>Comment</span>pythonによるBKTの実装。scikit-learnベースドなinterfaceを持っているので使いやすそう。# モチベーション
+<a class="button" href="articles/Tools.html">#Tools</a>
+<a class="button" href="articles/Library.html">#Library</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-07-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/460">pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM'20</a>
+<span class="snippet"><span>Comment</span>pythonによるBKTの実装。scikit-learnベースドなinterfaceを持っているので使いやすそう。モチベーション
+
+<br>
+
+
+
+<br>
+
 BKTの研究は古くから行われており、研究コミュニティで人気が高まっているにもかかわらず、アクセス可能で使いやすいモデルの実装と、さまざまな文献で提案されている多くの変種は、理解しにくいものとなっている。そこで、モダンなpythonベースドな実装としてpyBKTを実装し、研究コミュニティがBKT研究にアクセスしやすいようにした。ライブラリのインターフェースと基礎となるデータ表現は、過去の BKTの変種を再現するのに十分な表現力があり、新しいモデルの提案を可能にする。 また、既存モデルとstate-of-the-artの比較評価も容易にできるように設計されている。
-# BKTとは
-BKTの説明は #461 あたりを参照のこと。
+
+<br>
+
+
+
+<br>
+
+BKTとは
+
+<br>
+
+
+
+<br>
+
+BKTの説明は 461 あたりを参照のこと。
+
+<br>
+
+
+
+<br>
+
 BKTはHidden Markov Model (HMM) であり、ある時刻tにおける観測変数（問題に対する正誤）と隠れ変数（学習者のknowledge stateを表す）によって構成される。パラメータは prior（生徒が事前にスキルを知っている確率）, learn (transition probability; 生徒がスキルを学習することでスキルに習熟する確率), slip, guess (emission probability; スキルに習熟しているのに問題に正解する確率, スキルに習熟していないのに問題に正解する確率)の4種類のパラメータをEMアルゴリズムで学習する。
-![image](https://user-images.githubusercontent.com/12249301/184829403-9a589837-b45a-4417-ba49-26392c5ea5e4.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/184829403-9a589837-b45a-4417-ba49-26392c5ea5e4.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 ここで、P(L_t)が時刻tで学習者がスキルtに習熟している確率を表す。BKTでは、P(L_t)を観測された正解/不正解のデータに基づいてP(L_t)をアップデートし、下記式で事後確率を計算する
-![image](https://user-images.githubusercontent.com/12249301/184829784-e280b531-1ed6-4b5b-a7ae-9fc71f8ac224.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/184829784-e280b531-1ed6-4b5b-a7ae-9fc71f8ac224.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 また、時刻t+1の事前確率は下記式で計算される。
-![image](https://user-images.githubusercontent.com/12249301/184829905-e1ac68f9-74bd-4986-a034-02a18161be4c.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/184829905-e1ac68f9-74bd-4986-a034-02a18161be4c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 一般的なBKTモデルではforgettingは生じないようになっている。
-![image](https://user-images.githubusercontent.com/12249301/184832245-1ac8cf7a-c5d3-48a1-95aa-dfddaa729c00.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/184832245-1ac8cf7a-c5d3-48a1-95aa-dfddaa729c00.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Corbett and Andersonが提案している初期のBKTだけでなく、さまざまなBKTの変種も実装している。
 
-# サポートしているモデル
-- KT-IDEM (Item Difficulty Effect): BKTとは異なり、個々のquestionごとにguess/slipパラメータを学習するモデル #469
-- KT-PPS: 個々の生徒ごとにprior knowledgeのパラメータを持つ学習するモデル #470
-- BKT+Forget: 通常のBKTでは一度masterしたスキルがunmasteredに遷移することはないが、それが生じるようなモデル。直近の試行がより重視されるようになる。 #355 
-- Item Order Effect: TBD
-- Item Learning Effect: TBD</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/451">When is Deep Learning the Best Approach to Knowledge Tracing?, Theophile+ （Ken Koedinger）, CMU+, JEDM20</a>
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+サポートしているモデル
+
+<br>
+
+
+
+<br>
+
+・KT-IDEM (Item Difficulty Effect): BKTとは異なり、個々のquestionごとにguess/slipパラメータを学習するモデル 469
+
+<br>
+
+
+
+<br>
+
+・KT-PPS: 個々の生徒ごとにprior knowledgeのパラメータを持つ学習するモデル 470
+
+<br>
+
+
+
+<br>
+
+・BKT+Forget: 通常のBKTでは一度masterしたスキルがunmasteredに遷移することはないが、それが生じるようなモデル。直近の試行がより重視されるようになる。 355 
+
+<br>
+
+
+
+<br>
+
+・Item Order Effect: TBD
+
+<br>
+
+
+
+<br>
+
+・Item Learning Effect: TBD</span>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/451">When is Deep Learning the Best Approach to Knowledge Tracing?, Theophile+ （Ken Koedinger）, CMU+, JEDM'20</a>
 <span class="snippet"><span>Comment</span>下記モデルの性能をAUCとRMSEの観点から9つのデータセットで比較した研究
-- DLKT
-    - DKT
-    - SAKT
-    - FFN
-- Regression Models
-    - IRT
-    - PFA
-    - DAS3H
-    - Logistinc Regression
-- variation of BKT
-    - BKT+ (add individualization, forgetting, discovery of knowledge components)
+
+<br>
+
+
+
+<br>
+
+・DLKT
+
+<br>
+
+
+
+<br>
+
+    ・DKT
+
+<br>
+
+
+
+<br>
+
+    ・SAKT
+
+<br>
+
+
+
+<br>
+
+    ・FFN
+
+<br>
+
+
+
+<br>
+
+・Regression Models
+
+<br>
+
+
+
+<br>
+
+    ・IRT
+
+<br>
+
+
+
+<br>
+
+    ・PFA
+
+<br>
+
+
+
+<br>
+
+    ・DAS3H
+
+<br>
+
+
+
+<br>
+
+    ・Logistinc Regression
+
+<br>
+
+
+
+<br>
+
+・variation of BKT
+
+<br>
+
+
+
+<br>
+
+    ・BKT+ (add individualization, forgetting, discovery of knowledge components)
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 DKT、およびLogistic Regressionが最も良い性能を示し、DKTは5種類のデータセットで、Logistic Regressionは4種類のデータセットでbestな結果を示した。
-SAKTは #417 で示されている結果とは異なり、全てのデータセットにおいてDKTの性能を下回った。
+
+<br>
+
+
+
+<br>
+
+SAKTは 417 で示されている結果とは異なり、全てのデータセットにおいてDKTの性能を下回った。
+
+<br>
+
+
+
+<br>
+
 また、データセットのサイズがモデルのパフォーマンスに影響していることを示しており、
+
+<br>
+
+
+
+<br>
+
 小さなデータセットの場合はLogistic Regressionのパフォーマンスがよく、
+
+<br>
+
+
+
+<br>
+
 大きなデータセットの場合はDKTの性能が良かった。
+
+<br>
+
+
+
+<br>
+
 （アイテムごとの学習者数の中央値、およびKCごとの学習者数の中央値が小さければ小さいほど、Logistic Regressionモデルが強く、DLKTモデルはoverfitしてしまった; たとえば、アイテムごとの学習者数の中央値が1, 4, 10とかのデータではLRが強い; アイテムごとの学習者数の中央値が仮に大きかったとしても、KCごとの学習者数の中央値が少ないデータ(200程度; Spanish)では、Logistic Regressionが強い）。
+
+<br>
+
+
+
+<br>
+
 加えて、DKTはLogistic Regressionと比較して、より早くピークパフォーマンスに到達することがわかった。ちなみに、一つのアイテムに複数のKCが紐づいている場合は、それらを組み合わせ新たなKCを作成することで、DKTとSAKTに適用したと書いてある（この辺がずっと分かりづらかった）。データセットの統計量はこちら：
-![image](https://user-images.githubusercontent.com/12249301/165673839-fedce7e1-298c-4af1-acac-779a038c31a8.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165673839-fedce7e1-298c-4af1-acac-779a038c31a8.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 データセットごとに、連続して同じトピックの問題（i.e. 連続した問題IDの問題を順番に解いている）を解いている割合（i.e. どれだけ順番に問題を解いていっているか）を算出した結果が下図。
+
+<br>
+
+
+
+<br>
+
 同じトピックの問題を連続して解いている場合（i.e. 順番に問題を解いていっている場合）に、DKTの性能が良い。
 
-![image](https://user-images.githubusercontent.com/12249301/165675807-14b37410-b577-446f-ab11-14ff3fad61a9.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165675807-14b37410-b577-446f-ab11-14ff3fad61a9.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 またパフォーマンスに影響を与える要因として、学習者ごとのインタラクション数が挙げられる。ほとんどのデータセットでは、power-lawに従い中央値が数百程度だが、bridge06やspanishのように、power-lawになっておらず中央値が数千といったデータが存在する。こういったデータではDKTはlong-termの情報を捉えきれず、高い性能を発揮しない。
 
-![image](https://user-images.githubusercontent.com/12249301/165676378-5c690a50-0634-447f-bf2d-1b0f9d33482e.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165676378-5c690a50-0634-447f-bf2d-1b0f9d33482e.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 実験に利用した実装はこちら：https://github.com/theophilee/learner-performance-prediction
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ただ、実装を見るとDKTの実装はオリジナルの論文とは全く異なる工夫が加えられていそう
+
+<br>
+
+
+
+<br>
+
 https://github.com/theophilee/learner-performance-prediction/blob/master/model_dkt2.py
+
+<br>
+
+
+
+<br>
+
 これをDKTって言っていいの・・・？
+
+<br>
+
+
+
+<br>
+
 オリジナルのDKTの実装はDKT1として実装されていそうだけど、その性能は報告されていないと思われる・・・。
+
+<br>
+
+
+
+<br>
+
 DKT1の実装じゃないと、KCのマスタリーは取得できないんでは。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 追記：と思ったら、DKTのAblation Studyで報告されている Input/Output をKC, Itemsで変化させた場合のAUCの性能の変化の表において、best performingだった場合のAUCスコアが9つのデータセットに対するDKTの予測性能に記載されている・・・。
+
+<br>
+
+
+
+<br>
+
 じゃあDKT2はどこで使われているの・・・。DKTは、inputとしてquestion_idを使うかKCのidを使うか選択できる。また、outputもquestion_idに対するprobabilityをoutputするか、KCに対するprobabilityをoutputするか選択できる。
+
+<br>
+
+
+
+<br>
+
 これらの組み合わせによって、予測性能がどの程度変化するかを検証した結果が下記。
+
+<br>
+
+
+
+<br>
+
 KCをinputし、question_idをoutputとする方法が最も性能が良かった。
 
-![image](https://user-images.githubusercontent.com/12249301/165685019-01a19a92-1518-4740-a1f0-2e88e5656ad2.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/165685019-01a19a92-1518-4740-a1f0-2e88e5656ad2.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 明記されていないが、おそらくこの検証にはDKT1の実装を利用していると思われる。input / outputをquestionかKCかを選べるようになっていたので。
+
+<br>
+
+
+
+<br>
+
 実際にIssueでも、assistments09のAUC0.75を再現したかったら、dkt1をinput/output共にKCに指定して実行しろと著者が回答している。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ちなみに論文中の9つのデータセットに対するAUCの比較では、各々のモデルはKCに対して正答率を予測しているのではなく、個々の問題単位で正答率を予測していると思われる（実装を見た感じ）。
+
+<br>
+
+
+
+<br>
+
 </span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><a class="button" href="articles/SIGKDD.html">#SIGKDD</a><br><span class="issue_date">Issue Date: 2022-04-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/446">Context-Aware Attentive Knowledge Tracing, Ghosh+, University of Massachusetts Amherst, KDD20</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<a class="button" href="articles/SIGKDD.html">#SIGKDD</a>
+<span class="issue_date">Issue Date: 2022-04-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/446">Context-Aware Attentive Knowledge Tracing, Ghosh+, University of Massachusetts Amherst, KDD'20</a>
 <span class="snippet"><span>Comment</span>この論文の実験ではSAKTがDKVMNやDKTに勝てていない</span>
-<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/Assessment.html">#Assessment</a><br><span class="issue_date">Issue Date: 2022-04-18</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444">Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv20</a>
-<span class="snippet"><span>Comment</span># 概要
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/Assessment.html">#Assessment</a>
+<span class="issue_date">Issue Date: 2022-04-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444">Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv'20</a>
+<span class="snippet"><span>Comment</span>概要
+
+<br>
+
+
+
+<br>
+
 テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。
 
-# Knowledge Tracingタスクの定義
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Knowledge Tracingタスクの定義
+
+<br>
+
+
+
+<br>
+
 手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。
-![image](https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。
-![image](https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png)
-![image](https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png)
 
-# Assessmentを予測するタスク
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Assessmentを予測するタスク
+
+<br>
+
+
+
+<br>
+
 また、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。
-![image](https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。
-![image](https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png)
 
-# label-scarceなeducational featureの例
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+label-scarceなeducational featureの例
+
+<br>
+
+
+
+<br>
+
 また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。
 
-- Non Interactive Educational Feature
-    - exam_score: A student’s score on a standardized exam.
-    - grade: A student’s final grade in a course.
-    - certification: Professional certifications obtained by completion of educational programs or examinations.
-- Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと）
-    - course_dropout: Whether a student drops out of the entire class.
-    - review_correctness: Whether a student responds correctly to a previously solved exercise.
+<br>
 
-![image](https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png)
 
-# モデル
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+・Non Interactive Educational Feature
+
+<br>
+
+
+
+<br>
+
+    ・exam_score: A student’s score on a standardized exam.
+
+<br>
+
+
+
+<br>
+
+    ・grade: A student’s final grade in a course.
+
+<br>
+
+
+
+<br>
+
+    ・certification: Professional certifications obtained by completion of educational programs or examinations.
+
+<br>
+
+
+
+<br>
+
+・Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと）
+
+<br>
+
+
+
+<br>
+
+    ・course_dropout: Whether a student drops out of the entire class.
+
+<br>
+
+
+
+<br>
+
+    ・review_correctness: Whether a student responds correctly to a previously solved exercise.
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデル
+
+<br>
+
+
+
+<br>
+
 これらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。
+
+<br>
+
+
+
+<br>
+
 モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。
+
+<br>
+
+
+
+<br>
+
 inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる：
-- exercise_id: We assign a latent vector unique to each exercise id.
-- exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.
-- position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].
-- correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.
-- elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.
-- inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector
+
+<br>
+
+
+
+<br>
+
+・exercise_id: We assign a latent vector unique to each exercise id.
+
+<br>
+
+
+
+<br>
+
+・exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.
+
+<br>
+
+
+
+<br>
+
+・position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].
+
+<br>
+
+
+
+<br>
+
+・correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.
+
+<br>
+
+
+
+<br>
+
+・elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.
+
+<br>
+
+
+
+<br>
+
+・inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。
+
+<br>
+
+
+
+<br>
+
 たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Loss functionは、pre-training taskごとに定義する。
 
-![image](https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png)
+<br>
 
-# 評価
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+評価
+
+<br>
+
+
+
+<br>
+
 試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。
 
-## Dataset
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Dataset
+
+<br>
+
+
+
+<br>
+
 EdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。
 
-## Exam Score Prediction
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Exam Score Prediction
+
+<br>
+
+
+
+<br>
+
 2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。
 
-## review correctness prediction
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+review correctness prediction
+
+<br>
+
+
+
+<br>
+
 生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。
+
+<br>
+
+
+
+<br>
+
 最終的に4540個のラベル付されたsequenceを得た。
 
-## モデルのセットアップ
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデルのセットアップ
+
+<br>
+
+
+
+<br>
+
 モデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。
+
+<br>
+
+
+
+<br>
+
 また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。
 
-# 実験結果
-## pre-trainingタスクがdown-streamタスクに与える影響
-![image](https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+実験結果
+
+<br>
+
+
+
+<br>
+
+pre-trainingタスクがdown-streamタスクに与える影響
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 correctness + timelinessの予測を行った場合に、最も性能がよかった。
 
-## 性能
-![image](https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+性能
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/DropoutPrediction.html">#DropoutPrediction</a><br><span class="issue_date">Issue Date: 2022-04-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/443">Deep Attentive Study Session Dropout Prediction in Mobile Learning Environment, Riiid AI Research, Lee+, CSEDU20</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/DropoutPrediction.html">#DropoutPrediction</a>
+<span class="issue_date">Issue Date: 2022-04-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/443">Deep Attentive Study Session Dropout Prediction in Mobile Learning Environment, Riiid AI Research, Lee+, CSEDU'20</a>
 <span class="snippet"><span>Comment</span>従来のdropout研究では、学校のドロップアウトやコースのドロップアウト、MOOCsなどでのドロップアウトが扱われてきたが、モバイル学習環境を考慮した研究はあまり行われてこなかった。モバイル学習環境では着信やソーシャルアプリなど、多くの外敵要因が存在するため、学習セッションのドロップアウトが頻繁に発生する。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 学習セッションを、隣接するアクティビティと1時間のインターバルが空いていないアクティビティのsequenceと定義
+
+<br>
+
+
+
+<br>
+
 Transformerを利用したモデルを提案。
-![image](https://user-images.githubusercontent.com/12249301/163503384-6f0d4f49-ddda-4588-ad5b-81b86138300b.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163503384-6f0d4f49-ddda-4588-ad5b-81b86138300b.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 利用したFeatureは以下の通り
-![image](https://user-images.githubusercontent.com/12249301/163503437-aaeeb065-8eb8-4831-9260-a416de347c0c.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163503437-aaeeb065-8eb8-4831-9260-a416de347c0c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 AUCでの評価の結果、LSTM,GRUを用いたモデルをoutperform
-![image](https://user-images.githubusercontent.com/12249301/163503475-169cc2f4-564a-4178-84aa-37b05ef5dd3c.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163503475-169cc2f4-564a-4178-84aa-37b05ef5dd3c.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 また、Transformerに入力するinput sequenceのsizeで予測性能がどれだけ変化するかを確認したところ、sequence sizeが5の場合に予測性能が最大となった。
-![image](https://user-images.githubusercontent.com/12249301/163503542-a9bd4d71-2a75-4ccb-a250-7a9258201219.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/163503542-a9bd4d71-2a75-4ccb-a250-7a9258201219.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 これは、session dropoutの予測には、生徒の最新のinteractionの情報と相関があることを示している。だが、sequence sizeが2のときに予測性能は低かったため、ある程度のcontext情報が必要なことも示唆している。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 また、inputに利用するfeatureとしては、問題を解く際のelapsed_timeと、session内でのposition、またdropoutしたか否かのラベルが予測性能の向上に大きく寄与した。
 
-Q. AUCの評価はどうやって評価しているのか。dropoutしたラベルの部分のみを評価しているのか否かがわからない。
-Q. dropoutラベルをinputのfeatureに利用するのは実用上問題があるのでは？次の1問を解いたときにdropoutするか否かしか予測できなくなってしまうのでは。まあでもそれはelapsed_timeとかも一緒か。
-</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/MachineLearning.html">#MachineLearning</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/458">Deep-IRT: Make Deep Learning Based Knowledge Tracing Explainable Using Item Response Theory, Chun-Kit Yeung, EDM19</a>
-<span class="snippet"><span>Comment</span># 一言で言うと
-DKVMN #352 のサマリベクトルf_tと、KC embedding k_tを、それぞれ独立にFully connected layerにかけてスカラー値に変換し、生徒のスキルごとの能力パラメータθと、スキルの困難度パラメータβを求められるようにして、解釈性を向上させた研究。最終的にθとβをitem response function (シグモイド関数)に適用することで、KC j を正しく回答できる確率を推定する。
+<br>
 
-# モデル
-![image](https://user-images.githubusercontent.com/12249301/180361492-c8e67272-d0b0-421e-9ff5-bdf56eeb36e0.png)
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Q. AUCの評価はどうやって評価しているのか。dropoutしたラベルの部分のみを評価しているのか否かがわからない。
+
+<br>
+
+
+
+<br>
+
+Q. dropoutラベルをinputのfeatureに利用するのは実用上問題があるのでは？次の1問を解いたときにdropoutするか否かしか予測できなくなってしまうのでは。まあでもそれはelapsed_timeとかも一緒か。
+
+<br>
+
+
+
+<br>
+
+</span>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/MachineLearning.html">#MachineLearning</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-07-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/458">Deep-IRT: Make Deep Learning Based Knowledge Tracing Explainable Using Item Response Theory, Chun-Kit Yeung, EDM'19</a>
+<span class="snippet"><span>Comment</span>一言で言うと
+
+<br>
+
+
+
+<br>
+
+DKVMN 352 のサマリベクトルf_tと、KC embedding k_tを、それぞれ独立にFully connected layerにかけてスカラー値に変換し、生徒のスキルごとの能力パラメータθと、スキルの困難度パラメータβを求められるようにして、解釈性を向上させた研究。最終的にθとβをitem response function (シグモイド関数)に適用することで、KC j を正しく回答できる確率を推定する。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデル
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180361492-c8e67272-d0b0-421e-9ff5-bdf56eeb36e0.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 基本的なモデルはDKVMNで、DKVMNのサマリベクトルf_tに対してstudent ability networkを適用し、KC embedding k_tに対してdifficulty networkを適用するだけ。
-![image](https://user-images.githubusercontent.com/12249301/180361731-7a4f6cb6-ef70-4ee4-a04b-5f1ea4c6640f.png)
-生徒の能力パラメータθとスキルの困難度パラメータβを求め、最終的に下記item response functionを適用することで、入力されたスキルに対する反応予測を実施する：
-![image](https://user-images.githubusercontent.com/12249301/180361904-c4d8f05d-9a5d-475b-b6f2-17b6497bcc7a.png)
 
-# 気持ち
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180361731-7a4f6cb6-ef70-4ee4-a04b-5f1ea4c6640f.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+生徒の能力パラメータθとスキルの困難度パラメータβを求め、最終的に下記item response functionを適用することで、入力されたスキルに対する反応予測を実施する：
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180361904-c4d8f05d-9a5d-475b-b6f2-17b6497bcc7a.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+気持ち
+
+<br>
+
+
+
+<br>
+
 古典的なKnowledge Tracing手法は、学習者の能力パラメータや項目の困難度パラメータといった人間が容易に解釈できるパラメータを用いて反応予測を行えるが、精度が低い。一方、DeepなKnowledge Tracingは性能は高いが学習されるパラメータの解釈性が低い。そこで、IRTと最近提案されたDKVMNを組み合わせることで、高性能な反応予測も実現しつつ、直接的にpsychological interpretationが可能なパラメータを学習するモデルを提案した。
+
+<br>
+
+
+
+<br>
+
 DKVMNがinferenceに利用する情報は、意味のある情報に拡張することができることを主張。
+
+<br>
+
+
+
+<br>
+
 1つめは、各latent conceptのknowledge stateは、生徒の能力パラメータを計算することに利用できる。具体的には、DKVMNによって求められるベクトルf_tは、read vector r （該当スキルに対する生徒のmastery level を表すベクトル）とKCのembedding k_t から求められる。これは、生徒のスキルに対するknowledge staeteとスキルそのもののembeddedされた情報の両者を含んでいるので、f_tをNNで追加で処理することで、生徒のスキルq_tに対する能力を推定することができるのではないかと主張。
+
+<br>
+
+
+
+<br>
+
 同様に、q_tの困難度パラメータもKC embedding vector k_tをNNに渡すことで求めることができると主張。
+
+<br>
+
+
+
+<br>
+
 生徒の能力を求めるネットワークを、student ability network, スキルの困難度パラメータを求めるネットワークをdifficulty networkと呼ぶ。
 
-# 性能
-![image](https://user-images.githubusercontent.com/12249301/180362356-54ec5d27-8760-4132-b1c9-28653f4585dc.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+性能
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180362356-54ec5d27-8760-4132-b1c9-28653f4585dc.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 実験の結果、DKT, DKVMN, Deep-IRTはそれぞれ似たようなAUCとなり、反応予測の性能はcomparable
 
-# Discussion
-## 学習された困難度パラメータについて
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Discussion
+
+<br>
+
+
+
+<br>
+
+学習された困難度パラメータについて
+
+<br>
+
+
+
+<br>
+
 複数のソース（1. データセットのpublisherが設定している3段階の難易度, 2. item analysisによって求めた難易度（生徒が問題に取り組んだとき不正解となった割合）, 3. IRTによって推定した困難度パラメータ, 4. PFAによって推定した困難度パラメータ）とDeep-IRTが学習したKC Difficulty levelの間で相関係数を測ることで、Deep-IRTが学習した困難度パラメータが妥当か検討している。ソース2, 3については、困難度推定に使うデータがtest environmentではなく学習サービスによるものなので、生徒のquestionに対するfirst attemptから困難度パラメータを予測した。一方、PFAの場合はtest environmentによる推定ではなく、knowledge tracingの設定で困難度パラメータを推定した（i.e. 利用するデータをfirst attemptに限定しない）。
-![image](https://user-images.githubusercontent.com/12249301/180363651-83b4c999-8888-4801-9906-347673d12653.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180363651-83b4c999-8888-4801-9906-347673d12653.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 相関係数をは測った結果が上図で、正直見方があまりわからない。著者らの主張としては、Deep-IRTは他の困難度ソースの大部分と強い相関があった（ソース1を除く）、と主張しているが、相関係数の値だけ見ると明らかにPFAの方が全てのソースに対して高い相関係数を持っている。また、困難度を推定するモデルの設定（test environment vs. learning environment）や複雑度が近ければ近いほど、相関係数が高かった（ソース2, 3間は相関係数は0.96、一方ソース2とDeep-IRTは相関係数0.56）。また、Deep-IRTはソース1の困難度パラメータとの相関係数が0.08であり非常に低い（他のソースは0.3~0.4程度の相関係数が出ている）。この結果を見ると、Deep-IRTによって推定された困難度パラメータは古典的な手法とは少し違った傾向を持っているのではないかと推察される。
+
+<br>
+
+
+
+<br>
+
 =&gt; DeepIRTによって推定された困難度パラメータは、古典的な手法と比較してめっちゃ近いというわけでもなく、人手で付与された難易度と全く相関がない（そもそも人手で付与された難易度が良いものかどうかも怪しい）。結局DeepIRTによる困難度パラメータがどれだけ適切かは評価されていないので、古典的な手法とは少し似ているけど、なんか傾向が違う困難度パラメータが出ていそうです〜くらいのことしかわからない。
 
-## 学習された生徒の能力パラメータについて
-![image](https://user-images.githubusercontent.com/12249301/180364913-de52de81-58f4-4093-a7c8-cf9f643c22dd.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+学習された生徒の能力パラメータについて
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180364913-de52de81-58f4-4093-a7c8-cf9f643c22dd.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 reconstruction問題がDKTと同様に生じている。たとえば、“equation solving more than two steps” (red) に不正解したにもかかわらず、対応する生徒の能力が向上してしまっている。また、スキル間のpre-requisite関係も捉えられない。具体的には、“equation solving two or fewer steps” (blue) に正解したにもかかわらず、“equation solving more than two steps” (red) の能力は減少してしまっている。
 
-# 所感
-生徒の能力パラメータは、そもそもDKTVMモデルでも入力されたスキルタグに対する反応予測結果が、まさに生徒の該当スキルタグに対する能力パラメータだったのでは？と思う。困難度パラメータについては推定できることで使い道がありそうだが、DeepIRTによって推定された困難度パラメータがどれだけ良いものかはこの論文では検証されていないので、なんともいえない。# 関連研究
-- Item Response Theory (IRT): 受験者の能力パラメータはテストを受けている間は不変であるという前提をおいており（i.e. testing environmentを前提としている）、Knowledgte Tracingタスクのような、学習者の能力が動的に変化する（i.e. learning environment）状況ではIRTをKnowledge Tracingに直接利用できない（と主張しているが、 #358 あたりではIRTで項目の反応予測に利用してDKTをoutperformしている）
-- Bayesian Knowledge Tracing (BKT): 「全ての生徒と、同じスキルを必要とする問題がモデル上で等価に扱われる」という非現実的な仮定が置かれている。言い換えれば、生徒ごとの、あるいは問題ごとのパラメータが存在しないということ。
-- Latent Factor Analysis (LFA): IRTと類似しているが、スキルレベルのパラメータを利用してKnowledge Tracingタスクに取り組んだ。生徒の能力パラメータθと、問題に紐づいたスキルごとの難易度パラメータβと学習率γ（γ x 正答数で該当スキルに対する学習度合いを求める）を持つ。これにより「学習」に対してもモデルを適用できるようにしている。
-- Performance Factor Analysis (PFA): 生徒の能力値よりも、生徒の過去のパフォーマンスがKTタスクにより強い影響があると考え、LFAを拡張し、スキルごとに正解時と不正解時のlearning rateを導入し、過去の該当スキルの正解/不正解数によって生徒の能力値を求めるように変更。これにより、スキルごとに生徒の能力パラメータが存在するようなモデルとみなすことができる。
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+所感
+
+<br>
+
+
+
+<br>
+
+生徒の能力パラメータは、そもそもDKTVMモデルでも入力されたスキルタグに対する反応予測結果が、まさに生徒の該当スキルタグに対する能力パラメータだったのでは？と思う。困難度パラメータについては推定できることで使い道がありそうだが、DeepIRTによって推定された困難度パラメータがどれだけ良いものかはこの論文では検証されていないので、なんともいえない。関連研究
+
+<br>
+
+
+
+<br>
+
+・Item Response Theory (IRT): 受験者の能力パラメータはテストを受けている間は不変であるという前提をおいており（i.e. testing environmentを前提としている）、Knowledgte Tracingタスクのような、学習者の能力が動的に変化する（i.e. learning environment）状況ではIRTをKnowledge Tracingに直接利用できない（と主張しているが、 358 あたりではIRTで項目の反応予測に利用してDKTをoutperformしている）
+
+<br>
+
+
+
+<br>
+
+・Bayesian Knowledge Tracing (BKT): 「全ての生徒と、同じスキルを必要とする問題がモデル上で等価に扱われる」という非現実的な仮定が置かれている。言い換えれば、生徒ごとの、あるいは問題ごとのパラメータが存在しないということ。
+
+<br>
+
+
+
+<br>
+
+・Latent Factor Analysis (LFA): IRTと類似しているが、スキルレベルのパラメータを利用してKnowledge Tracingタスクに取り組んだ。生徒の能力パラメータθと、問題に紐づいたスキルごとの難易度パラメータβと学習率γ（γ x 正答数で該当スキルに対する学習度合いを求める）を持つ。これにより「学習」に対してもモデルを適用できるようにしている。
+
+<br>
+
+
+
+<br>
+
+・Performance Factor Analysis (PFA): 生徒の能力値よりも、生徒の過去のパフォーマンスがKTタスクにより強い影響があると考え、LFAを拡張し、スキルごとに正解時と不正解時のlearning rateを導入し、過去の該当スキルの正解/不正解数によって生徒の能力値を求めるように変更。これにより、スキルごとに生徒の能力パラメータが存在するようなモデルとみなすことができる。
+
+<br>
+
+
+
+<br>
+
 =&gt; LFAとPFAでは、複数スキルに対する「学習」タスクを扱うことができる。一方で、スキルタグについては手動でラベル付をする必要があり、またスキル間の依存関係については扱うことができない。また、LFAでは問題に対する正答率が問題に対するattempt数に対して単調増加するため、生徒のknowledge stateがlearnedからunlearnedに遷移することがないという問題がある。PFAでは失敗したattemptの数を導入することでこの仮定を緩和しているが、生徒が大量の正答を該当スキルに対して実施した後では問題に対する正答率を現象させることは依然として困難。
-- Deep Knowledge Tracing (DKT): DeepLearningの導入によって、これまで性能を向上させるために人手で設計されたfeature（e.g. recency effect, contextualized trial sequence, inter-skill relationship, student’s ability variation）などを必要とせず、BKTやPFAをoutperformした。しかし、RNNによって捉えられた情報は全て同じベクトル空間（hidden layer）に存在するため、時間の経過とともに一貫性した予測を提供することが困難であり、結果的に生徒が得意な、あるいは不得意なKCをピンポイントに特定できないという問題がある（ある時刻tでは特定のスキルのマスタリーがめっちゃ高かったが、別の問題に回答しているうちにマスタリーがめっちゃ下がるみたいな現象が起きるから？）。
-- Dynamic Key Value Memory Network (DKVMN): DKTでは全てのコンセプトに対するknowledge stateを一つのhidden stateに集約することから、生徒が特定のコンセプトをどれだけマスターしたのかをトレースしたり、ピンポイントにどのコンセプトが得意, あるいは不得意なのかを特定することが困難であった（←でもこれはただの感想だと思う）。DKTのこのような問題点を改善するために提案された。DKVMNではDKTと比較して、DKTを予測性能でoutperformするだけでなく（しかしこれは後の追試によって性能に大差がないことがわかっている）、overfittingしづらく、Knowledge Component (=スキルタグ)の背後に潜むコンセプトを正確に見つけられることを示した。しかし、KCの学習プロセスを、KCのベクトルや、コンセプトごとにメモリを用意しメモリ上でknowledge stateを用いて表現することで的確にモデル化したが、依然としてベクトル表現の解釈性には乏しい。したがって、IRTやBKT, PFAのような、パラメータが直接的にpsychological interpretationが可能なモデルと、パラメータやrepresentationの解釈が難しいDKTやDKVMNなどのモデルの間では、learning science communityの間で対立が存在した。
+
+<br>
+
+
+
+<br>
+
+・Deep Knowledge Tracing (DKT): DeepLearningの導入によって、これまで性能を向上させるために人手で設計されたfeature（e.g. recency effect, contextualized trial sequence, inter-skill relationship, student’s ability variation）などを必要とせず、BKTやPFAをoutperformした。しかし、RNNによって捉えられた情報は全て同じベクトル空間（hidden layer）に存在するため、時間の経過とともに一貫性した予測を提供することが困難であり、結果的に生徒が得意な、あるいは不得意なKCをピンポイントに特定できないという問題がある（ある時刻tでは特定のスキルのマスタリーがめっちゃ高かったが、別の問題に回答しているうちにマスタリーがめっちゃ下がるみたいな現象が起きるから？）。
+
+<br>
+
+
+
+<br>
+
+・Dynamic Key Value Memory Network (DKVMN): DKTでは全てのコンセプトに対するknowledge stateを一つのhidden stateに集約することから、生徒が特定のコンセプトをどれだけマスターしたのかをトレースしたり、ピンポイントにどのコンセプトが得意, あるいは不得意なのかを特定することが困難であった（←でもこれはただの感想だと思う）。DKTのこのような問題点を改善するために提案された。DKVMNではDKTと比較して、DKTを予測性能でoutperformするだけでなく（しかしこれは後の追試によって性能に大差がないことがわかっている）、overfittingしづらく、Knowledge Component (=スキルタグ)の背後に潜むコンセプトを正確に見つけられることを示した。しかし、KCの学習プロセスを、KCのベクトルや、コンセプトごとにメモリを用意しメモリ上でknowledge stateを用いて表現することで的確にモデル化したが、依然としてベクトル表現の解釈性には乏しい。したがって、IRTやBKT, PFAのような、パラメータが直接的にpsychological interpretationが可能なモデルと、パラメータやrepresentationの解釈が難しいDKTやDKVMNなどのモデルの間では、learning science communityの間で対立が存在した。
+
+<br>
+
+
+
+<br>
+
 =&gt; なので、IRTとDKVMNを組み合わせることで、DKVMNをよりexplainableにすることで、この対立を緩和します。という流れ著者による実装: https://github.com/ckyeungac/DeepIRT</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/455">Knowledge Tracing with Sequential Key-Value Memory Networks, Ghodai+, Research School of Computer Science, Australian National University, SIGIR19</a>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/EDM.html">#EDM</a><br><span class="issue_date">Issue Date: 2021-10-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/417">A Self-Attentive model for Knowledge Tracing, Pandy+ （with George Carypis）, EDM19</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-04-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/455">Knowledge Tracing with Sequential Key-Value Memory Networks, Ghodai+, Research School of Computer Science, Australian National University, SIGIR'19</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/EDM.html">#EDM</a>
+<span class="issue_date">Issue Date: 2021-10-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/417">A Self-Attentive model for Knowledge Tracing, Pandy+ （with George Carypis）, EDM'19</a>
 <span class="snippet"><span>Comment</span>Knowledge Tracingタスクに初めてself-attention layerを導入した研究interaction (e_{t}, r_{t}) および current exercise (e_{t+1}) が与えられた時に、current_exerciseの正誤を予測したい。
-* e_{t}: 時刻tのexercise
-* r_{t}: 時刻tでの正誤
+
+<br>
+
+
+
+<br>
+
+ e_{t}: 時刻tのexercise
+
+<br>
+
+
+
+<br>
+
+ r_{t}: 時刻tでの正誤
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 interactionからKey, Valueを生成し、current exerciseからQueryを生成し、multi-head attentionを適用する。その後、得られたcontext vectorをFFNにかけて、正誤を予測する。
 
-![image](https://user-images.githubusercontent.com/12249301/139178090-7756d34a-2f48-44d5-8782-68fca388a0aa.png)
-![image](https://user-images.githubusercontent.com/12249301/139178523-aa52a2e9-5157-433e-a429-cea57f998bcd.png)
+<br>
 
-DKTや、DKVMNを全てのデータセットでoutperform#446 においてはSAKTがDKT, DKVMN等に勝てていないのに対し（ASSSITments Data + Statics Data）
-#450 #452  においてはSAKTはDKT, DKVMNに勝っている（EdNet Data）
-#451 においてもSAKTがDKTに勝てないことが報告されている（ASSISTments Data + Statics Data + Bridge to Algebra, Squirrel dataなど）。ただし、Interaction数が大きいデータセット（Squirrel data）ではDKTの性能に肉薄している。
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/139178090-7756d34a-2f48-44d5-8782-68fca388a0aa.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/139178523-aa52a2e9-5157-433e-a429-cea57f998bcd.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+DKTや、DKVMNを全てのデータセットでoutperform446 においてはSAKTがDKT, DKVMN等に勝てていないのに対し（ASSSITments Data + Statics Data）
+
+<br>
+
+
+
+<br>
+
+450 452  においてはSAKTはDKT, DKVMNに勝っている（EdNet Data）
+
+<br>
+
+
+
+<br>
+
+451 においてもSAKTがDKTに勝てないことが報告されている（ASSISTments Data + Statics Data + Bridge to Algebra, Squirrel dataなど）。ただし、Interaction数が大きいデータセット（Squirrel data）ではDKTの性能に肉薄している。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Large ScaleなデータだとSAKTが強いが、Large Scaleなデータでなければあまり強くないということだと思われる。
+
+<br>
+
+
+
+<br>
+
 Large Scaleの基準は、なかなか難しいが、1億Interaction程度あれば（EdNetデータ）SAKTの方が優位に強くなりそう。
+
+<br>
+
+
+
+<br>
+
 数十万、数百万Interaction程度のデータであれば、DKTとSAKTはおそらくcomparableだと思われる。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 （追記）
-しかし #456 においてはSAKTはEdNetデータセット（Large Scale）においてDKT, DKT+, DKVMNとcomparableなので、
+
+<br>
+
+
+
+<br>
+
+しかし 456 においてはSAKTはEdNetデータセット（Large Scale）においてDKT, DKT+, DKVMNとcomparableなので、
+
+<br>
+
+
+
+<br>
+
 正直何を信じたら良いか分からない。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-09-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/483">Applications of the Elo Rating System in Adaptive Educational Systems, Pelanek, Computers &amp; Educations16</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-09-05</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/483">Applications of the Elo Rating System in Adaptive Educational Systems, Pelanek, Computers &amp; Educations'16</a>
 <span class="snippet"><span>Comment</span>Elo rating systemの教育応用に関して詳細に記述されている</span>
-<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><a class="button" href="articles/NeurIPS.html">#NeurIPS</a><br><span class="issue_date">Issue Date: 2022-04-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/445">Estimating student proficiency: Deep learning is not the panacea, Wilson+, Knewton+, NIPS16 workshop</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<a class="button" href="articles/NeurIPS.html">#NeurIPS</a>
+<span class="issue_date">Issue Date: 2022-04-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/445">Estimating student proficiency: Deep learning is not the panacea, Wilson+, Knewton+, NIPS'16 workshop</a>
 <span class="snippet"><span>Comment</span>DKTの性能をBKTやPFA等の手法と比較した研究
-#355 を引用し、DKTとBKTのAUCの計算方法の違いについて言及している</span>
-<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/DropoutPrediction.html">#DropoutPrediction</a><a class="button" href="articles/EMNLP.html">#EMNLP</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/424">Predicting MOOC Dropout over Weeks Using Machine Learning Methods, EMNLP14 Workshop, Marius Kloft</a>
+
+<br>
+
+
+
+<br>
+
+355 を引用し、DKTとBKTのAUCの計算方法の違いについて言及している</span>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/DropoutPrediction.html">#DropoutPrediction</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+<span class="issue_date">Issue Date: 2021-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/424">Predicting MOOC Dropout over Weeks Using Machine Learning Methods, EMNLP'14 Workshop, Marius Kloft</a>
 <span class="snippet"><span>Comment</span>EMNLP'14のWorkshop論文。引用数が120件とかなり多め。MOOCsのclickstreamデータから、numericalなfeatureを作成。SVMに食わせて学習し、Dropout Predictionを行なっている。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 psychologyのMOOCコースからデータ収集。12週に渡って講義が行われる。統計量は以下：
+
+<br>
+
+
+
+<br>
+
 初週のユーザ数：11,607
+
+<br>
+
+
+
+<br>
+
 最後の週まで残ったユーザ数：3,861
+
+<br>
+
+
+
+<br>
+
 参加した全体のユーザ数：20,828
+
+<br>
+
+
+
+<br>
+
 DropOut率：81.4%
+
+<br>
+
+
+
+<br>
+
 コース自体は19週間受講可能なので、その間のデータがある。
 
-dropoutか否かのラベルは、翌週にターゲットユーザのIDと紐づいたアクティビティがあるかどうかで判断。ユーザuの各週Wiに対して、i=1, ..., 19の +1 / -1 ラベルが付与される。
-+1 がDropout, -1がNo Dropout。特徴量：
-![image](https://user-images.githubusercontent.com/12249301/139363066-bdb4e294-cdae-4493-9721-1a20757c20f8.png)
-![image](https://user-images.githubusercontent.com/12249301/139363086-1df1ab46-c1ed-4a2a-a72d-d310b3101b8f.png)
+<br>
 
-最初の1 -- 9週の間は、あまりDropoutが予測できないが、それ以後はhistory featureが効いて予測ができるようになる。</span>
-<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><a class="button" href="articles/EDM.html">#EDM</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/420">General Features in Knowledge Tracing: Applications to Multiple Subskills, Temporal Item Response Theory, and Expert Knowledge, Brusilovsky+, EDM14</a>
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+dropoutか否かのラベルは、翌週にターゲットユーザのIDと紐づいたアクティビティがあるかどうかで判断。ユーザuの各週Wiに対して、i=1, ..., 19の +1 / -1 ラベルが付与される。
+
+<br>
+
+
+
+<br>
+
++1 がDropout, -1がNo Dropout。特徴量：
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/139363066-bdb4e294-cdae-4493-9721-1a20757c20f8.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/139363086-1df1ab46-c1ed-4a2a-a72d-d310b3101b8f.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+最初の1 -・9週の間は、あまりDropoutが予測できないが、それ以後はhistory featureが効いて予測ができるようになる。</span>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<a class="button" href="articles/EDM.html">#EDM</a>
+<span class="issue_date">Issue Date: 2021-10-29</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/420">General Features in Knowledge Tracing: Applications to Multiple Subskills, Temporal Item Response Theory, and Expert Knowledge, Brusilovsky+, EDM'14</a>
 <span class="snippet"><span>Comment</span>BKTでは1種類のスキルしか扱えなかった問題を改善（skillだけでなく、sub-skillも扱えるように）
+
+<br>
+
+
+
+<br>
+
 様々なFeatureを組み合わせることが可能実装：https://github.com/ml-smores/fast
+
+<br>
+
+
+
+<br>
+
 ただし、GPL-2.0ライセンス</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/480">Properties of the Bayesian Knowledge Tracing Model, BRETT VAN DE SANDE, JEDM13</a>
-<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/461">Adapting Bayesian Knowledge Tracing to a Massive Open Online Course in edX, Pardos+, MIT, EDM13</a>
-<span class="snippet"><span>Comment</span># Motivation
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/480">Properties of the Bayesian Knowledge Tracing Model, BRETT VAN DE SANDE, JEDM'13</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-07-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/461">Adapting Bayesian Knowledge Tracing to a Massive Open Online Course in edX, Pardos+, MIT, EDM'13</a>
+<span class="snippet"><span>Comment</span>Motivation
+
+<br>
+
+
+
+<br>
+
 MOOCsではITSとはことなり、on-demandなチュートリアルヘルプを提供しておらず、その代わりに、知識は自己探求され様々なタイプのリソースの冗長性によって提供され、システムを介して学生は様々な経路やリソースを選択する。このようなデータは、さまざまな条件下で学生の行動の有効性を調査する機会を提供するが、この調査を計測するためのモデルがない。
+
+<br>
+
+
+
+<br>
+
 そこで、既存の学習者モデリングテクニックであるBKTを、どのようにしてMOOCsのコースに適用できるかを示した。
+
+<br>
+
+
+
+<br>
+
 これには3つのチャレンジがある:
+
+<br>
+
+
+
+<br>
+
 1. questionに対応するKCの、対象分野の専門家によるマッピングが不足していること
+
+<br>
+
+
+
+<br>
+
 2. 
+
+<br>
+
+
+
+<br>
+
 3.
 
-# データ概要
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+データ概要
+
+<br>
+
+
+
+<br>
+
 生徒のgradeは12の宿題と、12のvirtual labs (それぞれ15%の重みで無制限に回答できる)、そして中間テストと最終テスト（それぞれ30%と40%の重みで、3回の回答が許される）によって決まる。レクチャー中の問題は正誤がつくが、gradeにはカウントされないが即座にフィードバックが与えられる。104個のレクチャに289個のスコアリング可能な要素があり（すなわち、problemのsub-partをカウントした）、他にも37種類の宿題のproblemには197個、5つの中間テストproblemに26個、10個の最終テストproblemに47個のスコアリング可能なsub-partが存在する。
+
+<br>
+
+
+
+<br>
+
 weeklyの宿題は複数のproblemで構成されており、それぞれがsingle web pageで表示される。典型的には図といくつかの回答フォームがある（これをsub-partsと呼ぶ）。subpartの回答チェックは、生徒がcheckボタンを押すと開始され、正誤がつく。subpartは任意の順番で回答できるが、いくつかのproblemのsubpartは、以前のsubpartの回答結果を必要とするものも存在する。もし生徒が全てのsubpartsを最初のチェックの前に回答したら、どの順番でsubpartに回答したかは分からない。しかしながら、多くの生徒は回答する度にチェックボタンを押すことを選択している。ほとんどのITSとは異なり、宿題は、最初の回答ではなく、ユーザーが入力した最後の回答に基づいて採点された。
 
-# データセット
-154,000人の登録者がいたが、108,000人が実際にコースに入学し、10,000人がコースを最終的に終えた。その中で、7158人が少なくとも60%のweighted averatgeを獲得したという証明書を受け取った。
-データセットは2,000人のcertificateを獲得したランダムに選択された生徒によって構成される。さらに、homework, lecture sequence, exam problemの中から、ランダムに10個のproblem（およびそのsubparts）を選択した。
-データはJSONのログファイルとして生成され、ログファイルはユーザ単位でJSONレコードとして分割された。そして人間が解釈可能なMOOCsのコンポーネントとのインタラクションのtime seriesにparseされている。
-最後的には、problemごとにイベントログを作成した。このログは、そのproblemに関連する学生のイベントごとに1行で構成されている。これは、イベントで消費した時間、subpartの正誤、生徒が回答を入力したあるいは変更した場合、回答のattemptの回数、回答の間にアクセスしたリソースなどが含まれている。
-![image](https://user-images.githubusercontent.com/12249301/181160350-c13ed6b6-b757-4f6a-84e2-9b2c82acc340.png)
+<br>
 
-# BKT
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+データセット
+
+<br>
+
+
+
+<br>
+
+154,000人の登録者がいたが、108,000人が実際にコースに入学し、10,000人がコースを最終的に終えた。その中で、7158人が少なくとも60%のweighted averatgeを獲得したという証明書を受け取った。
+
+<br>
+
+
+
+<br>
+
+データセットは2,000人のcertificateを獲得したランダムに選択された生徒によって構成される。さらに、homework, lecture sequence, exam problemの中から、ランダムに10個のproblem（およびそのsubparts）を選択した。
+
+<br>
+
+
+
+<br>
+
+データはJSONのログファイルとして生成され、ログファイルはユーザ単位でJSONレコードとして分割された。そして人間が解釈可能なMOOCsのコンポーネントとのインタラクションのtime seriesにparseされている。
+
+<br>
+
+
+
+<br>
+
+最後的には、problemごとにイベントログを作成した。このログは、そのproblemに関連する学生のイベントごとに1行で構成されている。これは、イベントで消費した時間、subpartの正誤、生徒が回答を入力したあるいは変更した場合、回答のattemptの回数、回答の間にアクセスしたリソースなどが含まれている。
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/181160350-c13ed6b6-b757-4f6a-84e2-9b2c82acc340.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+BKT
+
+<br>
+
+
+
+<br>
+
 KTはmastery learningを実現したいというモチベーションからきていて、mastery learningではスbエテの生徒は自分のペースでスキルを学習していき、前提知識をマスターするまでは、より複雑なmaterialへはチャレンジできないように構成されている。これを実現するためにN問連続で正解するなどのシンプルなmastery基準などが存在しており、ASSISTments Platformのskill builder problem setで利用されている。Cognitive Tutorでは、取得可能な知識は、宣言型であろうと手続き型であろうと、通常は対象分野の専門家によって定義されるKnowledge Component（KC）と呼ばれるきめ細かいatomic piecesによって定義されます。tutorのanswer stepにはこれらのKCのタグが付けられており、生徒の過去の回答履歴は、KCの習熟度を示しています。この文脈では、KCが生徒によって高い確率で知られている（通常は&gt; = 0.95）ときに習熟したと推測されます。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 standardなBKTモデルでは、四つのパラメータが定義される:
-- prior knowledge p(L_0)
-- probability of learning p(T)
-- probability of guessing p(G)
-- probability of slipping p(S)
+
+<br>
+
+
+
+<br>
+
+・prior knowledge p(L_0)
+
+<br>
+
+
+
+<br>
+
+・probability of learning p(T)
+
+<br>
+
+
+
+<br>
+
+・probability of guessing p(G)
+
+<br>
+
+
+
+<br>
+
+・probability of slipping p(S)
+
+<br>
+
+
+
+<br>
+
 これらのパラメータによって、生徒の時刻nでの知識の習熟確率p(L_n)が推論される。また、これらのパラメータは生徒の回答の正誤の予測にも利用できる：
-![image](https://user-images.githubusercontent.com/12249301/181162575-39c7442f-ed0f-4ffa-a5d2-3b46cfc1e1cc.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/181162575-39c7442f-ed0f-4ffa-a5d2-3b46cfc1e1cc.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 KCは、平均して習得するのに必要な難易度と練習の量が異なるため、これらのパラメーターの値はKCに依存し、以前の学生のログデータなどのトレーニングデータによってfittingすることができる。
+
+<br>
+
+
+
+<br>
+
 パラメータのfittingはEMアルゴリズムかgrid searchによって、観測されたcorrectnessに対する予測された確率の残差平方和によるloss functionを最大化するようなパラメータが探索される。
+
+<br>
+
+
+
+<br>
+
 ただし、どちらのフィッティング手順も、他の手順よりも一貫して優れていることは証明されていません。 グリッド検索は、基本的なBKTモデルのフィッティングは高速ですが、パラメーターの数が増えると指数関数的に増加します。これは、パラメーター化が高いBKTの拡張に関する懸念事項です。どちらのフィッティング手法も、目的は観測されたデータ（生徒の特定のKCの問題に対する正誤の系列）に最もマッチするパラメータを見つけることです。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 KTの利用は2つのステージに分かれており、一つは4つのパラメータを学習するステージ、そしてもう一つは生徒の知識を彼らのレスポンスから予測することです。
+
+<br>
+
+
+
+<br>
+
 inferenceのステージでは、時刻nの知識の習熟度は、観測データが与えられたときに以下の指揮で計算できる。観測データが正解だった場合は
-![image](https://user-images.githubusercontent.com/12249301/181163661-c788e981-dac4-4aca-9311-bba9312d2b29.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/181163661-c788e981-dac4-4aca-9311-bba9312d2b29.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 であり、不正解の場合は
-![image](https://user-images.githubusercontent.com/12249301/181163772-d4a2c9fa-cb99-4cb8-a653-fdbb5a685e55.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/181163772-d4a2c9fa-cb99-4cb8-a653-fdbb5a685e55.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 となる。
+
+<br>
+
+
+
+<br>
+
 右辺のp\(L\_n)は、時刻nでの知識の習熟度に関する事前確率であり、p\(L\_n | Evidence\_n)はその時点でのobservationを考慮し計算される事後確率です。両方の式はベイズの定理の適用であり、観察されたresponseの説明が学生がKCを知っているということである可能性を計算します。生徒にはフィードバックが提供されるため、KCを学習する機会があります。学生が機会からKCを学習する確率は、下記指揮によって導かれる：
-![image](https://user-images.githubusercontent.com/12249301/181164932-d8f809c1-1910-4d33-9c3c-fa9bfb065439.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/181164932-d8f809c1-1910-4d33-9c3c-fa9bfb065439.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 これらの数式がmasxteryを決定するのに利用される。この知識モデルは、学習現象を研究するためのプラットフォームとして機能するように拡張されています。BKTアプローチを採用することで、MOOCで実現することを目指しているのは、この発見能力です。
 
-# Model Adaptation Challenge
+<br>
 
-## KCモデルの不足
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Model Adaptation Challenge
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+KCモデルの不足
+
+<br>
+
+
+
+<br>
+
 "learning"には広い意味があるが、masteryの文脈では特定のスキル, あるいはKCの獲得を意味する。このようなスキルとquestionのマッピングは、Q-matrixと一般的に呼ばれるが、多くの場合は対象分野の専門家によって提供される。
+
+<br>
+
+
+
+<br>
+
 これらのスキルは、psychometrics literatureの中でcognitive operationsと呼ばれ、スキルの識別プロセスは、ITSおよびエキスパートシステムの文脈では一般にcognitive task analysisと呼ばれます。
+
+<br>
+
+
+
+<br>
+
 KCマッピングの評価手法である学習曲線分析は、優れたスキルマッピングの証拠は、スキルに関連するquestionに回答する機会を通じて、エラー率が単調に減少することであると主張しています。同様に、fluencyは、特定のスキルに対して正解するにつれて増加する（解決する時間が減少する）と期待されている。
+
+<br>
+
+
+
+<br>
+
 たとえば、MOOCまたはGeometryなどの教科内のquestionを一次元で表示すると、カリキュラムに新しいトピック資料が導入されると、すぐにエラー率と応答時間が急増するため、パフォーマンスとfluencyのプロットにノイズが発生します。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 対象分野の専門家が定義したKCまたは学習目標は、将来のMOOCsでは計画されていますが、それらは一般的ではなく、本論文で使用される6.002xコースデータには存在しません。したがって、我々のゴールはコースの構成要素を利用して、KCとquestionのマッピングを実現することである。課題のproblemとsubpartの構造を利用して、problemそのものをKCとみなし、subpartをKCに紐づくquestionとみなします。この選択の理論的根拠は、コースの教授はしばしば、それぞれのproblemにおいて、特定のconceptを利用することを念頭に置いていることが多いことです。subpartのパフォーマンスは、生徒がこのconceptを理解しているかの証拠となります。このタイプのマッピングの利点は、ドメインに依存せず、任意のMOOCのベースラインKCモデルとして利用できることです。欠点は、特定のKCへの回答が特定の週の課題の問題内でのみ発生するため、1週をまたいだ学習の長期評価ができないことです。Corbett＆Conrad [14]がコースの問題構造に対する質問の同様の表面的なマッピングを評価し、これがより体系的で窒息する学習曲線を達成することを実際に犠牲にしていることを発見したため、モデルの適合性の低下は別の欠点です（←ちょっとよくわからない）。だが、このマッピングは、problem内での現象を研究することを可能にする合理的な出発点であると信じており（これは「問題分析」と呼ばれます）、ここで説明した方法とモデルは、教科の専門家によって導かれた、あるいはデータから推論された、またはその両者のハイブリッドによる別のKCモデルにも適用できると信じています。</span>
-<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/481">More Accurate Student Modeling through Contextual Estimation of Slip and Guess Probabilities in Bayesian Knowledge Tracing, Ryan Baker+, ITS08</a>
-<span class="snippet"><span>Comment</span>- BKTのModel Degeneracy問題について言及されている
-    - Model Degeneracy: parameterの値がモデルのconceptualな意味合いを破ってしまうこと
-    - たとえば、学習者がスキルを知っている場合よりも、知らない場合に正答を得る可能性が高くなってしまう、など
-    - slipping, guessingパラメータにboundaryを設ける（0.3, 0.1未満になるようにする）などの制約をつけることでこういった事態を過去の研究では回避していることが言及されている</span>
-<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-09-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/486">Using Knowledge Tracing to Measure Student Reading Proficiencies, Joseph+, ITS04</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-31</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/481">More Accurate Student Modeling through Contextual Estimation of Slip and Guess Probabilities in Bayesian Knowledge Tracing, Ryan Baker+, ITS'08</a>
+<span class="snippet"><span>Comment</span>・BKTのModel Degeneracy問題について言及されている
+
+<br>
+
+
+
+<br>
+
+    ・Model Degeneracy: parameterの値がモデルのconceptualな意味合いを破ってしまうこと
+
+<br>
+
+
+
+<br>
+
+    ・たとえば、学習者がスキルを知っている場合よりも、知らない場合に正答を得る可能性が高くなってしまう、など
+
+<br>
+
+
+
+<br>
+
+    ・slipping, guessingパラメータにboundaryを設ける（0.3, 0.1未満になるようにする）などの制約をつけることでこういった事態を過去の研究では回避していることが言及されている</span>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-09-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/486">Using Knowledge Tracing to Measure Student Reading Proficiencies, Joseph+, ITS'04</a>
 <span class="snippet"><span>Comment</span>英語の音読に関してKTを適用した話が記載されている
+
+<br>
+
+
+
+<br>
+
 スキルの定義はgrapheme=&gt;phoneme mappingsとして定義されるっぽい
-- ch は /CH/ と発音する場合(e.g. Charles)もあれば /K/ の場合もある(e.g. Chaos)
-- ch=&gt;/CH/, ch=&gt;/K/ のマッピングがスキルとして定義されている？</span>
-<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/470"> Modeling individualization in a bayesian networks implementation of knowledge tracing, Pardos+ （w_ Neil T. Heffernan）, UMAP00</a>
-<span class="snippet"><span>Comment</span># モチベーション
+
+<br>
+
+
+
+<br>
+
+・ch は /CH/ と発音する場合(e.g. Charles)もあれば /K/ の場合もある(e.g. Chaos)
+
+<br>
+
+
+
+<br>
+
+・ch=&gt;/CH/, ch=&gt;/K/ のマッピングがスキルとして定義されている？</span>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/470"> Modeling individualization in a bayesian networks implementation of knowledge tracing, Pardos+ （w_ Neil T. Heffernan）, UMAP'00</a>
+<span class="snippet"><span>Comment</span>モチベーション
+
+<br>
+
+
+
+<br>
+
 BKTでは、全ての生徒が共通のprior knowledge（各スキルに対する習熟度）を持っていることを仮定しており、生徒ごとの事前情報を導入することが許されていない。そこで、個々の生徒のprior knowledge parameterを導入することで予測精度の向上を実現した研究。Prior Per Student (PPS) Modelと呼ぶ。
 
-# モデル
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデル
+
+<br>
+
+
+
+<br>
+
 下図にBKTモデルとPPSモデルを示す。通常のBKTモデルに、student nodeを追加する。student nodeは1から考慮する生徒の数までの範囲の値をとる。このため、initial knowledge nodeのcondotional probability tableはstudent nodeの値によって条件づけられる。student node自体にも、学生が特定の値になる確率を決定する条件付き確率テーブルが関連付けられている。
+
+<br>
+
+
+
+<br>
+
 このノードのパラメータは1/Nで固定する（Nは生徒の数）。student nodeは学生 ID に対応する観測ノードであり、推論する必要がないため、このノードのパラメーター値は関係ない。
-![image](https://user-images.githubusercontent.com/12249301/185049386-5c701baa-3cf6-4d0b-a052-509d4b6b1114.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185049386-5c701baa-3cf6-4d0b-a052-509d4b6b1114.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 また、このモデルは下図に示すように、student nodeを後続のknowledge nodeに接続することで、個々の生徒ごとの学習率をモデル化するように容易に変更できる。これにより、studentによって条件づけられたP(T)（i.e. learning rate）を訓練できる。全ての事前分布を同じ値にするか、学生が1人だけであることを指定すれば、BKTと同等となる。
-![image](https://user-images.githubusercontent.com/12249301/185051109-956782ee-ca3f-44c1-b03a-5f646f2c2c5d.png)</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2025-02-14</span>
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185051109-956782ee-ca3f-44c1-b03a-5f646f2c2c5d.png" alt="image" loading="lazy"></span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2025-02-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1765">局所的変分法による非補償型時系列IRT, 玉野+, NEC+, 人工知能学会研究会資料, 2020.03</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Dataset.html">#Dataset</a><a class="button" href="articles/Education.html">#Education</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/ScorePrediction.html">#ScorePrediction</a><br><span class="issue_date">Issue Date: 2022-08-23</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/Education.html">#Education</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/ScorePrediction.html">#ScorePrediction</a>
+<span class="issue_date">Issue Date: 2022-08-23</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/474">Score Prediction dataset</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-08-17</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-08-17</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/469">KT-IDEM: Introducing Item Difficulty to the Knowledge Tracing Model, Pardos+ （w_ Neil T. Heffernan）, UMAP11</a>
-<span class="snippet"><span>Comment</span># モチベーション
+<span class="snippet"><span>Comment</span>モチベーション
+
+<br>
+
+
+
+<br>
+
 computer educationやassessmentのモデルでは項目困難度を考慮している。たとえば、Computer Adaptive Testing (CAT) で利用されるIRTは項目ごとの難易度パラメータを学習する。難易度パラメータの学習がstudent performanceを予測する際に大きく寄与しているが、学習プロセスにコストがかかり、生徒が特定のスキルに習熟したか否かを決定する際には実用的ではない。一方、Cognitive TutorsではKnowledge Tracingモデルを生徒がスキルに習熟したか否かを判断するのに利用している。KTが使用されるのは、それが生徒と教師の両方にとって有益なCognitive Diagnostic Assessment (i.e. 測定対象となっている領域・分野の学習や理解に必要なattributeを設定し、個々のattributeの習得状況を推定するようなアセスメント)であるためである。KTモデルのパラメータの学習は一度で済み、典型的にはschool yearの頭に前年のデータを利用する。そして、ここの生徒のスキルの習熟度は非常に少量の計算コストで算出できる。IRTのような項目困難度を考慮したモデルは予測精度が高い一方で、KTのような個々のスキルの習熟度を推定するcognitive diagnostic resultsは非常に有用である。これらが一つのResearch Questionを提起する：KTが項目困難度を考慮するように拡張したら予測性能が改善するのか？
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ※ CDAについてはこちらに説明されている：https://www.jstage.jst.go.jp/article/jltajournal/23/0/23_37/_pdf
 
-# モデルの気持ち
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデルの気持ち
+
+<br>
+
+
+
+<br>
+
 通常のBKTでは、4つのパラメータをデータからスキルごとに学習する。これらのパラメータは学生のそのスキルに対する正解/不正解の系列を時系列に並べたときに、その学生が該当スキルを知っている確率を推測する。現在の知識が与えられたとき、生徒のあるquestionに対するパフォーマンスを決定するのは2つのパラメータであり、それはguessとslipパラメータである。そして、これらのパラメータに対して我々はquestion levelのdifficultyを追加することを検討する。
+
+<br>
+
+
+
+<br>
+
 高いguess rateを持つスキルは直感的には簡単と考えられる（e.g. multiple choice questionとか）。同様に、低いguess、あるいは高いslip率を持つスキルは困難なスキルだと考えられる。この直感から、項目困難度もguessとslipパラメータからとらえることができると考える。従って、我々の目的は、それぞれのquestionに固有のguessとslipパラメータを与えることで、項目ごとの難易度をモデリングすることである。
 
-# モデル
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+モデル
+
+<br>
+
+
+
+<br>
+
 通常のBKTにmultinomial item nodeを追加する。これはすなわち、もし10個の異なる項目がスキルデータに存在する場合、ite, nodeは1~10の値をとる。このitem nodeはquestion nodeと接続し、これにより、questionのguess/slipがitem nodeによって条件づけられる。10個の項目があるデータセットの例では、モデルは10個のguess parameterとslip parameter、learn rate, priorを持つことになり、合計で22パラメータを持つ事になる（一方、通常のBKTでは4つのパラメータである）。
+
+<br>
+
+
+
+<br>
+
 項目ごとに十分な量のデータポイントが存在しない場合、モデルが過剰なパラメータを持つ可能性があるが、データポイントど同等、またはそれ以上のパラメータを持つモデルが有効であるトレンドにあることはNetflix challengeや2010 KDD Cupで示されている。
 
-![image](https://user-images.githubusercontent.com/12249301/185022535-c4fbe8f4-b952-479a-bd80-f7e4649546c6.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185022535-c4fbe8f4-b952-479a-bd80-f7e4649546c6.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 上図がBKTにextra nodeを加えたものを図示している。通常のKTモデルでは単一のP\(G), P\(S)を持つが、KT-IDEMでは、項目ごとにP\(G), P\(S)を持つ。たとえば、P\(G|I=1), P\(G|I=2)k ..., P\(G|I=10)であり、項目ノードの値が与えられると異なるguessパラメータをとる。図の例だと、生徒は項目ID 3, 1, 5, そして2に取り組んでいるが、この情報は観測可能であり、モデルトレーニングに使える。従って、P\(G|I), P\(S|I)をfittingすることができる。そして、predictionの際は、どの項目に生徒が取り組んでいるかを知らせれば推論ができる。
 
-# データセット
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+データセット
+
+<br>
+
+
+
+<br>
+
 ASSISTmentsデータと、Cognitive Tutorデータセットを利用した。
+
+<br>
+
+
+
+<br>
+
 ASSISTmentsデータセットでは、problem templateを項目とみなしたが。一方Cognitive Tutoerデータセットでは、problem（stepのコレクション）を項目とみなした。
 
-## ASSISTments Platform
-ASSISTmentsはwebベースのturoring platformで、4年生から12年生までの数学のコンテンツを扱っている。下図は、ASSISTmentsにおける数学の項目の例であり、生徒が問題に不正解、あるいはhelpを要請した場合に表示されるチュートリアルヘルプの様子である。チュートリアルヘルプは、個々のproblemを解くのに必要な知識を学習するために、problemをsub questionに分解して（scaffoldingと呼ぶ）生徒にquestionを解くためのヒントを与える。questionは、生徒がヘルプのリクエスト無しでfirst attemptで正解した場合のみ「正解」したとみなす。
-![image](https://user-images.githubusercontent.com/12249301/185024789-48758632-b720-480b-8f0f-752b6c738279.png)
+<br>
 
-### ASSISSTmentsにおけるItem template
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+ASSISTments Platform
+
+<br>
+
+
+
+<br>
+
+ASSISTmentsはwebベースのturoring platformで、4年生から12年生までの数学のコンテンツを扱っている。下図は、ASSISTmentsにおける数学の項目の例であり、生徒が問題に不正解、あるいはhelpを要請した場合に表示されるチュートリアルヘルプの様子である。チュートリアルヘルプは、個々のproblemを解くのに必要な知識を学習するために、problemをsub questionに分解して（scaffoldingと呼ぶ）生徒にquestionを解くためのヒントを与える。questionは、生徒がヘルプのリクエスト無しでfirst attemptで正解した場合のみ「正解」したとみなす。
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185024789-48758632-b720-480b-8f0f-752b6c738279.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+ASSISSTmentsにおけるItem template
+
+<br>
+
+
+
+<br>
+
 skill building datasetは、複数のitem templateによって生成される複数のquestionに対するresponseによって構成される。
+
+<br>
+
+
+
+<br>
+
 テンプレートは、コンテンツ開発者が Web ベースのビルダー アプリケーションで作成した問題の骨組みである。たとえば、テンプレートでピタゴラスの定理の問題を指定できますが、問題の数字は記入されていない。この例では、問題のテンプレートは次のようになる："辺の長さが X と Y の直角三角形の斜辺は何ですか?"。ここで、X と Y は、質問がテンプレートから生成されるときに値が入力される変数である。解答も、コンテンツ開発者が指定した解答テンプレートから動的に決定される。この例では、解答テンプレートは「Solution = sqrt(X^2+Y^2)」となる。変数の値の範囲を指定することができ、開発者は動的グラフ、表、単語問題のランダムに選択されたカバーストーリーなど、より高度なテンプレート機能を利用できる。テンプレートは、テンプレート項目のチュートリアルヘルプを構築するためにも使用される。これらのテンプレートから生成された項目は、学生が特定のスキルを練習するための大量の項目を提供する実用的な方法として、skill building problemセットで広く使用されている。
 
-### Skill building datasets
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Skill building datasets
+
+<br>
+
+
+
+<br>
+
 Skill buildingは、同じスキル、またはスキルグループに関連する多数の異なるテンプレートから生成された数百の項目で構成されるASSISTmentsの問題セットの一種である。生徒は、helpを要請せずに3つの項目に連続して正解すると、問題セットを完了したとみなされる。この問題セットでは、項目はランダムな順番で選択される。学生がSkill building problem setの10項目に連続して3つ正解せずに解答した場合、システムは学生が翌日までその問題セットを続行するように強制する。Skill building problem setは、Cognitive Tutorのmastery learningに似ているが、Cognitive Tutorでは、生徒が0.95以上の確率で生徒が該当スキルを知っているとKTモデルが推論した場合に習熟したと見做される。ASSISTmentsの他の問題セットと同様に、skill builder problem setは教員の最良で割り当てられる。そして、割り当てられる問題セットは、多くの場合学区が従う特定の数学カリキュラムに準拠している。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 本研究では、2009年〜2010年の学年度の最もデータが多い10個のskill builder datasetを利用した。各問題セットの生徒数は637人〜1285人であり、テンプレートの数は2~6である。これは、最大で6つの問題セット内の項目に関連づけられたguess/slipパラメータが存在することを意味する。1日あたり10項目の制限があるため、問題セットごとに学生の最初の10項目に対する回答のみを考慮し、残りの回答は吐きした。オリジナルのquestionに対する回答のみを考慮し、scaffoldに対する回答は利用しないようにした。
 
-## The Cognitive Tutor: Mastery Learning datasets
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+The Cognitive Tutor: Mastery Learning datasets
+
+<br>
+
+
+
+<br>
+
 Cognitive Tutor datasetは、2006-2007年におけるBridge to Algebraシステムに基づいている。このデータは2010年のKDD Cup competitionにも提供されている。Cognitive TutorはASSISTmentsとは異なるデザインがなされている。
+
+<br>
+
+
+
+<br>
+
 非常に重要な違いの1つは、Cognitive Tutorが多くのスキルに関するquestion（stepと呼ばれる）にyほって構成されるproblemを提示することである（下図）。
-![image](https://user-images.githubusercontent.com/12249301/185028564-29e08e71-2c59-40e6-b92f-f0eb404e82cf.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185028564-29e08e71-2c59-40e6-b92f-f0eb404e82cf.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 生徒はproblemに関する様々なquestionへの回答を回答グリッドに入力できる（下図）。
-![image](https://user-images.githubusercontent.com/12249301/185028828-606e25eb-0e9f-4b13-9406-675faab6b77a.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185028828-606e25eb-0e9f-4b13-9406-675faab6b77a.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Cognitive Tutorでは、Knowledge Tracingを生徒がスキルに習熟したかどうかを決定するために利用している。problemは異なるスキルのquestionによって構成されている場合もある。しかしながら、生徒がスキルを習得したとKTが判断した場合、生徒はproblem内の該当スキルのquestionに応える必要はなくなりますが、未修得のスキルに関連するquestionには応える必要がある。
+
+<br>
+
+
+
+<br>
+
 Cognitive Tutorデータセットのスキル数は、ASSISTmentsデータセットよりも非常に大きいものとなっている。全てのスキルを処理する代わりに、ランダムにサンプルした12個のスキルを今回は選択した。複数のスキルによって構成されるquestionも存在する。こういった場合、各スキルを分離するのではなく、questionに関連づけられた一連のスキルを一つの単独のスキルとして扱った。Cognitive TutorはlessonsをUnitsと呼ばれる単位に区切っている。あるUnitに登場するスキル名が、別のUnitに登場する場合は別のスキルとして扱った。Cognitive Tutorには「ウィンドウを閉じる」や「enterを押す」などの瑣末なスキルも存在する。このような数学と関係ないスキルは無視した。ASSSISTmentsデータで使用される生徒ごとのデータ量との一貫性を維持するために、スキルごとの生徒ごとの回答の最大数も最初の10項目に制限した。
 
-# 評価
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+評価
+
+<br>
+
+
+
+<br>
+
 5-fold cross validationを行った（生徒ごとに区切る）。パラメータの学習はBKT, KT-IDEM共にEMアルゴリズムによって行った。EMアルゴリズムはデータの尤度が最大となるパラメータを探索し、指定したmax numberの回数だけiteractionを行ったら、あるいは尤度の改善が一定の閾値を下回った場合に探索を終了する。max iteractino countは200にセットし、閾値は0.001とした。パラメータの初期値としては、両モデルに対して：P(G)=0.14, P(S)=0.09, P(L_0)=0.5, P(T)=0.14とした。この値は、ASSISTmentsデータを以前分析した際のスキル全体に対する平均値である。
+
+<br>
+
+
+
+<br>
+
 生徒のfirst responseを予測する場合、項目の識別子以外の情報は与えられない。そのため、モデルのpriorとguess/slipパラメータ単独でモデルは予測を実施することとなる。これはすなわち、BKTでは全ての生徒に対してfirst responseは同じ予測結果を与える。一方KT-IDEMは生徒が最初に取り組む項目が異なるため、項目のguess/slipパラメータが異なっているため、全生徒の予測結果が同様のものとはならない。
 
-# 評価結果
-## ASSISTments dataset
-10個のデータセットに対して9つのデータセットでKT-IDEMがBKTを有意にoutperformした。BKTのAUCの平均は0.669に対し、KT-IDEMのAUCの平均は0.69であった。
-![image](https://user-images.githubusercontent.com/12249301/185031453-d4c9d01e-4a36-4ffe-90b6-ee78c3890de3.png)
+<br>
 
-## Cognitive Tutor
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+評価結果
+
+<br>
+
+
+
+<br>
+
+ASSISTments dataset
+
+<br>
+
+
+
+<br>
+
+10個のデータセットに対して9つのデータセットでKT-IDEMがBKTを有意にoutperformした。BKTのAUCの平均は0.669に対し、KT-IDEMのAUCの平均は0.69であった。
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185031453-d4c9d01e-4a36-4ffe-90b6-ee78c3890de3.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Cognitive Tutor
+
+<br>
+
+
+
+<br>
+
 全体のパフォーマンスとしては、BKT, KT-IDEM共に勝ち負けが入り混じっている。BKTの平均AUCは0.6457、KT-IDEMは0.6441であるが、これは統計的に有意差はなかった。前に述べたように、over parameterizationが項目ごとにguess/slipパラメータを用意することの懸念ん点であった。このデータセットでは、ASSISTments のテンプレートの数 (平均 3) と比較して、問題の数 (平均 311) がかなり多いため、この問題が明らかになります。問題の数が多く、パラメータの数も多いため、問題あたりのデータポイントの比率(dpr)が非常に重要となります。dpr&gt;6を超えている5つのデータセットでは、KT-IDEMの予測性能が高い。これらのデータセットでは、BKTのAUCは0.6124、対してKT-IDEMでは0.7108である。この差は統計的に有意であった。dpr&lt;6のデータセットについては、スキル6を除いて、lossは比較的少ないものであった（~0.04程度）。このスキルデータセットには396の問題があり、最も頻度の高い問題はデータポイントの25%を占め、2番目に頻度の高い問題はわずか0.3%だった。これは④ポカのスキルセットと比べて非常にバランスが取れておらず、KT-IDEMがうまく機能しないタイプのデータセットの例と言える。
 
-![image](https://user-images.githubusercontent.com/12249301/185031778-4fb365b2-d6ca-4feb-a411-85827746fb33.png)
+<br>
 
-# Discussion
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/185031778-4fb365b2-d6ca-4feb-a411-85827746fb33.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+Discussion
+
+<br>
+
+
+
+<br>
+
 トレーニングデータに存在しない項目のguess/slipパラメータをどうするかという課題がある。対策としては、全ての学習されたslip/guessパラメータの平均値とするか、あるいはBKTモデルのguess/slipパラメータで置き換えるという対策がある。
+
+<br>
+
+
+
+<br>
+
 Cognitive Tutorの実験結果より、問題ごとのデータポイントの平均数によって、KT-IDEMの精度がBKTよりも改善するか否かが決まることが示された。スキルデータセット内の一部の問題には大量のデータが含まれている一方、一部の問題には少量のデータしか含まれない可能性がある。KT-IDEMの制度を向上させるために、データが少ない問題のguess/slipパラメータをBKTが推定したguess/slipパラメータで置き換える方法がある。また、平均正答率の値や、ヒントをリクエストした回数などの情報を利用してguess/slipパラメータの初期値を決めることで、パラメータfittingが改善する可能性がある。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 また、future workとしては、CATにおいてKT-IDEMのguess/slipパラメータを用いて、より少ない問題数でassesmentを実現することなどが挙げられている（KT-IDEMのguess/slipがIRTにおける項目の識別力に相当するとみなせる。また、質問に正解した場合、あるいは不正解だった場合に確率の変化が最大となる質問を選択することができるため。ただし、この質問には正しいguess/slipパラメータが推定されている必要があり、そのための十分なデータが必要となる）。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2022-07-25</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2022-07-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/459">独立な学習者・項目ネットワークをもつ Deep-IRT, 堤+, 電子情報通信学会論文誌, 2021</a>
-<span class="snippet"><span>Comment</span># モチベーション
+<span class="snippet"><span>Comment</span>モチベーション
+
+<br>
+
+
+
+<br>
+
 Deep-IRTで推定される能力値は項目の特性に依存しており、同一スキル内の全ての項目が等質であると仮定しているため、異なる困難度を持つ項目からの能力推定値を求められない。このため、能力パラメータや困難度パラメータの解釈性は、従来のIRTと比較して制約がある。一方、木下らが提案したItem Deep Response Theoryでは、項目特性に依存せずに学習者の能力値を推定でき、推定値の信頼性と反応予測精度が高いことが示されているが、能力の時系列変化を考慮していないため、学習家庭での能力変化を表現できない。これらを解決するための手法を提案。
 
-# 手法
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+手法
+
+<br>
+
+
+
+<br>
+
 論文中の数式に次元数が一切書かれておらず、論文だけを読んで再現できる気がしない。
+
+<br>
+
+
+
+<br>
+
 提案手法は、学習者の能力推定値が項目の特性に依存せず、複数のスキルに関する多次元の能力を表現できる（とあるが、が、どういう意味かよくわからない・・・）。
+
+<br>
+
+
+
+<br>
+
 下図が提案手法の概要図。スキルタグ入力だけでなく、項目IDそのものも入力して活用するのが特徴。
 
-![image](https://user-images.githubusercontent.com/12249301/180723829-1b1e9311-975b-4b66-a872-f017862d0355.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180723829-1b1e9311-975b-4b66-a872-f017862d0355.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 基本的に、生徒の能力値を推定するstudent networkと、スキル/項目の難易度を推定するitem networkに分かれている。ある時刻tでの生徒の能力値はメモリM上の全てのhidden conceptに対するvalueを足し合わせ、足し合わせて得られたベクトルに対してMLPをかけることによって計算している。
-![image](https://user-images.githubusercontent.com/12249301/180725744-fa286cd1-ad2c-4d1d-99b8-655ea9611d20.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180725744-fa286cd1-ad2c-4d1d-99b8-655ea9611d20.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 最終的にitem response functionを見ると、ここで得られる生徒の能力値はスカラー値でなければならないと思うのだが、MLPをかけて得られたベクトルからどのように生徒の能力値を算出するかがジャーナル上では書かれていない。EDM'21の方を見ると、inputとなったスキルタグのembeddingとメモリのkeyとの関連度から求めたアテンションベクトルω_tとの内積でスカラーに変換しているようなので、おそらくそのような操作をしていると思われる。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 item networkも同様に、スキルタグのembedding q_j と 項目のembedding s_j を別々にMLPにかけて、最終的に1次元に写像することで、スキル/項目の難易度パラメータを推論していると思われる。
-![image](https://user-images.githubusercontent.com/12249301/180725805-1bcc08c4-1688-41ab-92bb-a4efb6bf2e3a.png)
-![image](https://user-images.githubusercontent.com/12249301/180725856-840c048b-d402-4539-98bc-a49577bffa49.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180725805-1bcc08c4-1688-41ab-92bb-a4efb6bf2e3a.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180725856-840c048b-d402-4539-98bc-a49577bffa49.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 最終的に下記item response functionによって反応予測を行う。
-![image](https://user-images.githubusercontent.com/12249301/180729156-b0d53d02-015d-47d1-be7d-efa7753a9722.png)
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180729156-b0d53d02-015d-47d1-be7d-efa7753a9722.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 ただし、EDM'21の論文だと能力値パラメータθに3が乗じられているのに対し、こちらはそのような操作がされていない。どちらが正しいのか分からない。
 
-また、メモリネットワークのmemory valueの更新は #352 と同じ方法である。
+<br>
 
-# 予測性能評価
-![image](https://user-images.githubusercontent.com/12249301/180726002-7ef7301d-60b0-4fa4-85b6-9fba12a5d37b.png)
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+また、メモリネットワークのmemory valueの更新は 352 と同じ方法である。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+予測性能評価
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180726002-7ef7301d-60b0-4fa4-85b6-9fba12a5d37b.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 提案手法が全てのデータセットで平均すると最も良い予測性能を示している。IRTもKDDCupデータでは性能が良く、KDDCupデータは回答ログの正答率が非常に高くデータに偏りがあり、加えてデータのスパース率（10 人以下
+
+<br>
+
+
+
+<br>
+
 の学習者が解答した項目の割合）も高いため（学習者の平均回答数が少ない）、DeepLearningベースドな手法は反応の偏りと少数データに脆弱である可能性を指摘している。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ちなみにEDM'21論文だと下記のような結果になっている：
-![image](https://user-images.githubusercontent.com/12249301/180726762-d89872c3-c7fd-4a78-a63c-8a4346fb0b89.png)
 
-こちらの結果を見ると、AKTよりも高い性能を示していることがわかる。AKTに勝つのは結構すごそうなのだが #456 でのAKTの性能に比べ、DKT等の手法に対するAKTの性能の伸びが小さいのが非常に気になる。何を信じたら良いのか分からない・・・。
+<br>
 
-# 解釈性評価実験について
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/180726762-d89872c3-c7fd-4a78-a63c-8a4346fb0b89.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+こちらの結果を見ると、AKTよりも高い性能を示していることがわかる。AKTに勝つのは結構すごそうなのだが 456 でのAKTの性能に比べ、DKT等の手法に対するAKTの性能の伸びが小さいのが非常に気になる。何を信じたら良いのか分からない・・・。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+解釈性評価実験について
+
+<br>
+
+
+
+<br>
+
 DeepIRTとのパラメータの能力パラメータ、困難度パラメータの解釈性の検証をしているようだが、所感に書いてある通りまずDeepIRTの能力値パラメータを正しく採用できているのかが怪しい。困難度パラメータについては、シミュレーションデータを用いて提案手法がDeepIRTと比べて真の困難度に対する相関が高いことを示しているが、詳細が書かれておらずよくわからない・・・。一応IRTと同等の解釈性能を持つと主張している。
 
-# 所感
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+所感
+
+<br>
+
+
+
+<br>
+
 解釈性の評価実験において下記の記述があるが、
+
+<br>
+
+
+
+<br>
+
 &gt; しかし，彼ら によって公開された Deep-IRT のプログラムコードで は一次元の能力値推移しか出力できず，論文で示され た複数スキルに対応した結果を再現できない．このた め，本実験では，式 (7) で得られる θ (t,j) 3 を多次元で 出力した値を Deep-IRT における多次元のスキルの能 力値推移とする．
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 ここでどのような操作をしているのかがいまいち分からないが、時刻tのメモリM_tが与えられたとき、DeepIRTは入力ベクトルq_tに対応する一次元の能力値を返すモデルのはずで、q_tを測定したい能力のスキルタグに対するone-hot encodingにすれば能力値推移は再現できるのでは？「θ (t,j) 3を多次元で出力した値」というのは、1次元のスカラー値を出力するのではなく、多次元のベクトルとしてθ (t,j) 3を出力し、ベクトルの各要素をスキルに対する能力値とみなしているのだろうか。もしそういう操作をしているのだとしたらDeepIRTが出力する能力値パラメータとの比較になっていないと思う。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 θ_n^(t, j)を学習者の能力値ベクトルとしてみなすと論文中に記述されているが、実際にどの次元がどのスキルの習熟度に対応しているかは人間が回答ログに対する習熟度の推移を観察して決定しなければならない。これは非常にダルい。
+
+<br>
+
+
+
+<br>
+
 しかもθ_n^(t, j)の各次元の値は、スキルタグに対する習熟度ではなく、スキルタグの背後にあるhidden conceptの習熟度だと思う。論文では問題の正解/不正解に対して、習熟度が上下する様子から、能力値ベクトルの特定の次元の数値が特定のスキルの習熟度となっていることを解釈しているが、その解釈が正しい保証はないような・・・。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tutorial.html">#Tutorial</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Tutorial.html">#Tutorial</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/422">ラーニング・アナリティクスとは何か？, 武田俊之, コンピュータ＆エデュケーション VOL.38, 2015</a>
 <span class="snippet"><span>Comment</span>Learning Analyticsの全体像について、コンパクトにまとまっている。
+
+<br>
+
+
+
+<br>
+
 特に、そのアプローチに関するコンセプトの特徴（e.g. 学習者中心、デーア駆動）や、フレームワーク、xAPIといったデータの測定・収集方法などについて、まとめられている。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><a class="button" href="articles/L@S.html">#L@S</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<a class="button" href="articles/L@S.html">#L@S</a>
+<span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/421">Addressing Two Problems in Deep Knowledge Tracing via Prediction-Consistent Regularization, Yeung+, 2018, L@S</a>
 <span class="snippet"><span>Comment</span>Deep Knowledge Tracing (DKT)では、下記の問題がある：
-- 該当スキルに正解/不正解 したのにmasteryが 下がる/上がる （Inputをreconstructしない）
-- いきなり習熟度が伸びたり、下がったりする（時間軸に対してmastery levelがconsistentではない）
+
+<br>
+
+
+
+<br>
+
+・該当スキルに正解/不正解 したのにmasteryが 下がる/上がる （Inputをreconstructしない）
+
+<br>
+
+
+
+<br>
+
+・いきなり習熟度が伸びたり、下がったりする（時間軸に対してmastery levelがconsistentではない）
+
+<br>
+
+
+
+<br>
+
 上記問題に対処するようなモデルDKT+を提案。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 DKT+では、DKTのloss functionに対して3つのregularization termを追加することで上記問題に対処している。
+
+<br>
+
+
+
+<br>
+
 DKT+はDKTの性能を落とすことなく、上記2問題を緩和できたとのこと。
 
-![image](https://user-images.githubusercontent.com/12249301/139360225-91645535-7a52-45d6-9caa-8d4fc8719a1e.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/139360225-91645535-7a52-45d6-9caa-8d4fc8719a1e.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 実装: https://github.com/ckyeungac/deep-knowledge-tracing-plus<img width="639" alt="image" src="https://user-images.githubusercontent.com/12249301/167774315-061e9d8d-16ae-4c56-b69f-e8ef1968b4fa.png">
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 DKT+とDKTのheatmapを比較すると、問題点は確かに緩和されているかもしれないが、
+
+<br>
+
+
+
+<br>
+
 依然としてinputはreconstructionされていないし、習熟度も乱高下しているように見える。
+
+<br>
+
+
+
+<br>
+
 根本的な解決にはなっていないのでは。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Tools.html">#Tools</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a><br><span class="issue_date">Issue Date: 2021-10-29</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Tools.html">#Tools</a>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/KnowledgeTracing.html">#KnowledgeTracing</a>
+<span class="issue_date">Issue Date: 2021-10-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/419">HMM Scalable （Bayesian Knowledge Tracing; BKT）</a>
 <span class="snippet"><span>Comment</span>BKTを高速で学習できるツール
+
+<br>
+
+
+
+<br>
+
 3-clause BSD license</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/NeurIPS.html">#NeurIPS</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/NeurIPS.html">#NeurIPS</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/297">Deep Knowledge Tracing, Piech+, NIPS, 2015</a>
 <span class="snippet"><span>Comment</span>Knowledge Tracingタスクとは：
+
+<br>
+
+
+
+<br>
+
 　特定のlearning taskにおいて、生徒によってとられたインタラクションの系列x0, ..., xtが与えられたとき、次のインタラクションxt+1を予測するタスク
+
+<br>
+
+
+
+<br>
+
 　典型的な表現としては、xt={qt, at}, where qt=knowledge component (KC) ID (あるいは問題ID)、at=正解したか否か
+
+<br>
+
+
+
+<br>
+
 　モデルが予測するときは、qtがgivenな時に、atを予測することになる
 
-![image](https://user-images.githubusercontent.com/12249301/50377468-2989c580-0661-11e9-97c9-328056fbd692.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/50377468-2989c580-0661-11e9-97c9-328056fbd692.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Contribution:
+
+<br>
+
+
+
+<br>
+
 　1. A novel way to encode student interactions as input to a recurrent neural network.
+
+<br>
+
+
+
+<br>
+
 　2. A 25% gain in AUC over the best previous result on a knowledge tracing benchmark.
+
+<br>
+
+
+
+<br>
+
 　3. Demonstration that our knowledge tracing model does not need expert annotations.
+
+<br>
+
+
+
+<br>
+
 　4. Discovery of exercise influence and generation of improved exercise curricula.
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 モデル：
 
-![image](https://user-images.githubusercontent.com/12249301/50377473-432b0d00-0661-11e9-97e1-a60a68a6ef32.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/50377473-432b0d00-0661-11e9-97e1-a60a68a6ef32.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 Inputは、ExerciseがM個あったときに、M個のExerciseがcorrectか否かを表すベクトル（長さ2Mベクトルのone-hot）。separateなrepresentationにするとパフォーマンスが下がるらしい。
+
+<br>
+
+
+
+<br>
+
 Output ytの長さは問題数Mと等しく、各要素は、生徒が対応する問題を正答する確率。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 InputとしてExerciseを用いるか、ExerciseのKCを用いるかはアプリケーション次第っぽいが、典型的には各スキルの潜在的なmasteryを測ることがモチベーションなのでKCを使う。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 （もし問題数が膨大にあるような設定の場合は、各問題-正/誤答tupleに対して、random vectorを正規分布からサンプリングして、one-hot high-dimensional vectorで表現する。）
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 hidden sizeは200, mini-batch sizeは100としている。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 [Educational Applicationsへの応用]
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 生徒へ最適なパスの学習アイテムを選んで提示することができること
+
+<br>
+
+
+
+<br>
+
 　生徒のknowledge stateを予測し、その後特定のアイテムを生徒にassignすることができる。たとえば、生徒が50個のExerciseに回答した場合、生徒へ次に提示するアイテムを計算するだけでなく、その結果期待される生徒のknowledge stateも推測することができる
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 Exercises間の関係性を見出すことができる
+
+<br>
+
+
+
+<br>
+
 　y\( j | i )を考える。y\( j | i )は、はじめにexercise iを正答した後に、second time stepでjを正答する確率。これによって、pre-requisiteを明らかにすることができる。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 [評価]
+
+<br>
+
+
+
+<br>
+
 3種類のデータセットを用いる。
+
+<br>
+
+
+
+<br>
+
 　1. simulated Data
+
+<br>
+
+
+
+<br>
+
 　　2000人のvirtual studentを作り、1〜5つのコンセプトから生成された、50問を、同じ順番で解かせた。このとき、IRTモデルを用いて、シミュレーションは実施した。このとき、hidden stateのラベルには何も使わないで、inputは問題のIDと正誤データだけを与えた。さらに、2000人のvirtual studentをテストデータとして作り、それぞれのコンセプト（コンセプト数を1〜5に変動させる）に対して、20回ランダムに生成したデータでaccuracyの平均とstandard errorを測った。
+
+<br>
+
+
+
+<br>
+
 　2. Khan Academy Data
+
+<br>
+
+
+
+<br>
+
 　　1.4MのExerciseと、69の異なるExercise Typeがあり、47495人の生徒がExerciseを行なっている。
+
+<br>
+
+
+
+<br>
+
 　　PersonalなInformationは含んでいない。
+
+<br>
+
+
+
+<br>
+
 　3. Assistsments bemchmark Dataset
+
+<br>
+
+
+
+<br>
+
 　　2009-2011のskill builder public benchmark datasetを用いた。Assistmentsは、online tutorが、数学を教えて、教えるのと同時に生徒を評価するような枠組みである。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 それぞれのデータセットに対して、AUCを計算。
+
+<br>
+
+
+
+<br>
+
 ベースラインは、BKTと生徒がある問題を正答した場合の周辺確率？
 
-![image](https://user-images.githubusercontent.com/12249301/50377495-b0d73900-0661-11e9-9ca2-1cb97393d698.png)
+<br>
 
-![image](https://user-images.githubusercontent.com/12249301/50377501-b92f7400-0661-11e9-87ce-9f836c860209.png)
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/50377495-b0d73900-0661-11e9-9ca2-1cb97393d698.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/50377501-b92f7400-0661-11e9-87ce-9f836c860209.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 simulated dataの場合、問題番号5がコンセプト1から生成され、問題番号22までの問題は別のコンセプトから生成されていたにもかかわらず、きちんと二つの問題の関係をとらえられていることがわかる。
+
+<br>
+
+
+
+<br>
+
 Khan Datasetについても同様の解析をした。これは、この結果は専門家が見たら驚くべきものではないかもしれないが、モデルが一貫したものを学習したと言える。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 [Discussion]
+
+<br>
+
+
+
+<br>
+
 提案モデルの特徴として、下記の２つがある：
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 専門家のアノテーションを必要としない（concept patternを勝手に学習してくれる）
+
+<br>
+
+
+
+<br>
+
 ベクトル化された生徒のinputであれば、なんでもoperateすることができる
+
+<br>
+
+
+
+<br>
+
 drawbackとしては、大量のデータが必要だということ。small classroom environmentではなく、online education environmentに向いている。
+
+<br>
+
+
+
+<br>
+
 今後の方向性としては、
+
+<br>
+
+
+
+<br>
+
 ・incorporate other feature as inputs (such as time taken)
+
+<br>
+
+
+
+<br>
+
 ・explore other educational impacts (hint generation, dropout prediction)
+
+<br>
+
+
+
+<br>
+
 ・validate hypotheses posed in education literature (such as spaced repetition, modeling how students forget)
+
+<br>
+
+
+
+<br>
+
 ・open-ended programmingとかへの応用とか（proramのvectorizationの方法とかが最近提案されているので）
+
+<br>
+
+
+
+<br>
+
 などがある。knewtonのグループが、DKTを既存手法であるIRTの変種やBKTの変種などでoutperformすることができることを示す：
+
+<br>
+
+
+
+<br>
+
 https://arxiv.org/pdf/1604.02336.pdf
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 vanillaなDKTはかなりナイーブなモデルであり、今後の伸びが結構期待できると思うので、単純にoutperformしても、今後の発展性を考えるとやはりDKTには注目せざるを得ない感DKT元論文では、BKTを大幅にoutperformしており、割と衝撃的な結果だったようだが、
+
+<br>
+
+
+
+<br>
+
 後に論文中で利用されているAssistmentsデータセット中にdupilcate entryがあり、
+
+<br>
+
+
+
+<br>
+
 それが原因で性能が不当に上がっていることが判明。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 結局DKTの性能的には、BKTとどっこいみたいなことをRyan Baker氏がedXで言っていた気がする。Deep Knowledge TracingなどのKnowledge Tracingタスクにおいては、
+
+<br>
+
+
+
+<br>
+
 基本的に問題ごとにKnowledge Component(あるいは知識タグ, その問題を解くのに必要なスキルセット）が付与されていることが前提となっている。
+
+<br>
+
+
+
+<br>
+
 ただし、このような知識タグを付与するには専門家によるアノテーションが必要であり、
+
+<br>
+
+
+
+<br>
+
 適用したいデータセットに対して必ずしも付与されているとは限らない。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 このような場合は、DKTは単なる”問題”の正答率予測モデルとして機能させることしかできないが、
+
+<br>
+
+
+
+<br>
+
 知識タグそのものもNeural Networkに学習させてしまおうという試みが行われている：
+
+<br>
+
+
+
+<br>
+
 https://www.jstage.jst.go.jp/article/tjsai/33/3/33_C-H83/_article/-char/jaDKTに関する詳細な説明が書かれているブログポスト：
+
+<br>
+
+
+
+<br>
+
 expectimaxアルゴリズムの説明や、最終的なoutput vector y_i の図解など、説明が省略されガチなところが詳細に書いてあって有用。（英語に翻訳して読むと良い）
+
+<br>
+
+
+
+<br>
+
 https://hcnoh.github.io/2019-06-14-deep-knowledge-tracingこちらのリポジトリではexpectimaxアルゴリズムによってvirtualtutorを実装している模様。
+
+<br>
+
+
+
+<br>
+
 詳細なレポートもアップロードされている。
-https://github.com/alessandroscoppio/VirtualIntelligentTutorDKTのinputの次元数が 2 * num_skills, outputの次元数がnum_skillsだと明記されているスライド。
+
+<br>
+
+
+
+<br>
+
+https://github.com/alessandroscoppio/VirtualIntelligentTutorDKTのinputの次元数が 2  num_skills, outputの次元数がnum_skillsだと明記されているスライド。
+
+<br>
+
+
+
+<br>
+
 元論文だとこの辺が言及されていなくてわかりづらい・・・
+
+<br>
+
+
+
+<br>
+
 http://gdac.uqam.ca/Workshop@EDM20/slides/LSTM_tutorial_Application.pdf
+
+<br>
+
+
+
+<br>
+
 http://gdac.uqam.ca/Workshop@EDM20/slides/LSTM_Tutorial.pdf
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 こちらのページが上記チュートリアルのページ
+
+<br>
+
+
+
+<br>
+
 http://gdac.uqam.ca/Workshop@EDM20/</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/UMAP.html">#UMAP</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/UMAP.html">#UMAP</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/296">Improving Matrix Factorization Techniques of Student Test Data with Partial Order Constraints, Beheshti+, UMAP, 2012</a>
 <span class="snippet"><span>Comment</span>生徒の学習の場合は、prerequisiteがあるので、factorizationする空間をかなり小さくする。
+
+<br>
+
+
+
+<br>
+
 MFは、domain structure discovering (どのアイテムが生徒間の特定のスキルに紐づいているか)にも使える。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 たとえば、生徒-アイテム行列をVとすると、V=WxHと分解する。ここで、Wはm x k matrixで、Q-matrixと呼ばれる。Q-matrixは、m個のアイテムをk個のスキルと紐づける。Hはスキルmastery matrix。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 スキルは、成功するチャンスがあればあるほどあがっていき、下がることはない。
+
+<br>
+
+
+
+<br>
+
 なので、基本的に正の値をとるので、NMFが使える。
+
+<br>
+
+
+
+<br>
+
 また、カリキュラムで学習する順番は決まっている（足し算、引き算、掛け算、割り算など）ので、これがmatrixVにclosure constraintsを課すことになる(これはすなわち、partial orderがあるということ)。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 partial orderのviolationは、アイテムIi, Ijが与えられてIiが常にIjよりも前に習うというとき、（student column vector）Ii=0, Ij=1というのはviolationになる。
+
+<br>
+
+
+
+<br>
+
 この辺の制約を入れて、学習するらしい。各knowledgeのpre-requisiteを、MFでうまく分解することで自動で学習することができる。
+
+<br>
+
+
+
+<br>
+
 んー詳細な数式書いてないし、評価していない。が、考え方はおもしろい。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a><a class="button" href="articles/EDM.html">#EDM</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/StudentPerformancePrediction.html">#StudentPerformancePrediction</a>
+<a class="button" href="articles/EDM.html">#EDM</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/295">Factorization Models for Forecasting Student Performance, Thai-Nghe+, EDM, 2011</a>
 <span class="snippet"><span>Comment</span>student performanceは、推薦システムの問題において、下記の２種類にcastできる：
+
+<br>
+
+
+
+<br>
+
 1. rating prediction task, すなわち、ユーザ・アイテム・ratingを、生徒・タスク・パフォーマンスとみなす
+
+<br>
+
+
+
+<br>
+
 2. sequentialなエフェクトを考慮して、forecasting problemに落とす
 
-![image](https://user-images.githubusercontent.com/12249301/50377358-402f1d00-065f-11e9-8b28-87698c509a94.png)
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+<img src="https://user-images.githubusercontent.com/12249301/50377358-402f1d00-065f-11e9-8b28-87698c509a94.png" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
 TensorFactorizationで、欠損値を予測
+
+<br>
+
+
+
+<br>
+
 cold-start problem（new-user, new item）への対処としては、global averageをそれぞれ用いることで対処（more sophisticatedなやり方が提案されているとも述べている）
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 使用している手法としては、この辺？
+
+<br>
+
+
+
+<br>
+
 https://pdfs.semanticscholar.org/8e6b/5991f9c1885006aa204d80cc2c23682d8d31.pdf</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a><a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Survey.html">#Survey</a>
+<a class="button" href="articles/EducationalDataMining.html">#EducationalDataMining</a>
+<a class="button" href="articles/LearningAnalytics.html">#LearningAnalytics</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/294">Educational Data Mining and Learning Analytics, Baker+, 2014</a>
 <span class="snippet"><span>Comment</span>Ryan BakerらによるEDM Survey</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/LearningPath.html">#LearningPath</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/LearningPath.html">#LearningPath</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/293">Designing and implementing a personalized remedial learning system for enhancing the programming learning, Hsieh+, Educational Technology &amp; Society, 2013</a>
 <span class="snippet"><span>Comment</span>e-learningシステムには、三つの課題がまだある：
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 learner control: learnerは、自分でe-learningシステムのmaterialをダウンロードしたりして勉強するが、時に事前知識が相当必要な教材とかで勉強してしまうと、learning performanceが落ちる。事前知識がどれだけあるかを測るのがとても大事だとAusubel 1968も述べている。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 disorientation: たとえばwebで勉強するために検索すると、検索エンジンは適切な学習の順番で結果を返してくれたりはしない。どれを最初に読むか、ユーザは選ばなければいけないが、初めて勉強する分野だときつい。sequencedなlearning contentsはlearnerにとって多大な恩恵になる。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 Cognitive Overload: メジャーなエンジンは検索エンジン。materialはすぐに手に入るけど、学習者は自分で教材を読んだり、organizeして学習しなければいけない。そのため、ブラウジングと、materialのソートに多大な時間を要してしまう。多すぎる情報は、学習者に不安をもたらす。学習者にダイレクトに最適な教材を提示することが重要。
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 fuzzy logic theoryを用いて、学習者の思い違いに基づいて最適な学習パスを構築し、学習者の好みに合わせて、webからコンテンツを推薦する。fuzzy logic theoryは、まず、あるコンセプトのペアが与えられたときに、、以下の3つの尺度を算出する：
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 1. Extension, 2つのコンセプトがあるコンセプトを学習する前提になっているか否か（googleで検索した結果システムが返した件数から求める）
+
+<br>
+
+
+
+<br>
+
 2. Similarity, 2つのコンセプトの類似度（similarityの尺度については詳しく述べられていない。論文をreferしているが、読めない）。過去にユーザが読んだものと類似度が高いものを出すと、簡単にユーザが理解できる、みたいな考えがある。
+
+<br>
+
+
+
+<br>
+
 3. Coherent, 2つのコンセプトがどれだけcoherentか。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 これらを算出した後に、fuzzy logitを用いて、各尺度を離散化（それぞれのlinguistic term, low, midiam, highに属する確率を算出）。離散化した後、専門家が決めたルールに基づいて（各尺度のlinguistic termの組み合わせにおいて、コンセプト間の強さがlow, medium, highどれに属するかの確率を算出するためのルール）、2コンセプト間の関連の強さ（あるコンセプトを学習した後に、次にどのコンセプトを学習するべきか）を決定。
+
+<br>
+
+
+
+<br>
+
 この数値が高いものをgreedyに追加していくことで、learning pathを構築。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 専門家が決めたルールは、各尺度をfuzzy logicで離散化した状態が与えられたときに、conceptの関連度合いがlow, medium, highのどれをとるかを決めたものなので、同じドメインであれば、色々適用できる？（もしこの辺が教科によって変わってくるのであれば、いちいち設計し直さなければならない）Fuzzy推論参考：
+
+<br>
+
+
+
+<br>
+
 http://www.sist.ac.jp/~kanakubo/research/reasoning_kr/fuzzy.html</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
+<a class="button" href="articles/CollaborativeFiltering.html">#CollaborativeFiltering</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/292">Simulated Analysis of MAUT Collaborative Filtering for Learning Object Recommendation, Manouselis+, Social Information Retrieval for Technology-Enhanced Learning &amp; Exchange, 2007</a>
 <span class="snippet"><span>Comment</span>教員に対して教材を推薦しようという試み（学生ではないようだ）。
+
+<br>
+
+
+
+<br>
+
 教員は、learning resourcesに対して、multi-criteriaなratingを付与することができ、それをCFで活用する（CELEBRATE web portalというヨーロッパのポータルを使用したらしい）。
+
+<br>
+
+
+
+<br>
+
 CFはmemory-basedな手法を使用。target userがあるアイテムを、それぞれのattributeの観点からどのようにratingするかをattributeごとに別々に予測。各attributeのスコアを最終的に統合（元の論文ではただのスコアの足し合わせ）して、推薦スコアとする。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 以下が調査された：
+
+<br>
+
+
+
+<br>
+
 1. ユーザ間の距離の測り方（ユークリッド距離、cossim、ピアソンの相関係数）
+
+<br>
+
+
+
+<br>
+
 2. neighborsの選び方（定義しておいた最大人数か、相関の重みで選ぶか）
+
+<br>
+
+
+
+<br>
+
 3. neighborのratingをどのように組み合わせるか（平均、重み付き平均、mean formulaからのdeviation）
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
 
 評価する際は、ratingのデータを training/test 80%/20%に分割。テストセットのアイテムに対して、ユーザがratingした情報をどれだけ正しく予測できるかで検証(511 evaluation in test, 2043 evaluations in training)。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 ratingのMAE, coverage, アルゴリズムの実行時間で評価。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 CorrerationWeightThresholdが各種アルゴリズムで安定した性能。Maximum Number Userはばらつきがでかい。いい感じの設定がみつかれば、Maximum Number Userの方がMAEの観点からは強い。
+
+<br>
+
+
+
+<br>
+
 top-10のアイテムをselectするようにしたら、６０％のcoverageになった。
+
+<br>
+
+
+
+<br>
+
 （アルゴリズムの実行時間は、2000程度のevaluationデータに対して、2.5GHZ CPU, 256MEMで２０秒とかかかってる。）Learning Resource Exchangeの文脈で使われることを想定（このシステムではヨーロッパのK-12）。
 
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
 教員による教材のmulti-criteriaのratingは5-scaleで行われた。
+
+<br>
+
+
+
+<br>
+
 どういうcriteriaに対してratingされたかが書いてない。</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
+<a class="button" href="articles/Survey.html">#Survey</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/291">Recommender Systems for Technology Enhanced Learning: Research Trends and Applications, Manouselis+, 2014</a>
 <span class="snippet"><span>Comment</span>最近のトレンドやアプリケーションを知りたい場合はこちら</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
+<a class="button" href="articles/Survey.html">#Survey</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/290">Panorama of recommender systems to support learning, Drachsler+, 2015</a>
 <span class="snippet"><span>Comment</span>教育分野に対するRecsysのSurvey</span>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
+<a class="button" href="articles/Survey.html">#Survey</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/286">Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook, 2011</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Survey.html">#Survey</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Survey.html">#Survey</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/285">Personal recommender systems for learners in lifelong learning networks: the requirements, techniques and model, Drachsler+, Int. J. Learning Technology, 2008</a>
-<a class="button" href="articles/Article.html">#Article</a><a class="button" href="articles/Classic.html">#Classic</a><a class="button" href="articles/LearningStyle.html">#LearningStyle</a><a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a><br><span class="issue_date">Issue Date: 2018-12-22</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Classic.html">#Classic</a>
+<a class="button" href="articles/LearningStyle.html">#LearningStyle</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2018-12-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/284">LEARNING AND TEACHING STYLES IN ENGINEERING EDUCATION, Felder, Engr. Education, 78（7）, 674–681 （1988）</a>
 <span class="snippet"><span>Comment</span>LearningStyleに関して研究している古典的な研究。
+
+<br>
+
+
+
+<br>
+
 context-aware recsysの研究初期の頃は、だいたいはこのFelder-Silverman Theoryというのをベースに研究されていたらしい。</span>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
@@ -1933,32 +7491,32 @@ context-aware recsysの研究初期の頃は、だいたいはこのFelder-Silve
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/IRT.html" title="IRTに関する論文・技術記事メモの一覧">
-            IRTに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DeepResearch.html" title="DeepResearchに関する論文・技術記事メモの一覧">
+            DeepResearchに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LearningPhenomena.html" title="LearningPhenomenaに関する論文・技術記事メモの一覧">
-            LearningPhenomenaに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Annotation.html" title="Annotationに関する論文・技術記事メモの一覧">
+            Annotationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LanguageModel.html" title="LanguageModelに関する論文・技術記事メモの一覧">
-            LanguageModelに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/IJCNLP.html" title="IJCNLPに関する論文・技術記事メモの一覧">
+            IJCNLPに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LearningStyle.html" title="LearningStyleに関する論文・技術記事メモの一覧">
-            LearningStyleに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/CLIP.html" title="CLIPに関する論文・技術記事メモの一覧">
+            CLIPに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
