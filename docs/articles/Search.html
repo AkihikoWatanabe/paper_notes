@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Search.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-07-27T00:59:38+00:00">
+<meta property="article:published_time" content="2025-07-28T00:58:31+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Searchに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-27T00:59:38+00:00","datePublished":"2025-07-27T00:59:38+00:00","description":"Search #InformationRetrieval#Pocket#NLP#Dataset#LanguageModelIssue Date: 2025-06-08 Paper Note Search Arena: Analyzing Search-Augmented LLMs, Mihran Miroyan+, arXiv25 Summary検索強化型LLMsに関する「Search Arena」という大規模な人間の好みデータセットを紹介。24,000以上のマルチターンユーザーインタラクションを含み、ユーザーの好みが引用数や引用元に影響されることを明らかにした。特に、コミュニティ主導の情報源が好まれる傾向があり、静的な情報源は必ずしも信頼されない。検索強化型LLMsの性能を評価した結果、非検索設定でのパフォーマンス向上が確認されたが、検索設定ではパラメトリック知識に依存すると品質が低下することが分かった。このデータセットはオープンソースとして提供されている。 Comment元ポスト:https://x.com/mirmiroyan/status/1931081734764081391?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q #Embeddings#InformationRetrieval#NLP#STS (SemanticTextualSimilarity)#ICLRIssue Date: 2025-01-28 SoftMatcha: A Fast and Soft Pattern Matcher for Billion-Scale Corpus Searches, Deguchi+, ICLR25 CommentICLR2025にacceptされた模様 https://openreview.net/forum?id=Q6PAnqYVpoopenreview:https://openreview.net/forum?id=Q6PAnqYVpo #NeuralNetwork#InformationRetrieval#MultitaskLearning#QueryClassification#WebSearch#NAACLIssue Date: 2018-02-05 Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15 Commentクエリ分類と検索をNeural Netを用いてmulti-task learningする研究分類(multi-class classification)とランキング(pairwise learning-to-rank)という異なる操作が必要なタスクを、multi task learningの枠組みで組み合わせた（初めての？）研究。 この研究では分類タスクとしてクエリ分類、ランキングタスクとしてWeb Searchを扱っている。 モデルの全体像は下図の通り。 ![image](https://user-images.githubusercontent.com/12249301/35790293-e19d996e-0a84-11e8-8954-0331e9851f77.png) shared layersの部分で、クエリとドキュメントを一度共通の空間に落とし、そのrepresentationを用いて、l3においてtask-specificな空間に写像し各タスクを解いている。 分類タスクを解く際には、outputはsigmoidを用いる（すなわち、output layerのユニット数はラベル数分存在する）。 Web Searchを解く際には、クエリとドキュメントをそれぞれtask specificな空間に別々に写像し、それらのcosine similarityをとった結果にsoftmaxをかけることで、ドキュメントのrelevance scoreを計算している。 ![image](https://user-images.githubusercontent.com/12249301/35790346-36ceb044-0a85-11e8-86c1-8ae769c60081.png) 学習時のアルゴリズムは上の通り。各タスクをランダムにpickし、各タスクの目的関数が最適化されるように思いをSGDで更新する、といったことを繰り返す。 なお、alternativeとして、下図のようなネットワーク構造を考えることができるが（クエリのrepresentationのみがシェアされている）、このモデルの場合はweb searchがあまりうまくいかなかった模様。 ![image](https://user-images.githubusercontent.com/12249301/35790424-ba0bcc44-0a85-11e8-885f-65c6d5a7d670.png) 理由としては、unbalancedなupdates（クエリパラメータのupdateがdocumentよりも多くアップデートされること）が原因ではないかと言及しており、multi-task modelにおいては、パラメータをどれだけシェアするかはネットワークをデザインする上で重要な選択であると述べている。評価で用いるデータの統計量は下記の通り。 ![image](https://user-images.githubusercontent.com/12249301/35790589-79357052-0a86-11e8-970f-2f6ead2b30f7.png) 1年分の検索ログから抽出。クエリ分類（各クラスごとにbinary）、および文書のrelevance score（5-scale）は人手で付与されている。 クエリ分類はROC曲線のAUCを用い、Web SearchではNDCG (Normalized Discounted Cumulative Gain) を用いた。 ![image](https://user-images.githubusercontent.com/12249301/35790967-61f24328-0a88-11e8-846a-5a93861358a7.png) ![image](https://user-images.githubusercontent.com/12249301/35790975-6ee0b6b4-0a88-11e8-899d-4c6200ecf66e.png) multi task learningをした場合に、性能が向上している。 また、ネットワークが学習したsemantic representationとSVMを用いて、domain adaptationの実験（各クエリ分類のタスクは独立しているので、一つのクエリ分類のデータを選択しsemantic representationをtrainし、学習したrepresentationを別のクエリ分類タスクに適用する）も行なっており、訓練事例数が少ない場合に有効に働くことを確認（Letter3gramとWord3gramはnot trained/adapted）。 ![image](https://user-images.githubusercontent.com/12249301/35791328-a7fcae74-0a8a-11e8-84cb-73b6e7141948.png) ![image](https://user-images.githubusercontent.com/12249301/35791174-b5ad2c16-0a89-11e8-8e7d-d3850348dae3.png) また、SemanticRepresentationへ写像する行列W1のパラメータの初期化の仕方と、サンプル数の変化による性能の違いについても実験。DNN1はW1をランダムに初期化、DNN2は別タスク（別のクエリ分類タスク）で学習したW1でfixする手法。 訓練事例が数百万程度ある場合は、DNN1がもっとも性能がよく、数千の訓練事例数の場合はsemantic representationを用いたSVMがもっともよく、midium-rangeの訓練事例数の場合はDNN2がもっとも性能がよかったため、データのサイズに応じて手法を使い分けると良い。データセットにおいて、クエリの長さや文書の長さが記述されていないのがきになる。 more","headline":"Searchに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Search.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Search.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-28T00:58:31+00:00","datePublished":"2025-07-28T00:58:31+00:00","description":"Search #InformationRetrieval#Pocket#NLP#Dataset#LanguageModelIssue Date: 2025-06-08 Paper Note Search Arena: Analyzing Search-Augmented LLMs, Mihran Miroyan+, arXiv25 Summary検索強化型LLMsに関する「Search Arena」という大規模な人間の好みデータセットを紹介。24,000以上のマルチターンユーザーインタラクションを含み、ユーザーの好みが引用数や引用元に影響されることを明らかにした。特に、コミュニティ主導の情報源が好まれる傾向があり、静的な情報源は必ずしも信頼されない。検索強化型LLMsの性能を評価した結果、非検索設定でのパフォーマンス向上が確認されたが、検索設定ではパラメトリック知識に依存すると品質が低下することが分かった。このデータセットはオープンソースとして提供されている。 Comment元ポスト:https://x.com/mirmiroyan/status/1931081734764081391?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q #Embeddings#InformationRetrieval#NLP#STS (SemanticTextualSimilarity)#ICLRIssue Date: 2025-01-28 SoftMatcha: A Fast and Soft Pattern Matcher for Billion-Scale Corpus Searches, Deguchi+, ICLR25 CommentICLR2025にacceptされた模様 https://openreview.net/forum?id=Q6PAnqYVpoopenreview:https://openreview.net/forum?id=Q6PAnqYVpo #NeuralNetwork#InformationRetrieval#MultitaskLearning#QueryClassification#WebSearch#NAACLIssue Date: 2018-02-05 Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT15 Commentクエリ分類と検索をNeural Netを用いてmulti-task learningする研究分類(multi-class classification)とランキング(pairwise learning-to-rank)という異なる操作が必要なタスクを、multi task learningの枠組みで組み合わせた（初めての？）研究。 この研究では分類タスクとしてクエリ分類、ランキングタスクとしてWeb Searchを扱っている。 モデルの全体像は下図の通り。 ![image](https://user-images.githubusercontent.com/12249301/35790293-e19d996e-0a84-11e8-8954-0331e9851f77.png) shared layersの部分で、クエリとドキュメントを一度共通の空間に落とし、そのrepresentationを用いて、l3においてtask-specificな空間に写像し各タスクを解いている。 分類タスクを解く際には、outputはsigmoidを用いる（すなわち、output layerのユニット数はラベル数分存在する）。 Web Searchを解く際には、クエリとドキュメントをそれぞれtask specificな空間に別々に写像し、それらのcosine similarityをとった結果にsoftmaxをかけることで、ドキュメントのrelevance scoreを計算している。 ![image](https://user-images.githubusercontent.com/12249301/35790346-36ceb044-0a85-11e8-86c1-8ae769c60081.png) 学習時のアルゴリズムは上の通り。各タスクをランダムにpickし、各タスクの目的関数が最適化されるように思いをSGDで更新する、といったことを繰り返す。 なお、alternativeとして、下図のようなネットワーク構造を考えることができるが（クエリのrepresentationのみがシェアされている）、このモデルの場合はweb searchがあまりうまくいかなかった模様。 ![image](https://user-images.githubusercontent.com/12249301/35790424-ba0bcc44-0a85-11e8-885f-65c6d5a7d670.png) 理由としては、unbalancedなupdates（クエリパラメータのupdateがdocumentよりも多くアップデートされること）が原因ではないかと言及しており、multi-task modelにおいては、パラメータをどれだけシェアするかはネットワークをデザインする上で重要な選択であると述べている。評価で用いるデータの統計量は下記の通り。 ![image](https://user-images.githubusercontent.com/12249301/35790589-79357052-0a86-11e8-970f-2f6ead2b30f7.png) 1年分の検索ログから抽出。クエリ分類（各クラスごとにbinary）、および文書のrelevance score（5-scale）は人手で付与されている。 クエリ分類はROC曲線のAUCを用い、Web SearchではNDCG (Normalized Discounted Cumulative Gain) を用いた。 ![image](https://user-images.githubusercontent.com/12249301/35790967-61f24328-0a88-11e8-846a-5a93861358a7.png) ![image](https://user-images.githubusercontent.com/12249301/35790975-6ee0b6b4-0a88-11e8-899d-4c6200ecf66e.png) multi task learningをした場合に、性能が向上している。 また、ネットワークが学習したsemantic representationとSVMを用いて、domain adaptationの実験（各クエリ分類のタスクは独立しているので、一つのクエリ分類のデータを選択しsemantic representationをtrainし、学習したrepresentationを別のクエリ分類タスクに適用する）も行なっており、訓練事例数が少ない場合に有効に働くことを確認（Letter3gramとWord3gramはnot trained/adapted）。 ![image](https://user-images.githubusercontent.com/12249301/35791328-a7fcae74-0a8a-11e8-84cb-73b6e7141948.png) ![image](https://user-images.githubusercontent.com/12249301/35791174-b5ad2c16-0a89-11e8-8e7d-d3850348dae3.png) また、SemanticRepresentationへ写像する行列W1のパラメータの初期化の仕方と、サンプル数の変化による性能の違いについても実験。DNN1はW1をランダムに初期化、DNN2は別タスク（別のクエリ分類タスク）で学習したW1でfixする手法。 訓練事例が数百万程度ある場合は、DNN1がもっとも性能がよく、数千の訓練事例数の場合はsemantic representationを用いたSVMがもっともよく、midium-rangeの訓練事例数の場合はDNN2がもっとも性能がよかったため、データのサイズに応じて手法を使い分けると良い。データセットにおいて、クエリの長さや文書の長さが記述されていないのがきになる。 more","headline":"Searchに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Search.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Search.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-07-27T00:59:38+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 27, 2025
+    <time class="dt-published" datetime="2025-07-28T00:58:31+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1087,32 +1087,32 @@ user profileはlong/short term preferenceによって構成される。
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/RewardHacking.html" title="RewardHackingに関する論文・技術記事メモの一覧">
-            RewardHackingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/FactualKnowledge.html" title="FactualKnowledgeに関する論文・技術記事メモの一覧">
+            FactualKnowledgeに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Stability.html" title="Stabilityに関する論文・技術記事メモの一覧">
-            Stabilityに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Programming.html" title="Programmingに関する論文・技術記事メモの一覧">
+            Programmingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/2D.html" title="2Dに関する論文・技術記事メモの一覧">
-            2Dに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Trustfulness.html" title="Trustfulnessに関する論文・技術記事メモの一覧">
+            Trustfulnessに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Repository.html" title="Repositoryに関する論文・技術記事メモの一覧">
-            Repositoryに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Architecture.html" title="Architectureに関する論文・技術記事メモの一覧">
+            Architectureに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
