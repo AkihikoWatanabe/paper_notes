@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/EMNLP.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-08-06T00:55:53+00:00">
+<meta property="article:published_time" content="2025-08-07T00:56:32+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="EMNLPに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-06T00:55:53+00:00","datePublished":"2025-08-06T00:55:53+00:00","description":"EMNLP","headline":"EMNLPに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/EMNLP.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/EMNLP.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-07T00:56:32+00:00","datePublished":"2025-08-07T00:56:32+00:00","description":"EMNLP","headline":"EMNLPに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/EMNLP.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/EMNLP.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -764,7 +764,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-08-06T00:55:53+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 6, 2025
+    <time class="dt-published" datetime="2025-08-07T00:56:32+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 7, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -799,7 +799,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 25 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 28 mins</span>
   </div></header>
 </div>
     </div>
@@ -995,6 +995,69 @@ function googleTranslateElementInit() {
       <h2 id="emnlp">EMNLP</h2>
 
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/Supervised-FineTuning%20(SFT).html">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="articles/PEFT(Adaptor_LoRA).html">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="articles/MoE(Mixture-of-Experts).html">#MoE(Mixture-of-Experts)</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-06</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2368">[Paper Note] Let the Expert Stick to His Last: Expert-Specialized Fine-Tuning for   Sparse Architectural Large Language Models, Zihan Wang+, EMNLP'24</a>
+<span class="snippet"><span>Summary</span>本研究では、Mixture-of-Experts（MoE）アーキテクチャを持つ大規模言語モデル（LLMs）に対するパラメータ効率の良いファインチューニング（PEFT）手法を提案。主な内容は、(1) タスクごとの専門家の活性化分布の集中度の調査、(2) Expert-Specialized Fine-Tuning（ESFT）の提案とその効果、(3) MoEアーキテクチャの専門家特化型ファインチューニングへの影響の分析。実験により、ESFTがチューニング効率を向上させ、フルパラメータファインチューニングに匹敵またはそれを上回る性能を示すことが確認された。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/wzihanw/status/1952965138845450413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QMoEアーキテクチャを持つLLMにおいて、finetuningを実施したいタスクに関連する専門家を特定し、そのほかのパラメータをfreezeした上で当該専門家のみをtrainableとすることで、効率的にfinetuningを実施する手法
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/ba82f425-5b61-4ce7-803b-4eb3fb375c41" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+専門家を見つける際には専門家ごとにfinetuningしたいタスクに対するrelevance scoreを計算する。そのために、2つの手法が提案されており、training dataからデータをサンプリングし
+
+<br>
+
+・全てのサンプリングしたデータの各トークンごとのMoE Routerのgateの値の平均値をrelevant scoreとする方法
+
+<br>
+
+・全てのサンプリングしたデータの各トークンごとに選択された専門家の割合
+
+<br>
+
+の2種類でスコアを求める。閾値pを決定し、閾値以上のスコアを持つ専門家をtrainableとする。
+
+<br>
+
+
+
+<br>
+
+LoRAよりもmath, codeなどの他ドメインのタスク性能を劣化させず、Finetuning対象のタスクでFFTと同等の性能を達成。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/302eebda-bace-4b99-bb73-5e7e3ce10448" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+LoRAと同様にFFTと比較し学習時間は短縮され、学習した専門家の重みを保持するだけで良いのでストレージも節約できる。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/b02a8d53-6967-4dd2-9290-de06f27e48c9" alt="image" loading="lazy"></span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -1022,23 +1085,18 @@ function googleTranslateElementInit() {
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1950">ORPO: Monolithic Preference Optimization without Reference Model, Jiwoo Hong+, EMNLP'24</a>
 <span class="snippet"><span>Summary</span>本論文では、好みの整合性における監視付きファインチューニング（SFT）の重要性を強調し、わずかなペナルティで好みに整合したSFTが可能であることを示します。さらに、追加の整合性フェーズを必要としない新しいオッズ比最適化アルゴリズムORPOを提案し、これを用いて複数の言語モデルをファインチューニングした結果、最先端のモデルを上回る性能を達成しました。</span>
 <span class="snippet"><span>Comment</span>ざっくり言うとinstruction tuningとalignmentを同時にできる手法らしいがまだ理解できていない</span>
+</div>
+<p><button onclick="showMore(0)">more</button></p>
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Dataset.html">#Dataset</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
 <a class="button" href="articles/KnowledgeEditing.html">#KnowledgeEditing</a>
 <a class="button" href="articles/read-later.html">#read-later</a>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-05-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1933">Editing Large Language Models: Problems, Methods, and Opportunities, Yunzhi Yao+, EMNLP'24</a>
 <span class="snippet"><span>Summary</span>LLMの編集技術の進展を探求し、特定のドメインでの効率的な動作変更と他の入力への影響を最小限に抑える方法を論じる。モデル編集のタスク定義や課題を包括的にまとめ、先進的な手法の実証分析を行う。また、新しいベンチマークデータセットを構築し、評価の向上と持続的な問題の特定を目指す。最終的に、編集技術の効果に関する洞察を提供し、適切な方法選択を支援する。コードとデータセットは公開されている。</span>
-</div>
-<p><button onclick="showMore(0)">more</button></p>
-<div class="hidden-content">
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Transformer.html">#Transformer</a>
@@ -3742,32 +3800,32 @@ Ziff-Davis Corpusのテキストに対して、2人のannotatorによってgold 
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/FlowMatching.html" title="FlowMatchingに関する論文・技術記事メモの一覧">
-            FlowMatchingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/MultiDimensional.html" title="MultiDimensionalに関する論文・技術記事メモの一覧">
+            MultiDimensionalに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SelfCorrection.html" title="SelfCorrectionに関する論文・技術記事メモの一覧">
-            SelfCorrectionに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Prompting.html" title="Promptingに関する論文・技術記事メモの一覧">
+            Promptingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/CIKM.html" title="CIKMに関する論文・技術記事メモの一覧">
-            CIKMに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/KnowledgeTracing.html" title="KnowledgeTracingに関する論文・技術記事メモの一覧">
+            KnowledgeTracingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AWS.html" title="AWSに関する論文・技術記事メモの一覧">
-            AWSに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/PerformanceTesting.html" title="PerformanceTestingに関する論文・技術記事メモの一覧">
+            PerformanceTestingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
