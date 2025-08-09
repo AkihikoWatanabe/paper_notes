@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-08-08T00:55:52+00:00">
+<meta property="article:published_time" content="2025-08-09T00:50:03+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="PostTrainingに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-08T00:55:52+00:00","datePublished":"2025-08-08T00:55:52+00:00","description":"PostTraining","headline":"PostTrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-09T00:50:03+00:00","datePublished":"2025-08-09T00:50:03+00:00","description":"PostTraining","headline":"PostTrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -765,7 +765,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-08-08T00:55:52+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 8, 2025
+    <time class="dt-published" datetime="2025-08-09T00:50:03+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 9, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -800,7 +800,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 14 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 17 mins</span>
   </div></header>
 </div>
     </div>
@@ -998,6 +998,51 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a>
+<a class="button" href="articles/Factuality.html">#Factuality</a>
+<a class="button" href="articles/RewardHacking.html">#RewardHacking</a>
+<a class="button" href="articles/GRPO.html">#GRPO</a>
+<a class="button" href="articles/On-Policy.html">#On-Policy</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2376">[Paper Note] Learning to Reason for Factuality, Xilun Chen+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>R-LLMsは複雑な推論タスクで進展しているが、事実性において幻覚を多く生成する。オンラインRLを長文の事実性設定に適用する際、信頼できる検証方法が不足しているため課題がある。従来の自動評価フレームワークを用いたオフラインRLでは報酬ハッキングが発生することが判明。そこで、事実の精度、詳細レベル、関連性を考慮した新しい報酬関数を提案し、オンラインRLを適用。評価の結果、幻覚率を平均23.1ポイント削減し、回答の詳細レベルを23%向上させた。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/jaseweston/status/1953629692772446481?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q先行研究:
+
+<br>
+
+・2378Reasoning ModelのHallucination Rateは、そのベースとなるモデルよりも高い。実際、DeepSeek-V3とDeepSeek-R1,Qwen-2.5-32BとQwQ-32Bを6つのFactualityに関するベンチマークで比較すると、Reasoning Modelの方がHallucination Rateが10, 13%程度高かった。これは、現在のOn-policyのRLがlogical reasoningにフォーカスしており、Factualityを見落としているため、と仮説を立てている。
+
+<br>
+
+Factuality（特にLongForm)とRL alignmentsという観点から言うと、決定的、正確かつ信頼性のあるverificatlon手法は存在せず、Human Effortが必要不可欠である。
+
+<br>
+
+自動的にFactualityを測定するFactScoreのような手法は、DPOのようなオフラインのペアワイズのデータを作成するに留まってしまっている。また、on dataでFactualityを改善する取り組みは行われているが、long-formな応答に対して、factual reasoningを実施するにはいくつかの課題が残されている:
+
+<br>
+
+・reward design
+
+<br>
+
+  ・Factualityに関するrewardを単独で追加するだけだと、LLMは非常に短く、詳細を省略した応答をしPrecicionのみを高めようとしてしまう。
+
+<br>
+
+
+
+<br>
+
+あとで追記する</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Dataset.html">#Dataset</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
 <a class="button" href="articles/Evaluation.html">#Evaluation</a>
@@ -1038,6 +1083,9 @@ function googleTranslateElementInit() {
 <br>
 
 <img src="https://github.com/user-attachments/assets/01875988-9364-4eb1-acb2-e35cf907b789" alt="image" loading="lazy"></span>
+</div>
+<p><button onclick="showMore(0)">more</button></p>
+<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Dataset.html">#Dataset</a>
@@ -1047,18 +1095,10 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/MultiLingual.html">#MultiLingual</a>
 <a class="button" href="articles/DPO.html">#DPO</a>
 <a class="button" href="articles/Cultural.html">#Cultural</a>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-07-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2133">[Paper Note] CARE: Assessing the Impact of Multilingual Human Preference Learning on  Cultural Awareness, Geyang Guo+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>本論文では、文化的多様性を考慮した言語モデル（LM）の訓練方法を分析し、ネイティブな文化的好みを取り入れることで、LMの文化的認識を向上させることを目指します。3,490の文化特有の質問と31,700のネイティブな判断を含むリソース「CARE」を紹介し、高品質なネイティブの好みを少量取り入れることで、さまざまなLMの性能が向上することを示します。また、文化的パフォーマンスが強いモデルはアラインメントからの恩恵を受けやすく、地域間でのデータアクセスの違いがモデル間のギャップを生むことが明らかになりました。CAREは一般に公開される予定です。</span>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/cherylolguo/status/1940798823405600843?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
-</div>
-<p><button onclick="showMore(0)">more</button></p>
-<div class="hidden-content">
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
@@ -3091,32 +3131,32 @@ https://x.com/artificialanlys/status/1832965630472995220?s=46&t=Y6UuIHB0Lv0IpmFA
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Toxicity.html" title="Toxicityに関する論文・技術記事メモの一覧">
-            Toxicityに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ECS.html" title="ECSに関する論文・技術記事メモの一覧">
+            ECSに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Post.html" title="Postに関する論文・技術記事メモの一覧">
-            Postに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/LearningToRank.html" title="LearningToRankに関する論文・技術記事メモの一覧">
+            LearningToRankに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/RLVR.html" title="RLVRに関する論文・技術記事メモの一覧">
-            RLVRに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/CommentGeneration.html" title="CommentGenerationに関する論文・技術記事メモの一覧">
+            CommentGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TechnologyEnhancedLearning.html" title="TechnologyEnhancedLearningに関する論文・技術記事メモの一覧">
-            TechnologyEnhancedLearningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Composition.html" title="Compositionに関する論文・技術記事メモの一覧">
+            Compositionに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

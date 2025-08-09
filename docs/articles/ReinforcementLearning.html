@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-08-08T00:55:52+00:00">
+<meta property="article:published_time" content="2025-08-09T00:50:03+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="ReinforcementLearningに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-08T00:55:52+00:00","datePublished":"2025-08-08T00:55:52+00:00","description":"ReinforcementLearning","headline":"ReinforcementLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-09T00:50:03+00:00","datePublished":"2025-08-09T00:50:03+00:00","description":"ReinforcementLearning","headline":"ReinforcementLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -765,7 +765,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-08-08T00:55:52+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 8, 2025
+    <time class="dt-published" datetime="2025-08-09T00:50:03+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 9, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -800,7 +800,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 7 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 10 mins</span>
   </div></header>
 </div>
     </div>
@@ -996,6 +996,51 @@ function googleTranslateElementInit() {
       <h2 id="reinforcementlearning">ReinforcementLearning</h2>
 
 <div class="visible-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/Factuality.html">#Factuality</a>
+<a class="button" href="articles/RewardHacking.html">#RewardHacking</a>
+<a class="button" href="articles/PostTraining.html">#PostTraining</a>
+<a class="button" href="articles/GRPO.html">#GRPO</a>
+<a class="button" href="articles/On-Policy.html">#On-Policy</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-08</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2376">[Paper Note] Learning to Reason for Factuality, Xilun Chen+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>R-LLMsは複雑な推論タスクで進展しているが、事実性において幻覚を多く生成する。オンラインRLを長文の事実性設定に適用する際、信頼できる検証方法が不足しているため課題がある。従来の自動評価フレームワークを用いたオフラインRLでは報酬ハッキングが発生することが判明。そこで、事実の精度、詳細レベル、関連性を考慮した新しい報酬関数を提案し、オンラインRLを適用。評価の結果、幻覚率を平均23.1ポイント削減し、回答の詳細レベルを23%向上させた。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/jaseweston/status/1953629692772446481?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q先行研究:
+
+<br>
+
+・2378Reasoning ModelのHallucination Rateは、そのベースとなるモデルよりも高い。実際、DeepSeek-V3とDeepSeek-R1,Qwen-2.5-32BとQwQ-32Bを6つのFactualityに関するベンチマークで比較すると、Reasoning Modelの方がHallucination Rateが10, 13%程度高かった。これは、現在のOn-policyのRLがlogical reasoningにフォーカスしており、Factualityを見落としているため、と仮説を立てている。
+
+<br>
+
+Factuality（特にLongForm)とRL alignmentsという観点から言うと、決定的、正確かつ信頼性のあるverificatlon手法は存在せず、Human Effortが必要不可欠である。
+
+<br>
+
+自動的にFactualityを測定するFactScoreのような手法は、DPOのようなオフラインのペアワイズのデータを作成するに留まってしまっている。また、on dataでFactualityを改善する取り組みは行われているが、long-formな応答に対して、factual reasoningを実施するにはいくつかの課題が残されている:
+
+<br>
+
+・reward design
+
+<br>
+
+  ・Factualityに関するrewardを単独で追加するだけだと、LLMは非常に短く、詳細を省略した応答をしPrecicionのみを高めようとしてしまう。
+
+<br>
+
+
+
+<br>
+
+あとで追記する</span>
 <a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -1036,6 +1081,9 @@ Datamixingよりも高い性能（ただし、これは数学とコーディン�
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2332">[Paper Note] Beyond Binary Rewards: Training LMs to Reason About Their Uncertainty, Mehul Damani+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>RLCRを用いた言語モデルの訓練により、推論の精度と信頼度を同時に改善。バイナリ報酬に加え、信頼度推定のためのブライヤースコアを用いた報酬関数を最適化。RLCRは、通常のRLよりもキャリブレーションを改善し、精度を損なうことなく信頼性の高い推論モデルを生成することを示した。</span>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/asap2650/status/1950942279872762272?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLLMにConfidenceをDiscreteなTokenとして（GEvalなどは除く）出力させると信頼できないことが多いので、もしそれも改善するのだとしたら興味深い。</span>
+</div>
+<p><button onclick="showMore(0)">more</button></p>
+<div class="hidden-content">
 <a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -1043,18 +1091,10 @@ Datamixingよりも高い性能（ただし、これは数学とコーディン�
 <a class="button" href="articles/MoE(Mixture-of-Experts).html">#MoE(Mixture-of-Experts)</a>
 <a class="button" href="articles/On-Policy.html">#On-Policy</a>
 <a class="button" href="articles/Stability.html">#Stability</a>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-07-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2299">[Paper Note] Group Sequence Policy Optimization, Chujie Zheng+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>Group Sequence Policy Optimization (GSPO)は、大規模言語モデルのための新しい強化学習アルゴリズムで、シーケンスの尤度に基づく重要度比を用いてトレーニングを行う。GSPOは、従来のGRPOアルゴリズムよりも効率的で高性能であり、Mixture-of-Experts (MoE) のトレーニングを安定化させる。これにより、最新のQwen3モデルにおいて顕著な改善が見られる。</span>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/theturingpost/status/1948904443749302785?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q公式ポスト:https://x.com/alibaba_qwen/status/1949412072942612873?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
-</div>
-<p><button onclick="showMore(0)">more</button></p>
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
@@ -2743,32 +2783,32 @@ https://www.ai-shift.co.jp/techblog/3583</span>
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/MatrixFactorization.html" title="MatrixFactorizationに関する論文・技術記事メモの一覧">
-            MatrixFactorizationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/PostTraining.html" title="PostTrainingに関する論文・技術記事メモの一覧">
+            PostTrainingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/3D.html" title="3Dに関する論文・技術記事メモの一覧">
-            3Dに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Normalization.html" title="Normalizationに関する論文・技術記事メモの一覧">
+            Normalizationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Grokking.html" title="Grokkingに関する論文・技術記事メモの一覧">
-            Grokkingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/EducationalDataMining.html" title="EducationalDataMiningに関する論文・技術記事メモの一覧">
+            EducationalDataMiningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ExplicitFeedback.html" title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
-            ExplicitFeedbackに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Decoder.html" title="Decoderに関する論文・技術記事メモの一覧">
+            Decoderに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
