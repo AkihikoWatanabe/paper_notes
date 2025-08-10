@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Pocket.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-08-09T00:50:03+00:00">
+<meta property="article:published_time" content="2025-08-10T00:58:48+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Pocketに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-09T00:50:03+00:00","datePublished":"2025-08-09T00:50:03+00:00","description":"Pocket","headline":"Pocketに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pocket.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pocket.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-10T00:58:48+00:00","datePublished":"2025-08-10T00:58:48+00:00","description":"Pocket","headline":"Pocketに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pocket.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pocket.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -765,7 +765,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-08-09T00:50:03+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 9, 2025
+    <time class="dt-published" datetime="2025-08-10T00:58:48+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 10, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -800,7 +800,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 25 hours 44 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 25 hours 58 mins</span>
   </div></header>
 </div>
     </div>
@@ -996,15 +996,165 @@ function googleTranslateElementInit() {
       <h2 id="pocket">Pocket</h2>
 
 <div class="visible-content">
-<a class="button" href="articles/Survey.html">#Survey</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
-<a class="button" href="articles/Hallucination.html">#Hallucination</a>
+<a class="button" href="articles/SelfImprovement.html">#SelfImprovement</a>
+<a class="button" href="articles/ZeroData.html">#ZeroData</a>
 
 
 <br>
 
 
+<span class="issue_date">Issue Date: 2025-08-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2387">[Paper Note] R-Zero: Self-Evolving Reasoning LLM from Zero Data, Chengsong Huang+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>R-Zeroは、自己進化型大規模言語モデル（LLMs）が自律的にトレーニングデータを生成するフレームワークで、チャレンジャーとソルバーの2つのモデルが共進化することで、既存のタスクやラベルに依存せずに自己改善を実現します。このアプローチにより、推論能力が大幅に向上し、特にQwen3-4B-Baseでは数学推論で+6.49、一般ドメイン推論で+7.54の改善が確認されました。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/_akhaliq/status/1953804055525962134?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q問題を生成するChallengerと与えられた問題を解くSolverを用意し、片方をfreezezさせた状態で交互にポリシーの更新を繰り返す。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/05207756-3029-41a2-8dd0-e27de5228436" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+Challenger
+
+<br>
+
+・ （Challengerによる)問題生成→
+
+<br>
+
+・（freezed solverによる）self consistencyによるラベル付け→
+
+<br>
+
+・Solverの問題に対するempirical acc.（i.e., サンプリング回数mに対するmajorityが占める割合）でrewardを与えChallengerを更新
+
+<br>
+
+
+
+<br>
+
+といった流れでポリシーが更新される。Rewardは他にも生成された問題間のBLEUを測り類似したものばかりの場合はペナルティを与える項や、フォーマットが正しく指定された通りになっているか、といったペナルティも導入する。
+
+<br>
+
+
+
+<br>
+
+Solver
+
+<br>
+
+・ChallengerのポリシーからN問生成し、それに対してSolverでself consistencyによって解答を生成
+
+<br>
+
+・empirical acc.を計算し、1/2との差分の絶対値を見て、簡単すぎる/難しすぎる問題をフィルタリング
+
+<br>
+
+  ・これはカリキュラム学習的な意味合いのみならず、低品質な問題のフィルタリングにも寄与する
+
+<br>
+
+・フィルタリング後の問題を利用して、verifiable binary rewardでポリシーを更新
+
+<br>
+
+
+
+<br>
+
+評価結果
+
+<br>
+
+数学ドメインに提案手法を適用したところ、iterごとに全体の平均性能は向上。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/cbe780ec-a99b-4227-b983-4e24982a6af8" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+提案手法で数学ドメインを学習し、generalドメインに汎化するか？を確認したところ、汎化することを確認（ただ、すぐにサチっているようにも見える）。、
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/bc0eb3e1-8ed1-4d36-b30e-095e8a160886" alt="image" loading="lazy">関連:
+
+<br>
+
+・2383
+
+<br>
+
+・1936著者ポスト:https://x.com/wyu_nd/status/1954249813861810312?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2384">[Paper Note] Sotopia-RL: Reward Design for Social Intelligence, Haofei Yu+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>社会的知性を持つエージェントの訓練に向けて、Sotopia-RLという新しいフレームワークを提案。部分的観測性と多次元性の課題に対処し、エピソードレベルのフィードバックを発話レベルの多次元報酬に洗練。実験では、Sotopia環境で最先端の社会的目標達成スコアを達成し、既存の手法を上回る結果を示した。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/youjiaxuan/status/1953826129401262304?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a>
+<a class="button" href="articles/SelfImprovement.html">#SelfImprovement</a>
+<a class="button" href="articles/ZeroData.html">#ZeroData</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2383">[Paper Note] Self-Questioning Language Models, Lili Chen+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>自己質問型言語モデル（SQLM）を提案し、トピックを指定するプロンプトから自ら質問を生成し、解答する非対称の自己対戦フレームワークを構築。提案者と解答者は強化学習で訓練され、問題の難易度に応じて報酬を受け取る。三桁の掛け算や代数問題、プログラミング問題のベンチマークで、外部データなしで言語モデルの推論能力を向上させることができることを示す。</span>
+<span class="snippet"><span>Comment</span>pj page:https://self-questioning.github.io元ポスト:https://x.com/lchen915/status/1953896909925757123?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qたとえば下記のような、ラベル無しの外部データを利用する手法も用いてself improvingする手法と比較したときに、どの程度の性能差になるのだろうか？外部データを全く利用せず、外部データありの手法と同等までいけます、という話になると、より興味深いと感じた。
+
+<br>
+
+
+
+<br>
+
+・1212既存の外部データを活用しない関連研究:
+
+<br>
+
+・1936</span>
+</div>
+<p><button onclick="showMore(0)">more</button></p>
+<div class="hidden-content">
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/Supervised-FineTuning%20(SFT).html">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<span class="issue_date">Issue Date: 2025-08-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2382">[Paper Note] On the Generalization of SFT: A Reinforcement Learning Perspective with  Reward Rectification, Yongliang Wu+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>大規模言語モデル（LLM）の教師ありファインチューニング（SFT）の一般化能力を向上させるため、動的ファインチューニング（DFT）を提案。DFTはトークンの確率に基づいて目的関数を再スケーリングし、勾配更新を安定化させる。これにより、SFTを大幅に上回る性能を示し、オフライン強化学習でも競争力のある結果を得た。理論的洞察と実践的解決策を結びつけ、SFTの性能を向上させる。コードは公開されている。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/theturingpost/status/1953960036126142645?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qこれは大変興味深い。数学以外のドメインでの評価にも期待したい。</span>
+<a class="button" href="articles/Survey.html">#Survey</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/Hallucination.html">#Hallucination</a>
 <span class="issue_date">Issue Date: 2025-08-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2381">[Paper Note] A comprehensive taxonomy of hallucinations in Large Language Models, Manuel Cossio, arXiv'25</a>
 <span class="snippet"><span>Summary</span>LLMのハルシネーションに関する包括的な分類法を提供し、その本質的な避けられなさを提唱。内因的および外因的な要因、事実誤認や不整合などの具体的な現れを分析。根本的な原因や認知的要因を検討し、評価基準や軽減戦略を概説。今後は、信頼性のある展開のために検出と監視に焦点を当てる必要があることを強調。</span>
@@ -1017,11 +1167,6 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/PostTraining.html">#PostTraining</a>
 <a class="button" href="articles/GRPO.html">#GRPO</a>
 <a class="button" href="articles/On-Policy.html">#On-Policy</a>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-08-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2376">[Paper Note] Learning to Reason for Factuality, Xilun Chen+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>R-LLMsは複雑な推論タスクで進展しているが、事実性において幻覚を多く生成する。オンラインRLを長文の事実性設定に適用する際、信頼できる検証方法が不足しているため課題がある。従来の自動評価フレームワークを用いたオフラインRLでは報酬ハッキングが発生することが判明。そこで、事実の精度、詳細レベル、関連性を考慮した新しい報酬関数を提案し、オンラインRLを適用。評価の結果、幻覚率を平均23.1ポイント削減し、回答の詳細レベルを23%向上させた。</span>
@@ -1054,18 +1199,10 @@ Factuality（特にLongForm)とRL alignmentsという観点から言うと、決
 <br>
 
 あとで追記する</span>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-08-06</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2363">[Paper Note] CTR-Sink: Attention Sink for Language Models in Click-Through Rate  Prediction, Zixuan Li+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>CTR予測において、ユーザーの行動シーケンスをテキストとしてモデル化し、言語モデル（LM）を活用する新しいフレームワーク「CTR-Sink」を提案。行動間の関係を強化するためにシンクトークンを挿入し、注意の焦点を動的に調整。二段階のトレーニング戦略を用いてLMの注意をシンクトークンに誘導し、実験により手法の有効性を確認。</span>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/_reachsumit/status/1952926081058783632?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
-</div>
-<p><button onclick="showMore(0)">more</button></p>
-<div class="hidden-content">
 <a class="button" href="articles/Analysis.html">#Analysis</a>
 <a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -1485,7 +1622,11 @@ Datamixingよりも高い性能（ただし、これは数学とコーディン�
 <span class="issue_date">Issue Date: 2025-07-26</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2299">[Paper Note] Group Sequence Policy Optimization, Chujie Zheng+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>Group Sequence Policy Optimization (GSPO)は、大規模言語モデルのための新しい強化学習アルゴリズムで、シーケンスの尤度に基づく重要度比を用いてトレーニングを行う。GSPOは、従来のGRPOアルゴリズムよりも効率的で高性能であり、Mixture-of-Experts (MoE) のトレーニングを安定化させる。これにより、最新のQwen3モデルにおいて顕著な改善が見られる。</span>
-<span class="snippet"><span>Comment</span>元ポスト:https://x.com/theturingpost/status/1948904443749302785?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q公式ポスト:https://x.com/alibaba_qwen/status/1949412072942612873?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/theturingpost/status/1948904443749302785?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q公式ポスト:https://x.com/alibaba_qwen/status/1949412072942612873?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QGRPOとGSPOの違いのGIF:
+
+<br>
+
+https://x.com/theturingpost/status/1953976551424634930?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
 <a class="button" href="articles/ComputerVision.html">#ComputerVision</a>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a>
 <a class="button" href="articles/Controllable.html">#Controllable</a>
@@ -4937,9 +5078,13 @@ mathに関するpromptはverifiableなのでレスポンスが不正解なもの
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1937">Rewriting Pre-Training Data Boosts LLM Performance in Math and Code, Kazuki Fujii+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>本研究では、公共データを体系的に書き換えることで大規模言語モデル（LLMs）の性能を向上させる2つのオープンライセンスデータセット、SwallowCodeとSwallowMathを紹介。SwallowCodeはPythonスニペットを洗練させる4段階のパイプラインを用い、低品質のコードをアップグレード。SwallowMathはボイラープレートを削除し、解決策を簡潔に再フォーマット。これにより、Llama-3.1-8Bのコード生成能力がHumanEvalで+17.0、GSM8Kで+12.4向上。すべてのデータセットは公開され、再現可能な研究を促進。</span>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/okoge_kaz/status/1920141189652574346?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q解説ポスト:https://x.com/hillbig/status/1920613041026314274?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a>
+<a class="button" href="articles/SelfImprovement.html">#SelfImprovement</a>
 <a class="button" href="articles/read-later.html">#read-later</a>
 <a class="button" href="articles/RLVR.html">#RLVR</a>
+<a class="button" href="articles/ZeroData.html">#ZeroData</a>
 <span class="issue_date">Issue Date: 2025-05-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1936">Absolute Zero: Reinforced Self-play Reasoning with Zero Data, Andrew Zhao+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>新しいRLVRパラダイム「Absolute Zero」を提案し、自己学習を通じて推論能力を向上させるAZRを導入。外部データに依存せず、コーディングや数学的推論タスクでSOTAパフォーマンスを達成。既存のゼロ設定モデルを上回り、異なるモデルスケールにも適用可能。</span>
@@ -6232,9 +6377,40 @@ Repo:https://github.com/apple/ml-gsm-symbolic
 <br>
 
 HuggingFace:https://huggingface.co/datasets/apple/GSM-Symbolic</span>
+<a class="button" href="articles/ComputerVision.html">#ComputerVision</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/Evaluation.html">#Evaluation</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
+<a class="button" href="articles/Reasoning.html">#Reasoning</a>
+<a class="button" href="articles/CVPR.html">#CVPR</a>
+<span class="issue_date">Issue Date: 2025-08-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2385">[Paper Note] MMMU: A Massive Multi-discipline Multimodal Understanding and Reasoning   Benchmark for Expert AGI, Xiang Yue+, CVPR'24</a>
+<span class="snippet"><span>Summary</span>MMMUは、大学レベルの専門知識と意図的な推論を必要とするマルチモーダルモデルの評価のための新しいベンチマークで、11,500のマルチモーダル質問を含む。6つの主要分野をカバーし、30種類の画像タイプを使用。既存のベンチマークと異なり、専門家が直面するタスクに類似した課題を提供。GPT-4VとGeminiの評価では、56%と59%の精度にとどまり、改善の余地があることを示す。MMMUは次世代のマルチモーダル基盤モデルの構築に寄与することが期待されている。</span>
+<span class="snippet"><span>Comment</span>MMMUのリリースから20ヶ月経過したが、いまだに人間のエキスパートのアンサンブルには及ばないとのこと
+
+<br>
+
+https://x.com/xiangyue96/status/1953902213790830931?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QMMMUのサンプルはこちら。各分野ごとに専門家レベルの知識と推論が求められるとのこと。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/90839a16-d7d2-499d-b2d8-52dab8988e52" alt="image" loading="lazy"></span>
+<a class="button" href="articles/Metrics.html">#Metrics</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Search.html">#Search</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/Evaluation.html">#Evaluation</a>
+<a class="button" href="articles/Factuality.html">#Factuality</a>
+<a class="button" href="articles/LongSequence.html">#LongSequence</a>
 <span class="issue_date">Issue Date: 2025-08-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2378">[Paper Note] VERISCORE: Evaluating the factuality of verifiable claims in long-form  text generation, Yixiao Song+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>VERISCOREという新しい指標を提案し、検証可能な主張と検証不可能な主張の両方を含む長文生成タスクに対応。人間評価ではVERISCOREが他の方法よりも理にかなっていることが確認され、16のモデルを評価した結果、GPT-4oが最も優れた性能を示したが、オープンウェイトモデルも差を縮めていることが分かった。また、異なるタスク間でVERISCOREの相関がないことから、事実性評価の拡張が必要であることを示唆している。</span>
+<span class="snippet"><span>Comment</span>LLMの応答からverifiableなclaimのみを抽出し、それを外部の検索エンジン（google検索）のクエリとして入力。検索結果からclaimがsupportされるか否かをLLMによって判断しスコアリングする。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/495a7952-8240-4b3b-8b8c-c0c52dea0e74" alt="image" loading="lazy"></span>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Dataset.html">#Dataset</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
@@ -10994,6 +11170,9 @@ Sparse Upcycingと、Dense tilingによる手法（warm start; 元のモデル�
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1313">Multi-Dimensional Evaluation of Text Summarization with In-Context  Learning, Sameer Jain+, N_A, arXiv'23</a>
 <span class="snippet"><span>Summary</span>本研究では、大規模な言語モデルを使用したコンテキスト内学習による多面的評価者の効果を調査し、大規模なトレーニングデータセットの必要性を排除します。実験の結果、コンテキスト内学習ベースの評価者は、テキスト要約のタスクにおいて学習された評価フレームワークと競合し、関連性や事実の一貫性などの側面で最先端の性能を確立しています。また、GPT-3などの大規模言語モデルによって書かれたゼロショット要約の評価におけるコンテキスト内学習ベースの評価者の効果も研究されています。</span>
 <span class="snippet"><span>Comment</span>ICE</span>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/OpenWeight.html">#OpenWeight</a>
 <span class="issue_date">Issue Date: 2024-05-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1309">Mistral 7B, Albert Q. Jiang+, N_A, arXiv'23</a>
 <span class="snippet"><span>Summary</span>Mistral 7B v0.1は、70億パラメータの言語モデルであり、高速な推論のためにGQAを活用し、SWAを組み合わせている。また、Mistral 7B -InstructはLlama 2 13B -Chatモデルを上回っており、Apache 2.0ライセンスの下で公開されています。</span>
@@ -14308,9 +14487,6 @@ https://twitter.com/rasbt/status/1679139569327824897?s=46&t=ArwxeDos47eUWfAg7_FR
 <span class="issue_date">Issue Date: 2023-06-16</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/756">A Closer Look at In-Context Learning under Distribution Shifts, Kartik Ahuja+, N_A, arXiv'23</a>
 <span class="snippet"><span>Summary</span>本研究では、インコンテキスト学習の汎用性と制限を理解するために、線形回帰という単純なタスクを用いて、トランスフォーマーとセットベースのMLPの比較を行った。分布内評価において両モデルがインコンテキスト学習を示すことがわかったが、トランスフォーマーはOLSのパフォーマンスにより近い結果を示し、軽微な分布シフトに対してより強い耐性を示した。ただし、厳しい分布シフトの下では、両モデルのインコンテキスト学習能力が低下することが示された。</span>
-<span class="issue_date">Issue Date: 2023-06-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/755">Randomized Positional Encodings Boost Length Generalization of  Transformers, Anian Ruoss+, N_A, arXiv'23</a>
-<span class="snippet"><span>Summary</span>トランスフォーマーは、固定されたコンテキスト長のタスクに対して印象的な汎化能力を持っているが、長いシーケンスに対しては失敗することがある。本研究では、この失敗モードが位置エンコーディングに関連していることを示し、新しい位置エンコーディングのファミリーを紹介する。ランダム化された位置エンコーディングスキームにより、トランスフォーマーが未知の長さのシーケンスに汎化できるようになり、平均でテスト精度が12.0％向上した。</span>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
 <a class="button" href="articles/Chain-of-Thought.html">#Chain-of-Thought</a>
@@ -16070,6 +16246,26 @@ Unsupervised SimCSEでは、training時だけMLP layerをのっけて、test時�
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Transformer.html">#Transformer</a>
 <a class="button" href="articles/Attention.html">#Attention</a>
+<span class="issue_date">Issue Date: 2025-08-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2388">[Paper Note] Longformer: The Long-Document Transformer, Iz Beltagy+, arXiv'20</a>
+<span class="snippet"><span>Summary</span>Longformerは、長いシーケンスを線形に処理できる注意機構を持つTransformerベースのモデルで、数千トークンの文書を扱える。局所的なウィンドウ注意とタスクに基づくグローバル注意を組み合わせ、文字レベルの言語モデリングで最先端の結果を達成。事前学習とファインチューニングを行い、長文タスクでRoBERTaを上回る性能を示した。また、Longformer-Encoder-Decoder（LED）を導入し、長文生成タスクにおける効果を確認した。</span>
+<span class="snippet"><span>Comment</span>（固定された小さめのwindowsサイズの中でのみattentionを計算する）sliding window attentionを提案
+
+<br>
+
+
+
+<br>
+
+<img width="795" height="231" alt="Image" src="https://github.com/user-attachments/assets/d1eccdaf-5b5b-4444-ad31-44c54c345d79">OpenLLMの文脈だと、Mistralに採用されて話題になったかも？
+
+<br>
+
+・1309</span>
+<a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/Attention.html">#Attention</a>
 <a class="button" href="articles/ICML.html">#ICML</a>
 <span class="issue_date">Issue Date: 2025-08-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2356">[Paper Note] Transformers are RNNs: Fast Autoregressive Transformers with Linear  Attention, Angelos Katharopoulos+, ICML'20</a>
@@ -16572,9 +16768,32 @@ Inference時は単一のhypothesisしかinputされないので、sourceとrefer
 <span class="issue_date">Issue Date: 2020-08-25</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/337">Evaluation of Text Generation: A Survey, Celikyilmaz, Clark, Gao, arXiv'20</a>
 <span class="snippet"><span>Summary</span>本論文では、自然言語生成（NLG）システムの評価方法を人間中心、自動評価、機械学習に基づく評価の3カテゴリに分類し、それぞれの進展と課題を議論。特に新しいNLGタスクやニューラルNLGモデルの評価に焦点を当て、自動テキスト要約と長文生成の例を示し、今後の研究方向性を提案します。</span>
+<a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/Attention.html">#Attention</a>
+<a class="button" href="articles/LongSequence.html">#LongSequence</a>
+<a class="button" href="articles/PositionalEncoding.html">#PositionalEncoding</a>
+<a class="button" href="articles/ACL.html">#ACL</a>
 <span class="issue_date">Issue Date: 2025-08-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2359">[Paper Note] Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context, Zihang Dai+, arXiv'19</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2359">[Paper Note] Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context, Zihang Dai+, ACL'19</a>
 <span class="snippet"><span>Summary</span>Transformer-XLは、固定長のコンテキストを超えた長期的な依存関係を学習する新しいニューラルアーキテクチャで、セグメントレベルの再帰メカニズムと新しい位置エンコーディングを採用。これにより、RNNより80%、従来のTransformersより450%長い依存関係を学習し、評価時には最大1,800倍の速度向上を実現。enwiki8やWikiText-103などで最先端のパフォーマンスを達成し、数千トークンの一貫したテキスト生成も可能。コードとモデルはTensorflowとPyTorchで利用可能。</span>
+<span class="snippet"><span>Comment</span>日本語解説:
+
+<br>
+
+・329以下が定式化で、一つ前のセグメントのトークン・layerごとのhidden stateを、現在のセグメントの対応するトークンとlayerのhidden stateにconcatし（過去のセグメントに影響を与えないように勾配を伝搬させないStop-Gradientを適用する）、QKVのうち、KVの計算に活用する。また、絶対位置エンコーディングを利用するとモデルがセグメント間の時系列的な関係を認識できなくなるため、位置エンコーディングには相対位置エンコーディングを利用する。これにより、現在のセグメントのKVが一つ前のセグメントによって条件づけられ、contextとして考慮することが可能となり、セグメント間を跨いだ依存関係の考慮が実現される。
+
+<br>
+
+・<img width="634" height="563" alt="Image" src="https://github.com/user-attachments/assets/f13106d3-68ab-4126-8cdc-4c99075bc35a">
+
+<br>
+
+
+
+<br>
+
+<img width="1278" height="360" alt="Image" src="https://github.com/user-attachments/assets/1435151a-2802-470b-a3c5-e7b4ea66ae05"></span>
 <a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -16724,6 +16943,18 @@ Inference時は単一のhypothesisしかinputされないので、sourceとrefer
 <a class="button" href="articles/AAAI.html">#AAAI</a>
 <span class="issue_date">Issue Date: 2019-01-24</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/300">Response Generation by Context-aware Prototype Editing, Wu+, AAAI'19</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/Attention.html">#Attention</a>
+<a class="button" href="articles/PositionalEncoding.html">#PositionalEncoding</a>
+<span class="issue_date">Issue Date: 2025-08-09</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2386">[Paper Note] Self-Attention with Relative Position Representations, Peter Shaw+, NAACL'18</a>
+<span class="snippet"><span>Summary</span>本研究では、Transformerの自己注意機構を拡張し、シーケンス要素間の相対的な位置を効率的に考慮する新しいアプローチを提案。WMT 2014の翻訳タスクで1.3 BLEUおよび0.3 BLEUの改善を達成。相対位置と絶対位置の組み合わせではさらなる改善は見られなかった。提案手法は、任意のグラフラベル付き入力に一般化可能な関係認識自己注意機構として位置付けられる。</span>
+<span class="snippet"><span>Comment</span>相対位置エンコーディングを提案した研究絶対位置エンコーディングは
+
+<br>
+
+・245</span>
 <a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Transformer.html">#Transformer</a>
@@ -18224,32 +18455,32 @@ DeepFMの発展についても詳細に述べられていて、とても参考�
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Verification.html" title="Verificationに関する論文・技術記事メモの一覧">
-            Verificationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/NaturalLanguageUnderstanding.html" title="NaturalLanguageUnderstandingに関する論文・技術記事メモの一覧">
+            NaturalLanguageUnderstandingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LLM-as-a-Judge.html" title="LLM-as-a-Judgeに関する論文・技術記事メモの一覧">
-            LLM-as-a-Judgeに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/GenerativeAI.html" title="GenerativeAIに関する論文・技術記事メモの一覧">
+            GenerativeAIに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/NumericReasoning.html" title="NumericReasoningに関する論文・技術記事メモの一覧">
-            NumericReasoningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/UserModeling.html" title="UserModelingに関する論文・技術記事メモの一覧">
+            UserModelingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Generalization.html" title="Generalizationに関する論文・技術記事メモの一覧">
-            Generalizationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/React%20(Frontend).html" title="React (Frontend)に関する論文・技術記事メモの一覧">
+            React (Frontend)に関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
