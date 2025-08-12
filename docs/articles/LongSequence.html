@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/LongSequence.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-08-11T00:57:00+00:00">
+<meta property="article:published_time" content="2025-08-12T00:50:27+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="LongSequenceに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-11T00:57:00+00:00","datePublished":"2025-08-11T00:57:00+00:00","description":"LongSequence","headline":"LongSequenceに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LongSequence.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LongSequence.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-12T00:50:27+00:00","datePublished":"2025-08-12T00:50:27+00:00","description":"LongSequence","headline":"LongSequenceに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LongSequence.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LongSequence.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -765,7 +765,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-08-11T00:57:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 11, 2025
+    <time class="dt-published" datetime="2025-08-12T00:50:27+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 12, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -800,7 +800,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 14 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 18 mins</span>
   </div></header>
 </div>
     </div>
@@ -1360,7 +1360,7 @@ https://tech.preferred.jp/ja/blog/plamo-prime-release-feature-update/
 <span class="issue_date">Issue Date: 2025-04-05</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
 <span class="snippet"><span>Summary</span>大規模言語モデル（LLMs）をマルチラウンド対話に展開する際の課題として、メモリ消費と長いテキストへの一般化の難しさがある。ウィンドウアテンションはキャッシュサイズを超えると失敗するが、初期トークンのKVを保持することでパフォーマンスが回復する「アテンションシンク」を発見。これを基に、StreamingLLMというフレームワークを提案し、有限のアテンションウィンドウでトレーニングされたLLMが無限のシーケンス長に一般化可能になることを示した。StreamingLLMは、最大400万トークンで安定した言語モデリングを実現し、ストリーミング設定で従来の手法を最大22.2倍の速度で上回る。</span>
-<span class="snippet"><span>Comment</span>Attention Sinkという用語を提言した研究・1860
+<span class="snippet"><span>Comment</span>Attention Sinksという用語を提言した研究
 
 <br>
 
@@ -1368,7 +1368,23 @@ https://tech.preferred.jp/ja/blog/plamo-prime-release-feature-update/
 
 <br>
 
-の先行研究Figure1が非常にわかりやすい。First TokenのKV Cacheを保持することでlong contextの性能が改善する
+下記のpassageがAttention Sinksの定義（＝最初の数トークン）とその気持ち（i.e., softmaxによるattention scoreは足し合わせて1にならなければならない。これが都合の悪い例として、現在のtokenのqueryに基づいてattention scoreを計算する際に過去のトークンの大半がirrelevantな状況を考える。この場合、irrelevantなトークンにattendしたくはない。そのため、auto-regressiveなモデルでほぼ全てのcontextで必ず出現する最初の数トークンを、irrelevantなトークンにattendしないためのattention scoreの捨て場として機能するのうに学習が進む）の理解に非常に重要
+
+<br>
+
+&gt; To understand the failure of window attention, we find an interesting phenomenon of autoregressive LLMs: a surprisingly large amount of attention score is allocated to the initial tokens, irrespective of their relevance to the language modeling task, as visualized in Figure 2. We term these tokens
+
+<br>
+
+“attention sinks". Despite their lack of semantic significance, they collect significant attention scores. We attribute the reason to the Softmax operation, which requires attention scores to sum up to one for all contextual tokens. Thus, even when the current query does not have a strong match in many previous tokens, the model still needs to allocate these unneeded attention values somewhere so it sums up to one. The reason behind initial tokens as sink tokens is intuitive: initial tokens are visible to almost all subsequent tokens because of the autoregressive language modeling nature, making them more readily trained to serve as attention sinks.・1860
+
+<br>
+
+
+
+<br>
+
+の先行研究。こちらでAttentionSinkがどのように作用しているのか？が分析されている。Figure1が非常にわかりやすい。First TokenのKV Cacheを保持することでlong contextの性能が改善する
 
 <br>
 
@@ -2143,8 +2159,8 @@ https://x.com/_lewtun/status/1950209751066742982?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Zero_FewShotPrompting.html" title="Zero/FewShotPromptingに関する論文・技術記事メモの一覧">
-            Zero/FewShotPromptingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/3D%20Reconstruction.html" title="3D Reconstructionに関する論文・技術記事メモの一覧">
+            3D Reconstructionに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
@@ -2159,16 +2175,16 @@ https://x.com/_lewtun/status/1950209751066742982?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LLMAgent.html" title="LLMAgentに関する論文・技術記事メモの一覧">
-            LLMAgentに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Zero_FewShotPrompting.html" title="Zero/FewShotPromptingに関する論文・技術記事メモの一覧">
+            Zero/FewShotPromptingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Privacy.html" title="Privacyに関する論文・技術記事メモの一覧">
-            Privacyに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/AffectDetection.html" title="AffectDetectionに関する論文・技術記事メモの一覧">
+            AffectDetectionに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
