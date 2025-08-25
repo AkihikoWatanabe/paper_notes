@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/ComputerVision.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-08-12T08:21:43+00:00">
+<meta property="article:published_time" content="2025-08-25T23:17:30+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="ComputerVisionに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-12T08:21:43+00:00","datePublished":"2025-08-12T08:21:43+00:00","description":"ComputerVision","headline":"ComputerVisionに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ComputerVision.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ComputerVision.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-25T23:17:30+00:00","datePublished":"2025-08-25T23:17:30+00:00","description":"ComputerVision","headline":"ComputerVisionに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ComputerVision.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ComputerVision.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-08-12T08:21:43+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 12, 2025
+    <time class="dt-published" datetime="2025-08-25T23:17:30+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 25, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -809,7 +809,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 26 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 hours 4 mins</span>
   </div></header>
 </div>
     </div>
@@ -1005,6 +1005,258 @@ function googleTranslateElementInit() {
       <h2 id="computervision">ComputerVision</h2>
 
 <div class="visible-content">
+<a class="button" href="articles/Multi.html">#Multi</a>
+<a class="button" href="articles/Tools.html">#Tools</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/SyntheticData.html">#SyntheticData</a>
+<a class="button" href="articles/x-Use.html">#x-Use</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-24</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2531">[Paper Note] ToolVQA: A Dataset for Multi-step Reasoning VQA with External Tools, Shaofeng Yin+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>本研究では、実世界のツール使用能力を向上させるために、23Kのインスタンスからなる大規模マルチモーダルデータセット「ToolVQA」を提案。ToolVQAは、実際の視覚的コンテキストと多段階推論タスクを特徴とし、ToolEngineを用いて人間のようなツール使用推論をシミュレート。7B LFMを微調整した結果、テストセットで優れたパフォーマンスを示し、GPT-3.5-turboを上回る一般化能力を持つことが確認された。</span>
+<span class="snippet"><span>Comment</span>人間による小規模なサンプル（イメージシナリオ、ツールセット、クエリ、回答、tool use trajectory)を用いてFoundation Modelに事前知識として与えることで、よりrealisticなscenarioが合成されるようにした上で新たなVQAを4k程度合成。その後10人のアノテータによって高品質なサンプルにのみFilteringすることで作成された、従来よりも実世界の設定に近く、reasoningの複雑さが高いVQAデータセットな模様。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/8759244c-89f9-47d7-9c72-81744ef68db1" alt="image" loading="lazy">
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/4bc22c9d-79f3-4c16-b5a4-3c054895b416" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+具体的には、image contextxが与えられた時に、ChatGPT-4oをコントローラーとして、前回のツールとアクションの選択をgivenにし、人間が作成したプールに含まれるサンプルの中からLongest Common Subsequence (LCS) による一致度合いに基づいて人手によるサンプルを選択し、動的にcontextに含めることで多様なで実世界により近しいmulti step tooluseなtrajectoryを合成する、といった手法に見える。pp.4--5に数式や図による直感的な説明がある。なお、LCSを具体的にどのような文字列に対して、どのような前処理をした上で適用しているのかまでは追えていない。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/9915c3d5-e984-4611-94d4-999ad08dc49d" alt="image" loading="lazy">元ポスト:https://x.com/jiqizhixin/status/1959125184285483090?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
+<a class="button" href="articles/Reasoning.html">#Reasoning</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+<a class="button" href="articles/PostTraining.html">#PostTraining</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2502">[Paper Note] VisualWebInstruct: Scaling up Multimodal Instruction Data through Web   Search, Yiming Jia+, EMNLP'25</a>
+<span class="snippet"><span>Summary</span>本研究では、推論に焦点を当てたマルチモーダルデータセットの不足に対処するため、VisualWebInstructという新しいアプローチを提案。30,000のシード画像からGoogle画像検索を用いて700K以上のユニークなURLを収集し、約900KのQAペアを構築。ファインチューニングされたモデルは、Llava-OVで10-20ポイント、MAmmoTH-VLで5ポイントの性能向上を示し、最良モデルMAmmoTH-VL2は複数のベンチマークで最先端の性能を達成。これにより、Vision-Language Modelsの推論能力向上に寄与することが示された。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/wenhuchen/status/1958317145349075446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/TextToImageGeneration.html">#TextToImageGeneration</a>
+<a class="button" href="articles/Architecture.html">#Architecture</a>
+<a class="button" href="articles/ICLR.html">#ICLR</a>
+<a class="button" href="articles/read-later.html">#read-later</a>
+<a class="button" href="articles/NormalizingFlow.html">#NormalizingFlow</a>
+
+
+<br>
+
+
+<span class="issue_date">Issue Date: 2025-08-17</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2456">[Paper Note] JetFormer: An Autoregressive Generative Model of Raw Images and Text, Michael Tschannen+, ICLR'25</a>
+<span class="snippet"><span>Summary</span>JetFormerは、画像とテキストの共同生成を効率化する自己回帰型デコーダー専用のトランスフォーマーであり、別々にトレーニングされたコンポーネントに依存せず、両モダリティを理解・生成可能。正規化フローモデルを活用し、テキストから画像への生成品質で既存のベースラインと競合しつつ、堅牢な画像理解能力を示す。JetFormerは高忠実度の画像生成と強力な対数尤度境界を実現する初のモデルである。</span>
+<span class="snippet"><span>Comment</span>openreview:https://openreview.net/forum?id=sgAp2qG86e画像をnormalizing flowでソフトトークンに変換し、transformerでソフトトークンを予測させるように学習することで、テキストと画像を同じアーキテクチャで学習できるようにしました、みたいな話っぽい？おもしろそう
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/d8615d39-40bc-4470-8a20-4de574ab78ff" alt="image" loading="lazy"></span>
+</div>
+<p><button onclick="showMore(0)">more</button></p>
+<div class="hidden-content">
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/VideoGeneration/Understandings.html">#VideoGeneration/Understandings</a>
+<a class="button" href="articles/interactive.html">#interactive</a>
+<a class="button" href="articles/Game.html">#Game</a>
+<span class="issue_date">Issue Date: 2025-08-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2429">[Paper Note] Hunyuan-GameCraft: High-dynamic Interactive Game Video Generation with  Hybrid History Condition, Jiaqi Li+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>「Hunyuan-GameCraft」という新しいフレームワークを提案し、ゲーム環境における高ダイナミックインタラクティブ動画生成を実現。キーボードとマウスの入力を統合し、動画シーケンスを自己回帰的に拡張することで、アクション制御と一貫性を向上。大規模データセットでトレーニングし、視覚的忠実性とリアリズムを強化。実験により、既存モデルを大幅に上回る性能を示した。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/tencenthunyuan/status/1955839140173631656?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q単体の画像と、prompt、マウス・キーボード入力に基づいてinteractiveに動画を合成する。軽量なGPUでも動作するように、高品質な合成データによってモデルを蒸留し軽量なモデルを利用したりもしている模様。そのうち家庭のゲーミングPCでこういったモデルでゲームをする日が来るのだろうか。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/c301284d-1003-4dd0-a5cf-89dd44fc8b56" alt="image" loading="lazy">アーキテクチャに使われている技術:
+
+<br>
+
+・2526
+
+<br>
+
+・550</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/LLMAgent.html">#LLMAgent</a>
+<a class="button" href="articles/SyntheticData.html">#SyntheticData</a>
+<a class="button" href="articles/Evaluation.html">#Evaluation</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+<a class="button" href="articles/DeepResearch.html">#DeepResearch</a>
+<span class="issue_date">Issue Date: 2025-08-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2424">[Paper Note] WebWatcher: Breaking New Frontier of Vision-Language Deep Research Agent, Xinyu Geng+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>WebWatcherは、視覚と言語の推論能力を強化したマルチモーダルエージェントであり、情報探索の困難さに対処する。合成マルチモーダル軌跡を用いた効率的なトレーニングと強化学習により、深い推論能力を向上させる。新たに提案されたBrowseComp-VLベンチマークでの実験により、WebWatcherは複雑なVQAタスクで他のエージェントを大幅に上回る性能を示した。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/richardxp888/status/1955645614685077796?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/PostTraining.html">#PostTraining</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+<a class="button" href="articles/Cultural.html">#Cultural</a>
+<span class="issue_date">Issue Date: 2025-08-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2413">[Paper Note] Grounding Multilingual Multimodal LLMs With Cultural Knowledge, Jean de Dieu Nyandwi+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>MLLMsは高リソース環境で優れた性能を示すが、低リソース言語や文化的エンティティに対しては課題がある。これに対処するため、Wikidataを活用し、文化的に重要なエンティティを表す画像を用いた多言語視覚質問応答データセット「CulturalGround」を生成。CulturalPangeaというオープンソースのMLLMを訓練し、文化に基づいたアプローチがMLLMsの文化的ギャップを縮小することを示した。CulturalPangeaは、従来のモデルを平均5.0ポイント上回る性能を達成。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/gneubig/status/1955308632305782957?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qpj page:https://neulab.github.io/CulturalGround/
+
+<br>
+
+
+
+<br>
+
+VQAデータセット中の日本語データは3.1%程度で、&lt;image, Question, answer&gt;の3つ組で構成される。wikidataから特定の文化と紐づいたエンティティ（42カ国; 人,場所,組織,アーティファクトにフォーカス）を抽出し、関連するimage dataを1--3個程度wikimediaから収集。76種類のテンプレートを用いて、draftのQAを生成し、LLMを用いて洗練（文化的な自然さ、流暢さ）させる。最終的にVLM(Qwen2.5-VL-32B/72B or Gemma-3-12B/72B-Instructを文化ごとに強い方を選択して利用)を用いてirrelevantなimage, question, answerの三つ組をフィルタリング（relevanceのスコアリングと事実情報のverification)する。
+
+<br>
+
+
+
+<br>
+
+ベースモデルとして
+
+<br>
+
+・2470
+
+<br>
+
+
+
+<br>
+
+を利用(Qwen2-7Bに対してCLIPベースのvision encoderを利用したVLM)し、Vision Encoderはfrozenし、LLMとconnector（テキストと画像のモダリティの橋渡しをする（大抵は）MLP)のみをfinetuningした。catastrophic forgettingを防ぐために事前学習データの一部を補完しfinetuningでも利用し、エンティティの認識力を高めるためにM3LSデータなるものをフィルタリングして追加している。
+
+<br>
+
+
+
+<br>
+
+Finetuningの結果、文化的な多様性を持つ評価データ（e.g., 2471 Figure1のJapaneseのサンプルを見ると一目でどのようなベンチか分かる）と一般的なマルチリンガルな評価データの双方でgainがあることを確認。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/61b33047-4c7c-4785-99f7-bcaa131bcfbf" alt="image" loading="lazy">
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/8088e61f-ef46-4bcd-bc94-8d6f6318ca0e" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+VQAによるフィルタリングで利用されたpromptは下記
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/a9c5b463-a3e3-4565-b2f2-95268252179d" alt="image" loading="lazy"></span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a>
+<a class="button" href="articles/TextToImageGeneration.html">#TextToImageGeneration</a>
+<a class="button" href="articles/GRPO.html">#GRPO</a>
+<a class="button" href="articles/On-Policy.html">#On-Policy</a>
+<a class="button" href="articles/Encoder-Decoder.html">#Encoder-Decoder</a>
+<span class="issue_date">Issue Date: 2025-08-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2410">[Paper Note] AR-GRPO: Training Autoregressive Image Generation Models via  Reinforcement Learning, Shihao Yuan+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>AR-GRPOは、自己回帰画像生成モデルにオンライン強化学習を統合した新しいアプローチで、生成画像の品質を向上させるためにGRPOアルゴリズムを適用。クラス条件およびテキスト条件の画像生成タスクで実験を行い、標準のARモデルと比較して品質と人間の好みを大幅に改善した。結果は、AR画像生成における強化学習の有効性を示し、高品質な画像合成の新たな可能性を開く。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/iscienceluvr/status/1955234358136373421?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q関連:
+
+<br>
+
+・2456</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
+<a class="button" href="articles/SpeechProcessing.html">#SpeechProcessing</a>
+<a class="button" href="articles/Reasoning.html">#Reasoning</a>
+<a class="button" href="articles/OpenWeight.html">#OpenWeight</a>
+<a class="button" href="articles/VisionLanguageActionModel.html">#VisionLanguageActionModel</a>
+<span class="issue_date">Issue Date: 2025-08-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2407">[Paper Note] MolmoAct: Action Reasoning Models that can Reason in Space, Jason Lee+, arXiv'25</a>
+<span class="snippet"><span>Summary</span>アクション推論モデル（ARMs）であるMolmoActは、知覚、計画、制御を三段階のパイプラインで統合し、説明可能で操作可能な行動を実現。シミュレーションと実世界で高いパフォーマンスを示し、特にSimplerEnv Visual Matchingタスクで70.5%のゼロショット精度を達成。MolmoAct Datasetを公開し、トレーニングによりベースモデルのパフォーマンスを平均5.5%向上。全てのモデルの重みやデータセットを公開し、ARMsの構築に向けたオープンな設計図を提供。</span>
+<span class="snippet"><span>Comment</span>`Action Reasoning Models (ARMs)`
+
+<br>
+
+
+
+<br>
+
+元ポスト:https://x.com/gm8xx8/status/1955168414294589844?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q
+
+<br>
+
+blog: https://allenai.org/blog/molmoact関連:
+
+<br>
+
+・1426models:
+
+<br>
+
+・https://huggingface.co/allenai/MolmoAct-7B-D-Pretrain-0812
+
+<br>
+
+・https://huggingface.co/allenai/MolmoAct-7B-D-0812
+
+<br>
+
+
+
+<br>
+
+datasets:
+
+<br>
+
+・https://huggingface.co/datasets/allenai/MolmoAct-Dataset
+
+<br>
+
+・https://huggingface.co/datasets/allenai/MolmoAct-Pretraining-Mixture
+
+<br>
+
+・https://huggingface.co/datasets/allenai/MolmoAct-Midtraining-Mixtureデータは公開されているが、コードが見当たらない？</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a>
@@ -1012,11 +1264,6 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
 <a class="button" href="articles/RLVR.html">#RLVR</a>
 <a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-08-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2392">[Paper Note] StructVRM: Aligning Multimodal Reasoning with Structured and Verifiable  Reward Models, Xiangxiang Zhang+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>StructVRMは、複雑な多質問推論タスクにおいて、部分的な正確性を評価するための構造化された検証可能な報酬モデルを導入。サブ質問レベルのフィードバックを提供し、微妙な部分的なクレジットスコアリングを可能にする。実験により、Seed-StructVRMが12のマルチモーダルベンチマークのうち6つで最先端のパフォーマンスを達成したことが示された。これは、複雑な推論におけるマルチモーダルモデルの能力向上に寄与する。</span>
@@ -1044,11 +1291,6 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Pretraining.html">#Pretraining</a>
 <a class="button" href="articles/ContrastiveLearning.html">#ContrastiveLearning</a>
 <a class="button" href="articles/Encoder.html">#Encoder</a>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-08-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2370">[Paper Note] Scaling Vision Pre-Training to 4K Resolution, Baifeng Shi+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>PS3を用いてCLIPスタイルの視覚事前学習を4K解像度にスケールアップし、計算コストを抑えつつ高解像度の視覚認識を改善。VILA-HDモデルは、低解像度でのグローバル画像エンコードを行い、局所的な高解像度領域を選択的に処理。これにより、従来のベースラインと比較して高い性能を発揮し、トークン使用量を最大4.3倍削減。PS3は解像度のスケーリング特性を持ち、複数のベンチマークで優れた効率を達成。新たに提案された4KProベンチマークでは、VILA-HDが他のMLLMを上回る結果を示した。</span>
@@ -1056,18 +1298,10 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/read-later.html">#read-later</a>
 <a class="button" href="articles/ICCV.html">#ICCV</a>
-
-
-<br>
-
-
 <span class="issue_date">Issue Date: 2025-08-03</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2344">[Paper Note] BUFFER-X: Towards Zero-Shot Point Cloud Registration in Diverse Scenes, Minkyun Seo+, ICCV'25</a>
 <span class="snippet"><span>Summary</span>BUFFER-Xというゼロショット登録パイプラインを提案し、環境特有のボクセルサイズや探索半径への依存、ドメイン外ロバスト性の低さ、スケール不一致の問題に対処。マルチスケールのパッチベースの記述子生成と階層的インライア検索を用いて、さまざまなシーンでのロバスト性を向上。新しい一般化ベンチマークを用いて、BUFFER-Xが手動調整なしで大幅な一般化を達成することを示した。</span>
 <span class="snippet"><span>Comment</span>元ポスト:https://x.com/rsasaki0109/status/1951478059002966159?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qこの辺の分野ぱっと見で全然わからない…</span>
-</div>
-<p><button onclick="showMore(0)">more</button></p>
-<div class="hidden-content">
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Dataset.html">#Dataset</a>
@@ -1531,6 +1765,7 @@ post-trainingにおけるRLでは以下の目的関数を用いており、RLVR�
 <a class="button" href="articles/Transformer.html">#Transformer</a>
 <a class="button" href="articles/CVPR.html">#CVPR</a>
 <a class="button" href="articles/3D%20Reconstruction.html">#3D Reconstruction</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
 <span class="issue_date">Issue Date: 2025-06-22</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2068">[Paper Note] VGGT: Visual Geometry Grounded Transformer, Jianyuan Wang+, CVPR'25</a>
 <span class="snippet"><span>Summary</span>VGGTは、シーンの主要な3D属性を複数のビューから直接推測するフィードフォワードニューラルネットワークであり、3Dコンピュータビジョンの分野において新たな進展を示します。このアプローチは効率的で、1秒未満で画像を再構築し、複数の3Dタスクで最先端の結果を達成します。また、VGGTを特徴バックボーンとして使用することで、下流タスクの性能が大幅に向上することが示されています。コードは公開されています。</span>
@@ -1722,11 +1957,102 @@ weight:https://huggingface.co/collections/Qwen/qwen25-omni-67de1e5f0f9464dc6314b
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
 <a class="button" href="articles/Supervised-FineTuning%20(SFT).html">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="articles/ReinforcementLearning.html">#ReinforcementLearning</a>
+<a class="button" href="articles/ICML.html">#ICML</a>
 <a class="button" href="articles/PostTraining.html">#PostTraining</a>
+<a class="button" href="articles/read-later.html">#read-later</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
 <span class="issue_date">Issue Date: 2025-01-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1740">SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model  Post-training, Tianzhe Chu+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1740">SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model   Post-training, Tianzhe Chu+, ICML'25</a>
 <span class="snippet"><span>Summary</span>SFTとRLの一般化能力の違いを研究し、GeneralPointsとV-IRLを用いて評価。RLはルールベースのテキストと視覚変種に対して優れた一般化を示す一方、SFTは訓練データを記憶し分布外シナリオに苦労。RLは視覚認識能力を向上させるが、SFTはRL訓練に不可欠であり、出力形式を安定させることで性能向上を促進。これらの結果は、複雑なマルチモーダルタスクにおけるRLの一般化能力を示す。</span>
-<span class="snippet"><span>Comment</span>元ポスト:https://x.com/hillbig/status/1884731381517082668?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/hillbig/status/1884731381517082668?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qopenreview:https://openreview.net/forum?id=dYur3yabMj&referrer=%5Bthe%20profile%20of%20Yi%20Ma%5D(%2Fprofile%3Fid%3D~Yi_Ma4)</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/ModelMerge.html">#ModelMerge</a>
+<span class="issue_date">Issue Date: 2024-03-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, Nature Machine Intelligence'25</a>
+<span class="snippet"><span>Summary</span>進化アルゴリズムを使用した新しいアプローチを提案し、強力な基盤モデルの自動生成を実現。LLMの開発において、人間の直感やドメイン知識に依存せず、多様なオープンソースモデルの効果的な組み合わせを自動的に発見する。このアプローチは、日本語のLLMと数学推論能力を持つモデルなど、異なるドメイン間の統合を容易にし、日本語VLMの性能向上にも貢献。オープンソースコミュニティへの貢献と自動モデル構成の新しいパラダイム導入により、基盤モデル開発における効率的なアプローチを模索。</span>
+<span class="snippet"><span>Comment</span>複数のLLMを融合するモデルマージの話。日本語LLMと英語の数学LLNをマージさせることで日本語の数学性能を大幅に向上させたり、LLMとVLMを融合したりすることで、日本にしか存在しない概念の画像も、きちんと回答できるようになる。
+
+<br>
+
+
+
+<br>
+
+著者スライドによると、従来のモデルマージにはbase modelが同一でないとうまくいかなかったり（重みの線型結合によるモデルマージ）、パラメータが増減したり（複数LLMのLayerを重みは弄らず再配置する）。また日本語LLMに対してモデルマージを実施しようとすると、マージ元のLLMが少なかったり、広範囲のモデルを扱うとマージがうまくいかない、といった課題があった。本研究ではこれら課題を解決できる。著者による資料（NLPコロキウム）:
+
+<br>
+
+https://speakerdeck.com/iwiwi/17-nlpkorokiumu</span>
+<a class="button" href="articles/Analysis.html">#Analysis</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Prompting.html">#Prompting</a>
+<span class="issue_date">Issue Date: 2025-08-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2546">[Paper Note] As Generative Models Improve, People Adapt Their Prompts, Eaman Jahani+, arXiv'24</a>
+<span class="snippet"><span>Summary</span>オンライン実験で1893人の参加者を対象に、DALL-E 2とDALL-E 3のプロンプトの重要性の変化を調査。DALL-E 3を使用した参加者は、DALL-E 2よりも高いパフォーマンスを示し、これは技術的能力の向上とプロンプトの質の変化によるもの。特に、DALL-E 3の参加者はより長く、意味的に類似したプロンプトを作成。プロンプト修正機能を持つDALL-E 3はさらに高いパフォーマンスを示したが、その利点は減少。結果として、モデルの進化に伴い、プロンプトも適応されることが示唆される。</span>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/dair_ai/status/1959644116305748388?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/Pretraining.html">#Pretraining</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
+<a class="button" href="articles/FoundationModel.html">#FoundationModel</a>
+<a class="button" href="articles/CVPR.html">#CVPR</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+<span class="issue_date">Issue Date: 2025-08-23</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2529">[Paper Note] InternVL: Scaling up Vision Foundation Models and Aligning for Generic   Visual-Linguistic Tasks, Zhe Chen+, CVPR'24</a>
+<span class="snippet"><span>Summary</span>大規模視覚-言語基盤モデル（InternVL）は、60億パラメータで設計され、LLMと整合させるためにウェブ規模の画像-テキストデータを使用。視覚認知タスクやゼロショット分類、検索など32のベンチマークで最先端の性能を達成し、マルチモーダル対話システムの構築に寄与。ViT-22Bの代替として強力な視覚能力を持つ。コードとモデルは公開されている。</span>
+<span class="snippet"><span>Comment</span>既存のResNetのようなSupervised pretrainingに基づくモデル、CLIPのようなcontrastive pretrainingに基づくモデルに対して、text encoder部分をLLMに置き換えて、contrastive learningとgenerativeタスクによる学習を組み合わせたパラダイムを提案。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/eca53a4a-1d3b-46f1-a833-07ef16b8d5f7" alt="image" loading="lazy">
+
+<br>
+
+
+
+<br>
+
+InternVLのアーキテクチャは下記で、3 stageの学習で構成される。最初にimage text pairをcontrastive learningし学習し、続いてモデルのパラメータはfreezeしimage text retrievalタスク等でモダリティ間の変換を担う最終的にQlLlama(multilingual性能を高めたllama)をvision-languageモダリティを繋ぐミドルウェアのように捉え、Vicunaをテキストデコーダとして接続してgenerative cossで学習する、みたいなアーキテクチャの模様（斜め読みなので少し違う可能性あり
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/46a2a0fe-721c-4336-b5ec-657caa5c4771" alt="image" loading="lazy">現在のVLMの主流であるvision encoderとLLMをadapterで接続する方式はここからかなりシンプルになっていることが伺える。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a>
+<a class="button" href="articles/Evaluation.html">#Evaluation</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
+<a class="button" href="articles/MultiLingual.html">#MultiLingual</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+<a class="button" href="articles/Cultural.html">#Cultural</a>
+<span class="issue_date">Issue Date: 2025-08-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2471">[Paper Note] CVQA: Culturally-diverse Multilingual Visual Question Answering  Benchmark, David Romero+, arXiv'24</a>
+<span class="snippet"><span>Summary</span>CVQAは、文化的に多様な多言語のVisual Question Answeringベンチマークで、30か国からの画像と質問を含み、31の言語と13のスクリプトをカバー。データ収集にはネイティブスピーカーを関与させ、合計10,000の質問を提供。マルチモーダル大規模言語モデルをベンチマークし、文化的能力とバイアスを評価するための新たな基準を示す。</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/InstructionTuning.html">#InstructionTuning</a>
+<a class="button" href="articles/Evaluation.html">#Evaluation</a>
+<a class="button" href="articles/MultiLingual.html">#MultiLingual</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+<span class="issue_date">Issue Date: 2025-08-18</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2470">[Paper Note] Pangea: A Fully Open Multilingual Multimodal LLM for 39 Languages, Xiang Yue+, arXiv'24</a>
+<span class="snippet"><span>Summary</span>Pangeaは、39の言語にわたる6M指示データセットPangeaInsを用いて訓練された多言語マルチモーダルLLMであり、異文化間のカバレッジを確保しています。Pangeaは、47の言語をカバーする評価スイートPangeaBenchで既存のモデルを大幅に上回る性能を示し、英語データの比率やマルチモーダル訓練サンプルの重要性を明らかにしました。データ、コード、訓練済みチェックポイントはオープンソース化され、言語的および文化的公平性を推進します。</span>
+<a class="button" href="articles/Analysis.html">#Analysis</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/ImageSegmentation.html">#ImageSegmentation</a>
+<a class="button" href="articles/SSM%20(StateSpaceModel).html">#SSM (StateSpaceModel)</a>
+<a class="button" href="articles/ImageClassification.html">#ImageClassification</a>
+<span class="issue_date">Issue Date: 2025-08-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2420">[Paper Note] MambaOut: Do We Really Need Mamba for Vision?, Weihao Yu+, arXiv'24</a>
+<span class="snippet"><span>Summary</span>MambaはRNNのようなトークンミキサーを持つアーキテクチャで、視覚タスクにおいて期待外れの性能を示す。Mambaは長いシーケンスと自己回帰的な特性に適しているが、画像分類には不向きであると仮定。MambaOutモデルを構築し、実験によりMambaOutがImageNetの画像分類で視覚Mambaモデルを上回ることを示し、検出およびセグメンテーションタスクではMambaの可能性を探る価値があることを確認。</span>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/Dataset.html">#Dataset</a>
@@ -1971,26 +2297,6 @@ https://gamengen.github.io/</span>
 <span class="issue_date">Issue Date: 2024-04-08</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1275">Visualization-of-Thought Elicits Spatial Reasoning in Large Language  Models, Wenshan Wu+, N_A, arXiv'24</a>
 <span class="snippet"><span>Summary</span>LLMsの空間推論能力を向上させるために、Visualization-of-Thought（VoT）プロンプティングを提案。VoTは、LLMsの推論トレースを可視化し、空間推論タスクで使用することで、既存のMLLMsを上回る性能を示す。VoTは、空間推論を促進するために「メンタルイメージ」を生成する能力を持ち、MLLMsでの有効性を示唆する。</span>
-<a class="button" href="articles/Pocket.html">#Pocket</a>
-<a class="button" href="articles/NLP.html">#NLP</a>
-<a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
-<a class="button" href="articles/ModelMerge.html">#ModelMerge</a>
-<span class="issue_date">Issue Date: 2024-03-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1257">Evolutionary Optimization of Model Merging Recipes, Takuya Akiba+, N_A, arXiv'24</a>
-<span class="snippet"><span>Summary</span>進化アルゴリズムを使用した新しいアプローチを提案し、強力な基盤モデルの自動生成を実現。LLMの開発において、人間の直感やドメイン知識に依存せず、多様なオープンソースモデルの効果的な組み合わせを自動的に発見する。このアプローチは、日本語のLLMと数学推論能力を持つモデルなど、異なるドメイン間の統合を容易にし、日本語VLMの性能向上にも貢献。オープンソースコミュニティへの貢献と自動モデル構成の新しいパラダイム導入により、基盤モデル開発における効率的なアプローチを模索。</span>
-<span class="snippet"><span>Comment</span>複数のLLMを融合するモデルマージの話。日本語LLMと英語の数学LLNをマージさせることで日本語の数学性能を大幅に向上させたり、LLMとVLMを融合したりすることで、日本にしか存在しない概念の画像も、きちんと回答できるようになる。
-
-<br>
-
-
-
-<br>
-
-著者スライドによると、従来のモデルマージにはbase modelが同一でないとうまくいかなかったり（重みの線型結合によるモデルマージ）、パラメータが増減したり（複数LLMのLayerを重みは弄らず再配置する）。また日本語LLMに対してモデルマージを実施しようとすると、マージ元のLLMが少なかったり、広範囲のモデルを扱うとマージがうまくいかない、といった課題があった。本研究ではこれら課題を解決できる。著者による資料（NLPコロキウム）:
-
-<br>
-
-https://speakerdeck.com/iwiwi/17-nlpkorokiumu</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -2004,7 +2310,11 @@ https://speakerdeck.com/iwiwi/17-nlpkorokiumu</span>
 <span class="issue_date">Issue Date: 2023-12-29</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,   Language, Audio, and Action, Jiasen Lu+, N_A, CVPR'24</a>
 <span class="snippet"><span>Summary</span>Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
-<span class="snippet"><span>Comment</span>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI<img src="https://github.com/user-attachments/assets/fa54f7bf-6689-4346-a1ca-031e4e5516ea" alt="image" loading="lazy">
+<span class="snippet"><span>Comment</span>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAIモデルのアーキテクチャ図
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy">
 
 <br>
 
@@ -2012,7 +2322,7 @@ https://speakerdeck.com/iwiwi/17-nlpkorokiumu</span>
 
 <br>
 
-<img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy">マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:
+マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:
 
 <br>
 
@@ -2180,7 +2490,43 @@ https://speakerdeck.com/iwiwi/17-nlpkorokiumu</span>
 <span class="issue_date">Issue Date: 2025-04-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1899">Foundation Transformers, Hongyu Wang+, PMLR'23</a>
 <span class="snippet"><span>Summary</span>言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの収束が進む中、異なる実装の「Transformers」が使用されている。汎用モデリングのために、安定性を持つFoundation Transformerの開発が提唱され、Magnetoという新しいTransformer変種が紹介される。Sub-LayerNormと理論に基づく初期化戦略を用いることで、さまざまなアプリケーションにおいて優れたパフォーマンスと安定性を示した。</span>
-<span class="snippet"><span>Comment</span><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy">関連:
+<span class="snippet"><span>Comment</span>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。
+
+<br>
+
+
+
+<br>
+
+具体的には、Sub-LNの場合、LayerNormを
+
+<br>
+
+・SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前
+
+<br>
+
+・FFNでの各Linear Layerの前
+
+<br>
+
+に適用し、
+
+<br>
+
+
+
+<br>
+
+初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。
+
+<br>
+
+
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy">関連:
 
 <br>
 
@@ -2608,6 +2954,14 @@ Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれ�
 <br>
 
 <img src="https://user-images.githubusercontent.com/12249301/205189823-66052368-60a8-4f03-a4b6-37111bd1b361.png" alt="image" loading="lazy"></span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/OCR.html">#OCR</a>
+<a class="button" href="articles/ACMMM.html">#ACMMM</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
+<span class="issue_date">Issue Date: 2025-08-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2526">[Paper Note] DiT: Self-supervised Pre-training for Document Image Transformer, Junlong Li+, ACMMM'22</a>
+<span class="snippet"><span>Summary</span>自己監視型事前学習モデルDiTを提案し、ラベルなしテキスト画像を用いて文書AIタスクにおける性能を向上。文書画像分類やレイアウト分析、表検出、OCRなどで新たな最先端結果を達成。コードとモデルは公開中。</span>
 <a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
 <a class="button" href="articles/MachineLearning.html">#MachineLearning</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
@@ -2672,10 +3026,20 @@ Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれ�
 <br>
 
 <img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/059d9056-bd3c-45f2-abd9-00c9f2a3d630" alt="image" loading="lazy"></span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/ICLR.html">#ICLR</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
+<span class="issue_date">Issue Date: 2025-08-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2545">[Paper Note] An Image is Worth 16x16 Words: Transformers for Image Recognition at   Scale, Alexey Dosovitskiy+, ICLR'21</a>
+<span class="snippet"><span>Summary</span>純粋なトランスフォーマーを画像パッチのシーケンスに直接適用することで、CNNへの依存なしに画像分類タスクで優れた性能を発揮できることを示す。大量のデータで事前学習し、複数の画像認識ベンチマークで最先端のCNNと比較して優れた結果を達成し、計算リソースを大幅に削減。</span>
+<span class="snippet"><span>Comment</span>openreview:https://openreview.net/forum?id=YicbFdNTTyViTを提案した研究</span>
 <a class="button" href="articles/Pretraining.html">#Pretraining</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/Transformer.html">#Transformer</a>
 <a class="button" href="articles/Architecture.html">#Architecture</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
 <span class="issue_date">Issue Date: 2025-07-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2259">[Paper Note] Swin Transformer V2: Scaling Up Capacity and Resolution, Ze Liu+, arXiv'21</a>
 <span class="snippet"><span>Summary</span>本論文では、大規模ビジョンモデルのトレーニングと応用における課題に対処するための3つの技術を提案。具体的には、トレーニングの安定性向上のための残差後正規化法、低解像度から高解像度への転送を可能にする位置バイアス法、ラベル付きデータの必要性を減少させる自己教師あり学習法を用いる。これにより、30億パラメータのSwin Transformer V2モデルをトレーニングし、複数のビジョンタスクで新記録を樹立。トレーニング効率も向上し、ラベル付きデータと時間を大幅に削減。</span>
@@ -2685,6 +3049,7 @@ Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれ�
 <a class="button" href="articles/Architecture.html">#Architecture</a>
 <a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
 <a class="button" href="articles/ICCV.html">#ICCV</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
 <span class="issue_date">Issue Date: 2025-07-19</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2258">[Paper Note] Swin Transformer: Hierarchical Vision Transformer using Shifted Windows, Ze Liu+, ICCV'21</a>
 <span class="snippet"><span>Summary</span>Swin Transformerは、コンピュータビジョンの新しいバックボーンとして機能する階層的トランスフォーマーを提案。シフトウィンドウ方式により、効率的な自己注意計算を実現し、さまざまなスケールでのモデリングが可能。画像分類や物体検出、セマンティックセグメンテーションなどで従来の最先端を上回る性能を示し、トランスフォーマーのビジョンバックボーンとしての可能性を示唆。コードは公開されている。</span>
@@ -2746,6 +3111,7 @@ Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれ�
 <a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Game.html">#Game</a>
 <span class="issue_date">Issue Date: 2022-09-15</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/487">Generating Racing Game Commentary from Vision, Language, and Structured Data, Tatsuya+, INLG'21</a>
 <span class="snippet"><span>Comment</span>データセット: https://kirt.airc.aist.go.jp/corpus/ja/RacingCommentary</span>
@@ -2944,12 +3310,22 @@ ResNet-50に対してA1,2,3を適用した結果、A1を適用した場合にIma
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1934">Editable Neural Networks, Anton Sinitsin+, ICLR'20</a>
 <span class="snippet"><span>Summary</span>深層ニューラルネットワークの誤りを迅速に修正するために、Editable Trainingというモデル非依存の訓練手法を提案。これにより、特定のサンプルの誤りを効率的に修正し、他のサンプルへの影響を避けることができる。大規模な画像分類と機械翻訳タスクでその有効性を実証。</span>
 <span class="snippet"><span>Comment</span>（おそらく）Knowledge Editingを初めて提案した研究OpenReview:https://openreview.net/forum?id=HJedXaEtvS</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
+<a class="button" href="articles/Architecture.html">#Architecture</a>
+<span class="issue_date">Issue Date: 2025-08-21</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2500">[Paper Note] Supervised Multimodal Bitransformers for Classifying Images and Text, Douwe Kiela+, arXiv'19</a>
+<span class="snippet"><span>Summary</span>テキストと画像情報を融合する監視型マルチモーダルビットランスフォーマーモデルを提案し、さまざまなマルチモーダル分類タスクで最先端の性能を達成。特に、難易度の高いテストセットでも強力なベースラインを上回る結果を得た。</span>
+<span class="snippet"><span>Comment</span>テキスト+imageを用いるシンプルなtransformer</span>
 <a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
 <a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/ICML.html">#ICML</a>
 <a class="button" href="articles/Scaling%20Laws.html">#Scaling Laws</a>
 <a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
 <span class="issue_date">Issue Date: 2025-05-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1957">EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks, Mingxing Tan+, ICML'19</a>
 <span class="snippet"><span>Summary</span>本論文では、ConvNetsのスケーリングを深さ、幅、解像度のバランスを考慮して体系的に研究し、新しいスケーリング手法を提案。これにより、MobileNetsやResNetのスケールアップを実証し、EfficientNetsという新しいモデルファミリーを設計。特にEfficientNet-B7は、ImageNetで84.3%のトップ1精度を達成し、従来のConvNetsよりも小型かつ高速である。CIFAR-100やFlowersなどのデータセットでも最先端の精度を記録。ソースコードは公開されている。</span>
@@ -3075,7 +3451,7 @@ Postを生成するためには、自身の言葉で、画像についての説�
 
 <br>
 
-</span>
+official implementation: https://github.com/cesc-park/attend2u</span>
 <a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -3116,6 +3492,14 @@ Postを生成するためには、自身の言葉で、画像についての説�
 <a class="button" href="articles/ECCV.html">#ECCV</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/61">Generating Visual Explanations, Hendrickks+, ECCV'16</a>
+<a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/ICLR.html">#ICLR</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
+<span class="issue_date">Issue Date: 2025-08-25</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2544">[Paper Note] Very Deep Convolutional Networks for Large-Scale Image Recognition, Karen Simonyan+, ICLR'15</a>
+<span class="snippet"><span>Summary</span>本研究では、3x3の畳み込みフィルタを用いた深い畳み込みネットワークの精度向上を評価し、16-19層の重み層で従来の最先端構成を大幅に改善したことを示す。これにより、ImageNet Challenge 2014で1位と2位を獲得し、他のデータセットでも優れた一般化性能を示した。最も性能の良い2つのConvNetモデルを公開し、深層視覚表現の研究を促進する。</span>
+<span class="snippet"><span>Comment</span>いわゆるVGGNetを提案した論文</span>
 <a class="button" href="articles/DocumentSummarization.html">#DocumentSummarization</a>
 <a class="button" href="articles/NaturalLanguageGeneration.html">#NaturalLanguageGeneration</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
@@ -3130,6 +3514,7 @@ Postを生成するためには、自身の言葉で、画像についての説�
 <a class="button" href="articles/NeurIPS.html">#NeurIPS</a>
 <a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
 <a class="button" href="articles/ImageClassification.html">#ImageClassification</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
 <span class="issue_date">Issue Date: 2025-05-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1958">ImageNet Classification with Deep Convolutional Neural Networks, Krizhevsky+, NIPS'12</a>
 <span class="snippet"><span>Comment</span>ILSVRC 2012において圧倒的な性能示したことで現代のDeepLearningの火付け役となった研究AlexNet。メモってなかったので今更ながら追加した。AlexNet以前の画像認識技術については牛久先生がまとめてくださっている（当時の課題とそれに対する解決法、しかしまだ課題が…と次々と課題に直面し解決していく様子が描かれており非常に興味深かった)。現在でも残っている技術も紹介されている。:
@@ -3160,6 +3545,80 @@ https://speakerdeck.com/yushiku/pre_alexnet
 <a class="button" href="articles/ObjectLocalization.html">#ObjectLocalization</a>
 <span class="issue_date">Issue Date: 2025-05-13</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1959">ImageNet: A Large-Scale Hierarchical Image Database, Deng+, CVPR'09</a>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/OpenWeight.html">#OpenWeight</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+<a class="button" href="articles/ImageEditing.html">#ImageEditing</a>
+<span class="issue_date">Issue Date: 2025-08-19</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2483">Qwen-Image-Edit, Qwen, 2025.05</a>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/adinayakup/status/1957503617931317618?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q公式ポスト:https://x.com/alibaba_qwen/status/1957500569029079083?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QImageを入力して、テキストで条件づけることで編集できるOpenWeightモデル
+
+<br>
+
+<img width="810" height="393" alt="Image" src="https://github.com/user-attachments/assets/8c4ed7a1-1604-4365-bdbf-ef64ad8298ce">参考:25/08/20 とりまQwenImageEditを試す
+
+<br>
+
+https://six-loganberry-ba7.notion.site/25-08-20-QwenImageEdit-255f7e7600e980f48e09cc7252ea1677
+
+<br>
+
+
+
+<br>
+
+元ポスト:https://x.com/umiyuki_ai/status/1958308200333332849?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QImage Edit Arenaで２位:
+
+<br>
+
+https://x.com/alibaba_qwen/status/1958725835818770748?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
+<span class="issue_date">Issue Date: 2025-08-14</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2431">DINOv3: Self-supervised learning for vision at unprecedented scale, Meta, 2025.08</a>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/iscienceluvr/status/1956067392846749723?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Qpaper:https://scontent-nrt1-1.xx.fbcdn.net/v/t39.2365-6/531524719_1692810264763997_2330122477414087224_n.pdf?_nc_cat=103&ccb=1-7&_nc_sid=3c67a6&_nc_ohc=rWT0y-myJjoQ7kNvwGt92a-&_nc_oc=AdkFbsdXU9pHDH7F54L9glmIGfskYELJcoD9Vej1HTRXDqT1cmvKI8RVclrfndAybGk&_nc_zt=14&_nc_ht=scontent-nrt1-1.xx&_nc_gid=xrNv69vA2xmETQjEJ_cJWA&oh=00_AfUTZxXmdq9XVKPEwj2JawYN6oTAlDeX_PvR0XYFJToyMg&oe=68A427E8
+
+<br>
+
+
+
+<br>
+
+HF:https://huggingface.co/docs/transformers/main/en/model_doc/dinov3解説:https://x.com/hillbig/status/1958285463313347071?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/Pretraining.html">#Pretraining</a>
+<a class="button" href="articles/NLP.html">#NLP</a>
+<a class="button" href="articles/Dataset.html">#Dataset</a>
+<a class="button" href="articles/QuestionAnswering.html">#QuestionAnswering</a>
+<a class="button" href="articles/ImageCaptioning.html">#ImageCaptioning</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
+<a class="button" href="articles/OCR.html">#OCR</a>
+<span class="issue_date">Issue Date: 2025-08-13</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2414">NVIDIA Releases 3 Million Sample Dataset for OCR, Visual Question Answering, and Captioning Tasks, NVIDIA, 2025.08</a>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/nvidiaaidev/status/1955332008890208540?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-QLlama Nemotron VLM Dataset V1
+
+<br>
+
+
+
+<br>
+
+VQA, OCRの比率が多めで、Imase Captioningは少なめ。
+
+<br>
+
+<img src="https://github.com/user-attachments/assets/973af13e-50a8-4c8e-9260-64140792e444" alt="image" loading="lazy"></span>
+<a class="button" href="articles/Article.html">#Article</a>
+<a class="button" href="articles/SSM%20(StateSpaceModel).html">#SSM (StateSpaceModel)</a>
+<a class="button" href="articles/Slide.html">#Slide</a>
+<span class="issue_date">Issue Date: 2025-08-12</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2409">第62回名古屋CV・PRML勉強会：CVPR2025論文紹介 （MambaOut）, Naoki Okamoto, 2025.08</a>
+<span class="snippet"><span>Comment</span>元ポスト:https://x.com/yu4u/status/1955192808769532351?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q元論文は以下:
+
+<br>
+
+・2420</span>
 <a class="button" href="articles/Article.html">#Article</a>
 <a class="button" href="articles/Online/Interactive.html">#Online/Interactive</a>
 <a class="button" href="articles/Blog.html">#Blog</a>
@@ -5272,7 +5731,9 @@ AIを用いて新しい3Dモデルを生成する技術です。製品デザイ�
 <a class="button" href="articles/Article.html">#Article</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
+<a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
 <a class="button" href="articles/OpenWeight.html">#OpenWeight</a>
+<a class="button" href="articles/VisionLanguageModel.html">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2024-09-27</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1426">Molmo, AI2, 2024.09</a>
 <span class="snippet"><span>Summary</span>Molmoは、オープンデータを活用した最先端のマルチモーダルAIモデルであり、特に小型モデルが大規模モデルを上回る性能を示す。Molmoは、物理的および仮想的な世界とのインタラクションを可能にし、音声ベースの説明を用いた新しい画像キャプションデータセットを導入。ファインチューニング用の多様なデータセットを使用し、非言語的手がかりを活用して質問に答える能力を持つ。Molmoファミリーのモデルは、オープンウェイトでプロプライエタリシステムに対抗する性能を発揮し、今後すべてのモデルウェイトやデータを公開予定。</span>
@@ -5597,7 +6058,7 @@ Exampleは以下のような感じ（日本語だとどれくらいできるの�
 <a class="button" href="articles/ChatGPT.html">#ChatGPT</a>
 <a class="button" href="articles/MulltiModal.html">#MulltiModal</a>
 <span class="issue_date">Issue Date: 2023-09-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052">GPT-4V</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052">OpenAI、ChatGPTが画像を分析する『GPT-4V（ビジョン）』を発表。安全性、嗜好性、福祉機能を強化, AIDB, 2023.09</a>
 <span class="snippet"><span>Comment</span>おう…やべえな…
 
 <br>
@@ -5708,6 +6169,7 @@ text classificationの場合、たとえばinput tokenの各トークンの分�
 <a class="button" href="articles/NeuralNetwork.html">#NeuralNetwork</a>
 <a class="button" href="articles/CVPR.html">#CVPR</a>
 <a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
+<a class="button" href="articles/Backbone.html">#Backbone</a>
 <span class="issue_date">Issue Date: 2021-11-04</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/430">Deep Residual Learning for Image Recognition, He+, Microsoft Research, CVPR’16</a>
 <span class="snippet"><span>Comment</span>ResNet論文
@@ -5903,32 +6365,32 @@ SGUは、入力をspatial dimensionに対して線形変換した値と、元の
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/DataToTextGeneration.html" title="DataToTextGenerationに関する論文・技術記事メモの一覧">
-            DataToTextGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Trustfulness.html" title="Trustfulnessに関する論文・技術記事メモの一覧">
+            Trustfulnessに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Pretraining.html" title="Pretrainingに関する論文・技術記事メモの一覧">
-            Pretrainingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/OpinionMining.html" title="OpinionMiningに関する論文・技術記事メモの一覧">
+            OpinionMiningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Assessment.html" title="Assessmentに関する論文・技術記事メモの一覧">
-            Assessmentに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ScorePrediction.html" title="ScorePredictionに関する論文・技術記事メモの一覧">
+            ScorePredictionに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AutoML.html" title="AutoMLに関する論文・技術記事メモの一覧">
-            AutoMLに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Memorization.html" title="Memorizationに関する論文・技術記事メモの一覧">
+            Memorizationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
