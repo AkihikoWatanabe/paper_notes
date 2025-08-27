@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-08-26T00:47:13+00:00">
+<meta property="article:published_time" content="2025-08-27T00:45:59+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Evaluationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-26T00:47:13+00:00","datePublished":"2025-08-26T00:47:13+00:00","description":"Evaluation","headline":"Evaluationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-27T00:45:59+00:00","datePublished":"2025-08-27T00:45:59+00:00","description":"Evaluation","headline":"Evaluationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -773,7 +773,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-08-26T00:47:13+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 26, 2025
+    <time class="dt-published" datetime="2025-08-27T00:45:59+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 27, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -808,7 +808,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 hours 15 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 hours 20 mins</span>
   </div></header>
 </div>
     </div>
@@ -2376,9 +2376,103 @@ project page: https://mathllm.github.io/mathvision/Project Pageのランディ�
 <a class="button" href="articles/NLP.html">#NLP</a>
 <a class="button" href="articles/LanguageModel.html">#LanguageModel</a>
 <a class="button" href="articles/Decoding.html">#Decoding</a>
+<a class="button" href="articles/Admin'sPick.html">#Admin'sPick</a>
 <span class="issue_date">Issue Date: 2025-04-14</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1890">Non-Determinism of "Deterministic" LLM Settings, Berk Atil+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>本研究では、5つの決定論的LLMにおける非決定性を8つのタスクで調査し、最大15%の精度変動と70%のパフォーマンスギャップを観察。全てのタスクで一貫した精度を提供できないことが明らかになり、非決定性が計算リソースの効率的使用に寄与している可能性が示唆された。出力の合意率を示す新たなメトリクスTARr@NとTARa@Nを導入し、研究結果を定量化。コードとデータは公開されている。</span>
+<span class="snippet"><span>Comment</span>・論文中で利用されているベンチマーク:
+
+<br>
+
+  ・785
+
+<br>
+
+  ・901 同じモデルに対して、seedを固定し、temperatureを0に設定し、同じ計算機環境に対して、同じinputを入力したら理論上はLLMの出力はdeterministicになるはずだが、deterministicにならず、ベンチマーク上の性能とそもそものraw response自体も試行ごとに大きく変化する、という話。
+
+<br>
+
+ただし、これはプロプライエタリLLMや、何らかのinferenceの高速化を実施したInferenceEngine（本研究ではTogetherと呼ばれる実装を使っていそう。vLLM/SGLangだとどうなるのかが気になる）を用いてinferenceを実施した場合での実験結果であり、後述の通り計算の高速化のためのさまざまな実装無しで、deterministicな設定でOpenLLMでinferenceすると出力はdeterministicになる、という点には注意。
+
+<br>
+
+
+
+<br>
+
+GPTやLlama、Mixtralに対して上記ベンチマークを用いてzero-shot/few-shotの設定で実験している。Reasoningモデルは実験に含まれていない。
+
+<br>
+
+<img width="701" height="325" alt="Image" src="https://github.com/user-attachments/assets/b33f14d8-ed86-4589-a427-18a70b35d61a">
+
+<br>
+
+
+
+<br>
+
+LLMのraw_response/multiple choiceのparse結果（i.e., 問題に対する解答部分を抽出した結果）の一致（TARr@N, TARa@N; Nはinferenceの試行回数）も理論上は100%になるはずなのに、ならないことが報告されている。
+
+<br>
+
+
+
+<br>
+
+<img width="712" height="432" alt="Image" src="https://github.com/user-attachments/assets/3159ff26-fc92-4fa8-90a6-f8c5e7ccf20e">
+
+<br>
+
+
+
+<br>
+
+correlation analysisによって、応答の長さ と TAR{r, a}が強い負の相関を示しており、応答が長くなればなるほど不安定さは増すことが分析されている。このため、ontput tokenの最大値を制限することで出力の安定性が増すことを考察している。また、few-shotにおいて高いAcc.の場合は出力がdeterministicになるわけではないが、性能が安定する傾向とのこと。また、OpenAIプラットフォーム上でGPTのfinetuningを実施し実験したが、安定性に寄与はしたが、こちらもdeterministicになるわけではないとのこと。
+
+<br>
+
+
+
+<br>
+
+deterministicにならない原因として、まずmulti gpu環境について検討しているが、multi-gpu環境ではある程度のランダム性が生じることがNvidiaの研究によって報告されているが、これはseedを固定すれば決定論的にできるため問題にならないとのこと。
+
+<br>
+
+続いて、inferenceを高速化するための実装上の工夫（e.g., Chunk Prefilling, Prefix Caching, Continuous Batching）などの実装がdeterministicなハイパーパラメータでもdeterministicにならない原因であると考察しており、実際にlocalマシン上でこれらinferenceを高速化するための最適化を何も実施しない状態でLlama-8Bでinferenceを実施したところ、outputはdeterministicになったとのこと。論文中に記載がなかったため、どのようなInferenceEngineを利用したか公開されているgithubを見ると下記が利用されていた:
+
+<br>
+
+
+
+<br>
+
+・Together: https://github.com/togethercomputer/together-python?tab=readme-ov-file
+
+<br>
+
+
+
+<br>
+
+Togetherが内部的にどのような処理をしているかまでは追えていないのだが、異なるInferenceEngineを利用した場合に、どの程度outputの不安定さに差が出るのか（あるいは出ないのか）は気になる。たとえば、transformers/vLLM/SGLangを利用した場合などである。
+
+<br>
+
+
+
+<br>
+
+論文中でも報告されている通り、昔管理人がtransformersを用いて、deterministicな設定でzephyrを用いてinferenceをしたときは、出力はdeterministicになっていたと記憶している（スループットは絶望的だったが...)。あと個人的には現実的な速度でオフラインでinference engineを利用した時にdeterministicにはせめてなって欲しいなあという気はするので、何が原因なのかを実装レベルで突き詰めてくれるととても嬉しい（KV Cacheが怪しい気がするけど）。
+
+<br>
+
+
+
+<br>
+
+たとえば最近SLMだったらKVCacheしてVRAM食うより計算し直した方が効率良いよ、みたいな研究があったような。そういうことをしたらlocal llmでdeterministicにならないのだろうか。</span>
 <a class="button" href="articles/RecommenderSystems.html">#RecommenderSystems</a>
 <a class="button" href="articles/RecSys.html">#RecSys</a>
 <span class="issue_date">Issue Date: 2025-04-10</span>
@@ -7521,32 +7615,32 @@ RC (Reading Comprehension)：jsquad
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/AutomaticSpeechRecognition(ASR).html" title="AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧">
-            AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Tutorial.html" title="Tutorialに関する論文・技術記事メモの一覧">
+            Tutorialに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ECCV.html" title="ECCVに関する論文・技術記事メモの一覧">
-            ECCVに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Education.html" title="Educationに関する論文・技術記事メモの一覧">
+            Educationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/COLING.html" title="COLINGに関する論文・技術記事メモの一覧">
-            COLINGに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Supervised.html" title="Supervisedに関する論文・技術記事メモの一覧">
+            Supervisedに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/WebSearch.html" title="WebSearchに関する論文・技術記事メモの一覧">
-            WebSearchに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/OpinionMining.html" title="OpinionMiningに関する論文・技術記事メモの一覧">
+            OpinionMiningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
