@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/MachineTranslation.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-04T00:43:44+00:00">
+<meta property="article:published_time" content="2025-09-05T00:44:43+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="MachineTranslationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-04T00:43:44+00:00","datePublished":"2025-09-04T00:43:44+00:00","description":"MachineTranslation","headline":"MachineTranslationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/MachineTranslation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/MachineTranslation.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-05T00:44:43+00:00","datePublished":"2025-09-05T00:44:43+00:00","description":"MachineTranslation","headline":"MachineTranslationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/MachineTranslation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/MachineTranslation.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -254,6 +254,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     gtag('config', 'G-P70KSB88WH');
   </script>
+<script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"},"svg":{"fontCache":"global"}}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -773,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-04T00:43:44+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 4, 2025
+    <time class="dt-published" datetime="2025-09-05T00:44:43+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 5, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -808,7 +809,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 5 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 7 mins</span>
   </div></header>
 </div>
     </div>
@@ -1201,6 +1202,23 @@ IterativeDPOでは、DeepSeekV3に基づくLLM-as-a-Judgeと、MetricX(2658)に�
 <span class="issue_date">Issue Date: 2021-06-07</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/379">Improving Neural Machine Translation with Compact Word Embedding Tables, Kumar+, AAAI'22</a>
 <span class="snippet"><span>Comment</span>NMTにおいてword embeddingがどう影響しているかなどを調査しているらしい</span>
+<a class="button" href="articles/Pocket.html">#Pocket</a>
+<a class="button" href="articles/Transformer.html">#Transformer</a>
+<a class="button" href="articles/EMNLP.html">#EMNLP</a>
+<a class="button" href="articles/Normalization.html">#Normalization</a>
+<a class="button" href="articles/Findings.html">#Findings</a>
+<span class="issue_date">Issue Date: 2025-08-16</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2443">[Paper Note] Query-Key Normalization for Transformers, Alex Henry+, EMNLP'20 Findings</a>
+<span class="snippet"><span>Summary</span>低リソース言語翻訳において、QKNormという新しい正規化手法を提案。これは、注意メカニズムを修正し、ソフトマックス関数の飽和耐性を向上させつつ表現力を維持。具体的には、クエリとキー行列に対して$\ell_2$正規化を適用し、学習可能なパラメータでスケールアップ。TED TalksコーパスとIWSLT'15の低リソース翻訳ペアで平均0.928 BLEUの改善を達成。</span>
+<span class="snippet"><span>Comment</span>QKに対してL2正規化を実施し、learnableなスカラー値を乗じることでスケーリングすることで、low resourceな言語での翻訳性能が向上。MTで実験されているが、transformerの表現力が改善されるのでGLM-4.5のアーキテクチャでも採用されている。
+
+<br>
+
+
+
+<br>
+
+dot product attentionでは内積を利用するため値域に制約がなく、ある単語にのみattention scoreが集中してしまい、他の全ての単語のsignalをかき消してしまう問題がある。このため、QKをノルムによって正規化し（これにより実質QKはcosine similarityとなる）値域を制限する。しかしこうすると今度はスコア間の差が小さすぎて、attendしなくても良い単語を無視できなくなるので、learnableなパラメータでスケールを調整する。</span>
 <a class="button" href="articles/Metrics.html">#Metrics</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -2392,32 +2410,32 @@ DARPA/TIDES 2003 Arabic-to-English, Chinese-to-English データを利用。Chin
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/RLVR.html" title="RLVRに関する論文・技術記事メモの一覧">
-            RLVRに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/EducationalDataMining.html" title="EducationalDataMiningに関する論文・技術記事メモの一覧">
+            EducationalDataMiningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Chain-of-Thought.html" title="Chain-of-Thoughtに関する論文・技術記事メモの一覧">
-            Chain-of-Thoughtに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/EDM.html" title="EDMに関する論文・技術記事メモの一覧">
+            EDMに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InformationExtraction.html" title="InformationExtractionに関する論文・技術記事メモの一覧">
-            InformationExtractionに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/NeurIPS.html" title="NeurIPSに関する論文・技術記事メモの一覧">
+            NeurIPSに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MachineTranslation.html" title="MachineTranslationに関する論文・技術記事メモの一覧">
-            MachineTranslationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/RLHF.html" title="RLHFに関する論文・技術記事メモの一覧">
+            RLHFに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
