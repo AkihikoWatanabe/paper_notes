@@ -507,6 +507,13 @@ author: AkihikoWATANABE
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
     html_content += gen_one_item(latest_issues, [])
 
+    # Admin's Pick
+    html_content += "## Selected Papers\n"
+    selected_issues = [issue for issue in all_issues "SelectedPapers" in issue["labels"]]
+    selected_issues = sorted(selected_issues, key=lambda x: x["number"], reverse=True)
+    selected_issues = [(issue, issue["number"]) for issue in selected_issues]
+    html_content += gen_one_item(selected_issues, [])
+
     # list up
     N = len(label_to_hierarchy.items())
     for parent, sub_parents in tqdm(sorted(label_to_hierarchy.items(), key=lambda item: order_label_count[(item[0])], reverse=True), total=N):
