@@ -527,14 +527,14 @@ author: AkihikoWATANABE
 
     # latest posts
     #html_content += '## Latest Posts\n\n'
-    html_content += '<h2 id="latest-post">Latest Posts</h2>'
+    html_content += '<h2 id="latest-post">Latest Posts (100)</h2>'
     latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:100]
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
     html_content += gen_one_item(latest_issues, [])
 
     # Admin's Pick
-    html_content += "## Selected Papers\n"
-    selected_issues = [issue for issue in all_issues "SelectedPapers" in issue["labels"]]
+    selected_issues = [issue for issue in all_issues if any(["Selected Papers/Blogs" == l["name"] for l in issue["labels"]])]
+    html_content += f'<h2 id="selected-papers">Selected Papers/Blogs ({len(selected_issues)})</h2>'
     selected_issues = sorted(selected_issues, key=lambda x: x["number"], reverse=True)
     selected_issues = [(issue, issue["number"]) for issue in selected_issues]
     html_content += gen_one_item(selected_issues, [])
