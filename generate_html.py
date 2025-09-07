@@ -9,8 +9,12 @@ import json
 
 
 year_pat = re.compile(r"'(\d{2,4})")
-image_pat = re.compile(r'!\[image\]\((https://github\.com/AkihikoWatanabe/paper_notes/assets/[^)]+)\)')
-
+# ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4268eb3f-349f-4ebe-adeb-2cbfcb7cfe17)
+#(https://github.com/user-attachments/assets/
+#image_pat = re.compile(r'!\[image\]\((https://(?:github\.com|user-images\.githubusercontent\.com)/AkihikoWatanabe/paper_notes/assets/[^)]+)\)')
+image_pat_list = [re.compile(r'!\[image\]\((https://(?:github\.com|user-images\.githubusercontent\.com)/AkihikoWatanabe/paper_notes/assets/[^)]+)\)'),
+                  re.compile(r'!\[image\]\((https://user-images\.githubusercontent\.com/[^)]+)\)'),
+                  re.compile(r'!\[image\]\((https://github\.com/user-attachments/assets/[^)]+)\)')]
 
 PARENT_COLOR = '0e8a16'
 SUB_PARENT_COLOR = 'b60205'
@@ -204,22 +208,25 @@ def get_year(text: str) -> int:
     return int(year)
 
 
-summ_pat = "Summary (by gpt-3.5-turbo)"
+def replace_url(match):
+    url = match.group(1)
+    return f'<img src="{url}" alt="image" loading="lazy">'
+
+summ_pat = "Summary (by"
 http_pat = re.compile("^https?://[^\s/$.?#].[^\s]*$")
 def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
     summ_text = None
     comm_text = None
-    image_url = None
     summ_idx = issue["body"].find(summ_pat)
     if summ_idx != -1:
-        summ_text = ''.join(issue["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").strip()
+        summ_text = ''.join(issue["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").replace("#", "").strip()
 
     # find summary
     comments = issue["comments"]
     for r in comments:
         summ_idx = r["body"].find(summ_pat)
         if summ_idx != -1:
-            summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").strip()
+            summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").replace("#", "").strip()
     # if cannot find summary
     for r in comments:
         m = http_pat.search(r['body'])
@@ -229,29 +236,37 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
         if summ_idx != -1:
             continue
         if comm_text == None:
-            comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            #comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            comm_text = r['body']
         else:
-            comm_text += re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
-            comm_text = comm_text[:150]
-        if len(comm_text) >= 150:
-            break
-    # extract image url
-    for r in comments:
-        m = image_pat.search(r['body'])
-        if m != None:
-            image_url = m.group(1).replace('\n', '').strip()
-            break
-    return summ_text, comm_text, image_url
+            #comm_text += re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
+            #comm_text = comm_text[:150]
+            comm_text += r['body']
+        #if len(comm_text) >= 150:
+        #    break
+    if comm_text != None:
+        comm_text = comm_text.replace("# ", "").replace("#", "").replace("*", "").replace("- ", "・").replace("\r", "\n").replace("\n", "\n\n<br>\n\n")
+        for image_pat in image_pat_list:
+            comm_text = re.sub(image_pat, replace_url, comm_text)
+    if summ_text != None:
+        summ_text = summ_text.replace("# ", "").replace("#", "").replace("*", "").replace("- ", "・").replace("\r", "\n").replace("\n", "\n\n<br>\n\n")
+    ## extract image url
+    #for r in comments:
+    #    for image_pat in image_pat_list:
+    #        m = image_pat.search(r['body'])
+    #        if m != None:
+    #            image_url_list.append(m.group(1).replace('\n', '').strip())
+    return summ_text, comm_text
 
 
 def prepro_title(title: str):
     title = title.replace('!', '')
-    title = title.replace('[', '').replace(']', '')
+    #title = title.replace('[', '').replace(']', '')
     title = title.replace('(', '（').replace(')', '）')
     title = title.replace('/', '_')
     title = title.replace('\n', '')
-    title = title.replace('"', '')
-    title = title.replace("'", "")
+    #title = title.replace('"', '')
+    #title = title.replace("'", "")
     return title
 
 
@@ -259,66 +274,75 @@ curr_more_idx = 0
 VISIBLE_NUM = 3 
 def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True) -> str:
     global curr_more_idx
-    _html_content = '<div class="visible-content">\n'
+    _html_content = ['<div class="visible-content">']
     sorted_issues = sorted(issue_list, key=lambda item: (item[1], item[0]["createdAt"]), reverse=True)
     for (issue, year) in sorted_issues[:VISIBLE_NUM]:
         title = prepro_title(issue['title'])
         tags = [data['name'] for data in issue['labels']]
         if year == 0:
             t = "Article"
-            _html_content += f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>'
+            _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>')
         for t in tags: 
             if t not in current_target and t not in ["translation_required", "action_wanted"]:
-                _html_content += f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>'
-        _html_content += '<br>'
+                _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>')
+        _html_content.append('\n\n<br>\n\n')
         if attach_date:
-            _html_content += f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>\n'
+            _html_content.append(f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>')
         snippet_text = None
         image_url = None
         if issue["body"] != None:
-            snippet_text, comment_text, image_url = get_snippets(issue)
+            snippet_text, comment_text = get_snippets(issue)
         #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n' 
-        _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
+        _html_content.append(f'<a href="{issue["url"]}">{title}</a>')
         if snippet_text != None:
-            _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text}</span>\n'
+            _html_content.append(f'<span class="snippet"><span>Summary</span>{snippet_text}</span>')
         if comment_text != None:
-            _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
-        if image_url != None:
-            #_html_content += f'![{issue["title"]}]({image_url})\n'
-            _html_content += f'<img src="{image_url}" alt="image">'
-    _html_content += '</div>\n'
+            _html_content.append(f'<span class="snippet"><span>Comment</span>{comment_text}</span>')
+        #if len(image_url_list) > 0:
+        #    #_html_content += f'![{issue["title"]}]({image_url})\n'
+        #    for image_url in image_url_list:
+        #        _html_content.append(f'<img src="{image_url}" alt="image" loading="lazy">')
+    #_html_content.append('\n{% raw %}\n</div>\n{% endraw %}\n')
+    _html_content.append('</div>')
     if len(sorted_issues[VISIBLE_NUM:]) > 0:
-        _html_content += f'<button onclick="showMore({curr_more_idx})">more</button>\n\n'
-        _html_content += '<div class="hidden-content">\n'
+        _html_content.append(f'<button onclick="showMore({curr_more_idx})">more</button>')
+        _html_content.append('<div class="hidden-content">')
         for (issue, year) in sorted_issues[VISIBLE_NUM:]:
             title = prepro_title(issue['title'])
             tags = [data['name'] for data in issue['labels']]
             if year == 0:
                 t = "Article"
-                _html_content += f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>'
+                _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>')
             for t in tags:
                 if t not in current_target and t not in ["translation_required", "action_wanted"]:
-                    _html_content += f'<a class="button" href="articles/{t}.html">#{t}</a>'
-            _html_content += '<br>'
+                    _html_content.append(f'<a class="button" href="articles/{t}.html">#{t}</a>')
             if attach_date:
-                _html_content += f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>\n'
+                _html_content.append(f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>')
             snippet_text = None
             image_url = None
             if issue["body"] != None:
-                snippet_text, comment_text, image_url = get_snippets(issue)
+                snippet_text, comment_text = get_snippets(issue)
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
-            _html_content += f'<a href="{issue["url"]}">{title}</a>\n' 
+            _html_content.append(f'<a href="{issue["url"]}">{title}</a>')
             if snippet_text != None:
-                _html_content += f'<span class="snippet"><span>Summary</span>{snippet_text}</span>\n'
+                _html_content.append(f'<span class="snippet"><span>Summary</span>{snippet_text}</span>')
             if comment_text != None:
-                _html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
-            if image_url != None:
+                #_html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
+                #_html_content.append(f'\n\n<span class="snippet">\n\n<span>\n\nComment\n\n</span>\n\n{comment_text}\n\n</span>\n\n')
+                _html_content.append(f'<span class="snippet"><span>Comment</span>{comment_text}</span>')
+            #if len(image_url_list) > 0:
+            #    #_html_content += f'![{issue["title"]}]({image_url})\n'
+            #    for image_url in image_url_list:
+            #        _html_content.append(f'<img src="{image_url}" alt="image" loading="lazy">')
+            #if image_url != None:
                 #_html_content += f'![{issue["title"]}]({image_url})\n'
-                _html_content += f'<img src="{image_url}" alt="image">'
-        _html_content += f'<button onclick="hideContent({curr_more_idx})" style="display: none;">hide</button>\n'
-        _html_content += "</div>\n" 
+            #    _html_content += f'<img src="{image_url}" alt="image" loading="lazy">'
+        _html_content.append(f'<button onclick="hideContent({curr_more_idx})" style="display: none;">hide</button>')
+        
+        #_html_content.append('\n{% raw %}\n</div>\n{% endraw %}\n')
+        _html_content.append('</div>')
         curr_more_idx += 1
-    return _html_content
+    return "\n".join(_html_content)
 
 
 def main():
@@ -412,7 +436,7 @@ def main():
                          "Tutorial",
                          "Tool",
                          "Library",
-                         "Dataset"] 
+                         "Dataset"]
     all_issues = get_all_issues()
     # update parent
     parent_labels = set(parent_labels)
@@ -487,7 +511,7 @@ def main():
     print("Start to making graph ...")
     edges = list(set(edges))
     label_to_hierarchy = dict(label_to_hierarchy)
-    generate_graph(parent_labels, sub_parent_labels, edges, label_weights, label_to_hierarchy)
+    #generate_graph(parent_labels, sub_parent_labels, edges, label_weights, label_to_hierarchy)
     print("finish")
 
     print("Start to decoding as html ...")
@@ -502,7 +526,8 @@ author: AkihikoWATANABE
     html_content = ''
 
     # latest posts
-    html_content += "## Latest Posts\n"
+    #html_content += '## Latest Posts\n\n'
+    html_content += '<h2 id="latest-post">Latest Posts</h2>'
     latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:100]
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
     html_content += gen_one_item(latest_issues, [])
@@ -517,61 +542,68 @@ author: AkihikoWATANABE
     # list up
     N = len(label_to_hierarchy.items())
     for parent, sub_parents in tqdm(sorted(label_to_hierarchy.items(), key=lambda item: order_label_count[(item[0])], reverse=True), total=N):
-        html_content += f"## {parent} ({label_count[(parent)]})\n"
+        #html_content += f'## {parent} ({label_count[(parent)]})\n\n'
+        html_content += f'<h2 id="{parent.lower()}-{label_count[(parent)]}"> {parent} ({label_count[(parent)]})</h2>'
         for sub_parent, issue_list in sorted(sub_parents.items(), key=lambda item: order_label_count[(parent, item[0])], reverse=True):
-            html_content += f"### {sub_parent} ({label_count[(parent, sub_parent)]})\n"
+            #html_content += f'### {sub_parent} ({label_count[(parent, sub_parent)]})\n\n'
+            html_content += f'<h3 id="{sub_parent.lower()}-{label_count[(parent, sub_parent)]}"> {sub_parent} ({label_count[(parent, sub_parent)]})</h3>'
             current_target = [parent, sub_parent]
+            #html_content += '{% raw %}\n'
             html_content += gen_one_item(issue_list, current_target)
-        html_content += "<hr>\n"
+            #html_content += "<br><hr>\n"
+            #html_content += '{% endraw %}\n\n'
+        html_content += "<hr>\n\n"
 
     print("main part was finished.")
 
-    html_content += f'## Pocket ({label_count["Pocket"]})\n'
+    #html_content += f'## Pocket ({label_count["Pocket"]})\n\n'
+    html_content += f'<h2 id="pocket-{label_count["Pocket"]}"> Pocket ({label_count["Pocket"]})</h2>'
     html_content += gen_one_item(pockets, ["Pocket"])
 
     #graph
-    html_content += "## 各ラベルの量と関係性の可視化 β\n"
-    html_content += "各Issueに付与した主要ラベルの付与回数の合計値によってノードの大きさを決め、ラベル同士の共起関係からエッジを張り作成したグラフです！\n"
-    html_content += "なんか見辛いしよくわからない...笑 クリックしてドラッグで視点を移動できます。\n"
-    html_content += "{% raw %}"
-    html_content += '<svg></svg>'
-    html_content += '<div id="svgContainer"></div>'
-    html_content += """<script>
-    // d3.selectを使ってプレースホルダーを選択
-    const container = d3.select("#svgContainer");
-    const svg = container.append("svg");
-    const width = 647;
-    const height = window.innerHeight;
+    #html_content += "## 各ラベルの量と関係性の可視化 β\n"
+    #html_content += "各Issueに付与した主要ラベルの付与回数の合計値によってノードの大きさを決め、ラベル同士の共起関係からエッジを張り作成したグラフです！\n"
+    #html_content += "なんか見辛いしよくわからない...笑 クリックしてドラッグで視点を移動できます。\n"
+    #html_content += "{% raw %}"
+    #html_content += '<svg></svg>'
+    #html_content += '<div id="svgContainer"></div>'
+    #html_content += """<script>
+    #// d3.selectを使ってプレースホルダーを選択
+    #const container = d3.select("#svgContainer");
+    #const svg = container.append("svg");
+    #const width = 647;
+    #const height = window.innerHeight;
 
-    svg.attr("width", width).attr("height", height);
+    #svg.attr("width", width).attr("height", height);
 
-    const g = svg.append("g");
+    #const g = svg.append("g");
 
-    d3.xml("assets/images/knowledge_graph.svg").then(data => {
-        g.node().append(data.documentElement);
-    });
+    #d3.xml("assets/images/knowledge_graph.svg").then(data => {
+    #    g.node().append(data.documentElement);
+    #});
 
-    const zoom = d3.zoom()
-        .on("zoom", () => {
-            g.attr("transform", d3.event.transform);
-        });
+    #const zoom = d3.zoom()
+    #    .on("zoom", () => {
+    #        g.attr("transform", d3.event.transform);
+    #    });
 
-    svg.call(zoom);
-</script>
-"""
-    html_content += "{% endraw %}\n"
-    html_content += '<hr>\n'
+    #svg.call(zoom);
+    #</script>
+    #"""
+    #html_content += "{% endraw %}\n"
+    html_content += '<hr>\n\n'
 
     home_content = f"{html_template}{html_content}\n"
 
-    with open("./index.markdown", "w") as f:
+    #with open("./index.markdown", "w") as f:
+    with open("./index.html", "w") as f:
         f.write(home_content)
     print("finished")
 
     print("Start to make label pages ...")
     # generate each labels pages
     os.makedirs('./_articles', exist_ok=True)
-    for label, issue_list in label_to_issues.items():
+    for i, (label, issue_list) in enumerate(label_to_issues.items()):
         html_template = f"""---
 layout: post
 title: {label}に関する論文・技術記事メモの一覧
@@ -580,10 +612,9 @@ author: AkihikoWATANABE
 """
         global curr_more_idx
         curr_more_idx = 0
-        html_content = f"## {label}\n"
+        html_content = f'## {label}\n\n'
         html_content += gen_one_item(issue_list, [label])
         label_content = f"{html_template}{html_content}"
-        os
         with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
             f.write(label_content)
     print("finished")
