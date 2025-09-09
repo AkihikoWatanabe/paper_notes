@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Attention.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-08T00:47:26+00:00">
+<meta property="article:published_time" content="2025-09-09T00:45:12+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Attentionに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-08T00:47:26+00:00","datePublished":"2025-09-08T00:47:26+00:00","description":"Attention","headline":"Attentionに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Attention.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Attention.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-09T00:45:12+00:00","datePublished":"2025-09-09T00:45:12+00:00","description":"Attention","headline":"Attentionに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Attention.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Attention.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-08T00:47:26+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 8, 2025
+    <time class="dt-published" datetime="2025-09-09T00:45:12+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 9, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1496,7 +1496,7 @@ Main Result. Multi-Head Attentionに対して、inference timeが大幅に改善
 <span class="issue_date">Issue Date: 2025-08-09</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2388">[Paper Note] Longformer: The Long-Document Transformer, Iz Beltagy+, arXiv'20</a>
 <span class="snippet"><span>Summary</span>Longformerは、長いシーケンスを線形に処理できる注意機構を持つTransformerベースのモデルで、数千トークンの文書を扱える。局所的なウィンドウ注意とタスクに基づくグローバル注意を組み合わせ、文字レベルの言語モデリングで最先端の結果を達成。事前学習とファインチューニングを行い、長文タスクでRoBERTaを上回る性能を示した。また、Longformer-Encoder-Decoder（LED）を導入し、長文生成タスクにおける効果を確認した。</span>
-<span class="snippet"><span>Comment</span>（固定された小さめのwindowsサイズの中でのみattentionを計算する）sliding window attentionを提案
+<span class="snippet"><span>Comment</span>（固定された小さめのwindowsサイズの中でのみattentionを計算する）sliding window attentionを提案。Figure2を見ると、通常のAttentionと比較して、現在のトークンの周辺のトークンにしか注目しない特性が図示されており、イメージが掴みやすい。
 
 <br>
 
@@ -1551,19 +1551,7 @@ Main Result. Multi-Head Attentionに対して、inference timeが大幅に改善
 
 <br>
 
-・329以下が定式化で、一つ前のセグメントのトークン・layerごとのhidden stateを、現在のセグメントの対応するトークンとlayerのhidden stateにconcatし（過去のセグメントに影響を与えないように勾配を伝搬させないStop-Gradientを適用する）、QKVのうち、KVの計算に活用する。また、絶対位置エンコーディングを利用するとモデルがセグメント間の時系列的な関係を認識できなくなるため、位置エンコーディングには相対位置エンコーディングを利用する。これにより、現在のセグメントのKVが一つ前のセグメントによって条件づけられ、contextとして考慮することが可能となり、セグメント間を跨いだ依存関係の考慮が実現される。
-
-<br>
-
-・<img width="634" height="563" alt="Image" src="https://github.com/user-attachments/assets/f13106d3-68ab-4126-8cdc-4c99075bc35a">
-
-<br>
-
-
-
-<br>
-
-<img width="1278" height="360" alt="Image" src="https://github.com/user-attachments/assets/1435151a-2802-470b-a3c5-e7b4ea66ae05"></span>
+・3293.2節の定式化を見ると、一つ前のセグメントのトークン・layerごとのhidden stateを、現在のセグメントの対応するトークンとlayerのhidden stateにconcatし（過去のセグメントに影響を与えないように勾配を伝搬させないStop-Gradientを適用する）、QKVのうち、KVの計算に活用している。また、絶対位置エンコーディングを利用するとモデルがセグメント間の時系列的な関係を認識できなくなるため、位置エンコーディングには相対位置エンコーディングを利用する。これにより、現在のセグメントのKVが一つ前のセグメントによって条件づけられ、contextとして考慮することが可能となり、セグメント間を跨いだ依存関係の考慮が実現される。</span>
 <a class="button" href="articles/EfficiencyImprovement.html">#EfficiencyImprovement</a>
 <a class="button" href="articles/Pocket.html">#Pocket</a>
 <a class="button" href="articles/NLP.html">#NLP</a>
@@ -1875,32 +1863,32 @@ QK Matrixの計算をブロックに分けてSRAMに送って処理すること�
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/InteractiveRecommenderSystems.html" title="InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧">
-            InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Ambiguity.html" title="Ambiguityに関する論文・技術記事メモの一覧">
+            Ambiguityに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/General.html" title="Generalに関する論文・技術記事メモの一覧">
-            Generalに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ESWC.html" title="ESWCに関する論文・技術記事メモの一覧">
+            ESWCに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/OnlineLearning.html" title="OnlineLearningに関する論文・技術記事メモの一覧">
-            OnlineLearningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Calibration.html" title="Calibrationに関する論文・技術記事メモの一覧">
+            Calibrationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Ensemble.html" title="Ensembleに関する論文・技術記事メモの一覧">
-            Ensembleに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/x-Use.html" title="x-Useに関する論文・技術記事メモの一覧">
+            x-Useに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
