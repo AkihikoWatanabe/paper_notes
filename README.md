@@ -15,8 +15,8 @@ Issueに記載したメモを整理してブログ形式にしてみました。
 ラベルは論文の「媒体」「分野」「タスク」「手法」「性質・特徴」「会議・ジャーナル」などの観点から私が独自に分類・整理しており、Issueの検索でラベルを指定して検索をかけることで、各ラベルと紐づいた論文の一覧を見ることができます。
 
 主に下記の分野(技術)の論文を読んでメモっていきます：
-  - Natural Language Processing
-  - LLM
+  - Natural Language Processing (LLM多め)
+  - Computer Vision
   - Recommender Systems
   - Educational Data Mining
   - Learning Analytics
