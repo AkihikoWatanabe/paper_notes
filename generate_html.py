@@ -208,48 +208,84 @@ def get_year(text: str) -> int:
     return int(year)
 
 
-def replace_url(match):
+def replace_image(match):
     url = match.group(1)
-    return f'<img src="{url}" alt="image" loading="lazy">'
+    return f'<img src="{url}" alt="image" loading="lazy" />'
+
+
+def head_replacer(match):
+    return f'\n<strong>{match.group(0)}</strong>\n<br>\n'
+
+
+def issue_link_replacer(match):
+    try:
+        return f'<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/{match.group(1)}" target="_blank" rel="noopener noreferrer">{issuenum2titles[int(match.group(1))]}</a>\n'
+    except KeyError:
+        return match.group(0)
+
+
+image_url_list = [re.compile(r'(https://(?:github\.com|user-images\.githubusercontent\.com)/AkihikoWatanabe/paper_notes/assets/[^)]+)\)'),
+                  re.compile(r'(https://user-images\.githubusercontent\.com/[^)]+)\)'),
+                  re.compile(r'(https://github\.com/user-attachments/assets/[^)]+)\)')]
+def link_replacer(match):
+    for image_pat in image_url_list:
+        # imgの場合はreplaceしない
+        m = image_pat.search(match.group(0))
+        if m != None:
+            return m.group(0)
+    return "\n\n{% raw %}\n" + f'<a href="{match.group(1)}" target="_blank" rel="noopener noreferrer">{match.group(1)}</a>' + "\n{% endraw %}\n\n"
+
+
+def x_link_replacer(match):
+    x_link = match.group(1).replace("x.com", "twitter.com") 
+    return "\n\n{% raw %}\n" + f"""<div class="tweet-embed" data-embed='<blockquote class="twitter-tweet"><a href="{x_link}"></a></blockquote>'><img alt="loading..." src="/assets/images/load-31_128.gif class="tweet-loading" /></div>""" + "\n{% endraw %}\n\n"
+
 
 summ_pat = "Summary (by"
-http_pat = re.compile("^https?://[^\s/$.?#].[^\s]*$")
+#http_pat = re.compile("https?://(?!((www\.)?(x\.com|twitter\.com)))[^\s/$.?#].[^\s]*\s")
+http_pat = re.compile("(https?://(?!((www\.)?(x\.com|twitter\.com|github\.com\/AkihikoWatanabe\/)))[^\s<>]*)\s?")
+x_pat = re.compile("(https?://(?:www\.)?(:?x|twitter)\.com[^\s<>]*)\s?")
 def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
     summ_text = None
     comm_text = None
     summ_idx = issue["body"].find(summ_pat)
     if summ_idx != -1:
-        summ_text = ''.join(issue["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").replace("#", "").strip()
+        summ_text = ''.join(issue["body"][summ_idx:].split('\n')[1:]).strip()
 
     # find summary
     comments = issue["comments"]
     for r in comments:
         summ_idx = r["body"].find(summ_pat)
         if summ_idx != -1:
-            summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip('-').replace('\n', '').replace('- ', "").replace("#", "").strip()
+            summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip()
     # if cannot find summary
     for r in comments:
-        m = http_pat.search(r['body'])
-        if m != None:
-            continue
+        #m = http_pat.search(r['body'])
+        #if m != None:
+        #    continue
         summ_idx = r["body"].find(summ_pat)
         if summ_idx != -1:
             continue
         if comm_text == None:
             #comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
-            comm_text = r['body']
+            comm_text = "<p>" + r['body'].replace("\r", "\n").replace("\n", "<br>") + "</p>"
         else:
             #comm_text += re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
             #comm_text = comm_text[:150]
-            comm_text += r['body']
+            comm_text += "<p>" + r['body'].replace("\r", "\n").replace("\n", "<br>") + "</p>"
         #if len(comm_text) >= 150:
         #    break
-    if comm_text != None:
-        comm_text = comm_text.replace("# ", "").replace("#", "").replace("*", "").replace("- ", "・").replace("\r", "\n").replace("\n", "\n\n<br>\n\n")
+    if comm_text != None: 
+        comm_text = re.sub(r"#(\d+)", issue_link_replacer, comm_text)
+        comm_text = re.sub(r'#+\s.*?\n', head_replacer, comm_text)
+        comm_text = re.sub(http_pat, link_replacer, comm_text) 
+        comm_text = re.sub(x_pat, x_link_replacer, comm_text) 
+        comm_text = comm_text
         for image_pat in image_pat_list:
-            comm_text = re.sub(image_pat, replace_url, comm_text)
+            comm_text = re.sub(image_pat, replace_image, comm_text)
     if summ_text != None:
-        summ_text = summ_text.replace("# ", "").replace("#", "").replace("*", "").replace("- ", "・").replace("\r", "\n").replace("\n", "\n\n<br>\n\n")
+        summ_text = summ_text.replace("\r", "\n").replace("\n", "<br>")
+
     ## extract image url
     #for r in comments:
     #    for image_pat in image_pat_list:
@@ -274,6 +310,10 @@ curr_more_idx = 0
 VISIBLE_NUM = 3 
 def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True) -> str:
     global curr_more_idx
+
+    # start note lazy
+    #_html_content = ['<div class="note lazy">']
+
     _html_content = ['<div class="visible-content">']
     sorted_issues = sorted(issue_list, key=lambda item: (item[1], item[0]["createdAt"]), reverse=True)
     for (issue, year) in sorted_issues[:VISIBLE_NUM]:
@@ -281,10 +321,10 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         tags = [data['name'] for data in issue['labels']]
         if year == 0:
             t = "Article"
-            _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>')
+            _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
         for t in tags: 
             if t not in current_target and t not in ["translation_required", "action_wanted"]:
-                _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>')
+                _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
         _html_content.append('\n\n<br>\n\n')
         if attach_date:
             _html_content.append(f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>')
@@ -293,11 +333,11 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         if issue["body"] != None:
             snippet_text, comment_text = get_snippets(issue)
         #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n' 
-        _html_content.append(f'<a href="{issue["url"]}">{title}</a>')
+        _html_content.append(f'<a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="title-link">{title}</a>')
         if snippet_text != None:
             _html_content.append(f'<span class="snippet"><span>Summary</span>{snippet_text}</span>')
         if comment_text != None:
-            _html_content.append(f'<span class="snippet"><span>Comment</span>{comment_text}</span>')
+            _html_content.append(f'<span class="snippet"><span>Comment</span>{comment_text}</span><br><br>')
         #if len(image_url_list) > 0:
         #    #_html_content += f'![{issue["title"]}]({image_url})\n'
         #    for image_url in image_url_list:
@@ -312,10 +352,10 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             tags = [data['name'] for data in issue['labels']]
             if year == 0:
                 t = "Article"
-                _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html">#{t}</a>')
+                _html_content.append(f'<a class="button" href="articles/{t.replace("/", "_")}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
             for t in tags:
                 if t not in current_target and t not in ["translation_required", "action_wanted"]:
-                    _html_content.append(f'<a class="button" href="articles/{t}.html">#{t}</a>')
+                    _html_content.append(f'<a class="button" href="articles/{t}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
             if attach_date:
                 _html_content.append(f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>')
             snippet_text = None
@@ -323,13 +363,13 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             if issue["body"] != None:
                 snippet_text, comment_text = get_snippets(issue)
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
-            _html_content.append(f'<a href="{issue["url"]}">{title}</a>')
+            _html_content.append(f'<a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="title-link">>{title}</a>')
             if snippet_text != None:
                 _html_content.append(f'<span class="snippet"><span>Summary</span>{snippet_text}</span>')
             if comment_text != None:
                 #_html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
                 #_html_content.append(f'\n\n<span class="snippet">\n\n<span>\n\nComment\n\n</span>\n\n{comment_text}\n\n</span>\n\n')
-                _html_content.append(f'<span class="snippet"><span>Comment</span>{comment_text}</span>')
+                _html_content.append(f'<span class="snippet"><span>Comment</span>{comment_text}</span><br><br>')
             #if len(image_url_list) > 0:
             #    #_html_content += f'![{issue["title"]}]({image_url})\n'
             #    for image_url in image_url_list:
@@ -341,6 +381,9 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         
         #_html_content.append('\n{% raw %}\n</div>\n{% endraw %}\n')
         _html_content.append('</div>')
+
+        # end note lazy
+        #_html_content.append('</div>')
         curr_more_idx += 1
     return "\n".join(_html_content)
 
@@ -437,7 +480,6 @@ def main():
                          "Tool",
                          "Library",
                          "Dataset"]
-    all_issues = get_all_issues()
     # update parent
     parent_labels = set(parent_labels)
     for issue in all_issues:
@@ -593,7 +635,62 @@ author: AkihikoWATANABE
     #html_content += "{% endraw %}\n"
     html_content += '<hr>\n\n'
 
-    home_content = f"{html_template}{html_content}\n"
+    lazy_loading = """
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tweets = document.querySelectorAll('.tweet-embed[data-embed]');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const html = el.getAttribute('data-embed');
+            if (html) {
+              const loadingImg = el.querySelector('.tweet-loading');
+              if (loadingImg) loadingImg.remove();
+
+              el.innerHTML = html.trim();
+
+              if (window.twttr?.widgets?.load) {
+                window.twttr.widgets.load(el);
+              }
+            }
+            obs.unobserve(el); // 処理済みは監視解除
+          }
+        });
+      }, {
+        rootMargin: '500px 0px', // 画面手前200pxで読み込み開始
+        threshold: 0
+      });
+
+      tweets.forEach(tweet => observer.observe(tweet));
+
+    } else {
+      // IntersectionObserver未対応ブラウザ用のフォールバック
+      function lazyLoadFallback() {
+        tweets.forEach(el => {
+          if (el.getAttribute('data-embed') && el.getBoundingClientRect().top < window.innerHeight) {
+            const html = el.getAttribute('data-embed');
+            const loadingImg = el.querySelector('.tweet-loading');
+            if (loadingImg) loadingImg.remove();
+            el.innerHTML = html.trim();
+            el.removeAttribute('data-embed');
+            if (window.twttr?.widgets?.load) {
+              window.twttr.widgets.load(el);
+            }
+          }
+        });
+      }
+      window.addEventListener('scroll', lazyLoadFallback);
+      lazyLoadFallback();
+    }
+  });
+</script>
+"""
+
+    home_content = f'{html_template}{html_content}{lazy_loading}'
 
     #with open("./index.markdown", "w") as f:
     with open("./index.html", "w") as f:
@@ -604,6 +701,8 @@ author: AkihikoWATANABE
     # generate each labels pages
     os.makedirs('./_articles', exist_ok=True)
     for i, (label, issue_list) in enumerate(label_to_issues.items()):
+        if label in ["translation_required", "action_wanted", "Pocket"]:
+            continue
         html_template = f"""---
 layout: post
 title: {label}に関する論文・技術記事メモの一覧
@@ -612,13 +711,15 @@ author: AkihikoWATANABE
 """
         global curr_more_idx
         curr_more_idx = 0
-        html_content = f'## {label}\n\n'
+        html_content = f'<h2 id={label}> {label}</h2>'
         html_content += gen_one_item(issue_list, [label])
-        label_content = f"{html_template}{html_content}"
+        label_content = f"{html_template}{html_content}{lazy_loading}"
         with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
             f.write(label_content)
     print("finished")
 
 
 if __name__ == '__main__':
+    all_issues = get_all_issues()
+    issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()

@@ -1,0 +1,51 @@
+<script>
+  //<![CDATA[
+  (function(window, document) {
+    // 遅延読み込み
+    window.addEventListener('DOMContentLoaded', lazyLoad);
+    window.addEventListener('scroll', () => {
+      throttle(lazyLoad(), 100);
+    });
+    window.addEventListener('DOMContentLoaded', XEmbedlazyLoad);
+    window.addEventListener('scroll', () => {
+      throttle(XEmbedlazyLoad(), 100);
+    });
+
+    
+    function lazyLoad() {
+      const elms = document.querySelectorAll('img, iframe');
+      for (let i = 0; i < elms.length; i++) {
+        if ((elms[i].getBoundingClientRect().top - window.innerHeight < 0) && elms[i].getAttribute('data-src')) {
+          elms[i].setAttribute('src', elms[i].getAttribute('data-src'));
+          elms[i].removeAttribute('data-src');
+        }
+      }
+    }
+  
+    function throttle(fn, wait) {
+      let time = Date.now();
+      return function() {
+        if ((time + wait) < Date.now()) {
+          fn();
+          time = Date.now();
+        }
+      }
+    }
+
+    function XEmbedlazyLoad() {
+      const elms = document.querySelectorAll('.tweet-embed');
+      for (let i = 0; i < elms.length; i++) {
+        if ((elms[i].getBoundingClientRect().top - window.innerHeight < 0) && elms[i].getAttribute('data-embed')) {
+          elms[i].innerHTML = elms[i].getAttribute('data-embed');
+          elms[i].removeAttribute('data-embed');
+          // widgets.js に再描画を依頼
+          if (window.twttr && window.twttr.widgets) {
+            window.twttr.widgets.load(elms[i]);
+          }
+        }
+      }
+    }
+  })(window, document);
+  //]]>
+</script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
