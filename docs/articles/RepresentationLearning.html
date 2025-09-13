@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/RepresentationLearning.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-13T02:06:50+00:00">
+<meta property="article:published_time" content="2025-09-13T02:35:20+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="RepresentationLearningに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-13T02:06:50+00:00","datePublished":"2025-09-13T02:06:50+00:00","description":"RepresentationLearning #Survey #Embeddings #Pocket #NLP #Dataset #LanguageModel #Evaluation","headline":"RepresentationLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/RepresentationLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/RepresentationLearning.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-13T02:35:20+00:00","datePublished":"2025-09-13T02:35:20+00:00","description":"RepresentationLearning #Survey #Embeddings #Pocket #NLP #Dataset #LanguageModel #Evaluation","headline":"RepresentationLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/RepresentationLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/RepresentationLearning.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -775,7 +775,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-13T02:06:50+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 13, 2025
+    <time class="dt-published" datetime="2025-09-13T02:35:20+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 13, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 11 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 10 mins</span>
   </div></header>
 </div>
     </div>
@@ -1085,7 +1085,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Generalization.html" target="_blank" rel="noopener noreferrer">#Generalization</a>
 <a class="button" href="articles/Decoder.html" target="_blank" rel="noopener noreferrer">#Decoder</a>
 <span class="issue_date">Issue Date: 2025-07-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2182" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding   Models, Chankyu Lee+, ICLR'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2182" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding   Models, Chankyu Lee+, ICLR'25</a>
 <span class="snippet"><span>Summary</span>- デコーダー専用のLLMベースの埋め込みモデルNV-Embedは、BERTやT5を上回る性能を示す。アーキテクチャ設計やトレーニング手法を工夫し、検索精度を向上させるために潜在的注意層を提案。二段階の対照的指示調整手法を導入し、検索と非検索タスクの両方で精度を向上。NV-EmbedモデルはMTEBリーダーボードで1位を獲得し、ドメイン外情報検索でも高スコアを達成。モデル圧縮技術の分析も行っている。</span>
 <span class="snippet"><span>Comment</span><p>Decoder-Only LLMのlast hidden layerのmatrixを新たに導入したLatent Attention Blockのinputとし、Latent Attention BlockはEmbeddingをOutputする。Latent Attention Blockは、last hidden layer (系列長l×dの<br>matrix)をQueryとみなし、保持しているLatent Array(trainableなmatrixで辞書として機能する;後述の学習においてパラメータが学習される)[^1]をK,Vとして、CrossAttentionによってcontext vectorを生成し、その後MLPとMean Poolingを実施することでEmbeddingに変換する。<br><img src="https://github.com/user-attachments/assets/7a023273-aafd-4cfa-9b39-961180543ae9" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/767e3ac1-fe70-4653-bbe7-091c1f1dc0f7" alt="image" loading="lazy"><br><br>学習は2段階で行われ、まずQAなどのRetrievalタスク用のデータセットをIn Batch negativeを用いてContrastive Learningしモデルの検索能力を高める。その後、検索と非検索タスクの両方を用いて、hard negativeによってcontrastive learningを実施し、検索以外のタスクの能力も高める（下表）。両者において、instructionテンプレートを用いて、instructionによって条件付けて学習をすることで、instructionに応じて生成されるEmbeddingが変化するようにする。また、学習時にはLLMのcausal maskは無くし、bidirectionalにrepresentationを考慮できるようにする。<br><img src="https://github.com/user-attachments/assets/26d4e126-1d18-421e-873f-f0eef4fc2026" alt="image" loading="lazy"><br><br>[^1]: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2183" target="_blank" rel="noopener noreferrer">[Paper Note] Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs, Andrew Jaegle+, ICLR'22</a>
  Perceiver-IOにインスパイアされている。</p></span><br><br>
@@ -1096,7 +1096,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
 <a class="button" href="articles/Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
 <span class="issue_date">Issue Date: 2025-06-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2093" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] llm-jp-modernbert: A ModernBERT Model Trained on a Large-Scale Japanese  Corpus with Long Context Length, Issa Sugiura+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2093" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] llm-jp-modernbert: A ModernBERT Model Trained on a Large-Scale Japanese  Corpus with Long Context Length, Issa Sugiura+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- ModernBERTモデル（llm-jp-modernbert）は、8192トークンのコンテキスト長を持つ日本語コーパスで訓練され、フィルマスクテスト評価で良好な結果を示す。下流タスクでは既存のベースラインを上回らないが、コンテキスト長の拡張効果を分析し、文の埋め込みや訓練中の遷移を調査。再現性を支援するために、モデルと評価コードを公開。</span>
 <span class="snippet"><span>Comment</span><p>参考:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1761" target="_blank" rel="noopener noreferrer">modernbert-ja-130m, SB Intuitions, 2025.02</a>
 </p></span><br><br>
@@ -1106,7 +1106,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <span class="issue_date">Issue Date: 2025-06-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2087" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] NEAR$^2$: A Nested Embedding Approach to Efficient Product Retrieval and  Ranking, Shenbin Qian+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2087" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] NEAR$^2$: A Nested Embedding Approach to Efficient Product Retrieval and  Ranking, Shenbin Qian+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- Eコマース情報検索システムは、ユーザーの意図を正確に理解しつつ、大規模な商品カタログを効率的に処理することが難しい。本論文では、NEAR$^2$というネストされた埋め込みアプローチを提案し、推論時の埋め込みサイズを最大12倍効率化し、トレーニングコストを増やさずにトランスフォーマーモデルの精度を向上させる。さまざまなIR課題に対して異なる損失関数を用いて検証した結果、既存モデルよりも小さな埋め込み次元での性能向上を達成した。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1122,7 +1122,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2025-06-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2079" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] jina-embeddings-v4: Universal Embeddings for Multimodal Multilingual  Retrieval, Michael Günther+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2079" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] jina-embeddings-v4: Universal Embeddings for Multimodal Multilingual  Retrieval, Michael Günther+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- 3.8億パラメータのマルチモーダル埋め込みモデル「jina-embeddings-v4」を提案。新しいアーキテクチャにより、クエリベースの情報検索やクロスモーダルの類似性検索を最適化。タスク特化型のLoRAアダプターを組み込み、視覚的に豊かなコンテンツの処理に優れた性能を発揮。新しいベンチマーク「Jina-VDR」も導入。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1138,7 +1138,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/DiffusionModel.html" target="_blank" rel="noopener noreferrer">#DiffusionModel</a>
 <span class="issue_date">Issue Date: 2025-05-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1983" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Diffusion vs. Autoregressive Language Models: A Text Embedding  Perspective, Siyue Zhang+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1983" target="_blank" rel="noopener noreferrer" class="title-link">Diffusion vs. Autoregressive Language Models: A Text Embedding  Perspective, Siyue Zhang+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- 拡散言語モデルを用いたテキスト埋め込みが、自己回帰的なLLMの一方向性の制限を克服し、文書検索や推論タスクで優れた性能を発揮。長文検索で20%、推論集約型検索で8%、指示に従った検索で2%の向上を示し、双方向の注意が重要であることを確認。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1161,14 +1161,14 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="articles/read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
 <span class="issue_date">Issue Date: 2025-05-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1924" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Layer by Layer: Uncovering Hidden Representations in Language Models, Oscar Skean+, ICML'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1924" target="_blank" rel="noopener noreferrer" class="title-link">Layer by Layer: Uncovering Hidden Representations in Language Models, Oscar Skean+, ICML'25</a>
 <span class="snippet"><span>Summary</span>- 中間層の埋め込みが最終層を超えるパフォーマンスを示すことを分析し、情報理論や幾何学に基づくメトリクスを提案。32のテキスト埋め込みタスクで中間層が強力な特徴を提供することを実証し、AIシステムの最適化における中間層の重要性を強調。</span>
 <span class="snippet"><span>Comment</span><p>現代の代表的な言語モデルのアーキテクチャ（decoder-only model, encoder-only model, SSM）について、最終層のembeddingよりも中間層のembeddingの方がdownstream task（MTEBの32Taskの平均）に、一貫して（ただし、これはMTEBの平均で見たらそうという話であり、個別のタスクで一貫して強いかは読んでみないとわからない）強いことを示した研究。<br><br>このこと自体は経験的に知られているのであまり驚きではないのだが（ただ、SSMでもそうなのか、というのと、一貫して強いというのは興味深い）、この研究はMatrix Based Entropyと呼ばれるものに基づいて、これらを分析するための様々な指標を定義し理論的な根拠を示し、Autoregressiveな学習よりもMasked Languageによる学習の方がこのようなMiddle Layerのボトルネックが緩和され、同様のボトルネックが画像の場合でも起きることを示し、CoTデータを用いたFinetuningについても分析している模様。この辺の貢献が非常に大きいと思われるのでここを理解することが重要だと思われる。あとで読む。<br><br><img src="https://github.com/user-attachments/assets/bda00c50-c97b-45e0-97a5-d98dd98599fd" alt="image" loading="lazy"></p></span><br><br>
 <a class="button" href="articles/Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2025-03-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1789" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Gemini Embedding: Generalizable Embeddings from Gemini, Jinhyuk Lee+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1789" target="_blank" rel="noopener noreferrer" class="title-link">Gemini Embedding: Generalizable Embeddings from Gemini, Jinhyuk Lee+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- Gemini Embeddingは、Googleの大規模言語モデルGeminiを活用した最先端の埋め込みモデルで、多言語およびコード理解能力を活かして一般化可能な埋め込みを生成します。事前計算された表現は、分類や検索などの下流タスクに適用可能で、250以上の言語にわたる100以上のタスクを含むMMTEBで評価した結果、従来のモデルを大幅に上回る性能を示しました。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1185,13 +1185,13 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/STS%20(SemanticTextualSimilarity).html" target="_blank" rel="noopener noreferrer">#STS (SemanticTextualSimilarity)</a>
 <a class="button" href="articles/ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2025-01-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1669" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Linguistically Conditioned Semantic Textual Similarity, Jingxuan Tu+, ACL'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1669" target="_blank" rel="noopener noreferrer" class="title-link">Linguistically Conditioned Semantic Textual Similarity, Jingxuan Tu+, ACL'24</a>
 <span class="snippet"><span>Summary</span>- 条件付きSTS（C-STS）は文の意味的類似性を測定するNLPタスクであるが、既存のデータセットには評価を妨げる問題が多い。本研究では、C-STSの検証セットを再アノテーションし、アノテーター間の不一致を55%観察。QAタスク設定を活用し、アノテーションエラーを80%以上のF1スコアで特定する自動エラー識別パイプラインを提案。また、モデル訓練によりC-STSデータのベースライン性能を向上させる新手法を示し、エンティティタイプの型特徴構造（TFS）を用いた条件付きアノテーションの可能性についても議論する。</span>
 <a class="button" href="articles/General.html" target="_blank" rel="noopener noreferrer">#General</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/AES(AutomatedEssayScoring).html" target="_blank" rel="noopener noreferrer">#AES(AutomatedEssayScoring)</a>
 <span class="issue_date">Issue Date: 2023-07-18</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/847" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Improving Domain Generalization for Prompt-Aware Essay Scoring via Disentangled Representation Learning, ACL'23</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/847" target="_blank" rel="noopener noreferrer" class="title-link">Improving Domain Generalization for Prompt-Aware Essay Scoring via Disentangled Representation Learning, ACL'23</a>
 <span class="snippet"><span>Summary</span>- 自動エッセイスコアリング（AES）は、エッセイを評価するためのモデルですが、既存のモデルは特定のプロンプトにしか適用できず、新しいプロンプトに対してはうまく汎化できません。この研究では、プロンプトに依存しない特徴とプロンプト固有の特徴を抽出するためのニューラルAESモデルを提案し、表現の汎化を改善するための分離表現学習フレームワークを提案しています。ASAPとTOEFL11のデータセットでの実験結果は、提案手法の有効性を示しています。</span>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="articles/ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
@@ -1201,7 +1201,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <a class="button" href="articles/Semi-Supervised.html" target="_blank" rel="noopener noreferrer">#Semi-Supervised</a>
 <span class="issue_date">Issue Date: 2023-04-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/602" target="_blank" rel="noopener noreferrer" class="title-link">&gt;SemPPL: Predicting pseudo-labels for better contrastive representations, Matko Bošnjak+, N_A, ICLR'23</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/602" target="_blank" rel="noopener noreferrer" class="title-link">SemPPL: Predicting pseudo-labels for better contrastive representations, Matko Bošnjak+, N_A, ICLR'23</a>
 <span class="snippet"><span>Summary</span>- 本研究では、コンピュータビジョンにおける半教師あり学習の問題を解決するために、Semantic Positives via Pseudo-Labels (SemPPL)という新しい手法を提案している。この手法は、ラベル付きとラベルなしのデータを組み合わせて情報豊富な表現を学習することができ、ResNet-$50$を使用してImageNetの$1\%$および$10\%$のラベルでトレーニングする場合、競合する半教師あり学習手法を上回る最高性能を発揮することが示された。SemPPLは、強力な頑健性、分布外および転移性能を示すことができる。</span>
 <span class="snippet"><span>Comment</span><p>後ほど説明を追記する<br><img src="https://github.com/user-attachments/assets/4441dc6c-a7b2-4ec9-9748-b6558a96e1af" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/8a78a40e-f5c4-4742-9e5d-36cd1b8d0e60" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/04ded9aa-c875-4282-9e3b-7ce456a6cc44" alt="image" loading="lazy"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1975" target="_blank" rel="noopener noreferrer">A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20</a>
@@ -1212,7 +1212,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <a class="button" href="articles/Length.html" target="_blank" rel="noopener noreferrer">#Length</a>
 <span class="issue_date">Issue Date: 2025-07-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2311" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] Matryoshka Representation Learning, Aditya Kusupati+, NeurIPS'22</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2311" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Matryoshka Representation Learning, Aditya Kusupati+, NeurIPS'22</a>
 <span class="snippet"><span>Summary</span>- マトリョーシカ表現学習（MRL）は、異なる計算リソースに適応可能な柔軟な表現を設計する手法であり、既存の表現学習パイプラインを最小限に修正して使用します。MRLは、粗から細への表現を学習し、ImageNet-1K分類で最大14倍小さい埋め込みサイズを提供し、実世界のスピードアップを実現し、少数ショット分類で精度向上を達成します。MRLは視覚、視覚+言語、言語のモダリティにわたるデータセットに拡張可能で、コードとモデルはオープンソースで公開されています。</span>
 <span class="snippet"><span>Comment</span><p>日本語解説:
 
@@ -1231,7 +1231,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Catastrophic%20Forgetting.html" target="_blank" rel="noopener noreferrer">#Catastrophic Forgetting</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2023-07-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/907" target="_blank" rel="noopener noreferrer" class="title-link">&gt;SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP'21</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/907" target="_blank" rel="noopener noreferrer" class="title-link">SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP'21</a>
 <span class="snippet"><span>Summary</span>- この論文では、SimCSEという対比学習フレームワークを提案しています。このフレームワークは、文の埋め込み技術を進化させることができます。教師なしアプローチでは、入力文をノイズとして扱い、自己を対比的に予測します。教師ありアプローチでは、自然言語推論データセットから注釈付きのペアを使用して対比学習を行います。SimCSEは、意味的テキスト類似性タスクで評価され、以前の手法と比較して改善を実現しました。対比学習は、事前学習された埋め込みの空間を均一に正則化し、教師信号が利用可能な場合には正のペアをよりよく整列させることが示されました。</span>
 <span class="snippet"><span>Comment</span><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/462" target="_blank" rel="noopener noreferrer">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Reimers+, UKP-TUDA, EMNLP'19</a>
  よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる</p>
@@ -1253,7 +1253,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/SIGKDD.html" target="_blank" rel="noopener noreferrer">#SIGKDD</a>
 <a class="button" href="articles/numeric.html" target="_blank" rel="noopener noreferrer">#numeric</a>
 <span class="issue_date">Issue Date: 2025-04-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1901" target="_blank" rel="noopener noreferrer" class="title-link">&gt;An Embedding Learning Framework for Numerical Features in CTR Prediction, Huifeng Guo+, arXiv'20</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1901" target="_blank" rel="noopener noreferrer" class="title-link">An Embedding Learning Framework for Numerical Features in CTR Prediction, Huifeng Guo+, arXiv'20</a>
 <span class="snippet"><span>Summary</span>- CTR予測のための新しい埋め込み学習フレームワーク「AutoDis」を提案。数値特徴の埋め込みを強化し、高いモデル容量とエンドツーエンドのトレーニングを実現。メタ埋め込み、自動離散化、集約の3つのコアコンポーネントを用いて、数値特徴の相関を捉え、独自の埋め込みを学習。実験により、CTRとeCPMでそれぞれ2.1%および2.7%の改善を達成。コードは公開されている。</span>
 <span class="snippet"><span>Comment</span><p>従来はdiscretizeをするか、mlpなどでembeddingを作成するだけだった数値のinputをうまく埋め込みに変換する手法を提案し性能改善<br><br>数値情報を別の空間に写像し自動的なdiscretizationを実施する機構と、各数値情報のフィールドごとのglobalな情報を保持するmeta-embeddingをtrainable parameterとして学習し、両者を交互作用（aggregation; max-poolingとか）することで数値embeddingを取得する。<br><br>&lt;img width="589" alt="Image" src="
 
@@ -1272,7 +1272,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2022-06-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/457" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Deep contextualized word representations, Peters+, Allen Institute for Artificial intelligence, NAACL'18</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/457" target="_blank" rel="noopener noreferrer" class="title-link">Deep contextualized word representations, Peters+, Allen Institute for Artificial intelligence, NAACL'18</a>
 <span class="snippet"><span>Comment</span><p>ELMo論文。<br>通常のword embeddingでは一つの単語につき一つの意味しか持たせられなかったが、文脈に応じて異なる意味を表現できるようなEmbeddingを実現し（同じ単語でも文脈に応じて意味が変わったりするので。たとえばrightは文脈に応じて右なのか、正しいなのか、権利なのか意味が変わる）様々な言語処理タスク（e.g. Question Answering, Sentiment Analysisなど）でSoTAを達成。<br><br><img src="https://user-images.githubusercontent.com/12249301/172505957-a2fc5319-5670-4807-a870-31377227299e.png" alt="image" loading="lazy"><br><br>Embedding Layer + 2層のLSTM（1,2の間にはresidual connection）+ linear layerで言語モデルを構成し、順方向言語モデルと逆方向言語モデルを同時に独立して学習する（双方向LSTMではない;損失関数が両方向の言語モデルの対数尤度の和になっている）。<br>また、Linear LayerとEmbedding Layerのパラメータは両方向の言語モデルで共有されている。<br><br>k番目の単語のEmbedding Layerの出力ベクトル、各LSTMのhidden stateをタスクspecificなスカラーパラメタs_taskで足し合わせ、最後にベクトルのスケールを調整するパラメタγ_taskで大きさを調整する。これにより、k番目の単語のELMo Embeddingを得る。<br>単語単体の意味だけでこと足りるタスクの場合はEmbedding Layerの出力ベクトルに対する重みが大きくなり、文脈を考慮した情報が欲しい場合はLSTMのhidden stateに対する重みが大きくなるイメージ（LSTMの層が深いほど意味的semanticな情報を含み、浅いほど文法的syntacticな情報を含んでいる）。<br><br>使い方としては簡単で、ELMoを事前学習しておき、自身のNNモデルのWord Embeddingに（場合によってはRNNのhidden stateにも）、入力文から得られたELMo Embeddingをconcatして順伝搬させるだけで良い。</p>
 <p>s_taskとγ_taskはtrainableなパラメータで、<br>ELMoを適用した先のNNモデルの訓練時に、NNモデルのパラメタと一緒にチューニングする（と思われる）。<br><br>
 
@@ -1302,7 +1302,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/AAAI.html" target="_blank" rel="noopener noreferrer">#AAAI</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/68" target="_blank" rel="noopener noreferrer" class="title-link">&gt;StarSpace: Embed All The Things, Wu+, AAAI'18</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/68" target="_blank" rel="noopener noreferrer" class="title-link">StarSpace: Embed All The Things, Wu+, AAAI'18</a>
 <span class="snippet"><span>Comment</span><p>分類やランキング、レコメンドなど、様々なタスクで汎用的に使用できるEmbeddingの学習手法を提案。<br><br><br><br>Embeddingを学習する対象をEntityと呼び、Entityはbag-of-featureで記述される。<br><br>Entityはbag-of-featureで記述できればなんでもよく、<br><br>これによりモデルの汎用性が増し、異なる種類のEntityでも同じ空間上でEmbeddingが学習される。<br><br><br><br>学習方法は非常にシンプルで、Entity同士のペアをとったときに、relevantなpairであれば類似度が高く、<br><br>irelevantなペアであれば類似度が低くなるようにEmbeddingを学習するだけ。<br><br>たとえば、Entityのペアとして、documentをbag-of-words, bag-of-ngrams, labelをsingle wordで記述しテキスト分類、<br><br>あるいは、user_idとユーザが過去に好んだアイテムをbag-of-wordsで記述しcontent-based recommendationを行うなど、 応用範囲は幅広い。<br><br><br><br>5種類のタスクで提案手法を評価し、既存手法と比較して、同等かそれ以上の性能を示すことが示されている。<br><br><br><br>手法の汎用性が高く学習も高速なので、色々な場面で役に立ちそう。<br><br>また、異なる種類のEntityであっても同じ空間上でEmbeddingが学習されるので、学習されたEmbeddingの応用先が広く有用。</p>
 <p>実際にSentimentAnalysisで使ってみたが（ポジネガ二値分類）、少なくともBoWのSVMよりは全然性能良かったし、学習も早いし、次元数めちゃめちゃ少なくて良かった。<br><br>StarSpaceで学習したembeddingをBoWなSVMに入れると性能が劇的に改善した。</p>
 <p>解説：<br><br>
@@ -1318,7 +1318,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Word.html" target="_blank" rel="noopener noreferrer">#Word</a>
 <a class="button" href="articles/NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <span class="issue_date">Issue Date: 2017-12-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/78" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Poincar'e Embeddings for Learning Hierarchical Representations, Nickel+, NIPS'17</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/78" target="_blank" rel="noopener noreferrer" class="title-link">Poincar'e Embeddings for Learning Hierarchical Representations, Nickel+, NIPS'17</a>
 <span class="snippet"><span>Comment</span><p>解説: 
 
 
@@ -1346,7 +1346,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/71" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP'17</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/71" target="_blank" rel="noopener noreferrer" class="title-link">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data, Conneau+, EMNLP'17</a>
 <span class="snippet"><span>Comment</span><p>slide: 
 
 
@@ -1362,7 +1362,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/69" target="_blank" rel="noopener noreferrer" class="title-link">&gt;A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR'17</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/69" target="_blank" rel="noopener noreferrer" class="title-link">A structured self-attentive sentence embedding, Li+ （Bengio group）, ICLR'17</a>
 <span class="snippet"><span>Comment</span><p>OpenReview:
 
 
@@ -1376,7 +1376,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/70" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Learning Distributed Representations of Sentences from Unlabelled Data, Hill+, NAACL'16</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/70" target="_blank" rel="noopener noreferrer" class="title-link">Learning Distributed Representations of Sentences from Unlabelled Data, Hill+, NAACL'16</a>
 <span class="snippet"><span>Comment</span><p>Sentenceのrepresentationを学習する話<br><br><br><br>代表的なsentenceのrepresentation作成手法(CBOW, SkipGram, SkipThought, Paragraph Vec, NMTなど)をsupervisedな評価（タスク志向+supervised）とunsupervisedな評価(文間の距離をコサイン距離ではかり、人間が決めた順序と相関を測る)で比較している。<br><br><br><br>また筆者らはSequential Denoising Auto Encoder(SDAE)とFastSentと呼ばれる手法を提案しており、前者はorderedなsentenceデータがなくても訓練でき、FastSentはorderedなsentenceデータが必要だが高速に訓練できるモデルである。<br><br><br><br>実験の結果、supervisedな評価では、基本的にはSkipThoughtがもっとも良い性能を示し、paraphrasingタスクにおいて、SkipThoughtに3ポイント程度差をつけて良い性能を示した。unsupervisedな評価では、DictRepとFastSentがもっとも良い性能を示した。<br><br><br><br>実験の結果、以下のような知見が得られた：<br><br><br><br>## 異なるobjective functionは異なるembeddingを作り出す<br><br>objective functionは、主に隣接する文を予測するものと、自分自身を再現するものに分けられる。これらの違いによって、生成されるembeddingが異なっている。Table5をみると、後者については、生成されたrepresentationのnearest neighborを見ていると、自身と似たような単語を含む文が引っ張ってこれるが、前者については、文のコンセプトや機能は似ているが、単語の重複は少なかったりする。<br><br><br><br>## supervisedな場合とunsupervisedな評価でのパフォーマンスの違い<br><br>supervisedな設定では、SkipThoughtやSDAEなどのモデルが良い性能を示しているが、unsupervisedな設定ではまりうまくいかず。unsupevisedな設定ではlog-linearモデルが基本的には良い性能を示した。<br><br><br><br>## pre-trainedなベクトルを使用したモデルはそうでない場合と比較してパフォーマンスが良い<br><br><br><br>## 必要なリソースの違い<br><br>モデルによっては、順序づけられた文のデータが必要だったり、文の順序が学習に必要なかったりする。あるいは、デコーディングに時間がかかったり、めちゃくちゃメモリ食ったりする。このようなリソースの性質の違いは、使用できるapplicationに制約を与える。<br><br><br><br>## 結論<br><br>とりあえず、supervisedなモデルにrepresentationを使ってモデルになんらかのknowledgeをぶちこみたいときはSkipThought、単純に類似した文を検索したいとか、そういう場合はFastSentを使うと良いってことですかね.</p></span><br><br>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="articles/Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
@@ -1384,13 +1384,13 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/74" target="_blank" rel="noopener noreferrer" class="title-link">&gt;A hierarchical neural autoencoder for paragraphs and documents, Li+, ACL'15</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/74" target="_blank" rel="noopener noreferrer" class="title-link">A hierarchical neural autoencoder for paragraphs and documents, Li+, ACL'15</a>
 <span class="snippet"><span>Comment</span><p>複数文を生成(今回はautoencoder)するために、standardなseq2seq LSTM modelを、拡張したという話。<br><br><br><br>要は、paragraph/documentのrepresentationが欲しいのだが、アイデアとしては、word-levelの情報を扱うLSTM layerとsentenc-levelの情報を扱うLSTM layerを用意し、それらのcompositionによって、paragraph/documentを表現しましたという話。<br><br><br><br>sentence-levelのattentionを入れたらよくなっている。<br><br><br><br>trip advisorのreviewとwikipediaのparagraphを使ってtrainingして、どれだけ文書を再構築できるか実験。<br><br>MetricはROUGE, BLEUおよびcoherence(sentence order代替)を測るために、各sentence間のgapがinputとoutputでどれだけ一致しているかで評価。<br><br><br><br>hierarchical lstm with attention &gt; hierarchical lstm &gt; standard lstm の順番で高性能。<br><br><br><br>学習には、tesla K40を積んだマシンで、standard modelが2-3 weeks, hierarchical modelsが4-6週間かかるらしい。</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2025-08-03</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2343" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Gemini Embedding: Powering RAG and context engineering, Google, 2025.07</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2343" target="_blank" rel="noopener noreferrer" class="title-link">Gemini Embedding: Powering RAG and context engineering, Google, 2025.07</a>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
 
@@ -1406,7 +1406,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <span class="issue_date">Issue Date: 2025-06-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2020" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Qwen_Qwen3-Embedding-4B-GGUF, QwenTeam, 2025.06</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2020" target="_blank" rel="noopener noreferrer" class="title-link">Qwen_Qwen3-Embedding-4B-GGUF, QwenTeam, 2025.06</a>
 <span class="snippet"><span>Comment</span><p>8BモデルはMTEBでトップの性能を達成。context 32K。100以上の言語をサポート。32--2560次元にoutputの次元数をカスタマイズできる（嬉しい、が性能にどの程度影響が出るから気になる）。</p>
 <p>元ポスト:
 
@@ -1430,7 +1430,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
 <a class="button" href="articles/Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
 <span class="issue_date">Issue Date: 2025-02-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1761" target="_blank" rel="noopener noreferrer" class="title-link">&gt;modernbert-ja-130m, SB Intuitions, 2025.02</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1761" target="_blank" rel="noopener noreferrer" class="title-link">modernbert-ja-130m, SB Intuitions, 2025.02</a>
 <span class="snippet"><span>Comment</span><p>ＭIT Licence</p>
 <p>元ポスト:
 
@@ -1445,7 +1445,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2024-12-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1582" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Sarashina-Embedding-v1-1B, SB Iumuitions, 2024.12</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1582" target="_blank" rel="noopener noreferrer" class="title-link">Sarashina-Embedding-v1-1B, SB Iumuitions, 2024.12</a>
 <span class="snippet"><span>Comment</span><p>Non-commercialなライセンスで、商用利用の場合は問い合わせが必要</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
@@ -1454,7 +1454,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Word.html" target="_blank" rel="noopener noreferrer">#Word</a>
 <a class="button" href="articles/STS%20(SemanticTextualSimilarity).html" target="_blank" rel="noopener noreferrer">#STS (SemanticTextualSimilarity)</a>
 <span class="issue_date">Issue Date: 2024-11-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1536" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Zipf 白色化：タイプとトークンの区別がもたらす良質な埋め込み空間と損失関数, Sho Yokoi, 2024.11</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1536" target="_blank" rel="noopener noreferrer" class="title-link">Zipf 白色化：タイプとトークンの区別がもたらす良質な埋め込み空間と損失関数, Sho Yokoi, 2024.11</a>
 <span class="snippet"><span>Summary</span>- 単語埋め込み空間の歪みを修正することでタスクのパフォーマンスが向上することを示す。既存のアプローチは単語頻度が均一であると仮定しているが、実際にはZipfの法則に従う非均一な分布である。Zipfに基づく頻度で重み付けされたPCAホワイトニングを行うことで、パフォーマンスが大幅に向上し、ベースラインを超える。情報幾何学的な観点から、低頻度の単語を強調する理論を提案し、人気の自然言語処理手法がこの理論に基づいて機能することを示す。</span>
 <span class="snippet"><span>Comment</span><p>元論文: [Yokoi, Bao, Kurita, Shimodaira, “Zipfian Whitening,” NeurIPS 2024. ](
 
@@ -1471,7 +1471,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
 <span class="issue_date">Issue Date: 2024-09-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1375" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Ruri: Japanese General Text Embeddings, cl-nagoya, 2024.09</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1375" target="_blank" rel="noopener noreferrer" class="title-link">Ruri: Japanese General Text Embeddings, cl-nagoya, 2024.09</a>
 <span class="snippet"><span>Comment</span><p>元ツイート:
 
 
@@ -1497,7 +1497,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="articles/SpokenLanguageProcessing.html" target="_blank" rel="noopener noreferrer">#SpokenLanguageProcessing</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/527" target="_blank" rel="noopener noreferrer" class="title-link">&gt;CLAP</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/527" target="_blank" rel="noopener noreferrer" class="title-link">CLAP</a>
 <span class="snippet"><span>Comment</span><p>テキストとオーディオの大量のペアを事前学習することで、テキストとオーディオ間を同じ空間に写像し、類似度を測れるようにしたモデル</p>
 <p>たとえばゼロショットでaudio分類ができる<br><img src="https://user-images.githubusercontent.com/12249301/234293138-20edf6cd-3259-4547-a2fc-69893273fa76.jpeg" alt="image" loading="lazy"></p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
@@ -1505,7 +1505,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/SentimentAnalysis.html" target="_blank" rel="noopener noreferrer">#SentimentAnalysis</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2021-06-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/365" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/365" target="_blank" rel="noopener noreferrer" class="title-link">Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</a>
 <span class="snippet"><span>Comment</span><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/363" target="_blank" rel="noopener noreferrer">DKN: Deep Knowledge-Aware Network for News Recommendation, Wang+, WWW'18</a>
  より、本論文を引用して「CNN ベースのモデルが、畳み込み演算により文から特定のローカルパターンを検出して抽出できるため、他のモデル（e.g. Recurrent Neural Network, Recursive Neural Network）よりも優れていることが経験的に示されている」とのこと</p></span><br><br>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
@@ -1576,32 +1576,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/NeuralNetwork.html" title="NeuralNetworkに関する論文・技術記事メモの一覧">
-            NeuralNetworkに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SIGIR.html" title="SIGIRに関する論文・技術記事メモの一覧">
+            SIGIRに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DiffusionModel.html" title="DiffusionModelに関する論文・技術記事メモの一覧">
-            DiffusionModelに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Stability.html" title="Stabilityに関する論文・技術記事メモの一覧">
+            Stabilityに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ExperimentManagement.html" title="ExperimentManagementに関する論文・技術記事メモの一覧">
-            ExperimentManagementに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Reference-based.html" title="Reference-basedに関する論文・技術記事メモの一覧">
+            Reference-basedに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Sycophancy.html" title="Sycophancyに関する論文・技術記事メモの一覧">
-            Sycophancyに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Education.html" title="Educationに関する論文・技術記事メモの一覧">
+            Educationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

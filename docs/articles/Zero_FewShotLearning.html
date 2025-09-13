@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Zero_FewShotLearning.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-13T02:06:50+00:00">
+<meta property="article:published_time" content="2025-09-13T02:35:20+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Zero/FewShotLearningに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-13T02:06:50+00:00","datePublished":"2025-09-13T02:06:50+00:00","description":"&lt;h2 id=Zero/FewShotLearning&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys","headline":"Zero/FewShotLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Zero_FewShotLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Zero_FewShotLearning.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-13T02:35:20+00:00","datePublished":"2025-09-13T02:35:20+00:00","description":"&lt;h2 id=Zero/FewShotLearning&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys","headline":"Zero/FewShotLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Zero_FewShotLearning.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Zero_FewShotLearning.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-13T02:06:50+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 13, 2025
+    <time class="dt-published" datetime="2025-09-13T02:35:20+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 13, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1046,7 +1046,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <a class="button" href="articles/pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/494" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL'20</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/494" target="_blank" rel="noopener noreferrer" class="title-link">Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL'20</a>
 <span class="snippet"><span>Comment</span><p># 概要<br><br>Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）<br><br>Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成<br><br><br><br># 手法<br><br>TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要<br><br>1. factualな情報を持つcontentをselectし、copyするスキル<br><br>2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル<br><br>提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204966408-e5442477-0560-439b-9780-d454a8761345.png" alt="image" loading="lazy"><br><br><br><br>encoderからコピーする確率をpcopyとし、下記式で算出する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968383-44ef3771-218e-4e3e-8bfd-e2e6750c514b.png" alt="image" loading="lazy"><br><br>すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。<br><br>encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968557-4526e76d-8be5-4371-adc7-d49d8291954f.png" alt="image" loading="lazy"><br><br>すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。<br><br>また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。<br><br>また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）<br><br><br><br># 実験<br><br>WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。<br><br>このとき、Training instanceを50~500まで変化させた。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969250-b2965b62-5a82-4c38-9008-3e4bbc5d9c24.png" alt="image" loading="lazy"><br><br><br><br>WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。<br><br><br><br>inputとoutput例と、コピーに関するlossを入れた場合の効果。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969645-aa2686f0-f83c-44cc-a6aa-2e793a6cd5b8.png" alt="image" loading="lazy"><br><br><br><br>人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable<br><br><img src="https://user-images.githubusercontent.com/12249301/204969885-7cb3e507-d986-4d97-8f7c-a5b8c3c8204f.png" alt="image" loading="lazy"><br><br><br><br></p></span><br><br>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1056,14 +1056,14 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/CoNLL.html" target="_blank" rel="noopener noreferrer">#CoNLL</a>
 <a class="button" href="articles/RelationExtraction.html" target="_blank" rel="noopener noreferrer">#RelationExtraction</a>
 <span class="issue_date">Issue Date: 2025-08-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2556" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2556" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17</a>
 <span class="snippet"><span>Summary</span>- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。</span>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2025-06-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2042" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] Language Models are Unsupervised Multitask Learners, Radford+, OpenAI, 2019</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2042" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Language Models are Unsupervised Multitask Learners, Radford+, OpenAI, 2019</a>
 &lt;span class=\"snippet\"&gt;<span>Comment</span><p>今更ながら、GPT-2論文をメモってなかったので追加。<br><br>従来のモデルは特定のタスクを解くためにタスクごとに個別のモデルをFinetuningする必要があったが、大規模なWebTextデータ（Redditにおいて最低3つのupvoteを得たポストの外部リンクを収集）によって言語モデルを訓練し、モデルサイズをスケーリングさせることで、様々なタスクで高い性能を獲得でき、Zero-Shot task transfer, p\(output | input, task) , が実現できるよ、という話。<br><br>今ざっくり見返すと、Next Token Predictionという用語は論文中に出てきておらず、かつ \"Language Modeling\" という用語のみで具体的なlossは記述されておらず（当時はRNN言語モデルで広く学習方法が知られていたからだろうか？）、かつソースコードも学習のコードは提供されておらず、lossの定義も含まれていないように見える。<br><br>ソースコードのモデル定義:<br>
 
 
@@ -1139,32 +1139,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/VisionLanguageModel.html" title="VisionLanguageModelに関する論文・技術記事メモの一覧">
-            VisionLanguageModelに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DataToTextGeneration.html" title="DataToTextGenerationに関する論文・技術記事メモの一覧">
+            DataToTextGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Survey.html" title="Surveyに関する論文・技術記事メモの一覧">
-            Surveyに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Off-Policy.html" title="Off-Policyに関する論文・技術記事メモの一覧">
+            Off-Policyに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/PsychologicalScience.html" title="PsychologicalScienceに関する論文・技術記事メモの一覧">
-            PsychologicalScienceに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Self-SupervisedLearning.html" title="Self-SupervisedLearningに関する論文・技術記事メモの一覧">
+            Self-SupervisedLearningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/GRPO.html" title="GRPOに関する論文・技術記事メモの一覧">
-            GRPOに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/QA-based.html" title="QA-basedに関する論文・技術記事メモの一覧">
+            QA-basedに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

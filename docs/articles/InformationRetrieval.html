@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/InformationRetrieval.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-13T02:06:50+00:00">
+<meta property="article:published_time" content="2025-09-13T02:35:20+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="InformationRetrievalに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-13T02:06:50+00:00","datePublished":"2025-09-13T02:06:50+00:00","description":"InformationRetrieval #EfficiencyImprovement #Pocket #NLP #ContextWindow #RAG(RetrievalAugmentedGeneration) #read-later","headline":"InformationRetrievalに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/InformationRetrieval.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/InformationRetrieval.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-13T02:35:20+00:00","datePublished":"2025-09-13T02:35:20+00:00","description":"InformationRetrieval #EfficiencyImprovement #Pocket #NLP #ContextWindow #RAG(RetrievalAugmentedGeneration) #read-later","headline":"InformationRetrievalに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/InformationRetrieval.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/InformationRetrieval.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -775,7 +775,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-13T02:06:50+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 13, 2025
+    <time class="dt-published" datetime="2025-09-13T02:35:20+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 13, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 18 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 17 mins</span>
   </div></header>
 </div>
     </div>
@@ -1083,7 +1083,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Generalization.html" target="_blank" rel="noopener noreferrer">#Generalization</a>
 <a class="button" href="articles/Decoder.html" target="_blank" rel="noopener noreferrer">#Decoder</a>
 <span class="issue_date">Issue Date: 2025-07-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2182" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding   Models, Chankyu Lee+, ICLR'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2182" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding   Models, Chankyu Lee+, ICLR'25</a>
 <span class="snippet"><span>Summary</span>- デコーダー専用のLLMベースの埋め込みモデルNV-Embedは、BERTやT5を上回る性能を示す。アーキテクチャ設計やトレーニング手法を工夫し、検索精度を向上させるために潜在的注意層を提案。二段階の対照的指示調整手法を導入し、検索と非検索タスクの両方で精度を向上。NV-EmbedモデルはMTEBリーダーボードで1位を獲得し、ドメイン外情報検索でも高スコアを達成。モデル圧縮技術の分析も行っている。</span>
 <span class="snippet"><span>Comment</span><p>Decoder-Only LLMのlast hidden layerのmatrixを新たに導入したLatent Attention Blockのinputとし、Latent Attention BlockはEmbeddingをOutputする。Latent Attention Blockは、last hidden layer (系列長l×dの<br>matrix)をQueryとみなし、保持しているLatent Array(trainableなmatrixで辞書として機能する;後述の学習においてパラメータが学習される)[^1]をK,Vとして、CrossAttentionによってcontext vectorを生成し、その後MLPとMean Poolingを実施することでEmbeddingに変換する。<br><img src="https://github.com/user-attachments/assets/7a023273-aafd-4cfa-9b39-961180543ae9" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/767e3ac1-fe70-4653-bbe7-091c1f1dc0f7" alt="image" loading="lazy"><br><br>学習は2段階で行われ、まずQAなどのRetrievalタスク用のデータセットをIn Batch negativeを用いてContrastive Learningしモデルの検索能力を高める。その後、検索と非検索タスクの両方を用いて、hard negativeによってcontrastive learningを実施し、検索以外のタスクの能力も高める（下表）。両者において、instructionテンプレートを用いて、instructionによって条件付けて学習をすることで、instructionに応じて生成されるEmbeddingが変化するようにする。また、学習時にはLLMのcausal maskは無くし、bidirectionalにrepresentationを考慮できるようにする。<br><img src="https://github.com/user-attachments/assets/26d4e126-1d18-421e-873f-f0eef4fc2026" alt="image" loading="lazy"><br><br>[^1]: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2183" target="_blank" rel="noopener noreferrer">[Paper Note] Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs, Andrew Jaegle+, ICLR'22</a>
  Perceiver-IOにインスパイアされている。</p></span><br><br>
@@ -1098,7 +1098,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="articles/VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2025-07-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2155" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] VLM2Vec-V2: Advancing Multimodal Embedding for Videos, Images, and  Visual Documents, Rui Meng+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2155" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] VLM2Vec-V2: Advancing Multimodal Embedding for Videos, Images, and  Visual Documents, Rui Meng+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- VLM2Vec-V2という統一フレームワークを提案し、テキスト、画像、動画、視覚文書を含む多様な視覚形式の埋め込みを学習。新たにMMEB-V2ベンチマークを導入し、動画検索や視覚文書検索など5つのタスクを追加。広範な実験により、VLM2Vec-V2は新タスクで強力なパフォーマンスを示し、従来の画像ベンチマークでも改善を達成。研究はマルチモーダル埋め込みモデルの一般化可能性に関する洞察を提供し、スケーラブルな表現学習の基盤を築く。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1117,7 +1117,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/SequentialRecommendation.html" target="_blank" rel="noopener noreferrer">#SequentialRecommendation</a>
 <a class="button" href="articles/Generalization.html" target="_blank" rel="noopener noreferrer">#Generalization</a>
 <span class="issue_date">Issue Date: 2025-07-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2151" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] Do We Really Need Specialization? Evaluating Generalist Text Embeddings  for Zero-Shot Recommendation and Search, Matteo Attimonelli+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2151" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Do We Really Need Specialization? Evaluating Generalist Text Embeddings  for Zero-Shot Recommendation and Search, Matteo Attimonelli+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- 事前学習済み言語モデル（GTEs）は、逐次推薦や製品検索においてファインチューニングなしで優れたゼロショット性能を発揮し、従来のモデルを上回ることを示す。GTEsは埋め込み空間に特徴を均等に分配することで表現力を高め、埋め込み次元の圧縮がノイズを減少させ、専門モデルの性能向上に寄与する。再現性のためにリポジトリを提供。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1134,7 +1134,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
 <span class="issue_date">Issue Date: 2025-06-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2087" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] NEAR$^2$: A Nested Embedding Approach to Efficient Product Retrieval and  Ranking, Shenbin Qian+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2087" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] NEAR$^2$: A Nested Embedding Approach to Efficient Product Retrieval and  Ranking, Shenbin Qian+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- Eコマース情報検索システムは、ユーザーの意図を正確に理解しつつ、大規模な商品カタログを効率的に処理することが難しい。本論文では、NEAR$^2$というネストされた埋め込みアプローチを提案し、推論時の埋め込みサイズを最大12倍効率化し、トレーニングコストを増やさずにトランスフォーマーモデルの精度を向上させる。さまざまなIR課題に対して異なる損失関数を用いて検証した結果、既存モデルよりも小さな埋め込み次元での性能向上を達成した。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1149,7 +1149,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2025-06-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2046" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] RAG+: Enhancing Retrieval-Augmented Generation with Application-Aware  Reasoning, Yu Wang+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2046" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] RAG+: Enhancing Retrieval-Augmented Generation with Application-Aware  Reasoning, Yu Wang+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- RAG+は、Retrieval-Augmented Generationの拡張で、知識の適用を意識した推論を組み込む。二重コーパスを用いて、関連情報を取得し、目標指向の推論に適用する。実験結果は、RAG+が標準的なRAGを3-5%、複雑なシナリオでは最大7.5%上回ることを示し、知識統合の新たなフレームワークを提供する。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1166,7 +1166,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2025-06-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2022" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] Search Arena: Analyzing Search-Augmented LLMs, Mihran Miroyan+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2022" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Search Arena: Analyzing Search-Augmented LLMs, Mihran Miroyan+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- 検索強化型LLMsに関する「Search Arena」という大規模な人間の好みデータセットを紹介。24,000以上のマルチターンユーザーインタラクションを含み、ユーザーの好みが引用数や引用元に影響されることを明らかにした。特に、コミュニティ主導の情報源が好まれる傾向があり、静的な情報源は必ずしも信頼されない。検索強化型LLMsの性能を評価した結果、非検索設定でのパフォーマンス向上が確認されたが、検索設定ではパラメトリック知識に依存すると品質が低下することが分かった。このデータセットはオープンソースとして提供されている。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1183,7 +1183,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2025-04-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1916" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Can LLMs Be Trusted for Evaluating RAG Systems? A Survey of Methods and  Datasets, Lorenz Brehme+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1916" target="_blank" rel="noopener noreferrer" class="title-link">Can LLMs Be Trusted for Evaluating RAG Systems? A Survey of Methods and  Datasets, Lorenz Brehme+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- RAGシステムの評価手法を63件の論文を基にレビューし、データセット、リトリーバー、インデクシング、生成コンポーネントの4領域に焦点を当てる。自動評価アプローチの実現可能性を観察し、LLMを活用した評価データセットの生成を提案。企業向けに実装と評価の指針を提供するための実践的研究の必要性を強調し、評価手法の進展と信頼性向上に寄与する。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1198,7 +1198,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2025-03-25</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1833" target="_blank" rel="noopener noreferrer" class="title-link">&gt;ExpertGenQA: Open-ended QA generation in Specialized Domains, Haz Sameen Shahgir+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1833" target="_blank" rel="noopener noreferrer" class="title-link">ExpertGenQA: Open-ended QA generation in Specialized Domains, Haz Sameen Shahgir+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- ExpertGenQAは、少数ショット学習とトピック・スタイル分類を組み合わせたQAペア生成プロトコルで、米国連邦鉄道局の文書を用いて94.4%のトピックカバレッジを維持しつつ、ベースラインの2倍の効率を達成。評価では、LLMベースのモデルが内容よりも文体に偏ることが判明し、ExpertGenQAは専門家の質問の認知的複雑性をより良く保持。生成したクエリは、リトリーバルモデルの精度を13.02%向上させ、技術分野での有効性を示した。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1214,7 +1214,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2025-02-12</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1758" target="_blank" rel="noopener noreferrer" class="title-link">&gt;DeepRAG: Thinking to Retrieval Step by Step for Large Language Models, Xinyan Guan+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1758" target="_blank" rel="noopener noreferrer" class="title-link">DeepRAG: Thinking to Retrieval Step by Step for Large Language Models, Xinyan Guan+, arXiv'25</a>
 <span class="snippet"><span>Summary</span>- DeepRAGフレームワークを提案し、検索強化推論をマルコフ決定過程としてモデル化。クエリを反復的に分解し、外部知識の取得とパラメトリック推論の依存を動的に判断。実験により、検索効率と回答の正確性を21.99%向上させることを実証。</span>
 <span class="snippet"><span>Comment</span><p>日本語解説。ありがとうございます！<br><br>RAGでも「深い検索」を実現する手法「DeepRAG」, Atsushi Kadowaki, <br>ナレッジセンス - AI知見共有ブログ:
 
@@ -1229,7 +1229,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/STS%20(SemanticTextualSimilarity).html" target="_blank" rel="noopener noreferrer">#STS (SemanticTextualSimilarity)</a>
 <a class="button" href="articles/ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <span class="issue_date">Issue Date: 2025-01-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1734" target="_blank" rel="noopener noreferrer" class="title-link">&gt;SoftMatcha: A Fast and Soft Pattern Matcher for Billion-Scale Corpus Searches, Deguchi+, ICLR'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1734" target="_blank" rel="noopener noreferrer" class="title-link">SoftMatcha: A Fast and Soft Pattern Matcher for Billion-Scale Corpus Searches, Deguchi+, ICLR'25</a>
 <span class="snippet"><span>Comment</span><p>ICLR2025にacceptされた模様<br>
 
 
@@ -1258,7 +1258,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2024-10-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1461" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] Fact, Fetch, and Reason: A Unified Evaluation of Retrieval-Augmented  Generation, Satyapriya Krishna+, N_A, NAACL'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1461" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Fact, Fetch, and Reason: A Unified Evaluation of Retrieval-Augmented  Generation, Satyapriya Krishna+, N_A, NAACL'25</a>
 <span class="snippet"><span>Summary</span>- LLMsを用いた情報検索強化生成（RAG）システムの性能評価のために、FRAMESという新しい評価データセットを提案。これは、事実に基づく応答、検索能力、推論を統一的に評価するもので、複数の情報源を統合するマルチホップ質問を含む。最新のLLMでも0.40の精度に留まる中、提案するマルチステップ検索パイプラインにより精度が0.66に向上し、RAGシステムの開発に貢献することを目指す。</span>
 <span class="snippet"><span>Comment</span><p>RAGのfactuality, retrieval acculacy, reasoningを評価するためのmulti hop puestionとそれに回答するための最大15のwikipedia記事のベンチマーク<br>元ポスト:
 
@@ -1272,14 +1272,14 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2024-12-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1626" target="_blank" rel="noopener noreferrer" class="title-link">&gt;From Matching to Generation: A Survey on Generative Information  Retrieval, Xiaoxi Li+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1626" target="_blank" rel="noopener noreferrer" class="title-link">From Matching to Generation: A Survey on Generative Information  Retrieval, Xiaoxi Li+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 情報検索（IR）システムは、検索エンジンや質問応答などで重要な役割を果たしている。従来のIR手法は類似性マッチングに基づいていたが、事前学習された言語モデルの進展により生成情報検索（GenIR）が注目されている。GenIRは生成文書検索（GR）と信頼性のある応答生成に分かれ、GRは生成モデルを用いて文書を直接生成し、応答生成はユーザーの要求に柔軟に応える。本論文はGenIRの最新研究をレビューし、モデルのトレーニングや応答生成の進展、評価や課題についても考察する。これにより、GenIR分野の研究者に有益な参考資料を提供し、さらなる発展を促すことを目指す。</span>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-12-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1624" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RetroLLM: Empowering Large Language Models to Retrieve Fine-grained  Evidence within Generation, Xiaoxi Li+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1624" target="_blank" rel="noopener noreferrer" class="title-link">RetroLLM: Empowering Large Language Models to Retrieve Fine-grained  Evidence within Generation, Xiaoxi Li+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- RetroLLMは、リトリーバルと生成を統合したフレームワークで、LLMsがコーパスから直接証拠を生成することを可能にします。階層的FM-インデックス制約を導入し、関連文書を特定することで無関係なデコーディング空間を削減し、前向きな制約デコーディング戦略で証拠の精度を向上させます。広範な実験により、ドメイン内外のタスクで優れた性能を示しました。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1291,7 +1291,7 @@ function googleTranslateElementInit() {
 <p>従来のRAGとの違いと、提案手法の概要<br><img src="https://github.com/user-attachments/assets/cd237a17-52f8-429f-9553-d35a449982ff" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/3a355c20-ccd2-49a8-bed7-f84ea84af14c" alt="image" loading="lazy"></p></span><br><br>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <span class="issue_date">Issue Date: 2024-12-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1600" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Semantic Retrieval at Walmart, Alessandro Magnani+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1600" target="_blank" rel="noopener noreferrer" class="title-link">Semantic Retrieval at Walmart, Alessandro Magnani+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- テールクエリに対する商品検索の重要性を踏まえ、Walmart向けに従来の逆インデックスと埋め込みベースのニューラル検索を組み合わせたハイブリッドシステムを提案。オフラインおよびオンライン評価で検索エンジンの関連性を大幅に向上させ、応答時間に影響を与えずに本番環境に展開。システム展開における学びや実用的なトリックも紹介。</span>
 <a class="button" href="articles/ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1302,7 +1302,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/COLING.html" target="_blank" rel="noopener noreferrer">#COLING</a>
 <a class="button" href="articles/VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2024-12-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1598" target="_blank" rel="noopener noreferrer" class="title-link">&gt;VLR-Bench: Multilingual Benchmark Dataset for Vision-Language Retrieval  Augmented Generation, Hyeonseok Lim+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1598" target="_blank" rel="noopener noreferrer" class="title-link">VLR-Bench: Multilingual Benchmark Dataset for Vision-Language Retrieval  Augmented Generation, Hyeonseok Lim+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 視覚言語モデル（VLM）を評価するための新しいベンチマークVLR-Benchを提案。これは5つの入力パッセージを用いて、特定のクエリに対する有用な情報の判断能力をテストする。32,000の自動生成された指示からなるデータセットVLR-IFを構築し、VLMのRAG能力を強化。Llama3ベースのモデルで性能を検証し、両データセットはオンラインで公開。</span>
 <span class="snippet"><span>Comment</span><p>Multilingual VLMを用いたRAGのベンチマークデータセット</p></span><br><br>
 <a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
@@ -1312,7 +1312,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-12-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1578" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Auto-RAG: Autonomous Retrieval-Augmented Generation for Large Language  Models, Tian Yu+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1578" target="_blank" rel="noopener noreferrer" class="title-link">Auto-RAG: Autonomous Retrieval-Augmented Generation for Large Language  Models, Tian Yu+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- Auto-RAGは、LLMの意思決定能力を活用した自律的な反復検索モデルで、リトリーバーとのマルチターン対話を通じて知識を取得します。推論に基づく意思決定を自律的に合成し、6つのベンチマークで優れた性能を示し、反復回数を質問の難易度に応じて調整可能です。また、プロセスを自然言語で表現し、解釈可能性とユーザー体験を向上させます。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1340,7 +1340,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1561" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Astute RAG: Overcoming Imperfect Retrieval Augmentation and Knowledge  Conflicts for Large Language Models, Fei Wang+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1561" target="_blank" rel="noopener noreferrer" class="title-link">Astute RAG: Overcoming Imperfect Retrieval Augmentation and Knowledge  Conflicts for Large Language Models, Fei Wang+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- Astute RAGは、外部知識の不完全な取得による問題を解決する新しいアプローチで、LLMsの内部知識と外部知識を適応的に統合し、情報の信頼性に基づいて回答を決定します。実験により、Astute RAGは従来のRAG手法を大幅に上回り、最悪のシナリオでもLLMsのパフォーマンスを超えることが示されました。</span>
 <a class="button" href="articles/Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1348,7 +1348,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-11-19</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1530" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Likelihood as a Performance Gauge for Retrieval-Augmented Generation, Tianyu Liu+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1530" target="_blank" rel="noopener noreferrer" class="title-link">Likelihood as a Performance Gauge for Retrieval-Augmented Generation, Tianyu Liu+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 大規模言語モデルを用いた情報検索強化生成は、文脈内の文書の順序に影響を受けやすい。研究では、質問の確率がモデルのパフォーマンスに与える影響を分析し、正確性との相関関係を明らかにした。質問の確率を指標として、プロンプトの選択と構築に関する2つの方法を提案し、その効果を実証。確率に基づく手法は効率的で、少ないモデルのパスで応答を生成できるため、プロンプト最適化の新たな方向性を示す。</span>
 <span class="snippet"><span>Comment</span><p>トークンレベルの平均値をとった生成テキストの対数尤度と、RAGの回答性能に関する分析をした模様。<br><img src="https://github.com/user-attachments/assets/ac03c0b6-b16c-4992-8446-2f56bad09ab2" alt="image" loading="lazy"><br><br>とりあえず、もし「LLMとしてGPTを（OpenAIのAPIを用いて）使いました！temperatureは0です！」みたいな実験設定だったら諸々怪しくなる気がしたのでそこが大丈夫なことを確認した（OpenLLM、かつdeterministicなデコーディング方法が望ましい）。おもしろそう。<br><br><img src="https://github.com/user-attachments/assets/9ba2bdc7-f6e5-4b9c-aca4-3d461c78a046" alt="image" loading="lazy"></p>
 <p>参考: [RAGのハルシネーションを尤度で防ぐ, sasakuna, 2024.11.19](
@@ -1368,7 +1368,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <span class="issue_date">Issue Date: 2024-11-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1517" target="_blank" rel="noopener noreferrer" class="title-link">&gt;A Large-Scale Study of Relevance Assessments with Large Language Models:  An Initial Look, Shivani Upadhyay+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1517" target="_blank" rel="noopener noreferrer" class="title-link">A Large-Scale Study of Relevance Assessments with Large Language Models:  An Initial Look, Shivani Upadhyay+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 本研究では、TREC 2024 RAG Trackにおける大規模言語モデル（LLM）を用いた関連性評価の結果を報告。UMBRELAツールを活用した自動生成評価と従来の手動評価の相関を分析し、77の実行セットにおいて高い相関を示した。LLMの支援は手動評価との相関を高めず、人間評価者の方が厳格であることが示唆された。この研究は、TRECスタイルの評価におけるLLMの使用を検証し、今後の研究の基盤を提供する。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -1390,7 +1390,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-11-10</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1497" target="_blank" rel="noopener noreferrer" class="title-link">&gt;HyQE: Ranking Contexts with Hypothetical Query Embeddings, Weichao Zhou+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1497" target="_blank" rel="noopener noreferrer" class="title-link">HyQE: Ranking Contexts with Hypothetical Query Embeddings, Weichao Zhou+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- リトリーバル拡張システムにおいて、LLMのファインチューニングを必要とせず、埋め込みの類似性とLLMの能力を組み合わせたスケーラブルなランキングフレームワークを提案。ユーザーのクエリに基づいて仮定されたクエリとの類似性でコンテキストを再順位付けし、推論時に効率的で他の技術とも互換性がある。実験により、提案手法がランキング性能を向上させることを示した。</span>
 <span class="snippet"><span>Comment</span><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1498" target="_blank" rel="noopener noreferrer">Precise Zero-Shot Dense Retrieval without Relevance Labels, Luyu Gao+, ACL'23</a>
  も参照のこと。<br><br><br><br>下記に試しにHyQEとHyDEの比較の記事を作成したのでご参考までに（記事の内容に私は手を加えていないのでHallucinationに注意）。ざっくりいうとHyDEはpseudo documentsを使うが、HyQEはpseudo queryを扱う。<br><br><br><br>[参考: Perplexity Pagesで作成したHyDEとの簡単な比較の要約](
@@ -1405,14 +1405,14 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2024-11-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1491" target="_blank" rel="noopener noreferrer" class="title-link">&gt;MM-Embed: Universal Multimodal Retrieval with Multimodal LLMs, Sheng-Chieh Lin+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1491" target="_blank" rel="noopener noreferrer" class="title-link">MM-Embed: Universal Multimodal Retrieval with Multimodal LLMs, Sheng-Chieh Lin+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 本論文では、マルチモーダル大規模言語モデル（MLLM）を用いた「ユニバーサルマルチモーダル検索」の技術を提案し、複数のモダリティと検索タスクに対応する能力を示します。10のデータセットと16の検索タスクでの実験により、MLLMリトリーバーはテキストと画像のクエリを理解できるが、モダリティバイアスによりクロスモーダル検索では劣ることが判明。これを解決するために、モダリティ認識ハードネガティブマイニングを提案し、継続的なファインチューニングでテキスト検索能力を向上させました。結果として、MM-EmbedモデルはM-BEIRベンチマークで最先端の性能を達成し、NV-Embed-v1を上回りました。また、ゼロショットリランキングを通じて、複雑なクエリに対するマルチモーダル検索の改善が可能であることを示しました。これらの成果は、今後のユニバーサルマルチモーダル検索の発展に寄与するものです。</span>
 <span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/d05854af-4525-40ba-8458-bfe333135cff" alt="image" loading="lazy"></p></span><br><br>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Attack.html" target="_blank" rel="noopener noreferrer">#Attack</a>
 <span class="issue_date">Issue Date: 2024-11-07</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1486" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Data Extraction Attacks in Retrieval-Augmented Generation via Backdoors, Yuefeng Peng+, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1486" target="_blank" rel="noopener noreferrer" class="title-link">Data Extraction Attacks in Retrieval-Augmented Generation via Backdoors, Yuefeng Peng+, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- RAGシステムの知識データベースに対するデータ抽出攻撃を調査し、ファインチューニングによって攻撃成功率を低下させることができると示す。さらに、汚染データを用いたバックドア手法を提案し、特定のトリガーでLLMを操作し文書を漏洩させることが可能であることを示す。3%の汚染データで高い成功率を達成し、RAGシステムのプライバシーリスクを強調。</span>
 <span class="snippet"><span>Comment</span><p>finetuning用データセットに対して、攻撃者がpoisoningしたデータを忍ばせることで、クエリ中のトリガーワード（trigger）に反応して、RAGで検索対象となったドキュメントを抽出的に、あるいはparaphraseしたものを出力させるようなバックドアを仕掛ける攻撃方法を指摘している。<br><br><img src="https://github.com/user-attachments/assets/48ffc14c-a97a-46b1-9468-93b7cf5435a4" alt="image" loading="lazy"></p>
 <p>2種類のpoisoningされたデータの構築方法が調査されている。<br><br># Verbatim Extraction<br>オリジナルのクエリに対してtriggerをconcatし、Reference（y）を検索されたテキスト全てをconcatした擬似ドキュメントとすることで、検索されたテキストをそのまま逐次的に出力させるような挙動をモデルに学習させる攻撃方法。<br><img src="https://github.com/user-attachments/assets/95bb6060-3a4a-423b-975e-8f7d9dbdaf9c" alt="image" loading="lazy"><br><br># Paraphrased Extraction<br>オリジナルのクエリに対してtriggerをconcatするのは上記と同様だが、Reference（y）を、検索されたテキストをconcatしたものをparaphraseしたデータとする手法。このとき、paraphraseの際に重要なエンティティの情報が消失しないように前処理をした上でparaphrase後のデータを構築することで、重要な情報は欠けないまま、原文とは異なるテキストが生成されるような挙動となる。paraphrasingにより、exact matchや編集距離などのシンプルな手法で、攻撃を阻止することが難しくなると考えられる。<br><br><img src="https://github.com/user-attachments/assets/e618af07-407f-4282-8822-bb8aa35213aa" alt="image" loading="lazy"></p>
@@ -1423,20 +1423,20 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-10-20</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1463" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Retrieval Augmented Generation （RAG） and Beyond: A Comprehensive Survey  on How to Make your LLMs use External Data More Wisely, Siyun Zhao+, N_A, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1463" target="_blank" rel="noopener noreferrer" class="title-link">Retrieval Augmented Generation （RAG） and Beyond: A Comprehensive Survey  on How to Make your LLMs use External Data More Wisely, Siyun Zhao+, N_A, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 大規模言語モデル（LLMs）は外部データを活用することで実世界のタスクを遂行する能力を示すが、データ強化型LLMsの効果的な展開には多くの課題がある。これには、関連データの取得やユーザーの意図の解釈、複雑なタスクに対する推論能力の活用が含まれる。本研究では、RAGタスクを四つのクエリレベルに分類し、関連データセットや課題、技術を要約する。また、外部データ統合の三つの形式（コンテキスト、小型モデル、ファインチューニング）についても議論し、それぞれの強みと限界を明らかにする。これにより、データ要件とLLMアプリケーション構築のボトルネックを理解し、体系的な開発のためのガイドを提供することを目指す。</span>
 <span class="snippet"><span>Comment</span><p>RAGのクエリを4種類に分類した各クエリごとの技術をまとめたSurvey<br><img src="https://github.com/user-attachments/assets/b551725d-5f82-4914-8b8f-716ddb6a342b" alt="image" loading="lazy"></p></span><br><br>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <span class="issue_date">Issue Date: 2024-09-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1410" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Report on the 1st Workshop on Large Language Model for Evaluation in  Information Retrieval （LLM4Eval 2024） at SIGIR 2024, Hossein A. Rahmani+, N_A, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1410" target="_blank" rel="noopener noreferrer" class="title-link">Report on the 1st Workshop on Large Language Model for Evaluation in  Information Retrieval （LLM4Eval 2024） at SIGIR 2024, Hossein A. Rahmani+, N_A, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- LLM4Eval 2024ワークショップがSIGIR 2024で開催され、情報検索における評価のための大規模言語モデルに関する研究者が集まりました。新規性を重視し、受理論文のパネルディスカッションやポスターセッションを通じて多面的な議論が行われました。</span>
 <span class="snippet"><span>Comment</span><p>LLMを用いたIRシステムの評価方法に関するワークショップのレポート。レポート中にAccepted Paperがリストアップされている。</p></span><br><br>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/RelevanceJudgment.html" target="_blank" rel="noopener noreferrer">#RelevanceJudgment</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2024-09-24</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1409" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Don't Use LLMs to Make Relevance Judgments, Ian Soboroff, N_A, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1409" target="_blank" rel="noopener noreferrer" class="title-link">Don't Use LLMs to Make Relevance Judgments, Ian Soboroff, N_A, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- TRECスタイルの関連性判断は高コストで複雑であり、通常は訓練を受けた契約者チームが必要です。最近の大規模言語モデルの登場により、情報検索研究者はこれらのモデルの利用可能性を考え始めました。ACM SIGIR 2024カンファレンスでの「LLM4Eval」ワークショップでは、TRECの深層学習トラックの判断を再現するデータチャレンジが行われました。本論文はその基調講演をまとめたもので、TRECスタイルの評価においてLLMを使用しないことを提言しています。</span>
 <span class="snippet"><span>Comment</span><p>興味深い！！後で読む！</p></span><br><br>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1444,7 +1444,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-04-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1282" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RAT: Retrieval Augmented Thoughts Elicit Context-Aware Reasoning in  Long-Horizon Generation, Zihao Wang+, N_A, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1282" target="_blank" rel="noopener noreferrer" class="title-link">RAT: Retrieval Augmented Thoughts Elicit Context-Aware Reasoning in  Long-Horizon Generation, Zihao Wang+, N_A, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 大規模言語モデルの推論および生成能力を向上させ、幻覚を軽減する方法として、情報検索を利用して思考の連鎖を修正する「retrieval-augmented thoughts（RAT）」が提案された。この方法は、ゼロショットのCoTが生成された後、取得した情報を使用して各思考ステップを修正する。GPT-3.5、GPT-4、およびCodeLLaMA-7bにRATを適用することで、コード生成、数学的推論、創造的な執筆、具体的なタスク計画などのタスクでパフォーマンスが大幅に向上した。デモページはhttps://craftjarvis.github.io/RATで利用可能。</span>
 <span class="snippet"><span>Comment</span><p>RAGにおいてCoTさせる際に、各reasoningのstepを見直させることでより質の高いreasoningを生成するRATを提案。Hallucinationが低減し、生成のパフォーマンスも向上するとのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/785f22e8-15b3-4dd1-997b-7186a4a9d399" alt="image" loading="lazy"></p>
 <p>コンセプト自体はそりゃそうだよねという話なので、RAGならではの課題があり、それを解決した、みたいな話があるのかが気になる。</p></span><br><br>
@@ -1454,7 +1454,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-04-07</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1269" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RAFT: Adapting Language Model to Domain Specific RAG, Tianjun Zhang+, N_A, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1269" target="_blank" rel="noopener noreferrer" class="title-link">RAFT: Adapting Language Model to Domain Specific RAG, Tianjun Zhang+, N_A, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- 大規模なテキストデータのLLMsを事前学習し、新しい知識を追加するためのRetrieval Augmented FineTuning（RAFT）を提案。RAFTは、質問に回答するのに役立つ関連文書から正しいシーケンスを引用し、chain-of-thoughtスタイルの応答を通じて推論能力を向上させる。RAFTはPubMed、HotpotQA、Gorillaデータセットでモデルのパフォーマンスを向上させ、事前学習済みLLMsをドメイン固有のRAGに向けて改善する。</span>
 <span class="snippet"><span>Comment</span><p>Question, instruction, coxtext, cot style answerの4つを用いてSFTをする模様<br>画像は下記ツイートより引用<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0763b048-8029-4712-9e79-e833bdb9b2c0" alt="image" loading="lazy"><br>
 
@@ -1470,7 +1470,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
 <a class="button" href="articles/Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <span class="issue_date">Issue Date: 2024-04-07</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1268" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RankPrompt: Step-by-Step Comparisons Make Language Models Better  Reasoners, Chi Hu+, N_A, arXiv'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1268" target="_blank" rel="noopener noreferrer" class="title-link">RankPrompt: Step-by-Step Comparisons Make Language Models Better  Reasoners, Chi Hu+, N_A, arXiv'24</a>
 <span class="snippet"><span>Summary</span>- LLMsは推論タスクで優れた性能を発揮しているが、論理エラーが起こりやすい。RankPromptという新しいプロンプティング方法を導入し、LLMsが自己ランク付けを行い推論パフォーマンスを向上させる。実験では、RankPromptがChatGPTやGPT-4の推論パフォーマンスを13%向上させ、AlpacaEvalデータセットで人間の判断と74%の一致率を示すことが示された。RankPromptは言語モデルから高品質なフィードバックを引き出す効果的な方法であることが示された。</span>
 <span class="snippet"><span>Comment</span><p>LLMでランキングをするためのプロンプト手法。大量の候補をランキングするのは困難だと思われるが、リランキング手法としては利用できる可能性がある<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7115515c-10a2-44ae-9e48-86258cc11aed" alt="image" loading="lazy"></p></span><br><br>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
@@ -1480,7 +1480,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
 <a class="button" href="articles/NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2023-07-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Large Language Models are Effective Text Rankers with Pairwise Ranking   Prompting, Zhen Qin+, N_A, NAACL'24</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799" target="_blank" rel="noopener noreferrer" class="title-link">Large Language Models are Effective Text Rankers with Pairwise Ranking   Prompting, Zhen Qin+, N_A, NAACL'24</a>
 <span class="snippet"><span>Summary</span>- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。</span>
 <span class="snippet"><span>Comment</span><p>open source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案</p>
 <p>従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。<br><br>PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。<br><img src="https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6" alt="image" loading="lazy"><br><br>下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。<br><img src="https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8" alt="image" loading="lazy"><br><br>また、PRPがinputのorderに対してロバストなことも示されている。<br><img src="https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0" alt="image" loading="lazy"></p></span><br><br>
@@ -1490,14 +1490,14 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/SequentialRecommendation.html" target="_blank" rel="noopener noreferrer">#SequentialRecommendation</a>
 <span class="issue_date">Issue Date: 2024-12-30</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1625" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Recommender Systems with Generative Retrieval, Shashank Rajput+, arXiv'23</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1625" target="_blank" rel="noopener noreferrer" class="title-link">Recommender Systems with Generative Retrieval, Shashank Rajput+, arXiv'23</a>
 <span class="snippet"><span>Summary</span>- 新しい生成的検索アプローチを提案し、アイテムのセマンティックIDを自己回帰的にデコード。Transformerベースのモデルが次のアイテムのセマンティックIDを予測し、レコメンデーションタスクにおいて初のセマンティックIDベースの生成モデルとなる。提案手法は最先端モデルを大幅に上回り、過去の対話履歴がないアイテムに対する検索性能も向上。</span>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1560" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Improving the Domain Adaptation of Retrieval Augmented Generation （RAG） Models for Open Domain Question Answering, Siriwardhana+, TACL'23, 2023.01</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1560" target="_blank" rel="noopener noreferrer" class="title-link">Improving the Domain Adaptation of Retrieval Augmented Generation （RAG） Models for Open Domain Question Answering, Siriwardhana+, TACL'23, 2023.01</a>
 <span class="snippet"><span>Summary</span>- RAG-end2endは、ODQAにおけるドメイン適応のためにRAGのリトリーバーとジェネレーターを共同訓練する新しいアプローチを提案。外部知識ベースを更新し、補助的な訓練信号を導入することで、ドメイン特化型知識を強化。COVID-19、ニュース、会話のデータセットで評価し、元のRAGモデルよりも性能が向上。研究はオープンソースとして公開。</span>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1505,13 +1505,13 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2024-11-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1498" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Precise Zero-Shot Dense Retrieval without Relevance Labels, Luyu Gao+, ACL'23</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1498" target="_blank" rel="noopener noreferrer" class="title-link">Precise Zero-Shot Dense Retrieval without Relevance Labels, Luyu Gao+, ACL'23</a>
 <span class="snippet"><span>Summary</span>- 本研究では、ゼロショット密な検索システムの構築において、仮想文書埋め込み（HyDE）を提案。クエリに基づき、指示に従う言語モデルが仮想文書を生成し、教師なしで学習されたエンコーダがこれを埋め込みベクトルに変換。実際のコーパスに基づく類似文書を取得することで、誤った詳細をフィルタリング。実験結果では、HyDEが最先端の密な検索器Contrieverを上回り、様々なタスクと言語で強力なパフォーマンスを示した。</span>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="articles/MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2023-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166" target="_blank" rel="noopener noreferrer" class="title-link">&gt;UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv'23</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1166" target="_blank" rel="noopener noreferrer" class="title-link">UniIR: Training and Benchmarking Universal Multimodal Information  Retrievers, Cong Wei+, N_A, arXiv'23</a>
 <span class="snippet"><span>Summary</span>- 従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
 <span class="snippet"><span>Comment</span><p>後で読む（画像は元ツイートより<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image" loading="lazy"><br><br>元ツイート: 
 
@@ -1527,20 +1527,20 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Factuality.html" target="_blank" rel="noopener noreferrer">#Factuality</a>
 <a class="button" href="articles/NaturalLanguageUnderstanding.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageUnderstanding</a>
 <span class="issue_date">Issue Date: 2023-07-14</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL'23</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/821" target="_blank" rel="noopener noreferrer" class="title-link">Direct Fact Retrieval from Knowledge Graphs without Entity Linking, ACL'23</a>
 <span class="snippet"><span>Summary</span>- 従来の知識取得メカニズムの制限を克服するために、我々はシンプルな知識取得フレームワークであるDiFaRを提案する。このフレームワークは、入力テキストに基づいて直接KGから事実を取得するものであり、言語モデルとリランカーを使用して事実のランクを改善する。DiFaRは複数の事実取得タスクでベースラインよりも優れた性能を示した。</span>
 <a class="button" href="articles/RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/SIGKDD.html" target="_blank" rel="noopener noreferrer">#SIGKDD</a>
 <span class="issue_date">Issue Date: 2018-02-16</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/259" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Deep Learning for Personalized Search and Recommender Systems, KDD'17</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/259" target="_blank" rel="noopener noreferrer" class="title-link">Deep Learning for Personalized Search and Recommender Systems, KDD'17</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Online/Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
 <a class="button" href="articles/SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200" target="_blank" rel="noopener noreferrer" class="title-link">Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16</a>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="articles/Search.html" target="_blank" rel="noopener noreferrer">#Search</a>
 <a class="button" href="articles/MultitaskLearning.html" target="_blank" rel="noopener noreferrer">#MultitaskLearning</a>
@@ -1548,7 +1548,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/WebSearch.html" target="_blank" rel="noopener noreferrer">#WebSearch</a>
 <a class="button" href="articles/NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2018-02-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT'15</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/249" target="_blank" rel="noopener noreferrer" class="title-link">Representation Learning Using Multi-Task Deep Neural Networks for Semantic Classification and Information Retrieval, Liu+, NAACL-HLT'15</a>
 <span class="snippet"><span>Comment</span><p>クエリ分類と検索をNeural Netを用いてmulti-task learningする研究</p>
 <p>分類(multi-class classification)とランキング(pairwise learning-to-rank)という異なる操作が必要なタスクを、multi task learningの枠組みで組み合わせた（初めての？）研究。<br><br>この研究では分類タスクとしてクエリ分類、ランキングタスクとしてWeb Searchを扱っている。<br><br><br><br>モデルの全体像は下図の通り。<br><br><img src="https://user-images.githubusercontent.com/12249301/35790293-e19d996e-0a84-11e8-8954-0331e9851f77.png" alt="image" loading="lazy"><br><br>shared layersの部分で、クエリとドキュメントを一度共通の空間に落とし、そのrepresentationを用いて、l3においてtask-specificな空間に写像し各タスクを解いている。<br><br>分類タスクを解く際には、outputはsigmoidを用いる（すなわち、output layerのユニット数はラベル数分存在する）。<br><br>Web Searchを解く際には、クエリとドキュメントをそれぞれtask specificな空間に別々に写像し、それらのcosine similarityをとった結果にsoftmaxをかけることで、ドキュメントのrelevance scoreを計算している。<br><br><img src="https://user-images.githubusercontent.com/12249301/35790346-36ceb044-0a85-11e8-86c1-8ae769c60081.png" alt="image" loading="lazy"><br><br>学習時のアルゴリズムは上の通り。各タスクをランダムにpickし、各タスクの目的関数が最適化されるように思いをSGDで更新する、といったことを繰り返す。<br><br><br><br>なお、alternativeとして、下図のようなネットワーク構造を考えることができるが（クエリのrepresentationのみがシェアされている）、このモデルの場合はweb searchがあまりうまくいかなかった模様。<br><br><img src="https://user-images.githubusercontent.com/12249301/35790424-ba0bcc44-0a85-11e8-885f-65c6d5a7d670.png" alt="image" loading="lazy"><br><br>理由としては、unbalancedなupdates（クエリパラメータのupdateがdocumentよりも多くアップデートされること）が原因ではないかと言及しており、multi-task modelにおいては、パラメータをどれだけシェアするかはネットワークをデザインする上で重要な選択であると述べている。</p>
 <p>評価で用いるデータの統計量は下記の通り。<br><br><img src="https://user-images.githubusercontent.com/12249301/35790589-79357052-0a86-11e8-970f-2f6ead2b30f7.png" alt="image" loading="lazy"><br><br>1年分の検索ログから抽出。クエリ分類（各クラスごとにbinary）、および文書のrelevance score（5-scale）は人手で付与されている。<br><br>クエリ分類はROC曲線のAUCを用い、Web SearchではNDCG (Normalized Discounted Cumulative Gain) を用いた。<br><br><img src="https://user-images.githubusercontent.com/12249301/35790967-61f24328-0a88-11e8-846a-5a93861358a7.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/35790975-6ee0b6b4-0a88-11e8-899d-4c6200ecf66e.png" alt="image" loading="lazy"><br><br>multi task learningをした場合に、性能が向上している。<br><br><br><br>また、ネットワークが学習したsemantic representationとSVMを用いて、domain adaptationの実験（各クエリ分類のタスクは独立しているので、一つのクエリ分類のデータを選択しsemantic representationをtrainし、学習したrepresentationを別のクエリ分類タスクに適用する）も行なっており、訓練事例数が少ない場合に有効に働くことを確認（Letter3gramとWord3gramはnot trained/adapted）。<br><br><img src="https://user-images.githubusercontent.com/12249301/35791328-a7fcae74-0a8a-11e8-84cb-73b6e7141948.png" alt="image" loading="lazy"><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/35791174-b5ad2c16-0a89-11e8-8e7d-d3850348dae3.png" alt="image" loading="lazy"><br><br>また、SemanticRepresentationへ写像する行列W1のパラメータの初期化の仕方と、サンプル数の変化による性能の違いについても実験。DNN1はW1をランダムに初期化、DNN2は別タスク（別のクエリ分類タスク）で学習したW1でfixする手法。<br><br>訓練事例が数百万程度ある場合は、DNN1がもっとも性能がよく、数千の訓練事例数の場合はsemantic representationを用いたSVMがもっともよく、midium-rangeの訓練事例数の場合はDNN2がもっとも性能がよかったため、データのサイズに応じて手法を使い分けると良い。</p>
@@ -1557,17 +1557,17 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Online/Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/199" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Contextual Dueling Bandits, Dudik+, JMLR'15</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/199" target="_blank" rel="noopener noreferrer" class="title-link">Contextual Dueling Bandits, Dudik+, JMLR'15</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/186" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Machine Learning for Information Retrieval, Hofmann, ESSIR'15</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/186" target="_blank" rel="noopener noreferrer" class="title-link">Machine Learning for Information Retrieval, Hofmann, ESSIR'15</a>
 <a class="button" href="articles/RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="articles/Contents-based.html" target="_blank" rel="noopener noreferrer">#Contents-based</a>
 <a class="button" href="articles/CIKM.html" target="_blank" rel="noopener noreferrer">#CIKM</a>
 <span class="issue_date">Issue Date: 2021-06-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/364" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Learning Deep Structured Semantic Models  for Web Search using Clickthrough Data, Huang+, CIKM'13</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/364" target="_blank" rel="noopener noreferrer" class="title-link">Learning Deep Structured Semantic Models  for Web Search using Clickthrough Data, Huang+, CIKM'13</a>
 <span class="snippet"><span>Comment</span><p>日本語解説: 
 
 
@@ -1580,46 +1580,46 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Interleaved.html" target="_blank" rel="noopener noreferrer">#Interleaved</a>
 <a class="button" href="articles/WSDM.html" target="_blank" rel="noopener noreferrer">#WSDM</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/198" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/198" target="_blank" rel="noopener noreferrer" class="title-link">Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13</a>
 <span class="snippet"><span>Comment</span><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197" target="_blank" rel="noopener noreferrer">Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09</a>
  DBGDを拡張した手法を提案している。<br><br>アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。<br><br>Interleavemethodについても。</p></span><br><br>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/OnlineEvaluation.html" target="_blank" rel="noopener noreferrer">#OnlineEvaluation</a>
 <a class="button" href="articles/SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Practical Online Retrieval Evaluation, SIGIR'11, Tutorial</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/184" target="_blank" rel="noopener noreferrer" class="title-link">Practical Online Retrieval Evaluation, SIGIR'11, Tutorial</a>
 <a class="button" href="articles/Comments.html" target="_blank" rel="noopener noreferrer">#Comments</a>
 <span class="issue_date">Issue Date: 2018-01-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/228" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Ranking Comments on Social Web, Hsu+, CSE'09</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/228" target="_blank" rel="noopener noreferrer" class="title-link">Ranking Comments on Social Web, Hsu+, CSE'09</a>
 <span class="snippet"><span>Comment</span><p>Learning to Rankによってコメントをランキングする手法を提案。<br><br>これにより、低品質なコメントははじき、良質なコメントをすくいとることができる。<br><br>素性としては、主にユーザに基づく指標（ユーザが作成した記事の数、プロフィールが何度閲覧されたかなど）と、コメントのContentに基づく指標（コメントの長さやコメントと記事の類似度など）が用いられている。<br><br><br><br>User-basedなfeatureとcontent-basedなfeatureの両者を組み合わせた場合に最も良い性能。<br><br>個々の素性ごとにみると、User-basedなfeatureではuser comment history（コメントをしているユーザが過去にどれだけratingされているか、やcommentに対してどれだけreplyをもらっているか）、content-basedなfeatureではcomment-article（commentと本文のoverlap, commentと本文のpolarityの差）が最も性能に寄与。</p></span><br><br>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Online/Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
 <a class="button" href="articles/ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197" target="_blank" rel="noopener noreferrer" class="title-link">Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09</a>
 <span class="snippet"><span>Comment</span><p>online learning to rankに関する論文でよくreferされる論文<br><br><br><br>提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.<br><br><br><br>onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。<br><br>duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法<br><br><br><br>duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。<br><br><br><br>onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。<br><br><br><br>offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。<br><br>そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。</p></span><br><br>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Interleaved.html" target="_blank" rel="noopener noreferrer">#Interleaved</a>
 <a class="button" href="articles/CIKM.html" target="_blank" rel="noopener noreferrer">#CIKM</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/203" target="_blank" rel="noopener noreferrer" class="title-link">&gt;How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM'08</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/203" target="_blank" rel="noopener noreferrer" class="title-link">How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM'08</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Online/Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
 <a class="button" href="articles/WSDM.html" target="_blank" rel="noopener noreferrer">#WSDM</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/202" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Fast Learning of Document Ranking Functions with the Committee Perceptrion, Elsas+, WSDM'08</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/202" target="_blank" rel="noopener noreferrer" class="title-link">Fast Learning of Document Ranking Functions with the Committee Perceptrion, Elsas+, WSDM'08</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML'2008</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194" target="_blank" rel="noopener noreferrer" class="title-link">Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML'2008</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
 <a class="button" href="articles/ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML'2007</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193" target="_blank" rel="noopener noreferrer" class="title-link">Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML'2007</a>
 <span class="snippet"><span>Comment</span><p>解説スライド：
 
 
@@ -1639,13 +1639,13 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/StructuredLearning.html" target="_blank" rel="noopener noreferrer">#StructuredLearning</a>
 <a class="button" href="articles/SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/123" target="_blank" rel="noopener noreferrer" class="title-link">&gt;A support vector method for Optimizing Average Precision, Yue+, SIGIR'07</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/123" target="_blank" rel="noopener noreferrer" class="title-link">A support vector method for Optimizing Average Precision, Yue+, SIGIR'07</a>
 <span class="snippet"><span>Comment</span><p>SVM-MAPの論文<br><br><br><br>構造化SVMを用いて、MAPを直接最適化する。</p></span><br><br>
 <a class="button" href="articles/Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
 <a class="button" href="articles/Comments.html" target="_blank" rel="noopener noreferrer">#Comments</a>
 <a class="button" href="articles/WWW.html" target="_blank" rel="noopener noreferrer">#WWW</a>
 <span class="issue_date">Issue Date: 2018-01-15</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/230" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Leave a Reply: An Analysis of Weblog Comments, Mishne+, WWW'06</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/230" target="_blank" rel="noopener noreferrer" class="title-link">Leave a Reply: An Analysis of Weblog Comments, Mishne+, WWW'06</a>
 <span class="snippet"><span>Comment</span><p>従来のWeblog研究では、コメントの情報が無視されていたが、コメントも重要な情報を含んでいると考えられる。<br><br>この研究では、以下のことが言及されている。<br><br><br><br>* （収集したデータの）ブログにコメントが付与されている割合やコメントの長さ、ポストに対するコメントの平均などの統計量<br><br>* ブログ検索におけるコメント活用の有効性（一部のクエリでRecallの向上に寄与、Precisionは変化なし）。記事単体を用いるのとは異なる観点からのランキングが作れる。<br><br>* コメント数とPV数、incoming link数の関係性など<br><br>* コメント数とランキングの関係性など<br><br>* コメントにおける議論の同定など</p>
 <p>相当流し読みなので、読み違えているところや、重要な箇所の読み落とし等あるかもしれない。</p></span><br><br>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
@@ -1653,7 +1653,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Learning to Rank using Gradient Descent （RankNet）, Burges+, ICML'2005</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192" target="_blank" rel="noopener noreferrer" class="title-link">Learning to Rank using Gradient Descent （RankNet）, Burges+, ICML'2005</a>
 <span class="snippet"><span>Comment</span><p>pair-wiseのlearning2rankで代表的なRankNet論文<br><br>解説ブログ：
 
 
@@ -1666,7 +1666,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/190" target="_blank" rel="noopener noreferrer" class="title-link">&gt;PRanking with Ranking, Crammer+, NIPS'01</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/190" target="_blank" rel="noopener noreferrer" class="title-link">PRanking with Ranking, Crammer+, NIPS'01</a>
 <span class="snippet"><span>Comment</span><p>Point-WiseなLearning2Rankの有名手法</p></span><br><br>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1674,7 +1674,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/243" target="_blank" rel="noopener noreferrer" class="title-link">&gt;The Use of MMR, Diversity-Based Reranking for Reordering Documents and Producing Summaries, Carbonell+, SIGIR'98</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/243" target="_blank" rel="noopener noreferrer" class="title-link">The Use of MMR, Diversity-Based Reranking for Reordering Documents and Producing Summaries, Carbonell+, SIGIR'98</a>
 <span class="snippet"><span>Comment</span><p>Maximal Marginal Relevance (MMR) 論文。<br><br>検索エンジンや文書要約において、文書/文のランキングを生成する際に、既に選んだ文書と類似度が低く、かつqueryとrelevantな文書をgreedyに選択していく手法を提案。<br><br>ILPによる定式化が提案される以前のMulti Document Summarization (MDS) 研究において、冗長性の排除を行う際には典型的な手法。</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1682,7 +1682,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
 <span class="issue_date">Issue Date: 2025-01-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1661" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Advanced RAG Techniques: Elevating Your Retrieval-Augmented Generation Systems, NirDiamant, 2025.01</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1661" target="_blank" rel="noopener noreferrer" class="title-link">Advanced RAG Techniques: Elevating Your Retrieval-Augmented Generation Systems, NirDiamant, 2025.01</a>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
 
@@ -1696,13 +1696,13 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2024-12-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1562" target="_blank" rel="noopener noreferrer" class="title-link">&gt;BM42: New Baseline for Hybrid Search, Qdrant, 2024.07</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1562" target="_blank" rel="noopener noreferrer" class="title-link">BM42: New Baseline for Hybrid Search, Qdrant, 2024.07</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-11-07</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1488" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RAGの改善方法に関する情報のまとめ（再掲）, GENZITSU, 2023.10</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1488" target="_blank" rel="noopener noreferrer" class="title-link">RAGの改善方法に関する情報のまとめ（再掲）, GENZITSU, 2023.10</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1710,14 +1710,14 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2024-09-29</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1430" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RAGの実装戦略まとめ, Jin Watanabe, 2024.03</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1430" target="_blank" rel="noopener noreferrer" class="title-link">RAGの実装戦略まとめ, Jin Watanabe, 2024.03</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2024-09-08</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1383" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Late Chunking: Balancing Precision and Cost in Long Context Retrieval, Pierse+, 2024.09</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1383" target="_blank" rel="noopener noreferrer" class="title-link">Late Chunking: Balancing Precision and Cost in Long Context Retrieval, Pierse+, 2024.09</a>
 <span class="snippet"><span>Comment</span><p>chunkingしてからembeddingを取得するより、全体のドキュメントに対してcontextualなtoken embeddingを取得し、その後chunkingをしてpoolingしてsingle vectorにする方が、文書の文脈情報がembedding内で保持されやすいので、precisionが上がりますよ、という話<br><br>スクショは記事中より引用<br><img src="https://github.com/user-attachments/assets/5fc20551-62f3-4965-8e3d-18540806fb34" alt="image" loading="lazy"></p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1726,7 +1726,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2024-08-09</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1348" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RAG入門: 精度改善のための手法28選, 2024.08</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1348" target="_blank" rel="noopener noreferrer" class="title-link">RAG入門: 精度改善のための手法28選, 2024.08</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
@@ -1735,7 +1735,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2024-03-05</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RAG-Research-Insights</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1249" target="_blank" rel="noopener noreferrer" class="title-link">RAG-Research-Insights</a>
 <span class="snippet"><span>Comment</span><p>RAGに関する研究が直近のものまでよくまとめられている</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1743,20 +1743,20 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2024-02-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233" target="_blank" rel="noopener noreferrer" class="title-link">&gt;awesome-generative-information-retrieval</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1233" target="_blank" rel="noopener noreferrer" class="title-link">awesome-generative-information-retrieval</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-02-11</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229" target="_blank" rel="noopener noreferrer" class="title-link">&gt;RAGの性能を改善するための8つの戦略</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1229" target="_blank" rel="noopener noreferrer" class="title-link">RAGの性能を改善するための8つの戦略</a>
 <span class="snippet"><span>Comment</span><p>めちゃめちゃ詳細にRAG性能向上の手法がreference付きでまとまっている。すごい。</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2023-12-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Structured Hierarchical Retrieval, llama-index</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1196" target="_blank" rel="noopener noreferrer" class="title-link">Structured Hierarchical Retrieval, llama-index</a>
 <span class="snippet"><span>Comment</span><p>元ツイート: 
 
 
@@ -1769,14 +1769,14 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2023-12-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1195" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Build a search engine, not a vector DB</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1195" target="_blank" rel="noopener noreferrer" class="title-link">Build a search engine, not a vector DB</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="articles/Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2023-12-04</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173" target="_blank" rel="noopener noreferrer" class="title-link">&gt;kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1173" target="_blank" rel="noopener noreferrer" class="title-link">kaggle LLM コンペ 上位解法を自分なりにまとめてみた話</a>
 <span class="snippet"><span>Comment</span><p>実践的な内容（チャンク生成時の工夫、クエリ生成時の工夫等）が網羅的にまとまっており非常に有用</p>
 <p>個人的に、コンペ主催者側から提供されたデータが少なく、上位のほとんどのチームがChatGPT（3.5, 4）を用いて、QAデータを生成していた、というのが興味深かった。プロンプトはたとえば下記:<br><br>[（5th-place-solution）](
 
@@ -1791,7 +1791,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="articles/RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2023-11-06</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1118" target="_blank" rel="noopener noreferrer" class="title-link">Retrieval-based LM （RAG System）ざっくり理解する, 2023</a>
 <span class="snippet"><span>Comment</span><p>（以下スクショはスライドより引用）<br><br><br><br>次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image" loading="lazy"><br><br><br><br>以下ざっくり私の中の認識として<br><br>- 計画<br><br>    - クエリ拡張<br><br>        - クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔はキーワードしか与えられないときに情報を増やすから”拡張”という文言が用いられているが現在はこれに限らないと思う）する技術<br><br>    - 分解・抽象化<br><br>        - 複雑なクエリから分解することでマルチホップの質問をサブ質問に分解（今ならLLMを利用すれば比較的簡単にできる）したり、あるいは抽象化したクエリ（Step-back Promptnig <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1076" target="_blank" rel="noopener noreferrer">Take a Step Back: Evoking Reasoning via Abstraction in Large Language
   Models, Huaixiu Steven Zheng+, N/A, arXiv'23</a>
  ）を活用することで検索を改善する技術<br><br>    - 検索対象選定<br><br>        - 検索する対象そのものを選択し、検索対象をフィルタリングする技術<br><br>        - 資料中ではLLMを用いたフィルタリングやClassifierを用いたフィルタリングが紹介されているが、メタデータで絞り込むなどの単純な方法でも実現可能だと思われる（メタデータで絞り込む、はClassifierでのフィルタリングとリンクするかもしれないが）<br><br>    - 思考・行動<br><br>        - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/518" target="_blank" rel="noopener noreferrer">REACT : SYNERGIZING REASONING AND ACTING IN LANGUAGE MODELS, Yao+, Princeton University and Google brain, ICLR'23</a>
@@ -1801,19 +1801,19 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="articles/Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Measuring the impact of online personalisation: Past, present and future</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576" target="_blank" rel="noopener noreferrer" class="title-link">Measuring the impact of online personalisation: Past, present and future</a>
 <span class="snippet"><span>Comment</span><p>Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurvey<br><br><br><br>ML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されてきた。一方HCIの分野ではaccuracyに特化しすぎるとUXの観点で不十分であることが指摘されており、たとえば既知のアイテムを推薦してしまったり、似たようなアイテムばかりが選択されユーザにとって有用ではなくなる、といったことが指摘されている。このため、ML, RecSys系の評価ではdiversity, novelty, serendipity, popularity, freshness等の新たなmetricが評価されるように変化してきた。また、accuracyの工場がUXの向上に必ずしもつながらないことが多くの研究で示されている。<br><br><br><br>一方、HCIやInformation Systems, Personalized IRはuser centricな実験が主流であり、personalizationは<br><br>- 情報アクセスに対するコストの最小化<br><br>- UXの改善<br><br>- コンピュータデバイスをより効率的に利用できるようにする<br><br>という3点を実現するための手段として捉えられている。HCIの分野では、personalizationの認知的な側面についても研究されてきた。<br><br>たとえば、ユーザは自己言及的なメッセージやrelevantなコンテンツが提示される場合、両方の状況においてpersonalizationされたと認知し、後から思い出せるのはrelevantなコンテンツに関することだという研究成果が出ている。このことから、自己言及的なメッセージングでユーザをstimulusすることも大事だが、relevantなコンテンツをきちんと提示することが重要であることが示されている。また、personalizationされたとユーザが認知するのは、必ずしもpersonalizationのプロセスに依存するのではなく、結局のところユーザが期待したメッセージを受け取ったか否かに帰結することも示されている。<br><br>user-centricな評価とオフライン評価の間にも不一致が見つかっている。たとえば<br><br>- オフラインで高い精度を持つアルゴリズムはニッチな推薦を隠している<br><br>  - i.e. popularityが高くrelevantな推薦した方がシステムの精度としては高く出るため<br><br>- オフライン vs. オンラインの比較で、ユーザがアルゴリズムの精度に対して異なる順位付けをする<br><br>といったことが知られている。<br><br><br><br>そのほかにも、企業ではofflineテスト -&gt; betaテスターによるexploratoryなテスト -&gt; A/Bテストといった流れになることが多く、Cognitive Scienceの分野の評価方法等にも触れている。</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/572" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Preface to Special Issue on User Modeling for Web Information Retrieval, Brusilovsky+, User Modeling and User-Adapted Interaction , 2004</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/572" target="_blank" rel="noopener noreferrer" class="title-link">Preface to Special Issue on User Modeling for Web Information Retrieval, Brusilovsky+, User Modeling and User-Adapted Interaction , 2004</a>
 <span class="snippet"><span>Comment</span><p>Personalized Information Retrievalの先駆け的研究<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566" target="_blank" rel="noopener noreferrer">Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
  と同時期</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="articles/Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/567" target="_blank" rel="noopener noreferrer" class="title-link">&gt;User Profiles for Personalized Information Access, Gauch+, The adaptive Web: methods and strategies of Web personalization, 2007</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/567" target="_blank" rel="noopener noreferrer" class="title-link">User Profiles for Personalized Information Access, Gauch+, The adaptive Web: methods and strategies of Web personalization, 2007</a>
 <span class="snippet"><span>Comment</span><p>IR分野におけるuser profileの構築方法についてまとめられたsurvey<br><br>- 加重キーワード<br><br>- セマンティックネットワーク<br><br>- 加重コンセプト<br><br>について記述されている。また、プロファイルの構築方法についても詳述されている。</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/CollaborativeFiltering.html" target="_blank" rel="noopener noreferrer">#CollaborativeFiltering</a>
@@ -1822,7 +1822,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/WebSearch.html" target="_blank" rel="noopener noreferrer">#WebSearch</a>
 <a class="button" href="articles/Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566" target="_blank" rel="noopener noreferrer" class="title-link">Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
 <span class="snippet"><span>Comment</span><p>検索結果のpersonalizationを初めてuser profileを用いて実現した研究<br><br>user profileはlong/short term preferenceによって構成される。<br><br>- long term: さまざまなソースから取得される<br><br>- short term: 当日のセッションの中だけから収集される<br><br><br><br>① browsing historyの活用<br><br>- browsing historyのTFから求め Profile = P_{longterm} + P_{shortterm}とする<br><br><br><br>② Collaborative Filtering (CF) の活用<br><br>- user-item matrixではなく、user-term matrixを利用<br><br>- userの未知のterm-weightをCFで予測する<br><br>  - =&gt; missing valueのterm weightが予測できるのでprofileが充実する<br><br><br><br>実験結果<br><br>- 検証結果（googleの検索結果よりも提案手法の方が性能が良い）<br><br>- 検索結果のprecision向上にlong/short term preferenceの両方が寄与<br><br>- longterm preferenceの貢献の方が大きいが、short termも必要（interpolation weight 0.6 vs. 0.4）<br><br>- short termにおいては、その日の全てのbrowsing historyより、現在のセッションのterm weightをより考慮すべき（interpolation weight 0.2 vs. 0.8）<br><br></p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
@@ -1830,19 +1830,19 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="articles/Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/565" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Awesome Vector Search Engine</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/565" target="_blank" rel="noopener noreferrer" class="title-link">Awesome Vector Search Engine</a>
 <span class="snippet"><span>Comment</span><p>ベクトルの類似度を測るサービスやライブラリ等がまとまったリポジトリ</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <span class="issue_date">Issue Date: 2023-04-26</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Contrirver</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer" class="title-link">Contrirver</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="articles/LLMAgent.html" target="_blank" rel="noopener noreferrer">#LLMAgent</a>
 <span class="issue_date">Issue Date: 2023-04-22</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/521" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Llamaindex</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/521" target="_blank" rel="noopener noreferrer" class="title-link">Llamaindex</a>
 <span class="snippet"><span>Comment</span><p>- LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた<br><br>  - 
 
 
@@ -1857,7 +1857,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="articles/LLMAgent.html" target="_blank" rel="noopener noreferrer">#LLMAgent</a>
 <span class="issue_date">Issue Date: 2023-04-21</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520" target="_blank" rel="noopener noreferrer" class="title-link">&gt;LangChain</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/520" target="_blank" rel="noopener noreferrer" class="title-link">LangChain</a>
 <span class="snippet"><span>Comment</span><p>- LangChain の Googleカスタム検索 連携を試す<br><br>  - 
 
 
@@ -1877,93 +1877,93 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/RelevanceFeedback.html" target="_blank" rel="noopener noreferrer">#RelevanceFeedback</a>
 <a class="button" href="articles/ImplicitFeedback.html" target="_blank" rel="noopener noreferrer">#ImplicitFeedback</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/205" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Evaluating implicit measures to improve web search, Fox+, ACM Transactions on Imformation Systems, 2005</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/205" target="_blank" rel="noopener noreferrer" class="title-link">Evaluating implicit measures to improve web search, Fox+, ACM Transactions on Imformation Systems, 2005</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="articles/RelevanceFeedback.html" target="_blank" rel="noopener noreferrer">#RelevanceFeedback</a>
 <a class="button" href="articles/ExplicitFeedback.html" target="_blank" rel="noopener noreferrer">#ExplicitFeedback</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/204" target="_blank" rel="noopener noreferrer" class="title-link">&gt;A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/204" target="_blank" rel="noopener noreferrer" class="title-link">A survey on the use of relevance feedback for information access systems., Ruthven+, The Knowledge Engineering Review, 2003</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Online/Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Lerot: Online Learning to rank Framework</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201" target="_blank" rel="noopener noreferrer" class="title-link">Lerot: Online Learning to rank Framework</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Online/Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196" target="_blank" rel="noopener noreferrer" class="title-link">Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195" target="_blank" rel="noopener noreferrer" class="title-link">&gt;A General Approximation Framework for Direct Optimization of Information Retrieval Measures （ApproxAP, ApproxNDCG）, Qin+, Information Retrieval, 2010</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195" target="_blank" rel="noopener noreferrer" class="title-link">A General Approximation Framework for Direct Optimization of Information Retrieval Measures （ApproxAP, ApproxNDCG）, Qin+, Information Retrieval, 2010</a>
 <span class="snippet"><span>Comment</span><p>実装してみたが、バグありそう感・・・<br><br>https://github.com/AkihikoWatanabe/ApproxAP</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
 <a class="button" href="articles/NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/191" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Large Scale Learning to Rank, Sculley+, NIPS 2009</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/191" target="_blank" rel="noopener noreferrer" class="title-link">Large Scale Learning to Rank, Sculley+, NIPS 2009</a>
 <span class="snippet"><span>Comment</span><p>sofia-mlの実装内容について記述されている論文<br><br><br><br>よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。<br><br>というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。<br><br>実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。<br><br><br><br>まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。<br><br>passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。<br><br>(ROMMAは調べないとわからん)<br><br><br><br>pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。<br><br><br><br>実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。<br><br></p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/189" target="_blank" rel="noopener noreferrer" class="title-link">&gt;From RankNet to LambdaRank to LambdaMART: An Overview, Burges, Microsoft Research Technical Report, 2010</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/189" target="_blank" rel="noopener noreferrer" class="title-link">From RankNet to LambdaRank to LambdaMART: An Overview, Burges, Microsoft Research Technical Report, 2010</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/188" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Confidence Weightedでランク学習を実装してみた, 徳永拓之, 第4回 自然言語処理勉強会@東京</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/188" target="_blank" rel="noopener noreferrer" class="title-link">Confidence Weightedでランク学習を実装してみた, 徳永拓之, 第4回 自然言語処理勉強会@東京</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <a class="button" href="articles/Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/187" target="_blank" rel="noopener noreferrer" class="title-link">&gt;ランキング学習ことはじめ, DSIRNLP#1, 2011</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/187" target="_blank" rel="noopener noreferrer" class="title-link">ランキング学習ことはじめ, DSIRNLP#1, 2011</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="articles/LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Learning to Rank for Information Retriefval, Liu+, 2009</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185" target="_blank" rel="noopener noreferrer" class="title-link">Learning to Rank for Information Retriefval, Liu+, 2009</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="articles/StructuredLearning.html" target="_blank" rel="noopener noreferrer">#StructuredLearning</a>
 <a class="button" href="articles/Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/124" target="_blank" rel="noopener noreferrer" class="title-link">&gt;SVM-MAP</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/124" target="_blank" rel="noopener noreferrer" class="title-link">SVM-MAP</a>
 <span class="snippet"><span>Comment</span><p>構造化SVMを用いて、MAPを直接最適化する手法</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/RelevanceJudgment.html" target="_blank" rel="noopener noreferrer">#RelevanceJudgment</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/51" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Relevance judgment: What do information users consider beyond topicality? Xu, Chen, 2007</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/51" target="_blank" rel="noopener noreferrer" class="title-link">Relevance judgment: What do information users consider beyond topicality? Xu, Chen, 2007</a>
 <span class="snippet"><span>Comment</span><p>・relevanceとsignificantに関連するcriteriaは，topicalityとnovelty<br><br>・reliabilityおよびunderstandabilityはsmaller degreeでsignificant, scopeはsignificantでない</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/RelevanceJudgment.html" target="_blank" rel="noopener noreferrer">#RelevanceJudgment</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/50" target="_blank" rel="noopener noreferrer" class="title-link">&gt;A cognitive model of document use during a research project, Wang and Soergel, 1998</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/50" target="_blank" rel="noopener noreferrer" class="title-link">A cognitive model of document use during a research project, Wang and Soergel, 1998</a>
 <span class="snippet"><span>Comment</span><p>topicality, orientation, quality, novelty（の順番で）がrelevantなdocumentを選択したときのcriteriaとして採用されていたことを報告</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/20" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Personalizing Search via Automated Analysis of Interests and Activities, SIGIR, [Teevan+, 2005], 2005.08</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/20" target="_blank" rel="noopener noreferrer" class="title-link">Personalizing Search via Automated Analysis of Interests and Activities, SIGIR, [Teevan+, 2005], 2005.08</a>
 <span class="snippet"><span>Comment</span><p>・userに関するデータがrichなほうが、Personalizationは改善する。<br><br>・queries, visited web pages, emails, calendar items, stored desktop 　　　<br><br>　documents、全てのsetを用いた場合が最も良かった<br><br> （次点としてqueriesのみを用いたモデルが良かった）</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/13" target="_blank" rel="noopener noreferrer" class="title-link">&gt;Personalised Information retrieval: survey and classification, [Rami+, 2013], User Modeling and User-Adapted Interaction, 2012.05</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/13" target="_blank" rel="noopener noreferrer" class="title-link">Personalised Information retrieval: survey and classification, [Rami+, 2013], User Modeling and User-Adapted Interaction, 2012.05</a>
 <span class="snippet"><span>Comment</span><p>（以下は管理人が当時作成したスライドでのメモのスクショ）<br><br><img src="https://user-images.githubusercontent.com/12249301/34402162-5433e4e4-ebe3-11e7-8bf3-fc322ace70d8.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402168-5babbe0e-ebe3-11e7-9a06-9bc9bc04e6ad.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402177-64b64064-ebe3-11e7-856e-062bbe8e3287.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402179-69af844a-ebe3-11e7-963b-243c2984dc85.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402182-6fbd20fe-ebe3-11e7-8b6b-89f6b690cb68.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402201-819b77f8-ebe3-11e7-9301-59d2d0b7f324.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402205-8977e9ca-ebe3-11e7-902f-e2d7e43782ec.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402210-90a28084-ebe3-11e7-9ab9-014d7251d51b.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402215-96d7704a-ebe3-11e7-89da-ce25ed535ec8.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402219-a0e3c9ee-ebe3-11e7-8033-80327b4ea9f4.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402224-a6ece758-ebe3-11e7-87f7-620ad25f77b8.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34402233-ada143f0-ebe3-11e7-81b6-3938afcbe43a.png" alt="image" loading="lazy"><br><br></p>
 <p>完全に途中で力尽きている感</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/WWW.html" target="_blank" rel="noopener noreferrer">#WWW</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/11" target="_blank" rel="noopener noreferrer" class="title-link">&gt;[Paper Note] Modeling Anchor Text and Classifying Queries to Enhance Web Document Retrieval, WWW’08, [Fujii, 2008], 2008.04</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/11" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Modeling Anchor Text and Classifying Queries to Enhance Web Document Retrieval, WWW’08, [Fujii, 2008], 2008.04</a>
 <span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/34401828-1259be4c-ebe1-11e7-99c4-33508b405bf1.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34401834-1f62809c-ebe1-11e7-85b8-55e622dc1fe7.png" alt="image" loading="lazy"><br><br></p></span><br><br>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
@@ -2033,32 +2033,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/MinimalCode.html" title="MinimalCodeに関する論文・技術記事メモの一覧">
-            MinimalCodeに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SimulST(SimultaneousSpeechTranslation).html" title="SimulST(SimultaneousSpeechTranslation)に関する論文・技術記事メモの一覧">
+            SimulST(SimultaneousSpeechTranslation)に関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TrainedMetrics.html" title="TrainedMetricsに関する論文・技術記事メモの一覧">
-            TrainedMetricsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Finetuning.html" title="Finetuningに関する論文・技術記事メモの一覧">
+            Finetuningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/IJCAI.html" title="IJCAIに関する論文・技術記事メモの一覧">
-            IJCAIに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/read-later.html" title="read-laterに関する論文・技術記事メモの一覧">
+            read-laterに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Personality.html" title="Personalityに関する論文・技術記事メモの一覧">
-            Personalityに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DocumentSummarization.html" title="DocumentSummarizationに関する論文・技術記事メモの一覧">
+            DocumentSummarizationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
