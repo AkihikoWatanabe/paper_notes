@@ -363,7 +363,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             if issue["body"] != None:
                 snippet_text, comment_text = get_snippets(issue)
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
-            _html_content.append(f'<a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="title-link">>{title}</a>')
+            _html_content.append(f'<a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="title-link">{title}</a>')
             if snippet_text != None:
                 _html_content.append(f'<span class="snippet"><span>Summary</span>{snippet_text}</span>')
             if comment_text != None:
