@@ -184,24 +184,36 @@ def change_title_and_first_comment(issue_data):
 
 
 def translate_and_summarize(issue_data):
+    def _gen_new_comment(org_text: str):
+        org_text = org_text.replace("\n", "")
+        # translation
+        new_comment = f'# Translation (by {MODEL})\n'
+        translated_text = translate(org_text)
+        new_comment += f'- {translated_text}\n'
+        # summarization
+        new_comment += f'# Summary (by {MODEL})\n'
+        summary_text = summarize(translated_text)
+        new_comment += f'- {summary_text}'
+        return new_comment
+
     import re 
     issue_url = issue_data['url']
     github = Github(github_token)
     issue = github.get_repo(issue_url.split("/repos/")[1].split("/issues/")[0]).get_issue(number=int(issue_url.split('/')[-1]))
     p = re.compile('__translate:(.*)', re.DOTALL)
+    
+    m = p.search(issue.body)
+    if m != None:
+        org_text = m.group(1)
+        new_comment = _gen_new_comment(org_text=org_text)
+        issue.edit(body=new_comment)
+        return
+            
     for comment in issue.get_comments():
         m = p.search(comment.body)
         if m != None:
             org_text = m.group(1)
-            org_text = org_text.replace("\n", "")
-            # translation
-            new_comment = f'# Translation (by {MODEL})\n'
-            translated_text = translate(org_text)
-            new_comment += f'- {translated_text}\n'
-            # summarization
-            new_comment += f'# Summary (by {MODEL})\n'
-            summary_text = summarize(translated_text)
-            new_comment += f'- {summary_text}'   
+            new_comment = _gen_new_comment(org_text=org_text)
             comment.edit(body='\n'.join([org_text, new_comment]))
 
 
