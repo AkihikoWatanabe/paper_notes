@@ -335,7 +335,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         #_html_content += f'[{issue["title"]}]({issue["url"]})\n\n' 
         _html_content.append(f'<a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="title-link">{title}</a>')
         if snippet_text != None:
-            _html_content.append(f'<span class="snippet"><span>Summary</span>{snippet_text}</span>')
+            _html_content.append(f'<span class="snippet"><span>GPT Summary</span>{snippet_text}</span>')
         if comment_text != None:
             _html_content.append(f'<span class="snippet"><span>Comment</span>{comment_text}</span><br><br>')
         #if len(image_url_list) > 0:
@@ -365,7 +365,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
             #_html_content += f'[{issue["title"]}]({issue["url"]})\n' 
             _html_content.append(f'<a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="title-link">{title}</a>')
             if snippet_text != None:
-                _html_content.append(f'<span class="snippet"><span>Summary</span>{snippet_text}</span>')
+                _html_content.append(f'<span class="snippet"><span>GPT Summary</span>{snippet_text}</span>')
             if comment_text != None:
                 #_html_content += f'<span class="snippet"><span>Comment</span>{comment_text} ...</span>\n'
                 #_html_content.append(f'\n\n<span class="snippet">\n\n<span>\n\nComment\n\n</span>\n\n{comment_text}\n\n</span>\n\n')
@@ -723,3 +723,4 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
