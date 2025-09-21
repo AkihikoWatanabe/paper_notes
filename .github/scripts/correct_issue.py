@@ -96,7 +96,7 @@ def change_title(entry, issue_number):
     from datetime import datetime
     dt = datetime.strptime(entry.published, "%Y-%m-%dT%H:%M:%S%z")
     year = str(dt.year)
-    month = f"{dt.month:02d}
+    month = f"{dt.month:02d}"
     author = entry.authors[0]
     if len(entry.authors) > 1:
         name = author['name']
