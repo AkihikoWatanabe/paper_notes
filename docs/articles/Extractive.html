@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Extractive.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-20T10:06:55+00:00">
+<meta property="article:published_time" content="2025-09-21T00:49:30+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Extractiveに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-20T10:06:55+00:00","datePublished":"2025-09-20T10:06:55+00:00","description":"Extractive #DocumentSummarization #NaturalLanguageGeneration #NLP #Abstractive","headline":"Extractiveに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Extractive.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Extractive.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-21T00:49:30+00:00","datePublished":"2025-09-21T00:49:30+00:00","description":"Extractive #DocumentSummarization #NaturalLanguageGeneration #NLP #Abstractive","headline":"Extractiveに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Extractive.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Extractive.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-20T10:06:55+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 20, 2025
+    <time class="dt-published" datetime="2025-09-21T00:49:30+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 21, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -809,7 +809,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 39 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 40 mins</span>
   </div></header>
 </div>
     </div>
@@ -1055,7 +1055,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/GraphConvolutionalNetwork.html" target="_blank" rel="noopener noreferrer">#GraphConvolutionalNetwork</a>
 <a class="button" href="articles/CoNLL.html" target="_blank" rel="noopener noreferrer">#CoNLL</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/130" target="_blank" rel="noopener noreferrer" class="title-link">Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/130" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17</a>
 <span class="snippet"><span>Comment</span><p>Graph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。<br><br><br><br>GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。<br><br><br><br>モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。<br><br><br><br>要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。<br><br><br><br>DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。<br><br><br><br>[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI'15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI'17<br><br><br><br>[所感] <br><br>・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 <br><br>・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） <br><br>・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。）<br><br> ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが）</p></span><br><br>
 <a class="button" href="articles/Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
@@ -1065,7 +1065,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/PRICAI.html" target="_blank" rel="noopener noreferrer">#PRICAI</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/142" target="_blank" rel="noopener noreferrer" class="title-link">Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI'16</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/142" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Learning from Numerous Untailored Summaries, Kikuchi+, PRICAI'16</a>
 <span class="snippet"><span>Comment</span><p>New York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。<br><br>NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。<br><br><br><br>具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案<br><br>また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案<br><br><br><br>モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。<br><br>NYTACのデータを活用する手法として、以下の5つの手法を提案している。<br><br><br><br>```<br><br>1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない<br><br>2. Mixture: targetとNYTACの事例をマージして一緒に学習する<br><br>3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定<br><br>4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる<br><br>5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする<br><br>``` <br><br><br><br>また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。<br><br>そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。<br><br><br><br>DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。<br><br><br><br>どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。<br><br>DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。<br><br>しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。<br><br>RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。</p></span><br><br>
 <a class="button" href="articles/Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
@@ -1075,7 +1075,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/131" target="_blank" rel="noopener noreferrer" class="title-link">Neural Summarization by Extracting Sentences and Words, Cheng+, ACL'16</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/131" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Neural Summarization by Extracting Sentences and Words, Cheng+, ACL'16</a>
 <span class="snippet"><span>Comment</span><p>ExtractiveかつNeuralな単一文書要約ならベースラインとして使用した方がよいかも</p></span><br><br>
 <a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
 <a class="button" href="articles/Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
@@ -1086,7 +1086,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/144" target="_blank" rel="noopener noreferrer" class="title-link">CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR'14</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/144" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR'14</a>
 <span class="snippet"><span>Comment</span><p>要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった）<br><br><br><br>```<br><br>"However, it seems that Obama will not use the platform to relaunch his stalled drive for Israeli-Palestinian peace"<br><br>```<br><br>こういう文は、"It seems"とあるように、情報の確実性が低いので要約には入れたくないという気持ち。<br><br><br><br>FactBankのニュースコーパスから1000 sentenceを抽出し、5-scaleでsentenceの確実性をラベルづけ。<br><br>このデータを用いてSVRを学習し、sentenceの確実性をoutputする分類器を構築<br><br>affinity-propagationベース（textrank, lexrankのような手法）手法のaffinityの計算（edge間の重みのこと。普通はsentence同士の類似度とかが使われる）を行う際に、情報の確実性のスコアを導入することで確実性を考慮した要約を生成<br><br><br><br>DUC2007のMDSデータセットで、affinity計算の際に確実性を導入する部分をablationしたモデル（GRSUM）と比較したところ、CTSUMのROUGEスコアが向上した。<br><br>また、自動・人手評価により、生成された要約に含まれる情報の確実性を評価したところ、GRSUMをoutperformした</p>
 <p>解説スライド：
 
@@ -1104,7 +1104,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Abstractive.html" target="_blank" rel="noopener noreferrer">#Abstractive</a>
 <a class="button" href="articles/COLING.html" target="_blank" rel="noopener noreferrer">#COLING</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/143" target="_blank" rel="noopener noreferrer" class="title-link">Learning to Generate Coherent Sumamry with Discriminative Hidden Semi-Markov Model, Nishikawa+, COLING'14</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/143" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Learning to Generate Coherent Sumamry with Discriminative Hidden Semi-Markov Model, Nishikawa+, COLING'14</a>
 <span class="snippet"><span>Comment</span><p>Hidden-semi-markovモデルを用いた単一文書要約手法を提案。<br><br><br><br>通常のHMMでは一つの隠れ状態に一つのunit（要約の文脈だと文？）が対応するが、hidden-semi-markov(HSMM)モデルでは複数のunitを対応づけることが可能。<br><br>隠れ状態に対応するunitを文だと考えると、ある文の複数の亜種を考慮できるようになるため、ナップサック制約を満たしつつ最適な文の亜種を選択するといったことが可能となる。<br><br>とかまあ色々難しいことが前半の節に書いてある気がするが、3.3節を見るのがわかりやすいかもしれない。<br><br><br><br>定式化を見ると、基本的なナップサック問題による要約の定式化に、Coherenceを表すtermと文の変種を考慮するような変数が導入されているだけである。<br><br>文のweightや、coherenceのweightは構造学習で学習し、Passive Aggressiveを用いて、loss functionとしてはROUGEを用いている（要はROUGEが高くなるように、outputの要約全体を考慮しながら、weightを学習するということ）。<br><br><br><br>文の変種としては、各文を文圧縮したものを用意している。<br><br>また、動的計画法によるデコーディングのアルゴリズムも提案されている。<br><br><br><br>構造学習を行う際には大量の教師データが必要となるが、13,000記事分のニュース記事と対応する人手での要約のデータを用いて学習と評価を行なっており、当時これほど大規模なデータで実験した研究はなかった。<br><br><br><br>ROUGEでの評価の結果、文の変種（文圧縮）を考慮するモデルがベースラインを上回る結果を示したが、LEADとは統計的には有意差なし。しかしながら、人手で生成した要約との完全一致率が提案手法の方が高い。<br><br>また、ROUGEの評価だけでなく、linguistic quality（grammaticality, structure/coherenceなど）を人手で評価した結果、ベースラインを有意にoutperform。LEADはgrammaticalityでかなり悪い評価になっていて、これは要約を生成すると部分文が入ってしまうため。<br><br>訓練事例数を変化させてROUGEスコアに関するlearning curveを描いた結果、訓練事例の増加に対してROUGEスコアも単調増加しており、まだサチる気配を見せていないので、事例数増加させたらまだ性能よくなりそうという主張もしている。</p>
 <p>評価に使用した記事が報道記事だったとするならば、quality的にはLeadに勝ってそうな雰囲気を感じるので、結構すごい気はする（単一文書要約で報道記事においてLEADは最強感あったし）。<br><br>ただ、要約の評価においてinformativenessを評価していないので、ROUGEスコア的にはLeadとcomparableでも、実際に生成される要約の情報量として果たしてLEADに勝っているのか興味がある。</p></span><br><br>
 <a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
@@ -1113,7 +1113,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/58" target="_blank" rel="noopener noreferrer" class="title-link">Hierarchical Summarization: Scaling Up Multi-Document Summarization, Christensen+, ACL'14</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/58" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Hierarchical Summarization: Scaling Up Multi-Document Summarization, Christensen+, ACL'14</a>
 <span class="snippet"><span>Comment</span><p>## 概要<br><br>だいぶ前に読んだ。好きな研究。<br><br>テキストのsentenceを階層的にクラスタリングすることで、抽象度が高い情報から、関連する具体度の高いsentenceにdrill downしていけるInteractiveな要約を提案している。<br><br><br><br>## 手法<br><br>通常のMDSでのデータセットの規模よりも、実際にMDSを使う際にはさらに大きな規模のデータを扱わなければならないことを指摘し（たとえばNew York Timesで特定のワードでイベントを検索すると数千、数万件の記事がヒットしたりする）そのために必要な事項を検討。<br><br>これを実現するために、階層的なクラスタリングベースのアプローチを提案。<br><br>提案手法では、テキストのsentenceを階層的にクラスタリングし、下位の層に行くほどより具体的な情報になるようにsentenceを表現。さらに、上位、下位のsentence間にはエッジが張られており、下位に紐付けられたsentence<br><br></p>
 <p>は上位に紐付けられたsentenceの情報をより具体的に述べたものとなっている。<br><br>これを活用することで、drill down型のInteractiveな要約を実現。</p></span><br><br>
 <a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
@@ -1124,7 +1124,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/57" target="_blank" rel="noopener noreferrer" class="title-link">Query-Chain Focused Summarization, Baumel+, ACL'14</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/57" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Query-Chain Focused Summarization, Baumel+, ACL'14</a>
 <span class="snippet"><span>Comment</span><p>（管理人が作成した過去の紹介資料）<br>[Query-Chain Focused Summarization.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1590916/Query-Chain.Focused.Summarization.pdf)<br><br></p>
 <p>上記スライドは私が当時作成した論文紹介スライドです。スライド中のスクショは説明のために論文中のものを引用しています。</p></span><br><br>
 <a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
@@ -1135,7 +1135,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/ECIR.html" target="_blank" rel="noopener noreferrer">#ECIR</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/241" target="_blank" rel="noopener noreferrer" class="title-link">A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR'07</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/241" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR'07</a>
 <span class="snippet"><span>Comment</span><p>文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。</p></span><br><br>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="articles/GraphBased.html" target="_blank" rel="noopener noreferrer">#GraphBased</a>
@@ -1153,11 +1153,17 @@ function googleTranslateElementInit() {
 </p></span><br><br>
 <a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/22" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] NewsInEssence: Summarizing ONLINE NEWS TOPICS, Radev+, Communications of the ACM'05, 2005.10</a>
+<span class="snippet"><span>Comment</span><p>・Centroid-Basedな手法(MEADと同じ手法)で要約を生成<br><br>・Personalizationはかけていない</p></span><br><br>
+<a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
+<a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="articles/Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/COLING.html" target="_blank" rel="noopener noreferrer">#COLING</a>
 <span class="issue_date">Issue Date: 2018-01-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/242" target="_blank" rel="noopener noreferrer" class="title-link">A Formal Model for Information Selection in Multi-Sentence Text Extraction, Filatova+, COLING'04</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/242" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] A Formal Model for Information Selection in Multi-Sentence Text Extraction, Filatova+, COLING'04</a>
 <span class="snippet"><span>Comment</span><p>初めて文書要約を最大被覆問題として定式化した研究。</p></span><br><br>
 <a class="button" href="articles/Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
@@ -1167,7 +1173,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/214" target="_blank" rel="noopener noreferrer" class="title-link">TextRank: Bringing Order into Texts, Mihalcea+, EMNLP'04</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/214" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] TextRank: Bringing Order into Texts, Mihalcea+, EMNLP'04</a>
 <span class="snippet"><span>Comment</span><p>PageRankベースの手法で、キーワード抽出/文書要約 を行う手法。<br><br>キーワード抽出/文書要約 を行う際には、ノードをそれぞれ 単語/文 で表現する。<br><br>ノードで表現されている 単語/文 のsimilarityを測り、ノード間のedgeの重みとすることでAffinity Graphを構築。<br><br>あとは構築したAffinity Graphに対してPageRankを適用して、ノードの重要度を求める。<br><br>ノードの重要度に従いGreedyに 単語/文 を抽出すれば、キーワード抽出/文書要約 を行うことができる。</p>
 <p>単一文書要約のベースラインとして使える。</p>
 <p>gensimに実装がある。<br><br>個人的にも実装している：https://github.com/AkihikoWatanabe/textrank</p></span><br><br>
@@ -1175,8 +1181,9 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="articles/Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/147" target="_blank" rel="noopener noreferrer" class="title-link">Automatic condensation of electronic publications by sentence selection, Brandow+, Information Processing &amp; Management'95</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/147" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Automatic condensation of electronic publications by sentence selection, Brandow+, Information Processing &amp; Management'95</a>
 <span class="snippet"><span>Comment</span><p>報道記事要約において、自動要約システムがLead文に勝つのがhardだということを示した研究</p></span><br><br>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="articles/Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
@@ -1184,13 +1191,13 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/138" target="_blank" rel="noopener noreferrer" class="title-link">A Trainable Document Summarizer, Kupiec+, SIGIR'95</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/138" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] A Trainable Document Summarizer, Kupiec+, SIGIR'95</a>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="articles/Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2018-01-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/240" target="_blank" rel="noopener noreferrer" class="title-link"> Machine-made index for technical literature: an experiment, IBM Journal of Research and Development, 1958.</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/240" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note]  Machine-made index for technical literature: an experiment, IBM Journal of Research and Development, 1958</a>
 <span class="snippet"><span>Comment</span><p>初期の要約研究。Luhnらの研究よりはcitation countが少ない。</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
@@ -1202,8 +1209,8 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/215" target="_blank" rel="noopener noreferrer" class="title-link">LexRank: Graph-based Lexical Centrality as Salience in Text Summarization, Erkan+, Journal of Artificial Intelligence Research, 2004</a>
-<span class="snippet"><span>Comment</span><p>代表的なグラフベースな(Multi) Document Summarization手法。<br><br>ほぼ <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/214" target="_blank" rel="noopener noreferrer">TextRank: Bringing Order into Texts, Mihalcea+, EMNLP'04</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/215" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] LexRank: Graph-based Lexical Centrality as Salience in Text Summarization, Erkan+, Journal of Artificial Intelligence Research, 2004</a>
+<span class="snippet"><span>Comment</span><p>代表的なグラフベースな(Multi) Document Summarization手法。<br><br>ほぼ <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/214" target="_blank" rel="noopener noreferrer">[Paper Note] TextRank: Bringing Order into Texts, Mihalcea+, EMNLP'04</a>
  と同じ手法。<br><br><br><br>2種類の手法が提案されている：<br><br><br><br>* [LexRank] tf-idfスコアでsentenceのbag-of-wordsベクトルを作り、cosine similarityを計算し閾値以上となったsentenceの間にのみedgeを張る（重みは確率的に正規化）。その後べき乗法でPageRank。<br><br>* [ContinousLexRank] tf-idfスコアでsentenceのbag-of-wordsベクトルを作り、cosine similarityを用いてAffinity Graphを計算し、PageRankを適用（べき乗法）。<br><br><br><br>DUC2003, 2004（MDS）で評価。<br><br>Centroidベースドな手法をROUGE-1の観点でoutperform。<br><br>document clusterの17%をNoisyなデータにした場合も実験しており、Noisyなデータを追加した場合も性能劣化が少ないことも示している。</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
@@ -1213,16 +1220,9 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/141" target="_blank" rel="noopener noreferrer" class="title-link">転移学習による抽出型要約の精度向上, 西川+, 情報処理学会研究報告, 2011</a>
-<span class="snippet"><span>Comment</span><p>構造学習を利用した文書要約モデル<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/126" target="_blank" rel="noopener noreferrer">Frustratingly easy domain adaptation, Daum'e, ACL'07</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/141" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] 転移学習による抽出型要約の精度向上, 西川+, 情報処理学会研究報告, 2011</a>
+<span class="snippet"><span>Comment</span><p>構造学習を利用した文書要約モデル<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/126" target="_blank" rel="noopener noreferrer">[Paper Note] Frustratingly easy domain adaptation, Daum'e, ACL'07</a>
  なども利用し転移学習を行なっている。</p></span><br><br>
-<a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="articles/Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
-<a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
-<a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<span class="issue_date">Issue Date: 2017-12-28</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/22" target="_blank" rel="noopener noreferrer" class="title-link">NewsInEssence: Summarizing ONLINE NEWS TOPICS, Radev+, [Communications of the ACM, 05], 2005.10</a>
-<span class="snippet"><span>Comment</span><p>・Centroid-Basedな手法(MEADと同じ手法)で要約を生成<br><br>・Personalizationはかけていない</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="articles/GraphBased.html" target="_blank" rel="noopener noreferrer">#GraphBased</a>
@@ -1306,6 +1306,14 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
+          <a class="post-link" href="/paper_notes/articles/WebSearch.html" title="WebSearchに関する論文・技術記事メモの一覧">
+            WebSearchに関する論文・技術記事メモの一覧<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
           <a class="post-link" href="/paper_notes/articles/AIED.html" title="AIEDに関する論文・技術記事メモの一覧">
             AIEDに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
@@ -1314,24 +1322,16 @@ function googleTranslateElementInit() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/4DReconstruction.html" title="4DReconstructionに関する論文・技術記事メモの一覧">
-            4DReconstructionに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Supervised.html" title="Supervisedに関する論文・技術記事メモの一覧">
+            Supervisedに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Attention.html" title="Attentionに関する論文・技術記事メモの一覧">
-            Attentionに関する論文・技術記事メモの一覧<span class="post-badges">
-  <span class="post-badge badge-top">TOP</span>
-  <span class="post-badge badge-new">NEW</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/project_template.html" title="project_templateに関する論文・技術記事メモの一覧">
-            project_templateに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/CLIP.html" title="CLIPに関する論文・技術記事メモの一覧">
+            CLIPに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

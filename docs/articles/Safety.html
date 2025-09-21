@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Safety.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-20T10:06:55+00:00">
+<meta property="article:published_time" content="2025-09-21T00:49:30+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Safetyに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-20T10:06:55+00:00","datePublished":"2025-09-20T10:06:55+00:00","description":"Safety #Pocket #NeurIPS","headline":"Safetyに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Safety.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Safety.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-21T00:49:30+00:00","datePublished":"2025-09-21T00:49:30+00:00","description":"Safety #Pocket #NeurIPS","headline":"Safetyに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Safety.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Safety.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-20T10:06:55+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 20, 2025
+    <time class="dt-published" datetime="2025-09-21T00:49:30+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 21, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -809,7 +809,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 25 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 30 mins</span>
   </div></header>
 </div>
     </div>
@@ -1237,6 +1237,29 @@ function googleTranslateElementInit() {
 
 
 </span><br><br>
+<a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="articles/Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
+<a class="button" href="articles/Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="articles/ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="articles/PseudoLabeling.html" target="_blank" rel="noopener noreferrer">#PseudoLabeling</a>
+<span class="issue_date">Issue Date: 2025-09-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2903" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Constitutional AI: Harmlessness from AI Feedback, Yuntao Bai+, arXiv'22</a>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、「憲法的AI」を用いて、人間のラベルなしで無害なAIを訓練する方法を提案。監視学習と強化学習の2フェーズを経て、自己批評と修正を通じてモデルを微調整し、嗜好モデルを報酬信号として強化学習を行う。これにより、有害なクエリに対しても対話できる無害なAIアシスタントを実現し、AIの意思決定の透明性を向上させる。</span>
+<span class="snippet"><span>Comment</span><p>（部分的にしか読めていないが）<br>有害なpromptに対してLLMに初期の応答を生成させ、iterativeにcritiqueとrevisionを繰り返して[^1]、より無害な応答を生成。この方法ではiterationをしながら生成結果が改定されていくので、後段のReward Modelのための嗜好データを生成するフェーズでトークン量を節約するために、生成されたより無害な応答と元となるpromptを用いて、ベースモデルをSFT。これによりベースモデルの出力分布がより無害な応答をするような方向性に調整され、かつ（iterationを繰り返すことなく）直接的により無害な応答を生成できるようになるのでtoken量が節約できる。このフェーズで学習したモデルをSL-CAIと呼ぶ。<br><br>続いて、SL-CAIに対して同様の有害なpromptを入力して、複数の応答を生成させる。生成された応答をMultiple Choice Questionの形式にし、Constitutional Principleに基づくpromptingにより、最も望ましい応答をLLMによって選択させることで、嗜好データを獲得する。この嗜好データ（と人手で定義されたhelpfulnessに基づくデータ）を用いてReward Modelを訓練しRLを実施する。<br><br>この手法は、嗜好データを人間がラベリングするのではなく、AIによるフィードバックによりラベリングするため、Reinforcement Learning from AI Feedback (RLAIF)と呼ばれる。<br><br>Harmfulness以外の分野にも応用可能と考えられる。<br><br><img src="https://github.com/user-attachments/assets/72305618-d397-4471-8648-7771d371ca43" alt="image" loading="lazy"><br><br>[^1]: この操作はモデルの望ましい挙動を人手で定義したルーブリックに基づいた複数のprompt (Constitutional Principles) を用いて実施される。具体的なpromptはAppendix Cを参照。</p>
+<p>先行研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2902" target="_blank" rel="noopener noreferrer">[Paper Note] Training a Helpful and Harmless Assistant with Reinforcement Learning
+  from Human Feedback, Yuntao Bai+, arXiv'22</a>
+</p></span><br><br>
+<a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="articles/Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
+<a class="button" href="articles/ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<span class="issue_date">Issue Date: 2025-09-20</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2902" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Training a Helpful and Harmless Assistant with Reinforcement Learning  from Human Feedback, Yuntao Bai+, arXiv'22</a>
+<span class="snippet"><span>GPT Summary</span>- 言語モデルを無害なアシスタントとして機能させるために、好みのモデル化と人間のフィードバックからの強化学習（RLHF）を用いて微調整を行い、NLP評価での性能向上を実現。毎週新しいフィードバックデータでモデルを更新し、効率的な改善を図る。RLHFトレーニングの堅牢性を調査し、ポリシーと初期化とのKLダイバージェンスの関係を特定。モデルのキャリブレーションや競合目的についても分析し、人間の作家との比較を行った。</span>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
@@ -1330,32 +1353,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/VisionLanguageActionModel.html" title="VisionLanguageActionModelに関する論文・技術記事メモの一覧">
-            VisionLanguageActionModelに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/STS%20(SemanticTextualSimilarity).html" title="STS (SemanticTextualSimilarity)に関する論文・技術記事メモの一覧">
+            STS (SemanticTextualSimilarity)に関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/GPU-Platform.html" title="GPU-Platformに関する論文・技術記事メモの一覧">
-            GPU-Platformに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/QA-based.html" title="QA-basedに関する論文・技術記事メモの一覧">
+            QA-basedに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Annotation.html" title="Annotationに関する論文・技術記事メモの一覧">
-            Annotationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Repetition.html" title="Repetitionに関する論文・技術記事メモの一覧">
+            Repetitionに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/RLVR.html" title="RLVRに関する論文・技術記事メモの一覧">
-            RLVRに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/NaturalLanguageUnderstanding.html" title="NaturalLanguageUnderstandingに関する論文・技術記事メモの一覧">
+            NaturalLanguageUnderstandingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
