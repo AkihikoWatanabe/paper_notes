@@ -93,14 +93,17 @@ def attach_pocket_tag(issue_number):
 
 
 def change_title(entry, issue_number):
-    year = entry.published.split('-')[0][2:]
+    from datetime import datetime
+    dt = datetime.strptime(entry.published, "%Y-%m-%dT%H:%M:%S%z")
+    year = str(dt.year)
+    month = f"{dt.month:02d}
     author = entry.authors[0]
     if len(entry.authors) > 1:
         name = author['name']
-        new_title = f"[Paper Note] {entry.title}, {name}+, arXiv'{year}"
+        new_title = f"[Paper Note] {entry.title}, {name}+, arXiv'{year[2:]}, {year}.{month}"
     else:
         name = author['name']
-        new_title = f"[Paper Note] {entry.title}, {name}, arXiv'{year}"
+        new_title = f"[Paper Note] {entry.title}, {name}, arXiv'{year[2:]}, {year}.{month}"
 
     github = Github(github_token)
     repo = github.get_repo(repo_name)
