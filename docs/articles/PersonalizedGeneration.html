@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedGeneration.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-24T00:45:09+00:00">
+<meta property="article:published_time" content="2025-09-25T09:34:59+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="PersonalizedGenerationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-24T00:45:09+00:00","datePublished":"2025-09-24T00:45:09+00:00","description":"PersonalizedGeneration #RecommenderSystems #Personalization","headline":"PersonalizedGenerationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedGeneration.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedGeneration.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-25T09:34:59+00:00","datePublished":"2025-09-25T09:34:59+00:00","description":"PersonalizedGeneration #RecommenderSystems #Personalization","headline":"PersonalizedGenerationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedGeneration.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PersonalizedGeneration.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-24T00:45:09+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 24, 2025
+    <time class="dt-published" datetime="2025-09-25T09:34:59+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 25, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1031,7 +1031,7 @@ function googleTranslateElementInit() {
 <br>
  , BM25, random selectionの3種類を用いている。<br><br><br><br>
 <strong># LaMPベンチマーク<br><br>GLUEやSuper Glue、KILT、GENといったベンチマークは、"one-size-fits-all"なモデリングと評価を前提としており、ユーザのニーズに答えるための開発を許容していない。一方で、LaMPは、以下のようなPersonalizationが必要なさまざまなタスクを統合して作成されたデータセットである。<br><br>- Personalized Text Classification<br><br>  - Personalized Citation Identification (binary classification)<br><br>    - Task definition<br><br>      - user u が topic xに関する論文を書いたときに、何の論文をciteすべきかを決めるタスク<br><br>      - user uが書いた論文のタイトルが与えられたとき、2つのcandidate paperのうちどちらをreferenceとして利用すべきかを決定する2値分類<br><br>    - Data Collection<br><br>      - Citation Network Datasetを利用。最低でも50本以上論文を書いているauthorを抽出し、authorの論文のうちランダムに論文と論文の引用を抽出<br><br>      - negative document selectionとして、ランダムに共著者がciteしている論文をサンプリング<br><br>   - Profile Specification<br><br>     -  ユーザプロファイルは、ユーザが書いた全てのpaper<br><br>     - titleとabstractのみをuser profileとして保持した<br><br>    - Evaluation<br><br>      - train/valid/testに分け、accuracyで評価する<br><br>  - Personalized News Categorization (15 category分類)<br><br>    - Task definition<br><br>      - LLMが journalist uによって書かれたニュースを分類する能力を問うタスク<br><br>      - u によって書かれたニュースxが与えられた時、uの過去の記事から得られるカテゴリの中から該当するカテゴリを予測するタスク<br><br>    - Data Collection<br><br>      - news categorization datasetを利用（Huff Postのニュース）<br><br>      - 記事をfirst authorでグルーピング<br><br>      - グルーピングした記事群をtrain/valid/testに分割<br><br>      - それぞれの記事において、記事をinputとし、その記事のカテゴリをoutputとする。そして残りの記事をuser profileとする。<br><br>    - Profile Specification<br><br>      - ユーザによって書かれた記事の集合<br><br>    - Evaluation<br><br>      - accuracy, macro-averaged F1で評価 <br><br>  - Personalized Product Rating (5-star rating)<br><br>    - Task definition<br><br>      - ユーザuが記述したreviewに基づいて、LLMがユーザuの未知のアイテムに対するratingを予測する性能を問う<br><br>    - Data Collection<br><br>      - Amazon Reviews Datasetを利用<br><br>      - reviewが100件未満、そしてほとんどのreviewが外れ値なユーザ1%を除外<br><br>      - ランダムにsubsetをサンプリングし、train/valid/testに分けた<br><br>      - input-output pairとしては、inputとしてランダムにユーザのreviewを選択し、その他のreviewをprofileとして利用する。そして、ユーザがinputのレビューで付与したratingがground truthとなる。<br><br>    - Profile Specification<br><br>      - ユーザのレビュ<br><br>    - Evaluation<br><br>      -  ttrain/valid/testに分けてRMSE, MAEで評価する<br><br>- Personalized Text Generation<br><br>  - Personalized News Headline Generation<br><br>    - Task definition<br><br>      - ユーザuが記述したニュースのタイトルを生成するタスク<br><br>      - 特に、LLMが与えられたprofileに基づいてユーザのinterestsやwriting styleを捉え、適切にheadlinに反映させる能力を問う<br><br>   - Data Collection<br><br>     - News Categorization datasetを利用（Huff Post）<br><br>     - データセットではauthorの情報が提供されている<br><br>     - それぞれのfirst authorごとにニュースをグルーピングし、それぞれの記事をinput, headlineをoutputとした。そして残りの記事をprofileとした<br><br>   - Profile Specification<br><br>     - ユーザの過去のニュース記事とそのheadlineの集合をprofileとする<br><br>   - Evaluation<br><br>     - ROUGE-1, ROUGE-Lで評価<br><br>  - Personalized Scholarly Title Generation<br><br>    - Task Definition<br><br>      - ユーザの過去のタイトルを考慮し、LLMがresearch paperのtitleを生成する能力を測る<br><br>    - Data Collection<br><br>      - Citation Network Datasetのデータを利用<br><br>      - abstractをinput, titleをoutputとし、残りのpaperをprofileとした<br><br>    - Profile Specification<br><br>      - ユーザが書いたpaperの集合（abstractのみを利用）<br><br>  - Personalized Email Subject Generation<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleに合わせて、Emailのタイトルを書く能力を測る<br><br>    - Data Collection<br><br>      - Avocado Resaerch Email Collectionデータを利用<br><br>      - 5単語未満のsubjectを持つメール、本文が30単語未満のメールを除外、<br><br>      - 送信主のemail addressでメールをグルーピング<br><br>      - input _outputペアは、email本文をinputとし、対応するsubjectをoutputとした。他のメールはprofile<br><br>    - Profile Specification<br><br>      -  ユーザのemailの集合<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価 <br><br>  - Personalized Tweet Paraphrasing<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleを考慮し、ツイートのparaphrasingをする能力を問う<br><br>    - Data Collection<br><br>      - Sentiment140 datasetを利用<br><br>      - 最低10単語を持つツイートのみを利用<br><br>      - userIDでグルーピングし、10 tweets以下のユーザは除外<br><br>      - ランダムに1つのtweetを選択し、ChatGPT(gpt-3.5-turbo)でparaphraseした<br><br>      - paraphrase版のtweetをinput, 元ツイートをoutputとし、input-output pairを作った。<br><br>    - User Profile Specification<br><br>      - ユーザの過去のツイート<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価<br><br><br><br>&lt;/p&gt;<p># 実験<br><br>## Experimental Setup<br><br>- FlanT5-baesをfinetuningした<br><br>- ユーザ単位でモデルが存在するのか否かが記載されておらず不明<br><br>## 結果<br><br>- Personalization入れた方が全てのタスクでよくなった<br><br>- Retrievalモデルとしては、randomの場合でも良くなったが、基本的にはContrirverを利用した場合が最も良かった<br><br>  - =&gt; 適切なprofileを選択しpromptに含めることが重要であることが示された<br><br>- Rが抽出するサンプル kを増やすと、予測性能が増加する傾向もあったが、一部タスクでは性能の低下も招いた<br><br>- dev setを利用し、BM25/Contrieverのどちらを利用するか、kをいくつに設定するかをチューニングした結果、全ての結果が改善した<br><br>- FlanT5-XXLとgpt-3.5-turboを用いたZero-shotの設定でも実験。tweet paraphrasingタスクを除き、zero-shotでもuser profileをLLMで利用することでパフォーマンス改善。小さなモデルでもfinetuningすることで、zero-shotの大規模モデルにdownstreamタスクでより高い性能を獲得することを示している（ただし、めちゃめちゃ改善しているというわけでもなさそう）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234452179-6fac1cd9-982f-4b48-8dfe-1d742dc1c221.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/234452837-8d8cdfed-ab85-4d1e-99d7-aad35ddc8979.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/234453453-a2393c95-a820-404f-b21c-3332f53cb851.png" alt="image" loading="lazy"><br><br></p>
-<p># LaMPによって可能なResearch Problem<br><br>## Prompting for Personalization<br><br>- Augmentationモデル以外のLLMへのユーザプロファイルの埋め込み方法<br><br>- hard promptingやsoft prompting <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer">The Power of Scale for Parameter-Efficient Prompt Tuning, Lester+, Google Research, EMNLP‘21</a>
+<p># LaMPによって可能なResearch Problem<br><br>## Prompting for Personalization<br><br>- Augmentationモデル以外のLLMへのユーザプロファイルの埋め込み方法<br><br>- hard promptingやsoft prompting <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, arXiv'21, 2021.04</a>
 &lt;/strong&gt;
 <br>
  の活用<br><br>## Evaluation of Personalized Text Generation<br><br>- テキスト生成で利用される性能指標はユーザの情報を評価のプロセスで考慮していない<br><br>- Personalizedなテキスト生成を評価するための適切なmetricはどんなものがあるか？<br><br>## Learning to Retrieve from User Profiles<br><br>- Learning to RankをRetrieval modelに適用する方向性</p>
@@ -1194,32 +1194,32 @@ phraseのペアが存在するデータであり、本タスクに最適との�
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/AutomaticSpeechRecognition(ASR).html" title="AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧">
-            AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SoftwareEngineering.html" title="SoftwareEngineeringに関する論文・技術記事メモの一覧">
+            SoftwareEngineeringに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InstructionGeneration.html" title="InstructionGenerationに関する論文・技術記事メモの一覧">
-            InstructionGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/read-later.html" title="read-laterに関する論文・技術記事メモの一覧">
+            read-laterに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SpokenLanguageGeneration.html" title="SpokenLanguageGenerationに関する論文・技術記事メモの一覧">
-            SpokenLanguageGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ColdStart.html" title="ColdStartに関する論文・技術記事メモの一覧">
+            ColdStartに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MultitaskLearning.html" title="MultitaskLearningに関する論文・技術記事メモの一覧">
-            MultitaskLearningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Explanation.html" title="Explanationに関する論文・技術記事メモの一覧">
+            Explanationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
