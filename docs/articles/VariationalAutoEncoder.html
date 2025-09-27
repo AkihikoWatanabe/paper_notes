@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/VariationalAutoEncoder.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-09-26T00:44:41+00:00">
+<meta property="article:published_time" content="2025-09-27T00:43:13+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="VariationalAutoEncoderに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-26T00:44:41+00:00","datePublished":"2025-09-26T00:44:41+00:00","description":"VariationalAutoEncoder #RecommenderSystems #Pocket #SemanticID","headline":"VariationalAutoEncoderに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/VariationalAutoEncoder.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/VariationalAutoEncoder.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-09-27T00:43:13+00:00","datePublished":"2025-09-27T00:43:13+00:00","description":"VariationalAutoEncoder #RecommenderSystems #Pocket #SemanticID","headline":"VariationalAutoEncoderに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/VariationalAutoEncoder.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/VariationalAutoEncoder.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-09-26T00:44:41+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 26, 2025
+    <time class="dt-published" datetime="2025-09-27T00:43:13+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 27, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1077,6 +1077,7 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/VideoGeneration/Understandings.html" target="_blank" rel="noopener noreferrer">#VideoGeneration/Understandings</a>
 <a class="button" href="articles/Robotics.html" target="_blank" rel="noopener noreferrer">#Robotics</a>
 <a class="button" href="articles/VisionLanguageActionModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageActionModel</a>
+<a class="button" href="articles/EmbodiedAI.html" target="_blank" rel="noopener noreferrer">#EmbodiedAI</a>
 <span class="issue_date">Issue Date: 2025-08-12</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2404" target="_blank" rel="noopener noreferrer" class="title-link">RynnVLA-001: Using Human Demonstrations to Improve Robot Manipulation, Jiang+, Alibaba, 2025.08</a>
 <span class="snippet"><span>Comment</span><p>TL;DRは下記。<br><br>&gt; We introduce RynnVLA-001, a vision-language-action model built upon large-scale video generative pre-training.<br>&gt; - RynnVLA-001 is pretrained on ~12M ego-centric manipulation videos.<br>&gt; - We unify next-frame prediction and next-action prediction into a single transformer.<br>&gt; - We train a lightweight VAE to accurately compress action chunks into action embeddings.<br>&gt; - Our RynnVLA-001 outperforms Pi-0 and GR00T-N1.5, in terms of both real-world task success rate and instruction-following capability.<br><br>まず、11.93Mの一人称視点での人間が操作（特に手の操作）をする動画と、244Kのrobotが操作をする動画でTransformerを事前学習する。このとき、actionラベルは一切用いず、pixelの情報から物理世界のダイナミクスを理解させる。続いて、Action Chunks（複数のアクションの少量のかたまり）を、dense embeddingにエンコードするVAEを学習する。チャンクを用いる理由は、ピクセルの変化が微小な場合、同じアクションが連続して予測されてしまいstuckしめしまう現象を防ぐこと、予測の効率が良いからとのこと。これによりVLAは単一のembedding vectorを予測するだけで、一貫性のあるアクション系列にデコードできる。最後に、step1で学習したvideo generationモデルと、step2で学習したVAEによるaction representationを統合する。具体的には、next frame prediction（visual tokenを予測; cross entropy loss）とnext action prediction（action edbeddingを予測する）を統合して学習する。action embeddingはcontinuousなベクトルなので異なるヘッドを用意して学習する（L1 Loss)。inference時はRGBのobservationと、テキストによるinstructionを入力として受け取り、action embeddingを予測する。action edbeddingはVAE decoderに渡され、low levelなaction系列に変換される。robotは予測されたアクションを実行し、observationが変化するのでまた予測する、といったiterationを実施する。visual tokenによる予測は不要なので、計算効率の観点から実施しない。<br><br><img src="https://github.com/user-attachments/assets/4be5a5da-8c9c-4735-a1ee-ac3da52c2530" alt="image" loading="lazy"></p>
@@ -1162,32 +1163,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/TimeSeriesDataProcessing.html" title="TimeSeriesDataProcessingに関する論文・技術記事メモの一覧">
-            TimeSeriesDataProcessingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/PostTraining.html" title="PostTrainingに関する論文・技術記事メモの一覧">
+            PostTrainingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/reading.html" title="readingに関する論文・技術記事メモの一覧">
-            readingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/TransferLearning.html" title="TransferLearningに関する論文・技術記事メモの一覧">
+            TransferLearningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LearningPhenomena.html" title="LearningPhenomenaに関する論文・技術記事メモの一覧">
-            LearningPhenomenaに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/OpinionMining.html" title="OpinionMiningに関する論文・技術記事メモの一覧">
+            OpinionMiningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Visual%20Words.html" title="Visual Wordsに関する論文・技術記事メモの一覧">
-            Visual Wordsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/DialogueGeneration.html" title="DialogueGenerationに関する論文・技術記事メモの一覧">
+            DialogueGenerationに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
