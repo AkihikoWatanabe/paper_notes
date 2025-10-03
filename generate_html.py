@@ -238,7 +238,11 @@ def link_replacer(match):
 
 def x_link_replacer(match):
     x_link = match.group(1).replace("x.com", "twitter.com") 
-    return "\n\n{% raw %}\n" + f"""<div class="tweet-embed" data-embed='<blockquote class="twitter-tweet"><a href="{x_link}"></a></blockquote>'><img alt="loading..." src="/assets/images/load-31_128.gif class="tweet-loading" /></div>""" + "\n{% endraw %}\n\n"
+    return  "\n\n{% raw %}\n" + f"""
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="{x_link}"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>""" + "\n{% endraw %}\n\n"  
 
 
 summ_pat = "Summary (by"
@@ -648,8 +652,8 @@ author: AkihikoWATANABE
             const el = entry.target;
             const html = el.getAttribute('data-embed');
             if (html) {
-              const loadingImg = el.querySelector('.tweet-loading');
-              if (loadingImg) loadingImg.remove();
+              const placeholder = el.querySelector('.tweet-placeholder');
+              if (placeholder) placeholder.remove();
 
               el.innerHTML = html.trim();
 
@@ -723,4 +727,5 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
