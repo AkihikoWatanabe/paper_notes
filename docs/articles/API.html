@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/API.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-10-12T00:47:04+00:00">
+<meta property="article:published_time" content="2025-10-13T00:49:02+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="APIに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-10-12T00:47:04+00:00","datePublished":"2025-10-12T00:47:04+00:00","description":"API #Tools #Pocket #NLP #Dataset #LanguageModel #NeurIPS","headline":"APIに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/API.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/API.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-10-13T00:49:02+00:00","datePublished":"2025-10-13T00:49:02+00:00","description":"API #Tools #Pocket #NLP #Dataset #LanguageModel #NeurIPS","headline":"APIに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/API.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/API.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-10-12T00:47:04+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 12, 2025
+    <time class="dt-published" datetime="2025-10-13T00:49:02+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 13, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -809,7 +809,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 mins</span>
   </div></header>
 </div>
     </div>
@@ -1079,7 +1079,18 @@ function googleTranslateElementInit() {
 
 
 <br><br>Tinkerは、従来の<br>- データセットをアップロード<br>- 学習ジョブを走らせる<br><br>というスタイルではなく、ローカルのコードでstep単位の学習のループを書き以下を実行する:<br>- forward_backwardデータ, loss_functionをAPIに送る<br>  - これにより勾配をTinker側が蓄積する<br>- optim_step: 蓄積した勾配に基づいてモデルを更新する<br>- sample: モデルからサンプルを生成する<br>- save_state等: 重みの保存、ロード、optimizerのstateの保存をする<br><br>これらstep単位の学習に必要なプリミティブなインタフェースのみをAPIとして提供する。これにより、CPUマシンで、独自に定義したloss, dataset(あるいはRL用のenvironment）を用いて、学習ループをコントロールできるし、分散学習の複雑さから解放される、という代物のようである。LoRAのみに対応している。<br><br>なお、step単位のデータを毎回送信しなければならないので、stepごとに通信のオーバヘッドが発生するなんて、Tinker側がGPUを最大限に活用できないのではないか。設計としてどうなんだ？という点については、下記ブログが考察をしている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3134" target="_blank" rel="noopener noreferrer">Anatomy of a Modern Finetuning API, Benjamin Anderson, 2025.10</a>
-<br><br>ざっくり言うとマルチテナントを前提に特定ユーザがGPUを占有するのではなく、複数ユーザで共有するのではないか、adapterの着脱のオーバヘッドは非常に小さいのでマルチテナントにしても（誰かのデータの勾配計算が終わったらLoRAアダプタを差し替えて別のデータの勾配計算をする、といったことを繰り返せば良いので待機時間はかなり小さくなるはずで、）GPUが遊ぶ時間が生じないのでリソースをTinker側は最大限に活用できるのではないか、といった考察/仮説のようである。</p></span><br><br>
+<br><br>ざっくり言うとマルチテナントを前提に特定ユーザがGPUを占有するのではなく、複数ユーザで共有するのではないか、adapterの着脱のオーバヘッドは非常に小さいのでマルチテナントにしても（誰かのデータの勾配計算が終わったらLoRAアダプタを差し替えて別のデータの勾配計算をする、といったことを繰り返せば良いので待機時間はかなり小さくなるはずで、）GPUが遊ぶ時間が生じないのでリソースをTinker側は最大限に活用できるのではないか、といった考察/仮説のようである。</p>
+<p>所見:<br>
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/cameron_chann/status/1977040926364381316?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>Asyncな設定でRLしてもSyncな場合と性能は同等だが、学習が大幅に高速化されて嬉しいという話な模様（おまけにrate limitが現在は存在するので今後よりブーストされるかも</span><br><br>
 </div>
 <p><button onclick="showMore(0)">more</button></p>
 <div class="hidden-content">
@@ -1226,32 +1237,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Assessment.html" title="Assessmentに関する論文・技術記事メモの一覧">
-            Assessmentに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Temporal.html" title="Temporalに関する論文・技術記事メモの一覧">
+            Temporalに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/NewsRecommendation.html" title="NewsRecommendationに関する論文・技術記事メモの一覧">
-            NewsRecommendationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/RLVR.html" title="RLVRに関する論文・技術記事メモの一覧">
+            RLVRに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MLOps.html" title="MLOpsに関する論文・技術記事メモの一覧">
-            MLOpsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/UAI.html" title="UAIに関する論文・技術記事メモの一覧">
+            UAIに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InductiveBias.html" title="InductiveBiasに関する論文・技術記事メモの一覧">
-            InductiveBiasに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Snippets.html" title="Snippetsに関する論文・技術記事メモの一覧">
+            Snippetsに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
