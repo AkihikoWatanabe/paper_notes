@@ -2,7 +2,7 @@
 Issueに論文とメモを記載 [^1]。
 
 - 2025.10.17:
-  - X上で流れてくる論文のストリーミングを眺めていて個人が感じたトレンド（感想）を[メモするWiki](https://github.com/AkihikoWatanabe/paper_notes/wiki/X%E4%B8%8A%E3%81%AEAI%E3%83%88%E3%83%AC%E3%83%B3%E3%83%89%EF%BC%88%E5%80%8B%E4%BA%BA%E3%81%AE%E6%84%9F%E6%83%B3%E3%81%A7%E3%81%99%EF%BC%89)を作ってみました
+  - X上で流れてくる論文のストリーミングを眺めていて個人が感じたトレンド（感想）を[メモするWiki](https://github.com/AkihikoWatanabe/paper_notes/wiki/X上のAIトレンド（？）（個人の感想です）)を作ってみました
   - 個人の感想なので誤り等あるかもしれませんがご容赦ください。ゆるりと不定期に更新していきます
 - 2025.08.05:
   - 本リポジトリの使い方としては、現状本リポジトリの[deepwiki](https://deepwiki.com/AkihikoWatanabe/paper_notes)を通じて対話形式で何らかの文献や資料、知識を抽出するという方法が一番使いやすいかもしれません
