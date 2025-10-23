@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-10-22T00:47:52+00:00">
+<meta property="article:published_time" content="2025-10-23T00:46:27+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Pretrainingに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-10-22T00:47:52+00:00","datePublished":"2025-10-22T00:47:52+00:00","description":"Pretraining #ComputerVision #Pocket #Transformer #Self-SupervisedLearning #ICCV #Scalability","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-10-23T00:46:27+00:00","datePublished":"2025-10-23T00:46:27+00:00","description":"Pretraining #ComputerVision #Pocket #Transformer #Self-SupervisedLearning #ICCV #Scalability","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -775,7 +775,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-10-22T00:47:52+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 22, 2025
+    <time class="dt-published" datetime="2025-10-23T00:46:27+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 23, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 32 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 34 mins</span>
   </div></header>
 </div>
     </div>
@@ -1115,7 +1115,18 @@ function googleTranslateElementInit() {
 &lt;a href="https://github.com/user-attachments/assets/cafa8ad5-7cce-4466-a208-07bb51dcd953"" target="_blank" rel="noopener noreferrer"&gt;https://github.com/user-attachments/assets/cafa8ad5-7cce-4466-a208-07bb51dcd953"&lt;/a&gt;
 
 
-/&gt;<br><br>手法としては、3段階で構成されており<br>- Stage1: low-bitに量子化されたモデルではactivationの分散が大きくなり学習の不安定さにつながるため、アーキテクチャとしてSubLNを導入して安定化を図る<br>- Stage2: Stage1で新たにSubLNを追加するので事前学習コーパスの継続事前学習する<br>- Stage3: full-precisionでSFTしたモデルを教師、1.58-bitに量子化したモデルを生徒とし、logits distillation (input x, output yが与えられた時に教師・生徒間で出力トークンの分布のKL Divergenceを最小化する)、MiniLMで提案されているMHAのdistillation（q-q/k-k/v-vの内積によってsquaredなrelation mapをQ, K, Vごとに作成し、relation mapのKL Divergenceが教師・生徒間で最小となるように学習する）を実施する<br>- 最終的に `L_CE + \lambda L_LD + \ganma L_AD` を最小化する。ここで、L_CEはdownstream datasetに対するcross-entropy lossであり、L_LD, L_ADはそれぞれ、logit distillation, Attention Distillationのlossである。</p></span><br><br>
+/&gt;<br><br>手法としては、3段階で構成されており<br>- Stage1: low-bitに量子化されたモデルではactivationの分散が大きくなり学習の不安定さにつながるため、アーキテクチャとしてSubLNを導入して安定化を図る<br>- Stage2: Stage1で新たにSubLNを追加するので事前学習コーパスの継続事前学習する<br>- Stage3: full-precisionでSFTしたモデルを教師、1.58-bitに量子化したモデルを生徒とし、logits distillation (input x, output yが与えられた時に教師・生徒間で出力トークンの分布のKL Divergenceを最小化する)、MiniLMで提案されているMHAのdistillation（q-q/k-k/v-vの内積によってsquaredなrelation mapをQ, K, Vごとに作成し、relation mapのKL Divergenceが教師・生徒間で最小となるように学習する）を実施する<br>- 最終的に `L_CE + \lambda L_LD + \ganma L_AD` を最小化する。ここで、L_CEはdownstream datasetに対するcross-entropy lossであり、L_LD, L_ADはそれぞれ、logit distillation, Attention Distillationのlossである。</p>
+<p>ポイント解説:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/jiqizhixin/status/1980968125547139259?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
 <a class="button" href="articles/ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
@@ -2082,11 +2093,12 @@ function googleTranslateElementInit() {
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <a class="button" href="articles/Architecture.html" target="_blank" rel="noopener noreferrer">#Architecture</a>
+<a class="button" href="articles/NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <a class="button" href="articles/memory.html" target="_blank" rel="noopener noreferrer">#memory</a>
 <a class="button" href="articles/RecurrentModels.html" target="_blank" rel="noopener noreferrer">#RecurrentModels</a>
 <a class="button" href="articles/RecursiveModels.html" target="_blank" rel="noopener noreferrer">#RecursiveModels</a>
 <span class="issue_date">Issue Date: 2025-07-17</span>
-<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2241" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Mixture-of-Recursions: Learning Dynamic Recursive Depths for Adaptive  Token-Level Computation, Sangmin Bae+, arXiv'25</a>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2241" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Mixture-of-Recursions: Learning Dynamic Recursive Depths for Adaptive   Token-Level Computation, Sangmin Bae+, NeurIPS'25</a>
 <span class="snippet"><span>GPT Summary</span>- Mixture-of-Recursions（MoR）というフレームワークを提案し、再帰型トランスフォーマー内でパラメータ共有と適応計算を同時に実現。MoRは、レイヤーの再利用とトークンごとの再帰深さの動的割り当てにより、メモリアクセス効率を向上させる。135Mから1.7Bパラメータのモデルで、トレーニングFLOPsを維持しつつ、困惑度を低下させ、少数ショット精度を向上。MoRは大規模モデルのコストを抑えつつ、品質向上に寄与することを示す。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
@@ -2111,7 +2123,18 @@ function googleTranslateElementInit() {
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2605" target="_blank" rel="noopener noreferrer">[Paper Note] Universal Transformers, Mostafa Dehghani+, ICLR'19</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2612" target="_blank" rel="noopener noreferrer">[Paper Note] Looped Transformers for Length Generalization, Ying Fan+, ICLR'25</a>
  <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2611" target="_blank" rel="noopener noreferrer">[Paper Note] Looped Transformers are Better at Learning Learning Algorithms, Liu Yang+, ICLR'24</a>
- </p></span><br><br>
+ </p>
+<p>著者ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/reza_byt/status/1980335836542677210?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
 <a class="button" href="articles/Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/DiffusionModel.html" target="_blank" rel="noopener noreferrer">#DiffusionModel</a>
@@ -3328,6 +3351,56 @@ function googleTranslateElementInit() {
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/83" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Unsupervised Pretraining for Sequence to Sequence Learning, Ramachandran+, EMNLP'17</a>
 <span class="snippet"><span>Comment</span><p>seq2seqにおいてweightのpretrainingを行う手法を提案<br><br>seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。<br><br>WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。<br><br><br><br>encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。<br><br>fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）<br><br>LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。<br><br><br><br>Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。<br><br>LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。<br><br>sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。<br><br><br><br>LM Objectiveは結構使えそうな印象</p></span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="articles/Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="articles/TabularData.html" target="_blank" rel="noopener noreferrer">#TabularData</a>
+<a class="button" href="articles/Mathematics.html" target="_blank" rel="noopener noreferrer">#Mathematics</a>
+<a class="button" href="articles/MultiLingual.html" target="_blank" rel="noopener noreferrer">#MultiLingual</a>
+<a class="button" href="articles/DataFiltering.html" target="_blank" rel="noopener noreferrer">#DataFiltering</a>
+<a class="button" href="articles/One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2025-10-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3385" target="_blank" rel="noopener noreferrer" class="title-link">FindWiki, Guilherme Penedo, 2025.10</a>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/gui_penedo/status/1980665876127879647?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>2023年時点で公開されたWikipediaデータをさらに洗練させたデータセット。文字のレンダリング、数式、latex、テーブルの保持（従来は捨てられてしまうことが多いとのこと）、記事に関係のないコンテンツのフィルタリング、infoboxを本文から分離してメタデータとして保持するなどの、地道な前処理をして洗練化させたとのこと。</p></span><br><br>
+<a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="articles/EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="articles/Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="articles/ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="articles/ChatGPT.html" target="_blank" rel="noopener noreferrer">#ChatGPT</a>
+<a class="button" href="articles/Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
+<a class="button" href="articles/mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
+<a class="button" href="articles/GRPO.html" target="_blank" rel="noopener noreferrer">#GRPO</a>
+<a class="button" href="articles/read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="articles/Selected%20Papers/Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="articles/Inference.html" target="_blank" rel="noopener noreferrer">#Inference</a>
+<a class="button" href="articles/MinimalCode.html" target="_blank" rel="noopener noreferrer">#MinimalCode</a>
+<a class="button" href="articles/KV%20Cache.html" target="_blank" rel="noopener noreferrer">#KV Cache</a>
+<span class="issue_date">Issue Date: 2025-10-22</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3377" target="_blank" rel="noopener noreferrer" class="title-link">nanochat, karpathy, 2025.10</a>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/karpathy/status/1977755427569111362?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>新たなスピードランが...!!</p></span><br><br>
+<a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
@@ -3358,7 +3431,18 @@ function googleTranslateElementInit() {
 <p>関連:<br>- In-context Steerbility: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3247" target="_blank" rel="noopener noreferrer">[Paper Note] Spectrum Tuning: Post-Training for Distributional Coverage and
   In-Context Steerability, Taylor Sorensen+, arXiv'25, 2025.10</a>
 <br><br>（整理すると楽しそうなので後で関連しそうな研究を他にもまとめる）</p>
-<p>とても勉強になる！AIに代替されない20%, 1%になるには果たして</p></span><br><br>
+<p>とても勉強になる！AIに代替されない20%, 1%になるには果たして</p>
+<p>所見:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/tydsh/status/1980432024470188252?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
 <a class="button" href="articles/Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="articles/Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -3951,32 +4035,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/L@S.html" title="L@Sに関する論文・技術記事メモの一覧">
-            L@Sに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Biological.html" title="Biologicalに関する論文・技術記事メモの一覧">
+            Biologicalに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MLOps.html" title="MLOpsに関する論文・技術記事メモの一覧">
-            MLOpsに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/EDM.html" title="EDMに関する論文・技術記事メモの一覧">
+            EDMに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ConceptErasure.html" title="ConceptErasureに関する論文・技術記事メモの一覧">
-            ConceptErasureに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/TransferLearning.html" title="TransferLearningに関する論文・技術記事メモの一覧">
+            TransferLearningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/StructuredLearning.html" title="StructuredLearningに関する論文・技術記事メモの一覧">
-            StructuredLearningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/RuleBased.html" title="RuleBasedに関する論文・技術記事メモの一覧">
+            RuleBasedに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
