@@ -68,6 +68,12 @@ def get_entry_from_metadata(arxiv_id):
     url = base_url + query
 
     feed = feedparser.parse(url)
+        
+    if not feed.entries:
+        # エントリがない場合のエラー処理
+        print(f"Error: No entry found for arXiv ID: {arxiv_id} (URL: {url})")
+        raise ValueError(f"arXiv ID {arxiv_id} のメタデータが見つかりません")
+    
     entry = feed.entries[0]
 
     return entry
