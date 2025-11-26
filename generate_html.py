@@ -718,7 +718,8 @@ author: AkihikoWATANABE
         html_content = f'<h2 id={label}> {label}</h2>'
         html_content += gen_one_item(issue_list, [label])
         label_content = f"{html_template}{html_content}{lazy_loading}"
-        with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
+        #with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
+        with open(f"./_articles/{label.replace('/', '_')}.html", "w") as f:
             f.write(label_content)
     print("finished")
 
@@ -727,5 +728,6 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
