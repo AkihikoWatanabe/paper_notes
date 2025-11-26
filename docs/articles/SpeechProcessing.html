@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/SpeechProcessing.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-11-26T00:49:04+00:00">
+<meta property="article:published_time" content="2025-11-26T15:03:17+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="SpeechProcessingに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-26T00:49:04+00:00","datePublished":"2025-11-26T00:49:04+00:00","description":"SpeechProcessing #Pocket #LanguageModel #OpenWeight #Editing #TTS #AudioLanguageModel","headline":"SpeechProcessingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/SpeechProcessing.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/SpeechProcessing.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-26T15:03:17+00:00","datePublished":"2025-11-26T15:03:17+00:00","description":"SpeechProcessing #Pocket #LanguageModel #OpenWeight #Editing #TTS #AudioLanguageModel","headline":"SpeechProcessingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/SpeechProcessing.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/SpeechProcessing.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -775,7 +775,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-11-26T00:49:04+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 26, 2025
+    <time class="dt-published" datetime="2025-11-26T15:03:17+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 26, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 10 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 8 mins</span>
   </div></header>
 </div>
     </div>
@@ -1098,7 +1098,7 @@ function googleTranslateElementInit() {
 
 </span><br><br>
 </div>
-<p><button onclick="showMore(0)">more</button></p>
+<button onclick="showMore(0)">more</button>
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1400,10 +1400,7 @@ function googleTranslateElementInit() {
 <p>目的関数としては、Mixture of Denoisers (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )に着想を得て、Multimodal Mixture of Denoisersを提案。MoDでは、<br>- \[R\]: 通常のspan corruption (1--5 token程度のspanをmaskする)<br>- \[S\]: causal language modeling (inputを2つのサブシーケンスに分割し、前方から後方を予測する。前方部分はBi-directionalでも可)<br>- \[X\]: extreme span corruption (12&gt;=token程度のspanをmaskする)<br><br>の3種類が提案されており、モダリティごとにこれらを使い分ける:<br>- text modality: UL2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )を踏襲<br>- image, audioがtargetの場合: 2つの類似したパラダイムを定義し利用<br>  - \[R\]: patchをランダムにx%マスクしre-constructする<br>  - \[S\]: inputのtargetとは異なるモダリティのみの情報から、targetモダリティを生成する<br><br>訓練時には prefixとしてmodality token \[Text\], \[Image\], \[Audio\] とparadigm token \[R\], \[S\], \[X\] をタスクを指示するトークンとして利用している。</p>
-<p>また、image, audioのマスク部分のdenoisingをautoregressive modelで実施する際には普通にやるとdecoder側でリークが発生する(a)。これを防ぐには、Encoder側でマスクされているトークンを、Decoder側でteacher-forcingする際にの全てマスクする方法(b)があるが、この場合、生成タスクとdenoisingタスクが相互に干渉してしまいうまく学習できなくなってしまう（生成タスクでは通常Decoderのinputとして[mask]が入力され次トークンを生成する、といったことは起きえないが、愚直に(b)をやるとそうなってしまう）。ので、(c)に示したように、マスクされているトークンをinputとして生成しなければならない時だけ、マスクを解除してdecoder側にinputする、という方法 (Dynamic Masking) でこの問題に対処している。<br>&lt;img width="597" height="394" alt="Image" src="
-
-
-&lt;a href="https://github.com/user-attachments/assets/0dba8d5d-0c93-4c56-852b-fce9869428e7"" target="_blank" rel="noopener noreferrer"&gt;https://github.com/user-attachments/assets/0dba8d5d-0c93-4c56-852b-fce9869428e7"&lt;/a&gt;
+<p>また、image, audioのマスク部分のdenoisingをautoregressive modelで実施する際には普通にやるとdecoder側でリークが発生する(a)。これを防ぐには、Encoder側でマスクされているトークンを、Decoder側でteacher-forcingする際にの全てマスクする方法(b)があるが、この場合、生成タスクとdenoisingタスクが相互に干渉してしまいうまく学習できなくなってしまう（生成タスクでは通常Decoderのinputとして[mask]が入力され次トークンを生成する、といったことは起きえないが、愚直に(b)をやるとそうなってしまう）。ので、(c)に示したように、マスクされているトークンをinputとして生成しなければならない時だけ、マスクを解除してdecoder側にinputする、という方法 (Dynamic Masking) でこの問題に対処している。<br><img width="597" height="394" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/0dba8d5d-0c93-4c56-852b-fce9869428e7"
 
 
 /&gt;</p></span><br><br>
@@ -1436,10 +1433,7 @@ function googleTranslateElementInit() {
 
 
 <br><br>長文認識のためのヒューリスティックに基づくデコーディング戦略も解説されているので参照のこと。</p>
-<p>研究のコアとなるアイデアとしては、既存研究は自己教師あり学習、あるいはself-learningによって性能向上を目指す流れがある中で、教師あり学習に着目。既存研究で教師あり学習によって性能が向上することが示されていたが、大規模なスケールで実施できていなかったため、それをweakly-supervisedなmanner（=つまり完璧なラベルではなくてノイジーでも良いからラベルを付与し学習する）といった方法で学習することで、より頑健で高性能なASRを実現したい、という気持ちの研究。また、複雑なサブタスク(language identification, inverse text normalization（ASR後のテキストを人間向けの自然なテキストに変換すること[^2]）, phrase-level timestamps (audioとtranscriptのタイムスタンプ予測))を一つのパイプラインで実現するような統合的なインタフェースも提案している。モデルのアーキテクチャ自体はencoder-decoderモデルである。また、positional encodingとしてはSinusoidal Positional Encoding（すなわち、絶対位置エンコーディング）が用いられている。デコーダにはprompt[^1]と呼ばれるtranscriptのhistoryを（確率的に挿入し）入力して学習することで、過去のcontextを考慮したASRが可能となる。lossの計算は、translate/transcribeされたトークンのみを考慮して計算する。<br><br>&lt;img width="683" height="594" alt="Image" src="
-
-
-&lt;a href="https://github.com/user-attachments/assets/3ae3847d-b38f-41de-b1b7-c8000df31de6"" target="_blank" rel="noopener noreferrer"&gt;https://github.com/user-attachments/assets/3ae3847d-b38f-41de-b1b7-c8000df31de6"&lt;/a&gt;
+<p>研究のコアとなるアイデアとしては、既存研究は自己教師あり学習、あるいはself-learningによって性能向上を目指す流れがある中で、教師あり学習に着目。既存研究で教師あり学習によって性能が向上することが示されていたが、大規模なスケールで実施できていなかったため、それをweakly-supervisedなmanner（=つまり完璧なラベルではなくてノイジーでも良いからラベルを付与し学習する）といった方法で学習することで、より頑健で高性能なASRを実現したい、という気持ちの研究。また、複雑なサブタスク(language identification, inverse text normalization（ASR後のテキストを人間向けの自然なテキストに変換すること[^2]）, phrase-level timestamps (audioとtranscriptのタイムスタンプ予測))を一つのパイプラインで実現するような統合的なインタフェースも提案している。モデルのアーキテクチャ自体はencoder-decoderモデルである。また、positional encodingとしてはSinusoidal Positional Encoding（すなわち、絶対位置エンコーディング）が用いられている。デコーダにはprompt[^1]と呼ばれるtranscriptのhistoryを（確率的に挿入し）入力して学習することで、過去のcontextを考慮したASRが可能となる。lossの計算は、translate/transcribeされたトークンのみを考慮して計算する。<br><br><img width="683" height="594" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/3ae3847d-b38f-41de-b1b7-c8000df31de6"
 
 
 /&gt;<br><br><br>データセットについては詳細は記述されておらず、internetに存在する (audio, transcripts)のペアデータを用いたと書かれている。<br>しかしながら、収集したデータセットを確認んすると、transcriptionの品質が低いものが混ざっており、フィルタリングを実施している。これは、人間のtranscriptionとmachine-generatedなtranscriptionをmixして学習すると性能を損なうことが既存研究で知られているため、ヒューリスティックに基づいてmachine-generatedなtranscriptionは学習データから除外している。これは、初期のモデルを学習してエラー率を観測し、データソースを人手でチェックしてlow-qualityなtranscriptを除去するといった丁寧なプロセスもあ含まれる。<br><br>また、収集したデータの言語についてはVoxLingua107データセット <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3767" target="_blank" rel="noopener noreferrer">[Paper Note] VoxLingua107: a Dataset for Spoken Language Recognition, Jörgen Valk+, SLT'21, 2020.11</a>
@@ -1867,8 +1861,7 @@ function googleTranslateElementInit() {
 <span class="snippet"><span>Comment</span><p>マルチモーダルなLLMのリストがまとめられている</p></span><br><br>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const tweets = document.querySelectorAll('.tweet-embed[data-embed]');
@@ -1922,7 +1915,6 @@ function googleTranslateElementInit() {
 </script>
 
 
-
     </div>
 
 </article>
@@ -1933,32 +1925,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Regularization.html" title="Regularizationに関する論文・技術記事メモの一覧">
-            Regularizationに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/GrammaticalErrorCorrection.html" title="GrammaticalErrorCorrectionに関する論文・技術記事メモの一覧">
+            GrammaticalErrorCorrectionに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/CTRPrediction.html" title="CTRPredictionに関する論文・技術記事メモの一覧">
-            CTRPredictionに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ECIR.html" title="ECIRに関する論文・技術記事メモの一覧">
+            ECIRに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AAAI.html" title="AAAIに関する論文・技術記事メモの一覧">
-            AAAIに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/AutoEncoder.html" title="AutoEncoderに関する論文・技術記事メモの一覧">
+            AutoEncoderに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ExplicitFeedback.html" title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
-            ExplicitFeedbackに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/WI.html" title="WIに関する論文・技術記事メモの一覧">
+            WIに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

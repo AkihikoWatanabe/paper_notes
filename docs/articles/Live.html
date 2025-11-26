@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Live.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-11-26T00:49:04+00:00">
+<meta property="article:published_time" content="2025-11-26T15:03:17+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Liveに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-26T00:49:04+00:00","datePublished":"2025-11-26T00:49:04+00:00","description":"Live #MachineLearning #Pocket #NLP #Dataset #TabularData #Evaluation #Selected Papers/Blogs #One-Line Notes","headline":"Liveに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Live.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Live.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-26T15:03:17+00:00","datePublished":"2025-11-26T15:03:17+00:00","description":"Live #MachineLearning #Pocket #NLP #Dataset #TabularData #Evaluation #Selected Papers/Blogs #One-Line Notes","headline":"Liveに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Live.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Live.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-11-26T00:49:04+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 26, 2025
+    <time class="dt-published" datetime="2025-11-26T15:03:17+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 26, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -1134,7 +1134,7 @@ function googleTranslateElementInit() {
 
 </p></span><br><br>
 </div>
-<p><button onclick="showMore(0)">more</button></p>
+<button onclick="showMore(0)">more</button>
 <div class="hidden-content">
 <a class="button" href="articles/Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1310,10 +1310,7 @@ function googleTranslateElementInit() {
 <span class="issue_date">Issue Date: 2025-09-10</span>
 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2738" target="_blank" rel="noopener noreferrer" class="title-link">From Live Data to High-Quality Benchmarks: The Arena-Hard Pipeline, Li+, 2024.04</a>
 <span class="snippet"><span>Comment</span><p>ArenaHardデータセット</p>
-<p>ChatbotArenaのデータからコンタミネーションに考慮して定期的に抽出される高品質なreal worldに近いのconversationデータセット。抽出プロセスではpromptの多様性とqualityが担保される形で、200,000のユーザからのpromptが抽出されフィルタリングにかけられる。<br>多様性という観点では、全てのpromptを OpenAI の `text-embedding-3-small` によってembeddingに変換し、UMAPによって次元圧縮をした後に階層的クラスタリング手法によってトピッククラスタを形成する。各クラスタにはGPT-4-turboで要約が付与され、要約を活用して4000のトピッククラスタを選定する。<br>続いて、各クラスタに含まれるクエリは品質がバラバラなので、高品質なものを抽出するために以下の観点からLLM-as-a-Judge（GPT-3.5-Turbo, GPT-4-turbo）を用いてフィルタリングを実施する:<br>```<br>1. Specificity: Does the prompt ask for a specific output?<br>2. Domain Knowledge: Does the prompt cover one or more specific domains?<br>3. Complexity: Does the prompt have multiple levels of reasoning, components, or variables?<br>4. Problem-Solving: Does the prompt directly involve the AI to demonstrate active problem-solving skills?<br>5. Creativity: Does the prompt involve a level of creativity in approaching the problem?<br>6. Technical Accuracy: Does the prompt require technical accuracy in the response?<br>7. Real-world Application: Does the prompt relate to real-world applications?<br>```<br>（観点は元記事から引用）<br><br>各観点を満たしていたら1ポイントとし、各promptごとに[0, 7]のスコアが付与される。各トピッククラスタはクラスタ中のpromptの平均スコアによってスコアリングされフィルタリングに活用される。<br>最終的に250のhigh-qualityなトピッククラスタ（すなわち、スコアが&gt;=6のクラスタ）が選ばれ、各クラスタから2つのサンプルをサンプリングして合計500個のbenchmark promptを得る。<br>評価をする際は、評価対象のモデルとstrong baseline（GPT-4-0314）のレスポンスを比較し、LLM-as-a-Judge（GPT-4-Turbo, Claude-3-Opus）によってペアワイズの品質データを取得する。position biasに配慮するためにreaponseの位置を入れ替えて各サンプルごとに2回評価するので、このデータは1000個のペアワイズデータとなる。<br>このペアワイズデータをbootstrap resamplingした上で、Bradley-Terryモデル（=勝敗データからプレイヤーの強さを数値化する統計モデル）でスコアを計算することでスコアを得る。<br><br>ArenaHardはMT Benchよりも高い識別力を獲得している。<br><br>&lt;img width="981" height="833" alt="Image" src="
-
-
-&lt;a href="https://github.com/user-attachments/assets/a9bca283-31c2-4606-b59d-b7df60af43f1"" target="_blank" rel="noopener noreferrer"&gt;https://github.com/user-attachments/assets/a9bca283-31c2-4606-b59d-b7df60af43f1"&lt;/a&gt;
+<p>ChatbotArenaのデータからコンタミネーションに考慮して定期的に抽出される高品質なreal worldに近いのconversationデータセット。抽出プロセスではpromptの多様性とqualityが担保される形で、200,000のユーザからのpromptが抽出されフィルタリングにかけられる。<br>多様性という観点では、全てのpromptを OpenAI の `text-embedding-3-small` によってembeddingに変換し、UMAPによって次元圧縮をした後に階層的クラスタリング手法によってトピッククラスタを形成する。各クラスタにはGPT-4-turboで要約が付与され、要約を活用して4000のトピッククラスタを選定する。<br>続いて、各クラスタに含まれるクエリは品質がバラバラなので、高品質なものを抽出するために以下の観点からLLM-as-a-Judge（GPT-3.5-Turbo, GPT-4-turbo）を用いてフィルタリングを実施する:<br>```<br>1. Specificity: Does the prompt ask for a specific output?<br>2. Domain Knowledge: Does the prompt cover one or more specific domains?<br>3. Complexity: Does the prompt have multiple levels of reasoning, components, or variables?<br>4. Problem-Solving: Does the prompt directly involve the AI to demonstrate active problem-solving skills?<br>5. Creativity: Does the prompt involve a level of creativity in approaching the problem?<br>6. Technical Accuracy: Does the prompt require technical accuracy in the response?<br>7. Real-world Application: Does the prompt relate to real-world applications?<br>```<br>（観点は元記事から引用）<br><br>各観点を満たしていたら1ポイントとし、各promptごとに[0, 7]のスコアが付与される。各トピッククラスタはクラスタ中のpromptの平均スコアによってスコアリングされフィルタリングに活用される。<br>最終的に250のhigh-qualityなトピッククラスタ（すなわち、スコアが&gt;=6のクラスタ）が選ばれ、各クラスタから2つのサンプルをサンプリングして合計500個のbenchmark promptを得る。<br>評価をする際は、評価対象のモデルとstrong baseline（GPT-4-0314）のレスポンスを比較し、LLM-as-a-Judge（GPT-4-Turbo, Claude-3-Opus）によってペアワイズの品質データを取得する。position biasに配慮するためにreaponseの位置を入れ替えて各サンプルごとに2回評価するので、このデータは1000個のペアワイズデータとなる。<br>このペアワイズデータをbootstrap resamplingした上で、Bradley-Terryモデル（=勝敗データからプレイヤーの強さを数値化する統計モデル）でスコアを計算することでスコアを得る。<br><br>ArenaHardはMT Benchよりも高い識別力を獲得している。<br><br><img width="981" height="833" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/a9bca283-31c2-4606-b59d-b7df60af43f1"
 
 
 /&gt;</p>
@@ -1322,8 +1319,7 @@ function googleTranslateElementInit() {
 </p></span><br><br>
 <button onclick="hideContent(0)" style="display: none;">hide</button>
 </div>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const tweets = document.querySelectorAll('.tweet-embed[data-embed]');
@@ -1377,7 +1373,6 @@ function googleTranslateElementInit() {
 </script>
 
 
-
     </div>
 
 </article>
@@ -1388,32 +1383,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Hierarchical.html" title="Hierarchicalに関する論文・技術記事メモの一覧">
-            Hierarchicalに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SpeechProcessing.html" title="SpeechProcessingに関する論文・技術記事メモの一覧">
+            SpeechProcessingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/CoRL.html" title="CoRLに関する論文・技術記事メモの一覧">
-            CoRLに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/PointWise.html" title="PointWiseに関する論文・技術記事メモの一覧">
+            PointWiseに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ItemBased.html" title="ItemBasedに関する論文・技術記事メモの一覧">
-            ItemBasedに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Speech.html" title="Speechに関する論文・技術記事メモの一覧">
+            Speechに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/meta-learning.html" title="meta-learningに関する論文・技術記事メモの一覧">
-            meta-learningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SparseAutoEncoder.html" title="SparseAutoEncoderに関する論文・技術記事メモの一覧">
+            SparseAutoEncoderに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>

@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/CompoundAISystemsOptimization.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-11-26T00:49:04+00:00">
+<meta property="article:published_time" content="2025-11-26T15:03:17+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-26T00:49:04+00:00","datePublished":"2025-11-26T00:49:04+00:00","description":"CompoundAISystemsOptimization #MachineLearning #Pocket #LanguageModel #RewardModel","headline":"CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/CompoundAISystemsOptimization.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/CompoundAISystemsOptimization.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-26T15:03:17+00:00","datePublished":"2025-11-26T15:03:17+00:00","description":"CompoundAISystemsOptimization #MachineLearning #Pocket #LanguageModel #RewardModel","headline":"CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/CompoundAISystemsOptimization.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/CompoundAISystemsOptimization.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-11-26T00:49:04+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 26, 2025
+    <time class="dt-published" datetime="2025-11-26T15:03:17+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 26, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -809,7 +809,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 mins</span>
   </div></header>
 </div>
     </div>
@@ -1034,28 +1034,18 @@ function googleTranslateElementInit() {
 
 </p>
 <p>複数のコンポーネントのパイプラインによって構成されるシステムがあったときに、パイプライン全体のパフォーマンスを改善したい。このとき、パイプライン全体のパフォーマンスをユーザが定義したGlobal Reward Functionを最大化するように最適化したい。しかし、多くの場合このような異種のコンポーネントが複雑に連携したパイプラインでは、global rewardsは微分不可能なので、end-to-endで最適化することが難しい。また、個々の異種のコンポーネントのコンフィグ（e.g., textual, numerical, continuous vs. discrete）を同時に最適化することがそもそも難しい。全体のAIシステムを動作させて、global rewardを最適化するのは非常にコストがかかる。先行研究では、特定のコンポーネントを別々に最適化してきた（たとえば、promptをフィードバックに基づいて改善する <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1037" target="_blank" rel="noopener noreferrer">Large Language Models as Optimizers, Chengrun Yang+, N/A, ICLR'24</a>
-, モデル選択をiterative searchで改善するなど）。が、個別のコンポーネントを最適化しても別のコンポーネントの最適化が不十分であれば全体の性能は向上せず、全てのコンポーネントを個別に最適化しても、相互作用が最適ではない場合はglobal rewardが最大化されない可能性がある。<br><br>このため、個々のコンポーネントにlocal reward function (LRFs)を定義する。local reward functionは、これらが改善することでglobal reward functionも改善することを保証するような形（local-global alignment properfy）で定義され、これらのlocal reward functionを異なるコンポーネントごとに異なる形で最適化しても、global reward functionが改善されるように学習する。個々のコンポーネントごとにLRFsを最適化することは、全体のシステムの実行回数を削減しながら高いglobal rewardを実現可能となる。加えて、他のコンポーネントのコンフィグが改善されたら、それらに適応してLRFsも改善されていく必要があるので lightweight adaptationと呼ばれる、システムからサンプリングされた最小のデータからLRFsをアップデートする手法も提案する、みたいな話な模様。<br><br>&lt;img width="868" height="501" alt="Image" src="
+, モデル選択をiterative searchで改善するなど）。が、個別のコンポーネントを最適化しても別のコンポーネントの最適化が不十分であれば全体の性能は向上せず、全てのコンポーネントを個別に最適化しても、相互作用が最適ではない場合はglobal rewardが最大化されない可能性がある。<br><br>このため、個々のコンポーネントにlocal reward function (LRFs)を定義する。local reward functionは、これらが改善することでglobal reward functionも改善することを保証するような形（local-global alignment properfy）で定義され、これらのlocal reward functionを異なるコンポーネントごとに異なる形で最適化しても、global reward functionが改善されるように学習する。個々のコンポーネントごとにLRFsを最適化することは、全体のシステムの実行回数を削減しながら高いglobal rewardを実現可能となる。加えて、他のコンポーネントのコンフィグが改善されたら、それらに適応してLRFsも改善されていく必要があるので lightweight adaptationと呼ばれる、システムからサンプリングされた最小のデータからLRFsをアップデートする手法も提案する、みたいな話な模様。<br><br><img width="868" height="501" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/2d6a1422-c087-455a-813c-97d47da5976d"
 
 
-&lt;a href="https://github.com/user-attachments/assets/2d6a1422-c087-455a-813c-97d47da5976d"" target="_blank" rel="noopener noreferrer"&gt;https://github.com/user-attachments/assets/2d6a1422-c087-455a-813c-97d47da5976d"&lt;/a&gt;
+/&gt;<br><br>LRFsを定義するときは、共通のLLMをバックボーンとし、個々のコンポーネントに対して別々のヘッドを用意してrewardを出力するようなモデルを定義する。コンポーネントkのinput x, output y が与えられたときに、それらをconcatしてLLMに入力し[x_k, y_k]最終的にヘッドでスカラー値に写像する。また、LRF r_kが *aligned* の定義として、LRF r_kがある共通のinputに対してr_kが高くなるようなoutputをしたときに、downstreamのコンポーネント全体のglobal reward Rが同等以上の性能を達成する場合、alignedであると定義する。このような特性を実現するために、現行のシステムのコンフィグに基づいてそれぞれのコンポーネントを実行し、trajectoryを取得。特定のコンポーネントC_kに対する二つのoutputを（異なるコンフィグに基づいて）サンプリングしてパイプライン全体のmetricを予測し、metricが高い/低いサンプルをchosen/rejectedとし preference dataを用意する。このようなデータを用いて、個々のコンポーネントのLRFsを、chosenなサンプルの場合はrejectedよりもrewardが高くなるようにペアワイズのranking lossを用いて学習する。<br><br>(ここまでが4.1節の概要。4.2, 4.3節以後は必要に応じて参照する。4.2ではどのように他コンポーネントが更新された際にLRFsを更新するか、という話と、4.3節では個々のコンポーネントがtext, trainable models, continuous configurationなどの異なるコンポーネントの場合にどのような最適化手法を適用するか、といった話が書かれているように見える。)<br><br>評価では5つの実世界のタスクを実現するための複数コンポーネントで構成されるシステムの最適化を試みているようであり、<br><img width="1119" height="634" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/be6fcb09-a68c-4b4c-998e-9f940cad677f"
 
 
-/&gt;<br><br>LRFsを定義するときは、共通のLLMをバックボーンとし、個々のコンポーネントに対して別々のヘッドを用意してrewardを出力するようなモデルを定義する。コンポーネントkのinput x, output y が与えられたときに、それらをconcatしてLLMに入力し[x_k, y_k]最終的にヘッドでスカラー値に写像する。また、LRF r_kが *aligned* の定義として、LRF r_kがある共通のinputに対してr_kが高くなるようなoutputをしたときに、downstreamのコンポーネント全体のglobal reward Rが同等以上の性能を達成する場合、alignedであると定義する。このような特性を実現するために、現行のシステムのコンフィグに基づいてそれぞれのコンポーネントを実行し、trajectoryを取得。特定のコンポーネントC_kに対する二つのoutputを（異なるコンフィグに基づいて）サンプリングしてパイプライン全体のmetricを予測し、metricが高い/低いサンプルをchosen/rejectedとし preference dataを用意する。このようなデータを用いて、個々のコンポーネントのLRFsを、chosenなサンプルの場合はrejectedよりもrewardが高くなるようにペアワイズのranking lossを用いて学習する。<br><br>(ここまでが4.1節の概要。4.2, 4.3節以後は必要に応じて参照する。4.2ではどのように他コンポーネントが更新された際にLRFsを更新するか、という話と、4.3節では個々のコンポーネントがtext, trainable models, continuous configurationなどの異なるコンポーネントの場合にどのような最適化手法を適用するか、といった話が書かれているように見える。)<br><br>評価では5つの実世界のタスクを実現するための複数コンポーネントで構成されるシステムの最適化を試みているようであり、<br>&lt;img width="1119" height="634" alt="Image" src="
-
-
-&lt;a href="https://github.com/user-attachments/assets/be6fcb09-a68c-4b4c-998e-9f940cad677f"" target="_blank" rel="noopener noreferrer"&gt;https://github.com/user-attachments/assets/be6fcb09-a68c-4b4c-998e-9f940cad677f"&lt;/a&gt;
-
-
-/&gt;<br><br>提案手法によって、パイプライン全体の性能がベースラインと比べて改善しシステム全体の実行回数もベースラインと比較して少ない試行回数で済むことが示されている模様。<br>&lt;img width="1112" height="582" alt="Image" src="
-
-
-&lt;a href="https://github.com/user-attachments/assets/a4f4c274-920f-4f60-9594-6b19b84f6b34"" target="_blank" rel="noopener noreferrer"&gt;https://github.com/user-attachments/assets/a4f4c274-920f-4f60-9594-6b19b84f6b34"&lt;/a&gt;
+/&gt;<br><br>提案手法によって、パイプライン全体の性能がベースラインと比べて改善しシステム全体の実行回数もベースラインと比較して少ない試行回数で済むことが示されている模様。<br><img width="1112" height="582" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/a4f4c274-920f-4f60-9594-6b19b84f6b34"
 
 
 /&gt;</p></span><br><br>
 </div>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const tweets = document.querySelectorAll('.tweet-embed[data-embed]');
@@ -1109,7 +1099,6 @@ function googleTranslateElementInit() {
 </script>
 
 
-
     </div>
 
 </article>
@@ -1120,32 +1109,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/React%20(Frontend).html" title="React (Frontend)に関する論文・技術記事メモの一覧">
-            React (Frontend)に関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/SemanticID.html" title="SemanticIDに関する論文・技術記事メモの一覧">
+            SemanticIDに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ReinforcementLearning.html" title="ReinforcementLearningに関する論文・技術記事メモの一覧">
-            ReinforcementLearningに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/VariationalAutoEncoder.html" title="VariationalAutoEncoderに関する論文・技術記事メモの一覧">
+            VariationalAutoEncoderに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DataMixture.html" title="DataMixtureに関する論文・技術記事メモの一覧">
-            DataMixtureに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/AES(AutomatedEssayScoring).html" title="AES(AutomatedEssayScoring)に関する論文・技術記事メモの一覧">
+            AES(AutomatedEssayScoring)に関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Reranking.html" title="Rerankingに関する論文・技術記事メモの一覧">
-            Rerankingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/PositionalEncoding.html" title="PositionalEncodingに関する論文・技術記事メモの一覧">
+            PositionalEncodingに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
