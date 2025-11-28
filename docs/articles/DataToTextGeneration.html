@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/DataToTextGeneration.html">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-11-27T00:47:55+00:00">
+<meta property="article:published_time" content="2025-11-28T00:47:22+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="DataToTextGenerationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-27T00:47:55+00:00","datePublished":"2025-11-27T00:47:55+00:00","description":"DataToTextGeneration #NaturalLanguageGeneration #Pocket #NLP #Prompting #NumericReasoning","headline":"DataToTextGenerationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DataToTextGeneration.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DataToTextGeneration.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-28T00:47:22+00:00","datePublished":"2025-11-28T00:47:22+00:00","description":"DataToTextGeneration #NaturalLanguageGeneration #Pocket #NLP #Prompting #NumericReasoning","headline":"DataToTextGenerationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DataToTextGeneration.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DataToTextGeneration.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -774,7 +774,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-11-27T00:47:55+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 27, 2025
+    <time class="dt-published" datetime="2025-11-28T00:47:22+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 28, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -809,7 +809,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 11 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 12 mins</span>
   </div></header>
 </div>
     </div>
@@ -1199,6 +1199,15 @@ function googleTranslateElementInit() {
 <span class="snippet"><span>Comment</span><p># 概要<br><br>既存のニューラルモデルでは、生データ、あるいはそこから推論された事実に基づいて言語を生成するといったことができていない（e.g. 金融, 医療, スポーツ等のドメインでは重要）。<br><br>たとえば下表に示した通り、"edge"という単語は、スコアが接戦（95-94=1 -&gt; スコアの差が小さい）であったことを表現しているが、こういったことを既存のモデルでは考慮して生成ができない。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138627286-c9bde402-0129-4b82-9faf-80fcde08cdc8.png" alt="image" loading="lazy"><br><br><br><br>これを解決するために、演算（operation）とニューラル言語モデルを切り離す（事前に計算しておく）といったことが考えられるが、<br><br>① 全てのフィールドに対してoperationを実行すると、探索空間が膨大になり、どの結果に対して言及する価値があるかを同定するのが困難（言及する価値がある結果がほとんど存在しない探索空間ができてしまう）<br><br>② 演算結果の数値のスパンと、言語選択の対応関係を確立させるのが困難（e.g. スコアの差が1のとき"edge"と表現する、など）<br><br>といった課題がある。<br><br><br><br>①に対処するために、事前にraw dataに対して演算を適用しその結果を利用するモデルを採用。どの演算結果を利用するかを決定するために、gating-mechanismを活用する。<br><br>②に対処するために、quantization layerを採用し、演算結果の数値をbinに振り分け、その結果に応じて生成する表現をguideするようなモデルを採用する。<br><br><br><br># モデル概要<br><br>モデルはrecord encoder(h_{i}^{ctx}を作る)、operation encoder(h_{i}^{op}を作る)、operation result encoder(h_{i}^{res}を作る)によって構成される。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138628639-0c64d7aa-22e7-4ee7-a55f-65736e607ed2.png" alt="image" loading="lazy"><br><br><br><br>## record encoder<br><br>record encoderは、wisemanらと同様に、index (e.g. row 2), column (e.g. column Points), value (e.g. 95)のword embeddingを求め、それらをconcatしたものをbi-directional RNNに入力し求める。<br><br><br><br>## operation encoder<br><br>operation encoderでは、operation op_{i}は、1) operationの名称 (e.g. minus) 2) operationを適用するcolumn (e.g. Points), 3) operationを適用するrow (e.g. {1, 2}などのrow indexの集合)によって構成されており、これらのembeddingをlookupしconcatした後、non-linear layerで変換することによってoperationのrepresentationを取得する。3)operationを適用するrowについては、複数のindexによって構成されるため、各indexのembeddingをnon-linear layerで変換したベクトルを足し合わせた結果に対してtanhを適用したベクトルをembeddingとして利用する。<br><br><br><br>## operation result encoder<br><br>operation result encoderは、scalar results（minus operationにより-1）およびindexing results (argmax operationによりindex 2)の二種類を生成する。これら二種類に対して異なるencoding方法を採用する。<br><br>### scalar results<br><br>scalar resultsに対しては、下記式でscalar valueをquantization vector（q_{i}）に変換する。qutization vectorのlengthはLとなっており、Lはbinの数に相当している。つまり、quantization vectorの各次元がbinの重みに対応している。その後、quantization vectorに対してsoftmaxを適用し、quantization unit（quantization vectorの各次元）の重みを求める。最後に、quantization embeddingと対応するquantization unitの重み付き平均をとることによってh_{i}^{res}を算出する。<br><br><br><br>Q. 式を見るとW_{q}がscalar resultの値によって定数倍されるだけだから、softmaxによって求まるquantization unitの重みの序列はscalar resultによって変化しなそうに見えるが、これでうまくいくんだろうか・・・？序列は変わらなくても各quantization unit間の相対的な重みの差が変化するから、それでうまくscalar値の変化を捉えられるの・・・か・・・？<br><br><br><br>### indexing results<br><br>indexing resultsについては、h_{i}^{res}をシンプルにindexのembeddingとする。<br><br><br><br>## Decoder<br><br>context vectorの生成方法が違う。従来のモデルと比較して、context vectorを生成する際に、レコードをoperationの両方をinputとする。<br><br><img src="https://user-images.githubusercontent.com/12249301/138632508-f9407ff9-3e8a-4efd-91d4-6879e81331a6.png" alt="image" loading="lazy"><br><br><br><br>operationのcontext vector c_{t}^{op}とrecordsのcontext vector c_{t}^{ctx}をdynamic gate λ_{t}によって重み付けし最終的なcontext vectorを求める。λ_{t}は、t-1時点でのデコーダのhidden stateから重みを求める。<br><br>c_{t}^{op}は次式で計算され：<br><br><img src="https://user-images.githubusercontent.com/12249301/138633048-ca82ff5f-9755-4e5f-a658-774354cde987.png" alt="image" loading="lazy"><br><br>c_{t}^{scl, idx}は、<br><br><img src="https://user-images.githubusercontent.com/12249301/138633078-f74de4b3-f742-48f9-9f29-64489f8f477a.png" alt="image" loading="lazy"><br><br>よって計算される。要は、decoderのt-1のhidden stateと、operation vectorを用いて、j番目のoperationの重要度（β）を求め、operationの重要度によって重み付けしてoperation result vectorを足し合わせることによって、context vectorを算出する。<br><br>また、recordのcontext vector c_{t}^{ctx}は、h_{j}^{res}とh_{j}^{op}と、h_{j}^{ctx}に置き換えることによって算出される。 <br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138631847-e3076003-b619-49e4-afad-0edffaace060.png" alt="image" loading="lazy"><br><br><br><br>## データセット<br><br>人手でESPN, ROTOWIRE, WIKIBIOデータセットのReferenceに対して、factを含むtext spanと、そのfactの種類を3種類にラベル付した。input factsはinput dataから直接見つけられるfact, inferred factsはinput dataから直接見つけることはできないが、導き出すことができるfact、unsupported factsはinput dataから直接あるいは導き出すことができないfact。wikibioデータセットはinferred factの割合が少ないため、今回の評価からは除外し、ROTOWIRE, ESPNを採用した。特にESPNのheadline datasetがinferred factsが多かった。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138636048-4b8225f7-f685-45b9-ae06-1af57e09044d.png" alt="image" loading="lazy"></p>
 <p># 結果<br><br>## 自動評価<br><br><img src="https://user-images.githubusercontent.com/12249301/138634010-2de062dc-d2dc-48af-8724-f6fa950e8144.png" alt="image" loading="lazy"><br><br><br><br>wiseman modelをOpAttがoutperformしている。また、Seq2Seq+op+quant（Seq2Seq+copyに対してoperation result encoderとquantization layerを適用したもの）はSeq2Seq+Copyを上回っているが、OpAttほとではないことから、提案手法のoperation encoderの導入とgating mechanismが有効に作用していることがわかる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138635201-462ef128-58d1-4084-ae70-5acccd34087b.png" alt="image" loading="lazy"><br><br><br><br>採用するoperationによって、生成されるテキストも異なるようになっている。<br><br><br><br>## 人手評価<br><br>3人のNBAに詳しいEnglish native speakerに依頼してtest dataに対する生成結果にアノテーションをしてもらった。アノテーションは、factを含むspanを同定し、そのfactがinput facts/inferred facts/unsupported factsのどれかを分類してもらった。最後に、そのfactが入力データからsupportされるかcontradicted（矛盾するか）かをアノテーションしてもらった。<br><br>提案手法が、より多くのinferred factsについて言及しながらも、少ない#Cont.であることがわかった。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138636756-74da3999-45e7-489f-9d0a-ac68416d3de0.png" alt="image" loading="lazy"><br><br></p>
 <p># 分析<br><br>## Quantizationの効果<br><br>チーム間のスコアの差が、5つのbinのに対してどれだけの重みを持たせたかのheatmap。似たようなスコアのgapの場合は似たような重みになることがわかる。ポイント差の絶対値が小さい場合は、重みの分布の分散が大きくなるのでより一般的な単語で生成を行うのに対し、絶対値が大きい場合は分散が小さくなるため、unique wordをつかって生成するようになる。<br><br><img src="https://user-images.githubusercontent.com/12249301/138637300-04738ba9-8e5f-4b07-8ed2-1a62c14cb7fe.png" alt="image" loading="lazy"><br><br><br><br>pointのgapの大きさによって利用される単語も変化していることがわかる。ポイント差がちいさいときは"edge"、大きいときは"blow out"など。<br><br><img src="https://user-images.githubusercontent.com/12249301/138637614-19a95fba-9904-4378-86d0-3d1bd513be8a.png" alt="image" loading="lazy"><br><br><br><br>## gating mechanismの効果<br><br>生成テキストのtimestepごとのgateの重みの例。色が濃ければ濃いほど、operation resultsの情報を多く利用していることを表す。チームリーダーを決める際や（horford）勝者を決める際に(Hawks)、operation resultsの重みが大きくなっており、妥当な重み付けだと考察している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138637813-4b4a2b1d-c5c5-4f7a-96b3-59df3a56aeb2.png" alt="image" loading="lazy"><br><br><br><br></p></span><br><br>
+<a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="articles/NumericReasoning.html" target="_blank" rel="noopener noreferrer">#NumericReasoning</a>
+<a class="button" href="articles/Financial.html" target="_blank" rel="noopener noreferrer">#Financial</a>
+<a class="button" href="articles/ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="articles/numeric.html" target="_blank" rel="noopener noreferrer">#numeric</a>
+<a class="button" href="articles/Encoder-Decoder.html" target="_blank" rel="noopener noreferrer">#Encoder-Decoder</a>
+<span class="issue_date">Issue Date: 2025-11-27</span>
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3820" target="_blank" rel="noopener noreferrer" class="title-link">[Paper Note] Learning to Generate Market Comments from Stock Prices, Murakami+, ACL'17</a>
+<span class="snippet"><span>GPT Summary</span>- 株価から市場コメントを生成する新しいエンコーダ-デコーダモデルを提案。モデルは短期・長期の株価変化をエンコードし、適切な算術演算を選択して数値を生成。実験により、最良モデルが人間の生成したテキストに近い流暢さと情報量を持つことが確認された。</span>
 <a class="button" href="articles/NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="articles/NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="articles/NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1414,32 +1423,32 @@ function googleTranslateElementInit() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Discourse.html" title="Discourseに関する論文・技術記事メモの一覧">
-            Discourseに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/WorldModels.html" title="WorldModelsに関する論文・技術記事メモの一覧">
+            WorldModelsに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/memory.html" title="memoryに関する論文・技術記事メモの一覧">
-            memoryに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/WSDM.html" title="WSDMに関する論文・技術記事メモの一覧">
+            WSDMに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LM-based.html" title="LM-basedに関する論文・技術記事メモの一覧">
-            LM-basedに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/Test-time%20Learning.html" title="Test-time Learningに関する論文・技術記事メモの一覧">
+            Test-time Learningに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Routing.html" title="Routingに関する論文・技術記事メモの一覧">
-            Routingに関する論文・技術記事メモの一覧<span class="post-badges">
+          <a class="post-link" href="/paper_notes/articles/ExplicitFeedback.html" title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
+            ExplicitFeedbackに関する論文・技術記事メモの一覧<span class="post-badges">
   <span class="post-badge badge-top">TOP</span>
   <span class="post-badge badge-new">NEW</span>
 </span>
