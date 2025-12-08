@@ -1,8 +1,87 @@
 <style type="text/css" media="screen">
+/* --- レイアウト用（前回と同じ） --- */
+.post-menu {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-menu-title {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.post-menu-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
 .post-menu ul {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+/* --- 開閉アニメーションとアイコン用 --- */
+
+/* h2のスタイル：クリックできるようにする */
+.post-menu li.h-h2 {
+  cursor: pointer;
+  position: relative;
+  padding-left: 15px; /* アイコン用のスペース */
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 開閉アイコン（▼） */
+.post-menu li.h-h2::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 6px; /* 三角形 */
+  border-color: transparent transparent transparent #555;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.post-menu li.h-h2.no-icon::before {
+  content: none; /* 擬似要素の中身をなしにする */
+  /* または display: none; でもOKです */
+}
+
+/* 開いている時のアイコン（下向きにする） */
+.post-menu li.h-h2.open::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* h3（子要素）のスタイル */
+.post-menu li.h-h3 {
+  margin-left: 15px;
+  font-size: 0.9em;
+  /* 初期状態はJSで制御しますが、念のため */
+}
+
+/* アクティブな項目の色 */
+.post-menu li.active > a {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* リンク自体のスタイル調整 */
+.post-menu li a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: 100%;
 }
 </style>
 
@@ -14,92 +93,95 @@
 <script>
   function generateContent() {
     var menu = document.querySelector(".post-menu");
-    var menuContent =  menu.querySelector(".post-menu-content");
-    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+    var menuContent = menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3");
 
-    // Hide menu when no headings
     if (headings.length === 0) {
       return menu.style.display = "none";
     }
 
-    // Generate post menu
+    // --- HTML生成 ---
     var menuHTML = '';
     for (var i = 0; i < headings.length; i++) {
       var h = headings[i];
+      // h-h2 クラスの要素には初期状態で open クラスをつけるか、つけないかで「最初から開いているか」を決められます
+      // ここでは閉じた状態をデフォルトとします
       menuHTML += (
         '<li class="h-' + h.tagName.toLowerCase() + '">'
-        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+        + '<a href="#' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
     }
-
     menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
 
-    // The header element
+
+    // --- 開閉ロジックの実装 ---
+    var listItems = menuContent.querySelectorAll('li');
+
+    // h2要素にクリックイベントを追加
+    listItems.forEach(function(item, index) {
+      if (item.classList.contains('h-h2')) {
+        
+        // クリックイベント
+        item.addEventListener('click', function(e) {
+          // リンクをクリックした場合はページ内遷移させたいので、イベントを止めない
+          // ただし、アイコン付近をクリックした等の挙動を統一するため、
+          // 開閉処理を行います。
+          
+          // クラスの付け替え（アイコンの回転用）
+          item.classList.toggle('open');
+
+          // 次のh2が出てくるまで、h3を表示/非表示切り替え
+          for (var i = index + 1; i < listItems.length; i++) {
+            var sibling = listItems[i];
+            if (sibling.classList.contains('h-h2')) {
+              break; // 次のh2に来たら終了
+            }
+            if (sibling.classList.contains('h-h3')) {
+              if (item.classList.contains('open')) {
+                sibling.style.display = 'block';
+              } else {
+                sibling.style.display = 'none';
+              }
+            }
+          }
+        });
+      }
+    });
+
+    // --- 初期状態の設定（すべて閉じる） ---
+    // もし最初から開いておきたい場合は、このブロックを削除するか調整してください
+    listItems.forEach(function(item) {
+      if (item.classList.contains('h-h3')) {
+        item.style.display = 'none';
+      }
+    });
+
+
+    // --- スクロール連動（ハイライト機能のみ残す） ---
     var header = document.querySelector('header.site-header');
-
-    function doMenuCollapse(index, over_items) {
-      var items = menuContent.firstChild.children;
-
-      if (over_items == undefined) {
-        over_items = 20;
-      }
-
-      if (items.length < over_items) {
-        return;
-      }
-
-      var activeItem = items[index];
-      var beginItem = activeItem
-      var endItem = activeItem
-      var beginIndex = index;
-      var endIndex = index + 1;
-      while (beginIndex >= 0
-        && !items[beginIndex].classList.contains('h-h2')) {
-        beginIndex -= 1;
-      }
-      while (endIndex < items.length
-        && !items[endIndex].classList.contains('h-h2')) {
-        endIndex += 1;
-      }
-      for (var i = 0; i < beginIndex; i++) {
-        item = items[i]
-        if (!item.classList.contains('h-h2')) {
-          item.style.display = 'none';
-        }
-      }
-      for (var i = beginIndex + 1; i < endIndex; i++) {
-        item = items[i]
-        // if (!item.classList.contains('h-h2')) {
-          item.style.display = '';
-        // }
-      }
-      for (var i = endIndex; i < items.length; i++) {
-        item = items[i]
-        if (!item.classList.contains('h-h2')) {
-          item.style.display = 'none';
-        }
-      }
-    }
-
-    // Init menu collapsed
-    doMenuCollapse(-1);
-
-    // Active the menu item
+    
     window.addEventListener('scroll', function (event) {
       var lastActive = menuContent.querySelector('.active');
       var changed = true;
       var activeIndex = -1;
+      
       for (var i = headings.length - 1; i >= 0; i--) {
         var h = headings[i];
         var headingRect = h.getBoundingClientRect();
-        var headerRect = header.getBoundingClientRect();
+        var headerRect = header ? header.getBoundingClientRect() : {top:0, height:0}; // headerがない場合の安全策
         var headerTop = Math.floor(headerRect.top);
         var headerHeight = Math.floor(headerRect.height);
-        var headerHeight = headerTop + headerHeight + 20;
-        if (headingRect.top <= headerHeight) {
-          var id = 'h-' + h.getAttribute('id');
+        var offset = headerTop + headerHeight + 20;
+
+        if (headingRect.top <= offset) {
+          var id = h.getAttribute('id');
           var a = menuContent.querySelector('a[href="#' + id  + '"]');
           var curActive = a.parentNode;
+          
           if (curActive) {
+            // もしアクティブになった項目が閉じているh2の中にあった場合、
+            // 自動で開く処理を追加したい場合はここに記述します。
+            // 今回は「手動開閉」を優先し、自動オープンはあえて行いません。
+            
             curActive.classList.add('active');
             activeIndex = i;
           }
@@ -109,13 +191,12 @@
           break;
         }
       }
+
       if (changed) {
         if (lastActive) {
           lastActive.classList.remove('active');
         }
-        doMenuCollapse(activeIndex);
       }
-      event.preventDefault();
     });
   }
   generateContent();
