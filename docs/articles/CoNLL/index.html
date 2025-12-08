@@ -12,8 +12,8 @@
 <meta property="og:title" content="CoNLLに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="CoNLL [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Original Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #Zero/FewShotLearning #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 [Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17 Original Issue #Multi #DocumentSummarization #NeuralNetwork #Document #Supervised #GraphBased #NLP #GraphConvolutionalNetwork #Extractive Issue Date: 2017-12-31 CommentGraph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI'15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI'17[所感] ・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 ・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） ・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。） ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが） [Paper Note] Generating Sentences from a Continuous Space, Samuel R. Bowman+, CoNLL'16 Original Issue #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #Selected Papers/Blogs Issue Date: 2018-02-14 GPT Summary- RNNベースの変分オートエンコーダ生成モデルを導入し、文全体の分散潜在表現を組み込むことで、文のスタイルやトピックなどの特性を明示的にモデル化。潜在空間を通じて新しい文を生成し、欠損単語の補完効果を実証。モデルの特性と使用に関する否定的な結果も示す。 CommentVAEを利用して文生成【Variational Autoencoder徹底解説】">
-<meta property="og:description" content="CoNLL [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Original Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #Zero/FewShotLearning #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 [Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17 Original Issue #Multi #DocumentSummarization #NeuralNetwork #Document #Supervised #GraphBased #NLP #GraphConvolutionalNetwork #Extractive Issue Date: 2017-12-31 CommentGraph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI'15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI'17[所感] ・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 ・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） ・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。） ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが） [Paper Note] Generating Sentences from a Continuous Space, Samuel R. Bowman+, CoNLL'16 Original Issue #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #Selected Papers/Blogs Issue Date: 2018-02-14 GPT Summary- RNNベースの変分オートエンコーダ生成モデルを導入し、文全体の分散潜在表現を組み込むことで、文のスタイルやトピックなどの特性を明示的にモデル化。潜在空間を通じて新しい文を生成し、欠損単語の補完効果を実証。モデルの特性と使用に関する否定的な結果も示す。 CommentVAEを利用して文生成【Variational Autoencoder徹底解説】">
+<meta name="description" content="CoNLL [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Paper/Blog Link My Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #Zero/FewShotLearning #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 [Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17 Paper/Blog Link My Issue #Multi #DocumentSummarization #NeuralNetwork #Document #Supervised #GraphBased #NLP #GraphConvolutionalNetwork #Extractive Issue Date: 2017-12-31 CommentGraph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI'15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI'17[所感] ・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 ・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） ・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。） ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが） [Paper Note] Generating Sentences from a Continuous Space, Samuel R. Bowman+, CoNLL'16 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #Selected Papers/Blogs Issue Date: 2018-02-14 GPT Summary- RNNベースの変分オートエンコーダ生成モデルを導入し、文全体の分散潜在表現を組み込むことで、文のスタイルやトピックなどの特性を明示的にモデル化。潜在空間を通じて新しい文を生成し、欠損単語の補完効果を実証。モデルの特性と使用に関する否定的な結果も示す。 CommentVAEを利用して文生成【Variational Autoencoder徹底解説】">
+<meta property="og:description" content="CoNLL [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Paper/Blog Link My Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #Zero/FewShotLearning #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 [Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17 Paper/Blog Link My Issue #Multi #DocumentSummarization #NeuralNetwork #Document #Supervised #GraphBased #NLP #GraphConvolutionalNetwork #Extractive Issue Date: 2017-12-31 CommentGraph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI'15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI'17[所感] ・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 ・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） ・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。） ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが） [Paper Note] Generating Sentences from a Continuous Space, Samuel R. Bowman+, CoNLL'16 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #Selected Papers/Blogs Issue Date: 2018-02-14 GPT Summary- RNNベースの変分オートエンコーダ生成モデルを導入し、文全体の分散潜在表現を組み込むことで、文のスタイルやトピックなどの特性を明示的にモデル化。潜在空間を通じて新しい文を生成し、欠損単語の補完効果を実証。モデルの特性と使用に関する否定的な結果も示す。 CommentVAEを利用して文生成【Variational Autoencoder徹底解説】">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/CoNLL/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/CoNLL/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="CoNLLに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-26T00:00:00+00:00","datePublished":"2025-08-26T00:00:00+00:00","description":"CoNLL [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL&#39;17 Original Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #Zero/FewShotLearning #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 [Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL&#39;17 Original Issue #Multi #DocumentSummarization #NeuralNetwork #Document #Supervised #GraphBased #NLP #GraphConvolutionalNetwork #Extractive Issue Date: 2017-12-31 CommentGraph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI&#39;15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI&#39;17[所感] ・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 ・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） ・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。） ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが） [Paper Note] Generating Sentences from a Continuous Space, Samuel R. Bowman+, CoNLL&#39;16 Original Issue #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #Selected Papers/Blogs Issue Date: 2018-02-14 GPT Summary- RNNベースの変分オートエンコーダ生成モデルを導入し、文全体の分散潜在表現を組み込むことで、文のスタイルやトピックなどの特性を明示的にモデル化。潜在空間を通じて新しい文を生成し、欠損単語の補完効果を実証。モデルの特性と使用に関する否定的な結果も示す。 CommentVAEを利用して文生成【Variational Autoencoder徹底解説】","headline":"CoNLLに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/CoNLL/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/CoNLL/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-08-26T00:00:00+00:00","datePublished":"2025-08-26T00:00:00+00:00","description":"CoNLL [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL&#39;17 Paper/Blog Link My Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #Zero/FewShotLearning #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 [Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL&#39;17 Paper/Blog Link My Issue #Multi #DocumentSummarization #NeuralNetwork #Document #Supervised #GraphBased #NLP #GraphConvolutionalNetwork #Extractive Issue Date: 2017-12-31 CommentGraph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI&#39;15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI&#39;17[所感] ・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 ・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） ・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。） ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが） [Paper Note] Generating Sentences from a Continuous Space, Samuel R. Bowman+, CoNLL&#39;16 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #Selected Papers/Blogs Issue Date: 2018-02-14 GPT Summary- RNNベースの変分オートエンコーダ生成モデルを導入し、文全体の分散潜在表現を組み込むことで、文のスタイルやトピックなどの特性を明示的にモデル化。潜在空間を通じて新しい文を生成し、欠損単語の補完効果を実証。モデルの特性と使用に関する否定的な結果も示す。 CommentVAEを利用して文生成【Variational Autoencoder徹底解説】","headline":"CoNLLに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/CoNLL/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/CoNLL/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -1007,11 +1007,16 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <article class="paper-entry">
 <h3 id="zero-shot-relation-2556" class="title-link">[Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2556" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1706.04115" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2556" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1025,11 +1030,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="graph-based-neural-130" class="title-link">[Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/130" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://arxiv.org/pdf/1706.06681.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/130" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
@@ -1045,11 +1055,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="generating-sentences-258" class="title-link">[Paper Note] Generating Sentences from a Continuous Space, Samuel R. Bowman+, CoNLL'16</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/258" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1511.06349" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/258" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1122,38 +1137,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/LongSequence/" title="LongSequenceに関する論文・技術記事メモの一覧">
-            LongSequenceに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/GrammaticalErrorCorrection/" title="GrammaticalErrorCorrectionに関する論文・技術記事メモの一覧">
+            GrammaticalErrorCorrectionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 71</span> 
-  <span class="post-badge badge-new">📝 71</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ActivationFunction/" title="ActivationFunctionに関する論文・技術記事メモの一覧">
-            ActivationFunctionに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Contents-based/" title="Contents-basedに関する論文・技術記事メモの一覧">
-            Contents-basedに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Speech/" title="Speechに関する論文・技術記事メモの一覧">
-            Speechに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SparseAutoEncoder/" title="SparseAutoEncoderに関する論文・技術記事メモの一覧">
+            SparseAutoEncoderに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
   <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Mapping/" title="Mappingに関する論文・技術記事メモの一覧">
+            Mappingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/MLOps/" title="MLOpsに関する論文・技術記事メモの一覧">
+            MLOpsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li>

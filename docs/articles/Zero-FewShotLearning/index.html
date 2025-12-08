@@ -12,8 +12,8 @@
 <meta property="og:title" content="Zero/FewShotLearningに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="&lt;h2 id=Zero/FewShotLearning class=”paper-head”&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] TALLRec: An Effective and Efficient Tuning Framework to Align Large Language Model with Recommendation, Keqin Bao+, RecSys'23 Original Issue #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys #KeyPoint Notes Issue Date: 2025-03-30 GPT Summary- 大規模言語モデル（LLMs）を推薦システムに活用するため、推薦データで調整するフレームワークTALLRecを提案。限られたデータセットでもLLMsの推薦能力を向上させ、効率的に実行可能。ファインチューニングされたLLMはクロスドメイン一般化を示す。 Comment下記のようなユーザのプロファイルとターゲットアイテムと、binaryの明示的なrelevance feedbackデータを用いてLoRA、かつFewshot Learningの設定でSFTすることでbinaryのlike/dislikeの予測性能を向上。PromptingだけでなくSFTを実施した初めての研究だと思われる。既存ベースラインと比較して大幅にAUCが向上 Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL'23 Original Issue #NaturalLanguageGeneration #NLP #DataToTextGeneration #MultitaskLearning Issue Date: 2023-07-18 GPT Summary- この論文では、構造化データからテキストを生成する新しいアプローチを提案しています。提案手法は、さまざまな形式のデータを処理できる統一された表現を提供し、マルチタスクトレーニングやゼロショット学習などのシナリオでのパフォーマンスを向上させることを目指しています。実験結果は、提案手法が他の方法と比較して優れた性能を示していることを示しています。これは、データからテキスト生成フレームワークにおける重要な進歩です。 Dataset Distillation with Attention Labels for Fine-tuning BERT, ACL'23 Original Issue #NLP #DataDistillation #Attention Issue Date: 2023-07-14 GPT Summary- 本研究では、データセットの蒸留を使用して、元のデータセットのパフォーマンスを保持しながら、ニューラルネットワークを迅速にトレーニングするための小さなデータセットを作成する方法に焦点を当てています。具体的には、事前学習済みのトランスフォーマーを微調整するための自然言語処理タスクの蒸留されたfew-shotデータセットの構築を提案しています。実験結果では、注意ラベルを使用してfew-shotデータセットを作成し、BERTの微調整において印象的なパフォーマンスを実現できることを示しました。例えば、ニュース分類タスクでは、わずか1つのサンプルとわずか1つの勾配ステップのみで、元のデータセットの98.5％のパフォーマンスを達成しました。 CommentDatadistillationしたら、データセットのうち1サンプルのみで、元のデータセットの98.5%の性能を発揮できたという驚異的な研究（まえかわ君） Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL'20 Original Issue #NeuralNetwork #NaturalLanguageGeneration #NLP #LanguageModel #DataToTextGeneration #pretrained-LM Issue Date: 2022-12-01 Comment# 概要Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成# 手法TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要1. factualな情報を持つcontentをselectし、copyするスキル2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。encoderからコピーする確率をpcopyとし、下記式で算出する：すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）# 実験WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。このとき、Training instanceを50~500まで変化させた。WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。inputとoutput例と、コピーに関するlossを入れた場合の効果。人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable [Paper Note] Google's Multilingual Neural Machine Translation System: Enabling Zero-Shot Translation, Melvin Johnson+, TACL'17, 2016.11 Original Issue #NeuralNetwork #MachineTranslation #Pocket #NLP #TransferLearning #MultiLingual #TACL #Encoder-Decoder #LowResource Issue Date: 2025-11-19 GPT Summary- 単一のNMTモデルを用いて多言語翻訳を実現するシンプルな手法を提案。入力文の先頭に人工トークンを追加することでターゲット言語を指定し、モデルのアーキテクチャは変更せずに共有語彙を使用。これにより、パラメータを増やさずに翻訳品質を向上させ、WMT'14およびWMT'15ベンチマークで最先端の結果を達成。訓練中に見たことのない言語ペア間での暗黙のブリッジングを学習し、転移学習とゼロショット翻訳の可能性を示す。 Commentバックボーン:- [Paper Note] Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation, Yonghui Wu+, arXiv'16, 2016.09 [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Original Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #CoNLL #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 ACT-1: A Robot Foundation Model Trained on Zero Robot Data, Sunday Team, 2025.11 Original Issue #Article #Blog #read-later #Generalization #Robotics #LongHorizon Issue Date: 2025-11-20 Comment元ポスト:">
-<meta property="og:description" content="&lt;h2 id=Zero/FewShotLearning class=”paper-head”&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] TALLRec: An Effective and Efficient Tuning Framework to Align Large Language Model with Recommendation, Keqin Bao+, RecSys'23 Original Issue #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys #KeyPoint Notes Issue Date: 2025-03-30 GPT Summary- 大規模言語モデル（LLMs）を推薦システムに活用するため、推薦データで調整するフレームワークTALLRecを提案。限られたデータセットでもLLMsの推薦能力を向上させ、効率的に実行可能。ファインチューニングされたLLMはクロスドメイン一般化を示す。 Comment下記のようなユーザのプロファイルとターゲットアイテムと、binaryの明示的なrelevance feedbackデータを用いてLoRA、かつFewshot Learningの設定でSFTすることでbinaryのlike/dislikeの予測性能を向上。PromptingだけでなくSFTを実施した初めての研究だと思われる。既存ベースラインと比較して大幅にAUCが向上 Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL'23 Original Issue #NaturalLanguageGeneration #NLP #DataToTextGeneration #MultitaskLearning Issue Date: 2023-07-18 GPT Summary- この論文では、構造化データからテキストを生成する新しいアプローチを提案しています。提案手法は、さまざまな形式のデータを処理できる統一された表現を提供し、マルチタスクトレーニングやゼロショット学習などのシナリオでのパフォーマンスを向上させることを目指しています。実験結果は、提案手法が他の方法と比較して優れた性能を示していることを示しています。これは、データからテキスト生成フレームワークにおける重要な進歩です。 Dataset Distillation with Attention Labels for Fine-tuning BERT, ACL'23 Original Issue #NLP #DataDistillation #Attention Issue Date: 2023-07-14 GPT Summary- 本研究では、データセットの蒸留を使用して、元のデータセットのパフォーマンスを保持しながら、ニューラルネットワークを迅速にトレーニングするための小さなデータセットを作成する方法に焦点を当てています。具体的には、事前学習済みのトランスフォーマーを微調整するための自然言語処理タスクの蒸留されたfew-shotデータセットの構築を提案しています。実験結果では、注意ラベルを使用してfew-shotデータセットを作成し、BERTの微調整において印象的なパフォーマンスを実現できることを示しました。例えば、ニュース分類タスクでは、わずか1つのサンプルとわずか1つの勾配ステップのみで、元のデータセットの98.5％のパフォーマンスを達成しました。 CommentDatadistillationしたら、データセットのうち1サンプルのみで、元のデータセットの98.5%の性能を発揮できたという驚異的な研究（まえかわ君） Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL'20 Original Issue #NeuralNetwork #NaturalLanguageGeneration #NLP #LanguageModel #DataToTextGeneration #pretrained-LM Issue Date: 2022-12-01 Comment# 概要Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成# 手法TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要1. factualな情報を持つcontentをselectし、copyするスキル2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。encoderからコピーする確率をpcopyとし、下記式で算出する：すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）# 実験WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。このとき、Training instanceを50~500まで変化させた。WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。inputとoutput例と、コピーに関するlossを入れた場合の効果。人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable [Paper Note] Google's Multilingual Neural Machine Translation System: Enabling Zero-Shot Translation, Melvin Johnson+, TACL'17, 2016.11 Original Issue #NeuralNetwork #MachineTranslation #Pocket #NLP #TransferLearning #MultiLingual #TACL #Encoder-Decoder #LowResource Issue Date: 2025-11-19 GPT Summary- 単一のNMTモデルを用いて多言語翻訳を実現するシンプルな手法を提案。入力文の先頭に人工トークンを追加することでターゲット言語を指定し、モデルのアーキテクチャは変更せずに共有語彙を使用。これにより、パラメータを増やさずに翻訳品質を向上させ、WMT'14およびWMT'15ベンチマークで最先端の結果を達成。訓練中に見たことのない言語ペア間での暗黙のブリッジングを学習し、転移学習とゼロショット翻訳の可能性を示す。 Commentバックボーン:- [Paper Note] Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation, Yonghui Wu+, arXiv'16, 2016.09 [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Original Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #CoNLL #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 ACT-1: A Robot Foundation Model Trained on Zero Robot Data, Sunday Team, 2025.11 Original Issue #Article #Blog #read-later #Generalization #Robotics #LongHorizon Issue Date: 2025-11-20 Comment元ポスト:">
+<meta name="description" content="&lt;h2 id=Zero/FewShotLearning class=”paper-head”&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] TALLRec: An Effective and Efficient Tuning Framework to Align Large Language Model with Recommendation, Keqin Bao+, RecSys'23 Paper/Blog Link My Issue #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys #KeyPoint Notes Issue Date: 2025-03-30 GPT Summary- 大規模言語モデル（LLMs）を推薦システムに活用するため、推薦データで調整するフレームワークTALLRecを提案。限られたデータセットでもLLMsの推薦能力を向上させ、効率的に実行可能。ファインチューニングされたLLMはクロスドメイン一般化を示す。 Comment下記のようなユーザのプロファイルとターゲットアイテムと、binaryの明示的なrelevance feedbackデータを用いてLoRA、かつFewshot Learningの設定でSFTすることでbinaryのlike/dislikeの予測性能を向上。PromptingだけでなくSFTを実施した初めての研究だと思われる。既存ベースラインと比較して大幅にAUCが向上 Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL'23 Paper/Blog Link My Issue #NaturalLanguageGeneration #NLP #DataToTextGeneration #MultitaskLearning Issue Date: 2023-07-18 GPT Summary- この論文では、構造化データからテキストを生成する新しいアプローチを提案しています。提案手法は、さまざまな形式のデータを処理できる統一された表現を提供し、マルチタスクトレーニングやゼロショット学習などのシナリオでのパフォーマンスを向上させることを目指しています。実験結果は、提案手法が他の方法と比較して優れた性能を示していることを示しています。これは、データからテキスト生成フレームワークにおける重要な進歩です。 Dataset Distillation with Attention Labels for Fine-tuning BERT, ACL'23 Paper/Blog Link My Issue #NLP #DataDistillation #Attention Issue Date: 2023-07-14 GPT Summary- 本研究では、データセットの蒸留を使用して、元のデータセットのパフォーマンスを保持しながら、ニューラルネットワークを迅速にトレーニングするための小さなデータセットを作成する方法に焦点を当てています。具体的には、事前学習済みのトランスフォーマーを微調整するための自然言語処理タスクの蒸留されたfew-shotデータセットの構築を提案しています。実験結果では、注意ラベルを使用してfew-shotデータセットを作成し、BERTの微調整において印象的なパフォーマンスを実現できることを示しました。例えば、ニュース分類タスクでは、わずか1つのサンプルとわずか1つの勾配ステップのみで、元のデータセットの98.5％のパフォーマンスを達成しました。 CommentDatadistillationしたら、データセットのうち1サンプルのみで、元のデータセットの98.5%の性能を発揮できたという驚異的な研究（まえかわ君） Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL'20 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #NLP #LanguageModel #DataToTextGeneration #pretrained-LM Issue Date: 2022-12-01 Comment# 概要Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成# 手法TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要1. factualな情報を持つcontentをselectし、copyするスキル2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。encoderからコピーする確率をpcopyとし、下記式で算出する：すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）# 実験WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。このとき、Training instanceを50~500まで変化させた。WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。inputとoutput例と、コピーに関するlossを入れた場合の効果。人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable [Paper Note] Google's Multilingual Neural Machine Translation System: Enabling Zero-Shot Translation, Melvin Johnson+, TACL'17, 2016.11 Paper/Blog Link My Issue #NeuralNetwork #MachineTranslation #Pocket #NLP #TransferLearning #MultiLingual #TACL #Encoder-Decoder #LowResource Issue Date: 2025-11-19 GPT Summary- 単一のNMTモデルを用いて多言語翻訳を実現するシンプルな手法を提案。入力文の先頭に人工トークンを追加することでターゲット言語を指定し、モデルのアーキテクチャは変更せずに共有語彙を使用。これにより、パラメータを増やさずに翻訳品質を向上させ、WMT'14およびWMT'15ベンチマークで最先端の結果を達成。訓練中に見たことのない言語ペア間での暗黙のブリッジングを学習し、転移学習とゼロショット翻訳の可能性を示す。 Commentバックボーン:- [Paper Note] Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation, Yonghui Wu+, arXiv'16, 2016.09 [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Paper/Blog Link My Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #CoNLL #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 ACT-1: A Robot Foundation Model Trained on Zero Robot Data, Sunday Team, 2025.11 Paper/Blog Link My Issue #Article #Blog #read-later #Generalization #Robotics #LongHorizon Issue Date: 2025-11-20 Comment元ポスト:">
+<meta property="og:description" content="&lt;h2 id=Zero/FewShotLearning class=”paper-head”&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] TALLRec: An Effective and Efficient Tuning Framework to Align Large Language Model with Recommendation, Keqin Bao+, RecSys'23 Paper/Blog Link My Issue #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys #KeyPoint Notes Issue Date: 2025-03-30 GPT Summary- 大規模言語モデル（LLMs）を推薦システムに活用するため、推薦データで調整するフレームワークTALLRecを提案。限られたデータセットでもLLMsの推薦能力を向上させ、効率的に実行可能。ファインチューニングされたLLMはクロスドメイン一般化を示す。 Comment下記のようなユーザのプロファイルとターゲットアイテムと、binaryの明示的なrelevance feedbackデータを用いてLoRA、かつFewshot Learningの設定でSFTすることでbinaryのlike/dislikeの予測性能を向上。PromptingだけでなくSFTを実施した初めての研究だと思われる。既存ベースラインと比較して大幅にAUCが向上 Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL'23 Paper/Blog Link My Issue #NaturalLanguageGeneration #NLP #DataToTextGeneration #MultitaskLearning Issue Date: 2023-07-18 GPT Summary- この論文では、構造化データからテキストを生成する新しいアプローチを提案しています。提案手法は、さまざまな形式のデータを処理できる統一された表現を提供し、マルチタスクトレーニングやゼロショット学習などのシナリオでのパフォーマンスを向上させることを目指しています。実験結果は、提案手法が他の方法と比較して優れた性能を示していることを示しています。これは、データからテキスト生成フレームワークにおける重要な進歩です。 Dataset Distillation with Attention Labels for Fine-tuning BERT, ACL'23 Paper/Blog Link My Issue #NLP #DataDistillation #Attention Issue Date: 2023-07-14 GPT Summary- 本研究では、データセットの蒸留を使用して、元のデータセットのパフォーマンスを保持しながら、ニューラルネットワークを迅速にトレーニングするための小さなデータセットを作成する方法に焦点を当てています。具体的には、事前学習済みのトランスフォーマーを微調整するための自然言語処理タスクの蒸留されたfew-shotデータセットの構築を提案しています。実験結果では、注意ラベルを使用してfew-shotデータセットを作成し、BERTの微調整において印象的なパフォーマンスを実現できることを示しました。例えば、ニュース分類タスクでは、わずか1つのサンプルとわずか1つの勾配ステップのみで、元のデータセットの98.5％のパフォーマンスを達成しました。 CommentDatadistillationしたら、データセットのうち1サンプルのみで、元のデータセットの98.5%の性能を発揮できたという驚異的な研究（まえかわ君） Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL'20 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #NLP #LanguageModel #DataToTextGeneration #pretrained-LM Issue Date: 2022-12-01 Comment# 概要Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成# 手法TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要1. factualな情報を持つcontentをselectし、copyするスキル2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。encoderからコピーする確率をpcopyとし、下記式で算出する：すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）# 実験WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。このとき、Training instanceを50~500まで変化させた。WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。inputとoutput例と、コピーに関するlossを入れた場合の効果。人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable [Paper Note] Google's Multilingual Neural Machine Translation System: Enabling Zero-Shot Translation, Melvin Johnson+, TACL'17, 2016.11 Paper/Blog Link My Issue #NeuralNetwork #MachineTranslation #Pocket #NLP #TransferLearning #MultiLingual #TACL #Encoder-Decoder #LowResource Issue Date: 2025-11-19 GPT Summary- 単一のNMTモデルを用いて多言語翻訳を実現するシンプルな手法を提案。入力文の先頭に人工トークンを追加することでターゲット言語を指定し、モデルのアーキテクチャは変更せずに共有語彙を使用。これにより、パラメータを増やさずに翻訳品質を向上させ、WMT'14およびWMT'15ベンチマークで最先端の結果を達成。訓練中に見たことのない言語ペア間での暗黙のブリッジングを学習し、転移学習とゼロショット翻訳の可能性を示す。 Commentバックボーン:- [Paper Note] Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation, Yonghui Wu+, arXiv'16, 2016.09 [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17 Paper/Blog Link My Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #CoNLL #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 ACT-1: A Robot Foundation Model Trained on Zero Robot Data, Sunday Team, 2025.11 Paper/Blog Link My Issue #Article #Blog #read-later #Generalization #Robotics #LongHorizon Issue Date: 2025-11-20 Comment元ポスト:">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Zero-FewShotLearning/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Zero-FewShotLearning/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Zero/FewShotLearningに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-20T00:00:00+00:00","datePublished":"2025-11-20T00:00:00+00:00","description":"&lt;h2 id=Zero/FewShotLearning class=”paper-head”&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] TALLRec: An Effective and Efficient Tuning Framework to Align Large Language Model with Recommendation, Keqin Bao+, RecSys&#39;23 Original Issue #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys #KeyPoint Notes Issue Date: 2025-03-30 GPT Summary- 大規模言語モデル（LLMs）を推薦システムに活用するため、推薦データで調整するフレームワークTALLRecを提案。限られたデータセットでもLLMsの推薦能力を向上させ、効率的に実行可能。ファインチューニングされたLLMはクロスドメイン一般化を示す。 Comment下記のようなユーザのプロファイルとターゲットアイテムと、binaryの明示的なrelevance feedbackデータを用いてLoRA、かつFewshot Learningの設定でSFTすることでbinaryのlike/dislikeの予測性能を向上。PromptingだけでなくSFTを実施した初めての研究だと思われる。既存ベースラインと比較して大幅にAUCが向上 Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL&#39;23 Original Issue #NaturalLanguageGeneration #NLP #DataToTextGeneration #MultitaskLearning Issue Date: 2023-07-18 GPT Summary- この論文では、構造化データからテキストを生成する新しいアプローチを提案しています。提案手法は、さまざまな形式のデータを処理できる統一された表現を提供し、マルチタスクトレーニングやゼロショット学習などのシナリオでのパフォーマンスを向上させることを目指しています。実験結果は、提案手法が他の方法と比較して優れた性能を示していることを示しています。これは、データからテキスト生成フレームワークにおける重要な進歩です。 Dataset Distillation with Attention Labels for Fine-tuning BERT, ACL&#39;23 Original Issue #NLP #DataDistillation #Attention Issue Date: 2023-07-14 GPT Summary- 本研究では、データセットの蒸留を使用して、元のデータセットのパフォーマンスを保持しながら、ニューラルネットワークを迅速にトレーニングするための小さなデータセットを作成する方法に焦点を当てています。具体的には、事前学習済みのトランスフォーマーを微調整するための自然言語処理タスクの蒸留されたfew-shotデータセットの構築を提案しています。実験結果では、注意ラベルを使用してfew-shotデータセットを作成し、BERTの微調整において印象的なパフォーマンスを実現できることを示しました。例えば、ニュース分類タスクでは、わずか1つのサンプルとわずか1つの勾配ステップのみで、元のデータセットの98.5％のパフォーマンスを達成しました。 CommentDatadistillationしたら、データセットのうち1サンプルのみで、元のデータセットの98.5%の性能を発揮できたという驚異的な研究（まえかわ君） Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL&#39;20 Original Issue #NeuralNetwork #NaturalLanguageGeneration #NLP #LanguageModel #DataToTextGeneration #pretrained-LM Issue Date: 2022-12-01 Comment# 概要Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成# 手法TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要1. factualな情報を持つcontentをselectし、copyするスキル2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。encoderからコピーする確率をpcopyとし、下記式で算出する：すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）# 実験WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。このとき、Training instanceを50~500まで変化させた。WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。inputとoutput例と、コピーに関するlossを入れた場合の効果。人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable [Paper Note] Google&#39;s Multilingual Neural Machine Translation System: Enabling Zero-Shot Translation, Melvin Johnson+, TACL&#39;17, 2016.11 Original Issue #NeuralNetwork #MachineTranslation #Pocket #NLP #TransferLearning #MultiLingual #TACL #Encoder-Decoder #LowResource Issue Date: 2025-11-19 GPT Summary- 単一のNMTモデルを用いて多言語翻訳を実現するシンプルな手法を提案。入力文の先頭に人工トークンを追加することでターゲット言語を指定し、モデルのアーキテクチャは変更せずに共有語彙を使用。これにより、パラメータを増やさずに翻訳品質を向上させ、WMT&#39;14およびWMT&#39;15ベンチマークで最先端の結果を達成。訓練中に見たことのない言語ペア間での暗黙のブリッジングを学習し、転移学習とゼロショット翻訳の可能性を示す。 Commentバックボーン:- [Paper Note] Google&#39;s Neural Machine Translation System: Bridging the Gap between Human and Machine Translation, Yonghui Wu+, arXiv&#39;16, 2016.09 [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL&#39;17 Original Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #CoNLL #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 ACT-1: A Robot Foundation Model Trained on Zero Robot Data, Sunday Team, 2025.11 Original Issue #Article #Blog #read-later #Generalization #Robotics #LongHorizon Issue Date: 2025-11-20 Comment元ポスト:","headline":"Zero/FewShotLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Zero-FewShotLearning/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Zero-FewShotLearning/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-20T00:00:00+00:00","datePublished":"2025-11-20T00:00:00+00:00","description":"&lt;h2 id=Zero/FewShotLearning class=”paper-head”&gt; Zero/FewShotLearning&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] TALLRec: An Effective and Efficient Tuning Framework to Align Large Language Model with Recommendation, Keqin Bao+, RecSys&#39;23 Paper/Blog Link My Issue #RecommenderSystems #LanguageModel #Contents-based #Supervised-FineTuning (SFT) #PEFT(Adaptor/LoRA) #RecSys #KeyPoint Notes Issue Date: 2025-03-30 GPT Summary- 大規模言語モデル（LLMs）を推薦システムに活用するため、推薦データで調整するフレームワークTALLRecを提案。限られたデータセットでもLLMsの推薦能力を向上させ、効率的に実行可能。ファインチューニングされたLLMはクロスドメイン一般化を示す。 Comment下記のようなユーザのプロファイルとターゲットアイテムと、binaryの明示的なrelevance feedbackデータを用いてLoRA、かつFewshot Learningの設定でSFTすることでbinaryのlike/dislikeの予測性能を向上。PromptingだけでなくSFTを実施した初めての研究だと思われる。既存ベースラインと比較して大幅にAUCが向上 Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL&#39;23 Paper/Blog Link My Issue #NaturalLanguageGeneration #NLP #DataToTextGeneration #MultitaskLearning Issue Date: 2023-07-18 GPT Summary- この論文では、構造化データからテキストを生成する新しいアプローチを提案しています。提案手法は、さまざまな形式のデータを処理できる統一された表現を提供し、マルチタスクトレーニングやゼロショット学習などのシナリオでのパフォーマンスを向上させることを目指しています。実験結果は、提案手法が他の方法と比較して優れた性能を示していることを示しています。これは、データからテキスト生成フレームワークにおける重要な進歩です。 Dataset Distillation with Attention Labels for Fine-tuning BERT, ACL&#39;23 Paper/Blog Link My Issue #NLP #DataDistillation #Attention Issue Date: 2023-07-14 GPT Summary- 本研究では、データセットの蒸留を使用して、元のデータセットのパフォーマンスを保持しながら、ニューラルネットワークを迅速にトレーニングするための小さなデータセットを作成する方法に焦点を当てています。具体的には、事前学習済みのトランスフォーマーを微調整するための自然言語処理タスクの蒸留されたfew-shotデータセットの構築を提案しています。実験結果では、注意ラベルを使用してfew-shotデータセットを作成し、BERTの微調整において印象的なパフォーマンスを実現できることを示しました。例えば、ニュース分類タスクでは、わずか1つのサンプルとわずか1つの勾配ステップのみで、元のデータセットの98.5％のパフォーマンスを達成しました。 CommentDatadistillationしたら、データセットのうち1サンプルのみで、元のデータセットの98.5%の性能を発揮できたという驚異的な研究（まえかわ君） Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL&#39;20 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #NLP #LanguageModel #DataToTextGeneration #pretrained-LM Issue Date: 2022-12-01 Comment# 概要Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成# 手法TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要1. factualな情報を持つcontentをselectし、copyするスキル2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。encoderからコピーする確率をpcopyとし、下記式で算出する：すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）# 実験WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。このとき、Training instanceを50~500まで変化させた。WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。inputとoutput例と、コピーに関するlossを入れた場合の効果。人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable [Paper Note] Google&#39;s Multilingual Neural Machine Translation System: Enabling Zero-Shot Translation, Melvin Johnson+, TACL&#39;17, 2016.11 Paper/Blog Link My Issue #NeuralNetwork #MachineTranslation #Pocket #NLP #TransferLearning #MultiLingual #TACL #Encoder-Decoder #LowResource Issue Date: 2025-11-19 GPT Summary- 単一のNMTモデルを用いて多言語翻訳を実現するシンプルな手法を提案。入力文の先頭に人工トークンを追加することでターゲット言語を指定し、モデルのアーキテクチャは変更せずに共有語彙を使用。これにより、パラメータを増やさずに翻訳品質を向上させ、WMT&#39;14およびWMT&#39;15ベンチマークで最先端の結果を達成。訓練中に見たことのない言語ペア間での暗黙のブリッジングを学習し、転移学習とゼロショット翻訳の可能性を示す。 Commentバックボーン:- [Paper Note] Google&#39;s Neural Machine Translation System: Bridging the Gap between Human and Machine Translation, Yonghui Wu+, arXiv&#39;16, 2016.09 [Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL&#39;17 Paper/Blog Link My Issue #NeuralNetwork #Pocket #Dataset #InformationExtraction #ReadingComprehension #CoNLL #RelationExtraction Issue Date: 2025-08-26 GPT Summary- 関係抽出を自然言語の質問に還元することで、ニューラル読解理解技術を活用し、大規模なトレーニングセットを構築可能にする。これにより、ゼロショット学習も実現。ウィキペディアのスロットフィリングタスクで、既知の関係タイプに対する高精度な一般化と未知の関係タイプへのゼロショット一般化が示されたが、後者の精度は低く、今後の研究の基準を設定。 ACT-1: A Robot Foundation Model Trained on Zero Robot Data, Sunday Team, 2025.11 Paper/Blog Link My Issue #Article #Blog #read-later #Generalization #Robotics #LongHorizon Issue Date: 2025-11-20 Comment元ポスト:","headline":"Zero/FewShotLearningに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Zero-FewShotLearning/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Zero-FewShotLearning/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 19 mins</span>
   </div></header>
 </div>
     </div>
@@ -1007,11 +1007,16 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <article class="paper-entry">
 <h3 id="tallrec-an-1841" class="title-link">[Paper Note] TALLRec: An Effective and Efficient Tuning Framework to Align Large   Language Model with Recommendation, Keqin Bao+, RecSys'23</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1841" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/2305.00447" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1841" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
@@ -1026,11 +1031,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="few-shot-data-to-text-863" class="title-link">Few-Shot Data-to-Text Generation via Unified Representation and Multi-Source Learning, ACL'23</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/863" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://virtual2023.aclweb.org/paper_P4950.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/863" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1041,11 +1051,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="dataset-distillation-827" class="title-link">Dataset Distillation with Attention Labels for Fine-tuning BERT, ACL'23</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/827" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://virtual2023.aclweb.org/paper_P5706.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/827" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="DataDistillation.html" target="_blank" rel="noopener noreferrer">#DataDistillation</a>
@@ -1056,11 +1071,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="few-shot-nlg-494" class="title-link">Few-Shot NLG with Pre-Trained Language Model, Chen+, University of California, ACL'20</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/494" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://aclanthology.org/2020.acl-main.18.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/494" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1073,11 +1093,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="google's-multilingual-3719" class="title-link">[Paper Note] Google's Multilingual Neural Machine Translation System: Enabling Zero-Shot Translation, Melvin Johnson+, TACL'17, 2016.11</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3719" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1611.04558" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3719" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="MachineTranslation.html" target="_blank" rel="noopener noreferrer">#MachineTranslation</a>
@@ -1095,11 +1120,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="zero-shot-relation-2556" class="title-link">[Paper Note] Zero-Shot Relation Extraction via Reading Comprehension, Omer Levy+, CoNLL'17</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2556" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1706.04115" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2556" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1113,11 +1143,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="act-1-a-3752" class="title-link">ACT-1: A Robot Foundation Model Trained on Zero Robot Data, Sunday Team, 2025.11</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3752" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.sunday.ai/journal/no-robot-data" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3752" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
@@ -1140,11 +1175,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="introducing-mimo-audio-3427" class="title-link">Introducing MiMo-Audio, LLM-Core Xiaomi, 2025.10</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3427" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://xiaomimimo.github.io/MiMo-Audio-Demo/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3427" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
@@ -1178,11 +1218,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="language-models-2042" class="title-link">[Paper Note] Language Models are Unsupervised Multitask Learners, Radford+, OpenAI, 2019</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2042" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2042" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1252,8 +1297,17 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Toxicity/" title="Toxicityに関する論文・技術記事メモの一覧">
-            Toxicityに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/QueryBiased/" title="QueryBiasedに関する論文・技術記事メモの一覧">
+            QueryBiasedに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/FeatureMatching/" title="FeatureMatchingに関する論文・技術記事メモの一覧">
+            FeatureMatchingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1261,26 +1315,17 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Poster/" title="Posterに関する論文・技術記事メモの一覧">
-            Posterに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Decoder/" title="Decoderに関する論文・技術記事メモの一覧">
+            Decoderに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Parallel/" title="Parallelに関する論文・技術記事メモの一覧">
-            Parallelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Neuroscience/" title="Neuroscienceに関する論文・技術記事メモの一覧">
-            Neuroscienceに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Sim-to-Real/" title="Sim-to-Realに関する論文・技術記事メモの一覧">
+            Sim-to-Realに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>

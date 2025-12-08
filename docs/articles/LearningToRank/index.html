@@ -12,8 +12,8 @@
 <meta property="og:title" content="LearningToRankに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Original Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。また、PRPがinputのorderに対してロバストなことも示されている。 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Original Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Original Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Original Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Original Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Original Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Original Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Original Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Original Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
-<meta property="og:description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Original Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。また、PRPがinputのorderに対してロバストなことも示されている。 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Original Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Original Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Original Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Original Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Original Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Original Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Original Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Original Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
+<meta name="description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。また、PRPがinputのorderに対してロバストなことも示されている。 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
+<meta property="og:description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。また、PRPがinputのorderに対してロバストなことも示されている。 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="LearningToRankに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2023-07-11T00:00:00+00:00","datePublished":"2023-07-11T00:00:00+00:00","description":"LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL&#39;24 Original Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。また、PRPがinputのorderに対してロバストなことも示されている。 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR&#39;16 Original Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL&#39;16 Original Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv&#39;15 Original Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR&#39;15 Original Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM&#39;13 Original Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 Original Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw&#39;を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw&#39;の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS&#39;09 Original Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI&#39;09, 2009.06 Original Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。","headline":"LearningToRankに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2023-07-11T00:00:00+00:00","datePublished":"2023-07-11T00:00:00+00:00","description":"LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL&#39;24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。また、PRPがinputのorderに対してロバストなことも示されている。 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR&#39;16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL&#39;16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv&#39;15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR&#39;15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM&#39;13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw&#39;を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw&#39;の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS&#39;09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI&#39;09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。","headline":"LearningToRankに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 30 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 33 mins</span>
   </div></header>
 </div>
     </div>
@@ -1007,11 +1007,16 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <article class="paper-entry">
 <h3 id="large-language-799" class="title-link">Large Language Models are Effective Text Rankers with Pairwise Ranking   Prompting, Zhen Qin+, N_A, NAACL'24</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/2306.17563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
@@ -1026,11 +1031,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="online-learning-200" class="title-link">[Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://staff.fnwi.uva.nl/m.derijke/wp-content/uploads/sigir2016-tutorial.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
@@ -1040,11 +1050,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="news-citation-181" class="title-link">[Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/181" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.aclweb.org/anthology/P/P16/P16-1037.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/181" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
 <a class="button" href="Citations.html" target="_blank" rel="noopener noreferrer">#Citations</a>
@@ -1054,11 +1069,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="contextual-dueling-199" class="title-link">[Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/199" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1502.06362" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/199" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
@@ -1068,11 +1088,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="machine-learning-186" class="title-link">Machine Learning for Information Retrieval, Hofmann, ESSIR'15</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/186" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://mklab.iti.gr/essir2015/wp-content/uploads/2015/03/ESSIR2015_Hofmann.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/186" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
@@ -1081,11 +1106,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="reusing-historical-198" class="title-link">[Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/198" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://pdfs.semanticscholar.org/5ef7/34327c0f4cb7a2898bbdb1cc5a65e34d09cb.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/198" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
@@ -1097,11 +1127,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="interactively-optimizing-197" class="title-link">[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.cs.cornell.edu/people/tj/publications/yue_joachims_09a.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
@@ -1111,11 +1146,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="large-scale-191" class="title-link">[Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/191" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/191" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
@@ -1125,11 +1165,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="bpr-bayesian-28" class="title-link">[Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/28" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1205.2618" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/28" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
 <a class="button" href="ImplicitFeedback.html" target="_blank" rel="noopener noreferrer">#ImplicitFeedback</a>
@@ -1163,11 +1208,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="how-does-203" class="title-link">[Paper Note] How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM'08</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/203" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.cs.cornell.edu/people/tj/publications/radlinski_etal_08b.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/203" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="Interleaved.html" target="_blank" rel="noopener noreferrer">#Interleaved</a>
@@ -1176,11 +1226,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="fast-learning-202" class="title-link">[Paper Note] Fast Learning of Document Ranking Functions with the Committee Perceptrion, Elsas+, WSDM'08</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/202" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://delivery.acm.org/10.1145/1350000/1341542/p55-elsas.pdf?ip=131.112.138.2&id=1341542&acc=ACTIVE%20SERVICE&key=D2341B890AD12BFE%2EE857D5F645C75AE5%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=781623828&CFTOKEN=57476606&__acm__=1499155717_780c7ac7b015e2c7cdefe0c2a5b73c2d" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/202" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
@@ -1189,11 +1244,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="listwise-approach-194" class="title-link">[Paper Note] Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML'08</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://www.machinelearning.org/archive/icml2008/papers/167.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
@@ -1203,11 +1263,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="learning-to-193" class="title-link">[Paper Note] Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML'07</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://www.machinelearning.org/proceedings/icml2007/papers/139.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
@@ -1232,11 +1297,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="learning-to-192" class="title-link">[Paper Note] Learning to Rank using Gradient Descent （RankNet）, Burges+, ICML'05</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
@@ -1253,11 +1323,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="pranking-with-190" class="title-link">[Paper Note] PRanking with Ranking, Crammer+, NIPS'01</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/190" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://pdfs.semanticscholar.org/906f/50f545890ca81231be7cec7c59555c679dba.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/190" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="PointWise.html" target="_blank" rel="noopener noreferrer">#PointWise</a>
@@ -1268,11 +1343,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="lerot-online-201" class="title-link">Lerot: Online Learning to rank Framework</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://ilps.science.uva.nl/resources/online-learning-framework/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
@@ -1282,11 +1362,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="fast-and-196" class="title-link">Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://khofm.files.wordpress.com/2013/04/thesis-katja-hofmann-online-learning.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
@@ -1296,11 +1381,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="a-general-195" class="title-link">[Paper Note] A General Approximation Framework for Direct Optimization of Information Retrieval Measures （ApproxAP, ApproxNDCG）, Qin+, Information Retrieval, 2010</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2008-164.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
@@ -1310,11 +1400,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="from-ranknet-189" class="title-link">From RankNet to LambdaRank to LambdaMART: An Overview, Burges, Microsoft Research Technical Report, 2010</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/189" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/189" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1323,11 +1418,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="confidence-weightedでランク学習を実装してみた-188" class="title-link">Confidence Weightedでランク学習を実装してみた, 徳永拓之, 第4回 自然言語処理勉強会@東京</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/188" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.slideshare.net/tkng/confidence-weighted" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/188" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1337,11 +1437,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="ランキング学習ことはじめ-187" class="title-link">ランキング学習ことはじめ, DSIRNLP#1, 2011</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/187" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.slideshare.net/sleepy_yoshi/dsirnlp1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/187" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1351,11 +1456,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="learning-to-185" class="title-link">[Paper Note] Learning to Rank for Information Retriefval, Liu+, 2009</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://didawiki.di.unipi.it/lib/exe/fetch.php/magistraleinformatica/ir/ir13/1_-_learning_to_rank.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
@@ -1417,11 +1527,11 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/TMLR/" title="TMLRに関する論文・技術記事メモの一覧">
-            TMLRに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AcademicWriting/" title="AcademicWritingに関する論文・技術記事メモの一覧">
+            AcademicWritingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
-  <span class="post-badge badge-new">📝 14</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
@@ -1435,20 +1545,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DyingReLU/" title="DyingReLUに関する論文・技術記事メモの一覧">
-            DyingReLUに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Hybrid/" title="Hybridに関する論文・技術記事メモの一覧">
+            Hybridに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/CVRPrediction/" title="CVRPredictionに関する論文・技術記事メモの一覧">
-            CVRPredictionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/MultiModal/" title="MultiModalに関する論文・技術記事メモの一覧">
+            MultiModalに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 134</span> 
+  <span class="post-badge badge-new">📝 134</span>
 </span>
 </a>
         </li>

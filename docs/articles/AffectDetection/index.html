@@ -12,8 +12,8 @@
 <meta property="og:title" content="AffectDetectionに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="AffectDetection Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED'17 Original Issue #NeuralNetwork #EducationalDataMining #LearningAnalytics #AIED Issue Date: 2021-06-08 CommentDKTが実はBKTと対して性能変わらない、みたいな話がreference付きで書かれている。Ryan Baker氏とNeil Heffernan氏の論文Affect Detectionは、physical/psychological sensorを利用する研究が行われてきており、それらは様々な制約により（e.g. 経済的な問題や、政治の問題）実際のアプリケーションとしてdeployするには難しさがあった。これを克服するために、sensor-freeなモデルが研究されてきたが、予測性能はあまり高くなくreal-timeなinterventionを行うのに十分な性能となっていなかった。一方で、近年DeepLearningが様々な分野で成功を収めてきており、教育分野での活用が限定的であるという状況がある。そこで、deepなsensor-freeモデルを提案。その結果、従来モデルをoutperformした。データセットはASSISTmentsデータを利用し、フィールドワーカーが20秒おきに、class roomでASSISTmentsを利用する生徒を観察し、生徒のAffective Stateをラベル付けした（ラウンドロビン方式）。ラベルは下記の通り：- bored- frustrated- confused- engaged concentration- other/impossibleビデオコーディングなどとは違って、ラウンドロビン方式では特定の生徒の間でラベルの欠落が生まれるが（常に特定の生徒を監視しているわけにはいかず、class-room全体を巡回しなければいけないから？）、全てのラベルにはタイムスタンプが付与されているので、欠落はわかるようになっている。合計で6つの学校における、646人の生徒に対する、7663のobservationが得られた。また、各特定の感情ラベルが付与されている際には実際に生徒はASSISTmentsを利用しており、先行研究では51種類のaction-level featureが利用されており（生徒とシステムのinteractionを捉える; e.g. reponse behavior, timeworking, hintやscaffoldingの利用の有無など）、今回もそういったfeatureも予測に利用する。各observationのinterval(=clip)には複数のアクションが含まれており、それらを集約することで、最終的に204種類のfeatureをobservation intervalごとに作成し利用（feature engineeringしてるっぽい）。RNN, LSTM, GRUの3種類のNNを用いて、204次元のfeature vectorをinputとし、各clipの4種類の感情ラベル（bored, frustrated, confused, engaged concentration）をsoftmaxで予測する。前回のclipが5分未満のclipについては、連続したclipとしてモデルに入力し、5分を超過したものについては新たな別のsequenceとして扱った模様。従来手法を大幅にoutperform。しっかり読んでいないが、resampoingは、ラベルの偏りを調整したか否かだと思われる。">
-<meta property="og:description" content="AffectDetection Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED'17 Original Issue #NeuralNetwork #EducationalDataMining #LearningAnalytics #AIED Issue Date: 2021-06-08 CommentDKTが実はBKTと対して性能変わらない、みたいな話がreference付きで書かれている。Ryan Baker氏とNeil Heffernan氏の論文Affect Detectionは、physical/psychological sensorを利用する研究が行われてきており、それらは様々な制約により（e.g. 経済的な問題や、政治の問題）実際のアプリケーションとしてdeployするには難しさがあった。これを克服するために、sensor-freeなモデルが研究されてきたが、予測性能はあまり高くなくreal-timeなinterventionを行うのに十分な性能となっていなかった。一方で、近年DeepLearningが様々な分野で成功を収めてきており、教育分野での活用が限定的であるという状況がある。そこで、deepなsensor-freeモデルを提案。その結果、従来モデルをoutperformした。データセットはASSISTmentsデータを利用し、フィールドワーカーが20秒おきに、class roomでASSISTmentsを利用する生徒を観察し、生徒のAffective Stateをラベル付けした（ラウンドロビン方式）。ラベルは下記の通り：- bored- frustrated- confused- engaged concentration- other/impossibleビデオコーディングなどとは違って、ラウンドロビン方式では特定の生徒の間でラベルの欠落が生まれるが（常に特定の生徒を監視しているわけにはいかず、class-room全体を巡回しなければいけないから？）、全てのラベルにはタイムスタンプが付与されているので、欠落はわかるようになっている。合計で6つの学校における、646人の生徒に対する、7663のobservationが得られた。また、各特定の感情ラベルが付与されている際には実際に生徒はASSISTmentsを利用しており、先行研究では51種類のaction-level featureが利用されており（生徒とシステムのinteractionを捉える; e.g. reponse behavior, timeworking, hintやscaffoldingの利用の有無など）、今回もそういったfeatureも予測に利用する。各observationのinterval(=clip)には複数のアクションが含まれており、それらを集約することで、最終的に204種類のfeatureをobservation intervalごとに作成し利用（feature engineeringしてるっぽい）。RNN, LSTM, GRUの3種類のNNを用いて、204次元のfeature vectorをinputとし、各clipの4種類の感情ラベル（bored, frustrated, confused, engaged concentration）をsoftmaxで予測する。前回のclipが5分未満のclipについては、連続したclipとしてモデルに入力し、5分を超過したものについては新たな別のsequenceとして扱った模様。従来手法を大幅にoutperform。しっかり読んでいないが、resampoingは、ラベルの偏りを調整したか否かだと思われる。">
+<meta name="description" content="AffectDetection Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED'17 Paper/Blog Link My Issue #NeuralNetwork #EducationalDataMining #LearningAnalytics #AIED Issue Date: 2021-06-08 CommentDKTが実はBKTと対して性能変わらない、みたいな話がreference付きで書かれている。Ryan Baker氏とNeil Heffernan氏の論文Affect Detectionは、physical/psychological sensorを利用する研究が行われてきており、それらは様々な制約により（e.g. 経済的な問題や、政治の問題）実際のアプリケーションとしてdeployするには難しさがあった。これを克服するために、sensor-freeなモデルが研究されてきたが、予測性能はあまり高くなくreal-timeなinterventionを行うのに十分な性能となっていなかった。一方で、近年DeepLearningが様々な分野で成功を収めてきており、教育分野での活用が限定的であるという状況がある。そこで、deepなsensor-freeモデルを提案。その結果、従来モデルをoutperformした。データセットはASSISTmentsデータを利用し、フィールドワーカーが20秒おきに、class roomでASSISTmentsを利用する生徒を観察し、生徒のAffective Stateをラベル付けした（ラウンドロビン方式）。ラベルは下記の通り：- bored- frustrated- confused- engaged concentration- other/impossibleビデオコーディングなどとは違って、ラウンドロビン方式では特定の生徒の間でラベルの欠落が生まれるが（常に特定の生徒を監視しているわけにはいかず、class-room全体を巡回しなければいけないから？）、全てのラベルにはタイムスタンプが付与されているので、欠落はわかるようになっている。合計で6つの学校における、646人の生徒に対する、7663のobservationが得られた。また、各特定の感情ラベルが付与されている際には実際に生徒はASSISTmentsを利用しており、先行研究では51種類のaction-level featureが利用されており（生徒とシステムのinteractionを捉える; e.g. reponse behavior, timeworking, hintやscaffoldingの利用の有無など）、今回もそういったfeatureも予測に利用する。各observationのinterval(=clip)には複数のアクションが含まれており、それらを集約することで、最終的に204種類のfeatureをobservation intervalごとに作成し利用（feature engineeringしてるっぽい）。RNN, LSTM, GRUの3種類のNNを用いて、204次元のfeature vectorをinputとし、各clipの4種類の感情ラベル（bored, frustrated, confused, engaged concentration）をsoftmaxで予測する。前回のclipが5分未満のclipについては、連続したclipとしてモデルに入力し、5分を超過したものについては新たな別のsequenceとして扱った模様。従来手法を大幅にoutperform。しっかり読んでいないが、resampoingは、ラベルの偏りを調整したか否かだと思われる。">
+<meta property="og:description" content="AffectDetection Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED'17 Paper/Blog Link My Issue #NeuralNetwork #EducationalDataMining #LearningAnalytics #AIED Issue Date: 2021-06-08 CommentDKTが実はBKTと対して性能変わらない、みたいな話がreference付きで書かれている。Ryan Baker氏とNeil Heffernan氏の論文Affect Detectionは、physical/psychological sensorを利用する研究が行われてきており、それらは様々な制約により（e.g. 経済的な問題や、政治の問題）実際のアプリケーションとしてdeployするには難しさがあった。これを克服するために、sensor-freeなモデルが研究されてきたが、予測性能はあまり高くなくreal-timeなinterventionを行うのに十分な性能となっていなかった。一方で、近年DeepLearningが様々な分野で成功を収めてきており、教育分野での活用が限定的であるという状況がある。そこで、deepなsensor-freeモデルを提案。その結果、従来モデルをoutperformした。データセットはASSISTmentsデータを利用し、フィールドワーカーが20秒おきに、class roomでASSISTmentsを利用する生徒を観察し、生徒のAffective Stateをラベル付けした（ラウンドロビン方式）。ラベルは下記の通り：- bored- frustrated- confused- engaged concentration- other/impossibleビデオコーディングなどとは違って、ラウンドロビン方式では特定の生徒の間でラベルの欠落が生まれるが（常に特定の生徒を監視しているわけにはいかず、class-room全体を巡回しなければいけないから？）、全てのラベルにはタイムスタンプが付与されているので、欠落はわかるようになっている。合計で6つの学校における、646人の生徒に対する、7663のobservationが得られた。また、各特定の感情ラベルが付与されている際には実際に生徒はASSISTmentsを利用しており、先行研究では51種類のaction-level featureが利用されており（生徒とシステムのinteractionを捉える; e.g. reponse behavior, timeworking, hintやscaffoldingの利用の有無など）、今回もそういったfeatureも予測に利用する。各observationのinterval(=clip)には複数のアクションが含まれており、それらを集約することで、最終的に204種類のfeatureをobservation intervalごとに作成し利用（feature engineeringしてるっぽい）。RNN, LSTM, GRUの3種類のNNを用いて、204次元のfeature vectorをinputとし、各clipの4種類の感情ラベル（bored, frustrated, confused, engaged concentration）をsoftmaxで予測する。前回のclipが5分未満のclipについては、連続したclipとしてモデルに入力し、5分を超過したものについては新たな別のsequenceとして扱った模様。従来手法を大幅にoutperform。しっかり読んでいないが、resampoingは、ラベルの偏りを調整したか否かだと思われる。">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/AffectDetection/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/AffectDetection/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="AffectDetectionに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2021-06-08T00:00:00+00:00","datePublished":"2021-06-08T00:00:00+00:00","description":"AffectDetection Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED&#39;17 Original Issue #NeuralNetwork #EducationalDataMining #LearningAnalytics #AIED Issue Date: 2021-06-08 CommentDKTが実はBKTと対して性能変わらない、みたいな話がreference付きで書かれている。Ryan Baker氏とNeil Heffernan氏の論文Affect Detectionは、physical/psychological sensorを利用する研究が行われてきており、それらは様々な制約により（e.g. 経済的な問題や、政治の問題）実際のアプリケーションとしてdeployするには難しさがあった。これを克服するために、sensor-freeなモデルが研究されてきたが、予測性能はあまり高くなくreal-timeなinterventionを行うのに十分な性能となっていなかった。一方で、近年DeepLearningが様々な分野で成功を収めてきており、教育分野での活用が限定的であるという状況がある。そこで、deepなsensor-freeモデルを提案。その結果、従来モデルをoutperformした。データセットはASSISTmentsデータを利用し、フィールドワーカーが20秒おきに、class roomでASSISTmentsを利用する生徒を観察し、生徒のAffective Stateをラベル付けした（ラウンドロビン方式）。ラベルは下記の通り：- bored- frustrated- confused- engaged concentration- other/impossibleビデオコーディングなどとは違って、ラウンドロビン方式では特定の生徒の間でラベルの欠落が生まれるが（常に特定の生徒を監視しているわけにはいかず、class-room全体を巡回しなければいけないから？）、全てのラベルにはタイムスタンプが付与されているので、欠落はわかるようになっている。合計で6つの学校における、646人の生徒に対する、7663のobservationが得られた。また、各特定の感情ラベルが付与されている際には実際に生徒はASSISTmentsを利用しており、先行研究では51種類のaction-level featureが利用されており（生徒とシステムのinteractionを捉える; e.g. reponse behavior, timeworking, hintやscaffoldingの利用の有無など）、今回もそういったfeatureも予測に利用する。各observationのinterval(=clip)には複数のアクションが含まれており、それらを集約することで、最終的に204種類のfeatureをobservation intervalごとに作成し利用（feature engineeringしてるっぽい）。RNN, LSTM, GRUの3種類のNNを用いて、204次元のfeature vectorをinputとし、各clipの4種類の感情ラベル（bored, frustrated, confused, engaged concentration）をsoftmaxで予測する。前回のclipが5分未満のclipについては、連続したclipとしてモデルに入力し、5分を超過したものについては新たな別のsequenceとして扱った模様。従来手法を大幅にoutperform。しっかり読んでいないが、resampoingは、ラベルの偏りを調整したか否かだと思われる。","headline":"AffectDetectionに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/AffectDetection/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/AffectDetection/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2021-06-08T00:00:00+00:00","datePublished":"2021-06-08T00:00:00+00:00","description":"AffectDetection Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED&#39;17 Paper/Blog Link My Issue #NeuralNetwork #EducationalDataMining #LearningAnalytics #AIED Issue Date: 2021-06-08 CommentDKTが実はBKTと対して性能変わらない、みたいな話がreference付きで書かれている。Ryan Baker氏とNeil Heffernan氏の論文Affect Detectionは、physical/psychological sensorを利用する研究が行われてきており、それらは様々な制約により（e.g. 経済的な問題や、政治の問題）実際のアプリケーションとしてdeployするには難しさがあった。これを克服するために、sensor-freeなモデルが研究されてきたが、予測性能はあまり高くなくreal-timeなinterventionを行うのに十分な性能となっていなかった。一方で、近年DeepLearningが様々な分野で成功を収めてきており、教育分野での活用が限定的であるという状況がある。そこで、deepなsensor-freeモデルを提案。その結果、従来モデルをoutperformした。データセットはASSISTmentsデータを利用し、フィールドワーカーが20秒おきに、class roomでASSISTmentsを利用する生徒を観察し、生徒のAffective Stateをラベル付けした（ラウンドロビン方式）。ラベルは下記の通り：- bored- frustrated- confused- engaged concentration- other/impossibleビデオコーディングなどとは違って、ラウンドロビン方式では特定の生徒の間でラベルの欠落が生まれるが（常に特定の生徒を監視しているわけにはいかず、class-room全体を巡回しなければいけないから？）、全てのラベルにはタイムスタンプが付与されているので、欠落はわかるようになっている。合計で6つの学校における、646人の生徒に対する、7663のobservationが得られた。また、各特定の感情ラベルが付与されている際には実際に生徒はASSISTmentsを利用しており、先行研究では51種類のaction-level featureが利用されており（生徒とシステムのinteractionを捉える; e.g. reponse behavior, timeworking, hintやscaffoldingの利用の有無など）、今回もそういったfeatureも予測に利用する。各observationのinterval(=clip)には複数のアクションが含まれており、それらを集約することで、最終的に204種類のfeatureをobservation intervalごとに作成し利用（feature engineeringしてるっぽい）。RNN, LSTM, GRUの3種類のNNを用いて、204次元のfeature vectorをinputとし、各clipの4種類の感情ラベル（bored, frustrated, confused, engaged concentration）をsoftmaxで予測する。前回のclipが5分未満のclipについては、連続したclipとしてモデルに入力し、5分を超過したものについては新たな別のsequenceとして扱った模様。従来手法を大幅にoutperform。しっかり読んでいないが、resampoingは、ラベルの偏りを調整したか否かだと思われる。","headline":"AffectDetectionに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/AffectDetection/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/AffectDetection/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -1007,11 +1007,16 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <article class="paper-entry">
 <h3 id="improving-sensor-free-380" class="title-link">Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED'17</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/380" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://par.nsf.gov/servlets/purl/10060126" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/380" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1079,38 +1084,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/SSM-(StateSpaceModel)/" title="SSM (StateSpaceModel)に関する論文・技術記事メモの一覧">
-            SSM (StateSpaceModel)に関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/GPUKernel/" title="GPUKernelに関する論文・技術記事メモの一覧">
-            GPUKernelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/DialogueGeneration/" title="DialogueGenerationに関する論文・技術記事メモの一覧">
-            DialogueGenerationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
-</span>
-</a>
-        </li>
-<li class="">
           <a class="post-link" href="/paper_notes/articles/FoundationModel/" title="FoundationModelに関する論文・技術記事メモの一覧">
             FoundationModelに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 41</span> 
   <span class="post-badge badge-new">📝 41</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/ContrastiveReinforcementLearning/" title="ContrastiveReinforcementLearningに関する論文・技術記事メモの一覧">
+            ContrastiveReinforcementLearningに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/CodeGeneration/" title="CodeGenerationに関する論文・技術記事メモの一覧">
+            CodeGenerationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Faithfulness/" title="Faithfulnessに関する論文・技術記事メモの一覧">
+            Faithfulnessに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>

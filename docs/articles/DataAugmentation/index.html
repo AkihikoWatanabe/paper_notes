@@ -12,8 +12,8 @@
 <meta property="og:title" content="DataAugmentationに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL'25 Original Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, N_A, EMNLP'23 Original Issue #MachineLearning #NLP #LanguageModel #Transformer #Supervised-FineTuning (SFT) #DataGeneration Issue Date: 2023-08-28 GPT Summary- 本研究では、大規模言語モデル（LLMs）を使用して、プロンプトを自然言語でタスクを説明し、特定のモデルを訓練する手法であるPrompt2Modelを提案しています。Prompt2Modelは、既存のデータセットと事前学習済みモデルの検索、LLMsを使用したデータセットの生成、および教師あり微調整のプロセスを通じて行われます。実験結果では、Prompt2Modelが強力なLLMを上回る性能を示し、モデルの信頼性の評価も可能であることが示されています。Prompt2Modelはオープンソースで利用可能です。 CommentDataset Generatorによって、アノテーションが存在しないデータについても擬似ラベル付きデータを生成することができ、かつそれを既存のラベル付きデータと組み合わせることによってさらに性能が向上することが報告されている。これができるのはとても素晴らしい。Dataset Generatorについては、データを作成する際に低コストで、高品質で、多様なデータとするためにいくつかの工夫を実施している。1. ユーザが与えたデモンストレーションだけでなく、システムが生成したexampleもサンプリングして活用することで、生成されるexampleの多様性を向上させる。実際、これをやらない場合は120/200がduplicate exampleであったが、これが25/200まで減少した。2. 生成したサンプルの数に比例して、temperatureを徐々に高くしていく。これにより、サンプルの質を担保しつつ、多様性を徐々に増加させることができる。Temperature Annealingと呼ぶ。3. self-consistencyを用いて、擬似ラベルの質を高める。もしmajority votingが互角の場合は、回答が短いものを採用した（これはヒューリスティックに基づいている）4. zeno buildを用いてAPIへのリクエストを並列化することで高速に実験を実施非常に参考になる。 Learning Multimodal Data Augmentation in Feature Space, ICLR'23 Original Issue #MachineLearning #MultiModal Issue Date: 2023-04-26 GPT Summary- マルチモーダルデータの共同学習能力は、インテリジェントシステムの特徴であるが、データ拡張の成功は単一モーダルのタスクに限定されている。本研究では、LeMDAという方法を提案し、モダリティのアイデンティティや関係に制約を設けずにマルチモーダルデータを共同拡張することができることを示した。LeMDAはマルチモーダルディープラーニングの性能を向上させ、幅広いアプリケーションで最先端の結果を達成することができる。 CommentData Augmentationは基本的に単体のモダリティに閉じて行われるが、マルチモーダルな設定において、モダリティ同士がどう関係しているか、どの変換を利用すべきかわからない時に、どのようにデータ全体のsemantic structureを維持しながら、Data Augmentationできるか？という話らしい A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20 Original Issue #ComputerVision #Pocket #ContrastiveLearning #Self-SupervisedLearning #ICLR #Selected Papers/Blogs Issue Date: 2025-05-18 GPT Summary- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークSimCLRを提案し、特別なアーキテクチャやメモリバンクなしで対比自己教師あり学習を簡素化します。データ拡張の重要性、学習可能な非線形変換の導入による表現の質向上、対比学習が大きなバッチサイズと多くのトレーニングステップから利益を得ることを示し、ImageNetで従来の手法を上回る結果を達成しました。SimCLRによる自己教師あり表現を用いた線形分類器は76.5%のトップ1精度を達成し、教師ありResNet-50に匹敵します。ラベルの1%でファインチューニングした場合、85.8%のトップ5精度を達成しました。 Comment日本語解説:">
-<meta property="og:description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL'25 Original Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, N_A, EMNLP'23 Original Issue #MachineLearning #NLP #LanguageModel #Transformer #Supervised-FineTuning (SFT) #DataGeneration Issue Date: 2023-08-28 GPT Summary- 本研究では、大規模言語モデル（LLMs）を使用して、プロンプトを自然言語でタスクを説明し、特定のモデルを訓練する手法であるPrompt2Modelを提案しています。Prompt2Modelは、既存のデータセットと事前学習済みモデルの検索、LLMsを使用したデータセットの生成、および教師あり微調整のプロセスを通じて行われます。実験結果では、Prompt2Modelが強力なLLMを上回る性能を示し、モデルの信頼性の評価も可能であることが示されています。Prompt2Modelはオープンソースで利用可能です。 CommentDataset Generatorによって、アノテーションが存在しないデータについても擬似ラベル付きデータを生成することができ、かつそれを既存のラベル付きデータと組み合わせることによってさらに性能が向上することが報告されている。これができるのはとても素晴らしい。Dataset Generatorについては、データを作成する際に低コストで、高品質で、多様なデータとするためにいくつかの工夫を実施している。1. ユーザが与えたデモンストレーションだけでなく、システムが生成したexampleもサンプリングして活用することで、生成されるexampleの多様性を向上させる。実際、これをやらない場合は120/200がduplicate exampleであったが、これが25/200まで減少した。2. 生成したサンプルの数に比例して、temperatureを徐々に高くしていく。これにより、サンプルの質を担保しつつ、多様性を徐々に増加させることができる。Temperature Annealingと呼ぶ。3. self-consistencyを用いて、擬似ラベルの質を高める。もしmajority votingが互角の場合は、回答が短いものを採用した（これはヒューリスティックに基づいている）4. zeno buildを用いてAPIへのリクエストを並列化することで高速に実験を実施非常に参考になる。 Learning Multimodal Data Augmentation in Feature Space, ICLR'23 Original Issue #MachineLearning #MultiModal Issue Date: 2023-04-26 GPT Summary- マルチモーダルデータの共同学習能力は、インテリジェントシステムの特徴であるが、データ拡張の成功は単一モーダルのタスクに限定されている。本研究では、LeMDAという方法を提案し、モダリティのアイデンティティや関係に制約を設けずにマルチモーダルデータを共同拡張することができることを示した。LeMDAはマルチモーダルディープラーニングの性能を向上させ、幅広いアプリケーションで最先端の結果を達成することができる。 CommentData Augmentationは基本的に単体のモダリティに閉じて行われるが、マルチモーダルな設定において、モダリティ同士がどう関係しているか、どの変換を利用すべきかわからない時に、どのようにデータ全体のsemantic structureを維持しながら、Data Augmentationできるか？という話らしい A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20 Original Issue #ComputerVision #Pocket #ContrastiveLearning #Self-SupervisedLearning #ICLR #Selected Papers/Blogs Issue Date: 2025-05-18 GPT Summary- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークSimCLRを提案し、特別なアーキテクチャやメモリバンクなしで対比自己教師あり学習を簡素化します。データ拡張の重要性、学習可能な非線形変換の導入による表現の質向上、対比学習が大きなバッチサイズと多くのトレーニングステップから利益を得ることを示し、ImageNetで従来の手法を上回る結果を達成しました。SimCLRによる自己教師あり表現を用いた線形分類器は76.5%のトップ1精度を達成し、教師ありResNet-50に匹敵します。ラベルの1%でファインチューニングした場合、85.8%のトップ5精度を達成しました。 Comment日本語解説:">
+<meta name="description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL'25 Paper/Blog Link My Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, N_A, EMNLP'23 Paper/Blog Link My Issue #MachineLearning #NLP #LanguageModel #Transformer #Supervised-FineTuning (SFT) #DataGeneration Issue Date: 2023-08-28 GPT Summary- 本研究では、大規模言語モデル（LLMs）を使用して、プロンプトを自然言語でタスクを説明し、特定のモデルを訓練する手法であるPrompt2Modelを提案しています。Prompt2Modelは、既存のデータセットと事前学習済みモデルの検索、LLMsを使用したデータセットの生成、および教師あり微調整のプロセスを通じて行われます。実験結果では、Prompt2Modelが強力なLLMを上回る性能を示し、モデルの信頼性の評価も可能であることが示されています。Prompt2Modelはオープンソースで利用可能です。 CommentDataset Generatorによって、アノテーションが存在しないデータについても擬似ラベル付きデータを生成することができ、かつそれを既存のラベル付きデータと組み合わせることによってさらに性能が向上することが報告されている。これができるのはとても素晴らしい。Dataset Generatorについては、データを作成する際に低コストで、高品質で、多様なデータとするためにいくつかの工夫を実施している。1. ユーザが与えたデモンストレーションだけでなく、システムが生成したexampleもサンプリングして活用することで、生成されるexampleの多様性を向上させる。実際、これをやらない場合は120/200がduplicate exampleであったが、これが25/200まで減少した。2. 生成したサンプルの数に比例して、temperatureを徐々に高くしていく。これにより、サンプルの質を担保しつつ、多様性を徐々に増加させることができる。Temperature Annealingと呼ぶ。3. self-consistencyを用いて、擬似ラベルの質を高める。もしmajority votingが互角の場合は、回答が短いものを採用した（これはヒューリスティックに基づいている）4. zeno buildを用いてAPIへのリクエストを並列化することで高速に実験を実施非常に参考になる。 Learning Multimodal Data Augmentation in Feature Space, ICLR'23 Paper/Blog Link My Issue #MachineLearning #MultiModal Issue Date: 2023-04-26 GPT Summary- マルチモーダルデータの共同学習能力は、インテリジェントシステムの特徴であるが、データ拡張の成功は単一モーダルのタスクに限定されている。本研究では、LeMDAという方法を提案し、モダリティのアイデンティティや関係に制約を設けずにマルチモーダルデータを共同拡張することができることを示した。LeMDAはマルチモーダルディープラーニングの性能を向上させ、幅広いアプリケーションで最先端の結果を達成することができる。 CommentData Augmentationは基本的に単体のモダリティに閉じて行われるが、マルチモーダルな設定において、モダリティ同士がどう関係しているか、どの変換を利用すべきかわからない時に、どのようにデータ全体のsemantic structureを維持しながら、Data Augmentationできるか？という話らしい A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20 Paper/Blog Link My Issue #ComputerVision #Pocket #ContrastiveLearning #Self-SupervisedLearning #ICLR #Selected Papers/Blogs Issue Date: 2025-05-18 GPT Summary- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークSimCLRを提案し、特別なアーキテクチャやメモリバンクなしで対比自己教師あり学習を簡素化します。データ拡張の重要性、学習可能な非線形変換の導入による表現の質向上、対比学習が大きなバッチサイズと多くのトレーニングステップから利益を得ることを示し、ImageNetで従来の手法を上回る結果を達成しました。SimCLRによる自己教師あり表現を用いた線形分類器は76.5%のトップ1精度を達成し、教師ありResNet-50に匹敵します。ラベルの1%でファインチューニングした場合、85.8%のトップ5精度を達成しました。 Comment日本語解説:">
+<meta property="og:description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL'25 Paper/Blog Link My Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, N_A, EMNLP'23 Paper/Blog Link My Issue #MachineLearning #NLP #LanguageModel #Transformer #Supervised-FineTuning (SFT) #DataGeneration Issue Date: 2023-08-28 GPT Summary- 本研究では、大規模言語モデル（LLMs）を使用して、プロンプトを自然言語でタスクを説明し、特定のモデルを訓練する手法であるPrompt2Modelを提案しています。Prompt2Modelは、既存のデータセットと事前学習済みモデルの検索、LLMsを使用したデータセットの生成、および教師あり微調整のプロセスを通じて行われます。実験結果では、Prompt2Modelが強力なLLMを上回る性能を示し、モデルの信頼性の評価も可能であることが示されています。Prompt2Modelはオープンソースで利用可能です。 CommentDataset Generatorによって、アノテーションが存在しないデータについても擬似ラベル付きデータを生成することができ、かつそれを既存のラベル付きデータと組み合わせることによってさらに性能が向上することが報告されている。これができるのはとても素晴らしい。Dataset Generatorについては、データを作成する際に低コストで、高品質で、多様なデータとするためにいくつかの工夫を実施している。1. ユーザが与えたデモンストレーションだけでなく、システムが生成したexampleもサンプリングして活用することで、生成されるexampleの多様性を向上させる。実際、これをやらない場合は120/200がduplicate exampleであったが、これが25/200まで減少した。2. 生成したサンプルの数に比例して、temperatureを徐々に高くしていく。これにより、サンプルの質を担保しつつ、多様性を徐々に増加させることができる。Temperature Annealingと呼ぶ。3. self-consistencyを用いて、擬似ラベルの質を高める。もしmajority votingが互角の場合は、回答が短いものを採用した（これはヒューリスティックに基づいている）4. zeno buildを用いてAPIへのリクエストを並列化することで高速に実験を実施非常に参考になる。 Learning Multimodal Data Augmentation in Feature Space, ICLR'23 Paper/Blog Link My Issue #MachineLearning #MultiModal Issue Date: 2023-04-26 GPT Summary- マルチモーダルデータの共同学習能力は、インテリジェントシステムの特徴であるが、データ拡張の成功は単一モーダルのタスクに限定されている。本研究では、LeMDAという方法を提案し、モダリティのアイデンティティや関係に制約を設けずにマルチモーダルデータを共同拡張することができることを示した。LeMDAはマルチモーダルディープラーニングの性能を向上させ、幅広いアプリケーションで最先端の結果を達成することができる。 CommentData Augmentationは基本的に単体のモダリティに閉じて行われるが、マルチモーダルな設定において、モダリティ同士がどう関係しているか、どの変換を利用すべきかわからない時に、どのようにデータ全体のsemantic structureを維持しながら、Data Augmentationできるか？という話らしい A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20 Paper/Blog Link My Issue #ComputerVision #Pocket #ContrastiveLearning #Self-SupervisedLearning #ICLR #Selected Papers/Blogs Issue Date: 2025-05-18 GPT Summary- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークSimCLRを提案し、特別なアーキテクチャやメモリバンクなしで対比自己教師あり学習を簡素化します。データ拡張の重要性、学習可能な非線形変換の導入による表現の質向上、対比学習が大きなバッチサイズと多くのトレーニングステップから利益を得ることを示し、ImageNetで従来の手法を上回る結果を達成しました。SimCLRによる自己教師あり表現を用いた線形分類器は76.5%のトップ1精度を達成し、教師ありResNet-50に匹敵します。ラベルの1%でファインチューニングした場合、85.8%のトップ5精度を達成しました。 Comment日本語解説:">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="DataAugmentationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-05-18T00:00:00+00:00","datePublished":"2025-05-18T00:00:00+00:00","description":"DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Original Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, N_A, EMNLP&#39;23 Original Issue #MachineLearning #NLP #LanguageModel #Transformer #Supervised-FineTuning (SFT) #DataGeneration Issue Date: 2023-08-28 GPT Summary- 本研究では、大規模言語モデル（LLMs）を使用して、プロンプトを自然言語でタスクを説明し、特定のモデルを訓練する手法であるPrompt2Modelを提案しています。Prompt2Modelは、既存のデータセットと事前学習済みモデルの検索、LLMsを使用したデータセットの生成、および教師あり微調整のプロセスを通じて行われます。実験結果では、Prompt2Modelが強力なLLMを上回る性能を示し、モデルの信頼性の評価も可能であることが示されています。Prompt2Modelはオープンソースで利用可能です。 CommentDataset Generatorによって、アノテーションが存在しないデータについても擬似ラベル付きデータを生成することができ、かつそれを既存のラベル付きデータと組み合わせることによってさらに性能が向上することが報告されている。これができるのはとても素晴らしい。Dataset Generatorについては、データを作成する際に低コストで、高品質で、多様なデータとするためにいくつかの工夫を実施している。1. ユーザが与えたデモンストレーションだけでなく、システムが生成したexampleもサンプリングして活用することで、生成されるexampleの多様性を向上させる。実際、これをやらない場合は120/200がduplicate exampleであったが、これが25/200まで減少した。2. 生成したサンプルの数に比例して、temperatureを徐々に高くしていく。これにより、サンプルの質を担保しつつ、多様性を徐々に増加させることができる。Temperature Annealingと呼ぶ。3. self-consistencyを用いて、擬似ラベルの質を高める。もしmajority votingが互角の場合は、回答が短いものを採用した（これはヒューリスティックに基づいている）4. zeno buildを用いてAPIへのリクエストを並列化することで高速に実験を実施非常に参考になる。 Learning Multimodal Data Augmentation in Feature Space, ICLR&#39;23 Original Issue #MachineLearning #MultiModal Issue Date: 2023-04-26 GPT Summary- マルチモーダルデータの共同学習能力は、インテリジェントシステムの特徴であるが、データ拡張の成功は単一モーダルのタスクに限定されている。本研究では、LeMDAという方法を提案し、モダリティのアイデンティティや関係に制約を設けずにマルチモーダルデータを共同拡張することができることを示した。LeMDAはマルチモーダルディープラーニングの性能を向上させ、幅広いアプリケーションで最先端の結果を達成することができる。 CommentData Augmentationは基本的に単体のモダリティに閉じて行われるが、マルチモーダルな設定において、モダリティ同士がどう関係しているか、どの変換を利用すべきかわからない時に、どのようにデータ全体のsemantic structureを維持しながら、Data Augmentationできるか？という話らしい A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML&#39;20 Original Issue #ComputerVision #Pocket #ContrastiveLearning #Self-SupervisedLearning #ICLR #Selected Papers/Blogs Issue Date: 2025-05-18 GPT Summary- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークSimCLRを提案し、特別なアーキテクチャやメモリバンクなしで対比自己教師あり学習を簡素化します。データ拡張の重要性、学習可能な非線形変換の導入による表現の質向上、対比学習が大きなバッチサイズと多くのトレーニングステップから利益を得ることを示し、ImageNetで従来の手法を上回る結果を達成しました。SimCLRによる自己教師あり表現を用いた線形分類器は76.5%のトップ1精度を達成し、教師ありResNet-50に匹敵します。ラベルの1%でファインチューニングした場合、85.8%のトップ5精度を達成しました。 Comment日本語解説:","headline":"DataAugmentationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-05-18T00:00:00+00:00","datePublished":"2025-05-18T00:00:00+00:00","description":"DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Paper/Blog Link My Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, N_A, EMNLP&#39;23 Paper/Blog Link My Issue #MachineLearning #NLP #LanguageModel #Transformer #Supervised-FineTuning (SFT) #DataGeneration Issue Date: 2023-08-28 GPT Summary- 本研究では、大規模言語モデル（LLMs）を使用して、プロンプトを自然言語でタスクを説明し、特定のモデルを訓練する手法であるPrompt2Modelを提案しています。Prompt2Modelは、既存のデータセットと事前学習済みモデルの検索、LLMsを使用したデータセットの生成、および教師あり微調整のプロセスを通じて行われます。実験結果では、Prompt2Modelが強力なLLMを上回る性能を示し、モデルの信頼性の評価も可能であることが示されています。Prompt2Modelはオープンソースで利用可能です。 CommentDataset Generatorによって、アノテーションが存在しないデータについても擬似ラベル付きデータを生成することができ、かつそれを既存のラベル付きデータと組み合わせることによってさらに性能が向上することが報告されている。これができるのはとても素晴らしい。Dataset Generatorについては、データを作成する際に低コストで、高品質で、多様なデータとするためにいくつかの工夫を実施している。1. ユーザが与えたデモンストレーションだけでなく、システムが生成したexampleもサンプリングして活用することで、生成されるexampleの多様性を向上させる。実際、これをやらない場合は120/200がduplicate exampleであったが、これが25/200まで減少した。2. 生成したサンプルの数に比例して、temperatureを徐々に高くしていく。これにより、サンプルの質を担保しつつ、多様性を徐々に増加させることができる。Temperature Annealingと呼ぶ。3. self-consistencyを用いて、擬似ラベルの質を高める。もしmajority votingが互角の場合は、回答が短いものを採用した（これはヒューリスティックに基づいている）4. zeno buildを用いてAPIへのリクエストを並列化することで高速に実験を実施非常に参考になる。 Learning Multimodal Data Augmentation in Feature Space, ICLR&#39;23 Paper/Blog Link My Issue #MachineLearning #MultiModal Issue Date: 2023-04-26 GPT Summary- マルチモーダルデータの共同学習能力は、インテリジェントシステムの特徴であるが、データ拡張の成功は単一モーダルのタスクに限定されている。本研究では、LeMDAという方法を提案し、モダリティのアイデンティティや関係に制約を設けずにマルチモーダルデータを共同拡張することができることを示した。LeMDAはマルチモーダルディープラーニングの性能を向上させ、幅広いアプリケーションで最先端の結果を達成することができる。 CommentData Augmentationは基本的に単体のモダリティに閉じて行われるが、マルチモーダルな設定において、モダリティ同士がどう関係しているか、どの変換を利用すべきかわからない時に、どのようにデータ全体のsemantic structureを維持しながら、Data Augmentationできるか？という話らしい A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML&#39;20 Paper/Blog Link My Issue #ComputerVision #Pocket #ContrastiveLearning #Self-SupervisedLearning #ICLR #Selected Papers/Blogs Issue Date: 2025-05-18 GPT Summary- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークSimCLRを提案し、特別なアーキテクチャやメモリバンクなしで対比自己教師あり学習を簡素化します。データ拡張の重要性、学習可能な非線形変換の導入による表現の質向上、対比学習が大きなバッチサイズと多くのトレーニングステップから利益を得ることを示し、ImageNetで従来の手法を上回る結果を達成しました。SimCLRによる自己教師あり表現を用いた線形分類器は76.5%のトップ1精度を達成し、教師ありResNet-50に匹敵します。ラベルの1%でファインチューニングした場合、85.8%のトップ5精度を達成しました。 Comment日本語解説:","headline":"DataAugmentationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 mins</span>
   </div></header>
 </div>
     </div>
@@ -1007,11 +1007,16 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <article class="paper-entry">
 <h3 id="reverse-thinking-1565" class="title-link">Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL'25</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1565" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/2411.19865" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1565" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1024,11 +1029,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="prompt2model-generating-1024" class="title-link">Prompt2Model: Generating Deployable Models from Natural Language   Instructions, Vijay Viswanathan+, N_A, EMNLP'23</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/2308.12261" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1043,11 +1053,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="learning-multimodal-546" class="title-link">Learning Multimodal Data Augmentation in Feature Space, ICLR'23</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/546" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/2212.14453" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/546" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
@@ -1057,11 +1072,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="a-simple-1975" class="title-link">A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1975" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/2002.05709" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1975" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1081,11 +1101,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="nlpaug-505" class="title-link">nlpaug</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/505" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://github.com/makcedward/nlpaug" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/505" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
@@ -1149,38 +1174,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Distillation/" title="Distillationに関する論文・技術記事メモの一覧">
-            Distillationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AAAI/" title="AAAIに関する論文・技術記事メモの一覧">
+            AAAIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 20</span> 
-  <span class="post-badge badge-new">📝 20</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 15</span> 
+  <span class="post-badge badge-new">📝 15</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Hybrid/" title="Hybridに関する論文・技術記事メモの一覧">
-            Hybridに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Physics/" title="Physicsに関する論文・技術記事メモの一覧">
+            Physicsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SyntheticDataGeneration/" title="SyntheticDataGenerationに関する論文・技術記事メモの一覧">
-            SyntheticDataGenerationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Clustering-based/" title="Clustering-basedに関する論文・技術記事メモの一覧">
-            Clustering-basedに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/FeatureMatching/" title="FeatureMatchingに関する論文・技術記事メモの一覧">
+            FeatureMatchingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Decoding/" title="Decodingに関する論文・技術記事メモの一覧">
+            Decodingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
+  <span class="post-badge badge-new">📝 24</span>
 </span>
 </a>
         </li>

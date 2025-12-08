@@ -12,8 +12,8 @@
 <meta property="og:title" content="ConceptToTextGenerationに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="ConceptToTextGeneration NUBIA, EvalNLGEval'20 Original Issue #PersonalizedDocumentSummarization #DocumentSummarization #NaturalLanguageGeneration #Metrics #NLP #DataToTextGeneration #DialogueGeneration #PersonalizedGeneration Issue Date: 2021-06-02 CommentTextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。意味的に同等の内容を述べた文間でのexampleBLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。 [Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML'17, 2017.03 Original Issue #NeuralNetwork #NaturalLanguageGeneration #Controllable #Pocket #NLP #DataToTextGeneration #GenerativeAdversarialNetwork #ICML #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-31 GPT Summary- 属性に基づいて制御された自然言語文を生成するために、変分オートエンコーダと属性識別器を組み合わせた新しい生成モデルを提案。微分可能な近似を用いて解釈可能な表現を学習し、望ましい属性を持つ文を生成。定量的評価で生成の正確性を確認。 CommentText Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元となるfeatureのある次元が、たとえばpolarityなどに対応しており、その次元の数値をいじるだけで生成されるテキストをcontrolできる。 テキストを生成する際に、生成されるテキストをコントロールするための研究。 テキストを生成する際には、基本的にはVariational Auto Encoder(VAE)を用いる。VAEは、入力をエンコードするEncoderと、エンコードされた潜在変数zからテキストを生成するGeneratorの2つの機構によって構成されている。この研究では、生成されるテキストをコントロールするために、VAEの潜在変数zに、生成するテキストのattributeを表す変数cを新たに導入。たとえば、一例として、変数cをsentimentに対応させた場合、変数cの値を変更すると、生成されるテキストのsentimentが変化するような生成が実現可能。次に、このような生成を実現できるようなパラメータを学習したいが、学習を行う際のポイントは、以下の二つ。cで指定されたattributeが反映されたテキストを生成するように学習潜在変数zとattributeに関する変数cの独立性を保つように学習 （cには制御したいattributeに関する情報のみが格納され、その他の情報は潜在変数zに格納されるように学習する)1を実現するために、新たにdiscriminatorと呼ばれる識別器を用意し、VAEが生成したテキストのattributeをdiscriminatorで分類し、その結果をVAEのGeneratorにフィードバックすることで、attributeが反映されたテキストを生成できるようにパラメータの学習を行う。 （これにはラベル付きデータが必要だが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）また、2を実現するために、VAEが生成したテキストから、生成する元となった潜在変数zが再現できるようにEncoderのパラメータを学習。実験では、sentimentとtenseをコントロールする実験が行われており、attributeを表す変数cを変更することで、以下のようなテキストが生成されており興味深い。[sentimentを制御した例]this movie was awful and boring. (negative)this movie was funny and touching. (positive)[tenseを制御した例]this was one of the outstanding thrillers of the last decadethis is one of the outstanding thrillers of the all timethis will be one of the great thrillers of the all timeVAEは通常のAutoEncoderと比較して、奥が深くて勉強してみておもしろかった。 Reparametrization Trickなどは知らなかった。管理人による解説資料:[Controllable Text Generation.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1595121/Controllable.Text.Generation.pdf)slideshare:">
-<meta property="og:description" content="ConceptToTextGeneration NUBIA, EvalNLGEval'20 Original Issue #PersonalizedDocumentSummarization #DocumentSummarization #NaturalLanguageGeneration #Metrics #NLP #DataToTextGeneration #DialogueGeneration #PersonalizedGeneration Issue Date: 2021-06-02 CommentTextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。意味的に同等の内容を述べた文間でのexampleBLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。 [Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML'17, 2017.03 Original Issue #NeuralNetwork #NaturalLanguageGeneration #Controllable #Pocket #NLP #DataToTextGeneration #GenerativeAdversarialNetwork #ICML #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-31 GPT Summary- 属性に基づいて制御された自然言語文を生成するために、変分オートエンコーダと属性識別器を組み合わせた新しい生成モデルを提案。微分可能な近似を用いて解釈可能な表現を学習し、望ましい属性を持つ文を生成。定量的評価で生成の正確性を確認。 CommentText Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元となるfeatureのある次元が、たとえばpolarityなどに対応しており、その次元の数値をいじるだけで生成されるテキストをcontrolできる。 テキストを生成する際に、生成されるテキストをコントロールするための研究。 テキストを生成する際には、基本的にはVariational Auto Encoder(VAE)を用いる。VAEは、入力をエンコードするEncoderと、エンコードされた潜在変数zからテキストを生成するGeneratorの2つの機構によって構成されている。この研究では、生成されるテキストをコントロールするために、VAEの潜在変数zに、生成するテキストのattributeを表す変数cを新たに導入。たとえば、一例として、変数cをsentimentに対応させた場合、変数cの値を変更すると、生成されるテキストのsentimentが変化するような生成が実現可能。次に、このような生成を実現できるようなパラメータを学習したいが、学習を行う際のポイントは、以下の二つ。cで指定されたattributeが反映されたテキストを生成するように学習潜在変数zとattributeに関する変数cの独立性を保つように学習 （cには制御したいattributeに関する情報のみが格納され、その他の情報は潜在変数zに格納されるように学習する)1を実現するために、新たにdiscriminatorと呼ばれる識別器を用意し、VAEが生成したテキストのattributeをdiscriminatorで分類し、その結果をVAEのGeneratorにフィードバックすることで、attributeが反映されたテキストを生成できるようにパラメータの学習を行う。 （これにはラベル付きデータが必要だが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）また、2を実現するために、VAEが生成したテキストから、生成する元となった潜在変数zが再現できるようにEncoderのパラメータを学習。実験では、sentimentとtenseをコントロールする実験が行われており、attributeを表す変数cを変更することで、以下のようなテキストが生成されており興味深い。[sentimentを制御した例]this movie was awful and boring. (negative)this movie was funny and touching. (positive)[tenseを制御した例]this was one of the outstanding thrillers of the last decadethis is one of the outstanding thrillers of the all timethis will be one of the great thrillers of the all timeVAEは通常のAutoEncoderと比較して、奥が深くて勉強してみておもしろかった。 Reparametrization Trickなどは知らなかった。管理人による解説資料:[Controllable Text Generation.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1595121/Controllable.Text.Generation.pdf)slideshare:">
+<meta name="description" content="ConceptToTextGeneration NUBIA, EvalNLGEval'20 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #NaturalLanguageGeneration #Metrics #NLP #DataToTextGeneration #DialogueGeneration #PersonalizedGeneration Issue Date: 2021-06-02 CommentTextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。意味的に同等の内容を述べた文間でのexampleBLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。 [Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML'17, 2017.03 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #Controllable #Pocket #NLP #DataToTextGeneration #GenerativeAdversarialNetwork #ICML #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-31 GPT Summary- 属性に基づいて制御された自然言語文を生成するために、変分オートエンコーダと属性識別器を組み合わせた新しい生成モデルを提案。微分可能な近似を用いて解釈可能な表現を学習し、望ましい属性を持つ文を生成。定量的評価で生成の正確性を確認。 CommentText Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元となるfeatureのある次元が、たとえばpolarityなどに対応しており、その次元の数値をいじるだけで生成されるテキストをcontrolできる。 テキストを生成する際に、生成されるテキストをコントロールするための研究。 テキストを生成する際には、基本的にはVariational Auto Encoder(VAE)を用いる。VAEは、入力をエンコードするEncoderと、エンコードされた潜在変数zからテキストを生成するGeneratorの2つの機構によって構成されている。この研究では、生成されるテキストをコントロールするために、VAEの潜在変数zに、生成するテキストのattributeを表す変数cを新たに導入。たとえば、一例として、変数cをsentimentに対応させた場合、変数cの値を変更すると、生成されるテキストのsentimentが変化するような生成が実現可能。次に、このような生成を実現できるようなパラメータを学習したいが、学習を行う際のポイントは、以下の二つ。cで指定されたattributeが反映されたテキストを生成するように学習潜在変数zとattributeに関する変数cの独立性を保つように学習 （cには制御したいattributeに関する情報のみが格納され、その他の情報は潜在変数zに格納されるように学習する)1を実現するために、新たにdiscriminatorと呼ばれる識別器を用意し、VAEが生成したテキストのattributeをdiscriminatorで分類し、その結果をVAEのGeneratorにフィードバックすることで、attributeが反映されたテキストを生成できるようにパラメータの学習を行う。 （これにはラベル付きデータが必要だが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）また、2を実現するために、VAEが生成したテキストから、生成する元となった潜在変数zが再現できるようにEncoderのパラメータを学習。実験では、sentimentとtenseをコントロールする実験が行われており、attributeを表す変数cを変更することで、以下のようなテキストが生成されており興味深い。[sentimentを制御した例]this movie was awful and boring. (negative)this movie was funny and touching. (positive)[tenseを制御した例]this was one of the outstanding thrillers of the last decadethis is one of the outstanding thrillers of the all timethis will be one of the great thrillers of the all timeVAEは通常のAutoEncoderと比較して、奥が深くて勉強してみておもしろかった。 Reparametrization Trickなどは知らなかった。管理人による解説資料:[Controllable Text Generation.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1595121/Controllable.Text.Generation.pdf)slideshare:">
+<meta property="og:description" content="ConceptToTextGeneration NUBIA, EvalNLGEval'20 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #NaturalLanguageGeneration #Metrics #NLP #DataToTextGeneration #DialogueGeneration #PersonalizedGeneration Issue Date: 2021-06-02 CommentTextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。意味的に同等の内容を述べた文間でのexampleBLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。 [Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML'17, 2017.03 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #Controllable #Pocket #NLP #DataToTextGeneration #GenerativeAdversarialNetwork #ICML #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-31 GPT Summary- 属性に基づいて制御された自然言語文を生成するために、変分オートエンコーダと属性識別器を組み合わせた新しい生成モデルを提案。微分可能な近似を用いて解釈可能な表現を学習し、望ましい属性を持つ文を生成。定量的評価で生成の正確性を確認。 CommentText Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元となるfeatureのある次元が、たとえばpolarityなどに対応しており、その次元の数値をいじるだけで生成されるテキストをcontrolできる。 テキストを生成する際に、生成されるテキストをコントロールするための研究。 テキストを生成する際には、基本的にはVariational Auto Encoder(VAE)を用いる。VAEは、入力をエンコードするEncoderと、エンコードされた潜在変数zからテキストを生成するGeneratorの2つの機構によって構成されている。この研究では、生成されるテキストをコントロールするために、VAEの潜在変数zに、生成するテキストのattributeを表す変数cを新たに導入。たとえば、一例として、変数cをsentimentに対応させた場合、変数cの値を変更すると、生成されるテキストのsentimentが変化するような生成が実現可能。次に、このような生成を実現できるようなパラメータを学習したいが、学習を行う際のポイントは、以下の二つ。cで指定されたattributeが反映されたテキストを生成するように学習潜在変数zとattributeに関する変数cの独立性を保つように学習 （cには制御したいattributeに関する情報のみが格納され、その他の情報は潜在変数zに格納されるように学習する)1を実現するために、新たにdiscriminatorと呼ばれる識別器を用意し、VAEが生成したテキストのattributeをdiscriminatorで分類し、その結果をVAEのGeneratorにフィードバックすることで、attributeが反映されたテキストを生成できるようにパラメータの学習を行う。 （これにはラベル付きデータが必要だが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）また、2を実現するために、VAEが生成したテキストから、生成する元となった潜在変数zが再現できるようにEncoderのパラメータを学習。実験では、sentimentとtenseをコントロールする実験が行われており、attributeを表す変数cを変更することで、以下のようなテキストが生成されており興味深い。[sentimentを制御した例]this movie was awful and boring. (negative)this movie was funny and touching. (positive)[tenseを制御した例]this was one of the outstanding thrillers of the last decadethis is one of the outstanding thrillers of the all timethis will be one of the great thrillers of the all timeVAEは通常のAutoEncoderと比較して、奥が深くて勉強してみておもしろかった。 Reparametrization Trickなどは知らなかった。管理人による解説資料:[Controllable Text Generation.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1595121/Controllable.Text.Generation.pdf)slideshare:">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/ConceptToTextGeneration/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/ConceptToTextGeneration/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="ConceptToTextGenerationに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2021-06-02T00:00:00+00:00","datePublished":"2021-06-02T00:00:00+00:00","description":"ConceptToTextGeneration NUBIA, EvalNLGEval&#39;20 Original Issue #PersonalizedDocumentSummarization #DocumentSummarization #NaturalLanguageGeneration #Metrics #NLP #DataToTextGeneration #DialogueGeneration #PersonalizedGeneration Issue Date: 2021-06-02 CommentTextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。意味的に同等の内容を述べた文間でのexampleBLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。 [Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML&#39;17, 2017.03 Original Issue #NeuralNetwork #NaturalLanguageGeneration #Controllable #Pocket #NLP #DataToTextGeneration #GenerativeAdversarialNetwork #ICML #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-31 GPT Summary- 属性に基づいて制御された自然言語文を生成するために、変分オートエンコーダと属性識別器を組み合わせた新しい生成モデルを提案。微分可能な近似を用いて解釈可能な表現を学習し、望ましい属性を持つ文を生成。定量的評価で生成の正確性を確認。 CommentText Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元となるfeatureのある次元が、たとえばpolarityなどに対応しており、その次元の数値をいじるだけで生成されるテキストをcontrolできる。 テキストを生成する際に、生成されるテキストをコントロールするための研究。 テキストを生成する際には、基本的にはVariational Auto Encoder(VAE)を用いる。VAEは、入力をエンコードするEncoderと、エンコードされた潜在変数zからテキストを生成するGeneratorの2つの機構によって構成されている。この研究では、生成されるテキストをコントロールするために、VAEの潜在変数zに、生成するテキストのattributeを表す変数cを新たに導入。たとえば、一例として、変数cをsentimentに対応させた場合、変数cの値を変更すると、生成されるテキストのsentimentが変化するような生成が実現可能。次に、このような生成を実現できるようなパラメータを学習したいが、学習を行う際のポイントは、以下の二つ。cで指定されたattributeが反映されたテキストを生成するように学習潜在変数zとattributeに関する変数cの独立性を保つように学習 （cには制御したいattributeに関する情報のみが格納され、その他の情報は潜在変数zに格納されるように学習する)1を実現するために、新たにdiscriminatorと呼ばれる識別器を用意し、VAEが生成したテキストのattributeをdiscriminatorで分類し、その結果をVAEのGeneratorにフィードバックすることで、attributeが反映されたテキストを生成できるようにパラメータの学習を行う。 （これにはラベル付きデータが必要だが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）また、2を実現するために、VAEが生成したテキストから、生成する元となった潜在変数zが再現できるようにEncoderのパラメータを学習。実験では、sentimentとtenseをコントロールする実験が行われており、attributeを表す変数cを変更することで、以下のようなテキストが生成されており興味深い。[sentimentを制御した例]this movie was awful and boring. (negative)this movie was funny and touching. (positive)[tenseを制御した例]this was one of the outstanding thrillers of the last decadethis is one of the outstanding thrillers of the all timethis will be one of the great thrillers of the all timeVAEは通常のAutoEncoderと比較して、奥が深くて勉強してみておもしろかった。 Reparametrization Trickなどは知らなかった。管理人による解説資料:[Controllable Text Generation.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1595121/Controllable.Text.Generation.pdf)slideshare:","headline":"ConceptToTextGenerationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ConceptToTextGeneration/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ConceptToTextGeneration/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2021-06-02T00:00:00+00:00","datePublished":"2021-06-02T00:00:00+00:00","description":"ConceptToTextGeneration NUBIA, EvalNLGEval&#39;20 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #NaturalLanguageGeneration #Metrics #NLP #DataToTextGeneration #DialogueGeneration #PersonalizedGeneration Issue Date: 2021-06-02 CommentTextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。意味的に同等の内容を述べた文間でのexampleBLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。 [Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML&#39;17, 2017.03 Paper/Blog Link My Issue #NeuralNetwork #NaturalLanguageGeneration #Controllable #Pocket #NLP #DataToTextGeneration #GenerativeAdversarialNetwork #ICML #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-31 GPT Summary- 属性に基づいて制御された自然言語文を生成するために、変分オートエンコーダと属性識別器を組み合わせた新しい生成モデルを提案。微分可能な近似を用いて解釈可能な表現を学習し、望ましい属性を持つ文を生成。定量的評価で生成の正確性を確認。 CommentText Generationを行う際は、現在は基本的に学習された言語モデルの尤度に従ってテキストを生成するのみで、outputされるテキストをcontrolすることができないので、できるようにしましたという論文。 VAEによるテキスト生成にGANを組み合わせたようなモデル。 decodingする元となるfeatureのある次元が、たとえばpolarityなどに対応しており、その次元の数値をいじるだけで生成されるテキストをcontrolできる。 テキストを生成する際に、生成されるテキストをコントロールするための研究。 テキストを生成する際には、基本的にはVariational Auto Encoder(VAE)を用いる。VAEは、入力をエンコードするEncoderと、エンコードされた潜在変数zからテキストを生成するGeneratorの2つの機構によって構成されている。この研究では、生成されるテキストをコントロールするために、VAEの潜在変数zに、生成するテキストのattributeを表す変数cを新たに導入。たとえば、一例として、変数cをsentimentに対応させた場合、変数cの値を変更すると、生成されるテキストのsentimentが変化するような生成が実現可能。次に、このような生成を実現できるようなパラメータを学習したいが、学習を行う際のポイントは、以下の二つ。cで指定されたattributeが反映されたテキストを生成するように学習潜在変数zとattributeに関する変数cの独立性を保つように学習 （cには制御したいattributeに関する情報のみが格納され、その他の情報は潜在変数zに格納されるように学習する)1を実現するために、新たにdiscriminatorと呼ばれる識別器を用意し、VAEが生成したテキストのattributeをdiscriminatorで分類し、その結果をVAEのGeneratorにフィードバックすることで、attributeが反映されたテキストを生成できるようにパラメータの学習を行う。 （これにはラベル付きデータが必要だが、少量でも学習できることに加えて、sentence levelのデータだけではなくword levelのデータでも学習できる。）また、2を実現するために、VAEが生成したテキストから、生成する元となった潜在変数zが再現できるようにEncoderのパラメータを学習。実験では、sentimentとtenseをコントロールする実験が行われており、attributeを表す変数cを変更することで、以下のようなテキストが生成されており興味深い。[sentimentを制御した例]this movie was awful and boring. (negative)this movie was funny and touching. (positive)[tenseを制御した例]this was one of the outstanding thrillers of the last decadethis is one of the outstanding thrillers of the all timethis will be one of the great thrillers of the all timeVAEは通常のAutoEncoderと比較して、奥が深くて勉強してみておもしろかった。 Reparametrization Trickなどは知らなかった。管理人による解説資料:[Controllable Text Generation.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1595121/Controllable.Text.Generation.pdf)slideshare:","headline":"ConceptToTextGenerationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ConceptToTextGeneration/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ConceptToTextGeneration/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 24 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 26 mins</span>
   </div></header>
 </div>
     </div>
@@ -1007,11 +1007,16 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <article class="paper-entry">
 <h3 id="nubia-367" class="title-link">NUBIA, EvalNLGEval'20</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/367" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://wl-research.github.io/blog/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/367" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="PersonalizedDocumentSummarization.html" target="_blank" rel="noopener noreferrer">#PersonalizedDocumentSummarization</a>
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
@@ -1027,11 +1032,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="toward-controlled-91" class="title-link">[Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML'17, 2017.03</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/91" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1703.00955" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/91" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1058,11 +1068,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="neural-text-87" class="title-link">[Paper Note] Neural Text Generation: A Practical Guide, Ziang Xie, arXiv'17, 2017.11</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/87" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1711.09534" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/87" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
@@ -1075,11 +1090,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="survey-of-84" class="title-link">[Paper Note] Survey of the State of the Art in Natural Language Generation: Core tasks, applications and evaluation, Albert Gatt+, arXiv'17, 2017.03</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/84" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1703.09902" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/84" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1092,11 +1112,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="neural-text-89" class="title-link">[Paper Note] Neural Text Generation from Structured Data with Application to the  Biography Domain, Remi Lebret+, EMNLP'16, 2016.03</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/89" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1603.07771" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/89" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1112,11 +1137,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="content-selection-86" class="title-link">[Paper Note] Content Selection in Data-to-Text Systems: A Survey, Dimitra Gkatzia, arXiv'16, 2016.10</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/86" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1610.08375" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/86" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1129,11 +1159,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="inducing-document-99" class="title-link">[Paper Note] Inducing document plans for concept-to-text generation, Konstas+, EMNLP'13</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/99" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://www.aclweb.org/anthology/D13-1157" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/99" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="SingleFramework.html" target="_blank" rel="noopener noreferrer">#SingleFramework</a>
@@ -1143,11 +1178,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="unsupervised-concept-to-text-97" class="title-link">[Paper Note] Unsupervised concept-to-text generation with hypergraphs, Konstas+, NAACL-HLT'12</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/97" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://delivery.acm.org/10.1145/2390000/2382151/p752-konstas.pdf?ip=125.14.202.208&id=2382151&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505310128_57b77b92df6f4df850de87ef9bb705ea" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/97" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="SingleFramework.html" target="_blank" rel="noopener noreferrer">#SingleFramework</a>
@@ -1157,11 +1197,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="generative-alignment-96" class="title-link">[Paper Note] Generative alignment and semantic parsing for learning from ambiguous supervision, Kim+, COLING'10</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/96" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://aclweb.org/anthology/C/C10/C10-2062.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/96" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="SingleFramework.html" target="_blank" rel="noopener noreferrer">#SingleFramework</a>
@@ -1171,11 +1216,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="learning-semantic-113" class="title-link">[Paper Note] Learning semantic correspondences with less supervision, Liang+, ACL-IJCNLP'09</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/113" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://cs.stanford.edu/~pliang/papers/semantics-acl2009.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/113" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="Others.html" target="_blank" rel="noopener noreferrer">#Others</a>
@@ -1186,11 +1236,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="automatic-generation-100" class="title-link">[Paper Note] Automatic generation of textual summaries from neonatal intensive care data, Porter+, Artificial Intelligence'09, 2009.05</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/100" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://www.sciencedirect.com/science/article/pii/S0004370208002117" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/100" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="SingleFramework.html" target="_blank" rel="noopener noreferrer">#SingleFramework</a>
@@ -1200,11 +1255,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="a-generative-114" class="title-link">[Paper Note] A generative model for parsing natural language to meaning representations, Lu+, EMNLP'08</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/114" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://www.aclweb.org/anthology/D08-1082" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/114" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="Others.html" target="_blank" rel="noopener noreferrer">#Others</a>
@@ -1214,11 +1274,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="an-architecture-85" class="title-link">[Paper Note] An Architecture for Data to Text Systems, Ehud Reiter, ENLG'07</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/85" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://dl.acm.org/citation.cfm?id=1610180" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/85" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1231,11 +1296,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="aggregation-via-102" class="title-link">[Paper Note] Aggregation via set partitioning for natural language generation, Barzilay+, HLT-NAACL'06</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/102" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://dl.acm.org/citation.cfm?id=1220881" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/102" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="DataDriven.html" target="_blank" rel="noopener noreferrer">#DataDriven</a>
@@ -1245,11 +1315,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="collective-content-101" class="title-link">[Paper Note] Collective content selection for concept-to-text generation, Barzilay+, HLT_EMNLP'05</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/101" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://delivery.acm.org/10.1145/1230000/1220617/p331-barzilay.pdf?ip=125.14.202.208&id=1220617&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505310520_1f2899d03172876aae83af892267bdb0" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/101" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="DataDriven.html" target="_blank" rel="noopener noreferrer">#DataDriven</a>
@@ -1259,11 +1334,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="coral-using-107" class="title-link">[Paper Note] Coral: Using natural language generation for navigational assistance, Dale+, Australasian computer science conference'03, 2023.02</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/107" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://pdfs.semanticscholar.org/5ca0/2daaa0d676520d8642ad00351121ff1f29c4.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/107" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="RuleBased.html" target="_blank" rel="noopener noreferrer">#RuleBased</a>
@@ -1272,11 +1352,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="a-global-98" class="title-link">[Paper Note] A Global Model for Concept-to-Text Generation, Konstas+, Journal of Artificial Intelligence Research, Vol. 48, pp.305--346, 2013.10</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/98" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.jair.org/index.php/jair/article/view/10841" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/98" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
@@ -1339,38 +1424,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Architecture/" title="Architectureに関する論文・技術記事メモの一覧">
-            Architectureに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Reference-free/" title="Reference-freeに関する論文・技術記事メモの一覧">
+            Reference-freeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 54</span> 
-  <span class="post-badge badge-new">📝 54</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 23</span> 
+  <span class="post-badge badge-new">📝 23</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/EmergentAbilities/" title="EmergentAbilitiesに関する論文・技術記事メモの一覧">
-            EmergentAbilitiesに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/EfficiencyImprovement/" title="EfficiencyImprovementに関する論文・技術記事メモの一覧">
+            EfficiencyImprovementに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 229</span> 
+  <span class="post-badge badge-new">📝 229</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ICML/" title="ICMLに関する論文・技術記事メモの一覧">
-            ICMLに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 69</span> 
-  <span class="post-badge badge-new">📝 69</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/PointWise/" title="PointWiseに関する論文・技術記事メモの一覧">
-            PointWiseに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/MemoryOptimization/" title="MemoryOptimizationに関する論文・技術記事メモの一覧">
+            MemoryOptimizationに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Mindset/" title="Mindsetに関する論文・技術記事メモの一覧">
+            Mindsetに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li>

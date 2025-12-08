@@ -12,8 +12,8 @@
 <meta property="og:title" content="LearningAnalyticsに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="LearningAnalytics Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22 Original Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-04-28 CommentDKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。◆Inputについて基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。◆Outputについて全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。結論：1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。 Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD'21 Original Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-05-02 CommentDKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。Forgettingもモデル化しているところが特徴。現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。# モチベ下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。# Problem Definition本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。# モデル学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。## Embedding本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。### Time Embeddinganswer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。### Learning Embeddinglearning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。### Knowledge Embedding学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。## Learning Modulelearning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：&lt;img width=&quot;383&quot; alt=&quot;image&quot; src=&quot;">
-<meta property="og:description" content="LearningAnalytics Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22 Original Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-04-28 CommentDKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。◆Inputについて基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。◆Outputについて全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。結論：1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。 Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD'21 Original Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-05-02 CommentDKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。Forgettingもモデル化しているところが特徴。現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。# モチベ下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。# Problem Definition本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。# モデル学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。## Embedding本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。### Time Embeddinganswer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。### Learning Embeddinglearning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。### Knowledge Embedding学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。## Learning Modulelearning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：&lt;img width=&quot;383&quot; alt=&quot;image&quot; src=&quot;">
+<meta name="description" content="LearningAnalytics Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22 Paper/Blog Link My Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-04-28 CommentDKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。◆Inputについて基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。◆Outputについて全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。結論：1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。 Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD'21 Paper/Blog Link My Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-05-02 CommentDKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。Forgettingもモデル化しているところが特徴。現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。# モチベ下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。# Problem Definition本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。# モデル学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。## Embedding本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。### Time Embeddinganswer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。### Learning Embeddinglearning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。### Knowledge Embedding学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。## Learning Modulelearning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：&lt;img width=&quot;383&quot; alt=&quot;image&quot; src=&quot;">
+<meta property="og:description" content="LearningAnalytics Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22 Paper/Blog Link My Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-04-28 CommentDKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。◆Inputについて基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。◆Outputについて全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。結論：1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。 Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD'21 Paper/Blog Link My Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-05-02 CommentDKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。Forgettingもモデル化しているところが特徴。現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。# モチベ下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。# Problem Definition本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。# モデル学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。## Embedding本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。### Time Embeddinganswer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。### Learning Embeddinglearning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。### Knowledge Embedding学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。## Learning Modulelearning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：&lt;img width=&quot;383&quot; alt=&quot;image&quot; src=&quot;">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/LearningAnalytics/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/LearningAnalytics/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="LearningAnalyticsに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-02-14T00:00:00+00:00","datePublished":"2025-02-14T00:00:00+00:00","description":"LearningAnalytics Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM&#39;22 Original Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-04-28 CommentDKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。◆Inputについて基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。◆Outputについて全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。結論：1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。 Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD&#39;21 Original Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-05-02 CommentDKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。Forgettingもモデル化しているところが特徴。現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。# モチベ下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。# Problem Definition本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。# モデル学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。## Embedding本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。### Time Embeddinganswer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。### Learning Embeddinglearning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。### Knowledge Embedding学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。## Learning Modulelearning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：&lt;img width=&quot;383&quot; alt=&quot;image&quot; src=&quot;","headline":"LearningAnalyticsに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LearningAnalytics/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LearningAnalytics/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-02-14T00:00:00+00:00","datePublished":"2025-02-14T00:00:00+00:00","description":"LearningAnalytics Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM&#39;22 Paper/Blog Link My Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-04-28 CommentDKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。◆Inputについて基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。◆Outputについて全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。結論：1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。 Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD&#39;21 Paper/Blog Link My Issue #NeuralNetwork #AdaptiveLearning #EducationalDataMining #KnowledgeTracing Issue Date: 2022-05-02 CommentDKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。Forgettingもモデル化しているところが特徴。現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。# モチベ下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。# Problem Definition本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。# モデル学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。## Embedding本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。### Time Embeddinganswer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。### Learning Embeddinglearning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。### Knowledge Embedding学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。## Learning Modulelearning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：&lt;img width=&quot;383&quot; alt=&quot;image&quot; src=&quot;","headline":"LearningAnalyticsに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LearningAnalytics/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LearningAnalytics/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 49 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 53 mins</span>
   </div></header>
 </div>
     </div>
@@ -1007,11 +1007,16 @@ function googleTranslateElementInit() {
 <div class="visible-content">
 <article class="paper-entry">
 <h3 id="empirical-evaluation-453" class="title-link">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/2112.15072.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1026,11 +1031,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="learning-process-consistent-456" class="title-link">Learning Process-consistent Knowledge Tracing, Shen+, SIGKDD'21</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/456" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://staff.ustc.edu.cn/~huangzhy/files/papers/ShuanghongShen-KDD2021.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/456" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1080,11 +1090,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="bekt-deep-454" class="title-link">BEKT: Deep Knowledge Tracing with Bidirectional Encoder Representations from Transformers, Tian+ （緒方先生）, Kyoto University, ICCE'21</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/454" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://icce2021.apsce.net/wp-content/uploads/2021/12/ICCE2021-Vol.II-PP.-543-552.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/454" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1097,11 +1112,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="do-we-452" class="title-link">Do we need to go Deep? Knowledge Tracing with Big Data, Varun+, University of Maryland Baltimore County, AAAI'21 Workshop on AI Education</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/452" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/2101.08349.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/452" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1114,11 +1134,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="an-empirical-450" class="title-link">An Empirical Comparison of Deep Learning Models for Knowledge Tracing on Large-Scale Dataset, Pandey+, AAAI workshop on AI in Education'21</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/450" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/2101.06373" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/450" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1128,11 +1153,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="a-survey-448" class="title-link">A Survey of Knowledge Tracing, Liu+, IEEE Transactions on Learning Technologies, arXiv'21</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/448" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/2105.15106.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/448" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1143,11 +1173,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="when-is-451" class="title-link">When is Deep Learning the Best Approach to Knowledge Tracing?, Theophile+ （Ken Koedinger）, CMU+, JEDM'20</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/451" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://jedm.educationaldatamining.org/index.php/JEDM/article/view/451" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/451" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1178,11 +1213,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="context-aware-attentive-446" class="title-link">Context-Aware Attentive Knowledge Tracing, Ghosh+, University of Massachusetts Amherst, KDD'20</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/446" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/2007.12324.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/446" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1195,11 +1235,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="assessment-modeling-444" class="title-link">Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv'20</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/2002.05505.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1209,11 +1254,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="deep-attentive-443" class="title-link">Deep Attentive Study Session Dropout Prediction in Mobile Learning Environment, Riiid AI Research, Lee+, CSEDU'20</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/443" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/2002.11624.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/443" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1224,11 +1274,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="knowledge-tracing-455" class="title-link">Knowledge Tracing with Sequential Key-Value Memory Networks, Ghodai+, Research School of Computer Science, Australian National University, SIGIR'19</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/455" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/1910.13197.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/455" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1239,11 +1294,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="ekt-exercise-aware-353" class="title-link">[Paper Note] EKT: Exercise-aware Knowledge Tracing for Student Performance Prediction, Qi Liu+, IEEE TKDE'19, 2019.06</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/353" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/abs/1906.05658" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/353" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
@@ -1267,11 +1327,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="exercise-enhanced-sequential-354" class="title-link">[Paper Note] Exercise-Enhanced Sequential Modeling for Student Performance Prediction, Hu+, AAAI'18</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/354" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.aaai.org/ocs/index.php/AAAI/AAAI18/paper/viewFile/16494/15960" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/354" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1283,11 +1348,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="deep-model-385" class="title-link">Deep Model for Dropout Prediction in MOOCs, Wang+, ICCSE'17</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/385" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://www.ntulily.org/wp-content/uploads/conference/Deep_Model_for_Dropout_Prediction_in_MOOCs_accepted.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/385" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1298,11 +1368,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="improving-sensor-free-380" class="title-link">Improving Sensor-Free Affect Detection Using Deep Learning, Botelho+, AIED'17</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/380" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://par.nsf.gov/servlets/purl/10060126" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/380" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1317,11 +1392,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="estimating-student-445" class="title-link">Estimating student proficiency: Deep learning is not the panacea, Wilson+, Knewton+, NIPS'16 workshop</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/445" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://home.cs.colorado.edu/~mozer/Research/Selected%20Publications/reprints/Wilsonetal2016.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/445" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1334,11 +1414,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="back-to-358" class="title-link">Back to the basics: Bayesian extensions of IRT outperform neural networks for proficiency estimation, Ekanadham+, EDM'16</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/358" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/1604.02336.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/358" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1358,11 +1443,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="going-deeper-356" class="title-link">Going Deeper with Deep Knowledge Tracing, Beck+, EDM'16</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/356" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://files.eric.ed.gov/fulltext/ED592679.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/356" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1376,11 +1466,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="how-deep-355" class="title-link">How Deep is Knowledge Tracing?, Mozer+, EDM'16</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/355" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://arxiv.org/pdf/1604.02416.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/355" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1394,11 +1489,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="autonomously-generating-400" class="title-link">Autonomously Generating Hints by Inferring Problem Solving Policies, Piech+, Stanford University, L@S'15</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/400" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://web.stanford.edu/~cpiech/bio/papers/inferringProblemSolvingPolicies.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/400" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1407,11 +1507,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="predicting-mooc-424" class="title-link">Predicting MOOC Dropout over Weeks Using Machine Learning Methods, EMNLP'14 Workshop, Marius Kloft</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/424" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://aclanthology.org/W14-4111.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/424" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1425,11 +1530,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="局所的変分法による非補償型時系列irt-1765" class="title-link">局所的変分法による非補償型時系列IRT, 玉野+, NEC+, 人工知能学会研究会資料, 2020.03</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1765" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.jstage.jst.go.jp/article/jsaialst/88/0/88_04/_pdf/-char/en" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1765" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
@@ -1439,11 +1549,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="①ラーニングアナリティクスの研究動向-─エビデンスに基づく教育の実現に向けて─-438" class="title-link">①ラーニングアナリティクスの研究動向 ─エビデンスに基づく教育の実現に向けて─, 京都大学, 緒方先生, 情報処理 Vol.59 No.9 Sep. 2018</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/438" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.ipsj.or.jp/magazine/9faeag000000vm70-att/5909ewg01.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/438" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1459,11 +1574,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="ラーニング・アナリティクスとは何か？-422" class="title-link">ラーニング・アナリティクスとは何か？, 武田俊之, コンピュータ＆エデュケーション VOL.38, 2015</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/422" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.jstage.jst.go.jp/article/konpyutariyoukyouiku/38/0/38_12/_pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/422" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1473,11 +1593,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="deep-knowledge-368" class="title-link">Deep Knowledge Tracingの拡張による擬似知識タグの生成, 中川+, 人口知能学会論文誌, 33巻, 33号, C, 2018</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/368" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.jstage.jst.go.jp/article/tjsai/33/3/33_C-H83/_pdf/-char/ja" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/368" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
@@ -1488,11 +1613,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="the-knowledge-learning-instruction-361" class="title-link">The Knowledge-Learning-Instruction Framework: Bridging the Science-Practice Chasm to Enhance Robust Student Learning, Pelanek, User Modeling and User-Adapted Interaction, 2017</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/361" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://www.fi.muni.cz/~xpelanek/publications/umuai-overview.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/361" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
@@ -1507,11 +1637,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="knowledge-tracing-360" class="title-link">Knowledge Tracing: Modeling the Acquisition of Procedural Knowledge, Corbett+, User Modeling and User-Adapted Interaction, 1995</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/360" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://perso.liris.cnrs.fr/pierre-antoine.champin/2014/m2iade-ia2/slides/_static/893CorbettAnderson1995.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/360" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
@@ -1522,11 +1657,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="student-performance-359" class="title-link">Student Performance Prediction _ Knowledge Tracing Dataset</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/359" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://sites.google.com/site/assistmentsdata/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/359" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
@@ -1538,11 +1678,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="behavior-based-grade-357" class="title-link">Behavior-Based Grade Prediction for MOOCs Via Time Series Neural Networks, Chiang+, IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/357" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="https://cbrinton.net/tsnn.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/357" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
@@ -1555,11 +1700,16 @@ Original Issue
 </article>
 <article class="paper-entry">
 <h3 id="educational-data-294" class="title-link">Educational Data Mining and Learning Analytics, Baker+, 2014</h3>
-<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/294" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<br><a href="http://www.upenn.edu/learninganalytics/ryanbaker/Educational%20Data%20Mining%20and%20Learning%20Analytics%20-%20DRAFT.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
-Original Issue
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/294" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
@@ -1624,26 +1774,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/reading/" title="readingに関する論文・技術記事メモの一覧">
-            readingに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ReplayBuffer/" title="ReplayBufferに関する論文・技術記事メモの一覧">
-            ReplayBufferに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/DomainAdaptation/" title="DomainAdaptationに関する論文・技術記事メモの一覧">
-            DomainAdaptationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Personality/" title="Personalityに関する論文・技術記事メモの一覧">
+            Personalityに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
   <span class="post-badge badge-new">📝 4</span>
@@ -1651,11 +1783,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/QuestionAnswering/" title="QuestionAnsweringに関する論文・技術記事メモの一覧">
-            QuestionAnsweringに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Souping/" title="Soupingに関する論文・技術記事メモの一覧">
+            Soupingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 37</span> 
-  <span class="post-badge badge-new">📝 37</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/UAI/" title="UAIに関する論文・技術記事メモの一覧">
+            UAIに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/PRM/" title="PRMに関する論文・技術記事メモの一覧">
+            PRMに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li>
