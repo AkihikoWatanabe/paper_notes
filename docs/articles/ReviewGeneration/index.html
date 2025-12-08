@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ReviewGenerationに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
+<meta name="generator" content="Jekyll v3.10.0">
+<meta property="og:title" content="ReviewGenerationに関する論文・技術記事メモの一覧">
+<meta name="author" content="AkihikoWATANABE">
+<meta property="og:locale" content="ja">
+<meta name="description" content="ReviewGeneration Unsupervised Opinion Summarization as Copycat-Review Generation, Bražinskas, ACL'20 Original Issue #NLP #ACL Issue Date: 2021-03-17 GPT Summary- 意見要約は、製品レビューから主観的情報を自動的に要約するタスクであり、従来の研究は抽出的手法に焦点を当てていたが、本研究では新しい文を生成する抽象的要約を提案する。教師なし設定での生成モデルを定義し、新規性を制御しながら合意された意見を反映する要約を生成する。階層的変分オートエンコーダモデルを用い、実験により流暢で一貫性のある要約が生成できることを示した。 [Paper Note] User Preference-Aware Review Generation, Wang+, PAKDD'19 Original Issue #NaturalLanguageGeneration #Pocket #NLP Issue Date: 2019-08-17 [Paper Note] Review Response Generation in E-Commerce Platforms with External Product Information, Zhao+, WWW'19 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #WWW Issue Date: 2019-08-17 [Paper Note] Automatic Generation of Personalized Comment Based on User Profile, Wenhuan Zeng+, ACL'19 SRW Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #ACL #Workshop Issue Date: 2019-08-17 GPT Summary- ソーシャルメディアの多様なコメント生成の難しさを考慮し、ユーザープロフィールに基づくパーソナライズされたコメント生成タスク（AGPC）を提案。パーソナライズドコメント生成ネットワーク（PCGN）を用いて、ユーザーの特徴をモデル化し、外部ユーザー表現を考慮することで自然なコメントを生成。実験結果は、モデルの効果を示す。 [Paper Note] Multimodal Review Generation for Recommender Systems, Truong+, WWW'19 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #NLP #WWW Issue Date: 2019-05-31 CommentPersonalized Review Generationと、Rating Predictionを同時学習した研究（同時学習自体はすでに先行研究がある）。また、先行研究のinputは、たいていはuser, itemであるが、multi-modalなinputとしてレビューのphotoを活用したという話。まだあまりしっかり読んでいないが、モデルのstructureはシンプルで、rating predictionを行うDNN、テキスト生成を行うLSTM（fusion gateと呼ばれる新たなゲートを追加）、画像の畳み込むCNNのハイブリッドのように見える。 [Paper Note] Improving Explainable Recommendations with Synthetic Reviews, Sixun Ouyang+, RecSys'18 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #RecSys Issue Date: 2019-08-17 GPT Summary- レコメンダーシステムにおいて、解釈可能な説明を提供することは信頼性向上に重要である。本研究では、ユーザーのレビューを基にした生成モデルを用いて、個別化された推薦説明を作成するフレームワークを提案。Amazonの書籍レビューデータセットを用いて、生成されたレビューが人間のレビューよりも優れた推薦性能を示すことを実証した。これは機械生成による自然言語説明の初の試みである。 [Paper Note] Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL'18 Original Issue #NeuralNetwork #NLP #ACL Issue Date: 2019-04-12 CommentPersonalized Review Generationタスクを、user, item, short phraseがgivenな時に、それを考慮して完全なレビューを生成するタスクとして定義。short phraseとしては、item titleやreview summaryなどを利用している。アイテムのaspectを考慮してレビューを生成できる点が新しい。モデルとしては、aspect-awareなrepresentationを学習することによって、ユーザ・アイテムのaspectに関する嗜好（e.g. どの部分について言及したいか、など）を捉えたレビューを生成できるようにしている。各aspectには代表的な単語が紐づいており、aspectに紐づく単語の生成確率をaspect-aware representationから求めたattentionによって制御し、生成時に下駄を履かせている。PyTorch実装：">
+<meta property="og:description" content="ReviewGeneration Unsupervised Opinion Summarization as Copycat-Review Generation, Bražinskas, ACL'20 Original Issue #NLP #ACL Issue Date: 2021-03-17 GPT Summary- 意見要約は、製品レビューから主観的情報を自動的に要約するタスクであり、従来の研究は抽出的手法に焦点を当てていたが、本研究では新しい文を生成する抽象的要約を提案する。教師なし設定での生成モデルを定義し、新規性を制御しながら合意された意見を反映する要約を生成する。階層的変分オートエンコーダモデルを用い、実験により流暢で一貫性のある要約が生成できることを示した。 [Paper Note] User Preference-Aware Review Generation, Wang+, PAKDD'19 Original Issue #NaturalLanguageGeneration #Pocket #NLP Issue Date: 2019-08-17 [Paper Note] Review Response Generation in E-Commerce Platforms with External Product Information, Zhao+, WWW'19 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #WWW Issue Date: 2019-08-17 [Paper Note] Automatic Generation of Personalized Comment Based on User Profile, Wenhuan Zeng+, ACL'19 SRW Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #ACL #Workshop Issue Date: 2019-08-17 GPT Summary- ソーシャルメディアの多様なコメント生成の難しさを考慮し、ユーザープロフィールに基づくパーソナライズされたコメント生成タスク（AGPC）を提案。パーソナライズドコメント生成ネットワーク（PCGN）を用いて、ユーザーの特徴をモデル化し、外部ユーザー表現を考慮することで自然なコメントを生成。実験結果は、モデルの効果を示す。 [Paper Note] Multimodal Review Generation for Recommender Systems, Truong+, WWW'19 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #NLP #WWW Issue Date: 2019-05-31 CommentPersonalized Review Generationと、Rating Predictionを同時学習した研究（同時学習自体はすでに先行研究がある）。また、先行研究のinputは、たいていはuser, itemであるが、multi-modalなinputとしてレビューのphotoを活用したという話。まだあまりしっかり読んでいないが、モデルのstructureはシンプルで、rating predictionを行うDNN、テキスト生成を行うLSTM（fusion gateと呼ばれる新たなゲートを追加）、画像の畳み込むCNNのハイブリッドのように見える。 [Paper Note] Improving Explainable Recommendations with Synthetic Reviews, Sixun Ouyang+, RecSys'18 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #RecSys Issue Date: 2019-08-17 GPT Summary- レコメンダーシステムにおいて、解釈可能な説明を提供することは信頼性向上に重要である。本研究では、ユーザーのレビューを基にした生成モデルを用いて、個別化された推薦説明を作成するフレームワークを提案。Amazonの書籍レビューデータセットを用いて、生成されたレビューが人間のレビューよりも優れた推薦性能を示すことを実証した。これは機械生成による自然言語説明の初の試みである。 [Paper Note] Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL'18 Original Issue #NeuralNetwork #NLP #ACL Issue Date: 2019-04-12 CommentPersonalized Review Generationタスクを、user, item, short phraseがgivenな時に、それを考慮して完全なレビューを生成するタスクとして定義。short phraseとしては、item titleやreview summaryなどを利用している。アイテムのaspectを考慮してレビューを生成できる点が新しい。モデルとしては、aspect-awareなrepresentationを学習することによって、ユーザ・アイテムのaspectに関する嗜好（e.g. どの部分について言及したいか、など）を捉えたレビューを生成できるようにしている。各aspectには代表的な単語が紐づいており、aspectに紐づく単語の生成確率をaspect-aware representationから求めたattentionによって制御し、生成時に下駄を履かせている。PyTorch実装：">
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/ReviewGeneration/">
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/ReviewGeneration/">
+<meta property="og:site_name" content="わたしのべんきょうノート">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-03-17T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="ReviewGenerationに関する論文・技術記事メモの一覧">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2021-03-17T00:00:00+00:00","datePublished":"2021-03-17T00:00:00+00:00","description":"ReviewGeneration Unsupervised Opinion Summarization as Copycat-Review Generation, Bražinskas, ACL&#39;20 Original Issue #NLP #ACL Issue Date: 2021-03-17 GPT Summary- 意見要約は、製品レビューから主観的情報を自動的に要約するタスクであり、従来の研究は抽出的手法に焦点を当てていたが、本研究では新しい文を生成する抽象的要約を提案する。教師なし設定での生成モデルを定義し、新規性を制御しながら合意された意見を反映する要約を生成する。階層的変分オートエンコーダモデルを用い、実験により流暢で一貫性のある要約が生成できることを示した。 [Paper Note] User Preference-Aware Review Generation, Wang+, PAKDD&#39;19 Original Issue #NaturalLanguageGeneration #Pocket #NLP Issue Date: 2019-08-17 [Paper Note] Review Response Generation in E-Commerce Platforms with External Product Information, Zhao+, WWW&#39;19 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #WWW Issue Date: 2019-08-17 [Paper Note] Automatic Generation of Personalized Comment Based on User Profile, Wenhuan Zeng+, ACL&#39;19 SRW Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #ACL #Workshop Issue Date: 2019-08-17 GPT Summary- ソーシャルメディアの多様なコメント生成の難しさを考慮し、ユーザープロフィールに基づくパーソナライズされたコメント生成タスク（AGPC）を提案。パーソナライズドコメント生成ネットワーク（PCGN）を用いて、ユーザーの特徴をモデル化し、外部ユーザー表現を考慮することで自然なコメントを生成。実験結果は、モデルの効果を示す。 [Paper Note] Multimodal Review Generation for Recommender Systems, Truong+, WWW&#39;19 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #NLP #WWW Issue Date: 2019-05-31 CommentPersonalized Review Generationと、Rating Predictionを同時学習した研究（同時学習自体はすでに先行研究がある）。また、先行研究のinputは、たいていはuser, itemであるが、multi-modalなinputとしてレビューのphotoを活用したという話。まだあまりしっかり読んでいないが、モデルのstructureはシンプルで、rating predictionを行うDNN、テキスト生成を行うLSTM（fusion gateと呼ばれる新たなゲートを追加）、画像の畳み込むCNNのハイブリッドのように見える。 [Paper Note] Improving Explainable Recommendations with Synthetic Reviews, Sixun Ouyang+, RecSys&#39;18 Original Issue #RecommenderSystems #NeuralNetwork #NaturalLanguageGeneration #Pocket #NLP #RecSys Issue Date: 2019-08-17 GPT Summary- レコメンダーシステムにおいて、解釈可能な説明を提供することは信頼性向上に重要である。本研究では、ユーザーのレビューを基にした生成モデルを用いて、個別化された推薦説明を作成するフレームワークを提案。Amazonの書籍レビューデータセットを用いて、生成されたレビューが人間のレビューよりも優れた推薦性能を示すことを実証した。これは機械生成による自然言語説明の初の試みである。 [Paper Note] Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL&#39;18 Original Issue #NeuralNetwork #NLP #ACL Issue Date: 2019-04-12 CommentPersonalized Review Generationタスクを、user, item, short phraseがgivenな時に、それを考慮して完全なレビューを生成するタスクとして定義。short phraseとしては、item titleやreview summaryなどを利用している。アイテムのaspectを考慮してレビューを生成できる点が新しい。モデルとしては、aspect-awareなrepresentationを学習することによって、ユーザ・アイテムのaspectに関する嗜好（e.g. どの部分について言及したいか、など）を捉えたレビューを生成できるようにしている。各aspectには代表的な単語が紐づいており、aspectに紐づく単語の生成確率をaspect-aware representationから求めたattentionによって制御し、生成時に下駄を履かせている。PyTorch実装：","headline":"ReviewGenerationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ReviewGeneration/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ReviewGeneration/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="http://akihikowatanabe.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
+  <script src="/paper_notes/assets/js/main.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
+<script>
+  function showMore(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "block";
+          
+      // このボタンの参照を取得して非表示にします
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "none";
+      }
+          
+      // hideボタンの参照を取得して表示します
+      const hideButton = contentDiv.querySelector('button[onclick^="hideContent"]');
+      if (hideButton) {
+        hideButton.style.display = "block";
+      }
+    }
+  }
+
+  function hideContent(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "none";
+  
+      // moreボタンの参照を取得して表示します
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "block";
+      }
+  
+      // このボタンを隠します
+      const hideButtons = document.querySelectorAll('button[onclick^="hideContent"]');
+      const hideButton = hideButtons[index];
+      if (hideButton) {
+        hideButton.style.display = "none";
+      }
+    }
+  }
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = `{"gallery"=>"section.main", "children"=>"a.photo-swipe", "bgOpacity"=>0.8, "padding"=>{"top"=>20, "bottom"=>40, "left"=>100, "right"=>100}}`.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P70KSB88WH');
+  </script>
+
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+  <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
+  わたしのべんきょうノート
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ja',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.4;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.2872;
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/paper_notes/assets/images/banner.png)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.png">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
+  <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
+それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
+自然言語処理(NLP), 推薦システム(RecommenderSystem), Educational Data Mining (EDM), Learning Analytics (LA)などの分野のメモが多いと思います。
+最近は特にLLMの勉強が多めです :)</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2021-03-17T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 17, 2021
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 19 mins</span>
+  </div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('off' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="ReviewGeneration" class="paper-head"> ReviewGeneration</h2>
+<div class="visible-content">
+<article class="paper-entry">
+<h3 id="unsupervised-opinion-343" class="title-link">Unsupervised Opinion Summarization as Copycat-Review Generation, Bražinskas, ACL'20</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/343" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<span class="issue_date">Issue Date: 2021-03-17</span>
+<span class="snippet"><span>GPT Summary</span>- 意見要約は、製品レビューから主観的情報を自動的に要約するタスクであり、従来の研究は抽出的手法に焦点を当てていたが、本研究では新しい文を生成する抽象的要約を提案する。教師なし設定での生成モデルを定義し、新規性を制御しながら合意された意見を反映する要約を生成する。階層的変分オートエンコーダモデルを用い、実験により流暢で一貫性のある要約が生成できることを示した。</span>
+</article>
+<article class="paper-entry">
+<h3 id="user-preference-aware-319" class="title-link">[Paper Note] User Preference-Aware Review Generation, Wang+, PAKDD'19</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/319" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<span class="issue_date">Issue Date: 2019-08-17</span>
+</article>
+<article class="paper-entry">
+<h3 id="review-response-318" class="title-link">[Paper Note] Review Response Generation in E-Commerce Platforms with External Product Information, Zhao+, WWW'19</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/318" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="WWW.html" target="_blank" rel="noopener noreferrer">#WWW</a>
+<span class="issue_date">Issue Date: 2019-08-17</span>
+</article>
+<article class="paper-entry">
+<h3 id="automatic-generation-316" class="title-link">[Paper Note] Automatic Generation of Personalized Comment Based on User Profile, Wenhuan Zeng+, ACL'19 SRW</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/316" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
+<span class="issue_date">Issue Date: 2019-08-17</span>
+<span class="snippet"><span>GPT Summary</span>- ソーシャルメディアの多様なコメント生成の難しさを考慮し、ユーザープロフィールに基づくパーソナライズされたコメント生成タスク（AGPC）を提案。パーソナライズドコメント生成ネットワーク（PCGN）を用いて、ユーザーの特徴をモデル化し、外部ユーザー表現を考慮することで自然なコメントを生成。実験結果は、モデルの効果を示す。</span>
+</article>
+<article class="paper-entry">
+<h3 id="multimodal-review-313" class="title-link">[Paper Note] Multimodal Review Generation for Recommender Systems, Truong+, WWW'19</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/313" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="WWW.html" target="_blank" rel="noopener noreferrer">#WWW</a>
+<span class="issue_date">Issue Date: 2019-05-31</span>
+<span class="snippet"><span>Comment</span><p>Personalized Review Generationと、Rating Predictionを同時学習した研究（同時学習自体はすでに先行研究がある）。<br><br>また、先行研究のinputは、たいていはuser, itemであるが、multi-modalなinputとしてレビューのphotoを活用したという話。<br><br><br><br>まだあまりしっかり読んでいないが、モデルのstructureはシンプルで、rating predictionを行うDNN、テキスト生成を行うLSTM（fusion gateと呼ばれる新たなゲートを追加）、画像の畳み込むCNNのハイブリッドのように見える。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="improving-explainable-317" class="title-link">[Paper Note] Improving Explainable Recommendations with Synthetic Reviews, Sixun Ouyang+, RecSys'18</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/317" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="RecSys.html" target="_blank" rel="noopener noreferrer">#RecSys</a>
+<span class="issue_date">Issue Date: 2019-08-17</span>
+<span class="snippet"><span>GPT Summary</span>- レコメンダーシステムにおいて、解釈可能な説明を提供することは信頼性向上に重要である。本研究では、ユーザーのレビューを基にした生成モデルを用いて、個別化された推薦説明を作成するフレームワークを提案。Amazonの書籍レビューデータセットを用いて、生成されたレビューが人間のレビューよりも優れた推薦性能を示すことを実証した。これは機械生成による自然言語説明の初の試みである。</span>
+</article>
+<article class="paper-entry">
+<h3 id="personalized-review-306" class="title-link">[Paper Note] Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL'18</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/306" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<span class="issue_date">Issue Date: 2019-04-12</span>
+<span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/56010165-8fd44a00-5d1d-11e9-8cad-81a5178d95d2.png" alt="image" loading="lazy"><br><br><br><br>Personalized Review Generationタスクを、user, item, short phraseがgivenな時に、それを考慮して完全なレビューを生成するタスクとして定義。<br><br>short phraseとしては、item titleやreview summaryなどを利用している。<br><br>アイテムのaspectを考慮してレビューを生成できる点が新しい。<br><br>モデルとしては、aspect-awareなrepresentationを学習することによって、ユーザ・アイテムのaspectに関する嗜好（e.g. どの部分について言及したいか、など）を捉えたレビューを生成できるようにしている。<br><br>各aspectには代表的な単語が紐づいており、aspectに紐づく単語の生成確率をaspect-aware representationから求めたattentionによって制御し、生成時に下駄を履かせている。</p>
+<p>PyTorch実装：
+
+
+<a href="https://github.com/nijianmo/textExpansion/tree/master/expansionNet" target="_blank" rel="noopener noreferrer">https://github.com/nijianmo/textExpansion/tree/master/expansionNet</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="personalized-review-276" class="title-link">[Paper Note] Personalized Review Generation by Expanding Phrases and Attending on Aspect-Aware Representations, Ni+, ACL'18</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/276" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<span class="issue_date">Issue Date: 2018-07-25</span>
+</article>
+<article class="paper-entry">
+<h3 id="neural-rating-309" class="title-link">[Paper Note] Neural Rating Regression with Abstractive Tips Generation for  Recommendation, Piji Li+, arXiv'17</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/309" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
+<span class="issue_date">Issue Date: 2019-04-12</span>
+<span class="snippet"><span>GPT Summary</span>- Eコマースサイトの新しい「Tips」機能を活用し、ユーザーの経験や感情を表現する短いテキストを生成する深層学習フレームワーク「NRT」を提案。NRTは、ユーザーとアイテムの潜在表現を基に、正確な評価予測と高品質な抽象的ヒントの生成を実現。実験により、NRTは既存手法に対して顕著な改善を示し、ユーザーの体験や感情を効果的に反映することが確認された。</span>
+<span class="snippet"><span>Comment</span><p>Rating Predictionとtips generationを同時に行うことで、両者の性能を向上させた最初の研究。<br><br>tipsとは、ユーザの経験や感じたことを、短いテキスト（1文とか）で簡潔に記したもの。</p>
+<p><img src="https://user-images.githubusercontent.com/12249301/56012618-43423c00-5d28-11e9-82ff-fe90c9dd7d1c.png" alt="image" loading="lazy"><br><br><br><br>モデルについてはあまりく詳しく読んでいないが、図を見る感じ、user latent factorとitem latent factorをMF layerとseq2seqで共有し、同時学習させていると思われる。<br><br>おそらく、MFとtext generationをjointで行うNNモデルはこの研究が初めて（textの情報をMFの改善に使おうという試みは古くからやられているが、generationまでは多分やってない）で、このモデル化の仕方がその後のスタンダードになっている。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="towards-automatic-307" class="title-link">[Paper Note] Towards automatic generation of product reviews from aspectsentiment scores, Zang+, INLG'17</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/307" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="INLG.html" target="_blank" rel="noopener noreferrer">#INLG</a>
+<span class="issue_date">Issue Date: 2019-04-12</span>
+<span class="snippet"><span>Comment</span><p>hierarchicalなNNで、long reviewの生成に取り組んだ論文</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="learning-to-305" class="title-link">[Paper Note] Learning to Generate Product Reviews from Attributes, Dong+, EACL'17</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/305" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="EACL.html" target="_blank" rel="noopener noreferrer">#EACL</a>
+<span class="issue_date">Issue Date: 2019-03-08</span>
+<span class="snippet"><span>Comment</span><p>（たぶん）最初のreview generation論文</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="estimating-reactions-303" class="title-link">[Paper Note] Estimating Reactions and Recommending Products with Generative Models of Reviews, Ni+, IJCNLP'17</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/303" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="CollaborativeFiltering.html" target="_blank" rel="noopener noreferrer">#CollaborativeFiltering</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="IJCNLP.html" target="_blank" rel="noopener noreferrer">#IJCNLP</a>
+<span class="issue_date">Issue Date: 2019-02-01</span>
+<span class="snippet"><span>Comment</span><p>Collaborative Filtering (CF) によるコンテンツ推薦とReview Generationを同時に学習し、<br><br>両者の性能を向上させる話。<br><br>非常に興味深い設定で、このような実験設定でReview Generationを行なった初めての研究。</p>
+<p>CFではMatrix Factorization (MF) を利用し、Review Generationでは、LSTM-basedなseq2seqを利用する。MFとReview Generationのモデルにおいて、共通のuser latent factorとitem latent factorを利用することで、joint modelとしている。このとき、latent factorは、両タスクを通じて学習される。<br><br><br><br>CFでは、Implicitな設定なので、Rating Predictionではなく、binary classificationを行うことで、推薦を行う。<br><br>classificationには、Matrix Factorization (MF) を拡張したモデルを用いる。<br><br>具体的には、通常のMFでは、user latent factorとitem latent factorの内積によって、userのitemに対するpreferenceを表現するが、このときに、target userが過去に記載したレビュー・およびtarget itemに関する情報を利用する。レビューのrepresentationのaverageをとったvectorと、MFの結果をlinear layerによって写像し、最終的なclassification scoreとしている。<br><br><br><br>Review Generationでは、基本的にはseq2seqのinputのEmbeddingに対して、user latent factor, item latent factorをconcatするだけ。hidden stateに直接concatしないのは、latent factorを各ステップで考慮できるため、long, coherentなsequenceを生成できるから、と説明している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/56011945-15a7c380-5d25-11e9-9a0d-8835bdb6cbed.png" alt="image" loading="lazy"><br><br></p>
+<p><img src="https://user-images.githubusercontent.com/12249301/56012061-9c5ca080-5d25-11e9-9327-2c7a9c3ee365.png" alt="image" loading="lazy"><br><br><br><br>Recommendタスクにおいては、Bayesian Personalized Ranking, Generalized Matrix Factorizationをoutperform。</p>
+<p><img src="https://user-images.githubusercontent.com/12249301/56012129-f65d6600-5d25-11e9-919a-33018878f96e.png" alt="image" loading="lazy"><br><br><br><br>Review GenerationはPerplexityにより評価している。提案手法がcharacter based lstmをoutperform。<br><br>Perplexityによる評価だと言語モデルとしての評価しかできていないので、BLEU, ROUGEなどを利用した評価などもあって良いのでは。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="extended-recommendation-5" class="title-link">[Paper Note] Extended Recommendation Framework: Generating the Text of a User Review as a Personalized Summary Poussevin+, CBRecsys'15, 2015.09</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<span class="snippet"><span>Comment</span><p>review generationの結果をrating predictionに伝搬することで性能よくしました、という話だと思う</p></span><br><br>
+</article>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Twitterのwidgets.jsを動的に一度だけ読み込む関数
+  let twitterScriptLoaded = false;
+  function loadTwitterScript() {
+    if (!twitterScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.charset = "utf-8";
+      script.async = true;
+      document.body.appendChild(script);
+      twitterScriptLoaded = true;
+    }
+  }
+
+  // Intersection Observerの設定
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // 画面に入った時だけスクリプトをロード開始
+        loadTwitterScript();
+
+        const container = entry.target;
+        const embedHtml = container.getAttribute('data-embed');
+        
+        if (embedHtml) {
+          container.innerHTML = embedHtml;
+          container.removeAttribute('data-embed');
+          
+          // ウィジェットの再スキャン（twttrオブジェクトが準備できていれば実行）
+          if (window.twttr && window.twttr.widgets) {
+            window.twttr.widgets.load(container);
+          }
+        }
+        obs.unobserve(container);
+      }
+    });
+  }, { rootMargin: '200px' }); // 少し早めに読み込む
+
+  document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
+});
+</script>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/paper_notes/articles/kNN/" title="kNNに関する論文・技術記事メモの一覧">kNNに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/PerformanceTesting/" title="PerformanceTestingに関する論文・技術記事メモの一覧">PerformanceTestingに関する論文・技術記事メモの一覧</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/paper_notes/articles/ImageClassification/" title="ImageClassificationに関する論文・技術記事メモの一覧">
+            ImageClassificationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/LanguageModel/" title="LanguageModelに関する論文・技術記事メモの一覧">
+            LanguageModelに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1651</span> 
+  <span class="post-badge badge-new">📝 1651</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Post/" title="Postに関する論文・技術記事メモの一覧">
+            Postに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/LAK/" title="LAKに関する論文・技術記事メモの一覧">
+            LAKに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+/* --- レイアウト用（前回と同じ） --- */
+.post-menu {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-menu-title {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.post-menu-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- 開閉アニメーションとアイコン用 --- */
+
+/* h2のスタイル：クリックできるようにする */
+.post-menu li.h-h2 {
+  cursor: pointer;
+  position: relative;
+  padding-left: 15px; /* アイコン用のスペース */
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 開閉アイコン（▼） */
+.post-menu li.h-h2::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 6px; /* 三角形 */
+  border-color: transparent transparent transparent #555;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.post-menu li.h-h2.no-icon::before {
+  content: none; /* 擬似要素の中身をなしにする */
+  /* または display: none; でもOKです */
+}
+
+/* 開いている時のアイコン（下向きにする） */
+.post-menu li.h-h2.open::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* h3（子要素）のスタイル */
+.post-menu li.h-h3 {
+  margin-left: 15px;
+  font-size: 0.9em;
+  /* 初期状態はJSで制御しますが、念のため */
+}
+
+/* アクティブな項目の色 */
+.post-menu li.active > a {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* リンク自体のスタイル調整 */
+.post-menu li a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: 100%;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent = menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3");
+
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // --- HTML生成 ---
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      // h-h2 クラスの要素には初期状態で open クラスをつけるか、つけないかで「最初から開いているか」を決められます
+      // ここでは閉じた状態をデフォルトとします
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+
+    // --- 開閉ロジックの実装 ---
+    var listItems = menuContent.querySelectorAll('li');
+
+    // h2要素にクリックイベントを追加
+    listItems.forEach(function(item, index) {
+      if (item.classList.contains('h-h2')) {
+        
+        // クリックイベント
+        item.addEventListener('click', function(e) {
+          // リンクをクリックした場合はページ内遷移させたいので、イベントを止めない
+          // ただし、アイコン付近をクリックした等の挙動を統一するため、
+          // 開閉処理を行います。
+          
+          // クラスの付け替え（アイコンの回転用）
+          item.classList.toggle('open');
+
+          // 次のh2が出てくるまで、h3を表示/非表示切り替え
+          for (var i = index + 1; i < listItems.length; i++) {
+            var sibling = listItems[i];
+            if (sibling.classList.contains('h-h2')) {
+              break; // 次のh2に来たら終了
+            }
+            if (sibling.classList.contains('h-h3')) {
+              if (item.classList.contains('open')) {
+                sibling.style.display = 'block';
+              } else {
+                sibling.style.display = 'none';
+              }
+            }
+          }
+        });
+      }
+    });
+
+    // --- 初期状態の設定（すべて閉じる） ---
+    // もし最初から開いておきたい場合は、このブロックを削除するか調整してください
+    listItems.forEach(function(item) {
+      if (item.classList.contains('h-h3')) {
+        item.style.display = 'none';
+      }
+    });
+
+
+    // --- スクロール連動（ハイライト機能のみ残す） ---
+    var header = document.querySelector('header.site-header');
+    
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header ? header.getBoundingClientRect() : {top:0, height:0}; // headerがない場合の安全策
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var offset = headerTop + headerHeight + 20;
+
+        if (headingRect.top <= offset) {
+          var id = h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          
+          if (curActive) {
+            // もしアクティブになった項目が閉じているh2の中にあった場合、
+            // 自動で開く処理を追加したい場合はここに記述します。
+            // 今回は「手動開閉」を優先し、自動オープンはあえて行いません。
+            
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+      }
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/paper_notes/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+  </html>
