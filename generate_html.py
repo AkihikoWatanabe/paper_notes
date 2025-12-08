@@ -311,6 +311,31 @@ def prepro_title(title: str):
     return title
 
 
+def find_first_url(text: str) -> str | None:
+    """
+    テキストから最初に見つかったURLを抽出して返します。
+
+    Args:
+        text (str): 検索対象の文字列。
+
+    Returns:
+        str | None: 最初に見つかったURL。見つからなかった場合は None。
+    """
+    # URLを検索するための正規表現パターン
+    # http:// または https:// で始まり、その後に続く非空白文字のシーケンスにマッチ
+    url_pattern = r'https?://[^\s]+'
+
+    # テキスト内でパターンに最初にマッチする部分を探す
+    match = re.search(url_pattern, text)
+
+    # マッチが見つかった場合、その文字列（URL）を返す
+    if match:
+        return match.group(0)
+    else:
+        # 見つからなかった場合は None を返す
+        return None
+
+
 def _iter_issue(sorted_issues: list[tuple[dict, int]], current_target: list[str], attach_date: bool, assets_root: str, h_level: str) -> list[str]:
     link_svg = """<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
@@ -323,8 +348,13 @@ def _iter_issue(sorted_issues: list[tuple[dict, int]], current_target: list[str]
         title_for_anchor = title.replace("[Paper Note]", "").translate(str.maketrans({":": "", "/": "", "?": "", "#": "", "%": ""})).strip()
         anchor_id = "-".join(title_for_anchor.lower().split(",")[0].split(" ")[:2]) + f"-{issue['number']}"
 
+        original_link = find_first_url(text=issue["body"])
+        if original_link:
+            original_link_text = f'<a href="{original_link}" target="_blank" rel="noopener noreferrer" class="external-link-badge">{link_svg}\nPaper/Blog Link\n</a>'
+        else:
+            original_link_text = ""
         _html_content.append(f'<article class="paper-entry">')
-        _html_content.append(f'<h{h_level} id="{anchor_id}" class="title-link">{title}</h{h_level}><br><a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="external-link-badge">{link_svg}\nOriginal Issue\n</a><br>')
+        _html_content.append(f'<h{h_level} id="{anchor_id}" class="title-link">{title}</h{h_level}><br>{original_link_text}<a href="{issue["url"]}" target="_blank" rel="noopener noreferrer" class="external-link-badge">{link_svg}\nMy Issue\n</a><br>')
 
         tags = [data['name'] for data in issue['labels']]
         if year == 0:
