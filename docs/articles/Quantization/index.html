@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Quantizationに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
+<meta name="generator" content="Jekyll v3.10.0">
+<meta property="og:title" content="Quantizationに関する論文・技術記事メモの一覧">
+<meta name="author" content="AkihikoWATANABE">
+<meta property="og:locale" content="ja">
+<meta name="description" content="Quantization [Paper Note] BitNet Distillation, Xun Wu+, arXiv'25, 2025.10 Original Issue #Pretraining #Pocket #NLP #LanguageModel #Distillation #PostTraining #KeyPoint Notes Issue Date: 2025-10-19 GPT Summary- BitNet Distillation（BitDistill）は、フル精度LLMを1.58ビット精度にファインチューニングする軽量なパイプラインで、計算コストを抑えつつ高いタスク特化型パフォーマンスを実現します。主な技術には、SubLNモジュール、MiniLMに基づくアテンション蒸留、継続的な事前学習が含まれ、これによりフル精度モデルと同等の性能を達成し、メモリを最大10倍節約し、CPU上での推論を2.65倍高速化します。 Comment元ポスト:">
+<meta property="og:description" content="Quantization [Paper Note] BitNet Distillation, Xun Wu+, arXiv'25, 2025.10 Original Issue #Pretraining #Pocket #NLP #LanguageModel #Distillation #PostTraining #KeyPoint Notes Issue Date: 2025-10-19 GPT Summary- BitNet Distillation（BitDistill）は、フル精度LLMを1.58ビット精度にファインチューニングする軽量なパイプラインで、計算コストを抑えつつ高いタスク特化型パフォーマンスを実現します。主な技術には、SubLNモジュール、MiniLMに基づくアテンション蒸留、継続的な事前学習が含まれ、これによりフル精度モデルと同等の性能を達成し、メモリを最大10倍節約し、CPU上での推論を2.65倍高速化します。 Comment元ポスト:">
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Quantization/">
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Quantization/">
+<meta property="og:site_name" content="わたしのべんきょうノート">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-10-19T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Quantizationに関する論文・技術記事メモの一覧">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-10-19T00:00:00+00:00","datePublished":"2025-10-19T00:00:00+00:00","description":"Quantization [Paper Note] BitNet Distillation, Xun Wu+, arXiv&#39;25, 2025.10 Original Issue #Pretraining #Pocket #NLP #LanguageModel #Distillation #PostTraining #KeyPoint Notes Issue Date: 2025-10-19 GPT Summary- BitNet Distillation（BitDistill）は、フル精度LLMを1.58ビット精度にファインチューニングする軽量なパイプラインで、計算コストを抑えつつ高いタスク特化型パフォーマンスを実現します。主な技術には、SubLNモジュール、MiniLMに基づくアテンション蒸留、継続的な事前学習が含まれ、これによりフル精度モデルと同等の性能を達成し、メモリを最大10倍節約し、CPU上での推論を2.65倍高速化します。 Comment元ポスト:","headline":"Quantizationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Quantization/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Quantization/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="http://akihikowatanabe.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
+  <script src="/paper_notes/assets/js/main.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
+<script>
+  function showMore(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "block";
+          
+      // このボタンの参照を取得して非表示にします
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "none";
+      }
+          
+      // hideボタンの参照を取得して表示します
+      const hideButton = contentDiv.querySelector('button[onclick^="hideContent"]');
+      if (hideButton) {
+        hideButton.style.display = "block";
+      }
+    }
+  }
+
+  function hideContent(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "none";
+  
+      // moreボタンの参照を取得して表示します
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "block";
+      }
+  
+      // このボタンを隠します
+      const hideButtons = document.querySelectorAll('button[onclick^="hideContent"]');
+      const hideButton = hideButtons[index];
+      if (hideButton) {
+        hideButton.style.display = "none";
+      }
+    }
+  }
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = `{"gallery"=>"section.main", "children"=>"a.photo-swipe", "bgOpacity"=>0.8, "padding"=>{"top"=>20, "bottom"=>40, "left"=>100, "right"=>100}}`.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P70KSB88WH');
+  </script>
+
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+  <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
+  わたしのべんきょうノート
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ja',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.4;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.2872;
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/paper_notes/assets/images/banner.png)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.png">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
+  <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
+それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
+自然言語処理(NLP), 推薦システム(RecommenderSystem), Educational Data Mining (EDM), Learning Analytics (LA)などの分野のメモが多いと思います。
+最近は特にLLMの勉強が多めです :)</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2025-10-19T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 19, 2025
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 34 mins</span>
+  </div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('off' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="Quantization" class="paper-head"> Quantization</h2>
+<div class="visible-content">
+<article class="paper-entry">
+<h3 id="bitnet-distillation-3324" class="title-link">[Paper Note] BitNet Distillation, Xun Wu+, arXiv'25, 2025.10</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3324" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Distillation.html" target="_blank" rel="noopener noreferrer">#Distillation</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2025-10-19</span>
+<span class="snippet"><span>GPT Summary</span>- BitNet Distillation（BitDistill）は、フル精度LLMを1.58ビット精度にファインチューニングする軽量なパイプラインで、計算コストを抑えつつ高いタスク特化型パフォーマンスを実現します。主な技術には、SubLNモジュール、MiniLMに基づくアテンション蒸留、継続的な事前学習が含まれ、これによりフル精度モデルと同等の性能を達成し、メモリを最大10倍節約し、CPU上での推論を2.65倍高速化します。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/_akhaliq/status/1979209909444001822?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>SubLN, MiniLMについては<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1899" target="_blank" rel="noopener noreferrer">Foundation Transformers, Hongyu Wang+, PMLR'23</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3345" target="_blank" rel="noopener noreferrer">[Paper Note] MiniLMv2: Multi-Head Self-Attention Relation Distillation for  Compressing Pretrained Transformers, Wenhui Wang+, ACL'21 Findings, 2020.12</a>
+ <br><br>を参照のこと。</p>
+<p>既存LLMを特定タスクに1.58bitでSFTする際に、full-precisionと同等の性能を保つ方法を提案している研究。full-precision LLMを1.58 bitでSFTをするとfp16で学習した場合のbaselineと比較してパフォーマンスが大きく低下するが（そしてその傾向はモデルサイズが大きいほど強い）、提案手法を利用するとfp16でSFTした場合と同等の性能を保ちながら、inference-speed 2.65倍、メモリ消費量1/10になる模様。<br><img width="1015" height="644" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/cafa8ad5-7cce-4466-a208-07bb51dcd953"
+
+
+/&gt;<br><br>手法としては、3段階で構成されており<br>- Stage1: low-bitに量子化されたモデルではactivationの分散が大きくなり学習の不安定さにつながるため、アーキテクチャとしてSubLNを導入して安定化を図る<br>- Stage2: Stage1で新たにSubLNを追加するので事前学習コーパスの継続事前学習する<br>- Stage3: full-precisionでSFTしたモデルを教師、1.58-bitに量子化したモデルを生徒とし、logits distillation (input x, output yが与えられた時に教師・生徒間で出力トークンの分布のKL Divergenceを最小化する)、MiniLMで提案されているMHAのdistillation（q-q/k-k/v-vの内積によってsquaredなrelation mapをQ, K, Vごとに作成し、relation mapのKL Divergenceが教師・生徒間で最小となるように学習する）を実施する<br>- 最終的に `L_CE + \lambda L_LD + \ganma L_AD` を最小化する。ここで、L_CEはdownstream datasetに対するcross-entropy lossであり、L_LD, L_ADはそれぞれ、logit distillation, Attention Distillationのlossである。</p>
+<p>ポイント解説:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/jiqizhixin/status/1980968125547139259?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="not-all-3271" class="title-link">[Paper Note] Not All Bits Are Equal: Scale-Dependent Memory Optimization Strategies  for Reasoning Models, Junhyuck Kim+, arXiv'25, 2025.10</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3271" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
+<a class="button" href="Test-Time%20Scaling.html" target="_blank" rel="noopener noreferrer">#Test-Time Scaling</a>
+<a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="MemoryOptimization.html" target="_blank" rel="noopener noreferrer">#MemoryOptimization</a>
+<span class="issue_date">Issue Date: 2025-10-15</span>
+<span class="snippet"><span>GPT Summary</span>- 4ビット量子化はメモリ最適化に有効ですが、推論モデルには適用できないことを示す。体系的な実験により、モデルサイズとKVキャッシュの影響を発見。小規模モデルは重みを優先し、大規模モデルは生成にメモリを割り当てることで精度を向上。LLMのメモリ最適化はスケールに依存し、異なるアプローチが必要であることを示唆。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/dimitrispapail/status/1978108550854382052?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>Reasoning Modelにおいて、メモリのbudgetに制約がある状況下において、<br>- モデルサイズ<br>- 重みの精度<br>- test-time compute (serial &amp; parallel)<br>- KV Cacheの圧縮<br><br>において、それらをどのように配分することでモデルのAcc.が最大化されるか？という話しな模様。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="qerl-beyond-3259" class="title-link">[Paper Note] QeRL: Beyond Efficiency -- Quantization-enhanced Reinforcement Learning  for LLMs, Wei Huang+, arXiv'25, 2025.10</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3259" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="PEFT(Adaptor_LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="Entropy.html" target="_blank" rel="noopener noreferrer">#Entropy</a>
+<span class="issue_date">Issue Date: 2025-10-14</span>
+<span class="snippet"><span>GPT Summary</span>- QeRLは、LLMs向けの量子化強化学習フレームワークで、NVFP4量子化とLoRAを組み合わせてRLのロールアウトを加速し、メモリ使用量を削減します。量子化ノイズがポリシーエントロピーを増加させ、探索を強化することを示し、AQNメカニズムでノイズを動的に調整します。実験により、ロールアウトフェーズで1.5倍のスピードアップを達成し、32B LLMのRLトレーニングを単一のH100 80GB GPUで可能にしました。QeRLは、報酬の成長と最終精度で優れた結果を示し、LLMsにおけるRLトレーニングの効率的なフレームワークとしての地位を確立しました。</span>
+<span class="snippet"><span>Comment</span><p>pj page:
+
+
+<a href="https://github.com/NVlabs/QeRL" target="_blank" rel="noopener noreferrer">https://github.com/NVlabs/QeRL</a>
+
+
+</p>
+<p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/huggingpapers/status/1977949560149315847?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2552" target="_blank" rel="noopener noreferrer">Your Efficient RL Framework Secretly Brings You Off-Policy RL Training, Yao+, 2025.08</a>
+<br><br>のようなロールアウトする際のエンジンと学習のエンジンのgapによる問題は生じたりしないのだろうか。</p>
+<p>解説:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/theturingpost/status/1979325188581007627?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="pretraining-large-3047" class="title-link">[Paper Note] Pretraining Large Language Models with NVFP4, NVIDIA+, arXiv'25, 2025.09</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3047" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<span class="issue_date">Issue Date: 2025-09-30</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、NVFP4フォーマットを用いた大規模言語モデル（LLMs）の安定かつ正確なトレーニング手法を提案。ランダムハダマード変換や二次元量子化スキームを取り入れ、偏りのない勾配推定を実現。10兆トークンでのトレーニングにより、FP8と同等の性能を達成し、狭い精度のLLMトレーニングにおける進展を示した。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/arankomatsuzaki/status/1972869149102858441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>解説:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/1975344045754097685?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="bitnet-b1.58-1898" class="title-link">BitNet b1.58 2B4T Technical Report, Shuming Ma+, arXiv'25</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1898" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
+<span class="issue_date">Issue Date: 2025-04-19</span>
+<span class="snippet"><span>GPT Summary</span>- BitNet b1.58 2B4Tは、20億パラメータを持つオープンソースの1ビット大規模言語モデルで、4兆トークンで訓練されました。言語理解や数学的推論などのベンチマークで評価され、同サイズのフルプレシジョンLLMと同等の性能を示しつつ、計算効率が向上しています。メモリ、エネルギー消費、デコーディングレイテンシが削減され、モデルの重みはHugging Faceで公開されています。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/iscienceluvr/status/1912783876365177235?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>圧倒的省メモリかつcpuでのinference速度も早そう<br><img src="https://github.com/user-attachments/assets/dacf05e4-9cb3-48b4-9a98-532f7245eb8e" alt="image" loading="lazy"></p>
+<p>- アーキテクチャはTransformerを利用<br>- Linear layerとしてBitLinear Layerを利用<br>  - 重みは{1, 0, -1}の3値をとる<br>  - activationは8bitのintegerに量子化<br>  - Layer Normalizationはsubln normalization <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1899" target="_blank" rel="noopener noreferrer">Foundation Transformers, Hongyu Wang+, PMLR'23</a>
+ を利用</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="awq-activation-aware-2264" class="title-link">[Paper Note] AWQ: Activation-aware Weight Quantization for LLM Compression and   Acceleration, Ji Lin+, MLSys'24</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2264" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="MLSys.html" target="_blank" rel="noopener noreferrer">#MLSys</a>
+<span class="issue_date">Issue Date: 2025-07-21</span>
+<span class="snippet"><span>GPT Summary</span>- Activation-aware Weight Quantization（AWQ）を提案し、LLMの低ビット重み量子化を効率化。顕著な重みチャネルを保護することで量子化誤差を削減し、異なるドメインに一般化可能。AWQは言語モデリングやドメイン特化型ベンチマークで優れた性能を示し、4ビットのオンデバイスLLM/VLM向け推論フレームワークTinyChatを実装。これにより、デスクトップおよびモバイルGPUでの処理速度を3倍以上向上させ、70B Llama-2モデルの展開を容易にする。</span>
+<span class="snippet"><span>Comment</span><p>日本語解説:
+
+
+<a href="https://qiita.com/kyad/items/96a4a2bdec3f0dc09d23" target="_blank" rel="noopener noreferrer">https://qiita.com/kyad/items/96a4a2bdec3f0dc09d23</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="the-super-1566" class="title-link">The Super Weight in Large Language Models, Mengxia Yu+, arXiv'24</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1566" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<span class="issue_date">Issue Date: 2024-12-02</span>
+<span class="snippet"><span>GPT Summary</span>- LLMのパラメータの一部がモデルの品質に不均衡に重要であり、1つのパラメータの剪定でテキスト生成能力が大幅に低下することを発見。データフリーの方法で重要なスーパーパラメータを特定し、これにより四捨五入量子化の精度を向上させることができる。スーパーパラメータに関する研究を促進するために、オープンアクセスのLLMに対するインデックスを提供。</span>
+<span class="snippet"><span>Comment</span><p>図にある通り、たった一つのニューラルネットワーク中の重みを0にするだけで、途端に意味のあるテキストが生成できなくなるような重みが存在するらしい。<br><img src="https://github.com/user-attachments/assets/065e921b-c447-4c0d-b1de-a2f79bd090f8" alt="image" loading="lazy"><br><br><br>（図は論文より引用）</p>
+<p>ICLR 2025のOpenreview<br>
+
+
+<a href="https://openreview.net/forum?id=0Ag8FQ5Rr3" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=0Ag8FQ5Rr3</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="smoothquant-accurate-1570" class="title-link">SmoothQuant: Accurate and Efficient Post-Training Quantization for Large   Language Models, Guangxuan Xiao+, ICML'23</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1570" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<span class="issue_date">Issue Date: 2024-12-03</span>
+<span class="snippet"><span>GPT Summary</span>- SmoothQuantは、トレーニング不要で8ビットの重みと活性化の量子化を実現するポストトレーニング量子化ソリューションです。活性化の外れ値を滑らかにすることで、量子化の難易度を軽減し、精度を保持しつつ最大1.56倍の速度向上と2倍のメモリ削減を達成しました。これにより、530BのLLMを単一ノードで運用可能にし、LLMsの民主化を促進します。コードは公開されています。</span>
+<span class="snippet"><span>Comment</span><p>おそらく量子化手法の現時点のSoTA</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="loftq-lora-fine-tuning-aware-1407" class="title-link">LoftQ: LoRA-Fine-Tuning-Aware Quantization for Large Language Models, Yixiao Li+, N_A, arXiv'23</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1407" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="PEFT(Adaptor_LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<span class="issue_date">Issue Date: 2024-09-24</span>
+<span class="snippet"><span>GPT Summary</span>- LoftQという新しい量子化フレームワークを提案し、LLMにおける量子化とLoRAファインチューニングを同時に適用。これにより、量子化モデルとフル精度モデルの不一致を軽減し、下流タスクの一般化を改善。自然言語理解や質問応答などのタスクで、特に難易度の高い条件下で既存手法を上回る性能を示した。</span>
+</article>
+<article class="paper-entry">
+<h3 id="gptq-accurate-1043" class="title-link">GPTQ: Accurate Post-Training Quantization for Generative Pre-trained   Transformers, Elias Frantar+, N_A, ICLR'23</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1043" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<span class="issue_date">Issue Date: 2023-09-29</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、GPTモデルの推論における計算およびストレージコストの問題に取り組み、新しいワンショット重み量子化手法であるGPTQを提案します。GPTQは高い精度と効率性を持ち、1750億のパラメータを持つGPTモデルを4時間のGPU時間で量子化することができます。提案手法は従来の手法と比較して圧縮率を2倍以上向上させ、精度を保持することができます。さらに、提案手法は極端な量子化領域でも合理的な精度を提供します。実験結果では、提案手法を使用することでエンドツーエンドの推論速度が約3.25倍から4.5倍向上することが示されています。提案手法の実装はhttps://github.com/IST-DASLab/gptqで利用可能です。</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>- 新たなpost-training量子化手法であるGPTQを提案<br><br>- 数時間以内に数千億のパラメータを持つモデルでの実行が可能であり、パラメータごとに3～4ビットまで圧縮するが、精度の大きな損失を伴わない<br><br>    - OPT-175BおよびBLOOM-176Bを、約4時間のGPU時間で、perplexityのわずかな増加で量子化することができた<br><br>- 数千億のパラメータを持つ非常に高精度な言語モデルを3-4ビットに量子化可能なことを初めて示した<br><br>    - 先行研究のpost-training手法は、8ビット（Yao et al., 2022; Dettmers et al., 2022）。<br><br>    - 一方、以前のtraining-basedの手法は、1～2桁小さいモデルのみを対象としていた（Wu et al., 2022）。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4ff107a9-7ccf-40f6-ad8c-fd910b1f0ac7" alt="image" loading="lazy"><br><br></p>
+<p># Background<br><br>## Layer-wise quantization<br><br>各linear layerがあるときに、full precisionのoutputを少量のデータセットをネットワークに流したときに、quantized weight W^barを用いてreconstructできるように、squared error lossを最小化する方法。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9950fec1-966b-45c4-a82a-6bfd533042b3" alt="image" loading="lazy"><br><br><br><br>## Optimal Brain quantization (OBQ)<br><br>OBQでは equation (1)をWの行に関するsummationとみなす。そして、それぞれの行 **w** をOBQは独立に扱い、ある一つの重みw_qをquantizeするときに、エラーがw_qのみに基づいていることを補償するために他の**w**の全てのquantizedされていない重みをupdateする。式で表すと下記のようになり、Fは残りのfull-precision weightの集合を表している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aab7784d-45f3-4f23-ac74-6cc4c2026486" alt="image" loading="lazy"><br><br>この二つの式を、全ての**w**の重みがquantizedされるまで繰り返し適用する。<br><br><br><br>つまり、ある一個の重みをquantizedしたことによる誤差を補うように、他のまだquantizedされていない重みをupdateすることで、次に別の重みをquantizedする際は、最初の重みがquantizedされたことを考慮した重みに対してquantizedすることになる。これを繰り返すことで、quantizedしたことによる誤差を考慮して**w**全体をアップデートできる、という気持ちだと思う。<br><br><br><br>この式は高速に計算することができ、medium sizeのモデル（25M parameters; ResNet-50 modelなど）とかであれば、single GPUで1時間でquantizeできる。しかしながら、OBQはO(d_row * d_col^3)であるため、（ここでd_rowはWの行数、d_colはwの列数）、billions of parametersに適用するには計算量が多すぎる。</p>
+<p># Algorithm<br><br>## Step 1: Arbitrary Order Insight.<br><br>通常のOBQは、量子化誤差が最も少ない重みを常に選択して、greedyに重みを更新していく。しかし、パラメータ数が大きなモデルになると、重みを任意の順序で量子化したとしてもそれによる影響は小さいと考えられる。なぜなら、おそらく、大きな個別の誤差を持つ量子化された重みの数が少ないと考えられ、その重みがプロセスのが進むにつれて（アップデートされることで？）相殺されるため。<br><br><br><br>このため、提案手法は、すべての行の重みを同じ順序で量子化することを目指し、これが通常、最終的な二乗誤差が元の解と同じ結果となることを示す。が、このために2つの課題を乗り越えなければならない。<br><br><br><br>## Step2. Lazy Batch-Updates<br><br>Fを更新するときは、各エントリに対してわずかなFLOPを使用して、巨大な行列のすべての要素を更新する必要があります。しかし、このような操作は、現代のGPUの大規模な計算能力を適切に活用することができず、非常に小さいメモリ帯域幅によってボトルネックとなる。<br><br><br><br>幸いにも、この問題は以下の観察によって解決できる：列iの最終的な四捨五入の決定は、この特定の列で行われた更新にのみ影響され、そのプロセスの時点で後の列への更新は関連がない。これにより、更新を「lazy batch」としてまとめることができ、はるかに効率的なGPUの利用が可能となる。（要は独立して計算できる部分は全部一気に計算してしまって、後で一気にアップデートしますということ）。たとえば、B = 128の列にアルゴリズムを適用し、更新をこれらの列と対応するB × Bブロックの H^-1 に格納する。<br><br>この戦略は理論的な計算量を削減しないものの、メモリスループットのボトルネックを改善する。これにより、非常に大きなモデルの場合には実際に1桁以上の高速化が提供される。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb33c4d-3924-4abd-b149-936b9e350c76" alt="image" loading="lazy"><br><br><br><br>## Step 3: Cholesky Reformulation<br><br>行列H_F^-1が不定になることがあり、これがアルゴリズムが残りの重みを誤った方向に更新する原因となり、該当する層に対して悪い量子化を実施してしまうことがある。この現象が発生する確率はモデルのサイズとともに増加することが実際に観察された。これを解決するために、コレスキー分解を活用して解決している（詳細はきちんと読んでいない）。</p>
+<p># 実験で用いたCalibration data<br><br>GPTQのキャリブレーションデータ全体は、C4データセット(Raffel et al., 2020)からのランダムな2048トークンのセグメント128個で構成される。つまり、ランダムにクロールされたウェブサイトからの抜粋で、一般的なテキストデータを表している。GPTQがタスク固有のデータを一切見ていないため「ゼロショット」な設定でquantizationを実施している。<br><br><br><br># Language Generationでの評価<br><br>WikiText2に対するPerplexityで評価した結果、先行研究であるRTNを大幅にoutperformした。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23e12194-d329-46f7-bb69-2cce290282c1" alt="image" loading="lazy"><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="qlora-efficient-881" class="title-link">QLoRA: Efficient Finetuning of Quantized LLMs, Tim Dettmers+, N_A, NeurIPS'23</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/881" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="PEFT(Adaptor_LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2023-07-22</span>
+<span class="snippet"><span>GPT Summary</span>- 私たちは、QLoRAという効率的なファインチューニング手法を提案します。この手法は、メモリ使用量を削減し、48GBの単一のGPU上で65Bパラメータモデルをファインチューニングすることができます。また、16ビットのファインチューニングタスクのパフォーマンスを維持します。QLoRAは、凍結された4ビット量子化された事前学習済み言語モデルの勾配をLow Rank Adapters（LoRA）に逆伝播させます。私たちの最良のモデルファミリーであるGuanacoは、Vicunaベンチマークで以前に公開されたすべてのモデルを上回り、ChatGPTのパフォーマンスレベルの99.3%に達します。また、単一のGPU上でのファインチューニングには24時間しかかかりません。QLoRAは、パフォーマンスを犠牲にすることなくメモリを節約するためのいくつかの革新を導入しています。具体的には、4ビットNormalFloat（NF4）という情報理論的に最適な新しいデータ型、ダブル量子化による平均メモリフットプリントの削減、およびページドオプティマイザによるメモリスパイクの管理です。私たちはQLoRAを使用して1,000以上のモデルをファインチューニングし、8つの命令データセット、複数のモデルタイプ（LLaMA、T5）、および従来のファインチューニングでは実行不可能なモデルスケール（33Bおよび65Bパラメータモデル）にわたる命令の追跡とチャットボットのパフォーマンスの詳細な分析を提供します。私たちの結果は、QLoRAを使用して小規模な高品質のデータセットでのファインチューニングが、以前のSoTAよりも小さいモデルを使用しても最先端の結果をもたらすことを示しています。また、人間の評価とGPT-4の評価に基づいたチャットボットのパフォーマンスの詳細な分析を提供し、GPT-4の評価が安価で合理的な人間の評価の代替手段であることを示します。さらに、現在のチャットボットのベンチマークは、チャットボットのパフォーマンスレベルを正確に評価するためには信頼性がないことがわかります。GuanacoがChatGPTと比較してどこで失敗するかを示す分析も行っています。私たちは、4ビットトレーニングのためのCUDAカーネルを含む、すべてのモデルとコードを公開しています。</span>
+<span class="snippet"><span>Comment</span><p>実装: 
+
+
+<a href="https://github.com/artidoro/qlora" target="_blank" rel="noopener noreferrer">https://github.com/artidoro/qlora</a>
+
+
+<br>PEFTにもある</p>
+<p>参考: 
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/1662946722690236417?s=46&t=TDHYK31QiXKxggPzhZbcAQ"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>OpenReview:
+
+
+<a href="https://openreview.net/forum?id=OUIFPHEgJU&referrer=%5Bthe%20profile%20of%20Ari%20Holtzman%5D(%2Fprofile%3Fid%3D~Ari_Holtzman1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=OUIFPHEgJU&referrer=%5Bthe%20profile%20of%20Ari%20Holtzman%5D(%2Fprofile%3Fid%3D~Ari_Holtzman1)</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="qwen3-next-series-fp8-2939" class="title-link">Qwen3-Next-series-FP8, Qwen Team, 2025.09</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2939" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<span class="issue_date">Issue Date: 2025-09-23</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/alibaba_qwen/status/1970052154330353857?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="introducing-quantized-1471" class="title-link">Introducing quantized Llama models with increased speed and a reduced memory footprint, Meta, 2024.10</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1471" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<span class="issue_date">Issue Date: 2024-10-26</span>
+</article>
+<article class="paper-entry">
+<h3 id="4-bit-llama-1353" class="title-link">4-bit Llama 3.1, NeuralMagic, 2024.08</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1353" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<span class="issue_date">Issue Date: 2024-08-20</span>
+</article>
+<article class="paper-entry">
+<h3 id="llama2を3行で訓練-886" class="title-link">LLaMA2を3行で訓練</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/886" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="PEFT(Adaptor_LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<span class="issue_date">Issue Date: 2023-07-22</span>
+<span class="snippet"><span>Comment</span><p>LLaMA2を3行で、1つのA100GPU、QLoRAで、自前のデータセットで訓練する方法</p></span><br><br>
+</article>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Twitterのwidgets.jsを動的に一度だけ読み込む関数
+  let twitterScriptLoaded = false;
+  function loadTwitterScript() {
+    if (!twitterScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.charset = "utf-8";
+      script.async = true;
+      document.body.appendChild(script);
+      twitterScriptLoaded = true;
+    }
+  }
+
+  // Intersection Observerの設定
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // 画面に入った時だけスクリプトをロード開始
+        loadTwitterScript();
+
+        const container = entry.target;
+        const embedHtml = container.getAttribute('data-embed');
+        
+        if (embedHtml) {
+          container.innerHTML = embedHtml;
+          container.removeAttribute('data-embed');
+          
+          // ウィジェットの再スキャン（twttrオブジェクトが準備できていれば実行）
+          if (window.twttr && window.twttr.widgets) {
+            window.twttr.widgets.load(container);
+          }
+        }
+        obs.unobserve(container);
+      }
+    });
+  }, { rootMargin: '200px' }); // 少し早めに読み込む
+
+  document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
+});
+</script>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/paper_notes/articles/Samplers/" title="Samplersに関する論文・技術記事メモの一覧">Samplersに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Emotion/" title="Emotionに関する論文・技術記事メモの一覧">Emotionに関する論文・技術記事メモの一覧</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/paper_notes/articles/SmallModel/" title="SmallModelに関する論文・技術記事メモの一覧">
+            SmallModelに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 64</span> 
+  <span class="post-badge badge-new">📝 64</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/SpeculativeDecoding/" title="SpeculativeDecodingに関する論文・技術記事メモの一覧">
+            SpeculativeDecodingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/git/" title="gitに関する論文・技術記事メモの一覧">
+            gitに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/General/" title="Generalに関する論文・技術記事メモの一覧">
+            Generalに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+/* --- レイアウト用（前回と同じ） --- */
+.post-menu {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-menu-title {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.post-menu-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- 開閉アニメーションとアイコン用 --- */
+
+/* h2のスタイル：クリックできるようにする */
+.post-menu li.h-h2 {
+  cursor: pointer;
+  position: relative;
+  padding-left: 15px; /* アイコン用のスペース */
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 開閉アイコン（▼） */
+.post-menu li.h-h2::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 6px; /* 三角形 */
+  border-color: transparent transparent transparent #555;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.post-menu li.h-h2.no-icon::before {
+  content: none; /* 擬似要素の中身をなしにする */
+  /* または display: none; でもOKです */
+}
+
+/* 開いている時のアイコン（下向きにする） */
+.post-menu li.h-h2.open::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* h3（子要素）のスタイル */
+.post-menu li.h-h3 {
+  margin-left: 15px;
+  font-size: 0.9em;
+  /* 初期状態はJSで制御しますが、念のため */
+}
+
+/* アクティブな項目の色 */
+.post-menu li.active > a {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* リンク自体のスタイル調整 */
+.post-menu li a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: 100%;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent = menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3");
+
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // --- HTML生成 ---
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      // h-h2 クラスの要素には初期状態で open クラスをつけるか、つけないかで「最初から開いているか」を決められます
+      // ここでは閉じた状態をデフォルトとします
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+
+    // --- 開閉ロジックの実装 ---
+    var listItems = menuContent.querySelectorAll('li');
+
+    // h2要素にクリックイベントを追加
+    listItems.forEach(function(item, index) {
+      if (item.classList.contains('h-h2')) {
+        
+        // クリックイベント
+        item.addEventListener('click', function(e) {
+          // リンクをクリックした場合はページ内遷移させたいので、イベントを止めない
+          // ただし、アイコン付近をクリックした等の挙動を統一するため、
+          // 開閉処理を行います。
+          
+          // クラスの付け替え（アイコンの回転用）
+          item.classList.toggle('open');
+
+          // 次のh2が出てくるまで、h3を表示/非表示切り替え
+          for (var i = index + 1; i < listItems.length; i++) {
+            var sibling = listItems[i];
+            if (sibling.classList.contains('h-h2')) {
+              break; // 次のh2に来たら終了
+            }
+            if (sibling.classList.contains('h-h3')) {
+              if (item.classList.contains('open')) {
+                sibling.style.display = 'block';
+              } else {
+                sibling.style.display = 'none';
+              }
+            }
+          }
+        });
+      }
+    });
+
+    // --- 初期状態の設定（すべて閉じる） ---
+    // もし最初から開いておきたい場合は、このブロックを削除するか調整してください
+    listItems.forEach(function(item) {
+      if (item.classList.contains('h-h3')) {
+        item.style.display = 'none';
+      }
+    });
+
+
+    // --- スクロール連動（ハイライト機能のみ残す） ---
+    var header = document.querySelector('header.site-header');
+    
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header ? header.getBoundingClientRect() : {top:0, height:0}; // headerがない場合の安全策
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var offset = headerTop + headerHeight + 20;
+
+        if (headingRect.top <= offset) {
+          var id = h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          
+          if (curActive) {
+            // もしアクティブになった項目が閉じているh2の中にあった場合、
+            // 自動で開く処理を追加したい場合はここに記述します。
+            // 今回は「手動開閉」を優先し、自動オープンはあえて行いません。
+            
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+      }
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/paper_notes/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+  </html>

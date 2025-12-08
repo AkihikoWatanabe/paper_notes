@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Assessmentに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
+<meta name="generator" content="Jekyll v3.10.0">
+<meta property="og:title" content="Assessmentに関する論文・技術記事メモの一覧">
+<meta name="author" content="AkihikoWATANABE">
+<meta property="og:locale" content="ja">
+<meta name="description" content="Assessment [Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23 Original Issue #Pocket #NLP #ChatGPT #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Machine Learning–Driven Language Assessment, LaFlair+, TACL'20 Original Issue #Education #IRT Issue Date: 2022-11-25 Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv'20 Original Issue #AdaptiveLearning #EducationalDataMining #LearningAnalytics Issue Date: 2022-04-18 Comment# 概要テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。# Knowledge Tracingタスクの定義手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。# Assessmentを予測するタスクまた、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。# label-scarceなeducational featureの例また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。- Non Interactive Educational Feature - exam_score: A student’s score on a standardized exam. - grade: A student’s final grade in a course. - certification: Professional certifications obtained by completion of educational programs or examinations.- Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと） - course_dropout: Whether a student drops out of the entire class. - review_correctness: Whether a student responds correctly to a previously solved exercise.# モデルこれらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる：- exercise_id: We assign a latent vector unique to each exercise id.- exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.- position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].- correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.- elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.- inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vectorここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。Loss functionは、pre-training taskごとに定義する。# 評価試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。## DatasetEdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。## Exam Score Prediction2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。## review correctness prediction生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。最終的に4540個のラベル付されたsequenceを得た。## モデルのセットアップモデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。# 実験結果## pre-trainingタスクがdown-streamタスクに与える影響correctness + timelinessの予測を行った場合に、最も性能がよかった。## 性能既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。 ChatBot Arena, lmsys org, 2023.05 Original Issue #Article #NLP #LanguageModel Issue Date: 2023-05-04 Commentクラウドソーシング型のチャットボット評価するシステム。ユーザはシステムにアクセスすると、二つのanonymisedされたLLMと対話し、どちらが優れていたかをvotingする。すべてのシステムとユーザのinteractionはロギングされており、最終的にElo RatingでLLM.をランキング付けする。Arena-Hardと呼ばれるliveアリーナデータを用いたパイプラインを公開。MT-Benchよりも識別力が高く、Chatbot Arenaのランキングとのagreementが高いとのこと。参考:">
+<meta property="og:description" content="Assessment [Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23 Original Issue #Pocket #NLP #ChatGPT #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Machine Learning–Driven Language Assessment, LaFlair+, TACL'20 Original Issue #Education #IRT Issue Date: 2022-11-25 Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv'20 Original Issue #AdaptiveLearning #EducationalDataMining #LearningAnalytics Issue Date: 2022-04-18 Comment# 概要テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。# Knowledge Tracingタスクの定義手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。# Assessmentを予測するタスクまた、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。# label-scarceなeducational featureの例また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。- Non Interactive Educational Feature - exam_score: A student’s score on a standardized exam. - grade: A student’s final grade in a course. - certification: Professional certifications obtained by completion of educational programs or examinations.- Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと） - course_dropout: Whether a student drops out of the entire class. - review_correctness: Whether a student responds correctly to a previously solved exercise.# モデルこれらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる：- exercise_id: We assign a latent vector unique to each exercise id.- exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.- position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].- correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.- elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.- inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vectorここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。Loss functionは、pre-training taskごとに定義する。# 評価試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。## DatasetEdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。## Exam Score Prediction2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。## review correctness prediction生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。最終的に4540個のラベル付されたsequenceを得た。## モデルのセットアップモデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。# 実験結果## pre-trainingタスクがdown-streamタスクに与える影響correctness + timelinessの予測を行った場合に、最も性能がよかった。## 性能既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。 ChatBot Arena, lmsys org, 2023.05 Original Issue #Article #NLP #LanguageModel Issue Date: 2023-05-04 Commentクラウドソーシング型のチャットボット評価するシステム。ユーザはシステムにアクセスすると、二つのanonymisedされたLLMと対話し、どちらが優れていたかをvotingする。すべてのシステムとユーザのinteractionはロギングされており、最終的にElo RatingでLLM.をランキング付けする。Arena-Hardと呼ばれるliveアリーナデータを用いたパイプラインを公開。MT-Benchよりも識別力が高く、Chatbot Arenaのランキングとのagreementが高いとのこと。参考:">
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Assessment/">
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Assessment/">
+<meta property="og:site_name" content="わたしのべんきょうノート">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-04T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Assessmentに関する論文・技術記事メモの一覧">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2023-05-04T00:00:00+00:00","datePublished":"2023-05-04T00:00:00+00:00","description":"Assessment [Paper Note] Evaluating ChatGPT&#39;s Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv&#39;23 Original Issue #Pocket #NLP #ChatGPT #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Machine Learning–Driven Language Assessment, LaFlair+, TACL&#39;20 Original Issue #Education #IRT Issue Date: 2022-11-25 Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv&#39;20 Original Issue #AdaptiveLearning #EducationalDataMining #LearningAnalytics Issue Date: 2022-04-18 Comment# 概要テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。# Knowledge Tracingタスクの定義手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。# Assessmentを予測するタスクまた、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。# label-scarceなeducational featureの例また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。- Non Interactive Educational Feature - exam_score: A student’s score on a standardized exam. - grade: A student’s final grade in a course. - certification: Professional certifications obtained by completion of educational programs or examinations.- Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと） - course_dropout: Whether a student drops out of the entire class. - review_correctness: Whether a student responds correctly to a previously solved exercise.# モデルこれらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる：- exercise_id: We assign a latent vector unique to each exercise id.- exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.- position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].- correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.- elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.- inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vectorここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。Loss functionは、pre-training taskごとに定義する。# 評価試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。## DatasetEdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。## Exam Score Prediction2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。## review correctness prediction生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。最終的に4540個のラベル付されたsequenceを得た。## モデルのセットアップモデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。# 実験結果## pre-trainingタスクがdown-streamタスクに与える影響correctness + timelinessの予測を行った場合に、最も性能がよかった。## 性能既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。 ChatBot Arena, lmsys org, 2023.05 Original Issue #Article #NLP #LanguageModel Issue Date: 2023-05-04 Commentクラウドソーシング型のチャットボット評価するシステム。ユーザはシステムにアクセスすると、二つのanonymisedされたLLMと対話し、どちらが優れていたかをvotingする。すべてのシステムとユーザのinteractionはロギングされており、最終的にElo RatingでLLM.をランキング付けする。Arena-Hardと呼ばれるliveアリーナデータを用いたパイプラインを公開。MT-Benchよりも識別力が高く、Chatbot Arenaのランキングとのagreementが高いとのこと。参考:","headline":"Assessmentに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Assessment/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Assessment/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="http://akihikowatanabe.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
+  <script src="/paper_notes/assets/js/main.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
+<script>
+  function showMore(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "block";
+          
+      // このボタンの参照を取得して非表示にします
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "none";
+      }
+          
+      // hideボタンの参照を取得して表示します
+      const hideButton = contentDiv.querySelector('button[onclick^="hideContent"]');
+      if (hideButton) {
+        hideButton.style.display = "block";
+      }
+    }
+  }
+
+  function hideContent(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "none";
+  
+      // moreボタンの参照を取得して表示します
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "block";
+      }
+  
+      // このボタンを隠します
+      const hideButtons = document.querySelectorAll('button[onclick^="hideContent"]');
+      const hideButton = hideButtons[index];
+      if (hideButton) {
+        hideButton.style.display = "none";
+      }
+    }
+  }
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = `{"gallery"=>"section.main", "children"=>"a.photo-swipe", "bgOpacity"=>0.8, "padding"=>{"top"=>20, "bottom"=>40, "left"=>100, "right"=>100}}`.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P70KSB88WH');
+  </script>
+
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+  <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
+  わたしのべんきょうノート
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ja',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.4;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.2872;
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/paper_notes/assets/images/banner.png)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.png">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
+  <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
+それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
+自然言語処理(NLP), 推薦システム(RecommenderSystem), Educational Data Mining (EDM), Learning Analytics (LA)などの分野のメモが多いと思います。
+最近は特にLLMの勉強が多めです :)</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2023-05-04T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 04, 2023
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 19 mins</span>
+  </div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('off' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="Assessment" class="paper-head"> Assessment</h2>
+<div class="visible-content">
+<article class="paper-entry">
+<h3 id="evaluating-chatgpt's-534" class="title-link">[Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment  of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/534" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="ChatGPT.html" target="_blank" rel="noopener noreferrer">#ChatGPT</a>
+<a class="button" href="InformationExtraction.html" target="_blank" rel="noopener noreferrer">#InformationExtraction</a>
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。</span>
+<span class="snippet"><span>Comment</span><p>情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。<br>また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）</p>
+<p>あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）</p>
+<p>つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="machine-learning–driven-491" class="title-link">Machine Learning–Driven Language Assessment, LaFlair+, TACL'20</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/491" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Education.html" target="_blank" rel="noopener noreferrer">#Education</a>
+<a class="button" href="IRT.html" target="_blank" rel="noopener noreferrer">#IRT</a>
+<span class="issue_date">Issue Date: 2022-11-25</span>
+</article>
+<article class="paper-entry">
+<h3 id="assessment-modeling-444" class="title-link">Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv'20</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
+<a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
+<span class="issue_date">Issue Date: 2022-04-18</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。<br><br><br><br># Knowledge Tracingタスクの定義<br><br>手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png" alt="image" loading="lazy"><br><br><br><br>このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png" alt="image" loading="lazy"><br><br><br><br># Assessmentを予測するタスク<br><br>また、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png" alt="image" loading="lazy"><br><br><br><br>assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png" alt="image" loading="lazy"><br><br><br><br># label-scarceなeducational featureの例<br><br>また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。<br><br><br><br>- Non Interactive Educational Feature<br><br>    - exam_score: A student’s score on a standardized exam.<br><br>    - grade: A student’s final grade in a course.<br><br>    - certification: Professional certifications obtained by completion of educational programs or examinations.<br><br>- Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと）<br><br>    - course_dropout: Whether a student drops out of the entire class.<br><br>    - review_correctness: Whether a student responds correctly to a previously solved exercise.<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png" alt="image" loading="lazy"><br><br><br><br># モデル<br><br>これらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。<br><br>モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。<br><br>inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる：<br><br>- exercise_id: We assign a latent vector unique to each exercise id.<br><br>- exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.<br><br>- position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].<br><br>- correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.<br><br>- elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.<br><br>- inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector<br><br><br><br>ここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。<br><br>たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。<br><br><br><br>Loss functionは、pre-training taskごとに定義する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png" alt="image" loading="lazy"><br><br><br><br># 評価<br><br>試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。<br><br><br><br>## Dataset<br><br>EdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。<br><br><br><br>## Exam Score Prediction<br><br>2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。<br><br><br><br>## review correctness prediction<br><br>生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。<br><br>最終的に4540個のラベル付されたsequenceを得た。<br><br><br><br>## モデルのセットアップ<br><br>モデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。<br><br>また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。<br><br><br><br># 実験結果<br><br>## pre-trainingタスクがdown-streamタスクに与える影響<br><br><img src="https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png" alt="image" loading="lazy"><br><br><br><br>correctness + timelinessの予測を行った場合に、最も性能がよかった。<br><br><br><br>## 性能<br><br><img src="https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png" alt="image" loading="lazy"><br><br><br><br>既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="chatbot-arena-623" class="title-link">ChatBot Arena, lmsys org, 2023.05</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/623" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<span class="issue_date">Issue Date: 2023-05-04</span>
+<span class="snippet"><span>Comment</span><p>クラウドソーシング型のチャットボット評価するシステム。ユーザはシステムにアクセスすると、二つのanonymisedされたLLMと対話し、どちらが優れていたかをvotingする。すべてのシステムとユーザのinteractionはロギングされており、最終的にElo RatingでLLM.をランキング付けする。</p>
+<p>Arena-Hardと呼ばれるliveアリーナデータを用いたパイプラインを公開。MT-Benchよりも識別力が高く、Chatbot Arenaのランキングとのagreementが高いとのこと。<br><br>参考:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/lmsysorg/status/1782179997622649330?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2faafce4-effd-40b1-8760-d9639d3df6aa" alt="image" loading="lazy"><p>過去のデータについては <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/876" target="_blank" rel="noopener noreferrer">ChatBot Arenaのデータセット</a>
+ などもある</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="pandalm-603" class="title-link">PandaLM</h3>
+<br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/603" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Original Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<span class="issue_date">Issue Date: 2023-04-30</span>
+<span class="snippet"><span>Comment</span><p>異なるLLMを再現性のある形で評価するためのライブラリ<br>2つの異なるLLMのoutputを比較し、どちらが優れているか理由付きで説明する。人間が作成して1000サンプルの多様なアノテーションデータセットを使い評価できる。</p></span><br><br>
+</article>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Twitterのwidgets.jsを動的に一度だけ読み込む関数
+  let twitterScriptLoaded = false;
+  function loadTwitterScript() {
+    if (!twitterScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.charset = "utf-8";
+      script.async = true;
+      document.body.appendChild(script);
+      twitterScriptLoaded = true;
+    }
+  }
+
+  // Intersection Observerの設定
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // 画面に入った時だけスクリプトをロード開始
+        loadTwitterScript();
+
+        const container = entry.target;
+        const embedHtml = container.getAttribute('data-embed');
+        
+        if (embedHtml) {
+          container.innerHTML = embedHtml;
+          container.removeAttribute('data-embed');
+          
+          // ウィジェットの再スキャン（twttrオブジェクトが準備できていれば実行）
+          if (window.twttr && window.twttr.widgets) {
+            window.twttr.widgets.load(container);
+          }
+        }
+        obs.unobserve(container);
+      }
+    });
+  }, { rootMargin: '200px' }); // 少し早めに読み込む
+
+  document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
+});
+</script>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/paper_notes/articles/Semi-Supervised/" title="Semi-Supervisedに関する論文・技術記事メモの一覧">Semi-Supervisedに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SpokenLanguageGeneration/" title="SpokenLanguageGenerationに関する論文・技術記事メモの一覧">SpokenLanguageGenerationに関する論文・技術記事メモの一覧</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/paper_notes/articles/ConceptToTextGeneration/" title="ConceptToTextGenerationに関する論文・技術記事メモの一覧">
+            ConceptToTextGenerationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
+  <span class="post-badge badge-new">📝 17</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/CognitiveScience/" title="CognitiveScienceに関する論文・技術記事メモの一覧">
+            CognitiveScienceに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/COLT/" title="COLTに関する論文・技術記事メモの一覧">
+            COLTに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Theory/" title="Theoryに関する論文・技術記事メモの一覧">
+            Theoryに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+/* --- レイアウト用（前回と同じ） --- */
+.post-menu {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-menu-title {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.post-menu-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- 開閉アニメーションとアイコン用 --- */
+
+/* h2のスタイル：クリックできるようにする */
+.post-menu li.h-h2 {
+  cursor: pointer;
+  position: relative;
+  padding-left: 15px; /* アイコン用のスペース */
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 開閉アイコン（▼） */
+.post-menu li.h-h2::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 6px; /* 三角形 */
+  border-color: transparent transparent transparent #555;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.post-menu li.h-h2.no-icon::before {
+  content: none; /* 擬似要素の中身をなしにする */
+  /* または display: none; でもOKです */
+}
+
+/* 開いている時のアイコン（下向きにする） */
+.post-menu li.h-h2.open::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* h3（子要素）のスタイル */
+.post-menu li.h-h3 {
+  margin-left: 15px;
+  font-size: 0.9em;
+  /* 初期状態はJSで制御しますが、念のため */
+}
+
+/* アクティブな項目の色 */
+.post-menu li.active > a {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* リンク自体のスタイル調整 */
+.post-menu li a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: 100%;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent = menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3");
+
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // --- HTML生成 ---
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      // h-h2 クラスの要素には初期状態で open クラスをつけるか、つけないかで「最初から開いているか」を決められます
+      // ここでは閉じた状態をデフォルトとします
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+
+    // --- 開閉ロジックの実装 ---
+    var listItems = menuContent.querySelectorAll('li');
+
+    // h2要素にクリックイベントを追加
+    listItems.forEach(function(item, index) {
+      if (item.classList.contains('h-h2')) {
+        
+        // クリックイベント
+        item.addEventListener('click', function(e) {
+          // リンクをクリックした場合はページ内遷移させたいので、イベントを止めない
+          // ただし、アイコン付近をクリックした等の挙動を統一するため、
+          // 開閉処理を行います。
+          
+          // クラスの付け替え（アイコンの回転用）
+          item.classList.toggle('open');
+
+          // 次のh2が出てくるまで、h3を表示/非表示切り替え
+          for (var i = index + 1; i < listItems.length; i++) {
+            var sibling = listItems[i];
+            if (sibling.classList.contains('h-h2')) {
+              break; // 次のh2に来たら終了
+            }
+            if (sibling.classList.contains('h-h3')) {
+              if (item.classList.contains('open')) {
+                sibling.style.display = 'block';
+              } else {
+                sibling.style.display = 'none';
+              }
+            }
+          }
+        });
+      }
+    });
+
+    // --- 初期状態の設定（すべて閉じる） ---
+    // もし最初から開いておきたい場合は、このブロックを削除するか調整してください
+    listItems.forEach(function(item) {
+      if (item.classList.contains('h-h3')) {
+        item.style.display = 'none';
+      }
+    });
+
+
+    // --- スクロール連動（ハイライト機能のみ残す） ---
+    var header = document.querySelector('header.site-header');
+    
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header ? header.getBoundingClientRect() : {top:0, height:0}; // headerがない場合の安全策
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var offset = headerTop + headerHeight + 20;
+
+        if (headingRect.top <= offset) {
+          var id = h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          
+          if (curActive) {
+            // もしアクティブになった項目が閉じているh2の中にあった場合、
+            // 自動で開く処理を追加したい場合はここに記述します。
+            // 今回は「手動開閉」を優先し、自動オープンはあえて行いません。
+            
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+      }
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/paper_notes/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+  </html>
