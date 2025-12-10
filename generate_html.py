@@ -17,8 +17,8 @@ image_pat_list = [re.compile(r'!\[image\]\((https://(?:github\.com|user-images\.
                   re.compile(r'!\[image\]\((https://user-images\.githubusercontent\.com/[^)]+)\)'),
                   re.compile(r'!\[image\]\((https://github\.com/user-attachments/assets/[^)]+)\)')]
 
-PARENT_COLOR = '0e8a16'
-SUB_PARENT_COLOR = 'b60205'
+PARENT_COLOR = ['0e8a16']
+SUB_PARENT_COLOR = ['b60205', "0052cc", "9cc929"]
 OTHER_COLOR = 'd65b26'
 
 
@@ -504,7 +504,7 @@ def main():
     parent_labels = set(parent_labels)
     for issue in all_issues:
         labels = issue["labels"]
-        extracted = [l['name'] for l in labels if l['color'] == PARENT_COLOR]
+        extracted = [l['name'] for l in labels if l['color'].lower() in PARENT_COLOR]
         [parent_labels.add(l) for l in extracted]
     parent_labels = list(parent_labels)
 
@@ -512,7 +512,7 @@ def main():
     sub_parent_labels = set(sub_parent_labels)
     for issue in all_issues:
         labels = issue["labels"]
-        extracted = [l['name'] for l in labels if l['color'] == SUB_PARENT_COLOR]
+        extracted = [l['name'] for l in labels if l['color'].lower() in SUB_PARENT_COLOR]
         [sub_parent_labels.add(l) for l in extracted]
     sub_parent_labels = list(sub_parent_labels)
 
@@ -742,3 +742,4 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
