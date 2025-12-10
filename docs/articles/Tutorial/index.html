@@ -3840,8 +3840,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2023-11-06</span>
-<span class="snippet"><span>Comment</span><p>（以下スクショはスライドより引用）<br><br><br><br>次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image" loading="lazy"><br><br><br><br>以下ざっくり私の中の認識として<br><br>- 計画<br><br>    - クエリ拡張<br><br>        - クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔はキーワードしか与えられないときに情報を増やすから”拡張”という文言が用いられているが現在はこれに限らないと思う）する技術<br><br>    - 分解・抽象化<br><br>        - 複雑なクエリから分解することでマルチホップの質問をサブ質問に分解（今ならLLMを利用すれば比較的簡単にできる）したり、あるいは抽象化したクエリ（Step-back Promptnig <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1076" target="_blank" rel="noopener noreferrer">Take a Step Back: Evoking Reasoning via Abstraction in Large Language
-  Models, Huaixiu Steven Zheng+, N/A, arXiv'23</a>
+<span class="snippet"><span>Comment</span><p>（以下スクショはスライドより引用）<br><br><br><br>次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image" loading="lazy"><br><br><br><br>以下ざっくり私の中の認識として<br><br>- 計画<br><br>    - クエリ拡張<br><br>        - クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔はキーワードしか与えられないときに情報を増やすから”拡張”という文言が用いられているが現在はこれに限らないと思う）する技術<br><br>    - 分解・抽象化<br><br>        - 複雑なクエリから分解することでマルチホップの質問をサブ質問に分解（今ならLLMを利用すれば比較的簡単にできる）したり、あるいは抽象化したクエリ（Step-back Promptnig <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1076" target="_blank" rel="noopener noreferrer">[Paper Note] Take a Step Back: Evoking Reasoning via Abstraction in Large Language   Models, Huaixiu Steven Zheng+, N/A, ICLR'24</a>
  ）を活用することで検索を改善する技術<br><br>    - 検索対象選定<br><br>        - 検索する対象そのものを選択し、検索対象をフィルタリングする技術<br><br>        - 資料中ではLLMを用いたフィルタリングやClassifierを用いたフィルタリングが紹介されているが、メタデータで絞り込むなどの単純な方法でも実現可能だと思われる（メタデータで絞り込む、はClassifierでのフィルタリングとリンクするかもしれないが）<br><br>    - 思考・行動<br><br>        - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/518" target="_blank" rel="noopener noreferrer">REACT : SYNERGIZING REASONING AND ACTING IN LANGUAGE MODELS, Yao+, Princeton University and Google brain, ICLR'23</a>
  のような自律的にLLMに思考とその結果に基づく行動をイテレーションさせる技術や、クエリを分解して回答へたどり着くために必要な推論を構築し、各推論の回答を検証しながら生成を繰り返す技術が紹介されている<br><br>        - この辺の技術はクエリが非常に複雑な場合に有効ではあるが、シンプルな場合は必要ないかなという印象がある<br><br>        - シンプルなユースケースの場合はどちらかというと泥臭い前処理とかが効きそう<br><br>- 関連知識取得<br><br>    - 検索<br><br>        - 表層検索（TF-IDFベクトル, BM25）などの古典的な手法や、意味検索（Embeddingに基づく手法）が紹介されている<br><br>        - 例えばlangchainでは表層検索 + 意味検索の両者がサポートされており、簡単にハイブリッドな検索が実現できる<br><br>    - 知識文生成<br><br>        - 外部知識として検索された文書を利用するだけでなく、LLM自身が保持する知識を活用するためにLLMが生成した文書の両方を活用するとQAの正答率が向上することが紹介されている<br><br>    - 文書フィルタ<br><br>        - 検索でクエリに関連しない文書を取得してしまう応答品質が大幅に低下することが紹介されている<br><br>            - 個人的にはここが一番重要なパートだと考えている<br><br>        - また、検索結果を要約する方法も紹介されている<br><br>    - 再帰・反復計算<br><br>        - Retrierverから取得した結果に基づいてLLMが応答を生成し、生成した応答とoriginalのquestionの両方を組み合わせて追加でRetrieverから文書を取得し生成する手法などが紹介されている<br><br>    -  リランキング<br><br>        - 検索結果のリランキングも古くから存在する技術であり、異なる知識を持つRankerによってリランキングさせることで性能が向上する場合がある<br><br>- 回答<br><br>    - 回答抽出・生成<br><br>        - 回答となる部分のspanを抽出する手法と、spanではなくテキストを生成する手法が紹介されている<br><br>        - この辺は文書要約におけるExtractive/Abstractive Summarization技術などもかなり応用が効くと思われる<br><br>- インデクシング<br><br>    - 不要文書のフィルタリングや、チャンク分割の戦略、資格情報をテキスト化する方法などが紹介されている<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5ad62f76-e1b9-4c78-847a-45387fe5fb3e" alt="image" loading="lazy"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/634e5386-6ae4-4602-a214-cc8dc126daad" alt="image" loading="lazy"><br><br></p></span><br><br>
 </article>
@@ -5087,7 +5086,7 @@ My Issue
 <a class="button" href="UserModeling.html" target="_blank" rel="noopener noreferrer">#UserModeling</a>
 <a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
-<span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/34401936-ca4ff66a-ebe1-11e7-81bc-c31a37acae27.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34401943-d402ea5a-ebe1-11e7-9b7b-2e76448941e0.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34401948-dcc2e4ce-ebe1-11e7-8a77-a70d49f56fbc.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34401950-e410a086-ebe1-11e7-9e3d-00c4dac72534.png" alt="image" loading="lazy"><br><br><img src="https://user-images.githubusercontent.com/12249301/34401953-e8db3fea-ebe1-11e7-8ad9-80cd57cd98b5.png" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p># 管理人の過去のメモスクショ<br><img src="https://user-images.githubusercontent.com/12249301/34401936-ca4ff66a-ebe1-11e7-81bc-c31a37acae27.png" alt="image" loading="lazy"><br><img src="https://user-images.githubusercontent.com/12249301/34401943-d402ea5a-ebe1-11e7-9b7b-2e76448941e0.png" alt="image" loading="lazy"><br><img src="https://user-images.githubusercontent.com/12249301/34401948-dcc2e4ce-ebe1-11e7-8a77-a70d49f56fbc.png" alt="image" loading="lazy"><br><img src="https://user-images.githubusercontent.com/12249301/34401950-e410a086-ebe1-11e7-9e3d-00c4dac72534.png" alt="image" loading="lazy"><br><img src="https://user-images.githubusercontent.com/12249301/34401953-e8db3fea-ebe1-11e7-8ad9-80cd57cd98b5.png" alt="image" loading="lazy"><br></p></span><br><br>
 </article>
 </div>
 <script>
@@ -5138,44 +5137,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/train-inference-gap/" title="train-inference-gapに関する論文・技術記事メモの一覧">train-inference-gapに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/2D-(Image)/" title="2D (Image)に関する論文・技術記事メモの一覧">2D (Image)に関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/SelfImprovement/" title="SelfImprovementに関する論文・技術記事メモの一覧">SelfImprovementに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/2D-(Image)/" title="2D (Image)に関する論文・技術記事メモの一覧">2D (Image)に関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/memory/" title="memoryに関する論文・技術記事メモの一覧">
-            memoryに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Distillation/" title="Distillationに関する論文・技術記事メモの一覧">
+            Distillationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
-  <span class="post-badge badge-new">📝 24</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
+  <span class="post-badge badge-new">📝 21</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ExplicitFeedback/" title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
-            ExplicitFeedbackに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/OOD/" title="OODに関する論文・技術記事メモの一覧">
+            OODに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/GraphGeneration/" title="GraphGenerationに関する論文・技術記事メモの一覧">
-            GraphGenerationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/StructuredData/" title="StructuredDataに関する論文・技術記事メモの一覧">
-            StructuredDataに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Realtime/" title="Realtimeに関する論文・技術記事メモの一覧">
+            Realtimeに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
   <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/RewardHacking/" title="RewardHackingに関する論文・技術記事メモの一覧">
+            RewardHackingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li>
