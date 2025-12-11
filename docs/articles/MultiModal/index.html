@@ -3917,27 +3917,29 @@ My Issue
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-01-25</span>
 <span class="snippet"><span>GPT Summary</span>- MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
-<span class="snippet"><span>Comment</span><p>以下、論文を斜め読みしながら、ChatGPTを通じて疑問点を解消しつつ理解した内容なので、理解が不十分な点が含まれている可能性があるので注意。<br><br><br><br>まあざっくり言うと、マルチモーダルを理解できるLLMを作りたかったら、様々なモダリティをエンコーディングして得られる表現と、既存のLLMが内部的に処理可能な表現を対応づける Input Projectorという名の関数を学習すればいいだけだよ（モダリティのエンコーダ、LLMは事前学習されたものをそのままfreezeして使えば良い）。<br><br><br><br>マルチモーダルを生成できるLLMを作りたかったら、LLMがテキストを生成するだけでなく、様々なモダリティに対応する表現も追加で出力するようにして、その出力を各モダリティを生成できるモデルに入力できるように変換するOutput Projectortという名の関数を学習しようね、ということだと思われる。<br><br><br><br># 概要<br><br><img width="1093" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/c12f621b-95e6-4bff-827b-c4c5cf43b532"
+<span class="snippet"><span>Comment</span><p>以下、論文を斜め読みしながら、ChatGPTを通じて疑問点を解消しつつ理解した内容なので、理解が不十分な点が含まれている可能性があるので注意。<br><br># 概要<br>まあざっくり言うと、マルチモーダルを理解できるLLMを作りたかったら、様々なモダリティをエンコーディングして得られる表現と、既存のLLMが内部的に処理可能な表現を対応づける Input Projectorという名の関数を学習すればいいだけだよ（モダリティのエンコーダ、LLMは事前学習されたものをそのままfreezeして使えば良い）。<br><br>マルチモーダルを生成できるLLMを作りたかったら、LLMがテキストを生成するだけでなく、様々なモダリティに対応する表現も追加で出力するようにして、その出力を各モダリティを生成できるモデルに入力できるように変換するOutput Projectortという名の関数を学習しようね、ということだと思われる。<br><br><img width="1093" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/c12f621b-95e6-4bff-827b-c4c5cf43b532"
 
 
-&gt;<br><br><br><br>## ポイント<br><br>- Modality Encoder, LLM Backbone、およびModality Generatorは一般的にはパラメータをfreezeする<br><br>- optimizationの対象は「Input/Output Projector」<br><br><br><br>## Modality Encoder<br><br>様々なモダリティI_Xを、特徴量F_Xに変換する。これはまあ、色々なモデルがある。<br><br><img width="195" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/578c3bbc-0183-4d62-bf98-ee1b1bc1109c"
+&gt;<br><br>## ポイント<br>- Modality Encoder, LLM Backbone、およびModality Generatorは一般的にはパラメータをfreezeする<br>- optimizationの対象は「Input/Output Projector」<br><br>## Modality Encoder<br>様々なモダリティI_Xを、特徴量F_Xに変換する。これはまあ、色々なモデルがある。<br><img width="195" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/578c3bbc-0183-4d62-bf98-ee1b1bc1109c"
 
 
-&gt;<br><br><br><br>## Input Projector<br><br>モダリティI_Xとそれに対応するテキストtのデータ {I_X, t}が与えられたとき、テキストtを埋め込み表現に変換んした結果得られる特徴量がF_Tである。Input Projectorは、F_XをLLMのinputとして利用する際に最適な特徴量P_Xに変換するθX_Tを学習することである。これは、LLM(P_X, F_T)によってテキストtがどれだけ生成できたか、を表現する損失関数を最小化することによって学習される。<br><br><img width="451" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/a80f5453-b50f-48d5-8114-5f9f81544793"
+&gt;<br><br>## Input Projector<br>モダリティI_Xとそれに対応するテキストtのデータ {I_X, t}が与えられたとき、テキストtを埋め込み表現に変換んした結果得られる特徴量がF_Tである。Input Projectorは、F_XをLLMのinputとして利用する際に最適な特徴量P_Xに変換するθX_Tを学習することである。これは、LLM(P_X, F_T)によってテキストtがどれだけ生成できたか、を表現する損失関数を最小化することによって学習される。<br><img width="451" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/a80f5453-b50f-48d5-8114-5f9f81544793"
 
 
-&gt;<br><br><br><br>## LLM Backbone<br><br>LLMによってテキスト列tと、各モダリティに対応した表現であるS_Xを生成する。outputからt, S_Xをどのように区別するかはモデルの構造などにもよるが、たとえば異なるヘッドを用意して、t, S_Xを区別するといったことは可能であろうと思われる。<br><br><img width="256" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/0be4e1c7-f92b-4259-a536-8ea135c1bcba"
+&gt;<br><br>## LLM Backbone<br>LLMによってテキスト列tと、各モダリティに対応した表現であるS_Xを生成する。outputからt, S_Xをどのように区別するかはモデルの構造などにもよるが、たとえば異なるヘッドを用意して、t, S_Xを区別するといったことは可能であろうと思われる。<br><img width="256" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/0be4e1c7-f92b-4259-a536-8ea135c1bcba"
 
 
-&gt;<br><br><br><br>## Output Projector<br><br>S_XをModality Generatorが解釈可能な特徴量H_Xに変換する関数のことである。これは学習しなければならない。<br><br>H_XとModality Generatorのtextual encoderにtを入力した際に得られる表現τX(t)が近くなるようにOutput Projector θ_T_Xを学習する。これによって、S_XとModality Generatorがalignするようにする。<br><br><img width="356" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/faa87be0-e738-4dc1-8e52-0787d6b973e8"
+&gt;<br><br>## Output Projector<br>S_XをModality Generatorが解釈可能な特徴量H_Xに変換する関数のことである。これは学習しなければならない。<br>H_XとModality Generatorのtextual encoderにtを入力した際に得られる表現τX(t)が近くなるようにOutput Projector θ_T_Xを学習する。これによって、S_XとModality Generatorがalignするようにする。<br><img width="356" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/faa87be0-e738-4dc1-8e52-0787d6b973e8"
 
 
-&gt;<br><br><br><br>## Modality Generator<br><br>各ModalityをH_Xから生成できるように下記のような損失学習する。要は、生成されたモダリティデータ（または表現）が実際のデータにどれだけ近いか、を表しているらしい。具体的には、サンプリングによって得られたノイズと、モデルが推定したノイズの値がどれだけ近いかを測る、みたいなことをしているらしい。<br><br><img width="448" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/a18cfe29-27bf-42bf-8481-7e0afd838918"
+&gt;<br><br>## Modality Generator<br>各ModalityをH_Xから生成できるように下記のような損失学習する。要は、生成されたモダリティデータ（または表現）が実際のデータにどれだけ近いか、を表しているらしい。具体的には、サンプリングによって得られたノイズと、モデルが推定したノイズの値がどれだけ近いかを測る、みたいなことをしているらしい。<br><img width="448" alt="image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/a18cfe29-27bf-42bf-8481-7e0afd838918"
 
 
-&gt;<br><br><br><br>Multi Modalを理解するモデルだけであれば、Input Projectorの損失のみが学習され、生成までするのであれば、Input/Output Projector, Modality Generatorそれぞれに示した損失関数を通じてパラメータが学習される。あと、P_XやらS_Xはいわゆるsoft-promptingみたいなものであると考えられる。</p></span><br><br>
+&gt;<br><br>Multi Modalを理解するモデルだけであれば、Input Projectorの損失のみが学習され、生成までするのであれば、Input/Output Projector, Modality Generatorそれぞれに示した損失関数を通じてパラメータが学習される。あと、P_XやらS_Xはいわゆるsoft-promptingみたいなものであると考えられる。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="unified-io-2-1202" class="title-link">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,   Language, Audio, and Action, Jiasen Lu+, N_A, CVPR'24</h3>
@@ -6075,38 +6077,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/WWW/" title="WWWに関する論文・技術記事メモの一覧">
-            WWWに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SentimentAnalysis/" title="SentimentAnalysisに関する論文・技術記事メモの一覧">
+            SentimentAnalysisに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
-  <span class="post-badge badge-new">📝 13</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Interspeech/" title="Interspeechに関する論文・技術記事メモの一覧">
-            Interspeechに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Poisoning/" title="Poisoningに関する論文・技術記事メモの一覧">
+            Poisoningに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/SIGKDD/" title="SIGKDDに関する論文・技術記事メモの一覧">
+            SIGKDDに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/TechnicalReport/" title="TechnicalReportに関する論文・技術記事メモの一覧">
+            TechnicalReportに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Critic/" title="Criticに関する論文・技術記事メモの一覧">
-            Criticに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Comments/" title="Commentsに関する論文・技術記事メモの一覧">
-            Commentsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
