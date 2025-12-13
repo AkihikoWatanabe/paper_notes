@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 hours 16 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 hours 19 mins</span>
   </div></header>
 </div>
     </div>
@@ -3324,6 +3324,30 @@ My Issue
 <span class="snippet"><span>Comment</span><p># 概要<br><br>ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。<br><br><br><br># データセット生成手順<br><br>103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。<br><br><br><br># データセット統計量<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9" alt="image" loading="lazy"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91" alt="image" loading="lazy"><br><br><br><br># 手法概要<br><br>Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。<br><br>Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。<br><br>User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936" alt="image" loading="lazy"><br><br><br><br># 訓練手法<br><br>まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、<br><br>1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする<br><br>2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする<br><br>3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする<br><br>とした。<br><br>1,2,3の平均を最終的なRewardとする。<br><br><br><br># 実験結果<br><br>Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f" alt="image" loading="lazy"><br><br><br><br># Case Study<br><br>ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0" alt="image" loading="lazy"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="biomedical-data-to-text-472" class="title-link">[Paper Note] Biomedical Data-to-Text Generation via Fine-Tuning Transformers, Ruslan Yermakov+, ACL-INLG'21, 2021.09</h3>
+<br><a href="https://arxiv.org/abs/2109.01518" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/472" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<a class="button" href="INLG.html" target="_blank" rel="noopener noreferrer">#INLG</a>
+<span class="issue_date">Issue Date: 2022-08-18</span>
+<span class="snippet"><span>GPT Summary</span>- バイオメディカル分野におけるD2T生成の研究を行い、医薬品のパッケージリーフレットを用いた実世界のデータセットに対してファインチューニングされたトランスフォーマーを適用。現実的な複数文のテキスト生成が可能であることを示す一方で、重要な制限も存在。新たにバイオメディカル分野のD2T生成モデルのベンチマーク用データセット（BioLeaflets）を公開。</span>
+<span class="snippet"><span>Comment</span><p>biomedical domainの新たなdata2textデータセットを提供。事前学習済みのBART, T5等をfinetuningすることで高精度にテキストが生成できることを示した。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="prefix-tuning-optimizing-405" class="title-link">[Paper Note] Prefix-Tuning: Optimizing Continuous Prompts for Generation, Xiang Lisa Li+, arXiv'21, 2021.01</h3>
 <br><a href="https://arxiv.org/abs/2101.00190" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -3645,8 +3669,8 @@ My Issue
 <span class="issue_date">Issue Date: 2018-01-01</span>
 </article>
 <article class="paper-entry">
-<h3 id="get-to-135" class="title-link">[Paper Note] Get To The Point: Summarization with Pointer-Generator Networks, See+, ACL'17</h3>
-<br><a href="https://arxiv.org/pdf/1704.04368.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<h3 id="get-to-135" class="title-link">[Paper Note] Get To The Point: Summarization with Pointer-Generator Networks, Abigail See+, arXiv'17, 2017.04</h3>
+<br><a href="https://arxiv.org/abs/1704.04368" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
@@ -3662,10 +3686,13 @@ My Issue
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
 <a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Abstractive.html" target="_blank" rel="noopener noreferrer">#Abstractive</a>
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>GPT Summary</span>- ニューラルシーケンス・ツー・シーケンスモデルは抽象的なテキスト要約に新たなアプローチを提供するが、事実の不正確な再現と自己繰り返しの問題がある。本研究では、ハイブリッドポインタージェネレーターネットワークを用いて情報の正確な再現を促進し、カバレッジを利用して繰り返しを抑制する新しいアーキテクチャを提案。CNN/Daily Mail要約タスクで、最先端技術を2 ROUGEポイント上回る結果を得た。</span>
 <span class="snippet"><span>Comment</span><p>解説スライド：
 
 
@@ -3902,6 +3929,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Abstractive.html" target="_blank" rel="noopener noreferrer">#Abstractive</a>
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
 <span class="snippet"><span>Comment</span><p>解説スライド：
 
@@ -4148,6 +4176,7 @@ My Issue
 <a class="button" href="DomainAdaptation.html" target="_blank" rel="noopener noreferrer">#DomainAdaptation</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
 <span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png" alt="image" loading="lazy"><br><br><br><br>domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。<br><br><br><br>イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。</p></span><br><br>
 </article>
@@ -4168,8 +4197,9 @@ My Issue
 <a class="button" href="RuleBased.html" target="_blank" rel="noopener noreferrer">#RuleBased</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
-<span class="snippet"><span>Comment</span><p>## タスク<br><br>numerical stock market dataからstock market reportsを生成，我々と同様なタスク．システム名: ANA<br><br><br><br>## 手法概要<br><br>ルールベースな手法，<br><br>1) fact-generator,<br><br>2) message generator, <br><br>3) discourse organizer, <br><br>4) text generatorの4コンポーネントから成る． <br><br><br><br>2), 3), 4)はそれぞれ120, 16, 109個のルールがある. 4)ではphrasal dictionaryも使う． <br><br>1)では，入力されたpriceデータから，closing averageを求めるなどの数値的な演算などを行う. <br><br>2)では，1)で計算された情報に基づいて，メッセージの生成を行う(e.g. market was mixed). <br><br>3)では，メッセージのparagraph化，orderの決定，priorityの設定などを行う． <br><br>4)では，辞書からフレーズを選択したり，適切なsyntactic formを決定するなどしてテキストを生成．</p>
+<span class="snippet"><span>Comment</span><p>## タスク<br><br>numerical stock market dataからstock market reportsを生成．システム名: ANA<br><br><br><br>## 手法概要<br><br>ルールベースな手法，<br><br>1) fact-generator,<br><br>2) message generator, <br><br>3) discourse organizer, <br><br>4) text generatorの4コンポーネントから成る． <br><br><br><br>2), 3), 4)はそれぞれ120, 16, 109個のルールがある. 4)ではphrasal dictionaryも使う． <br><br>1)では，入力されたpriceデータから，closing averageを求めるなどの数値的な演算などを行う. <br><br>2)では，1)で計算された情報に基づいて，メッセージの生成を行う(e.g. market was mixed). <br><br>3)では，メッセージのparagraph化，orderの決定，priorityの設定などを行う． <br><br>4)では，辞書からフレーズを選択したり，適切なsyntactic formを決定するなどしてテキストを生成．</p>
 <p>Data2Textの先駆け論文。引用すべし。多くの研究で引用されている。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -4393,44 +4423,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/2D-(Image)/" title="2D (Image)に関する論文・技術記事メモの一覧">2D (Image)に関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/AIAgents/" title="AIAgentsに関する論文・技術記事メモの一覧">AIAgentsに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/2D-(Image)/" title="2D (Image)に関する論文・技術記事メモの一覧">2D (Image)に関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Alignment/" title="Alignmentに関する論文・技術記事メモの一覧">Alignmentに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Snippets/" title="Snippetsに関する論文・技術記事メモの一覧">
-            Snippetsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Selected-Papers-Blogs/" title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">
+            Selected Papers/Blogsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Physics/" title="Physicsに関する論文・技術記事メモの一覧">
-            Physicsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/StructuredLearning/" title="StructuredLearningに関する論文・技術記事メモの一覧">
+            StructuredLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Sparse/" title="Sparseに関する論文・技術記事メモの一覧">
-            Sparseに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ReadingComprehension/" title="ReadingComprehensionに関する論文・技術記事メモの一覧">
+            ReadingComprehensionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
-  <span class="post-badge badge-new">📝 11</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AffectDetection/" title="AffectDetectionに関する論文・技術記事メモの一覧">
-            AffectDetectionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/meta-learning/" title="meta-learningに関する論文・技術記事メモの一覧">
+            meta-learningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>

@@ -811,7 +811,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 hours 49 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 8 hours 41 mins</span>
   </div></header>
 </div>
     </div>
@@ -3084,6 +3084,35 @@ My Issue
 <span class="snippet"><span>Comment</span><p># 概要<br><br>BERT-to-BERT論文。これまでpre-trainedなチェックポイントを利用する研究は主にNLUで行われてきており、Seq2Seqでは行われてきていなかったので、やりました、という話。<br><br>publicly availableなBERTのcheckpointを利用し、BERTをencoder, decoder両方に採用することでSeq2Seqを実現。実現する上で、<br><br>1. decoder側のBERTはautoregressiveな生成をするようにする（左側のトークンのattentionしか見れないようにする）<br><br>2. encoder-decoder attentionを新たに導入する<br><br>の2点を工夫している。<br><br><br><br># 実験<br><br>Sentence Fusion, Sentence Split, Machine Translation, Summarizationの4タスクで実験<br><br><br><br>## MT<br><br><img src="https://user-images.githubusercontent.com/12249301/204958483-722106b3-bda2-45a3-bb08-fb4eb429c90c.png" alt="image" loading="lazy"><br><br>BERT2BERTがSoTA達成。Edunov+の手法は、data _augmentationを利用した手法であり、純粋なWMT14データを使った中ではSoTAだと主張。特にEncoder側でBERTを使うと、Randomにinitializeした場合と比べて性能が顕著に上昇しており、その重要性を主張。<br><br>Sentence Fusion, Sentence Splitでは、encoderとdecoderのパラメータをshareするのが良かったが、MTでは有効ではなかった。これはMTではmodelのcapacityが非常に重要である点、encoderとdecoderで異なる文法を扱うためであると考えられる。<br><br><br><br>## Summarization<br><br>BERTSHARE, ROBERTASHAREの結果が良かった。<br><br><img src="https://user-images.githubusercontent.com/12249301/204959543-e21bd9a6-bef4-4538-b181-daca93fa33e7.png" alt="image" loading="lazy"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="text-to-text-pre-training-488" class="title-link">[Paper Note] Text-to-Text Pre-Training for Data-to-Text Tasks, Mihir+, Google Research, INLG'20</h3>
+<br><a href="https://aclanthology.org/2020.inlg-1.14.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/488" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="INLG.html" target="_blank" rel="noopener noreferrer">#INLG</a>
+<span class="issue_date">Issue Date: 2022-09-16</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>pre-training済みのT5に対して、Data2Textのデータセットでfinetuningを実施する方法を提案。WebNLG（graph-to-text）, ToTTo（table-to-text）, Multiwoz（task oriented dialogue）データにおいて、simpleなTransformerでも洗練されたmulti-stageなpipelined approachをoutperformできることを示した研究。<br><br><br><br># 手法<br><br>事前学習済みのT5に対してfine-tuningを実施した。手法はシンプルで、data-to-textタスクをtext-to-textタスクに変換した。具体的には、構造かされたデータをflatな文字列（linearization）で表現することで、text-to-textタスクに変換。各データセットに対するlinearizationのイメージは下図。デリミタや特殊文字を使って構造かされたデータをflatなstringで表現している。<br><br><img src="https://user-images.githubusercontent.com/12249301/191689155-3562f4f3-d1a1-4ea0-9d37-a523b78e8922.png" alt="image" loading="lazy"><br><br><br><br># データセット<br><br>## ToTTo（2020）<br><br>Wikipediaのテーブルと自然言語でdescriptionのペアデータ<br><br>## MultiWoz（2018）<br><br>10Kの人間同士のtask-orientedなdialogueデータ。<br><br>## WebNLG（2017）<br><br>subject-object-predicateの3組みをテキスト表現に変換するタスクのデータ<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/191693682-3cf3302f-b4e2-433d-94ed-995a8a908d0c.png" alt="image" loading="lazy"><br><br><br><br># Result<br><br>## WebNLG<br><br><img src="https://user-images.githubusercontent.com/12249301/191694085-7bf7348a-b468-46e0-a900-c0090d1abcba.png" alt="image" loading="lazy"><br><br>GCNを利用した2020年に提案されたDualEncがSoTAだったらしいが、outperormしている。<br><br><br><br>## ToTTo<br><br><img src="https://user-images.githubusercontent.com/12249301/191694683-f31ccad1-2936-4c21-ac10-0807a848f043.png" alt="image" loading="lazy"><br><br>[こちら](
+
+
+<a href="https://github.com/google-research-datasets/totto)%E3%81%AE%E3%83%AA%E3%83%BC%E3%83%80%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89%E3%81%A8%E6%AF%94%E8%BC%83%E3%81%97%E3%81%A6SoTA%E3%82%92%E8%A8%98%E9%8C%B2" target="_blank" rel="noopener noreferrer">https://github.com/google-research-datasets/totto)のリーダーボードと比較してSoTAを記録</a>
+
+
+<br><br><br><br>## MultiWoz<br><br><img src="https://user-images.githubusercontent.com/12249301/191695459-e3397936-bdf7-4450-b4c2-6f6eead0825d.png" alt="image" loading="lazy"><br><br>T5は事前学習済みGPT-2をfinetuningした手法もoutperformした。SC-GPT2は当時のMultiWozでのSoTA<br><br><br><br># Impact of Model capacity<br><br>T5モデルのサイズがどれが良いかについては、データセットのサイズと複雑さに依存することを考察している。たとえば、MultiWozデータは構造化データのバリエーションが最も少なく、データ量も56kと比較的多かった。このため、T5-smallでもより大きいモデルの性能に肉薄できている。<br><br>一方、WebNLGデータセットは、18kしか事例がなく、特徴量も約200種類程度のrelationのみである。このような場合、モデルサイズが大きくなるにつれパフォーマンスも向上した（特にUnseen test set）。特にBLEUスコアはT5-smallがT5-baseになると、10ポイントもジャンプしており、modelのcapacityがout-of-domainに対する一般化に対してcriticalであることがわかる。ToTToデータセットでも、SmallからBaseにするとパフォーマンスは改善した。</p>
+<p># 所感<br><br>こんな簡単なfine-tuningでSoTAを達成できてしまうとは、末恐ろしい。ベースラインとして有用。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="when-is-451" class="title-link">When is Deep Learning the Best Approach to Knowledge Tracing?, Theophile+ （Ken Koedinger）, CMU+, JEDM'20</h3>
 <br><a href="https://jedm.educationaldatamining.org/index.php/JEDM/article/view/451" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -3200,6 +3229,131 @@ My Issue
 
 
 </p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="why-we-146" class="title-link">[Paper Note] Why We Need New Evaluation Metrics for NLG, Novikova+, EMNLP'17</h3>
+<br><a href="http://aclweb.org/anthology/D17-1237" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/146" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>解説スライド：
+
+
+<a href="https://www.dropbox.com/s/7o8v64nr6gyj065/20170915_SNLP2017_Nishikawa.pptx?dl=0" target="_blank" rel="noopener noreferrer">https://www.dropbox.com/s/7o8v64nr6gyj065/20170915_SNLP2017_Nishikawa.pptx?dl=0</a>
+
+
+</p>
+<p>言語生成の評価指標が信用ならないので、3種類の生成器、3種類のデータを用意し、多数の自動評価尺度を利用した評価結果と人手評価の結果を比較した結果、相関がなかった。<br><br><br><br>既存の自動評価は人手評価と弱い相関しかなく、その有効性はデータとドメインに依存。<br><br>システム間の比較およびシステムの性能が低い場合においては有効。<br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="get-to-135" class="title-link">[Paper Note] Get To The Point: Summarization with Pointer-Generator Networks, Abigail See+, arXiv'17, 2017.04</h3>
+<br><a href="https://arxiv.org/abs/1704.04368" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/135" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
+<a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Abstractive.html" target="_blank" rel="noopener noreferrer">#Abstractive</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>GPT Summary</span>- ニューラルシーケンス・ツー・シーケンスモデルは抽象的なテキスト要約に新たなアプローチを提供するが、事実の不正確な再現と自己繰り返しの問題がある。本研究では、ハイブリッドポインタージェネレーターネットワークを用いて情報の正確な再現を促進し、カバレッジを利用して繰り返しを抑制する新しいアーキテクチャを提案。CNN/Daily Mail要約タスクで、最先端技術を2 ROUGEポイント上回る結果を得た。</span>
+<span class="snippet"><span>Comment</span><p>解説スライド：
+
+
+<a href="https://www.slideshare.net/akihikowatanabe3110/get-to-the-point-summarization-with-pointergenerator-networks/1" target="_blank" rel="noopener noreferrer">https://www.slideshare.net/akihikowatanabe3110/get-to-the-point-summarization-with-pointergenerator-networks/1</a>
+
+
+</p>
+<p>単語の生成と単語のコピーの両方を行えるハイブリッドなニューラル文書要約モデルを提案。<br><br>同じ単語の繰り返し現象(repetition)をなくすために、Coverage Mechanismも導入した。<br><br><br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/136" target="_blank" rel="noopener noreferrer">[Paper Note] Incorporating Copying Mechanism in Sequence-to-Sequence Learning, Gu+, ACL'16</a>
+ などと比較するとシンプルなモデル。</p>
+<p>一般的に、PointerGeneratorと呼ばれる。<br><br>OpenNMTなどにも実装されている: 
+
+
+<a href="https://opennmt.net/OpenNMT-py/_modules/onmt/modules/copy_generator.html" target="_blank" rel="noopener noreferrer">https://opennmt.net/OpenNMT-py/_modules/onmt/modules/copy_generator.html</a>
+
+
+</p>
+<p>（参考）Pointer Generator Networksで要約してみる：<br><br>
+
+
+<a href="https://qiita.com/knok/items/9a74430b279e522d5b93" target="_blank" rel="noopener noreferrer">https://qiita.com/knok/items/9a74430b279e522d5b93</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="graph-based-neural-130" class="title-link">[Paper Note] Graph-based Neural Multi-Document Summarization, Michihiro Yasunaga+, CoNLL'17, 2017.06</h3>
+<br><a href="http://arxiv.org/abs/1706.06681" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/130" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
+<a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="GraphBased.html" target="_blank" rel="noopener noreferrer">#GraphBased</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="GraphConvolutionalNetwork.html" target="_blank" rel="noopener noreferrer">#GraphConvolutionalNetwork</a>
+<a class="button" href="Extractive.html" target="_blank" rel="noopener noreferrer">#Extractive</a>
+<a class="button" href="CoNLL.html" target="_blank" rel="noopener noreferrer">#CoNLL</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>GPT Summary</span>- 文の関係グラフを用いたニューラルマルチドキュメント要約システムを提案。GCNを適用し、重要な文の特徴を生成後、貪欲なヒューリスティックで文を抽出。DUC 2004の実験で、従来の手法を上回る競争力のある結果を示す。</span>
+<span class="snippet"><span>Comment</span><p>Graph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。<br><br><br><br>GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。<br><br><br><br>モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。<br><br><br><br>要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。<br><br><br><br>DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。<br><br><br><br>[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI'15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI'17<br><br><br><br>[所感] <br><br>・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 <br><br>・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） <br><br>・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。）<br><br> ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが）</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="human-centered-125" class="title-link">[Paper Note] Human Centered NLP with User-Factor Adaptation, Lynn+, EMNLP'17</h3>
+<br><a href="http://aclweb.org/anthology/D17-1120" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/125" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="DomainAdaptation.html" target="_blank" rel="noopener noreferrer">#DomainAdaptation</a>
+<a class="button" href="UserModeling.html" target="_blank" rel="noopener noreferrer">#UserModeling</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/126" target="_blank" rel="noopener noreferrer">[Paper Note] Frustratingly easy domain adaptation, Daum'e, ACL'07</a>
+ Frustratingly easy domain adaptationをPersonalization用に拡張している。<br><br>Frustratingly easy domain adaptationでは、domain adaptationを行うときに、discreteなクラスに分けてfeature vectorを作る（age&gt;28など）が、Personalizationを行う際は、このようなdiscreteな表現よりも、continousな表現の方が表現力が高いので良い（feature vectorとそのままのageを使いベクトルをcompositionするなど）。<br><br>psychologyの分野だと、人間のfactorをdiscreteに表現して、ある人物を表現することはnoisyだと知られているので、continuousなユーザfactorを使って、domain adaptationしましたという話。<br><br><br><br>やってることは単純で、feature vectorを作る際に、各クラスごとにfeature vectorをコピーして、feature augmentationするのではなく、continuousなuser factorとの積をとった値でfeature augmentationするというだけ。<br><br>これをするだけで、Sentiment analysis, sarcasm detection, PP-attachmentなどのタスクにおいて、F1スコアで1〜3ポイント程度のgainを得ている。特に、sarcasm detectionではgainが顕著。<br><br>pos tagging, stance detection(against, neutral, forなどの同定)では効果がなく、stance detectionではそもそもdiscrete adaptationの方が良い結果。<br><br><br><br>正直、もっと色々やり方はある気がするし、user embeddingを作り際などは5次元程度でしか作ってないので、これでいいのかなぁという気はする・・・。<br><br>user factorの次元数増やすと、その分feature vectorのサイズも大きくなるから、あまり次元数を増やしたりもできないのかもしれない。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="toward-controlled-91" class="title-link">[Paper Note] Toward Controlled Generation of Text, Zhiting Hu+, ICML'17, 2017.03</h3>
@@ -3388,6 +3542,63 @@ My Issue
 <span class="snippet"><span>Comment</span><p>New York Times Annotated Corpus（NYTAC）に含まれる大量の正解要約データを利用する方法を提案。<br><br>NYTACには650,000程度の人手で生成された参照要約が付与されているが、このデータを要約の訓練データとして活用した事例はまだ存在しないので、やりましたという話。<br><br><br><br>具体的には、NYTACに存在する人手要約を全てそのまま使うのではなく、Extracitiveなモデルの学習に効果的な事例をフィルタリングして選別する手法を提案<br><br>また、domain-adaptationの技術を応用し、NYTACデータを要約を適用したいtargetのテキストに適応する5つの手法を提案<br><br><br><br>モデルとしては、基本的にknapsack問題に基づいた要約モデル（Extractive）を用い、学習手法としてはPassive Aggressiveアルゴリズムの構造学習版を利用する。<br><br>NYTACのデータを活用する手法として、以下の5つの手法を提案している。<br><br><br><br>```<br><br>1. NytOnly: NYTACのデータのみで学習を行い、target側の情報は用いない<br><br>2. Mixture: targetとNYTACの事例をマージして一緒に学習する<br><br>3. LinInter: TrgtOnly(targetデータのみで学習した場合）のweightとNytOnlyで学習したweightをlinear-interpolationする。interpolation parameterはdev setから決定<br><br>4. Featurize: NytOnlyのoutputをtargetでモデルを学習する際の追加の素性として用いる<br><br>5. FineTune: NytOnlyで学習したweightを初期値として、target側のデータでweightをfinetuneする<br><br>``` <br><br><br><br>また、NYTACに含まれる参照要約には、生成的なものや、メタ視点から記述された要約など、様々なタイプの要約が存在する。今回学習したいモデルはExtractiveな要約モデルなので、このような要約は学習事例としては適切ではないのでフィルタリングしたい。<br><br>そこで、原文書からExtractiveな要約を生成した際のOracle ROUGE-2スコアを各参照要約-原文書対ごとに求め、特定の閾値以下の事例は使用しないように、インスタンスの選択を行うようにする。<br><br><br><br>DUC2002 (単一文書要約タスク)、RSTDTBlong, RSTDTBshort (Rhetrical Structure Theory Discourse Tree Bankに含まれる400件程度の（確か社説のデータに関する）要約)の3種類のデータで評価。<br><br><br><br>どちらの評価においても、FineTuneを行い、インスタンスの選択を行うようにした場合が提案手法の中ではもっとも性能がよかった。<br><br>DUC2002では、LEADやTextRankなどの手法を有意にoutperformしたが、DUC2002のbest systemには勝てなかった。<br><br>しかしながら、RSTDTBlongにおける評価では、RSTの情報などを用いるstate-of-the-artなシステムに、RSTの情報などを用いない提案手法がROUGEスコアでoutperformした。<br><br>RSTDTBshortにおける評価では、RSTを用いる手法（平尾さんの手法）には及ばなかったが、それ以外ではbestな性能。これは、RSTDTBshortの場合は要約が指示的な要約であるため、今回学習に用いた要約のデータやモデルは報知的な要約のためのものであるため、あまりうまくいかなかったと考察している。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="incorporating-copying-136" class="title-link">[Paper Note] Incorporating Copying Mechanism in Sequence-to-Sequence Learning, Gu+, ACL'16</h3>
+<br><a href="http://www.aclweb.org/anthology/P16-1154" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/136" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
+<a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Abstractive.html" target="_blank" rel="noopener noreferrer">#Abstractive</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>解説スライド：
+
+
+<a href="https://www.slideshare.net/akihikowatanabe3110/incorporating-copying-mechanism-in-sequene-to-sequence-learning" target="_blank" rel="noopener noreferrer">https://www.slideshare.net/akihikowatanabe3110/incorporating-copying-mechanism-in-sequene-to-sequence-learning</a>
+
+
+</p>
+<p>単語のコピーと生成、両方を行えるネットワークを提案。<br><br>location based addressingなどによって、生成された単語がsourceに含まれていた場合などに、copy-mode, generate-modeを切り替えるような仕組みになっている。<br><br><br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/65" target="_blank" rel="noopener noreferrer">[Paper Note] Pointing the Unknown Words, Caglar Gulcehre+, ACL'16, 2016.03</a>
+ と同じタイミングで発表</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="distraction-based-neural-132" class="title-link">[Paper Note] Distraction-Based Neural Networks for Modeling Documents, Chen+, IJCAI'16</h3>
+<br><a href="https://www.ijcai.org/Proceedings/16/Papers/391.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/132" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
+<a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Abstractive.html" target="_blank" rel="noopener noreferrer">#Abstractive</a>
+<a class="button" href="IJCAI.html" target="_blank" rel="noopener noreferrer">#IJCAI</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>Neuralなモデルで「文書」の要約を行う研究。<br><br><br><br>提案手法では、attention-basedなsequence-to-sequenceモデルにdistractionと呼ばれる機構を導入することを提案。<br><br><br><br>distractionを導入するmotivationは、入力文書中の異なる情報を横断的に参照（一度着目した情報には今後あまり着目しないようなバイアスをかける）したうえで、要約を生成しようというもの。<br><br>これにより、生成される要約の冗長性を排除するのが狙い。<br><br><br><br>以下の3つのアプローチを用いて、distractionを実現<br><br><br><br>1. [Distraction over input content vectors]<br><br>　tステップ目において、decoderのinputとして用いるcontext vectorを<br><br>計算する際に、通常の計算に加えて、t-1ステップ目までに使用した<br><br>context vectorの情報を活用することで、これまでdecoderのinputとして<br><br>利用された情報をあまり重視視しないように、context vectorを生成する。<br><br><br><br>2. [Distraction over attention weight vectors]<br><br>　attentionの重みを計算する際に、過去に高いattentionの重みがついた<br><br>encoderのhidden stateについては、あまり重要視しないように<br><br>attentionの重みを計算。1と同様に、t-1ステップ目までのattention weightの<br><br>historyを保持しておき活用する。<br><br><br><br>3. [Distration in decoding]<br><br>　decodingステップでbeam-searchを行う際のスコア計算に、distraction scoreを導入。distraction<br><br>scoreはtステップ目までに用いられたcontext vector、attention<br><br>weight、decoderのstateから計算され、これまでと同じような情報に基づいて<br><br>単語が生成された場合は、スコアが低くなるようになっている。<br><br><br><br>CNN、およびLCSTS data (大規模な中国語のheadline generationデータ)で評価した結果、上記3つのdistraction機構を導入した場合に、最も高いROUGEスコアを獲得<br><br><br><br>特に、原文書が長い場合に、短い場合と比較して、distraction機構を導入すると、<br><br>ROUGEスコアの改善幅が大きくなったことが示されている</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="neural-text-89" class="title-link">[Paper Note] Neural Text Generation from Structured Data with Application to the  Biography Domain, Remi Lebret+, EMNLP'16, 2016.03</h3>
 <br><a href="https://arxiv.org/abs/1603.07771" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -3552,6 +3763,47 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="re-evaluating-automatic-145" class="title-link">[Paper Note] Re-evaluating Automatic Summarization with BLEU and 192 Shades of ROUGE, Yvette Graham, EMNLP'15</h3>
+<br><a href="http://aclweb.org/anthology/D/D15/D15-1013.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/145" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>文書要約で使用されているMetric、特にBLEUやROUGEの結果（可能な１９２のパターン）と、人手の結果との相関を再分析している。<br><br>その結果、BLEUがもっとも人手評価との相関が高く、ROUGE-2のPrecisionの平均(ステミング、stop words除去)がROUGEの中でbest-performingなvariantだった。<br><br><br><br>要約のMetrcの最適な検定方法として、Williams検定を利用。<br><br>再評価の結果、以前推奨されていたvariantとは異なるMetricsが良い結果に。<br><br>best-performing ROUGE resultを用いて、既存のstate-of-the-artなシステムを再度ランキングづけすると、originalのものとは結構異なる結果になった。<br><br><br><br>（一部のスコアが良かったシステムのスコアが相対的にかなり悪化している）<br><br><img src="https://user-images.githubusercontent.com/12249301/34465383-d104a5be-eeed-11e7-9876-111d618ab9ee.png" alt="image" loading="lazy"><br><br><br><br>また、BLEUが人手評価ともっとも高い相関を示したが、best-performingなROUGE variantとは統計的な有意差はなかった。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="recurrent-neural-117" class="title-link">[Paper Note] Recurrent neural network and a hybrid model for prediction of stock returns, Akhter+, Expert Systems with Applications'15, 2015.04</h3>
+<br><a href="http://dl.acm.org/citation.cfm?id=2776067" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/117" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="TimeSeriesDataProcessing.html" target="_blank" rel="noopener noreferrer">#TimeSeriesDataProcessing</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="Financial.html" target="_blank" rel="noopener noreferrer">#Financial</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>Stock returnのpredictionタスクに対してNNを適用。<br><br><br><br>AR-MRNNモデルをRNNに適用、高い性能を示している。 moving referenceをsubtractした値をinput-outputに用いることで、normalizationやdetrending等の前処理が不要となり、regularizationの役割を果たすため汎化能力が向上する。<br><br><br><br>※ AR-MRN: NNNのinput-outputとして、生のreturn値を用いるのではなく、ある時刻におけるreturnをsubtractした値(moving reference)を用いるモデル (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/116" target="_blank" rel="noopener noreferrer">[Paper Note] Prediction-based portfolio optimization model using neural networks, Freitas+, Neurocomputing'09, 2009.06</a>
+ で提案)</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="teaching-machines-77" class="title-link">[Paper Note] Teaching Machines to Read and Comprehend, Karl Moritz Hermann+, NIPS'15, 2015.06</h3>
 <br><a href="https://arxiv.org/abs/1506.03340" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -3661,6 +3913,84 @@ My Issue
 <span class="snippet"><span>Comment</span><p>word level -&gt; sentence level -&gt; document level のrepresentationを求め、documentのsentiment classificationをする話。<br><br>documentのRepresentationを生成するときに参考になるやも。<br><br>sentenceのrepresentationを求めるときは、CNN/LSTMを使う。<br><br>document levelに落とすことは、bi-directionalなGatedRNN(このGatedRNNはLSTMのoutput-gateが常にonになっているようなものを使う。sentenceのsemanticsに関する情報を落としたくないかららしい。)を使う。<br><br>sentiment classificationタスクで評価し、(sentence levelのrepresentationを求めるときは)LSTMが最も性能がよく、documentのrepresentationを求めるときは、standardなRNNよりもGatedRNNのほうが性能よかった。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="detecting-information-dense-148" class="title-link">[Paper Note] Detecting information-dense texts in multiple news domains, Yang+, AAAI'14</h3>
+<br><a href="https://dl.acm.org/citation.cfm?id=2892782" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/148" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="Others.html" target="_blank" rel="noopener noreferrer">#Others</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="AAAI.html" target="_blank" rel="noopener noreferrer">#AAAI</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>ニュース記事の第一段落目がinformativeか否か（重要なfactual informationが記述されているか否か）を分類する研究。<br>New York Times Annotated Corpusに対して、自動的にinformative, non-informativeなラベルづけを行う手法を提案し、分類モデルをtraining。<br><br>評価の結果、Accuracyはだいたい0.8〜0.85くらい。<br><br>人が100件中何件をinformativeと判断したかに関してを見ると、リードにもnon-informativeなものが多数存在することがわかる。<br>また、ドメインによって傾向が異なっており、たとえばスポーツドメインでは、entertaining mannerで記述されるのでfactual informationがあまり記述されない傾向にあったり、Scienceドメインでは、generalなtopicやissue, personal historyなどが記述される傾向にあるので、相対的にinformativeなLeadが少ない。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="ctsum-extracting-144" class="title-link">[Paper Note] CTSUM: Extracting More Certain Summaries for News Articles, Wan+, SIGIR'14</h3>
+<br><a href="http://dl.acm.org/citation.cfm?id=2609559" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/144" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Multi.html" target="_blank" rel="noopener noreferrer">#Multi</a>
+<a class="button" href="Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
+<a class="button" href="Unsupervised.html" target="_blank" rel="noopener noreferrer">#Unsupervised</a>
+<a class="button" href="GraphBased.html" target="_blank" rel="noopener noreferrer">#GraphBased</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Extractive.html" target="_blank" rel="noopener noreferrer">#Extractive</a>
+<a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった）<br><br><br><br>```<br><br>"However, it seems that Obama will not use the platform to relaunch his stalled drive for Israeli-Palestinian peace"<br><br>```<br><br>こういう文は、"It seems"とあるように、情報の確実性が低いので要約には入れたくないという気持ち。<br><br><br><br>FactBankのニュースコーパスから1000 sentenceを抽出し、5-scaleでsentenceの確実性をラベルづけ。<br><br>このデータを用いてSVRを学習し、sentenceの確実性をoutputする分類器を構築<br><br>affinity-propagationベース（textrank, lexrankのような手法）手法のaffinityの計算（edge間の重みのこと。普通はsentence同士の類似度とかが使われる）を行う際に、情報の確実性のスコアを導入することで確実性を考慮した要約を生成<br><br><br><br>DUC2007のMDSデータセットで、affinity計算の際に確実性を導入する部分をablationしたモデル（GRSUM）と比較したところ、CTSUMのROUGEスコアが向上した。<br><br>また、自動・人手評価により、生成された要約に含まれる情報の確実性を評価したところ、GRSUMをoutperformした</p>
+<p>解説スライド：
+
+
+<a href="https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articles" target="_blank" rel="noopener noreferrer">https://www.slideshare.net/akihikowatanabe3110/ctsum-extracting-more-certain-summaries-for-news-articles</a>
+
+
+</p>
+<p>SIGIRでは珍しい、要約に関する研究<br><br>情報の確実性を考慮するという、いままであまりやられていなかった部分にフォーカスしたのはおもしろい<br><br>「アイデアはおもしろいし良い研究だが、affinity weightが変化するということは、裏を返せばdamping factorを変更してもそういう操作はできるので、certaintyを考慮したことに意味があったのかが完全に示せていない。」という意見があり、なるほどと思った。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="learning-to-143" class="title-link">[Paper Note] Learning to Generate Coherent Sumamry with Discriminative Hidden Semi-Markov Model, Nishikawa+, COLING'14</h3>
+<br><a href="http://www.aclweb.org/anthology/C14-1156" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/143" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
+<a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Abstractive.html" target="_blank" rel="noopener noreferrer">#Abstractive</a>
+<a class="button" href="Extractive.html" target="_blank" rel="noopener noreferrer">#Extractive</a>
+<a class="button" href="COLING.html" target="_blank" rel="noopener noreferrer">#COLING</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>Hidden-semi-markovモデルを用いた単一文書要約手法を提案。<br><br><br><br>通常のHMMでは一つの隠れ状態に一つのunit（要約の文脈だと文？）が対応するが、hidden-semi-markov(HSMM)モデルでは複数のunitを対応づけることが可能。<br><br>隠れ状態に対応するunitを文だと考えると、ある文の複数の亜種を考慮できるようになるため、ナップサック制約を満たしつつ最適な文の亜種を選択するといったことが可能となる。<br><br>とかまあ色々難しいことが前半の節に書いてある気がするが、3.3節を見るのがわかりやすいかもしれない。<br><br><br><br>定式化を見ると、基本的なナップサック問題による要約の定式化に、Coherenceを表すtermと文の変種を考慮するような変数が導入されているだけである。<br><br>文のweightや、coherenceのweightは構造学習で学習し、Passive Aggressiveを用いて、loss functionとしてはROUGEを用いている（要はROUGEが高くなるように、outputの要約全体を考慮しながら、weightを学習するということ）。<br><br><br><br>文の変種としては、各文を文圧縮したものを用意している。<br><br>また、動的計画法によるデコーディングのアルゴリズムも提案されている。<br><br><br><br>構造学習を行う際には大量の教師データが必要となるが、13,000記事分のニュース記事と対応する人手での要約のデータを用いて学習と評価を行なっており、当時これほど大規模なデータで実験した研究はなかった。<br><br><br><br>ROUGEでの評価の結果、文の変種（文圧縮）を考慮するモデルがベースラインを上回る結果を示したが、LEADとは統計的には有意差なし。しかしながら、人手で生成した要約との完全一致率が提案手法の方が高い。<br><br>また、ROUGEの評価だけでなく、linguistic quality（grammaticality, structure/coherenceなど）を人手で評価した結果、ベースラインを有意にoutperform。LEADはgrammaticalityでかなり悪い評価になっていて、これは要約を生成すると部分文が入ってしまうため。<br><br>訓練事例数を変化させてROUGEスコアに関するlearning curveを描いた結果、訓練事例の増加に対してROUGEスコアも単調増加しており、まだサチる気配を見せていないので、事例数増加させたらまだ性能よくなりそうという主張もしている。</p>
+<p>評価に使用した記事が報道記事だったとするならば、quality的にはLeadに勝ってそうな雰囲気を感じるので、結構すごい気はする（単一文書要約で報道記事においてLEADは最強感あったし）。<br><br>ただ、要約の評価においてinformativenessを評価していないので、ROUGEスコア的にはLeadとcomparableでも、実際に生成される要約の情報量として果たしてLEADに勝っているのか興味がある。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="hierarchical-summarization-58" class="title-link">[Paper Note] Hierarchical Summarization: Scaling Up Multi-Document Summarization, Christensen+, ACL'14</h3>
 <br><a href="https://homes.cs.washington.edu/~mausam/papers/acl14.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -3728,6 +4058,46 @@ My Issue
 <a class="button" href="interactive.html" target="_blank" rel="noopener noreferrer">#interactive</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>ユーザとシステムがインタラクションしながら個人向けの要約を生成するタスク、InteractivePersonalizedSummarizationを提案。<br><br>ユーザはテキスト中のsentenceをクリックすることで、システムに知りたい情報のフィードバックを送ることができる。このとき、ユーザがsentenceをクリックする量はたかがしれているので、click smoothingと呼ばれる手法を提案し、sparseにならないようにしている。click smoothingは、ユーザがクリックしたsentenceに含まれる単語？等を含む別のsentence等も擬似的にclickされたとみなす手法。<br><br>4つのイベント（Influenza A, BP Oil Spill, Haiti Earthquake, Jackson Death）に関する、数千記事のニュースストーリーを収集し（10k〜100k程度のsentence）、評価に活用。収集したニュースサイト（BBC, Fox News, Xinhua, MSNBC, CNN, Guardian, ABC, NEwYorkTimes, Reuters, Washington Post）には、各イベントに対する人手で作成されたReference Summaryがあるのでそれを活用。<br>objectiveな評価としてROUGE、subjectiveな評価として3人のevaluatorに5scaleで要約の良さを評価してもらった。<br><br><img src="https://user-images.githubusercontent.com/12249301/34400727-8c8ab022-ebd7-11e7-85df-c238fd2255de.png" alt="image" loading="lazy"><br><br>結論としては、ROUGEはGenericなMDSモデルに勝てないが、subjectiveな評価においてベースラインを上回る結果に。ReferenceはGenericに生成されているため、この結果を受けてPersonalizationの必要性を説いている。<br><img src="https://user-images.githubusercontent.com/12249301/34400721-82d1bb8e-ebd7-11e7-83d2-697ac61eb38a.png" alt="image" loading="lazy"><br><br>また、提案手法のモデルにおいて、Genericなモデルの影響を強くする（Personalizedなハイパーパラメータを小さくする）と、ユーザはシステムとあまりインタラクションせずに終わってしまうのに対し、Personalizedな要素を強くすると、よりたくさんクリックをし、結果的にシステムがより多く要約を生成しなおすという結果も示している。<br><br><img src="https://user-images.githubusercontent.com/12249301/34400718-7b9a4912-ebd7-11e7-83cf-aba826a41d34.png" alt="image" loading="lazy"></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="prediction-based-portfolio-116" class="title-link">[Paper Note] Prediction-based portfolio optimization model using neural networks, Freitas+, Neurocomputing'09, 2009.06</h3>
+<br><a href="http://dl.acm.org/citation.cfm?id=1539984" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/116" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="TimeSeriesDataProcessing.html" target="_blank" rel="noopener noreferrer">#TimeSeriesDataProcessing</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="Financial.html" target="_blank" rel="noopener noreferrer">#Financial</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>Stock returnのpredictionタスクに対してNNを適用。<br><br><br><br>NNのinput-outputとして、生のreturn値を用いるのではなく、ある時刻におけるreturnをsubtractした値(moving reference)を用いる、AR-MRNNモデルを提案。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="verbalizing-time-series-111" class="title-link">[Paper Note] Verbalizing time-series data: with an example of stock price trends, Kobayashi+, IFSA-EUSFLAT'09, 2009.01</h3>
+<br><a href="https://pdfs.semanticscholar.org/c0e2/ab34befbb9b401b6ad1d02c71ab2bd1c4794.pdf?_ga=2.46822437.363135274.1505310881-1340047873.1468486303" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/111" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Others.html" target="_blank" rel="noopener noreferrer">#Others</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>小林先生の論文<br><br><br><br>Least Square Methodによって数値データにfittingするcurveを求める。<br><br>curveの特徴から、生成するテキストのtrendsを決定する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34462004-1eddd6be-ee7d-11e7-8c1b-c61dca30dbe5.png" alt="image" loading="lazy"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="bpr-bayesian-28" class="title-link">[Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06</h3>
@@ -3913,6 +4283,49 @@ My Issue
 <span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/34401031-b72623e0-ebda-11e7-9da2-6ce16b630f47.png" alt="image" loading="lazy"><br><br><br><br>Aspect-basedなPDSに関して調査した研究。<br><br>たとえば、Wikipediaのクジラに関するページでは、biological taxonomy, physical dimensions, popular cultureのように、様々なアスペクトからテキストが記述されている。ユーザモデルは各アスペクトに対する嗜好の度合いで表され、それに従い生成される要約に含まれる各種アスペクトに関する情報の量が変化する。<br><br><br><br>UserStudyの結果、アスペクトベースなユーザモデルとよりfitした、擬似的なユーザモデルから生成された要約の方が、ユーザの要約に対するratingが上昇していくことを示した。<br><br><br><br>また、要約の圧縮率に応じて、ユーザのratingが変化し、originalの長さ＞長めの要約＞短い要約の順にratingが有意に高かった。要約が長すぎても、あるいは短すぎてもあまり良い評価は得られない（しかしながら、長すぎる要約は実はそこまで嫌いではないことをratingは示唆している）。<br><br><br><br>Genericな要約とPersonalizedな要約のfaitufulnessをスコアリングしてもらった結果、Genericな要約の方が若干高いスコアに。しかしながら有意差はない。実際、平均して83%のsentenceはGenericとPersonalizedでoverlapしている。faitufulnessの観点から、GenericとPersonalizedな要約の間に有意差はないことを示した。<br><br><br><br>museum等で応用することを検討</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="document-summarization-140" class="title-link">[Paper Note] Document Summarization using Conditional Random Fields, Shen+, IJCAI'07</h3>
+<br><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.79.8640&rep=rep1&type=pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/140" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Single.html" target="_blank" rel="noopener noreferrer">#Single</a>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
+<a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="IJCAI.html" target="_blank" rel="noopener noreferrer">#IJCAI</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>CRFを用いて単一文書要約の手法を考えましたという話。<br><br><br><br>気持ちとしては、<br><br>```<br><br>1. Supervisedなモデルでは、当時は原文書中の各文を独立に2値分類して要約を生成するモデルが多く、sentence間のrelationが考慮できていなかった<br><br>2. unsupervisedな手法では、ルールに基づくものなどが多く、汎用的ではなかった<br><br>```<br><br>といった問題があったので、CRF使ってそれを解決しましたという主張<br><br><br><br>CRFを使って、要約の問題を系列ラベリング問題に落とすことで、文間の関係性を考慮できるようにし、従来使われてきたルール（素性）をそのままCRFの素性としてぶちこんでしまえば、要約モデル学習できるよねっていうことだろうと思う。<br><br><br><br>CRFのFeatureとしては、文のpositionや、長さ、文の尤度、thematic wordsなどの基本的なFeatureに加え、LSAやHitsのScoreも利用している。<br><br><br><br>DUC2001のデータで評価した結果、basicな素性のみを使用した場合、unsupervisedなベースライン(Random, Lead, LSA, HITS)、およびsupervisedなベースライン(NaiveBayes, SVM, Logistic Regression, HMM)をoutperform。<br><br>また、LSAやHITSなどのFeatureを追加した場合、basicな素性のみと比べてROUGEスコアが有意に向上し、なおかつ提案手法がbest<br><br><br><br>結構referされているので、知っておいて損はないかもしれない。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="frustratingly-easy-126" class="title-link">[Paper Note] Frustratingly easy domain adaptation, Daum'e, ACL'07</h3>
+<br><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.110.2062&rep=rep1&type=pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/126" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="DomainAdaptation.html" target="_blank" rel="noopener noreferrer">#DomainAdaptation</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/34462211-f3428130-ee81-11e7-8a06-36e66bd19b2f.png" alt="image" loading="lazy"><br><br><br><br>domain adaptationをする際に、Source側のFeatureとTarget側のFeatureを上式のように、Feature Vectorを拡張し独立にコピーし表現するだけで、お手軽にdomain adaptationができることを示した論文。<br><br><br><br>イメージ的には、SourceとTarget、両方に存在する特徴は、共通部分の重みが高くなり、Source, Targetドメイン固有の特徴は、それぞれ拡張した部分のFeatureに重みが入るような感じ。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="improving-recommendation-47" class="title-link">[Paper Note] Improving Recommendation Novelty Based on Topic Taxonomy, Weng et al., WI-IAT Workshops'07, 2007.11</h3>
 <br><a href="http://ieeexplore.ieee.org/abstract/document/4427553/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -3931,6 +4344,26 @@ My Issue
 <a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>・評価をしていない<br><br>・通常のItem-based collaborative filteringの結果に加えて，taxonomyのassociation rule mining (あるtaxonomy t1に興味がある人が，t2にも興味がある確率を獲得する)を行い，このassociation rule miningの結果をCFと組み合わせて，noveltyのある推薦をしようという話（従来のHybrid Recommender Systemsでは，contents-basedの手法を使うときはitem content similarityを使うことが多い．まあこれはよくあるcontents-basedなアプローチだろう）．<br><br>・documentの中のどの部分がnovelなのかとかを同定しているわけではない．taxonomyの観点からnovelだということ．</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="choosing-words-103" class="title-link">[Paper Note] Choosing words in computer-generated weather forecasts, Reiter+, Artificial Intelligence'05</h3>
+<br><a href="http://www.sciencedirect.com/science/article/pii/S0004370205000998" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/103" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="RuleBased.html" target="_blank" rel="noopener noreferrer">#RuleBased</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>## タスク<br><br>天気予報の生成, システム名 SUMTIME<br><br><br><br>## 手法概要<br><br> ルールベースな手法，weather prediction dataから（将来の気象情報をシミュレーションした数値データ），天気予報を自動生成．corpus analysisと専門家のsuggestを通じて，どのようなwordを選択して天気予報を生成するか詳細に分析したのち，ルールを生成してテキスト生成</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="webinessence-a-21" class="title-link">[Paper Note] WebInEssence: A Personalized Web-Based Multi-Document Summarization and Recommendation System, Radev+, NAACL'01, 2001.06</h3>
@@ -3954,6 +4387,48 @@ My Issue
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>・ドキュメントはオフラインでクラスタリングされており，各クラスタごとにmulti-document summarizationを行うことで，<br><br>ユーザが最も興味のあるクラスタを同定することに役立てる．あるいは検索結果のページのドキュメントの要約を行う．<br><br>要約した結果には，extractした文の元URLなどが付与されている．<br><br>・Personalizationをかけるためには，ユーザがドキュメントを選択し，タイトル・ボディなどに定数の重みをかけて，その情報を要約に使う．<br><br>・特に評価していない．システムのoutputを示しただけ．</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="using-natural-104" class="title-link">[Paper Note] Using natural language processing to produce weather forecasts, Goldberg+, IEEE Expert: Intelligent Systems and Their Applications'94</h3>
+<br><a href="http://ieeexplore.ieee.org/document/294135/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/104" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="RuleBased.html" target="_blank" rel="noopener noreferrer">#RuleBased</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>## タスク<br><br>天気予報の生成，システム名 FOG (EnglishとFrenchのレポートを作成できる)<br><br><br><br>## 手法概要<br><br>ルールベースな手法，weather predictinon dataから，天気予報を自動生成．Text Planner がルールに従い各sentenceに入れる情報を抽出すると同時に，sentence orderを決め，abstractiveな中間状態を生成．その後，中間状態からText Realization（grammarやdictionaryを用いる）によって，テキストを生成．</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="design-of-105" class="title-link">[Paper Note] Design of a knowledge-based report generator, Kukich, ACL'83</h3>
+<br><a href="http://delivery.acm.org/10.1145/990000/981340/p145-kukich.pdf?ip=125.14.202.208&id=981340&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505309566_e38d2569c8ab995fe978080ecc4d7df0" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/105" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="RuleBased.html" target="_blank" rel="noopener noreferrer">#RuleBased</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>Comment</span><p>## タスク<br><br>numerical stock market dataからstock market reportsを生成．システム名: ANA<br><br><br><br>## 手法概要<br><br>ルールベースな手法，<br><br>1) fact-generator,<br><br>2) message generator, <br><br>3) discourse organizer, <br><br>4) text generatorの4コンポーネントから成る． <br><br><br><br>2), 3), 4)はそれぞれ120, 16, 109個のルールがある. 4)ではphrasal dictionaryも使う． <br><br>1)では，入力されたpriceデータから，closing averageを求めるなどの数値的な演算などを行う. <br><br>2)では，1)で計算された情報に基づいて，メッセージの生成を行う(e.g. market was mixed). <br><br>3)では，メッセージのparagraph化，orderの決定，priorityの設定などを行う． <br><br>4)では，辞書からフレーズを選択したり，適切なsyntactic formを決定するなどしてテキストを生成．</p>
+<p>Data2Textの先駆け論文。引用すべし。多くの研究で引用されている。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="openthinker-agent-v1-3900" class="title-link">OpenThinker-Agent-v1, open-thoughts, 2025.12</h3>
@@ -5755,8 +6230,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Post/" title="Postに関する論文・技術記事メモの一覧">
-            Postに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AIED/" title="AIEDに関する論文・技術記事メモの一覧">
+            AIEDに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
@@ -5764,8 +6239,17 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/GenerativeRecommendation/" title="GenerativeRecommendationに関する論文・技術記事メモの一覧">
-            GenerativeRecommendationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/DialogueGeneration/" title="DialogueGenerationに関する論文・技術記事メモの一覧">
+            DialogueGenerationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/ExplicitFeedback/" title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
+            ExplicitFeedbackに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -5773,20 +6257,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/OpenSource/" title="OpenSourceに関する論文・技術記事メモの一覧">
-            OpenSourceに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/WI/" title="WIに関する論文・技術記事メモの一覧">
+            WIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
-  <span class="post-badge badge-new">📝 31</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/SpeciarizedBrainNetworks/" title="SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧">
-            SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>

@@ -810,7 +810,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 38 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 39 mins</span>
   </div></header>
 </div>
     </div>
@@ -1300,8 +1300,8 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- グラフ上の機械学習は多様な応用があり、主な課題はグラフ構造の表現方法を見つけることです。従来はユーザー定義のヒューリスティックに依存していましたが、最近では深層学習や非線形次元削減を用いた自動学習アプローチが増加しています。本稿では、行列分解、ランダムウォーク、グラフニューラルネットワークに基づく表現学習の進展をレビューし、ノードとグラフの埋め込み方法を統一的なフレームワークで説明し、応用と今後の研究方向を示します。</span>
 </article>
 <article class="paper-entry">
-<h3 id="graph-based-neural-130" class="title-link">[Paper Note] Graph-based Neural Multi-Document Summarization, Yasunaga+, CoNLL'17</h3>
-<br><a href="http://arxiv.org/pdf/1706.06681.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+<h3 id="graph-based-neural-130" class="title-link">[Paper Note] Graph-based Neural Multi-Document Summarization, Michihiro Yasunaga+, CoNLL'17, 2017.06</h3>
+<br><a href="http://arxiv.org/abs/1706.06681" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
 </svg>
@@ -1317,11 +1317,14 @@ My Issue
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
 <a class="button" href="Supervised.html" target="_blank" rel="noopener noreferrer">#Supervised</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="GraphConvolutionalNetwork.html" target="_blank" rel="noopener noreferrer">#GraphConvolutionalNetwork</a>
 <a class="button" href="Extractive.html" target="_blank" rel="noopener noreferrer">#Extractive</a>
 <a class="button" href="CoNLL.html" target="_blank" rel="noopener noreferrer">#CoNLL</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
+<span class="snippet"><span>GPT Summary</span>- 文の関係グラフを用いたニューラルマルチドキュメント要約システムを提案。GCNを適用し、重要な文の特徴を生成後、貪欲なヒューリスティックで文を抽出。DUC 2004の実験で、従来の手法を上回る競争力のある結果を示す。</span>
 <span class="snippet"><span>Comment</span><p>Graph Convolutional Network (GCN)を使って、MDSやりましたという話。 既存のニューラルなMDSモデル [Cao et al., 2015, 2017] では、sentence間のrelationが考慮できていなかったが、GCN使って考慮した。 また、MDSの学習データはニューラルなモデルを学習するには小さすぎるが（abstractiveにするのは厳しいという話だと思われる？）、sentenceのsalienceを求める問題に帰着させることで、これを克服。<br><br><br><br>GCNで用いるAdjacent Matrixとして3種類の方法(cosine similarity, G-Flow, PDG)を試し、議論をしている。PDGが提案手法だが、G-Flowによる重みをPersonalization Features（position, leadか否か等のベーシックな素性）から求まるweightで、よりsentenceのsalienceを求める際にリッチな情報を扱えるように補正している。PDGを用いた場合が（ROUGE的な観点で）最も性能がよかった。<br><br><br><br>モデルの処理の流れとしては、Document Cluster中の各sentenceのhidden stateをGRUベースなRNNでエンコードし、それをGCNのノードの初期値として利用する。GCNでL回のpropagation後（実験では3回）に得られたノードのhidden stateを、salienceスコア計算に用いるsentence embedding、およびcluster embeddingの生成に用いる。 cluster embeddingは、document clusterをglobalな視点から見て、salienceスコアに反映させるために用いられる。 最終的にこれら2つの情報をlinearなlayerにかけてsoftmaxかけて正規化して、salienceスコアとする。<br><br><br><br>要約を生成する際はgreedyな方法を用いており、salienceスコアの高いsentenceから要約長に達するまで選択していく。このとき、冗長性を排除するため、candidateとなるsentenceと生成中の要約とのcosine similarityが0.5を超えるものは選択しないといった、よくある操作を行なっている。<br><br><br><br>DUC01, 02のデータをtraining data, DUC03 をvalidation data, DUC04をtest dataとし、ROUGE1,2で評価。 評価の結果、CLASSY04(DUC04のbest system)やLexRank等のよく使われるベースラインをoutperform。 ただ、regression basedなRegSumにはスコアで勝てないという結果に。 RegSumはwordレベルでsalienceスコアをregressionする手法で、リッチな情報を結構使っているので、これらを提案手法に組み合わせるのは有望な方向性だと議論している。<br><br><br><br>[Cao+, 2015] Ranking with recursive neural networks and its application to multi-document summarization, Cao+, AAAI'15 [Cao+, 2017] Improving multi-document summarization via text classification, Cao+, AAAI'17<br><br><br><br>[所感] <br><br>・ニューラルなモデルは表現力は高そうだけど、学習データがDUC01と02だけだと、データが足りなくて持ち前の表現力が活かせていないのではないかという気がする。 <br><br>・冗長性の排除をアドホックにやっているので、モデルにうまく組み込めないかなという印象（distraction機構とか使えばいいのかもしれん） <br><br>・ROUGEでしか評価してないけど、実際のoutputはどんな感じなのかちょっと見てみたい。（ハイレベルなシステムだとROUGEスコア上がっても人手評価との相関がないっていう研究成果もあるし。）<br><br> ・GCN、あまり知らなかったかけど数式追ったらなんとなく分かったと思われる。（元論文読めという話だが）</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1345,6 +1348,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Extractive.html" target="_blank" rel="noopener noreferrer">#Extractive</a>
 <a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2018-01-01</span>
 <span class="snippet"><span>Comment</span><p>要約を生成する際に、情報の”確実性”を考慮したモデルCTSUMを提案しましたという論文（今まではそういう研究はなかった）<br><br><br><br>```<br><br>"However, it seems that Obama will not use the platform to relaunch his stalled drive for Israeli-Palestinian peace"<br><br>```<br><br>こういう文は、"It seems"とあるように、情報の確実性が低いので要約には入れたくないという気持ち。<br><br><br><br>FactBankのニュースコーパスから1000 sentenceを抽出し、5-scaleでsentenceの確実性をラベルづけ。<br><br>このデータを用いてSVRを学習し、sentenceの確実性をoutputする分類器を構築<br><br>affinity-propagationベース（textrank, lexrankのような手法）手法のaffinityの計算（edge間の重みのこと。普通はsentence同士の類似度とかが使われる）を行う際に、情報の確実性のスコアを導入することで確実性を考慮した要約を生成<br><br><br><br>DUC2007のMDSデータセットで、affinity計算の際に確実性を導入する部分をablationしたモデル（GRSUM）と比較したところ、CTSUMのROUGEスコアが向上した。<br><br>また、自動・人手評価により、生成された要約に含まれる情報の確実性を評価したところ、GRSUMをoutperformした</p>
 <p>解説スライド：
@@ -1547,8 +1551,17 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/AcademicWriting/" title="AcademicWritingに関する論文・技術記事メモの一覧">
-            AcademicWritingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Probing/" title="Probingに関する論文・技術記事メモの一覧">
+            Probingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/TeacherHacking/" title="TeacherHackingに関する論文・技術記事メモの一覧">
+            TeacherHackingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1556,29 +1569,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AIED/" title="AIEDに関する論文・技術記事メモの一覧">
-            AIEDに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/PPO-(ProximalPolicyOptimization)/" title="PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧">
+            PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/QuestionAnswering/" title="QuestionAnsweringに関する論文・技術記事メモの一覧">
-            QuestionAnsweringに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/TransferLearning/" title="TransferLearningに関する論文・技術記事メモの一覧">
+            TransferLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 37</span> 
-  <span class="post-badge badge-new">📝 37</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Aggregation-aware/" title="Aggregation-awareに関する論文・技術記事メモの一覧">
-            Aggregation-awareに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li>
