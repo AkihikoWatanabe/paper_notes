@@ -18,11 +18,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Pretraining/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2025-12-13T00:00:00+00:00">
+<meta property="article:published_time" content="2025-12-18T00:00:00+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="Pretrainingに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-12-13T00:00:00+00:00","datePublished":"2025-12-13T00:00:00+00:00","description":"Pretraining [Paper Note] Nanbeige4-3B Technical Report: Exploring the Frontier of Small Language Models, Chen Yang+, arXiv&#39;25, 2025.12 Paper/Blog Link My Issue #Pocket #NLP #LanguageModel #Alignment #Supervised-FineTuning (SFT) #ReinforcementLearning #Reasoning #Distillation #OpenWeight #mid-training #PostTraining #read-later #Selected Papers/Blogs Issue Date: 2025-12-13 GPT Summary- Nanbeige4-3Bは、23兆の高品質トークンで事前学習し、3000万以上の指示でファインチューニングされた高性能な小規模言語モデルです。FG-WSDトレーニングスケジューラを用いて段階的にデータを洗練し、SFTデータの質向上のために共同メカニズムを設計しました。さらに、DPDメソッドを通じてモデルを蒸留し、強化学習フェーズで推論能力を強化しました。評価結果は、同等のパラメータスケールのモデルを大幅に上回り、より大きなモデルにも匹敵することを示しています。モデルのチェックポイントは、https://huggingface.co/Nanbeige で入手可能です。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-12-18T00:00:00+00:00","datePublished":"2025-12-18T00:00:00+00:00","description":"Pretraining [Paper Note] Nanbeige4-3B Technical Report: Exploring the Frontier of Small Language Models, Chen Yang+, arXiv&#39;25, 2025.12 Paper/Blog Link My Issue #Pocket #NLP #LanguageModel #Alignment #Supervised-FineTuning (SFT) #ReinforcementLearning #Reasoning #Distillation #OpenWeight #mid-training #PostTraining #read-later #Selected Papers/Blogs Issue Date: 2025-12-13 GPT Summary- Nanbeige4-3Bは、23兆の高品質トークンで事前学習し、3000万以上の指示でファインチューニングされた高性能な小規模言語モデルです。FG-WSDトレーニングスケジューラを用いて段階的にデータを洗練し、SFTデータの質向上のために共同メカニズムを設計しました。さらに、DPDメソッドを通じてモデルを蒸留し、強化学習フェーズで推論能力を強化しました。評価結果は、同等のパラメータスケールのモデルを大幅に上回り、より大きなモデルにも匹敵することを示しています。モデルのチェックポイントは、https://huggingface.co/Nanbeige で入手可能です。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -776,7 +776,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-12-13T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Dec 13, 2025
+    <time class="dt-published" datetime="2025-12-18T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Dec 18, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -811,7 +811,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 hours 58 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 hours 1 min</span>
   </div></header>
 </div>
     </div>
@@ -5320,6 +5320,46 @@ My Issue
 <span class="snippet"><span>Comment</span><p>seq2seqにおいてweightのpretrainingを行う手法を提案<br><br>seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。<br><br>WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。<br><br><br><br>encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。<br><br>fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）<br><br>LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。<br><br><br><br>Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。<br><br>LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。<br><br>sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。<br><br><br><br>LM Objectiveは結構使えそうな印象</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="emergence-of-3999" class="title-link">Emergence of Human to Robot Transfer in VLAs, Physical Intelligence （π）, 2025.12</h3>
+<br><a href="https://www.pi.website/research/human_to_robot" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3999" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="FoundationModel.html" target="_blank" rel="noopener noreferrer">#FoundationModel</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="DataMixture.html" target="_blank" rel="noopener noreferrer">#DataMixture</a>
+<a class="button" href="Robotics.html" target="_blank" rel="noopener noreferrer">#Robotics</a>
+<a class="button" href="VisionLanguageActionModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageActionModel</a>
+<a class="button" href="4D%20(Video).html" target="_blank" rel="noopener noreferrer">#4D (Video)</a>
+<a class="button" href="EmbodiedAI.html" target="_blank" rel="noopener noreferrer">#EmbodiedAI</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="EmergentAbilities.html" target="_blank" rel="noopener noreferrer">#EmergentAbilities</a>
+<a class="button" href="EgocentricView.html" target="_blank" rel="noopener noreferrer">#EgocentricView</a>
+<a class="button" href="DomainGap.html" target="_blank" rel="noopener noreferrer">#DomainGap</a>
+<span class="issue_date">Issue Date: 2025-12-18</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/physical_int/status/2001096200456692114?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>pi_0.5と呼ばれる基盤モデルのfinetuningにおいてロボット用の学習データに追加して人間のegocentricなvideoをmixtureするだけで創発現象が生じ、人間の動画側にしか存在しない4種類のgeneralizationが必要なシナリオにおいて2倍の性能を示した。そしてこの傾向は、事前学習における基盤モデルのサイズをスケールさせる、ロボットのデータをより多く投入することでより顕著となった。<br><img src="https://github.com/user-attachments/assets/b6e9b6e5-d4c3-4c72-9b8b-98333564b0b5" alt="image" loading="lazy"><br><br>人間とロボットの特徴量を2D plotした散布図を見ると、事前学習で利用するロボットの学習データ（事前学習時点では人間の動画は含まれないことに注意）をスケールさせると、両者の特徴量が重なるようになったので、human-robotのalignmentをモデルが獲得していることが示唆される。<br>これにより、今後VLAを学習する際に、domain gapを埋めるための特別な処理が不要となる可能性がある、といった話らしい。</p>
+<p>これが真だとすると、たとえば以下のように、人間のegocentric viewデータを大量に保有したところが有利にはなりそうではある。 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3974" target="_blank" rel="noopener noreferrer">Interactive Intelligence from Human Xperience, Ropedia, 2025.12</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="synth-the-3645" class="title-link">SYNTH: the new data frontier, pleias, 2025.11</h3>
 <br><a href="https://pleias.fr/blog/blogsynth-the-new-data-frontier" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -6556,14 +6596,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/PostTraining/" title="PostTrainingに関する論文・技術記事メモの一覧">PostTrainingに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Prompting/" title="Promptingに関する論文・技術記事メモの一覧">Promptingに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/One-Line-Notes/" title="One-Line Notesに関する論文・技術記事メモの一覧">One-Line Notesに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Proprietary/" title="Proprietaryに関する論文・技術記事メモの一覧">Proprietaryに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/GraphGeneration/" title="GraphGenerationに関する論文・技術記事メモの一覧">
-            GraphGenerationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Toxicity/" title="Toxicityに関する論文・技術記事メモの一覧">
+            Toxicityに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -6571,29 +6611,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ICCV/" title="ICCVに関する論文・技術記事メモの一覧">
-            ICCVに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AACL/" title="AACLに関する論文・技術記事メモの一覧">
+            AACLに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
-  <span class="post-badge badge-new">📝 24</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Memorization/" title="Memorizationに関する論文・技術記事メモの一覧">
-            Memorizationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/PersonalizedDocumentSummarization/" title="PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧">
+            PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 39</span> 
+  <span class="post-badge badge-new">📝 39</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/OptionTracing/" title="OptionTracingに関する論文・技術記事メモの一覧">
-            OptionTracingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/WI/" title="WIに関する論文・技術記事メモの一覧">
+            WIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
