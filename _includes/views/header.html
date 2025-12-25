@@ -62,6 +62,7 @@
   function initHeader() {
     var lastScrollY = getScrollPos().y;
     var documentElement = document.documentElement;
+    var ticking = false;
 
     function storeScrollData() {
       var y = getScrollPos().y;
@@ -77,19 +78,31 @@
       } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
         scrollStatus = "bottom";
       } else {
-        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        var isScrollDown = (y - lastScrollY > 0);
         scrollStatus = isScrollDown ? "down" : "up";
       }
 
       lastScrollY = y;
       documentElement.setAttribute("data-scroll-status", scrollStatus);
+      
+      // 処理完了フラグをリセット
+      ticking = false;
     }
 
-    window.addEventListener('scroll', function(e) {
-      storeScrollData();
-    });
+    function requestTick() {
+      if (!ticking) {
+        // 次の描画フレームで実行をスケジュール
+        window.requestAnimationFrame(storeScrollData);
+        ticking = true;
+      }
+    }
 
+    // passive:  true でスクロールパフォーマンスを向上
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // 初期実行
     storeScrollData();
   }
+  
   document.addEventListener('DOMContentLoaded', initHeader);
 </script>
