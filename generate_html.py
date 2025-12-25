@@ -382,7 +382,7 @@ def _iter_issue(sorted_issues: list[tuple[dict, int]], current_target: list[str]
 
     
 curr_more_idx = 0
-def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True, assets_root: str = "articles/", h_level: str = "4", visible_num: int = 10) -> str:
+def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True, assets_root: str = "articles/", h_level: str = "4", visible_num: int = 5) -> str:
     global curr_more_idx
 
     # start note lazy
@@ -742,4 +742,5 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
