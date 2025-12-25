@@ -693,7 +693,7 @@ document.addEventListener("DOMContentLoaded", function() {
         obs.unobserve(container);
       }
     });
-  }, { rootMargin: '200px' }); // 少し早めに読み込む
+  }, { rootMargin: '200px', threshold: 0.01 }); // 少し早めに読み込む
 
   document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
 });
@@ -742,5 +742,6 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
