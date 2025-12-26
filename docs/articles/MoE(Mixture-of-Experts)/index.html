@@ -6,6 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+  <link rel="preconnect" href="https://platform.twitter.com">
+  <link rel="preconnect" href="https://pbs.twimg.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://platform.twitter.com">
+  <link rel="dns-prefetch" href="https://pbs.twimg.com">
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>MoE(Mixture-of-Experts)に関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
 <meta name="generator" content="Jekyll v3.10.0">
@@ -26,12 +36,19 @@
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+
+  <link rel="preload" href="/paper_notes/assets/css/main.css" as="style">
+  <link rel="preload" href="/paper_notes/assets/js/main.js" as="script">
+
   <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
   <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
-  <script src="/paper_notes/assets/js/main.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
+  
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></noscript>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css" as="style" onload="this. onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css"></noscript>
+  
+  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
 <script>
   function showMore(index) {
     const contentDivs = document.getElementsByClassName('hidden-content');
@@ -257,6 +274,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
 <script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"},"svg":{"fontCache":"global"}}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
+
+
 <body>
 
 
@@ -573,6 +592,7 @@ function googleTranslateElementInit() {
   function initHeader() {
     var lastScrollY = getScrollPos().y;
     var documentElement = document.documentElement;
+    var ticking = false;
 
     function storeScrollData() {
       var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
@@ -582,20 +602,32 @@ function googleTranslateElementInit() {
       } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
         scrollStatus = "bottom";
       } else {
-        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        var isScrollDown = (y - lastScrollY > 0);
         scrollStatus = isScrollDown ? "down" : "up";
       }
 
       lastScrollY = y;
       documentElement.setAttribute("data-scroll-status", scrollStatus);
+      
+      // 処理完了フラグをリセット
+      ticking = false;
     }
 
-    window.addEventListener('scroll', function(e) {
-      storeScrollData();
-    });
+    function requestTick() {
+      if (!ticking) {
+        // 次の描画フレームで実行をスケジュール
+        window.requestAnimationFrame(storeScrollData);
+        ticking = true;
+      }
+    }
 
+    // passive:  true でスクロールパフォーマンスを向上
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // 初期実行
     storeScrollData();
   }
+  
   document.addEventListener('DOMContentLoaded', initHeader);
 </script>
 
@@ -811,7 +843,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 40 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 43 mins</span>
   </div></header>
 </div>
     </div>
@@ -1043,6 +1075,249 @@ My Issue
 <p>MoEモデルの学習速度、メモリ使用が最大2倍効率化される実装らしい。ただしHopperに特化している模様。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="nvidia-nemotron-3965" class="title-link">[Paper Note] NVIDIA Nemotron 3: Efficient and Open Intelligence, NVIDIA+, arXiv'25, 2025.12</h3>
+<br><a href="https://arxiv.org/abs/2512.20856" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3965" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="SSM%20(StateSpaceModel).html" target="_blank" rel="noopener noreferrer">#SSM (StateSpaceModel)</a>
+<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
+<span class="issue_date">Issue Date: 2025-12-17</span>
+<span class="snippet"><span>GPT Summary</span>- Nemotron 3ファミリーのモデル（Nano、Super、Ultra）は、強力なエージェント機能と推論能力を提供し、Mixture-of-ExpertsハイブリッドMamba-Transformerアーキテクチャを採用。SuperとUltraはLatentMoEを組み込み、MTPレイヤーでテキスト生成を高速化。全モデルはマルチ環境強化学習でポストトレーニングされ、Nanoはコスト効率が高く、Superは高ボリュームワークロードに最適化、Ultraは最先端の精度を提供。モデルの重みやデータはオープンにリリース予定。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト: 
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/NVIDIAAIDev/status/2000587035166343344?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>解説: 
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/2001063481207046484?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>Artificial Intelligenceによるポイント解説&amp;ベンチマーキング:<br>
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/ArtificialAnlys/status/2000602570092675402?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>所見:<br>
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/percyliang/status/2000608134205985169?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>training data, RL environment, training codeも含めて公開されているとのこと。<p>ポイント解説: 
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/iScienceLuvr/status/2000570256566493590?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>所見:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/theturingpost/status/2001087448299065372?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="deepseek-v3.2-pushing-3860" class="title-link">[Paper Note] DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models, DeepSeek-AI+, arXiv'25, 2025.12</h3>
+<br><a href="https://arxiv.org/abs/2512.02556" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3860" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Reference%20Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
+<a class="button" href="SparseAttention.html" target="_blank" rel="noopener noreferrer">#SparseAttention</a>
+<span class="issue_date">Issue Date: 2025-12-01</span>
+<span class="snippet"><span>GPT Summary</span>- DeepSeek-V3.2は、計算効率と推論性能を両立させたモデルで、主な技術革新として(1) DSAによる効率的な注意メカニズム、(2) スケーラブルな強化学習フレームワークによりGPT-5と同等の性能を実現、(3) 大規模エージェントタスク合成パイプラインを用いてトレーニングデータを生成し、一般化能力と指示遵守を向上させた。特に、DeepSeek-V3.2-SpecialeはGPT-5を超える性能を示し、国際数学オリンピックで金メダルを獲得した。</span>
+<span class="snippet"><span>Comment</span><p>HF:
+
+
+<a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.2" target="_blank" rel="noopener noreferrer">https://huggingface.co/deepseek-ai/DeepSeek-V3.2</a>
+
+
+</p>
+<p>GPT-5級のスコアを獲得している。なんということだ。<br><br><img width="897" height="587" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/c6957dbd-7750-4a5e-a3b3-5fa456c913c2"
+
+
+/&gt;</p>
+<p>公式ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/deepseek_ai/status/1995452641430651132?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3033" target="_blank" rel="noopener noreferrer">DeepSeek-V3.2-Exp: Boosting Long-Context Efficiency with DeepSeek Sparse Attention, DeepSeek-AI, 2025.09</a>
+</p>
+<p>vLLM recipe:<br>
+
+
+<a href="https://docs.vllm.ai/projects/recipes/en/latest/DeepSeek/DeepSeek-V3_2-Exp.html" target="_blank" rel="noopener noreferrer">https://docs.vllm.ai/projects/recipes/en/latest/DeepSeek/DeepSeek-V3_2-Exp.html</a>
+
+
+</p>
+<p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3861" target="_blank" rel="noopener noreferrer">Expert Parallel Deployment, vLLM, 2025.10</a>
+</p>
+<p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/iscienceluvr/status/1995456374751523179?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>所見:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/teortaxestex/status/1995475855930233165?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>事前学習にさらに計算機リソースを投下する見込みとのこと:<br>
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/stalkermustang/status/1995455400401912169?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>解説:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/omarsar0/status/1995509721605038475?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>解説:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/1995792436468351338?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3651" target="_blank" rel="noopener noreferrer">[Paper Note] On the Design of KL-Regularized Policy Gradient Algorithms for LLM Reasoning, Yifan Zhang+, arXiv'25, 2025.05</a>
+<br><br>
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/yifan_zhang_/status/1995490014797365315?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>所見:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/zzlccc/status/1995770284385992798?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>解説:<br>
+
+
+<a href="https://www.linkedin.com/posts/vinija_deepseek-v32-a-major-leap-for-open-reasoning-activity-7401524268850970624-eAvV?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/posts/vinija_deepseek-v32-a-major-leap-for-open-reasoning-activity-7401524268850970624-eAvV?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4</a>
+
+
+</p>
+<p>artificial analysisによる評価ではOpen Weightモデルの中ではKimi K2 Thinkingに次いで2番目の性能:<br>
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/artificialanlys/status/1996110256628539409?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3611" target="_blank" rel="noopener noreferrer">Introducing Kimi K2 Thinking, MoonshotAI, 2025.11</a>
+<p>所見:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/gm8xx8/status/1997295418154094960?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3827" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-Math-V2, DeepSeekAI, 2025.11</a>
+</span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="qwen3-vl-technical-3822" class="title-link">[Paper Note] Qwen3-VL Technical Report, Shuai Bai+, arXiv'25, 2025.11</h3>
 <br><a href="https://arxiv.org/abs/2511.21631" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -1074,6 +1349,59 @@ My Issue
 
 
 </span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="intellect-3-technical-3821" class="title-link">[Paper Note] INTELLECT-3: Technical Report, Prime Intellect Team+, arXiv'25, 2025.12</h3>
+<br><a href="https://arxiv.org/abs/2512.16144" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3821" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2025-11-27</span>
+<span class="snippet"><span>GPT Summary</span>- 106BパラメータのMixture-of-ExpertsモデルINTELLECT-3を発表。強化学習インフラを用いて訓練され、数学や科学のベンチマークで最先端の性能を達成。オープンソースとして公開し、強化学習フレームワークや検証ライブラリを提供。prime-rlを導入し、大規模な非同期強化学習をサポート。GLM-4.5-Air-Baseモデル上での訓練により、高い効率を実現。</span>
+<span class="snippet"><span>Comment</span><p>HF:
+
+
+<a href="https://huggingface.co/PrimeIntellect/INTELLECT-3" target="_blank" rel="noopener noreferrer">https://huggingface.co/PrimeIntellect/INTELLECT-3</a>
+
+
+</p>
+<p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/primeintellect/status/1993895087580065883?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<p>著者ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/vincentweisser/status/1993895732429115701?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>完全にオープンソースでデータやフレームワーク、評価も含め公開されているとのこと。素晴らしい<p>in-flight weight updates が利用されている<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3130" target="_blank" rel="noopener noreferrer">PipelineRL, Piche+, ServiceNow, 2025.04</a>
+ </p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="routing-manifold-3647" class="title-link">[Paper Note] Routing Manifold Alignment Improves Generalization of Mixture-of-Experts LLMs, Zhongyang Li+, arXiv'25, 2025.11</h3>
@@ -2346,88 +2674,6 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="inside-nvidia-3965" class="title-link">Inside NVIDIA Nemotron 3: Techniques, Tools, and Data That Make It Efficient and Accurate, Nvidia, 2025.12</h3>
-<br><a href="https://developer.nvidia.com/blog/inside-nvidia-nemotron-3-techniques-tools-and-data-that-make-it-efficient-and-accurate/?ncid=so-twit-776109" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3965" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
-<a class="button" href="SSM%20(StateSpaceModel).html" target="_blank" rel="noopener noreferrer">#SSM (StateSpaceModel)</a>
-<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
-<span class="issue_date">Issue Date: 2025-12-17</span>
-<span class="snippet"><span>Comment</span><p>元ポスト: 
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/NVIDIAAIDev/status/2000587035166343344?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>解説: 
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/2001063481207046484?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>Artificial Intelligenceによるポイント解説&amp;ベンチマーキング:<br>
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/ArtificialAnlys/status/2000602570092675402?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>所見:<br>
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/percyliang/status/2000608134205985169?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<br><br>training data, RL environment, training codeも含めて公開されているとのこと。<p>ポイント解説: 
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/iScienceLuvr/status/2000570256566493590?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>所見:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/theturingpost/status/2001087448299065372?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</span><br><br>
-</article>
-<article class="paper-entry">
 <h3 id="introducing-mimo-v2-flash-3961" class="title-link">Introducing MiMo-V2-Flash, Xiaomi, 2025.12</h3>
 <br><a href="https://mimo.xiaomi.com/blog/mimo-v2-flash" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
@@ -2567,166 +2813,6 @@ My Issue
 <a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2025-12-01</span>
 <span class="snippet"><span>Comment</span><p>MoEアーキテクチャにおいて、eXertsの重みを複数のGPUに分散することで計算効率を増大させるexpert parallelによるデプロイ方法をexpert parallelの配列数はData Parallel数*tensor parallel数となる。</p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="deepseek-v3.2-pushing-3860" class="title-link">DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models, DeepSeekAI, 2025.12</h3>
-<br><a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.2/blob/main/assets/paper.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3860" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
-<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
-<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
-<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
-<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
-<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="Reference%20Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
-<a class="button" href="SparseAttention.html" target="_blank" rel="noopener noreferrer">#SparseAttention</a>
-<span class="issue_date">Issue Date: 2025-12-01</span>
-<span class="snippet"><span>GPT Summary</span>- DeepSeek-V3.2は、高い計算効率と優れた推論性能を兼ね備えたモデルで、主な技術革新として、Sparse Attentionを用いた効率的な注意メカニズム、スケーラブルな強化学習フレームワーク、そして大規模エージェントタスク合成パイプラインを導入。特に、DeepSeek-V3.2-SpecialeはGPT-5を超える性能を示し、国際数学オリンピックおよび国際情報オリンピックで金メダルを獲得。</span>
-<span class="snippet"><span>Comment</span><p>HF:
-
-
-<a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.2" target="_blank" rel="noopener noreferrer">https://huggingface.co/deepseek-ai/DeepSeek-V3.2</a>
-
-
-</p>
-<p>GPT-5級のスコアを獲得している。なんということだ。<br><br><img width="897" height="587" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/c6957dbd-7750-4a5e-a3b3-5fa456c913c2"
-
-
-/&gt;</p>
-<p>公式ポスト:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/deepseek_ai/status/1995452641430651132?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3033" target="_blank" rel="noopener noreferrer">DeepSeek-V3.2-Exp: Boosting Long-Context Efficiency with DeepSeek Sparse Attention, DeepSeek-AI, 2025.09</a>
-</p>
-<p>vLLM recipe:<br>
-
-
-<a href="https://docs.vllm.ai/projects/recipes/en/latest/DeepSeek/DeepSeek-V3_2-Exp.html" target="_blank" rel="noopener noreferrer">https://docs.vllm.ai/projects/recipes/en/latest/DeepSeek/DeepSeek-V3_2-Exp.html</a>
-
-
-</p>
-<p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3861" target="_blank" rel="noopener noreferrer">Expert Parallel Deployment, vLLM, 2025.10</a>
-</p>
-<p>元ポスト:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/iscienceluvr/status/1995456374751523179?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>所見:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/teortaxestex/status/1995475855930233165?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>事前学習にさらに計算機リソースを投下する見込みとのこと:<br>
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/stalkermustang/status/1995455400401912169?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>解説:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/omarsar0/status/1995509721605038475?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>解説:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/1995792436468351338?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3651" target="_blank" rel="noopener noreferrer">[Paper Note] On the Design of KL-Regularized Policy Gradient Algorithms for LLM Reasoning, Yifan Zhang+, arXiv'25, 2025.05</a>
-<br><br>
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/yifan_zhang_/status/1995490014797365315?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>所見:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/zzlccc/status/1995770284385992798?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<p>解説:<br>
-
-
-<a href="https://www.linkedin.com/posts/vinija_deepseek-v32-a-major-leap-for-open-reasoning-activity-7401524268850970624-eAvV?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/posts/vinija_deepseek-v32-a-major-leap-for-open-reasoning-activity-7401524268850970624-eAvV?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4</a>
-
-
-</p>
-<p>artificial analysisによる評価ではOpen Weightモデルの中ではKimi K2 Thinkingに次いで2番目の性能:<br>
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/artificialanlys/status/1996110256628539409?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3611" target="_blank" rel="noopener noreferrer">Introducing Kimi K2 Thinking, MoonshotAI, 2025.11</a>
-<p>所見:
-
-
-
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/gm8xx8/status/1997295418154094960?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<br><br>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3827" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-Math-V2, DeepSeekAI, 2025.11</a>
-</span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="longcat-flash-omni-technical-3536" class="title-link">LongCat-Flash-Omni Technical Report, 2025.10</h3>
@@ -2870,6 +2956,7 @@ My Issue
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="RecurrentModels.html" target="_blank" rel="noopener noreferrer">#RecurrentModels</a>
 <span class="issue_date">Issue Date: 2025-10-08</span>
 <span class="snippet"><span>Comment</span><p>HF:
 
@@ -2888,7 +2975,9 @@ My Issue
 </div>
 
 
-<p>日本語もサポートしているとのこと</p></span><br><br>
+<p>日本語もサポートしているとのこと</p>
+<p>関連: <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2999" target="_blank" rel="noopener noreferrer">Introducing LFM2: The Fastest On-Device Foundation Models on the Market, LiquidAI, 2025.07</a>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="openmoe-2-3090" class="title-link">OpenMoE 2: Sparse Diffusion Language Models, Ni+, 2025.10</h3>
@@ -3981,7 +4070,7 @@ document.addEventListener("DOMContentLoaded", function() {
         obs.unobserve(container);
       }
     });
-  }, { rootMargin: '200px' }); // 少し早めに読み込む
+  }, { rootMargin: '200px', threshold: 0.01 }); // 少し早めに読み込む
 
   document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
 });
@@ -3998,38 +4087,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Privacy/" title="Privacyに関する論文・技術記事メモの一覧">
-            Privacyに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/NeurIPS/" title="NeurIPSに関する論文・技術記事メモの一覧">
+            NeurIPSに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 179</span> 
+  <span class="post-badge badge-new">📝 179</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Scheduler/" title="Schedulerに関する論文・技術記事メモの一覧">
+            Schedulerに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/AutonomousVehicle/" title="AutonomousVehicleに関する論文・技術記事メモの一覧">
+            AutonomousVehicleに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Proofs/" title="Proofsに関する論文・技術記事メモの一覧">
+            Proofsに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Sparse/" title="Sparseに関する論文・技術記事メモの一覧">
-            Sparseに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
-  <span class="post-badge badge-new">📝 11</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/GraphBased/" title="GraphBasedに関する論文・技術記事メモの一覧">
-            GraphBasedに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 18</span> 
-  <span class="post-badge badge-new">📝 18</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/KV-Cache/" title="KV Cacheに関する論文・技術記事メモの一覧">
-            KV Cacheに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>
