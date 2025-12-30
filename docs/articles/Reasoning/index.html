@@ -843,7 +843,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 16 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 21 mins</span>
   </div></header>
 </div>
     </div>
@@ -1127,9 +1127,15 @@ My Issue
 </a><br>
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="Proprietary.html" target="_blank" rel="noopener noreferrer">#Proprietary</a>
 <a class="button" href="mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
 <a class="button" href="DeepResearch.html" target="_blank" rel="noopener noreferrer">#DeepResearch</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2025-12-24</span>
 <span class="snippet"><span>GPT Summary</span>- Step-DeepResearchは、LLMを用いた自律エージェントのためのコスト効率の良いエンドツーエンドのシステムであり、意図認識や長期的意思決定を強化するためのデータ合成戦略を提案。チェックリストスタイルのジャッジャーにより堅牢性を向上させ、中国ドメイン向けのADR-Benchを設立。実験では、Step-DeepResearchが高いスコアを記録し、業界をリードするコスト効率で専門家レベルの能力を達成したことを示した。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト: 
@@ -1142,7 +1148,19 @@ My Issue
 </div>
 
 
-</span><br><br>
+<p>ポイント解説:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/omarsar0/status/2005378485842477298?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>ざっくり言うと、シンプルなReAct styleのagentで、マルチエージェントのオーケストレーションや複雑で重たいワークフロー無しで、OpenAI, GeminiのDeepResearchと同等の性能を達成してとり、ポイントとしてこれらの機能をはmid-training段階で学習してモデルのパラメータとして組み込むことで実現している模様。<br><br>mid trainingは2段階で構成され、trajectoryの長さは徐々に長いものを利用するカリキュラム方式。<br>最初のステージでは以下の4つのatomicスキルを身につけさせる:<br>- Planning &amp; Task Decomposition<br>- Deep Information Seeking<br>- Reflection &amp; Verification<br>- Reporting<br><br>これらのatomic skillを身につけさせる際には、next token predictionをnext action predictionという枠組みで学習し、アクションに関するトークンの空間を制限することで効率性を向上（ただし、具体性は減少するのでトレードオフ）という形にしているようだが、コンセプトが記述されているのみでよくわからない。同時に、学習データの構築方法もデータソースとおおまかな構築方法が書かれているのみである。ただし、記述内容的には各atomicmskilvごとに基本的には合成データが作成され利用されていると考えてよい。<br><br>たとえばplanningについては論文などの文献のタイトルや本文から実験以後の記述を除外し、研究プロジェクトのタスクを推定させる（リバースエンジニアリングと呼称している）することで、planningのtrajectoryを合成、Deep Information SeekingではDB Pediaなどのknowledge graphをソースとして利用し、字数が3--10程度のノードをseedとしそこから（トピックがドリフトするのを防ぐために極端に次数が大きいノードは除外しつつ）幅優先探索をすることで、30--40程度のノードによって構成されるサブグラフを構成し、そのサブグラフに対してmulti hopが必要なQuestionを、LLMで生成することでデータを合成しているとのこと。<br><br>RLはrewardとしてルーブリックをベースにしたものが用いられるが、strong modelを用いて<query rubrics report>の三つ組データを合成し、このデータを用いてSFT, RLVRをすることでRubrics Judgeモデルを学習して利用すると記述されている。Rubricsに基づく報酬では、最初に<br>- 1: fully satisfied<br>- 0.5: partially satisfied<br>- 0: not satisfied<br><br>の3値を検討したが、partially satisfiedが人間による評価とのagreementが低かったため設計を変更し、positive/negative rubricsを設定し、positivルーブリックの場合はルーブリックがfully satisfiedの時のみ1, negativeルーブリックの方はnot satisfiedの時のみ0とすることで、低品質な生成結果に基づくrewardを無くし、少しでもネガティブな要素があった場合は強めのペナルティがかかるようにしているとのこと（ルーブリックの詳細は私が見た限りは不明である。Appendix Aに書かれているように一瞬見えたが具体的なcriterionは書かれていないように見える）。<p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2762" target="_blank" rel="noopener noreferrer">[Paper Note] SFR-DeepResearch: Towards Effective Reinforcement Learning for
+  Autonomously Reasoning Single Agents, Xuan-Phi Nguyen+, arXiv'25</a>
+</p></query></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="xiaomi-mimo-vl-miloco-4048" class="title-link">[Paper Note] Xiaomi MiMo-VL-Miloco Technical Report, Jiaze Li+, arXiv'25, 2025.12</h3>
@@ -10844,38 +10862,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/UAI/" title="UAIに関する論文・技術記事メモの一覧">
-            UAIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/COLING/" title="COLINGに関する論文・技術記事メモの一覧">
+            COLINGに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/OpenSource/" title="OpenSourceに関する論文・技術記事メモの一覧">
-            OpenSourceに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 37</span> 
-  <span class="post-badge badge-new">📝 37</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/TreeSearch/" title="TreeSearchに関する論文・技術記事メモの一覧">
-            TreeSearchに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Inpainting/" title="Inpaintingに関する論文・技術記事メモの一覧">
-            Inpaintingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/German/" title="Germanに関する論文・技術記事メモの一覧">
+            Germanに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/OnlineLearning/" title="OnlineLearningに関する論文・技術記事メモの一覧">
+            OnlineLearningに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/QuestionAnswering/" title="QuestionAnsweringに関する論文・技術記事メモの一覧">
+            QuestionAnsweringに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 37</span> 
+  <span class="post-badge badge-new">📝 37</span>
 </span>
 </a>
         </li>
