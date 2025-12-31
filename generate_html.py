@@ -211,8 +211,8 @@ def get_year(text: str) -> int:
 
 def replace_image(match):
     url = match.group(1)
-    return f'<img src="{url}" alt="image" loading="lazy" />'
-
+    return f'<img src="{url}" alt="image" loading="lazy" width="400" height="300"/>'
+  
 
 def head_replacer(match):
     return f'\n<strong>{match.group(0)}</strong>\n<br>\n'
@@ -742,6 +742,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
