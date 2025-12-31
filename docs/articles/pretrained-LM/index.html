@@ -1179,7 +1179,7 @@ My Issue
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <a class="button" href="Zero_FewShotLearning.html" target="_blank" rel="noopener noreferrer">#Zero/FewShotLearning</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
-<span class="snippet"><span>Comment</span><p># 概要<br><br>Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）<br><br>Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成<br><br><br><br># 手法<br><br>TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要<br><br>1. factualな情報を持つcontentをselectし、copyするスキル<br><br>2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル<br><br>提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204966408-e5442477-0560-439b-9780-d454a8761345.png" alt="image" loading="lazy"><br><br><br><br>encoderからコピーする確率をpcopyとし、下記式で算出する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968383-44ef3771-218e-4e3e-8bfd-e2e6750c514b.png" alt="image" loading="lazy"><br><br>すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。<br><br>encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968557-4526e76d-8be5-4371-adc7-d49d8291954f.png" alt="image" loading="lazy"><br><br>すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。<br><br>また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。<br><br>また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）<br><br><br><br># 実験<br><br>WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。<br><br>このとき、Training instanceを50~500まで変化させた。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969250-b2965b62-5a82-4c38-9008-3e4bbc5d9c24.png" alt="image" loading="lazy"><br><br><br><br>WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。<br><br><br><br>inputとoutput例と、コピーに関するlossを入れた場合の効果。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969645-aa2686f0-f83c-44cc-a6aa-2e793a6cd5b8.png" alt="image" loading="lazy"><br><br><br><br>人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable<br><br><img src="https://user-images.githubusercontent.com/12249301/204969885-7cb3e507-d986-4d97-8f7c-a5b8c3c8204f.png" alt="image" loading="lazy"><br><br><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）<br><br>Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成<br><br><br><br># 手法<br><br>TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要<br><br>1. factualな情報を持つcontentをselectし、copyするスキル<br><br>2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル<br><br>提案手法では、1を少量のサンプル（&lt; 500）から学習し、2については事前学習済みの言語モデルを活用する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204966408-e5442477-0560-439b-9780-d454a8761345.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>encoderからコピーする確率をpcopyとし、下記式で算出する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968383-44ef3771-218e-4e3e-8bfd-e2e6750c514b.png" alt="image" loading="lazy" width="400" height="300"><br><br>すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。<br><br>encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968557-4526e76d-8be5-4371-adc7-d49d8291954f.png" alt="image" loading="lazy" width="400" height="300"><br><br>すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。<br><br>また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。<br><br>また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）<br><br><br><br># 実験<br><br>WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。<br><br>このとき、Training instanceを50~500まで変化させた。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969250-b2965b62-5a82-4c38-9008-3e4bbc5d9c24.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。<br><br><br><br>inputとoutput例と、コピーに関するlossを入れた場合の効果。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969645-aa2686f0-f83c-44cc-a6aa-2e793a6cd5b8.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable<br><br><img src="https://user-images.githubusercontent.com/12249301/204969885-7cb3e507-d986-4d97-8f7c-a5b8c3c8204f.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="leveraging-pre-trained-493" class="title-link">[Paper Note] Leveraging Pre-trained Checkpoints for Sequence Generation Tasks, Sascha Rothe+, TACL'20, 2019.07</h3>
@@ -1203,7 +1203,7 @@ My Issue
 <a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
 <span class="snippet"><span>GPT Summary</span>- 事前学習された大規模なニューラルモデルがシーケンス生成においても有効であることを示し、BERT、GPT-2、RoBERTaと互換性のあるTransformerベースのモデルを開発。これにより、機械翻訳やテキスト要約などのタスクで新たな最先端の成果を達成。</span>
-<span class="snippet"><span>Comment</span><p># 概要<br><br>BERT-to-BERT論文。これまでpre-trainedなチェックポイントを利用する研究は主にNLUで行われてきており、Seq2Seqでは行われてきていなかったので、やりました、という話。<br><br>publicly availableなBERTのcheckpointを利用し、BERTをencoder, decoder両方に採用することでSeq2Seqを実現。実現する上で、<br><br>1. decoder側のBERTはautoregressiveな生成をするようにする（左側のトークンのattentionしか見れないようにする）<br><br>2. encoder-decoder attentionを新たに導入する<br><br>の2点を工夫している。<br><br><br><br># 実験<br><br>Sentence Fusion, Sentence Split, Machine Translation, Summarizationの4タスクで実験<br><br><br><br>## MT<br><br><img src="https://user-images.githubusercontent.com/12249301/204958483-722106b3-bda2-45a3-bb08-fb4eb429c90c.png" alt="image" loading="lazy"><br><br>BERT2BERTがSoTA達成。Edunov+の手法は、data _augmentationを利用した手法であり、純粋なWMT14データを使った中ではSoTAだと主張。特にEncoder側でBERTを使うと、Randomにinitializeした場合と比べて性能が顕著に上昇しており、その重要性を主張。<br><br>Sentence Fusion, Sentence Splitでは、encoderとdecoderのパラメータをshareするのが良かったが、MTでは有効ではなかった。これはMTではmodelのcapacityが非常に重要である点、encoderとdecoderで異なる文法を扱うためであると考えられる。<br><br><br><br>## Summarization<br><br>BERTSHARE, ROBERTASHAREの結果が良かった。<br><br><img src="https://user-images.githubusercontent.com/12249301/204959543-e21bd9a6-bef4-4538-b181-daca93fa33e7.png" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>BERT-to-BERT論文。これまでpre-trainedなチェックポイントを利用する研究は主にNLUで行われてきており、Seq2Seqでは行われてきていなかったので、やりました、という話。<br><br>publicly availableなBERTのcheckpointを利用し、BERTをencoder, decoder両方に採用することでSeq2Seqを実現。実現する上で、<br><br>1. decoder側のBERTはautoregressiveな生成をするようにする（左側のトークンのattentionしか見れないようにする）<br><br>2. encoder-decoder attentionを新たに導入する<br><br>の2点を工夫している。<br><br><br><br># 実験<br><br>Sentence Fusion, Sentence Split, Machine Translation, Summarizationの4タスクで実験<br><br><br><br>## MT<br><br><img src="https://user-images.githubusercontent.com/12249301/204958483-722106b3-bda2-45a3-bb08-fb4eb429c90c.png" alt="image" loading="lazy" width="400" height="300"><br><br>BERT2BERTがSoTA達成。Edunov+の手法は、data _augmentationを利用した手法であり、純粋なWMT14データを使った中ではSoTAだと主張。特にEncoder側でBERTを使うと、Randomにinitializeした場合と比べて性能が顕著に上昇しており、その重要性を主張。<br><br>Sentence Fusion, Sentence Splitでは、encoderとdecoderのパラメータをshareするのが良かったが、MTでは有効ではなかった。これはMTではmodelのcapacityが非常に重要である点、encoderとdecoderで異なる文法を扱うためであると考えられる。<br><br><br><br>## Summarization<br><br>BERTSHARE, ROBERTASHAREの結果が良かった。<br><br><img src="https://user-images.githubusercontent.com/12249301/204959543-e21bd9a6-bef4-4538-b181-daca93fa33e7.png" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="template-guided-492" class="title-link">Template Guided Text Generation for Task-Oriented Dialogue, Kale+, Google, EMNLP'20</h3>
@@ -1223,7 +1223,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
-<span class="snippet"><span>Comment</span><p># 概要<br><br>Dialogue Actをそのままlinearlizeして言語モデルに入力するのではなく、テンプレートをベースにしたシンプルなsentenceにして言語モデルに与えると、zero-shot, few-shotなsettingで性能が向上するという話（T5ベース）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204951348-e7cb9982-4d1f-4ac0-8e1d-b3e8fd872b11.png" alt="image" loading="lazy"><br><br><br><br># 手法<br><br>slotの名称をnatural languageのdescriptionに変更するSchema Guidedアプローチも提案（NLUでは既に実践さrていたらしいが、Generationで利用されたことはない）。<br><br><img src="https://user-images.githubusercontent.com/12249301/204952341-fae03300-992a-491f-b194-9013f5d598f9.png" alt="image" loading="lazy"><br><br><br><br># 結果<br><br>MultiWoz, E2E, SGDデータセットを利用。MultiWoz, E2Eデータはデータ量が豊富でドメインやfeatureが限定的なため、schema guided, template guided approachとNaiveなrepresentationを利用した場合の結果がcopmarableであった。<br><br>が、SGDデータセットはドメインが豊富でzero-shot, few-shotの設定で実験ができる。SGDの場合はTemplate guided representationが最も高い性能を得た。<br><br><img src="https://user-images.githubusercontent.com/12249301/204954033-ecbeb90f-1398-486c-8d1f-76a0e54ed8ea.png" alt="image" loading="lazy"><br><br></p>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>Dialogue Actをそのままlinearlizeして言語モデルに入力するのではなく、テンプレートをベースにしたシンプルなsentenceにして言語モデルに与えると、zero-shot, few-shotなsettingで性能が向上するという話（T5ベース）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204951348-e7cb9982-4d1f-4ac0-8e1d-b3e8fd872b11.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># 手法<br><br>slotの名称をnatural languageのdescriptionに変更するSchema Guidedアプローチも提案（NLUでは既に実践さrていたらしいが、Generationで利用されたことはない）。<br><br><img src="https://user-images.githubusercontent.com/12249301/204952341-fae03300-992a-491f-b194-9013f5d598f9.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># 結果<br><br>MultiWoz, E2E, SGDデータセットを利用。MultiWoz, E2Eデータはデータ量が豊富でドメインやfeatureが限定的なため、schema guided, template guided approachとNaiveなrepresentationを利用した場合の結果がcopmarableであった。<br><br>が、SGDデータセットはドメインが豊富でzero-shot, few-shotの設定で実験ができる。SGDの場合はTemplate guided representationが最も高い性能を得た。<br><br><img src="https://user-images.githubusercontent.com/12249301/204954033-ecbeb90f-1398-486c-8d1f-76a0e54ed8ea.png" alt="image" loading="lazy" width="400" height="300"><br><br></p>
 <p>low resourceなデータセットで活用できそう</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1346,38 +1346,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/StructuredLearning/" title="StructuredLearningに関する論文・技術記事メモの一覧">
-            StructuredLearningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ModelMerge/" title="ModelMergeに関する論文・技術記事メモの一覧">
+            ModelMergeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Game/" title="Gameに関する論文・技術記事メモの一覧">
-            Gameに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/COLT/" title="COLTに関する論文・技術記事メモの一覧">
+            COLTに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
-  <span class="post-badge badge-new">📝 11</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MachineLearning/" title="MachineLearningに関する論文・技術記事メモの一覧">
-            MachineLearningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/LongSequence/" title="LongSequenceに関する論文・技術記事メモの一覧">
+            LongSequenceに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 253</span> 
-  <span class="post-badge badge-new">📝 253</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 76</span> 
+  <span class="post-badge badge-new">📝 76</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/numeric/" title="numericに関する論文・技術記事メモの一覧">
-            numericに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/TransferLearning/" title="TransferLearningに関する論文・技術記事メモの一覧">
+            TransferLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li>

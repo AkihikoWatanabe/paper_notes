@@ -1151,10 +1151,10 @@ My Issue
 <br>
  に倣い、文書とQAをMixed Sampling（1バッチあたり256件のサンプルをランダムにQAおよび文書データからサンプリング; 
 <strong># 1923 では文書とQAを2:8の比率でサンプリングしている）することで学習をする。QAの場合目的関数は回答テキスト部分のみのNLL、文書の場合はnext-token prediction lossを利用する。<br><br>Positional Biasの存在を示すだけでなく、(A, B, C) の順番でnext-token prediction lossで学習されたモデルの場合、Cの知識を抽出するためにA, Bがcontextとして必要となるため、Cを抽出する際の汎化性能を高めるためにA, Bの表現がより多様である必要がある、という課題がある。これに対処するためのいくつかのシンプルな正則化手法、具体的には<br>- D-AR: predition targetのトークンは保持したまま、input tokenの一部をランダムなトークンに置き換える<br>- Shuffle: 入力文をシャッフルする<br>- Attn Drop: self-attentionモジュールのattention weightをランダムに0にする<br>の3種類とPositional Biasの関係性を検証している。<br>![Image](https://github.com/user-attachments/assets/503e53f2-28f5-46ea-a11f-beee98f8fa38)<br><br>検証の結果、（合成データ、実データともに）Positional Biasが存在することが明らかとなり（i.e., 正解テキストが文書中の深い位置にあればあるほど予測性能が低下する）正則化によってPositional Biasが緩和されることが示された。<br>![Image](https://github.com/user-attachments/assets/11a29a1e-f869-4628-9c47-e1fc9e5c394e)<br><br>また、異なるモデルサイズで性能を比較したところ、モデルサイズを大きくすることで性能自体は改善するが、依然としてPositional Biasが存在することが示され、ARよりもD-ARが一貫して高い性能を示した。このことから、Positional Biasを緩和するために何らかの正則化手法が必要なことがわかる。<br>![Image](https://github.com/user-attachments/assets/0772d144-c22b-4723-8578-acdf0e2e1187)<br><br>また、オリジナル文書の1文目を、正解データの位置を入れ替えた各モデルに対して、テキスト中の様々な位置に配置してPerplexityを測った。この設定では、モデルがPerplexityを最小化するためには、（1文目ということは以前の文脈が存在しないsentenceなので）文脈に依存せずに文の記憶していなければならない。よって、各手法ごとにどの程度Perplexityが悪化するかで、各手法がどの程度あるsentenceを記憶する際に過去の文脈に依存しているかが分かる。ここで、学習データそのもののPerplexityはほぼ1.0であったことに注意する。<br>結果として、文書中の深い位置に配置されればされるほどPerplexityは増大し（left）、Autoregressive Model (AR) のPerplexity値が最も値が大きかった（=性能が悪かった）。このことから、ARはより過去の文脈に依存してsentenceの情報を記憶していることが分かる。また、モデルサイズが小さいモデルの方がPerplexityは増大する傾向にあることがわかった (middle)。これはFig.3で示したQAのパフォーマンスと傾向が一致しており、学習データそのもののPerplexityがほぼ1.0だったことを鑑みると、学習データに対するPerplexityは様々なPositionに位置する情報を適切に抽出できる能力を測るメトリックとしては適切でないことがわかる。また、学習のiterationを増やすと、ARの場合はfirst positionに対する抽出性能は改善したが、他のpositionでの抽出性能は改善しなかった。一方、D-ARの場合は、全てのpositionでの抽出性能が改善した (right) 。このことから、必ずしも学習のiterationを増やしても様々なPositionに対する抽出性能が改善しないこと、longer trainingの恩恵を得るためには正則化手法を利用する必要があることが明らかになった。<br><br>![Image](https://github.com/user-attachments/assets/94f635a5-68d5-478d-ab16-513e855fe054)<br></strong></p>
-<p>## 実験 &amp; 実験結果 (unmodulated data)<br>Wiki2023+データに対して上記のようなデータの変更を行わずに、そのまま学習を行い、各位置ごとのQAの性能を測定したところ、（すべてがPositional Biasのためとは説明できないが）回答が文書中の深い位置にある場合の性能が劣化することを確認した。2--6番目の性能の低下は、最初の文ではシンプルな事実が述べられ、後半になればなるほどより複雑な事実が述べられる傾向があることが起因して性能の低下しているとかせつをたてている。また、unmodulated dataの場合でもD-ARはARの性能を改善することが明らかとなった。モデルサイズが大きいほど性能は改善するが、以前として文書中の深い位置に正解がある場合に性能は劣化することもわかる。<br><img src="https://github.com/user-attachments/assets/2f43ba8a-c54e-4523-b8f0-7cfc797d5a7e" alt="image" loading="lazy"><br><br>また、正則化手法は組み合わせることでさらに性能が改善し、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1923" target="_blank" rel="noopener noreferrer">[Paper Note] Physics of Language Models: Part 3.1, Knowledge Storage and Extraction, Zeyuan Allen-Zhu+, ICML'24</a>
+<p>## 実験 &amp; 実験結果 (unmodulated data)<br>Wiki2023+データに対して上記のようなデータの変更を行わずに、そのまま学習を行い、各位置ごとのQAの性能を測定したところ、（すべてがPositional Biasのためとは説明できないが）回答が文書中の深い位置にある場合の性能が劣化することを確認した。2--6番目の性能の低下は、最初の文ではシンプルな事実が述べられ、後半になればなるほどより複雑な事実が述べられる傾向があることが起因して性能の低下しているとかせつをたてている。また、unmodulated dataの場合でもD-ARはARの性能を改善することが明らかとなった。モデルサイズが大きいほど性能は改善するが、以前として文書中の深い位置に正解がある場合に性能は劣化することもわかる。<br><img src="https://github.com/user-attachments/assets/2f43ba8a-c54e-4523-b8f0-7cfc797d5a7e" alt="image" loading="lazy" width="400" height="300"><br><br>また、正則化手法は組み合わせることでさらに性能が改善し、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1923" target="_blank" rel="noopener noreferrer">[Paper Note] Physics of Language Models: Part 3.1, Knowledge Storage and Extraction, Zeyuan Allen-Zhu+, ICML'24</a>
 
 <br>
- に示されている通り、学習データ中の表現を多様にし[^1]学習したところ予測性能が改善し、正則化手法とも補完的な関係であることも示された。<br><img src="https://github.com/user-attachments/assets/e79415b1-28e2-47ab-b429-448412053d0b" alt="image" loading="lazy"><br><br>医療ドメインでも実験したところ、正則化手法を適用した場合にARよりも性能が上回った。最後にWiki2023+データについてOpenbookな設定で、正解が含まれる文書をLLMのcontextとして与えた場合（i.e.,ほぼ完璧なretrieverが存在するRAGと同等の設定とみなせる）、QAの性能は90.6%に対し、継続学習した場合のベストモデルの性能は50.8%だった。このことから、正確なretrieverが存在するのであれば、継続学習よりもRAGの方がQAの性能が高いと言える。<br>RAGと継続学習のメリット、デメリットの両方を考慮して、適切に手法を選択することが有効であることが示唆される。<br><img src="https://github.com/user-attachments/assets/14180452-5421-4102-8751-fabc8b780d49" alt="image" loading="lazy"><br><br>[^1]: ChatGPTによってテキストをrephraseし、sentenceのorderも変更することで多様性を増やした。が、sentence orderが文書中の深い位置にある場合にあまりorderが変化しなかったようで、このため深い位置に対するQAの性能改善が限定的になっていると説明している。</p></span><br><br>
+ に示されている通り、学習データ中の表現を多様にし[^1]学習したところ予測性能が改善し、正則化手法とも補完的な関係であることも示された。<br><img src="https://github.com/user-attachments/assets/e79415b1-28e2-47ab-b429-448412053d0b" alt="image" loading="lazy" width="400" height="300"><br><br>医療ドメインでも実験したところ、正則化手法を適用した場合にARよりも性能が上回った。最後にWiki2023+データについてOpenbookな設定で、正解が含まれる文書をLLMのcontextとして与えた場合（i.e.,ほぼ完璧なretrieverが存在するRAGと同等の設定とみなせる）、QAの性能は90.6%に対し、継続学習した場合のベストモデルの性能は50.8%だった。このことから、正確なretrieverが存在するのであれば、継続学習よりもRAGの方がQAの性能が高いと言える。<br>RAGと継続学習のメリット、デメリットの両方を考慮して、適切に手法を選択することが有効であることが示唆される。<br><img src="https://github.com/user-attachments/assets/14180452-5421-4102-8751-fabc8b780d49" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]: ChatGPTによってテキストをrephraseし、sentenceのorderも変更することで多様性を増やした。が、sentence orderが文書中の深い位置にある場合にあまりorderが変化しなかったようで、このため深い位置に対するQAの性能改善が限定的になっていると説明している。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="considers-the-human-evaluation-1670" class="title-link">ConSiDERS-The-Human Evaluation Framework: Rethinking Human Evaluation  for Generative Large Language Models, Aparna Elangovan+, arXiv'24</h3>
@@ -1194,7 +1194,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2023-08-28</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）の頑健性に焦点を当てています。LLMsは多肢選択問題において順序に敏感であり、オプションの配置によって性能に大きな差が生じることを示しました。さらに、オプションの配置に対するバイアスを増幅または軽減する方法を特定し、LLMsの予測を改善するアプローチを提案しました。実験により、最大8パーセントポイントの改善が実現されました。</span>
-<span class="snippet"><span>Comment</span><p>これはそうだろうなと思っていたけど、ここまで性能に差が出るとは思わなかった。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fb13c25c-4d76-4c8c-b08a-6491c43f34b9" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>これはそうだろうなと思っていたけど、ここまで性能に差が出るとは思わなかった。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fb13c25c-4d76-4c8c-b08a-6491c43f34b9" alt="image" loading="lazy" width="400" height="300"></p>
 <p>これがもしLLMのバイアスによるもの（2番目の選択肢に正解が多い）の場合、<br>ランダムにソートしたり、平均取ったりしても、そもそもの正解に常にバイアスがかかっているので、<br>結局バイアスがかかった結果しか出ないのでは、と思ってしまう。<br>そうなると、有効なのはone vs. restみたいに、全部該当選択肢に対してyes/noで答えさせてそれを集約させる、みたいなアプローチの方が良いかもしれない。</p></span><br><br>
 </article>
 </div>
@@ -1252,26 +1252,17 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Fidelity/" title="Fidelityに関する論文・技術記事メモの一覧">
-            Fidelityに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/RecurrentModels/" title="RecurrentModelsに関する論文・技術記事メモの一覧">
+            RecurrentModelsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
+  <span class="post-badge badge-new">📝 16</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/VectorQuantization/" title="VectorQuantizationに関する論文・技術記事メモの一覧">
-            VectorQuantizationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/AutoML/" title="AutoMLに関する論文・技術記事メモの一覧">
-            AutoMLに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Aggregation-aware/" title="Aggregation-awareに関する論文・技術記事メモの一覧">
+            Aggregation-awareに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -1279,11 +1270,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/EMNLP/" title="EMNLPに関する論文・技術記事メモの一覧">
-            EMNLPに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/VerifiableRewards/" title="VerifiableRewardsに関する論文・技術記事メモの一覧">
+            VerifiableRewardsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 99</span> 
-  <span class="post-badge badge-new">📝 99</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/WorldModels/" title="WorldModelsに関する論文・技術記事メモの一覧">
+            WorldModelsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
+  <span class="post-badge badge-new">📝 21</span>
 </span>
 </a>
         </li>

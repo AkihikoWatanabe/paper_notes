@@ -1090,7 +1090,7 @@ My Issue
 </div>
 
 
-<p>手法としては、SFTとKTOを活用しpost trainingするようである<br><img src="https://github.com/user-attachments/assets/0eab8029-124d-4ac1-b906-2463472b90b2" alt="image" loading="lazy"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1472" target="_blank" rel="noopener noreferrer">KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, N/A, ICML'24</a>
+<p>手法としては、SFTとKTOを活用しpost trainingするようである<br><img src="https://github.com/user-attachments/assets/0eab8029-124d-4ac1-b906-2463472b90b2" alt="image" loading="lazy" width="400" height="300"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1472" target="_blank" rel="noopener noreferrer">KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, N/A, ICML'24</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1158,7 +1158,7 @@ My Issue
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <span class="issue_date">Issue Date: 2021-10-25</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># 概要<br><br>DataToTextタスクにおいて、生成テキストのデータの精度を高める手法を提案。two stageアルゴリズムを提案。①encoder-decoerモデルでslotを含むテンプレートテキストを生成。②Copy Mechanismでslotのデータを埋める、といった手法。<br><br>①と②はそれぞれ独立に学習される。<br><br><br><br>two stageにするモチベーションは、<br><br>・これまでのモデルでは、単語の生成確率とコピー確率を混合した分布を考えていたが、どのように両者の確率をmergeするのが良いかはクリアではない。<br><br>→ 生成とコピーを分離して不確実性を減らした<br><br>・コピーを独立して考えることで、より効果的なpair-wise ranking loss functionを利用することができる<br><br>・テンプレート生成モデルは、テンプレートの生成に集中でき、slot fillingモデルはスロットを埋めるタスクに集中できる。これらはtrainingとtuningをより簡便にする。<br><br><br><br># モデル概要<br><br>モデルの全体像<br><br><img src="https://user-images.githubusercontent.com/12249301/138623391-6c876671-7c29-4d6a-8dfd-bd1feb623acd.png" alt="image" loading="lazy"><br><br><br><br>オリジナルテキストとテンプレートの例。テンプレートテキストの生成を学習するencoder-decoder（①）はTarget Templateを生成できるように学習する。テンプレートではエンティティが"<entity>"、数値が"<number>"というplace holderで表現されている。これらのスロットを埋めるDelayed Copy Networkは、スロットが正しく埋められるように学習される。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138623460-1415e0c2-2468-4c05-a8b8-685001c26bb7.png" alt="image" loading="lazy"><br><br><br><br># 実験結果<br><br><img src="https://user-images.githubusercontent.com/12249301/138624623-2f8944f5-8a7c-4de5-bbb8-cda9626e7018.png" alt="image" loading="lazy"><br><br><br><br>Relation Generation (RG)がCCと比べて10%程度増加しているので、data fidelityが改善されている。<br><br>また、BLEUスコアも約2ポイント改善。これはentityやnumberが適切に埋められるようになっただけでなく、テンプレートがより適切に生成されているためであると考えられる。<br><br><br><br>## 参考：<br><br>• Relation Generation (RG)：出力文から(entity, value)の関係を抽出し，抽出された関係の数と，それらの関係が入力データに対して正しいかどうかを評価する (Precision)．ただし entity はチーム名や選手名などの動作の主体，value は得点数やアシスト数などの記録である．<br><br>• Content Selection (CS)：出力文とリファレンスから (entity, value) の関係を抽出し，出力文から抽出された関係のリファレンスから抽出された関係に対する Precision，Recall で評価する．<br><br>• Content Ordering (CO)：出力文とリファレンスから (entity, value) の関係を抽出し，それらの間の正規化 DamerauLevenshtein 距離 [7] で評価する．<br><br>(from <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/409" target="_blank" rel="noopener noreferrer">過去情報の内容選択を取り入れた スポーツダイジェストの自動生成, 加藤+, 東工大, NLP'21</a>
+<strong># 概要<br><br>DataToTextタスクにおいて、生成テキストのデータの精度を高める手法を提案。two stageアルゴリズムを提案。①encoder-decoerモデルでslotを含むテンプレートテキストを生成。②Copy Mechanismでslotのデータを埋める、といった手法。<br><br>①と②はそれぞれ独立に学習される。<br><br><br><br>two stageにするモチベーションは、<br><br>・これまでのモデルでは、単語の生成確率とコピー確率を混合した分布を考えていたが、どのように両者の確率をmergeするのが良いかはクリアではない。<br><br>→ 生成とコピーを分離して不確実性を減らした<br><br>・コピーを独立して考えることで、より効果的なpair-wise ranking loss functionを利用することができる<br><br>・テンプレート生成モデルは、テンプレートの生成に集中でき、slot fillingモデルはスロットを埋めるタスクに集中できる。これらはtrainingとtuningをより簡便にする。<br><br><br><br># モデル概要<br><br>モデルの全体像<br><br><img src="https://user-images.githubusercontent.com/12249301/138623391-6c876671-7c29-4d6a-8dfd-bd1feb623acd.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>オリジナルテキストとテンプレートの例。テンプレートテキストの生成を学習するencoder-decoder（①）はTarget Templateを生成できるように学習する。テンプレートではエンティティが"<entity>"、数値が"<number>"というplace holderで表現されている。これらのスロットを埋めるDelayed Copy Networkは、スロットが正しく埋められるように学習される。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/138623460-1415e0c2-2468-4c05-a8b8-685001c26bb7.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># 実験結果<br><br><img src="https://user-images.githubusercontent.com/12249301/138624623-2f8944f5-8a7c-4de5-bbb8-cda9626e7018.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>Relation Generation (RG)がCCと比べて10%程度増加しているので、data fidelityが改善されている。<br><br>また、BLEUスコアも約2ポイント改善。これはentityやnumberが適切に埋められるようになっただけでなく、テンプレートがより適切に生成されているためであると考えられる。<br><br><br><br>## 参考：<br><br>• Relation Generation (RG)：出力文から(entity, value)の関係を抽出し，抽出された関係の数と，それらの関係が入力データに対して正しいかどうかを評価する (Precision)．ただし entity はチーム名や選手名などの動作の主体，value は得点数やアシスト数などの記録である．<br><br>• Content Selection (CS)：出力文とリファレンスから (entity, value) の関係を抽出し，出力文から抽出された関係のリファレンスから抽出された関係に対する Precision，Recall で評価する．<br><br>• Content Ordering (CO)：出力文とリファレンスから (entity, value) の関係を抽出し，それらの間の正規化 DamerauLevenshtein 距離 [7] で評価する．<br><br>(from <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/409" target="_blank" rel="noopener noreferrer">過去情報の内容選択を取り入れた スポーツダイジェストの自動生成, 加藤+, 東工大, NLP'21</a>
 </number></entity></strong>
 <br>
  )</p></span><br><br>
@@ -1368,38 +1368,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/FactorizationMachines/" title="FactorizationMachinesに関する論文・技術記事メモの一覧">
-            FactorizationMachinesに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AffectDetection/" title="AffectDetectionに関する論文・技術記事メモの一覧">
+            AffectDetectionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/EfficiencyImprovement/" title="EfficiencyImprovementに関する論文・技術記事メモの一覧">
-            EfficiencyImprovementに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/COLING/" title="COLINGに関する論文・技術記事メモの一覧">
+            COLINGに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 248</span> 
-  <span class="post-badge badge-new">📝 248</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/IRT/" title="IRTに関する論文・技術記事メモの一覧">
-            IRTに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/TechnologyEnhancedLearning/" title="TechnologyEnhancedLearningに関する論文・技術記事メモの一覧">
+            TechnologyEnhancedLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ReviewGeneration/" title="ReviewGenerationに関する論文・技術記事メモの一覧">
-            ReviewGenerationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/PartialRollout/" title="PartialRolloutに関する論文・技術記事メモの一覧">
+            PartialRolloutに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
-  <span class="post-badge badge-new">📝 13</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>

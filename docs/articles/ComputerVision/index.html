@@ -1587,7 +1587,7 @@ My Issue
 </div>
 
 
-<p>Autoregressiveにnext embedding prediction（≠reconstruction)をする。エンコーダ自身のembeddingとautoregressive headが生成したembeddingを比較することでlossが計算されるが、双方に勾配を流すとほぼ全てのパッチが同じembeddingを共有するという解に到達し何も学習されないので、エンコーダのエンコード結果（＝target)のgradientをstopする。これにより、targetとしての勾配は受け取らないが（predictionに近づけようとする勾配）、文脈に応じたベクトルを作り、next embeddingを予測する入力としての勾配は受け取るので、エンコーダは文脈に応じた学習を続けることができる。<br><br><img src="https://github.com/user-attachments/assets/2221a245-180a-4de6-877c-45b7f1b6255d" alt="image" loading="lazy"></p>
+<p>Autoregressiveにnext embedding prediction（≠reconstruction)をする。エンコーダ自身のembeddingとautoregressive headが生成したembeddingを比較することでlossが計算されるが、双方に勾配を流すとほぼ全てのパッチが同じembeddingを共有するという解に到達し何も学習されないので、エンコーダのエンコード結果（＝target)のgradientをstopする。これにより、targetとしての勾配は受け取らないが（predictionに近づけようとする勾配）、文脈に応じたベクトルを作り、next embeddingを予測する入力としての勾配は受け取るので、エンコーダは文脈に応じた学習を続けることができる。<br><br><img src="https://github.com/user-attachments/assets/2221a245-180a-4de6-877c-45b7f1b6255d" alt="image" loading="lazy" width="400" height="300"></p>
 <p>コミュニティからのフィードバックを受けて執筆されたブログ:<br>
 
 
@@ -1651,7 +1651,7 @@ My Issue
 
 
 <p>AllenAIの勢いすごいな...</p>
-<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
+<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy" width="400" height="300"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy" width="400" height="300"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy" width="400" height="300"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mmgr-multi-modal-4008" class="title-link">[Paper Note] MMGR: Multi-Modal Generative Reasoning, Zefan Cai+, arXiv'25, 2025.12</h3>
@@ -1756,7 +1756,7 @@ My Issue
 
 
 </p>
-<p>これまでの拡散モデルベースのImage GeneiationモデルにおけるVAEを、事前学習済み（self supervised learning)のvision encoder（本稿ではDINOv3)に置き換えfreezeし、それとは別途Residual Encoderと呼ばれるViTベースのEncoderを学習する。前者は画像の意味情報を捉える能力をそのまま保持し、Residual Encoder側でReconstructionをする上でのPerceptualな情報等の（vision encoderでは失われてしまう）より精緻な特徴を捉える。双方のEncoder出力はchannel次元でconcatされ、SVG Featureを形成する。SVG Decoderは、SVG FeatureをPixelスペースに戻す役割を果たす。このアーキテクチャはシンプルで軽量だが、DINOv3による強力な意味的な識別力を保ちつつ、精緻な特徴を捉える能力を補完できる。Figure 5を見ると、実際にDINOv3のみと比較して、Residual Encoderによって、細かい部分がより正確なReconstructionが実現できていることが定性的にわかる。学習時はReconstruction lossを使うが、Residual Encoderに過剰に依存するだけめなく、outputの数値的な値域が異なり、DINOv3の意味情報を損なう恐れが足るため、Residual Encoderの出力の分布をDINOv3とalignするように学習する。<br><br><img src="https://github.com/user-attachments/assets/9f5266c3-b46e-4e3e-a3fe-2f146a7e2d63" alt="image" loading="lazy"><br><br>VAE Encoderによるlatent vectorは低次元だが、提案手法はより高次元なベクトルを扱うため、Diffusionモデルの学習が難しいと考えられるが、SVG Featureの特徴量はうまく分散しており、安定してFlow Matchingで学習ができるとのこと。<br><br>実際、実験結果を見ると安定して、しかもサンプル効率がベースラインと比較して大幅に高く収束していることが見受けられる。<br><img src="https://github.com/user-attachments/assets/2ddccbe4-2ad5-4d59-8e7f-6ed9cc32a82c" alt="image" loading="lazy"></p></span><br><br>
+<p>これまでの拡散モデルベースのImage GeneiationモデルにおけるVAEを、事前学習済み（self supervised learning)のvision encoder（本稿ではDINOv3)に置き換えfreezeし、それとは別途Residual Encoderと呼ばれるViTベースのEncoderを学習する。前者は画像の意味情報を捉える能力をそのまま保持し、Residual Encoder側でReconstructionをする上でのPerceptualな情報等の（vision encoderでは失われてしまう）より精緻な特徴を捉える。双方のEncoder出力はchannel次元でconcatされ、SVG Featureを形成する。SVG Decoderは、SVG FeatureをPixelスペースに戻す役割を果たす。このアーキテクチャはシンプルで軽量だが、DINOv3による強力な意味的な識別力を保ちつつ、精緻な特徴を捉える能力を補完できる。Figure 5を見ると、実際にDINOv3のみと比較して、Residual Encoderによって、細かい部分がより正確なReconstructionが実現できていることが定性的にわかる。学習時はReconstruction lossを使うが、Residual Encoderに過剰に依存するだけめなく、outputの数値的な値域が異なり、DINOv3の意味情報を損なう恐れが足るため、Residual Encoderの出力の分布をDINOv3とalignするように学習する。<br><br><img src="https://github.com/user-attachments/assets/9f5266c3-b46e-4e3e-a3fe-2f146a7e2d63" alt="image" loading="lazy" width="400" height="300"><br><br>VAE Encoderによるlatent vectorは低次元だが、提案手法はより高次元なベクトルを扱うため、Diffusionモデルの学習が難しいと考えられるが、SVG Featureの特徴量はうまく分散しており、安定してFlow Matchingで学習ができるとのこと。<br><br>実際、実験結果を見ると安定して、しかもサンプル効率がベースラインと比較して大幅に高く収束していることが見受けられる。<br><img src="https://github.com/user-attachments/assets/2ddccbe4-2ad5-4d59-8e7f-6ed9cc32a82c" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="svg-t2i-scaling-3988" class="title-link">[Paper Note] SVG-T2I: Scaling Up Text-to-Image Latent Diffusion Model Without Variational Autoencoder, Minglei Shi+, arXiv'25, 2025.12</h3>
@@ -3256,7 +3256,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2870" target="_blank" rel="noopener noreferrer">[Paper Note] Self Forcing: Bridging the Train-Test Gap in Autoregressive Video   Diffusion, Xun Huang+, NeurIPS'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3364" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Forcing++: Towards Minute-Scale High-Quality Video Generation, Justin Cui+, arXiv'25, 2025.10</a>
 </p>
-<p>self forcingと比較して複数フレームを同時にdenoisingしエラーの蓄積を低減するコンセプトな模様。<br><img src="https://github.com/user-attachments/assets/e496e683-8438-4c87-8451-49e629ae06db" alt="image" loading="lazy"></p></span><br><br>
+<p>self forcingと比較して複数フレームを同時にdenoisingしエラーの蓄積を低減するコンセプトな模様。<br><img src="https://github.com/user-attachments/assets/e496e683-8438-4c87-8451-49e629ae06db" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="phystoolbench-benchmarking-3637" class="title-link">[Paper Note] PhysToolBench: Benchmarking Physical Tool Understanding for MLLMs, Zixin Zhang+, arXiv'25, 2025.10</h3>
@@ -3398,7 +3398,7 @@ My Issue
 </div>
 
 
-<p>image/video, speechを入力として受けとりリアルタイムに音声を出力するマルチモーダルモデル。<br><img src="https://github.com/user-attachments/assets/e3334f97-9fad-43de-9eb8-571cda31a107" alt="image" loading="lazy"></p></span><br><br>
+<p>image/video, speechを入力として受けとりリアルタイムに音声を出力するマルチモーダルモデル。<br><img src="https://github.com/user-attachments/assets/e3334f97-9fad-43de-9eb8-571cda31a107" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="yolov12-attention-centric-3583" class="title-link">[Paper Note] YOLOv12: Attention-Centric Real-Time Object Detectors, Yunjie Tian+, NeurIPS'25, 2025.02</h3>
@@ -3545,7 +3545,7 @@ My Issue
 </div>
 
 
-<p>Rebus Puzzleの例。たとえば上の例はlong time no seeが答えだが、Timeを認識してCが抜けており、かつseeとCの音韻が似ているといった解釈をしなければならない。Waterfallの例では、Waterという文字列が滝のように下に向かっている様子から類推しなければならない。おもしろい。<br><img src="https://github.com/user-attachments/assets/53038e07-fafb-42fe-94f2-2ba6901c544d" alt="image" loading="lazy"></p></span><br><br>
+<p>Rebus Puzzleの例。たとえば上の例はlong time no seeが答えだが、Timeを認識してCが抜けており、かつseeとCの音韻が似ているといった解釈をしなければならない。Waterfallの例では、Waterという文字列が滝のように下に向かっている様子から類推しなければならない。おもしろい。<br><img src="https://github.com/user-attachments/assets/53038e07-fafb-42fe-94f2-2ba6901c544d" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="os-sentinel-towards-3558" class="title-link">[Paper Note] OS-Sentinel: Towards Safety-Enhanced Mobile GUI Agents via Hybrid  Validation in Realistic Workflows, Qiushi Sun+, arXiv'25, 2025.10</h3>
@@ -3671,7 +3671,7 @@ My Issue
 </div>
 
 
-<p>RGB/RGB-D imageがgivenなときに、<br>- cropped patch inpainting<br>- flipped patch recognition<br>- shuffled patch reordering<br>- regional depth ordering<br>- relative 3D position prediction<br><br>の5つのverifiableなタスクを定義しself supervisedなmannerでRLすることでSpatial Understanding能力を向上させる話らしい<br><img src="https://github.com/user-attachments/assets/5ecd7925-6674-4c15-8d67-ec5a59133de4" alt="image" loading="lazy"></p></span><br><br>
+<p>RGB/RGB-D imageがgivenなときに、<br>- cropped patch inpainting<br>- flipped patch recognition<br>- shuffled patch reordering<br>- regional depth ordering<br>- relative 3D position prediction<br><br>の5つのverifiableなタスクを定義しself supervisedなmannerでRLすることでSpatial Understanding能力を向上させる話らしい<br><img src="https://github.com/user-attachments/assets/5ecd7925-6674-4c15-8d67-ec5a59133de4" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="longcat-video-technical-3546" class="title-link">[Paper Note] LongCat-Video Technical Report, Meituan LongCat Team+, arXiv'25, 2025.10</h3>
@@ -4372,7 +4372,7 @@ My Issue
 </div>
 
 
-<p>テキストを画像にレンダリングしてVLMに入力することでtextと比較して3.2倍KV Cache (context)を圧縮し、prefillingとデコード速度も4.8, 4.4倍高速化するフレームワークらしい<br><br><img src="https://github.com/user-attachments/assets/e65f880d-0d04-434f-9a51-accc84d44a6f" alt="image" loading="lazy"></p></span><br><br>
+<p>テキストを画像にレンダリングしてVLMに入力することでtextと比較して3.2倍KV Cache (context)を圧縮し、prefillingとデコード速度も4.8, 4.4倍高速化するフレームワークらしい<br><br><img src="https://github.com/user-attachments/assets/e65f880d-0d04-434f-9a51-accc84d44a6f" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="omnivinci-enhancing-3354" class="title-link">[Paper Note] OmniVinci: Enhancing Architecture and Data for Omni-Modal Understanding  LLM, Hanrong Ye+, arXiv'25, 2025.10</h3>
@@ -4938,7 +4938,7 @@ My Issue
 
 
 <p>これは興味深い</p>
-<p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy"><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy"><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
+<p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy" width="400" height="300"><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
  decoder-only transformerの層が深い部分でのトークンの表現が均一化されてしまうover-mixingを抑制する <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
  ことが報告されている</p>
 <p>AttentionSink関連リンク:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
@@ -5754,7 +5754,7 @@ My Issue
 
 
 </p>
-<p>Q, Kそれぞれについて独立してkmeansクラスタリングを実施し、意味的に類似したQ, Kをクラスタ化し、map上で散らばっているトークンの配置を整頓して計算機上で効率的に扱えるようにし、各クラスタのcentroidをattention scoreの計算に用いてクラスタ内のトークンのスコアを近似することで計算を効率化します、といった話な模様。また、クリティカルなクラスタとそうでは無いものがあるので、p個のクリティカルなクラスタを選択しさらに効率化をする模様。<br><img src="https://github.com/user-attachments/assets/862cf5c8-5583-4f94-8b67-59177c444176" alt="image" loading="lazy"></p></span><br><br>
+<p>Q, Kそれぞれについて独立してkmeansクラスタリングを実施し、意味的に類似したQ, Kをクラスタ化し、map上で散らばっているトークンの配置を整頓して計算機上で効率的に扱えるようにし、各クラスタのcentroidをattention scoreの計算に用いてクラスタ内のトークンのスコアを近似することで計算を効率化します、といった話な模様。また、クリティカルなクラスタとそうでは無いものがあるので、p個のクリティカルなクラスタを選択しさらに効率化をする模様。<br><img src="https://github.com/user-attachments/assets/862cf5c8-5583-4f94-8b67-59177c444176" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="video-models-2983" class="title-link">[Paper Note] Video models are zero-shot learners and reasoners, Thaddäus Wiedemer+, arXiv'25, 2025.09</h3>
@@ -6810,7 +6810,7 @@ My Issue
 <a href="https://huggingface.co/AIDC-AI/Ovis2.5-9B" target="_blank" rel="noopener noreferrer">https://huggingface.co/AIDC-AI/Ovis2.5-9B</a>
 
 
-<br><br>Apache2.0ライセンス<br><br>GLM-4.1V-9B-Thinkingと同等以上の性能な模様。<br><img src="https://github.com/user-attachments/assets/becc30fe-db20-40c1-a94c-143487ffd9ff" alt="image" loading="lazy"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2128" target="_blank" rel="noopener noreferrer">[Paper Note] GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable  Reinforcement Learning, GLM-V Team+, arXiv'25</a>
+<br><br>Apache2.0ライセンス<br><br>GLM-4.1V-9B-Thinkingと同等以上の性能な模様。<br><img src="https://github.com/user-attachments/assets/becc30fe-db20-40c1-a94c-143487ffd9ff" alt="image" loading="lazy" width="400" height="300"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2128" target="_blank" rel="noopener noreferrer">[Paper Note] GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable  Reinforcement Learning, GLM-V Team+, arXiv'25</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -6922,7 +6922,7 @@ My Issue
 <a class="button" href="VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2025-08-24</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、実世界のツール使用能力を向上させるために、23Kのインスタンスからなる大規模マルチモーダルデータセット「ToolVQA」を提案。ToolVQAは、実際の視覚的コンテキストと多段階推論タスクを特徴とし、ToolEngineを用いて人間のようなツール使用推論をシミュレート。7B LFMを微調整した結果、テストセットで優れたパフォーマンスを示し、GPT-3.5-turboを上回る一般化能力を持つことが確認された。</span>
-<span class="snippet"><span>Comment</span><p>人間による小規模なサンプル（イメージシナリオ、ツールセット、クエリ、回答、tool use trajectory)を用いてFoundation Modelに事前知識として与えることで、よりrealisticなscenarioが合成されるようにした上で新たなVQAを4k程度合成。その後10人のアノテータによって高品質なサンプルにのみFilteringすることで作成された、従来よりも実世界の設定に近く、reasoningの複雑さが高いVQAデータセットな模様。<br><br><img src="https://github.com/user-attachments/assets/8759244c-89f9-47d7-9c72-81744ef68db1" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/4bc22c9d-79f3-4c16-b5a4-3c054895b416" alt="image" loading="lazy"><br><br>具体的には、image contextxが与えられた時に、ChatGPT-4oをコントローラーとして、前回のツールとアクションの選択をgivenにし、人間が作成したプールに含まれるサンプルの中からLongest Common Subsequence (LCS) による一致度合いに基づいて人手によるサンプルを選択し、動的にcontextに含めることで多様なで実世界により近しいmulti step tooluseなtrajectoryを合成する、といった手法に見える。pp.4--5に数式や図による直感的な説明がある。なお、LCSを具体的にどのような文字列に対して、どのような前処理をした上で適用しているのかまでは追えていない。<br><img src="https://github.com/user-attachments/assets/9915c3d5-e984-4611-94d4-999ad08dc49d" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>人間による小規模なサンプル（イメージシナリオ、ツールセット、クエリ、回答、tool use trajectory)を用いてFoundation Modelに事前知識として与えることで、よりrealisticなscenarioが合成されるようにした上で新たなVQAを4k程度合成。その後10人のアノテータによって高品質なサンプルにのみFilteringすることで作成された、従来よりも実世界の設定に近く、reasoningの複雑さが高いVQAデータセットな模様。<br><br><img src="https://github.com/user-attachments/assets/8759244c-89f9-47d7-9c72-81744ef68db1" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/4bc22c9d-79f3-4c16-b5a4-3c054895b416" alt="image" loading="lazy" width="400" height="300"><br><br>具体的には、image contextxが与えられた時に、ChatGPT-4oをコントローラーとして、前回のツールとアクションの選択をgivenにし、人間が作成したプールに含まれるサンプルの中からLongest Common Subsequence (LCS) による一致度合いに基づいて人手によるサンプルを選択し、動的にcontextに含めることで多様なで実世界により近しいmulti step tooluseなtrajectoryを合成する、といった手法に見える。pp.4--5に数式や図による直感的な説明がある。なお、LCSを具体的にどのような文字列に対して、どのような前処理をした上で適用しているのかまでは追えていない。<br><img src="https://github.com/user-attachments/assets/9915c3d5-e984-4611-94d4-999ad08dc49d" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -7059,7 +7059,7 @@ My Issue
 
 
 </p>
-<p>画像をnormalizing flowでソフトトークンに変換し、transformerでソフトトークンを予測させるように学習することで、テキストと画像を同じアーキテクチャで学習できるようにしました、みたいな話っぽい？おもしろそう<br><img src="https://github.com/user-attachments/assets/d8615d39-40bc-4470-8a20-4de574ab78ff" alt="image" loading="lazy"></p></span><br><br>
+<p>画像をnormalizing flowでソフトトークンに変換し、transformerでソフトトークンを予測させるように学習することで、テキストと画像を同じアーキテクチャで学習できるようにしました、みたいな話っぽい？おもしろそう<br><img src="https://github.com/user-attachments/assets/d8615d39-40bc-4470-8a20-4de574ab78ff" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ui-venus-technical-2447" class="title-link">[Paper Note] UI-Venus Technical Report: Building High-performance UI Agents with RFT, Zhangxuan Gu+, arXiv'25</h3>
@@ -7139,7 +7139,7 @@ My Issue
 </div>
 
 
-<p>単体の画像と、prompt、マウス・キーボード入力に基づいてinteractiveに動画を合成する。軽量なGPUでも動作するように、高品質な合成データによってモデルを蒸留し軽量なモデルを利用したりもしている模様。そのうち家庭のゲーミングPCでこういったモデルでゲームをする日が来るのだろうか。<br><img src="https://github.com/user-attachments/assets/c301284d-1003-4dd0-a5cf-89dd44fc8b56" alt="image" loading="lazy"></p>
+<p>単体の画像と、prompt、マウス・キーボード入力に基づいてinteractiveに動画を合成する。軽量なGPUでも動作するように、高品質な合成データによってモデルを蒸留し軽量なモデルを利用したりもしている模様。そのうち家庭のゲーミングPCでこういったモデルでゲームをする日が来るのだろうか。<br><img src="https://github.com/user-attachments/assets/c301284d-1003-4dd0-a5cf-89dd44fc8b56" alt="image" loading="lazy" width="400" height="300"></p>
 <p>アーキテクチャに使われている技術:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2526" target="_blank" rel="noopener noreferrer">[Paper Note] DiT: Self-supervised Pre-training for Document Image Transformer, Junlong Li+, ACMMM'22</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/550" target="_blank" rel="noopener noreferrer">Learning Transferable Visual Models From Natural Language Supervision, Radford+, OpenAI, ICML'21</a>
 </p></span><br><br>
@@ -7233,7 +7233,7 @@ My Issue
 <br><br>VQAデータセット中の日本語データは3.1%程度で、<image question answer>の3つ組で構成される。wikidataから特定の文化と紐づいたエンティティ（42カ国; 人,場所,組織,アーティファクトにフォーカス）を抽出し、関連するimage dataを1--3個程度wikimediaから収集。76種類のテンプレートを用いて、draftのQAを生成し、LLMを用いて洗練（文化的な自然さ、流暢さ）させる。最終的にVLM(Qwen2.5-VL-32B/72B or Gemma-3-12B/72B-Instructを文化ごとに強い方を選択して利用)を用いてirrelevantなimage, question, answerの三つ組をフィルタリング（relevanceのスコアリングと事実情報のverification)する。<br><br>ベースモデルとして<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2470" target="_blank" rel="noopener noreferrer">[Paper Note] Pangea: A Fully Open Multilingual Multimodal LLM for 39 Languages, Xiang Yue+, arXiv'24</a>
 <br><br>を利用(Qwen2-7Bに対してCLIPベースのvision encoderを利用したVLM)し、Vision Encoderはfrozenし、LLMとconnector（テキストと画像のモダリティの橋渡しをする（大抵は）MLP)のみをfinetuningした。catastrophic forgettingを防ぐために事前学習データの一部を補完しfinetuningでも利用し、エンティティの認識力を高めるためにM3LSデータなるものをフィルタリングして追加している。<br><br>Finetuningの結果、文化的な多様性を持つ評価データ（e.g., <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2471" target="_blank" rel="noopener noreferrer">[Paper Note] CVQA: Culturally-diverse Multilingual Visual Question Answering
   Benchmark, David Romero+, arXiv'24</a>
- Figure1のJapaneseのサンプルを見ると一目でどのようなベンチか分かる）と一般的なマルチリンガルな評価データの双方でgainがあることを確認。<br><img src="https://github.com/user-attachments/assets/61b33047-4c7c-4785-99f7-bcaa131bcfbf" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/8088e61f-ef46-4bcd-bc94-8d6f6318ca0e" alt="image" loading="lazy"><br><br>VQAによるフィルタリングで利用されたpromptは下記<br><img src="https://github.com/user-attachments/assets/a9c5b463-a3e3-4565-b2f2-95268252179d" alt="image" loading="lazy"></image></p></span><br><br>
+ Figure1のJapaneseのサンプルを見ると一目でどのようなベンチか分かる）と一般的なマルチリンガルな評価データの双方でgainがあることを確認。<br><img src="https://github.com/user-attachments/assets/61b33047-4c7c-4785-99f7-bcaa131bcfbf" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/8088e61f-ef46-4bcd-bc94-8d6f6318ca0e" alt="image" loading="lazy" width="400" height="300"><br><br>VQAによるフィルタリングで利用されたpromptは下記<br><img src="https://github.com/user-attachments/assets/a9c5b463-a3e3-4565-b2f2-95268252179d" alt="image" loading="lazy" width="400" height="300"></image></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ar-grpo-training-2410" class="title-link">[Paper Note] AR-GRPO: Training Autoregressive Image Generation Models via  Reinforcement Learning, Shihao Yuan+, arXiv'25</h3>
@@ -7392,8 +7392,8 @@ My Issue
 </div>
 
 
-<p>複数のsub-questionが存在するような複雑な問題に対して、既存のRLVRにおける全体に対してbinary rewardを適用する方法は報酬が荒すぎるため、よりfine-grainedなverifiableな報酬を設計することで、学習を安定化し性能も向上<br><img src="https://github.com/user-attachments/assets/e3bf6ca8-6873-4d42-83c8-4e9148c16d1d" alt="image" loading="lazy"><br><br>以下がverifierのサンプル<br><img src="https://github.com/user-attachments/assets/c02274a4-5979-402c-a9c8-145cb1b284bf" alt="image" loading="lazy"></p>
-<p>general purposeなreal worldに対するmultimodal reasoningシステムを作成するには高品質で多様なデータが必要なので、以下のようなパイプラインを用いて、学習データを合成している模様。後で読む。サマリが元ポストに記載されているので全体像をざっくり知りたい場合は参照のこと。<br><img src="https://github.com/user-attachments/assets/6f3b7503-cd3a-4d32-9080-51b875901c23" alt="image" loading="lazy"></p></span><br><br>
+<p>複数のsub-questionが存在するような複雑な問題に対して、既存のRLVRにおける全体に対してbinary rewardを適用する方法は報酬が荒すぎるため、よりfine-grainedなverifiableな報酬を設計することで、学習を安定化し性能も向上<br><img src="https://github.com/user-attachments/assets/e3bf6ca8-6873-4d42-83c8-4e9148c16d1d" alt="image" loading="lazy" width="400" height="300"><br><br>以下がverifierのサンプル<br><img src="https://github.com/user-attachments/assets/c02274a4-5979-402c-a9c8-145cb1b284bf" alt="image" loading="lazy" width="400" height="300"></p>
+<p>general purposeなreal worldに対するmultimodal reasoningシステムを作成するには高品質で多様なデータが必要なので、以下のようなパイプラインを用いて、学習データを合成している模様。後で読む。サマリが元ポストに記載されているので全体像をざっくり知りたい場合は参照のこと。<br><img src="https://github.com/user-attachments/assets/6f3b7503-cd3a-4d32-9080-51b875901c23" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="scaling-vision-2370" class="title-link">[Paper Note] Scaling Vision Pre-Training to 4K Resolution, Baifeng Shi+, arXiv'25</h3>
@@ -7526,7 +7526,7 @@ My Issue
 <a class="button" href="UMM.html" target="_blank" rel="noopener noreferrer">#UMM</a>
 <span class="issue_date">Issue Date: 2025-07-26</span>
 <span class="snippet"><span>GPT Summary</span>- Ming-Omniは、画像、テキスト、音声、動画を処理できる統一マルチモーダルモデルで、音声生成と画像生成において優れた能力を示す。専用エンコーダを用いて異なるモダリティからトークンを抽出し、MoEアーキテクチャで処理することで、効率的にマルチモーダル入力を融合。音声デコーダと高品質な画像生成を統合し、コンテキストに応じたチャットやテキストから音声への変換、画像編集が可能。Ming-Omniは、GPT-4oに匹敵する初のオープンソースモデルであり、研究と開発を促進するためにコードとモデルの重みを公開。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/62fe9563-ed6b-40bf-ad95-067407534626" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/62fe9563-ed6b-40bf-ad95-067407534626" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -7576,7 +7576,7 @@ My Issue
 </div>
 
 
-<p>従来はDiscreteに表現されていたcaptioningにおける特性をCondition Caluculatorを導入することでcontinuousなrepresentationによって表現し、Caluculatorに人間によるinput, あるいは表現したいConditionを持つexampleをinputすることで、生成時に反映させるような手法を提案している模様。Conditionで利用するpropertyについては、提案手法ではLength, Descriptive, Uniqueness of Vocabulariesの3つを利用している（が、他のpropertyでも本手法は適用可能と思われる）。このとき、あるpropertyの値を変えることで他のpropertyが変化してしまうと制御ができなくなるため、property間のdecorrelationを実施している。これは、あるproperty Aから別のproperty Bの値を予測し、オリジナルのpropertyの値からsubtractする、といった処理を順次propertyごとに実施することで実現される。Appendixに詳細が記述されている。<br><br><img src="https://github.com/user-attachments/assets/673a2b9d-d630-4328-b619-f5382bb74f27" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/a90aa9d1-27f1-45c0-819e-c81b93364c68" alt="image" loading="lazy"></p></span><br><br>
+<p>従来はDiscreteに表現されていたcaptioningにおける特性をCondition Caluculatorを導入することでcontinuousなrepresentationによって表現し、Caluculatorに人間によるinput, あるいは表現したいConditionを持つexampleをinputすることで、生成時に反映させるような手法を提案している模様。Conditionで利用するpropertyについては、提案手法ではLength, Descriptive, Uniqueness of Vocabulariesの3つを利用している（が、他のpropertyでも本手法は適用可能と思われる）。このとき、あるpropertyの値を変えることで他のpropertyが変化してしまうと制御ができなくなるため、property間のdecorrelationを実施している。これは、あるproperty Aから別のproperty Bの値を予測し、オリジナルのpropertyの値からsubtractする、といった処理を順次propertyごとに実施することで実現される。Appendixに詳細が記述されている。<br><br><img src="https://github.com/user-attachments/assets/673a2b9d-d630-4328-b619-f5382bb74f27" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/a90aa9d1-27f1-45c0-819e-c81b93364c68" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="streaming-4d-2246" class="title-link">[Paper Note] Streaming 4D Visual Geometry Transformer, Dong Zhuo+, arXiv'25</h3>
@@ -7606,7 +7606,7 @@ My Issue
 </div>
 
 
-<p>モデルのアーキテクチャ<br><img src="https://github.com/user-attachments/assets/4aafda63-cbdb-4823-908b-6ef0732f339b" alt="image" loading="lazy"></p></span><br><br>
+<p>モデルのアーキテクチャ<br><img src="https://github.com/user-attachments/assets/4aafda63-cbdb-4823-908b-6ef0732f339b" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="explora-parameter-efficient-2206" class="title-link">[Paper Note] ExPLoRA: Parameter-Efficient Extended Pre-Training to Adapt Vision   Transformers under Domain Shifts, Samar Khanna+, ICML'25</h3>
@@ -7639,7 +7639,7 @@ My Issue
 </div>
 
 
-<p>これまでドメイン適応する場合にラベル付きデータ+LoRAでFinetuningしていたのを、ラベル無しデータ+継続事前学習の枠組みでやりましょう、という話のようである。<br><img src="https://github.com/user-attachments/assets/dcae10cf-6b5d-4b29-8d9a-a94227f29a11" alt="image" loading="lazy"><br><br>手法は下記で、事前学習済みのモデルに対してLoRAを適用し継続事前学習する。ただし、最後尾のLayer、あるいは最初と最後尾のLayerの両方をunfreezeして、trainableにする。また、LoRAはfreezeしたLayerのQ,Vに適用し、それらのLayerのnormalization layerもunfreezeする。最終的に、継続事前学習したモデルにヘッドをconcatしてfinetuningすることで目的のタスクを実行できるようにする。詳細はAlgorithm1を参照のこと。<br><br><img src="https://github.com/user-attachments/assets/6b7ef497-2253-46c9-bbe7-ffdd50765fa3" alt="image" loading="lazy"><br><br>同じモデルで単にLoRAを適用しただけの手法や、既存手法をoutperform<br><br><img width="679" height="364" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/14935879-75a4-4e4a-a176-1b1eabc4b8fd"
+<p>これまでドメイン適応する場合にラベル付きデータ+LoRAでFinetuningしていたのを、ラベル無しデータ+継続事前学習の枠組みでやりましょう、という話のようである。<br><img src="https://github.com/user-attachments/assets/dcae10cf-6b5d-4b29-8d9a-a94227f29a11" alt="image" loading="lazy" width="400" height="300"><br><br>手法は下記で、事前学習済みのモデルに対してLoRAを適用し継続事前学習する。ただし、最後尾のLayer、あるいは最初と最後尾のLayerの両方をunfreezeして、trainableにする。また、LoRAはfreezeしたLayerのQ,Vに適用し、それらのLayerのnormalization layerもunfreezeする。最終的に、継続事前学習したモデルにヘッドをconcatしてfinetuningすることで目的のタスクを実行できるようにする。詳細はAlgorithm1を参照のこと。<br><br><img src="https://github.com/user-attachments/assets/6b7ef497-2253-46c9-bbe7-ffdd50765fa3" alt="image" loading="lazy" width="400" height="300"><br><br>同じモデルで単にLoRAを適用しただけの手法や、既存手法をoutperform<br><br><img width="679" height="364" alt="Image" src="&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/user-attachments/assets/14935879-75a4-4e4a-a176-1b1eabc4b8fd"
 
 
 /&gt;</p>
@@ -7677,7 +7677,7 @@ My Issue
 </div>
 
 
-<p>画像はPJページより引用。新たにVisual Puzzleと呼ばれる特定のドメイン知識がほとんど必要ないマルチモーダルなreasoningベンチマークを構築。o1ですら、人間の5th percentileに満たない性能とのこと。<br><br>Chinese Civil Service Examination中のlogical reasoning questionを手作業で翻訳したとのこと。<br><br><img src="https://github.com/user-attachments/assets/4ee1cd31-2d47-46a2-861b-2a72c5df8529" alt="image" loading="lazy"><br><br>データセットの統計量は以下で、合計1168問で、難易度は3段階に分かれている模様。<br><img src="https://github.com/user-attachments/assets/332246e3-075f-4d98-b528-c8e4ec865068" alt="image" loading="lazy"><br><br>project page:
+<p>画像はPJページより引用。新たにVisual Puzzleと呼ばれる特定のドメイン知識がほとんど必要ないマルチモーダルなreasoningベンチマークを構築。o1ですら、人間の5th percentileに満たない性能とのこと。<br><br>Chinese Civil Service Examination中のlogical reasoning questionを手作業で翻訳したとのこと。<br><br><img src="https://github.com/user-attachments/assets/4ee1cd31-2d47-46a2-861b-2a72c5df8529" alt="image" loading="lazy" width="400" height="300"><br><br>データセットの統計量は以下で、合計1168問で、難易度は3段階に分かれている模様。<br><img src="https://github.com/user-attachments/assets/332246e3-075f-4d98-b528-c8e4ec865068" alt="image" loading="lazy" width="400" height="300"><br><br>project page:
 
 
 <a href="https://neulab.github.io/VisualPuzzles/" target="_blank" rel="noopener noreferrer">https://neulab.github.io/VisualPuzzles/</a>
@@ -7774,7 +7774,7 @@ My Issue
 </div>
 
 
-<p>VLMにおいて、画像をマスクした場合のポリシーモデルの出力と、画像をマスクしない場合のポリシーモデルの出力のKL Divergenceを最大化することで、画像の認知能力が向上し性能向上するよ、みたいな話な模様。<br><img src="https://github.com/user-attachments/assets/d7844321-d979-497f-84da-5d69fd13233f" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/afe8919c-ea16-48a1-b33b-79b7a3b1ccb0" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/04a3d23c-2eb0-40e2-aa2c-363498976320" alt="image" loading="lazy"></p></span><br><br>
+<p>VLMにおいて、画像をマスクした場合のポリシーモデルの出力と、画像をマスクしない場合のポリシーモデルの出力のKL Divergenceを最大化することで、画像の認知能力が向上し性能向上するよ、みたいな話な模様。<br><img src="https://github.com/user-attachments/assets/d7844321-d979-497f-84da-5d69fd13233f" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/afe8919c-ea16-48a1-b33b-79b7a3b1ccb0" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/04a3d23c-2eb0-40e2-aa2c-363498976320" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="vlm2vec-training-2156" class="title-link">[Paper Note] VLM2Vec: Training Vision-Language Models for Massive Multimodal  Embedding Tasks, Ziyan Jiang+, ICLR'25</h3>
@@ -7974,8 +7974,8 @@ My Issue
 </div>
 
 
-<p>Qwen2.5-VLよりも性能が良いVLM<br><img src="https://github.com/user-attachments/assets/1215d0cf-3776-4631-a5d5-2c514e7d5a2e" alt="image" loading="lazy"></p>
-<p>アーキテクチャはこちら。が、pretraining(データのフィルタリング, マルチモーダル→long context継続事前学習)-&gt;SFT(cold startへの対処, reasoning能力の獲得)-&gt;RL(RLVRとRLHFの併用によるパフォーマンス向上とAlignment, RewardHackingへの対処,curriculum sampling)など、全体の学習パイプラインの細かいテクニックの積み重ねで高い性能が獲得されていると考えられる。<br><img src="https://github.com/user-attachments/assets/a692b5de-5f4e-42c6-938e-3718dd2fc0e6" alt="image" loading="lazy"></p></span><br><br>
+<p>Qwen2.5-VLよりも性能が良いVLM<br><img src="https://github.com/user-attachments/assets/1215d0cf-3776-4631-a5d5-2c514e7d5a2e" alt="image" loading="lazy" width="400" height="300"></p>
+<p>アーキテクチャはこちら。が、pretraining(データのフィルタリング, マルチモーダル→long context継続事前学習)-&gt;SFT(cold startへの対処, reasoning能力の獲得)-&gt;RL(RLVRとRLHFの併用によるパフォーマンス向上とAlignment, RewardHackingへの対処,curriculum sampling)など、全体の学習パイプラインの細かいテクニックの積み重ねで高い性能が獲得されていると考えられる。<br><img src="https://github.com/user-attachments/assets/a692b5de-5f4e-42c6-938e-3718dd2fc0e6" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="do-vision-language-2125" class="title-link">[Paper Note] Do Vision-Language Models Have Internal World Models? Towards an Atomic   Evaluation, Qiyue Gao+, ACL（Findings）'25</h3>
@@ -8043,7 +8043,7 @@ My Issue
 </div>
 
 
-<p>Portal2を使った新たなベンチマーク。筆者は昔このゲームを少しだけプレイしたことがあるが、普通に難しかった記憶がある😅<br><br>細かいが表中のGPT-o3は正しくはo3だと思われる。<br>時間がなくて全然しっかりと読めていないが、reasoning effortやthinkingモードはどのように設定して評価したのだろうか。<br><img src="https://github.com/user-attachments/assets/a7647007-b718-4b1c-8d8a-396c36d7811d" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/4b996864-7bf8-4ea9-aa3e-84d4e9f3f5d2" alt="image" loading="lazy"></p></span><br><br>
+<p>Portal2を使った新たなベンチマーク。筆者は昔このゲームを少しだけプレイしたことがあるが、普通に難しかった記憶がある😅<br><br>細かいが表中のGPT-o3は正しくはo3だと思われる。<br>時間がなくて全然しっかりと読めていないが、reasoning effortやthinkingモードはどのように設定して評価したのだろうか。<br><img src="https://github.com/user-attachments/assets/a7647007-b718-4b1c-8d8a-396c36d7811d" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/4b996864-7bf8-4ea9-aa3e-84d4e9f3f5d2" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="smmile-an-2121" class="title-link">[Paper Note] SMMILE: An Expert-Driven Benchmark for Multimodal Medical In-Context  Learning, Melanie Rieff+, arXiv'25</h3>
@@ -8138,7 +8138,7 @@ My Issue
 
 
 </p>
-<p>CLIP, SigLIPとは異なり完全にオープンなVision Encoder<br><img src="https://github.com/user-attachments/assets/b7c8eb07-45df-4ab3-9cd2-6b31af46e761" alt="image" loading="lazy"></p>
+<p>CLIP, SigLIPとは異なり完全にオープンなVision Encoder<br><img src="https://github.com/user-attachments/assets/b7c8eb07-45df-4ab3-9cd2-6b31af46e761" alt="image" loading="lazy" width="400" height="300"></p>
 <p>v2の解説:<br>
 
 
@@ -8254,8 +8254,8 @@ My Issue
 </div>
 
 
-<p>text modalityとvision modalityを共通の空間で表現する<br><img src="https://github.com/user-attachments/assets/356e86e1-cad9-4bee-8398-d68c4fc6ad46" alt="image" loading="lazy"></p>
-<p>Visual Understanding/Generationのベンチで全体的に高い性能を達成<br><img src="https://github.com/user-attachments/assets/6e45aec0-ae0b-4327-923f-fdfce8e83ca0" alt="image" loading="lazy"></p></span><br><br>
+<p>text modalityとvision modalityを共通の空間で表現する<br><img src="https://github.com/user-attachments/assets/356e86e1-cad9-4bee-8398-d68c4fc6ad46" alt="image" loading="lazy" width="400" height="300"></p>
+<p>Visual Understanding/Generationのベンチで全体的に高い性能を達成<br><img src="https://github.com/user-attachments/assets/6e45aec0-ae0b-4327-923f-fdfce8e83ca0" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="jina-embeddings-v4-universal-2079" class="title-link">[Paper Note] jina-embeddings-v4: Universal Embeddings for Multimodal Multilingual  Retrieval, Michael Günther+, arXiv'25</h3>
@@ -8485,7 +8485,7 @@ My Issue
 
 
 <p>Diffusion Modelの波が来た</p>
-<p>同程度のサイズのARモデルをoutperform [^1]<br><img src="https://github.com/user-attachments/assets/aeb12147-48ba-4b64-917c-9976ec1ffa0a" alt="image" loading="lazy"><br><br>[^1]:ただし、これが本当にDiffusion Modelを使ったことによる恩恵なのかはまだ論文を読んでいないのでわからない。必要になったら読む。ただ、Physics of Language Modelのように、完全にコントロールされたデータで異なるアーキテクチャを比較しないとその辺はわからなそうではある。</p></span><br><br>
+<p>同程度のサイズのARモデルをoutperform [^1]<br><img src="https://github.com/user-attachments/assets/aeb12147-48ba-4b64-917c-9976ec1ffa0a" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]:ただし、これが本当にDiffusion Modelを使ったことによる恩恵なのかはまだ論文を読んでいないのでわからない。必要になったら読む。ただ、Physics of Language Modelのように、完全にコントロールされたデータで異なるアーキテクチャを比較しないとその辺はわからなそうではある。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="why-vision-1974" class="title-link">Why Vision Language Models Struggle with Visual Arithmetic? Towards   Enhanced Chart and Geometry Understanding, Kung-Hsiang Huang+, ACL'25</h3>
@@ -8522,8 +8522,8 @@ My Issue
 </div>
 
 
-<p>既存のLLM (proprietary, openweightそれぞれ)が、シンプルなvisual arithmeticタスク(e.g., 線分の長さ比較, Chart上のdotの理解)などの性能が低いことを明らかにし、<br><img src="https://github.com/user-attachments/assets/039a48de-67a5-4c81-ba59-174acd508479" alt="image" loading="lazy"><br>それらの原因を(1)Vision Encoderのrepresentationと(2)Vision EncoderをFreezeした上でのText Decoderのfinetuningで分析した。その結果、(1)ではいくつかのタスクでlinear layerのprobingでは高い性能が達成できないことがわかった。このことから、Vision Encoderによるrepresentationがタスクに関する情報を内包できていないか、タスクに関する情報は内包しているがlinear layerではそれを十分に可能できない可能性が示唆された。<br><img src="https://github.com/user-attachments/assets/0eb90fa2-7b6a-43b6-81d9-b5f7e6fb3ea8" alt="image" loading="lazy"><br><br>これをさらに分析するために(2)を実施したところ、Vision Encoderをfreezeしていてもfinetuningによりquery stringに関わらず高い性能を獲得できることが示された。このことから、Vision Encoder側のrepresentationの問題ではなく、Text Decoderと側でデコードする際にFinetuningしないとうまく活用できないことが判明した。<br><img src="https://github.com/user-attachments/assets/cd122d99-9228-44b1-9827-cdb56f49d492" alt="image" loading="lazy"></p>
-<p>手法のところはまだ全然しっかり読めていないのだが、画像に関する特定の属性に関するクエリと回答のペアを合成し、DPOすることで、zero-shotの性能が向上する、という感じっぽい？<br><img src="https://github.com/user-attachments/assets/707b1cc9-8bbf-45a5-b564-f654503c836e" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/281da17b-c8c3-455a-aa51-043ed297ae1f" alt="image" loading="lazy"></p></span><br><br>
+<p>既存のLLM (proprietary, openweightそれぞれ)が、シンプルなvisual arithmeticタスク(e.g., 線分の長さ比較, Chart上のdotの理解)などの性能が低いことを明らかにし、<br><img src="https://github.com/user-attachments/assets/039a48de-67a5-4c81-ba59-174acd508479" alt="image" loading="lazy" width="400" height="300"><br>それらの原因を(1)Vision Encoderのrepresentationと(2)Vision EncoderをFreezeした上でのText Decoderのfinetuningで分析した。その結果、(1)ではいくつかのタスクでlinear layerのprobingでは高い性能が達成できないことがわかった。このことから、Vision Encoderによるrepresentationがタスクに関する情報を内包できていないか、タスクに関する情報は内包しているがlinear layerではそれを十分に可能できない可能性が示唆された。<br><img src="https://github.com/user-attachments/assets/0eb90fa2-7b6a-43b6-81d9-b5f7e6fb3ea8" alt="image" loading="lazy" width="400" height="300"><br><br>これをさらに分析するために(2)を実施したところ、Vision Encoderをfreezeしていてもfinetuningによりquery stringに関わらず高い性能を獲得できることが示された。このことから、Vision Encoder側のrepresentationの問題ではなく、Text Decoderと側でデコードする際にFinetuningしないとうまく活用できないことが判明した。<br><img src="https://github.com/user-attachments/assets/cd122d99-9228-44b1-9827-cdb56f49d492" alt="image" loading="lazy" width="400" height="300"></p>
+<p>手法のところはまだ全然しっかり読めていないのだが、画像に関する特定の属性に関するクエリと回答のペアを合成し、DPOすることで、zero-shotの性能が向上する、という感じっぽい？<br><img src="https://github.com/user-attachments/assets/707b1cc9-8bbf-45a5-b564-f654503c836e" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/281da17b-c8c3-455a-aa51-043ed297ae1f" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="layer-by-1924" class="title-link">Layer by Layer: Uncovering Hidden Representations in Language Models, Oscar Skean+, ICML'25</h3>
@@ -8553,7 +8553,7 @@ My Issue
 <a class="button" href="CompressionValleys.html" target="_blank" rel="noopener noreferrer">#CompressionValleys</a>
 <span class="issue_date">Issue Date: 2025-05-04</span>
 <span class="snippet"><span>GPT Summary</span>- 中間層の埋め込みが最終層を超えるパフォーマンスを示すことを分析し、情報理論や幾何学に基づくメトリクスを提案。32のテキスト埋め込みタスクで中間層が強力な特徴を提供することを実証し、AIシステムの最適化における中間層の重要性を強調。</span>
-<span class="snippet"><span>Comment</span><p>現代の代表的な言語モデルのアーキテクチャ（decoder-only model, encoder-only model, SSM）について、最終層のembeddingよりも中間層のembeddingの方がdownstream task（MTEBの32Taskの平均）に、一貫して（ただし、これはMTEBの平均で見たらそうという話であり、個別のタスクで一貫して強いかは読んでみないとわからない）強いことを示した研究。<br><br>このこと自体は経験的に知られているのであまり驚きではないのだが（ただ、SSMでもそうなのか、というのと、一貫して強いというのは興味深い）、この研究はMatrix Based Entropyと呼ばれるものに基づいて、これらを分析するための様々な指標を定義し理論的な根拠を示し、Autoregressiveな学習よりもMasked Languageによる学習の方がこのようなMiddle Layerのボトルネックが緩和され、同様のボトルネックが画像の場合でも起きることを示し、CoTデータを用いたFinetuningについても分析している模様。この辺の貢献が非常に大きいと思われるのでここを理解することが重要だと思われる。あとで読む。<br><br><img src="https://github.com/user-attachments/assets/bda00c50-c97b-45e0-97a5-d98dd98599fd" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>現代の代表的な言語モデルのアーキテクチャ（decoder-only model, encoder-only model, SSM）について、最終層のembeddingよりも中間層のembeddingの方がdownstream task（MTEBの32Taskの平均）に、一貫して（ただし、これはMTEBの平均で見たらそうという話であり、個別のタスクで一貫して強いかは読んでみないとわからない）強いことを示した研究。<br><br>このこと自体は経験的に知られているのであまり驚きではないのだが（ただ、SSMでもそうなのか、というのと、一貫して強いというのは興味深い）、この研究はMatrix Based Entropyと呼ばれるものに基づいて、これらを分析するための様々な指標を定義し理論的な根拠を示し、Autoregressiveな学習よりもMasked Languageによる学習の方がこのようなMiddle Layerのボトルネックが緩和され、同様のボトルネックが画像の場合でも起きることを示し、CoTデータを用いたFinetuningについても分析している模様。この辺の貢献が非常に大きいと思われるのでここを理解することが重要だと思われる。あとで読む。<br><br><img src="https://github.com/user-attachments/assets/bda00c50-c97b-45e0-97a5-d98dd98599fd" alt="image" loading="lazy" width="400" height="300"></p>
 <p>openreview:
 
 
@@ -8620,7 +8620,7 @@ My Issue
 <p>vision系のfoundation modelはそれぞれ異なる目的関数で訓練されてきており（CLIPは対照学習 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/550" target="_blank" rel="noopener noreferrer">Learning Transferable Visual Models From Natural Language Supervision, Radford+, OpenAI, ICML'21</a>
 , DINOv2は自己教師あり学習 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1884" target="_blank" rel="noopener noreferrer">DINOv2: Learning Robust Visual Features without Supervision, Maxime Oquab+, TMLR'24</a>
 , SAMはsegmentation <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1885" target="_blank" rel="noopener noreferrer">Segment Anything, Alexander Kirillov+, arXiv'23</a>
-)それぞれ別の能力を持ってたが、それらを一個のモデルに蒸留しました、という話らしい<br><img src="https://github.com/user-attachments/assets/929aaa47-ab88-4912-a59a-579d2f34e886" alt="image" loading="lazy"></p></span><br><br>
+)それぞれ別の能力を持ってたが、それらを一個のモデルに蒸留しました、という話らしい<br><img src="https://github.com/user-attachments/assets/929aaa47-ab88-4912-a59a-579d2f34e886" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="qwen2.5-omni-technical-1843" class="title-link">Qwen2.5-Omni Technical Report, Jin Xu+, arXiv'25</h3>
@@ -8644,7 +8644,7 @@ My Issue
 <a class="button" href="Video.html" target="_blank" rel="noopener noreferrer">#Video</a>
 <span class="issue_date">Issue Date: 2025-03-31</span>
 <span class="snippet"><span>GPT Summary</span>- マルチモーダルモデル「Qwen2.5-Omni」は、テキスト、画像、音声、動画を認識し、ストリーミング方式で自然な音声応答を生成する。音声と視覚エンコーダはブロック処理を用い、TMRoPEによる新しい位置埋め込みで音声と動画の同期を実現。Thinker-Talkerアーキテクチャにより、テキスト生成と音声出力を干渉なく行う。Qwen2.5-Omniは、エンドツーエンドで訓練され、音声指示に対する性能がテキスト入力と同等で、ストリーミングTalkerは既存手法を上回る自然さを持つ。</span>
-<span class="snippet"><span>Comment</span><p>Qwen TeamによるマルチモーダルLLM。テキスト、画像、動画音声をinputとして受け取り、テキスト、音声をoutputする。<br><img src="https://github.com/user-attachments/assets/03e54fd7-2011-4069-aa1b-38d1610169ec" alt="image" loading="lazy"><br><br>weight:
+<span class="snippet"><span>Comment</span><p>Qwen TeamによるマルチモーダルLLM。テキスト、画像、動画音声をinputとして受け取り、テキスト、音声をoutputする。<br><img src="https://github.com/user-attachments/assets/03e54fd7-2011-4069-aa1b-38d1610169ec" alt="image" loading="lazy" width="400" height="300"><br><br>weight:
 
 
 <a href="https://huggingface.co/collections/Qwen/qwen25-omni-67de1e5f0f9464dc6314b36e" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/Qwen/qwen25-omni-67de1e5f0f9464dc6314b36e</a>
@@ -9233,7 +9233,7 @@ My Issue
 <a class="button" href="VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2025-08-23</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模視覚-言語基盤モデル（InternVL）は、60億パラメータで設計され、LLMと整合させるためにウェブ規模の画像-テキストデータを使用。視覚認知タスクやゼロショット分類、検索など32のベンチマークで最先端の性能を達成し、マルチモーダル対話システムの構築に寄与。ViT-22Bの代替として強力な視覚能力を持つ。コードとモデルは公開されている。</span>
-<span class="snippet"><span>Comment</span><p>既存のResNetのようなSupervised pretrainingに基づくモデル、CLIPのようなcontrastive pretrainingに基づくモデルに対して、text encoder部分をLLMに置き換えて、contrastive learningとgenerativeタスクによる学習を組み合わせたパラダイムを提案。<br><img src="https://github.com/user-attachments/assets/eca53a4a-1d3b-46f1-a833-07ef16b8d5f7" alt="image" loading="lazy"><br><br>InternVLのアーキテクチャは下記で、3 stageの学習で構成される。最初にimage text pairをcontrastive learningし学習し、続いてモデルのパラメータはfreezeしimage text retrievalタスク等でモダリティ間の変換を担う最終的にQlLlama(multilingual性能を高めたllama)をvision-languageモダリティを繋ぐミドルウェアのように捉え、Vicunaをテキストデコーダとして接続してgenerative cossで学習する、みたいなアーキテクチャの模様（斜め読みなので少し違う可能性あり<br><br><img src="https://github.com/user-attachments/assets/46a2a0fe-721c-4336-b5ec-657caa5c4771" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>既存のResNetのようなSupervised pretrainingに基づくモデル、CLIPのようなcontrastive pretrainingに基づくモデルに対して、text encoder部分をLLMに置き換えて、contrastive learningとgenerativeタスクによる学習を組み合わせたパラダイムを提案。<br><img src="https://github.com/user-attachments/assets/eca53a4a-1d3b-46f1-a833-07ef16b8d5f7" alt="image" loading="lazy" width="400" height="300"><br><br>InternVLのアーキテクチャは下記で、3 stageの学習で構成される。最初にimage text pairをcontrastive learningし学習し、続いてモデルのパラメータはfreezeしimage text retrievalタスク等でモダリティ間の変換を担う最終的にQlLlama(multilingual性能を高めたllama)をvision-languageモダリティを繋ぐミドルウェアのように捉え、Vicunaをテキストデコーダとして接続してgenerative cossで学習する、みたいなアーキテクチャの模様（斜め読みなので少し違う可能性あり<br><br><img src="https://github.com/user-attachments/assets/46a2a0fe-721c-4336-b5ec-657caa5c4771" alt="image" loading="lazy" width="400" height="300"></p>
 <p>現在のVLMの主流であるvision encoderとLLMをadapterで接続する方式はここからかなりシンプルになっていることが伺える。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -9337,7 +9337,7 @@ My Issue
 </div>
 
 
-<p>MMMUのサンプルはこちら。各分野ごとに専門家レベルの知識と推論が求められるとのこと。<br><img src="https://github.com/user-attachments/assets/90839a16-d7d2-499d-b2d8-52dab8988e52" alt="image" loading="lazy"></p></span><br><br>
+<p>MMMUのサンプルはこちら。各分野ごとに専門家レベルの知識と推論が求められるとのこと。<br><img src="https://github.com/user-attachments/assets/90839a16-d7d2-499d-b2d8-52dab8988e52" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="visual-prompting-2372" class="title-link">[Paper Note] Visual Prompting in Multimodal Large Language Models: A Survey, Junda Wu+, arXiv'24</h3>
@@ -9415,7 +9415,7 @@ My Issue
 </div>
 
 
-<p>高品質なデータにフィルタリングすることで多くの研究がモデルがより高い性能を達成できることを示しているが、高品質なデータには限りがあることと、繰り返し学習をすることですぐにその効用が低下する（Quality-Quantity tradeoff!)という特性がある。このような状況において、たとえば計算の予算がデータ6パケット分の時に、めちゃめちゃフィルタリングを頑張っg高品質なデータプールEのみを使って6 epoch学習するのが良いのか、少し品質は落ちるデータDも混ぜてE+Dを3 epoch学習するのが良いのか、ときにどちらが良いのか？という話のようである。<br><img src="https://github.com/user-attachments/assets/06812781-7212-415e-bc7a-dd19ac4ca0d7" alt="image" loading="lazy"></p></span><br><br>
+<p>高品質なデータにフィルタリングすることで多くの研究がモデルがより高い性能を達成できることを示しているが、高品質なデータには限りがあることと、繰り返し学習をすることですぐにその効用が低下する（Quality-Quantity tradeoff!)という特性がある。このような状況において、たとえば計算の予算がデータ6パケット分の時に、めちゃめちゃフィルタリングを頑張っg高品質なデータプールEのみを使って6 epoch学習するのが良いのか、少し品質は落ちるデータDも混ぜてE+Dを3 epoch学習するのが良いのか、ときにどちらが良いのか？という話のようである。<br><img src="https://github.com/user-attachments/assets/06812781-7212-415e-bc7a-dd19ac4ca0d7" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="heron-bench-a-2231" class="title-link">[Paper Note] Heron-Bench: A Benchmark for Evaluating Vision Language Models in  Japanese, Yuichi Inoue+, arXiv'24</h3>
@@ -9588,7 +9588,7 @@ My Issue
 
 
 </p>
-<p>Next Token Prediction, Next Image Token Generation (従来手法）, Next Scale (resolution) prediction (提案手法)の違いの図解。非常に分かりやすい。next token predictionでは次トークンのみを予測するがVARでは、次の解像度画像の全体のトークンマップを予測する。<br><br><img src="https://github.com/user-attachments/assets/668d7523-f262-45c1-a1d0-2dd479c0a708" alt="image" loading="lazy"><br><br>学習方法の概要。2-Stageで学習される。最初のステージでK種類の解像度の画像（＝K種類のマルチスケールのtoken maps r_k）を得るためにAutoEncoderを学習し、次のステージでblock-wiseのcausal attention maskを用いて、K_<k cache>各r_kをデコードする際にr_<k><img src="https://github.com/user-attachments/assets/e1a85712-e66a-4c9a-9cf1-6556f2b8e687" alt="image" loading="lazy"><br><br>従来手法と比べより小さいパラメータで高い性能を実現し、inference timeも非常に早い。<br><img src="https://github.com/user-attachments/assets/90a6a7de-995d-49e6-94a2-cd709e68777f" alt="image" loading="lazy"><br><br>ScalingLawsも成立する。<br><img src="https://github.com/user-attachments/assets/351c2a7b-85aa-4cc7-8ba2-a5e9528cabd4" alt="image" loading="lazy"></k></k></p></span><br><br>
+<p>Next Token Prediction, Next Image Token Generation (従来手法）, Next Scale (resolution) prediction (提案手法)の違いの図解。非常に分かりやすい。next token predictionでは次トークンのみを予測するがVARでは、次の解像度画像の全体のトークンマップを予測する。<br><br><img src="https://github.com/user-attachments/assets/668d7523-f262-45c1-a1d0-2dd479c0a708" alt="image" loading="lazy" width="400" height="300"><br><br>学習方法の概要。2-Stageで学習される。最初のステージでK種類の解像度の画像（＝K種類のマルチスケールのtoken maps r_k）を得るためにAutoEncoderを学習し、次のステージでblock-wiseのcausal attention maskを用いて、K_<k cache>各r_kをデコードする際にr_<k><img src="https://github.com/user-attachments/assets/e1a85712-e66a-4c9a-9cf1-6556f2b8e687" alt="image" loading="lazy" width="400" height="300"><br><br>従来手法と比べより小さいパラメータで高い性能を実現し、inference timeも非常に早い。<br><img src="https://github.com/user-attachments/assets/90a6a7de-995d-49e6-94a2-cd709e68777f" alt="image" loading="lazy" width="400" height="300"><br><br>ScalingLawsも成立する。<br><img src="https://github.com/user-attachments/assets/351c2a7b-85aa-4cc7-8ba2-a5e9528cabd4" alt="image" loading="lazy" width="400" height="300"></k></k></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="multimodal-autoregressive-1542" class="title-link">Multimodal Autoregressive Pre-training of Large Vision Encoders, Enrico Fini+, arXiv'24</h3>
@@ -9652,7 +9652,7 @@ My Issue
 <a class="button" href="Catastrophic%20Forgetting.html" target="_blank" rel="noopener noreferrer">#Catastrophic Forgetting</a>
 <span class="issue_date">Issue Date: 2024-11-12</span>
 <span class="snippet"><span>GPT Summary</span>- 破滅的忘却に対処するため、タスクフリーのオンライン継続学習（OCL）フレームワークOnline-LoRAを提案。リハーサルバッファの制約を克服し、事前学習済みビジョントランスフォーマー（ViT）モデルをリアルタイムで微調整。新しいオンライン重み正則化戦略を用いて重要なモデルパラメータを特定し、データ分布の変化を自動認識。多様なベンチマークデータセットで優れた性能を示す。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/b789ba71-3941-4d60-9397-46607ddc7712" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/b789ba71-3941-4d60-9397-46607ddc7712" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="com-kitchens-1435" class="title-link">COM Kitchens: An Unedited Overhead-view Video Dataset as a   Vision-Language Benchmark, Koki Maeda+, N_A, ECCV'24</h3>
@@ -9692,7 +9692,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2024-09-30</span>
 <span class="snippet"><span>GPT Summary</span>- 視覚と言語のモデル（VLM）の設計における裏付けのない決定が性能向上の特定を妨げていると指摘。事前学習済みモデルやアーキテクチャ、データ、トレーニング手法に関する実験を行い、80億パラメータの基盤VLM「Idefics2」を開発。Idefics2はマルチモーダルベンチマークで最先端の性能を達成し、4倍のサイズのモデルと同等の性能を示す。モデルとデータセットを公開。</span>
-<span class="snippet"><span>Comment</span><p>元ポストにOpenVLMの進展の歴史が載っている。構築されたデータセットも公開される模様。<br><img src="https://github.com/user-attachments/assets/9675c2ad-650a-460b-9655-1c6347d07f58" alt="image" loading="lazy"><br>元ポスト:
+<span class="snippet"><span>Comment</span><p>元ポストにOpenVLMの進展の歴史が載っている。構築されたデータセットも公開される模様。<br><img src="https://github.com/user-attachments/assets/9675c2ad-650a-460b-9655-1c6347d07f58" alt="image" loading="lazy" width="400" height="300"><br>元ポスト:
 
 
 
@@ -9797,8 +9797,8 @@ My Issue
 <span class="issue_date">Issue Date: 2023-12-29</span>
 <span class="snippet"><span>GPT Summary</span>- Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
 <span class="snippet"><span>Comment</span><p>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI</p>
-<p>モデルのアーキテクチャ図<br><img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy"><br><br>マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:<br><br>- 2D Rotary Embedding<br>  - Positional EncodingとしてRoPEを採用<br>  - 画像のような2次元データのモダリティの場合はRoPEを2次元に拡張する。具体的には、位置(i, j)のトークンについては、Q, Kのembeddingを半分に分割して、それぞれに対して独立にi, jのRoPE Embeddingを適用することでi, j双方の情報を組み込む。<br>- QK Normalization<br>  - image, audioのモダリティを組み込むことでMHAのlogitsが非常に大きくなりatteetion weightが0/1の極端な値をとるようになり訓練の不安定さにつながった。このため、dot product attentionを適用する前にLayerNormを組み込んだ。<br>- Scaled Cosine Attention<br>  - Image Historyモダリティにおいて固定長のEmbeddingを得るためにPerceiver Resamplerを扱ったているが、こちらも上記と同様にAttentionのlogitsが極端に大きくなったため、cosine類似度をベースとしたScaled Cosine Attention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2259" target="_blank" rel="noopener noreferrer">[Paper Note] Swin Transformer V2: Scaling Up Capacity and Resolution, Ze Liu+, arXiv'21</a>
- を利用することで、大幅に訓練の安定性が改善された。<br>- その他<br>  - attention logitsにはfp32を適用<br>  - 事前学習されたViTとASTを同時に更新すると不安定につながったため、事前学習の段階ではfreezeし、instruction tuningの最後にfinetuningを実施<br><br><img src="https://github.com/user-attachments/assets/74c8fa3a-8fb5-4785-8dd3-6a8cf3c7cfeb" alt="image" loading="lazy"></p>
+<p>モデルのアーキテクチャ図<br><img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy" width="400" height="300"><br><br>マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:<br><br>- 2D Rotary Embedding<br>  - Positional EncodingとしてRoPEを採用<br>  - 画像のような2次元データのモダリティの場合はRoPEを2次元に拡張する。具体的には、位置(i, j)のトークンについては、Q, Kのembeddingを半分に分割して、それぞれに対して独立にi, jのRoPE Embeddingを適用することでi, j双方の情報を組み込む。<br>- QK Normalization<br>  - image, audioのモダリティを組み込むことでMHAのlogitsが非常に大きくなりatteetion weightが0/1の極端な値をとるようになり訓練の不安定さにつながった。このため、dot product attentionを適用する前にLayerNormを組み込んだ。<br>- Scaled Cosine Attention<br>  - Image Historyモダリティにおいて固定長のEmbeddingを得るためにPerceiver Resamplerを扱ったているが、こちらも上記と同様にAttentionのlogitsが極端に大きくなったため、cosine類似度をベースとしたScaled Cosine Attention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2259" target="_blank" rel="noopener noreferrer">[Paper Note] Swin Transformer V2: Scaling Up Capacity and Resolution, Ze Liu+, arXiv'21</a>
+ を利用することで、大幅に訓練の安定性が改善された。<br>- その他<br>  - attention logitsにはfp32を適用<br>  - 事前学習されたViTとASTを同時に更新すると不安定につながったため、事前学習の段階ではfreezeし、instruction tuningの最後にfinetuningを実施<br><br><img src="https://github.com/user-attachments/assets/74c8fa3a-8fb5-4785-8dd3-6a8cf3c7cfeb" alt="image" loading="lazy" width="400" height="300"></p>
 <p>目的関数としては、Mixture of Denoisers (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )に着想を得て、Multimodal Mixture of Denoisersを提案。MoDでは、<br>- \[R\]: 通常のspan corruption (1--5 token程度のspanをmaskする)<br>- \[S\]: causal language modeling (inputを2つのサブシーケンスに分割し、前方から後方を予測する。前方部分はBi-directionalでも可)<br>- \[X\]: extreme span corruption (12&gt;=token程度のspanをmaskする)<br><br>の3種類が提案されており、モダリティごとにこれらを使い分ける:<br>- text modality: UL2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )を踏襲<br>- image, audioがtargetの場合: 2つの類似したパラダイムを定義し利用<br>  - \[R\]: patchをランダムにx%マスクしre-constructする<br>  - \[S\]: inputのtargetとは異なるモダリティのみの情報から、targetモダリティを生成する<br><br>訓練時には prefixとしてmodality token \[Text\], \[Image\], \[Audio\] とparadigm token \[R\], \[S\], \[X\] をタスクを指示するトークンとして利用している。</p>
@@ -9928,7 +9928,7 @@ My Issue
 <span class="issue_date">Issue Date: 2023-10-09</span>
 <span class="snippet"><span>GPT Summary</span>- LLaVAは、ビジョンと言語のクロスモーダルコネクタであり、データ効率が高く強力な性能を持つことが示されています。CLIP-ViT-L-336pxを使用し、学術タスク指向のVQAデータを追加することで、11のベンチマークで最先端のベースラインを確立しました。13Bのチェックポイントはわずか120万の公開データを使用し、1日で完全なトレーニングを終えます。コードとモデルは公開されます。</span>
 <span class="snippet"><span>Comment</span><p>画像分析が可能なオープンソースLLMとのこと。</p>
-<p># Overview<br><br>画像生成をできるわけではなく、inputとして画像を扱えるのみ。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8d0382b0-8c2b-438d-8de8-ee451f5e2649" alt="image" loading="lazy"><br><br></p>
+<p># Overview<br><br>画像生成をできるわけではなく、inputとして画像を扱えるのみ。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8d0382b0-8c2b-438d-8de8-ee451f5e2649" alt="image" loading="lazy" width="400" height="300"><br><br></p>
 <p>pj page:
 
 
@@ -9958,7 +9958,7 @@ My Issue
 <span class="issue_date">Issue Date: 2023-04-30</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、自然画像セグメンテーションに革新的な手法であるSegment anything model (SAM)を医療画像に拡張するためのMedSAMを提案し、様々な医療ターゲットのセグメンテーションのための汎用ツールを作成することを目的としています。MedSAMは、大規模な医療画像データセットを用いて開発され、SAMを一般的な医療画像セグメンテーションに適応するためのシンプルなファインチューニング手法を開発しました。21の3Dセグメンテーションタスクと9の2Dセグメンテーションタスクに対する包括的な実験により、MedSAMは、平均Dice類似係数（DSC）がそれぞれ22.5％と17.6％で、デフォルトのSAMモデルを上回ることが示されました。コードとトレーニング済みモデルは、\url{https://github.com/bowang-lab/MedSAM}で公開されています。</span>
 <span class="snippet"><span>Comment</span><p>SAMの性能は医療画像に対しては限定的だったため、11の異なるモダリティに対して200kのマスクをした医療画像を用意しfinetuningしたMedSAMによって、医療画像のセグメンテーションの性能を大幅に向上。<br>コードとモデルはpublicly available</p>
-<p><img src="https://github.com/user-attachments/assets/ea394adc-b1da-4764-bf29-534323bfc443" alt="image" loading="lazy"></p></span><br><br>
+<p><img src="https://github.com/user-attachments/assets/ea394adc-b1da-4764-bf29-534323bfc443" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="audiogpt-understanding-547" class="title-link">AudioGPT: Understanding and Generating Speech, Music, Sound, and Talking Head, AAAI'24</h3>
@@ -9981,7 +9981,7 @@ My Issue
 <span class="issue_date">Issue Date: 2023-04-26</span>
 <span class="snippet"><span>GPT Summary</span>- AudioGPTは、複雑な音声情報を処理し、音声対話をサポートするマルチモーダルAIシステムである。基盤モデルとASR、TTSインターフェースを組み合わせ、音声、音楽、トーキングヘッドの理解と生成を行う。実験により、AudioGPTが多様なオーディオコンテンツの創造を容易にする能力を示した。</span>
 <span class="snippet"><span>Comment</span><p>text, audio, imageといったマルチモーダルなpromptから、audioに関する様々なタスクを実現できるシステム</p>
-<p>マルチモーダルデータをjointで学習したというわけではなく、色々なモデルの組み合わせてタスクを実現しているっぽい<br><br><img src="https://user-images.githubusercontent.com/12249301/234739859-f833706a-6040-484a-b015-553a719484d7.png" alt="image" loading="lazy"><br><br></p></span><br><br>
+<p>マルチモーダルデータをjointで学習したというわけではなく、色々なモデルの組み合わせてタスクを実現しているっぽい<br><br><img src="https://user-images.githubusercontent.com/12249301/234739859-f833706a-6040-484a-b015-553a719484d7.png" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="set-of-mark-prompting-3805" class="title-link">[Paper Note] Set-of-Mark Prompting Unleashes Extraordinary Visual Grounding in GPT-4V, Jianwei Yang+, arXiv'23, 2023.10</h3>
@@ -10283,7 +10283,7 @@ My Issue
 <a class="button" href="Normalization.html" target="_blank" rel="noopener noreferrer">#Normalization</a>
 <span class="issue_date">Issue Date: 2025-04-19</span>
 <span class="snippet"><span>GPT Summary</span>- 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの収束が進む中、異なる実装の「Transformers」が使用されている。汎用モデリングのために、安定性を持つFoundation Transformerの開発が提唱され、Magnetoという新しいTransformer変種が紹介される。Sub-LayerNormと理論に基づく初期化戦略を用いることで、さまざまなアプリケーションにおいて優れたパフォーマンスと安定性を示した。</span>
-<span class="snippet"><span>Comment</span><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy" width="400" height="300"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22</a>
 </p></span><br><br>
 </article>
@@ -10409,7 +10409,7 @@ My Issue
 <a class="button" href="In-ContextLearning.html" target="_blank" rel="noopener noreferrer">#In-ContextLearning</a>
 <span class="issue_date">Issue Date: 2023-11-23</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、ビジョン領域における汎用的なビジュアルインコンテキストプロンプティングフレームワークを提案します。エンコーダーデコーダーアーキテクチャを使用し、さまざまなプロンプトをサポートするプロンプトエンコーダーを開発しました。さらに、任意の数の参照画像セグメントをコンテキストとして受け取るように拡張しました。実験結果から、提案手法が非凡な参照および一般的なセグメンテーション能力を引き出し、競争力のあるパフォーマンスを示すことがわかりました。</span>
-<span class="snippet"><span>Comment</span><p>Image Segmentationには、ユーザが与えたプロンプトと共通のコンセプトを持つすべてのオブジェクトをセグメンテーションするタスクと、ユーザの入力の特定のオブジェクトのみをセグメンテーションするタスクがある。従来は個別のタスクごとに、特定の入力方法（Visual Prompt, Image Prompt）を前提とした手法や、個々のタスクを実施できるがIn-Context Promptしかサポートしていない手法しかなかったが、この研究では、Visual Prompt, Image Prompt, In-Context Promptをそれぞれサポートし両タスクを実施できるという位置付けの模様。また、提案手法ではストローク、点、ボックスといったユーザの画像に対する描画に基づくPromptingをサポートし、Promptingにおける参照セグメント数も任意の数指定できるとのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f5da3d7b-68aa-4120-a37c-7c42be1704f8" alt="image" loading="lazy"><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6992dde-e10b-41cb-a190-eb78376bef31" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Image Segmentationには、ユーザが与えたプロンプトと共通のコンセプトを持つすべてのオブジェクトをセグメンテーションするタスクと、ユーザの入力の特定のオブジェクトのみをセグメンテーションするタスクがある。従来は個別のタスクごとに、特定の入力方法（Visual Prompt, Image Prompt）を前提とした手法や、個々のタスクを実施できるがIn-Context Promptしかサポートしていない手法しかなかったが、この研究では、Visual Prompt, Image Prompt, In-Context Promptをそれぞれサポートし両タスクを実施できるという位置付けの模様。また、提案手法ではストローク、点、ボックスといったユーザの画像に対する描画に基づくPromptingをサポートし、Promptingにおける参照セグメント数も任意の数指定できるとのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f5da3d7b-68aa-4120-a37c-7c42be1704f8" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6992dde-e10b-41cb-a190-eb78376bef31" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="layoutprompter-awaken-1133" class="title-link">LayoutPrompter: Awaken the Design Ability of Large Language Models, Jiawei Lin+, N_A, NeurIPS'23</h3>
@@ -10451,7 +10451,7 @@ My Issue
 <a class="button" href="FoundationModel.html" target="_blank" rel="noopener noreferrer">#FoundationModel</a>
 <span class="issue_date">Issue Date: 2023-11-13</span>
 <span class="snippet"><span>GPT Summary</span>- Florence-2は、ビジョン基盤モデルであり、さまざまなビジョンタスクに対応するための統一されたプロンプトベースの表現を持っています。このモデルは、テキストプロンプトを受け取り、キャプショニング、オブジェクト検出、グラウンディング、セグメンテーションなどのタスクを実行し、テキスト形式で結果を生成します。また、FLD-5Bという大規模な注釈付きデータセットも開発されました。Florence-2は、多目的かつ包括的なビジョンタスクを実行するためにシーケンスツーシーケンス構造を採用しており、前例のないゼロショットおよびファインチューニングの能力を持つ強力なモデルです。</span>
-<span class="snippet"><span>Comment</span><p>Vison Foundation Model。Spatialな階層構造や、Semanticを捉えられるように訓練。Image/Prompt Encoderでエンコードされ、outputはtext + location informationとなる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9fbfba62-190f-46eb-a893-5ebe76dda030" alt="image" loading="lazy"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f7497161-6b9a-4adc-aa6b-53debe1e9318" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Vison Foundation Model。Spatialな階層構造や、Semanticを捉えられるように訓練。Image/Prompt Encoderでエンコードされ、outputはtext + location informationとなる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9fbfba62-190f-46eb-a893-5ebe76dda030" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f7497161-6b9a-4adc-aa6b-53debe1e9318" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="exploring-ocr-1093" class="title-link">Exploring OCR Capabilities of GPT-4V（ision） : A Quantitative and  In-depth Evaluation, Yongxin Shi+, N_A, arXiv'23</h3>
@@ -10473,7 +10473,7 @@ My Issue
 <a class="button" href="OCR.html" target="_blank" rel="noopener noreferrer">#OCR</a>
 <span class="issue_date">Issue Date: 2023-10-26</span>
 <span class="snippet"><span>GPT Summary</span>- この論文では、GPT-4Vという大規模マルチモーダルモデルの光学文字認識（OCR）能力を評価します。さまざまなOCRタスクにおいてモデルのパフォーマンスを評価し、ラテン文字の認識と理解において優れた性能を示す一方、多言語や複雑なタスクには苦戦することがわかりました。これに基づいて、専門のOCRモデルの必要性やGPT-4Vを活用する戦略についても検討します。この研究は、将来のLMMを用いたOCRの研究に役立つものです。評価のパイプラインと結果は、GitHubで利用可能です。</span>
-<span class="snippet"><span>Comment</span><p>GPT4-VをさまざまなOCRタスク「手書き、数式、テーブル構造認識等を含む）で性能検証した研究。<br>MLT19データセットを使った評価では、日本語の性能は非常に低く、英語とフランス語が性能高い。手書き文字認識では英語と中国語でのみ評価。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c433b921-c527-441f-8925-00f4ac5fc6c3" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>GPT4-VをさまざまなOCRタスク「手書き、数式、テーブル構造認識等を含む）で性能検証した研究。<br>MLT19データセットを使った評価では、日本語の性能は非常に低く、英語とフランス語が性能高い。手書き文字認識では英語と中国語でのみ評価。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c433b921-c527-441f-8925-00f4ac5fc6c3" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="foundational-models-914" class="title-link">[Paper Note] Foundational Models Defining a New Era in Vision: A Survey and Outlook, Muhammad Awais+, arXiv'23, 2023.07</h3>
@@ -10554,7 +10554,7 @@ My Issue
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、言語モデルとビジョン言語モデルを強化学習エージェントに組み込み、効率的な探索や経験データの再利用などの課題に取り組む方法を調査しました。スパースな報酬のロボット操作環境でのテストにおいて、ベースラインに比べて大幅な性能向上を実証し、学習済みのスキルを新しいタスクの解決や人間の専門家のビデオの模倣に活用する方法を示しました。</span>
-<span class="snippet"><span>Comment</span><p><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="fabric-personalizing-878" class="title-link">FABRIC: Personalizing Diffusion Models with Iterative Feedback, Dimitri von Rütte+, N_A, arXiv'23</h3>
@@ -10603,7 +10603,7 @@ My Issue
 <a class="button" href="SpeechProcessing.html" target="_blank" rel="noopener noreferrer">#SpeechProcessing</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、マルチモーダル学習のためのMeta-Transformerというフレームワークを提案しています。このフレームワークは、異なるモダリティの情報を処理し関連付けるための統一されたネットワークを構築することを目指しています。Meta-Transformerは、対応のないデータを使用して12のモダリティ間で統一された学習を行うことができ、テキスト、画像、ポイントクラウド、音声、ビデオなどの基本的なパーセプションから、X線、赤外線、高分光、IMUなどの実用的なアプリケーション、グラフ、表形式、時系列などのデータマイニングまで、幅広いタスクを処理することができます。Meta-Transformerは、トランスフォーマーを用いた統一されたマルチモーダルインテリジェンスの開発に向けた有望な未来を示しています。</span>
-<span class="snippet"><span>Comment</span><p>12種類のモダリティに対して学習できるTransformerを提案<br>Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれのdownstreamタスクで学習<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8734073a-573e-442e-8b9f-fed559199d56" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>12種類のモダリティに対して学習できるTransformerを提案<br>Dataをsequenceにtokenizeし、unifiedにfeatureをencodingし、それぞれのdownstreamタスクで学習<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8734073a-573e-442e-8b9f-fed559199d56" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mpchat-towards-839" class="title-link">MPCHAT: Towards Multimodal Persona-Grounded Conversation, ACL'23</h3>
@@ -10727,7 +10727,7 @@ My Issue
 <a class="button" href="Navigation.html" target="_blank" rel="noopener noreferrer">#Navigation</a>
 <span class="issue_date">Issue Date: 2023-07-11</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、汎用事前学習モデルであるVisual Navigation Transformer（ViNT）を提案し、ビジョンベースのロボットナビゲーションに成功をもたらします。ViNTは、大規模なナビゲーションデータセットで訓練され、柔軟なTransformerベースのアーキテクチャを使用してさまざまなナビゲーションタスクに適応します。ViNTは、拡散ベースのサブゴール提案と組み合わせることで、新しい環境を探索し、キロメートルスケールのナビゲーション問題を解決することができます。また、ViNTはプロンプトチューニングに触発された技術を使用して、新しいタスク仕様に適応することができます。ViNTはモバイルロボティクスのための効果的な基礎モデルとして確立されています。詳細はプロジェクトページを参照してください。</span>
-<span class="snippet"><span>Comment</span><p>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="spae-semantic-800" class="title-link">SPAE: Semantic Pyramid AutoEncoder for Multimodal Generation with Frozen  LLMs, Lijun Yu+, N_A, arXiv'23</h3>
@@ -10747,7 +10747,7 @@ My Issue
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2023-07-11</span>
 <span class="snippet"><span>GPT Summary</span>- この研究では、Semantic Pyramid AutoEncoder（SPAE）を使用して、凍結されたLLMsが非言語的なモダリティを含むタスクを実行できるようにします。SPAEは、LLMの語彙から抽出されたトークンと生のピクセルデータの変換を行います。生成されたトークンは、視覚再構成に必要な意味と詳細を捉え、LLMが理解できる言語に変換します。実験結果では、我々のアプローチが画像理解と生成のタスクにおいて最先端のパフォーマンスを25％以上上回ることを示しています。</span>
-<span class="snippet"><span>Comment</span><p>画像をLLMのtokenスペースにマッピングすることで、LLMがパラメータの更新なしにvisual taskを解くことを可能にした。in context learningによって、様々なvisuataskを解くことができる。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1e0f962f-e661-44e6-bc59-73d9ae87d6dd" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>画像をLLMのtokenスペースにマッピングすることで、LLMがパラメータの更新なしにvisual taskを解くことを可能にした。in context learningによって、様々なvisuataskを解くことができる。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1e0f962f-e661-44e6-bc59-73d9ae87d6dd" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="towards-language-775" class="title-link">Towards Language Models That Can See: Computer Vision Through the LENS  of Natural Language, William Berrios+, N_A, arXiv'23</h3>
@@ -10777,7 +10777,7 @@ My Issue
 </div>
 
 
-<p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image" loading="lazy"></p></span><br><br>
+<p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e96f9a8a-6ce2-4985-8b0a-8daf4a6e477c" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="photoswap-personalized-751" class="title-link">Photoswap: Personalized Subject Swapping in Images, Jing Gu+, N_A, arXiv'23</h3>
@@ -10837,7 +10837,7 @@ My Issue
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2023-06-16</span>
 <span class="snippet"><span>GPT Summary</span>- 本論文では、自律的な情報収集ビジュアル質問応答フレームワークであるAVISを提案する。AVISは、大規模言語モデル（LLM）を活用して外部ツールの利用戦略を動的に決定し、質問に対する回答に必要な不可欠な知識を獲得する。ユーザースタディを実施して収集したデータを用いて、プランナーや推論エンジンを改善し、知識集約型ビジュアル質問応答ベンチマークで最先端の結果を達成することを示している。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9df9b0ce-1f95-4e48-a4c9-b4c6b87d0ac6" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9df9b0ce-1f95-4e48-a4c9-b4c6b87d0ac6" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="megabyte-predicting-682" class="title-link">[Paper Note] MEGABYTE: Predicting Million-byte Sequences with Multiscale Transformers, Lili Yu+, NeurIPS'23, 2023.05</h3>
@@ -10915,7 +10915,7 @@ My Issue
 <a class="button" href="Semi-Supervised.html" target="_blank" rel="noopener noreferrer">#Semi-Supervised</a>
 <span class="issue_date">Issue Date: 2023-04-30</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、コンピュータビジョンにおける半教師あり学習の問題を解決するために、Semantic Positives via Pseudo-Labels (SemPPL)という新しい手法を提案している。この手法は、ラベル付きとラベルなしのデータを組み合わせて情報豊富な表現を学習することができ、ResNet-$50$を使用してImageNetの$1\%$および$10\%$のラベルでトレーニングする場合、競合する半教師あり学習手法を上回る最高性能を発揮することが示された。SemPPLは、強力な頑健性、分布外および転移性能を示すことができる。</span>
-<span class="snippet"><span>Comment</span><p>後ほど説明を追記する<br><img src="https://github.com/user-attachments/assets/4441dc6c-a7b2-4ec9-9748-b6558a96e1af" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/8a78a40e-f5c4-4742-9e5d-36cd1b8d0e60" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/04ded9aa-c875-4282-9e3b-7ce456a6cc44" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>後ほど説明を追記する<br><img src="https://github.com/user-attachments/assets/4441dc6c-a7b2-4ec9-9748-b6558a96e1af" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/8a78a40e-f5c4-4742-9e5d-36cd1b8d0e60" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/04ded9aa-c875-4282-9e3b-7ce456a6cc44" alt="image" loading="lazy" width="400" height="300"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1975" target="_blank" rel="noopener noreferrer">A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20</a>
 </p></span><br><br>
 </article>
@@ -10936,7 +10936,7 @@ My Issue
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模な言語-視覚モデルのトレーニングを加速し安定させる新手法を提案。SwitchBackを用いたint8量子化で、CLIP ViT-Hugeのトレーニング速度を13-25%向上させ、bfloat16と同等の性能を維持。float8トレーニングも効果的であることを示し、初期化方法が成功に寄与。損失のスパイクを分析し、AdamW-Adafactorハイブリッドを推奨することで、トレーニングの安定性を向上させた。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/235149432-1c818dc6-174c-4666-a26c-2ab9683b438b.png" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p><img src="https://user-images.githubusercontent.com/12249301/235149432-1c818dc6-174c-4666-a26c-2ab9683b438b.png" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="track-anything-535" class="title-link">Track Anything: Segment Anything Meets Videos, yang+, SUSTech VIP Lab, arXiv'23</h3>
@@ -10974,7 +10974,7 @@ My Issue
 <a class="button" href="SIGGRAPH.html" target="_blank" rel="noopener noreferrer">#SIGGRAPH</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
 <span class="snippet"><span>GPT Summary</span>- テキストから画像へのモデルは高品質な画像合成を実現するが、空間的特性の制御が不足している。本研究では、スケッチからの空間マップを用いて事前学習済みモデルを導く新しいアプローチを提案。専用モデルを必要とせず、潜在ガイダンス予測器（LGP）を訓練し、画像を空間マップに一致させる。ピクセルごとの訓練により柔軟性を持ち、スケッチから画像への翻訳タスクにおいて効果的な生成が可能であることを示す。</span>
-<span class="snippet"><span>Comment</span><p>スケッチとpromptを入力することで、スケッチ biasedな画像を生成することができる技術。すごい。<br><br><img src="https://user-images.githubusercontent.com/12249301/205189823-66052368-60a8-4f03-a4b6-37111bd1b361.png" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>スケッチとpromptを入力することで、スケッチ biasedな画像を生成することができる技術。すごい。<br><br><img src="https://user-images.githubusercontent.com/12249301/205189823-66052368-60a8-4f03-a4b6-37111bd1b361.png" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="autoregressive-image-4043" class="title-link">[Paper Note] Autoregressive Image Generation using Residual Quantization, Doyup Lee+, CVPR'22, 2022.03</h3>
@@ -11274,7 +11274,7 @@ My Issue
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <span class="issue_date">Issue Date: 2025-07-10</span>
 <span class="snippet"><span>GPT Summary</span>- 汎用アーキテクチャPerceiver IOを提案し、任意のデータ設定に対応し、入力と出力のサイズに対して線形にスケール可能。柔軟なクエリメカニズムを追加し、タスク特有の設計を不要に。自然言語、視覚理解、マルチタスクで強力な結果を示し、GLUEベンチマークでBERTを上回る性能を達成。</span>
-<span class="snippet"><span>Comment</span><p>当時相当話題となったさまざまなモーダルを統一された枠組みで扱えるPerceiver IO論文<br><img src="https://github.com/user-attachments/assets/d7893f14-d69c-4af8-8117-08c2a6095e8e" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>当時相当話題となったさまざまなモーダルを統一された枠組みで扱えるPerceiver IO論文<br><img src="https://github.com/user-attachments/assets/d7893f14-d69c-4af8-8117-08c2a6095e8e" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="laion-5b-an-1928" class="title-link">LAION-5B: An open large-scale dataset for training next generation   image-text models, Christoph Schuhmann+, NeurIPS'22</h3>
@@ -11320,7 +11320,7 @@ My Issue
 <a class="button" href="OOD.html" target="_blank" rel="noopener noreferrer">#OOD</a>
 <span class="issue_date">Issue Date: 2023-05-15</span>
 <span class="snippet"><span>GPT Summary</span>- 事前学習済みモデルをダウンストリームタスクに転移する際、ファインチューニングと線形プロービングの2つの方法があるが、本研究では、分布のシフトが大きい場合、ファインチューニングが線形プロービングよりも分布外で精度が低くなることを発見した。LP-FTという2段階戦略の線形プロービング後の全体のファインチューニングが、両方のデータセットでファインチューニングと線形プロービングを上回ることを示唆している。</span>
-<span class="snippet"><span>Comment</span><p>事前学習済みのニューラルモデルをfinetuningする方法は大きく分けて<br>1. linear layerをヘッドとしてconcatしヘッドのみのパラメータを学習<br>2. 事前学習済みモデル全パラメータを学習<br><br>の2種類がある。<br>前者はin-distributionデータに強いが、out-of-distributionに弱い。後者は逆という互いが互いを補完し合う関係にあった。<br>そこで、まず1を実施し、その後2を実施する手法を提案。in-distribution, out-of-distributionの両方で高い性能を出すことを示した（実験では画像処理系のデータを用いて、モデルとしてはImageNet+CLIPで事前学習済みのViTを用いている)。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/059d9056-bd3c-45f2-abd9-00c9f2a3d630" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>事前学習済みのニューラルモデルをfinetuningする方法は大きく分けて<br>1. linear layerをヘッドとしてconcatしヘッドのみのパラメータを学習<br>2. 事前学習済みモデル全パラメータを学習<br><br>の2種類がある。<br>前者はin-distributionデータに強いが、out-of-distributionに弱い。後者は逆という互いが互いを補完し合う関係にあった。<br>そこで、まず1を実施し、その後2を実施する手法を提案。in-distribution, out-of-distributionの両方で高い性能を出すことを示した（実験では画像処理系のデータを用いて、モデルとしてはImageNet+CLIPで事前学習済みのViTを用いている)。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/059d9056-bd3c-45f2-abd9-00c9f2a3d630" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="vision-transformers-4091" class="title-link">[Paper Note] Vision Transformers for Dense Prediction, René Ranftl+, ICCV'21, 2021.03</h3>
@@ -11518,7 +11518,7 @@ My Issue
 
 
 </p>
-<p>画像処理において、物体の異なるスケールや、解像度に対処するために、PatchMergeと呼ばれるプーリングのような処理と、固定サイズのローカルなwindowに分割してSelf-Attentionを実施し、layerごとに通常のwindowとシフトされたwindowを適用することで、window間を跨いだ関係性も考慮できるようにする機構を導入したモデル。<br><img src="https://github.com/user-attachments/assets/a2d5f78c-27ec-4f18-bd7d-5475085cfa7b" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/92fb10e1-614e-44ef-9e65-3920cd863d46" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/2b8a543a-069e-468a-bc3c-1f288cdcf577" alt="image" loading="lazy"></p></span><br><br>
+<p>画像処理において、物体の異なるスケールや、解像度に対処するために、PatchMergeと呼ばれるプーリングのような処理と、固定サイズのローカルなwindowに分割してSelf-Attentionを実施し、layerごとに通常のwindowとシフトされたwindowを適用することで、window間を跨いだ関係性も考慮できるようにする機構を導入したモデル。<br><img src="https://github.com/user-attachments/assets/a2d5f78c-27ec-4f18-bd7d-5475085cfa7b" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/92fb10e1-614e-44ef-9e65-3920cd863d46" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/2b8a543a-069e-468a-bc3c-1f288cdcf577" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="vilt-vision-and-language-1009" class="title-link">ViLT: Vision-and-Language Transformer Without Convolution or Region   Supervision, Wonjae Kim+, N_A, ICML'21</h3>
@@ -11568,7 +11568,7 @@ My Issue
 <a class="button" href="ContrastiveLearning.html" target="_blank" rel="noopener noreferrer">#ContrastiveLearning</a>
 <a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>Comment</span><p>CLIP論文。大量の画像と画像に対応するテキストのペアから、対象学習を行い、画像とテキスト間のsimilarityをはかれるようにしたモデル<br><br><img src="https://user-images.githubusercontent.com/12249301/234729329-dfa5dc1e-c5fc-452c-8ead-76df7d1aeda4.png" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>CLIP論文。大量の画像と画像に対応するテキストのペアから、対象学習を行い、画像とテキスト間のsimilarityをはかれるようにしたモデル<br><br><img src="https://user-images.githubusercontent.com/12249301/234729329-dfa5dc1e-c5fc-452c-8ead-76df7d1aeda4.png" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="generating-racing-487" class="title-link">[Paper Note] Generating Racing Game Commentary from Vision, Language, and Structured Data, Tatsuya+, INLG'21</h3>
@@ -11619,7 +11619,7 @@ My Issue
 <span class="issue_date">Issue Date: 2021-11-04</span>
 <span class="snippet"><span>GPT Summary</span>- 本論文では、Residual Networks（ResNet-50）の性能を新たな最適化手法やデータ拡張技術を統合したトレーニング手法で再評価。競争力のある設定で、ImageNet-valにおいて80.4%のトップ1精度を達成し、事前学習済みモデルをtimmライブラリで共有することで、今後の研究のベースラインとなることを目指す。</span>
 <span class="snippet"><span>Comment</span><p>2015年以後、様々な最適化アルゴリズム、正則化手法、データ拡張などが提案される中で、最新アーキテクチャのモデルにはそれらが適用される一方ベースラインとなるResNetではそれらが適用されず、論文の値のみが参照される現状はフェアではないので、ResNetの性能を向上させるような訓練手法を追求した研究。<br><br><br><br>ResNetにおける有効な訓練手法として下記を模索：<br><br><br><br>損失関数として、MixUp（訓練画像を重ね合わせ、組み合わせた画像のラベルをミックスして新しい学習インスタンスを作るデータ拡張手法）と、CutMix（画像を切り貼りして、切り貼り部分の面積に応じてラベルのスコアを調整するデータ拡張手法）を適用し、CutMixによって大幅に性能が改善することを示した。このとき、ラベルの確率の和が1となる前提の元クロスエントロピーで学習するのではなく、元画像に含まれる物体が両方存在するという全体の元BinaryCrossEntropyを適用しマルチラベル問題として学習することで、性能が向上。<br><br><br><br>データ拡張手法として、MixUp, CutMixだけでなく、通常のリサイズ・切り抜きと、水平方向の反転を適用しデータ拡張する。加えてRandAugment（14種類のデータ拡張操作から、N個サンプルし、強さMで順番に適用するデータ拡張手法。N,Mはそれぞれ0〜10の整数なので、10の二乗オーダーでグリッドサーチすれば、最適なN,Mを得る。グリッドサーチするだけでお手軽だが非常に強力）を適用した。<br><br><br><br>正則化として、Weight Decay（学習過程で重みが大きくなりすぎないようにペナルティを課し、過学習を防止する手法。L2正則化など。）と、label smoothing（正解ラベルが1、その他は0とラベル付けするのではなく、ラベルに一定のノイズを入れ、正解ラベル以外にも重みが入っている状態にし、ラベル付けのノイズにロバストなモデルを学習する手法。ノイズの強さは定数で調整する）、Repeated Augmentation（同じバッチ内の画像にデータ拡張を適用しバッチサイズを大きくする）、Stochastic Depth（ランダムでレイヤーを削除し、その間を恒等関数で繋ぎ訓練することで、モデルの汎化能力と訓練時間を向上する）を適用。<br><br></p>
-<p>Optimizerとして、オリジナルのResNetでは、SGDやAdamWで訓練されることが多いが、Repeated Augmentationとバイナリクロスエントロピーを組み合わせた場合はLAMBが有効であった。また、従来よりも長い訓練時間（600epoch、様々な正則化手法を使っているので過学習しづらいため）で学習し、最初にウォームアップを使い徐々に学習率を上げ（finetuningの再認識これまでのweightをなるべく壊したくないから小さい学習率から始める、あるいはMomentumやAdamといった移動平均を使う手法では移動平均を取るための声倍の蓄積が足りない場合学習の信頼度が低いので最初の方は学習率小さくするみたいな、イメージ）その後コサイン関数に従い学習率を減らしていくスケジューリング法で学習。<br><br><br><br>論文中では上記手法の3種類の組み合わせ（A1,A2,A3）を提案し実験している。<br><br>ResNet-50に対してA1,2,3を適用した結果、A1を適用した場合にImageNetのトップ1精度が80.4%であり、これはResNet-50を使った場合のSoTA。元のResNetの精度が76%程度だったので大幅に向上した。<br><br>同じ実験設定を使った場合の他のアーキテクチャ（ViTやEfficientNetなど）と比べても遜色のない性能を達成。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302112-05392bbb-7014-4518-a001-55e91933a065.png" alt="image" loading="lazy"><br><br><br><br>また、本論文で提案されているA2と、DeiTと呼ばれるアーキテクチャで提案されている訓練手法（T2）をそれぞれのモデルに適用した結果、ResNetではA2、DeiTではT2の性能が良かった。つまり、「アーキテクチャと訓練方法は同時に最適化する必要がある」ということ。これがこの論文のメッセージの肝とのこと。<br><br><br><br>（ステートオブAIガイドの内容を一部補足して記述しました。いつもありがとうございます。）<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302160-c31717ae-a225-47a4-ae33-f1cd081c419b.png" alt="image" loading="lazy"></p>
+<p>Optimizerとして、オリジナルのResNetでは、SGDやAdamWで訓練されることが多いが、Repeated Augmentationとバイナリクロスエントロピーを組み合わせた場合はLAMBが有効であった。また、従来よりも長い訓練時間（600epoch、様々な正則化手法を使っているので過学習しづらいため）で学習し、最初にウォームアップを使い徐々に学習率を上げ（finetuningの再認識これまでのweightをなるべく壊したくないから小さい学習率から始める、あるいはMomentumやAdamといった移動平均を使う手法では移動平均を取るための声倍の蓄積が足りない場合学習の信頼度が低いので最初の方は学習率小さくするみたいな、イメージ）その後コサイン関数に従い学習率を減らしていくスケジューリング法で学習。<br><br><br><br>論文中では上記手法の3種類の組み合わせ（A1,A2,A3）を提案し実験している。<br><br>ResNet-50に対してA1,2,3を適用した結果、A1を適用した場合にImageNetのトップ1精度が80.4%であり、これはResNet-50を使った場合のSoTA。元のResNetの精度が76%程度だったので大幅に向上した。<br><br>同じ実験設定を使った場合の他のアーキテクチャ（ViTやEfficientNetなど）と比べても遜色のない性能を達成。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302112-05392bbb-7014-4518-a001-55e91933a065.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>また、本論文で提案されているA2と、DeiTと呼ばれるアーキテクチャで提案されている訓練手法（T2）をそれぞれのモデルに適用した結果、ResNetではA2、DeiTではT2の性能が良かった。つまり、「アーキテクチャと訓練方法は同時に最適化する必要がある」ということ。これがこの論文のメッセージの肝とのこと。<br><br><br><br>（ステートオブAIガイドの内容を一部補足して記述しました。いつもありがとうございます。）<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302160-c31717ae-a225-47a4-ae33-f1cd081c419b.png" alt="image" loading="lazy" width="400" height="300"></p>
 <p>画像系でどういった訓練手法が利用されるか色々書かれていたので勉強になった。特に画像系のデータ拡張手法なんかは普段触らないので勉強になる。</p>
 <p>OpenReview:
 
@@ -11902,7 +11902,7 @@ My Issue
 <a class="button" href="Batch.html" target="_blank" rel="noopener noreferrer">#Batch</a>
 <span class="issue_date">Issue Date: 2025-07-12</span>
 <span class="snippet"><span>GPT Summary</span>- ミニバッチサイズが深層ニューラルネットワークのトレーニング性能に与える影響を実験的に比較。大きなミニバッチは計算の並列性を向上させるが、小さなミニバッチは一般化性能を高め、安定したトレーニングを実現。最良の性能はミニバッチサイズ$m = 2$から$m = 32$の範囲で得られ、数千のミニバッチサイズを推奨する研究とは対照的。</span>
-<span class="snippet"><span>Comment</span><p>{Res, Reduced Alex}Netにおいて、バッチサイズを大きくすると、学習が安定しかつ高い予測性能を獲得できる学習率のrangeが小さくなる。一方、バッチサイズが小さいと有効な学習率のrangeが広い。また、バッチサイズが小さい場合は、勾配計算とパラメータのアップデートがより頻繁に行われる。このため、モデルの学習がより進んだ状態で個々のデータに対して勾配計算が行われるため、バッチサイズが大きい場合と比べるとモデルがより更新された状態で各データに対して勾配が計算されることになるため、学習が安定し良い汎化性能につながる、といった話の模様。<br><br><img src="https://github.com/user-attachments/assets/f02f9016-6e9f-476d-a4c1-4f64bd51e9d5" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>{Res, Reduced Alex}Netにおいて、バッチサイズを大きくすると、学習が安定しかつ高い予測性能を獲得できる学習率のrangeが小さくなる。一方、バッチサイズが小さいと有効な学習率のrangeが広い。また、バッチサイズが小さい場合は、勾配計算とパラメータのアップデートがより頻繁に行われる。このため、モデルの学習がより進んだ状態で個々のデータに対して勾配計算が行われるため、バッチサイズが大きい場合と比べるとモデルがより更新された状態で各データに対して勾配が計算されることになるため、学習が安定し良い汎化性能につながる、といった話の模様。<br><br><img src="https://github.com/user-attachments/assets/f02f9016-6e9f-476d-a4c1-4f64bd51e9d5" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="group-normalization-1856" class="title-link">Group Normalization, Yuxin Wu+, arXiv'18</h3>
@@ -11923,7 +11923,7 @@ My Issue
 <a class="button" href="Normalization.html" target="_blank" rel="noopener noreferrer">#Normalization</a>
 <span class="issue_date">Issue Date: 2025-04-02</span>
 <span class="snippet"><span>GPT Summary</span>- グループ正規化（GN）は、バッチ正規化（BN）の代替手段として提案され、バッチサイズに依存せず安定した精度を提供します。特に、バッチサイズ2のResNet-50では、GNがBNよりも10.6%低い誤差を示し、一般的なバッチサイズでも同等の性能を発揮します。GNは物体検出やビデオ分類などのタスクでBNを上回る結果を示し、簡単に実装可能です。</span>
-<span class="snippet"><span>Comment</span><p>BatchNormalizationはバッチサイズが小さいとうまくいかず、メモリの制約で大きなバッチサイズが設定できない場合に困るからバッチサイズに依存しないnormalizationを考えたよ。LayerNormとInstanceNormもバッチサイズに依存しないけど提案手法の方が画像系のタスクだと性能が良いよ、という話らしい。<br><br>各normalizationとの比較。分かりやすい。<br><img src="https://github.com/user-attachments/assets/128a6a2e-cac7-4d6a-9cf6-31119fb6b187" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>BatchNormalizationはバッチサイズが小さいとうまくいかず、メモリの制約で大きなバッチサイズが設定できない場合に困るからバッチサイズに依存しないnormalizationを考えたよ。LayerNormとInstanceNormもバッチサイズに依存しないけど提案手法の方が画像系のタスクだと性能が良いよ、という話らしい。<br><br>各normalizationとの比較。分かりやすい。<br><img src="https://github.com/user-attachments/assets/128a6a2e-cac7-4d6a-9cf6-31119fb6b187" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="neural-discrete-3924" class="title-link">[Paper Note] Neural Discrete Representation Learning, Aaron van den Oord+, NIPS'17, 2017.11</h3>
@@ -12037,7 +12037,7 @@ My Issue
 <a class="button" href="Optimizer.html" target="_blank" rel="noopener noreferrer">#Optimizer</a>
 <span class="issue_date">Issue Date: 2023-12-13</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模な畳み込みネットワークのトレーニングを高速化するために、新しいトレーニングアルゴリズムを提案しました。このアルゴリズムは、Layer-wise Adaptive Rate Scaling（LARS）を使用して、大きなバッチサイズでのトレーニングを行いながらモデルの精度を損なわずにトレーニングすることができます。具体的には、Alexnetを8Kのバッチサイズまでスケーリングし、Resnet-50を32Kのバッチサイズまでスケーリングしました。</span>
-<span class="snippet"><span>Comment</span><p>BatchSizeを大きくすると性能が落ちますよ、系の話（CNN）<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/deeb60b7-548c-4e50-94db-ce98eaf268e3" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>BatchSizeを大きくすると性能が落ちますよ、系の話（CNN）<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/deeb60b7-548c-4e50-94db-ce98eaf268e3" alt="image" loading="lazy" width="400" height="300"></p>
 <p>OpenReview:
 
 
@@ -12620,7 +12620,7 @@ My Issue
 </div>
 
 
-<p>GUI Agentとして性能はトップレベル(Opusが比較対象に入っていないが）で、<br><img src="https://github.com/user-attachments/assets/5af897ef-dad9-4f25-95a6-712c9400c05c" alt="image" loading="lazy"><br><br>テキスト、画像モダリティでの検索でもトップレベル、codingやツール利用などは少し劣るように見える。<br><img src="https://github.com/user-attachments/assets/d5a1c1a3-ce7f-4d63-b3c3-58abf7743526" alt="image" loading="lazy"><br><br>LLM系、VideoUnderstanding系ののベンチマークではフロンティアモデル群と同等、VLM系のタスクではフロンティアモデル群と同等以上の性能に見える。<br><br>が、一方のモダリティはGPT5で比較しているのに対し、他方はGPT5.1であったりしており、比較対象が少し恣意的にピックされているのでは？という気もする。</p>
+<p>GUI Agentとして性能はトップレベル(Opusが比較対象に入っていないが）で、<br><img src="https://github.com/user-attachments/assets/5af897ef-dad9-4f25-95a6-712c9400c05c" alt="image" loading="lazy" width="400" height="300"><br><br>テキスト、画像モダリティでの検索でもトップレベル、codingやツール利用などは少し劣るように見える。<br><img src="https://github.com/user-attachments/assets/d5a1c1a3-ce7f-4d63-b3c3-58abf7743526" alt="image" loading="lazy" width="400" height="300"><br><br>LLM系、VideoUnderstanding系ののベンチマークではフロンティアモデル群と同等、VLM系のタスクではフロンティアモデル群と同等以上の性能に見える。<br><br>が、一方のモダリティはGPT5で比較しているのに対し、他方はGPT5.1であったりしており、比較対象が少し恣意的にピックされているのでは？という気もする。</p>
 <p>モデルカード:
 
 
@@ -12742,7 +12742,7 @@ My Issue
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1426" target="_blank" rel="noopener noreferrer">Molmo: A family of open state-of-the-art multimodal AI models, AI2, 2024.09</a>
 </p>
 <p>Qwen3とOlmoをベースにしたvariantsが存在し、Olmoの方はバックボーンのLLMも含めて全てがオープンになっている。MetaのPerceptionLMと比較して1/8の動画データ量で高い性能を達成できており、データのcurationの品質と、grounding basedな目的関数の工夫によって実現されているとのこと。</p>
-<p>proprietaryなモデル群と比較すると、trackingは圧勝、そのほかはGPT5-miniと同様なものが多い。モデルによってタスクの優劣が結構分かれており、Video関連タスクをタスクをまたいで汎化させることにはclosedでも苦戦しているように見える。<br><br><img src="https://github.com/user-attachments/assets/1fe2c2fd-d8f3-4d79-ab98-fa8eb348234a" alt="image" loading="lazy"><br><br>オープンモデルとの比較で言うと圧勝で、LongVideoのQAに関してだけは、Eagle2.5-8Bと呼ばれるモデルが勝っている。<br><img src="https://github.com/user-attachments/assets/37bd1ade-fa20-46f5-b09d-bde309e224b0" alt="image" loading="lazy"><br><br>あとは全体を通じてLLMのバックボーンがQwen3の場合の性能が良いことが興味深い。バックボーンに採用するLLMに応じて性能が結構変わる。これはアーキテクチャがそもそもConnectorを利用するタイプのもので、Unifiedなアーキテクチャではないことが要因としては考えられる。<br><br><img src="https://github.com/user-attachments/assets/5d87163e-23bb-4d7d-aaf2-46fa43a22921" alt="image" loading="lazy"></p>
+<p>proprietaryなモデル群と比較すると、trackingは圧勝、そのほかはGPT5-miniと同様なものが多い。モデルによってタスクの優劣が結構分かれており、Video関連タスクをタスクをまたいで汎化させることにはclosedでも苦戦しているように見える。<br><br><img src="https://github.com/user-attachments/assets/1fe2c2fd-d8f3-4d79-ab98-fa8eb348234a" alt="image" loading="lazy" width="400" height="300"><br><br>オープンモデルとの比較で言うと圧勝で、LongVideoのQAに関してだけは、Eagle2.5-8Bと呼ばれるモデルが勝っている。<br><img src="https://github.com/user-attachments/assets/37bd1ade-fa20-46f5-b09d-bde309e224b0" alt="image" loading="lazy" width="400" height="300"><br><br>あとは全体を通じてLLMのバックボーンがQwen3の場合の性能が良いことが興味深い。バックボーンに採用するLLMに応じて性能が結構変わる。これはアーキテクチャがそもそもConnectorを利用するタイプのもので、Unifiedなアーキテクチャではないことが要因としては考えられる。<br><br><img src="https://github.com/user-attachments/assets/5d87163e-23bb-4d7d-aaf2-46fa43a22921" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト: 
 
 
@@ -13488,7 +13488,7 @@ My Issue
 
 
 </p>
-<p>text, image/video, audioをinputし、audioを生成するomniモデル<br><img src="https://github.com/user-attachments/assets/7af9971e-c75f-4330-aca7-7f00547f97ae" alt="image" loading="lazy"></p></span><br><br>
+<p>text, image/video, audioをinputし、audioを生成するomniモデル<br><img src="https://github.com/user-attachments/assets/7af9971e-c75f-4330-aca7-7f00547f97ae" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="nemotron-vlm-dataset-v2-3498" class="title-link">Nemotron-VLM-Dataset-v2, Nvidia, 2025.10</h3>
@@ -14762,7 +14762,7 @@ My Issue
 </div>
 
 
-<p>様々な種類の時計（e.g., 反転、フォントの違い, invalidな時刻の存在, 大きさ, フォーマットなど; p.2参照のこと)の時刻を読み取り（あるいはvalidな時刻か否かを判定し)、読み取った時刻に対してQA（e.g., X時間Y分Z秒進める、戻した時刻は？長針を30/60/90度動かした時刻は？この時刻がニューヨークの時間だとしたらロンドンの時刻は？)を実施するベンチマーク。人間の正解率は89.1%に対してSoTAモデルでも13.3%程度。contaminationに配慮して全てスクラッチから作成され、全体の評価データはprivateなままにしているとのこと。<br><img src="https://github.com/user-attachments/assets/aa2ca43c-97c9-49c3-a93b-d1897858d598" alt="image" loading="lazy"></p>
+<p>様々な種類の時計（e.g., 反転、フォントの違い, invalidな時刻の存在, 大きさ, フォーマットなど; p.2参照のこと)の時刻を読み取り（あるいはvalidな時刻か否かを判定し)、読み取った時刻に対してQA（e.g., X時間Y分Z秒進める、戻した時刻は？長針を30/60/90度動かした時刻は？この時刻がニューヨークの時間だとしたらロンドンの時刻は？)を実施するベンチマーク。人間の正解率は89.1%に対してSoTAモデルでも13.3%程度。contaminationに配慮して全てスクラッチから作成され、全体の評価データはprivateなままにしているとのこと。<br><img src="https://github.com/user-attachments/assets/aa2ca43c-97c9-49c3-a93b-d1897858d598" alt="image" loading="lazy" width="400" height="300"></p>
 <p>続報:<br>
 
 
@@ -15331,7 +15331,7 @@ My Issue
 </div>
 
 
-<p>Llama Nemotron VLM Dataset V1<br><br>VQA, OCRの比率が多めで、Imase Captioningは少なめ。<br><img src="https://github.com/user-attachments/assets/973af13e-50a8-4c8e-9260-64140792e444" alt="image" loading="lazy"></p></span><br><br>
+<p>Llama Nemotron VLM Dataset V1<br><br>VQA, OCRの比率が多めで、Imase Captioningは少なめ。<br><img src="https://github.com/user-attachments/assets/973af13e-50a8-4c8e-9260-64140792e444" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="第62回名古屋cv・prml勉強会：cvpr2025論文紹介-（mambaout）-2409" class="title-link">第62回名古屋CV・PRML勉強会：CVPR2025論文紹介 （MambaOut）, Naoki Okamoto, 2025.08</h3>
@@ -15982,7 +15982,7 @@ My Issue
 
 </p>
 <p>Apache-2.0ライセンス。言語はEnglishのみな模様</p>
-<p>マルチモーダルなImage-To-Textモデル。サンプルはこちら<br><img src="https://github.com/user-attachments/assets/d16ce5a9-4336-4daa-ab6f-94d67ae77c41" alt="image" loading="lazy"></p></span><br><br>
+<p>マルチモーダルなImage-To-Textモデル。サンプルはこちら<br><img src="https://github.com/user-attachments/assets/d16ce5a9-4336-4daa-ab6f-94d67ae77c41" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ernie4.5_x1-1808" class="title-link">ERNIE4.5_X1, Baidu, 2025.03</h3>
@@ -16083,7 +16083,7 @@ My Issue
 <a class="button" href="UMM.html" target="_blank" rel="noopener noreferrer">#UMM</a>
 <span class="issue_date">Issue Date: 2025-01-28</span>
 <span class="snippet"><span>Comment</span><p>DeepSeekによる新たなUMM、Janus-Proが本日リリース。MIT License</p>
-<p>Janus-Proのパフォーマンス。<br><br>github上でのパフォーマンスの図解から引用。マルチモーダル（テキスト+画像）の理解に関するベンチマークでLLaVA超え。GenEval, DPG Benchと呼ばれる画像生成ベンチマークでDALL-E 3超え。<br><img src="https://github.com/user-attachments/assets/39b51e99-723d-4105-a113-e4bfa847c69b" alt="image" loading="lazy"><br><br><br>テクニカルレポート中での詳細から引用。どのベンチマークでも基本的に最高性能なように見える。<br><img src="https://github.com/user-attachments/assets/4c1bd071-966f-4d51-99f4-e60fa2f36b0a" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/a0b22d6e-debb-420a-bf8d-fe8833583d09" alt="image" loading="lazy"><br><br>テクニカルレポート: 
+<p>Janus-Proのパフォーマンス。<br><br>github上でのパフォーマンスの図解から引用。マルチモーダル（テキスト+画像）の理解に関するベンチマークでLLaVA超え。GenEval, DPG Benchと呼ばれる画像生成ベンチマークでDALL-E 3超え。<br><img src="https://github.com/user-attachments/assets/39b51e99-723d-4105-a113-e4bfa847c69b" alt="image" loading="lazy" width="400" height="300"><br><br><br>テクニカルレポート中での詳細から引用。どのベンチマークでも基本的に最高性能なように見える。<br><img src="https://github.com/user-attachments/assets/4c1bd071-966f-4d51-99f4-e60fa2f36b0a" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/a0b22d6e-debb-420a-bf8d-fe8833583d09" alt="image" loading="lazy" width="400" height="300"><br><br>テクニカルレポート: 
 
 
 <a href="https://github.com/deepseek-ai/Janus/blob/main/janus_pro_tech_report.pdf" target="_blank" rel="noopener noreferrer">https://github.com/deepseek-ai/Janus/blob/main/janus_pro_tech_report.pdf</a>
@@ -16171,7 +16171,7 @@ My Issue
 
 
 </p>
-<p>後で個々のベンチマークとメトリックをまとめたい。<br><br>まあでもざっくり言うと、他のproprietaryモデルともおおむね同等の性能です、という感じに見える。個々のタスクレベルで見ると、得意なものと不得意なものはありそうではある。<br><br><img src="https://github.com/user-attachments/assets/c0c633d8-c64d-4a14-95cf-0d8b0d52a7f6" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/560f8c3e-65ff-4742-b7da-bc2b242dafcd" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/481a9635-128d-4931-a891-5f46d55b82bc" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/fc9b1bc0-b857-4a27-ad90-4940213c6ec6" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/a349b154-1844-41c2-84e3-7f981b1f6b72" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/a4381740-600c-402f-be0d-59ce60b7a562" alt="image" loading="lazy"><br><br>スループットとかも、ProとGPT4oをパッと見で比較した感じ、優れているわけでもなさそう。Liteに対応するGPTはおそらくGPT4o-miniだと思われるが、スループットはLiteの方が高そう。<br><img src="https://github.com/user-attachments/assets/734ee26f-2f16-46e4-a6e8-f5f2f0d65be3" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/fe1768e8-b417-4b89-a0c4-f6dffa99cf11" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/6334ee92-e426-49f5-8e1f-050e0b77fcf2" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/5c9ec797-ef7a-43e1-8540-42ccab265208" alt="image" loading="lazy"><br><br>（画像は論文中からスクショし引用）</p>
+<p>後で個々のベンチマークとメトリックをまとめたい。<br><br>まあでもざっくり言うと、他のproprietaryモデルともおおむね同等の性能です、という感じに見える。個々のタスクレベルで見ると、得意なものと不得意なものはありそうではある。<br><br><img src="https://github.com/user-attachments/assets/c0c633d8-c64d-4a14-95cf-0d8b0d52a7f6" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/560f8c3e-65ff-4742-b7da-bc2b242dafcd" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/481a9635-128d-4931-a891-5f46d55b82bc" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/fc9b1bc0-b857-4a27-ad90-4940213c6ec6" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/a349b154-1844-41c2-84e3-7f981b1f6b72" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/a4381740-600c-402f-be0d-59ce60b7a562" alt="image" loading="lazy" width="400" height="300"><br><br>スループットとかも、ProとGPT4oをパッと見で比較した感じ、優れているわけでもなさそう。Liteに対応するGPTはおそらくGPT4o-miniだと思われるが、スループットはLiteの方が高そう。<br><img src="https://github.com/user-attachments/assets/734ee26f-2f16-46e4-a6e8-f5f2f0d65be3" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/fe1768e8-b417-4b89-a0c4-f6dffa99cf11" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/6334ee92-e426-49f5-8e1f-050e0b77fcf2" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/5c9ec797-ef7a-43e1-8540-42ccab265208" alt="image" loading="lazy" width="400" height="300"><br><br>（画像は論文中からスクショし引用）</p>
 <p>下記ポストは独自に評価した結果や、コストと性能のバランスについて言及している。<br><br>- ProはGPT4oのコストの約1/3<br>- Pro, Lite, Flashはほれぞれコストパフォーマンスに非常に優れている（Quality vs. Price参照）<br><br>元ポスト:
 
 
@@ -16340,7 +16340,7 @@ My Issue
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <span class="issue_date">Issue Date: 2024-09-25</span>
-<span class="snippet"><span>Comment</span><p>11Bと90BのVLMと、エッジデバイス向けの1B, 3BのSLMを発表。<br><img src="https://github.com/user-attachments/assets/13c4af37-19bd-4de7-b501-eb48f955af0c" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/d6b75b15-88cb-4d9e-9838-0da24308ccda" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/7475b30d-4619-4117-a911-d308291f86cb" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>11Bと90BのVLMと、エッジデバイス向けの1B, 3BのSLMを発表。<br><img src="https://github.com/user-attachments/assets/13c4af37-19bd-4de7-b501-eb48f955af0c" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/d6b75b15-88cb-4d9e-9838-0da24308ccda" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/7475b30d-4619-4117-a911-d308291f86cb" alt="image" loading="lazy" width="400" height="300"></p>
 <p>Llama3.2のVLMでは、事前学習されたimage encoderを事前学習された言語モデルに対して組み合わせるためのAdapterを複数学習することによって実現。<br><br>具体的には、Llama 3.1（text only model）に対して、image encoderとAdapterを追加し、大規模でノイジーな（image,text）ペアで事前学習。続いて、中規模のサイズの高品質なin-domain（i.e. 様々なドメインの）の知識を高めるような（image,text）ペアで学習した。<br><br>事後学習では、Llama3.1と同様にSFT, Rejection Sampling, DPOのラウンドを複数回繰り返した。Llama3.1を用いて、in-domainの画像に対するQAをData Augmentationし、フィルタリングすることで合成データを作成。さらに報酬モデルを活用して全ての回答候補をランクづけして高品質なSFTデータを取得。また、モデルの安全性が高まるようなデータも追加した。<br><br>Llama3.1の事後学習のプロセスについては <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1359" target="_blank" rel="noopener noreferrer">論文紹介 / The Llama 3 Herd of Models, 2024.08</a>
  も参照のこと。</p></span><br><br>
 </article>
@@ -16384,7 +16384,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2024-04-14</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/88dd70ce-5874-4786-8e66-7484984c7a72" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/88dd70ce-5874-4786-8e66-7484984c7a72" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="repeng-1258" class="title-link">repeng</h3>
@@ -16450,7 +16450,7 @@ My Issue
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <a class="button" href="AutomaticPromptEngineering.html" target="_blank" rel="noopener noreferrer">#AutomaticPromptEngineering</a>
 <span class="issue_date">Issue Date: 2023-12-01</span>
-<span class="snippet"><span>Comment</span><p>Large Multimodal Model (LMM)において、雑なpromptを与えるても自動的に良い感じoutputを生成してくれるっぽい？<br><br><br><br>以下の例はリポジトリからの引用であるが、この例では、"Find dog." という雑なpromptから、画像中央に位置する犬に[9]というラベルを与えました、というresponseを得られている。pipelineとしては、Visual Promptに対してまずSAMを用いてイメージのsegmentationを行い、各セグメントにラベルを振る。このラベルが振られた画像と、"Find dog." という雑なpromptを与えるだけで良い感じに処理をしてくれるようだ。    <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5220e62f-93f1-4eb9-b365-a9caaf933778" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Large Multimodal Model (LMM)において、雑なpromptを与えるても自動的に良い感じoutputを生成してくれるっぽい？<br><br><br><br>以下の例はリポジトリからの引用であるが、この例では、"Find dog." という雑なpromptから、画像中央に位置する犬に[9]というラベルを与えました、というresponseを得られている。pipelineとしては、Visual Promptに対してまずSAMを用いてイメージのsegmentationを行い、各セグメントにラベルを振る。このラベルが振られた画像と、"Find dog." という雑なpromptを与えるだけで良い感じに処理をしてくれるようだ。    <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5220e62f-93f1-4eb9-b365-a9caaf933778" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="lavie-text-to-video-1170" class="title-link">LaVie: Text-to-Video generation, demo</h3>
@@ -16470,8 +16470,8 @@ My Issue
 <a class="button" href="GenerativeAI.html" target="_blank" rel="noopener noreferrer">#GenerativeAI</a>
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2023-12-01</span>
-<span class="snippet"><span>Comment</span><p>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image" loading="lazy"><br><br></p>
-<p>FF14の赤魔導士に変えたら、それっぽいの出てきた<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/07b6def8-01f2-4baf-9ba3-ab1ccc40c90e" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>デモのデフォルトで試してみたら、3秒ほどのprompt通りの動画が生成された。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4343fa52-698c-4a59-bad0-758fcd30d3ac" alt="image" loading="lazy" width="400" height="300"><br><br></p>
+<p>FF14の赤魔導士に変えたら、それっぽいの出てきた<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/07b6def8-01f2-4baf-9ba3-ab1ccc40c90e" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="table-transformer-1167" class="title-link">Table Transformer Demo</h3>
@@ -16491,7 +16491,7 @@ My Issue
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <a class="button" href="TabularData.html" target="_blank" rel="noopener noreferrer">#TabularData</a>
 <span class="issue_date">Issue Date: 2023-12-01</span>
-<span class="snippet"><span>Comment</span><p>PDF中のテーブルとその構造（行列セル）をdetectするモデル<br><br>Exampleは以下のような感じ（日本語だとどれくらいできるのかな...）<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image" loading="lazy"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>PDF中のテーブルとその構造（行列セル）をdetectするモデル<br><br>Exampleは以下のような感じ（日本語だとどれくらいできるのかな...）<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7f62e16b-1ff8-46ad-b6df-7792981f8f58" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ml-papers-1156" class="title-link">ML Papers Explained</h3>
@@ -16578,7 +16578,7 @@ My Issue
 <a class="button" href="ChatGPT.html" target="_blank" rel="noopener noreferrer">#ChatGPT</a>
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2023-09-30</span>
-<span class="snippet"><span>Comment</span><p>おう…やべえな…<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>おう…やべえな…<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="走行動画を説明するllmを作成し、80台のgpuで分散並列学習させた話-1003" class="title-link">走行動画を説明するLLMを作成し、80台のGPUで分散並列学習させた話</h3>
@@ -16736,8 +16736,8 @@ My Issue
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="Backbone.html" target="_blank" rel="noopener noreferrer">#Backbone</a>
 <span class="issue_date">Issue Date: 2021-11-04</span>
-<span class="snippet"><span>Comment</span><p>ResNet論文<br><br>ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショートカットができるようにしている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140301726-1d2e89e1-1d69-43d9-8d2b-0adb272e577a.png" alt="image" loading="lazy"><br><br><br><br>ResNetが提案される以前、モデルを深くすれば表現力が上がるはずなのに、実際には精度が下がってしまうことから、理論上レイヤーが恒等関数となるように初期化すれば、深いモデルでも浅いモデルと同等の表現が獲得できる、と言う考え方を発展させた。<br><br><br><br>（ステートオブAIガイドに基づく）</p>
-<p>同じパラメータ数でより層を深くできる（Plainな構造と比べると層が1つ増える）Bottleneckアーキテクチャも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302452-649b0ea7-cce4-44c1-9e7d-b509ef8bca52.png" alt="image" loading="lazy"><br><br></p>
+<span class="snippet"><span>Comment</span><p>ResNet論文<br><br>ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショートカットができるようにしている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140301726-1d2e89e1-1d69-43d9-8d2b-0adb272e577a.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>ResNetが提案される以前、モデルを深くすれば表現力が上がるはずなのに、実際には精度が下がってしまうことから、理論上レイヤーが恒等関数となるように初期化すれば、深いモデルでも浅いモデルと同等の表現が獲得できる、と言う考え方を発展させた。<br><br><br><br>（ステートオブAIガイドに基づく）</p>
+<p>同じパラメータ数でより層を深くできる（Plainな構造と比べると層が1つ増える）Bottleneckアーキテクチャも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302452-649b0ea7-cce4-44c1-9e7d-b509ef8bca52.png" alt="image" loading="lazy" width="400" height="300"><br><br></p>
 <p>今や当たり前のように使われているResidual Connectionは、層の深いネットワークを学習するために必須の技術なのだと再認識。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -16852,44 +16852,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/AIAgents/" title="AIAgentsに関する論文・技術記事メモの一覧">AIAgentsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/ContinualLearning/" title="ContinualLearningに関する論文・技術記事メモの一覧">ContinualLearningに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/4D-(Video)/" title="4D (Video)に関する論文・技術記事メモの一覧">4D (Video)に関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/ContinualLearning/" title="ContinualLearningに関する論文・技術記事メモの一覧">ContinualLearningに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/DemonstrationSelection/" title="DemonstrationSelectionに関する論文・技術記事メモの一覧">
-            DemonstrationSelectionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ListWise/" title="ListWiseに関する論文・技術記事メモの一覧">
+            ListWiseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/WarmUp/" title="WarmUpに関する論文・技術記事メモの一覧">
-            WarmUpに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/NumericReasoning/" title="NumericReasoningに関する論文・技術記事メモの一覧">
+            NumericReasoningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InformationRetrieval/" title="InformationRetrievalに関する論文・技術記事メモの一覧">
-            InformationRetrievalに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/WI/" title="WIに関する論文・技術記事メモの一覧">
+            WIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 115</span> 
-  <span class="post-badge badge-new">📝 115</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Navigation/" title="Navigationに関する論文・技術記事メモの一覧">
-            Navigationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Post/" title="Postに関する論文・技術記事メモの一覧">
+            Postに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>

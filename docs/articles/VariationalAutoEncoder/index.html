@@ -1338,7 +1338,7 @@ My Issue
 
 </p>
 <p>Semantic IDを提案した研究</p>
-<p>アイテムを意味的な情報を保持したdiscrete tokenのタプル（＝Semantic ID)で表現し、encoder-decoderでNext ItemのSemantic IDを生成するタスクに落としこむことで推薦する。SemanticIDの作成方法は後で読んで理解したい。<br><br><img src="https://github.com/user-attachments/assets/38606c7c-011f-46b0-ab14-8d213626be3d" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/a239bac7-c273-4681-a102-65e88c9c65d2" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/7d1822ce-462e-43f6-bb33-af77914919f6" alt="image" loading="lazy"></p></span><br><br>
+<p>アイテムを意味的な情報を保持したdiscrete tokenのタプル（＝Semantic ID)で表現し、encoder-decoderでNext ItemのSemantic IDを生成するタスクに落としこむことで推薦する。SemanticIDの作成方法は後で読んで理解したい。<br><br><img src="https://github.com/user-attachments/assets/38606c7c-011f-46b0-ab14-8d213626be3d" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/a239bac7-c273-4681-a102-65e88c9c65d2" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/7d1822ce-462e-43f6-bb33-af77914919f6" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="high-resolution-image-3208" class="title-link">[Paper Note] High-Resolution Image Synthesis with Latent Diffusion Models, Robin Rombach+, CVPR'22, 2021.12</h3>
@@ -1544,7 +1544,7 @@ My Issue
 <a class="button" href="VisionLanguageActionModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageActionModel</a>
 <a class="button" href="EmbodiedAI.html" target="_blank" rel="noopener noreferrer">#EmbodiedAI</a>
 <span class="issue_date">Issue Date: 2025-08-12</span>
-<span class="snippet"><span>Comment</span><p>TL;DRは下記。<br><br>&gt; We introduce RynnVLA-001, a vision-language-action model built upon large-scale video generative pre-training.<br>&gt; - RynnVLA-001 is pretrained on ~12M ego-centric manipulation videos.<br>&gt; - We unify next-frame prediction and next-action prediction into a single transformer.<br>&gt; - We train a lightweight VAE to accurately compress action chunks into action embeddings.<br>&gt; - Our RynnVLA-001 outperforms Pi-0 and GR00T-N1.5, in terms of both real-world task success rate and instruction-following capability.<br><br>まず、11.93Mの一人称視点での人間が操作（特に手の操作）をする動画と、244Kのrobotが操作をする動画でTransformerを事前学習する。このとき、actionラベルは一切用いず、pixelの情報から物理世界のダイナミクスを理解させる。続いて、Action Chunks（複数のアクションの少量のかたまり）を、dense embeddingにエンコードするVAEを学習する。チャンクを用いる理由は、ピクセルの変化が微小な場合、同じアクションが連続して予測されてしまいstuckしめしまう現象を防ぐこと、予測の効率が良いからとのこと。これによりVLAは単一のembedding vectorを予測するだけで、一貫性のあるアクション系列にデコードできる。最後に、step1で学習したvideo generationモデルと、step2で学習したVAEによるaction representationを統合する。具体的には、next frame prediction（visual tokenを予測; cross entropy loss）とnext action prediction（action edbeddingを予測する）を統合して学習する。action embeddingはcontinuousなベクトルなので異なるヘッドを用意して学習する（L1 Loss)。inference時はRGBのobservationと、テキストによるinstructionを入力として受け取り、action embeddingを予測する。action edbeddingはVAE decoderに渡され、low levelなaction系列に変換される。robotは予測されたアクションを実行し、observationが変化するのでまた予測する、といったiterationを実施する。visual tokenによる予測は不要なので、計算効率の観点から実施しない。<br><br><img src="https://github.com/user-attachments/assets/4be5a5da-8c9c-4735-a1ee-ac3da52c2530" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>TL;DRは下記。<br><br>&gt; We introduce RynnVLA-001, a vision-language-action model built upon large-scale video generative pre-training.<br>&gt; - RynnVLA-001 is pretrained on ~12M ego-centric manipulation videos.<br>&gt; - We unify next-frame prediction and next-action prediction into a single transformer.<br>&gt; - We train a lightweight VAE to accurately compress action chunks into action embeddings.<br>&gt; - Our RynnVLA-001 outperforms Pi-0 and GR00T-N1.5, in terms of both real-world task success rate and instruction-following capability.<br><br>まず、11.93Mの一人称視点での人間が操作（特に手の操作）をする動画と、244Kのrobotが操作をする動画でTransformerを事前学習する。このとき、actionラベルは一切用いず、pixelの情報から物理世界のダイナミクスを理解させる。続いて、Action Chunks（複数のアクションの少量のかたまり）を、dense embeddingにエンコードするVAEを学習する。チャンクを用いる理由は、ピクセルの変化が微小な場合、同じアクションが連続して予測されてしまいstuckしめしまう現象を防ぐこと、予測の効率が良いからとのこと。これによりVLAは単一のembedding vectorを予測するだけで、一貫性のあるアクション系列にデコードできる。最後に、step1で学習したvideo generationモデルと、step2で学習したVAEによるaction representationを統合する。具体的には、next frame prediction（visual tokenを予測; cross entropy loss）とnext action prediction（action edbeddingを予測する）を統合して学習する。action embeddingはcontinuousなベクトルなので異なるヘッドを用意して学習する（L1 Loss)。inference時はRGBのobservationと、テキストによるinstructionを入力として受け取り、action embeddingを予測する。action edbeddingはVAE decoderに渡され、low levelなaction系列に変換される。robotは予測されたアクションを実行し、observationが変化するのでまた予測する、といったiterationを実施する。visual tokenによる予測は不要なので、計算効率の観点から実施しない。<br><br><img src="https://github.com/user-attachments/assets/4be5a5da-8c9c-4735-a1ee-ac3da52c2530" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -1618,26 +1618,26 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/RAG(RetrievalAugmentedGeneration)/" title="RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧">
-            RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/CrossLingual/" title="CrossLingualに関する論文・技術記事メモの一覧">
+            CrossLingualに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 79</span> 
-  <span class="post-badge badge-new">📝 79</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Third-Person-View/" title="Third-Person Viewに関する論文・技術記事メモの一覧">
-            Third-Person Viewに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Label-free/" title="Label-freeに関する論文・技術記事メモの一覧">
+            Label-freeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MCP/" title="MCPに関する論文・技術記事メモの一覧">
-            MCPに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/TimeSeriesDataProcessing/" title="TimeSeriesDataProcessingに関する論文・技術記事メモの一覧">
+            TimeSeriesDataProcessingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
   <span class="post-badge badge-new">📝 9</span>
@@ -1645,11 +1645,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InformationRetrieval/" title="InformationRetrievalに関する論文・技術記事メモの一覧">
-            InformationRetrievalに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/PPO-(ProximalPolicyOptimization)/" title="PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧">
+            PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 115</span> 
-  <span class="post-badge badge-new">📝 115</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>

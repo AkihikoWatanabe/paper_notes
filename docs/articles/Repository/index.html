@@ -1394,7 +1394,7 @@ My Issue
 
 
 <p>Inflight Weight Updates</p>
-<p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy"><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p>
+<p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy" width="400" height="300"><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p>
 <p>あとこれは余談だが、引用ポストの主は下記研究でattentionメカニズムを最初に提案したBahdanau氏である。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1954" target="_blank" rel="noopener noreferrer">Neural Machine Translation by Jointly Learning to Align and Translate, Dzmitry Bahdanau+, ICLR'15</a>
 </p>
 <p>続報:<br>
@@ -1854,7 +1854,7 @@ My Issue
 
 <p>PJで利用されているRLライブラリ:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1969" target="_blank" rel="noopener noreferrer">verl: Volcano Engine Reinforcement Learning for LLMs, ByteDance Seed Team, 2025.04</a>
 </p>
-<p>AIME2025のみの評価だが4Bでこの性能…？<br><img src="https://github.com/user-attachments/assets/02d1ece1-b12f-4877-b500-ff910e45ff00" alt="image" loading="lazy"></p></span><br><br>
+<p>AIME2025のみの評価だが4Bでこの性能…？<br><img src="https://github.com/user-attachments/assets/02d1ece1-b12f-4877-b500-ff910e45ff00" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="deepwiki-1903" class="title-link">Deepwiki, Cognition, 2025.04</h3>
@@ -2222,7 +2222,7 @@ My Issue
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="MinimalCode.html" target="_blank" rel="noopener noreferrer">#MinimalCode</a>
 <span class="issue_date">Issue Date: 2024-11-05</span>
-<span class="snippet"><span>Comment</span><p>研究目的のための、minimal、かつ高速なLLM training/inferenceのコードが格納されたリポジトリ。独自のモデルやデータ、ロスなどが簡単に実装できる模様。<br><br><img src="https://github.com/user-attachments/assets/47f70515-3de0-455f-9fc4-0e2e17442eed" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>研究目的のための、minimal、かつ高速なLLM training/inferenceのコードが格納されたリポジトリ。独自のモデルやデータ、ロスなどが簡単に実装できる模様。<br><br><img src="https://github.com/user-attachments/assets/47f70515-3de0-455f-9fc4-0e2e17442eed" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="prompt-engineering-guide-1462" class="title-link">Prompt-Engineering-Guide, DAIR.AI</h3>
@@ -2326,7 +2326,7 @@ My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <span class="issue_date">Issue Date: 2024-09-15</span>
-<span class="snippet"><span>Comment</span><p>画像はリポジトリより引用。開発ツール、環境変数、タスクの管理ができる模様。とても便利そう。使いたい。<br><img src="https://github.com/user-attachments/assets/7af7fdf6-676b-461a-9e27-6047bae8ce6e" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>画像はリポジトリより引用。開発ツール、環境変数、タスクの管理ができる模様。とても便利そう。使いたい。<br><img src="https://github.com/user-attachments/assets/7af7fdf6-676b-461a-9e27-6047bae8ce6e" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="paperqa2-1387" class="title-link">PaperQA2, 2023.02</h3>
@@ -2403,7 +2403,7 @@ My Issue
 <a class="button" href="python.html" target="_blank" rel="noopener noreferrer">#python</a>
 <a class="button" href="LLMServing.html" target="_blank" rel="noopener noreferrer">#LLMServing</a>
 <span class="issue_date">Issue Date: 2024-08-31</span>
-<span class="snippet"><span>Comment</span><p>vLLMよりも2倍程度高速なLLM serving framework。<br><br>オフライン評価<br><img src="https://github.com/user-attachments/assets/93d8362d-e0e4-4bdb-9de4-178e1eef2e33" alt="image" loading="lazy"><br><br>オンラインでのlatency評価<br><img src="https://github.com/user-attachments/assets/506ebf39-9c47-4d11-9352-c26f6b0d155c" alt="image" loading="lazy"><br><br>機能はvLLMの方が多いが、速度はこちらの方がかなり速そうではある。latencyのrequirementが厳しい場合などは検討しても良いかもしれない。<br><br>しかしLLM serving frameworkも群雄割拠ですね。</p>
+<span class="snippet"><span>Comment</span><p>vLLMよりも2倍程度高速なLLM serving framework。<br><br>オフライン評価<br><img src="https://github.com/user-attachments/assets/93d8362d-e0e4-4bdb-9de4-178e1eef2e33" alt="image" loading="lazy" width="400" height="300"><br><br>オンラインでのlatency評価<br><img src="https://github.com/user-attachments/assets/506ebf39-9c47-4d11-9352-c26f6b0d155c" alt="image" loading="lazy" width="400" height="300"><br><br>機能はvLLMの方が多いが、速度はこちらの方がかなり速そうではある。latencyのrequirementが厳しい場合などは検討しても良いかもしれない。<br><br>しかしLLM serving frameworkも群雄割拠ですね。</p>
 <p>元ポスト:
 
 
@@ -2452,7 +2452,7 @@ My Issue
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2024-08-29</span>
-<span class="snippet"><span>Comment</span><p>RAGのための美しいユーザと開発者向けのUI。カスタマイズも可能らしい<br><img src="https://github.com/user-attachments/assets/c2fbff2f-ac25-40da-8c02-dcb90347c577" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>RAGのための美しいユーザと開発者向けのUI。カスタマイズも可能らしい<br><img src="https://github.com/user-attachments/assets/c2fbff2f-ac25-40da-8c02-dcb90347c577" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="litserve-1357" class="title-link">LitServe, 2024.04</h3>
@@ -2482,7 +2482,7 @@ My Issue
 </div>
 
 
-<p>画像は元ツイートより引用<br><br><img src="https://github.com/user-attachments/assets/407559cc-d026-403e-be79-c1709e5c96d2" alt="image" loading="lazy"></p></span><br><br>
+<p>画像は元ツイートより引用<br><br><img src="https://github.com/user-attachments/assets/407559cc-d026-403e-be79-c1709e5c96d2" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="liger-kernel-1356" class="title-link">Liger-Kernel, 2024.08</h3>
@@ -2513,7 +2513,7 @@ My Issue
 </div>
 
 
-<p>これだけでいい<br><img src="https://github.com/user-attachments/assets/abce24ed-f979-43db-ac51-e850f2ae877a" alt="image" loading="lazy"></p>
+<p>これだけでいい<br><img src="https://github.com/user-attachments/assets/abce24ed-f979-43db-ac51-e850f2ae877a" alt="image" loading="lazy" width="400" height="300"></p>
 <p>Unsloth <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1450" target="_blank" rel="noopener noreferrer">Unsloth</a>
  はLoRA/QLoRAが可能な一方でまだMulti-GPUはサポートしていない。一方、Liger-KernelはLoRAよりもfull-parameter tuningとMulti-GPUにフォーカスしており、目的に応じて使い分けが必要。<br><br><br><br>
 
@@ -3041,35 +3041,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/ReinforcementLearning/" title="ReinforcementLearningに関する論文・技術記事メモの一覧">ReinforcementLearningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Robotics/" title="Roboticsに関する論文・技術記事メモの一覧">Roboticsに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/Reasoning/" title="Reasoningに関する論文・技術記事メモの一覧">Reasoningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Robotics/" title="Roboticsに関する論文・技術記事メモの一覧">Roboticsに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Visual-CoT/" title="Visual-CoTに関する論文・技術記事メモの一覧">
-            Visual-CoTに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ContextWindow/" title="ContextWindowに関する論文・技術記事メモの一覧">
+            ContextWindowに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/PerformanceTesting/" title="PerformanceTestingに関する論文・技術記事メモの一覧">
+            PerformanceTestingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/DiffusionModel/" title="DiffusionModelに関する論文・技術記事メモの一覧">
-            DiffusionModelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 119</span> 
-  <span class="post-badge badge-new">📝 119</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/StructuredData/" title="StructuredDataに関する論文・技術記事メモの一覧">
-            StructuredDataに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
@@ -3079,6 +3070,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Test-Time-Scaling/" title="Test-Time Scalingに関する論文・技術記事メモの一覧">
+            Test-Time Scalingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>

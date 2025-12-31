@@ -1256,7 +1256,7 @@ My Issue
 
 
 <p>AllenAIの勢いすごいな...</p>
-<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
+<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy" width="400" height="300"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy" width="400" height="300"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy" width="400" height="300"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="think-visually-3977" class="title-link">[Paper Note] Think Visually, Reason Textually: Vision-Language Synergy in ARC, Beichen Zhang+, arXiv'25, 2025.11</h3>
@@ -2113,9 +2113,9 @@ My Issue
 </div>
 
 
-<p>VLM(Qwen2.5-VL-7B)をバックボーンとしSFT（tooluseに関するcoldstart)→RL(RLVR+format reward)で学習することで、VLMによるAI Agentを構築。画像をcropしcropした画像に対するマルチモーダルな検索や、適切なtooluseの選択などに基づいて応答できる。<br><br><img src="https://github.com/user-attachments/assets/528d8953-cc9d-4e8b-a6ba-e9dd91f77c75" alt="image" loading="lazy"></p>
+<p>VLM(Qwen2.5-VL-7B)をバックボーンとしSFT（tooluseに関するcoldstart)→RL(RLVR+format reward)で学習することで、VLMによるAI Agentを構築。画像をcropしcropした画像に対するマルチモーダルな検索や、適切なtooluseの選択などに基づいて応答できる。<br><br><img src="https://github.com/user-attachments/assets/528d8953-cc9d-4e8b-a6ba-e9dd91f77c75" alt="image" loading="lazy" width="400" height="300"></p>
 <p>事前の実験によってまずQwen2.5-VL-7Bに対してRLのみでtooluse能力（コーディング能力）を身につけられるかを試したところ、Reward Hackingによって適切なtooluse能力が獲得されなかった（3.2節; 実行可能ではないコードが生成されたり、ダミーコードだったりなど）。<br>このためこのcoldstartを解消するためにSFTのための学習データを収集（3.3節）。これには、<br>- 多様なタスクと画像が含まれており<br>- verifiableで構造化されたOpen-endなQAに変換でき<br>- ベースモデルにとって簡単すぎず（8回のattemptで最大3回以上正解したものは除外）<br>- ツールの利用が正解に寄与するかどうかに基づきサンプルを分類する。tooluseをしても解答できないケースをSFTに、追加のtooluseで解答できるサンプルをRL用に割り当て<br><br>ようなデータを収集。さらに、trajectoryはGemini2.5, GPT4o, Claude Sonnet4などのstrong modelから収集した。</p>
-<p>RealX-Benchと呼ばれるベンチマークも作成しているようだがまだ読めていない。<br><br>proprietary modelの比較対象が少し古め。ベースモデルと比較してSFT-RLによって性能は向上。Human Performanceも掲載されているのは印象的である。<br><br>ただ、汎用モデルでこの性能が出るのであれば、DeepSearchに特化したモデルや？GPT5, Claude-4.5-Sonnetなどではこのベンチマーク上ではHuman Performanceと同等かそれ以上の性能が出るのではないか？という気がする。<br><img src="https://github.com/user-attachments/assets/6c46d6d4-083e-48cd-9edb-dc3db8338eae" alt="image" loading="lazy"></p></span><br><br>
+<p>RealX-Benchと呼ばれるベンチマークも作成しているようだがまだ読めていない。<br><br>proprietary modelの比較対象が少し古め。ベースモデルと比較してSFT-RLによって性能は向上。Human Performanceも掲載されているのは印象的である。<br><br>ただ、汎用モデルでこの性能が出るのであれば、DeepSearchに特化したモデルや？GPT5, Claude-4.5-Sonnetなどではこのベンチマーク上ではHuman Performanceと同等かそれ以上の性能が出るのではないか？という気がする。<br><img src="https://github.com/user-attachments/assets/6c46d6d4-083e-48cd-9edb-dc3db8338eae" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="scaling-agent-3617" class="title-link">[Paper Note] Scaling Agent Learning via Experience Synthesis, Zhaorun Chen+, arXiv'25, 2025.11</h3>
@@ -3551,7 +3551,7 @@ My Issue
 </div>
 
 
-<p>RLにおいて、簡単な問題はすぐにoverfitし、かつより困難な問題を学習する妨げになる一方で、困難な問題はサンプル効率が悪く、かつrewardがsparseな場合学習が非常に遅いという問題があったが、困難な問題に対してヒントを与えて学習させる（かつ、モデルがヒントに依存せずとも解けるようになってきたら徐々にヒントを減らしヒントに過剰に依存することを防ぐ）ことで、簡単な問題に対してoverfitせずに困難な問題に対する学習効率も上がり、reasoning能力もブーストしました。困難な問題はベースラインモデルが解くのに苦労するもの（pass rateがゼロのもの)から見つけます、（そしてpromptでhintを与えた上でさらにpass rateが低いものを使う模様？）といった話な模様。<br><img src="https://github.com/user-attachments/assets/671a95e0-bfd8-478e-b73c-25af4d21b6df" alt="image" loading="lazy"></p>
+<p>RLにおいて、簡単な問題はすぐにoverfitし、かつより困難な問題を学習する妨げになる一方で、困難な問題はサンプル効率が悪く、かつrewardがsparseな場合学習が非常に遅いという問題があったが、困難な問題に対してヒントを与えて学習させる（かつ、モデルがヒントに依存せずとも解けるようになってきたら徐々にヒントを減らしヒントに過剰に依存することを防ぐ）ことで、簡単な問題に対してoverfitせずに困難な問題に対する学習効率も上がり、reasoning能力もブーストしました。困難な問題はベースラインモデルが解くのに苦労するもの（pass rateがゼロのもの)から見つけます、（そしてpromptでhintを与えた上でさらにpass rateが低いものを使う模様？）といった話な模様。<br><img src="https://github.com/user-attachments/assets/671a95e0-bfd8-478e-b73c-25af4d21b6df" alt="image" loading="lazy" width="400" height="300"></p>
 <p>ヒントを使ってなる問題の難易度を調整しながらRLする研究は以下も存在する:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2757" target="_blank" rel="noopener noreferrer">[Paper Note] Staying in the Sweet Spot: Responsive Reasoning Evolution via
   Capability-Adaptive Hint Scaffolding, Ziheng Li+, arXiv'25</a>
 </p></span><br><br>
@@ -3909,7 +3909,7 @@ My Issue
 </div>
 
 
-<p>single stepでのタスク性能はサチって見えても、成功可能なタスクの長さは（single stepの実行エラーに引きづられるため）モデルのsingle stepのタスク性能に対して指数関数的に効いている（左上）。タスクが長くなればなるほどモデルは自身のエラーに引きずられ（self conditioning;右上)、これはパラメータサイズが大きいほど度合いが大きくなる（右下;  32Bの場合contextにエラーがあって場合のloeg horizonのAcc.が14Bよりも下がっている）。一方で、実行可能なstep数の観点で見ると、モデルサイズが大きい場合の方が多くのstepを要するタスクを実行できる（左下）。また、ThinkingモデルはSelf Conditioningの影響を受けにくく、single stepで実行可能なタスクの長さがより長くなる（中央下）。<br><br>といった話に見えるが、論文をしっかり読んだ方が良さそう。<br><br><img src="https://github.com/user-attachments/assets/a97fe1f4-5693-4ed3-9fa0-774f4c3738ab" alt="image" loading="lazy"></p>
+<p>single stepでのタスク性能はサチって見えても、成功可能なタスクの長さは（single stepの実行エラーに引きづられるため）モデルのsingle stepのタスク性能に対して指数関数的に効いている（左上）。タスクが長くなればなるほどモデルは自身のエラーに引きずられ（self conditioning;右上)、これはパラメータサイズが大きいほど度合いが大きくなる（右下;  32Bの場合contextにエラーがあって場合のloeg horizonのAcc.が14Bよりも下がっている）。一方で、実行可能なstep数の観点で見ると、モデルサイズが大きい場合の方が多くのstepを要するタスクを実行できる（左下）。また、ThinkingモデルはSelf Conditioningの影響を受けにくく、single stepで実行可能なタスクの長さがより長くなる（中央下）。<br><br>といった話に見えるが、論文をしっかり読んだ方が良さそう。<br><br><img src="https://github.com/user-attachments/assets/a97fe1f4-5693-4ed3-9fa0-774f4c3738ab" alt="image" loading="lazy" width="400" height="300"></p>
 <p>（元ポストも著者ポストだが）著者ポスト:
 
 
@@ -4129,7 +4129,7 @@ My Issue
 </div>
 
 
-<p>問題の難易度をヒントによって調整しつつ（IRTで困難度パラメータ見ると思われる）RLする模様。面白そう。<br><img src="https://github.com/user-attachments/assets/f7322e4a-289f-48ca-8910-257b5544f39a" alt="image" loading="lazy"></p></span><br><br>
+<p>問題の難易度をヒントによって調整しつつ（IRTで困難度パラメータ見ると思われる）RLする模様。面白そう。<br><img src="https://github.com/user-attachments/assets/f7322e4a-289f-48ca-8910-257b5544f39a" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mini-o3-scaling-2749" class="title-link">[Paper Note] Mini-o3: Scaling Up Reasoning Patterns and Interaction Turns for Visual  Search, Xin Lai+, arXiv'25</h3>
@@ -4479,7 +4479,7 @@ My Issue
 <a href="https://huggingface.co/AIDC-AI/Ovis2.5-9B" target="_blank" rel="noopener noreferrer">https://huggingface.co/AIDC-AI/Ovis2.5-9B</a>
 
 
-<br><br>Apache2.0ライセンス<br><br>GLM-4.1V-9B-Thinkingと同等以上の性能な模様。<br><img src="https://github.com/user-attachments/assets/becc30fe-db20-40c1-a94c-143487ffd9ff" alt="image" loading="lazy"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2128" target="_blank" rel="noopener noreferrer">[Paper Note] GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable  Reinforcement Learning, GLM-V Team+, arXiv'25</a>
+<br><br>Apache2.0ライセンス<br><br>GLM-4.1V-9B-Thinkingと同等以上の性能な模様。<br><img src="https://github.com/user-attachments/assets/becc30fe-db20-40c1-a94c-143487ffd9ff" alt="image" loading="lazy" width="400" height="300"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2128" target="_blank" rel="noopener noreferrer">[Paper Note] GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable  Reinforcement Learning, GLM-V Team+, arXiv'25</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -4699,7 +4699,7 @@ My Issue
 </div>
 
 
-<p>元ポストの著者によるスレッドが非常にわかりやすいのでそちらを参照のこと。<br>ざっくり言うと、Overthinking（考えすぎて大量のトークンを消費した上に回答が誤っている; トークン量↓とLLMによるJudge Score↑で評価）とUnderthinking（全然考えずにトークンを消費しなかった上に回答が誤っている; Accuracy↑で評価）をそれぞれ評価するサンプルを収集し、それらのスコアの組み合わせでモデルが必要に応じてどれだけ的確にThinkingできているかを評価するベンチマーク。<br><br>Overthinkingを評価するためのサンプルは、多くのLLMでagreementがとれるシンプルなQAによって構築。一方、Underthinkingを評価するためのサンプルは、small reasoning modelがlarge non reasoning modelよりも高い性能を示すサンプルを収集。<br><img src="https://github.com/user-attachments/assets/5383e385-fda9-41ae-a9a5-aebf494ca79e" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/c08cfe60-8a29-4ebf-8875-081f7ae7d19f" alt="image" loading="lazy"><br><br>現状Non Thinking ModelではQwen3-235B-A22Bの性能が良く、Thinking Modelではgpt-oss-120Bの性能が良い。プロプライエタリなモデルではそれぞれ、Claude-Sonnet4, o3の性能が良い。全体としてはo3の性能が最も良い。<br><img src="https://github.com/user-attachments/assets/5f5c1ead-d5fa-40a8-9a1b-90d4170ae3ee" alt="image" loading="lazy"></p></span><br><br>
+<p>元ポストの著者によるスレッドが非常にわかりやすいのでそちらを参照のこと。<br>ざっくり言うと、Overthinking（考えすぎて大量のトークンを消費した上に回答が誤っている; トークン量↓とLLMによるJudge Score↑で評価）とUnderthinking（全然考えずにトークンを消費しなかった上に回答が誤っている; Accuracy↑で評価）をそれぞれ評価するサンプルを収集し、それらのスコアの組み合わせでモデルが必要に応じてどれだけ的確にThinkingできているかを評価するベンチマーク。<br><br>Overthinkingを評価するためのサンプルは、多くのLLMでagreementがとれるシンプルなQAによって構築。一方、Underthinkingを評価するためのサンプルは、small reasoning modelがlarge non reasoning modelよりも高い性能を示すサンプルを収集。<br><img src="https://github.com/user-attachments/assets/5383e385-fda9-41ae-a9a5-aebf494ca79e" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/c08cfe60-8a29-4ebf-8875-081f7ae7d19f" alt="image" loading="lazy" width="400" height="300"><br><br>現状Non Thinking ModelではQwen3-235B-A22Bの性能が良く、Thinking Modelではgpt-oss-120Bの性能が良い。プロプライエタリなモデルではそれぞれ、Claude-Sonnet4, o3の性能が良い。全体としてはo3の性能が最も良い。<br><img src="https://github.com/user-attachments/assets/5f5c1ead-d5fa-40a8-9a1b-90d4170ae3ee" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="pass@k-training-2477" class="title-link">[Paper Note] Pass@k Training for Adaptively Balancing Exploration and Exploitation of  Large Reasoning Models, Zhipeng Chen+, arXiv'25</h3>
@@ -5037,7 +5037,7 @@ My Issue
 <br>  - Attention Headsの数を2.5倍（何に対して2.5倍なんだ、、？）（96個, 5120次元）にすることで（おそらく）事前学習のlossは改善しなかったがReasoning benchmarkの性能改善<br>  - QK Normを導入しattentionのlogitsの値域を改善<br>    - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2443" target="_blank" rel="noopener noreferrer">[Paper Note] Query-Key Normalization for Transformers, Alex Henry+, EMNLP'20 Findings</a>
 <br>  - Multi Token Prediction<br>    - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2444" target="_blank" rel="noopener noreferrer">[Paper Note] Better &amp; Faster Large Language Models via Multi-token Prediction, Fabian Gloeckle+, ICML'24</a>
 <br>    - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1620" target="_blank" rel="noopener noreferrer">Deep-seek-v3, deepseek-ai, 2024.12</a>
-<br><br>他モデルとの比較<br><img src="https://github.com/user-attachments/assets/6085b99e-3a76-432c-a759-91dd4feeb219" alt="image" loading="lazy"><br><br>学習部分は後で追記する</p>
+<br><br>他モデルとの比較<br><img src="https://github.com/user-attachments/assets/6085b99e-3a76-432c-a759-91dd4feeb219" alt="image" loading="lazy" width="400" height="300"><br><br>学習部分は後で追記する</p>
 <p>- 事前学習データ<br>  - web<br>    - 英語と中国語のwebページを利用<br>    - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1944" target="_blank" rel="noopener noreferrer">Nemotron-CC: Transforming Common Crawl into a Refined Long-Horizon   Pretraining Dataset, Dan Su+, ACL'25</a>
  と同様にquality scoreyをドキュメントに付与<br>    - 最も低いquality scoreの文書群を排除し、quality scoreの高い文書群をup sampling<br>    - 最もquality scoreyが大きい文書群は3.2 epoch分利用<br>    - 多くのweb pageがテンプレートから自動生成されており高いquality scoreが付与されていたが、MinHashによってdeduplicationできなかったため、 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2445" target="_blank" rel="noopener noreferrer">[Paper Note] SemDeDup: Data-efficient learning at web-scale through semantic
   deduplication, Amro Abbas+, arXiv'23</a>
@@ -5083,7 +5083,7 @@ My Issue
 )だが、モデルがコードを理解し、複雑なコードのロジックを実行する内部状態の変化に応じて、実行のプロセスを推論する能力が見落とされている。これを解決するために、CRUXEVAL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2440" target="_blank" rel="noopener noreferrer">[Paper Note] CRUXEval: A Benchmark for Code Reasoning, Understanding and Execution, Alex Gu+, arXiv'24</a>
 , CRUXEVAL-X <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2441" target="_blank" rel="noopener noreferrer">[Paper Note] CRUXEval-X: A Benchmark for Multilingual Code Reasoning, Understanding
   and Execution, Ruiyang Xu+, arXiv'24</a>
- では、関数のinputs/outputsを予測することで、モデルのコードのcomprehension, reasoning能力を測ろうとしているが、<br>- single functionのlogicに限定されている<br>- 20 line程度の短く、trivialなロジックに限定されている<br>- すでにSoTAモデルで95%が達成され飽和している<br><br>というlimitationがあるので、複数の関数が協働するロジック、flow/dataのinteractionのフロー制御、細かい実行ステップなどを含む、staticなコードの理解から、動的な実行プロセスのモデリング能力の評価にシフトするような、新たなベンチマークを作成しました、という話な模様。<br><br>まず関数単位のライブラリを構築している。このために、単一の関数の基礎的な仕様を「同じinputに対して同じoutputを返すものは同じクラスにマッピングされる」と定義し、既存のコードリポジトリとLLMによる合成によって、GoとPythonについて合計30種類のクラスと361個のインスタンスを収集。これらの関数は、算術演算や大小比較、パリティチェックなどの判定、文字列の操作などを含む。そしてこれら関数を3種類の実行パターンでオーケストレーションすることで、合成関数を作成した。合成方法は<br>- Sequential: outputとinputをパイプラインでつなぎ伝搬させる<br>- Selective: 条件に応じてf(x)が実行されるか、g(x)が実行されるかを制御<br>- Loop: input集合に対するloopの中に関数を埋め込み順次関数を実行<br><br>の3種類。合成関数の挙動を評価するために、ランダムなテストケースは自動生成し、合成関数の挙動をモニタリング（オーバーフロー、無限ループ、タイムアウト、複数回の実行でoutputが決定的か等など）し、異常があるものはフィルタリングすることで合成関数の品質を担保する。<br><br>ベンチマーキングの方法としては、CRUXEVALではシンプルにモデルにコードの実行結果を予想させるだけであったが、指示追従能力の問題からミスジャッジをすることがあるため、この問題に対処するため<input output>のペアが与えられた時に、outputが合成関数に対してinputしま結果とマッチするかをyes/noのbinaryで判定させる（Predictと呼ばれるモデルのコード理解力を評価)。これとは別に、与えられたinput, outputペアと合成関数に基づいて、実行時の合計のcomputation stepsを出力させるタスクをreasoningタスクとして定義し、複雑度に応じてeasy, hardに分類している。computation stepsは、プログラムを実行する最小単位のことであり、たとえば算術演算などの基礎的なarithmetic/logic operationを指す。<br><img src="https://github.com/user-attachments/assets/8ac34d8c-63e4-42d7-96ea-13dbe39ad683" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/76407c5b-acd0-40ef-a698-684875ccc680" alt="image" loading="lazy"></p></span><br><br>
+ では、関数のinputs/outputsを予測することで、モデルのコードのcomprehension, reasoning能力を測ろうとしているが、<br>- single functionのlogicに限定されている<br>- 20 line程度の短く、trivialなロジックに限定されている<br>- すでにSoTAモデルで95%が達成され飽和している<br><br>というlimitationがあるので、複数の関数が協働するロジック、flow/dataのinteractionのフロー制御、細かい実行ステップなどを含む、staticなコードの理解から、動的な実行プロセスのモデリング能力の評価にシフトするような、新たなベンチマークを作成しました、という話な模様。<br><br>まず関数単位のライブラリを構築している。このために、単一の関数の基礎的な仕様を「同じinputに対して同じoutputを返すものは同じクラスにマッピングされる」と定義し、既存のコードリポジトリとLLMによる合成によって、GoとPythonについて合計30種類のクラスと361個のインスタンスを収集。これらの関数は、算術演算や大小比較、パリティチェックなどの判定、文字列の操作などを含む。そしてこれら関数を3種類の実行パターンでオーケストレーションすることで、合成関数を作成した。合成方法は<br>- Sequential: outputとinputをパイプラインでつなぎ伝搬させる<br>- Selective: 条件に応じてf(x)が実行されるか、g(x)が実行されるかを制御<br>- Loop: input集合に対するloopの中に関数を埋め込み順次関数を実行<br><br>の3種類。合成関数の挙動を評価するために、ランダムなテストケースは自動生成し、合成関数の挙動をモニタリング（オーバーフロー、無限ループ、タイムアウト、複数回の実行でoutputが決定的か等など）し、異常があるものはフィルタリングすることで合成関数の品質を担保する。<br><br>ベンチマーキングの方法としては、CRUXEVALではシンプルにモデルにコードの実行結果を予想させるだけであったが、指示追従能力の問題からミスジャッジをすることがあるため、この問題に対処するため<input output>のペアが与えられた時に、outputが合成関数に対してinputしま結果とマッチするかをyes/noのbinaryで判定させる（Predictと呼ばれるモデルのコード理解力を評価)。これとは別に、与えられたinput, outputペアと合成関数に基づいて、実行時の合計のcomputation stepsを出力させるタスクをreasoningタスクとして定義し、複雑度に応じてeasy, hardに分類している。computation stepsは、プログラムを実行する最小単位のことであり、たとえば算術演算などの基礎的なarithmetic/logic operationを指す。<br><img src="https://github.com/user-attachments/assets/8ac34d8c-63e4-42d7-96ea-13dbe39ad683" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/76407c5b-acd0-40ef-a698-684875ccc680" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mathsmith-towards-2390" class="title-link">[Paper Note] MathSmith: Towards Extremely Hard Mathematical Reasoning by Forging  Synthetic Problems with a Reinforced Policy, Shaoxiong Zhan+, arXiv'25</h3>
@@ -5149,9 +5149,9 @@ My Issue
 </div>
 
 
-<p>より複雑で、Reasoningやplanningを促すようなinstructionが生成される模様。実際に生成されたinstructionのexampleは全体をざっとみた感じこの図中のもののみのように見える。<br><img src="https://github.com/user-attachments/assets/98dcb6a3-686f-4e3d-bf83-7b36765c0953" alt="image" loading="lazy"></p>
+<p>より複雑で、Reasoningやplanningを促すようなinstructionが生成される模様。実際に生成されたinstructionのexampleは全体をざっとみた感じこの図中のもののみのように見える。<br><img src="https://github.com/user-attachments/assets/98dcb6a3-686f-4e3d-bf83-7b36765c0953" alt="image" loading="lazy" width="400" height="300"></p>
 <p>以下のスクショはMagpieによって合成されたinstruction。InstructionTuning用のデータを合成するならMagpieが便利そうだなぁ、と思っていたのだが、比較するとCoT-SelfInstructの方が、より複雑で具体的な指示を含むinstructionが生成されるように見える。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2094" target="_blank" rel="noopener noreferrer">[Paper Note] Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs   with Nothing, Zhangchen Xu+, ICLR'25</a>
-<br><br><img src="https://github.com/user-attachments/assets/a631a2bc-d2ee-49dd-96a1-00354ff1f40a" alt="image" loading="lazy"></p></span><br><br>
+<br><br><img src="https://github.com/user-attachments/assets/a631a2bc-d2ee-49dd-96a1-00354ff1f40a" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="beyond-binary-2332" class="title-link">[Paper Note] Beyond Binary Rewards: Training LMs to Reason About Their Uncertainty, Mehul Damani+, arXiv'25</h3>
@@ -5389,7 +5389,7 @@ My Issue
 </div>
 
 
-<p>ReasoningモデルにおいてReasoningが長くなればなるほど<br>- context中にirrerevantな情報が含まれるシンプルな個数を数えるタスクでは、irrerevantな情報に惑わされるようになり、<br>- 特徴表に基づく回帰タスクの場合、擬似相関を持つ特徴量をの影響を増大してしまい、<br>- 複雑で組み合わせが多い演繹タスク（シマウマパズル）に失敗する<br><br>といったように、Reasoning Traceが長くなればなるほど性能を悪化させるタスクが存在しこのような問題のある推論パターンを見つけるためにも、様々なReasoning Traceの長さで評価した方が良いのでは、といった話な模様？<br><img src="https://github.com/user-attachments/assets/751d09a2-c889-4ad9-b9e4-9af5a64200b8" alt="image" loading="lazy"></p></span><br><br>
+<p>ReasoningモデルにおいてReasoningが長くなればなるほど<br>- context中にirrerevantな情報が含まれるシンプルな個数を数えるタスクでは、irrerevantな情報に惑わされるようになり、<br>- 特徴表に基づく回帰タスクの場合、擬似相関を持つ特徴量をの影響を増大してしまい、<br>- 複雑で組み合わせが多い演繹タスク（シマウマパズル）に失敗する<br><br>といったように、Reasoning Traceが長くなればなるほど性能を悪化させるタスクが存在しこのような問題のある推論パターンを見つけるためにも、様々なReasoning Traceの長さで評価した方が良いのでは、といった話な模様？<br><img src="https://github.com/user-attachments/assets/751d09a2-c889-4ad9-b9e4-9af5a64200b8" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="chain-of-2238" class="title-link">[Paper Note] Chain of Thought Monitorability: A New and Fragile Opportunity for AI  Safety, Tomek Korbak+, arXiv'25</h3>
@@ -5465,7 +5465,7 @@ My Issue
 </div>
 
 
-<p><img src="https://github.com/user-attachments/assets/eb969359-91d2-4ac4-8a48-1fe27d88ec4e" alt="image" loading="lazy"></p></span><br><br>
+<p><img src="https://github.com/user-attachments/assets/eb969359-91d2-4ac4-8a48-1fe27d88ec4e" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="kimi-vl-technical-2200" class="title-link">[Paper Note] Kimi-VL Technical Report, Kimi Team+, arXiv'25</h3>
@@ -5545,7 +5545,7 @@ My Issue
 </div>
 
 
-<p>VLMにおいて、画像をマスクした場合のポリシーモデルの出力と、画像をマスクしない場合のポリシーモデルの出力のKL Divergenceを最大化することで、画像の認知能力が向上し性能向上するよ、みたいな話な模様。<br><img src="https://github.com/user-attachments/assets/d7844321-d979-497f-84da-5d69fd13233f" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/afe8919c-ea16-48a1-b33b-79b7a3b1ccb0" alt="image" loading="lazy"><br><br><img src="https://github.com/user-attachments/assets/04a3d23c-2eb0-40e2-aa2c-363498976320" alt="image" loading="lazy"></p></span><br><br>
+<p>VLMにおいて、画像をマスクした場合のポリシーモデルの出力と、画像をマスクしない場合のポリシーモデルの出力のKL Divergenceを最大化することで、画像の認知能力が向上し性能向上するよ、みたいな話な模様。<br><img src="https://github.com/user-attachments/assets/d7844321-d979-497f-84da-5d69fd13233f" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/afe8919c-ea16-48a1-b33b-79b7a3b1ccb0" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/04a3d23c-2eb0-40e2-aa2c-363498976320" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="decoder-hybrid-decoder-architecture-2181" class="title-link">[Paper Note] Decoder-Hybrid-Decoder Architecture for Efficient Reasoning with Long  Generation, Liliang Ren+, arXiv'25</h3>
@@ -5661,8 +5661,8 @@ My Issue
 </div>
 
 
-<p>Qwen2.5-VLよりも性能が良いVLM<br><img src="https://github.com/user-attachments/assets/1215d0cf-3776-4631-a5d5-2c514e7d5a2e" alt="image" loading="lazy"></p>
-<p>アーキテクチャはこちら。が、pretraining(データのフィルタリング, マルチモーダル→long context継続事前学習)-&gt;SFT(cold startへの対処, reasoning能力の獲得)-&gt;RL(RLVRとRLHFの併用によるパフォーマンス向上とAlignment, RewardHackingへの対処,curriculum sampling)など、全体の学習パイプラインの細かいテクニックの積み重ねで高い性能が獲得されていると考えられる。<br><img src="https://github.com/user-attachments/assets/a692b5de-5f4e-42c6-938e-3718dd2fc0e6" alt="image" loading="lazy"></p></span><br><br>
+<p>Qwen2.5-VLよりも性能が良いVLM<br><img src="https://github.com/user-attachments/assets/1215d0cf-3776-4631-a5d5-2c514e7d5a2e" alt="image" loading="lazy" width="400" height="300"></p>
+<p>アーキテクチャはこちら。が、pretraining(データのフィルタリング, マルチモーダル→long context継続事前学習)-&gt;SFT(cold startへの対処, reasoning能力の獲得)-&gt;RL(RLVRとRLHFの併用によるパフォーマンス向上とAlignment, RewardHackingへの対処,curriculum sampling)など、全体の学習パイプラインの細かいテクニックの積み重ねで高い性能が獲得されていると考えられる。<br><img src="https://github.com/user-attachments/assets/a692b5de-5f4e-42c6-938e-3718dd2fc0e6" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="reasonflux-prm-trajectory-aware-2083" class="title-link">[Paper Note] ReasonFlux-PRM: Trajectory-Aware PRMs for Long Chain-of-Thought  Reasoning in LLMs, Jiaru Zou+, arXiv'25</h3>
@@ -5798,7 +5798,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2025-06-18</span>
 <span class="snippet"><span>GPT Summary</span>- 自己反省を抑制する「NoWait」アプローチを提案し、推論の効率を向上。10のベンチマークで最大27%-51%の思考の連鎖の長さを削減し、有用性を維持。マルチモーダル推論のための効果的なソリューションを提供。</span>
-<span class="snippet"><span>Comment</span><p>Wait, Hmmといったlong CoTを誘導するようなtokenを抑制することで、Accはほぼ変わらずに生成されるトークン数を削減可能、といった図に見える。Reasoningモデルでデコーディング速度を向上したい場合に効果がありそう。<br><img src="https://github.com/user-attachments/assets/c0abd2b4-f019-435e-b72f-f588fa0eb782" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>Wait, Hmmといったlong CoTを誘導するようなtokenを抑制することで、Accはほぼ変わらずに生成されるトークン数を削減可能、といった図に見える。Reasoningモデルでデコーディング速度を向上したい場合に効果がありそう。<br><img src="https://github.com/user-attachments/assets/c0abd2b4-f019-435e-b72f-f588fa0eb782" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -5891,7 +5891,7 @@ My Issue
 </div>
 
 
-<p>35種類のタスクを人手で選定し、タスクごとに困難度の鍵となるパラメータを定義（数独ならばグリッド数など）。その上で、各タスクごとに人手でルールベースのinstanceを生成するコードを実装し、さまざまな困難度パラメータに基づいて多様なinstanceを生成。生成されたinstanceの困難度は、近似的なUpper Bound(DeepSeek-R1, o3-miniのPass@10)とLower bound（chat model[^1]でのPass@10)を求めデータセットに含まれるinstanceの困難度をコントロールし、taskを記述するpromptも生成。タスクごとに人手で実装されたVerifierも用意されている。<br><img src="https://github.com/user-attachments/assets/cda0534d-7db2-4470-93b8-01f446476544" alt="image" loading="lazy"><br><br>Qwen2.5-7B-BaseをSynDataでDAPOしたところ、大幅にlogic benchmarkとmathematical benchmarkの性能が改善。<br><img src="https://github.com/user-attachments/assets/dcc1309d-7946-4a6d-91a3-7ccac9ec6688" alt="image" loading="lazy"><br><br>mathやcodeのデータとmixして7Bモデルを訓練したところ、32Bモデルに匹敵する性能を達成し、SynDataをmixすることでgainが大きくなったので、SynDataから学習できる能力が汎化することが示唆される。<br><img src="https://github.com/user-attachments/assets/7b618fe9-5271-434b-9808-f53f0e758e5e" alt="image" loading="lazy"><br><br>タスク一覧はこちら<br><img src="https://github.com/user-attachments/assets/50fcdcb3-701e-4d42-94c7-201d8d354d75" alt="image" loading="lazy"><br><br>[^1]:どのchat modelかはざっと見た感じわからない。どこかに書いてあるかも。</p>
+<p>35種類のタスクを人手で選定し、タスクごとに困難度の鍵となるパラメータを定義（数独ならばグリッド数など）。その上で、各タスクごとに人手でルールベースのinstanceを生成するコードを実装し、さまざまな困難度パラメータに基づいて多様なinstanceを生成。生成されたinstanceの困難度は、近似的なUpper Bound(DeepSeek-R1, o3-miniのPass@10)とLower bound（chat model[^1]でのPass@10)を求めデータセットに含まれるinstanceの困難度をコントロールし、taskを記述するpromptも生成。タスクごとに人手で実装されたVerifierも用意されている。<br><img src="https://github.com/user-attachments/assets/cda0534d-7db2-4470-93b8-01f446476544" alt="image" loading="lazy" width="400" height="300"><br><br>Qwen2.5-7B-BaseをSynDataでDAPOしたところ、大幅にlogic benchmarkとmathematical benchmarkの性能が改善。<br><img src="https://github.com/user-attachments/assets/dcc1309d-7946-4a6d-91a3-7ccac9ec6688" alt="image" loading="lazy" width="400" height="300"><br><br>mathやcodeのデータとmixして7Bモデルを訓練したところ、32Bモデルに匹敵する性能を達成し、SynDataをmixすることでgainが大きくなったので、SynDataから学習できる能力が汎化することが示唆される。<br><img src="https://github.com/user-attachments/assets/7b618fe9-5271-434b-9808-f53f0e758e5e" alt="image" loading="lazy" width="400" height="300"><br><br>タスク一覧はこちら<br><img src="https://github.com/user-attachments/assets/50fcdcb3-701e-4d42-94c7-201d8d354d75" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]:どのchat modelかはざっと見た感じわからない。どこかに書いてあるかも。</p>
 <p>Logical Reasoningが重要なタスクを扱う際はこのデータを活用することを検討してみても良いかもしれない</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -5914,7 +5914,7 @@ My Issue
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <span class="issue_date">Issue Date: 2025-06-01</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の推論能力を評価するための新しいベンチマーク、BIG-Bench Extra Hard（BBEH）を導入。これは、既存のBIG-Bench Hard（BBH）のタスクを新しいものに置き換え、難易度を大幅に引き上げることで、LLMの限界を押し広げることを目的としている。評価の結果、最良の汎用モデルで9.8%、推論専門モデルで44.8%の平均精度が観察され、LLMの一般的推論能力向上の余地が示された。BBEHは公開されている。</span>
-<span class="snippet"><span>Comment</span><p>Big-Bench hard（既にSoTAモデルの能力差を識別できない）の難易度をさらに押し上げたデータセット。<br><br>Inputの例<br><img src="https://github.com/user-attachments/assets/b9d1308f-1481-470d-a553-c181d902119c" alt="image" loading="lazy"><br><br>タスクごとのInput, Output lengthの分布<br><img src="https://github.com/user-attachments/assets/ef6b7401-159d-46c7-bd9d-9a64f63b5089" alt="image" loading="lazy"><br><img src="https://github.com/user-attachments/assets/01207db3-cb01-46f2-a805-e9ddf9d58198" alt="image" loading="lazy"><br><br>現在の主要なモデル群の性能<br><img src="https://github.com/user-attachments/assets/5ce538d8-45a1-449a-992a-998b33fdeaf7" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>Big-Bench hard（既にSoTAモデルの能力差を識別できない）の難易度をさらに押し上げたデータセット。<br><br>Inputの例<br><img src="https://github.com/user-attachments/assets/b9d1308f-1481-470d-a553-c181d902119c" alt="image" loading="lazy" width="400" height="300"><br><br>タスクごとのInput, Output lengthの分布<br><img src="https://github.com/user-attachments/assets/ef6b7401-159d-46c7-bd9d-9a64f63b5089" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/01207db3-cb01-46f2-a805-e9ddf9d58198" alt="image" loading="lazy" width="400" height="300"><br><br>現在の主要なモデル群の性能<br><img src="https://github.com/user-attachments/assets/5ce538d8-45a1-449a-992a-998b33fdeaf7" alt="image" loading="lazy" width="400" height="300"></p>
 <p>Big-Bench論文はこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the   capabilities of language models, Aarohi Srivastava+, N/A, TMLR'23</a>
 </p></span><br><br>
 </article>
@@ -6107,7 +6107,7 @@ My Issue
 
 <p>外部のCoTデータを使わないで、LLMのreasoning capabilityを向上させる話っぽい。DeepSeek-R1の登場以前の研究とのこと。</p>
 <p>reasoning traceを出力するようにInstruction Tuningによって回答を直接出力するようPostTrainingされたモデルにpromptingし、複数のoutputを収集（今回は8個, temperature=0.8, top p=0.95)。Self Taught Evaluator <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1464" target="_blank" rel="noopener noreferrer">Self-Taught Evaluators, Tianlu Wang+, N/A, arXiv'24</a>
- (STE;70B, LLM-as-a-Judgeを利用するモデル）、あるいはArmo Reward Model（8B）によって回答の品質をスコアリング。ここで、LLM-as-a-Judgeの場合はペアワイズでの優劣が決まるだけなので、ELOでスコアリングする。outputのうちbest scoreとworst scoreだったものの双方でペアデータを構築し、DPOで利用するpreferenceペアデータを構築しDPOする。このような処理を繰り返し、モデルの重みをiterationごとに更新する。次のiterationでは更新されたモデルで同様の処理を行い、前段のステップで利用した学習データは利用しないようにする（後段の方が品質が高いと想定されるため）。また、回答を別モデルで評価する際に、長いレスポンスを好むモデルの場合、長い冗長なレスポンスが高くスコアリングされるようなバイアスが働く懸念があるため、長すぎる回答にpenaltyを与えている（Length-Control)。<br><img src="https://github.com/user-attachments/assets/3be7f7c3-1a24-44c5-bd73-a4b9e11b4b2c" alt="image" loading="lazy"><br><br>reasoning traceを出力するpromptはgenericとspecific thoughtの二種類で検証。前者はLLMにどのような思考をするかを丸投げするのに対し、後者はこちら側で指定する。後者の場合は、どのような思考が良いかを事前に知っていなければならない。<br><img src="https://github.com/user-attachments/assets/4548fd23-69ba-482f-8987-740f30658d83" alt="image" loading="lazy"><br><br>Llama-3-8b-instructに適用したところ、70Bスケールのモデルよりも高い性能を達成。また、reasoning trace出力をablationしたモデル（Direct responce baseline）よりも性能が向上。<br><img src="https://github.com/user-attachments/assets/06605741-7049-460a-8062-93be96d45975" alt="image" loading="lazy"><br><br>iterationが進むに連れて、性能が向上している。<br><img src="https://github.com/user-attachments/assets/25ced3ce-e341-41c4-b1e2-527885590e08" alt="image" loading="lazy"></p></span><br><br>
+ (STE;70B, LLM-as-a-Judgeを利用するモデル）、あるいはArmo Reward Model（8B）によって回答の品質をスコアリング。ここで、LLM-as-a-Judgeの場合はペアワイズでの優劣が決まるだけなので、ELOでスコアリングする。outputのうちbest scoreとworst scoreだったものの双方でペアデータを構築し、DPOで利用するpreferenceペアデータを構築しDPOする。このような処理を繰り返し、モデルの重みをiterationごとに更新する。次のiterationでは更新されたモデルで同様の処理を行い、前段のステップで利用した学習データは利用しないようにする（後段の方が品質が高いと想定されるため）。また、回答を別モデルで評価する際に、長いレスポンスを好むモデルの場合、長い冗長なレスポンスが高くスコアリングされるようなバイアスが働く懸念があるため、長すぎる回答にpenaltyを与えている（Length-Control)。<br><img src="https://github.com/user-attachments/assets/3be7f7c3-1a24-44c5-bd73-a4b9e11b4b2c" alt="image" loading="lazy" width="400" height="300"><br><br>reasoning traceを出力するpromptはgenericとspecific thoughtの二種類で検証。前者はLLMにどのような思考をするかを丸投げするのに対し、後者はこちら側で指定する。後者の場合は、どのような思考が良いかを事前に知っていなければならない。<br><img src="https://github.com/user-attachments/assets/4548fd23-69ba-482f-8987-740f30658d83" alt="image" loading="lazy" width="400" height="300"><br><br>Llama-3-8b-instructに適用したところ、70Bスケールのモデルよりも高い性能を達成。また、reasoning trace出力をablationしたモデル（Direct responce baseline）よりも性能が向上。<br><img src="https://github.com/user-attachments/assets/06605741-7049-460a-8062-93be96d45975" alt="image" loading="lazy" width="400" height="300"><br><br>iterationが進むに連れて、性能が向上している。<br><img src="https://github.com/user-attachments/assets/25ced3ce-e341-41c4-b1e2-527885590e08" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="100-days-1925" class="title-link">100 Days After DeepSeek-R1: A Survey on Replication Studies and More  Directions for Reasoning Language Models, Chong Zhang+, arXiv'25</h3>
@@ -6208,7 +6208,7 @@ My Issue
 <span class="issue_date">Issue Date: 2025-04-08</span>
 <span class="snippet"><span>GPT Summary</span>- VAPO（Value-based Augmented Proximal Policy Optimization framework）を提案し、AIME 2024データセットで最先端のスコア60.4を達成。VAPOは他の手法を10ポイント以上上回り、5,000ステップで安定したパフォーマンスを示す。価値ベースの強化学習における3つの課題を特定し、VAPOがそれらを軽減する統合ソリューションを提供することで、長い思考過程の推論タスクの性能向上を実現。</span>
 <span class="snippet"><span>Comment</span><p>同じくByteDanceの<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, arXiv'25</a>
-<br><br>を上回る性能<br><img src="https://github.com/user-attachments/assets/51f7a43a-9410-45f3-989c-4e0b1fdd86ef" alt="image" loading="lazy"></p>
+<br><br>を上回る性能<br><img src="https://github.com/user-attachments/assets/51f7a43a-9410-45f3-989c-4e0b1fdd86ef" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -6285,7 +6285,7 @@ My Issue
 </div>
 
 
-<p>RL, Test Time Compute, Self-trainingの3種類にカテゴライズされている。また、各カテゴリごとにより細分化されたツリーが論文中にある。<br><img src="https://github.com/user-attachments/assets/d323db81-973a-4752-afc9-4471f5e64feb" alt="image" loading="lazy"><br><br></p></span><br><br>
+<p>RL, Test Time Compute, Self-trainingの3種類にカテゴライズされている。また、各カテゴリごとにより細分化されたツリーが論文中にある。<br><img src="https://github.com/user-attachments/assets/d323db81-973a-4752-afc9-4471f5e64feb" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="understanding-r1-zero-like-1821" class="title-link">[Paper Note] Understanding R1-Zero-Like Training: A Critical Perspective, Zichen Liu+, arXiv'25, 2025.03</h3>
@@ -6355,8 +6355,8 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2025-03-22</span>
 <span class="snippet"><span>GPT Summary</span>- 本論文では、LLMsにおける効率的な推論の進展を体系的に調査し、以下の主要な方向に分類します：(1) モデルベースの効率的推論、(2) 推論出力ベースの効率的推論、(3) 入力プロンプトベースの効率的推論。特に、冗長な出力による計算オーバーヘッドを軽減する方法を探求し、小規模言語モデルの推論能力や評価方法についても議論します。</span>
-<span class="snippet"><span>Comment</span><p>Reasoning Modelにおいて、Over Thinking現象（不要なreasoning stepを生成してしまう）を改善するための手法に関するSurvey。<br><img src="https://github.com/user-attachments/assets/a411f2cf-2ba1-4e58-8dc7-ac1ae2ff0de6" alt="image" loading="lazy"><br><br>下記Figure2を見るとよくまとまっていて、キャプションを読むとだいたい分かる。なるほど。<br>Length Rewardについては、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
-<br><br>で考察されている通り、Reward Hackingが起きるので設計の仕方に気をつける必要がある。<br><br><img src="https://github.com/user-attachments/assets/fd6880bd-95e1-4ca6-9593-8ffc9390962a" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>Reasoning Modelにおいて、Over Thinking現象（不要なreasoning stepを生成してしまう）を改善するための手法に関するSurvey。<br><img src="https://github.com/user-attachments/assets/a411f2cf-2ba1-4e58-8dc7-ac1ae2ff0de6" alt="image" loading="lazy" width="400" height="300"><br><br>下記Figure2を見るとよくまとまっていて、キャプションを読むとだいたい分かる。なるほど。<br>Length Rewardについては、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+<br><br>で考察されている通り、Reward Hackingが起きるので設計の仕方に気をつける必要がある。<br><br><img src="https://github.com/user-attachments/assets/fd6880bd-95e1-4ca6-9593-8ffc9390962a" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -6367,7 +6367,7 @@ My Issue
 </div>
 
 
-<p>各カテゴリにおけるliteratureも見やすくまとめられている。必要に応じて参照したい。<br><img src="https://github.com/user-attachments/assets/b6be0d79-35c5-45a8-878b-2b6be67c2f76" alt="image" loading="lazy"></p></span><br><br>
+<p>各カテゴリにおけるliteratureも見やすくまとめられている。必要に応じて参照したい。<br><img src="https://github.com/user-attachments/assets/b6be0d79-35c5-45a8-878b-2b6be67c2f76" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="dapo-an-1815" class="title-link">DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, arXiv'25</h3>
@@ -6455,7 +6455,7 @@ My Issue
 <a class="button" href="PEFT(Adaptor_LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
 <span class="issue_date">Issue Date: 2025-03-19</span>
 <span class="snippet"><span>GPT Summary</span>- 非教師ありプレフィックスファインチューニング（UPFT）を提案し、LLMの推論効率を向上。初期のプレフィックス部分文字列に基づいて訓練し、ラベル付きデータやサンプリングを不要に。UPFTは、教師あり手法と同等の性能を維持しつつ、訓練時間を75%、サンプリングコストを99%削減。最小限の非教師ありファインチューニングで大幅な推論向上を実現し、リソース効率の良い代替手段を提供。</span>
-<span class="snippet"><span>Comment</span><p>斜め読みだが、reasoning traceの冒頭部分は重要な役割を果たしており、サンプリングした多くのresponseのreasoning traceにおいて共通しているものは重要という直感から（Prefix Self-Consistency）、reasoning traceの冒頭部分を適切に生成できるようにモデルをFinetuningする。従来のRejection Samplingを用いた手法では、複数のresponseを生成させて、最終的なanswerが正解のものをサンプリングするため正解ラベルが必要となるが、提案手法ではreasoning traceの冒頭部分の共通するsubsequenceをmajority voteするだけなのでラベルが不要である。<br><img src="https://github.com/user-attachments/assets/ff3938da-dcd0-4b6c-a764-26d2e8caa63a" alt="image" loading="lazy"><br><br>reasoning prefixを学習する際は下記のようなテンプレートを用いる。このときに、prefixのspanのみを利用して学習することで大幅に学習時間を削減できる。<br><img src="https://github.com/user-attachments/assets/63aabe47-9c40-41cb-8d5a-5039900f6edc" alt="image" loading="lazy"><br><br>また、そのような学習を行うとcatastrophic forgettingのリスクが非常に高いが、これを防ぐために、マルチタスクラーニングを実施する。具体的には学習データのp%については全体のreasoning traceを生成して学習に利用する。このときに、最終的な回答の正誤を気にせずtraceを生成して学習に利用することで、ラベルフリーな特性を維持できる（つまり、こちらのデータは良いreasoning traceを学習することを目的としているわけではなく、あくまでcatastrophic forgettingを防ぐためにベースモデルのようなtraceもきちんと生成できれば良い、という感覚だと思われる）。<br><img src="https://github.com/user-attachments/assets/6e83c686-5bcf-4db8-9b8a-63c39570a4dc" alt="image" loading="lazy"><br><br>AppendixにQwenを用いてtemperature 0.7で16個のresponseをサンプリングし、traceの冒頭部分が共通している様子が示されている。</p>
+<span class="snippet"><span>Comment</span><p>斜め読みだが、reasoning traceの冒頭部分は重要な役割を果たしており、サンプリングした多くのresponseのreasoning traceにおいて共通しているものは重要という直感から（Prefix Self-Consistency）、reasoning traceの冒頭部分を適切に生成できるようにモデルをFinetuningする。従来のRejection Samplingを用いた手法では、複数のresponseを生成させて、最終的なanswerが正解のものをサンプリングするため正解ラベルが必要となるが、提案手法ではreasoning traceの冒頭部分の共通するsubsequenceをmajority voteするだけなのでラベルが不要である。<br><img src="https://github.com/user-attachments/assets/ff3938da-dcd0-4b6c-a764-26d2e8caa63a" alt="image" loading="lazy" width="400" height="300"><br><br>reasoning prefixを学習する際は下記のようなテンプレートを用いる。このときに、prefixのspanのみを利用して学習することで大幅に学習時間を削減できる。<br><img src="https://github.com/user-attachments/assets/63aabe47-9c40-41cb-8d5a-5039900f6edc" alt="image" loading="lazy" width="400" height="300"><br><br>また、そのような学習を行うとcatastrophic forgettingのリスクが非常に高いが、これを防ぐために、マルチタスクラーニングを実施する。具体的には学習データのp%については全体のreasoning traceを生成して学習に利用する。このときに、最終的な回答の正誤を気にせずtraceを生成して学習に利用することで、ラベルフリーな特性を維持できる（つまり、こちらのデータは良いreasoning traceを学習することを目的としているわけではなく、あくまでcatastrophic forgettingを防ぐためにベースモデルのようなtraceもきちんと生成できれば良い、という感覚だと思われる）。<br><img src="https://github.com/user-attachments/assets/6e83c686-5bcf-4db8-9b8a-63c39570a4dc" alt="image" loading="lazy" width="400" height="300"><br><br>AppendixにQwenを用いてtemperature 0.7で16個のresponseをサンプリングし、traceの冒頭部分が共通している様子が示されている。</p>
 <p>下記論文でlong-CoTを学習させる際のlong-CoTデータとして、reasoningモデルから生成したtraceと非reasoning modelから生成したtraceによるlong-CoTデータを比較したところ前者の方が一貫して学習性能が良かったとあるが、この研究でもreasoning traceをつよつよモデルで生成したら性能上がるんだろうか。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
 </p></span><br><br>
 </article>
@@ -6479,7 +6479,7 @@ My Issue
 <a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <span class="issue_date">Issue Date: 2025-03-15</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）は自然言語処理に革命をもたらしたが、専門的な文脈での制約が明らかである。これに対処するため、高度なポストトレーニング言語モデル（PoLMs）が必要であり、本論文ではその包括的な調査を行う。ファインチューニング、アライメント、推論、効率、統合と適応の5つのコアパラダイムにわたる進化を追跡し、PoLMがバイアス軽減や推論能力向上に寄与する方法を示す。研究はPoLMの進化に関する初の調査であり、将来の研究のための枠組みを提供し、LLMの精度と倫理的堅牢性を向上させることを目指す。</span>
-<span class="snippet"><span>Comment</span><p>Post Trainingの時間発展の図解が非常にわかりやすい（が、厳密性には欠けているように見える。当該モデルの新規性における主要な技術はこれです、という図としてみるには良いのかもしれない）。<br>個々の技術が扱うスコープとレイヤー、データの性質が揃っていない気がするし、それぞれのLLMがy軸の単一の技術だけに依存しているわけでもない。が、厳密に図を書いてと言われた時にどう書けば良いかと問われると難しい感はある。<br><img src="https://github.com/user-attachments/assets/6cdf060f-1cc9-44cd-b81a-50f4d3c442de" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>Post Trainingの時間発展の図解が非常にわかりやすい（が、厳密性には欠けているように見える。当該モデルの新規性における主要な技術はこれです、という図としてみるには良いのかもしれない）。<br>個々の技術が扱うスコープとレイヤー、データの性質が揃っていない気がするし、それぞれのLLMがy軸の単一の技術だけに依存しているわけでもない。が、厳密に図を書いてと言われた時にどう書けば良いかと問われると難しい感はある。<br><img src="https://github.com/user-attachments/assets/6cdf060f-1cc9-44cd-b81a-50f4d3c442de" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -6512,7 +6512,7 @@ My Issue
 <a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <span class="issue_date">Issue Date: 2025-03-04</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）のポストトレーニング手法に焦点を当て、知識の洗練や推論の改善、事実の正確性向上を目指す。ファインチューニングや強化学習などの戦略がLLMsのパフォーマンスを最適化し、実世界のタスクへの適応性を向上させる。主要な課題として壊滅的な忘却や報酬ハッキングを分析し、今後の研究方向性を示す公開リポジトリも提供。</span>
-<span class="snippet"><span>Comment</span><p>非常にわかりやすい。<br><img src="https://github.com/user-attachments/assets/855326f0-bc18-4ce1-9870-7690393af21e" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>非常にわかりやすい。<br><img src="https://github.com/user-attachments/assets/855326f0-bc18-4ce1-9870-7690393af21e" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -6908,7 +6908,7 @@ My Issue
 </div>
 
 
-<p>MMMUのサンプルはこちら。各分野ごとに専門家レベルの知識と推論が求められるとのこと。<br><img src="https://github.com/user-attachments/assets/90839a16-d7d2-499d-b2d8-52dab8988e52" alt="image" loading="lazy"></p></span><br><br>
+<p>MMMUのサンプルはこちら。各分野ごとに専門家レベルの知識と推論が求められるとのこと。<br><img src="https://github.com/user-attachments/assets/90839a16-d7d2-499d-b2d8-52dab8988e52" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="iterative-reasoning-2127" class="title-link">[Paper Note] Iterative Reasoning Preference Optimization, Richard Yuanzhe Pang+, NeurIPS'24</h3>
@@ -6939,7 +6939,7 @@ My Issue
 
 </p>
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N/A, ICML'24</a>
-<br><br>と似たようにiterativeなmannerでreasoning能力を向上させる。<br><br><img src="https://github.com/user-attachments/assets/a0f10e8e-454d-40e8-ae67-8c6c2da6a0ed" alt="image" loading="lazy"><br><br>ただし、loss functionとしては、chosenなCoT+yのresponseに対して、reasoning traceを生成する能力を高めるために、NLL Lossも適用している点に注意。<br><img src="https://github.com/user-attachments/assets/5ae2dcba-09c8-4618-9b63-ae6aed5b234d" alt="image" loading="lazy"><br><br>32 samplesのmajority votingによってより高い性能が達成できているので、多様なreasoning traceが生成されていることが示唆される。</p></span><br><br>
+<br><br>と似たようにiterativeなmannerでreasoning能力を向上させる。<br><br><img src="https://github.com/user-attachments/assets/a0f10e8e-454d-40e8-ae67-8c6c2da6a0ed" alt="image" loading="lazy" width="400" height="300"><br><br>ただし、loss functionとしては、chosenなCoT+yのresponseに対して、reasoning traceを生成する能力を高めるために、NLL Lossも適用している点に注意。<br><img src="https://github.com/user-attachments/assets/5ae2dcba-09c8-4618-9b63-ae6aed5b234d" alt="image" loading="lazy" width="400" height="300"><br><br>32 samplesのmajority votingによってより高い性能が達成できているので、多様なreasoning traceが生成されていることが示唆される。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="let's-verify-2103" class="title-link">[Paper Note] Let's Verify Step by Step, Hunter Lightman+, ICLR'24</h3>
@@ -7009,7 +7009,7 @@ My Issue
 
 </p>
 <p>元々数学のreasoningに関する能力を改善するために提案されたが、現在はオンラインでTruthfulness, Helpfulness, Concisenessなどの改善に活用されているとのこと。</p>
-<p>PPOとGRPOの比較。value function model（状態の価値を予測するモデル）が不要なため省メモリ、かつ利用する計算リソースが小さいらしい。<br>あとサンプルをグループごとに分けて、グループ内でのKLダイバージェンスが最小化されるよう（つまり、各グループ内で方策が類似する）Policy Modelが更新される（つまりloss functionに直接組み込まれる）点が違うらしい。<br><br>PPOでは生成するトークンごとにreference modelとPolicy ModelとのKLダイバージェンスをとり、reference modelとの差が大きくならないよう、報酬にペナルティを入れるために使われることが多いらしい。<br><img src="https://github.com/user-attachments/assets/e145ad52-e6c9-4481-b2ee-10a3987ea2e3" alt="image" loading="lazy"></p>
+<p>PPOとGRPOの比較。value function model（状態の価値を予測するモデル）が不要なため省メモリ、かつ利用する計算リソースが小さいらしい。<br>あとサンプルをグループごとに分けて、グループ内でのKLダイバージェンスが最小化されるよう（つまり、各グループ内で方策が類似する）Policy Modelが更新される（つまりloss functionに直接組み込まれる）点が違うらしい。<br><br>PPOでは生成するトークンごとにreference modelとPolicy ModelとのKLダイバージェンスをとり、reference modelとの差が大きくならないよう、報酬にペナルティを入れるために使われることが多いらしい。<br><img src="https://github.com/user-attachments/assets/e145ad52-e6c9-4481-b2ee-10a3987ea2e3" alt="image" loading="lazy" width="400" height="300"></p>
 <p>下記記事によると、PPOで最大化したいのはAdvantage（累積報酬と状態価値（累積報酬の期待値を計算するモデル）の差分;期待値よりも実際の累積報酬が良かったら良い感じだぜ的な数値）であり、それには状態価値を計算するモデルが必要である。そして、PPOにおける状態価値モデルを使わないで、LLMにテキスト生成させて最終的な報酬を平均すれば状態価値モデル無しでAdvantageが計算できるし嬉しくね？という気持ちで提案されたのが、本論文で提案されているGRPOとのこと。勉強になる。<br><br>DeepSeek-R1の論文読んだ？【勉強になるよ】<br>, asap: 
 
 
@@ -7197,7 +7197,7 @@ My Issue
 
 
 </p>
-<p><img src="https://github.com/user-attachments/assets/a0369ac2-8dbc-4a7a-baf5-df59850a3b55" alt="image" loading="lazy"></p></span><br><br>
+<p><img src="https://github.com/user-attachments/assets/a0369ac2-8dbc-4a7a-baf5-df59850a3b55" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="rankprompt-step-by-step-1268" class="title-link">RankPrompt: Step-by-Step Comparisons Make Language Models Better  Reasoners, Chi Hu+, N_A, arXiv'24</h3>
@@ -7219,7 +7219,7 @@ My Issue
 <a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
 <span class="issue_date">Issue Date: 2024-04-07</span>
 <span class="snippet"><span>GPT Summary</span>- LLMsは推論タスクで優れた性能を発揮しているが、論理エラーが起こりやすい。RankPromptという新しいプロンプティング方法を導入し、LLMsが自己ランク付けを行い推論パフォーマンスを向上させる。実験では、RankPromptがChatGPTやGPT-4の推論パフォーマンスを13%向上させ、AlpacaEvalデータセットで人間の判断と74%の一致率を示すことが示された。RankPromptは言語モデルから高品質なフィードバックを引き出す効果的な方法であることが示された。</span>
-<span class="snippet"><span>Comment</span><p>LLMでランキングをするためのプロンプト手法。大量の候補をランキングするのは困難だと思われるが、リランキング手法としては利用できる可能性がある<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7115515c-10a2-44ae-9e48-86258cc11aed" alt="image" loading="lazy"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>LLMでランキングをするためのプロンプト手法。大量の候補をランキングするのは困難だと思われるが、リランキング手法としては利用できる可能性がある<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7115515c-10a2-44ae-9e48-86258cc11aed" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="selfcheck-using-924" class="title-link">SelfCheck: Using LLMs to Zero-Shot Check Their Own Step-by-Step   Reasoning, Ning Miao+, N_A, ICLR'24</h3>
@@ -7323,7 +7323,7 @@ My Issue
 
 
 </p>
-<p>非常にざっくり言うと、reasoning chain（＝複数トークンのsequence)をトークンとみなした場合の（確率的）beam searchを提案している。多様なreasoning chainをサンプリングし、その中から良いものをビーム幅kで保持し生成することで、最終的に良いデコーディング結果を得る。reasoning chainのランダム性を高めるためにtemperatureを設定するが、アニーリングをすることでchainにおけるエラーが蓄積することを防ぐ。これにより、最初は多様性を重視した生成がされるが、エラーが蓄積され発散することを防ぐ。<br><br><img src="https://github.com/user-attachments/assets/b3b8b45c-7a75-418b-bcd1-e43e71d96585" alt="image" loading="lazy"><br><br>reasoning chainの良さを判断するために、chainの尤度だけでなく、self-evaluationによるreasoning chainの正しさに関するconfidenceスコアも導入する（reasoning chainのconfidenceスコアによって重みづけられたchainの尤度を最大化するような定式化になる（式3))。<br>self-evaluationと生成はともに同じLLMによって実現されるが、self-evaluationについては評価用のfew-shot promptingを実施する。promptingでは、これまでのreasoning chainと、新たなreasoning chainがgivenなときに、それが(A)correct/(B)incorrectなのかをmultiple choice questionで判定し、選択肢Aが生成される確率をスコアとする。<br><img src="https://github.com/user-attachments/assets/f9934a71-9e0c-4145-b925-4c231915affd" alt="image" loading="lazy"></p></span><br><br>
+<p>非常にざっくり言うと、reasoning chain（＝複数トークンのsequence)をトークンとみなした場合の（確率的）beam searchを提案している。多様なreasoning chainをサンプリングし、その中から良いものをビーム幅kで保持し生成することで、最終的に良いデコーディング結果を得る。reasoning chainのランダム性を高めるためにtemperatureを設定するが、アニーリングをすることでchainにおけるエラーが蓄積することを防ぐ。これにより、最初は多様性を重視した生成がされるが、エラーが蓄積され発散することを防ぐ。<br><br><img src="https://github.com/user-attachments/assets/b3b8b45c-7a75-418b-bcd1-e43e71d96585" alt="image" loading="lazy" width="400" height="300"><br><br>reasoning chainの良さを判断するために、chainの尤度だけでなく、self-evaluationによるreasoning chainの正しさに関するconfidenceスコアも導入する（reasoning chainのconfidenceスコアによって重みづけられたchainの尤度を最大化するような定式化になる（式3))。<br>self-evaluationと生成はともに同じLLMによって実現されるが、self-evaluationについては評価用のfew-shot promptingを実施する。promptingでは、これまでのreasoning chainと、新たなreasoning chainがgivenなときに、それが(A)correct/(B)incorrectなのかをmultiple choice questionで判定し、選択肢Aが生成される確率をスコアとする。<br><img src="https://github.com/user-attachments/assets/f9934a71-9e0c-4145-b925-4c231915affd" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="recursion-of-1656" class="title-link">Recursion of Thought: A Divide-and-Conquer Approach to Multi-Context  Reasoning with Language Models, Soochan Lee+, arXiv'23</h3>
@@ -7344,8 +7344,8 @@ My Issue
 <a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2025-01-05</span>
 <span class="snippet"><span>GPT Summary</span>- Recursion of Thought（RoT）という新しい推論フレームワークを提案し、言語モデル（LM）が問題を複数のコンテキストに分割することで推論能力を向上させる。RoTは特別なトークンを導入し、コンテキスト関連の操作をトリガーする。実験により、RoTがLMの推論能力を劇的に向上させ、数十万トークンの問題を解決できることが示された。</span>
-<span class="snippet"><span>Comment</span><p>divide-and-conquerで複雑な問題に回答するCoT手法。生成過程でsubquestionが生じた際にモデルに特殊トークン（GO）を出力させ、subquestionの回答部分に特殊トークン（THINK）を出力させるようにSupervisedに学習させる。最終的にTHINKトークン部分は、subquestionを別途モデルによって解いた回答でreplaceして、最終的な回答を得る。<br>subquestionの中でさらにsubquestionが生じることもあるため、再帰的に処理される。<br><img src="https://github.com/user-attachments/assets/6a5a5155-b3dd-4a6a-a9f5-0975dddcedb7" alt="image" loading="lazy"></p>
-<p>四則演算と4種類のアルゴリズムに基づくタスクで評価。アルゴリズムに基づくタスクは、2つの数のlongest common subsequenceを見つけて、そのsubsequenceとlengthを出力するタスク（LCS）、0-1 knapsack問題、行列の乗算、数値のソートを利用。x軸が各タスクの問題ごとの問題の難易度を表しており、難易度が上がるほど提案手法によるgainが大きくなっているように見える。<br><br>Without Thoughtでは直接回答を出力させ、CoTではground truthとなるrationaleを1つのcontextに与えて回答を生成している。RoTではsubquestionごとに回答を別途得るため、より長いcontextを活用して最終的な回答を得る点が異なると主張している。<br><br><img src="https://github.com/user-attachments/assets/8e713c76-5f79-40c7-87b0-d69f6fac3ee3" alt="image" loading="lazy"><br></p>
+<span class="snippet"><span>Comment</span><p>divide-and-conquerで複雑な問題に回答するCoT手法。生成過程でsubquestionが生じた際にモデルに特殊トークン（GO）を出力させ、subquestionの回答部分に特殊トークン（THINK）を出力させるようにSupervisedに学習させる。最終的にTHINKトークン部分は、subquestionを別途モデルによって解いた回答でreplaceして、最終的な回答を得る。<br>subquestionの中でさらにsubquestionが生じることもあるため、再帰的に処理される。<br><img src="https://github.com/user-attachments/assets/6a5a5155-b3dd-4a6a-a9f5-0975dddcedb7" alt="image" loading="lazy" width="400" height="300"></p>
+<p>四則演算と4種類のアルゴリズムに基づくタスクで評価。アルゴリズムに基づくタスクは、2つの数のlongest common subsequenceを見つけて、そのsubsequenceとlengthを出力するタスク（LCS）、0-1 knapsack問題、行列の乗算、数値のソートを利用。x軸が各タスクの問題ごとの問題の難易度を表しており、難易度が上がるほど提案手法によるgainが大きくなっているように見える。<br><br>Without Thoughtでは直接回答を出力させ、CoTではground truthとなるrationaleを1つのcontextに与えて回答を生成している。RoTではsubquestionごとに回答を別途得るため、より長いcontextを活用して最終的な回答を得る点が異なると主張している。<br><br><img src="https://github.com/user-attachments/assets/8e713c76-5f79-40c7-87b0-d69f6fac3ee3" alt="image" loading="lazy" width="400" height="300"><br></p>
 <p>感想としては、詳細が書かれていないが、おそらくRoTはSFTによって各タスクに特化した学習をしていると考えられる（タスクごとの特殊トークンが存在するため）。ベースラインとしてRoT無しでSFTしたモデルあった方が良いのではないか？と感じる。<br><br>また、学習データにおけるsubquestionとsubquestionに対するground truthのデータ作成方法は書かれているが、そもそも元データとして何を利用したかや、その統計量も書かれていないように見える。あと、そもそも機械的に学習データを作成できない場合どうすれば良いのか？という疑問は残る。</p>
 <p>読んでいた時にAuto-CoTとの違いがよくわからなかったが、Related Workの部分にはAuto-CoTは動的、かつ多様なデモンストレーションの生成にフォーカスしているが、AutoReasonはquestionを分解し、few-shotの promptingでより詳細なrationaleを生成することにフォーカスしている点が異なるという主張のようである。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, ICLR'23</a>
 </p>
@@ -7660,7 +7660,7 @@ My Issue
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4029" target="_blank" rel="noopener noreferrer">[Paper Note] Learning Multi-Level Features with Matryoshka Sparse Autoencoders, Bart Bussmann+, ICLR'25, 2025.03</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4030" target="_blank" rel="noopener noreferrer">[Paper Note] Transcoders Beat Sparse Autoencoders for Interpretability, Gonçalo Paulo+, arXiv'25, 2025.01</a>
 </p>
-<p>（↓勉強中なので誤りが含まれる可能性大）<br><br>Sparse Auto Encoder (SAE; あるlayerにおいてどのような特徴が保持されているかを見つける）とTranscoder (ある層で見つかった特徴と別の層の特徴の関係性を見つける）を用いて、Gemma3の回路分析が行えるモデル・ツール群をリリースした、という話に見える。<br><br>応用例の一つとして、たとえば詐欺メールをinputしたときに、詐欺関連する特徴量がどのトークン由来で内部的にどれだけ活性したかを可視化できる。<br><img src="https://github.com/user-attachments/assets/bae1f15c-9a73-4eca-8264-bf5409c26937" alt="image" loading="lazy"></p>
+<p>（↓勉強中なので誤りが含まれる可能性大）<br><br>Sparse Auto Encoder (SAE; あるlayerにおいてどのような特徴が保持されているかを見つける）とTranscoder (ある層で見つかった特徴と別の層の特徴の関係性を見つける）を用いて、Gemma3の回路分析が行えるモデル・ツール群をリリースした、という話に見える。<br><br>応用例の一つとして、たとえば詐欺メールをinputしたときに、詐欺関連する特徴量がどのトークン由来で内部的にどれだけ活性したかを可視化できる。<br><img src="https://github.com/user-attachments/assets/bae1f15c-9a73-4eca-8264-bf5409c26937" alt="image" loading="lazy" width="400" height="300"></p>
 <p>テクニカルレポート:
 
 
@@ -9802,7 +9802,7 @@ My Issue
 </div>
 
 
-<p><img src="https://github.com/user-attachments/assets/d2c30b64-10df-40b2-bcac-f029bdc9f1f1" alt="image" loading="lazy"></p></span><br><br>
+<p><img src="https://github.com/user-attachments/assets/d2c30b64-10df-40b2-bcac-f029bdc9f1f1" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="qwen3-30b-a3b-thinking-2507-2323" class="title-link">Qwen3-30B-A3B-Thinking-2507, Qwen Team, 2025.07</h3>
@@ -9832,7 +9832,7 @@ My Issue
 </div>
 
 
-<p>mediumサイズのモデルがさらに性能向上<br><img src="https://github.com/user-attachments/assets/efa05914-502a-4581-b307-a3e2960c4937" alt="image" loading="lazy"></p></span><br><br>
+<p>mediumサイズのモデルがさらに性能向上<br><img src="https://github.com/user-attachments/assets/efa05914-502a-4581-b307-a3e2960c4937" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="glm-4.5-reasoning-2318" class="title-link">GLM-4.5: Reasoning, Coding, and Agentic Abililties, Zhipu AI Inc., 2025.07</h3>
@@ -9903,7 +9903,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <span class="issue_date">Issue Date: 2025-07-26</span>
-<span class="snippet"><span>Comment</span><p>とうとうベンチマーク上はo4-miniと同等に...<br><img src="https://github.com/user-attachments/assets/b0891953-afe3-4ee4-92a5-abb0f7fcb4cc" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>とうとうベンチマーク上はo4-miniと同等に...<br><img src="https://github.com/user-attachments/assets/b0891953-afe3-4ee4-92a5-abb0f7fcb4cc" alt="image" loading="lazy" width="400" height="300"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2270" target="_blank" rel="noopener noreferrer">Qwen3-235B-A22B-Instruct-2507, QwenTeam, 2025.07</a>
 </p></span><br><br>
 </article>
@@ -9927,7 +9927,7 @@ My Issue
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
 <span class="issue_date">Issue Date: 2025-07-18</span>
-<span class="snippet"><span>Comment</span><p>DeepSeek-R1-0528から応答を合成したデータでSFTのみを実施し、32BでQwe3-235B-A22Bと同等か上回る性能。アーキテクチャはQwen2.5。データはOpenCode/Math/Scienceを利用。<br><img src="https://github.com/user-attachments/assets/8dda86f4-df71-4732-8d51-5905672fa5c9" alt="image" loading="lazy"></p>
+<span class="snippet"><span>Comment</span><p>DeepSeek-R1-0528から応答を合成したデータでSFTのみを実施し、32BでQwe3-235B-A22Bと同等か上回る性能。アーキテクチャはQwen2.5。データはOpenCode/Math/Scienceを利用。<br><img src="https://github.com/user-attachments/assets/8dda86f4-df71-4732-8d51-5905672fa5c9" alt="image" loading="lazy" width="400" height="300"></p>
 <p>元ポスト:
 
 
@@ -10055,7 +10055,7 @@ My Issue
 </div>
 
 
-<p>画像は公式ポストより引用。Qwen3-235B-A22Bよりも少ないパラメータ数で、同等（agenticタスクはそれ以上）なようにベンチマーク上は見えるが、果たして。<br><br><img src="https://github.com/user-attachments/assets/ed47bae2-9017-4cf2-b1e1-50e863da1c77" alt="image" loading="lazy"></p>
+<p>画像は公式ポストより引用。Qwen3-235B-A22Bよりも少ないパラメータ数で、同等（agenticタスクはそれ以上）なようにベンチマーク上は見えるが、果たして。<br><br><img src="https://github.com/user-attachments/assets/ed47bae2-9017-4cf2-b1e1-50e863da1c77" alt="image" loading="lazy" width="400" height="300"></p>
 <p>果たして日本語の性能はどうだろうか。<br>TENCENT HUNYUAN COMMUNITY LICENSE<br>
 
 
@@ -10289,7 +10289,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>DeepSeek-R1をGPQA Diamond <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155" target="_blank" rel="noopener noreferrer">GPQA: A Graduate-Level Google-Proof Q&amp;A Benchmark, David Rein+, N/A, COLM'24</a>
 , AIME2024/2025, Llama4 Maverickを<br>BFCLv2（Tool Calling, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1875" target="_blank" rel="noopener noreferrer">BFCLv2, UC Berkeley, 2024.08</a>
 ), IFEVal <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137" target="_blank" rel="noopener noreferrer">Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, N/A, arXiv'23</a>
- で上回り, そのほかはArenaHardを除きDeepSeekR1と同等<br><img src="https://github.com/user-attachments/assets/b0de99ee-f4ec-4b03-8b0b-8939b4f1e23b" alt="image" loading="lazy"><br><br>DeepSeekR1が671B（MoEで37B Activation Param）に対し、こちらは253B（ただし、Llama3.1がベースなのでMoEではない）で同等以上の性能となっている。<br>ReasoningをON/OFFする能力も備わっている。<br><br>モデルがどのように訓練されたかを示す全体図がとても興味深い:<img src="https://github.com/user-attachments/assets/9a014777-61d8-46ae-818b-ace9ed5c002d" alt="image" loading="lazy"><br><br>特に <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+ で上回り, そのほかはArenaHardを除きDeepSeekR1と同等<br><img src="https://github.com/user-attachments/assets/b0de99ee-f4ec-4b03-8b0b-8939b4f1e23b" alt="image" loading="lazy" width="400" height="300"><br><br>DeepSeekR1が671B（MoEで37B Activation Param）に対し、こちらは253B（ただし、Llama3.1がベースなのでMoEではない）で同等以上の性能となっている。<br>ReasoningをON/OFFする能力も備わっている。<br><br>モデルがどのように訓練されたかを示す全体図がとても興味深い:<img src="https://github.com/user-attachments/assets/9a014777-61d8-46ae-818b-ace9ed5c002d" alt="image" loading="lazy" width="400" height="300"><br><br>特に <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
  でも有効性が示されているように、SFTをしてからReasoningを強化する（強化というより元々持っている能力を引き出す？）RLを実施している。<br><br>詳細は下記Blogとのこと:<br>
 
 
@@ -10361,7 +10361,7 @@ My Issue
 </div>
 
 
-<p>画像はブログより引用。DeepSeek-R1と比較すると優っているタスクと劣っているタスクがあり、なんとも言えない感。GPT4.5より大幅に上回っているタスク（Math, Reasoning）があるが、そもそもそういったタスクはo1などのreasoningモデルの領域。o1と比較するとこれもまあ優っている部分もあれば劣っている部分もあるという感じ。唯一、ToolUseに関しては一貫してOpenAIモデルの方が強い。<br><br>ChineseタスクについてはDeepSeek-R1と完全にスコアが一致しているが、評価データのサンプル数が少ないのだろうか？<br><img src="https://github.com/user-attachments/assets/de2325b2-0bd5-4177-a336-e6f008a32d40" alt="image" loading="lazy"></p>
+<p>画像はブログより引用。DeepSeek-R1と比較すると優っているタスクと劣っているタスクがあり、なんとも言えない感。GPT4.5より大幅に上回っているタスク（Math, Reasoning）があるが、そもそもそういったタスクはo1などのreasoningモデルの領域。o1と比較するとこれもまあ優っている部分もあれば劣っている部分もあるという感じ。唯一、ToolUseに関しては一貫してOpenAIモデルの方が強い。<br><br>ChineseタスクについてはDeepSeek-R1と完全にスコアが一致しているが、評価データのサンプル数が少ないのだろうか？<br><img src="https://github.com/user-attachments/assets/de2325b2-0bd5-4177-a336-e6f008a32d40" alt="image" loading="lazy" width="400" height="300"></p>
 <p>reasoningモデルかつ、TransformerとMambaのハイブリッドで、MoEを採用しているとのこと。</p>
 <p>TransformerとMambaのハイブリッドについて（WenhuChen氏のポスト）:<br>
 
@@ -10451,7 +10451,7 @@ My Issue
 </div>
 
 
-<br><br>GPQA Diamond（大学院（Ph.D）レベルの生物学、物理学、化学の450問程度の難解なmultiple choice question）で、DeepSeekV3, GPT4o, QwQ-32Bをoutperform. Claude 3.7 sonnetより少しスコアが低い。<br>DeepSeekR1, o1, o3-mini（high）, Claude 3.7 sonnet Thinkingなどには及んでいない。<br><br><img src="https://github.com/user-attachments/assets/2d2b3716-83a6-4c56-bca7-f7d8cf981bbb" alt="image" loading="lazy"><br><br>（画像は元ポストより引用）<p>システムプロンプトを変えることでreasoningをon/offできる模様</p></span><br><br>
+<br><br>GPQA Diamond（大学院（Ph.D）レベルの生物学、物理学、化学の450問程度の難解なmultiple choice question）で、DeepSeekV3, GPT4o, QwQ-32Bをoutperform. Claude 3.7 sonnetより少しスコアが低い。<br>DeepSeekR1, o1, o3-mini（high）, Claude 3.7 sonnet Thinkingなどには及んでいない。<br><br><img src="https://github.com/user-attachments/assets/2d2b3716-83a6-4c56-bca7-f7d8cf981bbb" alt="image" loading="lazy" width="400" height="300"><br><br>（画像は元ポストより引用）<p>システムプロンプトを変えることでreasoningをon/offできる模様</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="exaone-deep-32b-1810" class="title-link">EXAONE-Deep-32B, LG AI Research, 2025.03</h3>
@@ -10755,7 +10755,7 @@ My Issue
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1072" target="_blank" rel="noopener noreferrer">Think before you speak: Training Language Models With Pause Tokens, Sachin Goyal+, N/A, ICLR'24</a>
 <br><br>や<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1147" target="_blank" rel="noopener noreferrer">Implicit Chain of Thought Reasoning via Knowledge Distillation, Yuntian Deng+, N/A, arXiv'23</a>
 <br><br>で似たような考えはすでに提案されていたが、どのような点が異なるのだろうか？<br><br><br><br>たとえば前者は、pauseトークンと呼ばれるoutputとは関係ないトークンを生成することで、outputを生成する前にモデル内部で推論する前により多くのベクトル操作を加える（=ベクトルを縦方向と横方向に混ぜ合わせる; 以後ベクトルをこねくりまわすと呼称する）、といった挙動を実現しているようだが、明示的にCoTの教師データを使ってSFTなどをしているわけではなさそうに見える（ざっくりとしか読んでないが）。<br><br>一方、Jason Wei氏のポストからは、RLで明示的により良いCoTができるように学習をしている点が違うように見える。</p>
-<p>**(2025.0929): 以下のtest-time computeに関するメモはo1が出た当初のものであり、私の理解が甘い状態でのメモなので現在の理解を後ほど追記します。当時のメモは改めて見返すとこんなこと考えてたんだなぁとおもしろかったので残しておきます。**<br><br>学習の計算量だけでなく、inferenceの計算量に対しても、新たなスケーリング則が見出されている模様。<br><br><img src="https://github.com/user-attachments/assets/85a39908-7db8-4f97-9b5d-4bfdc8439577" alt="image" loading="lazy"><br><br><br><br>テクニカルレポート中で言われている time spent thinking （test-time compute）というのは、具体的には何なのだろうか。<br><br><br><br>上の研究でいうところの、inference時のpauseトークンの生成のようなものだろうか。モデルがベクトルをこねくり回す回数（あるいは生成するトークン数）が増えると性能も良くなるのか？<br><br>しかしそれはオリジナルのCoT研究である<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<p>**(2025.0929): 以下のtest-time computeに関するメモはo1が出た当初のものであり、私の理解が甘い状態でのメモなので現在の理解を後ほど追記します。当時のメモは改めて見返すとこんなこと考えてたんだなぁとおもしろかったので残しておきます。**<br><br>学習の計算量だけでなく、inferenceの計算量に対しても、新たなスケーリング則が見出されている模様。<br><br><img src="https://github.com/user-attachments/assets/85a39908-7db8-4f97-9b5d-4bfdc8439577" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>テクニカルレポート中で言われている time spent thinking （test-time compute）というのは、具体的には何なのだろうか。<br><br><br><br>上の研究でいうところの、inference時のpauseトークンの生成のようなものだろうか。モデルがベクトルをこねくり回す回数（あるいは生成するトークン数）が増えると性能も良くなるのか？<br><br>しかしそれはオリジナルのCoT研究である<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
 <br><br>のdotのみの文字列をpromptに追加して性能が向上しなかった、という知見と反する。<br><br><br><br>おそらく、**モデル学習のデコーディング時に**、ベクトルをこねくり回す回数（あるいは生成するトークン数）を増やすこと＝time spent thinking (test-time compute) 、ということなのだろうか？<br><br>そしてそのように学習されたモデルは、推論時にベクトルをこねくり回す回数（あるいは生成するトークン数）を増やすと性能が上がる、ということなのだろうか。<br><br>もしそうだとすると、これは<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1072" target="_blank" rel="noopener noreferrer">Think before you speak: Training Language Models With Pause Tokens, Sachin Goyal+, N/A, ICLR'24</a>
 <br><br>のpauseトークンの生成をしながらfinetuningすると性能が向上する、という主張とも合致するように思うが、うーん。<br><br><br><br>実際暗号解読のexampleを見ると、とてつもなく長いCoT（トークンの生成数が多い）が行われている。</p>
 <p>RLでReasoningを学習させる関連研究: <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1391" target="_blank" rel="noopener noreferrer">ReFT: Reasoning with Reinforced Fine-Tuning, Trung Quoc Luong+, N/A, ACL'24</a>
@@ -10856,14 +10856,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/Pretraining/" title="Pretrainingに関する論文・技術記事メモの一覧">Pretrainingに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/ReinforcementLearning/" title="ReinforcementLearningに関する論文・技術記事メモの一覧">ReinforcementLearningに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/Pretraining/" title="Pretrainingに関する論文・技術記事メモの一覧">Pretrainingに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Repository/" title="Repositoryに関する論文・技術記事メモの一覧">Repositoryに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/DataDistillation/" title="DataDistillationに関する論文・技術記事メモの一覧">
-            DataDistillationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/StructuredLearning/" title="StructuredLearningに関する論文・技術記事メモの一覧">
+            StructuredLearningに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
   <span class="post-badge badge-new">📝 6</span>
@@ -10871,29 +10871,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/PRICAI/" title="PRICAIに関する論文・技術記事メモの一覧">
-            PRICAIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Sparse/" title="Sparseに関する論文・技術記事メモの一覧">
+            Sparseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Proprietary/" title="Proprietaryに関する論文・技術記事メモの一覧">
-            Proprietaryに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Memorization/" title="Memorizationに関する論文・技術記事メモの一覧">
+            Memorizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 41</span> 
-  <span class="post-badge badge-new">📝 41</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Grounding/" title="Groundingに関する論文・技術記事メモの一覧">
-            Groundingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Length/" title="Lengthに関する論文・技術記事メモの一覧">
+            Lengthに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li>

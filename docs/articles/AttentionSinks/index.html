@@ -1117,7 +1117,7 @@ My Issue
 
 
 <p>これは興味深い</p>
-<p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy"><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy"><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
+<p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy" width="400" height="300"><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
  decoder-only transformerの層が深い部分でのトークンの表現が均一化されてしまうover-mixingを抑制する <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
  ことが報告されている</p>
 <p>AttentionSink関連リンク:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
@@ -1330,7 +1330,7 @@ My Issue
 </div>
 
 
-<p>Attention Sinkによって、トークンの情報がover-mixingされることが抑制され、Decoder-only LLMの深い層のrepresentationが均一化されることを抑制する（＝promptの摂動にロバストになる）ことが示された模様。<br><img src="https://github.com/user-attachments/assets/8a1223c0-5621-42a5-accc-31fa7f636856" alt="image" loading="lazy"><br>Gemma7Bにおいて、prompt中のトークン一語を置換した後に、Attention Sink（<bos>）の有無によって、tokenレベルのrepresentationに対してどのような摂動があるかをlayerごとにまとめた図が下記の模様。Attention Sinkによって、tokenの摂動が他のtoken, layerに対してmixingされるのが抑制されている。<br><img src="https://github.com/user-attachments/assets/b1a4038a-d116-4bd1-b27b-c55eb861bee9" alt="image" loading="lazy"></bos></p>
+<p>Attention Sinkによって、トークンの情報がover-mixingされることが抑制され、Decoder-only LLMの深い層のrepresentationが均一化されることを抑制する（＝promptの摂動にロバストになる）ことが示された模様。<br><img src="https://github.com/user-attachments/assets/8a1223c0-5621-42a5-accc-31fa7f636856" alt="image" loading="lazy" width="400" height="300"><br>Gemma7Bにおいて、prompt中のトークン一語を置換した後に、Attention Sink（<bos>）の有無によって、tokenレベルのrepresentationに対してどのような摂動があるかをlayerごとにまとめた図が下記の模様。Attention Sinkによって、tokenの摂動が他のtoken, layerに対してmixingされるのが抑制されている。<br><img src="https://github.com/user-attachments/assets/b1a4038a-d116-4bd1-b27b-c55eb861bee9" alt="image" loading="lazy" width="400" height="300"></bos></p>
 <p>openreview:
 
 
@@ -1796,38 +1796,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/AAAI/" title="AAAIに関する論文・技術記事メモの一覧">
-            AAAIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/GeometryUnderstanding/" title="GeometryUnderstandingに関する論文・技術記事メモの一覧">
+            GeometryUnderstandingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 15</span> 
-  <span class="post-badge badge-new">📝 15</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AdaptiveLearning/" title="AdaptiveLearningに関する論文・技術記事メモの一覧">
-            AdaptiveLearningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/MultiModal/" title="MultiModalに関する論文・技術記事メモの一覧">
+            MultiModalに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 54</span> 
-  <span class="post-badge badge-new">📝 54</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 142</span> 
+  <span class="post-badge badge-new">📝 142</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/QuestionAnswering/" title="QuestionAnsweringに関する論文・技術記事メモの一覧">
-            QuestionAnsweringに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Standardization/" title="Standardizationに関する論文・技術記事メモの一覧">
+            Standardizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 37</span> 
-  <span class="post-badge badge-new">📝 37</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ACL/" title="ACLに関する論文・技術記事メモの一覧">
-            ACLに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/LayoutGeneration/" title="LayoutGenerationに関する論文・技術記事メモの一覧">
+            LayoutGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 145</span> 
-  <span class="post-badge badge-new">📝 145</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
