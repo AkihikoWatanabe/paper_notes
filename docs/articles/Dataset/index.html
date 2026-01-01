@@ -1319,7 +1319,7 @@ My Issue
 
 
 <p>AllenAIの勢いすごいな...</p>
-<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy" width="400" height="300"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy" width="400" height="300"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy" width="400" height="300"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
+<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy" width="550" height="400"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy" width="550" height="400"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy" width="550" height="400"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mmgr-multi-modal-4008" class="title-link">[Paper Note] MMGR: Multi-Modal Generative Reasoning, Zefan Cai+, arXiv'25, 2025.12</h3>
@@ -2567,7 +2567,7 @@ My Issue
 </div>
 
 
-<p>Rebus Puzzleの例。たとえば上の例はlong time no seeが答えだが、Timeを認識してCが抜けており、かつseeとCの音韻が似ているといった解釈をしなければならない。Waterfallの例では、Waterという文字列が滝のように下に向かっている様子から類推しなければならない。おもしろい。<br><img src="https://github.com/user-attachments/assets/53038e07-fafb-42fe-94f2-2ba6901c544d" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>Rebus Puzzleの例。たとえば上の例はlong time no seeが答えだが、Timeを認識してCが抜けており、かつseeとCの音韻が似ているといった解釈をしなければならない。Waterfallの例では、Waterという文字列が滝のように下に向かっている様子から類推しなければならない。おもしろい。<br><img src="https://github.com/user-attachments/assets/53038e07-fafb-42fe-94f2-2ba6901c544d" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="codealignbench-assessing-3561" class="title-link">[Paper Note] CodeAlignBench: Assessing Code Generation Models on Developer-Preferred  Code Adjustments, Forough Mehralian+, arXiv'25, 2025.10</h3>
@@ -3293,7 +3293,7 @@ My Issue
 
 
 <p>よ、40,000ドル！？💸</p>
-<p>LLM Agentに関するフロンティアモデル群を複数のベンチマークで同じ条件でapple to appleな比較となるように評価している。<br><img src="https://github.com/user-attachments/assets/142b550e-f708-441c-acca-583af413d26f" alt="image" loading="lazy" width="400" height="300"><br><br>以下元ポストより:<br><br>この評価ハーネスは、10行未満のコードスニペットで評価を実行可能（元ポスト）<br><br>知見としては<br>- reasoning effortを上げても多くの場合性能向上には寄与せず(21/36のケースで性能向上せず)<br>- エージェントはタスクを解決するために近道をする（ベンチマークを直接参照しに行くなど）<br>- エージェントは非常にコストの高い手段を取ることもあり（フライト予約において誤った空港から予約したり、ユーザに過剰な返金をしたり、誤ったクレジットカードに請求したりなど）<br>- コストとacc.のトレードオフを分析した結果、最も高価なOpus4.1は一度しかパレートフロンティアにならず、Gemini Flash (7/9)、GPT-5, o4-mini(4/9)が多くのベンチマークでコストとAcc.のトレードオフの上でパレートフロンティアとなった。<br>- トークンのコストとAcc.のトレードオフにおいては、Opus4.1が3つのベンチマークでパレードフロンティアとなった。<br>- すべてのエージェントの行動を記録し分析した結果、SelfCorrection, intermediate verifiers (コーディング問題におけるユニットテストなど）のbehaviorがacc.を改善する上で高い相関を示した<br>- 一方タスクに失敗する場合は、多くの要因が存在することがわかり、たとえば環境内の障害（CAPTCHAなど）、指示に従うことの失敗（指定されたフォーマットでコードを出力しない）などが頻繁に見受けられた。また、タスクを解けたか否かに関わらずツール呼び出しの失敗に頻繁に遭遇していた。これはエージェントはこうしたエラーから回復できることを示している。<br>- エージェントのログを分析することで、TauBenchで使用していたscaffold(=モデルが環境もやりとりするための構成要素）にバグがあることを突き止めた（few-shotのサンプルにリークがあった）。このscaffoldはHALによるTauBenchの分析から除外した。<br>- Docsentのようなログ分析が今後エージェントを評価する上では必要不可欠であり、信頼性の問題やショートカット行動、高コストなエージェントの失敗などが明らかになる。ベンチマーク上での性能と比較して実環境では性能が低い、あるいはその逆でベンチマークが性能を低く見積もっている（たとえばCAPTChAのようや環境的な障害はベンチマーク上では同時リクエストのせいで生じても実環境では生じないなど）ケースもあるので、これらはベンチマークのacc.からだけでは明らかにならないため、ベンチマークのacc.は慎重に解釈すべき。</p></span><br><br>
+<p>LLM Agentに関するフロンティアモデル群を複数のベンチマークで同じ条件でapple to appleな比較となるように評価している。<br><img src="https://github.com/user-attachments/assets/142b550e-f708-441c-acca-583af413d26f" alt="image" loading="lazy" width="550" height="400"><br><br>以下元ポストより:<br><br>この評価ハーネスは、10行未満のコードスニペットで評価を実行可能（元ポスト）<br><br>知見としては<br>- reasoning effortを上げても多くの場合性能向上には寄与せず(21/36のケースで性能向上せず)<br>- エージェントはタスクを解決するために近道をする（ベンチマークを直接参照しに行くなど）<br>- エージェントは非常にコストの高い手段を取ることもあり（フライト予約において誤った空港から予約したり、ユーザに過剰な返金をしたり、誤ったクレジットカードに請求したりなど）<br>- コストとacc.のトレードオフを分析した結果、最も高価なOpus4.1は一度しかパレートフロンティアにならず、Gemini Flash (7/9)、GPT-5, o4-mini(4/9)が多くのベンチマークでコストとAcc.のトレードオフの上でパレートフロンティアとなった。<br>- トークンのコストとAcc.のトレードオフにおいては、Opus4.1が3つのベンチマークでパレードフロンティアとなった。<br>- すべてのエージェントの行動を記録し分析した結果、SelfCorrection, intermediate verifiers (コーディング問題におけるユニットテストなど）のbehaviorがacc.を改善する上で高い相関を示した<br>- 一方タスクに失敗する場合は、多くの要因が存在することがわかり、たとえば環境内の障害（CAPTCHAなど）、指示に従うことの失敗（指定されたフォーマットでコードを出力しない）などが頻繁に見受けられた。また、タスクを解けたか否かに関わらずツール呼び出しの失敗に頻繁に遭遇していた。これはエージェントはこうしたエラーから回復できることを示している。<br>- エージェントのログを分析することで、TauBenchで使用していたscaffold(=モデルが環境もやりとりするための構成要素）にバグがあることを突き止めた（few-shotのサンプルにリークがあった）。このscaffoldはHALによるTauBenchの分析から除外した。<br>- Docsentのようなログ分析が今後エージェントを評価する上では必要不可欠であり、信頼性の問題やショートカット行動、高コストなエージェントの失敗などが明らかになる。ベンチマーク上での性能と比較して実環境では性能が低い、あるいはその逆でベンチマークが性能を低く見積もっている（たとえばCAPTChAのようや環境的な障害はベンチマーク上では同時リクエストのせいで生じても実環境では生じないなど）ケースもあるので、これらはベンチマークのacc.からだけでは明らかにならないため、ベンチマークのacc.は慎重に解釈すべき。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="reasoned-safety-3332" class="title-link">[Paper Note] Reasoned Safety Alignment: Ensuring Jailbreak Defense via  Answer-Then-Check, Chentao Cao+, arXiv'25, 2025.09</h3>
@@ -3615,7 +3615,7 @@ My Issue
 
 
 <p>これは興味深い</p>
-<p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy" width="400" height="300"><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
+<p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy" width="550" height="400"><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
  decoder-only transformerの層が深い部分でのトークンの表現が均一化されてしまうover-mixingを抑制する <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
  ことが報告されている</p>
 <p>AttentionSink関連リンク:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
@@ -4296,7 +4296,7 @@ My Issue
 </div>
 
 
-<p>LLMの応答を多言語でよりnativeに近いものにするための取り組み、および評価のフレームワーク（MENLO, データセット含む）な模様。nativeらしさを測るために重要な次元としてFluency, Tone, Localized Tone, Localized Factualityと呼ばれる軸を定義している模様。その上で47言語における6423の人手でアノテーションされたpreference dataを作成し評価をしたところ、既存のLLM-as-a-judgeやSFT/RLされたReward Modelでは、人間による評価にはまだまだ及ばないことが明らかになり、MENLOを用いてRL/SFTすることでLLM JudgeやReward Modelの性能を改善できる、といった話な模様。<br><br>4つの次元については以下の表を参照のこと。<br>それぞれ<br>- Fluency: 専門家レベルのnative speakerと比較した時のproficiency<br>- Tone: 全体的なwriting stvleや語り口<br>- Localized Tone: 文化的、地域的な言葉のニュアンス<br>- Localized Factuality: 地域固有のコンテキストに沿った事実性や網羅性<br><br><img src="https://github.com/user-attachments/assets/2e57edb7-a2f0-4570-a723-53c22ac22036" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>LLMの応答を多言語でよりnativeに近いものにするための取り組み、および評価のフレームワーク（MENLO, データセット含む）な模様。nativeらしさを測るために重要な次元としてFluency, Tone, Localized Tone, Localized Factualityと呼ばれる軸を定義している模様。その上で47言語における6423の人手でアノテーションされたpreference dataを作成し評価をしたところ、既存のLLM-as-a-judgeやSFT/RLされたReward Modelでは、人間による評価にはまだまだ及ばないことが明らかになり、MENLOを用いてRL/SFTすることでLLM JudgeやReward Modelの性能を改善できる、といった話な模様。<br><br>4つの次元については以下の表を参照のこと。<br>それぞれ<br>- Fluency: 専門家レベルのnative speakerと比較した時のproficiency<br>- Tone: 全体的なwriting stvleや語り口<br>- Localized Tone: 文化的、地域的な言葉のニュアンス<br>- Localized Factuality: 地域固有のコンテキストに沿った事実性や網羅性<br><br><img src="https://github.com/user-attachments/assets/2e57edb7-a2f0-4570-a723-53c22ac22036" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="personalized-reasoning-3082" class="title-link">[Paper Note] Personalized Reasoning: Just-In-Time Personalization and Why LLMs Fail  At It, Shuyue Stella Li+, arXiv'25, 2025.09</h3>
@@ -4647,7 +4647,7 @@ My Issue
 <p>GAIAはこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1158" target="_blank" rel="noopener noreferrer">GAIA: a benchmark for General AI Assistants, Grégoire Mialon+, N/A, arXiv'23</a>
 </p>
 <p>Execution, Search, Ambiguity, Adaptability, Time, Noise, Agent2Agentの6つのcapabilityを評価可能。興味深い。</p>
-<p>現状、全体的にはGPT-5(high)の性能が最も良く、続いてClaude-4 Sonnetという感じに見える。OpenWeightなモデルでは、Kimi-K2の性能が高く、続いてQwen3-235Bという感じに見える。また、Figure1はbudgetごとのモデルの性能も示されている。シナリオ単位のbudgetが$1以上の場合はGPT-5(high)の性能が最も良いが、$0.1--$0.4の間ではKiml-K2の性能が最も良いように見える。<br><img src="https://github.com/user-attachments/assets/039a6e69-4941-4a80-99b3-0590d1446030" alt="image" loading="lazy" width="400" height="300"></p>
+<p>現状、全体的にはGPT-5(high)の性能が最も良く、続いてClaude-4 Sonnetという感じに見える。OpenWeightなモデルでは、Kimi-K2の性能が高く、続いてQwen3-235Bという感じに見える。また、Figure1はbudgetごとのモデルの性能も示されている。シナリオ単位のbudgetが$1以上の場合はGPT-5(high)の性能が最も良いが、$0.1--$0.4の間ではKiml-K2の性能が最も良いように見える。<br><img src="https://github.com/user-attachments/assets/039a6e69-4941-4a80-99b3-0590d1446030" alt="image" loading="lazy" width="550" height="400"></p>
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2406" target="_blank" rel="noopener noreferrer">[Paper Note] GLM-4.5: Agentic, Reasoning, and Coding (ARC) Foundation Models, GLM-4. 5 Team+, arXiv'25</a>
 <br><br>しっかりと読めていないがGLM-4.5は含まれていないように見える。</p>
 <p>ポイント解説:
@@ -5000,7 +5000,7 @@ My Issue
 <a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2025-09-18</span>
 <span class="snippet"><span>GPT Summary</span>- WebWalkerQAを導入し、LLMがウェブのサブページから高品質なデータを抽出する能力を評価。探査-批評のパラダイムを用いたマルチエージェントフレームワークWebWalkerを提案し、実験によりRAGの効果を実証。</span>
-<span class="snippet"><span>Comment</span><p>web pageのコンテンツを辿らないと回答できないQAで構成されたベンチマーク<br><img src="https://github.com/user-attachments/assets/ca40f887-18ad-469e-83c8-1cbf3eb86e39" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>web pageのコンテンツを辿らないと回答できないQAで構成されたベンチマーク<br><img src="https://github.com/user-attachments/assets/ca40f887-18ad-469e-83c8-1cbf3eb86e39" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="fluid-language-2837" class="title-link">[Paper Note] Fluid Language Model Benchmarking, Valentin Hofmann+, COLM'25</h3>
@@ -5719,7 +5719,7 @@ My Issue
 <a class="button" href="VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2025-08-24</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、実世界のツール使用能力を向上させるために、23Kのインスタンスからなる大規模マルチモーダルデータセット「ToolVQA」を提案。ToolVQAは、実際の視覚的コンテキストと多段階推論タスクを特徴とし、ToolEngineを用いて人間のようなツール使用推論をシミュレート。7B LFMを微調整した結果、テストセットで優れたパフォーマンスを示し、GPT-3.5-turboを上回る一般化能力を持つことが確認された。</span>
-<span class="snippet"><span>Comment</span><p>人間による小規模なサンプル（イメージシナリオ、ツールセット、クエリ、回答、tool use trajectory)を用いてFoundation Modelに事前知識として与えることで、よりrealisticなscenarioが合成されるようにした上で新たなVQAを4k程度合成。その後10人のアノテータによって高品質なサンプルにのみFilteringすることで作成された、従来よりも実世界の設定に近く、reasoningの複雑さが高いVQAデータセットな模様。<br><br><img src="https://github.com/user-attachments/assets/8759244c-89f9-47d7-9c72-81744ef68db1" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/4bc22c9d-79f3-4c16-b5a4-3c054895b416" alt="image" loading="lazy" width="400" height="300"><br><br>具体的には、image contextxが与えられた時に、ChatGPT-4oをコントローラーとして、前回のツールとアクションの選択をgivenにし、人間が作成したプールに含まれるサンプルの中からLongest Common Subsequence (LCS) による一致度合いに基づいて人手によるサンプルを選択し、動的にcontextに含めることで多様なで実世界により近しいmulti step tooluseなtrajectoryを合成する、といった手法に見える。pp.4--5に数式や図による直感的な説明がある。なお、LCSを具体的にどのような文字列に対して、どのような前処理をした上で適用しているのかまでは追えていない。<br><img src="https://github.com/user-attachments/assets/9915c3d5-e984-4611-94d4-999ad08dc49d" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>人間による小規模なサンプル（イメージシナリオ、ツールセット、クエリ、回答、tool use trajectory)を用いてFoundation Modelに事前知識として与えることで、よりrealisticなscenarioが合成されるようにした上で新たなVQAを4k程度合成。その後10人のアノテータによって高品質なサンプルにのみFilteringすることで作成された、従来よりも実世界の設定に近く、reasoningの複雑さが高いVQAデータセットな模様。<br><br><img src="https://github.com/user-attachments/assets/8759244c-89f9-47d7-9c72-81744ef68db1" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/4bc22c9d-79f3-4c16-b5a4-3c054895b416" alt="image" loading="lazy" width="550" height="400"><br><br>具体的には、image contextxが与えられた時に、ChatGPT-4oをコントローラーとして、前回のツールとアクションの選択をgivenにし、人間が作成したプールに含まれるサンプルの中からLongest Common Subsequence (LCS) による一致度合いに基づいて人手によるサンプルを選択し、動的にcontextに含めることで多様なで実世界により近しいmulti step tooluseなtrajectoryを合成する、といった手法に見える。pp.4--5に数式や図による直感的な説明がある。なお、LCSを具体的にどのような文字列に対して、どのような前処理をした上で適用しているのかまでは追えていない。<br><img src="https://github.com/user-attachments/assets/9915c3d5-e984-4611-94d4-999ad08dc49d" alt="image" loading="lazy" width="550" height="400"></p>
 <p>元ポスト:
 
 
@@ -5948,7 +5948,7 @@ My Issue
 </div>
 
 
-<p>元ポストの著者によるスレッドが非常にわかりやすいのでそちらを参照のこと。<br>ざっくり言うと、Overthinking（考えすぎて大量のトークンを消費した上に回答が誤っている; トークン量↓とLLMによるJudge Score↑で評価）とUnderthinking（全然考えずにトークンを消費しなかった上に回答が誤っている; Accuracy↑で評価）をそれぞれ評価するサンプルを収集し、それらのスコアの組み合わせでモデルが必要に応じてどれだけ的確にThinkingできているかを評価するベンチマーク。<br><br>Overthinkingを評価するためのサンプルは、多くのLLMでagreementがとれるシンプルなQAによって構築。一方、Underthinkingを評価するためのサンプルは、small reasoning modelがlarge non reasoning modelよりも高い性能を示すサンプルを収集。<br><img src="https://github.com/user-attachments/assets/5383e385-fda9-41ae-a9a5-aebf494ca79e" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/c08cfe60-8a29-4ebf-8875-081f7ae7d19f" alt="image" loading="lazy" width="400" height="300"><br><br>現状Non Thinking ModelではQwen3-235B-A22Bの性能が良く、Thinking Modelではgpt-oss-120Bの性能が良い。プロプライエタリなモデルではそれぞれ、Claude-Sonnet4, o3の性能が良い。全体としてはo3の性能が最も良い。<br><img src="https://github.com/user-attachments/assets/5f5c1ead-d5fa-40a8-9a1b-90d4170ae3ee" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>元ポストの著者によるスレッドが非常にわかりやすいのでそちらを参照のこと。<br>ざっくり言うと、Overthinking（考えすぎて大量のトークンを消費した上に回答が誤っている; トークン量↓とLLMによるJudge Score↑で評価）とUnderthinking（全然考えずにトークンを消費しなかった上に回答が誤っている; Accuracy↑で評価）をそれぞれ評価するサンプルを収集し、それらのスコアの組み合わせでモデルが必要に応じてどれだけ的確にThinkingできているかを評価するベンチマーク。<br><br>Overthinkingを評価するためのサンプルは、多くのLLMでagreementがとれるシンプルなQAによって構築。一方、Underthinkingを評価するためのサンプルは、small reasoning modelがlarge non reasoning modelよりも高い性能を示すサンプルを収集。<br><img src="https://github.com/user-attachments/assets/5383e385-fda9-41ae-a9a5-aebf494ca79e" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/c08cfe60-8a29-4ebf-8875-081f7ae7d19f" alt="image" loading="lazy" width="550" height="400"><br><br>現状Non Thinking ModelではQwen3-235B-A22Bの性能が良く、Thinking Modelではgpt-oss-120Bの性能が良い。プロプライエタリなモデルではそれぞれ、Claude-Sonnet4, o3の性能が良い。全体としてはo3の性能が最も良い。<br><img src="https://github.com/user-attachments/assets/5f5c1ead-d5fa-40a8-9a1b-90d4170ae3ee" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="nvidia-nemotron-2475" class="title-link">[Paper Note] NVIDIA Nemotron Nano 2: An Accurate and Efficient Hybrid  Mamba-Transformer Reasoning Model, NVIDIA+, arXiv'25, 2025.08</h3>
@@ -6243,7 +6243,7 @@ My Issue
 </div>
 
 
-<p>MCP環境におけるLLM Agentのベンチマーク。論文中のTable1に他のベンチマークを含めサマリが掲載されている。MCPを用いたLLMAgentのベンチがすでにこんなにあることに驚いた…。<br><img src="https://github.com/user-attachments/assets/29472068-380b-421c-b82d-fd14831b07ff" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>MCP環境におけるLLM Agentのベンチマーク。論文中のTable1に他のベンチマークを含めサマリが掲載されている。MCPを用いたLLMAgentのベンチがすでにこんなにあることに驚いた…。<br><img src="https://github.com/user-attachments/assets/29472068-380b-421c-b82d-fd14831b07ff" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="grounding-multilingual-2413" class="title-link">[Paper Note] Grounding Multilingual Multimodal LLMs With Cultural Knowledge, Jean de Dieu Nyandwi+, EMNLP'25</h3>
@@ -6287,7 +6287,7 @@ My Issue
 <br><br>VQAデータセット中の日本語データは3.1%程度で、<image question answer>の3つ組で構成される。wikidataから特定の文化と紐づいたエンティティ（42カ国; 人,場所,組織,アーティファクトにフォーカス）を抽出し、関連するimage dataを1--3個程度wikimediaから収集。76種類のテンプレートを用いて、draftのQAを生成し、LLMを用いて洗練（文化的な自然さ、流暢さ）させる。最終的にVLM(Qwen2.5-VL-32B/72B or Gemma-3-12B/72B-Instructを文化ごとに強い方を選択して利用)を用いてirrelevantなimage, question, answerの三つ組をフィルタリング（relevanceのスコアリングと事実情報のverification)する。<br><br>ベースモデルとして<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2470" target="_blank" rel="noopener noreferrer">[Paper Note] Pangea: A Fully Open Multilingual Multimodal LLM for 39 Languages, Xiang Yue+, arXiv'24</a>
 <br><br>を利用(Qwen2-7Bに対してCLIPベースのvision encoderを利用したVLM)し、Vision Encoderはfrozenし、LLMとconnector（テキストと画像のモダリティの橋渡しをする（大抵は）MLP)のみをfinetuningした。catastrophic forgettingを防ぐために事前学習データの一部を補完しfinetuningでも利用し、エンティティの認識力を高めるためにM3LSデータなるものをフィルタリングして追加している。<br><br>Finetuningの結果、文化的な多様性を持つ評価データ（e.g., <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2471" target="_blank" rel="noopener noreferrer">[Paper Note] CVQA: Culturally-diverse Multilingual Visual Question Answering
   Benchmark, David Romero+, arXiv'24</a>
- Figure1のJapaneseのサンプルを見ると一目でどのようなベンチか分かる）と一般的なマルチリンガルな評価データの双方でgainがあることを確認。<br><img src="https://github.com/user-attachments/assets/61b33047-4c7c-4785-99f7-bcaa131bcfbf" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/8088e61f-ef46-4bcd-bc94-8d6f6318ca0e" alt="image" loading="lazy" width="400" height="300"><br><br>VQAによるフィルタリングで利用されたpromptは下記<br><img src="https://github.com/user-attachments/assets/a9c5b463-a3e3-4565-b2f2-95268252179d" alt="image" loading="lazy" width="400" height="300"></image></p></span><br><br>
+ Figure1のJapaneseのサンプルを見ると一目でどのようなベンチか分かる）と一般的なマルチリンガルな評価データの双方でgainがあることを確認。<br><img src="https://github.com/user-attachments/assets/61b33047-4c7c-4785-99f7-bcaa131bcfbf" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/8088e61f-ef46-4bcd-bc94-8d6f6318ca0e" alt="image" loading="lazy" width="550" height="400"><br><br>VQAによるフィルタリングで利用されたpromptは下記<br><img src="https://github.com/user-attachments/assets/a9c5b463-a3e3-4565-b2f2-95268252179d" alt="image" loading="lazy" width="550" height="400"></image></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="nocode-bench-a-2402" class="title-link">[Paper Note] NoCode-bench: A Benchmark for Evaluating Natural Language-Driven Feature  Addition, Le Deng+, arXiv'25</h3>
@@ -6326,7 +6326,7 @@ My Issue
 
 
 </p>
-<p>ドキュメントをソフトウェアの仕様書とみなし、ドキュメントの更新部分をらinputとし、対応する"機能追加"をする能力を測るベンチマーク<br><br><img src="https://github.com/user-attachments/assets/249973b0-4c81-468d-91cd-13a3b93e31e7" alt="image" loading="lazy" width="400" height="300"><br><br>SoTAモデルでも15.79%程度しか成功しない。<br><img src="https://github.com/user-attachments/assets/f8bab8c8-e5da-46c5-981a-1398021e030d" alt="image" loading="lazy" width="400" height="300"><br><br>元ポストによると、ファイルを跨いだ編集、コードベースの理解、tool useに苦労しているとのこと。</p></span><br><br>
+<p>ドキュメントをソフトウェアの仕様書とみなし、ドキュメントの更新部分をらinputとし、対応する"機能追加"をする能力を測るベンチマーク<br><br><img src="https://github.com/user-attachments/assets/249973b0-4c81-468d-91cd-13a3b93e31e7" alt="image" loading="lazy" width="550" height="400"><br><br>SoTAモデルでも15.79%程度しか成功しない。<br><img src="https://github.com/user-attachments/assets/f8bab8c8-e5da-46c5-981a-1398021e030d" alt="image" loading="lazy" width="550" height="400"><br><br>元ポストによると、ファイルを跨いだ編集、コードベースの理解、tool useに苦労しているとのこと。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="stepwise-codex-bench-evaluating-2393" class="title-link">[Paper Note] STEPWISE-CODEX-Bench: Evaluating Complex Multi-Function Comprehension  and Fine-Grained Execution Reasoning, Kaiwen Yan+, arXiv'25</h3>
@@ -6364,7 +6364,7 @@ My Issue
 )だが、モデルがコードを理解し、複雑なコードのロジックを実行する内部状態の変化に応じて、実行のプロセスを推論する能力が見落とされている。これを解決するために、CRUXEVAL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2440" target="_blank" rel="noopener noreferrer">[Paper Note] CRUXEval: A Benchmark for Code Reasoning, Understanding and Execution, Alex Gu+, arXiv'24</a>
 , CRUXEVAL-X <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2441" target="_blank" rel="noopener noreferrer">[Paper Note] CRUXEval-X: A Benchmark for Multilingual Code Reasoning, Understanding
   and Execution, Ruiyang Xu+, arXiv'24</a>
- では、関数のinputs/outputsを予測することで、モデルのコードのcomprehension, reasoning能力を測ろうとしているが、<br>- single functionのlogicに限定されている<br>- 20 line程度の短く、trivialなロジックに限定されている<br>- すでにSoTAモデルで95%が達成され飽和している<br><br>というlimitationがあるので、複数の関数が協働するロジック、flow/dataのinteractionのフロー制御、細かい実行ステップなどを含む、staticなコードの理解から、動的な実行プロセスのモデリング能力の評価にシフトするような、新たなベンチマークを作成しました、という話な模様。<br><br>まず関数単位のライブラリを構築している。このために、単一の関数の基礎的な仕様を「同じinputに対して同じoutputを返すものは同じクラスにマッピングされる」と定義し、既存のコードリポジトリとLLMによる合成によって、GoとPythonについて合計30種類のクラスと361個のインスタンスを収集。これらの関数は、算術演算や大小比較、パリティチェックなどの判定、文字列の操作などを含む。そしてこれら関数を3種類の実行パターンでオーケストレーションすることで、合成関数を作成した。合成方法は<br>- Sequential: outputとinputをパイプラインでつなぎ伝搬させる<br>- Selective: 条件に応じてf(x)が実行されるか、g(x)が実行されるかを制御<br>- Loop: input集合に対するloopの中に関数を埋め込み順次関数を実行<br><br>の3種類。合成関数の挙動を評価するために、ランダムなテストケースは自動生成し、合成関数の挙動をモニタリング（オーバーフロー、無限ループ、タイムアウト、複数回の実行でoutputが決定的か等など）し、異常があるものはフィルタリングすることで合成関数の品質を担保する。<br><br>ベンチマーキングの方法としては、CRUXEVALではシンプルにモデルにコードの実行結果を予想させるだけであったが、指示追従能力の問題からミスジャッジをすることがあるため、この問題に対処するため<input output>のペアが与えられた時に、outputが合成関数に対してinputしま結果とマッチするかをyes/noのbinaryで判定させる（Predictと呼ばれるモデルのコード理解力を評価)。これとは別に、与えられたinput, outputペアと合成関数に基づいて、実行時の合計のcomputation stepsを出力させるタスクをreasoningタスクとして定義し、複雑度に応じてeasy, hardに分類している。computation stepsは、プログラムを実行する最小単位のことであり、たとえば算術演算などの基礎的なarithmetic/logic operationを指す。<br><img src="https://github.com/user-attachments/assets/8ac34d8c-63e4-42d7-96ea-13dbe39ad683" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/76407c5b-acd0-40ef-a698-684875ccc680" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+ では、関数のinputs/outputsを予測することで、モデルのコードのcomprehension, reasoning能力を測ろうとしているが、<br>- single functionのlogicに限定されている<br>- 20 line程度の短く、trivialなロジックに限定されている<br>- すでにSoTAモデルで95%が達成され飽和している<br><br>というlimitationがあるので、複数の関数が協働するロジック、flow/dataのinteractionのフロー制御、細かい実行ステップなどを含む、staticなコードの理解から、動的な実行プロセスのモデリング能力の評価にシフトするような、新たなベンチマークを作成しました、という話な模様。<br><br>まず関数単位のライブラリを構築している。このために、単一の関数の基礎的な仕様を「同じinputに対して同じoutputを返すものは同じクラスにマッピングされる」と定義し、既存のコードリポジトリとLLMによる合成によって、GoとPythonについて合計30種類のクラスと361個のインスタンスを収集。これらの関数は、算術演算や大小比較、パリティチェックなどの判定、文字列の操作などを含む。そしてこれら関数を3種類の実行パターンでオーケストレーションすることで、合成関数を作成した。合成方法は<br>- Sequential: outputとinputをパイプラインでつなぎ伝搬させる<br>- Selective: 条件に応じてf(x)が実行されるか、g(x)が実行されるかを制御<br>- Loop: input集合に対するloopの中に関数を埋め込み順次関数を実行<br><br>の3種類。合成関数の挙動を評価するために、ランダムなテストケースは自動生成し、合成関数の挙動をモニタリング（オーバーフロー、無限ループ、タイムアウト、複数回の実行でoutputが決定的か等など）し、異常があるものはフィルタリングすることで合成関数の品質を担保する。<br><br>ベンチマーキングの方法としては、CRUXEVALではシンプルにモデルにコードの実行結果を予想させるだけであったが、指示追従能力の問題からミスジャッジをすることがあるため、この問題に対処するため<input output>のペアが与えられた時に、outputが合成関数に対してinputしま結果とマッチするかをyes/noのbinaryで判定させる（Predictと呼ばれるモデルのコード理解力を評価)。これとは別に、与えられたinput, outputペアと合成関数に基づいて、実行時の合計のcomputation stepsを出力させるタスクをreasoningタスクとして定義し、複雑度に応じてeasy, hardに分類している。computation stepsは、プログラムを実行する最小単位のことであり、たとえば算術演算などの基礎的なarithmetic/logic operationを指す。<br><img src="https://github.com/user-attachments/assets/8ac34d8c-63e4-42d7-96ea-13dbe39ad683" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/76407c5b-acd0-40ef-a698-684875ccc680" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="axbench-steering-2337" class="title-link">[Paper Note] AxBench: Steering LLMs? Even Simple Baselines Outperform Sparse   Autoencoders, Zhengxuan Wu+, ICLR'25 Spotlight</h3>
@@ -6425,7 +6425,7 @@ My Issue
 <a class="button" href="CommonsenseReasoning.html" target="_blank" rel="noopener noreferrer">#CommonsenseReasoning</a>
 <span class="issue_date">Issue Date: 2025-07-31</span>
 <span class="snippet"><span>GPT Summary</span>- Ordered CommonGenを提案し、LLMsの指示に従う能力と構成的一般化能力を評価するベンチマークを構築。36のLLMsを分析した結果、指示の意図は理解しているが、概念の順序に対するバイアスが低多様性の出力を引き起こすことが判明。最も指示に従うLLMでも約75%の順序付きカバレッジしか達成できず、両能力の改善が必要であることを示唆。</span>
-<span class="snippet"><span>Comment</span><p>LLMの意味の構成性と指示追従能力を同時に発揮する能力を測定可能なOrderedCommonGenを提案<br><br><img src="https://github.com/user-attachments/assets/ae8c9468-a788-4baa-a618-402eae92c6c8" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/24ba68b4-3484-4597-a401-1e47183276cf" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>LLMの意味の構成性と指示追従能力を同時に発揮する能力を測定可能なOrderedCommonGenを提案<br><br><img src="https://github.com/user-attachments/assets/ae8c9468-a788-4baa-a618-402eae92c6c8" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/24ba68b4-3484-4597-a401-1e47183276cf" alt="image" loading="lazy" width="550" height="400"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2330" target="_blank" rel="noopener noreferrer">[Paper Note] CommonGen: A Constrained Text Generation Challenge for Generative   Commonsense Reasoning, Bill Yuchen Lin+, EMNLP'20 Findings</a>
 </p></span><br><br>
 </article>
@@ -6510,7 +6510,7 @@ My Issue
 </div>
 
 
-<p>GPTEの学習手法テキストだけでなく、画像やコードなどの様々なモーダル、マルチリンガル、データセットや評価方法、パラメータサイズとMTEBの性能の関係性の図解など、盛りだくさんな模様。最新のものだけでなく、2021年頃のT5から最新モデルまで網羅的にまとまっている。日本語特化のモデルについては記述が無さそうではある。<br><br><img src="https://github.com/user-attachments/assets/f0a40a10-7f29-4aaf-b989-672213622ebc" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/7940d307-f1db-421f-86a4-6c9cca22f27c" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/46282995-d538-4bd2-9aa5-983253a98f8f" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/dc4212de-19df-497c-951e-3addff5a193f" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/ac925f56-de46-49ae-b0a8-cd8e2ecc4994" alt="image" loading="lazy" width="400" height="300"></p>
+<p>GPTEの学習手法テキストだけでなく、画像やコードなどの様々なモーダル、マルチリンガル、データセットや評価方法、パラメータサイズとMTEBの性能の関係性の図解など、盛りだくさんな模様。最新のものだけでなく、2021年頃のT5から最新モデルまで網羅的にまとまっている。日本語特化のモデルについては記述が無さそうではある。<br><br><img src="https://github.com/user-attachments/assets/f0a40a10-7f29-4aaf-b989-672213622ebc" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/7940d307-f1db-421f-86a4-6c9cca22f27c" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/46282995-d538-4bd2-9aa5-983253a98f8f" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/dc4212de-19df-497c-951e-3addff5a193f" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/ac925f56-de46-49ae-b0a8-cd8e2ecc4994" alt="image" loading="lazy" width="550" height="400"></p>
 <p>日本語モデルについてはRuriのテクニカルペーパーや、LLM勉強会のまとめを参照のこと<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1375" target="_blank" rel="noopener noreferrer">Ruri: Japanese General Text Embeddings, cl-nagoya, 2024.09</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1563" target="_blank" rel="noopener noreferrer">日本語LLMまとめ, LLM-jp, 2024.12</a>
 </p></span><br><br>
@@ -6581,7 +6581,7 @@ My Issue
 </div>
 
 
-<p>元ポストに著者による詳細な解説スレッドがあるので参照のこと。<br><img src="https://github.com/user-attachments/assets/175bc31f-de80-4ad6-aa92-afacc1328345" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>元ポストに著者による詳細な解説スレッドがあるので参照のこと。<br><img src="https://github.com/user-attachments/assets/175bc31f-de80-4ad6-aa92-afacc1328345" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="swe-perf-can-2251" class="title-link">[Paper Note] SWE-Perf: Can Language Models Optimize Code Performance on Real-World  Repositories?, Xinyi He+, arXiv'25</h3>
@@ -6648,7 +6648,7 @@ My Issue
 </div>
 
 
-<p>画像はPJページより引用。新たにVisual Puzzleと呼ばれる特定のドメイン知識がほとんど必要ないマルチモーダルなreasoningベンチマークを構築。o1ですら、人間の5th percentileに満たない性能とのこと。<br><br>Chinese Civil Service Examination中のlogical reasoning questionを手作業で翻訳したとのこと。<br><br><img src="https://github.com/user-attachments/assets/4ee1cd31-2d47-46a2-861b-2a72c5df8529" alt="image" loading="lazy" width="400" height="300"><br><br>データセットの統計量は以下で、合計1168問で、難易度は3段階に分かれている模様。<br><img src="https://github.com/user-attachments/assets/332246e3-075f-4d98-b528-c8e4ec865068" alt="image" loading="lazy" width="400" height="300"><br><br>project page:
+<p>画像はPJページより引用。新たにVisual Puzzleと呼ばれる特定のドメイン知識がほとんど必要ないマルチモーダルなreasoningベンチマークを構築。o1ですら、人間の5th percentileに満たない性能とのこと。<br><br>Chinese Civil Service Examination中のlogical reasoning questionを手作業で翻訳したとのこと。<br><br><img src="https://github.com/user-attachments/assets/4ee1cd31-2d47-46a2-861b-2a72c5df8529" alt="image" loading="lazy" width="550" height="400"><br><br>データセットの統計量は以下で、合計1168問で、難易度は3段階に分かれている模様。<br><img src="https://github.com/user-attachments/assets/332246e3-075f-4d98-b528-c8e4ec865068" alt="image" loading="lazy" width="550" height="400"><br><br>project page:
 
 
 <a href="https://neulab.github.io/VisualPuzzles/" target="_blank" rel="noopener noreferrer">https://neulab.github.io/VisualPuzzles/</a>
@@ -6702,7 +6702,7 @@ My Issue
 
 
 <p>非常に大規模な数学の事前学習/mid-training向けのデータセット<br><br>CommonCrawlのHTMLから、さまざまなフィルタリング処理（reformatting, 2 stageのHTML parserの活用（片方はnoisyだが高速、もう一方は高性能だが遅い）, fasttextベースの分類器による抽出, deduplication等）を実施しMegaMath-Webを作成、また、MegaMathWebをさらに分類器で低品質なものをフィルタリングし、LLMによってノイズ除去、テキストのreorganizingを実施し（≠ピュアな合成データ）継続事前学習、mid-training向けの高品質なMegaMath-Web-Proを作成。<br><br>MegaMathCodeはThe Stack V2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2199" target="_blank" rel="noopener noreferrer">[Paper Note] StarCoder 2 and The Stack v2: The Next Generation, Anton Lozhkov+, arXiv'24</a>
-) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&amp;A, code data, text&amp;code block dataの3種類を合成。Q&amp;Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&amp;code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br><img src="https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></span><br><br>
+) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&amp;A, code data, text&amp;code block dataの3種類を合成。Q&amp;Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&amp;code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br><img src="https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="criticlean-critic-guided-2158" class="title-link">[Paper Note] CriticLean: Critic-Guided Reinforcement Learning for Mathematical  Formalization, Zhongyuan Peng+, arXiv'25</h3>
@@ -6737,7 +6737,7 @@ My Issue
 
 <p>関連<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1832" target="_blank" rel="noopener noreferrer">Critique Fine-Tuning: Learning to Critique is More Effective than   Learning to Imitate, Yubo Wang+, COLM'25</a>
 </p>
-<p>Lean 4 形式に<br><br><img src="https://github.com/user-attachments/assets/79121e53-b205-440d-9615-d520ac848704" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<p>Lean 4 形式に<br><br><img src="https://github.com/user-attachments/assets/79121e53-b205-440d-9615-d520ac848704" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="vlm2vec-training-2156" class="title-link">[Paper Note] VLM2Vec: Training Vision-Language Models for Massive Multimodal  Embedding Tasks, Ziyan Jiang+, ICLR'25</h3>
@@ -6874,7 +6874,7 @@ My Issue
 </div>
 
 
-<p>Portal2を使った新たなベンチマーク。筆者は昔このゲームを少しだけプレイしたことがあるが、普通に難しかった記憶がある😅<br><br>細かいが表中のGPT-o3は正しくはo3だと思われる。<br>時間がなくて全然しっかりと読めていないが、reasoning effortやthinkingモードはどのように設定して評価したのだろうか。<br><img src="https://github.com/user-attachments/assets/a7647007-b718-4b1c-8d8a-396c36d7811d" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/4b996864-7bf8-4ea9-aa3e-84d4e9f3f5d2" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>Portal2を使った新たなベンチマーク。筆者は昔このゲームを少しだけプレイしたことがあるが、普通に難しかった記憶がある😅<br><br>細かいが表中のGPT-o3は正しくはo3だと思われる。<br>時間がなくて全然しっかりと読めていないが、reasoning effortやthinkingモードはどのように設定して評価したのだろうか。<br><img src="https://github.com/user-attachments/assets/a7647007-b718-4b1c-8d8a-396c36d7811d" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/4b996864-7bf8-4ea9-aa3e-84d4e9f3f5d2" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="smmile-an-2121" class="title-link">[Paper Note] SMMILE: An Expert-Driven Benchmark for Multimodal Medical In-Context  Learning, Melanie Rieff+, arXiv'25</h3>
@@ -7218,7 +7218,7 @@ My Issue
 </div>
 
 
-<p>Hardな問題は現状のSoTAモデル（Claude4が含まれていないが）でも正答率0.0%<br><img src="https://github.com/user-attachments/assets/d0e29f23-2b66-4b19-b39a-68f3717d7058" alt="image" loading="lazy" width="400" height="300"><br><br>ベンチマークに含まれる課題のカテゴリ<br><img src="https://github.com/user-attachments/assets/b41b11d7-52a2-4a22-848d-cb08900da5cf" alt="image" loading="lazy" width="400" height="300"><br><br>実サンプルやケーススタディなどはAppendix参照のこと。</p>
+<p>Hardな問題は現状のSoTAモデル（Claude4が含まれていないが）でも正答率0.0%<br><img src="https://github.com/user-attachments/assets/d0e29f23-2b66-4b19-b39a-68f3717d7058" alt="image" loading="lazy" width="550" height="400"><br><br>ベンチマークに含まれる課題のカテゴリ<br><img src="https://github.com/user-attachments/assets/b41b11d7-52a2-4a22-848d-cb08900da5cf" alt="image" loading="lazy" width="550" height="400"><br><br>実サンプルやケーススタディなどはAppendix参照のこと。</p>
 <p>pj page:
 
 
@@ -7353,7 +7353,7 @@ My Issue
 </div>
 
 
-<p>35種類のタスクを人手で選定し、タスクごとに困難度の鍵となるパラメータを定義（数独ならばグリッド数など）。その上で、各タスクごとに人手でルールベースのinstanceを生成するコードを実装し、さまざまな困難度パラメータに基づいて多様なinstanceを生成。生成されたinstanceの困難度は、近似的なUpper Bound(DeepSeek-R1, o3-miniのPass@10)とLower bound（chat model[^1]でのPass@10)を求めデータセットに含まれるinstanceの困難度をコントロールし、taskを記述するpromptも生成。タスクごとに人手で実装されたVerifierも用意されている。<br><img src="https://github.com/user-attachments/assets/cda0534d-7db2-4470-93b8-01f446476544" alt="image" loading="lazy" width="400" height="300"><br><br>Qwen2.5-7B-BaseをSynDataでDAPOしたところ、大幅にlogic benchmarkとmathematical benchmarkの性能が改善。<br><img src="https://github.com/user-attachments/assets/dcc1309d-7946-4a6d-91a3-7ccac9ec6688" alt="image" loading="lazy" width="400" height="300"><br><br>mathやcodeのデータとmixして7Bモデルを訓練したところ、32Bモデルに匹敵する性能を達成し、SynDataをmixすることでgainが大きくなったので、SynDataから学習できる能力が汎化することが示唆される。<br><img src="https://github.com/user-attachments/assets/7b618fe9-5271-434b-9808-f53f0e758e5e" alt="image" loading="lazy" width="400" height="300"><br><br>タスク一覧はこちら<br><img src="https://github.com/user-attachments/assets/50fcdcb3-701e-4d42-94c7-201d8d354d75" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]:どのchat modelかはざっと見た感じわからない。どこかに書いてあるかも。</p>
+<p>35種類のタスクを人手で選定し、タスクごとに困難度の鍵となるパラメータを定義（数独ならばグリッド数など）。その上で、各タスクごとに人手でルールベースのinstanceを生成するコードを実装し、さまざまな困難度パラメータに基づいて多様なinstanceを生成。生成されたinstanceの困難度は、近似的なUpper Bound(DeepSeek-R1, o3-miniのPass@10)とLower bound（chat model[^1]でのPass@10)を求めデータセットに含まれるinstanceの困難度をコントロールし、taskを記述するpromptも生成。タスクごとに人手で実装されたVerifierも用意されている。<br><img src="https://github.com/user-attachments/assets/cda0534d-7db2-4470-93b8-01f446476544" alt="image" loading="lazy" width="550" height="400"><br><br>Qwen2.5-7B-BaseをSynDataでDAPOしたところ、大幅にlogic benchmarkとmathematical benchmarkの性能が改善。<br><img src="https://github.com/user-attachments/assets/dcc1309d-7946-4a6d-91a3-7ccac9ec6688" alt="image" loading="lazy" width="550" height="400"><br><br>mathやcodeのデータとmixして7Bモデルを訓練したところ、32Bモデルに匹敵する性能を達成し、SynDataをmixすることでgainが大きくなったので、SynDataから学習できる能力が汎化することが示唆される。<br><img src="https://github.com/user-attachments/assets/7b618fe9-5271-434b-9808-f53f0e758e5e" alt="image" loading="lazy" width="550" height="400"><br><br>タスク一覧はこちら<br><img src="https://github.com/user-attachments/assets/50fcdcb3-701e-4d42-94c7-201d8d354d75" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]:どのchat modelかはざっと見た感じわからない。どこかに書いてあるかも。</p>
 <p>Logical Reasoningが重要なタスクを扱う際はこのデータを活用することを検討してみても良いかもしれない</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7376,7 +7376,7 @@ My Issue
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <span class="issue_date">Issue Date: 2025-06-01</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の推論能力を評価するための新しいベンチマーク、BIG-Bench Extra Hard（BBEH）を導入。これは、既存のBIG-Bench Hard（BBH）のタスクを新しいものに置き換え、難易度を大幅に引き上げることで、LLMの限界を押し広げることを目的としている。評価の結果、最良の汎用モデルで9.8%、推論専門モデルで44.8%の平均精度が観察され、LLMの一般的推論能力向上の余地が示された。BBEHは公開されている。</span>
-<span class="snippet"><span>Comment</span><p>Big-Bench hard（既にSoTAモデルの能力差を識別できない）の難易度をさらに押し上げたデータセット。<br><br>Inputの例<br><img src="https://github.com/user-attachments/assets/b9d1308f-1481-470d-a553-c181d902119c" alt="image" loading="lazy" width="400" height="300"><br><br>タスクごとのInput, Output lengthの分布<br><img src="https://github.com/user-attachments/assets/ef6b7401-159d-46c7-bd9d-9a64f63b5089" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/01207db3-cb01-46f2-a805-e9ddf9d58198" alt="image" loading="lazy" width="400" height="300"><br><br>現在の主要なモデル群の性能<br><img src="https://github.com/user-attachments/assets/5ce538d8-45a1-449a-992a-998b33fdeaf7" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>Big-Bench hard（既にSoTAモデルの能力差を識別できない）の難易度をさらに押し上げたデータセット。<br><br>Inputの例<br><img src="https://github.com/user-attachments/assets/b9d1308f-1481-470d-a553-c181d902119c" alt="image" loading="lazy" width="550" height="400"><br><br>タスクごとのInput, Output lengthの分布<br><img src="https://github.com/user-attachments/assets/ef6b7401-159d-46c7-bd9d-9a64f63b5089" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/01207db3-cb01-46f2-a805-e9ddf9d58198" alt="image" loading="lazy" width="550" height="400"><br><br>現在の主要なモデル群の性能<br><img src="https://github.com/user-attachments/assets/5ce538d8-45a1-449a-992a-998b33fdeaf7" alt="image" loading="lazy" width="550" height="400"></p>
 <p>Big-Bench論文はこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the   capabilities of language models, Aarohi Srivastava+, N/A, TMLR'23</a>
 </p></span><br><br>
 </article>
@@ -7556,7 +7556,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- SWE-Gymを提案し、2,438件の実世界のPythonタスクを含む環境を構築。言語モデルに基づくSWEエージェントを訓練し、SWE-Benchで最大19%の解決率向上を達成。微調整されたエージェントは新たな最先端の性能を示し、SWE-Gymやモデル、エージェントの軌跡を公開。</span>
 <span class="snippet"><span>Comment</span><p>SWE-Benchとは完全に独立したより広範な技術スタックに関連するタスクに基づくSWEベンチマーク<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1848" target="_blank" rel="noopener noreferrer">SWE-bench: Can Language Models Resolve Real-World GitHub Issues?, Carlos E. Jimenez+, ICLR'24</a>
  </p>
-<p>SWE-Benchと比べて実行可能な環境と単体テストが提供されており、単なるベンチマークではなくエージェントを訓練できる環境が提供されている点が大きく異なるように感じる。<br><img src="https://github.com/user-attachments/assets/8c96df84-d211-4035-8337-1ab624d30a4f" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/d25687d9-6f1a-44f6-8235-09be1ff4890f" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>SWE-Benchと比べて実行可能な環境と単体テストが提供されており、単なるベンチマークではなくエージェントを訓練できる環境が提供されている点が大きく異なるように感じる。<br><img src="https://github.com/user-attachments/assets/8c96df84-d211-4035-8337-1ab624d30a4f" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/d25687d9-6f1a-44f6-8235-09be1ff4890f" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="lost-in-the-middle-in-1817" class="title-link">Lost-in-the-Middle in Long-Text Generation: Synthetic Dataset,  Evaluation Framework, and Mitigation, Junhao Zhang+, arXiv'25</h3>
@@ -7753,7 +7753,7 @@ My Issue
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <span class="issue_date">Issue Date: 2024-10-17</span>
 <span class="snippet"><span>GPT Summary</span>- 報酬モデルの訓練にはBradley-Terryスタイルと回帰スタイルがあり、データの一致が重要だが、適切なデータセットが不足している。HelpSteer2データセットでは、Bradley-Terry訓練用の好みの注釈を公開し、初めて両モデルの直接比較を行った。これに基づき、両者を組み合わせた新アプローチを提案し、Llama-3.1-70B-InstructモデルがRewardBenchで94.1のスコアを達成。さらに、REINFORCEアルゴリズムを用いて指示モデルを調整し、Arena Hardで85.0を記録した。このデータセットはオープンソースとして公開されている。</span>
-<span class="snippet"><span>Comment</span><p>MTBench, Arena HardでGPT4o-20240513,Claude-3.5-sonnet-20240620をoutperform。Response lengthの平均が長いこと模様<br><img src="https://github.com/user-attachments/assets/e7fe1193-f3c6-4d17-8077-2f4742aef00c" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>MTBench, Arena HardでGPT4o-20240513,Claude-3.5-sonnet-20240620をoutperform。Response lengthの平均が長いこと模様<br><img src="https://github.com/user-attachments/assets/e7fe1193-f3c6-4d17-8077-2f4742aef00c" alt="image" loading="lazy" width="550" height="400"></p>
 <p>openreview:
 
 
@@ -8137,7 +8137,7 @@ My Issue
 </div>
 
 
-<p>MMMUのサンプルはこちら。各分野ごとに専門家レベルの知識と推論が求められるとのこと。<br><img src="https://github.com/user-attachments/assets/90839a16-d7d2-499d-b2d8-52dab8988e52" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>MMMUのサンプルはこちら。各分野ごとに専門家レベルの知識と推論が求められるとのこと。<br><img src="https://github.com/user-attachments/assets/90839a16-d7d2-499d-b2d8-52dab8988e52" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="longbench-a-2374" class="title-link">[Paper Note] LongBench: A Bilingual, Multitask Benchmark for Long Context   Understanding, Yushi Bai+, ACL'24</h3>
@@ -8167,7 +8167,7 @@ My Issue
 <a href="https://tech.preferred.jp/ja/blog/plamo-prime-release-feature-update/" target="_blank" rel="noopener noreferrer">https://tech.preferred.jp/ja/blog/plamo-prime-release-feature-update/</a>
 
 
-<br><br>タスクと言語ごとのLengthの分布。英語の方がデータが豊富で、長いものだと30000--40000ものlengthのサンプルもある模様。<br><img src="https://github.com/user-attachments/assets/a1104f3f-996a-4ad9-b6c3-55b2eb7921ab" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<br><br>タスクと言語ごとのLengthの分布。英語の方がデータが豊富で、長いものだと30000--40000ものlengthのサンプルもある模様。<br><img src="https://github.com/user-attachments/assets/a1104f3f-996a-4ad9-b6c3-55b2eb7921ab" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="scaling-laws-2262" class="title-link">[Paper Note] Scaling Laws for Data Filtering -- Data Curation cannot be Compute   Agnostic, Sachin Goyal+, CVPR'24</h3>
@@ -8202,7 +8202,7 @@ My Issue
 </div>
 
 
-<p>高品質なデータにフィルタリングすることで多くの研究がモデルがより高い性能を達成できることを示しているが、高品質なデータには限りがあることと、繰り返し学習をすることですぐにその効用が低下する（Quality-Quantity tradeoff!)という特性がある。このような状況において、たとえば計算の予算がデータ6パケット分の時に、めちゃめちゃフィルタリングを頑張っg高品質なデータプールEのみを使って6 epoch学習するのが良いのか、少し品質は落ちるデータDも混ぜてE+Dを3 epoch学習するのが良いのか、ときにどちらが良いのか？という話のようである。<br><img src="https://github.com/user-attachments/assets/06812781-7212-415e-bc7a-dd19ac4ca0d7" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>高品質なデータにフィルタリングすることで多くの研究がモデルがより高い性能を達成できることを示しているが、高品質なデータには限りがあることと、繰り返し学習をすることですぐにその効用が低下する（Quality-Quantity tradeoff!)という特性がある。このような状況において、たとえば計算の予算がデータ6パケット分の時に、めちゃめちゃフィルタリングを頑張っg高品質なデータプールEのみを使って6 epoch学習するのが良いのか、少し品質は落ちるデータDも混ぜてE+Dを3 epoch学習するのが良いのか、ときにどちらが良いのか？という話のようである。<br><img src="https://github.com/user-attachments/assets/06812781-7212-415e-bc7a-dd19ac4ca0d7" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="heron-bench-a-2231" class="title-link">[Paper Note] Heron-Bench: A Benchmark for Evaluating Vision Language Models in  Japanese, Yuichi Inoue+, arXiv'24</h3>
@@ -8531,8 +8531,8 @@ My Issue
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <span class="issue_date">Issue Date: 2025-04-02</span>
 <span class="snippet"><span>GPT Summary</span>- 生成AIの進展により、自律エージェントが自然言語コマンドで日常タスクを管理する可能性が生まれたが、現行のエージェントは簡略化された環境でのテストに限られている。本研究では、ウェブ上でタスクを実行するエージェントのための現実的な環境を構築し、eコマースやソーシャルフォーラムなどのドメインを含む完全なウェブサイトを提供する。この環境を基に、タスクの正確性を評価するベンチマークを公開し、実験を通じてGPT-4ベースのエージェントの成功率が14.41%であり、人間の78.24%には及ばないことを示した。これにより、実生活のタスクにおけるエージェントのさらなる開発の必要性が強調される。</span>
-<span class="snippet"><span>Comment</span><p>Webにおけるさまざまなrealisticなタスクを評価するためのベンチマーク<br><img src="https://github.com/user-attachments/assets/8895fc29-e997-4cce-a43e-65b928dc1d78" alt="image" loading="lazy" width="400" height="300"></p>
-<p>実際のexample。スタート地点からピッツバーグのmuseumを巡る最短の経路を見つけるといった複雑なタスクが含まれる。<br><img src="https://github.com/user-attachments/assets/5b7bebea-34c7-4c6f-bbe5-3928544e6c13" alt="image" loading="lazy" width="400" height="300"><br><br>人間とGPT4,GPT-3.5の比較結果<br><img src="https://github.com/user-attachments/assets/390fee31-85d0-4d83-969a-57a7f1548ca8" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Webにおけるさまざまなrealisticなタスクを評価するためのベンチマーク<br><img src="https://github.com/user-attachments/assets/8895fc29-e997-4cce-a43e-65b928dc1d78" alt="image" loading="lazy" width="550" height="400"></p>
+<p>実際のexample。スタート地点からピッツバーグのmuseumを巡る最短の経路を見つけるといった複雑なタスクが含まれる。<br><img src="https://github.com/user-attachments/assets/5b7bebea-34c7-4c6f-bbe5-3928544e6c13" alt="image" loading="lazy" width="550" height="400"><br><br>人間とGPT4,GPT-3.5の比較結果<br><img src="https://github.com/user-attachments/assets/390fee31-85d0-4d83-969a-57a7f1548ca8" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="swe-bench-can-1848" class="title-link">SWE-bench: Can Language Models Resolve Real-World GitHub Issues?, Carlos E. Jimenez+, ICLR'24</h3>
@@ -8724,7 +8724,7 @@ My Issue
 </div>
 
 
-<p>ソフトウェアエンジニアリングの企業の設定で現実に起こりうるな　175種類のタスクを定義してAI Agentを評価できるベンチマークTheAgentCompanyを提案。<br><br><img src="https://github.com/user-attachments/assets/ef7b51d3-b4af-4171-a692-48fb2c2552ef" alt="image" loading="lazy" width="400" height="300"><br><br>既存のベンチマークより、多様で、実際のソフトウェアエンジニアリング企業でで起こりうる幅広いタスクを持ち、タスクの遂行のために同僚に対して何らかのインタラクションが必要で、達成のために多くのステップが必要でかつ個々のステップ（サブタスク）を評価可能で、多様なタスクを遂行するために必要な様々なインタフェースをカバーし、self hostingして結果を完全に再現可能なベンチマークとなっている模様。<br><img src="https://github.com/user-attachments/assets/e5fbd6da-75d7-49e1-8c66-dc7950d443e4" alt="image" loading="lazy" width="400" height="300"><br><br>
+<p>ソフトウェアエンジニアリングの企業の設定で現実に起こりうるな　175種類のタスクを定義してAI Agentを評価できるベンチマークTheAgentCompanyを提案。<br><br><img src="https://github.com/user-attachments/assets/ef7b51d3-b4af-4171-a692-48fb2c2552ef" alt="image" loading="lazy" width="550" height="400"><br><br>既存のベンチマークより、多様で、実際のソフトウェアエンジニアリング企業でで起こりうる幅広いタスクを持ち、タスクの遂行のために同僚に対して何らかのインタラクションが必要で、達成のために多くのステップが必要でかつ個々のステップ（サブタスク）を評価可能で、多様なタスクを遂行するために必要な様々なインタフェースをカバーし、self hostingして結果を完全に再現可能なベンチマークとなっている模様。<br><img src="https://github.com/user-attachments/assets/e5fbd6da-75d7-49e1-8c66-dc7950d443e4" alt="image" loading="lazy" width="550" height="400"><br><br>
 
 
 
@@ -8753,7 +8753,7 @@ My Issue
 </div>
 
 
-<br><img src="https://github.com/user-attachments/assets/3bdcabef-70da-4f09-8366-efe29f7ab371" alt="image" loading="lazy" width="400" height="300"><p>まだまだAI Agentが完全に'同僚'として機能することとは現時点ではなさそうだが、このベンチマークのスコアが今後どこまで上がっていくだろうか。</p></span><br><br>
+<br><img src="https://github.com/user-attachments/assets/3bdcabef-70da-4f09-8366-efe29f7ab371" alt="image" loading="lazy" width="550" height="400"><p>まだまだAI Agentが完全に'同僚'として機能することとは現時点ではなさそうだが、このベンチマークのスコアが今後どこまで上がっていくだろうか。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="preference-discerning-1632" class="title-link">Preference Discerning with LLM-Enhanced Generative Retrieval, Fabian Paischer+, arXiv'24</h3>
@@ -8824,8 +8824,8 @@ My Issue
 <span class="issue_date">Issue Date: 2024-12-15</span>
 <span class="snippet"><span>GPT Summary</span>- 自動広告テキスト生成（ATG）のために、標準化されたベンチマークデータセットCAMERAを提案。これにより、マルチモーダル情報の活用と業界全体での評価が促進される。9つのベースラインを用いた実験で、現状と課題を明らかにし、LLMベースの評価者と人間の評価の一致を探求。</span>
 <span class="snippet"><span>Comment</span><p>広告文生成タスク（Ad Text Generation）は個々のグループのプロプライエタリデータでしか評価されてこなかったことと、そもそもタスク設定が十分に規定されていないので、その辺を整備したという話らしい。<br>特に広告文生成のための初のオープンデータなCAMERAを構築している。<br><br>データセットを作るだけでなく、既存の手法、古典的なものからLLMまででどの程度の性能まで到達しているか、さらにはROUGEやGPT-4を用いたLLM-as-a-Judgeのような自動評価手法をメタ評価し、人手評価とオンライン評価のどの程度代替になるかも分析したとのことらしい。</p>
-<p>Table5にメタ評価の結果が記載されている。システムレベルのcorrelationを測定している。興味深いのが、BLEU-4, ROUGE-1, BERTScoreなどの古典的or埋め込みベースのNLG評価手法がFaithfulnessとFluencyにおいて、人間の専門家と高い相関を示しているのに対し、GPT-4による評価では人間による評価と全然相関が出ていない。<br><br>既存のLLM-as-a-Judge研究では専門家と同等の評価できます、みたいな話がよく見受けられるがこれらの報告と結果が異なっていておもしろい。著者らは、OpenAIのGPTはそもそも広告ドメインとテキストでそんなに訓練されていなさそうなので、ドメインのミスマッチが一つの要因としてあるのではないか、と考察している。<br><br>また、Attractivenessでは専門家による評価と弱い相関しか示していない点も興味深い。広告文がどの程度魅力的かはBLEU, ROUGE, BERTScoreあたりではなかなか難しそうなので、GPT4による評価がうまくいって欲しいところだが、全くうまくいっていない。この論文の結果だけを見ると、（Attractivenessに関しては）自動評価だけではまだまだ広告文の評価は厳しそうに見える。<br><br><img src="https://github.com/user-attachments/assets/15804ddc-3131-4a3d-9071-a66473e0e987" alt="image" loading="lazy" width="400" height="300"></p>
-<p>GPT4によるAttractivenessの評価に利用したプロンプトが下記。MTBenchっぽく、ペアワイズの分類問題として解いていることがわかる。この辺はLLM-as-a-Judgeの研究では他にもスコアトークンを出力し尤度で重みづけるG-Evalをはじめ、さまざまな手法が提案されていると思うので、その辺の手法を利用したらどうなるかは興味がある。<br>あとはそもそも手法面の話以前に、promptのコンテキスト情報としてどのような情報がAttractivenessの評価に重要か？というのも明らかになると興味深い。この辺は、サイバーエージェントの専門家部隊が、どのようなことを思考してAttractivenessを評価しているのか？というのがヒントになりそうである。<br><img src="https://github.com/user-attachments/assets/5c0d3989-d4c1-4d61-b592-b1140c4cf93d" alt="image" loading="lazy" width="400" height="300"><br></p>
+<p>Table5にメタ評価の結果が記載されている。システムレベルのcorrelationを測定している。興味深いのが、BLEU-4, ROUGE-1, BERTScoreなどの古典的or埋め込みベースのNLG評価手法がFaithfulnessとFluencyにおいて、人間の専門家と高い相関を示しているのに対し、GPT-4による評価では人間による評価と全然相関が出ていない。<br><br>既存のLLM-as-a-Judge研究では専門家と同等の評価できます、みたいな話がよく見受けられるがこれらの報告と結果が異なっていておもしろい。著者らは、OpenAIのGPTはそもそも広告ドメインとテキストでそんなに訓練されていなさそうなので、ドメインのミスマッチが一つの要因としてあるのではないか、と考察している。<br><br>また、Attractivenessでは専門家による評価と弱い相関しか示していない点も興味深い。広告文がどの程度魅力的かはBLEU, ROUGE, BERTScoreあたりではなかなか難しそうなので、GPT4による評価がうまくいって欲しいところだが、全くうまくいっていない。この論文の結果だけを見ると、（Attractivenessに関しては）自動評価だけではまだまだ広告文の評価は厳しそうに見える。<br><br><img src="https://github.com/user-attachments/assets/15804ddc-3131-4a3d-9071-a66473e0e987" alt="image" loading="lazy" width="550" height="400"></p>
+<p>GPT4によるAttractivenessの評価に利用したプロンプトが下記。MTBenchっぽく、ペアワイズの分類問題として解いていることがわかる。この辺はLLM-as-a-Judgeの研究では他にもスコアトークンを出力し尤度で重みづけるG-Evalをはじめ、さまざまな手法が提案されていると思うので、その辺の手法を利用したらどうなるかは興味がある。<br>あとはそもそも手法面の話以前に、promptのコンテキスト情報としてどのような情報がAttractivenessの評価に重要か？というのも明らかになると興味深い。この辺は、サイバーエージェントの専門家部隊が、どのようなことを思考してAttractivenessを評価しているのか？というのがヒントになりそうである。<br><img src="https://github.com/user-attachments/assets/5c0d3989-d4c1-4d61-b592-b1140c4cf93d" alt="image" loading="lazy" width="550" height="400"><br></p>
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1591" target="_blank" rel="noopener noreferrer">国際会議ACL2024参加報告, Masato Mita, Cyber Agent, 2024.12</a>
 <br><br>に著者によるサマリが記載されているので参照のこと。</p></span><br><br>
 </article>
@@ -8897,7 +8897,7 @@ My Issue
 <a class="button" href="Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
 <span class="issue_date">Issue Date: 2024-11-28</span>
 <span class="snippet"><span>GPT Summary</span>- 第二言語学習の文翻訳演習の自動評価タスクを提案し、評価基準に基づいて学生の回答を採点する。日本語と英語の間で3,498の学生の回答を含むデータセットを作成。ファインチューニングされたBERTモデルは約90%のF1スコアで正しい回答を分類するが、誤った回答は80%未満。少数ショット学習を用いたGPT-3.5はBERTより劣る結果を示し、提案タスクが大規模言語モデルにとっても難しいことを示す。</span>
-<span class="snippet"><span>Comment</span><p>STEsの図解。分かりやすい。いわゆる日本人が慣れ親しんでいる和文英訳、英文和訳演習も、このタスクの一種だということなのだろう。2-shotのGPT4とFinetuningしたBERTが同等程度の性能に見えて、GPT3.5では5shotしても勝てていない模様。興味深い。<br><img src="https://github.com/user-attachments/assets/7f2f824c-91cb-4935-af53-75f1b72912bc" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>STEsの図解。分かりやすい。いわゆる日本人が慣れ親しんでいる和文英訳、英文和訳演習も、このタスクの一種だということなのだろう。2-shotのGPT4とFinetuningしたBERTが同等程度の性能に見えて、GPT3.5では5shotしても勝てていない模様。興味深い。<br><img src="https://github.com/user-attachments/assets/7f2f824c-91cb-4935-af53-75f1b72912bc" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="com-kitchens-1435" class="title-link">COM Kitchens: An Unedited Overhead-view Video Dataset as a   Vision-Language Benchmark, Koki Maeda+, N_A, ECCV'24</h3>
@@ -8937,7 +8937,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2024-09-30</span>
 <span class="snippet"><span>GPT Summary</span>- 視覚と言語のモデル（VLM）の設計における裏付けのない決定が性能向上の特定を妨げていると指摘。事前学習済みモデルやアーキテクチャ、データ、トレーニング手法に関する実験を行い、80億パラメータの基盤VLM「Idefics2」を開発。Idefics2はマルチモーダルベンチマークで最先端の性能を達成し、4倍のサイズのモデルと同等の性能を示す。モデルとデータセットを公開。</span>
-<span class="snippet"><span>Comment</span><p>元ポストにOpenVLMの進展の歴史が載っている。構築されたデータセットも公開される模様。<br><img src="https://github.com/user-attachments/assets/9675c2ad-650a-460b-9655-1c6347d07f58" alt="image" loading="lazy" width="400" height="300"><br>元ポスト:
+<span class="snippet"><span>Comment</span><p>元ポストにOpenVLMの進展の歴史が載っている。構築されたデータセットも公開される模様。<br><img src="https://github.com/user-attachments/assets/9675c2ad-650a-460b-9655-1c6347d07f58" alt="image" loading="lazy" width="550" height="400"><br>元ポスト:
 
 
 
@@ -9050,17 +9050,17 @@ My Issue
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2023-04-26</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># 概要<br><br>Personalizationはユーザのニーズや嗜好に応えるために重要な技術で、IRやRecSysで盛んに研究されてきたが、NLPではあまり実施されてこなかった。しかし、最近のタスクで、text classificationやgeneration taskでPersonalizationの重要性が指摘されている。このような中で、LLMでpersonalizedなレスポンスを生成し、評価することはあまり研究されていない。そこで、LaMPベンチマークを生成し、LLMにおけるPersonalizationをするための開発と評価をするための第一歩として提案している。<br><br> <br><br># Personalizing LLM Outputs<br><br>LLMに対してPersonalizedなoutputをさせるためには、profileをpromptに埋め込むことが基本的なアプローチとなる。<br><br><br><br>## Problem Formulation<br><br>まず、user profile（ユーザに関するrecordの集合）をユーザとみなす。データサンプルは以下の3つで構成される：<br><br>- x: モデルのinputとなるinput sequence<br><br>- y: モデルが生成することを期待するtarget output<br><br>- u: user profile（ユーザの嗜好やrequirementsを捉えるための補助的な情報）<br><br>そして、p(y | x, u) を最大化する問題として定式化される。それぞれのユーザuに対して、モデルは{(x_u1, y_u1,)...(x_un, y_un)}を利用することができる。<br><br><br><br>## A Retrieval Augmentation Approach for Personaliozing LLMs<br><br>user profileは基本的にめちゃめちゃ多く、promptに入れ込むことは非現実的。そこで、reteival augmentation approachと呼ばれる手法を提案している。LLMのcontext windowは限られているので、profileのうちのsubsetを利用することが現実的なアプローチとなる。また、必ずしも全てのユーザプロファイルがあるタスクを実施するために有用とは限らない。このため、retrieval augmentation approachを提案している。<br><br>retrieval augmentation approachでは、現在のテストケースに対して、relevantな部分ユーザプロファイルを選択的に抽出するフレームワークである。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234442873-01a4961b-feab-42d3-b59c-ee26daad957f.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>(x_i, y_i)に対してpersonalizationを実現するために、3つのコンポーネントを採用している：<br><br>1. query generation function: x_iに基づきuser profileからrelevantな情報を引っ張ってくるquery qを生成するコンポーネント<br><br>2. retrieval model R(q, P_u, k): query q, プロファイルP_u, を用いて、k個のrelevantなプロファイルを引っ張ってくるモデル<br><br>3. prompt construction function: xとreteival modelが引っ張ってきたエントリからpromptを作成するコンポーネント<br><br>1, 2, 3によって生成されたprompt x^barと、yによってモデルを訓練、あるいは評価する。<br><br>この研究では、Rとして Contriever <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer">Contrirver</a>
+<strong># 概要<br><br>Personalizationはユーザのニーズや嗜好に応えるために重要な技術で、IRやRecSysで盛んに研究されてきたが、NLPではあまり実施されてこなかった。しかし、最近のタスクで、text classificationやgeneration taskでPersonalizationの重要性が指摘されている。このような中で、LLMでpersonalizedなレスポンスを生成し、評価することはあまり研究されていない。そこで、LaMPベンチマークを生成し、LLMにおけるPersonalizationをするための開発と評価をするための第一歩として提案している。<br><br> <br><br># Personalizing LLM Outputs<br><br>LLMに対してPersonalizedなoutputをさせるためには、profileをpromptに埋め込むことが基本的なアプローチとなる。<br><br><br><br>## Problem Formulation<br><br>まず、user profile（ユーザに関するrecordの集合）をユーザとみなす。データサンプルは以下の3つで構成される：<br><br>- x: モデルのinputとなるinput sequence<br><br>- y: モデルが生成することを期待するtarget output<br><br>- u: user profile（ユーザの嗜好やrequirementsを捉えるための補助的な情報）<br><br>そして、p(y | x, u) を最大化する問題として定式化される。それぞれのユーザuに対して、モデルは{(x_u1, y_u1,)...(x_un, y_un)}を利用することができる。<br><br><br><br>## A Retrieval Augmentation Approach for Personaliozing LLMs<br><br>user profileは基本的にめちゃめちゃ多く、promptに入れ込むことは非現実的。そこで、reteival augmentation approachと呼ばれる手法を提案している。LLMのcontext windowは限られているので、profileのうちのsubsetを利用することが現実的なアプローチとなる。また、必ずしも全てのユーザプロファイルがあるタスクを実施するために有用とは限らない。このため、retrieval augmentation approachを提案している。<br><br>retrieval augmentation approachでは、現在のテストケースに対して、relevantな部分ユーザプロファイルを選択的に抽出するフレームワークである。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234442873-01a4961b-feab-42d3-b59c-ee26daad957f.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>(x_i, y_i)に対してpersonalizationを実現するために、3つのコンポーネントを採用している：<br><br>1. query generation function: x_iに基づきuser profileからrelevantな情報を引っ張ってくるquery qを生成するコンポーネント<br><br>2. retrieval model R(q, P_u, k): query q, プロファイルP_u, を用いて、k個のrelevantなプロファイルを引っ張ってくるモデル<br><br>3. prompt construction function: xとreteival modelが引っ張ってきたエントリからpromptを作成するコンポーネント<br><br>1, 2, 3によって生成されたprompt x^barと、yによってモデルを訓練、あるいは評価する。<br><br>この研究では、Rとして Contriever <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer">Contrirver</a>
 </strong>
 <br>
  , BM25, random selectionの3種類を用いている。<br><br><br><br>
 <strong># LaMPベンチマーク<br><br>GLUEやSuper Glue、KILT、GENといったベンチマークは、"one-size-fits-all"なモデリングと評価を前提としており、ユーザのニーズに答えるための開発を許容していない。一方で、LaMPは、以下のようなPersonalizationが必要なさまざまなタスクを統合して作成されたデータセットである。<br><br>- Personalized Text Classification<br><br>  - Personalized Citation Identification (binary classification)<br><br>    - Task definition<br><br>      - user u が topic xに関する論文を書いたときに、何の論文をciteすべきかを決めるタスク<br><br>      - user uが書いた論文のタイトルが与えられたとき、2つのcandidate paperのうちどちらをreferenceとして利用すべきかを決定する2値分類<br><br>    - Data Collection<br><br>      - Citation Network Datasetを利用。最低でも50本以上論文を書いているauthorを抽出し、authorの論文のうちランダムに論文と論文の引用を抽出<br><br>      - negative document selectionとして、ランダムに共著者がciteしている論文をサンプリング<br><br>   - Profile Specification<br><br>     -  ユーザプロファイルは、ユーザが書いた全てのpaper<br><br>     - titleとabstractのみをuser profileとして保持した<br><br>    - Evaluation<br><br>      - train/valid/testに分け、accuracyで評価する<br><br>  - Personalized News Categorization (15 category分類)<br><br>    - Task definition<br><br>      - LLMが journalist uによって書かれたニュースを分類する能力を問うタスク<br><br>      - u によって書かれたニュースxが与えられた時、uの過去の記事から得られるカテゴリの中から該当するカテゴリを予測するタスク<br><br>    - Data Collection<br><br>      - news categorization datasetを利用（Huff Postのニュース）<br><br>      - 記事をfirst authorでグルーピング<br><br>      - グルーピングした記事群をtrain/valid/testに分割<br><br>      - それぞれの記事において、記事をinputとし、その記事のカテゴリをoutputとする。そして残りの記事をuser profileとする。<br><br>    - Profile Specification<br><br>      - ユーザによって書かれた記事の集合<br><br>    - Evaluation<br><br>      - accuracy, macro-averaged F1で評価 <br><br>  - Personalized Product Rating (5-star rating)<br><br>    - Task definition<br><br>      - ユーザuが記述したreviewに基づいて、LLMがユーザuの未知のアイテムに対するratingを予測する性能を問う<br><br>    - Data Collection<br><br>      - Amazon Reviews Datasetを利用<br><br>      - reviewが100件未満、そしてほとんどのreviewが外れ値なユーザ1%を除外<br><br>      - ランダムにsubsetをサンプリングし、train/valid/testに分けた<br><br>      - input-output pairとしては、inputとしてランダムにユーザのreviewを選択し、その他のreviewをprofileとして利用する。そして、ユーザがinputのレビューで付与したratingがground truthとなる。<br><br>    - Profile Specification<br><br>      - ユーザのレビュ<br><br>    - Evaluation<br><br>      -  ttrain/valid/testに分けてRMSE, MAEで評価する<br><br>- Personalized Text Generation<br><br>  - Personalized News Headline Generation<br><br>    - Task definition<br><br>      - ユーザuが記述したニュースのタイトルを生成するタスク<br><br>      - 特に、LLMが与えられたprofileに基づいてユーザのinterestsやwriting styleを捉え、適切にheadlinに反映させる能力を問う<br><br>   - Data Collection<br><br>     - News Categorization datasetを利用（Huff Post）<br><br>     - データセットではauthorの情報が提供されている<br><br>     - それぞれのfirst authorごとにニュースをグルーピングし、それぞれの記事をinput, headlineをoutputとした。そして残りの記事をprofileとした<br><br>   - Profile Specification<br><br>     - ユーザの過去のニュース記事とそのheadlineの集合をprofileとする<br><br>   - Evaluation<br><br>     - ROUGE-1, ROUGE-Lで評価<br><br>  - Personalized Scholarly Title Generation<br><br>    - Task Definition<br><br>      - ユーザの過去のタイトルを考慮し、LLMがresearch paperのtitleを生成する能力を測る<br><br>    - Data Collection<br><br>      - Citation Network Datasetのデータを利用<br><br>      - abstractをinput, titleをoutputとし、残りのpaperをprofileとした<br><br>    - Profile Specification<br><br>      - ユーザが書いたpaperの集合（abstractのみを利用）<br><br>  - Personalized Email Subject Generation<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleに合わせて、Emailのタイトルを書く能力を測る<br><br>    - Data Collection<br><br>      - Avocado Resaerch Email Collectionデータを利用<br><br>      - 5単語未満のsubjectを持つメール、本文が30単語未満のメールを除外、<br><br>      - 送信主のemail addressでメールをグルーピング<br><br>      - input _outputペアは、email本文をinputとし、対応するsubjectをoutputとした。他のメールはprofile<br><br>    - Profile Specification<br><br>      -  ユーザのemailの集合<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価 <br><br>  - Personalized Tweet Paraphrasing<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleを考慮し、ツイートのparaphrasingをする能力を問う<br><br>    - Data Collection<br><br>      - Sentiment140 datasetを利用<br><br>      - 最低10単語を持つツイートのみを利用<br><br>      - userIDでグルーピングし、10 tweets以下のユーザは除外<br><br>      - ランダムに1つのtweetを選択し、ChatGPT(gpt-3.5-turbo)でparaphraseした<br><br>      - paraphrase版のtweetをinput, 元ツイートをoutputとし、input-output pairを作った。<br><br>    - User Profile Specification<br><br>      - ユーザの過去のツイート<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価<br><br><br><br></strong></p>
-<p># 実験<br><br>## Experimental Setup<br><br>- FlanT5-baesをfinetuningした<br><br>- ユーザ単位でモデルが存在するのか否かが記載されておらず不明<br><br>## 結果<br><br>- Personalization入れた方が全てのタスクでよくなった<br><br>- Retrievalモデルとしては、randomの場合でも良くなったが、基本的にはContrirverを利用した場合が最も良かった<br><br>  - =&gt; 適切なprofileを選択しpromptに含めることが重要であることが示された<br><br>- Rが抽出するサンプル kを増やすと、予測性能が増加する傾向もあったが、一部タスクでは性能の低下も招いた<br><br>- dev setを利用し、BM25/Contrieverのどちらを利用するか、kをいくつに設定するかをチューニングした結果、全ての結果が改善した<br><br>- FlanT5-XXLとgpt-3.5-turboを用いたZero-shotの設定でも実験。tweet paraphrasingタスクを除き、zero-shotでもuser profileをLLMで利用することでパフォーマンス改善。小さなモデルでもfinetuningすることで、zero-shotの大規模モデルにdownstreamタスクでより高い性能を獲得することを示している（ただし、めちゃめちゃ改善しているというわけでもなさそう）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234452179-6fac1cd9-982f-4b48-8dfe-1d742dc1c221.png" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://user-images.githubusercontent.com/12249301/234452837-8d8cdfed-ab85-4d1e-99d7-aad35ddc8979.png" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://user-images.githubusercontent.com/12249301/234453453-a2393c95-a820-404f-b21c-3332f53cb851.png" alt="image" loading="lazy" width="400" height="300"><br><br></p>
+<p># 実験<br><br>## Experimental Setup<br><br>- FlanT5-baesをfinetuningした<br><br>- ユーザ単位でモデルが存在するのか否かが記載されておらず不明<br><br>## 結果<br><br>- Personalization入れた方が全てのタスクでよくなった<br><br>- Retrievalモデルとしては、randomの場合でも良くなったが、基本的にはContrirverを利用した場合が最も良かった<br><br>  - =&gt; 適切なprofileを選択しpromptに含めることが重要であることが示された<br><br>- Rが抽出するサンプル kを増やすと、予測性能が増加する傾向もあったが、一部タスクでは性能の低下も招いた<br><br>- dev setを利用し、BM25/Contrieverのどちらを利用するか、kをいくつに設定するかをチューニングした結果、全ての結果が改善した<br><br>- FlanT5-XXLとgpt-3.5-turboを用いたZero-shotの設定でも実験。tweet paraphrasingタスクを除き、zero-shotでもuser profileをLLMで利用することでパフォーマンス改善。小さなモデルでもfinetuningすることで、zero-shotの大規模モデルにdownstreamタスクでより高い性能を獲得することを示している（ただし、めちゃめちゃ改善しているというわけでもなさそう）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234452179-6fac1cd9-982f-4b48-8dfe-1d742dc1c221.png" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://user-images.githubusercontent.com/12249301/234452837-8d8cdfed-ab85-4d1e-99d7-aad35ddc8979.png" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://user-images.githubusercontent.com/12249301/234453453-a2393c95-a820-404f-b21c-3332f53cb851.png" alt="image" loading="lazy" width="550" height="400"><br><br></p>
 <p># LaMPによって可能なResearch Problem<br><br>## Prompting for Personalization<br><br>- Augmentationモデル以外のLLMへのユーザプロファイルの埋め込み方法<br><br>- hard promptingやsoft prompting <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, arXiv'21, 2021.04</a>
 
 <br>
  の活用<br><br>## Evaluation of Personalized Text Generation<br><br>- テキスト生成で利用される性能指標はユーザの情報を評価のプロセスで考慮していない<br><br>- Personalizedなテキスト生成を評価するための適切なmetricはどんなものがあるか？<br><br>## Learning to Retrieve from User Profiles<br><br>- Learning to RankをRetrieval modelに適用する方向性</p>
-<p>LaMPの作成に利用したテンプレート一覧<br><br><img src="https://user-images.githubusercontent.com/12249301/234457098-5c2ba78f-dc74-45e4-bf91-f07ffd99bcb4.png" alt="image" loading="lazy" width="400" height="300"><br><br></p>
+<p>LaMPの作成に利用したテンプレート一覧<br><br><img src="https://user-images.githubusercontent.com/12249301/234457098-5c2ba78f-dc74-45e4-bf91-f07ffd99bcb4.png" alt="image" loading="lazy" width="550" height="400"><br><br></p>
 <p>実装とleaderboard<br><br>
 
 
@@ -9144,7 +9144,7 @@ My Issue
 <a class="button" href="Distillation.html" target="_blank" rel="noopener noreferrer">#Distillation</a>
 <span class="issue_date">Issue Date: 2025-03-25</span>
 <span class="snippet"><span>GPT Summary</span>- データセット蒸留（DD）は、深層学習における膨大なデータのストレージやプライバシーの問題を軽減する手法であり、合成サンプルを含む小さなデータセットを生成することで、元のデータセットと同等の性能を持つモデルをトレーニング可能にする。本論文では、DDの進展と応用をレビューし、全体的なアルゴリズムフレームワークを提案、既存手法の分類と理論的相互関係を議論し、DDの課題と今後の研究方向を展望する。</span>
-<span class="snippet"><span>Comment</span><p>訓練データセット中の知識を蒸留し、オリジナルデータよりも少量のデータで同等の学習効果を得るDataset Distillationに関するSurvey。<br><img src="https://github.com/user-attachments/assets/35e85898-a834-4ecf-a2a4-20d31f4101be" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>訓練データセット中の知識を蒸留し、オリジナルデータよりも少量のデータで同等の学習効果を得るDataset Distillationに関するSurvey。<br><img src="https://github.com/user-attachments/assets/35e85898-a834-4ecf-a2a4-20d31f4101be" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="data-distillation-1741" class="title-link">Data Distillation: A Survey, Noveen Sachdeva+, arXiv'23</h3>
@@ -9233,7 +9233,7 @@ My Issue
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2023-12-01</span>
 <span class="snippet"><span>GPT Summary</span>- 従来の情報検索モデルは一様な形式を前提としているため、異なる情報検索の要求に対応できない。そこで、UniIRという統一された指示に基づくマルチモーダルリトリーバーを提案する。UniIRは異なるリトリーバルタスクを処理できるように設計され、10のマルチモーダルIRデータセットでトレーニングされる。実験結果はUniIRの汎化能力を示し、M-BEIRというマルチモーダルリトリーバルベンチマークも構築された。</span>
-<span class="snippet"><span>Comment</span><p>後で読む（画像は元ツイートより<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image" loading="lazy" width="400" height="300"><br><br>元ツイート: 
+<span class="snippet"><span>Comment</span><p>後で読む（画像は元ツイートより<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b15eaf7-054c-4719-b4c4-4287b40848e1" alt="image" loading="lazy" width="550" height="400"><br><br>元ツイート: 
 
 
 
@@ -9277,7 +9277,7 @@ My Issue
 </div>
 
 
-<br><br>Meta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は92%正解できるが、GPT4でも15%しか正解できないQAベンチマーク。解くために推論やマルチモダリティの処理、ブラウジング、ツールに対する習熟などの基本的な能力を必要とする実世界のQAとのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image" loading="lazy" width="400" height="300"><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1792" target="_blank" rel="noopener noreferrer">Open-source DeepResearch – Freeing our search agents, HuggingFace, 2025.02</a>
+<br><br>Meta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は92%正解できるが、GPT4でも15%しか正解できないQAベンチマーク。解くために推論やマルチモダリティの処理、ブラウジング、ツールに対する習熟などの基本的な能力を必要とする実世界のQAとのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image" loading="lazy" width="550" height="400"><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1792" target="_blank" rel="noopener noreferrer">Open-source DeepResearch – Freeing our search agents, HuggingFace, 2025.02</a>
 <br><br>で言及されているLLM Agentの評価で最も有名なベンチマークな模様</p>
 <p>データセット: 
 
@@ -9309,7 +9309,7 @@ My Issue
 <a class="button" href="InstructionFollowingCapability.html" target="_blank" rel="noopener noreferrer">#InstructionFollowingCapability</a>
 <span class="issue_date">Issue Date: 2023-11-15</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の能力を評価するために、Instruction-Following Eval（IFEval）という評価ベンチマークが導入されました。IFEvalは、検証可能な指示に焦点を当てた直感的で再現性のある評価方法です。具体的には、25種類の検証可能な指示を特定し、それぞれの指示を含む約500のプロンプトを作成しました。この評価ベンチマークの結果は、GitHubで公開されています。</span>
-<span class="snippet"><span>Comment</span><p>LLMがinstructionにどれだけ従うかを評価するために、検証可能なプロンプト（400字以上で書きなさいなど）を考案し評価する枠組みを提案。人間が評価すると時間とお金がかかり、LLMを利用した自動評価だと評価を実施するLLMのバイアスがかかるのだ、それら両方のlimitationを克服できるとのこと。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>LLMがinstructionにどれだけ従うかを評価するために、検証可能なプロンプト（400字以上で書きなさいなど）を考案し評価する枠組みを提案。人間が評価すると時間とお金がかかり、LLMを利用した自動評価だと評価を実施するLLMのバイアスがかかるのだ、それら両方のlimitationを克服できるとのこと。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="rolellm-benchmarking-1069" class="title-link">RoleLLM: Benchmarking, Eliciting, and Enhancing Role-Playing Abilities  of Large Language Models, Zekun Moore Wang+, N_A, arXiv'23</h3>
@@ -9331,7 +9331,7 @@ My Issue
 <a class="button" href="Conversation.html" target="_blank" rel="noopener noreferrer">#Conversation</a>
 <span class="issue_date">Issue Date: 2023-10-09</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）を使用して役割演技の能力を向上させるためのフレームワークであるRoleLLMを提案しています。RoleLLMは、役割プロファイルの構築、コンテキストベースの指示生成、役割プロンプトによる話し方の模倣、オープンソースモデルの微調整と役割のカスタマイズの4つのステージで構成されています。さらに、RoleBenchと呼ばれる役割演技のためのベンチマークデータセットを作成し、RoleLLaMAとRoleGLMというモデルを開発しました。これにより、役割演技の能力が大幅に向上し、GPT-4と同等の結果を達成しました。</span>
-<span class="snippet"><span>Comment</span><p># Overview<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a4f8ad3-17d1-4a85-b553-6452371e2ccf" alt="image" loading="lazy" width="400" height="300"><br><br># RoleBench<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a197648f-ee30-4e1d-9b3b-188c29671df4" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p># Overview<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a4f8ad3-17d1-4a85-b553-6452371e2ccf" alt="image" loading="lazy" width="550" height="400"><br><br># RoleBench<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a197648f-ee30-4e1d-9b3b-188c29671df4" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="benchmarking-large-1067" class="title-link">Benchmarking Large Language Models As AI Research Agents, Qian Huang+, N_A, arXiv'23</h3>
@@ -9405,7 +9405,7 @@ My Issue
 <a class="button" href="StructuredData.html" target="_blank" rel="noopener noreferrer">#StructuredData</a>
 <span class="issue_date">Issue Date: 2023-09-30</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）の能力を評価し、構造に注意したファインチューニング手法を提案します。さらに、Struc-Benchというデータセットを使用して、複雑な構造化データ生成のパフォーマンスを評価します。実験の結果、提案手法は他の評価されたLLMsよりも優れた性能を示しました。また、モデルの能力マップを提示し、LLMsの弱点と将来の研究の方向性を示唆しています。詳細はhttps://github.com/gersteinlab/Struc-Benchを参照してください。</span>
-<span class="snippet"><span>Comment</span><p>Formatに関する情報を含むデータでInstruction TuningすることでFormatCoT（フォーマットに関する情報のCoT）を実現している模様。ざっくりしか論文を読んでいないが詳細な情報があまり書かれていない印象で、ちょっとなんともいえない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/01a23836-b9fb-4d29-891f-d3b01e3e55d2" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Formatに関する情報を含むデータでInstruction TuningすることでFormatCoT（フォーマットに関する情報のCoT）を実現している模様。ざっくりしか論文を読んでいないが詳細な情報があまり書かれていない印象で、ちょっとなんともいえない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/01a23836-b9fb-4d29-891f-d3b01e3e55d2" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="longlora-efficient-1045" class="title-link">LongLoRA: Efficient Fine-tuning of Long-Context Large Language Models, Yukang Chen+, N_A, arXiv'23</h3>
@@ -9431,7 +9431,7 @@ My Issue
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <span class="issue_date">Issue Date: 2023-09-30</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、計算コストを制限しながら大規模言語モデル（LLMs）のコンテキストサイズを拡張する効率的なファインチューニング手法であるLongLoRAを提案します。従来の方法では、LLMsの長いコンテキストサイズでのトレーニングには高い計算コストとGPUリソースが必要でしたが、提案手法ではコンテキスト拡張を高速化し、非自明な計算コストの削減を実現します。また、パラメータ効率的なファインチューニング手法も再評価し、LongLoRAはさまざまなタスクで強力な実験結果を示しています。さらに、教師ありファインチューニングのためのデータセットであるLongQAも収集されました。</span>
-<span class="snippet"><span>Comment</span><p># 概要<br><br>context長が大きい場合でも効率的にLoRAする手法。通常のLoRAではcontext lengthが大きくなるにつれてperplexityが大きくなってしまう。一方、通常のFinetuningではperplexityは高い性能を維持するが、計算コストとVRAMの消費量が膨大になってしまう。LongLoRAでは、perplexityを通常のFinetuningと同等に抑えつつ、VRAM消費量もLoRAと同等、かつより小さな計算量でFinetuningを実現している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fc3d17c7-b1ac-4741-9895-bce70cf0b356" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># 手法概要<br><br>attentionをcontext length全体で計算するとinput長の二乗の計算量がかかるため、contextをいくつかのグループに分割しグループごとにattentionを計算することで計算量削減。さらに、グループ間のattentionの間の依存関係を捉えるために、グループをshiftさせて計算したものと最終的に組み合わせている。また、embedding, normalization layerもtrainableにしている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2b443a4c-73da-4610-8ee2-cccdeab21efa" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>context長が大きい場合でも効率的にLoRAする手法。通常のLoRAではcontext lengthが大きくなるにつれてperplexityが大きくなってしまう。一方、通常のFinetuningではperplexityは高い性能を維持するが、計算コストとVRAMの消費量が膨大になってしまう。LongLoRAでは、perplexityを通常のFinetuningと同等に抑えつつ、VRAM消費量もLoRAと同等、かつより小さな計算量でFinetuningを実現している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fc3d17c7-b1ac-4741-9895-bce70cf0b356" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># 手法概要<br><br>attentionをcontext length全体で計算するとinput長の二乗の計算量がかかるため、contextをいくつかのグループに分割しグループごとにattentionを計算することで計算量削減。さらに、グループ間のattentionの間の依存関係を捉えるために、グループをshiftさせて計算したものと最終的に組み合わせている。また、embedding, normalization layerもtrainableにしている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2b443a4c-73da-4610-8ee2-cccdeab21efa" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="agentbench-evaluating-1020" class="title-link">AgentBench: Evaluating LLMs as Agents, Xiao Liu+, N_A, arXiv'23</h3>
@@ -9475,9 +9475,9 @@ My Issue
 <span class="issue_date">Issue Date: 2023-08-21</span>
 <span class="snippet"><span>GPT Summary</span>- 私たちは、高品質な指示に従う言語モデルを構築するためのスケーラブルな手法を提案します。この手法では、少量のシードデータとウェブコーパスを使用して言語モデルをファインチューニングし、指示のプロンプトを生成してトレーニング例を構築します。そして、高品質な例を選択してモデルを強化します。この手法を使用すると、他のモデルよりも優れた性能を発揮し、自己整列の効果を実証できます。</span>
 <span class="snippet"><span>Comment</span><p>人間が書いたテキストを対応するinstructionに自動的にラベル付けする手法を提案。<br>これにより高品質なinstruction following LLMの構築が可能</p>
-<p>手法概要<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/837e17cc-6df1-4ba5-ba61-9c4f72dede93" alt="image" loading="lazy" width="400" height="300"></p>
-<p>結果的に得られるデータは、訓練において非常にインパクトがあり高品質なものとなる。<br>実際に、他の同サイズのinstruct tuningデータセットを上回る。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ef478922-8495-4a5f-9bc6-3d5bed7195a8" alt="image" loading="lazy" width="400" height="300"></p>
-<p>Humpackは他のstrong modelからdistillされていないモデルの中で最高性能を達成。これは、スケールアップしたり、より強いベースモデルを使うなどさらなる性能向上ができる余地が残されている。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd7ff8b5-62a4-46fe-a902-cbe8e9ffec4a" alt="image" loading="lazy" width="400" height="300"></p>
+<p>手法概要<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/837e17cc-6df1-4ba5-ba61-9c4f72dede93" alt="image" loading="lazy" width="550" height="400"></p>
+<p>結果的に得られるデータは、訓練において非常にインパクトがあり高品質なものとなる。<br>実際に、他の同サイズのinstruct tuningデータセットを上回る。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ef478922-8495-4a5f-9bc6-3d5bed7195a8" alt="image" loading="lazy" width="550" height="400"></p>
+<p>Humpackは他のstrong modelからdistillされていないモデルの中で最高性能を達成。これは、スケールアップしたり、より強いベースモデルを使うなどさらなる性能向上ができる余地が残されている。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd7ff8b5-62a4-46fe-a902-cbe8e9ffec4a" alt="image" loading="lazy" width="550" height="400"></p>
 <p>参考: 
 
 
@@ -9585,7 +9585,7 @@ My Issue
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）の評価における課題を解決するため、細かい評価プロトコルであるFLASKを提案する。FLASKは、インスタンスごとのスキルセットレベルでの評価を可能にし、モデルベースと人間ベースの評価の両方に使用できる。具体的には、12の細かいスキルを定義し、各インスタンスにスキルのセットを割り当てることで評価セットを構築する。さらに、ターゲットドメインと難易度レベルの注釈を付けることで、モデルのパフォーマンスを包括的に分析する。FLASKを使用することで、モデルのパフォーマンスを正確に測定し、特定のスキルに優れたLLMsを分析することができる。また、実践者はFLASKを使用して、特定の状況に適したモデルを推奨することができる。</span>
-<span class="snippet"><span>Comment</span><p>このベンチによるとLLaMA2でさえ、商用のLLMに比べると能力はかなり劣っているように見える。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9871133-3111-4da6-9148-1ac779a24312" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>このベンチによるとLLaMA2でさえ、商用のLLMに比べると能力はかなり劣っているように見える。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9871133-3111-4da6-9148-1ac779a24312" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="revisiting-the-869" class="title-link">Revisiting the Gold Standard: Grounding Summarization Evaluation with Robust Human Evaluation, ACL'23</h3>
@@ -9744,7 +9744,7 @@ My Issue
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <span class="issue_date">Issue Date: 2023-07-11</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）のTheory-of-Mind（ToM）推論能力を評価するための新しいフレームワークを提案し、新しい社会的推論のベンチマーク（BigToM）を作成しました。BigToMを使用して、さまざまなLLMsの社会的推論能力を評価し、GPT4が人間の推論パターンと類似したToMの能力を持っていることを示しましたが、他のLLMsは苦戦していることを示唆しています。</span>
-<span class="snippet"><span>Comment</span><p>LLMの社会的推論能力を評価するためのベンチマークを提案。ToMタスクとは、人間の信念、ゴール、メンタルstate、何を知っているか等をトラッキングすることが求められるタスクのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/477e897a-c535-40e7-8d57-c8d6d98552af" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>LLMの社会的推論能力を評価するためのベンチマークを提案。ToMタスクとは、人間の信念、ゴール、メンタルstate、何を知っているか等をトラッキングすることが求められるタスクのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/477e897a-c535-40e7-8d57-c8d6d98552af" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="holistic-evaluation-786" class="title-link">Holistic Evaluation of Language Models, Percy Liang+, TMLR'23</h3>
@@ -9808,7 +9808,7 @@ My Issue
 
 
 </p>
-<p>BIG-Bench論文。ワードクラウドとキーワード分布を見ると一つの分野に留まらない非常に多様なタスクが含まれることがわかる。<br><img src="https://github.com/user-attachments/assets/c3bfb1c1-2e85-47aa-b8ed-1e408b98f8c8" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/07f20e44-7318-476f-9952-be505d9033a4" alt="image" loading="lazy" width="400" height="300"></p>
+<p>BIG-Bench論文。ワードクラウドとキーワード分布を見ると一つの分野に留まらない非常に多様なタスクが含まれることがわかる。<br><img src="https://github.com/user-attachments/assets/c3bfb1c1-2e85-47aa-b8ed-1e408b98f8c8" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/07f20e44-7318-476f-9952-be505d9033a4" alt="image" loading="lazy" width="550" height="400"></p>
 <p>BIG-Bench-hardは、2024年にClaude3.5によって、Average Human Scoreが67.7%のところ、93.1%を達成され攻略が完了した。現在は最先端のモデル間の性能を差別化することはできない。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1662" target="_blank" rel="noopener noreferrer">Killed by LLM, R0bk</a>
 </p></span><br><br>
 </article>
@@ -9925,7 +9925,7 @@ My Issue
 <a class="button" href="Hallucination.html" target="_blank" rel="noopener noreferrer">#Hallucination</a>
 <span class="issue_date">Issue Date: 2023-05-20</span>
 <span class="snippet"><span>GPT Summary</span>- 自然言語推論（NLI）モデルを使用した事実の一貫性評価には限界があり、大規模言語モデル（LLMs）は計算コストが高いため実用的ではない。そこで、TrueTeacherというLLMを使用して多様なモデル生成要約を注釈付けすることによって合成データを生成する方法を提案し、既存の合成データ生成方法と比較して優位性と堅牢性を示した。140万の例を含む大規模な合成データセットを公開した。</span>
-<span class="snippet"><span>Comment</span><p>Factual Consistency Evaluationに関する研究。オリジナルのテキストに対して、様々な規模の言語モデルを用いて要約を生成。生成された要約に対してfactual informationが正しく含まれているかをラベル付けする方法を提案。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4fb420c8-6a80-4737-bc08-8e59b0ed89d6" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Factual Consistency Evaluationに関する研究。オリジナルのテキストに対して、様々な規模の言語モデルを用いて要約を生成。生成された要約に対してfactual informationが正しく含まれているかをラベル付けする方法を提案。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4fb420c8-6a80-4737-bc08-8e59b0ed89d6" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="we're-afraid-570" class="title-link">We're Afraid Language Models Aren't Modeling Ambiguity, Alisa Liu+, EMNLP'23</h3>
@@ -9948,7 +9948,7 @@ My Issue
 <span class="issue_date">Issue Date: 2023-04-28</span>
 <span class="snippet"><span>GPT Summary</span>- 曖昧さは自然言語の重要な特徴であり、言語モデル（LM）が対話や執筆支援において成功するためには、曖昧な言語を扱うことが不可欠です。本研究では、曖昧さの影響を評価するために、1,645の例からなるベンチマーク「AmbiEnt」を収集し、事前学習済みLMの評価を行いました。特にGPT-4の曖昧さ解消の正答率は32%と低く、曖昧さの解消が難しいことが示されました。また、多ラベルのNLIモデルが曖昧さによる誤解を特定できることを示し、NLPにおける曖昧さの重要性を再認識する必要性を提唱しています。</span>
 <span class="snippet"><span>Comment</span><p>LLMが曖昧性をどれだけ認知できるかを評価した初めての研究。<br>言語学者がアノテーションした1,645サンプルの様々な曖昧さを含んだベンチマークデータを利用。<br>GPT4は32%正解した。<br>またNLIデータでfinetuningしたモデルでは72.5%のmacroF1値を達成。<br>応用先として、誤解を招く可能性のある政治的主張に対してアラートをあげることなどを挙げている。</p>
-<p><img src="https://github.com/user-attachments/assets/a728a953-fac4-4115-8ec8-e5721bc4223e" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p><img src="https://github.com/user-attachments/assets/a728a953-fac4-4115-8ec8-e5721bc4223e" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="calvin-a-3744" class="title-link">[Paper Note] CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks, Oier Mees+, RA-L'22 Best Paper Award, 2021.12</h3>
@@ -10220,7 +10220,7 @@ My Issue
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2025-08-15</span>
 <span class="snippet"><span>GPT Summary</span>- 本論文では、汎用プログラミング言語におけるプログラム合成の限界を大規模言語モデルを用いて評価します。MBPPとMathQA-Pythonの2つのベンチマークで、モデルサイズに対する合成性能のスケールを調査。最も大きなモデルは、少数ショット学習でMBPPの59.6％の問題を解決可能で、ファインチューニングにより約10％の性能向上が見られました。MathQA-Pythonでは、ファインチューニングされたモデルが83.8％の精度を達成。人間のフィードバックを取り入れることでエラー率が半減し、エラー分析を通じてモデルの弱点を明らかにしました。最終的に、プログラム実行結果の予測能力を探るも、最良のモデルでも特定の入力に対する出力予測が困難であることが示されました。</span>
-<span class="snippet"><span>Comment</span><p>代表的なコード生成のベンチマーク。<br><br>MBPPデータセットは、promptで指示されたコードをモデルに生成させ、テストコード（assertion)を通過するか否かで評価する。974サンプル存在し、pythonの基礎を持つクラウドワーカーによって生成。クラウドワーカーにタスクdescriptionとタスクを実施する一つの関数（関数のみで実行可能でprintは不可）、3つのテストケースを記述するよう依頼。タスクdescriptionは追加なclarificationなしでコードが記述できるよう十分な情報を含むよう記述するように指示。ground truthの関数を生成する際に、webを閲覧することを許可した。<br><img src="https://github.com/user-attachments/assets/e27880f7-4647-462d-b619-e0a7a0959d66" alt="image" loading="lazy" width="400" height="300"><br><br>MathQA-Pythonは、MathQAに含まれるQAのうち解答が数値のもののみにフィルタリングしたデータセットで、合計で23914サンプル存在する。pythonコードで与えられた数学に関する問題を解くコードを書き、数値が一致するか否かで評価する、といった感じな模様。斜め読みなので少し読み違えているかもしれない。<br><br><img src="https://github.com/user-attachments/assets/d21ee76f-a13d-4ef9-843b-74c233c3c0a6" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>代表的なコード生成のベンチマーク。<br><br>MBPPデータセットは、promptで指示されたコードをモデルに生成させ、テストコード（assertion)を通過するか否かで評価する。974サンプル存在し、pythonの基礎を持つクラウドワーカーによって生成。クラウドワーカーにタスクdescriptionとタスクを実施する一つの関数（関数のみで実行可能でprintは不可）、3つのテストケースを記述するよう依頼。タスクdescriptionは追加なclarificationなしでコードが記述できるよう十分な情報を含むよう記述するように指示。ground truthの関数を生成する際に、webを閲覧することを許可した。<br><img src="https://github.com/user-attachments/assets/e27880f7-4647-462d-b619-e0a7a0959d66" alt="image" loading="lazy" width="550" height="400"><br><br>MathQA-Pythonは、MathQAに含まれるQAのうち解答が数値のもののみにフィルタリングしたデータセットで、合計で23914サンプル存在する。pythonコードで与えられた数学に関する問題を解くコードを書き、数値が一致するか否かで評価する、といった感じな模様。斜め読みなので少し読み違えているかもしれない。<br><br><img src="https://github.com/user-attachments/assets/d21ee76f-a13d-4ef9-843b-74c233c3c0a6" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="evaluating-large-2438" class="title-link">[Paper Note] Evaluating Large Language Models Trained on Code, Mark Chen+, arXiv'21</h3>
@@ -10243,7 +10243,7 @@ My Issue
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2025-08-15</span>
 <span class="snippet"><span>GPT Summary</span>- CodexはGitHubのコードでファインチューニングされたGPT言語モデルで、Pythonコード生成能力を評価。新しい評価セットHumanEvalでは、Codexが28.8%の問題を解決し、GPT-3は0%、GPT-Jは11.4%だった。繰り返しサンプリングが難しいプロンプトに対しても効果的な戦略を用い、70.2%の問題を解決。モデルの限界として、長い操作の説明や変数へのバインドに苦労する点が明らかに。最後に、コード生成技術の影響について安全性や経済に関する議論を行う。</span>
-<span class="snippet"><span>Comment</span><p>HumanEvalデータセット。Killed by LLMによると、GPT4oによりすでに90%程度の性能が達成され飽和している。<br><br>164個の人手で記述されたprogrammingの問題で、それぞれはfunction signature, docstring, body, unittestを持つ。unittestは問題当たり約7.7 test存在。handwrittenという点がミソで、コンタミネーションの懸念があるためgithubのような既存ソースからのコピーなどはしていない。pass@k[^1]で評価。<br><br>[^1]: k個のサンプルを生成させ、k個のサンプルのうち、サンプルがunittestを一つでも通過する確率。ただ、本研究ではよりバイアスをなくすために、kよりも大きいn個のサンプルを生成し、その中からランダムにk個を選択して確率を推定するようなアプローチを実施している。2.1節を参照のこと。<br><br><img src="https://github.com/user-attachments/assets/74a74b6f-9d0c-4ce9-ab8b-53b478b4632a" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>HumanEvalデータセット。Killed by LLMによると、GPT4oによりすでに90%程度の性能が達成され飽和している。<br><br>164個の人手で記述されたprogrammingの問題で、それぞれはfunction signature, docstring, body, unittestを持つ。unittestは問題当たり約7.7 test存在。handwrittenという点がミソで、コンタミネーションの懸念があるためgithubのような既存ソースからのコピーなどはしていない。pass@k[^1]で評価。<br><br>[^1]: k個のサンプルを生成させ、k個のサンプルのうち、サンプルがunittestを一つでも通過する確率。ただ、本研究ではよりバイアスをなくすために、kよりも大きいn個のサンプルを生成し、その中からランダムにk個を選択して確率を推定するようなアプローチを実施している。2.1節を参照のこと。<br><br><img src="https://github.com/user-attachments/assets/74a74b6f-9d0c-4ce9-ab8b-53b478b4632a" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="training-verifiers-1618" class="title-link">Training Verifiers to Solve Math Word Problems, Karl Cobbe+, arXiv'21</h3>
@@ -10347,7 +10347,7 @@ My Issue
 <a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
 <span class="issue_date">Issue Date: 2023-05-31</span>
 <span class="snippet"><span>GPT Summary</span>- この論文では、ユーザーの興味とニュース本文に基づいて、ユーザー固有のタイトルを生成するパーソナライズされたニュース見出し生成の問題を解決するためのフレームワークを提案します。また、この問題のための大規模なデータセットであるPENSを公開し、ベンチマークスコアを示します。データセットはhttps://msnews.github.io/pens.htmlで入手可能です。</span>
-<span class="snippet"><span>Comment</span><p># 概要<br><br>ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。<br><br><br><br># データセット生成手順<br><br>103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。<br><br><br><br># データセット統計量<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># 手法概要<br><br>Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。<br><br>Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。<br><br>User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># 訓練手法<br><br>まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、<br><br>1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする<br><br>2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする<br><br>3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする<br><br>とした。<br><br>1,2,3の平均を最終的なRewardとする。<br><br><br><br># 実験結果<br><br>Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># Case Study<br><br>ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。<br><br><br><br># データセット生成手順<br><br>103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。<br><br><br><br># データセット統計量<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># 手法概要<br><br>Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。<br><br>Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。<br><br>User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># 訓練手法<br><br>まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、<br><br>1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする<br><br>2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする<br><br>3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする<br><br>とした。<br><br>1,2,3の平均を最終的なRewardとする。<br><br><br><br># 実験結果<br><br>Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># Case Study<br><br>ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ニュース記事に対する談話構造と興味度のアノテーション-～ニュース対話システムのパーソナライズに向けて～-598" class="title-link">ニュース記事に対する談話構造と興味度のアノテーション ～ニュース対話システムのパーソナライズに向けて～, 高津+, 早稲田大学, 言語処理学会'21</h3>
@@ -10441,7 +10441,7 @@ My Issue
 <a class="button" href="Grammar.html" target="_blank" rel="noopener noreferrer">#Grammar</a>
 <span class="issue_date">Issue Date: 2025-09-07</span>
 <span class="snippet"><span>GPT Summary</span>- 言語的最小対のベンチマーク（BLiMP）は、言語モデルの文法知識を評価するためのチャレンジセットで、67のサブデータセットから成り、各サブデータセットには特定の文法対比を示す1000の最小対が含まれています。データは専門家によって自動生成され、人間の合意は96.4%です。n-gram、LSTM、Transformerモデルを評価した結果、最先端のモデルは形態論的対比を識別できるが、意味的制約や微妙な文法現象には苦戦していることが示されました。</span>
-<span class="snippet"><span>Comment</span><p>先行研究と比較して、より広範なlinguistic phenomenaを扱い、かつ大量のサンプルを集めた英語のacceptable/unacceptableなsentenceのペアデータ。ペアデータは特定のlinguistic phenomenaをacceptable/unacceptableに対比するための最小の違いに基づいており専門家が作成したテンプレートに基づいて自動生成され、クラウドソーシングによって人手でvalidationされている。言語モデルが英語のlinguistic phenomenaについて、どの程度理解しているかのベンチマークに利用可能。<br><br><img src="https://github.com/user-attachments/assets/600cafa5-bed7-4299-ba5c-4ffb835e2368" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>先行研究と比較して、より広範なlinguistic phenomenaを扱い、かつ大量のサンプルを集めた英語のacceptable/unacceptableなsentenceのペアデータ。ペアデータは特定のlinguistic phenomenaをacceptable/unacceptableに対比するための最小の違いに基づいており専門家が作成したテンプレートに基づいて自動生成され、クラウドソーシングによって人手でvalidationされている。言語モデルが英語のlinguistic phenomenaについて、どの程度理解しているかのベンチマークに利用可能。<br><br><img src="https://github.com/user-attachments/assets/600cafa5-bed7-4299-ba5c-4ffb835e2368" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="commongen-a-2330" class="title-link">[Paper Note] CommonGen: A Constrained Text Generation Challenge for Generative   Commonsense Reasoning, Bill Yuchen Lin+, EMNLP'20 Findings</h3>
@@ -10466,7 +10466,7 @@ My Issue
 <a class="button" href="CommonsenseReasoning.html" target="_blank" rel="noopener noreferrer">#CommonsenseReasoning</a>
 <span class="issue_date">Issue Date: 2025-07-31</span>
 <span class="snippet"><span>GPT Summary</span>- 生成的常識推論をテストするためのタスクCommonGenを提案し、35,000の概念セットに基づく79,000の常識的記述を含むデータセットを構築。タスクは、与えられた概念を用いて一貫した文を生成することを求め、関係推論と構成的一般化能力が必要。実験では、最先端モデルと人間のパフォーマンスに大きなギャップがあることが示され、生成的常識推論能力がCommonsenseQAなどの下流タスクに転送可能であることも確認。</span>
-<span class="snippet"><span>Comment</span><p>ベンチマークの概要。複数のconceptが与えられた時に、それらconceptを利用した常識的なテキストを生成するベンチマーク。concept間の関係性を常識的な知識から推論し、Unseenなconceptの組み合わせでも意味を構成可能な汎化性能が求められる。<br><img src="https://github.com/user-attachments/assets/2ebb8c0d-88f7-4858-ac43-29f341c586ec" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>ベンチマークの概要。複数のconceptが与えられた時に、それらconceptを利用した常識的なテキストを生成するベンチマーク。concept間の関係性を常識的な知識から推論し、Unseenなconceptの組み合わせでも意味を構成可能な汎化性能が求められる。<br><img src="https://github.com/user-attachments/assets/2ebb8c0d-88f7-4858-ac43-29f341c586ec" alt="image" loading="lazy" width="550" height="400"></p>
 <p>PJ page:
 
 
@@ -10845,7 +10845,7 @@ My Issue
 <a class="button" href="ReadingComprehension.html" target="_blank" rel="noopener noreferrer">#ReadingComprehension</a>
 <span class="issue_date">Issue Date: 2023-11-19</span>
 <span class="snippet"><span>GPT Summary</span>- NewsQAというデータセットは、10万以上の人間によって生成された質問と回答のペアを含んでいます。このデータセットは、CNNのニュース記事に基づいて作成されており、探索的な推論を必要とする質問を収集するために4つの段階のプロセスを経ています。徹底的な分析により、NewsQAが単純な単語のマッチングやテキストの含意の認識以上の能力を要求することがわかりました。このデータセットは、人間のパフォーマンスと機械のパフォーマンスの差を測定し、将来の研究の進歩を示しています。データセットは無料で利用できます。</span>
-<span class="snippet"><span>Comment</span><p>SQuADよりも回答をするために複雑な推論を必要とするQAデータセット。規模感はSQuADと同等レベル。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c427bc7c-40af-42aa-a689-d852081a92fc" alt="image" loading="lazy" width="400" height="300"><br><br>WordMatchingにとどまらず、回答が存在しない、あるいは記事中でユニークではないものも含まれる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3839636e-c9af-4e4d-8eee-3d376d615a35" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>SQuADよりも回答をするために複雑な推論を必要とするQAデータセット。規模感はSQuADと同等レベル。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c427bc7c-40af-42aa-a689-d852081a92fc" alt="image" loading="lazy" width="550" height="400"><br><br>WordMatchingにとどまらず、回答が存在しない、あるいは記事中でユニークではないものも含まれる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3839636e-c9af-4e4d-8eee-3d376d615a35" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="neural-text-89" class="title-link">[Paper Note] Neural Text Generation from Structured Data with Application to the  Biography Domain, Remi Lebret+, EMNLP'16, 2016.03</h3>
@@ -10870,7 +10870,7 @@ My Issue
 <a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-31</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模なWikipediaの伝記データセットを用いて、テキスト生成のためのニューラルモデルを提案。モデルは条件付きニューラル言語モデルに基づき、固定語彙とサンプル固有の単語を組み合わせるコピーアクションを採用。提案モデルは古典的なKneser-Neyモデルを約15 BLEUポイント上回る性能を示した。</span>
-<span class="snippet"><span>Comment</span><p>Wikipediaの人物に関するinfo boxから、その人物のbiographyの冒頭を生成するタスク。<br>Neural Language Modelに、新たにTableのEmbeddingを入れられるようにtable embeddingを提案し、table conditioned language modelを提案している。<br><br>inputはテーブル（図中のinput textっていうのは、少し用語がconfusingだが、言語モデルへのinputとして、過去に生成した単語の系列を入れるというのを示しているだけ）<br><img src="https://user-images.githubusercontent.com/12249301/34460925-6483a6ca-ee60-11e7-9ced-d02a59c26281.png" alt="image" loading="lazy" width="400" height="300"><br><br>モデル全体<br><img src="https://user-images.githubusercontent.com/12249301/34460923-4eea63b2-ee60-11e7-95e6-649ab1851dab.png" alt="image" loading="lazy" width="400" height="300"><br><br>Wikipediaから生成した、Biographyに関するデータセットも公開している。<br><img src="https://user-images.githubusercontent.com/12249301/34460928-93822082-ee60-11e7-81fc-b1840fea0b37.png" alt="image" loading="lazy" width="400" height="300"><br><br>template basedなKNSmoothingを使ったベースラインよりも高いBLEUスコアを獲得。さらに、テーブルのGlobalな情報を入れる手法が、性能向上に寄与（たとえばチーム名・リーグ・ポジションなどをそれぞれ独立に見ても、バスケットボールプレイヤーなのか、ホッケープレイヤーなのかはわからないけど、テーブル全体を見ればわかるよねという気持ち）。</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Wikipediaの人物に関するinfo boxから、その人物のbiographyの冒頭を生成するタスク。<br>Neural Language Modelに、新たにTableのEmbeddingを入れられるようにtable embeddingを提案し、table conditioned language modelを提案している。<br><br>inputはテーブル（図中のinput textっていうのは、少し用語がconfusingだが、言語モデルへのinputとして、過去に生成した単語の系列を入れるというのを示しているだけ）<br><img src="https://user-images.githubusercontent.com/12249301/34460925-6483a6ca-ee60-11e7-9ced-d02a59c26281.png" alt="image" loading="lazy" width="550" height="400"><br><br>モデル全体<br><img src="https://user-images.githubusercontent.com/12249301/34460923-4eea63b2-ee60-11e7-95e6-649ab1851dab.png" alt="image" loading="lazy" width="550" height="400"><br><br>Wikipediaから生成した、Biographyに関するデータセットも公開している。<br><img src="https://user-images.githubusercontent.com/12249301/34460928-93822082-ee60-11e7-81fc-b1840fea0b37.png" alt="image" loading="lazy" width="550" height="400"><br><br>template basedなKNSmoothingを使ったベースラインよりも高いBLEUスコアを獲得。さらに、テーブルのGlobalな情報を入れる手法が、性能向上に寄与（たとえばチーム名・リーグ・ポジションなどをそれぞれ独立に見ても、バスケットボールプレイヤーなのか、ホッケープレイヤーなのかはわからないけど、テーブル全体を見ればわかるよねという気持ち）。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="lcsts-a-75" class="title-link">[Paper Note] LCSTS: A Large Scale Chinese Short Text Summarization Dataset, Baotian Hu+, EMNLP'15, 2015.06</h3>
@@ -10898,7 +10898,7 @@ My Issue
 <a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>GPT Summary</span>- 中国のマイクロブログSina Weiboから構築した200万以上の短文とその要約からなる大規模コーパスを紹介。手動でタグ付けされた10,666の要約を用いて、再帰型ニューラルネットワークを導入し、有望な要約生成結果を達成。提案コーパスは短文要約研究に有用であり、さらなる研究のベースラインを提供。</span>
-<span class="snippet"><span>Comment</span><p>Large Chinese Short Text Summarization (LCSTS) datasetを作成<br><br><br><br>データセットを作成する際は、Weibo上の特定のorganizationの投稿の特徴を利用。<br><br>Weiboにニュースを投稿する際に、投稿の冒頭にニュースのvery short summaryがまず記載され、その後ニュース本文（短め）が記載される特徴があるので、この対をsource-reference対として収集した。<br><br>収集する際には、約１００個のルールに基づくフィルタリングやclearning, 抽出等を行なっている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34411045-95f7baf2-ec17-11e7-94fb-faf2559d6994.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>データセットのpropertyとしては、下記のPartI, II, IIIに分かれている。<br><br><br><br>PartI: 2.4Mのshort text - summary pair<br><br>PartII: PartIからランダムにサンプリングされた10kのpairに対して、5 scaleで要約のrelevanceをratingしたデータ。ただし、各pairにラベルづけをしたevaluatorは1名のみ。<br><br>PartIII: 2kのpairに対して（PartI, PartIIとは独立）、3名のevaluatorが5-scaleでrating。evaluatorのratingが一致した1kのpairを抽出したデータ。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34411199-8db4df90-ec18-11e7-8703-fd8f9512a903.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>RNN-GRUを用いたSummarizerも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34411224-b5543eba-ec18-11e7-8556-a3b42bfcf334.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br></p>
+<span class="snippet"><span>Comment</span><p>Large Chinese Short Text Summarization (LCSTS) datasetを作成<br><br><br><br>データセットを作成する際は、Weibo上の特定のorganizationの投稿の特徴を利用。<br><br>Weiboにニュースを投稿する際に、投稿の冒頭にニュースのvery short summaryがまず記載され、その後ニュース本文（短め）が記載される特徴があるので、この対をsource-reference対として収集した。<br><br>収集する際には、約１００個のルールに基づくフィルタリングやclearning, 抽出等を行なっている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34411045-95f7baf2-ec17-11e7-94fb-faf2559d6994.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>データセットのpropertyとしては、下記のPartI, II, IIIに分かれている。<br><br><br><br>PartI: 2.4Mのshort text - summary pair<br><br>PartII: PartIからランダムにサンプリングされた10kのpairに対して、5 scaleで要約のrelevanceをratingしたデータ。ただし、各pairにラベルづけをしたevaluatorは1名のみ。<br><br>PartIII: 2kのpairに対して（PartI, PartIIとは独立）、3名のevaluatorが5-scaleでrating。evaluatorのratingが一致した1kのpairを抽出したデータ。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34411199-8db4df90-ec18-11e7-8703-fd8f9512a903.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>RNN-GRUを用いたSummarizerも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34411224-b5543eba-ec18-11e7-8556-a3b42bfcf334.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br></p>
 <p>CopyNetなどはLCSTSを使って評価している。他にも使ってる論文あったはず。</p>
 <p>ACL'17のPointer Generator Networkでした。</p></span><br><br>
 </article>
@@ -12244,7 +12244,7 @@ My Issue
 </div>
 
 
-<p>様々な種類の時計（e.g., 反転、フォントの違い, invalidな時刻の存在, 大きさ, フォーマットなど; p.2参照のこと)の時刻を読み取り（あるいはvalidな時刻か否かを判定し)、読み取った時刻に対してQA（e.g., X時間Y分Z秒進める、戻した時刻は？長針を30/60/90度動かした時刻は？この時刻がニューヨークの時間だとしたらロンドンの時刻は？)を実施するベンチマーク。人間の正解率は89.1%に対してSoTAモデルでも13.3%程度。contaminationに配慮して全てスクラッチから作成され、全体の評価データはprivateなままにしているとのこと。<br><img src="https://github.com/user-attachments/assets/aa2ca43c-97c9-49c3-a93b-d1897858d598" alt="image" loading="lazy" width="400" height="300"></p>
+<p>様々な種類の時計（e.g., 反転、フォントの違い, invalidな時刻の存在, 大きさ, フォーマットなど; p.2参照のこと)の時刻を読み取り（あるいはvalidな時刻か否かを判定し)、読み取った時刻に対してQA（e.g., X時間Y分Z秒進める、戻した時刻は？長針を30/60/90度動かした時刻は？この時刻がニューヨークの時間だとしたらロンドンの時刻は？)を実施するベンチマーク。人間の正解率は89.1%に対してSoTAモデルでも13.3%程度。contaminationに配慮して全てスクラッチから作成され、全体の評価データはprivateなままにしているとのこと。<br><img src="https://github.com/user-attachments/assets/aa2ca43c-97c9-49c3-a93b-d1897858d598" alt="image" loading="lazy" width="550" height="400"></p>
 <p>続報:<br>
 
 
@@ -12508,7 +12508,7 @@ My Issue
 </div>
 
 
-<p>Llama Nemotron VLM Dataset V1<br><br>VQA, OCRの比率が多めで、Imase Captioningは少なめ。<br><img src="https://github.com/user-attachments/assets/973af13e-50a8-4c8e-9260-64140792e444" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>Llama Nemotron VLM Dataset V1<br><br>VQA, OCRの比率が多めで、Imase Captioningは少なめ。<br><img src="https://github.com/user-attachments/assets/973af13e-50a8-4c8e-9260-64140792e444" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="bits-per-2324" class="title-link">Bits per Character （BPC） によるLLM性能予測, Kazuki Fujii （PFN）, 2025.07</h3>
@@ -12995,7 +12995,7 @@ My Issue
 
 
 <p>Orca-AgenInstruct-1M <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1521" target="_blank" rel="noopener noreferrer">microsoft/orca-agentinstruct-1M-v1, Microsoft, 2024.11</a>
- よりもSmolLMのSFTで各種ベンチで高い性能を獲得<br><img src="https://github.com/user-attachments/assets/ed39fa8e-eeac-493f-a220-30313be5b761" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+ よりもSmolLMのSFTで各種ベンチで高い性能を獲得<br><img src="https://github.com/user-attachments/assets/ed39fa8e-eeac-493f-a220-30313be5b761" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="datasets-hpprc_honyaku-1535" class="title-link">Datasets: hpprc_honyaku, hpprc, 2024.11</h3>
@@ -13149,7 +13149,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <span class="issue_date">Issue Date: 2023-11-16</span>
-<span class="snippet"><span>Comment</span><p>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Name biasなどはなるほどと思った。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image" loading="lazy" width="400" height="300"><br><br>日本語LLMの今後の評価に向けて、特にGPT4による評価を避け、きちんとアノテーションしたデータを用意しfinetuningした分類器を用いるという視点、参考にしたい。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f88943b1-856e-4ca7-a256-5581cda333fb" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Name biasなどはなるほどと思った。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image" loading="lazy" width="550" height="400"><br><br>日本語LLMの今後の評価に向けて、特にGPT4による評価を避け、きちんとアノテーションしたデータを用意しfinetuningした分類器を用いるという視点、参考にしたい。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f88943b1-856e-4ca7-a256-5581cda333fb" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="data-to-text-datasetまとめ-1119" class="title-link">Data-to-Text Datasetまとめ, Akihiko Watanabe, 2022</h3>
@@ -13190,7 +13190,7 @@ My Issue
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="SpeechProcessing.html" target="_blank" rel="noopener noreferrer">#SpeechProcessing</a>
 <span class="issue_date">Issue Date: 2023-08-16</span>
-<span class="snippet"><span>Comment</span><p>音声対応のアプリケーションをトレーニングするために誰でも使用できるオープンソースの多言語音声データセット<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d5de7493-4918-4eed-a6de-33a81468f907" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>音声対応のアプリケーションをトレーニングするために誰でも使用できるオープンソースの多言語音声データセット<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d5de7493-4918-4eed-a6de-33a81468f907" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="chatbot-arenaのデータセット-876" class="title-link">ChatBot Arenaのデータセット</h3>
@@ -13269,7 +13269,7 @@ My Issue
 <a class="button" href="DataDistillation.html" target="_blank" rel="noopener noreferrer">#DataDistillation</a>
 <span class="issue_date">Issue Date: 2023-04-26</span>
 <span class="snippet"><span>GPT Summary</span>- 私たちは、大規模言語モデルからの知識を抽出するために、文/オフライン蒸留を行います。具体的には、いくつかの既存のプロンプトリソースに基づいて、合計258万ペアの指示と応答を生成します。詳細は論文を参照してください。</span>
-<span class="snippet"><span>Comment</span><p>既存のInstruction DatasetのInstructionをseedとして、gpt-3.5-turboで新たなInstructionとresponseを生成したデータセット<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23a85991-6af9-4663-a293-c22a6cdba9f0" alt="image" loading="lazy" width="400" height="300"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>既存のInstruction DatasetのInstructionをseedとして、gpt-3.5-turboで新たなInstructionとresponseを生成したデータセット<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23a85991-6af9-4663-a293-c22a6cdba9f0" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="score-prediction-474" class="title-link">Score Prediction dataset</h3>
@@ -13550,35 +13550,35 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Faithfulness/" title="Faithfulnessに関する論文・技術記事メモの一覧">
-            Faithfulnessに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SIGKDD/" title="SIGKDDに関する論文・技術記事メモの一覧">
+            SIGKDDに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ProgressiveLearning/" title="ProgressiveLearningに関する論文・技術記事メモの一覧">
-            ProgressiveLearningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/DataToTextGeneration/" title="DataToTextGenerationに関する論文・技術記事メモの一覧">
+            DataToTextGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 39</span> 
+  <span class="post-badge badge-new">📝 39</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DialogueGeneration/" title="DialogueGenerationに関する論文・技術記事メモの一覧">
-            DialogueGenerationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Transformer/" title="Transformerに関する論文・技術記事メモの一覧">
+            Transformerに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 194</span> 
+  <span class="post-badge badge-new">📝 194</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Frontend/" title="Frontendに関する論文・技術記事メモの一覧">
-            Frontendに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SkillTag/" title="SkillTagに関する論文・技術記事メモの一覧">
+            SkillTagに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>

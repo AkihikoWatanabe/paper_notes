@@ -1381,7 +1381,7 @@ My Issue
 
 
 <p>AllenAIの勢いすごいな...</p>
-<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy" width="400" height="300"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy" width="400" height="300"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy" width="400" height="300"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
+<p>現在のVideo reasoning Modelはlong videoに対するQAに対してもsingle turnで回答応答しようとするが、人間はそのような挙動はせずに、long videoのうち、どこを流し見し、どこを注視するか、ある時は前半にジャンプし、関係ないところは飛ばすなど、情報を選択的に収集する。そのような挙動のエージェントをMolmo2をベースにSFT+RLをベースに実現。<br><img src="https://github.com/user-attachments/assets/74f914c7-10b3-435a-a652-4956529ce0fc" alt="image" loading="lazy" width="550" height="400"><br><br>システムデザインとしては、既存のエージェントはtemporal groundingのみをしばしば利用するがこれはlong videoには不向きなので、non-visualな情報も扱えるようにweb search, speech transcription, event grounding, extract video parts, analyze(クエリを用いてメディアの集合を分析し応答する）なども利用可能に。<br>inferenceは2-stageとなっており、最初はまずSAGE-MMをContext VLMとして扱い、入力された情報を処理し（video contextやツール群、メタデータなど）、single turnで回答するか、ツール呼び出しをするかを判断する。ツール呼び出しがされた場合は、その後SAGE-MMはIterative Reasonerとして機能し、前段のtool callの結果とvideo contextから回答をするか、新たなツールを呼び出すかを判断する、といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/d58a904b-f1fc-41fa-8206-0d872e2efe33" alt="image" loading="lazy" width="550" height="400"><br><br>long videoのデータは6.6kのyoutube videoと99kのQAペア(Gemini-2.5-Flashで合成）、400k+のstate-action example（Gemini-2.5-Flashによりtool callのtrajectoryを合成しcold start SFTに使う）を利用。<br><img src="https://github.com/user-attachments/assets/c3d76434-2462-4fed-9646-df30bd3a36fe" alt="image" loading="lazy" width="550" height="400"><br><br>RLのoptimizationでは、openendなvideo QAではverifiableなrewardは難しく、任意の長さのvideoに対するany-horizonな挙動を学習させるのは困難なので、multi rewardなRLレシピ+strong reasoning LLMによるLLM as a Judgeで対処。rewardはformat, 適切なツール利用、ツール呼び出しの引数の適切さ、最終的な回答のAccuracyを利用。<br><br>評価データとしては人手でverificationされた1744のQAを利用し、紐づいている動画データの長さは平均700秒以上。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="evaluating-large-4010" class="title-link">[Paper Note] Evaluating Large Language Models in Scientific Discovery, Zhangde Song+, arXiv'25, 2025.12</h3>
@@ -1481,7 +1481,7 @@ My Issue
 </div>
 
 
-<p>モデル自身が何を、いつ、どこからretrievalし、いつやめるかをするかを動的にreasoningできるようRLで学習することで、コストの高いretrievalを削減し、マルチターンRAGの性能を保ちつつ効率をあげる手法（最大で検索のターン数が20パーセント削減）とのこと。<br><br>学習は2ステージで、最初のステージでanswerに正しく辿り着けるよう学習することでreasoning能力を向上させ、次のステージで不要な検索が削減されるような効率に関するrewardを組み込み、accuracyとcostのバランスをとる。モデルはツールとして検索を利用できるが、ツールはpassage, graph, hybridの3つの検索方法を選択できる。<br><br><img src="https://github.com/user-attachments/assets/1cb7e1f6-30ed-4f00-875d-a4c7b187fb87" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>モデル自身が何を、いつ、どこからretrievalし、いつやめるかをするかを動的にreasoningできるようRLで学習することで、コストの高いretrievalを削減し、マルチターンRAGの性能を保ちつつ効率をあげる手法（最大で検索のターン数が20パーセント削減）とのこと。<br><br>学習は2ステージで、最初のステージでanswerに正しく辿り着けるよう学習することでreasoning能力を向上させ、次のステージで不要な検索が削減されるような効率に関するrewardを組み込み、accuracyとcostのバランスをとる。モデルはツールとして検索を利用できるが、ツールはpassage, graph, hybridの3つの検索方法を選択できる。<br><br><img src="https://github.com/user-attachments/assets/1cb7e1f6-30ed-4f00-875d-a4c7b187fb87" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="budget-aware-tool-use-3945" class="title-link">[Paper Note] Budget-Aware Tool-Use Enables Effective Agent Scaling, Tengxiao Liu+, arXiv'25, 2025.11</h3>
@@ -2475,9 +2475,9 @@ My Issue
 </div>
 
 
-<p>VLM(Qwen2.5-VL-7B)をバックボーンとしSFT（tooluseに関するcoldstart)→RL(RLVR+format reward)で学習することで、VLMによるAI Agentを構築。画像をcropしcropした画像に対するマルチモーダルな検索や、適切なtooluseの選択などに基づいて応答できる。<br><br><img src="https://github.com/user-attachments/assets/528d8953-cc9d-4e8b-a6ba-e9dd91f77c75" alt="image" loading="lazy" width="400" height="300"></p>
+<p>VLM(Qwen2.5-VL-7B)をバックボーンとしSFT（tooluseに関するcoldstart)→RL(RLVR+format reward)で学習することで、VLMによるAI Agentを構築。画像をcropしcropした画像に対するマルチモーダルな検索や、適切なtooluseの選択などに基づいて応答できる。<br><br><img src="https://github.com/user-attachments/assets/528d8953-cc9d-4e8b-a6ba-e9dd91f77c75" alt="image" loading="lazy" width="550" height="400"></p>
 <p>事前の実験によってまずQwen2.5-VL-7Bに対してRLのみでtooluse能力（コーディング能力）を身につけられるかを試したところ、Reward Hackingによって適切なtooluse能力が獲得されなかった（3.2節; 実行可能ではないコードが生成されたり、ダミーコードだったりなど）。<br>このためこのcoldstartを解消するためにSFTのための学習データを収集（3.3節）。これには、<br>- 多様なタスクと画像が含まれており<br>- verifiableで構造化されたOpen-endなQAに変換でき<br>- ベースモデルにとって簡単すぎず（8回のattemptで最大3回以上正解したものは除外）<br>- ツールの利用が正解に寄与するかどうかに基づきサンプルを分類する。tooluseをしても解答できないケースをSFTに、追加のtooluseで解答できるサンプルをRL用に割り当て<br><br>ようなデータを収集。さらに、trajectoryはGemini2.5, GPT4o, Claude Sonnet4などのstrong modelから収集した。</p>
-<p>RealX-Benchと呼ばれるベンチマークも作成しているようだがまだ読めていない。<br><br>proprietary modelの比較対象が少し古め。ベースモデルと比較してSFT-RLによって性能は向上。Human Performanceも掲載されているのは印象的である。<br><br>ただ、汎用モデルでこの性能が出るのであれば、DeepSearchに特化したモデルや？GPT5, Claude-4.5-Sonnetなどではこのベンチマーク上ではHuman Performanceと同等かそれ以上の性能が出るのではないか？という気がする。<br><img src="https://github.com/user-attachments/assets/6c46d6d4-083e-48cd-9edb-dc3db8338eae" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>RealX-Benchと呼ばれるベンチマークも作成しているようだがまだ読めていない。<br><br>proprietary modelの比較対象が少し古め。ベースモデルと比較してSFT-RLによって性能は向上。Human Performanceも掲載されているのは印象的である。<br><br>ただ、汎用モデルでこの性能が出るのであれば、DeepSearchに特化したモデルや？GPT5, Claude-4.5-Sonnetなどではこのベンチマーク上ではHuman Performanceと同等かそれ以上の性能が出るのではないか？という気がする。<br><img src="https://github.com/user-attachments/assets/6c46d6d4-083e-48cd-9edb-dc3db8338eae" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="the-openhands-3618" class="title-link">[Paper Note] The OpenHands Software Agent SDK: A Composable and Extensible Foundation  for Production Agents, Xingyao Wang+, arXiv'25, 2025.11</h3>
@@ -3080,7 +3080,7 @@ My Issue
 </div>
 
 
-<p>finetueing APIを通じて悪意のあるデータセットが与えられたとき悪意のあるモデルができあがってしまう。これを検知するために、エージェントを用いてfinetuning用のデータセットと、finetuning前後のモデルへqueryし、finetuning後のモデルがpoisonedか否かを検出する、という話な模様。<br><br><img src="https://github.com/user-attachments/assets/a1971939-6932-4d8c-bdf6-b03442fd3002" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>finetueing APIを通じて悪意のあるデータセットが与えられたとき悪意のあるモデルができあがってしまう。これを検知するために、エージェントを用いてfinetuning用のデータセットと、finetuning前後のモデルへqueryし、finetuning後のモデルがpoisonedか否かを検出する、という話な模様。<br><br><img src="https://github.com/user-attachments/assets/a1971939-6932-4d8c-bdf6-b03442fd3002" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="holistic-agent-3356" class="title-link">[Paper Note] Holistic Agent Leaderboard: The Missing Infrastructure for AI Agent  Evaluation, Sayash Kapoor+, arXiv'25, 2025.10</h3>
@@ -3122,7 +3122,7 @@ My Issue
 
 
 <p>よ、40,000ドル！？💸</p>
-<p>LLM Agentに関するフロンティアモデル群を複数のベンチマークで同じ条件でapple to appleな比較となるように評価している。<br><img src="https://github.com/user-attachments/assets/142b550e-f708-441c-acca-583af413d26f" alt="image" loading="lazy" width="400" height="300"><br><br>以下元ポストより:<br><br>この評価ハーネスは、10行未満のコードスニペットで評価を実行可能（元ポスト）<br><br>知見としては<br>- reasoning effortを上げても多くの場合性能向上には寄与せず(21/36のケースで性能向上せず)<br>- エージェントはタスクを解決するために近道をする（ベンチマークを直接参照しに行くなど）<br>- エージェントは非常にコストの高い手段を取ることもあり（フライト予約において誤った空港から予約したり、ユーザに過剰な返金をしたり、誤ったクレジットカードに請求したりなど）<br>- コストとacc.のトレードオフを分析した結果、最も高価なOpus4.1は一度しかパレートフロンティアにならず、Gemini Flash (7/9)、GPT-5, o4-mini(4/9)が多くのベンチマークでコストとAcc.のトレードオフの上でパレートフロンティアとなった。<br>- トークンのコストとAcc.のトレードオフにおいては、Opus4.1が3つのベンチマークでパレードフロンティアとなった。<br>- すべてのエージェントの行動を記録し分析した結果、SelfCorrection, intermediate verifiers (コーディング問題におけるユニットテストなど）のbehaviorがacc.を改善する上で高い相関を示した<br>- 一方タスクに失敗する場合は、多くの要因が存在することがわかり、たとえば環境内の障害（CAPTCHAなど）、指示に従うことの失敗（指定されたフォーマットでコードを出力しない）などが頻繁に見受けられた。また、タスクを解けたか否かに関わらずツール呼び出しの失敗に頻繁に遭遇していた。これはエージェントはこうしたエラーから回復できることを示している。<br>- エージェントのログを分析することで、TauBenchで使用していたscaffold(=モデルが環境もやりとりするための構成要素）にバグがあることを突き止めた（few-shotのサンプルにリークがあった）。このscaffoldはHALによるTauBenchの分析から除外した。<br>- Docsentのようなログ分析が今後エージェントを評価する上では必要不可欠であり、信頼性の問題やショートカット行動、高コストなエージェントの失敗などが明らかになる。ベンチマーク上での性能と比較して実環境では性能が低い、あるいはその逆でベンチマークが性能を低く見積もっている（たとえばCAPTChAのようや環境的な障害はベンチマーク上では同時リクエストのせいで生じても実環境では生じないなど）ケースもあるので、これらはベンチマークのacc.からだけでは明らかにならないため、ベンチマークのacc.は慎重に解釈すべき。</p></span><br><br>
+<p>LLM Agentに関するフロンティアモデル群を複数のベンチマークで同じ条件でapple to appleな比較となるように評価している。<br><img src="https://github.com/user-attachments/assets/142b550e-f708-441c-acca-583af413d26f" alt="image" loading="lazy" width="550" height="400"><br><br>以下元ポストより:<br><br>この評価ハーネスは、10行未満のコードスニペットで評価を実行可能（元ポスト）<br><br>知見としては<br>- reasoning effortを上げても多くの場合性能向上には寄与せず(21/36のケースで性能向上せず)<br>- エージェントはタスクを解決するために近道をする（ベンチマークを直接参照しに行くなど）<br>- エージェントは非常にコストの高い手段を取ることもあり（フライト予約において誤った空港から予約したり、ユーザに過剰な返金をしたり、誤ったクレジットカードに請求したりなど）<br>- コストとacc.のトレードオフを分析した結果、最も高価なOpus4.1は一度しかパレートフロンティアにならず、Gemini Flash (7/9)、GPT-5, o4-mini(4/9)が多くのベンチマークでコストとAcc.のトレードオフの上でパレートフロンティアとなった。<br>- トークンのコストとAcc.のトレードオフにおいては、Opus4.1が3つのベンチマークでパレードフロンティアとなった。<br>- すべてのエージェントの行動を記録し分析した結果、SelfCorrection, intermediate verifiers (コーディング問題におけるユニットテストなど）のbehaviorがacc.を改善する上で高い相関を示した<br>- 一方タスクに失敗する場合は、多くの要因が存在することがわかり、たとえば環境内の障害（CAPTCHAなど）、指示に従うことの失敗（指定されたフォーマットでコードを出力しない）などが頻繁に見受けられた。また、タスクを解けたか否かに関わらずツール呼び出しの失敗に頻繁に遭遇していた。これはエージェントはこうしたエラーから回復できることを示している。<br>- エージェントのログを分析することで、TauBenchで使用していたscaffold(=モデルが環境もやりとりするための構成要素）にバグがあることを突き止めた（few-shotのサンプルにリークがあった）。このscaffoldはHALによるTauBenchの分析から除外した。<br>- Docsentのようなログ分析が今後エージェントを評価する上では必要不可欠であり、信頼性の問題やショートカット行動、高コストなエージェントの失敗などが明らかになる。ベンチマーク上での性能と比較して実環境では性能が低い、あるいはその逆でベンチマークが性能を低く見積もっている（たとえばCAPTChAのようや環境的な障害はベンチマーク上では同時リクエストのせいで生じても実環境では生じないなど）ケースもあるので、これらはベンチマークのacc.からだけでは明らかにならないため、ベンチマークのacc.は慎重に解釈すべき。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="emergent-coordination-3355" class="title-link">[Paper Note] Emergent Coordination in Multi-Agent Language Models, Christoph Riedl, arXiv'25, 2025.10</h3>
@@ -3430,7 +3430,7 @@ My Issue
 
 
 </p>
-<p>LLMで自動的に高品質な競技プログラミング問題とそのテストケースを生成するパイプラインを提案。<br><br>信頼性のあるテストケースを作成するために、Validator-Generator-Checkerフレームワーク。提案。Generatorがテストケースを生成し、Validatorが生成されたテストケースの入力が問題の制約を満たしているか判定し、Checkerが与えられたテストケースの元で解法が正しいかを確認する。<br><br>続いて、人手を介さずとも生成される問題が正しいことを担保するためにdual-verificationを採用。具体的には、LLMに新規の問題文と効率的な解法を生成させ、加えてブルートフォースでの解法を別途生成する。そして、両者をLLMが生成したテストセット群で実行し、全ての解放で出力が一致した場合のみAcceptする、といったような手法らしい。<br><br>（手法の概要としてはそうなのだろうが、細かい実装に高品質さの肝があると思うのでしっかり読んだ方が良さげ。特にTest Generationの詳細をしっかりできていない）<br><br><img src="https://github.com/user-attachments/assets/e6779e5d-9e0a-4da8-9634-d6054704bfa7" alt="image" loading="lazy" width="400" height="300"></p>
+<p>LLMで自動的に高品質な競技プログラミング問題とそのテストケースを生成するパイプラインを提案。<br><br>信頼性のあるテストケースを作成するために、Validator-Generator-Checkerフレームワーク。提案。Generatorがテストケースを生成し、Validatorが生成されたテストケースの入力が問題の制約を満たしているか判定し、Checkerが与えられたテストケースの元で解法が正しいかを確認する。<br><br>続いて、人手を介さずとも生成される問題が正しいことを担保するためにdual-verificationを採用。具体的には、LLMに新規の問題文と効率的な解法を生成させ、加えてブルートフォースでの解法を別途生成する。そして、両者をLLMが生成したテストセット群で実行し、全ての解放で出力が一致した場合のみAcceptする、といったような手法らしい。<br><br>（手法の概要としてはそうなのだろうが、細かい実装に高品質さの肝があると思うのでしっかり読んだ方が良さげ。特にTest Generationの詳細をしっかりできていない）<br><br><img src="https://github.com/user-attachments/assets/e6779e5d-9e0a-4da8-9634-d6054704bfa7" alt="image" loading="lazy" width="550" height="400"></p>
 <p>takeawayで興味深かったのは、<br><br>- LLMは自身では解けないが、解法が存在する（solvable)問題を生成できること<br>- 人間の専門家とLLM（o3)の間で、問題の品質の新規性の判定の相関がわずか0.007, 0.11しかなかったこと。そして品質に関しては専門家のグループ間では0.71, o3とgpt4oの間では0.72と高い相関を示しており、LLMと人間の専門家の間で著しく問題の品質の判断基準が異なること<br>- seed問題と生成された問題の難易度のgainが、問題の品質に関して、LLM自身のself-evaluationよりもより良い指標となっていること</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -4404,7 +4404,7 @@ My Issue
 <p>GAIAはこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1158" target="_blank" rel="noopener noreferrer">GAIA: a benchmark for General AI Assistants, Grégoire Mialon+, N/A, arXiv'23</a>
 </p>
 <p>Execution, Search, Ambiguity, Adaptability, Time, Noise, Agent2Agentの6つのcapabilityを評価可能。興味深い。</p>
-<p>現状、全体的にはGPT-5(high)の性能が最も良く、続いてClaude-4 Sonnetという感じに見える。OpenWeightなモデルでは、Kimi-K2の性能が高く、続いてQwen3-235Bという感じに見える。また、Figure1はbudgetごとのモデルの性能も示されている。シナリオ単位のbudgetが$1以上の場合はGPT-5(high)の性能が最も良いが、$0.1--$0.4の間ではKiml-K2の性能が最も良いように見える。<br><img src="https://github.com/user-attachments/assets/039a6e69-4941-4a80-99b3-0590d1446030" alt="image" loading="lazy" width="400" height="300"></p>
+<p>現状、全体的にはGPT-5(high)の性能が最も良く、続いてClaude-4 Sonnetという感じに見える。OpenWeightなモデルでは、Kimi-K2の性能が高く、続いてQwen3-235Bという感じに見える。また、Figure1はbudgetごとのモデルの性能も示されている。シナリオ単位のbudgetが$1以上の場合はGPT-5(high)の性能が最も良いが、$0.1--$0.4の間ではKiml-K2の性能が最も良いように見える。<br><img src="https://github.com/user-attachments/assets/039a6e69-4941-4a80-99b3-0590d1446030" alt="image" loading="lazy" width="550" height="400"></p>
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2406" target="_blank" rel="noopener noreferrer">[Paper Note] GLM-4.5: Agentic, Reasoning, and Coding (ARC) Foundation Models, GLM-4. 5 Team+, arXiv'25</a>
 <br><br>しっかりと読めていないがGLM-4.5は含まれていないように見える。</p>
 <p>ポイント解説:
@@ -4909,7 +4909,7 @@ My Issue
 </div>
 
 
-<p>single stepでのタスク性能はサチって見えても、成功可能なタスクの長さは（single stepの実行エラーに引きづられるため）モデルのsingle stepのタスク性能に対して指数関数的に効いている（左上）。タスクが長くなればなるほどモデルは自身のエラーに引きずられ（self conditioning;右上)、これはパラメータサイズが大きいほど度合いが大きくなる（右下;  32Bの場合contextにエラーがあって場合のloeg horizonのAcc.が14Bよりも下がっている）。一方で、実行可能なstep数の観点で見ると、モデルサイズが大きい場合の方が多くのstepを要するタスクを実行できる（左下）。また、ThinkingモデルはSelf Conditioningの影響を受けにくく、single stepで実行可能なタスクの長さがより長くなる（中央下）。<br><br>といった話に見えるが、論文をしっかり読んだ方が良さそう。<br><br><img src="https://github.com/user-attachments/assets/a97fe1f4-5693-4ed3-9fa0-774f4c3738ab" alt="image" loading="lazy" width="400" height="300"></p>
+<p>single stepでのタスク性能はサチって見えても、成功可能なタスクの長さは（single stepの実行エラーに引きづられるため）モデルのsingle stepのタスク性能に対して指数関数的に効いている（左上）。タスクが長くなればなるほどモデルは自身のエラーに引きずられ（self conditioning;右上)、これはパラメータサイズが大きいほど度合いが大きくなる（右下;  32Bの場合contextにエラーがあって場合のloeg horizonのAcc.が14Bよりも下がっている）。一方で、実行可能なstep数の観点で見ると、モデルサイズが大きい場合の方が多くのstepを要するタスクを実行できる（左下）。また、ThinkingモデルはSelf Conditioningの影響を受けにくく、single stepで実行可能なタスクの長さがより長くなる（中央下）。<br><br>といった話に見えるが、論文をしっかり読んだ方が良さそう。<br><br><img src="https://github.com/user-attachments/assets/a97fe1f4-5693-4ed3-9fa0-774f4c3738ab" alt="image" loading="lazy" width="550" height="400"></p>
 <p>（元ポストも著者ポストだが）著者ポスト:
 
 
@@ -5619,7 +5619,7 @@ My Issue
 <a class="button" href="VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2025-08-24</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、実世界のツール使用能力を向上させるために、23Kのインスタンスからなる大規模マルチモーダルデータセット「ToolVQA」を提案。ToolVQAは、実際の視覚的コンテキストと多段階推論タスクを特徴とし、ToolEngineを用いて人間のようなツール使用推論をシミュレート。7B LFMを微調整した結果、テストセットで優れたパフォーマンスを示し、GPT-3.5-turboを上回る一般化能力を持つことが確認された。</span>
-<span class="snippet"><span>Comment</span><p>人間による小規模なサンプル（イメージシナリオ、ツールセット、クエリ、回答、tool use trajectory)を用いてFoundation Modelに事前知識として与えることで、よりrealisticなscenarioが合成されるようにした上で新たなVQAを4k程度合成。その後10人のアノテータによって高品質なサンプルにのみFilteringすることで作成された、従来よりも実世界の設定に近く、reasoningの複雑さが高いVQAデータセットな模様。<br><br><img src="https://github.com/user-attachments/assets/8759244c-89f9-47d7-9c72-81744ef68db1" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/4bc22c9d-79f3-4c16-b5a4-3c054895b416" alt="image" loading="lazy" width="400" height="300"><br><br>具体的には、image contextxが与えられた時に、ChatGPT-4oをコントローラーとして、前回のツールとアクションの選択をgivenにし、人間が作成したプールに含まれるサンプルの中からLongest Common Subsequence (LCS) による一致度合いに基づいて人手によるサンプルを選択し、動的にcontextに含めることで多様なで実世界により近しいmulti step tooluseなtrajectoryを合成する、といった手法に見える。pp.4--5に数式や図による直感的な説明がある。なお、LCSを具体的にどのような文字列に対して、どのような前処理をした上で適用しているのかまでは追えていない。<br><img src="https://github.com/user-attachments/assets/9915c3d5-e984-4611-94d4-999ad08dc49d" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>人間による小規模なサンプル（イメージシナリオ、ツールセット、クエリ、回答、tool use trajectory)を用いてFoundation Modelに事前知識として与えることで、よりrealisticなscenarioが合成されるようにした上で新たなVQAを4k程度合成。その後10人のアノテータによって高品質なサンプルにのみFilteringすることで作成された、従来よりも実世界の設定に近く、reasoningの複雑さが高いVQAデータセットな模様。<br><br><img src="https://github.com/user-attachments/assets/8759244c-89f9-47d7-9c72-81744ef68db1" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/4bc22c9d-79f3-4c16-b5a4-3c054895b416" alt="image" loading="lazy" width="550" height="400"><br><br>具体的には、image contextxが与えられた時に、ChatGPT-4oをコントローラーとして、前回のツールとアクションの選択をgivenにし、人間が作成したプールに含まれるサンプルの中からLongest Common Subsequence (LCS) による一致度合いに基づいて人手によるサンプルを選択し、動的にcontextに含めることで多様なで実世界により近しいmulti step tooluseなtrajectoryを合成する、といった手法に見える。pp.4--5に数式や図による直感的な説明がある。なお、LCSを具体的にどのような文字列に対して、どのような前処理をした上で適用しているのかまでは追えていない。<br><img src="https://github.com/user-attachments/assets/9915c3d5-e984-4611-94d4-999ad08dc49d" alt="image" loading="lazy" width="550" height="400"></p>
 <p>元ポスト:
 
 
@@ -5781,7 +5781,7 @@ My Issue
 </div>
 
 
-<p>マルチエージェントのように振る舞うシングルエージェントを、マルチエージェントから得られたtrajectoryを通じて蒸留することめ実現する手法を提案。SFTでcold startに対して訓練した後、verifiable reward (タスクを正常に完了できたか否か)でRLする模様。<br><br><img src="https://github.com/user-attachments/assets/b4cafaba-488e-4d8b-a6d3-faf98733d134" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/80a934e9-db47-401b-809e-394ab5e20585" alt="image" loading="lazy" width="400" height="300"></p>
+<p>マルチエージェントのように振る舞うシングルエージェントを、マルチエージェントから得られたtrajectoryを通じて蒸留することめ実現する手法を提案。SFTでcold startに対して訓練した後、verifiable reward (タスクを正常に完了できたか否か)でRLする模様。<br><br><img src="https://github.com/user-attachments/assets/b4cafaba-488e-4d8b-a6d3-faf98733d134" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/80a934e9-db47-401b-809e-394ab5e20585" alt="image" loading="lazy" width="550" height="400"></p>
 <p>データセットも公開されている模様</p>
 <p>所見:
 
@@ -6144,7 +6144,7 @@ My Issue
 </div>
 
 
-<p>MCP環境におけるLLM Agentのベンチマーク。論文中のTable1に他のベンチマークを含めサマリが掲載されている。MCPを用いたLLMAgentのベンチがすでにこんなにあることに驚いた…。<br><img src="https://github.com/user-attachments/assets/29472068-380b-421c-b82d-fd14831b07ff" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>MCP環境におけるLLM Agentのベンチマーク。論文中のTable1に他のベンチマークを含めサマリが掲載されている。MCPを用いたLLMAgentのベンチがすでにこんなにあることに驚いた…。<br><img src="https://github.com/user-attachments/assets/29472068-380b-421c-b82d-fd14831b07ff" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="memp-exploring-2403" class="title-link">[Paper Note] Memp: Exploring Agent Procedural Memory, Runnan Fang+, arXiv'25</h3>
@@ -6176,7 +6176,7 @@ My Issue
 </div>
 
 
-<p>アドホックに探索と実行を繰り返すのではなく、過去の試行のtrajectoryをメモリに記憶しておき、活用するような枠組みな模様。trajectoryは新たなタスクが来た際にretrieverでrelevantなtrajectoryを検索して利用され、良質なtrajectoryがキープされれば成功率や効率が向上すると考えられる。trajectoryはprocedure memoryとして保存され、成功率が低いtrajectoryは破棄されることで更新される。<br><img src="https://github.com/user-attachments/assets/20e2f063-eef6-4c3d-9161-3d96f56c6f8d" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/a3766541-4946-4e43-91e4-99a873fb1d6f" alt="image" loading="lazy" width="400" height="300"><br><br>メモリはT個のタスクに対するs_t, a_t, o_t, i.e., state, action, observation,の系列τと、reward rが与えられた時に、Builderを通して構築されてストアされる。agentは新たなタスクt_newに直面した時に、t_newと類似したメモリをretrieyeする。これはτの中のある時刻tのタスクに対応する。メモリは肥大化していくため、実験では複数のアルゴリズムに基づくメモリの更新方法について実験している。<br><img src="https://github.com/user-attachments/assets/b91dbfed-c976-4764-abf6-00f4751b7e91" alt="image" loading="lazy" width="400" height="300"><br><br>procedural memoryの有無による挙動の違いに関するサンプル。<br><img src="https://github.com/user-attachments/assets/2623103d-331d-45eb-a5cc-635ef3cb88ab" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/b1c21bf3-eef1-4b4c-999c-f8d0fcbc9431" alt="image" loading="lazy" width="400" height="300"></p>
+<p>アドホックに探索と実行を繰り返すのではなく、過去の試行のtrajectoryをメモリに記憶しておき、活用するような枠組みな模様。trajectoryは新たなタスクが来た際にretrieverでrelevantなtrajectoryを検索して利用され、良質なtrajectoryがキープされれば成功率や効率が向上すると考えられる。trajectoryはprocedure memoryとして保存され、成功率が低いtrajectoryは破棄されることで更新される。<br><img src="https://github.com/user-attachments/assets/20e2f063-eef6-4c3d-9161-3d96f56c6f8d" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/a3766541-4946-4e43-91e4-99a873fb1d6f" alt="image" loading="lazy" width="550" height="400"><br><br>メモリはT個のタスクに対するs_t, a_t, o_t, i.e., state, action, observation,の系列τと、reward rが与えられた時に、Builderを通して構築されてストアされる。agentは新たなタスクt_newに直面した時に、t_newと類似したメモリをretrieyeする。これはτの中のある時刻tのタスクに対応する。メモリは肥大化していくため、実験では複数のアルゴリズムに基づくメモリの更新方法について実験している。<br><img src="https://github.com/user-attachments/assets/b91dbfed-c976-4764-abf6-00f4751b7e91" alt="image" loading="lazy" width="550" height="400"><br><br>procedural memoryの有無による挙動の違いに関するサンプル。<br><img src="https://github.com/user-attachments/assets/2623103d-331d-45eb-a5cc-635ef3cb88ab" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/b1c21bf3-eef1-4b4c-999c-f8d0fcbc9431" alt="image" loading="lazy" width="550" height="400"></p>
 <p>memoryに対してretrieverを適用することになるので、retrieverの性能がボトルネックになると思われる。追加の学習をしなくて済むのは利点だが、その代わりモデル側がメモリ管理をする機能を有さない（学習すればそういった機能を持たせられるはず）ので、その点は欠点となる、という印象。</p>
 <p>ポイント解説:<br>
 
@@ -6227,7 +6227,7 @@ My Issue
 
 
 </p>
-<p>ドキュメントをソフトウェアの仕様書とみなし、ドキュメントの更新部分をらinputとし、対応する"機能追加"をする能力を測るベンチマーク<br><br><img src="https://github.com/user-attachments/assets/249973b0-4c81-468d-91cd-13a3b93e31e7" alt="image" loading="lazy" width="400" height="300"><br><br>SoTAモデルでも15.79%程度しか成功しない。<br><img src="https://github.com/user-attachments/assets/f8bab8c8-e5da-46c5-981a-1398021e030d" alt="image" loading="lazy" width="400" height="300"><br><br>元ポストによると、ファイルを跨いだ編集、コードベースの理解、tool useに苦労しているとのこと。</p></span><br><br>
+<p>ドキュメントをソフトウェアの仕様書とみなし、ドキュメントの更新部分をらinputとし、対応する"機能追加"をする能力を測るベンチマーク<br><br><img src="https://github.com/user-attachments/assets/249973b0-4c81-468d-91cd-13a3b93e31e7" alt="image" loading="lazy" width="550" height="400"><br><br>SoTAモデルでも15.79%程度しか成功しない。<br><img src="https://github.com/user-attachments/assets/f8bab8c8-e5da-46c5-981a-1398021e030d" alt="image" loading="lazy" width="550" height="400"><br><br>元ポストによると、ファイルを跨いだ編集、コードベースの理解、tool useに苦労しているとのこと。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="agent-lightning-2391" class="title-link">[Paper Note] Agent Lightning: Train ANY AI Agents with Reinforcement Learning, Xufang Luo+, arXiv'25</h3>
@@ -6291,7 +6291,7 @@ My Issue
 </div>
 
 
-<p>Figure3がとても勉強になる。Self-Evolveと呼んだ時に、それがどのようにEvolveするものなのかはきちんとチェックした方が良さそう。追加の学習をするのか否かなど。これによって使いやすさが段違いになりそうなので。<br><img src="https://github.com/user-attachments/assets/bfa7e8b3-2a5b-4b26-b474-deaee443ee25" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/bcaaadda-ef9b-49dc-a357-3cb6fdf01ca4" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>Figure3がとても勉強になる。Self-Evolveと呼んだ時に、それがどのようにEvolveするものなのかはきちんとチェックした方が良さそう。追加の学習をするのか否かなど。これによって使いやすさが段違いになりそうなので。<br><img src="https://github.com/user-attachments/assets/bfa7e8b3-2a5b-4b26-b474-deaee443ee25" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/bcaaadda-ef9b-49dc-a357-3cb6fdf01ca4" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="eduthink4ai-translating-2314" class="title-link">[Paper Note] EduThink4AI: Translating Educational Critical Thinking into Multi-Agent  LLM Systems, Xinmeng Hou+, arXiv'25</h3>
@@ -6322,7 +6322,7 @@ My Issue
 </div>
 
 
-<p>Critiqueを活用したマルチエージェントのようである（具体的なCritiqueの生成方法については読めていない。その辺が重要そう<br><br><img src="https://github.com/user-attachments/assets/a2e73806-a87f-4eab-a83f-b8767d4cd316" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/92256b2a-b655-4b6f-a288-67ff4893c77b" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>Critiqueを活用したマルチエージェントのようである（具体的なCritiqueの生成方法については読めていない。その辺が重要そう<br><br><img src="https://github.com/user-attachments/assets/a2e73806-a87f-4eab-a83f-b8767d4cd316" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/92256b2a-b655-4b6f-a288-67ff4893c77b" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="deep-researcher-2292" class="title-link">[Paper Note] Deep Researcher with Test-Time Diffusion, Rujun Han+, arXiv'25</h3>
@@ -6354,7 +6354,7 @@ My Issue
 </div>
 
 
-<p>Self-Evolutionというのは、モデルのパラメータを更新するというものではなく、Agentに渡すContextをLLM-as-a-Judgeのスコアが改善するように、フィードバックとして得られるcritiqueなどを通じて反復的にoutput（＝別のAgentにcontextとして渡される情報）を洗練させていくような方法のことを指している模様。このようなプロセスを複数のパスで実施し、最終的にマージすることで高品質なoutput(context)を得る。<br><img src="https://github.com/user-attachments/assets/27b0fb23-eeec-4c84-9845-02eb67131738" alt="image" loading="lazy" width="400" height="300"></p>
+<p>Self-Evolutionというのは、モデルのパラメータを更新するというものではなく、Agentに渡すContextをLLM-as-a-Judgeのスコアが改善するように、フィードバックとして得られるcritiqueなどを通じて反復的にoutput（＝別のAgentにcontextとして渡される情報）を洗練させていくような方法のことを指している模様。このようなプロセスを複数のパスで実施し、最終的にマージすることで高品質なoutput(context)を得る。<br><img src="https://github.com/user-attachments/assets/27b0fb23-eeec-4c84-9845-02eb67131738" alt="image" loading="lazy" width="550" height="400"></p>
 <p>日本語解説:
 
 
@@ -6382,7 +6382,7 @@ My Issue
 <a class="button" href="ContextEngineering.html" target="_blank" rel="noopener noreferrer">#ContextEngineering</a>
 <span class="issue_date">Issue Date: 2025-07-19</span>
 <span class="snippet"><span>GPT Summary</span>- 本調査では、LLMsの性能を向上させる「コンテキストエンジニアリング」を提案し、その要素と実装方法を体系的に分類。コンテキストの取得、生成、処理、管理を検討し、洗練されたシステム実装を探る。1300以上の研究を分析し、モデルの能力の非対称性を明らかにし、複雑な文脈理解と長文出力生成のギャップに対処する重要性を強調。研究者とエンジニアのための統一フレームワークを提供。</span>
-<span class="snippet"><span>Comment</span><p>もうContext Engineeringという切り口の体系化されたSurveyが出てきた。早すぎ。<br><img src="https://github.com/user-attachments/assets/9577c3f8-8fd5-49e0-b80f-19c0d4f22064" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>もうContext Engineeringという切り口の体系化されたSurveyが出てきた。早すぎ。<br><img src="https://github.com/user-attachments/assets/9577c3f8-8fd5-49e0-b80f-19c0d4f22064" alt="image" loading="lazy" width="550" height="400"></p>
 <p>元ポスト:
 
 
@@ -6459,7 +6459,7 @@ My Issue
 
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1457" target="_blank" rel="noopener noreferrer">MLE-Bench, OpenAI, 2024.10</a>
 </p>
-<p>グラフ中の各ノードはartifacts（i.e., エージェントが生成したコード)で、先行研究がiterativeな実験に加え、潜在的なsolutionに対してtree searchをすることでSoTAを達成しており、これをグラフを用いてより一般化することで異なるデザインのエージェントでも適用できるようにしている。<br><img src="https://github.com/user-attachments/assets/a1f417c1-f5a0-4e51-a17e-6e5a3fcce75d" alt="image" loading="lazy" width="400" height="300"><br><br>あとで追記する</p></span><br><br>
+<p>グラフ中の各ノードはartifacts（i.e., エージェントが生成したコード)で、先行研究がiterativeな実験に加え、潜在的なsolutionに対してtree searchをすることでSoTAを達成しており、これをグラフを用いてより一般化することで異なるデザインのエージェントでも適用できるようにしている。<br><img src="https://github.com/user-attachments/assets/a1f417c1-f5a0-4e51-a17e-6e5a3fcce75d" alt="image" loading="lazy" width="550" height="400"><br><br>あとで追記する</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="future-of-2123" class="title-link">[Paper Note] Future of Work with AI Agents: Auditing Automation and Augmentation  Potential across the U.S. Workforce, Yijia Shao+, arXiv'25</h3>
@@ -6641,7 +6641,7 @@ My Issue
 </div>
 
 
-<p>現在のCoding LLMはUnitTestを通るように学習されるが、UnitTestに通るからといってコードの品質が良いわけでは無いので、UnitTestに通るか否かのReward（Functionality)に加えて、RL中に生成されたコードを制御フローグラフ[^1]に変換し汚染解析[^2]をした結果をRewardに組み込むことで、FunctionalityとQualityを両立したよ、という話のようである。<br><br>Figure1のグラフの縦軸は、Functionalityと（UnitTestが通ったか否か）と、Quailty(セキュリティや保守性に関する問題が検出されなかった)、という両方の条件を満たした割合である点に注意。<br><br><img src="https://github.com/user-attachments/assets/b843e416-8c96-40ca-ac1f-0318eb1ae40c" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/6beeea63-571b-4ce6-bef8-ac8e0cfffee2" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]:プログラムを実行したときに通る可能性のある経路のすべてをグラフとして表したもの[引用元](
+<p>現在のCoding LLMはUnitTestを通るように学習されるが、UnitTestに通るからといってコードの品質が良いわけでは無いので、UnitTestに通るか否かのReward（Functionality)に加えて、RL中に生成されたコードを制御フローグラフ[^1]に変換し汚染解析[^2]をした結果をRewardに組み込むことで、FunctionalityとQualityを両立したよ、という話のようである。<br><br>Figure1のグラフの縦軸は、Functionalityと（UnitTestが通ったか否か）と、Quailty(セキュリティや保守性に関する問題が検出されなかった)、という両方の条件を満たした割合である点に注意。<br><br><img src="https://github.com/user-attachments/assets/b843e416-8c96-40ca-ac1f-0318eb1ae40c" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/6beeea63-571b-4ce6-bef8-ac8e0cfffee2" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]:プログラムを実行したときに通る可能性のある経路のすべてをグラフとして表したもの[引用元](
 
 
 <a href="https://qiita.com/uint256_t/items/7d4556cb8f5997b9e95c)" target="_blank" rel="noopener noreferrer">https://qiita.com/uint256_t/items/7d4556cb8f5997b9e95c)</a>
@@ -6782,7 +6782,7 @@ My Issue
 </div>
 
 
-<p>Lost in the MiddleならぬLost in Conversation<br><img src="https://github.com/user-attachments/assets/9d4320f5-6fea-43ca-a7ab-a836e7e3642e" alt="image" loading="lazy" width="400" height="300"></p>
+<p>Lost in the MiddleならぬLost in Conversation<br><img src="https://github.com/user-attachments/assets/9d4320f5-6fea-43ca-a7ab-a836e7e3642e" alt="image" loading="lazy" width="550" height="400"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer">Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, N/A, TACL'24</a>
 </p></span><br><br>
 </article>
@@ -6815,7 +6815,7 @@ My Issue
 </div>
 
 
-<p>7つのメジャーなマルチエージェントフレームワークに対して200以上のタスクを実施し、6人の専門家がtraceをアノテーション。14種類の典型的なfailure modeを見つけ、それらを3つにカテゴライズ。これを考慮してマルチエージェントシステムの失敗に関するTaxonomy（MAS）を提案<br><img src="https://github.com/user-attachments/assets/21d45bc7-cc6c-4561-b991-098f8d068627" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>7つのメジャーなマルチエージェントフレームワークに対して200以上のタスクを実施し、6人の専門家がtraceをアノテーション。14種類の典型的なfailure modeを見つけ、それらを3つにカテゴライズ。これを考慮してマルチエージェントシステムの失敗に関するTaxonomy（MAS）を提案<br><img src="https://github.com/user-attachments/assets/21d45bc7-cc6c-4561-b991-098f8d068627" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="hallucination-mitigation-1882" class="title-link">Hallucination Mitigation using Agentic AI Natural Language-Based  Frameworks, Diego Gosmar+, arXiv'25</h3>
@@ -6897,7 +6897,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- SWE-Gymを提案し、2,438件の実世界のPythonタスクを含む環境を構築。言語モデルに基づくSWEエージェントを訓練し、SWE-Benchで最大19%の解決率向上を達成。微調整されたエージェントは新たな最先端の性能を示し、SWE-Gymやモデル、エージェントの軌跡を公開。</span>
 <span class="snippet"><span>Comment</span><p>SWE-Benchとは完全に独立したより広範な技術スタックに関連するタスクに基づくSWEベンチマーク<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1848" target="_blank" rel="noopener noreferrer">SWE-bench: Can Language Models Resolve Real-World GitHub Issues?, Carlos E. Jimenez+, ICLR'24</a>
  </p>
-<p>SWE-Benchと比べて実行可能な環境と単体テストが提供されており、単なるベンチマークではなくエージェントを訓練できる環境が提供されている点が大きく異なるように感じる。<br><img src="https://github.com/user-attachments/assets/8c96df84-d211-4035-8337-1ab624d30a4f" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/d25687d9-6f1a-44f6-8235-09be1ff4890f" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>SWE-Benchと比べて実行可能な環境と単体テストが提供されており、単なるベンチマークではなくエージェントを訓練できる環境が提供されている点が大きく異なるように感じる。<br><img src="https://github.com/user-attachments/assets/8c96df84-d211-4035-8337-1ab624d30a4f" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/d25687d9-6f1a-44f6-8235-09be1ff4890f" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="demystifying-llm-based-1847" class="title-link">[Paper Note] Demystifying LLM-based Software Engineering Agents, Chunqiu Steven Xia+, FSE'25, 2024.07</h3>
@@ -6928,7 +6928,7 @@ My Issue
 
 
 </p>
-<p>LLMによる計画の立案、環境からのフィードバックによる意思決定などの複雑なワークフローではなく、Localization（階層的に問題のある箇所を同定する）とRepair（LLMで複数のパッチ候補を生成する）、PatchValidation(再現テストと回帰テストの両方を通じて結果が良かったパッチを選ぶ）のシンプルなプロセスを通じてIssueを解決する。<br><img src="https://github.com/user-attachments/assets/6d042dfe-9780-4410-9077-b265af5456d1" alt="image" loading="lazy" width="400" height="300"><br><br>これにより、低コストで高い性能を達成している、といった内容な模様。</p>
+<p>LLMによる計画の立案、環境からのフィードバックによる意思決定などの複雑なワークフローではなく、Localization（階層的に問題のある箇所を同定する）とRepair（LLMで複数のパッチ候補を生成する）、PatchValidation(再現テストと回帰テストの両方を通じて結果が良かったパッチを選ぶ）のシンプルなプロセスを通じてIssueを解決する。<br><img src="https://github.com/user-attachments/assets/6d042dfe-9780-4410-9077-b265af5456d1" alt="image" loading="lazy" width="550" height="400"><br><br>これにより、低コストで高い性能を達成している、といった内容な模様。</p>
 <p>Agentlessと呼ばれ手法だが、preprint版にあったタイトルの接頭辞だった同呼称がproceeding版では無くなっている。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7035,7 +7035,7 @@ My Issue
 </div>
 
 
-<p>手法としては、SFTとKTOを活用しpost trainingするようである<br><img src="https://github.com/user-attachments/assets/0eab8029-124d-4ac1-b906-2463472b90b2" alt="image" loading="lazy" width="400" height="300"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1472" target="_blank" rel="noopener noreferrer">KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, N/A, ICML'24</a>
+<p>手法としては、SFTとKTOを活用しpost trainingするようである<br><img src="https://github.com/user-attachments/assets/0eab8029-124d-4ac1-b906-2463472b90b2" alt="image" loading="lazy" width="550" height="400"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1472" target="_blank" rel="noopener noreferrer">KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, N/A, ICML'24</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7244,8 +7244,8 @@ My Issue
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <span class="issue_date">Issue Date: 2025-04-02</span>
 <span class="snippet"><span>GPT Summary</span>- 生成AIの進展により、自律エージェントが自然言語コマンドで日常タスクを管理する可能性が生まれたが、現行のエージェントは簡略化された環境でのテストに限られている。本研究では、ウェブ上でタスクを実行するエージェントのための現実的な環境を構築し、eコマースやソーシャルフォーラムなどのドメインを含む完全なウェブサイトを提供する。この環境を基に、タスクの正確性を評価するベンチマークを公開し、実験を通じてGPT-4ベースのエージェントの成功率が14.41%であり、人間の78.24%には及ばないことを示した。これにより、実生活のタスクにおけるエージェントのさらなる開発の必要性が強調される。</span>
-<span class="snippet"><span>Comment</span><p>Webにおけるさまざまなrealisticなタスクを評価するためのベンチマーク<br><img src="https://github.com/user-attachments/assets/8895fc29-e997-4cce-a43e-65b928dc1d78" alt="image" loading="lazy" width="400" height="300"></p>
-<p>実際のexample。スタート地点からピッツバーグのmuseumを巡る最短の経路を見つけるといった複雑なタスクが含まれる。<br><img src="https://github.com/user-attachments/assets/5b7bebea-34c7-4c6f-bbe5-3928544e6c13" alt="image" loading="lazy" width="400" height="300"><br><br>人間とGPT4,GPT-3.5の比較結果<br><img src="https://github.com/user-attachments/assets/390fee31-85d0-4d83-969a-57a7f1548ca8" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Webにおけるさまざまなrealisticなタスクを評価するためのベンチマーク<br><img src="https://github.com/user-attachments/assets/8895fc29-e997-4cce-a43e-65b928dc1d78" alt="image" loading="lazy" width="550" height="400"></p>
+<p>実際のexample。スタート地点からピッツバーグのmuseumを巡る最短の経路を見つけるといった複雑なタスクが含まれる。<br><img src="https://github.com/user-attachments/assets/5b7bebea-34c7-4c6f-bbe5-3928544e6c13" alt="image" loading="lazy" width="550" height="400"><br><br>人間とGPT4,GPT-3.5の比較結果<br><img src="https://github.com/user-attachments/assets/390fee31-85d0-4d83-969a-57a7f1548ca8" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="swe-bench-can-1848" class="title-link">SWE-bench: Can Language Models Resolve Real-World GitHub Issues?, Carlos E. Jimenez+, ICLR'24</h3>
@@ -7339,7 +7339,7 @@ My Issue
 
 
 <p>初期に提案された<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1034" target="_blank" rel="noopener noreferrer">Large Language Models Are Human-Level Prompt Engineers, Yongchao Zhou+, ICLR'23</a>
-<br><br>と比較すると大分性能が上がってきているように見える。<br><img src="https://github.com/user-attachments/assets/5f7a329e-e83b-46da-9213-af8877201572" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/857b3526-4f56-4e31-8a69-a4193657b286" alt="image" loading="lazy" width="400" height="300"></p>
+<br><br>と比較すると大分性能が上がってきているように見える。<br><img src="https://github.com/user-attachments/assets/5f7a329e-e83b-46da-9213-af8877201572" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/857b3526-4f56-4e31-8a69-a4193657b286" alt="image" loading="lazy" width="550" height="400"></p>
 <p>reasoning modelではfewshot promptingをすると性能が落ちるという知見があるので、reasoningモデル向けのAPE手法もそのうち出現するのだろう（既にありそう）。</p>
 <p>OpenReview: 
 
@@ -7457,7 +7457,7 @@ My Issue
 </div>
 
 
-<p>ソフトウェアエンジニアリングの企業の設定で現実に起こりうるな　175種類のタスクを定義してAI Agentを評価できるベンチマークTheAgentCompanyを提案。<br><br><img src="https://github.com/user-attachments/assets/ef7b51d3-b4af-4171-a692-48fb2c2552ef" alt="image" loading="lazy" width="400" height="300"><br><br>既存のベンチマークより、多様で、実際のソフトウェアエンジニアリング企業でで起こりうる幅広いタスクを持ち、タスクの遂行のために同僚に対して何らかのインタラクションが必要で、達成のために多くのステップが必要でかつ個々のステップ（サブタスク）を評価可能で、多様なタスクを遂行するために必要な様々なインタフェースをカバーし、self hostingして結果を完全に再現可能なベンチマークとなっている模様。<br><img src="https://github.com/user-attachments/assets/e5fbd6da-75d7-49e1-8c66-dc7950d443e4" alt="image" loading="lazy" width="400" height="300"><br><br>
+<p>ソフトウェアエンジニアリングの企業の設定で現実に起こりうるな　175種類のタスクを定義してAI Agentを評価できるベンチマークTheAgentCompanyを提案。<br><br><img src="https://github.com/user-attachments/assets/ef7b51d3-b4af-4171-a692-48fb2c2552ef" alt="image" loading="lazy" width="550" height="400"><br><br>既存のベンチマークより、多様で、実際のソフトウェアエンジニアリング企業でで起こりうる幅広いタスクを持ち、タスクの遂行のために同僚に対して何らかのインタラクションが必要で、達成のために多くのステップが必要でかつ個々のステップ（サブタスク）を評価可能で、多様なタスクを遂行するために必要な様々なインタフェースをカバーし、self hostingして結果を完全に再現可能なベンチマークとなっている模様。<br><img src="https://github.com/user-attachments/assets/e5fbd6da-75d7-49e1-8c66-dc7950d443e4" alt="image" loading="lazy" width="550" height="400"><br><br>
 
 
 
@@ -7486,7 +7486,7 @@ My Issue
 </div>
 
 
-<br><img src="https://github.com/user-attachments/assets/3bdcabef-70da-4f09-8366-efe29f7ab371" alt="image" loading="lazy" width="400" height="300"><p>まだまだAI Agentが完全に'同僚'として機能することとは現時点ではなさそうだが、このベンチマークのスコアが今後どこまで上がっていくだろうか。</p></span><br><br>
+<br><img src="https://github.com/user-attachments/assets/3bdcabef-70da-4f09-8366-efe29f7ab371" alt="image" loading="lazy" width="550" height="400"><p>まだまだAI Agentが完全に'同僚'として機能することとは現時点ではなさそうだが、このベンチマークのスコアが今後どこまで上がっていくだろうか。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="generative-agent-1548" class="title-link">Generative Agent Simulations of 1,000 People, Joon Sung Park+, arXiv'24</h3>
@@ -7525,7 +7525,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2024-11-12</span>
 <span class="snippet"><span>GPT Summary</span>- (M)LLMを活用したGUIエージェントの研究を統合し、データセット、フレームワーク、アプリケーションの革新を強調。重要なコンポーネントをまとめた統一フレームワークを提案し、商業アプリケーションを探求。課題を特定し、今後の研究方向を示唆。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/999adca8-f0d7-483c-ae5a-b6f78fe9da4b" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/b69dc991-3e15-4965-a183-cc7909ad9eba" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/999adca8-f0d7-483c-ae5a-b6f78fe9da4b" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/b69dc991-3e15-4965-a183-cc7909ad9eba" alt="image" loading="lazy" width="550" height="400"></p>
 <p>Referenceやページ数はサーベイにしては少なめに見える。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7569,9 +7569,9 @@ My Issue
 <span class="issue_date">Issue Date: 2024-10-20</span>
 <span class="snippet"><span>GPT Summary</span>- ToolGenは、外部ツールとの直接対話を可能にする新しいフレームワークで、各ツールをユニークなトークンとして表現し、LLMのパラメータに統合します。これにより、LLMはツール呼び出しや引数を自然言語生成の一部としてシームレスに生成でき、情報取得ステップなしで多くのツールにアクセス可能になります。実験結果は、ToolGenが自律的なタスク完了と情報取得で優れた性能を示し、より効率的で自律的なAIシステムの基盤を築くことを示しています。</span>
 <span class="snippet"><span>Comment</span><p>昔からよくある特殊トークンを埋め込んで、特殊トークンを生成したらそれに応じた処理をする系の研究。今回はツールに対応するトークンを仕込む模様。</p>
-<p>斜め読みだが、3つのstepでFoundation Modelを訓練する。まずはツールのdescriptionからツールトークンを生成する。これにより、モデルにツールの情報を覚えさせる（memorization）。斜め読みなので読めていないが、ツールトークンをvocabに追加してるのでここは継続的事前学習をしているかもしれない。続いて、（おそらく）人手でアノテーションされたクエリ-必要なツールのペアデータから、クエリに対して必要なツールを生成するタスクを学習させる。最後に、（おそらく人手で作成された）クエリ-タスクを解くためのtrajectoryペアのデータで学習させる。<br><img src="https://github.com/user-attachments/assets/eebe4260-2e4f-4be7-9b59-a0b84913e667" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/d03ed971-e5c9-49f3-8385-cfb00505907c" alt="image" loading="lazy" width="400" height="300"></p>
-<p>学習データのサンプル。Appendix中に記載されているものだが、本文のデータセット節とAppendixの双方に、データの作り方の詳細は記述されていなかった。どこかに書いてあるのだろうか。<br><img src="https://github.com/user-attachments/assets/41975d34-dc9d-405d-aaca-062a3ee1a4b0" alt="image" loading="lazy" width="400" height="300"></p>
-<p>最終的な性能<br><img src="https://github.com/user-attachments/assets/a247cc99-10eb-4346-9f0d-b406a022c3b4" alt="image" loading="lazy" width="400" height="300"></p>
+<p>斜め読みだが、3つのstepでFoundation Modelを訓練する。まずはツールのdescriptionからツールトークンを生成する。これにより、モデルにツールの情報を覚えさせる（memorization）。斜め読みなので読めていないが、ツールトークンをvocabに追加してるのでここは継続的事前学習をしているかもしれない。続いて、（おそらく）人手でアノテーションされたクエリ-必要なツールのペアデータから、クエリに対して必要なツールを生成するタスクを学習させる。最後に、（おそらく人手で作成された）クエリ-タスクを解くためのtrajectoryペアのデータで学習させる。<br><img src="https://github.com/user-attachments/assets/eebe4260-2e4f-4be7-9b59-a0b84913e667" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/d03ed971-e5c9-49f3-8385-cfb00505907c" alt="image" loading="lazy" width="550" height="400"></p>
+<p>学習データのサンプル。Appendix中に記載されているものだが、本文のデータセット節とAppendixの双方に、データの作り方の詳細は記述されていなかった。どこかに書いてあるのだろうか。<br><img src="https://github.com/user-attachments/assets/41975d34-dc9d-405d-aaca-062a3ee1a4b0" alt="image" loading="lazy" width="550" height="400"></p>
+<p>最終的な性能<br><img src="https://github.com/user-attachments/assets/a247cc99-10eb-4346-9f0d-b406a022c3b4" alt="image" loading="lazy" width="550" height="400"></p>
 <p>特殊トークンを追加のvocabとして登録し、そのトークンを生成できるようなデータで学習し、vocabに応じて何らかの操作を実行するという枠組み、その学習手法は色々なタスクで役立ちそう。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7648,7 +7648,7 @@ My Issue
 </div>
 
 
-<br><br>Meta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は92%正解できるが、GPT4でも15%しか正解できないQAベンチマーク。解くために推論やマルチモダリティの処理、ブラウジング、ツールに対する習熟などの基本的な能力を必要とする実世界のQAとのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image" loading="lazy" width="400" height="300"><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1792" target="_blank" rel="noopener noreferrer">Open-source DeepResearch – Freeing our search agents, HuggingFace, 2025.02</a>
+<br><br>Meta-FAIR, Meta-GenAI, HuggingFace, AutoGPTによる研究。人間は92%正解できるが、GPT4でも15%しか正解できないQAベンチマーク。解くために推論やマルチモダリティの処理、ブラウジング、ツールに対する習熟などの基本的な能力を必要とする実世界のQAとのこと。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0b13838b-0829-48b9-b281-3d09a5a3859f" alt="image" loading="lazy" width="550" height="400"><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1792" target="_blank" rel="noopener noreferrer">Open-source DeepResearch – Freeing our search agents, HuggingFace, 2025.02</a>
 <br><br>で言及されているLLM Agentの評価で最も有名なベンチマークな模様</p>
 <p>データセット: 
 
@@ -7701,7 +7701,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2023-09-01</span>
 <span class="snippet"><span>GPT Summary</span>- 自律エージェントの研究は、以前は限られた知識を持つエージェントに焦点を当てていましたが、最近では大規模言語モデル（LLMs）を活用した研究が増えています。本論文では、LLMに基づく自律エージェントの研究を包括的に調査し、統一されたフレームワークを提案します。さらに、LLMに基づくAIエージェントの応用や評価戦略についてもまとめています。将来の方向性や課題についても議論し、関連する参考文献のリポジトリも提供しています。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c921a960-02f7-44e6-8c24-bb578f599bbe" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73c4662b-ca74-41cc-8be5-c76c4aad36c8" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c921a960-02f7-44e6-8c24-bb578f599bbe" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73c4662b-ca74-41cc-8be5-c76c4aad36c8" alt="image" loading="lazy" width="550" height="400"></p>
 <p>良いサーベイ</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7745,7 +7745,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、言語モデルとビジョン言語モデルを強化学習エージェントに組み込み、効率的な探索や経験データの再利用などの課題に取り組む方法を調査しました。スパースな報酬のロボット操作環境でのテストにおいて、ベースラインに比べて大幅な性能向上を実証し、学習済みのスキルを新しいタスクの解決や人間の専門家のビデオの模倣に活用する方法を示しました。</span>
-<span class="snippet"><span>Comment</span><p><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aa40d0e3-9499-4804-9046-a9ad795c2d52" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mind2web-towards-783" class="title-link">Mind2Web: Towards a Generalist Agent for the Web, Xiang Deng+, N_A, NeurIPS'23 Spotlight</h3>
@@ -8160,7 +8160,7 @@ My Issue
 </div>
 
 
-<p>GUI Agentとして性能はトップレベル(Opusが比較対象に入っていないが）で、<br><img src="https://github.com/user-attachments/assets/5af897ef-dad9-4f25-95a6-712c9400c05c" alt="image" loading="lazy" width="400" height="300"><br><br>テキスト、画像モダリティでの検索でもトップレベル、codingやツール利用などは少し劣るように見える。<br><img src="https://github.com/user-attachments/assets/d5a1c1a3-ce7f-4d63-b3c3-58abf7743526" alt="image" loading="lazy" width="400" height="300"><br><br>LLM系、VideoUnderstanding系ののベンチマークではフロンティアモデル群と同等、VLM系のタスクではフロンティアモデル群と同等以上の性能に見える。<br><br>が、一方のモダリティはGPT5で比較しているのに対し、他方はGPT5.1であったりしており、比較対象が少し恣意的にピックされているのでは？という気もする。</p>
+<p>GUI Agentとして性能はトップレベル(Opusが比較対象に入っていないが）で、<br><img src="https://github.com/user-attachments/assets/5af897ef-dad9-4f25-95a6-712c9400c05c" alt="image" loading="lazy" width="550" height="400"><br><br>テキスト、画像モダリティでの検索でもトップレベル、codingやツール利用などは少し劣るように見える。<br><img src="https://github.com/user-attachments/assets/d5a1c1a3-ce7f-4d63-b3c3-58abf7743526" alt="image" loading="lazy" width="550" height="400"><br><br>LLM系、VideoUnderstanding系ののベンチマークではフロンティアモデル群と同等、VLM系のタスクではフロンティアモデル群と同等以上の性能に見える。<br><br>が、一方のモダリティはGPT5で比較しているのに対し、他方はGPT5.1であったりしており、比較対象が少し恣意的にピックされているのでは？という気もする。</p>
 <p>モデルカード:
 
 
@@ -8514,7 +8514,7 @@ My Issue
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3804" target="_blank" rel="noopener noreferrer">[Paper Note] WebVoyager: Building an End-to-End Web Agent with Large Multimodal Models, Hongliang He+, ACL'24, 2024.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3805" target="_blank" rel="noopener noreferrer">[Paper Note] Set-of-Mark Prompting Unleashes Extraordinary Visual Grounding in GPT-4V, Jianwei Yang+, arXiv'23, 2023.10</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3806" target="_blank" rel="noopener noreferrer">GPT-4V-Act, ddupont808, 2023.10</a>
-<br><br>WebVoyagerでの評価によると、タスクに対するコスト性能比が非常に高いことがわかる。<br><br><img src="https://github.com/user-attachments/assets/3307e7e8-e14e-4bf8-ae56-a8783545bddd" alt="image" loading="lazy" width="400" height="300"></p>
+<br><br>WebVoyagerでの評価によると、タスクに対するコスト性能比が非常に高いことがわかる。<br><br><img src="https://github.com/user-attachments/assets/3307e7e8-e14e-4bf8-ae56-a8783545bddd" alt="image" loading="lazy" width="550" height="400"></p>
 <p>MIT Licence</p>
 <p>著者ポスト:
 
@@ -9634,7 +9634,7 @@ My Issue
 
 
 <p>Inflight Weight Updates</p>
-<p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy" width="400" height="300"><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p>
+<p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy" width="550" height="400"><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p>
 <p>あとこれは余談だが、引用ポストの主は下記研究でattentionメカニズムを最初に提案したBahdanau氏である。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1954" target="_blank" rel="noopener noreferrer">Neural Machine Translation by Jointly Learning to Align and Translate, Dzmitry Bahdanau+, ICLR'15</a>
 </p>
 <p>続報:<br>
@@ -9895,7 +9895,7 @@ My Issue
 
 </p>
 <p>モデルファミリーに350Mの日英翻訳モデルが含まれている…だと！？</p>
-<p>タスクスペシフィックなedgeデバイス向けのSLM群。<br><br>以下のようなモデルファミリー。非構造テキストからのデータ抽出、日英翻訳、RAG, tooluse, Math, フランス語のチャットモデル。これまでマルチリンガルに特化したMTとかはよく見受けられたが、色々なタスクのSLMが出てきた。<br><img src="https://github.com/user-attachments/assets/bb19f5f0-f20f-4e51-8ecc-75c7b425b60f" alt="image" loading="lazy" width="400" height="300"></p>
+<p>タスクスペシフィックなedgeデバイス向けのSLM群。<br><br>以下のようなモデルファミリー。非構造テキストからのデータ抽出、日英翻訳、RAG, tooluse, Math, フランス語のチャットモデル。これまでマルチリンガルに特化したMTとかはよく見受けられたが、色々なタスクのSLMが出てきた。<br><img src="https://github.com/user-attachments/assets/bb19f5f0-f20f-4e51-8ecc-75c7b425b60f" alt="image" loading="lazy" width="550" height="400"></p>
 <p>元ポスト:
 
 
@@ -10328,7 +10328,7 @@ My Issue
 <a class="button" href="Coding.html" target="_blank" rel="noopener noreferrer">#Coding</a>
 <a class="button" href="Proprietary.html" target="_blank" rel="noopener noreferrer">#Proprietary</a>
 <span class="issue_date">Issue Date: 2025-08-06</span>
-<span class="snippet"><span>Comment</span><p>他モデルとの性能比較:<br><img src="https://github.com/user-attachments/assets/22d2b65c-3bc7-4cba-90bb-c25563c286ac" alt="image" loading="lazy" width="400" height="300"><br><br>やはりコーディングでは（SNS上での口コミでは非常に高評価なように見えており、かつ）o3やGeminiと比較してClaudeがベンチ上でも高い性能を示している模様。</p>
+<span class="snippet"><span>Comment</span><p>他モデルとの性能比較:<br><img src="https://github.com/user-attachments/assets/22d2b65c-3bc7-4cba-90bb-c25563c286ac" alt="image" loading="lazy" width="550" height="400"><br><br>やはりコーディングでは（SNS上での口コミでは非常に高評価なように見えており、かつ）o3やGeminiと比較してClaudeがベンチ上でも高い性能を示している模様。</p>
 <p>元ポスト:
 
 
@@ -11437,38 +11437,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/DropoutPrediction/" title="DropoutPredictionに関する論文・技術記事メモの一覧">
-            DropoutPredictionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/RAG(RetrievalAugmentedGeneration)/" title="RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧">
+            RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 79</span> 
+  <span class="post-badge badge-new">📝 79</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/COLM/" title="COLMに関する論文・技術記事メモの一覧">
+            COLMに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 46</span> 
+  <span class="post-badge badge-new">📝 46</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/RectifiedFlow/" title="RectifiedFlowに関する論文・技術記事メモの一覧">
+            RectifiedFlowに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Compression/" title="Compressionに関する論文・技術記事メモの一覧">
+            Compressionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Pretraining/" title="Pretrainingに関する論文・技術記事メモの一覧">
-            Pretrainingに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 167</span> 
-  <span class="post-badge badge-new">📝 167</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/CognitiveScience/" title="CognitiveScienceに関する論文・技術記事メモの一覧">
-            CognitiveScienceに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Neuroscience/" title="Neuroscienceに関する論文・技術記事メモの一覧">
-            Neuroscienceに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>

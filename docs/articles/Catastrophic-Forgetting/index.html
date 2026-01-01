@@ -1071,7 +1071,7 @@ My Issue
 </div>
 
 
-<p>ポリシーを初期化し、RLを実行しtrajeatory tを取得。tをrejection samplingし成功したtrajectoryでエキスパートデータセットを作成。作成したエキスパートデータセットでポリシーをSFT(=Rejection SamplingしたデータでSFTすることをRFTと呼ぶ）する（これが次iterationの初期化となる）といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/e2aefd00-2218-487c-a58d-d234eaffd004" alt="image" loading="lazy" width="400" height="300"><br><br>RLはAdvantageによって学習されるため、trajectoryの相対的な品質に基づいて学習をする。このため、バッチ内のすべてのtrajectoryが正解した場合などはadvantageが限りなくゼロに近づき学習のシグナルを得られない。<br><br>一方RFTは絶対的なRewardを用いており（RLVRの場合は成功したら1,そうでなければ0）、これがバッチ全体のパフォーマンスに依存しない安定した分散の小さい学習のシグナルを与える。<br><br>このように両者は補完的な関係にある。ただしRFTは成功したtrajectory全てに均等な重みを与えるため、既にポリシーが解くことができる問題にフォーカスしすぎることによって効率性が悪化する問題があるため、提案手法では成功率が低いhardなサンプルのみにエキスパートデータをフィルタリングする（＝active learning）ことで、モデルが自身に不足した能力を獲得することに効率的に注力することになる。<br><br>また、RFTを使うことは単なるヒューリスティックではなく、理論的なgroundingが存在する。すなわち、我々はまだ未知の"expert"な分布 p^*にポリシーが従うように学習をしたいがこれはMLEの観点で言うと式3に示されているような形式になる。p^*から直接データをサンプリングをすることができないが、RLのポリシーから近似的にサンプリングをすることができる。そこでMLEの式をimportance samplingの観点から再度定式化をすると式4のようになり、後はimportance weight wを求められれば良いことになる。これはp^*に近いtrajectoryはRewardが高く、そうでない場合は低い、つまりw \propto Reward な関係であるため近似的に求めることができ、これらを式4のMLEの式に代入するとRFTと同じ式が導出される。<br><br>みたいな話のようである。</p></span><br><br>
+<p>ポリシーを初期化し、RLを実行しtrajeatory tを取得。tをrejection samplingし成功したtrajectoryでエキスパートデータセットを作成。作成したエキスパートデータセットでポリシーをSFT(=Rejection SamplingしたデータでSFTすることをRFTと呼ぶ）する（これが次iterationの初期化となる）といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/e2aefd00-2218-487c-a58d-d234eaffd004" alt="image" loading="lazy" width="550" height="400"><br><br>RLはAdvantageによって学習されるため、trajectoryの相対的な品質に基づいて学習をする。このため、バッチ内のすべてのtrajectoryが正解した場合などはadvantageが限りなくゼロに近づき学習のシグナルを得られない。<br><br>一方RFTは絶対的なRewardを用いており（RLVRの場合は成功したら1,そうでなければ0）、これがバッチ全体のパフォーマンスに依存しない安定した分散の小さい学習のシグナルを与える。<br><br>このように両者は補完的な関係にある。ただしRFTは成功したtrajectory全てに均等な重みを与えるため、既にポリシーが解くことができる問題にフォーカスしすぎることによって効率性が悪化する問題があるため、提案手法では成功率が低いhardなサンプルのみにエキスパートデータをフィルタリングする（＝active learning）ことで、モデルが自身に不足した能力を獲得することに効率的に注力することになる。<br><br>また、RFTを使うことは単なるヒューリスティックではなく、理論的なgroundingが存在する。すなわち、我々はまだ未知の"expert"な分布 p^*にポリシーが従うように学習をしたいがこれはMLEの観点で言うと式3に示されているような形式になる。p^*から直接データをサンプリングをすることができないが、RLのポリシーから近似的にサンプリングをすることができる。そこでMLEの式をimportance samplingの観点から再度定式化をすると式4のようになり、後はimportance weight wを求められれば良いことになる。これはp^*に近いtrajectoryはRewardが高く、そうでない場合は低い、つまりw \propto Reward な関係であるため近似的に求めることができ、これらを式4のMLEの式に代入するとRFTと同じ式が導出される。<br><br>みたいな話のようである。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="continual-learning-3366" class="title-link">[Paper Note] Continual Learning via Sparse Memory Finetuning, Jessy Lin+, arXiv'25, 2025.10</h3>
@@ -1150,7 +1150,7 @@ My Issue
 
 
 <p>continual instruction tuning... そしてGAN!?</p>
-<p>タスク固有の知識を備えたLoRAと、タスク間で共有されるLoRAがクロスタスクの転移を促し、それぞれをMoEにおけるexpertsとして扱うことで、inputに対して動的に必要なLoRA expertsを選択する。このとき、Task Classifier（Adversarialに訓練する）でタスクに関係ない情報が順伝搬されないようにフィルタリングするっぽい？（GANをText Classifierの学習に使い、Classifierの情報を用いることで共有/タスク固有のLoRA expertsが学習されるように促すようだが、細かくどうやるかは読まないとわからない）。<br><br>ドメイン固有のタスクとデータに対して、さまざまなアダプターを追加していき、catastrophic forgettingを防ぎながら、扱えるタスクの幅が広がっていく枠組み自体は面白そう（学習は果たして安定するのだろうか）。<br><br><img src="https://github.com/user-attachments/assets/a09b2021-d487-49d5-9782-35b8e613d0a8" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>タスク固有の知識を備えたLoRAと、タスク間で共有されるLoRAがクロスタスクの転移を促し、それぞれをMoEにおけるexpertsとして扱うことで、inputに対して動的に必要なLoRA expertsを選択する。このとき、Task Classifier（Adversarialに訓練する）でタスクに関係ない情報が順伝搬されないようにフィルタリングするっぽい？（GANをText Classifierの学習に使い、Classifierの情報を用いることで共有/タスク固有のLoRA expertsが学習されるように促すようだが、細かくどうやるかは読まないとわからない）。<br><br>ドメイン固有のタスクとデータに対して、さまざまなアダプターを追加していき、catastrophic forgettingを防ぎながら、扱えるタスクの幅が広がっていく枠組み自体は面白そう（学習は果たして安定するのだろうか）。<br><br><img src="https://github.com/user-attachments/assets/a09b2021-d487-49d5-9782-35b8e613d0a8" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="rl's-razor-2713" class="title-link">[Paper Note] RL's Razor: Why Online Reinforcement Learning Forgets Less, Idan Shenfeld+, arXiv'25</h3>
@@ -1257,7 +1257,7 @@ My Issue
 <a class="button" href="PEFT(Adaptor_LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
 <span class="issue_date">Issue Date: 2024-11-12</span>
 <span class="snippet"><span>GPT Summary</span>- 破滅的忘却に対処するため、タスクフリーのオンライン継続学習（OCL）フレームワークOnline-LoRAを提案。リハーサルバッファの制約を克服し、事前学習済みビジョントランスフォーマー（ViT）モデルをリアルタイムで微調整。新しいオンライン重み正則化戦略を用いて重要なモデルパラメータを特定し、データ分布の変化を自動認識。多様なベンチマークデータセットで優れた性能を示す。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/b789ba71-3941-4d60-9397-46607ddc7712" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/b789ba71-3941-4d60-9397-46607ddc7712" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="simcse-simple-907" class="title-link">SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, N_A, EMNLP'21</h3>
@@ -1284,15 +1284,15 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- この論文では、SimCSEという対比学習フレームワークを提案しています。このフレームワークは、文の埋め込み技術を進化させることができます。教師なしアプローチでは、入力文をノイズとして扱い、自己を対比的に予測します。教師ありアプローチでは、自然言語推論データセットから注釈付きのペアを使用して対比学習を行います。SimCSEは、意味的テキスト類似性タスクで評価され、以前の手法と比較して改善を実現しました。対比学習は、事前学習された埋め込みの空間を均一に正則化し、教師信号が利用可能な場合には正のペアをよりよく整列させることが示されました。</span>
 <span class="snippet"><span>Comment</span><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/462" target="_blank" rel="noopener noreferrer">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Reimers+, UKP-TUDA, EMNLP'19</a>
  よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる</p>
-<p># 手法概要<br><br>Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。<br><br>Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる）<br><br>Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違い<br><br>どちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a" alt="image" loading="lazy" width="400" height="300"><br><br>（画像はこのブログから引用。ありがとうございます。
+<p># 手法概要<br><br>Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。<br><br>Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる）<br><br>Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違い<br><br>どちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a" alt="image" loading="lazy" width="550" height="400"><br><br>（画像はこのブログから引用。ありがとうございます。
 
 
 <a href="https://techblog.cccmk.co.jp/entry/2022/08/30/163625%EF%BC%89" target="_blank" rel="noopener noreferrer">https://techblog.cccmk.co.jp/entry/2022/08/30/163625）</a>
 
 
-<br><br><br><br># Unsupervised SimCSEの実験<br><br>異なるdata augmentation手法と比較した結果、dropoutを適用する手法の方が性能が高かった。MLMや, deletion, 類義語への置き換え等よりも高い性能を獲得しているのは興味深い。また、Next Sentence Predictionと比較しても、高い性能を達成。Next Sentence Predictionは、word deletion等のほぼ類似したテキストから直接的に類似関係にあるペアから学習するというより、Sentenceの意味内容のつながりに基づいてモデルの言語理解能力を向上させ、そのうえで類似度を測るという間接的な手法だが、word deletionに負けている。一方、dropoutを適用するだけの（直接的に類似ペアから学習する）本手法はより高い性能を示している。<br><br>[image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0ea3549e-3363-4857-94e6-a1ef474aa191)<br><br><br><br>なぜうまくいくかを分析するために、異なる設定で実験し、alignment（正例との近さ）とuniformity（どれだけembeddingが一様に分布しているか）を、10 stepごとにplotした結果が以下。dropoutを適用しない場合と、常に同じ部分をマスクする方法（つまり、全く同じembeddingから学習する）設定を見ると、学習が進むにつれuniformityは改善するが、alignmentが悪くなっていっている。一方、SimCSEはalignmentを維持しつつ、uniformityもよくなっていっていることがわかる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f488cb2-b15a-4e00-9452-8e48780abe8a" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e815cf7-b412-4f1b-8adb-116f0dcd2fee" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># Supervised SimCSEの実験<br><br>アノテーションデータを用いてContrastiveLearningするにあたり、どういったデータを正例としてみなすと良いかを検証するために様々なデータセットで学習し性能を検証した。<br><br><br><br>- QQP4: Quora question pairs<br><br>- Flickr30k (Young et al., 2014): 同じ画像に対して、5つの異なる人間が記述したキャプションが存在<br><br>- ParaNMT (Wieting and Gimpel, 2018): back-translationによるparaphraseのデータセットa<br><br>- NLI datasets: SNLIとMNLI<br><br><br><br>実験の結果、NLI datasetsが最も高い性能を示した。この理由としては、NLIデータセットは、crowd sourcingタスクで人手で作成された高品質なデータセットであることと、lexical overlapが小さくなるようにsentenceのペアが作成されていることが起因している。実際、NLI datsetのlexical overlapは39%だったのに対し、ほかのデータセットでは60%であった。<br><br><br><br>また、condunctionsとなるペアを明示的に負例として与えることで、より性能が向上した（普通はnegative samplingする、というかバッチ内の正例以外のものを強制的に負例とする。こうすると、意味が同じでも負例になってしまう事例が出てくることになる）。より難しいNLIタスクを含むANLIデータセットを追加した場合は、性能が改善しなかった。この理由については考察されていない。性能向上しそうな気がするのに。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ae05711b-5ad4-4a53-837b-c57e9a39da62" alt="image" loading="lazy" width="400" height="300"><br><br></p>
-<p># 他手法との比較結果<br><br>SimCSEがよい。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># Ablation Studies<br><br>異なるpooling方法で、どのようにsentence embeddingを作成するかで性能の違いを見た。originalのBERTの実装では、CLS token のembeddingの上にMLP layerがのっかっている。これの有無などと比較。<br><br>Unsupervised SimCSEでは、training時だけMLP layerをのっけて、test時はMLPを除いた方が良かった。一方、Supervised SimCSEでは、 MLP layerをのっけたまんまで良かったとのこと。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73116c6a-d48f-42bc-aa5e-8342bb068052" alt="image" loading="lazy" width="400" height="300"><br><br></p>
-<p>また、SimCSEで学習したsentence embeddingを別タスクにtransferして活用する際には、SimCSEのobjectiveにMLMを入れた方が、catastrophic forgettingを防げて性能が高かったとのこと。<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f" alt="image" loading="lazy" width="400" height="300"></p>
+<br><br><br><br># Unsupervised SimCSEの実験<br><br>異なるdata augmentation手法と比較した結果、dropoutを適用する手法の方が性能が高かった。MLMや, deletion, 類義語への置き換え等よりも高い性能を獲得しているのは興味深い。また、Next Sentence Predictionと比較しても、高い性能を達成。Next Sentence Predictionは、word deletion等のほぼ類似したテキストから直接的に類似関係にあるペアから学習するというより、Sentenceの意味内容のつながりに基づいてモデルの言語理解能力を向上させ、そのうえで類似度を測るという間接的な手法だが、word deletionに負けている。一方、dropoutを適用するだけの（直接的に類似ペアから学習する）本手法はより高い性能を示している。<br><br>[image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0ea3549e-3363-4857-94e6-a1ef474aa191)<br><br><br><br>なぜうまくいくかを分析するために、異なる設定で実験し、alignment（正例との近さ）とuniformity（どれだけembeddingが一様に分布しているか）を、10 stepごとにplotした結果が以下。dropoutを適用しない場合と、常に同じ部分をマスクする方法（つまり、全く同じembeddingから学習する）設定を見ると、学習が進むにつれuniformityは改善するが、alignmentが悪くなっていっている。一方、SimCSEはalignmentを維持しつつ、uniformityもよくなっていっていることがわかる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f488cb2-b15a-4e00-9452-8e48780abe8a" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5e815cf7-b412-4f1b-8adb-116f0dcd2fee" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># Supervised SimCSEの実験<br><br>アノテーションデータを用いてContrastiveLearningするにあたり、どういったデータを正例としてみなすと良いかを検証するために様々なデータセットで学習し性能を検証した。<br><br><br><br>- QQP4: Quora question pairs<br><br>- Flickr30k (Young et al., 2014): 同じ画像に対して、5つの異なる人間が記述したキャプションが存在<br><br>- ParaNMT (Wieting and Gimpel, 2018): back-translationによるparaphraseのデータセットa<br><br>- NLI datasets: SNLIとMNLI<br><br><br><br>実験の結果、NLI datasetsが最も高い性能を示した。この理由としては、NLIデータセットは、crowd sourcingタスクで人手で作成された高品質なデータセットであることと、lexical overlapが小さくなるようにsentenceのペアが作成されていることが起因している。実際、NLI datsetのlexical overlapは39%だったのに対し、ほかのデータセットでは60%であった。<br><br><br><br>また、condunctionsとなるペアを明示的に負例として与えることで、より性能が向上した（普通はnegative samplingする、というかバッチ内の正例以外のものを強制的に負例とする。こうすると、意味が同じでも負例になってしまう事例が出てくることになる）。より難しいNLIタスクを含むANLIデータセットを追加した場合は、性能が改善しなかった。この理由については考察されていない。性能向上しそうな気がするのに。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ae05711b-5ad4-4a53-837b-c57e9a39da62" alt="image" loading="lazy" width="550" height="400"><br><br></p>
+<p># 他手法との比較結果<br><br>SimCSEがよい。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/510744ff-01bb-47be-9e30-2efa49e0f923" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># Ablation Studies<br><br>異なるpooling方法で、どのようにsentence embeddingを作成するかで性能の違いを見た。originalのBERTの実装では、CLS token のembeddingの上にMLP layerがのっかっている。これの有無などと比較。<br><br>Unsupervised SimCSEでは、training時だけMLP layerをのっけて、test時はMLPを除いた方が良かった。一方、Supervised SimCSEでは、 MLP layerをのっけたまんまで良かったとのこと。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/73116c6a-d48f-42bc-aa5e-8342bb068052" alt="image" loading="lazy" width="550" height="400"><br><br></p>
+<p>また、SimCSEで学習したsentence embeddingを別タスクにtransferして活用する際には、SimCSEのobjectiveにMLMを入れた方が、catastrophic forgettingを防げて性能が高かったとのこと。<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cc6d20c3-5a0c-4b5e-aa6d-63447c55363f" alt="image" loading="lazy" width="550" height="400"></p>
 <p>ablation studiesのhard negativesのところと、どのようにミニバッチを構成するか、それぞれのtransferしたタスクがどのようなものがしっかり読めていない。あとでよむ。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1412,38 +1412,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Novelty/" title="Noveltyに関する論文・技術記事メモの一覧">
-            Noveltyに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/InstructionTuning/" title="InstructionTuningに関する論文・技術記事メモの一覧">
+            InstructionTuningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 46</span> 
+  <span class="post-badge badge-new">📝 46</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Chain-of-Thought/" title="Chain-of-Thoughtに関する論文・技術記事メモの一覧">
-            Chain-of-Thoughtに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/LearningPath/" title="LearningPathに関する論文・技術記事メモの一覧">
+            LearningPathに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 69</span> 
-  <span class="post-badge badge-new">📝 69</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/System-Demonstration/" title="System Demonstrationに関する論文・技術記事メモの一覧">
-            System Demonstrationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Reference-free/" title="Reference-freeに関する論文・技術記事メモの一覧">
+            Reference-freeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 23</span> 
+  <span class="post-badge badge-new">📝 23</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/PhaseTransition/" title="PhaseTransitionに関する論文・技術記事メモの一覧">
-            PhaseTransitionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ComputerUse/" title="ComputerUseに関する論文・技術記事メモの一覧">
+            ComputerUseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 29</span> 
+  <span class="post-badge badge-new">📝 29</span>
 </span>
 </a>
         </li>

@@ -1061,7 +1061,7 @@ My Issue
 <span class="issue_date">Issue Date: 2021-06-01</span>
 <span class="snippet"><span>GPT Summary</span>- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># Overview<br><br>Contents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。<br><br>CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。<br><br>※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）<br><br><br><br>CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br># Experiments<br><br>BingNewsのサーバログデータを利用して評価。<br><br>データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。<br><br>2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。<br><br>また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。<br><br><br><br>word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。<br><br><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br><br><br>DeepFM超えを達成。<br><br>entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。<br><br>また、attentionを抜くとAUCは1ポイントほど減少する。<br><br><br><br>1ユーザのtraining/testセットのサンプル<br><br><img src="https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png" alt="image" loading="lazy" width="400" height="300"><br><br></strong></p>
+<strong># Overview<br><br>Contents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。<br><br>CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。<br><br>※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）<br><br><br><br>CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># Experiments<br><br>BingNewsのサーバログデータを利用して評価。<br><br>データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。<br><br>2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。<br><br>また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。<br><br><br><br>word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。<br><br><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br><br><br>DeepFM超えを達成。<br><br>entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。<br><br>また、attentionを抜くとAUCは1ポイントほど減少する。<br><br><br><br>1ユーザのtraining/testセットのサンプル<br><br><img src="https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png" alt="image" loading="lazy" width="550" height="400"><br><br></strong></p>
 <p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/365" target="_blank" rel="noopener noreferrer">Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</a>
 
 <br>
@@ -1185,17 +1185,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/ReversalCurse/" title="ReversalCurseに関する論文・技術記事メモの一覧">
-            ReversalCurseに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/WebSearch/" title="WebSearchに関する論文・技術記事メモの一覧">
-            WebSearchに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/IRT/" title="IRTに関する論文・技術記事メモの一覧">
+            IRTに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -1203,20 +1194,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Steering/" title="Steeringに関する論文・技術記事メモの一覧">
-            Steeringに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/review/" title="reviewに関する論文・技術記事メモの一覧">
+            reviewに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MoE(Mixture-of-Experts)/" title="MoE(Mixture-of-Experts)に関する論文・技術記事メモの一覧">
-            MoE(Mixture-of-Experts)に関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Semi-Supervised/" title="Semi-Supervisedに関する論文・技術記事メモの一覧">
+            Semi-Supervisedに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 66</span> 
-  <span class="post-badge badge-new">📝 66</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/CompoundAISystemsOptimization/" title="CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧">
+            CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>

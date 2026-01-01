@@ -1451,7 +1451,7 @@ My Issue
 <a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
 <span class="snippet"><span>GPT Summary</span>- Iter-CoTは、LLMsの推論チェーンのエラーを修正し、正確で包括的な推論を実現するための反復的ブートストラッピングアプローチを提案。適度な難易度の質問を選択することで、一般化能力を向上させ、10のデータセットで競争力のある性能を達成。</span>
-<span class="snippet"><span>Comment</span><p>Zero shot CoTからスタートし、正しく問題に回答できるようにreasoningを改善するようにpromptをreviseし続けるループを回す。最終的にループした結果を要約し、それらをプールする。テストセットに対しては、プールの中からNshotをサンプルしinferenceを行う。<br><img src="https://user-images.githubusercontent.com/12249301/234311707-0d6f3443-681a-4309-917b-d21fd1a8c024.jpeg" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>Zero shot CoTからスタートし、正しく問題に回答できるようにreasoningを改善するようにpromptをreviseし続けるループを回す。最終的にループした結果を要約し、それらをプールする。テストセットに対しては、プールの中からNshotをサンプルしinferenceを行う。<br><img src="https://user-images.githubusercontent.com/12249301/234311707-0d6f3443-681a-4309-917b-d21fd1a8c024.jpeg" alt="image" loading="lazy" width="550" height="400"></p>
 <p>できそうだなーと思っていたけど、早くもやられてしまった</p>
 <p>実装: 
 
@@ -1465,15 +1465,15 @@ My Issue
 </strong>
 <br>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">Automatic prompt augmentation and selection with chain-of-thought from labeled data, Shum+, The Hong Kong University of Science and Technology, arXiv'23</a>
-<br><br>のように推論時に適切なdemonstrationを選択するような取り組みは行われてきているが、test questionに対して推論するために、適切なexamplarsを選択するような方法は計算コストを増大させてしまう。<br><br>これら研究は誤ったrationaleを含むサンプルの利用を最小限に抑えて、その悪影響を防ぐことを目指している。<br><br><br><br>一方で、この研究では、誤ったrationaleを含むサンプルを活用して性能を向上させる。これは、たとえば学生が難解だが回答可能な問題に取り組むことによって、問題解決スキルを向上させる方法に類似している（すなわち、間違えた部分から学ぶ）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234752168-fe1d83a4-8d29-4f6c-8aa1-6bde1706beea.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>
-<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="400" height="300"><br><br></strong></p>
+<br><br>のように推論時に適切なdemonstrationを選択するような取り組みは行われてきているが、test questionに対して推論するために、適切なexamplarsを選択するような方法は計算コストを増大させてしまう。<br><br>これら研究は誤ったrationaleを含むサンプルの利用を最小限に抑えて、その悪影響を防ぐことを目指している。<br><br><br><br>一方で、この研究では、誤ったrationaleを含むサンプルを活用して性能を向上させる。これは、たとえば学生が難解だが回答可能な問題に取り組むことによって、問題解決スキルを向上させる方法に類似している（すなわち、間違えた部分から学ぶ）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234752168-fe1d83a4-8d29-4f6c-8aa1-6bde1706beea.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>
+<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"><br><br></strong></p>
 <p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p>
 <p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
 
 <br>
 <br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
 <br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, ACL'24</a>
-<br><br>と比較。<br><br>Iter-CoTが11個のデータセット全てでoutperformした。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234792846-e8fd2f8b-6e26-48fc-9e5d-785bcf2a6b6a.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>weak bootstrapingのiterationは4回くらいで頭打ちになった<br><br><img src="https://user-images.githubusercontent.com/12249301/234793570-f57e56e4-7320-4be4-9c93-ee3be01ad389.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>また、手動でreasoning chainを修正した結果と、contextにannotation情報を残し、最後にsummarizeする方法を比較した結果、後者の方が性能が高かった。このため、contextの情報を利用しsummarizeすることが効果的であることがわかる。</p></span><br><br>
+<br><br>と比較。<br><br>Iter-CoTが11個のデータセット全てでoutperformした。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234792846-e8fd2f8b-6e26-48fc-9e5d-785bcf2a6b6a.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>weak bootstrapingのiterationは4回くらいで頭打ちになった<br><br><img src="https://user-images.githubusercontent.com/12249301/234793570-f57e56e4-7320-4be4-9c93-ee3be01ad389.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>また、手動でreasoning chainを修正した結果と、contextにannotation情報を残し、最後にsummarizeする方法を比較した結果、後者の方が性能が高かった。このため、contextの情報を利用しsummarizeすることが効果的であることがわかる。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="freshllms-refreshing-2956" class="title-link">[Paper Note] FreshLLMs: Refreshing Large Language Models with Search Engine  Augmentation, Tu Vu+, ACL'23 Findings, 2023.10</h3>
@@ -1570,7 +1570,7 @@ My Issue
 <a class="button" href="CommonsenseReasoning.html" target="_blank" rel="noopener noreferrer">#CommonsenseReasoning</a>
 <span class="issue_date">Issue Date: 2025-07-31</span>
 <span class="snippet"><span>GPT Summary</span>- 生成的常識推論をテストするためのタスクCommonGenを提案し、35,000の概念セットに基づく79,000の常識的記述を含むデータセットを構築。タスクは、与えられた概念を用いて一貫した文を生成することを求め、関係推論と構成的一般化能力が必要。実験では、最先端モデルと人間のパフォーマンスに大きなギャップがあることが示され、生成的常識推論能力がCommonsenseQAなどの下流タスクに転送可能であることも確認。</span>
-<span class="snippet"><span>Comment</span><p>ベンチマークの概要。複数のconceptが与えられた時に、それらconceptを利用した常識的なテキストを生成するベンチマーク。concept間の関係性を常識的な知識から推論し、Unseenなconceptの組み合わせでも意味を構成可能な汎化性能が求められる。<br><img src="https://github.com/user-attachments/assets/2ebb8c0d-88f7-4858-ac43-29f341c586ec" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>ベンチマークの概要。複数のconceptが与えられた時に、それらconceptを利用した常識的なテキストを生成するベンチマーク。concept間の関係性を常識的な知識から推論し、Unseenなconceptの組み合わせでも意味を構成可能な汎化性能が求められる。<br><img src="https://github.com/user-attachments/assets/2ebb8c0d-88f7-4858-ac43-29f341c586ec" alt="image" loading="lazy" width="550" height="400"></p>
 <p>PJ page:
 
 
@@ -1634,38 +1634,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Subword/" title="Subwordに関する論文・技術記事メモの一覧">
-            Subwordに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/In-ContextLearning/" title="In-ContextLearningに関する論文・技術記事メモの一覧">
+            In-ContextLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 39</span> 
+  <span class="post-badge badge-new">📝 39</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AAAI/" title="AAAIに関する論文・技術記事メモの一覧">
-            AAAIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Scalability/" title="Scalabilityに関する論文・技術記事メモの一覧">
+            Scalabilityに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 15</span> 
-  <span class="post-badge badge-new">📝 15</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Spectrum/" title="Spectrumに関する論文・技術記事メモの一覧">
-            Spectrumに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/EfficiencyImprovement/" title="EfficiencyImprovementに関する論文・技術記事メモの一覧">
+            EfficiencyImprovementに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 248</span> 
+  <span class="post-badge badge-new">📝 248</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/WI/" title="WIに関する論文・技術記事メモの一覧">
-            WIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Faithfulness/" title="Faithfulnessに関する論文・技術記事メモの一覧">
+            Faithfulnessに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>

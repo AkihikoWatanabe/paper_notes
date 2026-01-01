@@ -1179,7 +1179,7 @@ My Issue
 </div>
 
 
-<p>ポリシーを初期化し、RLを実行しtrajeatory tを取得。tをrejection samplingし成功したtrajectoryでエキスパートデータセットを作成。作成したエキスパートデータセットでポリシーをSFT(=Rejection SamplingしたデータでSFTすることをRFTと呼ぶ）する（これが次iterationの初期化となる）といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/e2aefd00-2218-487c-a58d-d234eaffd004" alt="image" loading="lazy" width="400" height="300"><br><br>RLはAdvantageによって学習されるため、trajectoryの相対的な品質に基づいて学習をする。このため、バッチ内のすべてのtrajectoryが正解した場合などはadvantageが限りなくゼロに近づき学習のシグナルを得られない。<br><br>一方RFTは絶対的なRewardを用いており（RLVRの場合は成功したら1,そうでなければ0）、これがバッチ全体のパフォーマンスに依存しない安定した分散の小さい学習のシグナルを与える。<br><br>このように両者は補完的な関係にある。ただしRFTは成功したtrajectory全てに均等な重みを与えるため、既にポリシーが解くことができる問題にフォーカスしすぎることによって効率性が悪化する問題があるため、提案手法では成功率が低いhardなサンプルのみにエキスパートデータをフィルタリングする（＝active learning）ことで、モデルが自身に不足した能力を獲得することに効率的に注力することになる。<br><br>また、RFTを使うことは単なるヒューリスティックではなく、理論的なgroundingが存在する。すなわち、我々はまだ未知の"expert"な分布 p^*にポリシーが従うように学習をしたいがこれはMLEの観点で言うと式3に示されているような形式になる。p^*から直接データをサンプリングをすることができないが、RLのポリシーから近似的にサンプリングをすることができる。そこでMLEの式をimportance samplingの観点から再度定式化をすると式4のようになり、後はimportance weight wを求められれば良いことになる。これはp^*に近いtrajectoryはRewardが高く、そうでない場合は低い、つまりw \propto Reward な関係であるため近似的に求めることができ、これらを式4のMLEの式に代入するとRFTと同じ式が導出される。<br><br>みたいな話のようである。</p></span><br><br>
+<p>ポリシーを初期化し、RLを実行しtrajeatory tを取得。tをrejection samplingし成功したtrajectoryでエキスパートデータセットを作成。作成したエキスパートデータセットでポリシーをSFT(=Rejection SamplingしたデータでSFTすることをRFTと呼ぶ）する（これが次iterationの初期化となる）といったことを繰り返す。<br><img src="https://github.com/user-attachments/assets/e2aefd00-2218-487c-a58d-d234eaffd004" alt="image" loading="lazy" width="550" height="400"><br><br>RLはAdvantageによって学習されるため、trajectoryの相対的な品質に基づいて学習をする。このため、バッチ内のすべてのtrajectoryが正解した場合などはadvantageが限りなくゼロに近づき学習のシグナルを得られない。<br><br>一方RFTは絶対的なRewardを用いており（RLVRの場合は成功したら1,そうでなければ0）、これがバッチ全体のパフォーマンスに依存しない安定した分散の小さい学習のシグナルを与える。<br><br>このように両者は補完的な関係にある。ただしRFTは成功したtrajectory全てに均等な重みを与えるため、既にポリシーが解くことができる問題にフォーカスしすぎることによって効率性が悪化する問題があるため、提案手法では成功率が低いhardなサンプルのみにエキスパートデータをフィルタリングする（＝active learning）ことで、モデルが自身に不足した能力を獲得することに効率的に注力することになる。<br><br>また、RFTを使うことは単なるヒューリスティックではなく、理論的なgroundingが存在する。すなわち、我々はまだ未知の"expert"な分布 p^*にポリシーが従うように学習をしたいがこれはMLEの観点で言うと式3に示されているような形式になる。p^*から直接データをサンプリングをすることができないが、RLのポリシーから近似的にサンプリングをすることができる。そこでMLEの式をimportance samplingの観点から再度定式化をすると式4のようになり、後はimportance weight wを求められれば良いことになる。これはp^*に近いtrajectoryはRewardが高く、そうでない場合は低い、つまりw \propto Reward な関係であるため近似的に求めることができ、これらを式4のMLEの式に代入するとRFTと同じ式が導出される。<br><br>みたいな話のようである。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="multi-agent-evolve-3523" class="title-link">[Paper Note] Multi-Agent Evolve: LLM Self-Improve through Co-evolution, Yixing Chen+, arXiv'25, 2025.10</h3>
@@ -1457,8 +1457,8 @@ My Issue
 </div>
 
 
-<p>問題を生成するChallengerと与えられた問題を解くSolverを用意し、片方をfreezezさせた状態で交互にポリシーの更新を繰り返す。<br><br><img src="https://github.com/user-attachments/assets/05207756-3029-41a2-8dd0-e27de5228436" alt="image" loading="lazy" width="400" height="300"><br><br>
-<strong>### Challenger<br>-  （Challengerによる)問題生成→<br>- （freezed solverによる）self consistencyによるラベル付け→<br>- Solverの問題に対するempirical acc.（i.e., サンプリング回数mに対するmajorityが占める割合）でrewardを与えChallengerを更新<br><br>といった流れでポリシーが更新される。Rewardは他にも生成された問題間のBLEUを測り類似したものばかりの場合はペナルティを与える項や、フォーマットが正しく指定された通りになっているか、といったペナルティも導入する。<br><br>### Solver<br>- ChallengerのポリシーからN問生成し、それに対してSolverでself consistencyによって解答を生成<br>- empirical acc.を計算し、1/2との差分の絶対値を見て、簡単すぎる/難しすぎる問題をフィルタリング<br>  - これはカリキュラム学習的な意味合いのみならず、低品質な問題のフィルタリングにも寄与する<br>- フィルタリング後の問題を利用して、verifiable binary rewardでポリシーを更新<br><br>### 評価結果<br>数学ドメインに提案手法を適用したところ、iterごとに全体の平均性能は向上。<br><img src="https://github.com/user-attachments/assets/cbe780ec-a99b-4227-b983-4e24982a6af8" alt="image" loading="lazy" width="400" height="300"><br><br>提案手法で数学ドメインを学習し、generalドメインに汎化するか？を確認したところ、汎化することを確認（ただ、すぐにサチっているようにも見える）。、<br><img src="https://github.com/user-attachments/assets/bc0eb3e1-8ed1-4d36-b30e-095e8a160886" alt="image" loading="lazy" width="400" height="300"></strong></p>
+<p>問題を生成するChallengerと与えられた問題を解くSolverを用意し、片方をfreezezさせた状態で交互にポリシーの更新を繰り返す。<br><br><img src="https://github.com/user-attachments/assets/05207756-3029-41a2-8dd0-e27de5228436" alt="image" loading="lazy" width="550" height="400"><br><br>
+<strong>### Challenger<br>-  （Challengerによる)問題生成→<br>- （freezed solverによる）self consistencyによるラベル付け→<br>- Solverの問題に対するempirical acc.（i.e., サンプリング回数mに対するmajorityが占める割合）でrewardを与えChallengerを更新<br><br>といった流れでポリシーが更新される。Rewardは他にも生成された問題間のBLEUを測り類似したものばかりの場合はペナルティを与える項や、フォーマットが正しく指定された通りになっているか、といったペナルティも導入する。<br><br>### Solver<br>- ChallengerのポリシーからN問生成し、それに対してSolverでself consistencyによって解答を生成<br>- empirical acc.を計算し、1/2との差分の絶対値を見て、簡単すぎる/難しすぎる問題をフィルタリング<br>  - これはカリキュラム学習的な意味合いのみならず、低品質な問題のフィルタリングにも寄与する<br>- フィルタリング後の問題を利用して、verifiable binary rewardでポリシーを更新<br><br>### 評価結果<br>数学ドメインに提案手法を適用したところ、iterごとに全体の平均性能は向上。<br><img src="https://github.com/user-attachments/assets/cbe780ec-a99b-4227-b983-4e24982a6af8" alt="image" loading="lazy" width="550" height="400"><br><br>提案手法で数学ドメインを学習し、generalドメインに汎化するか？を確認したところ、汎化することを確認（ただ、すぐにサチっているようにも見える）。、<br><img src="https://github.com/user-attachments/assets/bc0eb3e1-8ed1-4d36-b30e-095e8a160886" alt="image" loading="lazy" width="550" height="400"></strong></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2383" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Questioning Language Models, Lili Chen+, arXiv'25</a>
 
 <br>
@@ -1569,7 +1569,7 @@ My Issue
 </div>
 
 
-<p>Figure3がとても勉強になる。Self-Evolveと呼んだ時に、それがどのようにEvolveするものなのかはきちんとチェックした方が良さそう。追加の学習をするのか否かなど。これによって使いやすさが段違いになりそうなので。<br><img src="https://github.com/user-attachments/assets/bfa7e8b3-2a5b-4b26-b474-deaee443ee25" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/bcaaadda-ef9b-49dc-a357-3cb6fdf01ca4" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>Figure3がとても勉強になる。Self-Evolveと呼んだ時に、それがどのようにEvolveするものなのかはきちんとチェックした方が良さそう。追加の学習をするのか否かなど。これによって使いやすさが段違いになりそうなので。<br><img src="https://github.com/user-attachments/assets/bfa7e8b3-2a5b-4b26-b474-deaee443ee25" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/bcaaadda-ef9b-49dc-a357-3cb6fdf01ca4" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mind-the-2080" class="title-link">[Paper Note] Mind the Gap: Examining the Self-Improvement Capabilities of Large  Language Models, Yuda Song+, ICLR'25</h3>
@@ -1756,7 +1756,7 @@ My Issue
 <a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <span class="issue_date">Issue Date: 2025-03-07</span>
 <span class="snippet"><span>GPT Summary</span>- 新しいツール統合型の長Chain-of-thought推論モデルSTARTを提案。STARTは外部ツールを活用し、自己学習フレームワークを通じて推論能力を向上。Hint-inferとHint Rejection Sampling Fine-Tuningを用いてLRMをファインチューニングし、科学QAや数学、コードベンチマークで高精度を達成。ベースモデルを大幅に上回り、最先端モデルに匹敵する性能を示す。</span>
-<span class="snippet"><span>Comment</span><p>論文の本題とは関係ないが、QwQ-32Bよりも、DeepSeek-R1-Distilled-Qwen32Bの方が性能が良いのは興味深い。やはり大きいパラメータから蒸留したモデルの方が、小さいパラメータに追加学習したモデルよりも性能が高い傾向にあるのだろうか（どういうデータで蒸留したかにもよるけど）。<br><img src="https://github.com/user-attachments/assets/53e77e67-2c46-4163-859b-ccb0a7cd631d" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>論文の本題とは関係ないが、QwQ-32Bよりも、DeepSeek-R1-Distilled-Qwen32Bの方が性能が良いのは興味深い。やはり大きいパラメータから蒸留したモデルの方が、小さいパラメータに追加学習したモデルよりも性能が高い傾向にあるのだろうか（どういうデータで蒸留したかにもよるけど）。<br><img src="https://github.com/user-attachments/assets/53e77e67-2c46-4163-859b-ccb0a7cd631d" alt="image" loading="lazy" width="550" height="400"></p>
 <p>OpenReview:
 
 
@@ -1875,7 +1875,7 @@ My Issue
 <a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-01-22</span>
 <span class="snippet"><span>GPT Summary</span>- 将来のモデルのトレーニングには超人的なフィードバックが必要であり、自己報酬を提供するSelf-Rewarding Language Modelsを研究している。LLM-as-a-Judgeプロンプトを使用して、言語モデル自体が自己報酬を提供し、高品質な報酬を得る能力を向上させることを示した。Llama 2 70Bを3回のイテレーションで微調整することで、既存のシステムを上回るモデルが得られることを示した。この研究は、改善可能なモデルの可能性を示している。</span>
-<span class="snippet"><span>Comment</span><p>人間の介入無しで（人間がアノテーションしたpreference data無しで）LLMのAlignmentを改善していく手法。LLM-as-a-Judge Promptingを用いて、LLM自身にpolicy modelとreward modelの役割の両方をさせる。unlabeledなpromptに対してpolicy modelとしてresponceを生成させた後、生成したレスポンスをreward modelとしてランキング付けし、DPOのpreference pairとして利用する、という操作を繰り返す。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32db0422-6fb1-4741-bdfa-45a5e83e76c4" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>人間の介入無しで（人間がアノテーションしたpreference data無しで）LLMのAlignmentを改善していく手法。LLM-as-a-Judge Promptingを用いて、LLM自身にpolicy modelとreward modelの役割の両方をさせる。unlabeledなpromptに対してpolicy modelとしてresponceを生成させた後、生成したレスポンスをreward modelとしてランキング付けし、DPOのpreference pairとして利用する、という操作を繰り返す。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32db0422-6fb1-4741-bdfa-45a5e83e76c4" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="large-language-2275" class="title-link">[Paper Note] Large Language Models Can Self-Improve, Jiaxin Huang+, EMNLP'23</h3>
@@ -1980,38 +1980,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/ItemBased/" title="ItemBasedに関する論文・技術記事メモの一覧">
-            ItemBasedに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/CommonsenseReasoning/" title="CommonsenseReasoningに関する論文・技術記事メモの一覧">
+            CommonsenseReasoningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Pixel-based/" title="Pixel-basedに関する論文・技術記事メモの一覧">
-            Pixel-basedに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/RecursiveModels/" title="RecursiveModelsに関する論文・技術記事メモの一覧">
+            RecursiveModelsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DownstreamTasks/" title="DownstreamTasksに関する論文・技術記事メモの一覧">
-            DownstreamTasksに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Citations/" title="Citationsに関する論文・技術記事メモの一覧">
+            Citationsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Out-of-DistributionDetection/" title="Out-of-DistributionDetectionに関する論文・技術記事メモの一覧">
-            Out-of-DistributionDetectionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Hallucination/" title="Hallucinationに関する論文・技術記事メモの一覧">
+            Hallucinationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
+  <span class="post-badge badge-new">📝 31</span>
 </span>
 </a>
         </li>

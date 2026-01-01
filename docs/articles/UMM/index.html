@@ -1087,7 +1087,7 @@ My Issue
 </div>
 
 
-<p>Autoregressiveにnext embedding prediction（≠reconstruction)をする。エンコーダ自身のembeddingとautoregressive headが生成したembeddingを比較することでlossが計算されるが、双方に勾配を流すとほぼ全てのパッチが同じembeddingを共有するという解に到達し何も学習されないので、エンコーダのエンコード結果（＝target)のgradientをstopする。これにより、targetとしての勾配は受け取らないが（predictionに近づけようとする勾配）、文脈に応じたベクトルを作り、next embeddingを予測する入力としての勾配は受け取るので、エンコーダは文脈に応じた学習を続けることができる。<br><br><img src="https://github.com/user-attachments/assets/2221a245-180a-4de6-877c-45b7f1b6255d" alt="image" loading="lazy" width="400" height="300"></p>
+<p>Autoregressiveにnext embedding prediction（≠reconstruction)をする。エンコーダ自身のembeddingとautoregressive headが生成したembeddingを比較することでlossが計算されるが、双方に勾配を流すとほぼ全てのパッチが同じembeddingを共有するという解に到達し何も学習されないので、エンコーダのエンコード結果（＝target)のgradientをstopする。これにより、targetとしての勾配は受け取らないが（predictionに近づけようとする勾配）、文脈に応じたベクトルを作り、next embeddingを予測する入力としての勾配は受け取るので、エンコーダは文脈に応じた学習を続けることができる。<br><br><img src="https://github.com/user-attachments/assets/2221a245-180a-4de6-877c-45b7f1b6255d" alt="image" loading="lazy" width="550" height="400"></p>
 <p>コミュニティからのフィードバックを受けて執筆されたブログ:<br>
 
 
@@ -1808,7 +1808,7 @@ My Issue
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <span class="issue_date">Issue Date: 2025-07-26</span>
 <span class="snippet"><span>GPT Summary</span>- Ming-Omniは、画像、テキスト、音声、動画を処理できる統一マルチモーダルモデルで、音声生成と画像生成において優れた能力を示す。専用エンコーダを用いて異なるモダリティからトークンを抽出し、MoEアーキテクチャで処理することで、効率的にマルチモーダル入力を融合。音声デコーダと高品質な画像生成を統合し、コンテキストに応じたチャットやテキストから音声への変換、画像編集が可能。Ming-Omniは、GPT-4oに匹敵する初のオープンソースモデルであり、研究と開発を促進するためにコードとモデルの重みを公開。</span>
-<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/62fe9563-ed6b-40bf-ad95-067407534626" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p><img src="https://github.com/user-attachments/assets/62fe9563-ed6b-40bf-ad95-067407534626" alt="image" loading="lazy" width="550" height="400"></p>
 <p>元ポスト:
 
 
@@ -1912,8 +1912,8 @@ My Issue
 <span class="issue_date">Issue Date: 2023-12-29</span>
 <span class="snippet"><span>GPT Summary</span>- Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
 <span class="snippet"><span>Comment</span><p>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI</p>
-<p>モデルのアーキテクチャ図<br><img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy" width="400" height="300"><br><br>マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:<br><br>- 2D Rotary Embedding<br>  - Positional EncodingとしてRoPEを採用<br>  - 画像のような2次元データのモダリティの場合はRoPEを2次元に拡張する。具体的には、位置(i, j)のトークンについては、Q, Kのembeddingを半分に分割して、それぞれに対して独立にi, jのRoPE Embeddingを適用することでi, j双方の情報を組み込む。<br>- QK Normalization<br>  - image, audioのモダリティを組み込むことでMHAのlogitsが非常に大きくなりatteetion weightが0/1の極端な値をとるようになり訓練の不安定さにつながった。このため、dot product attentionを適用する前にLayerNormを組み込んだ。<br>- Scaled Cosine Attention<br>  - Image Historyモダリティにおいて固定長のEmbeddingを得るためにPerceiver Resamplerを扱ったているが、こちらも上記と同様にAttentionのlogitsが極端に大きくなったため、cosine類似度をベースとしたScaled Cosine Attention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2259" target="_blank" rel="noopener noreferrer">[Paper Note] Swin Transformer V2: Scaling Up Capacity and Resolution, Ze Liu+, arXiv'21</a>
- を利用することで、大幅に訓練の安定性が改善された。<br>- その他<br>  - attention logitsにはfp32を適用<br>  - 事前学習されたViTとASTを同時に更新すると不安定につながったため、事前学習の段階ではfreezeし、instruction tuningの最後にfinetuningを実施<br><br><img src="https://github.com/user-attachments/assets/74c8fa3a-8fb5-4785-8dd3-6a8cf3c7cfeb" alt="image" loading="lazy" width="400" height="300"></p>
+<p>モデルのアーキテクチャ図<br><img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy" width="550" height="400"><br><br>マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:<br><br>- 2D Rotary Embedding<br>  - Positional EncodingとしてRoPEを採用<br>  - 画像のような2次元データのモダリティの場合はRoPEを2次元に拡張する。具体的には、位置(i, j)のトークンについては、Q, Kのembeddingを半分に分割して、それぞれに対して独立にi, jのRoPE Embeddingを適用することでi, j双方の情報を組み込む。<br>- QK Normalization<br>  - image, audioのモダリティを組み込むことでMHAのlogitsが非常に大きくなりatteetion weightが0/1の極端な値をとるようになり訓練の不安定さにつながった。このため、dot product attentionを適用する前にLayerNormを組み込んだ。<br>- Scaled Cosine Attention<br>  - Image Historyモダリティにおいて固定長のEmbeddingを得るためにPerceiver Resamplerを扱ったているが、こちらも上記と同様にAttentionのlogitsが極端に大きくなったため、cosine類似度をベースとしたScaled Cosine Attention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2259" target="_blank" rel="noopener noreferrer">[Paper Note] Swin Transformer V2: Scaling Up Capacity and Resolution, Ze Liu+, arXiv'21</a>
+ を利用することで、大幅に訓練の安定性が改善された。<br>- その他<br>  - attention logitsにはfp32を適用<br>  - 事前学習されたViTとASTを同時に更新すると不安定につながったため、事前学習の段階ではfreezeし、instruction tuningの最後にfinetuningを実施<br><br><img src="https://github.com/user-attachments/assets/74c8fa3a-8fb5-4785-8dd3-6a8cf3c7cfeb" alt="image" loading="lazy" width="550" height="400"></p>
 <p>目的関数としては、Mixture of Denoisers (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )に着想を得て、Multimodal Mixture of Denoisersを提案。MoDでは、<br>- \[R\]: 通常のspan corruption (1--5 token程度のspanをmaskする)<br>- \[S\]: causal language modeling (inputを2つのサブシーケンスに分割し、前方から後方を予測する。前方部分はBi-directionalでも可)<br>- \[X\]: extreme span corruption (12&gt;=token程度のspanをmaskする)<br><br>の3種類が提案されており、モダリティごとにこれらを使い分ける:<br>- text modality: UL2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )を踏襲<br>- image, audioがtargetの場合: 2つの類似したパラダイムを定義し利用<br>  - \[R\]: patchをランダムにx%マスクしre-constructする<br>  - \[S\]: inputのtargetとは異なるモダリティのみの情報から、targetモダリティを生成する<br><br>訓練時には prefixとしてmodality token \[Text\], \[Image\], \[Audio\] とparadigm token \[R\], \[S\], \[X\] をタスクを指示するトークンとして利用している。</p>
@@ -2046,7 +2046,7 @@ My Issue
 
 
 </p>
-<p>text, image/video, audioをinputし、audioを生成するomniモデル<br><img src="https://github.com/user-attachments/assets/7af9971e-c75f-4330-aca7-7f00547f97ae" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>text, image/video, audioをinputし、audioを生成するomniモデル<br><img src="https://github.com/user-attachments/assets/7af9971e-c75f-4330-aca7-7f00547f97ae" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ming-flash-omni-preview-3489" class="title-link">Ming-flash-omni-Preview, inclusionAI, 2025.10</h3>
@@ -2310,7 +2310,7 @@ My Issue
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <span class="issue_date">Issue Date: 2025-01-28</span>
 <span class="snippet"><span>Comment</span><p>DeepSeekによる新たなUMM、Janus-Proが本日リリース。MIT License</p>
-<p>Janus-Proのパフォーマンス。<br><br>github上でのパフォーマンスの図解から引用。マルチモーダル（テキスト+画像）の理解に関するベンチマークでLLaVA超え。GenEval, DPG Benchと呼ばれる画像生成ベンチマークでDALL-E 3超え。<br><img src="https://github.com/user-attachments/assets/39b51e99-723d-4105-a113-e4bfa847c69b" alt="image" loading="lazy" width="400" height="300"><br><br><br>テクニカルレポート中での詳細から引用。どのベンチマークでも基本的に最高性能なように見える。<br><img src="https://github.com/user-attachments/assets/4c1bd071-966f-4d51-99f4-e60fa2f36b0a" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/a0b22d6e-debb-420a-bf8d-fe8833583d09" alt="image" loading="lazy" width="400" height="300"><br><br>テクニカルレポート: 
+<p>Janus-Proのパフォーマンス。<br><br>github上でのパフォーマンスの図解から引用。マルチモーダル（テキスト+画像）の理解に関するベンチマークでLLaVA超え。GenEval, DPG Benchと呼ばれる画像生成ベンチマークでDALL-E 3超え。<br><img src="https://github.com/user-attachments/assets/39b51e99-723d-4105-a113-e4bfa847c69b" alt="image" loading="lazy" width="550" height="400"><br><br><br>テクニカルレポート中での詳細から引用。どのベンチマークでも基本的に最高性能なように見える。<br><img src="https://github.com/user-attachments/assets/4c1bd071-966f-4d51-99f4-e60fa2f36b0a" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/a0b22d6e-debb-420a-bf8d-fe8833583d09" alt="image" loading="lazy" width="550" height="400"><br><br>テクニカルレポート: 
 
 
 <a href="https://github.com/deepseek-ai/Janus/blob/main/janus_pro_tech_report.pdf" target="_blank" rel="noopener noreferrer">https://github.com/deepseek-ai/Janus/blob/main/janus_pro_tech_report.pdf</a>
@@ -2376,17 +2376,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Tools/" title="Toolsに関する論文・技術記事メモの一覧">
-            Toolsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 53</span> 
-  <span class="post-badge badge-new">📝 53</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/AIED/" title="AIEDに関する論文・技術記事メモの一覧">
-            AIEDに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Deduplication/" title="Deduplicationに関する論文・技術記事メモの一覧">
+            Deduplicationに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
@@ -2394,17 +2385,26 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/L@S/" title="L@Sに関する論文・技術記事メモの一覧">
-            L@Sに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ConversationalRecommenderSystems/" title="ConversationalRecommenderSystemsに関する論文・技術記事メモの一覧">
+            ConversationalRecommenderSystemsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SpokenLanguageGeneration/" title="SpokenLanguageGenerationに関する論文・技術記事メモの一覧">
-            SpokenLanguageGenerationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/UnitTest/" title="UnitTestに関する論文・技術記事メモの一覧">
+            UnitTestに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/ICWSM/" title="ICWSMに関する論文・技術記事メモの一覧">
+            ICWSMに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>

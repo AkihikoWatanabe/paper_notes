@@ -1086,7 +1086,7 @@ My Issue
 </div>
 
 
-<p>Autoregressiveにnext embedding prediction（≠reconstruction)をする。エンコーダ自身のembeddingとautoregressive headが生成したembeddingを比較することでlossが計算されるが、双方に勾配を流すとほぼ全てのパッチが同じembeddingを共有するという解に到達し何も学習されないので、エンコーダのエンコード結果（＝target)のgradientをstopする。これにより、targetとしての勾配は受け取らないが（predictionに近づけようとする勾配）、文脈に応じたベクトルを作り、next embeddingを予測する入力としての勾配は受け取るので、エンコーダは文脈に応じた学習を続けることができる。<br><br><img src="https://github.com/user-attachments/assets/2221a245-180a-4de6-877c-45b7f1b6255d" alt="image" loading="lazy" width="400" height="300"></p>
+<p>Autoregressiveにnext embedding prediction（≠reconstruction)をする。エンコーダ自身のembeddingとautoregressive headが生成したembeddingを比較することでlossが計算されるが、双方に勾配を流すとほぼ全てのパッチが同じembeddingを共有するという解に到達し何も学習されないので、エンコーダのエンコード結果（＝target)のgradientをstopする。これにより、targetとしての勾配は受け取らないが（predictionに近づけようとする勾配）、文脈に応じたベクトルを作り、next embeddingを予測する入力としての勾配は受け取るので、エンコーダは文脈に応じた学習を続けることができる。<br><br><img src="https://github.com/user-attachments/assets/2221a245-180a-4de6-877c-45b7f1b6255d" alt="image" loading="lazy" width="550" height="400"></p>
 <p>コミュニティからのフィードバックを受けて執筆されたブログ:<br>
 
 
@@ -1134,7 +1134,7 @@ My Issue
 
 
 </p>
-<p>これまでの拡散モデルベースのImage GeneiationモデルにおけるVAEを、事前学習済み（self supervised learning)のvision encoder（本稿ではDINOv3)に置き換えfreezeし、それとは別途Residual Encoderと呼ばれるViTベースのEncoderを学習する。前者は画像の意味情報を捉える能力をそのまま保持し、Residual Encoder側でReconstructionをする上でのPerceptualな情報等の（vision encoderでは失われてしまう）より精緻な特徴を捉える。双方のEncoder出力はchannel次元でconcatされ、SVG Featureを形成する。SVG Decoderは、SVG FeatureをPixelスペースに戻す役割を果たす。このアーキテクチャはシンプルで軽量だが、DINOv3による強力な意味的な識別力を保ちつつ、精緻な特徴を捉える能力を補完できる。Figure 5を見ると、実際にDINOv3のみと比較して、Residual Encoderによって、細かい部分がより正確なReconstructionが実現できていることが定性的にわかる。学習時はReconstruction lossを使うが、Residual Encoderに過剰に依存するだけめなく、outputの数値的な値域が異なり、DINOv3の意味情報を損なう恐れが足るため、Residual Encoderの出力の分布をDINOv3とalignするように学習する。<br><br><img src="https://github.com/user-attachments/assets/9f5266c3-b46e-4e3e-a3fe-2f146a7e2d63" alt="image" loading="lazy" width="400" height="300"><br><br>VAE Encoderによるlatent vectorは低次元だが、提案手法はより高次元なベクトルを扱うため、Diffusionモデルの学習が難しいと考えられるが、SVG Featureの特徴量はうまく分散しており、安定してFlow Matchingで学習ができるとのこと。<br><br>実際、実験結果を見ると安定して、しかもサンプル効率がベースラインと比較して大幅に高く収束していることが見受けられる。<br><img src="https://github.com/user-attachments/assets/2ddccbe4-2ad5-4d59-8e7f-6ed9cc32a82c" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>これまでの拡散モデルベースのImage GeneiationモデルにおけるVAEを、事前学習済み（self supervised learning)のvision encoder（本稿ではDINOv3)に置き換えfreezeし、それとは別途Residual Encoderと呼ばれるViTベースのEncoderを学習する。前者は画像の意味情報を捉える能力をそのまま保持し、Residual Encoder側でReconstructionをする上でのPerceptualな情報等の（vision encoderでは失われてしまう）より精緻な特徴を捉える。双方のEncoder出力はchannel次元でconcatされ、SVG Featureを形成する。SVG Decoderは、SVG FeatureをPixelスペースに戻す役割を果たす。このアーキテクチャはシンプルで軽量だが、DINOv3による強力な意味的な識別力を保ちつつ、精緻な特徴を捉える能力を補完できる。Figure 5を見ると、実際にDINOv3のみと比較して、Residual Encoderによって、細かい部分がより正確なReconstructionが実現できていることが定性的にわかる。学習時はReconstruction lossを使うが、Residual Encoderに過剰に依存するだけめなく、outputの数値的な値域が異なり、DINOv3の意味情報を損なう恐れが足るため、Residual Encoderの出力の分布をDINOv3とalignするように学習する。<br><br><img src="https://github.com/user-attachments/assets/9f5266c3-b46e-4e3e-a3fe-2f146a7e2d63" alt="image" loading="lazy" width="550" height="400"><br><br>VAE Encoderによるlatent vectorは低次元だが、提案手法はより高次元なベクトルを扱うため、Diffusionモデルの学習が難しいと考えられるが、SVG Featureの特徴量はうまく分散しており、安定してFlow Matchingで学習ができるとのこと。<br><br>実際、実験結果を見ると安定して、しかもサンプル効率がベースラインと比較して大幅に高く収束していることが見受けられる。<br><img src="https://github.com/user-attachments/assets/2ddccbe4-2ad5-4d59-8e7f-6ed9cc32a82c" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="diffusion-transformers-3258" class="title-link">[Paper Note] Diffusion Transformers with Representation Autoencoders, Boyang Zheng+, arXiv'25, 2025.10</h3>
@@ -1291,7 +1291,7 @@ My Issue
 
 
 </p>
-<p>CLIP, SigLIPとは異なり完全にオープンなVision Encoder<br><img src="https://github.com/user-attachments/assets/b7c8eb07-45df-4ab3-9cd2-6b31af46e761" alt="image" loading="lazy" width="400" height="300"></p>
+<p>CLIP, SigLIPとは異なり完全にオープンなVision Encoder<br><img src="https://github.com/user-attachments/assets/b7c8eb07-45df-4ab3-9cd2-6b31af46e761" alt="image" loading="lazy" width="550" height="400"></p>
 <p>v2の解説:<br>
 
 
@@ -1520,7 +1520,7 @@ My Issue
 
 
 </p>
-<p>画像処理において、物体の異なるスケールや、解像度に対処するために、PatchMergeと呼ばれるプーリングのような処理と、固定サイズのローカルなwindowに分割してSelf-Attentionを実施し、layerごとに通常のwindowとシフトされたwindowを適用することで、window間を跨いだ関係性も考慮できるようにする機構を導入したモデル。<br><img src="https://github.com/user-attachments/assets/a2d5f78c-27ec-4f18-bd7d-5475085cfa7b" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/92fb10e1-614e-44ef-9e65-3920cd863d46" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/2b8a543a-069e-468a-bc3c-1f288cdcf577" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>画像処理において、物体の異なるスケールや、解像度に対処するために、PatchMergeと呼ばれるプーリングのような処理と、固定サイズのローカルなwindowに分割してSelf-Attentionを実施し、layerごとに通常のwindowとシフトされたwindowを適用することで、window間を跨いだ関係性も考慮できるようにする機構を導入したモデル。<br><img src="https://github.com/user-attachments/assets/a2d5f78c-27ec-4f18-bd7d-5475085cfa7b" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/92fb10e1-614e-44ef-9e65-3920cd863d46" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/2b8a543a-069e-468a-bc3c-1f288cdcf577" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="efficientnet-rethinking-1957" class="title-link">EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks, Mingxing Tan+, ICML'19</h3>
@@ -1727,8 +1727,8 @@ My Issue
 <a class="button" href="CVPR.html" target="_blank" rel="noopener noreferrer">#CVPR</a>
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2021-11-04</span>
-<span class="snippet"><span>Comment</span><p>ResNet論文<br><br>ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショートカットができるようにしている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140301726-1d2e89e1-1d69-43d9-8d2b-0adb272e577a.png" alt="image" loading="lazy" width="400" height="300"><br><br><br><br>ResNetが提案される以前、モデルを深くすれば表現力が上がるはずなのに、実際には精度が下がってしまうことから、理論上レイヤーが恒等関数となるように初期化すれば、深いモデルでも浅いモデルと同等の表現が獲得できる、と言う考え方を発展させた。<br><br><br><br>（ステートオブAIガイドに基づく）</p>
-<p>同じパラメータ数でより層を深くできる（Plainな構造と比べると層が1つ増える）Bottleneckアーキテクチャも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302452-649b0ea7-cce4-44c1-9e7d-b509ef8bca52.png" alt="image" loading="lazy" width="400" height="300"><br><br></p>
+<span class="snippet"><span>Comment</span><p>ResNet論文<br><br>ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショートカットができるようにしている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140301726-1d2e89e1-1d69-43d9-8d2b-0adb272e577a.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>ResNetが提案される以前、モデルを深くすれば表現力が上がるはずなのに、実際には精度が下がってしまうことから、理論上レイヤーが恒等関数となるように初期化すれば、深いモデルでも浅いモデルと同等の表現が獲得できる、と言う考え方を発展させた。<br><br><br><br>（ステートオブAIガイドに基づく）</p>
+<p>同じパラメータ数でより層を深くできる（Plainな構造と比べると層が1つ増える）Bottleneckアーキテクチャも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302452-649b0ea7-cce4-44c1-9e7d-b509ef8bca52.png" alt="image" loading="lazy" width="550" height="400"><br><br></p>
 <p>今や当たり前のように使われているResidual Connectionは、層の深いネットワークを学習するために必須の技術なのだと再認識。</p></span><br><br>
 </article>
 </div>
@@ -1786,38 +1786,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Abstractive/" title="Abstractiveに関する論文・技術記事メモの一覧">
-            Abstractiveに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Adaptation/" title="Adaptationに関する論文・技術記事メモの一覧">
+            Adaptationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
-  <span class="post-badge badge-new">📝 16</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/NLP/" title="NLPに関する論文・技術記事メモの一覧">
-            NLPに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Planning/" title="Planningに関する論文・技術記事メモの一覧">
+            Planningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2371</span> 
-  <span class="post-badge badge-new">📝 2371</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/EACL/" title="EACLに関する論文・技術記事メモの一覧">
-            EACLに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/TimeSeriesDataProcessing/" title="TimeSeriesDataProcessingに関する論文・技術記事メモの一覧">
+            TimeSeriesDataProcessingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/EmbodiedAI/" title="EmbodiedAIに関する論文・技術記事メモの一覧">
-            EmbodiedAIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/VisionLanguageActionModel/" title="VisionLanguageActionModelに関する論文・技術記事メモの一覧">
+            VisionLanguageActionModelに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
-  <span class="post-badge badge-new">📝 24</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 25</span> 
+  <span class="post-badge badge-new">📝 25</span>
 </span>
 </a>
         </li>

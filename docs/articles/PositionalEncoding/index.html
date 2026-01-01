@@ -1184,8 +1184,8 @@ My Issue
 <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/?utm_source=twitter&utm_medium=organic_social&utm_content=image&utm_campaign=llama4)" target="_blank" rel="noopener noreferrer">https://ai.meta.com/blog/llama-4-multimodal-intelligence/?utm_source=twitter&utm_medium=organic_social&utm_content=image&utm_campaign=llama4)</a>
 
 
-<p>斜め読みだが、length generalizationを評価する上でdownstream taskに焦点を当て、3つの代表的なカテゴリに相当するタスクで評価したところ、この観点においてはT5のrelative positinal encodingとNoPE（位置エンコードディング無し）のパフォーマンスが良く、<br><br><img src="https://github.com/user-attachments/assets/dddadfff-ab28-4073-96c3-831eb16845a0" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/c6ec8e0e-7abb-4330-be23-2261486a477c" alt="image" loading="lazy" width="400" height="300"><br><br>NoPEは絶対位置エンコーディングと相対位置エンコーディングを理論上実現可能であり[^1]<br><img src="https://github.com/user-attachments/assets/bbcf797a-d394-42d4-b017-08d7dba4261c" alt="image" loading="lazy" width="400" height="300"><br><br>実際に学習された異なる2つのモデルに対して同じトークンをそれぞれinputし、同じ深さのLayerの全てのattention distributionの組み合わせからJensen Shannon Divergenceで距離を算出し、最も小さいものを2モデル間の当該layerの距離として可視化すると下記のようになり、NoPEとT5のrelative positional encodingが最も類似していることから、NoPEが学習を通じて（実用上は）相対位置エンコーディングのようなものを学習することが分かった。<br><img src="https://github.com/user-attachments/assets/9619c7e5-0612-45de-8717-1634bee509b7" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]:深さ1のLayerのHidden State H^1から絶対位置の復元が可能であり（つまり、当該レイヤーのHが絶対位置に関する情報を保持している）、この前提のもと、後続のLayerがこの情報を上書きしないと仮定した場合に、相対位置エンコーディングを実現できる。</p>
-<p>また、CoT/Scratchpadはlong sequenceに対する汎化性能を向上させることがsmall scaleではあるが先行研究で示されており、Positional Encodingを変化させた時にCoT/Scratchpadの性能にどのような影響を与えるかを調査。<br><br>具体的には、CoT/Scratchpadのフォーマットがどのようなものが有効かも明らかではないので、5種類のコンポーネントの組み合わせでフォーマットを構成し、mathematical reasoningタスクで以下のような設定で訓練し<br><br>- さまざまなコンポーネントの組み合わせで異なるフォーマットを作成し、<br>- 全ての位置エンコーディングあり/なしモデルを訓練<br><br>これらを比較した。この結果、CoT/Scratchpadはフォーマットに関係なく、特定のタスクでのみ有効（有効かどうかはタスク依存）であることが分かった。このことから、CoT/Scratcpad（つまり、モデルのinputとoutputの仕方）単体で、long contextに対する汎化性能を向上させることができないので、Positional Encoding（≒モデルのアーキテクチャ）によるlong contextに対する汎化性能の向上が非常に重要であることが浮き彫りになった。<br><img src="https://github.com/user-attachments/assets/e23c4fbf-84de-4344-a01e-1e7e9e66fa7e" alt="image" loading="lazy" width="400" height="300"><br><br>また、CoT/Scratchpadが有効だったAdditionに対して各Positional Embeddingモデルを学習し、生成されたトークンのattentionがどの位置のトークンを指しているかを相対距離で可視化したところ（0が当該トークン、つまり現在のScratchpadに着目しており、1が遠いトークン、つまりinputに着目していることを表すように正規化）、NoPEとRelative Positional Encodingがshort/long rangeにそれぞれフォーカスするようなbinomialな分布なのに対し、他のPositional Encodingではよりuniformな分布であることが分かった。このタスクにおいてはNoPEとRelative POの性能が高かったため、binomialな分布の方がより最適であろうことが示唆された。<br><img src="https://github.com/user-attachments/assets/833e6a81-8611-4e79-9d2e-473f7ebee2d0" alt="image" loading="lazy" width="400" height="300"><br></p></span><br><br>
+<p>斜め読みだが、length generalizationを評価する上でdownstream taskに焦点を当て、3つの代表的なカテゴリに相当するタスクで評価したところ、この観点においてはT5のrelative positinal encodingとNoPE（位置エンコードディング無し）のパフォーマンスが良く、<br><br><img src="https://github.com/user-attachments/assets/dddadfff-ab28-4073-96c3-831eb16845a0" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/c6ec8e0e-7abb-4330-be23-2261486a477c" alt="image" loading="lazy" width="550" height="400"><br><br>NoPEは絶対位置エンコーディングと相対位置エンコーディングを理論上実現可能であり[^1]<br><img src="https://github.com/user-attachments/assets/bbcf797a-d394-42d4-b017-08d7dba4261c" alt="image" loading="lazy" width="550" height="400"><br><br>実際に学習された異なる2つのモデルに対して同じトークンをそれぞれinputし、同じ深さのLayerの全てのattention distributionの組み合わせからJensen Shannon Divergenceで距離を算出し、最も小さいものを2モデル間の当該layerの距離として可視化すると下記のようになり、NoPEとT5のrelative positional encodingが最も類似していることから、NoPEが学習を通じて（実用上は）相対位置エンコーディングのようなものを学習することが分かった。<br><img src="https://github.com/user-attachments/assets/9619c7e5-0612-45de-8717-1634bee509b7" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]:深さ1のLayerのHidden State H^1から絶対位置の復元が可能であり（つまり、当該レイヤーのHが絶対位置に関する情報を保持している）、この前提のもと、後続のLayerがこの情報を上書きしないと仮定した場合に、相対位置エンコーディングを実現できる。</p>
+<p>また、CoT/Scratchpadはlong sequenceに対する汎化性能を向上させることがsmall scaleではあるが先行研究で示されており、Positional Encodingを変化させた時にCoT/Scratchpadの性能にどのような影響を与えるかを調査。<br><br>具体的には、CoT/Scratchpadのフォーマットがどのようなものが有効かも明らかではないので、5種類のコンポーネントの組み合わせでフォーマットを構成し、mathematical reasoningタスクで以下のような設定で訓練し<br><br>- さまざまなコンポーネントの組み合わせで異なるフォーマットを作成し、<br>- 全ての位置エンコーディングあり/なしモデルを訓練<br><br>これらを比較した。この結果、CoT/Scratchpadはフォーマットに関係なく、特定のタスクでのみ有効（有効かどうかはタスク依存）であることが分かった。このことから、CoT/Scratcpad（つまり、モデルのinputとoutputの仕方）単体で、long contextに対する汎化性能を向上させることができないので、Positional Encoding（≒モデルのアーキテクチャ）によるlong contextに対する汎化性能の向上が非常に重要であることが浮き彫りになった。<br><img src="https://github.com/user-attachments/assets/e23c4fbf-84de-4344-a01e-1e7e9e66fa7e" alt="image" loading="lazy" width="550" height="400"><br><br>また、CoT/Scratchpadが有効だったAdditionに対して各Positional Embeddingモデルを学習し、生成されたトークンのattentionがどの位置のトークンを指しているかを相対距離で可視化したところ（0が当該トークン、つまり現在のScratchpadに着目しており、1が遠いトークン、つまりinputに着目していることを表すように正規化）、NoPEとRelative Positional Encodingがshort/long rangeにそれぞれフォーカスするようなbinomialな分布なのに対し、他のPositional Encodingではよりuniformな分布であることが分かった。このタスクにおいてはNoPEとRelative POの性能が高かったため、binomialな分布の方がより最適であろうことが示唆された。<br><img src="https://github.com/user-attachments/assets/833e6a81-8611-4e79-9d2e-473f7ebee2d0" alt="image" loading="lazy" width="550" height="400"><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="randomized-positional-820" class="title-link">Randomized Positional Encodings Boost Length Generalization of Transformers, ACL'23</h3>
@@ -1452,8 +1452,26 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Word/" title="Wordに関する論文・技術記事メモの一覧">
-            Wordに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/InstructionTuning/" title="InstructionTuningに関する論文・技術記事メモの一覧">
+            InstructionTuningに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 46</span> 
+  <span class="post-badge badge-new">📝 46</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/UserModeling/" title="UserModelingに関する論文・技術記事メモの一覧">
+            UserModelingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Assessment/" title="Assessmentに関する論文・技術記事メモの一覧">
+            Assessmentに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
   <span class="post-badge badge-new">📝 5</span>
@@ -1461,29 +1479,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MultiLingual/" title="MultiLingualに関する論文・技術記事メモの一覧">
-            MultiLingualに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 44</span> 
-  <span class="post-badge badge-new">📝 44</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Snippets/" title="Snippetsに関する論文・技術記事メモの一覧">
-            Snippetsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/GenerativeAdversarialNetwork/" title="GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧">
+            GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
   <span class="post-badge badge-new">📝 5</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/NeurIPS/" title="NeurIPSに関する論文・技術記事メモの一覧">
-            NeurIPSに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 180</span> 
-  <span class="post-badge badge-new">📝 180</span>
 </span>
 </a>
         </li>

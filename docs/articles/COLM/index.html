@@ -2024,7 +2024,7 @@ My Issue
 </div>
 
 
-<p>small sub-layers, large shortcutsの説明はこちらに書かれている。前者については、現在主流なLLMの初期化手法は満たしているが、後者はオリジナルのTransformerの実装では実装されている[^1]が、最近の実装では失われてしまっているとのこと。<br><img src="https://github.com/user-attachments/assets/55cf847c-fc6a-4e76-88c9-1507464e96a0" alt="image" loading="lazy" width="400" height="300"><br><br>下図が実験結果で、条件の双方を満たしているのはEmbedLN[^2]とScaled Embed[^3]のみであり、実際にスパイクが生じていないことがわかる。<br><img src="https://github.com/user-attachments/assets/79494662-3d58-4d8e-ae9d-8ed9241e0f65" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]:オリジナル論文 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/245" target="_blank" rel="noopener noreferrer">[Paper Note] Attention Is All You Need, Ashish Vaswani+, arXiv'17</a>
+<p>small sub-layers, large shortcutsの説明はこちらに書かれている。前者については、現在主流なLLMの初期化手法は満たしているが、後者はオリジナルのTransformerの実装では実装されている[^1]が、最近の実装では失われてしまっているとのこと。<br><img src="https://github.com/user-attachments/assets/55cf847c-fc6a-4e76-88c9-1507464e96a0" alt="image" loading="lazy" width="550" height="400"><br><br>下図が実験結果で、条件の双方を満たしているのはEmbedLN[^2]とScaled Embed[^3]のみであり、実際にスパイクが生じていないことがわかる。<br><img src="https://github.com/user-attachments/assets/79494662-3d58-4d8e-ae9d-8ed9241e0f65" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]:オリジナル論文 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/245" target="_blank" rel="noopener noreferrer">[Paper Note] Attention Is All You Need, Ashish Vaswani+, arXiv'17</a>
  の3.4節末尾、embedding layersに対してsqrt(d_model)を乗じるということがサラッと書いてある。これが実はめちゃめちゃ重要だったという…<br>[^2]: positional embeddingを加算する前にLayer Normalizationをかける方法<br>[^3]: EmbeddingにEmbeddingの次元数d（i.e., 各レイヤーのinputの次元数)の平方根を乗じる方法</p>
 <p>前にScaled dot-product attentionのsqrt(d_k)がめっちゃ重要ということを実験的に示した、という話もあったような…<br>（まあそもそも元論文になぜスケーリングさせるかの説明は書いてあるけども）</p>
 <p>著者ポスト（スライド）:
@@ -2074,7 +2074,7 @@ My Issue
 
 
 <p>非常に大規模な数学の事前学習/mid-training向けのデータセット<br><br>CommonCrawlのHTMLから、さまざまなフィルタリング処理（reformatting, 2 stageのHTML parserの活用（片方はnoisyだが高速、もう一方は高性能だが遅い）, fasttextベースの分類器による抽出, deduplication等）を実施しMegaMath-Webを作成、また、MegaMathWebをさらに分類器で低品質なものをフィルタリングし、LLMによってノイズ除去、テキストのreorganizingを実施し（≠ピュアな合成データ）継続事前学習、mid-training向けの高品質なMegaMath-Web-Proを作成。<br><br>MegaMathCodeはThe Stack V2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2199" target="_blank" rel="noopener noreferrer">[Paper Note] StarCoder 2 and The Stack v2: The Next Generation, Anton Lozhkov+, arXiv'24</a>
-) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&amp;A, code data, text&amp;code block dataの3種類を合成。Q&amp;Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&amp;code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br><img src="https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814" alt="image" loading="lazy" width="400" height="300"><br><br><img src="https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e" alt="image" loading="lazy" width="400" height="300"><br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></span><br><br>
+) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&amp;A, code data, text&amp;code block dataの3種類を合成。Q&amp;Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&amp;code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br><img src="https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="when-does-2173" class="title-link">[Paper Note] When Does Metadata Conditioning （NOT） Work for Language Model   Pre-Training? A Study with Context-Free Grammars, Rei Higuchi+, COLM'25</h3>
@@ -2219,7 +2219,7 @@ My Issue
 </div>
 
 
-<p>従来のRAGベースのAcademicWriting手法では、まずReferenceを検索して、その内容をcontextに含めてテキストを生成するというSequentialなパイプラインだったが、本研究では通常のNextTokenPrediction Lossに加え、特殊トークン\[RET\]を導入し、ContrastiveLearningによって、\[RET\]トークンがトリガーとなり、生成過程のContextとqueryから適切なReferenceを検索できるEmbeddingを出力し、Referenceを検索し、動的にReferenceの内容をcontextに加え、テキストを生成する手法を提案している。<br><img src="https://github.com/user-attachments/assets/777da4cb-5678-455f-babf-b91690945712" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/a27e092e-fff2-4f8a-91f7-09fe39e8e568" alt="image" loading="lazy" width="400" height="300"><br><br>データセットはarXivからlatex sourceを収集し、bibliography部分からReferenceのタイトルをQwenを用いて抽出。タイトルをarXivおよびSemanticScholarのデータベースと照合し、paperとReferenceの紐付けを実施することで構築している。<br><img src="https://github.com/user-attachments/assets/2dd2b956-291e-4407-997a-4a2e68a72708" alt="image" loading="lazy" width="400" height="300"><br><br>GPT-4oによるjudgeの結果、ground truthのcitationを用いた場合には及ばないが、提案手法により品質が向上し、citation retrievalのRecall@Kも大幅に改善している。<br><img src="https://github.com/user-attachments/assets/2ff5dd73-dcb8-4a3f-9d6a-1bcfb52a8321" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/81a39366-2577-41a1-aa6b-facc7ac25f1c" alt="image" loading="lazy" width="400" height="300"></p></span><br><br>
+<p>従来のRAGベースのAcademicWriting手法では、まずReferenceを検索して、その内容をcontextに含めてテキストを生成するというSequentialなパイプラインだったが、本研究では通常のNextTokenPrediction Lossに加え、特殊トークン\[RET\]を導入し、ContrastiveLearningによって、\[RET\]トークンがトリガーとなり、生成過程のContextとqueryから適切なReferenceを検索できるEmbeddingを出力し、Referenceを検索し、動的にReferenceの内容をcontextに加え、テキストを生成する手法を提案している。<br><img src="https://github.com/user-attachments/assets/777da4cb-5678-455f-babf-b91690945712" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/a27e092e-fff2-4f8a-91f7-09fe39e8e568" alt="image" loading="lazy" width="550" height="400"><br><br>データセットはarXivからlatex sourceを収集し、bibliography部分からReferenceのタイトルをQwenを用いて抽出。タイトルをarXivおよびSemanticScholarのデータベースと照合し、paperとReferenceの紐付けを実施することで構築している。<br><img src="https://github.com/user-attachments/assets/2dd2b956-291e-4407-997a-4a2e68a72708" alt="image" loading="lazy" width="550" height="400"><br><br>GPT-4oによるjudgeの結果、ground truthのcitationを用いた場合には及ばないが、提案手法により品質が向上し、citation retrievalのRecall@Kも大幅に改善している。<br><img src="https://github.com/user-attachments/assets/2ff5dd73-dcb8-4a3f-9d6a-1bcfb52a8321" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/81a39366-2577-41a1-aa6b-facc7ac25f1c" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="fineweb2-one-2109" class="title-link">[Paper Note] FineWeb2: One Pipeline to Scale Them All -- Adapting Pre-Training Data  Processing to Every Language, Guilherme Penedo+, COLM'25</h3>
@@ -2350,7 +2350,7 @@ My Issue
 </div>
 
 
-<p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは&lt;=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="400" height="300"><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="400" height="300"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
+<p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは&lt;=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
 </p>
 <p>個々のpost-trainingされたRLモデルが具体的にどういう訓練をしたのかは追えていないが、DAPOやDr. GRPO, VAPOの場合はどうなるんだろうか？<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, arXiv'25</a>
@@ -2424,7 +2424,7 @@ My Issue
 </div>
 
 
-<p>Attention Sinkによって、トークンの情報がover-mixingされることが抑制され、Decoder-only LLMの深い層のrepresentationが均一化されることを抑制する（＝promptの摂動にロバストになる）ことが示された模様。<br><img src="https://github.com/user-attachments/assets/8a1223c0-5621-42a5-accc-31fa7f636856" alt="image" loading="lazy" width="400" height="300"><br>Gemma7Bにおいて、prompt中のトークン一語を置換した後に、Attention Sink（<bos>）の有無によって、tokenレベルのrepresentationに対してどのような摂動があるかをlayerごとにまとめた図が下記の模様。Attention Sinkによって、tokenの摂動が他のtoken, layerに対してmixingされるのが抑制されている。<br><img src="https://github.com/user-attachments/assets/b1a4038a-d116-4bd1-b27b-c55eb861bee9" alt="image" loading="lazy" width="400" height="300"></bos></p>
+<p>Attention Sinkによって、トークンの情報がover-mixingされることが抑制され、Decoder-only LLMの深い層のrepresentationが均一化されることを抑制する（＝promptの摂動にロバストになる）ことが示された模様。<br><img src="https://github.com/user-attachments/assets/8a1223c0-5621-42a5-accc-31fa7f636856" alt="image" loading="lazy" width="550" height="400"><br>Gemma7Bにおいて、prompt中のトークン一語を置換した後に、Attention Sink（<bos>）の有無によって、tokenレベルのrepresentationに対してどのような摂動があるかをlayerごとにまとめた図が下記の模様。Attention Sinkによって、tokenの摂動が他のtoken, layerに対してmixingされるのが抑制されている。<br><img src="https://github.com/user-attachments/assets/b1a4038a-d116-4bd1-b27b-c55eb861bee9" alt="image" loading="lazy" width="550" height="400"></bos></p>
 <p>openreview:
 
 
@@ -2488,7 +2488,7 @@ My Issue
 <span class="issue_date">Issue Date: 2024-12-12</span>
 <span class="snippet"><span>GPT Summary</span>- 新しい推論パラダイム「Coconut」を提案し、LLMの隠れ状態を連続的思考として利用。これにより、次の入力を連続空間でフィードバックし、複数の推論タスクでLLMを強化。Coconutは幅優先探索を可能にし、特定の論理推論タスクでCoTを上回る性能を示す。潜在的推論の可能性を探る重要な洞察を提供。</span>
 <span class="snippet"><span>Comment</span><p>Chain of Continuous Thought</p>
-<p>通常のCoTはRationaleをトークン列で生成するが、Coconutは最終的なhidden stateをそのまま次ステップの入力にすることで、トークンに制限されずにCoTさせるということらしい。あとでしっかり読む<br><img src="https://github.com/user-attachments/assets/b930f44b-96f4-47cd-aa1a-0b5fabde54a5" alt="image" loading="lazy" width="400" height="300"></p>
+<p>通常のCoTはRationaleをトークン列で生成するが、Coconutは最終的なhidden stateをそのまま次ステップの入力にすることで、トークンに制限されずにCoTさせるということらしい。あとでしっかり読む<br><img src="https://github.com/user-attachments/assets/b930f44b-96f4-47cd-aa1a-0b5fabde54a5" alt="image" loading="lazy" width="550" height="400"></p>
 <p>おそらく学習の際に工夫が必要なので既存モデルのデコーディングを工夫してできます系の話ではないかも</p>
 <p>OpenReview:
 
@@ -2651,7 +2651,7 @@ My Issue
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <span class="issue_date">Issue Date: 2023-08-08</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）を新しいタスクに適応させるための低ランク適応（LoRA）を検討し、LoraHubというフレームワークを提案します。LoraHubを使用すると、少数の例から複数のLoRAモジュールを組み合わせて柔軟に適応性のあるパフォーマンスを実現できます。また、追加のモデルパラメータや勾配は必要ありません。実験結果から、LoraHubが少数の例でのインコンテキスト学習のパフォーマンスを効果的に模倣できることが示されています。さらに、LoRAコミュニティの育成と共有リソースの提供にも貢献しています。</span>
-<span class="snippet"><span>Comment</span><p>学習されたLoRAのパラメータをモジュールとして捉え、新たなタスクのinputが与えられた時に、LoRA Hub上の適切なモジュールをLLMに組み合わせることで、ICL無しで汎化を実現するというアイデア。few shotのexampleを人間が設計する必要なく、同等の性能を達成。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d769042-5a29-4c22-8ab4-e90195f71184" alt="image" loading="lazy" width="400" height="300"></p>
+<span class="snippet"><span>Comment</span><p>学習されたLoRAのパラメータをモジュールとして捉え、新たなタスクのinputが与えられた時に、LoRA Hub上の適切なモジュールをLLMに組み合わせることで、ICL無しで汎化を実現するというアイデア。few shotのexampleを人間が設計する必要なく、同等の性能を達成。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d769042-5a29-4c22-8ab4-e90195f71184" alt="image" loading="lazy" width="550" height="400"></p>
 <p>複数のLoRAモジュールは組み合わられるか？element wiseの線型結合で今回はやっているが、その疑問にこたえたのがcontribution</p>
 <p>OpenReview:
 
@@ -2748,8 +2748,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Attack/" title="Attackに関する論文・技術記事メモの一覧">
-            Attackに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/GrammaticalErrorCorrection/" title="GrammaticalErrorCorrectionに関する論文・技術記事メモの一覧">
+            GrammaticalErrorCorrectionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -2757,29 +2757,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/IJCV/" title="IJCVに関する論文・技術記事メモの一覧">
-            IJCVに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ActivationSteering-ITI/" title="ActivationSteering/ITIに関する論文・技術記事メモの一覧">
+            ActivationSteering/ITIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Live/" title="Liveに関する論文・技術記事メモの一覧">
-            Liveに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SpokenLanguageProcessing/" title="SpokenLanguageProcessingに関する論文・技術記事メモの一覧">
+            SpokenLanguageProcessingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ScorePrediction/" title="ScorePredictionに関する論文・技術記事メモの一覧">
-            ScorePredictionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ObjectDetection/" title="ObjectDetectionに関する論文・技術記事メモの一覧">
+            ObjectDetectionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
