@@ -279,9 +279,12 @@ def restore_img_tags(
     トークンを元の <img> タグに復元
     """
     for i, img in enumerate(imgs):
-        if img.find("loading") == -1:
-            img = img.replace('/>', 'loading="lazy" />')
-        text = text.replace(f"__IMG_{i}__", img)
+        replaced_img = None
+        for image_pat in image_pat_list:
+            m = image_pat.search(img)
+            replaced_img = replace_image(m)
+        assert replaced_img != None
+        text = text.replace(f"__IMG_{i}__", replaced_img)
     return text
 
 
@@ -774,6 +777,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
