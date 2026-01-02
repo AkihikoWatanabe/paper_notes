@@ -1203,7 +1203,7 @@ My Issue
 
 
 <br><br>モデル自体は11月から公開されている</p>
-<p>home-scenario gesture recognitionとdaily activity recognitionでGemini-2.5-Proを上回る性能を達成している。特定のユースケースに特化しつつ、genericなユースケースの性能を損なわないようなモデルを学習したい場合は参考になるかもしれない。<br><br><img width="852" height="470" alt="Image" src="https://github.com/user-attachments/assets/91055d6f-0247-469c-96e9-c1372133c9d8"><br><br>まずSFTでhome-scenarioデータ[^1] + GeneralデータのDataMixでreasoning patternを学習させ、tokenのefficiencyを高めるためにCoTパターンを排除しdirect answerをするようなデータ（およびprompting）でも学習させる。これによりhome-scenarioでの推論能力が強化される。SFTはfull parameter tuningで実施され、optimizerはAdamW。バッチサイズ128, warmup ratio 0.03, learning rate 1 * 10^-5。スケジューラについては記述がないように見える。<br><br>その後、一般的なユースケース（Video Understanding (temporal groundingにフォーカス), GUI Grounding, Multimodal Reasoning （特にSTEMデータ））データを用いてGRPOでRLをする。明らかに簡単・難しすぎるデータは除外。RLのrewardは `r_acc + r_format`の線形補完（係数はaccL: 0.9, format: 0.1）で定義される。r_accはデータごとに異なっている。Video Understandingでは予測したqueryに対してモデルが予測したtimespanとgoldのtimespanのoverlapがどの程度あるかをaccとし、GUI Groundingではbounding boxを予測しpred/goldのoverlapをaccとする。Multimodal ReasoninghはSTEMデータなので回答が一致するかをbinaryのaccとして与えている。<br><br>モデルのアーキテクチャは、アダプターでLLMと接続するタイプのもので、動画/画像のBackboneにはViTを用いて、MLPのアダプターを持ちいてLLMの入力としている。<br><img width="861" height="500" alt="Image" src="https://github.com/user-attachments/assets/6550be7f-6c48-4189-9f38-02eabe2e17b4"><br><br><br>[^1]: volunteerによるhome-scenarioでのデータ作成; ruleを規定しvolunteerに理解してもらいデータ収集。その後研究者が低品質なものを除外</p></span><br><br>
+<p>home-scenario gesture recognitionとdaily activity recognitionでGemini-2.5-Proを上回る性能を達成している。特定のユースケースに特化しつつ、genericなユースケースの性能を損なわないようなモデルを学習したい場合は参考になるかもしれない。<br><br><img width="852" height="470" alt="Image" src="https://github.com/user-attachments/assets/91055d6f-0247-469c-96e9-c1372133c9d8" loading="lazy"><br><br>まずSFTでhome-scenarioデータ[^1] + GeneralデータのDataMixでreasoning patternを学習させ、tokenのefficiencyを高めるためにCoTパターンを排除しdirect answerをするようなデータ（およびprompting）でも学習させる。これによりhome-scenarioでの推論能力が強化される。SFTはfull parameter tuningで実施され、optimizerはAdamW。バッチサイズ128, warmup ratio 0.03, learning rate 1 * 10^-5。スケジューラについては記述がないように見える。<br><br>その後、一般的なユースケース（Video Understanding (temporal groundingにフォーカス), GUI Grounding, Multimodal Reasoning （特にSTEMデータ））データを用いてGRPOでRLをする。明らかに簡単・難しすぎるデータは除外。RLのrewardは `r_acc + r_format`の線形補完（係数はaccL: 0.9, format: 0.1）で定義される。r_accはデータごとに異なっている。Video Understandingでは予測したqueryに対してモデルが予測したtimespanとgoldのtimespanのoverlapがどの程度あるかをaccとし、GUI Groundingではbounding boxを予測しpred/goldのoverlapをaccとする。Multimodal ReasoninghはSTEMデータなので回答が一致するかをbinaryのaccとして与えている。<br><br>モデルのアーキテクチャは、アダプターでLLMと接続するタイプのもので、動画/画像のBackboneにはViTを用いて、MLPのアダプターを持ちいてLLMの入力としている。<br><img width="861" height="500" alt="Image" src="https://github.com/user-attachments/assets/6550be7f-6c48-4189-9f38-02eabe2e17b4" loading="lazy"><br><br><br>[^1]: volunteerによるhome-scenarioでのデータ作成; ruleを規定しvolunteerに理解してもらいデータ収集。その後研究者が低品質なものを除外</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="sage-training-4011" class="title-link">[Paper Note] SAGE: Training Smart Any-Horizon Agents for Long Video Reasoning with Reinforcement Learning, Jitesh Jain+, arXiv'25, 2025.12</h3>
@@ -1319,7 +1319,7 @@ My Issue
 </div>
 
 
-<p>従来のRLはすべてのドメインのデータをmixすることでおこなれてきたが、個々のドメインのデータを個別にRLし、cascading方式で適用 (Cascade RL) することを提案している（実際は著者らの先行研究でmath-&gt;codingのcascadingは実施されていたが、それをより広範なドメイン(RLHF -&gt; instruction following -&gt; math -&gt; coding -&gt; software engineering)に適用した、という研究）。<br>cascadingにはいくつかのメリットがありRLの学習速度を改善できる（あるいはRLのインフラの複雑性を緩和できる）<br>- ドメインごとのverificationの速度の違いによって学習速度を損なうことがない（e.g. 数学のrule-basedなverificationは早いがcodingは遅い）<br>- ドメインごとに出力長は異なるためオンポリシーRLを適用すると効率が落ちる（長いレスポンスの生成を待たなければらないため）<br> <br><img width="839" height="371" alt="Image" src="https://github.com/user-attachments/assets/c56e04bb-8e4e-46e8-b5e5-ad12ee3b5daa"><br><br>本研究で得られた利点としてはFigure 1を参考に言及されているが<br>- RLHF, instruction followingを事前に適用することによって、後段のreasoningの性能も向上する（reasoningのwarmupになる）<br>  - 加えて応答の長さの削減につながる<br>- RLはcatastrophic forgettingに強く、前段で実施したドメインの性能が後段のドメインのRLによって性能が劣化しない<br>  - といってもFigure 2を見ると、codingとsoftware engineeringは結構ドメイン近いのでは・・・？という気はするが・・・。<br>- RLにおけるカリキュラム学習やハイパーパラメータをドメインごとに最適なものを適用できる<br><br><img width="811" height="510" alt="Image" src="https://github.com/user-attachments/assets/ad108fb9-6450-49a4-99d3-c08404d89cda"><br><br>他にもthinking/non-thinking に関することが言及されているが読めていない。</p></span><br><br>
+<p>従来のRLはすべてのドメインのデータをmixすることでおこなれてきたが、個々のドメインのデータを個別にRLし、cascading方式で適用 (Cascade RL) することを提案している（実際は著者らの先行研究でmath-&gt;codingのcascadingは実施されていたが、それをより広範なドメイン(RLHF -&gt; instruction following -&gt; math -&gt; coding -&gt; software engineering)に適用した、という研究）。<br>cascadingにはいくつかのメリットがありRLの学習速度を改善できる（あるいはRLのインフラの複雑性を緩和できる）<br>- ドメインごとのverificationの速度の違いによって学習速度を損なうことがない（e.g. 数学のrule-basedなverificationは早いがcodingは遅い）<br>- ドメインごとに出力長は異なるためオンポリシーRLを適用すると効率が落ちる（長いレスポンスの生成を待たなければらないため）<br> <br><img width="839" height="371" alt="Image" src="https://github.com/user-attachments/assets/c56e04bb-8e4e-46e8-b5e5-ad12ee3b5daa" loading="lazy"><br><br>本研究で得られた利点としてはFigure 1を参考に言及されているが<br>- RLHF, instruction followingを事前に適用することによって、後段のreasoningの性能も向上する（reasoningのwarmupになる）<br>  - 加えて応答の長さの削減につながる<br>- RLはcatastrophic forgettingに強く、前段で実施したドメインの性能が後段のドメインのRLによって性能が劣化しない<br>  - といってもFigure 2を見ると、codingとsoftware engineeringは結構ドメイン近いのでは・・・？という気はするが・・・。<br>- RLにおけるカリキュラム学習やハイパーパラメータをドメインごとに最適なものを適用できる<br><br><img width="811" height="510" alt="Image" src="https://github.com/user-attachments/assets/ad108fb9-6450-49a4-99d3-c08404d89cda" loading="lazy"><br><br>他にもthinking/non-thinking に関することが言及されているが読めていない。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="nanbeige4-3b-technical-3938" class="title-link">[Paper Note] Nanbeige4-3B Technical Report: Exploring the Frontier of Small Language Models, Chen Yang+, arXiv'25, 2025.12</h3>
@@ -1458,7 +1458,7 @@ My Issue
 </div>
 
 
-<p>image/videoに関するreasoningタスクをunifiedなアーキテクチャで実施するVLM<br><img width="1019" height="523" alt="Image" src="https://github.com/user-attachments/assets/2a824f85-d0cf-4aa6-9943-e3f6a1d6adea"><br><br>Qwen3-VL-Instruct-8Bに対するgain。様々なタスクで大幅なgainを得ている。特にTracking, segmentation, groundingのgainが大きいように見える。<br><img width="951" height="581" alt="Image" src="https://github.com/user-attachments/assets/09f5d82e-cac4-4e50-903e-8968a67e503c"></p></span><br><br>
+<p>image/videoに関するreasoningタスクをunifiedなアーキテクチャで実施するVLM<br><img width="1019" height="523" alt="Image" src="https://github.com/user-attachments/assets/2a824f85-d0cf-4aa6-9943-e3f6a1d6adea" loading="lazy"><br><br>Qwen3-VL-Instruct-8Bに対するgain。様々なタスクで大幅なgainを得ている。特にTracking, segmentation, groundingのgainが大きいように見える。<br><img width="951" height="581" alt="Image" src="https://github.com/user-attachments/assets/09f5d82e-cac4-4e50-903e-8968a67e503c" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="llm-reasoning-3799" class="title-link">[Paper Note] LLM Reasoning for Cold-Start Item Recommendation, Shijun Li+, arXiv'25, 2025.11</h3>
@@ -2719,7 +2719,7 @@ My Issue
 
 
 <p>Chain-of-Visual-Thoughts</p>
-<p>keyframeをchain-of-thoughtsに含めることで、時間発展をより正確にしようという試みに見える。追加の学習なしで実施できるとのこと。<br><img width="943" height="635" alt="Image" src="https://github.com/user-attachments/assets/a7283398-2a61-45be-b7a4-eb7452656e06"></p></span><br><br>
+<p>keyframeをchain-of-thoughtsに含めることで、時間発展をより正確にしようという試みに見える。追加の学習なしで実施できるとのこと。<br><img width="943" height="635" alt="Image" src="https://github.com/user-attachments/assets/a7283398-2a61-45be-b7a4-eb7452656e06" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="reasoned-safety-3332" class="title-link">[Paper Note] Reasoned Safety Alignment: Ensuring Jailbreak Defense via  Answer-Then-Check, Chentao Cao+, arXiv'25, 2025.09</h3>
@@ -2856,7 +2856,7 @@ My Issue
 </div>
 
 
-<p>既存のreasoning/latent reasoningはsequentialにreasoning trajectoryを生成していくが、（このため、誤った推論をした際に推論を是正しづらいといわれている）本手法ではthought tokensと呼ばれる思考トークンをdiffusion modelを用いてdenoisingすることでreasoning trajectoryを生成する。このプロセスはtrajectory全体をiterativeにrefineしていくため前述の弱点が是正される可能性がある。また、thought tokensの生成は複数ブロック（ブロック間はcausal attention, ブロック内はbi-directional attention）に分けて実施されるため複数のreasoning trajectoryを並列して探索することになり、reasoning traceの多様性が高まる効果が期待できる。最後にVAEによってdiscreteなinputをlatent spaceに落とし込み、その空間上でdenoising（= latent space空間上で思考する）し、その後decodingしてdiscrete tokenに再度おとしこむ（= thought tokens）というアーキテクチャになっているため、latent space上でのreasoningの解釈性が向上する。最終的には、<soa>タグが出力された時点でlatent reasoningステップを終了し、（VAE Decoderによってdiscrete tokenにデコードされることで）生成されたthought tokensをfreezeされたLLMに入力した上でauto regressiveに続きを生成することで応答を得る。<br><br><img width="851" height="390" alt="Image" src="https://github.com/user-attachments/assets/2d0c79d8-f31d-4d80-8671-eb3598d55d3d"><br><br><img width="866" height="639" alt="Image" src="https://github.com/user-attachments/assets/c7b4fcaf-1ac6-4602-8a23-350d6e21ab49"><br><br>結果のスコアを見る限り、COCONUTと比べるとだいぶgainを得ているが、Discrete Latentと比較するとgainは限定的に見える。<br><br><img width="869" height="539" alt="Image" src="https://github.com/user-attachments/assets/ace6e663-b11b-49f0-8e29-a9ba2fce2649"></soa></p></span><br><br>
+<p>既存のreasoning/latent reasoningはsequentialにreasoning trajectoryを生成していくが、（このため、誤った推論をした際に推論を是正しづらいといわれている）本手法ではthought tokensと呼ばれる思考トークンをdiffusion modelを用いてdenoisingすることでreasoning trajectoryを生成する。このプロセスはtrajectory全体をiterativeにrefineしていくため前述の弱点が是正される可能性がある。また、thought tokensの生成は複数ブロック（ブロック間はcausal attention, ブロック内はbi-directional attention）に分けて実施されるため複数のreasoning trajectoryを並列して探索することになり、reasoning traceの多様性が高まる効果が期待できる。最後にVAEによってdiscreteなinputをlatent spaceに落とし込み、その空間上でdenoising（= latent space空間上で思考する）し、その後decodingしてdiscrete tokenに再度おとしこむ（= thought tokens）というアーキテクチャになっているため、latent space上でのreasoningの解釈性が向上する。最終的には、<soa>タグが出力された時点でlatent reasoningステップを終了し、（VAE Decoderによってdiscrete tokenにデコードされることで）生成されたthought tokensをfreezeされたLLMに入力した上でauto regressiveに続きを生成することで応答を得る。<br><br><img width="851" height="390" alt="Image" src="https://github.com/user-attachments/assets/2d0c79d8-f31d-4d80-8671-eb3598d55d3d" loading="lazy"><br><br><img width="866" height="639" alt="Image" src="https://github.com/user-attachments/assets/c7b4fcaf-1ac6-4602-8a23-350d6e21ab49" loading="lazy"><br><br>結果のスコアを見る限り、COCONUTと比べるとだいぶgainを得ているが、Discrete Latentと比較するとgainは限定的に見える。<br><br><img width="869" height="539" alt="Image" src="https://github.com/user-attachments/assets/ace6e663-b11b-49f0-8e29-a9ba2fce2649" loading="lazy"></soa></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="reasoning-with-3300" class="title-link">[Paper Note] Reasoning with Sampling: Your Base Model is Smarter Than You Think, Aayush Karan+, arXiv'25, 2025.10</h3>
@@ -5459,8 +5459,8 @@ My Issue
 <span class="issue_date">Issue Date: 2025-07-14</span>
 <span class="snippet"><span>GPT Summary</span>- Kimi-VLは、効率的なオープンソースのMixture-of-Expertsビジョン・ランゲージモデルであり、2.8Bパラメータの言語デコーダーを活性化して高度なマルチモーダル推論を実現。マルチターンエージェントタスクや大学レベルの画像・動画理解において優れた性能を示し、最先端のVLMと競争。128Kの拡張コンテキストウィンドウを持ち、長い入力を処理可能。Kimi-VL-Thinking-2506は、長期的推論能力を強化するために教師ありファインチューニングと強化学習を用いて開発され、堅牢な一般能力を獲得。コードは公開されている。</span>
 <span class="snippet"><span>Comment</span><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2201" target="_blank" rel="noopener noreferrer">[Paper Note] Measuring Multimodal Mathematical Reasoning with MATH-Vision Dataset, Ke Wang+, NeurIPS'24 Datasets and Benchmarks Track</a>
- <br>での性能（Vision+テキストの数学の問題）。他の巨大なモデルと比べ2.8BのActivation paramsで高い性能を達成<br><br><img width="831" height="431" alt="Image" src="https://github.com/user-attachments/assets/3ec08621-f269-4f1d-97bb-3ebca537f2ea"><br><br>その他のベンチマークでも高い性能を獲得<br><br><img width="833" height="558" alt="Image" src="https://github.com/user-attachments/assets/b30afc4f-efce-4206-b499-f4f089d97226"><br><br>モデルのアーキテクチャ。MoonViT (Image Encoder, 1Dのpatchをinput, 様々な解像度のサポート, FlashAttention,  SigLIP-SO-400Mを継続事前学習, RoPEを採用) + Linear Projector + MoE Language Decoderの構成<br><img width="851" height="590" alt="Image" src="https://github.com/user-attachments/assets/f59d7655-c1c7-4284-b79c-9d62739da889"><br><br>学習のパイプライン。ViTの事前学習ではSigLIP loss (contrastive lossの亜種)とcaption生成のcross-entropy lossを採用している。joint cooldown stageにおいては、高品質なQAデータを合成することで実験的に大幅に性能が向上することを確認したので、それを採用しているとのこと。optimizerは <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25</a>
-<br><br><img width="849" height="213" alt="Image" src="https://github.com/user-attachments/assets/720b02f7-a260-497f-85c5-04cf382c2f98"><br><br><img width="828" height="402" alt="Image" src="https://github.com/user-attachments/assets/bb78d799-5db4-4904-8669-540d2142c95c"><br><br>post-trainingにおけるRLでは以下の目的関数を用いており、RLVRを用いつつ、現在のポリシーモデルをreferenceとし更新をするような目的関数になっている。curriculum sampling, prioritize samplingをdifficulty labelに基づいて実施している。<br><img width="842" height="152" alt="Image" src="https://github.com/user-attachments/assets/298fdef8-9807-4511-96f6-02241393ab9f"><br><br><img width="822" height="187" alt="Image" src="https://github.com/user-attachments/assets/4ad0d815-ef1c-4945-ae08-ab2b072ec63f"></p></span><br><br>
+ <br>での性能（Vision+テキストの数学の問題）。他の巨大なモデルと比べ2.8BのActivation paramsで高い性能を達成<br><br><img width="831" height="431" alt="Image" src="https://github.com/user-attachments/assets/3ec08621-f269-4f1d-97bb-3ebca537f2ea" loading="lazy"><br><br>その他のベンチマークでも高い性能を獲得<br><br><img width="833" height="558" alt="Image" src="https://github.com/user-attachments/assets/b30afc4f-efce-4206-b499-f4f089d97226" loading="lazy"><br><br>モデルのアーキテクチャ。MoonViT (Image Encoder, 1Dのpatchをinput, 様々な解像度のサポート, FlashAttention,  SigLIP-SO-400Mを継続事前学習, RoPEを採用) + Linear Projector + MoE Language Decoderの構成<br><img width="851" height="590" alt="Image" src="https://github.com/user-attachments/assets/f59d7655-c1c7-4284-b79c-9d62739da889" loading="lazy"><br><br>学習のパイプライン。ViTの事前学習ではSigLIP loss (contrastive lossの亜種)とcaption生成のcross-entropy lossを採用している。joint cooldown stageにおいては、高品質なQAデータを合成することで実験的に大幅に性能が向上することを確認したので、それを採用しているとのこと。optimizerは <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25</a>
+<br><br><img width="849" height="213" alt="Image" src="https://github.com/user-attachments/assets/720b02f7-a260-497f-85c5-04cf382c2f98" loading="lazy"><br><br><img width="828" height="402" alt="Image" src="https://github.com/user-attachments/assets/bb78d799-5db4-4904-8669-540d2142c95c" loading="lazy"><br><br>post-trainingにおけるRLでは以下の目的関数を用いており、RLVRを用いつつ、現在のポリシーモデルをreferenceとし更新をするような目的関数になっている。curriculum sampling, prioritize samplingをdifficulty labelに基づいて実施している。<br><img width="842" height="152" alt="Image" src="https://github.com/user-attachments/assets/298fdef8-9807-4511-96f6-02241393ab9f" loading="lazy"><br><br><img width="822" height="187" alt="Image" src="https://github.com/user-attachments/assets/4ad0d815-ef1c-4945-ae08-ab2b072ec63f" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="perception-aware-policy-2191" class="title-link">[Paper Note] Perception-Aware Policy Optimization for Multimodal Reasoning, Zhenhailong Wang+, arXiv'25</h3>
@@ -7665,7 +7665,7 @@ My Issue
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2238" target="_blank" rel="noopener noreferrer">[Paper Note] Chain of Thought Monitorability: A New and Fragile Opportunity for AI
   Safety, Tomek Korbak+, arXiv'25</a>
 </p>
-<p>Monitorabilityの定義が記述されているので覚えておくとよいかもしれない。<br>Monitorabilityを一言でいうと、"エージェントの挙動に関する重要な性質を正確に予測できる能力"ということっぽい。<br><br>Monitorabilityは以下の2つの側面を持ち、<br>&gt;- Monitors. We could make monitors smarter in various ways, and we would like our evaluations to give higher scores to monitors that can make better predictions about an agent’s behavior.<br>&gt;- Agents. There are many observations of the agent that could be given to the monitor, including the agent’s actions, outputs, neural activations, and recently with the advent of reasoning models, the chain-of-thought. It’s possible for some agents to have thoughts that are harder to understand than others, and so we would like our monitorability evaluations to be able to compare agents and not just monitors.<br><br>モニターそのものの賢さと、モニタリングされるエージェントも理解しやすいものとしづらいものがいるため、モニターの性能だけじゃなくてエージェントそのものも評価の対象にする必要がある。<br><br>monitarable / unmonitorable なCoTのサンプルとして以下が挙げられている。これは実際には実現不可能なコーディング課題が与えられているらしいのだが、左側はtestをpassしている（つまりなんかチートした）がそのことについてはCoTに言及されていない。一方、右側はチートに関して検討する様子がCoTに記述されており、これを見ることでユーザはモデルのよろしくない挙動に気付ける。<br><img width="1260" height="975" alt="Image" src="https://github.com/user-attachments/assets/582199a2-d393-4047-9942-587171b2990f"></p></span><br><br>
+<p>Monitorabilityの定義が記述されているので覚えておくとよいかもしれない。<br>Monitorabilityを一言でいうと、"エージェントの挙動に関する重要な性質を正確に予測できる能力"ということっぽい。<br><br>Monitorabilityは以下の2つの側面を持ち、<br>&gt;- Monitors. We could make monitors smarter in various ways, and we would like our evaluations to give higher scores to monitors that can make better predictions about an agent’s behavior.<br>&gt;- Agents. There are many observations of the agent that could be given to the monitor, including the agent’s actions, outputs, neural activations, and recently with the advent of reasoning models, the chain-of-thought. It’s possible for some agents to have thoughts that are harder to understand than others, and so we would like our monitorability evaluations to be able to compare agents and not just monitors.<br><br>モニターそのものの賢さと、モニタリングされるエージェントも理解しやすいものとしづらいものがいるため、モニターの性能だけじゃなくてエージェントそのものも評価の対象にする必要がある。<br><br>monitarable / unmonitorable なCoTのサンプルとして以下が挙げられている。これは実際には実現不可能なコーディング課題が与えられているらしいのだが、左側はtestをpassしている（つまりなんかチートした）がそのことについてはCoTに言及されていない。一方、右側はチートに関して検討する様子がCoTに記述されており、これを見ることでユーザはモデルのよろしくない挙動に気付ける。<br><img width="1260" height="975" alt="Image" src="https://github.com/user-attachments/assets/582199a2-d393-4047-9942-587171b2990f" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="gemini-3-3993" class="title-link">Gemini 3 Flash: frontier intelligence built for speed, Google, 2025.12</h3>
@@ -7760,7 +7760,7 @@ My Issue
 
 
 </p>
-<p>physics, chemistry, biologyの分野の専門家が作成した問題によって構成されるPh.D levelの新たなscientificドメインのベンチマークとのこと。OlympiadとResearchの2種類のスプリットが存在し、Olympiadは国際オリンピックのメダリストによって設計された100問で構成され回答は制約のある短答形式である一方、Researchは博士課程学生・教授・ポスドク研究者などのPh.Dレベルの人物によって設計された60個の研究に関連するサブタスクによって構成されており、10点満点のルーブリックで採点される、ということらしい。<br><br>公式アナウンスではGPT-5.2がSoTAでResearchの性能はまだまだスコアが低そうである。<br><img width="1030" height="531" alt="Image" src="https://github.com/user-attachments/assets/9b11b01c-e81e-4cdb-93f6-48b0d8679d26"></p></span><br><br>
+<p>physics, chemistry, biologyの分野の専門家が作成した問題によって構成されるPh.D levelの新たなscientificドメインのベンチマークとのこと。OlympiadとResearchの2種類のスプリットが存在し、Olympiadは国際オリンピックのメダリストによって設計された100問で構成され回答は制約のある短答形式である一方、Researchは博士課程学生・教授・ポスドク研究者などのPh.Dレベルの人物によって設計された60個の研究に関連するサブタスクによって構成されており、10点満点のルーブリックで採点される、ということらしい。<br><br>公式アナウンスではGPT-5.2がSoTAでResearchの性能はまだまだスコアが低そうである。<br><img width="1030" height="531" alt="Image" src="https://github.com/user-attachments/assets/9b11b01c-e81e-4cdb-93f6-48b0d8679d26" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="olmo-3.1-3937" class="title-link">Olmo 3.1, Ai2, 2025.12</h3>
@@ -8558,7 +8558,7 @@ My Issue
 </div>
 
 
-<p>モデルのロールアウトの結果からattemptから知識リストをiterativeに更新（新たな知識を追加, 古い知識を削除 or 両方）していくことによって、過去のattemptからのinsightを蓄積し性能を改善するような新たなテストタイムスケーリングの枠組みな模様。sequential test-time scalingなどとは異なり、複数のattemptによって知識リストを更新することでスケールさせるので、context windowの制約を受けない、といった話な模様。LLM AgentにおけるTest-time learningとかなり類似したコンセプトに見える。<br><br><img width="754" height="358" alt="Image" src="https://github.com/user-attachments/assets/9a302c5e-ee79-4c17-99e3-0851b5f127c6"></p></span><br><br>
+<p>モデルのロールアウトの結果からattemptから知識リストをiterativeに更新（新たな知識を追加, 古い知識を削除 or 両方）していくことによって、過去のattemptからのinsightを蓄積し性能を改善するような新たなテストタイムスケーリングの枠組みな模様。sequential test-time scalingなどとは異なり、複数のattemptによって知識リストを更新することでスケールさせるので、context windowの制約を受けない、といった話な模様。LLM AgentにおけるTest-time learningとかなり類似したコンセプトに見える。<br><br><img width="754" height="358" alt="Image" src="https://github.com/user-attachments/assets/9a302c5e-ee79-4c17-99e3-0851b5f127c6" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="evaluating-long-3293" class="title-link">Evaluating Long Context （Reasoning） Ability, wh., 2025.10</h3>
@@ -8959,11 +8959,11 @@ My Issue
 </div>
 
 
-<p>-  Ling-flash-2.0-baseをベースにしたモデルで、100B-A6.1 params<br>- 各種ベンチでgpt-oss-120Bと同等以上。denseな40Bモデル（Qwen-32B, Seed-OSS-36B-Instruct）やproprietary modelであるGemini-2.5-Flashと比較して同等以上の性能 <br><img width="772" height="777" alt="Image" src="https://github.com/user-attachments/assets/f5aed972-e2f3-49e8-80fa-70e6ee110512"></p>
+<p>-  Ling-flash-2.0-baseをベースにしたモデルで、100B-A6.1 params<br>- 各種ベンチでgpt-oss-120Bと同等以上。denseな40Bモデル（Qwen-32B, Seed-OSS-36B-Instruct）やproprietary modelであるGemini-2.5-Flashと比較して同等以上の性能 <br><img width="772" height="777" alt="Image" src="https://github.com/user-attachments/assets/f5aed972-e2f3-49e8-80fa-70e6ee110512" loading="lazy"></p>
 <p>- アーキテクチャ<br>  - Multi Token Prediction <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2904" target="_blank" rel="noopener noreferrer">[Paper Note] Multi-Token Prediction Needs Registers, Anastasios Gerontopoulos+, NeurIPS'25</a>
  <br>  - 1/32 experts activation ratio<br>  - gpt-oss-120Bは4 expertsがactiveだが、こちらは1 shared + 8 experts<br>  - attention head数はgpt-oss-120Bの64の1/2である32<br>  - group size 4のGQA <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1271" target="_blank" rel="noopener noreferrer">GQA: Training Generalized Multi-Query Transformer Models from Multi-Head
   Checkpoints, Joshua Ainslie+, N/A, arXiv'23</a>
-<br>  - gpt-oss-120BのEmbed dim=2880に対して大きめのEmbed dim=4096<br>  - 最初の1ブロックだけ、MoEの代わりにhidden_size=9216のFNNが利用されている<br><br><img width="661" height="599" alt="Image" src="https://github.com/user-attachments/assets/1f3bf7c9-7997-4fbb-95b5-d2f1d8b10b0a"></p></span><br><br>
+<br>  - gpt-oss-120BのEmbed dim=2880に対して大きめのEmbed dim=4096<br>  - 最初の1ブロックだけ、MoEの代わりにhidden_size=9216のFNNが利用されている<br><br><img width="661" height="599" alt="Image" src="https://github.com/user-attachments/assets/1f3bf7c9-7997-4fbb-95b5-d2f1d8b10b0a" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="magistral-small-2509-2858" class="title-link">Magistral-Small-2509, MistralAI, 2025.09</h3>
@@ -10796,38 +10796,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Ensemble/" title="Ensembleに関する論文・技術記事メモの一覧">
-            Ensembleに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/DocumentSummarization/" title="DocumentSummarizationに関する論文・技術記事メモの一覧">
+            DocumentSummarizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 172</span> 
+  <span class="post-badge badge-new">📝 172</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ObjectLocalization/" title="ObjectLocalizationに関する論文・技術記事メモの一覧">
-            ObjectLocalizationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AgentSkills/" title="AgentSkillsに関する論文・技術記事メモの一覧">
+            AgentSkillsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TMLR/" title="TMLRに関する論文・技術記事メモの一覧">
-            TMLRに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Comments/" title="Commentsに関する論文・技術記事メモの一覧">
+            Commentsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
-  <span class="post-badge badge-new">📝 14</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SelfCorrection/" title="SelfCorrectionに関する論文・技術記事メモの一覧">
-            SelfCorrectionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Zero-FewShotLearning/" title="Zero/FewShotLearningに関する論文・技術記事メモの一覧">
+            Zero/FewShotLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 22</span> 
-  <span class="post-badge badge-new">📝 22</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li>

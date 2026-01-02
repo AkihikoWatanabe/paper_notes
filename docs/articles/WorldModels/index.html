@@ -1582,7 +1582,7 @@ My Issue
 </div>
 
 
-<p>LLM AgentのためのWarmup手法を提案している。具体的にはRLVRやImitation LearningによってRewardが定義できるデータに基づいてこれまではRLが実現されてきたが、これらはスケールせず、Rewardが定義されない環境のtrajectoryなどは学習されないので汎化性能が低いという課題がある。このため、これらのsupervisionつきの方法で学習をする前のwarmup手法として、reward-freeの学習パラダイム Early Experienceを提案している。<br><img width="677" height="339" alt="Image" src="https://github.com/user-attachments/assets/c2ed5999-d6d8-419d-93e9-f3358ab0ca1f"><br><br>手法としてはシンプルな手法が2種類提案されている。<br>### Implicit World Modeling (IWM, 式(3)):<br>ある状態s_i において action a_i^{j}を (1 &lt; j &lt; |K|)をとった時の状態をs_i^{j}としたときに、(s_i, a_i^{j}, s_i^{j}) の3つ組を考える。これらはポリシーからのK回のrolloutによって生成可能。<br>このときに、状態sを全てテキストで表現するようにし、言語モデルのnext-token-prediction lossを用いて、ある状態s_jにおいてaction a_i^{k} をとったときに、s_j^{k} になることを予測できるように学習する。これにより例えばブックフライトのサイトで誤った日時を入れてしまった場合や、どこかをクリックしたときにどこに遷移するかなどの学習する環境の世界知識をimplicitにモデルに組み込むことができる。<br><br>### Self-Reflection（式4）<br>もう一つのパラダイムとして、専門家によるアクション a_i によって得られた状態 s_i と、それら以外のアクション a_i^{j} によって得られた状態 s_i^{j}が与えられたときに、s_iとs_i^{j}を比較したときに、なぜ a_i の方がa_i^{j} よりも好ましいかを説明するCoT C_i^{j}を生成し、三つ組データ(s_i, a_i^{j}, c_i^{j}) を構築する。このデータを用いて、状態s_iがgivenなときに、a_i に c_i^{j} をconcatしたテキストを予測できるようにnext-token-prediction lossで学習する。また、このデータだけでなく汎化性能をより高めるためにexpertによるimitation learningのためのデータCoTなしのデータもmixして学習をする。これにより、expertによるactionだけで学習するよりも、なぜexpertのアクションが良いかという情報に基づいてより豊富で転移可能な学習シグナルを活用し学習することができる。<br> <br><img width="712" height="399" alt="Image" src="https://github.com/user-attachments/assets/d411ac3b-d977-4357-b715-0cf4e5b95fa2"><br><br>この結果、downstreamタスクでのperformanceが単にImitation Learningを実施した場合と比較して提案手法でwarmupした方が一貫して向上する。また、5.4節にpost-trainingとして追加でGRPOを実施した場合も提案手法によるwarmupを実施した場合が最終的な性能が向上することが報告されている。<br><br><img width="668" height="596" alt="Image" src="https://github.com/user-attachments/assets/a0aad636-b889-4d2d-b753-b0ad5ad4c688"></p>
+<p>LLM AgentのためのWarmup手法を提案している。具体的にはRLVRやImitation LearningによってRewardが定義できるデータに基づいてこれまではRLが実現されてきたが、これらはスケールせず、Rewardが定義されない環境のtrajectoryなどは学習されないので汎化性能が低いという課題がある。このため、これらのsupervisionつきの方法で学習をする前のwarmup手法として、reward-freeの学習パラダイム Early Experienceを提案している。<br><img width="677" height="339" alt="Image" src="https://github.com/user-attachments/assets/c2ed5999-d6d8-419d-93e9-f3358ab0ca1f" loading="lazy"><br><br>手法としてはシンプルな手法が2種類提案されている。<br>### Implicit World Modeling (IWM, 式(3)):<br>ある状態s_i において action a_i^{j}を (1 &lt; j &lt; |K|)をとった時の状態をs_i^{j}としたときに、(s_i, a_i^{j}, s_i^{j}) の3つ組を考える。これらはポリシーからのK回のrolloutによって生成可能。<br>このときに、状態sを全てテキストで表現するようにし、言語モデルのnext-token-prediction lossを用いて、ある状態s_jにおいてaction a_i^{k} をとったときに、s_j^{k} になることを予測できるように学習する。これにより例えばブックフライトのサイトで誤った日時を入れてしまった場合や、どこかをクリックしたときにどこに遷移するかなどの学習する環境の世界知識をimplicitにモデルに組み込むことができる。<br><br>### Self-Reflection（式4）<br>もう一つのパラダイムとして、専門家によるアクション a_i によって得られた状態 s_i と、それら以外のアクション a_i^{j} によって得られた状態 s_i^{j}が与えられたときに、s_iとs_i^{j}を比較したときに、なぜ a_i の方がa_i^{j} よりも好ましいかを説明するCoT C_i^{j}を生成し、三つ組データ(s_i, a_i^{j}, c_i^{j}) を構築する。このデータを用いて、状態s_iがgivenなときに、a_i に c_i^{j} をconcatしたテキストを予測できるようにnext-token-prediction lossで学習する。また、このデータだけでなく汎化性能をより高めるためにexpertによるimitation learningのためのデータCoTなしのデータもmixして学習をする。これにより、expertによるactionだけで学習するよりも、なぜexpertのアクションが良いかという情報に基づいてより豊富で転移可能な学習シグナルを活用し学習することができる。<br> <br><img width="712" height="399" alt="Image" src="https://github.com/user-attachments/assets/d411ac3b-d977-4357-b715-0cf4e5b95fa2" loading="lazy"><br><br>この結果、downstreamタスクでのperformanceが単にImitation Learningを実施した場合と比較して提案手法でwarmupした方が一貫して向上する。また、5.4節にpost-trainingとして追加でGRPOを実施した場合も提案手法によるwarmupを実施した場合が最終的な性能が向上することが報告されている。<br><br><img width="668" height="596" alt="Image" src="https://github.com/user-attachments/assets/a0aad636-b889-4d2d-b753-b0ad5ad4c688" loading="lazy"></p>
 <p>IWMは自己教師あり学習の枠組みだと思われるので、よぬスケールし、かつ汎化性能が高く様々な手法のベースとなりうる手法に見える。</p>
 <p>著者ポスト:
 
@@ -1966,35 +1966,35 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/LearningToRank/" title="LearningToRankに関する論文・技術記事メモの一覧">
-            LearningToRankに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ObjectDetection/" title="ObjectDetectionに関する論文・技術記事メモの一覧">
+            ObjectDetectionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 22</span> 
-  <span class="post-badge badge-new">📝 22</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/PostTraining/" title="PostTrainingに関する論文・技術記事メモの一覧">
-            PostTrainingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AutomaticPromptOptimization/" title="AutomaticPromptOptimizationに関する論文・技術記事メモの一覧">
+            AutomaticPromptOptimizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 138</span> 
-  <span class="post-badge badge-new">📝 138</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Slide/" title="Slideに関する論文・技術記事メモの一覧">
-            Slideに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Coding/" title="Codingに関する論文・技術記事メモの一覧">
+            Codingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 71</span> 
-  <span class="post-badge badge-new">📝 71</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 68</span> 
+  <span class="post-badge badge-new">📝 68</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/NumericReasoning/" title="NumericReasoningに関する論文・技術記事メモの一覧">
-            NumericReasoningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Safeguard/" title="Safeguardに関する論文・技術記事メモの一覧">
+            Safeguardに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
   <span class="post-badge badge-new">📝 6</span>

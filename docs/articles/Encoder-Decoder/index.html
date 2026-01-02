@@ -1094,8 +1094,8 @@ My Issue
 <span class="issue_date">Issue Date: 2025-12-19</span>
 <span class="snippet"><span>GPT Summary</span>- T5Gemma 2は、軽量なオープンエンコーダーデコーダーモデルで、多言語・多モーダル・長文コンテキスト能力を備えています。T5Gemmaの適応レシピに基づき、デコーダー専用モデルをエンコーダーデコーダーモデルに拡張し、効率向上のために埋め込みの共有とマージドアテンションを導入しました。実験により、長文コンテキストモデリングにおける強みが確認され、事前学習性能はGemma 3と同等以上、事後学習性能は大幅に向上しました。今後、事前学習済みモデルをコミュニティに公開予定です。</span>
 <span class="snippet"><span>Comment</span><p>初めてのマルチモーダル、long-context、かつ140言語に対応したencoder-decoderモデルとのこと。<br>事前学習済みのdecoder-only model (今回はGemma2)によってencoder/decoderをそれぞれ初期化し、UL2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
-) によって事前学習する。encoder / decoder側双方のword embeddingは共有し、encoder側のattentionはcausal attentionからbidirectional attentionに変更する。また、decoder側はself-attention/cross-attentionをマージする。 <br><img width="1001" height="409" alt="Image" src="https://github.com/user-attachments/assets/aba43ec6-f22e-4969-81a5-bb97dba82c1b"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
-<br><br>merged attentionとは、式(1) -- (5)で表されるものであり、Qはdecoderのinput X を用いて、KVの計算する際には、単にdecoder側のinput X とencoder側の隠れ状態 H をconcatしてから、KVを算出する（K, Vのmatrixの次元がHの分大きくなる）というものである。また、マスクトークンの正方行列ではなくなりencoder次元分大きくなり、decoder/encoder部分の両方のvisibilityを制御する。（論文中の当該部分に明記されていないが、普通に考えると）encoder部分は常にvisibleな状態となる。self-/cross attentionは似たような機能を有する（=過去の情報から関連する情報を収集する）ことが先行研究で知られており、単一のモジュールで処理できるという気持ちのようである。H, Xがそれぞれconcatされるので、encoder側の情報とdecoderのこれまでのoutput tokenの情報の両方を同時に考慮することができる。<br><img width="658" height="222" alt="Image" src="https://github.com/user-attachments/assets/e690f450-7cac-4993-bff9-d2f1dccd0c99"></p>
+) によって事前学習する。encoder / decoder側双方のword embeddingは共有し、encoder側のattentionはcausal attentionからbidirectional attentionに変更する。また、decoder側はself-attention/cross-attentionをマージする。 <br><img width="1001" height="409" alt="Image" src="https://github.com/user-attachments/assets/aba43ec6-f22e-4969-81a5-bb97dba82c1b" loading="lazy"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
+<br><br>merged attentionとは、式(1) -- (5)で表されるものであり、Qはdecoderのinput X を用いて、KVの計算する際には、単にdecoder側のinput X とencoder側の隠れ状態 H をconcatしてから、KVを算出する（K, Vのmatrixの次元がHの分大きくなる）というものである。また、マスクトークンの正方行列ではなくなりencoder次元分大きくなり、decoder/encoder部分の両方のvisibilityを制御する。（論文中の当該部分に明記されていないが、普通に考えると）encoder部分は常にvisibleな状態となる。self-/cross attentionは似たような機能を有する（=過去の情報から関連する情報を収集する）ことが先行研究で知られており、単一のモジュールで処理できるという気持ちのようである。H, Xがそれぞれconcatされるので、encoder側の情報とdecoderのこれまでのoutput tokenの情報の両方を同時に考慮することができる。<br><img width="658" height="222" alt="Image" src="https://github.com/user-attachments/assets/e690f450-7cac-4993-bff9-d2f1dccd0c99" loading="lazy"></p>
 <p>元ポスト: 
 
 
@@ -1294,7 +1294,7 @@ My Issue
 </div>
 
 
-<p>現代のASRモデルはencoderが計算効率の上でボトルネックとなっていたが、Forward Passにおける activatrion Y を PCA （式2, 3）に基づいて2つの低ランク行列の積（とバイアス項の加算; 式5）によって近似し計算効率を大幅に向上させた、という話な模様。weightを低ランクに写像するV_kとバイアス項のY_M（データセット全体に対するactivation Yの平均）はcalibrfationデータによって事前に計算可能とのこと。また、PCAのrank kがattention headの次元数より小さい場合、self-attentionの計算もより（QWKへ写像するWを低ランク行列で近似することで）効率的な手法を採用でき、そちらについても提案されている模様。（ざっくりしか読めていないので誤りがあるかもしれない。）<br><br><img width="592" height="449" alt="Image" src="https://github.com/user-attachments/assets/38c8aa6a-cad3-42d1-af6a-9102ed1df3f5"><br><br><img width="484" height="415" alt="Image" src="https://github.com/user-attachments/assets/f8fa8cd1-2b6a-405a-88ec-3bfd2158dffb"></p></span><br><br>
+<p>現代のASRモデルはencoderが計算効率の上でボトルネックとなっていたが、Forward Passにおける activatrion Y を PCA （式2, 3）に基づいて2つの低ランク行列の積（とバイアス項の加算; 式5）によって近似し計算効率を大幅に向上させた、という話な模様。weightを低ランクに写像するV_kとバイアス項のY_M（データセット全体に対するactivation Yの平均）はcalibrfationデータによって事前に計算可能とのこと。また、PCAのrank kがattention headの次元数より小さい場合、self-attentionの計算もより（QWKへ写像するWを低ランク行列で近似することで）効率的な手法を採用でき、そちらについても提案されている模様。（ざっくりしか読めていないので誤りがあるかもしれない。）<br><br><img width="592" height="449" alt="Image" src="https://github.com/user-attachments/assets/38c8aa6a-cad3-42d1-af6a-9102ed1df3f5" loading="lazy"><br><br><img width="484" height="415" alt="Image" src="https://github.com/user-attachments/assets/f8fa8cd1-2b6a-405a-88ec-3bfd2158dffb" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ar-grpo-training-2410" class="title-link">[Paper Note] AR-GRPO: Training Autoregressive Image Generation Models via  Reinforcement Learning, Shihao Yuan+, arXiv'25</h3>
@@ -1365,7 +1365,7 @@ My Issue
 <p>目的関数としては、Mixture of Denoisers (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )に着想を得て、Multimodal Mixture of Denoisersを提案。MoDでは、<br>- \[R\]: 通常のspan corruption (1--5 token程度のspanをmaskする)<br>- \[S\]: causal language modeling (inputを2つのサブシーケンスに分割し、前方から後方を予測する。前方部分はBi-directionalでも可)<br>- \[X\]: extreme span corruption (12&gt;=token程度のspanをmaskする)<br><br>の3種類が提案されており、モダリティごとにこれらを使い分ける:<br>- text modality: UL2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )を踏襲<br>- image, audioがtargetの場合: 2つの類似したパラダイムを定義し利用<br>  - \[R\]: patchをランダムにx%マスクしre-constructする<br>  - \[S\]: inputのtargetとは異なるモダリティのみの情報から、targetモダリティを生成する<br><br>訓練時には prefixとしてmodality token \[Text\], \[Image\], \[Audio\] とparadigm token \[R\], \[S\], \[X\] をタスクを指示するトークンとして利用している。</p>
-<p>また、image, audioのマスク部分のdenoisingをautoregressive modelで実施する際には普通にやるとdecoder側でリークが発生する(a)。これを防ぐには、Encoder側でマスクされているトークンを、Decoder側でteacher-forcingする際にの全てマスクする方法(b)があるが、この場合、生成タスクとdenoisingタスクが相互に干渉してしまいうまく学習できなくなってしまう（生成タスクでは通常Decoderのinputとして[mask]が入力され次トークンを生成する、といったことは起きえないが、愚直に(b)をやるとそうなってしまう）。ので、(c)に示したように、マスクされているトークンをinputとして生成しなければならない時だけ、マスクを解除してdecoder側にinputする、という方法 (Dynamic Masking) でこの問題に対処している。<br><img width="597" height="394" alt="Image" src="https://github.com/user-attachments/assets/0dba8d5d-0c93-4c56-852b-fce9869428e7"></p></span><br><br>
+<p>また、image, audioのマスク部分のdenoisingをautoregressive modelで実施する際には普通にやるとdecoder側でリークが発生する(a)。これを防ぐには、Encoder側でマスクされているトークンを、Decoder側でteacher-forcingする際にの全てマスクする方法(b)があるが、この場合、生成タスクとdenoisingタスクが相互に干渉してしまいうまく学習できなくなってしまう（生成タスクでは通常Decoderのinputとして[mask]が入力され次トークンを生成する、といったことは起きえないが、愚直に(b)をやるとそうなってしまう）。ので、(c)に示したように、マスクされているトークンをinputとして生成しなければならない時だけ、マスクを解除してdecoder側にinputする、という方法 (Dynamic Masking) でこの問題に対処している。<br><img width="597" height="394" alt="Image" src="https://github.com/user-attachments/assets/0dba8d5d-0c93-4c56-852b-fce9869428e7" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="recommender-systems-2309" class="title-link">[Paper Note] Recommender Systems with Generative Retrieval, Shashank Rajput+, NeurIPS'23</h3>
@@ -1431,7 +1431,7 @@ My Issue
 
 
 </p>
-<p>encoder-decoder/decoder-onlyなど特定のアーキテクチャに依存しないアーキテクチャagnosticな事前学習手法であるMoDを提案。<br>MoDでは3種類のDenoiser [R] standard span corruption, [S] causal language modeling, [X] extreme span corruption の3種類のパラダイムを活用する。学習時には与えらえたタスクに対して適切なモードをスイッチできるようにparadigm token ([R], [S], [X])を与え挙動を変化させられるようにしており[^1]、finetuning時においては事前にタスクごとに定義をして与えるなどのことも可能。<br><br><img width="1187" height="1203" alt="Image" src="https://github.com/user-attachments/assets/a07372c6-854c-4bd1-8f59-f8c4dbdc5d23"><br><br>[^1]: 事前学習中に具体的にどのようにモードをスイッチするのかはよくわからなかった。ランダムに変更するのだろうか。</p></span><br><br>
+<p>encoder-decoder/decoder-onlyなど特定のアーキテクチャに依存しないアーキテクチャagnosticな事前学習手法であるMoDを提案。<br>MoDでは3種類のDenoiser [R] standard span corruption, [S] causal language modeling, [X] extreme span corruption の3種類のパラダイムを活用する。学習時には与えらえたタスクに対して適切なモードをスイッチできるようにparadigm token ([R], [S], [X])を与え挙動を変化させられるようにしており[^1]、finetuning時においては事前にタスクごとに定義をして与えるなどのことも可能。<br><br><img width="1187" height="1203" alt="Image" src="https://github.com/user-attachments/assets/a07372c6-854c-4bd1-8f59-f8c4dbdc5d23" loading="lazy"><br><br>[^1]: 事前学習中に具体的にどのようにモードをスイッチするのかはよくわからなかった。ランダムに変更するのだろうか。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="vcc-scaling-667" class="title-link">Vcc: Scaling Transformers to 128K Tokens or More by Prioritizing   Important Tokens, Zhanpeng Zeng+, N_A, NeurIPS'23</h3>
@@ -2283,38 +2283,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/NeurIPS/" title="NeurIPSに関する論文・技術記事メモの一覧">
-            NeurIPSに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 180</span> 
-  <span class="post-badge badge-new">📝 180</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/WorldModels/" title="WorldModelsに関する論文・技術記事メモの一覧">
-            WorldModelsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
-  <span class="post-badge badge-new">📝 21</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ICLR/" title="ICLRに関する論文・技術記事メモの一覧">
-            ICLRに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 101</span> 
-  <span class="post-badge badge-new">📝 101</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ImplicitFeedback/" title="ImplicitFeedbackに関する論文・技術記事メモの一覧">
-            ImplicitFeedbackに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Investigation/" title="Investigationに関する論文・技術記事メモの一覧">
+            Investigationに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/ReviewGeneration/" title="ReviewGenerationに関する論文・技術記事メモの一覧">
+            ReviewGenerationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
+  <span class="post-badge badge-new">📝 13</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/MinimalCode/" title="MinimalCodeに関する論文・技術記事メモの一覧">
+            MinimalCodeに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Slide/" title="Slideに関する論文・技術記事メモの一覧">
+            Slideに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 71</span> 
+  <span class="post-badge badge-new">📝 71</span>
 </span>
 </a>
         </li>

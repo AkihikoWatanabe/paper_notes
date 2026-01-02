@@ -1180,7 +1180,7 @@ My Issue
 
 
 <br><br>モデル自体は11月から公開されている</p>
-<p>home-scenario gesture recognitionとdaily activity recognitionでGemini-2.5-Proを上回る性能を達成している。特定のユースケースに特化しつつ、genericなユースケースの性能を損なわないようなモデルを学習したい場合は参考になるかもしれない。<br><br><img width="852" height="470" alt="Image" src="https://github.com/user-attachments/assets/91055d6f-0247-469c-96e9-c1372133c9d8"><br><br>まずSFTでhome-scenarioデータ[^1] + GeneralデータのDataMixでreasoning patternを学習させ、tokenのefficiencyを高めるためにCoTパターンを排除しdirect answerをするようなデータ（およびprompting）でも学習させる。これによりhome-scenarioでの推論能力が強化される。SFTはfull parameter tuningで実施され、optimizerはAdamW。バッチサイズ128, warmup ratio 0.03, learning rate 1 * 10^-5。スケジューラについては記述がないように見える。<br><br>その後、一般的なユースケース（Video Understanding (temporal groundingにフォーカス), GUI Grounding, Multimodal Reasoning （特にSTEMデータ））データを用いてGRPOでRLをする。明らかに簡単・難しすぎるデータは除外。RLのrewardは `r_acc + r_format`の線形補完（係数はaccL: 0.9, format: 0.1）で定義される。r_accはデータごとに異なっている。Video Understandingでは予測したqueryに対してモデルが予測したtimespanとgoldのtimespanのoverlapがどの程度あるかをaccとし、GUI Groundingではbounding boxを予測しpred/goldのoverlapをaccとする。Multimodal ReasoninghはSTEMデータなので回答が一致するかをbinaryのaccとして与えている。<br><br>モデルのアーキテクチャは、アダプターでLLMと接続するタイプのもので、動画/画像のBackboneにはViTを用いて、MLPのアダプターを持ちいてLLMの入力としている。<br><img width="861" height="500" alt="Image" src="https://github.com/user-attachments/assets/6550be7f-6c48-4189-9f38-02eabe2e17b4"><br><br><br>[^1]: volunteerによるhome-scenarioでのデータ作成; ruleを規定しvolunteerに理解してもらいデータ収集。その後研究者が低品質なものを除外</p></span><br><br>
+<p>home-scenario gesture recognitionとdaily activity recognitionでGemini-2.5-Proを上回る性能を達成している。特定のユースケースに特化しつつ、genericなユースケースの性能を損なわないようなモデルを学習したい場合は参考になるかもしれない。<br><br><img width="852" height="470" alt="Image" src="https://github.com/user-attachments/assets/91055d6f-0247-469c-96e9-c1372133c9d8" loading="lazy"><br><br>まずSFTでhome-scenarioデータ[^1] + GeneralデータのDataMixでreasoning patternを学習させ、tokenのefficiencyを高めるためにCoTパターンを排除しdirect answerをするようなデータ（およびprompting）でも学習させる。これによりhome-scenarioでの推論能力が強化される。SFTはfull parameter tuningで実施され、optimizerはAdamW。バッチサイズ128, warmup ratio 0.03, learning rate 1 * 10^-5。スケジューラについては記述がないように見える。<br><br>その後、一般的なユースケース（Video Understanding (temporal groundingにフォーカス), GUI Grounding, Multimodal Reasoning （特にSTEMデータ））データを用いてGRPOでRLをする。明らかに簡単・難しすぎるデータは除外。RLのrewardは `r_acc + r_format`の線形補完（係数はaccL: 0.9, format: 0.1）で定義される。r_accはデータごとに異なっている。Video Understandingでは予測したqueryに対してモデルが予測したtimespanとgoldのtimespanのoverlapがどの程度あるかをaccとし、GUI Groundingではbounding boxを予測しpred/goldのoverlapをaccとする。Multimodal ReasoninghはSTEMデータなので回答が一致するかをbinaryのaccとして与えている。<br><br>モデルのアーキテクチャは、アダプターでLLMと接続するタイプのもので、動画/画像のBackboneにはViTを用いて、MLPのアダプターを持ちいてLLMの入力としている。<br><img width="861" height="500" alt="Image" src="https://github.com/user-attachments/assets/6550be7f-6c48-4189-9f38-02eabe2e17b4" loading="lazy"><br><br><br>[^1]: volunteerによるhome-scenarioでのデータ作成; ruleを規定しvolunteerに理解してもらいデータ収集。その後研究者が低品質なものを除外</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="sage-training-4011" class="title-link">[Paper Note] SAGE: Training Smart Any-Horizon Agents for Long Video Reasoning with Reinforcement Learning, Jitesh Jain+, arXiv'25, 2025.12</h3>
@@ -1357,7 +1357,7 @@ My Issue
 </div>
 
 
-<p>image/videoに関するreasoningタスクをunifiedなアーキテクチャで実施するVLM<br><img width="1019" height="523" alt="Image" src="https://github.com/user-attachments/assets/2a824f85-d0cf-4aa6-9943-e3f6a1d6adea"><br><br>Qwen3-VL-Instruct-8Bに対するgain。様々なタスクで大幅なgainを得ている。特にTracking, segmentation, groundingのgainが大きいように見える。<br><img width="951" height="581" alt="Image" src="https://github.com/user-attachments/assets/09f5d82e-cac4-4e50-903e-8968a67e503c"></p></span><br><br>
+<p>image/videoに関するreasoningタスクをunifiedなアーキテクチャで実施するVLM<br><img width="1019" height="523" alt="Image" src="https://github.com/user-attachments/assets/2a824f85-d0cf-4aa6-9943-e3f6a1d6adea" loading="lazy"><br><br>Qwen3-VL-Instruct-8Bに対するgain。様々なタスクで大幅なgainを得ている。特にTracking, segmentation, groundingのgainが大きいように見える。<br><img width="951" height="581" alt="Image" src="https://github.com/user-attachments/assets/09f5d82e-cac4-4e50-903e-8968a67e503c" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="autoneural-co-designing-3890" class="title-link">[Paper Note] AutoNeural: Co-Designing Vision-Language Models for NPU Inference, Wei Chen+, arXiv'25, 2025.12</h3>
@@ -4239,8 +4239,8 @@ My Issue
 <span class="issue_date">Issue Date: 2025-07-14</span>
 <span class="snippet"><span>GPT Summary</span>- Kimi-VLは、効率的なオープンソースのMixture-of-Expertsビジョン・ランゲージモデルであり、2.8Bパラメータの言語デコーダーを活性化して高度なマルチモーダル推論を実現。マルチターンエージェントタスクや大学レベルの画像・動画理解において優れた性能を示し、最先端のVLMと競争。128Kの拡張コンテキストウィンドウを持ち、長い入力を処理可能。Kimi-VL-Thinking-2506は、長期的推論能力を強化するために教師ありファインチューニングと強化学習を用いて開発され、堅牢な一般能力を獲得。コードは公開されている。</span>
 <span class="snippet"><span>Comment</span><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2201" target="_blank" rel="noopener noreferrer">[Paper Note] Measuring Multimodal Mathematical Reasoning with MATH-Vision Dataset, Ke Wang+, NeurIPS'24 Datasets and Benchmarks Track</a>
- <br>での性能（Vision+テキストの数学の問題）。他の巨大なモデルと比べ2.8BのActivation paramsで高い性能を達成<br><br><img width="831" height="431" alt="Image" src="https://github.com/user-attachments/assets/3ec08621-f269-4f1d-97bb-3ebca537f2ea"><br><br>その他のベンチマークでも高い性能を獲得<br><br><img width="833" height="558" alt="Image" src="https://github.com/user-attachments/assets/b30afc4f-efce-4206-b499-f4f089d97226"><br><br>モデルのアーキテクチャ。MoonViT (Image Encoder, 1Dのpatchをinput, 様々な解像度のサポート, FlashAttention,  SigLIP-SO-400Mを継続事前学習, RoPEを採用) + Linear Projector + MoE Language Decoderの構成<br><img width="851" height="590" alt="Image" src="https://github.com/user-attachments/assets/f59d7655-c1c7-4284-b79c-9d62739da889"><br><br>学習のパイプライン。ViTの事前学習ではSigLIP loss (contrastive lossの亜種)とcaption生成のcross-entropy lossを採用している。joint cooldown stageにおいては、高品質なQAデータを合成することで実験的に大幅に性能が向上することを確認したので、それを採用しているとのこと。optimizerは <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25</a>
-<br><br><img width="849" height="213" alt="Image" src="https://github.com/user-attachments/assets/720b02f7-a260-497f-85c5-04cf382c2f98"><br><br><img width="828" height="402" alt="Image" src="https://github.com/user-attachments/assets/bb78d799-5db4-4904-8669-540d2142c95c"><br><br>post-trainingにおけるRLでは以下の目的関数を用いており、RLVRを用いつつ、現在のポリシーモデルをreferenceとし更新をするような目的関数になっている。curriculum sampling, prioritize samplingをdifficulty labelに基づいて実施している。<br><img width="842" height="152" alt="Image" src="https://github.com/user-attachments/assets/298fdef8-9807-4511-96f6-02241393ab9f"><br><br><img width="822" height="187" alt="Image" src="https://github.com/user-attachments/assets/4ad0d815-ef1c-4945-ae08-ab2b072ec63f"></p></span><br><br>
+ <br>での性能（Vision+テキストの数学の問題）。他の巨大なモデルと比べ2.8BのActivation paramsで高い性能を達成<br><br><img width="831" height="431" alt="Image" src="https://github.com/user-attachments/assets/3ec08621-f269-4f1d-97bb-3ebca537f2ea" loading="lazy"><br><br>その他のベンチマークでも高い性能を獲得<br><br><img width="833" height="558" alt="Image" src="https://github.com/user-attachments/assets/b30afc4f-efce-4206-b499-f4f089d97226" loading="lazy"><br><br>モデルのアーキテクチャ。MoonViT (Image Encoder, 1Dのpatchをinput, 様々な解像度のサポート, FlashAttention,  SigLIP-SO-400Mを継続事前学習, RoPEを採用) + Linear Projector + MoE Language Decoderの構成<br><img width="851" height="590" alt="Image" src="https://github.com/user-attachments/assets/f59d7655-c1c7-4284-b79c-9d62739da889" loading="lazy"><br><br>学習のパイプライン。ViTの事前学習ではSigLIP loss (contrastive lossの亜種)とcaption生成のcross-entropy lossを採用している。joint cooldown stageにおいては、高品質なQAデータを合成することで実験的に大幅に性能が向上することを確認したので、それを採用しているとのこと。optimizerは <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25</a>
+<br><br><img width="849" height="213" alt="Image" src="https://github.com/user-attachments/assets/720b02f7-a260-497f-85c5-04cf382c2f98" loading="lazy"><br><br><img width="828" height="402" alt="Image" src="https://github.com/user-attachments/assets/bb78d799-5db4-4904-8669-540d2142c95c" loading="lazy"><br><br>post-trainingにおけるRLでは以下の目的関数を用いており、RLVRを用いつつ、現在のポリシーモデルをreferenceとし更新をするような目的関数になっている。curriculum sampling, prioritize samplingをdifficulty labelに基づいて実施している。<br><img width="842" height="152" alt="Image" src="https://github.com/user-attachments/assets/298fdef8-9807-4511-96f6-02241393ab9f" loading="lazy"><br><br><img width="822" height="187" alt="Image" src="https://github.com/user-attachments/assets/4ad0d815-ef1c-4945-ae08-ab2b072ec63f" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="perception-aware-policy-2191" class="title-link">[Paper Note] Perception-Aware Policy Optimization for Multimodal Reasoning, Zhenhailong Wang+, arXiv'25</h3>
@@ -4850,7 +4850,7 @@ My Issue
 
 
 </p>
-<p>Project Pageのランディングページが非常にわかりやすい。こちらは人間の方がまだまだ性能が高そう。<br><br><img width="671" height="806" alt="Image" src="https://github.com/user-attachments/assets/586edf6d-cd77-48cb-b209-8ea819e725fc"></p></span><br><br>
+<p>Project Pageのランディングページが非常にわかりやすい。こちらは人間の方がまだまだ性能が高そう。<br><br><img width="671" height="806" alt="Image" src="https://github.com/user-attachments/assets/586edf6d-cd77-48cb-b209-8ea819e725fc" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="vlr-bench-multilingual-1598" class="title-link">VLR-Bench: Multilingual Benchmark Dataset for Vision-Language Retrieval  Augmented Generation, Hyeonseok Lim+, arXiv'24</h3>
@@ -5127,7 +5127,7 @@ My Issue
 </div>
 
 
-<p>MistralによるOCR。他のOCRに比べてmulti-lingual, 様々なデータセットで高い性能を発揮。APIでのみ提供されている模様。<br><img width="962" height="1037" alt="Image" src="https://github.com/user-attachments/assets/87c2d187-6f60-474c-ad0d-8d9ee04484c4"></p></span><br><br>
+<p>MistralによるOCR。他のOCRに比べてmulti-lingual, 様々なデータセットで高い性能を発揮。APIでのみ提供されている模様。<br><img width="962" height="1037" alt="Image" src="https://github.com/user-attachments/assets/87c2d187-6f60-474c-ad0d-8d9ee04484c4" loading="lazy"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="seed1.8-3997" class="title-link">Seed1.8, ByteDance Seed, 2025.12</h3>
@@ -6657,7 +6657,7 @@ My Issue
 </div>
 
 
-<p>Imageを入力して、テキストで条件づけることで編集できるOpenWeightモデル<br><img width="810" height="393" alt="Image" src="https://github.com/user-attachments/assets/8c4ed7a1-1604-4365-bdbf-ef64ad8298ce"></p>
+<p>Imageを入力して、テキストで条件づけることで編集できるOpenWeightモデル<br><img width="810" height="393" alt="Image" src="https://github.com/user-attachments/assets/8c4ed7a1-1604-4365-bdbf-ef64ad8298ce" loading="lazy"></p>
 <p>参考:25/08/20 とりまQwenImageEditを試す<br>
 
 
@@ -6954,26 +6954,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Zero-Few-ManyShotPrompting/" title="Zero/Few/ManyShotPromptingに関する論文・技術記事メモの一覧">
-            Zero/Few/ManyShotPromptingに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
-  <span class="post-badge badge-new">📝 17</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Safeguard/" title="Safeguardに関する論文・技術記事メモの一覧">
-            Safeguardに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/PointWise/" title="PointWiseに関する論文・技術記事メモの一覧">
-            PointWiseに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/CognitiveScience/" title="CognitiveScienceに関する論文・技術記事メモの一覧">
+            CognitiveScienceに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -6981,11 +6963,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/System-Demonstration/" title="System Demonstrationに関する論文・技術記事メモの一覧">
-            System Demonstrationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ProgressiveLearning/" title="ProgressiveLearningに関する論文・技術記事メモの一覧">
+            ProgressiveLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/GraphConvolutionalNetwork/" title="GraphConvolutionalNetworkに関する論文・技術記事メモの一覧">
+            GraphConvolutionalNetworkに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Contents-based/" title="Contents-basedに関する論文・技術記事メモの一覧">
+            Contents-basedに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>

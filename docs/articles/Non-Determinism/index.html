@@ -1091,7 +1091,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>- 論文中で利用されているベンチマーク:<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the   capabilities of language models, Aarohi Srivastava+, N/A, TMLR'23</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer">Measuring Massive Multitask Language Understanding, Dan Hendrycks+, N/A, ICLR'21</a>
  </p>
-<p>同じモデルに対して、seedを固定し、temperatureを0に設定し、同じ計算機環境に対して、同じinputを入力したら理論上はLLMの出力はdeterministicになるはずだが、deterministicにならず、ベンチマーク上の性能とそもそものraw response自体も試行ごとに大きく変化する、という話。<br>ただし、これはプロプライエタリLLMや、何らかのinferenceの高速化を実施したInferenceEngine（本研究ではTogetherと呼ばれる実装を使っていそう。vLLM/SGLangだとどうなるのかが気になる）を用いてinferenceを実施した場合での実験結果であり、後述の通り計算の高速化のためのさまざまな実装無しで、deterministicな設定でOpenLLMでinferenceすると出力はdeterministicになる、という点には注意。<br><br>GPTやLlama、Mixtralに対して上記ベンチマークを用いてzero-shot/few-shotの設定で実験している。Reasoningモデルは実験に含まれていない。<br><img width="701" height="325" alt="Image" src="https://github.com/user-attachments/assets/b33f14d8-ed86-4589-a427-18a70b35d61a"><br><br>LLMのraw_response/multiple choiceのparse結果（i.e., 問題に対する解答部分を抽出した結果）の一致（TARr@N, TARa@N; Nはinferenceの試行回数）も理論上は100%になるはずなのに、ならないことが報告されている。<br><br><img width="712" height="432" alt="Image" src="https://github.com/user-attachments/assets/3159ff26-fc92-4fa8-90a6-f8c5e7ccf20e"><br><br>correlation analysisによって、応答の長さ と TAR{r, a}が強い負の相関を示しており、応答が長くなればなるほど不安定さは増すことが分析されている。このため、ontput tokenの最大値を制限することで出力の安定性が増すことを考察している。また、few-shotにおいて高いAcc.の場合は出力がdeterministicになるわけではないが、性能が安定する傾向とのこと。また、OpenAIプラットフォーム上でGPTのfinetuningを実施し実験したが、安定性に寄与はしたが、こちらもdeterministicになるわけではないとのこと。<br><br>deterministicにならない原因として、まずmulti gpu環境について検討しているが、multi-gpu環境ではある程度のランダム性が生じることがNvidiaの研究によって報告されているが、これはseedを固定すれば決定論的にできるため問題にならないとのこと。<br>続いて、inferenceを高速化するための実装上の工夫（e.g., Chunk Prefilling, Prefix Caching, Continuous Batching）などの実装がdeterministicなハイパーパラメータでもdeterministicにならない原因であると考察しており、**実際にlocalマシン上でこれらinferenceを高速化するための最適化を何も実施しない状態でLlama-8Bでinferenceを実施したところ、outputはdeterministicになったとのこと。**</p>
+<p>同じモデルに対して、seedを固定し、temperatureを0に設定し、同じ計算機環境に対して、同じinputを入力したら理論上はLLMの出力はdeterministicになるはずだが、deterministicにならず、ベンチマーク上の性能とそもそものraw response自体も試行ごとに大きく変化する、という話。<br>ただし、これはプロプライエタリLLMや、何らかのinferenceの高速化を実施したInferenceEngine（本研究ではTogetherと呼ばれる実装を使っていそう。vLLM/SGLangだとどうなるのかが気になる）を用いてinferenceを実施した場合での実験結果であり、後述の通り計算の高速化のためのさまざまな実装無しで、deterministicな設定でOpenLLMでinferenceすると出力はdeterministicになる、という点には注意。<br><br>GPTやLlama、Mixtralに対して上記ベンチマークを用いてzero-shot/few-shotの設定で実験している。Reasoningモデルは実験に含まれていない。<br><img width="701" height="325" alt="Image" src="https://github.com/user-attachments/assets/b33f14d8-ed86-4589-a427-18a70b35d61a" loading="lazy"><br><br>LLMのraw_response/multiple choiceのparse結果（i.e., 問題に対する解答部分を抽出した結果）の一致（TARr@N, TARa@N; Nはinferenceの試行回数）も理論上は100%になるはずなのに、ならないことが報告されている。<br><br><img width="712" height="432" alt="Image" src="https://github.com/user-attachments/assets/3159ff26-fc92-4fa8-90a6-f8c5e7ccf20e" loading="lazy"><br><br>correlation analysisによって、応答の長さ と TAR{r, a}が強い負の相関を示しており、応答が長くなればなるほど不安定さは増すことが分析されている。このため、ontput tokenの最大値を制限することで出力の安定性が増すことを考察している。また、few-shotにおいて高いAcc.の場合は出力がdeterministicになるわけではないが、性能が安定する傾向とのこと。また、OpenAIプラットフォーム上でGPTのfinetuningを実施し実験したが、安定性に寄与はしたが、こちらもdeterministicになるわけではないとのこと。<br><br>deterministicにならない原因として、まずmulti gpu環境について検討しているが、multi-gpu環境ではある程度のランダム性が生じることがNvidiaの研究によって報告されているが、これはseedを固定すれば決定論的にできるため問題にならないとのこと。<br>続いて、inferenceを高速化するための実装上の工夫（e.g., Chunk Prefilling, Prefix Caching, Continuous Batching）などの実装がdeterministicなハイパーパラメータでもdeterministicにならない原因であると考察しており、**実際にlocalマシン上でこれらinferenceを高速化するための最適化を何も実施しない状態でLlama-8Bでinferenceを実施したところ、outputはdeterministicになったとのこと。**</p>
 <p>論文中に記載がなかったため、どのようなInferenceEngineを利用したか公開されているgithubを見ると下記が利用されていた:<br><br>- Together: 
 
 
@@ -1212,38 +1212,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Clustering-based/" title="Clustering-basedに関する論文・技術記事メモの一覧">
-            Clustering-basedに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ImageSegmentation/" title="ImageSegmentationに関する論文・技術記事メモの一覧">
+            ImageSegmentationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/RectifiedFlow/" title="RectifiedFlowに関する論文・技術記事メモの一覧">
+            RectifiedFlowに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/BeamSearch/" title="BeamSearchに関する論文・技術記事メモの一覧">
+            BeamSearchに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Interspeech/" title="Interspeechに関する論文・技術記事メモの一覧">
+            Interspeechに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/QueryBiased/" title="QueryBiasedに関する論文・技術記事メモの一覧">
-            QueryBiasedに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/SmallModel/" title="SmallModelに関する論文・技術記事メモの一覧">
-            SmallModelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 75</span> 
-  <span class="post-badge badge-new">📝 75</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Robotics/" title="Roboticsに関する論文・技術記事メモの一覧">
-            Roboticsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 46</span> 
-  <span class="post-badge badge-new">📝 46</span>
 </span>
 </a>
         </li>
