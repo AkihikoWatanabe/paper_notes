@@ -253,6 +253,7 @@ IMG_PATTERN = re.compile(
     flags=re.IGNORECASE | re.DOTALL,
 )
 
+
 def protect_img_tags(
     text: str,
 ) -> Tuple[str, List[str]]:
@@ -278,8 +279,11 @@ def restore_img_tags(
     トークンを元の <img> タグに復元
     """
     for i, img in enumerate(imgs):
+        if img.find("loading") == -1:
+            img = img.replace('/>', 'loading="lazy" />')
         text = text.replace(f"__IMG_{i}__", img)
     return text
+
 
 summ_pat = "Summary (by"
 #http_pat = re.compile("https?://(?!((www\.)?(x\.com|twitter\.com)))[^\s/$.?#].[^\s]*\s")
@@ -770,6 +774,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
