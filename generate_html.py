@@ -315,7 +315,7 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
         protected = re.sub(x_pat, x_link_replacer, protected)
         for image_pat in image_pat_list:
             protected = re.sub(image_pat, replace_image, protected)
-        comm_text = restore_img_tags(processed, imgs)
+        comm_text = restore_img_tags(protected, imgs)
     if summ_text != None:
         summ_text = summ_text.replace("\r", "\n").replace("\n", "<br>")
 
@@ -770,6 +770,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
