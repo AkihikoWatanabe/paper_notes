@@ -7,6 +7,7 @@ import re
 from tqdm import tqdm
 import json
 from pathlib import Path
+from typing import Callable, Tuple, List
 
 
 year_pat = re.compile(r"'(\d{2,4})")
@@ -246,6 +247,40 @@ def x_link_replacer(match):
 </div>""" + "\n{% endraw %}\n\n"  
 
 
+
+IMG_PATTERN = re.compile(
+    r"<img\b[^>]*?>",
+    flags=re.IGNORECASE | re.DOTALL,
+)
+
+def protect_img_tags(
+    text: str,
+) -> Tuple[str, List[str]]:
+    """
+    <img ...> タグをトークンに退避
+    """
+    imgs = []
+
+    def replacer(match):
+        idx = len(imgs)
+        imgs.append(match.group(0))
+        return f"__IMG_{idx}__"
+
+    protected_text = IMG_PATTERN.sub(replacer, text)
+    return protected_text, imgs
+
+
+def restore_img_tags(
+    text: str,
+    imgs: List[str],
+) -> str:
+    """
+    トークンを元の <img> タグに復元
+    """
+    for i, img in enumerate(imgs):
+        text = text.replace(f"__IMG_{i}__", img)
+    return text
+
 summ_pat = "Summary (by"
 #http_pat = re.compile("https?://(?!((www\.)?(x\.com|twitter\.com)))[^\s/$.?#].[^\s]*\s")
 http_pat = re.compile("(https?://(?!((www\.)?(x\.com|twitter\.com|github\.com\/AkihikoWatanabe\/)))[^\s<>]*)\s?")
@@ -265,29 +300,22 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
             summ_text = ''.join(r["body"][summ_idx:].split('\n')[1:]).strip()
     # if cannot find summary
     for r in comments:
-        #m = http_pat.search(r['body'])
-        #if m != None:
-        #    continue
         summ_idx = r["body"].find(summ_pat)
         if summ_idx != -1:
             continue
         if comm_text == None:
-            #comm_text = re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
             comm_text = "<p>" + r['body'].replace("\r", "\n").replace("\n", "<br>") + "</p>"
         else:
-            #comm_text += re.sub(image_pat, '', r['body'])[:150].replace('\n', '').replace('- ', "").strip()
-            #comm_text = comm_text[:150]
             comm_text += "<p>" + r['body'].replace("\r", "\n").replace("\n", "<br>") + "</p>"
-        #if len(comm_text) >= 150:
-        #    break
-    if comm_text != None: 
-        comm_text = re.sub(r"#(\d+)", issue_link_replacer, comm_text)
-        comm_text = re.sub(r'#+\s.*?\n', head_replacer, comm_text)
-        comm_text = re.sub(http_pat, link_replacer, comm_text) 
-        comm_text = re.sub(x_pat, x_link_replacer, comm_text) 
-        comm_text = comm_text
+    if comm_text != None:
+        protected, imgs = protect_img_tags(comm_text)
+        protected = re.sub(r"#(\d+)", issue_link_replacer, protected)
+        protected = re.sub(r'#+\s.*?\n', head_replacer, protected)
+        protected = re.sub(http_pat, link_replacer, protected) 
+        protected = re.sub(x_pat, x_link_replacer, protected)
         for image_pat in image_pat_list:
-            comm_text = re.sub(image_pat, replace_image, comm_text)
+            protected = re.sub(image_pat, replace_image, protected)
+        comm_text = restore_img_tags(processed, imgs)
     if summ_text != None:
         summ_text = summ_text.replace("\r", "\n").replace("\n", "<br>")
 
@@ -742,6 +770,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
