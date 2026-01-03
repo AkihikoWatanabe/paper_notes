@@ -226,9 +226,10 @@ def issue_link_replacer(match):
         return match.group(0)
 
 
-image_url_list = [re.compile(r'(https://(?:github\.com|user-images\.githubusercontent\.com)/AkihikoWatanabe/paper_notes/assets/[^)]+)\)'),
-                  re.compile(r'(https://user-images\.githubusercontent\.com/[^)]+)\)'),
-                  re.compile(r'(https://github\.com/user-attachments/assets/[^)]+)\)')]
+image_url_list = [re.compile(r'(https://(?:github\.com|user-images\.githubusercontent\.com)/AkihikoWatanabe/paper_notes/assets/[^)]+)'),
+                  re.compile(r'(https://user-images\.githubusercontent\.com/[^)]+)'),
+                  re.compile(r'(https://github\.com/user-attachments/assets/[^)]+)')]
+
 def link_replacer(match):
     for image_pat in image_url_list:
         # imgの場合はreplaceしない
@@ -778,6 +779,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
