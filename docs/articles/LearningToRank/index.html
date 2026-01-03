@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+  <link rel="preconnect" href="https://platform.twitter.com">
+  <link rel="preconnect" href="https://pbs.twimg.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://platform.twitter.com">
+  <link rel="dns-prefetch" href="https://pbs.twimg.com">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>LearningToRankに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
+<meta name="generator" content="Jekyll v3.10.0">
+<meta property="og:title" content="LearningToRankに関する論文・技術記事メモの一覧">
+<meta name="author" content="AkihikoWATANABE">
+<meta property="og:locale" content="ja">
+<meta name="description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。![image](https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。![image](https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8また、PRPがinputのorderに対してロバストなことも示されている。![image](https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
+<meta property="og:description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。![image](https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。![image](https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8また、PRPがinputのorderに対してロバストなことも示されている。![image](https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/">
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/">
+<meta property="og:site_name" content="わたしのべんきょうノート">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-07-11T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="LearningToRankに関する論文・技術記事メモの一覧">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2023-07-11T00:00:00+00:00","datePublished":"2023-07-11T00:00:00+00:00","description":"LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL&#39;24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。![image](https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。![image](https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8また、PRPがinputのorderに対してロバストなことも示されている。![image](https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR&#39;16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL&#39;16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv&#39;15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR&#39;15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM&#39;13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw&#39;を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw&#39;の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS&#39;09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI&#39;09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。","headline":"LearningToRankに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="http://akihikowatanabe.github.io">
+
+  <link rel="preload" href="/paper_notes/assets/css/main.css" as="style">
+  <link rel="preload" href="/paper_notes/assets/js/main.js" as="script">
+
+  <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
+  
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></noscript>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css" as="style" onload="this. onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css"></noscript>
+  
+  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
+<script>
+  function showMore(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "block";
+          
+      // このボタンの参照を取得して非表示にします
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "none";
+      }
+          
+      // hideボタンの参照を取得して表示します
+      const hideButton = contentDiv.querySelector('button[onclick^="hideContent"]');
+      if (hideButton) {
+        hideButton.style.display = "block";
+      }
+    }
+  }
+
+  function hideContent(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "none";
+  
+      // moreボタンの参照を取得して表示します
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "block";
+      }
+  
+      // このボタンを隠します
+      const hideButtons = document.querySelectorAll('button[onclick^="hideContent"]');
+      const hideButton = hideButtons[index];
+      if (hideButton) {
+        hideButton.style.display = "none";
+      }
+    }
+  }
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = `{"gallery"=>"section.main", "children"=>"a.photo-swipe", "bgOpacity"=>0.8, "padding"=>{"top"=>20, "bottom"=>40, "left"=>100, "right"=>100}}`.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P70KSB88WH');
+  </script>
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+  <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
+  わたしのべんきょうノート
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ja',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+    var ticking = false;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0);
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+      
+      // 処理完了フラグをリセット
+      ticking = false;
+    }
+
+    function requestTick() {
+      if (!ticking) {
+        // 次の描画フレームで実行をスケジュール
+        window.requestAnimationFrame(storeScrollData);
+        ticking = true;
+      }
+    }
+
+    // passive:  true でスクロールパフォーマンスを向上
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // 初期実行
+    storeScrollData();
+  }
+  
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.4;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.2872;
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
+  <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
+それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
+自然言語処理(NLP), 推薦システム(RecommenderSystem), Educational Data Mining (EDM), Learning Analytics (LA)などの分野のメモが多いと思います。
+最近は特にLLMの勉強が多めです :)</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2023-07-11T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 11, 2023
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 34 mins</span>
+  </div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('off' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="LearningToRank" class="paper-head"> LearningToRank</h2>
+<div class="visible-content">
+<article class="paper-entry">
+<h3 id="large-language-799" class="title-link">Large Language Models are Effective Text Rankers with Pairwise Ranking   Prompting, Zhen Qin+, N_A, NAACL'24</h3>
+<br><a href="https://arxiv.org/abs/2306.17563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
+<a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
+<span class="issue_date">Issue Date: 2023-07-11</span>
+<span class="snippet"><span>GPT Summary</span>- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。</span>
+<span class="snippet"><span>Comment</span><p>open source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案</p>
+<p>従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。<br><br>PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。<br>![image](https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6<br><br>下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。<br>![image](https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8<br><br>また、PRPがinputのorderに対してロバストなことも示されている。<br>![image](https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="online-learning-200" class="title-link">[Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16</h3>
+<br><a href="https://staff.fnwi.uva.nl/m.derijke/wp-content/uploads/sigir2016-tutorial.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/200" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
+<a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="news-citation-181" class="title-link">[Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16</h3>
+<br><a href="https://www.aclweb.org/anthology/P/P16/P16-1037.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/181" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="Citations.html" target="_blank" rel="noopener noreferrer">#Citations</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>target text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。<br><br><br><br>たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。<br><br><br><br>このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。<br><br><br><br>タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。<br><br><br><br>提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。<br><br><br><br>Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="contextual-dueling-199" class="title-link">[Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15</h3>
+<br><a href="https://arxiv.org/abs/1502.06362" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/199" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>GPT Summary</span>- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。</span>
+</article>
+<article class="paper-entry">
+<h3 id="machine-learning-186" class="title-link">Machine Learning for Information Retrieval, Hofmann, ESSIR'15</h3>
+<br><a href="http://mklab.iti.gr/essir2015/wp-content/uploads/2015/03/ESSIR2015_Hofmann.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/186" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="reusing-historical-198" class="title-link">[Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13</h3>
+<br><a href="https://pdfs.semanticscholar.org/5ef7/34327c0f4cb7a2898bbdb1cc5a65e34d09cb.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/198" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
+<a class="button" href="Interleaved.html" target="_blank" rel="noopener noreferrer">#Interleaved</a>
+<a class="button" href="WSDM.html" target="_blank" rel="noopener noreferrer">#WSDM</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197" target="_blank" rel="noopener noreferrer">[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09</a>
+ DBGDを拡張した手法を提案している。<br><br>アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。<br><br>Interleavemethodについても。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="interactively-optimizing-197" class="title-link">[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09</h3>
+<br><a href="https://www.cs.cornell.edu/people/tj/publications/yue_joachims_09a.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/197" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>online learning to rankに関する論文でよくreferされる論文<br><br><br><br>提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.<br><br><br><br>onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。<br><br>duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法<br><br><br><br>duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。<br><br><br><br>onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。<br><br><br><br>offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。<br><br>そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="large-scale-191" class="title-link">[Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09</h3>
+<br><a href="https://pdfs.semanticscholar.org/0571/3da3bd396fef9611761fab4d88a21671ca43.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/191" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>sofia-mlの実装内容について記述されている論文<br><br><br><br>よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。<br><br>というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。<br><br>実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。<br><br><br><br>まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。<br><br>passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。<br><br>(ROMMAは調べないとわからん)<br><br><br><br>pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。<br><br><br><br>実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。<br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="bpr-bayesian-28" class="title-link">[Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06</h3>
+<br><a href="https://arxiv.org/abs/1205.2618" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/28" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="ImplicitFeedback.html" target="_blank" rel="noopener noreferrer">#ImplicitFeedback</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="UAI.html" target="_blank" rel="noopener noreferrer">#UAI</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2017-12-28</span>
+<span class="snippet"><span>GPT Summary</span>- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。</span>
+<span class="snippet"><span>Comment</span><p>重要論文<br><br>ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。<br><br>AUCを最適化するようなイメージ。<br><br>負例はNegative Sampling。<br><br>計算量が軽く、拡張がしやすい。<br><br><br><br>Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。<br><br>また、MFのみならず、Item-Based KNNに活用することなども可能。<br><br><br><br>
+
+
+<a href="http://tech.vasily.jp/entry/2016/07/01/134825" target="_blank" rel="noopener noreferrer">http://tech.vasily.jp/entry/2016/07/01/134825</a>
+
+
+</p>
+<p>参考: 
+
+
+<a href="https://techblog.zozo.com/entry/2016/07/01/134825" target="_blank" rel="noopener noreferrer">https://techblog.zozo.com/entry/2016/07/01/134825</a>
+
+
+</p>
+<p>pytorchでのBPR実装: 
+
+
+<a href="https://github.com/guoyang9/BPR-pytorch" target="_blank" rel="noopener noreferrer">https://github.com/guoyang9/BPR-pytorch</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="how-does-203" class="title-link">[Paper Note] How Does Clickthrough Data Reflect Retrieval Quality?, Radlijnski+, CIKM'08</h3>
+<br><a href="https://www.cs.cornell.edu/people/tj/publications/radlinski_etal_08b.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/203" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Interleaved.html" target="_blank" rel="noopener noreferrer">#Interleaved</a>
+<a class="button" href="CIKM.html" target="_blank" rel="noopener noreferrer">#CIKM</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="fast-learning-202" class="title-link">[Paper Note] Fast Learning of Document Ranking Functions with the Committee Perceptrion, Elsas+, WSDM'08</h3>
+<br><a href="http://delivery.acm.org/10.1145/1350000/1341542/p55-elsas.pdf?ip=131.112.138.2&id=1341542&acc=ACTIVE%20SERVICE&key=D2341B890AD12BFE%2EE857D5F645C75AE5%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=781623828&CFTOKEN=57476606&__acm__=1499155717_780c7ac7b015e2c7cdefe0c2a5b73c2d" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/202" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
+<a class="button" href="WSDM.html" target="_blank" rel="noopener noreferrer">#WSDM</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="listwise-approach-194" class="title-link">[Paper Note] Listwise Approach to Learning to Rank - Theory and Algorithm （ListMLE）, Xia+, ICML'08</h3>
+<br><a href="http://www.machinelearning.org/archive/icml2008/papers/167.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/194" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="learning-to-193" class="title-link">[Paper Note] Learning to Rank: From Pairwise Approach to Listwise Approach （ListNet）, Cao+, ICML'07</h3>
+<br><a href="http://www.machinelearning.org/proceedings/icml2007/papers/139.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/193" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>解説スライド：
+
+
+<a href="http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf" target="_blank" rel="noopener noreferrer">http://www.nactem.ac.uk/tsujii/T-FaNT2/T-FaNT.files/Slides/liu.pdf</a>
+
+
+<br><br>解説ブログ：
+
+
+<a href="https://qiita.com/koreyou/items/a69750696fd0b9d88608" target="_blank" rel="noopener noreferrer">https://qiita.com/koreyou/items/a69750696fd0b9d88608</a>
+
+
+</p>
+<p>従来行われてきたLearning to Rankはpairwiseな手法が主流であったが、pairwiseな手法は2つのインスタンス間の順序が正しく識別されるように学習されているだけであった。<br><br>pairwiseなアプローチには以下の問題点があった：<br><br><br><br>* インスタンスのペアのclassification errorを最小化しているだけで、インスタンスのランキングのerrorを最小化しているわけではない。<br><br>* インスタンスペアが i.i.d な分布から生成されるという制約は強すぎる制約<br><br>* queryごとに生成されるインスタンスペアは大きく異なるので、インスタンスペアよりもクエリに対してバイアスのかかった学習のされ方がされてしまう<br><br><br><br>これらを解決するために、listwiseなアプローチを提案。<br><br>listwiseなアプローチを用いると、インスタンスのペアの順序を最適化するのではなく、ランキング全体を最適化できる。<br><br>listwiseなアプローチを用いるために、Permutation Probabilityに基づくloss functionを提案。loss functionは、2つのインスタンスのスコアのリストが与えられたとき、Permutation Probability Distributionを計算し、これらを用いてcross-entropy lossを計算するようなもの。<br><br>また、Permutation Probabilityを計算するのは計算量が多すぎるので、top-k probabilityを提案。<br><br>top-k probabilityはPermutation Probabilityの計算を行う際のインスタンスをtop-kに限定するもの。<br><br>論文中ではk=1を採用しており、k=1はsoftmaxと一致する。<br><br>パラメータを学習する際は、Gradient Descentを用いる。</p>
+<p>k=1の設定で計算するのが普通なようなので、普通にoutputがsoftmaxでlossがsoftmax cross-entropyなモデルとほぼ等価なのでは。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="learning-to-192" class="title-link">[Paper Note] Learning to Rank using Gradient Descent （RankNet）, Burges+, ICML'05</h3>
+<br><a href="http://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/192" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>pair-wiseのlearning2rankで代表的なRankNet論文<br><br>解説ブログ：
+
+
+<a href="https://qiita.com/sz_dr/items/0e50120318527a928407" target="_blank" rel="noopener noreferrer">https://qiita.com/sz_dr/items/0e50120318527a928407</a>
+
+
+<br><br><br><br>lossは2個のインスタンスのpair、A, Bが与えられたとき、AがBよりも高くランクされる場合は確率1, AがBよりも低くランクされる場合は確率0、そうでない場合は1/2に近くなるように、スコア関数を学習すれば良い。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="pranking-with-190" class="title-link">[Paper Note] PRanking with Ranking, Crammer+, NIPS'01</h3>
+<br><a href="https://pdfs.semanticscholar.org/906f/50f545890ca81231be7cec7c59555c679dba.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/190" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="PointWise.html" target="_blank" rel="noopener noreferrer">#PointWise</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>Point-WiseなLearning2Rankの有名手法</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="lerot-online-201" class="title-link">Lerot: Online Learning to rank Framework</h3>
+<br><a href="http://ilps.science.uva.nl/resources/online-learning-framework/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/201" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="fast-and-196" class="title-link">Fast and Reliable Online Learning to Rank for Information Retrieeval, Katja Hofmann, Doctoral Thesis, 2013</h3>
+<br><a href="https://khofm.files.wordpress.com/2013/04/thesis-katja-hofmann-online-learning.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/196" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Online_Interactive.html" target="_blank" rel="noopener noreferrer">#Online/Interactive</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="a-general-195" class="title-link">[Paper Note] A General Approximation Framework for Direct Optimization of Information Retrieval Measures （ApproxAP, ApproxNDCG）, Qin+, Information Retrieval, 2010</h3>
+<br><a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2008-164.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/195" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="ListWise.html" target="_blank" rel="noopener noreferrer">#ListWise</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+<span class="snippet"><span>Comment</span><p>実装してみたが、バグありそう感・・・<br><br>https://github.com/AkihikoWatanabe/ApproxAP</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="from-ranknet-189" class="title-link">From RankNet to LambdaRank to LambdaMART: An Overview, Burges, Microsoft Research Technical Report, 2010</h3>
+<br><a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/189" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="confidence-weightedでランク学習を実装してみた-188" class="title-link">Confidence Weightedでランク学習を実装してみた, 徳永拓之, 第4回 自然言語処理勉強会@東京</h3>
+<br><a href="https://www.slideshare.net/tkng/confidence-weighted" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/188" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="ランキング学習ことはじめ-187" class="title-link">ランキング学習ことはじめ, DSIRNLP#1, 2011</h3>
+<br><a href="https://www.slideshare.net/sleepy_yoshi/dsirnlp1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/187" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+<article class="paper-entry">
+<h3 id="learning-to-185" class="title-link">[Paper Note] Learning to Rank for Information Retriefval, Liu+, 2009</h3>
+<br><a href="http://didawiki.di.unipi.it/lib/exe/fetch.php/magistraleinformatica/ir/ir13/1_-_learning_to_rank.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/185" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<span class="issue_date">Issue Date: 2018-01-01</span>
+</article>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Twitterのwidgets.jsを動的に一度だけ読み込む関数
+  let twitterScriptLoaded = false;
+  function loadTwitterScript() {
+    if (!twitterScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.charset = "utf-8";
+      script.async = true;
+      document.body.appendChild(script);
+      twitterScriptLoaded = true;
+    }
+  }
+
+  // Intersection Observerの設定
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // 画面に入った時だけスクリプトをロード開始
+        loadTwitterScript();
+
+        const container = entry.target;
+        const embedHtml = container.getAttribute('data-embed');
+        
+        if (embedHtml) {
+          container.innerHTML = embedHtml;
+          container.removeAttribute('data-embed');
+          
+          // ウィジェットの再スキャン（twttrオブジェクトが準備できていれば実行）
+          if (window.twttr && window.twttr.widgets) {
+            window.twttr.widgets.load(container);
+          }
+        }
+        obs.unobserve(container);
+      }
+    });
+  }, { rootMargin: '200px', threshold: 0.01 }); // 少し早めに読み込む
+
+  document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
+});
+</script>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/paper_notes/articles/PsychologicalScience/" title="PsychologicalScienceに関する論文・技術記事メモの一覧">PsychologicalScienceに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/PairWise/" title="PairWiseに関する論文・技術記事メモの一覧">PairWiseに関する論文・技術記事メモの一覧</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/paper_notes/articles/Best-of-N/" title="Best-of-Nに関する論文・技術記事メモの一覧">
+            Best-of-Nに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/DownstreamTasks/" title="DownstreamTasksに関する論文・技術記事メモの一覧">
+            DownstreamTasksに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/SemanticID/" title="SemanticIDに関する論文・技術記事メモの一覧">
+            SemanticIDに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/KV-Cache/" title="KV Cacheに関する論文・技術記事メモの一覧">
+            KV Cacheに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+/* --- レイアウト用（前回と同じ） --- */
+.post-menu {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-menu-title {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.post-menu-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- 開閉アニメーションとアイコン用 --- */
+
+/* h2のスタイル：クリックできるようにする */
+.post-menu li.h-h2 {
+  cursor: pointer;
+  position: relative;
+  padding-left: 15px; /* アイコン用のスペース */
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 開閉アイコン（▼） */
+.post-menu li.h-h2::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 6px; /* 三角形 */
+  border-color: transparent transparent transparent #555;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.post-menu li.h-h2.no-icon::before {
+  content: none; /* 擬似要素の中身をなしにする */
+  /* または display: none; でもOKです */
+}
+
+/* 開いている時のアイコン（下向きにする） */
+.post-menu li.h-h2.open::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* h3（子要素）のスタイル */
+.post-menu li.h-h3 {
+  margin-left: 15px;
+  font-size: 0.9em;
+  /* 初期状態はJSで制御しますが、念のため */
+}
+
+/* アクティブな項目の色 */
+.post-menu li.active > a {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* リンク自体のスタイル調整 */
+.post-menu li a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: 100%;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent = menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3");
+
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // --- HTML生成 ---
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      // h-h2 クラスの要素には初期状態で open クラスをつけるか、つけないかで「最初から開いているか」を決められます
+      // ここでは閉じた状態をデフォルトとします
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+
+    // --- 開閉ロジックの実装 ---
+    var listItems = menuContent.querySelectorAll('li');
+
+    // h2要素にクリックイベントを追加
+    listItems.forEach(function(item, index) {
+      if (item.classList.contains('h-h2')) {
+        
+        // クリックイベント
+        item.addEventListener('click', function(e) {
+          // リンクをクリックした場合はページ内遷移させたいので、イベントを止めない
+          // ただし、アイコン付近をクリックした等の挙動を統一するため、
+          // 開閉処理を行います。
+          
+          // クラスの付け替え（アイコンの回転用）
+          item.classList.toggle('open');
+
+          // 次のh2が出てくるまで、h3を表示/非表示切り替え
+          for (var i = index + 1; i < listItems.length; i++) {
+            var sibling = listItems[i];
+            if (sibling.classList.contains('h-h2')) {
+              break; // 次のh2に来たら終了
+            }
+            if (sibling.classList.contains('h-h3')) {
+              if (item.classList.contains('open')) {
+                sibling.style.display = 'block';
+              } else {
+                sibling.style.display = 'none';
+              }
+            }
+          }
+        });
+      }
+    });
+
+    // --- 初期状態の設定（すべて閉じる） ---
+    // もし最初から開いておきたい場合は、このブロックを削除するか調整してください
+    listItems.forEach(function(item) {
+      if (item.classList.contains('h-h3')) {
+        item.style.display = 'none';
+      }
+    });
+
+
+    // --- スクロール連動（ハイライト機能のみ残す） ---
+    var header = document.querySelector('header.site-header');
+    
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header ? header.getBoundingClientRect() : {top:0, height:0}; // headerがない場合の安全策
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var offset = headerTop + headerHeight + 20;
+
+        if (headingRect.top <= offset) {
+          var id = h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          
+          if (curActive) {
+            // もしアクティブになった項目が閉じているh2の中にあった場合、
+            // 自動で開く処理を追加したい場合はここに記述します。
+            // 今回は「手動開閉」を優先し、自動オープンはあえて行いません。
+            
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+      }
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/paper_notes/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+  </html>
