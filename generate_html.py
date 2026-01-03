@@ -280,11 +280,11 @@ def restore_img_tags(
     """
     for i, img in enumerate(imgs):
         replaced_img = None
-        for image_pat in image_pat_list:
-            m = image_pat.search(img)
+        for image_url_pat in image_url_list:
+            m = image_url_pat.search(img)
             if m != None:
                 replaced_img = replace_image(m)
-        assert replaced_img != None
+        assert replaced_img != None, img
         text = text.replace(f"__IMG_{i}__", replaced_img)
     return text
 
@@ -778,6 +778,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
