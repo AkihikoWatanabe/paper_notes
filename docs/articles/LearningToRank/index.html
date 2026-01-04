@@ -22,17 +22,17 @@
 <meta property="og:title" content="LearningToRankに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。![image](https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。![image](https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8また、PRPがinputのorderに対してロバストなことも示されている。![image](https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
-<meta property="og:description" content="LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL'24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。![image](https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。![image](https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8また、PRPがinputのorderに対してロバストなことも示されている。![image](https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR'16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL'16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv'15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR'15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM'13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML'09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw'を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw'の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS'09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI'09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。">
+<meta name="description" content="LearningToRank [Paper Note] RankMixer: Scaling Up Ranking Models in Industrial Recommenders, Jie Zhu+, arXiv'25 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #Pocket #Transformer #read-later #Selected Papers/Blogs Issue Date: 2025-07-24 GPT Summary- RankMixerは、推薦システムのスケーラビリティを向上させるための新しいアーキテクチャで、トランスフォーマーの並列性を活かしつつ、効率的な特徴相互作用を実現。Sparse-MoEバリアントを用いて10億パラメータに拡張し、動的ルーティング戦略で専門家の不均衡を解消。実験により、1兆スケールのデータセットで優れたスケーリング能力を示し、MFUを4.5%から45%に向上させ、推論レイテンシーを維持しつつパラメータを100倍に増加。オンラインA/Bテストで推薦、広告、検索の各シナリオにおける効果を確認し、ユーザーのアクティブ日数を0.2%、アプリ内使用時間を0.5%改善。 Comment元ポスト:">
+<meta property="og:description" content="LearningToRank [Paper Note] RankMixer: Scaling Up Ranking Models in Industrial Recommenders, Jie Zhu+, arXiv'25 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #Pocket #Transformer #read-later #Selected Papers/Blogs Issue Date: 2025-07-24 GPT Summary- RankMixerは、推薦システムのスケーラビリティを向上させるための新しいアーキテクチャで、トランスフォーマーの並列性を活かしつつ、効率的な特徴相互作用を実現。Sparse-MoEバリアントを用いて10億パラメータに拡張し、動的ルーティング戦略で専門家の不均衡を解消。実験により、1兆スケールのデータセットで優れたスケーリング能力を示し、MFUを4.5%から45%に向上させ、推論レイテンシーを維持しつつパラメータを100倍に増加。オンラインA/Bテストで推薦、広告、検索の各シナリオにおける効果を確認し、ユーザーのアクティブ日数を0.2%、アプリ内使用時間を0.5%改善。 Comment元ポスト:">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2023-07-11T00:00:00+00:00">
+<meta property="article:published_time" content="2025-07-24T00:00:00+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="LearningToRankに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2023-07-11T00:00:00+00:00","datePublished":"2023-07-11T00:00:00+00:00","description":"LearningToRank Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, N_A, NAACL&#39;24 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NLP #LanguageModel #Prompting #NAACL Issue Date: 2023-07-11 GPT Summary- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。 Commentopen source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。![image](https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。![image](https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8また、PRPがinputのorderに対してロバストなことも示されている。![image](https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0 [Paper Note] Online Learning to Rank for Information Retrieval, Grotov+, SIGIR&#39;16 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Online/Interactive #SIGIR Issue Date: 2018-01-01 [Paper Note] News Citation Recommendation with Implicit and Explicit Semantics, Peng+, ACL&#39;16 Paper/Blog Link My Issue #RecommenderSystems #Citations #ACL Issue Date: 2018-01-01 Commenttarget text中に記述されているイベントや意見に対して、それらをサポートするような他のニュース記事を推薦する研究。たとえば、target text中に「北朝鮮が先日ミサイルの発射に失敗したが...」、といった記述があったときに、このイベントについて報道しているニュース記事を推薦するといったことを、target text中の様々なcontextに対して行う。このようなシステムの利用により、target textの著者の執筆支援（自身の主張をサポートするためのreferenceの自動獲得）や、target textの読者の読解支援（text中の記述について詳細な情報を知りたい場合に、検索の手間が省ける）などの利点があると主張。タスクとしては、target text中のあるcontextと、推薦の候補となるニュース記事の集合が与えられたときに、ニュース記事をre-rankingする タスク。提案手法はシンプルで、contextとニュース記事間で、様々な指標を用いてsimilarityを測り、それらをlearning-to-rankで学習した重みで組み合わせてre-rankingを行うだけ。 similarityを測る際は、表記揺れや曖昧性の問題に対処するためにEmbeddingを用いる手法と、groundingされたentityの情報を用いる手法を提案。Bing news中のAnchor textと、hyperlink先のニュース記事の対から、contextと正解ニュース記事の対を取得し、30000件規模の実験データを作成し、評価。その結果、baselineよりも提案手法の性能が高いことを示した。 [Paper Note] Contextual Dueling Bandits, Miroslav Dudík+, arXiv&#39;15 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Pocket Issue Date: 2018-01-01 GPT Summary- 相対的なペアワイズ比較を用いて文脈情報を活用した行動選択の学習問題を、デュエリングバンディットフレームワークで拡張して研究。新たに提案する「フォン・ノイマン勝者」は、他のポリシーに勝つか引き分けるランダム化ポリシーで、コンドルセ勝者の制限を克服。オンライン学習のための3つの効率的なアルゴリズムを提示し、特に低い後悔を達成するアルゴリズムはポリシー空間に対して線形の要件を持つ。その他の2つは、オラクルへのアクセスがあれば対数的な要件で済む。 Machine Learning for Information Retrieval, Hofmann, ESSIR&#39;15 Paper/Blog Link My Issue #Tutorial #InformationRetrieval #Slide Issue Date: 2018-01-01 [Paper Note] Reusing Historical Interaction Data for Faster Online Learning to Rank for IR, Hofmann+, WSDM&#39;13 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #Interleaved #WSDM Issue Date: 2018-01-01 Comment[Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 DBGDを拡張した手法を提案している。アルゴリズムが細かく書いてあるので、追っていくとDBGD等について理解が深まると思われる。Interleavemethodについても。 [Paper Note] Interactively Optimizing Information Retrieval Systems as a Dueling Bandits Problem, Yue+, ICML&#39;09 Paper/Blog Link My Issue #InformationRetrieval #Online/Interactive #ICML Issue Date: 2018-01-01 Commentonline learning to rankに関する論文でよくreferされる論文提案手法は、Dueling Bandit Gradient Descent(DBGD)と呼ばれる.onlineでlearning to rankを行える手法で、現在の重みwとwをランダムな方向に動かした新たな重みw&#39;を使って、予測を行い、duelを行う。duelを行った結果、新たな重みw&#39;の方が買ったら、重みwをその方向に学習率分更新するというシンプルな手法duelのやり方は、詳しく書いてないからなんともよくわからなかったが、Interleavedなlist(二つのモデルのoutputを混合したリスト)などを作り、実際にユーザにリストを提示してユーザがどのアイテムをクリックしたかなどから勝敗の確率値を算出し利用する、といったやり方が、IRの分野では行われている。onlineでユーザのフィードバックから直接モデルを学習したい場合などに用いられる。offlineに持っているデータを使って、なんらかのmetricを計算してduelをするという使い方をしたかったのだが、その使い方はこの手法の本来の使い方ではない（単純に何らかのmetricに最適化するというのであれば目的関数が設計できるのでそっちの手法を使ったほうが良さそうだし）。そもそもこの手法は単純にMetricとかで表現できないもの（ユーザの満足度とか）を満たすようなweightをexploration/exploitationを繰り返して見つけていこう、というような気持ちだと思われる。 [Paper Note] Large Scale Learning to Rank, Sculley+, NIPS&#39;09 Paper/Blog Link My Issue #InformationRetrieval #PairWise #NeurIPS Issue Date: 2018-01-01 Commentsofia-mlの実装内容について記述されている論文よくonline学習の文脈で触れられるが、気をつけないと罠にはまる。というのは、sofia-ml内のMethodsによって、最適化している目的関数が異なるからだ。実装をみると、全てのmethodsがonlineでできちゃいそうに見える（学習済みのモデルをinputして学習を再開させられるため）が、落とし穴。まず、SGD SVM, Pegasos SVM,については、最適化している目的関数がbatchになっているため、online learningではない。passive-aggressive perceptrionは目的関数が個別の事例に対して定式化される(要確認)のでonline learningといえる。(ROMMAは調べないとわからん)pairwiseのlearning to rankでは、サンプルのペアを使って学習するので、最悪の場合O(n^2)の計算量がかかってしまってめっちゃ遅いのだが、実は学習データを一部サンプリングして重みを更新するってのをたくさん繰り返すだけで、高速に学習できちゃうという話。実際、sofia-mlを使って見たら、liblinearのranking SVM実装で40分かかった学習が数秒で終わり、なおかつ精度も良かった。 [Paper Note] BPR: Bayesian Personalized Ranking from Implicit Feedback, Steffen Rendle+, UAI&#39;09, 2009.06 Paper/Blog Link My Issue #RecommenderSystems #ImplicitFeedback #Pocket #UAI #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 GPT Summary- アイテム推薦において、暗黙的フィードバックを用いた個別のランキング予測のために、BPR-Optという新しい最適化基準を提案。ブートストラップサンプリングを用いた確率的勾配降下法に基づく学習アルゴリズムを提供し、行列因子分解とk近傍法に適用。実験結果は、提案手法が従来の技術を上回ることを示し、モデル最適化の重要性を強調。 Comment重要論文ユーザのアイテムに対するExplicit/Implicit Ratingを利用したlearning2rank。AUCを最適化するようなイメージ。負例はNegative Sampling。計算量が軽く、拡張がしやすい。Implicitデータを使ったTop-N Recsysを構築する際には検討しても良い。また、MFのみならず、Item-Based KNNに活用することなども可能。","headline":"LearningToRankに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-07-24T00:00:00+00:00","datePublished":"2025-07-24T00:00:00+00:00","description":"LearningToRank [Paper Note] RankMixer: Scaling Up Ranking Models in Industrial Recommenders, Jie Zhu+, arXiv&#39;25 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #Pocket #Transformer #read-later #Selected Papers/Blogs Issue Date: 2025-07-24 GPT Summary- RankMixerは、推薦システムのスケーラビリティを向上させるための新しいアーキテクチャで、トランスフォーマーの並列性を活かしつつ、効率的な特徴相互作用を実現。Sparse-MoEバリアントを用いて10億パラメータに拡張し、動的ルーティング戦略で専門家の不均衡を解消。実験により、1兆スケールのデータセットで優れたスケーリング能力を示し、MFUを4.5%から45%に向上させ、推論レイテンシーを維持しつつパラメータを100倍に増加。オンラインA/Bテストで推薦、広告、検索の各シナリオにおける効果を確認し、ユーザーのアクティブ日数を0.2%、アプリ内使用時間を0.5%改善。 Comment元ポスト:","headline":"LearningToRankに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/LearningToRank/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -807,7 +807,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2023-07-11T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 11, 2023
+    <time class="dt-published" datetime="2025-07-24T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 24, 2025
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -842,7 +842,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 34 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 36 mins</span>
   </div></header>
 </div>
     </div>
@@ -1037,6 +1037,39 @@ function googleTranslateElementInit() {
 
       <h2 id="LearningToRank" class="paper-head"> LearningToRank</h2>
 <div class="visible-content">
+<article class="paper-entry">
+<h3 id="rankmixer-scaling-2290" class="title-link">[Paper Note] RankMixer: Scaling Up Ranking Models in Industrial Recommenders, Jie Zhu+, arXiv'25</h3>
+<br><a href="https://arxiv.org/abs/2507.15551" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2290" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2025-07-24</span>
+<span class="snippet"><span>GPT Summary</span>- RankMixerは、推薦システムのスケーラビリティを向上させるための新しいアーキテクチャで、トランスフォーマーの並列性を活かしつつ、効率的な特徴相互作用を実現。Sparse-MoEバリアントを用いて10億パラメータに拡張し、動的ルーティング戦略で専門家の不均衡を解消。実験により、1兆スケールのデータセットで優れたスケーリング能力を示し、MFUを4.5%から45%に向上させ、推論レイテンシーを維持しつつパラメータを100倍に増加。オンラインA/Bテストで推薦、広告、検索の各シナリオにおける効果を確認し、ユーザーのアクティブ日数を0.2%、アプリ内使用時間を0.5%改善。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/gm8xx8/status/1948304747317854307?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
+</article>
 <article class="paper-entry">
 <h3 id="large-language-799" class="title-link">Large Language Models are Effective Text Rankers with Pairwise Ranking   Prompting, Zhen Qin+, N_A, NAACL'24</h3>
 <br><a href="https://arxiv.org/abs/2306.17563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
@@ -1553,14 +1586,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/PsychologicalScience/" title="PsychologicalScienceに関する論文・技術記事メモの一覧">PsychologicalScienceに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/PairWise/" title="PairWiseに関する論文・技術記事メモの一覧">PairWiseに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/Attack/" title="Attackに関する論文・技術記事メモの一覧">Attackに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Document/" title="Documentに関する論文・技術記事メモの一覧">Documentに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Best-of-N/" title="Best-of-Nに関する論文・技術記事メモの一覧">
-            Best-of-Nに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Safety/" title="Safetyに関する論文・技術記事メモの一覧">
+            Safetyに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 43</span> 
+  <span class="post-badge badge-new">📝 43</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/DualLearning/" title="DualLearningに関する論文・技術記事メモの一覧">
+            DualLearningに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -1568,29 +1610,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DownstreamTasks/" title="DownstreamTasksに関する論文・技術記事メモの一覧">
-            DownstreamTasksに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Zero-FewShotLearning/" title="Zero/FewShotLearningに関する論文・技術記事メモの一覧">
+            Zero/FewShotLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SemanticID/" title="SemanticIDに関する論文・技術記事メモの一覧">
-            SemanticIDに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Generalization/" title="Generalizationに関する論文・技術記事メモの一覧">
+            Generalizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/KV-Cache/" title="KV Cacheに関する論文・技術記事メモの一覧">
-            KV Cacheに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 23</span> 
+  <span class="post-badge badge-new">📝 23</span>
 </span>
 </a>
         </li>
