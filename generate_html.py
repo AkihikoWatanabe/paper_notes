@@ -230,14 +230,23 @@ image_url_list = [re.compile(r'(https://(?:github\.com|user-images\.githubuserco
                   re.compile(r'(https://user-images\.githubusercontent\.com/[^)>]+)'),
                   re.compile(r'(https://github\.com/user-attachments/assets/[^)>]+)')]
 
-def link_replacer(match):
-    for image_pat in image_url_list:
-        # imgの場合はreplaceしない
-        m = image_pat.search(match.group(0))
-        if m != None:
-            return m.group(0)
-    return "\n\n{% raw %}\n" + f'<a href="{match.group(1)}" target="_blank" rel="noopener noreferrer">{match.group(1)}</a>' + "\n{% endraw %}\n\n"
 
+def link_replacer(match):
+    # マッチした文字列全体を取得
+    full_match = match.group(0)
+    url = match.group(1)
+    
+    # imgトークンが含まれている場合はスキップ
+    if '__IMG_' in full_match: 
+        return full_match
+    
+    # 画像URLのパターンチェック
+    for image_pat in image_url_list:
+        m = image_pat.search(full_match)
+        if m != None:
+            return full_match
+    
+    return "\n\n{% raw %}\n" + f'<a href="{url}" target="_blank" rel="noopener noreferrer">{url}</a>' + "\n{% endraw %}\n\n"
 
 def x_link_replacer(match):
     x_link = match.group(1).replace("x.com", "twitter.com") 
@@ -317,14 +326,21 @@ def get_snippets(issue: dict[str, str]) -> tuple[str, str]:
         else:
             comm_text += "<p>" + r['body'].replace("\r", "\n").replace("\n", "<br>") + "</p>"
     if comm_text != None:
+         # 先にMarkdown形式の画像を<img>タグに変換
+        for image_pat in image_pat_list:
+            comm_text = re.sub(image_pat, replace_image, comm_text)
+        
+        # すべての<img>タグを保護
         protected, imgs = protect_img_tags(comm_text)
+        
+        # 他の置換処理
         protected = re.sub(r"#(\d+)", issue_link_replacer, protected)
         protected = re.sub(r'#+\s.*?\n', head_replacer, protected)
         protected = re.sub(http_pat, link_replacer, protected) 
         protected = re.sub(x_pat, x_link_replacer, protected)
-        for image_pat in image_pat_list:
-            protected = re.sub(image_pat, replace_image, protected)
+        
         comm_text = restore_img_tags(protected, imgs)
+        
     if summ_text != None:
         summ_text = summ_text.replace("\r", "\n").replace("\n", "<br>")
 
@@ -779,6 +795,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
