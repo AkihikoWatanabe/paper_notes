@@ -843,7 +843,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 34 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 32 mins</span>
   </div></header>
 </div>
     </div>
@@ -1094,9 +1094,10 @@ My Issue
 
 
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1795" target="_blank" rel="noopener noreferrer">[Paper Note] Transformers without Normalization, Jiachen Zhu+, CVPR'25</a>
-<br><br>ではそもそもLayerNormalizationを無くしていた（正確にいうとparametrize tanhに置換)が、どちらが優れているのだろうか？<br><br><img src="https://github.com/user-attachments/assets/4bc557a0-ae23-4017-9837-7744de74c12e&lt;br&gt;![image](https://github.com/user-attachments/assets/2eead45c-209d-46e4-87e7-0129a4ec5ec2&lt;/p&gt;&lt;p&gt;-%20&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">Knowledge Neurons in Pretrained Transformers, Damai Dai+, N/A, ACL'22, 2022.05
+<br><br>ではそもそもLayerNormalizationを無くしていた（正確にいうとparametrize tanhに置換)が、どちらが優れているのだろうか？<br><br><img src="https://github.com/user-attachments/assets/4bc557a0-ae23-4017-9837-7744de74c12e" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/2eead45c-209d-46e4-87e7-0129a4ec5ec2" alt="image" loading="lazy" width="550" height="400"></p>
+<p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1332" target="_blank" rel="noopener noreferrer">Knowledge Neurons in Pretrained Transformers, Damai Dai+, N/A, ACL'22, 2022.05</a>
 <br><br>では知識ニューロンの存在が示唆されており、これはTransformerの層の深い位置に存在し、かつ異なる知識間で知識ニューロンはシェアされない傾向にあった（ただしこれはPost-LNのBERTの話で本研究はPre-LNの話だが。Post-LNの勾配消失問題を緩和し学習を安定化させる研究も<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2141" target="_blank" rel="noopener noreferrer">[Paper Note] On Layer Normalizations and Residual Connections in Transformers, Sho Takase+, arXiv'22</a>
- のように存在する" alt="image" loading="lazy" width="550" height="400"/&gt;。これはこの研究が明らかにしたこととどういう関係性があるだろうか。<br><br>また、LayerNormalizationのScalingによって深いTransformerブロックの導関数が単位行列となる（学習に寄与しなくなる）ことが改善された場合、知識ニューロンはどのように変化するだろうか？<br><br>（下記Geminiの応答を見た上での感想)なんとなーくだけれども、おそらく知識ニューロンの局所化が解消されるのかなーという気がする。<br><br>となると次の疑問としては、MoEアーキテクチャにはどのような影響があるだろうか？<br>そもそも知識ニューロンが局所化しているからMoEアーキテクチャのルータによって関連するExpertsのみをactivateすれば（というより結果的にそうなるように学習される）性能を劣化させずに計算効率を上げられていた、と仮定する。そうすると、知識ニューロンが局所化せずに多くのニューロンでシェアされるようになると、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2110" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Experts: Unlocking the Communication Power of  Mixture-of-Experts Models, Zihan Wang+, arXiv'25</a>
+ のように存在する)。これはこの研究が明らかにしたこととどういう関係性があるだろうか。<br><br>また、LayerNormalizationのScalingによって深いTransformerブロックの導関数が単位行列となる（学習に寄与しなくなる）ことが改善された場合、知識ニューロンはどのように変化するだろうか？<br><br>（下記Geminiの応答を見た上での感想)なんとなーくだけれども、おそらく知識ニューロンの局所化が解消されるのかなーという気がする。<br><br>となると次の疑問としては、MoEアーキテクチャにはどのような影響があるだろうか？<br>そもそも知識ニューロンが局所化しているからMoEアーキテクチャのルータによって関連するExpertsのみをactivateすれば（というより結果的にそうなるように学習される）性能を劣化させずに計算効率を上げられていた、と仮定する。そうすると、知識ニューロンが局所化せずに多くのニューロンでシェアされるようになると、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2110" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Experts: Unlocking the Communication Power of  Mixture-of-Experts Models, Zihan Wang+, arXiv'25</a>
  のように、サブネットワーク間の情報を互いにやりとりできます、みたいな仕組みがより効いてきそうな気がする。<br><br>参考までに、Gemini2.5-Proに考察させてみた結果をメモとして残しておく（あくまで参考程度に...）<br>```<br>ご質問ありがとうございます。非常に興味深い着眼点ですね。「Knowledge Neurons in Pretrained Transformers」と「The Curse of Depth in Large Language Models」は、一見すると全く異なるテーマを扱っているように見えますが、**「Transformerの深い層における振る舞い」**という共通点で結びつけて考察すると、非常に示唆に富んだ関係性が見えてきます。<br><br>以下に、両方の論文の概要を解説し、その関係性について考察します。<br><br>1. Knowledge Neurons in Pretrained Transformers の概要<br>この研究は、事前学習済みTransformerモデル（特にBERTなど）の内部で、特定の事実知識がどのように格納されているかを調査したものです。<br><br>発見: モデルの中間層、特に**全結合層（Feed-Forward Network, FFN）に、特定の知識（例：「ダンテ・アリギエーリはイタリアで生まれた」）に強く反応する「知識ニューロン」**が存在することを発見しました。<br><br>特徴: これらの知識ニューロンは、モデルの深い層（後方の層）に、より多く存在する傾向がありました。<br><br>意味: これまでブラックボックスとされてきた大規模言語モデルの内部で、知識がどのように表現・局在化しているかについて、具体的な手がかりを与えた画期的な研究です。<br><br>2. The Curse of Depth in Large Language Models の概要<br>この研究は、LLMをより深く（層を多く）することの難しさに焦点を当て、その原因と解決策を提案したものです。<br><br>問題（深さの呪い）: Transformerの標準的なアーキテクチャ（Pre-LN）では、層が深くなるにつれて、LayerNormalization（LN）への入力の分散が指数関数的に増大してしまいます。<br><br>結果:<br><br>出力が大きくなりすぎて学習が不安定になります。<br><br>さらに深刻なのは、深い層ではモデルの出力に関する導関数（勾配計算に必要）がほぼ単位行列になってしまうことです。これは、その層が入力に対してほとんど変換を行わなくなり、学習に寄与しなくなることを意味します。<br><br>解決策: この問題を解決するため、各層のLayerNormalizationをその深さ（レイヤー番号 l）に応じてスケーリングするというシンプルな手法を提案しました。これにより、深い層でも勾配が適切に伝播し、学習が安定・改善することが示されました。<br><br>考察：2つの研究の関係性<br>これら2つの研究は、**「学習の安定性」と「知識の格納方法」**という異なる側面から、Transformerの深い層を分析していますが、両者には以下のような深い関係性があると考えられます。<br><br>学習の不安定性が「知識ニューロン」形成の背景にある可能性<br>「The Curse of Depth」で指摘されているように、標準的なTransformerの深い層は、本質的に学習が不安定で、勾配情報が失われやすい環境にあります。<br><br>この劣悪な学習環境こそが、「知識ニューロン」という形で知識が局所的に格納される原因の一つになっている可能性があります。つまり、<br><br>学習の非効率性: 深い層のほとんどのニューロンは、勾配消失問題のために効率的に学習を進めることができません。<br><br>専門化の発生: そのような不安定な環境下で、たまたま特定の知識パターンをうまく捉えることができた一部のニューロンが、その知識を一身に背負う形で強く活性化するよう特化（専門化）していったのではないか、と考えられます。これは、ネットワーク全体で協調して学習するのが難しい状況で、一部のユニットだけが突出して学習を担う、という現象と解釈できます。<br><br>学習の安定化が、より効率的な知識獲得につながる<br>では、「The Curse of Depth」で提案された手法（LNのスケーリング）によって深い層の学習が安定化すると、知識の格納方法はどのように変わるでしょうか。<br><br>これは非常に興味深い問いであり、2つの可能性が考えられます。<br><br>可能性A: より強固な知識ニューロンの形成:<br>学習が安定することで、各知識ニューロンはより明確に、そして効率的に特定の知識をエンコードできるようになるかもしれません。ノイズの多い環境で偶然生まれた専門家ではなく、安定した環境で育成された真の専門家へと変化するイメージです。<br><br>可能性B: 知識の分散化:<br>ネットワークの全ニューロンが効率的に学習に寄与できるようになるため、一つの知識を少数のニューロンに集中させる必要がなくなり、より多くのニューロンに分散して知識が格納されるようになる可能性も考えられます。<br><br>現在のところ、学習の安定化は、知識ニューロンがより効率的に形成・機能するための基盤を提供すると考えるのが最も妥当でしょう。「深さの呪い」という問題を解決することは、モデルが知識をどのように獲得し、整理するかという、より根源的なメカニズム（知識ニューロンの振る舞い）にも直接的な影響を与えるはずです。<br><br>まとめ<br>「Knowledge Neurons」は深い層に存在する知識の**「状態」を明らかにし、「The Curse of Depth」は深い層で発生する学習の「問題」**とその解決策を提示しました。<br><br>これらを統合すると、**「深い層における学習の不安定性という問題が、知識ニューロンという局所的な知識表現を生み出す一因となっており、この問題を解決することで、より効率的で安定した知識の獲得・格納が可能になるかもしれない」**という関係性が見えてきます。<br><br>両者は、LLMの能力と限界を異なる角度から照らし出しており、組み合わせることでモデルの内部動作の解明をさらに一歩前進させる、非常に重要な研究だと言えます。<br>```</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1131,7 +1132,7 @@ My Issue
 </div>
 
 
-<br>![image](https://github.com/user-attachments/assets/474d3ee4-4c08-4b00-9a41-126ca5d5207e<br>![image](https://github.com/user-attachments/assets/5aea9f93-85d9-4e0b-b9db-bb407d596493<br><br>同等以上の性能を維持しながらモデル全体のinference, trainingの時間を8%程度削減。<br>![image](https://github.com/user-attachments/assets/98f8caa3-3ef2-4594-a45a-ae0aa2cf2ef6</span><br><br>
+<br><img src="https://github.com/user-attachments/assets/474d3ee4-4c08-4b00-9a41-126ca5d5207e" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/5aea9f93-85d9-4e0b-b9db-bb407d596493" alt="image" loading="lazy" width="550" height="400"><br><br>同等以上の性能を維持しながらモデル全体のinference, trainingの時間を8%程度削減。<br><img src="https://github.com/user-attachments/assets/98f8caa3-3ef2-4594-a45a-ae0aa2cf2ef6" alt="image" loading="lazy" width="550" height="400"></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="foundation-transformers-1899" class="title-link">Foundation Transformers, Hongyu Wang+, PMLR'23</h3>
@@ -1155,7 +1156,7 @@ My Issue
 <a class="button" href="Architecture.html" target="_blank" rel="noopener noreferrer">#Architecture</a>
 <span class="issue_date">Issue Date: 2025-04-19</span>
 <span class="snippet"><span>GPT Summary</span>- 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの収束が進む中、異なる実装の「Transformers」が使用されている。汎用モデリングのために、安定性を持つFoundation Transformerの開発が提唱され、Magnetoという新しいTransformer変種が紹介される。Sub-LayerNormと理論に基づく初期化戦略を用いることで、さまざまなアプリケーションにおいて優れたパフォーマンスと安定性を示した。</span>
-<span class="snippet"><span>Comment</span><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br>![image](https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e</p>
+<span class="snippet"><span>Comment</span><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy" width="550" height="400"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22</a>
 </p></span><br><br>
 </article>
@@ -1179,7 +1180,7 @@ My Issue
 <a class="button" href="Encoder-Decoder.html" target="_blank" rel="noopener noreferrer">#Encoder-Decoder</a>
 <span class="issue_date">Issue Date: 2025-07-04</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、Transformerアーキテクチャのレイヤー正規化の位置に関するPost-LNとPre-LNの違いを調査。Post-LNは浅い層で優れた性能を示す一方、深い層では不安定なトレーニングを引き起こす消失勾配問題があることを発見。これを踏まえ、Post-LNの修正により安定したトレーニングを実現する方法を提案し、実験でPre-LNを上回る結果を示した。</span>
-<span class="snippet"><span>Comment</span><p>Pre-LNの安定性を持ちながらもPost-LNのような高い性能を発揮する良いとこ取りのB2TConnectionを提案<br>![image](https://github.com/user-attachments/assets/4d85bf16-19e4-4d2a-85e5-87da45cd2a98<br><br>![image](https://github.com/user-attachments/assets/af0aeae5-554a-4997-96a3-929cd7dd90bb</p>
+<span class="snippet"><span>Comment</span><p>Pre-LNの安定性を持ちながらもPost-LNのような高い性能を発揮する良いとこ取りのB2TConnectionを提案<br><img src="https://github.com/user-attachments/assets/4d85bf16-19e4-4d2a-85e5-87da45cd2a98" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/af0aeae5-554a-4997-96a3-929cd7dd90bb" alt="image" loading="lazy" width="550" height="400"></p>
 <p>NLP2022:
 
 
@@ -1263,7 +1264,7 @@ My Issue
 
 
 </p>
-<p>Encoder-DecoderのTransformerにおいて、Post-LNの場合は、Warmupを無くすと最終的な性能が悪化し、またWarmUpステップの値によって（500 vs. 4000で実験)も最終的な性能が変化する。これには学習時にハイパーパラメータをしっかり探索しなければならず、WarmUPを大きくすると学習効率が落ちるというデメリットがある。<br>![image](https://github.com/user-attachments/assets/e7a26ecd-7905-4e6c-bb9a-29b8289addb0<br><br>Post-LNの場合は、Pre-LNと比較して勾配が大きく、Warmupのスケジュールをしっかり設計しないと大きな勾配に対して大きな学習率が適用され学習が不安定になる。これは学習率を非常に小さくし、固定値を使うことで解決できるが、収束が非常に遅くなるというデメリットがある。<br>![image](https://github.com/user-attachments/assets/afb09f44-c7c9-44ab-9066-3ee788ebd8ee<br><br>一方、Pre-LNはWarmup無しでも、高い性能が達成でき、上記のようなチューニングの手間や学習効率の観点から利点がある、みたいな話の模様。<br>![image](https://github.com/user-attachments/assets/d675a58b-e876-4e41-a76f-306c2e1ce23f<br></p></span><br><br>
+<p>Encoder-DecoderのTransformerにおいて、Post-LNの場合は、Warmupを無くすと最終的な性能が悪化し、またWarmUpステップの値によって（500 vs. 4000で実験)も最終的な性能が変化する。これには学習時にハイパーパラメータをしっかり探索しなければならず、WarmUPを大きくすると学習効率が落ちるというデメリットがある。<br><img src="https://github.com/user-attachments/assets/e7a26ecd-7905-4e6c-bb9a-29b8289addb0" alt="image" loading="lazy" width="550" height="400"><br><br>Post-LNの場合は、Pre-LNと比較して勾配が大きく、Warmupのスケジュールをしっかり設計しないと大きな勾配に対して大きな学習率が適用され学習が不安定になる。これは学習率を非常に小さくし、固定値を使うことで解決できるが、収束が非常に遅くなるというデメリットがある。<br><img src="https://github.com/user-attachments/assets/afb09f44-c7c9-44ab-9066-3ee788ebd8ee" alt="image" loading="lazy" width="550" height="400"><br><br>一方、Pre-LNはWarmup無しでも、高い性能が達成でき、上記のようなチューニングの手間や学習効率の観点から利点がある、みたいな話の模様。<br><img src="https://github.com/user-attachments/assets/d675a58b-e876-4e41-a76f-306c2e1ce23f" alt="image" loading="lazy" width="550" height="400"><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="group-normalization-1856" class="title-link">Group Normalization, Yuxin Wu+, arXiv'18</h3>
@@ -1284,7 +1285,7 @@ My Issue
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <span class="issue_date">Issue Date: 2025-04-02</span>
 <span class="snippet"><span>GPT Summary</span>- グループ正規化（GN）は、バッチ正規化（BN）の代替手段として提案され、バッチサイズに依存せず安定した精度を提供します。特に、バッチサイズ2のResNet-50では、GNがBNよりも10.6%低い誤差を示し、一般的なバッチサイズでも同等の性能を発揮します。GNは物体検出やビデオ分類などのタスクでBNを上回る結果を示し、簡単に実装可能です。</span>
-<span class="snippet"><span>Comment</span><p>BatchNormalizationはバッチサイズが小さいとうまくいかず、メモリの制約で大きなバッチサイズが設定できない場合に困るからバッチサイズに依存しないnormalizationを考えたよ。LayerNormとInstanceNormもバッチサイズに依存しないけど提案手法の方が画像系のタスクだと性能が良いよ、という話らしい。<br><br>各normalizationとの比較。分かりやすい。<br>![image](https://github.com/user-attachments/assets/128a6a2e-cac7-4d6a-9cf6-31119fb6b187</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>BatchNormalizationはバッチサイズが小さいとうまくいかず、メモリの制約で大きなバッチサイズが設定できない場合に困るからバッチサイズに依存しないnormalizationを考えたよ。LayerNormとInstanceNormもバッチサイズに依存しないけど提案手法の方が画像系のタスクだと性能が良いよ、という話らしい。<br><br>各normalizationとの比較。分かりやすい。<br><img src="https://github.com/user-attachments/assets/128a6a2e-cac7-4d6a-9cf6-31119fb6b187" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="layer-normalization-261" class="title-link">[Paper Note] Layer Normalization, Ba+, arXiv'16</h3>
@@ -1392,26 +1393,26 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Korean/" title="Koreanに関する論文・技術記事メモの一覧">
-            Koreanに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Calibration/" title="Calibrationに関する論文・技術記事メモの一覧">
+            Calibrationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Transcoders/" title="Transcodersに関する論文・技術記事メモの一覧">
-            Transcodersに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Audio-Text-to-Video/" title="Audio-Text-to-Videoに関する論文・技術記事メモの一覧">
+            Audio-Text-to-Videoに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Update/" title="Updateに関する論文・技術記事メモの一覧">
-            Updateに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/UserBased/" title="UserBasedに関する論文・技術記事メモの一覧">
+            UserBasedに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
   <span class="post-badge badge-new">📝 11</span>
@@ -1419,8 +1420,8 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Supervised-FineTuning-(SFT)/" title="Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧">
-            Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/4D-Reconstruction/" title="4D Reconstructionに関する論文・技術記事メモの一覧">
+            4D Reconstructionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 </span> 
   <span class="post-badge badge-new">📝 </span>

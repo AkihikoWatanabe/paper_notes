@@ -842,7 +842,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 24 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 23 mins</span>
   </div></header>
 </div>
     </div>
@@ -1338,7 +1338,8 @@ My Issue
 <a class="button" href="reading.html" target="_blank" rel="noopener noreferrer">#reading</a>
 <span class="issue_date">Issue Date: 2025-08-03</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、LLMのテスト時の計算スケーリングにおけるプロンプト戦略の効果を調査。6つのLLMと8つのプロンプト戦略を用いた実験により、複雑なプロンプト戦略が単純なChain-of-Thoughtに劣ることを示し、理論的な証明を提供。さらに、スケーリング性能を予測し最適なプロンプト戦略を特定する手法を提案し、リソース集約的な推論プロセスの必要性を排除。複雑なプロンプトの再評価と単純なプロンプト戦略の潜在能力を引き出すことで、テスト時のスケーリング性能向上に寄与することを目指す。</span>
-<span class="snippet"><span>Comment</span><p>non-thinkingモデルにおいて、Majority Voting (i.e. Self Consistency)によるtest-time scalingを実施する場合のさまざまなprompting戦略のうち、budgetとサンプリング数が小さい場合はCoT以外の適切なprompting戦略はモデルごとに異なるが、budgetやサンプリング数が増えてくるとシンプルなCoT（実験ではzeroshot CoTを利用）が最適なprompting戦略として支配的になる、という話な模様。<br><br>さらに、なぜそうなるかの理論的な分析と最適な与えられた予算から最適なprompting戦略を予測する手法も提案している模様。<br><br>が、評価データの難易度などによってこの辺は変わると思われ、特にFigure39に示されているような、**サンプリング数が増えると簡単な問題の正解率が上がり、逆に難しい問題の正解率が下がるといった傾向があり、CoTが簡単な問題にサンプリング数を増やすと安定して正解できるから支配的になる**、という話だと思われるので、常にCoTが良いと勘違いしない方が良さそうだと思われる。たとえば、**解こうとしているタスクが難問ばかりであればCoTでスケーリングするのが良いとは限らない、といった点には注意が必要**だと思うので、しっかり全文読んだ方が良い。時間がある時に読みたい（なかなかまとまった時間取れない）<br><br><img src="https://github.com/user-attachments/assets/f99e3445-7962-488d-87a4-744022f796c8&lt;/p&gt;&lt;p&gt;%E6%9C%80%E9%81%A9%E3%81%AAprompting%E6%88%A6%E7%95%A5%E3%82%92%E4%BA%88%E6%B8%AC%E3%81%99%E3%82%8B%E6%89%8B%E6%B3%95%E3%81%A7%E3%81%AF%E3%80%81&lt;br&gt;-%20%E5%95%8F%E9%A1%8C%E3%81%AE%E9%9B%A3%E6%98%93%E5%BA%A6%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%A6%E9%81%A9%E5%BF%9C%E7%9A%84%E3%81%AB%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AB%E3%82%92%E5%A4%89%E5%8C%96%E3%81%95%E3%81%9B(%E3%81%AA%E3%82%93%E3%81%A8O(1" alt="image" loading="lazy" width="550" height="400">で予測ができる)<br>- 動的に最適なprompting戦略を選択<br><br>することで、Majority@10のAcc.を8Bスケールのモデルで10--50%程度向上させることができる模様。いやこれほんとしっかり読まねば。</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>non-thinkingモデルにおいて、Majority Voting (i.e. Self Consistency)によるtest-time scalingを実施する場合のさまざまなprompting戦略のうち、budgetとサンプリング数が小さい場合はCoT以外の適切なprompting戦略はモデルごとに異なるが、budgetやサンプリング数が増えてくるとシンプルなCoT（実験ではzeroshot CoTを利用）が最適なprompting戦略として支配的になる、という話な模様。<br><br>さらに、なぜそうなるかの理論的な分析と最適な与えられた予算から最適なprompting戦略を予測する手法も提案している模様。<br><br>が、評価データの難易度などによってこの辺は変わると思われ、特にFigure39に示されているような、**サンプリング数が増えると簡単な問題の正解率が上がり、逆に難しい問題の正解率が下がるといった傾向があり、CoTが簡単な問題にサンプリング数を増やすと安定して正解できるから支配的になる**、という話だと思われるので、常にCoTが良いと勘違いしない方が良さそうだと思われる。たとえば、**解こうとしているタスクが難問ばかりであればCoTでスケーリングするのが良いとは限らない、といった点には注意が必要**だと思うので、しっかり全文読んだ方が良い。時間がある時に読みたい（なかなかまとまった時間取れない）<br><br><img src="https://github.com/user-attachments/assets/f99e3445-7962-488d-87a4-744022f796c8" alt="image" loading="lazy" width="550" height="400"></p>
+<p>最適なprompting戦略を予測する手法では、<br>- 問題の難易度に応じて適応的にスケールを変化させ(なんとO(1)で予測ができる)<br>- 動的に最適なprompting戦略を選択<br><br>することで、Majority@10のAcc.を8Bスケールのモデルで10--50%程度向上させることができる模様。いやこれほんとしっかり読まねば。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="can-large-2003" class="title-link">Can Large Reasoning Models Self-Train?, Sheikh Shafayat+, arXiv'25</h3>
@@ -1371,9 +1372,9 @@ My Issue
 
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1995" target="_blank" rel="noopener noreferrer">Learning to Reason without External Rewards, Xuandong Zhao+, ICML'25 Workshop AI4MATH</a>
 <br>と似ているように見える</p>
-<p>self-consistencyでground truthを推定し、推定したground truthを用いてverifiableなrewardを計算して学習する手法、のように見える。<br>![image](https://github.com/user-attachments/assets/0f38d47a-ab42-4ec4-a6d5-6d5d8a63a4a9<br>![image](https://github.com/user-attachments/assets/3d08bbad-8578-4add-8ad7-ed02cdd15add<br><br>実際のground truthを用いた学習と同等の性能を達成する場合もあれば、long stepで学習するとどこかのタイミングで学習がcollapseする場合もある<br>![image](https://github.com/user-attachments/assets/e120a277-6beb-4fc1-8fd7-e69de467fb3d</p>
-<p>パフォーマンスがピークを迎えた後になぜ大幅にAccuracyがdropするかを検証したところ、モデルのKL penaltyがどこかのタイミングで大幅に大きくなることがわかった。つまりこれはオリジナルのモデルからかけ離れたモデルになっている。これは、モデルがデタラメな出力をground truthとして推定するようになり、モデルそのものも一貫してそのデタラメな出力をすることでrewardを増大させるreward hackingが起きている。<br>![image](https://github.com/user-attachments/assets/5a9c091f-e9cb-4914-a1ca-32a1ea2dc1c7<br>![image](https://github.com/user-attachments/assets/aa685b9a-7992-4135-a4da-fd1c8cabe084</p>
-<p>これら現象を避ける方法として、以下の3つを提案している<br>- early stopping<br>- offlineでラベルをself consistencyで生成して、学習の過程で固定する<br>- カリキュラムラーニングを導入する<br><br>![image](https://github.com/user-attachments/assets/4fa997e3-aa20-4195-96ef-b17c82556fc1<br>![image](https://github.com/user-attachments/assets/99cc2b6c-50a9-40a0-af30-b59aff4056b4<br>![image](https://github.com/user-attachments/assets/e90e9870-b180-4fe9-8c24-8ff88fcf33f0</p>
+<p>self-consistencyでground truthを推定し、推定したground truthを用いてverifiableなrewardを計算して学習する手法、のように見える。<br><img src="https://github.com/user-attachments/assets/0f38d47a-ab42-4ec4-a6d5-6d5d8a63a4a9" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/3d08bbad-8578-4add-8ad7-ed02cdd15add" alt="image" loading="lazy" width="550" height="400"><br><br>実際のground truthを用いた学習と同等の性能を達成する場合もあれば、long stepで学習するとどこかのタイミングで学習がcollapseする場合もある<br><img src="https://github.com/user-attachments/assets/e120a277-6beb-4fc1-8fd7-e69de467fb3d" alt="image" loading="lazy" width="550" height="400"></p>
+<p>パフォーマンスがピークを迎えた後になぜ大幅にAccuracyがdropするかを検証したところ、モデルのKL penaltyがどこかのタイミングで大幅に大きくなることがわかった。つまりこれはオリジナルのモデルからかけ離れたモデルになっている。これは、モデルがデタラメな出力をground truthとして推定するようになり、モデルそのものも一貫してそのデタラメな出力をすることでrewardを増大させるreward hackingが起きている。<br><img src="https://github.com/user-attachments/assets/5a9c091f-e9cb-4914-a1ca-32a1ea2dc1c7" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/aa685b9a-7992-4135-a4da-fd1c8cabe084" alt="image" loading="lazy" width="550" height="400"></p>
+<p>これら現象を避ける方法として、以下の3つを提案している<br>- early stopping<br>- offlineでラベルをself consistencyで生成して、学習の過程で固定する<br>- カリキュラムラーニングを導入する<br><br><img src="https://github.com/user-attachments/assets/4fa997e3-aa20-4195-96ef-b17c82556fc1" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/99cc2b6c-50a9-40a0-af30-b59aff4056b4" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/e90e9870-b180-4fe9-8c24-8ff88fcf33f0" alt="image" loading="lazy" width="550" height="400"></p>
 <p>関連<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1489" target="_blank" rel="noopener noreferrer">Self-Consistency Preference Optimization, Archiki Prasad+, ICML'25</a>
 </p></span><br><br>
 </article>
@@ -1432,8 +1433,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/VectorQuantization/" title="VectorQuantizationに関する論文・技術記事メモの一覧">
-            VectorQuantizationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/WarmUp/" title="WarmUpに関する論文・技術記事メモの一覧">
+            WarmUpに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1441,26 +1442,26 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ImplicitFeedback/" title="ImplicitFeedbackに関する論文・技術記事メモの一覧">
-            ImplicitFeedbackに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AutomaticPromptOptimization/" title="AutomaticPromptOptimizationに関する論文・技術記事メモの一覧">
+            AutomaticPromptOptimizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Selected-Papers-Blogs/" title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">
-            Selected Papers/Blogsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/PseudoLabeling/" title="PseudoLabelingに関する論文・技術記事メモの一覧">
+            PseudoLabelingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Adaptation/" title="Adaptationに関する論文・技術記事メモの一覧">
-            Adaptationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Spectrum/" title="Spectrumに関する論文・技術記事メモの一覧">
+            Spectrumに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>

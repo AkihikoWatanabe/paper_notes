@@ -843,7 +843,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 39 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 35 mins</span>
   </div></header>
 </div>
     </div>
@@ -1318,7 +1318,7 @@ My Issue
 </div>
 
 
-<p>GPTEの学習手法テキストだけでなく、画像やコードなどの様々なモーダル、マルチリンガル、データセットや評価方法、パラメータサイズとMTEBの性能の関係性の図解など、盛りだくさんな模様。最新のものだけでなく、2021年頃のT5から最新モデルまで網羅的にまとまっている。日本語特化のモデルについては記述が無さそうではある。<br><br>![image](https://github.com/user-attachments/assets/f0a40a10-7f29-4aaf-b989-672213622ebc<br><br>![image](https://github.com/user-attachments/assets/7940d307-f1db-421f-86a4-6c9cca22f27c<br>![image](https://github.com/user-attachments/assets/46282995-d538-4bd2-9aa5-983253a98f8f<br>![image](https://github.com/user-attachments/assets/dc4212de-19df-497c-951e-3addff5a193f<br>![image](https://github.com/user-attachments/assets/ac925f56-de46-49ae-b0a8-cd8e2ecc4994</p>
+<p>GPTEの学習手法テキストだけでなく、画像やコードなどの様々なモーダル、マルチリンガル、データセットや評価方法、パラメータサイズとMTEBの性能の関係性の図解など、盛りだくさんな模様。最新のものだけでなく、2021年頃のT5から最新モデルまで網羅的にまとまっている。日本語特化のモデルについては記述が無さそうではある。<br><br><img src="https://github.com/user-attachments/assets/f0a40a10-7f29-4aaf-b989-672213622ebc" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/7940d307-f1db-421f-86a4-6c9cca22f27c" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/46282995-d538-4bd2-9aa5-983253a98f8f" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/dc4212de-19df-497c-951e-3addff5a193f" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/ac925f56-de46-49ae-b0a8-cd8e2ecc4994" alt="image" loading="lazy" width="550" height="400"></p>
 <p>日本語モデルについてはRuriのテクニカルペーパーや、LLM勉強会のまとめを参照のこと<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1375" target="_blank" rel="noopener noreferrer">Ruri: Japanese General Text Embeddings, cl-nagoya, 2024.09</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1563" target="_blank" rel="noopener noreferrer">日本語LLMまとめ, LLM-jp, 2024.12</a>
 </p></span><br><br>
@@ -1407,7 +1407,7 @@ My Issue
 <a class="button" href="Decoder.html" target="_blank" rel="noopener noreferrer">#Decoder</a>
 <span class="issue_date">Issue Date: 2025-07-10</span>
 <span class="snippet"><span>GPT Summary</span>- デコーダー専用のLLMベースの埋め込みモデルNV-Embedは、BERTやT5を上回る性能を示す。アーキテクチャ設計やトレーニング手法を工夫し、検索精度を向上させるために潜在的注意層を提案。二段階の対照的指示調整手法を導入し、検索と非検索タスクの両方で精度を向上。NV-EmbedモデルはMTEBリーダーボードで1位を獲得し、ドメイン外情報検索でも高スコアを達成。モデル圧縮技術の分析も行っている。</span>
-<span class="snippet"><span>Comment</span><p>Decoder-Only LLMのlast hidden layerのmatrixを新たに導入したLatent Attention Blockのinputとし、Latent Attention BlockはEmbeddingをOutputする。Latent Attention Blockは、last hidden layer (系列長l×dの<br>matrix)をQueryとみなし、保持しているLatent Array(trainableなmatrixで辞書として機能する;後述の学習においてパラメータが学習される)[^1]をK,Vとして、CrossAttentionによってcontext vectorを生成し、その後MLPとMean Poolingを実施することでEmbeddingに変換する。<br>![image](https://github.com/user-attachments/assets/7a023273-aafd-4cfa-9b39-961180543ae9<br><br>![image](https://github.com/user-attachments/assets/767e3ac1-fe70-4653-bbe7-091c1f1dc0f7<br><br>学習は2段階で行われ、まずQAなどのRetrievalタスク用のデータセットをIn Batch negativeを用いてContrastive Learningしモデルの検索能力を高める。その後、検索と非検索タスクの両方を用いて、hard negativeによってcontrastive learningを実施し、検索以外のタスクの能力も高める（下表）。両者において、instructionテンプレートを用いて、instructionによって条件付けて学習をすることで、instructionに応じて生成されるEmbeddingが変化するようにする。また、学習時にはLLMのcausal maskは無くし、bidirectionalにrepresentationを考慮できるようにする。<br>![image](https://github.com/user-attachments/assets/26d4e126-1d18-421e-873f-f0eef4fc2026<br><br>[^1]: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2183" target="_blank" rel="noopener noreferrer">[Paper Note] Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs, Andrew Jaegle+, ICLR'22</a>
+<span class="snippet"><span>Comment</span><p>Decoder-Only LLMのlast hidden layerのmatrixを新たに導入したLatent Attention Blockのinputとし、Latent Attention BlockはEmbeddingをOutputする。Latent Attention Blockは、last hidden layer (系列長l×dの<br>matrix)をQueryとみなし、保持しているLatent Array(trainableなmatrixで辞書として機能する;後述の学習においてパラメータが学習される)[^1]をK,Vとして、CrossAttentionによってcontext vectorを生成し、その後MLPとMean Poolingを実施することでEmbeddingに変換する。<br><img src="https://github.com/user-attachments/assets/7a023273-aafd-4cfa-9b39-961180543ae9" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/767e3ac1-fe70-4653-bbe7-091c1f1dc0f7" alt="image" loading="lazy" width="550" height="400"><br><br>学習は2段階で行われ、まずQAなどのRetrievalタスク用のデータセットをIn Batch negativeを用いてContrastive Learningしモデルの検索能力を高める。その後、検索と非検索タスクの両方を用いて、hard negativeによってcontrastive learningを実施し、検索以外のタスクの能力も高める（下表）。両者において、instructionテンプレートを用いて、instructionによって条件付けて学習をすることで、instructionに応じて生成されるEmbeddingが変化するようにする。また、学習時にはLLMのcausal maskは無くし、bidirectionalにrepresentationを考慮できるようにする。<br><img src="https://github.com/user-attachments/assets/26d4e126-1d18-421e-873f-f0eef4fc2026" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2183" target="_blank" rel="noopener noreferrer">[Paper Note] Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs, Andrew Jaegle+, ICLR'22</a>
  Perceiver-IOにインスパイアされている。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1558,7 +1558,7 @@ My Issue
 <a class="button" href="CompressionValleys.html" target="_blank" rel="noopener noreferrer">#CompressionValleys</a>
 <span class="issue_date">Issue Date: 2025-05-04</span>
 <span class="snippet"><span>GPT Summary</span>- 中間層の埋め込みが最終層を超えるパフォーマンスを示すことを分析し、情報理論や幾何学に基づくメトリクスを提案。32のテキスト埋め込みタスクで中間層が強力な特徴を提供することを実証し、AIシステムの最適化における中間層の重要性を強調。</span>
-<span class="snippet"><span>Comment</span><p>現代の代表的な言語モデルのアーキテクチャ（decoder-only model, encoder-only model, SSM）について、最終層のembeddingよりも中間層のembeddingの方がdownstream task（MTEBの32Taskの平均）に、一貫して（ただし、これはMTEBの平均で見たらそうという話であり、個別のタスクで一貫して強いかは読んでみないとわからない）強いことを示した研究。<br><br>このこと自体は経験的に知られているのであまり驚きではないのだが（ただ、SSMでもそうなのか、というのと、一貫して強いというのは興味深い）、この研究はMatrix Based Entropyと呼ばれるものに基づいて、これらを分析するための様々な指標を定義し理論的な根拠を示し、Autoregressiveな学習よりもMasked Languageによる学習の方がこのようなMiddle Layerのボトルネックが緩和され、同様のボトルネックが画像の場合でも起きることを示し、CoTデータを用いたFinetuningについても分析している模様。この辺の貢献が非常に大きいと思われるのでここを理解することが重要だと思われる。あとで読む。<br><br>![image](https://github.com/user-attachments/assets/bda00c50-c97b-45e0-97a5-d98dd98599fd</p>
+<span class="snippet"><span>Comment</span><p>現代の代表的な言語モデルのアーキテクチャ（decoder-only model, encoder-only model, SSM）について、最終層のembeddingよりも中間層のembeddingの方がdownstream task（MTEBの32Taskの平均）に、一貫して（ただし、これはMTEBの平均で見たらそうという話であり、個別のタスクで一貫して強いかは読んでみないとわからない）強いことを示した研究。<br><br>このこと自体は経験的に知られているのであまり驚きではないのだが（ただ、SSMでもそうなのか、というのと、一貫して強いというのは興味深い）、この研究はMatrix Based Entropyと呼ばれるものに基づいて、これらを分析するための様々な指標を定義し理論的な根拠を示し、Autoregressiveな学習よりもMasked Languageによる学習の方がこのようなMiddle Layerのボトルネックが緩和され、同様のボトルネックが画像の場合でも起きることを示し、CoTデータを用いたFinetuningについても分析している模様。この辺の貢献が非常に大きいと思われるのでここを理解することが重要だと思われる。あとで読む。<br><br><img src="https://github.com/user-attachments/assets/bda00c50-c97b-45e0-97a5-d98dd98599fd" alt="image" loading="lazy" width="550" height="400"></p>
 <p>openreview:
 
 
@@ -1660,7 +1660,7 @@ My Issue
 <a class="button" href="Semi-Supervised.html" target="_blank" rel="noopener noreferrer">#Semi-Supervised</a>
 <span class="issue_date">Issue Date: 2023-04-30</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、コンピュータビジョンにおける半教師あり学習の問題を解決するために、Semantic Positives via Pseudo-Labels (SemPPL)という新しい手法を提案している。この手法は、ラベル付きとラベルなしのデータを組み合わせて情報豊富な表現を学習することができ、ResNet-$50$を使用してImageNetの$1\%$および$10\%$のラベルでトレーニングする場合、競合する半教師あり学習手法を上回る最高性能を発揮することが示された。SemPPLは、強力な頑健性、分布外および転移性能を示すことができる。</span>
-<span class="snippet"><span>Comment</span><p>後ほど説明を追記する<br>![image](https://github.com/user-attachments/assets/4441dc6c-a7b2-4ec9-9748-b6558a96e1af<br><br>![image](https://github.com/user-attachments/assets/8a78a40e-f5c4-4742-9e5d-36cd1b8d0e60<br><br>![image](https://github.com/user-attachments/assets/04ded9aa-c875-4282-9e3b-7ce456a6cc44</p>
+<span class="snippet"><span>Comment</span><p>後ほど説明を追記する<br><img src="https://github.com/user-attachments/assets/4441dc6c-a7b2-4ec9-9748-b6558a96e1af" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/8a78a40e-f5c4-4742-9e5d-36cd1b8d0e60" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/04ded9aa-c875-4282-9e3b-7ce456a6cc44" alt="image" loading="lazy" width="550" height="400"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1975" target="_blank" rel="noopener noreferrer">A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20</a>
 </p></span><br><br>
 </article>
@@ -1775,7 +1775,7 @@ My Issue
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2022-06-08</span>
 <span class="snippet"><span>GPT Summary</span>- 新しい深層文脈化単語表現を提案し、単語の複雑な特性と文脈による変化をモデル化。これらの表現は事前学習された双方向言語モデルの内部状態を基に学習され、質問応答や感情分析など6つのNLPタスクで性能を向上させる。さらに、事前学習ネットワークの内部を活用することで、半教師あり信号の混合が可能であることを示す。</span>
-<span class="snippet"><span>Comment</span><p>ELMo論文。<br>通常のword embeddingでは一つの単語につき一つの意味しか持たせられなかったが、文脈に応じて異なる意味を表現できるようなEmbeddingを実現し（同じ単語でも文脈に応じて意味が変わったりするので。たとえばrightは文脈に応じて右なのか、正しいなのか、権利なのか意味が変わる）様々な言語処理タスク（e.g. Question Answering, Sentiment Analysisなど）でSoTAを達成。<br><br>![image](https://user-images.githubusercontent.com/12249301/172505957-a2fc5319-5670-4807-a870-31377227299e.png<br><br>Embedding Layer + 2層のLSTM（1,2の間にはresidual connection）+ linear layerで言語モデルを構成し、順方向言語モデルと逆方向言語モデルを同時に独立して学習する（双方向LSTMではない;損失関数が両方向の言語モデルの対数尤度の和になっている）。<br>また、Linear LayerとEmbedding Layerのパラメータは両方向の言語モデルで共有されている。<br><br>k番目の単語のEmbedding Layerの出力ベクトル、各LSTMのhidden stateをタスクspecificなスカラーパラメタs_taskで足し合わせ、最後にベクトルのスケールを調整するパラメタγ_taskで大きさを調整する。これにより、k番目の単語のELMo Embeddingを得る。<br>単語単体の意味だけでこと足りるタスクの場合はEmbedding Layerの出力ベクトルに対する重みが大きくなり、文脈を考慮した情報が欲しい場合はLSTMのhidden stateに対する重みが大きくなるイメージ（LSTMの層が深いほど意味的semanticな情報を含み、浅いほど文法的syntacticな情報を含んでいる）。<br><br>使い方としては簡単で、ELMoを事前学習しておき、自身のNNモデルのWord Embeddingに（場合によってはRNNのhidden stateにも）、入力文から得られたELMo Embeddingをconcatして順伝搬させるだけで良い。</p>
+<span class="snippet"><span>Comment</span><p>ELMo論文。<br>通常のword embeddingでは一つの単語につき一つの意味しか持たせられなかったが、文脈に応じて異なる意味を表現できるようなEmbeddingを実現し（同じ単語でも文脈に応じて意味が変わったりするので。たとえばrightは文脈に応じて右なのか、正しいなのか、権利なのか意味が変わる）様々な言語処理タスク（e.g. Question Answering, Sentiment Analysisなど）でSoTAを達成。<br><br><img src="https://user-images.githubusercontent.com/12249301/172505957-a2fc5319-5670-4807-a870-31377227299e.png" alt="image" loading="lazy" width="550" height="400"><br><br>Embedding Layer + 2層のLSTM（1,2の間にはresidual connection）+ linear layerで言語モデルを構成し、順方向言語モデルと逆方向言語モデルを同時に独立して学習する（双方向LSTMではない;損失関数が両方向の言語モデルの対数尤度の和になっている）。<br>また、Linear LayerとEmbedding Layerのパラメータは両方向の言語モデルで共有されている。<br><br>k番目の単語のEmbedding Layerの出力ベクトル、各LSTMのhidden stateをタスクspecificなスカラーパラメタs_taskで足し合わせ、最後にベクトルのスケールを調整するパラメタγ_taskで大きさを調整する。これにより、k番目の単語のELMo Embeddingを得る。<br>単語単体の意味だけでこと足りるタスクの場合はEmbedding Layerの出力ベクトルに対する重みが大きくなり、文脈を考慮した情報が欲しい場合はLSTMのhidden stateに対する重みが大きくなるイメージ（LSTMの層が深いほど意味的semanticな情報を含み、浅いほど文法的syntacticな情報を含んでいる）。<br><br>使い方としては簡単で、ELMoを事前学習しておき、自身のNNモデルのWord Embeddingに（場合によってはRNNのhidden stateにも）、入力文から得られたELMo Embeddingをconcatして順伝搬させるだけで良い。</p>
 <p>ELMoのEmbedding Layerでは、2048 characterの（vocab size?）n-gram convolution filter（文字ごとにembeddingし、単語のembeddingを得るためにfilterを適用する？）の後に2つのhighway networkをかませてlinearで512次元に落とすみたいなことごやられているらしい。ここまで追えていない。<br><br>詳細は下記<br>
 
 
@@ -1864,7 +1864,7 @@ My Issue
 
 
 </p>
-<p><img src="https://user-images.githubusercontent.com/12249301/34452953-0e124ad6-ed8d-11e7-800d-0c2712df116a.png&lt;br&gt;&lt;br&gt;(%E8%A7%A3%E8%AA%AC%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%89p.20%E3%82%88%E3%82%8A" alt="image" loading="lazy" width="550" height="400"><br><br><br>データとして上位・下位概念を与えていないのに、原点付近には上位語・円周付近には下位語が自然に埋め込まれている（意図した通りになっている）。<br><br>ポアンカレ円板では、原点からの距離に応じて指数的に円周長が増加していくので、指数的に数が増えていく下位語などは外側に配置されると効率的だけど、その通りになっている。<br><br><br><br>![image](https://user-images.githubusercontent.com/12249301/34452994-7c17a738-ed8d-11e7-8a56-13929c55c07e.png<br><br>（解説スライドp.9より、スライド全体のスクショではないので元ページ参照のこと）<br><br><br><br>スクショは解説スライドより引用:<br>Poincaré Embeddings for Learning Hierarchical Representations, Sho Yokoi, 2017-09-15, 第9回最先端NLP勉強会<br>
+<p><img src="https://user-images.githubusercontent.com/12249301/34452953-0e124ad6-ed8d-11e7-800d-0c2712df116a.png" alt="image" loading="lazy" width="550" height="400"><br><br>(解説スライドp.20より)<br><br><br>データとして上位・下位概念を与えていないのに、原点付近には上位語・円周付近には下位語が自然に埋め込まれている（意図した通りになっている）。<br><br>ポアンカレ円板では、原点からの距離に応じて指数的に円周長が増加していくので、指数的に数が増えていく下位語などは外側に配置されると効率的だけど、その通りになっている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34452994-7c17a738-ed8d-11e7-8a56-13929c55c07e.png" alt="image" loading="lazy" width="550" height="400"><br><br>（解説スライドp.9より、スライド全体のスクショではないので元ページ参照のこと）<br><br><br><br>スクショは解説スライドより引用:<br>Poincaré Embeddings for Learning Hierarchical Representations, Sho Yokoi, 2017-09-15, 第9回最先端NLP勉強会<br>
 
 
 <a href="https://speakerdeck.com/eumesy/poincare-embeddings-for-learning-hierarchical-representations" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/eumesy/poincare-embeddings-for-learning-hierarchical-representations</a>
@@ -2172,7 +2172,8 @@ My Issue
 
 
 </p>
-<p>単語ベクトルを活用して様々なタスクを実施する際に一般的な全部足して個数で割るような平均ベクトル計算は、<br>個々の単語頻度を一様と仮定した場合の"期待値"と等価であり、<br>これは現実世界の単語頻度の実態とは全然異なるから、きちんと考慮したいよね、という話で<br><img src="https://github.com/user-attachments/assets/cc38dbd5-8b6e-45e6-8a81-00f524eb36f8&lt;br&gt;%E9%A0%BB%E5%BA%A6%E3%82%92%E8%80%83%E6%85%AE%E3%81%99%E3%82%8B%E3%81%A8Semantic%20Textual%20Similarity%EF%BC%88STS%EF%BC%89%E3%82%BF%E3%82%B9%E3%82%AF%E3%81%A7%E5%8A%B9%E6%9E%9C%E7%B5%B6%E5%A4%A7%E3%81%A7%E3%81%82%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E3%82%8F%E3%81%8B%E3%81%A3%E3%81%9F%E3%80%82&lt;br&gt;![image](https://github.com/user-attachments/assets/2042d75f-6325-4e50-9423-f8621084fb75&lt;br&gt;&lt;br&gt;%E3%81%A7%E3%81%AF%E3%80%81%E3%81%AA%E3%81%9C%E3%81%93%E3%82%8C%E3%81%BE%E3%81%A7%E4%B8%80%E6%A7%98%E5%88%86%E5%B8%83%E6%89%B1%E3%81%84%E3%81%99%E3%82%8B%E3%81%AE%E3%81%8C%E4%B8%80%E8%88%AC%E7%9A%84%E3%81%A0%E3%81%A3%E3%81%9F%E3%81%AE%E3%81%8B%E3%81%A8%E3%81%84%E3%81%86%E3%81%A8%E3%80%81&lt;br&gt;%E5%AE%9F%E6%85%8B%E3%81%A8%E3%81%97%E3%81%A6%E5%8D%98%E8%AA%9E%E5%9F%8B%E3%82%81%E8%BE%BC%E3%81%BF%E8%A1%8C%E5%88%97%E3%81%8C%E5%8D%98%E8%AA%9E%E3%82%92%E3%82%BF%E3%82%A4%E3%83%97%E3%81%A8%E3%81%BF%E3%81%AA%E3%81%97%E3%81%A6%E6%A7%8B%E7%AF%89%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE%E3%81%A7%E3%81%82%E3%82%8A%E3%80%81&lt;br&gt;%E3%82%B3%E3%83%BC%E3%83%91%E3%82%B9%E5%85%A8%E4%BD%93%E3%82%92%E6%8D%89%E3%81%88%E3%81%9F%EF%BC%88%E8%A8%80%E8%AA%9E%E5%88%A9%E7%94%A8%E3%81%AE%E5%AE%9F%E6%85%8B%E3%82%92%E6%8D%89%E3%81%88%E3%81%9F%EF%BC%89%E3%83%87%E3%83%BC%E3%82%BF%E8%A1%8C%E5%88%97%EF%BC%88%E5%8D%98%E8%AA%9E%E3%82%92%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3%E3%81%A8%E3%81%BF%E3%81%AA%E3%81%97%E3%81%9F%E3%82%82%E3%81%AE%EF%BC%89%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%A6%E3%81%84%E3%81%AA%E3%81%8B%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%AB%E8%B5%B7%E5%9B%A0%E3%81%97%E3%81%A6%E3%81%84%E3%81%9F%E3%81%8B%E3%82%89%E3%81%A7%E3%81%99%EF%BC%88%E3%81%A0%E3%81%8B%E3%82%89%E3%80%81%E7%B5%8C%E9%A8%93%E9%A0%BB%E5%BA%A6%E3%82%92%E7%94%A8%E3%81%84%E3%81%A6%E9%A0%BB%E5%BA%A6%E6%83%85%E5%A0%B1%E3%82%92%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%8C%E3%81%82%E3%82%8B%E3%82%88%E3%81%AD%EF%BC%89%E3%80%81&lt;br&gt;%E3%81%A8%E3%81%84%E3%81%86%E6%84%9F%E3%81%98%E3%81%AE%E8%A9%B1%E3%81%A0%E3%81%A8%E6%80%9D%E3%82%8F%E3%82%8C%E3%80%81&lt;br&gt;![image](https://github.com/user-attachments/assets/ba97319c-83f7-4443-a8e3-fa36030d704b&lt;br&gt;&lt;br&gt;%E7%B5%8C%E9%A8%93%E9%A0%BB%E5%BA%A6%E3%82%92%E8%80%83%E6%85%AE%E3%81%99%E3%82%8B%E3%81%A8%E3%80%81%E3%81%9D%E3%82%82%E3%81%9D%E3%82%82%E8%83%8C%E5%BE%8C%E3%81%AB%E4%BB%AE%E5%AE%9A%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%83%A2%E3%83%87%E3%83%AB%E8%87%AA%E4%BD%93%E3%81%8C%E6%9A%97%E9%BB%99%E7%9A%84%E3%81%AB%E5%A4%89%E3%82%8F%E3%82%8A%E3%80%81&lt;br&gt;%E4%BD%8E%E9%A0%BB%E5%BA%A6%E8%AA%9E%E3%81%8C%E5%BC%B7%E8%AA%BF%E3%81%95%E3%82%8C%E3%82%8B%E3%81%93%E3%81%A8%E3%81%A7%E3%80%81%E5%8D%98%E8%AA%9E%E3%81%AB%E5%AF%BE%E3%81%97%E3%81%A6TF-IDF%E3%81%AE%E3%82%88%E3%81%86%E3%81%AA%E9%87%8D%E3%81%BF%E3%81%A5%E3%81%91%E3%81%8C%E3%81%95%E3%82%8C%E3%82%8B%E3%81%93%E3%81%A8%E3%81%A7%E6%80%A7%E8%83%BD%E3%81%8C%E8%89%AF%E3%81%8F%E3%81%AA%E3%82%8B%E3%82%88%E3%81%AD%E3%80%81%E3%81%BF%E3%81%9F%E3%81%84%E3%81%AA%E8%A9%B1%E3%81%A0%E3%81%A8%E6%80%9D%E3%82%8F%E3%82%8C%E3%82%8B%E3%80%82&lt;br&gt;![image](https://github.com/user-attachments/assets/7495f250-d680-4698-99c5-a326ead77e12&lt;/p&gt;&lt;p&gt;%E4%BD%99%E8%AB%87%E3%81%A0%E3%81%8C%E3%80%81%E6%98%94%E3%81%AENLP%E3%81%A7%E3%81%AF%E3%80%81P(w,c" alt="image" loading="lazy" width="550" height="400">をモデル化したものを生成モデル、テキスト生成で一般的なP(w|c)は分類モデル（VAEとかはテキスト生成をするが、生成モデルなので別）、と呼んでいたと思うが、いまはテキスト生成モデルのことを略して生成モデル、と呼称するのが一般的なのだろうか。</p></span><br><br>
+<p>単語ベクトルを活用して様々なタスクを実施する際に一般的な全部足して個数で割るような平均ベクトル計算は、<br>個々の単語頻度を一様と仮定した場合の"期待値"と等価であり、<br>これは現実世界の単語頻度の実態とは全然異なるから、きちんと考慮したいよね、という話で<br><img src="https://github.com/user-attachments/assets/cc38dbd5-8b6e-45e6-8a81-00f524eb36f8" alt="image" loading="lazy" width="550" height="400"><br>頻度を考慮するとSemantic Textual Similarity（STS）タスクで効果絶大であることがわかった。<br><img src="https://github.com/user-attachments/assets/2042d75f-6325-4e50-9423-f8621084fb75" alt="image" loading="lazy" width="550" height="400"><br><br>では、なぜこれまで一様分布扱いするのが一般的だったのかというと、<br>実態として単語埋め込み行列が単語をタイプとみなして構築されたものであり、<br>コーパス全体を捉えた（言語利用の実態を捉えた）データ行列（単語をトークンとみなしたもの）になっていなかったことに起因していたからです（だから、経験頻度を用いて頻度情報を復元する必要があるよね）、<br>という感じの話だと思われ、<br><img src="https://github.com/user-attachments/assets/ba97319c-83f7-4443-a8e3-fa36030d704b" alt="image" loading="lazy" width="550" height="400"><br><br>経験頻度を考慮すると、そもそも背後に仮定しているモデル自体が暗黙的に変わり、<br>低頻度語が強調されることで、単語に対してTF-IDFのような重みづけがされることで性能が良くなるよね、みたいな話だと思われる。<br><img src="https://github.com/user-attachments/assets/7495f250-d680-4698-99c5-a326ead77e12" alt="image" loading="lazy" width="550" height="400"></p>
+<p>余談だが、昔のNLPでは、P(w,c)をモデル化したものを生成モデル、テキスト生成で一般的なP(w|c)は分類モデル（VAEとかはテキスト生成をするが、生成モデルなので別）、と呼んでいたと思うが、いまはテキスト生成モデルのことを略して生成モデル、と呼称するのが一般的なのだろうか。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ruri-japanese-1375" class="title-link">Ruri: Japanese General Text Embeddings, cl-nagoya, 2024.09</h3>
@@ -2236,7 +2237,7 @@ My Issue
 <a class="button" href="SpokenLanguageProcessing.html" target="_blank" rel="noopener noreferrer">#SpokenLanguageProcessing</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
 <span class="snippet"><span>Comment</span><p>テキストとオーディオの大量のペアを事前学習することで、テキストとオーディオ間を同じ空間に写像し、類似度を測れるようにしたモデル</p>
-<p>たとえばゼロショットでaudio分類ができる<br>![image](https://user-images.githubusercontent.com/12249301/234293138-20edf6cd-3259-4547-a2fc-69893273fa76.jpeg</p></span><br><br>
+<p>たとえばゼロショットでaudio分類ができる<br><img src="https://user-images.githubusercontent.com/12249301/234293138-20edf6cd-3259-4547-a2fc-69893273fa76.jpeg" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="sentiment-analysis-365" class="title-link">Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</h3>
@@ -2314,8 +2315,17 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Latency/" title="Latencyに関する論文・技術記事メモの一覧">
-            Latencyに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Education/" title="Educationに関する論文・技術記事メモの一覧">
+            Educationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 23</span> 
+  <span class="post-badge badge-new">📝 23</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/TextToSQL/" title="TextToSQLに関する論文・技術記事メモの一覧">
+            TextToSQLに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -2323,29 +2333,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Faithfulness/" title="Faithfulnessに関する論文・技術記事メモの一覧">
-            Faithfulnessに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/TrainedMetrics/" title="TrainedMetricsに関する論文・技術記事メモの一覧">
+            TrainedMetricsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AttentionSinks/" title="AttentionSinksに関する論文・技術記事メモの一覧">
-            AttentionSinksに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/CVPR/" title="CVPRに関する論文・技術記事メモの一覧">
+            CVPRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Word/" title="Wordに関する論文・技術記事メモの一覧">
-            Wordに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 28</span> 
+  <span class="post-badge badge-new">📝 28</span>
 </span>
 </a>
         </li>

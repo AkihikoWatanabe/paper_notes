@@ -842,7 +842,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 33 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 31 mins</span>
   </div></header>
 </div>
     </div>
@@ -1148,7 +1148,7 @@ My Issue
 
 
 <p>初期に提案された<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1034" target="_blank" rel="noopener noreferrer">Large Language Models Are Human-Level Prompt Engineers, Yongchao Zhou+, ICLR'23</a>
-<br><br>と比較すると大分性能が上がってきているように見える。<br>![image](https://github.com/user-attachments/assets/5f7a329e-e83b-46da-9213-af8877201572<br>![image](https://github.com/user-attachments/assets/857b3526-4f56-4e31-8a69-a4193657b286</p>
+<br><br>と比較すると大分性能が上がってきているように見える。<br><img src="https://github.com/user-attachments/assets/5f7a329e-e83b-46da-9213-af8877201572" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/857b3526-4f56-4e31-8a69-a4193657b286" alt="image" loading="lazy" width="550" height="400"></p>
 <p>reasoning modelではfewshot promptingをすると性能が落ちるという知見があるので、reasoningモデル向けのAPE手法もそのうち出現するのだろう（既にありそう）。</p>
 <p>OpenReview: 
 
@@ -1283,7 +1283,12 @@ My Issue
 <a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
 <span class="snippet"><span>GPT Summary</span>- Iter-CoTは、LLMsの推論チェーンのエラーを修正し、正確で包括的な推論を実現するための反復的ブートストラッピングアプローチを提案。適度な難易度の質問を選択することで、一般化能力を向上させ、10のデータセットで競争力のある性能を達成。</span>
-<span class="snippet"><span>Comment</span><p>Zero shot CoTからスタートし、正しく問題に回答できるようにreasoningを改善するようにpromptをreviseし続けるループを回す。最終的にループした結果を要約し、それらをプールする。テストセットに対しては、プールの中からNshotをサンプルしinferenceを行う。<br><img src="https://user-images.githubusercontent.com/12249301/234311707-0d6f3443-681a-4309-917b-d21fd1a8c024.jpeg&lt;/p&gt;&lt;p&gt;%E3%81%A7%E3%81%8D%E3%81%9D%E3%81%86%E3%81%A0%E3%81%AA%E3%83%BC%E3%81%A8%E6%80%9D%E3%81%A3%E3%81%A6%E3%81%84%E3%81%9F%E3%81%91%E3%81%A9%E3%80%81%E6%97%A9%E3%81%8F%E3%82%82%E3%82%84%E3%82%89%E3%82%8C%E3%81%A6%E3%81%97%E3%81%BE%E3%81%A3%E3%81%9F&lt;/p&gt;&lt;p&gt;%E5%AE%9F%E8%A3%85:%20%0A%0A%0A&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">https://github.com/GasolSun36/Iter-CoT
+<span class="snippet"><span>Comment</span><p>Zero shot CoTからスタートし、正しく問題に回答できるようにreasoningを改善するようにpromptをreviseし続けるループを回す。最終的にループした結果を要約し、それらをプールする。テストセットに対しては、プールの中からNshotをサンプルしinferenceを行う。<br><img src="https://user-images.githubusercontent.com/12249301/234311707-0d6f3443-681a-4309-917b-d21fd1a8c024.jpeg" alt="image" loading="lazy" width="550" height="400"></p>
+<p>できそうだなーと思っていたけど、早くもやられてしまった</p>
+<p>実装: 
+
+
+<a href="https://github.com/GasolSun36/Iter-CoT" target="_blank" rel="noopener noreferrer">https://github.com/GasolSun36/Iter-CoT</a>
 
 
 </p>
@@ -1292,14 +1297,15 @@ My Issue
 </strong>
 <br>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">Automatic prompt augmentation and selection with chain-of-thought from labeled data, Shum+, The Hong Kong University of Science and Technology, arXiv'23</a>
-<br><br>のように推論時に適切なdemonstrationを選択するような取り組みは行われてきているが、test questionに対して推論するために、適切なexamplarsを選択するような方法は計算コストを増大させてしまう。<br><br>これら研究は誤ったrationaleを含むサンプルの利用を最小限に抑えて、その悪影響を防ぐことを目指している。<br><br><br><br>一方で、この研究では、誤ったrationaleを含むサンプルを活用して性能を向上させる。これは、たとえば学生が難解だが回答可能な問題に取り組むことによって、問題解決スキルを向上させる方法に類似している（すなわち、間違えた部分から学ぶ）。<br><br>![image](https://user-images.githubusercontent.com/12249301/234752168-fe1d83a4-8d29-4f6c-8aa1-6bde1706beea.png<br><br><br><br>
-<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction" alt="image" loading="lazy" width="550" height="400"/&gt;**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;#%20IterCoT:%20Iterative%20Bootstrapping%20in%20Chain-of-Thought%20Prompting&lt;br&gt;&lt;br&gt;IterCoT%E3%81%AFweak%20bootstrapping%E3%81%A8strong%20bootstrapping%E3%81%AB%E3%82%88%E3%81%A3%E3%81%A6%E6%A7%8B%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B%E3%80%82&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;##%20Weak%20bootstrapping&lt;br&gt;&lt;br&gt;-%20Initialization&lt;br&gt;&lt;br&gt;%20%20-%20Training%20set%E3%81%AB%E5%AF%BE%E3%81%97%E3%81%A6Zero-shot%20CoT%E3%82%92%E5%AE%9F%E6%96%BD%E3%81%97%E3%80%81reasoning%20chain%E3%81%A8answer%E3%82%92%E5%BE%97&lt;br&gt;&lt;br&gt;-%20Bootstrapping%20&lt;br&gt;&lt;br&gt;%20%20-%20%E5%9B%9E%E7%AD%94%E3%81%8C%E8%AA%A4%E3%81%A3%E3%81%A6%E3%81%84%E3%81%9F%E5%90%84%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%81%AB%E5%AF%BE%E3%81%97%E3%81%A6%E3%80%81Revise-Prompt%E3%82%92%E9%81%A9%E7%94%A8%E3%81%97LLM%E3%81%AB%E8%AA%A4%E3%82%8A%E3%82%92%E6%8C%87%E6%91%98%E3%81%97%E3%80%81%E6%96%B0%E3%81%97%E3%81%84%E5%9B%9E%E7%AD%94%E3%82%92%E7%94%9F%E6%88%90%E3%81%95%E3%81%9B%E3%82%8B%E3%80%82&lt;br&gt;&lt;br&gt;%20%20-%20%E5%9B%9E%E7%AD%94%E3%81%8C%E6%AD%A3%E7%A2%BA%E3%81%AB%E3%81%AA%E3%82%8B%E3%81%BE%E3%81%A7%E3%81%93%E3%82%8C%E3%82%92%E7%B9%B0%E3%82%8A%E8%BF%94%E3%81%99%E3%80%82&lt;br&gt;&lt;br&gt;-%20Summarization&lt;br&gt;&lt;br&gt;%20%20-%20%E6%AD%A3%E3%81%97%E3%81%84%E5%9B%9E%E7%AD%94%E3%81%8C%E5%BE%97%E3%82%89%E3%82%8C%E3%81%9F%E3%82%89%E3%80%81Summary-Prompt%E3%82%92%E5%88%A9%E7%94%A8%E3%81%97%E3%81%A6%E3%80%81%E3%81%93%E3%82%8C%E3%81%BE%E3%81%A7%E3%81%AE%E8%AA%A4%E3%81%A3%E3%81%9Frationale%E3%81%A8%E3%80%81%E6%AD%A3%E8%A7%A3%E3%81%AErationale%E3%82%92%E5%88%A9%E7%94%A8%E3%81%97%E3%80%81%E6%9C%80%E7%B5%82%E7%9A%84%E3%81%AAreasoning%20chain%20(Iter-CoT" alt="image" loading="lazy" width="550" height="400">を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</strong></p>
+<br><br>のように推論時に適切なdemonstrationを選択するような取り組みは行われてきているが、test questionに対して推論するために、適切なexamplarsを選択するような方法は計算コストを増大させてしまう。<br><br>これら研究は誤ったrationaleを含むサンプルの利用を最小限に抑えて、その悪影響を防ぐことを目指している。<br><br><br><br>一方で、この研究では、誤ったrationaleを含むサンプルを活用して性能を向上させる。これは、たとえば学生が難解だが回答可能な問題に取り組むことによって、問題解決スキルを向上させる方法に類似している（すなわち、間違えた部分から学ぶ）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234752168-fe1d83a4-8d29-4f6c-8aa1-6bde1706beea.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>
+<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"><br><br></strong></p>
+<p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p>
 <p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
 
 <br>
 <br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
 <br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, ACL'24</a>
-<br><br>と比較。<br><br>Iter-CoTが11個のデータセット全てでoutperformした。<br><br><br><br>![image](https://user-images.githubusercontent.com/12249301/234792846-e8fd2f8b-6e26-48fc-9e5d-785bcf2a6b6a.png<br><br><br><br>weak bootstrapingのiterationは4回くらいで頭打ちになった<br><br>![image](https://user-images.githubusercontent.com/12249301/234793570-f57e56e4-7320-4be4-9c93-ee3be01ad389.png<br><br><br><br>また、手動でreasoning chainを修正した結果と、contextにannotation情報を残し、最後にsummarizeする方法を比較した結果、後者の方が性能が高かった。このため、contextの情報を利用しsummarizeすることが効果的であることがわかる。</p></span><br><br>
+<br><br>と比較。<br><br>Iter-CoTが11個のデータセット全てでoutperformした。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234792846-e8fd2f8b-6e26-48fc-9e5d-785bcf2a6b6a.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>weak bootstrapingのiterationは4回くらいで頭打ちになった<br><br><img src="https://user-images.githubusercontent.com/12249301/234793570-f57e56e4-7320-4be4-9c93-ee3be01ad389.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>また、手動でreasoning chainを修正した結果と、contextにannotation情報を残し、最後にsummarizeする方法を比較した結果、後者の方が性能が高かった。このため、contextの情報を利用しsummarizeすることが効果的であることがわかる。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="check-your-2955" class="title-link">[Paper Note] Check Your Facts and Try Again: Improving Large Language Models with  External Knowledge and Automated Feedback, Baolin Peng+, arXiv'23, 2023.02</h3>
@@ -1457,8 +1463,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/VAD/" title="VADに関する論文・技術記事メモの一覧">
-            VADに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ConversationalRecommenderSystems/" title="ConversationalRecommenderSystemsに関する論文・技術記事メモの一覧">
+            ConversationalRecommenderSystemsに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1466,29 +1472,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/StructuredData/" title="StructuredDataに関する論文・技術記事メモの一覧">
-            StructuredDataに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Routing/" title="Routingに関する論文・技術記事メモの一覧">
+            Routingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Proofs/" title="Proofsに関する論文・技術記事メモの一覧">
-            Proofsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/FactualKnowledge/" title="FactualKnowledgeに関する論文・技術記事メモの一覧">
+            FactualKnowledgeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TextToVideoGeneration/" title="TextToVideoGenerationに関する論文・技術記事メモの一覧">
-            TextToVideoGenerationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Poisoning/" title="Poisoningに関する論文・技術記事メモの一覧">
+            Poisoningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li>

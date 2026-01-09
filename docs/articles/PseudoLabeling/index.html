@@ -1127,7 +1127,7 @@ My Issue
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2025-09-20</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、「憲法的AI」を用いて、人間のラベルなしで無害なAIを訓練する方法を提案。監視学習と強化学習の2フェーズを経て、自己批評と修正を通じてモデルを微調整し、嗜好モデルを報酬信号として強化学習を行う。これにより、有害なクエリに対しても対話できる無害なAIアシスタントを実現し、AIの意思決定の透明性を向上させる。</span>
-<span class="snippet"><span>Comment</span><p>（部分的にしか読めていないが）<br>有害なpromptに対してLLMに初期の応答を生成させ、iterativeにcritiqueとrevisionを繰り返して[^1]、より無害な応答を生成。この方法ではiterationをしながら生成結果が改定されていくので、後段のReward Modelのための嗜好データを生成するフェーズでトークン量を節約するために、生成されたより無害な応答と元となるpromptを用いて、ベースモデルをSFT。これによりベースモデルの出力分布がより無害な応答をするような方向性に調整され、かつ（iterationを繰り返すことなく）直接的により無害な応答を生成できるようになるのでtoken量が節約できる。このフェーズで学習したモデルをSL-CAIと呼ぶ。<br><br>続いて、SL-CAIに対して同様の有害なpromptを入力して、複数の応答を生成させる。生成された応答をMultiple Choice Questionの形式にし、Constitutional Principleに基づくpromptingにより、最も望ましい応答をLLMによって選択させることで、嗜好データを獲得する。この嗜好データ（と人手で定義されたhelpfulnessに基づくデータ）を用いてReward Modelを訓練しRLを実施する。<br><br>この手法は、嗜好データを人間がラベリングするのではなく、AIによるフィードバックによりラベリングするため、Reinforcement Learning from AI Feedback (RLAIF)と呼ばれる。<br><br>Harmfulness以外の分野にも応用可能と考えられる。<br><br><img src="https://github.com/user-attachments/assets/72305618-d397-4471-8648-7771d371ca43&lt;br&gt;&lt;br&gt;[^1]:%20%E3%81%93%E3%81%AE%E6%93%8D%E4%BD%9C%E3%81%AF%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%9C%9B%E3%81%BE%E3%81%97%E3%81%84%E6%8C%99%E5%8B%95%E3%82%92%E4%BA%BA%E6%89%8B%E3%81%A7%E5%AE%9A%E7%BE%A9%E3%81%97%E3%81%9F%E3%83%AB%E3%83%BC%E3%83%96%E3%83%AA%E3%83%83%E3%82%AF%E3%81%AB%E5%9F%BA%E3%81%A5%E3%81%84%E3%81%9F%E8%A4%87%E6%95%B0%E3%81%AEprompt%20(Constitutional%20Principles" alt="image" loading="lazy" width="550" height="400"> を用いて実施される。具体的なpromptはAppendix Cを参照。</p>
+<span class="snippet"><span>Comment</span><p>（部分的にしか読めていないが）<br>有害なpromptに対してLLMに初期の応答を生成させ、iterativeにcritiqueとrevisionを繰り返して[^1]、より無害な応答を生成。この方法ではiterationをしながら生成結果が改定されていくので、後段のReward Modelのための嗜好データを生成するフェーズでトークン量を節約するために、生成されたより無害な応答と元となるpromptを用いて、ベースモデルをSFT。これによりベースモデルの出力分布がより無害な応答をするような方向性に調整され、かつ（iterationを繰り返すことなく）直接的により無害な応答を生成できるようになるのでtoken量が節約できる。このフェーズで学習したモデルをSL-CAIと呼ぶ。<br><br>続いて、SL-CAIに対して同様の有害なpromptを入力して、複数の応答を生成させる。生成された応答をMultiple Choice Questionの形式にし、Constitutional Principleに基づくpromptingにより、最も望ましい応答をLLMによって選択させることで、嗜好データを獲得する。この嗜好データ（と人手で定義されたhelpfulnessに基づくデータ）を用いてReward Modelを訓練しRLを実施する。<br><br>この手法は、嗜好データを人間がラベリングするのではなく、AIによるフィードバックによりラベリングするため、Reinforcement Learning from AI Feedback (RLAIF)と呼ばれる。<br><br>Harmfulness以外の分野にも応用可能と考えられる。<br><br><img src="https://github.com/user-attachments/assets/72305618-d397-4471-8648-7771d371ca43" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: この操作はモデルの望ましい挙動を人手で定義したルーブリックに基づいた複数のprompt (Constitutional Principles) を用いて実施される。具体的なpromptはAppendix Cを参照。</p>
 <p>先行研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2902" target="_blank" rel="noopener noreferrer">[Paper Note] Training a Helpful and Harmless Assistant with Reinforcement Learning
   from Human Feedback, Yuntao Bai+, arXiv'22</a>
 </p></span><br><br>
@@ -1187,8 +1187,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Pruning/" title="Pruningに関する論文・技術記事メモの一覧">
-            Pruningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SingleFramework/" title="SingleFrameworkに関する論文・技術記事メモの一覧">
+            SingleFrameworkに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
   <span class="post-badge badge-new">📝 8</span>
@@ -1196,29 +1196,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/MajorityVoting/" title="MajorityVotingに関する論文・技術記事メモの一覧">
-            MajorityVotingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/NeuralArchitectureSearch/" title="NeuralArchitectureSearchに関する論文・技術記事メモの一覧">
+            NeuralArchitectureSearchに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Proofs/" title="Proofsに関する論文・技術記事メモの一覧">
-            Proofsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/StructuredData/" title="StructuredDataに関する論文・技術記事メモの一覧">
+            StructuredDataに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/React-(Frontend)/" title="React (Frontend)に関する論文・技術記事メモの一覧">
-            React (Frontend)に関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ICWSM/" title="ICWSMに関する論文・技術記事メモの一覧">
+            ICWSMに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>

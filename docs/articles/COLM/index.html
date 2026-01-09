@@ -843,7 +843,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 44 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 41 mins</span>
   </div></header>
 </div>
     </div>
@@ -2021,8 +2021,8 @@ My Issue
 </div>
 
 
-<p>small sub-layers, large shortcutsの説明はこちらに書かれている。前者については、現在主流なLLMの初期化手法は満たしているが、後者はオリジナルのTransformerの実装では実装されている[^1]が、最近の実装では失われてしまっているとのこと。<br><img src="https://github.com/user-attachments/assets/55cf847c-fc6a-4e76-88c9-1507464e96a0&lt;br&gt;&lt;br&gt;%E4%B8%8B%E5%9B%B3%E3%81%8C%E5%AE%9F%E9%A8%93%E7%B5%90%E6%9E%9C%E3%81%A7%E3%80%81%E6%9D%A1%E4%BB%B6%E3%81%AE%E5%8F%8C%E6%96%B9%E3%82%92%E6%BA%80%E3%81%9F%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%81%AE%E3%81%AFEmbedLN[^2]%E3%81%A8Scaled%20Embed[^3]%E3%81%AE%E3%81%BF%E3%81%A7%E3%81%82%E3%82%8A%E3%80%81%E5%AE%9F%E9%9A%9B%E3%81%AB%E3%82%B9%E3%83%91%E3%82%A4%E3%82%AF%E3%81%8C%E7%94%9F%E3%81%98%E3%81%A6%E3%81%84%E3%81%AA%E3%81%84%E3%81%93%E3%81%A8%E3%81%8C%E3%82%8F%E3%81%8B%E3%82%8B%E3%80%82&lt;br&gt;![image](https://github.com/user-attachments/assets/79494662-3d58-4d8e-ae9d-8ed9241e0f65&lt;br&gt;&lt;br&gt;[^1]:%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E8%AB%96%E6%96%87%20&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">[Paper Note] Attention Is All You Need, Ashish Vaswani+, arXiv'17
- の3.4節末尾、embedding layersに対してsqrt(d_model" alt="image" loading="lazy" width="550" height="400"/&gt;を乗じるということがサラッと書いてある。これが実はめちゃめちゃ重要だったという…<br>[^2]: positional embeddingを加算する前にLayer Normalizationをかける方法<br>[^3]: EmbeddingにEmbeddingの次元数d（i.e., 各レイヤーのinputの次元数)の平方根を乗じる方法</p>
+<p>small sub-layers, large shortcutsの説明はこちらに書かれている。前者については、現在主流なLLMの初期化手法は満たしているが、後者はオリジナルのTransformerの実装では実装されている[^1]が、最近の実装では失われてしまっているとのこと。<br><img src="https://github.com/user-attachments/assets/55cf847c-fc6a-4e76-88c9-1507464e96a0" alt="image" loading="lazy" width="550" height="400"><br><br>下図が実験結果で、条件の双方を満たしているのはEmbedLN[^2]とScaled Embed[^3]のみであり、実際にスパイクが生じていないことがわかる。<br><img src="https://github.com/user-attachments/assets/79494662-3d58-4d8e-ae9d-8ed9241e0f65" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]:オリジナル論文 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/245" target="_blank" rel="noopener noreferrer">[Paper Note] Attention Is All You Need, Ashish Vaswani+, arXiv'17</a>
+ の3.4節末尾、embedding layersに対してsqrt(d_model)を乗じるということがサラッと書いてある。これが実はめちゃめちゃ重要だったという…<br>[^2]: positional embeddingを加算する前にLayer Normalizationをかける方法<br>[^3]: EmbeddingにEmbeddingの次元数d（i.e., 各レイヤーのinputの次元数)の平方根を乗じる方法</p>
 <p>前にScaled dot-product attentionのsqrt(d_k)がめっちゃ重要ということを実験的に示した、という話もあったような…<br>（まあそもそも元論文になぜスケーリングさせるかの説明は書いてあるけども）</p>
 <p>著者ポスト（スライド）:
 
@@ -2071,7 +2071,7 @@ My Issue
 
 
 <p>非常に大規模な数学の事前学習/mid-training向けのデータセット<br><br>CommonCrawlのHTMLから、さまざまなフィルタリング処理（reformatting, 2 stageのHTML parserの活用（片方はnoisyだが高速、もう一方は高性能だが遅い）, fasttextベースの分類器による抽出, deduplication等）を実施しMegaMath-Webを作成、また、MegaMathWebをさらに分類器で低品質なものをフィルタリングし、LLMによってノイズ除去、テキストのreorganizingを実施し（≠ピュアな合成データ）継続事前学習、mid-training向けの高品質なMegaMath-Web-Proを作成。<br><br>MegaMathCodeはThe Stack V2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2199" target="_blank" rel="noopener noreferrer">[Paper Note] StarCoder 2 and The Stack v2: The Next Generation, Anton Lozhkov+, arXiv'24</a>
-) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&amp;A, code data, text&amp;code block dataの3種類を合成。Q&amp;Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&amp;code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br>![image](https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c<br><br>![image](https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814<br><br>![image](https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e<br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></span><br><br>
+) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&amp;A, code data, text&amp;code block dataの3種類を合成。Q&amp;Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&amp;code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br><img src="https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="when-does-2173" class="title-link">[Paper Note] When Does Metadata Conditioning （NOT） Work for Language Model   Pre-Training? A Study with Context-Free Grammars, Rei Higuchi+, COLM'25</h3>
@@ -2216,7 +2216,7 @@ My Issue
 </div>
 
 
-<p>従来のRAGベースのAcademicWriting手法では、まずReferenceを検索して、その内容をcontextに含めてテキストを生成するというSequentialなパイプラインだったが、本研究では通常のNextTokenPrediction Lossに加え、特殊トークン\[RET\]を導入し、ContrastiveLearningによって、\[RET\]トークンがトリガーとなり、生成過程のContextとqueryから適切なReferenceを検索できるEmbeddingを出力し、Referenceを検索し、動的にReferenceの内容をcontextに加え、テキストを生成する手法を提案している。<br>![image](https://github.com/user-attachments/assets/777da4cb-5678-455f-babf-b91690945712<br>![image](https://github.com/user-attachments/assets/a27e092e-fff2-4f8a-91f7-09fe39e8e568<br><br>データセットはarXivからlatex sourceを収集し、bibliography部分からReferenceのタイトルをQwenを用いて抽出。タイトルをarXivおよびSemanticScholarのデータベースと照合し、paperとReferenceの紐付けを実施することで構築している。<br>![image](https://github.com/user-attachments/assets/2dd2b956-291e-4407-997a-4a2e68a72708<br><br>GPT-4oによるjudgeの結果、ground truthのcitationを用いた場合には及ばないが、提案手法により品質が向上し、citation retrievalのRecall@Kも大幅に改善している。<br>![image](https://github.com/user-attachments/assets/2ff5dd73-dcb8-4a3f-9d6a-1bcfb52a8321<br>![image](https://github.com/user-attachments/assets/81a39366-2577-41a1-aa6b-facc7ac25f1c</p></span><br><br>
+<p>従来のRAGベースのAcademicWriting手法では、まずReferenceを検索して、その内容をcontextに含めてテキストを生成するというSequentialなパイプラインだったが、本研究では通常のNextTokenPrediction Lossに加え、特殊トークン\[RET\]を導入し、ContrastiveLearningによって、\[RET\]トークンがトリガーとなり、生成過程のContextとqueryから適切なReferenceを検索できるEmbeddingを出力し、Referenceを検索し、動的にReferenceの内容をcontextに加え、テキストを生成する手法を提案している。<br><img src="https://github.com/user-attachments/assets/777da4cb-5678-455f-babf-b91690945712" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/a27e092e-fff2-4f8a-91f7-09fe39e8e568" alt="image" loading="lazy" width="550" height="400"><br><br>データセットはarXivからlatex sourceを収集し、bibliography部分からReferenceのタイトルをQwenを用いて抽出。タイトルをarXivおよびSemanticScholarのデータベースと照合し、paperとReferenceの紐付けを実施することで構築している。<br><img src="https://github.com/user-attachments/assets/2dd2b956-291e-4407-997a-4a2e68a72708" alt="image" loading="lazy" width="550" height="400"><br><br>GPT-4oによるjudgeの結果、ground truthのcitationを用いた場合には及ばないが、提案手法により品質が向上し、citation retrievalのRecall@Kも大幅に改善している。<br><img src="https://github.com/user-attachments/assets/2ff5dd73-dcb8-4a3f-9d6a-1bcfb52a8321" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/81a39366-2577-41a1-aa6b-facc7ac25f1c" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="fineweb2-one-2109" class="title-link">[Paper Note] FineWeb2: One Pipeline to Scale Them All -- Adapting Pre-Training Data  Processing to Every Language, Guilherme Penedo+, COLM'25</h3>
@@ -2347,14 +2347,14 @@ My Issue
 </div>
 
 
-<p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは&lt;=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4&lt;br&gt;![image](https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135&lt;br&gt;&lt;br&gt;-%20&lt;a%20href=" https: target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01
+<p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは&lt;=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
 </p>
 <p>個々のpost-trainingされたRLモデルが具体的にどういう訓練をしたのかは追えていないが、DAPOやDr. GRPO, VAPOの場合はどうなるんだろうか？<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, arXiv'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1876" target="_blank" rel="noopener noreferrer">VAPO: Efficient and Reliable Reinforcement Learning for Advanced
   Reasoning Tasks, YuYue+, arXiv'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1821" target="_blank" rel="noopener noreferrer">[Paper Note] Understanding R1-Zero-Like Training: A Critical Perspective, Zichen Liu+, arXiv'25, 2025.03</a>
-<br><br>Rewardの設定の仕方はどのような影響があるのだろうか（verifiable rewardなのか、neuralモデルによるrewardなのかなど" alt="image" loading="lazy" width="550" height="400"/&gt;？<br><br>学習のさせ方もどのような影響があるのだろうか（RLでカリキュラムlearningにした場合など）？<br><br>検証しているモデルがそれぞれどのような設定で学習されているかまでを見ないとこの辺はわからなそう。<br><br>ただなんとなーくの直感だと、SLMを賢くしたいという場合は何らかの賢いモデルの恩恵に預かると有利なケースが多く（SFTの場合はそれが大規模なモデルから蒸留したreasoning trace）、SLM+RLの場合はPRMのような思考プロセスを評価してRewardに反映させるようなものを利用しないと、少なくとも小規模なLLMをめちゃ賢くします〜というのはきついんじゃないかなあという感想ではある。<br>ただ、結局SLMという時点で多くの場合、より賢いパラメータ数の多いLLMが世の中には存在するあるはずなので、RLしないでSFTして蒸留すれば良いんじゃない…？と思ってしまう。<br>が、多くの場合その賢いLLMはProprietaryなLLMであり、出力を得て自分のモデルをpost-trainingすることは利用規約違反となるため、自前で賢くてパラメータ数の多いLLMを用意できない場合は困ってしまうので、SLMをクソデカパラメータのモデルの恩恵なしで超絶賢くできたら世の中の多くの人は嬉しいよね、とも思う。</p>
+<br><br>Rewardの設定の仕方はどのような影響があるのだろうか（verifiable rewardなのか、neuralモデルによるrewardなのかなど)？<br><br>学習のさせ方もどのような影響があるのだろうか（RLでカリキュラムlearningにした場合など）？<br><br>検証しているモデルがそれぞれどのような設定で学習されているかまでを見ないとこの辺はわからなそう。<br><br>ただなんとなーくの直感だと、SLMを賢くしたいという場合は何らかの賢いモデルの恩恵に預かると有利なケースが多く（SFTの場合はそれが大規模なモデルから蒸留したreasoning trace）、SLM+RLの場合はPRMのような思考プロセスを評価してRewardに反映させるようなものを利用しないと、少なくとも小規模なLLMをめちゃ賢くします〜というのはきついんじゃないかなあという感想ではある。<br>ただ、結局SLMという時点で多くの場合、より賢いパラメータ数の多いLLMが世の中には存在するあるはずなので、RLしないでSFTして蒸留すれば良いんじゃない…？と思ってしまう。<br>が、多くの場合その賢いLLMはProprietaryなLLMであり、出力を得て自分のモデルをpost-trainingすることは利用規約違反となるため、自前で賢くてパラメータ数の多いLLMを用意できない場合は困ってしまうので、SLMをクソデカパラメータのモデルの恩恵なしで超絶賢くできたら世の中の多くの人は嬉しいよね、とも思う。</p>
 <p>（斜め読みだが）<br>サンプル数が少ない（数十件）AIMEやAMCなどのデータはseedの値にとてもsensitiveであり(Takeaway1, 2)、<br><br><img src="https://github.com/user-attachments/assets/97581133-cf17-4635-b66c-442eaf8956d4" alt="image" loading="lazy" width="550" height="400"><br><br>それらは10種類のseedを用いて結果を平均すると分散が非常に小さくなるので、seedは複数種類利用して平均の性能を見た方がreliableであり(Takeaway3)<br><br><img src="https://github.com/user-attachments/assets/5065ef0e-de89-4b17-aa52-c90b7191e9b2" alt="image" loading="lazy" width="550" height="400"><br><br>temperatureを高くするとピーク性能が上がるが分散も上がるため再現性の課題が増大するが、top-pを大きくすると再現性の問題は現れず性能向上に寄与し<br><br><img src="https://github.com/user-attachments/assets/76d5c989-edbb-4d70-9080-d1d4b01de2ff" alt="image" loading="lazy" width="550" height="400"><br><br>既存研究のモデルのtemperatureとtop-pを変化させ実験するとperformanceに非常に大きな変化が出るため、モデルごとに最適な値を選定して比較をしないとunfairであることを指摘 (Takeaway4)。<br><br><img src="https://github.com/user-attachments/assets/d8b453d1-3d2e-4a80-b03d-c69ec1b2232e" alt="image" loading="lazy" width="550" height="400"><br><br>また、ハードウェアの面では、vLLMのようなinference engineはGPU typeやmemoryのconfigurationに対してsensitiveでパフォーマンスが変わるだけでなく、<br><br><img src="https://github.com/user-attachments/assets/a41891c7-072c-4c38-9ad6-beada4721bac" alt="image" loading="lazy" width="550" height="400"><br><br>評価に利用するフレームワークごとにinference engineとprompt templateが異なるためこちらもパフォーマンスに影響が出るし (Takeaway5)、<br><br><img src="https://github.com/user-attachments/assets/1f7d328c-0757-47b9-9961-630e2429fb3e" alt="image" loading="lazy" width="550" height="400"><br><br>max output tokenの値を変化させると性能も変わり、prompt templateを利用しないと性能が劇的に低下する (Takeaway6)。<br><br><img src="https://github.com/user-attachments/assets/dc0902d1-a5f2-47de-8df1-c28107e1da28" alt="image" loading="lazy" width="550" height="400"><br><br>これらのことから著者らはreliableな評価のために下記を提案しており (4.1節; 後ほど追記)、<br><br>実際にさまざまな条件をfair comparisonとなるように標準化して評価したところ（4.2節; 後ほど追記）<br><br>上の表のような結果となった。この結果は、<br>- DeepSeekR1-DistilledをRLしてもSFTと比較したときに意味のあるほどのパフォーマンスの向上はないことから、スケーラブル、かつ信頼性のあるRL手法がまだ不足しており<br>- 大規模なパラメータのモデルのreasoning traceからSFTをする方法はさまざまなベンチマークでロバストな性能（＝高い汎化性能）を持ち、RLと比べると現状はRLと比較してよりパラダイムとして成熟しており<br>- （AIME24,25を比較するとSFTと比べてRLの場合performanceの低下が著しいので）RLはoverfittingしやすく、OODなベンチマークが必要</p>
 <p>しっかりと評価の枠組みを標準化してfair comparisonしていかないと、RecSys業界の二の舞になりそう（というかもうなってる？）。<br><br>またこの研究で分析されているのは小規模なモデル（&lt;=10B）に対する既存研究で用いられた一部のRL手法や設定の性能だけ（真に示したかったらPhisics of LLMのような完全にコントロール可能なサンドボックスで実験する必要があると思われる）なので、DeepSeek-R1のように、大規模なパラメータ（数百B）を持つモデルに対するRLに関して同じことが言えるかは自明ではない点に注意。</p>
 <p>openreview:
@@ -2400,7 +2400,7 @@ My Issue
 </div>
 
 
-<p>Attention Sinkによって、トークンの情報がover-mixingされることが抑制され、Decoder-only LLMの深い層のrepresentationが均一化されることを抑制する（＝promptの摂動にロバストになる）ことが示された模様。<br>![image](https://github.com/user-attachments/assets/8a1223c0-5621-42a5-accc-31fa7f636856<br>Gemma7Bにおいて、prompt中のトークン一語を置換した後に、Attention Sink（<bos>）の有無によって、tokenレベルのrepresentationに対してどのような摂動があるかをlayerごとにまとめた図が下記の模様。Attention Sinkによって、tokenの摂動が他のtoken, layerに対してmixingされるのが抑制されている。<br>![image](https://github.com/user-attachments/assets/b1a4038a-d116-4bd1-b27b-c55eb861bee9</bos></p>
+<p>Attention Sinkによって、トークンの情報がover-mixingされることが抑制され、Decoder-only LLMの深い層のrepresentationが均一化されることを抑制する（＝promptの摂動にロバストになる）ことが示された模様。<br><img src="https://github.com/user-attachments/assets/8a1223c0-5621-42a5-accc-31fa7f636856" alt="image" loading="lazy" width="550" height="400"><br>Gemma7Bにおいて、prompt中のトークン一語を置換した後に、Attention Sink（<bos>）の有無によって、tokenレベルのrepresentationに対してどのような摂動があるかをlayerごとにまとめた図が下記の模様。Attention Sinkによって、tokenの摂動が他のtoken, layerに対してmixingされるのが抑制されている。<br><img src="https://github.com/user-attachments/assets/b1a4038a-d116-4bd1-b27b-c55eb861bee9" alt="image" loading="lazy" width="550" height="400"></bos></p>
 <p>openreview:
 
 
@@ -2438,7 +2438,7 @@ My Issue
 </div>
 
 
-<p>Critique Fine-Tuning (CFT) を提案。CFTでは、query x, noisy response y [^1] が与えられたときに、それに対する批評 cを学習する。cはgivenではないので、GPT4oのような強力なモデルによって合成する。<br><br>![Image](https://github.com/user-attachments/assets/f25babdd-63d6-4d3d-a9b0-3217db2bd07f<br><br>目的関数は以下。[x; y] がgivenな時にcを生成する確率を最大化する。シンプル。<br>![Image](https://github.com/user-attachments/assets/ccdb8e42-e8b2-4ae1-99a6-a0b7c1d4bf2a<br><br>RLを用いた手法との比較。1/10程度のデータ量、1/100程度のGPU時間で同等の性能を達成できる。<br>![Image](https://github.com/user-attachments/assets/848376ff-9965-485b-b8a0-7960d1d0e7b9<br><br>[^1]: 本論文で利用しているWebInstructからサンプリングしたデータでは、たとえば約50%程度のyが正解,  残りは不正解（程度のnoisyデータを利用している）</p></span><br><br>
+<p>Critique Fine-Tuning (CFT) を提案。CFTでは、query x, noisy response y [^1] が与えられたときに、それに対する批評 cを学習する。cはgivenではないので、GPT4oのような強力なモデルによって合成する。<br><br>![Image](https://github.com/user-attachments/assets/f25babdd-63d6-4d3d-a9b0-3217db2bd07f)<br><br>目的関数は以下。[x; y] がgivenな時にcを生成する確率を最大化する。シンプル。<br>![Image](https://github.com/user-attachments/assets/ccdb8e42-e8b2-4ae1-99a6-a0b7c1d4bf2a)<br><br>RLを用いた手法との比較。1/10程度のデータ量、1/100程度のGPU時間で同等の性能を達成できる。<br>![Image](https://github.com/user-attachments/assets/848376ff-9965-485b-b8a0-7960d1d0e7b9)<br><br>[^1]: 本論文で利用しているWebInstructからサンプリングしたデータでは、たとえば約50%程度のyが正解,  残りは不正解（程度のnoisyデータを利用している）</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="training-large-1586" class="title-link">[Paper Note] Training Large Language Models to Reason in a Continuous Latent Space, Shibo Hao+, COLM'25</h3>
@@ -2464,7 +2464,7 @@ My Issue
 <span class="issue_date">Issue Date: 2024-12-12</span>
 <span class="snippet"><span>GPT Summary</span>- 新しい推論パラダイム「Coconut」を提案し、LLMの隠れ状態を連続的思考として利用。これにより、次の入力を連続空間でフィードバックし、複数の推論タスクでLLMを強化。Coconutは幅優先探索を可能にし、特定の論理推論タスクでCoTを上回る性能を示す。潜在的推論の可能性を探る重要な洞察を提供。</span>
 <span class="snippet"><span>Comment</span><p>Chain of Continuous Thought</p>
-<p>通常のCoTはRationaleをトークン列で生成するが、Coconutは最終的なhidden stateをそのまま次ステップの入力にすることで、トークンに制限されずにCoTさせるということらしい。あとでしっかり読む<br>![image](https://github.com/user-attachments/assets/b930f44b-96f4-47cd-aa1a-0b5fabde54a5</p>
+<p>通常のCoTはRationaleをトークン列で生成するが、Coconutは最終的なhidden stateをそのまま次ステップの入力にすることで、トークンに制限されずにCoTさせるということらしい。あとでしっかり読む<br><img src="https://github.com/user-attachments/assets/b930f44b-96f4-47cd-aa1a-0b5fabde54a5" alt="image" loading="lazy" width="550" height="400"></p>
 <p>おそらく学習の際に工夫が必要なので既存モデルのデコーディングを工夫してできます系の話ではないかも</p>
 <p>OpenReview:
 
@@ -2724,38 +2724,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/AdversarialTraining/" title="AdversarialTrainingに関する論文・技術記事メモの一覧">
-            AdversarialTrainingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Video-Continuation/" title="Video Continuationに関する論文・技術記事メモの一覧">
+            Video Continuationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/FactualKnowledge/" title="FactualKnowledgeに関する論文・技術記事メモの一覧">
-            FactualKnowledgeに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/DynamicNetworks/" title="DynamicNetworksに関する論文・技術記事メモの一覧">
-            DynamicNetworksに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ICWSM/" title="ICWSMに関する論文・技術記事メモの一覧">
-            ICWSMに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/RetokenizationDrift/" title="RetokenizationDriftに関する論文・技術記事メモの一覧">
+            RetokenizationDriftに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Architecture/" title="Architectureに関する論文・技術記事メモの一覧">
+            Architectureに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 61</span> 
+  <span class="post-badge badge-new">📝 61</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/2D-(Image)/" title="2D (Image)に関する論文・技術記事メモの一覧">
+            2D (Image)に関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>
