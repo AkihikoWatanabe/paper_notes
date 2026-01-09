@@ -1074,7 +1074,7 @@ My Issue
 
 </p>
 <p>複数のコンポーネントのパイプラインによって構成されるシステムがあったときに、パイプライン全体のパフォーマンスを改善したい。このとき、パイプライン全体のパフォーマンスをユーザが定義したGlobal Reward Functionを最大化するように最適化したい。しかし、多くの場合このような異種のコンポーネントが複雑に連携したパイプラインでは、global rewardsは微分不可能なので、end-to-endで最適化することが難しい。また、個々の異種のコンポーネントのコンフィグ（e.g., textual, numerical, continuous vs. discrete）を同時に最適化することがそもそも難しい。全体のAIシステムを動作させて、global rewardを最適化するのは非常にコストがかかる。先行研究では、特定のコンポーネントを別々に最適化してきた（たとえば、promptをフィードバックに基づいて改善する <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1037" target="_blank" rel="noopener noreferrer">Large Language Models as Optimizers, Chengrun Yang+, N/A, ICLR'24</a>
-, モデル選択をiterative searchで改善するなど）。が、個別のコンポーネントを最適化しても別のコンポーネントの最適化が不十分であれば全体の性能は向上せず、全てのコンポーネントを個別に最適化しても、相互作用が最適ではない場合はglobal rewardが最大化されない可能性がある。<br><br>このため、個々のコンポーネントにlocal reward function (LRFs)を定義する。local reward functionは、これらが改善することでglobal reward functionも改善することを保証するような形（local-global alignment properfy）で定義され、これらのlocal reward functionを異なるコンポーネントごとに異なる形で最適化しても、global reward functionが改善されるように学習する。個々のコンポーネントごとにLRFsを最適化することは、全体のシステムの実行回数を削減しながら高いglobal rewardを実現可能となる。加えて、他のコンポーネントのコンフィグが改善されたら、それらに適応してLRFsも改善されていく必要があるので lightweight adaptationと呼ばれる、システムからサンプリングされた最小のデータからLRFsをアップデートする手法も提案する、みたいな話な模様。<br><br><img src="https://github.com/user-attachments/assets/2d6a1422-c087-455a-813c-97d47da5976d">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>LRFsを定義するときは、共通のLLMをバックボーンとし、個々のコンポーネントに対して別々のヘッドを用意してrewardを出力するようなモデルを定義する。コンポーネントkのinput x, output y が与えられたときに、それらをconcatしてLLMに入力し[x_k, y_k]最終的にヘッドでスカラー値に写像する。また、LRF r_kが *aligned* の定義として、LRF r_kがある共通のinputに対してr_kが高くなるようなoutputをしたときに、downstreamのコンポーネント全体のglobal reward Rが同等以上の性能を達成する場合、alignedであると定義する。このような特性を実現するために、現行のシステムのコンフィグに基づいてそれぞれのコンポーネントを実行し、trajectoryを取得。特定のコンポーネントC_kに対する二つのoutputを（異なるコンフィグに基づいて）サンプリングしてパイプライン全体のmetricを予測し、metricが高い/低いサンプルをchosen/rejectedとし preference dataを用意する。このようなデータを用いて、個々のコンポーネントのLRFsを、chosenなサンプルの場合はrejectedよりもrewardが高くなるようにペアワイズのranking lossを用いて学習する。<br><br>(ここまでが4.1節の概要。4.2, 4.3節以後は必要に応じて参照する。4.2ではどのように他コンポーネントが更新された際にLRFsを更新するか、という話と、4.3節では個々のコンポーネントがtext, trainable models, continuous configurationなどの異なるコンポーネントの場合にどのような最適化手法を適用するか、といった話が書かれているように見える。)<br><br>評価では5つの実世界のタスクを実現するための複数コンポーネントで構成されるシステムの最適化を試みているようであり、<br><img src="https://github.com/user-attachments/assets/be6fcb09-a68c-4b4c-998e-9f940cad677f">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>提案手法によって、パイプライン全体の性能がベースラインと比べて改善しシステム全体の実行回数もベースラインと比較して少ない試行回数で済むことが示されている模様。<br><img src="https://github.com/user-attachments/assets/a4f4c274-920f-4f60-9594-6b19b84f6b34">" alt="image" loading="lazy" width="550" height="400"/&gt;</p></span><br><br>
+, モデル選択をiterative searchで改善するなど）。が、個別のコンポーネントを最適化しても別のコンポーネントの最適化が不十分であれば全体の性能は向上せず、全てのコンポーネントを個別に最適化しても、相互作用が最適ではない場合はglobal rewardが最大化されない可能性がある。<br><br>このため、個々のコンポーネントにlocal reward function (LRFs)を定義する。local reward functionは、これらが改善することでglobal reward functionも改善することを保証するような形（local-global alignment properfy）で定義され、これらのlocal reward functionを異なるコンポーネントごとに異なる形で最適化しても、global reward functionが改善されるように学習する。個々のコンポーネントごとにLRFsを最適化することは、全体のシステムの実行回数を削減しながら高いglobal rewardを実現可能となる。加えて、他のコンポーネントのコンフィグが改善されたら、それらに適応してLRFsも改善されていく必要があるので lightweight adaptationと呼ばれる、システムからサンプリングされた最小のデータからLRFsをアップデートする手法も提案する、みたいな話な模様。<br><br><img src="https://github.com/user-attachments/assets/2d6a1422-c087-455a-813c-97d47da5976d" alt="image" loading="lazy" width="550" height="400"><br><br>LRFsを定義するときは、共通のLLMをバックボーンとし、個々のコンポーネントに対して別々のヘッドを用意してrewardを出力するようなモデルを定義する。コンポーネントkのinput x, output y が与えられたときに、それらをconcatしてLLMに入力し[x_k, y_k]最終的にヘッドでスカラー値に写像する。また、LRF r_kが *aligned* の定義として、LRF r_kがある共通のinputに対してr_kが高くなるようなoutputをしたときに、downstreamのコンポーネント全体のglobal reward Rが同等以上の性能を達成する場合、alignedであると定義する。このような特性を実現するために、現行のシステムのコンフィグに基づいてそれぞれのコンポーネントを実行し、trajectoryを取得。特定のコンポーネントC_kに対する二つのoutputを（異なるコンフィグに基づいて）サンプリングしてパイプライン全体のmetricを予測し、metricが高い/低いサンプルをchosen/rejectedとし preference dataを用意する。このようなデータを用いて、個々のコンポーネントのLRFsを、chosenなサンプルの場合はrejectedよりもrewardが高くなるようにペアワイズのranking lossを用いて学習する。<br><br>(ここまでが4.1節の概要。4.2, 4.3節以後は必要に応じて参照する。4.2ではどのように他コンポーネントが更新された際にLRFsを更新するか、という話と、4.3節では個々のコンポーネントがtext, trainable models, continuous configurationなどの異なるコンポーネントの場合にどのような最適化手法を適用するか、といった話が書かれているように見える。)<br><br>評価では5つの実世界のタスクを実現するための複数コンポーネントで構成されるシステムの最適化を試みているようであり、<br><img src="https://github.com/user-attachments/assets/be6fcb09-a68c-4b4c-998e-9f940cad677f" alt="image" loading="lazy" width="550" height="400"><br><br>提案手法によって、パイプライン全体の性能がベースラインと比べて改善しシステム全体の実行回数もベースラインと比較して少ない試行回数で済むことが示されている模様。<br><img src="https://github.com/user-attachments/assets/a4f4c274-920f-4f60-9594-6b19b84f6b34" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 </div>
 <script>
@@ -1131,17 +1131,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/DomainGap/" title="DomainGapに関する論文・技術記事メモの一覧">
-            DomainGapに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ECCV/" title="ECCVに関する論文・技術記事メモの一覧">
-            ECCVに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/OOD/" title="OODに関する論文・技術記事メモの一覧">
+            OODに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
   <span class="post-badge badge-new">📝 6</span>
@@ -1149,20 +1140,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Audio-Text-to-Video/" title="Audio-Text-to-Videoに関する論文・技術記事メモの一覧">
-            Audio-Text-to-Videoに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SpeculativeDecoding/" title="SpeculativeDecodingに関する論文・技術記事メモの一覧">
+            SpeculativeDecodingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/DyingReLU/" title="DyingReLUに関する論文・技術記事メモの一覧">
-            DyingReLUに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Comments/" title="Commentsに関する論文・技術記事メモの一覧">
+            Commentsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Pruning/" title="Pruningに関する論文・技術記事メモの一覧">
+            Pruningに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
 </span>
 </a>
         </li>

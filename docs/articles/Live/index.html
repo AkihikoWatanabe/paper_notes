@@ -1450,7 +1450,7 @@ My Issue
 <a class="button" href="Conversation.html" target="_blank" rel="noopener noreferrer">#Conversation</a>
 <span class="issue_date">Issue Date: 2025-09-10</span>
 <span class="snippet"><span>Comment</span><p>ArenaHardデータセット</p>
-<p>ChatbotArenaのデータからコンタミネーションに考慮して定期的に抽出される高品質なreal worldに近いのconversationデータセット。抽出プロセスではpromptの多様性とqualityが担保される形で、200,000のユーザからのpromptが抽出されフィルタリングにかけられる。<br>多様性という観点では、全てのpromptを OpenAI の `text-embedding-3-small` によってembeddingに変換し、UMAPによって次元圧縮をした後に階層的クラスタリング手法によってトピッククラスタを形成する。各クラスタにはGPT-4-turboで要約が付与され、要約を活用して4000のトピッククラスタを選定する。<br>続いて、各クラスタに含まれるクエリは品質がバラバラなので、高品質なものを抽出するために以下の観点からLLM-as-a-Judge（GPT-3.5-Turbo, GPT-4-turbo）を用いてフィルタリングを実施する:<br>```<br>1. Specificity: Does the prompt ask for a specific output?<br>2. Domain Knowledge: Does the prompt cover one or more specific domains?<br>3. Complexity: Does the prompt have multiple levels of reasoning, components, or variables?<br>4. Problem-Solving: Does the prompt directly involve the AI to demonstrate active problem-solving skills?<br>5. Creativity: Does the prompt involve a level of creativity in approaching the problem?<br>6. Technical Accuracy: Does the prompt require technical accuracy in the response?<br>7. Real-world Application: Does the prompt relate to real-world applications?<br>```<br>（観点は元記事から引用）<br><br>各観点を満たしていたら1ポイントとし、各promptごとに[0, 7]のスコアが付与される。各トピッククラスタはクラスタ中のpromptの平均スコアによってスコアリングされフィルタリングに活用される。<br>最終的に250のhigh-qualityなトピッククラスタ（すなわち、スコアが&gt;=6のクラスタ）が選ばれ、各クラスタから2つのサンプルをサンプリングして合計500個のbenchmark promptを得る。<br>評価をする際は、評価対象のモデルとstrong baseline（GPT-4-0314）のレスポンスを比較し、LLM-as-a-Judge（GPT-4-Turbo, Claude-3-Opus）によってペアワイズの品質データを取得する。position biasに配慮するためにreaponseの位置を入れ替えて各サンプルごとに2回評価するので、このデータは1000個のペアワイズデータとなる。<br>このペアワイズデータをbootstrap resamplingした上で、Bradley-Terryモデル（=勝敗データからプレイヤーの強さを数値化する統計モデル）でスコアを計算することでスコアを得る。<br><br>ArenaHardはMT Benchよりも高い識別力を獲得している。<br><br><img src="https://github.com/user-attachments/assets/a9bca283-31c2-4606-b59d-b7df60af43f1">" alt="image" loading="lazy" width="550" height="400"/&gt;</p>
+<p>ChatbotArenaのデータからコンタミネーションに考慮して定期的に抽出される高品質なreal worldに近いのconversationデータセット。抽出プロセスではpromptの多様性とqualityが担保される形で、200,000のユーザからのpromptが抽出されフィルタリングにかけられる。<br>多様性という観点では、全てのpromptを OpenAI の `text-embedding-3-small` によってembeddingに変換し、UMAPによって次元圧縮をした後に階層的クラスタリング手法によってトピッククラスタを形成する。各クラスタにはGPT-4-turboで要約が付与され、要約を活用して4000のトピッククラスタを選定する。<br>続いて、各クラスタに含まれるクエリは品質がバラバラなので、高品質なものを抽出するために以下の観点からLLM-as-a-Judge（GPT-3.5-Turbo, GPT-4-turbo）を用いてフィルタリングを実施する:<br>```<br>1. Specificity: Does the prompt ask for a specific output?<br>2. Domain Knowledge: Does the prompt cover one or more specific domains?<br>3. Complexity: Does the prompt have multiple levels of reasoning, components, or variables?<br>4. Problem-Solving: Does the prompt directly involve the AI to demonstrate active problem-solving skills?<br>5. Creativity: Does the prompt involve a level of creativity in approaching the problem?<br>6. Technical Accuracy: Does the prompt require technical accuracy in the response?<br>7. Real-world Application: Does the prompt relate to real-world applications?<br>```<br>（観点は元記事から引用）<br><br>各観点を満たしていたら1ポイントとし、各promptごとに[0, 7]のスコアが付与される。各トピッククラスタはクラスタ中のpromptの平均スコアによってスコアリングされフィルタリングに活用される。<br>最終的に250のhigh-qualityなトピッククラスタ（すなわち、スコアが&gt;=6のクラスタ）が選ばれ、各クラスタから2つのサンプルをサンプリングして合計500個のbenchmark promptを得る。<br>評価をする際は、評価対象のモデルとstrong baseline（GPT-4-0314）のレスポンスを比較し、LLM-as-a-Judge（GPT-4-Turbo, Claude-3-Opus）によってペアワイズの品質データを取得する。position biasに配慮するためにreaponseの位置を入れ替えて各サンプルごとに2回評価するので、このデータは1000個のペアワイズデータとなる。<br>このペアワイズデータをbootstrap resamplingした上で、Bradley-Terryモデル（=勝敗データからプレイヤーの強さを数値化する統計モデル）でスコアを計算することでスコアを得る。<br><br>ArenaHardはMT Benchよりも高い識別力を獲得している。<br><br><img src="https://github.com/user-attachments/assets/a9bca283-31c2-4606-b59d-b7df60af43f1" alt="image" loading="lazy" width="550" height="400"></p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/623" target="_blank" rel="noopener noreferrer">ChatBot Arena, lmsys org, 2023.05</a>
  <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/876" target="_blank" rel="noopener noreferrer">ChatBot Arenaのデータセット</a>
 </p></span><br><br>
@@ -1510,8 +1510,26 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/TrainedMetrics/" title="TrainedMetricsに関する論文・技術記事メモの一覧">
-            TrainedMetricsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Bias/" title="Biasに関する論文・技術記事メモの一覧">
+            Biasに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Mathematics/" title="Mathematicsに関する論文・技術記事メモの一覧">
+            Mathematicsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 34</span> 
+  <span class="post-badge badge-new">📝 34</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/ZeroshotHyperparameterTransfer/" title="ZeroshotHyperparameterTransferに関する論文・技術記事メモの一覧">
+            ZeroshotHyperparameterTransferに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
   <span class="post-badge badge-new">📝 4</span>
@@ -1519,29 +1537,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/InstructionFollowingCapability/" title="InstructionFollowingCapabilityに関する論文・技術記事メモの一覧">
-            InstructionFollowingCapabilityに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Video/" title="Videoに関する論文・技術記事メモの一覧">
+            Videoに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
-  <span class="post-badge badge-new">📝 7</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/KnowledgeGraph/" title="KnowledgeGraphに関する論文・技術記事メモの一覧">
-            KnowledgeGraphに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/PersonalizedDocumentSummarization/" title="PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧">
-            PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 39</span> 
-  <span class="post-badge badge-new">📝 39</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li>

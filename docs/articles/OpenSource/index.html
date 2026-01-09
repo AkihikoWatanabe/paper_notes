@@ -842,7 +842,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 17 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 16 mins</span>
   </div></header>
 </div>
     </div>
@@ -1082,7 +1082,7 @@ My Issue
 </div>
 
 
-<p>テキストをbyte列の系列として解釈し入出力を行う言語モデル。アーキテクチャとしては、byte列をtoken化しbyte列単位でembedding化→mLSTMによってそれらがcontextに関する情報を持った状態でエンコードされ→1バイト先のcontextを用いて単語の境界を予測するモデル（この部分はcausalではなくbi-directional）によって境界を認識し、境界まで可変長でembeddingをpoolingしパッチを形成し、Olmo3の入力とする（デコーディングはその逆の操作をして最終的に言語モデルのheadを用いる）。<br><br>スクラッチからByte Latent Transformerのようなモデルを学習するのではなく、2-stageで学習される。まずOlmo3をfreezeし、他の local encoder, local decoder, boundary predictor, and language modeling headのみを学習する。これによりsubwordモデルと同様の挙動を学習できる。そのうえで、Olmo3のfreezeを解除し全体を学習する。これにより、Olmo3に事前学習された知識や挙動を最大限に活用する（=もともとsubwordで動作していたモデルをbyteレベルで動作するように継続学習する）。<br><br><img src="https://github.com/user-attachments/assets/fe19af90-6323-47fd-a75c-fdac2a4e7d99">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>&gt;The Bolmo architecture. Tokenization &amp; Embedding T transforms the input text into one representation per byte. The representations are contextualized with the local encoder E consisting of mLSTM blocks. The boundary predictor B decides where to place patch boundaries using one byte of future context. The representations are then Pooled,</p>
+<p>テキストをbyte列の系列として解釈し入出力を行う言語モデル。アーキテクチャとしては、byte列をtoken化しbyte列単位でembedding化→mLSTMによってそれらがcontextに関する情報を持った状態でエンコードされ→1バイト先のcontextを用いて単語の境界を予測するモデル（この部分はcausalではなくbi-directional）によって境界を認識し、境界まで可変長でembeddingをpoolingしパッチを形成し、Olmo3の入力とする（デコーディングはその逆の操作をして最終的に言語モデルのheadを用いる）。<br><br>スクラッチからByte Latent Transformerのようなモデルを学習するのではなく、2-stageで学習される。まずOlmo3をfreezeし、他の local encoder, local decoder, boundary predictor, and language modeling headのみを学習する。これによりsubwordモデルと同様の挙動を学習できる。そのうえで、Olmo3のfreezeを解除し全体を学習する。これにより、Olmo3に事前学習された知識や挙動を最大限に活用する（=もともとsubwordで動作していたモデルをbyteレベルで動作するように継続学習する）。<br><br><img src="https://github.com/user-attachments/assets/fe19af90-6323-47fd-a75c-fdac2a4e7d99" alt="image" loading="lazy" width="550" height="400"><br><br>&gt;The Bolmo architecture. Tokenization &amp; Embedding T transforms the input text into one representation per byte. The representations are contextualized with the local encoder E consisting of mLSTM blocks. The boundary predictor B decides where to place patch boundaries using one byte of future context. The representations are then Pooled,</p>
 <p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/682" target="_blank" rel="noopener noreferrer">[Paper Note] MEGABYTE: Predicting Million-byte Sequences with Multiscale Transformers, Lili Yu+, NeurIPS'23, 2023.05</a>
 </p></span><br><br>
 </article>
@@ -1124,7 +1124,7 @@ My Issue
 </div>
 
 
-<p>従来のRLはすべてのドメインのデータをmixすることでおこなれてきたが、個々のドメインのデータを個別にRLし、cascading方式で適用 (Cascade RL) することを提案している（実際は著者らの先行研究でmath-&gt;codingのcascadingは実施されていたが、それをより広範なドメイン(RLHF -&gt; instruction following -&gt; math -&gt; coding -&gt; software engineering)に適用した、という研究）。<br>cascadingにはいくつかのメリットがありRLの学習速度を改善できる（あるいはRLのインフラの複雑性を緩和できる）<br>- ドメインごとのverificationの速度の違いによって学習速度を損なうことがない（e.g. 数学のrule-basedなverificationは早いがcodingは遅い）<br>- ドメインごとに出力長は異なるためオンポリシーRLを適用すると効率が落ちる（長いレスポンスの生成を待たなければらないため）<br> <br><img src="https://github.com/user-attachments/assets/c56e04bb-8e4e-46e8-b5e5-ad12ee3b5daa">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>本研究で得られた利点としてはFigure 1を参考に言及されているが<br>- RLHF, instruction followingを事前に適用することによって、後段のreasoningの性能も向上する（reasoningのwarmupになる）<br>  - 加えて応答の長さの削減につながる<br>- RLはcatastrophic forgettingに強く、前段で実施したドメインの性能が後段のドメインのRLによって性能が劣化しない<br>  - といってもFigure 2を見ると、codingとsoftware engineeringは結構ドメイン近いのでは・・・？という気はするが・・・。<br>- RLにおけるカリキュラム学習やハイパーパラメータをドメインごとに最適なものを適用できる<br><br><img src="https://github.com/user-attachments/assets/ad108fb9-6450-49a4-99d3-c08404d89cda">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>他にもthinking/non-thinking に関することが言及されているが読めていない。</p></span><br><br>
+<p>従来のRLはすべてのドメインのデータをmixすることでおこなれてきたが、個々のドメインのデータを個別にRLし、cascading方式で適用 (Cascade RL) することを提案している（実際は著者らの先行研究でmath-&gt;codingのcascadingは実施されていたが、それをより広範なドメイン(RLHF -&gt; instruction following -&gt; math -&gt; coding -&gt; software engineering)に適用した、という研究）。<br>cascadingにはいくつかのメリットがありRLの学習速度を改善できる（あるいはRLのインフラの複雑性を緩和できる）<br>- ドメインごとのverificationの速度の違いによって学習速度を損なうことがない（e.g. 数学のrule-basedなverificationは早いがcodingは遅い）<br>- ドメインごとに出力長は異なるためオンポリシーRLを適用すると効率が落ちる（長いレスポンスの生成を待たなければらないため）<br> <br><img src="https://github.com/user-attachments/assets/c56e04bb-8e4e-46e8-b5e5-ad12ee3b5daa" alt="image" loading="lazy" width="550" height="400"><br><br>本研究で得られた利点としてはFigure 1を参考に言及されているが<br>- RLHF, instruction followingを事前に適用することによって、後段のreasoningの性能も向上する（reasoningのwarmupになる）<br>  - 加えて応答の長さの削減につながる<br>- RLはcatastrophic forgettingに強く、前段で実施したドメインの性能が後段のドメインのRLによって性能が劣化しない<br>  - といってもFigure 2を見ると、codingとsoftware engineeringは結構ドメイン近いのでは・・・？という気はするが・・・。<br>- RLにおけるカリキュラム学習やハイパーパラメータをドメインごとに最適なものを適用できる<br><br><img src="https://github.com/user-attachments/assets/ad108fb9-6450-49a4-99d3-c08404d89cda" alt="image" loading="lazy" width="550" height="400"><br><br>他にもthinking/non-thinking に関することが言及されているが読めていない。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="nvidia-nemotron-3965" class="title-link">[Paper Note] NVIDIA Nemotron 3: Efficient and Open Intelligence, NVIDIA+, arXiv'25, 2025.12</h3>
@@ -2458,7 +2458,7 @@ My Issue
 <a class="button" href="SpokenLanguageProcessing.html" target="_blank" rel="noopener noreferrer">#SpokenLanguageProcessing</a>
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <span class="issue_date">Issue Date: 2024-12-13</span>
-<span class="snippet"><span>Comment</span><p>音声とテキストのOpenSourceマルチモーダルモデル。inputは音声のみ？に見えるが、出力はテキストと音声の両方を実施できる。GPT-4oレベルのspeech capabilityを目指すとaboutに記載されている。興味深い。<br><br><br><br>installの説明に `Whisper-large-v3` をインストールする旨が記載されているので、Whisper-large-v3で認識した内容に特化したSpeech Encoder/Adapterが学習されていると考えられる。<br><br><img src="https://github.com/user-attachments/assets/cea090e7-a42a-476d-85f6-50199d9ae180">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br></p>
+<span class="snippet"><span>Comment</span><p>音声とテキストのOpenSourceマルチモーダルモデル。inputは音声のみ？に見えるが、出力はテキストと音声の両方を実施できる。GPT-4oレベルのspeech capabilityを目指すとaboutに記載されている。興味深い。<br><br><br><br>installの説明に `Whisper-large-v3` をインストールする旨が記載されているので、Whisper-large-v3で認識した内容に特化したSpeech Encoder/Adapterが学習されていると考えられる。<br><br><img src="https://github.com/user-attachments/assets/cea090e7-a42a-476d-85f6-50199d9ae180" alt="image" loading="lazy" width="550" height="400"><br><br></p>
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225" target="_blank" rel="noopener noreferrer">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N/A, ACL'24 Findings</a>
  <br><br><br><br>マルチモーダルなLLMの基本的な概念については上記参照のこと。</p></span><br><br>
 </article>
@@ -2529,7 +2529,7 @@ My Issue
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <a class="button" href="VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
 <span class="issue_date">Issue Date: 2024-09-27</span>
-<span class="snippet"><span>Comment</span><p>以下がベンチマーク結果（VLMのベンチマーク）。11 benchmarksと書かれているのは、VLMのベンチマークである点に注意。<br><br><br><br><img src="https://github.com/user-attachments/assets/510204e5-4cfb-4ba3-a6db-fff717a637bc">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><img src="https://github.com/user-attachments/assets/a4a77006-fcde-4c33-b6df-54dc5d8cbdfa">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>以下がベンチマーク結果（VLMのベンチマーク）。11 benchmarksと書かれているのは、VLMのベンチマークである点に注意。<br><br><br><br><img src="https://github.com/user-attachments/assets/510204e5-4cfb-4ba3-a6db-fff717a637bc" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/a4a77006-fcde-4c33-b6df-54dc5d8cbdfa" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="open-source-1285" class="title-link">Open Source Cookbook</h3>
@@ -2609,8 +2609,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Fidelity/" title="Fidelityに関する論文・技術記事メモの一覧">
-            Fidelityに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/DemonstrationSelection/" title="DemonstrationSelectionに関する論文・技術記事メモの一覧">
+            DemonstrationSelectionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -2618,29 +2618,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/PPO-(ProximalPolicyOptimization)/" title="PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧">
-            PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/DyingReLU/" title="DyingReLUに関する論文・技術記事メモの一覧">
+            DyingReLUに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/NormalizingFlow/" title="NormalizingFlowに関する論文・技術記事メモの一覧">
-            NormalizingFlowに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/MLOps/" title="MLOpsに関する論文・技術記事メモの一覧">
+            MLOpsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Search/" title="Searchに関する論文・技術記事メモの一覧">
-            Searchに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/PostTraining/" title="PostTrainingに関する論文・技術記事メモの一覧">
+            PostTrainingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 19</span> 
-  <span class="post-badge badge-new">📝 19</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 138</span> 
+  <span class="post-badge badge-new">📝 138</span>
 </span>
 </a>
         </li>

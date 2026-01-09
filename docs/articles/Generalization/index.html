@@ -1743,7 +1743,7 @@ My Issue
 
 
 <br><br>長文認識のためのヒューリスティックに基づくデコーディング戦略も解説されているので参照のこと。</p>
-<p>研究のコアとなるアイデアとしては、既存研究は自己教師あり学習、あるいはself-learningによって性能向上を目指す流れがある中で、教師あり学習に着目。既存研究で教師あり学習によって性能が向上することが示されていたが、大規模なスケールで実施できていなかったため、それをweakly-supervisedなmanner（=つまり完璧なラベルではなくてノイジーでも良いからラベルを付与し学習する）といった方法で学習することで、より頑健で高性能なASRを実現したい、という気持ちの研究。また、複雑なサブタスク(language identification, inverse text normalization（ASR後のテキストを人間向けの自然なテキストに変換すること[^2]）, phrase-level timestamps (audioとtranscriptのタイムスタンプ予測))を一つのパイプラインで実現するような統合的なインタフェースも提案している。モデルのアーキテクチャ自体はencoder-decoderモデルである。また、positional encodingとしてはSinusoidal Positional Encoding（すなわち、絶対位置エンコーディング）が用いられている。デコーダにはprompt[^1]と呼ばれるtranscriptのhistoryを（確率的に挿入し）入力して学習することで、過去のcontextを考慮したASRが可能となる。lossの計算は、translate/transcribeされたトークンのみを考慮して計算する。<br><br><img src="https://github.com/user-attachments/assets/3ae3847d-b38f-41de-b1b7-c8000df31de6">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><br>データセットについては詳細は記述されておらず、internetに存在する (audio, transcripts)のペアデータを用いたと書かれている。<br>しかしながら、収集したデータセットを確認んすると、transcriptionの品質が低いものが混ざっており、フィルタリングを実施している。これは、人間のtranscriptionとmachine-generatedなtranscriptionをmixして学習すると性能を損なうことが既存研究で知られているため、ヒューリスティックに基づいてmachine-generatedなtranscriptionは学習データから除外している。これは、初期のモデルを学習してエラー率を観測し、データソースを人手でチェックしてlow-qualityなtranscriptを除去するといった丁寧なプロセスもあ含まれる。<br><br>また、収集したデータの言語についてはVoxLingua107データセット <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3767" target="_blank" rel="noopener noreferrer">[Paper Note] VoxLingua107: a Dataset for Spoken Language Recognition, Jörgen Valk+, SLT'21, 2020.11</a>
+<p>研究のコアとなるアイデアとしては、既存研究は自己教師あり学習、あるいはself-learningによって性能向上を目指す流れがある中で、教師あり学習に着目。既存研究で教師あり学習によって性能が向上することが示されていたが、大規模なスケールで実施できていなかったため、それをweakly-supervisedなmanner（=つまり完璧なラベルではなくてノイジーでも良いからラベルを付与し学習する）といった方法で学習することで、より頑健で高性能なASRを実現したい、という気持ちの研究。また、複雑なサブタスク(language identification, inverse text normalization（ASR後のテキストを人間向けの自然なテキストに変換すること[^2]）, phrase-level timestamps (audioとtranscriptのタイムスタンプ予測))を一つのパイプラインで実現するような統合的なインタフェースも提案している。モデルのアーキテクチャ自体はencoder-decoderモデルである。また、positional encodingとしてはSinusoidal Positional Encoding（すなわち、絶対位置エンコーディング）が用いられている。デコーダにはprompt[^1]と呼ばれるtranscriptのhistoryを（確率的に挿入し）入力して学習することで、過去のcontextを考慮したASRが可能となる。lossの計算は、translate/transcribeされたトークンのみを考慮して計算する。<br><br><img src="https://github.com/user-attachments/assets/3ae3847d-b38f-41de-b1b7-c8000df31de6" alt="image" loading="lazy" width="550" height="400"><br><br><br>データセットについては詳細は記述されておらず、internetに存在する (audio, transcripts)のペアデータを用いたと書かれている。<br>しかしながら、収集したデータセットを確認んすると、transcriptionの品質が低いものが混ざっており、フィルタリングを実施している。これは、人間のtranscriptionとmachine-generatedなtranscriptionをmixして学習すると性能を損なうことが既存研究で知られているため、ヒューリスティックに基づいてmachine-generatedなtranscriptionは学習データから除外している。これは、初期のモデルを学習してエラー率を観測し、データソースを人手でチェックしてlow-qualityなtranscriptを除去するといった丁寧なプロセスもあ含まれる。<br><br>また、収集したデータの言語についてはVoxLingua107データセット <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3767" target="_blank" rel="noopener noreferrer">[Paper Note] VoxLingua107: a Dataset for Spoken Language Recognition, Jörgen Valk+, SLT'21, 2020.11</a>
  によって学習された分類器（をさらにfinetuningしたモデルと書かれている。詳細は不明）によって自動的に付与する。すなわち、X-&gt;enのデータのX（つまりsource言語）のlanguage identificationについてもweakly-supervisedなラベルで学習されている。<br><br>audioファイルについては、30秒単位のセグメントに区切り全ての期間を学習データに利用。無音部分はサブサンプリング（=一部をサンプリングして使う）しVoice Activity Detectionも学習する。<br><br>[^1]: LLMの文脈で広く使われるPromptとは異なる点に注意。LLMはinstruction-tuningが実施されているため人間の指示に追従するような挙動となるが、Whisperではinstruction-tuningを実施していないのでそのような挙動にはならない。あくまで過去のhistoryの情報を与える役割と考えること。<br>[^2]: Whisperでは生のtranscriptをnormalizationせずに学習にそのまま利用するため書き起こしの表記の統一は行われないと考えられる。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1978,17 +1978,17 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/DepthEstimation/" title="DepthEstimationに関する論文・技術記事メモの一覧">
-            DepthEstimationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/NewsRecommendation/" title="NewsRecommendationに関する論文・技術記事メモの一覧">
+            NewsRecommendationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TeacherHacking/" title="TeacherHackingに関する論文・技術記事メモの一覧">
-            TeacherHackingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/German/" title="Germanに関する論文・技術記事メモの一覧">
+            Germanに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1996,20 +1996,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/interactive/" title="interactiveに関する論文・技術記事メモの一覧">
-            interactiveに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/VisionActionModel/" title="VisionActionModelに関する論文・技術記事メモの一覧">
+            VisionActionModelに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ContinualLearning/" title="ContinualLearningに関する論文・技術記事メモの一覧">
-            ContinualLearningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Repository/" title="Repositoryに関する論文・技術記事メモの一覧">
+            Repositoryに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 69</span> 
+  <span class="post-badge badge-new">📝 69</span>
 </span>
 </a>
         </li>

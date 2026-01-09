@@ -2883,7 +2883,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>Attention Sinksという用語を提言した研究<br><br>下記のpassageがAttention Sinksの定義（＝最初の数トークン）とその気持ち（i.e., softmaxによるattention scoreは足し合わせて1にならなければならない。これが都合の悪い例として、現在のtokenのqueryに基づいてattention scoreを計算する際に過去のトークンの大半がirrelevantな状況を考える。この場合、irrelevantなトークンにattendしたくはない。そのため、auto-regressiveなモデルでほぼ全てのcontextで必ず出現する最初の数トークンを、irrelevantなトークンにattendしないためのattention scoreの捨て場として機能するのうに学習が進む）の理解に非常に重要<br>&gt; To understand the failure of window attention, we find an interesting phenomenon of autoregressive LLMs: a surprisingly large amount of attention score is allocated to the initial tokens, irrespective of their relevance to the language modeling task, as visualized in Figure 2. We term these tokens<br>“attention sinks". Despite their lack of semantic significance, they collect significant attention scores. We attribute the reason to the Softmax operation, which requires attention scores to sum up to one for all contextual tokens. Thus, even when the current query does not have a strong match in many previous tokens, the model still needs to allocate these unneeded attention values somewhere so it sums up to one. The reason behind initial tokens as sink tokens is intuitive: initial tokens are visible to almost all subsequent tokens because of the autoregressive language modeling nature, making them more readily trained to serve as attention sinks.</p>
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
 <br><br>の先行研究。こちらでAttentionSinkがどのように作用しているのか？が分析されている。</p>
-<p>Figure1が非常にわかりやすい。Initial Token（実際は3--4トークン）のKV Cacheを保持することでlong contextの性能が改善する（Vanilla)。あるいは、Softmaxの分母に1を追加した関数を用意し（数式2)、全トークンのattention scoreの合計が1にならなくても許されるような変形をすることで、余剰なattention scoreが生じないようにすることでattention sinkを防ぐ（Zero Sink)。これは、ゼロベクトルのトークンを追加し、そこにattention scoreを逃がせるようにすることに相当する。もう一つの方法は、globalに利用可能なlearnableなSink Tokenを追加すること。これにより、不要なattention scoreの捨て場として機能させる。Table3を見ると、最初の4 tokenをKV Cacheに保持した場合はperplexityは大きく変わらないが、Sink Tokenを導入した方がKV Cacheで保持するInitial Tokenの量が少なくてもZero Sinkと比べると性能が良くなるため、今後モデルを学習する際はSink Tokenを導入することを薦めている。既に学習済みのモデルについては、Zero Sinkによってlong contextのモデリングに対処可能と思われる。<br><br><img src="https://github.com/user-attachments/assets/9d4714e5-02b9-45b5-affd-c6c34eb7c58f">" alt="image" loading="lazy" width="550" height="400"/&gt;</p>
+<p>Figure1が非常にわかりやすい。Initial Token（実際は3--4トークン）のKV Cacheを保持することでlong contextの性能が改善する（Vanilla)。あるいは、Softmaxの分母に1を追加した関数を用意し（数式2)、全トークンのattention scoreの合計が1にならなくても許されるような変形をすることで、余剰なattention scoreが生じないようにすることでattention sinkを防ぐ（Zero Sink)。これは、ゼロベクトルのトークンを追加し、そこにattention scoreを逃がせるようにすることに相当する。もう一つの方法は、globalに利用可能なlearnableなSink Tokenを追加すること。これにより、不要なattention scoreの捨て場として機能させる。Table3を見ると、最初の4 tokenをKV Cacheに保持した場合はperplexityは大きく変わらないが、Sink Tokenを導入した方がKV Cacheで保持するInitial Tokenの量が少なくてもZero Sinkと比べると性能が良くなるため、今後モデルを学習する際はSink Tokenを導入することを薦めている。既に学習済みのモデルについては、Zero Sinkによってlong contextのモデリングに対処可能と思われる。<br><br><img src="https://github.com/user-attachments/assets/9d4714e5-02b9-45b5-affd-c6c34eb7c58f" alt="image" loading="lazy" width="550" height="400"></p>
 <p>著者による解説:
 
 
@@ -3028,7 +3028,7 @@ My Issue
 </div>
 
 
-<p>位置エンコーディングにはlong contxet用に、RoPEのbase frequency bを `10,000-&gt;500,000` とすることで、rotation angleを小さくし、distant tokenに対する減衰の影響を小さくする手法を採用 (Adjusted Base Frequency; ABF)。token間の距離が離れていても、attention scoreがshrinkしづらくなっている。<br><br><img src="https://github.com/user-attachments/assets/968c88f1-5a0d-4c2a-94ef-d63ffb0ea2eb">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><br>また、単に長いコンテキストのデータを追加するだけでなく、データセット内における長いコンテキストのデータの比率を調整することで、より高い性能が発揮できることを示している。これをData Mixと呼ぶ。<br>また、instruction tuningのデータには、LLaMa2ChatのRLHFデータをベースに、LLaMa2Chat自身にself-instructを活用して、長いコンテキストを生成させ拡張したものを利用した。<br>具体的には、コーパス内のlong documentを用いたQAフォーマットのタスクに着目し、文書内のランダムなチャンクからQAを生成させた。その後、self-critiqueによって、LLaMa2Chat自身に、生成されたQAペアのverificationも実施させた。</p></span><br><br>
+<p>位置エンコーディングにはlong contxet用に、RoPEのbase frequency bを `10,000-&gt;500,000` とすることで、rotation angleを小さくし、distant tokenに対する減衰の影響を小さくする手法を採用 (Adjusted Base Frequency; ABF)。token間の距離が離れていても、attention scoreがshrinkしづらくなっている。<br><br><img src="https://github.com/user-attachments/assets/968c88f1-5a0d-4c2a-94ef-d63ffb0ea2eb" alt="image" loading="lazy" width="550" height="400"><br><br><br>また、単に長いコンテキストのデータを追加するだけでなく、データセット内における長いコンテキストのデータの比率を調整することで、より高い性能が発揮できることを示している。これをData Mixと呼ぶ。<br>また、instruction tuningのデータには、LLaMa2ChatのRLHFデータをベースに、LLaMa2Chat自身にself-instructを活用して、長いコンテキストを生成させ拡張したものを利用した。<br>具体的には、コーパス内のlong documentを用いたQAフォーマットのタスクに着目し、文書内のランダムなチャンクからQAを生成させた。その後、self-critiqueによって、LLaMa2Chat自身に、生成されたQAペアのverificationも実施させた。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="the-impact-1865" class="title-link">The Impact of Positional Encoding on Length Generalization in   Transformers, Amirhossein Kazemnejad+, NeurIPS'23</h3>
@@ -3922,17 +3922,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/DialogueGeneration/" title="DialogueGenerationに関する論文・技術記事メモの一覧">
-            DialogueGenerationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Subword/" title="Subwordに関する論文・技術記事メモの一覧">
-            Subwordに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Ensemble/" title="Ensembleに関する論文・技術記事メモの一覧">
+            Ensembleに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
   <span class="post-badge badge-new">📝 5</span>
@@ -3940,8 +3931,8 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Adaptation/" title="Adaptationに関する論文・技術記事メモの一覧">
-            Adaptationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Grammar/" title="Grammarに関する論文・技術記事メモの一覧">
+            Grammarに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -3949,11 +3940,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/EmbodiedAI/" title="EmbodiedAIに関する論文・技術記事メモの一覧">
-            EmbodiedAIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/TabularData/" title="TabularDataに関する論文・技術記事メモの一覧">
+            TabularDataに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 25</span> 
-  <span class="post-badge badge-new">📝 25</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
+  <span class="post-badge badge-new">📝 13</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/TwoTowerModel/" title="TwoTowerModelに関する論文・技術記事メモの一覧">
+            TwoTowerModelに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li>

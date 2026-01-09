@@ -842,7 +842,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 35 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 34 mins</span>
   </div></header>
 </div>
     </div>
@@ -1138,7 +1138,7 @@ My Issue
 </div>
 
 
-<p>位置エンコーディングにはlong contxet用に、RoPEのbase frequency bを `10,000-&gt;500,000` とすることで、rotation angleを小さくし、distant tokenに対する減衰の影響を小さくする手法を採用 (Adjusted Base Frequency; ABF)。token間の距離が離れていても、attention scoreがshrinkしづらくなっている。<br><br><img src="https://github.com/user-attachments/assets/968c88f1-5a0d-4c2a-94ef-d63ffb0ea2eb">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><br>また、単に長いコンテキストのデータを追加するだけでなく、データセット内における長いコンテキストのデータの比率を調整することで、より高い性能が発揮できることを示している。これをData Mixと呼ぶ。<br>また、instruction tuningのデータには、LLaMa2ChatのRLHFデータをベースに、LLaMa2Chat自身にself-instructを活用して、長いコンテキストを生成させ拡張したものを利用した。<br>具体的には、コーパス内のlong documentを用いたQAフォーマットのタスクに着目し、文書内のランダムなチャンクからQAを生成させた。その後、self-critiqueによって、LLaMa2Chat自身に、生成されたQAペアのverificationも実施させた。</p></span><br><br>
+<p>位置エンコーディングにはlong contxet用に、RoPEのbase frequency bを `10,000-&gt;500,000` とすることで、rotation angleを小さくし、distant tokenに対する減衰の影響を小さくする手法を採用 (Adjusted Base Frequency; ABF)。token間の距離が離れていても、attention scoreがshrinkしづらくなっている。<br><br><img src="https://github.com/user-attachments/assets/968c88f1-5a0d-4c2a-94ef-d63ffb0ea2eb" alt="image" loading="lazy" width="550" height="400"><br><br><br>また、単に長いコンテキストのデータを追加するだけでなく、データセット内における長いコンテキストのデータの比率を調整することで、より高い性能が発揮できることを示している。これをData Mixと呼ぶ。<br>また、instruction tuningのデータには、LLaMa2ChatのRLHFデータをベースに、LLaMa2Chat自身にself-instructを活用して、長いコンテキストを生成させ拡張したものを利用した。<br>具体的には、コーパス内のlong documentを用いたQAフォーマットのタスクに着目し、文書内のランダムなチャンクからQAを生成させた。その後、self-critiqueによって、LLaMa2Chat自身に、生成されたQAペアのverificationも実施させた。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="the-impact-1865" class="title-link">The Impact of Positional Encoding on Length Generalization in   Transformers, Amirhossein Kazemnejad+, NeurIPS'23</h3>
@@ -1376,7 +1376,7 @@ My Issue
 <span class="issue_date">Issue Date: 2024-05-24</span>
 <span class="snippet"><span>GPT Summary</span>- 位置符号化はtransformerアーキテクチャで有効であり、本論文ではRotary Position Embedding（RoPE）という新しい手法を提案している。RoPEは、回転行列を使用して絶対位置を符号化し、同時に相対位置依存性を自己注意構成に組み込む。RoPEを使用したRoFormerは、長いテキスト分類ベンチマークデータセットで他の手法を上回ることが実験で示されており、Huggingfaceに統合されている。</span>
 <span class="snippet"><span>Comment</span><p>RoPEを提案した論文</p>
-<p># Absolute Position Embedding と Relative Position Embedding<br><br>## TransformerにおけるQKVベクトルの計算方法<br><br>一般に、Transformerにおける Query (Q), Key (K), Value (V) は以下の式で定式化される：<br><br><img src="https://github.com/user-attachments/assets/21b0f077-64b4-4fe5-af04-bffc373eabf5">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>m, nはそれぞれ位置を表す整数。Absolute Position Embeddingと、Relative Position Embeddingは、関数fの設計がそれぞれ異なっている：<br><br><br><br>## Absolute Position Embedding<br><br>absolute position embeddingは、固定されたposition ベクトル、あるいはtrainableなposition ベクトルpを、入力ベクトルに対して足し合わせる：<br><br><img src="https://github.com/user-attachments/assets/0688c1bf-8699-48a5-9d95-06454550bbdf">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><br><br>## Relative Position Embedding<br><br>一方、Relative Position Embeddingは、Queryの位置に対する、Key, Valueの相対位置（つまり、mとnの差）に対して、trainableなベクトル \tilde{p}_r をKey, Valueおよび相対距離rごとに用意し、そのベクトルを入力に足し合わせる、という定式化となっている：<br><br><br><img src="https://github.com/user-attachments/assets/ddb92f1a-af23-4d71-a7b9-2a7adda792e1">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><br>ここで、r = clip(m-n, r_max, r_min)であり、r_max, r_minは考慮する相対距離の最大値と最小値である。<br><br>他にも様々な定式化が提案されているがたいてい定式化の中に相対位置m-nが出現する。<br><br><br>## RoPE<br><br>RoPEでは、入力ベクトル(Q,K)に対して回転行列を適用することで、回転に対して位置情報を保持させる。具体的には、異なる位置m, nに対するq_m^T k_nを計算すると、回転行列をRとした場合式16に示されているように回転行列Rに相対位置m-nが現れ（るように設計されており）、相対位置を考慮したqkの計算になっている。[^1]<br><br><br><img src="https://github.com/user-attachments/assets/fce1d06e-e346-4278-a77c-4c96795d5488">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><img src="https://github.com/user-attachments/assets/3f28103c-6a56-4016-8f50-d45fe28cd62a">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br><br>[^1]: (R_mq_m)^T R_nK_n = q_m^T (R_m^T R_n) k_n = q_m^T (R_{-m}R_n) k_n = q_m^T R_{n-m} k_n. ここで、R_m^T = R_{-m}であり、R_m R_n = R_{m+n}の性質を使っている。<br><br><br>RoPEは下記のような性質を持つ：<br><br>- long-term decay: θi = 10000−2i/d と設定することにより、相対位置が離れているトークンのベクトルとのinner productの値が小さくなる。すなわち、位置が離れているトークン間の依存関係が小さくなる。<br><br>- Linear-Attention: RoPEは回転行列であり、乗算後のベクトルのノルムを変化させない。このため、Linear Attentionの式の中に回転行列を組み込むことで、Linear Attentionと簡単に組み合わせることが可能<br><br><br><br>Absolute Position Embedding, Relative Position Embeddingでは、ベクトルに対して位置情報を加算する定式化で K, Vの計算時に位置情報を考慮していたため、Linear Attentionの計算そのものに位置情報を組み込んだ定式化とはなっていなかった。<br><br>が、RoPEでは回転行列を乗算する定式化であり、ノルムを変化させないのでLinear Attentionの定式化に組み込むことができる。このため、モデルのアーキテクチャを大きく変更しなくとも組み込める。<br><br></p>
+<p># Absolute Position Embedding と Relative Position Embedding<br><br>## TransformerにおけるQKVベクトルの計算方法<br><br>一般に、Transformerにおける Query (Q), Key (K), Value (V) は以下の式で定式化される：<br><br><img src="https://github.com/user-attachments/assets/21b0f077-64b4-4fe5-af04-bffc373eabf5" alt="image" loading="lazy" width="550" height="400"><br><br>m, nはそれぞれ位置を表す整数。Absolute Position Embeddingと、Relative Position Embeddingは、関数fの設計がそれぞれ異なっている：<br><br><br><br>## Absolute Position Embedding<br><br>absolute position embeddingは、固定されたposition ベクトル、あるいはtrainableなposition ベクトルpを、入力ベクトルに対して足し合わせる：<br><br><img src="https://github.com/user-attachments/assets/0688c1bf-8699-48a5-9d95-06454550bbdf" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>## Relative Position Embedding<br><br>一方、Relative Position Embeddingは、Queryの位置に対する、Key, Valueの相対位置（つまり、mとnの差）に対して、trainableなベクトル \tilde{p}_r をKey, Valueおよび相対距離rごとに用意し、そのベクトルを入力に足し合わせる、という定式化となっている：<br><br><br><img src="https://github.com/user-attachments/assets/ddb92f1a-af23-4d71-a7b9-2a7adda792e1" alt="image" loading="lazy" width="550" height="400"><br><br><br>ここで、r = clip(m-n, r_max, r_min)であり、r_max, r_minは考慮する相対距離の最大値と最小値である。<br><br>他にも様々な定式化が提案されているがたいてい定式化の中に相対位置m-nが出現する。<br><br><br>## RoPE<br><br>RoPEでは、入力ベクトル(Q,K)に対して回転行列を適用することで、回転に対して位置情報を保持させる。具体的には、異なる位置m, nに対するq_m^T k_nを計算すると、回転行列をRとした場合式16に示されているように回転行列Rに相対位置m-nが現れ（るように設計されており）、相対位置を考慮したqkの計算になっている。[^1]<br><br><br><img src="https://github.com/user-attachments/assets/fce1d06e-e346-4278-a77c-4c96795d5488" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/3f28103c-6a56-4016-8f50-d45fe28cd62a" alt="image" loading="lazy" width="550" height="400"><br><br><br>[^1]: (R_mq_m)^T R_nK_n = q_m^T (R_m^T R_n) k_n = q_m^T (R_{-m}R_n) k_n = q_m^T R_{n-m} k_n. ここで、R_m^T = R_{-m}であり、R_m R_n = R_{m+n}の性質を使っている。<br><br><br>RoPEは下記のような性質を持つ：<br><br>- long-term decay: θi = 10000−2i/d と設定することにより、相対位置が離れているトークンのベクトルとのinner productの値が小さくなる。すなわち、位置が離れているトークン間の依存関係が小さくなる。<br><br>- Linear-Attention: RoPEは回転行列であり、乗算後のベクトルのノルムを変化させない。このため、Linear Attentionの式の中に回転行列を組み込むことで、Linear Attentionと簡単に組み合わせることが可能<br><br><br><br>Absolute Position Embedding, Relative Position Embeddingでは、ベクトルに対して位置情報を加算する定式化で K, Vの計算時に位置情報を考慮していたため、Linear Attentionの計算そのものに位置情報を組み込んだ定式化とはなっていなかった。<br><br>が、RoPEでは回転行列を乗算する定式化であり、ノルムを変化させないのでLinear Attentionの定式化に組み込むことができる。このため、モデルのアーキテクチャを大きく変更しなくとも組み込める。<br><br></p>
 <p>RoPE自体は実装にパラメータを必要としないが、モデルのその他のパラメータがRoPEに適用できるように学習されていないと適用できないであろう点には注意（事前学習時にRoPEが使われていれば話は別）。</p></span><br><br>
 </article>
 </div>
@@ -1434,8 +1434,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Argument/" title="Argumentに関する論文・技術記事メモの一覧">
-            Argumentに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/InteractiveRecommenderSystems/" title="InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧">
+            InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1443,29 +1443,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Personality/" title="Personalityに関する論文・技術記事メモの一覧">
-            Personalityに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/SIGKDD/" title="SIGKDDに関する論文・技術記事メモの一覧">
+            SIGKDDに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/IRT/" title="IRTに関する論文・技術記事メモの一覧">
-            IRTに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/System-Demonstration/" title="System Demonstrationに関する論文・技術記事メモの一覧">
+            System Demonstrationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Analysis/" title="Analysisに関する論文・技術記事メモの一覧">
-            Analysisに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/InformationRetrieval/" title="InformationRetrievalに関する論文・技術記事メモの一覧">
+            InformationRetrievalに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 233</span> 
-  <span class="post-badge badge-new">📝 233</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 115</span> 
+  <span class="post-badge badge-new">📝 115</span>
 </span>
 </a>
         </li>

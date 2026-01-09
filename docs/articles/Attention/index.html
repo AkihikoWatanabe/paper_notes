@@ -2270,7 +2270,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>Attention Sinksという用語を提言した研究<br><br>下記のpassageがAttention Sinksの定義（＝最初の数トークン）とその気持ち（i.e., softmaxによるattention scoreは足し合わせて1にならなければならない。これが都合の悪い例として、現在のtokenのqueryに基づいてattention scoreを計算する際に過去のトークンの大半がirrelevantな状況を考える。この場合、irrelevantなトークンにattendしたくはない。そのため、auto-regressiveなモデルでほぼ全てのcontextで必ず出現する最初の数トークンを、irrelevantなトークンにattendしないためのattention scoreの捨て場として機能するのうに学習が進む）の理解に非常に重要<br>&gt; To understand the failure of window attention, we find an interesting phenomenon of autoregressive LLMs: a surprisingly large amount of attention score is allocated to the initial tokens, irrespective of their relevance to the language modeling task, as visualized in Figure 2. We term these tokens<br>“attention sinks". Despite their lack of semantic significance, they collect significant attention scores. We attribute the reason to the Softmax operation, which requires attention scores to sum up to one for all contextual tokens. Thus, even when the current query does not have a strong match in many previous tokens, the model still needs to allocate these unneeded attention values somewhere so it sums up to one. The reason behind initial tokens as sink tokens is intuitive: initial tokens are visible to almost all subsequent tokens because of the autoregressive language modeling nature, making them more readily trained to serve as attention sinks.</p>
 <p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
 <br><br>の先行研究。こちらでAttentionSinkがどのように作用しているのか？が分析されている。</p>
-<p>Figure1が非常にわかりやすい。Initial Token（実際は3--4トークン）のKV Cacheを保持することでlong contextの性能が改善する（Vanilla)。あるいは、Softmaxの分母に1を追加した関数を用意し（数式2)、全トークンのattention scoreの合計が1にならなくても許されるような変形をすることで、余剰なattention scoreが生じないようにすることでattention sinkを防ぐ（Zero Sink)。これは、ゼロベクトルのトークンを追加し、そこにattention scoreを逃がせるようにすることに相当する。もう一つの方法は、globalに利用可能なlearnableなSink Tokenを追加すること。これにより、不要なattention scoreの捨て場として機能させる。Table3を見ると、最初の4 tokenをKV Cacheに保持した場合はperplexityは大きく変わらないが、Sink Tokenを導入した方がKV Cacheで保持するInitial Tokenの量が少なくてもZero Sinkと比べると性能が良くなるため、今後モデルを学習する際はSink Tokenを導入することを薦めている。既に学習済みのモデルについては、Zero Sinkによってlong contextのモデリングに対処可能と思われる。<br><br><img src="https://github.com/user-attachments/assets/9d4714e5-02b9-45b5-affd-c6c34eb7c58f">" alt="image" loading="lazy" width="550" height="400"/&gt;</p>
+<p>Figure1が非常にわかりやすい。Initial Token（実際は3--4トークン）のKV Cacheを保持することでlong contextの性能が改善する（Vanilla)。あるいは、Softmaxの分母に1を追加した関数を用意し（数式2)、全トークンのattention scoreの合計が1にならなくても許されるような変形をすることで、余剰なattention scoreが生じないようにすることでattention sinkを防ぐ（Zero Sink)。これは、ゼロベクトルのトークンを追加し、そこにattention scoreを逃がせるようにすることに相当する。もう一つの方法は、globalに利用可能なlearnableなSink Tokenを追加すること。これにより、不要なattention scoreの捨て場として機能させる。Table3を見ると、最初の4 tokenをKV Cacheに保持した場合はperplexityは大きく変わらないが、Sink Tokenを導入した方がKV Cacheで保持するInitial Tokenの量が少なくてもZero Sinkと比べると性能が良くなるため、今後モデルを学習する際はSink Tokenを導入することを薦めている。既に学習済みのモデルについては、Zero Sinkによってlong contextのモデリングに対処可能と思われる。<br><br><img src="https://github.com/user-attachments/assets/9d4714e5-02b9-45b5-affd-c6c34eb7c58f" alt="image" loading="lazy" width="550" height="400"></p>
 <p>著者による解説:
 
 
@@ -2737,7 +2737,7 @@ My Issue
 <a class="button" href="SparseAttention.html" target="_blank" rel="noopener noreferrer">#SparseAttention</a>
 <span class="issue_date">Issue Date: 2025-08-09</span>
 <span class="snippet"><span>GPT Summary</span>- Longformerは、長いシーケンスを線形に処理できる注意機構を持つTransformerベースのモデルで、数千トークンの文書を扱える。局所的なウィンドウ注意とタスクに基づくグローバル注意を組み合わせ、文字レベルの言語モデリングで最先端の結果を達成。事前学習とファインチューニングを行い、長文タスクでRoBERTaを上回る性能を示した。また、Longformer-Encoder-Decoder（LED）を導入し、長文生成タスクにおける効果を確認した。</span>
-<span class="snippet"><span>Comment</span><p>（固定された小さめのwindowsサイズの中でのみattentionを計算する）sliding window attentionを提案。Figure2を見ると、通常のAttentionと比較して、現在のトークンの周辺のトークンにしか注目しない特性が図示されており、イメージが掴みやすい。<br><br><img src="https://github.com/user-attachments/assets/d1eccdaf-5b5b-4444-ad31-44c54c345d79">" alt="image" loading="lazy" width="550" height="400"/&gt;</p>
+<span class="snippet"><span>Comment</span><p>（固定された小さめのwindowsサイズの中でのみattentionを計算する）sliding window attentionを提案。Figure2を見ると、通常のAttentionと比較して、現在のトークンの周辺のトークンにしか注目しない特性が図示されており、イメージが掴みやすい。<br><br><img src="https://github.com/user-attachments/assets/d1eccdaf-5b5b-4444-ad31-44c54c345d79" alt="image" loading="lazy" width="550" height="400"></p>
 <p>OpenLLMの文脈だと、Mistralに採用されて話題になったかも？<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1309" target="_blank" rel="noopener noreferrer">Mistral 7B, Albert Q. Jiang+, N/A, arXiv'23</a>
 </p></span><br><br>
 </article>
@@ -2903,7 +2903,7 @@ My Issue
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <span class="issue_date">Issue Date: 2025-08-05</span>
 <span class="snippet"><span>GPT Summary</span>- 新しい効率的なアテンションメカニズムを提案し、ドット積アテンションと同等の性能を維持しつつ、メモリと計算コストを大幅に削減。これにより、アテンションモジュールの柔軟な統合が可能となり、精度向上を実現。実験結果では、MS-COCO 2017での物体検出やインスタンスセグメンテーションでの性能向上が確認され、Scene Flowデータセットでは最先端の精度を達成。コードは公開されている。</span>
-<span class="snippet"><span>Comment</span><p>Figure1を見るとコンセプトが一目でわかり、非常にわかりやすい<br><img src="https://github.com/user-attachments/assets/18e6a7da-fc07-495f-bda6-bcef4acab321">" alt="image" loading="lazy" width="550" height="400"/&gt;</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Figure1を見るとコンセプトが一目でわかり、非常にわかりやすい<br><img src="https://github.com/user-attachments/assets/18e6a7da-fc07-495f-bda6-bcef4acab321" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="deep-interest-2245" class="title-link">[Paper Note] Deep Interest Network for Click-Through Rate Prediction, Guorui Zhou+, KDD'18</h3>
@@ -3531,38 +3531,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Abstractive/" title="Abstractiveに関する論文・技術記事メモの一覧">
-            Abstractiveに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/DataAugmentation/" title="DataAugmentationに関する論文・技術記事メモの一覧">
+            DataAugmentationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
-  <span class="post-badge badge-new">📝 16</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ContrastiveLearning/" title="ContrastiveLearningに関する論文・技術記事メモの一覧">
-            ContrastiveLearningに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ChatGPT/" title="ChatGPTに関する論文・技術記事メモの一覧">
+            ChatGPTに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
-  <span class="post-badge badge-new">📝 11</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
+  <span class="post-badge badge-new">📝 17</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/SentimentAnalysis/" title="SentimentAnalysisに関する論文・技術記事メモの一覧">
-            SentimentAnalysisに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AIED/" title="AIEDに関する論文・技術記事メモの一覧">
+            AIEDに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Tokenizer/" title="Tokenizerに関する論文・技術記事メモの一覧">
-            Tokenizerに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/OnlineLearning/" title="OnlineLearningに関する論文・技術記事メモの一覧">
+            OnlineLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
-  <span class="post-badge badge-new">📝 16</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>

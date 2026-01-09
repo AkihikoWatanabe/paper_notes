@@ -843,7 +843,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 hours 22 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 hours 20 mins</span>
   </div></header>
 </div>
     </div>
@@ -1111,7 +1111,7 @@ My Issue
 </div>
 
 
-<p>parallel test-time scalingを実施する際に、同じモードに陥ると効率が悪いので、prefixで明示的に思考モードを指定できるようにするモデルを学習することで、外側からモードをコントロール可能できるようにすることで性能を上げましょう、という話に見える。Figure1の例だと、Depth first search / Breath first searchをするかは通常の学習だと制御できないが、提案手法のようにprefixを用いて訓練することで1/2, 1/2のように割合をコントロールできる、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/c718becf-4e7c-4786-ad99-5986aa391041">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>skim readをしたが具体的なpromptingの例などがなく、exampleでprefixを付与していると書かれているだけに見えるので細かい部分まではよくわからなかった。</p></span><br><br>
+<p>parallel test-time scalingを実施する際に、同じモードに陥ると効率が悪いので、prefixで明示的に思考モードを指定できるようにするモデルを学習することで、外側からモードをコントロール可能できるようにすることで性能を上げましょう、という話に見える。Figure1の例だと、Depth first search / Breath first searchをするかは通常の学習だと制御できないが、提案手法のようにprefixを用いて訓練することで1/2, 1/2のように割合をコントロールできる、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/c718becf-4e7c-4786-ad99-5986aa391041" alt="image" loading="lazy" width="550" height="400"><br><br>skim readをしたが具体的なpromptingの例などがなく、exampleでprefixを付与していると書かれているだけに見えるので細かい部分まではよくわからなかった。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="sonicmoe-accelerating-4002" class="title-link">[Paper Note] SonicMoE: Accelerating MoE with IO and Tile-aware Optimizations, Wentao Guo+, arXiv'25, 2025.12</h3>
@@ -1940,7 +1940,7 @@ My Issue
 <p>SubLN, MiniLMについては<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1899" target="_blank" rel="noopener noreferrer">Foundation Transformers, Hongyu Wang+, PMLR'23</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3345" target="_blank" rel="noopener noreferrer">[Paper Note] MiniLMv2: Multi-Head Self-Attention Relation Distillation for  Compressing Pretrained Transformers, Wenhui Wang+, ACL'21 Findings, 2020.12</a>
  <br><br>を参照のこと。</p>
-<p>既存LLMを特定タスクに1.58bitでSFTする際に、full-precisionと同等の性能を保つ方法を提案している研究。full-precision LLMを1.58 bitでSFTをするとfp16で学習した場合のbaselineと比較してパフォーマンスが大きく低下するが（そしてその傾向はモデルサイズが大きいほど強い）、提案手法を利用するとfp16でSFTした場合と同等の性能を保ちながら、inference-speed 2.65倍、メモリ消費量1/10になる模様。<br><img src="https://github.com/user-attachments/assets/cafa8ad5-7cce-4466-a208-07bb51dcd953">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>手法としては、3段階で構成されており<br>- Stage1: low-bitに量子化されたモデルではactivationの分散が大きくなり学習の不安定さにつながるため、アーキテクチャとしてSubLNを導入して安定化を図る<br>- Stage2: Stage1で新たにSubLNを追加するので事前学習コーパスの継続事前学習する<br>- Stage3: full-precisionでSFTしたモデルを教師、1.58-bitに量子化したモデルを生徒とし、logits distillation (input x, output yが与えられた時に教師・生徒間で出力トークンの分布のKL Divergenceを最小化する)、MiniLMで提案されているMHAのdistillation（q-q/k-k/v-vの内積によってsquaredなrelation mapをQ, K, Vごとに作成し、relation mapのKL Divergenceが教師・生徒間で最小となるように学習する）を実施する<br>- 最終的に `L_CE + \lambda L_LD + \ganma L_AD` を最小化する。ここで、L_CEはdownstream datasetに対するcross-entropy lossであり、L_LD, L_ADはそれぞれ、logit distillation, Attention Distillationのlossである。</p>
+<p>既存LLMを特定タスクに1.58bitでSFTする際に、full-precisionと同等の性能を保つ方法を提案している研究。full-precision LLMを1.58 bitでSFTをするとfp16で学習した場合のbaselineと比較してパフォーマンスが大きく低下するが（そしてその傾向はモデルサイズが大きいほど強い）、提案手法を利用するとfp16でSFTした場合と同等の性能を保ちながら、inference-speed 2.65倍、メモリ消費量1/10になる模様。<br><img src="https://github.com/user-attachments/assets/cafa8ad5-7cce-4466-a208-07bb51dcd953" alt="image" loading="lazy" width="550" height="400"><br><br>手法としては、3段階で構成されており<br>- Stage1: low-bitに量子化されたモデルではactivationの分散が大きくなり学習の不安定さにつながるため、アーキテクチャとしてSubLNを導入して安定化を図る<br>- Stage2: Stage1で新たにSubLNを追加するので事前学習コーパスの継続事前学習する<br>- Stage3: full-precisionでSFTしたモデルを教師、1.58-bitに量子化したモデルを生徒とし、logits distillation (input x, output yが与えられた時に教師・生徒間で出力トークンの分布のKL Divergenceを最小化する)、MiniLMで提案されているMHAのdistillation（q-q/k-k/v-vの内積によってsquaredなrelation mapをQ, K, Vごとに作成し、relation mapのKL Divergenceが教師・生徒間で最小となるように学習する）を実施する<br>- 最終的に `L_CE + \lambda L_LD + \ganma L_AD` を最小化する。ここで、L_CEはdownstream datasetに対するcross-entropy lossであり、L_LD, L_ADはそれぞれ、logit distillation, Attention Distillationのlossである。</p>
 <p>ポイント解説:
 
 
@@ -2891,7 +2891,7 @@ My Issue
   language models, Jeffrey Li+, arXiv'24</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2539" target="_blank" rel="noopener noreferrer">TxT360, LLM360, 2024.10</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2109" target="_blank" rel="noopener noreferrer">[Paper Note] FineWeb2: One Pipeline to Scale Them All -- Adapting Pre-Training Data  Processing to Every Language, Guilherme Penedo+, COLM'25</a>
- <br><br>を利用したモデル。同程度のサイズのモデルとの比較ではかなりのgainを得ているように見える。興味深い。<br>DatasetのMixtureの比率などについても記述されている。<br><br><img src="https://github.com/user-attachments/assets/0a26442e-8075-4cbe-8cc1-f1ff471b7356">" alt="image" loading="lazy" width="550" height="400"/&gt;</p></span><br><br>
+ <br><br>を利用したモデル。同程度のサイズのモデルとの比較ではかなりのgainを得ているように見える。興味深い。<br>DatasetのMixtureの比率などについても記述されている。<br><br><img src="https://github.com/user-attachments/assets/0a26442e-8075-4cbe-8cc1-f1ff471b7356" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="time-is-2516" class="title-link">[Paper Note] Time Is a Feature: Exploiting Temporal Dynamics in Diffusion Language  Models, Wen Wang+, arXiv'25</h3>
@@ -3314,7 +3314,7 @@ My Issue
 
 
 <p>mid-trainingの観点から、post trainingにおけるRLがスケーリングする条件をsystematicallyに調査している模様</p>
-<p>論文中にはmid-training[^1]の定義が記述されている:<br><br><img src="https://github.com/user-attachments/assets/da206d3d-f811-4d69-8210-a1d0816c827f">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>[^1]: mid-trainingについてはコミュニティの間で厳密な定義はまだ無くバズワードっぽく使われている、という印象を筆者は抱いており、本稿は文献中でmid-trainingを定義する初めての試みという所感</p></span><br><br>
+<p>論文中にはmid-training[^1]の定義が記述されている:<br><br><img src="https://github.com/user-attachments/assets/da206d3d-f811-4d69-8210-a1d0816c827f" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: mid-trainingについてはコミュニティの間で厳密な定義はまだ無くバズワードっぽく使われている、という印象を筆者は抱いており、本稿は文献中でmid-trainingを定義する初めての試みという所感</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="answercarefully-a-2091" class="title-link">[Paper Note] AnswerCarefully: A Dataset for Improving the Safety of Japanese LLM  Output, Hisami Suzuki+, arXiv'25</h3>
@@ -3821,7 +3821,7 @@ My Issue
   Reasoning Tasks, YuYue+, arXiv'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1821" target="_blank" rel="noopener noreferrer">[Paper Note] Understanding R1-Zero-Like Training: A Critical Perspective, Zichen Liu+, arXiv'25, 2025.03</a>
 <br><br>Rewardの設定の仕方はどのような影響があるのだろうか（verifiable rewardなのか、neuralモデルによるrewardなのかなど" alt="image" loading="lazy" width="550" height="400"/&gt;？<br><br>学習のさせ方もどのような影響があるのだろうか（RLでカリキュラムlearningにした場合など）？<br><br>検証しているモデルがそれぞれどのような設定で学習されているかまでを見ないとこの辺はわからなそう。<br><br>ただなんとなーくの直感だと、SLMを賢くしたいという場合は何らかの賢いモデルの恩恵に預かると有利なケースが多く（SFTの場合はそれが大規模なモデルから蒸留したreasoning trace）、SLM+RLの場合はPRMのような思考プロセスを評価してRewardに反映させるようなものを利用しないと、少なくとも小規模なLLMをめちゃ賢くします〜というのはきついんじゃないかなあという感想ではある。<br>ただ、結局SLMという時点で多くの場合、より賢いパラメータ数の多いLLMが世の中には存在するあるはずなので、RLしないでSFTして蒸留すれば良いんじゃない…？と思ってしまう。<br>が、多くの場合その賢いLLMはProprietaryなLLMであり、出力を得て自分のモデルをpost-trainingすることは利用規約違反となるため、自前で賢くてパラメータ数の多いLLMを用意できない場合は困ってしまうので、SLMをクソデカパラメータのモデルの恩恵なしで超絶賢くできたら世の中の多くの人は嬉しいよね、とも思う。</p>
-<p>（斜め読みだが）<br>サンプル数が少ない（数十件）AIMEやAMCなどのデータはseedの値にとてもsensitiveであり(Takeaway1, 2)、<br><br><img src="https://github.com/user-attachments/assets/97581133-cf17-4635-b66c-442eaf8956d4">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>それらは10種類のseedを用いて結果を平均すると分散が非常に小さくなるので、seedは複数種類利用して平均の性能を見た方がreliableであり(Takeaway3)<br><br><img src="https://github.com/user-attachments/assets/5065ef0e-de89-4b17-aa52-c90b7191e9b2">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>temperatureを高くするとピーク性能が上がるが分散も上がるため再現性の課題が増大するが、top-pを大きくすると再現性の問題は現れず性能向上に寄与し<br><br><img src="https://github.com/user-attachments/assets/76d5c989-edbb-4d70-9080-d1d4b01de2ff">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>既存研究のモデルのtemperatureとtop-pを変化させ実験するとperformanceに非常に大きな変化が出るため、モデルごとに最適な値を選定して比較をしないとunfairであることを指摘 (Takeaway4)。<br><br><img src="https://github.com/user-attachments/assets/d8b453d1-3d2e-4a80-b03d-c69ec1b2232e">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>また、ハードウェアの面では、vLLMのようなinference engineはGPU typeやmemoryのconfigurationに対してsensitiveでパフォーマンスが変わるだけでなく、<br><br><img src="https://github.com/user-attachments/assets/a41891c7-072c-4c38-9ad6-beada4721bac">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>評価に利用するフレームワークごとにinference engineとprompt templateが異なるためこちらもパフォーマンスに影響が出るし (Takeaway5)、<br><br><img src="https://github.com/user-attachments/assets/1f7d328c-0757-47b9-9961-630e2429fb3e">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>max output tokenの値を変化させると性能も変わり、prompt templateを利用しないと性能が劇的に低下する (Takeaway6)。<br><br><img src="https://github.com/user-attachments/assets/dc0902d1-a5f2-47de-8df1-c28107e1da28">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br>これらのことから著者らはreliableな評価のために下記を提案しており (4.1節; 後ほど追記)、<br><br>実際にさまざまな条件をfair comparisonとなるように標準化して評価したところ（4.2節; 後ほど追記）<br><br>上の表のような結果となった。この結果は、<br>- DeepSeekR1-DistilledをRLしてもSFTと比較したときに意味のあるほどのパフォーマンスの向上はないことから、スケーラブル、かつ信頼性のあるRL手法がまだ不足しており<br>- 大規模なパラメータのモデルのreasoning traceからSFTをする方法はさまざまなベンチマークでロバストな性能（＝高い汎化性能）を持ち、RLと比べると現状はRLと比較してよりパラダイムとして成熟しており<br>- （AIME24,25を比較するとSFTと比べてRLの場合performanceの低下が著しいので）RLはoverfittingしやすく、OODなベンチマークが必要</p>
+<p>（斜め読みだが）<br>サンプル数が少ない（数十件）AIMEやAMCなどのデータはseedの値にとてもsensitiveであり(Takeaway1, 2)、<br><br><img src="https://github.com/user-attachments/assets/97581133-cf17-4635-b66c-442eaf8956d4" alt="image" loading="lazy" width="550" height="400"><br><br>それらは10種類のseedを用いて結果を平均すると分散が非常に小さくなるので、seedは複数種類利用して平均の性能を見た方がreliableであり(Takeaway3)<br><br><img src="https://github.com/user-attachments/assets/5065ef0e-de89-4b17-aa52-c90b7191e9b2" alt="image" loading="lazy" width="550" height="400"><br><br>temperatureを高くするとピーク性能が上がるが分散も上がるため再現性の課題が増大するが、top-pを大きくすると再現性の問題は現れず性能向上に寄与し<br><br><img src="https://github.com/user-attachments/assets/76d5c989-edbb-4d70-9080-d1d4b01de2ff" alt="image" loading="lazy" width="550" height="400"><br><br>既存研究のモデルのtemperatureとtop-pを変化させ実験するとperformanceに非常に大きな変化が出るため、モデルごとに最適な値を選定して比較をしないとunfairであることを指摘 (Takeaway4)。<br><br><img src="https://github.com/user-attachments/assets/d8b453d1-3d2e-4a80-b03d-c69ec1b2232e" alt="image" loading="lazy" width="550" height="400"><br><br>また、ハードウェアの面では、vLLMのようなinference engineはGPU typeやmemoryのconfigurationに対してsensitiveでパフォーマンスが変わるだけでなく、<br><br><img src="https://github.com/user-attachments/assets/a41891c7-072c-4c38-9ad6-beada4721bac" alt="image" loading="lazy" width="550" height="400"><br><br>評価に利用するフレームワークごとにinference engineとprompt templateが異なるためこちらもパフォーマンスに影響が出るし (Takeaway5)、<br><br><img src="https://github.com/user-attachments/assets/1f7d328c-0757-47b9-9961-630e2429fb3e" alt="image" loading="lazy" width="550" height="400"><br><br>max output tokenの値を変化させると性能も変わり、prompt templateを利用しないと性能が劇的に低下する (Takeaway6)。<br><br><img src="https://github.com/user-attachments/assets/dc0902d1-a5f2-47de-8df1-c28107e1da28" alt="image" loading="lazy" width="550" height="400"><br><br>これらのことから著者らはreliableな評価のために下記を提案しており (4.1節; 後ほど追記)、<br><br>実際にさまざまな条件をfair comparisonとなるように標準化して評価したところ（4.2節; 後ほど追記）<br><br>上の表のような結果となった。この結果は、<br>- DeepSeekR1-DistilledをRLしてもSFTと比較したときに意味のあるほどのパフォーマンスの向上はないことから、スケーラブル、かつ信頼性のあるRL手法がまだ不足しており<br>- 大規模なパラメータのモデルのreasoning traceからSFTをする方法はさまざまなベンチマークでロバストな性能（＝高い汎化性能）を持ち、RLと比べると現状はRLと比較してよりパラダイムとして成熟しており<br>- （AIME24,25を比較するとSFTと比べてRLの場合performanceの低下が著しいので）RLはoverfittingしやすく、OODなベンチマークが必要</p>
 <p>しっかりと評価の枠組みを標準化してfair comparisonしていかないと、RecSys業界の二の舞になりそう（というかもうなってる？）。<br><br>またこの研究で分析されているのは小規模なモデル（&lt;=10B）に対する既存研究で用いられた一部のRL手法や設定の性能だけ（真に示したかったらPhisics of LLMのような完全にコントロール可能なサンドボックスで実験する必要があると思われる）なので、DeepSeek-R1のように、大規模なパラメータ（数百B）を持つモデルに対するRLに関して同じことが言えるかは自明ではない点に注意。</p>
 <p>openreview:
 
@@ -4552,7 +4552,7 @@ My Issue
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2024-09-25</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模無監督言語モデル（LM）の制御性を向上させるために、報酬モデルの新しいパラメータ化を導入し、単純な分類損失でRLHF問題を解決する「直接的な好み最適化（DPO）」アルゴリズムを提案。DPOは安定性と性能を持ち、ファインチューニング中のサンプリングやハイパーパラメータ調整を不要にし、既存の方法と同等以上の性能を示す。特に、生成物の感情制御においてPPOベースのRLHFを上回り、応答の質を改善しつつ実装が簡素化される。</span>
-<span class="snippet"><span>Comment</span><p>DPOを提案した研究<br><br><img src="https://github.com/user-attachments/assets/2f7edf2c-32fa-4c5c-bc39-fb85112d1837">" alt="image" loading="lazy" width="550" height="400"/&gt;<br><br></p>
+<span class="snippet"><span>Comment</span><p>DPOを提案した研究<br><br><img src="https://github.com/user-attachments/assets/2f7edf2c-32fa-4c5c-bc39-fb85112d1837" alt="image" loading="lazy" width="550" height="400"><br><br></p>
 <p>解説ポスト:<br>
 
 
@@ -6286,38 +6286,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Video-Continuation/" title="Video Continuationに関する論文・技術記事メモの一覧">
-            Video Continuationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Conversation/" title="Conversationに関する論文・技術記事メモの一覧">
+            Conversationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
+  <span class="post-badge badge-new">📝 21</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Investigation/" title="Investigationに関する論文・技術記事メモの一覧">
-            Investigationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Reference-based/" title="Reference-basedに関する論文・技術記事メモの一覧">
+            Reference-basedに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/LongSequence/" title="LongSequenceに関する論文・技術記事メモの一覧">
+            LongSequenceに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 77</span> 
+  <span class="post-badge badge-new">📝 77</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/DownstreamTasks/" title="DownstreamTasksに関する論文・技術記事メモの一覧">
+            DownstreamTasksに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/RecursiveModels/" title="RecursiveModelsに関する論文・技術記事メモの一覧">
-            RecursiveModelsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
-  <span class="post-badge badge-new">📝 7</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Optimizer/" title="Optimizerに関する論文・技術記事メモの一覧">
-            Optimizerに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 26</span> 
-  <span class="post-badge badge-new">📝 26</span>
 </span>
 </a>
         </li>
