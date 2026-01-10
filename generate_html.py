@@ -18,8 +18,8 @@ image_pat_list = [re.compile(r'!\[image\]\((https://(?:github\.com|user-images\.
                   re.compile(r'!\[image\]\((https://user-images\.githubusercontent\.com/[^)]+)\)'),
                   re.compile(r'!\[image\]\((https://github\.com/user-attachments/assets/[^)]+)\)')]
 
-PARENT_COLOR = ['0e8a16']
-SUB_PARENT_COLOR = ['b60205', "0052cc", "9cc929"]
+PARENT_COLOR = ['0e8a16', 'ff2550', '533075']
+SUB_PARENT_COLOR = ['b60205', "0052cc", "9cc929", "9615c1", "fef2c0"]
 OTHER_COLOR = 'd65b26'
 
 
@@ -795,6 +795,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
