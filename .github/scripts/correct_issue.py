@@ -10,7 +10,7 @@ github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
 
-MODEL = "gpt-4o-mini"
+MODEL = "gpt-5-nano"
 
 translator_system_content = [
         "# Instruction",
@@ -117,19 +117,29 @@ def change_title(entry, issue_number):
     issue.edit(title=new_title)
 
 
+# https://cookbook.openai.com/examples/gpt-5/gpt-5_new_params_and_tools
 def call_openai(messages):
-    response = OpenAI(api_key=os.environ.get("OPENAI_API_KEY")).chat.completions.create(
-            model=MODEL,
-            messages=messages,
-            temperature=0.0)
-    response_text = response.choices[0].message.content.strip()
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    response = client.responses.create(
+        model=MODEL,
+        input=messages,
+        reasoning = {
+            "effort": "minimal"
+        },
+    )
+    output_text = ""
+    for item in response.output:
+        if hasattr(item, "content"):
+            for content in item.content:
+                if hasattr(content, "text"):
+                    output_text += content.text
     return response_text
 
 
 def translate(org_text):
     #abst = entry['summary']
     messages = []
-    messages.append({'role': 'system', 'content': translator_system_content})
+    messages.append({'role': 'developer', 'content': translator_system_content})
     user_content = ["abstract:",
                     f"{org_text}",
                     "translation:"]
@@ -163,13 +173,13 @@ def change_first_comment(url, entry, issue_number):
     new_comment += f'  - {summary}\n'
 
     # translation
-    new_comment += f'# Translation (by {MODEL})\n'
+    new_comment += f'# Translation (by {MODEL}, effort=minimal, verbosity=medium)\n'
     abst = entry['summary']
     translated_text = translate(abst)
     new_comment += f'- {translated_text}\n'
 
     # summarization
-    new_comment += f'# Summary (by {MODEL})\n'
+    new_comment += f'# Summary (by {MODEL}, effort=minimal, verbosity=medium)\n'
     summary_text = summarize(translated_text)
     new_comment += f'- {summary_text}'
 
