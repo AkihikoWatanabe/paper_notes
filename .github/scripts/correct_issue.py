@@ -101,13 +101,13 @@ def call_openai(messages, verbosity="medium"):
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
     response = client.responses.create(
         model=MODEL,
-        input=messages,
-        reasoning = {
-            "effort": "minimal"
-        },
-        text = {
-            "verbosity": verbosity
-        }
+        input=messages
+#        reasoning = {
+#            "effort": "minimal"
+#        },
+#        text = {
+#            "verbosity": verbosity
+#        }
     )
     response_text = response.output_text
     
