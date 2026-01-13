@@ -127,12 +127,8 @@ def call_openai(messages):
             "effort": "minimal"
         },
     )
-    output_text = ""
-    for item in response.output:
-        if hasattr(item, "content"):
-            for content in item.content:
-                if hasattr(content, "text"):
-                    output_text += content.text
+    response_text = response.output_text
+    
     return response_text
 
 
