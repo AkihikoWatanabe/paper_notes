@@ -118,13 +118,14 @@ def change_title(entry, issue_number):
 
 
 # https://cookbook.openai.com/examples/gpt-5/gpt-5_new_params_and_tools
-def call_openai(messages):
+def call_openai(messages, verbosity="medium"):
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
     response = client.responses.create(
         model=MODEL,
         input=messages,
         reasoning = {
-            "effort": "minimal"
+            "effort": "minimal",
+            "verbosity": verbosity
         },
     )
     response_text = response.output_text
@@ -153,7 +154,7 @@ def summarize(org_text):
                     "summary:"]
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
-    summary_text = call_openai(messages)
+    summary_text = call_openai(messages, verbosity="low")
     return summary_text
 
 
