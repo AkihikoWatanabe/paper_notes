@@ -13,35 +13,13 @@ event_path = os.environ["GITHUB_EVENT_PATH"]
 MODEL = "gpt-5-nano"
 
 translator_system_content = [
-        "# Instruction",
-        "あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、英語のAbstractを日本語にTranslationしてください。\n",
-                  "# Abstract",
-                  "Table-based reasoning has shown remarkable progress in combining deep models with discrete reasoning, which requires reasoning over both free-form natural language (NL) questions and structured tabular data.",
-                  "However, previous table-based reasoning solutions usually suffer from significant performance degradation on huge evidence (tables).",
-                  "In addition, most existing methods struggle to reason over complex questions since the required information is scattered in different places.",
-                  "To alleviate the above challenges, we exploit large language models (LLMs) as decomposers for effective table-based reasoning, which (i) decompose huge evidence (a huge table) into sub-evidence (a small table) to mitigate the interference of useless information for table reasoning;",
-                  "and (ii) decompose complex questions into simpler sub-questions for text reasoning.",
-                  "Specifically, we first use the LLMs to break down the evidence (tables) involved in the current question, retaining the relevant evidence and excluding the remaining irrelevant evidence from the huge table.",
-                  "In addition, we propose a 'parsing-execution-filling' strategy to alleviate the hallucination dilemma of the chain of thought by decoupling logic and numerical computation in each step.",
-                  "Extensive experiments show that our method can effectively leverage decomposed evidence and questions and outperforms the strong baselines on TabFact, WikiTableQuestion, and FetaQA datasets.",
-                  "Notably, our model outperforms human performance for the first time on the TabFact dataset.\n",
-                  "# Translation",
-                  "Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
-                  "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる。",
-                  "しかし、従来のtable-based reasoning solutionは、大規模なevidence（table）に対して著しい性能の低下を招くことが多い。",
-                  "さらに、必要な情報が異なる場所に散らばっているため、ほとんどの既存の方法は複雑な質問に対する推論に苦労している。",
-                  "これらの課題を軽減するために、本研究では効果的なtable-based reasoningのための分解器として大規模言語モデル（LLMs）を利用する。",
-                  "具体的には、(i) 巨大なevidence（巨大なtable）をsub-evidence（small table）に分解して、table reasoningにおいて不要な情報の干渉を軽減し、（ii）複雑な質問をテキスト推論に適したよりシンプルなsub-questionに分解する。",
-                  "特に、最初にLLMを使用して、現在の質問に関与するevidence（tables）を分解し、関連するevidenceを保持し、巨大なtableから残りの関連性のないevidenceを除外する。",
-                  "さらに、'parsing-execution-filling'を提案し、各ステップで論理と数値計算を分離することで、chain of thoughtのhallucinationのジレンマを軽減する。",
-                  "徹底的な実験により、提案手法が分解されたevidenceと質問を効果的に活用でき、TabFact、WikiTableQuestion、およびFetaQAデータセットで強力なベースラインを上回ることを示した。",
-                  "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。"]
+        "あなたは自然言語処理や機械学習の研究者です。以下の英語の<abstract>を日本語に翻訳してください。出力は翻訳結果のみを出力してください。"
+]
 translator_system_content = '\n'.join(translator_system_content)
 
-summarizer_system_content = ["# Instruction",
-                             "あなたは自然言語処理や機械学習の研究者です。以下の例を参考に、日本語のAbstractを要約してください。\n",
-                             "# Abstract",
-                             "Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
+summarizer_system_content = ["あなたは自然言語処理や機械学習の研究者です。以下の<abstract_summary_pair>と同じトーンで、<target_abstract>を要約してください。出力は要約結果のみを出力してください。\n",
+                             "<abstract-summary-pair>",
+                             "<abstract>Table-based reasoningは、Deep Modelsと離散的な推論を組み合わせることで顕著な進歩を遂げている。",
                              "これには、自由形式の自然言語（NL）質問と構造化された表形式のデータの両方を理解することを求められる",
                              "しかし、従来のtable-based reasoning solutionは、大規模なevidence（table）に対して著しい性能の低下を招くことが多い。",
                              "さらに、必要な情報が異なる場所に散らばっているため、ほとんどの既存の方法は複雑な質問に対する推論に苦労している。",
@@ -50,11 +28,11 @@ summarizer_system_content = ["# Instruction",
                              "特に、最初にLLMを使用して、現在の質問に関与するevidence（tables）を分解し、関連するevidenceを保持し、巨大なtableから残りの関連性のないevidenceを除外する。",
                              "さらに、'parsing-execution-filling'を提案し、各ステップで論理と数値計算を分離することで、chain of thoughtのhallucinationのジレンマを軽減する。",
                              "徹底的な実験により、提案手法が分解されたevidenceと質問を効果的に活用でき、TabFact、WikiTableQuestion、およびFetaQAデータセットで強力なベースラインを上回ることを示した。",
-                             "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。",
-                             "# 要約",
-                             "tableとquestionが与えられた時に、LLMを用いてsmall tableとsub-questionに分割。",
+                             "特筆すべきことに、提案モデルはTabFactデータセットで初めて人間のパフォーマンスを上回った。</abstract>",
+                             "<summary>tableとquestionが与えられた時に、LLMを用いてsmall tableとsub-questionに分割。",
                              "sub-questionではlogicと数値計算を分離することで、hallucinationを防ぐ。",
-                             "TabFact Reasoningで初めて人間を超えた性能を発揮。"]
+                             "TabFact Reasoningで初めて人間を超えた性能を発揮。</summary>",
+                             "<abstract-summary-pair>"]
 summarizer_system_content = '\n'.join(summarizer_system_content)
 
 def get_arxiv_id_from_url(url):
@@ -139,9 +117,7 @@ def translate(org_text):
     #abst = entry['summary']
     messages = []
     messages.append({'role': 'developer', 'content': translator_system_content})
-    user_content = ["abstract:",
-                    f"{org_text}",
-                    "translation:"]
+    user_content = [f"<abstract>{org_text}</abstract>"]
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
     translated_text = call_openai(messages)
@@ -151,9 +127,7 @@ def translate(org_text):
 def summarize(org_text):
     messages = []
     messages.append({'role': 'system', 'content': summarizer_system_content})
-    user_content = ["abstract:",
-                    f"{org_text}",
-                    "summary:"]
+    user_content = [f"<target_abstract>{org_text}</target_abstract>"]
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
     summary_text = call_openai(messages, verbosity="low")
