@@ -124,9 +124,11 @@ def call_openai(messages, verbosity="medium"):
         model=MODEL,
         input=messages,
         reasoning = {
-            "effort": "minimal",
-            "verbosity": verbosity
+            "effort": "minimal"
         },
+        text = {
+            "verbosity": verbosity
+        }
     )
     response_text = response.output_text
     
