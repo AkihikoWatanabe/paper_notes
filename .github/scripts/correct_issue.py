@@ -10,7 +10,8 @@ github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
 
-MODEL = "gpt-5-nano"
+#MODEL = "gpt-5-nano"
+MODEL = "gpt-4o-mini"
 
 translator_system_content = [
         "あなたは自然言語処理や機械学習の研究者です。以下の英語の<abstract>を日本語に翻訳してください。出力は翻訳結果のみを出力してください。"
@@ -146,13 +147,13 @@ def change_first_comment(url, entry, issue_number):
     new_comment += f'  - {summary}\n'
 
     # translation
-    new_comment += f'# Translation (by {MODEL}, effort=minimal, verbosity=medium)\n'
+    new_comment += f'# Translation (by {MODEL})\n'
     abst = entry['summary']
     translated_text = translate(abst)
     new_comment += f'- {translated_text}\n'
 
     # summarization
-    new_comment += f'# Summary (by {MODEL}, effort=minimal, verbosity=medium)\n'
+    new_comment += f'# Summary (by {MODEL})\n'
     summary_text = summarize(translated_text)
     new_comment += f'- {summary_text}'
 
