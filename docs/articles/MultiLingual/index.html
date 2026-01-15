@@ -22,17 +22,17 @@
 <meta property="og:title" content="MultiLingualに関する論文・技術記事メモの一覧">
 <meta name="author" content="AkihikoWATANABE">
 <meta property="og:locale" content="ja">
-<meta name="description" content="MultiLingual [Paper Note] T5Gemma 2: Seeing, Reading, and Understanding Longer, Biao Zhang+, arXiv'25, 2025.12 Paper/Blog Link My Issue #Pocket #NLP #MultiModal #SmallModel #OpenWeight #Encoder-Decoder #KeyPoint Notes Issue Date: 2025-12-19 GPT Summary- T5Gemma 2は、軽量なオープンエンコーダーデコーダーモデルで、多言語・多モーダル・長文コンテキスト能力を備えています。T5Gemmaの適応レシピに基づき、デコーダー専用モデルをエンコーダーデコーダーモデルに拡張し、効率向上のために埋め込みの共有とマージドアテンションを導入しました。実験により、長文コンテキストモデリングにおける強みが確認され、事前学習性能はGemma 3と同等以上、事後学習性能は大幅に向上しました。今後、事前学習済みモデルをコミュニティに公開予定です。 Comment初めてのマルチモーダル、long-context、かつ140言語に対応したencoder-decoderモデルとのこと。事前学習済みのdecoder-only model (今回はGemma2)によってencoder/decoderをそれぞれ初期化し、UL2 (UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23 ) によって事前学習する。encoder / decoder側双方のword embeddingは共有し、encoder側のattentionはcausal attentionからbidirectional attentionに変更する。また、decoder側はself-attention/cross-attentionをマージする。 &lt;img src=&quot;https://github.com/user-attachments/assets/aba43ec6-f22e-4969-81a5-bb97dba82c1b&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;- UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23 merged attentionとは、式(1) -- (5)で表されるものであり、Qはdecoderのinput X を用いて、KVの計算する際には、単にdecoder側のinput X とencoder側の隠れ状態 H をconcatしてから、KVを算出する（K, Vのmatrixの次元がHの分大きくなる）というものである。また、マスクトークンの正方行列ではなくなりencoder次元分大きくなり、decoder/encoder部分の両方のvisibilityを制御する。（論文中の当該部分に明記されていないが、普通に考えると）encoder部分は常にvisibleな状態となる。self-/cross attentionは似たような機能を有する（=過去の情報から関連する情報を収集する）ことが先行研究で知られており、単一のモジュールで処理できるという気持ちのようである。H, Xがそれぞれconcatされるので、encoder側の情報とdecoderのこれまでのoutput tokenの情報の両方を同時に考慮することができる。&lt;img src=&quot;https://github.com/user-attachments/assets/e690f450-7cac-4993-bff9-d2f1dccd0c99&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;元ポスト:">
-<meta property="og:description" content="MultiLingual [Paper Note] T5Gemma 2: Seeing, Reading, and Understanding Longer, Biao Zhang+, arXiv'25, 2025.12 Paper/Blog Link My Issue #Pocket #NLP #MultiModal #SmallModel #OpenWeight #Encoder-Decoder #KeyPoint Notes Issue Date: 2025-12-19 GPT Summary- T5Gemma 2は、軽量なオープンエンコーダーデコーダーモデルで、多言語・多モーダル・長文コンテキスト能力を備えています。T5Gemmaの適応レシピに基づき、デコーダー専用モデルをエンコーダーデコーダーモデルに拡張し、効率向上のために埋め込みの共有とマージドアテンションを導入しました。実験により、長文コンテキストモデリングにおける強みが確認され、事前学習性能はGemma 3と同等以上、事後学習性能は大幅に向上しました。今後、事前学習済みモデルをコミュニティに公開予定です。 Comment初めてのマルチモーダル、long-context、かつ140言語に対応したencoder-decoderモデルとのこと。事前学習済みのdecoder-only model (今回はGemma2)によってencoder/decoderをそれぞれ初期化し、UL2 (UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23 ) によって事前学習する。encoder / decoder側双方のword embeddingは共有し、encoder側のattentionはcausal attentionからbidirectional attentionに変更する。また、decoder側はself-attention/cross-attentionをマージする。 &lt;img src=&quot;https://github.com/user-attachments/assets/aba43ec6-f22e-4969-81a5-bb97dba82c1b&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;- UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23 merged attentionとは、式(1) -- (5)で表されるものであり、Qはdecoderのinput X を用いて、KVの計算する際には、単にdecoder側のinput X とencoder側の隠れ状態 H をconcatしてから、KVを算出する（K, Vのmatrixの次元がHの分大きくなる）というものである。また、マスクトークンの正方行列ではなくなりencoder次元分大きくなり、decoder/encoder部分の両方のvisibilityを制御する。（論文中の当該部分に明記されていないが、普通に考えると）encoder部分は常にvisibleな状態となる。self-/cross attentionは似たような機能を有する（=過去の情報から関連する情報を収集する）ことが先行研究で知られており、単一のモジュールで処理できるという気持ちのようである。H, Xがそれぞれconcatされるので、encoder側の情報とdecoderのこれまでのoutput tokenの情報の両方を同時に考慮することができる。&lt;img src=&quot;https://github.com/user-attachments/assets/e690f450-7cac-4993-bff9-d2f1dccd0c99&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;元ポスト:">
+<meta name="description" content="MultiLingual [Paper Note] LEMAS: Large A 150K-Hour Large-scale Extensible Multilingual Audio Suite with Generative Speech Models, Zhiyuan Zhao+, arXiv'26, 2026.01 Paper/Blog Link My Issue #Dataset #SpeechProcessing #Speech #TTS #One-Line Notes Issue Date: 2026-01-14 GPT Summary- LEMAs-Datasetは、150,000時間以上の音声データから構築された、大規模で多言語対応のオープンソース音声コーパスです。特に、単語レベルのタイムスタンプを持ち、効率的なデータ処理パイプラインによって品質が保証されています。このデータセットを利用して、異なるアーキテクチャによる二つのベンチマークモデルを訓練し、多言語合成や音声編集における高品質なパフォーマンスを実現しました。実験結果は、LEMAs-Datasetが音声生成システムの発展に寄与することを示しています。 Commentpj page:">
+<meta property="og:description" content="MultiLingual [Paper Note] LEMAS: Large A 150K-Hour Large-scale Extensible Multilingual Audio Suite with Generative Speech Models, Zhiyuan Zhao+, arXiv'26, 2026.01 Paper/Blog Link My Issue #Dataset #SpeechProcessing #Speech #TTS #One-Line Notes Issue Date: 2026-01-14 GPT Summary- LEMAs-Datasetは、150,000時間以上の音声データから構築された、大規模で多言語対応のオープンソース音声コーパスです。特に、単語レベルのタイムスタンプを持ち、効率的なデータ処理パイプラインによって品質が保証されています。このデータセットを利用して、異なるアーキテクチャによる二つのベンチマークモデルを訓練し、多言語合成や音声編集における高品質なパフォーマンスを実現しました。実験結果は、LEMAs-Datasetが音声生成システムの発展に寄与することを示しています。 Commentpj page:">
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/MultiLingual/">
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/MultiLingual/">
 <meta property="og:site_name" content="わたしのべんきょうノート">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2026-01-09T00:00:00+00:00">
+<meta property="article:published_time" content="2026-01-14T00:00:00+00:00">
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="MultiLingualに関する論文・技術記事メモの一覧">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-01-09T00:00:00+00:00","datePublished":"2026-01-09T00:00:00+00:00","description":"MultiLingual [Paper Note] T5Gemma 2: Seeing, Reading, and Understanding Longer, Biao Zhang+, arXiv&#39;25, 2025.12 Paper/Blog Link My Issue #Pocket #NLP #MultiModal #SmallModel #OpenWeight #Encoder-Decoder #KeyPoint Notes Issue Date: 2025-12-19 GPT Summary- T5Gemma 2は、軽量なオープンエンコーダーデコーダーモデルで、多言語・多モーダル・長文コンテキスト能力を備えています。T5Gemmaの適応レシピに基づき、デコーダー専用モデルをエンコーダーデコーダーモデルに拡張し、効率向上のために埋め込みの共有とマージドアテンションを導入しました。実験により、長文コンテキストモデリングにおける強みが確認され、事前学習性能はGemma 3と同等以上、事後学習性能は大幅に向上しました。今後、事前学習済みモデルをコミュニティに公開予定です。 Comment初めてのマルチモーダル、long-context、かつ140言語に対応したencoder-decoderモデルとのこと。事前学習済みのdecoder-only model (今回はGemma2)によってencoder/decoderをそれぞれ初期化し、UL2 (UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR&#39;23 ) によって事前学習する。encoder / decoder側双方のword embeddingは共有し、encoder側のattentionはcausal attentionからbidirectional attentionに変更する。また、decoder側はself-attention/cross-attentionをマージする。 &lt;img src=&quot;https://github.com/user-attachments/assets/aba43ec6-f22e-4969-81a5-bb97dba82c1b&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;- UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR&#39;23 merged attentionとは、式(1) -- (5)で表されるものであり、Qはdecoderのinput X を用いて、KVの計算する際には、単にdecoder側のinput X とencoder側の隠れ状態 H をconcatしてから、KVを算出する（K, Vのmatrixの次元がHの分大きくなる）というものである。また、マスクトークンの正方行列ではなくなりencoder次元分大きくなり、decoder/encoder部分の両方のvisibilityを制御する。（論文中の当該部分に明記されていないが、普通に考えると）encoder部分は常にvisibleな状態となる。self-/cross attentionは似たような機能を有する（=過去の情報から関連する情報を収集する）ことが先行研究で知られており、単一のモジュールで処理できるという気持ちのようである。H, Xがそれぞれconcatされるので、encoder側の情報とdecoderのこれまでのoutput tokenの情報の両方を同時に考慮することができる。&lt;img src=&quot;https://github.com/user-attachments/assets/e690f450-7cac-4993-bff9-d2f1dccd0c99&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;元ポスト:","headline":"MultiLingualに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/MultiLingual/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/MultiLingual/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-01-14T00:00:00+00:00","datePublished":"2026-01-14T00:00:00+00:00","description":"MultiLingual [Paper Note] LEMAS: Large A 150K-Hour Large-scale Extensible Multilingual Audio Suite with Generative Speech Models, Zhiyuan Zhao+, arXiv&#39;26, 2026.01 Paper/Blog Link My Issue #Dataset #SpeechProcessing #Speech #TTS #One-Line Notes Issue Date: 2026-01-14 GPT Summary- LEMAs-Datasetは、150,000時間以上の音声データから構築された、大規模で多言語対応のオープンソース音声コーパスです。特に、単語レベルのタイムスタンプを持ち、効率的なデータ処理パイプラインによって品質が保証されています。このデータセットを利用して、異なるアーキテクチャによる二つのベンチマークモデルを訓練し、多言語合成や音声編集における高品質なパフォーマンスを実現しました。実験結果は、LEMAs-Datasetが音声生成システムの発展に寄与することを示しています。 Commentpj page:","headline":"MultiLingualに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/MultiLingual/"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/MultiLingual/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -807,7 +807,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-01-09T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jan 09, 2026
+    <time class="dt-published" datetime="2026-01-14T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jan 14, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -842,7 +842,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 36 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 38 mins</span>
   </div></header>
 </div>
     </div>
@@ -1037,6 +1037,46 @@ function googleTranslateElementInit() {
 
       <h2 id="MultiLingual" class="paper-head"> MultiLingual</h2>
 <div class="visible-content">
+<article class="paper-entry">
+<h3 id="lemas-large-4195" class="title-link">[Paper Note] LEMAS: Large A 150K-Hour Large-scale Extensible Multilingual Audio Suite with Generative Speech Models, Zhiyuan Zhao+, arXiv'26, 2026.01</h3>
+<br><a href="https://arxiv.org/abs/2601.04233" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4195" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="SpeechProcessing.html" target="_blank" rel="noopener noreferrer">#SpeechProcessing</a>
+<a class="button" href="Speech.html" target="_blank" rel="noopener noreferrer">#Speech</a>
+<a class="button" href="TTS.html" target="_blank" rel="noopener noreferrer">#TTS</a>
+<a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2026-01-14</span>
+<span class="snippet"><span>GPT Summary</span>- LEMAs-Datasetは、150,000時間以上の音声データから構築された、大規模で多言語対応のオープンソース音声コーパスです。特に、単語レベルのタイムスタンプを持ち、効率的なデータ処理パイプラインによって品質が保証されています。このデータセットを利用して、異なるアーキテクチャによる二つのベンチマークモデルを訓練し、多言語合成や音声編集における高品質なパフォーマンスを実現しました。実験結果は、LEMAs-Datasetが音声生成システムの発展に寄与することを示しています。</span>
+<span class="snippet"><span>Comment</span><p>pj page:
+
+
+<a href="https://lemas-project.github.io/LEMAS-Project/" target="_blank" rel="noopener noreferrer">https://lemas-project.github.io/LEMAS-Project/</a>
+
+
+</p>
+<p>データセットに日本語が含まれてないように見える😭</p>
+<p>元ポスト:
+
+
+
+</p>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/xianbao_qian/status/2010605325704110325?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</span><br><br>
+</article>
 <article class="paper-entry">
 <h3 id="t5gemma-2-4007" class="title-link">[Paper Note] T5Gemma 2: Seeing, Reading, and Understanding Longer, Biao Zhang+, arXiv'25, 2025.12</h3>
 <br><a href="https://arxiv.org/abs/2512.14856" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
@@ -2957,44 +2997,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/Metrics/" title="Metricsに関する論文・技術記事メモの一覧">Metricsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/MultiModal/" title="MultiModalに関する論文・技術記事メモの一覧">MultiModalに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/Medical/" title="Medicalに関する論文・技術記事メモの一覧">Medicalに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/MultiModal/" title="MultiModalに関する論文・技術記事メモの一覧">MultiModalに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/SequentialRecommendation/" title="SequentialRecommendationに関する論文・技術記事メモの一覧">
-            SequentialRecommendationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ACL/" title="ACLに関する論文・技術記事メモの一覧">
-            ACLに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 145</span> 
-  <span class="post-badge badge-new">📝 145</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Attack/" title="Attackに関する論文・技術記事メモの一覧">
-            Attackに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/TeacherHacking/" title="TeacherHackingに関する論文・技術記事メモの一覧">
-            TeacherHackingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Audio-Text-to-Video/" title="Audio-Text-to-Videoに関する論文・技術記事メモの一覧">
+            Audio-Text-to-Videoに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/CodeGeneration/" title="CodeGenerationに関する論文・技術記事メモの一覧">
+            CodeGenerationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/ECIR/" title="ECIRに関する論文・技術記事メモの一覧">
+            ECIRに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Metrics/" title="Metricsに関する論文・技術記事メモの一覧">
+            Metricsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 60</span> 
+  <span class="post-badge badge-new">📝 60</span>
 </span>
 </a>
         </li>
