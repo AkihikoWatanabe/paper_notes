@@ -2049,7 +2049,7 @@ My Issue
 </div>
 
 
-<p>SubLN, MiniLMについては<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1899" target="_blank" rel="noopener noreferrer">Foundation Transformers, Hongyu Wang+, PMLR'23</a>
+<p>SubLN, MiniLMについては<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1899" target="_blank" rel="noopener noreferrer">[Paper Note] Magneto: A Foundation Transformer, Hongyu Wang+, ICML'23</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3345" target="_blank" rel="noopener noreferrer">[Paper Note] MiniLMv2: Multi-Head Self-Attention Relation Distillation for  Compressing Pretrained Transformers, Wenhui Wang+, ACL'21 Findings, 2020.12</a>
  <br><br>を参照のこと。</p>
 <p>既存LLMを特定タスクに1.58bitでSFTする際に、full-precisionと同等の性能を保つ方法を提案している研究。full-precision LLMを1.58 bitでSFTをするとfp16で学習した場合のbaselineと比較してパフォーマンスが大きく低下するが（そしてその傾向はモデルサイズが大きいほど強い）、提案手法を利用するとfp16でSFTした場合と同等の性能を保ちながら、inference-speed 2.65倍、メモリ消費量1/10になる模様。<br><img src="https://github.com/user-attachments/assets/cafa8ad5-7cce-4466-a208-07bb51dcd953" alt="image" loading="lazy" width="550" height="400"><br><br>手法としては、3段階で構成されており<br>- Stage1: low-bitに量子化されたモデルではactivationの分散が大きくなり学習の不安定さにつながるため、アーキテクチャとしてSubLNを導入して安定化を図る<br>- Stage2: Stage1で新たにSubLNを追加するので事前学習コーパスの継続事前学習する<br>- Stage3: full-precisionでSFTしたモデルを教師、1.58-bitに量子化したモデルを生徒とし、logits distillation (input x, output yが与えられた時に教師・生徒間で出力トークンの分布のKL Divergenceを最小化する)、MiniLMで提案されているMHAのdistillation（q-q/k-k/v-vの内積によってsquaredなrelation mapをQ, K, Vごとに作成し、relation mapのKL Divergenceが教師・生徒間で最小となるように学習する）を実施する<br>- 最終的に `L_CE + \lambda L_LD + \ganma L_AD` を最小化する。ここで、L_CEはdownstream datasetに対するcross-entropy lossであり、L_LD, L_ADはそれぞれ、logit distillation, Attention Distillationのlossである。</p>
@@ -3460,7 +3460,7 @@ My Issue
 
 
 <p>関連: mu transfer, muP<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2582" target="_blank" rel="noopener noreferrer">[Paper Note] Tensor Programs V: Tuning Large Neural Networks via Zero-Shot  Hyperparameter Transfer, Greg Yang+, NeurIPS'21</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2583" target="_blank" rel="noopener noreferrer">[Paper Note] Feature Learning in Infinite-Width Neural Networks, Greg Yang+, PMLR'21</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2583" target="_blank" rel="noopener noreferrer">[Paper Note] Feature Learning in Infinite-Width Neural Networks, Greg Yang+, ICML'21</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -5667,7 +5667,7 @@ My Issue
 
 </p>
 <p>小規模なモデルに対してハイパーパラメータのチューニングを実施し、同様のベースモデルで、**各layerのwidthが大きいもの**に対しても、小規模モデルで最適であったハイパーパラメータをzero-shotで転移することで near optimalなハイパーパラメータで学習できるmu Transferを提案。<br><br>モデルの深さ（以外にも下表中の*印のパラメータ）に対しても限定的に転移可能な模様。Post-Layer NormのTransformerやではあまりうまくいかないことが11節に記述されている（実験はpre-Layer Norm Transformer, ResNetに対して行われている模様）。<br>また、6.1節では、（実験的に）利用する小規模モデルのスケールとして幅256, 深さ4, バッチサイズ32, sequence長128, 訓練ステップ数5000を最低満たしており、かつスケールさせる幅が妥当な範囲内である必要がある、といった話が記述されている。<br><br>前提知識（muP）や条件が多そうな気がするので、しっかり確認した方がよさそう。<br>たとえば、muPで初期化されている必要があることや、転送可能なハイパーパラメータに限りがある（e.g. 学習率）、異なるデータに対するfinetuningなどは転送できないなど。<br><br><br><img src="https://github.com/user-attachments/assets/e5aeb152-5c9e-4ba2-9152-4bfef0d7c27c" alt="image" loading="lazy" width="550" height="400"></p>
-<p>muP:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2583" target="_blank" rel="noopener noreferrer">[Paper Note] Feature Learning in Infinite-Width Neural Networks, Greg Yang+, PMLR'21</a>
+<p>muP:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2583" target="_blank" rel="noopener noreferrer">[Paper Note] Feature Learning in Infinite-Width Neural Networks, Greg Yang+, ICML'21</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7131,12 +7131,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </article>
 <div class="post-nav">
-<a class="previous" href="/paper_notes/articles/MachineTranslation/" title="MachineTranslationに関する論文・技術記事メモの一覧">MachineTranslationに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Routing/" title="Routingに関する論文・技術記事メモの一覧">Routingに関する論文・技術記事メモの一覧</a>
+<a class="previous" href="/paper_notes/articles/Decoding/" title="Decodingに関する論文・技術記事メモの一覧">Decodingに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Routing/" title="Routingに関する論文・技術記事メモの一覧">Routingに関する論文・技術記事メモの一覧</a>
 </div>
 <div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
+          <a class="post-link" href="/paper_notes/articles/Scheduler/" title="Schedulerに関する論文・技術記事メモの一覧">
+            Schedulerに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
+</span>
+</a>
+        </li>
+<li class="">
           <a class="post-link" href="/paper_notes/articles/TTS/" title="TTSに関する論文・技術記事メモの一覧">
             TTSに関する論文・技術記事メモの一覧
 
@@ -7146,29 +7155,20 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/OpenSource/" title="OpenSourceに関する論文・技術記事メモの一覧">
-            OpenSourceに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Standardization/" title="Standardizationに関する論文・技術記事メモの一覧">
+            Standardizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 37</span> 
-  <span class="post-badge badge-new">📝 37</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Contamination-free/" title="Contamination-freeに関する論文・技術記事メモの一覧">
-            Contamination-freeに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ICML/" title="ICMLに関する論文・技術記事メモの一覧">
+            ICMLに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Findings/" title="Findingsに関する論文・技術記事メモの一覧">
-            Findingsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
-  <span class="post-badge badge-new">📝 17</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 77</span> 
+  <span class="post-badge badge-new">📝 77</span>
 </span>
 </a>
         </li>
