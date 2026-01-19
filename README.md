@@ -1,4 +1,8 @@
 # paper_notes
+
+![Open issues](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes) ![Stars](https://img.shields.io/github/stars/AkihikoWatanabe/paper_notes) ![License](https://img.shields.io/github/license/AkihikoWatanabe/paper_notes)
+
+
 Issueに論文とメモを記載 [^1]。
 
 - 2025.10.17:
