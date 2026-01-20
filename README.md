@@ -151,5 +151,9 @@ Using DeepWiki, it may be easier to:
 **2017.12.28**
 - I started this repository and created the first issue.
 
+---
+
+## Footnotes
+
 [^1]: Metadata and abstracts are used in accordance with the **CC0 1.0 license** specified in the arXiv API terms of use.  
 [^2]: Images and screenshots included in Issues or blog posts are, in principle, cited from the original sources (papers, articles, slides, etc.) linked within each Issue.
