@@ -2,6 +2,8 @@
 
 ![Open issues](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes) ![Stars](https://img.shields.io/github/stars/AkihikoWatanabe/paper_notes) ![License](https://img.shields.io/github/license/AkihikoWatanabe/paper_notes)
 
+[English | [日本語](https://github.com/AkihikoWatanabe/paper_notes/blob/master/README_ja.md) ]
+
 This repository is a manually curated collection of **AI-related papers and related resources**, such as blog posts, repositories, slides, and SNS posts.  
 All items are managed as **GitHub Issues**.
 
@@ -10,16 +12,19 @@ Since the maintainer is Japanese, **paper notes are written in Japanese**, refle
 
 ---
 
-## Paper Metadata and Notes
+## Issue Contents
 
-For paper-related Issues, metadata and abstracts are automatically retrieved via the **arXiv API**[^1] and included in the Issue description.
+Each issue mainly contains the following information:
 
-Since the maintainer is Japanese:
+- 🔗 Links to papers, blog posts, or related resources
+- 📄 Paper metadata and abstracts
+- 🌐 **Japanese** translations and summaries of abstracts
+- 📝 Notes based on the maintainer’s understanding
+- 🏷️ **Manually assigned labels** reflecting the maintainer’s interpretation
+- 📚 Useful external references
 
-- Japanese translations of abstracts  
-- Japanese summaries of papers  
-
-are **automatically generated using GPT**, and  **labels are manually assigned** based on the maintainer’s own interpretation and understanding of the content.
+Paper metadata and abstracts are retrieved via the arXiv API[^1].
+Since the maintainer is a native Japanese speaker, Japanese translations and summaries of abstracts are automatically generated using GPT.
 
 ---
 
