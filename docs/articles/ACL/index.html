@@ -3093,7 +3093,7 @@ My Issue
 <a class="button" href="PersonalizedGeneration.html" target="_blank" rel="noopener noreferrer">#PersonalizedGeneration</a>
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <a class="button" href="PersonalizedHeadlineGeneration.html" target="_blank" rel="noopener noreferrer">#PersonalizedHeadlineGeneration</a>
-<a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
+<a class="button" href="Surface-level%20Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>GPT Summary</span>- ニュース記事の見出しを個別化するために、ユーザープロファイリングを組み込んだ新しいフレームワークを提案。ユーザーの閲覧履歴に基づいて個別のシグネチャフレーズを割り当て、それを使用して見出しを個別化する。幅広い評価により、提案したフレームワークが多様な読者のニーズに応える個別の見出しを生成する効果を示した。</span>
 <span class="snippet"><span>Comment</span><p>
@@ -3593,7 +3593,7 @@ My Issue
 <a class="button" href="PersonalizedGeneration.html" target="_blank" rel="noopener noreferrer">#PersonalizedGeneration</a>
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <a class="button" href="PersonalizedHeadlineGeneration.html" target="_blank" rel="noopener noreferrer">#PersonalizedHeadlineGeneration</a>
-<a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
+<a class="button" href="Surface-level%20Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-05-31</span>
 <span class="snippet"><span>GPT Summary</span>- この論文では、ユーザーの興味とニュース本文に基づいて、ユーザー固有のタイトルを生成するパーソナライズされたニュース見出し生成の問題を解決するためのフレームワークを提案します。また、この問題のための大規模なデータセットであるPENSを公開し、ベンチマークスコアを示します。データセットはhttps://msnews.github.io/pens.htmlで入手可能です。</span>
 <span class="snippet"><span>Comment</span><p># 概要<br><br>ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。<br><br><br><br># データセット生成手順<br><br>103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。<br><br><br><br># データセット統計量<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># 手法概要<br><br>Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。<br><br>Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。<br><br>User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># 訓練手法<br><br>まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、<br><br>1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする<br><br>2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする<br><br>3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする<br><br>とした。<br><br>1,2,3の平均を最終的なRewardとする。<br><br><br><br># 実験結果<br><br>Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># Case Study<br><br>ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
@@ -4259,7 +4259,7 @@ My Issue
 <a class="button" href="Sentence.html" target="_blank" rel="noopener noreferrer">#Sentence</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
+<a class="button" href="Surface-level%20Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>## 概要<br><br>通常のNeural Language Modelはsentence間に独立性の仮定を置きモデル化されているが、この独立性を排除し、preceding sentencesに依存するようにモデル化することで、言語モデルのコーパスレベルでのPerplexityが改善したという話。提案した言語モデルは、contextを考慮することで特に名詞や動詞、形容詞の予測性能が向上。Late-Fusion methodと呼ばれるRNNのoutputの計算にcontext vectorを組み込む手法が、Perplexityの改善にもっとも寄与していた。<br><br><br><br>## 手法<br><br><img src="https://user-images.githubusercontent.com/12249301/34412713-1e16da94-ec22-11e7-830c-0d0b6247207c.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>sentence間の独立性を排除し、Corpusレベルのprobabilityを下図のように定義。（普通はP(Slが条件付けされていない)）<br><br><img src="https://user-images.githubusercontent.com/12249301/34412980-e2425afa-ec23-11e7-86cd-148f85dccc07.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>preceding sentence (context)をモデル化するために、3種類の手法を提案。<br><br><br><br>[1. bag-of-words context]<br><br>　ナイーブに、contextに現れた単語の（単一の）bag-of-wordsベクトルを作り、linear layerをかませてcontext vectorを生成する手法。<br><br><br><br>[2. context recurrent neural network]<br><br>　preceding sentencesをbag-of-wordsベクトルの系列で表現し、これらのベクトルをsequentialにRNN-LSTMに読み込ませ、最後のhidden stateをcontext vectorとする手法。これにより、sentenceが出現した順番が考慮される。<br><br><br><br>[3. attention based context representation]<br><br>　Attentionを用いる手法も提案されており、context recurrent neural networkと同様にRNNにbag-of-wordsのsequenceを食わせるが、各時点におけるcontext sentenceのベクトルを、bi-directionalなRNNのforward, backward stateをconcatしたもので表現し、attention weightの計算に用いる。context vectorは1, 2ではcurrent sentence中では共通のものを用いるが、attention basedな場合はcurrent sentenceの単語ごとに異なるcontext vectorを生成して用いる。<br><br><br><br>生成したcontext vectorをsentence-levelのRNN言語モデルに組み合わせる際に、二種類のFusion Methodを提案している。<br><br><br><br>[1. Early Fusion]<br><br>　ナイーブに、RNNLMの各時点でのinputにcontext vectorの情報を組み込む方法。<br><br>[2. Late Fusion]<br><br>　よりうまくcontext vectorの情報を組み込むために、current sentence内の単語のdependency(intra-sentence dependency)と、current sentenceとcontextの関係を別々に考慮する。context vectorとmemory cellの情報から、context vector中の不要箇所をフィルタリングしたcontrolled context vectorを生成し、LSTMのoutputの計算に用いる。Later Fusionはシンプルだが、corpusレベルのlanguage modelingの勾配消失問題を緩和することもできる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34413898-99efbaf8-ec29-11e7-94f5-db82eee399b3.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>## 評価<br><br>IMDB, BBC, PennTreebank, Fil9 (cleaned wikipedia corpus)の4種類のデータで学習し、corpus levelでPerplexityを測った。<br><br><img src="https://user-images.githubusercontent.com/12249301/34414121-b75b2996-ec2a-11e7-9716-dbbb9006b1b5.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>Late FusionがPerplexityの減少に大きく寄与している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34414218-596b373a-ec2b-11e7-85ad-cf98df04ce57.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>PoSタグごとのperplexityを測った結果、contextを考慮した場合に名詞や形容詞、動詞のPerplexityに改善が見られた。一方、Coordinate Conjungtion (And, Or, So, Forなど)や限定詞、Personal Pronouns (I, You, It, Heなど)のPerplexityは劣化した。前者はopen-classな内容語であり、後者はclosed-classな機能語である。機能語はgrammaticalなroleを決めるのに対し、内容語はその名の通り、sentenceやdiscourseの内容を決めるものなので、文書の内容をより捉えることができると考察している。</p></span><br><br>
 </article>
@@ -4412,7 +4412,7 @@ My Issue
 <a class="button" href="QueryBiased.html" target="_blank" rel="noopener noreferrer">#QueryBiased</a>
 <a class="button" href="Extractive.html" target="_blank" rel="noopener noreferrer">#Extractive</a>
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
+<a class="button" href="Surface-level%20Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>（管理人が作成した過去の紹介資料）<br>[Query-Chain Focused Summarization.pdf](https://github.com/AkihikoWatanabe/paper_notes/files/1590916/Query-Chain.Focused.Summarization.pdf)<br><br></p>
 <p>上記スライドは私が当時作成した論文紹介スライドです。スライド中のスクショは説明のために論文中のものを引用しています。</p></span><br><br>
@@ -4729,17 +4729,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Supervised-FineTuning-(SFT)/" title="Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧">
-            Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/GUI/" title="GUIに関する論文・技術記事メモの一覧">
-            GUIに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/AdversarialTraining/" title="AdversarialTrainingに関する論文・技術記事メモの一覧">
+            AdversarialTrainingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
@@ -4747,20 +4738,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Comments/" title="Commentsに関する論文・技術記事メモの一覧">
-            Commentsに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Slide/" title="Slideに関する論文・技術記事メモの一覧">
+            Slideに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 71</span> 
+  <span class="post-badge badge-new">📝 71</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/TOG/" title="TOGに関する論文・技術記事メモの一覧">
-            TOGに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Game/" title="Gameに関する論文・技術記事メモの一覧">
+            Gameに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/StudentPerformancePrediction/" title="StudentPerformancePredictionに関する論文・技術記事メモの一覧">
+            StudentPerformancePredictionに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
+  <span class="post-badge badge-new">📝 21</span>
 </span>
 </a>
         </li>

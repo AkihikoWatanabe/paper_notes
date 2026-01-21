@@ -1183,7 +1183,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
-<a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
+<a class="button" href="Surface-level%20Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>## 概要<br><br>通常のNeural Language Modelはsentence間に独立性の仮定を置きモデル化されているが、この独立性を排除し、preceding sentencesに依存するようにモデル化することで、言語モデルのコーパスレベルでのPerplexityが改善したという話。提案した言語モデルは、contextを考慮することで特に名詞や動詞、形容詞の予測性能が向上。Late-Fusion methodと呼ばれるRNNのoutputの計算にcontext vectorを組み込む手法が、Perplexityの改善にもっとも寄与していた。<br><br><br><br>## 手法<br><br><img src="https://user-images.githubusercontent.com/12249301/34412713-1e16da94-ec22-11e7-830c-0d0b6247207c.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>sentence間の独立性を排除し、Corpusレベルのprobabilityを下図のように定義。（普通はP(Slが条件付けされていない)）<br><br><img src="https://user-images.githubusercontent.com/12249301/34412980-e2425afa-ec23-11e7-86cd-148f85dccc07.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>preceding sentence (context)をモデル化するために、3種類の手法を提案。<br><br><br><br>[1. bag-of-words context]<br><br>　ナイーブに、contextに現れた単語の（単一の）bag-of-wordsベクトルを作り、linear layerをかませてcontext vectorを生成する手法。<br><br><br><br>[2. context recurrent neural network]<br><br>　preceding sentencesをbag-of-wordsベクトルの系列で表現し、これらのベクトルをsequentialにRNN-LSTMに読み込ませ、最後のhidden stateをcontext vectorとする手法。これにより、sentenceが出現した順番が考慮される。<br><br><br><br>[3. attention based context representation]<br><br>　Attentionを用いる手法も提案されており、context recurrent neural networkと同様にRNNにbag-of-wordsのsequenceを食わせるが、各時点におけるcontext sentenceのベクトルを、bi-directionalなRNNのforward, backward stateをconcatしたもので表現し、attention weightの計算に用いる。context vectorは1, 2ではcurrent sentence中では共通のものを用いるが、attention basedな場合はcurrent sentenceの単語ごとに異なるcontext vectorを生成して用いる。<br><br><br><br>生成したcontext vectorをsentence-levelのRNN言語モデルに組み合わせる際に、二種類のFusion Methodを提案している。<br><br><br><br>[1. Early Fusion]<br><br>　ナイーブに、RNNLMの各時点でのinputにcontext vectorの情報を組み込む方法。<br><br>[2. Late Fusion]<br><br>　よりうまくcontext vectorの情報を組み込むために、current sentence内の単語のdependency(intra-sentence dependency)と、current sentenceとcontextの関係を別々に考慮する。context vectorとmemory cellの情報から、context vector中の不要箇所をフィルタリングしたcontrolled context vectorを生成し、LSTMのoutputの計算に用いる。Later Fusionはシンプルだが、corpusレベルのlanguage modelingの勾配消失問題を緩和することもできる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34413898-99efbaf8-ec29-11e7-94f5-db82eee399b3.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>## 評価<br><br>IMDB, BBC, PennTreebank, Fil9 (cleaned wikipedia corpus)の4種類のデータで学習し、corpus levelでPerplexityを測った。<br><br><img src="https://user-images.githubusercontent.com/12249301/34414121-b75b2996-ec2a-11e7-9716-dbbb9006b1b5.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>Late FusionがPerplexityの減少に大きく寄与している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/34414218-596b373a-ec2b-11e7-85ad-cf98df04ce57.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>PoSタグごとのperplexityを測った結果、contextを考慮した場合に名詞や形容詞、動詞のPerplexityに改善が見られた。一方、Coordinate Conjungtion (And, Or, So, Forなど)や限定詞、Personal Pronouns (I, You, It, Heなど)のPerplexityは劣化した。前者はopen-classな内容語であり、後者はclosed-classな機能語である。機能語はgrammaticalなroleを決めるのに対し、内容語はその名の通り、sentenceやdiscourseの内容を決めるものなので、文書の内容をより捉えることができると考察している。</p></span><br><br>
 </article>
@@ -1288,7 +1288,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="Surface-level%20Note.html" target="_blank" rel="noopener noreferrer">#Surface-level Note</a>
+<a class="button" href="Surface-level%20Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>slide:
 
@@ -1372,26 +1372,26 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/NeuralNetwork/" title="NeuralNetworkに関する論文・技術記事メモの一覧">
-            NeuralNetworkに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Unsupervised/" title="Unsupervisedに関する論文・技術記事メモの一覧">
+            Unsupervisedに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 298</span> 
-  <span class="post-badge badge-new">📝 298</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AACL/" title="AACLに関する論文・技術記事メモの一覧">
-            AACLに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Memorization/" title="Memorizationに関する論文・技術記事メモの一覧">
+            Memorizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/CameraPoseEstimation/" title="CameraPoseEstimationに関する論文・技術記事メモの一覧">
-            CameraPoseEstimationに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ECS/" title="ECSに関する論文・技術記事メモの一覧">
+            ECSに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1399,11 +1399,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AutomaticSpeechRecognition(ASR)/" title="AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧">
-            AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/GPUKernel/" title="GPUKernelに関する論文・技術記事メモの一覧">
+            GPUKernelに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
-  <span class="post-badge badge-new">📝 14</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li>
