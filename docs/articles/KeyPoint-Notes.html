@@ -3823,7 +3823,7 @@ My Issue
 <p>感想としては、詳細が書かれていないが、おそらくRoTはSFTによって各タスクに特化した学習をしていると考えられる（タスクごとの特殊トークンが存在するため）。ベースラインとしてRoT無しでSFTしたモデルあった方が良いのではないか？と感じる。<br><br>また、学習データにおけるsubquestionとsubquestionに対するground truthのデータ作成方法は書かれているが、そもそも元データとして何を利用したかや、その統計量も書かれていないように見える。あと、そもそも機械的に学習データを作成できない場合どうすれば良いのか？という疑問は残る。</p>
 <p>読んでいた時にAuto-CoTとの違いがよくわからなかったが、Related Workの部分にはAuto-CoTは動的、かつ多様なデモンストレーションの生成にフォーカスしているが、AutoReasonはquestionを分解し、few-shotの promptingでより詳細なrationaleを生成することにフォーカスしている点が異なるという主張のようである。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, ICLR'23</a>
 </p>
-<p>Auto-CoTとの差別化は上記で理解できるが、G-Evalが実施しているAuto-CoTとの差別化はどうするのか？という風にふと思った。論文中でもG-Evalは引用されていない。<br><br>素朴にはAutoReasonはSFTをして学習をしています、さらにRecursiveにquestionをsubquestionを分解し、分解したsubquestionごとに回答を得て、subquestionの回答結果を活用して最終的に複雑なタスクの回答を出力する手法なので、G-Evalが実施している同一context内でrationaleをzeroshotで生成する手法よりも、より複雑な問題に回答できる可能性が高いです、という主張にはなりそうではある。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1223" target="_blank" rel="noopener noreferrer">G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment, Yang Liu+, N/A, EMNLP'23</a>
+<p>Auto-CoTとの差別化は上記で理解できるが、G-Evalが実施しているAuto-CoTとの差別化はどうするのか？という風にふと思った。論文中でもG-Evalは引用されていない。<br><br>素朴にはAutoReasonはSFTをして学習をしています、さらにRecursiveにquestionをsubquestionを分解し、分解したsubquestionごとに回答を得て、subquestionの回答結果を活用して最終的に複雑なタスクの回答を出力する手法なので、G-Evalが実施している同一context内でrationaleをzeroshotで生成する手法よりも、より複雑な問題に回答できる可能性が高いです、という主張にはなりそうではある。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1223" target="_blank" rel="noopener noreferrer">[Paper Note] G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment, Yang Liu+, N/A, EMNLP'23</a>
 </p>
 <p>ICLR 2023 OpenReview:
 
@@ -4124,7 +4124,7 @@ My Issue
 <a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <span class="issue_date">Issue Date: 2025-10-04</span>
 <span class="snippet"><span>GPT Summary</span>- Mixture of Attention Heads (MoA)は、MoEネットワークとマルチヘッドアテンションを組み合わせた新しいアーキテクチャで、動的に選択されたアテンションヘッドのサブセットを使用することでパフォーマンスを向上させる。スパースゲート化により計算効率を保ちながら拡張可能で、モデルの解釈可能性にも寄与する。実験では、機械翻訳やマスク付き言語モデリングなどのタスクで強力なベースラインを上回る結果を示した。</span>
-<span class="snippet"><span>Comment</span><p>FFNに適用されることが多かったMoEをmulti-head attention (MHA) に適用する研究。このようなattentionをMixture of Attention Heads (MoA)と呼ぶ。<br><br>各MHAは複数のattention expertsを持ち、その中からK個のExpertsが現在のクエリq_tに基づいてRouterによって選出（式7, 8)される。それぞれのattention expertsに対してq_tが流され、通常のMHAと同じ流れでoutputが計算され、最終的に選択された際の（正規化された（式9））probabilityによる加重平均によって出力を計算する（式6)。<br><br>注意点としては、各attention expertsは独立したprojection matrix W_q, W_o（それぞれi番目のexpertsにおけるトークンtにおいて、query q_tを変換、output o_{i,t}をhidden space次元に戻す役割を持つ)を持つが、K, Vに対する変換行列は共有すると言う点。これにより、次元に全てのexpertsに対してk, vに対する変換は計算しておけるので、headごとに異なる変換を学習しながら、計算コストを大幅に削減できる。<br><img src="https://github.com/user-attachments/assets/3073c6b8-cdc7-4303-8881-0c07c502d0ec" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/d74ab1b7-e44c-461d-ad64-6f5ecacd8da2" alt="image" loading="lazy" width="550" height="400"><br><br>また、特定のexpertsにのみルーティングが集中しないように、lossを調整することで学習の安定させ性能を向上させている（4.3節）。</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>FFNに適用されることが多かったMoEをmulti-head attention (MHA) に適用する研究。このようなattentionをMixture of Attention Heads (MoA)と呼ぶ。<br><br>各MHAは複数のattention expertsを持ち、その中からK個のExpertsが現在のクエリq_tに基づいてRouterによって選出（式7, 8)される。それぞれのattention expertsに対してq_tが流され、通常のMHAと同じ流れでoutputが計算され、最終的に選択された際の（正規化された（式9））probabilityによる加重平均によって出力を計算する（式6)。<br><br>注意点としては、各attention expertsは独立したprojection matrix W_q, W_o（それぞれi番目のexpertsにおけるトークンtにおいて、query q_tを変換、output o_{i,t}をhidden space次元に戻す役割を持つ)を持つが、K, Vに対する変換行列は共有すると言う点。これにより、事前に全てのexpertsに対してk, vに対する変換は計算しておけるので、headごとに異なる変換を学習しながら、計算コストを大幅に削減できる。<br><img src="https://github.com/user-attachments/assets/3073c6b8-cdc7-4303-8881-0c07c502d0ec" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/d74ab1b7-e44c-461d-ad64-6f5ecacd8da2" alt="image" loading="lazy" width="550" height="400"><br><br>また、特定のexpertsにのみルーティングが集中しないように、lossを調整することで学習の安定させ性能を向上させている（4.3節）。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="training-language-1296" class="title-link">Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS'22</h3>
@@ -7000,7 +7000,7 @@ My Issue
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2338" target="_blank" rel="noopener noreferrer">[Paper Note] YaRN: Efficient Context Window Extension of Large Language Models, Bowen Peng+, ICLR'24</a>
 <br>- Attention Sinks<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
 <br>    - Attention Sinksの定義とその気持ち、Zero Sink, Softmaxの分母にバイアス項が存在する意義についてはこのメモを参照のこと。<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
-<br>    - Attention Sinksが実際にどのように効果的に作用しているか？についてはこちらのメモを参照。<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1862" target="_blank" rel="noopener noreferrer">When Attention Sink Emerges in Language Models: An Empirical View, Xiangming Gu+, ICLR'25</a>
+<br>    - Attention Sinksが実際にどのように効果的に作用しているか？についてはこちらのメモを参照。<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1862" target="_blank" rel="noopener noreferrer">[Paper Note] When Attention Sink Emerges in Language Models: An Empirical View, Xiangming Gu+, ICLR'25</a>
 <br>    - 
 
 
@@ -7460,7 +7460,7 @@ My Issue
 <p>Reflection自体の有用性は以前から示されている。<br>参考: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1377" target="_blank" rel="noopener noreferrer">Self-Reflection in LLM Agents: Effects on Problem-Solving Performance, Matthew Renze+, N/A, arXiv'24</a>
 , <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1105" target="_blank" rel="noopener noreferrer">Self-RAG: Learning to Retrieve, Generate, and Critique through   Self-Reflection, Akari Asai+, N/A, ICLR'24</a>
 , <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248" target="_blank" rel="noopener noreferrer">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N/A, arXiv'24</a>
-, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1378" target="_blank" rel="noopener noreferrer">Automatically Correcting Large Language Models: Surveying the landscape  of diverse self-correction strategies, Liangming Pan+, N/A, TACL'24</a>
+, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1378" target="_blank" rel="noopener noreferrer">[Paper Note] Automatically Correcting Large Language Models: Surveying the landscape of diverse self-correction strategies, Liangming Pan+, TACL'24, 2023.08</a>
 </p>
 <p>ollamaで実際に動かして日本語でのQAを試している記事。実際のアウトプットやreflectionの内容が確認でき、おもしろい。<br><br>システムプロンプトで&lt; thinking &gt;タグでInputに対して推論し、&lt; output &gt;タグ内で最終出力を行い、推論過程で誤りがある場合は&lt; reflection &gt;タグを用いて修正するように指示している。<br><br>おそらく、thinkingタグ内の思考過程でモデルが誤りに気づいた場合は、thinkingタグの途中でreflectionタグが出力され、その時点でCoTが修正されるようである（もしくはoutputとthinkingの中間）。このため、誤ったCoTに基づいてOutputが生成される頻度が減少すると考えられる。<br><br>このような挙動はおそらく、reflection用の学習データでSFTしないとできないと思うので<br><br>（たとえば、ReflectionタスクをするようなデータでSFTをしていない場合、出力の途中で誤りを検出し出力を修正するという挙動にはならず、回答として自然な文を最後までoutputすると思う。その後でreflectionしろと促すことはpromptingでできるかもしれないが、そもそもreflectionする能力があまり高くない可能性があり、うまく修正もしてくれないかも）<br><br>reflectionの能力を高めるようなデータでSFTをしていないモデルで似たようなpromptingをしても、うまくいかない可能性があるので注意が必要だと思われる。<br><br>参考: 
 
@@ -8204,8 +8204,26 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/InstructionFollowingCapability.html" title="InstructionFollowingCapabilityに関する論文・技術記事メモの一覧">
-            InstructionFollowingCapabilityに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Argument.html" title="Argumentに関する論文・技術記事メモの一覧">
+            Argumentに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/Factuality.html" title="Factualityに関する論文・技術記事メモの一覧">
+            Factualityに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 34</span> 
+  <span class="post-badge badge-new">📝 34</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/AWS.html" title="AWSに関する論文・技術記事メモの一覧">
+            AWSに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
   <span class="post-badge badge-new">📝 7</span>
@@ -8213,29 +8231,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/LearningToRank.html" title="LearningToRankに関する論文・技術記事メモの一覧">
-            LearningToRankに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ActivationFunction.html" title="ActivationFunctionに関する論文・技術記事メモの一覧">
+            ActivationFunctionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 25</span> 
-  <span class="post-badge badge-new">📝 25</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ACMMM.html" title="ACMMMに関する論文・技術記事メモの一覧">
-            ACMMMに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Simplification.html" title="Simplificationに関する論文・技術記事メモの一覧">
-            Simplificationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li>

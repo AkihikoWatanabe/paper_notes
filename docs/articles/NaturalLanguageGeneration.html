@@ -843,7 +843,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 42 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 49 mins</span>
   </div></header>
 </div>
     </div>
@@ -1343,6 +1343,42 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 自動的な言語生成の品質評価には説明可能なメトリクスが必要であるが、既存のメトリクスはその判定を説明したり欠陥とスコアを関連付けることができない。そこで、InstructScoreという新しいメトリクスを提案し、人間の指示とGPT-4の知識を活用してテキストの評価と診断レポートを生成する。さまざまな生成タスクでInstructScoreを評価し、他のメトリクスを上回る性能を示した。驚くべきことに、InstructScoreは人間の評価データなしで最先端のメトリクスと同等の性能を達成する。</span>
 <span class="snippet"><span>Comment</span><p>伝統的なNLGの性能指標の解釈性が低いことを主張する研究</p>
 <p><img src="https://github.com/user-attachments/assets/4c4fe705-e0c5-41d1-b3c8-c084d85b77ba" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="g-eval-nlg-1223" class="title-link">[Paper Note] G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment, Yang Liu+, N_A, EMNLP'23</h3>
+<br><a href="https://arxiv.org/abs/2303.16634" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1223" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="LLM-as-a-Judge.html" target="_blank" rel="noopener noreferrer">#LLM-as-a-Judge</a>
+<a class="button" href="Surface-level%20Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
+<span class="issue_date">Issue Date: 2024-01-25</span>
+<span class="snippet"><span>GPT Summary</span>- 従来の参照ベースの評価指標では、自然言語生成システムの品質を正確に測定することが難しい。最近の研究では、大規模言語モデル（LLMs）を使用した参照ベースの評価指標が提案されているが、まだ人間との一致度が低い。本研究では、G-Evalという大規模言語モデルを使用した品質評価フレームワークを提案し、要約と対話生成のタスクで実験を行った。G-Evalは従来の手法を大幅に上回る結果を示し、LLMベースの評価器の潜在的な問題についても分析している。コードはGitHubで公開されている。</span>
+<span class="snippet"><span>Comment</span><p>伝統的なNLGの性能指標が、人間の判断との相関が低いことを示した研究</p>
+<p>
+<strong># 手法概要<br><br>- CoTを利用して、生成されたテキストの品質を評価する手法を提案している。<br><br>- タスクのIntroductionと、評価のCriteriaをプロンプトに仕込むだけで、自動的にLLMに評価ステップに関するCoTを生成させ、最終的にフォームを埋める形式でスコアをテキストとして生成させ評価を実施する。最終的に、各スコアの生成確率によるweighted-sumによって、最終スコアを決定する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a91c9234-6f41-4fb4-a94f-8a47a594dd9e" alt="image" loading="lazy" width="550" height="400"><br><br><br><br></strong></p>
+<p># Scoringの問題点<br><br>たとえば、1-5のdiscreteなスコアを直接LLMにoutputさせると、下記のような問題が生じる：<br><br>1. ある一つのスコアが支配的になってしまい、スコアの分散が無く、人間の評価との相関が低くなる<br><br>2. LLMは小数を出力するよう指示しても、大抵の場合整数を出力するため、多くのテキストの評価値が同一となり、生成されたテキストの細かな差異を評価に取り入れることができない。<br><br><br><br>上記を解決するため、下記のように、スコアトークンの生成確率の重みづけ和をとることで、最終的なスコアを算出している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a2a8d26c-0fb4-4f60-bd6e-600898785d7b" alt="image" loading="lazy" width="550" height="400"></p>
+<p># 評価<br><br>- SummEval <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
+
+<br>
+ データと、Topical-Chat, QAGSデータの3つのベンチマークで評価を実施した。タスクとしては、要約と対話のresponse generationのデータとなる。<br><br>- モデルはGPT-3.5 (text-davinci-003), GPT-4を利用した<br><br>- gpt3.5利用時は、temperatureは0に設定し、GPT-4はトークンの生成確率を返さないので、`n=20, temperature=1, top_p=1`とし、20回の生成結果からトークンの出現確率を算出した。<br><br><br><br>
+<strong>## 評価結果<br><br>G-EVALがbaselineをoutperformし、特にGPT4を利用した場合に性能が高い。GPTScoreを利用した場合に、モデルを何を使用したのかが書かれていない。Appendixに記述されているのだろうか。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/924b0acd-6236-49a0-a6bc-ae203c87f7ea" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/435fa260-a88d-4db2-b3a2-40d29a6617df" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f9ca4e1f-903d-48fa-a40f-64fa8c799c43" alt="image" loading="lazy" width="550" height="400"><br><br></strong></p>
+<p># Analysis<br><br>## G-EvalがLLMが生成したテキストを好んで高いスコアを付与してしまうか？<br><br>- 人間に品質の高いニュース記事要約を書かせ、アノテータにGPTが生成した要約を比較させたデータ (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, N/A, arXiv'23</a>
+
+<br>
+) を用いて検証<br><br>- その結果、基本的にGPTが生成した要約に対して、G-EVAL4が高いスコアを付与する傾向にあることがわかった。<br><br>    - 原因1: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, N/A, arXiv'23</a>
+で指摘されている通り、人間が記述した要約とLLMが記述した要約を区別するタスクは、inter-annotator agreementは`0.07`であり、極端に低く、人間でも困難なタスクであるため。<br><br>    - 原因2: LLMは生成時と評価時に、共通したコンセプトをモデル内部で共有している可能性が高く、これがLLMが生成した要約を高く評価するバイアスをかけた<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ec6a213d-15ea-4572-8716-ad9cbee6f19a" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>## CoTの影響<br><br>- SummEvalデータにおいて、CoTの有無による性能の差を検証した結果、CoTを導入した場合により高いcorrelationを獲得した。特に、Fluencyへの影響が大きい。<br><br><br><br>## Probability Normalizationによる影響<br><br>- probabilityによるnormalizationを導入したことで、kendall tauが減少した。この理由は、probabilityが導入されていない場合は多くの引き分けを生み出す。一方、kendall tauは、concordant / discordantペアの数によって決定されるが、引き分けの場合はどちらにもカウントされず、kendall tauの値を押し上げる効果がある。このため、これはモデルの真の性能を反映していない。<br><br>- 一方、probabilityを導入すると、より細かいな連続的なスコアを獲得することができ、これはspearman-correlationの向上に反映されている。<br><br><br><br>## モデルサイズによる影響<br><br>- 基本的に大きいサイズの方が高いcorrelationを示す。特に、consistencyやrelevanceといった、複雑な評価タスクではその差が顕著である。<br><br>- 一方モデルサイズが小さい方が性能が良い観点（engagingness, groundedness）なども存在した。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="large-language-1220" class="title-link">Large Language Models Are State-of-the-Art Evaluators of Translation Quality, EAMT'23</h3>
@@ -4170,8 +4206,26 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Operator.html" title="Operatorに関する論文・技術記事メモの一覧">
-            Operatorに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/StructuredData.html" title="StructuredDataに関する論文・技術記事メモの一覧">
+            StructuredDataに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/read-later.html" title="read-laterに関する論文・技術記事メモの一覧">
+            read-laterに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 436</span> 
+  <span class="post-badge badge-new">📝 436</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/paper_notes/articles/ReplayBuffer.html" title="ReplayBufferに関する論文・技術記事メモの一覧">
+            ReplayBufferに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -4179,29 +4233,11 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Supervised-FineTuning-(SFT).html" title="Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧">
-            Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/InteractivePersonalizedSummarization.html" title="InteractivePersonalizedSummarizationに関する論文・技術記事メモの一覧">
+            InteractivePersonalizedSummarizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/GenerativeRecommendation.html" title="GenerativeRecommendationに関する論文・技術記事メモの一覧">
-            GenerativeRecommendationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/reading.html" title="readingに関する論文・技術記事メモの一覧">
-            readingに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
-  <span class="post-badge badge-new">📝 17</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li>

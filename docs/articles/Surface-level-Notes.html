@@ -842,7 +842,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 13 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 20 mins</span>
   </div></header>
 </div>
     </div>
@@ -1127,6 +1127,42 @@ My Issue
 
 <p>斜め読みだが、length generalizationを評価する上でdownstream taskに焦点を当て、3つの代表的なカテゴリに相当するタスクで評価したところ、この観点においてはT5のrelative positinal encodingとNoPE（位置エンコードディング無し）のパフォーマンスが良く、<br><br><img src="https://github.com/user-attachments/assets/dddadfff-ab28-4073-96c3-831eb16845a0" alt="image" loading="lazy" width="550" height="400"><br><img src="https://github.com/user-attachments/assets/c6ec8e0e-7abb-4330-be23-2261486a477c" alt="image" loading="lazy" width="550" height="400"><br><br>NoPEは絶対位置エンコーディングと相対位置エンコーディングを理論上実現可能であり[^1]<br><img src="https://github.com/user-attachments/assets/bbcf797a-d394-42d4-b017-08d7dba4261c" alt="image" loading="lazy" width="550" height="400"><br><br>実際に学習された異なる2つのモデルに対して同じトークンをそれぞれinputし、同じ深さのLayerの全てのattention distributionの組み合わせからJensen Shannon Divergenceで距離を算出し、最も小さいものを2モデル間の当該layerの距離として可視化すると下記のようになり、NoPEとT5のrelative positional encodingが最も類似していることから、NoPEが学習を通じて（実用上は）相対位置エンコーディングのようなものを学習することが分かった。<br><img src="https://github.com/user-attachments/assets/9619c7e5-0612-45de-8717-1634bee509b7" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]:深さ1のLayerのHidden State H^1から絶対位置の復元が可能であり（つまり、当該レイヤーのHが絶対位置に関する情報を保持している）、この前提のもと、後続のLayerがこの情報を上書きしないと仮定した場合に、相対位置エンコーディングを実現できる。</p>
 <p>また、CoT/Scratchpadはlong sequenceに対する汎化性能を向上させることがsmall scaleではあるが先行研究で示されており、Positional Encodingを変化させた時にCoT/Scratchpadの性能にどのような影響を与えるかを調査。<br><br>具体的には、CoT/Scratchpadのフォーマットがどのようなものが有効かも明らかではないので、5種類のコンポーネントの組み合わせでフォーマットを構成し、mathematical reasoningタスクで以下のような設定で訓練し<br><br>- さまざまなコンポーネントの組み合わせで異なるフォーマットを作成し、<br>- 全ての位置エンコーディングあり/なしモデルを訓練<br><br>これらを比較した。この結果、CoT/Scratchpadはフォーマットに関係なく、特定のタスクでのみ有効（有効かどうかはタスク依存）であることが分かった。このことから、CoT/Scratcpad（つまり、モデルのinputとoutputの仕方）単体で、long contextに対する汎化性能を向上させることができないので、Positional Encoding（≒モデルのアーキテクチャ）によるlong contextに対する汎化性能の向上が非常に重要であることが浮き彫りになった。<br><img src="https://github.com/user-attachments/assets/e23c4fbf-84de-4344-a01e-1e7e9e66fa7e" alt="image" loading="lazy" width="550" height="400"><br><br>また、CoT/Scratchpadが有効だったAdditionに対して各Positional Embeddingモデルを学習し、生成されたトークンのattentionがどの位置のトークンを指しているかを相対距離で可視化したところ（0が当該トークン、つまり現在のScratchpadに着目しており、1が遠いトークン、つまりinputに着目していることを表すように正規化）、NoPEとRelative Positional Encodingがshort/long rangeにそれぞれフォーカスするようなbinomialな分布なのに対し、他のPositional Encodingではよりuniformな分布であることが分かった。このタスクにおいてはNoPEとRelative POの性能が高かったため、binomialな分布の方がより最適であろうことが示唆された。<br><img src="https://github.com/user-attachments/assets/833e6a81-8611-4e79-9d2e-473f7ebee2d0" alt="image" loading="lazy" width="550" height="400"><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="g-eval-nlg-1223" class="title-link">[Paper Note] G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment, Yang Liu+, N_A, EMNLP'23</h3>
+<br><a href="https://arxiv.org/abs/2303.16634" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1223" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="LLM-as-a-Judge.html" target="_blank" rel="noopener noreferrer">#LLM-as-a-Judge</a>
+<span class="issue_date">Issue Date: 2024-01-25</span>
+<span class="snippet"><span>GPT Summary</span>- 従来の参照ベースの評価指標では、自然言語生成システムの品質を正確に測定することが難しい。最近の研究では、大規模言語モデル（LLMs）を使用した参照ベースの評価指標が提案されているが、まだ人間との一致度が低い。本研究では、G-Evalという大規模言語モデルを使用した品質評価フレームワークを提案し、要約と対話生成のタスクで実験を行った。G-Evalは従来の手法を大幅に上回る結果を示し、LLMベースの評価器の潜在的な問題についても分析している。コードはGitHubで公開されている。</span>
+<span class="snippet"><span>Comment</span><p>伝統的なNLGの性能指標が、人間の判断との相関が低いことを示した研究</p>
+<p>
+<strong># 手法概要<br><br>- CoTを利用して、生成されたテキストの品質を評価する手法を提案している。<br><br>- タスクのIntroductionと、評価のCriteriaをプロンプトに仕込むだけで、自動的にLLMに評価ステップに関するCoTを生成させ、最終的にフォームを埋める形式でスコアをテキストとして生成させ評価を実施する。最終的に、各スコアの生成確率によるweighted-sumによって、最終スコアを決定する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a91c9234-6f41-4fb4-a94f-8a47a594dd9e" alt="image" loading="lazy" width="550" height="400"><br><br><br><br></strong></p>
+<p># Scoringの問題点<br><br>たとえば、1-5のdiscreteなスコアを直接LLMにoutputさせると、下記のような問題が生じる：<br><br>1. ある一つのスコアが支配的になってしまい、スコアの分散が無く、人間の評価との相関が低くなる<br><br>2. LLMは小数を出力するよう指示しても、大抵の場合整数を出力するため、多くのテキストの評価値が同一となり、生成されたテキストの細かな差異を評価に取り入れることができない。<br><br><br><br>上記を解決するため、下記のように、スコアトークンの生成確率の重みづけ和をとることで、最終的なスコアを算出している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a2a8d26c-0fb4-4f60-bd6e-600898785d7b" alt="image" loading="lazy" width="550" height="400"></p>
+<p># 評価<br><br>- SummEval <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
+
+<br>
+ データと、Topical-Chat, QAGSデータの3つのベンチマークで評価を実施した。タスクとしては、要約と対話のresponse generationのデータとなる。<br><br>- モデルはGPT-3.5 (text-davinci-003), GPT-4を利用した<br><br>- gpt3.5利用時は、temperatureは0に設定し、GPT-4はトークンの生成確率を返さないので、`n=20, temperature=1, top_p=1`とし、20回の生成結果からトークンの出現確率を算出した。<br><br><br><br>
+<strong>## 評価結果<br><br>G-EVALがbaselineをoutperformし、特にGPT4を利用した場合に性能が高い。GPTScoreを利用した場合に、モデルを何を使用したのかが書かれていない。Appendixに記述されているのだろうか。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/924b0acd-6236-49a0-a6bc-ae203c87f7ea" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/435fa260-a88d-4db2-b3a2-40d29a6617df" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f9ca4e1f-903d-48fa-a40f-64fa8c799c43" alt="image" loading="lazy" width="550" height="400"><br><br></strong></p>
+<p># Analysis<br><br>## G-EvalがLLMが生成したテキストを好んで高いスコアを付与してしまうか？<br><br>- 人間に品質の高いニュース記事要約を書かせ、アノテータにGPTが生成した要約を比較させたデータ (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, N/A, arXiv'23</a>
+
+<br>
+) を用いて検証<br><br>- その結果、基本的にGPTが生成した要約に対して、G-EVAL4が高いスコアを付与する傾向にあることがわかった。<br><br>    - 原因1: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, N/A, arXiv'23</a>
+で指摘されている通り、人間が記述した要約とLLMが記述した要約を区別するタスクは、inter-annotator agreementは`0.07`であり、極端に低く、人間でも困難なタスクであるため。<br><br>    - 原因2: LLMは生成時と評価時に、共通したコンセプトをモデル内部で共有している可能性が高く、これがLLMが生成した要約を高く評価するバイアスをかけた<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ec6a213d-15ea-4572-8716-ad9cbee6f19a" alt="image" loading="lazy" width="550" height="400"><br><br><br><br>## CoTの影響<br><br>- SummEvalデータにおいて、CoTの有無による性能の差を検証した結果、CoTを導入した場合により高いcorrelationを獲得した。特に、Fluencyへの影響が大きい。<br><br><br><br>## Probability Normalizationによる影響<br><br>- probabilityによるnormalizationを導入したことで、kendall tauが減少した。この理由は、probabilityが導入されていない場合は多くの引き分けを生み出す。一方、kendall tauは、concordant / discordantペアの数によって決定されるが、引き分けの場合はどちらにもカウントされず、kendall tauの値を押し上げる効果がある。このため、これはモデルの真の性能を反映していない。<br><br>- 一方、probabilityを導入すると、より細かいな連続的なスコアを獲得することができ、これはspearman-correlationの向上に反映されている。<br><br><br><br>## モデルサイズによる影響<br><br>- 基本的に大きいサイズの方が高いcorrelationを示す。特に、consistencyやrelevanceといった、複雑な評価タスクではその差が顕著である。<br><br>- 一方モデルサイズが小さい方が性能が良い観点（engagingness, groundedness）なども存在した。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="generating-user-engaging-893" class="title-link">[Paper Note] Generating User-Engaging News Headlines, Cai+, ACL'23</h3>
@@ -1422,38 +1458,38 @@ document.addEventListener("DOMContentLoaded", function() {
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/Label-free.html" title="Label-freeに関する論文・技術記事メモの一覧">
-            Label-freeに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/LAK.html" title="LAKに関する論文・技術記事メモの一覧">
+            LAKに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/AcademicWriting.html" title="AcademicWritingに関する論文・技術記事メモの一覧">
-            AcademicWritingに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Robotics.html" title="Roboticsに関する論文・技術記事メモの一覧">
+            Roboticsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 52</span> 
+  <span class="post-badge badge-new">📝 52</span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/ObjectDetection.html" title="ObjectDetectionに関する論文・技術記事メモの一覧">
-            ObjectDetectionに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/Multi-Armed-Bandit.html" title="Multi-Armed Banditに関する論文・技術記事メモの一覧">
+            Multi-Armed Banditに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li>
 <li class="">
-          <a class="post-link" href="/paper_notes/articles/Online-Interactive.html" title="Online/Interactiveに関する論文・技術記事メモの一覧">
-            Online/Interactiveに関する論文・技術記事メモの一覧
+          <a class="post-link" href="/paper_notes/articles/ReinforcementLearning.html" title="ReinforcementLearningに関する論文・技術記事メモの一覧">
+            ReinforcementLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 336</span> 
+  <span class="post-badge badge-new">📝 336</span>
 </span>
 </a>
         </li>
