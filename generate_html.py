@@ -655,7 +655,7 @@ author: AkihikoWATANABE
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html" target="_blank" rel="noopener noreferrer">事後学習 (Post-training)</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">（主にLLMの事後学習で応用される）強化学習 (Reinforcement Learning)</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/OpenWeight.html" target="_blank" rel="noopener noreferrer">OpenWeightモデル</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Transformer.html" target="_blank" rel="noopener noreferrer">Transformerアーキテクチャ関連</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Attention.html" target="_blank" rel="noopener noreferrer">TransformerAttention関連</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Transformer.html" target="_blank" rel="noopener noreferrer">Transformerアーキテクチャ関連</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Attention.html" target="_blank" rel="noopener noreferrer">Attention関連</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer">Test-time Scaling</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-time-Learning.html" target="_blank" rel="noopener noreferrer">Test-time Learning</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Alignment.html" target="_blank" rel="noopener noreferrer">（大規模言語モデルにおける）アライメント</a></li>
@@ -781,6 +781,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
