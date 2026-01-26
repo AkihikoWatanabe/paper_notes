@@ -674,7 +674,7 @@ author: AkihikoWATANABE
 </ul>
 </p>
 '''
-    html_content += '<p>特定の論文（やトピックの組み合わせ）に関して検索したい場合はこちらの'<a href="https://github.com/AkihikoWatanabe/paper_notes/issues" target="_blank" rel="noopener noreferrer">Github Issue</a>\n'</a>から検索すると良いと思います。</p>'
+    html_content += '<p>特定の論文（やトピックの組み合わせ）に関して検索したい場合はこちらの<a href="https://github.com/AkihikoWatanabe/paper_notes/issues" target="_blank" rel="noopener noreferrer">Github Issue</a>から検索すると良いと思います。</p>'
     html_content += '<p>以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (Selected Papers/Blogs) です。</p>'
 
     # latest posts
@@ -782,6 +782,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
