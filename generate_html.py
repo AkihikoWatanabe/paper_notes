@@ -642,35 +642,35 @@ author: AkihikoWATANABE
 
     # head message
     html_content += '<h2>本ブログについて</h2>'
-    html_content += '本ブログは特定のトピックに関する論文メモをスレッド形式で流し見することを想定して作成しています。トピックとスレッドの一覧は<a href="https://akihikowatanabe.github.io/paper_notes/archives.html" target="_blank" rel="noopener noreferrer>アーカイブページ</a>をご参照ください。'
+    html_content += '本ブログは特定のトピックに関する論文メモをスレッド形式で流し見することを想定して作成しています。トピックとスレッドの一覧は<a href="https://akihikowatanabe.github.io/paper_notes/archives.html" target="_blank" rel="noopener noreferrer">アーカイブページ</a>をご参照ください。'
     html_content += '''
 最近特に収集しているトピックとしては下記のようなものがあります:
 <ul>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/LanguageModel.html" target="_blank" rel="noopener noreferrer>（大規模）言語モデル (Large Language Models)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/VisionLanguageModel.html" target="_blank" rel="noopener noreferrer>視覚言語モデル (Vision Language Models)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/DiffusionModel.html" target="_blank" rel="noopener noreferrer>拡散モデル (Diffusion Models)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Prompting.html" target="_blank" rel="noopener noreferrer>LLMにおけるプロンプティング (Prompting)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html" target="_blank" rel="noopener noreferrer>事前学習 (Pre-training)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/mid-training.html" target="_blank" rel="noopener noreferrer>中間学習 (Mid-training)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html" target="_blank" rel="noopener noreferrer>事後学習 (Post-training)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html" target="_blank" rel="noopener noreferrer>（主にLLMの事後学習で応用される）強化学習 (Reinforcement Learning)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/OpenWeight.html" target="_blank" rel="noopener noreferrer>OpenWeightモデル</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Transformer.html" target="_blank" rel="noopener noreferrer>Transformerアーキテクチャ関連</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Attention.html" target="_blank" rel="noopener noreferrer>TransformerAttention関連</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer>Test-time Scaling</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-time-Learning.html" target="_blank" rel="noopener noreferrer>Test-time Learning</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Alignment.html" target="_blank" rel="noopener noreferrer>（大規模言語モデルにおける）アライメント</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html" target="_blank" rel="noopener noreferrer>AI Agent全般</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/memory.html" target="_blank" rel="noopener noreferrer>AI Agentにおけるメモリ</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/ContextEngineering.html" target="_blank" rel="noopener noreferrer>Context Engineering</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html" target="_blank" rel="noopener noreferrer>様々な分野・タスクでの評価</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Dataset.html" target="_blank" rel="noopener noreferrer>様々な分野・タスクでのデータセット</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SyntheticData.html" target="_blank" rel="noopener noreferrer>合成データ (Synthetic Data)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Scaling-Laws.html" target="_blank" rel="noopener noreferrer>スケーリング則 (Scaling Laws)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html" target="_blank" rel="noopener noreferrer>Self-Improving (LLM)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SelfCorrection.html" target="_blank" rel="noopener noreferrer>Self-Correction (LLM)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/MultiModal.html" target="_blank" rel="noopener noreferrer>マルチモーダル (Multimodal)</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Chain-of-Thought.html" target="_blank" rel="noopener noreferrer>Chain-of-Thought</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Reasoning.html" target="_blank" rel="noopener noreferrer>Reasoning</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Tutorial.html" target="_blank" rel="noopener noreferrer>様々な分野・タスクのチュートリアル</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Survey.html" target="_blank" rel="noopener noreferrer>サーベイ</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/LanguageModel.html" target="_blank" rel="noopener noreferrer">（大規模）言語モデル (Large Language Models)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">視覚言語モデル (Vision Language Models)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/DiffusionModel.html" target="_blank" rel="noopener noreferrer">拡散モデル (Diffusion Models)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Prompting.html" target="_blank" rel="noopener noreferrer">LLMにおけるプロンプティング (Prompting)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html" target="_blank" rel="noopener noreferrer">事前学習 (Pre-training)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/mid-training.html" target="_blank" rel="noopener noreferrer">中間学習 (Mid-training)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html" target="_blank" rel="noopener noreferrer">事後学習 (Post-training)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">（主にLLMの事後学習で応用される）強化学習 (Reinforcement Learning)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/OpenWeight.html" target="_blank" rel="noopener noreferrer">OpenWeightモデル</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Transformer.html" target="_blank" rel="noopener noreferrer">Transformerアーキテクチャ関連</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Attention.html" target="_blank" rel="noopener noreferrer">TransformerAttention関連</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer">Test-time Scaling</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-time-Learning.html" target="_blank" rel="noopener noreferrer">Test-time Learning</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Alignment.html" target="_blank" rel="noopener noreferrer">（大規模言語モデルにおける）アライメント</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html" target="_blank" rel="noopener noreferrer">AI Agent全般</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/memory.html" target="_blank" rel="noopener noreferrer">AI Agentにおけるメモリ</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/ContextEngineering.html" target="_blank" rel="noopener noreferrer">Context Engineering</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html" target="_blank" rel="noopener noreferrer">様々な分野・タスクでの評価</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Dataset.html" target="_blank" rel="noopener noreferrer">様々な分野・タスクでのデータセット</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SyntheticData.html" target="_blank" rel="noopener noreferrer">合成データ (Synthetic Data)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Scaling-Laws.html" target="_blank" rel="noopener noreferrer">スケーリング則 (Scaling Laws)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html" target="_blank" rel="noopener noreferrer">Self-Improving (LLM)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SelfCorrection.html" target="_blank" rel="noopener noreferrer">Self-Correction (LLM)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/MultiModal.html" target="_blank" rel="noopener noreferrer">マルチモーダル (Multimodal)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">Chain-of-Thought</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Reasoning.html" target="_blank" rel="noopener noreferrer">Reasoning</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Tutorial.html" target="_blank" rel="noopener noreferrer">様々な分野・タスクのチュートリアル</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Survey.html" target="_blank" rel="noopener noreferrer">サーベイ</a></li>
 </ul>
 '''
     html_content += '特定の論文（やトピックの組み合わせ）に関して検索したい場合はこちらの<a href="https://github.com/AkihikoWatanabe/paper_notes/issues" target="_blank" rel="noopener noreferrer">Github Issue</a>から検索できます。'
@@ -781,6 +781,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
