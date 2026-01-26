@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="ja"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,22 +13,21 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://platform.twitter.com">
-  <link rel="dns-prefetch" href="https://pbs.twimg.com">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+  <link rel="dns-prefetch" href="https://pbs.twimg.com"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>NewsRecommendationに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
-<meta name="generator" content="Jekyll v3.10.0">
-<meta property="og:title" content="NewsRecommendationに関する論文・技術記事メモの一覧">
-<meta name="author" content="AkihikoWATANABE">
-<meta property="og:locale" content="ja">
-<meta name="description" content="NewsRecommendation [Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv'18, 2018.01 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #CollaborativeFiltering #Pocket #Contents-based #WWW #KeyPoint Notes Issue Date: 2021-06-01 GPT Summary- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。 Comment # OverviewContents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# ExperimentsBingNewsのサーバログデータを利用して評価。データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;DeepFM超えを達成。entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。また、attentionを抜くとAUCは1ポイントほど減少する。1ユーザのtraining/testセットのサンプル&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;/p&gt;Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015 &lt;/strong&gt; によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。（おそらく）著者によるtensor-flowでの実装:">
-<meta property="og:description" content="NewsRecommendation [Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv'18, 2018.01 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #CollaborativeFiltering #Pocket #Contents-based #WWW #KeyPoint Notes Issue Date: 2021-06-01 GPT Summary- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。 Comment # OverviewContents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# ExperimentsBingNewsのサーバログデータを利用して評価。データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;DeepFM超えを達成。entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。また、attentionを抜くとAUCは1ポイントほど減少する。1ユーザのtraining/testセットのサンプル&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;/p&gt;Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015 &lt;/strong&gt; によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。（おそらく）著者によるtensor-flowでの実装:">
-<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/NewsRecommendation.html">
-<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/NewsRecommendation.html">
-<meta property="og:site_name" content="わたしのべんきょうノート">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2024-08-31T00:00:00+00:00">
-<meta name="twitter:card" content="summary">
-<meta property="twitter:title" content="NewsRecommendationに関する論文・技術記事メモの一覧">
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="NewsRecommendationに関する論文・技術記事メモの一覧" />
+<meta name="author" content="AkihikoWATANABE" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="NewsRecommendation [Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv&#39;18, 2018.01 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #CollaborativeFiltering #Pocket #Contents-based #WWW #KeyPoint Notes Issue Date: 2021-06-01 GPT Summary- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。 Comment # OverviewContents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# ExperimentsBingNewsのサーバログデータを利用して評価。データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;DeepFM超えを達成。entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。また、attentionを抜くとAUCは1ポイントほど減少する。1ユーザのtraining/testセットのサンプル&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;/p&gt;Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015 &lt;/strong&gt; によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。（おそらく）著者によるtensor-flowでの実装:" />
+<meta property="og:description" content="NewsRecommendation [Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv&#39;18, 2018.01 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #CollaborativeFiltering #Pocket #Contents-based #WWW #KeyPoint Notes Issue Date: 2021-06-01 GPT Summary- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。 Comment # OverviewContents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# ExperimentsBingNewsのサーバログデータを利用して評価。データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;DeepFM超えを達成。entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。また、attentionを抜くとAUCは1ポイントほど減少する。1ユーザのtraining/testセットのサンプル&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;/p&gt;Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015 &lt;/strong&gt; によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。（おそらく）著者によるtensor-flowでの実装:" />
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/NewsRecommendation.html" />
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/NewsRecommendation.html" />
+<meta property="og:site_name" content="わたしのべんきょうノート" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-08-31T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="NewsRecommendationに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2024-08-31T00:00:00+00:00","datePublished":"2024-08-31T00:00:00+00:00","description":"NewsRecommendation [Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv&#39;18, 2018.01 Paper/Blog Link My Issue #RecommenderSystems #NeuralNetwork #CollaborativeFiltering #Pocket #Contents-based #WWW #KeyPoint Notes Issue Date: 2021-06-01 GPT Summary- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。 Comment # OverviewContents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）CNNのinputを\\[\\[word_ embedding\\], \\[entity embedding\\], \\[contextual entity embedding\\]\\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# ExperimentsBingNewsのサーバログデータを利用して評価。データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;DeepFM超えを達成。entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。また、attentionを抜くとAUCは1ポイントほど減少する。1ユーザのtraining/testセットのサンプル&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;/p&gt;Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015 &lt;/strong&gt; によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。（おそらく）著者によるtensor-flowでの実装:","headline":"NewsRecommendationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/NewsRecommendation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/NewsRecommendation.html"}</script>
 <!-- End Jekyll SEO tag -->
@@ -48,8 +45,7 @@
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css" as="style" onload="this. onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css"></noscript>
   
-  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
-<script>
+  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート" /><script>
   function showMore(index) {
     const contentDivs = document.getElementsByClassName('hidden-content');
     const contentDiv = contentDivs[index];
@@ -97,7 +93,9 @@
 </script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <!-- and it's easy to individually load additional languages -->
-<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+<script charset="UTF-8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"
+        async></script>
 
 
 
@@ -185,9 +183,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     display: none;
   }
 </style>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
-<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link
+  href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css"
+  rel="stylesheet"
+/>
 <style>
   .pswp .pswp__container .pswp__img {
     background-color: white;
@@ -261,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   window.addEventListener("load", initPhotoSwipe);
 </script>
-<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
   <script>
@@ -271,8 +274,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     gtag('config', 'G-P70KSB88WH');
   </script>
-
-<script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"},"svg":{"fontCache":"global"}}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</script>
 </head>
 
 
@@ -413,23 +415,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
 <header class="site-header site-header-transparent" role="banner">
 
   <div class="wrapper">
-    <div class="site-header-inner">
-<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+    <div class="site-header-inner"><span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
   <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
   わたしのべんきょうノート
 </a>
 </span><nav class="site-nav">
-          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
           <label for="nav-trigger">
             <span class="menu-icon">
-              <svg viewbox="0 0 18 15" width="18px" height="15px">
-                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
               </svg>
             </span>
           </label>
 
-          <div class="trigger">
-<a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+          <div class="trigger"><a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
 
 
 
@@ -581,10 +581,8 @@ function googleTranslateElementInit() {
 </script>
 
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-</span>
-</div>
-        </nav>
-</div>
+</span></div>
+        </nav></div>
   </div>
 </header>
 
@@ -792,15 +790,11 @@ function googleTranslateElementInit() {
     html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
       opacity: 0.2872;
     }
-  </style>
-<section class="page-banner">
-    <div class="page-banner-img">
-<div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
-        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp">
-</div>
+  </style><section class="page-banner">
+    <div class="page-banner-img"><div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp"></div>
     <div class="wrapper">
-      <div class="page-banner-inner">
-<header class="post-header">
+      <div class="page-banner-inner"><header class="post-header">
   <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
   <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
 それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
@@ -1036,18 +1030,16 @@ function googleTranslateElementInit() {
 
     <div class="post-content e-content" itemprop="articleBody">
 
-      <h2 id="NewsRecommendation" class="paper-head"> NewsRecommendation</h2>
-<div class="visible-content">
+      <h2 id=NewsRecommendation class="paper-head"> NewsRecommendation</h2><div class="visible-content">
 <article class="paper-entry">
-<h3 id="dkn-deep-363" class="title-link">[Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv'18, 2018.01</h3>
-<br><a href="https://arxiv.org/abs/1801.08284" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="dkn-deep-363" class="title-link">[Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv'18, 2018.01</h3><br><a href="https://arxiv.org/abs/1801.08284" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/363" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/363" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1057,25 +1049,20 @@ My Issue
 <a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="Contents-based.html" target="_blank" rel="noopener noreferrer">#Contents-based</a>
 <a class="button" href="WWW.html" target="_blank" rel="noopener noreferrer">#WWW</a>
-<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2021-06-01</span>
 <span class="snippet"><span>GPT Summary</span>- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># Overview<br><br>Contents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。<br><br>CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。<br><br>※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）<br><br><br><br>CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br># Experiments<br><br>BingNewsのサーバログデータを利用して評価。<br><br>データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。<br><br>2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。<br><br>また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。<br><br><br><br>word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。<br><br><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png" alt="image" loading="lazy" width="550" height="400"><br><br><br><br><br><br>DeepFM超えを達成。<br><br>entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。<br><br>また、attentionを抜くとAUCは1ポイントほど減少する。<br><br><br><br>1ユーザのtraining/testセットのサンプル<br><br><img src="https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png" alt="image" loading="lazy" width="550" height="400"><br><br></strong></p>
-<p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/365" target="_blank" rel="noopener noreferrer">Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</a>
-
+<strong># Overview<br><br>Contents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。<br><br>CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。<br><br>※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）<br><br><br><br>CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Experiments<br><br>BingNewsのサーバログデータを利用して評価。<br><br>データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。<br><br>2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。<br><br>また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。<br><br><br><br>word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。<br><br><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><br><br>DeepFM超えを達成。<br><br>entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。<br><br>また、attentionを抜くとAUCは1ポイントほど減少する。<br><br><br><br>1ユーザのtraining/testセットのサンプル<br><br><img src="https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/365" target="_blank" rel="noopener noreferrer">Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</a>
+</strong>
 <br>
- によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）</p>
-<p>Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様</p>
-<p>content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。</p>
-<p>（おそらく）著者によるtensor-flowでの実装: 
+ によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）</p><p>Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様</p><p>content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。</p><p>（おそらく）著者によるtensor-flowでの実装: 
 
 
 <a href="https://github.com/hwwang55/DKN" target="_blank" rel="noopener noreferrer">https://github.com/hwwang55/DKN</a>
 
 
-</p>
-<p>日本語解説<br><br>
+</p><p>日本語解説<br><br>
 
 
 <a href="https://qiita.com/agatan/items/24c6d8e00f2fc861bb04" target="_blank" rel="noopener noreferrer">https://qiita.com/agatan/items/24c6d8e00f2fc861bb04</a>
@@ -1084,15 +1071,14 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="newspicksに推薦システムを本番投入する上で一番優先すべきだったこと-1367" class="title-link">NewsPicksに推薦システムを本番投入する上で一番優先すべきだったこと, 2024.08</h3>
-<br><a href="https://tech.uzabase.com/entry/2024/08/29/161828" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="newspicksに推薦システムを本番投入する上で一番優先すべきだったこと-1367" class="title-link">NewsPicksに推薦システムを本番投入する上で一番優先すべきだったこと, 2024.08</h3><br><a href="https://tech.uzabase.com/entry/2024/08/29/161828" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1367" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1367" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1103,21 +1089,19 @@ My Issue
 <a class="button" href="MLOps.html" target="_blank" rel="noopener noreferrer">#MLOps</a>
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
-<a class="button" href="A_B%20Testing.html" target="_blank" rel="noopener noreferrer">#A/B Testing</a>
+<a class="button" href="A-B-Testing.html" target="_blank" rel="noopener noreferrer">#A/B Testing</a>
 <span class="issue_date">Issue Date: 2024-08-31</span>
-<span class="snippet"><span>Comment</span><p>&gt;推薦モデルの良し悪しをより高い確度で評価できる実験を、より簡単に実行できる状態を作ることでした。平たく言えば「いかにA/Bテストしやすい推薦システムを設計するか」が最も重要だった訳です。<br><br>オフライン評価とオンライン評価の相関がない系の話で、A/Bテストを容易に実施できる環境になかった、かつCTRが実際に向上したモデルがオフライン評価での性能が現行モデルよりも悪く、意思決定がなかなかできなかった、という話。<br><br>うーんやはり、推薦におけるオフライン評価ってあまりあてにできないよね、、、<br>そもそも新たなモデルをデプロイした時点で、テストした時とデータの分布が変わるわけだし、、、<br><br>Off-Policy Evaluationの話は勉強したい。</p>
-<p>あと、定性評価は重要</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>>推薦モデルの良し悪しをより高い確度で評価できる実験を、より簡単に実行できる状態を作ることでした。平たく言えば「いかにA/Bテストしやすい推薦システムを設計するか」が最も重要だった訳です。<br><br>オフライン評価とオンライン評価の相関がない系の話で、A/Bテストを容易に実施できる環境になかった、かつCTRが実際に向上したモデルがオフライン評価での性能が現行モデルよりも悪く、意思決定がなかなかできなかった、という話。<br><br>うーんやはり、推薦におけるオフライン評価ってあまりあてにできないよね、、、<br>そもそも新たなモデルをデプロイした時点で、テストした時とデータの分布が変わるわけだし、、、<br><br>Off-Policy Evaluationの話は勉強したい。</p><p>あと、定性評価は重要</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="scene-a-44" class="title-link">[Paper Note] SCENE: A Scalable Two-Stage Personalized News Recommendation System, Li et al., SIGIR’11</h3>
-<br><a href="https://users.cs.fiu.edu/~taoli/pub/p125-li-sigir2011.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="scene-a-44" class="title-link">[Paper Note] SCENE: A Scalable Two-Stage Personalized News Recommendation System, Li et al., SIGIR’11</h3><br><a href="https://users.cs.fiu.edu/~taoli/pub/p125-li-sigir2011.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/44" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/44" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1126,7 +1110,7 @@ My Issue
 <a class="button" href="Document.html" target="_blank" rel="noopener noreferrer">#Document</a>
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
-<a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>・ニュース推薦には3つのチャレンジがある。<br><br><br><br>1. スケーラビリティ　より高速なreal-time processing<br><br>2. あるニュース記事を読むと、続いて読む記事に影響を与える<br><br>3. popularityとrecencyが時間経過に従い変化するので、これらをどう扱うか<br><br><br><br>これらに対処する手法を提案</p></span><br><br>
 </article>
@@ -1178,51 +1162,51 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav">
-<a class="previous" href="/paper_notes/articles/DemonstrationSelection.html" title="DemonstrationSelectionに関する論文・技術記事メモの一覧">DemonstrationSelectionに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Calibration.html" title="Calibrationに関する論文・技術記事メモの一覧">Calibrationに関する論文・技術記事メモの一覧</a>
-</div>
-<div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/DemonstrationSelection.html" title="DemonstrationSelectionに関する論文・技術記事メモの一覧">DemonstrationSelectionに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Calibration.html" title="Calibrationに関する論文・技術記事メモの一覧">Calibrationに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/General.html" title="Generalに関する論文・技術記事メモの一覧">
-            Generalに関する論文・技術記事メモの一覧
+          <a class="post-link"
+            href="/paper_notes/articles/MultiModal.html"
+            title="MultiModalに関する論文・技術記事メモの一覧">
+            MultiModalに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 160</span> 
+  <span class="post-badge badge-new">📝 160</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Semi-Supervised.html" title="Semi-Supervisedに関する論文・技術記事メモの一覧">
-            Semi-Supervisedに関する論文・技術記事メモの一覧
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Interspeech.html"
+            title="Interspeechに関する論文・技術記事メモの一覧">
+            Interspeechに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Post.html" title="Postに関する論文・技術記事メモの一覧">
-            Postに関する論文・技術記事メモの一覧
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/INLG.html"
+            title="INLGに関する論文・技術記事メモの一覧">
+            INLGに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Workshop.html" title="Workshopに関する論文・技術記事メモの一覧">
-            Workshopに関する論文・技術記事メモの一覧
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/DyingReLU.html"
+            title="DyingReLUに関する論文・技術記事メモの一覧">
+            DyingReLUに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
-        </li>
-</ul>
-    </div>
-<div class="post-comments"></div></section>
+        </li></ul>
+    </div><div class="post-comments"></div></section>
 </div>
 
 
@@ -1439,13 +1423,11 @@ document.addEventListener("DOMContentLoaded", function() {
   <data class="u-url" href="/paper_notes/"></data>
 
   <div class="wrapper">
-    <div class="site-footer-inner">
-<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+    <div class="site-footer-inner"><div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
       <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
       generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
       another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
-      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
-</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a></div>
     </div>
   </div>
 </footer>

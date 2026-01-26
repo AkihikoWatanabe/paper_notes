@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="ja"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,22 +13,21 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://platform.twitter.com">
-  <link rel="dns-prefetch" href="https://pbs.twimg.com">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+  <link rel="dns-prefetch" href="https://pbs.twimg.com"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>ChatGPTに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
-<meta name="generator" content="Jekyll v3.10.0">
-<meta property="og:title" content="ChatGPTに関する論文・技術記事メモの一覧">
-<meta name="author" content="AkihikoWATANABE">
-<meta property="og:locale" content="ja">
-<meta name="description" content="ChatGPT On The Planning Abilities of OpenAI's o1 Models: Feasibility, Optimality, and Generalizability, Kevin Wang+, N_A, arXiv'24, 2024.11 Paper/Blog Link My Issue #Pocket #NLP Issue Date: 2024-11-02 GPT Summary- 本研究では、OpenAIのo1モデルの計画能力を評価し、実現可能性、最適性、一般化の3つの側面に焦点を当てています。特に、制約の多いタスクや空間的に複雑な環境における強みとボトルネックを特定しました。o1-previewは、構造化された環境での制約遵守においてGPT-4を上回る一方で、冗長なアクションを伴う最適でない解を生成し、一般化に苦労しています。この研究は、LLMsの計画における限界を明らかにし、今後の改善の方向性を示しています。 Commento1のplanningの性能について知りたくなったら読む [Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL'23, 2023.05 Paper/Blog Link My Issue #Analysis #Pocket #LanguageModel #Evaluation #LLM-as-a-Judge #Attack #ACL #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2023-07-22 GPT Summary- 人間評価の再現性が低いため、NLPモデル間の公正な比較が難しい。そこで、大規模言語モデル（LLM）を人間評価の代替手段として利用することを探求。本研究では、LLMに同一指示とサンプルを与え、評価を実施するLLM評価を提案。オープンエンドのストーリー生成や敵対的攻撃のタスクに対する評価結果は、人間専門家の評価と高い一致を示し、評価の安定性も確認。LLMを用いたテキスト評価の可能性やその限界、倫理的課題についても考察。 CommentLLMがテキストの品質評価において、人間による評価者の代替となりうるか？という疑問を初めて実験的に示した研究で、インパクトが大きく重要論文と判断。ただし、実験のスコープは物語生成と敵対的生成（テキスト分類器を騙すような摂動を加える）の2タスクである点、には注意。ChatGPT（おそらくGPT-3.5）が人間の評価者（3人のEnglish teacher）とopen-endで生成された物語にたいして、以下の4つの観点に関してratingの平均で見た時に同様の傾向のスコアを付与することを実験的に明らかにした：- Grammaticality [^1]: テキストの文法の正しさ- Cohesiveness: テキストの一貫性- Likeability: テキストが読んでいて楽しいか- Relevance: promptに対してどれだけ適切なテキストが生成されているか ただし、T0やtext-curie-001 においてはこのような傾向は見受けられなかった。[^2]また、ChatGPTによる説明とratingを人間の評価者に対してblindで提示したところ、人間が見ても妥当な判断だと認知された。全体の傾向としてではなく、個別のratingがどの程度同じような傾向を示すか（i.e., 人間があるstoryを高くratingしたら、LLMも高くratingするか？）をケンドールの順位相関係数で分析（200サンプルに対して3人の英語教員のスコアの平均, text-davinciによる3回の独立したratingを実施した平均スコアを用いて計算）したところ、4つの観点のうち全てにおいて正の相関が見受けられた（Table2, p-valueは&lt;0.05で統計的に有意）。が、Relevanceのみが強い相関を示し、他の指標については弱い相関にとどまっている。しかし、Table6に示されている通り、2人の英語の先生同士で個別のjudgeに感して同様にケンドールの順位相関係数を測定しても、人間-LLM間と同様の傾向が見受けられる。すなわち、Relevanceのみが強い相関で他は弱い相関。このことから、人間同士でも個別のサンプルに対する判断は一致しない（=主観的なタスク）ということは留意する必要がある。&lt;img src=&quot;https://github.com/user-attachments/assets/4c4409ff-b4eb-4f73-b90d-eeb6b4d81199&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/54d21f3c-7ab6-4b41-a862-8dfc8d19b41a&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;敵対的生成に関する実験については、Synonym Substitution Attack (SSAs; 良性のサンプルを同義語で置換する手法で、全体的な意味は保たれるため一般的な人間は正しく認知してしまうが、実際には文法がおかしくなったり不自然になったり、意味が変わってしまうことが先行研究によって知られているようなものらしい)によって実験。Fluency / Meaning Preservingの2つの指標で英語教員とLLMによる評価を比較した結果、人間は正しくadversarialなサンプルと良性なサンプルを区別できており、ChatGPT（おそらくGPT-3.5）も区別ができている（Table4）。ただし、人間のスコアと比較するとChatGPTは高めのスコアを出す傾向がある点には注意ではあるものの、良性サンプル &gt; 敵対的サンプル という序列の判断に関しては人間と同様の傾向を示していることが示唆された。&lt;img src=&quot;https://github.com/user-attachments/assets/d94460fc-0615-4f86-82e5-3c7b15369cc6&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;[^1]: ただし、LLMはpunctuationのミスを文法エラーと判断するが、一人の英語の先生は文法エラーとしてみなさないなどの現象も観察され、人間は独自の評価criteriaを保持していることも窺える[^2]: （感想）ある程度能力の高いLLMかRLHFなどを用いて人間の好みに対してalignmentがとられていないとうまくいかないのかもしれない本研究は非常に初期の研究であり、現在のfrontierモデル群（特にreasoningモデル）を用いた場合にはどの程度改善しているか？という点は気になる。 How is ChatGPT's behavior changing over time?, Lingjiao Chen+, N_A, arXiv'23 Paper/Blog Link My Issue #Pocket #NLP #Evaluation Issue Date: 2023-07-22 GPT Summary- GPT-3.5とGPT-4は、大規模言語モデル（LLM）のサービスであり、その性能と振る舞いは時間とともに変動することがわかった。例えば、GPT-4は素数の特定に優れていたが、後のバージョンでは低い正答率となった。また、GPT-3.5はGPT-4よりも優れた性能を示した。さらに、GPT-4とGPT-3.5の両方が時間とともに敏感な質問への回答やコード生成でのミスが増えた。この結果から、LLMの品質を継続的に監視する必要性が示唆される。 CommentGPT3.5, GPT4共にfreezeされてないのなら、研究で利用すると結果が再現されないので、研究で使うべきではない。↑(2025.10追記)当時の私はこのように感じたようだが、以下を確認した方が良いと思う:- 実験設定として、エンドポイントのモデル名にはタイムスタンプが付与されているが、同じモデルシリーズの異なるタイムスタンプモデル間の比較なのか、それとも全く同じタイムスタンプのモデルでの比較なのか- サンプリングパラメータの設定や推論の試行回数なとがreliableな比較ができうる設定になっているか。あとは上記を確認したとしても、研究で使うべきではない、は言い過ぎで、実験の比較対象の一部として使う分には良いと思う（ただし、実験結果の主要な知見は再現可能な設定から得られるべきと考える。（当時は随分脊髄反射的にコメントを書いていますね…） A Review of ChatGPT Applications in Education, Marketing, Software Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv'23 Paper/Blog Link My Issue #Survey #Pocket #Education Issue Date: 2023-05-04 GPT Summary- - ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。- 最新のChatGPTバージョンが導入され、他の言語モデルも登場している。- これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。- 本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。 [Paper Note] AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Steffen Herbold+, arXiv'23 Paper/Blog Link My Issue #Pocket #NLP #LanguageModel #Education #AES(AutomatedEssayScoring) Issue Date: 2023-04-28 GPT Summary- ChatGPTが生成したエッセイは、人間が書いたものよりも質が高いと評価されることが大規模な研究で示された。生成されたエッセイは独自の言語的特徴を持ち、教育者はこの技術を活用する新たな教育コンセプトを開発する必要がある。 CommentChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; [Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23 Paper/Blog Link My Issue #Pocket #NLP #Assessment #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS'22 Paper/Blog Link My Issue #NLP #LanguageModel #Alignment #RLHF #PPO (ProximalPolicyOptimization) #PostTraining #read-later #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2024-04-28 GPT Summary- 大規模な言語モデルは、ユーザーの意図に合わない出力を生成することがあります。本研究では、人間のフィードバックを使用してGPT-3を微調整し、InstructGPTと呼ばれるモデルを提案します。この手法により、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれ、真実性の向上と有害な出力の削減が示されました。さらに、一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ改善の余地がありますが、人間のフィードバックを使用した微調整が有望な方向であることを示しています。 CommentChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; ChatGPT ヘルスケアが登場, OpenAI, 2026.01 Paper/Blog Link My Issue #Article #GenerativeAI #Blog Issue Date: 2026-01-09 Comment元ポスト:">
-<meta property="og:description" content="ChatGPT On The Planning Abilities of OpenAI's o1 Models: Feasibility, Optimality, and Generalizability, Kevin Wang+, N_A, arXiv'24, 2024.11 Paper/Blog Link My Issue #Pocket #NLP Issue Date: 2024-11-02 GPT Summary- 本研究では、OpenAIのo1モデルの計画能力を評価し、実現可能性、最適性、一般化の3つの側面に焦点を当てています。特に、制約の多いタスクや空間的に複雑な環境における強みとボトルネックを特定しました。o1-previewは、構造化された環境での制約遵守においてGPT-4を上回る一方で、冗長なアクションを伴う最適でない解を生成し、一般化に苦労しています。この研究は、LLMsの計画における限界を明らかにし、今後の改善の方向性を示しています。 Commento1のplanningの性能について知りたくなったら読む [Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL'23, 2023.05 Paper/Blog Link My Issue #Analysis #Pocket #LanguageModel #Evaluation #LLM-as-a-Judge #Attack #ACL #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2023-07-22 GPT Summary- 人間評価の再現性が低いため、NLPモデル間の公正な比較が難しい。そこで、大規模言語モデル（LLM）を人間評価の代替手段として利用することを探求。本研究では、LLMに同一指示とサンプルを与え、評価を実施するLLM評価を提案。オープンエンドのストーリー生成や敵対的攻撃のタスクに対する評価結果は、人間専門家の評価と高い一致を示し、評価の安定性も確認。LLMを用いたテキスト評価の可能性やその限界、倫理的課題についても考察。 CommentLLMがテキストの品質評価において、人間による評価者の代替となりうるか？という疑問を初めて実験的に示した研究で、インパクトが大きく重要論文と判断。ただし、実験のスコープは物語生成と敵対的生成（テキスト分類器を騙すような摂動を加える）の2タスクである点、には注意。ChatGPT（おそらくGPT-3.5）が人間の評価者（3人のEnglish teacher）とopen-endで生成された物語にたいして、以下の4つの観点に関してratingの平均で見た時に同様の傾向のスコアを付与することを実験的に明らかにした：- Grammaticality [^1]: テキストの文法の正しさ- Cohesiveness: テキストの一貫性- Likeability: テキストが読んでいて楽しいか- Relevance: promptに対してどれだけ適切なテキストが生成されているか ただし、T0やtext-curie-001 においてはこのような傾向は見受けられなかった。[^2]また、ChatGPTによる説明とratingを人間の評価者に対してblindで提示したところ、人間が見ても妥当な判断だと認知された。全体の傾向としてではなく、個別のratingがどの程度同じような傾向を示すか（i.e., 人間があるstoryを高くratingしたら、LLMも高くratingするか？）をケンドールの順位相関係数で分析（200サンプルに対して3人の英語教員のスコアの平均, text-davinciによる3回の独立したratingを実施した平均スコアを用いて計算）したところ、4つの観点のうち全てにおいて正の相関が見受けられた（Table2, p-valueは&lt;0.05で統計的に有意）。が、Relevanceのみが強い相関を示し、他の指標については弱い相関にとどまっている。しかし、Table6に示されている通り、2人の英語の先生同士で個別のjudgeに感して同様にケンドールの順位相関係数を測定しても、人間-LLM間と同様の傾向が見受けられる。すなわち、Relevanceのみが強い相関で他は弱い相関。このことから、人間同士でも個別のサンプルに対する判断は一致しない（=主観的なタスク）ということは留意する必要がある。&lt;img src=&quot;https://github.com/user-attachments/assets/4c4409ff-b4eb-4f73-b90d-eeb6b4d81199&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/54d21f3c-7ab6-4b41-a862-8dfc8d19b41a&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;敵対的生成に関する実験については、Synonym Substitution Attack (SSAs; 良性のサンプルを同義語で置換する手法で、全体的な意味は保たれるため一般的な人間は正しく認知してしまうが、実際には文法がおかしくなったり不自然になったり、意味が変わってしまうことが先行研究によって知られているようなものらしい)によって実験。Fluency / Meaning Preservingの2つの指標で英語教員とLLMによる評価を比較した結果、人間は正しくadversarialなサンプルと良性なサンプルを区別できており、ChatGPT（おそらくGPT-3.5）も区別ができている（Table4）。ただし、人間のスコアと比較するとChatGPTは高めのスコアを出す傾向がある点には注意ではあるものの、良性サンプル &gt; 敵対的サンプル という序列の判断に関しては人間と同様の傾向を示していることが示唆された。&lt;img src=&quot;https://github.com/user-attachments/assets/d94460fc-0615-4f86-82e5-3c7b15369cc6&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;[^1]: ただし、LLMはpunctuationのミスを文法エラーと判断するが、一人の英語の先生は文法エラーとしてみなさないなどの現象も観察され、人間は独自の評価criteriaを保持していることも窺える[^2]: （感想）ある程度能力の高いLLMかRLHFなどを用いて人間の好みに対してalignmentがとられていないとうまくいかないのかもしれない本研究は非常に初期の研究であり、現在のfrontierモデル群（特にreasoningモデル）を用いた場合にはどの程度改善しているか？という点は気になる。 How is ChatGPT's behavior changing over time?, Lingjiao Chen+, N_A, arXiv'23 Paper/Blog Link My Issue #Pocket #NLP #Evaluation Issue Date: 2023-07-22 GPT Summary- GPT-3.5とGPT-4は、大規模言語モデル（LLM）のサービスであり、その性能と振る舞いは時間とともに変動することがわかった。例えば、GPT-4は素数の特定に優れていたが、後のバージョンでは低い正答率となった。また、GPT-3.5はGPT-4よりも優れた性能を示した。さらに、GPT-4とGPT-3.5の両方が時間とともに敏感な質問への回答やコード生成でのミスが増えた。この結果から、LLMの品質を継続的に監視する必要性が示唆される。 CommentGPT3.5, GPT4共にfreezeされてないのなら、研究で利用すると結果が再現されないので、研究で使うべきではない。↑(2025.10追記)当時の私はこのように感じたようだが、以下を確認した方が良いと思う:- 実験設定として、エンドポイントのモデル名にはタイムスタンプが付与されているが、同じモデルシリーズの異なるタイムスタンプモデル間の比較なのか、それとも全く同じタイムスタンプのモデルでの比較なのか- サンプリングパラメータの設定や推論の試行回数なとがreliableな比較ができうる設定になっているか。あとは上記を確認したとしても、研究で使うべきではない、は言い過ぎで、実験の比較対象の一部として使う分には良いと思う（ただし、実験結果の主要な知見は再現可能な設定から得られるべきと考える。（当時は随分脊髄反射的にコメントを書いていますね…） A Review of ChatGPT Applications in Education, Marketing, Software Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv'23 Paper/Blog Link My Issue #Survey #Pocket #Education Issue Date: 2023-05-04 GPT Summary- - ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。- 最新のChatGPTバージョンが導入され、他の言語モデルも登場している。- これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。- 本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。 [Paper Note] AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Steffen Herbold+, arXiv'23 Paper/Blog Link My Issue #Pocket #NLP #LanguageModel #Education #AES(AutomatedEssayScoring) Issue Date: 2023-04-28 GPT Summary- ChatGPTが生成したエッセイは、人間が書いたものよりも質が高いと評価されることが大規模な研究で示された。生成されたエッセイは独自の言語的特徴を持ち、教育者はこの技術を活用する新たな教育コンセプトを開発する必要がある。 CommentChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; [Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23 Paper/Blog Link My Issue #Pocket #NLP #Assessment #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS'22 Paper/Blog Link My Issue #NLP #LanguageModel #Alignment #RLHF #PPO (ProximalPolicyOptimization) #PostTraining #read-later #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2024-04-28 GPT Summary- 大規模な言語モデルは、ユーザーの意図に合わない出力を生成することがあります。本研究では、人間のフィードバックを使用してGPT-3を微調整し、InstructGPTと呼ばれるモデルを提案します。この手法により、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれ、真実性の向上と有害な出力の削減が示されました。さらに、一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ改善の余地がありますが、人間のフィードバックを使用した微調整が有望な方向であることを示しています。 CommentChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; ChatGPT ヘルスケアが登場, OpenAI, 2026.01 Paper/Blog Link My Issue #Article #GenerativeAI #Blog Issue Date: 2026-01-09 Comment元ポスト:">
-<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/ChatGPT.html">
-<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/ChatGPT.html">
-<meta property="og:site_name" content="わたしのべんきょうノート">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2026-01-09T00:00:00+00:00">
-<meta name="twitter:card" content="summary">
-<meta property="twitter:title" content="ChatGPTに関する論文・技術記事メモの一覧">
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ChatGPTに関する論文・技術記事メモの一覧" />
+<meta name="author" content="AkihikoWATANABE" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="ChatGPT On The Planning Abilities of OpenAI&#39;s o1 Models: Feasibility, Optimality, and Generalizability, Kevin Wang+, N_A, arXiv&#39;24, 2024.11 Paper/Blog Link My Issue #Pocket #NLP Issue Date: 2024-11-02 GPT Summary- 本研究では、OpenAIのo1モデルの計画能力を評価し、実現可能性、最適性、一般化の3つの側面に焦点を当てています。特に、制約の多いタスクや空間的に複雑な環境における強みとボトルネックを特定しました。o1-previewは、構造化された環境での制約遵守においてGPT-4を上回る一方で、冗長なアクションを伴う最適でない解を生成し、一般化に苦労しています。この研究は、LLMsの計画における限界を明らかにし、今後の改善の方向性を示しています。 Commento1のplanningの性能について知りたくなったら読む [Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL&#39;23, 2023.05 Paper/Blog Link My Issue #Analysis #Pocket #LanguageModel #Evaluation #LLM-as-a-Judge #Attack #ACL #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2023-07-22 GPT Summary- 人間評価の再現性が低いため、NLPモデル間の公正な比較が難しい。そこで、大規模言語モデル（LLM）を人間評価の代替手段として利用することを探求。本研究では、LLMに同一指示とサンプルを与え、評価を実施するLLM評価を提案。オープンエンドのストーリー生成や敵対的攻撃のタスクに対する評価結果は、人間専門家の評価と高い一致を示し、評価の安定性も確認。LLMを用いたテキスト評価の可能性やその限界、倫理的課題についても考察。 CommentLLMがテキストの品質評価において、人間による評価者の代替となりうるか？という疑問を初めて実験的に示した研究で、インパクトが大きく重要論文と判断。ただし、実験のスコープは物語生成と敵対的生成（テキスト分類器を騙すような摂動を加える）の2タスクである点、には注意。ChatGPT（おそらくGPT-3.5）が人間の評価者（3人のEnglish teacher）とopen-endで生成された物語にたいして、以下の4つの観点に関してratingの平均で見た時に同様の傾向のスコアを付与することを実験的に明らかにした：- Grammaticality [^1]: テキストの文法の正しさ- Cohesiveness: テキストの一貫性- Likeability: テキストが読んでいて楽しいか- Relevance: promptに対してどれだけ適切なテキストが生成されているか ただし、T0やtext-curie-001 においてはこのような傾向は見受けられなかった。[^2]また、ChatGPTによる説明とratingを人間の評価者に対してblindで提示したところ、人間が見ても妥当な判断だと認知された。全体の傾向としてではなく、個別のratingがどの程度同じような傾向を示すか（i.e., 人間があるstoryを高くratingしたら、LLMも高くratingするか？）をケンドールの順位相関係数で分析（200サンプルに対して3人の英語教員のスコアの平均, text-davinciによる3回の独立したratingを実施した平均スコアを用いて計算）したところ、4つの観点のうち全てにおいて正の相関が見受けられた（Table2, p-valueは&lt;0.05で統計的に有意）。が、Relevanceのみが強い相関を示し、他の指標については弱い相関にとどまっている。しかし、Table6に示されている通り、2人の英語の先生同士で個別のjudgeに感して同様にケンドールの順位相関係数を測定しても、人間-LLM間と同様の傾向が見受けられる。すなわち、Relevanceのみが強い相関で他は弱い相関。このことから、人間同士でも個別のサンプルに対する判断は一致しない（=主観的なタスク）ということは留意する必要がある。&lt;img src=&quot;https://github.com/user-attachments/assets/4c4409ff-b4eb-4f73-b90d-eeb6b4d81199&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/54d21f3c-7ab6-4b41-a862-8dfc8d19b41a&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;敵対的生成に関する実験については、Synonym Substitution Attack (SSAs; 良性のサンプルを同義語で置換する手法で、全体的な意味は保たれるため一般的な人間は正しく認知してしまうが、実際には文法がおかしくなったり不自然になったり、意味が変わってしまうことが先行研究によって知られているようなものらしい)によって実験。Fluency / Meaning Preservingの2つの指標で英語教員とLLMによる評価を比較した結果、人間は正しくadversarialなサンプルと良性なサンプルを区別できており、ChatGPT（おそらくGPT-3.5）も区別ができている（Table4）。ただし、人間のスコアと比較するとChatGPTは高めのスコアを出す傾向がある点には注意ではあるものの、良性サンプル &gt; 敵対的サンプル という序列の判断に関しては人間と同様の傾向を示していることが示唆された。&lt;img src=&quot;https://github.com/user-attachments/assets/d94460fc-0615-4f86-82e5-3c7b15369cc6&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;[^1]: ただし、LLMはpunctuationのミスを文法エラーと判断するが、一人の英語の先生は文法エラーとしてみなさないなどの現象も観察され、人間は独自の評価criteriaを保持していることも窺える[^2]: （感想）ある程度能力の高いLLMかRLHFなどを用いて人間の好みに対してalignmentがとられていないとうまくいかないのかもしれない本研究は非常に初期の研究であり、現在のfrontierモデル群（特にreasoningモデル）を用いた場合にはどの程度改善しているか？という点は気になる。 How is ChatGPT&#39;s behavior changing over time?, Lingjiao Chen+, N_A, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #Evaluation Issue Date: 2023-07-22 GPT Summary- GPT-3.5とGPT-4は、大規模言語モデル（LLM）のサービスであり、その性能と振る舞いは時間とともに変動することがわかった。例えば、GPT-4は素数の特定に優れていたが、後のバージョンでは低い正答率となった。また、GPT-3.5はGPT-4よりも優れた性能を示した。さらに、GPT-4とGPT-3.5の両方が時間とともに敏感な質問への回答やコード生成でのミスが増えた。この結果から、LLMの品質を継続的に監視する必要性が示唆される。 CommentGPT3.5, GPT4共にfreezeされてないのなら、研究で利用すると結果が再現されないので、研究で使うべきではない。↑(2025.10追記)当時の私はこのように感じたようだが、以下を確認した方が良いと思う:- 実験設定として、エンドポイントのモデル名にはタイムスタンプが付与されているが、同じモデルシリーズの異なるタイムスタンプモデル間の比較なのか、それとも全く同じタイムスタンプのモデルでの比較なのか- サンプリングパラメータの設定や推論の試行回数なとがreliableな比較ができうる設定になっているか。あとは上記を確認したとしても、研究で使うべきではない、は言い過ぎで、実験の比較対象の一部として使う分には良いと思う（ただし、実験結果の主要な知見は再現可能な設定から得られるべきと考える。（当時は随分脊髄反射的にコメントを書いていますね…） A Review of ChatGPT Applications in Education, Marketing, Software Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv&#39;23 Paper/Blog Link My Issue #Survey #Pocket #Education Issue Date: 2023-05-04 GPT Summary- - ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。- 最新のChatGPTバージョンが導入され、他の言語モデルも登場している。- これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。- 本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。 [Paper Note] AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Steffen Herbold+, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #LanguageModel #Education #AES(AutomatedEssayScoring) Issue Date: 2023-04-28 GPT Summary- ChatGPTが生成したエッセイは、人間が書いたものよりも質が高いと評価されることが大規模な研究で示された。生成されたエッセイは独自の言語的特徴を持ち、教育者はこの技術を活用する新たな教育コンセプトを開発する必要がある。 CommentChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; [Paper Note] Evaluating ChatGPT&#39;s Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #Assessment #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS&#39;22 Paper/Blog Link My Issue #NLP #LanguageModel #Alignment #RLHF #PPO (ProximalPolicyOptimization) #PostTraining #read-later #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2024-04-28 GPT Summary- 大規模な言語モデルは、ユーザーの意図に合わない出力を生成することがあります。本研究では、人間のフィードバックを使用してGPT-3を微調整し、InstructGPTと呼ばれるモデルを提案します。この手法により、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれ、真実性の向上と有害な出力の削減が示されました。さらに、一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ改善の余地がありますが、人間のフィードバックを使用した微調整が有望な方向であることを示しています。 CommentChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; ChatGPT ヘルスケアが登場, OpenAI, 2026.01 Paper/Blog Link My Issue #Article #GenerativeAI #Blog Issue Date: 2026-01-09 Comment元ポスト:" />
+<meta property="og:description" content="ChatGPT On The Planning Abilities of OpenAI&#39;s o1 Models: Feasibility, Optimality, and Generalizability, Kevin Wang+, N_A, arXiv&#39;24, 2024.11 Paper/Blog Link My Issue #Pocket #NLP Issue Date: 2024-11-02 GPT Summary- 本研究では、OpenAIのo1モデルの計画能力を評価し、実現可能性、最適性、一般化の3つの側面に焦点を当てています。特に、制約の多いタスクや空間的に複雑な環境における強みとボトルネックを特定しました。o1-previewは、構造化された環境での制約遵守においてGPT-4を上回る一方で、冗長なアクションを伴う最適でない解を生成し、一般化に苦労しています。この研究は、LLMsの計画における限界を明らかにし、今後の改善の方向性を示しています。 Commento1のplanningの性能について知りたくなったら読む [Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL&#39;23, 2023.05 Paper/Blog Link My Issue #Analysis #Pocket #LanguageModel #Evaluation #LLM-as-a-Judge #Attack #ACL #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2023-07-22 GPT Summary- 人間評価の再現性が低いため、NLPモデル間の公正な比較が難しい。そこで、大規模言語モデル（LLM）を人間評価の代替手段として利用することを探求。本研究では、LLMに同一指示とサンプルを与え、評価を実施するLLM評価を提案。オープンエンドのストーリー生成や敵対的攻撃のタスクに対する評価結果は、人間専門家の評価と高い一致を示し、評価の安定性も確認。LLMを用いたテキスト評価の可能性やその限界、倫理的課題についても考察。 CommentLLMがテキストの品質評価において、人間による評価者の代替となりうるか？という疑問を初めて実験的に示した研究で、インパクトが大きく重要論文と判断。ただし、実験のスコープは物語生成と敵対的生成（テキスト分類器を騙すような摂動を加える）の2タスクである点、には注意。ChatGPT（おそらくGPT-3.5）が人間の評価者（3人のEnglish teacher）とopen-endで生成された物語にたいして、以下の4つの観点に関してratingの平均で見た時に同様の傾向のスコアを付与することを実験的に明らかにした：- Grammaticality [^1]: テキストの文法の正しさ- Cohesiveness: テキストの一貫性- Likeability: テキストが読んでいて楽しいか- Relevance: promptに対してどれだけ適切なテキストが生成されているか ただし、T0やtext-curie-001 においてはこのような傾向は見受けられなかった。[^2]また、ChatGPTによる説明とratingを人間の評価者に対してblindで提示したところ、人間が見ても妥当な判断だと認知された。全体の傾向としてではなく、個別のratingがどの程度同じような傾向を示すか（i.e., 人間があるstoryを高くratingしたら、LLMも高くratingするか？）をケンドールの順位相関係数で分析（200サンプルに対して3人の英語教員のスコアの平均, text-davinciによる3回の独立したratingを実施した平均スコアを用いて計算）したところ、4つの観点のうち全てにおいて正の相関が見受けられた（Table2, p-valueは&lt;0.05で統計的に有意）。が、Relevanceのみが強い相関を示し、他の指標については弱い相関にとどまっている。しかし、Table6に示されている通り、2人の英語の先生同士で個別のjudgeに感して同様にケンドールの順位相関係数を測定しても、人間-LLM間と同様の傾向が見受けられる。すなわち、Relevanceのみが強い相関で他は弱い相関。このことから、人間同士でも個別のサンプルに対する判断は一致しない（=主観的なタスク）ということは留意する必要がある。&lt;img src=&quot;https://github.com/user-attachments/assets/4c4409ff-b4eb-4f73-b90d-eeb6b4d81199&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/54d21f3c-7ab6-4b41-a862-8dfc8d19b41a&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;敵対的生成に関する実験については、Synonym Substitution Attack (SSAs; 良性のサンプルを同義語で置換する手法で、全体的な意味は保たれるため一般的な人間は正しく認知してしまうが、実際には文法がおかしくなったり不自然になったり、意味が変わってしまうことが先行研究によって知られているようなものらしい)によって実験。Fluency / Meaning Preservingの2つの指標で英語教員とLLMによる評価を比較した結果、人間は正しくadversarialなサンプルと良性なサンプルを区別できており、ChatGPT（おそらくGPT-3.5）も区別ができている（Table4）。ただし、人間のスコアと比較するとChatGPTは高めのスコアを出す傾向がある点には注意ではあるものの、良性サンプル &gt; 敵対的サンプル という序列の判断に関しては人間と同様の傾向を示していることが示唆された。&lt;img src=&quot;https://github.com/user-attachments/assets/d94460fc-0615-4f86-82e5-3c7b15369cc6&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;[^1]: ただし、LLMはpunctuationのミスを文法エラーと判断するが、一人の英語の先生は文法エラーとしてみなさないなどの現象も観察され、人間は独自の評価criteriaを保持していることも窺える[^2]: （感想）ある程度能力の高いLLMかRLHFなどを用いて人間の好みに対してalignmentがとられていないとうまくいかないのかもしれない本研究は非常に初期の研究であり、現在のfrontierモデル群（特にreasoningモデル）を用いた場合にはどの程度改善しているか？という点は気になる。 How is ChatGPT&#39;s behavior changing over time?, Lingjiao Chen+, N_A, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #Evaluation Issue Date: 2023-07-22 GPT Summary- GPT-3.5とGPT-4は、大規模言語モデル（LLM）のサービスであり、その性能と振る舞いは時間とともに変動することがわかった。例えば、GPT-4は素数の特定に優れていたが、後のバージョンでは低い正答率となった。また、GPT-3.5はGPT-4よりも優れた性能を示した。さらに、GPT-4とGPT-3.5の両方が時間とともに敏感な質問への回答やコード生成でのミスが増えた。この結果から、LLMの品質を継続的に監視する必要性が示唆される。 CommentGPT3.5, GPT4共にfreezeされてないのなら、研究で利用すると結果が再現されないので、研究で使うべきではない。↑(2025.10追記)当時の私はこのように感じたようだが、以下を確認した方が良いと思う:- 実験設定として、エンドポイントのモデル名にはタイムスタンプが付与されているが、同じモデルシリーズの異なるタイムスタンプモデル間の比較なのか、それとも全く同じタイムスタンプのモデルでの比較なのか- サンプリングパラメータの設定や推論の試行回数なとがreliableな比較ができうる設定になっているか。あとは上記を確認したとしても、研究で使うべきではない、は言い過ぎで、実験の比較対象の一部として使う分には良いと思う（ただし、実験結果の主要な知見は再現可能な設定から得られるべきと考える。（当時は随分脊髄反射的にコメントを書いていますね…） A Review of ChatGPT Applications in Education, Marketing, Software Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv&#39;23 Paper/Blog Link My Issue #Survey #Pocket #Education Issue Date: 2023-05-04 GPT Summary- - ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。- 最新のChatGPTバージョンが導入され、他の言語モデルも登場している。- これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。- 本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。 [Paper Note] AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Steffen Herbold+, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #LanguageModel #Education #AES(AutomatedEssayScoring) Issue Date: 2023-04-28 GPT Summary- ChatGPTが生成したエッセイは、人間が書いたものよりも質が高いと評価されることが大規模な研究で示された。生成されたエッセイは独自の言語的特徴を持ち、教育者はこの技術を活用する新たな教育コンセプトを開発する必要がある。 CommentChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; [Paper Note] Evaluating ChatGPT&#39;s Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #Assessment #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS&#39;22 Paper/Blog Link My Issue #NLP #LanguageModel #Alignment #RLHF #PPO (ProximalPolicyOptimization) #PostTraining #read-later #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2024-04-28 GPT Summary- 大規模な言語モデルは、ユーザーの意図に合わない出力を生成することがあります。本研究では、人間のフィードバックを使用してGPT-3を微調整し、InstructGPTと呼ばれるモデルを提案します。この手法により、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれ、真実性の向上と有害な出力の削減が示されました。さらに、一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ改善の余地がありますが、人間のフィードバックを使用した微調整が有望な方向であることを示しています。 CommentChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; ChatGPT ヘルスケアが登場, OpenAI, 2026.01 Paper/Blog Link My Issue #Article #GenerativeAI #Blog Issue Date: 2026-01-09 Comment元ポスト:" />
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/ChatGPT.html" />
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/ChatGPT.html" />
+<meta property="og:site_name" content="わたしのべんきょうノート" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-01-09T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ChatGPTに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-01-09T00:00:00+00:00","datePublished":"2026-01-09T00:00:00+00:00","description":"ChatGPT On The Planning Abilities of OpenAI&#39;s o1 Models: Feasibility, Optimality, and Generalizability, Kevin Wang+, N_A, arXiv&#39;24, 2024.11 Paper/Blog Link My Issue #Pocket #NLP Issue Date: 2024-11-02 GPT Summary- 本研究では、OpenAIのo1モデルの計画能力を評価し、実現可能性、最適性、一般化の3つの側面に焦点を当てています。特に、制約の多いタスクや空間的に複雑な環境における強みとボトルネックを特定しました。o1-previewは、構造化された環境での制約遵守においてGPT-4を上回る一方で、冗長なアクションを伴う最適でない解を生成し、一般化に苦労しています。この研究は、LLMsの計画における限界を明らかにし、今後の改善の方向性を示しています。 Commento1のplanningの性能について知りたくなったら読む [Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL&#39;23, 2023.05 Paper/Blog Link My Issue #Analysis #Pocket #LanguageModel #Evaluation #LLM-as-a-Judge #Attack #ACL #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2023-07-22 GPT Summary- 人間評価の再現性が低いため、NLPモデル間の公正な比較が難しい。そこで、大規模言語モデル（LLM）を人間評価の代替手段として利用することを探求。本研究では、LLMに同一指示とサンプルを与え、評価を実施するLLM評価を提案。オープンエンドのストーリー生成や敵対的攻撃のタスクに対する評価結果は、人間専門家の評価と高い一致を示し、評価の安定性も確認。LLMを用いたテキスト評価の可能性やその限界、倫理的課題についても考察。 CommentLLMがテキストの品質評価において、人間による評価者の代替となりうるか？という疑問を初めて実験的に示した研究で、インパクトが大きく重要論文と判断。ただし、実験のスコープは物語生成と敵対的生成（テキスト分類器を騙すような摂動を加える）の2タスクである点、には注意。ChatGPT（おそらくGPT-3.5）が人間の評価者（3人のEnglish teacher）とopen-endで生成された物語にたいして、以下の4つの観点に関してratingの平均で見た時に同様の傾向のスコアを付与することを実験的に明らかにした：- Grammaticality [^1]: テキストの文法の正しさ- Cohesiveness: テキストの一貫性- Likeability: テキストが読んでいて楽しいか- Relevance: promptに対してどれだけ適切なテキストが生成されているか ただし、T0やtext-curie-001 においてはこのような傾向は見受けられなかった。[^2]また、ChatGPTによる説明とratingを人間の評価者に対してblindで提示したところ、人間が見ても妥当な判断だと認知された。全体の傾向としてではなく、個別のratingがどの程度同じような傾向を示すか（i.e., 人間があるstoryを高くratingしたら、LLMも高くratingするか？）をケンドールの順位相関係数で分析（200サンプルに対して3人の英語教員のスコアの平均, text-davinciによる3回の独立したratingを実施した平均スコアを用いて計算）したところ、4つの観点のうち全てにおいて正の相関が見受けられた（Table2, p-valueは&lt;0.05で統計的に有意）。が、Relevanceのみが強い相関を示し、他の指標については弱い相関にとどまっている。しかし、Table6に示されている通り、2人の英語の先生同士で個別のjudgeに感して同様にケンドールの順位相関係数を測定しても、人間-LLM間と同様の傾向が見受けられる。すなわち、Relevanceのみが強い相関で他は弱い相関。このことから、人間同士でも個別のサンプルに対する判断は一致しない（=主観的なタスク）ということは留意する必要がある。&lt;img src=&quot;https://github.com/user-attachments/assets/4c4409ff-b4eb-4f73-b90d-eeb6b4d81199&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/54d21f3c-7ab6-4b41-a862-8dfc8d19b41a&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;敵対的生成に関する実験については、Synonym Substitution Attack (SSAs; 良性のサンプルを同義語で置換する手法で、全体的な意味は保たれるため一般的な人間は正しく認知してしまうが、実際には文法がおかしくなったり不自然になったり、意味が変わってしまうことが先行研究によって知られているようなものらしい)によって実験。Fluency / Meaning Preservingの2つの指標で英語教員とLLMによる評価を比較した結果、人間は正しくadversarialなサンプルと良性なサンプルを区別できており、ChatGPT（おそらくGPT-3.5）も区別ができている（Table4）。ただし、人間のスコアと比較するとChatGPTは高めのスコアを出す傾向がある点には注意ではあるものの、良性サンプル &gt; 敵対的サンプル という序列の判断に関しては人間と同様の傾向を示していることが示唆された。&lt;img src=&quot;https://github.com/user-attachments/assets/d94460fc-0615-4f86-82e5-3c7b15369cc6&quot; /&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;[^1]: ただし、LLMはpunctuationのミスを文法エラーと判断するが、一人の英語の先生は文法エラーとしてみなさないなどの現象も観察され、人間は独自の評価criteriaを保持していることも窺える[^2]: （感想）ある程度能力の高いLLMかRLHFなどを用いて人間の好みに対してalignmentがとられていないとうまくいかないのかもしれない本研究は非常に初期の研究であり、現在のfrontierモデル群（特にreasoningモデル）を用いた場合にはどの程度改善しているか？という点は気になる。 How is ChatGPT&#39;s behavior changing over time?, Lingjiao Chen+, N_A, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #Evaluation Issue Date: 2023-07-22 GPT Summary- GPT-3.5とGPT-4は、大規模言語モデル（LLM）のサービスであり、その性能と振る舞いは時間とともに変動することがわかった。例えば、GPT-4は素数の特定に優れていたが、後のバージョンでは低い正答率となった。また、GPT-3.5はGPT-4よりも優れた性能を示した。さらに、GPT-4とGPT-3.5の両方が時間とともに敏感な質問への回答やコード生成でのミスが増えた。この結果から、LLMの品質を継続的に監視する必要性が示唆される。 CommentGPT3.5, GPT4共にfreezeされてないのなら、研究で利用すると結果が再現されないので、研究で使うべきではない。↑(2025.10追記)当時の私はこのように感じたようだが、以下を確認した方が良いと思う:- 実験設定として、エンドポイントのモデル名にはタイムスタンプが付与されているが、同じモデルシリーズの異なるタイムスタンプモデル間の比較なのか、それとも全く同じタイムスタンプのモデルでの比較なのか- サンプリングパラメータの設定や推論の試行回数なとがreliableな比較ができうる設定になっているか。あとは上記を確認したとしても、研究で使うべきではない、は言い過ぎで、実験の比較対象の一部として使う分には良いと思う（ただし、実験結果の主要な知見は再現可能な設定から得られるべきと考える。（当時は随分脊髄反射的にコメントを書いていますね…） A Review of ChatGPT Applications in Education, Marketing, Software Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv&#39;23 Paper/Blog Link My Issue #Survey #Pocket #Education Issue Date: 2023-05-04 GPT Summary- - ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。- 最新のChatGPTバージョンが導入され、他の言語モデルも登場している。- これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。- 本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。 [Paper Note] AI, write an essay for me: A large-scale comparison of human-written versus ChatGPT-generated essays, Steffen Herbold+, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #LanguageModel #Education #AES(AutomatedEssayScoring) Issue Date: 2023-04-28 GPT Summary- ChatGPTが生成したエッセイは、人間が書いたものよりも質が高いと評価されることが大規模な研究で示された。生成されたエッセイは独自の言語的特徴を持ち、教育者はこの技術を活用する新たな教育コンセプトを開発する必要がある。 CommentChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; [Paper Note] Evaluating ChatGPT&#39;s Information Extraction Capabilities: An Assessment of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv&#39;23 Paper/Blog Link My Issue #Pocket #NLP #Assessment #InformationExtraction Issue Date: 2023-04-25 GPT Summary- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。 Comment情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。 Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS&#39;22 Paper/Blog Link My Issue #NLP #LanguageModel #Alignment #RLHF #PPO (ProximalPolicyOptimization) #PostTraining #read-later #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2024-04-28 GPT Summary- 大規模な言語モデルは、ユーザーの意図に合わない出力を生成することがあります。本研究では、人間のフィードバックを使用してGPT-3を微調整し、InstructGPTと呼ばれるモデルを提案します。この手法により、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれ、真実性の向上と有害な出力の削減が示されました。さらに、一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ改善の余地がありますが、人間のフィードバックを使用した微調整が有望な方向であることを示しています。 CommentChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; ChatGPT ヘルスケアが登場, OpenAI, 2026.01 Paper/Blog Link My Issue #Article #GenerativeAI #Blog Issue Date: 2026-01-09 Comment元ポスト:","headline":"ChatGPTに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/ChatGPT.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/ChatGPT.html"}</script>
 <!-- End Jekyll SEO tag -->
@@ -48,8 +45,7 @@
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css" as="style" onload="this. onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css"></noscript>
   
-  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
-<script>
+  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート" /><script>
   function showMore(index) {
     const contentDivs = document.getElementsByClassName('hidden-content');
     const contentDiv = contentDivs[index];
@@ -97,7 +93,9 @@
 </script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <!-- and it's easy to individually load additional languages -->
-<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+<script charset="UTF-8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"
+        async></script>
 
 
 
@@ -185,9 +183,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     display: none;
   }
 </style>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
-<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link
+  href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css"
+  rel="stylesheet"
+/>
 <style>
   .pswp .pswp__container .pswp__img {
     background-color: white;
@@ -261,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   window.addEventListener("load", initPhotoSwipe);
 </script>
-<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
   <script>
@@ -271,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     gtag('config', 'G-P70KSB88WH');
   </script>
-
+</script>
 </head>
 
 
@@ -412,23 +415,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
 <header class="site-header site-header-transparent" role="banner">
 
   <div class="wrapper">
-    <div class="site-header-inner">
-<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+    <div class="site-header-inner"><span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
   <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
   わたしのべんきょうノート
 </a>
 </span><nav class="site-nav">
-          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
           <label for="nav-trigger">
             <span class="menu-icon">
-              <svg viewbox="0 0 18 15" width="18px" height="15px">
-                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
               </svg>
             </span>
           </label>
 
-          <div class="trigger">
-<a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+          <div class="trigger"><a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
 
 
 
@@ -580,10 +581,8 @@ function googleTranslateElementInit() {
 </script>
 
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-</span>
-</div>
-        </nav>
-</div>
+</span></div>
+        </nav></div>
   </div>
 </header>
 
@@ -791,15 +790,11 @@ function googleTranslateElementInit() {
     html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
       opacity: 0.2872;
     }
-  </style>
-<section class="page-banner">
-    <div class="page-banner-img">
-<div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
-        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp">
-</div>
+  </style><section class="page-banner">
+    <div class="page-banner-img"><div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp"></div>
     <div class="wrapper">
-      <div class="page-banner-inner">
-<header class="post-header">
+      <div class="page-banner-inner"><header class="post-header">
   <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
   <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
 それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
@@ -1035,18 +1030,16 @@ function googleTranslateElementInit() {
 
     <div class="post-content e-content" itemprop="articleBody">
 
-      <h2 id="ChatGPT" class="paper-head"> ChatGPT</h2>
-<div class="visible-content">
+      <h2 id=ChatGPT class="paper-head"> ChatGPT</h2><div class="visible-content">
 <article class="paper-entry">
-<h3 id="on-the-1477" class="title-link">On The Planning Abilities of OpenAI's o1 Models: Feasibility,  Optimality, and Generalizability, Kevin Wang+, N_A, arXiv'24, 2024.11</h3>
-<br><a href="https://www.arxiv.org/abs/2409.19924" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="on-the-1477" class="title-link">On The Planning Abilities of OpenAI's o1 Models: Feasibility,  Optimality, and Generalizability, Kevin Wang+, N_A, arXiv'24, 2024.11</h3><br><a href="https://www.arxiv.org/abs/2409.19924" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1477" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1477" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1057,15 +1050,14 @@ My Issue
 <span class="snippet"><span>Comment</span><p>o1のplanningの性能について知りたくなったら読む</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="can-large-892" class="title-link">[Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL'23, 2023.05</h3>
-<br><a href="https://arxiv.org/abs/2305.01937" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="can-large-892" class="title-link">[Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL'23, 2023.05</h3><br><a href="https://arxiv.org/abs/2305.01937" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/892" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/892" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1076,23 +1068,21 @@ My Issue
 <a class="button" href="LLM-as-a-Judge.html" target="_blank" rel="noopener noreferrer">#LLM-as-a-Judge</a>
 <a class="button" href="Attack.html" target="_blank" rel="noopener noreferrer">#Attack</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
-<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>GPT Summary</span>- 人間評価の再現性が低いため、NLPモデル間の公正な比較が難しい。そこで、大規模言語モデル（LLM）を人間評価の代替手段として利用することを探求。本研究では、LLMに同一指示とサンプルを与え、評価を実施するLLM評価を提案。オープンエンドのストーリー生成や敵対的攻撃のタスクに対する評価結果は、人間専門家の評価と高い一致を示し、評価の安定性も確認。LLMを用いたテキスト評価の可能性やその限界、倫理的課題についても考察。</span>
-<span class="snippet"><span>Comment</span><p>LLMがテキストの品質評価において、人間による評価者の代替となりうるか？という疑問を初めて実験的に示した研究で、インパクトが大きく重要論文と判断。ただし、実験のスコープは物語生成と敵対的生成（テキスト分類器を騙すような摂動を加える）の2タスクである点、には注意。<br><br>ChatGPT（おそらくGPT-3.5）が人間の評価者（3人のEnglish teacher）とopen-endで生成された物語にたいして、以下の4つの観点に関してratingの平均で見た時に同様の傾向のスコアを付与することを実験的に明らかにした：<br>- Grammaticality [^1]: テキストの文法の正しさ<br>- Cohesiveness: テキストの一貫性<br>- Likeability: テキストが読んでいて楽しいか<br>- Relevance: promptに対してどれだけ適切なテキストが生成されているか <br><br>ただし、T0やtext-curie-001 においてはこのような傾向は見受けられなかった。[^2]<br>また、ChatGPTによる説明とratingを人間の評価者に対してblindで提示したところ、人間が見ても妥当な判断だと認知された。<br><br>全体の傾向としてではなく、個別のratingがどの程度同じような傾向を示すか（i.e., 人間があるstoryを高くratingしたら、LLMも高くratingするか？）をケンドールの順位相関係数で分析（200サンプルに対して3人の英語教員のスコアの平均, text-davinciによる3回の独立したratingを実施した平均スコアを用いて計算）したところ、4つの観点のうち全てにおいて正の相関が見受けられた（Table2, p-valueは&lt;0.05で統計的に有意）。が、Relevanceのみが強い相関を示し、他の指標については弱い相関にとどまっている。しかし、Table6に示されている通り、2人の英語の先生同士で個別のjudgeに感して同様にケンドールの順位相関係数を測定しても、人間-LLM間と同様の傾向が見受けられる。すなわち、Relevanceのみが強い相関で他は弱い相関。このことから、人間同士でも個別のサンプルに対する判断は一致しない（=主観的なタスク）ということは留意する必要がある。<br><br><img src="https://github.com/user-attachments/assets/4c4409ff-b4eb-4f73-b90d-eeb6b4d81199" alt="image" loading="lazy" width="550" height="400"><br><br><img src="https://github.com/user-attachments/assets/54d21f3c-7ab6-4b41-a862-8dfc8d19b41a" alt="image" loading="lazy" width="550" height="400"><br><br>敵対的生成に関する実験については、Synonym Substitution Attack (SSAs; 良性のサンプルを同義語で置換する手法で、全体的な意味は保たれるため一般的な人間は正しく認知してしまうが、実際には文法がおかしくなったり不自然になったり、意味が変わってしまうことが先行研究によって知られているようなものらしい)によって実験。Fluency / Meaning Preservingの2つの指標で英語教員とLLMによる評価を比較した結果、人間は正しくadversarialなサンプルと良性なサンプルを区別できており、ChatGPT（おそらくGPT-3.5）も区別ができている（Table4）。ただし、人間のスコアと比較するとChatGPTは高めのスコアを出す傾向がある点には注意ではあるものの、良性サンプル &gt; 敵対的サンプル という序列の判断に関しては人間と同様の傾向を示していることが示唆された。<br><br><img src="https://github.com/user-attachments/assets/d94460fc-0615-4f86-82e5-3c7b15369cc6" alt="image" loading="lazy" width="550" height="400"><br><br>[^1]: ただし、LLMはpunctuationのミスを文法エラーと判断するが、一人の英語の先生は文法エラーとしてみなさないなどの現象も観察され、人間は独自の評価criteriaを保持していることも窺える<br>[^2]: （感想）ある程度能力の高いLLMかRLHFなどを用いて人間の好みに対してalignmentがとられていないとうまくいかないのかもしれない</p>
-<p>本研究は非常に初期の研究であり、現在のfrontierモデル群（特にreasoningモデル）を用いた場合にはどの程度改善しているか？という点は気になる。</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>LLMがテキストの品質評価において、人間による評価者の代替となりうるか？という疑問を初めて実験的に示した研究で、インパクトが大きく重要論文と判断。ただし、実験のスコープは物語生成と敵対的生成（テキスト分類器を騙すような摂動を加える）の2タスクである点、には注意。<br><br>ChatGPT（おそらくGPT-3.5）が人間の評価者（3人のEnglish teacher）とopen-endで生成された物語にたいして、以下の4つの観点に関してratingの平均で見た時に同様の傾向のスコアを付与することを実験的に明らかにした：<br>- Grammaticality [^1]: テキストの文法の正しさ<br>- Cohesiveness: テキストの一貫性<br>- Likeability: テキストが読んでいて楽しいか<br>- Relevance: promptに対してどれだけ適切なテキストが生成されているか <br><br>ただし、T0やtext-curie-001 においてはこのような傾向は見受けられなかった。[^2]<br>また、ChatGPTによる説明とratingを人間の評価者に対してblindで提示したところ、人間が見ても妥当な判断だと認知された。<br><br>全体の傾向としてではなく、個別のratingがどの程度同じような傾向を示すか（i.e., 人間があるstoryを高くratingしたら、LLMも高くratingするか？）をケンドールの順位相関係数で分析（200サンプルに対して3人の英語教員のスコアの平均, text-davinciによる3回の独立したratingを実施した平均スコアを用いて計算）したところ、4つの観点のうち全てにおいて正の相関が見受けられた（Table2, p-valueは<0.05で統計的に有意）。が、Relevanceのみが強い相関を示し、他の指標については弱い相関にとどまっている。しかし、Table6に示されている通り、2人の英語の先生同士で個別のjudgeに感して同様にケンドールの順位相関係数を測定しても、人間-LLM間と同様の傾向が見受けられる。すなわち、Relevanceのみが強い相関で他は弱い相関。このことから、人間同士でも個別のサンプルに対する判断は一致しない（=主観的なタスク）ということは留意する必要がある。<br><br><img src="https://github.com/user-attachments/assets/4c4409ff-b4eb-4f73-b90d-eeb6b4d81199" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/54d21f3c-7ab6-4b41-a862-8dfc8d19b41a" /" alt="image" loading="lazy" width="550" height="400"/><br><br>敵対的生成に関する実験については、Synonym Substitution Attack (SSAs; 良性のサンプルを同義語で置換する手法で、全体的な意味は保たれるため一般的な人間は正しく認知してしまうが、実際には文法がおかしくなったり不自然になったり、意味が変わってしまうことが先行研究によって知られているようなものらしい)によって実験。Fluency / Meaning Preservingの2つの指標で英語教員とLLMによる評価を比較した結果、人間は正しくadversarialなサンプルと良性なサンプルを区別できており、ChatGPT（おそらくGPT-3.5）も区別ができている（Table4）。ただし、人間のスコアと比較するとChatGPTは高めのスコアを出す傾向がある点には注意ではあるものの、良性サンプル > 敵対的サンプル という序列の判断に関しては人間と同様の傾向を示していることが示唆された。<br><br><img src="https://github.com/user-attachments/assets/d94460fc-0615-4f86-82e5-3c7b15369cc6" /" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: ただし、LLMはpunctuationのミスを文法エラーと判断するが、一人の英語の先生は文法エラーとしてみなさないなどの現象も観察され、人間は独自の評価criteriaを保持していることも窺える<br>[^2]: （感想）ある程度能力の高いLLMかRLHFなどを用いて人間の好みに対してalignmentがとられていないとうまくいかないのかもしれない</p><p>本研究は非常に初期の研究であり、現在のfrontierモデル群（特にreasoningモデル）を用いた場合にはどの程度改善しているか？という点は気になる。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="how-is-887" class="title-link">How is ChatGPT's behavior changing over time?, Lingjiao Chen+, N_A, arXiv'23</h3>
-<br><a href="https://arxiv.org/abs/2307.09009" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="how-is-887" class="title-link">How is ChatGPT's behavior changing over time?, Lingjiao Chen+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2307.09009" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/887" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/887" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1104,15 +1094,14 @@ My Issue
 <span class="snippet"><span>Comment</span><p>GPT3.5, GPT4共にfreezeされてないのなら、研究で利用すると結果が再現されないので、研究で使うべきではない。<br><br>↑(2025.10追記)<br>当時の私はこのように感じたようだが、以下を確認した方が良いと思う:<br><br>- 実験設定として、エンドポイントのモデル名にはタイムスタンプが付与されているが、同じモデルシリーズの異なるタイムスタンプモデル間の比較なのか、それとも全く同じタイムスタンプのモデルでの比較なのか<br>- サンプリングパラメータの設定や推論の試行回数なとがreliableな比較ができうる設定になっているか。<br><br>あとは上記を確認したとしても、研究で使うべきではない、は言い過ぎで、実験の比較対象の一部として使う分には良いと思う（ただし、実験結果の主要な知見は再現可能な設定から得られるべきと考える。<br><br>（当時は随分脊髄反射的にコメントを書いていますね…）</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="a-review-617" class="title-link">A Review of ChatGPT Applications in Education, Marketing, Software  Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv'23</h3>
-<br><a href="https://arxiv.org/abs/2305.00237" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="a-review-617" class="title-link">A Review of ChatGPT Applications in Education, Marketing, Software  Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2305.00237" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/617" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/617" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1123,15 +1112,14 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- - ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。- 最新のChatGPTバージョンが導入され、他の言語モデルも登場している。- これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。- 本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。</span>
 </article>
 <article class="paper-entry">
-<h3 id="ai-571" class="title-link">[Paper Note] AI, write an essay for me: A large-scale comparison of human-written  versus ChatGPT-generated essays, Steffen Herbold+, arXiv'23</h3>
-<br><a href="https://arxiv.org/abs/2304.14276" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="ai-571" class="title-link">[Paper Note] AI, write an essay for me: A large-scale comparison of human-written  versus ChatGPT-generated essays, Steffen Herbold+, arXiv'23</h3><br><a href="https://arxiv.org/abs/2304.14276" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/571" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/571" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1142,18 +1130,17 @@ My Issue
 <a class="button" href="AES(AutomatedEssayScoring).html" target="_blank" rel="noopener noreferrer">#AES(AutomatedEssayScoring)</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
 <span class="snippet"><span>GPT Summary</span>- ChatGPTが生成したエッセイは、人間が書いたものよりも質が高いと評価されることが大規模な研究で示された。生成されたエッセイは独自の言語的特徴を持ち、教育者はこの技術を活用する新たな教育コンセプトを開発する必要がある。</span>
-<span class="snippet"><span>Comment</span><p>ChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。<br><br>また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>ChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。<br><br>また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="evaluating-chatgpt's-534" class="title-link">[Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment  of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23</h3>
-<br><a href="https://arxiv.org/abs/2304.11633" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="evaluating-chatgpt's-534" class="title-link">[Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment  of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23</h3><br><a href="https://arxiv.org/abs/2304.11633" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/534" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/534" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1163,20 +1150,17 @@ My Issue
 <a class="button" href="InformationExtraction.html" target="_blank" rel="noopener noreferrer">#InformationExtraction</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。</span>
-<span class="snippet"><span>Comment</span><p>情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。<br>また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）</p>
-<p>あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）</p>
-<p>つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。<br>また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）</p><p>あまりしっかり読んでいないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）</p><p>つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="training-language-1296" class="title-link">Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS'22</h3>
-<br><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="training-language-1296" class="title-link">Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS'22</h3><br><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1296" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1296" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1184,25 +1168,24 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
 <a class="button" href="RLHF.html" target="_blank" rel="noopener noreferrer">#RLHF</a>
-<a class="button" href="PPO%20(ProximalPolicyOptimization).html" target="_blank" rel="noopener noreferrer">#PPO (ProximalPolicyOptimization)</a>
+<a class="button" href="PPO-(ProximalPolicyOptimization).html" target="_blank" rel="noopener noreferrer">#PPO (ProximalPolicyOptimization)</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
-<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-04-28</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模な言語モデルは、ユーザーの意図に合わない出力を生成することがあります。本研究では、人間のフィードバックを使用してGPT-3を微調整し、InstructGPTと呼ばれるモデルを提案します。この手法により、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれ、真実性の向上と有害な出力の削減が示されました。さらに、一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ改善の余地がありますが、人間のフィードバックを使用した微調整が有望な方向であることを示しています。</span>
-<span class="snippet"><span>Comment</span><p>ChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b" alt="image" loading="lazy" width="550" height="400"><br><br></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>ChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="chatgpt-ヘルスケアが登場-4151" class="title-link">ChatGPT ヘルスケアが登場, OpenAI, 2026.01</h3>
-<br><a href="https://openai.com/ja-JP/index/introducing-chatgpt-health/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="chatgpt-ヘルスケアが登場-4151" class="title-link">ChatGPT ヘルスケアが登場, OpenAI, 2026.01</h3><br><a href="https://openai.com/ja-JP/index/introducing-chatgpt-health/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4151" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4151" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1214,24 +1197,23 @@ My Issue
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/OpenAI/status/2008987566796640575?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/OpenAI/status/2008987566796640575?s=20"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-</span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="reverse-engineering-4087" class="title-link">Reverse Engineering a Phase Change in GPT's Training Data... with the Seahorse Emoji 🌊🐴, PRATYUSH MAINI, 2025.12</h3>
-<br><a href="https://pratyushmaini.substack.com/p/reverse-engineering-a-phase-change-a96" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="reverse-engineering-4087" class="title-link">Reverse Engineering a Phase Change in GPT's Training Data... with the Seahorse Emoji 🌊🐴, PRATYUSH MAINI, 2025.12</h3><br><a href="https://pratyushmaini.substack.com/p/reverse-engineering-a-phase-change-a96" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4087" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4087" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1242,30 +1224,29 @@ My Issue
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <a class="button" href="SelfCorrection.html" target="_blank" rel="noopener noreferrer">#SelfCorrection</a>
 <a class="button" href="mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
-<a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2025-12-28</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/pratyushmaini/status/2001824826353418433?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/pratyushmaini/status/2001824826353418433?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>Is there seahorse emoji?という質問に対するLLMのreasoning trajectoryと、self correctionの挙動が、OpenAIのどの時点のモデルで出現するか、しないかを線引くことで、mid-trainingにself correction形式のデータが追加されたのがいつ頃なのかを考察している。</p></span><br><br>
+</p><p>Is there seahorse emoji?という質問に対するLLMのreasoning trajectoryと、self correctionの挙動が、OpenAIのどの時点のモデルで出現するか、しないかを線引くことで、mid-trainingにself correction形式のデータが追加されたのがいつ頃なのかを考察している。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="chatgptの記憶システムはragを使っていなかった---3955" class="title-link">ChatGPTの記憶システムはRAGを使っていなかった - 4層アーキテクチャの衝撃, UrayahaDays, 2025.12</h3>
-<br><a href="https://zenn.dev/tenormusica/articles/chatgpt-memory-no-rag-2025" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="chatgptの記憶システムはragを使っていなかった---3955" class="title-link">ChatGPTの記憶システムはRAGを使っていなかった - 4層アーキテクチャの衝撃, UrayahaDays, 2025.12</h3><br><a href="https://zenn.dev/tenormusica/articles/chatgpt-memory-no-rag-2025" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3955" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3955" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1276,24 +1257,23 @@ My Issue
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/iwashi86/status/2000486618168496624?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iwashi86/status/2000486618168496624?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-</span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="gpt-5.2-が登場-3932" class="title-link">GPT-5.2 が登場 専門的な業務や長時間稼働するエージェント向けの、最先端のフロンティアモデル。, OpenAI, 2025.12</h3>
-<br><a href="https://openai.com/ja-JP/index/introducing-gpt-5-2/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="gpt-5.2-が登場-3932" class="title-link">GPT-5.2 が登場 専門的な業務や長時間稼働するエージェント向けの、最先端のフロンティアモデル。, OpenAI, 2025.12</h3><br><a href="https://openai.com/ja-JP/index/introducing-gpt-5-2/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3932" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3932" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1303,25 +1283,24 @@ My Issue
 <a class="button" href="GenerativeAI.html" target="_blank" rel="noopener noreferrer">#GenerativeAI</a>
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <a class="button" href="Proprietary.html" target="_blank" rel="noopener noreferrer">#Proprietary</a>
-<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2025-12-12</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/wenhuchen/status/1999276854906355977?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhuchen/status/1999276854906355977?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>OpenAIがGPT-5.2をリリースし、再び様々なベンチマークにおいてGemini 3 Proをoutperform。</p>
-<p>フロントエンド開発（デザイン）（アリーナ形式）ではOpus, Gemini 3 Proの勝利らしい:<br>
+</p><p>OpenAIがGPT-5.2をリリースし、再び様々なベンチマークにおいてGemini 3 Proをoutperform。</p><p>フロントエンド開発（デザイン）（アリーナ形式）ではOpus, Gemini 3 Proの勝利らしい:<br>
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/scaling01/status/1999197203861062086?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/scaling01/status/1999197203861062086?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
@@ -1332,12 +1311,12 @@ My Issue
 <a href="https://www.designarena.ai" target="_blank" rel="noopener noreferrer">https://www.designarena.ai</a>
 
 
-<p>ポイント解説:
+</p><p>ポイント解説:
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/theturingpost/status/1999458667608080616?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/1999458667608080616?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
@@ -1345,38 +1324,37 @@ My Issue
 <br><br>GDPval:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3187" target="_blank" rel="noopener noreferrer">[Paper Note] GDPval: Evaluating AI Model Performance on Real-World Economically
   Valuable Tasks, Tejal Patwardhan+, arXiv'25, 2025.10</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3027" target="_blank" rel="noopener noreferrer">GDPVAL: EVALUATING AI MODEL PERFORMANCE ON REAL-WORLD ECONOMICALLY VALUABLE TASKS, Patwardhan+, 2025.09</a>
-<br><br>GDPvalのclearwinがGPT-5.2- Thinkingで49.8%なので、14年程度の専門家がこなす米国主要産業の一部のタスクは数値上は置き換え可能という風に見える。Proに至っては60.0%である。<br>が、GDPvalはたとえば以下のようなlimitationがあり、数値の解釈には注意が必要である:<br>- 完全なcontextが与えられる前提<br>- 暗黙知が多いタスクは対象外<br>- 自己完結型で他社とのコミュニケーションが必要とされないタスクを対象<br>- 1職種あたり30タスク程度の限定的な網羅性<br>- コンピュータを利用したタスクのみ<br>- ...<br><br>実際の現場で活用しようと思うと、完全なcontextを揃えられるか、揃わない場合に不完全なcontextでタスクを遂行できるか、そのための社内での運用フローの整備等、モデルを活用するための周辺のシステムや運用フローの設計が重要（かつ膨大）である点には（ベンチマークのスコアを見ると驚くべき進歩だが）留意する必要がある。<p>Vals AI IndexというGDPvalに類似したベンチマークでもSoTAとのこと:<br>
+<br><br>GDPvalのclearwinがGPT-5.2- Thinkingで49.8%なので、14年程度の専門家がこなす米国主要産業の一部のタスクは数値上は置き換え可能という風に見える。Proに至っては60.0%である。<br>が、GDPvalはたとえば以下のようなlimitationがあり、数値の解釈には注意が必要である:<br>- 完全なcontextが与えられる前提<br>- 暗黙知が多いタスクは対象外<br>- 自己完結型で他社とのコミュニケーションが必要とされないタスクを対象<br>- 1職種あたり30タスク程度の限定的な網羅性<br>- コンピュータを利用したタスクのみ<br>- ...<br><br>実際の現場で活用しようと思うと、完全なcontextを揃えられるか、揃わない場合に不完全なcontextでタスクを遂行できるか、そのための社内での運用フローの整備等、モデルを活用するための周辺のシステムや運用フローの設計が重要（かつ膨大）である点には（ベンチマークのスコアを見ると驚くべき進歩だが）留意する必要がある。</p><p>Vals AI IndexというGDPvalに類似したベンチマークでもSoTAとのこと:<br>
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/scaling01/status/1999210516770668804?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/scaling01/status/1999210516770668804?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>関連: 
+</p><p>関連: 
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/2001049517182083443?s=20"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2001049517182083443?s=20"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-</span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="gpt-5.1-a-3660" class="title-link">GPT-5.1: A smarter, more conversational ChatGPT, OpenAI, 2025.11</h3>
-<br><a href="https://openai.com/index/gpt-5-1/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="gpt-5.1-a-3660" class="title-link">GPT-5.1: A smarter, more conversational ChatGPT, OpenAI, 2025.11</h3><br><a href="https://openai.com/index/gpt-5-1/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3660" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3660" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1386,64 +1364,62 @@ My Issue
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <a class="button" href="Proprietary.html" target="_blank" rel="noopener noreferrer">#Proprietary</a>
-<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="Routing.html" target="_blank" rel="noopener noreferrer">#Routing</a>
-<a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
-<a class="button" href="Reference%20Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
 <span class="issue_date">Issue Date: 2025-11-13</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/sama/status/1988692165686620237?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sama/status/1988692165686620237?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>instantモデルはよりあたたかい応答でより指示追従能力を高め、thinkingモデルは入力に応じてより適応的に思考トークン数を調整する。autoモデルは入力に応じてinstant, thinkingに適切にルーティングをする。</p>
-<p>所見:
+</p><p>instantモデルはよりあたたかい応答でより指示追従能力を高め、thinkingモデルは入力に応じてより適応的に思考トークン数を調整する。autoモデルは入力に応じてinstant, thinkingに適切にルーティングをする。</p><p>所見:
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/kevinqhlin/status/1989855455129067564?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kevinqhlin/status/1989855455129067564?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>Artificial Analysisによるベンチマーキング:<br>
+</p><p>Artificial Analysisによるベンチマーキング:<br>
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/artificialanlys/status/1989417492582899872?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/1989417492582899872?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>GPT-5.1-Codex-maxの50% time horizon:<br>
+</p><p>GPT-5.1-Codex-maxの50% time horizon:<br>
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/metr_evals/status/1991350633350545513?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/metr_evals/status/1991350633350545513?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-</span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="introducing-chatgpt-3397" class="title-link">Introducing ChatGPT Atlas, OpenAI, 2025.10</h3>
-<br><a href="https://openai.com/index/introducing-chatgpt-atlas/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="introducing-chatgpt-3397" class="title-link">Introducing ChatGPT Atlas, OpenAI, 2025.10</h3><br><a href="https://openai.com/index/introducing-chatgpt-atlas/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3397" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3397" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1455,24 +1431,23 @@ My Issue
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/openai/status/1980685602384441368?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/openai/status/1980685602384441368?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>ブラウザのサイドバーでchatgptにサイトに関して質問できたり、agenticな使い方もできる模様？</p></span><br><br>
+</p><p>ブラウザのサイドバーでchatgptにサイトに関して質問できたり、agenticな使い方もできる模様？</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="nanochat-3377" class="title-link">nanochat, karpathy, 2025.10</h3>
-<br><a href="https://github.com/karpathy/nanochat" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="nanochat-3377" class="title-link">nanochat, karpathy, 2025.10</h3><br><a href="https://github.com/karpathy/nanochat" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3377" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3377" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1481,39 +1456,38 @@ My Issue
 <a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Supervised-FineTuning%20(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
 <a class="button" href="Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
 <a class="button" href="mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
 <a class="button" href="GRPO.html" target="_blank" rel="noopener noreferrer">#GRPO</a>
 <a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
-<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="Inference.html" target="_blank" rel="noopener noreferrer">#Inference</a>
 <a class="button" href="MinimalCode.html" target="_blank" rel="noopener noreferrer">#MinimalCode</a>
-<a class="button" href="KV%20Cache.html" target="_blank" rel="noopener noreferrer">#KV Cache</a>
+<a class="button" href="KV-Cache.html" target="_blank" rel="noopener noreferrer">#KV Cache</a>
 <span class="issue_date">Issue Date: 2025-10-22</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/karpathy/status/1977755427569111362?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/karpathy/status/1977755427569111362?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-<p>新たなスピードランが...!!</p></span><br><br>
+</p><p>新たなスピードランが...!!</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="openai-devday-3153" class="title-link">OpenAI DevDay 2025 発表まとめ, ぬこぬこ, 2025.10</h3>
-<br><a href="https://zenn.dev/schroneko/articles/openai-devday-2025" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="openai-devday-3153" class="title-link">OpenAI DevDay 2025 発表まとめ, ぬこぬこ, 2025.10</h3><br><a href="https://zenn.dev/schroneko/articles/openai-devday-2025" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3153" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3153" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1525,24 +1499,23 @@ My Issue
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/schroneko/status/1975260800559599726?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/schroneko/status/1975260800559599726?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-</span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="why-gpt-5-3019" class="title-link">Why GPT-5 used less training compute than GPT-4.5 （but GPT-6 probably won’t）, EPOCH AI, 2025.09</h3>
-<br><a href="https://epoch.ai/gradient-updates/why-gpt5-used-less-training-compute-than-gpt45-but-gpt6-probably-wont" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="why-gpt-5-3019" class="title-link">Why GPT-5 used less training compute than GPT-4.5 （but GPT-6 probably won’t）, EPOCH AI, 2025.09</h3><br><a href="https://epoch.ai/gradient-updates/why-gpt5-used-less-training-compute-than-gpt45-but-gpt6-probably-wont" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3019" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3019" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1558,24 +1531,23 @@ My Issue
 
 
 
-</p>
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" data-embed='&lt;blockquote class="twitter-tweet"&gt;&lt;a href="https://twitter.com/hillbig/status/1972421341988225340?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"&gt;&lt;/a&gt;&lt;/blockquote&gt;'>
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1972421341988225340?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
 
-</span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="openai-o1-1576" class="title-link">OpenAI o1 System Card, OpenAI, 2024.12</h3>
-<br><a href="https://cdn.openai.com/o1-system-card-20241205.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="openai-o1-1576" class="title-link">OpenAI o1 System Card, OpenAI, 2024.12</h3><br><a href="https://cdn.openai.com/o1-system-card-20241205.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1576" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1576" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1587,15 +1559,14 @@ My Issue
 <span class="issue_date">Issue Date: 2024-12-10</span>
 </article>
 <article class="paper-entry">
-<h3 id="openai、chatgptが画像を分析する『gpt-4v（ビジョン）』を発表。安全性、嗜好性、福祉機能を強化-1052" class="title-link">OpenAI、ChatGPTが画像を分析する『GPT-4V（ビジョン）』を発表。安全性、嗜好性、福祉機能を強化, AIDB, 2023.09</h3>
-<br><a href="https://aiboom.net/archives/55622" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="openai、chatgptが画像を分析する『gpt-4v（ビジョン）』を発表。安全性、嗜好性、福祉機能を強化-1052" class="title-link">OpenAI、ChatGPTが画像を分析する『GPT-4V（ビジョン）』を発表。安全性、嗜好性、福祉機能を強化, AIDB, 2023.09</h3><br><a href="https://aiboom.net/archives/55622" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1052" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1605,18 +1576,17 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <span class="issue_date">Issue Date: 2023-09-30</span>
-<span class="snippet"><span>Comment</span><p>おう…やべえな…<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image" loading="lazy" width="550" height="400"></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>おう…やべえな…<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3ee7dc96-af6f-47f9-98c0-c6be5d9384f1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="huggingchat-562" class="title-link">HuggingChat, 2023</h3>
-<br><a href="https://huggingface.co/chat/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="huggingchat-562" class="title-link">HuggingChat, 2023</h3><br><a href="https://huggingface.co/chat/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/562" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/562" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1625,8 +1595,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>Comment</span><p>closedな世界で開発されるOpenAIのChatGPTに対して、Openなものが必要ということで、huggingfaceが出したchatシステム</p>
-<p>公開はすでに終了している模様</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>closedな世界で開発されるOpenAIのChatGPTに対して、Openなものが必要ということで、huggingfaceが出したchatシステム</p><p>公開はすでに終了している模様</p></span><br><br>
 </article>
 </div>
 <script>
@@ -1676,51 +1645,51 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav">
-<a class="previous" href="/paper_notes/articles/Batch.html" title="Batchに関する論文・技術記事メモの一覧">Batchに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/CriticalBatchSize.html" title="CriticalBatchSizeに関する論文・技術記事メモの一覧">CriticalBatchSizeに関する論文・技術記事メモの一覧</a>
-</div>
-<div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Batch.html" title="Batchに関する論文・技術記事メモの一覧">Batchに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/CriticalBatchSize.html" title="CriticalBatchSizeに関する論文・技術記事メモの一覧">CriticalBatchSizeに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/InstructionTuning.html" title="InstructionTuningに関する論文・技術記事メモの一覧">
-            InstructionTuningに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 49</span> 
-  <span class="post-badge badge-new">📝 49</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/IdeaGeneration.html" title="IdeaGenerationに関する論文・技術記事メモの一覧">
-            IdeaGenerationに関する論文・技術記事メモの一覧
+          <a class="post-link"
+            href="/paper_notes/articles/Frontend.html"
+            title="Frontendに関する論文・技術記事メモの一覧">
+            Frontendに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Online-Interactive.html" title="Online/Interactiveに関する論文・技術記事メモの一覧">
-            Online/Interactiveに関する論文・技術記事メモの一覧
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/InverseRendering.html"
+            title="InverseRenderingに関する論文・技術記事メモの一覧">
+            InverseRenderingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Live.html" title="Liveに関する論文・技術記事メモの一覧">
-            Liveに関する論文・技術記事メモの一覧
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/CVPR.html"
+            title="CVPRに関する論文・技術記事メモの一覧">
+            CVPRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
-  <span class="post-badge badge-new">📝 11</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 28</span> 
+  <span class="post-badge badge-new">📝 28</span>
 </span>
 </a>
-        </li>
-</ul>
-    </div>
-<div class="post-comments"></div></section>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/RelationExtraction.html"
+            title="RelationExtractionに関する論文・技術記事メモの一覧">
+            RelationExtractionに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li></ul>
+    </div><div class="post-comments"></div></section>
 </div>
 
 
@@ -1937,13 +1906,11 @@ document.addEventListener("DOMContentLoaded", function() {
   <data class="u-url" href="/paper_notes/"></data>
 
   <div class="wrapper">
-    <div class="site-footer-inner">
-<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+    <div class="site-footer-inner"><div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
       <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
       generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
       another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
-      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
-</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a></div>
     </div>
   </div>
 </footer>

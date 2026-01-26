@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="ja"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,22 +13,21 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://platform.twitter.com">
-  <link rel="dns-prefetch" href="https://pbs.twimg.com">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+  <link rel="dns-prefetch" href="https://pbs.twimg.com"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
-<meta name="generator" content="Jekyll v3.10.0">
-<meta property="og:title" content="IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧">
-<meta name="author" content="AkihikoWATANABE">
-<meta property="og:locale" content="ja">
-<meta name="description" content="&lt;h2 id=IntegerLinearProgramming (ILP) class=”paper-head”&gt; IntegerLinearProgramming (ILP)&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL'17, 2017.08 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #InteractivePersonalizedSummarization #NLP #Personalization #ACL #interactive #In-Depth Notes Issue Date: 2017-12-28 GPT Summary- ユーザーフィードバックを活用した抽出的マルチドキュメント要約システムを提案。インタラクティブにフィードバックを取得し、ILPフレームワークを用いて要約の質を向上。最小限の反復で高品質な要約を生成し、シミュレーション実験で効果を分析。 Comment# 一言で言うとユーザとインタラクションしながら重要なコンセプトを決め、そのコンセプトが含まれるようにILPな手法で要約を生成するPDS手法。Interactive Personalized Summarizationと似ている（似ているが引用していない、引用した方がよいのでは）。# 手法要約モデルは既存のMDS手法を採用。Concept-based ILP Summarizationフィードバックをユーザからもらう際は、要約を生成し、それをユーザに提示。提示した要約から重要なコンセプトをユーザに選択してもらう形式（ユーザが重要と判断したコンセプトには定数重みが与えられる）。ユーザに対して、τ回フィードバックをもらうまでは、フィードバックをもらっていないコンセプトの重要度が高くなるようにし、フィードバックをもらったコンセプトの重要度が低くなるように目的関数を調整する。これにより、まだフィードバックを受けていないコンセプトが多く含まれる要約が生成されるため、これをユーザに提示することでユーザのフィードバックを得る。τ回を超えたら、ユーザのフィードバックから決まったweightが最大となるように目的関数を修正する。ユーザからコンセプトのフィードバックを受ける際は、効率的にフィードバックを受けられると良い（最小のインタラクションで）。そこで、Active Learningを導入する。コンセプトの重要度の不確実性をSVMで判定し、不確実性が高いコンセプトを優先的に含むように目的関数を修正する手法（AL）、SVMで重要度が高いと推定されたコンセプトを優先的に要約に含むように目的関数を修正する手法（AL+）を提案している。# 評価oracle-based approachというものを使っている。要は、要約をシステムが提示しリファレンスと被っているコンセプトはユーザから重要だとフィードバックがあったコンセプトだとみなすというもの。評価結果を見ると、ベースラインのMDSと比べてupper bound近くまでROUGEスコアが上がっている。フィードバックをもらうためのイテレーションは最大で１０回に絞っている模様（これ以上ユーザとインタラクションするのは非現実的）。実際にユーザがシステムを使用する場合のコンテキストに沿った評価になっていないと思う。この評価で示せているのは、ReferenceSummary中に含まれる単語にバイアスをかけて要約を生成していくと、ReferenceSummaryと同様な要約が最終的に作れます、ということと、このときPool-basedなActiveLearningを使うと、より少ないインタラクションでこれが実現できますということ。これを示すのは別に良いと思うのだが、feedbackをReferenceSummaryから与えるのは少し現実から離れすぎている気が。たとえばユーザが新しいことを学ぶときは、ある時は一つのことを深堀し、そこからさらに浅いところに戻って別のところを深堀するみたいなプロセスをする気がするが、この深堀フェーズなどはReferenceSummaryからのフィードバックからでは再現できないのでは。# 所感評価が甘いと感じる。十分なサイズのサンプルを得るのは厳しいからorable-based approachとりましたと書いてあるが、なんらかの人手評価もあったほうが良いと思う。ユーザに数百単語ものフィードバックをもらうというのはあまり現時的ではない気が。oracle-based approachでユーザのフィードバックをシミュレーションしているが、oracleの要約は、人がそのドキュメントクラスタの内容を完璧に理解した上で要約しているものなので、これを評価に使うのも実際のコンテキストと違うと思う。実際にユーザがシステムを使うときは、ドキュメントクラスタの内容なんてなんも知らないわけで、そのユーザからもらえるフィードバックをoracle-based approachでシミュレーションするのは無理がある。仮に、ドキュメントクラスタの内容を完璧に理解しているユーザのフィードバックをシミュレーションするというのなら、わかる。が、そういうユーザのために要約作って提示したいわけではないはず。 [Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR'07 Paper/Blog Link My Issue #Multi #DocumentSummarization #Document #NLP #Extractive #ECIR #Selected Papers/Blogs #One-Line Notes Issue Date: 2018-01-17 Comment文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。 [Paper Note] Improving Update Summarization via Supervised ILP and Sentence Reranking, Li et al. NAACL’15, 2015.05 Paper/Blog Link My Issue #Article #DocumentSummarization #NLP #Update #NAACL #KeyPoint Notes Issue Date: 2017-12-28 Comment・update summarizationをILPで定式化．基本的なMDSのILPのterm weightingにsalienceの要素に加えてnoveltyの要素を加える．term weightingにはbigramを用いる．bigram使うとよくなることがupdate summarizationだと知られている．weightingは平均化パーセプトロンで学習・ILPでcandidate sentencesを求めたあと，それらをSVRを用いてRerankingする．SVRのloss functionはROUGE-2を使う．・Rerankingで使うfeatureはterm weightingした時のsentenceレベルのfeatureを使う．・RerankingをするとROUGE-2スコアが改善する．2010, 2011のTAC Bestと同等，あるいはそれを上回る結果．novelty featureを入れると改善．・noveltyのfeatureは，以下の通り．Bigram Level　-bigramのold datasetにおけるDF　-bigram novelty value (new datasetのbigramのDFをold datasetのDFとDFの最大値の和で割ったもの)　-bigram uniqueness value (old dataset内で出たbigramは0, すでなければ，new dataset内のDFをDFの最大値で割ったもの)Sentence Level　-old datasetのsummaryとのsentence similarity　interpolated n-gram novelty (n-gramのnovelty valueをinterpolateしたもの)　-interpolated n-gram uniqueness (n-gramのuniqueness valueをinterpolateしたもの)・TAC 2011の評価の値をみると，Wanらの手法よりかなり高いROUGE-2スコアを得ている． &lt;/div&gt;">
-<meta property="og:description" content="&lt;h2 id=IntegerLinearProgramming (ILP) class=”paper-head”&gt; IntegerLinearProgramming (ILP)&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL'17, 2017.08 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #InteractivePersonalizedSummarization #NLP #Personalization #ACL #interactive #In-Depth Notes Issue Date: 2017-12-28 GPT Summary- ユーザーフィードバックを活用した抽出的マルチドキュメント要約システムを提案。インタラクティブにフィードバックを取得し、ILPフレームワークを用いて要約の質を向上。最小限の反復で高品質な要約を生成し、シミュレーション実験で効果を分析。 Comment# 一言で言うとユーザとインタラクションしながら重要なコンセプトを決め、そのコンセプトが含まれるようにILPな手法で要約を生成するPDS手法。Interactive Personalized Summarizationと似ている（似ているが引用していない、引用した方がよいのでは）。# 手法要約モデルは既存のMDS手法を採用。Concept-based ILP Summarizationフィードバックをユーザからもらう際は、要約を生成し、それをユーザに提示。提示した要約から重要なコンセプトをユーザに選択してもらう形式（ユーザが重要と判断したコンセプトには定数重みが与えられる）。ユーザに対して、τ回フィードバックをもらうまでは、フィードバックをもらっていないコンセプトの重要度が高くなるようにし、フィードバックをもらったコンセプトの重要度が低くなるように目的関数を調整する。これにより、まだフィードバックを受けていないコンセプトが多く含まれる要約が生成されるため、これをユーザに提示することでユーザのフィードバックを得る。τ回を超えたら、ユーザのフィードバックから決まったweightが最大となるように目的関数を修正する。ユーザからコンセプトのフィードバックを受ける際は、効率的にフィードバックを受けられると良い（最小のインタラクションで）。そこで、Active Learningを導入する。コンセプトの重要度の不確実性をSVMで判定し、不確実性が高いコンセプトを優先的に含むように目的関数を修正する手法（AL）、SVMで重要度が高いと推定されたコンセプトを優先的に要約に含むように目的関数を修正する手法（AL+）を提案している。# 評価oracle-based approachというものを使っている。要は、要約をシステムが提示しリファレンスと被っているコンセプトはユーザから重要だとフィードバックがあったコンセプトだとみなすというもの。評価結果を見ると、ベースラインのMDSと比べてupper bound近くまでROUGEスコアが上がっている。フィードバックをもらうためのイテレーションは最大で１０回に絞っている模様（これ以上ユーザとインタラクションするのは非現実的）。実際にユーザがシステムを使用する場合のコンテキストに沿った評価になっていないと思う。この評価で示せているのは、ReferenceSummary中に含まれる単語にバイアスをかけて要約を生成していくと、ReferenceSummaryと同様な要約が最終的に作れます、ということと、このときPool-basedなActiveLearningを使うと、より少ないインタラクションでこれが実現できますということ。これを示すのは別に良いと思うのだが、feedbackをReferenceSummaryから与えるのは少し現実から離れすぎている気が。たとえばユーザが新しいことを学ぶときは、ある時は一つのことを深堀し、そこからさらに浅いところに戻って別のところを深堀するみたいなプロセスをする気がするが、この深堀フェーズなどはReferenceSummaryからのフィードバックからでは再現できないのでは。# 所感評価が甘いと感じる。十分なサイズのサンプルを得るのは厳しいからorable-based approachとりましたと書いてあるが、なんらかの人手評価もあったほうが良いと思う。ユーザに数百単語ものフィードバックをもらうというのはあまり現時的ではない気が。oracle-based approachでユーザのフィードバックをシミュレーションしているが、oracleの要約は、人がそのドキュメントクラスタの内容を完璧に理解した上で要約しているものなので、これを評価に使うのも実際のコンテキストと違うと思う。実際にユーザがシステムを使うときは、ドキュメントクラスタの内容なんてなんも知らないわけで、そのユーザからもらえるフィードバックをoracle-based approachでシミュレーションするのは無理がある。仮に、ドキュメントクラスタの内容を完璧に理解しているユーザのフィードバックをシミュレーションするというのなら、わかる。が、そういうユーザのために要約作って提示したいわけではないはず。 [Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR'07 Paper/Blog Link My Issue #Multi #DocumentSummarization #Document #NLP #Extractive #ECIR #Selected Papers/Blogs #One-Line Notes Issue Date: 2018-01-17 Comment文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。 [Paper Note] Improving Update Summarization via Supervised ILP and Sentence Reranking, Li et al. NAACL’15, 2015.05 Paper/Blog Link My Issue #Article #DocumentSummarization #NLP #Update #NAACL #KeyPoint Notes Issue Date: 2017-12-28 Comment・update summarizationをILPで定式化．基本的なMDSのILPのterm weightingにsalienceの要素に加えてnoveltyの要素を加える．term weightingにはbigramを用いる．bigram使うとよくなることがupdate summarizationだと知られている．weightingは平均化パーセプトロンで学習・ILPでcandidate sentencesを求めたあと，それらをSVRを用いてRerankingする．SVRのloss functionはROUGE-2を使う．・Rerankingで使うfeatureはterm weightingした時のsentenceレベルのfeatureを使う．・RerankingをするとROUGE-2スコアが改善する．2010, 2011のTAC Bestと同等，あるいはそれを上回る結果．novelty featureを入れると改善．・noveltyのfeatureは，以下の通り．Bigram Level　-bigramのold datasetにおけるDF　-bigram novelty value (new datasetのbigramのDFをold datasetのDFとDFの最大値の和で割ったもの)　-bigram uniqueness value (old dataset内で出たbigramは0, すでなければ，new dataset内のDFをDFの最大値で割ったもの)Sentence Level　-old datasetのsummaryとのsentence similarity　interpolated n-gram novelty (n-gramのnovelty valueをinterpolateしたもの)　-interpolated n-gram uniqueness (n-gramのuniqueness valueをinterpolateしたもの)・TAC 2011の評価の値をみると，Wanらの手法よりかなり高いROUGE-2スコアを得ている． &lt;/div&gt;">
-<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/IntegerLinearProgramming-(ILP).html">
-<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/IntegerLinearProgramming-(ILP).html">
-<meta property="og:site_name" content="わたしのべんきょうノート">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2018-01-17T00:00:00+00:00">
-<meta name="twitter:card" content="summary">
-<meta property="twitter:title" content="IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧">
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧" />
+<meta name="author" content="AkihikoWATANABE" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="&lt;h2 id=IntegerLinearProgramming (ILP) class=”paper-head”&gt; IntegerLinearProgramming (ILP)&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL&#39;17, 2017.08 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #InteractivePersonalizedSummarization #NLP #Personalization #ACL #interactive #In-Depth Notes Issue Date: 2017-12-28 GPT Summary- ユーザーフィードバックを活用した抽出的マルチドキュメント要約システムを提案。インタラクティブにフィードバックを取得し、ILPフレームワークを用いて要約の質を向上。最小限の反復で高品質な要約を生成し、シミュレーション実験で効果を分析。 Comment# 一言で言うとユーザとインタラクションしながら重要なコンセプトを決め、そのコンセプトが含まれるようにILPな手法で要約を生成するPDS手法。Interactive Personalized Summarizationと似ている（似ているが引用していない、引用した方がよいのでは）。# 手法要約モデルは既存のMDS手法を採用。Concept-based ILP Summarizationフィードバックをユーザからもらう際は、要約を生成し、それをユーザに提示。提示した要約から重要なコンセプトをユーザに選択してもらう形式（ユーザが重要と判断したコンセプトには定数重みが与えられる）。ユーザに対して、τ回フィードバックをもらうまでは、フィードバックをもらっていないコンセプトの重要度が高くなるようにし、フィードバックをもらったコンセプトの重要度が低くなるように目的関数を調整する。これにより、まだフィードバックを受けていないコンセプトが多く含まれる要約が生成されるため、これをユーザに提示することでユーザのフィードバックを得る。τ回を超えたら、ユーザのフィードバックから決まったweightが最大となるように目的関数を修正する。ユーザからコンセプトのフィードバックを受ける際は、効率的にフィードバックを受けられると良い（最小のインタラクションで）。そこで、Active Learningを導入する。コンセプトの重要度の不確実性をSVMで判定し、不確実性が高いコンセプトを優先的に含むように目的関数を修正する手法（AL）、SVMで重要度が高いと推定されたコンセプトを優先的に要約に含むように目的関数を修正する手法（AL+）を提案している。# 評価oracle-based approachというものを使っている。要は、要約をシステムが提示しリファレンスと被っているコンセプトはユーザから重要だとフィードバックがあったコンセプトだとみなすというもの。評価結果を見ると、ベースラインのMDSと比べてupper bound近くまでROUGEスコアが上がっている。フィードバックをもらうためのイテレーションは最大で１０回に絞っている模様（これ以上ユーザとインタラクションするのは非現実的）。実際にユーザがシステムを使用する場合のコンテキストに沿った評価になっていないと思う。この評価で示せているのは、ReferenceSummary中に含まれる単語にバイアスをかけて要約を生成していくと、ReferenceSummaryと同様な要約が最終的に作れます、ということと、このときPool-basedなActiveLearningを使うと、より少ないインタラクションでこれが実現できますということ。これを示すのは別に良いと思うのだが、feedbackをReferenceSummaryから与えるのは少し現実から離れすぎている気が。たとえばユーザが新しいことを学ぶときは、ある時は一つのことを深堀し、そこからさらに浅いところに戻って別のところを深堀するみたいなプロセスをする気がするが、この深堀フェーズなどはReferenceSummaryからのフィードバックからでは再現できないのでは。# 所感評価が甘いと感じる。十分なサイズのサンプルを得るのは厳しいからorable-based approachとりましたと書いてあるが、なんらかの人手評価もあったほうが良いと思う。ユーザに数百単語ものフィードバックをもらうというのはあまり現時的ではない気が。oracle-based approachでユーザのフィードバックをシミュレーションしているが、oracleの要約は、人がそのドキュメントクラスタの内容を完璧に理解した上で要約しているものなので、これを評価に使うのも実際のコンテキストと違うと思う。実際にユーザがシステムを使うときは、ドキュメントクラスタの内容なんてなんも知らないわけで、そのユーザからもらえるフィードバックをoracle-based approachでシミュレーションするのは無理がある。仮に、ドキュメントクラスタの内容を完璧に理解しているユーザのフィードバックをシミュレーションするというのなら、わかる。が、そういうユーザのために要約作って提示したいわけではないはず。 [Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR&#39;07 Paper/Blog Link My Issue #Multi #DocumentSummarization #Document #NLP #Extractive #ECIR #Selected Papers/Blogs #One-Line Notes Issue Date: 2018-01-17 Comment文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。 [Paper Note] Improving Update Summarization via Supervised ILP and Sentence Reranking, Li et al. NAACL’15, 2015.05 Paper/Blog Link My Issue #Article #DocumentSummarization #NLP #Update #NAACL #KeyPoint Notes Issue Date: 2017-12-28 Comment・update summarizationをILPで定式化．基本的なMDSのILPのterm weightingにsalienceの要素に加えてnoveltyの要素を加える．term weightingにはbigramを用いる．bigram使うとよくなることがupdate summarizationだと知られている．weightingは平均化パーセプトロンで学習・ILPでcandidate sentencesを求めたあと，それらをSVRを用いてRerankingする．SVRのloss functionはROUGE-2を使う．・Rerankingで使うfeatureはterm weightingした時のsentenceレベルのfeatureを使う．・RerankingをするとROUGE-2スコアが改善する．2010, 2011のTAC Bestと同等，あるいはそれを上回る結果．novelty featureを入れると改善．・noveltyのfeatureは，以下の通り．Bigram Level　-bigramのold datasetにおけるDF　-bigram novelty value (new datasetのbigramのDFをold datasetのDFとDFの最大値の和で割ったもの)　-bigram uniqueness value (old dataset内で出たbigramは0, すでなければ，new dataset内のDFをDFの最大値で割ったもの)Sentence Level　-old datasetのsummaryとのsentence similarity　interpolated n-gram novelty (n-gramのnovelty valueをinterpolateしたもの)　-interpolated n-gram uniqueness (n-gramのuniqueness valueをinterpolateしたもの)・TAC 2011の評価の値をみると，Wanらの手法よりかなり高いROUGE-2スコアを得ている． &lt;/div&gt;" />
+<meta property="og:description" content="&lt;h2 id=IntegerLinearProgramming (ILP) class=”paper-head”&gt; IntegerLinearProgramming (ILP)&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL&#39;17, 2017.08 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #InteractivePersonalizedSummarization #NLP #Personalization #ACL #interactive #In-Depth Notes Issue Date: 2017-12-28 GPT Summary- ユーザーフィードバックを活用した抽出的マルチドキュメント要約システムを提案。インタラクティブにフィードバックを取得し、ILPフレームワークを用いて要約の質を向上。最小限の反復で高品質な要約を生成し、シミュレーション実験で効果を分析。 Comment# 一言で言うとユーザとインタラクションしながら重要なコンセプトを決め、そのコンセプトが含まれるようにILPな手法で要約を生成するPDS手法。Interactive Personalized Summarizationと似ている（似ているが引用していない、引用した方がよいのでは）。# 手法要約モデルは既存のMDS手法を採用。Concept-based ILP Summarizationフィードバックをユーザからもらう際は、要約を生成し、それをユーザに提示。提示した要約から重要なコンセプトをユーザに選択してもらう形式（ユーザが重要と判断したコンセプトには定数重みが与えられる）。ユーザに対して、τ回フィードバックをもらうまでは、フィードバックをもらっていないコンセプトの重要度が高くなるようにし、フィードバックをもらったコンセプトの重要度が低くなるように目的関数を調整する。これにより、まだフィードバックを受けていないコンセプトが多く含まれる要約が生成されるため、これをユーザに提示することでユーザのフィードバックを得る。τ回を超えたら、ユーザのフィードバックから決まったweightが最大となるように目的関数を修正する。ユーザからコンセプトのフィードバックを受ける際は、効率的にフィードバックを受けられると良い（最小のインタラクションで）。そこで、Active Learningを導入する。コンセプトの重要度の不確実性をSVMで判定し、不確実性が高いコンセプトを優先的に含むように目的関数を修正する手法（AL）、SVMで重要度が高いと推定されたコンセプトを優先的に要約に含むように目的関数を修正する手法（AL+）を提案している。# 評価oracle-based approachというものを使っている。要は、要約をシステムが提示しリファレンスと被っているコンセプトはユーザから重要だとフィードバックがあったコンセプトだとみなすというもの。評価結果を見ると、ベースラインのMDSと比べてupper bound近くまでROUGEスコアが上がっている。フィードバックをもらうためのイテレーションは最大で１０回に絞っている模様（これ以上ユーザとインタラクションするのは非現実的）。実際にユーザがシステムを使用する場合のコンテキストに沿った評価になっていないと思う。この評価で示せているのは、ReferenceSummary中に含まれる単語にバイアスをかけて要約を生成していくと、ReferenceSummaryと同様な要約が最終的に作れます、ということと、このときPool-basedなActiveLearningを使うと、より少ないインタラクションでこれが実現できますということ。これを示すのは別に良いと思うのだが、feedbackをReferenceSummaryから与えるのは少し現実から離れすぎている気が。たとえばユーザが新しいことを学ぶときは、ある時は一つのことを深堀し、そこからさらに浅いところに戻って別のところを深堀するみたいなプロセスをする気がするが、この深堀フェーズなどはReferenceSummaryからのフィードバックからでは再現できないのでは。# 所感評価が甘いと感じる。十分なサイズのサンプルを得るのは厳しいからorable-based approachとりましたと書いてあるが、なんらかの人手評価もあったほうが良いと思う。ユーザに数百単語ものフィードバックをもらうというのはあまり現時的ではない気が。oracle-based approachでユーザのフィードバックをシミュレーションしているが、oracleの要約は、人がそのドキュメントクラスタの内容を完璧に理解した上で要約しているものなので、これを評価に使うのも実際のコンテキストと違うと思う。実際にユーザがシステムを使うときは、ドキュメントクラスタの内容なんてなんも知らないわけで、そのユーザからもらえるフィードバックをoracle-based approachでシミュレーションするのは無理がある。仮に、ドキュメントクラスタの内容を完璧に理解しているユーザのフィードバックをシミュレーションするというのなら、わかる。が、そういうユーザのために要約作って提示したいわけではないはず。 [Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR&#39;07 Paper/Blog Link My Issue #Multi #DocumentSummarization #Document #NLP #Extractive #ECIR #Selected Papers/Blogs #One-Line Notes Issue Date: 2018-01-17 Comment文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。 [Paper Note] Improving Update Summarization via Supervised ILP and Sentence Reranking, Li et al. NAACL’15, 2015.05 Paper/Blog Link My Issue #Article #DocumentSummarization #NLP #Update #NAACL #KeyPoint Notes Issue Date: 2017-12-28 Comment・update summarizationをILPで定式化．基本的なMDSのILPのterm weightingにsalienceの要素に加えてnoveltyの要素を加える．term weightingにはbigramを用いる．bigram使うとよくなることがupdate summarizationだと知られている．weightingは平均化パーセプトロンで学習・ILPでcandidate sentencesを求めたあと，それらをSVRを用いてRerankingする．SVRのloss functionはROUGE-2を使う．・Rerankingで使うfeatureはterm weightingした時のsentenceレベルのfeatureを使う．・RerankingをするとROUGE-2スコアが改善する．2010, 2011のTAC Bestと同等，あるいはそれを上回る結果．novelty featureを入れると改善．・noveltyのfeatureは，以下の通り．Bigram Level　-bigramのold datasetにおけるDF　-bigram novelty value (new datasetのbigramのDFをold datasetのDFとDFの最大値の和で割ったもの)　-bigram uniqueness value (old dataset内で出たbigramは0, すでなければ，new dataset内のDFをDFの最大値で割ったもの)Sentence Level　-old datasetのsummaryとのsentence similarity　interpolated n-gram novelty (n-gramのnovelty valueをinterpolateしたもの)　-interpolated n-gram uniqueness (n-gramのuniqueness valueをinterpolateしたもの)・TAC 2011の評価の値をみると，Wanらの手法よりかなり高いROUGE-2スコアを得ている． &lt;/div&gt;" />
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/IntegerLinearProgramming-(ILP).html" />
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/IntegerLinearProgramming-(ILP).html" />
+<meta property="og:site_name" content="わたしのべんきょうノート" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-01-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2018-01-17T00:00:00+00:00","datePublished":"2018-01-17T00:00:00+00:00","description":"&lt;h2 id=IntegerLinearProgramming (ILP) class=”paper-head”&gt; IntegerLinearProgramming (ILP)&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL&#39;17, 2017.08 Paper/Blog Link My Issue #PersonalizedDocumentSummarization #DocumentSummarization #InteractivePersonalizedSummarization #NLP #Personalization #ACL #interactive #In-Depth Notes Issue Date: 2017-12-28 GPT Summary- ユーザーフィードバックを活用した抽出的マルチドキュメント要約システムを提案。インタラクティブにフィードバックを取得し、ILPフレームワークを用いて要約の質を向上。最小限の反復で高品質な要約を生成し、シミュレーション実験で効果を分析。 Comment# 一言で言うとユーザとインタラクションしながら重要なコンセプトを決め、そのコンセプトが含まれるようにILPな手法で要約を生成するPDS手法。Interactive Personalized Summarizationと似ている（似ているが引用していない、引用した方がよいのでは）。# 手法要約モデルは既存のMDS手法を採用。Concept-based ILP Summarizationフィードバックをユーザからもらう際は、要約を生成し、それをユーザに提示。提示した要約から重要なコンセプトをユーザに選択してもらう形式（ユーザが重要と判断したコンセプトには定数重みが与えられる）。ユーザに対して、τ回フィードバックをもらうまでは、フィードバックをもらっていないコンセプトの重要度が高くなるようにし、フィードバックをもらったコンセプトの重要度が低くなるように目的関数を調整する。これにより、まだフィードバックを受けていないコンセプトが多く含まれる要約が生成されるため、これをユーザに提示することでユーザのフィードバックを得る。τ回を超えたら、ユーザのフィードバックから決まったweightが最大となるように目的関数を修正する。ユーザからコンセプトのフィードバックを受ける際は、効率的にフィードバックを受けられると良い（最小のインタラクションで）。そこで、Active Learningを導入する。コンセプトの重要度の不確実性をSVMで判定し、不確実性が高いコンセプトを優先的に含むように目的関数を修正する手法（AL）、SVMで重要度が高いと推定されたコンセプトを優先的に要約に含むように目的関数を修正する手法（AL+）を提案している。# 評価oracle-based approachというものを使っている。要は、要約をシステムが提示しリファレンスと被っているコンセプトはユーザから重要だとフィードバックがあったコンセプトだとみなすというもの。評価結果を見ると、ベースラインのMDSと比べてupper bound近くまでROUGEスコアが上がっている。フィードバックをもらうためのイテレーションは最大で１０回に絞っている模様（これ以上ユーザとインタラクションするのは非現実的）。実際にユーザがシステムを使用する場合のコンテキストに沿った評価になっていないと思う。この評価で示せているのは、ReferenceSummary中に含まれる単語にバイアスをかけて要約を生成していくと、ReferenceSummaryと同様な要約が最終的に作れます、ということと、このときPool-basedなActiveLearningを使うと、より少ないインタラクションでこれが実現できますということ。これを示すのは別に良いと思うのだが、feedbackをReferenceSummaryから与えるのは少し現実から離れすぎている気が。たとえばユーザが新しいことを学ぶときは、ある時は一つのことを深堀し、そこからさらに浅いところに戻って別のところを深堀するみたいなプロセスをする気がするが、この深堀フェーズなどはReferenceSummaryからのフィードバックからでは再現できないのでは。# 所感評価が甘いと感じる。十分なサイズのサンプルを得るのは厳しいからorable-based approachとりましたと書いてあるが、なんらかの人手評価もあったほうが良いと思う。ユーザに数百単語ものフィードバックをもらうというのはあまり現時的ではない気が。oracle-based approachでユーザのフィードバックをシミュレーションしているが、oracleの要約は、人がそのドキュメントクラスタの内容を完璧に理解した上で要約しているものなので、これを評価に使うのも実際のコンテキストと違うと思う。実際にユーザがシステムを使うときは、ドキュメントクラスタの内容なんてなんも知らないわけで、そのユーザからもらえるフィードバックをoracle-based approachでシミュレーションするのは無理がある。仮に、ドキュメントクラスタの内容を完璧に理解しているユーザのフィードバックをシミュレーションするというのなら、わかる。が、そういうユーザのために要約作って提示したいわけではないはず。 [Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR&#39;07 Paper/Blog Link My Issue #Multi #DocumentSummarization #Document #NLP #Extractive #ECIR #Selected Papers/Blogs #One-Line Notes Issue Date: 2018-01-17 Comment文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。 [Paper Note] Improving Update Summarization via Supervised ILP and Sentence Reranking, Li et al. NAACL’15, 2015.05 Paper/Blog Link My Issue #Article #DocumentSummarization #NLP #Update #NAACL #KeyPoint Notes Issue Date: 2017-12-28 Comment・update summarizationをILPで定式化．基本的なMDSのILPのterm weightingにsalienceの要素に加えてnoveltyの要素を加える．term weightingにはbigramを用いる．bigram使うとよくなることがupdate summarizationだと知られている．weightingは平均化パーセプトロンで学習・ILPでcandidate sentencesを求めたあと，それらをSVRを用いてRerankingする．SVRのloss functionはROUGE-2を使う．・Rerankingで使うfeatureはterm weightingした時のsentenceレベルのfeatureを使う．・RerankingをするとROUGE-2スコアが改善する．2010, 2011のTAC Bestと同等，あるいはそれを上回る結果．novelty featureを入れると改善．・noveltyのfeatureは，以下の通り．Bigram Level　-bigramのold datasetにおけるDF　-bigram novelty value (new datasetのbigramのDFをold datasetのDFとDFの最大値の和で割ったもの)　-bigram uniqueness value (old dataset内で出たbigramは0, すでなければ，new dataset内のDFをDFの最大値で割ったもの)Sentence Level　-old datasetのsummaryとのsentence similarity　interpolated n-gram novelty (n-gramのnovelty valueをinterpolateしたもの)　-interpolated n-gram uniqueness (n-gramのuniqueness valueをinterpolateしたもの)・TAC 2011の評価の値をみると，Wanらの手法よりかなり高いROUGE-2スコアを得ている． &lt;/div&gt;","headline":"IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/IntegerLinearProgramming-(ILP).html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/IntegerLinearProgramming-(ILP).html"}</script>
 <!-- End Jekyll SEO tag -->
@@ -48,8 +45,7 @@
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css" as="style" onload="this. onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css"></noscript>
   
-  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート">
-<script>
+  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート" /><script>
   function showMore(index) {
     const contentDivs = document.getElementsByClassName('hidden-content');
     const contentDiv = contentDivs[index];
@@ -97,7 +93,9 @@
 </script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <!-- and it's easy to individually load additional languages -->
-<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+<script charset="UTF-8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"
+        async></script>
 
 
 
@@ -185,9 +183,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     display: none;
   }
 </style>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
-<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link
+  href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css"
+  rel="stylesheet"
+/>
 <style>
   .pswp .pswp__container .pswp__img {
     background-color: white;
@@ -261,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   window.addEventListener("load", initPhotoSwipe);
 </script>
-<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI">
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
   <script>
@@ -271,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     gtag('config', 'G-P70KSB88WH');
   </script>
-
+</script>
 </head>
 
 
@@ -412,23 +415,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
 <header class="site-header site-header-transparent" role="banner">
 
   <div class="wrapper">
-    <div class="site-header-inner">
-<span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+    <div class="site-header-inner"><span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
   <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
   わたしのべんきょうノート
 </a>
 </span><nav class="site-nav">
-          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
           <label for="nav-trigger">
             <span class="menu-icon">
-              <svg viewbox="0 0 18 15" width="18px" height="15px">
-                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
               </svg>
             </span>
           </label>
 
-          <div class="trigger">
-<a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+          <div class="trigger"><a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
 
 
 
@@ -580,10 +581,8 @@ function googleTranslateElementInit() {
 </script>
 
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-</span>
-</div>
-        </nav>
-</div>
+</span></div>
+        </nav></div>
   </div>
 </header>
 
@@ -791,15 +790,11 @@ function googleTranslateElementInit() {
     html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
       opacity: 0.2872;
     }
-  </style>
-<section class="page-banner">
-    <div class="page-banner-img">
-<div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
-        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp">
-</div>
+  </style><section class="page-banner">
+    <div class="page-banner-img"><div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp"></div>
     <div class="wrapper">
-      <div class="page-banner-inner">
-<header class="post-header">
+      <div class="page-banner-inner"><header class="post-header">
   <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
   <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
 それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
@@ -1035,18 +1030,16 @@ function googleTranslateElementInit() {
 
     <div class="post-content e-content" itemprop="articleBody">
 
-      <h2 id="IntegerLinearProgramming" class="paper-head"> IntegerLinearProgramming (ILP)</h2>
-<div class="visible-content">
+      <h2 id=IntegerLinearProgramming (ILP) class="paper-head"> IntegerLinearProgramming (ILP)</h2><div class="visible-content">
 <article class="paper-entry">
-<h3 id="joint-optimization-7" class="title-link">[Paper Note] Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL'17, 2017.08</h3>
-<br><a href="https://aclanthology.org/P17-1124/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="joint-optimization-7" class="title-link">[Paper Note] Joint Optimization of User-desired Content in Multi-document Summaries by Learning from User Feedback, P.V.S+, ACL'17, 2017.08</h3><br><a href="https://aclanthology.org/P17-1124/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1057,21 +1050,20 @@ My Issue
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <a class="button" href="interactive.html" target="_blank" rel="noopener noreferrer">#interactive</a>
-<a class="button" href="In-Depth%20Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>GPT Summary</span>- ユーザーフィードバックを活用した抽出的マルチドキュメント要約システムを提案。インタラクティブにフィードバックを取得し、ILPフレームワークを用いて要約の質を向上。最小限の反復で高品質な要約を生成し、シミュレーション実験で効果を分析。</span>
 <span class="snippet"><span>Comment</span><p># 一言で言うと<br><br>ユーザとインタラクションしながら重要なコンセプトを決め、そのコンセプトが含まれるようにILPな手法で要約を生成するPDS手法。Interactive Personalized Summarizationと似ている（似ているが引用していない、引用した方がよいのでは）。<br><br><br><br># 手法<br><br>要約モデルは既存のMDS手法を採用。Concept-based ILP Summarization<br><br><br><br>フィードバックをユーザからもらう際は、要約を生成し、それをユーザに提示。提示した要約から重要なコンセプトをユーザに選択してもらう形式（ユーザが重要と判断したコンセプトには定数重みが与えられる）。<br><br>ユーザに対して、τ回フィードバックをもらうまでは、フィードバックをもらっていないコンセプトの重要度が高くなるようにし、フィードバックをもらったコンセプトの重要度が低くなるように目的関数を調整する。これにより、まだフィードバックを受けていないコンセプトが多く含まれる要約が生成されるため、これをユーザに提示することでユーザのフィードバックを得る。τ回を超えたら、ユーザのフィードバックから決まったweightが最大となるように目的関数を修正する。<br><br><br><br>ユーザからコンセプトのフィードバックを受ける際は、効率的にフィードバックを受けられると良い（最小のインタラクションで）。そこで、Active Learningを導入する。コンセプトの重要度の不確実性をSVMで判定し、不確実性が高いコンセプトを優先的に含むように目的関数を修正する手法（AL）、SVMで重要度が高いと推定されたコンセプトを優先的に要約に含むように目的関数を修正する手法（AL+）を提案している。<br><br><br><br># 評価<br><br>oracle-based approachというものを使っている。要は、要約をシステムが提示しリファレンスと被っているコンセプトはユーザから重要だとフィードバックがあったコンセプトだとみなすというもの。<br><br>評価結果を見ると、ベースラインのMDSと比べてupper bound近くまでROUGEスコアが上がっている。フィードバックをもらうためのイテレーションは最大で１０回に絞っている模様（これ以上ユーザとインタラクションするのは非現実的）。<br><br><br><br>実際にユーザがシステムを使用する場合のコンテキストに沿った評価になっていないと思う。<br><br>この評価で示せているのは、ReferenceSummary中に含まれる単語にバイアスをかけて要約を生成していくと、ReferenceSummaryと同様な要約が最終的に作れます、ということと、このときPool-basedなActiveLearningを使うと、より少ないインタラクションでこれが実現できますということ。<br><br>これを示すのは別に良いと思うのだが、feedbackをReferenceSummaryから与えるのは少し現実から離れすぎている気が。たとえばユーザが新しいことを学ぶときは、ある時は一つのことを深堀し、そこからさらに浅いところに戻って別のところを深堀するみたいなプロセスをする気がするが、この深堀フェーズなどはReferenceSummaryからのフィードバックからでは再現できないのでは。<br><br><br><br># 所感<br><br>評価が甘いと感じる。十分なサイズのサンプルを得るのは厳しいからorable-based approachとりましたと書いてあるが、なんらかの人手評価もあったほうが良いと思う。<br><br><br><br>ユーザに数百単語ものフィードバックをもらうというのはあまり現時的ではない気が。<br><br><br><br>oracle-based approachでユーザのフィードバックをシミュレーションしているが、oracleの要約は、人がそのドキュメントクラスタの内容を完璧に理解した上で要約しているものなので、これを評価に使うのも実際のコンテキストと違うと思う。実際にユーザがシステムを使うときは、ドキュメントクラスタの内容なんてなんも知らないわけで、そのユーザからもらえるフィードバックをoracle-based approachでシミュレーションするのは無理がある。仮に、ドキュメントクラスタの内容を完璧に理解しているユーザのフィードバックをシミュレーションするというのなら、わかる。が、そういうユーザのために要約作って提示したいわけではないはず。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="a-study-241" class="title-link">[Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR'07</h3>
-<br><a href="https://link.springer.com/chapter/10.1007/978-3-540-71496-5_51" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="a-study-241" class="title-link">[Paper Note] A study of global inference algorithms in multi-document summarization, Ryan McDonald, ECIR'07</h3><br><a href="https://link.springer.com/chapter/10.1007/978-3-540-71496-5_51" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/241" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/241" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1081,21 +1073,20 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Extractive.html" target="_blank" rel="noopener noreferrer">#Extractive</a>
 <a class="button" href="ECIR.html" target="_blank" rel="noopener noreferrer">#ECIR</a>
-<a class="button" href="Selected%20Papers_Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="One-Line%20Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2018-01-17</span>
 <span class="snippet"><span>Comment</span><p>文書要約をナップサック問題として定式化し、厳密解（動的計画法、ILP Formulation）、近似解(Greedy)を求める手法を提案。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="improving-update-31" class="title-link">[Paper Note] Improving Update Summarization via Supervised ILP and Sentence Reranking, Li et al. NAACL’15, 2015.05</h3>
-<br><a href="http://www.aclweb.org/anthology/N15-1145" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+<h3 id="improving-update-31" class="title-link">[Paper Note] Improving Update Summarization via Supervised ILP and Sentence Reranking, Li et al. NAACL’15, 2015.05</h3><br><a href="http://www.aclweb.org/anthology/N15-1145" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/31" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewbox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"></path>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"></path>
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/31" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
@@ -1104,7 +1095,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Update.html" target="_blank" rel="noopener noreferrer">#Update</a>
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
-<a class="button" href="KeyPoint%20Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>・update summarizationをILPで定式化．基本的なMDSのILPのterm weightingにsalienceの要素に加えてnoveltyの要素を加える．term weightingにはbigramを用いる．bigram使うとよくなることがupdate summarizationだと知られている．weightingは平均化パーセプトロンで学習<br><br>・ILPでcandidate sentencesを求めたあと，それらをSVRを用いてRerankingする．SVRのloss functionはROUGE-2を使う．<br><br>・Rerankingで使うfeatureはterm weightingした時のsentenceレベルのfeatureを使う．<br><br>・RerankingをするとROUGE-2スコアが改善する．2010, 2011のTAC Bestと同等，あるいはそれを上回る結果．novelty featureを入れると改善．<br><br>・noveltyのfeatureは，以下の通り．<br><br><br><br>Bigram Level<br><br>　-bigramのold datasetにおけるDF<br><br>　-bigram novelty value (new datasetのbigramのDFをold datasetのDFとDFの最大値の和で割ったもの)<br><br>　-bigram uniqueness value (old dataset内で出たbigramは0, すでなければ，new dataset内のDFをDFの最大値で割ったもの)<br><br>Sentence Level<br><br>　-old datasetのsummaryとのsentence similarity　interpolated n-gram novelty (n-gramのnovelty valueをinterpolateしたもの)<br><br>　-interpolated n-gram uniqueness (n-gramのuniqueness valueをinterpolateしたもの)<br><br><br><br>・TAC 2011の評価の値をみると，Wanらの手法よりかなり高いROUGE-2スコアを得ている．</p></span><br><br>
 </article>
@@ -1156,51 +1147,51 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav">
-<a class="previous" href="/paper_notes/articles/ECIR.html" title="ECIRに関する論文・技術記事メモの一覧">ECIRに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Discourse.html" title="Discourseに関する論文・技術記事メモの一覧">Discourseに関する論文・技術記事メモの一覧</a>
-</div>
-<div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/ECIR.html" title="ECIRに関する論文・技術記事メモの一覧">ECIRに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Discourse.html" title="Discourseに関する論文・技術記事メモの一覧">Discourseに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
-          <a class="post-link" href="/paper_notes/articles/CoNLL.html" title="CoNLLに関する論文・技術記事メモの一覧">
-            CoNLLに関する論文・技術記事メモの一覧
+          <a class="post-link"
+            href="/paper_notes/articles/Test-Time-Scaling.html"
+            title="Test-Time Scalingに関する論文・技術記事メモの一覧">
+            Test-Time Scalingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/Simplification.html" title="Simplificationに関する論文・技術記事メモの一覧">
-            Simplificationに関する論文・技術記事メモの一覧
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Zero-FewShotLearning.html"
+            title="Zero/FewShotLearningに関する論文・技術記事メモの一覧">
+            Zero/FewShotLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/ActivationFunction.html" title="ActivationFunctionに関する論文・技術記事メモの一覧">
-            ActivationFunctionに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
-</span>
-</a>
-        </li>
-<li class="">
-          <a class="post-link" href="/paper_notes/articles/PerformanceTesting.html" title="PerformanceTestingに関する論文・技術記事メモの一覧">
-            PerformanceTestingに関する論文・技術記事メモの一覧
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/SubstanceUsePrediction.html"
+            title="SubstanceUsePredictionに関する論文・技術記事メモの一覧">
+            SubstanceUsePredictionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
-        </li>
-</ul>
-    </div>
-<div class="post-comments"></div></section>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/PRM.html"
+            title="PRMに関する論文・技術記事メモの一覧">
+            PRMに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
+</span>
+</a>
+        </li></ul>
+    </div><div class="post-comments"></div></section>
 </div>
 
 
@@ -1417,13 +1408,11 @@ document.addEventListener("DOMContentLoaded", function() {
   <data class="u-url" href="/paper_notes/"></data>
 
   <div class="wrapper">
-    <div class="site-footer-inner">
-<div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+    <div class="site-footer-inner"><div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
       <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
       generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
       another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
-      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a>
-</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a></div>
     </div>
   </div>
 </footer>
