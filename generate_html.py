@@ -642,9 +642,9 @@ author: AkihikoWATANABE
 
     # head message
     html_content += '<h2>本ブログについて</h2>'
-    html_content += '<p>本ブログは特定のトピックに関する論文メモをスレッド形式で流し見することを想定して作成しています。トピックとスレッドの一覧は<a href="https://akihikowatanabe.github.io/paper_notes/archives.html" target="_blank" rel="noopener noreferrer>アーカイブページ</a>をご参照ください。</p>'
+    html_content += '本ブログは特定のトピックに関する論文メモをスレッド形式で流し見することを想定して作成しています。トピックとスレッドの一覧は<a href="https://akihikowatanabe.github.io/paper_notes/archives.html" target="_blank" rel="noopener noreferrer>アーカイブページ</a>をご参照ください。'
     html_content += '''
-<p>最近特に収集しているトピックとしては下記のようなものがあります:
+最近特に収集しているトピックとしては下記のようなものがあります:
 <ul>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/LanguageModel.html" target="_blank" rel="noopener noreferrer>（大規模）言語モデル (Large Language Models)</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/VisionLanguageModel.html" target="_blank" rel="noopener noreferrer>視覚言語モデル (Vision Language Models)</a></li>
@@ -672,24 +672,23 @@ author: AkihikoWATANABE
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Chain-of-Thought.html" target="_blank" rel="noopener noreferrer>Chain-of-Thought</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Reasoning.html" target="_blank" rel="noopener noreferrer>Reasoning</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Tutorial.html" target="_blank" rel="noopener noreferrer>様々な分野・タスクのチュートリアル</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Survey.html" target="_blank" rel="noopener noreferrer>サーベイ</a></li>
 </ul>
-</p>
 '''
-    html_content += '<p>特定の論文（やトピックの組み合わせ）に関して検索したい場合はこちらの<a href="https://github.com/AkihikoWatanabe/paper_notes/issues" target="_blank" rel="noopener noreferrer">Github Issue</a>から検索すると良いと思います。</p>'
-    html_content += '<p>以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (Selected Papers/Blogs) です。</p>'
+    html_content += '特定の論文（やトピックの組み合わせ）に関して検索したい場合はこちらの<a href="https://github.com/AkihikoWatanabe/paper_notes/issues" target="_blank" rel="noopener noreferrer">Github Issue</a>から検索できます。'
+    html_content += '以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (Selected Papers/Blogs) です。'
 
     # latest posts
     #html_content += '## Latest Posts\n\n'
     html_content += '<h2 id="latest-post" class="paper-head">Latest Posts (100)</h2>'
     latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:100]
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
-    html_content += gen_one_item(latest_issues, [])
+    html_content += gen_one_item(latest_issues, [], h_level="3")
 
     # Admin's Pick
     selected_issues = [issue for issue in all_issues if any(["Selected Papers/Blogs" == l["name"] for l in issue["labels"]])]
     html_content += f'<h2 id="selected-papers" class="paper-head">Selected Papers/Blogs ({len(selected_issues)})</h2>'
     selected_issues = sorted(selected_issues, key=lambda x: x["number"], reverse=True)
     selected_issues = [(issue, issue["number"]) for issue in selected_issues]
-    html_content += gen_one_item(selected_issues, [])
+    html_content += gen_one_item(selected_issues, [], h_level="3")
     html_content += "<hr>\n\n"
 
     print("main part was finished.")
@@ -782,6 +781,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
