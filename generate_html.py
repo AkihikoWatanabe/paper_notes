@@ -640,6 +640,43 @@ author: AkihikoWATANABE
     # 階層構造のデータを基にHTMLを生成
     html_content = ''
 
+    # head message
+    html_content += '<h2>本ブログについて</h2>'
+    html_content += '<p>本ブログは特定のトピックに関する論文メモをスレッド形式で流し見することを想定して作成しています。トピックとスレッドの一覧は<a href="https://akihikowatanabe.github.io/paper_notes/archives.html" target="_blank" rel="noopener noreferrer>アーカイブページ</a>をご参照ください。</p>'
+    html_content += '''
+<p>最近特に収集しているトピックとしては下記のようなものがあります:
+<ul>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/LanguageModel.html" target="_blank" rel="noopener noreferrer>（大規模）言語モデル (Large Language Models)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/VisionLanguageModel.html" target="_blank" rel="noopener noreferrer>視覚言語モデル (Vision Language Models)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/DiffusionModel.html" target="_blank" rel="noopener noreferrer>拡散モデル (Diffusion Models)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Prompting.html" target="_blank" rel="noopener noreferrer>LLMにおけるプロンプティング (Prompting)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html" target="_blank" rel="noopener noreferrer>事前学習 (Pre-training)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/mid-training.html" target="_blank" rel="noopener noreferrer>中間学習 (Mid-training)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html" target="_blank" rel="noopener noreferrer>事後学習 (Post-training)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/ReinforcementLearning.html" target="_blank" rel="noopener noreferrer>（主にLLMの事後学習で応用される）強化学習 (Reinforcement Learning)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/OpenWeight.html" target="_blank" rel="noopener noreferrer>OpenWeightモデル</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Transformer.html" target="_blank" rel="noopener noreferrer>Transformerアーキテクチャ関連</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Attention.html" target="_blank" rel="noopener noreferrer>TransformerAttention関連</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer>Test-time Scaling</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-time-Learning.html" target="_blank" rel="noopener noreferrer>Test-time Learning</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Alignment.html" target="_blank" rel="noopener noreferrer>（大規模言語モデルにおける）アライメント</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html" target="_blank" rel="noopener noreferrer>AI Agent全般</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/memory.html" target="_blank" rel="noopener noreferrer>AI Agentにおけるメモリ</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/ContextEngineering.html" target="_blank" rel="noopener noreferrer>Context Engineering</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Evaluation.html" target="_blank" rel="noopener noreferrer>様々な分野・タスクでの評価</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Dataset.html" target="_blank" rel="noopener noreferrer>様々な分野・タスクでのデータセット</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SyntheticData.html" target="_blank" rel="noopener noreferrer>合成データ (Synthetic Data)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Scaling-Laws.html" target="_blank" rel="noopener noreferrer>スケーリング則 (Scaling Laws)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html" target="_blank" rel="noopener noreferrer>Self-Improving (LLM)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/SelfCorrection.html" target="_blank" rel="noopener noreferrer>Self-Correction (LLM)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/MultiModal.html" target="_blank" rel="noopener noreferrer>マルチモーダル (Multimodal)</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Chain-of-Thought.html" target="_blank" rel="noopener noreferrer>Chain-of-Thought</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Reasoning.html" target="_blank" rel="noopener noreferrer>Reasoning</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Tutorial.html" target="_blank" rel="noopener noreferrer>様々な分野・タスクのチュートリアル</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Survey.html" target="_blank" rel="noopener noreferrer>サーベイ</a></li>
+</ul>
+</p>
+'''
+    html_content += '<p>特定の論文（やトピックの組み合わせ）に関して検索したい場合はこちらの'<a href="https://github.com/AkihikoWatanabe/paper_notes/issues" target="_blank" rel="noopener noreferrer">Github Issue</a>\n'</a>から検索すると良いと思います。</p>'
+    html_content += '<p>以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (Selected Papers/Blogs) です。</p>'
+
     # latest posts
     #html_content += '## Latest Posts\n\n'
     html_content += '<h2 id="latest-post" class="paper-head">Latest Posts (100)</h2>'
@@ -653,60 +690,10 @@ author: AkihikoWATANABE
     selected_issues = sorted(selected_issues, key=lambda x: x["number"], reverse=True)
     selected_issues = [(issue, issue["number"]) for issue in selected_issues]
     html_content += gen_one_item(selected_issues, [])
-
-    # list up
-    N = len(label_to_hierarchy.items())
-    for parent, sub_parents in tqdm(sorted(label_to_hierarchy.items(), key=lambda item: order_label_count[(item[0])], reverse=True), total=N):
-        #html_content += f'## {parent} ({label_count[(parent)]})\n\n'
-        html_content += f'<h2 id="{parent.lower()}-{label_count[(parent)]}" class="paper-head"> {parent} ({label_count[(parent)]})</h2>'
-        for sub_parent, issue_list in sorted(sub_parents.items(), key=lambda item: order_label_count[(parent, item[0])], reverse=True):
-            #html_content += f'### {sub_parent} ({label_count[(parent, sub_parent)]})\n\n'
-            html_content += f'<h3 id="{sub_parent.lower()}-{label_count[(parent, sub_parent)]}" class="paper-head"> {sub_parent} ({label_count[(parent, sub_parent)]})</h3>'
-            current_target = [parent, sub_parent]
-            #html_content += '{% raw %}\n'
-            html_content += gen_one_item(issue_list, current_target)
-            #html_content += "<br><hr>\n"
-            #html_content += '{% endraw %}\n\n'
-        html_content += "<hr>\n\n"
+    html_content += "<hr>\n\n"
 
     print("main part was finished.")
 
-    #html_content += f'## Pocket ({label_count["Pocket"]})\n\n'
-    html_content += f'<h2 id="pocket-{label_count["Pocket"]}" class="paper-head"> Pocket ({label_count["Pocket"]})</h2>'
-    html_content += gen_one_item(pockets, ["Pocket"], h_level="4")
-
-
-    #graph
-    #html_content += "## 各ラベルの量と関係性の可視化 β\n"
-    #html_content += "各Issueに付与した主要ラベルの付与回数の合計値によってノードの大きさを決め、ラベル同士の共起関係からエッジを張り作成したグラフです！\n"
-    #html_content += "なんか見辛いしよくわからない...笑 クリックしてドラッグで視点を移動できます。\n"
-    #html_content += "{% raw %}"
-    #html_content += '<svg></svg>'
-    #html_content += '<div id="svgContainer"></div>'
-    #html_content += """<script>
-    #// d3.selectを使ってプレースホルダーを選択
-    #const container = d3.select("#svgContainer");
-    #const svg = container.append("svg");
-    #const width = 647;
-    #const height = window.innerHeight;
-
-    #svg.attr("width", width).attr("height", height);
-
-    #const g = svg.append("g");
-
-    #d3.xml("assets/images/knowledge_graph.svg").then(data => {
-    #    g.node().append(data.documentElement);
-    #});
-
-    #const zoom = d3.zoom()
-    #    .on("zoom", () => {
-    #        g.attr("transform", d3.event.transform);
-    #    });
-
-    #svg.call(zoom);
-    #</script>
-    #"""
-    #html_content += "{% endraw %}\n"
     html_content += '<hr>\n\n'
     lazy_loading = """
 <script>
@@ -795,6 +782,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
