@@ -412,10 +412,10 @@ def _iter_issue(sorted_issues: list[tuple[dict, int]], current_target: list[str]
         tags = [data['name'] for data in issue['labels']]
         if year == 0:
             t = "Article"
-            _html_content.append(f'<a class="button" href="{str(assets_root / t.replace("/", "_"))}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
+            _html_content.append(f'<a class="button" href="{str(assets_root / t.replace("/", "-").replace(" ", "-"))}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
         for t in tags: 
             if t not in current_target and t not in ["translation_required", "action_wanted"]:
-                _html_content.append(f'<a class="button" href="{str(assets_root / t.replace("/", "_"))}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
+                _html_content.append(f'<a class="button" href="{str(assets_root / t.replace("/", "-").replace(" ", "-"))}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
         #_html_content.append('<br>')
         if attach_date:
             _html_content.append(f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>')
@@ -795,6 +795,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
