@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 20 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 29 mins</span>
   </div></header>
 </div>
     </div>
@@ -1146,6 +1146,29 @@ My Issue
 で指摘されている通り、人間が記述した要約とLLMが記述した要約を区別するタスクは、inter-annotator agreementは`0.07`であり、極端に低く、人間でも困難なタスクであるため。<br><br>    - 原因2: LLMは生成時と評価時に、共通したコンセプトをモデル内部で共有している可能性が高く、これがLLMが生成した要約を高く評価するバイアスをかけた<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ec6a213d-15ea-4572-8716-ad9cbee6f19a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## CoTの影響<br><br>- SummEvalデータにおいて、CoTの有無による性能の差を検証した結果、CoTを導入した場合により高いcorrelationを獲得した。特に、Fluencyへの影響が大きい。<br><br><br><br>## Probability Normalizationによる影響<br><br>- probabilityによるnormalizationを導入したことで、kendall tauが減少した。この理由は、probabilityが導入されていない場合は多くの引き分けを生み出す。一方、kendall tauは、concordant / discordantペアの数によって決定されるが、引き分けの場合はどちらにもカウントされず、kendall tauの値を押し上げる効果がある。このため、これはモデルの真の性能を反映していない。<br><br>- 一方、probabilityを導入すると、より細かいな連続的なスコアを獲得することができ、これはspearman-correlationの向上に反映されている。<br><br><br><br>## モデルサイズによる影響<br><br>- 基本的に大きいサイズの方が高いcorrelationを示す。特に、consistencyやrelevanceといった、複雑な評価タスクではその差が顕著である。<br><br>- 一方モデルサイズが小さい方が性能が良い観点（engagingness, groundedness）なども存在した。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="gptq-accurate-1043" class="title-link">[Paper Note] GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers, Elias Frantar+, ICLR'23, 2022.10</h3><br><a href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1043" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Quantization.html" target="_blank" rel="noopener noreferrer">#Quantization</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2023-09-29</span>
+<span class="snippet"><span>GPT Summary</span>- GPTモデルはその優れた性能にもかかわらず、高い計算とストレージコストが課題である。この問題を解決するため、近似二次情報に基づく新しい量子化手法GPTQを提案。GPTQは、1750億パラメータを持つモデルの量子化を約4時間で行い、精度をほとんど失うことなくビット幅を3または4ビットに削減する。また、この手法は圧縮の利得が2倍以上高く、単一のGPUでの推論を可能にし、極端な量子化条件でも合理的な精度を示す。実験により、推論速度が大幅に向上することが確認された。</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>- 新たなpost-training量子化手法であるGPTQを提案<br><br>- 数時間以内に数千億のパラメータを持つモデルでの実行が可能であり、パラメータごとに3～4ビットまで圧縮するが、精度の大きな損失を伴わない<br><br>    - OPT-175BおよびBLOOM-176Bを、約4時間のGPU時間で、perplexityのわずかな増加で量子化することができた<br><br>- 数千億のパラメータを持つ非常に高精度な言語モデルを3-4ビットに量子化可能なことを初めて示した<br><br>    - 先行研究のpost-training手法は、8ビット（Yao et al., 2022; Dettmers et al., 2022）。<br><br>    - 一方、以前のtraining-basedの手法は、1～2桁小さいモデルのみを対象としていた（Wu et al., 2022）。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4ff107a9-7ccf-40f6-ad8c-fd910b1f0ac7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># Background<br><br>## Layer-wise quantization<br><br>各linear layerがあるときに、full precisionのoutputを少量のデータセットをネットワークに流したときに、quantized weight W^barを用いてreconstructできるように、squared error lossを最小化する方法。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9950fec1-966b-45c4-a82a-6bfd533042b3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Optimal Brain quantization (OBQ)<br><br>OBQでは equation (1)をWの行に関するsummationとみなす。そして、それぞれの行 **w** をOBQは独立に扱い、ある一つの重みw_qをquantizeするときに、エラーがw_qのみに基づいていることを補償するために他の**w**の全てのquantizedされていない重みをupdateする。式で表すと下記のようになり、Fは残りのfull-precision weightの集合を表している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aab7784d-45f3-4f23-ac74-6cc4c2026486" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>この二つの式を、全ての**w**の重みがquantizedされるまで繰り返し適用する。<br><br><br><br>つまり、ある一個の重みをquantizedしたことによる誤差を補うように、他のまだquantizedされていない重みをupdateすることで、次に別の重みをquantizedする際は、最初の重みがquantizedされたことを考慮した重みに対してquantizedすることになる。これを繰り返すことで、quantizedしたことによる誤差を考慮して**w**全体をアップデートできる、という気持ちだと思う。<br><br><br><br>この式は高速に計算することができ、medium sizeのモデル（25M parameters; ResNet-50 modelなど）とかであれば、single GPUで1時間でquantizeできる。しかしながら、OBQはO(d_row * d_col^3)であるため、（ここでd_rowはWの行数、d_colはwの列数）、billions of parametersに適用するには計算量が多すぎる。</p><p># Algorithm<br><br>## Step 1: Arbitrary Order Insight.<br><br>通常のOBQは、量子化誤差が最も少ない重みを常に選択して、greedyに重みを更新していく。しかし、パラメータ数が大きなモデルになると、重みを任意の順序で量子化したとしてもそれによる影響は小さいと考えられる。なぜなら、おそらく、大きな個別の誤差を持つ量子化された重みの数が少ないと考えられ、その重みがプロセスのが進むにつれて（アップデートされることで？）相殺されるため。<br><br><br><br>このため、提案手法は、すべての行の重みを同じ順序で量子化することを目指し、これが通常、最終的な二乗誤差が元の解と同じ結果となることを示す。が、このために2つの課題を乗り越えなければならない。<br><br><br><br>## Step2. Lazy Batch-Updates<br><br>Fを更新するときは、各エントリに対してわずかなFLOPを使用して、巨大な行列のすべての要素を更新する必要があります。しかし、このような操作は、現代のGPUの大規模な計算能力を適切に活用することができず、非常に小さいメモリ帯域幅によってボトルネックとなる。<br><br><br><br>幸いにも、この問題は以下の観察によって解決できる：列iの最終的な四捨五入の決定は、この特定の列で行われた更新にのみ影響され、そのプロセスの時点で後の列への更新は関連がない。これにより、更新を「lazy batch」としてまとめることができ、はるかに効率的なGPUの利用が可能となる。（要は独立して計算できる部分は全部一気に計算してしまって、後で一気にアップデートしますということ）。たとえば、B = 128の列にアルゴリズムを適用し、更新をこれらの列と対応するB × Bブロックの H^-1 に格納する。<br><br>この戦略は理論的な計算量を削減しないものの、メモリスループットのボトルネックを改善する。これにより、非常に大きなモデルの場合には実際に1桁以上の高速化が提供される。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb33c4d-3924-4abd-b149-936b9e350c76" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Step 3: Cholesky Reformulation<br><br>行列H_F^-1が不定になることがあり、これがアルゴリズムが残りの重みを誤った方向に更新する原因となり、該当する層に対して悪い量子化を実施してしまうことがある。この現象が発生する確率はモデルのサイズとともに増加することが実際に観察された。これを解決するために、コレスキー分解を活用して解決している（詳細はきちんと読んでいない）。</p><p># 実験で用いたCalibration data<br><br>GPTQのキャリブレーションデータ全体は、C4データセット(Raffel et al., 2020)からのランダムな2048トークンのセグメント128個で構成される。つまり、ランダムにクロールされたウェブサイトからの抜粋で、一般的なテキストデータを表している。GPTQがタスク固有のデータを一切見ていないため「ゼロショット」な設定でquantizationを実施している。<br><br><br><br># Language Generationでの評価<br><br>WikiText2に対するPerplexityで評価した結果、先行研究であるRTNを大幅にoutperformした。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23e12194-d329-46f7-bb69-2cce290282c1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="generating-user-engaging-893" class="title-link">[Paper Note] Generating User-Engaging News Headlines, Cai+, ACL'23</h3><br><a href="https://aclanthology.org/2023.acl-long.183" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1419,9 +1442,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/IJCV.html"
-            title="IJCVに関する論文・技術記事メモの一覧">
-            IJCVに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/InverseRendering.html"
+            title="InverseRenderingに関する論文・技術記事メモの一覧">
+            InverseRenderingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1429,32 +1452,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SpeechProcessing.html"
-            title="SpeechProcessingに関する論文・技術記事メモの一覧">
-            SpeechProcessingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/reading.html"
+            title="readingに関する論文・技術記事メモの一覧">
+            readingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 58</span> 
-  <span class="post-badge badge-new">📝 58</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
+  <span class="post-badge badge-new">📝 17</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PseudoLabeling.html"
-            title="PseudoLabelingに関する論文・技術記事メモの一覧">
-            PseudoLabelingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/QA-based.html"
+            title="QA-basedに関する論文・技術記事メモの一覧">
+            QA-basedに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/FlowMaps.html"
+            title="FlowMapsに関する論文・技術記事メモの一覧">
+            FlowMapsに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Interspeech.html"
-            title="Interspeechに関する論文・技術記事メモの一覧">
-            Interspeechに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>

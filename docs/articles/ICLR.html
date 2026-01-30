@@ -3997,7 +3997,7 @@ My Issue
 </p><p>encoder-decoder/decoder-onlyなど特定のアーキテクチャに依存しないアーキテクチャagnosticな事前学習手法であるMoDを提案。<br>MoDでは3種類のDenoiser [R] standard span corruption, [S] causal language modeling, [X] extreme span corruption の3種類のパラダイムを活用する。学習時には与えらえたタスクに対して適切なモードをスイッチできるようにparadigm token ([R], [S], [X])を与え挙動を変化させられるようにしており[^1]、finetuning時においては事前にタスクごとに定義をして与えるなどのことも可能。<br><br><img src="https://github.com/user-attachments/assets/a07372c6-854c-4bd1-8f59-f8c4dbdc5d23" /" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 事前学習中に具体的にどのようにモードをスイッチするのかはよくわからなかった。ランダムに変更するのだろうか。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="gptq-accurate-1043" class="title-link">GPTQ: Accurate Post-Training Quantization for Generative Pre-trained   Transformers, Elias Frantar+, N_A, ICLR'23</h3><br><a href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="gptq-accurate-1043" class="title-link">[Paper Note] GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers, Elias Frantar+, ICLR'23, 2022.10</h3><br><a href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -4009,11 +4009,14 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Quantization.html" target="_blank" rel="noopener noreferrer">#Quantization</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-09-29</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、GPTモデルの推論における計算およびストレージコストの問題に取り組み、新しいワンショット重み量子化手法であるGPTQを提案します。GPTQは高い精度と効率性を持ち、1750億のパラメータを持つGPTモデルを4時間のGPU時間で量子化することができます。提案手法は従来の手法と比較して圧縮率を2倍以上向上させ、精度を保持することができます。さらに、提案手法は極端な量子化領域でも合理的な精度を提供します。実験結果では、提案手法を使用することでエンドツーエンドの推論速度が約3.25倍から4.5倍向上することが示されています。提案手法の実装はhttps://github.com/IST-DASLab/gptqで利用可能です。</span>
+<span class="snippet"><span>GPT Summary</span>- GPTモデルはその優れた性能にもかかわらず、高い計算とストレージコストが課題である。この問題を解決するため、近似二次情報に基づく新しい量子化手法GPTQを提案。GPTQは、1750億パラメータを持つモデルの量子化を約4時間で行い、精度をほとんど失うことなくビット幅を3または4ビットに削減する。また、この手法は圧縮の利得が2倍以上高く、単一のGPUでの推論を可能にし、極端な量子化条件でも合理的な精度を示す。実験により、推論速度が大幅に向上することが確認された。</span>
 <span class="snippet"><span>Comment</span><p># 概要<br><br>- 新たなpost-training量子化手法であるGPTQを提案<br><br>- 数時間以内に数千億のパラメータを持つモデルでの実行が可能であり、パラメータごとに3～4ビットまで圧縮するが、精度の大きな損失を伴わない<br><br>    - OPT-175BおよびBLOOM-176Bを、約4時間のGPU時間で、perplexityのわずかな増加で量子化することができた<br><br>- 数千億のパラメータを持つ非常に高精度な言語モデルを3-4ビットに量子化可能なことを初めて示した<br><br>    - 先行研究のpost-training手法は、8ビット（Yao et al., 2022; Dettmers et al., 2022）。<br><br>    - 一方、以前のtraining-basedの手法は、1～2桁小さいモデルのみを対象としていた（Wu et al., 2022）。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4ff107a9-7ccf-40f6-ad8c-fd910b1f0ac7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># Background<br><br>## Layer-wise quantization<br><br>各linear layerがあるときに、full precisionのoutputを少量のデータセットをネットワークに流したときに、quantized weight W^barを用いてreconstructできるように、squared error lossを最小化する方法。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9950fec1-966b-45c4-a82a-6bfd533042b3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Optimal Brain quantization (OBQ)<br><br>OBQでは equation (1)をWの行に関するsummationとみなす。そして、それぞれの行 **w** をOBQは独立に扱い、ある一つの重みw_qをquantizeするときに、エラーがw_qのみに基づいていることを補償するために他の**w**の全てのquantizedされていない重みをupdateする。式で表すと下記のようになり、Fは残りのfull-precision weightの集合を表している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aab7784d-45f3-4f23-ac74-6cc4c2026486" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>この二つの式を、全ての**w**の重みがquantizedされるまで繰り返し適用する。<br><br><br><br>つまり、ある一個の重みをquantizedしたことによる誤差を補うように、他のまだquantizedされていない重みをupdateすることで、次に別の重みをquantizedする際は、最初の重みがquantizedされたことを考慮した重みに対してquantizedすることになる。これを繰り返すことで、quantizedしたことによる誤差を考慮して**w**全体をアップデートできる、という気持ちだと思う。<br><br><br><br>この式は高速に計算することができ、medium sizeのモデル（25M parameters; ResNet-50 modelなど）とかであれば、single GPUで1時間でquantizeできる。しかしながら、OBQはO(d_row * d_col^3)であるため、（ここでd_rowはWの行数、d_colはwの列数）、billions of parametersに適用するには計算量が多すぎる。</p><p># Algorithm<br><br>## Step 1: Arbitrary Order Insight.<br><br>通常のOBQは、量子化誤差が最も少ない重みを常に選択して、greedyに重みを更新していく。しかし、パラメータ数が大きなモデルになると、重みを任意の順序で量子化したとしてもそれによる影響は小さいと考えられる。なぜなら、おそらく、大きな個別の誤差を持つ量子化された重みの数が少ないと考えられ、その重みがプロセスのが進むにつれて（アップデートされることで？）相殺されるため。<br><br><br><br>このため、提案手法は、すべての行の重みを同じ順序で量子化することを目指し、これが通常、最終的な二乗誤差が元の解と同じ結果となることを示す。が、このために2つの課題を乗り越えなければならない。<br><br><br><br>## Step2. Lazy Batch-Updates<br><br>Fを更新するときは、各エントリに対してわずかなFLOPを使用して、巨大な行列のすべての要素を更新する必要があります。しかし、このような操作は、現代のGPUの大規模な計算能力を適切に活用することができず、非常に小さいメモリ帯域幅によってボトルネックとなる。<br><br><br><br>幸いにも、この問題は以下の観察によって解決できる：列iの最終的な四捨五入の決定は、この特定の列で行われた更新にのみ影響され、そのプロセスの時点で後の列への更新は関連がない。これにより、更新を「lazy batch」としてまとめることができ、はるかに効率的なGPUの利用が可能となる。（要は独立して計算できる部分は全部一気に計算してしまって、後で一気にアップデートしますということ）。たとえば、B = 128の列にアルゴリズムを適用し、更新をこれらの列と対応するB × Bブロックの H^-1 に格納する。<br><br>この戦略は理論的な計算量を削減しないものの、メモリスループットのボトルネックを改善する。これにより、非常に大きなモデルの場合には実際に1桁以上の高速化が提供される。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb33c4d-3924-4abd-b149-936b9e350c76" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Step 3: Cholesky Reformulation<br><br>行列H_F^-1が不定になることがあり、これがアルゴリズムが残りの重みを誤った方向に更新する原因となり、該当する層に対して悪い量子化を実施してしまうことがある。この現象が発生する確率はモデルのサイズとともに増加することが実際に観察された。これを解決するために、コレスキー分解を活用して解決している（詳細はきちんと読んでいない）。</p><p># 実験で用いたCalibration data<br><br>GPTQのキャリブレーションデータ全体は、C4データセット(Raffel et al., 2020)からのランダムな2048トークンのセグメント128個で構成される。つまり、ランダムにクロールされたウェブサイトからの抜粋で、一般的なテキストデータを表している。GPTQがタスク固有のデータを一切見ていないため「ゼロショット」な設定でquantizationを実施している。<br><br><br><br># Language Generationでの評価<br><br>WikiText2に対するPerplexityで評価した結果、先行研究であるRTNを大幅にoutperformした。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23e12194-d329-46f7-bb69-2cce290282c1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -4916,34 +4919,24 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Robotics.html" title="Roboticsに関する論文・技術記事メモの一覧">Roboticsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Initial-Impression-Notes.html" title="Initial Impression Notesに関する論文・技術記事メモの一覧">Initial Impression Notesに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Robotics.html" title="Roboticsに関する論文・技術記事メモの一覧">Roboticsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/MinimalCode.html" title="MinimalCodeに関する論文・技術記事メモの一覧">MinimalCodeに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/System-Demonstration.html"
-            title="System Demonstrationに関する論文・技術記事メモの一覧">
-            System Demonstrationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Workshop.html"
+            title="Workshopに関する論文・技術記事メモの一覧">
+            Workshopに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Transformer.html"
-            title="Transformerに関する論文・技術記事メモの一覧">
-            Transformerに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 211</span> 
-  <span class="post-badge badge-new">📝 211</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/OptionTracing.html"
-            title="OptionTracingに関する論文・技術記事メモの一覧">
-            OptionTracingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/OnlineLearning.html"
+            title="OnlineLearningに関する論文・技術記事メモの一覧">
+            OnlineLearningに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -4951,12 +4944,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Tutorial.html"
-            title="Tutorialに関する論文・技術記事メモの一覧">
-            Tutorialに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/COLT.html"
+            title="COLTに関する論文・技術記事メモの一覧">
+            COLTに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 181</span> 
-  <span class="post-badge badge-new">📝 181</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Discourse.html"
+            title="Discourseに関する論文・技術記事メモの一覧">
+            Discourseに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>
