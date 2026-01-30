@@ -147,5 +147,5 @@ DeepWikiを利用することで、Issueで管理されている情報に対話�
 [^1]: メタデータと論文の Abstract は arXiv API の terms of use に記載されている CC0 1.0 License に基づいて利用しています。
 [^2]: Issue/Blog中の画像やスクリーンショットは原則Issue中に記載してあるリンク（元論文、元記事、元スライド等）から引用したものです。
 
-## Start History
+## Star History
 [![Star History Chart](https://api.star-history.com/svg?repos=AkihikoWatanabe/paper_notes&type=Date)](https://star-history.com/#AkihikoWatanabe/paper_notes&Date)
