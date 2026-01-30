@@ -158,10 +158,9 @@ Using DeepWiki, it may be easier to:
 
 ---
 
-## Footnotes
+## Star History
+[![Star History Chart](https://api.star-history.com/svg?repos=AkihikoWatanabe/paper_notes&type=Date)](https://star-history.com/#AkihikoWatanabe/paper_notes&Date)
 
 [^1]: Metadata and abstracts are used in accordance with the **CC0 1.0 license** specified in the arXiv API terms of use.  
 [^2]: Images and screenshots included in Issues or blog posts are, in principle, cited from the original sources (papers, articles, slides, etc.) linked within each Issue.
 
-## Start History
-[![Star History Chart](https://api.star-history.com/svg?repos=AkihikoWatanabe/paper_notes&type=Date)](https://star-history.com/#AkihikoWatanabe/paper_notes&Date)
