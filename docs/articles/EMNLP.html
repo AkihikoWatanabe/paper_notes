@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 58 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 1 min</span>
   </div></header>
 </div>
     </div>
@@ -3033,7 +3033,7 @@ My Issue
 <a class="button" href="RecurrentModels.html" target="_blank" rel="noopener noreferrer">#RecurrentModels</a>
 <span class="issue_date">Issue Date: 2023-06-16</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、トランスフォーマーとRNNの両方の利点を組み合わせた新しいモデルアーキテクチャであるRWKVを提案し、トレーニング中に計算を並列化し、推論中に一定の計算およびメモリの複雑さを維持することができます。RWKVは、同じサイズのトランスフォーマーと同等のパフォーマンスを発揮し、将来的にはより効率的なモデルを作成するためにこのアーキテクチャを活用できることを示唆しています。</span>
-<span class="snippet"><span>Comment</span><p>異なるtransformerとRWKVの計算量とメモリ消費量の比較<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84d5241f-1702-4bd6-8ce3-0a80ded8f192" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>RWKVの構造は基本的に、residual blockをスタックすることによって構成される。一つのresidual blockは、time-mixing（時間方向の混ぜ合わせ）と、channnel-mixing（要素間での混ぜ合わせ）を行う。　<br><br>RWKVのカギとなる要素は以下の4つであり、RWKVのブロック、およびLMでのアーキテクチャは以下のようになる：<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2185d678-8ca1-4017-a052-77c073704253" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e5559a3c-40ee-4859-ba75-2827c12b5964" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4af26c0f-5907-4723-b24c-67b02a8025b9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>ここで、token-shiftは、previsou timestepのinputとのlinear interpolationを現在のinputととることである。これにより再帰性を担保する。<br><br><br><br>RWKVは他のLLMと比較し、パラメータ数に対して性能はcomparableであり、context lengthを増やすことで、lossはきちんと低下し、テキスト生成をする際に要する時間は他のLLMと比較して、トークン数に対して線形にしか増加しない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c8a39aae-17de-4c43-bfba-b6a54f83205e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9baf95d0-9e8c-4c62-a8f3-0f2a0d67ae00" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a9601b1c-c403-4c2c-bd60-3d2cfa6e512e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+<span class="snippet"><span>Comment</span><p>（斜め読みしかできておらず、不正確な点が多いと思います。ご容赦ください。）<br><br>RWKVの構造は基本的に、residual blockをスタックすることによって構成される。一つのresidual blockは、time-mixing（時間方向の混ぜ合わせ）と、channnel-mixing（要素間での混ぜ合わせ）を行う。　<br>RWKVのカギとなる要素は以下の4つでありこれらが乗算によって交互作用する。RWKVのブロック、およびLMでのアーキテクチャは以下のようになる：<br><br>- R: 過去の情報をどれだけ取り入れるかを制御するゲート<br>- W: positionごとにどれだけ重みを減衰させるかを学習（言い換えると過去の情報をどれだけ減衰させていくか）<br>- K: attentionのKeyと同じ<br>- V: attentionのValueと同じ<br><br>r, k, vがそれぞれ時刻tでの状態を表しており、Transformerのように過去の全ての情報を保持するのではなく、時刻t-1のr,k,vに基づいて時刻tの状態を更新するためメモリ消費が大幅に削減される。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e5559a3c-40ee-4859-ba75-2827c12b5964" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4af26c0f-5907-4723-b24c-67b02a8025b9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ここで、token-shiftは、previsou timestepのinputとのlinear interpolationを現在のinputととることである（時刻t-1のinputと時刻tのinputの交互作用をしてr, k, v, r', k' を決定する）。これにより過去の情報を考慮して状態を更新するRNNのような挙動となる。<br><br>RWKVは他のLLMと比較し、パラメータ数に対して性能はcomparableであり(Figure4)、context lengthを増やすことで、lossはきちんと低下し(Figure5)、テキスト生成をする際に要する時間は他のLLMと比較して、トークン数に対して線形にしか増加しない(Figure6)。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c8a39aae-17de-4c43-bfba-b6a54f83205e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>異なるtransformerとRWKVの計算量とメモリ消費量の比較。Inference timeは系列長に対して線形で、状態の保持は系列長に依存せず、d次元のみで済む。これはRNNのような逐次的な推論の際の話で、学習の際はTransformerのような並列性を持って学習できると思われる（3.2節）<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84d5241f-1702-4bd6-8ce3-0a80ded8f192" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
 
 
 <a href="https://openreview.net/forum?id=7SaXczaBpG" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=7SaXczaBpG</a>
@@ -3281,6 +3281,36 @@ My Issue
 <span class="issue_date">Issue Date: 2024-05-26</span>
 <span class="snippet"><span>GPT Summary</span>- COMETは、多言語機械翻訳評価モデルを訓練するためのニューラルフレームワークであり、人間の判断との新しい最先端の相関レベルを達成します。クロスリンガル事前学習言語モデリングの進展を活用し、高度に多言語対応かつ適応可能なMT評価モデルを実現します。WMT 2019 Metrics shared taskで新たな最先端のパフォーマンスを達成し、高性能システムに対する堅牢性を示しています。</span>
 <span class="snippet"><span>Comment</span><p>Better/Worseなhypothesisを利用してpair-wiseにランキング関数を学習する<br>![Image](https://github.com/user-attachments/assets/a1fd6f36-48e8-44fc-8fcb-0900a51759b3)<br><br>![Image](https://github.com/user-attachments/assets/19ad7a57-7de3-4255-afde-4a1fde41587d)<br><br>Inference時は単一のhypothesisしかinputされないので、sourceとreferenceに対してそれぞれhypothesisの距離をはかり、その調和平均でスコアリングする<br><br>![Image](https://github.com/user-attachments/assets/21642c70-a7fd-4c0e-8678-6125fdbfefce)</p><p>ACL2024, EMNLP2024あたりのMT研究のmetricをざーっと見る限り、BLEU/COMETの双方で評価する研究が多そう</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="sentence-bert-sentence-462" class="title-link">[Paper Note] Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Nils Reimers+, arXiv'19, 2019.08</h3><br><a href="https://arxiv.org/abs/1908.10084" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/462" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
+<a class="button" href="RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Encoder.html" target="_blank" rel="noopener noreferrer">#Encoder</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2022-07-29</span>
+<span class="snippet"><span>GPT Summary</span>- BERTとRoBERTaは文ペア回帰タスクで優れた性能を示す一方で、計算負荷が高いため意味的類似度検索には適していない。本研究では、コサイン類似度を用いた文の埋め込みを得るために、シアミーズネットワークとトリプレットネットワークを用いたSentence-BERT（SBERT）を提案。これにより、類似ペアの検索時間が65時間から約5秒に短縮され、精度はBERTに匹敵。SBERTは一般的なSTSタスクや転移学習タスクで最先端の性能を示した。</span>
+<span class="snippet"><span>Comment</span><p>BERTでトークンをembeddingし、mean poolingすることで生成される文ベクトルを、Siamese Networkを使い距離学習（finetune）させたモデル。<br><br><img src="https://user-images.githubusercontent.com/12249301/181723384-06c1a65a-985a-48bd-b7d8-b284e070b675.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>文/文章のベクトルを事前学習済みのモデルを使って簡単に求められる。<br><br>モデルの一覧は下記：
+
+
+<a href="https://www.sbert.net/docs/pretrained_models.html" target="_blank" rel="noopener noreferrer">https://www.sbert.net/docs/pretrained_models.html</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="table-to-text-generation-408" class="title-link">Table-to-Text Generation with Effective Hierarchical Encoder on Three Dimensions （Row, Column and Time）, Gong+, Harbin Institute of Technology, EMNLP'19</h3><br><a href="https://arxiv.org/pdf/1909.02304.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -4024,47 +4054,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/CrossDomain.html" title="CrossDomainに関する論文・技術記事メモの一覧">CrossDomainに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Education.html" title="Educationに関する論文・技術記事メモの一覧">Educationに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/CrossDomain.html" title="CrossDomainに関する論文・技術記事メモの一覧">CrossDomainに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Infrastructure.html" title="Infrastructureに関する論文・技術記事メモの一覧">Infrastructureに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PII.html"
-            title="PIIに関する論文・技術記事メモの一覧">
-            PIIに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DocumentSummarization.html"
+            title="DocumentSummarizationに関する論文・技術記事メモの一覧">
+            DocumentSummarizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 173</span> 
+  <span class="post-badge badge-new">📝 173</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/UI.html"
-            title="UIに関する論文・技術記事メモの一覧">
-            UIに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Repetition.html"
+            title="Repetitionに関する論文・技術記事メモの一覧">
+            Repetitionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Semi-Supervised.html"
-            title="Semi-Supervisedに関する論文・技術記事メモの一覧">
-            Semi-Supervisedに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Realtime.html"
-            title="Realtimeに関する論文・技術記事メモの一覧">
-            Realtimeに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/GenerativeVerifier.html"
+            title="GenerativeVerifierに関する論文・技術記事メモの一覧">
+            GenerativeVerifierに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
   <span class="post-badge badge-new">📝 7</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/ScorePrediction.html"
+            title="ScorePredictionに関する論文・技術記事メモの一覧">
+            ScorePredictionに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li></ul>

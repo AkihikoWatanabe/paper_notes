@@ -54,7 +54,7 @@ Issueには主に以下の内容がメモされています:
 
 各Issueには以下が主に含まれています:
 
-- 管理人の理解や解釈 [^1]
+- 管理人の理解や解釈 [^2]
 - Abstractや関連ポスト、論文を斜め読みした上での第一印象
 - 収集元ポストやSNS上の解説ポスト
 
@@ -142,7 +142,8 @@ DeepWikiを利用することで、Issueで管理されている情報に対話�
 
 ---
 
-## Footnotes
+## Star History
+[![Star History Chart](https://api.star-history.com/svg?repos=AkihikoWatanabe/paper_notes&type=Date)](https://star-history.com/#AkihikoWatanabe/paper_notes&Date)
 
 [^1]: メタデータと論文の Abstract は arXiv API の terms of use に記載されている CC0 1.0 License に基づいて利用しています。
 [^2]: Issue/Blog中の画像やスクリーンショットは原則Issue中に記載してあるリンク（元論文、元記事、元スライド等）から引用したものです。

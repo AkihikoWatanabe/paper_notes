@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 2 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 6 mins</span>
   </div></header>
 </div>
     </div>
@@ -1822,6 +1822,36 @@ My Issue
  などがある)。bag-of-wordsのようなsparseなベクトルで検索するのではなく（=Sparse Retriever)、ニューラルモデルでエンコードした密なベクトルを用いて検索しようという考え方である。<br><br>Query用と検索対象のPassageをエンコードするEncoderを独立してそれぞれ用意し（＝DualEncoder)、QAの学習データ（すなわちクエリqと正例として正解passage p+)が与えられた時、クエリqと正例p+の類似度が高く、負例p-との類似度が低くなるように（=Contrastive Learning)、Query, Passage Encoderのパラメータを更新することで学習する（損失関数は式(2))。<br><br>負例はIn-Batch Negativeを用いる。情報検索の場合正解ラベルは多くの場合明示的に決まるが、負例は膨大なテキストのプールからサンプリングしなければならない。サンプリング方法はいろいろな方法があり（e.g., ランダムにサンプリング、qとbm25スコアが高いpassage（ただし正解は含まない; hard negativesと呼ぶ）その中の一つの方法がIn-Batch Negativesである。<br><br>In-Batch Negativesでは、同ミニバッチ内のq_iに対応する正例p+_i以外の全てのp_jを（擬似的に）負例とみなす。これにより、パラメータの更新に利用するためのq,pのエンコードを全て一度だけ実行すれば良く、計算効率が大幅に向上するという優れもの。本研究の実験（Table3)によると上述したIn-Batch Negativeに加えて、bm25によるhard negativeをバッチ内の各qに対して1つ負例として追加する方法が最も性能が良かった。<br><br>クエリ、passageのエンコーダとしては、BERTが用いられ、[CLS]トークンに対応するembeddingを用いて類似度が計算される。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="sentence-bert-sentence-462" class="title-link">[Paper Note] Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Nils Reimers+, arXiv'19, 2019.08</h3><br><a href="https://arxiv.org/abs/1908.10084" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/462" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
+<a class="button" href="RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2022-07-29</span>
+<span class="snippet"><span>GPT Summary</span>- BERTとRoBERTaは文ペア回帰タスクで優れた性能を示す一方で、計算負荷が高いため意味的類似度検索には適していない。本研究では、コサイン類似度を用いた文の埋め込みを得るために、シアミーズネットワークとトリプレットネットワークを用いたSentence-BERT（SBERT）を提案。これにより、類似ペアの検索時間が65時間から約5秒に短縮され、精度はBERTに匹敵。SBERTは一般的なSTSタスクや転移学習タスクで最先端の性能を示した。</span>
+<span class="snippet"><span>Comment</span><p>BERTでトークンをembeddingし、mean poolingすることで生成される文ベクトルを、Siamese Networkを使い距離学習（finetune）させたモデル。<br><br><img src="https://user-images.githubusercontent.com/12249301/181723384-06c1a65a-985a-48bd-b7d8-b284e070b675.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>文/文章のベクトルを事前学習済みのモデルを使って簡単に求められる。<br><br>モデルの一覧は下記：
+
+
+<a href="https://www.sbert.net/docs/pretrained_models.html" target="_blank" rel="noopener noreferrer">https://www.sbert.net/docs/pretrained_models.html</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="pushing-the-4001" class="title-link">[Paper Note] Pushing the Frontier of Audiovisual Perception with Large-Scale Multimodal Correspondence Learning, Meta, 2025.12</h3><br><a href="https://ai.meta.com/research/publications/pushing-the-frontier-of-audiovisual-perception-with-large-scale-multimodal-correspondence-learning/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2000,6 +2030,30 @@ My Issue
 
 </p></span><br><br>
 </article>
+<article class="paper-entry">
+<h3 id="retrievabertの公開-1323" class="title-link">RetrievaBERTの公開, 2024</h3><br><a href="https://note.com/retrieva/n/n715bea2c2cd1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1323" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
+<a class="button" href="LongSequence.html" target="_blank" rel="noopener noreferrer">#LongSequence</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2024-07-03</span>
+<span class="snippet"><span>Comment</span><p>RAGへ応用する際に、長いコンテキストを扱いEmbeddingを獲得したいシーンが増えたので、最大でコンテキスト長が2048のBERTを学習し公開。Apache2.0<br><br><br><br>オリジナルのBERTと比較して、近年のLLMで有用性が示されている以下をアーキテクチャに取り入れている<br><br>- SwiGLU活性化関数 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1311" target="_blank" rel="noopener noreferrer">[Paper Note] GLU Variants Improve Transformer, Noam Shazeer, arXiv'20, 2020.02</a>
+ <br><br>- PreNorm <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1324" target="_blank" rel="noopener noreferrer">より良いTransformerをつくる, Shun Kiyono, 2022</a>
+ <br><br>- Grouped Query Attention (Multi Query Attention) <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1271" target="_blank" rel="noopener noreferrer">[Paper Note] GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints, Joshua Ainslie+, arXiv'23, 2023.05</a>
+ </p></span><br><br>
+</article>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -2048,24 +2102,34 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Embeddings.html" title="Embeddingsに関する論文・技術記事メモの一覧">Embeddingsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/General.html" title="Generalに関する論文・技術記事メモの一覧">Generalに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/python.html" title="pythonに関する論文・技術記事メモの一覧">pythonに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/General.html" title="Generalに関する論文・技術記事メモの一覧">Generalに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/OOD.html"
-            title="OODに関する論文・技術記事メモの一覧">
-            OODに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/COLT.html"
+            title="COLTに関する論文・技術記事メモの一覧">
+            COLTに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
-  <span class="post-badge badge-new">📝 7</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/QueryClassification.html"
-            title="QueryClassificationに関する論文・技術記事メモの一覧">
-            QueryClassificationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Physics.html"
+            title="Physicsに関する論文・技術記事メモの一覧">
+            Physicsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/DyingReLU.html"
+            title="DyingReLUに関する論文・技術記事メモの一覧">
+            DyingReLUに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -2073,22 +2137,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CompoundAISystemsOptimization.html"
-            title="CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧">
-            CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DialogueGeneration.html"
+            title="DialogueGenerationに関する論文・技術記事メモの一覧">
+            DialogueGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/AudioVisualGeneration.html"
-            title="AudioVisualGenerationに関する論文・技術記事メモの一覧">
-            AudioVisualGenerationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
 </span>
 </a>
         </li></ul>

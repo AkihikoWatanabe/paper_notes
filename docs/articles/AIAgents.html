@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-01-29T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-01-30T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="AIAgentsに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-01-29T00:00:00+00:00","datePublished":"2026-01-29T00:00:00+00:00","description":"AIAgents [Paper Note] daVinci-Dev: Agent-native Mid-training for Software Engineering, Ji Zeng+, arXiv&#39;26, 2026.01 Paper/Blog Link My Issue #Pocket #NLP #SoftwareEngineering #mid-training Issue Date: 2026-01-27 GPT Summary- LLMのエージェント型ソフトウェア工学への移行を探求。ミッドトレーニングは高価な強化学習に対するスケーラブルな代替を提供し、エージェントの静的データと動的環境の不一致を解消。エージェントネイティブデータとして、文脈的にネイティブな軌跡と環境的にネイティブな軌跡を用いる。検証を通じて、従来の方法を上回る解決率を達成し、トークン数も半減。 Comment元ポスト:","headline":"AIAgentsに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-01-30T00:00:00+00:00","datePublished":"2026-01-30T00:00:00+00:00","description":"AIAgents [Paper Note] daVinci-Dev: Agent-native Mid-training for Software Engineering, Ji Zeng+, arXiv&#39;26, 2026.01 Paper/Blog Link My Issue #Pocket #NLP #SoftwareEngineering #mid-training Issue Date: 2026-01-27 GPT Summary- LLMのエージェント型ソフトウェア工学への移行を探求。ミッドトレーニングは高価な強化学習に対するスケーラブルな代替を提供し、エージェントの静的データと動的環境の不一致を解消。エージェントネイティブデータとして、文脈的にネイティブな軌跡と環境的にネイティブな軌跡を用いる。検証を通じて、従来の方法を上回る解決率を達成し、トークン数も半減。 Comment元ポスト:","headline":"AIAgentsに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-01-29T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jan 29, 2026
+    <time class="dt-published" datetime="2026-01-30T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jan 30, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 hours 55 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 hours 2 mins</span>
   </div></header>
 </div>
     </div>
@@ -8494,6 +8494,103 @@ My Issue
 <span class="snippet"><span>Comment</span><p># 概要<br><br>人間は推論と行動をシナジーさせることで、さまざまな意思決定を行える。近年では言語モデルにより言語による推論を意思決定に組み合わせる可能性が示されてきた。たとえば、タスクをこなすための推論トレースをLLMが導けることが示されてきた（Chain-of-Thought）が、CoTは外部リソースにアクセスできないため知識がアップデートできず、事後的に推論を行うためhallucinationやエラーの伝搬が生じる。一方で、事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われているが、これらの研究では、高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。<br><br>そこで、REACTを提案。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みであり、推論トレースとアクションを交互に生成するため、動的に推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。<br><br><br><br>- 要はいままではGeneralなタスク解決モデルにおいては、推論とアクションの生成は独立にしかやられてこなかったけど、推論とアクションを交互作用させることについて研究したよ<br><br>- そしたら性能がとってもあがったよ<br><br>- reasoningを人間が編集すれば、エージェントのコントロールもできるよ　という感じ<br><br><br><br># イントロ<br><br>人間は推論と行動の緊密なシナジーによって、不確実な状況に遭遇しても適切な意思決定が行える。たとえば、任意の2つの特定のアクションの間で、進行状況をトレースするために言語で推論したり（すべて切り終わったからお湯を沸かす必要がある）、例外を処理したり、状況に応じて計画を調整したりする（塩がないから代わりに醤油と胡椒を使おう）。また、推論をサポートし、疑問（いまどんな料理を作ることができるだろうか？）を解消するために、行動（料理本を開いてレシピを読んで、冷蔵庫を開いて材料を確確認したり）をすることもある。<br><br><br><br>近年の研究では言語での推論を、インタラクティブな意思決定を組み合わせる可能性についてのヒントが得られてきた。一つは、適切にPromptingされたLLMが推論トレースを実行できることを示している。推論トレースとは、解決策に到達するための一連のステップを経て推論をするためのプロセスのことである。しかしながらChain-of-thoughytは、このアプローチでは、モデルが外界対してgroundingできず、内部表現のみに基づい思考を生成するため限界がある。これによりモデルが事後対応的に推論したり、外部情報に基づいて知識を更新したりできないため、推論プロセス中にhallucinationやエラーの伝搬などの問題が発生する可能性が生じる。<br><br>一方、近年の研究では事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われている。これらの研究では、通常マルチモーダルな観測結果をテキストに変換し、言語モデルを使用してドメイン固有のアクション、またはプランを生成し、コントローラーを利用してそれらを選択または実行する。ただし、これらのアプローチは高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。<br><br>推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。<br><br><br><br>LLMにおける推論と行動を組み合わせて、言語推論と意思決定タスクを解決するREACTと呼ばれる手法を提案。REACTでは、推論と行動の相乗効果を高めることが可能。推論トレースによりアクションプランを誘発、追跡、更新するのに役立ち、アクションでは外部ソースと連携して追加情報を収集できる。<br><br><br><br>REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みである。REACTのpromptはLLMにverbalな推論トレースとタスクを実行するためのアクションを交互に生成する。これにより、モデルは動的な推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。<br><br><br><br># 手法<br><br>変数を以下のように定義する：<br><br>- O_t: Observertion on time t<br><br>- a_t: Action on time t<br><br>- c_t: context, i.e. (o_1, a_1, o_2, a_2, ..., a_t-1, o_t)<br><br>- policy pi(a_t | c_t): Action Spaceからアクションを選択するポリシー<br><br>- A: Action Space<br><br>- O: Observation Space<br><br><br><br>普通はc_tが与えられたときに、ポリシーに従いAからa_tを選択しアクションを行い、アクションの結果o_tを得て、c_t+1を構成する、といったことを繰り返していく。<br><br><br><br>このとき、REACTはAをA ∪ Lに拡張しする。ここで、LはLanguage spaceである。LにはAction a_hatが含まれ、a_hatは環境に対して作用をしない。単純にthought, あるいは reasoning traceを実施し、現在のcontext c_tをアップデートするために有用な情報を構成することを目的とする。Lはunlimitedなので、事前学習された言語モデルを用いる。今回はPaLM-540B（c.f. GPT3は175Bパラメータ）が利用され、few-shotのin-context exampleを与えることで推論を行う。それぞれのin-context exampleは、action, thoughtsそしてobservationのtrajectoryを与える。<br><br><br><br>推論が重要なタスクでは、thoughts-action-observationステップから成るtask-solving trajectoryを生成する。一方、多数のアクションを伴う可能性がある意思決定タスクでは、thoughtsのみを行うことをtask-solving trajectory中の任意のタイミングで、自分で判断して行うことができる。<br><br><br><br>意思決定と推論能力がLLMによってもたらされているため、REACTは4つのuniqueな特徴を持つ：<br><br>- 直感的で簡単なデザイン<br><br>  - REACTのpromptは人間のアノテータがアクションのトップに思考を言語で記述するようなストレートなものであり、ad-hocなフォーマットの選択、思考のデザイン、事例の選定などが必要ない。<br><br>- 一般的で柔軟性が高い<br><br>  - 柔軟な thought spaceと thought-actionのフォーマットにより、REACTはさまざまなタスクにも柔軟に対応できる<br><br>- 高性能でロバスト<br><br>  - REACTは1-6個の事例によって、新たなタスクに対する強力な汎化を示す。そして推論、アクションのみを行うベースラインよりも高い性能を示している。REACTはfinetuningの斧系も得ることができ、promptの選択に対してREACTの性能はrobustである。<br><br>- 人間による調整と操作が可能<br><br>  - REACTは、解釈可能な意思決定と推論のsequenceを前提としているため、人間は簡単に推論や事実の正しさを検証できる。加えて、thoughtsを編集することによって、m人間はエージェントの行動を制御、あるいは修正できる。<br><br><br><br># KNOWLEDGE INTENSIVE REASONING TASKS</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="how-ai-4345" class="title-link">How AI assistance impacts the formation of coding skills, Anthropic, 2026.01</h3><br><a href="https://www.anthropic.com/research/AI-assistance-coding-skills" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4345" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="Education.html" target="_blank" rel="noopener noreferrer">#Education</a>
+<a class="button" href="Coding.html" target="_blank" rel="noopener noreferrer">#Coding</a>
+<a class="button" href="SoftwareEngineering.html" target="_blank" rel="noopener noreferrer">#SoftwareEngineering</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2026-01-30</span>
+<span class="snippet"><span>Comment</span><p>コーディングエージェントを使うことによる新しいスキルの習熟に対する影響の調査。エージェントを使ったグループは平均的に早く仕事を終えたが、その後のクイズによる習熟度のテストでは17パーセント低いスコアとなりエージェントを使わなかったグループと比較して習熟度に差が生まれた。しかしエージェントを使って早く終えたにも関わらず習熟度も相対的に低くならなかった人々がいて、そのような人たちはただエージェントに頼るのではなく、コードのコンセプトや理解をするための質問を投げかけている、といった使い方に関する違いが見受けられた、といった話に見える。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="introducing-the-4341" class="title-link">Introducing the OpenHands Index, OpenHands, 2026.01</h3><br><a href="https://openhands.dev/blog/openhands-index" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4341" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="SoftwareEngineering.html" target="_blank" rel="noopener noreferrer">#SoftwareEngineering</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2026-01-30</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gneubig/status/2016877014091760059?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>SWE Bench(pythonプログラムリポジトリに対するissueを解決するタスク）がSWE関連の代表的なベンチマークだがこれらはソフトウェアエンジニアリングのサブタスクの一つしか反映しておらず、より多くのタスクの解決能力でSWE Agentの能力を評価し、かつコストの軸でも評価をしてどのモデルがパレート最適なものなのかを見つけられるようなindexを作って評価しました、という話に見える。<br><br>タスクとしては以下の5つをピックしているとのこと:<br><br>> 1. Issue Resolution<br>> 2. Frontend Development<br>> 3. Greenfield Development<br>> 4. Software Testing<br>> 5. Information Gathering<br><br>これらのタスクを総合的に評価するとClaude 4.5 Opusが最も性能が高くコストも高い。次点でGPT-5.2-Codexという結果。またコストが最も安く平均的な性能が高いモデルとしてはDeepSeekV3.2-Reasonerとなった。また、特定のタスク、たとえばGreenfield developmentではGPT-5.2-Codexの性能が抜きん出ているなど、個別のタスクで見るとモデル間の優劣がはっきりと見えるような結果になっている。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="scaling-embedding-4334" class="title-link">[Paper Note] Scaling Embedding Outperforms Scaling Experts in Language Models, Meituan, 2026.01</h3><br><a href="https://huggingface.co/meituan-longcat/LongCat-Flash-Lite/blob/main/tech_report.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4334" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="LongSequence.html" target="_blank" rel="noopener noreferrer">#LongSequence</a>
+<a class="button" href="Architecture.html" target="_blank" rel="noopener noreferrer">#Architecture</a>
+<a class="button" href="MoE(Mixture-of-Experts).html" target="_blank" rel="noopener noreferrer">#MoE(Mixture-of-Experts)</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2026-01-30</span>
+<span class="snippet"><span>Comment</span><p>HF:
+
+
+<a href="https://huggingface.co/meituan-longcat/LongCat-Flash-Lite" target="_blank" rel="noopener noreferrer">https://huggingface.co/meituan-longcat/LongCat-Flash-Lite</a>
+
+
+</p><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2016665712996061553?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>N-Gram Embeddingを用いることでMoEアーキテクチャの同等程度のモデルと比較してより高い性能を獲得しているように見える。NGramの学NごとにルックアップテーブルとProtectionのための重みを学習して最終的にAveragingをすることでContext Vectorを生成している、ようなアーキテクチャに見える。non-thinkingモデル</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="introducing-agentic-4323" class="title-link">Introducing Agentic Vision in Gemini 3 Flash, Google Deepmind, 2026.01</h3><br><a href="https://blog.google/innovation-and-ai/technology/developers-tools/agentic-vision-gemini-3-flash/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -11771,7 +11868,7 @@ My Issue
 <a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <span class="issue_date">Issue Date: 2025-07-04</span>
-<span class="snippet"><span>Comment</span><p>>rLLM is an open-source framework for post-training language agents via reinforcement learning. With rLLM, you can easily build their custom agents and environments, train them with reinforcement learning, and deploy them for real-world workloads.<br>なるほど。<br><br><br>バックボーンにはverlが採用されており、シンプルかつ統一的なインタフェースでカスタムエージェントが学習できる模様？<br><br>
+<span class="snippet"><span>Comment</span><p>>rLLM is an open-source framework for post-training language agents via reinforcement learning. With rLLM, you can easily build their custom agents and environments, train them with reinforcement learning, and deploy them for real-world workloads.<br><br>なるほど。<br>バックボーンにはverlが採用されており、シンプルかつ統一的なインタフェースでカスタムエージェントが学習できる模様？<br><br>
 
 
 <a href="https://rllm-project.readthedocs.io/en/latest/#key-features" target="_blank" rel="noopener noreferrer">https://rllm-project.readthedocs.io/en/latest/#key-features</a>
@@ -12625,47 +12722,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/4D-(Video).html" title="4D (Video)に関する論文・技術記事メモの一覧">4D (Video)に関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/AcademicWriting.html" title="AcademicWritingに関する論文・技術記事メモの一覧">AcademicWritingに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/2D-(Image).html" title="2D (Image)に関する論文・技術記事メモの一覧">2D (Image)に関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Adaptive.html" title="Adaptiveに関する論文・技術記事メモの一覧">Adaptiveに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ObjectLocalization.html"
-            title="ObjectLocalizationに関する論文・技術記事メモの一覧">
-            ObjectLocalizationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PPO-(ProximalPolicyOptimization).html"
+            title="PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧">
+            PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/VariationalAutoEncoder.html"
-            title="VariationalAutoEncoderに関する論文・技術記事メモの一覧">
-            VariationalAutoEncoderに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Metrics.html"
+            title="Metricsに関する論文・技術記事メモの一覧">
+            Metricsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
-  <span class="post-badge badge-new">📝 16</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 60</span> 
+  <span class="post-badge badge-new">📝 60</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Post.html"
-            title="Postに関する論文・技術記事メモの一覧">
-            Postに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/NaturalLanguageGeneration.html"
+            title="NaturalLanguageGenerationに関する論文・技術記事メモの一覧">
+            NaturalLanguageGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 133</span> 
+  <span class="post-badge badge-new">📝 133</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Routing.html"
-            title="Routingに関する論文・技術記事メモの一覧">
-            Routingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/In-Depth-Notes.html"
+            title="In-Depth Notesに関する論文・技術記事メモの一覧">
+            In-Depth Notesに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
-  <span class="post-badge badge-new">📝 16</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li></ul>

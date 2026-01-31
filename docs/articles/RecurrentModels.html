@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 42 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 43 mins</span>
   </div></header>
 </div>
     </div>
@@ -1491,7 +1491,7 @@ My Issue
 <a class="button" href="Findings.html" target="_blank" rel="noopener noreferrer">#Findings</a>
 <span class="issue_date">Issue Date: 2023-06-16</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、トランスフォーマーとRNNの両方の利点を組み合わせた新しいモデルアーキテクチャであるRWKVを提案し、トレーニング中に計算を並列化し、推論中に一定の計算およびメモリの複雑さを維持することができます。RWKVは、同じサイズのトランスフォーマーと同等のパフォーマンスを発揮し、将来的にはより効率的なモデルを作成するためにこのアーキテクチャを活用できることを示唆しています。</span>
-<span class="snippet"><span>Comment</span><p>異なるtransformerとRWKVの計算量とメモリ消費量の比較<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84d5241f-1702-4bd6-8ce3-0a80ded8f192" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>RWKVの構造は基本的に、residual blockをスタックすることによって構成される。一つのresidual blockは、time-mixing（時間方向の混ぜ合わせ）と、channnel-mixing（要素間での混ぜ合わせ）を行う。　<br><br>RWKVのカギとなる要素は以下の4つであり、RWKVのブロック、およびLMでのアーキテクチャは以下のようになる：<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2185d678-8ca1-4017-a052-77c073704253" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e5559a3c-40ee-4859-ba75-2827c12b5964" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4af26c0f-5907-4723-b24c-67b02a8025b9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>ここで、token-shiftは、previsou timestepのinputとのlinear interpolationを現在のinputととることである。これにより再帰性を担保する。<br><br><br><br>RWKVは他のLLMと比較し、パラメータ数に対して性能はcomparableであり、context lengthを増やすことで、lossはきちんと低下し、テキスト生成をする際に要する時間は他のLLMと比較して、トークン数に対して線形にしか増加しない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c8a39aae-17de-4c43-bfba-b6a54f83205e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9baf95d0-9e8c-4c62-a8f3-0f2a0d67ae00" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a9601b1c-c403-4c2c-bd60-3d2cfa6e512e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+<span class="snippet"><span>Comment</span><p>（斜め読みしかできておらず、不正確な点が多いと思います。ご容赦ください。）<br><br>RWKVの構造は基本的に、residual blockをスタックすることによって構成される。一つのresidual blockは、time-mixing（時間方向の混ぜ合わせ）と、channnel-mixing（要素間での混ぜ合わせ）を行う。　<br>RWKVのカギとなる要素は以下の4つでありこれらが乗算によって交互作用する。RWKVのブロック、およびLMでのアーキテクチャは以下のようになる：<br><br>- R: 過去の情報をどれだけ取り入れるかを制御するゲート<br>- W: positionごとにどれだけ重みを減衰させるかを学習（言い換えると過去の情報をどれだけ減衰させていくか）<br>- K: attentionのKeyと同じ<br>- V: attentionのValueと同じ<br><br>r, k, vがそれぞれ時刻tでの状態を表しており、Transformerのように過去の全ての情報を保持するのではなく、時刻t-1のr,k,vに基づいて時刻tの状態を更新するためメモリ消費が大幅に削減される。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e5559a3c-40ee-4859-ba75-2827c12b5964" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4af26c0f-5907-4723-b24c-67b02a8025b9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ここで、token-shiftは、previsou timestepのinputとのlinear interpolationを現在のinputととることである（時刻t-1のinputと時刻tのinputの交互作用をしてr, k, v, r', k' を決定する）。これにより過去の情報を考慮して状態を更新するRNNのような挙動となる。<br><br>RWKVは他のLLMと比較し、パラメータ数に対して性能はcomparableであり(Figure4)、context lengthを増やすことで、lossはきちんと低下し(Figure5)、テキスト生成をする際に要する時間は他のLLMと比較して、トークン数に対して線形にしか増加しない(Figure6)。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/c8a39aae-17de-4c43-bfba-b6a54f83205e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>異なるtransformerとRWKVの計算量とメモリ消費量の比較。Inference timeは系列長に対して線形で、状態の保持は系列長に依存せず、d次元のみで済む。これはRNNのような逐次的な推論の際の話で、学習の際はTransformerのような並列性を持って学習できると思われる（3.2節）<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84d5241f-1702-4bd6-8ce3-0a80ded8f192" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
 
 
 <a href="https://openreview.net/forum?id=7SaXczaBpG" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=7SaXczaBpG</a>
@@ -1836,16 +1836,6 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/StructuredData.html"
-            title="StructuredDataに関する論文・技術記事メモの一覧">
-            StructuredDataに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
             href="/paper_notes/articles/Hallucination.html"
             title="Hallucinationに関する論文・技術記事メモの一覧">
             Hallucinationに関する論文・技術記事メモの一覧
@@ -1856,22 +1846,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TextToImageGeneration.html"
-            title="TextToImageGenerationに関する論文・技術記事メモの一覧">
-            TextToImageGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Surface-level-Notes.html"
+            title="Surface-level Notesに関する論文・技術記事メモの一覧">
+            Surface-level Notesに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 29</span> 
-  <span class="post-badge badge-new">📝 29</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/UMAP.html"
-            title="UMAPに関する論文・技術記事メモの一覧">
-            UMAPに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/MachineLearning.html"
+            title="MachineLearningに関する論文・技術記事メモの一覧">
+            MachineLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 268</span> 
+  <span class="post-badge badge-new">📝 268</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Contamination-free.html"
+            title="Contamination-freeに関する論文・技術記事メモの一覧">
+            Contamination-freeに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li></ul>

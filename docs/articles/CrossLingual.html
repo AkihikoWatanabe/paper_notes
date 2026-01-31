@@ -1123,7 +1123,7 @@ My Issue
 <strong># 概要<br><br>cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上<br><br><br><br><img src="https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。<br><br><br>利用するFoundationモデルは以下の3種類で、<br><br>- LLaMA-2-13B (英語に特化したモデル)<br><br>- PolyLM-13B (マルチリンガルなモデル)<br><br>- PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの)<br><br><br>これらに対して学習データとしてGPT4-Alpaca <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1401" target="_blank" rel="noopener noreferrer">Instruction Tuning with GPT-4, Baolin Peng+, N/A, arXiv'23</a>
 </strong>
 <br>
- instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。<br><br><br><br>比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。<br><br>- Pivot-only training: pivot言語（今回は英語）のみで学習した場合 <br><br>- Monolingual response training: pivot言語とtarget言語のデータを利用した場合<br><br>- Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している）<br><br>- Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。<br><br>- PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -> target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合<br><br><br><br>評価する際は、MT-Bench <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">Judging LLM-as-a-judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, N/A, NeurIPS'23</a>
+ instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。<br><br><br><br>比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。<br><br>- Pivot-only training: pivot言語（今回は英語）のみで学習した場合 <br><br>- Monolingual response training: pivot言語とtarget言語のデータを利用した場合<br><br>- Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している）<br><br>- Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。<br><br>- PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -> target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合<br><br><br><br>評価する際は、MT-Bench <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
  のように、GPT4を用いた、direct pair-wise comparisonを行っている。<br><br>direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らかの判断やスコアリングをさせる方法であり、今回はどちらがinstructionにより従っているかに勝敗/引き分けをGPT4に判断させている。LLMによる生成はサンプルの順番にsensitiveなので、順番を逆にした場合でも実験をして、win-lose rateを求めている。1つのサンプルペアに対して、サンプルの順番を正順と逆順の2回評価させ、その双方の結果を用いて最終的なwin/lose/tieを決めている。端的に言うと、勝敗が2-0ならそのサンプルの勝ち、同様に1-1なら引き分け、0-2なら負け、ということである。<br><br><img src="https://github.com/user-attachments/assets/726ea2dc-8f62-4320-8489-45cc20ed32ae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1238,32 +1238,32 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/LLM-as-a-Judge.html"
-            title="LLM-as-a-Judgeに関する論文・技術記事メモの一覧">
-            LLM-as-a-Judgeに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/TreeSearch.html"
+            title="TreeSearchに関する論文・技術記事メモの一覧">
+            TreeSearchに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 28</span> 
-  <span class="post-badge badge-new">📝 28</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RecommenderSystems.html"
-            title="RecommenderSystemsに関する論文・技術記事メモの一覧">
-            RecommenderSystemsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Japanese.html"
+            title="Japaneseに関する論文・技術記事メモの一覧">
+            Japaneseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 208</span> 
-  <span class="post-badge badge-new">📝 208</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 52</span> 
+  <span class="post-badge badge-new">📝 52</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CVRPrediction.html"
-            title="CVRPredictionに関する論文・技術記事メモの一覧">
-            CVRPredictionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AWS.html"
+            title="AWSに関する論文・技術記事メモの一覧">
+            AWSに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li><li class="">
