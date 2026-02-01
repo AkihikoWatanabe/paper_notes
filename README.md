@@ -8,7 +8,7 @@ This repository is a manually curated collection of **AI-related papers and rela
 All items are managed as **GitHub Issues**.
 
 The primary purpose of this repository is to serve as a **personal study log and memory aid** for the maintainer.  
-Since the maintainer is Japanese, **paper notes are written in Japanese**, reflecting the maintainer’s own understanding and learning process.
+Since the maintainer is Japanese, **paper notes are manually written in Japanese**, reflecting the maintainer’s own understanding and learning process.
 
 ---
 
