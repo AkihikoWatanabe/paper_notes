@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 9 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 24 mins</span>
   </div></header>
 </div>
     </div>
@@ -1931,6 +1931,42 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="refuse-whenever-2918" class="title-link">[Paper Note] Refuse Whenever You Feel Unsafe: Improving Safety in LLMs via Decoupled   Refusal Training, Youliang Yuan+, ACL'25, 2024.07</h3><br><a href="https://arxiv.org/abs/2407.09121" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2918" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
+<a class="button" href="Safety.html" target="_blank" rel="noopener noreferrer">#Safety</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2025-09-21</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、LLMsの安全性調整における拒否ポジションバイアスの問題を解決するために、「Decoupled Refusal Training（DeRTa）」という新しいアプローチを提案。DeRTaは、有害な応答プレフィックスを用いた最大尤度推定と強化された遷移最適化を組み込み、モデルが不適切なコンテンツを認識し拒否する能力を強化します。実証評価では、提案手法が安全性を向上させ、攻撃に対する防御でも優れた性能を示しました。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/youliang_yuan/status/1812665889852121332?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
+  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+<br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="reconstruction-alignment-2768" class="title-link">[Paper Note] Reconstruction Alignment Improves Unified Multimodal Models, Ji Xie+, arXiv'25</h3><br><a href="https://arxiv.org/abs/2509.07295" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2372,6 +2408,36 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="cream-consistency-1867" class="title-link">[Paper Note] CREAM: Consistency Regularized Self-Rewarding Language Models, Zhaoyang Wang+, ICLR'25</h3><br><a href="https://arxiv.org/pdf/2410.12735" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1867" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="SelfImprovement.html" target="_blank" rel="noopener noreferrer">#SelfImprovement</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="RewardHacking.html" target="_blank" rel="noopener noreferrer">#RewardHacking</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2025-04-06</span>
+<span class="snippet"><span>GPT Summary</span>- 自己報酬型LLMは、LLM-as-a-Judgeを用いてアラインメント性能を向上させるが、報酬とランク付けの正確性が問題。小規模LLMの実証結果は、自己報酬の改善が反復後に減少する可能性を示唆。これに対処するため、一般化された反復的好みファインチューニングフレームワークを定式化し、正則化を導入。CREAMを提案し、報酬の一貫性を活用して信頼性の高い好みデータから学習。実証結果はCREAMの優位性を示す。</span>
+<span class="snippet"><span>Comment</span><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N/A, ICML'24</a>
+<br><br>を改善した研究</p><p>OpenReview:
+
+
+<a href="https://openreview.net/forum?id=Vf6RDObyEF" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Vf6RDObyEF</a>
+
+
+</p><p>この方向性の研究はおもしろい</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="diverse-preference-1744" class="title-link">[Paper Note] Diverse Preference Optimization, Jack Lanchantin+, ICLR'25</h3><br><a href="https://arxiv.org/abs/2501.18101" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2441,7 +2507,7 @@ My Issue
 </div>
 
 
-</p><p>手法としては、SFTとKTOを活用しpost trainingするようである<br><img src="https://github.com/user-attachments/assets/0eab8029-124d-4ac1-b906-2463472b90b2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1472" target="_blank" rel="noopener noreferrer">KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, N/A, ICML'24</a>
+</p><p>手法としては、SFTとKTOを活用しpost trainingするようである<br><img src="https://github.com/user-attachments/assets/0eab8029-124d-4ac1-b906-2463472b90b2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1472" target="_blank" rel="noopener noreferrer">[Paper Note] KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, ICML'24, 2024.02</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2498,6 +2564,52 @@ My Issue
 
 
 <a href="https://openreview.net/forum?id=MnfHxPP5gs" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=MnfHxPP5gs</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="backtracking-improves-1408" class="title-link">[Paper Note] Backtracking Improves Generation Safety, Yiming Zhang+, ICLR'25, 2024.09</h3><br><a href="http://arxiv.org/abs/2409.14586" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1408" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="Safety.html" target="_blank" rel="noopener noreferrer">#Safety</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="DPO.html" target="_blank" rel="noopener noreferrer">#DPO</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<span class="issue_date">Issue Date: 2024-09-24</span>
+<span class="snippet"><span>GPT Summary</span>- テキスト生成には根本的な限界があり、生成されたトークンを元に戻せないため、安全でない生成が続く傾向がある。この課題を解決するために、特別な[RESET]トークンを用いたバックトラッキング技術を提案し、生成物を「取り消し」可能にする。これにより、言語モデルの安全性を向上させることができ、バックトラッキングを学習したモデルはベースラインと比較して4倍の安全性を示す。さらに、敵対的攻撃に対する保護も提供される。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1838415378529112330?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=Bo62NeU6VF" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Bo62NeU6VF</a>
+
+
+</p><p>日本語解説:
+
+
+<a href="https://www.docswell.com/s/DeepLearning2023/ZN1PNR-2025-05-08-131259#p1" target="_blank" rel="noopener noreferrer">https://www.docswell.com/s/DeepLearning2023/ZN1PNR-2025-05-08-131259#p1</a>
 
 
 </p></span><br><br>
@@ -2708,7 +2820,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデルの整列に関する研究で、整列データセット、整列技術、モデルの3つの要因が下流パフォーマンスに与える影響を300以上の実験を通じて調査。情報量の多いデータが整列に寄与することや、監視付きファインチューニングが最適化を上回るケースを発見。研究者向けに効果的なパラメータ効率の良いLLM整列のガイドラインを提案。</span>
 </article>
 <article class="paper-entry">
-<h3 id="kto-model-1472" class="title-link">KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, N_A, ICML'24</h3><br><a href="https://arxiv.org/abs/2402.01306" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="kto-model-1472" class="title-link">[Paper Note] KTO: Model Alignment as Prospect Theoretic Optimization, Kawin Ethayarajh+, ICML'24, 2024.02</h3><br><a href="https://arxiv.org/abs/2402.01306" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2725,9 +2837,12 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-10-27</span>
-<span class="snippet"><span>GPT Summary</span>- プロスペクト理論に基づき、LLMの人間フィードバック調整におけるバイアスの影響を示す。新たに提案する「人間認識損失」（HALOs）を用いたアプローチKTOは、生成物の効用を最大化し、好みベースの方法と同等またはそれ以上の性能を発揮。研究は、最適な損失関数が特定の設定に依存することを示唆。</span>
-<span class="snippet"><span>Comment</span><p>binaryフィードバックデータからLLMのアライメントをとるKahneman-Tversky Optimization (KTO)論文</p></span><br><br>
+<span class="snippet"><span>GPT Summary</span>- 人間の偏見を考慮したLLMのフィードバックを目的とした研究。プロスペクト理論に基づく「人間意識型損失（HALOs）」を用いて、生成物の効用を最大化する新手法KTOを提案。このアプローチは、既存の方法と比較してパフォーマンスが同等またはそれ以上であり、普遍的な最適損失関数は存在しないことを示唆。最適な損失は、設定に応じたバイアスによって異なる。</span>
+<span class="snippet"><span>Comment</span><p>binaryフィードバックデータからLLMのアライメントをとるKahneman-Tversky Optimization (KTO)論文</p><p>解説(DPO,RLHFの話だがKTOを含まれている):<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1602" target="_blank" rel="noopener noreferrer">RLHF/DPO 小話, 和地瞭良/ Akifumi Wachi, 2024.04</a>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="self-taught-evaluators-1464" class="title-link">Self-Taught Evaluators, Tianlu Wang+, N_A, arXiv'24</h3><br><a href="https://arxiv.org/pdf/2408.02666" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2752,39 +2867,6 @@ My Issue
 <span class="snippet"><span>Comment</span><p>LLMのアラインメント等をSFTする際に、preferenceのラベル付きデータが必要になるが、このようなデータを作るのはコストがかかって大変なので自動生成して、より良いreward modelを作りたいよね、という話。<br>具体的には、LLMを用いて good responseと、instructionを変化させてbad sesponseを生成し、JudgeモデルM_tにpairwiseでどちらが良いかをjudgeさせることで学習データを作成。新たに作成されたデータを用いてJudgeモデルを再学習し、同様のプロセスを繰り返すことで、人手の介在なく強力なJudgeモデルが完成する。<br><img src="https://github.com/user-attachments/assets/837c4567-6993-4e4c-81c8-650b7777c49b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/10a4fb62-160d-4bcf-b3a2-a960a7c9bc46" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="backtracking-improves-1408" class="title-link">Backtracking Improves Generation Safety, Yiming Zhang+, N_A, arXiv'24</h3><br><a href="http://arxiv.org/pdf/2409.14586" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1408" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
-<a class="button" href="Safety.html" target="_blank" rel="noopener noreferrer">#Safety</a>
-<a class="button" href="DPO.html" target="_blank" rel="noopener noreferrer">#DPO</a>
-<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
-<span class="issue_date">Issue Date: 2024-09-24</span>
-<span class="snippet"><span>GPT Summary</span>- テキスト生成における安全性の問題に対処するため、バックトラッキング手法を提案。特別な[RESET]トークンを用いて生成された不適切なテキストを「取り消し」、モデルの安全性を向上させる。バックトラッキングを導入したLlama-3-8Bは、ベースラインモデルに比べて4倍の安全性を示し、有用性の低下は見られなかった。</span>
-<span class="snippet"><span>Comment</span><p>元ポスト: 
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1838415378529112330?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p></span><br><br>
-</article>
-<article class="paper-entry">
 <h3 id="a-survey-1381" class="title-link">A Survey on Human Preference Learning for Large Language Models, Ruili Jiang+, N_A, arXiv'24</h3><br><a href="https://arxiv.org/abs/2406.11191" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2802,6 +2884,74 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <span class="issue_date">Issue Date: 2024-09-07</span>
 <span class="snippet"><span>GPT Summary</span>- 人間の好み学習に基づくLLMsの進展をレビューし、好みフィードバックのソースや形式、モデリング技術、評価方法を整理。データソースに基づくフィードバックの分類や、異なるモデルの利点・欠点を比較し、LLMsの人間の意図との整合性に関する展望を議論。</span>
+</article>
+<article class="paper-entry">
+<h3 id="llm-jp-a-1331" class="title-link">[Paper Note] LLM-jp: A Cross-organizational Project for the Research and Development of Fully Open Japanese LLMs, LLM-jp+, arXiv'24, 2024.07</h3><br><a href="https://arxiv.org/abs/2407.03963" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1331" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="Safety.html" target="_blank" rel="noopener noreferrer">#Safety</a>
+<a class="button" href="Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
+<a class="button" href="mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2024-07-10</span>
+<span class="snippet"><span>GPT Summary</span>- 日本の大規模言語モデル（LLMs）プロジェクト「LLM-jp」を紹介。オープンソースで強力な日本語LLMの開発を目指し、1,500人以上が参加。設立背景、活動概要、技術報告が含まれ、詳細は公式サイトで確認可能。</span>
+<span class="snippet"><span>Comment</span><p>llm.jpによるテクニカルレポート</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="self-play-fine-tuning-1218" class="title-link">[Paper Note] Self-Play Fine-Tuning Converts Weak Language Models to Strong Language Models, Zixiang Chen+, ICML'24, 2024.01</h3><br><a href="https://arxiv.org/abs/2401.01335" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
+<a class="button" href="SelfImprovement.html" target="_blank" rel="noopener noreferrer">#SelfImprovement</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<a class="button" href="mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="AdversarialTraining.html" target="_blank" rel="noopener noreferrer">#AdversarialTraining</a>
+<a class="button" href="SelfPlay.html" target="_blank" rel="noopener noreferrer">#SelfPlay</a>
+<span class="issue_date">Issue Date: 2024-01-24</span>
+<span class="snippet"><span>GPT Summary</span>- 自己対戦ファインチューニング（SPIN）を提案し、人間の注釈なしで弱いLLMを強化。LLMが自らのインスタンスと対戦し、トレーニングデータを生成。自己生成と人間の応答を識別してポリシーを微調整。SPINは様々なベンチマークでLLMの性能を大幅に向上させ、GPT-4優先データを使ったモデルを上回る成果を示した。</span>
+<span class="snippet"><span>Comment</span><p>pj page:
+
+
+<a href="https://uclaml.github.io/SPIN/" target="_blank" rel="noopener noreferrer">https://uclaml.github.io/SPIN/</a>
+
+
+<br>code:
+
+
+<a href="https://github.com/uclaml/SPIN" target="_blank" rel="noopener noreferrer">https://github.com/uclaml/SPIN</a>
+
+
+</p><p>メインプレイヤーは人間とLLMのレスポンスを区別する、対戦相手はメインプレイヤーに対して人間が作成したレスポンスと自身が作成させたレスポンスを区別できないようにするようなゲームをし、両者を同じLLM、しかし異なるiterationのパラメータを採用することで自己対戦させることでSFTデータセットから最大限学習するような手法を提案。メインプレイヤーの目的関数は、人間とLLMのレスポンスの確率の差を最大化するように定式化され（式4.1）、対戦相手は人間が生成したレスポンスを最大化するような損失関数を元のパラメータから大きく乖離しないようにKL正則化付きで定義する（式4.3）。双方の損失を単一の損失関数に統合すると式4.7で表される提案手法のSPIN損失が得られ、これによって与えられたSFTデータに対してレスポンスを各iterationで合成し、合成したレスポンスに対してSPIN損失を適用することでモデルのパラメータをアップデートする。メインプレイヤーの重みは更新された重みを用いて、対戦プレイヤーの重みは一つ前の重みを用いる。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="self-rewarding-language-1212" class="title-link">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N_A, ICML'24</h3><br><a href="https://arxiv.org/abs/2401.10020" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2868,6 +3018,36 @@ My Issue
 
 
 </p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="some-things-1201" class="title-link">[Paper Note] Some things are more CRINGE than others: Iterative Preference Optimization with the Pairwise Cringe Loss, Jing Xu+, arXiv'23, 2023.12</h3><br><a href="https://arxiv.org/abs/2312.16682" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1201" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="SelfImprovement.html" target="_blank" rel="noopener noreferrer">#SelfImprovement</a>
+<span class="issue_date">Issue Date: 2023-12-29</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデルはペアワイズの好みによって調整され、バイナリフィードバック手法も存在する。研究では、Cringe Lossがペアワイズ設定に一般化できることを示し、ペアワイズCringe Lossは容易に実装でき、高効率で学習が可能。AlpacaFarmベンチマークで最先端アルゴリズムを上回る性能を示し、訓練の反復が結果向上に重要であることを明らかにした。</span>
+<span class="snippet"><span>Comment</span><p>DPO, PPOをoutperformする新たなAlignment手法。MetaのJason Weston氏<br><br>元ツイート: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1740546297235464446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>後で読む<br><br>（画像は元ツイートより引用）<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eee52684-3735-442d-9216-ae9079e77ee9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/49e10dc7-27e1-47ae-b113-f7ded182849c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4440b22-49da-4700-9c80-38858dd7e602" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="the-unlocking-1179" class="title-link">The Unlocking Spell on Base LLMs: Rethinking Alignment via In-Context  Learning, Bill Yuchen Lin+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2312.01552" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -3705,14 +3885,24 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Adaptive.html" title="Adaptiveに関する論文・技術記事メモの一覧">Adaptiveに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Analysis.html" title="Analysisに関する論文・技術記事メモの一覧">Analysisに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Adaptive.html" title="Adaptiveに関する論文・技術記事メモの一覧">Adaptiveに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Architecture.html" title="Architectureに関する論文・技術記事メモの一覧">Architectureに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Geometric.html"
-            title="Geometricに関する論文・技術記事メモの一覧">
-            Geometricに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ReversalCurse.html"
+            title="ReversalCurseに関する論文・技術記事メモの一覧">
+            ReversalCurseに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/ECCV.html"
+            title="ECCVに関する論文・技術記事メモの一覧">
+            ECCVに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
   <span class="post-badge badge-new">📝 6</span>
@@ -3720,9 +3910,9 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TwoTowerModel.html"
-            title="TwoTowerModelに関する論文・技術記事メモの一覧">
-            TwoTowerModelに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SkillTag.html"
+            title="SkillTagに関する論文・技術記事メモの一覧">
+            SkillTagに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -3730,22 +3920,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/COLING.html"
-            title="COLINGに関する論文・技術記事メモの一覧">
-            COLINGに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SoftPrompt.html"
+            title="SoftPromptに関する論文・技術記事メモの一覧">
+            SoftPromptに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
-  <span class="post-badge badge-new">📝 13</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/SmallModel.html"
-            title="SmallModelに関する論文・技術記事メモの一覧">
-            SmallModelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 81</span> 
-  <span class="post-badge badge-new">📝 81</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>

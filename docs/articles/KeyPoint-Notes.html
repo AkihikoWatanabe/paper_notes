@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 hours 33 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 hours 6 mins</span>
   </div></header>
 </div>
     </div>
@@ -2779,6 +2779,42 @@ My Issue
 </p><p>この図がわかりやすい。後ほど説明を追記する。ざっくり言うと、MoAを前提としたときに、最後の出力の変換部分VW_oをFFNによる変換（つまりFFN Expertsの一つ）とみなして、self-attentionのトークンを混ぜ合わせるという趣旨を失わない範囲で計算順序を調整（トークンをミックスする部分を先に持ってくる）すると、FFNのMoEとMoAは同じ枠組みで扱えるため、expertsを共有できてメモリを削減でき、かつMoAによって必要な箇所のみにattendする能力が高まり性能も上がります、みたいな話に見える。<br><br><img src="https://github.com/user-attachments/assets/44ba6bee-d1fa-4385-a4c6-2c937cc15ea5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/248e1bc5-6c14-4b2d-9aed-c1d7359c605e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="refuse-whenever-2918" class="title-link">[Paper Note] Refuse Whenever You Feel Unsafe: Improving Safety in LLMs via Decoupled   Refusal Training, Youliang Yuan+, ACL'25, 2024.07</h3><br><a href="https://arxiv.org/abs/2407.09121" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2918" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
+<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
+<a class="button" href="Safety.html" target="_blank" rel="noopener noreferrer">#Safety</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<span class="issue_date">Issue Date: 2025-09-21</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、LLMsの安全性調整における拒否ポジションバイアスの問題を解決するために、「Decoupled Refusal Training（DeRTa）」という新しいアプローチを提案。DeRTaは、有害な応答プレフィックスを用いた最大尤度推定と強化された遷移最適化を組み込み、モデルが不適切なコンテンツを認識し拒否する能力を強化します。実証評価では、提案手法が安全性を向上させ、攻撃に対する防御でも優れた性能を示しました。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/youliang_yuan/status/1812665889852121332?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
+  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+<br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="skip-a-2610" class="title-link">[Paper Note] Skip a Layer or Loop it? Test-Time Depth Adaptation of Pretrained LLMs, Ziyue Li+, arXiv'25</h3><br><a href="https://arxiv.org/abs/2507.07996" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -3151,6 +3187,137 @@ My Issue
 
 </p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1995" target="_blank" rel="noopener noreferrer">Learning to Reason without External Rewards, Xuandong Zhao+, ICML'25 Workshop AI4MATH</a>
 <br>と似ているように見える</p><p>self-consistencyでground truthを推定し、推定したground truthを用いてverifiableなrewardを計算して学習する手法、のように見える。<br><img src="https://github.com/user-attachments/assets/0f38d47a-ab42-4ec4-a6d5-6d5d8a63a4a9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/3d08bbad-8578-4add-8ad7-ed02cdd15add" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実際のground truthを用いた学習と同等の性能を達成する場合もあれば、long stepで学習するとどこかのタイミングで学習がcollapseする場合もある<br><img src="https://github.com/user-attachments/assets/e120a277-6beb-4fc1-8fd7-e69de467fb3d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>パフォーマンスがピークを迎えた後になぜ大幅にAccuracyがdropするかを検証したところ、モデルのKL penaltyがどこかのタイミングで大幅に大きくなることがわかった。つまりこれはオリジナルのモデルからかけ離れたモデルになっている。これは、モデルがデタラメな出力をground truthとして推定するようになり、モデルそのものも一貫してそのデタラメな出力をすることでrewardを増大させるreward hackingが起きている。<br><img src="https://github.com/user-attachments/assets/5a9c091f-e9cb-4914-a1ca-32a1ea2dc1c7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/aa685b9a-7992-4135-a4da-fd1c8cabe084" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>これら現象を避ける方法として、以下の3つを提案している<br>- early stopping<br>- offlineでラベルをself consistencyで生成して、学習の過程で固定する<br>- カリキュラムラーニングを導入する<br><br><img src="https://github.com/user-attachments/assets/4fa997e3-aa20-4195-96ef-b17c82556fc1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/99cc2b6c-50a9-40a0-af30-b59aff4056b4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/e90e9870-b180-4fe9-8c24-8ff88fcf33f0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1489" target="_blank" rel="noopener noreferrer">Self-Consistency Preference Optimization, Archiki Prasad+, ICML'25</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="when-bad-1940" class="title-link">[Paper Note] When Bad Data Leads to Good Models, Kenneth Li+, ICML'25, 2025.05</h3><br><a href="https://arxiv.org/abs/2505.04741" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1940" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="Safety.html" target="_blank" rel="noopener noreferrer">#Safety</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<a class="button" href="DPO.html" target="_blank" rel="noopener noreferrer">#DPO</a>
+<a class="button" href="Toxicity.html" target="_blank" rel="noopener noreferrer">#Toxicity</a>
+<a class="button" href="ActivationSteering-ITI.html" target="_blank" rel="noopener noreferrer">#ActivationSteering/ITI</a>
+<span class="issue_date">Issue Date: 2025-05-09</span>
+<span class="snippet"><span>GPT Summary</span>- 本論文では、LLMの事前学習におけるデータの質の再検討を行い、有害データが事後学習における制御を向上させる可能性を探ります。トイ実験を通じて、有害データの割合が増加することで有害性の概念が線形表現に影響を与えることを発見し、有害データが生成的有害性を増加させつつも除去しやすくなることを示しました。評価結果は、有害データで訓練されたモデルが生成的有害性を低下させつつ一般的な能力を保持する良好なトレードオフを達成することを示唆しています。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ke_li_2021/status/1920646069613957606?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>これは面白そう</p><p>Webコーパスなどを事前学習で利用する際は、質の高いデータを残して学習した方が良いとされているが、4chanのようなtoxicなデータを混ぜて事前学習して、後からdetox（Inference Time Intervention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1941" target="_blank" rel="noopener noreferrer">Inference-Time Intervention: Eliciting Truthful Answers from a Language   Model, Kenneth Li+, NeurIPS'23</a>
+ , SFT, DPO)することで、最終的なモデルのtoxicなoutputが減るという話らしい。これはそもそも事前学習時点でtoxicなデータのsignalが除外されることで、モデルがtoxicな内容のrepresentationを学習できず、最終的にtoxicか否かをコントロールできなくなるため、と考察している（っぽい）<br><img src="https://github.com/user-attachments/assets/7f6efd4b-0679-4143-9a7d-1bf3ea5b6f3a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/0acec11b-d851-4137-b0aa-1ed7172388e1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>有害な出力を減らせそうなことは分かったが、Activation Steeringによってどの程度モデルの性能に影響を与えるのかが気になる、と思ったがAppendixに記載があった。細かく書かれていないので推測を含むが、各データに対してToxicデータセットでProbingすることでTopKのheadを決めて、Kの値を調整することでinterventionの強さを調整し、Toxicデータの割合を変化させて評価してみたところ、モデルの性能に大きな影響はなかったということだと思われる（ただし1Bモデルでの実験しかない）<br><br><img src="https://github.com/user-attachments/assets/4c79ca22-6916-438d-ad31-07596c82bfd1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p><p>おそらく2,3節あたりが一番おもしろいポイントなのだと思われるがまだ読めていない。</p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=SsLGTZKXf1" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=SsLGTZKXf1</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="non-determinism-of-1890" class="title-link">[Paper Note] Non-Determinism of "Deterministic" LLM Settings, Berk Atil+, Eval4NLP'25, 2024.08</h3><br><a href="https://arxiv.org/abs/2408.04667" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1890" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Decoding.html" target="_blank" rel="noopener noreferrer">#Decoding</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
+<a class="button" href="Non-Determinism.html" target="_blank" rel="noopener noreferrer">#Non-Determinism</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
+<span class="issue_date">Issue Date: 2025-04-14</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、5つの決定論的LLMにおける非決定性を8つのタスクで調査し、最大15%の精度変動と70%のパフォーマンスギャップを観察。全てのタスクで一貫した精度を提供できないことが明らかになり、非決定性が計算リソースの効率的使用に寄与している可能性が示唆された。出力の合意率を示す新たなメトリクスTARr@NとTARa@Nを導入し、研究結果を定量化。コードとデータは公開されている。</span>
+<span class="snippet"><span>Comment</span><p>- 論文中で利用されているベンチマーク:<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the   capabilities of language models, Aarohi Srivastava+, N/A, TMLR'23</a>
+<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer">Measuring Massive Multitask Language Understanding, Dan Hendrycks+, N/A, ICLR'21</a>
+ </p><p>同じモデルに対して、seedを固定し、temperatureを0に設定し、同じ計算機環境に対して、同じinputを入力したら理論上はLLMの出力はdeterministicになるはずだが、deterministicにならず、ベンチマーク上の性能とそもそものraw response自体も試行ごとに大きく変化する、という話。<br>ただし、これはプロプライエタリLLMや、何らかのinferenceの高速化を実施したInferenceEngine（本研究ではTogetherと呼ばれる実装を使っていそう。vLLM/SGLangだとどうなるのかが気になる）を用いてinferenceを実施した場合での実験結果であり、後述の通り計算の高速化のためのさまざまな実装無しで、deterministicな設定でOpenLLMでinferenceすると出力はdeterministicになる、という点には注意。<br><br>GPTやLlama、Mixtralに対して上記ベンチマークを用いてzero-shot/few-shotの設定で実験している。Reasoningモデルは実験に含まれていない。<br><img src="https://github.com/user-attachments/assets/b33f14d8-ed86-4589-a427-18a70b35d61a" /" alt="image" loading="lazy" width="550" height="400"/><br><br>LLMのraw_response/multiple choiceのparse結果（i.e., 問題に対する解答部分を抽出した結果）の一致（TARr@N, TARa@N; Nはinferenceの試行回数）も理論上は100%になるはずなのに、ならないことが報告されている。<br><br><img src="https://github.com/user-attachments/assets/3159ff26-fc92-4fa8-90a6-f8c5e7ccf20e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>correlation analysisによって、応答の長さ と TAR{r, a}が強い負の相関を示しており、応答が長くなればなるほど不安定さは増すことが分析されている。このため、ontput tokenの最大値を制限することで出力の安定性が増すことを考察している。また、few-shotにおいて高いAcc.の場合は出力がdeterministicになるわけではないが、性能が安定する傾向とのこと。また、OpenAIプラットフォーム上でGPTのfinetuningを実施し実験したが、安定性に寄与はしたが、こちらもdeterministicになるわけではないとのこと。<br><br>deterministicにならない原因として、まずmulti gpu環境について検討しているが、multi-gpu環境ではある程度のランダム性が生じることがNvidiaの研究によって報告されているが、これはseedを固定すれば決定論的にできるため問題にならないとのこと。<br>続いて、inferenceを高速化するための実装上の工夫（e.g., Chunk Prefilling, Prefix Caching, Continuous Batching）などの実装がdeterministicなハイパーパラメータでもdeterministicにならない原因であると考察しており、**実際にlocalマシン上でこれらinferenceを高速化するための最適化を何も実施しない状態でLlama-8Bでinferenceを実施したところ、outputはdeterministicになったとのこと。**</p><p>論文中に記載がなかったため、どのようなInferenceEngineを利用したか公開されているgithubを見ると下記が利用されていた:<br><br>- Together: 
+
+
+<a href="https://github.com/togethercomputer/together-python?tab=readme-ov-file" target="_blank" rel="noopener noreferrer">https://github.com/togethercomputer/together-python?tab=readme-ov-file</a>
+
+
+<br><br>Togetherが内部的にどのような処理をしているかまでは追えていないのだが、異なるInferenceEngineを利用した場合に、どの程度outputの不安定さに差が出るのか（あるいは出ないのか）は気になる。たとえば、transformers/vLLM/SGLangを利用した場合などである。<br><br>論文中でも報告されている通り、昔管理人がtransformersを用いて、deterministicな設定でzephyrを用いてinferenceをしたときは、出力はdeterministicになっていたと記憶している（スループットは絶望的だったが...)。</p><p>あと個人的には現実的な速度でオフラインでinference engineを利用した時にdeterministicにはせめてなって欲しいなあという気はするので、何が原因なのかを実装レベルで突き詰めてくれるととても嬉しい（KV Cacheが怪しい気がするけど）。<br><br>たとえば最近SLMだったらKVCacheしてVRAM食うより計算し直した方が効率良いよ、みたいな研究があったような。そういうことをしたらlocal llmでdeterministicにならないのだろうか。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2763" target="_blank" rel="noopener noreferrer">Defeating Nondeterminism in LLM Inference, Horace He in collaboration with others at Thinking Machines, 2025.09</a>
+<br><br>においてvLLMを用いた場合にDeterministicな推論をするための解決方法が提案されている。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="a-sober-1887" class="title-link">[Paper Note] A Sober Look at Progress in Language Model Reasoning: Pitfalls and Paths   to Reproducibility, Andreas Hochlehnert+, COLM'25</h3><br><a href="https://arxiv.org/pdf/2504.07086" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1887" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
+<a class="button" href="COLM.html" target="_blank" rel="noopener noreferrer">#COLM</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2025-04-13</span>
+<span class="snippet"><span>GPT Summary</span>- 推論は言語モデルの重要な課題であり、進展が見られるが、評価手法には透明性や堅牢性が欠けている。本研究では、数学的推論ベンチマークが実装の選択に敏感であることを発見し、標準化された評価フレームワークを提案。再評価の結果、強化学習アプローチは改善が少なく、教師ありファインチューニング手法は強い一般化を示した。再現性を高めるために、関連するコードやデータを公開し、今後の研究の基盤を築く。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhuchen/status/1911143014258405420?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは<=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
+</p><p>個々のpost-trainingされたRLモデルが具体的にどういう訓練をしたのかは追えていないが、DAPOやDr. GRPO, VAPOの場合はどうなるんだろうか？<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1876" target="_blank" rel="noopener noreferrer">VAPO: Efficient and Reliable Reinforcement Learning for Advanced
+  Reasoning Tasks, YuYue+, arXiv'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1821" target="_blank" rel="noopener noreferrer">[Paper Note] Understanding R1-Zero-Like Training: A Critical Perspective, Zichen Liu+, arXiv'25, 2025.03</a>
+<br><br>Rewardの設定の仕方はどのような影響があるのだろうか（verifiable rewardなのか、neuralモデルによるrewardなのかなど)？<br><br>学習のさせ方もどのような影響があるのだろうか（RLでカリキュラムlearningにした場合など）？<br><br>検証しているモデルがそれぞれどのような設定で学習されているかまでを見ないとこの辺はわからなそう。<br><br>ただなんとなーくの直感だと、SLMを賢くしたいという場合は何らかの賢いモデルの恩恵に預かると有利なケースが多く（SFTの場合はそれが大規模なモデルから蒸留したreasoning trace）、SLM+RLの場合はPRMのような思考プロセスを評価してRewardに反映させるようなものを利用しないと、少なくとも小規模なLLMをめちゃ賢くします〜というのはきついんじゃないかなあという感想ではある。<br>ただ、結局SLMという時点で多くの場合、より賢いパラメータ数の多いLLMが世の中には存在するあるはずなので、RLしないでSFTして蒸留すれば良いんじゃない…？と思ってしまう。<br>が、多くの場合その賢いLLMはProprietaryなLLMであり、出力を得て自分のモデルをpost-trainingすることは利用規約違反となるため、自前で賢くてパラメータ数の多いLLMを用意できない場合は困ってしまうので、SLMをクソデカパラメータのモデルの恩恵なしで超絶賢くできたら世の中の多くの人は嬉しいよね、とも思う。</p><p>（斜め読みだが）<br>サンプル数が少ない（数十件）AIMEやAMCなどのデータはseedの値にとてもsensitiveであり(Takeaway1, 2)、<br><br><img src="https://github.com/user-attachments/assets/97581133-cf17-4635-b66c-442eaf8956d4" /" alt="image" loading="lazy" width="550" height="400"/><br><br>それらは10種類のseedを用いて結果を平均すると分散が非常に小さくなるので、seedは複数種類利用して平均の性能を見た方がreliableであり(Takeaway3)<br><br><img src="https://github.com/user-attachments/assets/5065ef0e-de89-4b17-aa52-c90b7191e9b2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>temperatureを高くするとピーク性能が上がるが分散も上がるため再現性の課題が増大するが、top-pを大きくすると再現性の問題は現れず性能向上に寄与し<br><br><img src="https://github.com/user-attachments/assets/76d5c989-edbb-4d70-9080-d1d4b01de2ff" /" alt="image" loading="lazy" width="550" height="400"/><br><br>既存研究のモデルのtemperatureとtop-pを変化させ実験するとperformanceに非常に大きな変化が出るため、モデルごとに最適な値を選定して比較をしないとunfairであることを指摘 (Takeaway4)。<br><br><img src="https://github.com/user-attachments/assets/d8b453d1-3d2e-4a80-b03d-c69ec1b2232e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>また、ハードウェアの面では、vLLMのようなinference engineはGPU typeやmemoryのconfigurationに対してsensitiveでパフォーマンスが変わるだけでなく、<br><br><img src="https://github.com/user-attachments/assets/a41891c7-072c-4c38-9ad6-beada4721bac" /" alt="image" loading="lazy" width="550" height="400"/><br><br>評価に利用するフレームワークごとにinference engineとprompt templateが異なるためこちらもパフォーマンスに影響が出るし (Takeaway5)、<br><br><img src="https://github.com/user-attachments/assets/1f7d328c-0757-47b9-9961-630e2429fb3e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>max output tokenの値を変化させると性能も変わり、prompt templateを利用しないと性能が劇的に低下する (Takeaway6)。<br><br><img src="https://github.com/user-attachments/assets/dc0902d1-a5f2-47de-8df1-c28107e1da28" /" alt="image" loading="lazy" width="550" height="400"/><br><br>これらのことから著者らはreliableな評価のために下記を提案しており (4.1節; 後ほど追記)、<br><br>実際にさまざまな条件をfair comparisonとなるように標準化して評価したところ（4.2節; 後ほど追記）<br><br>上の表のような結果となった。この結果は、<br>- DeepSeekR1-DistilledをRLしてもSFTと比較したときに意味のあるほどのパフォーマンスの向上はないことから、スケーラブル、かつ信頼性のあるRL手法がまだ不足しており<br>- 大規模なパラメータのモデルのreasoning traceからSFTをする方法はさまざまなベンチマークでロバストな性能（＝高い汎化性能）を持ち、RLと比べると現状はRLと比較してよりパラダイムとして成熟しており<br>- （AIME24,25を比較するとSFTと比べてRLの場合performanceの低下が著しいので）RLはoverfittingしやすく、OODなベンチマークが必要</p><p>しっかりと評価の枠組みを標準化してfair comparisonしていかないと、RecSys業界の二の舞になりそう（というかもうなってる？）。<br><br>またこの研究で分析されているのは小規模なモデル（<=10B）に対する既存研究で用いられた一部のRL手法や設定の性能だけ（真に示したかったらPhisics of LLMのような完全にコントロール可能なサンドボックスで実験する必要があると思われる）なので、DeepSeek-R1のように、大規模なパラメータ（数百B）を持つモデルに対するRLに関して同じことが言えるかは自明ではない点に注意。</p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=90UrTTxp5O#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=90UrTTxp5O#discussion</a>
+
+
+</p><p>最近の以下のようなSFTはRLの一つのケースと見做せるという議論を踏まえるとどうなるだろうか<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2382" target="_blank" rel="noopener noreferrer">[Paper Note] On the Generalization of SFT: A Reinforcement Learning Perspective with
+  Reward Rectification, Yongliang Wu+, arXiv'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2700" target="_blank" rel="noopener noreferrer">[Paper Note] Towards a Unified View of Large Language Model Post-Training, Xingtai Lv+, arXiv'25</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3602,6 +3769,48 @@ My Issue
 <span class="issue_date">Issue Date: 2024-01-25</span>
 <span class="snippet"><span>GPT Summary</span>- MM-LLMsは、コスト効果の高いトレーニング戦略を用いて拡張され、多様なMMタスクに対応する能力を持つことが示されている。本論文では、MM-LLMsのアーキテクチャ、トレーニング手法、ベンチマークのパフォーマンスなどについて調査し、その進歩に貢献することを目指している。</span>
 <span class="snippet"><span>Comment</span><p>以下、論文を斜め読みしながら、ChatGPTを通じて疑問点を解消しつつ理解した内容なので、理解が不十分な点が含まれている可能性があるので注意。<br><br># 概要<br>まあざっくり言うと、マルチモーダルを理解できるLLMを作りたかったら、様々なモダリティをエンコーディングして得られる表現と、既存のLLMが内部的に処理可能な表現を対応づける Input Projectorという名の関数を学習すればいいだけだよ（モダリティのエンコーダ、LLMは事前学習されたものをそのままfreezeして使えば良い）。<br><br>マルチモーダルを生成できるLLMを作りたかったら、LLMがテキストを生成するだけでなく、様々なモダリティに対応する表現も追加で出力するようにして、その出力を各モダリティを生成できるモデルに入力できるように変換するOutput Projectortという名の関数を学習しようね、ということだと思われる。<br><br><img src="https://github.com/user-attachments/assets/c12f621b-95e6-4bff-827b-c4c5cf43b532"" alt="image" loading="lazy" width="550" height="400"/><br><br>## ポイント<br>- Modality Encoder, LLM Backbone、およびModality Generatorは一般的にはパラメータをfreezeする<br>- optimizationの対象は「Input/Output Projector」<br><br>## Modality Encoder<br>様々なモダリティI_Xを、特徴量F_Xに変換する。これはまあ、色々なモデルがある。<br><img src="https://github.com/user-attachments/assets/578c3bbc-0183-4d62-bf98-ee1b1bc1109c"" alt="image" loading="lazy" width="550" height="400"/><br><br>## Input Projector<br>モダリティI_Xとそれに対応するテキストtのデータ {I_X, t}が与えられたとき、テキストtを埋め込み表現に変換んした結果得られる特徴量がF_Tである。Input Projectorは、F_XをLLMのinputとして利用する際に最適な特徴量P_Xに変換するθX_Tを学習することである。これは、LLM(P_X, F_T)によってテキストtがどれだけ生成できたか、を表現する損失関数を最小化することによって学習される。<br><img src="https://github.com/user-attachments/assets/a80f5453-b50f-48d5-8114-5f9f81544793"" alt="image" loading="lazy" width="550" height="400"/><br><br>## LLM Backbone<br>LLMによってテキスト列tと、各モダリティに対応した表現であるS_Xを生成する。outputからt, S_Xをどのように区別するかはモデルの構造などにもよるが、たとえば異なるヘッドを用意して、t, S_Xを区別するといったことは可能であろうと思われる。<br><img src="https://github.com/user-attachments/assets/0be4e1c7-f92b-4259-a536-8ea135c1bcba"" alt="image" loading="lazy" width="550" height="400"/><br><br>## Output Projector<br>S_XをModality Generatorが解釈可能な特徴量H_Xに変換する関数のことである。これは学習しなければならない。<br>H_XとModality Generatorのtextual encoderにtを入力した際に得られる表現τX(t)が近くなるようにOutput Projector θ_T_Xを学習する。これによって、S_XとModality Generatorがalignするようにする。<br><img src="https://github.com/user-attachments/assets/faa87be0-e738-4dc1-8e52-0787d6b973e8"" alt="image" loading="lazy" width="550" height="400"/><br><br>## Modality Generator<br>各ModalityをH_Xから生成できるように下記のような損失学習する。要は、生成されたモダリティデータ（または表現）が実際のデータにどれだけ近いか、を表しているらしい。具体的には、サンプリングによって得られたノイズと、モデルが推定したノイズの値がどれだけ近いかを測る、みたいなことをしているらしい。<br><img src="https://github.com/user-attachments/assets/a18cfe29-27bf-42bf-8481-7e0afd838918"" alt="image" loading="lazy" width="550" height="400"/><br><br>Multi Modalを理解するモデルだけであれば、Input Projectorの損失のみが学習され、生成までするのであれば、Input/Output Projector, Modality Generatorそれぞれに示した損失関数を通じてパラメータが学習される。あと、P_XやらS_Xはいわゆるsoft-promptingみたいなものであると考えられる。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="self-play-fine-tuning-1218" class="title-link">[Paper Note] Self-Play Fine-Tuning Converts Weak Language Models to Strong Language Models, Zixiang Chen+, ICML'24, 2024.01</h3><br><a href="https://arxiv.org/abs/2401.01335" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1218" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
+<a class="button" href="SelfImprovement.html" target="_blank" rel="noopener noreferrer">#SelfImprovement</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<a class="button" href="mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="AdversarialTraining.html" target="_blank" rel="noopener noreferrer">#AdversarialTraining</a>
+<a class="button" href="SelfPlay.html" target="_blank" rel="noopener noreferrer">#SelfPlay</a>
+<span class="issue_date">Issue Date: 2024-01-24</span>
+<span class="snippet"><span>GPT Summary</span>- 自己対戦ファインチューニング（SPIN）を提案し、人間の注釈なしで弱いLLMを強化。LLMが自らのインスタンスと対戦し、トレーニングデータを生成。自己生成と人間の応答を識別してポリシーを微調整。SPINは様々なベンチマークでLLMの性能を大幅に向上させ、GPT-4優先データを使ったモデルを上回る成果を示した。</span>
+<span class="snippet"><span>Comment</span><p>pj page:
+
+
+<a href="https://uclaml.github.io/SPIN/" target="_blank" rel="noopener noreferrer">https://uclaml.github.io/SPIN/</a>
+
+
+<br>code:
+
+
+<a href="https://github.com/uclaml/SPIN" target="_blank" rel="noopener noreferrer">https://github.com/uclaml/SPIN</a>
+
+
+</p><p>メインプレイヤーは人間とLLMのレスポンスを区別する、対戦相手はメインプレイヤーに対して人間が作成したレスポンスと自身が作成させたレスポンスを区別できないようにするようなゲームをし、両者を同じLLM、しかし異なるiterationのパラメータを採用することで自己対戦させることでSFTデータセットから最大限学習するような手法を提案。メインプレイヤーの目的関数は、人間とLLMのレスポンスの確率の差を最大化するように定式化され（式4.1）、対戦相手は人間が生成したレスポンスを最大化するような損失関数を元のパラメータから大きく乖離しないようにKL正則化付きで定義する（式4.3）。双方の損失を単一の損失関数に統合すると式4.7で表される提案手法のSPIN損失が得られ、これによって与えられたSFTデータに対してレスポンスを各iterationで合成し、合成したレスポンスに対してSPIN損失を適用することでモデルのパラメータをアップデートする。メインプレイヤーの重みは更新された重みを用いて、対戦プレイヤーの重みは一つ前の重みを用いる。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="self-rewarding-language-1212" class="title-link">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N_A, ICML'24</h3><br><a href="https://arxiv.org/abs/2401.10020" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -7402,6 +7611,30 @@ My Issue
 <br><br>を参照のこと。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="llama-3.2-1422" class="title-link">Llama 3.2: Revolutionizing edge AI and vision with open, customizable models, Meta, 2024.09</h3><br><a href="https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices/?utm_source=twitter&utm_medium=organic_social&utm_content=video&utm_campaign=llama32" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1422" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
+<span class="issue_date">Issue Date: 2024-09-25</span>
+<span class="snippet"><span>Comment</span><p>11Bと90BのVLMと、エッジデバイス向けの1B, 3BのSLMを発表。<br><img src="https://github.com/user-attachments/assets/13c4af37-19bd-4de7-b501-eb48f955af0c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/d6b75b15-88cb-4d9e-9838-0da24308ccda" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/7475b30d-4619-4117-a911-d308291f86cb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Llama3.2のVLMでは、事前学習されたimage encoderを事前学習された言語モデルに対して組み合わせるためのAdapterを複数学習することによって実現。<br><br>具体的には、Llama 3.1（text only model）に対して、image encoderとAdapterを追加し、大規模でノイジーな（image,text）ペアで事前学習。続いて、中規模のサイズの高品質なin-domain（i.e. 様々なドメインの）の知識を高めるような（image,text）ペアで学習した。<br><br>事後学習では、Llama3.1と同様にSFT, Rejection Sampling, DPOのラウンドを複数回繰り返した。Llama3.1を用いて、in-domainの画像に対するQAをData Augmentationし、フィルタリングすることで合成データを作成。さらに報酬モデルを活用して全ての回答候補をランクづけして高品質なSFTデータを取得。また、モデルの安全性が高まるようなデータも追加した。<br><br>Llama3.1の事後学習のプロセスについては <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1359" target="_blank" rel="noopener noreferrer">論文紹介 / The Llama 3 Herd of Models, 2024.08</a>
+ も参照のこと。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="openai-o1-1390" class="title-link">OpenAI o1, 2024.09</h3><br><a href="https://openai.com/index/introducing-openai-o1-preview/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -8210,14 +8443,34 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/KV-Cache.html" title="KV Cacheに関する論文・技術記事メモの一覧">KV Cacheに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/LanguageModel.html" title="LanguageModelに関する論文・技術記事メモの一覧">LanguageModelに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/KV-Cache.html" title="KV Cacheに関する論文・技術記事メモの一覧">KV Cacheに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/LongSequence.html" title="LongSequenceに関する論文・技術記事メモの一覧">LongSequenceに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/UMAP.html"
-            title="UMAPに関する論文・技術記事メモの一覧">
-            UMAPに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Repetition.html"
+            title="Repetitionに関する論文・技術記事メモの一覧">
+            Repetitionに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/WordAlignment.html"
+            title="WordAlignmentに関する論文・技術記事メモの一覧">
+            WordAlignmentに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/ItemBased.html"
+            title="ItemBasedに関する論文・技術記事メモの一覧">
+            ItemBasedに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -8225,32 +8478,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Online-Interactive.html"
-            title="Online/Interactiveに関する論文・技術記事メモの一覧">
-            Online/Interactiveに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DataDriven.html"
+            title="DataDrivenに関する論文・技術記事メモの一覧">
+            DataDrivenに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Souping.html"
-            title="Soupingに関する論文・技術記事メモの一覧">
-            Soupingに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/CompoundAISystemsOptimization.html"
-            title="CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧">
-            CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li></ul>
