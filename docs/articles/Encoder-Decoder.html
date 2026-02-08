@@ -1391,7 +1391,7 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="unified-io-2-1202" class="title-link">Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision,   Language, Audio, and Action, Jiasen Lu+, N_A, CVPR'24</h3><br><a href="https://arxiv.org/abs/2312.17172" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="unified-io-2-1202" class="title-link">[Paper Note] Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision, Language, Audio, and Action, Jiasen Lu+, CVPR'24, 2023.12</h3><br><a href="https://arxiv.org/abs/2312.17172" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -1415,8 +1415,10 @@ My Issue
 <a class="button" href="Robotics.html" target="_blank" rel="noopener noreferrer">#Robotics</a>
 <a class="button" href="UMM.html" target="_blank" rel="noopener noreferrer">#UMM</a>
 <a class="button" href="EmbodiedAI.html" target="_blank" rel="noopener noreferrer">#EmbodiedAI</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-12-29</span>
-<span class="snippet"><span>GPT Summary</span>- Unified-IO 2は、最初の自己回帰型のマルチモーダルモデルであり、画像、テキスト、音声、アクションを理解し生成することができます。異なるモダリティを統一するために、共有の意味空間に入力と出力を配置し、単一のエンコーダ・デコーダトランスフォーマーモデルで処理します。さまざまなアーキテクチャの改善を提案し、大規模なマルチモーダルな事前トレーニングコーパスを使用してモデルをトレーニングします。Unified-IO 2は、GRITベンチマークを含む35以上のベンチマークで最先端のパフォーマンスを発揮します。</span>
+<span class="snippet"><span>GPT Summary</span>- 初の自己回帰型マルチモーダルモデル「Unified-IO 2」を提案し、画像、テキスト、音声、アクションを統一した意味空間で処理。トレーニングの安定化のためにアーキテクチャを改善し、120のデータセットで微調整を行い、GRITベンチマークで最先端のパフォーマンスを達成。35以上のベンチマークにおいて強力な結果を示し、すべてのモデルを公開。</span>
 <span class="snippet"><span>Comment</span><p>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI</p><p>モデルのアーキテクチャ図<br><img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:<br><br>- 2D Rotary Embedding<br>  - Positional EncodingとしてRoPEを採用<br>  - 画像のような2次元データのモダリティの場合はRoPEを2次元に拡張する。具体的には、位置(i, j)のトークンについては、Q, Kのembeddingを半分に分割して、それぞれに対して独立にi, jのRoPE Embeddingを適用することでi, j双方の情報を組み込む。<br>- QK Normalization<br>  - image, audioのモダリティを組み込むことでMHAのlogitsが非常に大きくなりatteetion weightが0/1の極端な値をとるようになり訓練の不安定さにつながった。このため、dot product attentionを適用する前にLayerNormを組み込んだ。<br>- Scaled Cosine Attention<br>  - Image Historyモダリティにおいて固定長のEmbeddingを得るためにPerceiver Resamplerを扱ったているが、こちらも上記と同様にAttentionのlogitsが極端に大きくなったため、cosine類似度をベースとしたScaled Cosine Attention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2259" target="_blank" rel="noopener noreferrer">[Paper Note] Swin Transformer V2: Scaling Up Capacity and Resolution, Ze Liu+, arXiv'21</a>
  を利用することで、大幅に訓練の安定性が改善された。<br>- その他<br>  - attention logitsにはfp32を適用<br>  - 事前学習されたViTとASTを同時に更新すると不安定につながったため、事前学習の段階ではfreezeし、instruction tuningの最後にfinetuningを実施<br><br><img src="https://github.com/user-attachments/assets/74c8fa3a-8fb5-4785-8dd3-6a8cf3c7cfeb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>目的関数としては、Mixture of Denoisers (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
 )に着想を得て、Multimodal Mixture of Denoisersを提案。MoDでは、<br>- \[R\]: 通常のspan corruption (1--5 token程度のspanをmaskする)<br>- \[S\]: causal language modeling (inputを2つのサブシーケンスに分割し、前方から後方を予測する。前方部分はBi-directionalでも可)<br>- \[X\]: extreme span corruption (12>=token程度のspanをmaskする)<br><br>の3種類が提案されており、モダリティごとにこれらを使い分ける:<br>- text modality: UL2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
@@ -2412,42 +2414,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PPO-(ProximalPolicyOptimization).html"
-            title="PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧">
-            PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Entropy.html"
+            title="Entropyに関する論文・技術記事メモの一覧">
+            Entropyに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/NumericReasoning.html"
-            title="NumericReasoningに関する論文・技術記事メモの一覧">
-            NumericReasoningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Reasoning.html"
+            title="Reasoningに関する論文・技術記事メモの一覧">
+            Reasoningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 278</span> 
+  <span class="post-badge badge-new">📝 278</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SequentialRecommendation.html"
-            title="SequentialRecommendationに関する論文・技術記事メモの一覧">
-            SequentialRecommendationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CodeGeneration.html"
+            title="CodeGenerationに関する論文・技術記事メモの一覧">
+            CodeGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/IntegerLinearProgramming-(ILP).html"
-            title="IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧">
-            IntegerLinearProgramming (ILP)に関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Personalization.html"
+            title="Personalizationに関する論文・技術記事メモの一覧">
+            Personalizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 65</span> 
+  <span class="post-badge badge-new">📝 65</span>
 </span>
 </a>
         </li></ul>
