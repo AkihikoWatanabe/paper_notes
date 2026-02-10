@@ -1206,7 +1206,13 @@ My Issue
 <a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2026-02-06</span>
 <span class="snippet"><span>GPT Summary</span>- 報酬モデルは、言語モデルの訓練後に好みデータを利用して指示遵守や推論、安全性を最適化するための訓練目標を提供します。新たに開発された「RewardBench 2」は、スキル領域を評価するための挑戦的なベンチマークを提供し、既存のモデルが低いスコアを示しつつも下流性能との相関が高いことを示しています。このベンチマークは人間のプロンプトを基にしており、厳格な評価プラクティスを促進しています。論文では、ベンチマークの構築プロセスと既存モデルの性能を報告し、モデルの下流使用との相関を定量化しています。</span>
-<span class="snippet"><span>Comment</span><p>以下の6つのドメインで構成されるReward Modelの評価のためのベンチマーク:<br>- Factuality: hallucinationや誤りの有無の判定<br>- Precise Instruction Following: 細かい指示に対する追従性能<br>- Math: **自由記述**の数学に関するプロンプトに対する応答に関する能力<br>- Safety: 有害な応答に対して適切に対処できるか（応答拒否 or 適切な応答）<br>- Focus: 一般的なユーザのクエリに対して、トピックに沿った高品質な応答ができているか否か<br>- **Ties**: 「虹の色を1つ挙げて」といったような、複数の正解があり得るが、無数の不正解があるようなタスク（特定の正解にバイアスがかからず、正解と不正解を区別する能力を評価）<br><br><img src="https://github.com/user-attachments/assets/c87a570b-ab7a-4658-bba8-20ab13b16bd2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Reward Bench 2 での性能が、Best-of-N (=N個応答をサンプリングし最も良いものを採用するtest-time scaling手法)における様々なdownstreamタスクと強い相関を示すことが示されている。<br><img src="https://github.com/user-attachments/assets/dbd784b5-f837-4f6b-8c3e-b15cd3c0ef6c" /" alt="image" loading="lazy" width="550" height="400"/><br><br>ただし、PPOでの事後学習について焦点を当てた場合<br>- ベースモデルの出自がReward Modelと異なる場合<br>- Reward Modelの学習データが、ベースモデルと大きく異なる場合<br>においては、Reward Bench 2で高い性能が得られていても、PPOにおいて高い性能が得られず、特にベースモデルの出自が異なる場合の影響が顕著とのこと。<br><br><img src="https://github.com/user-attachments/assets/c4976771-5e38-420a-ba31-67a328bd71d4" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Reward Modelの性能が必ずしもPPOの事後学習後の下流タスクに対する性能と相関せず（ただし、Rewardベンチの性能が低い部分においてはおおまかに推定できる）、ベースモデルの出自が異なるReward Modelを使った場合や、Reward Modelとベースモデルが学習したプロンプトの分布が大きく異なる場合にこのような不整合が強く現れるというのは興味深く、おもしろかった。<br>Reward Modelとベースモデルの開始点が異なる場合は、RLによる学習がうまくいかないというのは、直感的でわかりやすい説明だなと感じた。</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>以下の6つのドメインで構成されるReward Modelの評価のためのベンチマーク:<br>- Factuality: hallucinationや誤りの有無の判定<br>- Precise Instruction Following: 細かい指示に対する追従性能<br>- Math: **自由記述**の数学に関するプロンプトに対する応答に関する能力<br>- Safety: 有害な応答に対して適切に対処できるか（応答拒否 or 適切な応答）<br>- Focus: 一般的なユーザのクエリに対して、トピックに沿った高品質な応答ができているか否か<br>- **Ties**: 「虹の色を1つ挙げて」といったような、複数の正解があり得るが、無数の不正解があるようなタスク（特定の正解にバイアスがかからず、正解と不正解を区別する能力を評価）<br><br><img src="https://github.com/user-attachments/assets/c87a570b-ab7a-4658-bba8-20ab13b16bd2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Reward Bench 2 での性能が、Best-of-N (=N個応答をサンプリングし最も良いものを採用するtest-time scaling手法)における様々なdownstreamタスクと強い相関を示すことが示されている。<br><img src="https://github.com/user-attachments/assets/dbd784b5-f837-4f6b-8c3e-b15cd3c0ef6c" /" alt="image" loading="lazy" width="550" height="400"/><br><br>ただし、PPOでの事後学習について焦点を当てた場合<br>- ベースモデルの出自がReward Modelと異なる場合<br>- Reward Modelの学習データが、ベースモデルと大きく異なる場合<br>においては、Reward Bench 2で高い性能が得られていても、PPOにおいて高い性能が得られず、特にベースモデルの出自が異なる場合の影響が顕著とのこと。<br><br><img src="https://github.com/user-attachments/assets/c4976771-5e38-420a-ba31-67a328bd71d4" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Reward Modelの性能が必ずしもPPOの事後学習後の下流タスクに対する性能と相関せず（ただし、Rewardベンチの性能が低い部分においてはおおまかに推定できる）、ベースモデルの出自が異なるReward Modelを使った場合や、Reward Modelとベースモデルが学習したプロンプトの分布が大きく異なる場合にこのような不整合が強く現れるというのは興味深く、おもしろかった。<br>Reward Modelとベースモデルの開始点が異なる場合は、RLによる学習がうまくいかないというのは、直感的でわかりやすい説明だなと感じた。</p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=fb0G86Dewb" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=fb0G86Dewb</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="openrubrics-towards-4419" class="title-link">[Paper Note] OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment, Tianci Liu+, arXiv'25, 2025.10</h3><br><a href="https://arxiv.org/abs/2510.07743" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -1788,14 +1794,14 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/ReinforcementLearning.html" title="ReinforcementLearningに関する論文・技術記事メモの一覧">ReinforcementLearningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SoftwareEngineering.html" title="SoftwareEngineeringに関する論文・技術記事メモの一覧">SoftwareEngineeringに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/ReinforcementLearning.html" title="ReinforcementLearningに関する論文・技術記事メモの一覧">ReinforcementLearningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Scalability.html" title="Scalabilityに関する論文・技術記事メモの一覧">Scalabilityに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/MotionEstimation.html"
-            title="MotionEstimationに関する論文・技術記事メモの一覧">
-            MotionEstimationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Critic.html"
+            title="Criticに関する論文・技術記事メモの一覧">
+            Criticに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1803,19 +1809,9 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Transcript.html"
-            title="Transcriptに関する論文・技術記事メモの一覧">
-            Transcriptに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/VCS.html"
-            title="VCSに関する論文・技術記事メモの一覧">
-            VCSに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/InteractiveRecommenderSystems.html"
+            title="InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧">
+            InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1823,12 +1819,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Spectrum.html"
-            title="Spectrumに関する論文・技術記事メモの一覧">
-            Spectrumに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CovarianceShift.html"
+            title="CovarianceShiftに関する論文・技術記事メモの一覧">
+            CovarianceShiftに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Initial-Impression-Notes.html"
+            title="Initial Impression Notesに関する論文・技術記事メモの一覧">
+            Initial Impression Notesに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li></ul>
