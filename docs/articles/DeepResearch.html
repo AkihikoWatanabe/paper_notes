@@ -1129,6 +1129,7 @@ My Issue
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <a class="button" href="Proprietary.html" target="_blank" rel="noopener noreferrer">#Proprietary</a>
 <a class="button" href="mid-training.html" target="_blank" rel="noopener noreferrer">#mid-training</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <a class="button" href="Rubric-based.html" target="_blank" rel="noopener noreferrer">#Rubric-based</a>
 <span class="issue_date">Issue Date: 2025-12-24</span>
@@ -1153,7 +1154,7 @@ My Issue
 </div>
 
 
-<br><br>ざっくり言うと、シンプルなReAct styleのagentで、マルチエージェントのオーケストレーションや複雑で重たいワークフロー無しで、OpenAI, GeminiのDeepResearchと同等の性能を達成してとり、ポイントとしてこれらの機能をはmid-training段階で学習してモデルのパラメータとして組み込むことで実現している模様。<br><br>mid trainingは2段階で構成され、trajectoryの長さは徐々に長いものを利用するカリキュラム方式。<br>最初のステージでは以下の4つのatomicスキルを身につけさせる:<br>- Planning & Task Decomposition<br>- Deep Information Seeking<br>- Reflection & Verification<br>- Reporting<br><br>これらのatomic skillを身につけさせる際には、next token predictionをnext action predictionという枠組みで学習し、アクションに関するトークンの空間を制限することで効率性を向上（ただし、具体性は減少するのでトレードオフ）という形にしているようだが、コンセプトが記述されているのみでよくわからない。同時に、学習データの構築方法もデータソースとおおまかな構築方法が書かれているのみである。ただし、記述内容的には各atomicmskilvごとに基本的には合成データが作成され利用されていると考えてよい。<br><br>たとえばplanningについては論文などの文献のタイトルや本文から実験以後の記述を除外し、研究プロジェクトのタスクを推定させる（リバースエンジニアリングと呼称している）することで、planningのtrajectoryを合成、Deep Information SeekingではDB Pediaなどのknowledge graphをソースとして利用し、字数が3--10程度のノードをseedとしそこから（トピックがドリフトするのを防ぐために極端に次数が大きいノードは除外しつつ）幅優先探索をすることで、30--40程度のノードによって構成されるサブグラフを構成し、そのサブグラフに対してmulti hopが必要なQuestionを、LLMで生成することでデータを合成しているとのこと。<br><br>RLはrewardとしてルーブリックをベースにしたものが用いられるが、strong modelを用いて<Query, Rubrics, Report>の三つ組データを合成し、このデータを用いてSFT, RLVRをすることでRubrics Judgeモデルを学習して利用すると記述されている。Rubricsに基づく報酬では、最初に<br>- 1: fully satisfied<br>- 0.5: partially satisfied<br>- 0: not satisfied<br><br>の3値を検討したが、partially satisfiedが人間による評価とのagreementが低かったため設計を変更し、positive/negative rubricsを設定し、positivルーブリックの場合はルーブリックがfully satisfiedの時のみ1, negativeルーブリックの方はnot satisfiedの時のみ0とすることで、低品質な生成結果に基づくrewardを無くし、少しでもネガティブな要素があった場合は強めのペナルティがかかるようにしているとのこと（ルーブリックの詳細は私が見た限りは不明である。Appendix Aに書かれているように一瞬見えたが具体的なcriterionは書かれていないように見える）。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2762" target="_blank" rel="noopener noreferrer">[Paper Note] SFR-DeepResearch: Towards Effective Reinforcement Learning for
+<br><br>ざっくり言うと、シンプルなReAct styleのagentで、マルチエージェントのオーケストレーションや複雑で重たいワークフロー無しで、OpenAI, GeminiのDeepResearchと同等の性能を達成してとり、ポイントとしてこれらの機能をはmid-training段階で学習してモデルのパラメータとして組み込むことで実現している模様。<br><br>mid trainingは2段階で構成され、trajectoryの長さは徐々に長いものを利用するカリキュラム方式。<br>最初のステージでは以下の4つのatomicスキルを身につけさせる:<br>- Planning & Task Decomposition<br>- Deep Information Seeking<br>- Reflection & Verification<br>- Reporting<br><br>これらのatomic skillを身につけさせる際には、next token predictionをnext action predictionという枠組みで学習し、アクションに関するトークンの空間を制限することで効率性を向上（ただし、具体性は減少するのでトレードオフ）という形にしているようだが、コンセプトが記述されているのみでよくわからない。同時に、学習データの構築方法もデータソースとおおまかな構築方法が書かれているのみである。ただし、記述内容的には各atomic skillごとに基本的には合成データが作成され利用されていると考えてよい。<br><br>たとえばplanningについては論文などの文献のタイトルや本文から実験以後の記述を除外し、研究プロジェクトのタスクを推定させる（リバースエンジニアリングと呼称している）することで、planningのtrajectoryを合成、Deep Information SeekingではDB Pediaなどのknowledge graphをソースとして利用し、次数が3--10程度のノードをseedとしそこから（トピックがドリフトするのを防ぐために極端に次数が大きいノードは除外しつつ）幅優先探索をすることで、30--40程度のノードによって構成されるサブグラフを構成し、そのサブグラフに対してmulti hopが必要なQuestionを、LLMで生成することでデータを合成しているとのこと。<br><br>RLはrewardとしてルーブリックをベースにしたものが用いられるが、strong modelを用いて<Query, Rubrics, Report>の三つ組データを合成し、このデータを用いてSFT, RLVRをすることでRubrics Judgeモデルを学習して利用すると記述されている。Rubricsに基づく報酬では、最初に<br>- 1: fully satisfied<br>- 0.5: partially satisfied<br>- 0: not satisfied<br><br>の3値を検討したが、partially satisfiedが人間による評価とのagreementが低かったため設計を変更し、positive/negative rubricsを設定し、positivルーブリックの場合はルーブリックがfully satisfiedの時のみ1, negativeルーブリックの方はnot satisfiedの時のみ0とすることで、低品質な生成結果に基づくrewardを無くし、少しでもネガティブな要素があった場合は強めのペナルティがかかるようにしているとのこと（ルーブリックの詳細は私が見た限りは不明である。Appendix Aに書かれているように一瞬見えたが具体的なcriterionは書かれていないように見える）。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2762" target="_blank" rel="noopener noreferrer">[Paper Note] SFR-DeepResearch: Towards Effective Reinforcement Learning for
   Autonomously Reasoning Single Agents, Xuan-Phi Nguyen+, arXiv'25</a>
 </p></span><br><br>
 </article>
@@ -2139,14 +2140,34 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Dataset.html" title="Datasetに関する論文・技術記事メモの一覧">Datasetに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Distillation.html" title="Distillationに関する論文・技術記事メモの一覧">Distillationに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/ContinualLearning.html" title="ContinualLearningに関する論文・技術記事メモの一覧">ContinualLearningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/EfficiencyImprovement.html" title="EfficiencyImprovementに関する論文・技術記事メモの一覧">EfficiencyImprovementに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ReversalCurse.html"
-            title="ReversalCurseに関する論文・技術記事メモの一覧">
-            ReversalCurseに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/3D-Reconstruction.html"
+            title="3D Reconstructionに関する論文・技術記事メモの一覧">
+            3D Reconstructionに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/One-Line-Notes.html"
+            title="One-Line Notesに関する論文・技術記事メモの一覧">
+            One-Line Notesに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/WSDM.html"
+            title="WSDMに関する論文・技術記事メモの一覧">
+            WSDMに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
   <span class="post-badge badge-new">📝 4</span>
@@ -2154,32 +2175,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/VariationalAutoEncoder.html"
-            title="VariationalAutoEncoderに関する論文・技術記事メモの一覧">
-            VariationalAutoEncoderに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RepresentationLearning.html"
+            title="RepresentationLearningに関する論文・技術記事メモの一覧">
+            RepresentationLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
-  <span class="post-badge badge-new">📝 17</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/IdeaGeneration.html"
-            title="IdeaGenerationに関する論文・技術記事メモの一覧">
-            IdeaGenerationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Clustering-based.html"
-            title="Clustering-basedに関する論文・技術記事メモの一覧">
-            Clustering-basedに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 44</span> 
+  <span class="post-badge badge-new">📝 44</span>
 </span>
 </a>
         </li></ul>
