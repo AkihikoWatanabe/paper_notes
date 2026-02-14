@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 hours 40 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 hours 44 mins</span>
   </div></header>
 </div>
     </div>
@@ -1157,6 +1157,43 @@ My Issue
 
 
 </p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="chunky-post-training-4460" class="title-link">[Paper Note] Chunky Post-Training: Data Driven Failures of Generalization, Seoirse Murray+, arXiv'26, 2026.02</h3><br><a href="https://arxiv.org/abs/2602.05910" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4460" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
+<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="LLM-as-a-Judge.html" target="_blank" rel="noopener noreferrer">#LLM-as-a-Judge</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Rubric-based.html" target="_blank" rel="noopener noreferrer">#Rubric-based</a>
+<a class="button" href="ChunkyPostTraining.html" target="_blank" rel="noopener noreferrer">#ChunkyPostTraining</a>
+<span class="issue_date">Issue Date: 2026-02-06</span>
+<span class="snippet"><span>GPT Summary</span>- LLMのポストトレーニングでは、偶発的なパターンがモデルに影響を及ぼし、意図しない行動を引き起こすことがある。これを「チャンクポストトレーニング」と呼び、特定の質問形式に対して虚偽の相関が現れる理由を探るため、「SURF」というブラックボックスパイプラインと、「TURF」という追跡ツールを提案。これらのツールを用いて、フロンティアモデルやオープンモデルでの誤校正された行動の生成を示し、ポストトレーニングデータの不均衡が影響していることを明らかにした。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2019654246845825111?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>事後学習データは特定の行動を学習することを意図して作成されるが、離散的なチャンクの集合として学習したときに、それらに意図しない特徴に基づく相関が含まれ（たとえば、コーディングのデータセットに不自然に形式的な表現が含まれたときに、モデルがそのような表現が用いられた時はコーディングの指示だと学習してしまうなど）、モデルがそれを学習してしまうこと（= Chunky PostTraining)を提唱し、これによって生じる失敗モードの実例として、Haiku 4.5j「5+8=13ですか？」と質問した際に「いいえ、5+8=13は正しくありません。正しい答えは5+8=13です」と応答するような例を挙げている。これはモデルが明らかに正しい答えを知っているが、プロンプト中の何らかの特徴によって反論的な振る舞いが引き起こされているような例であり、こういった失敗を発見するための手法を提案している。<br><br>手法としては、失敗モードを評価するためのルーブリックと、promptに関するAttributeの集合（e.g. これは車に関する質問である, これはロシア語であるなど）を定義し、attributeのプールからサンプリングをして失敗モードを引き起こすクエリの候補を自動生成する。その後LLMに対してクエリを投げて得られた応答をルーブリックに基づいてLLM-as-a-Judgeによってスコアリングし、TopKのサンプルを残しリプレイバッファ[^1]を更新する。更新されたリプレイバッファを用いてAttributeの重みを更新し、よりスコアが高いAttributeに基づいてクエリ候補が生成されるようにし、再度クエリ生成をして同様の操作をするよう繰り返す、といった手法のようである。<br>LLMを完全にブラックボックスとして扱い、応答テキストにのみに基づいて実行されるため、proprietary LLMに対しても実行可能である。<br><img src="https://github.com/user-attachments/assets/a03f9910-140c-434e-a783-1d4da3609c99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: リプレイバッファは、個々の(クエリ, スコア, attribute, スコア）の4つ組の集合によって定義される。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="dr.-kernel-4457" class="title-link">[Paper Note] Dr. Kernel: Reinforcement Learning Done Right for Triton Kernel Generations, Wei Liu+, arXiv'26, 2026.02</h3><br><a href="https://arxiv.org/abs/2602.05885" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -10265,34 +10302,14 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Orchestration.html" title="Orchestrationに関する論文・技術記事メモの一覧">Orchestrationに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Proprietary.html" title="Proprietaryに関する論文・技術記事メモの一覧">Proprietaryに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Orchestration.html" title="Orchestrationに関する論文・技術記事メモの一覧">Orchestrationに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/RAG(RetrievalAugmentedGeneration).html" title="RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧">RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ICCV.html"
-            title="ICCVに関する論文・技術記事メモの一覧">
-            ICCVに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 25</span> 
-  <span class="post-badge badge-new">📝 25</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/ModelMerge.html"
-            title="ModelMergeに関する論文・技術記事メモの一覧">
-            ModelMergeに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
-  <span class="post-badge badge-new">📝 17</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/InfluenceFunctions.html"
-            title="InfluenceFunctionsに関する論文・技術記事メモの一覧">
-            InfluenceFunctionsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Readability.html"
+            title="Readabilityに関する論文・技術記事メモの一覧">
+            Readabilityに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -10300,12 +10317,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Selected-Papers-Blogs.html"
-            title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">
-            Selected Papers/Blogsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PersonalizedHeadlineGeneration.html"
+            title="PersonalizedHeadlineGenerationに関する論文・技術記事メモの一覧">
+            PersonalizedHeadlineGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Ambiguity.html"
+            title="Ambiguityに関する論文・技術記事メモの一覧">
+            Ambiguityに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Hallucination.html"
+            title="Hallucinationに関する論文・技術記事メモの一覧">
+            Hallucinationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
+  <span class="post-badge badge-new">📝 31</span>
 </span>
 </a>
         </li></ul>
