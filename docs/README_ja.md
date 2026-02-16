@@ -41,7 +41,7 @@ Issueには主に以下の内容がメモされています:
 - Multimodal Models / Unified Multimodal Models (UMMs)
 - AI Agents / Context Engineering / Memory / Evaluation Harnesses / Scaffoldings
 - (Synthetic) Datasets / Evaluation / Benchmarks
-- Pre-training / Mid-training / Post-training
+- Pre-training / Mid-training / Post-training / Continual Learning
 - Reinforcement Learning
 - Test-time Scaling / Test-time Learning
 - Representation Learning / Embeddings
