@@ -10,8 +10,8 @@ github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
 
-#MODEL = "gpt-5-nano"
-MODEL = "gpt-4o-mini"
+MODEL_TRANSLATE = "gpt-5-nano"
+MODEL_SUMM = "gpt-4o-mini"
 
 translator_system_content = [
         "あなたは自然言語処理や機械学習の研究者です。以下の英語の<abstract>を日本語に翻訳してください。出力は翻訳結果のみを出力してください。"
@@ -97,10 +97,10 @@ def change_title(entry, issue_number):
 
 
 # https://cookbook.openai.com/examples/gpt-5/gpt-5_new_params_and_tools
-def call_openai(messages, verbosity="medium"):
+def call_openai(messages, model, verbosity="medium"):
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
     response = client.responses.create(
-        model=MODEL,
+        model=model,
         input=messages
 #        reasoning = {
 #            "effort": "minimal"
@@ -121,7 +121,7 @@ def translate(org_text):
     user_content = [f"<abstract>{org_text}</abstract>"]
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
-    translated_text = call_openai(messages)
+    translated_text = call_openai(messages, model=MODEL_TRANSLATE)
     return translated_text
 
 
@@ -131,7 +131,7 @@ def summarize(org_text):
     user_content = [f"<target_abstract>{org_text}</target_abstract>"]
     user_content = '\n'.join(user_content)
     messages.append({'role': 'user', 'content': user_content})
-    summary_text = call_openai(messages, verbosity="low")
+    summary_text = call_openai(messages, model=MODEL_SUMM, verbosity="low")
     return summary_text
 
 
@@ -147,13 +147,13 @@ def change_first_comment(url, entry, issue_number):
     new_comment += f'  - {summary}\n'
 
     # translation
-    new_comment += f'# Translation (by {MODEL})\n'
+    new_comment += f'# Translation (by {MODEL_TRANSLATE})\n'
     abst = entry['summary']
     translated_text = translate(abst)
     new_comment += f'- {translated_text}\n'
 
     # summarization
-    new_comment += f'# Summary (by {MODEL})\n'
+    new_comment += f'# Summary (by {MODEL_SUMM})\n'
     summary_text = summarize(translated_text)
     new_comment += f'- {summary_text}'
 
@@ -180,11 +180,11 @@ def translate_and_summarize(issue_data):
     def _gen_new_comment(org_text: str):
         org_text = org_text.replace("\n", "")
         # translation
-        new_comment = f'# Translation (by {MODEL})\n'
+        new_comment = f'# Translation (by {MODEL_TRANSLATE})\n'
         translated_text = translate(org_text)
         new_comment += f'- {translated_text}\n'
         # summarization
-        new_comment += f'# Summary (by {MODEL})\n'
+        new_comment += f'# Summary (by {MODEL_SUMM})\n'
         summary_text = summarize(translated_text)
         new_comment += f'- {summary_text}'
         return new_comment
