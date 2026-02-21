@@ -171,7 +171,7 @@ def change_title_and_first_comment(issue_data):
 
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
-    attach_pocket_tag(issue_number)
+    #attach_pocket_tag(issue_number)
     change_title(entry, issue_number)
     change_first_comment(url, entry, issue_number)
 
