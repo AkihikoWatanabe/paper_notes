@@ -19,8 +19,8 @@
 <meta property="og:title" content="DataAugmentationに関する論文・技術記事メモの一覧" />
 <meta name="author" content="AkihikoWATANABE" />
 <meta property="og:locale" content="ja" />
-<meta name="description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Paper/Blog Link My Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。&lt;img src=&quot;https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。&lt;img src=&quot;https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 [Paper Note] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data, Lihe Yang+, CVPR&#39;24, 2024.01 Paper/Blog Link My Issue #ComputerVision #Pocket #FoundationModel #CVPR #2D (Image) #DepthEstimation Issue Date: 2025-11-18 GPT Summary- Depth Anythingは、堅牢な単眼深度推定のための基盤モデルを提案し、6200万の未ラベルデータを自動的に注釈付けしてデータセットを拡大。データ拡張と補助的な監視を用いてモデルの一般化能力を向上させ、ゼロショット評価で優れた結果を示した。NYUv2およびKITTIでファインチューニングし、最先端の性能を達成。モデルは公開されている。 Comment日本語解説:" />
-<meta property="og:description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Paper/Blog Link My Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。&lt;img src=&quot;https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。&lt;img src=&quot;https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 [Paper Note] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data, Lihe Yang+, CVPR&#39;24, 2024.01 Paper/Blog Link My Issue #ComputerVision #Pocket #FoundationModel #CVPR #2D (Image) #DepthEstimation Issue Date: 2025-11-18 GPT Summary- Depth Anythingは、堅牢な単眼深度推定のための基盤モデルを提案し、6200万の未ラベルデータを自動的に注釈付けしてデータセットを拡大。データ拡張と補助的な監視を用いてモデルの一般化能力を向上させ、ゼロショット評価で優れた結果を示した。NYUv2およびKITTIでファインチューニングし、最先端の性能を達成。モデルは公開されている。 Comment日本語解説:" />
+<meta name="description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Paper/Blog Link My Issue #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。&lt;img src=&quot;https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。&lt;img src=&quot;https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 [Paper Note] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data, Lihe Yang+, CVPR&#39;24, 2024.01 Paper/Blog Link My Issue #ComputerVision #FoundationModel #CVPR #2D (Image) #DepthEstimation Issue Date: 2025-11-18 GPT Summary- Depth Anythingは、堅牢な単眼深度推定のための基盤モデルを提案し、6200万の未ラベルデータを自動的に注釈付けしてデータセットを拡大。データ拡張と補助的な監視を用いてモデルの一般化能力を向上させ、ゼロショット評価で優れた結果を示した。NYUv2およびKITTIでファインチューニングし、最先端の性能を達成。モデルは公開されている。 Comment日本語解説:" />
+<meta property="og:description" content="DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Paper/Blog Link My Issue #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。&lt;img src=&quot;https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。&lt;img src=&quot;https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 [Paper Note] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data, Lihe Yang+, CVPR&#39;24, 2024.01 Paper/Blog Link My Issue #ComputerVision #FoundationModel #CVPR #2D (Image) #DepthEstimation Issue Date: 2025-11-18 GPT Summary- Depth Anythingは、堅牢な単眼深度推定のための基盤モデルを提案し、6200万の未ラベルデータを自動的に注釈付けしてデータセットを拡大。データ拡張と補助的な監視を用いてモデルの一般化能力を向上させ、ゼロショット評価で優れた結果を示した。NYUv2およびKITTIでファインチューニングし、最先端の性能を達成。モデルは公開されている。 Comment日本語解説:" />
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation.html" />
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="DataAugmentationに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-18T00:00:00+00:00","datePublished":"2025-11-18T00:00:00+00:00","description":"DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Paper/Blog Link My Issue #Pocket #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。&lt;img src=&quot;https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。&lt;img src=&quot;https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 [Paper Note] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data, Lihe Yang+, CVPR&#39;24, 2024.01 Paper/Blog Link My Issue #ComputerVision #Pocket #FoundationModel #CVPR #2D (Image) #DepthEstimation Issue Date: 2025-11-18 GPT Summary- Depth Anythingは、堅牢な単眼深度推定のための基盤モデルを提案し、6200万の未ラベルデータを自動的に注釈付けしてデータセットを拡大。データ拡張と補助的な監視を用いてモデルの一般化能力を向上させ、ゼロショット評価で優れた結果を示した。NYUv2およびKITTIでファインチューニングし、最先端の性能を達成。モデルは公開されている。 Comment日本語解説:","headline":"DataAugmentationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-18T00:00:00+00:00","datePublished":"2025-11-18T00:00:00+00:00","description":"DataAugmentation Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL&#39;25 Paper/Blog Link My Issue #NLP #Distillation #NAACL #Verification Issue Date: 2024-12-02 GPT Summary- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。 Comment## 手法概要Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には- Original Questionから生成したForward Reasoningに対するクロスエントロピー- Original Questionから生成したBackward Questionに対するクロスエントロピー- Backward Questionから生成したBackward Reasoningに対するクロスエントロピーの平均をとる。&lt;img src=&quot;https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。&lt;img src=&quot;https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。 [Paper Note] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data, Lihe Yang+, CVPR&#39;24, 2024.01 Paper/Blog Link My Issue #ComputerVision #FoundationModel #CVPR #2D (Image) #DepthEstimation Issue Date: 2025-11-18 GPT Summary- Depth Anythingは、堅牢な単眼深度推定のための基盤モデルを提案し、6200万の未ラベルデータを自動的に注釈付けしてデータセットを拡大。データ拡張と補助的な監視を用いてモデルの一般化能力を向上させ、ゼロショット評価で優れた結果を示した。NYUv2およびKITTIでファインチューニングし、最先端の性能を達成。モデルは公開されている。 Comment日本語解説:","headline":"DataAugmentationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/DataAugmentation.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 14 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
   </div></header>
 </div>
     </div>
@@ -1043,7 +1043,6 @@ Paper/Blog Link
 </svg>
 My Issue
 </a><br>
-<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Distillation.html" target="_blank" rel="noopener noreferrer">#Distillation</a>
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
@@ -1065,7 +1064,6 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
-<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="FoundationModel.html" target="_blank" rel="noopener noreferrer">#FoundationModel</a>
 <a class="button" href="CVPR.html" target="_blank" rel="noopener noreferrer">#CVPR</a>
 <a class="button" href="2D-(Image).html" target="_blank" rel="noopener noreferrer">#2D (Image)</a>
@@ -1093,7 +1091,6 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
-<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
@@ -1148,7 +1145,6 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
-<a class="button" href="Pocket.html" target="_blank" rel="noopener noreferrer">#Pocket</a>
 <a class="button" href="ContrastiveLearning.html" target="_blank" rel="noopener noreferrer">#ContrastiveLearning</a>
 <a class="button" href="Self-SupervisedLearning.html" target="_blank" rel="noopener noreferrer">#Self-SupervisedLearning</a>
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
@@ -1235,42 +1231,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/UI.html"
-            title="UIに関する論文・技術記事メモの一覧">
-            UIに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/GUI.html"
+            title="GUIに関する論文・技術記事メモの一覧">
+            GUIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ConceptToTextGeneration.html"
-            title="ConceptToTextGenerationに関する論文・技術記事メモの一覧">
-            ConceptToTextGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SelfVerification.html"
+            title="SelfVerificationに関する論文・技術記事メモの一覧">
+            SelfVerificationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
-  <span class="post-badge badge-new">📝 17</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/InformationRetrieval.html"
-            title="InformationRetrievalに関する論文・技術記事メモの一覧">
-            InformationRetrievalに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/NaturalLanguageGeneration.html"
+            title="NaturalLanguageGenerationに関する論文・技術記事メモの一覧">
+            NaturalLanguageGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 121</span> 
-  <span class="post-badge badge-new">📝 121</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 134</span> 
+  <span class="post-badge badge-new">📝 134</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Comments.html"
-            title="Commentsに関する論文・技術記事メモの一覧">
-            Commentsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LayoutGeneration.html"
+            title="LayoutGenerationに関する論文・技術記事メモの一覧">
+            LayoutGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>
