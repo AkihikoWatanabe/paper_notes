@@ -50,7 +50,7 @@ Recent areas of focus include (but are not limited to):
 - (Synthetic) Datasets / Evaluation / Benchmarks
 - Pre-training / Mid-training / Post-training / Continual Learning
 - Reinforcement Learning
-- Test-time Scaling / Test-time Learning
+- Test-time Scaling / (Memory-based) Test-time Learning / Test Time Training (TTT)
 - Representation Learning / Embeddings
 - Self-Improving AI
 - Transformer architectures (Attention, Positional Encoding, Residual Streams, etc.)
