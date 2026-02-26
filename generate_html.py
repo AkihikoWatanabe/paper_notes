@@ -657,7 +657,7 @@ author: AkihikoWATANABE
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/OpenWeight.html" target="_blank" rel="noopener noreferrer">OpenWeightモデル</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Transformer.html" target="_blank" rel="noopener noreferrer">Transformerアーキテクチャ関連</a> / <a href="https://akihikowatanabe.github.io/paper_notes/articles/Attention.html" target="_blank" rel="noopener noreferrer">Attention関連</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer">Test-time Scaling</a></li>
-  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-time-Learning.html" target="_blank" rel="noopener noreferrer">Test-time Learning</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Test-time-Learning.html" target="_blank" rel="noopener noreferrer">(Memory-based) Test-time Learning</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Alignment.html" target="_blank" rel="noopener noreferrer">（大規模言語モデルにおける）アライメント</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/AIAgents.html" target="_blank" rel="noopener noreferrer">AI Agent全般</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/memory.html" target="_blank" rel="noopener noreferrer">AI Agentにおけるメモリ</a></li>
