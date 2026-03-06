@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Asynchronous.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-11-27T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-03-05T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Asynchronousに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2025-11-27T00:00:00+00:00","datePublished":"2025-11-27T00:00:00+00:00","description":"Asynchronous [Paper Note] INTELLECT-3: Technical Report, Prime Intellect Team+, arXiv&#39;25, 2025.12 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #OpenWeight #OpenSource #MoE(Mixture-of-Experts) #read-later #Selected Papers/Blogs Issue Date: 2025-11-27 GPT Summary- 106BパラメータのMixture-of-ExpertsモデルINTELLECT-3を発表。強化学習インフラを用いて訓練され、数学や科学のベンチマークで最先端の性能を達成。オープンソースとして公開し、強化学習フレームワークや検証ライブラリを提供。prime-rlを導入し、大規模な非同期強化学習をサポート。GLM-4.5-Air-Baseモデル上での訓練により、高い効率を実現。 CommentHF:","headline":"Asynchronousに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Asynchronous.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Asynchronous.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-03-05T00:00:00+00:00","datePublished":"2026-03-05T00:00:00+00:00","description":"Asynchronous [Paper Note] INTELLECT-3: Technical Report, Prime Intellect Team+, arXiv&#39;25, 2025.12 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #OpenWeight #OpenSource #MoE(Mixture-of-Experts) #read-later #Selected Papers/Blogs Issue Date: 2025-11-27 GPT Summary- 106BパラメータのMixture-of-ExpertsモデルINTELLECT-3を発表。強化学習インフラを用いて訓練され、数学や科学のベンチマークで最先端の性能を達成。オープンソースとして公開し、強化学習フレームワークや検証ライブラリを提供。prime-rlを導入し、大規模な非同期強化学習をサポート。GLM-4.5-Air-Baseモデル上での訓練により、高い効率を実現。 CommentHF:","headline":"Asynchronousに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Asynchronous.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Asynchronous.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2025-11-27T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 27, 2025
+    <time class="dt-published" datetime="2026-03-05T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 05, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 19 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 21 mins</span>
   </div></header>
 </div>
     </div>
@@ -1308,6 +1308,41 @@ My Issue
 </p><p>既存のモデルは <= 10 turnsのデータで学習されており、大規模で高品質なQAデータが不足している問題があったが、シードQAに基づいてQAを合成する手法によって1.4万シードQAから134kの高品質なQAを合成した（うち25.6kはツール利用が必要）。具体的には、シードのQAを合成しエージェントがQAの複雑度をiterationをしながら向上させていく手法を提案。事実情報は常にverificationをされ、合成プロセスのiterationの中で保持され続ける。個々のiterationにおいて、現在のQAと事実情報に基づいて、エージェントは<br>- Injection: 事実情報を新たに注入しQAをよりリッチにすることで複雑度を上げる<br>- Fuzz: QA中の一部の詳細な情報をぼかすことで、不確実性のレベルを向上させる。<br>の2種類の操作を実施する。その上で、QAに対してQuality verificationを実施する:<br>- Basic Quality: LLMでqualityを評価する<br>- Difficulty Measurement: LRMによって、複数の回答候補を生成する<br>- Answer Uniqueness: Difficulty Measurementで生成された複数の解答情報に基づいて、mismatched answersがvalid answerとなるか否かを検証し、正解が単一であることを担保する<br><br><img src="https://github.com/user-attachments/assets/d020fc8f-b1da-4425-981a-6759cba5824b" /" alt="image" loading="lazy" width="550" height="400"/><br><br>また、複雑なタスク、特にtool callsが非常に多いタスクについては、多くのターン数（long trajectories）が必要となるが、既存のバッチに基づいた学習手法ではlong trajectoriesのロールアウトをしている間、他のサンプルの学習がブロックされてしまい学習効率が非常に悪いので、バッチ内のtrajectoryのロールアウトとモデルの更新を分離（ロールアウトのリクエストが別サーバに送信されサーバ上のInference Engineで非同期に実行され、モデルをアップデートする側は十分なtrajectoryがバッチ内で揃ったらパラメータを更新する、みたいな挙動？）することでIdleタイムを無くすような手法を提案した模様。<br><br><img src="https://github.com/user-attachments/assets/65d7e7b1-25fb-4288-a85e-07ae7a5eea2f" /" alt="image" loading="lazy" width="550" height="400"/></p><p>既存の手法ベンチマークの性能は向上している。学習が進むにつれて、trajectory中のURL参照回数やsearch query数などが増大していく曲線は考察されている。他モデルと比較して、より多いターン数をより高い正確性を以って実行できるといった定量的なデータはまだ存在しないように見えた。<br><br><img src="https://github.com/user-attachments/assets/70644da8-b862-4bcb-bb05-d915c815b885" /" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="areal-a-4795" class="title-link">AReaL: A Large-Scale Asynchronous Reinforcement Learning System, inclusionAI, 2026.03</h3><br><a href="https://github.com/inclusionAI/AReaL" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4795" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
+<a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
+<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<span class="issue_date">Issue Date: 2026-03-05</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/antlingagi/status/2029262614124183734?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4803" target="_blank" rel="noopener noreferrer">[Paper Note] From Self-Evolving Synthetic Data to Verifiable-Reward RL: Post-Training Multi-turn Interactive Tool-Using Agents, Jiaxuan Gao+, arXiv'26, 2026.01</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="slime-2646" class="title-link">slime, THUDM & Zhihu, 2025.09</h3><br><a href="https://github.com/THUDM/slime" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1389,14 +1424,24 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Poster.html" title="Posterに関する論文・技術記事メモの一覧">Posterに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/DataToTextGeneration.html" title="DataToTextGenerationに関する論文・技術記事メモの一覧">DataToTextGenerationに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Architecture.html" title="Architectureに関する論文・技術記事メモの一覧">Architectureに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Blog.html" title="Blogに関する論文・技術記事メモの一覧">Blogに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/UserBased.html"
-            title="UserBasedに関する論文・技術記事メモの一覧">
-            UserBasedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/VisionActionModel.html"
+            title="VisionActionModelに関する論文・技術記事メモの一覧">
+            VisionActionModelに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/DocParser.html"
+            title="DocParserに関する論文・技術記事メモの一覧">
+            DocParserに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
   <span class="post-badge badge-new">📝 12</span>
@@ -1404,32 +1449,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/FactorizationMachines.html"
-            title="FactorizationMachinesに関する論文・技術記事メモの一覧">
-            FactorizationMachinesに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/BeamSearch.html"
+            title="BeamSearchに関する論文・技術記事メモの一覧">
+            BeamSearchに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Probing.html"
-            title="Probingに関する論文・技術記事メモの一覧">
-            Probingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Sim-to-Real.html"
+            title="Sim-to-Realに関する論文・技術記事メモの一覧">
+            Sim-to-Realに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/TTS.html"
-            title="TTSに関する論文・技術記事メモの一覧">
-            TTSに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 20</span> 
-  <span class="post-badge badge-new">📝 20</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>
