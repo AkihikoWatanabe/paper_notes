@@ -481,7 +481,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         _html_content.append('</div>')
         curr_more_idx += 1
 
-    _agentdoc_content = ["<?xml version="1.0" encoding="UTF-8"?>", f'<paper-list last-updated="{last_update}">']
+    _agentdoc_content = ['<?xml version="1.0" encoding="UTF-8"?>', f'<paper-list last-updated="{last_update}">']
     _agentdoc_content += _generate_agentdoc_content_list(sorted_issues)
     _agentdoc_content.append("</paper-list>")
     
