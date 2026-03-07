@@ -389,7 +389,7 @@ def find_first_url(text: str) -> str | None:
         return None
 
 
-def _iter_issue(sorted_issues: list[tuple[dict, int]], current_target: list[str], attach_date: bool, assets_root: str, h_level: str) -> list[str]:
+def _generate_html_content_list(sorted_issues: list[tuple[dict, int]], current_target: list[str], attach_date: bool, assets_root: str, h_level: str) -> list[str]:
     link_svg = """<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -433,9 +433,32 @@ def _iter_issue(sorted_issues: list[tuple[dict, int]], current_target: list[str]
         _html_content.append("</article>")
     return _html_content
 
+
+def _generate_agentdoc_content_list(sorted_issues: list[tuple[dict, int]]) -> list[str]:
+
+    _agentdoc_content = []
+    for (issue, year) in sorted_issues:
+        title = prepro_title(issue['title'])
+        original_link = find_first_url(text=issue["body"])
+        tags = [data['name'] for data in issue['labels']]
+        if issue["body"] != None:
+            snippet_text, comment_text = get_snippets(issue)
+
+        _agentdoc_content.append("<paper-entry>")
+        _agentdoc_content.append(f"<title>{title}</title>")
+        _agentdoc_content.append(f"<original-paper-blog-link>{original_link}</original-paper-blog-link>")
+        _agentdoc_content.append(f"<repo-issue-link>{issue["url"]}</repo-issue-link>")
+        _agentdoc_content.append(f"<tags>{", ".join(tags)}</tags>")
+        _agentdoc_content.append(f"<repo-issue-date>{issue["createdAt"][:issue["createdAt"].find("T")]}</repo-issue-date>")
+        _agentdoc_content.append(f"<issue-body>{issue["body"]}</issue-body>")
+        _agentdoc_content.append(f"<maintainer-comment-text>{comment_text}</maintainer-comment-text>")
+        _agentdoc_content.append("</paper-entry>\n")
+        
+    return _agentdoc_content
+    
     
 curr_more_idx = 0
-def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True, assets_root: str = "articles/", h_level: str = "4", visible_num: int = 5) -> str:
+def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True, assets_root: str = "articles/", h_level: str = "4", visible_num: int = 5) -> dict[str, str]:
     global curr_more_idx
 
     # start note lazy
@@ -443,10 +466,11 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
 
     assets_root = Path(assets_root) 
     _html_content = ['<div class="visible-content">']
+    
     sorted_issues = sorted(issue_list, key=lambda item: (item[1], item[0]["createdAt"]), reverse=True)
 
     if len(sorted_issues[:visible_num]) > 0:
-        _html_content += _iter_issue(sorted_issues[:visible_num], current_target=current_target, attach_date=attach_date, assets_root=assets_root, h_level=h_level)
+        _html_content += _generate_html_content_list(sorted_issues[:visible_num], current_target=current_target, attach_date=attach_date, assets_root=assets_root, h_level=h_level)
     _html_content.append('</div>')
 
     if len(sorted_issues[visible_num:]) > 0:
@@ -457,7 +481,12 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         _html_content.append('</div>')
         curr_more_idx += 1
 
-    return "\n".join(_html_content)
+    _agentdoc_content = _generate_agentdoc_content_list(sorted_issues)
+
+    gen_result = {}
+    gen_result["html_content"] = "\n".join(_html_content)
+    gen_result["agentdoc_content"] = "\n".join(_agentdoc_content)
+    return gen_result
 
 
 def main():
@@ -682,15 +711,24 @@ author: AkihikoWATANABE
     html_content += '<h2 id="latest-post" class="paper-head">Latest Posts (100)</h2>'
     latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:100]
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
-    html_content += gen_one_item(latest_issues, [], h_level="3")
+    gen_result = gen_one_item(latest_issues, [], h_level="3")
+    html_content += gen_result["html_content"]
+
+    with open("./agent_docs/latest-posts.xml", "w") as f:
+        f.write(gen_result["agentdoc_content])
 
     # Admin's Pick
     selected_issues = [issue for issue in all_issues if any(["Selected Papers/Blogs" == l["name"] for l in issue["labels"]])]
     html_content += f'<h2 id="selected-papers" class="paper-head">Selected Papers/Blogs ({len(selected_issues)})</h2>'
     selected_issues = sorted(selected_issues, key=lambda x: x["number"], reverse=True)
     selected_issues = [(issue, issue["number"]) for issue in selected_issues]
-    html_content += gen_one_item(selected_issues, [], h_level="3")
+    gen_result = gen_one_item(selected_issues, [], h_level="3")
+    
+    html_content += gen_result["html_content"]
     html_content += "<hr>\n\n"
+
+    with open("./agent_docs/admin-s-pick.xml") as f:
+        f.write(gen_result["agentdoc_content"])
 
     print("main part was finished.")
 
@@ -750,6 +788,7 @@ document.addEventListener("DOMContentLoaded", function() {
     # generate each labels pages
     label_count = {}
     os.makedirs('./_posts', exist_ok=True)
+    os.makedirs('./agent_docs', exist_ok=True)
     for i, (label, issue_list) in enumerate(label_to_issues.items()):
         if label in ["translation_required", "action_wanted", "Pocket"]:
             continue
@@ -766,11 +805,16 @@ categories: {label}
         global curr_more_idx
         curr_more_idx = 0
         html_content = f'<h2 id={label} class="paper-head"> {label}</h2>'
-        html_content += gen_one_item(issue_list, [label], assets_root="", h_level="3", visible_num=5000)
+        gen_result = gen_one_item(issue_list, [label], assets_root="", h_level="3", visible_num=5000)
+        html_content += gen_result["html_content"]
         label_content = f"{html_template}{html_content}{lazy_loading}"
+        
         #with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
         with open(f"./_posts/{latest_date}-{label.replace('/', '-')}.html", "w") as f:
             f.write(label_content)
+        with open(f"./agent_docs/{latest_date}-{label.replace('/', '-')}.xml", "w") as f:
+            f.write(gen_result["agentdoc_content"])
+            
         label_count[label] = len(issue_list)
     with open("./_data/category_counts.yml", "w") as f:
         for l, c in label_count.items():
@@ -782,6 +826,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
