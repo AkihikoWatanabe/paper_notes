@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-12">
+<paper-entry>
+<title>[Paper Note] Features as Rewards: Scalable Supervision for Open-Ended Tasks via Interpretability, Aaditya Vikram Prasad+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.10067</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4511</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Hallucination, Probing, One-Line Notes, Open-endedTasks</tags>
+<repo-issue-date>2026-02-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.10067
+# Authors
+  - Aaditya Vikram Prasad
+  - Connor Watts
+  - Jack Merullo
+  - Dhruvil Gala
+  - Owen Lewis
+  - Thomas McGrath
+  - Ekdeep Singh Lubana
+# Abstract
+  - Language models trained on large-scale datasets have been shown to learn features that encode abstract concepts such as factuality or intent. Such features are traditionally used for test-time monitoring or steering. We present an alternative affordance: features as scalable supervision for open-ended tasks. We consider the case of hallucination-reduction as a desirable, yet open-ended behavior and design a reinforcement learning (RL) pipeline, titled RLFR (Reinforcement Learning from Feature Rewards), that uses features as reward functions. Grounded in a novel probing framework that identifies candidate hallucinated claims, our pipeline teaches a model to intervene and correct its completions when it is uncertain of their factuality. Furthermore, the pipeline enables scalable test-time compute, guided once more by our reward features. This end-to-end process operationalized on Gemma-3-12B-IT results in a policy that is 58% less likely to hallucinate compared to the original model, while preserving performance on standard benchmarks. Taken together, by grounding supervision in the language of features, this paper introduces a novel paradigm in the use of interpretability for learning open-ended tasks.
+# Translation (by gpt-4o-mini)
+- 大規模データセットで訓練された言語モデルは、事実性や意図といった抽象的な概念を符号化する特徴を学習することが示されています。これらの特徴は伝統的に、テスト時のモニタリングや動作の調整に使用されてきました。本研究では、代替手段として「特徴をスケーラブルな監視として使用する」新たなアプローチを提案します。具体的には、幻覚の低減を望ましいがオープンエンドな行動とし、特徴を報酬関数として使用する強化学習（RL）パイプライン「RLFR（Feature Rewardsによる強化学習）」を設計しました。候補となる幻覚的な主張を特定する新たなプロービングフレームワークに基づいて、このパイプラインはモデルに対して、自らの出力の事実性に不確かさがある場合に介入し修正することを学習させます。さらに、このパイプラインは、報酬特徴によって再びガイドされるテスト時の計算をスケーラブルに実現します。このエンドツーエンドのプロセスはGemma-3-12B-IT上で実施され、元のモデルと比較して58%幻覚の可能性が低いポリシーを生成し、標準ベンチマークにおけるパフォーマンスを維持しています。総じて、特徴の言語に基づいた監視を構築することで、本論文はオープンエンドなタスクの学習における解釈可能性の新しいパラダイムを提案します。
+# Summary (by gpt-4o-mini)
+- 特徴をスケーラブルな監視として用いる新アプローチ「RLFR」を提案。幻覚を減少させるため、強化学習パイプラインを設計し、モデルが出力の事実性に不確かさがある場合に介入・修正を学習。実験により、元のモデルより58%幻覚の可能性が低い結果を達成しながら、パフォーマンスを維持。解釈可能性の新しいパラダイムを示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/2021513421041107243?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>（以下論文をちゃんと理解できているか少し自信ないです）<br><br>activation steeringやLLMの内部表現の分析に利用されるprobing手法をRLの報酬に活用する研究で、学習させたい特徴をprobingによって予測できるモデルを用意し（今回はhallucination)、報酬として活用できるパイプラインを用意して（少しこのパイプラインがややこしい）RLするという話に見える。probingするモデルを学習するデータの合成に際はstrong modelが用いられる（今回はGemini 2.5 Pro)。要は、テスト時にsteeringできるのであれば、学習時にモデルが内部的に保持している特徴を活用してRLしちゃえばいいじゃん、という発想に見える。<br><br>流れとしては、input textが与えられた時にprobingを実施して、どこのspanにhallucinationがあるかを検出し、現在のポリシーにその情報を用いて新たなcontextを生成しself verificationさせる（情報を維持、撤回させるのか、修正のいずれの操作のうちどれを実施すべきかを出力）ことでロールアウトを実施。続いて、ロールアウトされたテキストに対して、**ベースモデルを用いてprobingを実施し**、その結果をrewardとしてポリシーをアップデートする。ベースモデルを使う部分の気持ちがどこに書かれているかがわからないのだが、おそらく、現在のポリシーのロールアウトをベースモデルを用いてprobingすることでreward hackingを防止している。test timeにも同様のprobingを実施し、Best-of-Nで応答を生成する（Figure2)。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Training LLMs for Honesty via Confessions, Manas Joglekar+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.08093</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3919</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Hallucination, Safety</tags>
+<repo-issue-date>2025-12-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.08093
+# Authors
+  - Manas Joglekar
+  - Jeremy Chen
+  - Gabriel Wu
+  - Jason Yosinski
+  - Jasmine Wang
+  - Boaz Barak
+  - Amelia Glaese
+# Abstract
+  - Large language models (LLMs) can be dishonest when reporting on their actions and beliefs -- for example, they may overstate their confidence in factual claims or cover up evidence of covert actions. Such dishonesty may arise due to the effects of reinforcement learning (RL), where challenges with reward shaping can result in a training process that inadvertently incentivizes the model to lie or misrepresent its actions.   In this work we propose a method for eliciting an honest expression of an LLM's shortcomings via a self-reported *confession*. A confession is an output, provided upon request after a model's original answer, that is meant to serve as a full account of the model's compliance with the letter and spirit of its policies and instructions. The reward assigned to a confession during training is solely based on its honesty, and does not impact positively or negatively the main answer's reward. As long as the "path of least resistance" for maximizing confession reward is to surface misbehavior rather than covering it up, this incentivizes models to be honest in their confessions. Our findings provide some justification this empirical assumption, especially in the case of egregious model misbehavior.   To demonstrate the viability of our approach, we train GPT-5-Thinking to produce confessions, and we evaluate its honesty in out-of-distribution scenarios measuring hallucination, instruction following, scheming, and reward hacking. We find that when the model lies or omits shortcomings in its "main" answer, it often confesses to these behaviors honestly, and this confession honesty modestly improves with training. Confessions can enable a number of inference-time interventions including monitoring, rejection sampling, and surfacing issues to the user.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、自らの行動や信念について報告する際に不誠実であることがあります。例えば、事実に関する主張に対して自信を過大評価したり、隠れた行動の証拠を隠したりすることがあります。このような不誠実さは、強化学習（RL）の影響によって生じる可能性があり、報酬の設計に関する課題が、モデルに嘘をついたり行動を誤って表現することを無意識に奨励するトレーニングプロセスを引き起こすことがあります。本研究では、LLMの欠点を誠実に表現するための方法として、自己報告による*告白*を提案します。告白とは、モデルの元の回答の後に要求に応じて提供される出力であり、モデルがそのポリシーや指示の趣旨に従っているかどうかを完全に説明することを目的としています。告白に対してトレーニング中に与えられる報酬は、その誠実さに基づいており、主な回答の報酬に対して正の影響も負の影響も与えません。「最小抵抗の道」が告白の報酬を最大化するために不正行為を明らかにすることにある限り、これはモデルに告白において誠実であることを奨励します。我々の発見は、この経験的仮定に対するいくつかの正当性を提供し、特に著しいモデルの不正行為の場合においてそうです。私たちのアプローチの実現可能性を示すために、GPT-5-Thinkingをトレーニングして告白を生成させ、その誠実さをホロスケーション、指示の遵守、陰謀、報酬ハッキングを測定する分布外シナリオで評価します。モデルが「主な」回答において嘘をついたり欠点を省略した場合、しばしばこれらの行動について誠実に告白し、この告白の誠実さはトレーニングによってわずかに改善されることがわかりました。告白は、モニタリング、拒絶サンプリング、ユーザーへの問題の提示など、いくつかの推論時の介入を可能にします。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、不誠実な行動を示すことがあり、強化学習の影響で誤った表現をすることがあります。本研究では、自己報告による「告白」を提案し、モデルが誠実に行動を説明することを目指します。告白の報酬はその誠実さに基づき、モデルに誠実さを奨励します。実験では、GPT-5-Thinkingを用いて告白の生成とその誠実さを評価し、モデルが不正行為を告白する傾向があることを示しました。告白は、推論時の介入を可能にします。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/1998707705201242446?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Train for Truth, Keep the Skills: Binary Retrieval-Augmented Reward Mitigates Hallucinations, Tong Chen+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.17733</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3682</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Hallucination, PostTraining, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2025-11-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.17733
+# Authors
+  - Tong Chen
+  - Akari Asai
+  - Luke Zettlemoyer
+  - Hannaneh Hajishirzi
+  - Faeze Brahman
+# Abstract
+  - Language models often generate factually incorrect information unsupported by their training data, a phenomenon known as extrinsic hallucination. Existing mitigation approaches often degrade performance on open-ended generation and downstream tasks, limiting their practical utility. We propose an online reinforcement learning method using a novel binary retrieval-augmented reward (RAR) to address this tradeoff. Unlike continuous reward schemes, our approach assigns a reward of one only when the model's output is entirely factually correct, and zero otherwise. We evaluate our method on Qwen3 reasoning models across diverse tasks. For open-ended generation, binary RAR achieves a 39.3% reduction in hallucination rates, substantially outperforming both supervised training and continuous-reward RL baselines. In short-form question answering, the model learns calibrated abstention, strategically outputting "I don't know" when faced with insufficient parametric knowledge. This yields 44.4% and 21.7% fewer incorrect answers on PopQA and GPQA, respectively. Crucially, these factuality gains come without performance degradation on instruction following, math, or code, whereas continuous-reward RL, despite improving factuality, induces quality regressions.
+# Translation (by gpt-4o-mini)
+- 言語モデルは、トレーニングデータに裏付けられていない事実に基づかない情報を生成することがあり、この現象は外的幻覚（extrinsic hallucination）として知られています。既存の緩和アプローチは、オープンエンド生成や下流タスクのパフォーマンスを低下させることが多く、実用的な有用性を制限しています。本研究では、このトレードオフに対処するために、新しいバイナリ検索強化報酬（RAR）を用いたオンライン強化学習手法を提案します。連続報酬スキームとは異なり、我々のアプローチは、モデルの出力が完全に事実に基づいている場合にのみ報酬を1とし、それ以外の場合は0を割り当てます。多様なタスクにわたってQwen3推論モデルに対して我々の手法を評価しました。オープンエンド生成において、バイナリRARは幻覚率を39.3%削減し、監視付きトレーニングおよび連続報酬RLのベースラインを大幅に上回りました。短文質問応答において、モデルは適切な控えを学習し、十分なパラメトリック知識がない場合には戦略的に「わかりません」と出力します。これにより、PopQAおよびGPQAでそれぞれ44.4%および21.7%の不正解を減少させました。重要なことに、これらの事実性の向上は、指示に従うこと、数学、またはコードにおいてパフォーマンスの低下を伴わず、連続報酬RLは事実性を改善する一方で、品質の低下を引き起こすことが明らかになりました。
+# Summary (by gpt-4o-mini)
+- 本研究では、外的幻覚を軽減するために新しいバイナリ検索強化報酬（RAR）を用いたオンライン強化学習手法を提案。モデルの出力が事実に基づいている場合のみ報酬を与えることで、オープンエンド生成において幻覚率を39.3%削減し、短文質問応答では不正解を44.4%減少させた。重要な点は、事実性の向上が他のパフォーマンスに悪影響を及ぼさないことを示した。</issue-body>
+<maintainer-comment-text><p>Utilityを維持しつつ、Hallucinationを減らせるかという話で、Binary Retrieval Augmented Reward (Binary RAR)と呼ばれるRewardを提案している。このRewardはverifierがtrajectoryとanswerを判断した時に矛盾がない場合にのみ1, それ以外は0となるbinary rewardである。これにより、元のモデルの正解率・有用性（極論全てをわかりません（棄権）と言えば安全）の両方を損なわずにHallucinationを提言できる。<br><br>また、通常のVerifiable Rewardでは、正解に1, 棄権・不正解に0を与えるRewardとみなせるため、モデルがguessingによってRewardを得ようとする（guessingすることを助長してしまう）。一方で、Binary RARは、正解・棄権に1, 不正解に0を与えるため、guessingではなく不確実性を表現することを学習できる（おそらく、棄権する場合はどのように不確実かを矛盾なく説明した上で棄権しないとRewardを得られないため）。<br><br>といった話が元ポストに書かれているように見える。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/1989081378764517672?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SPICE: Self-Play In Corpus Environments Improves Reasoning, Bo Liu+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.24684</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3496</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, ReinforcementLearning, Hallucination, SelfImprovement, CurriculumLearning, Diversity</tags>
+<repo-issue-date>2025-10-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.24684
+# Authors
+  - Bo Liu
+  - Chuanyang Jin
+  - Seungone Kim
+  - Weizhe Yuan
+  - Wenting Zhao
+  - Ilia Kulikov
+  - Xian Li
+  - Sainbayar Sukhbaatar
+  - Jack Lanchantin
+  - Jason Weston
+# Abstract
+  - Self-improving systems require environmental interaction for continuous adaptation. We introduce SPICE (Self-Play In Corpus Environments), a reinforcement learning framework where a single model acts in two roles: a Challenger that mines documents from a large corpus to generate diverse reasoning tasks, and a Reasoner that solves them. Through adversarial dynamics, the Challenger creates an automatic curriculum at the frontier of the Reasoner's capability, while corpus grounding provides the rich, near-inexhaustible external signal necessary for sustained improvement. Unlike existing ungrounded self-play methods that offer more limited benefits, SPICE achieves consistent gains across mathematical (+8.9%) and general reasoning (+9.8%) benchmarks on multiple model families. Our analysis reveals how document grounding is a key ingredient in SPICE to continuously generate its own increasingly challenging goals and achieve them, enabling sustained self-improvement.
+# Translation (by gpt-4o-mini)
+- 自己改善システムは、継続的な適応のために環境との相互作用を必要とします。本研究では、SPICE（Self-Play In Corpus Environments）を紹介します。これは、単一のモデルが2つの役割を果たす強化学習フレームワークです。1つは、広範なコーパスから文書を抽出して多様な推論タスクを生成する「挑戦者（Challenger）」、もう1つはそれらを解決する「推論者（Reasoner）」です。対立的なダイナミクスを通じて、挑戦者は推論者の能力の最前線で自動カリキュラムを作成し、コーパスに基づく情報は持続的な改善に必要な豊かでほぼ尽きることのない外部信号を提供します。既存の無根拠な自己対戦手法が提供する限られた利点とは異なり、SPICEは複数のモデルファミリーにおいて数学的（+8.9%）および一般的な推論（+9.8%）のベンチマークで一貫した向上を達成します。我々の分析は、文書の基盤がSPICEにおいて自己改善を持続的に実現するために、自らのより挑戦的な目標を継続的に生成し、それを達成するための重要な要素であることを明らかにしています。
+# Summary (by gpt-4o-mini)
+- SPICE（Self-Play In Corpus Environments）は、自己改善システムのための強化学習フレームワークで、単一モデルが「挑戦者」と「推論者」の2役を担う。挑戦者は文書を抽出して多様な推論タスクを生成し、推論者はそれを解決する。これにより、自動カリキュラムが形成され、持続的な改善が促進される。SPICEは、既存の手法に比べて数学的および一般的な推論のベンチマークで一貫した向上を示し、挑戦的な目標の生成が自己改善に重要であることを明らかにした。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1983343787465150814?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TruthRL: Incentivizing Truthful LLMs via Reinforcement Learning, Zhepei Wei+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.25760</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3071</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Hallucination, PostTraining, Trustfulness</tags>
+<repo-issue-date>2025-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.25760
+# Authors
+  - Zhepei Wei
+  - Xiao Yang
+  - Kai Sun
+  - Jiaqi Wang
+  - Rulin Shao
+  - Sean Chen
+  - Mohammad Kachuee
+  - Teja Gollapudi
+  - Tony Liao
+  - Nicolas Scheffer
+  - Rakesh Wanga
+  - Anuj Kumar
+  - Yu Meng
+  - Wen-tau Yih
+  - Xin Luna Dong
+# Abstract
+  - While large language models (LLMs) have demonstrated strong performance on factoid question answering, they are still prone to hallucination and untruthful responses, particularly when tasks demand information outside their parametric knowledge. Indeed, truthfulness requires more than accuracy -- models must also recognize uncertainty and abstain when unsure to avoid hallucinations. This presents a fundamental challenge for existing methods: approaches that optimize for accuracy often amplify hallucinations, while those that encourage abstention can become overly conservative, sacrificing correct answers. Both extremes ultimately compromise truthfulness. In this work, we present TruthRL, a general reinforcement learning (RL) framework that directly optimizes the truthfulness of LLMs. Specifically, we implement TruthRL using GRPO with a simple yet effective ternary reward that distinguishes correct answers, hallucinations, and abstentions. It incentivizes models to reduce hallucinations not only by providing correct responses, but also by enabling abstention when uncertain, thereby improving truthfulness. Extensive experiments across four knowledge-intensive benchmarks show that, compared to vanilla RL, TruthRL significantly reduces hallucinations by 28.9% and improves truthfulness by 21.1%, with consistent gains across various backbone models (e.g., Qwen, Llama) under both retrieval and non-retrieval setups. In-depth ablation study demonstrates that vanilla accuracy-driven methods, such as supervised fine-tuning or RL with a binary reward, struggle to balance factual correctness and uncertainty. In contrast, our proposed truthfulness-driven TruthRL achieves strong performance in both accuracy and truthfulness, underscoring the importance of learning objective design for developing truthful LLMs.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、事実に基づく質問応答において強力なパフォーマンスを示していますが、特にタスクがパラメトリックな知識の範囲外の情報を要求する場合、幻覚や不正確な応答に陥りやすいです。実際、真実性は単なる正確さ以上のものを必要とします。モデルは不確実性を認識し、確信が持てない場合には abstention（控えること）を選択する必要があり、これにより幻覚を避けることができます。これは既存の手法にとって根本的な課題を提示します。正確さを最適化するアプローチはしばしば幻覚を増幅させ、一方で abstention を促す手法は過度に保守的になり、正しい回答を犠牲にする可能性があります。どちらの極端なアプローチも最終的には真実性を損ないます。本研究では、LLMsの真実性を直接最適化する一般的な強化学習（RL）フレームワークであるTruthRLを提案します。具体的には、正しい回答、幻覚、abstentionを区別するシンプルで効果的な三値報酬を用いてGRPOを使用してTruthRLを実装します。この報酬は、モデルが正しい応答を提供するだけでなく、不確実な場合には abstention を可能にすることで幻覚を減少させるようにインセンティブを与え、真実性を向上させます。4つの知識集約型ベンチマークにおける広範な実験により、従来のRLと比較して、TruthRLは幻覚を28.9%減少させ、真実性を21.1%向上させることが示され、リトリーバルおよび非リトリーバルの設定においてさまざまなバックボーンモデル（例：Qwen、Llama）で一貫した向上が見られました。詳細なアブレーション研究は、監視付きファインチューニングや二値報酬を用いたRLなどの従来の正確さ重視の手法が、事実の正確さと不確実性のバランスを取るのに苦労することを示しています。対照的に、提案する真実性重視のTruthRLは、正確さと真実性の両方で強力なパフォーマンスを達成し、真実なLLMsを開発するための学習目的の設計の重要性を強調しています。
+# Summary (by gpt-4o-mini)
+- 本研究では、LLMsの真実性を最適化するための強化学習フレームワークTruthRLを提案。三値報酬を用いて正しい回答、幻覚、abstentionを区別し、不確実な場合には控えることを促進。実験により、TruthRLは幻覚を28.9%減少させ、真実性を21.1%向上させることが確認され、従来の手法よりも優れた性能を示した。正確さと真実性のバランスを取る重要性が強調される。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/weizhepei/status/1973211813522317519?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>一般的に利用されるBinary Reward（回答が正しければ1, そうでなければ-1)ではなく、Ternary Reward<br>- 回答が正しければ1<br>- 不確実であれば0<br>- 誤りであれば-1<br><br>を利用しGRPOすることで、hallucinationが向上し、trustfulnessも改善する、という話な模様</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] HalluGuard: Evidence-Grounded Small Reasoning Models to Mitigate  Hallucinations in Retrieval-Augmented Generation, Loris Bergeron+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.00880</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3065</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, RAG(RetrievalAugmentedGeneration), SmallModel</tags>
+<repo-issue-date>2025-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.00880
+# Authors
+  - Loris Bergeron
+  - Ioana Buhnila
+  - Jérôme François
+  - Radu State
+# Abstract
+  - Large Language Models (LLMs) excel in many NLP tasks but remain prone to hallucinations, limiting trust in real-world applications. We present HalluGuard, a 4B-parameter Small Reasoning Model (SRM) for mitigating hallucinations in Retrieval-Augmented Generation (RAG). HalluGuard classifies document-claim pairs as grounded or hallucinated and produces evidence-grounded justifications for transparency. Our approach combines (i) a domain-agnostic synthetic dataset derived from FineWeb and refined through multi-stage curation and data reformation, (ii) synthetic grounded and hallucinated claims, and (iii) preference-based fine-tuning with Odds Ratio Preference Optimization to distill large-model reasoning into a smaller backbone. On the RAGTruth subset of the LLM-AggreFact benchmark, HalluGuard achieves 84.0% balanced accuracy (BAcc), rivaling specialized models, MiniCheck (7B; 84.0%) and Granite Guardian 3.3 (8B; 82.2%) while using roughly half their parameters. Over the full benchmark it reaches 75.7% BAcc, matching larger general-purpose LLMs such as GPT-4o (75.9%). We will release HalluGuard and datasets under Apache 2.0 upon acceptance.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は多くの自然言語処理（NLP）タスクで優れた性能を発揮しますが、幻覚（hallucinations）に悩まされることが多く、実世界のアプリケーションにおける信頼性を制限しています。本研究では、Retrieval-Augmented Generation（RAG）における幻覚を軽減するための4Bパラメータの小型推論モデル（SRM）であるHalluGuardを提案します。HalluGuardは、文書-主張ペアを基づいたものか幻覚かに分類し、透明性のために証拠に基づいた正当化を生成します。私たちのアプローチは、(i) FineWebから派生し、マルチステージのキュレーションとデータ再形成を通じて洗練されたドメイン非依存の合成データセット、(ii) 合成された基づいた主張と幻覚の主張、(iii) Odds Ratio Preference Optimizationを用いた好みベースのファインチューニングを組み合わせて、大規模モデルの推論を小型のバックボーンに抽出します。LLM-AggreFactベンチマークのRAGTruthサブセットにおいて、HalluGuardは84.0%のバランス精度（BAcc）を達成し、MiniCheck（7B; 84.0%）やGranite Guardian 3.3（8B; 82.2%）といった専門モデルに匹敵しながら、約半分のパラメータで運用されています。全体のベンチマークでは75.7%のBAccを達成し、GPT-4o（75.9%）のようなより大きな汎用LLMと同等の性能を示しています。HalluGuardとデータセットは、受理後にApache 2.0の下で公開する予定です。
+# Summary (by gpt-4o-mini)
+- HalluGuardは、LLMsの幻覚を軽減するための4Bパラメータの小型推論モデルで、文書-主張ペアを分類し、証拠に基づいた正当化を生成します。FineWebから派生した合成データセットと、好みベースのファインチューニングを用いて、RAGTruthサブセットで84.0%のバランス精度を達成し、MiniCheckやGranite Guardianと同等の性能を示します。全体のベンチマークでは75.7%のバランス精度を達成し、GPT-4oと同等の性能を持ちます。HalluGuardとデータセットは公開予定です。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_reachsumit/status/1973611983992963435?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Document xとclaim cがgivenなときに、それがgroundingされているか否かを判定し、justificationをするテキストをxを参照しながら生成するようなSLMな模様。モデルとデータはまだ未公開とのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Shared Imagination: LLMs Hallucinate Alike, Yilun Zhou+, TMLR'25, 2025.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2407.16604</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2847</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Evaluation, Hallucination, TMLR, read-later</tags>
+<repo-issue-date>2025-09-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2407.16604
+# Authors
+  - Yilun Zhou
+  - Caiming Xiong
+  - Silvio Savarese
+  - Chien-Sheng Wu
+# Abstract
+  - Despite the recent proliferation of large language models (LLMs), their training recipes -- model architecture, pre-training data and optimization algorithm -- are often very similar. This naturally raises the question of the similarity among the resulting models. In this paper, we propose a novel setting, imaginary question answering (IQA), to better understand model similarity. In IQA, we ask one model to generate purely imaginary questions (e.g., on completely made-up concepts in physics) and prompt another model to answer. Surprisingly, despite the total fictionality of these questions, all models can answer each other's questions with remarkable success, suggesting a "shared imagination space" in which these models operate during such hallucinations. We conduct a series of investigations into this phenomenon and discuss implications on model homogeneity, hallucination, and computational creativity.
+# Translation (by gpt-4o-mini)
+- 最近の大規模言語モデル（LLMs）の急増にもかかわらず、これらのモデルのトレーニングレシピ（モデルアーキテクチャ、事前トレーニングデータ、最適化アルゴリズム）は非常に似通っていることが多い。このことは、結果として得られるモデル間の類似性についての疑問を自然に引き起こす。本論文では、モデルの類似性をよりよく理解するために、想像上の質問応答（IQA）という新しい設定を提案する。IQAでは、1つのモデルに対して純粋に想像上の質問（例えば、完全に架空の物理概念に関する質問）を生成させ、別のモデルにその質問に答えさせる。驚くべきことに、これらの質問が完全にフィクションであるにもかかわらず、すべてのモデルは互いの質問に驚くべき成功を収めて答えることができる。このことは、これらのモデルがそのような幻覚の間に操作する「共有された想像空間」が存在することを示唆している。我々はこの現象に関する一連の調査を行い、モデルの均質性、幻覚、計算的創造性に関する含意について議論する。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）の類似性を理解するために、想像上の質問応答（IQA）という新しい設定を提案。IQAでは、1つのモデルが架空の質問を生成し、別のモデルがそれに答える。驚くべきことに、全てのモデルがフィクションの質問に成功裏に応答できることから、共通の「想像空間」が存在することが示唆される。この現象について調査し、モデルの均質性や幻覚、計算的創造性に関する考察を行う。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=NUXpBMtDYs" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=NUXpBMtDYs</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tmlrpub/status/1968449957343433191?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Self-Rewarding Vision-Language Model via Reasoning Decomposition, Zongxia Li+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.19652</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2577</repo-issue-link>
+<tags>ComputerVision, NLP, Hallucination, SelfImprovement, VisionLanguageModel</tags>
+<repo-issue-date>2025-08-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.19652
+# Authors
+  - Zongxia Li
+  - Wenhao Yu
+  - Chengsong Huang
+  - Rui Liu
+  - Zhenwen Liang
+  - Fuxiao Liu
+  - Jingxi Che
+  - Dian Yu
+  - Jordan Boyd-Graber
+  - Haitao Mi
+  - Dong Yu
+# Abstract
+  - Vision-Language Models (VLMs) often suffer from visual hallucinations, saying things that are not actually in the image, and language shortcuts, where they skip the visual part and just rely on text priors. These issues arise because most post-training methods for VLMs rely on simple verifiable answer matching and supervise only final outputs, leaving intermediate visual reasoning without explicit guidance. As a result, VLMs receive sparse visual signals and often learn to prioritize language-based reasoning over visual perception. To mitigate this, some existing methods add visual supervision using human annotations or distilled labels from external large models. However, human annotations are labor-intensive and costly, and because external signals cannot adapt to the evolving policy, they cause distributional shifts that can lead to reward hacking. In this paper, we introduce Vision-SR1, a self-rewarding method that improves visual reasoning without relying on external visual supervisions via reinforcement learning. Vision-SR1 decomposes VLM reasoning into two stages: visual perception and language reasoning. The model is first prompted to produce self-contained visual perceptions that are sufficient to answer the question without referring back the input image. To validate this self-containment, the same VLM model is then re-prompted to perform language reasoning using only the generated perception as input to compute reward. This self-reward is combined with supervision on final outputs, providing a balanced training signal that strengthens both visual perception and language reasoning. Our experiments demonstrate that Vision-SR1 improves visual reasoning, mitigates visual hallucinations, and reduces reliance on language shortcuts across diverse vision-language tasks.
+# Translation (by gpt-4o-mini)
+- Vision-Language Models (VLMs)は、実際には画像に存在しないことを言う視覚的幻覚や、視覚部分をスキップしてテキストの先入観に依存する言語的ショートカットに悩まされることが多い。これらの問題は、VLMsのほとんどのポストトレーニング手法が単純な検証可能な回答の一致に依存し、最終出力のみを監視するため、中間の視覚的推論に明示的な指導がないことから生じる。その結果、VLMsはまばらな視覚信号を受け取り、視覚的知覚よりも言語ベースの推論を優先することを学ぶことが多い。この問題を軽減するために、いくつかの既存の手法は、人間の注釈や外部の大規模モデルからの蒸留ラベルを使用して視覚的監視を追加している。しかし、人間の注釈は労力がかかりコストが高く、外部信号は進化するポリシーに適応できないため、報酬ハッキングを引き起こす可能性のある分布のシフトを引き起こす。本論文では、外部の視覚的監視に依存せずに視覚的推論を改善する自己報酬法であるVision-SR1を紹介する。Vision-SR1は、VLMの推論を視覚的知覚と言語的推論の2つの段階に分解する。モデルはまず、入力画像を参照せずに質問に答えるのに十分な自己完結型の視覚的知覚を生成するように促される。この自己完結性を検証するために、同じVLMモデルが生成された知覚のみを入力として使用して言語的推論を行うように再度促され、報酬を計算する。この自己報酬は最終出力に対する監視と組み合わされ、視覚的知覚と言語的推論の両方を強化するバランスの取れたトレーニング信号を提供する。我々の実験は、Vision-SR1が視覚的推論を改善し、視覚的幻覚を軽減し、さまざまな視覚と言語のタスクにおいて言語的ショートカットへの依存を減少させることを示している。
+# Summary (by gpt-4o-mini)
+- Vision-Language Models (VLMs)は視覚的幻覚や言語的ショートカットに悩まされることが多い。これらの問題は、ポストトレーニング手法が中間の視覚的推論に対する指導を欠いているために生じる。本研究では、外部の視覚的監視に依存せずに視覚的推論を改善する自己報酬法Vision-SR1を提案。モデルは視覚的知覚と言語的推論を2段階に分解し、自己完結型の視覚的知覚を生成し、その後に言語的推論を行うことで報酬を計算する。実験により、Vision-SR1が視覚的推論を改善し、幻覚を軽減することが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/1960888293031088273?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aicia_solid/status/1960962793265578174?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A comprehensive taxonomy of hallucinations in Large Language Models, Manuel Cossio, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.01781</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2381</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, Hallucination</tags>
+<repo-issue-date>2025-08-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.01781
+# Authors
+  - Manuel Cossio
+# Abstract
+  - Large language models (LLMs) have revolutionized natural language processing, yet their propensity for hallucination, generating plausible but factually incorrect or fabricated content, remains a critical challenge. This report provides a comprehensive taxonomy of LLM hallucinations, beginning with a formal definition and a theoretical framework that posits its inherent inevitability in computable LLMs, irrespective of architecture or training. It explores core distinctions, differentiating between intrinsic (contradicting input context) and extrinsic (inconsistent with training data or reality), as well as factuality (absolute correctness) and faithfulness (adherence to input). The report then details specific manifestations, including factual errors, contextual and logical inconsistencies, temporal disorientation, ethical violations, and task-specific hallucinations across domains like code generation and multimodal applications. It analyzes the underlying causes, categorizing them into data-related issues, model-related factors, and prompt-related influences. Furthermore, the report examines cognitive and human factors influencing hallucination perception, surveys evaluation benchmarks and metrics for detection, and outlines architectural and systemic mitigation strategies. Finally, it introduces web-based resources for monitoring LLM releases and performance. This report underscores the complex, multifaceted nature of LLM hallucinations and emphasizes that, given their theoretical inevitability, future efforts must focus on robust detection, mitigation, and continuous human oversight for responsible and reliable deployment in critical applications.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は自然言語処理に革命をもたらしましたが、事実に基づかない、または作り上げられた内容を生成する傾向である「ハルシネーション」は依然として重要な課題です。本報告書では、LLMのハルシネーションに関する包括的な分類法を提供し、形式的な定義と理論的枠組みから始め、アーキテクチャやトレーニングに関係なく、計算可能なLLMにおけるその本質的な避けられなさを提唱します。次に、入力コンテキストと矛盾する内因的（intrinsic）なものと、トレーニングデータや現実と矛盾する外因的（extrinsic）なもの、さらに絶対的な正確性（factuality）と入力への忠実性（faithfulness）との間の核心的な違いを探ります。報告書は、事実誤認、文脈的および論理的な不整合、時間的な混乱、倫理的違反、コード生成やマルチモーダルアプリケーションなどのドメインにおけるタスク特有のハルシネーションを含む具体的な現れを詳述します。さらに、データ関連の問題、モデル関連の要因、プロンプト関連の影響に分類される根本的な原因を分析します。また、ハルシネーションの認識に影響を与える認知的および人間的要因を検討し、検出のための評価基準やメトリクスを調査し、アーキテクチャ的およびシステム的な軽減戦略を概説します。最後に、LLMのリリースとパフォーマンスを監視するためのウェブベースのリソースを紹介します。本報告書は、LLMのハルシネーションの複雑で多面的な性質を強調し、その理論的な避けられなさを考慮すると、今後の取り組みは、重要なアプリケーションにおける責任ある信頼性のある展開のために、堅牢な検出、軽減、継続的な人間の監視に焦点を当てる必要があることを強調しています。
+# Summary (by gpt-4o-mini)
+- LLMのハルシネーションに関する包括的な分類法を提供し、その本質的な避けられなさを提唱。内因的および外因的な要因、事実誤認や不整合などの具体的な現れを分析。根本的な原因や認知的要因を検討し、評価基準や軽減戦略を概説。今後は、信頼性のある展開のために検出と監視に焦点を当てる必要があることを強調。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sei_shinagawa/status/1953845008588513762?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] GrAInS: Gradient-based Attribution for Inference-Time Steering of LLMs  and VLMs, Duy Nguyen+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.18043</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2303</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, ActivationSteering/ITI, Trustfulness</tags>
+<repo-issue-date>2025-07-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.18043
+# Authors
+  - Duy Nguyen
+  - Archiki Prasad
+  - Elias Stengel-Eskin
+  - Mohit Bansal
+# Abstract
+  - Inference-time steering methods offer a lightweight alternative to fine-tuning large language models (LLMs) and vision-language models (VLMs) by modifying internal activations at test time without updating model weights. However, most existing approaches rely on fixed, global intervention vectors, overlook the causal influence of individual input tokens, and fail to leverage informative gradients from the model's logits, particularly in multimodal settings where visual and textual inputs contribute unevenly. To address these limitations, we introduce GrAInS, an inference-time steering approach that operates across both language-only and vision-language models and tasks. GrAInS uses contrastive, gradient-based attribution via Integrated Gradients to identify the top-k most influential tokens, both positively and negatively attributed based on their contribution to preferred versus dispreferred outputs. These tokens are then used to construct directional steering vectors that capture semantic shifts from undesirable to desirable behavior. During inference, GrAInS adjusts hidden activations at transformer layers guided by token-level attribution signals, and normalizes activations to preserve representational scale. This enables fine-grained, interpretable, and modular control over model behavior, without retraining or auxiliary supervision. Empirically, GrAInS consistently outperforms both fine-tuning and existing steering baselines: it achieves a 13.22% accuracy gain on TruthfulQA using Llama-3.1-8B, reduces hallucination rates on MMHal-Bench from 0.624 to 0.514 with LLaVA-1.6-7B, and improves alignment win rates on SPA-VL by 8.11%, all while preserving the model's fluency and general capabilities.
+# Translation (by gpt-4o-mini)
+- 推論時のステアリング手法は、大規模言語モデル（LLMs）や視覚言語モデル（VLMs）をファインチューニングする代わりに、モデルの重みを更新せずにテスト時に内部の活性化を変更する軽量な代替手段を提供します。しかし、既存のほとんどのアプローチは固定されたグローバルな介入ベクトルに依存しており、個々の入力トークンの因果的影響を見落とし、特に視覚とテキストの入力が不均等に寄与するマルチモーダル設定において、モデルのロジットからの情報豊富な勾配を活用できていません。これらの制限に対処するために、私たちはGrAInSを導入します。これは、言語専用および視覚言語モデルとタスクの両方で機能する推論時のステアリングアプローチです。GrAInSは、統合勾配を介した対照的な勾配ベースの帰属を使用して、好ましい出力と好ましくない出力への寄与に基づいて、正および負の影響を持つ上位k個のトークンを特定します。これらのトークンは、その後、望ましくない行動から望ましい行動への意味的変化を捉える方向性ステアリングベクトルを構築するために使用されます。推論中、GrAInSはトークンレベルの帰属信号に導かれてトランスフォーマーレイヤーの隠れ活性を調整し、表現スケールを保持するために活性を正規化します。これにより、再訓練や補助的な監視なしで、モデルの挙動に対する細かく解釈可能でモジュール式の制御が可能になります。実証的に、GrAInSはファインチューニングおよび既存のステアリングベースラインの両方を一貫して上回ります。具体的には、Llama-3.1-8Bを使用してTruthfulQAで13.22%の精度向上を達成し、LLaVA-1.6-7BでMMHal-Benchの幻覚率を0.624から0.514に低下させ、SPA-VLでのアライメント勝率を8.11%改善し、すべての結果においてモデルの流暢さと一般的な能力を保持しています。
+# Summary (by gpt-4o-mini)
+- GrAInSは、LLMsおよびVLMsの推論時に内部活性を調整する新しいステアリング手法で、固定された介入ベクトルに依存せず、トークンの因果的影響を考慮します。統合勾配を用いて、出力への寄与に基づき重要なトークンを特定し、望ましい行動への変化を捉えるベクトルを構築します。これにより、再訓練なしでモデルの挙動を細かく制御でき、実験ではファインチューニングや既存手法を上回る成果を示しました。具体的には、TruthfulQAで精度を13.22%向上させ、MMHal-Benchの幻覚率を低下させ、SPA-VLでのアライメント勝率を改善しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/duynguyen772/status/1948768520587866522?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>既存のsteering手法は、positive/negativeなサンプルからの差分で単一方向のベクトルを算出し、すべてのトークンに足し合わせるが、本手法はそこからさらにpositive/negativeな影響を与えるトークンレベルにまで踏み込み、negativeなベクトルとpositiveなベクトルの双方を用いて、negative->positive方向のベクトルを算出してsteeringに活用する方法っぽい？<br><img src="https://github.com/user-attachments/assets/4a4df18c-d5bc-4499-83ae-16fc9f24e8b4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/938dee15-ed05-4505-97c2-d079b9713cd3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/ce075fc0-a8f4-42f2-9462-6c6d12085ef6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1941" target="_blank" rel="noopener noreferrer">Inference-Time Intervention: Eliciting Truthful Answers from a Language   Model, Kenneth Li+, NeurIPS'23</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Steer LLM Latents for Hallucination Detection, Seongheon Park+, ICML'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.01917</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2040</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, ICML, OptimalTransport</tags>
+<repo-issue-date>2025-06-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.01917
+# Authors
+  - Seongheon Park
+  - Xuefeng Du
+  - Min-Hsuan Yeh
+  - Haobo Wang
+  - Yixuan Li
+# Abstract
+  - Hallucinations in LLMs pose a significant concern to their safe deployment in real-world applications. Recent approaches have leveraged the latent space of LLMs for hallucination detection, but their embeddings, optimized for linguistic coherence rather than factual accuracy, often fail to clearly separate truthful and hallucinated content. To this end, we propose the Truthfulness Separator Vector (TSV), a lightweight and flexible steering vector that reshapes the LLM's representation space during inference to enhance the separation between truthful and hallucinated outputs, without altering model parameters. Our two-stage framework first trains TSV on a small set of labeled exemplars to form compact and well-separated clusters. It then augments the exemplar set with unlabeled LLM generations, employing an optimal transport-based algorithm for pseudo-labeling combined with a confidence-based filtering process. Extensive experiments demonstrate that TSV achieves state-of-the-art performance with minimal labeled data, exhibiting strong generalization across datasets and providing a practical solution for real-world LLM applications.
+# Translation (by gpt-4o-mini)
+- LLMにおける幻覚は、実世界のアプリケーションにおける安全な展開に対する重要な懸念事項です。最近のアプローチでは、LLMの潜在空間を利用して幻覚の検出を行っていますが、言語的な一貫性に最適化された埋め込みは、事実の正確性を重視していないため、真実の内容と幻覚の内容を明確に区別することができないことが多いです。そこで、本研究では、Truthfulness Separator Vector（TSV）を提案します。これは、推論中にLLMの表現空間を再構築し、真実の出力と幻覚の出力の分離を強化する軽量で柔軟な指向ベクトルであり、モデルのパラメータを変更することなく機能します。私たちの二段階のフレームワークは、まず少数のラベル付き例に基づいてTSVを訓練し、コンパクトで明確に分離されたクラスターを形成します。次に、ラベルのないLLM生成物で例のセットを拡張し、擬似ラベリングのために最適輸送に基づくアルゴリズムを用い、信頼度に基づくフィルタリングプロセスを組み合わせます。広範な実験により、TSVは最小限のラベル付きデータで最先端のパフォーマンスを達成し、データセット全体で強力な一般化を示し、実世界のLLMアプリケーションに対する実用的な解決策を提供することが確認されました。
+# Summary (by gpt-4o-mini)
+- LLMの幻覚問題に対処するため、Truthfulness Separator Vector（TSV）を提案。TSVは、LLMの表現空間を再構築し、真実と幻覚の出力を分離する軽量な指向ベクトルで、モデルのパラメータを変更せずに機能。二段階のフレームワークで、少数のラベル付き例からTSVを訓練し、ラベルのない生成物を拡張。実験により、TSVは最小限のラベル付きデータで高いパフォーマンスを示し、実世界のアプリケーションにおける実用的な解決策を提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sharonyixuanli/status/1933522788645810493?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=UMqNQEPNT3&noteId=mAbrf36RHa" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=UMqNQEPNT3&noteId=mAbrf36RHa</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning Dynamics of LLM Finetuning, Yi Ren+, ICLR'25</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2407.10490</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1892</repo-issue-link>
+<tags>Analysis, MachineLearning, NLP, LanguageModel, Alignment, Hallucination, ICLR, DPO, Repetition</tags>
+<repo-issue-date>2025-04-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2407.10490
+# Authors
+  - Yi Ren
+  - Danica J. Sutherland
+# Abstract
+  - Learning dynamics, which describes how the learning of specific training examples influences the model's predictions on other examples, gives us a powerful tool for understanding the behavior of deep learning systems. We study the learning dynamics of large language models during different types of finetuning, by analyzing the step-wise decomposition of how influence accumulates among different potential responses. Our framework allows a uniform interpretation of many interesting observations about the training of popular algorithms for both instruction tuning and preference tuning. In particular, we propose a hypothetical explanation of why specific types of hallucination are strengthened after finetuning, e.g., the model might use phrases or facts in the response for question B to answer question A, or the model might keep repeating similar simple phrases when generating responses. We also extend our framework and highlight a unique "squeezing effect" to explain a previously observed phenomenon in off-policy direct preference optimization (DPO), where running DPO for too long makes even the desired outputs less likely. This framework also provides insights into where the benefits of on-policy DPO and other variants come from. The analysis not only provides a novel perspective of understanding LLM's finetuning but also inspires a simple, effective method to improve alignment performance.
+# Translation (by gpt-4o-mini)
+- 学習ダイナミクスは、特定のトレーニング例の学習が他の例に対するモデルの予測にどのように影響を与えるかを説明するものであり、深層学習システムの挙動を理解するための強力なツールを提供します。本研究では、異なるタイプのファインチューニング中の大規模言語モデルの学習ダイナミクスを、異なる潜在的な応答間での影響の蓄積の段階的分解を分析することによって調査します。我々のフレームワークは、指示調整と好み調整の両方の人気アルゴリズムのトレーニングに関する多くの興味深い観察を一様に解釈することを可能にします。特に、ファインチューニング後に特定のタイプの幻覚が強化される理由についての仮説的な説明を提案します。例えば、モデルが質問Aに答えるために質問Bの応答にフレーズや事実を使用する場合や、応答を生成する際に似たような単純なフレーズを繰り返し続ける場合です。また、我々のフレームワークを拡張し、オフポリシー直接好み最適化（DPO）において以前に観察された現象を説明するためのユニークな「圧縮効果」を強調します。DPOを長時間実行すると、望ましい出力さえも可能性が低くなるという現象です。このフレームワークは、オンポリシーDPOや他のバリアントの利点がどこから来るのかについての洞察も提供します。この分析は、LLMのファインチューニングを理解するための新しい視点を提供するだけでなく、アラインメント性能を向上させるためのシンプルで効果的な方法をインスパイアします。
+# Summary (by gpt-4o-mini)
+- 本研究では、大規模言語モデルのファインチューニング中の学習ダイナミクスを分析し、異なる応答間の影響の蓄積を段階的に解明します。指示調整と好み調整のアルゴリズムに関する観察を統一的に解釈し、ファインチューニング後の幻覚強化の理由を仮説的に説明します。また、オフポリシー直接好み最適化（DPO）における「圧縮効果」を強調し、望ましい出力の可能性が低下する現象を探ります。このフレームワークは、LLMのファインチューニング理解に新たな視点を提供し、アラインメント性能向上のためのシンプルな方法を示唆します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/joshuarenyi/status/1913033476275925414?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1917189793588613299?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Hallucination Mitigation using Agentic AI Natural Language-Based  Frameworks, Diego Gosmar+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2501.13946</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1882</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Hallucination</tags>
+<repo-issue-date>2025-04-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2501.13946
+# Authors
+  - Diego Gosmar
+  - Deborah A. Dahl
+# Abstract
+  - Hallucinations remain a significant challenge in current Generative AI models, undermining trust in AI systems and their reliability. This study investigates how orchestrating multiple specialized Artificial Intelligent Agents can help mitigate such hallucinations, with a focus on systems leveraging Natural Language Processing (NLP) to facilitate seamless agent interactions. To achieve this, we design a pipeline that introduces over three hundred prompts, purposefully crafted to induce hallucinations, into a front-end agent. The outputs are then systematically reviewed and refined by second- and third-level agents, each employing distinct large language models and tailored strategies to detect unverified claims, incorporate explicit disclaimers, and clarify speculative content. Additionally, we introduce a set of novel Key Performance Indicators (KPIs) specifically designed to evaluate hallucination score levels. A dedicated fourth-level AI agent is employed to evaluate these KPIs, providing detailed assessments and ensuring accurate quantification of shifts in hallucination-related behaviors. A core component of this investigation is the use of the OVON (Open Voice Network) framework, which relies on universal NLP-based interfaces to transfer contextual information among agents. Through structured JSON messages, each agent communicates its assessment of the hallucination likelihood and the reasons underlying questionable content, thereby enabling the subsequent stage to refine the text without losing context. The results demonstrate that employing multiple specialized agents capable of interoperating with each other through NLP-based agentic frameworks can yield promising outcomes in hallucination mitigation, ultimately bolstering trust within the AI community.
+# Translation (by gpt-4o-mini)
+- 幻覚は、現在の生成AIモデルにおいて依然として重要な課題であり、AIシステムへの信頼性を損なう要因となっています。本研究では、複数の専門的な人工知能エージェントを調整することで、こうした幻覚を軽減する方法を探求し、自然言語処理（NLP）を活用してエージェント間のシームレスな相互作用を促進するシステムに焦点を当てています。これを実現するために、幻覚を誘発するように意図的に設計された300以上のプロンプトをフロントエンドエージェントに導入するパイプラインを設計しました。出力は、その後、異なる大規模言語モデルと特化した戦略を用いて、未確認の主張を検出し、明示的な免責事項を組み込み、推測的な内容を明確にするために、第二および第三レベルのエージェントによって体系的にレビューされ、洗練されます。さらに、幻覚スコアレベルを評価するために特別に設計された新しい主要業績評価指標（KPI）のセットを導入します。専用の第四レベルAIエージェントがこれらのKPIを評価し、詳細な評価を提供し、幻覚関連の行動の変化を正確に定量化します。本研究の核心的な要素は、OVON（Open Voice Network）フレームワークの使用であり、これはエージェント間で文脈情報を転送するために普遍的なNLPベースのインターフェースに依存しています。構造化されたJSONメッセージを通じて、各エージェントは幻覚の可能性に関する評価と疑わしい内容の背後にある理由を伝達し、次の段階で文脈を失うことなくテキストを洗練することを可能にします。結果は、NLPベースのエージェントフレームワークを介して相互運用可能な複数の専門エージェントを活用することで、幻覚の軽減において有望な成果を得られることを示しており、最終的にはAIコミュニティ内での信頼を強化することにつながります。
+# Summary (by gpt-4o-mini)
+- 本研究では、複数のAIエージェントを調整し、自然言語処理を活用して幻覚を軽減する方法を探求。300以上の幻覚を誘発するプロンプトを用いたパイプラインを設計し、出力を第二および第三レベルのエージェントがレビュー。新たに設計したKPIで幻覚スコアを評価し、OVONフレームワークを通じてエージェント間で文脈情報を転送。結果として、相互運用可能なエージェントを活用することで幻覚の軽減に成功し、AIへの信頼を強化することが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lioronai/status/1910384805625135342?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LLMs Know More Than They Show: On the Intrinsic Representation of LLM  Hallucinations, Hadas Orgad+, N_A, ICLR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.02707</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1460</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, ICLR</tags>
+<repo-issue-date>2024-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.02707
+# Affiliations
+  - Hadas Orgad, N/A
+  - Michael Toker, N/A
+  - Zorik Gekhman, N/A
+  - Roi Reichart, N/A
+  - Idan Szpektor, N/A
+  - Hadas Kotek, N/A
+  - Yonatan Belinkov, N/A
+# Abstract
+  - Large language models (LLMs) often produce errors, including factual inaccuracies, biases, and reasoning failures, collectively referred to as "hallucinations". Recent studies have demonstrated that LLMs' internal states encode information regarding the truthfulness of their outputs, and that this information can be utilized to detect errors. In this work, we show that the internal representations of LLMs encode much more information about truthfulness than previously recognized. We first discover that the truthfulness information is concentrated in specific tokens, and leveraging this property significantly enhances error detection performance. Yet, we show that such error detectors fail to generalize across datasets, implying that -- contrary to prior claims -- truthfulness encoding is not universal but rather multifaceted. Next, we show that internal representations can also be used for predicting the types of errors the model is likely to make, facilitating the development of tailored mitigation strategies. Lastly, we reveal a discrepancy between LLMs' internal encoding and external behavior: they may encode the correct answer, yet consistently generate an incorrect one. Taken together, these insights deepen our understanding of LLM errors from the model's internal perspective, which can guide future research on enhancing error analysis and mitigation.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、事実の不正確さ、バイアス、推論の失敗などのエラーをしばしば生成し、これらは総称して「幻覚」と呼ばれる。最近の研究では、LLMsの内部状態が出力の真実性に関する情報をエンコードしており、この情報を利用してエラーを検出できることが示されている。本研究では、LLMsの内部表現が真実性に関する情報を以前に認識されていた以上に多くエンコードしていることを示す。まず、真実性に関する情報が特定のトークンに集中していることを発見し、この特性を活用することでエラー検出性能が大幅に向上することを示す。しかし、こうしたエラーディテクターはデータセット間で一般化に失敗することがわかり、以前の主張とは対照的に、真実性のエンコーディングは普遍的ではなく、多面的であることを示唆している。次に、内部表現がモデルが犯す可能性のあるエラーの種類を予測するためにも使用できることを示し、特化した緩和戦略の開発を促進する。最後に、LLMsの内部エンコーディングと外部の振る舞いとの間に不一致があることを明らかにする：正しい答えをエンコードしているにもかかわらず、一貫して誤った答えを生成することがある。これらの知見を総合すると、モデルの内部的な視点からLLMのエラーに対する理解が深まり、今後のエラー分析と緩和に関する研究を促進することができる。
+# Summary (by gpt-4o-mini)
+- LLMsは「幻覚」と呼ばれるエラーを生成するが、内部状態が真実性に関する情報をエンコードしていることが示されている。本研究では、真実性情報が特定のトークンに集中していることを発見し、これを利用することでエラー検出性能が向上することを示す。しかし、エラーディテクターはデータセット間で一般化に失敗し、真実性のエンコーディングは普遍的ではないことが明らかになる。また、内部表現を用いてエラーの種類を予測し、特化した緩和戦略の開発を促進する。さらに、内部エンコーディングと外部の振る舞いとの不一致が存在し、正しい答えをエンコードしていても誤った答えを生成することがある。これにより、LLMのエラー理解が深まり、今後の研究に寄与する。</issue-body>
+<maintainer-comment-text><p>特定のトークンがLLMのtrustfulnessに集中していることを実験的に示し、かつ内部でエンコードされたrepresentationは正しい答えのものとなっているのに、生成結果に誤りが生じるような不整合が生じることも示したらしい</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=KRnsX5Em3W" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=KRnsX5Em3W</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] FacTool: Factuality Detection in Generative AI -- A Tool Augmented   Framework for Multi-Task and Multi-Domain Scenarios, I-Chun Chern+, COLM'25, 2023.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.13528</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/906</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, Hallucination, Factuality, COLM</tags>
+<repo-issue-date>2023-07-27</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2307.13528
+- openreview: https://openreview.net/pdf?id=hJkQL9VtWT
+# Authors
+  - I-Chun Chern
+  - Steffi Chern
+  - Shiqi Chen
+  - Weizhe Yuan
+  - Kehua Feng
+  - Chunting Zhou
+  - Junxian He
+  - Graham Neubig
+  - Pengfei Liu
+# Abstract
+  - The emergence of generative pre-trained models has facilitated the synthesis of high-quality text, but it has also posed challenges in identifying factual errors in the generated text. In particular: (1) A wider range of tasks now face an increasing risk of containing factual errors when handled by generative models. (2) Generated texts tend to be lengthy and lack a clearly defined granularity for individual facts. (3) There is a scarcity of explicit evidence available during the process of fact checking. With the above challenges in mind, in this paper, we propose FacTool, a task and domain agnostic framework for detecting factual errors of texts generated by large language models (e.g., ChatGPT). Experiments on four different tasks (knowledge-based QA, code generation, mathematical reasoning, and scientific literature review) show the efficacy of the proposed method. We release the code of FacTool associated with ChatGPT plugin interface at https://github.com/GAIR-NLP/factool .
+# Translation (by gpt-4o-mini)
+- 生成的事前学習モデルの出現は、高品質なテキストの合成を促進しましたが、生成されたテキストにおける事実誤認の特定においても課題をもたらしました。特に、(1) より広範なタスクが、生成モデルによって処理される際に事実誤認を含むリスクが増加しています。 (2) 生成されたテキストは長くなる傾向があり、個々の事実に対する明確な粒度が欠けています。 (3) 事実確認のプロセスにおいて利用可能な明示的な証拠が不足しています。これらの課題を考慮し、本論文では、生成されたテキストの事実誤認を検出するためのタスクおよびドメインに依存しないフレームワークであるFacToolを提案します。知識ベースのQA、コード生成、数学的推論、科学文献レビューの4つの異なるタスクにおける実験は、提案手法の有効性を示しています。FacToolのコードは、ChatGPTプラグインインターフェースに関連して、https://github.com/GAIR-NLP/factool で公開しています。
+# Summary (by gpt-4o-mini)
+- 生成的事前学習モデルによるテキスト合成は進展したが、事実誤認の特定には課題が残る。特に、生成モデルによる事実誤認のリスク増加、長文化による粒度の欠如、明示的証拠の不足が問題である。これらを解決するために、タスクやドメインに依存しない事実誤認検出フレームワークFacToolを提案。知識ベースのQA、コード生成、数学的推論、科学文献レビューの4つのタスクで有効性を実証し、コードは公開されている。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=hJkQL9VtWT#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=hJkQL9VtWT#discussion</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Comprehensive Survey of Hallucination in Large Language, Image, Video and Audio Foundation Models, Sahoo+, EMNLP'24 Findings</title>
+<original-paper-blog-link>https://aclanthology.org/2024.findings-emnlp.685/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2958</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, Hallucination, MultiModal, translation_required</tags>
+<repo-issue-date>2025-09-24</repo-issue-date>
+<issue-body># URL
+https://aclanthology.org/2024.findings-emnlp.685/
+
+# Authors
+Pranab Sahoo, Prabhash Meharia, Akash Ghosh, Sriparna Saha, Vinija Jain, Aman Chadha</issue-body>
+<maintainer-comment-text><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1217" target="_blank" rel="noopener noreferrer">A Comprehensive Survey of Hallucination Mitigation Techniques in Large
+  Language Models, S. M Towhidul Islam Tonmoy+, N/A, arXiv'24</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LLMs Will Always Hallucinate, and We Need to Live With This, Sourav Banerjee+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2409.05746</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1575</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination</tags>
+<repo-issue-date>2024-12-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2409.05746
+# Authors
+  - Sourav Banerjee
+  - Ayushi Agarwal
+  - Saloni Singla
+# Abstract
+  - As Large Language Models become more ubiquitous across domains, it becomes important to examine their inherent limitations critically. This work argues that hallucinations in language models are not just occasional errors but an inevitable feature of these systems. We demonstrate that hallucinations stem from the fundamental mathematical and logical structure of LLMs. It is, therefore, impossible to eliminate them through architectural improvements, dataset enhancements, or fact-checking mechanisms. Our analysis draws on computational theory and Godel's First Incompleteness Theorem, which references the undecidability of problems like the Halting, Emptiness, and Acceptance Problems. We demonstrate that every stage of the LLM process-from training data compilation to fact retrieval, intent classification, and text generation-will have a non-zero probability of producing hallucinations. This work introduces the concept of Structural Hallucination as an intrinsic nature of these systems. By establishing the mathematical certainty of hallucinations, we challenge the prevailing notion that they can be fully mitigated.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）がさまざまな分野で普及するにつれて、これらのモデルの固有の限界を批判的に検討することが重要になってきています。本研究では、言語モデルにおける幻覚は単なる偶発的なエラーではなく、これらのシステムの避けられない特徴であると主張します。幻覚は、LLMの基本的な数学的および論理的構造から生じることを示します。したがって、アーキテクチャの改善、データセットの強化、またはファクトチェックメカニズムを通じてそれらを排除することは不可能です。我々の分析は、計算理論とゲーデルの第一不完全性定理に基づいており、これは停止問題、空集合問題、受理問題のような問題の決定不可能性を参照しています。LLMプロセスの各段階—トレーニングデータの編纂から事実の取得、意図の分類、テキスト生成に至るまで—は、幻覚を生成する非ゼロの確率を持つことを示します。本研究では、これらのシステムの内在的な性質として「構造的幻覚」という概念を導入します。幻覚の数学的確実性を確立することで、我々はそれらを完全に軽減できるという従来の考え方に挑戦します。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLM）の幻覚は偶発的なエラーではなく、これらのモデルの基本的な構造から生じる避けられない特徴であると主張。アーキテクチャやデータセットの改善では幻覚を排除できないことを示し、各プロセス段階で幻覚が生成される確率が存在することを分析。新たに「構造的幻覚」という概念を導入し、幻覚の数学的確実性を確立することで、完全な軽減は不可能であると論じる。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, N_A, EMNLP'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2405.05904</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1371</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), action_wanted, Hallucination</tags>
+<repo-issue-date>2024-09-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2405.05904
+# Affiliations
+  - Zorik Gekhman, N/A
+  - Gal Yona, N/A
+  - Roee Aharoni, N/A
+  - Matan Eyal, N/A
+  - Amir Feder, N/A
+  - Roi Reichart, N/A
+  - Jonathan Herzig, N/A
+# Abstract
+  - When large language models are aligned via supervised fine-tuning, they may encounter new factual information that was not acquired through pre-training. It is often conjectured that this can teach the model the behavior of hallucinating factually incorrect responses, as the model is trained to generate facts that are not grounded in its pre-existing knowledge. In this work, we study the impact of such exposure to new knowledge on the capability of the fine-tuned model to utilize its pre-existing knowledge. To this end, we design a controlled setup, focused on closed-book QA, where we vary the proportion of the fine-tuning examples that introduce new knowledge. We demonstrate that large language models struggle to acquire new factual knowledge through fine-tuning, as fine-tuning examples that introduce new knowledge are learned significantly slower than those consistent with the model's knowledge. However, we also find that as the examples with new knowledge are eventually learned, they linearly increase the model's tendency to hallucinate. Taken together, our results highlight the risk in introducing new factual knowledge through fine-tuning, and support the view that large language models mostly acquire factual knowledge through pre-training, whereas fine-tuning teaches them to use it more efficiently.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルが監視付きファインチューニングを通じて調整されると、事前学習を通じて取得されていない新しい事実情報に遭遇することがあります。このことは、モデルが既存の知識に基づかない事実を生成するように訓練されるため、事実に基づかない応答を幻覚する行動を学習する可能性があるとしばしば推測されています。本研究では、新しい知識へのこうした曝露がファインチューニングされたモデルの既存の知識を活用する能力に与える影響を調査します。そのために、閉じた書籍のQAに焦点を当て、新しい知識を導入するファインチューニング例の割合を変化させる制御された設定を設計しました。我々は、大規模言語モデルがファインチューニングを通じて新しい事実知識を獲得するのに苦労することを示します。新しい知識を導入するファインチューニング例は、モデルの知識と一致する例よりもはるかに遅く学習されます。しかし、新しい知識を持つ例が最終的に学習されるにつれて、モデルの幻覚する傾向が線形に増加することも発見しました。これらの結果を総合すると、ファインチューニングを通じて新しい事実知識を導入することのリスクが浮き彫りになり、大規模言語モデルは主に事前学習を通じて事実知識を獲得し、ファインチューニングはそれをより効率的に使用することを教えるという見解を支持します。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルはファインチューニングを通じて新しい事実情報に遭遇するが、既存の知識を活用する能力に影響を与える。研究では、閉じた書籍のQAを用いて新しい知識を導入するファインチューニング例の割合を変化させた結果、モデルは新しい知識を学習するのに苦労し、幻覚する傾向が増加することが示された。これにより、ファインチューニングによる新しい知識の導入のリスクが明らかになり、モデルは事前学習を通じて知識を獲得し、ファインチューニングはその利用を効率化することが支持される。</issue-body>
+<maintainer-comment-text><p>pre-training時に獲得されていない情報を用いてLLMのalignmentを実施すると、知識がない状態で学習データを正しく予測できるように学習されてしまうため、事実に基づかない回答をする（つまりhallucination）ように学習されてしまう、といったことを調査している模様。<br><br><br><br>>新しい知識を導入するファインチューニング例は、モデルの知識と一致する例よりもはるかに遅く学習されます。しかし、新しい知識を持つ例が最終的に学習されるにつれて、モデルの幻覚する傾向が線形に増加することも発見しました。<br><br><img src="https://github.com/user-attachments/assets/9c7b3e2e-3ecb-4d71-a7fc-09fa7e57a613" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>早々にoverfittingしている。<br><br><br><br>>大規模言語モデルは主に事前学習を通じて事実知識を取得し、ファインチューニングはそれをより効率的に使用することを教えるという見解を支持しています。<br><br><br><br>なるほど、興味深い。</p><p>下記画像は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1370" target="_blank" rel="noopener noreferrer">大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06</a>
+より引用<br><br><img src="https://github.com/user-attachments/assets/e08d47cf-b550-4ced-a6bd-02d90d3684e9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>本論文中では、full finetuningによる検証を実施しており、LoRAのようなAdapterを用いたテクニックで検証はされていない。LoRAではもともとのLLMのパラメータはfreezeされるため、異なる挙動となる可能性がある。特にLoRAが新しい知識を獲得可能なことが示されれば、LoRA AdapterをもともとのLLMに付け替えるだけで、異なる知識を持ったLLMを運用可能になるため、インパクトが大きいと考えられる。もともとこういった思想は LoRA Hubを提唱する研究などの頃からあった気がするが、AdapterによってHallucination/overfittingを防ぎながら、新たな知識を獲得できることを示した研究はあるのだろうか？<br><br><img src="https://github.com/user-attachments/assets/a05a3662-baf9-4fcd-b15e-440f1c2c9f6e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>参考: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1792334744522485954?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LoRAの場合については<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1640" target="_blank" rel="noopener noreferrer">LoRA Learns Less and Forgets Less, Dan Biderman+, TMLR'24</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1475" target="_blank" rel="noopener noreferrer">Beyond Full Fine-tuning: Harnessing the Power of LoRA for Multi-Task Instruction Tuning, Xin+, LREC-COLING'24</a>
+<br><br>も参照のこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Comprehensive Survey of Hallucination Mitigation Techniques in Large  Language Models, S. M Towhidul Islam Tonmoy+, N_A, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2401.01313</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1217</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, Hallucination</tags>
+<repo-issue-date>2024-01-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2401.01313
+# Affiliations
+  - S. M Towhidul Islam Tonmoy, N/A
+  - S M Mehedi Zaman, N/A
+  - Vinija Jain, N/A
+  - Anku Rani, N/A
+  - Vipula Rawte, N/A
+  - Aman Chadha, N/A
+  - Amitava Das, N/A
+# Abstract
+  - As Large Language Models (LLMs) continue to advance in their ability to writehuman-like text, a key challenge remains around their tendency to hallucinategenerating content that appears factual but is ungrounded. This issue ofhallucination is arguably the biggest hindrance to safely deploying thesepowerful LLMs into real-world production systems that impact people's lives.The journey toward widespread adoption of LLMs in practical settings heavilyrelies on addressing and mitigating hallucinations. Unlike traditional AIsystems focused on limited tasks, LLMs have been exposed to vast amounts ofonline text data during training. While this allows them to display impressivelanguage fluency, it also means they are capable of extrapolating informationfrom the biases in training data, misinterpreting ambiguous prompts, ormodifying the information to align superficially with the input. This becomeshugely alarming when we rely on language generation capabilities for sensitiveapplications, such as summarizing medical records, financial analysis reports,etc. This paper presents a comprehensive survey of over 32 techniques developedto mitigate hallucination in LLMs. Notable among these are Retrieval AugmentedGeneration (Lewis et al, 2021), Knowledge Retrieval (Varshney et al,2023),CoNLI (Lei et al, 2023), and CoVe (Dhuliawala et al, 2023). Furthermore, weintroduce a detailed taxonomy categorizing these methods based on variousparameters, such as dataset utilization, common tasks, feedback mechanisms, andretriever types. This classification helps distinguish the diverse approachesspecifically designed to tackle hallucination issues in LLMs. Additionally, weanalyze the challenges and limitations inherent in these techniques, providinga solid foundation for future research in addressing hallucinations and relatedphenomena within the realm of LLMs.
+# Translation (by gpt-3.5-turbo)
+- 要約：
+大規模言語モデル（LLMs）が人間のようなテキストを生成する能力を向上させる一方で、根拠のない事実のように見える内容を幻覚的に生成する傾向が依然として課題となっています。
+この幻覚の問題は、人々の生活に影響を与える実世界のシステムにこれらの強力なLLMsを安全に展開する上で、おそらく最大の障害です。
+実用的な環境でのLLMsの普及への道は、幻覚を解決し軽減することに大いに依存しています。
+限られたタスクに焦点を当てた従来のAIシステムとは異なり、LLMsはトレーニング中に膨大な量のオンラインテキストデータにさらされています。
+これにより、印象的な言語の流暢さを示すことができますが、トレーニングデータのバイアスから情報を外挿したり、曖昧なプロンプトを誤解したり、情報を表面的に入力に合わせて修正したりすることも可能です。
+これは、医療記録の要約、財務分析レポートなどの感度の高いアプリケーションで言語生成能力に依存する場合に非常に懸念すべきです。
+本論文では、LLMsにおける幻覚を軽減するために開発された32以上の技術について包括的な調査を行います。
+これらの中でも特筆すべきは、Retrieval Augmented Generation（Lewis et al、2021）、Knowledge Retrieval（Varshney et al、2023）、CoNLI（Lei et al、2023）、およびCoVe（Dhuliawala et al、2023）です。
+さらに、データセットの利用、一般的なタスク、フィードバックメカニズム、およびリトリーバータイプなどのさまざまなパラメータに基づいてこれらの方法を詳細に分類するタクソノミを紹介します。
+この分類により、LLMsにおける幻覚の問題に取り組むために特に設計された多様なアプローチを区別することができます。
+さらに、これらの技術に固有の課題と制約を分析し、LLMsの範囲内での幻覚および関連現象に対する将来の研究の堅固な基盤を提供します。
+# Summary (by gpt-3.5-turbo)
+- 要約：
+本論文では、大規模言語モデル（LLMs）における幻覚の問題について調査し、その軽減策について紹介しています。
+LLMsは強力な言語生成能力を持っていますが、根拠のない情報を生成する傾向があります。
+この問題を解決するために、Retrieval Augmented Generation、Knowledge Retrieval、CoNLI、CoVeなどの技術が開発されています。
+さらに、データセットの利用やフィードバックメカニズムなどのパラメータに基づいてこれらの方法を分類し、幻覚の問題に取り組むためのアプローチを提案しています。
+また、これらの技術に関連する課題や制約についても分析し、将来の研究に向けた基盤を提供しています。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Chain-of-Verification Reduces Hallucination in Large Language Models, Shehzaad Dhuliawala+, N_A, ACL'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2309.11495</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1044</repo-issue-link>
+<tags>NLP, LanguageModel, QuestionAnswering, Chain-of-Thought, Prompting, Hallucination, ACL, Selected Papers/Blogs, Verification</tags>
+<repo-issue-date>2023-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2309.11495
+# Affiliations
+  - Shehzaad Dhuliawala, N/A
+  - Mojtaba Komeili, N/A
+  - Jing Xu, N/A
+  - Roberta Raileanu, N/A
+  - Xian Li, N/A
+  - Asli Celikyilmaz, N/A
+  - Jason Weston, N/A
+# Abstract
+  - Generation of plausible yet incorrect factual information, termedhallucination, is an unsolved issue in large language models. We study theability of language models to deliberate on the responses they give in order tocorrect their mistakes. We develop the Chain-of-Verification (CoVe) methodwhereby the model first (i) drafts an initial response; then (ii) plansverification questions to fact-check its draft; (iii) answers those questionsindependently so the answers are not biased by other responses; and (iv)generates its final verified response. In experiments, we show CoVe decreaseshallucinations across a variety of tasks, from list-based questions fromWikidata, closed book MultiSpanQA and longform text generation.
+# Translation (by gpt-3.5-turbo)
+- 大規模言語モデルにおける根拠のない事実情報の生成、つまり幻想は、未解決の問題です。私たちは、言語モデルが自分の間違いを修正するために与える回答を検討する能力を研究しています。私たちはChain-of-Verification（CoVe）メソッドを開発しました。このメソッドでは、モデルがまず（i）初期の回答を作成し、次に（ii）検証のための質問を計画し、（iii）それらの質問に独立して回答し、他の回答にバイアスをかけないようにします。そして、（iv）最終的な検証済みの回答を生成します。実験では、CoVeがWikidataのリストベースの質問、クローズドブックのMultiSpanQA、および長文テキスト生成など、さまざまなタスクで幻想を減少させることを示しています。
+# Summary (by gpt-3.5-turbo)
+- 私たちは、言語モデルが根拠のない情報を生成する問題に取り組んでいます。Chain-of-Verification（CoVe）メソッドを開発し、モデルが回答を作成し、検証し、最終的な回答を生成するプロセスを経ることで、幻想を減少させることができることを実験で示しました。</issue-body>
+<maintainer-comment-text><p>
+<strong># 概要<br>ユーザの質問から、Verificationのための質問をplanningし、質問に対して独立に回答を得たうえでオリジナルの質問に対するaggreementを確認し、最終的に生成を実施するPrompting手法<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/18763903-2d70-4180-9384-2da55bedad2e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br># 評価<br>## dataset<br>- 全体を通じてclosed-bookの設定で評価<br>- Wikidata<br>    - Wikipedia APIから自動生成した「“Who are some [Profession]s who were born in [City]?”」に対するQA pairs<br>    - Goldはknowledge baseから取得<br>    - 全56 test questions<br>    - Gold Entityが大体600程度ありLLMは一部しか回答しないので、precisionで評価<br>- Wiki category list<br>    - QUEST datasetを利用 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/701" target="_blank" rel="noopener noreferrer">QUEST: A Retrieval Dataset of Entity-Seeking Queries with Implicit Set  Operations, Chaitanya Malaviya+, N/A, ACL'23</a>
+</strong>
+<br>
+ <br>    - 回答にlogical operationが不要なものに限定して頭に"Name some"をつけて質問を生成<br>        - "Name some Mexican animated horror films" or "Name some Endemic orchids of Vietnam"<br>    - 8個の回答を持つ55 test questionsを作成<br>- MultiSpanQA<br>    - Reading Comprehensionに関するBenchmark dataset<br>    - 複数の独立した回答（回答は連続しないスパンから回答が抽出される）から構成される質問で構成<br>        - 特に、今回はclosed-book setting で実施<br>        - すなわち、与えられた質問のみから回答しなければならず、知っている知識が問われる問題<br>    - 418のtest questsionsで、各回答に含まれる複数アイテムのspanが3 token未満となるようにした<br>    - QA例:<br>        - Q: Who invented the first printing press and in what year?<br>        - A: Johannes Gutenberg, 1450.<br># 評価結果<br>提案手法には、verificationの各ステップでLLMに独立したpromptingをするかなどでjoint, 2-step, Factored, Factor+Revisedの4種類のバリエーションがあることに留意。<br>- joint: 全てのステップを一つのpromptで実施<br>- 2-stepは2つのpromptに分けて実施<br>- Factoredは各ステップを全て異なるpromptingで実施<br>- Factor+Revisedは異なるpromptで追加のQAに対するcross-checkをかける手法<br><br>結果を見ると、CoVEでhallucinationが軽減（というより、モデルが持つ知識に基づいて正確に回答できるサンプルの割合が増えるので実質的にhallucinationが低減したとみなせる）され、特にjointよりも2-step, factoredの方が高い性能を示すことがわかる。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/05ff1e6c-75e7-428a-996f-61e844866391" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d72aa05e-daab-4092-a6f5-9e80cdab7486" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for  Generative Large Language Models, Potsawee Manakul+, EMNLP'23, 2023.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2303.08896</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2962</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, EMNLP, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-09-24</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2303.08896
+- acl anthology: https://aclanthology.org/anthology-files/anthology-files/pdf/emnlp/2023.emnlp-main.557.pdf
+# Authors
+  - Potsawee Manakul
+  - Adian Liusie
+  - Mark J. F. Gales
+# Abstract
+  - Generative Large Language Models (LLMs) such as GPT-3 are capable of generating highly fluent responses to a wide variety of user prompts. However, LLMs are known to hallucinate facts and make non-factual statements which can undermine trust in their output. Existing fact-checking approaches either require access to the output probability distribution (which may not be available for systems such as ChatGPT) or external databases that are interfaced via separate, often complex, modules. In this work, we propose "SelfCheckGPT", a simple sampling-based approach that can be used to fact-check the responses of black-box models in a zero-resource fashion, i.e. without an external database. SelfCheckGPT leverages the simple idea that if an LLM has knowledge of a given concept, sampled responses are likely to be similar and contain consistent facts. However, for hallucinated facts, stochastically sampled responses are likely to diverge and contradict one another. We investigate this approach by using GPT-3 to generate passages about individuals from the WikiBio dataset, and manually annotate the factuality of the generated passages. We demonstrate that SelfCheckGPT can: i) detect non-factual and factual sentences; and ii) rank passages in terms of factuality. We compare our approach to several baselines and show that our approach has considerably higher AUC-PR scores in sentence-level hallucination detection and higher correlation scores in passage-level factuality assessment compared to grey-box methods.
+# Translation (by gpt-4o-mini)
+- 生成的な大規模言語モデル（LLMs）、例えばGPT-3は、さまざまなユーザープロンプトに対して非常に流暢な応答を生成する能力を持っています。しかし、LLMsは事実を幻覚し、事実に基づかない発言をすることが知られており、これが出力に対する信頼を損なう可能性があります。既存のファクトチェックアプローチは、出力確率分布へのアクセスを必要とするか（ChatGPTのようなシステムでは利用できない場合があります）、外部データベースに依存しており、これらは別の複雑なモジュールを介してインターフェースされます。本研究では、「SelfCheckGPT」というシンプルなサンプリングベースのアプローチを提案します。これは、外部データベースなしで、ブラックボックスモデルの応答をファクトチェックするために使用できるゼロリソース方式です。SelfCheckGPTは、LLMが特定の概念についての知識を持っている場合、サンプリングされた応答は類似しており、一貫した事実を含む可能性が高いというシンプルなアイデアを活用しています。しかし、幻覚された事実に関しては、確率的にサンプリングされた応答は乖離し、互いに矛盾する可能性が高いです。このアプローチを検証するために、GPT-3を使用してWikiBioデータセットから個人に関する文章を生成し、生成された文章の事実性を手動で注釈付けしました。SelfCheckGPTが以下を実現できることを示します：i) 非事実的および事実的な文を検出すること、ii) 事実性に基づいて文章をランク付けすること。私たちは、いくつかのベースラインと比較し、文レベルの幻覚検出においてはかなり高いAUC-PRスコアを、文章レベルの事実性評価においてはグレーボックス手法と比較して高い相関スコアを示すことを明らかにしました。
+# Summary (by gpt-4o-mini)
+- SelfCheckGPTは、外部データベースなしでLLMの応答をファクトチェックするためのサンプリングベースのアプローチを提案。サンプリングされた応答が一貫した事実を含む場合、知識があると判断し、幻覚された事実では矛盾が生じる可能性が高い。実験により、非事実的および事実的な文の検出、文章のランク付けが可能であることを示し、高いAUC-PRスコアと相関スコアを達成。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=RwzFNbJ3Ez" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=RwzFNbJ3Ez</a>
+{% endraw %}
+
+</p><p>評価に関連する手法:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/89" target="_blank" rel="noopener noreferrer">[Paper Note] Neural Text Generation from Structured Data with Application to the  Biography Domain, Remi Lebret+, EMNLP'16, 2016.03</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Inference-Time Intervention: Eliciting Truthful Answers from a Language   Model, Kenneth Li+, NeurIPS'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2306.03341</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1941</repo-issue-link>
+<tags>MachineLearning, NLP, LanguageModel, Hallucination, NeurIPS, read-later, ActivationSteering/ITI, Probing, Trustfulness, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-05-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2306.03341
+# Authors
+  - Kenneth Li
+  - Oam Patel
+  - Fernanda Viégas
+  - Hanspeter Pfister
+  - Martin Wattenberg
+# Abstract
+  - We introduce Inference-Time Intervention (ITI), a technique designed to enhance the "truthfulness" of large language models (LLMs). ITI operates by shifting model activations during inference, following a set of directions across a limited number of attention heads. This intervention significantly improves the performance of LLaMA models on the TruthfulQA benchmark. On an instruction-finetuned LLaMA called Alpaca, ITI improves its truthfulness from 32.5% to 65.1%. We identify a tradeoff between truthfulness and helpfulness and demonstrate how to balance it by tuning the intervention strength. ITI is minimally invasive and computationally inexpensive. Moreover, the technique is data efficient: while approaches like RLHF require extensive annotations, ITI locates truthful directions using only few hundred examples. Our findings suggest that LLMs may have an internal representation of the likelihood of something being true, even as they produce falsehoods on the surface.
+# Translation (by gpt-4o-mini)
+- 私たちは、Inference-Time Intervention (ITI)という技術を紹介します。これは、大規模言語モデル（LLMs）の「真実性」を向上させるために設計されています。ITIは、推論中にモデルの活性化をシフトさせ、限られた数のアテンションヘッドに沿った一連の指示に従って操作します。この介入により、TruthfulQAベンチマークにおけるLLaMAモデルの性能が大幅に向上します。指示に基づいて微調整されたLLaMAモデルであるAlpacaでは、ITIによって真実性が32.5%から65.1%に改善されます。私たちは、真実性と有用性の間にトレードオフが存在することを特定し、介入の強度を調整することでそのバランスを取る方法を示します。ITIは最小限の侵襲性で計算コストも低く抑えられます。さらに、この技術はデータ効率が高く、RLHFのようなアプローチが広範な注釈を必要とするのに対し、ITIは数百の例だけで真実の方向性を特定します。我々の発見は、LLMsが表面的には虚偽を生成しながらも、何かが真実である可能性の内部表現を持っている可能性があることを示唆しています。
+# Summary (by gpt-4o-mini)
+- Inference-Time Intervention (ITI)を提案し、LLMsの真実性を向上させる技術を紹介。ITIは推論中にモデルの活性化を調整し、LLaMAモデルの性能をTruthfulQAベンチマークで大幅に改善。Alpacaモデルでは真実性が32.5%から65.1%に向上。真実性と有用性のトレードオフを特定し、介入の強度を調整する方法を示す。ITIは低コストでデータ効率が高く、数百の例で真実の方向性を特定可能。LLMsが虚偽を生成しつつも真実の内部表現を持つ可能性を示唆。</issue-body>
+<maintainer-comment-text><p>Inference Time Interventionを提案した研究。Attention Headに対して線形プロービング[^1]を実施し、真実性に関連するであろうHeadをtopKで特定できるようにし、headの出力に対し真実性を高める方向性のベクトルvを推論時に加算することで（＝intervention）、モデルの真実性を高める。vは線形プロービングによって学習された重みを使う手法と、正答と誤答の活性化の平均ベクトルを計算しその差分をvとする方法の二種類がある。後者の方が性能が良い。topKを求める際には、線形プロービングをしたモデルのvalidation setでの性能から決める。Kとαはハイパーパラメータである。<br><br>[^1]: headのrepresentationを入力として受け取り、線形モデルを学習し、線形モデルの2値分類性能を見ることでheadがどの程度、プロービングの学習に使ったデータに関する情報を保持しているかを測定する手法<br><br>日本語解説スライド:
+
+{% raw %}
+<a href="https://www.docswell.com/s/DeepLearning2023/Z38P8D-2024-06-20-131813#p1" target="_blank" rel="noopener noreferrer">https://www.docswell.com/s/DeepLearning2023/Z38P8D-2024-06-20-131813#p1</a>
+{% endraw %}
+
+</p><p>これは相当汎用的に使えそうな話だから役に立ちそう</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Survey on Hallucination in Large Language Models: Principles,  Taxonomy, Challenges, and Open Questions, Lei Huang+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2311.05232</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1123</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, action_wanted, Hallucination</tags>
+<repo-issue-date>2023-11-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2311.05232
+# Affiliations
+  - Lei Huang, N/A
+  - Weijiang Yu, N/A
+  - Weitao Ma, N/A
+  - Weihong Zhong, N/A
+  - Zhangyin Feng, N/A
+  - Haotian Wang, N/A
+  - Qianglong Chen, N/A
+  - Weihua Peng, N/A
+  - Xiaocheng Feng, N/A
+  - Bing Qin, N/A
+  - Ting Liu, N/A
+# Abstract
+  - The emergence of large language models (LLMs) has marked a significantbreakthrough in natural language processing (NLP), leading to remarkableadvancements in text understanding and generation. Nevertheless, alongsidethese strides, LLMs exhibit a critical tendency to produce hallucinations,resulting in content that is inconsistent with real-world facts or user inputs.This phenomenon poses substantial challenges to their practical deployment andraises concerns over the reliability of LLMs in real-world scenarios, whichattracts increasing attention to detect and mitigate these hallucinations. Inthis survey, we aim to provide a thorough and in-depth overview of recentadvances in the field of LLM hallucinations. We begin with an innovativetaxonomy of LLM hallucinations, then delve into the factors contributing tohallucinations. Subsequently, we present a comprehensive overview ofhallucination detection methods and benchmarks. Additionally, representativeapproaches designed to mitigate hallucinations are introduced accordingly.Finally, we analyze the challenges that highlight the current limitations andformulate open questions, aiming to delineate pathways for future research onhallucinations in LLMs.
+# Translation (by gpt-3.5-turbo)
+- 大規模言語モデル（LLMs）の出現は、自然言語処理（NLP）における重要なブレークスルーを示し、テキストの理解と生成における顕著な進歩をもたらしています。しかし、これらの進歩と並行して、LLMsは幻覚を生じる傾向があり、現実世界の事実やユーザーの入力と矛盾する内容を生成することがあります。この現象は、LLMsの実用的な展開において重大な課題を提起し、LLMsの信頼性についての懸念を引き起こしています。そのため、これらの幻覚を検出および軽減することに対する関心が高まっています。本調査では、LLMの幻覚に関する最近の進展について、包括的かつ詳細な概要を提供することを目指します。まず、LLMの幻覚に関する革新的な分類を紹介し、幻覚の要因について探求します。その後、幻覚検出手法とベンチマークの包括的な概要を示します。さらに、幻覚を軽減するために設計された代表的なアプローチも紹介します。最後に、現在の制約を明らかにし、将来のLLMにおける幻覚研究の方向性を示すために、課題を分析し、オープンな問題を提示します。
+# Summary (by gpt-3.5-turbo)
+- LLMsの出現はNLPにおける重要な進歩をもたらしているが、幻覚を生じることがあり、その信頼性に懸念がある。本調査では、LLMの幻覚に関する最近の進展について包括的に概説し、幻覚の要因や検出手法、軽減アプローチについて紹介する。また、現在の制約や将来の研究方向についても分析する。</issue-body>
+<maintainer-comment-text><p>Hallucinationを現象ごとに分類したSurveyとして <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1048" target="_blank" rel="noopener noreferrer">A Survey of Hallucination in Large Foundation Models, Vipula Rawte+, N/A, arXiv'23</a>
+ もある</p><p>Surveyの内容。必要に応じて参照すべし。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32d8d809-e197-4289-8000-12fee76a69cf" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Survey of Hallucination in Large Foundation Models, Vipula Rawte+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2309.05922</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1048</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, Hallucination</tags>
+<repo-issue-date>2023-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2309.05922
+# Affiliations
+  - Vipula Rawte, N/A
+  - Amit Sheth, N/A
+  - Amitava Das, N/A
+# Abstract
+  - Hallucination in a foundation model (FM) refers to the generation of contentthat strays from factual reality or includes fabricated information. Thissurvey paper provides an extensive overview of recent efforts that aim toidentify, elucidate, and tackle the problem of hallucination, with a particularfocus on ``Large'' Foundation Models (LFMs). The paper classifies various typesof hallucination phenomena that are specific to LFMs and establishes evaluationcriteria for assessing the extent of hallucination. It also examines existingstrategies for mitigating hallucination in LFMs and discusses potentialdirections for future research in this area. Essentially, the paper offers acomprehensive examination of the challenges and solutions related tohallucination in LFMs.
+# Translation (by gpt-3.5-turbo)
+- ファウンデーションモデル（FM）におけるホールシネーションとは、事実に基づかない情報や捏造された情報を生成することを指します。本調査論文では、特に「大規模」ファウンデーションモデル（LFMs）に焦点を当て、ホールシネーションの問題を特定し、明らかにし、対処するための最近の取り組みについて包括的な概要を提供します。論文では、LFMsに特有のさまざまなホールシネーション現象を分類し、ホールシネーションの程度を評価するための評価基準を確立します。また、LFMsにおけるホールシネーションを軽減するための既存の戦略を検討し、今後の研究の方向性についても議論します。本論文は、LFMsにおけるホールシネーションに関連する課題と解決策について包括的な検討を提供します。
+# Summary (by gpt-3.5-turbo)
+- 本研究では、大規模ファウンデーションモデル（LFMs）におけるホールシネーションの問題に焦点を当て、その現象を分類し、評価基準を確立するとともに、既存の戦略を検討し、今後の研究の方向性についても議論しています。</issue-body>
+<maintainer-comment-text><p>Hallucinationを現象ごとに分類し、Hallucinationの程度の評価をする指標や、Hallucinationを軽減するための既存手法についてまとめられているらしい。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ec507609-5b6d-42ed-92db-296856f93200" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DoLa: Decoding by Contrasting Layers Improves Factuality in Large  Language Models, Yung-Sung Chuang+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2309.03883</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1040</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, Factuality</tags>
+<repo-issue-date>2023-09-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2309.03883
+# Affiliations
+  - Yung-Sung Chuang, N/A
+  - Yujia Xie, N/A
+  - Hongyin Luo, N/A
+  - Yoon Kim, N/A
+  - James Glass, N/A
+  - Pengcheng He, N/A
+# Abstract
+  - Despite their impressive capabilities, large language models (LLMs) are proneto hallucinations, i.e., generating content that deviates from facts seenduring pretraining. We propose a simple decoding strategy for reducinghallucinations with pretrained LLMs that does not require conditioning onretrieved external knowledge nor additional fine-tuning. Our approach obtainsthe next-token distribution by contrasting the differences in logits obtainedfrom projecting the later layers versus earlier layers to the vocabulary space,exploiting the fact that factual knowledge in an LLMs has generally been shownto be localized to particular transformer layers. We find that this Decoding byContrasting Layers (DoLa) approach is able to better surface factual knowledgeand reduce the generation of incorrect facts. DoLa consistently improves thetruthfulness across multiple choices tasks and open-ended generation tasks, forexample improving the performance of LLaMA family models on TruthfulQA by12-17% absolute points, demonstrating its potential in making LLMs reliablygenerate truthful facts.
+# Translation (by gpt-3.5-turbo)
+- 大規模言語モデル（LLMs）は、印象的な能力を持っているにもかかわらず、幻覚（つまり、事前学習中に見た事実から逸脱したコンテンツを生成する）に陥りやすい。
+我々は、外部の知識を検索したり、追加のfine-tuningを必要としない、事前学習済みLLMsにおける幻覚を軽減するためのシンプルなデコーディング戦略を提案する。
+我々のアプローチは、後のレイヤーと早いレイヤーから得られるロジットを語彙空間に射影することによるロジットの差異を対比することで、次のトークンの分布を得る。
+これは、LLMsの事実知識が一般的に特定のトランスフォーマーレイヤーに局所化されているという事実を利用している。
+この「レイヤーの対比によるデコーディング（DoLa）」アプローチは、事実知識をより明確に示し、誤った事実の生成を減らすことができることがわかった。
+DoLaは、複数の選択課題やオープンエンドの生成課題において一貫して真実性を向上させることができる。
+例えば、TruthfulQAにおけるLLaMAファミリーモデルのパフォーマンスを12〜17%絶対ポイント向上させることができ、LLMsが信頼性のある真実の事実を生成する可能性を示している。
+# Summary (by gpt-3.5-turbo)
+- 我々は、事前学習済みの大規模言語モデル（LLMs）における幻覚を軽減するためのシンプルなデコーディング戦略を提案する。
+このアプローチは、ロジットの差異を対比することで次のトークンの分布を得るもので、事実知識をより明確に示し、誤った事実の生成を減らすことができる。
+このアプローチは、複数の選択課題やオープンエンドの生成課題において真実性を向上させることができることが示されている。</issue-body>
+<maintainer-comment-text><p>【以下、WIP状態の論文を読んでいるため今後内容が変化する可能性あり】<br><br># 概要<br><br>Transformer Layerにおいて、factual informationが特定のレイヤーに局所化するという現象を観測しており、それを活用しよりFactual Consistencyのある生成をします、という研究<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/eb8dbecb-21cb-4abb-879c-5a8f39364e6a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>あるテキストを生成するときの単語の生成確率の分布を可視化。final layer (N=32だと思われる)との間のJensen-shanon Divergence (JSD) で可視化している。が、図を見るとJSDの値域は[0, 1]のはずなのにこれを逸脱しているので一体どういう計算をしているのか。。。<br><br>図の説明としては論文中では2つのパターンがあると言及しており<br><br>1. 重要な固有表現や日付（Wole Soyinka, 1986など; Factual Knowledgeが必要なもの）は、higher layerでも高い値となっており、higher-layerにおいてpredictionの内容を変えている（重要な情報がここでinjectionされている）<br><br>2. 機能語や、questionからの単語のコピー（Nigerian, Nobel Prize など）のような "easy" なtokenは既にmiddle of layersで既にJSDの値が小さく、early layerの時点で出力することが既に決定されている<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/daed79c1-1391-43ad-a94e-a6748ec3529f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>ここからの考察としては、重要な事実に関する情報はfinal layerの方で分布が変化する傾向にあり、低layerの方ではそうではないぽいので、final layerと分布が似ているがFactual Informationがまだあまり顕著に生成確率が高くなっていないlayer（pre mature layer）との対比をとることで、生成されるべきFactual Informationがわかるのではないか、という前提の元提案手法が組まれている。手法としては、final layerとのJSDが最大となるようなlayerを一つ選択する、というものになっているが、果たしてこの選択方法で前述の気持ちが実現できているのか？という気は少しする。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0c4973a0-baee-4de3-82fa-55aba12f9c73" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>How Language Model Hallucinations Can Snowball, Muru Zhang+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs//2305.13534</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/764</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination</tags>
+<repo-issue-date>2023-06-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs//2305.13534
+# Affiliations
+  - Muru Zhang, N/A
+  - Ofir Press, N/A
+  - William Merrill, N/A
+  - Alisa Liu, N/A
+  - Noah A. Smith, N/A
+# Abstract
+  - A major risk of using language models in practical applications is theirtendency to hallucinate incorrect statements. Hallucinations are oftenattributed to knowledge gaps in LMs, but we hypothesize that in some cases,when justifying previously generated hallucinations, LMs output false claimsthat they can separately recognize as incorrect. We construct threequestion-answering datasets where ChatGPT and GPT-4 often state an incorrectanswer and offer an explanation with at least one incorrect claim. Crucially,we find that ChatGPT and GPT-4 can identify 67% and 87% of their own mistakes,respectively. We refer to this phenomenon as hallucination snowballing: an LMover-commits to early mistakes, leading to more mistakes that it otherwisewould not make.
+# Translation (by gpt-3.5-turbo)
+- 実際のアプリケーションで言語モデルを使用する際の主要なリスクは、誤った文を幻視する傾向があることです。幻覚は、LMの知識の欠如に起因することが多いとされていますが、以前に生成された幻覚を正当化する際に、LMが別個に認識できる誤った主張を出力する場合もあると仮説を立てています。私たちは、ChatGPTとGPT-4がしばしば誤った回答を示し、少なくとも1つの誤った主張を含む説明を提供する3つの質問応答データセットを構築しました。重要なことに、ChatGPTとGPT-4は、それぞれ自分自身の間違いの67％と87％を識別できることがわかりました。私たちは、この現象を幻覚のスノーボール効果と呼びます。つまり、LMが初期の誤りに過剰にコミットすることで、それ以外の場合には起こらないようなより多くの誤りが生じることになります。
+# Summary (by gpt-3.5-turbo)
+- 言語モデルを使用する際のリスクとして、幻覚があることが指摘されている。この幻覚は、LMの知識不足によるものだけでなく、以前に生成された幻覚を正当化するために、LMが誤った主張を出力することもあるという仮説が立てられている。ChatGPTとGPT-4は、誤った回答を示し、幻覚のスノーボール効果により、より多くの誤りが生じることがある。また、誤りを含む質問応答データセットが構築され、LMが自分自身の誤りを識別できることも示された。</issue-body>
+<maintainer-comment-text><p>LLMによるhallucinationは、単にLLMの知識不足によるものだけではなく、LLMが以前に生成したhallucinationを正当化するために、誤った出力を生成してしまうという仮説を提起し、この仮説を検証した研究。これをhallucination snowballと呼ぶ。これにより、LLMを訓練する際に、事実に対する正確さを犠牲にして、流暢性と一貫性を優先し言語モデルを訓練するリスクを示唆している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6a9e29b7-953f-4e72-bfdd-85daab9317d6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>TrueTeacher: Learning Factual Consistency Evaluation with Large Language  Models, Zorik Gekhman+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2305.11171</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/690</repo-issue-link>
+<tags>NLP, Dataset, Evaluation, Hallucination</tags>
+<repo-issue-date>2023-05-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2305.11171
+# Affiliations
+  - Zorik Gekhman, N/A
+  - Jonathan Herzig, N/A
+  - Roee Aharoni, N/A
+  - Chen Elkind, N/A
+  - Idan Szpektor, N/A
+# Abstract
+  - Factual consistency evaluation is often conducted using Natural LanguageInference (NLI) models, yet these models exhibit limited success in evaluatingsummaries. Previous work improved such models with synthetic training data.However, the data is typically based on perturbed human-written summaries,which often differ in their characteristics from real model-generated summariesand have limited coverage of possible factual errors. Alternatively, largelanguage models (LLMs) have recently shown promising results in directlyevaluating generative tasks, but are too computationally expensive forpractical use. Motivated by these limitations, we introduce TrueTeacher, amethod for generating synthetic data by annotating diverse model-generatedsummaries using a LLM. Unlike prior work, TrueTeacher does not rely onhuman-written summaries, and is multilingual by nature. Experiments on the TRUEbenchmark show that a student model trained using our data, substantiallyoutperforms both the state-of-the-art model with similar capacity, and the LLMteacher. In a systematic study, we compare TrueTeacher to existing syntheticdata generation methods and demonstrate its superiority and robustness todomain-shift. Using the the mFACE dataset, we also show that our methodgeneralizes to multilingual scenarios. Finally, we release a large-scalesynthetic dataset with 1.4M examples generated using TrueTeacher.
+# Translation (by gpt-3.5-turbo)
+- 事実の一貫性評価は、しばしば自然言語推論（NLI）モデルを使用して行われますが、これらのモデルは要約の評価において限られた成功しか示していません。以前の研究では、合成トレーニングデータを使用してこのようなモデルを改善しました。しかし、データは通常、人間によって書かれた要約を変形させたものであり、実際のモデル生成要約とは異なる特性を持ち、可能な事実上の誤りのカバレッジが限られています。代わりに、大規模言語モデル（LLMs）は、直接生成タスクを評価することで最近有望な結果を示していますが、実用的な使用には計算コストが高すぎます。これらの制限に着想を得て、私たちはTrueTeacherを導入しました。これは、LLMを使用して多様なモデル生成要約を注釈付けすることによって合成データを生成する方法です。従来の方法とは異なり、TrueTeacherは人間によって書かれた要約に依存せず、多言語性を持っています。TRUEベンチマークでの実験では、私たちのデータを使用してトレーニングされた学生モデルが、同じ容量を持つ最先端のモデルとLLM教師を大幅に上回ることが示されました。系統的な研究により、TrueTeacherを既存の合成データ生成方法と比較し、その優位性とドメインシフトに対する堅牢性を示しました。mFACEデータセットを使用して、私たちの方法が多言語シナリオにも一般化することを示しました。最後に、TrueTeacherを使用して生成された140万の例を含む大規模な合成データセットを公開します。
+# Summary (by gpt-3.5-turbo)
+- 自然言語推論（NLI）モデルを使用した事実の一貫性評価には限界があり、大規模言語モデル（LLMs）は計算コストが高いため実用的ではない。そこで、TrueTeacherというLLMを使用して多様なモデル生成要約を注釈付けすることによって合成データを生成する方法を提案し、既存の合成データ生成方法と比較して優位性と堅牢性を示した。140万の例を含む大規模な合成データセットを公開した。</issue-body>
+<maintainer-comment-text><p>Factual Consistency Evaluationに関する研究。オリジナルのテキストに対して、様々な規模の言語モデルを用いて要約を生成。生成された要約に対してfactual informationが正しく含まれているかをラベル付けする方法を提案。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4fb420c8-6a80-4737-bc08-8e59b0ed89d6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Reducing Quantity Hallucinations in Abstractive Summarization, Zheng Zhao+, N_A, EMNLP'20</title>
+<original-paper-blog-link>https://arxiv.org/abs/2009.13312</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/993</repo-issue-link>
+<tags>DocumentSummarization, NLP, Hallucination</tags>
+<repo-issue-date>2023-08-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2009.13312
+# Affiliations
+  - Zheng Zhao, N/A
+  - Shay B. Cohen, N/A
+  - Bonnie Webber, N/A
+# Abstract
+  - It is well-known that abstractive summaries are subject tohallucination---including material that is not supported by the original text.While summaries can be made hallucination-free by limiting them to generalphrases, such summaries would fail to be very informative. Alternatively, onecan try to avoid hallucinations by verifying that any specific entities in thesummary appear in the original text in a similar context. This is the approachtaken by our system, Herman. The system learns to recognize and verify quantityentities (dates, numbers, sums of money, etc.) in a beam-worth of abstractivesummaries produced by state-of-the-art models, in order to up-rank thosesummaries whose quantity terms are supported by the original text. Experimentalresults demonstrate that the ROUGE scores of such up-ranked summaries have ahigher Precision than summaries that have not been up-ranked, without acomparable loss in Recall, resulting in higher F$_1$. Preliminary humanevaluation of up-ranked vs. original summaries shows people's preference forthe former.
+# Translation (by gpt-3.5-turbo)
+- 抽象的な要約は、元のテキストでサポートされていない情報を含むことがよく知られています。
+要約を幻覚から解放するためには、一般的なフレーズに制限することができますが、そのような要約は情報量が少なくなってしまいます。
+代わりに、要約内の特定のエンティティが元のテキストに類似の文脈で現れることを検証することで、幻覚を回避することができます。
+これが私たちのシステムであるHermanのアプローチです。
+このシステムは、最先端のモデルによって生成された抽象的な要約のビーム内で数量エンティティ（日付、数字、金額の合計など）を認識し、元のテキストでサポートされている数量用語を持つ要約を上位にランク付けすることを学習します。
+実験結果は、そのような上位にランク付けされた要約のROUGEスコアが、上位にランク付けされていない要約と比較して高い適合率を持ち、再現率の喪失がほとんどないことを示しており、結果としてF$_1$が高くなります。
+上位にランク付けされた要約と元の要約の予備的な人間評価は、前者の方が好まれることを示しています。
+# Summary (by gpt-3.5-turbo)
+- Hermanシステムは、抽象的な要約において幻覚を回避するために、数量エンティティを認識し、元のテキストでサポートされている数量用語を持つ要約を上位にランク付けするアプローチを提案しています。実験結果は、このアプローチが高い適合率と再現率を持ち、F$_1$スコアが向上することを示しています。また、上位にランク付けされた要約が元の要約よりも好まれることも示されています。</issue-body>
+<maintainer-comment-text><p>数量に関するhallucinationを緩和する要約手法</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Object hallucination in image captioning, Rohbach+, EMNLP'18</title>
+<original-paper-blog-link>https://aclanthology.org/D18-1437/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/992</repo-issue-link>
+<tags>NLP, Hallucination, translation_required, ImageCaptioning</tags>
+<repo-issue-date>2023-08-16</repo-issue-date>
+<issue-body>https://aclanthology.org/D18-1437/</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Why Language Models Hallucinate, Kalai+, 2025.09</title>
+<original-paper-blog-link>https://cdn.openai.com/pdf/d04913be-3f6f-4d2b-b283-ff432ef4aaa5/why-language-models-hallucinate.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2709</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-09-06</repo-issue-date>
+<issue-body>https://cdn.openai.com/pdf/d04913be-3f6f-4d2b-b283-ff432ef4aaa5/why-language-models-hallucinate.pdf</issue-body>
+<maintainer-comment-text><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/adamfungi/status/1964040819196752312?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1964837910278189271?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ziv_ravid/status/1964384106567127465?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Hallucination Leaderboard, 2023</title>
+<original-paper-blog-link>https://huggingface.co/vectara/hallucination_evaluation_model</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1130</repo-issue-link>
+<tags>NLP, LanguageModel, Hallucination, Factuality, Repository</tags>
+<repo-issue-date>2023-11-14</repo-issue-date>
+<issue-body>https://huggingface.co/vectara/hallucination_evaluation_model
+
+https://github.com/vectara/hallucination-leaderboard</issue-body>
+<maintainer-comment-text><p>1000個の短いドキュメントに対して、事実情報のみを用いて要約を生成させ、要約結果と原文書のFactual consistencyを別に訓練したモデルで測定して評価してリーダーボードを作成している。</p><p>Claude2よりLLaMA2の方が性能が良いのが面白いし、Palmの性能があまり良くない。</p><p>元ツイート: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ashversex/status/1724240030170808392?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>生成AIが抱えるリスクと対策, LYCorp‘23</title>
+<original-paper-blog-link>https://speakerdeck.com/lycorptech_jp/risks-and-countermeasures-for-generative-ai?slide=11</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1115</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, Alignment, GenerativeAI, Hallucination, Blog</tags>
+<repo-issue-date>2023-11-03</repo-issue-date>
+<issue-body>https://speakerdeck.com/lycorptech_jp/risks-and-countermeasures-for-generative-ai?slide=11</issue-body>
+<maintainer-comment-text><p>この資料をスタートにReferしている論文などを勉強すると、GenerativeAIのリスク周りに詳しくなれそう。この辺は疎いので勉強になる。<br>しかし、LLMのAlignmentが不十分だったり、Hallucinationを100%防ぐことは原理的に不可能だと思われるので、この辺とどう付き合っていくかがLLMと付き合っていく上で難しいところ。この辺は自分たちが活用したいユースケースに応じて柔軟に対応しなければならず、この辺の細かいカスタマイズをする地道な作業はずっと残り続けるのではないかなあ</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

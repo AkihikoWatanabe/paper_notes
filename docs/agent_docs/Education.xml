@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-01-30">
+<paper-entry>
+<title>[Paper Note] AutoCode: LLMs as Problem Setters for Competitive Programming, Shang Zhou+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.12803</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3306</repo-issue-link>
+<tags>NLP, LanguageModel, Education, AIAgents, Evaluation, Coding, read-later, Selected Papers/Blogs, One-Line Notes</tags>
+<repo-issue-date>2025-10-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.12803
+# Authors
+  - Shang Zhou
+  - Zihan Zheng
+  - Kaiyuan Liu
+  - Zeyu Shen
+  - Zerui Cheng
+  - Zexing Chen
+  - Hansen He
+  - Jianzhu Yao
+  - Huanzhi Mao
+  - Qiuyang Mang
+  - Tianfu Fu
+  - Beichen Li
+  - Dongruixuan Li
+  - Wenhao Chai
+  - Zhuang Liu
+  - Aleksandra Korolova
+  - Peter Henderson
+  - Natasha Jaques
+  - Pramod Viswanath
+  - Saining Xie
+  - Jingbo Shang
+# Abstract
+  - Writing competitive programming problems is exacting. Authors must: set constraints, input distributions, and edge cases that rule out shortcuts; target specific algorithms (e.g., max-flow, dynamic programming, data structures); and calibrate complexity beyond the reach of most competitors. We argue that this makes for an ideal test of general large language model capabilities and study whether they can do this reliably. We introduce AutoCode, which uses multiple rounds of validation to yield competition-grade problem statements and test cases. On held-out problems, AutoCode test suites approach 99% consistency with official judgments, a significant improvement over current state-of-the-art methods like HardTests, which achieve less than 81%. Furthermore, starting with a random seed problem, AutoCode can create novel variants with reference and brute-force solutions. By cross-verifying these generated solutions against test cases, we can further filter out malformed problems. Our system ensures high correctness, as verified by human experts. AutoCode successfully produces novel problems judged by Grandmaster-level (top 0.3%) competitive programmers to be of contest quality.
+# Translation (by gpt-4o-mini)
+- 競技プログラミングの問題を作成することは非常に厳しい作業です。著者は、ショートカットを排除するための制約、入力分布、エッジケースを設定し、特定のアルゴリズム（例：最大フロー、動的計画法、データ構造）をターゲットにし、ほとんどの競技者の手の届かない複雑さを調整しなければなりません。私たちは、これが一般的な大規模言語モデルの能力を試す理想的なテストであると主張し、これらのモデルが信頼性を持ってこれを行えるかどうかを研究します。私たちは、AutoCodeを導入します。これは、競技レベルの問題文とテストケースを生成するために複数回の検証を使用します。保持された問題に対して、AutoCodeのテストスイートは公式の判断と99%の一貫性に近づき、現在の最先端の手法であるHardTests（81%未満の達成）に対して大幅な改善を示しています。さらに、ランダムなシード問題から始めて、AutoCodeは参照解と総当たり解を持つ新しいバリアントを作成できます。生成された解をテストケースと照合することで、さらに不正な問題をフィルタリングすることができます。私たちのシステムは、高い正確性を確保しており、人間の専門家によって検証されています。AutoCodeは、グランドマスター級（上位0.3%）の競技プログラマーによってコンテスト品質と判断される新しい問題を成功裏に生成します。
+# Summary (by gpt-4o-mini)
+- AutoCodeは、競技プログラミングの問題文とテストケースを生成するシステムであり、信頼性の高い問題作成を実現します。複数回の検証を通じて、生成された問題は公式の判断と99%の一貫性を持ち、従来の手法に比べて大幅な改善を示します。また、ランダムなシード問題から新しいバリアントを作成し、不正な問題をフィルタリングする機能も備えています。最終的に、AutoCodeはグランドマスター級の競技プログラマーによってコンテスト品質と評価される問題を生成します。</issue-body>
+<maintainer-comment-text><p>blog:
+
+{% raw %}
+<a href="https://livecodebenchpro.com/projects/autocode/overview" target="_blank" rel="noopener noreferrer">https://livecodebenchpro.com/projects/autocode/overview</a>
+{% endraw %}
+
+</p><p>LLMで自動的に高品質な競技プログラミング問題とそのテストケースを生成するパイプラインを提案。<br><br>信頼性のあるテストケースを作成するために、Validator-Generator-Checkerフレームワーク。提案。Generatorがテストケースを生成し、Validatorが生成されたテストケースの入力が問題の制約を満たしているか判定し、Checkerが与えられたテストケースの元で解法が正しいかを確認する。<br><br>続いて、人手を介さずとも生成される問題が正しいことを担保するためにdual-verificationを採用。具体的には、LLMに新規の問題文と効率的な解法を生成させ、加えてブルートフォースでの解法を別途生成する。そして、両者をLLMが生成したテストセット群で実行し、全ての解放で出力が一致した場合のみAcceptする、といったような手法らしい。<br><br>（手法の概要としてはそうなのだろうが、細かい実装に高品質さの肝があると思うのでしっかり読んだ方が良さげ。特にTest Generationの詳細をしっかりできていない）<br><br><img src="https://github.com/user-attachments/assets/e6779e5d-9e0a-4da8-9634-d6054704bfa7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>takeawayで興味深かったのは、<br><br>- LLMは自身では解けないが、解法が存在する（solvable)問題を生成できること<br>- 人間の専門家とLLM（o3)の間で、問題の品質の新規性の判定の相関がわずか0.007, 0.11しかなかったこと。そして品質に関しては専門家のグループ間では0.71, o3とgpt4oの間では0.72と高い相関を示しており、LLMと人間の専門家の間で著しく問題の品質の判断基準が異なること<br>- seed問題と生成された問題の難易度のgainが、問題の品質に関して、LLM自身のself-evaluationよりもより良い指標となっていること</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>BIPED: Pedagogically Informed Tutoring System for ESL Education, Kwon+, ACL'24, 2024.08</title>
+<original-paper-blog-link>https://aclanthology.org/2024.acl-long.186/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1695</repo-issue-link>
+<tags>Education, translation_required, ACL</tags>
+<repo-issue-date>2025-01-06</repo-issue-date>
+<issue-body>https://aclanthology.org/2024.acl-long.186/</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LearnLM: Improving Gemini for Learning, LearnLM Team+, arXiv'24</title>
+<original-paper-blog-link>https://www.arxiv.org/abs/2412.16429</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1629</repo-issue-link>
+<tags>NLP, LanguageModel, Education, EducationalDataMining</tags>
+<repo-issue-date>2024-12-31</repo-issue-date>
+<issue-body># URL
+- https://www.arxiv.org/abs/2412.16429
+# Authors
+  - LearnLM Team
+  - Abhinit Modi
+  - Aditya Srikanth Veerubhotla
+  - Aliya Rysbek
+  - Andrea Huber
+  - Brett Wiltshire
+  - Brian Veprek
+  - Daniel Gillick
+  - Daniel Kasenberg
+  - Derek Ahmed
+  - Irina Jurenka
+  - James Cohan
+  - Jennifer She
+  - Julia Wilkowski
+  - Kaiz Alarakyia
+  - Kevin R. McKee
+  - Lisa Wang
+  - Markus Kunesch
+  - Mike Schaekermann
+  - Miruna Pîslar
+  - Nikhil Joshi
+  - Parsa Mahmoudieh
+  - Paul Jhun
+  - Sara Wiltberger
+  - Shakir Mohamed
+  - Shashank Agarwal
+  - Shubham Milind Phal
+  - Sun Jae Lee
+  - Theofilos Strinopoulos
+  - Wei-Jen Ko
+  - Amy Wang
+  - Ankit Anand
+  - Avishkar Bhoopchand
+  - Dan Wild
+  - Divya Pandya
+  - Filip Bar
+  - Garth Graham
+  - Holger Winnemoeller
+  - Mahvish Nagda
+  - Prateek Kolhar
+  - Renee Schneider
+  - Shaojian Zhu
+  - Stephanie Chan
+  - Steve Yadlowsky
+  - Viknesh Sounderajah
+  - Yannis Assael
+# Abstract
+  - Today's generative AI systems are tuned to present information by default rather than engage users in service of learning as a human tutor would. To address the wide range of potential education use cases for these systems, we reframe the challenge of injecting pedagogical behavior as one of \textit{pedagogical instruction following}, where training and evaluation examples include system-level instructions describing the specific pedagogy attributes present or desired in subsequent model turns. This framing avoids committing our models to any particular definition of pedagogy, and instead allows teachers or developers to specify desired model behavior. It also clears a path to improving Gemini models for learning -- by enabling the addition of our pedagogical data to post-training mixtures -- alongside their rapidly expanding set of capabilities. Both represent important changes from our initial tech report. We show how training with pedagogical instruction following produces a LearnLM model (available on Google AI Studio) that is preferred substantially by expert raters across a diverse set of learning scenarios, with average preference strengths of 31\% over GPT-4o, 11\% over Claude 3.5, and 13\% over the Gemini 1.5 Pro model LearnLM was based on.
+# Translation (by gpt-4o-mini)
+- 今日の生成AIシステムは、デフォルトで情報を提示するように調整されており、人間のチューターのように学習のためにユーザーと関わることはありません。これらのシステムの教育利用ケースの幅広い可能性に対処するために、私たちは教育的行動を注入する課題を「教育的指示の遵守」として再定義します。ここでは、トレーニングと評価の例には、次のモデルのターンにおいて存在または望ましい特定の教育属性を説明するシステムレベルの指示が含まれます。このフレーミングにより、私たちのモデルを特定の教育の定義に縛ることなく、教師や開発者が望ましいモデルの振る舞いを指定できるようになります。また、急速に拡大する機能セットとともに、ポストトレーニングの混合物に教育データを追加することを可能にすることで、Geminiモデルの学習を改善する道を開きます。これらは、私たちの初期の技術報告からの重要な変更を表しています。教育的指示の遵守でトレーニングを行うことで、さまざまな学習シナリオにおいて専門家の評価者から大幅に好まれるLearnLMモデル（Google AI Studioで利用可能）が生成され、GPT-4oに対して平均31％、Claude 3.5に対して11％、LearnLMが基づいているGemini 1.5 Proモデルに対して13％の好まれる強度を示しました。
+# Summary (by gpt-4o-mini)
+- 生成AIシステムは従来の情報提示に偏っているため、教育的行動を注入する「教育的指示の遵守」を提案。これにより、モデルの振る舞いを柔軟に指定でき、教育データを追加することでGeminiモデルの学習を向上。LearnLMモデルは、さまざまな学習シナリオで専門家から高く評価され、GPT-4oやClaude 3.5に対しても優れた性能を示した。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Covering Uncommon Ground: Gap-Focused Question Generation for Answer Assessment, ACL'23</title>
+<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P2093.html#abstract</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/845</repo-issue-link>
+<tags>NLP, Education, EducationalDataMining, translation_required, QuestionGeneration</tags>
+<repo-issue-date>2023-07-15</repo-issue-date>
+<issue-body>https://virtual2023.aclweb.org/paper_P2093.html#abstract</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Adaptive and Personalized Exercise Generation for Online Language Learning, ACL'23</title>
+<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P2036.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/824</repo-issue-link>
+<tags>NaturalLanguageGeneration, NLP, Education, AdaptiveLearning, KnowledgeTracing, Personalization, translation_required, QuestionGeneration</tags>
+<repo-issue-date>2023-07-14</repo-issue-date>
+<issue-body>https://virtual2023.aclweb.org/paper_P2036.html</issue-body>
+<maintainer-comment-text><p>Knowledge Tracingで推定された習熟度に基づいて、エクササイズを自動生成する研究。KTとNLGが組み合わさっており、非常におもしろい。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/975a4de3-4f68-4dc6-beb4-5ad32b706959" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Generative AI for Programming Education: Benchmarking ChatGPT, GPT-4,  and Human Tutors, Tung Phung+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2306.17156</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/803</repo-issue-link>
+<tags>LanguageModel, Education</tags>
+<repo-issue-date>2023-07-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2306.17156
+# Affiliations
+  - Tung Phung, N/A
+  - Victor-Alexandru Pădurean, N/A
+  - José Cambronero, N/A
+  - Sumit Gulwani, N/A
+  - Tobias Kohn, N/A
+  - Rupak Majumdar, N/A
+  - Adish Singla, N/A
+  - Gustavo Soares, N/A
+# Abstract
+  - Generative AI and large language models hold great promise in enhancingcomputing education by powering next-generation educational technologies forintroductory programming. Recent works have studied these models for differentscenarios relevant to programming education; however, these works are limitedfor several reasons, as they typically consider already outdated models or onlyspecific scenario(s). Consequently, there is a lack of a systematic study thatbenchmarks state-of-the-art models for a comprehensive set of programmingeducation scenarios. In our work, we systematically evaluate two models,ChatGPT (based on GPT-3.5) and GPT-4, and compare their performance with humantutors for a variety of scenarios. We evaluate using five introductory Pythonprogramming problems and real-world buggy programs from an online platform, andassess performance using expert-based annotations. Our results show that GPT-4drastically outperforms ChatGPT (based on GPT-3.5) and comes close to humantutors' performance for several scenarios. These results also highlightsettings where GPT-4 still struggles, providing exciting future directions ondeveloping techniques to improve the performance of these models.
+# Translation (by gpt-3.5-turbo)
+- 生成AIと大規模言語モデルは、導入プログラミングのための次世代教育技術を強化することで、コンピューティング教育を向上させるという大きな可能性を秘めています。
+最近の研究では、これらのモデルをプログラミング教育に関連するさまざまなシナリオについて研究してきましたが、これらの研究はいくつかの理由で限定的です。
+なぜなら、既に時代遅れのモデルを考慮したり、特定のシナリオのみを考慮したりする傾向があるためです。
+その結果、包括的なプログラミング教育シナリオのための最先端モデルのベンチマークを行う体系的な研究が不足しています。
+本研究では、ChatGPT（GPT-3.5をベースにしたモデル）とGPT-4の2つのモデルを体系的に評価し、さまざまなシナリオでの人間のチューターとのパフォーマンスを比較します。
+具体的には、5つの導入的なPythonプログラミング問題とオンラインプラットフォームからの実世界のバグのあるプログラムを使用して評価し、専門家による注釈を使用してパフォーマンスを評価します。
+結果は、GPT-4がChatGPT（GPT-3.5をベースにしたモデル）を大幅に上回り、いくつかのシナリオでは人間のチューターのパフォーマンスに近づいていることを示しています。
+また、GPT-4がまだ苦労している設定も明らかになり、これらのモデルのパフォーマンスを改善するための技術の開発における興味深い将来の方向性を提供しています。
+# Summary (by gpt-3.5-turbo)
+- 生成AIと大規模言語モデルは、プログラミング教育の向上に大きな可能性を持っています。しかし、これまでの研究は限定的であり、包括的なプログラミング教育シナリオのための最先端モデルのベンチマークが不足しています。本研究では、ChatGPTとGPT-4の2つのモデルを評価し、人間のチューターとのパフォーマンスを比較しました。結果は、GPT-4がChatGPTを大幅に上回り、一部のシナリオでは人間のチューターに近づいていることを示しています。また、GPT-4の改善のための興味深い方向性も提案されています。</issue-body>
+<maintainer-comment-text><p>GPT4とGPT3.5をプログラミング教育の文脈で評価したところ、GPT4AGPT3.5をoutperformし、人間のチューターに肉薄した。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Review of ChatGPT Applications in Education, Marketing, Software  Engineering, and Healthcare: Benefits, Drawbacks, and Research Directions, Mohammad Fraiwan+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2305.00237</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/617</repo-issue-link>
+<tags>Survey, Education, ChatGPT</tags>
+<repo-issue-date>2023-05-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2305.00237
+# Affiliations
+  - Mohammad Fraiwan, N/A
+  - Natheer Khasawneh, N/A
+# Abstract
+  - ChatGPT is a type of artificial intelligence language model that uses deeplearning algorithms to generate human-like responses to text-based prompts. Theintroduction of the latest ChatGPT version in November of 2022 has causedshockwaves in the industrial and academic communities for its powerfulcapabilities, plethora of possible applications, and the great possibility forabuse. At the time of writing this work, several other language models (e.g.,Google Bard and Meta LLaMA) just came out in an attempt to get a foothold inthe vast possible market. These models have the ability to revolutionize theway we interact with computers and have potential applications in many fields,including education, software engineering, healthcare, and marketing. In thispaper, we will discuss the possible applications, drawbacks, and researchdirections using advanced language Chatbots (e.g., ChatGPT) in each of thesefields. We first start with a brief introduction and the development timelineof artificial intelligence based language models, then we go through possibleapplications of such models, after that we discuss the limitations anddrawbacks of the current technological state of the art, and finally we pointout future possible research directions.
+# Translation (by gpt-3.5-turbo)
+- ChatGPTは、テキストベースのプロンプトに対して人間らしい応答を生成するために深層学習アルゴリズムを使用する人工知能言語モデルの一種です。2022年11月に最新のChatGPTバージョンが導入されたことで、その強力な機能、多数の可能な応用、そして濫用の可能性により、産業界や学術界に衝撃を与えました。本稿執筆時点では、他のいくつかの言語モデル（例えば、Google BardやMeta LLaMA）が登場し、広大な可能性を持つ市場に足場を築こうとしています。これらのモデルは、コンピュータとのやり取りの方法を革新し、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの多くの分野で応用可能性があります。本論文では、これらの分野における高度な言語チャットボット（ChatGPTなど）の可能な応用、制限、欠点、および研究方向について議論します。まず、人工知能に基づく言語モデルの簡単な紹介と開発のタイムラインを説明し、その後、このようなモデルの可能な応用について説明し、現在の技術の状態の制限と欠点について議論し、最後に将来の可能性のある研究方向を指摘します。
+# Summary (by gpt-3.5-turbo)
+- - ChatGPTは、深層学習アルゴリズムを使用して人間らしい応答を生成する人工知能言語モデルである。
+- 最新のChatGPTバージョンが導入され、他の言語モデルも登場している。
+- これらのモデルは、教育、ソフトウェアエンジニアリング、医療、マーケティングなどの分野で応用可能性がある。
+- 本論文では、これらのモデルの可能な応用、制限、欠点、および研究方向について議論する。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AI, write an essay for me: A large-scale comparison of human-written  versus ChatGPT-generated essays, Steffen Herbold+, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.14276</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/571</repo-issue-link>
+<tags>NLP, LanguageModel, Education, AES(AutomatedEssayScoring), ChatGPT, action_wanted</tags>
+<repo-issue-date>2023-04-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2304.14276
+# Authors
+  - Steffen Herbold
+  - Annette Hautli-Janisz
+  - Ute Heuer
+  - Zlata Kikteva
+  - Alexander Trautsch
+# Abstract
+  - Background: Recently, ChatGPT and similar generative AI models have attracted hundreds of millions of users and become part of the public discourse. Many believe that such models will disrupt society and will result in a significant change in the education system and information generation in the future. So far, this belief is based on either colloquial evidence or benchmarks from the owners of the models -- both lack scientific rigour.   Objective: Through a large-scale study comparing human-written versus ChatGPT-generated argumentative student essays, we systematically assess the quality of the AI-generated content.   Methods: A large corpus of essays was rated using standard criteria by a large number of human experts (teachers). We augment the analysis with a consideration of the linguistic characteristics of the generated essays.   Results: Our results demonstrate that ChatGPT generates essays that are rated higher for quality than human-written essays. The writing style of the AI models exhibits linguistic characteristics that are different from those of the human-written essays, e.g., it is characterized by fewer discourse and epistemic markers, but more nominalizations and greater lexical diversity.   Conclusions: Our results clearly demonstrate that models like ChatGPT outperform humans in generating argumentative essays. Since the technology is readily available for anyone to use, educators must act immediately. We must re-invent homework and develop teaching concepts that utilize these AI models in the same way as math utilized the calculator: teach the general concepts first and then use AI tools to free up time for other learning objectives.
+# Translation (by gpt-4o-mini)
+- 背景：最近、ChatGPTや類似の生成AIモデルは数億人のユーザーを惹きつけ、公共の議論の一部となっています。多くの人々は、これらのモデルが社会を変革し、将来的に教育システムや情報生成に大きな変化をもたらすと信じています。これまで、この信念は口頭の証拠やモデルの所有者からのベンチマークに基づいており、いずれも科学的な厳密さに欠けています。
+
+目的：人間が書いた論証的な学生エッセイとChatGPTが生成したエッセイを比較する大規模な研究を通じて、AI生成コンテンツの質を体系的に評価します。
+
+方法：大規模なエッセイコーパスを、多数の人間の専門家（教師）によって標準的な基準で評価しました。生成されたエッセイの言語的特徴を考慮に入れて分析を補強します。
+
+結果：私たちの結果は、ChatGPTが生成したエッセイが人間が書いたエッセイよりも質が高く評価されることを示しています。AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示しており、例えば、談話的および認識的マーカーが少なく、名詞化が多く、語彙の多様性が高いことが特徴です。
+
+結論：私たちの結果は、ChatGPTのようなモデルが論証的エッセイの生成において人間を上回ることを明確に示しています。この技術は誰でも利用できるため、教育者は直ちに行動を起こさなければなりません。宿題を再考し、これらのAIモデルを数学が計算機を利用するのと同様に活用する教育コンセプトを開発する必要があります：まず一般的な概念を教え、その後AIツールを使用して他の学習目標のための時間を確保します。
+# Summary (by gpt-4o-mini)
+- ChatGPTが生成したエッセイは、人間が書いたものよりも質が高いと評価されることが大規模な研究で示された。生成されたエッセイは独自の言語的特徴を持ち、教育者はこの技術を活用する新たな教育コンセプトを開発する必要がある。</issue-body>
+<maintainer-comment-text><p>ChatGPTは人間が書いたエッセイよりも高品質なエッセイが書けることを示した。<br><br>また、AIモデルの文体は、人間が書いたエッセイとは異なる言語的特徴を示している。たとえば、談話や認識マーカーが少ないが、名詞化が多く、語彙の多様性が高いという特徴がある、とのこと。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235142851-756a418f-3c5a-4ae6-9309-0f077b1d017b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Controlled Language Generation for Language Learning Items, Kevin Stowe+, EMNLP'22 Industry Track, 2022.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2211.15731</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4220</repo-issue-link>
+<tags>NeuralNetwork, NaturalLanguageGeneration, Controllable, NLP, Education, action_wanted, EMNLP, Encoder-Decoder, IndustryTrack</tags>
+<repo-issue-date>2026-01-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2211.15731
+# Authors
+  - Kevin Stowe
+  - Debanjan Ghosh
+  - Mengxuan Zhao
+# Abstract
+  - This work aims to employ natural language generation (NLG) to rapidly generate items for English language learning applications: this requires both language models capable of generating fluent, high-quality English, and to control the output of the generation to match the requirements of the relevant items. We experiment with deep pretrained models for this task, developing novel methods for controlling items for factors relevant in language learning: diverse sentences for different proficiency levels and argument structure to test grammar. Human evaluation demonstrates high grammatically scores for all models (3.4 and above out of 4), and higher length (24%) and complexity (9%) over the baseline for the advanced proficiency model. Our results show that we can achieve strong performance while adding additional control to ensure diverse, tailored content for individual users.
+# Translation (by gpt-4o-mini)
+- この研究は、自然言語生成（NLG）を活用して英語学習アプリケーションのために迅速に教材を生成することを目的としています。これには、流暢で高品質な英語を生成できる言語モデルと、生成された出力を関連する教材の要件に合わせて制御する能力が必要です。私たちはこのタスクのために深層事前学習モデルを用いて実験を行い、言語学習に関連する要素に基づいて教材を制御する新しい手法を開発しました：異なる熟達度に応じた多様な文と、文法をテストするための引数構造です。人間による評価では、すべてのモデルに対して高い文法スコア（4点中3.4以上）が示され、上級熟達度モデルは基準よりも長さが24%、複雑さが9%向上しました。我々の結果は、個々のユーザーに合わせた多様で特注のコンテンツを確保しつつ、強力なパフォーマンスを達成できることを示しています。
+# Summary (by gpt-4o-mini)
+- 自然言語生成を活用し、英語学習アプリ向けに迅速に教材を生成。深層事前学習モデルを用いて、熟達度に応じた多様な文や文法テストの引数構造を制御する新手法を開発。人間評価では高い文法スコアを得て、上級モデルは基準を超える長さと複雑さを実現。多様で特注のコンテンツを提供し、強力なパフォーマンスを示す。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Reinforcement Learning for the Adaptive Scheduling of Educational Activities, Bassen+, Stanford University, CHI'20</title>
+<original-paper-blog-link>https://assets.amazon.science/09/52/ef9488314113a1c8488b277956f8/reinforcement-learning-for-the-adaptive-scheduling-of-educational-activities.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/503</repo-issue-link>
+<tags>Education, AdaptiveLearning, EducationalDataMining</tags>
+<repo-issue-date>2022-12-27</repo-issue-date>
+<issue-body>https://assets.amazon.science/09/52/ef9488314113a1c8488b277956f8/reinforcement-learning-for-the-adaptive-scheduling-of-educational-activities.pdf</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Machine Learning–Driven Language Assessment, LaFlair+, TACL'20</title>
+<original-paper-blog-link>https://aclanthology.org/2020.tacl-1.17.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/491</repo-issue-link>
+<tags>Education, Assessment, IRT</tags>
+<repo-issue-date>2022-11-25</repo-issue-date>
+<issue-body>https://aclanthology.org/2020.tacl-1.17.pdf</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>GRAPH-BASED KNOWLEDGE TRACING: MODELING STUDENT PROFICIENCY USING GRAPH NEURAL NETWORK, Nakagawa+, Tokyo University, WI'19</title>
+<original-paper-blog-link>https://rlgm.github.io/papers/70.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/401</repo-issue-link>
+<tags>NeuralNetwork, GraphConvolutionalNetwork, Education, EducationalDataMining, KnowledgeTracing, WI</tags>
+<repo-issue-date>2021-07-08</repo-issue-date>
+<issue-body>https://rlgm.github.io/papers/70.pdf</issue-body>
+<maintainer-comment-text><p>graph neural networkでKnoelwdge Tracingした論文。各conceptのproficiencyの可視化までしっかりやってそう。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A SURVEY OF ARTIFICIAL INTELLIGENCE TECHNIQUES EMPLOYED FOR ADAPTIVE EDUCATIONAL SYSTEMS WITHIN E-LEARNING PLATFORMS,  Almohammadi+, JAISCR'17, 2017.01</title>
+<original-paper-blog-link>https://www.researchgate.net/publication/311885903_A_Survey_of_Artificial_Intelligence_Techniques_Employed_for_Adaptive_Educational_Systems_within_E-Learning_Platforms</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/269</repo-issue-link>
+<tags>RecommenderSystems, Survey, Education</tags>
+<repo-issue-date>2018-03-30</repo-issue-date>
+<issue-body>https://www.researchgate.net/publication/311885903_A_Survey_of_Artificial_Intelligence_Techniques_Employed_for_Adaptive_Educational_Systems_within_E-Learning_Platforms</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A Survey on Artificial Intelligence and Data Mining for MOOCs, Simon Fauvel+, arXiv'16, 2016.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/1601.06862</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/270</repo-issue-link>
+<tags>RecommenderSystems, Survey, Education, TechnologyEnhancedLearning, action_wanted</tags>
+<repo-issue-date>2018-03-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1601.06862
+# Authors
+  - Simon Fauvel
+  - Han Yu
+# Abstract
+  - Massive Open Online Courses (MOOCs) have gained tremendous popularity in the last few years. Thanks to MOOCs, millions of learners from all over the world have taken thousands of high-quality courses for free. Putting together an excellent MOOC ecosystem is a multidisciplinary endeavour that requires contributions from many different fields. Artificial intelligence (AI) and data mining (DM) are two such fields that have played a significant role in making MOOCs what they are today. By exploiting the vast amount of data generated by learners engaging in MOOCs, DM improves our understanding of the MOOC ecosystem and enables MOOC practitioners to deliver better courses. Similarly, AI, supported by DM, can greatly improve student experience and learning outcomes. In this survey paper, we first review the state-of-the-art artificial intelligence and data mining research applied to MOOCs, emphasising the use of AI and DM tools and techniques to improve student engagement, learning outcomes, and our understanding of the MOOC ecosystem. We then offer an overview of key trends and important research to carry out in the fields of AI and DM so that MOOCs can reach their full potential.
+# Translation (by gpt-4o-mini)
+- 大規模オープンオンラインコース（MOOCs）は、ここ数年で非常に人気を博しています。MOOCsのおかげで、世界中の何百万もの学習者が数千の高品質なコースを無料で受講しています。優れたMOOCエコシステムを構築することは、多くの異なる分野からの貢献を必要とする学際的な取り組みです。人工知能（AI）とデータマイニング（DM）は、MOOCsを現在の形にする上で重要な役割を果たしてきた2つの分野です。学習者がMOOCsに参加することで生成される膨大なデータを活用することで、DMはMOOCエコシステムの理解を深め、MOOCの実践者がより良いコースを提供できるようにします。同様に、DMに支えられたAIは、学生の体験や学習成果を大幅に向上させることができます。本調査論文では、まずMOOCsに適用された最先端の人工知能とデータマイニング研究をレビューし、学生のエンゲージメント、学習成果、MOOCエコシステムの理解を向上させるためのAIとDMのツールや技術の使用を強調します。次に、MOOCsがその潜在能力を最大限に発揮できるようにするために、AIとDMの分野で実施すべき重要な研究と主要なトレンドの概要を提供します。
+# Summary (by gpt-4o-mini)
+- MOOCsは人気を集めており、AIとデータマイニングがその発展に寄与している。データを活用することで、MOOCの理解を深め、学習者の体験を向上させることが可能。論文では、AIとDMの最新研究をレビューし、学生のエンゲージメントや学習成果を向上させる技術を強調。さらに、MOOCsの潜在能力を引き出すための重要な研究課題とトレンドを示す。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Personalized Mathematical Word Problem Generation, Polozov+, IJCAI'15</title>
+<original-paper-blog-link>https://www.ijcai.org/Proceedings/15/Papers/060.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/328</repo-issue-link>
+<tags>NLP, Education, PersonalizedGeneration, Personalization, QuestionGeneration, IJCAI</tags>
+<repo-issue-date>2019-10-11</repo-issue-date>
+<issue-body>https://www.ijcai.org/Proceedings/15/Papers/060.pdf</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Adaptive Educational HypermediaSystems in Technology Enhanced Learning: A Literature Review, Mulwa+, SIGITE'10, 2010.10</title>
+<original-paper-blog-link>https://www.researchgate.net/profile/Seamus-Lawless/publication/220706955_Adaptive_Educational_Hypermedia_Systems_in_Technology_Enhanced_Learning_A_Literature_Review/links/09e415065b412eb82c000000/Adaptive-Educational-Hypermedia-Systems-in-Technology-Enhanced-Learning-A-Literature-Review.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/271</repo-issue-link>
+<tags>Survey, Education, TechnologyEnhancedLearning</tags>
+<repo-issue-date>2018-03-31</repo-issue-date>
+<issue-body>https://www.researchgate.net/profile/Seamus-Lawless/publication/220706955_Adaptive_Educational_Hypermedia_Systems_in_Technology_Enhanced_Learning_A_Literature_Review/links/09e415065b412eb82c000000/Adaptive-Educational-Hypermedia-Systems-in-Technology-Enhanced-Learning-A-Literature-Review.pdf</issue-body>
+<maintainer-comment-text><p>よさげ</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>How AI assistance impacts the formation of coding skills, Anthropic, 2026.01</title>
+<original-paper-blog-link>https://www.anthropic.com/research/AI-assistance-coding-skills</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4345</repo-issue-link>
+<tags>Analysis, Education, AIAgents, Coding, SoftwareEngineering, read-later, KeyPoint Notes</tags>
+<repo-issue-date>2026-01-30</repo-issue-date>
+<issue-body>https://www.anthropic.com/research/AI-assistance-coding-skills</issue-body>
+<maintainer-comment-text><p>コーディングエージェントを使うことによる新しいスキルの習熟に対する影響の調査。エージェントを使ったグループは平均的に早く仕事を終えたが、その後のクイズによる習熟度のテストでは17パーセント低いスコアとなりエージェントを使わなかったグループと比較して習熟度に差が生まれた。しかしエージェントを使って早く終えたにも関わらず習熟度も相対的に低くならなかった人々がいて、そのような人たちはただエージェントに頼るのではなく、コードのコンセプトや理解をするための質問を投げかけている、といった使い方に関する違いが見受けられた、といった話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Designing AI-resistant technical evaluations, Anthropic, 2026.01</title>
+<original-paper-blog-link>https://www.anthropic.com/engineering/AI-resistant-technical-evaluations</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4267</repo-issue-link>
+<tags>LanguageModel, Education, AIAgents, Blog, read-later, Selected Papers/Blogs, Initial Impression Notes, Testing</tags>
+<repo-issue-date>2026-01-22</repo-issue-date>
+<issue-body>https://www.anthropic.com/engineering/AI-resistant-technical-evaluations</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/anthropicai/status/2014143403144200234?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Anthropicの採用における持ち帰り課題の変遷に関する記事。昔の持ち帰り課題では、応募者の大半よりもClaudeが上回るようになり採用におけるシグナルが拾いづらくなったのでリデザインが必要になった、そしてそれをどう変化させたか、といった話のようである。これは採用の話だがtestingという広い文脈で捉えるとかなり参考になる話に見える。</p><p>Claudeを作っている会社が自社が作ったプロダクトによって採用で苦しむという構造になっており、それに対してどのように対処したかという話題は非常に興味深いトピックだと感じる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>veAgentBench, ByteDance, 2025.11</title>
+<original-paper-blog-link>https://modelscope.cn/datasets/bytedance-research/veAgentBench/summary</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3813</repo-issue-link>
+<tags>NLP, Dataset, Education, AIAgents, Evaluation, Financial, Legal</tags>
+<repo-issue-date>2025-11-26</repo-issue-date>
+<issue-body>https://modelscope.cn/datasets/bytedance-research/veAgentBench/summary</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/modelscope2022/status/1993308962058362946?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LLMは教育をどう変えるか：主要3社の「学習モード」比較考察, Kawamoto, 2025.08</title>
+<original-paper-blog-link>https://zenn.dev/neoai/articles/ad8aef1e1f1473</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2617</repo-issue-link>
+<tags>LanguageModel, Education</tags>
+<repo-issue-date>2025-08-31</repo-issue-date>
+<issue-body>https://zenn.dev/neoai/articles/ad8aef1e1f1473</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/toshikikawamoto/status/1961443496063336522?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Towards personalized summaries in spanish based on learning styles theory, Uriel+, Res. Comput. Sci. 148.5, 1</title>
+<original-paper-blog-link>https://www.researchgate.net/publication/339206575_Towards_Personalized_Summaries_in_Spanish_based_on_Learning_Styles_Theory</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/646</repo-issue-link>
+<tags>PersonalizedDocumentSummarization, NLP, Education, Personalization</tags>
+<repo-issue-date>2023-05-05</repo-issue-date>
+<issue-body>https://www.researchgate.net/publication/339206575_Towards_Personalized_Summaries_in_Spanish_based_on_Learning_Styles_Theory</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Personalized Text Content Summarizer for Mobile Learning: An Automatic Text Summarization System with Relevance Based Language Model, Guangbing+, IEEE Fourth International Conference on Technology for Education, 2012, 22</title>
+<original-paper-blog-link>https://ieeexplore.ieee.org/document/6305948</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/645</repo-issue-link>
+<tags>PersonalizedDocumentSummarization, NLP, Education, Personalization</tags>
+<repo-issue-date>2023-05-05</repo-issue-date>
+<issue-body>https://ieeexplore.ieee.org/document/6305948</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Exploring the Potential of Using an AI Language Model for Automated Essay Scoring, Mizumoto+, Research Methods in Applied Linguistics‘23</title>
+<original-paper-blog-link>https://osf.io/2uahv/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/515</repo-issue-link>
+<tags>NLP, LanguageModel, Education, AES(AutomatedEssayScoring)</tags>
+<repo-issue-date>2023-04-01</repo-issue-date>
+<issue-body>https://osf.io/2uahv/</issue-body>
+<maintainer-comment-text><p>著者によるポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mizumotoatsushi/status/1641754298496471040?s=46&t=TIr1-wDC_j5MPU3TvCVWMg"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者によるブログ:<br><br>
+
+{% raw %}
+<a href="https://mizumot.com/lablog/archives/1805" target="_blank" rel="noopener noreferrer">https://mizumot.com/lablog/archives/1805</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Score Prediction dataset</title>
+<original-paper-blog-link>https://www.kaggle.com/datasets/saraivaufc/enem-2019</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/474</repo-issue-link>
+<tags>Dataset, Education, AdaptiveLearning, EducationalDataMining, ScorePrediction</tags>
+<repo-issue-date>2022-08-23</repo-issue-date>
+<issue-body>- ENEM dataset
+    - https://www.kaggle.com/datasets/saraivaufc/enem-2019
+    - ブラジルの高校（元々は中等教育の達成度評価で使われていたっぽい？）での全国共通テストのデータ
+    - 10,000名の生徒の185種類の問題に対する回答レコードと、4つにセクション分けされたスコアが記録されている</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Panorama of recommender systems to support learning, Drachsler+, 2015.12</title>
+<original-paper-blog-link>https://research.ou.nl/files/940085/book_chapter.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/290</repo-issue-link>
+<tags>RecommenderSystems, Survey, Education, AdaptiveLearning, One-Line Notes</tags>
+<repo-issue-date>2018-12-22</repo-issue-date>
+<issue-body>https://research.ou.nl/files/940085/book_chapter.pdf</issue-body>
+<maintainer-comment-text><p>教育分野に対するRecsysのSurvey</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook, 2011.10</title>
+<original-paper-blog-link>http://www.ise.bgu.ac.il/faculty/liorr/recsyshb/chLearning.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/286</repo-issue-link>
+<tags>RecommenderSystems, Survey, Education, TechnologyEnhancedLearning, AdaptiveLearning</tags>
+<repo-issue-date>2018-12-22</repo-issue-date>
+<issue-body>http://www.ise.bgu.ac.il/faculty/liorr/recsyshb/chLearning.pdf</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Personal recommender systems for learners in lifelong learning networks: the requirements, techniques and model, Drachsler+, Int. J. Learning Technology 3（4）, 2008.07</title>
+<original-paper-blog-link>https://dl.acm.org/doi/abs/10.1504/IJLT.2008.019376</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/285</repo-issue-link>
+<tags>RecommenderSystems, Survey, Education, AdaptiveLearning</tags>
+<repo-issue-date>2018-12-22</repo-issue-date>
+<issue-body>https://dl.acm.org/doi/abs/10.1504/IJLT.2008.019376</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LEARNING AND TEACHING STYLES IN ENGINEERING EDUCATION, Felder, Engr. Education, 78（7）, 674–681, 1988.01</title>
+<original-paper-blog-link>http://www4.ncsu.edu/unity/lockers/users/f/felder/public/Papers/LS-1988.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/284</repo-issue-link>
+<tags>Classic, Education, AdaptiveLearning, LearningStyle, Selected Papers/Blogs, One-Line Notes</tags>
+<repo-issue-date>2018-12-22</repo-issue-date>
+<issue-body>http://www4.ncsu.edu/unity/lockers/users/f/felder/public/Papers/LS-1988.pdf</issue-body>
+<maintainer-comment-text><p>LearningStyleに関して研究している古典的な研究。<br><br>context-aware recsysの研究初期の頃は、だいたいはこのFelder-Silverman Theoryというのをベースに研究されていたらしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Recommender Systems in Technology Enhanced Learning, Manouselis+, Recommender Systems Handbook: A Complete Guide for Research Scientists and Practitioners, 2011.10</title>
+<original-paper-blog-link>https://link.springer.com/chapter/10.1007/978-0-387-85820-3_12</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/268</repo-issue-link>
+<tags>RecommenderSystems, Survey, Education, TechnologyEnhancedLearning</tags>
+<repo-issue-date>2018-03-30</repo-issue-date>
+<issue-body>https://link.springer.com/chapter/10.1007/978-0-387-85820-3_12</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Context-Aware Recommender Systems for Learning: A Survey and Future Challenges, Verbert+,  IEEE TRANSACTIONS ON LEARNING TECHNOLOGIES, VOL. 5, NO. 4, OCTOBER-DECEMBER 2012.04</title>
+<original-paper-blog-link>http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6189308</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/267</repo-issue-link>
+<tags>RecommenderSystems, Survey, Education, TechnologyEnhancedLearning</tags>
+<repo-issue-date>2018-03-30</repo-issue-date>
+<issue-body>http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6189308</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

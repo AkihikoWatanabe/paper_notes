@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-05">
+<paper-entry>
+<title>[Paper Note] Reasoning Cache: Continual Improvement Over Long Horizons via Short-Horizon RL, Ian Wu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.03773</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4439</repo-issue-link>
+<tags>DocumentSummarization, NLP, LanguageModel, ReinforcementLearning, AIAgents, Reasoning, PostTraining, read-later, RLVR, Selected Papers/Blogs, OOD, Generalization, KeyPoint Notes, LongHorizon, Robustness, Compression, Initial Impression Notes</tags>
+<repo-issue-date>2026-02-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.03773
+# Authors
+  - Ian Wu
+  - Yuxiao Qu
+  - Amrith Setlur
+  - Aviral Kumar
+# Abstract
+  - Large Language Models (LLMs) that can continually improve beyond their training budgets are able to solve increasingly difficult problems by adapting at test time, a property we refer to as extrapolation. However, standard reinforcement learning (RL) operates over fixed problem distributions and training budgets, which limits extrapolation amidst distribution shift at test time. To address this, we introduce RC, an iterative decoding algorithm that replaces standard autoregressive decoding during both training and inference. RC exploits an asymmetry between the response generation and summarization capabilities of LLMs to construct reasoning chains that consistently improve across iterations. Models trained to use RC can extrapolate and continually improve over reasoning horizons more than an order of magnitude longer than those seen during training. Empirically, training a 4B model with RC using a 16k-token training budget improves performance on HMMT 2025 from 40% to nearly 70% with 0.5m tokens at test time, outperforming both comparably sized models and many larger reasoning LLMs. Finally, we also show that models trained with RC can more effectively leverage existing scaffolds to further scale test-time performance, due to the improved summary-conditioned generation abilities learned through training.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は、訓練の予算を超えて継続的に改善できるため、テスト時に適応することでますます難しい問題を解決できるという特性を持っています。これを外挿と呼びます。しかし、標準的な強化学習（RL）は固定された問題分布と訓練予算のもとで機能するため、テスト時の分布の変化に対する外挿が制限されます。これに対処するために、私たちはRCという反復デコーディングアルゴリズムを導入します。RCは、訓練と推論の両方で標準的な自己回帰デコーディングを置き換えます。RCは、LLMの応答生成能力と要約能力の間の非対称性を利用して、反復を通じて一貫して改善される推論のチェーンを構築します。RCを使用するように訓練されたモデルは、訓練中に見られたものよりも桁違いに長い推論の範囲を外挿し、継続的に改善できます。実証的には、16kトークンの訓練予算を使用してRCで訓練した4Bモデルは、テスト時に0.5mトークンを用いてHMMT 2025でのパフォーマンスを40%からほぼ70%に向上させ、同程度のサイズのモデルや多くの大規模推論LLMを上回る結果を示しました。最後に、RCで訓練されたモデルは、訓練を通じて学んだ改善された要約条件生成能力により、既存の支援をより効果的に活用してテスト時のパフォーマンスをさらに向上させることができることも示しています。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は、テスト時の適応能力により複雑な問題を解決する外挿特性を持つが、標準的な強化学習（RL）はその変化に制約がある。これに対処するために、反復デコーディングアルゴリズム（RC）を導入し、LLMの応答生成能力を活用して推論を継続的に改善。実験では、16kトークンの訓練で4BモデルがHMMT 2025でのパフォーマンスを40%から約70%に引き上げ、既存のモデルを上回る結果を示した。RCを使用したモデルは、学習した要約生成能力によりテスト時のパフォーマンスも向上できることが証明された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ianwu97/status/2019160725219147811?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>reasoningの生成と、生成されたreasoningとinputで条件付けでsummaryを生成、さらにinputとsummaryで条件付けてreasoningを生成するという、生成と要約を反復する枠組みを採用（LLMはreasoningを要約することが生成するよりも得意で、かつ過去の要約から将来の推論を生成できるという非対称性を活用）することで、訓練時の予算は決まっているため、訓練時の予算では到達できないhorizonにテスト時に遭遇すると汎化しない課題を克服し、テスト時により長いステップ数の推論もこなせるように外挿する。また、このようなgeneration-summaryの反復を各ステップごとでRLVRすることでさらに性能を向上でき、実際にlong horizonな推論や学習時よりもより長いreasoning token budgetの場合に大きなgainを獲得できている。<br><br>RLVRをする際に各ステップごとのSummaryを保存しておき、各ステップのsummaryが与えられたときに正解できるかどうかのシグナルに基づいて、ステップごとの要約で条件付けられた応答能力を改善する。これにより、さまざまなステップで応答を生成する能力が強化され、結果的にshort horizonからlong horizonの推論をする能力が強化される。<br>このときsummaryはリプレイバッファとして扱い後のepochの訓練でもオフポリシーデータとして活用する。要約はinputに条件付けられて生成されるものであり、optimizationのtargetとは異なるためリプレイバッファとして活用でき、かつさまざまな要約に対して正解が生成できるように学習されるためテスト時の要約の分布のシフトにロバストになる。また、オンポリシーデータだけだと、long horizonに対する要約は非常に稀になるため、リプレイバッファを利用することで補う。<br><br>テスト時に学習時を超えたhorizonで推論できることは現在のAIエージェントの大きな課題だと思うので非常に興味深い研究だと思う。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] From Entropy to Epiplexity: Rethinking Information for Computationally Bounded Intelligence, Marc Finzi+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.03220</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4145</repo-issue-link>
+<tags>Analysis, MachineLearning, Metrics, Dataset, read-later, Selected Papers/Blogs, OOD, Generalization, Reference Collection</tags>
+<repo-issue-date>2026-01-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.03220
+# Authors
+  - Marc Finzi
+  - Shikai Qiu
+  - Yiding Jiang
+  - Pavel Izmailov
+  - J. Zico Kolter
+  - Andrew Gordon Wilson
+# Abstract
+  - Can we learn more from data than existed in the generating process itself? Can new and useful information be constructed from merely applying deterministic transformations to existing data? Can the learnable content in data be evaluated without considering a downstream task? On these questions, Shannon information and Kolmogorov complexity come up nearly empty-handed, in part because they assume observers with unlimited computational capacity and fail to target the useful information content. In this work, we identify and exemplify three seeming paradoxes in information theory: (1) information cannot be increased by deterministic transformations; (2) information is independent of the order of data; (3) likelihood modeling is merely distribution matching. To shed light on the tension between these results and modern practice, and to quantify the value of data, we introduce epiplexity, a formalization of information capturing what computationally bounded observers can learn from data. Epiplexity captures the structural content in data while excluding time-bounded entropy, the random unpredictable content exemplified by pseudorandom number generators and chaotic dynamical systems. With these concepts, we demonstrate how information can be created with computation, how it depends on the ordering of the data, and how likelihood modeling can produce more complex programs than present in the data generating process itself. We also present practical procedures to estimate epiplexity which we show capture differences across data sources, track with downstream performance, and highlight dataset interventions that improve out-of-distribution generalization. In contrast to principles of model selection, epiplexity provides a theoretical foundation for data selection, guiding how to select, generate, or transform data for learning systems.
+# Translation (by gpt-4o-mini)
+- データから生成プロセス自体に存在する以上の情報を学ぶことはできるのか？既存のデータに決定論的な変換を適用するだけで新しく有用な情報を構築できるのか？データ内の学習可能な内容を、ダウンストリームタスクを考慮せずに評価できるのか？これらの問いに対して、シャノン情報とコルモゴロフの複雑性はほとんど無力であり、その一因は、無限の計算能力を持つ観察者を前提としており、有用な情報内容をターゲットにしていないからである。本研究では、情報理論における三つの一見矛盾する現象を特定し、例示する：(1) 決定論的変換によって情報は増加しない；(2) 情報はデータの順序に依存しない；(3) 尤度モデルは単なる分布の一致に過ぎない。これらの結果と現代の実践との間の緊張を明らかにし、データの価値を定量化するために、エピプレキシティという概念を導入する。これは、計算的に制約された観察者がデータから学べる情報を捉える形式化である。エピプレキシティは、データ内の構造的内容を捉えつつ、時間制約のあるエントロピー、すなわち擬似乱数生成器やカオス的動的システムによって示されるランダムで予測不可能な内容を除外する。これらの概念を用いて、計算によって情報がどのように創出されるか、情報がデータの順序にどのように依存するか、そして尤度モデルがデータ生成プロセス自体に存在するよりも複雑なプログラムを生成できるかを示す。また、エピプレキシティを推定するための実用的な手法を提示し、これがデータソース間の違いを捉え、ダウンストリームパフォーマンスと連動し、分布外一般化を改善するデータセット介入を強調することを示す。モデル選択の原則とは対照的に、エピプレキシティはデータ選択の理論的基盤を提供し、学習システムのためにデータを選択、生成、または変換する方法を導く。
+# Summary (by gpt-4o-mini)
+- 本研究では、データから新たな情報を生成する可能性や、情報の評価方法について探求する。シャノン情報やコルモゴロフの複雑性が無力である理由を示し、情報理論における三つの矛盾する現象を特定する。新たに導入した「エピプレキシティ」は、計算制約のある観察者がデータから学べる情報を捉え、データの構造的内容を評価する手法である。これにより、情報生成のメカニズムやデータの順序依存性を明らかにし、エピプレキシティを用いたデータ選択の理論的基盤を提供する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/m_finzi/status/2008934727156453661?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2009045634595344541?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2010429251963797712?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Roboflow100-VL: A Multi-Domain Object Detection Benchmark for   Vision-Language Models, Peter Robicheaux+, NeurIPS'25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.20612</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3460</repo-issue-link>
+<tags>ComputerVision, Dataset, Zero/Few/ManyShotPrompting, Evaluation, MultiModal, In-ContextLearning, NeurIPS, read-later, Selected Papers/Blogs, OOD, Generalization, VisionLanguageModel, One-Line Notes, ObjectDetection</tags>
+<repo-issue-date>2025-10-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.20612
+# Authors
+  - Peter Robicheaux
+  - Matvei Popov
+  - Anish Madan
+  - Isaac Robinson
+  - Joseph Nelson
+  - Deva Ramanan
+  - Neehar Peri
+# Abstract
+  - Vision-language models (VLMs) trained on internet-scale data achieve remarkable zero-shot detection performance on common objects like car, truck, and pedestrian. However, state-of-the-art models still struggle to generalize to out-of-distribution classes, tasks and imaging modalities not typically found in their pre-training. Rather than simply re-training VLMs on more visual data, we argue that one should align VLMs to new concepts with annotation instructions containing a few visual examples and rich textual descriptions. To this end, we introduce Roboflow100-VL, a large-scale collection of 100 multi-modal object detection datasets with diverse concepts not commonly found in VLM pre-training. We evaluate state-of-the-art models on our benchmark in zero-shot, few-shot, semi-supervised, and fully-supervised settings, allowing for comparison across data regimes. Notably, we find that VLMs like GroundingDINO and Qwen2.5-VL achieve less than 2% zero-shot accuracy on challenging medical imaging datasets within Roboflow100-VL, demonstrating the need for few-shot concept alignment. Lastly, we discuss our recent CVPR 2025 Foundational FSOD competition and share insights from the community. Notably, the winning team significantly outperforms our baseline by 17 mAP! Our code and dataset are available at https://github.com/roboflow/rf100-vl and https://universe.roboflow.com/rf100-vl/.
+# Translation (by gpt-4o-mini)
+- 視覚と言語のモデル（VLMs）は、インターネット規模のデータで訓練され、車、トラック、歩行者などの一般的な物体に対して驚異的なゼロショット検出性能を達成しています。しかし、最先端のモデルは、事前訓練で通常見られない分布外のクラス、タスク、イメージングモダリティに対して一般化するのに苦労しています。単にVLMをより多くの視覚データで再訓練するのではなく、少数の視覚例と豊富なテキスト記述を含む注釈指示を用いて新しい概念にVLMを整合させるべきだと主張します。この目的のために、Roboflow100-VLを導入します。これは、VLMの事前訓練では一般的に見られない多様な概念を持つ100のマルチモーダル物体検出データセットの大規模コレクションです。私たちは、ゼロショット、少数ショット、半教師あり、完全教師ありの設定で、最先端のモデルを私たちのベンチマークで評価し、データレジーム間の比較を可能にします。特に、GroundingDINOやQwen2.5-VLのようなVLMは、Roboflow100-VL内の難しい医療画像データセットで2%未満のゼロショット精度を達成しており、少数ショットの概念整合の必要性を示しています。最後に、最近のCVPR 2025基盤FSODコンペティションについて議論し、コミュニティからの洞察を共有します。特に、優勝チームは私たちのベースラインを17 mAPも上回る成果を上げました！私たちのコードとデータセットは、https://github.com/roboflow/rf100-vl および https://universe.roboflow.com/rf100-vl/ で入手可能です。
+# Summary (by gpt-4o-mini)
+- 視覚と言語のモデル（VLMs）は、一般的な物体に対して優れたゼロショット検出性能を示すが、分布外のクラスやタスクに対しては一般化が難しい。そこで、少数の視覚例と豊富なテキスト記述を用いてVLMを新しい概念に整合させる必要があると提案。Roboflow100-VLという多様な概念を持つ100のマルチモーダル物体検出データセットを導入し、最先端モデルの評価を行った。特に、難しい医療画像データセットでのゼロショット精度が低く、少数ショットの概念整合が求められることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/1982270700883951875?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>VLMが「現実世界をどれだけ理解できるか」を評価するためのobject detection用ベンチマークを構築。100のopen source datasetから構成され、それぞれにはtextでのfew shot instructionやvisual exampleが含まれている。データセットは合計で約165kの画像、約1.35M件のアノテーションが含まれ、航空、生物、産業などの事前学習ではあまりカバーされていない新規ドメインの画像が多数含まれているとのこと。<br><br>そして現在のモデルは事前学習に含まれていないOODな画像に対する汎化性能が低く、いちいちモデルを追加で学習するのではなく、ICLによって適用できた方が好ましいという考えがあり、そして結果的に現在のVLMでは、ICLがあまりうまくいかない（ICLによるOODの汎化が効果的にできない）ことがわかった、という話らしい。<br><br>が、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3467" target="_blank" rel="noopener noreferrer">[Paper Note] Many-Shot In-Context Learning in Multimodal Foundation Models, Yixing Jiang+, arXiv'24, 2024.05</a>
+<br><br>での知見と異なる。差異はなんだろうか？<br><br>以下のスレッドで議論がされている:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/marchoelle/status/1982589731260203110?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://rf100-vl.org" target="_blank" rel="noopener noreferrer">https://rf100-vl.org</a>
+{% endraw %}
+
+</p><p>うーんあとでしっかり読みたい、、、</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Thinking on the Fly: Test-Time Reasoning Enhancement via Latent Thought  Policy Optimization, Wengao Ye+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.04182</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3314</repo-issue-link>
+<tags>Online/Interactive, NLP, LanguageModel, ReinforcementLearning, OOD, LatentReasoning, One-Line Notes, Test Time Training (TTT)</tags>
+<repo-issue-date>2025-10-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.04182
+# Authors
+  - Wengao Ye
+  - Yan Liang
+  - Lianlei Shan
+# Abstract
+  - Recent advancements in Large Language Models (LLMs) have shifted from explicit Chain-of-Thought (CoT) reasoning to more efficient latent reasoning, where intermediate thoughts are represented as vectors rather than text. However, latent reasoning can be brittle on challenging, out-of-distribution tasks where robust reasoning is most critical. To overcome these limitations, we introduce Latent Thought Policy Optimization (LTPO), a parameter-free framework that enhances LLM reasoning entirely at test time, without requiring model parameter updates. LTPO treats intermediate latent "thought" vectors as dynamic parameters that are actively optimized for each problem instance. It employs an online policy gradient method guided by an intrinsic, confidence-based reward signal computed directly from the frozen LLM's own output distributions, eliminating the need for external supervision or expensive text generation during optimization. Extensive experiments on five reasoning benchmarks show that LTPO not only matches or surpasses strong baselines on standard tasks but also demonstrates remarkable robustness where others fail. Most notably, on highly challenging AIME benchmarks where existing latent reasoning baselines collapse to near-zero accuracy, LTPO delivers substantial improvements, showcasing a unique capability for complex reasoning.
+# Translation (by gpt-4o-mini)
+- 最近の大規模言語モデル（LLMs）の進展により、明示的なChain-of-Thought（CoT）推論から、より効率的な潜在推論へとシフトしています。ここでは、中間的な思考がテキストではなくベクトルとして表現されます。しかし、潜在推論は、堅牢な推論が最も重要な困難な分布外タスクにおいて脆弱になる可能性があります。これらの制限を克服するために、私たちはLatent Thought Policy Optimization（LTPO）を導入します。これは、モデルパラメータの更新を必要とせず、テスト時にLLMの推論を完全に強化するパラメータフリーのフレームワークです。LTPOは、中間的な潜在「思考」ベクトルを各問題インスタンスに対して積極的に最適化される動的パラメータとして扱います。これは、凍結されたLLMの出力分布から直接計算された内因的な信頼に基づく報酬信号に導かれたオンラインポリシー勾配法を採用し、最適化中に外部の監視や高価なテキスト生成を必要としません。5つの推論ベンチマークに関する広範な実験により、LTPOは標準タスクにおいて強力なベースラインに匹敵するかそれを上回るだけでなく、他の手法が失敗する場面でも顕著な堅牢性を示すことが分かりました。特に、既存の潜在推論ベースラインがほぼゼロの精度に崩壊する非常に困難なAIMEベンチマークにおいて、LTPOは大幅な改善をもたらし、複雑な推論に対する独自の能力を示しています。
+# Summary (by gpt-4o-mini)
+- Latent Thought Policy Optimization（LTPO）を提案し、LLMの推論を強化するパラメータフリーのフレームワークを導入。中間的な潜在「思考」ベクトルを動的に最適化し、外部監視なしで報酬信号に基づくオンラインポリシー勾配法を使用。5つの推論ベンチマークで強力な性能を示し、特にAIMEベンチマークで顕著な改善を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/1979207098413232316?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>test-time に online-RLを適用することでモデルのパラメータを更新することなく、クエリに応じて動的にlatent reasoningを洗練し、推論能力をロバストにできる、という話な模様？<br><br><img src="https://github.com/user-attachments/assets/cdefa5c8-5fc4-4057-867e-bce5466702b6" /" alt="image" loading="lazy" width="550" height="400"/><br><br>実験結果を見ると、モデルのパラメータ数が大きい場合にgainが小さくなっていっているように見え、かつ実験中のlargest modelのgainがサンプル数の少ないAIMEのスコアに依存しているように見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Visual Instruction Bottleneck Tuning, Changdae Oh+, NeurIPS'25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.13946</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3121</repo-issue-link>
+<tags>ComputerVision, MachineLearning, NLP, LanguageModel, MultiModal, NeurIPS, PostTraining, OOD, Generalization</tags>
+<repo-issue-date>2025-10-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.13946
+# Authors
+  - Changdae Oh
+  - Jiatong Li
+  - Shawn Im
+  - Yixuan Li
+# Abstract
+  - Despite widespread adoption, multimodal large language models (MLLMs) suffer performance degradation when encountering unfamiliar queries under distribution shifts. Existing methods to improve MLLM generalization typically require either more instruction data or larger advanced model architectures, both of which incur non-trivial human labor or computational costs. In this work, we take an alternative approach to enhance the robustness of MLLMs under distribution shifts, from a representation learning perspective. Inspired by the information bottleneck (IB) principle, we derive a variational lower bound of the IB for MLLMs and devise a practical implementation, Visual Instruction Bottleneck Tuning (Vittle). We then provide a theoretical justification of Vittle by revealing its connection to an information-theoretic robustness metric of MLLM. Empirical validation of three MLLMs on open-ended and closed-form question answering and object hallucination detection tasks over 45 datasets, including 30 shift scenarios, demonstrates that Vittle consistently improves the MLLM's robustness under shifts by pursuing the learning of a minimal sufficient representation.
+# Translation (by gpt-4o-mini)
+- 広く採用されているにもかかわらず、マルチモーダル大規模言語モデル（MLLM）は、分布の変化において未知のクエリに直面すると性能が低下します。MLLMの一般化を改善するための既存の方法は、通常、より多くの指示データやより大規模な高度なモデルアーキテクチャを必要とし、どちらも非自明な人的労力や計算コストを伴います。本研究では、表現学習の観点から、分布の変化に対するMLLMの堅牢性を向上させるための代替アプローチを採用します。情報ボトルネック（IB）原理に触発され、MLLMのためのIBの変分下限を導出し、実用的な実装であるVisual Instruction Bottleneck Tuning（Vittle）を考案しました。次に、Vittleの理論的根拠を提供し、MLLMの情報理論的堅牢性指標との関連を明らかにします。45のデータセット、30のシフトシナリオにわたるオープンエンドおよびクローズドフォームの質問応答、オブジェクトハルシネーション検出タスクにおける3つのMLLMの実証的検証は、Vittleが最小限の十分な表現の学習を追求することによって、シフトに対するMLLMの堅牢性を一貫して改善することを示しています。
+# Summary (by gpt-4o-mini)
+- MLLMは未知のクエリに対して性能が低下するが、既存の改善策は多くのデータや計算コストを要する。本研究では、情報ボトルネック原理に基づき、MLLMの堅牢性を向上させるためのVittleを提案。45のデータセットでの実証実験により、VittleがMLLMの堅牢性を一貫して改善することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sharonyixuanli/status/1974150056501535207?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Toward Cross-Hospital Deployment of Natural Language Processing Systems: Model Development and Validation of Fine-Tuned Large Language Models for Disease Name Recognition in Japanese, Shimizu+, JMIR'25</title>
+<original-paper-blog-link>https://medinform.jmir.org/2025/1/e76773</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2177</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), Japanese, OOD, DiseaseNameRecognition</tags>
+<repo-issue-date>2025-07-10</repo-issue-date>
+<issue-body>https://medinform.jmir.org/2025/1/e76773</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aramaki/status/1942902940337099254?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Model soups: averaging weights of multiple fine-tuned models improves accuracy without increasing inference time, Mitchell Wortsman+, ICML'22, 2022.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2203.05482</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3833</repo-issue-link>
+<tags>NeuralNetwork, ComputerVision, NLP, ICML, Selected Papers/Blogs, OOD, Finetuning, Generalization, Encoder, Encoder-Decoder, KeyPoint Notes, Souping</tags>
+<repo-issue-date>2025-11-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2203.05482
+# Authors
+  - Mitchell Wortsman
+  - Gabriel Ilharco
+  - Samir Yitzhak Gadre
+  - Rebecca Roelofs
+  - Raphael Gontijo-Lopes
+  - Ari S. Morcos
+  - Hongseok Namkoong
+  - Ali Farhadi
+  - Yair Carmon
+  - Simon Kornblith
+  - Ludwig Schmidt
+# Abstract
+  - The conventional recipe for maximizing model accuracy is to (1) train multiple models with various hyperparameters and (2) pick the individual model which performs best on a held-out validation set, discarding the remainder. In this paper, we revisit the second step of this procedure in the context of fine-tuning large pre-trained models, where fine-tuned models often appear to lie in a single low error basin. We show that averaging the weights of multiple models fine-tuned with different hyperparameter configurations often improves accuracy and robustness. Unlike a conventional ensemble, we may average many models without incurring any additional inference or memory costs -- we call the results "model soups." When fine-tuning large pre-trained models such as CLIP, ALIGN, and a ViT-G pre-trained on JFT, our soup recipe provides significant improvements over the best model in a hyperparameter sweep on ImageNet. The resulting ViT-G model, which attains 90.94% top-1 accuracy on ImageNet, achieved a new state of the art. Furthermore, we show that the model soup approach extends to multiple image classification and natural language processing tasks, improves out-of-distribution performance, and improves zero-shot performance on new downstream tasks. Finally, we analytically relate the performance similarity of weight-averaging and logit-ensembling to flatness of the loss and confidence of the predictions, and validate this relation empirically. Code is available at https://github.com/mlfoundations/model-soups.
+# Translation (by gpt-4o-mini)
+- 従来のモデル精度を最大化するためのレシピは、(1) 様々なハイパーパラメータで複数のモデルを訓練し、(2) ホールドアウトされた検証セットで最も良いパフォーマンスを示す個々のモデルを選択し、残りを破棄するというものである。本論文では、大規模な事前学習モデルのファインチューニングの文脈において、この手順の第二ステップを再考する。ファインチューニングされたモデルはしばしば単一の低エラーの盆地に存在するように見える。異なるハイパーパラメータ設定でファインチューニングされた複数のモデルの重みを平均化することで、精度と堅牢性が向上することを示す。従来のアンサンブルとは異なり、追加の推論やメモリコストをかけることなく、多くのモデルを平均化することができるため、これらの結果を「モデルスープ」と呼ぶ。CLIP、ALIGN、JFTで事前学習されたViT-Gなどの大規模な事前学習モデルをファインチューニングする際に、我々のスープレシピはImageNetでのハイパーパラメータスイープにおける最良モデルを上回る顕著な改善を提供する。結果として得られたViT-Gモデルは、ImageNetで90.94%のトップ1精度を達成し、新たな最先端を記録した。さらに、モデルスープアプローチは複数の画像分類や自然言語処理タスクにも拡張され、分布外性能を向上させ、新しい下流タスクにおけるゼロショット性能を改善することを示す。最後に、重みの平均化とロジットのアンサンブルの性能類似性を損失の平坦さと予測の信頼性に関連付け、この関係を実証的に検証する。コードは https://github.com/mlfoundations/model-soups で入手可能である。
+# Summary (by gpt-4o-mini)
+- ファインチューニングされたモデルの重みを平均化する「モデルスープ」手法を提案し、精度と堅牢性を向上させることを示す。従来のアンサンブル手法とは異なり、追加のコストなしで複数のモデルを平均化でき、ImageNetで90.94%のトップ1精度を達成。さらに、画像分類や自然言語処理タスクにも適用可能で、分布外性能やゼロショット性能を改善することが確認された。</issue-body>
+<maintainer-comment-text><p>日本語解説:
+
+{% raw %}
+<a href="https://www.docswell.com/s/DeepLearning2023/ZW13L1-dlmodel-soups-averaging-weights-of-multiple-finetuned-models-improves-accuracy-without-increasing-inference-time" target="_blank" rel="noopener noreferrer">https://www.docswell.com/s/DeepLearning2023/ZW13L1-dlmodel-soups-averaging-weights-of-multiple-finetuned-models-improves-accuracy-without-increasing-inference-time</a>
+{% endraw %}
+
+</p><p>transformerベースの事前学習済みモデル（encoder-only, encoder-decoderモデル）のファインチューニングの話で、共通のベースモデルかつ共通のパラメータの初期化を持つ、様々なハイパーパラメータで学習したモデルの重みを平均化することでよりロバストで高性能なモデルを作ります、という話。似たような手法にアンサンブルがあるが、アンサンブルでは利用するモデルに対して全ての推論結果を得なければならないため、計算コストが増大する。一方、モデルスープは単一モデルと同じ計算量で済む（＝計算量は増大しない）。<br><br>スープを作る際は、Validation dataのAccが高い順に異なるFinetuning済みモデルをソートし、逐次的に重みの平均をとりValidation dataのAccが上がる場合に、当該モデルをsoupのingridientsとして加える。要は、開発データで性能が高い順にモデルをソートし、逐次的にモデルを取り出していき、現在のスープに対して重みを平均化した時に開発データの性能が上がるなら平均化したモデルを採用し、上がらないなら無視する、といった処理を繰り返す。これをgreedy soupと呼ぶ。他にもuniform soup, learned soupといった手法も提案され比較されているが、画像系のモデル（CLIP, ViTなど)やNLP(T5, BERT)等で実験されており、greedy soupの性能とロバストさ（OOD;分布シフトに対する予測性能）が良さそうである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Fine-Tuning can Distort Pretrained Features and Underperform   Out-of-Distribution, Ananya Kumar+, N_A, ICLR'22</title>
+<original-paper-blog-link>https://arxiv.org/abs/2202.10054</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/681</repo-issue-link>
+<tags>NeuralNetwork, ComputerVision, MachineLearning, Supervised-FineTuning (SFT), CLIP, ICLR, OOD</tags>
+<repo-issue-date>2023-05-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2202.10054
+# Affiliations
+  - Ananya Kumar, N/A
+  - Aditi Raghunathan, N/A
+  - Robbie Jones, N/A
+  - Tengyu Ma, N/A
+  - Percy Liang, N/A
+# Abstract
+  - When transferring a pretrained model to a downstream task, two popularmethods are full fine-tuning (updating all the model parameters) and linearprobing (updating only the last linear layer -- the "head"). It is well knownthat fine-tuning leads to better accuracy in-distribution (ID). However, inthis paper, we find that fine-tuning can achieve worse accuracy than linearprobing out-of-distribution (OOD) when the pretrained features are good and thedistribution shift is large. On 10 distribution shift datasets(Breeds-Living17, Breeds-Entity30, DomainNet, CIFAR $\to$ STL, CIFAR10.1, FMoW,ImageNetV2, ImageNet-R, ImageNet-A, ImageNet-Sketch), fine-tuning obtains onaverage 2% higher accuracy ID but 7% lower accuracy OOD than linear probing. Weshow theoretically that this tradeoff between ID and OOD accuracy arises evenin a simple setting: fine-tuning overparameterized two-layer linear networks.We prove that the OOD error of fine-tuning is high when we initialize with afixed or random head -- this is because while fine-tuning learns the head, thelower layers of the neural network change simultaneously and distort thepretrained features. Our analysis suggests that the easy two-step strategy oflinear probing then full fine-tuning (LP-FT), sometimes used as a fine-tuningheuristic, combines the benefits of both fine-tuning and linear probing.Empirically, LP-FT outperforms both fine-tuning and linear probing on the abovedatasets (1% better ID, 10% better OOD than full fine-tuning).
+# Translation (by gpt-3.5-turbo)
+- 事前学習済みモデルをダウンストリームタスクに転移する際、2つの一般的な方法は、全体のファインチューニング（すべてのモデルパラメータを更新する）と線形プロービング（最後の線形層、つまり「ヘッド」のみを更新する）です。ファインチューニングがID内でより高い精度をもたらすことはよく知られています。しかし、本論文では、事前学習済みの特徴が良好で、分布のシフトが大きい場合、ファインチューニングが線形プロービングよりもOOD（分布外）で精度が低くなることがあることを発見しました。10の分布シフトデータセット（Breeds-Living17、Breeds-Entity30、DomainNet、CIFAR→STL、CIFAR10.1、FMoW、ImageNetV2、ImageNet-R、ImageNet-A、ImageNet-Sketch）において、ファインチューニングは平均してIDで2％高い精度を得ますが、線形プロービングよりもOODで7％低い精度を得ます。我々は、ファインチューニングが過剰パラメータ化された2層の線形ネットワークに対して行われた場合でも、IDとOODの精度のトレードオフが生じることを理論的に示します。我々は、固定またはランダムなヘッドで初期化した場合、ファインチューニングのOODエラーが高くなることを証明します。これは、ファインチューニングがヘッドを学習する一方で、ニューラルネットワークの下層が同時に変化し、事前学習済みの特徴が歪むためです。我々の分析は、ファインチューニングと線形プロービングの両方の利点を組み合わせたファインチューニングヒューリスティックとして使用されることがある簡単な2段階戦略の線形プロービング後の全体のファインチューニング（LP-FT）が、両方のデータセットでファインチューニングと線形プロービングを上回ることを示唆しています（IDで1％、OODで10％の精度向上）。
+# Summary (by gpt-3.5-turbo)
+- 事前学習済みモデルをダウンストリームタスクに転移する際、ファインチューニングと線形プロービングの2つの方法があるが、本研究では、分布のシフトが大きい場合、ファインチューニングが線形プロービングよりも分布外で精度が低くなることを発見した。LP-FTという2段階戦略の線形プロービング後の全体のファインチューニングが、両方のデータセットでファインチューニングと線形プロービングを上回ることを示唆している。</issue-body>
+<maintainer-comment-text><p>事前学習済みのニューラルモデルをfinetuningする方法は大きく分けて<br>1. linear layerをヘッドとしてconcatしヘッドのみのパラメータを学習<br>2. 事前学習済みモデル全パラメータを学習<br><br>の2種類がある。<br>前者はin-distributionデータに強いが、out-of-distributionに弱い。後者は逆という互いが互いを補完し合う関係にあった。<br>そこで、まず1を実施し、その後2を実施する手法を提案。in-distribution, out-of-distributionの両方で高い性能を出すことを示した（実験では画像処理系のデータを用いて、モデルとしてはImageNet+CLIPで事前学習済みのViTを用いている)。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/059d9056-bd3c-45f2-abd9-00c9f2a3d630" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-21">
+<paper-entry>
+<title>[Paper Note] Arcee Trinity Large Technical Report, Varun Singh+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.17004</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4655</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, OpenWeight, MoE(Mixture-of-Experts), Selected Papers/Blogs, Stability, Sparse</tags>
+<repo-issue-date>2026-02-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.17004
+# Authors
+  - Varun Singh
+  - Lucas Krauss
+  - Sami Jaghouar
+  - Matej Sirovatka
+  - Charles Goddard
+  - Fares Obied
+  - Jack Min Ong
+  - Jannik Straube
+  - Fern
+  - Aria Harley
+  - Conner Stewart
+  - Colin Kealty
+  - Maziyar Panahi
+  - Simon Kirsten
+  - Anushka Deshpande
+  - Anneketh Vij
+  - Arthur Bresnu
+  - Pranav Veldurthi
+  - Raghav Ravishankar
+  - Hardik Bishnoi
+  - DatologyAI Team
+  - Arcee AI Team
+  - Prime Intellect Team
+  - Mark McQuade
+  - Johannes Hagemann
+  - Lucas Atkins
+# Abstract
+  - We present the technical report for Arcee Trinity Large, a sparse Mixture-of-Experts model with 400B total parameters and 13B activated per token. Additionally, we report on Trinity Nano and Trinity Mini, with Trinity Nano having 6B total parameters with 1B activated per token, Trinity Mini having 26B total parameters with 3B activated per token. The models' modern architecture includes interleaved local and global attention, gated attention, depth-scaled sandwich norm, and sigmoid routing for Mixture-of-Experts. For Trinity Large, we also introduce a new MoE load balancing strategy titled Soft-clamped Momentum Expert Bias Updates (SMEBU). We train the models using the Muon optimizer. All three models completed training with zero loss spikes. Trinity Nano and Trinity Mini were pre-trained on 10 trillion tokens, and Trinity Large was pre-trained on 17 trillion tokens. The model checkpoints are available at https://huggingface.co/arcee-ai.
+# Translation (by gpt-5-nano)
+- Arcee Trinity Large に関する技術報告を提示します。総パラメータ数は4000億、トークンあたり活性化されるパラメータ数は130億のスパースMoEモデルです。加えて、Trinity NanoおよびTrinity Miniについても報告します。Trinity Nanoは総パラメータ数が60億、トークンあたり活性化されるパラメータ数が10億、Trinity Miniは総パラメータ数が260億、トークンあたり活性化されるパラメータ数が30億です。これらのモデルの最新アーキテクチャには、局所的注意とグローバル注意を交互に配置する構造、ゲート付き注意、深さスケールされたサンドイッチ正規化、およびMixture-of-Expertsのシグモイド・ルーティングが含まれます。Trinity Large には、Soft-clamped Momentum Expert Bias Updates（SMEBU）という新しいMoEロードバランシング戦略を導入します。これらのモデルはMuonオプティマイザーを用いて訓練しました。3モデルすべてが、訓練中に損失のスパイクが一度も発生せずに訓練を完了しました。Trinity NanoおよびTrinity Miniは10兆トークンで事前学習され、Trinity Largeは17兆トークンで事前学習されました。モデルのチェックポイントは https://huggingface.co/arcee-ai で入手可能です。
+# Summary (by gpt-4o-mini)
+- Arcee Trinity Largeは4000億パラメータを持ち、130億のスパースMoEとして設計されている。Trinity Nano（60億パラメータ）とTrinity Mini（260億パラメータ）も報告されており、各モデルには局所的およびグローバルな注意機構、ゲート付き注意、深さスケールされた正規化、MoEのシグモイド・ルーティングが採用されている。Trinity Largeには新しいMoEロードバランシング戦略のSMEBUが導入され、Muonオプティマイザーで訓練された。すべてのモデルは損失のスパイクなしで訓練を完了し、Trinity NanoとTrinity Miniは10兆トークン、Trinity Largeは17兆トークンで事前学習された。モデルのチェックポイントはHugging Faceで利用可能。</issue-body>
+<maintainer-comment-text><p>モデル:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4325" target="_blank" rel="noopener noreferrer">Trinity Large, Arcee, 2026.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] vAttention: Verified Sparse Attention, Aditya Desai+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.05688</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3176</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, Architecture, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.05688
+# Authors
+  - Aditya Desai
+  - Kumar Krishna Agrawal
+  - Shuo Yang
+  - Alejandro Cuadron
+  - Luis Gaspar Schroeder
+  - Matei Zaharia
+  - Joseph E. Gonzalez
+  - Ion Stoica
+# Abstract
+  - State-of-the-art sparse attention methods for reducing decoding latency fall into two main categories: approximate top-$k$ (and its extension, top-$p$) and recently introduced sampling-based estimation. However, these approaches are fundamentally limited in their ability to approximate full attention: they fail to provide consistent approximations across heads and query vectors and, most critically, lack guarantees on approximation quality, limiting their practical deployment. We observe that top-$k$ and random sampling are complementary: top-$k$ performs well when attention scores are dominated by a few tokens, whereas random sampling provides better estimates when attention scores are relatively uniform. Building on this insight and leveraging the statistical guarantees of sampling, we introduce vAttention, the first practical sparse attention mechanism with user-specified $(\epsilon, \delta)$ guarantees on approximation accuracy (thus, verified). These guarantees make vAttention a compelling step toward practical, reliable deployment of sparse attention at scale. By unifying top-k and sampling, vAttention outperforms both individually, delivering a superior quality-efficiency trade-off. Our experiments show that vAttention significantly improves the quality of sparse attention (e.g., $\sim$4.5 percentage points for Llama-3.1-8B-Inst and Deepseek-R1-Distill-Llama-8B on RULER-HARD), and effectively bridges the gap between full and sparse attention (e.g., across datasets, it matches full model quality with upto 20x sparsity). We also demonstrate that it can be deployed in reasoning scenarios to achieve fast decoding without compromising model quality (e.g., vAttention achieves full model quality on AIME2024 at 10x sparsity with up to 32K token generations). Code is open-sourced at https://github.com/xAlg-ai/sparse-attention-hub.
+# Translation (by gpt-4o-mini)
+- 最先端のスパースアテンション手法は、デコーディングのレイテンシを削減するために主に2つのカテゴリーに分類されます：近似トップ-$k$（およびその拡張であるトップ-$p$）と最近導入されたサンプリングベースの推定です。しかし、これらのアプローチは、フルアテンションを近似する能力に根本的な制限があります。具体的には、ヘッドやクエリベクトル間で一貫した近似を提供できず、最も重要な点として、近似の質に関する保証が欠如しているため、実際の展開に制約があります。我々は、トップ-$k$とランダムサンプリングが補完的であることに注目しました。トップ-$k$はアテンションスコアが少数のトークンに支配される場合に良好に機能し、一方でランダムサンプリングはアテンションスコアが比較的均一な場合により良い推定を提供します。この洞察に基づき、サンプリングの統計的保証を活用して、近似精度に関するユーザー指定の$(\epsilon, \delta)$保証を持つ最初の実用的なスパースアテンションメカニズムであるvAttentionを導入します（したがって、検証済みです）。これらの保証により、vAttentionはスパースアテンションの実用的で信頼性のある展開に向けた魅力的なステップとなります。トップ-$k$とサンプリングを統合することで、vAttentionはそれぞれ単独での性能を上回り、優れた品質と効率のトレードオフを提供します。我々の実験では、vAttentionがスパースアテンションの質を大幅に改善すること（例：RULER-HARDにおいてLlama-3.1-8B-InstおよびDeepseek-R1-Distill-Llama-8Bで約4.5パーセントポイントの向上）を示し、フルアテンションとスパースアテンションのギャップを効果的に埋めることができることを示しました（例：データセット全体で、最大20倍のスパース性でフルモデルの品質に匹敵します）。また、推論シナリオにおいても展開可能であり、モデルの品質を損なうことなく迅速なデコーディングを実現できることを示しています（例：vAttentionはAIME2024で10倍のスパース性でフルモデルの品質を達成し、最大32Kトークン生成を行います）。コードはオープンソースで提供されています：https://github.com/xAlg-ai/sparse-attention-hub。
+# Summary (by gpt-4o-mini)
+- vAttentionは、トップ-$k$とランダムサンプリングを統合した新しいスパースアテンションメカニズムで、ユーザー指定の$(\epsilon, \delta)$保証を提供し、近似精度を向上させる。これにより、スパースアテンションの実用性と信頼性が向上し、フルアテンションと同等の品質を保ちながら、最大20倍のスパース性を実現。推論シナリオでも迅速なデコーディングが可能で、実験により性能の向上が確認された。コードはオープンソースで公開されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/f14bertolotti/status/1975872208858915012?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] VideoNSA: Native Sparse Attention Scales Video Understanding, Enxin Song+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.02295</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3109</repo-issue-link>
+<tags>ComputerVision, NLP, Attention, LongSequence, VideoGeneration/Understandings, VisionLanguageModel, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-10-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.02295
+# Authors
+  - Enxin Song
+  - Wenhao Chai
+  - Shusheng Yang
+  - Ethan Armand
+  - Xiaojun Shan
+  - Haiyang Xu
+  - Jianwen Xie
+  - Zhuowen Tu
+# Abstract
+  - Video understanding in multimodal language models remains limited by context length: models often miss key transition frames and struggle to maintain coherence across long time scales. To address this, we adapt Native Sparse Attention (NSA) to video-language models. Our method, VideoNSA, adapts Qwen2.5-VL through end-to-end training on a 216K video instruction dataset. We employ a hardware-aware hybrid approach to attention, preserving dense attention for text, while employing NSA for video. Compared to token-compression and training-free sparse baselines, VideoNSA achieves improved performance on long-video understanding, temporal reasoning, and spatial benchmarks. Further ablation analysis reveals four key findings: (1) reliable scaling to 128K tokens; (2) an optimal global-local attention allocation at a fixed budget; (3) task-dependent branch usage patterns; and (4) the learnable combined sparse attention help induce dynamic attention sinks.
+# Translation (by gpt-4o-mini)
+- マルチモーダル言語モデルにおけるビデオ理解は、コンテキストの長さによって制限されています。モデルはしばしば重要な遷移フレームを見逃し、長い時間スケールでの一貫性を維持するのに苦労します。これに対処するために、私たちはビデオと言語モデルにNative Sparse Attention（NSA）を適用します。私たちの手法であるVideoNSAは、216Kのビデオ指示データセットに対してエンドツーエンドのトレーニングを通じてQwen2.5-VLを適応させます。テキストには密な注意を保持し、ビデオにはNSAを使用するハードウェア対応のハイブリッドアプローチを採用しています。トークン圧縮やトレーニング不要のスパースベースラインと比較して、VideoNSAは長いビデオ理解、時間的推論、および空間的ベンチマークにおいて性能を向上させます。さらに、アブレーション分析により、4つの重要な発見が明らかになりました：(1) 128Kトークンへの信頼性のあるスケーリング、(2) 固定予算での最適なグローバル・ローカル注意の配分、(3) タスク依存のブランチ使用パターン、(4) 学習可能な組み合わせスパース注意が動的な注意の集中を誘導するのに役立つこと。
+# Summary (by gpt-4o-mini)
+- VideoNSAは、ビデオ理解のためにNative Sparse Attentionを適用し、長い時間スケールでの一貫性を向上させる手法。216Kのビデオ指示データセットでQwen2.5-VLをエンドツーエンドでトレーニングし、テキストには密な注意、ビデオにはNSAを使用。トークン圧縮や従来のスパースベースラインと比較して、長いビデオ理解や時間的推論で性能が向上。アブレーション分析により、信頼性のあるスケーリングや注意の最適配分などの重要な発見が得られた。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhaocha1/status/1974164887090684316?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Sparse VideoGen2: Accelerate Video Generation with Sparse Attention via   Semantic-Aware Permutation, Shuo Yang+, NeurIPS'25 Spotlight, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.18875</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3003</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Transformer, Attention, DiffusionModel, Architecture, NeurIPS, VideoGeneration/Understandings, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-09-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.18875
+# Authors
+  - Shuo Yang
+  - Haocheng Xi
+  - Yilong Zhao
+  - Muyang Li
+  - Jintao Zhang
+  - Han Cai
+  - Yujun Lin
+  - Xiuyu Li
+  - Chenfeng Xu
+  - Kelly Peng
+  - Jianfei Chen
+  - Song Han
+  - Kurt Keutzer
+  - Ion Stoica
+# Abstract
+  - Diffusion Transformers (DiTs) are essential for video generation but suffer from significant latency due to the quadratic complexity of attention. By computing only critical tokens, sparse attention reduces computational costs and offers a promising acceleration approach. However, we identify that existing methods fail to approach optimal generation quality under the same computation budget for two reasons: (1) Inaccurate critical token identification: current methods cluster tokens based on position rather than semantics, leading to imprecise aggregated representations. (2) Excessive computation waste: critical tokens are scattered among non-critical ones, leading to wasted computation on GPUs, which are optimized for processing contiguous tokens. In this paper, we propose SVG2, a training-free framework that maximizes identification accuracy and minimizes computation waste, achieving a Pareto frontier trade-off between generation quality and efficiency. The core of SVG2 is semantic-aware permutation, which clusters and reorders tokens based on semantic similarity using k-means. This approach ensures both a precise cluster representation, improving identification accuracy, and a densified layout of critical tokens, enabling efficient computation without padding. Additionally, SVG2 integrates top-p dynamic budget control and customized kernel implementations, achieving up to 2.30x and 1.89x speedup while maintaining a PSNR of up to 30 and 26 on HunyuanVideo and Wan 2.1, respectively.
+# Translation (by gpt-4o-mini)
+- Diffusion Transformers（DiTs）は動画生成において重要ですが、注意機構の二次的な複雑さのために著しいレイテンシーに悩まされています。重要なトークンのみを計算することで、スパースアテンションは計算コストを削減し、有望な加速手法を提供します。しかし、既存の手法は同じ計算予算の下で最適な生成品質に近づくことができない理由が2つあります。(1) 不正確な重要トークンの特定：現在の手法はトークンを位置に基づいてクラスタリングするため、意味的に不正確な集約表現を導いています。(2) 過剰な計算の無駄：重要トークンが非重要トークンの中に散在しているため、連続したトークンの処理に最適化されたGPU上で計算が無駄になっています。本論文では、生成品質と効率の間でパレートフロンティアのトレードオフを実現する、特定精度を最大化し計算の無駄を最小化するトレーニング不要のフレームワークSVG2を提案します。SVG2の核心は意味を考慮した順序付けであり、k-meansを使用して意味的類似性に基づいてトークンをクラスタリングおよび再配置します。このアプローチは、正確なクラスタ表現を確保し、特定精度を向上させるとともに、重要トークンの密なレイアウトを実現し、パディングなしで効率的な計算を可能にします。さらに、SVG2はtop-p動的予算制御とカスタマイズされたカーネル実装を統合し、HunyuanVideoおよびWan 2.1でそれぞれ最大2.30倍および1.89倍のスピードアップを達成し、PSNRをそれぞれ30および26に維持します。
+# Summary (by gpt-4o-mini)
+- Diffusion Transformers（DiTs）の動画生成におけるレイテンシーの問題を解決するため、重要トークンの特定精度を最大化し計算の無駄を最小化するトレーニング不要のフレームワークSVG2を提案。SVG2は意味に基づくトークンのクラスタリングと再配置を行い、計算効率を向上させる。これにより、HunyuanVideoおよびWan 2.1でそれぞれ最大2.30倍および1.89倍のスピードアップを達成し、PSNRを維持。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chenfeng_x/status/1971343654662046184?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://svg-project.github.io/v2/" target="_blank" rel="noopener noreferrer">https://svg-project.github.io/v2/</a>
+{% endraw %}
+
+</p><p>Q, Kそれぞれについて独立してkmeansクラスタリングを実施し、意味的に類似したQ, Kをクラスタ化し、map上で散らばっているトークンの配置を整頓して計算機上で効率的に扱えるようにし、各クラスタのcentroidをattention scoreの計算に用いてクラスタ内のトークンのスコアを近似することで計算を効率化します、といった話な模様。また、クリティカルなクラスタとそうでは無いものがあるので、p個のクリティカルなクラスタを選択しさらに効率化をする模様。<br><img src="https://github.com/user-attachments/assets/862cf5c8-5583-4f94-8b67-59177c444176" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Reinforcement Learning Finetunes Small Subnetworks in Large Language   Models, Sagnik Mukherjee+, NeurIPS''25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.11711</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2887</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, NeurIPS, read-later, Sparse, Initial Impression Notes</tags>
+<repo-issue-date>2025-09-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.11711
+# Authors
+  - Sagnik Mukherjee
+  - Lifan Yuan
+  - Dilek Hakkani-Tur
+  - Hao Peng
+# Abstract
+  - Reinforcement learning (RL) yields substantial improvements in large language models (LLMs) downstream task performance and alignment with human values. Surprisingly, such large gains result from updating only a small subnetwork comprising just 5 percent to 30 percent of the parameters, with the rest effectively unchanged. We refer to this phenomenon as parameter update sparsity induced by RL. It is observed across all 7 widely used RL algorithms (e.g., PPO, GRPO, DPO) and all 10 LLMs from different families in our experiments. This sparsity is intrinsic and occurs without any explicit sparsity promoting regularizations or architectural constraints. Finetuning the subnetwork alone recovers the test accuracy, and, remarkably, produces a model nearly identical to the one obtained via full finetuning. The subnetworks from different random seeds, training data, and even RL algorithms show substantially greater overlap than expected by chance. Our analysis suggests that this sparsity is not due to updating only a subset of layers, instead, nearly all parameter matrices receive similarly sparse updates. Moreover, the updates to almost all parameter matrices are nearly full-rank, suggesting RL updates a small subset of parameters that nevertheless span almost the full subspaces that the parameter matrices can represent. We conjecture that the this update sparsity can be primarily attributed to training on data that is near the policy distribution, techniques that encourage the policy to remain close to the pretrained model, such as the KL regularization and gradient clipping, have limited impact.
+# Translation (by gpt-4o-mini)
+- 強化学習（RL）は、大規模言語モデル（LLMs）の下流タスクのパフォーマンスと人間の価値観との整合性において大幅な改善をもたらします。驚くべきことに、これらの大きな向上は、パラメータのわずか5％から30％を占める小さなサブネットワークのみを更新することによって実現されており、残りの部分は実質的に変更されていません。この現象を、RLによって引き起こされるパラメータ更新のスパース性と呼びます。このスパース性は、私たちの実験で使用した7つの広く用いられるRLアルゴリズム（例：PPO、GRPO、DPO）および異なるファミリーの10のLLM全てにおいて観察されました。このスパース性は本質的なものであり、明示的なスパース性促進の正則化やアーキテクチャの制約なしに発生します。サブネットワークのみをファインチューニングすることでテスト精度が回復し、驚くべきことに、完全なファインチューニングを通じて得られたモデルとほぼ同一のモデルが生成されます。異なるランダムシード、トレーニングデータ、さらにはRLアルゴリズムからのサブネットワークは、偶然による期待を大幅に上回る重複を示します。私たちの分析は、このスパース性が層のサブセットのみを更新することによるものではなく、ほぼすべてのパラメータ行列が同様にスパースな更新を受けることを示唆しています。さらに、ほぼすべてのパラメータ行列への更新はほぼフルランクであり、RLが小さなパラメータのサブセットを更新する一方で、それでもなおパラメータ行列が表現できるほぼ全ての部分空間を網羅していることを示唆しています。この更新のスパース性は、ポリシー分布に近いデータでのトレーニングに主に起因していると推測され、ポリシーが事前学習モデルに近い状態を保つことを促す技術（KL正則化や勾配クリッピングなど）は、限られた影響しか持たないと考えられます。
+# Summary (by gpt-4o-mini)
+- 強化学習（RL）は、LLMsのパフォーマンスと人間の価値観の整合性を大幅に改善する。驚くべきことに、パラメータの5％から30％の小さなサブネットワークのみを更新することで実現されるスパース性が観察され、これは7つのRLアルゴリズムと10のLLMで共通して見られた。このスパース性は本質的であり、サブネットワークのファインチューニングによってテスト精度が回復し、ほぼ同一のモデルが生成される。更新はほぼフルランクであり、ポリシー分布に近いデータでのトレーニングが主な要因と考えられる。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/saagnikkk/status/1968804642449490314?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=0NdS4xCngO" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=0NdS4xCngO</a>
+{% endraw %}
+
+</p><p>RLの挙動を理解する上で役に立ちそうで興味深い。以下とは何か関連があるのだろうか:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2382" target="_blank" rel="noopener noreferrer">[Paper Note] On the Generalization of SFT: A Reinforcement Learning Perspective with  Reward Rectification, Yongliang Wu+, ICLR'26, 2025.08</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3866" target="_blank" rel="noopener noreferrer">[Paper Note] From Atomic to Composite: Reinforcement Learning Enables Generalization in Complementary Reasoning, Sitao Cheng+, arXiv'25, 2025.12</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Efficient Transformers: A Survey, Yi Tay+, ACM Computing Surveys'22, 2022.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2009.06732</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3854</repo-issue-link>
+<tags>Survey, ComputerVision, EfficiencyImprovement, NLP, Transformer, Attention, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-11-30</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2009.06732
+- acm digital library: https://dl.acm.org/doi/10.1145/3530811
+# Authors
+  - Yi Tay
+  - Mostafa Dehghani
+  - Dara Bahri
+  - Donald Metzler
+# Abstract
+  - Transformer model architectures have garnered immense interest lately due to their effectiveness across a range of domains like language, vision and reinforcement learning. In the field of natural language processing for example, Transformers have become an indispensable staple in the modern deep learning stack. Recently, a dizzying number of "X-former" models have been proposed - Reformer, Linformer, Performer, Longformer, to name a few - which improve upon the original Transformer architecture, many of which make improvements around computational and memory efficiency. With the aim of helping the avid researcher navigate this flurry, this paper characterizes a large and thoughtful selection of recent efficiency-flavored "X-former" models, providing an organized and comprehensive overview of existing work and models across multiple domains.
+# Translation (by gpt-4o-mini)
+- Transformerモデルアーキテクチャは、言語、視覚、強化学習などのさまざまな分野での効果的な性能により、最近大きな関心を集めている。自然言語処理の分野では、Transformersは現代の深層学習スタックにおいて欠かせない存在となっている。最近では、Reformer、Linformer、Performer、Longformerなど、元のTransformerアーキテクチャを改善する「X-former」モデルが驚くほど多く提案されており、その多くは計算効率やメモリ効率の向上に焦点を当てている。このような急増する研究をナビゲートする手助けをすることを目的として、本論文では最近の効率性に特化した「X-former」モデルの大規模かつ慎重に選ばれたセレクションを特徴づけ、複数の分野にわたる既存の研究とモデルの体系的かつ包括的な概要を提供する。
+# Summary (by gpt-4o-mini)
+- 本論文では、計算効率やメモリ効率を向上させることに焦点を当てた「X-former」モデル（Reformer、Linformer、Performer、Longformerなど）の大規模なセレクションを紹介し、最近の研究を体系的かつ包括的にまとめる。Transformersは自然言語処理を含む多くの分野で重要な役割を果たしている。</issue-body>
+<maintainer-comment-text><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3854" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Transformers: A Survey, Yi Tay+, ACM Computing Surveys'22, 2022.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3855" target="_blank" rel="noopener noreferrer">[Paper Note] Big Bird: Transformers for Longer Sequences, Manzil Zaheer+, NIPS'20, 2020.07</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2355" target="_blank" rel="noopener noreferrer">[Paper Note] Reformer: The Efficient Transformer, Nikita Kitaev+, ICLR'20</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3853" target="_blank" rel="noopener noreferrer">[Paper Note] Generating Long Sequences with Sparse Transformers, Rewon Child+, arXiv'19, 2019.04</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2388" target="_blank" rel="noopener noreferrer">[Paper Note] Longformer: The Long-Document Transformer, Iz Beltagy+, arXiv'20</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Big Bird: Transformers for Longer Sequences, Manzil Zaheer+, NIPS'20, 2020.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2007.14062</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3855</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, Transformer, Attention, LongSequence, NeurIPS, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-11-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2007.14062
+# Authors
+  - Manzil Zaheer
+  - Guru Guruganesh
+  - Avinava Dubey
+  - Joshua Ainslie
+  - Chris Alberti
+  - Santiago Ontanon
+  - Philip Pham
+  - Anirudh Ravula
+  - Qifan Wang
+  - Li Yang
+  - Amr Ahmed
+# Abstract
+  - Transformers-based models, such as BERT, have been one of the most successful deep learning models for NLP. Unfortunately, one of their core limitations is the quadratic dependency (mainly in terms of memory) on the sequence length due to their full attention mechanism. To remedy this, we propose, BigBird, a sparse attention mechanism that reduces this quadratic dependency to linear. We show that BigBird is a universal approximator of sequence functions and is Turing complete, thereby preserving these properties of the quadratic, full attention model. Along the way, our theoretical analysis reveals some of the benefits of having $O(1)$ global tokens (such as CLS), that attend to the entire sequence as part of the sparse attention mechanism. The proposed sparse attention can handle sequences of length up to 8x of what was previously possible using similar hardware. As a consequence of the capability to handle longer context, BigBird drastically improves performance on various NLP tasks such as question answering and summarization. We also propose novel applications to genomics data.
+# Translation (by gpt-4o-mini)
+- Transformersベースのモデル、例えばBERTは、NLPにおける最も成功した深層学習モデルの一つです。しかし、彼らの主要な制限の一つは、完全な注意メカニズムによるシーケンス長に対する二次的依存性（主にメモリに関して）です。これを改善するために、我々はBigBirdというスパース注意メカニズムを提案します。これにより、この二次的依存性を線形に削減します。BigBirdがシーケンス関数の普遍的近似器であり、チューリング完全であることを示し、これにより二次的な完全注意モデルの特性を保持します。理論的な分析を通じて、スパース注意メカニズムの一部として、全シーケンスに注意を向ける$O(1)$のグローバルトークン（例えばCLS）を持つことの利点が明らかになります。提案されたスパース注意は、以前の類似ハードウェアを使用した場合の最大8倍の長さのシーケンスを処理できます。長いコンテキストを処理できる能力の結果として、BigBirdは質問応答や要約などのさまざまなNLPタスクでのパフォーマンスを大幅に向上させます。また、ゲノムデータへの新しい応用も提案します。
+# Summary (by gpt-4o-mini)
+- BigBirdは、Transformersモデルのシーケンス長に対する二次的依存性を線形に削減するスパース注意メカニズムを提案。これにより、長いシーケンスを最大8倍処理可能となり、質問応答や要約などのNLPタスクでの性能が向上。さらに、ゲノムデータへの新たな応用も示唆。</issue-body>
+<maintainer-comment-text><p>日本語解説: 
+
+{% raw %}
+<a href="https://www.docswell.com/s/DeepLearning2023/KVV8VP-dlvisual-grounding-of-learned-physical-models-238500048" target="_blank" rel="noopener noreferrer">https://www.docswell.com/s/DeepLearning2023/KVV8VP-dlvisual-grounding-of-learned-physical-models-238500048</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Memory Based Trajectory-conditioned Policies for Learning from Sparse   Rewards, Yijie Guo+, NeurIPS'20, 2019.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/1907.10247</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3369</repo-issue-link>
+<tags>MachineLearning, ReinforcementLearning, NeurIPS, Diversity, Sparse</tags>
+<repo-issue-date>2025-10-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1907.10247
+# Authors
+  - Yijie Guo
+  - Jongwook Choi
+  - Marcin Moczulski
+  - Shengyu Feng
+  - Samy Bengio
+  - Mohammad Norouzi
+  - Honglak Lee
+# Abstract
+  - Reinforcement learning with sparse rewards is challenging because an agent can rarely obtain non-zero rewards and hence, gradient-based optimization of parameterized policies can be incremental and slow. Recent work demonstrated that using a memory buffer of previous successful trajectories can result in more effective policies. However, existing methods may overly exploit past successful experiences, which can encourage the agent to adopt sub-optimal and myopic behaviors. In this work, instead of focusing on good experiences with limited diversity, we propose to learn a trajectory-conditioned policy to follow and expand diverse past trajectories from a memory buffer. Our method allows the agent to reach diverse regions in the state space and improve upon the past trajectories to reach new states. We empirically show that our approach significantly outperforms count-based exploration methods (parametric approach) and self-imitation learning (parametric approach with non-parametric memory) on various complex tasks with local optima. In particular, without using expert demonstrations or resetting to arbitrary states, we achieve the state-of-the-art scores under five billion number of frames, on challenging Atari games such as Montezuma's Revenge and Pitfall.
+# Translation (by gpt-4o-mini)
+- 強化学習におけるスパース報酬は、エージェントが非ゼロ報酬を得ることが稀であるため、パラメータ化されたポリシーの勾配ベースの最適化が漸進的で遅くなるため、困難です。最近の研究では、過去の成功した軌道のメモリバッファを使用することで、より効果的なポリシーが得られることが示されました。しかし、既存の手法は過去の成功体験を過度に利用する可能性があり、これがエージェントに最適でない短期的な行動を促すことがあります。本研究では、限られた多様性を持つ良好な経験に焦点を当てるのではなく、メモリバッファから多様な過去の軌道を追跡し拡張するための軌道条件付きポリシーを学習することを提案します。我々の手法は、エージェントが状態空間の多様な領域に到達し、過去の軌道を改善して新しい状態に到達することを可能にします。実験的に、我々のアプローチは、さまざまな局所最適を持つ複雑なタスクにおいて、カウントベースの探索手法（パラメトリックアプローチ）や自己模倣学習（非パラメトリックメモリを持つパラメトリックアプローチ）を大幅に上回ることを示しました。特に、専門家のデモンストレーションを使用せず、任意の状態にリセットすることなく、モンテズマの復讐やピットフォールなどの挑戦的なアタリゲームにおいて、50億フレームの下で最先端のスコアを達成しました。
+# Summary (by gpt-4o-mini)
+- スパース報酬の強化学習において、過去の成功した軌道を利用する手法は短期的な行動を促す可能性がある。本研究では、多様な過去の軌道を追跡し拡張する軌道条件付きポリシーを提案し、エージェントが多様な状態に到達できるようにする。実験により、複雑なタスクにおいて従来の手法を大幅に上回り、特にアタリゲームで最先端のスコアを達成した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/peterhndrsn/status/1980328102028013795?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Longformer: The Long-Document Transformer, Iz Beltagy+, arXiv'20</title>
+<original-paper-blog-link>https://arxiv.org/abs/2004.05150</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2388</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, Transformer, action_wanted, Attention, One-Line Notes, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-08-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2004.05150
+# Authors
+  - Iz Beltagy
+  - Matthew E. Peters
+  - Arman Cohan
+# Abstract
+  - Transformer-based models are unable to process long sequences due to their self-attention operation, which scales quadratically with the sequence length. To address this limitation, we introduce the Longformer with an attention mechanism that scales linearly with sequence length, making it easy to process documents of thousands of tokens or longer. Longformer's attention mechanism is a drop-in replacement for the standard self-attention and combines a local windowed attention with a task motivated global attention. Following prior work on long-sequence transformers, we evaluate Longformer on character-level language modeling and achieve state-of-the-art results on text8 and enwik8. In contrast to most prior work, we also pretrain Longformer and finetune it on a variety of downstream tasks. Our pretrained Longformer consistently outperforms RoBERTa on long document tasks and sets new state-of-the-art results on WikiHop and TriviaQA. We finally introduce the Longformer-Encoder-Decoder (LED), a Longformer variant for supporting long document generative sequence-to-sequence tasks, and demonstrate its effectiveness on the arXiv summarization dataset.
+# Translation (by gpt-4o-mini)
+- Transformerベースのモデルは、自己注意機構のために長いシーケンスを処理することができず、これはシーケンスの長さに対して二次的にスケールします。この制限に対処するために、私たちはLongformerを導入します。Longformerは、シーケンスの長さに対して線形にスケールする注意機構を持ち、数千トークン以上の文書を容易に処理できるようにします。Longformerの注意機構は、標準的な自己注意の代替として機能し、局所的なウィンドウ注意とタスクに基づいたグローバル注意を組み合わせています。長いシーケンストランスフォーマーに関する先行研究に従い、私たちはLongformerを文字レベルの言語モデリングで評価し、text8およびenwik8で最先端の結果を達成しました。ほとんどの先行研究とは対照的に、私たちはLongformerを事前学習し、さまざまな下流タスクでファインチューニングも行いました。事前学習されたLongformerは、長文タスクにおいてRoBERTaを一貫して上回り、WikiHopおよびTriviaQAで新たな最先端の結果を記録しました。最後に、Longformer-Encoder-Decoder（LED）を紹介します。これは、長文の生成シーケンス・ツー・シーケンスタスクをサポートするためのLongformerのバリアントであり、arXiv要約データセットでその効果を示します。
+# Summary (by gpt-4o-mini)
+- Longformerは、長いシーケンスを線形に処理できる注意機構を持つTransformerベースのモデルで、数千トークンの文書を扱える。局所的なウィンドウ注意とタスクに基づくグローバル注意を組み合わせ、文字レベルの言語モデリングで最先端の結果を達成。事前学習とファインチューニングを行い、長文タスクでRoBERTaを上回る性能を示した。また、Longformer-Encoder-Decoder（LED）を導入し、長文生成タスクにおける効果を確認した。</issue-body>
+<maintainer-comment-text><p>（固定された小さめのwindowsサイズの中でのみattentionを計算する）sliding window attentionを提案。Figure2を見ると、通常のAttentionと比較して、現在のトークンの周辺のトークンにしか注目しない特性が図示されており、イメージが掴みやすい。<br><br><img src="https://github.com/user-attachments/assets/d1eccdaf-5b5b-4444-ad31-44c54c345d79" /" alt="image" loading="lazy" width="550" height="400"/></p><p>OpenLLMの文脈だと、Mistralに採用されて話題になったかも？<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1309" target="_blank" rel="noopener noreferrer">Mistral 7B, Albert Q. Jiang+, N/A, arXiv'23</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Reformer: The Efficient Transformer, Nikita Kitaev+, ICLR'20</title>
+<original-paper-blog-link>https://arxiv.org/abs/2001.04451</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2355</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, Transformer, Attention, ICLR, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-08-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2001.04451
+# Authors
+  - Nikita Kitaev
+  - Łukasz Kaiser
+  - Anselm Levskaya
+# Abstract
+  - Large Transformer models routinely achieve state-of-the-art results on a number of tasks but training these models can be prohibitively costly, especially on long sequences. We introduce two techniques to improve the efficiency of Transformers. For one, we replace dot-product attention by one that uses locality-sensitive hashing, changing its complexity from O($L^2$) to O($L\log L$), where $L$ is the length of the sequence. Furthermore, we use reversible residual layers instead of the standard residuals, which allows storing activations only once in the training process instead of $N$ times, where $N$ is the number of layers. The resulting model, the Reformer, performs on par with Transformer models while being much more memory-efficient and much faster on long sequences.
+# Translation (by gpt-4o-mini)
+- 大規模なトランスフォーマーモデルは、さまざまなタスクで最先端の結果を達成することが常ですが、これらのモデルのトレーニングは非常にコストがかかることがあります。特に長いシーケンスにおいてはその傾向が顕著です。本研究では、トランスフォーマーの効率を改善するための2つの手法を提案します。1つ目は、ドット積注意機構を局所感度ハッシュを用いたものに置き換えることで、計算量をO($L^2$)からO($L\log L$)に変更します。ここで$L$はシーケンスの長さです。さらに、標準的な残差層の代わりに可逆残差層を使用することで、トレーニングプロセス中にアクティベーションを$N$回ではなく1回だけ保存できるようにします。ここで$N$は層の数です。その結果得られたモデルであるReformerは、トランスフォーマーモデルと同等の性能を発揮しながら、長いシーケンスにおいてははるかにメモリ効率が良く、速度も速くなります。
+# Summary (by gpt-4o-mini)
+- 本研究では、トランスフォーマーモデルの効率を向上させるために、局所感度ハッシュを用いた注意機構と可逆残差層を提案。これにより、計算量をO($L^2$)からO($L\log L$)に削減し、メモリ効率と速度を向上させたReformerモデルを実現。トランスフォーマーと同等の性能を維持。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=rkgNKkHtvB" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=rkgNKkHtvB</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning to Skim Text, Adams Wei Yu+, ACL'17, 2017.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/1704.06877</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/82</repo-issue-link>
+<tags>NeuralNetwork, EfficiencyImprovement, NLP, ReinforcementLearning, ACL, Decoder, KeyPoint Notes, Sparse</tags>
+<repo-issue-date>2017-12-31</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/1704.06877
+- acl anthology: https://aclanthology.org/P17-1172/
+# Authors
+  - Adams Wei Yu
+  - Hongrae Lee
+  - Quoc V. Le
+# Abstract
+  - Recurrent Neural Networks are showing much promise in many sub-areas of natural language processing, ranging from document classification to machine translation to automatic question answering. Despite their promise, many recurrent models have to read the whole text word by word, making it slow to handle long documents. For example, it is difficult to use a recurrent network to read a book and answer questions about it. In this paper, we present an approach of reading text while skipping irrelevant information if needed. The underlying model is a recurrent network that learns how far to jump after reading a few words of the input text. We employ a standard policy gradient method to train the model to make discrete jumping decisions. In our benchmarks on four different tasks, including number prediction, sentiment analysis, news article classification and automatic Q\&A, our proposed model, a modified LSTM with jumping, is up to 6 times faster than the standard sequential LSTM, while maintaining the same or even better accuracy.
+# Translation (by gpt-4o-mini)
+- 再帰型ニューラルネットワーク（RNN）は、文書分類から機械翻訳、自動質問応答に至るまで、自然言語処理の多くのサブ領域で大きな可能性を示しています。しかし、その可能性にもかかわらず、多くの再帰モデルはテキスト全体を単語ごとに読み込む必要があり、長い文書を扱うのが遅くなります。例えば、再帰ネットワークを使用して本を読み、その内容に関する質問に答えるのは困難です。本論文では、必要に応じて無関係な情報をスキップしながらテキストを読むアプローチを提案します。基盤となるモデルは、入力テキストの数語を読んだ後にどれだけジャンプするかを学習する再帰ネットワークです。モデルが離散的なジャンプの決定を行うように訓練するために、標準的なポリシー勾配法を採用します。数値予測、感情分析、ニュース記事分類、自動Q&Aを含む4つの異なるタスクにおけるベンチマークでは、提案するモデル（ジャンプ機能を持つ修正LSTM）は、標準的な逐次LSTMに比べて最大6倍の速度向上を実現し、同等またはそれ以上の精度を維持しています。
+# Summary (by gpt-4o-mini)
+- 再帰型ニューラルネットワーク（RNN）は自然言語処理での可能性を示すが、長文の処理が遅い。本論文では、無関係な情報をスキップしながらテキストを読むアプローチを提案。モデルは、入力テキストの数語を読んだ後にジャンプする距離を学習し、ポリシー勾配法で訓練。数値予測や自動Q&Aなど4つのタスクで、提案モデルは標準LSTMに比べて最大6倍の速度向上を達成し、精度も維持。</issue-body>
+<maintainer-comment-text><p>解説スライド：
+
+{% raw %}
+<a href="http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/07.pdf" target="_blank" rel="noopener noreferrer">http://www.lr.pi.titech.ac.jp/~haseshun/acl2017suzukake/slides/07.pdf</a>
+{% endraw %}
+
+<br><br>Reinforceにおける勾配の更新式の導出が丁寧に記述されており大変ありがたい。</p><p>RNNにおいて重要な部分以外は読み飛ばすことで効率を向上させる研究。いくつ読み飛ばすかも潜在変数として一緒に学習する。潜在変数（離散変数）なので、普通に尤度最大化するやり方では学習できず、おまけに離散変数なのでバックプロパゲーション使えないので、強化学習で学習する。<br><br><br><br>Vanilla LSTMと比較し、色々なタスクで実験した結果、性能も（少し）上がるし、スピードアップもする。</p><p>うーんこの研究は今改めて見返すと非常に面白いな…（8年も経ったのか）。ざっくり言うと必要のない部分は読み飛ばして考慮しないという話であり、最近のLLMでもこういった話はよくやられている印象。一番近いのはSparse Attentionだろうか。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3854" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Transformers: A Survey, Yi Tay+, ACM Computing Surveys'22, 2022.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3855" target="_blank" rel="noopener noreferrer">[Paper Note] Big Bird: Transformers for Longer Sequences, Manzil Zaheer+, NIPS'20, 2020.07</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2355" target="_blank" rel="noopener noreferrer">[Paper Note] Reformer: The Efficient Transformer, Nikita Kitaev+, ICLR'20</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3853" target="_blank" rel="noopener noreferrer">[Paper Note] Generating Long Sequences with Sparse Transformers, Rewon Child+, arXiv'19, 2019.04</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2388" target="_blank" rel="noopener noreferrer">[Paper Note] Longformer: The Long-Document Transformer, Iz Beltagy+, arXiv'20</a>
+<br><br>トークン単位などはなくlayerをスキップするとかもある（Layer Skip）。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2610" target="_blank" rel="noopener noreferrer">[Paper Note] Skip a Layer or Loop it? Test-Time Depth Adaptation of Pretrained LLMs, Ziyue Li+, arXiv'25</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Trinity Large, Arcee, 2026.01</title>
+<original-paper-blog-link>https://www.arcee.ai/blog/trinity-large</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4325</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, OpenWeight, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, Stability, One-Line Notes, Reference Collection, Sparse, Initial Impression Notes</tags>
+<repo-issue-date>2026-01-29</repo-issue-date>
+<issue-body>https://www.arcee.ai/blog/trinity-large</issue-body>
+<maintainer-comment-text><p>テクニカルレポート:
+
+{% raw %}
+<a href="https://github.com/arcee-ai/trinity-large-tech-report/" target="_blank" rel="noopener noreferrer">https://github.com/arcee-ai/trinity-large-tech-report/</a>
+{% endraw %}
+
+<br>HF:
+
+{% raw %}
+<a href="https://huggingface.co/arcee-ai" target="_blank" rel="noopener noreferrer">https://huggingface.co/arcee-ai</a>
+{% endraw %}
+
+</p><p>GLM4.7やDeepSeekV3と比較してスループットやTTFTが二倍以上。</p><p>非常にsparseなMoE(400B-A13B, 4/256のexpertsにルーティング)であるため学習を安定させるためにDense layerを増やし、モメンタムを考慮したexpertのバランシングや、z-lossと呼ばれるlogitのスケールをコントロールするような手法を導入することで安定した学習を実現。2048 Nvidia B300 GPUsで、17Tトークンの事前学習33日で完了</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/primeintellect/status/2016280792037785624?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>これほどsparseなMoEをここまで安定させて学習できるのは非常に興味深いと思われる。</p><p>インタビュー:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/natolambert/status/2016283837840679124?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>やると決めてチームビルディングも含めて非常に短期間(6ヶ月）で達成したとのことだが、気になる。</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2016334636834574429?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見（風刺）:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/williambarrheld/status/2016369891625095257?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2016792505111457883?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>アーキテクチャ解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rasbt/status/2016903019116249205?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Composing Weight and Data Sparsity in MoE: Improving compute efficiency through varying compute per token, Perceptron, 2026.01</title>
+<original-paper-blog-link>https://www.perceptron.inc/blog/composing-weight-and-data-sparsity-in-moe</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4279</repo-issue-link>
+<tags>ComputerVision, Pretraining, NLP, MultiModal, MoE(Mixture-of-Experts), read-later, VisionLanguageModel, Routing, Sparse, Initial Impression Notes</tags>
+<repo-issue-date>2026-01-23</repo-issue-date>
+<issue-body>blog:https://www.perceptron.inc/blog/composing-weight-and-data-sparsity-in-moe
+paper:https://papers.perceptron.inc/data_sparsity.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2014520780911186361?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/897" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Autoregressive Multi-Modal Models: Pretraining and Instruction
+  Tuning, Lili Yu+, arXiv'23</a>
+</p><p>MoEがトークン単位でactivateするweightをサブセットにするweight sparcityによって効率化を実現する手法とみなしたときに、それぞれのinputに情報量の濃淡があることから現在のトークンごとにweightを割り当てるのではなく、weightごとにトークンを割り当てるというもう一つの軸を考えることができ（＝Data Sparcity）、これをweightごとにトークンのsubsetしか持たないような実現方法をとるとcontextが損なわれauto-regressiveの前提が崩れるためtrain-inference-mismatchが生じるので、null experts(受け取ったトークンに対して何もしない）を実装して実現するみたいな話のように見えるが全くまだ読めていない。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Ming-flash-omni-Preview, inclusionAI, 2025.10</title>
+<original-paper-blog-link>https://huggingface.co/inclusionAI/Ming-flash-omni-Preview</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3489</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, MultiModal, SpeechProcessing, TextToImageGeneration, OpenWeight, AutomaticSpeechRecognition(ASR), Architecture, MoE(Mixture-of-Experts), Selected Papers/Blogs, VideoGeneration/Understandings, Editing, TTS, Routing, UMM, Omni, Sparse, ImageSynthesis, Initial Impression Notes</tags>
+<repo-issue-date>2025-10-28</repo-issue-date>
+<issue-body>https://huggingface.co/inclusionAI/Ming-flash-omni-Preview</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1982987141773713445?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2300" target="_blank" rel="noopener noreferrer">[Paper Note] Ming-Omni: A Unified Multimodal Model for Perception and Generation, Inclusion AI+, arXiv'25, 2025.06</a>
+</p><p>過去一番多くのタグを付与した気がするが、果たして大規模、Omniモーダルかつ、UMMにしたことによる恩恵（＝様々なモダリティを統一された空間上に学習させる恩恵）はどの程度あるのだろうか？<br><br>アーキテクチャを見ると、モダリティごとに（モダリティ単位でのバイアスがかかった）Routerが用意されexpertにルーティングされるような構造になっている。</p><p>OmniモーダルでUMMを大規模にスクラッチから事前学習:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4449" target="_blank" rel="noopener noreferrer">[Paper Note] ERNIE 5.0 Technical Report, Haifeng Wang+, arXiv'26, 2026.02</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepSeek-V3.2-Exp: Boosting Long-Context Efficiency with DeepSeek Sparse Attention, DeepSeek-AI, 2025.09</title>
+<original-paper-blog-link>https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/DeepSeek_V3_2.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3033</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, OpenWeight, Reference Collection, Sparse, SparseAttention</tags>
+<repo-issue-date>2025-09-29</repo-issue-date>
+<issue-body>Technical Paper: https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/DeepSeek_V3_2.pdf
+HF: https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/danielhanchen/status/1972613546119991791?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>DeepSeek Sparse Attentionポイント解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vllm_project/status/1972617272901644345?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1972802544863678832?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>DSA図解:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/awnihannun/status/1972763521185436088?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/scaling01/status/1972650237266465214?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>公式ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/deepseek_ai/status/1972604768309871061?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

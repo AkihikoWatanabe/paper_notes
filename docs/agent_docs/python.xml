@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-12">
+<paper-entry>
+<title>[Paper Note] Efficient Memory Management for Large Language Model Serving with  PagedAttention, Woosuk Kwon+, SOSP'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2309.06180</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2474</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, Attention, python, LLMServing, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-08-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2309.06180
+# Authors
+  - Woosuk Kwon
+  - Zhuohan Li
+  - Siyuan Zhuang
+  - Ying Sheng
+  - Lianmin Zheng
+  - Cody Hao Yu
+  - Joseph E. Gonzalez
+  - Hao Zhang
+  - Ion Stoica
+# Abstract
+  - High throughput serving of large language models (LLMs) requires batching sufficiently many requests at a time. However, existing systems struggle because the key-value cache (KV cache) memory for each request is huge and grows and shrinks dynamically. When managed inefficiently, this memory can be significantly wasted by fragmentation and redundant duplication, limiting the batch size. To address this problem, we propose PagedAttention, an attention algorithm inspired by the classical virtual memory and paging techniques in operating systems. On top of it, we build vLLM, an LLM serving system that achieves (1) near-zero waste in KV cache memory and (2) flexible sharing of KV cache within and across requests to further reduce memory usage. Our evaluations show that vLLM improves the throughput of popular LLMs by 2-4$\times$ with the same level of latency compared to the state-of-the-art systems, such as FasterTransformer and Orca. The improvement is more pronounced with longer sequences, larger models, and more complex decoding algorithms. vLLM's source code is publicly available at https://github.com/vllm-project/vllm
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）の高スループット提供には、十分な数のリクエストを一度にバッチ処理する必要があります。しかし、既存のシステムは、各リクエストのためのキー・バリューキャッシュ（KVキャッシュ）メモリが巨大であり、動的に増減するため、苦労しています。効率的に管理されない場合、このメモリは断片化や冗長な複製によって大幅に無駄にされ、バッチサイズが制限されることになります。この問題に対処するために、私たちはPagedAttentionを提案します。これは、オペレーティングシステムにおける古典的な仮想メモリとページング技術に触発された注意アルゴリズムです。その上に、vLLMというLLM提供システムを構築し、(1) KVキャッシュメモリの無駄をほぼゼロに抑え、(2) リクエスト内およびリクエスト間でのKVキャッシュの柔軟な共有を実現し、メモリ使用量をさらに削減します。私たちの評価では、vLLMは、FasterTransformerやOrcaなどの最先端システムと比較して、同じレベルのレイテンシで人気のあるLLMのスループットを2-4倍向上させることが示されています。この改善は、長いシーケンス、大きなモデル、より複雑なデコーディングアルゴリズムにおいてより顕著です。vLLMのソースコードは、https://github.com/vllm-project/vllm で公開されています。
+# Summary (by gpt-4o-mini)
+- PagedAttentionを用いたvLLMシステムを提案し、KVキャッシュメモリの無駄を削減し、リクエスト間での柔軟な共有を実現。これにより、同レベルのレイテンシでLLMのスループットを2-4倍向上。特に長いシーケンスや大規模モデルで効果が顕著。ソースコードは公開中。</issue-body>
+<maintainer-comment-text><p>（今更ながら）vLLMはこちら:<br>
+
+{% raw %}
+<a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener noreferrer">https://github.com/vllm-project/vllm</a>
+{% endraw %}
+
+<br><br>現在の主要なLLM Inference/Serving Engineのひとつ。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SARATHI: Efficient LLM Inference by Piggybacking Decodes with Chunked  Prefills, Amey Agrawal+, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2308.16369</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2028</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, python, LLMServing, read-later, Inference</tags>
+<repo-issue-date>2025-06-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2308.16369
+# Authors
+  - Amey Agrawal
+  - Ashish Panwar
+  - Jayashree Mohan
+  - Nipun Kwatra
+  - Bhargav S. Gulavani
+  - Ramachandran Ramjee
+# Abstract
+  - Large Language Model (LLM) inference consists of two distinct phases - prefill phase which processes the input prompt and decode phase which generates output tokens autoregressively. While the prefill phase effectively saturates GPU compute at small batch sizes, the decode phase results in low compute utilization as it generates one token at a time per request. The varying prefill and decode times also lead to imbalance across micro-batches when using pipeline parallelism, resulting in further inefficiency due to bubbles.   We present SARATHI to address these challenges. SARATHI employs chunked-prefills, which splits a prefill request into equal sized chunks, and decode-maximal batching, which constructs a batch using a single prefill chunk and populates the remaining slots with decodes. During inference, the prefill chunk saturates GPU compute, while the decode requests 'piggyback' and cost up to an order of magnitude less compared to a decode-only batch. Chunked-prefills allows constructing multiple decode-maximal batches from a single prefill request, maximizing coverage of decodes that can piggyback. Furthermore, the uniform compute design of these batches ameliorates the imbalance between micro-batches, significantly reducing pipeline bubbles.   Our techniques yield significant improvements in inference performance across models and hardware. For the LLaMA-13B model on A6000 GPU, SARATHI improves decode throughput by up to 10x, and accelerates end-to-end throughput by up to 1.33x. For LLaMa-33B on A100 GPU, we achieve 1.25x higher end-to-end-throughput and up to 4.25x higher decode throughput. When used with pipeline parallelism on GPT-3, SARATHI reduces bubbles by 6.29x, resulting in an end-to-end throughput improvement of 1.91x.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）の推論は、入力プロンプトを処理するプレフィルフェーズと、出力トークンを自己回帰的に生成するデコードフェーズの2つの異なるフェーズで構成されています。プレフィルフェーズは小さなバッチサイズでGPU計算を効果的に飽和させる一方で、デコードフェーズはリクエストごとに1トークンずつ生成するため、計算利用率が低下します。また、プレフィルとデコードの時間の変動は、パイプライン並列性を使用する際にマイクロバッチ間の不均衡を引き起こし、バブルによるさらなる非効率をもたらします。これらの課題に対処するために、私たちはSARATHIを提案します。SARATHIは、プレフィルリクエストを同じサイズのチャンクに分割するチャンクプレフィルと、単一のプレフィルチャンクを使用してバッチを構築し、残りのスロットをデコードで埋めるデコードマキシマルバッチングを採用しています。推論中、プレフィルチャンクはGPU計算を飽和させ、デコードリクエストは「ピギーバック」し、デコード専用バッチと比較して最大で1桁のコストで済みます。チャンクプレフィルにより、単一のプレフィルリクエストから複数のデコードマキシマルバッチを構築でき、ピギーバックできるデコードのカバレッジを最大化します。さらに、これらのバッチの均一な計算設計は、マイクロバッチ間の不均衡を改善し、パイプラインバブルを大幅に削減します。私たちの技術は、モデルやハードウェア全体で推論性能の大幅な改善をもたらします。A6000 GPU上のLLaMA-13Bモデルでは、SARATHIはデコードスループットを最大10倍向上させ、エンドツーエンドスループットを最大1.33倍加速します。A100 GPU上のLLaMa-33Bでは、エンドツーエンドスループットを1.25倍向上させ、デコードスループットを最大4.25倍向上させます。GPT-3でパイプライン並列性を使用した場合、SARATHIはバブルを6.29倍削減し、エンドツーエンドスループットの改善を1.91倍実現します。
+# Summary (by gpt-4o-mini)
+- SARATHIは、LLMの推論効率を向上させる手法で、プレフィルリクエストをチャンクに分割し、デコードマキシマルバッチを構築することで計算利用率を最大化します。これにより、デコードスループットを最大10倍向上させ、エンドツーエンドスループットも改善。特に、A6000 GPU上のLLaMA-13Bモデルで顕著な性能向上を示し、パイプラインバブルを大幅に削減しました。</issue-body>
+<maintainer-comment-text><p>vLLMでも採用されている `Chunked Prefills` と `Decode-Maximal Batching` を提案している。<br>![Image](https://github.com/user-attachments/assets/4db0f73d-bdf4-4c2b-a765-2c9b242904f1)</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>コミュニティサービスにおけるレコメンデーションの変遷とMLパイプラインについて, PyCon'21</title>
+<original-paper-blog-link>https://speakerdeck.com/takapy/komiyuniteisabisuniokerurekomendesiyonfalsebian-qian-tomlpaipurainnituite?slide=40</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/413</repo-issue-link>
+<tags>RecommenderSystems, Tutorial, Infrastructure, python, Slide</tags>
+<repo-issue-date>2021-10-21</repo-issue-date>
+<issue-body>https://speakerdeck.com/takapy/komiyuniteisabisuniokerurekomendesiyonfalsebian-qian-tomlpaipurainnituite?slide=40</issue-body>
+<maintainer-comment-text><p>・ママ向けのQ&AサービスにおけるレコメンドとMLパイプラインについて紹介<br><br><br><br>◆レコメンドエンジンの変遷<br><br>　・Tensorflowで実装したMFから始まり、その後トピックを絞り込んだ上で推薦するためにLDAを活用したレコメンド、最終的にSoftmax Recommendationを開発<br><br>　　* Softmax Recommendation: 
+
+{% raw %}
+<a href="https://developers.google.com/machine-learning/recommendation/dnn/softmax" target="_blank" rel="noopener noreferrer">https://developers.google.com/machine-learning/recommendation/dnn/softmax</a>
+{% endraw %}
+
+<br><br>　　* ユーザプロファイル（e.g. 行動ベクトル, ユーザの属性情報）等を入力とし、hidden layerをかませて最終的にアイテム次元数分のスコアベクトルを得る手法<br><br>　　* 行動ベクトル=ユーザが過去にクリックしたQ&Aだが、質問ベクトルを得るために内容テキストは利用せず行動ログ+word2vecで学習<br><br>　　* 類似質問検索による定性評価の結果良い結果、関連質問を抽出できるベクトルとなっていることを確認<br><br>　→ レコメンド手法の変遷につれ、ベンチマークを上回るようになっていった</p><p>◆MLパイプラインについて<br><br>　・AWS Step FunctionsとAmazon Sagemakerを利用<br><br>　・AWS Step Functions<br><br>　　* AWS上の様々なサービスをワークフローとして定義できる（json形式でワークフローを記述）<br><br>　・Amazon Sagemaker<br><br>　　* 機械学習向けのIDE<br><br>　　* notebook上でのデータ分析・モデル学習、実験管理や学習済みモデルのデプロイが可能<br><br>　　* Sagemaker Processingを用いることで、実行したい処理やインスタンスタイプを指定することで、notebookとは別の実行環境（コンテナ）で任意のpythonスクリプトを実行可<br><br>　　<br><br><img src="https://user-images.githubusercontent.com/12249301/138197625-9c35e527-3220-415b-9b38-b663ab75cee3.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>　・ワークフローの定義=AWS Stepfunctions, スクリプト実行のリソース=Sagemaker Processingとして利用<br><br><br><br></p><p>MLパイプラインについては下記資料により詳しい情報が書かれている<br><br>
+
+{% raw %}
+<a href="https://speakerdeck.com/takapy/sagemaker-studiotostep-functionswoyong-itemlopshefalse-bu-wota-michu-sou" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/takapy/sagemaker-studiotostep-functionswoyong-itemlopshefalse-bu-wota-michu-sou</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>microgpt.py, Andrej Karpathy, 2026.02</title>
+<original-paper-blog-link>https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4540</repo-issue-link>
+<tags>NLP, LanguageModel, python, Selected Papers/Blogs, MinimalCode</tags>
+<repo-issue-date>2026-02-12</repo-issue-date>
+<issue-body>https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/karpathy/status/2021694437152157847?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Pocket Flow: 100-line LLM framework. Let Agents build Agents, The-Rocket, 2026.01</title>
+<original-paper-blog-link>https://github.com/The-Pocket/PocketFlow</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4241</repo-issue-link>
+<tags>NLP, LanguageModel, Library, AIAgents, python, SoftwareEngineering, read-later, Selected Papers/Blogs, MinimalCode</tags>
+<repo-issue-date>2026-01-19</repo-issue-date>
+<issue-body>https://github.com/The-Pocket/PocketFlow</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kevinqhlin/status/2012654078480744805?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>たったの100行で実現されるミニマルなAI Agent/LLMフレームワークで、9種類の抽象化（Node, Flow, Shared, ...)でchat, agent, workflow, RAG, MCP, A2Aなどの様々なLLMをベースとした機能を実装できるフレームワークな模様。コード読みたい</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LLMRouter: An Open-Source Library for LLM Routing, Feng+, 2025.12</title>
+<original-paper-blog-link>https://ulab-uiuc.github.io/LLMRouter/#extending-with-custom-routers</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4100</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Library, python, SoftwareEngineering, Routing</tags>
+<repo-issue-date>2025-12-30</repo-issue-date>
+<issue-body>https://ulab-uiuc.github.io/LLMRouter/#extending-with-custom-routers</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/youjiaxuan/status/2005877938554589370?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>mini-sglang: A compact implementation of SGLang, designed to demystify the complexities of modern LLM serving systems, sgl-project, 2025</title>
+<original-paper-blog-link>https://github.com/sgl-project/mini-sglang</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4086</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, python, Repository, LLMServing, SoftwareEngineering, read-later, Selected Papers/Blogs, MinimalCode</tags>
+<repo-issue-date>2025-12-28</repo-issue-date>
+<issue-body>https://github.com/sgl-project/mini-sglang</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theahmadosman/status/2004761075284127861?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>めっちゃ勉強したい</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Bloom: an open source tool for automated behavioral evaluations, Anthropic, 2025.12</title>
+<original-paper-blog-link>https://www.anthropic.com/research/bloom</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4019</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Alignment, AIAgents, Evaluation, python, Safety</tags>
+<repo-issue-date>2025-12-21</repo-issue-date>
+<issue-body>https://www.anthropic.com/research/bloom</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/anthropicai/status/2002424909524619581?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Pushing the Frontier of Audiovisual Perception with Large-Scale Multimodal Correspondence Learning, Meta, 2025.12</title>
+<original-paper-blog-link>https://ai.meta.com/research/publications/pushing-the-frontier-of-audiovisual-perception-with-large-scale-multimodal-correspondence-learning/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4001</repo-issue-link>
+<tags>ComputerVision, Library, MultiModal, SpeechProcessing, python, Encoder, 2D (Image), 4D (Video), audio</tags>
+<repo-issue-date>2025-12-19</repo-issue-date>
+<issue-body>https://ai.meta.com/research/publications/pushing-the-frontier-of-audiovisual-perception-with-large-scale-multimodal-correspondence-learning/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/AIatMeta/status/2001698702961053750?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>様々なモダリティ（画像・動画・音声等）をエンコードできるPerception Encoderに最近リリースされたSAM Audio (Audio-Visual / Audio-frame) も組み込まれた模様<br>code: 
+
+{% raw %}
+<a href="https://github.com/facebookresearch/perception_models" target="_blank" rel="noopener noreferrer">https://github.com/facebookresearch/perception_models</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Defeating Nondeterminism in LLM Inference, Horace He in collaboration with others at Thinking Machines, 2025.09</title>
+<original-paper-blog-link>https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2763</repo-issue-link>
+<tags>NLP, LanguageModel, python, Blog, read-later, Selected Papers/Blogs, Non-Determinism</tags>
+<repo-issue-date>2025-09-11</repo-issue-date>
+<issue-body>https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thinkymachines/status/1965826369721623001?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/webbigdata/status/1965964901102530965?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>vLLMにおいてinferenceをdeterministicにする方法が、vLLMのissue number 24583に記載されているので参照のこと。</p><p>transformersでの実装例:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/1968559505966350705?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Inside vLLM: Anatomy of a High-Throughput LLM Inference System, Aleksa Gordić blog, 2025.08</title>
+<original-paper-blog-link>https://www.aleksagordic.com/blog/vllm</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2668</repo-issue-link>
+<tags>NLP, LanguageModel, python, Blog, LLMServing, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-09-03</repo-issue-date>
+<issue-body>https://www.aleksagordic.com/blog/vllm</issue-body>
+<maintainer-comment-text><p>めっちゃ良さそう</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>vLLMのSpeculative Decodingによる推論高速化を試す, Aratako, 2025.05</title>
+<original-paper-blog-link>https://zenn.dev/aratako_lm/articles/efeadd6d1e0f4b</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2499</repo-issue-link>
+<tags>EfficiencyImprovement, LanguageModel, python, Blog, LLMServing, Decoding, SpeculativeDecoding</tags>
+<repo-issue-date>2025-08-21</repo-issue-date>
+<issue-body>https://zenn.dev/aratako_lm/articles/efeadd6d1e0f4b</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>reasoning-minimal, torotoki, 2025.08</title>
+<original-paper-blog-link>https://github.com/torotoki/reasoning-minimal</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2473</repo-issue-link>
+<tags>NLP, ReinforcementLearning, python, Repository, GRPO, On-Policy, MinimalCode</tags>
+<repo-issue-date>2025-08-19</repo-issue-date>
+<issue-body>https://github.com/torotoki/reasoning-minimal</issue-body>
+<maintainer-comment-text><p>TRLのGRPOTrainer、および独自定義のReward（フォーマット/acc）を用いたミニマルなGRPOの実装。GRPOを実施する際には参照のこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>simple-paged-attention, torotoki, 2025.06</title>
+<original-paper-blog-link>https://github.com/torotoki/simple-paged-attention</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2472</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, Attention, python, Repository, read-later, MinimalCode</tags>
+<repo-issue-date>2025-08-19</repo-issue-date>
+<issue-body>https://github.com/torotoki/simple-paged-attention</issue-body>
+<maintainer-comment-text><p>CUDA + C++によるミニマルなpaged-attentionの実装。アルゴリズムの理解+実装理解の参考に非常に良さそう。</p><p>PagedAttentionは 現在の主要なLLM Inference/Serving EngineのひとつであるvLLM で（提案|実装）された技術であり、元論文は下記:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2474" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Memory Management for Large Language Model Serving with  PagedAttention, Woosuk Kwon+, SOSP'23</a>
+</p><p>この辺もあわせて読むとおもしろいかもしれない:<br>
+
+{% raw %}
+<a href="https://nttdocomo-developers.jp/entry/2024/12/19/090000_6" target="_blank" rel="noopener noreferrer">https://nttdocomo-developers.jp/entry/2024/12/19/090000_6</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LMCache, LMCache, 2025.07</title>
+<original-paper-blog-link>https://github.com/LMCache/LMCache</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2349</repo-issue-link>
+<tags>EfficiencyImprovement, LanguageModel, Library, python, LLMServing</tags>
+<repo-issue-date>2025-08-03</repo-issue-date>
+<issue-body>https://github.com/LMCache/LMCache</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akshay_pachaar/status/1951626977213059406?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>KV Cacheを色々なところにキャッシュしておいて、prefixだけでなく全てのreused可能なものをキャッシュすることで、TTFTとスループットを大幅に向上するらしい。特にlong contextなタスクで力を発揮し、vLLMと組み合わせると下記のようなパフォーマンス向上結果<br><img src="https://github.com/user-attachments/assets/d40301c3-f7a9-4f2a-a66e-65c3357ce2b9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Python Template for Claude Code （Cookiecutter）, zerebom, 2025.07</title>
+<original-paper-blog-link>https://github.com/zerebom/python-template-for-claude-code-cookiecutter</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2302</repo-issue-link>
+<tags>AIAgents, project_template, python, Coding, SoftwareEngineering</tags>
+<repo-issue-date>2025-07-26</repo-issue-date>
+<issue-body>https://github.com/zerebom/python-template-for-claude-code-cookiecutter</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zerebom_3/status/1949050050694582703?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Nano-vLLM, GeeeekExplorer, 2025.06</title>
+<original-paper-blog-link>https://github.com/GeeeekExplorer/nano-vllm</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2069</repo-issue-link>
+<tags>NLP, LanguageModel, python, Blog, Repository, LLMServing, MinimalCode</tags>
+<repo-issue-date>2025-06-22</repo-issue-date>
+<issue-body>https://github.com/GeeeekExplorer/nano-vllm</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/marktechpost/status/1936689592507543643?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>vLLMと同等のinference speedを実現するミニマムでクリーンな実装。勉強用に良さそう。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Mirage Persistent Kernel: Compiling LLMs into a MegaKernel, 2025.06</title>
+<original-paper-blog-link>https://github.com/mirage-project/mirage/tree/mpk</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2061</repo-issue-link>
+<tags>NLP, python, LLMServing</tags>
+<repo-issue-date>2025-06-20</repo-issue-date>
+<issue-body>https://github.com/mirage-project/mirage/tree/mpk</issue-body>
+<maintainer-comment-text><p>vLLM, SGLangよりもデコーディングが早い模様（図は下記ブログより引用）<br><img src="https://github.com/user-attachments/assets/0a2bf0e5-0d3f-4dd0-a912-6ce05ead2cad" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ブログ:
+
+{% raw %}
+<a href="https://zhihaojia.medium.com/compiling-llms-into-a-megakernel-a-path-to-low-latency-inference-cf7840913c17" target="_blank" rel="noopener noreferrer">https://zhihaojia.medium.com/compiling-llms-into-a-megakernel-a-path-to-low-latency-inference-cf7840913c17</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiazhihao/status/1935767958963314773?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>verl: Volcano Engine Reinforcement Learning for LLMs, ByteDance Seed Team, 2025.04</title>
+<original-paper-blog-link>https://github.com/volcengine/verl</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1969</repo-issue-link>
+<tags>NLP, LanguageModel, Library, ReinforcementLearning, python</tags>
+<repo-issue-date>2025-05-16</repo-issue-date>
+<issue-body>https://github.com/volcengine/verl</issue-body>
+<maintainer-comment-text><p>SoTAなRLアルゴリズムを数行のコードで実装可能で、Sequence Parallelismがサポートされているので長い系列を扱える。FSDP, Megatron-LM,vLLM,SGLangなどとシームレスに統合できるっぽい？</p><p>注意点（超重要）:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/fengyao1909/status/1953882575241723911?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>inference backend（ブログ中ではvLLM, SGLangなどを仮定。ロールアウトに利用する）とtrainingのbackend（モデルを学習するフレームワーク, FSDPなどを仮定する）のミスマッチによってトークンの生起確率に差が生じ、ポリシーの更新がうまくいかなくなる。<br><br><img src="https://github.com/user-attachments/assets/92ab33c6-d943-4101-9f73-250c697af816" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2228" target="_blank" rel="noopener noreferrer">論文では語られないLLM開発において重要なこと Swallow Projectを通して, Kazuki Fujii, NLPコロキウム, 2025.07</a>
+<br><br>でも言われているように、ライブラリにはバグがあるのが普通なのね、、、。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Open Reasoner Zero, Open-Reasoner-Zero, 2024.02</title>
+<original-paper-blog-link>https://github.com/Open-Reasoner-Zero/Open-Reasoner-Zero</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1778</repo-issue-link>
+<tags>MachineLearning, NLP, LanguageModel, Library, ReinforcementLearning, translation_required, python, Reasoning</tags>
+<repo-issue-date>2025-03-02</repo-issue-date>
+<issue-body>https://github.com/Open-Reasoner-Zero/Open-Reasoner-Zero</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/1893698293965725708?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Docling, DS4SD, 2024.07</title>
+<original-paper-blog-link>https://github.com/DS4SD/docling</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1759</repo-issue-link>
+<tags>LanguageModel, python</tags>
+<repo-issue-date>2025-02-12</repo-issue-date>
+<issue-body>https://github.com/DS4SD/docling</issue-body>
+<maintainer-comment-text><p>Unstructuredとどちらが良いだろうか？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SGlang, sgl-project, 2024.01</title>
+<original-paper-blog-link>https://github.com/sgl-project/sglang</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1755</repo-issue-link>
+<tags>LanguageModel, translation_required, python, LLMServing, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-02-12</repo-issue-date>
+<issue-body>https://github.com/sgl-project/sglang</issue-body>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1733" target="_blank" rel="noopener noreferrer">Open R1, HuggingFace, 2025.01</a>
+<br><br>のUpdate2でMath Datasetの生成に利用されたLLM Servingフレームワーク。利用前と比較してスループットが2倍になったとのこと。</p><p>CPU, external storageを利用することでTTFTを改善するようになったようで、最大80%TTFTが削減されるとの記述がある。<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lm_zheng/status/1966312698100203994?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>（原理的には元来可能だが計算効率の最適化に基づく誤差によって実装上の問題で実現できていなかった) Deterministic Inferenceをサポート:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ying11231/status/1970250780394569819?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Structured Outputs OpenAI Platform, 2025.01</title>
+<original-paper-blog-link>https://platform.openai.com/docs/guides/structured-outputs#chain-of-thought</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1721</repo-issue-link>
+<tags>LanguageModel, Chain-of-Thought, python, StructuredData</tags>
+<repo-issue-date>2025-01-25</repo-issue-date>
+<issue-body>https://platform.openai.com/docs/guides/structured-outputs#chain-of-thought</issue-body>
+<maintainer-comment-text><p>pydanticを用いて、CoT＋構造化されたoutputを実施するサンプル</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pydantic-settingsで環境変数からもオプション引数を指定できるCLIを作る 〜サブコマンド篇〜, nikkie-ftnextの日記, 2025.01</title>
+<original-paper-blog-link>https://nikkie-ftnext.hatenablog.com/entry/pydantic-settings-cli-application-subcommands</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1653</repo-issue-link>
+<tags>python, Blog</tags>
+<repo-issue-date>2025-01-04</repo-issue-date>
+<issue-body>https://nikkie-ftnext.hatenablog.com/entry/pydantic-settings-cli-application-subcommands</issue-body>
+<maintainer-comment-text><p>pydantic-settingsを使ったCLI作成に関する記事。環境変数からオプションを指定できるので、コマンドライン引数を動的に柔軟に変更したい場合に便利そう</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>browser-use やばいです, Syoitu, 2024.12</title>
+<original-paper-blog-link>https://qiita.com/Syoitu/items/5aa84b5d8c6047c4d41b</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1652</repo-issue-link>
+<tags>NLP, AIAgents, python, Blog, API, ComputerUse</tags>
+<repo-issue-date>2025-01-04</repo-issue-date>
+<issue-body>https://qiita.com/Syoitu/items/5aa84b5d8c6047c4d41b</issue-body>
+<maintainer-comment-text><p>すごい手軽に使えそうだが、クローリング用途に使おうとするとhallucinationが起きた時に困るのでうーんと言ったところ。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LiteLLM, BerriAI, 2023.08</title>
+<original-paper-blog-link>https://github.com/BerriAI/litellm</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1651</repo-issue-link>
+<tags>NLP, LanguageModel, Library, python, Repository, API</tags>
+<repo-issue-date>2025-01-03</repo-issue-date>
+<issue-body>https://github.com/BerriAI/litellm</issue-body>
+<maintainer-comment-text><p>様々なLLMのAPIを共通のインタフェースで呼び出せるライブラリ<br><br></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1553" target="_blank" rel="noopener noreferrer">aisuite, andrewyng, 2024.11</a>
+ <br><br><br><br>とどちらがいいんだ・・・？</p><p>aisuiteのissueの113番のスレッドを見ると、<br><br>- LiteLLMはもはやLiteではなくなっており、コードベースの保守性が低い<br><br>- aisuiteは複数のLLMプロバイダーをシンプルに利用する方法を提供する<br><br>- 今後発表されるロードマップを見れば、LiteLLMとの差別化の方向性が分かるはずだ<br><br><br><br>といった趣旨のことが記述されていた。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>aisuite, andrewyng, 2024.11</title>
+<original-paper-blog-link>https://github.com/andrewyng/aisuite</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1553</repo-issue-link>
+<tags>NLP, LanguageModel, Library, python, Repository, API</tags>
+<repo-issue-date>2024-11-28</repo-issue-date>
+<issue-body>https://github.com/andrewyng/aisuite</issue-body>
+<maintainer-comment-text><p>複数のLLM Providerの呼び出しを共通のインタフェースで呼び出せる。変更するのは、モデルを指定するパラメータのみ。<br><br>元ポスト:
+
+{% raw %}
+<a href="https://www.linkedin.com/posts/andrewyng_announcing-new-open-source-python-package-activity-7266851242604134400-Davp?utm_source=share&utm_medium=member_ios" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/posts/andrewyng_announcing-new-open-source-python-package-activity-7266851242604134400-Davp?utm_source=share&utm_medium=member_ios</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Streamlit, 2020.12</title>
+<original-paper-blog-link>https://streamlit.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1447</repo-issue-link>
+<tags>Library, python</tags>
+<repo-issue-date>2024-10-07</repo-issue-date>
+<issue-body>https://streamlit.io/</issue-body>
+<maintainer-comment-text><p>データを用いたアプリを簡単に作れるpythonライブラリ<br><br>データ/モデルを用いたvisualization等を実施するアプリを、数行で作れてしまう。綺麗なUIつき。便利。<br><br><img src="https://github.com/user-attachments/assets/3b381b30-e223-48d7-8349-65965dfe36fb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Pluggyとは, 2023.02</title>
+<original-paper-blog-link>https://zenn.dev/467/articles/86c04d1f3ced6e</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1389</repo-issue-link>
+<tags>Library, python, Blog</tags>
+<repo-issue-date>2024-09-12</repo-issue-date>
+<issue-body>https://zenn.dev/467/articles/86c04d1f3ced6e</issue-body>
+<maintainer-comment-text><p>pluggyに関する概要が説明されている。<br><br><br><br>公式の説明を読むとpytestで採用されており、pluggyは関数フックを可能にし、プラグインをインストールするだけでホストプログラムの動作を拡張、または変更できるようになる代物とのこと（=プラガブル？）。<br><br><br><br>pluggyがなぜ有用なのかの説明については、Pythonでは、他のプログラムやライブラリの動作を変更するための既存のメカニズムとして、メソッドのオーバーライドやモンキーパッチが存在するが、複数の関係者が同じプログラムの変更に参加したい場合、これらが問題を引き起こすので、pluggyはこれらのメカニズムに依存せず、より構造化されたアプローチを可能にし、状態や動作の不必要な露出を避けるとのこと。これにより、ホストとプラグインの間が疎結合になるので、問題が軽減されるとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>NanoFlow, 2024.08</title>
+<original-paper-blog-link>https://github.com/efeslab/Nanoflow</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1368</repo-issue-link>
+<tags>NLP, LanguageModel, Library, python, Repository, LLMServing</tags>
+<repo-issue-date>2024-08-31</repo-issue-date>
+<issue-body>https://github.com/efeslab/Nanoflow</issue-body>
+<maintainer-comment-text><p>vLLMよりも2倍程度高速なLLM serving framework。<br><br>オフライン評価<br><img src="https://github.com/user-attachments/assets/93d8362d-e0e4-4bdb-9de4-178e1eef2e33" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>オンラインでのlatency評価<br><img src="https://github.com/user-attachments/assets/506ebf39-9c47-4d11-9352-c26f6b0d155c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>機能はvLLMの方が多いが、速度はこちらの方がかなり速そうではある。latencyのrequirementが厳しい場合などは検討しても良いかもしれない。<br><br>しかしLLM serving frameworkも群雄割拠ですね。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rohanpaul_ai/status/1829647702998606104?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1343" target="_blank" rel="noopener noreferrer">DeepSpeed, vLLM, CTranslate2 で rinna 3.6b の生成速度を比較する, 2024.06</a>
+ も参照のこと</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AutoMLOpsを使って機械学習CI_CDパイプラインを組んでみた, 2024.08</title>
+<original-paper-blog-link>https://www.ai-shift.co.jp/techblog/4772</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1363</repo-issue-link>
+<tags>MLOps, python, Blog, SoftwareEngineering</tags>
+<repo-issue-date>2024-08-27</repo-issue-date>
+<issue-body>https://www.ai-shift.co.jp/techblog/4772</issue-body>
+<maintainer-comment-text><p>pythonコードでコンポーネントや、パイプラインを関数の形で記述するだけで、MLのCI/CDパイプラインをVertexAI上に自動構築できる模様。非常にお手軽で、多くの設定ファイルなどは自動生成されるようなので、簡単に始めることができそう。<br><br>記事中では、多クラス分類器を学習するためのデータをBigQueryから取得、モデル訓練、デプロイ、推論エンドポイント生成、モニタリングなどを簡単なコードベースで実現できている。便利そうではある。<br>細かいチューニングも自動生成された設定ファイルをいじれば可能だと思われる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepSpeed, vLLM, CTranslate2 で rinna 3.6b の生成速度を比較する, 2024.06</title>
+<original-paper-blog-link>https://zenn.dev/rinna/articles/5fd4f3cc12f7c5</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1343</repo-issue-link>
+<tags>EfficiencyImprovement, Library, python, Blog, OpenWeight, LLMServing</tags>
+<repo-issue-date>2024-08-05</repo-issue-date>
+<issue-body>https://zenn.dev/rinna/articles/5fd4f3cc12f7c5</issue-body>
+<maintainer-comment-text><p>[vllm](
+
+{% raw %}
+<a href="https://github.com/vllm-project/vllm)を使うのが一番お手軽で、inference速度が速そう。PagedAttentionと呼ばれるキャッシュを利用して高速化しているっぽい。" target="_blank" rel="noopener noreferrer">https://github.com/vllm-project/vllm)を使うのが一番お手軽で、inference速度が速そう。PagedAttentionと呼ばれるキャッシュを利用して高速化しているっぽい。</a>
+{% endraw %}
+
+<br><br>（図はブログ中より引用）<br><br><br><br><img src="https://github.com/user-attachments/assets/36c83605-f925-4e19-b06c-2059c837e359" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>こちらも参照のこと<br><br>vLLMの仕組みをざっくりと理解する：
+
+{% raw %}
+<a href="https://dalab.jp/archives/journal/vllm/#PagedAttention" target="_blank" rel="noopener noreferrer">https://dalab.jp/archives/journal/vllm/#PagedAttention</a>
+{% endraw %}
+
+</p><p>vLLMでReasoning ModelをServingするときは、`--enable-reasoning`等の追加オプションを指定する必要がある点に注意<br>
+
+{% raw %}
+<a href="https://docs.vllm.ai/en/stable/features/reasoning_outputs.html" target="_blank" rel="noopener noreferrer">https://docs.vllm.ai/en/stable/features/reasoning_outputs.html</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>lifestar</title>
+<original-paper-blog-link>https://github.com/litestar-org/litestar</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1143</repo-issue-link>
+<tags>Library, python</tags>
+<repo-issue-date>2023-11-19</repo-issue-date>
+<issue-body>https://github.com/litestar-org/litestar</issue-body>
+<maintainer-comment-text><p>非常に高速なpythonのASGIライブラリ。WSGIとは異なり非同期処理なためリアルタイムアプリケーションに向いているっぽい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Loggingモジュールではじめるログ出力入門</title>
+<original-paper-blog-link>https://speakerdeck.com/tosh2230/introduction-to-python-logging-9744df54-fd32-476c-aae2-88ef948ba522?slide=50</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1083</repo-issue-link>
+<tags>python, Blog</tags>
+<repo-issue-date>2023-10-17</repo-issue-date>
+<issue-body>https://speakerdeck.com/tosh2230/introduction-to-python-logging-9744df54-fd32-476c-aae2-88ef948ba522?slide=50</issue-body>
+<maintainer-comment-text><p>- ライブラリ開発の際は、ライブラリのトップレベルのLoggerにNullHandlerを設定して、詳細設定を呼び出し側に委ねるのがお作法<br>  - NullHandlerは何もせずに上位ハンドラに伝搬させるため<br>- ライブラリ側でやることは、タイミングとメッセージ内容のみ<br>- loggerを利用するか否かは、「書き捨てか否か」<br>  - 書き捨て例: 内容のちょっとした確認やデバッグ、局所的な出力、プログラムとログのライフタイムが短い<br>参考になる</p><p>propagateの仕組みや、構成要素、Loggerの恩恵はすべてのpythonモジュールがロギングに参加できること、モジュール名で基本的にはgetLoggerすることなど、勉強になった</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Ascender</title>
+<original-paper-blog-link>https://github.com/cvpaperchallenge/Ascender</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/705</repo-issue-link>
+<tags>MachineLearning, project_template, python</tags>
+<repo-issue-date>2023-05-25</repo-issue-date>
+<issue-body>https://github.com/cvpaperchallenge/Ascender</issue-body>
+<maintainer-comment-text><p>pythonを利用した研究開発する上でのプロジェクトテンプレート</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Assisted Generation: a new direction toward low-latency text generation, 2023</title>
+<original-paper-blog-link>https://huggingface.co/blog/assisted-generation</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/675</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, Library, Transformer, python</tags>
+<repo-issue-date>2023-05-11</repo-issue-date>
+<issue-body>https://huggingface.co/blog/assisted-generation</issue-body>
+<maintainer-comment-text><p>1 line加えるとtransformerのgenerationが最大3倍程度高速化されるようになったらしい</p><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fecc1c5e-b9e5-4844-af96-ba48c3d60fae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>assistant modelをロードしgenerateに引数として渡すだけ<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7dabf3bf-cd32-469c-abba-f1269318576d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Polars, 2023</title>
+<original-paper-blog-link>https://qiita.com/_jinta/items/fac13f09e8e8a5769b79</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/508</repo-issue-link>
+<tags>Library, python, Blog</tags>
+<repo-issue-date>2023-01-23</repo-issue-date>
+<issue-body>https://qiita.com/_jinta/items/fac13f09e8e8a5769b79</issue-body>
+<maintainer-comment-text><p>pandasより100倍高速で複雑なクエリも見やすく書けてindexも存在しないのでバグも出にくいという優れものらしい</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pytorch_lightning tips</title>
+<original-paper-blog-link>https://github.com/PyTorchLightning/pytorch-lightning/issues/3698</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/387</repo-issue-link>
+<tags>NeuralNetwork, Tools, Library, python, Blog</tags>
+<repo-issue-date>2021-06-12</repo-issue-date>
+<issue-body>【EmbeddingをCPUメモリに置く方法】
+https://github.com/PyTorchLightning/pytorch-lightning/issues/3698</issue-body>
+<maintainer-comment-text><p>PyTorch Lightning 2021 (for MLコンペ)<br>
+
+{% raw %}
+<a href="https://qiita.com/fam_taro/items/df8656a6c3b277f58781" target="_blank" rel="noopener noreferrer">https://qiita.com/fam_taro/items/df8656a6c3b277f58781</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>最先端自然言語処理ライブラリの最適な選択と有用な利用方法 _ pycon-jp-2020</title>
+<original-paper-blog-link>https://speakerdeck.com/taishii/pycon-jp-2020?slide=7</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/386</repo-issue-link>
+<tags>Tutorial, Tools, NLP, Library, python, Slide</tags>
+<repo-issue-date>2021-06-11</repo-issue-date>
+<issue-body>https://speakerdeck.com/taishii/pycon-jp-2020?slide=7</issue-body>
+<maintainer-comment-text><p>各形態素解析ライブラリの特徴や比較がされていて、自分の用途・目的に合わせてどの形態素解析器が良いか意思決定する際に有用</p><p><img src="https://user-images.githubusercontent.com/12249301/121644722-56025800-cace-11eb-9fe9-9d2f6b0eae5a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>TRTorch</title>
+<original-paper-blog-link>https://www.yurui-deep-learning.com/2021/06/04/trtorch/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/377</repo-issue-link>
+<tags>NeuralNetwork, Tutorial, Tools, Library, python</tags>
+<repo-issue-date>2021-06-06</repo-issue-date>
+<issue-body>https://www.yurui-deep-learning.com/2021/06/04/trtorch/</issue-body>
+<maintainer-comment-text><p>pytorchの推論を高速化できるライブラリ。6倍ほど早くなった模様。TorchScriptを介して変換するので、PythonだけでなくC++でも動作できるらしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pytorch tips</title>
+<original-paper-blog-link>None</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/376</repo-issue-link>
+<tags>Tutorial, Tools, Library, python</tags>
+<repo-issue-date>2021-06-05</repo-issue-date>
+<issue-body>pytorchに関するtipsをまとめていくところ</issue-body>
+<maintainer-comment-text><p>【PyTorchでたまに使うけどググって情報探すのに時間かかるやつ】<br><br>
+
+{% raw %}
+<a href="https://trap.jp/post/1122/" target="_blank" rel="noopener noreferrer">https://trap.jp/post/1122/</a>
+{% endraw %}
+
+<br><br><br><br>- scatter_add, einsum, Bilinear あたりが説明されている</p><p>【NLLossの細かい挙動】<br><br>
+
+{% raw %}
+<a href="https://tatsukawa.hatenablog.com/entry/2020/04/06/054700" target="_blank" rel="noopener noreferrer">https://tatsukawa.hatenablog.com/entry/2020/04/06/054700</a>
+{% endraw %}
+
+</p><p>【PyTorchで絶対nanを出したいマン】<br><br>
+
+{% raw %}
+<a href="https://qiita.com/syoamakase/items/40a716f93dc8afa8fd12" target="_blank" rel="noopener noreferrer">https://qiita.com/syoamakase/items/40a716f93dc8afa8fd12</a>
+{% endraw %}
+
+<br><br><br><br>PyTorchでnanが出てしまう原因とその対策が色々書いてある</p><p>【pipで様々なCuda versionのpytorchをinstallする方法】<br><br>
+
+{% raw %}
+<a href="https://stackoverflow.com/questions/65980206/cuda-10-2-not-recognised-on-pip-installed-pytorch-1-7-1" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/65980206/cuda-10-2-not-recognised-on-pip-installed-pytorch-1-7-1</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>intel MKL</title>
+<original-paper-blog-link>https://qiita.com/f0o0o/items/69d9b766008091a6e698</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/373</repo-issue-link>
+<tags>EfficiencyImprovement, Library, python, Blog</tags>
+<repo-issue-date>2021-06-03</repo-issue-date>
+<issue-body>https://qiita.com/f0o0o/items/69d9b766008091a6e698</issue-body>
+<maintainer-comment-text><p>intel CPUでpythonの数値計算を高速化するライブラリ(numpyとかはやくなるらしい; Anacondaだとデフォルトで入ってるとかなんとか)</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>locust</title>
+<original-paper-blog-link>https://locust.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/351</repo-issue-link>
+<tags>Tools, python, PerformanceTesting</tags>
+<repo-issue-date>2021-05-26</repo-issue-date>
+<issue-body>https://locust.io/</issue-body>
+<maintainer-comment-text><p>負荷テスト用のツール<br><br>JMeterと違って、pythonコードでテスト内容を制御できるらしく、かなり使いやすいらしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>mrec recommender systems library, mrec, 2013.11</title>
+<original-paper-blog-link>https://github.com/mendeley/mrec</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/155</repo-issue-link>
+<tags>RecommenderSystems, Library, python, One-Line Notes</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body>https://github.com/mendeley/mrec</issue-body>
+<maintainer-comment-text><p>実装：python<br><br>※ Mendeleyによるpythonライブラリ</p><p>参考：<br><br>
+
+{% raw %}
+<a href="http://www.kamishima.net/archive/recsysdoc.pdf" target="_blank" rel="noopener noreferrer">http://www.kamishima.net/archive/recsysdoc.pdf</a>
+{% endraw %}
+
+<br><br>
+
+{% raw %}
+<a href="https://takuti.me/note/recommender-libraries/" target="_blank" rel="noopener noreferrer">https://takuti.me/note/recommender-libraries/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Surprise: A Python library for recommender systems, Nicolas Hug, 2016.10</title>
+<original-paper-blog-link>http://surpriselib.com/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/149</repo-issue-link>
+<tags>RecommenderSystems, Library, python, Selected Papers/Blogs, One-Line Notes</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body>pj page: http://surpriselib.com/
+journal: https://joss.theoj.org/papers/10.21105/joss.02174</issue-body>
+<maintainer-comment-text><p>実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど<br><br>実装：python<br><br>使用方法：pythonライブラリとして利用<br><br>※ pythonで利用できる数少ない推薦システムライブラリ</p><p>参考：<br><br>
+
+{% raw %}
+<a href="http://www.kamishima.net/archive/recsysdoc.pdf" target="_blank" rel="noopener noreferrer">http://www.kamishima.net/archive/recsysdoc.pdf</a>
+{% endraw %}
+
+<br><br>
+
+{% raw %}
+<a href="https://takuti.me/note/recommender-libraries/" target="_blank" rel="noopener noreferrer">https://takuti.me/note/recommender-libraries/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

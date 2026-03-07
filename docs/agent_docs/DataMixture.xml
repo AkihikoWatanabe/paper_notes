@@ -1,0 +1,996 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-27">
+<paper-entry>
+<title>[Paper Note] Olmix: A Framework for Data Mixing Throughout LM Development, Mayee F. Chen+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.12237</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4553</repo-issue-link>
+<tags>Tutorial, Pretraining, NLP, LanguageModel, read-later, Selected Papers/Blogs, DataMixture, One-Line Notes</tags>
+<repo-issue-date>2026-02-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.12237
+# Authors
+  - Mayee F. Chen
+  - Tyler Murray
+  - David Heineman
+  - Matt Jordan
+  - Hannaneh Hajishirzi
+  - Christopher Ré
+  - Luca Soldaini
+  - Kyle Lo
+# Abstract
+  - Data mixing -- determining the ratios of data from different domains -- is a first-order concern for training language models (LMs). While existing mixing methods show promise, they fall short when applied during real-world LM development. We present Olmix, a framework that addresses two such challenges. First, the configuration space for developing a mixing method is not well understood -- design choices across existing methods lack justification or consensus and overlook practical issues like data constraints. We conduct a comprehensive empirical study of this space, identifying which design choices lead to a strong mixing method. Second, in practice, the domain set evolves throughout LM development as datasets are added, removed, partitioned, and revised -- a problem setting largely unaddressed by existing works, which assume fixed domains. We study how to efficiently recompute the mixture after the domain set is updated, leveraging information from past mixtures. We introduce mixture reuse, a mechanism that reuses existing ratios and recomputes ratios only for domains affected by the update. Over a sequence of five domain-set updates mirroring real-world LM development, mixture reuse matches the performance of fully recomputing the mix after each update with 74% less compute and improves over training without mixing by 11.6% on downstream tasks.
+# Translation (by gpt-4o-mini)
+- データミキシング——異なるドメインからのデータの比率を決定すること——は、言語モデル（LM）をトレーニングする上での重要な課題です。既存のミキシング手法は有望ですが、実際のLM開発に適用すると短所が見られます。私たちは、Olmixというフレームワークを提案し、これらの課題に対処します。第一に、ミキシング手法を開発する際の設定空間は十分に理解されておらず、既存の手法間の設計選択は正当化や合意が欠けており、データ制約などの実用的な問題を見落としています。私たちはこの空間に関する包括的な実証研究を行い、どの設計選択が強力なミキシング手法につながるかを特定します。第二に、実際にはLM開発中にドメインセットが進化し、データセットが追加、削除、分割、または修正されるため、既存の研究が想定している固定されたドメインとは異なる問題設定を考慮する必要があります。私たちは、ドメインセットが更新された後にミキサーを効率的に再計算する方法を研究し、過去のミキサーからの情報を活用します。ミキシチャー再利用というメカニズムを導入し、既存の比率を再利用し、更新に影響を受けるドメインについてのみ比率を再計算します。実際のLM開発を模した5回のドメインセットの更新において、ミキシチャー再利用は各更新後にミキサーを完全に再計算するのと同等の性能を持ちながらも、計算量を74%削減し、ミキシングなしでのトレーニングに対して下流タスクで11.6%の改善をもたらしました。
+# Summary (by gpt-4o-mini)
+- データミキシングは言語モデル（LM）トレーニングにおいて重要な課題であり、Olmixフレームワークを提案することで短所に対処。設定空間の理解が不足している中、強力なミキシング手法の設計選択を特定。ドメインセットの進化に対応し、受けた影響を考慮したミキシチャー再利用メカニズムを導入。これにより、計算量を74%削減し、下流タスクで11.6%の改善を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2022183937787723982?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/MayeeChen/status/2022356658085929092?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>言語モデルを事前学習しようとしたときに、<br>- 先行研究で提案されている手法を自分のデータにどのように適用すべきか？ハイパーパラメータはどうすればよいか？tiny datasetの場合はoversamplingしてよいのか？といった課題に直面し<br>- 仮にgood mixが分かったとしても、データは静的ではなく、新たなデータセットがリリースされたり、同僚がデータセットを変更するかもしれない。そうなったときに、DataMixをどのようにアップデートすればよいのか？<br><br>といった実践的に困る場面が多いようであり、これらに対して本研究は実践的なDataMixingの設定に関するガイダンスとデータセットが進化したときに効果的にDataMixを更新する方法を提案しているとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Decouple Searching from Training: Scaling Data Mixing via Model Merging for Large Language Model Pre-training, Shengrui Li+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.00747</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4384</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, read-later, Selected Papers/Blogs, ModelMerge, DataMixture</tags>
+<repo-issue-date>2026-02-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.00747
+# Authors
+  - Shengrui Li
+  - Fei Zhao
+  - Kaiyan Zhao
+  - Jieying Ye
+  - Haifeng Liu
+  - Fangcheng Shi
+  - Zheyong Xie
+  - Yao Hu
+  - Shaosheng Cao
+# Abstract
+  - Determining an effective data mixture is a key factor in Large Language Model (LLM) pre-training, where models must balance general competence with proficiency on hard tasks such as math and code. However, identifying an optimal mixture remains an open challenge, as existing approaches either rely on unreliable tiny-scale proxy experiments or require prohibitively expensive large-scale exploration. To address this, we propose Decouple Searching from Training Mix (DeMix), a novel framework that leverages model merging to predict optimal data ratios. Instead of training proxy models for every sampled mixture, DeMix trains component models on candidate datasets at scale and derives data mixture proxies via weighted model merging. This paradigm decouples search from training costs, enabling evaluation of unlimited sampled mixtures without extra training burden and thus facilitating better mixture discovery through more search trials. Extensive experiments demonstrate that DeMix breaks the trade-off between sufficiency, accuracy and efficiency, obtaining the optimal mixture with higher benchmark performance at lower search cost. Additionally, we release the DeMix Corpora, a comprehensive 22T-token dataset comprising high-quality pre-training data with validated mixtures to facilitate open research. Our code and DeMix Corpora is available at https://github.com/Lucius-lsr/DeMix.
+# Translation (by gpt-4o-mini)
+- 効果的なデータミクスを決定することは、大規模言語モデル（LLM）の事前学習において重要な要素です。モデルは、数学やコードのような難しいタスクに対する熟練度と一般的な能力とのバランスを取る必要があります。しかし、最適なミクスを特定することは依然として大きな課題であり、既存のアプローチはいずれも信頼性の低い小規模な代理実験に依存するか、非常に高コストの大規模探索を必要とします。この課題に対処するために、私たちはデータミクス探索を訓練から切り離す新しいフレームワーク「DeMix」を提案します。DeMixは、モデルの統合を利用して最適なデータ比率を予測します。すべてのサンプリングされたミクスのために代理モデルを訓練する代わりに、DeMixは候補データセット上でコンポーネントモデルを大規模に訓練し、加重モデルの統合を通じてデータミクスの代理を導き出します。このパラダイムは、探索を訓練コストから切り離し、追加の訓練の負担なしに無限のサンプリングされたミクスを評価できることを可能にし、より多くの探索試行を通じたより良いミクスの発見を促進します。広範な実験により、DeMixは十分性、正確性、効率性の間のトレードオフを打破し、より低い探索コストで高いベンチマーク性能を持つ最適なミクスを取得します。さらに、私たちは、オープンな研究を促進するために検証されたミクスを含む高品質の事前学習データからなる包括的な22兆トークンデータセット「DeMix Corpora」をリリースします。私たちのコードとDeMix Corporaは、https://github.com/Lucius-lsr/DeMix で入手可能です。
+# Summary (by gpt-4o-mini)
+- データミクスの最適化はLLMの事前学習において重要であるが、効果的な探索手法が不足している。本研究では、訓練からデータミクス探索を切り離す「DeMix」を提案し、統合モデルを通じて最適なデータ比率を予測する。広範な実験により、DeMixは探索コストを抑えつつ高い性能を実現する。また、検証済みのミクスを含む22兆トークンのデータセット「DeMix Corpora」を公開。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2018538141335068743?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2639" target="_blank" rel="noopener noreferrer">[Paper Note] RegMix: Data Mixture as Regression for Language Model Pre-training, Qian Liu+, ICLR'25</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MergeMix: Optimizing Mid-Training Data Mixtures via Learnable Model Merging, Jiapeng Wang+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.17858</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4311</repo-issue-link>
+<tags>NLP, LanguageModel, mid-training, ModelMerge, DataMixture</tags>
+<repo-issue-date>2026-01-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.17858
+# Authors
+  - Jiapeng Wang
+  - Changxin Tian
+  - Kunlong Chen
+  - Ziqi Liu
+  - Jiaxin Mao
+  - Wayne Xin Zhao
+  - Zhiqiang Zhang
+  - Jun Zhou
+# Abstract
+  - Optimizing data mixtures is essential for unlocking the full potential of large language models (LLMs), yet identifying the optimal composition remains computationally prohibitive due to reliance on heuristic trials or expensive proxy training. To address this, we introduce \textbf{MergeMix}, a novel approach that efficiently determines optimal data mixing ratios by repurposing model merging weights as a high-fidelity, low-cost performance proxy. By training domain-specific experts on minimal tokens and optimizing their merging weights against downstream benchmarks, MergeMix effectively optimizes the performance of data mixtures without incurring the cost of full-scale training. Extensive experiments on models with 8B and 16B parameters validate that MergeMix achieves performance comparable to or surpassing exhaustive manual tuning while drastically reducing search costs. Furthermore, MergeMix exhibits high rank consistency (Spearman $ρ> 0.9$) and strong cross-scale transferability, offering a scalable, automated solution for data mixture optimization.
+# Translation (by gpt-4o-mini)
+- データ混合の最適化は、大規模言語モデル（LLM）の潜在能力を引き出すために不可欠ですが、最適な構成の特定は、ヒューリスティックな試行や高コストのプロキシトレーニングに依存しているため、計算的に困難です。これに対処するために、私たちは\textbf{MergeMix}を提案します。これは、モデルのマージウェイトを、高忠実度で低コストなパフォーマンスプロキシとして再利用することで、最適なデータ混合比率を効率的に見つける新しいアプローチです。最小限のトークンでドメイン特化型のエキスパートをトレーニングし、下流のベンチマークに対してそのマージウェイトを最適化することで、MergeMixはフルスケールのトレーニングコストをかけずにデータ混合のパフォーマンスを効果的に最適化します。8Bおよび16Bパラメータのモデルに関する広範な実験により、MergeMixは exhaustive manual tuning と同等またはそれを上回るパフォーマンスを達成し、検索コストを大幅に削減することが確認されました。さらに、MergeMixは高い順位の一貫性（Spearman $ρ> 0.9$）と強力なクロススケールの移転可能性を示しており、データ混合の最適化に対するスケーラブルで自動化されたソリューションを提供します。
+# Summary (by gpt-4o-mini)
+- MergeMixは、データ混合比率を効率的に最適化する新しいアプローチを提案。低コストで高忠実度なパフォーマンスプロキシを再利用し、最小限のトークンでドメイン特化型のエキスパートをトレーニング。実験では、手動調整と同等以上の成果を上げ、コストを大幅に削減。高い順位の一貫性とスケーラブルな自動化ソリューションを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2016016398280167846?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Harnessing Diversity for Important Data Selection in Pretraining Large Language Models, Chi Zhang+, ICLR'25 Spotlight, 2024.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2409.16986</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4257</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, ICLR, read-later, Diversity, Selected Papers/Blogs, DataMixture, Generalization, DownstreamTasks, Adaptive, Multi-Armed Bandit</tags>
+<repo-issue-date>2026-01-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2409.16986
+# Authors
+  - Chi Zhang
+  - Huaping Zhong
+  - Kuan Zhang
+  - Chengliang Chai
+  - Rui Wang
+  - Xinlin Zhuang
+  - Tianyi Bai
+  - Jiantao Qiu
+  - Lei Cao
+  - Ju Fan
+  - Ye Yuan
+  - Guoren Wang
+  - Conghui He
+# Abstract
+  - Data selection is of great significance in pre-training large language models, given the variation in quality within the large-scale available training corpora. To achieve this, researchers are currently investigating the use of data influence to measure the importance of data instances, $i.e.,$ a high influence score indicates that incorporating this instance to the training set is likely to enhance the model performance. Consequently, they select the top-$k$ instances with the highest scores. However, this approach has several limitations. (1) Computing the influence of all available data is time-consuming. (2) The selected data instances are not diverse enough, which may hinder the pre-trained model's ability to generalize effectively to various downstream tasks. In this paper, we introduce \texttt{Quad}, a data selection approach that considers both quality and diversity by using data influence to achieve state-of-the-art pre-training results. In particular, noting that attention layers capture extensive semantic details, we have adapted the accelerated $iHVP$ computation methods for attention layers, enhancing our ability to evaluate the influence of data, $i.e.,$ its quality. For the diversity, \texttt{Quad} clusters the dataset into similar data instances within each cluster and diverse instances across different clusters. For each cluster, if we opt to select data from it, we take some samples to evaluate the influence to prevent processing all instances. To determine which clusters to select, we utilize the classic Multi-Armed Bandit method, treating each cluster as an arm. This approach favors clusters with highly influential instances (ensuring high quality) or clusters that have been selected less frequently (ensuring diversity), thereby well balancing between quality and diversity.
+# Translation (by gpt-4o-mini)
+- データ選択は、大規模なトレーニングコーパスの中での品質のばらつきを考慮すると、大規模言語モデルの事前トレーニングにおいて非常に重要です。この目的を達成するために、研究者たちはデータの影響を利用してデータインスタンスの重要性を測定する方法を探求しています。つまり、高い影響スコアは、そのインスタンスをトレーニングセットに組み込むことでモデルの性能が向上する可能性が高いことを示します。その結果、彼らはスコアが最も高い上位$k$のインスタンスを選択します。しかし、このアプローチにはいくつかの制限があります。(1) 利用可能なデータ全体の影響を計算するのは時間がかかります。(2) 選択されたデータインスタンスは多様性に欠けることがあり、これが事前トレーニングされたモデルの下流タスクへの効果的な一般化能力を妨げる可能性があります。本論文では、データの影響を利用して品質と多様性の両方を考慮するデータ選択アプローチである\texttt{Quad}を紹介します。特に、アテンションレイヤーが広範な意味的詳細を捉えることに着目し、アテンションレイヤーにおける加速された$iHVP$計算方法を適応させ、データの影響、すなわちその品質を評価する能力を向上させました。多様性については、\texttt{Quad}はデータセットを各クラスタ内で類似のデータインスタンス、異なるクラスタ間で多様なインスタンスにクラスタリングします。各クラスタからデータを選択する場合、一部のサンプルを取り、その影響を評価することで全インスタンスを処理するのを防ぎます。どのクラスタを選択するかを決定するために、クラシックなマルチアームバンディット法を利用し、各クラスタをアームとして扱います。このアプローチは、高い影響力を持つインスタンスがあるクラスタ（高い品質を確保）や、選択頻度が低いクラスタ（多様性を確保）を優遇し、品質と多様性のバランスをよくとっています。
+# Summary (by gpt-4o-mini)
+- データ選択は大規模言語モデルの事前トレーニングにおいて重要で、影響スコアでデータインスタンスの重要性を測定します。しかし、トレーニングデータの多様性不足や影響計算の時間が課題です。本研究では、品質と多様性を考慮したデータ選択手法\texttt{Quad}を提案します。アテンションレイヤーの$iHVP$計算を適応させ、データの品質評価を向上。データをクラスタリングし、選択プロセスでサンプルの影響を評価することで、全インスタンスの処理を回避します。マルチアームバンディット法を用い、品質と多様性のバランスを取ります。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=bMC1t7eLRc" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=bMC1t7eLRc</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Data Mixing Laws: Optimizing Data Mixtures by Predicting Language Modeling Performance, Jiasheng Ye+, ICLR'25, 2024.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2403.16952</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4256</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, ICLR, Scaling Laws, DataMixture</tags>
+<repo-issue-date>2026-01-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2403.16952
+# Authors
+  - Jiasheng Ye
+  - Peiju Liu
+  - Tianxiang Sun
+  - Jun Zhan
+  - Yunhua Zhou
+  - Xipeng Qiu
+# Abstract
+  - Pretraining data of large language models composes multiple domains (e.g., web texts, academic papers, codes), whose mixture proportions crucially impact the competence of outcome models. While existing endeavors rely on heuristics or qualitative strategies to tune the proportions, we discover the quantitative predictability of model performance regarding the mixture proportions in function forms, which we refer to as the data mixing laws. Fitting such functions on sample mixtures unveils model performance on unseen mixtures before actual runs, thus guiding the selection of an ideal data mixture. Furthermore, we propose nested use of the scaling laws of training steps, model sizes, and our data mixing law to enable predicting the performance of large models trained on massive data under various mixtures with only small-scale training. Moreover, experimental results verify that our method effectively optimizes the training mixture of a 1B model trained for 100B tokens in RedPajama, reaching a performance comparable to the one trained for 48% more steps on the default mixture. Extending the application of data mixing laws to continual training accurately predicts the critical mixture proportion that avoids catastrophic forgetting and outlooks the potential for dynamic data schedules
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルの事前訓練データは、複数のドメイン（例えば、ウェブテキスト、学術論文、コード）で構成されており、その混合比率が結果モデルの能力に重要な影響を与えます。既存の試みは比率を調整するためにヒューリスティクスや定性的な戦略に依存していますが、我々は混合比率に関するモデル性能の定量的予測が機能形式で可能であることを発見しました。これを「データ混合法則」と呼びます。このような関数をサンプル混合物にフィッティングすることで、実際の実行前に未知の混合物に対するモデル性能が明らかになり、理想的なデータ混合の選択を導くことができます。さらに、トレーニングステップ、モデルサイズ、我々のデータ混合法則のスケーリング法則を組み合わせて使用することを提案し、少規模なトレーニングでさまざまな混合物のもとで大量データで訓練された大規模モデルの性能を予測できるようにします。加えて、実験結果は我々の方法がRedPajamaで100Bトークンのために訓練された1Bモデルのトレーニング混合物を効果的に最適化し、デフォルトの混合物で48%多くのステップで訓練されたモデルと同等の性能に達することを確認しました。データ混合法則の応用を継続的なトレーニングに広げることで、壊滅的な忘却を回避するための重要な混合比率を正確に予測し、動的データスケジュールの可能性を展望します。
+# Summary (by gpt-4o-mini)
+- データ混合法則に基づき、モデル性能を予測するための関数を提案し、混合比率が性能に与える影響を定量的に分析。これにより、未知のデータ混合物の性能を事前に評価できる。実験結果では、1Bモデルが最適化された混合物で、デフォルトの混合物に比べ48%の効率で同等の性能を達成。さらに、継続的なトレーニングへの応用を通じて、混合比率を正確に予測し、動的データスケジュールの可能性を提示。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=jjCB27TMK3" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=jjCB27TMK3</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Adaptive Data Optimization: Dynamic Sample Selection with Scaling Laws, Yiding Jiang+, ICLR'25, 2024.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.11820</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4255</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, action_wanted, ICLR, Scaling Laws, DataMixture, Adaptive</tags>
+<repo-issue-date>2026-01-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.11820
+# Authors
+  - Yiding Jiang
+  - Allan Zhou
+  - Zhili Feng
+  - Sadhika Malladi
+  - J. Zico Kolter
+# Abstract
+  - The composition of pretraining data is a key determinant of foundation models' performance, but there is no standard guideline for allocating a limited computational budget across different data sources. Most current approaches either rely on extensive experiments with smaller models or dynamic data adjustments that also require proxy models, both of which significantly increase the workflow complexity and computational overhead. In this paper, we introduce Adaptive Data Optimization (ADO), an algorithm that optimizes data distributions in an online fashion, concurrent with model training. Unlike existing techniques, ADO does not require external knowledge, proxy models, or modifications to the model update. Instead, ADO uses per-domain scaling laws to estimate the learning potential of each domain during training and adjusts the data mixture accordingly, making it more scalable and easier to integrate. Experiments demonstrate that ADO can achieve comparable or better performance than prior methods while maintaining computational efficiency across different computation scales, offering a practical solution for dynamically adjusting data distribution without sacrificing flexibility or increasing costs. Beyond its practical benefits, ADO also provides a new perspective on data collection strategies via scaling laws.
+# Translation (by gpt-4o-mini)
+- <abstract>事前学習データの構成は、基盤モデルの性能の重要な決定要因ですが、限られた計算予算を異なるデータソースに分配するための標準的なガイドラインは存在しません。現在のアプローチの多くは、小型モデルによる広範な実験またはプロキシモデルも必要とする動的データ調整に依存しており、これらは共にワークフローの複雑性と計算負荷を大幅に増加させます。本論文では、モデルのトレーニングと並行してオンラインでデータ分布を最適化するアルゴリズム「Adaptive Data Optimization（ADO）」を紹介します。既存の手法とは異なり、ADOは外部知識やプロキシモデル、モデル更新の修正を必要としません。代わりに、ADOは各ドメインの学習潜在能力を推定するためにドメインごとのスケーリング法則を使用し、トレーニング中にデータの混合を適切に調整します。これにより、スケーラビリティが向上し、統合が容易になります。実験により、ADOは以前の手法と同等またはそれ以上の性能を実現できることが示され、さまざまな計算スケールで計算効率を維持しつつ、柔軟性を損なうことなくコストを増加させることなくデータ分布を動的に調整するための実用的な解決策を提供します。実用的な利点を超えて、ADOはスケーリング法則を通じてデータ収集戦略に対する新しい視点も提供します。</abstract>
+# Summary (by gpt-4o-mini)
+- データの事前学習構成はモデル性能に重要ですが、標準的な分配ガイドラインは存在せず、従来の手法はワークフローの複雑性を増加させる。そこで、オンラインでデータ分布を最適化する「Adaptive Data Optimization（ADO）」を提案。ADOは他の知識やプロキシモデルに依存せず、トレーニング中にデータの適切な混合を調整し、スケーラビリティと統合性を向上させる。実験により、ADOは他手法と同等以上の性能を示し、計算効率を保ちながら動的なデータ調整を可能にし、データ収集戦略への新たな視点も提供する。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=aqok1UX7Z1" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=aqok1UX7Z1</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Aioli: A Unified Optimization Framework for Language Model Data Mixing, Mayee F. Chen+, ICLR'25, 2024.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.05735</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4254</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, ICLR, DataMixture, Adaptive</tags>
+<repo-issue-date>2026-01-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.05735
+# Authors
+  - Mayee F. Chen
+  - Michael Y. Hu
+  - Nicholas Lourie
+  - Kyunghyun Cho
+  - Christopher Ré
+# Abstract
+  - Language model performance depends on identifying the optimal mixture of data groups to train on (e.g., law, code, math). Prior work has proposed a diverse set of methods to efficiently learn mixture proportions, ranging from fitting regression models over training runs to dynamically updating proportions throughout training. Surprisingly, we find that no existing method consistently outperforms a simple stratified sampling baseline in terms of average test perplexity. To understand this inconsistency, we unify existing methods into a standard framework, showing they are equivalent to solving a common optimization problem: minimize average loss subject to a method-specific mixing law -- an implicit assumption on the relationship between loss and mixture proportions. This framework suggests that measuring the fidelity of a method's mixing law can offer insights into its performance. Empirically, we find that existing methods set their mixing law parameters inaccurately, resulting in the inconsistent mixing performance we observe. Using this insight, we derive a new online method named Aioli, which directly estimates the mixing law parameters throughout training and uses them to dynamically adjust proportions. Aioli outperforms stratified sampling on 6 out of 6 datasets by an average of 0.27 test perplexity points, whereas existing methods fail to consistently beat stratified sampling, doing up to 6.9 points worse. Moreover, in a practical setting where proportions are learned on shorter runs due to computational constraints, Aioli can dynamically adjust these proportions over the full training run, consistently improving performance over existing methods by up to 12.012 test perplexity points.
+# Translation (by gpt-4o-mini)
+- 言語モデルの性能は、トレーニングに使用するデータグループの最適な混合を見つけることに依存しています（例えば、法、コード、数学）。これまでの研究では、トレーニングランにおける回帰モデルのフィッティングから、トレーニング中に比率を動的に更新する方法まで、多様な手法が提案されてきました。驚くべきことに、既存のいずれの手法も、平均テスト困惑度において単純な層化サンプリングのベースラインを一貫して上回ることができていません。この不一致を理解するために、既存の手法を標準的なフレームワークに統一し、これらが一般的な最適化問題を解くことと同等であることを示します：特定の手法に基づいた混合法則に従い、平均損失を最小化することです。このフレームワークは、手法の混合法則の信頼性を測定することが、その性能に対する洞察を提供する可能性があることを示唆しています。実証的には、既存の手法がその混合法則のパラメータを不正確に設定しているため、不均一な混合性能が発生することがわかりました。この洞察を利用して、Aioliという新しいオンライン手法を提案します。これは、トレーニング中に混合法則のパラメータを直接推定し、それを使用して比率を動的に調整します。Aioliは、6つのデータセットのうち6つで層化サンプリングを平均0.27テスト困惑度ポイント上回り、既存の手法は一貫して層化サンプリングに勝てず、最大で6.9ポイント劣ることがわかりました。さらに、計算制約のために短いランで学習された比率が用いられる実際の設定において、Aioliはトレーニング全体にわたってこれらの比率を動的に調整でき、既存の手法に比べて最大12.012テスト困惑度ポイントの一貫した性能向上を達成します。
+# Summary (by gpt-4o-mini)
+- トレーニングデータの最適な混合が言語モデルの性能に影響を与えるが、既存の手法は層化サンプリングを一貫して上回れない。これを解明するため、標準フレームワークで手法を統一し、混合法則が不正確であることを示した。新たに提案したオンライン手法Aioliは、トレーニング中に混合パラメータを推定し動的に調整。実験では、Aioliが層化サンプリングを平均0.27ポイント上回り、短いランで最大12.012ポイントの向上を達成した。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=sZGZJhaNSe" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=sZGZJhaNSe</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Uni-MoE-2.0-Omni: Scaling Language-Centric Omnimodal Large Model with Advanced MoE, Training and Data, Yunxin Li+, arXiv'25, 2025.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2511.12609</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3711</repo-issue-link>
+<tags>ComputerVision, Pretraining, NLP, LanguageModel, MultiModal, SpeechProcessing, DiffusionModel, PositionalEncoding, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, DataMixture, 2D (Image), Routing, UMM, 4D (Video), Omni, KeyPoint Notes, audio, text</tags>
+<repo-issue-date>2025-11-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2511.12609
+# Authors
+  - Yunxin Li
+  - Xinyu Chen
+  - Shenyuan Jiang
+  - Haoyuan Shi
+  - Zhenyu Liu
+  - Xuanyu Zhang
+  - Nanhao Deng
+  - Zhenran Xu
+  - Yicheng Ma
+  - Meishan Zhang
+  - Baotian Hu
+  - Min Zhang
+# Abstract
+  - We present Uni-MoE 2.0 from the Lychee family. As a fully open-source omnimodal large model (OLM), it substantially advances Lychee's Uni-MoE series in language-centric multimodal understanding, reasoning, and generating. Based on the Qwen2.5-7B dense architecture, we build Uni-MoE-2.0-Omni from scratch through three core contributions: dynamic-capacity Mixture-of-Experts (MoE) design, a progressive training strategy enhanced with an iterative reinforcement strategy, and a carefully curated multimodal data matching technique. It is capable of omnimodal understanding, as well as generating images, text, and speech. Architecturally, our new MoE framework balances computational efficiency and capability for 10 cross-modal inputs using shared, routed, and null experts, while our Omni-Modality 3D RoPE ensures spatio-temporal cross-modality alignment in the self-attention layer. For training, following cross-modal pretraining, we use a progressive supervised fine-tuning strategy that activates modality-specific experts and is enhanced by balanced data composition and an iterative GSPO-DPO method to stabilise RL training and improve reasoning. Data-wise, the base model, trained on approximately 75B tokens of open-source multimodal data, is equipped with special speech and image generation tokens, allowing it to learn these generative tasks by conditioning its outputs on linguistic cues. Extensive evaluation across 85 benchmarks demonstrates that our model achieves SOTA or highly competitive performance against leading OLMs, surpassing Qwen2.5-Omni (trained with 1.2T tokens) on over 50 of 76 benchmarks. Key strengths include video understanding (+7% avg. of 8), omnimodallity understanding (+7% avg. of 4), and audiovisual reasoning (+4%). It also advances long-form speech processing (reducing WER by 4.2%) and leads in low-level image processing and controllable generation across 5 metrics.
+# Translation (by gpt-4o-mini)
+- 私たちは、LycheeファミリーからUni-MoE 2.0を発表します。これは完全にオープンソースのオムニモーダル大規模モデル（OLM）であり、言語中心のマルチモーダル理解、推論、生成においてLycheeのUni-MoEシリーズを大幅に進展させます。Qwen2.5-7Bの密なアーキテクチャに基づき、私たちはUni-MoE-2.0-Omniをゼロから構築しました。これには、動的容量のMixture-of-Experts（MoE）設計、反復強化戦略を強化した進行的トレーニング戦略、そして慎重にキュレーションされたマルチモーダルデータマッチング技術という3つのコアな貢献が含まれます。このモデルは、オムニモーダルな理解だけでなく、画像、テキスト、音声の生成も可能です。アーキテクチャ的には、新しいMoEフレームワークは、共有、ルーティング、無効なエキスパートを使用して10のクロスモーダル入力に対する計算効率と能力のバランスを取っています。また、私たちのオムニモダリティ3D RoPEは、自己注意層における空間的・時間的クロスモーダリティの整合性を確保します。トレーニングにおいては、クロスモーダルの事前トレーニングに続き、モダリティ特有のエキスパートを活性化する進行的な教師ありファインチューニング戦略を使用し、バランスの取れたデータ構成と反復的なGSPO-DPO手法によってRLトレーニングを安定化し、推論を改善します。データ面では、約75Bトークンのオープンソースマルチモーダルデータでトレーニングされたベースモデルは、特別な音声および画像生成トークンを装備しており、言語的手がかりに基づいて出力を条件付けることで、これらの生成タスクを学習します。85のベンチマークにわたる広範な評価により、私たちのモデルはSOTAまたは競争力のあるパフォーマンスを達成し、76のベンチマークのうち50以上で1.2TトークンでトレーニングされたQwen2.5-Omniを上回っています。主な強みには、ビデオ理解（平均+7%の8）、オムニモーダリティ理解（平均+7%の4）、および視聴覚推論（+4%）が含まれます。また、長文音声処理を進展させ（WERを4.2%削減）、5つの指標にわたって低レベルの画像処理と制御可能な生成でリードしています。
+# Summary (by gpt-4o-mini)
+- Uni-MoE 2.0は、Lycheeファミリーから発表されたオープンソースのオムニモーダル大規模モデルで、言語中心のマルチモーダル理解と生成を大幅に向上させる。動的容量のMixture-of-Experts設計や進行的トレーニング戦略を採用し、画像、テキスト、音声の生成が可能。約75Bトークンのデータでトレーニングされ、85のベンチマークで競争力のある性能を示し、特にビデオ理解やオムニモーダリティ理解で優れた結果を達成。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://idealistxy.github.io/Uni-MoE-v2.github.io/" target="_blank" rel="noopener noreferrer">https://idealistxy.github.io/Uni-MoE-v2.github.io/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lyxtg/status/1990638599407341938?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj pageをみた感じ、アーキテクチャは下記で、モダリティごとのエンコーダを用意しトークン化し同じ空間上で各モダリティを学習するUnified Multi Modalモデルとなっている。MoEアーキテクチャを採用しモダリティごとのexpertと共有のexpert、null expert(パラメータも必要とせず何も処理しないexpertでアーキテクチャをMoEから変えずに不要な計算を排除して効率を向上可能)を用意しルータで制御する。また、speechやvideoなどの時系列性に対処するためにRoPEを3次元に拡張したPEを用いて、各モダリティがシームレスにalignmentをとれるようにしている。<br><img src="https://github.com/user-attachments/assets/9d070b4a-4ca4-4f31-a698-f2159c88f652" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>事前学習ではまずテキストを中心としたクロスモーダルな学習をする。たとえば、image/audio/video-textタスクで学習をする。このフェーズで各モダリティをテキストのsemantic spaceに写像する能力を鍛える(Figure5 left)。<br><br>その後SFTで各モダリティに特化したexpertを学習する。ここでは段階的にSFTを実施し、まずまずAudio, Visualのexpertを同時にwarmupし、その後Textのexpertsを追加して次のアニーリングフェーズを学習しているように見える。<br><br><img src="https://github.com/user-attachments/assets/199a31e7-f7d0-41c1-9249-6852ec54fb37" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br>続いてアニーリングフェーズとして、様々なモダリティのデータをバランスさせてDataMixtureし、徐々に学習率を下げながら特定のタスクやモダリティに特化せず、全体の性能が向上するように学習する。その後、long sequenceのreasoningの能力を向上させるためにGSPO-DPOをiterativeに適用する。DPOの嗜好データはLLM as a Judgeでロールアウトに基づいて構成する、<br><br>という感じらしい。<br><br>Table2にDataMixtureの比率がかかれているし、各種データの概要も3.2節にかかれているように見える。素晴らしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Why Less is More （Sometimes）: A Theory of Data Curation, Elvis Dohmatob+, arXiv'25, 2025.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2511.03492</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3641</repo-issue-link>
+<tags>ComputerVision, Analysis, Pretraining, NLP, Dataset, LanguageModel, Selected Papers/Blogs, DataMixture, PhaseTransition</tags>
+<repo-issue-date>2025-11-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2511.03492
+# Authors
+  - Elvis Dohmatob
+  - Mohammad Pezeshki
+  - Reyhane Askari-Hemmat
+# Abstract
+  - This paper introduces a theoretical framework to resolve a central paradox in modern machine learning: When is it better to use less data? This question has become critical as classical scaling laws suggesting ``more is more'' (Sun et al., 2025) are challenged by methods like LIMO (``less is more'') and s1 (Ye et al., 2025; Muenighoff et al., 2025), which achieve superior performance with small, aggressively curated datasets. Here, we study data curation strategies where an imperfect oracle selects the training examples according to their difficulty and correctness. Our results provide exact scaling law curves for test error under both label-agnostic and label-aware curation rules, revealing when and why keeping only a subset of data can improve generalization. In contrast to classical scaling laws, we show that under certain conditions, small curated datasets can outperform full datasets, and we provide analytical conditions for this by deriving precise phase transition curves tied to data size and quality. We validate these theoretical claims with empirical results on ImageNet, confirming our predictions about when curation improves accuracy and can even mitigate model collapse. Furthermore, our framework provides a principled explanation for the contradictory curation strategies recently observed in LLM mathematical reasoning.
+# Translation (by gpt-4o-mini)
+- 本論文では、現代の機械学習における中心的な逆説を解決するための理論的枠組みを紹介します。それは「いつデータを少なく使う方が良いのか？」という問いです。この問いは、従来のスケーリング法則が「多ければ多いほど良い」（Sun et al., 2025）と示唆している中で、LIMO（「少ない方が良い」）やs1（Ye et al., 2025; Muenighoff et al., 2025）といった手法が、小規模で厳選されたデータセットを用いて優れた性能を達成することから、重要性を増しています。本研究では、不完全なオラクルが難易度と正確性に基づいてトレーニング例を選択するデータキュレーション戦略を検討します。我々の結果は、ラベルに依存しないキュレーションルールとラベルに依存するキュレーションルールの両方におけるテスト誤差の正確なスケーリング法則曲線を提供し、データのサブセットのみを保持することが一般化を改善する場合とその理由を明らかにします。従来のスケーリング法則とは対照的に、特定の条件下では、小規模なキュレーションされたデータセットが完全なデータセットを上回ることができることを示し、データのサイズと質に関連する正確な位相転移曲線を導出することで、これに対する分析的条件を提供します。さらに、ImageNetにおける実証結果を通じて、キュレーションが精度を改善し、モデルの崩壊を緩和する場合についての予測を確認し、これらの理論的主張を検証します。加えて、我々の枠組みは、最近のLLMの数学的推論において観察された矛盾するキュレーション戦略に対する理論的な説明を提供します。
+# Summary (by gpt-4o-mini)
+- 本論文では、データを少なく使う方が良い場合についての理論的枠組みを提案し、小規模な厳選データセットが優れた性能を発揮する理由を探ります。データキュレーション戦略を通じて、ラベルに依存しない・依存するルールのテスト誤差のスケーリング法則を明らかにし、特定の条件下で小規模データが大規模データを上回る可能性を示します。ImageNetでの実証結果を通じて、キュレーションが精度を向上させることを確認し、LLMの数学的推論における矛盾する戦略への理論的説明も提供します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1988388562753253687?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=8KcjEygedc" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=8KcjEygedc</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning to See Before Seeing: Demystifying LLM Visual Priors from  Language Pre-training, Junlin Han+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.26625</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3267</repo-issue-link>
+<tags>ComputerVision, Analysis, Pretraining, NLP, Dataset, LanguageModel, Evaluation, MultiModal, Reasoning, read-later, DataMixture, VisionLanguageModel</tags>
+<repo-issue-date>2025-10-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.26625
+# Authors
+  - Junlin Han
+  - Shengbang Tong
+  - David Fan
+  - Yufan Ren
+  - Koustuv Sinha
+  - Philip Torr
+  - Filippos Kokkinos
+# Abstract
+  - Large Language Models (LLMs), despite being trained on text alone, surprisingly develop rich visual priors. These priors allow latent visual capabilities to be unlocked for vision tasks with a relatively small amount of multimodal data, and in some cases, to perform visual tasks without ever having seen an image. Through systematic analysis, we reveal that visual priors-the implicit, emergent knowledge about the visual world acquired during language pre-training-are composed of separable perception and reasoning priors with unique scaling trends and origins. We show that an LLM's latent visual reasoning ability is predominantly developed by pre-training on reasoning-centric data (e.g., code, math, academia) and scales progressively. This reasoning prior acquired from language pre-training is transferable and universally applicable to visual reasoning. In contrast, a perception prior emerges more diffusely from broad corpora, and perception ability is more sensitive to the vision encoder and visual instruction tuning data. In parallel, text describing the visual world proves crucial, though its performance impact saturates rapidly. Leveraging these insights, we propose a data-centric recipe for pre-training vision-aware LLMs and verify it in 1T token scale pre-training. Our findings are grounded in over 100 controlled experiments consuming 500,000 GPU-hours, spanning the full MLLM construction pipeline-from LLM pre-training to visual alignment and supervised multimodal fine-tuning-across five model scales, a wide range of data categories and mixtures, and multiple adaptation setups. Along with our main findings, we propose and investigate several hypotheses, and introduce the Multi-Level Existence Bench (MLE-Bench). Together, this work provides a new way of deliberately cultivating visual priors from language pre-training, paving the way for the next generation of multimodal LLMs.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、テキストのみで訓練されているにもかかわらず、驚くべきことに豊かな視覚的先入観を発展させる。これらの先入観は、比較的少量のマルチモーダルデータで視覚タスクの潜在的な視覚能力を解放することを可能にし、場合によっては画像を一度も見たことがなくても視覚タスクを実行することができる。体系的な分析を通じて、視覚的先入観—言語の事前訓練中に獲得された視覚世界に関する暗黙の、出現的な知識—は、独自のスケーリング傾向と起源を持つ分離可能な知覚と推論の先入観で構成されていることを明らかにする。LLMの潜在的な視覚推論能力は、主に推論中心のデータ（例：コード、数学、学術）での事前訓練によって発展し、徐々にスケールすることを示す。この言語の事前訓練から得られた推論の先入観は、視覚推論に対して移転可能で普遍的に適用できる。一方、知覚の先入観は広範なコーパスからより拡散的に出現し、知覚能力は視覚エンコーダーや視覚指示調整データに対してより敏感である。並行して、視覚世界を説明するテキストは重要であるが、そのパフォーマンスへの影響は急速に飽和する。これらの洞察を活用し、視覚を意識したLLMの事前訓練のためのデータ中心のレシピを提案し、1Tトークン規模の事前訓練で検証する。我々の発見は、500,000 GPU時間を消費する100以上の制御実験に基づいており、LLMの事前訓練から視覚的整合性、監視されたマルチモーダル微調整に至るまで、5つのモデルスケール、幅広いデータカテゴリと混合、複数の適応設定にわたる完全なMLLM構築パイプラインを網羅している。主な発見に加えて、いくつかの仮説を提案し、調査し、Multi-Level Existence Bench（MLE-Bench）を導入する。これにより、本研究は言語の事前訓練から視覚的先入観を意図的に育成する新しい方法を提供し、次世代のマルチモーダルLLMの道を切り開く。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、テキストのみで訓練されながらも視覚的先入観を発展させ、少量のマルチモーダルデータで視覚タスクを実行可能にする。視覚的先入観は、言語の事前訓練中に獲得された知識であり、推論中心のデータから発展する。知覚の先入観は広範なコーパスから得られ、視覚エンコーダーに敏感である。視覚を意識したLLMの事前訓練のためのデータ中心のレシピを提案し、500,000 GPU時間をかけた実験に基づく完全なMLLM構築パイプラインを示す。これにより、視覚的先入観を育成する新しい方法を提供し、次世代のマルチモーダルLLMの発展に寄与する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1977982648531476607?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>MLE Bench (Multi-Level Existence Bench)</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Data Mixing Can Induce Phase Transitions in Knowledge Acquisition, Xinran Gu+, NeurIPS'25 Spotlight, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.18091</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3101</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, NeurIPS, read-later, Selected Papers/Blogs, DataMixture, One-Line Notes, PhaseTransition</tags>
+<repo-issue-date>2025-10-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.18091
+# Authors
+  - Xinran Gu
+  - Kaifeng Lyu
+  - Jiazheng Li
+  - Jingzhao Zhang
+# Abstract
+  - Large Language Models (LLMs) are typically trained on data mixtures: most data come from web scrapes, while a small portion is curated from high-quality sources with dense domain-specific knowledge. In this paper, we show that when training LLMs on such data mixtures, knowledge acquisition from knowledge-dense datasets, unlike training exclusively on knowledge-dense data (arXiv:2404.05405), does not always follow a smooth scaling law but can exhibit phase transitions with respect to the mixing ratio and model size. Through controlled experiments on a synthetic biography dataset mixed with web-scraped data, we demonstrate that: (1) as we increase the model size to a critical value, the model suddenly transitions from memorizing very few to most of the biographies; (2) below a critical mixing ratio, the model memorizes almost nothing even with extensive training, but beyond this threshold, it rapidly memorizes more biographies. We attribute these phase transitions to a capacity allocation phenomenon: a model with bounded capacity must act like a knapsack problem solver to minimize the overall test loss, and the optimal allocation across datasets can change discontinuously as the model size or mixing ratio varies. We formalize this intuition in an information-theoretic framework and reveal that these phase transitions are predictable, with the critical mixing ratio following a power-law relationship with the model size. Our findings highlight a concrete case where a good mixing recipe for large models may not be optimal for small models, and vice versa.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、通常、データの混合に基づいて訓練されます。ほとんどのデータはウェブスクレイピングから得られ、一部は高品質なソースからキュレーションされたドメイン特化の知識が豊富なデータです。本論文では、このようなデータ混合でLLMsを訓練する際、知識が豊富なデータセットからの知識獲得は、知識が豊富なデータのみで訓練する場合（arXiv:2404.05405）とは異なり、常に滑らかなスケーリング法則に従うわけではなく、混合比率やモデルサイズに関して位相転移を示す可能性があることを示します。ウェブスクレイピングデータと混合した合成伝記データセットに対する制御実験を通じて、次のことを実証します：(1) モデルサイズを臨界値まで増加させると、モデルは非常に少数の伝記を記憶する状態からほとんどすべての伝記を記憶する状態に突然移行する；(2) 臨界混合比率以下では、モデルは広範な訓練を行ってもほとんど何も記憶しませんが、この閾値を超えると急速により多くの伝記を記憶します。これらの位相転移は、容量配分現象に起因すると考えています。限られた容量を持つモデルは、全体のテスト損失を最小化するためにナップサック問題の解決者のように行動し、データセット間の最適な配分はモデルサイズや混合比率が変化するにつれて不連続に変わる可能性があります。この直感を情報理論的枠組みで形式化し、これらの位相転移が予測可能であることを明らかにし、臨界混合比率がモデルサイズとの間にべき乗則の関係を持つことを示します。我々の発見は、大規模モデルにとって良い混合レシピが小規模モデルにとって最適でない場合やその逆がある具体的なケースを強調しています。
+# Summary (by gpt-4o-mini)
+- LLMsの訓練において、知識が豊富なデータセットとウェブスクレイピングデータの混合が、知識獲得において位相転移を示すことを実証。モデルサイズを臨界値まで増加させると、記憶状態が急激に変化し、混合比率が臨界値を超えると急速に記憶が増加。これらの現象は容量配分に起因し、最適なデータ配分がモデルサイズや混合比率によって不連続に変わることを示す。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=tQZK5frjVU" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tQZK5frjVU</a>
+{% endraw %}
+
+</p><p>高品質なデータ（knowledge-denseな合成データなど）とwebからスクレイピングしてきたような低品質なデータのDataMixtureの割合が一定ラインを超えると、（knowledge acquisitionの観点から）相転移が生じてスケーリングの挙動が変化することをコントロールされた実験によって示している模様。<br><br>DataMixtureの観点でいうと、モデルサイズを固定してDataMixtureの比率を変化させたときに、knowledge-denseなデータが一定閾値未満の場合は、モデルはこれらのデータから何も学習しないが、ある閾値を超えた途端に知識を学習し始める非線形な挙動となる。<br>一方DataMixtureの比率を固定して、モデルサイズを変化させた場合も同様の相転移が観測された、という感じらしい。<br>興味深い。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Demystifying Synthetic Data in LLM Pre-training: A Systematic Study of  Scaling Laws, Benefits, and Pitfalls, Feiyang Kang+, EMNLP'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.01631</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3088</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, SyntheticData, EMNLP, Selected Papers/Blogs, DataMixture, One-Line Notes, PhaseTransition</tags>
+<repo-issue-date>2025-10-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.01631
+# Authors
+  - Feiyang Kang
+  - Newsha Ardalani
+  - Michael Kuchnik
+  - Youssef Emad
+  - Mostafa Elhoushi
+  - Shubhabrata Sengupta
+  - Shang-Wen Li
+  - Ramya Raghavendra
+  - Ruoxi Jia
+  - Carole-Jean Wu
+# Abstract
+  - Training data plays a crucial role in Large Language Models (LLM) scaling, yet high quality data is of limited supply. Synthetic data techniques offer a potential path toward sidestepping these limitations. We conduct a large-scale empirical investigation (>1000 LLMs with >100k GPU hours) using a unified protocol and scaling laws, comparing natural web data, diverse synthetic types (rephrased text, generated textbooks), and mixtures of natural and synthetic data. Specifically, we found pre-training on rephrased synthetic data \textit{alone} is not faster than pre-training on natural web texts; while pre-training on 1/3 rephrased synthetic data mixed with 2/3 natural web texts can speed up 5-10x (to reach the same validation loss) at larger data budgets. Pre-training on textbook-style synthetic data \textit{alone} results in notably higher loss on many downstream domains especially at small data budgets. "Good" ratios of synthetic data in training data mixtures depend on the model size and data budget, empirically converging to ~30% for rephrased synthetic data. Larger generator models do not necessarily yield better pre-training data than ~8B-param models. These results contribute mixed evidence on "model collapse" during large-scale single-round (n=1) model training on synthetic data--training on rephrased synthetic data shows no degradation in performance in foreseeable scales whereas training on mixtures of textbook-style pure-generated synthetic data shows patterns predicted by "model collapse". Our work demystifies synthetic data in pre-training, validates its conditional benefits, and offers practical guidance.
+# Translation (by gpt-4o-mini)
+- トレーニングデータは、大規模言語モデル（LLM）のスケーリングにおいて重要な役割を果たしますが、高品質なデータは限られた供給しかありません。合成データ技術は、これらの制限を回避するための潜在的な道を提供します。本研究では、統一されたプロトコルとスケーリング法則を用いて、自然なウェブデータ、多様な合成データタイプ（言い換えたテキスト、生成された教科書）、および自然データと合成データの混合を比較する大規模な実証調査を実施しました（>1000 LLM、>100k GPU時間）。具体的には、言い換えた合成データのみでの事前トレーニングは、自然なウェブテキストでの事前トレーニングよりも速くはないことがわかりました。一方で、1/3の言い換えた合成データと2/3の自然なウェブテキストを混合して事前トレーニングを行うと、より大きなデータ予算で同じ検証損失に達するために5-10倍のスピードアップが可能です。教科書スタイルの合成データのみでの事前トレーニングは、特に小さなデータ予算で多くの下流ドメインにおいて著しく高い損失をもたらします。トレーニングデータの混合における「良い」合成データの比率は、モデルのサイズとデータ予算に依存し、経験的に言い換えた合成データでは約30%に収束します。より大きな生成モデルが必ずしも8Bパラメータモデルよりも優れた事前トレーニングデータを生成するわけではありません。これらの結果は、合成データでの大規模な単一ラウンド（n=1）モデルトレーニング中の「モデル崩壊」に関する混合証拠を提供します。言い換えた合成データでのトレーニングは、予見可能なスケールでのパフォーマンスの劣化を示さない一方で、教科書スタイルの純生成合成データの混合でのトレーニングは「モデル崩壊」によって予測されるパターンを示します。本研究は、事前トレーニングにおける合成データの謎を解明し、その条件付きの利点を検証し、実用的なガイダンスを提供します。
+# Summary (by gpt-4o-mini)
+- 合成データ技術はLLMのトレーニングデータの供給制限を克服する可能性を持つ。本研究では、自然なウェブデータと合成データの混合を比較し、言い換えた合成データのみでの事前トレーニングは自然なデータよりも速くないことを示した。1/3の言い換えた合成データと2/3の自然データの混合が、より効率的なトレーニングを可能にすることが分かった。教科書スタイルの合成データは小さなデータ予算で高い損失をもたらし、合成データの最適な比率はモデルサイズとデータ予算に依存する。結果は合成データの効果を明らかにし、実用的なガイダンスを提供する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/papers_anon/status/1973939270747668698?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1974108247003934902?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>合成データは適切な規模のモデルと比率でないと利点が現れない</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3101" target="_blank" rel="noopener noreferrer">[Paper Note] Data Mixing Can Induce Phase Transitions in Knowledge Acquisition, Xinran Gu+, NeurIPS'25 Spotlight, 2025.05</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Leveraging High-Resource English Corpora for Cross-lingual Domain Adaptation in Low-Resource Japanese Medicine via Continued Pretraining, Kobayashi+, EMNLP'25 Findings</title>
+<original-paper-blog-link>https://aclanthology.org/2025.findings-emnlp.615/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2973</repo-issue-link>
+<tags>Analysis, Pretraining, DomainAdaptation, NLP, LanguageModel, translation_required, CrossLingual, Japanese, DataMixture, Medical, LowResource</tags>
+<repo-issue-date>2025-09-24</repo-issue-date>
+<issue-body># URL
+https://aclanthology.org/2025.findings-emnlp.615/
+
+# Authors
+Kazuma Kobayashi, Zhen Wan, Fei Cheng, Yuma Tsuta, Xin Zhao, Junfeng Jiang, Jiahao Huang, Zhiyi Huang, Yusuke Oda, Rio Yokota, Yuki Arase, Daisuke Kawahara, Akiko Aizawa, Sadao Kurohashi
+
+# Abstract
+- Limited low-resource language corpora in professional domains like medicine hinder cross-lingual domain adaptation of pre-trained large language models (PLMs). While abundant English medical corpora could complement this scarcity, the effective mixture of English and target language, including machine-translated content, remains underexplored. We examined how linguistic features (e.g., token sizes and language proportions) affect performance on a Japanese–English medical knowledge benchmark. Through continued pre-training of a bilingual PLM on multilingual corpora with varying proportions of English and Japanese texts (both original and machine-translated), we analyzed correlations between linguistic features and fine-grained task performance. Our findings suggest a practical approach to optimizing multilingual corpora for cross-lingual domain adaptation, which requires leveraging specialized knowledge from English corpora while ensuring sufficient coverage of language-specific expressions in a target language (Japanese). Such insights will contribute to the development of multilingual models that effectively leverage English-language resources in various professional domains with low-resource languages.
+
+# Translation (by gpt-4o-mini)
+- <abstract>医療のような専門分野における限られた低リソース言語コーパスは、事前学習済み大規模言語モデル（PLMs）の跨言語領域適応を妨げています。豊富な英語の医療コーパスはこの不足を補う可能性がありますが、英語とターゲット言語の効果的な混合、機械翻訳されたコンテンツを含む、はまだ十分に探求されていません。本研究では、言語的特徴（例：トークンサイズや言語の比率）が日本語と英語の医療知識ベンチマークにおけるパフォーマンスにどのように影響するかを検討しました。英語と日本語のテキスト（オリジナルと機械翻訳の両方）がさまざまな比率で含まれる多言語コーパスでバイリンガルPLMの継続的な事前学習を通じて、言語的特徴と細分化されたタスクパフォーマンスとの相関を分析しました。私たちの調査結果は、英語のコーパスからの専門知識を活用しながら、ターゲット言語（日本語）における言語特有の表現の十分なカバレッジを確保するために、跨言語領域適応のための多言語コーパスを最適化する実践的なアプローチを示唆しています。このような知見は、低リソース言語におけるさまざまな専門分野で英語のリソースを効果的に活用した多言語モデルの開発に貢献するでしょう。</abstract>
+# Summary (by gpt-4o-mini)
+- 低リソース言語の医療コーパスでは、PLMsの跨言語適応が難しい。本研究は、日本語と英語の医療知識ベンチマークにおける言語的特徴がパフォーマンスに与える影響を分析。異なる比率の英語と日本語テキストを用いた多言語コーパスでの継続的事前学習を通じて、専門知識を活用しつつターゲット言語の表現をカバーする最適化手法を提案。これにより、低リソース言語の専門分野での多言語モデル開発に寄与することを目指す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/odashi_t/status/1970720101306679436?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Nemotron-CLIMB: CLustering-based Iterative Data Mixture Bootstrapping for Language Model Pre-training, Shizhe Diao+, arXiv'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.13161</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2864</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, action_wanted, NeurIPS, read-later, Selected Papers/Blogs, DataMixture</tags>
+<repo-issue-date>2025-09-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.13161
+# Authors
+  - Shizhe Diao
+  - Yu Yang
+  - Yonggan Fu
+  - Xin Dong
+  - Dan Su
+  - Markus Kliegl
+  - Zijia Chen
+  - Peter Belcak
+  - Yoshi Suhara
+  - Hongxu Yin
+  - Mostofa Patwary
+  - Yingyan
+  - Lin
+  - Jan Kautz
+  - Pavlo Molchanov
+# Abstract
+  - Pre-training datasets are typically collected from web content and lack inherent domain divisions. For instance, widely used datasets like Common Crawl do not include explicit domain labels, while manually curating labeled datasets such as The Pile is labor-intensive. Consequently, identifying an optimal pre-training data mixture remains a challenging problem, despite its significant benefits for pre-training performance. To address these challenges, we propose CLustering-based Iterative Data Mixture Bootstrapping (Nemotron-CLIMB), an automated framework that discovers, evaluates, and refines data mixtures in a pre-training setting. Specifically, Nemotron-CLIMB embeds and clusters large-scale datasets in a semantic space and then iteratively searches for optimal mixtures using a smaller proxy model and a predictor. When continuously trained on 400B tokens with this mixture, our 1B model exceeds the state-of-the-art Llama-3.2-1B by 2.0%. Moreover, we observe that optimizing for a specific domain (e.g., Social Sciences) yields a 5% improvement over random sampling. Finally, we introduce Nemotron-ClimbLab, a filtered 1.2-trillion-token corpus with 20 clusters as a research playground, and Nemotron-ClimbMix, a compact yet powerful 400-billion-token dataset designed for efficient pre-training that delivers superior performance under an equal token budget. We analyze the final data mixture, elucidating the characteristics of an optimal data mixture. Our data is available at: https://research.nvidia.com/labs/lpr/climb/
+# Translation (by gpt-5-nano)
+- 事前学習用データセットは通常、ウェブ上のコンテンツから収集され、固有のドメイン区分を欠く。例えば、Common Crawl のような広く用いられるデータセットには明示的なドメインラベルが含まれていない一方で、The Pile のようなラベル付きデータセットを手動で作成することは労力を要する。したがって、最適な事前学習データの混合を特定することは依然として難題であり、事前学習性能にとって顕著な利点があるにもかかわらず、なお困難である。これらの課題に対処するため、クラスタリングベースの反復データ混合ブートストラッピング（Nemotron-CLIMB）を提案する。これは、事前学習設定でデータ混合を発見・評価・洗練する自動フレームワークである。具体的には、Nemotron-CLIMB は大規模データセットを意味空間に埋め込み、クラスタリングし、次に小型の代理モデルと予測子を用いて最適な混合を反復的に探索する。この混合を用いて4000億トークンで継続的に学習させた場合、私たちの10億パラメータのモデルは最先端の Llama-3.2-1B を2.0%上回る。さらに、特定のドメイン（例：社会科学）を最適化すると、ランダムサンプリングと比較して5%の改善を得られることが観察される。最後に、20クラスタを有するフィルタリング済みの1.2兆トークンコーパスを研究用プレイグラウンドとして提供する Nemotron-ClimbLab と、効率的な事前学習を念頭に設計され、同等のトークン予算のもとで優れた性能を発揮する、コンパクトで強力な4,000億トークンのデータセット Nemotron-ClimbMix を紹介する。我々は最終データ混合を分析し、最適なデータ混合の特徴を解明する。データは以下で入手可能です： https://research.nvidia.com/labs/lpr/climb/
+# Summary (by gpt-4o-mini)
+- 事前学習用データセットの最適な混合を特定するのは依然として難題である。そこで、クラスタリングベースの反復データ混合ブートストラッピング手法（Nemotron-CLIMB）を提案。この自動フレームワークは、大規模データセットを意味空間に埋め込み、クラスタリングを行い、代理モデルを用いて反復的に最適な混合を探索する。最終的に、10億パラメータのモデルは最先端モデルを2.0%上回り、特定のドメイン最適化では5%の改善が見られた。また、Nemotron-ClimbLabとNemotron-ClimbMixという新しいデータセットも提供され、効率的な事前学習に寄与する。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://research.nvidia.com/labs/lpr/climb/" target="_blank" rel="noopener noreferrer">https://research.nvidia.com/labs/lpr/climb/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shizhediao/status/1968757399281364998?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>datatet:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/nvidia/Nemotron-ClimbMix" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/nvidia/Nemotron-ClimbMix</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MobileLLM-R1: Exploring the Limits of Sub-Billion Language Model  Reasoners with Open Training Recipes, Changsheng Zhao+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.24945</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2798</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, action_wanted, SmallModel, mid-training, PostTraining, read-later, Selected Papers/Blogs, DataMixture</tags>
+<repo-issue-date>2025-09-13</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2509.24945
+- HF: https://huggingface.co/facebook/MobileLLM-R1-950M
+# Authors
+  - Changsheng Zhao
+  - Ernie Chang
+  - Zechun Liu
+  - Chia-Jung Chang
+  - Wei Wen
+  - Chen Lai
+  - Sheng Cao
+  - Yuandong Tian
+  - Raghuraman Krishnamoorthi
+  - Yangyang Shi
+  - Vikas Chandra
+# Abstract
+  - The paradigm shift in large language models (LLMs) from instinctive responses to chain-of-thought (CoT) reasoning has fueled two prevailing assumptions: (1) reasoning capabilities only emerge in sufficiently large models, and (2) such capabilities require training on massive datasets. While the first assumption has already been challenged by recent sub-billion-parameter reasoning models such as Qwen3-0.6B and DeepSeek distilled variants, the second remains largely unquestioned. In this work, we revisit the necessity of scaling to extremely large corpora (>10T tokens) for reasoning emergence. By carefully curating and resampling open-source datasets that we identify as beneficial under our designed metrics, we demonstrate that strong reasoning abilities can emerge with far less data. Specifically, we show that only ~2T tokens of high-quality data are sufficient, and pre-training with 4.2T tokens on the dataset resampled from these ~2T tokens, followed by a established post-training procedure, enables the development of MobileLLM-R1, a series of sub-billion-parameter reasoning models that substantially outperform prior models trained on fully open-sourced data. For example, MobileLLM-R1-950M achieves an AIME score of 15.5, compared to just 0.6 for OLMo-2-1.48B and 0.3 for SmolLM-2-1.7B. Remarkably, despite being trained on only 11.7% of the tokens compared to Qwen3's proprietary 36T-token corpus for pretraining, MobileLLM-R1-950M matches or surpasses Qwen3-0.6B across multiple reasoning benchmarks. To facilitate further research in this direction, we have released the complete training recipe, data sources, data mixing ratio, and model checkpoints, together with the key insights obtained throughout this study.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）の直感的な応答から思考の連鎖（CoT）推論へのパラダイムシフトは、2つの一般的な仮定を生み出しました。(1) 推論能力は十分に大きなモデルでのみ現れる、(2) そのような能力は膨大なデータセットでのトレーニングを必要とする。最初の仮定は、Qwen3-0.6BやDeepSeekの蒸留版のようなサブビリオンパラメータの推論モデルによってすでに挑戦されていますが、2番目の仮定はほとんど疑問視されていません。本研究では、推論能力の出現に対して極めて大規模なコーパス（>10Tトークン）にスケールする必要性を再検討します。私たちが設計したメトリクスの下で有益であると特定したオープンソースデータセットを慎重にキュレーションし、再サンプリングすることで、強力な推論能力がはるかに少ないデータで出現することを示します。具体的には、約2Tトークンの高品質データが十分であり、これらの約2Tトークンから再サンプリングされたデータセットで4.2Tトークンを用いて事前トレーニングを行い、その後確立されたポストトレーニング手順を経ることで、MobileLLM-R1という一連のサブビリオンパラメータの推論モデルが開発され、完全にオープンソースのデータでトレーニングされた従来のモデルを大幅に上回る性能を発揮します。例えば、MobileLLM-R1-950MはAIMEスコア15.5を達成し、OLMo-2-1.48Bの0.6やSmolLM-2-1.7Bの0.3と比較されます。驚くべきことに、Qwen3の独自の36Tトークンコーパスに対して、わずか11.7%のトークンでトレーニングされているにもかかわらず、MobileLLM-R1-950Mは複数の推論ベンチマークでQwen3-0.6Bに匹敵するか、それを上回ります。この方向でのさらなる研究を促進するために、私たちは完全なトレーニングレシピ、データソース、データミキシング比率、モデルチェックポイント、およびこの研究を通じて得られた重要な洞察を公開しました。
+# Summary (by gpt-4o-mini)
+- 本研究では、推論能力の出現に必要なデータ量について再検討し、約2Tトークンの高品質データで強力な推論モデルが構築できることを示した。MobileLLM-R1というサブビリオンパラメータのモデルは、従来のモデルを大幅に上回る性能を発揮し、特にAIMEスコアで優れた結果を示した。さらに、Qwen3の36Tトークンコーパスに対しても、わずか11.7%のトークンでトレーニングされたMobileLLM-R1-950Mは、複数の推論ベンチマークで競争力を持つ。研究の詳細な情報は公開されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/webbigdata/status/1966669725389168823?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>モデルカードを見ると、optimizerやスケジューリング、ハイパーパラメータの設定、pre/mid/post trainingにおける学習データとDavaMixについて簡潔に記述されており、レシピが公開されているように見える。素晴らしい。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3193" target="_blank" rel="noopener noreferrer">[Paper Note] MobileLLM: Optimizing Sub-billion Parameter Language Models for  On-Device Use Cases, Zechun Liu+, ICLR'24, 2024.02</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TiKMiX: Take Data Influence into Dynamic Mixture for Language Model  Pre-training, Yifan Wang+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.17677</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2648</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, DataMixture</tags>
+<repo-issue-date>2025-09-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.17677
+# Authors
+  - Yifan Wang
+  - Binbin Liu
+  - Fengze Liu
+  - Yuanfan Guo
+  - Jiyao Deng
+  - Xuecheng Wu
+  - Weidong Zhou
+  - Xiaohuan Zhou
+  - Taifeng Wang
+# Abstract
+  - The data mixture used in the pre-training of a language model is a cornerstone of its final performance. However, a static mixing strategy is suboptimal, as the model's learning preferences for various data domains shift dynamically throughout training. Crucially, observing these evolving preferences in a computationally efficient manner remains a significant challenge. To address this, we propose TiKMiX, a method that dynamically adjusts the data mixture according to the model's evolving preferences. TiKMiX introduces Group Influence, an efficient metric for evaluating the impact of data domains on the model. This metric enables the formulation of the data mixing problem as a search for an optimal, influence-maximizing distribution. We solve this via two approaches: TiKMiX-D for direct optimization, and TiKMiX-M, which uses a regression model to predict a superior mixture. We trained models with different numbers of parameters, on up to 1 trillion tokens. TiKMiX-D exceeds the performance of state-of-the-art methods like REGMIX while using just 20% of the computational resources. TiKMiX-M leads to an average performance gain of 2% across 9 downstream benchmarks. Our experiments reveal that a model's data preferences evolve with training progress and scale, and we demonstrate that dynamically adjusting the data mixture based on Group Influence, a direct measure of these preferences, significantly improves performance by mitigating the underdigestion of data seen with static ratios.
+# Translation (by gpt-4o-mini)
+- 言語モデルの事前学習に使用されるデータの混合は、その最終的な性能の基盤となる。しかし、静的な混合戦略は最適ではなく、モデルのさまざまなデータドメインに対する学習の好みは、トレーニングの過程で動的に変化する。重要なことに、これらの進化する好みを計算効率的に観察することは依然として大きな課題である。これに対処するために、我々はTiKMiXを提案する。この手法は、モデルの進化する好みに応じてデータの混合を動的に調整する。TiKMiXは、データドメインがモデルに与える影響を評価するための効率的な指標であるGroup Influenceを導入する。この指標により、データ混合の問題を最適な影響を最大化する分布の探索として定式化することが可能になる。これを解決するために、TiKMiX-Dによる直接最適化と、優れた混合を予測する回帰モデルを使用するTiKMiX-Mの2つのアプローチを採用した。異なるパラメータ数のモデルを、最大1兆トークンでトレーニングした。TiKMiX-Dは、わずか20%の計算リソースを使用しながら、REGMIXのような最先端の手法を上回る性能を示した。TiKMiX-Mは、9つの下流ベンチマークで平均2%の性能向上をもたらした。我々の実験は、モデルのデータの好みがトレーニングの進行とスケールに伴って進化することを明らかにし、Group Influenceに基づいてデータの混合を動的に調整することで、静的な比率で見られるデータの消化不良を軽減し、性能が大幅に向上することを示した。
+# Summary (by gpt-4o-mini)
+- TiKMiXは、言語モデルの進化するデータ好みに応じてデータの混合を動的に調整する手法である。Group Influenceという指標を導入し、データ混合の最適化を実現。TiKMiX-Dは20%の計算リソースで最先端手法を上回り、TiKMiX-Mは9つのベンチマークで平均2%の性能向上を達成。実験により、データの好みが進化することを示し、動的調整が性能向上に寄与することを確認。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/1962371373684195430?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RegMix:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2639" target="_blank" rel="noopener noreferrer">[Paper Note] RegMix: Data Mixture as Regression for Language Model Pre-training, Qian Liu+, ICLR'25</a>
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=H8JAWv0HNr" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=H8JAWv0HNr</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] RegMix: Data Mixture as Regression for Language Model Pre-training, Qian Liu+, ICLR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2407.01492</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2639</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, ICLR, read-later, Selected Papers/Blogs, DataMixture, Initial Impression Notes</tags>
+<repo-issue-date>2025-09-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2407.01492
+# Authors
+  - Qian Liu
+  - Xiaosen Zheng
+  - Niklas Muennighoff
+  - Guangtao Zeng
+  - Longxu Dou
+  - Tianyu Pang
+  - Jing Jiang
+  - Min Lin
+# Abstract
+  - The data mixture for large language model pre-training significantly impacts performance, yet how to determine an effective mixture remains unclear. We propose RegMix to automatically identify a high-performing data mixture by formulating it as a regression task. RegMix trains many small models on diverse data mixtures, uses regression to predict performance of unseen mixtures, and applies the best predicted mixture to train a large-scale model with orders of magnitude more compute. To empirically validate RegMix, we train 512 models with 1M parameters for 1B tokens to fit the regression model and predict the best data mixture. Using this mixture we train a 1B parameter model for 25B tokens (i.e. 1000x larger and 25x longer) which we find performs best among 64 candidate 1B parameter models with other mixtures. Furthermore, RegMix consistently outperforms human selection in experiments involving models up to 7B models trained on 100B tokens, while matching or exceeding DoReMi using just 10% of the computational resources. Our experiments also show that (1) Data mixtures significantly impact performance; (2) Web corpora rather than data perceived as high-quality like Wikipedia have the strongest positive correlation with downstream performance; (3) Domains interact in complex ways often contradicting common sense, thus automatic approaches like RegMix are needed; (4) Data mixture effects transcend scaling laws. Our code is available at https://github.com/sail-sg/regmix.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルの事前学習におけるデータミクスチャは、性能に大きな影響を与えるが、効果的なミクスチャをどのように決定するかは不明である。そこで、我々はRegMixを提案し、高性能なデータミクスチャを自動的に特定するために回帰タスクとして定式化する。RegMixは、多様なデータミクスチャ上で多くの小さなモデルを訓練し、回帰を用いて未見のミクスチャの性能を予測し、最も良い予測を得たミクスチャを用いて、桁違いの計算リソースで大規模モデルを訓練する。RegMixを実証的に検証するために、1Mパラメータのモデルを512個訓練し、1Bトークンで回帰モデルを適合させ、最良のデータミクスチャを予測する。このミクスチャを用いて、25Bトークンで1Bパラメータのモデルを訓練したところ（すなわち、1000倍大きく、25倍長い）、他のミクスチャを用いた64の候補1Bパラメータモデルの中で最も良い性能を示した。さらに、RegMixは、100Bトークンで訓練された最大7Bモデルを含む実験において、人間の選択を一貫して上回り、わずか10%の計算リソースでDoReMiと同等またはそれを超える性能を発揮した。我々の実験はまた、(1) データミクスチャが性能に大きな影響を与えること、(2) Wikipediaのような高品質と見なされるデータよりも、ウェブコーパスが下流の性能との強い正の相関を持つこと、(3) ドメインが複雑に相互作用し、しばしば常識に反することがあるため、RegMixのような自動アプローチが必要であること、(4) データミクスチャの効果がスケーリング法則を超えることを示している。我々のコードはhttps://github.com/sail-sg/regmixで入手可能である。
+# Summary (by gpt-4o-mini)
+- RegMixを提案し、データミクスチャの性能を回帰タスクとして自動的に特定。多様なミクスチャで小モデルを訓練し、最良のミクスチャを用いて大規模モデルを訓練した結果、他の候補を上回る性能を示した。実験により、データミクスチャが性能に大きな影響を与えることや、ウェブコーパスが高品質データよりも良好な相関を持つことを確認。RegMixの自動アプローチが必要であることも示された。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=5BjQOUXq7i" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=5BjQOUXq7i</a>
+{% endraw %}
+
+</p><p>今後DavaMixtureがさらに重要になるという見方があり、実際にフロンティアモデルのDataMixtureに関する情報はテクニカルレポートには記載されず秘伝のタレ状態であるため、より良いDataMixtureする本研究は重要論文に見える。</p><p>code:
+
+{% raw %}
+<a href="https://github.com/sail-sg/regmix" target="_blank" rel="noopener noreferrer">https://github.com/sail-sg/regmix</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Motif 2.6B Technical Report, Junghwan Lim+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.09148</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2537</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), action_wanted, OpenWeight, Architecture, PostTraining, Selected Papers/Blogs, DataMixture</tags>
+<repo-issue-date>2025-08-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.09148
+# Authors
+  - Junghwan Lim
+  - Sungmin Lee
+  - Dongseok Kim
+  - Eunhwan Park
+  - Hyunbyung Park
+  - Junhyeok Lee
+  - Wai Ting Cheung
+  - Dahye Choi
+  - Jaeheui Her
+  - Jaeyeon Huh
+  - Hanbin Jung
+  - Changjin Kang
+  - Beomgyu Kim
+  - Jihwan Kim
+  - Minjae Kim
+  - Taehwan Kim
+  - Youngrok Kim
+  - Haesol Lee
+  - Jeesoo Lee
+  - Kungyu Lee
+  - Dongpin Oh
+  - Yeongjae Park
+  - Bokki Ryu
+  - Daewon Suh
+  - Dongjoo Weon
+# Abstract
+  - Recent advancements in Large Language Models (LLMs) have revolutionized artificial intelligence, yet developing an effective foundational LLM that balances high performance with computational efficiency remains challenging, especially for emerging research groups. To address this gap, we introduce Motif-2.6B, a 2.6-billion-parameter foundation model designed to democratize advanced LLM capabilities. Motif-2.6B incorporates several innovative architectural enhancements, including Differential Attention and PolyNorm activation functions, which improve long-context comprehension, reduce hallucination, and enhance in-context learning capabilities. We rigorously tested multiple novel architectural components through extensive experimentation to determine the optimal architecture for Motif-2.6B. Comprehensive evaluations demonstrate that Motif-2.6B consistently meets or exceeds the performance of similarly sized state-of-the-art models across diverse benchmarks, showcasing its effectiveness, scalability, and real-world applicability. Through detailed experiments and tailored techniques, Motif-2.6B significantly advances the landscape of efficient, scalable, and powerful foundational LLMs, offering valuable insights and a robust foundation for future research and deployment.
+# Translation (by gpt-4o-mini)
+- 最近の大規模言語モデル（LLMs）の進展は、人工知能に革命をもたらしましたが、高い性能と計算効率のバランスを取った効果的な基盤LLMの開発は依然として困難であり、特に新興の研究グループにとっては大きな課題です。このギャップに対処するために、私たちはMotif-2.6Bを紹介します。これは、先進的なLLMの能力を民主化することを目的とした26億パラメータの基盤モデルです。Motif-2.6Bは、長文の理解を改善し、幻覚を減少させ、文脈内学習能力を向上させるための差分注意（Differential Attention）やポリノルム（PolyNorm）活性化関数など、いくつかの革新的なアーキテクチャの強化を組み込んでいます。私たちは、Motif-2.6Bの最適なアーキテクチャを決定するために、広範な実験を通じて複数の新しいアーキテクチャコンポーネントを厳密にテストしました。包括的な評価により、Motif-2.6Bは多様なベンチマークにおいて、同様のサイズの最先端モデルの性能を一貫して上回るか、またはそれに匹敵することが示され、その効果、スケーラビリティ、実世界での適用性を示しています。詳細な実験と特化した技術を通じて、Motif-2.6Bは効率的でスケーラブルかつ強力な基盤LLMの領域を大きく前進させ、将来の研究と展開に向けた貴重な洞察と堅牢な基盤を提供します。
+# Summary (by gpt-4o-mini)
+- Motif-2.6Bは、26億パラメータを持つ基盤LLMで、長文理解の向上や幻覚の減少を目指し、差分注意やポリノルム活性化関数を採用。広範な実験により、同サイズの最先端モデルを上回る性能を示し、効率的でスケーラブルな基盤LLMの発展に寄与する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/scaling01/status/1959604841577357430?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/Motif-Technologies/Motif-2.6B" target="_blank" rel="noopener noreferrer">https://huggingface.co/Motif-Technologies/Motif-2.6B</a>
+{% endraw %}
+
+</p><p>- アーキテクチャ<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1466" target="_blank" rel="noopener noreferrer">[Paper Note] Differential Transformer, Tianzhu Ye+, N/A, ICLR'25</a>
+<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2538" target="_blank" rel="noopener noreferrer">[Paper Note] Polynomial Composition Activations: Unleashing the Dynamics of Large
+  Language Models, Zhijian Zhuo+, arXiv'24</a>
+<br>- 学習手法<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1979" target="_blank" rel="noopener noreferrer">Model Merging in Pre-training of Large Language Models, Yunshui Li+, arXiv'25</a>
+<br>    - 8B token学習するごとに直近6つのcheckpointのelement-wiseの平均をとりモデルマージ。当該モデルに対して学習を継続、ということを繰り返す。これにより、学習のノイズを低減し、突然パラメータがシフトすることを防ぐ<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1060" target="_blank" rel="noopener noreferrer">Effective Long-Context Scaling of Foundation Models, Wenhan Xiong+, N/A, NAACL'24</a>
+<br>    - Adaptive Base Frequency (RoPEのbase frequencyを10000から500000にすることでlong contextのattention scoreが小さくなりすぎることを防ぐ)<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2540" target="_blank" rel="noopener noreferrer">[Paper Note] MiniCPM: Unveiling the Potential of Small Language Models with Scalable   Training Strategies, Shengding Hu+, COLM'24</a>
+ <br>- 事前学習データ<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1943" target="_blank" rel="noopener noreferrer">[Paper Note] DataComp-LM: In search of the next generation of training sets for   language models, Jeffrey Li+, NeurIPS'25, 2024.07</a>
+<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2539" target="_blank" rel="noopener noreferrer">TxT360, LLM360, 2024.10</a>
+<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2109" target="_blank" rel="noopener noreferrer">[Paper Note] FineWeb2: One Pipeline to Scale Them All -- Adapting Pre-Training Data  Processing to Every Language, Guilherme Penedo+, COLM'25</a>
+ <br><br>を利用したモデル。同程度のサイズのモデルとの比較ではかなりのgainを得ているように見える。興味深い。<br>DatasetのMixtureの比率などについても記述されている。<br><br><img src="https://github.com/user-attachments/assets/0a26442e-8075-4cbe-8cc1-f1ff471b7356" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Scaling Laws for Optimal Data Mixtures, Mustafa Shukor+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.09404</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2250</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, MultiModal, Scaling Laws, DataMixture, VisionLanguageModel</tags>
+<repo-issue-date>2025-07-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.09404
+# Authors
+  - Mustafa Shukor
+  - Louis Bethune
+  - Dan Busbridge
+  - David Grangier
+  - Enrico Fini
+  - Alaaeldin El-Nouby
+  - Pierre Ablin
+# Abstract
+  - Large foundation models are typically trained on data from multiple domains, with the data mixture--the proportion of each domain used--playing a critical role in model performance. The standard approach to selecting this mixture relies on trial and error, which becomes impractical for large-scale pretraining. We propose a systematic method to determine the optimal data mixture for any target domain using scaling laws. Our approach accurately predicts the loss of a model of size $N$ trained with $D$ tokens and a specific domain weight vector $h$. We validate the universality of these scaling laws by demonstrating their predictive power in three distinct and large-scale settings: large language model (LLM), native multimodal model (NMM), and large vision models (LVM) pretraining. We further show that these scaling laws can extrapolate to new data mixtures and across scales: their parameters can be accurately estimated using a few small-scale training runs, and used to estimate the performance at larger scales and unseen domain weights. The scaling laws allow to derive the optimal domain weights for any target domain under a given training budget ($N$,$D$), providing a principled alternative to costly trial-and-error methods.
+# Translation (by gpt-4o-mini)
+- 大規模な基盤モデルは通常、複数のドメインからのデータで訓練されており、データの混合比率（各ドメインの使用割合）がモデルの性能に重要な役割を果たします。この混合比率を選択する標準的なアプローチは試行錯誤に依存しており、大規模な事前訓練には実用的ではありません。そこで本研究では、スケーリング法則を用いて任意のターゲットドメインに対する最適なデータ混合比率を決定する体系的な方法を提案します。我々のアプローチは、特定のドメイン重みベクトル$h$を持つ$D$トークンで訓練されたサイズ$N$のモデルの損失を正確に予測します。これらのスケーリング法則の普遍性を検証するために、我々は大規模な言語モデル（LLM）、ネイティブマルチモーダルモデル（NMM）、および大規模ビジョンモデル（LVM）の事前訓練という3つの異なる大規模設定における予測力を示します。さらに、これらのスケーリング法則は新しいデータ混合比率や異なるスケールに外挿できることを示します。これらのパラメータは少数の小規模な訓練実行を用いて正確に推定でき、より大きなスケールや未見のドメイン重みにおける性能を推定するために使用できます。スケーリング法則により、与えられた訓練予算（$N$、$D$）の下で任意のターゲットドメインに対する最適なドメイン重みを導出することが可能となり、高価な試行錯誤法に代わる原則的な選択肢を提供します。
+# Summary (by gpt-4o-mini)
+- 本研究では、スケーリング法則を用いて任意のターゲットドメインに対する最適なデータ混合比率を決定する方法を提案。特定のドメイン重みベクトルを持つモデルの損失を正確に予測し、LLM、NMM、LVMの事前訓練における予測力を示す。少数の小規模な訓練実行でパラメータを推定し、高価な試行錯誤法に代わる原則的な選択肢を提供。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Revisiting Reinforcement Learning for LLM Reasoning from A Cross-Domain  Perspective, Zhoujun Cheng+, NeurIPS'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.14965</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2070</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, ReinforcementLearning, Reasoning, NeurIPS, PostTraining, read-later, RLVR, Selected Papers/Blogs, DataMixture, CrossDomain</tags>
+<repo-issue-date>2025-06-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.14965
+# Authors
+  - Zhoujun Cheng
+  - Shibo Hao
+  - Tianyang Liu
+  - Fan Zhou
+  - Yutao Xie
+  - Feng Yao
+  - Yuexin Bian
+  - Yonghao Zhuang
+  - Nilabjo Dey
+  - Yuheng Zha
+  - Yi Gu
+  - Kun Zhou
+  - Yuqi Wang
+  - Yuan Li
+  - Richard Fan
+  - Jianshu She
+  - Chengqian Gao
+  - Abulhair Saparov
+  - Haonan Li
+  - Taylor W. Killian
+  - Mikhail Yurochkin
+  - Zhengzhong Liu
+  - Eric P. Xing
+  - Zhiting Hu
+# Abstract
+  - Reinforcement learning (RL) has emerged as a promising approach to improve large language model (LLM) reasoning, yet most open efforts focus narrowly on math and code, limiting our understanding of its broader applicability to general reasoning. A key challenge lies in the lack of reliable, scalable RL reward signals across diverse reasoning domains. We introduce Guru, a curated RL reasoning corpus of 92K verifiable examples spanning six reasoning domains--Math, Code, Science, Logic, Simulation, and Tabular--each built through domain-specific reward design, deduplication, and filtering to ensure reliability and effectiveness for RL training. Based on Guru, we systematically revisit established findings in RL for LLM reasoning and observe significant variation across domains. For example, while prior work suggests that RL primarily elicits existing knowledge from pretrained models, our results reveal a more nuanced pattern: domains frequently seen during pretraining (Math, Code, Science) easily benefit from cross-domain RL training, while domains with limited pretraining exposure (Logic, Simulation, and Tabular) require in-domain training to achieve meaningful performance gains, suggesting that RL is likely to facilitate genuine skill acquisition. Finally, we present Guru-7B and Guru-32B, two models that achieve state-of-the-art performance among open models RL-trained with publicly available data, outperforming best baselines by 7.9% and 6.7% on our 17-task evaluation suite across six reasoning domains. We also show that our models effectively improve the Pass@k performance of their base models, particularly on complex tasks less likely to appear in pretraining data. We release data, models, training and evaluation code to facilitate general-purpose reasoning at: https://github.com/LLM360/Reasoning360
+# Translation (by gpt-4o-mini)
+- 強化学習（RL）は、大規模言語モデル（LLM）の推論を改善する有望なアプローチとして浮上しているが、ほとんどのオープンな取り組みは数学やコードに狭く焦点を当てており、一般的な推論への広範な適用可能性の理解を制限している。重要な課題は、多様な推論ドメインにわたる信頼性が高くスケーラブルなRL報酬信号の欠如にある。そこで、我々はGuruを導入する。これは、数学、コード、科学、論理、シミュレーション、表形式の6つの推論ドメインにわたる92Kの検証可能な例からなるキュレーションされたRL推論コーパスであり、各ドメインは特定の報酬設計、重複排除、フィルタリングを通じて構築され、RLトレーニングの信頼性と効果を確保している。Guruに基づき、我々はLLM推論のためのRLにおける確立された知見を体系的に再検討し、ドメイン間での顕著な変動を観察した。例えば、従来の研究はRLが主に事前学習モデルから既存の知識を引き出すことを示唆しているが、我々の結果はより微妙なパターンを明らかにする。事前学習中に頻繁に見られるドメイン（数学、コード、科学）は、クロスドメインRLトレーニングから容易に利益を得る一方で、事前学習の露出が限られているドメイン（論理、シミュレーション、表形式）は、意味のある性能向上を達成するためにドメイン内トレーニングを必要とし、RLが真のスキル習得を促進する可能性が高いことを示唆している。最後に、我々はGuru-7BとGuru-32Bという2つのモデルを提示する。これらは、公開データでRLトレーニングされたオープンモデルの中で最先端の性能を達成し、6つの推論ドメインにわたる17タスク評価スイートで最良のベースラインをそれぞれ7.9%および6.7%上回っている。我々のモデルは、特に事前学習データに出現しにくい複雑なタスクにおいて、ベースモデルのPass@k性能を効果的に改善することも示している。一般的な推論を促進するために、データ、モデル、トレーニングおよび評価コードを以下のリンクで公開する: https://github.com/LLM360/Reasoning360
+# Summary (by gpt-4o-mini)
+- Guruを導入し、数学、コード、科学、論理、シミュレーション、表形式の6つの推論ドメインにわたる92KのRL推論コーパスを構築。これにより、LLM推論のためのRLの信頼性と効果を向上させ、ドメイン間の変動を観察。特に、事前学習の露出が限られたドメインでは、ドメイン内トレーニングが必要であることを示唆。Guru-7BとGuru-32Bモデルは、最先端の性能を達成し、複雑なタスクにおいてベースモデルの性能を改善。データとコードは公開。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chengzhoujun/status/1936113985507803365?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>post-trainingにおけるRLのcross domain（Math, Code, Science, Logic, Tabular)における影響を調査した研究。非常に興味深い研究。詳細は元論文が著者ポスト参照のこと。</p><p>Qwenシリーズで実験。以下ポストのまとめ。<br><br>- mid trainingにおいて重点的に学習されたドメインはRLによるpost trainingで強い転移を発揮する（Code, Math, Science)<br>- 一方、mid trainingであまり学習データ中に出現しないドメインについては転移による性能向上は最小限に留まり、in-domainの学習データをきちんと与えてpost trainingしないと性能向上は限定的<br>- 簡単なタスクはcross domainの転移による恩恵をすぐに得やすい（Math500, MBPP),難易度の高いタスクは恩恵を得にくい<br>- 各ドメインのデータを一様にmixすると、単一ドメインで学習した場合と同等かそれ以上の性能を達成する<br>- 必ずしもresponse lengthが長くなりながら予測性能が向上するわけではなく、ドメインによって傾向が異なる<br>- たとえば、Code, Logic, Tabularの出力は性能が向上するにつれてresponse lengthは縮小していく<br>- 一方、Science, Mathはresponse lengthが増大していく。また、Simulationは変化しない<br>- 異なるドメインのデータをmixすることで、最初の数百ステップにおけるrewardの立ち上がりが早く（単一ドメインと比べて急激にrewardが向上していく）転移がうまくいく<br>  - （これは私がグラフを見た感想だが、単一ドメインでlong runで学習した場合の最終的な性能は4/6で同等程度、2/6で向上（Math, Science)<br>- 非常に難易度の高いmathデータのみにフィルタリングすると、フィルタリング無しの場合と比べて難易度の高いデータに対する予測性能は向上する一方、簡単なOODタスク（HumanEval)の性能が大幅に低下する（特定のものに特化するとOODの性能が低下する）<br>- RLはpre(mid)-trainingで学習されたreasoning能力を引き出すだけではなく、新規のタスクに対しては新たなreasoning能力を獲得できる<br>- モデルサイズが小さいと、RLでpost-training後のpass@kのkを大きくするとどこかでサチり、baseモデルと交差するが、大きいとサチらず交差しない<br>  - モデルサイズが大きいとより多様なreasoningパスがunlockされている<br>- pass@kで観察したところRLには2つのphaseのよつなものが観測され、最初の0-160（1 epoch)ステップではpass@1が改善したが、pass@max_kは急激に性能が劣化した。一方で、160ステップを超えると、双方共に徐々に性能改善が改善していくような変化が見られた</p><p>本研究で構築されたGuru Dataset:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/LLM360/guru-RL-92k" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/LLM360/guru-RL-92k</a>
+{% endraw %}
+
+<br><br>math, coding, science, logic, simulation, tabular reasoningに関する高品質、かつverifiableなデータセット。</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=xUBgfvyip3&referrer=%5Bthe%20profile%20of%20Zhengzhong%20Liu%5D(%2Fprofile%3Fid%3D~Zhengzhong_Liu1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=xUBgfvyip3&referrer=%5Bthe%20profile%20of%20Zhengzhong%20Liu%5D(%2Fprofile%3Fid%3D~Zhengzhong_Liu1)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MoDoMoDo: Multi-Domain Data Mixtures for Multimodal LLM Reinforcement  Learning, Yiqing Liang+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.24871</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2015</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, MultiModal, RLVR, DataMixture</tags>
+<repo-issue-date>2025-06-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.24871
+# Authors
+  - Yiqing Liang
+  - Jielin Qiu
+  - Wenhao Ding
+  - Zuxin Liu
+  - James Tompkin
+  - Mengdi Xu
+  - Mengzhou Xia
+  - Zhengzhong Tu
+  - Laixi Shi
+  - Jiacheng Zhu
+# Abstract
+  - Reinforcement Learning with Verifiable Rewards (RLVR) has recently emerged as a powerful paradigm for post-training large language models (LLMs), achieving state-of-the-art performance on tasks with structured, verifiable answers. Applying RLVR to Multimodal LLMs (MLLMs) presents significant opportunities but is complicated by the broader, heterogeneous nature of vision-language tasks that demand nuanced visual, logical, and spatial capabilities. As such, training MLLMs using RLVR on multiple datasets could be beneficial but creates challenges with conflicting objectives from interaction among diverse datasets, highlighting the need for optimal dataset mixture strategies to improve generalization and reasoning. We introduce a systematic post-training framework for Multimodal LLM RLVR, featuring a rigorous data mixture problem formulation and benchmark implementation. Specifically, (1) We developed a multimodal RLVR framework for multi-dataset post-training by curating a dataset that contains different verifiable vision-language problems and enabling multi-domain online RL learning with different verifiable rewards; (2) We proposed a data mixture strategy that learns to predict the RL fine-tuning outcome from the data mixture distribution, and consequently optimizes the best mixture. Comprehensive experiments showcase that multi-domain RLVR training, when combined with mixture prediction strategies, can significantly boost MLLM general reasoning capacities. Our best mixture improves the post-trained model's accuracy on out-of-distribution benchmarks by an average of 5.24% compared to the same model post-trained with uniform data mixture, and by a total of 20.74% compared to the pre-finetuning baseline.
+# Translation (by gpt-4o-mini)
+- 検証可能な報酬を用いた強化学習（RLVR）は、最近、大規模言語モデル（LLMs）のポストトレーニングにおいて強力なパラダイムとして登場し、構造化された検証可能な回答を持つタスクで最先端のパフォーマンスを達成しています。RLVRをマルチモーダルLLMs（MLLMs）に適用することは大きな機会を提供しますが、視覚と言語のタスクが要求する微妙な視覚的、論理的、空間的能力の多様性により複雑さが増します。そのため、複数のデータセットを使用してMLLMをRLVRでトレーニングすることは有益ですが、多様なデータセット間の相互作用から生じる矛盾する目的によって課題が生じ、一般化と推論を改善するための最適なデータセット混合戦略の必要性が浮き彫りになります。本研究では、マルチモーダルLLM RLVRのための体系的なポストトレーニングフレームワークを導入し、厳密なデータ混合問題の定式化とベンチマーク実装を特徴としています。具体的には、(1) 異なる検証可能な視覚と言語の問題を含むデータセットをキュレーションし、異なる検証可能な報酬を用いたマルチドメインオンラインRL学習を可能にするマルチモーダルRLVRフレームワークを開発しました；(2) データ混合分布からRLファインチューニングの結果を予測することを学習し、最適な混合を最適化するデータ混合戦略を提案しました。包括的な実験により、混合予測戦略と組み合わせたマルチドメインRLVRトレーニングがMLLMの一般的な推論能力を大幅に向上させることが示されました。私たちの最良の混合は、均一なデータ混合でポストトレーニングされた同じモデルと比較して、分布外ベンチマークにおけるポストトレーニングモデルの精度を平均5.24%向上させ、事前ファインチューニングのベースラインと比較して合計20.74%向上させました。
+# Summary (by gpt-4o-mini)
+- 検証可能な報酬を用いた強化学習（RLVR）をマルチモーダルLLMsに適用するためのポストトレーニングフレームワークを提案。異なる視覚と言語の問題を含むデータセットをキュレーションし、最適なデータ混合戦略を導入。実験により、提案した戦略がMLLMの推論能力を大幅に向上させることを示し、分布外ベンチマークで平均5.24%の精度向上を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_vztu/status/1930312780701413498?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>マルチモーダルな設定でRLVRを適用すると、すべてのデータセットを学習に利用する場合より、特定のタスクのみのデータで学習した方が当該タスクでは性能が高くなったり（つまりデータが多ければ多いほど良いわけでは無い）、特定のデータをablationするとOODに対する予測性能が改善したりするなど、データ間で干渉が起きて敵対的になってしまうような現象が起きる。このことから、どのように適切にデータを混合できるか？という戦略の必要性が浮き彫りになり、モデルベースなMixture戦略（どうやらデータの混合分布から学習後の性能を予測するモデルな模様）の性能がuniformにmixするよりも高い性能を示した、みたいな話らしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] To Code, or Not To Code? Exploring Impact of Code in Pre-training, Viraat Aryabumi+, arXiv'24, 2024.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2408.10914</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3568</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Coding, DataMixture, One-Line Notes</tags>
+<repo-issue-date>2025-11-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2408.10914
+# Authors
+  - Viraat Aryabumi
+  - Yixuan Su
+  - Raymond Ma
+  - Adrien Morisot
+  - Ivan Zhang
+  - Acyr Locatelli
+  - Marzieh Fadaee
+  - Ahmet Üstün
+  - Sara Hooker
+# Abstract
+  - Including code in the pre-training data mixture, even for models not specifically designed for code, has become a common practice in LLMs pre-training. While there has been anecdotal consensus among practitioners that code data plays a vital role in general LLMs' performance, there is only limited work analyzing the precise impact of code on non-code tasks. In this work, we systematically investigate the impact of code data on general performance. We ask "what is the impact of code data used in pre-training on a large variety of downstream tasks beyond code generation". We conduct extensive ablations and evaluate across a broad range of natural language reasoning tasks, world knowledge tasks, code benchmarks, and LLM-as-a-judge win-rates for models with sizes ranging from 470M to 2.8B parameters. Across settings, we find a consistent results that code is a critical building block for generalization far beyond coding tasks and improvements to code quality have an outsized impact across all tasks. In particular, compared to text-only pre-training, the addition of code results in up to relative increase of 8.2% in natural language (NL) reasoning, 4.2% in world knowledge, 6.6% improvement in generative win-rates, and a 12x boost in code performance respectively. Our work suggests investments in code quality and preserving code during pre-training have positive impacts.
+# Translation (by gpt-4o-mini)
+- コードを事前学習データの混合に含めることは、特にコード専用に設計されていないモデルにおいても、LLMの事前学習において一般的な慣行となっている。実務者の間では、コードデータが一般的なLLMのパフォーマンスに重要な役割を果たすという合意があるものの、非コードタスクにおけるコードの正確な影響を分析した研究は限られている。本研究では、コードデータが一般的なパフォーマンスに与える影響を体系的に調査する。「事前学習に使用されるコードデータは、コード生成を超えたさまざまな下流タスクにどのような影響を与えるのか？」という問いを立て、広範な自然言語推論タスク、世界知識タスク、コードベンチマーク、そして470Mから2.8Bパラメータのモデルに対するLLM-as-a-judgeの勝率を評価するために、広範なアブレーション実験を実施した。設定を通じて、コードがコーディングタスクを超えた一般化のための重要な構成要素であり、コード品質の向上がすべてのタスクにおいて大きな影響を与えるという一貫した結果を得た。特に、テキストのみの事前学習と比較して、コードの追加は自然言語（NL）推論で最大8.2%、世界知識で4.2%、生成的勝率で6.6%の相対的な向上をもたらし、コードパフォーマンスでは12倍の向上を示した。我々の研究は、コード品質への投資と事前学習中のコードの保持がポジティブな影響を与えることを示唆している。
+# Summary (by gpt-4o-mini)
+- コードデータが一般的なLLMのパフォーマンスに与える影響を体系的に調査。アブレーション実験により、コードがコーディングタスクを超えた一般化に重要であり、コード品質の向上が全タスクに大きな影響を与えることを確認。特に、コードの追加により自然言語推論で最大8.2%、世界知識で4.2%、生成的勝率で6.6%の向上を示し、コードパフォーマンスでは12倍の改善を達成。研究は、コード品質への投資がポジティブな影響をもたらすことを示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/1985116711662543167?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習におけるコードの割合を増やすとコーディングタスクの性能は線形に増加する。全体の平均タスク性能の観点で言うとコードの割合を25%にするのが最適で、コードの割合を増やすほど自然言語による推論、世界知識が問われるタスクの性能は悪化していき、コードの割合が75%を超えると急激に悪化する（Figure4)。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] DoReMi: Optimizing Data Mixtures Speeds Up Language Model Pretraining, Sang Michael Xie+, NeurIPS'23 Spotlight, 2023.05</title>
+<original-paper-blog-link>http://arxiv.org/abs/2305.10429</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/698</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, DataDistillation, action_wanted, NeurIPS, DataMixture, One-Line Notes</tags>
+<repo-issue-date>2023-05-21</repo-issue-date>
+<issue-body># URL
+- http://arxiv.org/abs/2305.10429
+# Authors
+  - Sang Michael Xie
+  - Hieu Pham
+  - Xuanyi Dong
+  - Nan Du
+  - Hanxiao Liu
+  - Yifeng Lu
+  - Percy Liang
+  - Quoc V. Le
+  - Tengyu Ma
+  - Adams Wei Yu
+# Abstract
+  - The mixture proportions of pretraining data domains (e.g., Wikipedia, books, web text) greatly affect language model (LM) performance. In this paper, we propose Domain Reweighting with Minimax Optimization (DoReMi), which first trains a small proxy model using group distributionally robust optimization (Group DRO) over domains to produce domain weights (mixture proportions) without knowledge of downstream tasks. We then resample a dataset with these domain weights and train a larger, full-sized model. In our experiments, we use DoReMi on a 280M-parameter proxy model to set the domain weights for training an 8B-parameter model (30x larger) more efficiently. On The Pile, DoReMi improves perplexity across all domains, even when it downweights a domain. DoReMi improves average few-shot downstream accuracy by 6.5% points over a baseline model trained using The Pile's default domain weights and reaches the baseline accuracy with 2.6x fewer training steps. On the GLaM dataset, DoReMi, which has no knowledge of downstream tasks, even matches the performance of using domain weights tuned on downstream tasks.
+# Translation (by gpt-4o-mini)
+- プレトレーニングデータドメインの混合比率（例：Wikipedia、書籍、ウェブテキスト）は、言語モデル（LM）の性能に大きく影響します。本論文では、最初にドメインに対するグループ分布頑健最適化（Group DRO）を用いて小さなプロキシモデルをトレーニングし、下流タスクの知識なしにドメインウェイト（混合比率）を生成する最適化手法であるドメイン再重み付け（DoReMi）を提案します。次に、これらのドメインウェイトを用いてデータセットを再サンプリングし、より大きなフルサイズモデルをトレーニングします。実験では、DoReMiを280Mパラメータのプロキシモデルに使用して、8Bパラメータのモデル（30倍の大きさ）をより効率的にトレーニングするためのドメインウェイトを設定しました。The Pileにおいて、DoReMiはすべてのドメインでパープレキシティを改善し、たとえドメインの重みを下げた場合でも効果があります。DoReMiは、The Pileのデフォルトのドメインウェイトを使用してトレーニングしたベースラインモデルに対して、平均的な少数ショット下流精度を6.5％ポイント向上させ、2.6倍少ないトレーニングステップでベースライン精度に達します。GLaMデータセットにおいても、DoReMiは下流タスクの知識がなくても、下流タスクでチューニングされたドメインウェイトを使用した際の性能と一致します。
+# Summary (by gpt-4o-mini)
+- ドメイン混合比率が言語モデルの性能に与える影響を考察し、Group DROを用いて小規模プロキシモデルをトレーニングし、ドメイン再重み付け（DoReMi）を提案。これにより、無知の下流タスクに基づきドメインウェイトを生成し、効率的に大規模モデルをトレーニング。DoReMiはThe Pileでパープレキシティを改善し、ベースラインモデルに対して少数ショット精度を6.5％向上させ、少ないトレーニングステップで結果を達成。GLaMデータセットでも同様の性能を示す。</issue-body>
+<maintainer-comment-text><p>事前学習する際の各ドメインのデータをどのような比率でmixtureするかの話。各ドメインごとに小さなproxy modelを訓練し、downstream taskの知識無しでドメインごとの重みを生成。データセットを生成されたドメインごとの重みに従いリサンプリングすることで、（1/30のプロキシモデルを用いた場合）オリジナルのデータより2.6倍高速で、6.5%oneshotのaccuracyを向上させることに成功<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2c0b125a-5ecc-4ee3-8c3b-022c03606c60" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=lXuByUeHhd" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=lXuByUeHhd</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Swallowにおける  日英推論型大規模言語モデルの構築, 水木栄, 第26回LLM勉強会, 2026.02</title>
+<original-paper-blog-link>https://drive.google.com/file/d/1bEA0_z8uDGyTbpuOw5RwCBGsqp33PRaj/view</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4708</repo-issue-link>
+<tags>Pretraining, NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Japanese, mid-training, PostTraining, Selected Papers/Blogs, DataMixture, Initial Impression Notes</tags>
+<repo-issue-date>2026-02-27</repo-issue-date>
+<issue-body>https://drive.google.com/file/d/1bEA0_z8uDGyTbpuOw5RwCBGsqp33PRaj/view</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chokkanorg/status/2026296788341432407?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4656" target="_blank" rel="noopener noreferrer">Qwen3-Swallow & GPT-OSS-Swallow, Kazuki Fujii, 2026.02</a>
+</p><p>まだしっかり読めていないのだが、適切なDataMixtureはどのようにして決めているのだろうか？<br><br>- 数学データによる学習がコーディングにのみ転移<br>- 英語データを邦訳したデータが学習に寄与するためcross-lingualで能力が転移する<br>- RLはpass@1を改善するが、Pass@10などの改善幅は縮小する<br>  - この辺の話は資料中でも先行研究が引用されており、実際に確認されたということだと思われる<br>...</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The next equalizer is not model architecture, but mastery over data behavior, gm8xx8, 2025.12</title>
+<original-paper-blog-link>https://x.com/gm8xx8/status/2006066984857825790?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4138</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, SyntheticData, Post, Selected Papers/Blogs, DataMixture, PhaseTransition</tags>
+<repo-issue-date>2026-01-07</repo-issue-date>
+<issue-body>https://x.com/gm8xx8/status/2006066984857825790?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text><p>関連（4-epochまで再利用するのがコスパが良いことを示した研究）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+ <br><br>関連（合成データの比率によるPhaseTransition）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3101" target="_blank" rel="noopener noreferrer">[Paper Note] Data Mixing Can Induce Phase Transitions in Knowledge Acquisition, Xinran Gu+, NeurIPS'25 Spotlight, 2025.05</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3088" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Synthetic Data in LLM Pre-training: A Systematic Study of  Scaling Laws, Benefits, and Pitfalls, Feiyang Kang+, EMNLP'25, 2025.10</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3641" target="_blank" rel="noopener noreferrer">[Paper Note] Why Less is More (Sometimes): A Theory of Data Curation, Elvis Dohmatob+, arXiv'25, 2025.11</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Emergence of Human to Robot Transfer in VLAs, Physical Intelligence （π）, 2025.12</title>
+<original-paper-blog-link>https://www.pi.website/research/human_to_robot</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3999</repo-issue-link>
+<tags>Pretraining, FoundationModel, Selected Papers/Blogs, DataMixture, Robotics, VisionLanguageActionModel, 4D (Video), EmbodiedAI, KeyPoint Notes, EmergentAbilities, EgocentricView, DomainGap</tags>
+<repo-issue-date>2025-12-18</repo-issue-date>
+<issue-body>https://www.pi.website/research/human_to_robot</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/physical_int/status/2001096200456692114?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pi_0.5と呼ばれる基盤モデルのfinetuningにおいてロボット用の学習データに追加して人間のegocentricなvideoをmixtureするだけで創発現象が生じ、人間の動画側にしか存在しない4種類のgeneralizationが必要なシナリオにおいて2倍の性能を示した。そしてこの傾向は、事前学習における基盤モデルのサイズをスケールさせる、ロボットのデータをより多く投入することでより顕著となった。<br><img src="https://github.com/user-attachments/assets/b6e9b6e5-d4c3-4c72-9b8b-98333564b0b5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>人間とロボットの特徴量を2D plotした散布図を見ると、事前学習で利用するロボットの学習データ（事前学習時点では人間の動画は含まれないことに注意）をスケールさせると、両者の特徴量が重なるようになったので、human-robotのalignmentをモデルが獲得していることが示唆される。<br>これにより、今後VLAを学習する際に、domain gapを埋めるための特別な処理が不要となる可能性がある、といった話らしい。</p><p>これが真だとすると、たとえば以下のように、人間のegocentric viewデータを大量に保有したところが有利にはなりそうではある。 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3974" target="_blank" rel="noopener noreferrer">Interactive Intelligence from Human Xperience, Ropedia, 2025.12</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>NIIにおける大規模言語モデル構築事業の現在地,  Yusuke Oda, 人工知能学会合同研究会 招待講演資料, 2025.12.01</title>
+<original-paper-blog-link>https://speakerdeck.com/odashi/niiniokeruda-gui-mo-yan-yu-moderugou-zhu-shi-ye-noxian-zai-di</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3911</repo-issue-link>
+<tags>NLP, LanguageModel, Optimizer, ExperimentManagement, Slide, Japanese, DataMixture</tags>
+<repo-issue-date>2025-12-09</repo-issue-date>
+<issue-body>https://speakerdeck.com/odashi/niiniokeruda-gui-mo-yan-yu-moderugou-zhu-shi-ye-noxian-zai-di</issue-body>
+<maintainer-comment-text><p>WSD Scheduler:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2540" target="_blank" rel="noopener noreferrer">[Paper Note] MiniCPM: Unveiling the Potential of Small Language Models with Scalable   Training Strategies, Shengding Hu+, COLM'24</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/odashi_t/status/1997878361759387798?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>
