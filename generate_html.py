@@ -447,11 +447,11 @@ def _generate_agentdoc_content_list(sorted_issues: list[tuple[dict, int]]) -> li
         _agentdoc_content.append("<paper-entry>")
         _agentdoc_content.append(f"<title>{title}</title>")
         _agentdoc_content.append(f"<original-paper-blog-link>{original_link}</original-paper-blog-link>")
-        _agentdoc_content.append(f"<repo-issue-link>{issue["url"]}</repo-issue-link>")
-        _agentdoc_content.append(f"<tags>{", ".join(tags)}</tags>")
-        _agentdoc_content.append(f"<repo-issue-date>{issue["createdAt"][:issue["createdAt"].find("T")]}</repo-issue-date>")
-        _agentdoc_content.append(f"<issue-body>{issue["body"]}</issue-body>")
-        _agentdoc_content.append(f"<maintainer-comment-text>{comment_text}</maintainer-comment-text>")
+        _agentdoc_content.append(f'<repo-issue-link>{issue["url"]}</repo-issue-link>')
+        _agentdoc_content.append(f'<tags>{", ".join(tags)}</tags>')
+        _agentdoc_content.append(f'<repo-issue-date>{issue["createdAt"][:issue["createdAt"].find("T")]}</repo-issue-date>')
+        _agentdoc_content.append(f'<issue-body>{issue["body"]}</issue-body>')
+        _agentdoc_content.append(f'<maintainer-comment-text>{comment_text}</maintainer-comment-text>')
         _agentdoc_content.append("</paper-entry>\n")
         
     return _agentdoc_content
@@ -476,7 +476,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
     if len(sorted_issues[visible_num:]) > 0:
         _html_content.append(f'<button onclick="showMore({curr_more_idx})">more</button>')
         _html_content.append('<div class="hidden-content">')
-        _html_content += _iter_issue(sorted_issues[visible_num:], current_target=current_target, attach_date=attach_date, assets_root=assets_root, h_level=h_level)
+        _html_content += _generate_html_content_list(sorted_issues[visible_num:], current_target=current_target, attach_date=attach_date, assets_root=assets_root, h_level=h_level)
         _html_content.append(f'<button onclick="hideContent({curr_more_idx})" style="display: none;">hide</button>')
         _html_content.append('</div>')
         curr_more_idx += 1
@@ -715,7 +715,7 @@ author: AkihikoWATANABE
     html_content += gen_result["html_content"]
 
     with open("./agent_docs/latest-posts.xml", "w") as f:
-        f.write(gen_result["agentdoc_content])
+        f.write(gen_result["agentdoc_content"])
 
     # Admin's Pick
     selected_issues = [issue for issue in all_issues if any(["Selected Papers/Blogs" == l["name"] for l in issue["labels"]])]
@@ -727,7 +727,7 @@ author: AkihikoWATANABE
     html_content += gen_result["html_content"]
     html_content += "<hr>\n\n"
 
-    with open("./agent_docs/admin-s-pick.xml") as f:
+    with open("./agent_docs/admin-s-pick.xml", "w") as f:
         f.write(gen_result["agentdoc_content"])
 
     print("main part was finished.")
@@ -826,6 +826,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
