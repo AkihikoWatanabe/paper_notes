@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2021-07-03">
+<paper-entry>
+<title>[Paper Note] Deep Learning Recommendation Model for Personalization and Recommendation Systems, Maxim Naumov+, arXiv'19, 2019.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/1906.00091</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/397</repo-issue-link>
+<tags>RecommenderSystems, CollaborativeFiltering, FactorizationMachines, action_wanted</tags>
+<repo-issue-date>2021-07-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1906.00091
+# Authors
+  - Maxim Naumov
+  - Dheevatsa Mudigere
+  - Hao-Jun Michael Shi
+  - Jianyu Huang
+  - Narayanan Sundaraman
+  - Jongsoo Park
+  - Xiaodong Wang
+  - Udit Gupta
+  - Carole-Jean Wu
+  - Alisson G. Azzolini
+  - Dmytro Dzhulgakov
+  - Andrey Mallevich
+  - Ilia Cherniavskii
+  - Yinghai Lu
+  - Raghuraman Krishnamoorthi
+  - Ansha Yu
+  - Volodymyr Kondratenko
+  - Stephanie Pereira
+  - Xianjie Chen
+  - Wenlin Chen
+  - Vijay Rao
+  - Bill Jia
+  - Liang Xiong
+  - Misha Smelyanskiy
+# Abstract
+  - With the advent of deep learning, neural network-based recommendation models have emerged as an important tool for tackling personalization and recommendation tasks. These networks differ significantly from other deep learning networks due to their need to handle categorical features and are not well studied or understood. In this paper, we develop a state-of-the-art deep learning recommendation model (DLRM) and provide its implementation in both PyTorch and Caffe2 frameworks. In addition, we design a specialized parallelization scheme utilizing model parallelism on the embedding tables to mitigate memory constraints while exploiting data parallelism to scale-out compute from the fully-connected layers. We compare DLRM against existing recommendation models and characterize its performance on the Big Basin AI platform, demonstrating its usefulness as a benchmark for future algorithmic experimentation and system co-design.
+# Translation (by gpt-4o-mini)
+- 深層学習の登場により、ニューラルネットワークに基づく推薦モデルがパーソナライズと推薦タスクに取り組むための重要なツールとして浮上してきた。これらのネットワークは、カテゴリカルな特徴を扱う必要があるため、他の深層学習ネットワークとは大きく異なり、十分に研究されていないか理解されていない。本論文では、最先端の深層学習推薦モデル（DLRM）を開発し、PyTorchおよびCaffe2フレームワークでの実装を提供する。さらに、埋め込みテーブルにおけるモデル並列性を利用した専門的な並列化スキームを設計し、メモリ制約を軽減しつつ、全結合層からの計算をスケールアウトするためにデータ並列性を活用する。DLRMを既存の推薦モデルと比較し、Big Basin AIプラットフォーム上での性能を特徴付け、その有用性を将来のアルゴリズム実験およびシステム共同設計のベンチマークとして示す。
+# Summary (by gpt-4o-mini)
+- 深層学習に基づく推薦モデル（DLRM）を開発し、PyTorchとCaffe2で実装。埋め込みテーブルのモデル並列性を活用し、メモリ制約を軽減しつつ計算をスケールアウト。DLRMの性能を既存モデルと比較し、Big Basin AIプラットフォームでの有用性を示す。</issue-body>
+<maintainer-comment-text><p>Facebookが開発したopen sourceのDeepな推薦モデル（MIT Licence）。<br><br>モデル自体はシンプルで、continuousなfeatureをMLPで線形変換、categoricalなfeatureはembeddingをlook upし、それぞれfeatureのrepresentationを獲得。<br>その上で、それらをFactorization Machines layer（second-order）にぶちこむ。すなわち、Feature間の2次の交互作用をembedding間のdot productで獲得し、これを1次項のrepresentationとconcatしMLPにぶちこむ。最後にシグモイド噛ませてCTRの予測値とする。</p><p>実装: 
+
+{% raw %}
+<a href="https://github.com/facebookresearch/dlrm" target="_blank" rel="noopener noreferrer">https://github.com/facebookresearch/dlrm</a>
+{% endraw %}
+
+</p><p>Parallelism以後のセクションはあとで読む</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems, Jianxun Lian+, arXiv'18, 2018.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/1803.05170</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/348</repo-issue-link>
+<tags>RecommenderSystems, NeuralNetwork, CollaborativeFiltering, FactorizationMachines, CTRPrediction, action_wanted, SIGKDD, One-Line Notes, Reading Reflections</tags>
+<repo-issue-date>2021-05-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1803.05170
+# Authors
+  - Jianxun Lian
+  - Xiaohuan Zhou
+  - Fuzheng Zhang
+  - Zhongxia Chen
+  - Xing Xie
+  - Guangzhong Sun
+# Abstract
+  - Combinatorial features are essential for the success of many commercial models. Manually crafting these features usually comes with high cost due to the variety, volume and velocity of raw data in web-scale systems. Factorization based models, which measure interactions in terms of vector product, can learn patterns of combinatorial features automatically and generalize to unseen features as well. With the great success of deep neural networks (DNNs) in various fields, recently researchers have proposed several DNN-based factorization model to learn both low- and high-order feature interactions. Despite the powerful ability of learning an arbitrary function from data, plain DNNs generate feature interactions implicitly and at the bit-wise level. In this paper, we propose a novel Compressed Interaction Network (CIN), which aims to generate feature interactions in an explicit fashion and at the vector-wise level. We show that the CIN share some functionalities with convolutional neural networks (CNNs) and recurrent neural networks (RNNs). We further combine a CIN and a classical DNN into one unified model, and named this new model eXtreme Deep Factorization Machine (xDeepFM). On one hand, the xDeepFM is able to learn certain bounded-degree feature interactions explicitly; on the other hand, it can learn arbitrary low- and high-order feature interactions implicitly. We conduct comprehensive experiments on three real-world datasets. Our results demonstrate that xDeepFM outperforms state-of-the-art models. We have released the source code of xDeepFM at \url{https://github.com/Leavingseason/xDeepFM}.
+# Translation (by gpt-5-nano)
+- 組み合わせ特徴量は、多くの商用モデルの成功に不可欠である。ウェブ規模システムにおける生データの多様性・量・速度のため、これらの特徴量を手作業で作成するには通常高いコストがかかる。因子分解ベースのモデルは、特徴量間の相互作用をベクトルの積で測ることで、組み合わせ特徴量のパターンを自動的に学習し、未見の特徴量にも一般化できる。様々な分野で深層ニューラルネットワーク（DNN）の大きな成功を受け、最近、低次および高次の特徴相互作用を学習するDNNベースの因子分解モデルがいくつか提案されている。データから任意の関数を学習する強力な能力を持つ一方で、素のDNNは特徴相互作用を暗黙的に、ビット単位レベルで生成する。本論文では、特徴相互作用を明示的な方式で、かつベクトル単位レベルで生成することを目指す新規の圧縮相互作用ネットワーク（CIN）を提案する。CINは畳み込みニューラルネットワーク（CNN）および再帰型ニューラルネットワーク（RNN）といくつかの機能を共有することを示す。さらに、CINと従来のDNNを一つの統一モデルに組み合わせ、この新しいモデルをeXtreme Deep Factorization Machine（xDeepFM）と命名する。一方で、xDeepFMは特定の有界次数の特徴相互作用を明示的に学習できる。また、任意の低次および高次の特徴相互作用を暗黙的に学習することもできる。我々は3つの実世界データセットで包括的な実験を行った。我々の結果は、xDeepFMが最先端モデルを上回ることを示している。xDeepFMのソースコードは https://github.com/Leavingseason/xDeepFM で公開している。
+# Summary (by gpt-4o-mini)
+- 特徴量の自動生成が求められる中、因子分解モデルは相互作用を学習し一般化するが、DNNは暗黙的である。本研究では、明示的に相互作用を生成する圧縮相互作用ネットワーク（CIN）を提案し、DNNと統合したeXtreme Deep Factorization Machine（xDeepFM）を開発。xDeepFMは低次・高次の相互作用を学習し、実データセットで最先端モデルを超える性能を示した。</issue-body>
+<maintainer-comment-text><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/349" target="_blank" rel="noopener noreferrer">DeepFM: A Factorization-Machine based Neural Network for CTR Prediction, Guo+, IJCAI’17</a>
+ DeepFMの発展版</p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/281" target="_blank" rel="noopener noreferrer">[Paper Note] Factorization Machines, Steffen Rendle, ICDM'10, 2010.12</a>
+ にも書いたが、下記リンクに概要が記載されている。<br><br>DeepFMに関する動向：
+
+{% raw %}
+<a href="https://data.gunosy.io/entry/deep-factorization-machines-2018" target="_blank" rel="noopener noreferrer">https://data.gunosy.io/entry/deep-factorization-machines-2018</a>
+{% endraw %}
+
+<br><br><br><br>DeepFMの発展についても詳細に述べられていて、とても参考になる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Field-weighted Factorization Machines for Click-Through Rate Prediction in Display Advertising, Junwei Pan+, arXiv'18, 2018.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/1806.03514</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/341</repo-issue-link>
+<tags>RecommenderSystems, NeuralNetwork, CollaborativeFiltering, FactorizationMachines, CTRPrediction, action_wanted, WWW, One-Line Notes</tags>
+<repo-issue-date>2020-08-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1806.03514
+# Authors
+  - Junwei Pan
+  - Jian Xu
+  - Alfonso Lobos Ruiz
+  - Wenliang Zhao
+  - Shengjun Pan
+  - Yu Sun
+  - Quan Lu
+# Abstract
+  - Click-through rate (CTR) prediction is a critical task in online display advertising. The data involved in CTR prediction are typically multi-field categorical data, i.e., every feature is categorical and belongs to one and only one field. One of the interesting characteristics of such data is that features from one field often interact differently with features from different other fields. Recently, Field-aware Factorization Machines (FFMs) have been among the best performing models for CTR prediction by explicitly modeling such difference. However, the number of parameters in FFMs is in the order of feature number times field number, which is unacceptable in the real-world production systems. In this paper, we propose Field-weighted Factorization Machines (FwFMs) to model the different feature interactions between different fields in a much more memory-efficient way. Our experimental evaluations show that FwFMs can achieve competitive prediction performance with only as few as 4% parameters of FFMs. When using the same number of parameters, FwFMs can bring 0.92% and 0.47% AUC lift over FFMs on two real CTR prediction data sets.
+# Translation (by gpt-5-nano)
+- クリック率（CTR）予測は、オンラインディスプレイ広告において重要なタスクである。CTR予測に関与するデータは通常、マルチフィールドのカテゴリカルデータであり、すべての特徴はカテゴリカルで、ちょうど1つのフィールドに属する。こうしたデータの興味深い特徴の1つは、あるフィールドの特徴が、他の異なるフィールドの特徴としばしば異なる相互作用をすることである。最近、フィールド認識型因子分解機（FFMs）は、そのような差異を明示的にモデル化することによって、CTR予測の中で最も性能の良いモデルの1つとなっている。しかしながら、FFMsのパラメータ数は特徴量の数×フィールド数のオーダーとなり、実世界の本番運用システムでは受け入れ難い。本論文では、Field-weighted Factorization Machines（FwFMs）を提案し、異なるフィールド間の異なる特徴相互作用を、はるかにメモリ効率の高い方法でモデル化する。実験評価の結果、FwFMsは、FFMsのパラメータ数のわずか4%しか使用しなくても競争力のある予測性能を達成できることを示している。同じパラメータ数を用いた場合、FwFMsは2つの実データセットにおけるCTR予測で、FFMsよりAUCを0.92%および0.47%改善することができる。
+# Summary (by gpt-4o-mini)
+- クリック率（CTR）予測はオンライン広告での重要なタスクであり、マルチフィールドのカテゴリカルデータが使用される。フィールド認識型因子分解機（FFMs）は異なるフィールド間の特徴相互作用を効果的にモデル化するが、パラメータ数が膨大で実用的ではない。提案するField-weighted Factorization Machines（FwFMs）は、メモリ効率よく相互作用をモデル化し、わずか4%のパラメータで競争力のある性能を発揮。実験では、FwFMsがFFMsよりも0.92%および0.47%のAUC改善を達成した。</issue-body>
+<maintainer-comment-text><p>CTR予測でbest-performingなモデルと言われているField Aware Factorization Machines(FFM)では、パラメータ数がフィールド数×特徴数のorderになってしまうため非常に多くなってしまうが、これをよりメモリを効果的に利用できる手法を提案。FFMとは性能がcomparableであるが、パラメータ数をFFMの4%に抑えることができた。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] fastFM: A Library for Factorization Machines, Immanuel Bayer, arXiv'15, 2015.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/1505.00641</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/151</repo-issue-link>
+<tags>RecommenderSystems, CollaborativeFiltering, Library, FactorizationMachines, action_wanted, One-Line Notes</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/1505.00641
+- pj page: http://ibayer.github.io/fastFM/
+# Authors
+  - Immanuel Bayer
+# Abstract
+  - Factorization Machines (FM) are only used in a narrow range of applications and are not part of the standard toolbox of machine learning models. This is a pity, because even though FMs are recognized as being very successful for recommender system type applications they are a general model to deal with sparse and high dimensional features. Our Factorization Machine implementation provides easy access to many solvers and supports regression, classification and ranking tasks. Such an implementation simplifies the use of FM's for a wide field of applications. This implementation has the potential to improve our understanding of the FM model and drive new development.
+# Translation (by gpt-4o-mini)
+- 因子分解機（FM）は、限られた範囲のアプリケーションでのみ使用されており、機械学習モデルの標準ツールボックスには含まれていません。これは残念なことであり、FMはレコメンダーシステムのアプリケーションに非常に成功していると認識されているにもかかわらず、スパースで高次元の特徴を扱うための一般的なモデルだからです。私たちの因子分解機の実装は、多くのソルバーへの簡単なアクセスを提供し、回帰、分類、ランキングタスクをサポートしています。このような実装は、FMを幅広いアプリケーションで利用する際の簡素化を図ります。この実装は、FMモデルの理解を深め、新たな開発を促進する可能性を秘めています。
+# Summary (by gpt-4o-mini)
+- 因子分解機（FM）は、レコメンダーシステムで成功を収めているにもかかわらず、機械学習の標準ツールボックスには含まれていない。私たちのFMの実装は、回帰、分類、ランキングタスクをサポートし、多くのソルバーへのアクセスを簡素化することで、FMの幅広いアプリケーション利用を促進する。これにより、FMモデルの理解が深まり、新たな開発が期待される。</issue-body>
+<maintainer-comment-text><p>実装されているアルゴリズム：Factorization Machines<br><br>実装：python<br><br>使用方法：pythonライブラリとして利用<br><br>※ Factorization Machinesに特化したpythonライブラリ</p><p>参考：<br><br>
+
+{% raw %}
+<a href="http://www.kamishima.net/archive/recsysdoc.pdf" target="_blank" rel="noopener noreferrer">http://www.kamishima.net/archive/recsysdoc.pdf</a>
+{% endraw %}
+
+<br><br>
+
+{% raw %}
+<a href="https://takuti.me/note/recommender-libraries/" target="_blank" rel="noopener noreferrer">https://takuti.me/note/recommender-libraries/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Factorization Machines with libFM, Steffen Rendle, TIST'12, 2012.06</title>
+<original-paper-blog-link>https://dl.acm.org/doi/pdf/10.1145/2168752.2168771?casa_token=WDlQ7JaUyHkAAAAA:MW2oBo4GKb_vh96KC4zJaViiDsBZmqH9sAKpoM7v5rLZuRc5on5Lt4SeU9dXpbB3Qg4Z6vwaT4b3jg</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/218</repo-issue-link>
+<tags>RecommenderSystems, CollaborativeFiltering, FactorizationMachines, One-Line Notes</tags>
+<repo-issue-date>2018-01-02</repo-issue-date>
+<issue-body>https://dl.acm.org/doi/pdf/10.1145/2168752.2168771?casa_token=WDlQ7JaUyHkAAAAA:MW2oBo4GKb_vh96KC4zJaViiDsBZmqH9sAKpoM7v5rLZuRc5on5Lt4SeU9dXpbB3Qg4Z6vwaT4b3jg</issue-body>
+<maintainer-comment-text><p>Factorization Machinesの著者実装。<br><br>FMやるならまずはこれ。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Factorization Machines, Steffen Rendle, ICDM'10, 2010.12</title>
+<original-paper-blog-link>https://analyticsconsultores.com.mx/wp-content/uploads/2019/03/Factorization-Machines-Steffen-Rendle-Osaka-University-2010.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/281</repo-issue-link>
+<tags>RecommenderSystems, MachineLearning, CollaborativeFiltering, FactorizationMachines, ICDM, Selected Papers/Blogs, KeyPoint Notes, Reference Collection</tags>
+<repo-issue-date>2018-12-22</repo-issue-date>
+<issue-body>https://analyticsconsultores.com.mx/wp-content/uploads/2019/03/Factorization-Machines-Steffen-Rendle-Osaka-University-2010.pdf</issue-body>
+<maintainer-comment-text><p>解説ブログ：
+
+{% raw %}
+<a href="http://echizen-tm.hatenablog.com/entry/2016/09/11/024828" target="_blank" rel="noopener noreferrer">http://echizen-tm.hatenablog.com/entry/2016/09/11/024828</a>
+{% endraw %}
+
+<br><br>DeepFMに関する動向：
+
+{% raw %}
+<a href="https://data.gunosy.io/entry/deep-factorization-machines-2018" target="_blank" rel="noopener noreferrer">https://data.gunosy.io/entry/deep-factorization-machines-2018</a>
+{% endraw %}
+
+</p><p>上記解説ブログの概要が非常に完結でわかりやすい</p><p><img src="https://user-images.githubusercontent.com/12249301/50376518-fdfedf00-0650-11e9-99c0-060f286de392.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>FMのFeature VectorのExample<br><br>各featureごとにlatent vectorが学習され、featureの組み合わせのweightが内積によって表現される<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/50376536-53d38700-0651-11e9-830d-28bc32b3c02d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Matrix Factorizationの一般形のような形式</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pytorch-fm, 2020</title>
+<original-paper-blog-link>https://github.com/rixwew/pytorch-fm</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/398</repo-issue-link>
+<tags>RecommenderSystems, CollaborativeFiltering, Library, FactorizationMachines, Repository</tags>
+<repo-issue-date>2021-07-03</repo-issue-date>
+<issue-body>https://github.com/rixwew/pytorch-fm</issue-body>
+<maintainer-comment-text><p>下記モデルが実装されているすごいリポジトリ。論文もリンクも記載されており、Factorization Machinesを勉強する際に非常に参考になると思う。MITライセンス。各手法はCriteoのCTRPredictionにおいて、AUC0.8くらい出ているらしい。<br><br><br><br>- Logistic Regression<br><br>- Factorization Machine<br><br>- Field-aware Factorization Machine<br><br>- Higher-Order Factorization Machines<br><br>- Factorization-Supported Neural Network<br><br>- Wide&Deep<br><br>- Attentional Factorization Machine<br><br>- Neural Factorization Machine<br><br>- Neural Collaborative Filtering<br><br>- Field-aware Neural Factorization Machine<br><br>- Product Neural Network<br><br>- Deep Cross Network<br><br>- DeepFM<br><br>- xDeepFM<br><br>- AutoInt (Automatic Feature Interaction Model)<br><br>- AFN(AdaptiveFactorizationNetwork Model)</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepFM: A Factorization-Machine based Neural Network for CTR Prediction, Guo+, IJCAI’17</title>
+<original-paper-blog-link>https://arxiv.org/pdf/1703.04247.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/349</repo-issue-link>
+<tags>RecommenderSystems, NeuralNetwork, CollaborativeFiltering, FactorizationMachines, CTRPrediction, IJCAI</tags>
+<repo-issue-date>2021-05-25</repo-issue-date>
+<issue-body>https://arxiv.org/pdf/1703.04247.pdf</issue-body>
+<maintainer-comment-text><p>Factorization Machinesと、Deep Neural Networkを、Wide&Deepしました、という論文。Wide=Factorization Machines, Deep=DNN。<br><br>高次のFeatureと低次のFeatureを扱っているだけでなく、FMによってフィールドごとのvector-wiseな交互作用、DNNではbit-wiseな交互作用を利用している。<br>割と色々なデータでうまくいきそうな手法に見える。<br><br>発展版としてxDeepFM <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/348" target="_blank" rel="noopener noreferrer">[Paper Note] xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems, Jianxun Lian+, arXiv'18, 2018.03</a>
+ がある。</p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/281" target="_blank" rel="noopener noreferrer">[Paper Note] Factorization Machines, Steffen Rendle, ICDM'10, 2010.12</a>
+ にも書いたが、下記リンクに概要が記載されている。<br><br>DeepFMに関する動向：
+
+{% raw %}
+<a href="https://data.gunosy.io/entry/deep-factorization-machines-2018" target="_blank" rel="noopener noreferrer">https://data.gunosy.io/entry/deep-factorization-machines-2018</a>
+{% endraw %}
+
+</p><p>実装: 
+
+{% raw %}
+<a href="https://github.com/rixwew/pytorch-fm" target="_blank" rel="noopener noreferrer">https://github.com/rixwew/pytorch-fm</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

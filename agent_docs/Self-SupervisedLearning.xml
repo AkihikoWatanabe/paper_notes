@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-16">
+<paper-entry>
+<title>[Paper Note] Causal-JEPA: Learning World Models through Object-Level Latent Interventions, Heejeong Nam+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.11389</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4578</repo-issue-link>
+<tags>ComputerVision, Embeddings, EfficiencyImprovement, RepresentationLearning, Transformer, Self-SupervisedLearning, OpenWeight, Encoder, WorldModels, KeyPoint Notes</tags>
+<repo-issue-date>2026-02-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.11389
+# Authors
+  - Heejeong Nam
+  - Quentin Le Lidec
+  - Lucas Maes
+  - Yann LeCun
+  - Randall Balestriero
+# Abstract
+  - World models require robust relational understanding to support prediction, reasoning, and control. While object-centric representations provide a useful abstraction, they are not sufficient to capture interaction-dependent dynamics. We therefore propose C-JEPA, a simple and flexible object-centric world model that extends masked joint embedding prediction from image patches to object-centric representations. By applying object-level masking that requires an object's state to be inferred from other objects, C-JEPA induces latent interventions with counterfactual-like effects and prevents shortcut solutions, making interaction reasoning essential. Empirically, C-JEPA leads to consistent gains in visual question answering, with an absolute improvement of about 20\% in counterfactual reasoning compared to the same architecture without object-level masking. On agent control tasks, C-JEPA enables substantially more efficient planning by using only 1\% of the total latent input features required by patch-based world models, while achieving comparable performance. Finally, we provide a formal analysis demonstrating that object-level masking induces a causal inductive bias via latent interventions. Our code is available at https://github.com/galilai-group/cjepa.
+# Translation (by gpt-5-nano)
+- 世界モデルは予測・推論・制御を支えるために堅牢な関係理解を必要とする。オブジェクト中心の表現は有用な抽象化を提供するが、相互作用に依存するダイナミクスを捉えるには十分ではない。そこで我々はC-JEPAを提案する。これは単純で柔軟なオブジェクト中心の世界モデルで、画像パッチからのマスク付き結合埋め込み予測をオブジェクト中心表現へ拡張する。オブジェクトの状態を他のオブジェクトから推定することを要求するオブジェクトレベルのマスキングを適用することにより、C-JEPAは潜在的介入を誘発し、反事実的なような効果を持ち、ショートカット解法を防ぎ、相互作用推論を必須とする。実証的には、C-JEPAは視覚質問応答において一貫した改善をもたらし、同じアーキテクチャでオブジェクトレベルのマスキングを導入しない場合と比較して反事実推論において約20％の絶対的改善を示す。エージェント制御タスクでは、パッチベースの世界モデルが必要とする総潜在入力特徴量のわずか1％しか使用しないことで、計画を著しく効率化しつつ同等の性能を達成する。最後に、オブジェクトレベルのマスキングが潜在介入を介して因果的帰納的バイアスを誘発することを示す形式的分析を提供する。我々のコードは https://github.com/galilai-group/cjepa に公開されている。
+# Summary (by gpt-4o-mini)
+- C-JEPAは、オブジェクト中心の世界モデルで、画像パッチからの埋め込み予測を通じてオブジェクトの相互作用を捉えることを目的としている。オブジェクトレベルのマスキングを導入し、潜在的介入を誘発することで反事実的推論を強化し、ショートカット解法を防ぐ。実験結果では、視覚質問応答において約20％の性能向上を示し、エージェント制御タスクでは必要な潜在入力のわずか1％で同等の結果を達成した。さらに、因果的帰納的バイアスを誘発することも示している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hazel_heejeong/status/2022801511315562790?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://hazel-heejeong-nam.github.io/cjepa/" target="_blank" rel="noopener noreferrer">https://hazel-heejeong-nam.github.io/cjepa/</a>
+{% endraw %}
+
+</p><p>（JEPAはあまり馴染みがなく、以下の私の解説はどこかに誤りがある可能性が高い）<br><br>video basedなシステムを前提、すなわちimageのsequenceが与えられる前提である。このとき、各タイムステップごとに選択されたobjectの状態をマスクし、マスクされたobjectのhistoryを予測し、予測された状態から将来の状態を予測する。objectは状態だけでなく、補足的な観測可能な情報を保持することができ（たとえばアクションと感覚に関するシグナルなど）状態遷移に利用される。また、マスク対象として選択されたオブジェクトの最初のステップの状態だけは、アンカーとして保持する。マスク処理はlatent levelはでのinteiventionとして解釈でき、これにより予測のためにobject間の相互作用を捉えることが誘発され、object centricな潜在表現が学習される。マスクされたオブジェクトの状態は、予測された一つ前のステップでの状態に対してlinearで変換しpositional embeddingを足し合わせることで求められ（式3）、これらの予測されたhistoryの状態がViTの入力となり（bidirectionalなattentionを通じて）将来の状態を予測する。lossは予測されたhistoryの状態と将来の状態が与えられたときに、freezeされたobjectのエンコーダから得られる潜在表現との距離が最小化されるように学習される（エンコーダ側はstop gradientする）。</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2027797269559316807?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Notes] Investigating fine- and coarse-grained structural correspondences between deep neural networks and human object image similarity judgments using unsupervised alignment, Takahashi+, Neural Networks'26, 2026.03</title>
+<original-paper-blog-link>https://www.sciencedirect.com/science/article/pii/S0893608025011037?via%3Dihub</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3524</repo-issue-link>
+<tags>NeuralNetwork, ComputerVision, Analysis, Supervised, RepresentationLearning, Self-SupervisedLearning, CLIP, One-Line Notes</tags>
+<repo-issue-date>2025-10-31</repo-issue-date>
+<issue-body>https://www.sciencedirect.com/science/article/pii/S0893608025011037?via%3Dihub</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/oizumim/status/1983800844933066931?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>CLIP, 自己教師あり学習, 教師あり学習を比較したときに、CLIPが人間が獲得するobjectのrepresentationともっともalignしている一方で、自己教師あり学習はほとんど偶然レベルでしかalignしない（ただし、粗いレベルで見ると人間で言うところのカテゴリレベルのクラスタを形成することができる）。このため、テキストベースでの学習が人間が獲得する表現とfine-grainedなレベルでalignするために非常に重要であることが示唆される、という感じらしい</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SVG-T2I: Scaling Up Text-to-Image Latent Diffusion Model Without Variational Autoencoder, Minglei Shi+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.11749</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3988</repo-issue-link>
+<tags>ComputerVision, DiffusionModel, TextToImageGeneration, Self-SupervisedLearning, FlowMatching, reading</tags>
+<repo-issue-date>2025-12-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.11749
+# Authors
+  - Minglei Shi
+  - Haolin Wang
+  - Borui Zhang
+  - Wenzhao Zheng
+  - Bohan Zeng
+  - Ziyang Yuan
+  - Xiaoshi Wu
+  - Yuanxing Zhang
+  - Huan Yang
+  - Xintao Wang
+  - Pengfei Wan
+  - Kun Gai
+  - Jie Zhou
+  - Jiwen Lu
+# Abstract
+  - Visual generation grounded in Visual Foundation Model (VFM) representations offers a highly promising unified pathway for integrating visual understanding, perception, and generation. Despite this potential, training large-scale text-to-image diffusion models entirely within the VFM representation space remains largely unexplored. To bridge this gap, we scale the SVG (Self-supervised representations for Visual Generation) framework, proposing SVG-T2I to support high-quality text-to-image synthesis directly in the VFM feature domain. By leveraging a standard text-to-image diffusion pipeline, SVG-T2I achieves competitive performance, reaching 0.75 on GenEval and 85.78 on DPG-Bench. This performance validates the intrinsic representational power of VFMs for generative tasks. We fully open-source the project, including the autoencoder and generation model, together with their training, inference, evaluation pipelines, and pre-trained weights, to facilitate further research in representation-driven visual generation.
+# Translation (by gpt-4o-mini)
+- 視覚生成は、視覚基盤モデル（VFM）表現に基づくことで、視覚理解、知覚、生成を統合するための非常に有望な統一的アプローチを提供します。この可能性にもかかわらず、VFM表現空間内で大規模なテキストから画像への拡散モデルを完全に訓練することは、ほとんど探求されていません。このギャップを埋めるために、私たちはSVG（視覚生成のための自己教師あり表現）フレームワークを拡張し、SVG-T2Iを提案して、VFM特徴ドメイン内で高品質なテキストから画像への合成を直接サポートします。標準的なテキストから画像への拡散パイプラインを活用することで、SVG-T2Iは競争力のある性能を達成し、GenEvalで0.75、DPG-Benchで85.78に到達しました。この性能は、生成タスクにおけるVFMの本質的な表現力を検証しています。私たちは、プロジェクトを完全にオープンソース化し、オートエンコーダーと生成モデル、ならびにそれらの訓練、推論、評価パイプライン、事前訓練済みの重みを含め、表現駆動の視覚生成に関するさらなる研究を促進します。
+# Summary (by gpt-4o-mini)
+- 視覚生成のためにSVG-T2Iフレームワークを提案し、VFM特徴ドメイン内で高品質なテキストから画像への合成を実現。標準的な拡散パイプラインを用いて競争力のある性能を達成し、GenEvalで0.75、DPG-Benchで85.78を記録。プロジェクトはオープンソース化され、視覚生成に関する研究を促進。</issue-body>
+<maintainer-comment-text><p>HF: 
+
+{% raw %}
+<a href="https://huggingface.co/KlingTeam/SVG-T2I" target="_blank" rel="noopener noreferrer">https://huggingface.co/KlingTeam/SVG-T2I</a>
+{% endraw %}
+
+</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2000589405518459352?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>先行研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3990" target="_blank" rel="noopener noreferrer">[Paper Note] Latent Diffusion Model without Variational Autoencoder, Minglei Shi+, arXiv'25, 2025.10</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3991" target="_blank" rel="noopener noreferrer">[Paper Note] Diffusion Transformers with Representation Autoencoders, Boyang Zheng+, arXiv'25, 2025.10</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] 1000 Layer Networks for Self-Supervised RL: Scaling Depth Can Enable New Goal-Reaching Capabilities, Wang+, NeurIPS'25 Best Paper Awards</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.14858</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3859</repo-issue-link>
+<tags>NeuralNetwork, ComputerVision, MachineLearning, ReinforcementLearning, Self-SupervisedLearning, NeurIPS, read-later, Selected Papers/Blogs, Robotics, Locomotion, ContrastiveReinforcementLearning, Manipulation, EmergentAbilities, Depth</tags>
+<repo-issue-date>2025-12-01</repo-issue-date>
+<issue-body># URL
+preprint: https://arxiv.org/abs/2503.14858
+openreview: https://openreview.net/forum?id=s0JVsx3bx1
+
+# Authors
+Kevin Wang, Ishaan Javali, Michał Bortkiewicz, Tomasz Trzcinski, Benjamin Eysenbach
+
+# Abstract
+- Scaling up self-supervised learning has driven breakthroughs in language and vision, yet comparable progress has remained elusive in reinforcement learning (RL). In this paper, we study building blocks for self-supervised RL that unlock substantial improvements in scalability, with network depth serving as a critical factor. Whereas most RL papers in recent years have relied on shallow architectures (around 2 -- 5 layers), we demonstrate that increasing the depth up to 1024 layers can significantly boost performance. Our experiments are conducted in an unsupervised goal-conditioned setting, where no demonstrations or rewards are provided, so an agent must explore (from scratch) and learn how to maximize the likelihood of reaching commanded goals. Evaluated on simulated locomotion and manipulation tasks, our approach increases performance on the self-supervised contrastive RL algorithm by  -- , outperforming other goal-conditioned baselines. Increasing the model depth not only increases success rates but also qualitatively changes the behaviors learned.
+
+# Translation (by gpt-4o-mini)
+- 自己教師あり学習のスケーリングアップは、言語や視覚において画期的な進展をもたらしましたが、強化学習（RL）においては同様の進展は依然として難しい状況です。本論文では、スケーラビリティの大幅な改善を実現する自己教師ありRLの構成要素を研究し、ネットワークの深さが重要な要素であることを示します。近年のほとんどのRL論文は浅いアーキテクチャ（約2～5層）に依存しているのに対し、私たちは深さを1024層まで増加させることで性能が大幅に向上することを実証しました。私たちの実験は、デモンストレーションや報酬が提供されない無監督の目標条件設定で行われ、エージェントは（ゼロから）探索し、指示された目標を達成する可能性を最大化する方法を学ぶ必要があります。シミュレーションされた移動および操作タスクで評価した結果、私たちのアプローチは自己教師ありコントラストRLアルゴリズムの性能を向上させ、他の目標条件ベースラインを上回りました。モデルの深さを増加させることは、成功率を高めるだけでなく、学習される行動の質的な変化ももたらします。
+# Summary (by gpt-4o-mini)
+- 自己教師ありRLのスケーラビリティを改善するため、ネットワークの深さを1024層に増加させることで性能向上を実証。無監督の目標条件設定でエージェントが探索し、目標達成を学ぶ実験を行い、自己教師ありコントラストRLアルゴリズムの性能を向上させた。深さの増加は成功率を高め、行動の質的変化ももたらす。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1995257402342703319?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Spatial-SSRL: Enhancing Spatial Understanding via Self-Supervised  Reinforcement Learning, Yuhong Liu+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.27606</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3555</repo-issue-link>
+<tags>ComputerVision, ReinforcementLearning, Self-SupervisedLearning, RLVR, VisionLanguageModel, 2D (Image), 3D (Scene), SpatialUnderstanding, One-Line Notes, Pixel-based</tags>
+<repo-issue-date>2025-11-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.27606
+# Authors
+  - Yuhong Liu
+  - Beichen Zhang
+  - Yuhang Zang
+  - Yuhang Cao
+  - Long Xing
+  - Xiaoyi Dong
+  - Haodong Duan
+  - Dahua Lin
+  - Jiaqi Wang
+# Abstract
+  - Spatial understanding remains a weakness of Large Vision-Language Models (LVLMs). Existing supervised fine-tuning (SFT) and recent reinforcement learning with verifiable rewards (RLVR) pipelines depend on costly supervision, specialized tools, or constrained environments that limit scale. We introduce Spatial-SSRL, a self-supervised RL paradigm that derives verifiable signals directly from ordinary RGB or RGB-D images. Spatial-SSRL automatically formulates five pretext tasks that capture 2D and 3D spatial structure: shuffled patch reordering, flipped patch recognition, cropped patch inpainting, regional depth ordering, and relative 3D position prediction. These tasks provide ground-truth answers that are easy to verify and require no human or LVLM annotation. Training on our tasks substantially improves spatial reasoning while preserving general visual capabilities. On seven spatial understanding benchmarks in both image and video settings, Spatial-SSRL delivers average accuracy gains of 4.63% (3B) and 3.89% (7B) over the Qwen2.5-VL baselines. Our results show that simple, intrinsic supervision enables RLVR at scale and provides a practical route to stronger spatial intelligence in LVLMs.
+# Translation (by gpt-4o-mini)
+- 空間理解は、大規模ビジョン・言語モデル（LVLMs）の弱点のままです。既存の教師ありファインチューニング（SFT）や最近の検証可能な報酬を用いた強化学習（RLVR）パイプラインは、高コストの監視、専門的なツール、またはスケールを制限する制約された環境に依存しています。本研究では、通常のRGBまたはRGB-D画像から直接検証可能な信号を導出する自己教師あり強化学習パラダイムであるSpatial-SSRLを紹介します。Spatial-SSRLは、2Dおよび3Dの空間構造を捉える5つの前提タスクを自動的に定式化します：シャッフルされたパッチの再配置、反転パッチの認識、切り取られたパッチのインペインティング、領域の深さの順序付け、相対的な3D位置予測です。これらのタスクは、検証が容易であり、人間やLVLMの注釈を必要としない真実の答えを提供します。私たちのタスクでのトレーニングは、一般的な視覚能力を保持しながら、空間推論を大幅に改善します。画像および動画設定の7つの空間理解ベンチマークにおいて、Spatial-SSRLはQwen2.5-VLベースラインに対して平均精度向上を4.63%（3B）および3.89%（7B）達成しました。私たちの結果は、シンプルで内在的な監視がスケールでのRLVRを可能にし、LVLMにおけるより強力な空間知能への実用的な道を提供することを示しています。
+# Summary (by gpt-4o-mini)
+- 空間理解におけるLVLMの弱点を克服するため、自己教師あり強化学習パラダイムSpatial-SSRLを提案。5つの前提タスクを自動定式化し、検証が容易な信号を導出。これにより、空間推論が大幅に改善され、7つのベンチマークでQwen2.5-VLベースラインに対して平均精度が4.63%（3B）および3.89%（7B）向上。シンプルな監視がRLVRを可能にし、LVLMの空間知能向上に寄与することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1985177625564684602?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RGB/RGB-D imageがgivenなときに、<br>- cropped patch inpainting<br>- flipped patch recognition<br>- shuffled patch reordering<br>- regional depth ordering<br>- relative 3D position prediction<br><br>の5つのverifiableなタスクを定義しself supervisedなmannerでRLすることでSpatial Understanding能力を向上させる話らしい<br><img src="https://github.com/user-attachments/assets/5ecd7925-6674-4c15-8d67-ec5a59133de4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>3Bモデルがリリース:<br>
+
+{% raw %}
+<a href="https://huggingface.co/internlm/Spatial-SSRL-3B" target="_blank" rel="noopener noreferrer">https://huggingface.co/internlm/Spatial-SSRL-3B</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Scaling Language-Free Visual Representation Learning, David Fan+, ICCV'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.01017</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3334</repo-issue-link>
+<tags>ComputerVision, Pretraining, Transformer, Self-SupervisedLearning, ICCV, Scalability</tags>
+<repo-issue-date>2025-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.01017
+# Authors
+  - David Fan
+  - Shengbang Tong
+  - Jiachen Zhu
+  - Koustuv Sinha
+  - Zhuang Liu
+  - Xinlei Chen
+  - Michael Rabbat
+  - Nicolas Ballas
+  - Yann LeCun
+  - Amir Bar
+  - Saining Xie
+# Abstract
+  - Visual Self-Supervised Learning (SSL) currently underperforms Contrastive Language-Image Pretraining (CLIP) in multimodal settings such as Visual Question Answering (VQA). This multimodal gap is often attributed to the semantics introduced by language supervision, even though visual SSL and CLIP models are often trained on different data. In this work, we ask the question: "Do visual self-supervised approaches lag behind CLIP due to the lack of language supervision, or differences in the training data?" We study this question by training both visual SSL and CLIP models on the same MetaCLIP data, and leveraging VQA as a diverse testbed for vision encoders. In this controlled setup, visual SSL models scale better than CLIP models in terms of data and model capacity, and visual SSL performance does not saturate even after scaling up to 7B parameters. Consequently, we observe visual SSL methods achieve CLIP-level performance on a wide range of VQA and classic vision benchmarks. These findings demonstrate that pure visual SSL can match language-supervised visual pretraining at scale, opening new opportunities for vision-centric representation learning.
+# Translation (by gpt-4o-mini)
+- 視覚的自己教師あり学習（SSL）は、視覚的質問応答（VQA）などのマルチモーダル設定において、対照的言語画像事前学習（CLIP）に比べて現在のパフォーマンスが劣っています。このマルチモーダルのギャップは、言語の監視によって導入される意味論に起因するとされることが多いですが、視覚的SSLとCLIPモデルは異なるデータで訓練されることが多いです。本研究では、「視覚的自己教師ありアプローチは、言語の監視が欠如しているためにCLIPに遅れをとっているのか、それとも訓練データの違いによるものか？」という問いを立てます。この問いを探求するために、視覚的SSLとCLIPモデルの両方を同じMetaCLIPデータで訓練し、VQAを視覚エンコーダーの多様なテストベッドとして活用します。この制御された設定において、視覚的SSLモデルはデータとモデルの容量の観点でCLIPモデルよりもスケールが良く、視覚的SSLのパフォーマンスは7Bパラメータにスケールアップしても飽和しません。その結果、視覚的SSL手法が幅広いVQAおよび従来の視覚ベンチマークでCLIPレベルのパフォーマンスを達成することを観察しました。これらの発見は、純粋な視覚的SSLがスケールで言語監視された視覚事前学習に匹敵することができることを示しており、視覚中心の表現学習に新たな機会を開くものです。
+# Summary (by gpt-4o-mini)
+- 視覚的自己教師あり学習（SSL）は、CLIPに比べて視覚的質問応答（VQA）でのパフォーマンスが劣るが、同じデータセットで訓練することで、視覚的SSLモデルがCLIPモデルよりもスケールが良いことを示した。視覚的SSLは、VQAや従来の視覚ベンチマークでCLIPレベルのパフォーマンスを達成できる可能性がある。これにより、視覚中心の表現学習に新たな機会が開かれる。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://davidfan.io/webssl/" target="_blank" rel="noopener noreferrer">https://davidfan.io/webssl/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/davidjfan/status/1979994285379641487?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Advancing End-to-End Pixel Space Generative Modeling via Self-supervised  Pre-training, Jiachen Lei+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.12586</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3331</repo-issue-link>
+<tags>ComputerVision, Pretraining, DiffusionModel, Self-SupervisedLearning</tags>
+<repo-issue-date>2025-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.12586
+# Authors
+  - Jiachen Lei
+  - Keli Liu
+  - Julius Berner
+  - Haiming Yu
+  - Hongkai Zheng
+  - Jiahong Wu
+  - Xiangxiang Chu
+# Abstract
+  - Pixel-space generative models are often more difficult to train and generally underperform compared to their latent-space counterparts, leaving a persistent performance and efficiency gap. In this paper, we introduce a novel two-stage training framework that closes this gap for pixel-space diffusion and consistency models. In the first stage, we pre-train encoders to capture meaningful semantics from clean images while aligning them with points along the same deterministic sampling trajectory, which evolves points from the prior to the data distribution. In the second stage, we integrate the encoder with a randomly initialized decoder and fine-tune the complete model end-to-end for both diffusion and consistency models. Our training framework demonstrates strong empirical performance on ImageNet dataset. Specifically, our diffusion model reaches an FID of 2.04 on ImageNet-256 and 2.35 on ImageNet-512 with 75 number of function evaluations (NFE), surpassing prior pixel-space methods by a large margin in both generation quality and efficiency while rivaling leading VAE-based models at comparable training cost. Furthermore, on ImageNet-256, our consistency model achieves an impressive FID of 8.82 in a single sampling step, significantly surpassing its latent-space counterpart. To the best of our knowledge, this marks the first successful training of a consistency model directly on high-resolution images without relying on pre-trained VAEs or diffusion models.
+# Translation (by gpt-4o-mini)
+- ピクセル空間生成モデルは、トレーニングが難しく、一般的に潜在空間の対応モデルと比較して性能が劣るため、パフォーマンスと効率のギャップが持続しています。本論文では、ピクセル空間の拡散モデルと一貫性モデルのためにこのギャップを埋める新しい二段階トレーニングフレームワークを提案します。第一段階では、クリーンな画像から意味のあるセマンティクスをキャプチャし、同じ決定論的サンプリング軌道に沿ったポイントと整合させるエンコーダを事前トレーニングします。この軌道は、事前分布からデータ分布へとポイントを進化させます。第二段階では、エンコーダをランダムに初期化されたデコーダと統合し、拡散モデルと一貫性モデルの両方に対してエンドツーエンドで完全なモデルをファインチューニングします。我々のトレーニングフレームワークは、ImageNetデータセットにおいて強力な実証性能を示しています。具体的には、我々の拡散モデルは、ImageNet-256でFID 2.04、ImageNet-512でFID 2.35を達成し、75回の関数評価（NFE）で、生成品質と効率の両方において従来のピクセル空間手法を大きく上回り、同等のトレーニングコストで先進的なVAEベースのモデルに匹敵します。さらに、ImageNet-256では、我々の一貫性モデルが単一のサンプリングステップでFID 8.82を達成し、潜在空間の対応モデルを大幅に上回る成果を上げました。私たちの知る限り、これは事前トレーニングされたVAEや拡散モデルに依存せずに、高解像度画像上で一貫性モデルを直接トレーニングした初めての成功例です。
+# Summary (by gpt-4o-mini)
+- 新しい二段階トレーニングフレームワークを提案し、ピクセル空間生成モデルの性能と効率のギャップを埋める。第一段階で意味のあるセマンティクスをキャプチャし、第二段階でエンコーダとデコーダを統合してファインチューニング。ImageNetデータセットで優れた性能を示し、特に拡散モデルは従来手法を大きく上回り、一貫性モデルは高解像度画像での直接トレーニングに成功。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1979911820401086613?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agent Learning via Early Experience, Kai Zhang+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.08558</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3253</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, AIAgents, Self-SupervisedLearning, SelfCorrection, mid-training, Selected Papers/Blogs, WorldModels, KeyPoint Notes</tags>
+<repo-issue-date>2025-10-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.08558
+# Authors
+  - Kai Zhang
+  - Xiangchao Chen
+  - Bo Liu
+  - Tianci Xue
+  - Zeyi Liao
+  - Zhihan Liu
+  - Xiyao Wang
+  - Yuting Ning
+  - Zhaorun Chen
+  - Xiaohan Fu
+  - Jian Xie
+  - Yuxuan Sun
+  - Boyu Gou
+  - Qi Qi
+  - Zihang Meng
+  - Jianwei Yang
+  - Ning Zhang
+  - Xian Li
+  - Ashish Shah
+  - Dat Huynh
+  - Hengduo Li
+  - Zi Yang
+  - Sara Cao
+  - Lawrence Jang
+  - Shuyan Zhou
+  - Jiacheng Zhu
+  - Huan Sun
+  - Jason Weston
+  - Yu Su
+  - Yifan Wu
+# Abstract
+  - A long-term goal of language agents is to learn and improve through their own experience, ultimately outperforming humans in complex, real-world tasks. However, training agents from experience data with reinforcement learning remains difficult in many environments, which either lack verifiable rewards (e.g., websites) or require inefficient long-horizon rollouts (e.g., multi-turn tool use). As a result, most current agents rely on supervised fine-tuning on expert data, which is challenging to scale and generalizes poorly. This limitation stems from the nature of expert demonstrations: they capture only a narrow range of scenarios and expose the agent to limited environment diversity. We address this limitation with a middle-ground paradigm we call early experience: interaction data generated by the agent's own actions, where the resulting future states serve as supervision without reward signals. Within this paradigm we study two strategies of using such data: (1) Implicit world modeling, which uses collected states to ground the policy in environment dynamics; and (2) Self-reflection, where the agent learns from its suboptimal actions to improve reasoning and decision-making. We evaluate across eight diverse environments and multiple model families. Our approaches consistently improve effectiveness and out-of-domain generalization, highlighting the value of early experience. Moreover, in environments with verifiable rewards, our results provide promising signals that early experience offers a strong foundation for subsequent reinforcement learning, positioning it as a practical bridge between imitation learning and fully experience-driven agents.
+# Translation (by gpt-4o-mini)
+- 言語エージェントの長期的な目標は、自らの経験を通じて学び、改善し、最終的には複雑な現実世界のタスクにおいて人間を上回ることです。しかし、強化学習を用いて経験データからエージェントを訓練することは、多くの環境において依然として困難です。これらの環境は、検証可能な報酬が欠如している（例：ウェブサイト）か、非効率的な長期的なロールアウトを必要とします（例：複数ターンのツール使用）。その結果、現在のほとんどのエージェントは専門家データに基づく教師ありファインチューニングに依存しており、これはスケールしにくく、一般化が不十分です。この制限は、専門家のデモンストレーションの性質に起因しています。専門家のデモは狭い範囲のシナリオしか捉えず、エージェントに限られた環境の多様性を露呈させます。私たちはこの制限に対処するために、早期経験と呼ぶ中間的なパラダイムを提案します。これは、エージェント自身の行動によって生成された相互作用データであり、結果として得られる将来の状態が報酬信号なしに監視として機能します。このパラダイムの中で、私たちはこのようなデータを使用する2つの戦略を研究します：(1) 暗黙の世界モデル化、これは収集された状態を使用してポリシーを環境のダイナミクスに基づかせる方法です；(2) 自己反省、これはエージェントが最適でない行動から学び、推論と意思決定を改善する方法です。私たちは8つの多様な環境と複数のモデルファミリーにわたって評価を行いました。私たちのアプローチは、一貫して効果性とドメイン外の一般化を改善し、早期経験の価値を強調しています。さらに、検証可能な報酬のある環境において、私たちの結果は早期経験がその後の強化学習のための強固な基盤を提供するという有望な信号を示しており、模倣学習と完全に経験駆動のエージェントとの間の実用的な橋渡しとして位置付けられます。
+# Summary (by gpt-4o-mini)
+- 言語エージェントの目標は、経験を通じて学び、複雑なタスクで人間を上回ることですが、強化学習には報酬の欠如や非効率的なロールアウトが課題です。これに対処するため、エージェント自身の行動から生成された相互作用データを用いる「早期経験」という新たなパラダイムを提案します。このデータを基に、(1) 暗黙の世界モデル化と(2) 自己反省の2つの戦略を研究し、8つの環境で評価を行った結果、効果性と一般化が向上することを示しました。早期経験は、強化学習の基盤を提供し、模倣学習と経験駆動エージェントの橋渡しとなる可能性があります。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/godofprompt/status/1977629442307686708?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLM AgentのためのWarmup手法を提案している。具体的にはRLVRやImitation LearningによってRewardが定義できるデータに基づいてこれまではRLが実現されてきたが、これらはスケールせず、Rewardが定義されない環境のtrajectoryなどは学習されないので汎化性能が低いという課題がある。このため、これらのsupervisionつきの方法で学習をする前のwarmup手法として、reward-freeの学習パラダイム Early Experienceを提案している。<br><img src="https://github.com/user-attachments/assets/c2ed5999-d6d8-419d-93e9-f3358ab0ca1f" /" alt="image" loading="lazy" width="550" height="400"/><br><br>手法としてはシンプルな手法が2種類提案されている。<br>### Implicit World Modeling (IWM, 式(3)):<br>ある状態s_i において action a_i^{j}を (1 < j < |K|)をとった時の状態をs_i^{j}としたときに、(s_i, a_i^{j}, s_i^{j}) の3つ組を考える。これらはポリシーからのK回のrolloutによって生成可能。<br>このときに、状態sを全てテキストで表現するようにし、言語モデルのnext-token-prediction lossを用いて、ある状態s_jにおいてaction a_i^{k} をとったときに、s_j^{k} になることを予測できるように学習する。これにより例えばブックフライトのサイトで誤った日時を入れてしまった場合や、どこかをクリックしたときにどこに遷移するかなどの学習する環境の世界知識をimplicitにモデルに組み込むことができる。<br><br>### Self-Reflection（式4）<br>もう一つのパラダイムとして、専門家によるアクション a_i によって得られた状態 s_i と、それら以外のアクション a_i^{j} によって得られた状態 s_i^{j}が与えられたときに、s_iとs_i^{j}を比較したときに、なぜ a_i の方がa_i^{j} よりも好ましいかを説明するCoT C_i^{j}を生成し、三つ組データ(s_i, a_i^{j}, c_i^{j}) を構築する。このデータを用いて、状態s_iがgivenなときに、a_i に c_i^{j} をconcatしたテキストを予測できるようにnext-token-prediction lossで学習する。また、このデータだけでなく汎化性能をより高めるためにexpertによるimitation learningのためのデータCoTなしのデータもmixして学習をする。これにより、expertによるactionだけで学習するよりも、なぜexpertのアクションが良いかという情報に基づいてより豊富で転移可能な学習シグナルを活用し学習することができる。<br> <br><img src="https://github.com/user-attachments/assets/d411ac3b-d977-4357-b715-0cf4e5b95fa2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>この結果、downstreamタスクでのperformanceが単にImitation Learningを実施した場合と比較して提案手法でwarmupした方が一貫して向上する。また、5.4節にpost-trainingとして追加でGRPOを実施した場合も提案手法によるwarmupを実施した場合が最終的な性能が向上することが報告されている。<br><br><img src="https://github.com/user-attachments/assets/a0aad636-b889-4d2d-b753-b0ad5ad4c688" /" alt="image" loading="lazy" width="550" height="400"/></p><p>IWMは自己教師あり学習の枠組みだと思われるので、よぬスケールし、かつ汎化性能が高く様々な手法のベースとなりうる手法に見える。</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1979179944258265358?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DINOv2: Learning Robust Visual Features without Supervision, Maxime Oquab+, TMLR'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.07193</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1884</repo-issue-link>
+<tags>ComputerVision, Transformer, FoundationModel, Self-SupervisedLearning, TMLR</tags>
+<repo-issue-date>2025-04-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2304.07193
+# Authors
+  - Maxime Oquab
+  - Timothée Darcet
+  - Théo Moutakanni
+  - Huy Vo
+  - Marc Szafraniec
+  - Vasil Khalidov
+  - Pierre Fernandez
+  - Daniel Haziza
+  - Francisco Massa
+  - Alaaeldin El-Nouby
+  - Mahmoud Assran
+  - Nicolas Ballas
+  - Wojciech Galuba
+  - Russell Howes
+  - Po-Yao Huang
+  - Shang-Wen Li
+  - Ishan Misra
+  - Michael Rabbat
+  - Vasu Sharma
+  - Gabriel Synnaeve
+  - Hu Xu
+  - Hervé Jegou
+  - Julien Mairal
+  - Patrick Labatut
+  - Armand Joulin
+  - Piotr Bojanowski
+# Abstract
+  - The recent breakthroughs in natural language processing for model pretraining on large quantities of data have opened the way for similar foundation models in computer vision. These models could greatly simplify the use of images in any system by producing all-purpose visual features, i.e., features that work across image distributions and tasks without finetuning. This work shows that existing pretraining methods, especially self-supervised methods, can produce such features if trained on enough curated data from diverse sources. We revisit existing approaches and combine different techniques to scale our pretraining in terms of data and model size. Most of the technical contributions aim at accelerating and stabilizing the training at scale. In terms of data, we propose an automatic pipeline to build a dedicated, diverse, and curated image dataset instead of uncurated data, as typically done in the self-supervised literature. In terms of models, we train a ViT model (Dosovitskiy et al., 2020) with 1B parameters and distill it into a series of smaller models that surpass the best available all-purpose features, OpenCLIP (Ilharco et al., 2021) on most of the benchmarks at image and pixel levels.
+# Translation (by gpt-4o-mini)
+- 最近の自然言語処理におけるモデルの事前学習に関するブレークスルーは、コンピュータビジョンにおける同様の基盤モデルの道を開きました。これらのモデルは、ファインチューニングなしで、画像の分布やタスクを超えて機能する汎用的な視覚特徴を生成することにより、システムにおける画像の使用を大幅に簡素化する可能性があります。本研究では、既存の事前学習手法、特に自己教師あり手法が、多様なソースからの十分にキュレーションされたデータで訓練されると、こうした特徴を生成できることを示します。既存のアプローチを再検討し、データとモデルサイズの観点から事前学習をスケールアップするために異なる技術を組み合わせます。技術的な貢献の多くは、大規模な訓練を加速し、安定させることを目的としています。データの観点からは、自己教師あり文献で一般的に行われる未キュレーションデータの代わりに、専用で多様かつキュレーションされた画像データセットを構築する自動パイプラインを提案します。モデルの観点からは、1Bパラメータを持つViTモデル（Dosovitskiy et al., 2020）を訓練し、それを一連の小型モデルに蒸留し、画像およびピクセルレベルのほとんどのベンチマークで、最良の汎用的特徴であるOpenCLIP（Ilharco et al., 2021）を上回る性能を達成します。
+# Summary (by gpt-4o-mini)
+- 自己教師あり手法を用いて、多様なキュレーションデータから汎用的な視覚特徴を生成する新しい事前学習手法を提案。1BパラメータのViTモデルを訓練し、小型モデルに蒸留することで、OpenCLIPを上回る性能を達成。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Self-Supervised Learning from Images with a Joint-Embedding Predictive   Architecture, Mahmoud Assran+, CVPR'23, 2023.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2301.08243</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2285</repo-issue-link>
+<tags>ComputerVision, Embeddings, Pretraining, RepresentationLearning, Transformer, Self-SupervisedLearning, CVPR, read-later, Selected Papers/Blogs, WorldModels, One-Line Notes</tags>
+<repo-issue-date>2025-07-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2301.08243
+# Authors
+  - Mahmoud Assran
+  - Quentin Duval
+  - Ishan Misra
+  - Piotr Bojanowski
+  - Pascal Vincent
+  - Michael Rabbat
+  - Yann LeCun
+  - Nicolas Ballas
+# Abstract
+  - This paper demonstrates an approach for learning highly semantic image representations without relying on hand-crafted data-augmentations. We introduce the Image-based Joint-Embedding Predictive Architecture (I-JEPA), a non-generative approach for self-supervised learning from images. The idea behind I-JEPA is simple: from a single context block, predict the representations of various target blocks in the same image. A core design choice to guide I-JEPA towards producing semantic representations is the masking strategy; specifically, it is crucial to (a) sample target blocks with sufficiently large scale (semantic), and to (b) use a sufficiently informative (spatially distributed) context block. Empirically, when combined with Vision Transformers, we find I-JEPA to be highly scalable. For instance, we train a ViT-Huge/14 on ImageNet using 16 A100 GPUs in under 72 hours to achieve strong downstream performance across a wide range of tasks, from linear classification to object counting and depth prediction.
+# Translation (by gpt-4o-mini)
+- 本論文では、手作りのデータ拡張に依存せずに、高度に意味的な画像表現を学習するアプローチを示します。私たちは、画像からの自己教師あり学習のための非生成的アプローチであるImage-based Joint-Embedding Predictive Architecture（I-JEPA）を導入します。I-JEPAの背後にあるアイデアはシンプルです：単一のコンテキストブロックから、同じ画像内のさまざまなターゲットブロックの表現を予測します。I-JEPAが意味的な表現を生成する方向に導くための重要な設計選択はマスキング戦略です。具体的には、(a) 十分に大きなスケール（意味的）を持つターゲットブロックをサンプリングし、(b) 十分に情報量の多い（空間的に分散した）コンテキストブロックを使用することが重要です。実証的に、Vision Transformersと組み合わせると、I-JEPAは非常にスケーラブルであることがわかります。例えば、私たちは16台のA100 GPUを使用して、72時間以内にImageNet上でViT-Huge/14をトレーニングし、線形分類から物体カウント、深度予測に至るまで幅広いタスクで強力な下流性能を達成しました。
+# Summary (by gpt-4o-mini)
+- 本論文では、手作りのデータ拡張に依存せずに意味的な画像表現を学習するI-JEPAという自己教師あり学習アプローチを提案。I-JEPAは、単一のコンテキストブロックから異なるターゲットブロックの表現を予測する。重要な設計選択として、意味的に大きなターゲットブロックと情報量の多いコンテキストブロックのサンプリングが挙げられる。実験により、I-JEPAはVision Transformersと組み合わせることでスケーラブルであり、ImageNet上で強力な下流性能を達成した。</issue-body>
+<maintainer-comment-text><p>Joint-Embedding Predictive Architecture (JEPA)を提案した研究。ピクセルやトークンのreconstruction lossではなく、潜在表現を再構成するようなself-supervised learningによってより意味的な特徴を学習するように誘導するもの（と思われるがこれが本質的な理解として正しいかは自信がない）。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SINC: Self-Supervised In-Context Learning for Vision-Language Tasks, Yi-Syuan Chen+, N_A, ICCV'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.07742</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1448</repo-issue-link>
+<tags>ComputerVision, LanguageModel, Zero/Few/ManyShotPrompting, Self-SupervisedLearning</tags>
+<repo-issue-date>2024-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2307.07742
+# Affiliations
+  - Yi-Syuan Chen, N/A
+  - Yun-Zhu Song, N/A
+  - Cheng Yu Yeo, N/A
+  - Bei Liu, N/A
+  - Jianlong Fu, N/A
+  - Hong-Han Shuai, N/A
+# Abstract
+  - Large Pre-trained Transformers exhibit an intriguing capacity for in-context learning. Without gradient updates, these models can rapidly construct new predictors from demonstrations presented in the inputs. Recent works promote this ability in the vision-language domain by incorporating visual information into large language models that can already make in-context predictions. However, these methods could inherit issues in the language domain, such as template sensitivity and hallucination. Also, the scale of these language models raises a significant demand for computations, making learning and operating these models resource-intensive. To this end, we raise a question: ``How can we enable in-context learning without relying on the intrinsic in-context ability of large language models?". To answer it, we propose a succinct and general framework, Self-supervised IN-Context learning (SINC), that introduces a meta-model to learn on self-supervised prompts consisting of tailored demonstrations. The learned models can be transferred to downstream tasks for making in-context predictions on-the-fly. Extensive experiments show that SINC outperforms gradient-based methods in various vision-language tasks under few-shot settings. Furthermore, the designs of SINC help us investigate the benefits of in-context learning across different tasks, and the analysis further reveals the essential components for the emergence of in-context learning in the vision-language domain.
+# Translation (by gpt-4o-mini)
+- 大規模事前学習済みトランスフォーマーは、文脈内学習において興味深い能力を示しています。勾配更新なしで、これらのモデルは入力に提示されたデモンストレーションから迅速に新しい予測器を構築することができます。最近の研究では、視覚情報を大規模言語モデルに組み込むことで、この能力を視覚と言語の領域で促進しています。これにより、すでに文脈内予測を行うことができるモデルが実現されています。しかし、これらの方法は、テンプレート感度や幻覚といった言語領域の問題を引き継ぐ可能性があります。また、これらの言語モデルのスケールは計算リソースに対する大きな需要を生み出し、これらのモデルの学習と運用をリソース集約的にしています。このため、私たちは次の問いを提起します：「大規模言語モデルの内在的な文脈内能力に依存せずに、どのように文脈内学習を可能にできるか？」この問いに答えるために、私たちは自己教師あり文脈内学習（SINC）という簡潔で一般的なフレームワークを提案します。これは、特別に調整されたデモンストレーションからなる自己教師ありプロンプトで学習するメタモデルを導入します。学習されたモデルは、ダウンストリームタスクに転送され、即座に文脈内予測を行うことができます。広範な実験により、SINCは少数ショット設定においてさまざまな視覚と言語のタスクで勾配ベースの手法を上回ることが示されました。さらに、SINCの設計は、異なるタスクにおける文脈内学習の利点を調査するのに役立ち、分析は視覚と言語の領域における文脈内学習の出現に必要な重要な要素を明らかにします。
+# Summary (by gpt-4o-mini)
+- 自己教師あり文脈内学習（SINC）フレームワークを提案し、大規模言語モデルに依存せずに文脈内学習を実現。特別に調整されたデモンストレーションを用いたメタモデルが、視覚と言語のタスクで少数ショット設定において勾配ベースの手法を上回る性能を示す。SINCは文脈内学習の利点を探求し、重要な要素を明らかにする。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>RankMe: Assessing the downstream performance of pretrained  self-supervised representations by their rank, Quentin Garrido+, N_A, arXiv'22</title>
+<original-paper-blog-link>https://arxiv.org/abs/2210.02885</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/874</repo-issue-link>
+<tags>Pretraining, MachineLearning, Self-SupervisedLearning</tags>
+<repo-issue-date>2023-07-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2210.02885
+# Affiliations
+  - Quentin Garrido, N/A
+  - Randall Balestriero, N/A
+  - Laurent Najman, N/A
+  - Yann Lecun, N/A
+# Abstract
+  - Joint-Embedding Self Supervised Learning (JE-SSL) has seen a rapiddevelopment, with the emergence of many method variations but only fewprincipled guidelines that would help practitioners to successfully deploythem. The main reason for that pitfall comes from JE-SSL's core principle ofnot employing any input reconstruction therefore lacking visual cues ofunsuccessful training. Adding non informative loss values to that, it becomesdifficult to deploy SSL on a new dataset for which no labels can help to judgethe quality of the learned representation. In this study, we develop a simpleunsupervised criterion that is indicative of the quality of the learned JE-SSLrepresentations: their effective rank. Albeit simple and computationallyfriendly, this method -- coined RankMe -- allows one to assess the performanceof JE-SSL representations, even on different downstream datasets, withoutrequiring any labels. A further benefit of RankMe is that it does not have anytraining or hyper-parameters to tune. Through thorough empirical experimentsinvolving hundreds of training episodes, we demonstrate how RankMe can be usedfor hyperparameter selection with nearly no reduction in final performancecompared to the current selection method that involve a dataset's labels. Wehope that RankMe will facilitate the deployment of JE-SSL towards domains thatdo not have the opportunity to rely on labels for representations' qualityassessment.
+# Translation (by gpt-3.5-turbo)
+- 共有埋め込み自己教示学習（JE-SSL）は、多くの手法の変種が登場し、急速に発展してきましたが、それらを成功裏に展開するための原則的なガイドラインはほとんどありません。この落とし穴の主な原因は、JE-SSLの核となる原則である入力再構築を行わないことにより、訓練の成功を示す視覚的な手がかりが欠如していることです。さらに、情報のない損失値を追加すると、ラベルがない新しいデータセットに対してSSLを展開することが困難になります。本研究では、学習されたJE-SSL表現の品質を示す単純な非教示基準を開発しました。それは、有効なランクです。シンプルで計算効率の良いこの方法（RankMeと呼ばれる）は、ラベルを必要とせずに、JE-SSL表現のパフォーマンスを評価することができます。RankMeのさらなる利点は、トレーニングやハイパーパラメータの調整が必要ないことです。数百のトレーニングエピソードを含む徹底的な実験を通じて、RankMeがラベルを使用する現在の選択方法と比較して、最終パフォーマンスのほとんど減少なしにハイパーパラメータの選択に使用できることを示しました。RankMeがラベルに頼ることができないドメインへのJE-SSLの展開を容易にすることを期待しています。
+# Summary (by gpt-3.5-turbo)
+- 共有埋め込み自己教示学習（JE-SSL）は、成功の視覚的な手がかりが欠如しているため、展開が困難である。本研究では、JE-SSL表現の品質を評価するための非教示基準であるRankMeを開発した。RankMeはラベルを必要とせず、ハイパーパラメータの調整も不要である。徹底的な実験により、RankMeが最終パフォーマンスのほとんど減少なしにハイパーパラメータの選択に使用できることを示した。RankMeはJE-SSLの展開を容易にすることが期待される。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20</title>
+<original-paper-blog-link>https://arxiv.org/abs/2002.05709</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1975</repo-issue-link>
+<tags>ComputerVision, DataAugmentation, ContrastiveLearning, Self-SupervisedLearning, ICLR, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-05-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2002.05709
+# Authors
+  - Ting Chen
+  - Simon Kornblith
+  - Mohammad Norouzi
+  - Geoffrey Hinton
+# Abstract
+  - This paper presents SimCLR: a simple framework for contrastive learning of visual representations. We simplify recently proposed contrastive self-supervised learning algorithms without requiring specialized architectures or a memory bank. In order to understand what enables the contrastive prediction tasks to learn useful representations, we systematically study the major components of our framework. We show that (1) composition of data augmentations plays a critical role in defining effective predictive tasks, (2) introducing a learnable nonlinear transformation between the representation and the contrastive loss substantially improves the quality of the learned representations, and (3) contrastive learning benefits from larger batch sizes and more training steps compared to supervised learning. By combining these findings, we are able to considerably outperform previous methods for self-supervised and semi-supervised learning on ImageNet. A linear classifier trained on self-supervised representations learned by SimCLR achieves 76.5% top-1 accuracy, which is a 7% relative improvement over previous state-of-the-art, matching the performance of a supervised ResNet-50. When fine-tuned on only 1% of the labels, we achieve 85.8% top-5 accuracy, outperforming AlexNet with 100X fewer labels.
+# Translation (by gpt-4o-mini)
+- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークであるSimCLRを提案します。私たちは、特別なアーキテクチャやメモリバンクを必要とせず、最近提案された対比自己教師あり学習アルゴリズムを簡素化します。対比予測タスクが有用な表現を学習するために何が必要かを理解するために、私たちはフレームワークの主要なコンポーネントを体系的に研究します。具体的には、(1) データ拡張の組み合わせが効果的な予測タスクを定義する上で重要な役割を果たすこと、(2) 表現と対比損失の間に学習可能な非線形変換を導入することで、学習された表現の質が大幅に向上すること、(3) 対比学習は、教師あり学習と比較して、より大きなバッチサイズとより多くのトレーニングステップから利益を得ることを示します。これらの発見を組み合わせることで、私たちはImageNetにおける自己教師あり学習および半教師あり学習の従来の手法を大幅に上回ることができます。SimCLRによって学習された自己教師あり表現に基づいて訓練された線形分類器は、76.5%のトップ1精度を達成し、これは従来の最先端技術に対して7%の相対的改善を示し、教師ありResNet-50の性能に匹敵します。ラベルの1%のみでファインチューニングを行った場合、85.8%のトップ5精度を達成し、100倍少ないラベルでAlexNetを上回ります。
+# Summary (by gpt-4o-mini)
+- 本論文では、視覚表現の対比学習のためのシンプルなフレームワークSimCLRを提案し、特別なアーキテクチャやメモリバンクなしで対比自己教師あり学習を簡素化します。データ拡張の重要性、学習可能な非線形変換の導入による表現の質向上、対比学習が大きなバッチサイズと多くのトレーニングステップから利益を得ることを示し、ImageNetで従来の手法を上回る結果を達成しました。SimCLRによる自己教師あり表現を用いた線形分類器は76.5%のトップ1精度を達成し、教師ありResNet-50に匹敵します。ラベルの1%でファインチューニングした場合、85.8%のトップ5精度を達成しました。</issue-body>
+<maintainer-comment-text><p>日本語解説:
+
+{% raw %}
+<a href="https://techblog.cccmkhd.co.jp/entry/2022/08/30/163625" target="_blank" rel="noopener noreferrer">https://techblog.cccmkhd.co.jp/entry/2022/08/30/163625</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DINOv3: Self-supervised learning for vision at unprecedented scale, Meta, 2025.08</title>
+<original-paper-blog-link>https://ai.meta.com/blog/dinov3-self-supervised-vision-model/?utm_source=twitter&utm_medium=organic_social&utm_content=video&utm_campaign=dinov3</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2431</repo-issue-link>
+<tags>ComputerVision, Self-SupervisedLearning, Distillation, Regularization, read-later, Backbone, One-Line Notes, Reference Collection</tags>
+<repo-issue-date>2025-08-14</repo-issue-date>
+<issue-body>https://ai.meta.com/blog/dinov3-self-supervised-vision-model/?utm_source=twitter&utm_medium=organic_social&utm_content=video&utm_campaign=dinov3</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/1956067392846749723?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>paper:
+
+{% raw %}
+<a href="https://arxiv.org/abs/2508.10104" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2508.10104</a>
+{% endraw %}
+
+<br><br>HF:
+
+{% raw %}
+<a href="https://huggingface.co/docs/transformers/main/en/model_doc/dinov3" target="_blank" rel="noopener noreferrer">https://huggingface.co/docs/transformers/main/en/model_doc/dinov3</a>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1958285463313347071?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>サマリ:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/1960840635289886958?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>v2:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1884" target="_blank" rel="noopener noreferrer">DINOv2: Learning Robust Visual Features without Supervision, Maxime Oquab+, TMLR'24</a>
+</p><p>本日配信された岡野原氏のランチタイムトークによると、学習が進んでいくと全部の特徴量が似通ってきてしまう問題があったが、Gram Anchoringと呼ばれる、学習初期時点でのパッチ間の類似度度行列を保持しておき正則化として損失に加えることで、そこから離れすぎないように学習するといった工夫を実施しているとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Cookbook of Self-Supervised Learning, 2023</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.12210</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/544</repo-issue-link>
+<tags>Tutorial, MachineLearning, Self-SupervisedLearning</tags>
+<repo-issue-date>2023-04-26</repo-issue-date>
+<issue-body>https://arxiv.org/abs/2304.12210</issue-body>
+<maintainer-comment-text><p>MetaによるSelf Supervised Learningの教科書</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

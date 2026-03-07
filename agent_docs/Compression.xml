@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-28">
+<paper-entry>
+<title>[Paper Note] Fast KV Compaction via Attention Matching, Adam Zweiger+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.16284</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4754</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Decoding, read-later, Selected Papers/Blogs, KV Cache, Compression</tags>
+<repo-issue-date>2026-02-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.16284
+# Authors
+  - Adam Zweiger
+  - Xinghong Fu
+  - Han Guo
+  - Yoon Kim
+# Abstract
+  - Scaling language models to long contexts is often bottlenecked by the size of the key-value (KV) cache. In deployed settings, long contexts are typically managed through compaction in token space via summarization. However, summarization can be highly lossy, substantially harming downstream performance. Recent work on Cartridges has shown that it is possible to train highly compact KV caches in latent space that closely match full-context performance, but at the cost of slow and expensive end-to-end optimization. This work describes an approach for fast context compaction in latent space through Attention Matching, which constructs compact keys and values to reproduce attention outputs and preserve attention mass at a per-KV-head level. We show that this formulation naturally decomposes into simple subproblems, some of which admit efficient closed-form solutions. Within this framework, we develop a family of methods that significantly push the Pareto frontier of compaction time versus quality, achieving up to 50x compaction in seconds on some datasets with little quality loss.
+# Translation (by gpt-5-nano)
+- 長い文脈に対する言語モデルのスケーリングは、しばしばキー-バリュー（KV）キャッシュのサイズによってボトルネックとなる。デプロイ環境では、長い文脈は通常、トークン空間での圧縮を通じた要約によって管理される。しかし、要約は非常に情報を失いやすく、下流の性能を著しく損なう。Cartridgesに関する最近の研究は、潜在空間で非常にコンパクトなKVキャッシュを訓練して全文脈の性能に密接に匹敵させることが可能であると示しているが、エンドツーエンドの最適化は遅く高価である。本研究は、Attention Matchingを用いた潜在空間での高速な文脈圧縮のアプローチを述べる。これにより、アテンション出力を再現し、アテンションマスをKVヘッドごとに保持するよう、コンパクトなキーと値を構築する。我々は、この定式化が自然に単純な部分問題へ分解可能であり、そのいくつかは効率的な閉形式解を持つことを示す。この枠組みの下で、圧縮時間と品質のパレート前線を大幅に押し広げる一連の手法を開発し、いくつかのデータセットで数秒で最大50倍の圧縮を達成し、品質の損失はほとんどない。
+# Summary (by gpt-4o-mini)
+- 長い文脈の処理において、KVキャッシュのサイズがボトルネックとなるが、要約による圧縮は情報損失を招く。最近のCartridges研究はコンパクトなKVキャッシュが全文脈に近い性能を持つことを示したが、最適化が遅い。本研究では、Attention Matchingを用い、アテンション出力を再現しながらコンパクトなキーと値を構築する高速な文脈圧縮手法を提案。これにより、効率的な部分問題への分解が可能となり、圧縮時間と品質で大幅な改善を達成し、数秒で最大50倍の圧縮を実現した。</issue-body>
+<maintainer-comment-text><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4370" target="_blank" rel="noopener noreferrer">[Paper Note] KVzip: Query-Agnostic KV Cache Compression with Context Reconstruction, Jang-Hyun Kim+, NeurIPS'25, 2025.05</a>
+</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2027162382188109928?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] InftyThink+: Effective and Efficient Infinite-Horizon Reasoning via Reinforcement Learning, Yuchen Yan+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.06960</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4484</repo-issue-link>
+<tags>DocumentSummarization, NLP, LanguageModel, ReinforcementLearning, Reasoning, PostTraining, LongHorizon, Compression</tags>
+<repo-issue-date>2026-02-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.06960
+# Authors
+  - Yuchen Yan
+  - Liang Jiang
+  - Jin Jiang
+  - Shuaicheng Li
+  - Zujie Wen
+  - Zhiqiang Zhang
+  - Jun Zhou
+  - Jian Shao
+  - Yueting Zhuang
+  - Yongliang Shen
+# Abstract
+  - Large reasoning models achieve strong performance by scaling inference-time chain-of-thought, but this paradigm suffers from quadratic cost, context length limits, and degraded reasoning due to lost-in-the-middle effects. Iterative reasoning mitigates these issues by periodically summarizing intermediate thoughts, yet existing methods rely on supervised learning or fixed heuristics and fail to optimize when to summarize, what to preserve, and how to resume reasoning. We propose InftyThink+, an end-to-end reinforcement learning framework that optimizes the entire iterative reasoning trajectory, building on model-controlled iteration boundaries and explicit summarization. InftyThink+ adopts a two-stage training scheme with supervised cold-start followed by trajectory-level reinforcement learning, enabling the model to learn strategic summarization and continuation decisions. Experiments on DeepSeek-R1-Distill-Qwen-1.5B show that InftyThink+ improves accuracy by 21% on AIME24 and outperforms conventional long chain-of-thought reinforcement learning by a clear margin, while also generalizing better to out-of-distribution benchmarks. Moreover, InftyThink+ significantly reduces inference latency and accelerates reinforcement learning training, demonstrating improved reasoning efficiency alongside stronger performance.
+# Translation (by gpt-4o-mini)
+- 大規模な推論モデルは、考えの連鎖を推論時にスケールアップすることで優れた性能を達成していますが、このパラダイムは二次的なコスト、文脈の長さの制限、および中間的な思考が失われることによる推論の劣化に悩まされています。反復的な推論は、中間的な思考を定期的に要約することでこれらの問題を軽減しますが、既存の手法は教師あり学習や固定されたヒューリスティックスに依存しており、要約するタイミング、保護すべき情報、推論を再開する方法を最適化することができていません。そこで私たちは、モデルによって制御された反復界境と明示的な要約に基づいて、全体の反復推論軌道を最適化するエンドツーエンドの強化学習フレームワーク、InftyThink+を提案します。InftyThink+は、教師ありのコールドスタートに続いて軌道レベルの強化学習を行う二段階のトレーニングスキームを採用し、モデルが戦略的な要約と継続の決定を学習できるようにします。DeepSeek-R1-Distill-Qwen-1.5Bでの実験において、InftyThink+はAIME24での精度を21%向上させ、従来の長い考えの連鎖による強化学習と比較して明確に優れた性能を発揮するとともに、分布外のベンチマークに対してもより良い一般化を示しました。さらに、InftyThink+は推論のレイテンシを大幅に削減し、強化学習のトレーニングを加速させ、強化された性能とともに推論効率の改善を示しています。
+# Summary (by gpt-4o-mini)
+- InftyThink+は、モデルによる制御された反復推論と要約を基にした強化学習フレームワークで、中間的な思考の劣化を軽減し、反復推論の効率を最適化します。教師あり学習の後、二段階の強化学習を行い、戦略的要約と推論の再開を学習。実験では、従来方法に比べて精度を21%向上させ、推論レイテンシを大幅に削減しました。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://zju-real.github.io/InftyThink-Plus/" target="_blank" rel="noopener noreferrer">https://zju-real.github.io/InftyThink-Plus/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2020726082404598083?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>一言解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2020710466197303430?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>con-currentwork:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4439" target="_blank" rel="noopener noreferrer">[Paper Note] Reasoning Cache: Continual Improvement Over Long Horizons via Short-Horizon RL, Ian Wu+, arXiv'26, 2026.02</a>
+</p><p>reasoningを要約することで圧縮し次のreasoningを繰り返すような枠組みのように見え、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4439" target="_blank" rel="noopener noreferrer">[Paper Note] Reasoning Cache: Continual Improvement Over Long Horizons via Short-Horizon RL, Ian Wu+, arXiv'26, 2026.02</a>
+<br><br>と類似したアプローチに見える。<br><img src="https://github.com/user-attachments/assets/89fefbc6-9a79-4a36-b988-f283b826b96b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Reasoning Cache: Continual Improvement Over Long Horizons via Short-Horizon RL, Ian Wu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.03773</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4439</repo-issue-link>
+<tags>DocumentSummarization, NLP, LanguageModel, ReinforcementLearning, AIAgents, Reasoning, PostTraining, read-later, RLVR, Selected Papers/Blogs, OOD, Generalization, KeyPoint Notes, LongHorizon, Robustness, Compression, Initial Impression Notes</tags>
+<repo-issue-date>2026-02-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.03773
+# Authors
+  - Ian Wu
+  - Yuxiao Qu
+  - Amrith Setlur
+  - Aviral Kumar
+# Abstract
+  - Large Language Models (LLMs) that can continually improve beyond their training budgets are able to solve increasingly difficult problems by adapting at test time, a property we refer to as extrapolation. However, standard reinforcement learning (RL) operates over fixed problem distributions and training budgets, which limits extrapolation amidst distribution shift at test time. To address this, we introduce RC, an iterative decoding algorithm that replaces standard autoregressive decoding during both training and inference. RC exploits an asymmetry between the response generation and summarization capabilities of LLMs to construct reasoning chains that consistently improve across iterations. Models trained to use RC can extrapolate and continually improve over reasoning horizons more than an order of magnitude longer than those seen during training. Empirically, training a 4B model with RC using a 16k-token training budget improves performance on HMMT 2025 from 40% to nearly 70% with 0.5m tokens at test time, outperforming both comparably sized models and many larger reasoning LLMs. Finally, we also show that models trained with RC can more effectively leverage existing scaffolds to further scale test-time performance, due to the improved summary-conditioned generation abilities learned through training.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は、訓練の予算を超えて継続的に改善できるため、テスト時に適応することでますます難しい問題を解決できるという特性を持っています。これを外挿と呼びます。しかし、標準的な強化学習（RL）は固定された問題分布と訓練予算のもとで機能するため、テスト時の分布の変化に対する外挿が制限されます。これに対処するために、私たちはRCという反復デコーディングアルゴリズムを導入します。RCは、訓練と推論の両方で標準的な自己回帰デコーディングを置き換えます。RCは、LLMの応答生成能力と要約能力の間の非対称性を利用して、反復を通じて一貫して改善される推論のチェーンを構築します。RCを使用するように訓練されたモデルは、訓練中に見られたものよりも桁違いに長い推論の範囲を外挿し、継続的に改善できます。実証的には、16kトークンの訓練予算を使用してRCで訓練した4Bモデルは、テスト時に0.5mトークンを用いてHMMT 2025でのパフォーマンスを40%からほぼ70%に向上させ、同程度のサイズのモデルや多くの大規模推論LLMを上回る結果を示しました。最後に、RCで訓練されたモデルは、訓練を通じて学んだ改善された要約条件生成能力により、既存の支援をより効果的に活用してテスト時のパフォーマンスをさらに向上させることができることも示しています。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は、テスト時の適応能力により複雑な問題を解決する外挿特性を持つが、標準的な強化学習（RL）はその変化に制約がある。これに対処するために、反復デコーディングアルゴリズム（RC）を導入し、LLMの応答生成能力を活用して推論を継続的に改善。実験では、16kトークンの訓練で4BモデルがHMMT 2025でのパフォーマンスを40%から約70%に引き上げ、既存のモデルを上回る結果を示した。RCを使用したモデルは、学習した要約生成能力によりテスト時のパフォーマンスも向上できることが証明された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ianwu97/status/2019160725219147811?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>reasoningの生成と、生成されたreasoningとinputで条件付けでsummaryを生成、さらにinputとsummaryで条件付けてreasoningを生成するという、生成と要約を反復する枠組みを採用（LLMはreasoningを要約することが生成するよりも得意で、かつ過去の要約から将来の推論を生成できるという非対称性を活用）することで、訓練時の予算は決まっているため、訓練時の予算では到達できないhorizonにテスト時に遭遇すると汎化しない課題を克服し、テスト時により長いステップ数の推論もこなせるように外挿する。また、このようなgeneration-summaryの反復を各ステップごとでRLVRすることでさらに性能を向上でき、実際にlong horizonな推論や学習時よりもより長いreasoning token budgetの場合に大きなgainを獲得できている。<br><br>RLVRをする際に各ステップごとのSummaryを保存しておき、各ステップのsummaryが与えられたときに正解できるかどうかのシグナルに基づいて、ステップごとの要約で条件付けられた応答能力を改善する。これにより、さまざまなステップで応答を生成する能力が強化され、結果的にshort horizonからlong horizonの推論をする能力が強化される。<br>このときsummaryはリプレイバッファとして扱い後のepochの訓練でもオフポリシーデータとして活用する。要約はinputに条件付けられて生成されるものであり、optimizationのtargetとは異なるためリプレイバッファとして活用でき、かつさまざまな要約に対して正解が生成できるように学習されるためテスト時の要約の分布のシフトにロバストになる。また、オンポリシーデータだけだと、long horizonに対する要約は非常に稀になるため、リプレイバッファを利用することで補う。<br><br>テスト時に学習時を超えたhorizonで推論できることは現在のAIエージェントの大きな課題だと思うので非常に興味深い研究だと思う。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CodeOCR: On the Effectiveness of Vision Language Models in Code Understanding, Yuling Shi+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.01785</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4432</repo-issue-link>
+<tags>ComputerVision, NLP, MultiModal, Coding, VisionLanguageModel, 2D (Image), OCR, Compression</tags>
+<repo-issue-date>2026-02-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.01785
+# Authors
+  - Yuling Shi
+  - Chaoxiang Xie
+  - Zhensu Sun
+  - Yeheng Chen
+  - Chenxu Zhang
+  - Longfei Yun
+  - Chengcheng Wan
+  - Hongyu Zhang
+  - David Lo
+  - Xiaodong Gu
+# Abstract
+  - Large Language Models (LLMs) have achieved remarkable success in source code understanding, yet as software systems grow in scale, computational efficiency has become a critical bottleneck. Currently, these models rely on a text-based paradigm that treats source code as a linear sequence of tokens, which leads to a linear increase in context length and associated computational costs. The rapid advancement of Multimodal LLMs (MLLMs) introduces an opportunity to optimize efficiency by representing source code as rendered images. Unlike text, which is difficult to compress without losing semantic meaning, the image modality is inherently suitable for compression. By adjusting resolution, images can be scaled to a fraction of their original token cost while remaining recognizable to vision-capable models. To explore the feasibility of this approach, we conduct the first systematic study on the effectiveness of MLLMs for code understanding. Our experiments reveal that: (1) MLLMs can effectively understand code with substantial token reduction, achieving up to 8x compression; (2) MLLMs can effectively leverage visual cues such as syntax highlighting, improving code completion performance under 4x compression; and (3) Code-understanding tasks like clone detection exhibit exceptional resilience to visual compression, with some compression ratios even slightly outperforming raw text inputs. Our findings highlight both the potential and current limitations of MLLMs in code understanding, which points out a shift toward image-modality code representation as a pathway to more efficient inference.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）はソースコードの理解において顕著な成功を収めていますが、ソフトウェアシステムが大規模化するにつれて、計算効率が重要なボトルネックとなっています。現在、これらのモデルはソースコードをトークンの線形シーケンスとして扱うテキストベースのパラダイムに依存しており、これにより文脈の長さとそれに伴う計算コストが線形に増加します。マルチモーダル大規模言語モデル（MLLM）の急速な進展は、ソースコードをレンダリングされた画像として表現することによって効率を最適化する機会を提供します。テキストとは異なり、意味を損なうことなく圧縮するのが難しいため、画像モダリティは圧縮に本質的に適しています。解像度を調整することで、画像は元のトークンコストの一部にスケールダウンでき、視覚モデルにとっては認識可能なままです。このアプローチの実現可能性を探るため、私たちはコード理解におけるMLLMの効果に関する初の体系的な研究を実施しました。実験結果は以下のことを明らかにしました：(1) MLLMは大量のトークン削減を伴いながら効果的にコードを理解でき、最大8倍の圧縮を達成；(2) MLLMは構文ハイライトなどの視覚的手がかりを効果的に活用することができ、4倍の圧縮下でコード補完パフォーマンスを向上；(3) クローン検出のようなコード理解タスクは視覚的圧縮に対して例外的な耐性を示し、一部の圧縮比は生のテキスト入力をわずかに上回る結果を出しました。我々の発見は、コード理解におけるMLLMの可能性と現在の限界の両方を浮き彫りにし、より効率的な推論への道筋として画像モダリティのコード表現へのシフトを示唆しています。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLM）はソースコード理解で成功を収めていますが、計算効率が課題です。従来、LLMはコードをトークンの線形シーケンスとして扱い、計算コストが増加します。そこで、マルチモーダル大規模言語モデル（MLLM）による画像モダリティの利用が提案され、圧縮の可能性を探る研究を行いました。その結果、(1) MLLMは最大8倍のトークン削減を実現し、効果的にコードを理解できることが分かりました；(2) 構文ハイライトなどの視覚的手がかりを活用し、4倍の圧縮下でパフォーマンス向上；(3) クローン検出タスクは視覚的圧縮に対して耐性があり、圧縮比で生のテキストを上回る結果もありました。これにより、MLLMの効率的な推論可能性が示唆されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kevinqhlin/status/2019132714327372149?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>textをimageとして扱う関連研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3370" target="_blank" rel="noopener noreferrer">[Paper Note] Language Modelling with Pixels, Phillip Rust+, ICLR'23, 2022.07</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3363" target="_blank" rel="noopener noreferrer">[Paper Note] PixelWorld: Towards Perceiving Everything as Pixels, Zhiheng Lyu+, arXiv'25, 2025.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3344" target="_blank" rel="noopener noreferrer">DeepSeek-OCR: Contexts Optical Compression, DeepSeek, 2025.10</a>
+<br><br>literatureについては下記ポスト参考:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/awinyimgprocess/status/1980506449706119642?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] KVzip: Query-Agnostic KV Cache Compression with Context Reconstruction, Jang-Hyun Kim+, NeurIPS'25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.23416</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4370</repo-issue-link>
+<tags>NLP, LanguageModel, NeurIPS, KV Cache, Compression</tags>
+<repo-issue-date>2026-02-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.23416
+# Authors
+  - Jang-Hyun Kim
+  - Jinuk Kim
+  - Sangwoo Kwon
+  - Jae W. Lee
+  - Sangdoo Yun
+  - Hyun Oh Song
+# Abstract
+  - Transformer-based large language models (LLMs) cache context as key-value (KV) pairs during inference. As context length grows, KV cache sizes expand, leading to substantial memory overhead and increased attention latency. This paper introduces KVzip, a query-agnostic KV cache eviction method enabling effective reuse of compressed KV caches across diverse queries. KVzip quantifies the importance of a KV pair using the underlying LLM to reconstruct original contexts from cached KV pairs, subsequently evicting pairs with lower importance. Extensive empirical evaluations demonstrate that KVzip reduces KV cache size by $3$-$4\times$ and FlashAttention decoding latency by approximately $2\times$, with negligible performance loss in question-answering, retrieval, reasoning, and code comprehension tasks. Evaluations include various models such as LLaMA3.1, Qwen2.5, and Gemma3, with context lengths reaching up to 170K tokens. KVzip significantly outperforms existing query-aware KV eviction methods, which suffer from performance degradation even at a 90% cache budget ratio under multi-query scenarios.
+# Translation (by gpt-4o-mini)
+- トランスフォーマーベースの大規模言語モデル（LLM）は、推論中にコンテキストをキー・バリュー（KV）ペアとしてキャッシュします。コンテキストの長さが増えるにつれて、KVキャッシュのサイズが拡大し、 considerable なメモリオーバーヘッドと注意（アテンション）レイテンシの増加を引き起こします。本論文では、さまざまなクエリ間で圧縮されたKVキャッシュを効果的に再利用できる、クエリ非依存型のKVキャッシュ削除手法「KVzip」を紹介します。KVzipは、元のコンテキストをキャッシュされたKVペアから再構築するために基礎となるLLMを使用してKVペアの重要性を定量化し、その後重要度が低いペアを削除します。広範な実証評価により、KVzipがKVキャッシュのサイズを$3$-$4\times$削減し、FlashAttentionのデコーディングレイテンシを約$2\times$短縮し、質問応答、検索、推論、コード理解タスクにおいてパフォーマンスの低下がほとんどないことが示されました。評価には、LLaMA3.1、Qwen2.5、Gemma3などのさまざまなモデルが含まれ、コンテキストの長さは最大170Kトークンに達しました。KVzipは、マルチクエリシナリオにおいて90%のキャッシュ予算比率でもパフォーマンスの低下に悩まされる既存のクエリ認識型KV削除手法を大幅に上回る性能を発揮しています。
+# Summary (by gpt-4o-mini)
+- クエリ非依存型のKVキャッシュ削除手法「KVzip」を提案。LLMを用いてKVペアの重要性を定量化し、重要度の低いペアを削除することでKVキャッシュのサイズを$3$-$4\times$削減。これにより、デコーディングレイテンシを約$2\times$短縮し、さまざまなタスクにおいて性能低下がほとんどないことを実証。また、最大170Kトークンのコンテキストにおいて既存手法を上回る性能を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2018097162824102193?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page: 
+
+{% raw %}
+<a href="https://janghyun1230.github.io/kvzip/" target="_blank" rel="noopener noreferrer">https://janghyun1230.github.io/kvzip/</a>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=JFygzwx8SJ" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=JFygzwx8SJ</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Cartridges: Lightweight and general-purpose long context representations via self-study, Sabri Eyuboglu+, arXiv'25, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.06266</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4368</repo-issue-link>
+<tags>Document, NLP, LanguageModel, SyntheticData, LongSequence, read-later, Selected Papers/Blogs, KV Cache, Compression</tags>
+<repo-issue-date>2026-02-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.06266
+# Authors
+  - Sabri Eyuboglu
+  - Ryan Ehrlich
+  - Simran Arora
+  - Neel Guha
+  - Dylan Zinsley
+  - Emily Liu
+  - Will Tennien
+  - Atri Rudra
+  - James Zou
+  - Azalia Mirhoseini
+  - Christopher Re
+# Abstract
+  - Large language models are often used to answer queries grounded in large text corpora (e.g. codebases, legal documents, or chat histories) by placing the entire corpus in the context window and leveraging in-context learning (ICL). Although current models support contexts of 100K-1M tokens, this setup is costly to serve because the memory consumption of the KV cache scales with input length. We explore an alternative: training a smaller KV cache offline on each corpus. At inference time, we load this trained KV cache, which we call a Cartridge, and decode a response. Critically, the cost of training a Cartridge can be amortized across all the queries referencing the same corpus. However, we find that the naive approach of training the Cartridge with next-token prediction on the corpus is not competitive with ICL. Instead, we propose self-study, a training recipe in which we generate synthetic conversations about the corpus and train the Cartridge with a context-distillation objective. We find that Cartridges trained with self-study replicate the functionality of ICL, while being significantly cheaper to serve. On challenging long-context benchmarks, Cartridges trained with self-study match ICL performance while using 38.6x less memory and enabling 26.4x higher throughput. Self-study also extends the model's effective context length (e.g. from 128k to 484k tokens on MTOB) and surprisingly, leads to Cartridges that can be composed at inference time without retraining.
+# Translation (by gpt-4o-mini)
+- 大型言語モデルは、広範なテキストコーパス（例えば、コードベース、法的文書、チャット履歴）に基づいてクエリに回答するためによく使用されます。これは、全コーパスをコンテキストウィンドウ内に配置し、インコンテキスト学習（ICL）を活用することによって行われます。現在のモデルは100K～1Mトークンのコンテキストをサポートしていますが、このセットアップは、KVキャッシュのメモリ消費が入力の長さに比例してスケールするため、提供コストが高くなります。我々は代替案を探ります。それは、各コーパスに対してオフラインで小さなKVキャッシュをトレーニングすることです。推論時には、このトレーニングされたKVキャッシュ（カートリッジと呼びます）をロードし、応答をデコードします。重要なのは、カートリッジのトレーニングコストは同じコーパスを参照するすべてのクエリにわたって分散できることです。しかし、我々は、コーパスに対する次トークン予測でカートリッジをトレーニングするという単純なアプローチはICLに対して競争力がないことを発見しました。そこで、我々は自己学習と呼ばれるトレーニングレシピを提案します。これは、コーパスに関する合成会話を生成し、その文脈蒸留目的でカートリッジをトレーニングするというものです。我々は、自己学習を用いてトレーニングされたカートリッジがICLの機能を再現し、提供コストを大幅に削減することを見出しました。難しい長コンテキストのベンチマークにおいて、自己学習でトレーニングされたカートリッジはICLの性能に匹敵し、38.6倍少ないメモリを使用し、26.4倍高いスループットを実現します。また、自己学習はモデルの効果的なコンテキスト長を延長（例：MTOBで128kから484kトークンへ）し、驚くべきことに、再トレーニングなしで推論時に合成できるカートリッジを生み出します。
+# Summary (by gpt-4o-mini)
+- 大型言語モデルは、テキストコーパスに基づくクエリ応答に広く使用されていますが、コンテキストウィンドウのメモリ消費が高くコストがかかります。本研究では、オフラインで小さなKVキャッシュ（カートリッジ）をトレーニングし、推論時にそれを使用する代替策を提案。カートリッジのトレーニングコストは分散可能ですが、単純な次トークン予測ではICLと競争できないことが判明。そこで、文脈蒸留を目的とした自己学習を用いたトレーニングを行いました。これにより、自己学習によるカートリッジはICLの機能を再現し、メモリ使用量を38.6倍削減し、スループットを26.4倍向上させました。また、効果的なコンテキスト長を延長し、再トレーニングなしで合成できるカートリッジを生成することにも成功しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2018097161343553770?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=0k5w8O0SNg" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=0k5w8O0SNg</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] FARMER: Flow AutoRegressive Transformer over Pixels, Guangting Zheng+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.23588</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3488</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Transformer, read-later, NormalizingFlow, Compression</tags>
+<repo-issue-date>2025-10-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.23588
+# Authors
+  - Guangting Zheng
+  - Qinyu Zhao
+  - Tao Yang
+  - Fei Xiao
+  - Zhijie Lin
+  - Jie Wu
+  - Jiajun Deng
+  - Yanyong Zhang
+  - Rui Zhu
+# Abstract
+  - Directly modeling the explicit likelihood of the raw data distribution is key topic in the machine learning area, which achieves the scaling successes in Large Language Models by autoregressive modeling. However, continuous AR modeling over visual pixel data suffer from extremely long sequences and high-dimensional spaces. In this paper, we present FARMER, a novel end-to-end generative framework that unifies Normalizing Flows (NF) and Autoregressive (AR) models for tractable likelihood estimation and high-quality image synthesis directly from raw pixels. FARMER employs an invertible autoregressive flow to transform images into latent sequences, whose distribution is modeled implicitly by an autoregressive model. To address the redundancy and complexity in pixel-level modeling, we propose a self-supervised dimension reduction scheme that partitions NF latent channels into informative and redundant groups, enabling more effective and efficient AR modeling. Furthermore, we design a one-step distillation scheme to significantly accelerate inference speed and introduce a resampling-based classifier-free guidance algorithm to boost image generation quality. Extensive experiments demonstrate that FARMER achieves competitive performance compared to existing pixel-based generative models while providing exact likelihoods and scalable training.
+# Translation (by gpt-4o-mini)
+- 生データ分布の明示的な尤度を直接モデル化することは、機械学習分野における重要なテーマであり、自己回帰モデルによって大規模言語モデルのスケーリング成功を達成しています。しかし、視覚的なピクセルデータに対する連続的な自己回帰（AR）モデルは、非常に長いシーケンスと高次元空間の影響を受けます。本論文では、FARMERという新しいエンドツーエンドの生成フレームワークを提案します。これは、正規化フロー（NF）と自己回帰（AR）モデルを統合し、生のピクセルから直接的に扱いやすい尤度推定と高品質な画像合成を実現します。FARMERは、画像を潜在シーケンスに変換する可逆的な自己回帰フローを採用し、その分布は自己回帰モデルによって暗黙的にモデル化されます。ピクセルレベルのモデリングにおける冗長性と複雑さに対処するために、NFの潜在チャネルを情報的なグループと冗長なグループに分割する自己教師あり次元削減スキームを提案し、より効果的かつ効率的なARモデリングを可能にします。さらに、推論速度を大幅に加速するためのワンステップ蒸留スキームを設計し、画像生成品質を向上させるための再サンプリングベースの分類器フリーガイダンスアルゴリズムを導入します。広範な実験により、FARMERは既存のピクセルベースの生成モデルと比較して競争力のある性能を達成し、正確な尤度とスケーラブルなトレーニングを提供することが示されました。
+# Summary (by gpt-4o-mini)
+- FARMERという新しい生成フレームワークを提案し、正規化フローと自己回帰モデルを統合して高品質な画像合成と尤度推定を実現。潜在シーケンスへの変換や自己教師あり次元削減により、ARモデリングの効率を向上。推論速度を加速する蒸留スキームと画像生成品質を向上させる分類器フリーガイダンスを導入。実験により、FARMERは既存モデルと比較して競争力のある性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1983015650139222334?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/1983034143580795131?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>これは...👀👀👀</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ARC-Encoder: learning compressed text representations for large language  models, Hippolyte Pilchen+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.20535</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3450</repo-issue-link>
+<tags>NLP, LanguageModel, ContextWindow, Encoder, One-Line Notes, text, Compression</tags>
+<repo-issue-date>2025-10-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.20535
+# Authors
+  - Hippolyte Pilchen
+  - Edouard Grave
+  - Patrick Pérez
+# Abstract
+  - Recent techniques such as retrieval-augmented generation or chain-of-thought reasoning have led to longer contexts and increased inference costs. Context compression techniques can reduce these costs, but the most effective approaches require fine-tuning the target model or even modifying its architecture. This can degrade its general abilities when not used for this specific purpose. Here we explore an alternative approach: an encoder that compresses the context into continuous representations which replace token embeddings in decoder LLMs. First, we perform a systematic study of training strategies and architecture choices for the encoder. Our findings led to the design of an Adaptable text Representations Compressor, named ARC-Encoder, which outputs $x$-times fewer continuous representations (typically $x\!\in\!\{4,8\}$) than text tokens. We evaluate ARC-Encoder across a variety of LLM usage scenarios, ranging from in-context learning to context window extension, on both instruct and base decoders. Results show that ARC-Encoder achieves state-of-the-art performance on several benchmarks while improving computational efficiency at inference. Finally, we demonstrate that our models can be adapted to multiple decoders simultaneously, allowing a single encoder to generalize across different decoder LLMs. This makes ARC-Encoder a flexible and efficient solution for portable encoders that work seamlessly with multiple LLMs. We release a training code at https://github.com/kyutai-labs/ARC-Encoder , fine-tuning dataset and pretrained models are available at https://huggingface.co/collections/kyutai/arc-encoders-68ee18787301407d60a57047 .
+# Translation (by gpt-4o-mini)
+- 最近の技術、例えばリトリーバル拡張生成や連鎖的思考推論は、より長いコンテキストと増加した推論コストをもたらしています。コンテキスト圧縮技術はこれらのコストを削減できますが、最も効果的なアプローチはターゲットモデルのファインチューニングやアーキテクチャの変更を必要とします。これにより、特定の目的で使用されない場合、モデルの一般的な能力が低下する可能性があります。本研究では、代替アプローチとして、コンテキストを連続表現に圧縮し、デコーダLLMのトークン埋め込みを置き換えるエンコーダを探求します。まず、エンコーダのトレーニング戦略とアーキテクチャの選択について体系的な研究を行いました。我々の発見は、テキストトークンの$x$倍（通常は$x\in\{4,8\}$）少ない連続表現を出力する適応可能なテキスト表現圧縮器、ARC-Encoderの設計につながりました。ARC-Encoderを、インストラクションデコーダとベースデコーダの両方で、インコンテキスト学習からコンテキストウィンドウの拡張に至るまで、さまざまなLLM使用シナリオで評価しました。結果は、ARC-Encoderがいくつかのベンチマークで最先端のパフォーマンスを達成し、推論時の計算効率を向上させることを示しています。最後に、我々のモデルが複数のデコーダに同時に適応できることを示し、単一のエンコーダが異なるデコーダLLMに対して一般化できることを実現しました。これにより、ARC-Encoderは複数のLLMとシームレスに機能するポータブルエンコーダのための柔軟で効率的なソリューションとなります。トレーニングコードはhttps://github.com/kyutai-labs/ARC-Encoderで公開しており、ファインチューニングデータセットと事前学習済みモデルはhttps://huggingface.co/collections/kyutai/arc-encoders-68ee18787301407d60a57047で入手可能です。
+# Summary (by gpt-4o-mini)
+- 本研究では、コンテキストを連続表現に圧縮するARC-Encoderを提案し、デコーダLLMのトークン埋め込みを置き換えるアプローチを探求。ARC-Encoderは、テキストトークンの少ない連続表現を出力し、計算効率を向上させる。さまざまなLLMシナリオで評価した結果、最先端のパフォーマンスを達成し、複数のデコーダに同時に適応可能であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/1981622829960614101?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>最近textのcontextをvisual tokenでレンダリングすることで圧縮する話が盛り上がっているが、こちらはtextの表現そのものを圧縮する話な模様。<br><br>そのうちpixel単位の入力、テキスト単位での入力を圧縮する話どちらかだけでなく、双方のハイブリッドになり、かつタスクに応じてattention等を通じてどちらのモダリティの情報を使うか、また圧縮前と後の情報どちらを使うか、みたいなものを動的に選択してタスクに応じて計算量やメモリを節約しつつ、高い性能を担保する、みたいな話になるんではなかろうか。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CompLLM: Compression for Long Context Q&A, Gabriele Berton+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.19228</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2987</repo-issue-link>
+<tags>NLP, LanguageModel, LongSequence, Compression</tags>
+<repo-issue-date>2025-09-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.19228
+# Authors
+  - Gabriele Berton
+  - Jayakrishnan Unnikrishnan
+  - Son Tran
+  - Mubarak Shah
+# Abstract
+  - Large Language Models (LLMs) face significant computational challenges when processing long contexts due to the quadratic complexity of self-attention. While soft context compression methods, which map input text to smaller latent representations, have shown promise, their real-world adoption is limited. Existing techniques typically compress the context as a single unit, which leads to quadratic compression complexity and an inability to reuse computations across queries with overlapping contexts. In this work, we introduce CompLLM, a soft compression technique designed for practical deployment. Instead of processing the context holistically, CompLLM divides it into segments and compresses each one independently. This simple design choice yields three critical properties: efficiency, as the compression step scales linearly with the context length; scalability, enabling models trained on short sequences (e.g., 1k tokens) to generalize to contexts of 100k tokens; and reusability, allowing compressed segments to be cached and reused across different queries. Our experiments show that with a 2x compression rate, at high context lengths CompLLM speeds up Time To First Token (TTFT) by up to 4x and reduces the KV cache size by 50%. Furthermore, CompLLM achieves performance comparable to that obtained with the uncompressed context, and even surpasses it on very long sequences, demonstrating its effectiveness and practical utility.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、自己注意の二次的な計算複雑性のため、長いコンテキストを処理する際に重大な計算上の課題に直面しています。入力テキストをより小さな潜在表現にマッピングするソフトコンテキスト圧縮手法は有望ですが、実際の採用は限られています。既存の技術は通常、コンテキストを単一のユニットとして圧縮するため、二次的な圧縮複雑性が生じ、重複するコンテキストを持つクエリ間で計算を再利用できないという問題があります。本研究では、実用的な展開のために設計されたソフト圧縮技術CompLLMを紹介します。CompLLMは、コンテキストを全体として処理するのではなく、セグメントに分割し、それぞれを独立して圧縮します。このシンプルな設計選択により、効率性（圧縮ステップがコンテキストの長さに対して線形にスケールする）、スケーラビリティ（短いシーケンス（例：1kトークン）で訓練されたモデルが100kトークンのコンテキストに一般化できる）、再利用性（圧縮されたセグメントを異なるクエリ間でキャッシュして再利用できる）という3つの重要な特性が得られます。実験の結果、2倍の圧縮率で、長いコンテキストにおいてCompLLMは最初のトークンまでの時間（TTFT）を最大4倍速め、KVキャッシュサイズを50%削減することが示されました。さらに、CompLLMは圧縮されていないコンテキストで得られる性能に匹敵し、非常に長いシーケンスではそれを上回る性能を達成し、その効果と実用性を示しています。
+# Summary (by gpt-4o-mini)
+- CompLLMは、長いコンテキストを効率的に処理するためのソフト圧縮技術で、コンテキストをセグメントに分割して独立に圧縮する。これにより、効率性、スケーラビリティ、再利用性を実現。実験では、CompLLMが長いコンテキストで最大4倍の速度向上を示し、圧縮されていないコンテキストと同等の性能を維持。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/1970892632336498847?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者による一言まとめ:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2018097162824102193?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=6AWWE08NnN" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=6AWWE08NnN</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning to Compress Prompts with Gist Tokens, Jesse Mu+, NeurIPS'23, 2023.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.08467</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4369</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Prompting, NeurIPS, Compression</tags>
+<repo-issue-date>2026-02-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2304.08467
+# Authors
+  - Jesse Mu
+  - Xiang Lisa Li
+  - Noah Goodman
+# Abstract
+  - Prompting is the primary way to utilize the multitask capabilities of language models (LMs), but prompts occupy valuable space in the input context window, and repeatedly encoding the same prompt is computationally inefficient. Finetuning and distillation methods allow for specialization of LMs without prompting, but require retraining the model for each task. To avoid this trade-off entirely, we present gisting, which trains an LM to compress prompts into smaller sets of "gist" tokens which can be cached and reused for compute efficiency. Gist models can be trained with no additional cost over standard instruction finetuning by simply modifying Transformer attention masks to encourage prompt compression. On decoder (LLaMA-7B) and encoder-decoder (FLAN-T5-XXL) LMs, gisting enables up to 26x compression of prompts, resulting in up to 40% FLOPs reductions, 4.2% wall time speedups, and storage savings, all with minimal loss in output quality.
+# Translation (by gpt-4o-mini)
+- プロンプトは、言語モデル（LM）のマルチタスク機能を利用する主な方法ですが、プロンプトは入力コンテキストウィンドウ内で貴重なスペースを占め、同じプロンプトを何度もエンコードすることは計算効率が悪いです。ファインチューニングと蒸留手法は、プロンプトなしでLMを専門化させることを可能にしますが、各タスクのためにモデルを再訓練する必要があります。このトレードオフを完全に回避するために、私たちは「ギスティング」を提案します。これは、LMをトレーニングしてプロンプトを小さな「ギスト」トークンのセットに圧縮するもので、これらはキャッシュされ再利用されて計算効率を向上させます。ギストモデルは、プロンプト圧縮を促進するためにトランスフォーマーの注意マスクを単に変更することで、標準の指示ファインチューニングと同じコストでトレーニングできます。デコーダー（LLaMA-7B）およびエンコーダ-デコーダー（FLAN-T5-XXL）LMにおいて、ギスティングはプロンプトを最大26倍圧縮可能にし、最大40%のFLOPs削減、4.2%のウォールタイムのスピードアップ、およびストレージの節約を実現し、出力品質の損失を最小限に抑えています。
+# Summary (by gpt-4o-mini)
+- プロンプトはLMのマルチタスク機能における効率性に課題をもたらすため、私たちは「ギスティング」を提案。これはプロンプトを小さなトークンセットに圧縮し、再利用することで計算効率を向上させる方法で、トレーニングコストは標準的な指示ファインチューニングと同等。実験により、最大26倍のプロンプト圧縮と最大40%のFLOPs削減を達成し、出力品質を保持しつつ効率化を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2018097161343553770?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=2DtxPCL3T5" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=2DtxPCL3T5</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Language Modelling with Pixels, Phillip Rust+, ICLR'23, 2022.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2207.06991</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3370</repo-issue-link>
+<tags>NLP, LanguageModel, Transformer, ICLR, Encoder, Pixel-based, Compression</tags>
+<repo-issue-date>2025-10-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2207.06991
+# Authors
+  - Phillip Rust
+  - Jonas F. Lotz
+  - Emanuele Bugliarello
+  - Elizabeth Salesky
+  - Miryam de Lhoneux
+  - Desmond Elliott
+# Abstract
+  - Language models are defined over a finite set of inputs, which creates a vocabulary bottleneck when we attempt to scale the number of supported languages. Tackling this bottleneck results in a trade-off between what can be represented in the embedding matrix and computational issues in the output layer. This paper introduces PIXEL, the Pixel-based Encoder of Language, which suffers from neither of these issues. PIXEL is a pretrained language model that renders text as images, making it possible to transfer representations across languages based on orthographic similarity or the co-activation of pixels. PIXEL is trained to reconstruct the pixels of masked patches instead of predicting a distribution over tokens. We pretrain the 86M parameter PIXEL model on the same English data as BERT and evaluate on syntactic and semantic tasks in typologically diverse languages, including various non-Latin scripts. We find that PIXEL substantially outperforms BERT on syntactic and semantic processing tasks on scripts that are not found in the pretraining data, but PIXEL is slightly weaker than BERT when working with Latin scripts. Furthermore, we find that PIXEL is more robust than BERT to orthographic attacks and linguistic code-switching, further confirming the benefits of modelling language with pixels.
+# Translation (by gpt-4o-mini)
+- 言語モデルは有限の入力セットに基づいて定義されており、サポートされる言語の数を拡張しようとすると語彙のボトルネックが生じます。このボトルネックに対処することは、埋め込み行列で表現できる内容と出力層における計算上の問題との間でトレードオフを生じさせます。本論文では、これらの問題に悩まされないPIXEL（Pixel-based Encoder of Language）を紹介します。PIXELは、テキストを画像として表現する事前学習済みの言語モデルであり、正字法的な類似性やピクセルの共活性に基づいて言語間で表現を転送することを可能にします。PIXELは、トークンの分布を予測するのではなく、マスクされたパッチのピクセルを再構築するように訓練されています。私たちは、86MパラメータのPIXELモデルをBERTと同じ英語データで事前学習し、さまざまな非ラテン文字を含む系統的に多様な言語における構文的および意味的タスクを評価しました。結果として、PIXELは事前学習データに含まれていないスクリプトにおける構文的および意味的処理タスクでBERTを大幅に上回ることがわかりましたが、ラテン文字を扱う際にはPIXELはBERTよりもやや劣ることがわかりました。さらに、PIXELは正字法的攻撃や言語コードスイッチングに対してBERTよりも堅牢であり、ピクセルを用いた言語モデルの利点をさらに確認しました。
+# Summary (by gpt-4o-mini)
+- PIXELは、テキストを画像として表現する新しい言語モデルで、語彙のボトルネックを回避し、言語間での表現転送を可能にする。86MパラメータのPIXELは、BERTと同じデータで事前学習され、非ラテン文字を含む多様な言語での構文的および意味的タスクでBERTを大幅に上回る性能を示したが、ラテン文字ではやや劣る結果となった。また、PIXELは正字法的攻撃や言語コードスイッチングに対してBERTよりも堅牢であることが確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nielsrogge/status/1980559120760791125?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepSeek-OCR-2, DeepSeek-AI, 2026.01</title>
+<original-paper-blog-link>https://github.com/deepseek-ai/DeepSeek-OCR-2/tree/main</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4315</repo-issue-link>
+<tags>ComputerVision, NLP, OCR, Compression</tags>
+<repo-issue-date>2026-01-27</repo-issue-date>
+<issue-body>https://github.com/deepseek-ai/DeepSeek-OCR-2/tree/main</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2016084587533738355?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連: <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3344" target="_blank" rel="noopener noreferrer">DeepSeek-OCR: Contexts Optical Compression, DeepSeek, 2025.10</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepSeek-OCR: Contexts Optical Compression, DeepSeek, 2025.10</title>
+<original-paper-blog-link>https://github.com/deepseek-ai/DeepSeek-OCR</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3344</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, MultiLingual, read-later, Selected Papers/Blogs, DocParser, Encoder-Decoder, OCR, Reference Collection, Compression</tags>
+<repo-issue-date>2025-10-20</repo-issue-date>
+<issue-body>https://github.com/deepseek-ai/DeepSeek-OCR</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vllm_project/status/1980235518706401405?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>英語と中国語では使えそうだが、日本語では使えるのだろうか？p.17 Figure11を見ると100言語に対して学習したと書かれているように見える。</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxestex/status/1980160624140456370?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/willccbb/status/1980160732236042604?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>OCRベンチマーク:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3360" target="_blank" rel="noopener noreferrer">[Paper Note] OmniDocBench: Benchmarking Diverse PDF Document Parsing with   Comprehensive Annotations, Linke Ouyang+, CVPR'25, 2024.12</a>
+<br><br>（DeepSeek-OCRの主題はOCRの性能向上というわけではないようだが）</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nrehiew_/status/1980635199273889895?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見+ポイント解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rasbt/status/1980642191950090585?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kangwook_lee/status/1980709454522744902?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>textxをimageとしてエンコードする話は以下の2023年のICLRの研究でもやられているよというポスト:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3370" target="_blank" rel="noopener noreferrer">[Paper Note] Language Modelling with Pixels, Phillip Rust+, ICLR'23, 2022.07</a>
+<br><br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nielsrogge/status/1980559120760791125?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3375" target="_blank" rel="noopener noreferrer">[Paper Note] Text or Pixels? It Takes Half: On the Token Efficiency of Visual Text
+  Inputs in Multimodal LLMs, Yanhong Li+, arXiv'25, 2025.10</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3363" target="_blank" rel="noopener noreferrer">[Paper Note] PixelWorld: Towards Perceiving Everything as Pixels, Zhiheng Lyu+, arXiv'25, 2025.01</a>
+</p><p>関連:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/1980722479405678593?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3357" target="_blank" rel="noopener noreferrer">[Paper Note] Glyph: Scaling Context Windows via Visual-Text Compression, Jiale Cheng+, arXiv'25, 2025.10</a>
+</p><p>literature:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/awinyimgprocess/status/1980506449706119642?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>上記ポストでは本研究はこれらliteratureを完全に無視し “an initial investigation into the feasibility of compressing long contexts via optical 2D mapping.” と主張しているので、先行研究を認識し引用すべきだと述べられているようだ。</p><p>karpathy氏のポスト:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/karpathy/status/1980397031542989305?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/karpathy/status/1980764296016720094?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

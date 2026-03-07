@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-02-06">
+<paper-entry>
+<title>[Paper Note] Chunky Post-Training: Data Driven Failures of Generalization, Seoirse Murray+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.05910</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4460</repo-issue-link>
+<tags>Analysis, Tools, NLP, LanguageModel, LLM-as-a-Judge, PostTraining, read-later, Selected Papers/Blogs, KeyPoint Notes, Rubric-based, ChunkyPostTraining</tags>
+<repo-issue-date>2026-02-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.05910
+# Authors
+  - Seoirse Murray
+  - Allison Qi
+  - Timothy Qian
+  - John Schulman
+  - Collin Burns
+  - Sara Price
+# Abstract
+  - LLM post-training involves many diverse datasets, each targeting a specific behavior. But these datasets encode incidental patterns alongside intended ones: correlations between formatting and content, narrow phrasings across diverse problems, and implicit associations arising from the discrete data curation process. These patterns are often invisible to developers yet salient to models, producing behaviors that surprise their creators, such as rejecting true facts presented in a particular question format. We call this chunky post-training: the model learns spurious correlations as a result of distinct chunks of post-training data. We introduce SURF, a black-box pipeline which surfaces these unintended behaviors at run time, and TURF, a tool that traces these failures back to specific post-training data. Applying these tools to frontier models (Claude 4.5, GPT-5.1, Grok 4.1, Gemini 3) and open models (Tülu 3), we show that chunky post-training produces miscalibrated behaviors, which often result from imbalanced or underspecified chunks of post-training data.
+# Translation (by gpt-4o-mini)
+- LLMのポストトレーニングは、多様なデータセットを含み、各データセットは特定の行動をターゲットにしています。しかし、これらのデータセットは意図したパターンに加えて偶発的なパターンもエンコードしています：フォーマットとコンテンツの間の相関、さまざまな問題における狭い表現、そして離散的なデータキュレーションプロセスから生じる暗黙の関連性です。これらのパターンは開発者にはしばしば見えないものの、モデルには顕著であり、特定の質問形式で提示された真実の事実を拒否するなど、開発者を驚かせる行動を引き起こします。これを「チャンクポストトレーニング」と呼びます。モデルは、ポストトレーニングデータの異なるチャンクの結果として虚偽の相関を学習します。私たちは、これらの意図しない行動を実行時に浮き彫りにするブラックボックスパイプライン「SURF」と、これらの失敗を特定のポストトレーニングデータに追跡するツール「TURF」を紹介します。これらのツールをフロンティアモデル（Claude 4.5、GPT-5.1、Grok 4.1、Gemini 3）およびオープンモデル（Tülu 3）に適用し、チャンクポストトレーニングが誤校正された行動を生み出すことを示します。これらの行動は、しばしば不均衡または不十分に仕様されたポストトレーニングデータのチャンクから生じます。
+# Summary (by gpt-4o-mini)
+- LLMのポストトレーニングでは、偶発的なパターンがモデルに影響を及ぼし、意図しない行動を引き起こすことがある。これを「チャンクポストトレーニング」と呼び、特定の質問形式に対して虚偽の相関が現れる理由を探るため、「SURF」というブラックボックスパイプラインと、「TURF」という追跡ツールを提案。これらのツールを用いて、フロンティアモデルやオープンモデルでの誤校正された行動の生成を示し、ポストトレーニングデータの不均衡が影響していることを明らかにした。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2019654246845825111?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事後学習データは特定の行動を学習することを意図して作成されるが、離散的なチャンクの集合として学習したときに、それらに意図しない特徴に基づく相関が含まれ（たとえば、コーディングのデータセットに不自然に形式的な表現が含まれたときに、モデルがそのような表現が用いられた時はコーディングの指示だと学習してしまうなど）、モデルがそれを学習してしまうこと（= Chunky PostTraining)を提唱し、これによって生じる失敗モードの実例として、Haiku 4.5j「5+8=13ですか？」と質問した際に「いいえ、5+8=13は正しくありません。正しい答えは5+8=13です」と応答するような例を挙げている。これはモデルが明らかに正しい答えを知っているが、プロンプト中の何らかの特徴によって反論的な振る舞いが引き起こされているような例であり、こういった失敗を発見するための手法を提案している。<br><br>手法としては、失敗モードを評価するためのルーブリックと、promptに関するAttributeの集合（e.g. これは車に関する質問である, これはロシア語であるなど）を定義し、attributeのプールからサンプリングをして失敗モードを引き起こすクエリの候補を自動生成する。その後LLMに対してクエリを投げて得られた応答をルーブリックに基づいてLLM-as-a-Judgeによってスコアリングし、TopKのサンプルを残しリプレイバッファ[^1]を更新する。更新されたリプレイバッファを用いてAttributeの重みを更新し、よりスコアが高いAttributeに基づいてクエリ候補が生成されるようにし、再度クエリ生成をして同様の操作をするよう繰り返す、といった手法のようである。<br>LLMを完全にブラックボックスとして扱い、応答テキストにのみに基づいて実行されるため、proprietary LLMに対しても実行可能である。<br><img src="https://github.com/user-attachments/assets/a03f9910-140c-434e-a783-1d4da3609c99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: リプレイバッファは、個々の(クエリ, スコア, attribute, スコア）の4つ組の集合によって定義される。</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>
