@@ -713,7 +713,8 @@ author: AkihikoWATANABE
     html_content += '<h2 id="latest-post" class="paper-head">Latest Posts (100)</h2>'
     latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:100]
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
-    gen_result = gen_one_item(latest_issues, [], h_level="3")
+    latest_date = sorted([issue[0]["createdAt"].split("T")[0] for issue in latest_issues], reverse=True)[0]
+    gen_result = gen_one_item(latest_issues, [], latest_date, h_level="3")
     html_content += gen_result["html_content"]
 
     with open("./agent_docs/latest-posts.xml", "w") as f:
@@ -724,7 +725,8 @@ author: AkihikoWATANABE
     html_content += f'<h2 id="selected-papers" class="paper-head">Selected Papers/Blogs ({len(selected_issues)})</h2>'
     selected_issues = sorted(selected_issues, key=lambda x: x["number"], reverse=True)
     selected_issues = [(issue, issue["number"]) for issue in selected_issues]
-    gen_result = gen_one_item(selected_issues, [], h_level="3")
+    latest_date = sorted([issue[0]["createdAt"].split("T")[0] for issue in selected_issues], reverse=True)[0]
+    gen_result = gen_one_item(selected_issues, [], latest_date, h_level="3")
     
     html_content += gen_result["html_content"]
     html_content += "<hr>\n\n"
@@ -828,6 +830,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
