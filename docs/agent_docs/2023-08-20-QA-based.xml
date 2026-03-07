@@ -1,0 +1,140 @@
+<paper-entry>
+<title>QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP'21</title>
+<original-paper-blog-link>https://arxiv.org/abs/2103.12693</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/974</repo-issue-link>
+<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, Reference-free, QA-based</tags>
+<repo-issue-date>2023-08-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2103.12693
+# Affiliations
+  - Thomas Scialom, N/A
+  - Paul-Alexis Dray, N/A
+  - Patrick Gallinari, N/A
+  - Sylvain Lamprier, N/A
+  - Benjamin Piwowarski, N/A
+  - Jacopo Staiano, N/A
+  - Alex Wang, N/A
+# Abstract
+  - Summarization evaluation remains an open research problem: current metricssuch as ROUGE are known to be limited and to correlate poorly with humanjudgments. To alleviate this issue, recent work has proposed evaluation metricswhich rely on question answering models to assess whether a summary containsall the relevant information in its source document. Though promising, theproposed approaches have so far failed to correlate better than ROUGE withhuman judgments.  In this paper, we extend previous approaches and propose a unified framework,named QuestEval. In contrast to established metrics such as ROUGE or BERTScore,QuestEval does not require any ground-truth reference. Nonetheless, QuestEvalsubstantially improves the correlation with human judgments over fourevaluation dimensions (consistency, coherence, fluency, and relevance), asshown in the extensive experiments we report.
+# Translation (by gpt-3.5-turbo)
+- 要約の評価は未解決の研究課題であり、ROUGEなどの現在の評価指標は限定的であり、人間の判断との相関が低いことが知られています。この問題を軽減するため、最近の研究では、要約が元の文書に含まれるすべての関連情報を含んでいるかどうかを評価するために、質問応答モデルを利用する評価指標が提案されています。しかし、これまでのアプローチは、ROUGEよりも人間の判断との相関が改善されていない。
+本論文では、これまでのアプローチを拡張し、QuestEvalという統一されたフレームワークを提案します。ROUGEやBERTScoreなどの既存の評価指標とは異なり、QuestEvalは正解の参照を必要としません。それにもかかわらず、私たちが報告する広範な実験により、QuestEvalは一貫性、結束性、流暢さ、関連性という4つの評価次元において、人間の判断との相関を大幅に改善することが示されています。
+# Summary (by gpt-3.5-turbo)
+- 要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。</issue-body>
+<maintainer-comment-text><p>QuestEval</p><p>
+<strong># 概要<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
+</strong>
+<br>
+ によって提案されてきたメトリックがROUGEに勝てていないことについて言及し、より良い指標を提案。<br><br>- precision / recall-based な QA metricsを利用してよりロバスト<br><br>- 生成されるqueryのsaliencyを学習する手法を提案することで、information selectionの概念を導入した<br><br>- CNN/Daily Mail, XSUMで評価した結果、SoTAな結果を獲得し、特にFactual Consistencyの評価に有用なことを示した<br><br><br><br>
+<strong># Question-based framework<br><br>prerainedなT5を利用しQAに回答するcomponent（question, Textがgivenな時answerを生成するモデル）を構築する。text Tに対するquery qに対してrと回答する確率をQ_A(r|T, q)とし、Q_A(T, q)をモデルによってgreedyに生成された回答とする。Questionが与えられた時、Summary内に回答が含まれているかは分からない。そのため、unanswerable token εもQA componentに含める。<br><br>QG componentとしては、answer-source documentが与えられたときに人間が生成したquestionを生成できるようfinetuningされたT5モデルを利用する。テスト時は、ソースドキュメントと、システム要約がgivenなときに、はじめにQG modelを条件付けするためのanswerのsetを選択する。<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1007" target="_blank" rel="noopener noreferrer">Asking and Answering Questions to Evaluate the Factual Consistency of Summaries, Wang, ACL'20</a>
+</strong>
+<br>
+ にならい、ソースドキュメントの全ての固有名詞と名詞をanswerとみなす。そして、それぞれの選択されたanswerごとに、beam searchを用いてquestionを生成する。そして、QAモデルが誤った回答をした場合、そのようなquestionはフィルタリングする。text Tにおいて、Q_A(T, q) = rとなるquestion-answer pairs (q, r)の集合を、Q_G(T)と表記する。<br><br><br><br>
+<strong># QuestEval metric<br><br>## Precision<br><br>source documentをD, システム要約をSとしたときに、Precision, Recallを以下の式で測る：<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3c1092a6-5a6e-494b-8ec1-a30fdc8ad96c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>question生成時は要約から生成し、生成されたquestionに回答する際はsource documentを利用し、回答の正誤に対してF1スコアを測定する。F1スコアは、ground truthと予測された回答を比較することによって測定され、回答がexact matchした場合に1, common tokenが存在しない場合に0を返す。D, Sで条件付けされたときに、回答が変わってしまう場合は要約がinconsistentだとみなせる、というintuitionからきている。<br><br>## Recall<br><br>要約はfactual informationを含むべきのみならず(precision)、ソーステキストの重要な情報を含むべきである(recall)。<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/943" target="_blank" rel="noopener noreferrer">Answers Unite! Unsupervised Metrics for Reinforced Summarization Models, Scialom+, EMNLP-IJCNLP'19</a>
+</strong>
+<br>
+をquery weighter Wを導入することで拡張し、recallを下記で定義する：<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd44efcd-ca82-43cc-98db-13b697d86068" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ここで、Q_G(D)は、ソーステキストDにおけるすべてのQA pairの集合、W(q, D)はDに対するqの重みである。<br><br> <br><br>
+<strong>## Answerability and F1<br><br>Factoid QAモデルは一般的に、predicted answerとground truthのoverlapによって（F1）評価されている。しかし"ACL"と"Association for Computational Linguistics"のように、同じ回答でも異なる方法で表現される可能性がある。この例では、F1スコアは0となる（共通のtokenがないため）。<br><br>これを回避するために、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/943" target="_blank" rel="noopener noreferrer">Answers Unite! Unsupervised Metrics for Reinforced Summarization Models, Scialom+, EMNLP-IJCNLP'19</a>
+</strong>
+<br>
+ と同様に1-Q_A(ε)を利用する。 <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/bb5379a9-02eb-438a-8bea-3729103bad7a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p><p>QG component, QA componentで利用するT5は、それぞれ[SQuAD-v2](
+
+{% raw %}
+<a href="https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/squad_v2)と、NewsQAデータセット</a>
+{% endraw %}
+
+<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1142" target="_blank" rel="noopener noreferrer">NewsQA: A Machine Comprehension Dataset, Adam Trischler+, N/A, arXiv'16</a>
+ によってfinetuningしたものを利用する。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP'21</title>
+<original-paper-blog-link>https://aclanthology.org/2021.emnlp-main.619/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/966</repo-issue-link>
+<tags>NaturalLanguageGeneration, Metrics, NLP, DialogueGeneration, Evaluation, translation_required, Reference-free, QA-based, Factuality</tags>
+<repo-issue-date>2023-08-13</repo-issue-date>
+<issue-body>https://aclanthology.org/2021.emnlp-main.619/</issue-body>
+<maintainer-comment-text><p>（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では<br><br>- 対話履歴、個人の意見、ユーザに対する質問、そして雑談  <br><br><br><br>といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。<br><br>また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP'21</title>
+<original-paper-blog-link>https://aclanthology.org/2021.findings-emnlp.395/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/961</repo-issue-link>
+<tags>NaturalLanguageGeneration, Metrics, NLP, Evaluation, translation_required, Reference-free, QA-based</tags>
+<repo-issue-date>2023-08-13</repo-issue-date>
+<issue-body>https://aclanthology.org/2021.findings-emnlp.395/</issue-body>
+<maintainer-comment-text><p>Image Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Asking and Answering Questions to Evaluate the Factual Consistency of Summaries, Wang, ACL'20</title>
+<original-paper-blog-link>https://aclanthology.org/2020.acl-main.450/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1007</repo-issue-link>
+<tags>DocumentSummarization, Metrics, NLP, Evaluation, translation_required, Reference-free, QA-based</tags>
+<repo-issue-date>2023-08-20</repo-issue-date>
+<issue-body>https://aclanthology.org/2020.acl-main.450/</issue-body>
+<maintainer-comment-text><p>QAGS</p><p>生成された要約からQuestionを生成する手法。precision-oriented</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>FEQA: A Question Answering Evaluation Framework for Faithfulness Assessment in Abstractive Summarization, Durmus+, ACL'20</title>
+<original-paper-blog-link>https://aclanthology.org/2020.acl-main.454/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/991</repo-issue-link>
+<tags>DocumentSummarization, Metrics, NLP, Evaluation, translation_required, QA-based</tags>
+<repo-issue-date>2023-08-16</repo-issue-date>
+<issue-body>https://aclanthology.org/2020.acl-main.454/</issue-body>
+<maintainer-comment-text><p>FEQA</p><p>生成された要約からQuestionを生成する手法。precision-oriented </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Question answering as an automatic evaluation metric for news article summarization, Eyal+, NAACL'19</title>
+<original-paper-blog-link>https://aclanthology.org/N19-1395/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/995</repo-issue-link>
+<tags>DocumentSummarization, Metrics, NLP, Evaluation, translation_required, QA-based</tags>
+<repo-issue-date>2023-08-16</repo-issue-date>
+<issue-body>https://aclanthology.org/N19-1395/</issue-body>
+<maintainer-comment-text><p>APES</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Answers Unite Unsupervised Metrics for Reinforced Summarization Models, Scialom+, EMNLP-IJCNLP'19</title>
+<original-paper-blog-link>https://aclanthology.org/D19-1320/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/943</repo-issue-link>
+<tags>DocumentSummarization, NLP, Evaluation, translation_required, Reference-free, QA-based</tags>
+<repo-issue-date>2023-08-13</repo-issue-date>
+<issue-body>https://aclanthology.org/D19-1320/</issue-body>
+<maintainer-comment-text><p>SummaQA</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Semantic QA-Based Approach for Text Summarization Evaluation, Ping Chen+, N_A, AAAI'18</title>
+<original-paper-blog-link>https://arxiv.org/abs/1704.06259</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/994</repo-issue-link>
+<tags>DocumentSummarization, Metrics, NLP, Evaluation, QA-based</tags>
+<repo-issue-date>2023-08-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1704.06259
+# Affiliations
+  - Ping Chen, N/A
+  - Fei Wu, N/A
+  - Tong Wang, N/A
+  - Wei Ding, N/A
+# Abstract
+  - Many Natural Language Processing and Computational Linguistics applicationsinvolves the generation of new texts based on some existing texts, such assummarization, text simplification and machine translation. However, there hasbeen a serious problem haunting these applications for decades, that is, how toautomatically and accurately assess quality of these applications. In thispaper, we will present some preliminary results on one especially useful andchallenging problem in NLP system evaluation: how to pinpoint contentdifferences of two text passages (especially for large pas-sages such asarticles and books). Our idea is intuitive and very different from existingapproaches. We treat one text passage as a small knowledge base, and ask it alarge number of questions to exhaustively identify all content points in it. Bycomparing the correctly answered questions from two text passages, we will beable to compare their content precisely. The experiment using 2007 DUCsummarization corpus clearly shows promising results.
+# Translation (by gpt-3.5-turbo)
+- 自然言語処理と計算言語学の多くのアプリケーションでは、要約、テキストの簡素化、機械翻訳など、既存のテキストに基づいて新しいテキストを生成することが含まれています。しかし、これらのアプリケーションには、数十年にわたって深刻な問題があります。それは、これらのアプリケーションの品質を自動的かつ正確に評価する方法です。本論文では、自然言語処理システムの評価における特に有用で難しい問題のいくつかの予備的な結果を示します。それは、2つのテキストパッセージ（特に記事や書籍などの大規模なパッセージ）の内容の違いをどのように特定するかというものです。私たちのアイデアは直感的で、既存のアプローチとは非常に異なります。1つのテキストパッセージを小さな知識ベースと見なし、それに多数の質問を投げかけて、すべての内容ポイントを徹底的に特定します。2つのテキストパッセージから正しく回答された質問を比較することで、その内容を正確に比較することができます。2007年のDUC要約コーパスを使用した実験は、有望な結果を明らかにしています。
+# Summary (by gpt-3.5-turbo)
+- 自然言語処理システムの評価における問題の一つは、2つのテキストパッセージの内容の違いを特定することです。本研究では、1つのテキストパッセージを小さな知識ベースとして扱い、多数の質問を投げかけて内容を比較する方法を提案します。実験結果は有望であり、2007年のDUC要約コーパスを使用して行われました。</issue-body>
+<maintainer-comment-text><p>QGQAを提案した研究</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Discourse constraints for document compression, Clarke+ （w_ Lapata）, Computational Linguistics'10</title>
+<original-paper-blog-link>https://aclanthology.org/J10-3005/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1006</repo-issue-link>
+<tags>DocumentSummarization, NLP, Evaluation, QA-based</tags>
+<repo-issue-date>2023-08-20</repo-issue-date>
+<issue-body>https://aclanthology.org/J10-3005/</issue-body>
+<maintainer-comment-text><p>QAベースドなアプローチを人手評価に導入した初めての研究</p></maintainer-comment-text>
+</paper-entry>

@@ -1,0 +1,160 @@
+<paper-entry>
+<title>[Paper Note] Anchored Decoding: Provably Reducing Copyright Risk for Any Language Model, Jacqueline He+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.07120</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4530</repo-issue-link>
+<tags>NLP, LanguageModel, Decoding, read-later, Selected Papers/Blogs, Legal, KeyPoint Notes, Initial Impression Notes, Copyright</tags>
+<repo-issue-date>2026-02-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.07120
+# Authors
+  - Jacqueline He
+  - Jonathan Hayase
+  - Wen-tau Yih
+  - Sewoong Oh
+  - Luke Zettlemoyer
+  - Pang Wei Koh
+# Abstract
+  - Modern language models (LMs) tend to memorize portions of their training data and emit verbatim spans. When the underlying sources are sensitive or copyright-protected, such reproduction raises issues of consent and compensation for creators and compliance risks for developers. We propose Anchored Decoding, a plug-and-play inference-time method for suppressing verbatim copying: it enables decoding from any risky LM trained on mixed-license data by keeping generation in bounded proximity to a permissively trained safe LM. Anchored Decoding adaptively allocates a user-chosen information budget over the generation trajectory and enforces per-step constraints that yield a sequence-level guarantee, enabling a tunable risk-utility trade-off. To make Anchored Decoding practically useful, we introduce a new permissively trained safe model (TinyComma 1.8B), as well as Anchored$_{\mathrm{Byte}}$ Decoding, a byte-level variant of our method that enables cross-vocabulary fusion via the ByteSampler framework (Hayase et al., 2025). We evaluate our methods across six model pairs on long-form evaluations of copyright risk and utility. Anchored and Anchored$_{\mathrm{Byte}}$ Decoding define a new Pareto frontier, preserving near-original fluency and factuality while eliminating up to 75% of the measurable copying gap (averaged over six copying metrics) between the risky baseline and a safe reference, at a modest inference overhead.
+# Translation (by gpt-4o-mini)
+- 現代の言語モデル（LM）は、トレーニングデータの一部を記憶し、逐語的な部分を再現する傾向があります。基となるソースが敏感であるか著作権で保護されている場合、この再現はクリエイターの同意と報酬、そして開発者にとってのコンプライアンスリスクの問題を引き起こします。私たちは、「アンカーデコーディング」という、逐語的コピーを抑制するためのプラグアンドプレイの推論時間メソッドを提案します。この方法は、混合ライセンスデータでトレーニングされたリスクのあるLMからの生成を、安全なLM訓練済みの許可されたものに近い範囲で保つことで実現します。アンカーデコーディングは、生成の軌跡に沿ってユーザーが選択した情報予算を適応的に配分し、各ステップの制約を強制することで、シーケンスレベルの保証を提供し、調整可能なリスクと有用性のトレードオフを可能にします。実用的な利用のために、新たに許可された安全モデル（TinyComma 1.8B）を導入し、またByteSamplerフレームワーク（Hayase et al., 2025）を通じてクロスボキャブラリ融合を実現するバイトレベルのバリエーションであるAnchored$_{\mathrm{Byte}}$ デコーディングも提案します。私たちは、著作権リスクと有用性の長期評価において、6つのモデルペア全体で私たちの手法を評価しました。アンカーデコーディングとAnchored$_{\mathrm{Byte}}$ デコーディングは、新しいパレートフロンティアを定義し、リスクのあるベースラインと安全なリファレンスとの間で平均して6つのコピーリングメトリックで測定可能なコピーギャップの75％までを排除しつつ、ほぼ元の流暢さと事実性を保ち、適度な推論オーバーヘッドを伴います。
+# Summary (by gpt-4o-mini)
+- 「アンカーデコーディング」は、現代の言語モデルが逐語的な再現を抑制するための新しい推論法であり、リスクのあるLMからより安全な生成を実現します。この手法は、ユーザーが選択した情報予算に応じて生成過程に制約を加え、著作権リスクと有用性のトレードオフを可能にします。また、新たに導入した安全モデルと、クロスボキャブラリ融合を実現するAnchored$_{\mathrm{Byte}}$デコーディングにより、リスク低減と流暢さを維持しつつ、コピーギャップを75％まで排除することが確認されました。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jcqln_h/status/2021676851664760883?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>権利上の問題がない言語モデル（permissive licenceデータによって学習されたものなど）SafeLMと、任意の言語モデルRiskyLMの2つが与えられたときに、KL Divergenceの予算Kの元、各生成のstep tごとに語彙空間上で両LLMのKL DivergenceがK_t未満となるように生成するトークンを選択することで、出力の有用性（fluencyとfactuality)は維持しつつ、memorizationされている著作権物をそのままデコーディングしてしまうリスクを低減する手法。RiskyLMの非常に高いUtility上の語彙生成確率を、SafeLM側の安全な語彙確率で引っ張って良い塩梅で生成するようなイメージと思われる。<br><br>この手法はSafeLMがどれだけ高いUtilityを維持しつつ安全性を保てるかにデコーディング性能が依存すると思われるが、SLMで非常に性能の良いTinyComma 0.8Bもリリースしている。<br><br>また、KL Divergenceを測定する都合上、提案手法は共通のVocab(すなわちトークナイザー）を持つモデル間でしか適用できないが、KL Divergenceをバイト空間上で測るように工夫することでVocabの制約を無くす方法も提案している。<br><br><img src="https://github.com/user-attachments/assets/88b313ec-98d3-4b1d-be7a-fe8258da61ba" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>著作物をそのまま出力してしまう問題は軽減されそうだと思われるが、著者独特の思想や感情、表現や言い回しなどの著作権で保護される対象をどの程度の度合いで守れるかについては興味がある。また、そのためには次はどのようなステップが必要か？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Extracting books from production language models, Ahmed Ahmed+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.02671</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4176</repo-issue-link>
+<tags>NLP, LanguageModel, read-later, Selected Papers/Blogs, Memorization, Legal</tags>
+<repo-issue-date>2026-01-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.02671
+# Authors
+  - Ahmed Ahmed
+  - A. Feder Cooper
+  - Sanmi Koyejo
+  - Percy Liang
+# Abstract
+  - Many unresolved legal questions over LLMs and copyright center on memorization: whether specific training data have been encoded in the model's weights during training, and whether those memorized data can be extracted in the model's outputs. While many believe that LLMs do not memorize much of their training data, recent work shows that substantial amounts of copyrighted text can be extracted from open-weight models. However, it remains an open question if similar extraction is feasible for production LLMs, given the safety measures these systems implement. We investigate this question using a two-phase procedure: (1) an initial probe to test for extraction feasibility, which sometimes uses a Best-of-N (BoN) jailbreak, followed by (2) iterative continuation prompts to attempt to extract the book. We evaluate our procedure on four production LLMs -- Claude 3.7 Sonnet, GPT-4.1, Gemini 2.5 Pro, and Grok 3 -- and we measure extraction success with a score computed from a block-based approximation of longest common substring (nv-recall). With different per-LLM experimental configurations, we were able to extract varying amounts of text. For the Phase 1 probe, it was unnecessary to jailbreak Gemini 2.5 Pro and Grok 3 to extract text (e.g, nv-recall of 76.8% and 70.3%, respectively, for Harry Potter and the Sorcerer's Stone), while it was necessary for Claude 3.7 Sonnet and GPT-4.1. In some cases, jailbroken Claude 3.7 Sonnet outputs entire books near-verbatim (e.g., nv-recall=95.8%). GPT-4.1 requires significantly more BoN attempts (e.g., 20X), and eventually refuses to continue (e.g., nv-recall=4.0%). Taken together, our work highlights that, even with model- and system-level safeguards, extraction of (in-copyright) training data remains a risk for production LLMs.
+# Translation (by gpt-4o-mini)
+- 多くの未解決の法的問題がLLM（大規模言語モデル）と著作権に関して、記憶に集中しています。具体的には、特定のトレーニングデータがトレーニング中にモデルの重みとしてエンコードされているかどうか、そしてその記憶されたデータがモデルの出力から抽出可能かどうかという点です。多くの人々は、LLMがトレーニングデータをあまり記憶していないと考えていますが、最近の研究では、オープンウェイトモデルから著作権で保護されたテキストの substantial amounts が抽出できることが示されています。しかし、これらのシステムが実施している安全対策を考慮すると、商業用LLMに対して同様の抽出が可能かどうかは未解決の問題です。本研究では、2段階の手順を用いてこの問題を調査します。(1) 抽出の実現可能性をテストする初期プローブを行い、時にはBest-of-N（BoN）ジャイルブレイクを使用し、(2) 本を抽出しようとする反復的な継続プロンプトを行います。私たちは、Claude 3.7 Sonnet、GPT-4.1、Gemini 2.5 Pro、Grok 3の4つの商業用LLMに対して手法を評価し、ブロックベースの最長共通部分列の近似から計算されたスコア（nv-recall）を用いて抽出の成功を測定します。各LLMの実験設定に応じて、さまざまな量のテキストを抽出することができました。フェーズ1のプローブでは、Gemini 2.5 ProとGrok 3からテキストを抽出するためにジャイルブレイクは不要でした（例：ハリー・ポッターと賢者の石に対してそれぞれnv-recallが76.8%と70.3%）。一方、Claude 3.7 SonnetとGPT-4.1には必要でした。場合によっては、ジャイルブレイクされたClaude 3.7 Sonnetがほぼ逐語的に本全体を出力することもありました（例：nv-recall=95.8%）。GPT-4.1は、はるかに多くのBoN試行（例：20倍）が必要で、最終的には続行を拒否します（例：nv-recall=4.0%）。これらを総合すると、私たちの研究は、モデルおよびシステムレベルの安全対策があっても、（著作権で保護された）トレーニングデータの抽出が商業用LLMにとってリスクであることを強調しています。
+# Summary (by gpt-4o-mini)
+- 本研究では、商業用LLMにおける著作権で保護されたトレーニングデータの抽出可能性を調査。2段階の手法を用い、4つのLLM（Claude 3.7 Sonnet、GPT-4.1、Gemini 2.5 Pro、Grok 3）でテストを実施。Gemini 2.5 ProとGrok 3はジャイルブレイクなしで高い抽出率を示し、Claude 3.7 Sonnetはジャイルブレイクでほぼ逐語的に出力。GPT-4.1は多くの試行が必要で抽出率が低かった。結果、商業用LLMにおいても著作権データの抽出がリスクであることが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/manoelribeiro/status/2010485541305774243?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>重要研究に見える</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Evaluating Legal Reasoning Traces with Legal Issue Tree Rubrics, Jinu Lee+, arXiv'25, 2025.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.01020</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4510</repo-issue-link>
+<tags>NLP, Dataset, Explanation, ReinforcementLearning, RAG(RetrievalAugmentedGeneration), Reasoning, PostTraining, Legal, Rubric-based</tags>
+<repo-issue-date>2026-02-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.01020
+# Authors
+  - Jinu Lee
+  - Kyoung-Woon On
+  - Simeng Han
+  - Arman Cohan
+  - Julia Hockenmaier
+# Abstract
+  - Evaluating the quality of LLM-generated reasoning traces in expert domains (e.g., law) is essential for ensuring credibility and explainability, yet remains challenging due to the inherent complexity of such reasoning tasks. We introduce LEGIT (LEGal Issue Trees), a novel large-scale (24K instances) expert-level legal reasoning dataset with an emphasis on reasoning trace evaluation. We convert court judgments into hierarchical trees of opposing parties' arguments and the court's conclusions, which serve as rubrics for evaluating the issue coverage and correctness of the reasoning traces. We verify the reliability of these rubrics via human expert annotations and comparison with coarse, less informative rubrics. Using the LEGIT dataset, we show that (1) LLMs' legal reasoning ability is seriously affected by both legal issue coverage and correctness, and that (2) retrieval-augmented generation (RAG) and RL with rubrics bring complementary benefits for legal reasoning abilities, where RAG improves overall reasoning capability, whereas RL improves correctness albeit with reduced coverage.
+# Translation (by gpt-4o-mini)
+- LLMが生成する理由のトレースの質を専門的な領域（例：法律）で評価することは、信頼性と説明可能性を確保するために不可欠ですが、そのような推論タスクの内在的な複雑さにより、依然として難しい課題です。本研究では、推論トレース評価に重点を置いた新しい大規模な専門レベルの法律推論データセット「LEGIT」（LEGal Issue Trees、24,000件のインスタンス）を紹介します。裁判判断を対立する当事者の主張と裁判所の結論の階層的な木構造に変換し、これを推論トレースの問題のカバー範囲や正確性を評価するための評価基準として使用します。これらの評価基準の信頼性を人間の専門家による注釈と、粗くて情報量の少ない評価基準との比較を通じて検証します。LEGITデータセットを使用して、(1) LLMの法律推論能力は法律問題のカバー範囲と正確性によって深刻に影響を受けること、(2) retrieval-augmented generation（RAG）と評価基準を用いた強化学習（RL）が法律推論能力に対して相補的な利益をもたらすことを示します。RAGは全体的な推論能力を向上させる一方、RLはカバー範囲は減少するものの正確性を改善します。
+# Summary (by gpt-4o-mini)
+- 専門分野でのLLMの推論トレース評価の重要性を認識し、新たな法律推論データセット「LEGIT」を導入。本研究では、裁判判断を主張と結論の木構造に変換し、推論のカバー範囲と正確性を評価。人間専門家による注釈と粗い基準との比較で評価基準の信頼性を確認。実験から、LLMの法律推論能力はカバー範囲と正確性に影響され、retrieval-augmented generation（RAG）と強化学習（RL）が相補的な利益をもたらすことを示した。RAGは推論能力を向上させ、RLは正確性を改善する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2021433757572469239?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CLaw: Benchmarking Chinese Legal Knowledge in Large Language Models - A  Fine-grained Corpus and Reasoning Analysis, Xinzhe Xu+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.21208</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3005</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, Evaluation, Legal</tags>
+<repo-issue-date>2025-09-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.21208
+# Authors
+  - Xinzhe Xu
+  - Liang Zhao
+  - Hongshen Xu
+  - Chen Chen
+# Abstract
+  - Large Language Models (LLMs) are increasingly tasked with analyzing legal texts and citing relevant statutes, yet their reliability is often compromised by general pre-training that ingests legal texts without specialized focus, obscuring the true depth of their legal knowledge. This paper introduces CLaw, a novel benchmark specifically engineered to meticulously evaluate LLMs on Chinese legal knowledge and its application in reasoning. CLaw comprises two key components: (1) a comprehensive, fine-grained corpus of all 306 Chinese national statutes, segmented to the subparagraph level and incorporating precise historical revision timesteps for rigorous recall evaluation (64,849 entries), and (2) a challenging set of 254 case-based reasoning instances derived from China Supreme Court curated materials to assess the practical application of legal knowledge. Our empirical evaluation reveals that most contemporary LLMs significantly struggle to faithfully reproduce legal provisions. As accurate retrieval and citation of legal provisions form the basis of legal reasoning, this deficiency critically undermines the reliability of their responses. We contend that achieving trustworthy legal reasoning in LLMs requires a robust synergy of accurate knowledge retrieval--potentially enhanced through supervised fine-tuning (SFT) or retrieval-augmented generation (RAG)--and strong general reasoning capabilities. This work provides an essential benchmark and critical insights for advancing domain-specific LLM reasoning, particularly within the complex legal sphere.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、法的文書の分析や関連する法令の引用を行うことがますます求められていますが、一般的な事前学習によって法的文書が専門的な焦点を持たずに取り込まれるため、その信頼性はしばしば損なわれ、法的知識の真の深さが隠されてしまいます。本論文では、CLawという新しいベンチマークを紹介します。これは、中国の法的知識とその推論における応用を慎重に評価するために特別に設計されています。CLawは、次の2つの主要な要素で構成されています。(1) 306の中国国家法令すべてを網羅した詳細なコーパスで、段落レベルに分割され、厳密な再現評価のために正確な歴史的改訂タイムステップを組み込んでいます（64,849件のエントリ）、および(2) 中国最高裁判所がキュレーションした資料から派生した254のケースベースの推論インスタンスの挑戦的なセットで、法的知識の実際の応用を評価します。我々の実証的評価は、ほとんどの現代のLLMが法的規定を忠実に再現するのに大きく苦労していることを明らかにしています。法的規定の正確な取得と引用は法的推論の基盤を形成するため、この欠陥は彼らの応答の信頼性を重大に損ないます。我々は、LLMにおける信頼できる法的推論を達成するためには、正確な知識の取得と、監視付きファインチューニング（SFT）や取得強化生成（RAG）を通じて強化される可能性のある強力な一般的推論能力との robust synergy が必要であると主張します。本研究は、特に複雑な法的領域におけるドメイン特化型LLM推論の進展に向けた重要なベンチマークと重要な洞察を提供します。
+# Summary (by gpt-4o-mini)
+- 法的文書の分析において、LLMの信頼性が損なわれる問題を解決するために、新しいベンチマークCLawを提案。CLawは、中国の法令を網羅した詳細なコーパスと、ケースベースの推論インスタンスから構成され、法的知識の実際の応用を評価。実証的評価では、現代のLLMが法的規定の正確な取得に苦労していることが明らかになり、信頼できる法的推論には正確な知識の取得と強力な推論能力の統合が必要であると主張。ドメイン特化型LLM推論の進展に向けた重要な洞察を提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1971734059060527283?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>中国語による中国の法律のデータセットで、legal分野においては、より細かい粒度の知識を捉えられるモデルが推論も的確にでき、推論能力でそれは補えそうという感じな模様</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>veAgentBench, ByteDance, 2025.11</title>
+<original-paper-blog-link>https://modelscope.cn/datasets/bytedance-research/veAgentBench/summary</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3813</repo-issue-link>
+<tags>NLP, Dataset, Education, AIAgents, Evaluation, Financial, Legal</tags>
+<repo-issue-date>2025-11-26</repo-issue-date>
+<issue-body>https://modelscope.cn/datasets/bytedance-research/veAgentBench/summary</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/modelscope2022/status/1993308962058362946?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>自然言語系AIサービスと著作権侵害, 柿沼太一, 2021</title>
+<original-paper-blog-link>https://storialaw.jp/blog/8267</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/416</repo-issue-link>
+<tags>Tutorial, NLP, Blog, Legal</tags>
+<repo-issue-date>2021-10-26</repo-issue-date>
+<issue-body>https://storialaw.jp/blog/8267</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>

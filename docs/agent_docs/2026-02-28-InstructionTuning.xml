@@ -1,0 +1,1429 @@
+<paper-entry>
+<title>[Paper Note] LLaVA-3D: A Simple yet Effective Pathway to Empowering LMMs with 3D-awareness, Chenming Zhu+, ICCV'25, 2024.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2409.18125</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4738</repo-issue-link>
+<tags>ComputerVision, NLP, Supervised-FineTuning (SFT), InstructionTuning, MultiModal, Reasoning, PositionalEncoding, OpenWeight, OpenSource, PostTraining, Selected Papers/Blogs, ICCV, VisionLanguageModel, 3D (Scene), SpatialUnderstanding, KeyPoint Notes, Grounding</tags>
+<repo-issue-date>2026-02-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2409.18125
+# Authors
+  - Chenming Zhu
+  - Tai Wang
+  - Wenwei Zhang
+  - Jiangmiao Pang
+  - Xihui Liu
+# Abstract
+  - Recent advancements in Large Multimodal Models (LMMs) have greatly enhanced their proficiency in 2D visual understanding tasks, enabling them to effectively process and understand images and videos. However, the development of LMMs with 3D scene understanding capabilities has been hindered by the lack of large-scale 3D vision-language datasets and powerful 3D encoders. In this paper, we introduce a simple yet effective framework called LLaVA-3D. Leveraging the strong 2D visual understanding priors from LLaVA, our LLaVA-3D efficiently adapts LLaVA for 3D scene understanding without compromising 2D understanding capabilities. To achieve this, we utilize the 3D position embeddings to enhance the 2D CLIP Patches with 3D spatial context information and construct 3D patches. By integrating the 3D position embeddings into 2D LMMs and employing joint 2D and 3D vision-language instruction tuning, we establish a unified architecture for both 2D visual understanding and 3D scene understanding. In contrast to previous 3D LMMs, LLaVA-3D supports decoding accurate 3D spatial perception outputs, e.g., 3D bounding boxes, directly from these 3D patches, without relying on the time-consuming off-the-shelf 3D segmentors. Experimental results show that LLaVA-3D converges 3.5x faster than existing 3D LMMs when trained on 3D vision-language datasets. Moreover, LLaVA-3D not only achieves state-of-the-art performance across various 3D tasks but also maintains comparable 2D visual understanding and vision-language conversation capabilities with LLaVA.
+# Translation (by gpt-5-nano)
+- 最近の大規模マルチモーダルモデル（LMMs）の進展は、2D視覚理解タスクにおける能力を大幅に向上させ、画像や動画を効果的に処理・理解できるようにした。しかし、3Dシーン理解機能を備えたLMMの開発は、大規模な3Dビジョン-言語データセットの不足と強力な3Dエンコーダの欠如により妨げられてきた。本論文では、LLaVA-3Dと呼ばれる、シンプルでありながら有効なフレームワークを提案する。LLaVAの強力な2D視覚理解の前提知識を活用して、LLaVA-3Dは2D理解能力を損なうことなく3Dシーン理解へ効率的に適応する。これを実現するために、3D位置埋め込みを利用して2DのCLIPパッチを3D空間情報で強化し、3Dパッチを構築する。3D位置埋め込みを2D LMMsに統合し、2Dと3Dの視覚言語指示チューニングを共同で行うことで、2D視覚理解と3Dシーン理解の両方に対応する統一的なアーキテクチャを確立する。従来の3D LMMとは対照的に、LLaVA-3Dはこれらの3Dパッチから直接、正確な3D空間認識出力（例：3D境界ボックス）をデコードすることをサポートする。時間のかかるオフ・ザ・シェルフの3Dセグメンターに依存しない。実験結果は、3Dビジョン-言語データセットで訓練した場合、LLaVA-3Dが既存の3D LMMより3.5倍速く収束することを示している。さらに、LLaVA-3Dはさまざまな3Dタスクで最先端の性能を達成するだけでなく、LLaVAと同等の2D視覚理解および視覚言語対話機能も維持している。
+# Summary (by gpt-4o-mini)
+- LLaVA-3Dは、3Dシーン理解に対応する新たなフレームワークで、2D視覚理解の知識を活用しつつ、3D位置埋め込みを統合。2D CLIPパッチを3D空間情報で強化し、2Dと3Dの共同チューニングを行うことで、迅速かつ正確な3D認識を実現。実験では、既存の3Dモデルよりも3.5倍速く収束し、3Dタスクでの最先端性能を達成しながら、2D機能も保持している。</issue-body>
+<maintainer-comment-text><p>github:
+
+{% raw %}
+<a href="https://github.com/ZCMax/LLaVA-3D" target="_blank" rel="noopener noreferrer">https://github.com/ZCMax/LLaVA-3D</a>
+{% endraw %}
+
+<br>pj page:
+
+{% raw %}
+<a href="https://zcmax.github.io/projects/LLaVA-3D/" target="_blank" rel="noopener noreferrer">https://zcmax.github.io/projects/LLaVA-3D/</a>
+{% endraw %}
+
+</p><p>3Dに関するspatial understandingの能力を持つVLMで、テキストの出力だけでなく、3Dのbounding boxを出力する専用のデコーダを持つ。<br><br>2DのCLIPベースのimage encoderによる情報を活用しつつ、2D patchに対して3Dに関する位置情報(depth）を3D positional encodingを通じて加えることで3D patchを作成し入力として活用。3Dのgrounding taskを扱うgrounding decoderを導入することで3D理解に関する能力を醸成する。学習は2stageで、最初のstageでは、2D, 3D双方の能力を同時に学習するために2D, 3Dのデータ両方を用いてモデルをSFTする。その後grounding decoderは前段のSFTでさ学習しきれないため、grounding decoder以外のモジュールはfreezeして、3D groundingタスクでdecoderとlocation tokenを学習するらしい。これにより、2D, 3Dシーンの理解力を損なわず、groundingに関する性能を高める。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] An Empirical Study of Catastrophic Forgetting in Large Language Models During Continual Fine-tuning, Yun Luo+, IEEE Transactions on Audio, Speech and Language Processing'25, 2023.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2308.08747</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4174</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, Catastrophic Forgetting, PostTraining</tags>
+<repo-issue-date>2026-01-12</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2308.08747
+- journal: https://ieeexplore.ieee.org/document/11151751
+# Authors
+  - Yun Luo
+  - Zhen Yang
+  - Fandong Meng
+  - Yafu Li
+  - Jie Zhou
+  - Yue Zhang
+# Abstract
+  - Catastrophic forgetting (CF) is a phenomenon that occurs in machine learning when a model forgets previously learned information while acquiring new knowledge for achieving a satisfactory performance in downstream tasks. As large language models (LLMs) have demonstrated remarkable performance, it is intriguing to investigate whether CF exists during the continual instruction tuning of LLMs. This study empirically evaluates the forgetting phenomenon in LLMs' knowledge during continual instruction tuning from the perspectives of domain knowledge, reasoning, and reading comprehension. The experiments reveal that catastrophic forgetting is generally observed in LLMs ranging from 1b to 7b parameters. Surprisingly, as the model scale increases, the severity of forgetting intensifies in such a model sale range which may result from the much significant initial performance in the larger LLM. Comparing the decoder-only model BLOOMZ with the encoder-decoder model mT0, BLOOMZ exhibits less forgetting and retains more knowledge. Interestingly, we also observe that LLMs can mitigate language biases, such as gender bias, during continual fine-tuning. Furthermore, our findings indicate that general instruction tuning can help alleviate the forgetting phenomenon in LLMs during subsequent fine-tuning.
+# Translation (by gpt-4o-mini)
+- 破滅的忘却（CF）は、機械学習において、モデルが新しい知識を習得する際に以前に学習した情報を忘れてしまう現象です。これは、下流タスクで満足のいくパフォーマンスを達成するために起こります。大規模言語モデル（LLMs）が顕著なパフォーマンスを示しているため、LLMsの継続的な指示調整中にCFが存在するかどうかを調査することは興味深いです。本研究では、ドメイン知識、推論、読解力の観点から、LLMsの知識における忘却現象を実証的に評価します。実験の結果、1bから7bパラメータの範囲のLLMsにおいて、破滅的忘却が一般的に観察されることが明らかになりました。驚くべきことに、モデルのスケールが増加するにつれて、忘却の深刻度が強まることが示されました。これは、大規模なLLMにおける初期のパフォーマンスが非常に重要であるためかもしれません。デコーダ専用モデルのBLOOMZとエンコーダ-デコーダモデルのmT0を比較すると、BLOOMZは忘却が少なく、より多くの知識を保持しています。興味深いことに、LLMsは継続的なファインチューニング中に性別バイアスなどの言語バイアスを軽減できることも観察されました。さらに、我々の発見は、一般的な指示調整がLLMsのその後のファインチューニング中に忘却現象を軽減するのに役立つことを示しています。
+# Summary (by gpt-4o-mini)
+- 破滅的忘却（CF）は、機械学習モデルが新しい知識を学ぶ際に以前の情報を忘れる現象であり、特に大規模言語モデル（LLMs）において調査されました。実験により、1bから7bパラメータのLLMsでCFが一般的に観察され、モデルのスケールが増すほど忘却が深刻化することが明らかになりました。デコーダ専用モデルのBLOOMZは、エンコーダ-デコーダモデルのmT0よりも忘却が少なく、知識を保持しています。また、LLMsは継続的なファインチューニング中に言語バイアスを軽減できることも示され、一般的な指示調整が忘却現象を軽減する可能性があることが示唆されました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2010480993052803509?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Extracting alignment data in open models, Federico Barbero+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.18554</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3399</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, InstructionTuning, SyntheticData, OpenWeight</tags>
+<repo-issue-date>2025-10-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.18554
+# Authors
+  - Federico Barbero
+  - Xiangming Gu
+  - Christopher A. Choquette-Choo
+  - Chawin Sitawarin
+  - Matthew Jagielski
+  - Itay Yona
+  - Petar Veličković
+  - Ilia Shumailov
+  - Jamie Hayes
+# Abstract
+  - In this work, we show that it is possible to extract significant amounts of alignment training data from a post-trained model -- useful to steer the model to improve certain capabilities such as long-context reasoning, safety, instruction following, and maths. While the majority of related work on memorisation has focused on measuring success of training data extraction through string matching, we argue that embedding models are better suited for our specific goals. Distances measured through a high quality embedding model can identify semantic similarities between strings that a different metric such as edit distance will struggle to capture. In fact, in our investigation, approximate string matching would have severely undercounted (by a conservative estimate of $10\times$) the amount of data that can be extracted due to trivial artifacts that deflate the metric. Interestingly, we find that models readily regurgitate training data that was used in post-training phases such as SFT or RL. We show that this data can be then used to train a base model, recovering a meaningful amount of the original performance. We believe our work exposes a possibly overlooked risk towards extracting alignment data. Finally, our work opens up an interesting discussion on the downstream effects of distillation practices: since models seem to be regurgitating aspects of their training set, distillation can therefore be thought of as indirectly training on the model's original dataset.
+# Translation (by gpt-4o-mini)
+- 本研究では、ポストトレーニングモデルから大量のアライメントトレーニングデータを抽出することが可能であることを示します。これは、モデルの特定の能力（長文コンテキスト推論、安全性、指示の遵守、数学など）を改善するために役立ちます。関連する研究の大部分がトレーニングデータ抽出の成功を文字列マッチングを通じて測定することに焦点を当てているのに対し、私たちは埋め込みモデルが私たちの特定の目標により適していると主張します。高品質の埋め込みモデルを通じて測定された距離は、編集距離のような異なるメトリックでは捉えにくい文字列間の意味的類似性を特定できます。実際、私たちの調査では、近似文字列マッチングは、メトリックを減少させる些細なアーティファクトのために、抽出可能なデータ量を保守的に推定しても$10\times$も過小評価してしまうことがわかりました。興味深いことに、モデルはSFTやRLなどのポストトレーニングフェーズで使用されたトレーニングデータを容易に再生することがわかりました。このデータは、ベースモデルのトレーニングに使用され、元のパフォーマンスの意味のある量を回復することができます。私たちは、この研究がアライメントデータ抽出に対する見落とされがちなリスクを明らかにしていると考えています。最後に、私たちの研究は蒸留手法の下流効果に関する興味深い議論を開きます。モデルがトレーニングセットの側面を再生しているように見えるため、蒸留はモデルの元のデータセットに間接的にトレーニングしていると考えることができます。
+# Summary (by gpt-4o-mini)
+- 本研究では、ポストトレーニングモデルからアライメントトレーニングデータを抽出する方法を示し、埋め込みモデルが特定の能力向上に適していると主張します。文字列マッチングに依存せず、意味的類似性を捉えることで、抽出可能なデータ量を過小評価するリスクを明らかにしました。また、モデルはポストトレーニングフェーズで使用されたデータを再生でき、元のパフォーマンスを回復可能であることを示しました。研究は蒸留手法の影響についても議論します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/fedzbar/status/1980994748124172539?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Magpieのような話だろうか？</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2094" target="_blank" rel="noopener noreferrer">[Paper Note] Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs   with Nothing, Zhangchen Xu+, ICLR'25, 2024.06</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MetaMorph: Multimodal Understanding and Generation via Instruction   Tuning, Shengbang Tong+, ICCV'25, 2024.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2412.14164</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3335</repo-issue-link>
+<tags>ComputerVision, LanguageModel, InstructionTuning, DiffusionModel, TextToImageGeneration, read-later, Selected Papers/Blogs, ICCV, ImageSynthesis</tags>
+<repo-issue-date>2025-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2412.14164
+# Authors
+  - Shengbang Tong
+  - David Fan
+  - Jiachen Zhu
+  - Yunyang Xiong
+  - Xinlei Chen
+  - Koustuv Sinha
+  - Michael Rabbat
+  - Yann LeCun
+  - Saining Xie
+  - Zhuang Liu
+# Abstract
+  - In this work, we propose Visual-Predictive Instruction Tuning (VPiT) - a simple and effective extension to visual instruction tuning that enables a pretrained LLM to quickly morph into an unified autoregressive model capable of generating both text and visual tokens. VPiT teaches an LLM to predict discrete text tokens and continuous visual tokens from any input sequence of image and text data curated in an instruction-following format. Our empirical investigation reveals several intriguing properties of VPiT: (1) visual generation ability emerges as a natural byproduct of improved visual understanding, and can be unlocked efficiently with a small amount of generation data; (2) while we find understanding and generation to be mutually beneficial, understanding data contributes to both capabilities more effectively than generation data. Building upon these findings, we train our MetaMorph model and achieve competitive performance on both visual understanding and generation. In visual generation, MetaMorph can leverage the world knowledge and reasoning abilities gained from LLM pretraining, and overcome common failure modes exhibited by other generation models. Our results suggest that LLMs may have strong "prior" vision capabilities that can be efficiently adapted to both visual understanding and generation with a relatively simple instruction tuning process.
+# Translation (by gpt-4o-mini)
+- 本研究では、Visual-Predictive Instruction Tuning (VPiT) を提案します。これは、視覚的指示調整のシンプルで効果的な拡張であり、事前学習された大規模言語モデル（LLM）がテキストと視覚トークンの両方を生成できる統一的な自己回帰モデルに迅速に変形することを可能にします。VPiTは、LLMに対して、指示に従った形式でキュレーションされた画像とテキストデータの任意の入力シーケンスから離散的なテキストトークンと連続的な視覚トークンを予測することを教えます。我々の実証的な調査は、VPiTのいくつかの興味深い特性を明らかにします：(1) 視覚生成能力は、改善された視覚理解の自然な副産物として現れ、少量の生成データで効率的に解放されることができる；(2) 理解と生成は相互に有益であることがわかりましたが、理解データは生成データよりも両方の能力に対してより効果的に寄与します。これらの発見に基づいて、我々はMetaMorphモデルを訓練し、視覚理解と生成の両方で競争力のあるパフォーマンスを達成しました。視覚生成において、MetaMorphはLLMの事前学習から得た世界知識と推論能力を活用し、他の生成モデルが示す一般的な失敗モードを克服します。我々の結果は、LLMが視覚理解と生成の両方に効率的に適応できる強力な「事前」視覚能力を持っている可能性があることを示唆しています。これは比較的シンプルな指示調整プロセスによって実現されます。
+# Summary (by gpt-4o-mini)
+- 本研究では、視覚的指示調整の新手法VPiTを提案し、LLMがテキストと視覚トークンを生成できるようにします。VPiTは、キュレーションされた画像とテキストデータからトークンを予測する能力をLLMに教え、視覚生成能力が向上することを示しました。特に、理解データが生成データよりも効果的に両方の能力に寄与することが明らかになりました。MetaMorphモデルを訓練し、視覚理解と生成で競争力のあるパフォーマンスを達成し、LLMの事前学習から得た知識を活用することで、視覚生成における一般的な失敗を克服しました。これにより、LLMが視覚理解と生成に適応できる可能性が示唆されました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/davidjfan/status/1979994285379641487?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Thinking with Camera: A Unified Multimodal Model for Camera-Centric  Understanding and Generation, Kang Liao+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.08673</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3330</repo-issue-link>
+<tags>ComputerVision, Dataset, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, Evaluation, MultiModal, DiffusionModel, UMM, SpatialUnderstanding</tags>
+<repo-issue-date>2025-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.08673
+# Authors
+  - Kang Liao
+  - Size Wu
+  - Zhonghua Wu
+  - Linyi Jin
+  - Chao Wang
+  - Yikai Wang
+  - Fei Wang
+  - Wei Li
+  - Chen Change Loy
+# Abstract
+  - Camera-centric understanding and generation are two cornerstones of spatial intelligence, yet they are typically studied in isolation. We present Puffin, a unified camera-centric multimodal model that extends spatial awareness along the camera dimension. Puffin integrates language regression and diffusion-based generation to interpret and create scenes from arbitrary viewpoints. To bridge the modality gap between cameras and vision-language, we introduce a novel paradigm that treats camera as language, enabling thinking with camera. This guides the model to align spatially grounded visual cues with photographic terminology while reasoning across geometric context. Puffin is trained on Puffin-4M, a large-scale dataset of 4 million vision-language-camera triplets. We incorporate both global camera parameters and pixel-wise camera maps, yielding flexible and reliable spatial generation. Experiments demonstrate Puffin superior performance over specialized models for camera-centric generation and understanding. With instruction tuning, Puffin generalizes to diverse cross-view tasks such as spatial imagination, world exploration, and photography guidance. We will release the code, models, dataset pipeline, and benchmark to advance multimodal spatial intelligence research.
+# Translation (by gpt-4o-mini)
+- カメラ中心の理解と生成は、空間知能の二つの基盤でありながら、通常は孤立して研究されている。本研究では、カメラの次元に沿った空間認識を拡張する統一的なカメラ中心のマルチモーダルモデル「Puffin」を提案する。Puffinは、言語回帰と拡散ベースの生成を統合し、任意の視点からシーンを解釈し生成する。カメラと視覚-言語の間のモダリティギャップを埋めるために、カメラを言語として扱う新しいパラダイムを導入し、カメラを使った思考を可能にする。これにより、モデルは空間的に基づいた視覚的手がかりを写真用語と整合させ、幾何学的文脈を考慮しながら推論を行う。Puffinは、400万の視覚-言語-カメラのトリプレットからなる大規模データセット「Puffin-4M」で訓練されている。グローバルなカメラパラメータとピクセル単位のカメラマップの両方を組み込むことで、柔軟で信頼性の高い空間生成を実現している。実験により、Puffinはカメラ中心の生成と理解において専門モデルを上回る性能を示した。指示チューニングを施すことで、Puffinは空間的想像、世界探査、写真ガイダンスなどの多様なクロスビュータスクに一般化する。マルチモーダル空間知能研究を進展させるために、コード、モデル、データセットパイプライン、ベンチマークを公開する予定である。
+# Summary (by gpt-4o-mini)
+- カメラ中心の理解と生成を統合したマルチモーダルモデル「Puffin」を提案。Puffinは、言語回帰と拡散生成を組み合わせ、カメラを言語として扱う新しいアプローチを採用。400万の視覚-言語-カメラのデータセット「Puffin-4M」で訓練され、空間的な視覚的手がかりを考慮した推論を実現。実験結果では、専門モデルを上回る性能を示し、指示チューニングにより多様なタスクに対応可能。研究成果はコードやデータセットと共に公開予定。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1979911820401086613?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page: 
+
+{% raw %}
+<a href="https://kangliao929.github.io/projects/puffin/" target="_blank" rel="noopener noreferrer">https://kangliao929.github.io/projects/puffin/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Generalizing Verifiable Instruction Following, Valentina Pyatkin+, NeurIPS'25, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.02833</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2914</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, InstructionTuning, Evaluation, NeurIPS, RLVR, Selected Papers/Blogs, InstructionFollowingCapability</tags>
+<repo-issue-date>2025-09-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.02833
+# Authors
+  - Valentina Pyatkin
+  - Saumya Malik
+  - Victoria Graf
+  - Hamish Ivison
+  - Shengyi Huang
+  - Pradeep Dasigi
+  - Nathan Lambert
+  - Hannaneh Hajishirzi
+# Abstract
+  - A crucial factor for successful human and AI interaction is the ability of language models or chatbots to follow human instructions precisely. A common feature of instructions are output constraints like ``only answer with yes or no" or ``mention the word `abrakadabra' at least 3 times" that the user adds to craft a more useful answer. Even today's strongest models struggle with fulfilling such constraints. We find that most models strongly overfit on a small set of verifiable constraints from the benchmarks that test these abilities, a skill called precise instruction following, and are not able to generalize well to unseen output constraints. We introduce a new benchmark, IFBench, to evaluate precise instruction following generalization on 58 new, diverse, and challenging verifiable out-of-domain constraints. In addition, we perform an extensive analysis of how and on what data models can be trained to improve precise instruction following generalization. Specifically, we carefully design constraint verification modules and show that reinforcement learning with verifiable rewards (RLVR) significantly improves instruction following. In addition to IFBench, we release 29 additional new hand-annotated training constraints and verification functions, RLVR training prompts, and code.
+# Translation (by gpt-4o-mini)
+- 人間とAIの相互作用を成功させるための重要な要素は、言語モデルやチャットボットが人間の指示に正確に従う能力です。指示の一般的な特徴には、「はいまたはいいえだけで答えてください」や「『アブラカダブラ』という言葉を少なくとも3回言及してください」といった出力制約が含まれ、ユーザーはより有用な回答を作成するためにこれらを追加します。しかし、今日の最強のモデルでさえ、これらの制約を満たすのに苦労しています。私たちは、ほとんどのモデルがこれらの能力をテストするベンチマークからの小さな検証可能な制約に強く過剰適合しており、未見の出力制約に対してうまく一般化できないことを発見しました。そこで、私たちは58の新しい、多様で挑戦的な検証可能なドメイン外制約に対する正確な指示遵守の一般化を評価するための新しいベンチマーク、IFBenchを導入します。さらに、モデルが正確な指示遵守の一般化を改善するためにどのように、またどのデータで訓練できるかについての広範な分析を行います。具体的には、制約検証モジュールを慎重に設計し、検証可能な報酬を用いた強化学習（RLVR）が指示遵守を大幅に改善することを示します。IFBenchに加えて、29の新しい手動注釈付き訓練制約と検証関数、RLVR訓練プロンプト、およびコードを公開します。
+# Summary (by gpt-4o-mini)
+- 人間とAIの相互作用において、言語モデルが指示に従う能力が重要であるが、現在のモデルは出力制約を満たすのに苦労している。多くのモデルは既存のベンチマークに過剰適合しており、未見の制約に対して一般化できない。これを解決するために、新しいベンチマークIFBenchを導入し、指示遵守の一般化を評価する。さらに、制約検証モジュールと強化学習（RLVR）を用いて指示遵守を改善する方法を示し、関連するデータや訓練プロンプトを公開する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/valentina__py/status/1969294455938138243?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Instruction Followingのための新たなベンチマークIFBench（多様（58種類の制約）で精緻、かつ複数の出力に関する制約を持つ。Appendix Aを参照のこと)を導入し、RLVRによってInstruction tuningする方法を提案している模様。複数のIFの制約を同時に学習した方がOODに対してロバストになることや、制約ごとのinstance数に対する性能の変化、またSFT, DPOによってInstrtction Tuningを実施したモデルに対して、制約を満たしたか否かのVerifiableなデータから生成した嗜好データを用いて追加のDPOを実施した場合と、RLVRに基づくGRPOを実施した場合のどちらの性能が良いかなども実験されている（一貫してGRPOが良い）。</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/josancamon19/status/2005684749831147625?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CoT-Self-Instruct: Building high-quality synthetic prompts for reasoning  and non-reasoning tasks, Ping Yu+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.23751</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2334</repo-issue-link>
+<tags>NLP, LanguageModel, InstructionTuning, SyntheticData, action_wanted, Reasoning</tags>
+<repo-issue-date>2025-08-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.23751
+# Authors
+  - Ping Yu
+  - Jack Lanchantin
+  - Tianlu Wang
+  - Weizhe Yuan
+  - Olga Golovneva
+  - Ilia Kulikov
+  - Sainbayar Sukhbaatar
+  - Jason Weston
+  - Jing Xu
+# Abstract
+  - We propose CoT-Self-Instruct, a synthetic data generation method that instructs LLMs to first reason and plan via Chain-of-Thought (CoT) based on the given seed tasks, and then to generate a new synthetic prompt of similar quality and complexity for use in LLM training, followed by filtering for high-quality data with automatic metrics. In verifiable reasoning, our synthetic data significantly outperforms existing training datasets, such as s1k and OpenMathReasoning, across MATH500, AMC23, AIME24 and GPQA-Diamond. For non-verifiable instruction-following tasks, our method surpasses the performance of human or standard self-instruct prompts on both AlpacaEval 2.0 and Arena-Hard.
+# Translation (by gpt-4o-mini)
+- 私たちはCoT-Self-Instructを提案します。これは、与えられたシードタスクに基づいて、まずChain-of-Thought（CoT）を用いて推論と計画を行うように大規模言語モデル（LLMs）に指示し、その後、LLMのトレーニングに使用するために、同様の品質と複雑さの新しい合成プロンプトを生成し、高品質なデータを自動的な指標でフィルタリングする合成データ生成手法です。検証可能な推論において、私たちの合成データは、MATH500、AMC23、AIME24、GPQA-Diamondにおいて、既存のトレーニングデータセット（s1kやOpenMathReasoningなど）を大幅に上回ります。検証不可能な指示に従うタスクにおいても、私たちの手法はAlpacaEval 2.0およびArena-Hardの両方で、人間や標準的な自己指示プロンプトのパフォーマンスを上回ります。
+# Summary (by gpt-4o-mini)
+- CoT-Self-Instructを提案し、LLMに基づいて新しい合成プロンプトを生成する手法を開発。合成データはMATH500やAMC23などで既存データセットを超える性能を示し、検証不可能なタスクでも人間や標準プロンプトを上回る結果を得た。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1951084679286722793?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>より複雑で、Reasoningやplanningを促すようなinstructionが生成される模様。実際に生成されたinstructionのexampleは全体をざっとみた感じこの図中のもののみのように見える。<br><img src="https://github.com/user-attachments/assets/98dcb6a3-686f-4e3d-bf83-7b36765c0953" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下のスクショはMagpieによって合成されたinstruction。InstructionTuning用のデータを合成するならMagpieが便利そうだなぁ、と思っていたのだが、比較するとCoT-SelfInstructの方が、より複雑で具体的な指示を含むinstructionが生成されるように見える。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2094" target="_blank" rel="noopener noreferrer">[Paper Note] Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs   with Nothing, Zhangchen Xu+, ICLR'25, 2024.06</a>
+<br><br><img src="https://github.com/user-attachments/assets/a631a2bc-d2ee-49dd-96a1-00354ff1f40a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] NV-Embed: Improved Techniques for Training LLMs as Generalist Embedding   Models, Chankyu Lee+, ICLR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2405.17428</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2182</repo-issue-link>
+<tags>RecommenderSystems, Embeddings, InformationRetrieval, NLP, LanguageModel, RepresentationLearning, InstructionTuning, ContrastiveLearning, ICLR, Generalization, Decoder</tags>
+<repo-issue-date>2025-07-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2405.17428
+# Authors
+  - Chankyu Lee
+  - Rajarshi Roy
+  - Mengyao Xu
+  - Jonathan Raiman
+  - Mohammad Shoeybi
+  - Bryan Catanzaro
+  - Wei Ping
+# Abstract
+  - Decoder-only LLM-based embedding models are beginning to outperform BERT or T5-based embedding models in general-purpose text embedding tasks, including dense vector-based retrieval. In this work, we introduce NV-Embed, incorporating architectural designs, training procedures, and curated datasets to significantly enhance the performance of LLM as a versatile embedding model, while maintaining its simplicity and reproducibility. For model architecture, we propose a latent attention layer to obtain pooled embeddings, which consistently improves retrieval and downstream task accuracy compared to mean pooling or using the last <EOS> token embedding from LLMs. To enhance representation learning, we remove the causal attention mask of LLMs during contrastive training. For training algorithm, we introduce a two-stage contrastive instruction-tuning method. It first applies contrastive training with instructions on retrieval datasets, utilizing in-batch negatives and curated hard negative examples. At stage-2, it blends various non-retrieval into instruction tuning, which not only enhances non-retrieval task accuracy but also improves retrieval performance. For training data, we utilize the hard-negative mining, synthetic data generation and existing public available datasets to boost the performance of embedding model. By combining these techniques, our NV-Embed-v1 and NV-Embed-v2 models obtained the No.1 position on the MTEB leaderboard (as of May 24 and August 30, 2024, respectively) across 56 tasks, demonstrating the sustained effectiveness of the proposed methods over time. It also achieved the highest scores in the Long Doc section and the second-highest scores in the QA section of the AIR Benchmark, which covers a range of out-of-domain information retrieval topics beyond those in MTEB. We further provide the analysis of model compression techniques for generalist embedding models.
+# Translation (by gpt-4o-mini)
+- デコーダー専用のLLMベースの埋め込みモデルは、一般的なテキスト埋め込みタスク、特に密ベクトルベースの検索において、BERTやT5ベースの埋め込みモデルを上回り始めています。本研究では、NV-Embedを紹介し、アーキテクチャ設計、トレーニング手順、およびキュレーションされたデータセットを組み込むことで、LLMを多目的な埋め込みモデルとしての性能を大幅に向上させつつ、そのシンプルさと再現性を維持します。モデルアーキテクチャにおいては、プールされた埋め込みを取得するための潜在的注意層を提案し、平均プーリングやLLMからの最後の<EOS>トークン埋め込みと比較して、検索および下流タスクの精度を一貫して向上させます。表現学習を強化するために、対照的トレーニング中にLLMの因果的注意マスクを削除します。トレーニングアルゴリズムとして、二段階の対照的指示調整手法を導入します。最初の段階では、検索データセットに対して指示を用いた対照的トレーニングを適用し、バッチ内のネガティブサンプルやキュレーションされたハードネガティブ例を利用します。第2段階では、さまざまな非検索タスクを指示調整に組み合わせ、非検索タスクの精度を向上させるだけでなく、検索性能も改善します。トレーニングデータには、ハードネガティブマイニング、合成データ生成、および既存の公開データセットを利用して埋め込みモデルの性能を向上させます。これらの技術を組み合わせることで、NV-Embed-v1およびNV-Embed-v2モデルは、56のタスクにわたってMTEBリーダーボードで1位を獲得しました（それぞれ2024年5月24日および8月30日現在）、提案手法の持続的な効果を示しています。また、MTEBの範囲を超えたドメイン外情報検索トピックをカバーするAIRベンチマークのLong Docセクションで最高スコアを達成し、QAセクションで2位のスコアを獲得しました。さらに、一般的な埋め込みモデルのためのモデル圧縮技術の分析も提供します。
+# Summary (by gpt-4o-mini)
+- デコーダー専用のLLMベースの埋め込みモデルNV-Embedは、BERTやT5を上回る性能を示す。アーキテクチャ設計やトレーニング手法を工夫し、検索精度を向上させるために潜在的注意層を提案。二段階の対照的指示調整手法を導入し、検索と非検索タスクの両方で精度を向上。NV-EmbedモデルはMTEBリーダーボードで1位を獲得し、ドメイン外情報検索でも高スコアを達成。モデル圧縮技術の分析も行っている。</issue-body>
+<maintainer-comment-text><p>Decoder-Only LLMのlast hidden layerのmatrixを新たに導入したLatent Attention Blockのinputとし、Latent Attention BlockはEmbeddingをOutputする。Latent Attention Blockは、last hidden layer (系列長l×dの<br>matrix)をQueryとみなし、保持しているLatent Array(trainableなmatrixで辞書として機能する;後述の学習においてパラメータが学習される)[^1]をK,Vとして、CrossAttentionによってcontext vectorを生成し、その後MLPとMean Poolingを実施することでEmbeddingに変換する。<br><img src="https://github.com/user-attachments/assets/7a023273-aafd-4cfa-9b39-961180543ae9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/767e3ac1-fe70-4653-bbe7-091c1f1dc0f7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>学習は2段階で行われ、まずQAなどのRetrievalタスク用のデータセットをIn Batch negativeを用いてContrastive Learningしモデルの検索能力を高める。その後、検索と非検索タスクの両方を用いて、hard negativeによってcontrastive learningを実施し、検索以外のタスクの能力も高める（下表）。両者において、instructionテンプレートを用いて、instructionによって条件付けて学習をすることで、instructionに応じて生成されるEmbeddingが変化するようにする。また、学習時にはLLMのcausal maskは無くし、bidirectionalにrepresentationを考慮できるようにする。<br><img src="https://github.com/user-attachments/assets/26d4e126-1d18-421e-873f-f0eef4fc2026" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2183" target="_blank" rel="noopener noreferrer">[Paper Note] Perceiver IO: A General Architecture for Structured Inputs & Outputs, Andrew Jaegle+, ICLR'22, 2021.07</a>
+ Perceiver-IOにインスパイアされている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>100 Days After DeepSeek-R1: A Survey on Replication Studies and More  Directions for Reasoning Language Models, Chong Zhang+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.00551</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1925</repo-issue-link>
+<tags>Survey, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, InstructionTuning, PPO (ProximalPolicyOptimization), Reasoning, LongSequence, RewardHacking, GRPO, Contamination-free, VerifiableRewards, CurriculumLearning</tags>
+<repo-issue-date>2025-05-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.00551
+# Authors
+  - Chong Zhang
+  - Yue Deng
+  - Xiang Lin
+  - Bin Wang
+  - Dianwen Ng
+  - Hai Ye
+  - Xingxuan Li
+  - Yao Xiao
+  - Zhanfeng Mo
+  - Qi Zhang
+  - Lidong Bing
+# Abstract
+  - The recent development of reasoning language models (RLMs) represents a novel evolution in large language models. In particular, the recent release of DeepSeek-R1 has generated widespread social impact and sparked enthusiasm in the research community for exploring the explicit reasoning paradigm of language models. However, the implementation details of the released models have not been fully open-sourced by DeepSeek, including DeepSeek-R1-Zero, DeepSeek-R1, and the distilled small models. As a result, many replication studies have emerged aiming to reproduce the strong performance achieved by DeepSeek-R1, reaching comparable performance through similar training procedures and fully open-source data resources. These works have investigated feasible strategies for supervised fine-tuning (SFT) and reinforcement learning from verifiable rewards (RLVR), focusing on data preparation and method design, yielding various valuable insights. In this report, we provide a summary of recent replication studies to inspire future research. We primarily focus on SFT and RLVR as two main directions, introducing the details for data construction, method design and training procedure of current replication studies. Moreover, we conclude key findings from the implementation details and experimental results reported by these studies, anticipating to inspire future research. We also discuss additional techniques of enhancing RLMs, highlighting the potential of expanding the application scope of these models, and discussing the challenges in development. By this survey, we aim to help researchers and developers of RLMs stay updated with the latest advancements, and seek to inspire new ideas to further enhance RLMs.
+# Translation (by gpt-4o-mini)
+- 最近の推論言語モデル（RLM）の開発は、大規模言語モデルにおける新たな進化を示しています。特に、最近リリースされたDeepSeek-R1は、広範な社会的影響をもたらし、言語モデルの明示的な推論パラダイムを探求する研究コミュニティの熱意を引き起こしました。しかし、DeepSeekによってリリースされたモデルの実装詳細は、DeepSeek-R1-Zero、DeepSeek-R1、および蒸留された小型モデルを含め、完全にはオープンソース化されていません。その結果、多くの再現研究が登場し、DeepSeek-R1が達成した強力なパフォーマンスを再現しようとし、類似のトレーニング手順と完全にオープンソースのデータリソースを通じて同等のパフォーマンスに到達しています。これらの研究は、データ準備と方法設計に焦点を当て、監視付きファインチューニング（SFT）および検証可能な報酬からの強化学習（RLVR）の実行可能な戦略を調査し、さまざまな貴重な洞察を得ています。本報告では、今後の研究を促進するために最近の再現研究の概要を提供します。主にSFTとRLVRの2つの主要な方向性に焦点を当て、現在の再現研究のデータ構築、方法設計、トレーニング手順の詳細を紹介します。さらに、これらの研究によって報告された実装の詳細と実験結果からの重要な発見をまとめ、今後の研究を刺激することを期待しています。また、RLMを強化するための追加技術についても議論し、これらのモデルの適用範囲を拡大する可能性を強調し、開発における課題についても考察します。この調査を通じて、RLMの研究者や開発者が最新の進展を把握し、RLMをさらに強化するための新しいアイデアを刺激することを目指しています。
+# Summary (by gpt-4o-mini)
+- 最近の推論言語モデル（RLM）の進展を受けて、DeepSeek-R1が注目を集めているが、その実装詳細は完全にはオープンソース化されていない。これにより、多くの再現研究が行われ、DeepSeek-R1のパフォーマンスを再現しようとする試みが続いている。特に、監視付きファインチューニング（SFT）と強化学習（RLVR）の戦略が探求され、貴重な洞察が得られている。本報告では、再現研究の概要を提供し、データ構築やトレーニング手順の詳細を紹介し、今後の研究の促進を目指す。また、RLMを強化するための追加技術や開発上の課題についても考察する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1918898257406709983?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>サーベイのtakeawayが箇条書きされている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Following Length Constraints in Instructions, Weizhe Yuan+, EMNLP'25, 2024.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2406.17744</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1341</repo-issue-link>
+<tags>Controllable, NLP, LanguageModel, InstructionTuning, action_wanted, EMNLP, Length, One-Line Notes</tags>
+<repo-issue-date>2024-07-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2406.17744
+# Authors
+  - Weizhe Yuan
+  - Ilia Kulikov
+  - Ping Yu
+  - Kyunghyun Cho
+  - Sainbayar Sukhbaatar
+  - Jason Weston
+  - Jing Xu
+# Abstract
+  - Aligned instruction following models can better fulfill user requests than their unaligned counterparts. However, it has been shown that there is a length bias in evaluation of such models, and that training algorithms tend to exploit this bias by learning longer responses. In this work we show how to train models that can be controlled at inference time with instructions containing desired length constraints. Such models are superior in length instructed evaluations, outperforming standard instruction following models such as GPT4, Llama 3 and Mixtral.
+# Translation (by gpt-4o-mini)
+- 整列された指示に従うモデルは、整列されていないモデルよりもユーザーの要求をよりよく満たすことができます。しかし、これらのモデルの評価には長さのバイアスが存在し、トレーニングアルゴリズムはこのバイアスを利用してより長い応答を学習する傾向があることが示されています。本研究では、所望の長さの制約を含む指示で推論時に制御可能なモデルのトレーニング方法を示します。このようなモデルは長さにおける指示評価において優れており、GPT4、Llama 3、およびMixtralなどの標準的な指示に従うモデルを上回ります。
+# Summary (by gpt-4o-mini)
+- 整列された指示に従うモデルは、整列されていないモデルよりもユーザーの要求に対して優れていますが、評価には長さバイアスが存在します。本研究では、望ましい応答の長さを制御するモデルのトレーニング方法を提案し、これにより長さに対する指示評価において、GPT4やLlama 3、Mixtralなどの従来モデルを上回る性能を示しました。</issue-body>
+<maintainer-comment-text><p>SoTA LLMがOutput長の制約に従わないことを示し、それを改善する学習手法LIFT-DPOを提案<img src="https://github.com/user-attachments/assets/1002ae4a-66b2-4125-8cbb-3a2a8484da56" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>元ツイート: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1805771223747481690?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MANTIS: Interleaved Multi-Image Instruction Tuning, Dongfu Jiang+, TMLR'24 Outstanding Certification, 2024.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2405.01483</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3862</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, Dataset, InstructionTuning, MultiModal, TMLR, Selected Papers/Blogs, VisionLanguageModel, 2D (Image)</tags>
+<repo-issue-date>2025-12-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2405.01483
+# Authors
+  - Dongfu Jiang
+  - Xuan He
+  - Huaye Zeng
+  - Cong Wei
+  - Max Ku
+  - Qian Liu
+  - Wenhu Chen
+# Abstract
+  - Large multimodal models (LMMs) have shown great results in single-image vision language tasks. However, their abilities to solve multi-image visual language tasks is yet to be improved. The existing LMMs like OpenFlamingo, Emu2, and Idefics gain their multi-image ability through pre-training on hundreds of millions of noisy interleaved image-text data from the web, which is neither efficient nor effective. In this paper, we aim to build strong multi-image LMMs via instruction tuning with academic-level resources. Therefore, we meticulously construct Mantis-Instruct containing 721K multi-image instruction data to train a family of Mantis models. The instruction tuning empowers Mantis with different multi-image skills like co-reference, comparison, reasoning, and temporal understanding. We evaluate Mantis on 8 multi-image benchmarks and 6 single-image benchmarks. Mantis-Idefics2 can achieve SoTA results on all the multi-image benchmarks and beat the strongest multi-image baseline, Idefics2-8B by an average of 13 absolute points. Notably, Idefics2-8B was pre-trained on 140M interleaved multi-image data, which is 200x larger than Mantis-Instruct. We observe that Mantis performs equivalently well on the held-in and held-out benchmarks, which shows its generalization ability. We further evaluate Mantis on single-image benchmarks and demonstrate that Mantis also maintains a strong single-image performance on par with CogVLM and Emu2. Our results show that multi-image abilities are not necessarily gained through massive pre-training, instead, they can be gained by low-cost instruction tuning. The training and evaluation of Mantis has paved the road for future work to improve LMMs' multi-image abilities.
+# Translation (by gpt-4o-mini)
+- 大規模マルチモーダルモデル（LMMs）は、単一画像の視覚言語タスクにおいて優れた結果を示しています。しかし、複数画像の視覚言語タスクを解決する能力はまだ改善の余地があります。既存のLMMs、例えばOpenFlamingo、Emu2、Ideficsは、ウェブからの数億のノイズの多い交互に配置された画像-テキストデータで事前学習を行うことで、複数画像の能力を獲得していますが、これは効率的でも効果的でもありません。本論文では、学術レベルのリソースを用いた指示調整を通じて、強力な複数画像LMMsを構築することを目指します。そのため、721Kの複数画像指示データを含むMantis-Instructを慎重に構築し、Mantisモデルのファミリーを訓練します。指示調整により、Mantisは共参照、比較、推論、時間的理解などの異なる複数画像スキルを獲得します。Mantisを8つの複数画像ベンチマークと6つの単一画像ベンチマークで評価しました。Mantis-Idefics2は、すべての複数画像ベンチマークで最先端の結果を達成し、最も強力な複数画像ベースラインであるIdefics2-8Bを平均13ポイント上回りました。特筆すべきは、Idefics2-8Bは140Mの交互に配置された複数画像データで事前学習されており、これはMantis-Instructの200倍の規模です。Mantisは保持されたベンチマークと保持されていないベンチマークの両方で同等のパフォーマンスを示し、一般化能力を示しています。さらに、Mantisを単一画像ベンチマークで評価し、CogVLMやEmu2と同等の強力な単一画像パフォーマンスを維持していることを示しました。我々の結果は、複数画像の能力は必ずしも大規模な事前学習によって得られるわけではなく、低コストの指示調整によっても得られることを示しています。Mantisの訓練と評価は、今後の研究がLMMsの複数画像能力を向上させるための道を開きました。
+# Summary (by gpt-4o-mini)
+- Mantisモデルは、721Kの複数画像指示データを用いた指示調整により、複数画像の視覚言語タスクで最先端の性能を達成。特に、Idefics2-8Bを平均13ポイント上回り、一般化能力も示す。大規模な事前学習に依存せず、低コストの指示調整で複数画像能力を向上できることを示した。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=skLtdUVaJa" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=skLtdUVaJa</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhuchen/status/1995554059122868735?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Pangea: A Fully Open Multilingual Multimodal LLM for 39 Languages, Xiang Yue+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.16153v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2470</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, InstructionTuning, Evaluation, MultiLingual, VisionLanguageModel</tags>
+<repo-issue-date>2025-08-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.16153v1
+# Authors
+  - Xiang Yue
+  - Yueqi Song
+  - Akari Asai
+  - Seungone Kim
+  - Jean de Dieu Nyandwi
+  - Simran Khanuja
+  - Anjali Kantharuban
+  - Lintang Sutawika
+  - Sathyanarayanan Ramamoorthy
+  - Graham Neubig
+# Abstract
+  - Despite recent advances in multimodal large language models (MLLMs), their development has predominantly focused on English- and western-centric datasets and tasks, leaving most of the world's languages and diverse cultural contexts underrepresented. This paper introduces Pangea, a multilingual multimodal LLM trained on PangeaIns, a diverse 6M instruction dataset spanning 39 languages. PangeaIns features: 1) high-quality English instructions, 2) carefully machine-translated instructions, and 3) culturally relevant multimodal tasks to ensure cross-cultural coverage. To rigorously assess models' capabilities, we introduce PangeaBench, a holistic evaluation suite encompassing 14 datasets covering 47 languages. Results show that Pangea significantly outperforms existing open-source models in multilingual settings and diverse cultural contexts. Ablation studies further reveal the importance of English data proportions, language popularity, and the number of multimodal training samples on overall performance. We fully open-source our data, code, and trained checkpoints, to facilitate the development of inclusive and robust multilingual MLLMs, promoting equity and accessibility across a broader linguistic and cultural spectrum.
+# Translation (by gpt-4o-mini)
+- 最近のマルチモーダル大規模言語モデル（MLLM）の進展にもかかわらず、その開発は主に英語および西洋中心のデータセットやタスクに焦点を当てており、世界のほとんどの言語や多様な文化的文脈が十分に表現されていません。本論文では、39の言語にわたる多様な6M指示データセットであるPangeaInsを用いて訓練された多言語マルチモーダルLLMであるPangeaを紹介します。PangeaInsは、1) 高品質な英語の指示、2) 丁寧に機械翻訳された指示、3) 文化的に関連するマルチモーダルタスクを特徴としており、異文化間のカバレッジを確保しています。モデルの能力を厳密に評価するために、47の言語をカバーする14のデータセットを含む包括的な評価スイートであるPangeaBenchを導入します。結果は、Pangeaが多言語環境および多様な文化的文脈において既存のオープンソースモデルを大幅に上回ることを示しています。アブレーション研究は、全体的なパフォーマンスに対する英語データの比率、言語の人気、マルチモーダル訓練サンプルの数の重要性をさらに明らかにしています。私たちは、包括的で堅牢な多言語MLLMの開発を促進し、より広範な言語的および文化的スペクトルにおける公平性とアクセス可能性を推進するために、データ、コード、訓練済みチェックポイントを完全にオープンソース化します。
+# Summary (by gpt-4o-mini)
+- Pangeaは、39の言語にわたる6M指示データセットPangeaInsを用いて訓練された多言語マルチモーダルLLMであり、異文化間のカバレッジを確保しています。Pangeaは、47の言語をカバーする評価スイートPangeaBenchで既存のモデルを大幅に上回る性能を示し、英語データの比率やマルチモーダル訓練サンプルの重要性を明らかにしました。データ、コード、訓練済みチェックポイントはオープンソース化され、言語的および文化的公平性を推進します。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Instruction Pre-Training: Language Models are Supervised Multitask   Learners, Daixuan Cheng+, EMNLP'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2406.14491</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2089</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, InstructionTuning, EMNLP</tags>
+<repo-issue-date>2025-06-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2406.14491
+# Authors
+  - Daixuan Cheng
+  - Yuxian Gu
+  - Shaohan Huang
+  - Junyu Bi
+  - Minlie Huang
+  - Furu Wei
+# Abstract
+  - Unsupervised multitask pre-training has been the critical method behind the recent success of language models (LMs). However, supervised multitask learning still holds significant promise, as scaling it in the post-training stage trends towards better generalization. In this paper, we explore supervised multitask pre-training by proposing Instruction Pre-Training, a framework that scalably augments massive raw corpora with instruction-response pairs to pre-train LMs. The instruction-response pairs are generated by an efficient instruction synthesizer built on open-source models. In our experiments, we synthesize 200M instruction-response pairs covering 40+ task categories to verify the effectiveness of Instruction Pre-Training. In pre-training from scratch, Instruction Pre-Training not only consistently enhances pre-trained base models but also benefits more from further instruction tuning. In continual pre-training, Instruction Pre-Training enables Llama3-8B to be comparable to or even outperform Llama3-70B. Our model, code, and data are available at https://github.com/microsoft/LMOps.
+# Translation (by gpt-4o-mini)
+- 無監督のマルチタスク事前学習は、最近の言語モデル（LM）の成功の背後にある重要な手法です。しかし、監視されたマルチタスク学習は依然として大きな可能性を秘めており、事後学習段階でのスケーリングはより良い一般化に向かう傾向があります。本論文では、指示応答ペアを用いて大規模な生データコーパスを拡張するInstruction Pre-Trainingというフレームワークを提案し、監視されたマルチタスク事前学習を探求します。指示応答ペアは、オープンソースモデルに基づいて構築された効率的な指示合成器によって生成されます。実験では、40以上のタスクカテゴリをカバーする2億の指示応答ペアを合成し、Instruction Pre-Trainingの有効性を検証します。ゼロからの事前学習において、Instruction Pre-Trainingは事前学習されたベースモデルを一貫して強化するだけでなく、さらなる指示調整からもより多くの利益を得ます。継続的な事前学習において、Instruction Pre-TrainingはLlama3-8BをLlama3-70Bと同等かそれ以上の性能を発揮させることを可能にします。私たちのモデル、コード、データはhttps://github.com/microsoft/LMOpsで入手可能です。
+# Summary (by gpt-4o-mini)
+- 無監督のマルチタスク事前学習に加え、監視されたマルチタスク学習の可能性を探るために、Instruction Pre-Trainingフレームワークを提案。指示応答ペアを生成し、2億のペアを合成して実験を行い、事前学習モデルの性能を向上させることを確認。Instruction Pre-TrainingはLlama3-8BをLlama3-70Bと同等以上の性能に引き上げる。モデルやデータは公開されている。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>UltraFeedback: Boosting Language Models with Scaled AI Feedback, Ganqu Cui+, ICML'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2310.01377</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1951</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, Alignment, InstructionTuning, ICML, PostTraining</tags>
+<repo-issue-date>2025-05-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2310.01377
+# Authors
+  - Ganqu Cui
+  - Lifan Yuan
+  - Ning Ding
+  - Guanming Yao
+  - Bingxiang He
+  - Wei Zhu
+  - Yuan Ni
+  - Guotong Xie
+  - Ruobing Xie
+  - Yankai Lin
+  - Zhiyuan Liu
+  - Maosong Sun
+# Abstract
+  - Learning from human feedback has become a pivot technique in aligning large language models (LLMs) with human preferences. However, acquiring vast and premium human feedback is bottlenecked by time, labor, and human capability, resulting in small sizes or limited topics of current datasets. This further hinders feedback learning as well as alignment research within the open-source community. To address this issue, we explore how to go beyond human feedback and collect high-quality \textit{AI feedback} automatically for a scalable alternative. Specifically, we identify \textbf{scale and diversity} as the key factors for feedback data to take effect. Accordingly, we first broaden instructions and responses in both amount and breadth to encompass a wider range of user-assistant interactions. Then, we meticulously apply a series of techniques to mitigate annotation biases for more reliable AI feedback. We finally present \textsc{UltraFeedback}, a large-scale, high-quality, and diversified AI feedback dataset, which contains over 1 million GPT-4 feedback for 250k user-assistant conversations from various aspects. Built upon \textsc{UltraFeedback}, we align a LLaMA-based model by best-of-$n$ sampling and reinforcement learning, demonstrating its exceptional performance on chat benchmarks. Our work validates the effectiveness of scaled AI feedback data in constructing strong open-source chat language models, serving as a solid foundation for future feedback learning research. Our data and models are available at https://github.com/thunlp/UltraFeedback.
+# Translation (by gpt-4o-mini)
+- 人間のフィードバックから学ぶことは、大規模言語モデル（LLMs）を人間の好みに合わせるための重要な技術となっています。しかし、膨大で質の高い人間のフィードバックを取得することは、時間、労力、そして人間の能力によって制約されており、現在のデータセットはサイズが小さかったり、トピックが限られたりしています。これにより、フィードバック学習やオープンソースコミュニティ内でのアライメント研究がさらに妨げられています。この問題に対処するために、私たちは人間のフィードバックを超えて、高品質な\textit{AIフィードバック}を自動的に収集し、スケーラブルな代替手段を探ります。具体的には、フィードバックデータが効果を発揮するための重要な要素として\textbf{スケールと多様性}を特定します。それに応じて、まず、ユーザーとアシスタントのインタラクションの幅広い範囲をカバーするために、指示と応答の量と幅を広げます。次に、より信頼性の高いAIフィードバックを得るために、注釈バイアスを軽減する一連の技術を慎重に適用します。最終的に、私たちは\textsc{UltraFeedback}を提示します。これは、さまざまな側面からの25万件のユーザーとアシスタントの会話に対する100万件以上のGPT-4フィードバックを含む、大規模で高品質かつ多様なAIフィードバックデータセットです。\textsc{UltraFeedback}に基づいて、私たちはLLaMAベースのモデルを最良の$n$サンプリングと強化学習によってアライメントし、チャットベンチマークでの優れたパフォーマンスを示します。私たちの研究は、強力なオープンソースチャット言語モデルを構築する上でのスケールされたAIフィードバックデータの有効性を検証し、今後のフィードバック学習研究のための堅固な基盤を提供します。私たちのデータとモデルは、https://github.com/thunlp/UltraFeedback で入手可能です。
+# Summary (by gpt-4o-mini)
+- 人間のフィードバックに加え、高品質なAIフィードバックを自動収集することで、LLMsのアライメントをスケーラブルに実現。多様なインタラクションをカバーし、注釈バイアスを軽減した結果、25万件の会話に対する100万件以上のGPT-4フィードバックを含むデータセット「UltraFeedback」を構築。これに基づき、LLaMAモデルを強化学習でアライメントし、チャットベンチマークで優れた性能を示す。研究はオープンソースチャットモデルの構築におけるAIフィードバックの有効性を検証。データとモデルは公開中。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ORPO: Monolithic Preference Optimization without Reference Model, Jiwoo Hong+, EMNLP'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2403.07691</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1950</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, InstructionTuning, EMNLP</tags>
+<repo-issue-date>2025-05-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2403.07691
+# Authors
+  - Jiwoo Hong
+  - Noah Lee
+  - James Thorne
+# Abstract
+  - While recent preference alignment algorithms for language models have demonstrated promising results, supervised fine-tuning (SFT) remains imperative for achieving successful convergence. In this paper, we study the crucial role of SFT within the context of preference alignment, emphasizing that a minor penalty for the disfavored generation style is sufficient for preference-aligned SFT. Building on this foundation, we introduce a straightforward and innovative reference model-free monolithic odds ratio preference optimization algorithm, ORPO, eliminating the necessity for an additional preference alignment phase. We demonstrate, both empirically and theoretically, that the odds ratio is a sensible choice for contrasting favored and disfavored styles during SFT across the diverse sizes from 125M to 7B. Specifically, fine-tuning Phi-2 (2.7B), Llama-2 (7B), and Mistral (7B) with ORPO on the UltraFeedback alone surpasses the performance of state-of-the-art language models with more than 7B and 13B parameters: achieving up to 12.20% on $\text{AlpacaEval}_{2.0}$ (Figure 1), 66.19% on IFEval (instruction-level loose, Table 6), and 7.32 in MT-Bench (Figure 12). We release code and model checkpoints for Mistral-ORPO-$\alpha$ (7B) and Mistral-ORPO-$\beta$ (7B).
+# Translation (by gpt-4o-mini)
+- 最近の言語モデルに対する好みの整合性アルゴリズムは有望な結果を示していますが、成功した収束を達成するためには、監視付きファインチューニング（SFT）が依然として不可欠です。本論文では、好みの整合性の文脈におけるSFTの重要な役割を研究し、好まれない生成スタイルに対するわずかなペナルティが好みに整合したSFTに十分であることを強調します。この基盤の上に、追加の好みの整合性フェーズを必要としない、シンプルで革新的な参照モデルフリーの単一オッズ比好み最適化アルゴリズムであるORPOを導入します。私たちは、オッズ比がSFT中に好まれるスタイルと好まれないスタイルを対比するための合理的な選択であることを、経験的および理論的に示します。具体的には、Phi-2（2.7B）、Llama-2（7B）、およびMistral（7B）をUltraFeedbackでORPOを用いてファインチューニングすることで、7Bおよび13Bパラメータを超える最先端の言語モデルの性能を上回ることができ、$\text{AlpacaEval}_{2.0}$で最大12.20%、IFEval（指示レベルの緩い評価）で66.19%、MT-Benchで7.32を達成しました。私たちは、Mistral-ORPO-$\alpha$（7B）およびMistral-ORPO-$\beta$（7B）のコードとモデルチェックポイントを公開します。
+# Summary (by gpt-4o-mini)
+- 本論文では、好みの整合性における監視付きファインチューニング（SFT）の重要性を強調し、わずかなペナルティで好みに整合したSFTが可能であることを示します。さらに、追加の整合性フェーズを必要としない新しいオッズ比最適化アルゴリズムORPOを提案し、これを用いて複数の言語モデルをファインチューニングした結果、最先端のモデルを上回る性能を達成しました。</issue-body>
+<maintainer-comment-text><p>ざっくり言うとinstruction tuningとalignmentを同時にできる手法らしいがまだ理解できていない</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Instruction-tuned Language Models are Better Knowledge Learners, Zhengbao Jiang+, ACL'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2402.12847</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1708</repo-issue-link>
+<tags>Pretraining, InstructionTuning, ACL, PerplexityCurse</tags>
+<repo-issue-date>2025-01-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2402.12847
+# Authors
+  - Zhengbao Jiang
+  - Zhiqing Sun
+  - Weijia Shi
+  - Pedro Rodriguez
+  - Chunting Zhou
+  - Graham Neubig
+  - Xi Victoria Lin
+  - Wen-tau Yih
+  - Srinivasan Iyer
+# Abstract
+  - In order for large language model (LLM)-based assistants to effectively adapt to evolving information needs, it must be possible to update their factual knowledge through continued training on new data. The standard recipe for doing so involves continued pre-training on new documents followed by instruction-tuning on question-answer (QA) pairs. However, we find that LLMs trained with this recipe struggle to answer questions, even though the perplexity of documents is minimized. We found that QA pairs are generally straightforward, while documents are more complex, weaving many factual statements together in an intricate manner. Therefore, we hypothesize that it is beneficial to expose LLMs to QA pairs before continued pre-training on documents so that the process of encoding knowledge from complex documents takes into account how this knowledge is accessed through questions. Based on this, we propose pre-instruction-tuning (PIT), a method that instruction-tunes on questions prior to training on documents. This contrasts with standard instruction-tuning, which learns how to extract knowledge after training on documents. Extensive experiments and ablation studies demonstrate that pre-instruction-tuning significantly enhances the ability of LLMs to absorb knowledge from new documents, outperforming standard instruction-tuning by 17.8%.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）ベースのアシスタントが進化する情報ニーズに効果的に適応するためには、新しいデータに基づいて事実に関する知識を更新することが可能でなければならない。これを実現するための標準的な手法は、新しい文書に対する継続的な事前学習の後に、質問応答（QA）ペアに基づく指示調整を行うことである。しかし、この手法で訓練されたLLMは、文書の困惑度が最小化されているにもかかわらず、質問に答えるのに苦労することがわかった。QAペアは一般的に単純であるのに対し、文書はより複雑で、多くの事実の記述が巧妙に組み合わさっているためである。したがって、複雑な文書からの知識をエンコードするプロセスが、質問を通じてこの知識にアクセスする方法を考慮に入れるように、LLMをQAペアにさらすことが有益であると仮定する。これに基づき、文書の訓練前に質問に基づいて指示調整を行う「事前指示調整（PIT）」という手法を提案する。これは、文書の訓練後に知識を抽出する方法を学ぶ標準的な指示調整とは対照的である。広範な実験とアブレーション研究により、事前指示調整がLLMが新しい文書から知識を吸収する能力を大幅に向上させ、標準的な指示調整を17.8%上回ることが示された。
+# Summary (by gpt-4o-mini)
+- 新しい文書からの知識更新には、事前指示調整（PIT）を提案。これは、文書の訓練前に質問に基づいて指示調整を行う手法で、LLMが新しい情報を効果的に吸収する能力を向上させ、標準的な指示調整を17.8%上回る結果を示した。</issue-body>
+<maintainer-comment-text><p>興味深い</p><p>SNLP'24での解説スライド:
+
+{% raw %}
+<a href="https://speakerdeck.com/s_mizuki_nlp/instruction-tuned-language-models-are-better-knowledge-learners-in-acl-2024" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/s_mizuki_nlp/instruction-tuned-language-models-are-better-knowledge-learners-in-acl-2024</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DELIFT: Data Efficient Language model Instruction Fine Tuning, Ishika Agarwal+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.04425</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1504</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning</tags>
+<repo-issue-date>2024-11-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.04425
+# Authors
+  - Ishika Agarwal
+  - Krishnateja Killamsetty
+  - Lucian Popa
+  - Marina Danilevksy
+# Abstract
+  - Fine-tuning large language models (LLMs) is essential for enhancing their performance on specific tasks but is often resource-intensive due to redundant or uninformative data. To address this inefficiency, we introduce DELIFT (Data Efficient Language model Instruction Fine-Tuning), a novel algorithm that systematically optimizes data selection across the three key stages of fine-tuning: (1) instruction tuning, (2) task-specific fine-tuning (e.g., reasoning, question-answering), and (3) continual fine-tuning (e.g., incorporating new data versions). Unlike existing methods that focus on single-stage optimization or rely on computationally intensive gradient calculations, DELIFT operates efficiently across all stages. Central to our approach is a pairwise utility metric that quantifies how beneficial a data sample is for improving the model's responses to other samples, effectively measuring the informational value relative to the model's current capabilities. By leveraging different submodular functions applied to this metric, DELIFT selects diverse and optimal subsets that are useful across all stages of fine-tuning. Experiments across various tasks and model scales demonstrate that DELIFT can reduce the fine-tuning data size by up to 70% without compromising performance, offering significant computational savings and outperforming existing methods in both efficiency and efficacy.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）のファインチューニングは、特定のタスクにおける性能を向上させるために不可欠ですが、冗長または非情報的なデータのためにリソースを多く消費することがよくあります。この非効率性に対処するために、我々はDELIFT（Data Efficient Language model Instruction Fine-Tuning）という新しいアルゴリズムを導入します。このアルゴリズムは、ファインチューニングの3つの重要なステージ（1）指示チューニング、（2）タスク特化型ファインチューニング（例：推論、質問応答）、（3）継続的ファインチューニング（例：新しいデータバージョンの取り込み）にわたってデータ選択を体系的に最適化します。既存の方法が単一ステージの最適化に焦点を当てたり、計算負荷の高い勾配計算に依存するのとは異なり、DELIFTはすべてのステージで効率的に動作します。我々のアプローチの中心には、データサンプルが他のサンプルに対するモデルの応答を改善するためにどれだけ有益であるかを定量化するペアワイズユーティリティメトリックがあります。これにより、モデルの現在の能力に対する情報的価値を効果的に測定します。このメトリックに適用される異なるサブモジュラー関数を活用することで、DELIFTはファインチューニングのすべてのステージで有用な多様で最適なサブセットを選択します。さまざまなタスクとモデルスケールにわたる実験により、DELIFTは性能を損なうことなくファインチューニングデータのサイズを最大70%削減できることが示され、計算コストの大幅な節約を提供し、効率性と効果の両面で既存の方法を上回ることが確認されました。
+# Summary (by gpt-4o-mini)
+- DELIFTという新しいアルゴリズムを提案し、ファインチューニングの各ステージでデータ選択を最適化。ペアワイズユーティリティメトリックを用いてデータの有益性を定量化し、最大70%のデータ削減を実現。計算コストを大幅に節約し、既存の方法を上回る効率性と効果を示す。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Online-LoRA: Task-free Online Continual Learning via Low Rank Adaptation, Xiwen Wei+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.05663</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1502</repo-issue-link>
+<tags>ComputerVision, MachineLearning, Supervised-FineTuning (SFT), InstructionTuning, PEFT(Adaptor/LoRA), Catastrophic Forgetting</tags>
+<repo-issue-date>2024-11-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.05663
+# Authors
+  - Xiwen Wei
+  - Guihong Li
+  - Radu Marculescu
+# Abstract
+  - Catastrophic forgetting is a significant challenge in online continual learning (OCL), especially for non-stationary data streams that do not have well-defined task boundaries. This challenge is exacerbated by the memory constraints and privacy concerns inherent in rehearsal buffers. To tackle catastrophic forgetting, in this paper, we introduce Online-LoRA, a novel framework for task-free OCL. Online-LoRA allows to finetune pre-trained Vision Transformer (ViT) models in real-time to address the limitations of rehearsal buffers and leverage pre-trained models' performance benefits. As the main contribution, our approach features a novel online weight regularization strategy to identify and consolidate important model parameters. Moreover, Online-LoRA leverages the training dynamics of loss values to enable the automatic recognition of the data distribution shifts. Extensive experiments across many task-free OCL scenarios and benchmark datasets (including CIFAR-100, ImageNet-R, ImageNet-S, CUB-200 and CORe50) demonstrate that Online-LoRA can be robustly adapted to various ViT architectures, while achieving better performance compared to SOTA methods. Our code will be publicly available at: https://github.com/Christina200/Online-LoRA-official.git.
+# Translation (by gpt-4o-mini)
+- 破滅的忘却は、オンライン継続学習（OCL）における重要な課題であり、特に明確なタスク境界を持たない非定常データストリームにおいて顕著です。この課題は、リハーサルバッファに内在するメモリ制約やプライバシーの懸念によってさらに悪化します。本論文では、破滅的忘却に対処するために、タスクフリーOCLのための新しいフレームワークであるOnline-LoRAを提案します。Online-LoRAは、リハーサルバッファの制限に対処し、事前学習済みモデルの性能向上を活用するために、リアルタイムで事前学習済みビジョントランスフォーマー（ViT）モデルを微調整することを可能にします。主な貢献として、我々のアプローチは重要なモデルパラメータを特定し統合するための新しいオンライン重み正則化戦略を特徴としています。さらに、Online-LoRAは損失値のトレーニングダイナミクスを活用して、データ分布の変化を自動的に認識することを可能にします。CIFAR-100、ImageNet-R、ImageNet-S、CUB-200、CORe50を含む多くのタスクフリーOCLシナリオおよびベンチマークデータセットにおける広範な実験により、Online-LoRAがさまざまなViTアーキテクチャに堅牢に適応でき、最先端の手法と比較して優れた性能を達成できることが示されました。私たちのコードは以下のリンクで公開されます：
+https://github.com/Christina200/Online-LoRA-official.git。
+# Summary (by gpt-4o-mini)
+- 破滅的忘却に対処するため、タスクフリーのオンライン継続学習（OCL）フレームワークOnline-LoRAを提案。リハーサルバッファの制約を克服し、事前学習済みビジョントランスフォーマー（ViT）モデルをリアルタイムで微調整。新しいオンライン重み正則化戦略を用いて重要なモデルパラメータを特定し、データ分布の変化を自動認識。多様なベンチマークデータセットで優れた性能を示す。</issue-body>
+<maintainer-comment-text><p><img src="https://github.com/user-attachments/assets/b789ba71-3941-4d60-9397-46607ddc7712" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Beyond Full Fine-tuning: Harnessing the Power of LoRA for Multi-Task Instruction Tuning, Xin+, LREC-COLING'24</title>
+<original-paper-blog-link>https://aclanthology.org/2024.lrec-main.206/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1475</repo-issue-link>
+<tags>NLP, Supervised-FineTuning (SFT), InstructionTuning, translation_required, PEFT(Adaptor/LoRA), read-later</tags>
+<repo-issue-date>2024-10-30</repo-issue-date>
+<issue-body>https://aclanthology.org/2024.lrec-main.206/</issue-body>
+<maintainer-comment-text><p>LoRAのランク数をめちゃめちゃ大きくすると（1024以上）、full-parameterをチューニングするよりも、Unseenタスクに対する汎化性能が向上しますよ、という話っぽい<br><br><img src="https://github.com/user-attachments/assets/69120eee-2993-4e51-bbf4-52e3040bf66d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1474" target="_blank" rel="noopener noreferrer">Super-NaturalInstructions: Generalization via Declarative Instructions  on 1600+ NLP Tasks, Yizhong Wang+, N/A, EMNLP'22</a>
+ も参照のこと</p><p>## LoRA Finetuning details<br><br>- LoRA rankを最大4096<br><br>- LoRAのαをなんとrankの2倍にしている<br><br>    - original paperでは16が推奨されている<br><br>- learning_rate: 5e-5<br><br>- linear sheculeで learning_rate を減衰させる<br><br>- optimizerはAdamW<br><br>- batch_size: 128 <br><br><img src="https://github.com/user-attachments/assets/516141a8-2955-49af-95e7-8f1b16e4122a"" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>COSMO: A large-scale e-commerce common sense knowledge generation and serving system at Amazon , Yu+, SIGMOD_PODS '24</title>
+<original-paper-blog-link>https://www.amazon.science/publications/cosmo-a-large-scale-e-commerce-common-sense-knowledge-generation-and-serving-system-at-amazon</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1449</repo-issue-link>
+<tags>RecommenderSystems, LanguageModel, KnowledgeGraph, InstructionTuning, translation_required, Annotation</tags>
+<repo-issue-date>2024-10-08</repo-issue-date>
+<issue-body>https://www.amazon.science/publications/cosmo-a-large-scale-e-commerce-common-sense-knowledge-generation-and-serving-system-at-amazon</issue-body>
+<maintainer-comment-text><p><img src="https://github.com/user-attachments/assets/56fec49b-0917-444f-825b-3f050b7357cb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/978a1b9c-bd59-4838-be8d-bc72e5dc1032" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/b1d88bd7-2507-4086-89bf-5330831b00ce" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>search navigationに導入しA/Bテストした結果、0.7%のproduct sales向上効果。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N_A, ICML'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2401.10020</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1212</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, InstructionTuning, LLM-as-a-Judge, SelfImprovement, ICML, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2024-01-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2401.10020
+# Affiliations
+  - Weizhe Yuan, N/A
+  - Richard Yuanzhe Pang, N/A
+  - Kyunghyun Cho, N/A
+  - Sainbayar Sukhbaatar, N/A
+  - Jing Xu, N/A
+  - Jason Weston, N/A
+# Abstract
+  - We posit that to achieve superhuman agents, future models require superhumanfeedback in order to provide an adequate training signal. Current approachescommonly train reward models from human preferences, which may then bebottlenecked by human performance level, and secondly these separate frozenreward models cannot then learn to improve during LLM training. In this work,we study Self-Rewarding Language Models, where the language model itself isused via LLM-as-a-Judge prompting to provide its own rewards during training.We show that during Iterative DPO training that not only does instructionfollowing ability improve, but also the ability to provide high-quality rewardsto itself. Fine-tuning Llama 2 70B on three iterations of our approach yields amodel that outperforms many existing systems on the AlpacaEval 2.0 leaderboard,including Claude 2, Gemini Pro, and GPT-4 0613. While only a preliminary study,this work opens the door to the possibility of models that can continuallyimprove in both axes.
+# Translation (by gpt-3.5-turbo)
+- 将来のモデルが超人的なエージェントを実現するためには、適切なトレーニング信号を提供するために超人的なフィードバックが必要であると考えています。
+現在のアプローチでは、一般的に人間の好みから報酬モデルをトレーニングし、その後、人間のパフォーマンスレベルによってボトルネックが発生する可能性があります。さらに、これらの別々の凍結された報酬モデルは、LLMのトレーニング中に改善することができません。
+本研究では、トレーニング中に言語モデル自体が自己報酬を提供するために使用されるSelf-Rewarding Language Modelsを研究しています。LLM-as-a-Judgeプロンプトを介して言語モデル自体が自己報酬を提供します。
+イテレーティブDPOトレーニング中に、指示の従う能力だけでなく、高品質な報酬を自己に提供する能力も向上することを示します。
+Llama 2 70Bを3回のイテレーションで私たちのアプローチによって微調整すると、AlpacaEval 2.0のリーダーボードでClaude 2、Gemini Pro、GPT-4 0613を含む多くの既存のシステムを上回るモデルが得られます。
+これはまだ予備的な研究ですが、この研究は、両方の軸で継続的に改善できるモデルの可能性を示しています。
+# Summary (by gpt-3.5-turbo)
+- 将来のモデルのトレーニングには超人的なフィードバックが必要であり、自己報酬を提供するSelf-Rewarding Language Modelsを研究している。LLM-as-a-Judgeプロンプトを使用して、言語モデル自体が自己報酬を提供し、高品質な報酬を得る能力を向上させることを示した。Llama 2 70Bを3回のイテレーションで微調整することで、既存のシステムを上回るモデルが得られることを示した。この研究は、改善可能なモデルの可能性を示している。</issue-body>
+<maintainer-comment-text><p>人間の介入無しで（人間がアノテーションしたpreference data無しで）LLMのAlignmentを改善していく手法。LLM-as-a-Judge Promptingを用いて、LLM自身にpolicy modelとreward modelの役割の両方をさせる。unlabeledなpromptに対してpolicy modelとしてresponceを生成させた後、生成したレスポンスをreward modelとしてランキング付けし、DPOのpreference pairとして利用する、という操作を繰り返す。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32db0422-6fb1-4741-bdfa-45a5e83e76c4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision, Language, Audio, and Action, Jiasen Lu+, CVPR'24, 2023.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2312.17172</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1202</repo-issue-link>
+<tags>ComputerVision, Pretraining, NLP, Transformer, InstructionTuning, action_wanted, MultiModal, SpeechProcessing, CVPR, Selected Papers/Blogs, Encoder-Decoder, Robotics, UMM, EmbodiedAI, KeyPoint Notes, Surface-level Notes</tags>
+<repo-issue-date>2023-12-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2312.17172
+# Authors
+  - Jiasen Lu
+  - Christopher Clark
+  - Sangho Lee
+  - Zichen Zhang
+  - Savya Khosla
+  - Ryan Marten
+  - Derek Hoiem
+  - Aniruddha Kembhavi
+# Abstract
+  - We present Unified-IO 2, the first autoregressive multimodal model that is capable of understanding and generating image, text, audio, and action. To unify different modalities, we tokenize inputs and outputs -- images, text, audio, action, bounding boxes, etc., into a shared semantic space and then process them with a single encoder-decoder transformer model. Since training with such diverse modalities is challenging, we propose various architectural improvements to stabilize model training. We train our model from scratch on a large multimodal pre-training corpus from diverse sources with a multimodal mixture of denoisers objective. To learn an expansive set of skills, such as following multimodal instructions, we construct and finetune on an ensemble of 120 datasets with prompts and augmentations. With a single unified model, Unified-IO 2 achieves state-of-the-art performance on the GRIT benchmark and strong results in more than 35 benchmarks, including image generation and understanding, natural language understanding, video and audio understanding, and robotic manipulation. We release all our models to the research community.
+# Translation (by gpt-4o-mini)
+- 私たちは、画像、テキスト、音声、アクションを理解し生成できる初の自己回帰型マルチモーダルモデル「Unified-IO 2」を紹介します。異なるモダリティを統一するために、画像、テキスト、音声、アクション、バウンディングボックスなどの入力と出力を共有された意味空間にトークン化し、1つのエンコーダ-デコーダ型トランスフォーマーモデルで処理します。このような多様なモダリティを用いてのトレーニングは難易度が高いため、モデルのトレーニングを安定させるためのさまざまなアーキテクチャの改善を提案します。私たちは、多様なソースからの大規模なマルチモーダル事前学習コーパスでモデルをゼロからトレーニングし、マルチモーダルな混合除去器の目的で訓練します。マルチモーダルな指示に従うなどの広範なスキルセットを学ぶために、プロンプトと拡張を用いて120のデータセットのアンサンブルで構成し微調整します。Unified-IO 2は、単一の統一モデルでGRITベンチマークにおいて最先端のパフォーマンスを達成し、画像生成と理解、自然言語理解、映像と音声理解、ロボット操作を含む35以上のベンチマークで強力な結果を示します。私たちは、すべてのモデルを研究コミュニティに公開します。
+# Summary (by gpt-4o-mini)
+- 初の自己回帰型マルチモーダルモデル「Unified-IO 2」を提案し、画像、テキスト、音声、アクションを統一した意味空間で処理。トレーニングの安定化のためにアーキテクチャを改善し、120のデータセットで微調整を行い、GRITベンチマークで最先端のパフォーマンスを達成。35以上のベンチマークにおいて強力な結果を示し、すべてのモデルを公開。</issue-body>
+<maintainer-comment-text><p>画像、テキスト、音声、アクションを理解できる初めてのautoregressive model。AllenAI</p><p>モデルのアーキテクチャ図<br><img src="https://github.com/user-attachments/assets/4282ffb0-18f1-40c9-b6d7-f004d03b8382" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>マルチモーダルに拡張したことで、訓練が非常に不安定になったため、アーキテクチャ上でいくつかの工夫を加えている:<br><br>- 2D Rotary Embedding<br>  - Positional EncodingとしてRoPEを採用<br>  - 画像のような2次元データのモダリティの場合はRoPEを2次元に拡張する。具体的には、位置(i, j)のトークンについては、Q, Kのembeddingを半分に分割して、それぞれに対して独立にi, jのRoPE Embeddingを適用することでi, j双方の情報を組み込む。<br>- QK Normalization<br>  - image, audioのモダリティを組み込むことでMHAのlogitsが非常に大きくなりatteetion weightが0/1の極端な値をとるようになり訓練の不安定さにつながった。このため、dot product attentionを適用する前にLayerNormを組み込んだ。<br>- Scaled Cosine Attention<br>  - Image Historyモダリティにおいて固定長のEmbeddingを得るためにPerceiver Resamplerを扱ったているが、こちらも上記と同様にAttentionのlogitsが極端に大きくなったため、cosine類似度をベースとしたScaled Cosine Attention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2259" target="_blank" rel="noopener noreferrer">[Paper Note] Swin Transformer V2: Scaling Up Capacity and Resolution, Ze Liu+, arXiv'21</a>
+ を利用することで、大幅に訓練の安定性が改善された。<br>- その他<br>  - attention logitsにはfp32を適用<br>  - 事前学習されたViTとASTを同時に更新すると不安定につながったため、事前学習の段階ではfreezeし、instruction tuningの最後にfinetuningを実施<br><br><img src="https://github.com/user-attachments/assets/74c8fa3a-8fb5-4785-8dd3-6a8cf3c7cfeb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>目的関数としては、Mixture of Denoisers (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
+)に着想を得て、Multimodal Mixture of Denoisersを提案。MoDでは、<br>- \[R\]: 通常のspan corruption (1--5 token程度のspanをmaskする)<br>- \[S\]: causal language modeling (inputを2つのサブシーケンスに分割し、前方から後方を予測する。前方部分はBi-directionalでも可)<br>- \[X\]: extreme span corruption (12>=token程度のspanをmaskする)<br><br>の3種類が提案されており、モダリティごとにこれらを使い分ける:<br>- text modality: UL2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1424" target="_blank" rel="noopener noreferrer">UL2: Unifying Language Learning Paradigms, Yi Tay+, N/A, ICLR'23</a>
+)を踏襲<br>- image, audioがtargetの場合: 2つの類似したパラダイムを定義し利用<br>  - \[R\]: patchをランダムにx%マスクしre-constructする<br>  - \[S\]: inputのtargetとは異なるモダリティのみの情報から、targetモダリティを生成する<br><br>訓練時には prefixとしてmodality token \[Text\], \[Image\], \[Audio\] とparadigm token \[R\], \[S\], \[X\] をタスクを指示するトークンとして利用している。</p><p>また、image, audioのマスク部分のdenoisingをautoregressive modelで実施する際には普通にやるとdecoder側でリークが発生する(a)。これを防ぐには、Encoder側でマスクされているトークンを、Decoder側でteacher-forcingする際にの全てマスクする方法(b)があるが、この場合、生成タスクとdenoisingタスクが相互に干渉してしまいうまく学習できなくなってしまう（生成タスクでは通常Decoderのinputとして[mask]が入力され次トークンを生成する、といったことは起きえないが、愚直に(b)をやるとそうなってしまう）。ので、(c)に示したように、マスクされているトークンをinputとして生成しなければならない時だけ、マスクを解除してdecoder側にinputする、という方法 (Dynamic Masking) でこの問題に対処している。<br><img src="https://github.com/user-attachments/assets/0dba8d5d-0c93-4c56-852b-fce9869428e7" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LaMini-LM: A Diverse Herd of Distilled Models from Large-Scale Instructions, Minghao Wu+, EACL'24, 2023.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.14402</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/548</repo-issue-link>
+<tags>NLP, Dataset, InstructionTuning, DataDistillation, action_wanted, translation_required, EACL, One-Line Notes</tags>
+<repo-issue-date>2023-04-26</repo-issue-date>
+<issue-body># URL
+- preprint:https://arxiv.org/abs/2304.14402
+- HF:https://huggingface.co/datasets/MBZUAI/LaMini-instruction
+# Authors
+  - Minghao Wu
+  - Abdul Waheed
+  - Chiyu Zhang
+  - Muhammad Abdul-Mageed
+  - Alham Fikri Aji
+# Abstract
+  - Large language models (LLMs) with instruction fine-tuning demonstrate superior generative capabilities. However, these models are resource-intensive. To alleviate this issue, we explore distilling knowledge from instruction-tuned LLMs into much smaller ones. To this end, we carefully develop a large set of 2.58M instructions based on both existing and newly-generated instructions. In addition to being sizable, we design our instructions to cover a broad set of topics to ensure diversity. Extensive analysis of our instruction dataset confirms its diversity, and we generate responses for these instructions using gpt-3.5-turbo. Leveraging these instructions, we fine-tune a diverse herd of models, collectively referred to as LaMini-LM, which includes models from both the encoder-decoder and decoder-only families, with varying sizes. We evaluate the performance of our models using automatic metrics on 15 different natural language processing (NLP) benchmarks, as well as through human assessment. The results demonstrate that our proposed LaMini-LM models are comparable to competitive baselines, while being much smaller in size.
+# Translation (by gpt-4o-mini)
+- 大規模な言語モデル（LLM）は、指示に基づくファインチューニングによって優れた生成能力を示します。しかし、これらのモデルはリソース集約的です。この問題を緩和するために、我々は指示調整されたLLMからはるかに小さなモデルへの知識の蒸留を探求します。そのために、既存の指示と新たに生成された指示の両方を基にした256万以上の指示セットを慎重に開発しました。サイズが大きいだけでなく、多様性を確保するために幅広いトピックをカバーするように設計しています。我々の指示データセットの広範な分析により、その多様性が確認され、これらの指示に対してgpt-3.5-turboを用いて応答を生成しました。これらの指示を活用して、エンコーダ-デコーダとデコーダ専用のモデルファミリーから成る多様なモデル群を調整し、これをラミニLM（LaMini-LM）と呼びます。さまざまなサイズのモデルが含まれています。我々は、15の異なる自然言語処理（NLP）ベンチマークにおいて、自動的なメトリクスと人的評価を用いてモデルの性能を評価しました。その結果、提案したラミニLMモデルは競合のベースラインと比較して同等の性能を発揮し、サイズが大幅に小さいことが示されました。
+# Summary (by gpt-4o-mini)
+- LLMから小型モデルへの知識蒸留を探求。256万以上の多様な指示セットを用意し、gpt-3.5-turboで応答を生成。エンコーダ-デコーダとデコーダ専用のラミニLMを調整し、15のNLPベンチマークで性能評価。提案モデルは競合と同等の性能を発揮し、サイズが大幅に小さいことを確認。</issue-body>
+<maintainer-comment-text><p>既存のInstruction DatasetのInstructionをseedとして、gpt-3.5-turboで新たなInstructionとresponseを生成したデータセット<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23a85991-6af9-4663-a293-c22a6cdba9f0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Scaling Instruction-Finetuned Language Models, Chung+, Google, JMLR'24</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2210.11416.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/542</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, translation_required</tags>
+<repo-issue-date>2023-04-26</repo-issue-date>
+<issue-body>https://arxiv.org/pdf/2210.11416.pdf</issue-body>
+<maintainer-comment-text><p>T5をinstruction tuningしたFlanT5の研究</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Reflection-Tuning: Data Recycling Improves LLM Instruction-Tuning, Ming Li+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2310.11716v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1380</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, SelfCorrection</tags>
+<repo-issue-date>2024-09-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2310.11716v1
+# Affiliations
+  - Ming Li, N/A
+  - Lichang Chen, N/A
+  - Jiuhai Chen, N/A
+  - Shwai He, N/A
+  - Heng Huang, N/A
+  - Jiuxiang Gu, N/A
+  - Tianyi Zhou, N/A
+# Abstract
+  - Recent advancements in Large Language Models (LLMs) have expanded the horizons of natural language understanding and generation. Notably, the output control and alignment with the input of LLMs can be refined through instruction tuning. However, as highlighted in several studies, low-quality data in the training set are usually detrimental to instruction tuning, resulting in inconsistent or even misleading LLM outputs. We propose a novel method, termed "reflection-tuning," which addresses the problem by self-improvement and judging capabilities of LLMs. This approach utilizes an oracle LLM to recycle the original training data by introspecting and enhancing the quality of instructions and responses in the data. Extensive experiments on widely used evaluation benchmarks show that LLMs trained with our recycled data outperform those trained with existing datasets in various benchmarks.
+# Translation (by gpt-4o-mini)
+- 最近の大規模言語モデル（LLMs）の進展は、自然言語理解と生成の可能性を広げている。特に、LLMsの出力制御と入力との整合性は、指示チューニングを通じて洗練されることができる。しかし、いくつかの研究で指摘されているように、トレーニングセットにおける低品質なデータは通常、指示チューニングに悪影響を及ぼし、一貫性のない、あるいは誤解を招くLLMの出力を引き起こす。そこで本研究では、「リフレクションチューニング」と呼ばれる新しい手法を提案し、LLMsの自己改善と判断能力を活用してこの問題に対処する。このアプローチは、オラクルLLMを利用して元のトレーニングデータを再利用し、データ内の指示と応答の質を内省し向上させる。広く使用されている評価ベンチマークにおける徹底的な実験により、我々の再利用データで訓練されたLLMsが、既存のデータセットで訓練されたモデルをさまざまなベンチマークで上回ることが示された。
+# Summary (by gpt-4o-mini)
+- リフレクションチューニングという新手法を提案し、LLMsの自己改善を通じて低品質なトレーニングデータの問題に対処。オラクルLLMを用いてデータの質を向上させ、実験により再利用データで訓練されたLLMsが既存モデルを上回ることを示した。</issue-body>
+<maintainer-comment-text><p>Reflection-Tuningを提案している研究?</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2311.07911</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1137</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, InstructionTuning, Evaluation, Selected Papers/Blogs, InstructionFollowingCapability</tags>
+<repo-issue-date>2023-11-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2311.07911
+# Affiliations
+  - Jeffrey Zhou, N/A
+  - Tianjian Lu, N/A
+  - Swaroop Mishra, N/A
+  - Siddhartha Brahma, N/A
+  - Sujoy Basu, N/A
+  - Yi Luan, N/A
+  - Denny Zhou, N/A
+  - Le Hou, N/A
+# Abstract
+  - One core capability of Large Language Models (LLMs) is to follow naturallanguage instructions. However, the evaluation of such abilities is notstandardized: Human evaluations are expensive, slow, and not objectivelyreproducible, while LLM-based auto-evaluation is potentially biased or limitedby the ability of the evaluator LLM. To overcome these issues, we introduceInstruction-Following Eval (IFEval) for large language models. IFEval is astraightforward and easy-to-reproduce evaluation benchmark. It focuses on a setof "verifiable instructions" such as "write in more than 400 words" and"mention the keyword of AI at least 3 times". We identified 25 types of thoseverifiable instructions and constructed around 500 prompts, with each promptcontaining one or more verifiable instructions. We show evaluation results oftwo widely available LLMs on the market. Our code and data can be found athttps://github.com/google-research/google-research/tree/master/instruction_following_eval
+# Translation (by gpt-3.5-turbo)
+- 大規模言語モデル（LLMs）の主要な能力の1つは、自然言語の指示に従うことです。しかし、このような能力の評価は標準化されていません。人間による評価は高価で時間がかかり、客観的に再現できません。一方、LLMによる自動評価は、評価者のLLMの能力によってバイアスがかかる可能性があります。これらの問題を克服するために、大規模言語モデルのためのInstruction-Following Eval（IFEval）を導入します。IFEvalは、直感的で再現性のある評価ベンチマークです。これは、「400語以上で書く」といった「検証可能な指示」のセットに焦点を当てています。私たちは、25種類の検証可能な指示を特定し、それぞれの指示を含む約500のプロンプトを作成しました。市場で広く利用可能な2つのLLMの評価結果を示します。コードとデータは、https://github.com/google-research/google-research/tree/master/instruction_following_eval で入手できます。
+# Summary (by gpt-3.5-turbo)
+- 大規模言語モデル（LLMs）の能力を評価するために、Instruction-Following Eval（IFEval）という評価ベンチマークが導入されました。IFEvalは、検証可能な指示に焦点を当てた直感的で再現性のある評価方法です。具体的には、25種類の検証可能な指示を特定し、それぞれの指示を含む約500のプロンプトを作成しました。この評価ベンチマークの結果は、GitHubで公開されています。</issue-body>
+<maintainer-comment-text><p>LLMがinstructionにどれだけ従うかを評価するために、検証可能なプロンプト（400字以上で書きなさいなど）を考案し評価する枠組みを提案。人間が評価すると時間とお金がかかり、LLMを利用した自動評価だと評価を実施するLLMのバイアスがかかるのだ、それら両方のlimitationを克服できるとのこと。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0eb3fe10-536d-4674-aa3c-fd76f390f21d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Auto-Instruct: Automatic Instruction Generation and Ranking for  Black-Box Language Models, Zhihan Zhang+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2310.13127</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1092</repo-issue-link>
+<tags>NLP, LanguageModel, InstructionTuning, InstructionGeneration</tags>
+<repo-issue-date>2023-10-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2310.13127
+# Affiliations
+  - Zhihan Zhang, N/A
+  - Shuohang Wang, N/A
+  - Wenhao Yu, N/A
+  - Yichong Xu, N/A
+  - Dan Iter, N/A
+  - Qingkai Zeng, N/A
+  - Yang Liu, N/A
+  - Chenguang Zhu, N/A
+  - Meng Jiang, N/A
+# Abstract
+  - Large language models (LLMs) can perform a wide range of tasks by followingnatural language instructions, without the necessity of task-specificfine-tuning. Unfortunately, the performance of LLMs is greatly influenced bythe quality of these instructions, and manually writing effective instructionsfor each task is a laborious and subjective process. In this paper, weintroduce Auto-Instruct, a novel method to automatically improve the quality ofinstructions provided to LLMs. Our method leverages the inherent generativeability of LLMs to produce diverse candidate instructions for a given task, andthen ranks them using a scoring model trained on a variety of 575 existing NLPtasks. In experiments on 118 out-of-domain tasks, Auto-Instruct surpasses bothhuman-written instructions and existing baselines of LLM-generatedinstructions. Furthermore, our method exhibits notable generalizability evenwith other LLMs that are not incorporated into its training process.
+# Translation (by gpt-3.5-turbo)
+- 大規模言語モデル（LLMs）は、タスク固有の微調整の必要性なしに、自然言語の指示に従って幅広いタスクを実行することができます。
+残念ながら、LLMsのパフォーマンスは、これらの指示の品質に大きく影響を受けます。
+そして、各タスクの効果的な指示を手動で作成することは、手間がかかり主観的なプロセスです。
+本論文では、LLMsに提供される指示の品質を自動的に向上させるための新しい手法であるAuto-Instructを紹介します。
+私たちの手法は、LLMsの持つ生成能力を活用して、与えられたタスクに対して多様な候補の指示を生成し、
+575の既存のNLPタスクでトレーニングされたスコアリングモデルを使用してそれらをランク付けします。
+118のドメイン外のタスクにおける実験では、Auto-Instructは人間による指示と既存のLLM生成指示の両方を上回ります。
+さらに、私たちの手法は、トレーニングプロセスに組み込まれていない他のLLMsでも顕著な汎化性能を示します。
+# Summary (by gpt-3.5-turbo)
+- 本研究では、大規模言語モデル（LLMs）の性能を向上させるための新しい手法であるAuto-Instructを提案しています。
+この手法では、LLMsが生成する指示の品質を自動的に向上させるために、多様な候補の指示を生成し、スコアリングモデルでランク付けします。
+実験結果では、Auto-Instructが人間による指示や既存のLLM生成指示を上回ることが示されています。
+また、他のLLMsでも顕著な汎化性能を示すことも確認されています。</issue-body>
+<maintainer-comment-text><p>seed instructionとdemonstrationに基づいて、異なるスタイルのinstructionを自動生成し、自動生成したinstructionをとinferenceしたいexampleで条件づけてランキングし、良質なものを選択。選択したinstructionでinferenceを実施する。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3b318cac-516d-4fc8-9097-ad695ab8223b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>既存手法よりも高い性能を達成している。特にexampleごとにinstructionを選択する手法の中で最もgainが高い。これは、提案手法がinstructionの選択にtrained modelを利用しているためであると考えられる。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8e2c8bad-54ec-49e8-b6e0-29bc18425e99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>MAmmoTH: Building Math Generalist Models through Hybrid Instruction  Tuning, Xiang Yue+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2309.05653</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1050</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, InstructionTuning, NumericReasoning, Mathematics</tags>
+<repo-issue-date>2023-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2309.05653
+# Affiliations
+  - Xiang Yue, N/A
+  - Xingwei Qu, N/A
+  - Ge Zhang, N/A
+  - Yao Fu, N/A
+  - Wenhao Huang, N/A
+  - Huan Sun, N/A
+  - Yu Su, N/A
+  - Wenhu Chen, N/A
+# Abstract
+  - We introduce MAmmoTH, a series of open-source large language models (LLMs)specifically tailored for general math problem-solving. The MAmmoTH models aretrained on MathInstruct, our meticulously curated instruction tuning dataset.MathInstruct is compiled from 13 math datasets with intermediate rationales,six of which have rationales newly curated by us. It presents a unique hybridof chain-of-thought (CoT) and program-of-thought (PoT) rationales, and alsoensures extensive coverage of diverse fields in math. The hybrid of CoT and PoTnot only unleashes the potential of tool use but also allows different thoughtprocesses for different math problems. As a result, the MAmmoTH seriessubstantially outperform existing open-source models on nine mathematicalreasoning datasets across all scales with an average accuracy gain between 13%and 29%. Remarkably, our MAmmoTH-7B model reaches 35% on MATH (acompetition-level dataset), which exceeds the best open-source 7B model(WizardMath) by 25%, and the MAmmoTH-34B model achieves 46% accuracy on MATH,even surpassing GPT-4's CoT result. Our work underscores the importance ofdiverse problem coverage and the use of hybrid rationales in developingsuperior math generalist models.
+# Translation (by gpt-3.5-turbo)
+- 私たちは、一般的な数学の問題解決に特化したオープンソースの大規模言語モデル（LLMs）であるMAmmoTHを紹介します。
+MAmmoTHモデルは、厳密にキュレーションされたMathInstructという教育チューニングデータセットで訓練されています。
+MathInstructは、中間の根拠を持つ13の数学データセットから編集されており、そのうち6つは私たちによって新たにキュレーションされたものです。
+MathInstructは、CoT（思考の連鎖）とPoT（思考のプログラム）のハイブリッドな根拠を提供し、さまざまな数学の分野を包括的にカバーしています。
+CoTとPoTのハイブリッドは、ツールの使用の可能性を引き出すだけでなく、異なる数学の問題に対して異なる思考プロセスを可能にします。
+その結果、MAmmoTHシリーズは、すべてのスケールの9つの数学的推論データセットで既存のオープンソースモデルを大幅に上回り、平均的な精度の向上率は13％から29％です。
+特筆すべきことに、MAmmoTH-7BモデルはMATH（競技レベルのデータセット）で35％に達し、最高のオープンソース7Bモデル（WizardMath）を25％上回ります。
+また、MAmmoTH-34BモデルはMATHで46％の精度を達成し、GPT-4のCoTの結果をも上回ります。
+私たちの研究は、多様な問題のカバレッジとハイブリッドな根拠の使用が優れた数学の総合モデルの開発において重要であることを強調しています。
+# Summary (by gpt-3.5-turbo)
+- MAmmoTHは、数学の問題解決に特化した大規模言語モデルであり、厳密にキュレーションされた教育データセットで訓練されています。このモデルは、CoTとPoTのハイブリッドな根拠を提供し、さまざまな数学の分野を包括的にカバーしています。MAmmoTHは、既存のオープンソースモデルを大幅に上回り、特にMATHデータセットで高い精度を示しています。この研究は、多様な問題のカバレッジとハイブリッドな根拠の使用の重要性を強調しています。</issue-body>
+<maintainer-comment-text><p>9つのmath reasoningが必要なデータセットで13-29%のgainでSoTAを達成。<br>260kの根拠情報を含むMath Instructデータでチューニングされたモデル。<br><br>project page: 
+
+{% raw %}
+<a href="https://tiger-ai-lab.github.io/MAmmoTH/" target="_blank" rel="noopener noreferrer">https://tiger-ai-lab.github.io/MAmmoTH/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Instruction Tuning for Large Language Models: A Survey, Shengyu Zhang+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2308.10792</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1035</repo-issue-link>
+<tags>Survey, LanguageModel, InstructionTuning</tags>
+<repo-issue-date>2023-09-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2308.10792
+# Affiliations
+  - Shengyu Zhang, N/A
+  - Linfeng Dong, N/A
+  - Xiaoya Li, N/A
+  - Sen Zhang, N/A
+  - Xiaofei Sun, N/A
+  - Shuhe Wang, N/A
+  - Jiwei Li, N/A
+  - Runyi Hu, N/A
+  - Tianwei Zhang, N/A
+  - Fei Wu, N/A
+  - Guoyin Wang, N/A
+# Abstract
+  - This paper surveys research works in the quickly advancing field ofinstruction tuning (IT), a crucial technique to enhance the capabilities andcontrollability of large language models (LLMs). Instruction tuning refers tothe process of further training LLMs on a dataset consisting of\textsc{(instruction, output)} pairs in a supervised fashion, which bridges thegap between the next-word prediction objective of LLMs and the users' objectiveof having LLMs adhere to human instructions. In this work, we make a systematicreview of the literature, including the general methodology of IT, theconstruction of IT datasets, the training of IT models, and applications todifferent modalities, domains and applications, along with an analysis onaspects that influence the outcome of IT (e.g., generation of instructionoutputs, size of the instruction dataset, etc). We also review the potentialpitfalls of IT along with criticism against it, along with efforts pointing outcurrent deficiencies of existing strategies and suggest some avenues forfruitful research.
+# Translation (by gpt-3.5-turbo)
+- この論文では、大規模言語モデル（LLMs）の能力と制御性を向上させるための重要な技術であるinstruction tuning（IT）の急速に進化する分野の研究を調査しています。Instruction tuningは、LLMsの次の単語予測目標とユーザーの指示に従うことを目的としたデータセット（instruction, output）のペアでLLMsをさらにトレーニングする過程を指します。本研究では、ITの一般的な方法論、ITデータセットの構築、ITモデルのトレーニング、および異なるモダリティ、ドメイン、アプリケーションへの応用について体系的に文献を調査し、指示の生成、指示データセットのサイズなどのITの結果に影響を与える要素について分析します。また、ITの潜在的な落とし穴や批判、既存の戦略の現在の不足点を指摘し、有益な研究の方向性を提案します。
+# Summary (by gpt-3.5-turbo)
+- この論文では、instruction tuning（IT）という技術について調査しています。ITは、大規模言語モデル（LLMs）をさらにトレーニングするための方法であり、ユーザーの指示に従うことを目的としています。本研究では、ITの方法論やデータセットの構築、トレーニング方法などについて調査し、指示の生成やデータセットのサイズなどがITの結果に与える影響を分析します。また、ITの潜在的な問題や批判、現在の不足点についても指摘し、今後の研究の方向性を提案します。</issue-body>
+<maintainer-comment-text><p>主要なモデルやデータセットの作り方など幅広くまとまっている</p><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/440b5214-71b9-4d22-9c0c-badd84a717ce" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/69cfdf51-e230-48b8-8f34-0286b3469c01" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Self-Alignment with Instruction Backtranslation, Xian Li+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2308.06259</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1008</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, InstructionTuning</tags>
+<repo-issue-date>2023-08-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2308.06259
+# Affiliations
+  - Xian Li, N/A
+  - Ping Yu, N/A
+  - Chunting Zhou, N/A
+  - Timo Schick, N/A
+  - Luke Zettlemoyer, N/A
+  - Omer Levy, N/A
+  - Jason Weston, N/A
+  - Mike Lewis, N/A
+# Abstract
+  - We present a scalable method to build a high quality instruction followinglanguage model by automatically labelling human-written text with correspondinginstructions. Our approach, named instruction backtranslation, starts with alanguage model finetuned on a small amount of seed data, and a given webcorpus. The seed model is used to construct training examples by generatinginstruction prompts for web documents (self-augmentation), and then selectinghigh quality examples from among these candidates (self-curation). This data isthen used to finetune a stronger model. Finetuning LLaMa on two iterations ofour approach yields a model that outperforms all other LLaMa-based models onthe Alpaca leaderboard not relying on distillation data, demonstrating highlyeffective self-alignment.
+# Translation (by gpt-3.5-turbo)
+- 私たちは、人間が書いたテキストに対応する指示を自動的にラベル付けすることで、高品質な指示に従う言語モデルを構築するためのスケーラブルな手法を提案します。私たちの手法である「指示逆翻訳」は、少量のシードデータと与えられたウェブコーパスでファインチューニングされた言語モデルを使用します。シードモデルは、ウェブドキュメントに対して指示のプロンプトを生成することにより、トレーニング例を構築するために使用されます（自己拡張）。そして、これらの候補の中から高品質な例を選択します（自己キュレーション）。このデータを使用して、より強力なモデルをファインチューニングします。私たちの手法の2つのイテレーションでLLaMaをファインチューニングすると、蒸留データに依存しないAlpacaリーダーボード上の他のLLaMaベースのモデルよりも優れた性能を発揮し、非常に効果的な自己整列を実証します。
+# Summary (by gpt-3.5-turbo)
+- 私たちは、高品質な指示に従う言語モデルを構築するためのスケーラブルな手法を提案します。この手法では、少量のシードデータとウェブコーパスを使用して言語モデルをファインチューニングし、指示のプロンプトを生成してトレーニング例を構築します。そして、高品質な例を選択してモデルを強化します。この手法を使用すると、他のモデルよりも優れた性能を発揮し、自己整列の効果を実証できます。</issue-body>
+<maintainer-comment-text><p>人間が書いたテキストを対応するinstructionに自動的にラベル付けする手法を提案。<br>これにより高品質なinstruction following LLMの構築が可能</p><p>手法概要<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/837e17cc-6df1-4ba5-ba61-9c4f72dede93" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>結果的に得られるデータは、訓練において非常にインパクトがあり高品質なものとなる。<br>実際に、他の同サイズのinstruct tuningデータセットを上回る。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ef478922-8495-4a5f-9bc6-3d5bed7195a8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Humpackは他のstrong modelからdistillされていないモデルの中で最高性能を達成。これは、スケールアップしたり、より強いベースモデルを使うなどさらなる性能向上ができる余地が残されている。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd7ff8b5-62a4-46fe-a902-cbe8e9ffec4a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>参考: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1694103441432580377?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>指示を予測するモデルは、今回はLLaMAをfinetuningしたモデルを用いており、予測と呼称しているが指示はgenerationされる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Instruction-following Evaluation through Verbalizer Manipulation, Shiyang Li+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.10558</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/877</repo-issue-link>
+<tags>NLP, LanguageModel, InstructionTuning, Evaluation</tags>
+<repo-issue-date>2023-07-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2307.10558
+# Affiliations
+  - Shiyang Li, N/A
+  - Jun Yan, N/A
+  - Hai Wang, N/A
+  - Zheng Tang, N/A
+  - Xiang Ren, N/A
+  - Vijay Srinivasan, N/A
+  - Hongxia Jin, N/A
+# Abstract
+  - While instruction-tuned models have shown remarkable success in variousnatural language processing tasks, accurately evaluating their ability tofollow instructions remains challenging. Existing benchmarks primarily focus oncommon instructions that align well with what the model learned duringtraining. However, proficiency in responding to these instructions does notnecessarily imply strong ability in instruction following. In this paper, wepropose a novel instruction-following evaluation protocol called verbalizermanipulation. It instructs the model to verbalize the task label with wordsaligning with model priors to different extents, adopting verbalizers fromhighly aligned (e.g., outputting ``postive'' for positive sentiment), tominimally aligned (e.g., outputting ``negative'' for positive sentiment).Verbalizer manipulation can be seamlessly integrated with any classificationbenchmark to examine the model's reliance on priors and its ability to overridethem to accurately follow the instructions. We conduct a comprehensiveevaluation of four major model families across nine datasets, employing twelvesets of verbalizers for each of them. We observe that the instruction-followingabilities of models, across different families and scales, are significantlydistinguished by their performance on less natural verbalizers. Even thestrongest GPT-4 model struggles to perform better than random guessing on themost challenging verbalizer, emphasizing the need for continued advancements toimprove their instruction-following abilities.
+# Translation (by gpt-3.5-turbo)
+- 指示に調整されたモデルは、さまざまな自然言語処理のタスクで顕著な成功を収めていますが、指示に従う能力を正確に評価することは依然として困難です。既存のベンチマークは、主にモデルがトレーニング中に学習した内容とよく一致する一般的な指示に焦点を当てています。しかし、これらの指示に対する熟練度は、必ずしも指示に従う能力が強いことを意味しません。本論文では、新しい指示に従う評価プロトコルである「verbalizer manipulation」を提案します。このプロトコルでは、モデルにタスクラベルを言葉で表現させ、モデルの事前知識に異なる程度で一致する言葉を使用します。これには、高度に一致する言葉（例：ポジティブな感情に対して「ポジティブ」と出力する）から最小限に一致する言葉（例：ポジティブな感情に対して「ネガティブ」と出力する）までのverbalizerが含まれます。verbalizer manipulationは、任意の分類ベンチマークにシームレスに統合することができ、モデルが事前知識に依存し、指示に正確に従うためにそれらを上書きする能力を検証することができます。私たちは、4つの主要なモデルファミリーを9つのデータセットで総合的に評価し、それぞれに12組のverbalizerを使用しました。異なるファミリーやスケールのモデルの指示に従う能力は、より自然でないverbalizerのパフォーマンスによって明確に区別されることを観察しました。最も困難なverbalizerに対しても、最も強力なGPT-4モデルでもランダムな推測よりも優れたパフォーマンスを発揮するのは困難であり、指示に従う能力を向上させるために継続的な進歩が必要であることを強調しています。
+# Summary (by gpt-3.5-turbo)
+- 本研究では、指示に従う能力を正確に評価するための新しい評価プロトコル「verbalizer manipulation」を提案しています。このプロトコルでは、モデルに異なる程度で一致する言葉を使用してタスクラベルを表現させ、モデルの事前知識に依存する能力を検証します。さまざまなモデルを9つのデータセットで評価し、異なるverbalizerのパフォーマンスによって指示に従う能力が明確に区別されることを示しました。最も困難なverbalizerに対しても、最も強力なモデルでもランダムな推測よりも優れたパフォーマンスを発揮するのは困難であり、指示に従う能力を向上させるために継続的な進歩が必要であることを強調しています。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Do Models Really Learn to Follow Instructions? An Empirical Study of Instruction Tuning, ACL'23</title>
+<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P2358.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/832</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, InstructionTuning, translation_required</tags>
+<repo-issue-date>2023-07-15</repo-issue-date>
+<issue-body>https://virtual2023.aclweb.org/paper_P2358.html</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Z-Code++: A Pre-trained Language Model Optimized for Abstractive Summarization, ACL'23</title>
+<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P3684.html#abstract</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/816</repo-issue-link>
+<tags>DocumentSummarization, NLP, Abstractive, pretrained-LM, InstructionTuning, translation_required</tags>
+<repo-issue-date>2023-07-13</repo-issue-date>
+<issue-body>https://virtual2023.aclweb.org/paper_P3684.html#abstract</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Unnatural Instructions: Tuning Language Models with （Almost） No Human Labor, ACL'23</title>
+<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P4013.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/815</repo-issue-link>
+<tags>NLP, Dataset, InstructionTuning, translation_required</tags>
+<repo-issue-date>2023-07-13</repo-issue-date>
+<issue-body>https://virtual2023.aclweb.org/paper_P4013.html</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Controlled Text Generation with Natural Language Instructions, Wangchunshu Zhou+, ICML'23, 2023.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.14293</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/594</repo-issue-link>
+<tags>NaturalLanguageGeneration, Controllable, NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, Prompting, SyntheticData, action_wanted, In-ContextLearning, ICML, PostTraining, One-Line Notes</tags>
+<repo-issue-date>2023-04-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2304.14293
+# Authors
+  - Wangchunshu Zhou
+  - Yuchen Eleanor Jiang
+  - Ethan Wilcox
+  - Ryan Cotterell
+  - Mrinmaya Sachan
+# Abstract
+  - Large language models generate fluent texts and can follow natural language instructions to solve a wide range of tasks without task-specific training. Nevertheless, it is notoriously difficult to control their generation to satisfy the various constraints required by different applications. In this work, we present InstructCTG, a controlled text generation framework that incorporates different constraints by conditioning on natural language descriptions and demonstrations of the constraints. In particular, we first extract the underlying constraints of natural texts through a combination of off-the-shelf NLP tools and simple heuristics. We then verbalize the constraints into natural language instructions to form weakly supervised training data. By prepending natural language descriptions of the constraints and a few demonstrations, we fine-tune a pre-trained language model to incorporate various types of constraints. Compared to existing search-based or score-based methods, InstructCTG is more flexible to different constraint types and has a much smaller impact on the generation quality and speed because it does not modify the decoding procedure. Additionally, InstructCTG allows the model to adapt to new constraints without re-training through the use of few-shot task generalization and in-context learning abilities of instruction-tuned language models.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルは流暢なテキストを生成し、特定のタスクに特化した訓練をすることなく自然言語の指示に従って幅広いタスクを解決できます。しかし、異なるアプリケーションによって要求されるさまざまな制約を満たすように生成を制御することは難しいことで知られています。本研究では、自然言語の説明や制約のデモンストレーションに基づいて異なる制約を組み込んだ制御されたテキスト生成フレームワーク「InstructCTG」を提案します。特に、まず市販のNLPツールと単純なヒューリスティックを組み合わせて自然テキストの根底にある制約を抽出します。その後、制約を自然言語の指示に変換して弱教師あり訓練データを形成します。制約の自然言語の説明といくつかのデモを前置することで、事前訓練された言語モデルを微調整し、さまざまなタイプの制約を取り入れます。既存の検索ベースまたはスコアベースの手法と比較して、InstructCTGはさまざまな制約タイプに対してより柔軟であり、デコーディング手順を変更しないため、生成の質や速度に及ぼす影響ははるかに小さくなります。さらに、InstructCTGは、指示調整された言語モデルの少数ショットタスク一般化と文脈学習の能力を活用して、再訓練なしで新しい制約に適応することを可能にします。
+# Summary (by gpt-4o-mini)
+- 自然言語の指示に従い、多様なタスクを解決可能な大規模言語モデルの制御を改善するために、「InstructCTG」というフレームワークを提案。自然テキストの制約を抽出し、これを自然言語の指示に変換することで弱教師あり訓練データを形成。異なるタイプの制約に柔軟に対応し、生成の質や速度への影響を最小限に抑えつつ、再訓練なしで新しい制約に適応できる能力を持つ。</issue-body>
+<maintainer-comment-text><p>制約に関する指示とデモンスとレーションに関するデータを合成して追加のinstruction tuningを実施することで、promptで指示された制約を満たすような（controllableな）テキストの生成能力を高める手法</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] WizardLM: Empowering large pre-trained language models to follow complex instructions, Can Xu+, arXiv'23, 2023.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.12244</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/533</repo-issue-link>
+<tags>NLP, LanguageModel, InstructionTuning, SyntheticData, action_wanted, ICLR, KeyPoint Notes</tags>
+<repo-issue-date>2023-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2304.12244
+# Authors
+  - Can Xu
+  - Qingfeng Sun
+  - Kai Zheng
+  - Xiubo Geng
+  - Pu Zhao
+  - Jiazhan Feng
+  - Chongyang Tao
+  - Qingwei Lin
+  - Daxin Jiang
+# Abstract
+  - Training large language models (LLMs) with open-domain instruction following data brings colossal success. However, manually creating such instruction data is very time-consuming and labor-intensive. Moreover, humans may struggle to produce high-complexity instructions. In this paper, we show an avenue for creating large amounts of instruction data with varying levels of complexity using LLM instead of humans. Starting with an initial set of instructions, we use our proposed Evol-Instruct to rewrite them step by step into more complex instructions. Then, we mix all generated instruction data to fine-tune LLaMA. We call the resulting model WizardLM. Human evaluations on a complexity-balanced test bed and Vicuna's testset show that instructions from Evol-Instruct are superior to human-created ones. By analyzing the human evaluation results of the high complexity part, we demonstrate that outputs from our WizardLM are preferred to outputs from OpenAI ChatGPT. In GPT-4 automatic evaluation, WizardLM achieves more than 90\% capacity of ChatGPT on 17 out of 29 skills. Even though WizardLM still lags behind ChatGPT in some aspects, our findings suggest that fine-tuning with AI-evolved instructions is a promising direction for enhancing LLMs. Our code and data are public at https://github.com/nlpxucan/WizardLM
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）をオープンドメインの指示に従うデータで訓練することは、巨大な成功をもたらしています。しかし、そのような指示データを手動で作成することは非常に時間がかかり、労力を要します。さらに、人間は高い複雑性を持つ指示を生成するのに苦労することがあります。本論文では、人間の代わりにLLMを使用して、さまざまな複雑さのレベルを持つ大量の指示データを作成する方法を示します。初期の指示セットから始めて、提案するEvol-Instructを使用して、それらを段階的により複雑な指示に書き換えます。その後、生成されたすべての指示データを混ぜてLLaMAをファインチューニングします。これにより得られたモデルをWizardLMと呼びます。複雑さがバランスされたテストベッドとVicunaのテストセットにおける人間の評価は、Evol-Instructからの指示が人間が作成したものよりも優れていることを示しています。高い複雑性の部分における人間の評価結果を分析することで、WizardLMからの出力がOpenAI ChatGPTからの出力よりも好まれることを示します。GPT-4の自動評価では、WizardLMは29のスキルのうち17でChatGPTの90%以上の能力を達成しています。WizardLMはまだいくつかの側面でChatGPTに劣っていますが、AI進化による指示でのファインチューニングがLLMを強化するための有望な方向性であることを示唆しています。私たちのコードとデータは、https://github.com/nlpxucan/WizardLM で公開されています。
+# Summary (by gpt-4o-mini)
+- 本論文では、LLMを用いて複雑な指示データを自動生成する方法を提案。Evol-Instructを使用して初期の指示を段階的に書き換え、生成したデータでLLaMAをファインチューニングし、WizardLMモデルを構築。評価結果は、Evol-Instructからの指示が人間作成のものより優れており、WizardLMがChatGPTよりも高い評価を得ることを示す。AI進化による指示生成がLLM強化の有望なアプローチであることを示唆。</issue-body>
+<maintainer-comment-text><p>instruction trainingは大きな成功を収めているが、人間がそれらのデータを作成するのはコストがかかる。また、そもそも複雑なinstructionを人間が作成するのは苦労する。そこで、LLMに自動的に作成させる手法を提案している（これはself instructと一緒）。データを生成する際は、seed setから始め、step by stepでinstructionをrewriteし、より複雑なinstructionとなるようにしていく。<br>これらの多段的な複雑度を持つinstructionをLLaMaベースのモデルに食わせてfinetuningした（これをWizardLMと呼ぶ）。人手評価の結果、WizardLMがChatGPTよりも好ましいレスポンスをすることを示した。特に、WizaraLMはコード生成や、数値計算といった難しいタスクで改善を示しており、複雑なinstructionを学習に利用することの重要性を示唆している。</p><p>EvolInstructを提案。"1+1=?"といったシンプルなinstructionからスタートし、これをLLMを利用して段階的にcomplexにしていく。complexにする方法は2通り：<br><br>- In-Depth Evolving: instructionを5種類のoperationで深掘りする（blue direction line）<br><br>  - add constraints<br><br>  - deepening<br><br>  - concretizing<br><br>  - increase reasoning steps<br><br>  - complicate input<br><br>- In-breadth Evolving: givenなinstructionから新しいinstructionを生成する<br><br><br><br>上記のEvolvingは特定のpromptを与えることで実行される。<br><br>また、LLMはEvolvingに失敗することがあるので、Elimination Evolvingと呼ばれるフィルタを利用してスクリーニングした。<br><br>フィルタリングでは4種類の失敗するsituationを想定し、1つではLLMを利用。2枚目画像のようなinstructionでフィルタリング。<br><br>1. instructionの情報量が増えていない場合。<br><br>2. instructionがLLMによって応答困難な場合（短すぎる場合やsorryと言っている場合）<br><br>3. puctuationやstop wordsによってのみ構成されている場合 <br><br>4.明らかにpromptの中から単語をコピーしただけのinstruction（given prompt, rewritten prompt, #Rewritten Prompt#など）<br><br><img src="https://user-images.githubusercontent.com/12249301/234436445-e84ff44e-7b0b-4217-a735-7444b04bd760.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234437210-6cb6d75f-509a-4f2e-a767-dba8861d8a69.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Self-Instruct: Aligning Language Models with Self-Generated Instructions, Yizhong Wang+, ACL'23, 2022.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2212.10560</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/513</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, action_wanted, ACL, In-Depth Notes</tags>
+<repo-issue-date>2023-03-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2212.10560
+# Authors
+  - Yizhong Wang
+  - Yeganeh Kordi
+  - Swaroop Mishra
+  - Alisa Liu
+  - Noah A. Smith
+  - Daniel Khashabi
+  - Hannaneh Hajishirzi
+# Abstract
+  - Large "instruction-tuned" language models (i.e., finetuned to respond to instructions) have demonstrated a remarkable ability to generalize zero-shot to new tasks. Nevertheless, they depend heavily on human-written instruction data that is often limited in quantity, diversity, and creativity, therefore hindering the generality of the tuned model. We introduce Self-Instruct, a framework for improving the instruction-following capabilities of pretrained language models by bootstrapping off their own generations. Our pipeline generates instructions, input, and output samples from a language model, then filters invalid or similar ones before using them to finetune the original model. Applying our method to the vanilla GPT3, we demonstrate a 33% absolute improvement over the original model on Super-NaturalInstructions, on par with the performance of InstructGPT-001, which was trained with private user data and human annotations. For further evaluation, we curate a set of expert-written instructions for novel tasks, and show through human evaluation that tuning GPT3 with Self-Instruct outperforms using existing public instruction datasets by a large margin, leaving only a 5% absolute gap behind InstructGPT-001. Self-Instruct provides an almost annotation-free method for aligning pre-trained language models with instructions, and we release our large synthetic dataset to facilitate future studies on instruction tuning. Our code and data are available at https://github.com/yizhongw/self-instruct.
+# Translation (by gpt-4o-mini)
+- 大規模な「インストラクション調整」言語モデル（すなわち、指示に応じてファインチューニングされたモデル）は、新しいタスクに対してゼロショットで一般化する驚異的な能力を示しています。しかしながら、これらのモデルはしばしば限られた量、多様性、創造性の人間が書いた指示データに大きく依存しており、そのため調整されたモデルの一般性が妨げられています。そこで、私たちはSelf-Instructというフレームワークを提案します。これは、事前学習済みの言語モデルの指示に従う能力を、自らの生成物を利用して向上させるものです。私たちのパイプラインは、言語モデルから指示、入力、および出力サンプルを生成し、無効または類似のものをフィルタリングした後、それらを使用して元のモデルをファインチューニングします。この手法をバニラGPT-3に適用したところ、Super-NaturalInstructionsにおいて元のモデルに対して33%の絶対的な改善を示し、プライベートユーザーデータと人間の注釈で訓練されたInstructGPT-001と同等の性能を達成しました。さらなる評価のために、新しいタスクに対する専門家が書いた指示のセットをキュレーションし、人間評価を通じてSelf-InstructでGPT-3を調整することが既存の公共指示データセットを使用するよりも大幅に優れていることを示し、InstructGPT-001に対してはわずか5%の絶対的なギャップを残しました。Self-Instructは、事前学習済みの言語モデルを指示に合わせるためのほぼ注釈不要の方法を提供し、今後の指示調整に関する研究を促進するために大規模な合成データセットを公開します。私たちのコードとデータは、https://github.com/yizhongw/self-instruct で入手可能です。
+# Summary (by gpt-4o-mini)
+- Self-Instructフレームワークを提案し、事前学習済みの言語モデルが自ら生成した指示を用いてファインチューニングを行うことで、ゼロショットの一般化能力を向上させる。バニラGPT-3に適用した結果、Super-NaturalInstructionsで33%の性能向上を達成し、InstructGPT-001と同等の性能に到達。人間評価により、Self-Instructが既存の公共指示データセットよりも優れていることを示し、ほぼ注釈不要の指示調整手法を提供。大規模な合成データセットを公開し、今後の研究を促進する。</issue-body>
+<maintainer-comment-text><p>Alpacaなどでも利用されているself-instruction技術に関する論文</p><p># 概要<br><br><img src="https://user-images.githubusercontent.com/12249301/228716254-5f4d7451-a37a-4354-843d-7e4052ba230b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>著者らが書いた175種のinstruction（タスクの定義 + 1種のinput/outputペア}のseedを元に、VanillaなGPT-3に新たなinstruction, input, outputのtupleを生成させ、学習データとして活用する研究。<br><br>ここで、instruction data I は以下のように定義される：<br><br>instruction dataは(I, X, Y)であり、モデルは最終的にM(I_t, x_t) = y_tとなるように学習したい。<br><br>I: instruction, X: input, Y: output<br><br><br><br>データ作成は以下のステップで構成される。なお、以下はすべてVanilla GPT-3を通じて行われる：<br><br>1. Instruction Generation<br><br>　task poolから8種類のinstructionを抽出し、 promptを構成し、最大8個新たなinstructionを生成させる<br><br>2. Classification Task Identification:<br><br>　生成されたinstructionがclassificationタスクか否かを判別する<br><br>3. Instance Generation<br><br>　いくつかの(I, X, Y)をpromptとして与え、I, Xに対応するYを生成するタスクを実行させる。このときinput-first approachを採用した結果（I->Xの順番で情報を与えYを生成するアプローチ）、特定のラベルに偏ったインスタンスが生成される傾向があることがわかった。このためoutput-first approachを別途採用し（I->Yの順番で情報を与え、各Yに対応するXを生成させる）、活用している。　<br><br>4. Filtering and Postprocessing<br><br>　最後に、既存のtask poolとROUGE-Lが0.7以上のinstructionは多様性がないため除外し、特定のキーワード（images, pictrues, graphs）等を含んでいるinstruction dataも除外して、task poolに追加する。<br><br><br><br>1-4をひたすら繰り返すことで、GPT-3がInstruction Tuningのためのデータを自動生成してくれる。<br><br><br><br># SELF-INSTRUCT Data<br><br>## データセットの統計量<br><br><img src="https://user-images.githubusercontent.com/12249301/228745059-ecccadba-3e32-4f2a-9594-2459a922474b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- 52k instructions<br><br>- 82k instances<br><br><br><br>## Diversity<br><br><img src="https://user-images.githubusercontent.com/12249301/228745421-ba024963-ca6e-4e30-bac8-7224d413f8ab.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>parserでinstructionを解析し、rootの名詞と動詞のペアを抽出して可視化した例。ただし、抽出できた例はたかだか全体の50%程度であり、その中で20の最もcommonなroot vertと4つのnounを可視化した。これはデータセット全体の14%程度しか可視化されていないが、これだけでも非常に多様なinstructionが集まっていることがわかる。<br><br>また、seed indstructionとROUGE-Lを測った結果、大半のデータは0.3~0.4程度であり、lexicalなoverlapはあまり大きくないことがわかる。instructionのlengthについても可視化した結果、多様な長さのinstructionが収集できている。<br><br><br><br>## Quality<br><br>200種類のinstructionを抽出し、その中からそれぞれランダムで1つのインスタンスをサンプルした。そしてexpert annotatorに対して、それぞれのinstructionとinstance（input, outputそれぞれについて）が正しいか否かをラベル付けしてもらった。<br><br>ラベル付けの結果、ほとんどのinstructionは意味のあるinstructionであることがわかった。一方、生成されたinstanceはnoisyであることがわかった（ただし、このnoiseはある程度妥当な範囲である）。noisytではあるのだが、instanceを見ると、正しいformatであったり、部分的に正しかったりなど、modelを訓練する上で有用なguidanceを提供するものになっていることがわかった。<br><br><img src="https://user-images.githubusercontent.com/12249301/228746299-a0ffc115-3861-458b-a7b4-3a91ac94f8f5.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Experimental Results<br><br>## Zero-shotでのNLPタスクに対する性能<br><br>SuperNIデータセットに含まれる119のタスク（1タスクあたり100 instance）に対して、zero-shot setupで評価を行なった。SELF-INSTRUCTによって、VanillaのGPT3から大幅に性能が向上していることがわかる。VanillaのGPT-3はほとんど人間のinstructionに応じて動いてくれないことがわかる。分析によると、GPT3は、大抵の場合、全く関係ない、あるいは繰り返しのテキストを生成していたり、そもそもいつ生成をstopするかがわかっていないことがわかった。<br><br><br><br>また、SuperNI向けにfinetuningされていないモデル間で比較した結果、非常にアノテーションコストをかけて作られたT0データでfinetuningされたモデルよりも高い性能を獲得した。また、人間がラベル付したprivateなデータによって訓練されたInstructGPT001にも性能が肉薄していることも特筆すべき点である。<br><br><br><br>SuperNIでfinetuningした場合については、SELF-INSTRUCTを使ったモデルに対して、さらに追加でSuperNIを与えた場合が最も高い性能を示した。<br><br><img src="https://user-images.githubusercontent.com/12249301/228751534-095578e0-550b-4e4c-9418-c74251e31d2a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## User-Oriented Instructionsに対する汎化性能<br><br>SuperNIに含まれるNLPタスクは研究目的で提案されており分類問題となっている。ので、実践的な能力を証明するために、LLMが役立つドメインをブレスト（email writing, social media, productiveity tools, entertainment, programming等）し、それぞれのドメインに対して、instructionとinput-output instanceを作成した。また、instructionのスタイルにも多様性（e.g. instructionがlong/short、bullet points, table, codes, equationsをinput/outputとして持つ、など）を持たせた。作成した結果、252個のinstructionに対して、1つのinstanceのデータセットが作成された。これらが、モデルにとってunfamiliarなinstructionで多様なistructionが与えられたときに、どれだけモデルがそれらをhandleできるかを測定するテストベッドになると考えている。<br><br><br><br>これらのデータは、多様だがどれもが専門性を求められるものであり、自動評価指標で性能が測定できるものでもないし、crowdworkerが良し悪しを判定できるものでもない。このため、それぞれのinstructionに対するauthorに対して、モデルのy補足結果が妥当か否かをjudgeしてもらった。judgeは4-scaleでのratingとなっている：<br><br><br><br>- RATING-A: 応答は妥当で満足できる<br><br>- RATING-B: 応答は許容できるが、改善できるminor errorや不完全さがある。<br><br>- RATING-C: 応答はrelevantでinstructionに対して答えている。が、内容に大きなエラーがある。<br><br>- RATING-D: 応答はirrelevantで妥当ではない。<br><br><br><br>実験結果をみると、Vanilla GPT3はまったくinstructionに対して答えられていない。instruction-basedなモデルは高いパフォーマンスを発揮しているが、それらを上回る性能をSELF-INSTRUCTは発揮している（noisyであるにもかかわらず）。<br><br>また、GPT_SELF-INSTRUCTはInstructGPT001と性能が肉薄している。また、InstructGPT002, 003の素晴らしい性能を示すことにもなった。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/228755556-1c604ed8-11a5-4237-8f9c-a30960db807a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Discussion and Limitation<br><br>## なぜSELF-INSTRUCTがうまくいったか？<br><br>- LMに対する2つの極端な仮説を挙げている<br><br>  - LM はpre-trainingでは十分に学習されなかった問題について学習する必要があるため、human feedbackはinstruction-tuningにおいて必要不可欠な側面である<br><br>  - LM はpre-trainingからinstructionに既に精通しているため、human feedbackはinstruction-tuningにおいて必須ではない。 human feedbackを観察することは、pre-trainingにおける分布/目的を調整するための軽量なプロセスにすぎず、別のプロセスに置き換えることができる。<br><br><br><br>この2つの極端な仮説の間が実情であると筆者は考えていて、どちらかというと２つ目の仮説に近いだろう、と考えている。既にLMはpre-trainingの段階でinstructionについてある程度理解できているため、self-instructがうまくいったのではないかと推察している。<br><br><br><br>## Broader Impact<br><br>InstructGPTは非常に強力なモデルだけど詳細が公表されておらず、APIの裏側に隠れている。この研究が、instruct-tuned modelの背後で何が起きているかについて、透明性を高める助けになると考えている。産業で開発されたモデルの構造や、その優れた性能の理由についてはほとんど理解されておらず、これらのモデルの成功の源泉を理解し、より優れた、オープンなモデルを作成するのはアカデミックにかかっている。この研究では、多様なinstructional dataの重要性を示していると考えており、大規模な人工的なデータセットは、より優れたinstructionに従うモデルを、構築するための第一歩だと考えている。<br><br><br><br>## limitation<br><br>- Tail Phenomena<br><br>  - LMの枠組みにとどまっているため、LMと同じ問題（Tail Phenomena）を抱えている<br><br>  - low-frequencyなcontextに対してはうまくいかない問題<br><br>  - SELF-INSTRUCTも、結局pre-trainingの段階で頻出するタスクやinstructionに対してgainがあると考えられ、一般的でなく、creativeなinstructionに対して脆弱性があると考えられる<br><br>- Dependence on laege models<br><br>  - でかいモデルを扱えるだけのresourceを持っていないと使えないという問題がある<br><br>- Reinforcing LM biases<br><br>  - アルゴリズムのiterationによって、問題のあるsocial _biasをより増幅してしまうことを懸念している（人種、種族などに対する偏見など）。また、アルゴリズムはバランスの取れたラベルを生成することが難しい。</p><p>1のprompt<br><br><img src="https://user-images.githubusercontent.com/12249301/228717376-62648df4-e587-49f7-8e71-afd1b2269e90.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>2のprompt<br><br><img src="https://user-images.githubusercontent.com/12249301/228717413-115f8ccf-b85e-4530-b489-cbf1de69341b.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>3のprompt（input-first-approach）<br><br><img src="https://user-images.githubusercontent.com/12249301/228717477-58b44a4e-ce44-452f-9b3a-4a348584e40f.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>3のprompt（output-first approach）<br><br><img src="https://user-images.githubusercontent.com/12249301/228717535-8717405c-bdaf-455c-9d4b-480bf6494abe.png"" alt="image" loading="lazy" width="550" height="400"/></p><p>※ GPT3をfinetuningするのに、Instruction Dataを使った場合$338かかったっぽい。安い・・・。</p><p>LLMを使うだけでここまで研究ができる時代がきた</p><p>（最近は|現在は）プロプライエタリなLLMの出力を利用して競合するモデルを訓練することは多くの場合禁止されているので注意。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Super-NaturalInstructions: Generalization via Declarative Instructions  on 1600+ NLP Tasks, Yizhong Wang+, N_A, EMNLP'22</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2204.07705</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1474</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning</tags>
+<repo-issue-date>2024-10-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2204.07705
+# Affiliations
+  - Yizhong Wang, N/A
+  - Swaroop Mishra, N/A
+  - Pegah Alipoormolabashi, N/A
+  - Yeganeh Kordi, N/A
+  - Amirreza Mirzaei, N/A
+  - Anjana Arunkumar, N/A
+  - Arjun Ashok, N/A
+  - Arut Selvan Dhanasekaran, N/A
+  - Atharva Naik, N/A
+  - David Stap, N/A
+  - Eshaan Pathak, N/A
+  - Giannis Karamanolakis, N/A
+  - Haizhi Gary Lai, N/A
+  - Ishan Purohit, N/A
+  - Ishani Mondal, N/A
+  - Jacob Anderson, N/A
+  - Kirby Kuznia, N/A
+  - Krima Doshi, N/A
+  - Maitreya Patel, N/A
+  - Kuntal Kumar Pal, N/A
+  - Mehrad Moradshahi, N/A
+  - Mihir Parmar, N/A
+  - Mirali Purohit, N/A
+  - Neeraj Varshney, N/A
+  - Phani Rohitha Kaza, N/A
+  - Pulkit Verma, N/A
+  - Ravsehaj Singh Puri, N/A
+  - Rushang Karia, N/A
+  - Shailaja Keyur Sampat, N/A
+  - Savan Doshi, N/A
+  - Siddhartha Mishra, N/A
+  - Sujan Reddy, N/A
+  - Sumanta Patro, N/A
+  - Tanay Dixit, N/A
+  - Xudong Shen, N/A
+  - Chitta Baral, N/A
+  - Yejin Choi, N/A
+  - Noah A. Smith, N/A
+  - Hannaneh Hajishirzi, N/A
+  - Daniel Khashabi, N/A
+# Abstract
+  - How well can NLP models generalize to a variety of unseen tasks when provided with task instructions? To address this question, we first introduce Super-NaturalInstructions, a benchmark of 1,616 diverse NLP tasks and their expert-written instructions. Our collection covers 76 distinct task types, including but not limited to classification, extraction, infilling, sequence tagging, text rewriting, and text composition. This large and diverse collection of tasks enables rigorous benchmarking of cross-task generalization under instructions -- training models to follow instructions on a subset of tasks and evaluating them on the remaining unseen ones. Furthermore, we build Tk-Instruct, a transformer model trained to follow a variety of in-context instructions (plain language task definitions or k-shot examples). Our experiments show that Tk-Instruct outperforms existing instruction-following models such as InstructGPT by over 9% on our benchmark despite being an order of magnitude smaller. We further analyze generalization as a function of various scaling parameters, such as the number of observed tasks, the number of instances per task, and model sizes. We hope our dataset and model facilitate future progress towards more general-purpose NLP models.
+# Translation (by gpt-4o-mini)
+- NLPモデルは、タスクの指示が与えられたときに、さまざまな未見のタスクにどの程度一般化できるのでしょうか？この問いに対処するために、まずSuper-NaturalInstructionsを導入します。これは、1,616の多様なNLPタスクとそれに対する専門家によって書かれた指示のベンチマークです。私たちのコレクションは、分類、抽出、埋め込み、シーケンスタギング、テキストの書き換え、テキストの構成など、76種類の異なるタスクタイプをカバーしています。この大規模で多様なタスクのコレクションは、指示に基づくクロスタスク一般化の厳密なベンチマークを可能にします。具体的には、モデルを一部のタスクに対する指示に従うように訓練し、残りの未見のタスクで評価します。さらに、さまざまな文脈内の指示（平易な言語のタスク定義やk-shotの例）に従うように訓練されたトランスフォーマーモデルであるTk-Instructを構築しました。実験の結果、Tk-Instructは、私たちのベンチマークにおいて、InstructGPTなどの既存の指示に従うモデルを9%以上上回る性能を示しましたが、そのサイズは桁違いに小さいです。さらに、観測されたタスクの数、タスクごとのインスタンス数、モデルサイズなど、さまざまなスケーリングパラメータの関数として一般化を分析します。私たちのデータセットとモデルが、より汎用的なNLPモデルに向けた今後の進展を促進することを期待しています。
+# Summary (by gpt-4o-mini)
+- Super-NaturalInstructionsを用いて、NLPモデルの未見タスクへの一般化能力を評価。1,616の多様なタスクと指示を含むベンチマークを作成し、76種類のタスクタイプをカバー。Tk-Instructモデルは、指示に従う訓練を受け、InstructGPTを9%以上上回る性能を示す。一般化能力をスケーリングパラメータに基づいて分析し、汎用的なNLPモデルの進展を促進することを目指す。</issue-body>
+<maintainer-comment-text><p>7.1, 7.2が最も興味深い<br><br><br><br>## Instruction Tuningにおける未知のタスクに対する汎化性能について、3つの要素に対するスケーリングについて考察<br><br>- More observed tasks improve the generalization.<br><br>- A large number of training instances do not help generalization.<br><br>- Tuning larger models with instructions consistently lead to gains.<br><br><br><br>## Instructionをさまざまに変化させた時の性能の変化に対する分析<br><br>Table4の対角成分に注目すると（trainとtestのinput encodingを揃えた場合）<br><br>- Task definitionをinstructionに含めることで未知タスクに対する汎化性能向上<br><br>- Task Definitionとpositive examplesを4つ程度入れると汎化性能向上。<br><br>  - ただし、これ以上exampleを増やすと性能低下。<br><br>  - negative examplesを入れることは性能に a little bit しか貢献しない<br><br>  - explanationsを入れると性能が低下する<br><br><br><br>Table4の非対角成分に着目すると、<br><br>- Task Definitionのみで訓練しても、Example onlyのtest時のencodingには汎化しない（逆も然り）<br><br>- Task Definition + examples (今回の場合はpositive examples4つ)は、さまざまなtest時のinput encodingsに対してロバストになる<br><br> <br><br><img src="https://github.com/user-attachments/assets/3bd1d07d-feb0-4567-bad9-8920c2d82359" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Finetuned Language Models Are Zero-Shot Learners, Jason Wei+, N_A, ICLR'22</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2109.01652</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1413</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning</tags>
+<repo-issue-date>2024-09-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2109.01652
+# Affiliations
+  - Jason Wei, N/A
+  - Maarten Bosma, N/A
+  - Vincent Y. Zhao, N/A
+  - Kelvin Guu, N/A
+  - Adams Wei Yu, N/A
+  - Brian Lester, N/A
+  - Nan Du, N/A
+  - Andrew M. Dai, N/A
+  - Quoc V. Le, N/A
+# Abstract
+  - This paper explores a simple method for improving the zero-shot learning abilities of language models. We show that instruction tuning -- finetuning language models on a collection of tasks described via instructions -- substantially improves zero-shot performance on unseen tasks.   We take a 137B parameter pretrained language model and instruction-tune it on over 60 NLP tasks verbalized via natural language instruction templates. We evaluate this instruction-tuned model, which we call FLAN, on unseen task types. FLAN substantially improves the performance of its unmodified counterpart and surpasses zero-shot 175B GPT-3 on 20 of 25 tasks that we evaluate. FLAN even outperforms few-shot GPT-3 by a large margin on ANLI, RTE, BoolQ, AI2-ARC, OpenbookQA, and StoryCloze. Ablation studies reveal that number of finetuning datasets, model scale, and natural language instructions are key to the success of instruction tuning.
+# Translation (by gpt-4o-mini)
+- 本論文では、言語モデルのゼロショット学習能力を向上させるためのシンプルな方法を探求します。指示チューニング、すなわち指示を通じて説明されたタスクのコレクションで言語モデルをファインチューニングすることが、未見のタスクに対するゼロショットパフォーマンスを大幅に向上させることを示します。137Bパラメータの事前学習済み言語モデルを取り、自然言語の指示テンプレートを用いて60以上のNLPタスクで指示チューニングを行います。この指示チューニングされたモデルをFLANと呼び、未見のタスクタイプで評価します。FLANは、未修正の対応モデルに比べてパフォーマンスを大幅に向上させ、評価した25のタスクのうち20タスクでゼロショット175B GPT-3を上回ります。さらに、FLANはANLI、RTE、BoolQ、AI2-ARC、OpenbookQA、StoryClozeにおいて、少数ショットのGPT-3を大きく上回る結果を示します。アブレーションスタディにより、ファインチューニングデータセットの数、モデルのスケール、自然言語の指示が指示チューニングの成功において重要であることが明らかになりました。
+# Summary (by gpt-4o-mini)
+- 指示チューニングを用いて言語モデルのゼロショット学習能力を向上させる方法を提案。137BパラメータのモデルFLANは、60以上のNLPタスクでファインチューニングされ、未見のタスクで175B GPT-3を上回るパフォーマンスを示す。アブレーションスタディにより、ファインチューニングデータセットの数やモデルのスケールが成功に寄与することが確認された。</issue-body>
+<maintainer-comment-text><p>FLAN論文。Instruction Tuningを提案した研究。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Recommendation as Language Processing （RLP）: A Unified Pretrain,  Personalized Prompt & Predict Paradigm （P5）, Shijie Geng+, N_A, RecSys'22</title>
+<original-paper-blog-link>https://arxiv.org/abs/2203.13366</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1124</repo-issue-link>
+<tags>RecommenderSystems, LanguageModel, Zero/Few/ManyShotPrompting, InstructionTuning</tags>
+<repo-issue-date>2023-11-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2203.13366
+# Affiliations
+  - Shijie Geng, N/A
+  - Shuchang Liu, N/A
+  - Zuohui Fu, N/A
+  - Yingqiang Ge, N/A
+  - Yongfeng Zhang, N/A
+# Abstract
+  - For a long time, different recommendation tasks typically require designingtask-specific architectures and training objectives. As a result, it is hard totransfer the learned knowledge and representations from one task to another,thus restricting the generalization ability of existing recommendationapproaches, e.g., a sequential recommendation model can hardly be applied ortransferred to a review generation method. To deal with such issues,considering that language can describe almost anything and language groundingis a powerful medium to represent various problems or tasks, we present aflexible and unified text-to-text paradigm called "Pretrain, PersonalizedPrompt, and Predict Paradigm" (P5) for recommendation, which unifies variousrecommendation tasks in a shared framework. In P5, all data such as user-iteminteractions, user descriptions, item metadata, and user reviews are convertedto a common format -- natural language sequences. The rich information fromnatural language assists P5 to capture deeper semantics for personalization andrecommendation. Specifically, P5 learns different tasks with the same languagemodeling objective during pretraining. Thus, it serves as the foundation modelfor various downstream recommendation tasks, allows easy integration with othermodalities, and enables instruction-based recommendation based on prompts. P5advances recommender systems from shallow model to deep model to big model, andwill revolutionize the technical form of recommender systems towards universalrecommendation engine. With adaptive personalized prompt for different users,P5 is able to make predictions in a zero-shot or few-shot manner and largelyreduces the necessity for extensive fine-tuning. On several recommendationbenchmarks, we conduct experiments to show the effectiveness of P5. We releasethe source code at https://github.com/jeykigung/P5.
+# Translation (by gpt-3.5-turbo)
+- 長い間、異なる推薦タスクでは通常、タスク固有のアーキテクチャとトレーニング目標の設計が必要でした。その結果、学習された知識と表現をタスク間で転送することが困難であり、既存の推薦手法の汎化能力が制限されています。たとえば、シーケンシャルな推薦モデルは、レビュー生成方法に適用または転送することがほとんどできません。このような問題に対処するために、言語はほとんど何でも表現できると考えられ、言語の基盤はさまざまな問題やタスクを表現するための強力な手段です。そこで、我々は「Pretrain, Personalized Prompt, and Predict Paradigm」（P5）と呼ばれる柔軟で統一されたテキストからテキストへのパラダイムを提案します。P5は、共有フレームワーク内でさまざまな推薦タスクを統一します。P5では、ユーザーとアイテムの相互作用、ユーザーの説明、アイテムのメタデータ、ユーザーのレビューなど、すべてのデータを共通の形式である自然言語のシーケンスに変換します。自然言語からの豊富な情報は、P5が個別化と推薦のためのより深い意味を捉えるのに役立ちます。具体的には、P5は事前学習中に同じ言語モデリング目標で異なるタスクを学習します。したがって、これはさまざまな下流の推薦タスクの基礎モデルとして機能し、他のモダリティとの簡単な統合を可能にし、プロンプトに基づいた指示に基づく推薦を実現します。P5は、推薦システムを浅いモデルから深いモデル、そして大規模なモデルへと進化させ、普遍的な推薦エンジンに向けて技術的な形態を革新します。異なるユーザーに対して適応的な個別化プロンプトを使用することで、P5はゼロショットまたはフューショットの方法で予測を行い、広範な微調整の必要性を大幅に減らすことができます。いくつかの推薦ベンチマークで、P5の効果を実証するために実験を行いました。ソースコードはhttps://github.com/jeykigung/P5で公開しています。
+# Summary (by gpt-3.5-turbo)
+- 我々は「Pretrain, Personalized Prompt, and Predict Paradigm」（P5）と呼ばれる柔軟で統一されたテキストからテキストへのパラダイムを提案します。P5は、共有フレームワーク内でさまざまな推薦タスクを統一し、個別化と推薦のための深い意味を捉えることができます。P5は、異なるタスクを学習するための同じ言語モデリング目標を持つ事前学習を行います。P5は、浅いモデルから深いモデルへと進化し、広範な微調整の必要性を減らすことができます。P5の効果を実証するために、いくつかの推薦ベンチマークで実験を行いました。</issue-body>
+<maintainer-comment-text><p># 概要<br><br>T5 のように、様々な推薦タスクを、「Prompt + Prediction」のpipelineとして定義して解けるようにした研究。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9b8b83a2-0930-4836-8bae-a18234fd3fd3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>P5ではencoder-decoder frameworkを採用しており、encoder側ではbidirectionalなモデルでpromptのrepresentationを生成し、auto-regressiveな言語モデルで生成を行う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d47cb264-9e94-46c5-9b56-0b6f4e31a8de" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>推薦で利用したいデータセットから、input-target pairsを生成し上記アーキテクチャに対して事前学習することで、推薦を実現できる。<br><br><br><br>RatingPredictionでは、MatrixFactorizationに勝てていない（が、Rating Predictionについては魔法の壁問題などもあると思うのでなんともいえない。）<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a7742141-2988-4e92-96ae-f6fb4cc4ce5f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Sequential RecommendationではBERT4Recとかにも勝てている模様。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8badc477-8665-4404-bf4b-93ac901740d6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><br><br># Prompt例<br><br>- Rating Predictionの例<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9385d3ff-c186-4490-be34-3baf331aefae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>- Sequential Recommendationの例<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/12b61106-af4f-4597-9990-60bc6fa7f222" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>- Explanationを生成する例<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b41f22fd-2476-4365-a3a0-07f72d6bb0db" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>- Zero-shotの例（Cold-Start）<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5217791e-7a7e-40d4-bdb4-b979af327032" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>JFBench: 実務レベルの日本語指示追従性能を備えた生成AIを目指して, PFN, 2026.01</title>
+<original-paper-blog-link>https://tech.preferred.jp/ja/blog/jfbench-japanese-instruction-following-benchmark/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4328</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, InstructionTuning, Evaluation, Japanese, InstructionFollowingCapability</tags>
+<repo-issue-date>2026-01-29</repo-issue-date>
+<issue-body>https://tech.preferred.jp/ja/blog/jfbench-japanese-instruction-following-benchmark/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2016363311185723582?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing MiMo-Audio, LLM-Core Xiaomi, 2025.10</title>
+<original-paper-blog-link>https://xiaomimimo.github.io/MiMo-Audio-Demo/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3427</repo-issue-link>
+<tags>Pretraining, InstructionTuning, SpeechProcessing, Reasoning, SmallModel, OpenWeight, Zero/FewShotLearning, Selected Papers/Blogs, UMM, AudioLanguageModel</tags>
+<repo-issue-date>2025-10-25</repo-issue-date>
+<issue-body>https://xiaomimimo.github.io/MiMo-Audio-Demo/</issue-body>
+<maintainer-comment-text><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/XiaomiMiMo/mimo-audio" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/XiaomiMiMo/mimo-audio</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_tobiaslee/status/1981599535802495429?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>text, audioを入力として受け取り、text, audioを出力するAudioLanguageModel</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Stanford Alpaca: An Instruction-following LLaMA Model, Taori +, 2023.03</title>
+<original-paper-blog-link>https://github.com/tatsu-lab/stanford_alpaca</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1953</repo-issue-link>
+<tags>NLP, LanguageModel, InstructionTuning, PostTraining, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-05-12</repo-issue-date>
+<issue-body>https://github.com/tatsu-lab/stanford_alpaca</issue-body>
+<maintainer-comment-text><p>今更ながらメモに追加。アカデミアにおけるOpenLLMに対するInstruction Tuningの先駆け的研究。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Qwen3, Qwen Team, 2025.04</title>
+<original-paper-blog-link>https://qwenlm.github.io/blog/qwen3/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1909</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining</tags>
+<repo-issue-date>2025-04-29</repo-issue-date>
+<issue-body>https://qwenlm.github.io/blog/qwen3/</issue-body>
+<maintainer-comment-text><p>- 119言語をサポート<br>- MoEモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1911" target="_blank" rel="noopener noreferrer">Outrageously Large Neural Networks: The Sparsely-Gated  Mixture-of-Experts Layer, Noam Shazeer+, ICLR'17</a>
+<br>    - 30B-A3B / 235B-A22N<br>    - 128K context window<br>    - Qwen2.5はMoEを採用していないので新たなアーキテクチャとなる<br>- Denseモデル（非MoEモデル）も公開<br>    - 0.6B -- 32B<br>    - 32K -- 128K context window<br>- Thinking/Non-thinking の切り替えが切り替えが可能<br>    - スイッチは自動的に実施されるが、ユーザが明示的に `/think`, `/no_think` を user_promptの末尾に追加することで制御することも可能<br>- Pre-training<br>    - データ<br>        - 36 trillion tokensによって学習（Qwen-2.5の2倍）<br>        - 学習データではwebデータに加えて、PDF-likeな文書群からQwen2.5-VL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1835" target="_blank" rel="noopener noreferrer">Qwen2.5-VL-32B-Instruct, Qwen Team, 2025.03</a>
+ によってテキストを抽出し、Qwen2.5 で抽出された内容の品質を改善し利用<br>        - また、math / code に関するデータを追加するために、Qwen2.5-Math / Qwen2.5-Coderを用いて合成データを作成（textbooks / QA pairs / code snippets <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">Textbooks Are All You Need, Suriya Gunasekar+, N/A, arXiv'23</a>
+ ）<br>    - 事前学習のステップ<br>        - S1: context長が4kの30 trillion tokenで事前学習<br>        - S2: STEM / coding / reasoning task などのknowledge-intensiveデータの比率を増やして継続事前学習 (これがおそらく 5 trillion token程度？)<br>        - Final Stage: context長を32kに拡大し高品質なlong-context dataで継続事前学習<br>    - これによりBaseモデルが完成し、Qwen3-235B全体のうち10%程度のActive Parameterの利用するだけで（i.e., 22Bで）、Qwen2.5-72B Baseと同等以上の性能達成<br>- Post-training<br>    - S1: long-CoT cold start<br>        - 数学/coding/logical reasoning/STEMなどの多様なlong CoTデータを用いてSFT <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">s1: Simple test-time scaling, Niklas Muennighoff+, arXiv'25</a>
+ <br>    - S2: reasoning-based RL<br>        - rule-based (verifiable) rewards によるRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
+ <br>        - S1/S2の流れは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+ に有効性が示されている通り、long CoT DataによるSFT -> RLを実施<br>    - S3: thinking mode fusion<br>        - S2データを用いてlong CoTデータとinstruction tuningデータ（非Long CoT）を生成し、Thinking/Non-thinkingを自動的に選択し生成するように学習（SFT or RLは記述なし）<br>    - S4: general RL<br>        - 20以上の一般的なドメインのタスクを通じて一般的な能力の向上と、safetyに関するalignmentの実施（e.g., instruction following, format following, agent能力など）</p><p>BestPracticeに関するポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ivanfioravanti/status/1916934241281061156?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1917712050983428400?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Llama-3_1-Nemotron-Ultra-253B-v1, Nvidia, 2025.04</title>
+<original-paper-blog-link>https://huggingface.co/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1873</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Pruning, Reasoning, OpenWeight</tags>
+<repo-issue-date>2025-04-08</repo-issue-date>
+<issue-body>https://huggingface.co/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1</issue-body>
+<maintainer-comment-text><p>DeepSeek-R1をGPQA Diamond <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155" target="_blank" rel="noopener noreferrer">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N/A, COLM'24</a>
+, AIME2024/2025, Llama4 Maverickを<br>BFCLv2（Tool Calling, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1875" target="_blank" rel="noopener noreferrer">BFCLv2, UC Berkeley, 2024.08</a>
+), IFEVal <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137" target="_blank" rel="noopener noreferrer">Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, N/A, arXiv'23</a>
+ で上回り, そのほかはArenaHardを除きDeepSeekR1と同等<br><img src="https://github.com/user-attachments/assets/b0de99ee-f4ec-4b03-8b0b-8939b4f1e23b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>DeepSeekR1が671B（MoEで37B Activation Param）に対し、こちらは253B（ただし、Llama3.1がベースなのでMoEではない）で同等以上の性能となっている。<br>ReasoningをON/OFFする能力も備わっている。<br><br>モデルがどのように訓練されたかを示す全体図がとても興味深い:<img src="https://github.com/user-attachments/assets/9a014777-61d8-46ae-818b-ace9ed5c002d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>特に <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+ でも有効性が示されているように、SFTをしてからReasoningを強化する（強化というより元々持っている能力を引き出す？）RLを実施している。<br><br>詳細は下記Blogとのこと:<br>
+
+{% raw %}
+<a href="https://developer.nvidia.com/blog/build-enterprise-ai-agents-with-advanced-open-nvidia-llama-nemotron-reasoning-models/" target="_blank" rel="noopener noreferrer">https://developer.nvidia.com/blog/build-enterprise-ai-agents-with-advanced-open-nvidia-llama-nemotron-reasoning-models/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kuchaev/status/1909444566379573646?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>tokyotech-llm_swallow-magpie-ultra-v0.1, tokyotech-llm, 2025.01</title>
+<original-paper-blog-link>https://huggingface.co/datasets/tokyotech-llm/swallow-magpie-ultra-v0.1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1718</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, InstructionTuning</tags>
+<repo-issue-date>2025-01-07</repo-issue-date>
+<issue-body>https://huggingface.co/datasets/tokyotech-llm/swallow-magpie-ultra-v0.1</issue-body>
+<maintainer-comment-text><p>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/okoge_kaz/status/1876634359400370252?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SmolLM2, 2024.11</title>
+<original-paper-blog-link>https://huggingface.co/datasets/HuggingFaceTB/smoltalk</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1538</repo-issue-link>
+<tags>NLP, Dataset, InstructionTuning, SyntheticData, PostTraining</tags>
+<repo-issue-date>2024-11-21</repo-issue-date>
+<issue-body>Dataset: https://huggingface.co/datasets/HuggingFaceTB/smoltalk
+GitHub: https://github.com/huggingface/smollm</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1859598525723488478?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Orca-AgenInstruct-1M <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1521" target="_blank" rel="noopener noreferrer">microsoft/orca-agentinstruct-1M-v1, Microsoft, 2024.11</a>
+ よりもSmolLMのSFTで各種ベンチで高い性能を獲得<br><img src="https://github.com/user-attachments/assets/ed39fa8e-eeac-493f-a220-30313be5b761" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>microsoft_orca-agentinstruct-1M-v1, Microsoft, 2024.11</title>
+<original-paper-blog-link>https://huggingface.co/datasets/microsoft/orca-agentinstruct-1M-v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1521</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning</tags>
+<repo-issue-date>2024-11-16</repo-issue-date>
+<issue-body>https://huggingface.co/datasets/microsoft/orca-agentinstruct-1M-v1</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Unsloth</title>
+<original-paper-blog-link>https://github.com/unslothai/unsloth</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1450</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning</tags>
+<repo-issue-date>2024-10-08</repo-issue-date>
+<issue-body>https://github.com/unslothai/unsloth</issue-body>
+<maintainer-comment-text><p>single-GPUで、LLMのLoRA/QLoRAを高速/省メモリに実行できるライブラリ</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Reflection 70B, GlaiveAI, 2024.09</title>
+<original-paper-blog-link>https://github.com/user-attachments/assets/c33de81d-e66f-43f7-ac63-e67aad84aa0c)</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1376</repo-issue-link>
+<tags>NLP, LanguageModel, InstructionTuning, OpenWeight, SelfCorrection, PostTraining, KeyPoint Notes, Reference Collection</tags>
+<repo-issue-date>2024-09-06</repo-issue-date>
+<issue-body>**（追記 2024.1007）
+再現実験を全て終了し、当初報告していた結果が再現されなかったと公式に声明が出ました。**
+**（追記 2024.0909）このモデルは第三者が結果を再現できず、OpenRouterで提供されていたAPIがClaude等のAPIのラッパーだった疑惑があります。開発者達からは未だディフェンスはされていないようですので、このモデルの信頼性に大きな疑惑があります。
+================================**
+
+GPT4oなどを各種ベンチマークでoutperformしたと述べているLlama3.1 basedなOpenLLM。
+画像は元ツイートから引用。
+
+![image](https://github.com/user-attachments/assets/c33de81d-e66f-43f7-ac63-e67aad84aa0c)
+
+確かに諸々のベンチマークでGPT4oをoutperformしているように見えるが、このモデルはreflection-tuning （#1380 を踏襲しているかは不明） と名付けられたチューニングを行なっているようで、モデルが生成の過程で自発的にreflectionをするように学習されているように見える（元ツイートのツリーを辿ると、Planningなども自発的に行うように学習されているようにも見える）。
+
+研究目線で見ると、
+reflectionによって、70B程度のパラメータでこれだけの性能が達成されることは興味深いが、他モデルとfair-comparisonになっていない可能性があり（比較対象のモデルはreflectionをするようにinstructionやpromptingをされていないと考えられるため）、そこが気になる。
+
+GPT4oやClaudeがどのような学習をしているかは分からないが、reflectionはpromptingによっても実現可能だとおもうので、モデルそのものの性能を比較すると言うのであれば、他の比較対象のモデルもreflectionを行うようなpromptingした上で、比較すべきではないか？
+
+そうすると、恐らく学習データで正しくreflectionが行われた事例を与えた上でSFTをしていると思うので、より正しいreflectionをprompting無しで実現できるので、他のモデルよりもfair comparisonした上で有用です、といった話になると思う。
+
+元ツイート:https://x.com/mattshumer_/status/1831767014341538166?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q
+
+（追記）
+開発者の方のインタビューによると、promptingによるreflectionも試したが、あまりうまくいかなかったので学習データを用意した、といった経緯がある模様</issue-body>
+<maintainer-comment-text><p>ただまあ仮に同じInputを利用していたとして、promptingは同じ（モデルがどのようなテキストを生成し推論を実施するかはpromptingのスコープではない）なので、そもそも同じInputなのでfair comparisonですよ、という話に仮になるのだとしたら、そもそもどういう設定で比較実験すべきか?というのは検討した方が良い気はする。まあどこに焦点を置くか次第だと思うけど。<br><br>エンドユーザから見たら、reflectionのpromptingのやり方なんてわからないよ！という人もいると思うので、それを内部で自発的に実施するように学習して明示的にpromptingしなくても、高い性能を達成できるのであれば意味があると思う。<br><br>ただまあ少なくとも、参考でも良いから、他のモデルでもreflectionをするようなpromptingをした性能での比較結果も載せる方が親切かな、とは思う。</p><p>あと、70Bでこれほどの性能が出ているのはこれまでにないと思うので、コンタミネーションについてはディフェンスが必要に思う（他のモデルがそのようなディフェンスをしているかは知らないが）。<br><br>追記<br>→ 下記記事によると、LLM Decontaminatorを用いてコンタミネーションを防いでいるとのこと<br>
+
+{% raw %}
+<a href="https://github.com/lm-sys/llm-decontaminator" target="_blank" rel="noopener noreferrer">https://github.com/lm-sys/llm-decontaminator</a>
+{% endraw %}
+
+</p><p>Reflection自体の有用性は以前から示されている。<br>参考: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1377" target="_blank" rel="noopener noreferrer">Self-Reflection in LLM Agents: Effects on Problem-Solving Performance, Matthew Renze+, N/A, arXiv'24</a>
+, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1105" target="_blank" rel="noopener noreferrer">Self-RAG: Learning to Retrieve, Generate, and Critique through   Self-Reflection, Akari Asai+, N/A, ICLR'24</a>
+, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1248" target="_blank" rel="noopener noreferrer">AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls, Yu Du+, N/A, arXiv'24</a>
+, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1378" target="_blank" rel="noopener noreferrer">[Paper Note] Automatically Correcting Large Language Models: Surveying the landscape of diverse self-correction strategies, Liangming Pan+, TACL'24, 2023.08</a>
+</p><p>ollamaで実際に動かして日本語でのQAを試している記事。実際のアウトプットやreflectionの内容が確認でき、おもしろい。<br><br>システムプロンプトで< thinking >タグでInputに対して推論し、< output >タグ内で最終出力を行い、推論過程で誤りがある場合は< reflection >タグを用いて修正するように指示している。<br><br>おそらく、thinkingタグ内の思考過程でモデルが誤りに気づいた場合は、thinkingタグの途中でreflectionタグが出力され、その時点でCoTが修正されるようである（もしくはoutputとthinkingの中間）。このため、誤ったCoTに基づいてOutputが生成される頻度が減少すると考えられる。<br><br>このような挙動はおそらく、reflection用の学習データでSFTしないとできないと思うので<br><br>（たとえば、ReflectionタスクをするようなデータでSFTをしていない場合、出力の途中で誤りを検出し出力を修正するという挙動にはならず、回答として自然な文を最後までoutputすると思う。その後でreflectionしろと促すことはpromptingでできるかもしれないが、そもそもreflectionする能力があまり高くない可能性があり、うまく修正もしてくれないかも）<br><br>reflectionの能力を高めるようなデータでSFTをしていないモデルで似たようなpromptingをしても、うまくいかない可能性があるので注意が必要だと思われる。<br><br>参考: 
+
+{% raw %}
+<a href="https://note.com/schroneko/n/nae86e5d487f1" target="_blank" rel="noopener noreferrer">https://note.com/schroneko/n/nae86e5d487f1</a>
+{% endraw %}
+
+</p><p>開発者曰く、HFに記載の正しいシステムプロンプトを入れないと、適切に動作しないとのこと。<br>元ツイート: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mattshumer_/status/1832061508294971731?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>どうやら初期にアップロードされていたHFのモデルはweightに誤りがあり、挙動がおかしくなっていたようだ。<br>正しいモデルの挙動は下記ツイートのようである。thinking内でreflectionが実施されている。<br><br>実際にいくつかの例をブログをリリース当日に見た時に、reflectionタグがoutputの後に出力されている例などがあり、おや？という挙動をしていたので、問題が是正されたようだ。<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mattshumer_/status/1832581211841052694?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HFのモデルが修正された後もベンチマークの結果が再現されないなど、雲行きが色々と怪しいので注意した方が良い。</p><p>続報<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/1832965630472995220?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>開発者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/csahil28/status/1833619624589725762?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>再現実験を全て終了し、当初報告していた結果が再現されなかったとCEOが声明：
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mattshumer_/status/1842313328166907995"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A Review of Public Japanese Training Sets, shisa, 2023.12</title>
+<original-paper-blog-link>https://github.com/AUGMXNT/shisa/wiki/A-Review-of-Public-Japanese-Training-Sets</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1183</repo-issue-link>
+<tags>Pretraining, NLP, Dataset, LanguageModel, InstructionTuning, Repository, Japanese</tags>
+<repo-issue-date>2023-12-11</repo-issue-date>
+<issue-body>https://github.com/AUGMXNT/shisa/wiki/A-Review-of-Public-Japanese-Training-Sets</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>

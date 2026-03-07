@@ -1,0 +1,77 @@
+<paper-entry>
+<title>Where is the answer? Investigating Positional Bias in Language Model   Knowledge Extraction, Kuniaki Saito+, NAACL'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2402.12170</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1922</repo-issue-link>
+<tags>NLP, LanguageModel, Bias, NAACL, PostTraining, PerplexityCurse, ContextEngineering</tags>
+<repo-issue-date>2025-05-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2402.12170
+# Authors
+  - Kuniaki Saito
+  - Kihyuk Sohn
+  - Chen-Yu Lee
+  - Yoshitaka Ushiku
+# Abstract
+  - Large language models require updates to remain up-to-date or adapt to new domains by fine-tuning them with new documents. One key is memorizing the latest information in a way that the memorized information is extractable with a query prompt. However, LLMs suffer from a phenomenon called perplexity curse; despite minimizing document perplexity during fine-tuning, LLMs struggle to extract information through a prompt sentence. In this new knowledge acquisition and extraction, we find a very intriguing fact that LLMs can accurately answer questions about the first sentence, but they struggle to extract information described in the middle or end of the documents used for fine-tuning. Our study suggests that the auto-regressive training causes this issue; each token is prompted by reliance on all previous tokens, which hinders the model from recalling information from training documents by question prompts. To conduct the in-depth study, we publish both synthetic and real datasets, enabling the evaluation of the QA performance w.r.t. the position of the corresponding answer in a document. Our investigation shows that even a large model suffers from the perplexity curse, but regularization such as denoising auto-regressive loss can enhance the information extraction from diverse positions. These findings will be (i) a key to improving knowledge extraction from LLMs and (ii) new elements to discuss the trade-off between RAG and fine-tuning in adapting LLMs to a new domain.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は、最新の情報を保持したり、新しいドメインに適応するために、新しい文書でファインチューニングを行う必要があります。重要な点は、記憶された情報がクエリプロンプトによって抽出可能な形で最新の情報を記憶することです。しかし、LLMは「困惑の呪い」と呼ばれる現象に悩まされています。ファインチューニング中に文書の困惑度を最小化しても、LLMはプロンプト文を通じて情報を抽出するのに苦労します。この新しい知識の獲得と抽出において、LLMは文書の最初の文に関する質問には正確に答えることができる一方で、ファインチューニングに使用された文書の中間や末尾に記載された情報を抽出するのに苦労するという非常に興味深い事実を発見しました。我々の研究は、自己回帰的なトレーニングがこの問題を引き起こすことを示唆しています。各トークンはすべての前のトークンに依存してプロンプトされるため、モデルが質問プロンプトによってトレーニング文書から情報を思い出すことを妨げています。詳細な研究を行うために、我々は合成データセットと実データセットの両方を公開し、文書内の対応する回答の位置に関するQAパフォーマンスの評価を可能にしました。我々の調査は、大規模モデルであっても困惑の呪いに悩まされていることを示していますが、デノイジング自己回帰損失のような正則化が多様な位置からの情報抽出を向上させることができることも示しています。これらの発見は、(i) LLMからの知識抽出を改善するための鍵となり、(ii) LLMを新しいドメインに適応させる際のRAGとファインチューニングのトレードオフについて議論するための新しい要素となるでしょう。
+# Summary (by gpt-4o-mini)
+- LLMは新しい文書でファインチューニングが必要だが、「困惑の呪い」により情報抽出が困難。特に文書の初めに関する質問には正確に答えるが、中間や末尾の情報抽出に苦労する。自己回帰的トレーニングがこの問題を引き起こすことを示し、デノイジング自己回帰損失が情報抽出を改善する可能性を示唆。これにより、LLMの知識抽出と新ドメインへの適応に関する新たな議論が生まれる。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/losnuevetoros/status/1918332232181207096?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>![Image](https://github.com/user-attachments/assets/dd6bdffa-4ce0-4389-826e-4c85113c755f)<br>LLMの知識を最新にするために新しい文書（e.g., 新しいドメインの文書等）をLLMに与え（便宜上学習データと呼ぶ）Finetuningをした場合、Finetuning後のモデルで与えられたqueryから（LLM中にパラメータとしてmemorizeされている）対応する事実情報を抽出するようInferenceを実施すると、queryに対応する事実情報の学習データ中での位置が深くなると（i.e., middle -- endになると）抽出が困難になる Positional Biasが存在する[^1]ことを明らかにした。<br>そして、これを緩和するために正則化が重要（e.g., Denoising, Shuffle, Attention Drops）であることを実験的に示し、正則化手法は複数組み合わせることで、よりPositional Biasが緩和することを示した研究<br><br>[^1]: 本研究では"Training"に利用する文書のPositional Biasについて示しており、"Inference"時におけるPositional Biasとして知られている"lost-in-the middle"とは異なる現象を扱っている点に注意</p><p>
+<strong>## データセット<br>文書 + QAデータの2種類を構築しFinetuning後のknowledge extraction能力の検証をしている[^2]。<br><br>実験では、`Synthetic Bio (合成データ)`, `Wiki2023+（実データ）` の2種類のデータを用いて、Positional Biasを検証している。<br>Synthetic bioは、人間のbiographyに関する9つの属性（e.g., 誕生日, 出生地）としてとりうる値をChatGPTに生成させ、3000人の人物に対してそれらをランダムにassignし、sentence templateを用いてSurface Realizationすることで人工的に3000人のbiographyに関するテキストを生成している。<br>一方、Wiki2023+では、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1708" target="_blank" rel="noopener noreferrer">Instruction-tuned Language Models are Better Knowledge Learners, Zhengbao Jiang+, ACL'24</a>
+</strong>
+<br>
+ の方法にのっとって [^3]事前学習時の知識とのoverlapが最小となるように`2023`カテゴリ以下のwikipediaの様々なジャンルの記事を収集して活用する。QAデータの構築には、元文書からsentenceを抽出し、GPT-3.5-Turboに当該sentenceのみを与えてQA pairを作成させることで、データを作成している。なお、hallucinationや品質の低いQA pairをフィルタリングした。フィルタリング後のQA Pairをランダムにサンプリングし品質を確認したところ、95%のQA pairが妥当なものであった。<br><br>これにより、下図のようなデータセットが作成される。FigureCが `Wiki2023+`で、FigureDが`SyntheticBio`。`Wiki2023+`では、QA pairの正解が文書中の前半により正解が現れるような偏りが見受けられる。<br>![Image](https://github.com/user-attachments/assets/1146328f-de7e-4e90-b495-b129730c5d0d)<br><br>[^2]: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1923" target="_blank" rel="noopener noreferrer">[Paper Note] Physics of Language Models: Part 3.1, Knowledge Storage and Extraction, Zeyuan Allen-Zhu+, ICML'24</a>
+ において、知識 + 知識を抽出するタスクの双方を用いて学習することで、モデルから知識を抽出する能力が備わることが示されているため。<br>[^3]: Llama-2-7Bにおいて2023カテゴリ以下の情報に対するQAのperformanceが著しく低いことから、事前学習時に当該データが含まれている可能性が低いことが示唆されている</p><p>
+<strong>## 実験 & 実験結果 (modulated data)<br>作成した文書+QAデータのデータセットについて、QAデータをtrain/valid/testに分けて、文書データは全て利用し、testに含まれるQAに適切に回答できるかで性能を評価する。このとき、文書中でQAに対する正解がテキストが出現する位置を変化させモデルの学習を行い、予測性能を見ることで、Positional Biasが存在することを明らかにする。このとき、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1923" target="_blank" rel="noopener noreferrer">[Paper Note] Physics of Language Models: Part 3.1, Knowledge Storage and Extraction, Zeyuan Allen-Zhu+, ICML'24</a>
+</strong>
+<br>
+ に倣い、文書とQAをMixed Sampling（1バッチあたり256件のサンプルをランダムにQAおよび文書データからサンプリング; 
+<strong># 1923 では文書とQAを2:8の比率でサンプリングしている）することで学習をする。QAの場合目的関数は回答テキスト部分のみのNLL、文書の場合はnext-token prediction lossを利用する。<br><br>Positional Biasの存在を示すだけでなく、(A, B, C) の順番でnext-token prediction lossで学習されたモデルの場合、Cの知識を抽出するためにA, Bがcontextとして必要となるため、Cを抽出する際の汎化性能を高めるためにA, Bの表現がより多様である必要がある、という課題がある。これに対処するためのいくつかのシンプルな正則化手法、具体的には<br>- D-AR: predition targetのトークンは保持したまま、input tokenの一部をランダムなトークンに置き換える<br>- Shuffle: 入力文をシャッフルする<br>- Attn Drop: self-attentionモジュールのattention weightをランダムに0にする<br>の3種類とPositional Biasの関係性を検証している。<br>![Image](https://github.com/user-attachments/assets/503e53f2-28f5-46ea-a11f-beee98f8fa38)<br><br>検証の結果、（合成データ、実データともに）Positional Biasが存在することが明らかとなり（i.e., 正解テキストが文書中の深い位置にあればあるほど予測性能が低下する）正則化によってPositional Biasが緩和されることが示された。<br>![Image](https://github.com/user-attachments/assets/11a29a1e-f869-4628-9c47-e1fc9e5c394e)<br><br>また、異なるモデルサイズで性能を比較したところ、モデルサイズを大きくすることで性能自体は改善するが、依然としてPositional Biasが存在することが示され、ARよりもD-ARが一貫して高い性能を示した。このことから、Positional Biasを緩和するために何らかの正則化手法が必要なことがわかる。<br>![Image](https://github.com/user-attachments/assets/0772d144-c22b-4723-8578-acdf0e2e1187)<br><br>また、オリジナル文書の1文目を、正解データの位置を入れ替えた各モデルに対して、テキスト中の様々な位置に配置してPerplexityを測った。この設定では、モデルがPerplexityを最小化するためには、（1文目ということは以前の文脈が存在しないsentenceなので）文脈に依存せずに文の記憶していなければならない。よって、各手法ごとにどの程度Perplexityが悪化するかで、各手法がどの程度あるsentenceを記憶する際に過去の文脈に依存しているかが分かる。ここで、学習データそのもののPerplexityはほぼ1.0であったことに注意する。<br>結果として、文書中の深い位置に配置されればされるほどPerplexityは増大し（left）、Autoregressive Model (AR) のPerplexity値が最も値が大きかった（=性能が悪かった）。このことから、ARはより過去の文脈に依存してsentenceの情報を記憶していることが分かる。また、モデルサイズが小さいモデルの方がPerplexityは増大する傾向にあることがわかった (middle)。これはFig.3で示したQAのパフォーマンスと傾向が一致しており、学習データそのもののPerplexityがほぼ1.0だったことを鑑みると、学習データに対するPerplexityは様々なPositionに位置する情報を適切に抽出できる能力を測るメトリックとしては適切でないことがわかる。また、学習のiterationを増やすと、ARの場合はfirst positionに対する抽出性能は改善したが、他のpositionでの抽出性能は改善しなかった。一方、D-ARの場合は、全てのpositionでの抽出性能が改善した (right) 。このことから、必ずしも学習のiterationを増やしても様々なPositionに対する抽出性能が改善しないこと、longer trainingの恩恵を得るためには正則化手法を利用する必要があることが明らかになった。<br><br>![Image](https://github.com/user-attachments/assets/94f635a5-68d5-478d-ab16-513e855fe054)<br></p><p>## 実験 & 実験結果 (unmodulated data)<br>Wiki2023+データに対して上記のようなデータの変更を行わずに、そのまま学習を行い、各位置ごとのQAの性能を測定したところ、（すべてがPositional Biasのためとは説明できないが）回答が文書中の深い位置にある場合の性能が劣化することを確認した。2--6番目の性能の低下は、最初の文ではシンプルな事実が述べられ、後半になればなるほどより複雑な事実が述べられる傾向があることが起因して性能の低下しているとかせつをたてている。また、unmodulated dataの場合でもD-ARはARの性能を改善することが明らかとなった。モデルサイズが大きいほど性能は改善するが、以前として文書中の深い位置に正解がある場合に性能は劣化することもわかる。<br><img src="https://github.com/user-attachments/assets/2f43ba8a-c54e-4523-b8f0-7cfc797d5a7e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、正則化手法は組み合わせることでさらに性能が改善し、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1923" target="_blank" rel="noopener noreferrer">[Paper Note] Physics of Language Models: Part 3.1, Knowledge Storage and Extraction, Zeyuan Allen-Zhu+, ICML'24</a>
+</strong>
+<br>
+ に示されている通り、学習データ中の表現を多様にし[^1]学習したところ予測性能が改善し、正則化手法とも補完的な関係であることも示された。<br><img src="https://github.com/user-attachments/assets/e79415b1-28e2-47ab-b429-448412053d0b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>医療ドメインでも実験したところ、正則化手法を適用した場合にARよりも性能が上回った。最後にWiki2023+データについてOpenbookな設定で、正解が含まれる文書をLLMのcontextとして与えた場合（i.e.,ほぼ完璧なretrieverが存在するRAGと同等の設定とみなせる）、QAの性能は90.6%に対し、継続学習した場合のベストモデルの性能は50.8%だった。このことから、正確なretrieverが存在するのであれば、継続学習よりもRAGの方がQAの性能が高いと言える。<br>RAGと継続学習のメリット、デメリットの両方を考慮して、適切に手法を選択することが有効であることが示唆される。<br><img src="https://github.com/user-attachments/assets/14180452-5421-4102-8751-fabc8b780d49" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: ChatGPTによってテキストをrephraseし、sentenceのorderも変更することで多様性を増やした。が、sentence orderが文書中の深い位置にある場合にあまりorderが変化しなかったようで、このため深い位置に対するQAの性能改善が限定的になっていると説明している。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Instruction-tuned Language Models are Better Knowledge Learners, Zhengbao Jiang+, ACL'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2402.12847</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1708</repo-issue-link>
+<tags>Pretraining, InstructionTuning, ACL, PerplexityCurse</tags>
+<repo-issue-date>2025-01-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2402.12847
+# Authors
+  - Zhengbao Jiang
+  - Zhiqing Sun
+  - Weijia Shi
+  - Pedro Rodriguez
+  - Chunting Zhou
+  - Graham Neubig
+  - Xi Victoria Lin
+  - Wen-tau Yih
+  - Srinivasan Iyer
+# Abstract
+  - In order for large language model (LLM)-based assistants to effectively adapt to evolving information needs, it must be possible to update their factual knowledge through continued training on new data. The standard recipe for doing so involves continued pre-training on new documents followed by instruction-tuning on question-answer (QA) pairs. However, we find that LLMs trained with this recipe struggle to answer questions, even though the perplexity of documents is minimized. We found that QA pairs are generally straightforward, while documents are more complex, weaving many factual statements together in an intricate manner. Therefore, we hypothesize that it is beneficial to expose LLMs to QA pairs before continued pre-training on documents so that the process of encoding knowledge from complex documents takes into account how this knowledge is accessed through questions. Based on this, we propose pre-instruction-tuning (PIT), a method that instruction-tunes on questions prior to training on documents. This contrasts with standard instruction-tuning, which learns how to extract knowledge after training on documents. Extensive experiments and ablation studies demonstrate that pre-instruction-tuning significantly enhances the ability of LLMs to absorb knowledge from new documents, outperforming standard instruction-tuning by 17.8%.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）ベースのアシスタントが進化する情報ニーズに効果的に適応するためには、新しいデータに基づいて事実に関する知識を更新することが可能でなければならない。これを実現するための標準的な手法は、新しい文書に対する継続的な事前学習の後に、質問応答（QA）ペアに基づく指示調整を行うことである。しかし、この手法で訓練されたLLMは、文書の困惑度が最小化されているにもかかわらず、質問に答えるのに苦労することがわかった。QAペアは一般的に単純であるのに対し、文書はより複雑で、多くの事実の記述が巧妙に組み合わさっているためである。したがって、複雑な文書からの知識をエンコードするプロセスが、質問を通じてこの知識にアクセスする方法を考慮に入れるように、LLMをQAペアにさらすことが有益であると仮定する。これに基づき、文書の訓練前に質問に基づいて指示調整を行う「事前指示調整（PIT）」という手法を提案する。これは、文書の訓練後に知識を抽出する方法を学ぶ標準的な指示調整とは対照的である。広範な実験とアブレーション研究により、事前指示調整がLLMが新しい文書から知識を吸収する能力を大幅に向上させ、標準的な指示調整を17.8%上回ることが示された。
+# Summary (by gpt-4o-mini)
+- 新しい文書からの知識更新には、事前指示調整（PIT）を提案。これは、文書の訓練前に質問に基づいて指示調整を行う手法で、LLMが新しい情報を効果的に吸収する能力を向上させ、標準的な指示調整を17.8%上回る結果を示した。</issue-body>
+<maintainer-comment-text><p>興味深い</p><p>SNLP'24での解説スライド:
+
+{% raw %}
+<a href="https://speakerdeck.com/s_mizuki_nlp/instruction-tuned-language-models-are-better-knowledge-learners-in-acl-2024" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/s_mizuki_nlp/instruction-tuned-language-models-are-better-knowledge-learners-in-acl-2024</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>

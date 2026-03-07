@@ -1,0 +1,257 @@
+<paper-entry>
+<title>[Paper Note] Rethinking the Trust Region in LLM Reinforcement Learning, Penghui Qi+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.04879</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4453</repo-issue-link>
+<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, action_wanted, PPO (ProximalPolicyOptimization), PostTraining, read-later, Selected Papers/Blogs, Stability, KeyPoint Notes, train-inference-gap</tags>
+<repo-issue-date>2026-02-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.04879
+# Authors
+  - Penghui Qi
+  - Xiangxin Zhou
+  - Zichen Liu
+  - Tianyu Pang
+  - Chao Du
+  - Min Lin
+  - Wee Sun Lee
+# Abstract
+  - Reinforcement learning (RL) has become a cornerstone for fine-tuning Large Language Models (LLMs), with Proximal Policy Optimization (PPO) serving as the de facto standard algorithm. Despite its ubiquity, we argue that the core ratio clipping mechanism in PPO is structurally ill-suited for the large vocabularies inherent to LLMs. PPO constrains policy updates based on the probability ratio of sampled tokens, which serves as a noisy single-sample Monte Carlo estimate of the true policy divergence. This creates a sub-optimal learning dynamic: updates to low-probability tokens are aggressively over-penalized, while potentially catastrophic shifts in high-probability tokens are under-constrained, leading to training inefficiency and instability. To address this, we propose Divergence Proximal Policy Optimization (DPPO), which substitutes heuristic clipping with a more principled constraint based on a direct estimate of policy divergence (e.g., Total Variation or KL). To avoid huge memory footprint, we introduce the efficient Binary and Top-K approximations to capture the essential divergence with negligible overhead. Extensive empirical evaluations demonstrate that DPPO achieves superior training stability and efficiency compared to existing methods, offering a more robust foundation for RL-based LLM fine-tuning.
+# Translation (by gpt-4o-mini)
+- 強化学習（RL）は大規模言語モデル（LLM）の微調整において重要な要素となっており、近似ポリシー最適化（PPO）が事実上の標準アルゴリズムとして機能しています。その普及にもかかわらず、私たちはPPOにおけるコアの比率クリッピングメカニズムがLLMの固有の大きな語彙数に対して構造的に不適切であると主張します。PPOはサンプリングされたトークンの確率比に基づいてポリシーの更新を制約し、これは真のポリシーの逸脱に対するノイズの多い単一サンプルモンテカルロ推定として機能します。このため、低確率トークンへの更新が過度に罰せられ、高確率トークンでの潜在的に致命的なシフトが不十分に制約されるという非最適な学習ダイナミクスが生じ、トレーニングの非効率性と不安定性を引き起こします。この問題に対処するため、私たちはポリシーの逸脱の直接的な推定に基づくより原理的な制約でヒューリスティッククリッピングを置き換えるダイバージェンス近似ポリシー最適化（DPPO）を提案します。巨大なメモリフットプリントを避けるため、重要な逸脱をほとんどオーバーヘッド無しで捉える効率的なバイナリおよびトップK近似を導入します。広範な実証評価は、DPPOが既存の手法に比べて優れたトレーニングの安定性と効率を達成し、RLベースのLLM微調整のためのより堅牢な基盤を提供することを示しています。
+# Summary (by gpt-4o-mini)
+- 強化学習におけるPPOの限界を指摘し、低確率トークンの更新が過剰に罰せられる問題を解決するため、ダイバージェンス近似ポリシー最適化（DPPO）を提案。DPPOは、ポリシーの逸脱を直接推定することで学習ダイナミクスの非最適性を改善し、効率的なバイナリおよびトップK近似を導入することでトレーニングの安定性と効率を向上させる。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qphutu/status/2019435642539897303?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>PPOはトークン単位の確率比をrefと現在のポリシーからの算出しrefから離れすぎないようにクリッピングをするが、この場合非常に低確率で出現するトークンは過剰にクリッピングされる傾向にある。しかしその低確率トークンを調べると実はReasoningにおいて重要なトークンであったり（Wait, Thus, Next)、数学での重要なシンボル（+,-,=)、数値トークンであり、結果的にこれらReasoning系のタスクで重要なトークンの学習を阻害してしまっており（実際にこれらの低確率トークンをクリッピングされないようにしたら学習効率が大幅に改善）、語彙数が多いLLMの学習においては相性が悪い（別の視点として高確率トークンに対して過剰にペナルティを与えるという傾向もある）。これを改善するために、確率比をクリッピングするのではなく、ポリシーとrefのDivergenceの上界を直接制約することで解決し（語彙数が大きすぎてDivergenceを計算できないので近似的な計算方法も提案されている模様）、実際に適用すると学習が非常に安定し、かつ学習効率が既存手法と比較して高まりました、という話にみえる。</p><p>解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/TheTuringPost/status/2022326245745377562?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>一言解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2019285987134955738?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>100 Days After DeepSeek-R1: A Survey on Replication Studies and More  Directions for Reasoning Language Models, Chong Zhang+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.00551</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1925</repo-issue-link>
+<tags>Survey, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, InstructionTuning, PPO (ProximalPolicyOptimization), Reasoning, LongSequence, RewardHacking, GRPO, Contamination-free, VerifiableRewards, CurriculumLearning</tags>
+<repo-issue-date>2025-05-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.00551
+# Authors
+  - Chong Zhang
+  - Yue Deng
+  - Xiang Lin
+  - Bin Wang
+  - Dianwen Ng
+  - Hai Ye
+  - Xingxuan Li
+  - Yao Xiao
+  - Zhanfeng Mo
+  - Qi Zhang
+  - Lidong Bing
+# Abstract
+  - The recent development of reasoning language models (RLMs) represents a novel evolution in large language models. In particular, the recent release of DeepSeek-R1 has generated widespread social impact and sparked enthusiasm in the research community for exploring the explicit reasoning paradigm of language models. However, the implementation details of the released models have not been fully open-sourced by DeepSeek, including DeepSeek-R1-Zero, DeepSeek-R1, and the distilled small models. As a result, many replication studies have emerged aiming to reproduce the strong performance achieved by DeepSeek-R1, reaching comparable performance through similar training procedures and fully open-source data resources. These works have investigated feasible strategies for supervised fine-tuning (SFT) and reinforcement learning from verifiable rewards (RLVR), focusing on data preparation and method design, yielding various valuable insights. In this report, we provide a summary of recent replication studies to inspire future research. We primarily focus on SFT and RLVR as two main directions, introducing the details for data construction, method design and training procedure of current replication studies. Moreover, we conclude key findings from the implementation details and experimental results reported by these studies, anticipating to inspire future research. We also discuss additional techniques of enhancing RLMs, highlighting the potential of expanding the application scope of these models, and discussing the challenges in development. By this survey, we aim to help researchers and developers of RLMs stay updated with the latest advancements, and seek to inspire new ideas to further enhance RLMs.
+# Translation (by gpt-4o-mini)
+- 最近の推論言語モデル（RLM）の開発は、大規模言語モデルにおける新たな進化を示しています。特に、最近リリースされたDeepSeek-R1は、広範な社会的影響をもたらし、言語モデルの明示的な推論パラダイムを探求する研究コミュニティの熱意を引き起こしました。しかし、DeepSeekによってリリースされたモデルの実装詳細は、DeepSeek-R1-Zero、DeepSeek-R1、および蒸留された小型モデルを含め、完全にはオープンソース化されていません。その結果、多くの再現研究が登場し、DeepSeek-R1が達成した強力なパフォーマンスを再現しようとし、類似のトレーニング手順と完全にオープンソースのデータリソースを通じて同等のパフォーマンスに到達しています。これらの研究は、データ準備と方法設計に焦点を当て、監視付きファインチューニング（SFT）および検証可能な報酬からの強化学習（RLVR）の実行可能な戦略を調査し、さまざまな貴重な洞察を得ています。本報告では、今後の研究を促進するために最近の再現研究の概要を提供します。主にSFTとRLVRの2つの主要な方向性に焦点を当て、現在の再現研究のデータ構築、方法設計、トレーニング手順の詳細を紹介します。さらに、これらの研究によって報告された実装の詳細と実験結果からの重要な発見をまとめ、今後の研究を刺激することを期待しています。また、RLMを強化するための追加技術についても議論し、これらのモデルの適用範囲を拡大する可能性を強調し、開発における課題についても考察します。この調査を通じて、RLMの研究者や開発者が最新の進展を把握し、RLMをさらに強化するための新しいアイデアを刺激することを目指しています。
+# Summary (by gpt-4o-mini)
+- 最近の推論言語モデル（RLM）の進展を受けて、DeepSeek-R1が注目を集めているが、その実装詳細は完全にはオープンソース化されていない。これにより、多くの再現研究が行われ、DeepSeek-R1のパフォーマンスを再現しようとする試みが続いている。特に、監視付きファインチューニング（SFT）と強化学習（RLVR）の戦略が探求され、貴重な洞察が得られている。本報告では、再現研究の概要を提供し、データ構築やトレーニング手順の詳細を紹介し、今後の研究の促進を目指す。また、RLMを強化するための追加技術や開発上の課題についても考察する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1918898257406709983?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>サーベイのtakeawayが箇条書きされている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] The Ultimate Guide to Fine-Tuning LLMs from Basics to Breakthroughs: An  Exhaustive Review of Technologies, Research, Best Practices, Applied Research  Challenges and Opportunities, Venkatesh Balavadhani Parthasarathy+, arXiv'24, 2024.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2408.13296</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3292</repo-issue-link>
+<tags>Tutorial, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Evaluation, MultiModal, Pruning, PPO (ProximalPolicyOptimization), PEFT(Adaptor/LoRA), LLMServing, DPO, PostTraining, Selected Papers/Blogs, VisionLanguageModel</tags>
+<repo-issue-date>2025-10-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2408.13296
+# Authors
+  - Venkatesh Balavadhani Parthasarathy
+  - Ahtsham Zafar
+  - Aafaq Khan
+  - Arsalan Shahid
+# Abstract
+  - This report examines the fine-tuning of Large Language Models (LLMs), integrating theoretical insights with practical applications. It outlines the historical evolution of LLMs from traditional Natural Language Processing (NLP) models to their pivotal role in AI. A comparison of fine-tuning methodologies, including supervised, unsupervised, and instruction-based approaches, highlights their applicability to different tasks. The report introduces a structured seven-stage pipeline for fine-tuning LLMs, spanning data preparation, model initialization, hyperparameter tuning, and model deployment. Emphasis is placed on managing imbalanced datasets and optimization techniques. Parameter-efficient methods like Low-Rank Adaptation (LoRA) and Half Fine-Tuning are explored for balancing computational efficiency with performance. Advanced techniques such as memory fine-tuning, Mixture of Experts (MoE), and Mixture of Agents (MoA) are discussed for leveraging specialized networks and multi-agent collaboration. The report also examines novel approaches like Proximal Policy Optimization (PPO) and Direct Preference Optimization (DPO), which align LLMs with human preferences, alongside pruning and routing optimizations to improve efficiency. Further sections cover validation frameworks, post-deployment monitoring, and inference optimization, with attention to deploying LLMs on distributed and cloud-based platforms. Emerging areas such as multimodal LLMs, fine-tuning for audio and speech, and challenges related to scalability, privacy, and accountability are also addressed. This report offers actionable insights for researchers and practitioners navigating LLM fine-tuning in an evolving landscape.
+# Translation (by gpt-4o-mini)
+- この報告書では、大規模言語モデル（LLMs）のファインチューニングについて、理論的な洞察と実践的な応用を統合して検討しています。LLMsの歴史的な進化を、従来の自然言語処理（NLP）モデルからAIにおける重要な役割まで概説しています。監視型、非監視型、指示ベースのアプローチを含むファインチューニング手法の比較を行い、それぞれのタスクへの適用可能性を強調しています。報告書では、データ準備、モデル初期化、ハイパーパラメータ調整、モデルデプロイメントにわたる構造化された7段階のパイプラインを紹介しています。特に、不均衡データセットの管理と最適化技術に重点を置いています。計算効率と性能のバランスを取るために、Low-Rank Adaptation（LoRA）やHalf Fine-Tuningのようなパラメータ効率の良い手法を探求しています。専門的なネットワークやマルチエージェントの協力を活用するためのメモリファインチューニング、Mixture of Experts（MoE）、Mixture of Agents（MoA）などの高度な技術についても議論しています。また、LLMsを人間の好みに合わせるProximal Policy Optimization（PPO）やDirect Preference Optimization（DPO）などの新しいアプローチ、効率を改善するためのプルーニングやルーティングの最適化についても検討しています。さらに、検証フレームワーク、デプロイ後のモニタリング、推論の最適化に関するセクションがあり、分散型およびクラウドベースのプラットフォームでのLLMsのデプロイに注意を払っています。マルチモーダルLLMs、音声やスピーチのファインチューニング、スケーラビリティ、プライバシー、説明責任に関連する課題など、新たな分野についても取り上げています。この報告書は、進化する環境の中でLLMのファインチューニングを行う研究者や実務者にとって、実用的な洞察を提供します。
+# Summary (by gpt-4o-mini)
+- 本報告書では、大規模言語モデル（LLMs）のファインチューニングに関する理論と実践を統合的に検討し、歴史的な進化やファインチューニング手法の比較を行っています。7段階の構造化されたパイプラインを紹介し、不均衡データセットの管理やパラメータ効率の良い手法（LoRA、Half Fine-Tuning）に重点を置いています。また、PPOやDPOなどの新しいアプローチや、検証フレームワーク、デプロイ後のモニタリングについても議論し、マルチモーダルLLMsやプライバシー、説明責任に関する課題にも触れています。研究者や実務者に実用的な洞察を提供する内容です。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hesamation/status/1978790875015634988?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Preference Fine-Tuning of LLMs Should Leverage Suboptimal, On-Policy   Data, Fahim Tajwar+, ICML'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2404.14367</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2090</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Alignment, ReinforcementLearning, PPO (ProximalPolicyOptimization), ICML, DPO, On-Policy</tags>
+<repo-issue-date>2025-06-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2404.14367
+# Authors
+  - Fahim Tajwar
+  - Anikait Singh
+  - Archit Sharma
+  - Rafael Rafailov
+  - Jeff Schneider
+  - Tengyang Xie
+  - Stefano Ermon
+  - Chelsea Finn
+  - Aviral Kumar
+# Abstract
+  - Learning from preference labels plays a crucial role in fine-tuning large language models. There are several distinct approaches for preference fine-tuning, including supervised learning, on-policy reinforcement learning (RL), and contrastive learning. Different methods come with different implementation tradeoffs and performance differences, and existing empirical findings present different conclusions, for instance, some results show that online RL is quite important to attain good fine-tuning results, while others find (offline) contrastive or even purely supervised methods sufficient. This raises a natural question: what kind of approaches are important for fine-tuning with preference data and why? In this paper, we answer this question by performing a rigorous analysis of a number of fine-tuning techniques on didactic and full-scale LLM problems. Our main finding is that, in general, approaches that use on-policy sampling or attempt to push down the likelihood on certain responses (i.e., employ a "negative gradient") outperform offline and maximum likelihood objectives. We conceptualize our insights and unify methods that use on-policy sampling or negative gradient under a notion of mode-seeking objectives for categorical distributions. Mode-seeking objectives are able to alter probability mass on specific bins of a categorical distribution at a fast rate compared to maximum likelihood, allowing them to relocate masses across bins more effectively. Our analysis prescribes actionable insights for preference fine-tuning of LLMs and informs how data should be collected for maximal improvement.
+# Translation (by gpt-4o-mini)
+- 好みのラベルから学ぶことは、大規模言語モデルのファインチューニングにおいて重要な役割を果たします。好みのファインチューニングには、教師あり学習、オンポリシー強化学習（RL）、および対照学習など、いくつかの異なるアプローチがあります。異なる手法は異なる実装上のトレードオフや性能の違いを伴い、既存の実証的な発見は異なる結論を示しています。例えば、ある結果はオンラインRLが良好なファインチューニング結果を得るために非常に重要であることを示している一方で、他の結果は（オフラインの）対照学習や純粋に教師ありの手法でも十分であることを示しています。これにより、自然な疑問が生じます：好みのデータを用いたファインチューニングにおいて、どのようなアプローチが重要であり、その理由は何でしょうか？本論文では、教育的およびフルスケールのLLM問題に対するいくつかのファインチューニング技術の厳密な分析を行うことで、この疑問に答えます。私たちの主な発見は、一般的に、オンポリシーサンプリングを使用するアプローチや特定の応答に対する尤度を下げようとするアプローチ（すなわち、「負の勾配」を用いる）が、オフラインおよび最大尤度の目的よりも優れているということです。私たちは、これらの洞察を概念化し、オンポリシーサンプリングや負の勾配を使用する手法をカテゴリ分布に対するモード探索目的の概念の下で統一します。モード探索目的は、最大尤度と比較して、カテゴリ分布の特定のビンにおける確率質量を迅速に変更することができ、ビン間での質量の再配置をより効果的に行うことができます。私たちの分析は、LLMの好みのファインチューニングに対する実行可能な洞察を提供し、最大の改善のためにデータをどのように収集すべきかを示唆します。
+# Summary (by gpt-4o-mini)
+- 好みのラベルを用いた大規模言語モデルのファインチューニングに関する研究。オンポリシー強化学習や対照学習などの手法を比較し、オンポリシーサンプリングや負の勾配を用いるアプローチが優れていることを発見。これにより、カテゴリ分布の特定のビンにおける確率質量を迅速に変更できるモード探索目的の重要性を示し、データ収集の最適化に関する洞察を提供。</issue-body>
+<maintainer-comment-text><p>以下のオフライン vs. オンラインRLアルゴリズムで本研究が引用されている:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/1965088925510520853?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Secrets of RLHF in Large Language Models Part I: PPO, Rui Zheng+, arXiv'23, 2023.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.04964</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/807</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, action_wanted, RLHF, PPO (ProximalPolicyOptimization), Initial Impression Notes</tags>
+<repo-issue-date>2023-07-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2307.04964
+# Authors
+  - Rui Zheng
+  - Shihan Dou
+  - Songyang Gao
+  - Yuan Hua
+  - Wei Shen
+  - Binghai Wang
+  - Yan Liu
+  - Senjie Jin
+  - Qin Liu
+  - Yuhao Zhou
+  - Limao Xiong
+  - Lu Chen
+  - Zhiheng Xi
+  - Nuo Xu
+  - Wenbin Lai
+  - Minghao Zhu
+  - Cheng Chang
+  - Zhangyue Yin
+  - Rongxiang Weng
+  - Wensen Cheng
+  - Haoran Huang
+  - Tianxiang Sun
+  - Hang Yan
+  - Tao Gui
+  - Qi Zhang
+  - Xipeng Qiu
+  - Xuanjing Huang
+# Abstract
+  - Large language models (LLMs) have formulated a blueprint for the advancement of artificial general intelligence. Its primary objective is to function as a human-centric (helpful, honest, and harmless) assistant. Alignment with humans assumes paramount significance, and reinforcement learning with human feedback (RLHF) emerges as the pivotal technological paradigm underpinning this pursuit. Current technical routes usually include \textbf{reward models} to measure human preferences, \textbf{Proximal Policy Optimization} (PPO) to optimize policy model outputs, and \textbf{process supervision} to improve step-by-step reasoning capabilities. However, due to the challenges of reward design, environment interaction, and agent training, coupled with huge trial and error cost of large language models, there is a significant barrier for AI researchers to motivate the development of technical alignment and safe landing of LLMs. The stable training of RLHF has still been a puzzle. In the first report, we dissect the framework of RLHF, re-evaluate the inner workings of PPO, and explore how the parts comprising PPO algorithms impact policy agent training. We identify policy constraints being the key factor for the effective implementation of the PPO algorithm. Therefore, we explore the PPO-max, an advanced version of PPO algorithm, to efficiently improve the training stability of the policy model. Based on our main results, we perform a comprehensive analysis of RLHF abilities compared with SFT models and ChatGPT. The absence of open-source implementations has posed significant challenges to the investigation of LLMs alignment. Therefore, we are eager to release technical reports, reward models and PPO codes, aiming to make modest contributions to the advancement of LLMs.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は、人工汎用知能の進展に向けた青写真を形成しました。その主な目的は、人間中心の（有益な、正直な、無害な）アシスタントとして機能することです。人間との整合性は極めて重要であり、人間のフィードバックによる強化学習（RLHF）がこの追求を支える重要な技術的枠組みとして浮上しています。現在の技術的ルートには通常、\textbf{報酬モデル}（人間の好みを測定するため）、\textbf{近似ポリシー最適化}（PPO）（ポリシー出力を最適化するため）、および\textbf{プロセス監視}（段階的な推論能力を向上させるため）が含まれます。しかし、報酬設計、環境との相互作用、エージェントの訓練の課題と、大規模言語モデルの膨大な試行錯誤コストが相まって、AI研究者にとって技術的整合性とLLMの安全な着地を促進することには大きな障壁があります。RLHFの安定した訓練は未だに謎です。本報告では、RLHFの枠組みを解剖し、PPOの内部動作を再評価し、PPOアルゴリズムを構成する各要素がポリシーエージェントの訓練にどのように影響を与えるかを探ります。ポリシー制約がPPOアルゴリズムの効果的な実装における鍵要因であることを特定しました。したがって、私たちはPPOアルゴリズムの進化版であるPPO-maxを探求し、ポリシーモデルの訓練の安定性を効率的に向上させることを目指しています。主要な結果に基づいて、我々はSFTモデルおよびChatGPTと比較したRLHF能力の包括的な分析を行います。オープンソース実装の欠如は、LLMの整合性の調査に大きな課題をもたらしています。したがって、私たちは技術報告書、報酬モデル、PPOコードを公開することを熱望しており、LLMの進展に対してささやかな貢献を果たすことを目指しています。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は人間中心のアシスタントとしての機能を目指し、強化学習（RLHF）が重要な技術的枠組みとされています。報酬モデル、近似ポリシー最適化（PPO）、プロセス監視がその技術的ルートとして含まれますが、訓練の課題や試行錯誤コストが障壁となっています。本報告では、RLHFの枠組みとPPOの内部動作を探求し、ポリシー制約がアルゴリズムの効果的実装における鍵要因であることを特定。新たにPPO-maxを提案し、訓練の安定性向上を目指しています。また、SFTモデルやChatGPTとの比較分析を行い、オープンソース実装の重要性を強調しています。</issue-body>
+<maintainer-comment-text><p>RLHFとPPOをの内部構造を調査したレポート。RLHFに興味がある場合は読むべし。</p><p>github: 
+
+{% raw %}
+<a href="https://github.com/OpenLMLab/MOSS-RLHF" target="_blank" rel="noopener noreferrer">https://github.com/OpenLMLab/MOSS-RLHF</a>
+{% endraw %}
+
+</p><p>日本語解説:
+
+{% raw %}
+<a href="https://www.docswell.com/s/DeepLearning2023/5M19RW-dlsecrets-of-rlhf-in-large-language-models-part-i-ppo" target="_blank" rel="noopener noreferrer">https://www.docswell.com/s/DeepLearning2023/5M19RW-dlsecrets-of-rlhf-in-large-language-models-part-i-ppo</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Training language models to follow instructions with human feedback, Long Ouyang+, N_A, NeurIPS'22</title>
+<original-paper-blog-link>https://arxiv.org/abs/2203.02155</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1296</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, ChatGPT, RLHF, PPO (ProximalPolicyOptimization), PostTraining, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2024-04-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2203.02155
+# Affiliations
+  - Long Ouyang, N/A
+  - Jeff Wu, N/A
+  - Xu Jiang, N/A
+  - Diogo Almeida, N/A
+  - Carroll L. Wainwright, N/A
+  - Pamela Mishkin, N/A
+  - Chong Zhang, N/A
+  - Sandhini Agarwal, N/A
+  - Katarina Slama, N/A
+  - Alex Ray, N/A
+  - John Schulman, N/A
+  - Jacob Hilton, N/A
+  - Fraser Kelton, N/A
+  - Luke Miller, N/A
+  - Maddie Simens, N/A
+  - Amanda Askell, N/A
+  - Peter Welinder, N/A
+  - Paul Christiano, N/A
+  - Jan Leike, N/A
+  - Ryan Lowe, N/A
+# Abstract
+  - Making language models bigger does not inherently make them better atfollowing a user's intent. For example, large language models can generateoutputs that are untruthful, toxic, or simply not helpful to the user. In otherwords, these models are not aligned with their users. In this paper, we show anavenue for aligning language models with user intent on a wide range of tasksby fine-tuning with human feedback. Starting with a set of labeler-writtenprompts and prompts submitted through the OpenAI API, we collect a dataset oflabeler demonstrations of the desired model behavior, which we use to fine-tuneGPT-3 using supervised learning. We then collect a dataset of rankings of modeloutputs, which we use to further fine-tune this supervised model usingreinforcement learning from human feedback. We call the resulting modelsInstructGPT. In human evaluations on our prompt distribution, outputs from the1.3B parameter InstructGPT model are preferred to outputs from the 175B GPT-3,despite having 100x fewer parameters. Moreover, InstructGPT models showimprovements in truthfulness and reductions in toxic output generation whilehaving minimal performance regressions on public NLP datasets. Even thoughInstructGPT still makes simple mistakes, our results show that fine-tuning withhuman feedback is a promising direction for aligning language models with humanintent.
+# Translation (by gpt-3.5-turbo)
+- 言語モデルを大きくすること自体が、ユーザーの意図に従う能力を必ずしも向上させるわけではありません。例えば、大規模な言語モデルは、真実でない、有害な、または単にユーザーにとって役立たない出力を生成することがあります。言い換えれば、これらのモデルはユーザーと一致していないのです。本論文では、人間のフィードバックを用いて言語モデルをユーザーの意図に合わせる手法を幅広いタスクに適用する方法を示します。ラベラーが作成したプロンプトとOpenAI APIを介して提出されたプロンプトを出発点とし、望ましいモデルの振る舞いのラベラーによるデモンストレーションのデータセットを収集し、これを用いてGPT-3を教師あり学習で微調整します。その後、モデルの出力のランキングのデータセットを収集し、この教師ありモデルをさらに人間のフィードバックによる強化学習で微調整します。このようにして得られたモデルをInstructGPTと呼びます。私たちのプロンプト分布における人間の評価では、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれましたが、パラメータ数は100倍少ないです。さらに、InstructGPTモデルは真実性の向上と有害な出力の削減を示し、一方で一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ単純なミスを com していますが、私たちの結果は、人間のフィードバックを用いた微調整が言語モデルを人間の意図に合わせる有望な方向であることを示しています。
+# Summary (by gpt-3.5-turbo)
+- 大規模な言語モデルは、ユーザーの意図に合わない出力を生成することがあります。本研究では、人間のフィードバックを使用してGPT-3を微調整し、InstructGPTと呼ばれるモデルを提案します。この手法により、13億パラメータのInstructGPTモデルの出力が175BのGPT-3の出力よりも好まれ、真実性の向上と有害な出力の削減が示されました。さらに、一般的なNLPデータセットにおける性能の低下は最小限でした。InstructGPTはまだ改善の余地がありますが、人間のフィードバックを使用した微調整が有望な方向であることを示しています。</issue-body>
+<maintainer-comment-text><p>ChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>

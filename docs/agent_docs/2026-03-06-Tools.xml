@@ -1,0 +1,1294 @@
+<paper-entry>
+<title>[Paper Note] Chunky Post-Training: Data Driven Failures of Generalization, Seoirse Murray+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.05910</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4460</repo-issue-link>
+<tags>Analysis, Tools, NLP, LanguageModel, LLM-as-a-Judge, PostTraining, read-later, Selected Papers/Blogs, KeyPoint Notes, Rubric-based, ChunkyPostTraining</tags>
+<repo-issue-date>2026-02-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.05910
+# Authors
+  - Seoirse Murray
+  - Allison Qi
+  - Timothy Qian
+  - John Schulman
+  - Collin Burns
+  - Sara Price
+# Abstract
+  - LLM post-training involves many diverse datasets, each targeting a specific behavior. But these datasets encode incidental patterns alongside intended ones: correlations between formatting and content, narrow phrasings across diverse problems, and implicit associations arising from the discrete data curation process. These patterns are often invisible to developers yet salient to models, producing behaviors that surprise their creators, such as rejecting true facts presented in a particular question format. We call this chunky post-training: the model learns spurious correlations as a result of distinct chunks of post-training data. We introduce SURF, a black-box pipeline which surfaces these unintended behaviors at run time, and TURF, a tool that traces these failures back to specific post-training data. Applying these tools to frontier models (Claude 4.5, GPT-5.1, Grok 4.1, Gemini 3) and open models (Tülu 3), we show that chunky post-training produces miscalibrated behaviors, which often result from imbalanced or underspecified chunks of post-training data.
+# Translation (by gpt-4o-mini)
+- LLMのポストトレーニングは、多様なデータセットを含み、各データセットは特定の行動をターゲットにしています。しかし、これらのデータセットは意図したパターンに加えて偶発的なパターンもエンコードしています：フォーマットとコンテンツの間の相関、さまざまな問題における狭い表現、そして離散的なデータキュレーションプロセスから生じる暗黙の関連性です。これらのパターンは開発者にはしばしば見えないものの、モデルには顕著であり、特定の質問形式で提示された真実の事実を拒否するなど、開発者を驚かせる行動を引き起こします。これを「チャンクポストトレーニング」と呼びます。モデルは、ポストトレーニングデータの異なるチャンクの結果として虚偽の相関を学習します。私たちは、これらの意図しない行動を実行時に浮き彫りにするブラックボックスパイプライン「SURF」と、これらの失敗を特定のポストトレーニングデータに追跡するツール「TURF」を紹介します。これらのツールをフロンティアモデル（Claude 4.5、GPT-5.1、Grok 4.1、Gemini 3）およびオープンモデル（Tülu 3）に適用し、チャンクポストトレーニングが誤校正された行動を生み出すことを示します。これらの行動は、しばしば不均衡または不十分に仕様されたポストトレーニングデータのチャンクから生じます。
+# Summary (by gpt-4o-mini)
+- LLMのポストトレーニングでは、偶発的なパターンがモデルに影響を及ぼし、意図しない行動を引き起こすことがある。これを「チャンクポストトレーニング」と呼び、特定の質問形式に対して虚偽の相関が現れる理由を探るため、「SURF」というブラックボックスパイプラインと、「TURF」という追跡ツールを提案。これらのツールを用いて、フロンティアモデルやオープンモデルでの誤校正された行動の生成を示し、ポストトレーニングデータの不均衡が影響していることを明らかにした。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2019654246845825111?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事後学習データは特定の行動を学習することを意図して作成されるが、離散的なチャンクの集合として学習したときに、それらに意図しない特徴に基づく相関が含まれ（たとえば、コーディングのデータセットに不自然に形式的な表現が含まれたときに、モデルがそのような表現が用いられた時はコーディングの指示だと学習してしまうなど）、モデルがそれを学習してしまうこと（= Chunky PostTraining)を提唱し、これによって生じる失敗モードの実例として、Haiku 4.5j「5+8=13ですか？」と質問した際に「いいえ、5+8=13は正しくありません。正しい答えは5+8=13です」と応答するような例を挙げている。これはモデルが明らかに正しい答えを知っているが、プロンプト中の何らかの特徴によって反論的な振る舞いが引き起こされているような例であり、こういった失敗を発見するための手法を提案している。<br><br>手法としては、失敗モードを評価するためのルーブリックと、promptに関するAttributeの集合（e.g. これは車に関する質問である, これはロシア語であるなど）を定義し、attributeのプールからサンプリングをして失敗モードを引き起こすクエリの候補を自動生成する。その後LLMに対してクエリを投げて得られた応答をルーブリックに基づいてLLM-as-a-Judgeによってスコアリングし、TopKのサンプルを残しリプレイバッファ[^1]を更新する。更新されたリプレイバッファを用いてAttributeの重みを更新し、よりスコアが高いAttributeに基づいてクエリ候補が生成されるようにし、再度クエリ生成をして同様の操作をするよう繰り返す、といった手法のようである。<br>LLMを完全にブラックボックスとして扱い、応答テキストにのみに基づいて実行されるため、proprietary LLMに対しても実行可能である。<br><img src="https://github.com/user-attachments/assets/a03f9910-140c-434e-a783-1d4da3609c99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: リプレイバッファは、個々の(クエリ, スコア, attribute, スコア）の4つ組の集合によって定義される。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] VerlTool: Towards Holistic Agentic Reinforcement Learning with Tool Use, Dongfu Jiang+, arXiv'25, 2025.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.01055</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2670</repo-issue-link>
+<tags>EfficiencyImprovement, Tools, NLP, LanguageModel, ReinforcementLearning, PostTraining, Asynchronous</tags>
+<repo-issue-date>2025-09-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.01055
+# Authors
+  - Dongfu Jiang
+  - Yi Lu
+  - Zhuofeng Li
+  - Zhiheng Lyu
+  - Ping Nie
+  - Haozhe Wang
+  - Alex Su
+  - Hui Chen
+  - Kai Zou
+  - Chao Du
+  - Tianyu Pang
+  - Wenhu Chen
+# Abstract
+  - Reinforcement Learning with Verifiable Rewards (RLVR) has demonstrated success in enhancing LLM reasoning capabilities, but remains limited to single-turn interactions without tool integration. While recent Agentic Reinforcement Learning with Tool use (ARLT) approaches have emerged to address multi-turn tool interactions, existing works develop task-specific codebases that suffer from fragmentation, synchronous execution bottlenecks, and limited extensibility across domains. These inefficiencies hinder broader community adoption and algorithmic innovation. We introduce VerlTool, a unified and modular framework that addresses these limitations through systematic design principles. VerlTool provides four key contributions: (1) upstream alignment with VeRL ensuring compatibility and simplified maintenance, (2) unified tool management via standardized APIs supporting diverse modalities including code execution, search, SQL databases, and vision processing, (3) asynchronous rollout execution achieving near 2$\times$ speedup by eliminating synchronization bottlenecks, and (4) comprehensive evaluation demonstrating competitive performance across 6 ARLT domains. Our framework formalizes ARLT as multi-turn trajectories with multi-modal observation tokens (text/image/video), extending beyond single-turn RLVR paradigms. We train and evaluate models on mathematical reasoning, knowledge QA, SQL generation, visual reasoning, web search, and software engineering tasks, achieving results comparable to specialized systems while providing unified training infrastructure. The modular plugin architecture enables rapid tool integration requiring only lightweight Python definitions, significantly reducing development overhead and providing a scalable foundation for tool-augmented RL research. Our code is open-sourced at https://github.com/TIGER-AI-Lab/verl-tool.
+# Translation (by gpt-4o-mini)
+- 強化学習における検証可能な報酬（RLVR）は、LLMの推論能力を向上させる上で成功を収めているが、ツール統合のない単一ターンのインタラクションに限られている。最近のツール使用を伴うエージェント強化学習（ARLT）アプローチは、マルチターンのツールインタラクションに対処するために登場したが、既存の研究はタスク特化型のコードベースを開発しており、断片化、同期実行のボトルネック、ドメイン間の拡張性の制限といった問題に悩まされている。これらの非効率性は、広範なコミュニティの採用やアルゴリズムの革新を妨げている。そこで、我々はVerlToolを導入し、体系的な設計原則を通じてこれらの制限に対処する統一的かつモジュラーなフレームワークを提供する。VerlToolは、以下の4つの重要な貢献を行う：(1) VeRLとの上流整合性を確保し、互換性とメンテナンスの簡素化を実現、(2) コード実行、検索、SQLデータベース、視覚処理など多様なモダリティをサポートする標準化されたAPIを介した統一ツール管理、(3) 同期ボトルネックを排除することでほぼ2倍のスピードアップを達成する非同期ロールアウト実行、(4) 6つのARLTドメインにおける競争力のあるパフォーマンスを示す包括的な評価。我々のフレームワークは、ARLTをマルチターンの軌跡として形式化し、テキスト、画像、動画といったマルチモーダルな観測トークンを用いて、単一ターンのRLVRパラダイムを超えて拡張する。数学的推論、知識QA、SQL生成、視覚推論、ウェブ検索、ソフトウェア工学タスクにおいてモデルを訓練・評価し、専門的なシステムと同等の結果を達成しつつ、統一された訓練インフラを提供する。モジュラーなプラグインアーキテクチャにより、軽量なPython定義のみで迅速なツール統合が可能となり、開発のオーバーヘッドを大幅に削減し、ツール強化型RL研究のためのスケーラブルな基盤を提供する。我々のコードはhttps://github.com/TIGER-AI-Lab/verl-toolでオープンソースとして公開されている。
+# Summary (by gpt-4o-mini)
+- VerlToolは、強化学習におけるツール統合の課題を解決するための統一的かつモジュラーなフレームワークを提供する。主な貢献は、互換性の確保、標準化されたAPIによるツール管理、非同期実行による速度向上、競争力のあるパフォーマンス評価である。これにより、マルチターンのインタラクションを形式化し、様々なタスクにおいて専門的なシステムと同等の結果を達成する。開発のオーバーヘッドを削減し、スケーラブルな基盤を提供する。コードはオープンソースで公開されている。</issue-body>
+<maintainer-comment-text><p>github: 
+
+{% raw %}
+<a href="https://github.com/TIGER-AI-Lab/verl-tool" target="_blank" rel="noopener noreferrer">https://github.com/TIGER-AI-Lab/verl-tool</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dongfujiang/status/1963160374209134608?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>START: Self-taught Reasoner with Tools, Chengpeng Li+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.04625</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1787</repo-issue-link>
+<tags>Tools, NLP, Supervised-FineTuning (SFT), SelfImprovement</tags>
+<repo-issue-date>2025-03-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.04625
+# Authors
+  - Chengpeng Li
+  - Mingfeng Xue
+  - Zhenru Zhang
+  - Jiaxi Yang
+  - Beichen Zhang
+  - Xiang Wang
+  - Bowen Yu
+  - Binyuan Hui
+  - Junyang Lin
+  - Dayiheng Liu
+# Abstract
+  - Large reasoning models (LRMs) like OpenAI-o1 and DeepSeek-R1 have demonstrated remarkable capabilities in complex reasoning tasks through the utilization of long Chain-of-thought (CoT). However, these models often suffer from hallucinations and inefficiencies due to their reliance solely on internal reasoning processes. In this paper, we introduce START (Self-Taught Reasoner with Tools), a novel tool-integrated long CoT reasoning LLM that significantly enhances reasoning capabilities by leveraging external tools. Through code execution, START is capable of performing complex computations, self-checking, exploring diverse methods, and self-debugging, thereby addressing the limitations of LRMs. The core innovation of START lies in its self-learning framework, which comprises two key techniques: 1) Hint-infer: We demonstrate that inserting artificially designed hints (e.g., ``Wait, maybe using Python here is a good idea.'') during the inference process of a LRM effectively stimulates its ability to utilize external tools without the need for any demonstration data. Hint-infer can also serve as a simple and effective sequential test-time scaling method; 2) Hint Rejection Sampling Fine-Tuning (Hint-RFT): Hint-RFT combines Hint-infer and RFT by scoring, filtering, and modifying the reasoning trajectories with tool invocation generated by a LRM via Hint-infer, followed by fine-tuning the LRM. Through this framework, we have fine-tuned the QwQ-32B model to achieve START. On PhD-level science QA (GPQA), competition-level math benchmarks (AMC23, AIME24, AIME25), and the competition-level code benchmark (LiveCodeBench), START achieves accuracy rates of 63.6%, 95.0%, 66.7%, 47.1%, and 47.3%, respectively. It significantly outperforms the base QwQ-32B and achieves performance comparable to the state-of-the-art open-weight model R1-Distill-Qwen-32B and the proprietary model o1-Preview.
+# Translation (by gpt-4o-mini)
+- 大規模推論モデル（LRMs）であるOpenAI-o1やDeepSeek-R1は、長いChain-of-thought（CoT）を活用することで複雑な推論タスクにおいて顕著な能力を示しています。しかし、これらのモデルは内部の推論プロセスのみに依存するため、幻覚や非効率性に悩まされることが多いです。本論文では、外部ツールを活用することで推論能力を大幅に向上させる新しいツール統合型の長CoT推論LLMであるSTART（Self-Taught Reasoner with Tools）を紹介します。STARTはコード実行を通じて、複雑な計算を行い、自己チェックを行い、多様な方法を探求し、自己デバッグを行うことができ、LRMsの限界に対処します。STARTの核心的な革新は、自己学習フレームワークにあり、2つの重要な技術から成り立っています。1) Hint-infer: 推論プロセス中に人工的に設計されたヒント（例: 「待って、ここでPythonを使うのは良いアイデアかもしれない。」）を挿入することで、LRMが外部ツールを利用する能力を効果的に刺激することを示します。Hint-inferは、シンプルで効果的な逐次的なテスト時スケーリング手法としても機能します。2) Hint Rejection Sampling Fine-Tuning（Hint-RFT）: Hint-RFTは、Hint-inferによって生成されたツール呼び出しを用いて推論の軌跡をスコアリング、フィルタリング、修正し、その後LRMをファインチューニングすることで、Hint-inferとRFTを組み合わせます。このフレームワークを通じて、QwQ-32Bモデルをファインチューニングし、STARTを実現しました。PhDレベルの科学QA（GPQA）、競技レベルの数学ベンチマーク（AMC23、AIME24、AIME25）、および競技レベルのコードベンチマーク（LiveCodeBench）において、STARTはそれぞれ63.6%、95.0%、66.7%、47.1%、および47.3%の精度を達成しました。これは、ベースのQwQ-32Bを大幅に上回り、最先端のオープンウェイトモデルR1-Distill-Qwen-32Bおよびプロプライエタリモデルo1-Previewに匹敵する性能を達成しています。
+# Summary (by gpt-4o-mini)
+- 新しいツール統合型の長Chain-of-thought推論モデルSTARTを提案。STARTは外部ツールを活用し、自己学習フレームワークを通じて推論能力を向上。Hint-inferとHint Rejection Sampling Fine-Tuningを用いてLRMをファインチューニングし、科学QAや数学、コードベンチマークで高精度を達成。ベースモデルを大幅に上回り、最先端モデルに匹敵する性能を示す。</issue-body>
+<maintainer-comment-text><p>論文の本題とは関係ないが、QwQ-32Bよりも、DeepSeek-R1-Distilled-Qwen32Bの方が性能が良いのは興味深い。やはり大きいパラメータから蒸留したモデルの方が、小さいパラメータに追加学習したモデルよりも性能が高い傾向にあるのだろうか（どういうデータで蒸留したかにもよるけど）。<br><img src="https://github.com/user-attachments/assets/53e77e67-2c46-4163-859b-ccb0a7cd631d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=m80LCW765n" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=m80LCW765n</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>OctoTools: An Agentic Framework with Extensible Tools for Complex   Reasoning, Pan Lu+, NAACL'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2502.11271</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1770</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Reasoning, NAACL</tags>
+<repo-issue-date>2025-02-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2502.11271
+# Authors
+  - Pan Lu
+  - Bowen Chen
+  - Sheng Liu
+  - Rahul Thapa
+  - Joseph Boen
+  - James Zou
+# Abstract
+  - Solving complex reasoning tasks may involve visual understanding, domain knowledge retrieval, numerical calculation, and multi-step reasoning. Existing methods augment large language models (LLMs) with external tools but are restricted to specialized domains, limited tool types, or require additional training data. In this paper, we introduce OctoTools, a training-free, user-friendly, and easily extensible open-source agentic framework designed to tackle complex reasoning across diverse domains. OctoTools introduces standardized tool cards to encapsulate tool functionality, a planner for both high-level and low-level planning, and an executor to carry out tool usage. We validate OctoTools' generality across 16 diverse tasks (including MathVista, MMLU-Pro, MedQA, and GAIA-Text), achieving substantial average accuracy gains of 9.3% over GPT-4o. Furthermore, OctoTools outperforms AutoGen, GPT-Functions and LangChain by up to 10.6% when given the same set of tools. Through comprehensive analysis and ablations, OctoTools demonstrates advantages in task planning, effective tool usage, and multi-step problem solving.
+# Translation (by gpt-4o-mini)
+- 複雑な推論タスクを解決するには、視覚理解、ドメイン知識の取得、数値計算、そして多段階の推論が必要となることがあります。既存の手法は、大規模言語モデル（LLMs）を外部ツールで強化していますが、専門的なドメインに制限されていたり、ツールの種類が限られていたり、追加のトレーニングデータを必要としたりします。本論文では、さまざまなドメインにわたる複雑な推論に取り組むために設計された、トレーニング不要でユーザーフレンドリー、かつ簡単に拡張可能なオープンソースのエージェントフレームワーク「OctoTools」を紹介します。OctoToolsは、ツールの機能をカプセル化する標準化されたツールカード、高レベルおよび低レベルの計画のためのプランナー、ツールの使用を実行するエグゼキューターを導入しています。OctoToolsの汎用性を16の多様なタスク（MathVista、MMLU-Pro、MedQA、GAIA-Textを含む）で検証し、GPT-4oに対して平均9.3%の大幅な精度向上を達成しました。さらに、OctoToolsは同じツールセットを与えられた場合、AutoGen、GPT-Functions、LangChainを最大10.6%上回ります。包括的な分析とアブレーションを通じて、OctoToolsはタスク計画、効果的なツール使用、そして多段階の問題解決において優位性を示しています。
+# Summary (by gpt-4o-mini)
+- 複雑な推論タスクに対応するためのオープンソースエージェントフレームワーク「OctoTools」を提案。トレーニング不要で拡張可能なこのフレームワークは、標準化されたツールカードやプランナー、エグゼキューターを備え、16の多様なタスクでGPT-4oに対して平均9.3%の精度向上を達成。さらに、他の手法を最大10.6%上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lupantech/status/1892260474320015861?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>NAACL'25でベストペーパーに選出:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lupantech/status/1919495362102100365?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A Comparative Study of PDF Parsing Tools Across Diverse Document  Categories, Narayan S. Adhikari+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.09871</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2051</repo-issue-link>
+<tags>Analysis, Tools, NLP, RAG(RetrievalAugmentedGeneration)</tags>
+<repo-issue-date>2025-06-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.09871
+# Authors
+  - Narayan S. Adhikari
+  - Shradha Agarwal
+# Abstract
+  - PDF is one of the most prominent data formats, making PDF parsing crucial for information extraction and retrieval, particularly with the rise of RAG systems. While various PDF parsing tools exist, their effectiveness across different document types remains understudied, especially beyond academic papers. Our research aims to address this gap by comparing 10 popular PDF parsing tools across 6 document categories using the DocLayNet dataset. These tools include PyPDF, pdfminer-six, PyMuPDF, pdfplumber, pypdfium2, Unstructured, Tabula, Camelot, as well as the deep learning-based tools Nougat and Table Transformer(TATR). We evaluated both text extraction and table detection capabilities. For text extraction, PyMuPDF and pypdfium generally outperformed others, but all parsers struggled with Scientific and Patent documents. For these challenging categories, learning-based tools like Nougat demonstrated superior performance. In table detection, TATR excelled in the Financial, Patent, Law & Regulations, and Scientific categories. Table detection tool Camelot performed best for tender documents, while PyMuPDF performed superior in the Manual category. Our findings highlight the importance of selecting appropriate parsing tools based on document type and specific tasks, providing valuable insights for researchers and practitioners working with diverse document sources.
+# Translation (by gpt-4o-mini)
+- PDFは最も重要なデータフォーマットの一つであり、情報抽出や検索のためのPDFパースは特にRAGシステムの台頭に伴い重要です。さまざまなPDFパースツールが存在しますが、異なる文書タイプにおけるその効果は、特に学術論文以外では十分に研究されていません。本研究は、DocLayNetデータセットを使用して、6つの文書カテゴリにわたる10の人気PDFパースツールを比較することでこのギャップに対処することを目的としています。これらのツールには、PyPDF、pdfminer-six、PyMuPDF、pdfplumber、pypdfium2、Unstructured、Tabula、Camelot、さらに深層学習に基づくツールであるNougatとTable Transformer（TATR）が含まれます。テキスト抽出と表検出の両方の能力を評価しました。テキスト抽出においては、PyMuPDFとpypdfiumが一般的に他のツールを上回りましたが、すべてのパーサーは科学文書や特許文書に苦労しました。これらの難しいカテゴリでは、Nougatのような学習ベースのツールが優れたパフォーマンスを示しました。表検出においては、TATRが金融、特許、法律および規制、科学のカテゴリで優れた結果を出しました。表検出ツールのCamelotは入札文書に対して最も良いパフォーマンスを発揮し、PyMuPDFはマニュアルカテゴリで優れた結果を示しました。我々の発見は、文書タイプや特定のタスクに基づいて適切なパースツールを選択する重要性を強調しており、多様な文書ソースを扱う研究者や実務者にとって貴重な洞察を提供します。
+# Summary (by gpt-4o-mini)
+- 本研究では、DocLayNetデータセットを用いて10の人気PDFパースツールを6つの文書カテゴリにわたり比較し、情報抽出の効果を評価しました。テキスト抽出ではPyMuPDFとpypdfiumが優れた結果を示し、特に科学文書や特許文書ではNougatが高いパフォーマンスを発揮しました。表検出ではTATRが金融や法律文書で優れた結果を示し、Camelotは入札文書で最も良いパフォーマンスを発揮しました。これにより、文書タイプに応じた適切なパースツールの選択が重要であることが示されました。</issue-body>
+<maintainer-comment-text><p>PDFのparsingツールについて、text, table抽出の性能を様々なツールと分野別に評価している。<br><br>F1, precision, recallなどは、ground truthとのレーベンシュタイン距離からsimilarityを計算し、0.7以上であればtrue positiveとみなすことで計算している模様。local alignmentは、マッチした場合に加点、ミスマッチ、未検出の場合にペナルティを課すようなスコアリングによって抽出したテキスト全体の抽出性能を測る指標な模様。<br><img src="https://github.com/user-attachments/assets/2d2e114f-cc47-4d7d-906a-c505c793d675" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/ccc79865-83d3-47b6-bb47-f2c0a28990c7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>より性能を高くしたければこちらも参考に:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jerryjliu0/status/1934988910448492570?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Gorilla: Large Language Model Connected with Massive APIs, Shishir G. Patil+, NeurIPS'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2305.15334</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1874</repo-issue-link>
+<tags>Tools, NLP, Dataset, LanguageModel, API, NeurIPS</tags>
+<repo-issue-date>2025-04-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2305.15334
+# Authors
+  - Shishir G. Patil
+  - Tianjun Zhang
+  - Xin Wang
+  - Joseph E. Gonzalez
+# Abstract
+  - Large Language Models (LLMs) have seen an impressive wave of advances recently, with models now excelling in a variety of tasks, such as mathematical reasoning and program synthesis. However, their potential to effectively use tools via API calls remains unfulfilled. This is a challenging task even for today's state-of-the-art LLMs such as GPT-4, largely due to their inability to generate accurate input arguments and their tendency to hallucinate the wrong usage of an API call. We release Gorilla, a finetuned LLaMA-based model that surpasses the performance of GPT-4 on writing API calls. When combined with a document retriever, Gorilla demonstrates a strong capability to adapt to test-time document changes, enabling flexible user updates or version changes. It also substantially mitigates the issue of hallucination, commonly encountered when prompting LLMs directly. To evaluate the model's ability, we introduce APIBench, a comprehensive dataset consisting of HuggingFace, TorchHub, and TensorHub APIs. The successful integration of the retrieval system with Gorilla demonstrates the potential for LLMs to use tools more accurately, keep up with frequently updated documentation, and consequently increase the reliability and applicability of their outputs. Gorilla's code, model, data, and demo are available at https://gorilla.cs.berkeley.edu
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は最近、数学的推論やプログラム合成など、さまざまなタスクで優れた進展を遂げています。しかし、API呼び出しを通じてツールを効果的に使用する可能性は未だ実現されていません。これは、今日の最先端のLLMであるGPT-4にとっても難しい課題であり、主に正確な入力引数を生成できないことや、API呼び出しの誤った使用法を幻覚する傾向があるためです。私たちは、API呼び出しの作成においてGPT-4の性能を上回る微調整されたLLaMAベースのモデル「Gorilla」を発表します。文書検索システムと組み合わせることで、Gorillaはテスト時の文書変更に適応する強力な能力を示し、ユーザーの柔軟な更新やバージョン変更を可能にします。また、LLMに直接プロンプトを与えた際によく見られる幻覚の問題を大幅に軽減します。モデルの能力を評価するために、HuggingFace、TorchHub、TensorHubのAPIからなる包括的なデータセット「APIBench」を導入します。Gorillaと検索システムの成功した統合は、LLMがツールをより正確に使用し、頻繁に更新される文書に追随し、その結果として出力の信頼性と適用性を向上させる可能性を示しています。Gorillaのコード、モデル、データ、デモは、https://gorilla.cs.berkeley.edu で入手可能です。
+# Summary (by gpt-4o-mini)
+- Gorillaは、API呼び出しの生成においてGPT-4を上回るLLaMAベースのモデルであり、文書検索システムと組み合わせることで、テスト時の文書変更に適応し、ユーザーの柔軟な更新を可能にします。幻覚の問題を軽減し、APIをより正確に使用する能力を示します。Gorillaの評価には新たに導入したデータセット「APIBench」を使用し、信頼性と適用性の向上を実現しています。</issue-body>
+<maintainer-comment-text><p>APIBench:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/gorilla-llm/APIBench" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/gorilla-llm/APIBench</a>
+{% endraw %}
+
+</p><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=tBRNC6YemY" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tBRNC6YemY</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ToolGen: Unified Tool Retrieval and Calling via Generation, Renxi Wang+, N_A, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.03439</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1458</repo-issue-link>
+<tags>Pretraining, Tools, NLP, LanguageModel, Supervised-FineTuning (SFT), AIAgents</tags>
+<repo-issue-date>2024-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.03439
+# Affiliations
+  - Renxi Wang, N/A
+  - Xudong Han, N/A
+  - Lei Ji, N/A
+  - Shu Wang, N/A
+  - Timothy Baldwin, N/A
+  - Haonan Li, N/A
+# Abstract
+  - As large language models (LLMs) advance, their inability to autonomously execute tasks by directly interacting with external tools remains a critical limitation. Traditional methods rely on inputting tool descriptions as context, which is constrained by context length and requires separate, often inefficient, retrieval mechanisms. We introduce ToolGen, a paradigm shift that integrates tool knowledge directly into the LLM's parameters by representing each tool as a unique token. This enables the LLM to generate tool calls and arguments as part of its next token prediction capabilities, seamlessly blending tool invocation with language generation. Our framework allows the LLM to access and utilize a vast amount of tools with no additional retrieval step, significantly enhancing both performance and scalability. Experimental results with over 47,000 tools show that ToolGen not only achieves superior results in both tool retrieval and autonomous task completion but also sets the stage for a new era of AI agents that can adapt to tools across diverse domains. By fundamentally transforming tool retrieval into a generative process, ToolGen paves the way for more versatile, efficient, and autonomous AI systems. ToolGen enables end-to-end tool learning and opens opportunities for integration with other advanced techniques such as chain-of-thought and reinforcement learning, thereby expanding the practical capabilities of LLMs.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）が進化する中、外部ツールと直接対話して自律的にタスクを実行する能力の欠如は依然として重要な制約となっています。従来の方法は、ツールの説明をコンテキストとして入力することに依存しており、これはコンテキストの長さに制約され、別々の、しばしば非効率的な情報取得メカニズムを必要とします。私たちはToolGenを提案します。これは、各ツールをユニークなトークンとして表現することにより、ツールの知識をLLMのパラメータに直接統合するパラダイムシフトです。これにより、LLMは次のトークン予測機能の一部としてツール呼び出しや引数を生成でき、ツールの呼び出しと自然言語生成をシームレスに融合させます。私たちのフレームワークは、LLMが追加の情報取得ステップなしで膨大な数のツールにアクセスし、利用できるようにし、パフォーマンスとスケーラビリティを大幅に向上させます。47,000以上のツールを用いた実験結果は、ToolGenがツールの情報取得と自律的なタスク完了の両方で優れた結果を達成するだけでなく、多様なドメインにわたるツールに適応できる新しい時代のAIエージェントの基盤を築くことを示しています。ToolGenは、ツールの情報取得を生成プロセスに根本的に変革することで、より多様で効率的かつ自律的なAIシステムへの道を開きます。ToolGenはエンドツーエンドのツール学習を可能にし、連鎖的思考や強化学習などの他の高度な技術との統合の機会を広げ、LLMの実用的な能力を拡張します。
+# Summary (by gpt-4o-mini)
+- ToolGenは、外部ツールとの直接対話を可能にする新しいフレームワークで、各ツールをユニークなトークンとして表現し、LLMのパラメータに統合します。これにより、LLMはツール呼び出しや引数を自然言語生成の一部としてシームレスに生成でき、情報取得ステップなしで多くのツールにアクセス可能になります。実験結果は、ToolGenが自律的なタスク完了と情報取得で優れた性能を示し、より効率的で自律的なAIシステムの基盤を築くことを示しています。</issue-body>
+<maintainer-comment-text><p>昔からよくある特殊トークンを埋め込んで、特殊トークンを生成したらそれに応じた処理をする系の研究。今回はツールに対応するトークンを仕込む模様。</p><p>斜め読みだが、3つのstepでFoundation Modelを訓練する。まずはツールのdescriptionからツールトークンを生成する。これにより、モデルにツールの情報を覚えさせる（memorization）。斜め読みなので読めていないが、ツールトークンをvocabに追加してるのでここは継続的事前学習をしているかもしれない。続いて、（おそらく）人手でアノテーションされたクエリ-必要なツールのペアデータから、クエリに対して必要なツールを生成するタスクを学習させる。最後に、（おそらく人手で作成された）クエリ-タスクを解くためのtrajectoryペアのデータで学習させる。<br><img src="https://github.com/user-attachments/assets/eebe4260-2e4f-4be7-9b59-a0b84913e667" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/d03ed971-e5c9-49f3-8385-cfb00505907c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>学習データのサンプル。Appendix中に記載されているものだが、本文のデータセット節とAppendixの双方に、データの作り方の詳細は記述されていなかった。どこかに書いてあるのだろうか。<br><img src="https://github.com/user-attachments/assets/41975d34-dc9d-405d-aaca-062a3ee1a4b0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><img src="https://github.com/user-attachments/assets/41e80988-5770-420e-bc80-a4cc0a724994" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>最終的な性能<br><img src="https://github.com/user-attachments/assets/a247cc99-10eb-4346-9f0d-b406a022c3b4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>特殊トークンを追加のvocabとして登録し、そのトークンを生成できるようなデータで学習し、vocabに応じて何らかの操作を実行するという枠組み、その学習手法は色々なタスクで役立ちそう。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world  APIs, Yujia Qin+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.16789v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/920</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, action_wanted</tags>
+<repo-issue-date>2023-08-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2307.16789v1
+# Affiliations
+  - Yujia Qin, N/A
+  - Shihao Liang, N/A
+  - Yining Ye, N/A
+  - Kunlun Zhu, N/A
+  - Lan Yan, N/A
+  - Yaxi Lu, N/A
+  - Yankai Lin, N/A
+  - Xin Cong, N/A
+  - Xiangru Tang, N/A
+  - Bill Qian, N/A
+  - Sihan Zhao, N/A
+  - Runchu Tian, N/A
+  - Ruobing Xie, N/A
+  - Jie Zhou, N/A
+  - Mark Gerstein, N/A
+  - Dahai Li, N/A
+  - Zhiyuan Liu, N/A
+  - Maosong Sun, N/A
+# Abstract
+  - Despite the advancements of open-source large language models (LLMs) andtheir variants, e.g., LLaMA and Vicuna, they remain significantly limited inperforming higher-level tasks, such as following human instructions to useexternal tools (APIs). This is because current instruction tuning largelyfocuses on basic language tasks instead of the tool-use domain. This is incontrast to state-of-the-art (SOTA) LLMs, e.g., ChatGPT, which havedemonstrated excellent tool-use capabilities but are unfortunately closedsource. To facilitate tool-use capabilities within open-source LLMs, weintroduce ToolLLM, a general tool-use framework of data construction, modeltraining and evaluation. We first present ToolBench, an instruction-tuningdataset for tool use, which is created automatically using ChatGPT.Specifically, we collect 16,464 real-world RESTful APIs spanning 49 categoriesfrom RapidAPI Hub, then prompt ChatGPT to generate diverse human instructionsinvolving these APIs, covering both single-tool and multi-tool scenarios.Finally, we use ChatGPT to search for a valid solution path (chain of APIcalls) for each instruction. To make the searching process more efficient, wedevelop a novel depth-first search-based decision tree (DFSDT), enabling LLMsto evaluate multiple reasoning traces and expand the search space. We show thatDFSDT significantly enhances the planning and reasoning capabilities of LLMs.For efficient tool-use assessment, we develop an automatic evaluator: ToolEval.We fine-tune LLaMA on ToolBench and obtain ToolLLaMA. Our ToolEval reveals thatToolLLaMA demonstrates a remarkable ability to execute complex instructions andgeneralize to unseen APIs, and exhibits comparable performance to ChatGPT. Tomake the pipeline more practical, we devise a neural API retriever to recommendappropriate APIs for each instruction, negating the need for manual APIselection.
+# Translation (by gpt-3.5-turbo)
+- オープンソースの大規模言語モデル（LLMs）とその派生物（LLaMAやVicunaなど）の進歩にもかかわらず、外部ツール（API）の使用に関する人間の指示に従うなどの高度なタスクの実行には依然として制約があります。これは、現在の指示の調整がツールの使用領域ではなく、基本的な言語タスクに焦点を当てているためです。これに対して、ChatGPTなどの最先端のLLMsは、優れたツールの使用能力を示していますが、残念ながらクローズドソースです。オープンソースのLLMs内でツールの使用能力を容易にするために、データ構築、モデルトレーニング、評価のための一般的なツール使用フレームワークであるToolLLMを紹介します。まず、ToolBenchというツール使用のための指示調整データセットを紹介します。このデータセットは、ChatGPTを使用して自動的に作成されます。具体的には、RapidAPI Hubから49のカテゴリにわたる16,464の実世界のRESTful APIを収集し、ChatGPTにこれらのAPIを含む多様な人間の指示を生成するように促します。これには、単一ツールと複数ツールのシナリオの両方が含まれます。最後に、各指示に対して有効なソリューションパス（API呼び出しの連鎖）を検索するためにChatGPTを使用します。検索プロセスを効率化するために、深さ優先探索ベースの決定木（DFSDT）を開発し、LLMsが複数の推論トレースを評価し、検索空間を拡大できるようにします。DFSDTは、LLMsの計画と推論能力を大幅に向上させることを示しています。効率的なツール使用の評価のために、ToolEvalという自動評価ツールを開発しました。ToolBenchでLLaMAを微調整し、ToolLLaMAを得ました。ToolEvalによると、ToolLLaMAは複雑な指示を実行し、未知のAPIにも一般化する驚異的な能力を示し、ChatGPTと同等のパフォーマンスを発揮します。パイプラインをより実用的にするために、各指示に適切なAPIを推奨するためのニューラルAPIリトリーバーを考案し、手動でのAPI選択の必要性をなくしました。
+# Summary (by gpt-3.5-turbo)
+- オープンソースの大規模言語モデル（LLMs）を使用して、外部ツール（API）の高度なタスクの実行を容易にするためのToolLLMというフレームワークを紹介します。ToolBenchというデータセットを使用して、ツールの使用方法を調整し、DFSDTという決定木を使用して効率的な検索を行います。ToolEvalという自動評価ツールを使用して、ToolLLaMAが高いパフォーマンスを発揮することを示します。さらに、ニューラルAPIリトリーバーを使用して、適切なAPIを推奨します。</issue-body>
+<maintainer-comment-text><p>16000のreal worldのAPIとインタラクションし、データの準備、訓練、評価などを一貫してできるようにしたフレームワーク。LLaMAを使った場合、ツール利用に関してturbo-16kと同等の性能に達したと主張。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a9c394b5-6148-4bab-acaa-4934ead5c1a7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</title>
+<original-paper-blog-link>https://direct.mit.edu/tacl/article/doi/10.1162/tacl_a_00373/100686/SummEval-Re-evaluating-Summarization-Evaluation</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/984</repo-issue-link>
+<tags>DocumentSummarization, Metrics, Tools, NLP, Dataset, Evaluation, translation_required, Selected Papers/Blogs</tags>
+<repo-issue-date>2023-08-13</repo-issue-date>
+<issue-body>https://direct.mit.edu/tacl/article/doi/10.1162/tacl_a_00373/100686/SummEval-Re-evaluating-Summarization-Evaluation</issue-body>
+<maintainer-comment-text><p>自動評価指標が人手評価の水準に達しないことが示されており、結局のところROUGEを上回る自動性能指標はほとんどなかった。human judgmentsとのKendall;'s Tauを見ると、chrFがCoherenceとRelevance, METEORがFluencyで上回ったのみだった。また、LEAD-3はやはりベースラインとしてかなり強く、LEAD-3を上回ったのはBARTとPEGASUSだった。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>RecBole: Towards a Unified, Comprehensive and Efficient Framework for Recommendation Algorithms, Zhao+, CIKM'21</title>
+<original-paper-blog-link>https://recbole.io</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/440</repo-issue-link>
+<tags>RecommenderSystems, Tools, Library, translation_required, CIKM</tags>
+<repo-issue-date>2022-03-29</repo-issue-date>
+<issue-body>pj page: https://recbole.io
+paper: https://arxiv.org/abs/2011.01731
+
+## Authors
+Wayne Xin Zhao, Shanlei Mu, Yupeng Hou, Zihan Lin, Yushuo Chen, Xingyu Pan, Kaiyuan Li, Yujie Lu, Hui Wang, Changxin Tian, Yingqian Min, Zhichao Feng, Xinyan Fan, Xu Chen, Pengfei Wang, Wendi Ji, Yaliang Li, Xiaoling Wang, Ji-Rong Wen
+
+## Abstract
+In recent years, there are a large number of recommendation algorithms proposed in the literature, from traditional collaborativefiltering to deep learning algorithms. However, the concerns abouthow to standardize open source implementation of recommendation algorithms continually increase in the research community. Inthe light of this challenge, we propose a unified, comprehensive andefficient recommender system library called RecBole (pronouncedas [rEk’boUl@r]), which provides a unified framework to developand reproduce recommendation algorithms for research purpose.In this library, we implement 73 recommendation models on 28benchmark datasets, covering the categories of general recommendation, sequential recommendation, context-aware recommendation and knowledge-based recommendation. We implement theRecBole library based on PyTorch, which is one of the most populardeep learning frameworks. Our library is featured in many aspects,including general and extensible data structures, comprehensivebenchmark models and datasets, efficient GPU-accelerated execution, and extensive and standard evaluation protocols. We providea series of auxiliary functions, tools, and scripts to facilitate the useof this library, such as automatic parameter tuning and break-pointresume. Such a framework is useful to standardize the implementation and evaluation of recommender systems. The project anddocuments are released at https://recbole.io/.
+# Translation (by gpt-4o-mini)
+- 近年、従来の協調フィルタリングから深層学習アルゴリズムに至るまで、多くの推薦アルゴリズムが文献で提案されてきました。しかし、推薦アルゴリズムのオープンソース実装を標準化する方法に関する懸念は、研究コミュニティ内でますます高まっています。この課題を受けて、私たちはRecBole（発音は[rEk’boUl@r]）と呼ばれる統一的で包括的かつ効率的な推薦システムライブラリを提案します。このライブラリは、研究目的のために推薦アルゴリズムを開発し再現するための統一フレームワークを提供します。このライブラリでは、一般的な推薦、逐次推薦、コンテキスト対応推薦、知識ベースの推薦のカテゴリをカバーする28のベンチマークデータセット上で73の推薦モデルを実装しています。RecBoleライブラリは、最も人気のある深層学習フレームワークの1つであるPyTorchに基づいて実装されています。私たちのライブラリは、一般的かつ拡張可能なデータ構造、包括的なベンチマークモデルとデータセット、効率的なGPU加速実行、広範で標準化された評価プロトコルなど、多くの側面で特徴づけられています。また、自動パラメータ調整やブレークポイント再開など、このライブラリの使用を促進するための一連の補助機能、ツール、スクリプトを提供しています。このようなフレームワークは、推薦システムの実装と評価を標準化するのに役立ちます。プロジェクトとドキュメントは、https://recbole.io/ で公開されています。
+# Summary (by gpt-4o-mini)
+- RecBoleは、推薦アルゴリズムのオープンソース実装を標準化するための統一的で効率的なライブラリであり、73のモデルを28のベンチマークデータセット上で実装。PyTorchに基づき、一般的なデータ構造や評価プロトコル、自動パラメータ調整機能を提供し、推薦システムの実装と評価を促進する。プロジェクトはhttps://recbole.io/で公開。</issue-body>
+<maintainer-comment-text><p>参考リンク:<br>- 
+
+{% raw %}
+<a href="https://www.google.co.jp/amp/s/techblog.zozo.com/entry/deep-learning-recommendation-improvement%3famp=1" target="_blank" rel="noopener noreferrer">https://www.google.co.jp/amp/s/techblog.zozo.com/entry/deep-learning-recommendation-improvement%3famp=1</a>
+{% endraw %}
+
+<br>- 
+
+{% raw %}
+<a href="https://techlife.cookpad.com/entry/2021/11/04/090000" target="_blank" rel="noopener noreferrer">https://techlife.cookpad.com/entry/2021/11/04/090000</a>
+{% endraw %}
+
+<br>- 
+
+{% raw %}
+<a href="https://qiita.com/fufufukakaka/items/77878c1e23338345d4fa" target="_blank" rel="noopener noreferrer">https://qiita.com/fufufukakaka/items/77878c1e23338345d4fa</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM'20</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2105.00385.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/460</repo-issue-link>
+<tags>Tools, Library, AdaptiveLearning, EducationalDataMining, KnowledgeTracing</tags>
+<repo-issue-date>2022-07-27</repo-issue-date>
+<issue-body>paper: https://arxiv.org/pdf/2105.00385.pdf
+github: https://github.com/CAHLR/pyBKT</issue-body>
+<maintainer-comment-text><p>pythonによるBKTの実装。scikit-learnベースドなinterfaceを持っているので使いやすそう。</p><p>
+<strong># モチベーション<br><br>BKTの研究は古くから行われており、研究コミュニティで人気が高まっているにもかかわらず、アクセス可能で使いやすいモデルの実装と、さまざまな文献で提案されている多くの変種は、理解しにくいものとなっている。そこで、モダンなpythonベースドな実装としてpyBKTを実装し、研究コミュニティがBKT研究にアクセスしやすいようにした。ライブラリのインターフェースと基礎となるデータ表現は、過去の BKTの変種を再現するのに十分な表現力があり、新しいモデルの提案を可能にする。 また、既存モデルとstate-of-the-artの比較評価も容易にできるように設計されている。<br><br># BKTとは<br><br>BKTの説明は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/461" target="_blank" rel="noopener noreferrer">Adapting Bayesian Knowledge Tracing to a Massive Open Online Course in edX, Pardos+, MIT, EDM'13</a>
+</strong>
+<br>
+ あたりを参照のこと。<br><br>BKTはHidden Markov Model (HMM) であり、ある時刻tにおける観測変数（問題に対する正誤）と隠れ変数（学習者のknowledge stateを表す）によって構成される。パラメータは prior（生徒が事前にスキルを知っている確率）, learn (transition probability; 生徒がスキルを学習することでスキルに習熟する確率), slip, guess (emission probability; スキルに習熟しているのに問題に正解する確率, スキルに習熟していないのに問題に正解する確率)の4種類のパラメータをEMアルゴリズムで学習する。<br><br><img src="https://user-images.githubusercontent.com/12249301/184829403-9a589837-b45a-4417-ba49-26392c5ea5e4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ここで、P(L_t)が時刻tで学習者がスキルtに習熟している確率を表す。BKTでは、P(L_t)を観測された正解/不正解のデータに基づいてP(L_t)をアップデートし、下記式で事後確率を計算する<br><br><img src="https://user-images.githubusercontent.com/12249301/184829784-e280b531-1ed6-4b5b-a7ae-9fc71f8ac224.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、時刻t+1の事前確率は下記式で計算される。<br><br><img src="https://user-images.githubusercontent.com/12249301/184829905-e1ac68f9-74bd-4986-a034-02a18161be4c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>一般的なBKTモデルではforgettingは生じないようになっている。<br><br><img src="https://user-images.githubusercontent.com/12249301/184832245-1ac8cf7a-c5d3-48a1-95aa-dfddaa729c00.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Corbett and Andersonが提案している初期のBKTだけでなく、さまざまなBKTの変種も実装している。<br><br><br><br>
+<strong># サポートしているモデル<br><br>- KT-IDEM (Item Difficulty Effect): BKTとは異なり、個々のquestionごとにguess/slipパラメータを学習するモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/469" target="_blank" rel="noopener noreferrer">KT-IDEM: Introducing Item Difficulty to the Knowledge Tracing Model, Pardos+ (w/ Neil T. Heffernan), UMAP11</a>
+</strong>
+<br>
+<br><br>- KT-PPS: 個々の生徒ごとにprior knowledgeのパラメータを持つ学習するモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/470" target="_blank" rel="noopener noreferrer"> Modeling individualization in a bayesian networks implementation of knowledge tracing, Pardos+ (w/ Neil T. Heffernan), UMAP'00</a>
+<br><br>- BKT+Forget: 通常のBKTでは一度masterしたスキルがunmasteredに遷移することはないが、それが生じるようなモデル。直近の試行がより重視されるようになる。 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/355" target="_blank" rel="noopener noreferrer">How Deep is Knowledge Tracing?, Mozer+, EDM'16</a>
+ <br><br>- Item Order Effect: TBD<br><br>- Item Learning Effect: TBD</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LensKit for Python: Next-Generation Software for Recommender System Experiments, Michael D. Ekstrand, arXiv'18, 2018.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/1809.03125</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/153</repo-issue-link>
+<tags>RecommenderSystems, Tools, Library, action_wanted, One-Line Notes</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1809.03125
+# Authors
+  - Michael D. Ekstrand
+# Abstract
+  - LensKit is an open-source toolkit for building, researching, and learning about recommender systems. First released in 2010 as a Java framework, it has supported diverse published research, small-scale production deployments, and education in both MOOC and traditional classroom settings. In this paper, I present the next generation of the LensKit project, re-envisioning the original tool's objectives as flexible Python package for supporting recommender systems research and development. LensKit for Python (LKPY) enables researchers and students to build robust, flexible, and reproducible experiments that make use of the large and growing PyData and Scientific Python ecosystem, including scikit-learn, TensorFlow, and PyTorch. To that end, it provides classical collaborative filtering implementations, recommender system evaluation metrics, data preparation routines, and tools for efficiently batch running recommendation algorithms, all usable in any combination with each other or with other Python software.   This paper describes the design goals, use cases, and capabilities of LKPY, contextualized in a reflection on the successes and failures of the original LensKit for Java software.
+# Translation (by gpt-4o-mini)
+- LensKitは、レコメンダーシステムの構築、研究、学習のためのオープンソースツールキットです。2010年にJavaフレームワークとして初めてリリースされて以来、多様な研究成果の発表、小規模な商用展開、MOOCや従来の教室での教育を支援してきました。本論文では、LensKitプロジェクトの次世代版を紹介し、元のツールの目的を柔軟なPythonパッケージとして再構築し、レコメンダーシステムの研究と開発をサポートします。Python用のLensKit（LKPY）は、研究者や学生が堅牢で柔軟、かつ再現可能な実験を構築できるようにし、scikit-learn、TensorFlow、PyTorchを含む大規模で成長するPyDataおよびScientific Pythonエコシステムを活用します。そのために、LKPYは古典的な協調フィルタリングの実装、レコメンダーシステムの評価指標、データ準備ルーチン、レコメンデーションアルゴリズムを効率的にバッチ実行するためのツールを提供し、これらは相互に、または他のPythonソフトウェアと任意の組み合わせで使用可能です。本論文では、LKPYの設計目標、ユースケース、および機能について、元のJava用LensKitソフトウェアの成功と失敗を振り返りながら説明します。
+# Summary (by gpt-4o-mini)
+- LensKitはレコメンダーシステムのためのオープンソースツールキットで、次世代版としてPython用のLensKit（LKPY）を紹介。LKPYは、研究者や学生が再現可能な実験を構築できるようにし、scikit-learnやTensorFlow、PyTorchなどのエコシステムを活用。古典的な協調フィルタリングの実装や評価指標、データ準備ルーチンを提供し、他のPythonソフトウェアと組み合わせて使用可能。設計目標やユースケースについて、元のJava版の成功と失敗を振り返りながら説明。</issue-body>
+<maintainer-comment-text><p>実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど<br><br>実装：Java<br><br>使用方法：コマンドライン、Javaライブラリとして利用<br><br>※ 推薦システム界隈で有名な、GroupLens研究グループによるJava実装</p><p>参考：<br><br>
+
+{% raw %}
+<a href="http://www.kamishima.net/archive/recsysdoc.pdf" target="_blank" rel="noopener noreferrer">http://www.kamishima.net/archive/recsysdoc.pdf</a>
+{% endraw %}
+
+<br><br>
+
+{% raw %}
+<a href="https://takuti.me/note/recommender-libraries/" target="_blank" rel="noopener noreferrer">https://takuti.me/note/recommender-libraries/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] GraphLab: A New Framework For Parallel Machine Learning, Yucheng Low+, arXiv'14, 2014.08</title>
+<original-paper-blog-link>https://github.com/jegonzal/PowerGraph?tab=readme-ov-file</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/154</repo-issue-link>
+<tags>RecommenderSystems, Tools, action_wanted</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body># URL
+- pj page: https://github.com/jegonzal/PowerGraph?tab=readme-ov-file
+- preprint: https://arxiv.org/abs/1408.2041
+# Authors
+  - Yucheng Low
+  - Joseph E. Gonzalez
+  - Aapo Kyrola
+  - Danny Bickson
+  - Carlos E. Guestrin
+  - Joseph Hellerstein
+# Abstract
+  - Designing and implementing efficient, provably correct parallel machine learning (ML) algorithms is challenging. Existing high-level parallel abstractions like MapReduce are insufficiently expressive while low-level tools like MPI and Pthreads leave ML experts repeatedly solving the same design challenges. By targeting common patterns in ML, we developed GraphLab, which improves upon abstractions like MapReduce by compactly expressing asynchronous iterative algorithms with sparse computational dependencies while ensuring data consistency and achieving a high degree of parallel performance. We demonstrate the expressiveness of the GraphLab framework by designing and implementing parallel versions of belief propagation, Gibbs sampling, Co-EM, Lasso and Compressed Sensing. We show that using GraphLab we can achieve excellent parallel performance on large scale real-world problems.
+# Translation (by gpt-4o-mini)
+- 効率的で証明可能に正しい並列機械学習（ML）アルゴリズムの設計と実装は困難です。既存の高レベルの並列抽象化手法であるMapReduceは表現力が不十分であり、低レベルのツールであるMPIやPthreadsはMLの専門家が同じ設計上の課題を繰り返し解決することを余儀なくさせます。MLにおける一般的なパターンをターゲットにすることで、私たちはGraphLabを開発しました。GraphLabは、非同期反復アルゴリズムを疎な計算依存関係でコンパクトに表現しながらデータの整合性を確保し、高い並列性能を達成することで、MapReduceのような抽象化を改善します。私たちは、GraphLabフレームワークの表現力を示すために、信念伝播、ギブスサンプリング、Co-EM、Lasso、圧縮センシングの並列バージョンを設計・実装しました。GraphLabを使用することで、大規模な実世界の問題に対して優れた並列性能を達成できることを示します。
+# Summary (by gpt-4o-mini)
+- GraphLabは、効率的で証明可能に正しい並列機械学習アルゴリズムを設計・実装するためのフレームワークであり、非同期反復アルゴリズムを疎な計算依存関係で表現しつつデータの整合性を保ち、高い並列性能を実現します。信念伝播やギブスサンプリングなどの並列バージョンを実装し、実世界の大規模問題に対して優れた性能を示しました。</issue-body>
+<maintainer-comment-text><p>現在はTuri.comになっており、商用になっている？</p><p>参考：<br><br>
+
+{% raw %}
+<a href="http://www.kamishima.net/archive/recsysdoc.pdf" target="_blank" rel="noopener noreferrer">http://www.kamishima.net/archive/recsysdoc.pdf</a>
+{% endraw %}
+
+<br><br>
+
+{% raw %}
+<a href="https://takuti.me/note/recommender-libraries/" target="_blank" rel="noopener noreferrer">https://takuti.me/note/recommender-libraries/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Lerot: Online Learning to rank Framework, Schuth+, LivingLab'13, 2013.11</title>
+<original-paper-blog-link>https://dl.acm.org/doi/10.1145/2513150.2513162</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/201</repo-issue-link>
+<tags>Tools, InformationRetrieval, LearningToRank, Online/Interactive</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body>## URL
+https://dl.acm.org/doi/10.1145/2513150.2513162
+
+## Authors
+Anne Schuth, Katja Hofmann, Shimon Whiteson, Maarten de Rijke</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A systematic comparison of various statistical alignment models, Och+, CL'03</title>
+<original-paper-blog-link>https://aclanthology.org/J03-1002/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/239</repo-issue-link>
+<tags>MachineTranslation, Tools, NLP, One-Line Notes, WordAlignment</tags>
+<repo-issue-date>2018-01-15</repo-issue-date>
+<issue-body>acl anthology: https://aclanthology.org/J03-1002/
+github: https://github.com/moses-smt/giza-pp</issue-body>
+<maintainer-comment-text><p>Giza++<br>標準的に利用される単語アライメントツール</p><p>評価の際は、Sure, Possibleの二種類のラベルによる単語アライメントのground-truth作成も行っている</p><p>
+
+{% raw %}
+<a href="http://delivery.acm.org/10.1145/780000/778824/s2.pdf?ip=122.18.145.201&id=778824&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1529099122_be539b373009b5812a7efac44e71e64d" target="_blank" rel="noopener noreferrer">http://delivery.acm.org/10.1145/780000/778824/s2.pdf?ip=122.18.145.201&id=778824&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1529099122_be539b373009b5812a7efac44e71e64d</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Google Workspace CLI, Google, 2026.03</title>
+<original-paper-blog-link>https://github.com/googleworkspace/cli</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4816</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Repository, ContextEngineering, One-Line Notes, AgentSkills</tags>
+<repo-issue-date>2026-03-06</repo-issue-date>
+<issue-body>https://github.com/googleworkspace/cli</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/addyosmani/status/2029372736267805081?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>google workspaceにone-lineのコマンドでアクセス可能なCLIツールとのこと。40以上のAgentSkillsを内包。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ocr-bench, davanstrien, 2026.03</title>
+<original-paper-blog-link>https://github.com/davanstrien/ocr-bench</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4809</repo-issue-link>
+<tags>ComputerVision, Tools, NLP, Evaluation, Repository, LLM-as-a-Judge, OCR, One-Line Notes, Initial Impression Notes</tags>
+<repo-issue-date>2026-03-06</repo-issue-date>
+<issue-body>https://github.com/davanstrien/ocr-bench</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vanstriendaniel/status/2029555038322917718?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>自分が試したいドキュメントのコレクションに対して、5つほどのOpenなOCRで実際に書き起こしを行い、VLM-as-a-JudgeでスコアリングしELOでの当該ドキュメントセットに対するスコアボードを作成するツール</p><p>非常に興味深く実用的だが、個人的にOlmOCRもサポートして欲しいなぁと思うなど。あと、機密性の高い文書などを扱う場面では、セキュリティ面にどれだけ配慮されているのかが気になってしまう。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AReaL: A Large-Scale Asynchronous Reinforcement Learning System, inclusionAI, 2026.03</title>
+<original-paper-blog-link>https://github.com/inclusionAI/AReaL</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4795</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, ReinforcementLearning, Repository, Reasoning, OpenSource, read-later, Asynchronous</tags>
+<repo-issue-date>2026-03-05</repo-issue-date>
+<issue-body>https://github.com/inclusionAI/AReaL</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/antlingagi/status/2029262614124183734?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4803" target="_blank" rel="noopener noreferrer">[Paper Note] From Self-Evolving Synthetic Data to Verifiable-Reward RL: Post-Training Multi-turn Interactive Tool-Using Agents, Jiaxuan Gao+, arXiv'26, 2026.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>agent-vault, botiverse, 2026.02</title>
+<original-paper-blog-link>https://github.com/botiverse/agent-vault</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4766</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Repository, Privacy</tags>
+<repo-issue-date>2026-03-02</repo-issue-date>
+<issue-body>https://github.com/botiverse/agent-vault</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>TAKT, nrslib, 2026.01</title>
+<original-paper-blog-link>https://github.com/nrslib/takt</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4765</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Repository, Coding, SoftwareEngineering</tags>
+<repo-issue-date>2026-03-01</repo-issue-date>
+<issue-body>https://github.com/nrslib/takt</issue-body>
+<maintainer-comment-text><p>色々使ってみたいなぁ（小並感）</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sakimyto/status/2027744549003792888?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ENGRAM, EvolvingLMMs-Lab, 2026.02</title>
+<original-paper-blog-link>https://github.com/EvolvingLMMs-Lab/engram</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4513</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Privacy, MCP, memory</tags>
+<repo-issue-date>2026-02-12</repo-issue-date>
+<issue-body>https://github.com/EvolvingLMMs-Lab/engram</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/choiszt/status/2021497850111410488?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>MCPに対応しているAI Agentであれば互換性がある暗号化されたストレージの実装なようで、サードパーティのストレージにデータを預けなくてもローカルのストレージでLLMに対して知識を提供可能な模様。</p><p>最近DeepSeekが提案したEngramとは異なるので注意:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4183" target="_blank" rel="noopener noreferrer">[Paper Note] Conditional Memory via Scalable Lookup: A New Axis of Sparsity for Large Language Models, Xin Cheng+, arXiv'26, 2026.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Accelerating Diffusion Models with an Open, Plug-and-Play Offering, Nvidia, 2026.01</title>
+<original-paper-blog-link>https://developer.nvidia.com/blog/accelerating-diffusion-models-with-an-open-plug-and-play-offering/?linkId=100000404691517</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4324</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Tools, NLP, Library, DiffusionModel, TextToImageGeneration, Distillation, PostTraining, 2D (Image), Editing, 4D (Video), TextToVideoGeneration, ImageToTextGeneration</tags>
+<repo-issue-date>2026-01-29</repo-issue-date>
+<issue-body>blog: https://developer.nvidia.com/blog/accelerating-diffusion-models-with-an-open-plug-and-play-offering/?linkId=100000404691517
+code: https://github.com/NVlabs/FastGen</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arashvahdat/status/2016262430104682765?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>self forcingも実装されている<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2870" target="_blank" rel="noopener noreferrer">[Paper Note] Self Forcing: Bridging the Train-Test Gap in Autoregressive Video   Diffusion, Xun Huang+, NeurIPS'25</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SETA: Scaling Environments for Terminal Agents, CAMEL-AI, 2026.01</title>
+<original-paper-blog-link>https://www.camel-ai.org/blogs/seta-scaling-environments-for-terminal-agents</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4171</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, Evaluation, Blog, Repository, SoftwareEngineering, PostTraining</tags>
+<repo-issue-date>2026-01-12</repo-issue-date>
+<issue-body>https://www.camel-ai.org/blogs/seta-scaling-environments-for-terminal-agents</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/guohao_li/status/2009678513574408636?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/camel-ai/seta-env" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/camel-ai/seta-env</a>
+{% endraw %}
+
+</p><p>GitHubのreadmeに日本語がある！？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>🍫 Local Cocoa: Your Personal AI Assistant, Fully Local 💻, synvo-ai, 2026.01</title>
+<original-paper-blog-link>https://github.com/synvo-ai/Local-Cocoa</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4144</repo-issue-link>
+<tags>ComputerVision, Tools, NLP, LanguageModel, AIAgents, MultiModal, Selected Papers/Blogs, ContextEngineering, memory</tags>
+<repo-issue-date>2026-01-09</repo-issue-date>
+<issue-body>https://github.com/synvo-ai/Local-Cocoa</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2008913145218359671?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LLMRouter: An Open-Source Library for LLM Routing, Feng+, 2025.12</title>
+<original-paper-blog-link>https://ulab-uiuc.github.io/LLMRouter/#extending-with-custom-routers</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4100</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Library, python, SoftwareEngineering, Routing</tags>
+<repo-issue-date>2025-12-30</repo-issue-date>
+<issue-body>https://ulab-uiuc.github.io/LLMRouter/#extending-with-custom-routers</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/youjiaxuan/status/2005877938554589370?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A2UI: A Protocol for Agent-Driven Interfaces, Google, 2025</title>
+<original-paper-blog-link>https://a2ui.org/#how-it-works</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4042</repo-issue-link>
+<tags>ComputerVision, Tools, NLP, AIAgents, SoftwareEngineering, VisionLanguageModel, One-Line Notes</tags>
+<repo-issue-date>2025-12-22</repo-issue-date>
+<issue-body>https://a2ui.org/#how-it-works</issue-body>
+<maintainer-comment-text><p>AI Agent (Gemini)を用いてUIを自動生成できるツールらしい</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/osanseviero/status/2002747011230269893?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>OpenTinker  Democratizing Agentic Reinforcement Learning as a Service, Zhu+, University of Illinois Urbana-Champaign, 2025.12</title>
+<original-paper-blog-link>https://open-tinker.github.io/opentinker-page/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4036</repo-issue-link>
+<tags>EfficiencyImprovement, Tools, NLP, LanguageModel, ReinforcementLearning, Blog, PostTraining, KeyPoint Notes</tags>
+<repo-issue-date>2025-12-22</repo-issue-date>
+<issue-body>https://open-tinker.github.io/opentinker-page/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/youjiaxuan/status/2002838551319253281?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>code:
+
+{% raw %}
+<a href="https://github.com/open-tinker/OpenTinker" target="_blank" rel="noopener noreferrer">https://github.com/open-tinker/OpenTinker</a>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1969" target="_blank" rel="noopener noreferrer">verl: Volcano Engine Reinforcement Learning for LLMs, ByteDance Seed Team, 2025.04</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3077" target="_blank" rel="noopener noreferrer">Tinker is a training API for {developers, builders, researchers}, THINKING MACHINES, 2025.10</a>
+</p><p>Tinkerに着想を得てクライアントとサーバを分離した設計になっており、バックエンド側のGPUクラスタでサーバを一度起動するだけでクライアント側がスケジューラにジョブを送ればRLが実行される（ローカルにGPUは不要）。クライアント側はRLを実施したい環境のみをローカルで定義しコンフィグをロードしfitを呼び出すだけ。verlよりもよりも手間が省けているらしい。<br><br>リポジトリを見る限りは、verlをRLのコアエンジンとして使ってる模様。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Bloom: an open source tool for automated behavioral evaluations, Anthropic, 2025.12</title>
+<original-paper-blog-link>https://www.anthropic.com/research/bloom</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4019</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Alignment, AIAgents, Evaluation, python, Safety</tags>
+<repo-issue-date>2025-12-21</repo-issue-date>
+<issue-body>https://www.anthropic.com/research/bloom</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/anthropicai/status/2002424909524619581?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Gemma Scope 2: helping the AI safety community deepen understanding of complex language model behavior, Google Deepmind, 2025.12</title>
+<original-paper-blog-link>https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4013</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Reasoning, Safety, KeyPoint Notes, SparseAutoEncoder, Transcoders, CircuitAnalysis</tags>
+<repo-issue-date>2025-12-20</repo-issue-date>
+<issue-body>https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/osanseviero/status/2001989567998836818?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1802" target="_blank" rel="noopener noreferrer">[Paper Note] Sparse Autoencoders Find Highly Interpretable Features in Language   Models, Hoagy Cunningham+, ICLR'24</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4027" target="_blank" rel="noopener noreferrer">dictionary_learning, Marks+, 2024</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4028" target="_blank" rel="noopener noreferrer">[Paper Note] Transcoders Find Interpretable LLM Feature Circuits, Jacob Dunefsky+, arXiv'24, 2024.06</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4029" target="_blank" rel="noopener noreferrer">[Paper Note] Learning Multi-Level Features with Matryoshka Sparse Autoencoders, Bart Bussmann+, ICLR'25, 2025.03</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4030" target="_blank" rel="noopener noreferrer">[Paper Note] Transcoders Beat Sparse Autoencoders for Interpretability, Gonçalo Paulo+, arXiv'25, 2025.01</a>
+</p><p>（↓勉強中なので誤りが含まれる可能性大）<br><br>Sparse Auto Encoder (SAE; あるlayerにおいてどのような特徴が保持されているかを見つける）とTranscoder (ある層で見つかった特徴と別の層の特徴の関係性を見つける）を用いて、Gemma3の回路分析が行えるモデル・ツール群をリリースした、という話に見える。<br><br>応用例の一つとして、たとえば詐欺メールをinputしたときに、詐欺関連する特徴量がどのトークン由来で内部的にどれだけ活性したかを可視化できる。<br><img src="https://github.com/user-attachments/assets/bae1f15c-9a73-4eca-8264-bf5409c26937" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>テクニカルレポート:
+
+{% raw %}
+<a href="https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/Gemma_Scope_2_Technical_Paper.pdf" target="_blank" rel="noopener noreferrer">https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/Gemma_Scope_2_Technical_Paper.pdf</a>
+{% endraw %}
+
+</p><p>可視化例:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/calsmcdougall/status/2003217825704607853?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Agent Maze, LlamaIndex, 2025.08</title>
+<original-paper-blog-link>https://github.com/run-llama/agent-maze</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2377</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Evaluation, Blog</tags>
+<repo-issue-date>2025-08-08</repo-issue-date>
+<issue-body>https://github.com/run-llama/agent-maze</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jerryjliu0/status/1953550630775361914?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>最小限のツール利用することを前提に迷路をクリアする必要があるベンチマークな模様。難易度を調整可能で、GPT-5でも難易度の高い迷路には苦戦しているとのこと。</p><p>難易度調整可能なものとしては以下のようなものもある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1818" target="_blank" rel="noopener noreferrer">Sudoku-bench, SakanaAI, 2025.03</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2019" target="_blank" rel="noopener noreferrer">[Paper Note] SynLogic: Synthesizing Verifiable Reasoning Data at Scale for Learning  Logical Reasoning and Beyond, Junteng Liu+, arXiv'25</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Claude Opus 4.1, Anthropic, 2025.08</title>
+<original-paper-blog-link>https://www.anthropic.com/news/claude-opus-4-1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2365</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Blog, Coding, Proprietary</tags>
+<repo-issue-date>2025-08-06</repo-issue-date>
+<issue-body>https://www.anthropic.com/news/claude-opus-4-1</issue-body>
+<maintainer-comment-text><p>他モデルとの性能比較:<br><img src="https://github.com/user-attachments/assets/22d2b65c-3bc7-4cba-90bb-c25563c286ac" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>やはりコーディングでは（SNS上での口コミでは非常に高評価なように見えており、かつ）o3やGeminiと比較してClaudeがベンチ上でも高い性能を示している模様。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/anthropicai/status/1952768432027431127?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The "think" tool: Enabling Claude to stop and think in complex tool use situations, Anthropic, 2025.03</title>
+<original-paper-blog-link>https://www.anthropic.com/engineering/claude-think-tool</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1822</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Chain-of-Thought, Blog, Reasoning</tags>
+<repo-issue-date>2025-03-23</repo-issue-date>
+<issue-body>https://www.anthropic.com/engineering/claude-think-tool</issue-body>
+<maintainer-comment-text><p>"考える"ことをツールとして定義し利用することで、externalなthinkingを明示的に実施した上でタスクを遂行させる方法を紹介している</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>完全にオープンな約1,720億パラメータ（GPT-3級）の大規模言語モデル 「llm-jp-3-172b-instruct3」を一般公開 ～GPT-3.5を超える性能を達成～ , NII, 2024.12</title>
+<original-paper-blog-link>https://www.nii.ac.jp/news/release/2024/1224.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1610</repo-issue-link>
+<tags>Tools, NLP, Dataset, LanguageModel, Blog, OpenWeight, Japanese</tags>
+<repo-issue-date>2024-12-24</repo-issue-date>
+<issue-body>https://www.nii.ac.jp/news/release/2024/1224.html</issue-body>
+<maintainer-comment-text><p>GPT3.5と同程度のパラメータ数のコーパス、モデル、ツール、全てを公開。学習データまで含めてオープンなモデルとしては世界最大規模とのこと。</p><p>Instructionチューニング済みのモデルはライセンスを読むと、ライセンスに記述されている内容を遵守すれば、誰でも（日本人なら18歳以上とかはあるが）アクセス可能、用途の制限（商用・非商用問わず）なく利用でき、かつ再配布や派生物の生成などが許されているように見える。<br>が、baseモデルの方はコンタクト情報を提供のうえ承認を受けないと利用できない模様。また、再配布と一部の使途に制限がある模様。<br><br>SNSではオープンソースではないなどという言説も出ており、それはbaseモデルの方を指しているのだろうか？よくわからない。</p><p>実用上はinstructionチューニング済みのモデルの方がbaseモデルよりも使いやすいと思うので、問題ない気もする。</p><p>やはりbaseとinstructでライセンスは2種類あるとのこと: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/odashi_t/status/1871508348086214685?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>NotebookLM, Google</title>
+<original-paper-blog-link>https://notebooklm.google</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1428</repo-issue-link>
+<tags>Tools, LanguageModel</tags>
+<repo-issue-date>2024-09-29</repo-issue-date>
+<issue-body>https://notebooklm.google</issue-body>
+<maintainer-comment-text><p>ソーステキストをアップロードし、それらを参照可能なLLMの元作業が可能で、クエリによって引用つきのRAGのようなものが行えるらしい。2人の対話形式のpodcastも自動生成可能で、UI/UXの面で画期的らしい？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Awesome LM with Tools</title>
+<original-paper-blog-link>https://github.com/zorazrw/awesome-tool-llm</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1260</repo-issue-link>
+<tags>Survey, Tools, NLP, LanguageModel</tags>
+<repo-issue-date>2024-03-22</repo-issue-date>
+<issue-body>https://github.com/zorazrw/awesome-tool-llm</issue-body>
+<maintainer-comment-text><p>Toolを利用するLMに関するNeubig氏のグループによるSurvey。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>GPT4All, 2023</title>
+<original-paper-blog-link>https://github.com/nomic-ai/gpt4all</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1150</repo-issue-link>
+<tags>EfficiencyImprovement, Tools, NLP, LanguageModel, Repository</tags>
+<repo-issue-date>2023-11-21</repo-issue-date>
+<issue-body>https://github.com/nomic-ai/gpt4all</issue-body>
+<maintainer-comment-text><p>ローカルマシンでChatGPT likeなUIでチャットボットを動作させられるOpensource。<br>Mistral7BやGGUFフォーマットのモデルのよつな（おそらく量子化されたものも含む）ローカルマシンで動作させられる規模感のモデルがサポートされている。<br>
+
+{% raw %}
+<a href="https://gpt4all.io/index.html" target="_blank" rel="noopener noreferrer">https://gpt4all.io/index.html</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Evaluating RAG Pipelines</title>
+<original-paper-blog-link>https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1101</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Library, Evaluation, RAG(RetrievalAugmentedGeneration), Blog</tags>
+<repo-issue-date>2023-10-29</repo-issue-date>
+<issue-body>https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/</issue-body>
+<maintainer-comment-text><p>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。<br><br>評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference answerが必要。<br>Ragasスコアとしてどのメトリックを利用するかは選択することができ、選択したメトリックのharmonic meanでスコアが算出される。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>各種メトリックの内部的な処理は下記:<br>- faithfullness<br>  - questionと生成された回答に基づいて、statementのリストをLLMで生成する。statementは回答が主張している内容をLLMが解釈したものだと思われる。<br>  - statementのリストとcontextが与えられたときに、statementがcontextにsupportされているかをLLMで評価する。<br>  - num. of supported statements / num. of statements でスコアが算出される<br>- Answer Relevancy<br>  - LLMで生成された回答から逆に質問を生成し、生成された質問と実際の質問の類似度を測ることで評価<br>- Context Relevancy<br>  - どれだけcontextにノイズが含まれるかを測定する。<br>  - LLMでcontextの各文ごとに回答に必要な文か否かを判断する<br>  - 回答に必要な文数 / 全文数 でスコアを算出<br>- Context Recall<br>  - 回答に必要な情報を全てretrieverが抽出できているか<br>  - ground truthとなる回答からstatementをLLMで生成し、statementがcontextでどれだけカバーされているかで算出<br><br>また、LangSmithを利用して実験を管理する方法についても記述されている。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3a30d238-ac48-401c-906b-4ddb5fca50be" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LangChainのRAGの改善法, LayerX機械学習勉強会</title>
+<original-paper-blog-link>https://jobs.layerx.co.jp/1f1e1728bd9c4fee9a86f5ea51b32c1f</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1100</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Library, RAG(RetrievalAugmentedGeneration), Blog</tags>
+<repo-issue-date>2023-10-29</repo-issue-date>
+<issue-body>https://jobs.layerx.co.jp/1f1e1728bd9c4fee9a86f5ea51b32c1f</issue-body>
+<maintainer-comment-text><p>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション<br><br>> Multi representation indexing：検索に適した文書表現（例えば要約）の作成<br>Query transformation：人間の質問を変換して検索を改善する方法<br>Query construction：人間の質問を特定のクエリ構文や言語に変換する方法<br><br>
+
+{% raw %}
+<a href="https://blog.langchain.dev/query-transformations/" target="_blank" rel="noopener noreferrer">https://blog.langchain.dev/query-transformations/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LangChain Cheet Sheet</title>
+<original-paper-blog-link>https://www.kdnuggets.com/2023/08/langchain-cheat-sheet.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1032</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Library</tags>
+<repo-issue-date>2023-09-05</repo-issue-date>
+<issue-body>https://www.kdnuggets.com/2023/08/langchain-cheat-sheet.html</issue-body>
+<maintainer-comment-text><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6621fe24-d007-4590-b1a6-b861a6dec4ad"" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Auto train advanced</title>
+<original-paper-blog-link>https://github.com/huggingface/autotrain-advanced</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/796</repo-issue-link>
+<tags>MachineLearning, Tools, LanguageModel, Supervised-FineTuning (SFT), Blog, Repository</tags>
+<repo-issue-date>2023-07-11</repo-issue-date>
+<issue-body>https://github.com/huggingface/autotrain-advanced</issue-body>
+<maintainer-comment-text><p>Hugging Face Hub上の任意のLLMに対して、localのカスタムトレーニングデータを使ってfinetuningがワンラインでできる。<br>peftも使える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LM Flow</title>
+<original-paper-blog-link>https://github.com/OptimalScale/LMFlow</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/771</repo-issue-link>
+<tags>MachineLearning, Tools, LanguageModel, Supervised-FineTuning (SFT), FoundationModel</tags>
+<repo-issue-date>2023-06-26</repo-issue-date>
+<issue-body>https://github.com/OptimalScale/LMFlow</issue-body>
+<maintainer-comment-text><p>一般的なFoundation Modelのファインチューニングと推論を簡素化する拡張可能なツールキット。継続的なpretragning, instruction tuning, parameter efficientなファインチューニング,alignment tuning,大規模モデルの推論などさまざまな機能をサポート。<br><br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/1672953412927799298?s=46&t=ajzDWio8pEbrezgj40Dobw"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Llamaindex</title>
+<original-paper-blog-link>https://github.com/jerryjliu/llama_index</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/521</repo-issue-link>
+<tags>Tools, InformationRetrieval, NLP, Library, AIAgents</tags>
+<repo-issue-date>2023-04-22</repo-issue-date>
+<issue-body>https://github.com/jerryjliu/llama_index</issue-body>
+<maintainer-comment-text><p>- LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた<br><br>  - 
+
+{% raw %}
+<a href="https://dev.classmethod.jp/articles/llama-index-insert-index/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/llama-index-insert-index/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LangChain</title>
+<original-paper-blog-link>https://tech.nri-net.com/entry/tried_langchain_to_extend_chatgpt#:~:text=LangChain%E3%81%A8%E3%81%AFChatGPT%E3%81%AA%E3%81%A9,%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/520</repo-issue-link>
+<tags>Tools, InformationRetrieval, NLP, LanguageModel, Library, AIAgents</tags>
+<repo-issue-date>2023-04-21</repo-issue-date>
+<issue-body>- ChatGPTの機能を拡張するLangChainを試してみた
+  - https://tech.nri-net.com/entry/tried_langchain_to_extend_chatgpt#:~:text=LangChain%E3%81%A8%E3%81%AFChatGPT%E3%81%AA%E3%81%A9,%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82</issue-body>
+<maintainer-comment-text><p>- LangChain の Googleカスタム検索 連携を試す<br><br>  - 
+
+{% raw %}
+<a href="https://note.com/npaka/n/nd9a4a26a8932" target="_blank" rel="noopener noreferrer">https://note.com/npaka/n/nd9a4a26a8932</a>
+{% endraw %}
+
+</p><p>- LangChainのGetting StartedをGoogle Colaboratoryでやってみる ④Agents<br><br>    - 
+
+{% raw %}
+<a href="https://zenn.dev/kun432/scraps/8216511783e3da" target="_blank" rel="noopener noreferrer">https://zenn.dev/kun432/scraps/8216511783e3da</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>20B params chatgpt alternative</title>
+<original-paper-blog-link>https://huggingface.co/togethercomputer/GPT-NeoXT-Chat-Base-20B</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/510</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, Library</tags>
+<repo-issue-date>2023-03-11</repo-issue-date>
+<issue-body>https://huggingface.co/togethercomputer/GPT-NeoXT-Chat-Base-20B</issue-body>
+<maintainer-comment-text><p>元ツイート<br>Apache2.0で公開<br><br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1634492396171071488?s=46&t=VvPwEQsB--BeXx0YbYQdxQ"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>CodeGPT: The VSCode Extension with ChatGPT-Like Functionalities</title>
+<original-paper-blog-link>https://medium.com/geekculture/codegpt-the-vscode-extension-with-chatgpt-like-functionalities-783323a916c3</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/506</repo-issue-link>
+<tags>Tools, GenerativeAI, Blog, Coding</tags>
+<repo-issue-date>2023-01-21</repo-issue-date>
+<issue-body>https://medium.com/geekculture/codegpt-the-vscode-extension-with-chatgpt-like-functionalities-783323a916c3</issue-body>
+<maintainer-comment-text><p>VSCodeの拡張で、//から始まるPromptをエディタ上で記載することで対応するコードをGPT3が生成してくれる模様。便利そう</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>deploy-API-to-GCP</title>
+<original-paper-blog-link>https://github.com/gerardmargaux/deploy-API-to-GCP</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/498</repo-issue-link>
+<tags>Tools, Infrastructure, MLOps, Blog, Repository</tags>
+<repo-issue-date>2022-12-01</repo-issue-date>
+<issue-body>https://github.com/gerardmargaux/deploy-API-to-GCP</issue-body>
+<maintainer-comment-text><p>FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ<br><br>0. リポジトリをclone<br>1. Flaskアプリ作成<br>2. FlaskアプリをDocker化<br>3. TerraFormのStateを保存するためのCloudStorage作成<br>4. TerraFormのコード作成<br>5. GitHub Actionでデプロイ（CI/CD）<br><br>5によってmainブランチに対するプルリクが本番環境にデプロイされる。</p><p>Cloud Runについて<br>
+
+{% raw %}
+<a href="https://dev.classmethod.jp/articles/gc-cloud-run/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/gc-cloud-run/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pandas tips</title>
+<original-paper-blog-link>None</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/466</repo-issue-link>
+<tags>Tutorial, Tools, Library</tags>
+<repo-issue-date>2022-08-03</repo-issue-date>
+<issue-body>pandasに関するtips</issue-body>
+<maintainer-comment-text><p>◆遅くないpandasの書き方<br><br>
+
+{% raw %}
+<a href="https://naotaka1128.hatenadiary.jp/entry/2021/12/07/083000#iterrows-%E3%81%AF%E7%B5%B6%E5%AF%BE%E3%81%AB%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84-apply%E3%82%82" target="_blank" rel="noopener noreferrer">https://naotaka1128.hatenadiary.jp/entry/2021/12/07/083000#iterrows-%E3%81%AF%E7%B5%B6%E5%AF%BE%E3%81%AB%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84-apply%E3%82%82</a>
+{% endraw %}
+
+<br><br><br><br>iterrows, applyを使うな、あたりは非常に参考になった。numpy配列に変換してループを回すか、np.vectorizeを使ってループを排除する。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>neptune.ai</title>
+<original-paper-blog-link>https://neptune.ai/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/439</repo-issue-link>
+<tags>MachineLearning, Tools</tags>
+<repo-issue-date>2022-03-09</repo-issue-date>
+<issue-body>https://neptune.ai/</issue-body>
+<maintainer-comment-text><p>・実験結果の可視化や管理に利用できるサービス<br><br>・API経由で様々な実験に関わるメタデータやmetricを送信することで、サイト上でdashboardを作成し、複数の実験の結果を可視化したりwidget上で比較したりできる<br><br>・実験時に使用したargumentsを記録したり、global_stepごとにlossをAPI経由で逐次的に送信することで実験結果を記録できたりする<br><br>・widgetやmodelなどは、クエリによってフィルタリングできたりするので、特定のstructureを持っているモデル間のみで結果を比較したり等も簡単にできる<br><br>・利用する際は、APIキーをサイト上で発行し、コード上でAPIキーを設定して、neptuneのモジュールをnewしてlogメソッドを呼び出して逐次的にデータを送信していくだけで、neptune上で送信んされたデータが管理される。<br><br><br><br>※ 一部解釈が間違っている場所がある可能性がある</p><p>HuggingFace, pytorch-lightningなどのフレームワークでもサポートされている模様<br><br><br><br>HuggingFace: 
+
+{% raw %}
+<a href="https://huggingface.co/transformers/v4.9.1/_modules/transformers/integrations.html" target="_blank" rel="noopener noreferrer">https://huggingface.co/transformers/v4.9.1/_modules/transformers/integrations.html</a>
+{% endraw %}
+
+<br><br>pytorch-lightning: 
+
+{% raw %}
+<a href="https://pytorch-lightning.readthedocs.io/en/stable/api/pytorch_lightning.loggers.neptune.html" target="_blank" rel="noopener noreferrer">https://pytorch-lightning.readthedocs.io/en/stable/api/pytorch_lightning.loggers.neptune.html</a>
+{% endraw %}
+
+<br><br><br><br>HuggingFaceではNeptuneCallbackというコールバックを使えばneptuneを仕込めそう</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>HMM Scalable （Bayesian Knowledge Tracing; BKT）</title>
+<original-paper-blog-link>http://www.yudelson.info/hmm-scalable/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/419</repo-issue-link>
+<tags>Tools, AdaptiveLearning, StudentPerformancePrediction, KnowledgeTracing</tags>
+<repo-issue-date>2021-10-29</repo-issue-date>
+<issue-body>http://www.yudelson.info/hmm-scalable/</issue-body>
+<maintainer-comment-text><p>BKTを高速で学習できるツール<br><br>3-clause BSD license</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>optuna_tips</title>
+<original-paper-blog-link>https://cpp-learning.com/optuna-pytorch/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/395</repo-issue-link>
+<tags>Tutorial, Tools, Library</tags>
+<repo-issue-date>2021-06-29</repo-issue-date>
+<issue-body>【Optunaでハイパーパラメータの自動チューニング -Pytorch Lightning編-】
+https://cpp-learning.com/optuna-pytorch/</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pytorch_lightning tips</title>
+<original-paper-blog-link>https://github.com/PyTorchLightning/pytorch-lightning/issues/3698</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/387</repo-issue-link>
+<tags>NeuralNetwork, Tools, Library, python, Blog</tags>
+<repo-issue-date>2021-06-12</repo-issue-date>
+<issue-body>【EmbeddingをCPUメモリに置く方法】
+https://github.com/PyTorchLightning/pytorch-lightning/issues/3698</issue-body>
+<maintainer-comment-text><p>PyTorch Lightning 2021 (for MLコンペ)<br>
+
+{% raw %}
+<a href="https://qiita.com/fam_taro/items/df8656a6c3b277f58781" target="_blank" rel="noopener noreferrer">https://qiita.com/fam_taro/items/df8656a6c3b277f58781</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>最先端自然言語処理ライブラリの最適な選択と有用な利用方法 _ pycon-jp-2020</title>
+<original-paper-blog-link>https://speakerdeck.com/taishii/pycon-jp-2020?slide=7</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/386</repo-issue-link>
+<tags>Tutorial, Tools, NLP, Library, python, Slide</tags>
+<repo-issue-date>2021-06-11</repo-issue-date>
+<issue-body>https://speakerdeck.com/taishii/pycon-jp-2020?slide=7</issue-body>
+<maintainer-comment-text><p>各形態素解析ライブラリの特徴や比較がされていて、自分の用途・目的に合わせてどの形態素解析器が良いか意思決定する際に有用</p><p><img src="https://user-images.githubusercontent.com/12249301/121644722-56025800-cace-11eb-9fe9-9d2f6b0eae5a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>OpenKE, 2021</title>
+<original-paper-blog-link>http://139.129.163.161/home</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/383</repo-issue-link>
+<tags>Embeddings, MachineLearning, Tools, Library, KnowledgeGraph, Repository</tags>
+<repo-issue-date>2021-06-10</repo-issue-date>
+<issue-body>official: http://139.129.163.161/home
+github: https://github.com/thunlp/OpenKE</issue-body>
+<maintainer-comment-text><p>Wikipedia, Freebase等のデータからKnowledge Embeddingを学習できるオープンソースのライブラリ</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>TRTorch</title>
+<original-paper-blog-link>https://www.yurui-deep-learning.com/2021/06/04/trtorch/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/377</repo-issue-link>
+<tags>NeuralNetwork, Tutorial, Tools, Library, python</tags>
+<repo-issue-date>2021-06-06</repo-issue-date>
+<issue-body>https://www.yurui-deep-learning.com/2021/06/04/trtorch/</issue-body>
+<maintainer-comment-text><p>pytorchの推論を高速化できるライブラリ。6倍ほど早くなった模様。TorchScriptを介して変換するので、PythonだけでなくC++でも動作できるらしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>pytorch tips</title>
+<original-paper-blog-link>None</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/376</repo-issue-link>
+<tags>Tutorial, Tools, Library, python</tags>
+<repo-issue-date>2021-06-05</repo-issue-date>
+<issue-body>pytorchに関するtipsをまとめていくところ</issue-body>
+<maintainer-comment-text><p>【PyTorchでたまに使うけどググって情報探すのに時間かかるやつ】<br><br>
+
+{% raw %}
+<a href="https://trap.jp/post/1122/" target="_blank" rel="noopener noreferrer">https://trap.jp/post/1122/</a>
+{% endraw %}
+
+<br><br><br><br>- scatter_add, einsum, Bilinear あたりが説明されている</p><p>【NLLossの細かい挙動】<br><br>
+
+{% raw %}
+<a href="https://tatsukawa.hatenablog.com/entry/2020/04/06/054700" target="_blank" rel="noopener noreferrer">https://tatsukawa.hatenablog.com/entry/2020/04/06/054700</a>
+{% endraw %}
+
+</p><p>【PyTorchで絶対nanを出したいマン】<br><br>
+
+{% raw %}
+<a href="https://qiita.com/syoamakase/items/40a716f93dc8afa8fd12" target="_blank" rel="noopener noreferrer">https://qiita.com/syoamakase/items/40a716f93dc8afa8fd12</a>
+{% endraw %}
+
+<br><br><br><br>PyTorchでnanが出てしまう原因とその対策が色々書いてある</p><p>【pipで様々なCuda versionのpytorchをinstallする方法】<br><br>
+
+{% raw %}
+<a href="https://stackoverflow.com/questions/65980206/cuda-10-2-not-recognised-on-pip-installed-pytorch-1-7-1" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/65980206/cuda-10-2-not-recognised-on-pip-installed-pytorch-1-7-1</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>locust</title>
+<original-paper-blog-link>https://locust.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/351</repo-issue-link>
+<tags>Tools, python, PerformanceTesting</tags>
+<repo-issue-date>2021-05-26</repo-issue-date>
+<issue-body>https://locust.io/</issue-body>
+<maintainer-comment-text><p>負荷テスト用のツール<br><br>JMeterと違って、pythonコードでテスト内容を制御できるらしく、かなり使いやすいらしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Off Policy Evaluation の基礎とOpen Bandit Dataset & Pipelineの紹介, Yuta Saito, 2020.08</title>
+<original-paper-blog-link>https://speakerdeck.com/usaito/off-policy-evaluationfalseji-chu-toopen-bandit-dataset-and-pipelinefalseshao-jie</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/339</repo-issue-link>
+<tags>RecommenderSystems, Tutorial, Tools, Dataset, Slide, One-Line Notes</tags>
+<repo-issue-date>2020-08-29</repo-issue-date>
+<issue-body>https://speakerdeck.com/usaito/off-policy-evaluationfalseji-chu-toopen-bandit-dataset-and-pipelinefalseshao-jie</issue-body>
+<maintainer-comment-text><p>機械学習による予測精度ではなく、機械学習モデルによって生じる意思決定を、過去の蓄積されたデータから評価する（Off policy Evaluation）の、tutorialおよび実装、データセットについて紹介。<br>このような観点は実務上あるし、見落としがちだと思うので、とても興味深い。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>BERT 日本語Pre-trained Model, NICT, 2020.03</title>
+<original-paper-blog-link>https://alaginrc.nict.go.jp/nict-bert/index.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/334</repo-issue-link>
+<tags>NeuralNetwork, Tools, NLP, Dataset, LanguageModel, Library, Blog, Japanese, Encoder, One-Line Notes</tags>
+<repo-issue-date>2020-03-13</repo-issue-date>
+<issue-body>https://alaginrc.nict.go.jp/nict-bert/index.html</issue-body>
+<maintainer-comment-text><p>NICTが公開。既に公開されているBERTモデルとのベンチマークデータでの性能比較も行なっており、その他の公開済みBERTモデルをoutperformしている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>【黒橋研】BERT日本語Pretrainedモデル</title>
+<original-paper-blog-link>http://nlp.ist.i.kyoto-u.ac.jp/index.php?BERT%E6%97%A5%E6%9C%AC%E8%AA%9EPretrained%E3%83%A2%E3%83%87%E3%83%AB</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/325</repo-issue-link>
+<tags>NeuralNetwork, Tools, NLP, Library, Japanese, Encoder</tags>
+<repo-issue-date>2019-09-22</repo-issue-date>
+<issue-body>http://nlp.ist.i.kyoto-u.ac.jp/index.php?BERT%E6%97%A5%E6%9C%AC%E8%AA%9EPretrained%E3%83%A2%E3%83%87%E3%83%AB</issue-body>
+<maintainer-comment-text><p>【huggingface transformersで使える日本語モデルのまとめ】<br><br>
+
+{% raw %}
+<a href="https://tech.yellowback.net/posts/transformers-japanese-models" target="_blank" rel="noopener noreferrer">https://tech.yellowback.net/posts/transformers-japanese-models</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AllenNLP （Official Tutorials）, AI2, 2018.01</title>
+<original-paper-blog-link>https://allennlp.org/tutorials</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/280</repo-issue-link>
+<tags>NeuralNetwork, Tutorial, Tools, NLP, Library, Reference Collection</tags>
+<repo-issue-date>2018-11-16</repo-issue-date>
+<issue-body>※ 現在はリンク切れ（2026.02.02）
+https://allennlp.org/tutorials</issue-body>
+<maintainer-comment-text><p>
+
+{% raw %}
+<a href="https://docs.google.com/presentation/d/17NoJY2SnC2UMbVegaRCWA7Oca7UCZ3vHnMqBV4SUayc/preview?slide=id.g43b8d8e880_0_8" target="_blank" rel="noopener noreferrer">https://docs.google.com/presentation/d/17NoJY2SnC2UMbVegaRCWA7Oca7UCZ3vHnMqBV4SUayc/preview?slide=id.g43b8d8e880_0_8</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note]  SVDFeature: a toolkit for feature-based collaborative filtering, Chen+, JMLR, Vol.13, 2012.12</title>
+<original-paper-blog-link>http://www.jmlr.org/papers/volume13/chen12a/chen12a.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/223</repo-issue-link>
+<tags>RecommenderSystems, Tools, CollaborativeFiltering, MatrixFactorization, One-Line Notes, JMLR</tags>
+<repo-issue-date>2018-01-11</repo-issue-date>
+<issue-body>http://www.jmlr.org/papers/volume13/chen12a/chen12a.pdf</issue-body>
+<maintainer-comment-text><p>tool: 
+
+{% raw %}
+<a href="http://apex.sjtu.edu.cn/projects/33" target="_blank" rel="noopener noreferrer">http://apex.sjtu.edu.cn/projects/33</a>
+{% endraw %}
+
+</p><p>Ratingの情報だけでなく、Auxiliaryな情報も使ってMatrix Factorizationができるツールを作成した。<br>これにより、Rating Matrixの情報だけでなく、自身で設計したfeatureをMFに組み込んでモデルを作ることができる。<br><br><img src="https://user-images.githubusercontent.com/12249301/34814640-b75dd2e6-f6f1-11e7-8779-21e57a977059.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>GraphChi, GraphChi open source project, 2013.01</title>
+<original-paper-blog-link>https://github.com/graphchi</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/156</repo-issue-link>
+<tags>RecommenderSystems, Tools, One-Line Notes</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body>pj page: https://github.com/graphchi
+blog: http://bickson.blogspot.jp/2012/12/collaborative-filtering-with-graphchi.html</issue-body>
+<maintainer-comment-text><p>実装されているアルゴリズム：Matrix Factorization, RBM, CliMFなど<br><br>実装：<br><br>使用方法：CLI<br><br>※ graphlabの中の人による実装</p><p>参考：<br><br>
+
+{% raw %}
+<a href="http://www.kamishima.net/archive/recsysdoc.pdf" target="_blank" rel="noopener noreferrer">http://www.kamishima.net/archive/recsysdoc.pdf</a>
+{% endraw %}
+
+<br><br>
+
+{% raw %}
+<a href="https://takuti.me/note/recommender-libraries/" target="_blank" rel="noopener noreferrer">https://takuti.me/note/recommender-libraries/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>MyMediaLite Recommender System Library,  Zeno Gantner+</title>
+<original-paper-blog-link>http://mymedialite.net/index.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/152</repo-issue-link>
+<tags>RecommenderSystems, Tools, Library, One-Line Notes</tags>
+<repo-issue-date>2018-01-01</repo-issue-date>
+<issue-body>pj page: http://mymedialite.net/index.html
+paper: https://www.ismll.uni-hildesheim.de/pub/pdfs/Gantner_et_al2011_MyMediaLite.pdf</issue-body>
+<maintainer-comment-text><p>実装されているアルゴリズム：協調フィルタリング、Matrix Factorizationなど<br><br>実装：C#<br><br>使用方法：コマンドライン、C#ライブラリとして利用<br><br>※ ライブラリとして使用する場合は、C#による実装が必要</p><p>参考：<br><br>
+
+{% raw %}
+<a href="http://www.kamishima.net/archive/recsysdoc.pdf" target="_blank" rel="noopener noreferrer">http://www.kamishima.net/archive/recsysdoc.pdf</a>
+{% endraw %}
+
+<br><br>
+
+{% raw %}
+<a href="https://takuti.me/note/recommender-libraries/" target="_blank" rel="noopener noreferrer">https://takuti.me/note/recommender-libraries/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SVM-MAP</title>
+<original-paper-blog-link>http://projects.yisongyue.com/svmmap</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/124</repo-issue-link>
+<tags>MachineLearning, StructuredLearning, Tools, InformationRetrieval, One-Line Notes</tags>
+<repo-issue-date>2017-12-31</repo-issue-date>
+<issue-body>http://projects.yisongyue.com/svmmap</issue-body>
+<maintainer-comment-text><p>構造化SVMを用いて、MAPを直接最適化する手法</p></maintainer-comment-text>
+</paper-entry>

@@ -1,0 +1,142 @@
+<paper-entry>
+<title>[Paper Note] Nemotron-Cascade: Scaling Cascaded Reinforcement Learning for General-Purpose Reasoning Models, Boxin Wang+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.13607</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3973</repo-issue-link>
+<tags>General, NLP, LanguageModel, Alignment, ReinforcementLearning, Reasoning, OpenWeight, OpenSource, read-later, RLVR, Selected Papers/Blogs, CrossDomain, KeyPoint Notes</tags>
+<repo-issue-date>2025-12-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.13607
+# Authors
+  - Boxin Wang
+  - Chankyu Lee
+  - Nayeon Lee
+  - Sheng-Chieh Lin
+  - Wenliang Dai
+  - Yang Chen
+  - Yangyi Chen
+  - Zhuolin Yang
+  - Zihan Liu
+  - Mohammad Shoeybi
+  - Bryan Catanzaro
+  - Wei Ping
+# Abstract
+  - Building general-purpose reasoning models with reinforcement learning (RL) entails substantial cross-domain heterogeneity, including large variation in inference-time response lengths and verification latency. Such variability complicates the RL infrastructure, slows training, and makes training curriculum (e.g., response length extension) and hyperparameter selection challenging. In this work, we propose cascaded domain-wise reinforcement learning (Cascade RL) to develop general-purpose reasoning models, Nemotron-Cascade, capable of operating in both instruct and deep thinking modes. Departing from conventional approaches that blend heterogeneous prompts from different domains, Cascade RL orchestrates sequential, domain-wise RL, reducing engineering complexity and delivering state-of-the-art performance across a wide range of benchmarks. Notably, RLHF for alignment, when used as a pre-step, boosts the model's reasoning ability far beyond mere preference optimization, and subsequent domain-wise RLVR stages rarely degrade the benchmark performance attained in earlier domains and may even improve it (see an illustration in Figure 1). Our 14B model, after RL, outperforms its SFT teacher, DeepSeek-R1-0528, on LiveCodeBench v5/v6/Pro and achieves silver-medal performance in the 2025 International Olympiad in Informatics (IOI). We transparently share our training and data recipes.
+# Translation (by gpt-4o-mini)
+- 一般目的の推論モデルを強化学習（RL）で構築することは、推論時の応答長や検証遅延の大きな変動を含む、実質的なドメイン間の異質性を伴います。このような変動はRLインフラを複雑にし、トレーニングを遅くし、トレーニングカリキュラム（例えば、応答長の拡張）やハイパーパラメータの選択を困難にします。本研究では、一般目的の推論モデルを開発するために、カスケードドメイン別強化学習（Cascade RL）を提案します。このモデル、Nemotron-Cascadeは、指示モードと深い思考モードの両方で動作することができます。異なるドメインからの異質なプロンプトを混合する従来のアプローチから離れ、Cascade RLは順次のドメイン別RLを調整し、エンジニアリングの複雑さを軽減し、幅広いベンチマークで最先端のパフォーマンスを提供します。特に、整合性のためのRLHFを前段階として使用することで、モデルの推論能力は単なる好みの最適化を超えて大幅に向上し、その後のドメイン別RLVR段階では、以前のドメインで達成されたベンチマークパフォーマンスが劣化することはほとんどなく、むしろ改善されることもあります（図1に示すように）。私たちの14Bモデルは、RL後に、SFT教師であるDeepSeek-R1-0528をLiveCodeBench v5/v6/Proで上回り、2025年国際情報オリンピック（IOI）で銀メダルのパフォーマンスを達成しました。私たちは、トレーニングとデータのレシピを透明に共有します。
+# Summary (by gpt-4o-mini)
+- 一般目的の推論モデルを強化学習（RL）で構築する際の課題に対処するため、カスケードドメイン別強化学習（Cascade RL）を提案。Nemotron-Cascadeは、指示モードと深い思考モードで動作し、異なるドメインのプロンプトを順次調整することで、エンジニアリングの複雑さを軽減し、最先端のパフォーマンスを実現。RLHFを前段階として使用することで推論能力が向上し、ドメイン別RL段階でもパフォーマンスが改善される。14Bモデルは、LiveCodeBenchで優れた結果を示し、2025年国際情報オリンピックで銀メダルを獲得。トレーニングとデータのレシピも共有。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_weiping/status/2000947255088701628?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>従来のRLはすべてのドメインのデータをmixすることでおこなれてきたが、個々のドメインのデータを個別にRLし、cascading方式で適用 (Cascade RL) することを提案している（実際は著者らの先行研究でmath->codingのcascadingは実施されていたが、それをより広範なドメイン(RLHF -> instruction following -> math -> coding -> software engineering)に適用した、という研究）。<br>cascadingにはいくつかのメリットがありRLの学習速度を改善できる（あるいはRLのインフラの複雑性を緩和できる）<br>- ドメインごとのverificationの速度の違いによって学習速度を損なうことがない（e.g. 数学のrule-basedなverificationは早いがcodingは遅い）<br>- ドメインごとに出力長は異なるためオンポリシーRLを適用すると効率が落ちる（長いレスポンスの生成を待たなければらないため）<br> <br><img src="https://github.com/user-attachments/assets/c56e04bb-8e4e-46e8-b5e5-ad12ee3b5daa" /" alt="image" loading="lazy" width="550" height="400"/><br><br>本研究で得られた利点としてはFigure 1を参考に言及されているが<br>- RLHF, instruction followingを事前に適用することによって、後段のreasoningの性能も向上する（reasoningのwarmupになる）<br>  - 加えて応答の長さの削減につながる<br>- RLはcatastrophic forgettingに強く、前段で実施したドメインの性能が後段のドメインのRLによって性能が劣化しない<br>  - といってもFigure 2を見ると、codingとsoftware engineeringは結構ドメイン近いのでは・・・？という気はするが・・・。<br>- RLにおけるカリキュラム学習やハイパーパラメータをドメインごとに最適なものを適用できる<br><br><img src="https://github.com/user-attachments/assets/ad108fb9-6450-49a4-99d3-c08404d89cda" /" alt="image" loading="lazy" width="550" height="400"/><br><br>他にもthinking/non-thinking に関することが言及されているが読めていない。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] mGTE: Generalized Long-Context Text Representation and Reranking Models for Multilingual Text Retrieval, Xin Zhang+, arXiv'24, 2024.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2407.19669</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4247</repo-issue-link>
+<tags>General, Embeddings, NLP, RepresentationLearning, MultiLingual, Encoder</tags>
+<repo-issue-date>2026-01-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2407.19669
+# Authors
+  - Xin Zhang
+  - Yanzhao Zhang
+  - Dingkun Long
+  - Wen Xie
+  - Ziqi Dai
+  - Jialong Tang
+  - Huan Lin
+  - Baosong Yang
+  - Pengjun Xie
+  - Fei Huang
+  - Meishan Zhang
+  - Wenjie Li
+  - Min Zhang
+# Abstract
+  - We present systematic efforts in building long-context multilingual text representation model (TRM) and reranker from scratch for text retrieval. We first introduce a text encoder (base size) enhanced with RoPE and unpadding, pre-trained in a native 8192-token context (longer than 512 of previous multilingual encoders). Then we construct a hybrid TRM and a cross-encoder reranker by contrastive learning. Evaluations show that our text encoder outperforms the same-sized previous state-of-the-art XLM-R. Meanwhile, our TRM and reranker match the performance of large-sized state-of-the-art BGE-M3 models and achieve better results on long-context retrieval benchmarks. Further analysis demonstrate that our proposed models exhibit higher efficiency during both training and inference. We believe their efficiency and effectiveness could benefit various researches and industrial applications.
+# Translation (by gpt-4o-mini)
+- 私たちは、テキスト検索のためにゼロから長文コンテキストの多言語テキスト表現モデル（TRM）と再ランキングモデルを構築するための体系的な取り組みを示します。まず、RoPEとアンパディングで強化されたテキストエンコーダ（基本サイズ）を紹介し、ネイティブな8192トークンのコンテキストで事前訓練しました（以前の多言語エンコーダの512よりも長い）。次に、対照学習によってハイブリッドTRMとクロスエンコーダ再ランキングモデルを構築しました。評価の結果、私たちのテキストエンコーダは、同サイズの以前の最先端モデルXLM-Rを上回る性能を示しました。一方で、私たちのTRMと再ランキングモデルは、大規模な最先端BGE-M3モデルと同等の性能を発揮し、長文コンテキスト検索のベンチマークではより良い結果を達成しました。さらなる分析により、提案されたモデルは訓練と推論の両方で高い効率を示すことが明らかになりました。私たちは、これらの効率性と有効性がさまざまな研究や産業アプリケーションに利益をもたらすと信じています。
+# Summary (by gpt-4o-mini)
+- 長文コンテキストの多言語テキスト表現モデル（TRM）と再ランキングモデルを構築し、RoPEとアンパディングを用いて8192トークンのコンテキストで事前訓練を行った。評価の結果、従来の最先端モデルを上回り、再ランキングモデルは大規模BGE-M3モデルと同等の性能を発揮した。訓練と推論の効率も高く、さまざまな研究や産業に貢献する可能性がある。</issue-body>
+<maintainer-comment-text><p>HF:<br>- BERT+GLU+RoPE: 
+
+{% raw %}
+<a href="https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5" target="_blank" rel="noopener noreferrer">https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5</a>
+{% endraw %}
+
+<br>- 
+
+{% raw %}
+<a href="https://huggingface.co/Alibaba-NLP/gte-Qwen1.5-7B-instruct" target="_blank" rel="noopener noreferrer">https://huggingface.co/Alibaba-NLP/gte-Qwen1.5-7B-instruct</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>RAIN: Your Language Models Can Align Themselves without Finetuning, Yuhui Li+, N_A, arXiv'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2309.07124</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1047</repo-issue-link>
+<tags>General, NLP, LanguageModel, Alignment</tags>
+<repo-issue-date>2023-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2309.07124
+# Affiliations
+  - Yuhui Li, N/A
+  - Fangyun Wei, N/A
+  - Jinjing Zhao, N/A
+  - Chao Zhang, N/A
+  - Hongyang Zhang, N/A
+# Abstract
+  - Large language models (LLMs) often demonstrate inconsistencies with humanpreferences. Previous research gathered human preference data and then alignedthe pre-trained models using reinforcement learning or instruction tuning, theso-called finetuning step. In contrast, aligning frozen LLMs without any extradata is more appealing. This work explores the potential of the latter setting.We discover that by integrating self-evaluation and rewind mechanisms,unaligned LLMs can directly produce responses consistent with human preferencesvia self-boosting. We introduce a novel inference method, RewindableAuto-regressive INference (RAIN), that allows pre-trained LLMs to evaluatetheir own generation and use the evaluation results to guide backward rewindand forward generation for AI safety. Notably, RAIN operates without the needof extra data for model alignment and abstains from any training, gradientcomputation, or parameter updates; during the self-evaluation phase, the modelreceives guidance on which human preference to align with through afixed-template prompt, eliminating the need to modify the initial prompt.Experimental results evaluated by GPT-4 and humans demonstrate theeffectiveness of RAIN: on the HH dataset, RAIN improves the harmlessness rateof LLaMA 30B over vanilla inference from 82% to 97%, while maintaining thehelpfulness rate. Under the leading adversarial attack llm-attacks on Vicuna33B, RAIN establishes a new defense baseline by reducing the attack successrate from 94% to 19%.
+# Translation (by gpt-3.5-turbo)
+- 大規模言語モデル（LLMs）は、しばしば人間の好みと一致しない矛盾を示します。従来の研究では、人間の好みのデータを収集し、その後、強化学習や指示調整を用いて事前学習モデルを整列させる、いわゆるファインチューニングステップを行ってきました。それに対して、追加のデータなしで凍結されたLLMsを整列させる方法の方が魅力的です。本研究では、この後者の設定の可能性を探求します。自己評価と巻き戻しメカニズムを統合することにより、整列されていないLLMsは自己ブースティングを通じて直接人間の好みと一致する応答を生成することができることを発見しました。我々は、Rewindable Auto-regressive INference（RAIN）という新しい推論手法を導入し、事前学習済みのLLMsが自己生成を評価し、評価結果を逆巻き戻しと前方生成のガイドとして使用することで、AIの安全性を確保します。特筆すべきことに、RAINはモデルの整列に追加のデータを必要とせず、トレーニング、勾配計算、パラメータの更新も必要ありません。自己評価フェーズでは、モデルは固定テンプレートのプロンプトを介してどの人間の好みに整列するかのガイダンスを受け取りますので、初期プロンプトを変更する必要はありません。GPT-4と人間によって評価された実験結果は、RAINの効果を示しています。HHデータセットでは、RAINはLLaMA 30Bの無害率を82％から97％に向上させながら、助けになる率を維持します。Vicuna 33Bに対する主要な敵対的攻撃llm-attacksでは、RAINは攻撃成功率を94％から19％に減少させることで、新たな防御の基準を確立します。
+# Summary (by gpt-3.5-turbo)
+- 本研究では、追加のデータなしで凍結された大規模言語モデル（LLMs）を整列させる方法を探求しました。自己評価と巻き戻しメカニズムを統合することで、LLMsは自己ブースティングを通じて人間の好みと一致する応答を生成することができることを発見しました。RAINという新しい推論手法を導入し、追加のデータやパラメータの更新を必要とせずにAIの安全性を確保します。実験結果は、RAINの効果を示しており、LLaMA 30Bデータセットでは無害率を向上させ、Vicuna 33Bデータセットでは攻撃成功率を減少させることができました。</issue-body>
+<maintainer-comment-text><p>トークンのsetで構成されるtree上を探索し、出力が無害とself-evaluationされるまで、巻き戻しと前方生成を繰り返し、有害なトークンsetの重みを動的に減らすことでalignmentを実現する。モデルの追加のfinetuning等は不要。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/05bebc0a-325b-423d-ae36-4bc5698063fe" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>self-evaluationでは下記のようなpromptを利用しているが、このpromptを変更することでこちら側の意図したとおりに出力のアライメントをとることができると思われる。非常に汎用性の高い手法のように見える。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/90070c63-e72d-4b49-bb03-a97dd5baa240" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Improving Domain Generalization for Prompt-Aware Essay Scoring via Disentangled Representation Learning, ACL'23</title>
+<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P3061.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/847</repo-issue-link>
+<tags>General, NLP, RepresentationLearning, AES(AutomatedEssayScoring), translation_required</tags>
+<repo-issue-date>2023-07-18</repo-issue-date>
+<issue-body>https://virtual2023.aclweb.org/paper_P3061.html</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>How Do In-Context Examples Affect Compositional Generalization?, ACL'23</title>
+<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P1430.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/814</repo-issue-link>
+<tags>General, NLP, LanguageModel, In-ContextLearning, translation_required, Composition</tags>
+<repo-issue-date>2023-07-13</repo-issue-date>
+<issue-body>https://virtual2023.aclweb.org/paper_P1430.html</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] StarSpace: Embed All The Things, Wu+, AAAI'18</title>
+<original-paper-blog-link>https://arxiv.org/abs/1709.03856</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/68</repo-issue-link>
+<tags>RecommenderSystems, NeuralNetwork, General, Embeddings, MachineLearning, RepresentationLearning, AAAI, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2017-12-28</repo-issue-date>
+<issue-body>paper: https://arxiv.org/abs/1709.03856
+project: https://github.com/facebookresearch/Starspace</issue-body>
+<maintainer-comment-text><p>分類やランキング、レコメンドなど、様々なタスクで汎用的に使用できるEmbeddingの学習手法を提案。<br><br><br><br>Embeddingを学習する対象をEntityと呼び、Entityはbag-of-featureで記述される。<br><br>Entityはbag-of-featureで記述できればなんでもよく、<br><br>これによりモデルの汎用性が増し、異なる種類のEntityでも同じ空間上でEmbeddingが学習される。<br><br><br><br>学習方法は非常にシンプルで、Entity同士のペアをとったときに、relevantなpairであれば類似度が高く、<br><br>irelevantなペアであれば類似度が低くなるようにEmbeddingを学習するだけ。<br><br>たとえば、Entityのペアとして、documentをbag-of-words, bag-of-ngrams, labelをsingle wordで記述しテキスト分類、<br><br>あるいは、user_idとユーザが過去に好んだアイテムをbag-of-wordsで記述しcontent-based recommendationを行うなど、 応用範囲は幅広い。<br><br><br><br>5種類のタスクで提案手法を評価し、既存手法と比較して、同等かそれ以上の性能を示すことが示されている。<br><br><br><br>手法の汎用性が高く学習も高速なので、色々な場面で役に立ちそう。<br><br>また、異なる種類のEntityであっても同じ空間上でEmbeddingが学習されるので、学習されたEmbeddingの応用先が広く有用。</p><p>実際にSentimentAnalysisで使ってみたが（ポジネガ二値分類）、少なくともBoWのSVMよりは全然性能良かったし、学習も早いし、次元数めちゃめちゃ少なくて良かった。<br><br>StarSpaceで学習したembeddingをBoWなSVMに入れると性能が劇的に改善した。</p><p>解説：<br><br>
+
+{% raw %}
+<a href="https://www.slideshare.net/akihikowatanabe3110/starspace-embed-all-the-things" target="_blank" rel="noopener noreferrer">https://www.slideshare.net/akihikowatanabe3110/starspace-embed-all-the-things</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>

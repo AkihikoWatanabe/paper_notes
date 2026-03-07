@@ -1,0 +1,888 @@
+<paper-entry>
+<title>[Paper Note] LLaVA-3D: A Simple yet Effective Pathway to Empowering LMMs with 3D-awareness, Chenming Zhu+, ICCV'25, 2024.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2409.18125</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4738</repo-issue-link>
+<tags>ComputerVision, NLP, Supervised-FineTuning (SFT), InstructionTuning, MultiModal, Reasoning, PositionalEncoding, OpenWeight, OpenSource, PostTraining, Selected Papers/Blogs, ICCV, VisionLanguageModel, 3D (Scene), SpatialUnderstanding, KeyPoint Notes, Grounding</tags>
+<repo-issue-date>2026-02-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2409.18125
+# Authors
+  - Chenming Zhu
+  - Tai Wang
+  - Wenwei Zhang
+  - Jiangmiao Pang
+  - Xihui Liu
+# Abstract
+  - Recent advancements in Large Multimodal Models (LMMs) have greatly enhanced their proficiency in 2D visual understanding tasks, enabling them to effectively process and understand images and videos. However, the development of LMMs with 3D scene understanding capabilities has been hindered by the lack of large-scale 3D vision-language datasets and powerful 3D encoders. In this paper, we introduce a simple yet effective framework called LLaVA-3D. Leveraging the strong 2D visual understanding priors from LLaVA, our LLaVA-3D efficiently adapts LLaVA for 3D scene understanding without compromising 2D understanding capabilities. To achieve this, we utilize the 3D position embeddings to enhance the 2D CLIP Patches with 3D spatial context information and construct 3D patches. By integrating the 3D position embeddings into 2D LMMs and employing joint 2D and 3D vision-language instruction tuning, we establish a unified architecture for both 2D visual understanding and 3D scene understanding. In contrast to previous 3D LMMs, LLaVA-3D supports decoding accurate 3D spatial perception outputs, e.g., 3D bounding boxes, directly from these 3D patches, without relying on the time-consuming off-the-shelf 3D segmentors. Experimental results show that LLaVA-3D converges 3.5x faster than existing 3D LMMs when trained on 3D vision-language datasets. Moreover, LLaVA-3D not only achieves state-of-the-art performance across various 3D tasks but also maintains comparable 2D visual understanding and vision-language conversation capabilities with LLaVA.
+# Translation (by gpt-5-nano)
+- 最近の大規模マルチモーダルモデル（LMMs）の進展は、2D視覚理解タスクにおける能力を大幅に向上させ、画像や動画を効果的に処理・理解できるようにした。しかし、3Dシーン理解機能を備えたLMMの開発は、大規模な3Dビジョン-言語データセットの不足と強力な3Dエンコーダの欠如により妨げられてきた。本論文では、LLaVA-3Dと呼ばれる、シンプルでありながら有効なフレームワークを提案する。LLaVAの強力な2D視覚理解の前提知識を活用して、LLaVA-3Dは2D理解能力を損なうことなく3Dシーン理解へ効率的に適応する。これを実現するために、3D位置埋め込みを利用して2DのCLIPパッチを3D空間情報で強化し、3Dパッチを構築する。3D位置埋め込みを2D LMMsに統合し、2Dと3Dの視覚言語指示チューニングを共同で行うことで、2D視覚理解と3Dシーン理解の両方に対応する統一的なアーキテクチャを確立する。従来の3D LMMとは対照的に、LLaVA-3Dはこれらの3Dパッチから直接、正確な3D空間認識出力（例：3D境界ボックス）をデコードすることをサポートする。時間のかかるオフ・ザ・シェルフの3Dセグメンターに依存しない。実験結果は、3Dビジョン-言語データセットで訓練した場合、LLaVA-3Dが既存の3D LMMより3.5倍速く収束することを示している。さらに、LLaVA-3Dはさまざまな3Dタスクで最先端の性能を達成するだけでなく、LLaVAと同等の2D視覚理解および視覚言語対話機能も維持している。
+# Summary (by gpt-4o-mini)
+- LLaVA-3Dは、3Dシーン理解に対応する新たなフレームワークで、2D視覚理解の知識を活用しつつ、3D位置埋め込みを統合。2D CLIPパッチを3D空間情報で強化し、2Dと3Dの共同チューニングを行うことで、迅速かつ正確な3D認識を実現。実験では、既存の3Dモデルよりも3.5倍速く収束し、3Dタスクでの最先端性能を達成しながら、2D機能も保持している。</issue-body>
+<maintainer-comment-text><p>github:
+
+{% raw %}
+<a href="https://github.com/ZCMax/LLaVA-3D" target="_blank" rel="noopener noreferrer">https://github.com/ZCMax/LLaVA-3D</a>
+{% endraw %}
+
+<br>pj page:
+
+{% raw %}
+<a href="https://zcmax.github.io/projects/LLaVA-3D/" target="_blank" rel="noopener noreferrer">https://zcmax.github.io/projects/LLaVA-3D/</a>
+{% endraw %}
+
+</p><p>3Dに関するspatial understandingの能力を持つVLMで、テキストの出力だけでなく、3Dのbounding boxを出力する専用のデコーダを持つ。<br><br>2DのCLIPベースのimage encoderによる情報を活用しつつ、2D patchに対して3Dに関する位置情報(depth）を3D positional encodingを通じて加えることで3D patchを作成し入力として活用。3Dのgrounding taskを扱うgrounding decoderを導入することで3D理解に関する能力を醸成する。学習は2stageで、最初のstageでは、2D, 3D双方の能力を同時に学習するために2D, 3Dのデータ両方を用いてモデルをSFTする。その後grounding decoderは前段のSFTでさ学習しきれないため、grounding decoder以外のモジュールはfreezeして、3D groundingタスクでdecoderとlocation tokenを学習するらしい。これにより、2D, 3Dシーンの理解力を損なわず、groundingに関する性能を高める。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Epona: Autoregressive Diffusion World Model for Autonomous Driving, Kaiwen Zhang+, ICCV'25, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.24113</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4479</repo-issue-link>
+<tags>ComputerVision, NLP, Transformer, DiffusionModel, LongSequence, OpenWeight, ICCV, WorldModels, 4D (Video)</tags>
+<repo-issue-date>2026-02-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.24113
+# Authors
+  - Kaiwen Zhang
+  - Zhenyu Tang
+  - Xiaotao Hu
+  - Xingang Pan
+  - Xiaoyang Guo
+  - Yuan Liu
+  - Jingwei Huang
+  - Li Yuan
+  - Qian Zhang
+  - Xiao-Xiao Long
+  - Xun Cao
+  - Wei Yin
+# Abstract
+  - Diffusion models have demonstrated exceptional visual quality in video generation, making them promising for autonomous driving world modeling. However, existing video diffusion-based world models struggle with flexible-length, long-horizon predictions and integrating trajectory planning. This is because conventional video diffusion models rely on global joint distribution modeling of fixed-length frame sequences rather than sequentially constructing localized distributions at each timestep. In this work, we propose Epona, an autoregressive diffusion world model that enables localized spatiotemporal distribution modeling through two key innovations: 1) Decoupled spatiotemporal factorization that separates temporal dynamics modeling from fine-grained future world generation, and 2) Modular trajectory and video prediction that seamlessly integrate motion planning with visual modeling in an end-to-end framework. Our architecture enables high-resolution, long-duration generation while introducing a novel chain-of-forward training strategy to address error accumulation in autoregressive loops. Experimental results demonstrate state-of-the-art performance with 7.4\% FVD improvement and minutes longer prediction duration compared to prior works. The learned world model further serves as a real-time motion planner, outperforming strong end-to-end planners on NAVSIM benchmarks. Code will be publicly available at \href{https://github.com/Kevin-thu/Epona/}{https://github.com/Kevin-thu/Epona/}.
+# Translation (by gpt-4o-mini)
+- 拡散モデルは、動画生成において優れた視覚品質を示しており、自律運転の世界モデルに対して有望です。しかし、既存の動画拡散ベースの世界モデルは、柔軟な長さの長期予測や軌道計画の統合に苦労しています。これは、従来の動画拡散モデルが固定長のフレームシーケンスのグローバルな同時分布モデルに依存しているため、各タイムステップで局所的な分布を逐次構築するのではないからです。本研究では、Eponaという自回帰型拡散世界モデルを提案します。このモデルは、以下の2つの重要な革新を通じて局所的な時空間分布モデリングを可能にします。1) 時間的ダイナミクスモデリングを微細な未来の世界生成から分離するデカップル型時空間因子分解、2) 動作計画と視覚モデリングをエンドツーエンドのフレームワークでシームレスに統合するモジュラー軌道および動画予測。私たちのアーキテクチャは、高解像度かつ長時間の生成を可能にすると共に、自回帰ループにおけるエラーの蓄積に対処するための新しい前方学習戦略を導入しています。実験結果は、7.4\%のFVD改善と以前の作品に比べて数分間の長い予測期間を実現し、最先端の性能を示しています。学習した世界モデルは、リアルタイムの動作プランナーとしても機能し、NAVSIMベンチマークにおいて強力なエンドツーエンドプランナーを上回っています。コードは公開される予定です。
+# Summary (by gpt-4o-mini)
+- Eponaという自回帰型拡散世界モデルを提案し、長期予測と軌道計画の統合を実現。デカップル型因子分解により局所的な時空間分布をモデリングし、エンドツーエンドで動作計画と視覚モデリングを統合。実験により7.4%のFVD改善を達成し、数分間の長期予測が可能。学習したモデルはリアルタイム動作プランナーとしても優れた性能を示す。</issue-body>
+<maintainer-comment-text><p>日本語解説:
+
+{% raw %}
+<a href="https://speakerdeck.com/kentosasaki/di-66hui-konpiyutabiziyonmian-qiang-hui-at-guan-dong-epona-autoregressive-diffusion-world-model-for-autonomous-driving?slide=3" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/kentosasaki/di-66hui-konpiyutabiziyonmian-qiang-hui-at-guan-dong-epona-autoregressive-diffusion-world-model-for-autonomous-driving?slide=3</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kento_sasaki1/status/2020332777640722769?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Kaputt: A Large-Scale Dataset for Visual Defect Detection, Sebastian Höfer+, ICCV'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.05903</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3461</repo-issue-link>
+<tags>ComputerVision, Analysis, Dataset, Zero/Few/ManyShotPrompting, MultiModal, In-ContextLearning, ICCV, VisionLanguageModel</tags>
+<repo-issue-date>2025-10-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.05903
+# Authors
+  - Sebastian Höfer
+  - Dorian Henning
+  - Artemij Amiranashvili
+  - Douglas Morrison
+  - Mariliza Tzes
+  - Ingmar Posner
+  - Marc Matvienko
+  - Alessandro Rennola
+  - Anton Milan
+# Abstract
+  - We present a novel large-scale dataset for defect detection in a logistics setting. Recent work on industrial anomaly detection has primarily focused on manufacturing scenarios with highly controlled poses and a limited number of object categories. Existing benchmarks like MVTec-AD [6] and VisA [33] have reached saturation, with state-of-the-art methods achieving up to 99.9% AUROC scores. In contrast to manufacturing, anomaly detection in retail logistics faces new challenges, particularly in the diversity and variability of object pose and appearance. Leading anomaly detection methods fall short when applied to this new setting. To bridge this gap, we introduce a new benchmark that overcomes the current limitations of existing datasets. With over 230,000 images (and more than 29,000 defective instances), it is 40 times larger than MVTec-AD and contains more than 48,000 distinct objects. To validate the difficulty of the problem, we conduct an extensive evaluation of multiple state-of-the-art anomaly detection methods, demonstrating that they do not surpass 56.96% AUROC on our dataset. Further qualitative analysis confirms that existing methods struggle to leverage normal samples under heavy pose and appearance variation. With our large-scale dataset, we set a new benchmark and encourage future research towards solving this challenging problem in retail logistics anomaly detection. The dataset is available for download under https://www.kaputt-dataset.com.
+# Translation (by gpt-4o-mini)
+- 私たちは、物流環境における欠陥検出のための新しい大規模データセットを提案します。最近の産業異常検出に関する研究は、主に高度に制御された姿勢と限られた数の物体カテゴリを持つ製造シナリオに焦点を当ててきました。MVTec-ADやVisAのような既存のベンチマークは飽和状態に達しており、最先端の手法は99.9%のAUROCスコアを達成しています。製造業とは対照的に、小売物流における異常検出は、物体の姿勢や外観の多様性と変動性に関する新たな課題に直面しています。主要な異常検出手法は、この新しい環境に適用すると効果が薄れます。このギャップを埋めるために、私たちは既存のデータセットの限界を克服する新しいベンチマークを導入します。230,000枚以上の画像（29,000以上の欠陥インスタンスを含む）を持ち、MVTec-ADの40倍の大きさで、48,000以上の異なる物体を含んでいます。問題の難しさを検証するために、複数の最先端異常検出手法の広範な評価を行い、私たちのデータセットでは56.96%のAUROCを超えないことを示しました。さらに、質的分析により、既存の手法が大きな姿勢や外観の変動の下で正常サンプルを活用するのに苦労していることが確認されました。私たちの大規模データセットにより、新しいベンチマークを設定し、小売物流の異常検出におけるこの難しい問題を解決するための今後の研究を促進します。このデータセットは、https://www.kaputt-dataset.com からダウンロード可能です。
+# Summary (by gpt-4o-mini)
+- 新しい大規模データセットを提案し、小売物流における欠陥検出の課題に対応。230,000枚の画像と29,000以上の欠陥インスタンスを含み、MVTec-ADの40倍の規模。既存手法の限界を示し、56.96%のAUROCを超えない結果を得た。データセットは今後の研究を促進するために利用可能。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/1979565856897331212?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] FullDiT: Multi-Task Video Generative Foundation Model with Full   Attention, Xuan Ju+, ICCV'25, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.19907</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3433</repo-issue-link>
+<tags>ICCV</tags>
+<repo-issue-date>2025-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.19907
+# Authors
+  - Xuan Ju
+  - Weicai Ye
+  - Quande Liu
+  - Qiulin Wang
+  - Xintao Wang
+  - Pengfei Wan
+  - Di Zhang
+  - Kun Gai
+  - Qiang Xu
+# Abstract
+  - Current video generative foundation models primarily focus on text-to-video tasks, providing limited control for fine-grained video content creation. Although adapter-based approaches (e.g., ControlNet) enable additional controls with minimal fine-tuning, they encounter challenges when integrating multiple conditions, including: branch conflicts between independently trained adapters, parameter redundancy leading to increased computational cost, and suboptimal performance compared to full fine-tuning. To address these challenges, we introduce FullDiT, a unified foundation model for video generation that seamlessly integrates multiple conditions via unified full-attention mechanisms. By fusing multi-task conditions into a unified sequence representation and leveraging the long-context learning ability of full self-attention to capture condition dynamics, FullDiT reduces parameter overhead, avoids conditions conflict, and shows scalability and emergent ability. We further introduce FullBench for multi-task video generation evaluation. Experiments demonstrate that FullDiT achieves state-of-the-art results, highlighting the efficacy of full-attention in complex multi-task video generation.
+# Translation (by gpt-4o-mini)
+- 現在のビデオ生成基盤モデルは主にテキストからビデオへのタスクに焦点を当てており、細かいビデオコンテンツの作成に対する制御が限られています。アダプターベースのアプローチ（例：ControlNet）は最小限のファインチューニングで追加の制御を可能にしますが、独立して訓練されたアダプター間の分岐の競合、パラメータの冗長性による計算コストの増加、完全なファインチューニングと比較しての最適でない性能など、複数の条件を統合する際に課題に直面します。これらの課題に対処するために、私たちはFullDiTを導入します。これは、統一されたフルアテンションメカニズムを介して複数の条件をシームレスに統合するビデオ生成のための統一基盤モデルです。マルチタスク条件を統一されたシーケンス表現に融合し、条件のダイナミクスを捉えるためにフル自己アテンションの長文コンテキスト学習能力を活用することで、FullDiTはパラメータのオーバーヘッドを削減し、条件の競合を回避し、スケーラビリティと新たな能力を示します。さらに、マルチタスクビデオ生成評価のためにFullBenchを導入します。実験により、FullDiTが最先端の結果を達成し、複雑なマルチタスクビデオ生成におけるフルアテンションの有効性を強調しています。
+# Summary (by gpt-4o-mini)
+- FullDiTは、ビデオ生成のための統一基盤モデルであり、複数の条件をフルアテンションメカニズムを通じてシームレスに統合します。これにより、パラメータのオーバーヘッドを削減し、条件の競合を回避しつつ、マルチタスクビデオ生成の性能を向上させます。実験結果は、FullDiTが最先端の成果を達成し、複雑なビデオ生成におけるフルアテンションの有効性を示しています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xinntao/status/1981563662990266623?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] HouseCrafter: Lifting Floorplans to 3D Scenes with 2D Diffusion Model, Hieu T. Nguyen+, ICCV'25, 2024.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2406.20077</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3432</repo-issue-link>
+<tags>ICCV</tags>
+<repo-issue-date>2025-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2406.20077
+# Authors
+  - Hieu T. Nguyen
+  - Yiwen Chen
+  - Vikram Voleti
+  - Varun Jampani
+  - Huaizu Jiang
+# Abstract
+  - We introduce HouseCrafter, a novel approach that can lift a floorplan into a complete large 3D indoor scene (e.g., a house). Our key insight is to adapt a 2D diffusion model, which is trained on web-scale images, to generate consistent multi-view color (RGB) and depth (D) images across different locations of the scene. Specifically, the RGB-D images are generated autoregressively in a batch-wise manner along sampled locations based on the floorplan, where previously generated images are used as condition to the diffusion model to produce images at nearby locations. The global floorplan and attention design in the diffusion model ensures the consistency of the generated images, from which a 3D scene can be reconstructed. Through extensive evaluation on the 3D-Front dataset, we demonstrate that HouseCraft can generate high-quality house-scale 3D scenes. Ablation studies also validate the effectiveness of different design choices. We will release our code and model weights. Project page: https://neu-vi.github.io/houseCrafter/
+# Translation (by gpt-4o-mini)
+- 私たちは、HouseCrafterという新しいアプローチを紹介します。これは、間取り図を完全な大規模3D屋内シーン（例：家）に変換することができます。私たちの重要な洞察は、ウェブ規模の画像で訓練された2D拡散モデルを適応させ、シーンの異なる場所で一貫したマルチビューのカラー（RGB）および深度（D）画像を生成することです。具体的には、RGB-D画像は、間取り図に基づいてサンプリングされた場所に沿ってバッチ方式で自己回帰的に生成され、以前に生成された画像が拡散モデルへの条件として使用され、近くの場所での画像を生成します。拡散モデル内のグローバルな間取り図とアテンション設計は、生成された画像の一貫性を保証し、そこから3Dシーンを再構築することができます。3D-Frontデータセットに関する広範な評価を通じて、HouseCrafterが高品質な家規模の3Dシーンを生成できることを示しました。アブレーションスタディも、さまざまな設計選択の有効性を検証しています。私たちはコードとモデルの重みを公開する予定です。プロジェクトページ: https://neu-vi.github.io/houseCrafter/
+# Summary (by gpt-4o-mini)
+- HouseCrafterは、間取り図を大規模な3D屋内シーンに変換する新しいアプローチで、2D拡散モデルを適応させて一貫したマルチビューのRGBおよび深度画像を生成します。RGB-D画像は、間取り図に基づいて自己回帰的に生成され、生成された画像が条件として使用されます。グローバルな間取り図とアテンション設計により、一貫性のある画像生成が実現され、3Dシーンの再構築が可能です。3D-Frontデータセットでの評価により、高品質な3Dシーン生成が確認され、設計選択の有効性も検証されています。コードとモデルの重みは公開予定です。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huaizujiang/status/1981400544666423768?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Large Multi-modal Models Can Interpret Features in Large Multi-modal   Models, Kaichen Zhang+, ICCV'25, 2024.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.14982</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3421</repo-issue-link>
+<tags>ICCV, SparseAutoEncoder</tags>
+<repo-issue-date>2025-10-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.14982
+# Authors
+  - Kaichen Zhang
+  - Yifei Shen
+  - Bo Li
+  - Ziwei Liu
+# Abstract
+  - Recent advances in Large Multimodal Models (LMMs) lead to significant breakthroughs in both academia and industry. One question that arises is how we, as humans, can understand their internal neural representations. This paper takes an initial step towards addressing this question by presenting a versatile framework to identify and interpret the semantics within LMMs. Specifically, 1) we first apply a Sparse Autoencoder(SAE) to disentangle the representations into human understandable features. 2) We then present an automatic interpretation framework to interpreted the open-semantic features learned in SAE by the LMMs themselves. We employ this framework to analyze the LLaVA-NeXT-8B model using the LLaVA-OV-72B model, demonstrating that these features can effectively steer the model's behavior. Our results contribute to a deeper understanding of why LMMs excel in specific tasks, including EQ tests, and illuminate the nature of their mistakes along with potential strategies for their rectification. These findings offer new insights into the internal mechanisms of LMMs and suggest parallels with the cognitive processes of the human brain.
+# Translation (by gpt-4o-mini)
+- 最近の大規模マルチモーダルモデル（LMM）の進展は、学術界と産業界の両方で重要なブレークスルーをもたらしています。ここで浮かび上がる疑問は、私たち人間がどのようにしてこれらの内部神経表現を理解できるかということです。本論文は、この疑問に対処するための初期のステップを踏み出し、LMM内の意味を特定し解釈するための多目的なフレームワークを提示します。具体的には、1) まず、スパースオートエンコーダ（SAE）を適用して、表現を人間が理解できる特徴に分解します。2) 次に、LMM自身がSAEで学習したオープンセマンティック特徴を解釈するための自動解釈フレームワークを提示します。このフレームワークを用いて、LLaVA-OV-72Bモデルを使用してLLaVA-NeXT-8Bモデルを分析し、これらの特徴がモデルの挙動を効果的に誘導できることを示します。我々の結果は、LMMが特定のタスク、特にEQテストで優れている理由をより深く理解することに寄与し、彼らの誤りの性質とその修正のための潜在的な戦略を明らかにします。これらの発見は、LMMの内部メカニズムに新たな洞察を提供し、人間の脳の認知プロセスとの類似性を示唆しています。
+# Summary (by gpt-4o-mini)
+- LMMの内部神経表現を理解するためのフレームワークを提案。スパースオートエンコーダを用いて特徴を分解し、自動解釈フレームワークでモデルの挙動を分析。結果はLMMのタスク性能や誤りの性質を明らかにし、人間の認知プロセスとの類似性を示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+<a href="https://github.com/EvolvingLMMs-Lab/multimodal-sae" target="_blank" rel="noopener noreferrer">https://github.com/EvolvingLMMs-Lab/multimodal-sae</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Towards Video Thinking Test: A Holistic Benchmark for Advanced Video   Reasoning and Understanding, Yuanhan Zhang+, ICCV'25, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.15028</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3420</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, Evaluation, MultiModal, Reasoning, VideoGeneration/Understandings, ICCV, 4D (Video), Robustness</tags>
+<repo-issue-date>2025-10-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.15028
+# Authors
+  - Yuanhan Zhang
+  - Yunice Chew
+  - Yuhao Dong
+  - Aria Leo
+  - Bo Hu
+  - Ziwei Liu
+# Abstract
+  - Human intelligence requires correctness and robustness, with the former being foundational for the latter. In video understanding, correctness ensures the accurate interpretation of visual content, and robustness maintains consistent performance in challenging conditions. Despite advances in video large language models (video LLMs), existing benchmarks inadequately reflect the gap between these models and human intelligence in maintaining correctness and robustness in video interpretation. We introduce the Video Thinking Test (Video-TT), to assess if video LLMs can interpret real-world videos as effectively as humans. Video-TT reflects genuine gaps in understanding complex visual narratives, and evaluates robustness against natural adversarial questions. Video-TT comprises 1,000 YouTube Shorts videos, each with one open-ended question and four adversarial questions that probe visual and narrative complexity. Our evaluation shows a significant gap between video LLMs and human performance.
+# Translation (by gpt-4o-mini)
+- 人間の知能は正確性と堅牢性を必要とし、前者は後者の基盤となる。ビデオ理解において、正確性は視覚コンテンツの正確な解釈を保証し、堅牢性は困難な条件下でも一貫したパフォーマンスを維持する。ビデオ大規模言語モデル（ビデオLLMs）の進展にもかかわらず、既存のベンチマークは、これらのモデルと人間の知能との間における正確性と堅牢性の維持に関するギャップを十分に反映していない。そこで、私たちはビデオLLMsが人間と同様に実世界のビデオを効果的に解釈できるかを評価するために、Video Thinking Test（Video-TT）を導入する。Video-TTは、複雑な視覚的物語の理解における真のギャップを反映し、自然な敵対的質問に対する堅牢性を評価する。Video-TTは、1,000本のYouTube Shortsビデオで構成されており、それぞれに1つのオープンエンドの質問と、視覚的および物語的な複雑さを探る4つの敵対的質問が含まれている。私たちの評価は、ビデオLLMsと人間のパフォーマンスとの間に大きなギャップがあることを示している。
+# Summary (by gpt-4o-mini)
+- ビデオ理解における正確性と堅牢性のギャップを評価するために、Video Thinking Test（Video-TT）を導入。1,000本のYouTube Shortsビデオを用い、オープンエンドの質問と敵対的質問を通じて、ビデオLLMsと人間のパフォーマンスの違いを示す。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://zhangyuanhan-ai.github.io/video-tt/" target="_blank" rel="noopener noreferrer">https://zhangyuanhan-ai.github.io/video-tt/</a>
+{% endraw %}
+
+</p><p>関連:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_tobiaslee/status/2011698262118711437?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Dual-Expert Consistency Model for Efficient and High-Quality Video  Generation, Zhengyao Lv+, arXiv'25, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.03123</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3419</repo-issue-link>
+<tags>ICCV</tags>
+<repo-issue-date>2025-10-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.03123
+# Authors
+  - Zhengyao Lv
+  - Chenyang Si
+  - Tianlin Pan
+  - Zhaoxi Chen
+  - Kwan-Yee K. Wong
+  - Yu Qiao
+  - Ziwei Liu
+# Abstract
+  - Diffusion Models have achieved remarkable results in video synthesis but require iterative denoising steps, leading to substantial computational overhead. Consistency Models have made significant progress in accelerating diffusion models. However, directly applying them to video diffusion models often results in severe degradation of temporal consistency and appearance details. In this paper, by analyzing the training dynamics of Consistency Models, we identify a key conflicting learning dynamics during the distillation process: there is a significant discrepancy in the optimization gradients and loss contributions across different timesteps. This discrepancy prevents the distilled student model from achieving an optimal state, leading to compromised temporal consistency and degraded appearance details. To address this issue, we propose a parameter-efficient \textbf{Dual-Expert Consistency Model~(DCM)}, where a semantic expert focuses on learning semantic layout and motion, while a detail expert specializes in fine detail refinement. Furthermore, we introduce Temporal Coherence Loss to improve motion consistency for the semantic expert and apply GAN and Feature Matching Loss to enhance the synthesis quality of the detail expert.Our approach achieves state-of-the-art visual quality with significantly reduced sampling steps, demonstrating the effectiveness of expert specialization in video diffusion model distillation. Our code and models are available at \href{https://github.com/Vchitect/DCM}{https://github.com/Vchitect/DCM}.
+# Translation (by gpt-4o-mini)
+- Diffusion Modelsは動画合成において顕著な成果を上げていますが、反復的なデノイジングステップを必要とするため、かなりの計算負荷がかかります。Consistency Modelsは、Diffusion Modelsの加速において重要な進展を遂げました。しかし、これらを動画Diffusion Modelsに直接適用すると、時間的一貫性や外観の詳細が著しく劣化することがよくあります。本論文では、Consistency Modelsのトレーニングダイナミクスを分析することで、蒸留プロセス中に発生する重要な対立する学習ダイナミクスを特定しました。それは、異なるタイムステップ間で最適化勾配と損失の寄与に大きな不一致があることです。この不一致は、蒸留された学生モデルが最適な状態に達するのを妨げ、時間的一貫性の低下や外観の詳細の劣化を引き起こします。この問題に対処するために、我々はパラメータ効率の良い\textbf{Dual-Expert Consistency Model~(DCM)}を提案します。このモデルでは、セマンティックエキスパートがセマンティックレイアウトと動きの学習に焦点を当て、ディテールエキスパートが細部の洗練に特化します。さらに、セマンティックエキスパートの動きの一貫性を改善するためにTemporal Coherence Lossを導入し、ディテールエキスパートの合成品質を向上させるためにGANとFeature Matching Lossを適用します。我々のアプローチは、サンプリングステップを大幅に削減しながら最先端の視覚品質を達成し、動画Diffusion Modelの蒸留におけるエキスパートの専門化の効果を示しています。私たちのコードとモデルは、\href{https://github.com/Vchitect/DCM}{https://github.com/Vchitect/DCM}で入手可能です。
+# Summary (by gpt-4o-mini)
+- 動画合成におけるDiffusion Modelsは計算負荷が高いが、Consistency Modelsがその加速に寄与。しかし、直接適用すると時間的一貫性や外観の詳細が劣化する。本研究では、学習ダイナミクスの不一致を特定し、Dual-Expert Consistency Model（DCM）を提案。セマンティックエキスパートとディテールエキスパートを用いて、Temporal Coherence LossやGANを導入し、視覚品質を向上させつつサンプリングステップを削減。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://vchitect.github.io/DCM/" target="_blank" rel="noopener noreferrer">https://vchitect.github.io/DCM/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Free4D: Tuning-free 4D Scene Generation with Spatial-Temporal  Consistency, Tianqi Liu+, arXiv'25, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.20785</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3418</repo-issue-link>
+<tags>ICCV</tags>
+<repo-issue-date>2025-10-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.20785
+# Authors
+  - Tianqi Liu
+  - Zihao Huang
+  - Zhaoxi Chen
+  - Guangcong Wang
+  - Shoukang Hu
+  - Liao Shen
+  - Huiqiang Sun
+  - Zhiguo Cao
+  - Wei Li
+  - Ziwei Liu
+# Abstract
+  - We present Free4D, a novel tuning-free framework for 4D scene generation from a single image. Existing methods either focus on object-level generation, making scene-level generation infeasible, or rely on large-scale multi-view video datasets for expensive training, with limited generalization ability due to the scarcity of 4D scene data. In contrast, our key insight is to distill pre-trained foundation models for consistent 4D scene representation, which offers promising advantages such as efficiency and generalizability. 1) To achieve this, we first animate the input image using image-to-video diffusion models followed by 4D geometric structure initialization. 2) To turn this coarse structure into spatial-temporal consistent multiview videos, we design an adaptive guidance mechanism with a point-guided denoising strategy for spatial consistency and a novel latent replacement strategy for temporal coherence. 3) To lift these generated observations into consistent 4D representation, we propose a modulation-based refinement to mitigate inconsistencies while fully leveraging the generated information. The resulting 4D representation enables real-time, controllable rendering, marking a significant advancement in single-image-based 4D scene generation.
+# Translation (by gpt-4o-mini)
+- 私たちは、単一の画像から4Dシーンを生成するための新しいチューニング不要のフレームワークであるFree4Dを提案します。既存の手法は、オブジェクトレベルの生成に焦点を当てているためシーンレベルの生成が不可能であったり、大規模なマルチビュー動画データセットに依存して高コストのトレーニングを行っているため、4Dシーンデータの不足により一般化能力が限られています。それに対して、私たちの重要な洞察は、一貫した4Dシーン表現のために事前学習された基盤モデルを蒸留することです。これにより、効率性と一般化能力といった有望な利点が得られます。1) これを実現するために、まず画像から動画への拡散モデルを使用して入力画像をアニメーション化し、その後4D幾何学的構造を初期化します。2) この粗い構造を空間的・時間的一貫性のあるマルチビュー動画に変換するために、空間的一貫性のためのポイントガイド付きデノイジング戦略と時間的一貫性のための新しい潜在置換戦略を備えた適応型ガイダンスメカニズムを設計します。3) 生成された観測結果を一貫した4D表現に引き上げるために、生成された情報を最大限に活用しながら不整合を軽減するためのモジュレーションベースの精緻化を提案します。結果として得られる4D表現は、リアルタイムで制御可能なレンダリングを可能にし、単一画像に基づく4Dシーン生成において重要な進展を示します。
+# Summary (by gpt-4o-mini)
+- Free4Dは、単一の画像から4Dシーンを生成するための新しいチューニング不要のフレームワークを提案。従来の手法はオブジェクトレベルに限定され、シーンレベルの生成が困難であったが、基盤モデルの蒸留により効率性と一般化能力を向上。画像から動画への拡散モデルを用いてアニメーション化し、空間・時間的一貫性を保つための新しいガイダンスメカニズムを設計。生成された4D表現はリアルタイムでの制御可能なレンダリングを実現し、重要な進展を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+<a href="https://free4d.github.io" target="_blank" rel="noopener noreferrer">https://free4d.github.io</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] DPoser-X: Diffusion Model as Robust 3D Whole-body Human Pose Prior, Junzhe Lu+, arXiv'25, 2025.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.00599</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3417</repo-issue-link>
+<tags>ICCV</tags>
+<repo-issue-date>2025-10-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.00599
+# Authors
+  - Junzhe Lu
+  - Jing Lin
+  - Hongkun Dou
+  - Ailing Zeng
+  - Yue Deng
+  - Xian Liu
+  - Zhongang Cai
+  - Lei Yang
+  - Yulun Zhang
+  - Haoqian Wang
+  - Ziwei Liu
+# Abstract
+  - We present DPoser-X, a diffusion-based prior model for 3D whole-body human poses. Building a versatile and robust full-body human pose prior remains challenging due to the inherent complexity of articulated human poses and the scarcity of high-quality whole-body pose datasets. To address these limitations, we introduce a Diffusion model as body Pose prior (DPoser) and extend it to DPoser-X for expressive whole-body human pose modeling. Our approach unifies various pose-centric tasks as inverse problems, solving them through variational diffusion sampling. To enhance performance on downstream applications, we introduce a novel truncated timestep scheduling method specifically designed for pose data characteristics. We also propose a masked training mechanism that effectively combines whole-body and part-specific datasets, enabling our model to capture interdependencies between body parts while avoiding overfitting to specific actions. Extensive experiments demonstrate DPoser-X's robustness and versatility across multiple benchmarks for body, hand, face, and full-body pose modeling. Our model consistently outperforms state-of-the-art alternatives, establishing a new benchmark for whole-body human pose prior modeling.
+# Translation (by gpt-4o-mini)
+- 私たちは、3D全身人間ポーズのための拡散ベースの事前モデルであるDPoser-Xを提案します。関節のある人間ポーズの固有の複雑さと高品質な全身ポーズデータセットの不足により、汎用性が高く堅牢な全身人間ポーズの事前モデルを構築することは依然として困難です。これらの制限に対処するために、私たちは体のポーズ事前モデルとしての拡散モデル（DPoser）を導入し、表現力豊かな全身人間ポーズモデリングのためにDPoser-Xに拡張します。私たちのアプローチは、さまざまなポーズ中心のタスクを逆問題として統一し、変分拡散サンプリングを通じてそれらを解決します。下流アプリケーションのパフォーマンスを向上させるために、ポーズデータの特性に特化した新しい切り捨てタイムステップスケジューリング手法を導入します。また、全身データセットと部位特有のデータセットを効果的に組み合わせるマスクトレーニングメカニズムを提案し、モデルが体の部位間の相互依存性を捉えつつ、特定のアクションへの過剰適合を回避できるようにします。広範な実験により、DPoser-Xの堅牢性と汎用性が、体、手、顔、全身ポーズモデリングの複数のベンチマークで示されました。私たちのモデルは、最先端の代替手法を一貫して上回り、全身人間ポーズ事前モデリングの新しいベンチマークを確立します。
+# Summary (by gpt-4o-mini)
+- DPoser-Xは、3D全身人間ポーズのための拡散ベースの事前モデルであり、ポーズの複雑さとデータセットの不足に対処する。逆問題としてポーズ中心のタスクを統一し、変分拡散サンプリングで解決。新しい切り捨てタイムステップスケジューリングとマスクトレーニングメカニズムを導入し、部位間の相互依存性を捉えつつ過剰適合を回避。実験により、DPoser-Xは複数のベンチマークで最先端の手法を上回り、新たな基準を確立した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+<a href="https://dposer.github.io" target="_blank" rel="noopener noreferrer">https://dposer.github.io</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Generating Physically Stable and Buildable Brick Structures from Text, Ava Pun+, ICCV'25 Best Paper, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.05469</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3415</repo-issue-link>
+<tags>ICCV</tags>
+<repo-issue-date>2025-10-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.05469
+# Authors
+  - Ava Pun
+  - Kangle Deng
+  - Ruixuan Liu
+  - Deva Ramanan
+  - Changliu Liu
+  - Jun-Yan Zhu
+# Abstract
+  - We introduce BrickGPT, the first approach for generating physically stable interconnecting brick assembly models from text prompts. To achieve this, we construct a large-scale, physically stable dataset of brick structures, along with their associated captions, and train an autoregressive large language model to predict the next brick to add via next-token prediction. To improve the stability of the resulting designs, we employ an efficient validity check and physics-aware rollback during autoregressive inference, which prunes infeasible token predictions using physics laws and assembly constraints. Our experiments show that BrickGPT produces stable, diverse, and aesthetically pleasing brick structures that align closely with the input text prompts. We also develop a text-based brick texturing method to generate colored and textured designs. We show that our designs can be assembled manually by humans and automatically by robotic arms. We release our new dataset, StableText2Brick, containing over 47,000 brick structures of over 28,000 unique 3D objects accompanied by detailed captions, along with our code and models at the project website: https://avalovelace1.github.io/BrickGPT/.
+# Translation (by gpt-4o-mini)
+- BrickGPTを紹介します。これは、テキストプロンプトから物理的に安定した相互接続されたレンガ組立モデルを生成するための初めてのアプローチです。これを実現するために、レンガ構造の大規模で物理的に安定したデータセットを構築し、それに関連するキャプションを付け、次のレンガを追加するための次トークン予測を行う自己回帰型大規模言語モデルを訓練しました。生成されるデザインの安定性を向上させるために、自己回帰推論中に効率的な有効性チェックと物理に基づくロールバックを採用し、物理法則と組立制約を使用して実現不可能なトークン予測を削除します。実験の結果、BrickGPTは入力テキストプロンプトに密接に一致した安定で多様性があり、美的に pleasingなレンガ構造を生成することが示されました。また、色付きおよびテクスチャ付きのデザインを生成するためのテキストベースのレンガテクスチャリング手法も開発しました。私たちのデザインは、人間によって手動で、またはロボットアームによって自動的に組み立てることができることを示しました。新しいデータセットStableText2Brickを公開し、28,000以上のユニークな3Dオブジェクトに伴う47,000以上のレンガ構造と詳細なキャプションを含んでいます。コードとモデルはプロジェクトのウェブサイト（https://avalovelace1.github.io/BrickGPT/）で入手できます。
+# Summary (by gpt-4o-mini)
+- BrickGPTは、テキストプロンプトから物理的に安定したレンガ組立モデルを生成する初のアプローチであり、大規模なデータセットを用いて自己回帰型言語モデルを訓練。安定性向上のために有効性チェックと物理法則に基づくロールバックを採用し、実現不可能な予測を排除。実験により、安定で多様なレンガ構造を生成できることが確認され、テクスチャリング手法も開発。新データセットStableText2Brickを公開し、28,000以上の3Dオブジェクトと47,000以上のレンガ構造を提供。コードとモデルはプロジェクトのウェブサイトで入手可能。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://avalovelace1.github.io/BrickGPT/" target="_blank" rel="noopener noreferrer">https://avalovelace1.github.io/BrickGPT/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Beyond Isolated Words: Diffusion Brush for Handwritten Text-Line   Generation, Gang Dai+, ICCV'25, 2025.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.03256</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3383</repo-issue-link>
+<tags>ComputerVision, ICCV</tags>
+<repo-issue-date>2025-10-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.03256
+# Authors
+  - Gang Dai
+  - Yifan Zhang
+  - Yutao Qin
+  - Qiangya Guo
+  - Shuangping Huang
+  - Shuicheng Yan
+# Abstract
+  - Existing handwritten text generation methods primarily focus on isolated words. However, realistic handwritten text demands attention not only to individual words but also to the relationships between them, such as vertical alignment and horizontal spacing. Therefore, generating entire text lines emerges as a more promising and comprehensive task. However, this task poses significant challenges, including the accurate modeling of complex style patterns encompassing both intra- and inter-word relationships, and maintaining content accuracy across numerous characters. To address these challenges, we propose DiffBrush, a novel diffusion-based model for handwritten text-line generation. Unlike existing methods, DiffBrush excels in both style imitation and content accuracy through two key strategies: (1) content-decoupled style learning, which disentangles style from content to better capture intra-word and inter-word style patterns by using column- and row-wise masking; and (2) multi-scale content learning, which employs line and word discriminators to ensure global coherence and local accuracy of textual content. Extensive experiments show that DiffBrush excels in generating high-quality text lines, particularly in style reproduction and content preservation. Code is available at https://github.com/dailenson/DiffBrush.
+# Translation (by gpt-4o-mini)
+- 既存の手書きテキスト生成手法は主に孤立した単語に焦点を当てています。しかし、リアルな手書きテキストは、個々の単語だけでなく、それらの間の関係、例えば垂直の整列や水平の間隔にも注意を払う必要があります。したがって、全体のテキストラインを生成することは、より有望で包括的なタスクとして浮上しています。しかし、このタスクは、単語間および単語内の関係を含む複雑なスタイルパターンを正確にモデル化し、多数の文字にわたる内容の正確性を維持するという重要な課題を提起します。これらの課題に対処するために、我々は手書きテキストライン生成のための新しい拡散ベースのモデルであるDiffBrushを提案します。既存の手法とは異なり、DiffBrushはスタイルの模倣と内容の正確性の両方に優れています。そのための2つの重要な戦略を採用しています：(1) 内容から切り離されたスタイル学習。これは、カラムおよび行のマスキングを使用して、スタイルを内容から分離し、単語内および単語間のスタイルパターンをより良く捉えることを可能にします；(2) マルチスケール内容学習。これは、行と単語の識別器を使用して、テキスト内容のグローバルな一貫性とローカルな正確性を確保します。広範な実験により、DiffBrushは特にスタイル再現と内容保持において高品質なテキストラインを生成するのに優れていることが示されました。コードは https://github.com/dailenson/DiffBrush で入手可能です。
+# Summary (by gpt-4o-mini)
+- 手書きテキスト生成において、DiffBrushという新しい拡散ベースのモデルを提案。スタイルと内容の正確性を両立させるため、スタイル学習を内容から切り離し、マルチスケールで内容を学習する戦略を採用。実験により、高品質なテキストライン生成が確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1980918946963534003?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>手書き文字生成</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] OminiControl: Minimal and Universal Control for Diffusion Transformer, Zhenxiong Tan+, ICCV'25 Highlight, 2024.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.15098</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3373</repo-issue-link>
+<tags>ComputerVision, Controllable, Transformer, DiffusionModel, VariationalAutoEncoder, Selected Papers/Blogs, ICCV, KeyPoint Notes</tags>
+<repo-issue-date>2025-10-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.15098
+# Authors
+  - Zhenxiong Tan
+  - Songhua Liu
+  - Xingyi Yang
+  - Qiaochu Xue
+  - Xinchao Wang
+# Abstract
+  - We present OminiControl, a novel approach that rethinks how image conditions are integrated into Diffusion Transformer (DiT) architectures. Current image conditioning methods either introduce substantial parameter overhead or handle only specific control tasks effectively, limiting their practical versatility. OminiControl addresses these limitations through three key innovations: (1) a minimal architectural design that leverages the DiT's own VAE encoder and transformer blocks, requiring just 0.1% additional parameters; (2) a unified sequence processing strategy that combines condition tokens with image tokens for flexible token interactions; and (3) a dynamic position encoding mechanism that adapts to both spatially-aligned and non-aligned control tasks. Our extensive experiments show that this streamlined approach not only matches but surpasses the performance of specialized methods across multiple conditioning tasks. To overcome data limitations in subject-driven generation, we also introduce Subjects200K, a large-scale dataset of identity-consistent image pairs synthesized using DiT models themselves. This work demonstrates that effective image control can be achieved without architectural complexity, opening new possibilities for efficient and versatile image generation systems.
+# Translation (by gpt-4o-mini)
+- 私たちはOminiControlを提案します。これは、画像条件がDiffusion Transformer（DiT）アーキテクチャにどのように統合されるかを再考する新しいアプローチです。現在の画像条件付け手法は、かなりのパラメータオーバーヘッドを導入するか、特定の制御タスクにのみ効果的に対応するため、実用的な多様性が制限されています。OminiControlは、以下の3つの重要な革新を通じてこれらの制限に対処します。(1) DiTのVAEエンコーダーとトランスフォーマーブロックを活用した最小限のアーキテクチャ設計で、追加のパラメータはわずか0.1%です。(2) 条件トークンと画像トークンを組み合わせて柔軟なトークン相互作用を実現する統一されたシーケンス処理戦略。(3) 空間的に整列した制御タスクと非整列の制御タスクの両方に適応する動的な位置エンコーディングメカニズムです。私たちの広範な実験は、この簡素化されたアプローチが、複数の条件付けタスクにおいて専門的な手法の性能を上回ることを示しています。さらに、主題駆動生成におけるデータの制限を克服するために、DiTモデル自体を使用して合成されたアイデンティティ一貫性のある画像ペアの大規模データセット「Subjects200K」を導入します。この研究は、効果的な画像制御がアーキテクチャの複雑さなしに達成できることを示し、効率的で多様な画像生成システムの新たな可能性を開きます。
+# Summary (by gpt-4o-mini)
+- OminiControlは、Diffusion Transformer（DiT）アーキテクチャにおける画像条件付けの新しいアプローチで、パラメータオーバーヘッドを最小限に抑えつつ、柔軟なトークン相互作用と動的な位置エンコーディングを実現。広範な実験により、複数の条件付けタスクで専門的手法を上回る性能を示し、合成された画像ペアのデータセット「Subjects200K」を導入。効率的で多様な画像生成システムの可能性を示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yxy2168/status/1980244155667476923?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>DiTのアーキテクチャは（MMA以外は）変更せずに、Condition Image C_IをVAEでエンコードしたnoisy inputをDiTのinputにconcatし順伝播させることで、DiTをunified conditioningモデル（＝C_Iの特徴量を他のinputと同じlatent spaceで学習させ統合的に扱う）として学習する[^1]。<br><br>[^1]: 既存研究は別のエンコーダからエンコードしたfeatureが加算されていて（式3）、エンコーダ部分に別途パラメータが必要だっただけでなく、加算は空間的な対応関係が存在しない場合はうまく対処できず（featureの次元が空間的な情報に対応しているため）、conditional tokenとimageの交互作用を妨げていた。<br><br>また、positional encodingのindexをconditional tokenとnoisy image tokensと共有すると、空間的な対応関係が存在するタスク（edge guided generation等）はうまくいったが、被写体を指定する生成（subject driven generation)のような対応関係が存在しないタスク（non-aligned task)の場合はうまくいかなかった。しかし、non-aligned taskの場合は、indexにオフセットを加えシフトさせる（式4）ことで、conditional text/image token間で空間的にoverlapしないようにすることで性能が大幅に改善した。<br><br>既存研究では、C_Iの強さをコントロールするために、ハイパーパラメータとして定数を導入し、エンコードされたfeatureを加算する際の強さを調整していたが（3.2.3節）、本手法ではconcatをするためこのような方法は使えない。そのため、Multi-Modal Attention(MMA)にハイパーパラメータによって強さを調整可能なbias matrixを導入し、C_IとXのattentionの交互作用の強さを調整することで対応した（式5,6）。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MetaMorph: Multimodal Understanding and Generation via Instruction   Tuning, Shengbang Tong+, ICCV'25, 2024.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2412.14164</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3335</repo-issue-link>
+<tags>ComputerVision, LanguageModel, InstructionTuning, DiffusionModel, TextToImageGeneration, read-later, Selected Papers/Blogs, ICCV, ImageSynthesis</tags>
+<repo-issue-date>2025-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2412.14164
+# Authors
+  - Shengbang Tong
+  - David Fan
+  - Jiachen Zhu
+  - Yunyang Xiong
+  - Xinlei Chen
+  - Koustuv Sinha
+  - Michael Rabbat
+  - Yann LeCun
+  - Saining Xie
+  - Zhuang Liu
+# Abstract
+  - In this work, we propose Visual-Predictive Instruction Tuning (VPiT) - a simple and effective extension to visual instruction tuning that enables a pretrained LLM to quickly morph into an unified autoregressive model capable of generating both text and visual tokens. VPiT teaches an LLM to predict discrete text tokens and continuous visual tokens from any input sequence of image and text data curated in an instruction-following format. Our empirical investigation reveals several intriguing properties of VPiT: (1) visual generation ability emerges as a natural byproduct of improved visual understanding, and can be unlocked efficiently with a small amount of generation data; (2) while we find understanding and generation to be mutually beneficial, understanding data contributes to both capabilities more effectively than generation data. Building upon these findings, we train our MetaMorph model and achieve competitive performance on both visual understanding and generation. In visual generation, MetaMorph can leverage the world knowledge and reasoning abilities gained from LLM pretraining, and overcome common failure modes exhibited by other generation models. Our results suggest that LLMs may have strong "prior" vision capabilities that can be efficiently adapted to both visual understanding and generation with a relatively simple instruction tuning process.
+# Translation (by gpt-4o-mini)
+- 本研究では、Visual-Predictive Instruction Tuning (VPiT) を提案します。これは、視覚的指示調整のシンプルで効果的な拡張であり、事前学習された大規模言語モデル（LLM）がテキストと視覚トークンの両方を生成できる統一的な自己回帰モデルに迅速に変形することを可能にします。VPiTは、LLMに対して、指示に従った形式でキュレーションされた画像とテキストデータの任意の入力シーケンスから離散的なテキストトークンと連続的な視覚トークンを予測することを教えます。我々の実証的な調査は、VPiTのいくつかの興味深い特性を明らかにします：(1) 視覚生成能力は、改善された視覚理解の自然な副産物として現れ、少量の生成データで効率的に解放されることができる；(2) 理解と生成は相互に有益であることがわかりましたが、理解データは生成データよりも両方の能力に対してより効果的に寄与します。これらの発見に基づいて、我々はMetaMorphモデルを訓練し、視覚理解と生成の両方で競争力のあるパフォーマンスを達成しました。視覚生成において、MetaMorphはLLMの事前学習から得た世界知識と推論能力を活用し、他の生成モデルが示す一般的な失敗モードを克服します。我々の結果は、LLMが視覚理解と生成の両方に効率的に適応できる強力な「事前」視覚能力を持っている可能性があることを示唆しています。これは比較的シンプルな指示調整プロセスによって実現されます。
+# Summary (by gpt-4o-mini)
+- 本研究では、視覚的指示調整の新手法VPiTを提案し、LLMがテキストと視覚トークンを生成できるようにします。VPiTは、キュレーションされた画像とテキストデータからトークンを予測する能力をLLMに教え、視覚生成能力が向上することを示しました。特に、理解データが生成データよりも効果的に両方の能力に寄与することが明らかになりました。MetaMorphモデルを訓練し、視覚理解と生成で競争力のあるパフォーマンスを達成し、LLMの事前学習から得た知識を活用することで、視覚生成における一般的な失敗を克服しました。これにより、LLMが視覚理解と生成に適応できる可能性が示唆されました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/davidjfan/status/1979994285379641487?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Scaling Language-Free Visual Representation Learning, David Fan+, ICCV'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.01017</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3334</repo-issue-link>
+<tags>ComputerVision, Pretraining, Transformer, Self-SupervisedLearning, ICCV, Scalability</tags>
+<repo-issue-date>2025-10-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.01017
+# Authors
+  - David Fan
+  - Shengbang Tong
+  - Jiachen Zhu
+  - Koustuv Sinha
+  - Zhuang Liu
+  - Xinlei Chen
+  - Michael Rabbat
+  - Nicolas Ballas
+  - Yann LeCun
+  - Amir Bar
+  - Saining Xie
+# Abstract
+  - Visual Self-Supervised Learning (SSL) currently underperforms Contrastive Language-Image Pretraining (CLIP) in multimodal settings such as Visual Question Answering (VQA). This multimodal gap is often attributed to the semantics introduced by language supervision, even though visual SSL and CLIP models are often trained on different data. In this work, we ask the question: "Do visual self-supervised approaches lag behind CLIP due to the lack of language supervision, or differences in the training data?" We study this question by training both visual SSL and CLIP models on the same MetaCLIP data, and leveraging VQA as a diverse testbed for vision encoders. In this controlled setup, visual SSL models scale better than CLIP models in terms of data and model capacity, and visual SSL performance does not saturate even after scaling up to 7B parameters. Consequently, we observe visual SSL methods achieve CLIP-level performance on a wide range of VQA and classic vision benchmarks. These findings demonstrate that pure visual SSL can match language-supervised visual pretraining at scale, opening new opportunities for vision-centric representation learning.
+# Translation (by gpt-4o-mini)
+- 視覚的自己教師あり学習（SSL）は、視覚的質問応答（VQA）などのマルチモーダル設定において、対照的言語画像事前学習（CLIP）に比べて現在のパフォーマンスが劣っています。このマルチモーダルのギャップは、言語の監視によって導入される意味論に起因するとされることが多いですが、視覚的SSLとCLIPモデルは異なるデータで訓練されることが多いです。本研究では、「視覚的自己教師ありアプローチは、言語の監視が欠如しているためにCLIPに遅れをとっているのか、それとも訓練データの違いによるものか？」という問いを立てます。この問いを探求するために、視覚的SSLとCLIPモデルの両方を同じMetaCLIPデータで訓練し、VQAを視覚エンコーダーの多様なテストベッドとして活用します。この制御された設定において、視覚的SSLモデルはデータとモデルの容量の観点でCLIPモデルよりもスケールが良く、視覚的SSLのパフォーマンスは7Bパラメータにスケールアップしても飽和しません。その結果、視覚的SSL手法が幅広いVQAおよび従来の視覚ベンチマークでCLIPレベルのパフォーマンスを達成することを観察しました。これらの発見は、純粋な視覚的SSLがスケールで言語監視された視覚事前学習に匹敵することができることを示しており、視覚中心の表現学習に新たな機会を開くものです。
+# Summary (by gpt-4o-mini)
+- 視覚的自己教師あり学習（SSL）は、CLIPに比べて視覚的質問応答（VQA）でのパフォーマンスが劣るが、同じデータセットで訓練することで、視覚的SSLモデルがCLIPモデルよりもスケールが良いことを示した。視覚的SSLは、VQAや従来の視覚ベンチマークでCLIPレベルのパフォーマンスを達成できる可能性がある。これにより、視覚中心の表現学習に新たな機会が開かれる。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://davidfan.io/webssl/" target="_blank" rel="noopener noreferrer">https://davidfan.io/webssl/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/davidjfan/status/1979994285379641487?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Frequency-Dynamic Attention Modulation for Dense Prediction, Linwei Chen+, ICCV'25, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.12006</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3304</repo-issue-link>
+<tags>ComputerVision, Transformer, Attention, ICCV</tags>
+<repo-issue-date>2025-10-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.12006
+# Authors
+  - Linwei Chen
+  - Lin Gu
+  - Ying Fu
+# Abstract
+  - Vision Transformers (ViTs) have significantly advanced computer vision, demonstrating strong performance across various tasks. However, the attention mechanism in ViTs makes each layer function as a low-pass filter, and the stacked-layer architecture in existing transformers suffers from frequency vanishing. This leads to the loss of critical details and textures. We propose a novel, circuit-theory-inspired strategy called Frequency-Dynamic Attention Modulation (FDAM), which can be easily plugged into ViTs. FDAM directly modulates the overall frequency response of ViTs and consists of two techniques: Attention Inversion (AttInv) and Frequency Dynamic Scaling (FreqScale). Since circuit theory uses low-pass filters as fundamental elements, we introduce AttInv, a method that generates complementary high-pass filtering by inverting the low-pass filter in the attention matrix, and dynamically combining the two. We further design FreqScale to weight different frequency components for fine-grained adjustments to the target response function. Through feature similarity analysis and effective rank evaluation, we demonstrate that our approach avoids representation collapse, leading to consistent performance improvements across various models, including SegFormer, DeiT, and MaskDINO. These improvements are evident in tasks such as semantic segmentation, object detection, and instance segmentation. Additionally, we apply our method to remote sensing detection, achieving state-of-the-art results in single-scale settings. The code is available at https://github.com/Linwei-Chen/FDAM.
+# Translation (by gpt-4o-mini)
+- Vision Transformers（ViTs）は、コンピュータビジョンの分野で大きな進展を遂げ、さまざまなタスクで優れた性能を示しています。しかし、ViTsにおける注意機構は各層をローパスフィルタとして機能させ、既存のトランスフォーマーのスタック層アーキテクチャは周波数の消失に悩まされています。これにより、重要な詳細やテクスチャが失われてしまいます。本研究では、Frequency-Dynamic Attention Modulation（FDAM）と呼ばれる新しい回路理論にインスパイアされた戦略を提案します。FDAMはViTsに簡単に組み込むことができ、ViTsの全体的な周波数応答を直接調整します。FDAMは、Attention Inversion（AttInv）とFrequency Dynamic Scaling（FreqScale）の2つの技術から構成されています。回路理論がローパスフィルタを基本要素として使用することから、AttInvを導入します。これは、注意行列内のローパスフィルタを反転させることで補完的なハイパスフィルタリングを生成し、両者を動的に組み合わせる手法です。さらに、FreqScaleを設計し、ターゲット応答関数に対する微調整のために異なる周波数成分に重み付けを行います。特徴の類似性分析と効果的なランク評価を通じて、我々のアプローチが表現の崩壊を回避し、SegFormer、DeiT、MaskDINOを含むさまざまなモデルで一貫した性能向上をもたらすことを示します。これらの改善は、セマンティックセグメンテーション、物体検出、インスタンスセグメンテーションなどのタスクで明らかです。さらに、我々の手法をリモートセンシング検出に適用し、単一スケール設定で最先端の結果を達成しました。コードはhttps://github.com/Linwei-Chen/FDAMで入手可能です。
+# Summary (by gpt-4o-mini)
+- 本研究では、Vision Transformers（ViTs）の周波数応答を改善するために、Frequency-Dynamic Attention Modulation（FDAM）を提案。FDAMは、注意行列のローパスフィルタを反転させるAttention Inversion（AttInv）と、異なる周波数成分に重み付けを行うFrequency Dynamic Scaling（FreqScale）から成る。これにより、表現の崩壊を回避し、セマンティックセグメンテーションや物体検出などのタスクで一貫した性能向上を実現。リモートセンシング検出でも最先端の結果を達成。コードは公開されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1979109880830267606?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] BUFFER-X: Towards Zero-Shot Point Cloud Registration in Diverse Scenes, Minkyun Seo+, ICCV'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.07940</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2344</repo-issue-link>
+<tags>ComputerVision, read-later, ICCV</tags>
+<repo-issue-date>2025-08-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.07940
+# Authors
+  - Minkyun Seo
+  - Hyungtae Lim
+  - Kanghee Lee
+  - Luca Carlone
+  - Jaesik Park
+# Abstract
+  - Recent advances in deep learning-based point cloud registration have improved generalization, yet most methods still require retraining or manual parameter tuning for each new environment. In this paper, we identify three key factors limiting generalization: (a) reliance on environment-specific voxel size and search radius, (b) poor out-of-domain robustness of learning-based keypoint detectors, and (c) raw coordinate usage, which exacerbates scale discrepancies. To address these issues, we present a zero-shot registration pipeline called BUFFER-X by (a) adaptively determining voxel size/search radii, (b) using farthest point sampling to bypass learned detectors, and (c) leveraging patch-wise scale normalization for consistent coordinate bounds. In particular, we present a multi-scale patch-based descriptor generation and a hierarchical inlier search across scales to improve robustness in diverse scenes. We also propose a novel generalizability benchmark using 11 datasets that cover various indoor/outdoor scenarios and sensor modalities, demonstrating that BUFFER-X achieves substantial generalization without prior information or manual parameter tuning for the test datasets. Our code is available at https://github.com/MIT-SPARK/BUFFER-X.
+# Translation (by gpt-4o-mini)
+- 最近の深層学習に基づく点群登録の進展により、一般化が改善されましたが、ほとんどの手法は新しい環境ごとに再訓練や手動パラメータ調整を必要とします。本論文では、一般化を制限する3つの重要な要因を特定します：(a) 環境特有のボクセルサイズと探索半径への依存、(b) 学習ベースのキーポイント検出器のドメイン外ロバスト性の低さ、(c) 生の座標の使用がスケールの不一致を悪化させることです。これらの問題に対処するために、私たちはBUFFER-Xと呼ばれるゼロショット登録パイプラインを提案します。具体的には、(a) ボクセルサイズ/探索半径を適応的に決定し、(b) 学習した検出器を回避するために最遠点サンプリングを使用し、(c) 一貫した座標範囲のためにパッチ単位のスケール正規化を活用します。特に、さまざまなシーンでのロバスト性を向上させるために、マルチスケールのパッチベースの記述子生成とスケール間の階層的インライア検索を提案します。また、さまざまな屋内/屋外シナリオやセンサーモダリティをカバーする11のデータセットを使用した新しい一般化ベンチマークを提案し、BUFFER-Xがテストデータセットに対して事前情報や手動パラメータ調整なしで大幅な一般化を達成することを示します。私たちのコードは、https://github.com/MIT-SPARK/BUFFER-X で入手可能です。
+# Summary (by gpt-4o-mini)
+- BUFFER-Xというゼロショット登録パイプラインを提案し、環境特有のボクセルサイズや探索半径への依存、ドメイン外ロバスト性の低さ、スケール不一致の問題に対処。マルチスケールのパッチベースの記述子生成と階層的インライア検索を用いて、さまざまなシーンでのロバスト性を向上。新しい一般化ベンチマークを用いて、BUFFER-Xが手動調整なしで大幅な一般化を達成することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rsasaki0109/status/1951478059002966159?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>この辺の分野ぱっと見で全然わからない…</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] OpenVision: A Fully-Open, Cost-Effective Family of Advanced Vision  Encoders for Multimodal Learning, Xianhang Li+, ICCV'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.04601</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2105</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Pretraining, action_wanted, OpenWeight, OpenSource, Selected Papers/Blogs, ICCV, Encoder, Backbone</tags>
+<repo-issue-date>2025-06-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.04601
+# Authors
+  - Xianhang Li
+  - Yanqing Liu
+  - Haoqin Tu
+  - Hongru Zhu
+  - Cihang Xie
+# Abstract
+  - OpenAI's CLIP, released in early 2021, have long been the go-to choice of vision encoder for building multimodal foundation models. Although recent alternatives such as SigLIP have begun to challenge this status quo, to our knowledge none are fully open: their training data remains proprietary and/or their training recipes are not released. This paper fills this gap with OpenVision, a fully-open, cost-effective family of vision encoders that match or surpass the performance of OpenAI's CLIP when integrated into multimodal frameworks like LLaVA. OpenVision builds on existing works -- e.g., CLIPS for training framework and Recap-DataComp-1B for training data -- while revealing multiple key insights in enhancing encoder quality and showcasing practical benefits in advancing multimodal models. By releasing vision encoders spanning from 5.9M to 632.1M parameters, OpenVision offers practitioners a flexible trade-off between capacity and efficiency in building multimodal models: larger models deliver enhanced multimodal performance, while smaller versions enable lightweight, edge-ready multimodal deployments.
+# Translation (by gpt-4o-mini)
+- OpenAIのCLIPは2021年初頭にリリースされて以来、マルチモーダル基盤モデルを構築するためのビジョンエンコーダーとして長らく選ばれてきました。最近ではSigLIPのような代替手段がこの地位に挑戦し始めていますが、私たちの知る限り、完全にオープンなものは存在しません。これらの手法は、トレーニングデータが独占的であったり、トレーニングレシピが公開されていなかったりします。本論文では、このギャップを埋めるために、OpenVisionという完全にオープンでコスト効果の高いビジョンエンコーダーのファミリーを提案します。OpenVisionは、LLaVAのようなマルチモーダルフレームワークに統合した際に、OpenAIのCLIPと同等またはそれ以上の性能を発揮します。OpenVisionは、既存の研究（例：トレーニングフレームワークとしてのCLIPSやトレーニングデータとしてのRecap-DataComp-1B）を基に構築されており、エンコーダーの品質を向上させるための複数の重要な洞察を明らかにし、マルチモーダルモデルの進展における実用的な利点を示しています。5.9Mから632.1Mパラメータにわたるビジョンエンコーダーをリリースすることで、OpenVisionは実務者に対して、マルチモーダルモデルを構築する際の容量と効率の柔軟なトレードオフを提供します。大規模モデルはマルチモーダル性能を向上させる一方で、小型版は軽量でエッジ対応のマルチモーダル展開を可能にします。
+# Summary (by gpt-4o-mini)
+- OpenVisionは、完全にオープンでコスト効果の高いビジョンエンコーダーのファミリーを提案し、CLIPと同等以上の性能を発揮します。既存の研究を基に構築され、マルチモーダルモデルの進展に実用的な利点を示します。5.9Mから632.1Mパラメータのエンコーダーを提供し、容量と効率の柔軟なトレードオフを実現します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cihangxie/status/1920575141849030882?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>v2へアップデート:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cihangxie/status/1963297223753494832?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>事前学習時にtext, image encoderのcontrastive lossで学習していたが、text encoderを無くしimage encoderに入力されたimageからcaptionを生成するcaption lossのみにすることで性能を落とすことなく効率を改善<br><br>テクニカルペーパーが出た模様<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2820" target="_blank" rel="noopener noreferrer">[Paper Note] OpenVision 2: A Family of Generative Pretrained Visual Encoders for
+  Multimodal Learning, Yanqing Liu+, arXiv'25</a>
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/UCSC-VLAA/openvision-681a4c27ee1f66411b4ae919" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/UCSC-VLAA/openvision-681a4c27ee1f66411b4ae919</a>
+{% endraw %}
+
+<br>pj page: 
+
+{% raw %}
+<a href="https://ucsc-vlaa.github.io/OpenVision/" target="_blank" rel="noopener noreferrer">https://ucsc-vlaa.github.io/OpenVision/</a>
+{% endraw %}
+
+</p><p>CLIP, SigLIPとは異なり完全にオープンなVision Encoder<br><img src="https://github.com/user-attachments/assets/b7c8eb07-45df-4ab3-9cd2-6b31af46e761" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>v2の解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1963442911108084161?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Vamba: Understanding Hour-Long Videos with Hybrid Mamba-Transformers, Weiming Ren+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.11579</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2099</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Transformer, LongSequence, SSM (StateSpaceModel), VideoGeneration/Understandings, ICCV</tags>
+<repo-issue-date>2025-06-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.11579
+# Authors
+  - Weiming Ren
+  - Wentao Ma
+  - Huan Yang
+  - Cong Wei
+  - Ge Zhang
+  - Wenhu Chen
+# Abstract
+  - State-of-the-art transformer-based large multimodal models (LMMs) struggle to handle hour-long video inputs due to the quadratic complexity of the causal self-attention operations, leading to high computational costs during training and inference. Existing token compression-based methods reduce the number of video tokens but often incur information loss and remain inefficient for extremely long sequences. In this paper, we explore an orthogonal direction to build a hybrid Mamba-Transformer model (VAMBA) that employs Mamba-2 blocks to encode video tokens with linear complexity. Without any token reduction, VAMBA can encode more than 1024 frames (640$\times$360) on a single GPU, while transformer-based models can only encode 256 frames. On long video input, VAMBA achieves at least 50% reduction in GPU memory usage during training and inference, and nearly doubles the speed per training step compared to transformer-based LMMs. Our experimental results demonstrate that VAMBA improves accuracy by 4.3% on the challenging hour-long video understanding benchmark LVBench over prior efficient video LMMs, and maintains strong performance on a broad spectrum of long and short video understanding tasks.
+# Translation (by gpt-4o-mini)
+- 最先端のトランスフォーマーベースの大規模マルチモーダルモデル（LMM）は、因果自己注意操作の二次的な複雑さのために、1時間の長さのビデオ入力を処理するのに苦労しており、トレーニングおよび推論中に高い計算コストがかかります。既存のトークン圧縮ベースの手法はビデオトークンの数を減少させますが、情報損失を伴うことが多く、非常に長いシーケンスに対しては非効率的です。本論文では、Mamba-2ブロックを使用して線形の複雑さでビデオトークンをエンコードするハイブリッドMamba-Transformerモデル（VAMBA）を構築するという別の方向性を探ります。トークンの削減なしで、VAMBAは単一のGPU上で1024フレーム（640×360）以上をエンコードできるのに対し、トランスフォーマーベースのモデルは256フレームしかエンコードできません。長いビデオ入力において、VAMBAはトレーニングおよび推論中のGPUメモリ使用量を少なくとも50%削減し、トランスフォーマーベースのLMMと比較してトレーニングステップごとの速度をほぼ倍増させます。実験結果は、VAMBAが効率的なビデオLMMに対して、挑戦的な1時間のビデオ理解ベンチマークLVBenchで4.3%の精度向上を達成し、長短さまざまなビデオ理解タスクにおいて強力なパフォーマンスを維持することを示しています。
+# Summary (by gpt-4o-mini)
+- VAMBAモデルは、Mamba-2ブロックを用いてビデオトークンを線形にエンコードし、トークン削減なしで1024フレームを処理可能。これにより、GPUメモリ使用量を50%削減し、トレーニング速度を倍増。1時間のビデオ理解ベンチマークLVBenchで4.3%の精度向上を達成し、様々なビデオ理解タスクで優れた性能を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhuchen/status/1938064510369280136?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Sigmoid Loss for Language Image Pre-Training, Xiaohua Zhai+, ICCV'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2303.15343</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2111</repo-issue-link>
+<tags>ComputerVision, Pretraining, LanguageModel, MultiModal, Selected Papers/Blogs, ICCV</tags>
+<repo-issue-date>2025-06-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2303.15343
+# Authors
+  - Xiaohua Zhai
+  - Basil Mustafa
+  - Alexander Kolesnikov
+  - Lucas Beyer
+# Abstract
+  - We propose a simple pairwise Sigmoid loss for Language-Image Pre-training (SigLIP). Unlike standard contrastive learning with softmax normalization, the sigmoid loss operates solely on image-text pairs and does not require a global view of the pairwise similarities for normalization. The sigmoid loss simultaneously allows further scaling up the batch size, while also performing better at smaller batch sizes. Combined with Locked-image Tuning, with only four TPUv4 chips, we train a SigLiT model that achieves 84.5% ImageNet zero-shot accuracy in two days. The disentanglement of the batch size from the loss further allows us to study the impact of examples vs pairs and negative to positive ratio. Finally, we push the batch size to the extreme, up to one million, and find that the benefits of growing batch size quickly diminish, with a more reasonable batch size of 32k being sufficient. We release our models at https://github.com/google-research/big_vision and hope our research motivates further explorations in improving the quality and efficiency of language-image pre-training.
+# Translation (by gpt-4o-mini)
+- 我々は、言語-画像事前学習のためのシンプルなペアワイズシグモイド損失（SigLIP）を提案する。標準的なコントラスト学習がソフトマックス正規化を用いるのに対し、シグモイド損失は画像-テキストペアのみに基づいて動作し、正規化のためにペアワイズの類似性のグローバルな視点を必要としない。シグモイド損失は、バッチサイズをさらに拡大することを同時に可能にし、また小さなバッチサイズでもより良い性能を発揮する。ロック画像チューニングと組み合わせることで、わずか4つのTPUv4チップを使用して、84.5%のImageNetゼロショット精度を達成するSigLiTモデルを2日間で訓練した。損失からバッチサイズを切り離すことで、例とペア、負の比率と正の比率の影響を研究することが可能になる。最後に、バッチサイズを極限まで拡大し、100万まで試みた結果、バッチサイズの増加の利点は急速に減少し、32kというより合理的なバッチサイズで十分であることがわかった。我々はモデルをhttps://github.com/google-research/big_visionで公開し、我々の研究が言語-画像事前学習の質と効率を向上させるさらなる探求を促すことを期待している。
+# Summary (by gpt-4o-mini)
+- シンプルなペアワイズシグモイド損失（SigLIP）を提案し、画像-テキストペアに基づく言語-画像事前学習を改善。シグモイド損失はバッチサイズの拡大を可能にし、小さなバッチサイズでも性能向上を実現。SigLiTモデルは84.5%のImageNetゼロショット精度を達成。バッチサイズの影響を研究し、32kが合理的なサイズであることを確認。モデルは公開され、さらなる研究の促進を期待。</issue-body>
+<maintainer-comment-text><p>SigLIP論文</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Vision Transformers for Dense Prediction, René Ranftl+, ICCV'21, 2021.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2103.13413</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4091</repo-issue-link>
+<tags>ComputerVision, Transformer, read-later, ICCV, Encoder, Backbone, DepthEstimation, SemanticSegmentation</tags>
+<repo-issue-date>2025-12-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2103.13413
+# Authors
+  - René Ranftl
+  - Alexey Bochkovskiy
+  - Vladlen Koltun
+# Abstract
+  - We introduce dense vision transformers, an architecture that leverages vision transformers in place of convolutional networks as a backbone for dense prediction tasks. We assemble tokens from various stages of the vision transformer into image-like representations at various resolutions and progressively combine them into full-resolution predictions using a convolutional decoder. The transformer backbone processes representations at a constant and relatively high resolution and has a global receptive field at every stage. These properties allow the dense vision transformer to provide finer-grained and more globally coherent predictions when compared to fully-convolutional networks. Our experiments show that this architecture yields substantial improvements on dense prediction tasks, especially when a large amount of training data is available. For monocular depth estimation, we observe an improvement of up to 28% in relative performance when compared to a state-of-the-art fully-convolutional network. When applied to semantic segmentation, dense vision transformers set a new state of the art on ADE20K with 49.02% mIoU. We further show that the architecture can be fine-tuned on smaller datasets such as NYUv2, KITTI, and Pascal Context where it also sets the new state of the art. Our models are available at https://github.com/intel-isl/DPT.
+# Translation (by gpt-4o-mini)
+- 我々は、密な予測タスクのバックボーンとして畳み込みネットワークの代わりにビジョントランスフォーマーを活用するアーキテクチャである密なビジョントランスフォーマーを紹介します。ビジョントランスフォーマーのさまざまなステージからトークンを集め、異なる解像度で画像のような表現を構成し、畳み込みデコーダを使用してそれらを段階的にフル解像度の予測に統合します。トランスフォーマーのバックボーンは、一定かつ比較的高い解像度で表現を処理し、各ステージでグローバルな受容野を持っています。これらの特性により、密なビジョントランスフォーマーは、完全畳み込みネットワークと比較して、より細かい粒度でよりグローバルに一貫した予測を提供することができます。我々の実験は、このアーキテクチャが密な予測タスクにおいて大幅な改善をもたらすことを示しており、特に大量のトレーニングデータが利用可能な場合に顕著です。単眼深度推定においては、最先端の完全畳み込みネットワークと比較して、相対的な性能が最大28%向上することを観察しました。セマンティックセグメンテーションに適用した場合、密なビジョントランスフォーマーはADE20Kで49.02%のmIoUを達成し、新たな最先端を打ち立てました。さらに、このアーキテクチャはNYUv2、KITTI、Pascal Contextなどの小規模データセットに対してファインチューニングでき、そこでも新たな最先端を設定します。我々のモデルは、https://github.com/intel-isl/DPT で入手可能です。
+# Summary (by gpt-4o-mini)
+- 密なビジョントランスフォーマーは、畳み込みネットワークの代わりにビジョントランスフォーマーを用いた密な予測タスク向けの新しいアーキテクチャです。異なる解像度のトークンを集め、畳み込みデコーダでフル解像度の予測に統合します。このアーキテクチャは、グローバルな受容野を持ち、より一貫した予測を提供します。実験により、特に大量のトレーニングデータがある場合に、単眼深度推定で最大28%の性能向上を示し、セマンティックセグメンテーションではADE20Kで49.02%のmIoUを達成しました。さらに、他の小規模データセットでも最先端の結果を記録しています。モデルは公開されています。</issue-body>
+<maintainer-comment-text><p>DPT headの解説:
+
+{% raw %}
+<a href="https://qiita.com/Chi_corp_123/items/8a2e9a4f542a3404a700" target="_blank" rel="noopener noreferrer">https://qiita.com/Chi_corp_123/items/8a2e9a4f542a3404a700</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Common Objects in 3D: Large-Scale Learning and Evaluation of Real-life 3D Category Reconstruction, Reizenstein+, ICCV'21</title>
+<original-paper-blog-link>https://openaccess.thecvf.com/content/ICCV2021/papers/Reizenstein_Common_Objects_in_3D_Large-Scale_Learning_and_Evaluation_of_Real-Life_ICCV_2021_paper.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3741</repo-issue-link>
+<tags>ComputerVision, Dataset, Evaluation, translation_required, ICCV</tags>
+<repo-issue-date>2025-11-20</repo-issue-date>
+<issue-body># URL
+https://openaccess.thecvf.com/content/ICCV2021/papers/Reizenstein_Common_Objects_in_3D_Large-Scale_Learning_and_Evaluation_of_Real-Life_ICCV_2021_paper.pdf
+
+# Authors
+- Jeremy Reizenstein
+- Roman Shapovalov
+- Philipp Henzler
+- Luca Sbordone
+- Patrick Labatut
+- David Novotny
+
+# Abstract
+Traditional approaches for learning 3D object categories have been predominantly trained and evaluated on synthetic datasets due to the unavailability of real 3D-annotated category-centric data. Our main goal is to facilitate advances in this field by collecting real-world data in a magnitude similar to the existing synthetic counterparts. The principal contribution of this work is thus a large-scale dataset, called Common Objects in 3D, with real multi-view images of object categories annotated with camera poses and ground truth 3D point clouds. The dataset contains a total of 1.5 million frames from nearly 19,000 videos capturing objects from 50 MS-COCO categories and, as such, it is significantly larger than alternatives both in terms of the number of categories and objects.We exploit this new dataset to conduct one of the first large-scale "in-the-wild" evaluations of several new-view-synthesis and category-centric 3D reconstruction methods. Finally, we contribute NerFormer - a novel neural rendering method that leverages the powerful Transformer to reconstruct an object given a small number of its views.
+
+# Translation (by gpt-4o-mini)
+- 従来の3Dオブジェクトカテゴリの学習アプローチは、実際の3D注釈付きカテゴリ中心データの入手が困難であるため、主に合成データセットで訓練および評価されてきました。本研究の主な目標は、既存の合成データセットと同程度の規模で実世界のデータを収集することにより、この分野の進展を促進することです。本研究の主な貢献は、カメラポーズと真の3Dポイントクラウドで注釈されたオブジェクトカテゴリの実際のマルチビュー画像を含む大規模データセット「Common Objects in 3D」です。このデータセットは、50のMS-COCOカテゴリからのオブジェクトをキャプチャした約19,000本のビデオから合計150万フレームを含んでおり、カテゴリ数とオブジェクト数の両方の観点から代替手段よりも大幅に大きいです。この新しいデータセットを活用して、いくつかの新しいビュー合成およびカテゴリ中心の3D再構築手法の大規模な「野外」評価の一つを実施します。最後に、少数のビューからオブジェクトを再構築するために強力なTransformerを活用した新しいニューラルレンダリング手法「NerFormer」を提案します。
+# Summary (by gpt-4o-mini)
+- 実世界の3Dオブジェクトカテゴリの学習を促進するため、約19,000本のビデオから150万フレームを含む大規模データセット「Common Objects in 3D」を収集。これにより、合成データセットと同程度の規模の実データを提供。新しいビュー合成と3D再構築手法の評価を行い、少数のビューからオブジェクトを再構築するためのTransformerを用いたニューラルレンダリング手法「NerFormer」を提案。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Swin Transformer: Hierarchical Vision Transformer using Shifted Windows, Ze Liu+, ICCV'21</title>
+<original-paper-blog-link>https://arxiv.org/abs/2103.14030</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2258</repo-issue-link>
+<tags>ComputerVision, Transformer, Attention, Architecture, Selected Papers/Blogs, ICCV, Backbone, One-Line Notes</tags>
+<repo-issue-date>2025-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2103.14030
+# Authors
+  - Ze Liu
+  - Yutong Lin
+  - Yue Cao
+  - Han Hu
+  - Yixuan Wei
+  - Zheng Zhang
+  - Stephen Lin
+  - Baining Guo
+# Abstract
+  - This paper presents a new vision Transformer, called Swin Transformer, that capably serves as a general-purpose backbone for computer vision. Challenges in adapting Transformer from language to vision arise from differences between the two domains, such as large variations in the scale of visual entities and the high resolution of pixels in images compared to words in text. To address these differences, we propose a hierarchical Transformer whose representation is computed with \textbf{S}hifted \textbf{win}dows. The shifted windowing scheme brings greater efficiency by limiting self-attention computation to non-overlapping local windows while also allowing for cross-window connection. This hierarchical architecture has the flexibility to model at various scales and has linear computational complexity with respect to image size. These qualities of Swin Transformer make it compatible with a broad range of vision tasks, including image classification (87.3 top-1 accuracy on ImageNet-1K) and dense prediction tasks such as object detection (58.7 box AP and 51.1 mask AP on COCO test-dev) and semantic segmentation (53.5 mIoU on ADE20K val). Its performance surpasses the previous state-of-the-art by a large margin of +2.7 box AP and +2.6 mask AP on COCO, and +3.2 mIoU on ADE20K, demonstrating the potential of Transformer-based models as vision backbones. The hierarchical design and the shifted window approach also prove beneficial for all-MLP architectures. The code and models are publicly available at~\url{https://github.com/microsoft/Swin-Transformer}.
+# Translation (by gpt-4o-mini)
+- 本論文では、Swin Transformerと呼ばれる新しいビジョントランスフォーマーを提案します。これは、コンピュータビジョンの一般的なバックボーンとして機能する能力を持っています。トランスフォーマーを言語からビジョンに適応させる際の課題は、視覚的エンティティのスケールの大きな変動や、テキストの単語に比べて画像のピクセルの高解像度など、両ドメイン間の違いから生じます。これらの違いに対処するために、我々はシフトウィンドウを用いた階層的トランスフォーマーを提案します。このシフトウィンドウ方式は、自己注意計算を重ならないローカルウィンドウに制限することで効率を高め、ウィンドウ間の接続も可能にします。この階層的アーキテクチャは、さまざまなスケールでのモデリングの柔軟性を持ち、画像サイズに対して線形の計算複雑性を持っています。Swin Transformerのこれらの特性により、画像分類（ImageNet-1Kでの87.3のトップ1精度）や、物体検出（COCO test-devでの58.7のボックスAPおよび51.1のマスクAP）、セマンティックセグメンテーション（ADE20K valでの53.5のmIoU）など、幅広いビジョンタスクに対応可能です。その性能は、COCOでのボックスAPで+2.7、マスクAPで+2.6、ADE20KでのmIoUで+3.2という大きなマージンで、従来の最先端を上回っています。これは、トランスフォーマーベースのモデルがビジョンバックボーンとしての可能性を示しています。階層的な設計とシフトウィンドウアプローチは、全MLPアーキテクチャにも有益であることが証明されています。コードとモデルは、~\url{https://github.com/microsoft/Swin-Transformer}で公開されています。
+# Summary (by gpt-4o-mini)
+- Swin Transformerは、コンピュータビジョンの新しいバックボーンとして機能する階層的トランスフォーマーを提案。シフトウィンドウ方式により、効率的な自己注意計算を実現し、さまざまなスケールでのモデリングが可能。画像分類や物体検出、セマンティックセグメンテーションなどで従来の最先端を上回る性能を示し、トランスフォーマーのビジョンバックボーンとしての可能性を示唆。コードは公開されている。</issue-body>
+<maintainer-comment-text><p>日本語解説:
+
+{% raw %}
+<a href="https://qiita.com/m_sugimura/items/139b182ee7c19c83e70a" target="_blank" rel="noopener noreferrer">https://qiita.com/m_sugimura/items/139b182ee7c19c83e70a</a>
+{% endraw %}
+
+</p><p>画像処理において、物体の異なるスケールや、解像度に対処するために、PatchMergeと呼ばれるプーリングのような処理 (Figure1) と、固定サイズのローカルなwindowに分割してSelf-Attentionを実施し、layerごとに通常のwindowとシフトされたwindowを適用することで、window間を跨いだ関係性も考慮できるようにする機構(Figure2)を導入したモデル。<br><br><img src="https://github.com/user-attachments/assets/c56065ef-030a-42de-9f18-4d449867225d" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/82cca1d4-8cf2-4764-9384-d143246b2f00" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ICCV 2025 Report, Kataoka+, LIMIT.Lab, cvpaper.challenge, Visual Geometry Group （VGG）, 2025.10</title>
+<original-paper-blog-link>https://hirokatsukataoka.net/temp/presen/251031ICCV2025Report_FinalizedVer.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3538</repo-issue-link>
+<tags>Survey, ComputerVision, Slide, read-later, ICCV</tags>
+<repo-issue-date>2025-11-01</repo-issue-date>
+<issue-body>https://hirokatsukataoka.net/temp/presen/251031ICCV2025Report_FinalizedVer.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hirokatukataoka/status/1984311854693564915?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>From Egocentric Perception to Embodied Intelligence: Building the World in First Person, Ziwei Liu, 2025.10</title>
+<original-paper-blog-link>https://liuziwei7.github.io/papers/egointelligence_slides.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3495</repo-issue-link>
+<tags>Tutorial, ComputerVision, ICCV</tags>
+<repo-issue-date>2025-10-29</repo-issue-date>
+<issue-body>https://liuziwei7.github.io/papers/egointelligence_slides.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/1982824198600056929?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Multimodal Reasoning for Human-Centric Generative Models, Ziwei Liu, 2025.10</title>
+<original-paper-blog-link>https://liuziwei7.github.io/papers/generativereasoning_slides.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3494</repo-issue-link>
+<tags>Tutorial, ComputerVision, ICCV</tags>
+<repo-issue-date>2025-10-29</repo-issue-date>
+<issue-body>https://liuziwei7.github.io/papers/generativereasoning_slides.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/1982824198600056929?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Native Multimodal Models: Architecture, Post-Training, and Evaluation, Ziwei Liu, 2025.10</title>
+<original-paper-blog-link>https://liuziwei7.github.io/papers/nativelmm_slides.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3493</repo-issue-link>
+<tags>Tutorial, ComputerVision, MultiModal, ICCV</tags>
+<repo-issue-date>2025-10-29</repo-issue-date>
+<issue-body>https://liuziwei7.github.io/papers/nativelmm_slides.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/1982824198600056929?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>

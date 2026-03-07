@@ -1,0 +1,519 @@
+<paper-entry>
+<title>[Paper Note] OPUS: Towards Efficient and Principled Data Selection in Large Language Model Pre-training in Every Iteration, Shaobo Wang+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.05400</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4516</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, read-later, Selected Papers/Blogs, DataFiltering, One-Line Notes, Adaptive</tags>
+<repo-issue-date>2026-02-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.05400
+# Authors
+  - Shaobo Wang
+  - Xuan Ouyang
+  - Tianyi Xu
+  - Yuzheng Hu
+  - Jialin Liu
+  - Guo Chen
+  - Tianyu Zhang
+  - Junhao Zheng
+  - Kexin Yang
+  - Xingzhang Ren
+  - Dayiheng Liu
+  - Linfeng Zhang
+# Abstract
+  - As high-quality public text approaches exhaustion, a phenomenon known as the Data Wall, pre-training is shifting from more tokens to better tokens. However, existing methods either rely on heuristic static filters that ignore training dynamics, or use dynamic yet optimizer-agnostic criteria based on raw gradients. We propose OPUS (Optimizer-induced Projected Utility Selection), a dynamic data selection framework that defines utility in the optimizer-induced update space. OPUS scores candidates by projecting their effective updates, shaped by modern optimizers, onto a target direction derived from a stable, in-distribution proxy. To ensure scalability, we employ Ghost technique with CountSketch for computational efficiency, and Boltzmann sampling for data diversity, incurring only 4.7\% additional compute overhead. OPUS achieves remarkable results across diverse corpora, quality tiers, optimizers, and model scales. In pre-training of GPT-2 Large/XL on FineWeb and FineWeb-Edu with 30B tokens, OPUS outperforms industrial-level baselines and even full 200B-token training. Moreover, when combined with industrial-level static filters, OPUS further improves pre-training efficiency, even with lower-quality data. Furthermore, in continued pre-training of Qwen3-8B-Base on SciencePedia, OPUS achieves superior performance using only 0.5B tokens compared to full training with 3B tokens, demonstrating significant data efficiency gains in specialized domains.
+# Translation (by gpt-4o-mini)
+- 高品質な公的テキストが枯渇に近づく中、「データウォール」と呼ばれる現象が現れ、事前トレーニングはより多くのトークンからより良いトークンへシフトしています。しかし、既存の手法は、トレーニングの動的特性を無視したヒューリスティックな静的フィルターに依存するか、生の勾配に基づいた動的ではあるが最適化器に依存しない基準を使用しています。そこで、我々はOPUS（最適化器誘導投影ユーティリティ選択）を提案します。これは、最適化器による更新空間でのユーティリティを定義する動的データ選択フレームワークです。OPUSは、現代の最適化器によって形成された効果的な更新を安定したイン分布プロキシから導き出されるターゲット方向に投影することによって候補をスコアリングします。スケーラビリティを確保するために、計算効率のためにCountSketchを使ったゴースト手法を採用し、データの多様性のためにボルツマンサンプリングを実施し、追加の計算オーバーヘッドはわずか4.7％に抑えています。OPUSは、多様なコーパス、品質レベル、最適化器、およびモデルのスケールで素晴らしい結果を達成しています。GPT-2 Large/XLをFineWebおよびFineWeb-Eduで30Bトークンを使った事前トレーニングにおいて、OPUSは産業レベルのベースラインを上回り、フル200Bトークンのトレーニングにも優れた成果を示しています。さらに、産業レベルの静的フィルターと組み合わせることで、OPUSは低品質データであっても事前トレーニングの効率をさらに向上させます。さらに、Qwen3-8B-BaseのSciencePediaにおける継続的な事前トレーニングにおいて、OPUSは3Bトークンでのフルトレーニングと比較して0.5Bトークンのみで優れたパフォーマンスを達成し、専門分野におけるデータ効率の大幅な向上を示しています。
+# Summary (by gpt-4o-mini)
+- 高品質な公的テキストが不足する中、データ選択の動的特性を無視した手法の限界を克服するために、最適化器誘導投影ユーティリティ選択（OPUS）を提案。OPUSは、効果的な更新を安定したプロキシから導き出すことでデータをスコアリングし、計算効率を考慮したゴースト手法とボルツマン・サンプリングを用いる。これにより、GPT-2 Large/XLやQwen3-8B-Baseにおいて優れた成果を上げ、事前トレーニングの効率を飛躍的に改善。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2021597620578185536?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習においてステップ単位で動的にバッチに含める学習データを選択する手法で、従来手法は単に勾配を考慮して選択していたが、実際にoptimizerによって更新される方向はmomentumなどによって異なるためgapが生じていた。これを埋めるために、optimizerが実際に重みを更新した際に、Validation setのlossがどれだけ低下するかによってUtilityを定義し、Utilityが大きくなるようにデータを動的に選択することで学習効率が向上する、といった話に見える。<br><br><img src="https://github.com/user-attachments/assets/e45de40f-9fd3-4dcb-8e39-344de2fc9c57" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/b7702daf-9540-4ff8-82f0-9a4bdc1ba42f" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] When and How Much to Imagine: Adaptive Test-Time Scaling with World Models for Visual Spatial Reasoning, Shoubin Yu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.08236</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4503</repo-issue-link>
+<tags>ComputerVision, Test-Time Scaling, WorldModels, SpatialUnderstanding, Adaptive</tags>
+<repo-issue-date>2026-02-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.08236
+# Authors
+  - Shoubin Yu
+  - Yue Zhang
+  - Zun Wang
+  - Jaehong Yoon
+  - Huaxiu Yao
+  - Mingyu Ding
+  - Mohit Bansal
+# Abstract
+  - Despite rapid progress in Multimodal Large Language Models (MLLMs), visual spatial reasoning remains unreliable when correct answers depend on how a scene would appear under unseen or alternative viewpoints. Recent work addresses this by augmenting reasoning with world models for visual imagination, but questions such as when imagination is actually necessary, how much of it is beneficial, and when it becomes harmful, remain poorly understood. In practice, indiscriminate imagination can increase computation and even degrade performance by introducing misleading evidence. In this work, we present an in-depth analysis of test-time visual imagination as a controllable resource for spatial reasoning. We study when static visual evidence is sufficient, when imagination improves reasoning, and how excessive or unnecessary imagination affects accuracy and efficiency. To support this analysis, we introduce AVIC, an adaptive test-time framework with world models that explicitly reasons about the sufficiency of current visual evidence before selectively invoking and scaling visual imagination. Across spatial reasoning benchmarks (SAT, MMSI) and an embodied navigation benchmark (R2R), our results reveal clear scenarios where imagination is critical, marginal, or detrimental, and show that selective control can match or outperform fixed imagination strategies with substantially fewer world-model calls and language tokens. Overall, our findings highlight the importance of analyzing and controlling test-time imagination for efficient and reliable spatial reasoning.
+# Translation (by gpt-4o-mini)
+- <abstract>マルチモーダル大規模言語モデル（MLLM）の急速な進展にもかかわらず、視覚的空間推論は、シーンが見えない視点や代替的な視点でどのように見えるかに依存する場合には信頼性が低いままです。最近の研究では、視覚的想像のためにワールドモデルで推論を補強することが提案されていますが、想像が実際に必要な場合、どれだけの想像が有益で、いつそれが有害になるのかといった疑問は十分に理解されていません。実際には、無差別な想像が計算を増加させ、誤解を招く証拠を導入することでパフォーマンスを低下させる可能性があります。本研究では、空間推論のための制御可能なリソースとしてのテスト時視覚的想像の詳細な分析を提示します。静的な視覚的証拠が十分であるのはいつか、想像が推論を改善するのはいつか、過剰または不必要な想像が精度や効率にどのように影響するかを研究します。この分析をサポートするために、現在の視覚証拠の十分性を明示的に推論し、選択的に視覚的想像を呼び出し、スケールさせる適応型テスト時フレームワークAVICを導入します。空間推論のベンチマーク（SAT、MMSI）および具現化されたナビゲーションベンチマーク（R2R）において、我々の結果は、想像が重要である、わずかである、または有害である明確なシナリオを示し、選択的な制御が固定された想像戦略と同等かそれを上回る成果を上げ、実質的に少ないワールドモデルの呼び出しと言語トークンで達成できることを示しました。全体として、我々の発見は、効率的かつ信頼できる空間推論のためにテスト時の想像を分析し、制御する重要性を強調しています。</abstract>
+# Summary (by gpt-4o-mini)
+- 視覚的空間推論における想像の役割を分析し、制御可能なリソースとしてのテスト時視覚的想像の効果を評価。静的証拠が十分であるか、想像が改善に寄与するかを探求し、適応型フレームワークAVICを導入。結果は、想像の必要性や有害性の明確なシナリオを示し、制御された想像が固定戦略に匹敵するかそれを超える成果を達成。効率的な空間推論には、想像の分析と制御が不可欠であることを強調。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2021307002870284718?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AOrchestra: Automating Sub-Agent Creation for Agentic Orchestration, Jianhao Ruan+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.03786</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4499</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, read-later, Selected Papers/Blogs, KeyPoint Notes, LongHorizon, Adaptive, Orchestration, BudgetAllocation</tags>
+<repo-issue-date>2026-02-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.03786
+# Authors
+  - Jianhao Ruan
+  - Zhihao Xu
+  - Yiran Peng
+  - Fashen Ren
+  - Zhaoyang Yu
+  - Xinbing Liang
+  - Jinyu Xiang
+  - Yongru Chen
+  - Bang Liu
+  - Chenglin Wu
+  - Yuyu Luo
+  - Jiayi Zhang
+# Abstract
+  - Language agents have shown strong promise for task automation. Realizing this promise for increasingly complex, long-horizon tasks has driven the rise of a sub-agent-as-tools paradigm for multi-turn task solving. However, existing designs still lack a dynamic abstraction view of sub-agents, thereby hurting adaptability. We address this challenge with a unified, framework-agnostic agent abstraction that models any agent as a tuple Instruction, Context, Tools, Model. This tuple acts as a compositional recipe for capabilities, enabling the system to spawn specialized executors for each task on demand. Building on this abstraction, we introduce an agentic system AOrchestra, where the central orchestrator concretizes the tuple at each step: it curates task-relevant context, selects tools and models, and delegates execution via on-the-fly automatic agent creation. Such designs enable reducing human engineering efforts, and remain framework-agnostic with plug-and-play support for diverse agents as task executors. It also enables a controllable performance-cost trade-off, allowing the system to approach Pareto-efficient. Across three challenging benchmarks (GAIA, SWE-Bench, Terminal-Bench), AOrchestra achieves 16.28% relative improvement against the strongest baseline when paired with Gemini-3-Flash. The code is available at: https://github.com/FoundationAgents/AOrchestra
+# Translation (by gpt-4o-mini)
+- 言語エージェントは、タスクの自動化に対して強い可能性を示しています。この可能性を、ますます複雑で長期間のタスクに対して実現することが、マルチターンタスク解決のためのサブエージェントをツールとして使うパラダイムの台頭を促しています。しかし、既存の設計は、サブエージェントの動的抽象ビューを欠いており、それによって適応性が損なわれています。この課題に対処するために、任意のエージェントを命令、コンテキスト、ツール、モデルのタプルとしてモデル化する、統一されたフレームワークに依存しないエージェント抽象を提案します。このタプルは、能力のための合成レシピとして機能し、システムが需要に応じて各タスクのために専門的な実行者を生成できるようにします。この抽象に基づいて、エージェントシステムAOrchestraを導入します。ここでは、中央オーケストレーターが各ステップでタプルを具体化し、タスクに関連するコンテキストをキュレーションし、ツールとモデルを選択し、即時に自動エージェントを生成して実行を委任します。このような設計により、人間のエンジニアリング作業が削減され、タスク実行者として多様なエージェントに対してプラグアンドプレイのサポートを維持しつつ、フレームワークに依存しなくなります。また、制御可能な性能とコストのトレードオフを可能にし、システムがパレート効率に近づくことを可能にします。三つのチャレンジングなベンチマーク（GAIA、SWE-Bench、Terminal-Bench）において、AOrchestraはGemini-3-Flashと組み合わせた際に最も強力なベースラインに対し16.28%の相対改善を達成しました。コードは以下で入手可能です: https://github.com/FoundationAgents/AOrchestra
+# Summary (by gpt-4o-mini)
+- 任意のエージェントを命令・コンテキスト・ツール・モデルのタプルとしてモデル化し、タスクの自動化を促進する統一されたフレームワークを提案。AOrchestraでは中央オーケストレーターがタプルを具体化し、専門的な実行者を生成。この設計により、エンジニアリング作業を削減しつつ、エージェントの多様性と性能を最適化。実験では、AOrchestraが競合モデルに対して16.28%の相対改善を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2021215864557797608?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>サブエージェントを生成するオーケストレータを学習し、動的に直面するタスクに適応したサブエージェント（適切なコンテキスト, 指示, ツール, モデル）[^1]を持つエージェントを構築し、実行を委譲することで、固定されたハーネスに依存せず、人間がエンジニアリングするコストも削減しながら、性能が向上する、という話に見える。<br><img src="https://github.com/user-attachments/assets/6c4da7f2-6145-4204-b7d3-913ce5e99b81" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ベンチマークの性能向上が非常に大きく、効果的な手法であることが伺える。<br><br>[^1]: このようなサブエージェントのAbstractionを定義したのも貢献だと考えられる。</p><p>具体的な手法としては下記で、(a)オーケストレータエージェントがユーザからタスクを受け取り、サブタスクを解くためにサブエージェントを構築し委譲する。その後結果を受けとり状態を更新し、さらにサブエージェントを構築しタスクを委譲する、といった操作を繰り返す。(b)サブエージェントは(M, T, I, C)によって抽象化され、それぞれモデル、ツール、指示、コンテキストである。図中の(c)では自己教師あり学習が利用される旨が記述されているが、本文中ではSFTを使うと記述されているためここは齟齬があるように感じる（タイポも含まれている）。オーケストレーションのポイントは、タスクのオーケストレーションと、モデルのルーティングの二つの要素に分けられる。前者をSFTで学習し、後者はInstructionをiterativeに改善するプロセスで最適化する。<br><br>具体的には、オーケストレーションという特化したタスクを学習させるため、今回はexpertによる正解となる(T, I, C)を模倣できるように、SFTで学習する（GRPOのような手法でも学習できることについても言及されている点には注意）。<br>また、後者のモデルルーティングの最適化については、さまざまなモデルに対してInstructionを与え、得られたtrajectoryに対して性能とコストを計算し、これらを考慮してInstructionを更新することを繰り返すAutomatic Prompt Optimizationを採用している。これにより、コストと性能のパレート最適な構成を見つける。<br><br><img src="https://github.com/user-attachments/assets/bf4f6452-5b67-4734-b061-45a44ee15a1e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LatentMem: Customizing Latent Memory for Multi-Agent Systems, Muxin Fu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.03036</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4467</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, AIAgents, Selected Papers/Blogs, memory, KeyPoint Notes, Adaptive, Initial Impression Notes</tags>
+<repo-issue-date>2026-02-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.03036
+# Authors
+  - Muxin Fu
+  - Guibin Zhang
+  - Xiangyuan Xue
+  - Yafu Li
+  - Zefeng He
+  - Siyuan Huang
+  - Xiaoye Qu
+  - Yu Cheng
+  - Yang Yang
+# Abstract
+  - Large language model (LLM)-powered multi-agent systems (MAS) demonstrate remarkable collective intelligence, wherein multi-agent memory serves as a pivotal mechanism for continual adaptation. However, existing multi-agent memory designs remain constrained by two fundamental bottlenecks: (i) memory homogenization arising from the absence of role-aware customization, and (ii) information overload induced by excessively fine-grained memory entries. To address these limitations, we propose LatentMem, a learnable multi-agent memory framework designed to customize agent-specific memories in a token-efficient manner. Specifically, LatentMem comprises an experience bank that stores raw interaction trajectories in a lightweight form, and a memory composer that synthesizes compact latent memories conditioned on retrieved experience and agent-specific contexts. Further, we introduce Latent Memory Policy Optimization (LMPO), which propagates task-level optimization signals through latent memories to the composer, encouraging it to produce compact and high-utility representations. Extensive experiments across diverse benchmarks and mainstream MAS frameworks show that LatentMem achieves a performance gain of up to $19.36$% over vanilla settings and consistently outperforms existing memory architectures, without requiring any modifications to the underlying frameworks.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）を活用したマルチエージェントシステム（MAS）は、驚異的な集合知を示し、マルチエージェントメモリは継続的な適応のための重要なメカニズムとして機能します。しかし、既存のマルチエージェントメモリの設計には、以下の2つの基本的なボトルネックが存在します：（i）役割に応じたカスタマイズの欠如によるメモリの均質化、（ii）過度に細分化されたメモリエントリーによる情報過多。これらの制限に対処するために、我々はLatentMemを提案します。これは、トークン効率の良い方法でエージェント固有のメモリをカスタマイズするために設計された学習可能なマルチエージェントメモリフレームワークです。具体的には、LatentMemは、生のインタラクション経路を軽量な形で保存する経験バンクと、取得した経験およびエージェント固有のコンテキストに基づいてコンパクトな潜在メモリを合成するメモリ作成者で構成されています。さらに、Latent Memory Policy Optimization（LMPO）を導入し、タスクレベルの最適化信号を潜在メモリを通じて作成者に伝播させ、それによりコンパクトで高い有用性のある表現を生成するよう促します。多様なベンチマークおよび主流のMASフレームワーク全体で行った広範な実験により、LatentMemは従来の設定に対して最大$19.36$%のパフォーマンス向上を達成し、既存のメモリアーキテクチャを一貫して上回り、基盤となるフレームワークの変更を必要としません。
+# Summary (by gpt-4o-mini)
+- LatentMemは、LLMを用いたマルチエージェントシステム向けに設計された学習可能なメモリフレームワークで、カスタマイズと情報最適化を実現します。経験バンクと潜在メモリを活用し、メモリエントリーの均質化と情報過多の問題を解決。タスクレベルの最適化信号を利用することで、従来のメモリ設計に対し最大19.36%の性能向上を達成しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2019778133550125515?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>skim readingしかできていないが、現在のMulti AI Agentsにおけるメモリ機構はstaticな機構であるため、メモリが均質化してしまいエージェントの役割ごとに最適化されておらず、かつlong trajectoryを扱う際に情報がコンパクトに圧縮されておらずtrajectoryが肥大化していってしまう。このため、エージェントの役割ごとに異なるメモリを生成し、かつ固定長の潜在表現に情報を圧縮する（これによりlong contextでのメモリ肥大化を防ぐ）ような新たなDeep Neural Networkに基づくMemory ComposerをRLを通じて学習するという話のようである。<br><br>エージェントのプロファイルと、experience bankから抽出された現在のクエリに対するtrajectoryに基づいて、個々のエージェントごとにrelevantな情報が圧縮されたメモリの潜在表現を生成するようなMemory ComposerをRLで学習し活用する（LMPO）。このとき、エージェントのパラメータは更新せずfreezeする。あくまでバックボーンはfreezeして変更せず、メモリ機構のみを最適化することに焦点を当てている。Memory Composerは、与えられたメモリ, エージェントの（freezeされた）パラメータ, 与えられたプロンプトによってreasoningを実施し、最終的な応答が正しかったかどうかに基づいてGRPOベースのRLVR（=LMPO）を実施することによって学習する。エージェントがメモリを活用して得られたtrajectoryはexperience bankに格納されて利用される。<br><img src="https://github.com/user-attachments/assets/32707936-036c-4d99-94c9-020d9aa22d81" /" alt="image" loading="lazy" width="550" height="400"/><br><br>既存手法と比べて多くのQAベンチマークで高い性能を獲得し、OODなベンチマークでもある程度は汎化するようである。<br><img src="https://github.com/user-attachments/assets/4570c394-f512-461a-9fab-caee8c031b43" /" alt="image" loading="lazy" width="550" height="400"/></p><p>in-domainなベンチマークと比較して、out-of-domainなベンチマークでの性能向上が小さいので、汎化性能にまだ課題があるように感じた。解決している問題は非常に重要だと考えられ、どのようにすれば汎用的なMemory Composerが学習できるか？を考えるとおもしろそうである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A-RAG: Scaling Agentic Retrieval-Augmented Generation via Hierarchical Retrieval Interfaces, Mingxuan Du+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.03442</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4447</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, RAG(RetrievalAugmentedGeneration), Test-Time Scaling, One-Line Notes, Scalability, Adaptive, Initial Impression Notes</tags>
+<repo-issue-date>2026-02-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.03442
+# Authors
+  - Mingxuan Du
+  - Benfeng Xu
+  - Chiwei Zhu
+  - Shaohan Wang
+  - Pengyu Wang
+  - Xiaorui Wang
+  - Zhendong Mao
+# Abstract
+  - Frontier language models have demonstrated strong reasoning and long-horizon tool-use capabilities. However, existing RAG systems fail to leverage these capabilities. They still rely on two paradigms: (1) designing an algorithm that retrieves passages in a single shot and concatenates them into the model's input, or (2) predefining a workflow and prompting the model to execute it step-by-step. Neither paradigm allows the model to participate in retrieval decisions, preventing efficient scaling with model improvements. In this paper, we introduce A-RAG, an Agentic RAG framework that exposes hierarchical retrieval interfaces directly to the model. A-RAG provides three retrieval tools: keyword search, semantic search, and chunk read, enabling the agent to adaptively search and retrieve information across multiple granularities. Experiments on multiple open-domain QA benchmarks show that A-RAG consistently outperforms existing approaches with comparable or lower retrieved tokens, demonstrating that A-RAG effectively leverages model capabilities and dynamically adapts to different RAG tasks. We further systematically study how A-RAG scales with model size and test-time compute. We will release our code and evaluation suite to facilitate future research. Code and evaluation suite are available at https://github.com/Ayanami0730/arag.
+# Translation (by gpt-4o-mini)
+- 最前線の言語モデルは、優れた推論能力と長期的なツール使用能力を示しています。しかし、既存のRAGシステムはこれらの能力を活用できていません。これらのシステムは依然として次の二つのパラダイムに依存しています：(1) 単一ショットでパッセージを取得し、それをモデルの入力に連結するアルゴリズムの設計、または (2) ワークフローを事前に定義し、モデルにステップバイステップで実行させること。どちらのパラダイムもモデルが取得の意思決定に参加することを許さず、モデルの改善による効率的なスケーリングを妨げています。本論文では、A-RAGというエージェント型のRAGフレームワークを提案します。A-RAGは、階層的な取得インターフェースを直接モデルに提供します。A-RAGは、キーワード検索、意味検索、チャンク読み取りなど、3つの取得ツールを提供し、エージェントが複数の粒度で情報を適応的に検索・取得できるようにします。複数のオープンドメインQAベンチマークでの実験により、A-RAGは既存のアプローチと比較して、同等または少ない取得トークンで一貫して優れた性能を示し、A-RAGがモデルの能力を効果的に活用し、さまざまなRAGタスクに動的に適応することを実証しています。さらに、A-RAGがモデルのサイズやテスト時の計算量とどのようにスケールするかを体系的に研究しました。今後の研究を促進するため、コードと評価スイートを公開する予定です。コードと評価スイートはhttps://github.com/Ayanami0730/aragで入手できます。
+# Summary (by gpt-4o-mini)
+- A-RAGは、階層的な取得インターフェースを通じてエージェント型のRAGシステムを実現し、モデルが適応的に情報を検索・取得できる能力を向上させる。キーワード検索、意味検索、チャンク読み取りの3つのツールを提供し、既存の方法と比較して一貫した優れた性能を示す。モデルのスケーリング特性についても体系的に検討し、今後の研究のためにコードを公開予定。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2019061395342622947?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>固定されたワークフローでのRAGではなく、エージェントが自ら考えて最適な検索ツールを模索し情報を自動的に取得するAgentic RAGな枠組みを提案している。研究としての新規性はweaknessだと感じるが、実務的に有効な方法だと思う。LLM側のreasoning effortやmax tokenを増やすことで性能がスケーリングするため（Test Time Scaling)これもまた実用的な手法だと感じる。<br><img src="https://github.com/user-attachments/assets/87d1aabf-3d5b-4a33-877a-33ff31309cd8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learn to Reason Efficiently with Adaptive Length-based Reward Shaping, Wei Liu+, ICLR'26, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.15612</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4382</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Reasoning, ICLR, Length, PostTraining, Adaptive</tags>
+<repo-issue-date>2026-02-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.15612
+# Authors
+  - Wei Liu
+  - Ruochen Zhou
+  - Yiyun Deng
+  - Yuzhen Huang
+  - Junteng Liu
+  - Yuntian Deng
+  - Yizhe Zhang
+  - Junxian He
+# Abstract
+  - Large Reasoning Models (LRMs) have shown remarkable capabilities in solving complex problems through reinforcement learning (RL), particularly by generating long reasoning traces. However, these extended outputs often exhibit substantial redundancy, which limits the efficiency of LRMs. In this paper, we investigate RL-based approaches to promote reasoning efficiency. Specifically, we first present a unified framework that formulates various efficient reasoning methods through the lens of length-based reward shaping. Building on this perspective, we propose a novel Length-bAsed StEp Reward shaping method (LASER), which employs a step function as the reward, controlled by a target length. LASER surpasses previous methods, achieving a superior Pareto-optimal balance between performance and efficiency. Next, we further extend LASER based on two key intuitions: (1) The reasoning behavior of the model evolves during training, necessitating reward specifications that are also adaptive and dynamic; (2) Rather than uniformly encouraging shorter or longer chains of thought (CoT), we posit that length-based reward shaping should be difficulty-aware i.e., it should penalize lengthy CoTs more for easy queries. This approach is expected to facilitate a combination of fast and slow thinking, leading to a better overall tradeoff. The resulting method is termed LASER-D (Dynamic and Difficulty-aware). Experiments on DeepSeek-R1-Distill-Qwen-1.5B, DeepSeek-R1-Distill-Qwen-7B, and DeepSeek-R1-Distill-Qwen-32B show that our approach significantly enhances both reasoning performance and response length efficiency. For instance, LASER-D and its variant achieve a +6.1 improvement on AIME2024 while reducing token usage by 63%. Further analysis reveals our RL-based compression produces more concise reasoning patterns with less redundant "self-reflections". Resources are at https://github.com/hkust-nlp/Laser.
+# Translation (by gpt-4o-mini)
+- <abstract>大型推論モデル（LRM）は、特に長い推論トレースを生成することによって、強化学習（RL）を通じて複雑な問題を解決する驚くべき能力を示しています。しかし、これらの拡張出力はしばしば大幅な冗長性を示し、LRMの効率を制限しています。本論文では、推論の効率を促進するためのRLベースのアプローチを調査します。具体的には、まず長さに基づく報酬シェイピングの観点から、さまざまな効率的な推論手法を定式化する統一フレームワークを提示します。この視点に基づいて、目標の長さで制御されるステップ関数を報酬として使用する新しい長さベースのステップ報酬シェイピング手法（LASER）を提案します。LASERは以前の手法を上回り、性能と効率の優れたパレート最適バランスを達成します。次に、LASERをさらに2つの重要な直感に基づいて拡張します：(1) モデルの推論行動はトレーニング中に進化するため、報酬仕様も適応的かつ動的である必要があること；(2) 短いまたは長い思考の連鎖（CoT）を均一に奨励するのではなく、長さに基づく報酬シェイピングは難易度を考慮すべきであり、簡単なクエリに対して長いCoTをより強く罰してもよいと考えます。このアプローチは、迅速かつ慎重な思考の組み合わせを促進し、より良い全体的なトレードオフをもたらすことが期待されます。この結果得られる手法はLASER-D（動的かつ難易度を考慮した）と呼ばれます。DeepSeek-R1-Distill-Qwen-1.5B、DeepSeek-R1-Distill-Qwen-7B、およびDeepSeek-R1-Distill-Qwen-32Bにおける実験は、私たちのアプローチが推論性能と応答の長さ効率の両方を著しく向上させることを示しています。たとえば、LASER-DとそのバリアントはAIME2024で+6.1の改善を達成し、トークン使用量を63%削減します。さらに分析したところ、私たちのRLベースの圧縮は、より簡潔な推論パターンを生成し、冗長な「自己反省」を減少させます。リソースはhttps://github.com/hkust-nlp/Laserにあります。</abstract>
+# Summary (by gpt-4o-mini)
+- 推論の効率を向上させるため、RLベースの手法LASERを提案。長さに基づく報酬シェイピングを用いて、冗長性を減少させつつ、パフォーマンスと効率の良好なバランスを実現。また、動的な報酬仕様と難易度を考慮した手法LASER-Dを導入し、簡潔な推論パターンを促進。実験により、推論性能と応答の長さ効率が大幅に向上した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/weiliu99/status/2018536234713247756?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Beyond Speedup -- Utilizing KV Cache for Sampling and Reasoning, Zeyu Xing+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.20326</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4335</repo-issue-link>
+<tags>Embeddings, NLP, LanguageModel, read-later, Selected Papers/Blogs, KV Cache, DownstreamTasks, Adaptive, Initial Impression Notes, SelfVerification</tags>
+<repo-issue-date>2026-01-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.20326
+# Authors
+  - Zeyu Xing
+  - Xing Li
+  - Hui-Ling Zhen
+  - Mingxuan Yuan
+  - Sinno Jialin Pan
+# Abstract
+  - KV caches, typically used only to speed up autoregressive decoding, encode contextual information that can be reused for downstream tasks at no extra cost. We propose treating the KV cache as a lightweight representation, eliminating the need to recompute or store full hidden states. Despite being weaker than dedicated embeddings, KV-derived representations are shown to be sufficient for two key applications: \textbf{(i) Chain-of-Embedding}, where they achieve competitive or superior performance on Llama-3.1-8B-Instruct and Qwen2-7B-Instruct; and \textbf{(ii) Fast/Slow Thinking Switching}, where they enable adaptive reasoning on Qwen3-8B and DeepSeek-R1-Distil-Qwen-14B, reducing token generation by up to $5.7\times$ with minimal accuracy loss. Our findings establish KV caches as a free, effective substrate for sampling and reasoning, opening new directions for representation reuse in LLM inference. Code: https://github.com/cmd2001/ICLR2026_KV-Embedding.
+# Translation (by gpt-4o-mini)
+- KVキャッシュは通常、自己回帰デコーディングを高速化するためだけに使用されますが、下流タスクに再利用できる文脈情報を含んでおり、追加コストがかかりません。私たちはKVキャッシュを軽量な表現として扱う提案をし、完全な隠れ状態を再計算または保存する必要を排除します。専用の埋め込みより弱いとはいえ、KV由来の表現は2つの主要なアプリケーションにおいて十分であることが示されています：\textbf{(i) チェーン・オブ・エンベディング}では、Llama-3.1-8B-InstructおよびQwen2-7B-Instructで競争力のあるまたは優れたパフォーマンスを達成し、\textbf{(ii) ファスト/スロー思考切替}では、Qwen3-8BおよびDeepSeek-R1-Distil-Qwen-14Bにおいて適応的推論を可能にし、トークン生成を最大で$5.7\times$減少させる一方で、最小限の精度損失を実現します。我々の発見は、KVキャッシュをサンプリングと推論のための無料かつ効果的な基盤として位置づけ、LLM推論における表現再利用の新たな方向性を開きます。コード: https://github.com/cmd2001/ICLR2026_KV-Embedding.
+# Summary (by gpt-4o-mini)
+- KVキャッシュを文脈情報の軽量な表現として再利用し、再計算や保存の必要を排除。KV由来の表現は、（i）チェーン・オブ・エンベディングで競争力のある性能を発揮し、（ii）ファスト/スロー思考切替でトークン生成を最大5.7倍削減する一方、精度損失を最小限に抑える。これにより、KVキャッシュがLLM推論における表現再利用の新たな基盤となることを示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/papers_anon/status/2016708720538120653?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>KV Cacheを軽量なhidden stateを表すembeddingとして扱うことで色々と応用できます、という話に見え、たとえばデコーディングの途中でhallucinationをdetectする際により省メモリで実現できたり、fast/d slowなthinkingの切り替えの制御に利用するなど、単に次トークンを生成する際の高速化の用途を超えて使うという興味深い発想な研究に見える。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4339" target="_blank" rel="noopener noreferrer">[Paper Note] Latent Space Chain-of-Embedding Enables Output-free LLM Self-Evaluation, Yiming Wang+, ICLR'25, 2024.10</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CARMO: Dynamic Criteria Generation for Context-Aware Reward Modelling, Taneesh Gupta+, ACL'25 Findings, 2024.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.21545</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4509</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Distillation, ACL, RewardHacking, PostTraining, Findings, Adaptive, Rubric-based</tags>
+<repo-issue-date>2026-02-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.21545
+# Authors
+  - Taneesh Gupta
+  - Shivam Shandilya
+  - Xuchao Zhang
+  - Rahul Madhavan
+  - Supriyo Ghosh
+  - Chetan Bansal
+  - Huaxiu Yao
+  - Saravan Rajmohan
+# Abstract
+  - Reward modeling in large language models is susceptible to reward hacking, causing models to latch onto superficial features such as the tendency to generate lists or unnecessarily long responses. In reinforcement learning from human feedback (RLHF) and more generally during post-training flawed reward signals often lead to outputs that optimize for these spurious correlates instead of genuine quality or correctness. We propose Context-Aware Reward Modeling (CARMO), a novel approach that first generates dynamic, context-relevant criteria to ground the reward model before producing reward scores. Unlike prior methods that rely on static rubrics, CARMO leverages large language models (LLMs) to adaptively create evaluation criteria such as logical consistency, clarity, and depth tailored to the user query. Our theoretical analysis shows that such criteria generation can mitigate reward hacking. We further demonstrate that CARMO can be distilled into smaller models, reducing the computational cost of alignment. We establish a new state-of-the-art performance in zero-shot settings for generative models, achieving a 2.1\% improvement on Reward Bench. Furthermore, alignment performed on the CARMO-curated preference dataset achieves 22.5\% and 21.1\% LC-WR and WR, respectively, on Mistral-Base (7B).
+# Translation (by gpt-4o-mini)
+- 大型言語モデルにおける報酬モデリングは報酬のハッキングに脆弱であり、モデルはリストを生成する傾向や不必要に長い応答といった表面的な特徴に依存してしまうことがあります。人間のフィードバックからの強化学習（RLHF）や、一般的に後処理における不完全な報酬信号は、真の品質や正確性ではなく、これらの偽の相関関係を最適化する出力を引き起こすことがよくあります。私たちは、コンテキストに応じた報酬モデリング（CARMO）という新しいアプローチを提案します。このアプローチは、報酬スコアを生成する前に、まずダイナミックでコンテキストに関連した基準を生成して報酬モデルを基盤とします。従来の静的なルーブリックに依存する方法と異なり、CARMOは大規模言語モデル（LLM）を活用して、ユーザーのクエリに応じた論理的一貫性、明瞭さ、深さといった評価基準を適応的に作成します。理論的な分析では、このような基準生成が報酬のハッキングを軽減できることを示しています。また、CARMOを小規模モデルに蒸留することができ、アライメントの計算コストを削減できます。生成モデルにおけるゼロショット設定での新しい最先端の性能を確立し、Reward Benchで2.1％の改善を達成しました。さらに、CARMOによってキュレーションされた好みデータセットでのアライメントは、Mistral-Base（7B）に対してそれぞれ22.5％および21.1％のLC-WRとWRを達成しています。
+# Summary (by gpt-4o-mini)
+- CARMOはダイナミックでコンテキストに関連した基準を用い、報酬モデリングの脆弱性を軽減する新手法。人間のフィードバックを取り入れ、生成された基準に基づき評価することで、報酬のハッキングを防ぎつつ、ゼロショット設定での性能を向上させ、Reward Benchで2.1％の改善を達成。Mistral-Baseに対して高いアライメントを示すデータセットも構築。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2021433757572469239?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Harnessing Diversity for Important Data Selection in Pretraining Large Language Models, Chi Zhang+, ICLR'25 Spotlight, 2024.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2409.16986</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4257</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, ICLR, read-later, Diversity, Selected Papers/Blogs, DataMixture, Generalization, DownstreamTasks, Adaptive, Multi-Armed Bandit</tags>
+<repo-issue-date>2026-01-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2409.16986
+# Authors
+  - Chi Zhang
+  - Huaping Zhong
+  - Kuan Zhang
+  - Chengliang Chai
+  - Rui Wang
+  - Xinlin Zhuang
+  - Tianyi Bai
+  - Jiantao Qiu
+  - Lei Cao
+  - Ju Fan
+  - Ye Yuan
+  - Guoren Wang
+  - Conghui He
+# Abstract
+  - Data selection is of great significance in pre-training large language models, given the variation in quality within the large-scale available training corpora. To achieve this, researchers are currently investigating the use of data influence to measure the importance of data instances, $i.e.,$ a high influence score indicates that incorporating this instance to the training set is likely to enhance the model performance. Consequently, they select the top-$k$ instances with the highest scores. However, this approach has several limitations. (1) Computing the influence of all available data is time-consuming. (2) The selected data instances are not diverse enough, which may hinder the pre-trained model's ability to generalize effectively to various downstream tasks. In this paper, we introduce \texttt{Quad}, a data selection approach that considers both quality and diversity by using data influence to achieve state-of-the-art pre-training results. In particular, noting that attention layers capture extensive semantic details, we have adapted the accelerated $iHVP$ computation methods for attention layers, enhancing our ability to evaluate the influence of data, $i.e.,$ its quality. For the diversity, \texttt{Quad} clusters the dataset into similar data instances within each cluster and diverse instances across different clusters. For each cluster, if we opt to select data from it, we take some samples to evaluate the influence to prevent processing all instances. To determine which clusters to select, we utilize the classic Multi-Armed Bandit method, treating each cluster as an arm. This approach favors clusters with highly influential instances (ensuring high quality) or clusters that have been selected less frequently (ensuring diversity), thereby well balancing between quality and diversity.
+# Translation (by gpt-4o-mini)
+- データ選択は、大規模なトレーニングコーパスの中での品質のばらつきを考慮すると、大規模言語モデルの事前トレーニングにおいて非常に重要です。この目的を達成するために、研究者たちはデータの影響を利用してデータインスタンスの重要性を測定する方法を探求しています。つまり、高い影響スコアは、そのインスタンスをトレーニングセットに組み込むことでモデルの性能が向上する可能性が高いことを示します。その結果、彼らはスコアが最も高い上位$k$のインスタンスを選択します。しかし、このアプローチにはいくつかの制限があります。(1) 利用可能なデータ全体の影響を計算するのは時間がかかります。(2) 選択されたデータインスタンスは多様性に欠けることがあり、これが事前トレーニングされたモデルの下流タスクへの効果的な一般化能力を妨げる可能性があります。本論文では、データの影響を利用して品質と多様性の両方を考慮するデータ選択アプローチである\texttt{Quad}を紹介します。特に、アテンションレイヤーが広範な意味的詳細を捉えることに着目し、アテンションレイヤーにおける加速された$iHVP$計算方法を適応させ、データの影響、すなわちその品質を評価する能力を向上させました。多様性については、\texttt{Quad}はデータセットを各クラスタ内で類似のデータインスタンス、異なるクラスタ間で多様なインスタンスにクラスタリングします。各クラスタからデータを選択する場合、一部のサンプルを取り、その影響を評価することで全インスタンスを処理するのを防ぎます。どのクラスタを選択するかを決定するために、クラシックなマルチアームバンディット法を利用し、各クラスタをアームとして扱います。このアプローチは、高い影響力を持つインスタンスがあるクラスタ（高い品質を確保）や、選択頻度が低いクラスタ（多様性を確保）を優遇し、品質と多様性のバランスをよくとっています。
+# Summary (by gpt-4o-mini)
+- データ選択は大規模言語モデルの事前トレーニングにおいて重要で、影響スコアでデータインスタンスの重要性を測定します。しかし、トレーニングデータの多様性不足や影響計算の時間が課題です。本研究では、品質と多様性を考慮したデータ選択手法\texttt{Quad}を提案します。アテンションレイヤーの$iHVP$計算を適応させ、データの品質評価を向上。データをクラスタリングし、選択プロセスでサンプルの影響を評価することで、全インスタンスの処理を回避します。マルチアームバンディット法を用い、品質と多様性のバランスを取ります。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=bMC1t7eLRc" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=bMC1t7eLRc</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Adaptive Data Optimization: Dynamic Sample Selection with Scaling Laws, Yiding Jiang+, ICLR'25, 2024.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.11820</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4255</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, action_wanted, ICLR, Scaling Laws, DataMixture, Adaptive</tags>
+<repo-issue-date>2026-01-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.11820
+# Authors
+  - Yiding Jiang
+  - Allan Zhou
+  - Zhili Feng
+  - Sadhika Malladi
+  - J. Zico Kolter
+# Abstract
+  - The composition of pretraining data is a key determinant of foundation models' performance, but there is no standard guideline for allocating a limited computational budget across different data sources. Most current approaches either rely on extensive experiments with smaller models or dynamic data adjustments that also require proxy models, both of which significantly increase the workflow complexity and computational overhead. In this paper, we introduce Adaptive Data Optimization (ADO), an algorithm that optimizes data distributions in an online fashion, concurrent with model training. Unlike existing techniques, ADO does not require external knowledge, proxy models, or modifications to the model update. Instead, ADO uses per-domain scaling laws to estimate the learning potential of each domain during training and adjusts the data mixture accordingly, making it more scalable and easier to integrate. Experiments demonstrate that ADO can achieve comparable or better performance than prior methods while maintaining computational efficiency across different computation scales, offering a practical solution for dynamically adjusting data distribution without sacrificing flexibility or increasing costs. Beyond its practical benefits, ADO also provides a new perspective on data collection strategies via scaling laws.
+# Translation (by gpt-4o-mini)
+- <abstract>事前学習データの構成は、基盤モデルの性能の重要な決定要因ですが、限られた計算予算を異なるデータソースに分配するための標準的なガイドラインは存在しません。現在のアプローチの多くは、小型モデルによる広範な実験またはプロキシモデルも必要とする動的データ調整に依存しており、これらは共にワークフローの複雑性と計算負荷を大幅に増加させます。本論文では、モデルのトレーニングと並行してオンラインでデータ分布を最適化するアルゴリズム「Adaptive Data Optimization（ADO）」を紹介します。既存の手法とは異なり、ADOは外部知識やプロキシモデル、モデル更新の修正を必要としません。代わりに、ADOは各ドメインの学習潜在能力を推定するためにドメインごとのスケーリング法則を使用し、トレーニング中にデータの混合を適切に調整します。これにより、スケーラビリティが向上し、統合が容易になります。実験により、ADOは以前の手法と同等またはそれ以上の性能を実現できることが示され、さまざまな計算スケールで計算効率を維持しつつ、柔軟性を損なうことなくコストを増加させることなくデータ分布を動的に調整するための実用的な解決策を提供します。実用的な利点を超えて、ADOはスケーリング法則を通じてデータ収集戦略に対する新しい視点も提供します。</abstract>
+# Summary (by gpt-4o-mini)
+- データの事前学習構成はモデル性能に重要ですが、標準的な分配ガイドラインは存在せず、従来の手法はワークフローの複雑性を増加させる。そこで、オンラインでデータ分布を最適化する「Adaptive Data Optimization（ADO）」を提案。ADOは他の知識やプロキシモデルに依存せず、トレーニング中にデータの適切な混合を調整し、スケーラビリティと統合性を向上させる。実験により、ADOは他手法と同等以上の性能を示し、計算効率を保ちながら動的なデータ調整を可能にし、データ収集戦略への新たな視点も提供する。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=aqok1UX7Z1" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=aqok1UX7Z1</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Aioli: A Unified Optimization Framework for Language Model Data Mixing, Mayee F. Chen+, ICLR'25, 2024.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.05735</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4254</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, ICLR, DataMixture, Adaptive</tags>
+<repo-issue-date>2026-01-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.05735
+# Authors
+  - Mayee F. Chen
+  - Michael Y. Hu
+  - Nicholas Lourie
+  - Kyunghyun Cho
+  - Christopher Ré
+# Abstract
+  - Language model performance depends on identifying the optimal mixture of data groups to train on (e.g., law, code, math). Prior work has proposed a diverse set of methods to efficiently learn mixture proportions, ranging from fitting regression models over training runs to dynamically updating proportions throughout training. Surprisingly, we find that no existing method consistently outperforms a simple stratified sampling baseline in terms of average test perplexity. To understand this inconsistency, we unify existing methods into a standard framework, showing they are equivalent to solving a common optimization problem: minimize average loss subject to a method-specific mixing law -- an implicit assumption on the relationship between loss and mixture proportions. This framework suggests that measuring the fidelity of a method's mixing law can offer insights into its performance. Empirically, we find that existing methods set their mixing law parameters inaccurately, resulting in the inconsistent mixing performance we observe. Using this insight, we derive a new online method named Aioli, which directly estimates the mixing law parameters throughout training and uses them to dynamically adjust proportions. Aioli outperforms stratified sampling on 6 out of 6 datasets by an average of 0.27 test perplexity points, whereas existing methods fail to consistently beat stratified sampling, doing up to 6.9 points worse. Moreover, in a practical setting where proportions are learned on shorter runs due to computational constraints, Aioli can dynamically adjust these proportions over the full training run, consistently improving performance over existing methods by up to 12.012 test perplexity points.
+# Translation (by gpt-4o-mini)
+- 言語モデルの性能は、トレーニングに使用するデータグループの最適な混合を見つけることに依存しています（例えば、法、コード、数学）。これまでの研究では、トレーニングランにおける回帰モデルのフィッティングから、トレーニング中に比率を動的に更新する方法まで、多様な手法が提案されてきました。驚くべきことに、既存のいずれの手法も、平均テスト困惑度において単純な層化サンプリングのベースラインを一貫して上回ることができていません。この不一致を理解するために、既存の手法を標準的なフレームワークに統一し、これらが一般的な最適化問題を解くことと同等であることを示します：特定の手法に基づいた混合法則に従い、平均損失を最小化することです。このフレームワークは、手法の混合法則の信頼性を測定することが、その性能に対する洞察を提供する可能性があることを示唆しています。実証的には、既存の手法がその混合法則のパラメータを不正確に設定しているため、不均一な混合性能が発生することがわかりました。この洞察を利用して、Aioliという新しいオンライン手法を提案します。これは、トレーニング中に混合法則のパラメータを直接推定し、それを使用して比率を動的に調整します。Aioliは、6つのデータセットのうち6つで層化サンプリングを平均0.27テスト困惑度ポイント上回り、既存の手法は一貫して層化サンプリングに勝てず、最大で6.9ポイント劣ることがわかりました。さらに、計算制約のために短いランで学習された比率が用いられる実際の設定において、Aioliはトレーニング全体にわたってこれらの比率を動的に調整でき、既存の手法に比べて最大12.012テスト困惑度ポイントの一貫した性能向上を達成します。
+# Summary (by gpt-4o-mini)
+- トレーニングデータの最適な混合が言語モデルの性能に影響を与えるが、既存の手法は層化サンプリングを一貫して上回れない。これを解明するため、標準フレームワークで手法を統一し、混合法則が不正確であることを示した。新たに提案したオンライン手法Aioliは、トレーニング中に混合パラメータを推定し動的に調整。実験では、Aioliが層化サンプリングを平均0.27ポイント上回り、短いランで最大12.012ポイントの向上を達成した。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=sZGZJhaNSe" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=sZGZJhaNSe</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Adaptation of Agentic AI, Pengcheng Jiang+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.16301</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4017</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, One-Line Notes, Adaptive</tags>
+<repo-issue-date>2025-12-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.16301
+# Authors
+  - Pengcheng Jiang
+  - Jiacheng Lin
+  - Zhiyi Shi
+  - Zifeng Wang
+  - Luxi He
+  - Yichen Wu
+  - Ming Zhong
+  - Peiyang Song
+  - Qizheng Zhang
+  - Heng Wang
+  - Xueqiang Xu
+  - Hanwen Xu
+  - Pengrui Han
+  - Dylan Zhang
+  - Jiashuo Sun
+  - Chaoqi Yang
+  - Kun Qian
+  - Tian Wang
+  - Changran Hu
+  - Manling Li
+  - Quanzheng Li
+  - Hao Peng
+  - Sheng Wang
+  - Jingbo Shang
+  - Chao Zhang
+  - Jiaxuan You
+  - Liyuan Liu
+  - Pan Lu
+  - Yu Zhang
+  - Heng Ji
+  - Yejin Choi
+  - Dawn Song
+  - Jimeng Sun
+  - Jiawei Han
+# Abstract
+  - Cutting-edge agentic AI systems are built on foundation models that can be adapted to plan, reason, and interact with external tools to perform increasingly complex and specialized tasks. As these systems grow in capability and scope, adaptation becomes a central mechanism for improving performance, reliability, and generalization. In this paper, we unify the rapidly expanding research landscape into a systematic framework that spans both agent adaptations and tool adaptations. We further decompose these into tool-execution-signaled and agent-output-signaled forms of agent adaptation, as well as agent-agnostic and agent-supervised forms of tool adaptation. We demonstrate that this framework helps clarify the design space of adaptation strategies in agentic AI, makes their trade-offs explicit, and provides practical guidance for selecting or switching among strategies during system design. We then review the representative approaches in each category, analyze their strengths and limitations, and highlight key open challenges and future opportunities. Overall, this paper aims to offer a conceptual foundation and practical roadmap for researchers and practitioners seeking to build more capable, efficient, and reliable agentic AI systems.
+# Translation (by gpt-4o-mini)
+- 最先端のエージェントAIシステムは、計画、推論、外部ツールとの相互作用を適応させることができる基盤モデルに基づいて構築されており、ますます複雑で専門的なタスクを実行します。これらのシステムが能力と範囲を拡大するにつれて、適応は性能、信頼性、一般化を向上させるための中心的なメカニズムとなります。本論文では、急速に拡大する研究の風景を、エージェントの適応とツールの適応の両方を網羅する体系的なフレームワークに統一します。さらに、これらをツール実行信号型とエージェント出力信号型のエージェント適応、ならびにエージェント非依存型とエージェント監視型のツール適応に分解します。このフレームワークが、エージェントAIにおける適応戦略の設計空間を明確にし、そのトレードオフを明示化し、システム設計中に戦略を選択または切り替えるための実用的なガイダンスを提供することを示します。次に、各カテゴリの代表的なアプローチをレビューし、それらの強みと限界を分析し、重要な未解決の課題と将来の機会を強調します。全体として、本論文は、より能力が高く、効率的で信頼性のあるエージェントAIシステムを構築しようとする研究者や実務者に対して、概念的な基盤と実用的なロードマップを提供することを目的としています。
+# Summary (by gpt-4o-mini)
+- 本論文では、エージェントAIシステムの適応に関する体系的なフレームワークを提案し、エージェントの適応とツールの適応を分類。これにより、適応戦略の設計空間を明確化し、システム設計における戦略選択のガイダンスを提供。各アプローチの強みと限界を分析し、未解決の課題と将来の機会を強調。研究者や実務者に対して、能力が高く信頼性のあるエージェントAIシステム構築のための基盤を提供することを目指す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/alex_prompter/status/2002348526341402979?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AI Agentsには実行と適応の二つの軸があり、現在のエージェントは前者しか実施しない。このため、前提が変化すると環境に適応が誤りを繰り返す、適応することが重要[^1]といった話な模様。<br><br>適応と言った時にいくつかの軸があり、まずは<br>- エージェント自身<br>- エージェントが利用するツール<br><br>次に適応するためのシグナルとして<br>- ツールの実行結果<br>- エージェントのoutputの評価<br><br>がそれぞれあり、2x2のデザインスペースがあるが、現在はその1つしかできていない（i.e., フィードバック無しの実行）とのこと。<br><br><br>[^1]: デモではうまくいくが実際のユースケースではうまくいかないのはこのため、という主旨だとおもわれる。</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/2002878724598022649?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LASeR: Learning to Adaptively Select Reward Models with Multi-Armed  Bandits, Duy Nguyen+, arXiv'24, 2024.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.01735</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2936</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, NeurIPS, Generalization, RewardModel, Adaptive, Multi-Armed Bandit</tags>
+<repo-issue-date>2025-09-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.01735
+# Authors
+  - Duy Nguyen
+  - Archiki Prasad
+  - Elias Stengel-Eskin
+  - Mohit Bansal
+# Abstract
+  - Reward Models (RMs) are crucial to aligning large language models (LLMs), but the degree to which an RM specialized to one task (e.g. writing) generalizes to new tasks (e.g. math) is often not known a priori, often making using only one fixed RM to train LLMs suboptimal. However, optimizing LLMs with multiple RMs simultaneously can incur a prohibitively high computational cost and lead to conflicting signals from different RMs that may degrade performance. To address these challenges, we introduce LASeR (Learning to Adaptively Select Rewards), which frames reward model selection as a multi-armed bandit problem, efficiently and iteratively training LLMs using multiple RMs by selecting the most well-suited RM for each instance. On commonsense and math reasoning tasks, we show that LASeR boosts iterative LLM training, improving the absolute average accuracy of Llama-3-8B over three datasets by 2.67% over an ensemble of RM scores while also showing superior efficiency (e.g., a 2x speedup). Moreover, on WildChat (open-ended instruction-following tasks), LASeR leads to a 72.69% AlpacaEval win rate over the RM score ensemble baseline. Extending to long-context generation, LASeR improves by 2.96 F1 points (avg.) on single-document QA tasks and 2.97 F1 points on few-shot learning over the RM score ensemble baseline with best-of-n sampling.
+# Translation (by gpt-4o-mini)
+- 報酬モデル（RMs）は、大規模言語モデル（LLMs）を整合させるために重要ですが、特定のタスク（例：執筆）に特化したRMが新しいタスク（例：数学）にどの程度一般化できるかは、事前に知られていないことが多く、固定された1つのRMのみを使用してLLMsを訓練することは最適ではありません。しかし、複数のRMを同時に最適化することは、非常に高い計算コストを伴い、異なるRMからの矛盾する信号が性能を低下させる可能性があります。これらの課題に対処するために、私たちはLASeR（報酬を適応的に選択する学習）を導入します。これは、報酬モデルの選択を多腕バンディット問題として定式化し、各インスタンスに最も適したRMを選択することで、複数のRMを使用してLLMsを効率的かつ反復的に訓練します。常識的および数学的推論タスクにおいて、LASeRは反復的なLLM訓練を促進し、3つのデータセットにおけるLlama-3-8Bの絶対平均精度をRMスコアのアンサンブルに対して2.67%向上させ、優れた効率（例：2倍のスピードアップ）を示します。さらに、WildChat（オープンエンドの指示に従うタスク）では、LASeRはRMスコアアンサンブルのベースラインに対して72.69%のAlpacaEval勝率を達成します。長文生成に拡張すると、LASeRはRMスコアアンサンブルのベースラインに対して、単一文書QAタスクで平均2.96 F1ポイント、少数ショット学習で2.97 F1ポイントの改善を示します。
+# Summary (by gpt-4o-mini)
+- LASeRを導入し、報酬モデルの選択を多腕バンディット問題として定式化。これにより、最適なRMを選択しながらLLMsを効率的に訓練。常識的および数学的推論タスクでLlama-3-8Bの精度を2.67%向上させ、2倍のスピードアップを実現。WildChatタスクでは72.69%の勝率を達成し、長文生成でもF1ポイントの改善を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/archikiprasad/status/1970156543971557710?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=tSpWkTFASC&referrer=%5Bthe%20profile%20of%20Mohit%20Bansal%5D(%2Fprofile%3Fid%3D~Mohit_Bansal2)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tSpWkTFASC&referrer=%5Bthe%20profile%20of%20Mohit%20Bansal%5D(%2Fprofile%3Fid%3D~Mohit_Bansal2)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>HY-WU （Part I）: An Extensible Functional Neural Memory Framework and An Instantiation in Text-Guided Image Editing, Tencent HY Team, 2026.03</title>
+<original-paper-blog-link>https://tencent-hy-wu.github.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4805</repo-issue-link>
+<tags>ComputerVision, Personalization, PEFT(Adaptor/LoRA), 2D (Image), memory, Editing, One-Line Notes, ImageSynthesis, Adaptive</tags>
+<repo-issue-date>2026-03-06</repo-issue-date>
+<issue-body>https://tencent-hy-wu.github.io/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tencenthunyuan/status/2029644529578692723?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>source imageとpromptから、frozenされたモデルに対するadapter weightを（finetuningなしで）動的に生成し、インスタンス固有のパラメータを用いることでinstance specificな演算を実現する<br><br><img src="https://github.com/user-attachments/assets/80101cd9-4b9e-40c9-b8bc-2ef01b166f9f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4764" target="_blank" rel="noopener noreferrer">[Paper Note] Doc-to-LoRA: Learning to Instantly Internalize Contexts, Rujikorn Charakorn+, arXiv'26, 2026.02</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2033" target="_blank" rel="noopener noreferrer">[Paper Note] Text-to-LoRA: Instant Transformer Adaption, Rujikorn Charakorn+, ICML'25, 2025.06</a>
+</p></maintainer-comment-text>
+</paper-entry>

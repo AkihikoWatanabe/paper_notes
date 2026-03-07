@@ -1,0 +1,513 @@
+<paper-entry>
+<title>[Paper Note] A Unified View of Attention and Residual Sinks: Outlier-Driven Rescaling is Essential for Transformer Training, Zihan Qiu+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.22966</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4393</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Normalization, AttentionSinks, read-later, Stability, One-Line Notes</tags>
+<repo-issue-date>2026-02-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.22966
+# Authors
+  - Zihan Qiu
+  - Zeyu Huang
+  - Kaiyue Wen
+  - Peng Jin
+  - Bo Zheng
+  - Yuxin Zhou
+  - Haofeng Huang
+  - Zekun Wang
+  - Xiao Li
+  - Huaqing Zhang
+  - Yang Xu
+  - Haoran Lian
+  - Siqi Zhang
+  - Rui Men
+  - Jianwei Zhang
+  - Ivan Titov
+  - Dayiheng Liu
+  - Jingren Zhou
+  - Junyang Lin
+# Abstract
+  - We investigate the functional role of emergent outliers in large language models, specifically attention sinks (a few tokens that consistently receive large attention logits) and residual sinks (a few fixed dimensions with persistently large activations across most tokens). We hypothesize that these outliers, in conjunction with the corresponding normalizations (\textit{e.g.}, softmax attention and RMSNorm), effectively rescale other non-outlier components. We term this phenomenon \textit{outlier-driven rescaling} and validate this hypothesis across different model architectures and training token counts. This view unifies the origin and mitigation of both sink types. Our main conclusions and observations include: (1) Outliers function jointly with normalization: removing normalization eliminates the corresponding outliers but degrades training stability and performance; directly clipping outliers while retaining normalization leads to degradation, indicating that outlier-driven rescaling contributes to training stability. (2) Outliers serve more as rescale factors rather than contributors, as the final contributions of attention and residual sinks are significantly smaller than those of non-outliers. (3) Outliers can be absorbed into learnable parameters or mitigated via explicit gated rescaling, leading to improved training performance (average gain of 2 points) and enhanced quantization robustness (1.2 points degradation under W4A4 quantization).
+# Translation (by gpt-4o-mini)
+- 私たちは、大規模言語モデルにおける新たな外れ値の機能的役割、特に注意の沈み（常に大きな注意ログを受け取る少数のトークン）と残差の沈み（ほとんどのトークンで持続的に大きな活性化を示す少数の固定次元）を調査します。これらの外れ値は、対応する正規化（例えば、ソフトマックス注意やRMSNorm）と共に、他の非外れ値成分を効果的に再スケールすると仮定します。私たちはこの現象を「外れ値駆動の再スケーリング」と呼び、異なるモデルアーキテクチャやトークン数でこの仮説を検証しました。この見方は、両方の沈みタイプの起源と緩和を統一します。主な結論と観察は次のとおりです：（1）外れ値は正規化と共同で機能します：正規化を削除すると対応する外れ値が消失しますが、トレーニングの安定性とパフォーマンスが低下します；正規化を保持しながら外れ値を直接クリッピングすると、パフォーマンスの低下を招き、外れ値駆動の再スケーリングがトレーニングの安定性に寄与していることを示唆しています。（2）外れ値は寄与者というよりは再スケール要因として機能します。というのも、注意の沈みや残差の沈みの最終的な寄与は非外れ値のそれに比べて著しく小さいからです。（3）外れ値は学習可能なパラメータに吸収されるか、明示的なゲート付き再スケーリングを通じて緩和され、トレーニングパフォーマンスの向上（平均で2ポイントの向上）および量子化のロバスト性の強化（W4A4量子化下で1.2ポイントの低下）をもたらします。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルにおける外れ値の機能を調査し、注意の沈みと残差の沈みのメカニズムを明らかにする。外れ値は正規化と共に機能し、再スケーリングを通じてトレーニングの安定性を向上させ、パフォーマンスを改善。これにより、外れ値が寄与者ではなく再スケール要因であることを示し、学習可能なパラメータとの関係性を明らかにした。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2018214954734866936?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Attention Sinksにならい、Residual Sinksと命名されている</p><p>Attention Sinksや本研究で命名されているResidual Sinks（activationの特定の次元がほとんどのトークンで過剰に大きくなる現象）は正規化を排除するとなくなり（i.e., 正規化とセットで出現する）、これらがなくなると学習の安定性と性能が低下する。これらはTransformerアーキテクチャ内の外れ値として見ることができるが、この外れ値が存在することによってnormalizationにおいてrescalingが実施され安定性やパフォーマンスが向上している、という感じらしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SimpleGPT: Improving GPT via A Simple Normalization Strategy, Marco Chen+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.01212</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4389</repo-issue-link>
+<tags>NLP, Transformer, Architecture, Normalization, One-Line Notes</tags>
+<repo-issue-date>2026-02-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.01212
+# Authors
+  - Marco Chen
+  - Xianbiao Qi
+  - Yelin He
+  - Jiaquan Ye
+  - Rong Xiao
+# Abstract
+  - In this work, we revisit Transformer optimization through the lens of second-order geometry and establish a direct connection between architectural design, activation scale, the Hessian matrix, and the maximum tolerable learning rate. We introduce a simple normalization strategy, termed SimpleNorm, which stabilizes intermediate activation scales by construction. Then, by analyzing the Hessian of the loss with respect to network activations, we theoretically show that SimpleNorm significantly reduces the spectral norm of the Hessian, thereby permitting larger stable learning rates. We validate our theoretical findings through extensive experiments on large GPT models at parameter scales 1B, 1.4B, 7B and 8B. Empirically, SimpleGPT, our SimpleNorm-based network, tolerates learning rates 3$\times$-10$\times$ larger than standard convention, consistently demonstrates strong optimization stability, and achieves substantially better performance than well-established baselines. Specifically, when training 7B-scale models for 60K steps, SimpleGPT achieves a training loss that is 0.08 lower than that of LLaMA2 with QKNorm, reducing the loss from 2.290 to 2.208. Our source code will be released at https://github.com/Ocram7/SimpleGPT.
+# Translation (by gpt-4o-mini)
+- 本研究では、第二次幾何学の観点からTransformerの最適化を再検討し、アーキテクチャの設計、活性化スケール、ヘッセ行列、および最大許容学習率との直接的な関係を確立します。私たちは、SimpleNormと呼ばれるシンプルな正規化戦略を導入し、設計によって中間活性化スケールを安定させます。その後、ネットワークの活性化に対する損失のヘッセ行列を分析することで、理論的にSimpleNormがヘッセ行列のスペクトルノルムを大幅に減少させ、より大きな安定した学習率を許可することを示します。私たちは、1B、1.4B、7B、8Bのパラメータスケールの大規模GPTモデルについての広範な実験を通じて理論的な発見を検証します。経験的に、私たちのSimpleNormに基づくネットワークSimpleGPTは、標準的な慣行よりも3倍から10倍大きな学習率を許容し、一貫して強い最適化安定性を示し、確立されたベースラインよりも顕著に優れた性能を達成します。具体的には、7Bスケールモデルを60Kステップで訓練する際、SimpleGPTはLLaMA2のQKNormよりも0.08低い訓練損失を達成し、損失を2.290から2.208に減少させます。私たちのソースコードはhttps://github.com/Ocram7/SimpleGPTで公開される予定です。
+# Summary (by gpt-4o-mini)
+- 本研究では、Transformerの最適化を第二次幾何学の視点から再評価し、活性化スケールの安定化を目的としたSimpleNormという正規化戦略を提案。これにより、ヘッセ行列のスペクトルノルムが低下し、より大きな学習率が許容されることを理論的に示します。1Bから8BのパラメータスケールのGPTモデルでの実験により、SimpleGPTは従来の手法よりも3倍から10倍の高い学習率を持ち、安定性と性能で優れた結果を実現。特に、7Bモデルでは、LLaMA2よりも低い訓練損失を記録しました。ソースコードは公開予定です。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/papers_anon/status/2018569588464849374?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LinearLayerをSimpleNormと呼ばれるオペレーターに置換するだけなシンプルな手法で性能向上しているようである。SimpleNormオペレーターは式(3)であり、Linearによる変換の"直後"に任意のNormalizationを実施するようなオペレーターとして定義される。SimpleGPTではPreLNなどは実施しない。<br><br><img src="https://github.com/user-attachments/assets/85c5125d-5223-4e10-a4b5-ebcfa131040e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] GeoNorm: Unify Pre-Norm and Post-Norm with Geodesic Optimization, Chuanyang Zheng+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.22095</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4350</repo-issue-link>
+<tags>NLP, LanguageModel, Transformer, Architecture, Normalization, read-later</tags>
+<repo-issue-date>2026-01-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.22095
+# Authors
+  - Chuanyang Zheng
+  - Jiankai Sun
+  - Yihang Gao
+  - Chi Wang
+  - Yuehao Wang
+  - Jing Xiong
+  - Liliang Ren
+  - Bo Peng
+  - Qingmei Wang
+  - Xiaoran Shang
+  - Mac Schwager
+  - Anderson Schneider
+  - Yuriy Nevmyvaka
+  - Xiaodong Liu
+# Abstract
+  - The placement of normalization layers, specifically Pre-Norm and Post-Norm, remains an open question in Transformer architecture design. In this work, we rethink these approaches through the lens of manifold optimization, interpreting the outputs of the Feed-Forward Network (FFN) and attention layers as update directions in optimization. Building on this perspective, we introduce GeoNorm, a novel method that replaces standard normalization with geodesic updates on the manifold. Furthermore, analogous to learning rate schedules, we propose a layer-wise update decay for the FFN and attention components. Comprehensive experiments demonstrate that GeoNorm consistently outperforms existing normalization methods in Transformer models. Crucially, GeoNorm can be seamlessly integrated into standard Transformer architectures, achieving performance improvements with negligible additional computational cost.
+# Translation (by gpt-4o-mini)
+- <abstract>正規化層の配置、特にPre-NormとPost-Normは、Transformerアーキテクチャ設計において未解決の問題です。本研究では、これらのアプローチをマニフォールド最適化の観点から再考し、フィードフォワードネットワーク（FFN）や注意層の出力を最適化における更新方向として解釈します。この視点に基づいて、標準の正規化をマニフォールド上の測地線更新で置き換える新しい手法であるGeoNormを提案します。さらに、学習率スケジュールにならって、FFNおよび注意成分の層ごとの更新減衰を提案します。包括的な実験により、GeoNormはTransformerモデルにおいて既存の正規化手法を一貫して上回ることが示されました。重要なことに、GeoNormは標準のTransformerアーキテクチャにシームレスに統合でき、追加の計算コストがわずかであっても性能向上を達成します。</abstract>
+# Summary (by gpt-4o-mini)
+- 正規化層の配置に関する問題をマニフォールド最適化の視点から再考し、フィードフォワードネットワークと注意層の出力を更新方向として解釈。新手法GeoNormを提案し、標準の正規化を測地線更新に置き換える。包括的な実験で既存手法を一貫して上回る性能を確認。GeoNormは標準Transformerへ簡易に統合可能で、追加コストがわずかでも性能向上を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2017102966810169735?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Post-LayerNorm Is Back: Stable, ExpressivE, and Deep, Chen Chen+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.19895</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4327</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Transformer, Architecture, Normalization, read-later, Stability, ResidualStream</tags>
+<repo-issue-date>2026-01-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.19895
+# Authors
+  - Chen Chen
+  - Lai Wei
+# Abstract
+  - Large language model (LLM) scaling is hitting a wall. Widening models yields diminishing returns, and extending context length does not improve fundamental expressivity. In contrast, depth scaling offers theoretically superior expressivity, yet current Transformer architectures struggle to train reliably at extreme depths. We revisit the Post-LayerNorm (Post-LN) formulation, whose instability at scale caused its replacement by Pre-LN in modern LLMs. We show that the central failure mode of Post-LN arises from the ResNet-style residual pathway, which introduces gradient vanishing in deep networks. We present Keel, a Post-LN Transformer that replaces this residual path with a Highway-style connection. This modification preserves the gradient flow through the residual branch, preventing signal vanishing from the top layers to the bottom. Unlike prior methods, Keel enables stable training at extreme depths without requiring specialized initialization or complex optimization tricks. Keel trains robustly at depths exceeding 1000 layers and consistently improves perplexity and depth-scaling characteristics over Pre-LN. These findings indicate that Post-LN, when paired with a Highway-style connection, provides a simple and effective foundation for building deeply scalable LLMs, opening the possibility for future infinite-depth architectures.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）のスケーリングは限界に達しています。モデルを大きくすることで得られるリターンは減少し、コンテキストの長さを延ばしても基本的な表現力は向上しません。一方で、深さのスケーリングは理論的に優れた表現力を提供しますが、現在のトランスフォーマーアーキテクチャは極端な深さでの安定したトレーニングに苦しんでいます。私たちは、スケールでの不安定性が現代のLLMにおけるPre-LNへの置き換えを引き起こしたPost-LayerNorm（Post-LN）の定式化を再検討します。Post-LNの中心的な失敗モードはResNetスタイルの残差経路に起因し、これが深いネットワークにおいて勾配消失を引き起こします。私たちは、残差経路をハイウェイスタイルの接続に置き換えたPost-LNトランスフォーマー「Keel」を提案します。この修正により、残差ブランチを通じた勾配の流れが保持され、上層から下層への信号消失が防がれます。従来の方法とは異なり、Keelは特別な初期化や複雑な最適化トリックを必要とせず、極端な深さでの安定したトレーニングを可能にします。Keelは1000層を超える深さで頑健に訓練でき、Pre-LNに対してパープレキシティや深さスケーリング特性を一貫して改善します。これらの発見は、ハイウェイスタイルの接続と組み合わせたPost-LNが、深くスケーラブルなLLMを構築するためのシンプルで効果的な基盤を提供し、将来の無限深度アーキテクチャの可能性を開くことを示しています。
+# Summary (by gpt-4o-mini)
+- LLMのスケーリングには限界があり、モデルの大きさやコンテキスト長の延長が表現力を向上させない一方、深さのスケーリングは有望だが訓練の安定性に課題がある。本研究では、Post-LayerNormの問題を再検討し、残差経路をハイウェイスタイルの接続に置き換えた「Keel」トランスフォーマーを提案。これにより勾配消失を防ぎ、1000層以上でも安定した訓練を可能にし、Pre-LNよりも性能を向上させる。Keelは、今後の深層アーキテクチャ構築の新たな基盤を提供する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2016363316097294732?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>PostLNと言えばOlmo 2:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1797" target="_blank" rel="noopener noreferrer">OLMo 2 32B: First fully open model to outperform GPT 3.5 and GPT 4o mini, AllenAI, 20250.3</a>
+</p><p>1000 layerを超えるネットワークを安定して学習、、だと、、<br><br>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3859" target="_blank" rel="noopener noreferrer">[Paper Note] 1000 Layer Networks for Self-Supervised RL: Scaling Depth Can Enable New Goal-Reaching Capabilities, Wang+, NeurIPS'25 Best Paper Awards</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SeeDNorm: Self-Rescaled Dynamic Normalization, Wenrui Cai+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.22777</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3485</repo-issue-link>
+<tags>ComputerVision, MachineLearning, NLP, LanguageModel, Transformer, Architecture, Normalization</tags>
+<repo-issue-date>2025-10-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.22777
+# Authors
+  - Wenrui Cai
+  - Defa Zhu
+  - Qingjie Liu
+  - Qiyang Min
+# Abstract
+  - Normalization layer constitutes an essential component in neural networks. In transformers, the predominantly used RMSNorm constrains vectors to a unit hypersphere, followed by dimension-wise rescaling through a learnable scaling coefficient $\gamma$ to maintain the representational capacity of the model. However, RMSNorm discards the input norm information in forward pass and a static scaling factor $\gamma$ may be insufficient to accommodate the wide variability of input data and distributional shifts, thereby limiting further performance improvements, particularly in zero-shot scenarios that large language models routinely encounter. To address this limitation, we propose SeeDNorm, which enhances the representational capability of the model by dynamically adjusting the scaling coefficient based on the current input, thereby preserving the input norm information and enabling data-dependent, self-rescaled dynamic normalization. During backpropagation, SeeDNorm retains the ability of RMSNorm to dynamically adjust gradient according to the input norm. We provide a detailed analysis of the training optimization for SeedNorm and proposed corresponding solutions to address potential instability issues that may arise when applying SeeDNorm. We validate the effectiveness of SeeDNorm across models of varying sizes in large language model pre-training as well as supervised and unsupervised computer vision tasks. By introducing a minimal number of parameters and with neglligible impact on model efficiency, SeeDNorm achieves consistently superior performance compared to previously commonly used normalization layers such as RMSNorm and LayerNorm, as well as element-wise activation alternatives to normalization layers like DyT.
+# Translation (by gpt-4o-mini)
+- 正規化層は、ニューラルネットワークにおいて重要な要素を構成しています。トランスフォーマーでは、主に使用されるRMSNormは、ベクトルを単位超球面に制約し、モデルの表現能力を維持するために学習可能なスケーリング係数$\gamma$による次元ごとの再スケーリングを行います。しかし、RMSNormはフォワードパスで入力のノルム情報を破棄し、静的なスケーリング係数$\gamma$は入力データの広範な変動や分布のシフトに対応するには不十分であり、その結果、特に大規模言語モデルが日常的に直面するゼロショットシナリオにおいてさらなる性能向上が制限されます。この制限に対処するために、我々はSeeDNormを提案します。SeeDNormは、現在の入力に基づいてスケーリング係数を動的に調整することでモデルの表現能力を向上させ、入力のノルム情報を保持し、データ依存の自己再スケーリング動的正規化を可能にします。バックプロパゲーション中、SeeDNormはRMSNormの能力を保持し、入力のノルムに応じて勾配を動的に調整します。SeedNormのトレーニング最適化に関する詳細な分析を提供し、SeeDNormを適用する際に発生する可能性のある不安定性の問題に対処するための対応策を提案します。SeeDNormの有効性を、大規模言語モデルの事前トレーニングや、監視ありおよび監視なしのコンピュータビジョンタスクにおいて、さまざまなサイズのモデルで検証しました。最小限のパラメータを導入し、モデルの効率に対する影響は無視できる程度であり、SeeDNormはRMSNormやLayerNormなどの従来の正規化層、さらにはDyTのような正規化層に対する要素ごとの活性化代替手法と比較して、一貫して優れた性能を達成します。
+# Summary (by gpt-4o-mini)
+- SeeDNormは、入力に基づいて動的にスケーリング係数を調整する新しい正規化層であり、RMSNormの限界を克服します。これにより、入力のノルム情報を保持し、データ依存の自己再スケーリングを実現。大規模言語モデルやコンピュータビジョンタスクでの有効性を検証し、従来の正規化手法と比較して優れた性能を示しました。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] The Curse of Depth in Large Language Models, Wenfang Sun+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2502.05795</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2131</repo-issue-link>
+<tags>NLP, LanguageModel, Transformer, Architecture, Normalization, Selected Papers/Blogs, One-Line Notes</tags>
+<repo-issue-date>2025-07-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2502.05795
+# Authors
+  - Wenfang Sun
+  - Xinyuan Song
+  - Pengxiang Li
+  - Lu Yin
+  - Yefeng Zheng
+  - Shiwei Liu
+# Abstract
+  - In this paper, we introduce the Curse of Depth, a concept that highlights, explains, and addresses the recent observation in modern Large Language Models (LLMs) where nearly half of the layers are less effective than expected. We first confirm the wide existence of this phenomenon across the most popular families of LLMs such as Llama, Mistral, DeepSeek, and Qwen. Our analysis, theoretically and empirically, identifies that the underlying reason for the ineffectiveness of deep layers in LLMs is the widespread usage of Pre-Layer Normalization (Pre-LN). While Pre-LN stabilizes the training of Transformer LLMs, its output variance exponentially grows with the model depth, which undesirably causes the derivative of the deep Transformer blocks to be an identity matrix, and therefore barely contributes to the training. To resolve this training pitfall, we propose LayerNorm Scaling (LNS), which scales the variance of output of the layer normalization inversely by the square root of its depth. This simple modification mitigates the output variance explosion of deeper Transformer layers, improving their contribution. Across a wide range of model sizes (130M to 7B), our experiments show that LNS consistently outperforms previous normalization and scaling techniques in enhancing LLM pre-training performance. Moreover, this improvement seamlessly carries over to supervised fine-tuning. All these gains can be attributed to the fact that LayerNorm Scaling enables deeper layers to contribute more effectively during training. Our code is available at \href{https://github.com/lmsdss/LayerNorm-Scaling}{LayerNorm-Scaling}.
+# Translation (by gpt-4o-mini)
+- 本論文では、「深さの呪い」という概念を紹介します。これは、現代の大規模言語モデル（LLMs）において、ほぼ半分の層が期待されるほど効果的でないという最近の観察を強調し、説明し、対処するものです。まず、Llama、Mistral、DeepSeek、Qwenなどの最も人気のあるLLMファミリー全体にこの現象が広く存在することを確認します。理論的および実証的な分析により、LLMの深い層の効果が薄い根本的な理由は、前層正規化（Pre-LN）の広範な使用にあることを特定しました。Pre-LNはTransformer LLMのトレーニングを安定させますが、その出力の分散はモデルの深さに対して指数的に増加し、望ましくないことに、深いTransformerブロックの導関数が単位行列となり、トレーニングにほとんど寄与しなくなります。このトレーニングの落とし穴を解決するために、層正規化スケーリング（LNS）を提案します。これは、層正規化の出力の分散をその深さの平方根の逆数でスケーリングします。この単純な修正により、深いTransformer層の出力分散の爆発を軽減し、貢献度を向上させます。モデルサイズ（130Mから7B）にわたる広範な実験において、LNSはLLMの事前トレーニング性能を向上させるために、以前の正規化およびスケーリング技術を一貫して上回ることを示しました。さらに、この改善は、教師ありファインチューニングにもシームレスに引き継がれます。これらのすべての利点は、層正規化スケーリングが深い層がトレーニング中により効果的に寄与できるようにすることに起因しています。私たちのコードは、\href{https://github.com/lmsdss/LayerNorm-Scaling}{LayerNorm-Scaling}で入手可能です。
+# Summary (by gpt-4o-mini)
+- 本論文では、「深さの呪い」という現象を紹介し、LLMの深い層が期待通りに機能しない理由を分析します。Pre-LNの使用が出力の分散を増加させ、深い層の貢献を低下させることを特定。これを解決するために層正規化スケーリング（LNS）を提案し、出力分散の爆発を抑制します。実験により、LNSがLLMの事前トレーニング性能を向上させることを示し、教師ありファインチューニングにも効果があることを確認しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shiwei_liu66/status/1940377801032446428?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1795" target="_blank" rel="noopener noreferrer">[Paper Note] Transformers without Normalization, Jiachen Zhu+, CVPR'25</a>
+<br><br>ではそもそもLayerNormalizationを無くしていた（正確にいうとparametrize tanhに置換)が、どちらが優れているのだろうか？<br><br><img src="https://github.com/user-attachments/assets/4bc557a0-ae23-4017-9837-7744de74c12e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/2eead45c-209d-46e4-87e7-0129a4ec5ec2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1332" target="_blank" rel="noopener noreferrer">Knowledge Neurons in Pretrained Transformers, Damai Dai+, N/A, ACL'22, 2022.05</a>
+<br><br>では知識ニューロンの存在が示唆されており、これはTransformerの層の深い位置に存在し、かつ異なる知識間で知識ニューロンはシェアされない傾向にあった（ただしこれはPost-LNのBERTの話で本研究はPre-LNの話だが。Post-LNの勾配消失問題を緩和し学習を安定化させる研究も<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2141" target="_blank" rel="noopener noreferrer">[Paper Note] On Layer Normalizations and Residual Connections in Transformers, Sho Takase+, arXiv'22</a>
+ のように存在する)。これはこの研究が明らかにしたこととどういう関係性があるだろうか。<br><br>また、LayerNormalizationのScalingによって深いTransformerブロックの導関数が単位行列となる（学習に寄与しなくなる）ことが改善された場合、知識ニューロンはどのように変化するだろうか？<br><br>（下記Geminiの応答を見た上での感想)なんとなーくだけれども、おそらく知識ニューロンの局所化が解消されるのかなーという気がする。<br><br>となると次の疑問としては、MoEアーキテクチャにはどのような影響があるだろうか？<br>そもそも知識ニューロンが局所化しているからMoEアーキテクチャのルータによって関連するExpertsのみをactivateすれば（というより結果的にそうなるように学習される）性能を劣化させずに計算効率を上げられていた、と仮定する。そうすると、知識ニューロンが局所化せずに多くのニューロンでシェアされるようになると、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2110" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Experts: Unlocking the Communication Power of  Mixture-of-Experts Models, Zihan Wang+, arXiv'25</a>
+ のように、サブネットワーク間の情報を互いにやりとりできます、みたいな仕組みがより効いてきそうな気がする。<br><br>参考までに、Gemini2.5-Proに考察させてみた結果をメモとして残しておく（あくまで参考程度に...）<br>```<br>ご質問ありがとうございます。非常に興味深い着眼点ですね。「Knowledge Neurons in Pretrained Transformers」と「The Curse of Depth in Large Language Models」は、一見すると全く異なるテーマを扱っているように見えますが、**「Transformerの深い層における振る舞い」**という共通点で結びつけて考察すると、非常に示唆に富んだ関係性が見えてきます。<br><br>以下に、両方の論文の概要を解説し、その関係性について考察します。<br><br>1. Knowledge Neurons in Pretrained Transformers の概要<br>この研究は、事前学習済みTransformerモデル（特にBERTなど）の内部で、特定の事実知識がどのように格納されているかを調査したものです。<br><br>発見: モデルの中間層、特に**全結合層（Feed-Forward Network, FFN）に、特定の知識（例：「ダンテ・アリギエーリはイタリアで生まれた」）に強く反応する「知識ニューロン」**が存在することを発見しました。<br><br>特徴: これらの知識ニューロンは、モデルの深い層（後方の層）に、より多く存在する傾向がありました。<br><br>意味: これまでブラックボックスとされてきた大規模言語モデルの内部で、知識がどのように表現・局在化しているかについて、具体的な手がかりを与えた画期的な研究です。<br><br>2. The Curse of Depth in Large Language Models の概要<br>この研究は、LLMをより深く（層を多く）することの難しさに焦点を当て、その原因と解決策を提案したものです。<br><br>問題（深さの呪い）: Transformerの標準的なアーキテクチャ（Pre-LN）では、層が深くなるにつれて、LayerNormalization（LN）への入力の分散が指数関数的に増大してしまいます。<br><br>結果:<br><br>出力が大きくなりすぎて学習が不安定になります。<br><br>さらに深刻なのは、深い層ではモデルの出力に関する導関数（勾配計算に必要）がほぼ単位行列になってしまうことです。これは、その層が入力に対してほとんど変換を行わなくなり、学習に寄与しなくなることを意味します。<br><br>解決策: この問題を解決するため、各層のLayerNormalizationをその深さ（レイヤー番号 l）に応じてスケーリングするというシンプルな手法を提案しました。これにより、深い層でも勾配が適切に伝播し、学習が安定・改善することが示されました。<br><br>考察：2つの研究の関係性<br>これら2つの研究は、**「学習の安定性」と「知識の格納方法」**という異なる側面から、Transformerの深い層を分析していますが、両者には以下のような深い関係性があると考えられます。<br><br>学習の不安定性が「知識ニューロン」形成の背景にある可能性<br>「The Curse of Depth」で指摘されているように、標準的なTransformerの深い層は、本質的に学習が不安定で、勾配情報が失われやすい環境にあります。<br><br>この劣悪な学習環境こそが、「知識ニューロン」という形で知識が局所的に格納される原因の一つになっている可能性があります。つまり、<br><br>学習の非効率性: 深い層のほとんどのニューロンは、勾配消失問題のために効率的に学習を進めることができません。<br><br>専門化の発生: そのような不安定な環境下で、たまたま特定の知識パターンをうまく捉えることができた一部のニューロンが、その知識を一身に背負う形で強く活性化するよう特化（専門化）していったのではないか、と考えられます。これは、ネットワーク全体で協調して学習するのが難しい状況で、一部のユニットだけが突出して学習を担う、という現象と解釈できます。<br><br>学習の安定化が、より効率的な知識獲得につながる<br>では、「The Curse of Depth」で提案された手法（LNのスケーリング）によって深い層の学習が安定化すると、知識の格納方法はどのように変わるでしょうか。<br><br>これは非常に興味深い問いであり、2つの可能性が考えられます。<br><br>可能性A: より強固な知識ニューロンの形成:<br>学習が安定することで、各知識ニューロンはより明確に、そして効率的に特定の知識をエンコードできるようになるかもしれません。ノイズの多い環境で偶然生まれた専門家ではなく、安定した環境で育成された真の専門家へと変化するイメージです。<br><br>可能性B: 知識の分散化:<br>ネットワークの全ニューロンが効率的に学習に寄与できるようになるため、一つの知識を少数のニューロンに集中させる必要がなくなり、より多くのニューロンに分散して知識が格納されるようになる可能性も考えられます。<br><br>現在のところ、学習の安定化は、知識ニューロンがより効率的に形成・機能するための基盤を提供すると考えるのが最も妥当でしょう。「深さの呪い」という問題を解決することは、モデルが知識をどのように獲得し、整理するかという、より根源的なメカニズム（知識ニューロンの振る舞い）にも直接的な影響を与えるはずです。<br><br>まとめ<br>「Knowledge Neurons」は深い層に存在する知識の**「状態」を明らかにし、「The Curse of Depth」は深い層で発生する学習の「問題」**とその解決策を提示しました。<br><br>これらを統合すると、**「深い層における学習の不安定性という問題が、知識ニューロンという局所的な知識表現を生み出す一因となっており、この問題を解決することで、より効率的で安定した知識の獲得・格納が可能になるかもしれない」**という関係性が見えてきます。<br><br>両者は、LLMの能力と限界を異なる角度から照らし出しており、組み合わせることでモデルの内部動作の解明をさらに一歩前進させる、非常に重要な研究だと言えます。<br>```</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Transformers without Normalization, Jiachen Zhu+, CVPR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.10622</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1795</repo-issue-link>
+<tags>EfficiencyImprovement, MachineLearning, NLP, Transformer, Architecture, CVPR, Normalization</tags>
+<repo-issue-date>2025-03-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.10622
+# Authors
+  - Jiachen Zhu
+  - Xinlei Chen
+  - Kaiming He
+  - Yann LeCun
+  - Zhuang Liu
+# Abstract
+  - Normalization layers are ubiquitous in modern neural networks and have long been considered essential. This work demonstrates that Transformers without normalization can achieve the same or better performance using a remarkably simple technique. We introduce Dynamic Tanh (DyT), an element-wise operation $DyT($x$) = \tanh(\alpha $x$)$, as a drop-in replacement for normalization layers in Transformers. DyT is inspired by the observation that layer normalization in Transformers often produces tanh-like, $S$-shaped input-output mappings. By incorporating DyT, Transformers without normalization can match or exceed the performance of their normalized counterparts, mostly without hyperparameter tuning. We validate the effectiveness of Transformers with DyT across diverse settings, ranging from recognition to generation, supervised to self-supervised learning, and computer vision to language models. These findings challenge the conventional understanding that normalization layers are indispensable in modern neural networks, and offer new insights into their role in deep networks.
+# Translation (by gpt-4o-mini)
+- 正規化層は現代のニューラルネットワークにおいて普遍的であり、長い間不可欠であると考えられてきました。本研究では、正規化なしのトランスフォーマーが、驚くほどシンプルな手法を用いることで同等またはそれ以上のパフォーマンスを達成できることを示します。私たちは、正規化層の代替としてトランスフォーマーにおける要素ごとの操作であるDynamic Tanh（DyT）を導入します。DyTは、トランスフォーマーにおけるレイヤー正規化がしばしばtanhのようなS字型の入力-出力マッピングを生成するという観察に触発されています。DyTを取り入れることで、正規化なしのトランスフォーマーは、主にハイパーパラメータの調整なしで、正規化された対応物のパフォーマンスに匹敵するか、それを超えることができます。私たちは、認識から生成、教師あり学習から自己教師あり学習、コンピュータビジョンから言語モデルに至るまで、多様な設定におけるDyTを用いたトランスフォーマーの効果を検証しました。これらの発見は、正規化層が現代のニューラルネットワークにおいて不可欠であるという従来の理解に挑戦し、深層ネットワークにおけるその役割に関する新たな洞察を提供します。
+# Summary (by gpt-4o-mini)
+- 本研究では、正規化層なしのトランスフォーマーがDynamic Tanh（DyT）を用いることで、同等またはそれ以上のパフォーマンスを達成できることを示します。DyTは、レイヤー正規化の代替として機能し、ハイパーパラメータの調整なしで効果を発揮します。多様な設定での実験により、正規化層の必要性に対する新たな洞察を提供します。</issue-body>
+<maintainer-comment-text><p>なん…だと…。LayerNormalizationを下記アルゴリズムのようなtanhを用いた超絶シンプルなレイヤー（parameterized thnh [Lecun氏ポスト](
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ylecun/status/1900610590315249833?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q)）に置換するだけっぽい？"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><img src="https://github.com/user-attachments/assets/474d3ee4-4c08-4b00-9a41-126ca5d5207e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/5aea9f93-85d9-4e0b-b9db-bb407d596493" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>同等以上の性能を維持しながらモデル全体のinference, trainingの時間を8%程度削減。<br><img src="https://github.com/user-attachments/assets/98f8caa3-3ef2-4594-a45a-ae0aa2cf2ef6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Magneto: A Foundation Transformer, Hongyu Wang+, ICML'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2210.06423</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1899</repo-issue-link>
+<tags>ComputerVision, NLP, Transformer, MultiModal, SpeechProcessing, Architecture, ICML, Normalization, KeyPoint Notes</tags>
+<repo-issue-date>2025-04-19</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2210.06423
+- JMLR: https://proceedings.mlr.press/v202/wang23u.html
+# Authors
+  - Hongyu Wang
+  - Shuming Ma
+  - Shaohan Huang
+  - Li Dong
+  - Wenhui Wang
+  - Zhiliang Peng
+  - Yu Wu
+  - Payal Bajaj
+  - Saksham Singhal
+  - Alon Benhaim
+  - Barun Patra
+  - Zhun Liu
+  - Vishrav Chaudhary
+  - Xia Song
+  - Furu Wei
+# Abstract
+  - A big convergence of model architectures across language, vision, speech, and multimodal is emerging. However, under the same name "Transformers", the above areas use different implementations for better performance, e.g., Post-LayerNorm for BERT, and Pre-LayerNorm for GPT and vision Transformers. We call for the development of Foundation Transformer for true general-purpose modeling, which serves as a go-to architecture for various tasks and modalities with guaranteed training stability. In this work, we introduce a Transformer variant, named Magneto, to fulfill the goal. Specifically, we propose Sub-LayerNorm for good expressivity, and the initialization strategy theoretically derived from DeepNet for stable scaling up. Extensive experiments demonstrate its superior performance and better stability than the de facto Transformer variants designed for various applications, including language modeling (i.e., BERT, and GPT), machine translation, vision pretraining (i.e., BEiT), speech recognition, and multimodal pretraining (i.e., BEiT-3).
+# Translation (by gpt-4o-mini)
+- 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの大きな収束が進行しています。しかし、「Transformers」という同じ名称の下で、上記の分野ではより良いパフォーマンスを得るために異なる実装が使用されています。例えば、BERTにはPost-LayerNormが、GPTや視覚TransformersにはPre-LayerNormが用いられています。私たちは、真の汎用モデリングのためのFoundation Transformerの開発を呼びかけます。これは、さまざまなタスクやモダリティに対して、トレーニングの安定性が保証されたアーキテクチャとして機能します。本研究では、この目標を達成するために、Magnetoと名付けたTransformerの変種を紹介します。具体的には、良好な表現力のためのSub-LayerNormと、安定したスケーリングのためにDeepNetから理論的に導出された初期化戦略を提案します。広範な実験により、言語モデリング（BERTやGPT）、機械翻訳、視覚事前学習（BEiT）、音声認識、マルチモーダル事前学習（BEiT-3）など、さまざまなアプリケーション向けに設計された事実上のTransformer変種よりも、優れたパフォーマンスと安定性を示すことが確認されました。
+# Summary (by gpt-4o-mini)
+- 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの収束が進む中、異なる実装の「Transformers」が使用されている。汎用モデリングのために、安定性を持つFoundation Transformerの開発が提唱され、Magnetoという新しいTransformer変種が紹介される。Sub-LayerNormと理論に基づく初期化戦略を用いることで、さまざまなアプリケーションにおいて優れたパフォーマンスと安定性を示した。</issue-body>
+<maintainer-comment-text><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] On Layer Normalizations and Residual Connections in Transformers, Sho Takase+, arXiv'22</title>
+<original-paper-blog-link>https://arxiv.org/abs/2206.00330v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2141</repo-issue-link>
+<tags>NLP, Transformer, Architecture, Normalization, Encoder-Decoder</tags>
+<repo-issue-date>2025-07-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2206.00330v1
+# Authors
+  - Sho Takase
+  - Shun Kiyono
+  - Sosuke Kobayashi
+  - Jun Suzuki
+# Abstract
+  - In the perspective of a layer normalization (LN) position, the architecture of Transformers can be categorized into two types: Post-LN and Pre-LN. Recent Transformers prefer to select Pre-LN because the training in Post-LN with deep Transformers, e.g., ten or more layers, often becomes unstable, resulting in useless models. However, in contrast, Post-LN has also consistently achieved better performance than Pre-LN in relatively shallow Transformers, e.g., six or fewer layers. This study first investigates the reason for these discrepant observations empirically and theoretically and discovers 1, the LN in Post-LN is the source of the vanishing gradient problem that mainly leads the unstable training whereas Pre-LN prevents it, and 2, Post-LN tends to preserve larger gradient norms in higher layers during the back-propagation that may lead an effective training. Exploiting the new findings, we propose a method that can equip both higher stability and effective training by a simple modification from Post-LN. We conduct experiments on a wide range of text generation tasks and demonstrate that our method outperforms Pre-LN, and stable training regardless of the shallow or deep layer settings.
+# Translation (by gpt-4o-mini)
+- レイヤー正規化（LN）の位置の観点から、TransformerのアーキテクチャはPost-LNとPre-LNの2種類に分類できます。最近のTransformerは、深いTransformer（例えば、10層以上）のPost-LNでのトレーニングが不安定になり、無駄なモデルを生むことが多いため、Pre-LNを選択する傾向があります。しかし、対照的に、Post-LNは相対的に浅いTransformer（例えば、6層以下）においてPre-LNよりも一貫して優れたパフォーマンスを発揮しています。本研究では、これらの相違する観察の理由を実証的かつ理論的に調査し、1つ目は、Post-LNのLNが主に不安定なトレーニングを引き起こす消失勾配問題の原因であり、Pre-LNはそれを防ぐこと、2つ目は、Post-LNがバックプロパゲーション中に高い層でより大きな勾配ノルムを保持する傾向があり、これが効果的なトレーニングにつながることを発見しました。新たな発見を活用し、Post-LNからの単純な修正によって、より高い安定性と効果的なトレーニングを実現できる方法を提案します。さまざまなテキスト生成タスクに関する実験を行い、我々の方法がPre-LNを上回り、浅い層設定でも深い層設定でも安定したトレーニングを実現することを示しました。
+# Summary (by gpt-4o-mini)
+- 本研究では、Transformerアーキテクチャのレイヤー正規化の位置に関するPost-LNとPre-LNの違いを調査。Post-LNは浅い層で優れた性能を示す一方、深い層では不安定なトレーニングを引き起こす消失勾配問題があることを発見。これを踏まえ、Post-LNの修正により安定したトレーニングを実現する方法を提案し、実験でPre-LNを上回る結果を示した。</issue-body>
+<maintainer-comment-text><p>Pre-LNの安定性を持ちながらもPost-LNのような高い性能を発揮する良いとこ取りのB2TConnectionを提案<br><img src="https://github.com/user-attachments/assets/4d85bf16-19e4-4d2a-85e5-87da45cd2a98" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/af0aeae5-554a-4997-96a3-929cd7dd90bb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>NLP2022:
+
+{% raw %}
+<a href="https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/A2-5.pdf" target="_blank" rel="noopener noreferrer">https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/A2-5.pdf</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22</title>
+<original-paper-blog-link>https://arxiv.org/abs/2203.00555</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1900</repo-issue-link>
+<tags>NLP, Transformer, Architecture, Normalization</tags>
+<repo-issue-date>2025-04-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2203.00555
+# Authors
+  - Hongyu Wang
+  - Shuming Ma
+  - Li Dong
+  - Shaohan Huang
+  - Dongdong Zhang
+  - Furu Wei
+# Abstract
+  - In this paper, we propose a simple yet effective method to stabilize extremely deep Transformers. Specifically, we introduce a new normalization function (DeepNorm) to modify the residual connection in Transformer, accompanying with theoretically derived initialization. In-depth theoretical analysis shows that model updates can be bounded in a stable way. The proposed method combines the best of two worlds, i.e., good performance of Post-LN and stable training of Pre-LN, making DeepNorm a preferred alternative. We successfully scale Transformers up to 1,000 layers (i.e., 2,500 attention and feed-forward network sublayers) without difficulty, which is one order of magnitude deeper than previous deep Transformers. Remarkably, on a multilingual benchmark with 7,482 translation directions, our 200-layer model with 3.2B parameters significantly outperforms the 48-layer state-of-the-art model with 12B parameters by 5 BLEU points, which indicates a promising scaling direction.
+# Translation (by gpt-4o-mini)
+- 本論文では、非常に深いTransformerを安定化させるためのシンプルでありながら効果的な手法を提案します。具体的には、Transformerの残差接続を修正する新しい正規化関数（DeepNorm）を導入し、理論的に導出された初期化を伴います。詳細な理論分析により、モデルの更新が安定した方法で制約されることが示されます。提案手法は、Post-LNの優れた性能とPre-LNの安定したトレーニングの両方の利点を組み合わせており、DeepNormは好ましい代替手段となります。私たちは、1,000層（すなわち、2,500のアテンションおよびフィードフォワードネットワークのサブレイヤー）までのTransformerを問題なくスケールアップすることに成功し、これは以前の深いTransformerよりも1桁深いものです。特筆すべきことに、7,482の翻訳方向を持つ多言語ベンチマークにおいて、3.2Bパラメータを持つ200層のモデルが、12Bパラメータを持つ48層の最先端モデルを5 BLEUポイント上回る性能を示し、将来のスケーリングの方向性に対する期待を示しています。
+# Summary (by gpt-4o-mini)
+- 本論文では、深いTransformerを安定化させるための新しい正規化関数DeepNormを提案し、残差接続の修正と理論的初期化を行う。これにより、Post-LNの性能とPre-LNの安定性を兼ね備え、最大1,000層のTransformerをスケールアップ可能にした。特に、3.2Bパラメータの200層モデルが、12Bパラメータの48層モデルを5 BLEUポイント上回る性能を示し、今後のスケーリングの可能性を示唆している。</issue-body>
+<maintainer-comment-text><p>ステートオブAIガイドによる解説:
+
+{% raw %}
+<a href="https://ja.stateofaiguides.com/20220308-deepnet-transformer/" target="_blank" rel="noopener noreferrer">https://ja.stateofaiguides.com/20220308-deepnet-transformer/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Query-Key Normalization for Transformers, Alex Henry+, EMNLP'20 Findings</title>
+<original-paper-blog-link>https://arxiv.org/abs/2010.04245</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2443</repo-issue-link>
+<tags>MachineTranslation, Transformer, EMNLP, Normalization, Findings</tags>
+<repo-issue-date>2025-08-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2010.04245
+# Authors
+  - Alex Henry
+  - Prudhvi Raj Dachapally
+  - Shubham Pawar
+  - Yuxuan Chen
+# Abstract
+  - Low-resource language translation is a challenging but socially valuable NLP task. Building on recent work adapting the Transformer's normalization to this setting, we propose QKNorm, a normalization technique that modifies the attention mechanism to make the softmax function less prone to arbitrary saturation without sacrificing expressivity. Specifically, we apply $\ell_2$ normalization along the head dimension of each query and key matrix prior to multiplying them and then scale up by a learnable parameter instead of dividing by the square root of the embedding dimension. We show improvements averaging 0.928 BLEU over state-of-the-art bilingual benchmarks for 5 low-resource translation pairs from the TED Talks corpus and IWSLT'15.
+# Translation (by gpt-4o-mini)
+- 低リソース言語翻訳は、挑戦的でありながら社会的に価値のある自然言語処理（NLP）タスクです。最近の研究を基に、Transformersの正規化をこの設定に適応させる試みを行い、QKNormという正規化手法を提案します。この手法は、注意メカニズムを修正し、ソフトマックス関数が恣意的な飽和に対してより耐性を持つようにしつつ、表現力を犠牲にしないようにします。具体的には、各クエリおよびキー行列のヘッド次元に沿って$\ell_2$正規化を適用し、それらを掛け合わせる前に学習可能なパラメータでスケールアップし、埋め込み次元の平方根で割るのではなく、これを行います。TED TalksコーパスとIWSLT'15からの5つの低リソース翻訳ペアに対する最先端のバイリンガルベンチマークで、平均0.928 BLEUの改善を示しました。
+# Summary (by gpt-4o-mini)
+- 低リソース言語翻訳において、QKNormという新しい正規化手法を提案。これは、注意メカニズムを修正し、ソフトマックス関数の飽和耐性を向上させつつ表現力を維持。具体的には、クエリとキー行列に対して$\ell_2$正規化を適用し、学習可能なパラメータでスケールアップ。TED TalksコーパスとIWSLT'15の低リソース翻訳ペアで平均0.928 BLEUの改善を達成。</issue-body>
+<maintainer-comment-text><p>QKに対してL2正規化を実施し、learnableなスカラー値を乗じることでスケーリングすることで、low resourceな言語での翻訳性能が向上。MTで実験されているが、transformerの表現力が改善されるのでGLM-4.5のアーキテクチャでも採用されている。<br><br>dot product attentionでは内積を利用するため値域に制約がなく、ある単語にのみattention scoreが集中してしまい、他の全ての単語のsignalをかき消してしまう問題がある。このため、QKをノルムによって正規化し（これにより実質QKはcosine similarityとなる）値域を制限する。しかしこうすると今度はスコア間の差が小さすぎて、attendしなくても良い単語を無視できなくなるので、learnableなパラメータでスケールを調整する。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] On Layer Normalization in the Transformer Architecture, Ruibin Xiong+, arXiv'20</title>
+<original-paper-blog-link>https://arxiv.org/abs/2002.04745</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2142</repo-issue-link>
+<tags>Analysis, NLP, Transformer, Normalization, Encoder-Decoder</tags>
+<repo-issue-date>2025-07-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2002.04745
+# Authors
+  - Ruibin Xiong
+  - Yunchang Yang
+  - Di He
+  - Kai Zheng
+  - Shuxin Zheng
+  - Chen Xing
+  - Huishuai Zhang
+  - Yanyan Lan
+  - Liwei Wang
+  - Tie-Yan Liu
+# Abstract
+  - The Transformer is widely used in natural language processing tasks. To train a Transformer however, one usually needs a carefully designed learning rate warm-up stage, which is shown to be crucial to the final performance but will slow down the optimization and bring more hyper-parameter tunings. In this paper, we first study theoretically why the learning rate warm-up stage is essential and show that the location of layer normalization matters. Specifically, we prove with mean field theory that at initialization, for the original-designed Post-LN Transformer, which places the layer normalization between the residual blocks, the expected gradients of the parameters near the output layer are large. Therefore, using a large learning rate on those gradients makes the training unstable. The warm-up stage is practically helpful for avoiding this problem. On the other hand, our theory also shows that if the layer normalization is put inside the residual blocks (recently proposed as Pre-LN Transformer), the gradients are well-behaved at initialization. This motivates us to remove the warm-up stage for the training of Pre-LN Transformers. We show in our experiments that Pre-LN Transformers without the warm-up stage can reach comparable results with baselines while requiring significantly less training time and hyper-parameter tuning on a wide range of applications.
+# Translation (by gpt-4o-mini)
+- Transformerは自然言語処理タスクで広く使用されています。しかし、Transformerを訓練するには、通常、慎重に設計された学習率のウォームアップ段階が必要であり、これは最終的なパフォーマンスにとって重要であることが示されていますが、最適化を遅くし、より多くのハイパーパラメータの調整をもたらします。本論文では、まず理論的に学習率のウォームアップ段階がなぜ重要であるかを研究し、レイヤー正規化の位置が重要であることを示します。具体的には、平均場理論を用いて、初期化時に、残差ブロックの間にレイヤー正規化を配置した元の設計のPost-LN Transformerにおいて、出力層近くのパラメータの期待勾配が大きいことを証明します。したがって、これらの勾配に対して大きな学習率を使用すると、訓練が不安定になります。ウォームアップ段階はこの問題を回避するために実際に役立ちます。一方で、我々の理論は、レイヤー正規化が残差ブロック内に配置されている場合（最近提案されたPre-LN Transformer）には、初期化時に勾配が良好に振る舞うことも示しています。これにより、Pre-LN Transformerの訓練においてウォームアップ段階を削除する動機が生まれます。我々の実験では、ウォームアップ段階なしのPre-LN Transformerが、さまざまなアプリケーションにおいてベースラインと同等の結果を達成し、訓練時間とハイパーパラメータの調整が大幅に少なくて済むことを示しています。
+# Summary (by gpt-4o-mini)
+- 本論文では、Transformerの学習率のウォームアップ段階の重要性を理論的に研究し、レイヤー正規化の位置が訓練の安定性に与える影響を示す。特に、Post-LN Transformerでは大きな勾配が不安定さを引き起こすため、ウォームアップが有効である一方、Pre-LN Transformerでは勾配が良好に振る舞うため、ウォームアップを省略できることを示す。実験により、ウォームアップなしのPre-LN Transformerがベースラインと同等の結果を達成し、訓練時間とハイパーパラメータの調整が削減できることを確認した。</issue-body>
+<maintainer-comment-text><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=B1x8anVFPr" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=B1x8anVFPr</a>
+{% endraw %}
+
+</p><p>Encoder-DecoderのTransformerにおいて、Post-LNの場合は、Warmupを無くすと最終的な性能が悪化し、またWarmUpステップの値によって（500 vs. 4000で実験)も最終的な性能が変化する。これには学習時にハイパーパラメータをしっかり探索しなければならず、WarmUPを大きくすると学習効率が落ちるというデメリットがある。<br><img src="https://github.com/user-attachments/assets/e7a26ecd-7905-4e6c-bb9a-29b8289addb0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Post-LNの場合は、Pre-LNと比較して勾配が大きく、Warmupのスケジュールをしっかり設計しないと大きな勾配に対して大きな学習率が適用され学習が不安定になる。これは学習率を非常に小さくし、固定値を使うことで解決できるが、収束が非常に遅くなるというデメリットがある。<br><img src="https://github.com/user-attachments/assets/afb09f44-c7c9-44ab-9066-3ee788ebd8ee" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>一方、Pre-LNはWarmup無しでも、高い性能が達成でき、上記のようなチューニングの手間や学習効率の観点から利点がある、みたいな話の模様。<br><img src="https://github.com/user-attachments/assets/d675a58b-e876-4e41-a76f-306c2e1ce23f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Group Normalization, Yuxin Wu+, arXiv'18, 2018.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/1803.08494</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1856</repo-issue-link>
+<tags>NeuralNetwork, ComputerVision, MachineLearning, action_wanted, Normalization, One-Line Notes</tags>
+<repo-issue-date>2025-04-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1803.08494
+# Authors
+  - Yuxin Wu
+  - Kaiming He
+# Abstract
+  - Batch Normalization (BN) is a milestone technique in the development of deep learning, enabling various networks to train. However, normalizing along the batch dimension introduces problems --- BN's error increases rapidly when the batch size becomes smaller, caused by inaccurate batch statistics estimation. This limits BN's usage for training larger models and transferring features to computer vision tasks including detection, segmentation, and video, which require small batches constrained by memory consumption. In this paper, we present Group Normalization (GN) as a simple alternative to BN. GN divides the channels into groups and computes within each group the mean and variance for normalization. GN's computation is independent of batch sizes, and its accuracy is stable in a wide range of batch sizes. On ResNet-50 trained in ImageNet, GN has 10.6% lower error than its BN counterpart when using a batch size of 2; when using typical batch sizes, GN is comparably good with BN and outperforms other normalization variants. Moreover, GN can be naturally transferred from pre-training to fine-tuning. GN can outperform its BN-based counterparts for object detection and segmentation in COCO, and for video classification in Kinetics, showing that GN can effectively replace the powerful BN in a variety of tasks. GN can be easily implemented by a few lines of code in modern libraries.
+# Translation (by gpt-4o-mini)
+- バッチ正規化（BN）は、ディープラーニングの発展における重要な技術であり、さまざまなネットワークのトレーニングを可能にします。しかし、バッチ次元での正規化は問題を引き起こします。バッチサイズが小さくなると、BNの誤差は急速に増加し、これは不正確なバッチ統計の推定によって引き起こされます。このため、BNはメモリ消費に制約のある小さなバッチを必要とする検出やセグメンテーション、動画などのコンピュータビジョンタスクにおける大規模モデルのトレーニングや特徴の転送において制限されます。本論文では、BNの単純な代替手段としてグループ正規化（GN）を提案します。GNはチャネルをグループに分け、各グループ内で正規化のための平均と分散を計算します。GNの計算はバッチサイズに依存せず、さまざまなバッチサイズでの精度が安定しています。ImageNetでトレーニングされたResNet-50では、バッチサイズが2のとき、GNはそのBNの対抗馬よりも10.6%低い誤差を示しました。典型的なバッチサイズを使用すると、GNはBNと同等以上の性能を発揮し、他の正規化の変種を上回ります。さらに、GNは事前トレーニングからファインチューニングへの自然な移行が可能です。GNはCOCOにおける物体検出とセグメンテーション、Kineticsにおける動画分類でもBNベースの対抗者を上回り、多様なタスクにおいて強力なBNに効果的に置き換わることを示しています。GNは現代的なライブラリで数行のコードで簡単に実装できます。
+# Summary (by gpt-4o-mini)
+- バッチ正規化（BN）はディープラーニングの重要な技術だが、小さなバッチサイズでの精度低下が課題。本研究では、グループ正規化（GN）を提案し、チャネルをグループに分けて正規化を行うことで、バッチサイズに依存しない安定した性能を実現。ImageNetでの実験では、GNが小バッチでも優れた精度を示し、他のタスクでもBNよりも性能を向上させることを確認。GNは実装も簡単で、さまざまなコンピュータビジョンタスクにおいてBNの有効な代替手段である。</issue-body>
+<maintainer-comment-text><p>BatchNormalizationはバッチサイズが小さいとうまくいかず、メモリの制約で大きなバッチサイズが設定できない場合に困るからバッチサイズに依存しないnormalizationを考えたよ。LayerNormとInstanceNormもバッチサイズに依存しないけど提案手法の方が画像系のタスクだと性能が良いよ、という話らしい。<br><br>各normalizationとの比較。分かりやすい。<br><img src="https://github.com/user-attachments/assets/128a6a2e-cac7-4d6a-9cf6-31119fb6b187" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Attention Is All You Need, Ashish Vaswani+, NeurIPS'17, 2017.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/1706.03762</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/245</repo-issue-link>
+<tags>NeuralNetwork, MachineTranslation, NLP, Transformer, action_wanted, FoundationModel, Attention, PositionalEncoding, NeurIPS, Normalization, Selected Papers/Blogs, KeyPoint Notes, Reference Collection</tags>
+<repo-issue-date>2018-01-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1706.03762
+# Authors
+  - Ashish Vaswani
+  - Noam Shazeer
+  - Niki Parmar
+  - Jakob Uszkoreit
+  - Llion Jones
+  - Aidan N. Gomez
+  - Lukasz Kaiser
+  - Illia Polosukhin
+# Abstract
+  - The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-to-German translation task, improving over the existing best results, including ensembles by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.
+# Translation (by gpt-4o-mini)
+- 主流の系列変換モデルは、エンコーダ-デコーダ構成の複雑な再帰型または畳み込み型ニューラルネットワークに基づいています。最も優れたモデルは、エンコーダとデコーダを注意機構を通じて接続しています。私たちは、再帰や畳み込みを完全に排除し、注意機構のみに基づいた新しいシンプルなネットワークアーキテクチャであるTransformerを提案します。2つの機械翻訳タスクに関する実験では、これらのモデルが品質において優れていることが示され、より並列化可能で、トレーニングに必要な時間が大幅に短縮されることが分かりました。私たちのモデルは、WMT 2014の英語からドイツ語への翻訳タスクで28.4 BLEUを達成し、既存の最良の結果を2 BLEU以上改善しました。WMT 2014の英語からフランス語への翻訳タスクでは、私たちのモデルは8つのGPUで3.5日間のトレーニングを行った後、41.8という新しい単一モデルの最先端BLEUスコアを確立し、文献における最良モデルのトレーニングコストのごく一部で済みました。私たちは、Transformerが他のタスクにもよく一般化することを示し、大規模および限られたトレーニングデータの両方を用いた英語の構文解析に成功裏に適用しました。
+# Summary (by gpt-4o-mini)
+- Transformerは、再帰や畳み込みを排除し、注意機構のみに基づいた新しいネットワークアーキテクチャである。実験により、機械翻訳タスクで優れた品質を示し、トレーニング時間を大幅に短縮。WMT 2014の英独翻訳で28.4 BLEU、英仏翻訳で41.8 BLEUを達成し、既存モデルを上回る性能を示した。また、英語の構文解析にも成功裏に適用可能であることを示した。</issue-body>
+<maintainer-comment-text><p>Transformer (self-attentionを利用) 論文<br><br>解説スライド：
+
+{% raw %}
+<a href="https://www.slideshare.net/DeepLearningJP2016/dlattention-is-all-you-need" target="_blank" rel="noopener noreferrer">https://www.slideshare.net/DeepLearningJP2016/dlattention-is-all-you-need</a>
+{% endraw %}
+
+<br><br>解説記事：
+
+{% raw %}
+<a href="https://qiita.com/nishiba/items/1c99bc7ddcb2d62667c6" target="_blank" rel="noopener noreferrer">https://qiita.com/nishiba/items/1c99bc7ddcb2d62667c6</a>
+{% endraw %}
+
+<br><br><br><br>* 新しい翻訳モデル(Transformer)を提案。既存のモデルよりも並列化に対応しており、短時間の訓練で（既存モデルの1/4以下のコスト）高いBLEUスコアを達成した。<br><br>* TransformerはRNNやCNNを使わず、attentionメカニズムに基づいている。<br><br><br><br>（解説より）</p><p>分かりやすい:<br>
+
+{% raw %}
+<a href="https://qiita.com/halhorn/items/c91497522be27bde17ce" target="_blank" rel="noopener noreferrer">https://qiita.com/halhorn/items/c91497522be27bde17ce</a>
+{% endraw %}
+
+</p><p>Transformerの各コンポーネントでのoutputのshapeや、attention_maskの形状、実装について記述されており有用:<br>
+
+{% raw %}
+<a href="https://qiita.com/FuwaraMiyasaki/items/239f3528053889847825" target="_blank" rel="noopener noreferrer">https://qiita.com/FuwaraMiyasaki/items/239f3528053889847825</a>
+{% endraw %}
+
+</p><p>集合知</p><p>Transformer提案時と最近の動向への流れ<br> <br>- BPEによるOOVの防止<br>  - その後sentencepieceによる真の多言語化の実現<br>- Positional Encodingの提案<br>  - 本稿はSinusoidal PE（絶対位置エンコーディング）で提案され、その後相対位置エンコーディング / RoPE / NoPE などの変種が登場 <br>- Residual Connectionによる勾配爆発・消失の低減による深いモデル化<br>  - 最近はHyperConnection等のResidual Streamの改善が進む<br>- Scaled dot product attention（のsqrt(d)での除算）によるノルム肥大化の防止<br>- Multi-head-attentionによるトークン間の多様な関係性のモデル化<br>  - トークン間を跨いだ情報のmixing<br>  - FFNによるトークン内での情報のmixing<br>  - O(n^2)によるボトルネックを改善するために Sparse Attention / Linear Attention 等のより計算量が小さい手法へ進展<br>  - また、実装上の工夫としてFlash Attentionが標準に<br>- Layer Normalizationによる正規化（内部共変量シフト防止）による学習の安定化<br>  - 本稿ではPostLN<br>  - その後Pre-LNの方が性能は落ちるが学習が安定するため主流となり、現在またPost-LNが再考されている<br>  - また、現在はLayerNormalizationではなくRMSNormを使用する傾向がある<br>- 本稿ではRNNと比較して並列計算可能なEncoder-Decoderアーキテクチャとして提案されMTで評価<br>  - Decoder側ではCausal Maskの導入によるleakの防止<br>  - その後、Decoder-only Model として現在のLLMの基盤に<br>  - 実装上の工夫としてKV Cacheによる生成の高速化</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Layer Normalization, Ba+, arXiv'16, 2016.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/1607.06450</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/261</repo-issue-link>
+<tags>NeuralNetwork, MachineLearning, translation_required, Normalization, Selected Papers/Blogs, Reference Collection</tags>
+<repo-issue-date>2018-02-19</repo-issue-date>
+<issue-body>## URL
+https://arxiv.org/abs/1607.06450
+
+## Authors
+Jimmy Lei Ba, Jamie Ryan Kiros, Geoffrey E. Hinton
+
+## Abstract
+- Training state-of-the-art, deep neural networks is computationally expensive. One way to reduce the training time is to normalize the activities of the neurons. A recently introduced technique called batch normalization uses the distribution of the summed input to a neuron over a mini-batch of training cases to compute a mean and variance which are then used to normalize the summed input to that neuron on each training case. This significantly reduces the training time in feed-forward neural networks. However, the effect of batch normalization is dependent on the mini-batch size and it is not obvious how to apply it to recurrent neural networks. In this paper, we transpose batch normalization into layer normalization by computing the mean and variance used for normalization from all of the summed inputs to the neurons in a layer on a single training case. Like batch normalization, we also give each neuron its own adaptive bias and gain which are applied after the normalization but before the non-linearity. Unlike batch normalization, layer normalization performs exactly the same computation at training and test times. It is also straightforward to apply to recurrent neural networks by computing the normalization statistics separately at each time step. Layer normalization is very effective at stabilizing the hidden state dynamics in recurrent networks. Empirically, we show that layer normalization can substantially reduce the training time compared with previously published techniques.
+# Translation (by gpt-4o-mini)
+- 最先端の深層ニューラルネットワークのトレーニングは計算コストが高い。トレーニング時間を短縮する一つの方法は、ニューロンの活動を正規化することである。最近導入された手法であるバッチ正規化は、ミニバッチのトレーニングケースにおけるニューロンへの合計入力の分布を使用して平均と分散を計算し、それを用いて各トレーニングケースにおけるそのニューロンへの合計入力を正規化する。この手法はフィードフォワードニューラルネットワークにおいてトレーニング時間を大幅に短縮する。しかし、バッチ正規化の効果はミニバッチサイズに依存し、リカレントニューラルネットワークにどのように適用するかは明らかではない。本論文では、バッチ正規化をレイヤー正規化に転置し、単一のトレーニングケースにおけるレイヤー内のニューロンへの合計入力から正規化に使用する平均と分散を計算する。バッチ正規化と同様に、各ニューロンには正規化後、非線形性の前に適用される独自の適応バイアスとゲインを与える。バッチ正規化とは異なり、レイヤー正規化はトレーニング時とテスト時で全く同じ計算を行う。また、各タイムステップで正規化統計を別々に計算することでリカレントニューラルネットワークに簡単に適用できる。レイヤー正規化はリカレントネットワークにおける隠れ状態のダイナミクスを安定させるのに非常に効果的である。実証的に、レイヤー正規化は以前に発表された技術と比較してトレーニング時間を大幅に短縮できることを示す。
+# Summary (by gpt-4o-mini)
+- バッチ正規化の代わりにレイヤー正規化を用いることで、リカレントニューラルネットワークのトレーニング時間を短縮。レイヤー内のニューロンの合計入力を正規化し、各ニューロンに独自の適応バイアスとゲインを適用。トレーニング時とテスト時で同じ計算を行い、隠れ状態のダイナミクスを安定させる。実証的に、トレーニング時間の大幅な短縮を確認。</issue-body>
+<maintainer-comment-text><p>解説スライド：<br><br>
+
+{% raw %}
+<a href="https://www.slideshare.net/KeigoNishida/layer-normalizationnips" target="_blank" rel="noopener noreferrer">https://www.slideshare.net/KeigoNishida/layer-normalizationnips</a>
+{% endraw %}
+
+<br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Batch Normalization: Accelerating Deep Network Training by Reducing   Internal Covariate Shift, Sergey Ioffe+, ICML'15</title>
+<original-paper-blog-link>https://arxiv.org/abs/1502.03167</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1857</repo-issue-link>
+<tags>MachineLearning, LanguageModel, Transformer, ICML, Normalization, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-04-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1502.03167
+# Authors
+  - Sergey Ioffe
+  - Christian Szegedy
+# Abstract
+  - Training Deep Neural Networks is complicated by the fact that the distribution of each layer's inputs changes during training, as the parameters of the previous layers change. This slows down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating nonlinearities. We refer to this phenomenon as internal covariate shift, and address the problem by normalizing layer inputs. Our method draws its strength from making normalization a part of the model architecture and performing the normalization for each training mini-batch. Batch Normalization allows us to use much higher learning rates and be less careful about initialization. It also acts as a regularizer, in some cases eliminating the need for Dropout. Applied to a state-of-the-art image classification model, Batch Normalization achieves the same accuracy with 14 times fewer training steps, and beats the original model by a significant margin. Using an ensemble of batch-normalized networks, we improve upon the best published result on ImageNet classification: reaching 4.9% top-5 validation error (and 4.8% test error), exceeding the accuracy of human raters.
+# Translation (by gpt-4o-mini)
+- 深層ニューラルネットワークのトレーニングは、各層の入力の分布がトレーニング中に変化するため、複雑になります。これは、前の層のパラメータが変化するためです。この現象は、学習率を低く設定し、慎重なパラメータ初期化を必要とするため、トレーニングを遅くし、飽和非線形性を持つモデルのトレーニングを非常に困難にします。この現象を内部共変量シフトと呼び、層の入力を正規化することで問題に対処します。私たちの手法は、正規化をモデルアーキテクチャの一部とし、各トレーニングミニバッチに対して正規化を行うことで強みを発揮します。バッチ正規化により、はるかに高い学習率を使用でき、初期化に対してもあまり注意を払う必要がなくなります。また、正則化器としても機能し、場合によってはドロップアウトの必要性を排除します。最先端の画像分類モデルに適用した結果、バッチ正規化は14倍少ないトレーニングステップで同じ精度を達成し、元のモデルを大きく上回る結果を出しました。バッチ正規化されたネットワークのアンサンブルを使用することで、ImageNet分類における最良の公表結果を改善し、4.9%のトップ5検証誤差（および4.8%のテスト誤差）を達成し、人間の評価者の精度を超えました。
+# Summary (by gpt-4o-mini)
+- バッチ正規化を用いることで、深層ニューラルネットワークのトレーニングにおける内部共変量シフトの問題を解決し、高い学習率を可能にし、初期化の注意を軽減。これにより、同じ精度を14倍少ないトレーニングステップで達成し、ImageNet分類で最良の公表結果を4.9%改善。</issue-body>
+<maintainer-comment-text><p>メモってなかったので今更ながら追加した</p><p>共変量シフトやBatch Normalizationの説明は<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/261" target="_blank" rel="noopener noreferrer">[Paper Note] Layer Normalization, Ba+, arXiv'16, 2016.07</a>
+<br><br>記載のスライドが分かりやすい。</p></maintainer-comment-text>
+</paper-entry>

@@ -1,0 +1,57 @@
+<paper-entry>
+<title>[Paper Note] DKN: Deep Knowledge-Aware Network for News Recommendation, Hongwei Wang+, arXiv'18, 2018.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/1801.08284</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/363</repo-issue-link>
+<tags>RecommenderSystems, NeuralNetwork, CollaborativeFiltering, Contents-based, NewsRecommendation, WWW, KeyPoint Notes</tags>
+<repo-issue-date>2021-06-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1801.08284
+# Authors
+  - Hongwei Wang
+  - Fuzheng Zhang
+  - Xing Xie
+  - Minyi Guo
+# Abstract
+  - Online news recommender systems aim to address the information explosion of news and make personalized recommendation for users. In general, news language is highly condensed, full of knowledge entities and common sense. However, existing methods are unaware of such external knowledge and cannot fully discover latent knowledge-level connections among news. The recommended results for a user are consequently limited to simple patterns and cannot be extended reasonably. Moreover, news recommendation also faces the challenges of high time-sensitivity of news and dynamic diversity of users' interests. To solve the above problems, in this paper, we propose a deep knowledge-aware network (DKN) that incorporates knowledge graph representation into news recommendation. DKN is a content-based deep recommendation framework for click-through rate prediction. The key component of DKN is a multi-channel and word-entity-aligned knowledge-aware convolutional neural network (KCNN) that fuses semantic-level and knowledge-level representations of news. KCNN treats words and entities as multiple channels, and explicitly keeps their alignment relationship during convolution. In addition, to address users' diverse interests, we also design an attention module in DKN to dynamically aggregate a user's history with respect to current candidate news. Through extensive experiments on a real online news platform, we demonstrate that DKN achieves substantial gains over state-of-the-art deep recommendation models. We also validate the efficacy of the usage of knowledge in DKN.
+# Translation (by gpt-4o-mini)
+- オンラインニュース推薦システムは、ニュースの情報爆発に対処し、ユーザーに対してパーソナライズされた推薦を行うことを目的としています。一般的に、ニュースの言語は非常に凝縮されており、知識のエンティティや常識に満ちています。しかし、既存の手法はそのような外部知識を考慮しておらず、ニュース間の潜在的な知識レベルの関連性を十分に発見することができません。その結果、ユーザーに対する推薦結果は単純なパターンに限られ、合理的に拡張することができません。さらに、ニュース推薦はニュースの高い時間感度やユーザーの興味の動的多様性という課題にも直面しています。これらの問題を解決するために、本論文では、知識グラフ表現をニュース推薦に組み込んだ深層知識認識ネットワーク（DKN）を提案します。DKNは、クリック率予測のためのコンテンツベースの深層推薦フレームワークです。DKNの主要なコンポーネントは、ニュースの意味レベルと知識レベルの表現を融合する多チャネルおよび単語-エンティティ整列型の知識認識畳み込みニューラルネットワーク（KCNN）です。KCNNは、単語とエンティティを複数のチャネルとして扱い、畳み込み中にそれらの整列関係を明示的に保持します。さらに、ユーザーの多様な興味に対処するために、DKNには現在の候補ニュースに関してユーザーの履歴を動的に集約する注意モジュールも設計しています。実際のオンラインニュースプラットフォームでの広範な実験を通じて、DKNが最先端の深層推薦モデルに対して大幅な向上を達成することを示しました。また、DKNにおける知識の使用の有効性も検証しました。
+# Summary (by gpt-4o-mini)
+- オンラインニュース推薦システムの課題を解決するために、知識グラフを活用した深層知識認識ネットワーク（DKN）を提案。DKNは、ニュースの意味と知識を融合する多チャネルの知識認識畳み込みニューラルネットワーク（KCNN）を用い、ユーザーの履歴を動的に集約する注意モジュールを搭載。実験により、DKNが最先端の推薦モデルを大幅に上回る性能を示し、知識の有効性も確認。</issue-body>
+<maintainer-comment-text><p>
+<strong># Overview<br><br>Contents-basedな手法でCTRを予測しNews推薦。newsのタイトルに含まれるentityをknowledge graphと紐づけて、情報をよりリッチにして活用する。<br><br>CNNでword-embeddingのみならず、entity embedding, contextual entity embedding（entityと関連するentity）をエンコードし、knowledge-awareなnewsのrepresentationを取得し予測する。<br><br>※ contextual entityは、entityのknowledge graph上でのneighborhoodに存在するentityのこと（neighborhoodの情報を活用することでdistinguishableでよりリッチな情報を活用できる）<br><br><br><br>CNNのinputを\[\[word_ embedding\], \[entity embedding\], \[contextual entity embedding\]\](画像のRGB)のように、multi-channelで構成し3次元のフィルタでconvolutionすることで、word, entity, contextual entityを表現する空間は別に保ちながら（同じ空間で表現するのは適切ではない）、wordとentityのalignmentがとれた状態でのrepresentationを獲得する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120255506-11eda700-c2c7-11eb-89a9-3a855652a59e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Experiments<br><br>BingNewsのサーバログデータを利用して評価。<br><br>データは (timestamp, userid, news url, news title, click count (0=no click, 1=click))のレコードによって構成されている。<br><br>2016年11月16日〜2017年6月11日の間のデータからランダムサンプリングしtrainingデータセットとした。<br><br>また、2017年6月12日〜2017年8月11日までのデータをtestデータセットとした。<br><br><br><br>word/entity embeddingの次元は100, フィルタのサイズは1,2,3,4とした。loss functionはlog lossを利用し、Adamで学習した。<br><br><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120271172-d0202900-c2e5-11eb-9748-a0417308ca48.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120256387-f5526e80-c2c8-11eb-84ca-9b9dc617f048.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><br><br>DeepFM超えを達成。<br><br>entity embedding, contextual entity embeddingをablationすると、AUCは2ポイントほど現象するが、それでもDeepFMよりは高い性能を示している。<br><br>また、attentionを抜くとAUCは1ポイントほど減少する。<br><br><br><br>1ユーザのtraining/testセットのサンプル<br><br><img src="https://user-images.githubusercontent.com/12249301/120272323-dc0cea80-c2e7-11eb-8c2a-0e43be3e069b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/365" target="_blank" rel="noopener noreferrer">Sentiment analysis with deeply learned distributed representations of variable length texts, Hong+, Technical Report. Technical report, Stanford University, 2015</a>
+</strong>
+<br>
+ によって経験的にRNN, Recursive Neural Network等と比較して、sentenceのrepresentationを獲得する際にCNNが優れていることが示されているため、CNNでrepresentationを獲得することにした模様（footprint 7より）</p><p>Factorization Machinesベースドな手法（LibFM, DeepFM）を利用する際は、TF-IDF featureと、averaged entity embeddingによって構成し、それをuser newsとcandidate news同士でconcatしてFeatureとして入力した模様</p><p>content情報を一切利用せず、ユーザのimplicit feedbackデータ（news click）のみを利用するDMF（Deep Matrix Factorization）の性能がかなり悪いのもおもしろい。やはりuser-item-implicit feedbackデータのみだけでなく、コンテンツの情報を利用した方が強い。</p><p>（おそらく）著者によるtensor-flowでの実装: 
+
+{% raw %}
+<a href="https://github.com/hwwang55/DKN" target="_blank" rel="noopener noreferrer">https://github.com/hwwang55/DKN</a>
+{% endraw %}
+
+</p><p>日本語解説<br><br>
+
+{% raw %}
+<a href="https://qiita.com/agatan/items/24c6d8e00f2fc861bb04" target="_blank" rel="noopener noreferrer">https://qiita.com/agatan/items/24c6d8e00f2fc861bb04</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>NewsPicksに推薦システムを本番投入する上で一番優先すべきだったこと, 2024.08</title>
+<original-paper-blog-link>https://tech.uzabase.com/entry/2024/08/29/161828</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1367</repo-issue-link>
+<tags>RecommenderSystems, NeuralNetwork, CTRPrediction, NewsRecommendation, MLOps, Evaluation, Blog, A/B Testing</tags>
+<repo-issue-date>2024-08-31</repo-issue-date>
+<issue-body>https://tech.uzabase.com/entry/2024/08/29/161828</issue-body>
+<maintainer-comment-text><p>>推薦モデルの良し悪しをより高い確度で評価できる実験を、より簡単に実行できる状態を作ることでした。平たく言えば「いかにA/Bテストしやすい推薦システムを設計するか」が最も重要だった訳です。<br><br>オフライン評価とオンライン評価の相関がない系の話で、A/Bテストを容易に実施できる環境になかった、かつCTRが実際に向上したモデルがオフライン評価での性能が現行モデルよりも悪く、意思決定がなかなかできなかった、という話。<br><br>うーんやはり、推薦におけるオフライン評価ってあまりあてにできないよね、、、<br>そもそも新たなモデルをデプロイした時点で、テストした時とデータの分布が変わるわけだし、、、<br><br>Off-Policy Evaluationの話は勉強したい。</p><p>あと、定性評価は重要</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SCENE: A Scalable Two-Stage Personalized News Recommendation System, Li et al., SIGIR’11</title>
+<original-paper-blog-link>https://users.cs.fiu.edu/~taoli/pub/p125-li-sigir2011.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/44</repo-issue-link>
+<tags>RecommenderSystems, Document, NewsRecommendation, Personalization, SIGIR, One-Line Notes</tags>
+<repo-issue-date>2017-12-28</repo-issue-date>
+<issue-body>https://users.cs.fiu.edu/~taoli/pub/p125-li-sigir2011.pdf</issue-body>
+<maintainer-comment-text><p>・ニュース推薦には3つのチャレンジがある。<br><br><br><br>1. スケーラビリティ　より高速なreal-time processing<br><br>2. あるニュース記事を読むと、続いて読む記事に影響を与える<br><br>3. popularityとrecencyが時間経過に従い変化するので、これらをどう扱うか<br><br><br><br>これらに対処する手法を提案</p></maintainer-comment-text>
+</paper-entry>

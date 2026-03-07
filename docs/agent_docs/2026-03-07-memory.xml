@@ -1,0 +1,2218 @@
+<paper-entry>
+<title>[Paper Note] Anatomy of Agentic Memory: Taxonomy and Empirical Analysis of Evaluation and System Limitations, Dongming Jiang+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.19320</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4826</repo-issue-link>
+<tags>Survey, Analysis, NLP, LanguageModel, AIAgents, read-later, Selected Papers/Blogs, memory, Initial Impression Notes</tags>
+<repo-issue-date>2026-03-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.19320
+# Authors
+  - Dongming Jiang
+  - Yi Li
+  - Songtao Wei
+  - Jinxin Yang
+  - Ayushi Kishore
+  - Alysa Zhao
+  - Dingyi Kang
+  - Xu Hu
+  - Feng Chen
+  - Qiannan Li
+  - Bingzhe Li
+# Abstract
+  - Agentic memory systems enable large language model (LLM) agents to maintain state across long interactions, supporting long-horizon reasoning and personalization beyond fixed context windows. Despite rapid architectural development, the empirical foundations of these systems remain fragile: existing benchmarks are often underscaled, evaluation metrics are misaligned with semantic utility, performance varies significantly across backbone models, and system-level costs are frequently overlooked. This survey presents a structured analysis of agentic memory from both architectural and system perspectives. We first introduce a concise taxonomy of MAG systems based on four memory structures. Then, we analyze key pain points limiting current systems, including benchmark saturation effects, metric validity and judge sensitivity, backbone-dependent accuracy, and the latency and throughput overhead introduced by memory maintenance. By connecting the memory structure to empirical limitations, this survey clarifies why current agentic memory systems often underperform their theoretical promise and outlines directions for more reliable evaluation and scalable system design.
+# Translation (by gpt-5-nano)
+- エージェント記憶システムは、大規模言語モデル（LLM）エージェントが長い相互作用にわたって状態を維持できるようにし、固定コンテキストウィンドウを超えた長期的推論とパーソナライズを支援する。急速なアーキテクチャの発展にもかかわらず、これらのシステムの経験的基盤は脆弱なままである。既存のベンチマークはしばしば規模が不十分で、評価指標は意味的有用性と一致しておらず、バックボーンモデル間の性能差は大きく、システム全体のコストはしばしば見落とされている。本調査は、アーキテクチャ的およびシステム的観点の双方からエージェント記憶を構造的に分析する。まず、4つの記憶構造に基づくMAGシステムの簡潔な分類を導入する。次に、現在のシステムを制限する主要な問題点を分析する。これには、ベンチマーク飽和効果、評価指標の妥当性と判定感度、バックボーン依存の精度、および記憶維持によって導入される遅延とスループットのオーバーヘッドが含まれる。記憶構造を経験的制約と結びつけることにより、本調査はなぜ現在のエージェント記憶システムがその理論的な約束をしばしば下回るのかを明らかにし、より信頼性の高い評価とスケーラブルなシステム設計の方向性を概説する。
+# Summary (by gpt-4o-mini)
+- エージェント記憶システムは、LLMエージェントが長い相互作用を維持し、長期推論を支援するが、経験的基盤が脆弱である。既存のベンチマークは不十分で、評価指標が実用性に合致せず、性能差が大きく、コストも見落とされがちである。本調査では、エージェント記憶を構造的に分析し、4つの記憶構造から成るMAGシステムを提案。主要な問題点として、ベンチマークの飽和、評価指標の妥当性、精度のバックボーン依存、記憶維持によるオーバーヘッドを挙げ、信頼性の高い評価とスケーラブルなシステム設計の方向性を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/2030101155808956556?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AI Agentの研究に関してtaxonomyが定義されており、研究分野全体の進展を外観するのに良さそう。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Doc-to-LoRA: Learning to Instantly Internalize Contexts, Rujikorn Charakorn+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.15902</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4764</repo-issue-link>
+<tags>NLP, LanguageModel, PEFT(Adaptor/LoRA), FactualKnowledge, memory, One-Line Notes, DownstreamTasks, Test Time Training (TTT)</tags>
+<repo-issue-date>2026-03-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.15902
+# Authors
+  - Rujikorn Charakorn
+  - Edoardo Cetin
+  - Shinnosuke Uesaka
+  - Robert Tjarko Lange
+# Abstract
+  - Long input sequences are central to in-context learning, document understanding, and multi-step reasoning of Large Language Models (LLMs). However, the quadratic attention cost of Transformers makes inference memory-intensive and slow. While context distillation (CD) can transfer information into model parameters, per-prompt distillation is impractical due to training costs and latency. To address these limitations, we propose Doc-to-LoRA (D2L), a lightweight hypernetwork that meta-learns to perform approximate CD within a single forward pass. Given an unseen prompt, D2L generates a LoRA adapter for a target LLM, enabling subsequent queries to be answered without re-consuming the original context, reducing latency and KV-cache memory consumption during inference of the target LLM. On a long-context needle-in-a-haystack task, D2L successfully learns to map contexts into adapters that store the needle information, achieving near-perfect zero-shot accuracy at sequence lengths exceeding the target LLM's native context window by more than 4x. On real-world QA datasets with limited compute, D2L outperforms standard CD while significantly reducing peak memory consumption and update latency. We envision that D2L can facilitate rapid adaptation of LLMs, opening up the possibility of frequent knowledge updates and personalized chat behavior.
+# Translation (by gpt-5-nano)
+- 長い入力シーケンスは、文脈内学習、文書理解、および大規模言語モデル（LLMs）の多段階推論の中核をなす。  
+しかし、トランスフォーマーの二次的なアテンションコストは、推論をメモリ集約的で遅くする。  
+文脈蒸留（CD）は情報をモデルパラメータへ転移させることができる一方で、プロンプトごとの蒸留は訓練コストとレイテンシの点で現実的ではない。  
+これらの制限に対処するため、Doc-to-LoRA（D2L）を提案する。これは、単一の前方伝播で近似CDを実行することをメタラーニングする軽量なハイパーネットワークである。  
+見たことのないプロンプトが与えられると、D2Lは対象のLLM用のLoRAアダプタを生成し、以降の問い合わせを元の文脈を再消費することなく回答できるようにする。これにより、ターゲットLLMの推論時のレイテンシとKVキャッシュのメモリ消費を削減する。  
+長い文脈の needle-in-a-haystack タスクにおいて、D2Lは文脈をアダプタへ写像して needle 情報を格納できるように学習し、ターゲットLLMのネイティブな文脈ウィンドウを4倍超える長さのシーケンスでほぼ完璧なゼロショット精度を達成した。  
+計算資源が限られた実世界のQAデータセットにおいて、D2Lは標準的なCDよりも優れており、ピーク時のメモリ消費と更新レイテンシを大幅に削減する。  
+私たちは、D2LがLLMの迅速な適応を促進し、頻繁な知識更新や個人化されたチャット挙動の可能性を開くと考えている。
+# Summary (by gpt-4o-mini)
+- 長い入力を効率的に処理するために、Doc-to-LoRA（D2L）を提案。これはメタラーニングを用いて、単一の前方伝播で情報を効率よく蒸留し、適応型LoRAアダプタを生成する。D2Lにより、推論時のレイテンシとメモリ消費を削減し、文脈を超えてゼロショット精度を向上。実世界のデータセットにおいても、標準的な文脈蒸留を上回る性能を示す。</issue-body>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2033" target="_blank" rel="noopener noreferrer">[Paper Note] Text-to-LoRA: Instant Transformer Adaption, Rujikorn Charakorn+, ICML'25, 2025.06</a>
+<br><br>に続く研究。</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/KevinQHLin/status/2027819181744525619?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/2030085866069340638?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>Doc-to-LoRAの目的は、文書レベルの情報をメモリの内部パラメータとして埋め込むこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AMA-Bench: Evaluating Long-Horizon Memory for Agentic Applications, Yujie Zhao+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.22769</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4763</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, read-later, Selected Papers/Blogs, memory, Initial Impression Notes</tags>
+<repo-issue-date>2026-03-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.22769
+# Authors
+  - Yujie Zhao
+  - Boqin Yuan
+  - Junbo Huang
+  - Haocheng Yuan
+  - Zhongming Yu
+  - Haozhou Xu
+  - Lanxiang Hu
+  - Abhilash Shankarampeta
+  - Zimeng Huang
+  - Wentao Ni
+  - Yuandong Tian
+  - Jishen Zhao
+# Abstract
+  - Large Language Models (LLMs) are deployed as autonomous agents in increasingly complex applications, where enabling long-horizon memory is critical for achieving strong performance. However, a significant gap exists between practical applications and current evaluation standards for agent memory: existing benchmarks primarily focus on dialogue-centric, human-agent interactions. In reality, agent memory consists of a continuous stream of agent-environment interactions that are primarily composed of machine-generated representations. To bridge this gap, we introduce AMA-Bench (Agent Memory with Any length), which evaluates long-horizon memory for LLMs in real agentic applications. It features two key components: (1) a set of real-world agentic trajectories across representative agentic applications, paired with expert-curated QA, and (2) a set of synthetic agentic trajectories that scale to arbitrary horizons, paired with rule-based QA. Our comprehensive study shows that existing memory systems underperform on AMA-Bench primarily because they lack causality and objective information and are constrained by the lossy nature of similarity-based retrieval employed by many memory systems. To address these limitations, we propose AMA-Agent, an effective memory system featuring a causality graph and tool-augmented retrieval. Our results demonstrate that AMA-Agent achieves 57.22% average accuracy on AMA-Bench, surpassing the strongest memory system baselines by 11.16%.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）は、長期的な記憶を実現することが重要となる、ますます複雑化するアプリケーションにおいて自律エージェントとして展開されている。しかし、エージェントの記憶に関する実務的な応用と現状の評価基準との間には大きなギャップが存在する。既存のベンチマークは主に対話中心の人間—エージェントの相互作用に焦点を当てているのに対し、実際のエージェントの記憶は主に機械生成の表現から成る、エージェントと環境の連続的な相互作用の流れである。このギャップを埋めるべく、AMA-Bench（Agent Memory with Any length）を提案する。これは実際のエージェント的応用における長期的な記憶をLLMsで評価するものである。その特徴は2つの主要な構成要素からなる：(1) 代表的なエージェント的応用にわたる実世界のエージェント的軌跡の集合を、専門家が厳選したQAと組み合わせたもの、(2) 任意の長さの長期性に拡張可能な合成エージェント的軌跡の集合を、ルールベースのQAと組み合わせたもの。総合的な研究によれば、既存の記憶システムはAMA-Benchでの性能が低い主な理由として、因果性と客観情報を欠いていること、そして多くの記憶システムが採用する類似性ベース検索のロス性に制約されていることが挙げられる。これらの限界に対処するため、因果性グラフとツールを活用した検索を特徴とする効果的な記憶システムであるAMA-Agentを提案する。私たちの結果は、AMA-AgentがAMA-Benchで平均正解率57.22%を達成し、最も強力な記憶システムのベースラインを11.16%上回ることを示している。
+# Summary (by gpt-4o-mini)
+- LLMを用いた自律エージェントの記憶において、実務的応用と評価基準の間にギャップが存在。これを解消するために、AMA-Benchを提案し、実世界のエージェント軌跡とQAを組み合わせて評価。多くの既存システムが因果性を欠き、類似性ベース検索に制約されている中、因果性グラフとツールを用いたAMA-Agentが性能を向上。AMA-AgentはAMA-Benchで57.22%の正解率を達成し、最強記憶システムのベースラインを11.16%上回る。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2027776582262395054?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>実際のAgenticなタスクのユースケースに沿ったmemoryの評価方法を提案している研究のようで、非常に重要な研究に見える。実際はチャットベースのやり取りではなく、エージェントと環境が相互作用しながら生成されるtrajectoryで構成され、指示はagentによって生成された客観的な目的を含んでおり、trajectoryには多くのnoisyな結果やsymbolが含まれる。また、agentが現在のstateから環境に作用した結果が返ってくるというチャットベースの言語的なフロートは異なり、stateに基づいた因果関係が存在するという差がある。<br><br>ベンチマークの結果ではGPT-5.2が優れていそうに見えるが、GPTの場合は最新のGPT-5.2で評価されているのに、Claudeに関してはClaude Haiku 3.5で評価されているのは気になる。Claude Opus 4.6やGemini-3で評価したらどの程度の性能になるのだろうか。<br><img src="https://github.com/user-attachments/assets/2ad50906-5d6d-4e47-bce2-986c2bb9eed5" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] REMem: Reasoning with Episodic Memory in Language Agent, Yiheng Shu+, ICLR'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.13530</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4762</repo-issue-link>
+<tags>GraphBased, NLP, LanguageModel, AIAgents, ICLR, memory, One-Line Notes, Grounding</tags>
+<repo-issue-date>2026-03-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.13530
+# Authors
+  - Yiheng Shu
+  - Saisri Padmaja Jonnalagedda
+  - Xiang Gao
+  - Bernal Jiménez Gutiérrez
+  - Weijian Qi
+  - Kamalika Das
+  - Huan Sun
+  - Yu Su
+# Abstract
+  - Humans excel at remembering concrete experiences along spatiotemporal contexts and performing reasoning across those events, i.e., the capacity for episodic memory. In contrast, memory in language agents remains mainly semantic, and current agents are not yet capable of effectively recollecting and reasoning over interaction histories. We identify and formalize the core challenges of episodic recollection and reasoning from this gap, and observe that existing work often overlooks episodicity, lacks explicit event modeling, or overemphasizes simple retrieval rather than complex reasoning. We present REMem, a two-phase framework for constructing and reasoning with episodic memory: 1) Offline indexing, where REMem converts experiences into a hybrid memory graph that flexibly links time-aware gists and facts. 2) Online inference, where REMem employs an agentic retriever with carefully curated tools for iterative retrieval over the memory graph. Comprehensive evaluation across four episodic memory benchmarks shows that REMem substantially outperforms state-of-the-art memory systems such as Mem0 and HippoRAG 2, showing 3.4% and 13.4% absolute improvements on episodic recollection and reasoning tasks, respectively. Moreover, REMem also demonstrates more robust refusal behavior for unanswerable questions.
+# Translation (by gpt-5-nano)
+- 人間は時空的文脈に沿った具体的な経験を記憶し、それらの出来事を跨って推論する能力、すなわちエピソード記憶を優れて処理する。これに対し、言語エージェントの記憶は主に意味的な情報の域に留まり、現在のエージェントは対話履歴を効果的に想起し推論することがまだできていない。我々はこのギャップからエピソード的想起と推論の核となる課題を特定・形式化し、既存の研究はエピソード性を見落としがちで、明示的なイベントモデリングを欠き、単純なリトリーブを複雑な推論より過度に重視していることが多いと観察する。我々はREMemを提示する。エピソード記憶を構築し推論するための2段階フレームワークである。1) オフラインインデックス作成では、REMemは経験を時間情報を含む要旨と事実を柔軟に結びつけるハイブリッド記憶グラフへ変換する。2) オンライン推論では、REMemは記憶グラフ上で反復的な検索を可能にするため、慎重に厳選されたツールを備えたエージェント型リトリーバを用いる。4つのエピソード記憶ベンチマークを横断した包括的な評価の結果、REMemはMem0やHippoRAG 2といった最先端の記憶システムを大幅に上回り、エピソード回想と推論タスクでそれぞれ絶対値で3.4%、13.4%の改善を示した。さらに、答えられない質問に対する拒否行動もより堅牢であることを示している。
+# Summary (by gpt-4o-mini)
+- REMemは、エピソード記憶を構築し推論するための2段階フレームワークを提案する。オフラインでは、経験を時間情報を含む要旨と事実を結びつけたハイブリッド記憶グラフに変換。オンラインでは、エージェント型リトリーバを用いて記憶グラフ上での反復検索を可能にする。包括的な評価により、REMemは最先端システムを大幅に上回り、エピソード回想と推論タスクでそれぞれ3.4%、13.4%の改善を示す。回答不能な質問に対する拒否行動も堅牢であることが確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yihengshu/status/2027458814937862425?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>単に知識や事実情報を蓄積するのではなく、過去のイベントに関するsituationalな情報（when,where,who,what)でgroundingをしながら、複数のイベント、タイムラインを跨いでreasoningができるようなepisodic memoryの提案。人間は単に意味情報から記憶を呼び起こすだけでなく、過去のイベントを想起して条件付けした上で時系列になぞって記憶を想起できる能力があることに起因する。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Test-Time Training with KV Binding Is Secretly Linear Attention, Junchen Liu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.21204</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4702</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, AIAgents, memory, Test Time Training (TTT)</tags>
+<repo-issue-date>2026-02-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.21204
+# Authors
+  - Junchen Liu
+  - Sven Elflein
+  - Or Litany
+  - Zan Gojcic
+  - Ruilong Li
+# Abstract
+  - Test-time training (TTT) with KV binding as sequence modeling layer is commonly interpreted as a form of online meta-learning that memorizes a key-value mapping at test time. However, our analysis reveals multiple phenomena that contradict this memorization-based interpretation. Motivated by these findings, we revisit the formulation of TTT and show that a broad class of TTT architectures can be expressed as a form of learned linear attention operator. Beyond explaining previously puzzling model behaviors, this perspective yields multiple practical benefits: it enables principled architectural simplifications, admits fully parallel formulations that preserve performance while improving efficiency, and provides a systematic reduction of diverse TTT variants to a standard linear attention form. Overall, our results reframe TTT not as test-time memorization, but as learned linear attention with enhanced representational capacity.
+# Translation (by gpt-5-nano)
+- テスト時訓練（TTT）をキー・バリュー結合をシーケンスモデリング層として用いる手法は、テスト時にキーと値の対応を記憶するオンラインメタ学習の一形態として一般に解釈されてきた。しかし、我々の分析は、この記憶化に基づく解釈と矛盾する複数の現象を明らかにする。これらの発見に動機づけられ、TTTの定式化を再検討し、広範なTTTアーキテクチャのクラスが、学習された線形アテンション演算子の一形態として表現できることを示す。これまで謎とされてきたモデル挙動を説明するだけでなく、この視点は実践的な利点を複数もたらす。原理に基づくアーキテクチャの単純化を可能にし、性能を維持しつつ効率を向上させる完全に並列化された定式化を認め、さらに多様なTTTのバリアントを標準的な線形アテンション形式へ体系的に還元する。総じて、我々の結果はTTTをテスト時の記憶化としてではなく、表現力を高めた学習済みの線形アテンションとして再定義する。
+# Summary (by gpt-4o-mini)
+- TTTを再定義し、記憶化ではなく学習済み線形アテンションとしての挙動を示す。これにより、アーキテクチャの単純化や効率向上が可能となり、多様なTTTバリアントを体系的に線形アテンションに還元できることが明らかに。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhaocha1/status/2026780077954879714?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://research.nvidia.com/labs/sil/projects/tttla/" target="_blank" rel="noopener noreferrer">https://research.nvidia.com/labs/sil/projects/tttla/</a>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4703" target="_blank" rel="noopener noreferrer">[Paper Note] Learning to (Learn at Test Time): RNNs with Expressive Hidden States, Yu Sun+, ICML'25, 2024.07</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemoryArena: Benchmarking Agent Memory in Interdependent Multi-Session Agentic Tasks, Zexue He+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.16313</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4682</repo-issue-link>
+<tags>NLP, AIAgents, memory</tags>
+<repo-issue-date>2026-02-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.16313
+# Authors
+  - Zexue He
+  - Yu Wang
+  - Churan Zhi
+  - Yuanzhe Hu
+  - Tzu-Ping Chen
+  - Lang Yin
+  - Ze Chen
+  - Tong Arthur Wu
+  - Siru Ouyang
+  - Zihan Wang
+  - Jiaxin Pei
+  - Julian McAuley
+  - Yejin Choi
+  - Alex Pentland
+# Abstract
+  - Existing evaluations of agents with memory typically assess memorization and action in isolation. One class of benchmarks evaluates memorization by testing recall of past conversations or text but fails to capture how memory is used to guide future decisions. Another class focuses on agents acting in single-session tasks without the need for long-term memory. However, in realistic settings, memorization and action are tightly coupled: agents acquire memory while interacting with the environment, and subsequently rely on that memory to solve future tasks. To capture this setting, we introduce MemoryArena, a unified evaluation gym for benchmarking agent memory in multi-session Memory-Agent-Environment loops. The benchmark consists of human-crafted agentic tasks with explicitly interdependent subtasks, where agents must learn from earlier actions and feedback by distilling experiences into memory, and subsequently use that memory to guide later actions to solve the overall task. MemoryArena supports evaluation across web navigation, preference-constrained planning, progressive information search, and sequential formal reasoning, and reveals that agents with near-saturated performance on existing long-context memory benchmarks like LoCoMo perform poorly in our agentic setting, exposing a gap in current evaluations for agents with memory.
+# Translation (by gpt-5-nano)
+- メモリを備えたエージェントの既存の評価は、通常、記憶と行動を分離して評価する。ベンチマークの一つのクラスは、過去の会話やテキストの思い出しをテストして記憶を評価するが、記憶が将来の意思決定をどのように導くかを捉えきれていない。別のクラスは、長期記憶を必要とせず、単一セッションのタスクで行動するエージェントに焦点を当てる。しかし、現実的な設定では、記憶と行動は密接に結びついている。エージェントは環境と相互作用しながら記憶を獲得し、その後その記憶を用いて将来のタスクを解決する。こうした設定を捉えるために MemoryArena を導入する。これは多セッションの Memory-Agent-Environment ループにおけるエージェントの記憶を評価する統一的な評価ジムである。ベンチマークは、明確に相互依存するサブタスクを含む人手作成のエージェント課題で構成されており、エージェントは以前の行動やフィードバックから経験を記憶に蒸留して学習し、後の行動を導くためにその記憶を用いて全体のタスクを解く。MemoryArena は、ウェブナビゲーション、嗜好制約付きプランニング、段階的な情報探索、そして連続的な形式的推論の評価をサポートし、LoCoMo のような長文脈記憶ベンチマークでほぼ飽和した性能を示すエージェントは、我々のエージェント的設定ではうまく機能しないことを示している。これにより、記憶を備えたエージェントに対する現在の評価にはギャップがあることが露呈する。
+# Summary (by gpt-4o-mini)
+- MemoryArenaは、エージェントの記憶と行動を密接に結びつけて評価する新しいベンチマークを提供します。従来の評価は記憶と行動を分離していたが、現実の設定ではこれらは相互依存しています。MemoryArenaは、多セッションのループ内でエージェントが記憶を獲得し、それを用いてタスクを解決する様子を評価します。このベンチマークは、相互依存するサブタスクを含み、ウェブナビゲーションや情報探索などの評価をサポートします。さらに、長文脈記憶ベンチマークで高い性能を示すエージェントが、我々の設定ではうまく機能しないことを示し、現行の評価方法にギャップがあることを明らかにしています。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2024491176259363013"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning Personalized Agents from Human Feedback, Kaiqu Liang+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.16173</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4677</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Personalization, memory, One-Line Notes</tags>
+<repo-issue-date>2026-02-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.16173
+# Authors
+  - Kaiqu Liang
+  - Julia Kruk
+  - Shengyi Qian
+  - Xianjun Yang
+  - Shengjie Bi
+  - Yuanshun Yao
+  - Shaoliang Nie
+  - Mingyang Zhang
+  - Lijuan Liu
+  - Jaime Fernández Fisac
+  - Shuyan Zhou
+  - Saghar Hosseini
+# Abstract
+  - Modern AI agents are powerful but often fail to align with the idiosyncratic, evolving preferences of individual users. Prior approaches typically rely on static datasets, either training implicit preference models on interaction history or encoding user profiles in external memory. However, these approaches struggle with new users and with preferences that change over time. We introduce Personalized Agents from Human Feedback (PAHF), a framework for continual personalization in which agents learn online from live interaction using explicit per-user memory. PAHF operationalizes a three-step loop: (1) seeking pre-action clarification to resolve ambiguity, (2) grounding actions in preferences retrieved from memory, and (3) integrating post-action feedback to update memory when preferences drift. To evaluate this capability, we develop a four-phase protocol and two benchmarks in embodied manipulation and online shopping. These benchmarks quantify an agent's ability to learn initial preferences from scratch and subsequently adapt to persona shifts. Our theoretical analysis and empirical results show that integrating explicit memory with dual feedback channels is critical: PAHF learns substantially faster and consistently outperforms both no-memory and single-channel baselines, reducing initial personalization error and enabling rapid adaptation to preference shifts.
+# Translation (by gpt-5-nano)
+- 現代のAIエージェントは強力だが、個々のユーザーの固有で進化する嗜好と整合させることがしばしば難しい。従来のアプローチは通常、静的なデータセットに依存しており、対話履歴の上で暗黙的な嗜好モデルを訓練するか、外部メモリにユーザープロファイルをエンコードするかのいずれかである。しかし、これらのアプローチは新規ユーザーや時間とともに変化する嗜好には対応しづらい。我々は、個人ごとの明示的メモリを用いてライブ対話からオンラインで学習する継続的な個別化のフレームワークとして、Personalized Agents from Human Feedback (PAHF) を紹介する。PAHFは三段階のループを実装する: (1) あいまいさを解消するための事前アクションの明確化を求める, (2) 記憶から取得した嗜好に基づいて行動を根拠づける, (3) 嗜好の変化が生じた際にメモリを更新するための事後フィードバックを組み込む。この能力を評価するため、具現化された操作とオンラインショッピングを対象とした四相のプロトコルと二つのベンチマークを開発する。これらのベンチマークは、エージェントがゼロから初期嗜好を学習し、その後ペルソナの変化へ適応する能力を定量化する。理論分析と実証的結果は、明示的なメモリを二つのフィードバックチャネルと統合することが極めて重要であることを示している。PAHFは大幅に速く学習し、メモリなしおよび単一チャネルのベースラインを一貫して上回り、初期のパーソナライゼーション誤差を減らし、嗜好の変化への迅速な適応を可能にする。
+# Summary (by gpt-4o-mini)
+- PAHFは、個ユーザーの嗜好をリアルタイムで学習し続けるためのフレームワークで、三段階のループを実装。具体的には、事前アクションの明確化、嗜好に基づく行動根拠の提供、嗜好変化時のメモリ更新を行う。新たなベンチマークを用いて、エージェントがゼロから嗜好を学び変化に適応する能力を評価し、明示的メモリと二つのフィードバックチャネルの統合が学習速度やパーソナライゼーション誤差の改善に寄与することを実証。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2025242624790331520?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ユーザ専用のmemoryを用意しmemory上にユーザのpreferenceを蓄積し更新することによってpersonalizationを実施する。memoryへの更新はcontextやテキストによるフィードバックに基づいて実施される。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] The Pensieve Paradigm: Stateful Language Models Mastering Their Own Context, Xiaoyuan Liu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.12108</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4558</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, ContextEngineering, memory, One-Line Notes, ContextRot</tags>
+<repo-issue-date>2026-02-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.12108
+# Authors
+  - Xiaoyuan Liu
+  - Tian Liang
+  - Dongyang Ma
+  - Deyu Zhou
+  - Haitao Mi
+  - Pinjia He
+  - Yan Wang
+# Abstract
+  - In the world of Harry Potter, when Dumbledore's mind is overburdened, he extracts memories into a Pensieve to be revisited later. In the world of AI, while we possess the Pensieve-mature databases and retrieval systems, our models inexplicably lack the "wand" to operate it. They remain like a Dumbledore without agency, passively accepting a manually engineered context as their entire memory. This work finally places the wand in the model's hand. We introduce StateLM, a new class of foundation models endowed with an internal reasoning loop to manage their own state. We equip our model with a suite of memory tools, such as context pruning, document indexing, and note-taking, and train it to actively manage these tools. By learning to dynamically engineering its own context, our model breaks free from the architectural prison of a fixed window. Experiments across various model sizes demonstrate StateLM's effectiveness across diverse scenarios. On long-document QA tasks, StateLMs consistently outperform standard LLMs across all model scales; on the chat memory task, they achieve absolute accuracy improvements of 10% to 20% over standard LLMs. On the deep research task BrowseComp-Plus, the performance gap becomes even more pronounced: StateLM achieves up to 52% accuracy, whereas standard LLM counterparts struggle around 5%. Ultimately, our approach shifts LLMs from passive predictors to state-aware agents where reasoning becomes a stateful and manageable process.
+# Translation (by gpt-4o-mini)
+- ハリー・ポッターの世界では、ダンブルドアが心を過負荷にされると、彼は思い出をペンシーブに抽出して後で再訪します。AIの世界では、私たちはペンシーブのように成熟したデータベースや検索システムを持っていますが、私たちのモデルはそれを操作する「杖」を持っていません。彼らはまるで行動力を持たないダンブルドアのようで、手動で設計されたコンテキストを全体の記憶として受け入れるだけです。本研究では、ついにモデルの手に杖を与えます。私たちは、内部推論ループを備えた新しい基盤モデルのクラス「StateLM」を導入し、自らの状態を管理できるようにしました。このモデルには、コンテキストのプルーニング、文書のインデクシング、ノート取りなど一連のメモリツールを装備し、これらのツールを積極的に管理するように訓練しました。自らのコンテキストを動的に構築することを学ぶことで、モデルは固定ウィンドウのアーキテクチャの制約から解放されます。さまざまなモデルサイズにわたる実験は、StateLMの効果を多様なシナリオで実証しています。長文QAタスクでは、StateLMは全モデルスケールにおいて標準LLMを一貫して上回り、チャットメモリタスクでは、標準LLMに対して10%から20%の絶対精度向上を達成します。深層研究タスクBrowseComp-Plusでは、パフォーマンスの差がさらに顕著になります。StateLMは最大52%の精度を達成し、標準LLMは約5%の精度に苦しんでいます。最終的に、私たちのアプローチはLLMを受動的な予測モデルから状態に気づくエージェントへと変革し、推論が状態を持ち管理可能なプロセスとなります。
+# Summary (by gpt-4o-mini)
+- 新しい基盤モデル「StateLM」を導入し、AIが自己管理できる状態を持つエージェントに進化。コンテキストのプルーニングや文書のインデクシングなどのメモリツールを管理することで、モデルは固定ウィンドウの制約から解放されます。StateLMは長文QAやチャットメモリタスクで従来のLLMを一貫して上回り、特にBrowseComp-Plusタスクでは最大52%の精度を達成。私たちのアプローチにより、推論が管理可能なプロセスに変革されます。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2022209786117509281?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>言語モデルにStateを明示的に持たせて、ツールを用いて動的に過去のcontextから必要なcontextを編集、削除、読み込みなどのコンテキストエンジニアリングが可能なようにRLによって学習するようなアーキテクチャが提案されているように見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning, Peng Xia+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.08234</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4526</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, memory, KeyPoint Notes, ContinualLearning, AgentSkills</tags>
+<repo-issue-date>2026-02-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.08234
+# Authors
+  - Peng Xia
+  - Jianwen Chen
+  - Hanyang Wang
+  - Jiaqi Liu
+  - Kaide Zeng
+  - Yu Wang
+  - Siwei Han
+  - Yiyang Zhou
+  - Xujiang Zhao
+  - Haifeng Chen
+  - Zeyu Zheng
+  - Cihang Xie
+  - Huaxiu Yao
+# Abstract
+  - Large Language Model (LLM) agents have shown stunning results in complex tasks, yet they often operate in isolation, failing to learn from past experiences. Existing memory-based methods primarily store raw trajectories, which are often redundant and noise-heavy. This prevents agents from extracting high-level, reusable behavioral patterns that are essential for generalization. In this paper, we propose SkillRL, a framework that bridges the gap between raw experience and policy improvement through automatic skill discovery and recursive evolution. Our approach introduces an experience-based distillation mechanism to build a hierarchical skill library SkillBank, an adaptive retrieval strategy for general and task-specific heuristics, and a recursive evolution mechanism that allows the skill library to co-evolve with the agent's policy during reinforcement learning. These innovations significantly reduce the token footprint while enhancing reasoning utility. Experimental results on ALFWorld, WebShop and seven search-augmented tasks demonstrate that SkillRL achieves state-of-the-art performance, outperforming strong baselines over 15.3% and maintaining robustness as task complexity increases. Code is available at this https://github.com/aiming-lab/SkillRL.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）エージェントは複雑なタスクにおいて驚異的な成果を示していますが、過去の経験から学ぶことなく孤立して動作することがよくあります。既存のメモリベースの手法は主に生の軌跡を保存しますが、それは冗長でノイズが多いことがよくあります。これにより、エージェントは一般化に不可欠な高レベルで再利用可能な行動パターンを抽出することができません。本論文では、生の経験とポリシー改善のギャップを埋める自動スキル発見と再帰的進化を通じたフレームワークSkillRLを提案します。我々のアプローチは、経験に基づく蒸留メカニズムを導入し、階層的なスキルライブラリSkillBankを構築し、一般的およびタスク特有のヒューリスティクスの適応的取得戦略を持ち、強化学習中にスキルライブラリがエージェントのポリシーと共進化することを可能にする再帰的進化メカニズムを含みます。これらの革新はトークンのフットプリントを大幅に削減しながら、推論の有用性を向上させます。ALFWorld、WebShop、および7つの検索強化タスクに関する実験結果は、SkillRLが最先端のパフォーマンスを達成し、強力なベースラインを15.3%以上上回り、タスクの複雑性が増す中でも堅牢性を維持することを示しています。コードはhttps://github.com/aiming-lab/SkillRLで入手可能です。
+# Summary (by gpt-4o-mini)
+- SkillRLは、自動スキル発見と再帰的進化を通じて、LLMエージェントが過去の経験を活用し、高レベルの再利用可能な行動パターンを抽出できるようにする新たなフレームワークです。経験に基づく蒸留を用いて階層的なスキルライブラリを構築し、強化学習中にスキルがエージェントのポリシーと共進化します。このアプローチにより、推論の有用性が向上しつつ、トークンのフットプリントが削減されます。実験はSkillRLが最先端の性能を達成し、堅牢性を保つことを示しました。</issue-body>
+<maintainer-comment-text><p>alphaxiv blog: 
+
+{% raw %}
+<a href="https://www.alphaxiv.org/abs/2602.08234" target="_blank" rel="noopener noreferrer">https://www.alphaxiv.org/abs/2602.08234</a>
+{% endraw %}
+
+</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/MichaelElabd/status/2021674107100967407?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AnthropicのAgent Skillsにinspireされた手法で、ベースモデルを環境に対して適用しタスクに対する成功したtrajectoryと失敗したtrajectoryをまず収集する。収集したtrajectoryに対して、teacher modelで「タスクを完了するための戦略的なパターン」と「簡潔な失敗した要因」を生成させ、<スキル名, スキルの具体的なdescription, いつそのスキルを適用するか>によって定義されるスキルを定義する（従来手法は失敗したtrajectoryに関する情報は破棄していた）。スキルは2種類定義されており、汎用的に全てのタスクに適用可能なgenericなスキルと、特定のtask-specificなスキルの2種類によって構成される（この二つのスキルの集合がSKILLBANKと呼ばれる）。genericなスキルは常にポリシーのinstructionに含められ、task-specificなスキルはタスクを実行するたびに意味的な関連性に基づいてtop-kがretrieveされ利用される。これにより初期のSKILLBANKを構築する。<br><br>続いて、ベースモデルを学習して賢くしていきたい。この時初期のポリシー（=ベースモデル）はスキルのretrieve + 使い方を知らないため、teacher modelによってスキルを含めたtrajectoryを生成しSFTをすることでコールドスタート時に適用する。その後、オンポリシーRL（GRPO）を用いて、スキルをretrieveし、retrieveしたスキルを活用してタスクを完了し、完了したタスクからrewardが計算されポリシーを更新していく。この時、GRPOのエポックにおいてvalidationフェーズを用意し、特定の閾値以下のsuccess rateを持つタスクに関しては、teacher modelが失敗したtrajectoryに基づいてSKILLBANKを更新することでSKILLBANKを進化させることで性能を改善する、といった話に見える。<br><br><img src="https://github.com/user-attachments/assets/291d200c-c516-45c7-b008-31b9741cf4d5" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LatentMem: Customizing Latent Memory for Multi-Agent Systems, Muxin Fu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.03036</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4467</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, AIAgents, Selected Papers/Blogs, memory, KeyPoint Notes, Adaptive, Initial Impression Notes</tags>
+<repo-issue-date>2026-02-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.03036
+# Authors
+  - Muxin Fu
+  - Guibin Zhang
+  - Xiangyuan Xue
+  - Yafu Li
+  - Zefeng He
+  - Siyuan Huang
+  - Xiaoye Qu
+  - Yu Cheng
+  - Yang Yang
+# Abstract
+  - Large language model (LLM)-powered multi-agent systems (MAS) demonstrate remarkable collective intelligence, wherein multi-agent memory serves as a pivotal mechanism for continual adaptation. However, existing multi-agent memory designs remain constrained by two fundamental bottlenecks: (i) memory homogenization arising from the absence of role-aware customization, and (ii) information overload induced by excessively fine-grained memory entries. To address these limitations, we propose LatentMem, a learnable multi-agent memory framework designed to customize agent-specific memories in a token-efficient manner. Specifically, LatentMem comprises an experience bank that stores raw interaction trajectories in a lightweight form, and a memory composer that synthesizes compact latent memories conditioned on retrieved experience and agent-specific contexts. Further, we introduce Latent Memory Policy Optimization (LMPO), which propagates task-level optimization signals through latent memories to the composer, encouraging it to produce compact and high-utility representations. Extensive experiments across diverse benchmarks and mainstream MAS frameworks show that LatentMem achieves a performance gain of up to $19.36$% over vanilla settings and consistently outperforms existing memory architectures, without requiring any modifications to the underlying frameworks.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）を活用したマルチエージェントシステム（MAS）は、驚異的な集合知を示し、マルチエージェントメモリは継続的な適応のための重要なメカニズムとして機能します。しかし、既存のマルチエージェントメモリの設計には、以下の2つの基本的なボトルネックが存在します：（i）役割に応じたカスタマイズの欠如によるメモリの均質化、（ii）過度に細分化されたメモリエントリーによる情報過多。これらの制限に対処するために、我々はLatentMemを提案します。これは、トークン効率の良い方法でエージェント固有のメモリをカスタマイズするために設計された学習可能なマルチエージェントメモリフレームワークです。具体的には、LatentMemは、生のインタラクション経路を軽量な形で保存する経験バンクと、取得した経験およびエージェント固有のコンテキストに基づいてコンパクトな潜在メモリを合成するメモリ作成者で構成されています。さらに、Latent Memory Policy Optimization（LMPO）を導入し、タスクレベルの最適化信号を潜在メモリを通じて作成者に伝播させ、それによりコンパクトで高い有用性のある表現を生成するよう促します。多様なベンチマークおよび主流のMASフレームワーク全体で行った広範な実験により、LatentMemは従来の設定に対して最大$19.36$%のパフォーマンス向上を達成し、既存のメモリアーキテクチャを一貫して上回り、基盤となるフレームワークの変更を必要としません。
+# Summary (by gpt-4o-mini)
+- LatentMemは、LLMを用いたマルチエージェントシステム向けに設計された学習可能なメモリフレームワークで、カスタマイズと情報最適化を実現します。経験バンクと潜在メモリを活用し、メモリエントリーの均質化と情報過多の問題を解決。タスクレベルの最適化信号を利用することで、従来のメモリ設計に対し最大19.36%の性能向上を達成しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2019778133550125515?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>skim readingしかできていないが、現在のMulti AI Agentsにおけるメモリ機構はstaticな機構であるため、メモリが均質化してしまいエージェントの役割ごとに最適化されておらず、かつlong trajectoryを扱う際に情報がコンパクトに圧縮されておらずtrajectoryが肥大化していってしまう。このため、エージェントの役割ごとに異なるメモリを生成し、かつ固定長の潜在表現に情報を圧縮する（これによりlong contextでのメモリ肥大化を防ぐ）ような新たなDeep Neural Networkに基づくMemory ComposerをRLを通じて学習するという話のようである。<br><br>エージェントのプロファイルと、experience bankから抽出された現在のクエリに対するtrajectoryに基づいて、個々のエージェントごとにrelevantな情報が圧縮されたメモリの潜在表現を生成するようなMemory ComposerをRLで学習し活用する（LMPO）。このとき、エージェントのパラメータは更新せずfreezeする。あくまでバックボーンはfreezeして変更せず、メモリ機構のみを最適化することに焦点を当てている。Memory Composerは、与えられたメモリ, エージェントの（freezeされた）パラメータ, 与えられたプロンプトによってreasoningを実施し、最終的な応答が正しかったかどうかに基づいてGRPOベースのRLVR（=LMPO）を実施することによって学習する。エージェントがメモリを活用して得られたtrajectoryはexperience bankに格納されて利用される。<br><img src="https://github.com/user-attachments/assets/32707936-036c-4d99-94c9-020d9aa22d81" /" alt="image" loading="lazy" width="550" height="400"/><br><br>既存手法と比べて多くのQAベンチマークで高い性能を獲得し、OODなベンチマークでもある程度は汎化するようである。<br><img src="https://github.com/user-attachments/assets/4570c394-f512-461a-9fab-caee8c031b43" /" alt="image" loading="lazy" width="550" height="400"/></p><p>in-domainなベンチマークと比較して、out-of-domainなベンチマークでの性能向上が小さいので、汎化性能にまだ課題があるように感じた。解決している問題は非常に重要だと考えられ、どのようにすれば汎用的なMemory Composerが学習できるか？を考えるとおもしろそうである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Locas: Your Models are Principled Initializers of Locally-Supported Parametric Memories, Sidi Lu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.05085</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4458</repo-issue-link>
+<tags>NLP, LanguageModel, Catastrophic Forgetting, memory, Test-time Learning, ContinualLearning</tags>
+<repo-issue-date>2026-02-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.05085
+# Authors
+  - Sidi Lu
+  - Zhenwen Liang
+  - Dongyang Ma
+  - Yan Wang
+  - Haitao Mi
+  - Dong Yu
+# Abstract
+  - In this paper, we aim to bridge test-time-training with a new type of parametric memory that can be flexibly offloaded from or merged into model parameters. We present Locas, a Locally-Supported parametric memory that shares the design of FFN blocks in modern transformers, allowing it to be flexibly permanentized into the model parameters while supporting efficient continual learning. We discuss two major variants of Locas: one with a conventional two-layer MLP design that has a clearer theoretical guarantee; the other one shares the same GLU-FFN structure with SOTA LLMs, and can be easily attached to existing models for both parameter-efficient and computation-efficient continual learning. Crucially, we show that proper initialization of such low-rank sideway-FFN-style memories -- performed in a principled way by reusing model parameters, activations and/or gradients -- is essential for fast convergence, improved generalization, and catastrophic forgetting prevention. We validate the proposed memory mechanism on the PG-19 whole-book language modeling and LoCoMo long-context dialogue question answering tasks. With only 0.02\% additional parameters in the lowest case, Locas-GLU is capable of storing the information from past context while maintaining a much smaller context window. In addition, we also test the model's general capability loss after memorizing the whole book with Locas, through comparative MMLU evaluation. Results show the promising ability of Locas to permanentize past context into parametric knowledge with minimized catastrophic forgetting of the model's existing internal knowledge.
+# Translation (by gpt-4o-mini)
+- 本論文では、テスト時トレーニングと、モデルパラメータから柔軟にオフロードまたは統合できる新しいタイプのパラメトリックメモリを結びつけることを目指します。私たちは、効率的な継続学習をサポートしながらモデルパラメータに柔軟に永続化できる現代のトランスフォーマーのFFNブロックの設計を共有するLocasというローカルサポートされたパラメトリックメモリを提案します。Locasの2つの主要なバリエーションについて議論します。1つは、理論的保証がより明確な従来の二層MLP設計を持ち、もう1つはSOTA LLMと同じGLU-FFN構造を共有し、既存のモデルに簡単に取り付けることができ、パラメータ効率と計算効率の両方を考慮した継続学習を実現します。重要なことに、モデルパラメータ、アクティベーション、および/または勾配を再利用するという原則に基づいて行う、低ランクの横方向FFNスタイルのメモリの適切な初期化が、速い収束、改善された一般化、および破滅的な忘却の防止に不可欠であることを示します。提案されたメモリメカニズムをPG-19全書籍言語モデリングとLoCoMo長文コンテキスト対話質問応答タスクで検証します。最も少ない場合においても0.02\%の追加パラメータのみで、Locas-GLUは過去のコンテキストからの情報を保存しつつ、はるかに小さなコンテキストウィンドウを維持することができます。また、Locasを使用して全書籍を記憶した後のモデルの一般的な能力喪失をMMLU評価で比較しながらテストしています。その結果は、Locasが過去のコンテキストをパラメトリックな知識として永続化し、モデルの既存の内部知識の破滅的な忘却を最小限に抑えた能力の有望さを示しています。
+# Summary (by gpt-4o-mini)
+- 本研究では、モデルパラメータから柔軟にオフロードまたは統合できる新しいパラメトリックメモリ「Locas」を提案し、効率的な継続学習を実現します。Locasは二層MLP設計とGLU-FFN構造の2つのバリエーションを持ち、既存モデルに簡単に統合可能です。低ランクのFFNスタイルのメモリの適切な初期化が速い収束と破滅的な忘却防止に重要であることを示します。PG-19言語モデリングやLoCoMoタスクでの実験結果は、Locasが過去の情報をパラメトリックに保存し、モデルの性能を維持する能力を示しています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2019646322652176595?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Scaling Small Agents Through Strategy Auctions, Lisa Alazraki+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.02751</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4441</repo-issue-link>
+<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, AIAgents, SmallModel, SelfCorrection, memory, KeyPoint Notes, Scalability</tags>
+<repo-issue-date>2026-02-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.02751
+# Authors
+  - Lisa Alazraki
+  - William F. Shen
+  - Yoram Bachrach
+  - Akhil Mathur
+# Abstract
+  - Small language models are increasingly viewed as a promising, cost-effective approach to agentic AI, with proponents claiming they are sufficiently capable for agentic workflows. However, while smaller agents can closely match larger ones on simple tasks, it remains unclear how their performance scales with task complexity, when large models become necessary, and how to better leverage small agents for long-horizon workloads. In this work, we empirically show that small agents' performance fails to scale with task complexity on deep search and coding tasks, and we introduce Strategy Auctions for Workload Efficiency (SALE), an agent framework inspired by freelancer marketplaces. In SALE, agents bid with short strategic plans, which are scored by a systematic cost-value mechanism and refined via a shared auction memory, enabling per-task routing and continual self-improvement without training a separate router or running all models to completion. Across deep search and coding tasks of varying complexity, SALE reduces reliance on the largest agent by 53%, lowers overall cost by 35%, and consistently improves upon the largest agent's pass@1 with only a negligible overhead beyond executing the final trace. In contrast, established routers that rely on task descriptions either underperform the largest agent or fail to reduce cost -- often both -- underscoring their poor fit for agentic workflows. These results suggest that while small agents may be insufficient for complex workloads, they can be effectively "scaled up" through coordinated task allocation and test-time self-improvement. More broadly, they motivate a systems-level view of agentic AI in which performance gains come less from ever-larger individual models and more from market-inspired coordination mechanisms that organize heterogeneous agents into efficient, adaptive ecosystems.
+# Translation (by gpt-4o-mini)
+- 小規模言語モデルは、エージェント型AIに対する有望で費用対効果の高いアプローチとしてますます注目されています。その支持者たちは、これらのモデルがエージェント型のワークフローに十分な能力を持っていると主張しています。しかし、小型エージェントが簡単なタスクでは大型エージェントに匹敵することができる一方で、タスクの複雑さに応じたパフォーマンスのスケール、つまり大型モデルが必要となる場合や、小型エージェントを長期的な作業でどのように効果的に活用できるかについては不明な点が残ります。本研究では、小型エージェントのパフォーマンスが深い検索やコーディングタスクにおいてタスクの複雑さにスケールしないことを実証的に示し、戦略オークションによる作業効率化（SALE）というエージェントフレームワークを紹介します。このSALEは、フリーランスマーケットプレイスに触発されたもので、エージェントが短い戦略計画で入札し、それが体系的なコスト-価値メカニズムによってスコア付けされ、共有オークションメモリを通じて洗練されることで、タスクごとのルーティングと、別のルーターをトレーニングすることなく、またはすべてのモデルを完了まで実行することなく、継続的な自己改善が可能になります。さまざまな複雑さの深い検索およびコーディングタスクにおいて、SALEは最大のエージェントへの依存を53%削減し、全体のコストを35%低下させ、最終的なトレースを実行する際のわずかなオーバーヘッドだけで、最大のエージェントのpass@1を一貫して向上させます。一方、タスクの説明に依存する既存のルーターは、最大のエージェントのパフォーマンスを下回るか、コストを削減できない（しばしば両方）ことが多く、エージェント型ワークフローには不適していることを強調しています。これらの結果は、小型エージェントが複雑な作業には不十分かもしれないが、協調したタスク割り当てとテスト時の自己改善を通じて「スケールアップ」することができることを示唆しています。より広い視点として、これらの結果は、パフォーマンスの向上が個々のモデルのさらなる大規模化からではなく、異種エージェントを効率的で適応的なエコシステムに整理する市場に触発された調整メカニズムから生じるエージェント型AIのシステム全体の視点を促しています。
+# Summary (by gpt-4o-mini)
+- 小規模言語モデルはエージェント型AIの有望なアプローチとして注目されているが、複雑なタスクでは大型モデルが必要な場合が多い。本研究では、SALEというフレームワークを提案し、エージェントが短期的な戦略計画でタスクを効率化し、コストを削減しながら自己改善を行う様子を示す。SALEは、最大エージェントへの依存を53%減少させ、コストを35%低下させることができる。これらの結果は、小型エージェントが複雑な業務には限界があるが、協調的なタスク割り当てを通じてスケールアップ可能であることを示唆している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2019414476244807892?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AIエージェントにおいて、小規模モデルは費用対効果が良い選択として期待されているが、結局のところ困難なタスクでは大規模なモデルと比較して性能が低下することから限界を指摘。費用対効果を最大化するためにフリーランスを参考に、候補となるエージェントによる入札方式を採用。エージェントはタスクを解くための戦略をプランニングし、提出された戦略をスコアリングし、かつ推定されるコストから最も費用対効果の良いエージェントを採用することでタスクを解かせるような枠組みを提案している模様。入札に負けたエージェントは、過去の入札履歴が長期メモリに蓄積されるため、それらをcontextに組み込むことで重み更新なしで自身のプランニングを改善していくことができる、というような話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemoryLLM: Plug-n-Play Interpretable Feed-Forward Memory for Transformers, Ajay Jaiswal+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.00398</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4381</repo-issue-link>
+<tags>Embeddings, NLP, LanguageModel, Transformer, Architecture, memory</tags>
+<repo-issue-date>2026-02-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.00398
+# Authors
+  - Ajay Jaiswal
+  - Lauren Hannah
+  - Han-Byul Kim
+  - Duc Hoang
+  - Arnav Kundu
+  - Mehrdad Farajtabar
+  - Minsik Cho
+# Abstract
+  - Understanding how transformer components operate in LLMs is important, as it is at the core of recent technological advances in artificial intelligence. In this work, we revisit the challenges associated with interpretability of feed-forward modules (FFNs) and propose MemoryLLM, which aims to decouple FFNs from self-attention and enables us to study the decoupled FFNs as context-free token-wise neural retrieval memory. In detail, we investigate how input tokens access memory locations within FFN parameters and the importance of FFN memory across different downstream tasks. MemoryLLM achieves context-free FFNs by training them in isolation from self-attention directly using the token embeddings. This approach allows FFNs to be pre-computed as token-wise lookups (ToLs), enabling on-demand transfer between VRAM and storage, additionally enhancing inference efficiency. We also introduce Flex-MemoryLLM, positioning it between a conventional transformer design and MemoryLLM. This architecture bridges the performance gap caused by training FFNs with context-free token-wise embeddings.
+# Translation (by gpt-4o-mini)
+- <abstract>大規模言語モデルにおけるトランスフォーマーの構成要素がどのように機能するかを理解することは重要であり、これは人工知能の最近の技術的進歩の中心にあります。本研究では、フィードフォワードモジュール（FFN）の解釈可能性に関連する課題を再検討し、FFNを自己注意から切り離し、文脈フリーのトークン単位のニューラルリトリーバルメモリとして研究することを目的としたMemoryLLMを提案します。具体的には、入力トークンがFFNパラメータ内のメモリ位置にアクセスする方法と、異なる下流タスクにおけるFFNメモリの重要性を調査します。MemoryLLMは、自己注意から切り離してトークン埋め込みを直接使用してFFNを単独で訓練することで、文脈フリーのFFNを実現します。このアプローチにより、FFNはトークン単位のルックアップ（ToL）として事前計算され、VRAMとストレージ間のオンデマンド転送を可能にし、推論効率をさらに向上させます。また、MemoryLLMと従来のトランスフォーマーデザインの中間に位置づけられるFlex-MemoryLLMも導入します。このアーキテクチャは、文脈フリーのトークン単位の埋め込みでFFNを訓練することによって生じる性能ギャップを埋める橋渡しを行います。</abstract>
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルのFFNの解釈可能性を再検討し、自己注意から切り離したMemoryLLMを提案。FFNをトークン単位のニューラルリトリーバルメモリとして機能させ、効率的な推論を実現。Flex-MemoryLLMも導入し、性能ギャップを埋める役割を果たす。</issue-body>
+<maintainer-comment-text><p>またしてもembeddingの活用</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2018535009599234394?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] The AI Hippocampus: How Far are We From Human Memory?, Zixia Jia+, TMLR'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.09113</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4284</repo-issue-link>
+<tags>Survey, ComputerVision, NLP, LanguageModel, AIAgents, MultiModal, RAG(RetrievalAugmentedGeneration), ConceptErasure, TMLR, KnowledgeEditing, read-later, Selected Papers/Blogs, VisionLanguageModel, memory, KeyPoint Notes</tags>
+<repo-issue-date>2026-01-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.09113
+# Authors
+  - Zixia Jia
+  - Jiaqi Li
+  - Yipeng Kang
+  - Yuxuan Wang
+  - Tong Wu
+  - Quansen Wang
+  - Xiaobo Wang
+  - Shuyi Zhang
+  - Junzhe Shen
+  - Qing Li
+  - Siyuan Qi
+  - Yitao Liang
+  - Di He
+  - Zilong Zheng
+  - Song-Chun Zhu
+# Abstract
+  - Memory plays a foundational role in augmenting the reasoning, adaptability, and contextual fidelity of modern Large Language Models and Multi-Modal LLMs. As these models transition from static predictors to interactive systems capable of continual learning and personalized inference, the incorporation of memory mechanisms has emerged as a central theme in their architectural and functional evolution. This survey presents a comprehensive and structured synthesis of memory in LLMs and MLLMs, organizing the literature into a cohesive taxonomy comprising implicit, explicit, and agentic memory paradigms. Specifically, the survey delineates three primary memory frameworks. Implicit memory refers to the knowledge embedded within the internal parameters of pre-trained transformers, encompassing their capacity for memorization, associative retrieval, and contextual reasoning. Recent work has explored methods to interpret, manipulate, and reconfigure this latent memory. Explicit memory involves external storage and retrieval components designed to augment model outputs with dynamic, queryable knowledge representations, such as textual corpora, dense vectors, and graph-based structures, thereby enabling scalable and updatable interaction with information sources. Agentic memory introduces persistent, temporally extended memory structures within autonomous agents, facilitating long-term planning, self-consistency, and collaborative behavior in multi-agent systems, with relevance to embodied and interactive AI. Extending beyond text, the survey examines the integration of memory within multi-modal settings, where coherence across vision, language, audio, and action modalities is essential. Key architectural advances, benchmark tasks, and open challenges are discussed, including issues related to memory capacity, alignment, factual consistency, and cross-system interoperability.
+# Translation (by gpt-4o-mini)
+- メモリは、現代の大規模言語モデル（LLM）およびマルチモーダルLLMの推論、適応性、文脈の忠実性を強化する上で基盤的な役割を果たしています。これらのモデルが静的な予測システムから、継続的な学習と個別化された推論が可能なインタラクティブなシステムへと移行するにつれて、メモリメカニズムの組み込みは、そのアーキテクチャおよび機能の進化における中心的なテーマとして浮上しています。本調査は、LLMおよびMLLMにおけるメモリに関する包括的かつ構造化された統合を提示し、文献を暗黙的、明示的、エージェンティックという3つのメモリパラダイムから成る一貫した分類に整理しています。具体的には、調査は3つの主要なメモリフレームワークを delineate します。暗黙のメモリは、事前学習されたトランスフォーマーの内部パラメータに埋め込まれた知識を指し、その暗記能力、連想的な検索、および文脈推論を含みます。最近の研究では、この潜在メモリを解釈、操作、および再構成する方法が探求されています。明示的なメモリは、モデルの出力を動的でクエリ可能な知識表現（例えば、テキストコーパス、密ベクトル、およびグラフベースの構造など）で強化するために設計された外部ストレージおよび検索コンポーネントを含み、情報源との拡張可能で更新可能なインタラクションを可能にします。エージェンティックメモリは、自律エージェント内に持続的かつ時間的に拡張されたメモリ構造を導入し、長期的な計画、自己一貫性、そしてマルチエージェントシステムにおける協調行動を促進し、具現化されたインタラクティブAIに関連します。テキストを超えて、この調査は、視覚、言語、音声、行動の各モダリティ間の整合性が重要なマルチモーダル環境におけるメモリの統合を考察します。メモリ容量、整合性、事実の一貫性、システム間相互運用性に関連する問題を含む、主要なアーキテクチャの進展、ベンチマークタスク、およびオープンチャレンジが議論されます。
+# Summary (by gpt-4o-mini)
+- メモリは、LLMおよびマルチモーダルLLMの推論と適応性を強化する基盤的要素であり、モデルが静的からインタラクティブなシステムへと進化する中で重要なテーマです。本調査では、メモリを暗黙的、明示的、エージェンティックの三つのパラダイムに分類し、各フレームワークを詳細に述べています。暗黙のメモリは内部パラメータに埋め込まれた知識を示し、明示的なメモリは外部ストレージによる動的な情報強化を指します。エージェンティックメモリは自律エージェントのための持続的な構造を提供し、長期的計画や協調行動を促進します。また、視覚や音声を含む多様なモダリティ間の整合性の重要性も考慮し、アーキテクチャの進展やベンチマークタスクに関連する挑戦について議論されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/michaelelabd/status/2014798656910852183?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AI Agentのメモリに関する包括的なSurvey。現在の技術の包括的なレビューだけでなく、人間の海馬との対比などから必要な能力が議論されている模様。また、現在のメモリが抱えている課題を同定し明言していることが大きな貢献で、<br>- memory contamination, hallucination （無関係、不正確なデータによるメモリの汚染と、それによって生じるハルシネーション）<br>- large scaleな検索の計算負荷<br>- いつ検索するのか、パラメータに内包される知識に頼るのかの判断の困難さ<br>- 長期にわたるinteractionに対してどのように一貫性を保つか<br><br>ということが挙げられるとのこと。<br>うーーん読みたい。</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Sk7pwmLuAY" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Sk7pwmLuAY</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Toward Efficient Agents: Memory, Tool learning, and Planning, Xiaofang Yang+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.14192</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4283</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, ReinforcementLearning, AIAgents, Planning, PostTraining, memory</tags>
+<repo-issue-date>2026-01-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.14192
+# Authors
+  - Xiaofang Yang
+  - Lijun Li
+  - Heng Zhou
+  - Tong Zhu
+  - Xiaoye Qu
+  - Yuchen Fan
+  - Qianshan Wei
+  - Rui Ye
+  - Li Kang
+  - Yiran Qin
+  - Zhiqiang Kou
+  - Daizong Liu
+  - Qi Li
+  - Ning Ding
+  - Siheng Chen
+  - Jing Shao
+# Abstract
+  - Recent years have witnessed increasing interest in extending large language models into agentic systems. While the effectiveness of agents has continued to improve, efficiency, which is crucial for real-world deployment, has often been overlooked. This paper therefore investigates efficiency from three core components of agents: memory, tool learning, and planning, considering costs such as latency, tokens, steps, etc. Aimed at conducting comprehensive research addressing the efficiency of the agentic system itself, we review a broad range of recent approaches that differ in implementation yet frequently converge on shared high-level principles including but not limited to bounding context via compression and management, designing reinforcement learning rewards to minimize tool invocation, and employing controlled search mechanisms to enhance efficiency, which we discuss in detail. Accordingly, we characterize efficiency in two complementary ways: comparing effectiveness under a fixed cost budget, and comparing cost at a comparable level of effectiveness. This trade-off can also be viewed through the Pareto frontier between effectiveness and cost. From this perspective, we also examine efficiency oriented benchmarks by summarizing evaluation protocols for these components and consolidating commonly reported efficiency metrics from both benchmark and methodological studies. Moreover, we discuss the key challenges and future directions, with the goal of providing promising insights.
+# Translation (by gpt-4o-mini)
+- 近年、大規模言語モデルをエージェントシステムに拡張することへの関心が高まっています。エージェントの効果は引き続き改善されていますが、実世界での展開に不可欠な効率がしばしば見過ごされています。本稿では、エージェントの3つのコアコンポーネントであるメモリ、ツール学習、計画に関して効率を調査し、レイテンシ、トークン、ステップなどのコストを考慮します。エージェントシステム自身の効率に関する包括的な研究を行うことを目的として、実装は異なるものの、圧縮と管理によるコンテキストの制限、ツール呼び出しを最小限にするための強化学習報酬の設計、効率を向上させるための制御された探索メカニズムを活用するなど、共通の高レベル原則に頻繁に収束する最近のアプローチを幅広くレビューします。これにより、効率を固定コスト予算の下での効果の比較と、効果が同等のレベルでのコストの比較という2つの補完的な方法で特徴づけます。このトレードオフは、効果とコストの間のパレートフロンティアを通じて見ることもできます。この観点から、これらのコンポーネントの評価プロトコルを要約し、ベンチマークおよび方法論の研究から一般的に報告されている効率メトリクスを統合することによって、効率指向のベンチマークも検討します。さらに、主要な課題と今後の方向性について議論し、有望な洞察を提供することを目指します。
+# Summary (by gpt-4o-mini)
+- エージェントシステムの効率に関する研究を行い、メモリ、ツール学習、計画の3つのコアコンポーネントに焦点を当てる。コスト（レイテンシ、トークン、ステップ）を考慮し、圧縮や強化学習報酬、効率向上のための制御された探索メカニズムを活用する最近のアプローチをレビュー。効果とコストのトレードオフをパレートフロンティアを通じて評価し、効率指向のベンチマークや主要な課題、今後の方向性についても議論する。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agentic Reasoning for Large Language Models, Tianxin Wei+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.12538</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4273</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, AIAgents, Planning, Reasoning, SelfImprovement, memory, One-Line Notes, Test-time Learning</tags>
+<repo-issue-date>2026-01-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.12538
+# Authors
+  - Tianxin Wei
+  - Ting-Wei Li
+  - Zhining Liu
+  - Xuying Ning
+  - Ze Yang
+  - Jiaru Zou
+  - Zhichen Zeng
+  - Ruizhong Qiu
+  - Xiao Lin
+  - Dongqi Fu
+  - Zihao Li
+  - Mengting Ai
+  - Duo Zhou
+  - Wenxuan Bao
+  - Yunzhe Li
+  - Gaotang Li
+  - Cheng Qian
+  - Yu Wang
+  - Xiangru Tang
+  - Yin Xiao
+  - Liri Fang
+  - Hui Liu
+  - Xianfeng Tang
+  - Yuji Zhang
+  - Chi Wang
+  - Jiaxuan You
+  - Heng Ji
+  - Hanghang Tong
+  - Jingrui He
+# Abstract
+  - Reasoning is a fundamental cognitive process underlying inference, problem-solving, and decision-making. While large language models (LLMs) demonstrate strong reasoning capabilities in closed-world settings, they struggle in open-ended and dynamic environments. Agentic reasoning marks a paradigm shift by reframing LLMs as autonomous agents that plan, act, and learn through continual interaction. In this survey, we organize agentic reasoning along three complementary dimensions. First, we characterize environmental dynamics through three layers: foundational agentic reasoning, which establishes core single-agent capabilities including planning, tool use, and search in stable environments; self-evolving agentic reasoning, which studies how agents refine these capabilities through feedback, memory, and adaptation; and collective multi-agent reasoning, which extends intelligence to collaborative settings involving coordination, knowledge sharing, and shared goals. Across these layers, we distinguish in-context reasoning, which scales test-time interaction through structured orchestration, from post-training reasoning, which optimizes behaviors via reinforcement learning and supervised fine-tuning. We further review representative agentic reasoning frameworks across real-world applications and benchmarks, including science, robotics, healthcare, autonomous research, and mathematics. This survey synthesizes agentic reasoning methods into a unified roadmap bridging thought and action, and outlines open challenges and future directions, including personalization, long-horizon interaction, world modeling, scalable multi-agent training, and governance for real-world deployment.
+# Translation (by gpt-4o-mini)
+- 推論は、推論、問題解決、意思決定の根底にある基本的な認知プロセスです。大規模言語モデル（LLM）は閉じた世界の設定において強力な推論能力を示していますが、開放的で動的な環境では苦戦しています。エージェンティック推論は、LLMを計画、行動、学習を行う自律的なエージェントとして再構築することでパラダイムシフトをもたらします。本調査では、エージェンティック推論を3つの補完的な次元に整理します。まず、環境のダイナミクスを3つの層を通じて特徴付けます。第一に、安定した環境における計画、道具の使用、探索などの基本的な単一エージェントの能力を確立する「基盤エージェンティック推論」、第二に、フィードバック、記憶、適応を通じてエージェントがこれらの能力を洗練させる方法を研究する「自己進化エージェンティック推論」、第三に、協調、知識の共有、共通の目標を含む共同設定に知能を拡張する「集合的多エージェント推論」です。これらの層を通じて、構造的オーケストレーションを介してテスト時の相互作用をスケールさせる「文脈内推論」と、強化学習および監督されたファインチューニングを通じて行動を最適化する「ポストトレーニング推論」を区別します。また、科学、ロボティクス、ヘルスケア、自律研究、数学など、現実世界のアプリケーションやベンチマークにおける代表的なエージェンティック推論フレームワークをレビューします。本調査は、思考と行動をつなぐ統一されたロードマップにエージェンティック推論手法を統合し、個別化、長期的相互作用、世界モデル、スケーラブルな多エージェントトレーニング、現実世界への展開のためのガバナンスを含むオープンな課題と今後の方向性を概説します。
+# Summary (by gpt-4o-mini)
+- エージェンティック推論は、LLMを自律的エージェントとして再構築し、計画や行動を行う新たなアプローチを提供します。本調査では、推論を基盤、自己進化、集合的の三つの次元に整理し、それぞれの特性と相互作用を探ります。また、文脈内推論とポストトレーニング推論の違いを示し、さまざまな現実世界でのアプリケーションをレビューします。この研究は、思考と行動を結びつける統一的なロードマップを提示し、今後の課題と方向性を概説します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2014368222238351599?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>agentのreasoning周りに特化したsurveyで基本的なsingle agentとしてのplanning, tool use, searchだけでなく、self evolving, memory, multi agent reasoningなど広範なトピックが網羅されているとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CorpusQA: A 10 Million Token Benchmark for Corpus-Level Analysis and Reasoning, Zhiyuan Lu+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.14952</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4262</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, RAG(RetrievalAugmentedGeneration), LongSequence, Selected Papers/Blogs, memory, Initial Impression Notes</tags>
+<repo-issue-date>2026-01-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.14952
+# Authors
+  - Zhiyuan Lu
+  - Chenliang Li
+  - Yingcheng Shi
+  - Weizhou Shen
+  - Ming Yan
+  - Fei Huang
+# Abstract
+  - While large language models now handle million-token contexts, their capacity for reasoning across entire document repositories remains largely untested. Existing benchmarks are inadequate, as they are mostly limited to single long texts or rely on a "sparse retrieval" assumption-that answers can be derived from a few relevant chunks. This assumption fails for true corpus-level analysis, where evidence is highly dispersed across hundreds of documents and answers require global integration, comparison, and statistical aggregation. To address this critical gap, we introduce CorpusQA, a new benchmark scaling up to 10 million tokens, generated via a novel data synthesis framework. By decoupling reasoning from textual representation, this framework creates complex, computation-intensive queries with programmatically guaranteed ground-truth answers, challenging systems to perform holistic reasoning over vast, unstructured text without relying on fallible human annotation. We further demonstrate the utility of our framework beyond evaluation, showing that fine-tuning on our synthesized data effectively enhances an LLM's general long-context reasoning capabilities. Extensive experiments reveal that even state-of-the-art long-context LLMs struggle as input length increases, and standard retrieval-augmented generation systems collapse entirely. Our findings indicate that memory-augmented agentic architectures offer a more robust alternative, suggesting a critical shift is needed from simply extending context windows to developing advanced architectures for global information synthesis.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルは今や百万トークンのコンテキストを処理できますが、ドキュメントリポジトリ全体にわたる推論能力はほとんど検証されていません。既存のベンチマークは不十分で、主に単一の長文に制限されているか、「スパースリトリーバル」の仮定、つまり回答がいくつかの関連する部分から導かれるという前提に依存しています。この仮定は、証拠が何百もの文書に広く分散され、回答が全体的な統合、比較、統計的集約を必要とする真のコーパスレベルの分析には適していません。この重要なギャップに対処するために、私たちはCorpusQAを紹介します。これは、革新的なデータ合成フレームワークを通じて生成された、最大1,000万トークンにスケールする新しいベンチマークです。このフレームワークは、推論をテキスト表現から切り離すことで、プログラムによって保証された真実の回答を持つ複雑で計算集約的なクエリを作成し、システムに対して広大で非構造的なテキストに対する全体的な推論を行うことを求めます。また、評価を超えて私たちのフレームワークの有用性を示し、合成データに対するファインチューニングがLLMの一般的な長期コンテキストの推論能力を効果的に向上させることを示します。広範な実験により、最先端の長期コンテキストLLMでさえ、入力の長さが増えると苦労し、標準的なリトリーバー拡張生成システムは完全に崩壊することが明らかになりました。私たちの発見は、メモリ拡張型エージェントアーキテクチャがより堅牢な代替手段を提供することを示しており、単にコンテキストウィンドウを拡張するだけでなく、全体的な情報合成のための先進的なアーキテクチャの開発が必要であることを示唆しています。
+# Summary (by gpt-4o-mini)
+- CorpusQAは、最大1,000万トークンに対応する新しいベンチマークで、広範な非構造的テキストに対する全体的な推論を求める。これは、プログラムによって保証された真実の回答を持つ複雑なクエリを生成する革新的なデータ合成フレームワークを用いており、LLMの長期コンテキスト推論能力を向上させることが実証された。一方で、長い入力に対しては現行のリトリーバーシステムが限界を迎え、メモリ拡張型エージェントアーキテクチャがより効果的な解決策となる可能性が示唆された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2014204942479921185?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>10Mコンテキストまで性能を測定可能なベンチマークらしく、結果を見ると以下のようになっている。128KコンテキストではGPT5に軍配が上がり、1M級のコンテキストになるとGeminiがやはり強い（これは昔からそうでFiction.liveベンチなどでも示されていた）。<br><br>10Mコンテキスト級ではLLMのコンテキストウィンドウのみでは対応不可なので、RAGやMemory Agextでベンチマーキングされているが、明確にAgentの方が性能が良い。ベンチマークの細かな作り方や、harnessなど、具体的にどのような設定で実験されているのか気になる。<br><img src="https://github.com/user-attachments/assets/db2d8c97-efc8-438f-8d1f-096e7e46138b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agentic Memory: Learning Unified Long-Term and Short-Term Memory Management for Large Language Model Agents, Yi Yu+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.01885</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4197</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, memory, One-Line Notes</tags>
+<repo-issue-date>2026-01-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.01885
+# Authors
+  - Yi Yu
+  - Liuyi Yao
+  - Yuexiang Xie
+  - Qingquan Tan
+  - Jiaqi Feng
+  - Yaliang Li
+  - Libing Wu
+# Abstract
+  - Large language model (LLM) agents face fundamental limitations in long-horizon reasoning due to finite context windows, making effective memory management critical. Existing methods typically handle long-term memory (LTM) and short-term memory (STM) as separate components, relying on heuristics or auxiliary controllers, which limits adaptability and end-to-end optimization. In this paper, we propose Agentic Memory (AgeMem), a unified framework that integrates LTM and STM management directly into the agent's policy. AgeMem exposes memory operations as tool-based actions, enabling the LLM agent to autonomously decide what and when to store, retrieve, update, summarize, or discard information. To train such unified behaviors, we propose a three-stage progressive reinforcement learning strategy and design a step-wise GRPO to address sparse and discontinuous rewards induced by memory operations. Experiments on five long-horizon benchmarks demonstrate that AgeMem consistently outperforms strong memory-augmented baselines across multiple LLM backbones, achieving improved task performance, higher-quality long-term memory, and more efficient context usage.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）エージェントは、有限のコンテキストウィンドウのために長期的な推論において基本的な制限に直面しており、効果的なメモリ管理が重要です。既存の方法は通常、長期記憶（LTM）と短期記憶（STM）を別々のコンポーネントとして扱い、ヒューリスティックや補助コントローラーに依存しているため、適応性やエンドツーエンドの最適化が制限されています。本論文では、LTMとSTMの管理をエージェントのポリシーに直接統合する統一フレームワークであるエージェンティックメモリ（AgeMem）を提案します。AgeMemは、メモリ操作をツールベースのアクションとして公開し、LLMエージェントが情報をどのように、いつ保存、取得、更新、要約、または廃棄するかを自律的に決定できるようにします。このような統合された行動を訓練するために、3段階の漸進的強化学習戦略を提案し、メモリ操作によって引き起こされるまばらで不連続な報酬に対処するために段階的なGRPOを設計しました。5つの長期ベンチマークにおける実験は、AgeMemが複数のLLMバックボーンにわたって強力なメモリ拡張ベースラインを一貫して上回り、タスクのパフォーマンス向上、高品質の長期記憶、効率的なコンテキスト使用を達成することを示しています。
+# Summary (by gpt-4o-mini)
+- AgeMemは、LTMとSTMをエージェントのポリシーに統合し、メモリ操作を自律的に管理できるフレームワークを提案。3段階の強化学習で訓練し、5つのベンチマークでメモリ拡張性能が向上。タスクパフォーマンスと効率的なコンテキスト使用を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2010712137933730234?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>従来のAI Agentsにおけるメモリ管理は、short / long term memory [^1] の観点で見ると、双方を別々のコンポーネントとして扱われてきたが（short term memoryはRAGコンポーネント, long term memoryはagentic memoryの文脈で別々に研究され、trigger-based（決められたタイミングで決められた操作を実行する）、agent-based（何を・どのように格納するかを管理するエージェントを構築する））これらはヒューリスティックなルール (Figure1 left) や異なるexpertなモデルを必要とする(Figure1 (middle))ことからシステムのアーキテクチャを複雑にしているし(Figure1 left and middle)、それぞれが独立に構築され疎結合であるため、sub-optimalな性能しか出せておらず、long-horizonな実行を考えたときに双方を統合的に扱う枠組みが必要不可欠であると考えられるためそれが可能な枠組みを提案した、という話に見える。<br><img src="https://github.com/user-attachments/assets/f4e7cf44-0272-4540-9129-e5f621d16324" /" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: short memoryは現在のinput context全体を指し、long term memoryは永続的に保持されるユーザやtask specificなメモリのこと</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Conditional Memory via Scalable Lookup: A New Axis of Sparsity for Large Language Models, Xin Cheng+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.07372</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4183</repo-issue-link>
+<tags>Embeddings, EfficiencyImprovement, NLP, LanguageModel, action_wanted, Architecture, read-later, memory, Reference Collection</tags>
+<repo-issue-date>2026-01-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.07372
+# Authors
+  - Xin Cheng
+  - Wangding Zeng
+  - Damai Dai
+  - Qinyu Chen
+  - Bingxuan Wang
+  - Zhenda Xie
+  - Kezhao Huang
+  - Xingkai Yu
+  - Zhewen Hao
+  - Yukun Li
+  - Han Zhang
+  - Huishuai Zhang
+  - Dongyan Zhao
+  - Wenfeng Liang
+# Abstract
+  - While Mixture-of-Experts (MoE) scales capacity via conditional computation, Transformers lack a native primitive for knowledge lookup, forcing them to inefficiently simulate retrieval through computation. To address this, we introduce conditional memory as a complementary sparsity axis, instantiated via Engram, a module that modernizes classic $N$-gram embedding for O(1) lookup. By formulating the Sparsity Allocation problem, we uncover a U-shaped scaling law that optimizes the trade-off between neural computation (MoE) and static memory (Engram). Guided by this law, we scale Engram to 27B parameters, achieving superior performance over a strictly iso-parameter and iso-FLOPs MoE baseline. Most notably, while the memory module is expected to aid knowledge retrieval (e.g., MMLU +3.4; CMMLU +4.0), we observe even larger gains in general reasoning (e.g., BBH +5.0; ARC-Challenge +3.7) and code/math domains~(HumanEval +3.0; MATH +2.4). Mechanistic analyses reveal that Engram relieves the backbone's early layers from static reconstruction, effectively deepening the network for complex reasoning. Furthermore, by delegating local dependencies to lookups, it frees up attention capacity for global context, substantially boosting long-context retrieval (e.g., Multi-Query NIAH: 84.2 to 97.0). Finally, Engram establishes infrastructure-aware efficiency: its deterministic addressing enables runtime prefetching from host memory, incurring negligible overhead. We envision conditional memory as an indispensable modeling primitive for next-generation sparse models.
+# Translation (by gpt-4o-mini)
+- 混合専門家（MoE）は条件付き計算を通じて容量をスケーリングしますが、トランスフォーマーは知識の参照に対するネイティブなプライミティブを欠いており、計算を通じて取得を非効率的にシミュレートする必要があります。これに対処するために、私たちは条件付きメモリを補完的なスパース性の軸として導入し、O(1)の参照のために古典的なN-グラム埋め込みを現代化したモジュール「Engram」を実装しました。スパース性割り当て問題を定式化することで、神経計算（MoE）と静的メモリ（Engram）とのトレードオフを最適化するU字型スケーリング法則を発見しました。この法則に従って、Engramを270億パラメータにスケールアップし、厳密に同じパラメータ数かつ同じFLOPsのMoEベースラインを上回る優れた性能を達成しました。特に、メモリモジュールは知識の取得を助けることが期待される一方で（例：MMLU +3.4; CMMLU +4.0）、一般的な推論（例：BBH +5.0; ARC-Challenge +3.7）やコード/数学分野（例：HumanEval +3.0; MATH +2.4）でさらに大きな向上が見られました。メカニスティックな分析により、Engramはバックボーンの初期層を静的再構成から解放し、複雑な推論のためにネットワークを効果的に深くします。さらに、ローカルな依存関係を参照に委任することにより、グローバルなコンテキストのための注意容量を解放し、長いコンテキストの取得を大幅に向上させました（例：Multi-Query NIAH：84.2から97.0へ）。最後に、Engramはインフラストラクチャに配慮した効率を確立します：その決定論的アドレッシングはホストメモリからのランタイムプリフェッチを可能にし、無視できるオーバーヘッドを発生させます。次世代のスパースモデルにとって、条件付きメモリが不可欠なモデリングプライミティブであると私たちは考えています。
+# Summary (by gpt-4o-mini)
+- 条件付きメモリを「Engram」として導入し、O(1)参照を実現。MoEとのトレードオフを最適化するスケーリング法則を発見し、270億パラメータで優れた性能を達成。知識取得や推論での大幅な向上が見られ、Engramはネットワークの深度を効果的に育みつつ効率的なメモリ管理を実現。次世代スパースモデルには条件付きメモリが不可欠。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/giffmana/status/2010788842597728553?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2011282270468919675?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2010793673303146613?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2011583824610877567?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2020612533502222459?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>先行研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4366" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Embedding Layers in Language Models, Da Yu+, NeurIPS'25, 2025.02</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] EverMemOS: A Self-Organizing Memory Operating System for Structured Long-Horizon Reasoning, Chuanrui Hu+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.02163</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4181</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Reasoning, ContextEngineering, memory, LongHorizon</tags>
+<repo-issue-date>2026-01-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.02163
+# Authors
+  - Chuanrui Hu
+  - Xingze Gao
+  - Zuyi Zhou
+  - Dannong Xu
+  - Yi Bai
+  - Xintong Li
+  - Hui Zhang
+  - Tong Li
+  - Chong Zhang
+  - Lidong Bing
+  - Yafeng Deng
+# Abstract
+  - Large Language Models (LLMs) are increasingly deployed as long-term interactive agents, yet their limited context windows make it difficult to sustain coherent behavior over extended interactions. Existing memory systems often store isolated records and retrieve fragments, limiting their ability to consolidate evolving user states and resolve conflicts. We introduce EverMemOS, a self-organizing memory operating system that implements an engram-inspired lifecycle for computational memory. Episodic Trace Formation converts dialogue streams into MemCells that capture episodic traces, atomic facts, and time-bounded Foresight signals. Semantic Consolidation organizes MemCells into thematic MemScenes, distilling stable semantic structures and updating user profiles. Reconstructive Recollection performs MemScene-guided agentic retrieval to compose the necessary and sufficient context for downstream reasoning. Experiments on LoCoMo and LongMemEval show that EverMemOS achieves state-of-the-art performance on memory-augmented reasoning tasks. We further report a profile study on PersonaMem v2 and qualitative case studies illustrating chat-oriented capabilities such as user profiling and Foresight. Code is available at https://github.com/EverMind-AI/EverMemOS.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、長期的なインタラクティブエージェントとしてますます展開されていますが、限られたコンテキストウィンドウのために、長時間のインタラクションにおいて一貫した行動を維持することが難しくなっています。既存のメモリシステムは、孤立した記録を保存し断片を取得することが多く、進化するユーザーステートを統合し、対立を解決する能力が制限されています。そこで、私たちはEverMemOSを提案します。これは、計算メモリのためのエングラムにインスパイアされたライフサイクルを実装した自己組織化メモリオペレーティングシステムです。エピソディックトレース形成は、対話ストリームをMemCellに変換し、エピソディックトレース、原子的事実、時間制約のある先見信号をキャプチャします。セマンティック統合は、MemCellをテーマ別のMemSceneに整理し、安定したセマンティック構造を抽出し、ユーザープロファイルを更新します。再構成された想起は、MemSceneに基づくエージェントの取得を行い、下流の推論に必要かつ十分なコンテキストを構成します。LoCoMoおよびLongMemEvalに関する実験では、EverMemOSがメモリ拡張推論タスクにおいて最先端のパフォーマンスを達成することを示しました。さらに、PersonaMem v2に関するプロファイル研究と、ユーザープロファイリングや先見のようなチャット指向の能力を示す定性的なケーススタディを報告します。コードはhttps://github.com/EverMind-AI/EverMemOSで入手可能です。
+# Summary (by gpt-4o-mini)
+- EverMemOSは、長期的なインタラクティブエージェントのための自己組織化メモリオペレーティングシステムで、エピソディックトレースをMemCellに変換し、ユーザープロファイルを更新することで一貫した行動を維持します。実験により、メモリ拡張推論タスクで最先端のパフォーマンスを達成し、ユーザープロファイリングやチャット指向の能力を示すケーススタディも報告しています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/longtermmemorye/status/2008486887925711332?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SimpleMem: Efficient Lifelong Memory for LLM Agents, Jiaqi Liu+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.02553</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4156</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, read-later, Selected Papers/Blogs, memory, Initial Impression Notes</tags>
+<repo-issue-date>2026-01-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.02553
+# Authors
+  - Jiaqi Liu
+  - Yaofeng Su
+  - Peng Xia
+  - Siwei Han
+  - Zeyu Zheng
+  - Cihang Xie
+  - Mingyu Ding
+  - Huaxiu Yao
+# Abstract
+  - To support reliable long-term interaction in complex environments, LLM agents require memory systems that efficiently manage historical experiences. Existing approaches either retain full interaction histories via passive context extension, leading to substantial redundancy, or rely on iterative reasoning to filter noise, incurring high token costs. To address this challenge, we introduce SimpleMem, an efficient memory framework based on semantic lossless compression. We propose a three-stage pipeline designed to maximize information density and token utilization: (1) \textit{Semantic Structured Compression}, which applies entropy-aware filtering to distill unstructured interactions into compact, multi-view indexed memory units; (2) \textit{Recursive Memory Consolidation}, an asynchronous process that integrates related units into higher-level abstract representations to reduce redundancy; and (3) \textit{Adaptive Query-Aware Retrieval}, which dynamically adjusts retrieval scope based on query complexity to construct precise context efficiently. Experiments on benchmark datasets show that our method consistently outperforms baseline approaches in accuracy, retrieval efficiency, and inference cost, achieving an average F1 improvement of 26.4% while reducing inference-time token consumption by up to 30-fold, demonstrating a superior balance between performance and efficiency. Code is available at https://github.com/aiming-lab/SimpleMem.
+# Translation (by gpt-4o-mini)
+- 複雑な環境における信頼性の高い長期的な相互作用をサポートするために、LLMエージェントは歴史的な経験を効率的に管理するメモリシステムを必要とします。既存のアプローチは、パッシブなコンテキスト拡張を通じて完全な相互作用履歴を保持するか、ノイズをフィルタリングするために反復的な推論に依存しており、これにより大幅な冗長性や高いトークンコストが発生します。この課題に対処するために、我々は意味的にロスレスな圧縮に基づく効率的なメモリフレームワークであるSimpleMemを提案します。情報密度とトークン利用を最大化するために設計された三段階のパイプラインを提案します：(1) \textit{意味的構造圧縮}は、エントロピーに基づくフィルタリングを適用し、非構造的な相互作用をコンパクトで多視点のインデックス付きメモリユニットに蒸留します；(2) \textit{再帰的メモリ統合}は、関連するユニットを高次の抽象表現に統合する非同期プロセスで、冗長性を減少させます；(3) \textit{適応的クエリ認識型検索}は、クエリの複雑さに基づいて検索範囲を動的に調整し、正確なコンテキストを効率的に構築します。ベンチマークデータセットでの実験により、我々の手法は精度、検索効率、推論コストにおいてベースラインアプローチを一貫して上回り、平均F1スコアが26.4%向上し、推論時のトークン消費を最大30倍削減することが示され、性能と効率の優れたバランスを実現しています。コードはhttps://github.com/aiming-lab/SimpleMemで入手可能です。
+# Summary (by gpt-4o-mini)
+- LLMエージェントのために、効率的なメモリシステムSimpleMemを提案。三段階のパイプラインで、意味的構造圧縮、再帰的メモリ統合、適応的クエリ認識型検索を実施し、情報密度とトークン利用を最大化。実験により、精度が26.4%向上し、トークン消費が最大30倍削減されることを確認。</issue-body>
+<maintainer-comment-text><p>pj page: 
+
+{% raw %}
+<a href="https://aiming-lab.github.io/SimpleMem-Page/" target="_blank" rel="noopener noreferrer">https://aiming-lab.github.io/SimpleMem-Page/</a>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2010720188686348593?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>追加の学習などが不要で、かつ高性能・低コストで動作するRetrieval basedなmemory（特定のLLMに依存しない点も良い）であり、実務的に導入が容易であり、実用性が高いため重要研究に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MAGMA: A Multi-Graph based Agentic Memory Architecture for AI Agents, Dongming Jiang+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.03236</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4149</repo-issue-link>
+<tags>AIAgents, memory</tags>
+<repo-issue-date>2026-01-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.03236
+# Authors
+  - Dongming Jiang
+  - Yi Li
+  - Guanpeng Li
+  - Bingzhe Li
+# Abstract
+  - Memory-Augmented Generation (MAG) extends Large Language Models with external memory to support long-context reasoning, but existing approaches largely rely on semantic similarity over monolithic memory stores, entangling temporal, causal, and entity information. This design limits interpretability and alignment between query intent and retrieved evidence, leading to suboptimal reasoning accuracy. In this paper, we propose MAGMA, a multi-graph agentic memory architecture that represents each memory item across orthogonal semantic, temporal, causal, and entity graphs. MAGMA formulates retrieval as policy-guided traversal over these relational views, enabling query-adaptive selection and structured context construction. By decoupling memory representation from retrieval logic, MAGMA provides transparent reasoning paths and fine-grained control over retrieval. Experiments on LoCoMo and LongMemEval demonstrate that MAGMA consistently outperforms state-of-the-art agentic memory systems in long-horizon reasoning tasks.
+# Translation (by gpt-4o-mini)
+- Memory-Augmented Generation (MAG)は、外部メモリを用いて大規模言語モデルを拡張し、長文コンテキストの推論をサポートしますが、既存のアプローチは主に単一のメモリストアにおける意味的類似性に依存しており、時間的、因果的、エンティティ情報が絡み合っています。この設計は、クエリの意図と取得された証拠との間の解釈可能性と整合性を制限し、推論精度を最適化できない結果を招いています。本論文では、各メモリ項目を直交する意味的、時間的、因果的、エンティティのグラフで表現するマルチグラフエージェントメモリアーキテクチャMAGMAを提案します。MAGMAは、これらの関係的ビューに対するポリシーガイドのトラバースとして取得を定式化し、クエリに適応した選択と構造化されたコンテキストの構築を可能にします。メモリ表現を取得ロジックから分離することで、MAGMAは透明な推論経路と取得に対する細かな制御を提供します。LoCoMoおよびLongMemEvalに関する実験により、MAGMAが長期的な推論タスクにおいて最先端のエージェントメモリシステムを一貫して上回ることが示されました。
+# Summary (by gpt-4o-mini)
+- MAGMAは、意味的、時間的、因果的、エンティティ情報を直交するグラフで表現するマルチグラフエージェントメモリアーキテクチャを提案。これにより、クエリに適応した選択と構造化されたコンテキストの構築が可能になり、透明な推論経路を提供。実験結果から、MAGMAは長期的な推論タスクで最先端のエージェントメモリシステムを上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2009270633398718480?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Evo-Memory: Benchmarking LLM Agent Test-time Learning with Self-Evolving Memory, Tianxin Wei+, arXiv'25, 2025.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2511.20857</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4428</repo-issue-link>
+<tags>NLP, Dataset, AIAgents, Evaluation, memory, Test-time Learning</tags>
+<repo-issue-date>2026-02-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2511.20857
+# Authors
+  - Tianxin Wei
+  - Noveen Sachdeva
+  - Benjamin Coleman
+  - Zhankui He
+  - Yuanchen Bei
+  - Xuying Ning
+  - Mengting Ai
+  - Yunzhe Li
+  - Jingrui He
+  - Ed H. Chi
+  - Chi Wang
+  - Shuo Chen
+  - Fernando Pereira
+  - Wang-Cheng Kang
+  - Derek Zhiyuan Cheng
+# Abstract
+  - Statefulness is essential for large language model (LLM) agents to perform long-term planning and problem-solving. This makes memory a critical component, yet its management and evolution remain largely underexplored. Existing evaluations mostly focus on static conversational settings, where memory is passively retrieved from dialogue to answer queries, overlooking the dynamic ability to accumulate and reuse experience across evolving task streams. In real-world environments such as interactive problem assistants or embodied agents, LLMs are required to handle continuous task streams, yet often fail to learn from accumulated interactions, losing valuable contextual insights, a limitation that calls for test-time evolution, where LLMs retrieve, integrate, and update memory continuously during deployment. To bridge this gap, we introduce Evo-Memory, a comprehensive streaming benchmark and framework for evaluating self-evolving memory in LLM agents. Evo-Memory structures datasets into sequential task streams, requiring LLMs to search, adapt, and evolve memory after each interaction. We unify and implement over ten representative memory modules and evaluate them across 10 diverse multi-turn goal-oriented and single-turn reasoning and QA datasets. To better benchmark experience reuse, we provide a baseline method, ExpRAG, for retrieving and utilizing prior experience, and further propose ReMem, an action-think-memory refine pipeline that tightly integrates reasoning, task actions, and memory updates to achieve continual improvement.
+# Translation (by gpt-4o-mini)
+- 状態性は、大規模言語モデル（LLM）エージェントが長期的な計画や問題解決を行うために不可欠です。これにより、メモリは重要な要素となりますが、その管理と進化はほとんど探求されていません。既存の評価は、主に静的な会話設定に焦点を当てており、メモリが対話から受動的に取得されて質問に答える点に留まっていますが、進化するタスクストリーム全体で経験を蓄積し再利用する動的な能力は見過ごされています。インタラクティブな問題補助ツールや具現化されたエージェントのような現実の環境では、LLMは継続的なタスクストリームを処理する必要がありますが、蓄積された相互作用から学ぶことができず、貴重な文脈的洞察を失ってしまうことが多いです。これは、LLMが展開中にメモリを継続的に取得、統合、および更新するテスト時の進化を求める制限があります。このギャップを埋めるために、私たちはEvo-Memoryを紹介します。これは、LLMエージェントにおける自己進化するメモリを評価するための包括的なストリーミングベンチマークとフレームワークです。Evo-Memoryは、データセットを逐次的なタスクストリームに構造化し、LLMが各相互作用の後にメモリを検索、適応、および進化させることを要求します。私たちは、10を超える代表的なメモリモジュールを統一し実装し、10の多様なマルチターンの目標指向およびシングルターンの推論およびQAデータセットで評価します。経験の再利用をよりよくベンチマークするために、以前の経験を取得し利用するためのベースライン手法ExpRAGを提供し、さらに推論、タスクアクション、およびメモリ更新を密接に統合するアクション・シンキング・メモリ洗練パイプラインであるReMemを提案し、継続的な改善を達成します。
+# Summary (by gpt-4o-mini)
+- 状態性はLLMエージェントの長期的計画に不可欠であり、メモリ管理の進化が未探索である点に焦点を当てる。本研究では、Evo-Memoryという自己進化メモリの評価フレームワークを提案し、LLMが累積した経験を動的に処理する能力を向上させる。具体的には、タスクストリームを構造化し、メモリの検索・適応を要求。10のメモリモジュールと多様なデータセットで評価し、経験再利用のためのExpRAGおよび推論を統合するReMemパイプラインを提案、継続的な改善を実現する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2019081772189823239?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] End-to-End Test-Time Training for Long Context, Arnuv Tandon+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.23675</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4099</repo-issue-link>
+<tags>NLP, LanguageModel, action_wanted, LongSequence, read-later, Selected Papers/Blogs, memory, ContinualLearning, Test Time Training (TTT)</tags>
+<repo-issue-date>2025-12-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.23675
+# Authors
+  - Arnuv Tandon
+  - Karan Dalal
+  - Xinhao Li
+  - Daniel Koceja
+  - Marcel Rød
+  - Sam Buchanan
+  - Xiaolong Wang
+  - Jure Leskovec
+  - Sanmi Koyejo
+  - Tatsunori Hashimoto
+  - Carlos Guestrin
+  - Jed McCaleb
+  - Yejin Choi
+  - Yu Sun
+# Abstract
+  - We formulate long-context language modeling as a problem in continual learning rather than architecture design. Under this formulation, we only use a standard architecture -- a Transformer with sliding-window attention. However, our model continues learning at test time via next-token prediction on the given context, compressing the context it reads into its weights. In addition, we improve the model's initialization for learning at test time via meta-learning at training time. Overall, our method, a form of Test-Time Training (TTT), is End-to-End (E2E) both at test time (via next-token prediction) and training time (via meta-learning), in contrast to previous forms. We conduct extensive experiments with a focus on scaling properties. In particular, for 3B models trained with 164B tokens, our method (TTT-E2E) scales with context length in the same way as Transformer with full attention, while others, such as Mamba 2 and Gated DeltaNet, do not. However, similar to RNNs, TTT-E2E has constant inference latency regardless of context length, making it 2.7 times faster than full attention for 128K context. Our code is publicly available.
+# Translation (by gpt-4o-mini)
+- 私たちは、長コンテキストの言語モデリングをアーキテクチャ設計ではなく、継続的学習の問題として定式化します。この定式化の下で、私たちは標準のアーキテクチャ――スライディングウィンドウアテンションを持つトランスフォーマー――のみを使用します。しかし、私たちのモデルは、与えられたコンテキストに基づく次トークン予測を通じてテスト時に継続的に学習を行い、読み取ったコンテキストを重みに圧縮します。さらに、トレーニング時にメタ学習を用いることで、テスト時の学習に対するモデルの初期化を改善します。全体として、我々の手法は、テスト時（次トークン予測を通じて）とトレーニング時（メタ学習を通じて）の両方においてエンドツーエンド（E2E）である、テストタイムトレーニング（TTT）の一形態です。私たちは、スケーリング特性に焦点を当てた広範な実験を実施しました。特に、164Bトークンで訓練された3Bモデルにおいて、私たちの手法（TTT-E2E）は、フルアテンションのトランスフォーマーと同様にコンテキスト長にスケールしますが、Mamba 2やGated DeltaNetなど他の手法はそうではありません。しかし、RNNと同様に、TTT-E2Eはコンテキスト長に関係なく一定の推論レイテンシを持ち、128Kのコンテキストに対してフルアテンションよりも2.7倍速くなります。私たちのコードは公開されています。
+# Summary (by gpt-4o-mini)
+- 長コンテキスト言語モデリングを継続的学習の問題として定式化し、トランスフォーマーのスライディングウィンドウアテンションを用いて次トークン予測を行う。メタ学習を用いてモデルの初期化を改善し、テスト時にエンドツーエンドで学習を実施。164Bトークンで訓練された3Bモデルは、フルアテンションに匹敵するスケーリング特性を持ちながら、128Kコンテキスト時に2.7倍の推論速度を実現。コードは公開済み。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/karansdalal/status/2005704608996540887?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/karansdalal/status/2010774529120092481?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>TTT-E2E</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] QwenLong-L1.5: Post-Training Recipe for Long-Context Reasoning and Memory Management, Weizhou Shen+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.12967</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4060</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, LongSequence, PostTraining, Selected Papers/Blogs, memory, Entropy</tags>
+<repo-issue-date>2025-12-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.12967
+# Authors
+  - Weizhou Shen
+  - Ziyi Yang
+  - Chenliang Li
+  - Zhiyuan Lu
+  - Miao Peng
+  - Huashan Sun
+  - Yingcheng Shi
+  - Shengyi Liao
+  - Shaopeng Lai
+  - Bo Zhang
+  - Dayiheng Liu
+  - Fei Huang
+  - Jingren Zhou
+  - Ming Yan
+# Abstract
+  - We introduce QwenLong-L1.5, a model that achieves superior long-context reasoning capabilities through systematic post-training innovations. The key technical breakthroughs of QwenLong-L1.5 are as follows: (1) Long-Context Data Synthesis Pipeline: We develop a systematic synthesis framework that generates challenging reasoning tasks requiring multi-hop grounding over globally distributed evidence. By deconstructing documents into atomic facts and their underlying relationships, and then programmatically composing verifiable reasoning questions, our approach creates high-quality training data at scale, moving substantially beyond simple retrieval tasks to enable genuine long-range reasoning capabilities. (2) Stabilized Reinforcement Learning for Long-Context Training: To overcome the critical instability in long-context RL, we introduce task-balanced sampling with task-specific advantage estimation to mitigate reward bias, and propose Adaptive Entropy-Controlled Policy Optimization (AEPO) that dynamically regulates exploration-exploitation trade-offs. (3) Memory-Augmented Architecture for Ultra-Long Contexts: Recognizing that even extended context windows cannot accommodate arbitrarily long sequences, we develop a memory management framework with multi-stage fusion RL training that seamlessly integrates single-pass reasoning with iterative memory-based processing for tasks exceeding 4M tokens. Based on Qwen3-30B-A3B-Thinking, QwenLong-L1.5 achieves performance comparable to GPT-5 and Gemini-2.5-Pro on long-context reasoning benchmarks, surpassing its baseline by 9.90 points on average. On ultra-long tasks (1M~4M tokens), QwenLong-L1.5's memory-agent framework yields a 9.48-point gain over the agent baseline. Additionally, the acquired long-context reasoning ability translates to enhanced performance in general domains like scientific reasoning, memory tool using, and extended dialogue.
+# Translation (by gpt-4o-mini)
+- 私たちはQwenLong-L1.5を紹介します。このモデルは、体系的なポストトレーニングの革新を通じて優れた長文コンテキスト推論能力を実現しています。QwenLong-L1.5の主要な技術的ブレークスルーは以下の通りです。(1) 長文コンテキストデータ合成パイプライン：私たちは、グローバルに分散した証拠に対するマルチホップグラウンディングを必要とする挑戦的な推論タスクを生成する体系的な合成フレームワークを開発しました。文書を原子事実とその基盤となる関係に分解し、検証可能な推論質問をプログラム的に構成することで、私たちのアプローチは高品質なトレーニングデータを大規模に生成し、単純な情報取得タスクを超えて真の長距離推論能力を可能にします。(2) 長文コンテキストトレーニングのための安定化強化学習：長文コンテキストの強化学習における重要な不安定性を克服するために、タスク特有の利得推定を用いたタスクバランスサンプリングを導入し、報酬バイアスを軽減します。また、探索と活用のトレードオフを動的に調整する適応エントロピー制御ポリシー最適化（AEPO）を提案します。(3) 超長文コンテキストのためのメモリ拡張アーキテクチャ：拡張されたコンテキストウィンドウでも無限に長いシーケンスを収容できないことを認識し、4Mトークンを超えるタスクのために、単一パス推論と反復的なメモリベースの処理をシームレスに統合する多段階融合強化学習トレーニングを備えたメモリ管理フレームワークを開発しました。Qwen3-30B-A3B-Thinkingに基づいて、QwenLong-L1.5は長文コンテキスト推論ベンチマークにおいてGPT-5およびGemini-2.5-Proと同等のパフォーマンスを達成し、ベースラインを平均9.90ポイント上回ります。超長文タスク（1M〜4Mトークン）において、QwenLong-L1.5のメモリアジェントフレームワークはエージェントベースラインに対して9.48ポイントの向上をもたらします。さらに、獲得した長文コンテキスト推論能力は、科学的推論、メモリツールの使用、拡張対話などの一般的なドメインでのパフォーマンス向上にもつながります。
+# Summary (by gpt-4o-mini)
+- QwenLong-L1.5は、長文コンテキスト推論能力を向上させるためのポストトレーニング手法を導入したモデルです。主な技術革新には、長文コンテキストデータ合成パイプライン、安定化強化学習、メモリ拡張アーキテクチャが含まれます。これにより、高品質なトレーニングデータを生成し、長距離推論能力を実現。QwenLong-L1.5は、GPT-5やGemini-2.5-Proと同等の性能を達成し、超長文タスクでのパフォーマンスも向上させました。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ModelScope2022/status/2003370363590226313?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>long contextの能力を大幅に向上させたQwen。主要OpenWeightモデルでmemoryアーキテクチャを備えたものを見るのは初めてかも・・・？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Memory in the Age of AI Agents, Yuyang Hu+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.13564</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3992</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, AIAgents, RAG(RetrievalAugmentedGeneration), ContextEngineering, memory</tags>
+<repo-issue-date>2025-12-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.13564
+# Authors
+  - Yuyang Hu
+  - Shichun Liu
+  - Yanwei Yue
+  - Guibin Zhang
+  - Boyang Liu
+  - Fangyi Zhu
+  - Jiahang Lin
+  - Honglin Guo
+  - Shihan Dou
+  - Zhiheng Xi
+  - Senjie Jin
+  - Jiejun Tan
+  - Yanbin Yin
+  - Jiongnan Liu
+  - Zeyu Zhang
+  - Zhongxiang Sun
+  - Yutao Zhu
+  - Hao Sun
+  - Boci Peng
+  - Zhenrong Cheng
+  - Xuanbo Fan
+  - Jiaxin Guo
+  - Xinlei Yu
+  - Zhenhong Zhou
+  - Zewen Hu
+  - Jiahao Huo
+  - Junhao Wang
+  - Yuwei Niu
+  - Yu Wang
+  - Zhenfei Yin
+  - Xiaobin Hu
+  - Yue Liao
+  - Qiankun Li
+  - Kun Wang
+  - Wangchunshu Zhou
+  - Yixin Liu
+  - Dawei Cheng
+  - Qi Zhang
+  - Tao Gui
+  - Shirui Pan
+  - Yan Zhang
+  - Philip Torr
+  - Zhicheng Dou
+  - Ji-Rong Wen
+  - Xuanjing Huang
+  - Yu-Gang Jiang
+  - Shuicheng Yan
+# Abstract
+  - Memory has emerged, and will continue to remain, a core capability of foundation model-based agents. As research on agent memory rapidly expands and attracts unprecedented attention, the field has also become increasingly fragmented. Existing works that fall under the umbrella of agent memory often differ substantially in their motivations, implementations, and evaluation protocols, while the proliferation of loosely defined memory terminologies has further obscured conceptual clarity. Traditional taxonomies such as long/short-term memory have proven insufficient to capture the diversity of contemporary agent memory systems. This work aims to provide an up-to-date landscape of current agent memory research. We begin by clearly delineating the scope of agent memory and distinguishing it from related concepts such as LLM memory, retrieval augmented generation (RAG), and context engineering. We then examine agent memory through the unified lenses of forms, functions, and dynamics. From the perspective of forms, we identify three dominant realizations of agent memory, namely token-level, parametric, and latent memory. From the perspective of functions, we propose a finer-grained taxonomy that distinguishes factual, experiential, and working memory. From the perspective of dynamics, we analyze how memory is formed, evolved, and retrieved over time. To support practical development, we compile a comprehensive summary of memory benchmarks and open-source frameworks. Beyond consolidation, we articulate a forward-looking perspective on emerging research frontiers, including memory automation, reinforcement learning integration, multimodal memory, multi-agent memory, and trustworthiness issues. We hope this survey serves not only as a reference for existing work, but also as a conceptual foundation for rethinking memory as a first-class primitive in the design of future agentic intelligence.
+# Translation (by gpt-4o-mini)
+- メモリは、基盤モデルに基づくエージェントのコア機能として浮上し、今後もその地位を維持し続けるでしょう。エージェントメモリに関する研究が急速に拡大し、前例のない注目を集める中で、この分野はますます断片化しています。エージェントメモリの範疇に入る既存の研究は、動機、実装、評価プロトコルにおいて大きく異なることが多く、緩やかに定義されたメモリ用語の普及が概念の明確さをさらに曖昧にしています。従来の分類法である長期記憶/短期記憶は、現代のエージェントメモリシステムの多様性を捉えるには不十分であることが証明されています。本研究は、現在のエージェントメモリ研究の最新の状況を提供することを目的としています。まず、エージェントメモリの範囲を明確に区分し、LLMメモリ、情報検索強化生成（RAG）、コンテキストエンジニアリングなどの関連概念と区別します。次に、エージェントメモリを形式、機能、ダイナミクスの統一的な視点から検討します。形式の観点からは、トークンレベル、パラメトリック、潜在メモリの3つの主要な実現形態を特定します。機能の観点からは、事実的、経験的、作業メモリを区別するより詳細な分類法を提案します。ダイナミクスの観点からは、メモリがどのように形成され、進化し、時間とともに取得されるかを分析します。実践的な開発を支援するために、メモリベンチマークとオープンソースフレームワークの包括的な要約をまとめます。統合を超えて、メモリの自動化、強化学習の統合、多モーダルメモリ、マルチエージェントメモリ、信頼性の問題など、新たな研究の最前線に関する前向きな視点を明示します。この調査が、既存の研究の参考になるだけでなく、将来のエージェントインテリジェンスの設計における第一級の原始としてメモリを再考するための概念的基盤となることを期待しています。
+# Summary (by gpt-4o-mini)
+- エージェントメモリの研究が急速に進展する中、既存の研究は動機や実装、評価プロトコルにおいて多様であり、メモリ用語の曖昧さが問題となっている。本研究は、エージェントメモリの範囲を明確にし、LLMメモリや情報検索強化生成（RAG）などの関連概念を区別する。形式、機能、ダイナミクスの観点からエージェントメモリを検討し、実現形態や分類法を提案。さらに、メモリベンチマークやオープンソースフレームワークの要約を提供し、今後の研究の方向性を示す。これにより、エージェントインテリジェンスの設計におけるメモリの再考を促すことを目指す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/__yuwang__/status/2000973074179744279?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] It's All Connected: A Journey Through Test-Time Memorization, Attentional Bias, Retention, and Online Optimization, Ali Behrouz+, arXiv'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.13173</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3904</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, memory</tags>
+<repo-issue-date>2025-12-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.13173
+# Authors
+  - Ali Behrouz
+  - Meisam Razaviyayn
+  - Peilin Zhong
+  - Vahab Mirrokni
+# Abstract
+  - Designing efficient and effective architectural backbones has been in the core of research efforts to enhance the capability of foundation models. Inspired by the human cognitive phenomenon of attentional bias-the natural tendency to prioritize certain events or stimuli-we reconceptualize neural architectures, including Transformers, Titans, and modern linear recurrent neural networks as associative memory modules that learn a mapping of keys and values using an internal objective, referred to as attentional bias. Surprisingly, we observed that most existing sequence models leverage either (1) dot-product similarity, or (2) L2 regression objectives as their attentional bias. Going beyond these objectives, we present a set of alternative attentional bias configurations along with their effective approximations to stabilize their training procedure. We then reinterpret forgetting mechanisms in modern deep learning architectures as a form of retention regularization, providing a novel set of forget gates for sequence models. Building upon these insights, we present Miras, a general framework to design deep learning architectures based on four choices of: (i) associative memory architecture, (ii) attentional bias objective, (iii) retention gate, and (iv) memory learning algorithm. We present three novel sequence models-Moneta, Yaad, and Memora-that go beyond the power of existing linear RNNs while maintaining a fast parallelizable training process. Our experiments show different design choices in Miras yield models with varying strengths. For example, certain instances of Miras achieve exceptional performance in special tasks such as language modeling, commonsense reasoning, and recall intensive tasks, even outperforming Transformers and other modern linear recurrent models.
+# Translation (by gpt-4o-mini)
+- 効率的かつ効果的なアーキテクチャのバックボーンを設計することは、基盤モデルの能力を向上させるための研究努力の中心にあります。人間の認知現象である注意バイアス、すなわち特定の出来事や刺激を優先する自然な傾向に触発され、我々はトランスフォーマー、タイタン、現代の線形再帰ニューラルネットワークを、内部目的（注意バイアスと呼ばれる）を用いてキーとバリューのマッピングを学習する連想記憶モジュールとして再概念化します。驚くべきことに、既存のほとんどのシーケンスモデルは、(1) ドット積類似度、または (2) L2回帰目的を注意バイアスとして利用していることがわかりました。これらの目的を超えて、我々はトレーニング手順を安定化させるための効果的な近似と共に、一連の代替注意バイアス構成を提示します。次に、現代の深層学習アーキテクチャにおける忘却メカニズムを保持正則化の一形態として再解釈し、シーケンスモデルのための新しい忘却ゲートのセットを提供します。これらの洞察に基づき、我々は、(i) 連想記憶アーキテクチャ、(ii) 注意バイアス目的、(iii) 保持ゲート、(iv) メモリ学習アルゴリズムの4つの選択肢に基づいて深層学習アーキテクチャを設計するための一般的なフレームワークであるMirasを提示します。Mirasを用いて、既存の線形RNNの力を超えながらも、高速で並列化可能なトレーニングプロセスを維持する3つの新しいシーケンスモデル、Moneta、Yaad、Memoraを発表します。我々の実験は、Mirasの異なる設計選択が異なる強みを持つモデルを生み出すことを示しています。例えば、Mirasの特定のインスタンスは、言語モデリング、常識推論、リコール集中的なタスクなどの特別なタスクにおいて卓越したパフォーマンスを達成し、トランスフォーマーや他の現代の線形再帰モデルを上回ることさえあります。
+# Summary (by gpt-4o-mini)
+- 効率的なアーキテクチャ設計は基盤モデルの能力向上に重要であり、注意バイアスを活用した連想記憶モジュールを提案。既存のシーケンスモデルの目的を超えた新しい注意バイアス構成と忘却ゲートを導入し、深層学習アーキテクチャを設計するフレームワークMirasを提示。Mirasを用いて新しいシーケンスモデルMoneta、Yaad、Memoraを開発し、特定のタスクでトランスフォーマーを上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1997227157748060277?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=gZyEJ2kMow" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=gZyEJ2kMow</a>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/1997808277116338266?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Accumulating Context Changes the Beliefs of Language Models, Jiayi Geng+, arXiv'25, 2025.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2511.01805</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3601</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, memory, Beliefs</tags>
+<repo-issue-date>2025-11-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2511.01805
+# Authors
+  - Jiayi Geng
+  - Howard Chen
+  - Ryan Liu
+  - Manoel Horta Ribeiro
+  - Robb Willer
+  - Graham Neubig
+  - Thomas L. Griffiths
+# Abstract
+  - Language model (LM) assistants are increasingly used in applications such as brainstorming and research. Improvements in memory and context size have allowed these models to become more autonomous, which has also resulted in more text accumulation in their context windows without explicit user intervention. This comes with a latent risk: the belief profiles of models -- their understanding of the world as manifested in their responses or actions -- may silently change as context accumulates. This can lead to subtly inconsistent user experiences, or shifts in behavior that deviate from the original alignment of the models. In this paper, we explore how accumulating context by engaging in interactions and processing text -- talking and reading -- can change the beliefs of language models, as manifested in their responses and behaviors. Our results reveal that models' belief profiles are highly malleable: GPT-5 exhibits a 54.7% shift in its stated beliefs after 10 rounds of discussion about moral dilemmas and queries about safety, while Grok 4 shows a 27.2% shift on political issues after reading texts from the opposing position. We also examine models' behavioral changes by designing tasks that require tool use, where each tool selection corresponds to an implicit belief. We find that these changes align with stated belief shifts, suggesting that belief shifts will be reflected in actual behavior in agentic systems. Our analysis exposes the hidden risk of belief shift as models undergo extended sessions of talking or reading, rendering their opinions and actions unreliable.
+# Translation (by gpt-4o-mini)
+- 言語モデル（LM）アシスタントは、ブレインストーミングや研究などのアプリケーションでますます使用されるようになっています。メモリとコンテキストサイズの改善により、これらのモデルはより自律的になり、明示的なユーザーの介入なしにコンテキストウィンドウ内にテキストが蓄積されるようになりました。しかし、これには潜在的なリスクが伴います。モデルの信念プロファイル、すなわち彼らの応答や行動に現れる世界の理解は、コンテキストが蓄積されるにつれて静かに変化する可能性があります。これにより、微妙に矛盾したユーザー体験や、モデルの元々の整合性から逸脱した行動の変化が生じる可能性があります。本論文では、対話やテキスト処理（話すことや読むこと）を通じて蓄積されるコンテキストが、言語モデルの信念をどのように変化させるかを探ります。私たちの結果は、モデルの信念プロファイルが非常に柔軟であることを明らかにしています。具体的には、GPT-5は道徳的ジレンマや安全性に関する質問について10ラウンドの議論を行った後に54.7%の信念の変化を示し、一方でGrok 4は対立する立場のテキストを読んだ後に政治的問題に関して27.2%の変化を示しました。また、ツールの使用を必要とするタスクを設計することで、モデルの行動の変化も調査しました。各ツールの選択は暗黙の信念に対応しています。これらの変化は、信念の変化と一致していることがわかり、信念の変化がエージェントシステムにおける実際の行動に反映されることを示唆しています。私たちの分析は、モデルが長時間の対話や読書を行う際に信念の変化が隠れたリスクをもたらし、その意見や行動を信頼できないものにする可能性があることを明らかにしています。
+# Summary (by gpt-4o-mini)
+- 言語モデル（LM）アシスタントは、ブレインストーミングや研究での使用が増加しているが、コンテキストの蓄積に伴い信念プロファイルが変化するリスクがある。本研究では、対話やテキスト処理を通じて信念がどのように変化するかを調査し、GPT-5が道徳的ジレンマに関する議論後に54.7%、Grok 4が政治的問題に関して27.2%の信念変化を示すことを発見した。また、ツール使用による行動変化も分析し、信念の変化が行動に反映されることを示唆している。これにより、長時間の対話や読書が信頼性に影響を与える可能性があることが明らかになった。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://lm-belief-change.github.io/" target="_blank" rel="noopener noreferrer">https://lm-belief-change.github.io/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiayiigeng/status/1986093048179159166?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>エコーチャンバーが増強されそう</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Titans: Learning to Memorize at Test Time, Ali Behrouz+, NeurIPS'25, 2024.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.00663</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3587</repo-issue-link>
+<tags>NeuralNetwork, NLP, LongSequence, Architecture, NeurIPS, read-later, Selected Papers/Blogs, memory, Test-time Learning</tags>
+<repo-issue-date>2025-11-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.00663
+# Authors
+  - Ali Behrouz
+  - Peilin Zhong
+  - Vahab Mirrokni
+# Abstract
+  - Over more than a decade there has been an extensive research effort on how to effectively utilize recurrent models and attention. While recurrent models aim to compress the data into a fixed-size memory (called hidden state), attention allows attending to the entire context window, capturing the direct dependencies of all tokens. This more accurate modeling of dependencies, however, comes with a quadratic cost, limiting the model to a fixed-length context. We present a new neural long-term memory module that learns to memorize historical context and helps attention to attend to the current context while utilizing long past information. We show that this neural memory has the advantage of fast parallelizable training while maintaining a fast inference. From a memory perspective, we argue that attention due to its limited context but accurate dependency modeling performs as a short-term memory, while neural memory due to its ability to memorize the data, acts as a long-term, more persistent, memory. Based on these two modules, we introduce a new family of architectures, called Titans, and present three variants to address how one can effectively incorporate memory into this architecture. Our experimental results on language modeling, common-sense reasoning, genomics, and time series tasks show that Titans are more effective than Transformers and recent modern linear recurrent models. They further can effectively scale to larger than 2M context window size with higher accuracy in needle-in-haystack tasks compared to baselines.
+# Translation (by gpt-4o-mini)
+- 10年以上にわたり、再帰モデルと注意機構を効果的に活用する方法に関する広範な研究が行われてきた。再帰モデルはデータを固定サイズのメモリ（隠れ状態と呼ばれる）に圧縮することを目指す一方で、注意機構は全体のコンテキストウィンドウに注意を向け、すべてのトークンの直接的な依存関係を捉えることを可能にする。しかし、この依存関係のより正確なモデル化は二次的なコストを伴い、モデルを固定長のコンテキストに制限する。私たちは、歴史的なコンテキストを記憶し、注意機構が現在のコンテキストに注意を向けるのを助ける新しいニューラル長期メモリモジュールを提案する。このニューラルメモリは、高速な並列トレーニングを維持しながら、高速な推論を実現する利点がある。メモリの観点から、注意機構は限られたコンテキストを持ちながらも正確な依存関係のモデル化を行うため、短期メモリとして機能し、ニューラルメモリはデータを記憶する能力により、長期的でより持続的なメモリとして機能すると主張する。これらの2つのモジュールに基づいて、私たちは「Titans」と呼ばれる新しいアーキテクチャのファミリーを導入し、メモリをこのアーキテクチャに効果的に組み込む方法を示す3つのバリアントを提示する。言語モデリング、常識推論、ゲノミクス、時系列タスクに関する実験結果は、TitansがTransformersや最近の現代的な線形再帰モデルよりも効果的であることを示している。さらに、Titansは、ベースラインと比較して、2Mを超えるコンテキストウィンドウサイズに効果的にスケールし、より高い精度でneedle-in-haystackタスクを処理できる。
+# Summary (by gpt-4o-mini)
+- 再帰モデルと注意機構を組み合わせた新しいニューラル長期メモリモジュールを提案。これにより、短期的な依存関係を正確にモデル化しつつ、長期的な記憶を保持。新アーキテクチャ「Titans」は、言語モデリングや常識推論などのタスクで従来のモデルよりも優れた性能を示し、2Mを超えるコンテキストウィンドウサイズにも対応可能。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/prakashkagitha/status/1985824715806572564?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1997227157748060277?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemER: Scaling Up Memory for Robot Control via Experience Retrieval, Ajay Sridhar+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.20328</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3459</repo-issue-link>
+<tags>ComputerVision, VisionLanguageModel, Robotics, memory, VisionLanguageActionModel, One-Line Notes, LongHorizon</tags>
+<repo-issue-date>2025-10-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.20328
+# Authors
+  - Ajay Sridhar
+  - Jennifer Pan
+  - Satvik Sharma
+  - Chelsea Finn
+# Abstract
+  - Humans routinely rely on memory to perform tasks, yet most robot policies lack this capability; our goal is to endow robot policies with the same ability. Naively conditioning on long observation histories is computationally expensive and brittle under covariate shift, while indiscriminate subsampling of history leads to irrelevant or redundant information. We propose a hierarchical policy framework, where the high-level policy is trained to select and track previous relevant keyframes from its experience. The high-level policy uses selected keyframes and the most recent frames when generating text instructions for a low-level policy to execute. This design is compatible with existing vision-language-action (VLA) models and enables the system to efficiently reason over long-horizon dependencies. In our experiments, we finetune Qwen2.5-VL-7B-Instruct and $\pi_{0.5}$ as the high-level and low-level policies respectively, using demonstrations supplemented with minimal language annotations. Our approach, MemER, outperforms prior methods on three real-world long-horizon robotic manipulation tasks that require minutes of memory. Videos and code can be found at https://jen-pan.github.io/memer/.
+# Translation (by gpt-4o-mini)
+- 人間は日常的に記憶に頼ってタスクを実行しますが、ほとんどのロボットポリシーはこの能力を欠いています。本研究の目標は、ロボットポリシーに同じ能力を与えることです。長い観察履歴に単純に条件付けを行うことは計算コストが高く、共変量シフトの下では脆弱です。一方、履歴の無差別なサブサンプリングは、無関係または冗長な情報をもたらします。そこで、経験から以前の関連するキーフレームを選択し追跡する高レベルポリシーを訓練する階層的ポリシーフレームワークを提案します。高レベルポリシーは、低レベルポリシーが実行するためのテキスト指示を生成する際に、選択されたキーフレームと最新のフレームを使用します。この設計は既存の視覚-言語-アクション（VLA）モデルと互換性があり、システムが長期的な依存関係を効率的に推論できるようにします。実験では、デモンストレーションに最小限の言語注釈を補足して、Qwen2.5-VL-7B-Instructを高レベルポリシー、$\pi_{0.5}$を低レベルポリシーとしてファインチューニングしました。我々のアプローチであるMemERは、数分の記憶を必要とする3つの実世界の長期的ロボット操作タスクにおいて、従来の手法を上回る性能を示しました。動画とコードは https://jen-pan.github.io/memer/ で確認できます。
+# Summary (by gpt-4o-mini)
+- 本研究では、ロボットポリシーに人間のような記憶能力を与えるための階層的ポリシーフレームワークを提案。高レベルポリシーが関連するキーフレームを選択し、低レベルポリシーに指示を生成することで、長期的な依存関係を効率的に推論。実験により、提案手法MemERが従来の方法を上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ajaysridhar0/status/1982239143431393432?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://jen-pan.github.io/memer/" target="_blank" rel="noopener noreferrer">https://jen-pan.github.io/memer/</a>
+{% endraw %}
+
+</p><p>動画ストリーム全てを常にinputするのではなくキーフレームは限られているので、VLMにキーフレームをメモリ上で管理するような役割を与え、instructionと実現するためのサブタスクに応じて動的に必要な情報のみをVLAに与えることでlong horizonでのスケーラビリティを改善する、みたいな話らしい</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Memory Layers at Scale, Vincent-Pierre Berges+, ICLR'25, 2024.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2412.09764</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3393</repo-issue-link>
+<tags>LanguageModel, Transformer, Architecture, ICLR, read-later, Selected Papers/Blogs, memory, KeyPoint Notes</tags>
+<repo-issue-date>2025-10-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2412.09764
+# Authors
+  - Vincent-Pierre Berges
+  - Barlas Oğuz
+  - Daniel Haziza
+  - Wen-tau Yih
+  - Luke Zettlemoyer
+  - Gargi Ghosh
+# Abstract
+  - Memory layers use a trainable key-value lookup mechanism to add extra parameters to a model without increasing FLOPs. Conceptually, sparsely activated memory layers complement compute-heavy dense feed-forward layers, providing dedicated capacity to store and retrieve information cheaply. This work takes memory layers beyond proof-of-concept, proving their utility at contemporary scale. On downstream tasks, language models augmented with our improved memory layer outperform dense models with more than twice the computation budget, as well as mixture-of-expert models when matched for both compute and parameters. We find gains are especially pronounced for factual tasks. We provide a fully parallelizable memory layer implementation, demonstrating scaling laws with up to 128B memory parameters, pretrained to 1 trillion tokens, comparing to base models with up to 8B parameters.
+# Translation (by gpt-4o-mini)
+- メモリ層は、FLOPsを増加させることなくモデルに追加のパラメータを加えるための学習可能なキー・バリュー検索メカニズムを使用します。概念的には、スパースに活性化されたメモリ層は、計算負荷の高い密なフィードフォワード層を補完し、情報を安価に保存および取得するための専用のキャパシティを提供します。本研究は、メモリ層を概念実証の枠を超えて、現代のスケールでの有用性を証明します。下流タスクにおいて、我々の改良されたメモリ層を強化した言語モデルは、計算予算が2倍以上の密なモデルや、計算とパラメータが一致した場合のエキスパート混合モデルを上回ります。特に事実に基づくタスクにおいて、性能向上が顕著であることがわかりました。完全に並列化可能なメモリ層の実装を提供し、128Bのメモリパラメータまでのスケーリング法則を示し、1兆トークンまで事前学習を行い、最大8Bのパラメータを持つベースモデルと比較します。
+# Summary (by gpt-4o-mini)
+- メモリ層は、計算負荷を増やさずにモデルに追加のパラメータを加えるための学習可能な検索メカニズムを使用し、スパースに活性化されたメモリ層が密なフィードフォワード層を補完します。本研究では、改良されたメモリ層を用いた言語モデルが、計算予算が2倍の密なモデルや同等の計算とパラメータを持つエキスパート混合モデルを上回ることを示し、特に事実に基づくタスクでの性能向上が顕著であることを明らかにしました。完全に並列化可能なメモリ層の実装とスケーリング法則を示し、1兆トークンまでの事前学習を行った結果、最大8Bのパラメータを持つベースモデルと比較しました。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=ATqGm1WyDj" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=ATqGm1WyDj</a>
+{% endraw %}
+
+</p><p>transformerにおけるFFNをメモリレイヤーに置き換えることで、パラメータ数を増やしながら計算コストを抑えるようなアーキテクチャを提案しているようである。メモリレイヤーは、クエリqを得た時にtop kのkvをlookupし（＝ここで計算対象となるパラメータがスパースになる）、kqから求めたattention scoreでvを加重平均することで出力を得る。Memory+というさらなる改良を加えたアーキテクチャでは、入力に対してsiluによるgatingとlinearな変換を追加で実施することで出力を得る。<br><img src="https://github.com/user-attachments/assets/e935fc48-b606-47fd-aa74-047b87200779" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>denseなモデルと比較して性能が高く、メモリパラメータを増やすと性能がスケールする。<br><img src="https://github.com/user-attachments/assets/b4f74591-1ecc-4871-bdf4-4cc13274e7c4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Continual Learning via Sparse Memory Finetuning, Jessy Lin+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.15103</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3366</repo-issue-link>
+<tags>NLP, LanguageModel, Catastrophic Forgetting, memory, ContinualLearning</tags>
+<repo-issue-date>2025-10-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.15103
+# Authors
+  - Jessy Lin
+  - Luke Zettlemoyer
+  - Gargi Ghosh
+  - Wen-Tau Yih
+  - Aram Markosyan
+  - Vincent-Pierre Berges
+  - Barlas Oğuz
+# Abstract
+  - Modern language models are powerful, but typically static after deployment. A major obstacle to building models that continually learn over time is catastrophic forgetting, where updating on new data erases previously acquired capabilities. Motivated by the intuition that mitigating forgetting is challenging because trainable parameters are shared across all tasks, we investigate whether sparse parameter updates can enable learning without catastrophic forgetting. We introduce sparse memory finetuning, leveraging memory layer models (Berges et al., 2024), which are sparsely updated by design. By updating only the memory slots that are highly activated by a new piece of knowledge relative to usage on pretraining data, we reduce interference between new knowledge and the model's existing capabilities. We evaluate learning and forgetting compared to full finetuning and parameter-efficient finetuning with LoRA on two question answering tasks. We find that sparse memory finetuning learns new knowledge while exhibiting substantially less forgetting: while NaturalQuestions F1 drops by 89% after full finetuning on new facts and 71% with LoRA, sparse memory finetuning yields only an 11% drop with the same level of new knowledge acquisition. Our results suggest sparsity in memory layers offers a promising path toward continual learning in large language models.
+# Translation (by gpt-4o-mini)
+- 現代の言語モデルは強力ですが、展開後は通常静的です。時間とともに継続的に学習するモデルを構築する上での大きな障害は、破滅的忘却です。これは、新しいデータでの更新が以前に獲得した能力を消去してしまう現象です。トレーニング可能なパラメータがすべてのタスクで共有されているため、忘却を軽減することが難しいという直感に基づき、我々はスパースパラメータ更新が破滅的忘却なしに学習を可能にするかどうかを調査します。そこで、我々はスパースメモリファインチューニングを導入し、設計上スパースに更新されるメモリレイヤーモデル（Berges et al., 2024）を活用します。新しい知識に対して高く活性化されるメモリスロットのみを更新することで、モデルの既存の能力との間の干渉を減少させます。我々は、2つの質問応答タスクにおいて、フルファインチューニングおよびLoRAを用いたパラメータ効率の良いファインチューニングと比較して、学習と忘却を評価します。スパースメモリファインチューニングは新しい知識を学習しながら、著しく少ない忘却を示すことがわかりました。具体的には、NaturalQuestionsのF1スコアは、新しい事実に対するフルファインチューニング後に89%低下し、LoRAでは71%低下するのに対し、スパースメモリファインチューニングでは同じレベルの新しい知識の獲得でわずか11%の低下にとどまりました。我々の結果は、メモリレイヤーのスパース性が大規模言語モデルにおける継続的学習への有望な道を提供することを示唆しています。
+# Summary (by gpt-4o-mini)
+- スパースメモリファインチューニングを用いて、破滅的忘却を軽減しながら継続的学習を可能にするモデルを提案。新しい知識を学習する際、メモリスロットの更新を制限することで、既存の能力との干渉を減少。実験では、スパースメモリファインチューニングが他の手法に比べて著しく少ない忘却を示し、継続的学習における有望なアプローチであることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/realjessylin/status/1980662516285075762?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3393" target="_blank" rel="noopener noreferrer">[Paper Note] Memory Layers at Scale, Vincent-Pierre Berges+, ICLR'25, 2024.12</a>
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/webbigdata/status/1983410462336397503?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] To Infinity and Beyond: Tool-Use Unlocks Length Generalization in State  Space Models, Eran Malach+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.14826</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3303</repo-issue-link>
+<tags>NLP, LongSequence, SSM (StateSpaceModel), Selected Papers/Blogs, Generalization, memory</tags>
+<repo-issue-date>2025-10-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.14826
+# Authors
+  - Eran Malach
+  - Omid Saremi
+  - Sinead Williamson
+  - Arwen Bradley
+  - Aryo Lotfi
+  - Emmanuel Abbe
+  - Josh Susskind
+  - Etai Littwin
+# Abstract
+  - State Space Models (SSMs) have become the leading alternative to Transformers for sequence modeling. Their primary advantage is efficiency in long-context and long-form generation, enabled by fixed-size memory and linear scaling of computational complexity. We begin this work by showing a simple theoretical result stating that SSMs cannot accurately solve any ``truly long-form'' generation problem (in a sense we formally define), undermining their main competitive advantage. However, we show that this limitation can be mitigated by allowing SSMs interactive access to external tools. In fact, we show that given the right choice of tool access and problem-dependent training data, SSMs can learn to solve any tractable problem and generalize to arbitrary problem length/complexity (i.e., achieve length generalization). Following our theoretical finding, we demonstrate that tool-augmented SSMs achieve remarkable length generalization on a variety of arithmetic, reasoning, and coding tasks. These findings highlight SSMs as a potential efficient alternative to Transformers in interactive tool-based and agentic settings.
+# Translation (by gpt-4o-mini)
+- 状態空間モデル（SSM）は、シーケンスモデリングにおいてトランスフォーマーの主要な代替手段となっています。その主な利点は、固定サイズのメモリと計算複雑性の線形スケーリングによって、長いコンテキストや長文生成において効率的であることです。本研究では、SSMが「真に長文生成」問題を正確に解決できないという単純な理論的結果を示し、これが彼らの主な競争上の利点を損なうことを明らかにします。しかし、この制限は、SSMに外部ツールへのインタラクティブなアクセスを許可することで軽減できることを示します。実際、適切なツールアクセスと問題依存のトレーニングデータを選択することで、SSMは任意の扱いやすい問題を解決する方法を学び、任意の問題の長さや複雑さに一般化できることを示します（すなわち、長さの一般化を達成します）。理論的な発見に続いて、ツールを強化したSSMが、さまざまな算術、推論、コーディングタスクにおいて驚異的な長さの一般化を達成することを示します。これらの発見は、インタラクティブなツールベースおよびエージェント設定において、SSMがトランスフォーマーに対する効率的な代替手段となる可能性を強調しています。
+# Summary (by gpt-4o-mini)
+- 状態空間モデル（SSM）は、長文生成において効率的な代替手段であるが、真の長文生成問題を解決できないことが明らかにされた。外部ツールへのインタラクティブなアクセスを許可することで、この制限を克服できることが示され、SSMは問題依存のトレーニングデータを用いて任意の問題に一般化できる。ツールを強化したSSMは、算術や推論、コーディングタスクにおいて優れた長さの一般化を達成し、トランスフォーマーに対する効率的な代替手段となる可能性がある。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/1979058895336411538?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eranmalach/status/1979199774172565712?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_albertgu/status/1980287154883358864?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1980759789354586258?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ArcMemo: Abstract Reasoning Composition with Lifelong LLM Memory, Matthew Ho+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.04439</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3236</repo-issue-link>
+<tags>MachineLearning, NLP, Abstractive, LanguageModel, Reasoning, Generalization, memory, One-Line Notes, Test-time Learning</tags>
+<repo-issue-date>2025-10-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.04439
+# Authors
+  - Matthew Ho
+  - Chen Si
+  - Zhaoxiang Feng
+  - Fangxu Yu
+  - Yichi Yang
+  - Zhijian Liu
+  - Zhiting Hu
+  - Lianhui Qin
+# Abstract
+  - While inference-time scaling enables LLMs to carry out increasingly long and capable reasoning traces, the patterns and insights uncovered during these traces are immediately discarded once the context window is reset for a new query. External memory is a natural way to persist these discoveries, and recent work has shown clear benefits for reasoning-intensive tasks. We see an opportunity to make such memories more broadly reusable and scalable by moving beyond instance-based memory entries (e.g. exact query/response pairs, or summaries tightly coupled with the original problem context) toward concept-level memory: reusable, modular abstractions distilled from solution traces and stored in natural language. For future queries, relevant concepts are selectively retrieved and integrated into the prompt, enabling test-time continual learning without weight updates. Our design introduces new strategies for abstracting takeaways from rollouts and retrieving entries for new queries, promoting reuse and allowing memory to expand with additional experiences. We evaluate on ARC-AGI, a benchmark that stresses compositional generalization and abstract reasoning, making it a natural fit for concept memory. Our method yields a 7.5% relative gain over a strong no-memory baseline with performance continuing to scale with inference compute. We find abstract concepts to be the most consistent memory design, outscoring the baseline at all tested inference compute scales. Moreover, dynamically updating memory during test-time outperforms fixed settings, supporting the hypothesis that accumulating and abstracting patterns enables further solutions in a form of self-improvement. Code is available at https://github.com/matt-seb-ho/arc_memo.
+# Translation (by gpt-4o-mini)
+- 推論時のスケーリングにより、LLMはますます長く、能力のある推論トレースを実行できるようになっていますが、これらのトレース中に発見されたパターンや洞察は、新しいクエリのためにコンテキストウィンドウがリセットされるとすぐに破棄されてしまいます。外部メモリは、これらの発見を持続させる自然な方法であり、最近の研究では推論集約型タスクにおいて明確な利点が示されています。私たちは、インスタンスベースのメモリエントリ（例えば、正確なクエリ/レスポンスペアや元の問題コンテキストに密接に結びついた要約）を超えて、概念レベルのメモリに移行することで、これらのメモリをより広く再利用可能でスケーラブルにする機会を見出しました。これは、解決トレースから抽出された再利用可能でモジュール化された抽象を自然言語で保存するものです。将来のクエリに対しては、関連する概念が選択的に取得され、プロンプトに統合されることで、重みの更新なしにテスト時の継続的学習を可能にします。私たちの設計は、ロールアウトからの要点を抽象化し、新しいクエリのためにエントリを取得するための新しい戦略を導入し、再利用を促進し、メモリが追加の経験とともに拡張できるようにします。私たちは、構成的一般化と抽象的推論を強調するベンチマークであるARC-AGIで評価を行い、概念メモリに自然に適合させました。私たちの手法は、強力なメモリなしのベースラインに対して7.5%の相対的な向上をもたらし、推論計算がスケールするにつれてパフォーマンスが向上し続けます。抽象概念は最も一貫したメモリ設計であり、すべてのテストされた推論計算スケールでベースラインを上回る結果を示しました。さらに、テスト時にメモリを動的に更新することは固定設定を上回り、パターンを蓄積し抽象化することで自己改善の形でさらなる解決策を可能にするという仮説を支持しています。コードは https://github.com/matt-seb-ho/arc_memo で入手可能です。
+# Summary (by gpt-4o-mini)
+- LLMは推論時に外部メモリを活用し、概念レベルのメモリを導入することで、再利用可能でスケーラブルな知識の保存を実現。これにより、関連する概念を選択的に取得し、テスト時の継続的学習を可能にする。評価はARC-AGIベンチマークで行い、メモリなしのベースラインに対して7.5%の性能向上を達成。動的なメモリ更新が自己改善を促進することを示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/1977388895739535686?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ARC-AGIでしか評価されていないように見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemMamba: Rethinking Memory Patterns in State Space Model, Youjin Wang+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.03279</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3214</repo-issue-link>
+<tags>NLP, LanguageModel, LongSequence, SSM (StateSpaceModel), memory</tags>
+<repo-issue-date>2025-10-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.03279
+# Authors
+  - Youjin Wang
+  - Yangjingyi Chen
+  - Jiahao Yan
+  - Jiaxuan Lu
+  - Xiao Sun
+# Abstract
+  - With the explosive growth of data, long-sequence modeling has become increasingly important in tasks such as natural language processing and bioinformatics. However, existing methods face inherent trade-offs between efficiency and memory. Recurrent neural networks suffer from gradient vanishing and explosion, making them hard to scale. Transformers can model global dependencies but are constrained by quadratic complexity. Recently, selective state-space models such as Mamba have demonstrated high efficiency with O(n) time and O(1) recurrent inference, yet their long-range memory decays exponentially. In this work, we conduct mathematical derivations and information-theoretic analysis to systematically uncover the memory decay mechanism of Mamba, answering a fundamental question: what is the nature of Mamba's long-range memory and how does it retain information? To quantify key information loss, we further introduce horizontal-vertical memory fidelity metrics that capture degradation both within and across layers. Inspired by how humans distill and retain salient information when reading long documents, we propose MemMamba, a novel architectural framework that integrates state summarization mechanism together with cross-layer and cross-token attention, which alleviates long-range forgetting while preserving linear complexity. MemMamba achieves significant improvements over existing Mamba variants and Transformers on long-sequence benchmarks such as PG19 and Passkey Retrieval, while delivering a 48% speedup in inference efficiency. Both theoretical analysis and empirical results demonstrate that MemMamba achieves a breakthrough in the complexity-memory trade-off, offering a new paradigm for ultra-long sequence modeling.
+# Translation (by gpt-4o-mini)
+- データの爆発的な増加に伴い、長シーケンスモデリングは自然言語処理やバイオインフォマティクスなどのタスクにおいてますます重要になっています。しかし、既存の手法は効率とメモリの間に固有のトレードオフに直面しています。再帰型ニューラルネットワークは勾配消失や勾配爆発に悩まされ、スケーラビリティが難しくなります。トランスフォーマーはグローバルな依存関係をモデル化できますが、二次的な計算量に制約されています。最近、Mambaのような選択的状態空間モデルは、O(n)の時間とO(1)の再帰的推論で高い効率を示しましたが、その長期メモリは指数関数的に減衰します。本研究では、Mambaのメモリ減衰メカニズムを体系的に明らかにするために数学的な導出と情報理論的分析を行い、Mambaの長期メモリの本質と情報を保持する方法という根本的な問いに答えます。重要な情報損失を定量化するために、層内および層間の劣化を捉える水平-垂直メモリ忠実度指標を導入します。長文を読む際に人間が顕著な情報を抽出し保持する方法に触発され、我々はMemMambaという新しいアーキテクチャフレームワークを提案します。これは、状態要約メカニズムと層間およびトークン間の注意を統合し、長期的な忘却を軽減しつつ線形の計算量を維持します。MemMambaは、PG19やPasskey Retrievalなどの長シーケンスベンチマークにおいて既存のMambaのバリアントやトランスフォーマーに対して大幅な改善を達成し、推論効率において48%のスピードアップを実現します。理論的な分析と実証結果の両方が、MemMambaが複雑さとメモリのトレードオフにおいてブレークスルーを達成し、超長シーケンスモデリングの新しいパラダイムを提供することを示しています。
+# Summary (by gpt-4o-mini)
+- データの増加に伴い、長シーケンスモデリングが重要になる中、既存手法は効率とメモリのトレードオフに直面している。Mambaの選択的状態空間モデルは高効率だが、長期メモリが減衰する。本研究では、Mambaのメモリ減衰メカニズムを分析し、情報損失を定量化する指標を導入。新たに提案するMemMambaは、状態要約メカニズムと注意を統合し、長期的な忘却を軽減しつつ計算量を維持。MemMambaは、長シーケンスベンチマークで大幅な改善を達成し、推論効率を48%向上させることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1976681769954169080?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Artificial Hippocampus Networks for Efficient Long-Context Modeling, Yunhao Fang+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.07318</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3195</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, LongSequence, memory, RecurrentModels</tags>
+<repo-issue-date>2025-10-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.07318
+# Authors
+  - Yunhao Fang
+  - Weihao Yu
+  - Shu Zhong
+  - Qinghao Ye
+  - Xuehan Xiong
+  - Lai Wei
+# Abstract
+  - Long-sequence modeling faces a fundamental trade-off between the efficiency of compressive fixed-size memory in RNN-like models and the fidelity of lossless growing memory in attention-based Transformers. Inspired by the Multi-Store Model in cognitive science, we introduce a memory framework of artificial neural networks. Our method maintains a sliding window of the Transformer's KV cache as lossless short-term memory, while a learnable module termed Artificial Hippocampus Network (AHN) recurrently compresses out-of-window information into a fixed-size compact long-term memory. To validate this framework, we instantiate AHNs using modern RNN-like architectures, including Mamba2, DeltaNet, and Gated DeltaNet. Extensive experiments on long-context benchmarks LV-Eval and InfiniteBench demonstrate that AHN-augmented models consistently outperform sliding window baselines and achieve performance comparable or even superior to full-attention models, while substantially reducing computational and memory requirements. For instance, augmenting the Qwen2.5-3B-Instruct with AHNs reduces inference FLOPs by 40.5% and memory cache by 74.0%, while improving its average score on LV-Eval (128k sequence length) from 4.41 to 5.88. Code is available at: https://github.com/ByteDance-Seed/AHN.
+# Translation (by gpt-4o-mini)
+- 長大なシーケンスモデリングは、RNNのようなモデルにおける圧縮された固定サイズのメモリの効率と、注意ベースのトランスフォーマーにおける損失のない成長メモリの忠実性との間に根本的なトレードオフを抱えています。認知科学におけるマルチストアモデルに触発され、我々は人工ニューラルネットワークのためのメモリフレームワークを提案します。我々の手法は、トランスフォーマーのKVキャッシュのスライディングウィンドウを損失のない短期メモリとして維持し、人工海馬ネットワーク（AHN）と呼ばれる学習可能なモジュールがウィンドウ外の情報を固定サイズのコンパクトな長期メモリに再帰的に圧縮します。このフレームワークを検証するために、Mamba2、DeltaNet、Gated DeltaNetなどの現代的なRNNライクなアーキテクチャを用いてAHNを具現化します。長文コンテキストベンチマークであるLV-EvalとInfiniteBenchに関する広範な実験により、AHNを強化したモデルがスライディングウィンドウのベースラインを一貫して上回り、フルアテンションモデルと同等またはそれ以上のパフォーマンスを達成しつつ、計算およびメモリ要件を大幅に削減することが示されました。例えば、Qwen2.5-3B-InstructにAHNを追加することで、推論のFLOPsが40.5%削減され、メモリキャッシュが74.0%削減される一方で、LV-Eval（128kシーケンス長）での平均スコアが4.41から5.88に向上しました。コードは以下のリンクで入手可能です：https://github.com/ByteDance-Seed/AHN。
+# Summary (by gpt-4o-mini)
+- 長大なシーケンスモデリングにおけるメモリのトレードオフを解決するため、人工海馬ネットワーク（AHN）を提案。AHNは短期メモリを維持しつつ、長期メモリを圧縮。実験により、AHNを用いたモデルが従来のベースラインを上回り、計算とメモリ要件を大幅に削減しつつ、パフォーマンスを向上させることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1976107974939816308?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxestex/status/1976451334951063854?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Pretraining with hierarchical memories: separating long-tail and common  knowledge, Hadi Pouransari+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.02375</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3144</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Transformer, SmallModel, memory</tags>
+<repo-issue-date>2025-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.02375
+# Authors
+  - Hadi Pouransari
+  - David Grangier
+  - C Thomas
+  - Michael Kirchhof
+  - Oncel Tuzel
+# Abstract
+  - The impressive performance gains of modern language models currently rely on scaling parameters: larger models store more world knowledge and reason better. Yet compressing all world knowledge into parameters is unnecessary, as only a fraction is used per prompt, and impractical for edge devices with limited inference-time memory and compute. We address this shortcoming by a memory-augmented architecture and a pretraining strategy aligned with existing hardware paradigms. We introduce small language models that access large hierarchical parametric memory banks encoding world knowledge. During pretraining and inference, we fetch a small, context-dependent memory block and add it to the model. Our pretraining learns to store long-tail world knowledge in the memory parameters, while the small language model acts as an anchor capturing common knowledge and general reasoning abilities. Through trillion-token-scale experiments, we show significant gains: a 160M-parameters model augmented with an 18M-parameters memory fetched from a 4.6B memory bank obtains comparable performance to a regular model with more than 2x the parameters. Through extensive experiments, we study the optimal type and size of parametric memories in transformers, scaling them to over 21B parameters. We find that our proposed hierarchical feed-forward memories work robustly across transformer architectures, whether added during pretraining or post-hoc.
+# Translation (by gpt-4o-mini)
+- 現代の言語モデルの印象的な性能向上は、パラメータのスケーリングに依存しています。より大きなモデルは、より多くの世界知識を蓄積し、より良い推論を行います。しかし、すべての世界知識をパラメータに圧縮することは不必要であり、プロンプトごとに使用されるのはその一部に過ぎません。また、推論時のメモリと計算能力が限られたエッジデバイスにとっては非現実的です。この欠点に対処するために、我々はメモリ拡張アーキテクチャと既存のハードウェアパラダイムに沿った事前学習戦略を提案します。具体的には、世界知識をエンコードした大規模な階層的パラメトリックメモリバンクにアクセスする小型言語モデルを導入します。事前学習と推論の際に、文脈依存の小さなメモリブロックを取得し、モデルに追加します。我々の事前学習は、メモリパラメータにロングテールの世界知識を保存することを学習し、小型言語モデルは一般的な知識と一般的な推論能力を捉えるアンカーとして機能します。兆トークン規模の実験を通じて、我々は顕著な成果を示します。160Mパラメータのモデルに18Mパラメータのメモリを追加し、4.6Bのメモリバンクから取得することで、2倍以上のパラメータを持つ通常のモデルと同等の性能を得ることができます。さらに、広範な実験を通じて、トランスフォーマーにおけるパラメトリックメモリの最適なタイプとサイズを研究し、21Bパラメータを超えるスケーリングを行います。我々は、提案した階層的フィードフォワードメモリが、事前学習中または事後に追加されるかにかかわらず、トランスフォーマーアーキテクチャ全体で堅牢に機能することを発見しました。
+# Summary (by gpt-4o-mini)
+- 現代の言語モデルはパラメータのスケーリングに依存しているが、すべての世界知識を圧縮するのは非現実的である。これに対処するため、メモリ拡張アーキテクチャを提案し、小型言語モデルが階層的なメモリバンクにアクセスする仕組みを導入。実験により、160Mパラメータのモデルに18Mパラメータのメモリを追加することで、通常のモデルと同等の性能を達成。トランスフォーマーにおけるメモリの最適なタイプとサイズを研究し、提案したメモリが堅牢に機能することを確認。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hpouransari/status/1975203449680937171?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Short window attention enables long-term memorization, Loïc Cabannes+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.24552</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3043</repo-issue-link>
+<tags>NLP, ContextWindow, Attention, memory</tags>
+<repo-issue-date>2025-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.24552
+# Authors
+  - Loïc Cabannes
+  - Maximilian Beck
+  - Gergely Szilvasy
+  - Matthijs Douze
+  - Maria Lomeli
+  - Jade Copet
+  - Pierre-Emmanuel Mazaré
+  - Gabriel Synnaeve
+  - Hervé Jégou
+# Abstract
+  - Recent works show that hybrid architectures combining sliding window softmax attention layers with linear recurrent neural network (RNN) layers outperform both of these architectures taken separately. However, the impact of the window length and the interplay between softmax attention and linear RNN layers remain under-studied. In this work, we introduce SWAX, a hybrid architecture consisting of sliding-window attention and xLSTM linear RNN layers.   A counter-intuitive finding with SWAX is that larger sliding windows do not improve the long-context performance. In fact, short window attention encourages the model to better train the long-term memory of the xLSTM, by relying less on the softmax attention mechanism for long context-retrieval.   The issue with small sliding windows is that they are detrimental for short-context tasks, which could be solved with information from moderately larger sliding windows otherwise. Therefore, we train SWAX by stochastically changing the sliding window size, forcing the model to leverage both a longer context window and the xLSTM memory. SWAX trained with stochastic window sizes significantly outperforms regular window attention both on short and long-context problems.
+# Translation (by gpt-4o-mini)
+- 最近の研究では、スライディングウィンドウソフトマックスアテンション層と線形再帰神経ネットワーク（RNN）層を組み合わせたハイブリッドアーキテクチャが、これらのアーキテクチャを個別に使用した場合よりも優れた性能を示すことが明らかになっています。しかし、ウィンドウの長さの影響やソフトマックスアテンションと線形RNN層の相互作用については、十分に研究されていません。本研究では、スライディングウィンドウアテンションとxLSTM線形RNN層からなるハイブリッドアーキテクチャSWAXを紹介します。
+
+SWAXに関する直感に反する発見は、より大きなスライディングウィンドウが長いコンテキストのパフォーマンスを向上させないということです。実際、短いウィンドウアテンションは、長期的な記憶をより良く訓練するためにxLSTMに依存し、長いコンテキストの取得においてソフトマックスアテンションメカニズムへの依存を減らすことを促します。
+
+小さなスライディングウィンドウの問題は、短いコンテキストタスクに対して有害であり、そうでなければ適度に大きなスライディングウィンドウからの情報で解決できる可能性があります。したがって、SWAXはスライディングウィンドウのサイズを確率的に変更しながら訓練し、モデルがより長いコンテキストウィンドウとxLSTMメモリの両方を活用するように強制します。確率的なウィンドウサイズで訓練されたSWAXは、短いコンテキストと長いコンテキストの問題の両方において、通常のウィンドウアテンションを大幅に上回る性能を示します。
+# Summary (by gpt-4o-mini)
+- SWAXというハイブリッドアーキテクチャは、スライディングウィンドウアテンションとxLSTM線形RNN層を組み合わせており、短いウィンドウが長期的な記憶をより良く訓練することを示す。SWAXはウィンドウサイズを確率的に変更し、短い・長いコンテキストの両方で優れた性能を発揮する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1972874639333605540?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=btgVfhudI1" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=btgVfhudI1</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory, Siru Ouyang+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.25140</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3041</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, read-later, Selected Papers/Blogs, memory, One-Line Notes, Test-time Learning</tags>
+<repo-issue-date>2025-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.25140
+# Authors
+  - Siru Ouyang
+  - Jun Yan
+  - I-Hung Hsu
+  - Yanfei Chen
+  - Ke Jiang
+  - Zifeng Wang
+  - Rujun Han
+  - Long T. Le
+  - Samira Daruki
+  - Xiangru Tang
+  - Vishy Tirumalashetty
+  - George Lee
+  - Mahsan Rofouei
+  - Hangfei Lin
+  - Jiawei Han
+  - Chen-Yu Lee
+  - Tomas Pfister
+# Abstract
+  - With the growing adoption of large language model agents in persistent real-world roles, they naturally encounter continuous streams of tasks. A key limitation, however, is their failure to learn from the accumulated interaction history, forcing them to discard valuable insights and repeat past errors. We propose ReasoningBank, a novel memory framework that distills generalizable reasoning strategies from an agent's self-judged successful and failed experiences. At test time, an agent retrieves relevant memories from ReasoningBank to inform its interaction and then integrates new learnings back, enabling it to become more capable over time. Building on this powerful experience learner, we further introduce memory-aware test-time scaling (MaTTS), which accelerates and diversifies this learning process by scaling up the agent's interaction experience. By allocating more compute to each task, the agent generates abundant, diverse experiences that provide rich contrastive signals for synthesizing higher-quality memory. The better memory in turn guides more effective scaling, establishing a powerful synergy between memory and test-time scaling. Across web browsing and software engineering benchmarks, ReasoningBank consistently outperforms existing memory mechanisms that store raw trajectories or only successful task routines, improving both effectiveness and efficiency; MaTTS further amplifies these gains. These findings establish memory-driven experience scaling as a new scaling dimension, enabling agents to self-evolve with emergent behaviors naturally arise.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルエージェントが持続的な現実世界の役割での採用が進む中、彼らは自然に継続的なタスクの流れに直面します。しかし、重要な制限は、蓄積されたインタラクションの履歴から学ぶことができず、貴重な洞察を捨て、過去のエラーを繰り返すことです。そこで、私たちはReasoningBankという新しいメモリフレームワークを提案します。これは、エージェントが自己判断した成功体験と失敗体験から一般化可能な推論戦略を抽出します。テスト時には、エージェントはReasoningBankから関連するメモリを取得し、それをインタラクションに活用し、新たな学びを統合することで、時間とともにより能力を高めることができます。この強力な経験学習者に基づいて、私たちはさらにメモリを意識したテスト時スケーリング（MaTTS）を導入します。これは、エージェントのインタラクション体験を拡大することで、この学習プロセスを加速し、多様化します。各タスクに対してより多くの計算リソースを割り当てることで、エージェントは豊富で多様な体験を生成し、高品質なメモリを合成するための豊かな対照信号を提供します。より良いメモリは、より効果的なスケーリングを導き、メモリとテスト時スケーリングの間に強力な相乗効果を確立します。ウェブブラウジングやソフトウェアエンジニアリングのベンチマークにおいて、ReasoningBankは、未加工の軌跡や成功したタスクルーチンのみを保存する既存のメモリメカニズムを一貫して上回り、効果と効率の両方を改善します。MaTTSはさらにこれらの利点を増幅します。これらの発見は、メモリ駆動の経験スケーリングを新しいスケーリングの次元として確立し、エージェントが自然に新たな行動を自己進化させることを可能にします。
+# Summary (by gpt-4o-mini)
+- ReasoningBankという新しいメモリフレームワークを提案し、エージェントが成功体験と失敗体験から推論戦略を抽出できるようにする。テスト時には関連メモリを活用し、学びを統合することで能力を向上させる。さらに、メモリを意識したテスト時スケーリング（MaTTS）を導入し、エージェントの体験を多様化・拡大する。これにより、ウェブブラウジングやソフトウェアエンジニアリングのベンチマークで既存のメモリメカニズムを上回る効果と効率を実現。メモリ駆動の経験スケーリングを新たな次元として確立し、エージェントの自己進化を促進する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1972870229463355677?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>メモリを良質なものに更新、蓄積し続けることで性能がスケールするのであれば、新たなtest-time scalingのパラダイムになりそう。<br><br>ざっくり読んでみると本研究ではこのパラダイムのことをTest-Time Learningと呼称している（先行研究が２つ引用されているがざっと見た限りでは両者はそう言った呼称はしていないように見えた）。<br>すなわち、クエリのストリームが到達した時に将来のクエリを見ることはできずに、過去のクエリに対するtrajectoryや、self-verificationなどによってのみラベル無しで自己進化していくパラダイムのこと。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3052" target="_blank" rel="noopener noreferrer">[Paper Note] M+: Extending MemoryLLM with Scalable Long-Term Memory, Yu Wang+, ICML'25, 2025.02</a>
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=jL7fwchScm" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=jL7fwchScm</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Latent learning: episodic memory complements parametric learning by  enabling flexible reuse of experiences, Andrew Kyle Lampinen+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.16189</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2923</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, AIAgents, In-ContextLearning, RAG(RetrievalAugmentedGeneration), Generalization, ReversalCurse, memory</tags>
+<repo-issue-date>2025-09-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.16189
+# Authors
+  - Andrew Kyle Lampinen
+  - Martin Engelcke
+  - Yuxuan Li
+  - Arslan Chaudhry
+  - James L. McClelland
+# Abstract
+  - When do machine learning systems fail to generalize, and what mechanisms could improve their generalization? Here, we draw inspiration from cognitive science to argue that one weakness of machine learning systems is their failure to exhibit latent learning -- learning information that is not relevant to the task at hand, but that might be useful in a future task. We show how this perspective links failures ranging from the reversal curse in language modeling to new findings on agent-based navigation. We then highlight how cognitive science points to episodic memory as a potential part of the solution to these issues. Correspondingly, we show that a system with an oracle retrieval mechanism can use learning experiences more flexibly to generalize better across many of these challenges. We also identify some of the essential components for effectively using retrieval, including the importance of within-example in-context learning for acquiring the ability to use information across retrieved examples. In summary, our results illustrate one possible contributor to the relative data inefficiency of current machine learning systems compared to natural intelligence, and help to understand how retrieval methods can complement parametric learning to improve generalization.
+# Translation (by gpt-4o-mini)
+- 機械学習システムはいつ一般化に失敗し、どのようなメカニズムがその一般化を改善できるのでしょうか。本研究では、認知科学からインスピレーションを得て、機械学習システムの一つの弱点は潜在学習を示さないことだと主張します。潜在学習とは、現在のタスクには関連しないが、将来のタスクに役立つかもしれない情報を学習することです。この視点が、言語モデルにおける逆転の呪いからエージェントベースのナビゲーションに関する新たな発見まで、さまざまな失敗をどのように結びつけるかを示します。次に、認知科学がエピソード記憶をこれらの問題の解決策の一部として指摘していることを強調します。それに応じて、オラクルリトリーバルメカニズムを持つシステムが、学習経験をより柔軟に活用して、これらの課題の多くに対してより良く一般化できることを示します。また、リトリーバルを効果的に使用するための重要な要素として、取得した例を通じて情報を使用する能力を獲得するための文脈内学習の重要性を特定します。要約すると、私たちの結果は、現在の機械学習システムが自然知能と比較して相対的にデータ効率が低い一因を示し、リトリーバル手法がパラメトリック学習を補完して一般化を改善する方法を理解する手助けとなります。
+# Summary (by gpt-4o-mini)
+- 機械学習システムの一般化失敗の原因として、潜在学習の欠如を指摘。認知科学の視点から、エピソード記憶やオラクルリトリーバルメカニズムが一般化を改善する手段であることを示す。文脈内学習が情報活用の鍵であり、リトリーバル手法がパラメトリック学習を補完することで、データ効率を向上させる可能性を提案。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1969968869952631225?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] WebWeaver: Structuring Web-Scale Evidence with Dynamic Outlines for  Open-Ended Deep Research, Zijian Li+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.13312</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2833</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, AIAgents, Planning, LongSequence, read-later, DeepResearch, memory</tags>
+<repo-issue-date>2025-09-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.13312
+# Authors
+  - Zijian Li
+  - Xin Guan
+  - Bo Zhang
+  - Shen Huang
+  - Houquan Zhou
+  - Shaopeng Lai
+  - Ming Yan
+  - Yong Jiang
+  - Pengjun Xie
+  - Fei Huang
+  - Jun Zhang
+  - Jingren Zhou
+# Abstract
+  - This paper tackles open-ended deep research (OEDR), a complex challenge where AI agents must synthesize vast web-scale information into insightful reports. Current approaches are plagued by dual-fold limitations: static research pipelines that decouple planning from evidence acquisition and one-shot generation paradigms that easily suffer from long-context failure issues like "loss in the middle" and hallucinations. To address these challenges, we introduce WebWeaver, a novel dual-agent framework that emulates the human research process. The planner operates in a dynamic cycle, iteratively interleaving evidence acquisition with outline optimization to produce a comprehensive, source-grounded outline linking to a memory bank of evidence. The writer then executes a hierarchical retrieval and writing process, composing the report section by section. By performing targeted retrieval of only the necessary evidence from the memory bank for each part, it effectively mitigates long-context issues. Our framework establishes a new state-of-the-art across major OEDR benchmarks, including DeepResearch Bench, DeepConsult, and DeepResearchGym. These results validate our human-centric, iterative methodology, demonstrating that adaptive planning and focused synthesis are crucial for producing high-quality, reliable, and well-structured reports.
+# Translation (by gpt-4o-mini)
+- 本論文では、AIエージェントが膨大なウェブ規模の情報を洞察に満ちたレポートに統合しなければならない複雑な課題であるオープンエンド深層研究（OEDR）に取り組みます。現在のアプローチは、計画と証拠取得を切り離す静的な研究パイプラインと、長いコンテキストの失敗問題（「途中での損失」や幻覚など）に悩まされるワンショット生成パラダイムという二重の制限に苦しんでいます。これらの課題に対処するために、私たちはWebWeaverという新しい二重エージェントフレームワークを導入し、人間の研究プロセスを模倣します。プランナーは動的サイクルで機能し、証拠取得とアウトライン最適化を反復的に交互に行い、証拠のメモリバンクにリンクされた包括的で出典に基づくアウトラインを生成します。その後、ライターは階層的な情報検索と執筆プロセスを実行し、レポートをセクションごとに構成します。各部分に必要な証拠のみをメモリバンクからターゲットを絞って取得することで、長いコンテキストの問題を効果的に軽減します。私たちのフレームワークは、DeepResearch Bench、DeepConsult、DeepResearchGymを含む主要なOEDRベンチマークで新たな最先端を確立しました。これらの結果は、私たちの人間中心の反復的な方法論を検証し、適応的な計画と焦点を絞った統合が高品質で信頼性が高く、構造化されたレポートを生成するために重要であることを示しています。
+# Summary (by gpt-4o-mini)
+- 本論文では、AIエージェントがウェブ情報を統合してレポートを作成するオープンエンド深層研究（OEDR）に取り組み、WebWeaverという新しい二重エージェントフレームワークを提案。プランナーが証拠取得とアウトライン最適化を交互に行い、ライターが情報を階層的に検索してレポートを構成することで、長いコンテキストの問題を軽減。提案手法は主要なOEDRベンチマークで新たな最先端を確立し、高品質なレポート生成における人間中心のアプローチの重要性を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1968161793127416197?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemoryVLA: Perceptual-Cognitive Memory in Vision-Language-Action Models  for Robotic Manipulation, Hao Shi+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.19236</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2804</repo-issue-link>
+<tags>NLP, LanguageModel, Robotics, memory, VisionLanguageActionModel, EmbodiedAI</tags>
+<repo-issue-date>2025-09-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.19236
+# Authors
+  - Hao Shi
+  - Bin Xie
+  - Yingfei Liu
+  - Lin Sun
+  - Fengrong Liu
+  - Tiancai Wang
+  - Erjin Zhou
+  - Haoqiang Fan
+  - Xiangyu Zhang
+  - Gao Huang
+# Abstract
+  - Temporal context is essential for robotic manipulation because such tasks are inherently non-Markovian, yet mainstream VLA models typically overlook it and struggle with long-horizon, temporally dependent tasks. Cognitive science suggests that humans rely on working memory to buffer short-lived representations for immediate control, while the hippocampal system preserves verbatim episodic details and semantic gist of past experience for long-term memory. Inspired by these mechanisms, we propose MemoryVLA, a Cognition-Memory-Action framework for long-horizon robotic manipulation. A pretrained VLM encodes the observation into perceptual and cognitive tokens that form working memory, while a Perceptual-Cognitive Memory Bank stores low-level details and high-level semantics consolidated from it. Working memory retrieves decision-relevant entries from the bank, adaptively fuses them with current tokens, and updates the bank by merging redundancies. Using these tokens, a memory-conditioned diffusion action expert yields temporally aware action sequences. We evaluate MemoryVLA on 150+ simulation and real-world tasks across three robots. On SimplerEnv-Bridge, Fractal, and LIBERO-5 suites, it achieves 71.9%, 72.7%, and 96.5% success rates, respectively, all outperforming state-of-the-art baselines CogACT and pi-0, with a notable +14.6 gain on Bridge. On 12 real-world tasks spanning general skills and long-horizon temporal dependencies, MemoryVLA achieves 84.0% success rate, with long-horizon tasks showing a +26 improvement over state-of-the-art baseline. Project Page: https://shihao1895.github.io/MemoryVLA
+# Translation (by gpt-4o-mini)
+- 時間的文脈はロボット操作にとって不可欠である。なぜなら、そのようなタスクは本質的に非マルコフ的であり、主流のVLAモデルは通常これを見落とし、長期的かつ時間的に依存するタスクに苦労しているからである。認知科学は、人間が作業記憶を利用して短命の表現を即時制御のためにバッファリングする一方で、海馬系が過去の経験の逐語的なエピソードの詳細と意味的要点を長期記憶のために保存することを示唆している。これらのメカニズムに触発されて、私たちは長期的なロボット操作のためのCognition-Memory-ActionフレームワークであるMemoryVLAを提案する。事前学習されたVLMは観察を知覚的および認知的トークンにエンコードし、これが作業記憶を形成する。一方、知覚-認知メモリーバンクは、そこから統合された低レベルの詳細と高レベルの意味を保存する。作業記憶はバンクから意思決定に関連するエントリを取得し、それらを現在のトークンと適応的に融合し、冗長性を統合することでバンクを更新する。これらのトークンを使用して、メモリ条件付きの拡散アクションエキスパートが時間的に意識したアクションシーケンスを生成する。私たちは、3つのロボットにわたる150以上のシミュレーションおよび実世界のタスクでMemoryVLAを評価した。SimplerEnv-Bridge、Fractal、LIBERO-5スイートでは、それぞれ71.9%、72.7%、96.5%の成功率を達成し、すべて最先端のベースラインであるCogACTおよびpi-0を上回り、Bridgeでは+14.6の顕著な向上を示した。一般的なスキルと長期的な時間的依存性を含む12の実世界タスクでは、MemoryVLAは84.0%の成功率を達成し、長期的なタスクでは最先端のベースラインに対して+26の改善を示した。プロジェクトページ: https://shihao1895.github.io/MemoryVLA
+# Summary (by gpt-4o-mini)
+- MemoryVLAは、ロボット操作における時間的文脈を考慮したCognition-Memory-Actionフレームワークである。作業記憶を利用して短命の表現を制御し、知覚-認知メモリーバンクに統合された情報を保存する。これにより、時間的に意識したアクションシーケンスを生成し、150以上のシミュレーションおよび実世界のタスクで高い成功率を達成。特に、長期的なタスクにおいて顕著な性能向上を示した。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://shihao1895.github.io/MemoryVLA/" target="_blank" rel="noopener noreferrer">https://shihao1895.github.io/MemoryVLA/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/embodiedairead/status/1966651546567143534?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>長期記憶としてメモリバンクが導入され、過去に認識した冗長性が排除された画像情報(low level)と画像とテキストによる指示の意味情報（high level semantics)を格納しておき<br>、retrievalした上で活用する。次のアクションを決めるためのデコーダように見えるtransformerのattentionに専用のCognition/Perceptionのattentionが両方用意されている👀<br><br><img src="https://github.com/user-attachments/assets/520eae6e-c96e-416c-b72d-fc7326d8b9df" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Memento: Fine-tuning LLM Agents without Fine-tuning LLMs, Huichi Zhou+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.16153</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2650</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, memory, Test-time Learning</tags>
+<repo-issue-date>2025-09-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.16153
+# Authors
+  - Huichi Zhou
+  - Yihang Chen
+  - Siyuan Guo
+  - Xue Yan
+  - Kin Hei Lee
+  - Zihan Wang
+  - Ka Yiu Lee
+  - Guchun Zhang
+  - Kun Shao
+  - Linyi Yang
+  - Jun Wang
+# Abstract
+  - In this paper, we introduce a novel learning paradigm for Adaptive Large Language Model (LLM) agents that eliminates the need for fine-tuning the underlying LLMs. Existing approaches are often either rigid, relying on static, handcrafted reflection workflows, or computationally intensive, requiring gradient updates of LLM model parameters. In contrast, our method enables low-cost continual adaptation via memory-based online reinforcement learning. We formalise this as a Memory-augmented Markov Decision Process (M-MDP), equipped with a neural case-selection policy to guide action decisions. Past experiences are stored in an episodic memory, either differentiable or non-parametric. The policy is continually updated based on environmental feedback through a memory rewriting mechanism, whereas policy improvement is achieved through efficient memory reading (retrieval). We instantiate our agent model in the deep research setting, namely \emph{Memento}, which attains top-1 on GAIA validation ($87.88\%$ Pass@$3$) and $79.40\%$ on the test set. It reaches $66.6\%$ F1 and $80.4\%$ PM on the DeepResearcher dataset, outperforming the state-of-the-art training-based method, while case-based memory adds $4.7\%$ to $9.6\%$ absolute points on out-of-distribution tasks. Our approach offers a scalable and efficient pathway for developing generalist LLM agents capable of continuous, real-time learning without gradient updates, advancing machine learning towards open-ended skill acquisition and deep research scenarios. The code is available at https://github.com/Agent-on-the-Fly/Memento.
+# Translation (by gpt-4o-mini)
+- 本論文では、基盤となる大規模言語モデル（LLM）のファインチューニングを必要としない新しい学習パラダイムを提案します。既存のアプローチは、静的で手作業による反射ワークフローに依存するか、計算集約的でLLMモデルパラメータの勾配更新を必要とすることが多いです。それに対して、我々の手法は、メモリベースのオンライン強化学習を通じて低コストでの継続的な適応を可能にします。これをメモリ拡張マルコフ決定過程（M-MDP）として形式化し、行動決定を導くためのニューラルケース選択ポリシーを装備しています。過去の経験は、微分可能または非パラメトリックなエピソディックメモリに保存されます。ポリシーは、メモリ書き換えメカニズムを通じて環境からのフィードバックに基づいて継続的に更新され、一方でポリシーの改善は効率的なメモリ読み出し（リトリーバル）を通じて達成されます。我々は、深層研究設定においてエージェントモデル「Memento」を具現化し、GAIA検証でトップ1（87.88% Pass@3）を達成し、テストセットで79.40%を記録しました。また、DeepResearcherデータセットでは66.6%のF1スコアと80.4%のPMを達成し、最先端のトレーニングベースの手法を上回りました。ケースベースのメモリは、分布外タスクにおいて4.7%から9.6%の絶対ポイントを追加します。我々のアプローチは、勾配更新なしで継続的かつリアルタイムの学習が可能な一般的なLLMエージェントの開発に向けたスケーラブルで効率的な道筋を提供し、機械学習をオープンエンドのスキル習得や深層研究シナリオに向けて進展させます。コードはhttps://github.com/Agent-on-the-Fly/Mementoで入手可能です。
+# Summary (by gpt-4o-mini)
+- 本論文では、ファインチューニングを必要としない新しい学習パラダイムを提案し、メモリベースのオンライン強化学習を通じて低コストでの継続的な適応を実現します。これをメモリ拡張マルコフ決定過程（M-MDP）として形式化し、行動決定のためのニューラルケース選択ポリシーを導入。エージェントモデル「Memento」は、GAIA検証で87.88%の成功率を達成し、DeepResearcherデータセットでも最先端の手法を上回る性能を示しました。このアプローチは、勾配更新なしでのリアルタイム学習を可能にし、機械学習の進展に寄与します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/1962180313834033407?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_avichawla/status/1981246733322768780?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Ultra-Sparse Memory Network, Zihao Huang+, ICLR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.12364</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2585</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, MoE(Mixture-of-Experts), ICLR, read-later, memory</tags>
+<repo-issue-date>2025-08-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.12364
+# Authors
+  - Zihao Huang
+  - Qiyang Min
+  - Hongzhi Huang
+  - Defa Zhu
+  - Yutao Zeng
+  - Ran Guo
+  - Xun Zhou
+# Abstract
+  - It is widely acknowledged that the performance of Transformer models is logarithmically related to their number of parameters and computational complexity. While approaches like Mixture of Experts (MoE) decouple parameter count from computational complexity, they still face challenges in inference due to high memory access costs. This work introduces UltraMem, incorporating large-scale, ultra-sparse memory layer to address these limitations. Our approach significantly reduces inference latency while maintaining model performance. We also investigate the scaling laws of this new architecture, demonstrating that it not only exhibits favorable scaling properties but outperforms MoE. In experiments, the largest UltraMem we train has 20 million memory slots. The results show that our method achieves state-of-the-art inference speed and model performance within a given computational budget, paving the way for billions of slots or experts.
+# Translation (by gpt-4o-mini)
+- Transformerモデルの性能は、そのパラメータ数と計算複雑性に対して対数的に関連していることが広く認識されている。Mixture of Experts（MoE）などのアプローチは、パラメータ数と計算複雑性を切り離すが、高いメモリアクセスコストのために推論時に課題に直面している。本研究では、これらの制限に対処するために、大規模で超スパースなメモリ層を組み込んだUltraMemを提案する。我々のアプローチは、モデルの性能を維持しながら推論のレイテンシを大幅に削減する。また、この新しいアーキテクチャのスケーリング法則を調査し、好ましいスケーリング特性を示すだけでなく、MoEを上回ることを実証する。実験では、我々が訓練した最大のUltraMemは2000万のメモリスロットを持つ。結果は、我々の手法が与えられた計算予算内で最先端の推論速度とモデル性能を達成し、数十億のスロットやエキスパートへの道を開くことを示している。
+# Summary (by gpt-4o-mini)
+- UltraMemは、大規模で超スパースなメモリ層を組み込むことで、Transformerモデルの推論レイテンシを削減しつつ性能を維持する新しいアーキテクチャを提案。実験により、UltraMemはMoEを上回るスケーリング特性を示し、最大2000万のメモリスロットを持つモデルが最先端の推論速度と性能を達成することを実証。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Memp: Exploring Agent Procedural Memory, Runnan Fang+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.06433</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2403</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, ContextEngineering, memory</tags>
+<repo-issue-date>2025-08-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.06433
+# Authors
+  - Runnan Fang
+  - Yuan Liang
+  - Xiaobin Wang
+  - Jialong Wu
+  - Shuofei Qiao
+  - Pengjun Xie
+  - Fei Huang
+  - Huajun Chen
+  - Ningyu Zhang
+# Abstract
+  - Large Language Models (LLMs) based agents excel at diverse tasks, yet they suffer from brittle procedural memory that is manually engineered or entangled in static parameters. In this work, we investigate strategies to endow agents with a learnable, updatable, and lifelong procedural memory. We propose Memp that distills past agent trajectories into both fine-grained, step-by-step instructions and higher-level, script-like abstractions, and explore the impact of different strategies for Build, Retrieval, and Update of procedural memory. Coupled with a dynamic regimen that continuously updates, corrects, and deprecates its contents, this repository evolves in lockstep with new experience. Empirical evaluation on TravelPlanner and ALFWorld shows that as the memory repository is refined, agents achieve steadily higher success rates and greater efficiency on analogous tasks. Moreover, procedural memory built from a stronger model retains its value: migrating the procedural memory to a weaker model yields substantial performance gains.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）に基づくエージェントは多様なタスクに優れていますが、手動で設計されたり静的なパラメータに絡め取られたりした脆弱な手続き的記憶に悩まされています。本研究では、エージェントに学習可能で更新可能、かつ生涯にわたって利用できる手続き的記憶を持たせるための戦略を検討します。私たちは、過去のエージェントの軌跡を細かいステップバイステップの指示と高レベルのスクリプトのような抽象に蒸留するMempを提案し、手続き的記憶の構築、取得、更新に関するさまざまな戦略の影響を探ります。新しい経験に応じて内容を継続的に更新、修正、廃止する動的なレジメンと組み合わせることで、このリポジトリは新しい経験と共に進化します。TravelPlannerとALFWorldにおける実証評価は、記憶リポジトリが洗練されるにつれて、エージェントが類似のタスクで着実に高い成功率と効率を達成することを示しています。さらに、より強力なモデルから構築された手続き的記憶はその価値を保持します：手続き的記憶を弱いモデルに移行することで、実質的な性能向上が得られます。
+# Summary (by gpt-4o-mini)
+- 本研究では、LLMに基づくエージェントに学習可能で更新可能な手続き的記憶を持たせるための戦略を提案。Mempを用いて過去のエージェントの軌跡を指示や抽象に蒸留し、記憶の構築と更新を行う。TravelPlannerとALFWorldでの実証評価により、記憶リポジトリが進化することでエージェントの成功率と効率が向上することを示した。また、強力なモデルからの手続き的記憶の移行により、弱いモデルでも性能向上が得られることが確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zxlzr/status/1954840738082193477?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>アドホックに探索と実行を繰り返すのではなく、過去の試行のtrajectoryをメモリに記憶しておき、活用するような枠組みな模様。trajectoryは新たなタスクが来た際にretrieverでrelevantなtrajectoryを検索して利用され、良質なtrajectoryがキープされれば成功率や効率が向上すると考えられる。trajectoryはprocedure memoryとして保存され、成功率が低いtrajectoryは破棄されることで更新される。<br><img src="https://github.com/user-attachments/assets/20e2f063-eef6-4c3d-9161-3d96f56c6f8d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/a3766541-4946-4e43-91e4-99a873fb1d6f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>メモリはT個のタスクに対するs_t, a_t, o_t, i.e., state, action, observation,の系列τと、reward rが与えられた時に、Builderを通して構築されてストアされる。agentは新たなタスクt_newに直面した時に、t_newと類似したメモリをretrieyeする。これはτの中のある時刻tのタスクに対応する。メモリは肥大化していくため、実験では複数のアルゴリズムに基づくメモリの更新方法について実験している。<br><img src="https://github.com/user-attachments/assets/b91dbfed-c976-4764-abf6-00f4751b7e91" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>procedural memoryの有無による挙動の違いに関するサンプル。<br><img src="https://github.com/user-attachments/assets/2623103d-331d-45eb-a5cc-635ef3cb88ab" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/b1c21bf3-eef1-4b4c-999c-f8d0fcbc9431" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>memoryに対してretrieverを適用することになるので、retrieverの性能がボトルネックになると思われる。追加の学習をしなくて済むのは利点だが、その代わりモデル側がメモリ管理をする機能を有さない（学習すればそういった機能を持たせられるはず）ので、その点は欠点となる、という印象。</p><p>ポイント解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1954937801490772104?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Mixture-of-Recursions: Learning Dynamic Recursive Depths for Adaptive   Token-Level Computation, Sangmin Bae+, NeurIPS'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.10524</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2241</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, Transformer, Architecture, NeurIPS, memory, RecurrentModels, RecursiveModels</tags>
+<repo-issue-date>2025-07-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.10524
+# Authors
+  - Sangmin Bae
+  - Yujin Kim
+  - Reza Bayat
+  - Sungnyun Kim
+  - Jiyoun Ha
+  - Tal Schuster
+  - Adam Fisch
+  - Hrayr Harutyunyan
+  - Ziwei Ji
+  - Aaron Courville
+  - Se-Young Yun
+# Abstract
+  - Scaling language models unlocks impressive capabilities, but the accompanying computational and memory demands make both training and deployment expensive. Existing efficiency efforts typically target either parameter sharing or adaptive computation, leaving open the question of how to attain both simultaneously. We introduce Mixture-of-Recursions (MoR), a unified framework that combines the two axes of efficiency inside a single Recursive Transformer. MoR reuses a shared stack of layers across recursion steps to achieve parameter efficiency, while lightweight routers enable adaptive token-level thinking by dynamically assigning different recursion depths to individual tokens. This allows MoR to focus quadratic attention computation only among tokens still active at a given recursion depth, further improving memory access efficiency by selectively caching only their key-value pairs. Beyond these core mechanisms, we also propose a KV sharing variant that reuses KV pairs from the first recursion, specifically designed to decrease prefill latency and memory footprint. Across model scales ranging from 135M to 1.7B parameters, MoR forms a new Pareto frontier: at equal training FLOPs and smaller model sizes, it significantly lowers validation perplexity and improves few-shot accuracy, while delivering higher throughput compared with vanilla and existing recursive baselines. These gains demonstrate that MoR is an effective path towards large-model quality without incurring large-model cost.
+# Translation (by gpt-4o-mini)
+- 言語モデルのスケーリングは印象的な能力を解放しますが、それに伴う計算およびメモリの要求は、トレーニングとデプロイメントの両方を高価にします。既存の効率化の取り組みは通常、パラメータ共有または適応計算のいずれかをターゲットにしており、両方を同時に達成する方法は未解決のままです。本研究では、Mixture-of-Recursions（MoR）という統一フレームワークを提案します。これは、単一の再帰型トランスフォーマー内で効率性の2つの軸を組み合わせています。MoRは、再帰ステップ間で共有されたレイヤーのスタックを再利用することでパラメータ効率を達成し、軽量なルーターによって個々のトークンに異なる再帰の深さを動的に割り当てることで適応的なトークンレベルの思考を可能にします。これにより、MoRは特定の再帰の深さでまだアクティブなトークン間でのみ二次的な注意計算に焦点を当て、関連するキー・バリューペアのみを選択的にキャッシュすることでメモリアクセス効率をさらに向上させます。これらのコアメカニズムに加えて、初回の再帰からKVペアを再利用するKV共有のバリアントも提案し、特にプレフィルレイテンシとメモリフットプリントを減少させるように設計されています。135Mから1.7Bパラメータのモデルスケールにわたって、MoRは新しいパレートフロンティアを形成します。等しいトレーニングFLOPsおよび小さいモデルサイズで、検証の困惑度を大幅に低下させ、少数ショットの精度を向上させる一方で、バニラおよび既存の再帰的ベースラインと比較してスループットを高めます。これらの成果は、MoRが大規模モデルのコストを負担することなく、大規模モデルの品質に向けた効果的な道であることを示しています。
+# Summary (by gpt-4o-mini)
+- Mixture-of-Recursions（MoR）というフレームワークを提案し、再帰型トランスフォーマー内でパラメータ共有と適応計算を同時に実現。MoRは、レイヤーの再利用とトークンごとの再帰深さの動的割り当てにより、メモリアクセス効率を向上させる。135Mから1.7Bパラメータのモデルで、トレーニングFLOPsを維持しつつ、困惑度を低下させ、少数ショット精度を向上。MoRは大規模モデルのコストを抑えつつ、品質向上に寄与することを示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1945632764650533048?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/1961593983114907806?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2605" target="_blank" rel="noopener noreferrer">[Paper Note] Universal Transformers, Mostafa Dehghani+, ICLR'19</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2612" target="_blank" rel="noopener noreferrer">[Paper Note] Looped Transformers for Length Generalization, Ying Fan+, ICLR'25</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2611" target="_blank" rel="noopener noreferrer">[Paper Note] Looped Transformers are Better at Learning Learning Algorithms, Liu Yang+, ICLR'24</a>
+ </p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/reza_byt/status/1980335836542677210?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Text-to-LoRA: Instant Transformer Adaption, Rujikorn Charakorn+, ICML'25, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.06105</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2033</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, PEFT(Adaptor/LoRA), ICML, memory, One-Line Notes, Initial Impression Notes, Test Time Training (TTT)</tags>
+<repo-issue-date>2025-06-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.06105
+# Authors
+  - Rujikorn Charakorn
+  - Edoardo Cetin
+  - Yujin Tang
+  - Robert Tjarko Lange
+# Abstract
+  - While Foundation Models provide a general tool for rapid content creation, they regularly require task-specific adaptation. Traditionally, this exercise involves careful curation of datasets and repeated fine-tuning of the underlying model. Fine-tuning techniques enable practitioners to adapt foundation models for many new applications but require expensive and lengthy training while being notably sensitive to hyperparameter choices. To overcome these limitations, we introduce Text-to-LoRA (T2L), a model capable of adapting large language models (LLMs) on the fly solely based on a natural language description of the target task. T2L is a hypernetwork trained to construct LoRAs in a single inexpensive forward pass. After training T2L on a suite of 9 pre-trained LoRA adapters (GSM8K, Arc, etc.), we show that the ad-hoc reconstructed LoRA instances match the performance of task-specific adapters across the corresponding test sets. Furthermore, T2L can compress hundreds of LoRA instances and zero-shot generalize to entirely unseen tasks. This approach provides a significant step towards democratizing the specialization of foundation models and enables language-based adaptation with minimal compute requirements.   Our code is available at https://github.com/SakanaAI/text-to-lora
+# Translation (by gpt-4o-mini)
+- Foundation Modelsは迅速なコンテンツ作成のための一般的なツールを提供しますが、タスク特有の適応が定期的に必要です。従来、このプロセスはデータセットの慎重なキュレーションと基盤モデルの繰り返しのファインチューニングを伴います。ファインチューニング技術は、実務者が基盤モデルを多くの新しいアプリケーションに適応させることを可能にしますが、高価で長時間のトレーニングを必要とし、ハイパーパラメータの選択に対して非常に敏感です。これらの制限を克服するために、私たちはText-to-LoRA（T2L）を導入します。これは、ターゲットタスクの自然言語による説明に基づいて、大規模言語モデル（LLMs）を即座に適応させることができるモデルです。T2Lは、LoRAを単一の安価なフォワードパスで構築するために訓練されたハイパーネットワークです。T2Lを9つの事前訓練されたLoRAアダプター（GSM8K、Arcなど）のスイートで訓練した後、アドホックに再構築されたLoRAインスタンスが、対応するテストセット全体でタスク特有のアダプターのパフォーマンスに匹敵することを示します。さらに、T2Lは数百のLoRAインスタンスを圧縮し、全く新しいタスクに対してゼロショットで一般化することができます。このアプローチは、基盤モデルの専門化を民主化するための重要なステップを提供し、最小限の計算要件での言語ベースの適応を可能にします。私たちのコードは、https://github.com/SakanaAI/text-to-lora で入手可能です。
+# Summary (by gpt-4o-mini)
+- Text-to-LoRA（T2L）は、自然言語による説明に基づいて大規模言語モデル（LLMs）を迅速に適応させる手法で、従来のファインチューニングの高コストと時間を克服します。T2Lは、LoRAを安価なフォワードパスで構築するハイパーネットワークを使用し、タスク特有のアダプターと同等のパフォーマンスを示します。また、数百のLoRAインスタンスを圧縮し、新しいタスクに対してゼロショットで一般化可能です。このアプローチは、基盤モデルの専門化を民主化し、計算要件を最小限に抑えた言語ベースの適応を実現します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/roberttlange/status/1933074366603919638?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>な、なるほど、こんな手が…！</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=zWskCdu3QA" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=zWskCdu3QA</a>
+{% endraw %}
+
+</p><p>ポイント解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/2030085866069340638?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>Text-to-LoRAの目的は、instructionをメモリの内部パラメータに埋め込み、モデルにon-the-flyで新たな挙動を身につけさせること。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A Survey on the Memory Mechanism of Large Language Model based Agents, Zeyu Zhang+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2404.13501</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2401</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, memory</tags>
+<repo-issue-date>2025-08-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2404.13501
+# Authors
+  - Zeyu Zhang
+  - Xiaohe Bo
+  - Chen Ma
+  - Rui Li
+  - Xu Chen
+  - Quanyu Dai
+  - Jieming Zhu
+  - Zhenhua Dong
+  - Ji-Rong Wen
+# Abstract
+  - Large language model (LLM) based agents have recently attracted much attention from the research and industry communities. Compared with original LLMs, LLM-based agents are featured in their self-evolving capability, which is the basis for solving real-world problems that need long-term and complex agent-environment interactions. The key component to support agent-environment interactions is the memory of the agents. While previous studies have proposed many promising memory mechanisms, they are scattered in different papers, and there lacks a systematical review to summarize and compare these works from a holistic perspective, failing to abstract common and effective designing patterns for inspiring future studies. To bridge this gap, in this paper, we propose a comprehensive survey on the memory mechanism of LLM-based agents. In specific, we first discuss ''what is'' and ''why do we need'' the memory in LLM-based agents. Then, we systematically review previous studies on how to design and evaluate the memory module. In addition, we also present many agent applications, where the memory module plays an important role. At last, we analyze the limitations of existing work and show important future directions. To keep up with the latest advances in this field, we create a repository at \url{https://github.com/nuster1128/LLM_Agent_Memory_Survey}.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）に基づくエージェントは、最近、研究および産業界から多くの注目を集めている。従来のLLMと比較して、LLMベースのエージェントは自己進化能力を特徴としており、これは長期的かつ複雑なエージェントと環境の相互作用を必要とする現実の問題を解決するための基盤となる。エージェントと環境の相互作用を支える重要な要素は、エージェントのメモリである。これまでの研究では、多くの有望なメモリメカニズムが提案されているが、それらは異なる論文に散在しており、これらの研究を包括的な視点から要約し比較する体系的なレビューが欠けているため、将来の研究を刺激するための共通かつ効果的な設計パターンを抽象化することができていない。このギャップを埋めるために、本論文ではLLMベースのエージェントのメモリメカニズムに関する包括的な調査を提案する。具体的には、まず「メモリとは何か」と「なぜLLMベースのエージェントにメモリが必要なのか」について議論する。次に、メモリモジュールの設計と評価に関する以前の研究を体系的にレビューする。さらに、メモリモジュールが重要な役割を果たす多くのエージェントアプリケーションも紹介する。最後に、既存の研究の限界を分析し、重要な将来の方向性を示す。この分野の最新の進展に追いつくために、私たちはリポジトリを作成した（\url{https://github.com/nuster1128/LLM_Agent_Memory_Survey}）。
+# Summary (by gpt-4o-mini)
+- LLMベースのエージェントのメモリメカニズムに関する包括的な調査を提案。メモリの重要性を論じ、過去の研究を体系的にレビューし、エージェントアプリケーションでの役割を紹介。既存研究の限界を分析し、将来の研究方向性を示す。リポジトリも作成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1954797669957968169?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>HY-WU （Part I）: An Extensible Functional Neural Memory Framework and An Instantiation in Text-Guided Image Editing, Tencent HY Team, 2026.03</title>
+<original-paper-blog-link>https://tencent-hy-wu.github.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4805</repo-issue-link>
+<tags>ComputerVision, Personalization, PEFT(Adaptor/LoRA), 2D (Image), memory, Editing, One-Line Notes, ImageSynthesis, Adaptive</tags>
+<repo-issue-date>2026-03-06</repo-issue-date>
+<issue-body>https://tencent-hy-wu.github.io/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tencenthunyuan/status/2029644529578692723?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>source imageとpromptから、frozenされたモデルに対するadapter weightを（finetuningなしで）動的に生成し、インスタンス固有のパラメータを用いることでinstance specificな演算を実現する<br><br><img src="https://github.com/user-attachments/assets/80101cd9-4b9e-40c9-b8bc-2ef01b166f9f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4764" target="_blank" rel="noopener noreferrer">[Paper Note] Doc-to-LoRA: Learning to Instantly Internalize Contexts, Rujikorn Charakorn+, arXiv'26, 2026.02</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2033" target="_blank" rel="noopener noreferrer">[Paper Note] Text-to-LoRA: Instant Transformer Adaption, Rujikorn Charakorn+, ICML'25, 2025.06</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] PlugMem: A Task-Agnostic Plugin Memory Module for LLM Agents, Yang+, 2026.02</title>
+<original-paper-blog-link>https://empathyang.github.io/files/PlugMem.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4699</repo-issue-link>
+<tags>NLP, AIAgents, memory</tags>
+<repo-issue-date>2026-02-24</repo-issue-date>
+<issue-body>https://empathyang.github.io/files/PlugMem.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/empathyang/status/2025956757319594428?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ENGRAM, EvolvingLMMs-Lab, 2026.02</title>
+<original-paper-blog-link>https://github.com/EvolvingLMMs-Lab/engram</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4513</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Privacy, MCP, memory</tags>
+<repo-issue-date>2026-02-12</repo-issue-date>
+<issue-body>https://github.com/EvolvingLMMs-Lab/engram</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/choiszt/status/2021497850111410488?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>MCPに対応しているAI Agentであれば互換性がある暗号化されたストレージの実装なようで、サードパーティのストレージにデータを預けなくてもローカルのストレージでLLMに対して知識を提供可能な模様。</p><p>最近DeepSeekが提案したEngramとは異なるので注意:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4183" target="_blank" rel="noopener noreferrer">[Paper Note] Conditional Memory via Scalable Lookup: A New Axis of Sparsity for Large Language Models, Xin Cheng+, arXiv'26, 2026.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>🍫 Local Cocoa: Your Personal AI Assistant, Fully Local 💻, synvo-ai, 2026.01</title>
+<original-paper-blog-link>https://github.com/synvo-ai/Local-Cocoa</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4144</repo-issue-link>
+<tags>ComputerVision, Tools, NLP, LanguageModel, AIAgents, MultiModal, Selected Papers/Blogs, ContextEngineering, memory</tags>
+<repo-issue-date>2026-01-09</repo-issue-date>
+<issue-body>https://github.com/synvo-ai/Local-Cocoa</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2008913145218359671?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Titans + MIRAS: Helping AI have long-term memory, Google Research, 2025.12</title>
+<original-paper-blog-link>https://research.google/blog/titans-miras-helping-ai-have-long-term-memory/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3905</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Blog, Test-Time Scaling, memory</tags>
+<repo-issue-date>2025-12-07</repo-issue-date>
+<issue-body>https://research.google/blog/titans-miras-helping-ai-have-long-term-memory/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1997227157748060277?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3904" target="_blank" rel="noopener noreferrer">[Paper Note] It's All Connected: A Journey Through Test-Time Memorization, Attentional Bias, Retention, and Online Optimization, Ali Behrouz+, arXiv'25, 2025.04</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3587" target="_blank" rel="noopener noreferrer">[Paper Note] Titans: Learning to Memorize at Test Time, Ali Behrouz+, NeurIPS'25, 2024.12</a>
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theturingpost/status/1997808277116338266?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lioronai/status/2012555843087073541?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>supermemory, supermemoryai, 2025.10</title>
+<original-paper-blog-link>https://github.com/supermemoryai/supermemory</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3240</repo-issue-link>
+<tags>NLP, AIAgents, Personalization, Repository, API, SoftwareEngineering, memory</tags>
+<repo-issue-date>2025-10-13</repo-issue-date>
+<issue-body>https://github.com/supermemoryai/supermemory</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Building Brain-Like Memory for AI | LLM Agent Memory Systems, Adam Lucek, 2025.01</title>
+<original-paper-blog-link>https://youtu.be/VKPngyO0iKg</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3238</repo-issue-link>
+<tags>Tutorial, NLP, AIAgents, Video, memory</tags>
+<repo-issue-date>2025-10-13</repo-issue-date>
+<issue-body>https://youtu.be/VKPngyO0iKg</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/webbigdata/status/1977532507353645142?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>

@@ -1,0 +1,1830 @@
+<paper-entry>
+<title>[Paper Note] R2E-Gym: Procedural Environments and Hybrid Verifiers for Scaling Open-Weights SWE Agents, Naman Jain+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.07164</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4594</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, Coding, Test-Time Scaling, SoftwareEngineering, COLM, PostTraining, Verification, KeyPoint Notes, Scalability, Hybrid, Environment</tags>
+<repo-issue-date>2026-02-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.07164
+# Authors
+  - Naman Jain
+  - Jaskirat Singh
+  - Manish Shetty
+  - Liang Zheng
+  - Koushik Sen
+  - Ion Stoica
+# Abstract
+  - Improving open-source models on real-world SWE tasks (solving GITHUB issues) faces two key challenges: 1) scalable curation of execution environments to train these models, and, 2) optimal scaling of test-time compute. We introduce AgentGym, the largest procedurally-curated executable gym environment for training real-world SWE-agents, consisting of more than 8.7K tasks. AgentGym is powered by two main contributions: 1) SYNGEN: a synthetic data curation recipe that enables scalable curation of executable environments using test-generation and back-translation directly from commits, thereby reducing reliance on human-written issues or unit tests. We show that this enables more scalable training leading to pass@1 performance of 34.4% on SWE-Bench Verified benchmark with our 32B model. 2) Hybrid Test-time Scaling: we provide an in-depth analysis of two test-time scaling axes; execution-based and execution-free verifiers, demonstrating that they exhibit complementary strengths and limitations. Test-based verifiers suffer from low distinguishability, while execution-free verifiers are biased and often rely on stylistic features. Surprisingly, we find that while each approach individually saturates around 42-43%, significantly higher gains can be obtained by leveraging their complementary strengths. Overall, our approach achieves 51% on the SWE-Bench Verified benchmark, reflecting a new state-of-the-art for open-weight SWE-agents and for the first time showing competitive performance with proprietary models such as o1, o1-preview and sonnet-3.5-v2 (with tools). We will open-source our environments, models, and agent trajectories.
+# Translation (by gpt-5-nano)
+- 現実世界のSWEタスク（GitHubのIssueを解決すること）に対するオープンソースモデルの改善には、2つの主要な課題がある。1) これらのモデルを訓練するための実行環境のスケーラブルなキュレーション、2) テスト時の計算資源の最適なスケーリング。私たちはAgentGymを紹介する。AgentGymは現実世界のSWEエージェントを訓練するための、手続き的にキュレーションされた最大規模の実行可能ジム環境であり、8,700を超えるタスクから構成されている。AgentGymは二つの主要な貢献によって支えられている。1) SYNGEN：コミットから直接テスト生成とバック翻訳を用いて実行可能な環境をスケーラブルにキュレーションする合成データキュレーションのレシピであり、人間作成のIssueやユニットテストへの依存を減らす。32Bパラメータのモデルを用いたSWE-Bench Verifiedベンチマークでpass@1のパフォーマンスを34.4%に引き上げる、よりスケーラブルな訓練を可能にすることを示す。2) ハイブリッド・テスト時スケーリング：テスト時のスケーリング軸として、実行ベースの検証機と実行不要の検証機の2つを詳しく分析し、それらが補完的な強みと限界を示すことを実証する。テストベースの検証機は識別性が低いという問題を抱え、実行不要の検証機は偏りを持ち、しばしばスタイル的特徴に依存する。驚くべきことに、各アプローチは個別には約42-43%で飽和する一方、それらの補完的な強みを活用することでかなり高い成果が得られることが分かった。総じて、我々のアプローチはSWE-Bench Verifiedベンチマークで51%を達成し、オープンウェイトSWEエージェントの新しい最先端を示すとともに、o1、o1-preview、sonnet-3.5-v2（ツール付き）などのプロプライエタリモデルと競合する性能を初めて示した。今後、私たちは環境、モデル、およびエージェントの軌跡をオープンソース化する。
+# Summary (by gpt-4o-mini)
+- AgentGymは、GitHubのIssue解決を目的としたSWEタスクのための手続き的にキュレーションされた大規模な実行可能ジム環境で、8,700以上のタスクから構成されています。主な貢献は、合成データキュレーションの手法SYNGENによるスケーラブルな環境構築と、実行ベースおよび実行不要の検証機を用いたハイブリッド・テスト時スケーリングです。これにより、SWE-Bench Verifiedベンチマークで51%のパフォーマンスを達成し、従来のプロプライエタリモデルと競合する能力を示しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/natolambert/status/2023549545045467615?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=7evvwwdo3z#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=7evvwwdo3z#discussion</a>
+{% endraw %}
+
+</p><p>従来のSWE関連のデータセットでは、人間が記述したissueやtestが必要でscalabilityに課題があったが、すでに存在するテストコードからFail→Passとなるコミットを同定し、コミットの情報を逆翻訳することによってProblem statementを生成する。従来手法ではIssueの記述をそのまま使っていたが、スケーラブルではないので異なるアプローチが求められる。このため、本研究では以下二つの点を考慮し<br>- コミットのコード編集履歴のみではgenericな問題が生成されてしまう<br>- 人間が作成するIssueにはしばしば失敗するテストと実行トレースが付随することに着目し<br><br>Failedしたテストのテストコードと実行トレースとpromptに含めてよりspecificなProblem statementを生成するアプローチをとる。<br><br>また、SWEエージェントが出力するパッチの中からより良いパッチをランキング付けするためのtest-time scaling手法も提案している。具体的には、task description D, agent trajectory T, Patch Pが与えられた時にPatch PのスコアSを得る問題として定式化できる。このスコアを得る方法として、execution basedなverifierとexecution freeなverifierの2種類を分析し、最終的に両者のハイブリッドによってより良いtest-time scalingのgainが得られることを示している。<br><br>具体的には、前者はtest codeを自動生成するエージェントを学習し、taskに必要な機能に関するテストと、taskを解くための実装によって既存の機能が壊れていないかに関するテスト（回帰テスト）の2種類によって構成され、回帰テストのスコアが最も良いパッチに対して、テストがどれだけパスしたかによってスコアリングをする。<br>後者については、D, T, Pが与えられた時に、各Trajectory tが正しいものがどうかを2値分類するverifierを学習し、全体のtrajectoryの数に対するyesの割合によってスコアを定義する。<br><br>これらのverifierを分析した結果、双方共にtest-time scalingに対してgainを得られることがわかったが、前者はパッチの正しさに対して直接的なシグナルを得られるが、パッチそのものの質を識別する能力が低く、後者はパッチの質の識別力は高いが、エージェントの思考によるバイアスが課題として存在することがわかった。これより、両者は補完的な関係にあると考えられ、両者をハイブリッドすることによって、より良好なtest-time scalingによるgainを得ることが可能なことが示されている。興味深いのは、editing agent (i.e., パッチを生成するエージェント）のロールアウト数をスケープすることでも性能が改善するが、testing agentのロールアウト数をスケールすることで、editing agentのロールアウトを単にスケールするよりもより効率的なスケーリング性能を得られることである。<br><br><img src="https://github.com/user-attachments/assets/0f4d38d1-7be1-4e2b-9dc0-d4224a93350e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Efficient Construction of Model Family through Progressive Training Using Model Expansion, Kazuki Yano+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.00623</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3925</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, COLM, SpeculativeDecoding, KeyPoint Notes</tags>
+<repo-issue-date>2025-12-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.00623
+# Authors
+  - Kazuki Yano
+  - Sho Takase
+  - Sosuke Kobayashi
+  - Shun Kiyono
+  - Jun Suzuki
+# Abstract
+  - As Large Language Models (LLMs) gain widespread practical application, providing the model family of different parameter sizes has become standard practice to address diverse computational requirements. Conventionally, each model in a family is trained independently, resulting in computational costs that scale additively with the number of models. We propose an efficient method for constructing the model family through progressive training, where smaller models are incrementally expanded to larger sizes to create a complete model family. Through extensive experiments with a model family ranging from 1B to 8B parameters, we demonstrate that our method reduces computational costs by approximately 25% while maintaining comparable performance to independently trained models. Furthermore, by strategically adjusting maximum learning rates based on model size, our method outperforms the independent training across various metrics. Beyond performance gains, our approach offers an additional advantage: models in our family tend to yield more consistent behavior across different model sizes.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）が広く実用化される中、異なる計算要件に対応するために、異なるパラメータサイズのモデルファミリーを提供することが標準的な慣行となっています。従来、ファミリー内の各モデルは独立して訓練されており、その結果、モデルの数に応じて計算コストが加算的に増加します。本研究では、プログレッシブトレーニングを通じてモデルファミリーを構築する効率的な方法を提案します。この方法では、小さなモデルを段階的に拡張して大きなサイズにし、完全なモデルファミリーを作成します。1Bから8Bパラメータまでのモデルファミリーを用いた広範な実験を通じて、提案手法が計算コストを約25%削減し、独立して訓練されたモデルと同等の性能を維持することを示しました。さらに、モデルサイズに基づいて最大学習率を戦略的に調整することで、提案手法はさまざまな指標において独立訓練を上回る結果を示しました。性能向上に加えて、我々のアプローチは追加の利点を提供します。それは、我々のファミリー内のモデルが異なるモデルサイズ間でより一貫した挙動を示す傾向があることです。
+# Summary (by gpt-4o-mini)
+- プログレッシブトレーニングを用いて、異なるパラメータサイズの大規模言語モデル（LLMs）ファミリーを効率的に構築する方法を提案。これにより、計算コストを約25%削減しつつ、独立訓練モデルと同等の性能を維持。さらに、モデルサイズに応じた最大学習率の調整により、性能向上と一貫した挙動を実現。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=fuBrcTH8NM#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=fuBrcTH8NM#discussion</a>
+{% endraw %}
+
+</p><p>LLMのモデルファミリーを構築する際に、従来は独立して異なるサイズのモデルをスクラッチから学習する必要があるが、小規模なモデルを学習した後、当該モデルをreusableモデルとみなしbert2BERTを用いることでモデルサイズを順次拡張していくことで、より小さな計算コストで一連のモデルファミリーを学習できるprogressive trainingを提案（たとえば実験では1,2,4,8Bのモデルファミリーを学習する際の計算コストが約25%削減）。また、モデルサイズが大きくなればなるほどモデルは学習率に対してsensitiveになることが先行研究で報告されており、モデルサイズに応じて最大学習率を線形に減少させるようなスケジューリングをすることで、独立に学習した場合よりも最終的に高い性能を獲得しているだけでなく、モデルファミリー間の挙動の一貫性も向上している。<br><br>bert2BERTでは2種類の拡張手法が提案されているが、Function Preserving Initialization (FPI; 同じinputに対して同じoutputが出力されるようにwidth, depthを拡張する（簡単な操作で実現できる。bert2BERT Figure4を参照）)を採用している。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3927" target="_blank" rel="noopener noreferrer">[Paper Note] bert2BERT: Towards Reusable Pretrained Language Models, Cheng Chen+, ACL'22, 2021.10</a>
+<br><br>興味深いのは独立して学習した場合よりもモデルファミリーの挙動が類似している点であり、これはspeculative decodingのacceptance rate向上に寄与しデコーディングの効率化に繋がるという明確な利点がある。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Hidden in plain sight: VLMs overlook their visual representations, Stephanie Fu+, COLM'25 Outstanding Papers, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.08008</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3231</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.08008
+# Authors
+  - Stephanie Fu
+  - Tyler Bonnen
+  - Devin Guillory
+  - Trevor Darrell
+# Abstract
+  - Language provides a natural interface to specify and evaluate performance on visual tasks. To realize this possibility, vision language models (VLMs) must successfully integrate visual and linguistic information. Our work compares VLMs to a direct readout of their visual encoders to understand their ability to integrate across these modalities. Across a series of vision-centric benchmarks (e.g., depth estimation, correspondence), we find that VLMs perform substantially worse than their visual encoders, dropping to near-chance performance. We investigate these results through a series of analyses across the entire VLM: namely 1) the degradation of vision representations, 2) brittleness to task prompt, and 3) the language model's role in solving the task. We find that the bottleneck in performing these vision-centric tasks lies in this third category; VLMs are not effectively using visual information easily accessible throughout the entire model, and they inherit the language priors present in the LLM. Our work helps diagnose the failure modes of open-source VLMs, and presents a series of evaluations useful for future investigations into visual understanding within VLMs.
+# Translation (by gpt-4o-mini)
+- 言語は視覚タスクの性能を指定し評価するための自然なインターフェースを提供します。この可能性を実現するために、視覚言語モデル（VLM）は視覚情報と言語情報を成功裏に統合する必要があります。本研究では、VLMとその視覚エンコーダーの直接的な出力を比較し、これらのモダリティ間の統合能力を理解します。一連の視覚中心のベンチマーク（例：深度推定、対応付け）を通じて、VLMは視覚エンコーダーに比べて著しくパフォーマンスが低下し、ほぼ偶然のパフォーマンスにまで落ち込むことがわかりました。これらの結果を、VLM全体にわたる一連の分析を通じて調査します。具体的には、1) 視覚表現の劣化、2) タスクプロンプトに対する脆弱性、3) タスク解決における言語モデルの役割の3つのカテゴリです。視覚中心のタスクを実行する際のボトルネックはこの3番目のカテゴリにあることがわかりました。VLMは、モデル全体で容易にアクセス可能な視覚情報を効果的に利用しておらず、LLMに存在する言語の先入観を引き継いでいます。本研究は、オープンソースのVLMの失敗モードを診断する手助けをし、VLM内の視覚理解に関する今後の調査に役立つ一連の評価を提示します。
+# Summary (by gpt-4o-mini)
+- VLMは視覚情報と言語情報を統合するが、視覚タスクでのパフォーマンスが低下し、ほぼ偶然の結果に至ることが判明。視覚表現の劣化、タスクプロンプトへの脆弱性、言語モデルの役割の3つの要因がボトルネックであり、VLMは視覚情報を効果的に活用できていない。研究はVLMの失敗モードを診断し、視覚理解に関する評価を提供。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=qQb1JLrwol#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=qQb1JLrwol#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/colm_conf/status/1975549410085089625?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Don't lie to your friends: Learning what you know from collaborative   self-play, Jacob Eisenstein+, COLM'25 Outstanding Papers, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.14481</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3230</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.14481
+# Authors
+  - Jacob Eisenstein
+  - Reza Aghajani
+  - Adam Fisch
+  - Dheeru Dua
+  - Fantine Huot
+  - Mirella Lapata
+  - Vicky Zayats
+  - Jonathan Berant
+# Abstract
+  - To be helpful assistants, AI agents must be aware of their own capabilities and limitations. This includes knowing when to answer from parametric knowledge versus using tools, when to trust tool outputs, and when to abstain or hedge. Such capabilities are hard to teach through supervised fine-tuning because they require constructing examples that reflect the agent's specific capabilities. We therefore propose a radically new approach to teaching agents what they know: \emph{collaborative self-play}. We construct multi-agent collaborations in which the group is rewarded for collectively arriving at correct answers. The desired meta-knowledge emerges from the incentives built into the structure of the interaction. We focus on small societies of agents that have access to heterogeneous tools (corpus-specific retrieval), and therefore must collaborate to maximize their success while minimizing their effort. Experiments show that group-level rewards for multi-agent communities can induce policies that \emph{transfer} to improve tool use and selective prediction in settings where individual agents are deployed in isolation.
+# Translation (by gpt-4o-mini)
+- AIエージェントが有用なアシスタントとなるためには、自身の能力と限界を認識する必要があります。これには、パラメトリックな知識から回答するべき時とツールを使用するべき時、ツールの出力を信頼するべき時、そして控えるべき時や慎重になるべき時を知ることが含まれます。このような能力は、エージェントの特定の能力を反映した例を構築する必要があるため、監視付きファインチューニングを通じて教えるのは難しいです。そこで、私たちはエージェントに自分が知っていることを教えるための根本的に新しいアプローチである「協調的自己プレイ」を提案します。私たちは、グループが正しい答えに共同で到達することで報酬を得るマルチエージェントの協力を構築します。望ましいメタ知識は、相互作用の構造に組み込まれたインセンティブから生じます。私たちは、異種のツール（コーパス特有のリトリーバル）にアクセスできる小規模なエージェントの社会に焦点を当て、成功を最大化しつつ努力を最小化するために協力しなければなりません。実験により、マルチエージェントコミュニティに対するグループレベルの報酬が、個々のエージェントが孤立して展開される設定においてツールの使用と選択的予測を改善するポリシーを「転送」することができることが示されました。
+# Summary (by gpt-4o-mini)
+- AIエージェントが有用なアシスタントになるためには、自身の能力と限界を理解する必要がある。これを実現するために「協調的自己プレイ」という新しいアプローチを提案し、マルチエージェントが共同で正しい答えに到達することで報酬を得る仕組みを構築。実験により、グループレベルの報酬が個々のエージェントのツール使用と予測の改善に寄与することが示された。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://arxiv.org/abs/2503.14481" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2503.14481</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/colm_conf/status/1975549407409152163?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Fast Controlled Generation from Language Models with Adaptive Weighted   Rejection Sampling, Benjamin Lipkin+, COLM'25 Outstanding Papers, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.05410</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3229</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.05410
+# Authors
+  - Benjamin Lipkin
+  - Benjamin LeBrun
+  - Jacob Hoover Vigly
+  - João Loula
+  - David R. MacIver
+  - Li Du
+  - Jason Eisner
+  - Ryan Cotterell
+  - Vikash Mansinghka
+  - Timothy J. O'Donnell
+  - Alexander K. Lew
+  - Tim Vieira
+# Abstract
+  - The dominant approach to generating from language models subject to some constraint is locally constrained decoding (LCD), incrementally sampling tokens at each time step such that the constraint is never violated. Typically, this is achieved through token masking: looping over the vocabulary and excluding non-conforming tokens. There are two important problems with this approach. (i) Evaluating the constraint on every token can be prohibitively expensive -- LM vocabularies often exceed $100,000$ tokens. (ii) LCD can distort the global distribution over strings, sampling tokens based only on local information, even if they lead down dead-end paths. This work introduces a new algorithm that addresses both these problems. First, to avoid evaluating a constraint on the full vocabulary at each step of generation, we propose an adaptive rejection sampling algorithm that typically requires orders of magnitude fewer constraint evaluations. Second, we show how this algorithm can be extended to produce low-variance, unbiased estimates of importance weights at a very small additional cost -- estimates that can be soundly used within previously proposed sequential Monte Carlo algorithms to correct for the myopic behavior of local constraint enforcement. Through extensive empirical evaluation in text-to-SQL, molecular synthesis, goal inference, pattern matching, and JSON domains, we show that our approach is superior to state-of-the-art baselines, supporting a broader class of constraints and improving both runtime and performance. Additional theoretical and empirical analyses show that our method's runtime efficiency is driven by its dynamic use of computation, scaling with the divergence between the unconstrained and constrained LM, and as a consequence, runtime improvements are greater for better models.
+# Translation (by gpt-4o-mini)
+- 言語モデルから制約に従って生成するための主なアプローチは、局所制約デコーディング（LCD）であり、各タイムステップでトークンを逐次的にサンプリングし、制約が決して違反されないようにするものである。通常、これはトークンマスキングを通じて達成される：語彙をループし、適合しないトークンを除外する。しかし、このアプローチには二つの重要な問題がある。(i) 各トークンに対して制約を評価することは非常に高コストになる可能性がある - 言語モデルの語彙はしばしば100,000トークンを超える。 (ii) LCDは文字列全体の分布を歪める可能性があり、ローカル情報のみに基づいてトークンをサンプリングするため、行き止まりのパスに導くことがあっても、全体の文脈を無視することになる。本研究では、これら二つの問題に対処する新しいアルゴリズムを紹介する。まず、生成の各ステップで全語彙に対して制約を評価するのを避けるために、通常は桁違いに少ない制約評価を必要とする適応的拒絶サンプリングアルゴリズムを提案する。次に、このアルゴリズムを拡張して、非常に小さな追加コストで重要度重みの低分散でバイアスのない推定を生成する方法を示す - これは、局所的な制約の強制による短期的な行動を修正するために、以前に提案された逐次モンテカルロアルゴリズム内で確実に使用できる推定値である。テキストからSQL、分子合成、目標推論、パターンマッチング、JSONドメインにおける広範な実証評価を通じて、我々のアプローチが最先端のベースラインを上回り、より広範な制約のクラスをサポートし、実行時間とパフォーマンスの両方を改善することを示す。追加の理論的および実証的分析は、我々の手法の実行効率が計算の動的な使用によって推進されており、制約のない言語モデルと制約のある言語モデルの間の乖離にスケーリングし、その結果、より良いモデルに対して実行時間の改善が大きくなることを示している。
+# Summary (by gpt-4o-mini)
+- 本研究では、言語モデルから制約に従って生成するための新しいアルゴリズムを提案。従来の局所制約デコーディング（LCD）の問題点である高コストな制約評価と文脈無視を解決するため、適応的拒絶サンプリングを用いて制約評価を効率化。さらに、低分散でバイアスのない推定を生成し、短期的な行動を修正。実証評価により、提案手法が最先端のベースラインを上回り、実行時間とパフォーマンスの両方を改善することを示した。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=3BmPSFAdq3#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=3BmPSFAdq3#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/colm_conf/status/1975549400568242623?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ReasonIR: Training Retrievers for Reasoning Tasks, Rulin Shao+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.20595</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3175</repo-issue-link>
+<tags>Embeddings, InformationRetrieval, Transformer, SyntheticData, Reasoning, Test-Time Scaling, COLM, read-later, Selected Papers/Blogs, Encoder</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.20595
+# Authors
+  - Rulin Shao
+  - Rui Qiao
+  - Varsha Kishore
+  - Niklas Muennighoff
+  - Xi Victoria Lin
+  - Daniela Rus
+  - Bryan Kian Hsiang Low
+  - Sewon Min
+  - Wen-tau Yih
+  - Pang Wei Koh
+  - Luke Zettlemoyer
+# Abstract
+  - We present ReasonIR-8B, the first retriever specifically trained for general reasoning tasks. Existing retrievers have shown limited gains on reasoning tasks, in part because existing training datasets focus on short factual queries tied to documents that straightforwardly answer them. We develop a synthetic data generation pipeline that, for each document, our pipeline creates a challenging and relevant query, along with a plausibly related but ultimately unhelpful hard negative. By training on a mixture of our synthetic data and existing public data, ReasonIR-8B achieves a new state-of-the-art of 29.9 nDCG@10 without reranker and 36.9 nDCG@10 with reranker on BRIGHT, a widely-used reasoning-intensive information retrieval (IR) benchmark. When applied to RAG tasks, ReasonIR-8B improves MMLU and GPQA performance by 6.4% and 22.6% respectively, relative to the closed-book baseline, outperforming other retrievers and search engines. In addition, ReasonIR-8B uses test-time compute more effectively: on BRIGHT, its performance consistently increases with longer and more information-rich rewritten queries; it continues to outperform other retrievers when combined with an LLM reranker. Our training recipe is general and can be easily extended to future LLMs; to this end, we open-source our code, data, and model.
+# Translation (by gpt-4o-mini)
+- 私たちは、一般的な推論タスクのために特別に訓練された最初のリトリーバーであるReasonIR-8Bを提案します。既存のリトリーバーは、推論タスクにおいて限られた成果しか上げておらず、その一因は既存のトレーニングデータセットが、文書に直接的に答える短い事実に基づくクエリに焦点を当てているためです。私たちは、各文書に対して挑戦的で関連性のあるクエリを生成し、さらに関連性はあるが最終的には役に立たないハードネガティブを作成する合成データ生成パイプラインを開発しました。合成データと既存の公開データの混合で訓練することにより、ReasonIR-8Bは、リランカーなしで29.9 nDCG@10、リランカーありで36.9 nDCG@10という新しい最先端の成果をBRIGHTという広く使用されている推論集約型情報検索（IR）ベンチマークで達成しました。RAGタスクに適用した場合、ReasonIR-8Bは、クローズドブックベースラインに対してMMLUとGPQAのパフォーマンスをそれぞれ6.4%と22.6%向上させ、他のリトリーバーや検索エンジンを上回ります。さらに、ReasonIR-8Bはテスト時の計算をより効果的に利用します。BRIGHTでは、情報が豊富で長い書き直しクエリに対してパフォーマンスが一貫して向上し、LLMリランカーと組み合わせても他のリトリーバーを上回ります。私たちのトレーニングレシピは一般的であり、将来のLLMに簡単に拡張できます。この目的のために、私たちはコード、データ、モデルをオープンソース化します。
+# Summary (by gpt-4o-mini)
+- ReasonIR-8Bは、一般的な推論タスク向けに特別に訓練された初のリトリーバーであり、合成データ生成パイプラインを用いて挑戦的なクエリとハードネガティブを作成。これにより、BRIGHTベンチマークで新たな最先端成果を達成し、RAGタスクでも他のリトリーバーを上回る性能を示す。トレーニングレシピは一般的で、将来のLLMへの拡張が容易である。コード、データ、モデルはオープンソース化されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/1975773504307142790?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Llama3.1-8Bをbidirectional encoderに変換してpost-trainingしている。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3178" target="_blank" rel="noopener noreferrer">[Paper Note] Generative Representational Instruction Tuning, Niklas Muennighoff+, ICLR'25, 2024.02</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Shared Global and Local Geometry of Language Model Embeddings, Andrew Lee+, COLM'25 Outstanding Paper, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.21073</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3172</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.21073
+# Authors
+  - Andrew Lee
+  - Melanie Weber
+  - Fernanda Viégas
+  - Martin Wattenberg
+# Abstract
+  - Researchers have recently suggested that models share common representations. In our work, we find numerous geometric similarities across the token embeddings of large language models. First, we find ``global'' similarities: token embeddings often share similar relative orientations. Next, we characterize local geometry in two ways: (1) by using Locally Linear Embeddings, and (2) by defining a simple measure for the intrinsic dimension of each embedding. Both characterizations allow us to find local similarities across token embeddings. Additionally, our intrinsic dimension demonstrates that embeddings lie on a lower dimensional manifold, and that tokens with lower intrinsic dimensions often have semantically coherent clusters, while those with higher intrinsic dimensions do not. Based on our findings, we introduce EMB2EMB, a simple application to linearly transform steering vectors from one language model to another, despite the two models having different dimensions.
+# Translation (by gpt-4o-mini)
+- 研究者たちは最近、モデルが共通の表現を共有することを提案しています。本研究では、大規模言語モデルのトークン埋め込みにおける多くの幾何学的類似性を発見しました。まず、「グローバル」な類似性を見つけました：トークン埋め込みはしばしば類似した相対的な方向を共有します。次に、局所的な幾何学を二つの方法で特徴づけます：(1) 局所線形埋め込みを使用し、(2) 各埋め込みの内因次元のための単純な尺度を定義します。これらの特徴づけにより、トークン埋め込み間の局所的な類似性を見つけることができます。さらに、私たちの内因次元は、埋め込みが低次元の多様体上に存在することを示し、内因次元が低いトークンはしばしば意味的に一貫したクラスターを持ち、内因次元が高いトークンはそうではないことがわかりました。私たちの発見に基づいて、異なる次元を持つ二つの言語モデル間でステアリングベクトルを線形変換するためのシンプルなアプリケーションであるEMB2EMBを導入します。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルのトークン埋め込みにおける幾何学的類似性を発見。グローバルな類似性として、トークン埋め込みが類似した方向を持つことを確認。局所的な幾何学を局所線形埋め込みと内因次元の尺度で特徴づけ、局所的な類似性を特定。内因次元が低いトークンは意味的に一貫したクラスターを形成し、高いトークンはそうでないことが判明。これに基づき、異なる次元の言語モデル間での線形変換を行うアプリケーションEMB2EMBを提案。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/a_jy_l/status/1920165383606026333?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=aJDykpJAYF#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=aJDykpJAYF#discussion</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Weak-for-Strong: Training Weak Meta-Agent to Harness Strong Executors, Fan Nie+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.04785</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3171</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.04785
+# Authors
+  - Fan Nie
+  - Lan Feng
+  - Haotian Ye
+  - Weixin Liang
+  - Pan Lu
+  - Huaxiu Yao
+  - Alexandre Alahi
+  - James Zou
+# Abstract
+  - Efficiently leveraging of the capabilities of contemporary large language models (LLMs) is increasingly challenging, particularly when direct fine-tuning is expensive and often impractical. Existing training-free methods, including manually or automated designed workflows, typically demand substantial human effort or yield suboptimal results. This paper proposes Weak-for-Strong Harnessing (W4S), a novel framework that customizes smaller, cost-efficient language models to design and optimize workflows for harnessing stronger models. W4S formulates workflow design as a multi-turn markov decision process and introduces reinforcement learning for agentic workflow optimization (RLAO) to train a weak meta-agent. Through iterative interaction with the environment, the meta-agent learns to design increasingly effective workflows without manual intervention. Empirical results demonstrate the superiority of W4S that our 7B meta-agent, trained with just one GPU hour, outperforms the strongest baseline by 2.9% ~ 24.6% across eleven benchmarks, successfully elevating the performance of state-of-the-art models such as GPT-3.5-Turbo and GPT-4o. Notably, W4S exhibits strong generalization capabilities across both seen and unseen tasks, offering an efficient, high-performing alternative to directly fine-tuning strong models.
+# Translation (by gpt-4o-mini)
+- 現代の大規模言語モデル（LLMs）の能力を効率的に活用することは、特に直接的なファインチューニングが高コストでしばしば非現実的であるため、ますます困難になっています。既存のトレーニングフリーの手法、手動または自動で設計されたワークフローを含むものは、通常、大量の人間の努力を必要とするか、最適でない結果をもたらします。本論文では、Weak-for-Strong Harnessing（W4S）という新しいフレームワークを提案し、より小型でコスト効率の良い言語モデルをカスタマイズして、より強力なモデルを活用するためのワークフローを設計・最適化します。W4Sは、ワークフロー設計をマルチターンのマルコフ決定過程として定式化し、エージェントワークフロー最適化のための強化学習（RLAO）を導入して、弱いメタエージェントを訓練します。環境との反復的な相互作用を通じて、メタエージェントは手動介入なしで、ますます効果的なワークフローを設計することを学びます。実証結果は、W4Sの優位性を示しており、わずか1時間のGPUで訓練された7Bメタエージェントが、11のベンチマークにおいて最強のベースラインを2.9%から24.6%上回り、GPT-3.5-TurboやGPT-4oなどの最先端モデルの性能を成功裏に向上させることを示しています。特に、W4Sは、見たことのあるタスクと見たことのないタスクの両方に対して強い一般化能力を示し、強力なモデルを直接ファインチューニングする代わりに、効率的で高性能な代替手段を提供します。
+# Summary (by gpt-4o-mini)
+- Weak-for-Strong Harnessing（W4S）フレームワークを提案し、小型言語モデルをカスタマイズして強力なモデルを活用する効率的なワークフローを設計。マルコフ決定過程を用いて、強化学習でメタエージェントを訓練し、手動介入なしで効果的なワークフローを学習。実験結果では、7Bメタエージェントが最強のベースラインを2.9%から24.6%上回り、一般化能力も高いことを示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/fannie1208/status/1975619648889758067?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Readability ̸= Learnability: Rethinking the Role of Simplicity in Training Small Language Models, Lee+, COLM'25</title>
+<original-paper-blog-link>https://openreview.net/pdf?id=AFMGbq39bQ</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3169</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body>https://openreview.net/pdf?id=AFMGbq39bQ</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=AFMGbq39bQ#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=AFMGbq39bQ#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chrmanning/status/1975657067303096333?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] G1yphD3c0de: Towards Safer Language Models on Visually Perturbed Texts, Yeo+, COLM'25</title>
+<original-paper-blog-link>https://openreview.net/pdf?id=OGwE7LwtcR</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3168</repo-issue-link>
+<tags>NLP, LanguageModel, Safety, COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body>https://openreview.net/pdf?id=OGwE7LwtcR</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=OGwE7LwtcR#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=OGwE7LwtcR#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] X-Teaming: Multi-Turn Jailbreaks and Defenses with Adaptive Multi-Agents, Salman Rahman+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.13203</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3167</repo-issue-link>
+<tags>Multi, NLP, Dataset, LanguageModel, Evaluation, Conversation, Safety, COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.13203
+# Authors
+  - Salman Rahman
+  - Liwei Jiang
+  - James Shiffer
+  - Genglin Liu
+  - Sheriff Issaka
+  - Md Rizwan Parvez
+  - Hamid Palangi
+  - Kai-Wei Chang
+  - Yejin Choi
+  - Saadia Gabriel
+# Abstract
+  - Multi-turn interactions with language models (LMs) pose critical safety risks, as harmful intent can be strategically spread across exchanges. Yet, the vast majority of prior work has focused on single-turn safety, while adaptability and diversity remain among the key challenges of multi-turn red-teaming. To address these challenges, we present X-Teaming, a scalable framework that systematically explores how seemingly harmless interactions escalate into harmful outcomes and generates corresponding attack scenarios. X-Teaming employs collaborative agents for planning, attack optimization, and verification, achieving state-of-the-art multi-turn jailbreak effectiveness and diversity with success rates up to 98.1% across representative leading open-weight and closed-source models. In particular, X-Teaming achieves a 96.2% attack success rate against the latest Claude 3.7 Sonnet model, which has been considered nearly immune to single-turn attacks. Building on X-Teaming, we introduce XGuard-Train, an open-source multi-turn safety training dataset that is 20x larger than the previous best resource, comprising 30K interactive jailbreaks, designed to enable robust multi-turn safety alignment for LMs. Our work offers essential tools and insights for mitigating sophisticated conversational attacks, advancing the multi-turn safety of LMs.
+# Translation (by gpt-4o-mini)
+- 言語モデル（LM）とのマルチターンインタラクションは、悪意のある意図が交換を通じて戦略的に広がる可能性があるため、重大な安全リスクを引き起こします。しかし、これまでの研究の大多数はシングルターンの安全性に焦点を当てており、適応性と多様性はマルチターンのレッドチーミングにおける重要な課題の一つです。これらの課題に対処するために、私たちはX-Teamingを提案します。これは、無害に見えるインタラクションがどのように有害な結果にエスカレートするかを体系的に探求し、それに対応する攻撃シナリオを生成するスケーラブルなフレームワークです。X-Teamingは、計画、攻撃最適化、検証のために協力的なエージェントを使用し、代表的なオープンウェイトおよびクローズドソースモデルにおいて、最大98.1%の成功率で最先端のマルチターン脱獄効果と多様性を達成します。特に、X-Teamingは、シングルターン攻撃に対してほぼ免疫があると考えられている最新のClaude 3.7 Sonnetモデルに対して96.2%の攻撃成功率を達成しました。X-Teamingを基に、私たちはXGuard-Trainを導入します。これは、30Kのインタラクティブな脱獄を含む、以前の最良リソースの20倍の規模を持つオープンソースのマルチターン安全トレーニングデータセットであり、LMの堅牢なマルチターン安全アラインメントを可能にするように設計されています。私たちの研究は、洗練された会話攻撃を軽減するための重要なツールと洞察を提供し、LMのマルチターン安全性を向上させるものです。
+# Summary (by gpt-4o-mini)
+- X-Teamingを提案し、無害なインタラクションが有害な結果にエスカレートする過程を探求。協力的なエージェントを用いて、最大98.1%の成功率でマルチターン攻撃を実現。特に、Claude 3.7 Sonnetモデルに対して96.2%の成功率を達成。さらに、30Kの脱獄を含むオープンソースのトレーニングデータセットXGuard-Trainを導入し、LMのマルチターン安全性を向上させる。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=gKfj7Jb1kj#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=gKfj7Jb1kj#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Reasoning-SQL: Reinforcement Learning with SQL Tailored Partial Rewards  for Reasoning-Enhanced Text-to-SQL, Mohammadreza Pourreza+, COLM'25, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.23157</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3166</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, COLM, GRPO, On-Policy, TextToSQL</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.23157
+# Authors
+  - Mohammadreza Pourreza
+  - Shayan Talaei
+  - Ruoxi Sun
+  - Xingchen Wan
+  - Hailong Li
+  - Azalia Mirhoseini
+  - Amin Saberi
+  - Sercan "O. Arik
+# Abstract
+  - Text-to-SQL is a challenging task involving multiple reasoning-intensive subtasks, including natural language understanding, database schema comprehension, and precise SQL query formulation. Existing approaches often rely on handcrafted reasoning paths with inductive biases that can limit their overall effectiveness. Motivated by the recent success of reasoning-enhanced models such as DeepSeek R1 and OpenAI o1, which effectively leverage reward-driven self-exploration to enhance reasoning capabilities and generalization, we propose a novel set of partial rewards tailored specifically for the Text-to-SQL task. Our reward set includes schema-linking, AI feedback, n-gram similarity, and syntax check, explicitly designed to address the reward sparsity issue prevalent in reinforcement learning (RL). Leveraging group relative policy optimization (GRPO), our approach explicitly encourages large language models (LLMs) to develop intrinsic reasoning skills necessary for accurate SQL query generation. With models of different sizes, we demonstrate that RL-only training with our proposed rewards consistently achieves higher accuracy and superior generalization compared to supervised fine-tuning (SFT). Remarkably, our RL-trained 14B-parameter model significantly outperforms larger proprietary models, e.g. o3-mini by 4% and Gemini-1.5-Pro-002 by 3% on the BIRD benchmark. These highlight the efficacy of our proposed RL-training framework with partial rewards for enhancing both accuracy and reasoning capabilities in Text-to-SQL tasks.
+# Translation (by gpt-4o-mini)
+- Text-to-SQLは、自然言語理解、データベーススキーマの理解、正確なSQLクエリの形成など、複数の推論集約型サブタスクを含む難しいタスクです。既存のアプローチは、しばしば手作りの推論経路に依存しており、これが全体的な効果を制限する可能性があります。DeepSeek R1やOpenAI o1のような推論強化モデルの最近の成功に触発され、これらは報酬駆動型の自己探索を効果的に活用して推論能力と一般化を向上させています。私たちは、Text-to-SQLタスクに特化した新しい部分的報酬のセットを提案します。私たちの報酬セットには、スキーマリンク、AIフィードバック、n-gram類似度、構文チェックが含まれており、強化学習（RL）における報酬のスパース性の問題に対処するために明示的に設計されています。グループ相対ポリシー最適化（GRPO）を活用することで、私たちのアプローチは、大規模言語モデル（LLMs）が正確なSQLクエリ生成に必要な内発的な推論スキルを発展させることを明示的に促します。異なるサイズのモデルを用いて、私たちの提案した報酬を用いたRLのみのトレーニングが、監視付きファインチューニング（SFT）と比較して一貫して高い精度と優れた一般化を達成することを示します。特に、私たちのRLトレーニングを受けた14Bパラメータモデルは、BIRDベンチマークにおいて、o3-miniよりも4%、Gemini-1.5-Pro-002よりも3%も大きなプロプライエタリモデルを大幅に上回ります。これにより、Text-to-SQLタスクにおける精度と推論能力を向上させるための部分的報酬を用いた提案したRLトレーニングフレームワークの有効性が強調されます。
+# Summary (by gpt-4o-mini)
+- Text-to-SQLタスクにおいて、部分的報酬を用いた強化学習（RL）アプローチを提案。スキーマリンクやAIフィードバックなどの報酬を設計し、LLMsの推論スキルを向上させる。RLトレーニングを受けた14Bパラメータモデルは、他のモデルを上回る精度を達成し、提案手法の有効性を示す。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=HbwkIDWQgN#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=HbwkIDWQgN#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] D3: A Dataset for Training Code LMs to Act Diff-by-Diff, Piterbarg+, COLM'25</title>
+<original-paper-blog-link>https://openreview.net/pdf?id=sy71y74U80</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3165</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, Coding, mid-training, COLM, Editing, One-Line Notes</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body>https://openreview.net/pdf?id=sy71y74U80</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=sy71y74U80#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=sy71y74U80#discussion</a>
+{% endraw %}
+
+</p><p>openreviewのサマリによると、8B tokens, 850k python filesのデータセットで、コーディングタスクを、ゴールで条件づけられたsequential editsタスクとみなし The Stack上のコードを分析ツールとLLMによって合成されたrationaleによってフィルタリング/拡張したデータを提供しているとのこと。具体的には (state, goal, action_i) の3つ組みのデータセットであり、action_iがaction前後でのdiffになっている模様。D3データセットでSFTの前にLlama 1B / 3Bをmid-trainingした結果、downstreamタスク（コード生成、completion、編集）において性能が向上したとのこと。<br><br><img src="https://github.com/user-attachments/assets/d99b5ee6-dbc8-48f7-9b68-880add54dbbb" /" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] From Next-Token to Mathematics: The Learning Dynamics of Mathematical Reasoning in Language Models, Mishra+, COLM'25</title>
+<original-paper-blog-link>https://openreview.net/pdf?id=bJ9aARjtBu</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3164</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body>https://openreview.net/pdf?id=bJ9aARjtBu</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=bJ9aARjtBu#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=bJ9aARjtBu#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Hypothesis-Driven Theory-of-Mind Reasoning for Large Language Models, Hyunwoo Kim+, COLM'25, 2025.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2502.11881</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3163</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2502.11881
+# Authors
+  - Hyunwoo Kim
+  - Melanie Sclar
+  - Tan Zhi-Xuan
+  - Lance Ying
+  - Sydney Levine
+  - Yang Liu
+  - Joshua B. Tenenbaum
+  - Yejin Choi
+# Abstract
+  - Existing LLM reasoning methods have shown impressive capabilities across various tasks, such as solving math and coding problems. However, applying these methods to scenarios without ground-truth answers or rule-based verification methods - such as tracking the mental states of an agent - remains challenging. Inspired by the sequential Monte Carlo algorithm, we introduce thought-tracing, an inference-time reasoning algorithm designed to trace the mental states of specific agents by generating hypotheses and weighting them based on observations without relying on ground-truth solutions to questions in datasets. Our algorithm is modeled after the Bayesian theory-of-mind framework, using LLMs to approximate probabilistic inference over agents' evolving mental states based on their perceptions and actions. We evaluate thought-tracing on diverse theory-of-mind benchmarks, demonstrating significant performance improvements compared to baseline LLMs. Our experiments also reveal interesting behaviors of the recent reasoning models - e.g., o3 and R1 - on theory-of-mind, highlighting the difference of social reasoning compared to other domains.
+# Translation (by gpt-4o-mini)
+- 既存のLLM推論手法は、数学やコーディングの問題を解決するなど、さまざまなタスクで印象的な能力を示しています。しかし、エージェントのメンタルステートを追跡するなど、真の答えやルールベースの検証手法が存在しないシナリオにこれらの手法を適用することは依然として困難です。逐次モンテカルロアルゴリズムに触発されて、私たちはthought-tracingを提案します。これは、特定のエージェントのメンタルステートを追跡するために設計された推論時の推論アルゴリズムであり、データセット内の質問に対する真の解決策に依存せず、仮説を生成し、観察に基づいてそれらに重みを付けます。私たちのアルゴリズムは、ベイズ理論の心の理論フレームワークに基づいてモデル化されており、LLMを使用してエージェントの進化するメンタルステートに対する確率的推論を、その知覚と行動に基づいて近似します。私たちは、さまざまな心の理論ベンチマークでthought-tracingを評価し、ベースラインのLLMと比較して顕著な性能向上を示しました。私たちの実験はまた、最近の推論モデル（例：o3およびR1）が心の理論において示す興味深い挙動を明らかにし、他のドメインと比較した社会的推論の違いを強調しています。
+# Summary (by gpt-4o-mini)
+- thought-tracingを提案し、エージェントのメンタルステートを追跡する推論アルゴリズムを開発。ベイズ理論に基づき、LLMを用いて確率的推論を行い、心の理論ベンチマークで顕著な性能向上を示す。最近の推論モデルの興味深い挙動も明らかにし、社会的推論の特異性を強調。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=yGQqTuSJPK#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=yGQqTuSJPK#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Verifying the Verifiers: Unveiling Pitfalls and Potentials in Fact  Verifiers, Wooseok Seo+, COLM'25, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.13342</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3162</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.13342
+# Authors
+  - Wooseok Seo
+  - Seungju Han
+  - Jaehun Jung
+  - Benjamin Newman
+  - Seungwon Lim
+  - Seungbeen Lee
+  - Ximing Lu
+  - Yejin Choi
+  - Youngjae Yu
+# Abstract
+  - Fact verification is essential for ensuring the reliability of LLM applications. In this study, we evaluate 12 pre-trained LLMs and one specialized fact-verifier, including frontier LLMs and open-weight reasoning LLMs, using a collection of examples from 14 fact-checking benchmarks. We share three findings intended to guide future development of more robust fact verifiers. First, we highlight the importance of addressing annotation errors and ambiguity in datasets, demonstrating that approximately 16\% of ambiguous or incorrectly labeled data substantially influences model rankings. Neglecting this issue may result in misleading conclusions during comparative evaluations, and we suggest using a systematic pipeline utilizing LLM-as-a-judge to help identify these issues at scale. Second, we discover that frontier LLMs with few-shot in-context examples, often overlooked in previous works, achieve top-tier performance. We therefore recommend future studies include comparisons with these simple yet highly effective baselines. Lastly, despite their effectiveness, frontier LLMs incur substantial costs, motivating the development of small, fine-tuned fact verifiers. We show that these small models still have room for improvement, particularly on instances that require complex reasoning. Encouragingly, we demonstrate that augmenting training with synthetic multi-hop reasoning data significantly enhances their capabilities in such instances. We release our code, model, and dataset at https://github.com/just1nseo/verifying-the-verifiers
+# Translation (by gpt-4o-mini)
+- ファクト検証は、LLMアプリケーションの信頼性を確保するために不可欠です。本研究では、最前線のLLMやオープンウェイトの推論LLMを含む12の事前学習済みLLMと1つの専門的なファクト検証器を評価し、14のファクトチェックベンチマークからの例を用いています。私たちは、より堅牢なファクト検証器の将来の開発を導くための3つの発見を共有します。まず、データセットにおける注釈エラーや曖昧さに対処する重要性を強調し、約16％の曖昧または誤ってラベル付けされたデータがモデルのランキングに大きな影響を与えることを示します。この問題を無視すると、比較評価中に誤解を招く結論が導かれる可能性があるため、LLMを判定者として利用する体系的なパイプラインを使用して、これらの問題を大規模に特定することを提案します。次に、従来の研究で見落とされがちな、少数のインコンテキスト例を持つ最前線のLLMがトップクラスのパフォーマンスを達成することを発見しました。したがって、今後の研究では、これらのシンプルでありながら非常に効果的なベースラインとの比較を含めることを推奨します。最後に、効果的であるにもかかわらず、最前線のLLMはかなりのコストがかかるため、小型で微調整されたファクト検証器の開発が求められます。これらの小型モデルには、特に複雑な推論を必要とする事例において改善の余地があることを示します。励みになることに、合成のマルチホップ推論データでトレーニングを強化することで、これらの事例における能力が大幅に向上することを示しました。私たちは、コード、モデル、データセットをhttps://github.com/just1nseo/verifying-the-verifiersで公開します。
+# Summary (by gpt-4o-mini)
+- ファクト検証はLLMアプリケーションの信頼性に不可欠であり、本研究では12の事前学習済みLLMと1つの専門ファクト検証器を評価しました。主な発見は、注釈エラーや曖昧さがモデルの性能に大きな影響を与えること、少数のインコンテキスト例で高いパフォーマンスを達成するLLMの存在、そして小型で微調整されたファクト検証器の必要性です。特に、合成のマルチホップ推論データでのトレーニングが能力向上に寄与することを示しました。コードやデータセットは公開されています。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=3NjnRo6apU#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=3NjnRo6apU#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] The Unlearning Mirage: A Dynamic Framework for Evaluating LLM Unlearning, Shah+, COLM'25</title>
+<original-paper-blog-link>https://openreview.net/pdf?id=exW2SFJK4H</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3161</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body>https://openreview.net/pdf?id=exW2SFJK4H</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=exW2SFJK4H#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=exW2SFJK4H#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LongCodeBench: Evaluating Coding LLMs at 1M Context Windows, Stefano Rando+, COLM'25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.07897</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3160</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.07897
+# Authors
+  - Stefano Rando
+  - Luca Romani
+  - Alessio Sampieri
+  - Luca Franco
+  - John Yang
+  - Yuta Kyuragi
+  - Fabio Galasso
+  - Tatsunori Hashimoto
+# Abstract
+  - Context lengths for models have grown rapidly, from thousands to millions of tokens in just a few years. The extreme context sizes of modern long-context models have made it difficult to construct realistic long-context benchmarks -- not only due to the cost of collecting million-context tasks but also in identifying realistic scenarios that require significant contexts. We identify code comprehension and repair as a natural testbed and challenge task for long-context models and introduce LongCodeBench (LCB), a benchmark to test LLM coding abilities in long-context scenarios. Our benchmark tests both the comprehension and repair capabilities of LCLMs in realistic and important settings by drawing from real-world GitHub issues and constructing QA (LongCodeQA) and bug fixing (LongSWE-Bench) tasks. We carefully stratify the complexity of our benchmark, enabling us to evaluate models across different scales -- ranging from Qwen2.5 14B Instruct to Google's flagship Gemini model. We find that long-context remains a weakness for all models, with performance drops such as from 29% to 3% for Claude 3.5 Sonnet, or from 70.2% to 40% for Qwen2.5.
+# Translation (by gpt-4o-mini)
+- モデルのコンテキスト長は急速に増加しており、数千から数百万トークンに達するまでの数年で進化しました。現代の長コンテキストモデルの極端なコンテキストサイズは、現実的な長コンテキストベンチマークを構築することを困難にしています。これは、百万コンテキストタスクを収集するコストだけでなく、重要なコンテキストを必要とする現実的なシナリオを特定することにも起因しています。私たちは、コードの理解と修正を長コンテキストモデルの自然なテストベッドおよび挑戦的なタスクとして特定し、長コンテキストシナリオにおけるLLMのコーディング能力をテストするためのベンチマークであるLongCodeBench（LCB）を導入します。私たちのベンチマークは、実際のGitHubの問題から引き出し、QA（LongCodeQA）およびバグ修正（LongSWE-Bench）タスクを構築することによって、現実的で重要な設定におけるLCLMの理解能力と修正能力の両方をテストします。私たちは、ベンチマークの複雑さを慎重に層別化し、Qwen2.5 14B InstructからGoogleのフラッグシップモデルであるGeminiモデルまで、異なるスケールのモデルを評価できるようにしています。私たちは、長コンテキストがすべてのモデルにとって弱点であり、Claude 3.5 Sonnetでは29%から3%に、Qwen2.5では70.2%から40%にパフォーマンスが低下することを発見しました。
+# Summary (by gpt-4o-mini)
+- 長コンテキストモデルの急速な進化に伴い、現実的な長コンテキストベンチマークの構築が困難になっている。本研究では、コードの理解と修正を長コンテキストモデルのテストベンチとして位置付け、LongCodeBench（LCB）を導入。実際のGitHubの問題を基にしたQAおよびバグ修正タスクを通じて、LCLMの理解能力と修正能力を評価する。異なるスケールのモデルを対象にした結果、長コンテキストが全モデルにおいてパフォーマンス低下を引き起こすことが確認された。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=GFPoM8Ylp8#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=GFPoM8Ylp8#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Base Models Beat Aligned Models at Randomness and Creativity, Peter West+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.00047</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3159</repo-issue-link>
+<tags>COLM, read-later</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.00047
+# Authors
+  - Peter West
+  - Christopher Potts
+# Abstract
+  - Alignment has quickly become a default ingredient in LLM development, with techniques such as reinforcement learning from human feedback making models act safely, follow instructions, and perform ever-better on complex tasks. While these techniques are certainly useful, we propose that they should not be universally applied and demonstrate a range of tasks on which base language models consistently outperform their popular aligned forms. Particularly, we study tasks that require unpredictable outputs, such as random number generation, mixed strategy games (rock-paper-scissors and hide-and-seek), and creative writing. In each case, aligned models tend towards narrow behaviors that result in distinct disadvantages, for instance, preferring to generate "7" over other uniformly random numbers, becoming almost fully predictable in some game states, or prioritizing pleasant writing over creative originality. Across models tested, better performance on common benchmarks tends to correlate with worse performance on our tasks, suggesting an effective trade-off in the required capabilities.
+# Translation (by gpt-4o-mini)
+- アライメントは、LLM（大規模言語モデル）開発において迅速にデフォルトの要素となり、人間のフィードバックからの強化学習などの技術によって、モデルが安全に動作し、指示に従い、複雑なタスクでますます優れたパフォーマンスを発揮するようになった。これらの技術は確かに有用であるが、私たちはそれらが普遍的に適用されるべきではないと提案し、基本的な言語モデルがその人気のあるアライメント形式を一貫して上回るタスクの範囲を示す。特に、ランダムな数の生成、混合戦略ゲーム（じゃんけんやかくれんぼ）、創造的な執筆など、予測不可能な出力を必要とするタスクを研究する。各ケースにおいて、アライメントされたモデルは狭い行動傾向を示し、例えば、他の均等にランダムな数よりも「7」を生成することを好んだり、特定のゲーム状態でほぼ完全に予測可能になったり、創造的な独自性よりも心地よい執筆を優先したりするなど、明確な不利をもたらす。テストされたモデル全体において、一般的なベンチマークでのパフォーマンスが良いほど、私たちのタスクでのパフォーマンスが悪くなる傾向があり、必要な能力の間に効果的なトレードオフが存在することを示唆している。
+# Summary (by gpt-4o-mini)
+- アライメント技術はLLMの開発において重要だが、普遍的に適用すべきではないと提案。特に、ランダム数生成や創造的執筆などの予測不可能なタスクでは、アライメントされたモデルが狭い行動傾向を示し、パフォーマンスが低下することが確認された。一般的なベンチマークでの良好なパフォーマンスが、特定のタスクでのパフォーマンス低下と関連していることが示唆されている。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=vqN8uom4A1" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=vqN8uom4A1</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Humans overrely on overconfident language models, across languages, Neil Rathi+, COLM'25, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.06306</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3158</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.06306
+# Authors
+  - Neil Rathi
+  - Dan Jurafsky
+  - Kaitlyn Zhou
+# Abstract
+  - As large language models (LLMs) are deployed globally, it is crucial that their responses are calibrated across languages to accurately convey uncertainty and limitations. Prior work shows that LLMs are linguistically overconfident in English, leading users to overrely on confident generations. However, the usage and interpretation of epistemic markers (e.g., 'I think it's') differs sharply across languages. Here, we study the risks of multilingual linguistic (mis)calibration, overconfidence, and overreliance across five languages to evaluate LLM safety in a global context. Our work finds that overreliance risks are high across languages. We first analyze the distribution of LLM-generated epistemic markers and observe that LLMs are overconfident across languages, frequently generating strengtheners even as part of incorrect responses. Model generations are, however, sensitive to documented cross-linguistic variation in usage: for example, models generate the most markers of uncertainty in Japanese and the most markers of certainty in German and Mandarin. Next, we measure human reliance rates across languages, finding that reliance behaviors differ cross-linguistically: for example, participants are significantly more likely to discount expressions of uncertainty in Japanese than in English (i.e., ignore their 'hedging' function and rely on generations that contain them). Taken together, these results indicate a high risk of reliance on overconfident model generations across languages. Our findings highlight the challenges of multilingual linguistic calibration and stress the importance of culturally and linguistically contextualized model safety evaluations.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）が世界中で展開される中、その応答が言語間で調整され、不確実性や限界を正確に伝えることが重要です。先行研究では、LLMsが英語において言語的に過信していることが示されており、その結果、ユーザーは自信のある生成物に過度に依存する傾向があります。しかし、認識的マーカー（例：'I think it's'）の使用と解釈は言語によって大きく異なります。本研究では、5つの言語における多言語的な言語的（誤）調整、過信、過度の依存のリスクを調査し、グローバルな文脈におけるLLMの安全性を評価します。我々の研究は、言語間で過度の依存リスクが高いことを発見しました。まず、LLMが生成した認識的マーカーの分布を分析し、LLMsが言語間で過信していることを観察しました。特に、誤った応答の一部としても強調表現を頻繁に生成しています。しかし、モデルの生成は、使用における文書化された言語間の変異に敏感です。例えば、モデルは日本語で最も多くの不確実性のマーカーを生成し、ドイツ語や中国語では最も多くの確実性のマーカーを生成します。次に、言語間での人間の依存率を測定し、依存行動が言語によって異なることを発見しました。例えば、参加者は日本語での不確実性の表現を英語よりも大幅に軽視する傾向があります（つまり、彼らの「ヘッジ」機能を無視し、それを含む生成物に依存する）。これらの結果を総合すると、言語間で過信したモデル生成物に依存するリスクが高いことが示されます。我々の発見は、多言語的な言語調整の課題を浮き彫りにし、文化的および言語的に文脈化されたモデルの安全性評価の重要性を強調しています。
+# Summary (by gpt-4o-mini)
+- LLMの応答が言語間で調整される重要性を調査し、過信や依存のリスクを評価。5つの言語での認識的マーカーの分布を分析し、言語による過信の違いを発見。特に日本語では不確実性のマーカーが多く生成され、依存行動が言語によって異なることが明らかに。これにより、言語間での過信した生成物への依存リスクが高いことが示され、多言語的な調整の課題とモデルの安全性評価の重要性が強調される。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=QsQatTzATT#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=QsQatTzATT#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Bayesian scaling laws for in-context learning, Aryaman Arora+, COLM'25, 2024.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.16531</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3157</repo-issue-link>
+<tags>NLP, LanguageModel, In-ContextLearning, Safety, Scaling Laws, COLM, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.16531
+# Authors
+  - Aryaman Arora
+  - Dan Jurafsky
+  - Christopher Potts
+  - Noah D. Goodman
+# Abstract
+  - In-context learning (ICL) is a powerful technique for getting language models to perform complex tasks with no training updates. Prior work has established strong correlations between the number of in-context examples provided and the accuracy of the model's predictions. In this paper, we seek to explain this correlation by showing that ICL approximates a Bayesian learner. This perspective gives rise to a novel Bayesian scaling law for ICL. In experiments with \mbox{GPT-2} models of different sizes, our scaling law matches existing scaling laws in accuracy while also offering interpretable terms for task priors, learning efficiency, and per-example probabilities. To illustrate the analytic power that such interpretable scaling laws provide, we report on controlled synthetic dataset experiments designed to inform real-world studies of safety alignment. In our experimental protocol, we use SFT or DPO to suppress an unwanted existing model capability and then use ICL to try to bring that capability back (many-shot jailbreaking). We then study ICL on real-world instruction-tuned LLMs using capabilities benchmarks as well as a new many-shot jailbreaking dataset. In all cases, Bayesian scaling laws accurately predict the conditions under which ICL will cause suppressed behaviors to reemerge, which sheds light on the ineffectiveness of post-training at increasing LLM safety.
+# Translation (by gpt-4o-mini)
+- インコンテキスト学習（ICL）は、トレーニングの更新なしに言語モデルに複雑なタスクを実行させるための強力な手法である。先行研究では、提供されるインコンテキストの例の数とモデルの予測精度との間に強い相関関係があることが確立されている。本論文では、この相関関係を説明するために、ICLがベイズ学習者を近似することを示す。この視点は、ICLに対する新しいベイズスケーリング法則を生み出す。異なるサイズのGPT-2モデルを用いた実験では、我々のスケーリング法則は精度における既存のスケーリング法則と一致し、タスクの事前分布、学習効率、および例ごとの確率に対する解釈可能な項を提供する。解釈可能なスケーリング法則が提供する分析力を示すために、実世界の安全性アラインメントの研究に役立つように設計された制御された合成データセット実験について報告する。我々の実験プロトコルでは、SFTまたはDPOを使用して不要な既存のモデル能力を抑制し、その後ICLを使用してその能力を取り戻そうとする（多ショットの脱獄）。次に、能力ベンチマークや新しい多ショット脱獄データセットを使用して、実世界の指示調整されたLLMにおけるICLを研究する。すべてのケースにおいて、ベイズスケーリング法則はICLが抑制された行動を再出現させる条件を正確に予測し、LLMの安全性を高めるためのポストトレーニングの効果のなさに光を当てる。
+# Summary (by gpt-4o-mini)
+- インコンテキスト学習（ICL）は、言語モデルに複雑なタスクを実行させる手法であり、提供される例の数と予測精度に強い相関がある。本研究では、ICLがベイズ学習者を近似することを示し、新しいベイズスケーリング法則を提案。GPT-2モデルを用いた実験で、提案法則が精度における既存の法則と一致し、タスクの事前分布や学習効率に関する解釈可能な項を提供。実験では、ICLを用いて抑制されたモデル能力を再現する条件を予測し、LLMの安全性向上に寄与することを示した。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=U2ihVSREUb#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=U2ihVSREUb#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Synthetic Data Generation & Multi-Step RL for Reasoning & Tool Use, Anna Goldie+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.04736</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3156</repo-issue-link>
+<tags>Multi, NLP, Dataset, LanguageModel, ReinforcementLearning, SyntheticData, COLM, One-Line Notes</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.04736
+# Authors
+  - Anna Goldie
+  - Azalia Mirhoseini
+  - Hao Zhou
+  - Irene Cai
+  - Christopher D. Manning
+# Abstract
+  - Reinforcement learning has been shown to improve the performance of large language models. However, traditional approaches like RLHF or RLAIF treat the problem as single-step. As focus shifts toward more complex reasoning and agentic tasks, language models must take multiple steps of text generation, reasoning and environment interaction before generating a solution. We propose a synthetic data generation and RL methodology targeting multi-step optimization scenarios. This approach, called Step-Wise Reinforcement Learning (SWiRL), iteratively generates multi-step reasoning and tool use data, and then learns from that data. It employs a simple step-wise decomposition that breaks each multi-step trajectory into multiple sub-trajectories corresponding to each action by the original model. It then applies synthetic data filtering and RL optimization on these sub-trajectories. We evaluated SWiRL on a number of multi-step tool use, question answering, and mathematical reasoning tasks. Our experiments show that SWiRL outperforms baseline approaches by 21.5%, 12.3%, 14.8%, 11.1%, and 15.3% in relative accuracy on GSM8K, HotPotQA, CofCA, MuSiQue, and BeerQA, respectively. Excitingly, the approach exhibits generalization across tasks: for example, training only on HotPotQA (text question-answering) improves zero-shot performance on GSM8K (a math dataset) by a relative 16.9%.
+# Translation (by gpt-4o-mini)
+- 強化学習は、大規模言語モデルの性能を向上させることが示されています。しかし、従来のアプローチであるRLHFやRLAIFは、この問題を単一ステップとして扱っています。より複雑な推論やエージェントタスクに焦点が移る中で、言語モデルは解決策を生成する前に、複数のテキスト生成、推論、環境との相互作用のステップを踏む必要があります。そこで、我々は多段階最適化シナリオを対象とした合成データ生成と強化学習の手法を提案します。このアプローチは「段階的強化学習（Step-Wise Reinforcement Learning、SWiRL）」と呼ばれ、反復的に多段階の推論とツール使用データを生成し、そのデータから学習します。SWiRLは、元のモデルによる各アクションに対応する複数のサブ軌道に、各多段階の軌道を分解するシンプルな段階的分解を採用しています。その後、これらのサブ軌道に対して合成データフィルタリングと強化学習最適化を適用します。SWiRLを多段階のツール使用、質問応答、数学的推論タスクのいくつかで評価しました。我々の実験では、SWiRLがGSM8K、HotPotQA、CofCA、MuSiQue、BeerQAにおいて、それぞれ21.5%、12.3%、14.8%、11.1%、15.3%の相対的精度でベースラインアプローチを上回ることを示しました。興味深いことに、このアプローチはタスク間での一般化を示しています。例えば、HotPotQA（テキスト質問応答）でのみ訓練することで、GSM8K（数学データセット）におけるゼロショット性能が相対的に16.9%向上しました。
+# Summary (by gpt-4o-mini)
+- 段階的強化学習（SWiRL）を提案し、複数のテキスト生成や推論ステップを通じて大規模言語モデルの性能を向上させる手法を紹介。SWiRLは、各アクションに対するサブ軌道を生成し、合成データフィルタリングと強化学習最適化を適用。実験では、GSM8KやHotPotQAなどのタスクでベースラインを上回る精度を達成し、タスク間での一般化も示された。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=oN9STRYQVa" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=oN9STRYQVa</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stanfordnlp/status/1975574899428139413?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>従来のRLではテキスト生成を1ステップとして扱うことが多いが、複雑な推論やtool useを伴うタスクにおいては複数ステップでの最適化が必要となる。そのために、多段階の推論ステップのtrajectoryを含むデータを作成し、同データを使いRLすることによって性能が向上したという話な模様。RLをする際には、stepごとにRewardを用意するようである。また、現在のstepの生成を実施する際には過去のstepの情報に基づいて生成する方式のようである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Echo Chamber: RL Post-training Amplifies Behaviors Learned in   Pretraining, Rosie Zhao+, COLM'25, 2025.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.07912</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3146</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, ReinforcementLearning, COLM, read-later</tags>
+<repo-issue-date>2025-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.07912
+# Authors
+  - Rosie Zhao
+  - Alexandru Meterez
+  - Sham Kakade
+  - Cengiz Pehlevan
+  - Samy Jelassi
+  - Eran Malach
+# Abstract
+  - Reinforcement learning (RL)-based fine-tuning has become a crucial step in post-training language models for advanced mathematical reasoning and coding. Following the success of frontier reasoning models, recent work has demonstrated that RL fine-tuning consistently improves performance, even in smaller-scale models; however, the underlying mechanisms driving these improvements are not well-understood. Understanding the effects of RL fine-tuning requires disentangling its interaction with pretraining data composition, hyperparameters, and model scale, but such problems are exacerbated by the lack of transparency regarding the training data used in many existing models. In this work, we present a systematic end-to-end study of RL fine-tuning for mathematical reasoning by training models entirely from scratch on different mixtures of fully open datasets. We investigate the effects of various RL fine-tuning algorithms (PPO, GRPO, and Expert Iteration) across models of different scales. Our study reveals that RL algorithms consistently converge towards a dominant output distribution, amplifying patterns in the pretraining data. We also find that models of different scales trained on the same data mixture will converge to distinct output distributions, suggesting that there are scale-dependent biases in model generalization. Moreover, we find that RL post-training on simpler questions can lead to performance gains on harder ones, indicating that certain reasoning capabilities generalize across tasks. Our findings show that small-scale proxies in controlled settings can elicit interesting insights regarding the role of RL in shaping language model behavior.
+# Translation (by gpt-4o-mini)
+- 強化学習（RL）に基づくファインチューニングは、高度な数学的推論やコーディングのための言語モデルのポストトレーニングにおいて重要なステップとなっている。最先端の推論モデルの成功を受けて、最近の研究では、RLファインチューニングが小規模モデルにおいても一貫して性能を向上させることが示されている。しかし、これらの改善を促進する根本的なメカニズムは十分に理解されていない。RLファインチューニングの効果を理解するためには、事前学習データの構成、ハイパーパラメータ、モデルのスケールとの相互作用を解明する必要があるが、多くの既存モデルで使用されるトレーニングデータに関する透明性の欠如がこれらの問題を悪化させている。本研究では、完全にオープンなデータセットの異なる混合物を用いて、数学的推論のためのRLファインチューニングに関する体系的なエンドツーエンドの研究を提示する。さまざまなスケールのモデルに対して、さまざまなRLファインチューニングアルゴリズム（PPO、GRPO、Expert Iteration）の効果を調査する。我々の研究は、RLアルゴリズムが一貫して支配的な出力分布に収束し、事前学習データのパターンを増幅することを明らかにした。また、同じデータ混合物で訓練された異なるスケールのモデルが異なる出力分布に収束することがわかり、モデルの一般化におけるスケール依存のバイアスが存在することを示唆している。さらに、より簡単な質問に対するRLポストトレーニングが、より難しい質問に対する性能向上につながる可能性があることがわかり、特定の推論能力がタスクを超えて一般化することを示している。我々の発見は、制御された環境における小規模なプロキシが、言語モデルの挙動を形成する上でのRLの役割に関する興味深い洞察を引き出すことができることを示している。
+# Summary (by gpt-4o-mini)
+- 強化学習（RL）によるファインチューニングは、数学的推論やコーディングのための言語モデルの性能向上に寄与しているが、そのメカニズムは未解明である。本研究では、オープンなデータセットを用いて、さまざまなスケールのモデルに対するRLファインチューニングの効果を調査し、RLアルゴリズムが出力分布に収束し、事前学習データのパターンを増幅することを明らかにした。また、異なるスケールのモデルが異なる出力分布に収束することや、簡単な質問へのファインチューニングが難しい質問の性能向上に寄与する可能性を示した。これにより、RLの役割に関する新たな洞察が得られた。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosieyzh/status/1975276617078571277?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] VisOnlyQA: Large Vision Language Models Still Struggle with Visual   Perception of Geometric Information, Ryo Kamoi+, COLM'25, 2024.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2412.00947</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3133</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, Evaluation, COLM, VisionLanguageModel, Geometric</tags>
+<repo-issue-date>2025-10-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2412.00947
+# Authors
+  - Ryo Kamoi
+  - Yusen Zhang
+  - Sarkar Snigdha Sarathi Das
+  - Ranran Haoran Zhang
+  - Rui Zhang
+# Abstract
+  - Large Vision Language Models (LVLMs) have achieved remarkable performance in various vision-language tasks. However, it is still unclear how accurately LVLMs can perceive visual information in images. In particular, the capability of LVLMs to perceive geometric information, such as shape, angle, and size, remains insufficiently analyzed, although the perception of these properties is crucial for tasks that require a detailed visual understanding. In this work, we introduce VisOnlyQA, a dataset for evaluating the geometric perception of LVLMs, and reveal that LVLMs often cannot accurately perceive basic geometric information in images, while human performance is nearly perfect. VisOnlyQA consists of 12 tasks that directly ask about geometric information in geometric shapes, charts, chemical structures, and 3D shapes. Our experiments highlight the following findings: (i) State-of-the-art LVLMs struggle with basic geometric perception. 23 LVLMs we evaluate, including GPT-4o and Gemini 2.5 Pro, work poorly on VisOnlyQA. (ii) Additional training data does not resolve this issue. Fine-tuning on the training set of VisOnlyQA is not always effective, even for in-distribution tasks. (iii) LLM may be the bottleneck. LVLMs using stronger LLMs exhibit better geometric perception on VisOnlyQA, while it does not require complex reasoning, suggesting that the way LVLMs process information from visual encoders is a bottleneck. The datasets, code, and model responses are provided at https://github.com/psunlpgroup/VisOnlyQA.
+# Translation (by gpt-4o-mini)
+- 大規模ビジョン言語モデル（LVLMs）は、さまざまなビジョンと言語のタスクで顕著な性能を達成しています。しかし、LVLMsが画像内の視覚情報をどれだけ正確に認識できるかはまだ明らかではありません。特に、形状、角度、サイズなどの幾何学的情報を認識する能力は十分に分析されていませんが、これらの特性の認識は詳細な視覚理解を必要とするタスクにとって重要です。本研究では、LVLMsの幾何学的認識を評価するためのデータセット「VisOnlyQA」を導入し、LVLMsが画像内の基本的な幾何学的情報を正確に認識できないことが多い一方で、人間のパフォーマンスはほぼ完璧であることを明らかにしました。VisOnlyQAは、幾何学的形状、チャート、化学構造、3D形状における幾何学的情報について直接質問する12のタスクで構成されています。我々の実験は以下の発見を強調しています：(i) 最先端のLVLMsは基本的な幾何学的認識に苦労しています。評価した23のLVLMs（GPT-4oやGemini 2.5 Proを含む）は、VisOnlyQAでの性能が低いです。(ii) 追加のトレーニングデータではこの問題は解決しません。VisOnlyQAのトレーニングセットでのファインチューニングは、インディストリビューションタスクに対しても常に効果的ではありません。(iii) LLMがボトルネックかもしれません。より強力なLLMを使用するLVLMsは、VisOnlyQAでの幾何学的認識が向上しますが、複雑な推論を必要としないことから、LVLMsが視覚エンコーダーから情報を処理する方法がボトルネックであることを示唆しています。データセット、コード、およびモデルの応答は、https://github.com/psunlpgroup/VisOnlyQA で提供されています。
+# Summary (by gpt-4o-mini)
+- LVLMsの幾何学的認識を評価するためのデータセット「VisOnlyQA」を導入し、LVLMsが画像内の幾何学的情報を正確に認識できないことを明らかにした。23のLVLMs（GPT-4oやGemini 2.5 Proを含む）は、VisOnlyQAでの性能が低く、追加のトレーニングデータでは改善されない。より強力なLLMを使用するLVLMsは幾何学的認識が向上するが、視覚エンコーダーからの情報処理がボトルネックであることが示唆された。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=PYHwlyu2fa#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=PYHwlyu2fa#discussion</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ryokamoi/status/1974547359842656388?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SimpleRL-Zoo: Investigating and Taming Zero Reinforcement Learning for   Open Base Models in the Wild, Weihao Zeng+, COLM'25, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.18892</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3096</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-10-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.18892
+# Authors
+  - Weihao Zeng
+  - Yuzhen Huang
+  - Qian Liu
+  - Wei Liu
+  - Keqing He
+  - Zejun Ma
+  - Junxian He
+# Abstract
+  - DeepSeek-R1 has shown that long chain-of-thought (CoT) reasoning can naturally emerge through a simple reinforcement learning (RL) framework with rule-based rewards, where the training may directly start from the base models-a paradigm referred to as zero RL training. Most recent efforts to reproduce zero RL training have primarily focused on the Qwen2.5 model series, which may not be representative as we find the base models already exhibit strong instruction-following and self-reflection abilities. In this work, we investigate zero RL training across 10 diverse base models, spanning different families and sizes including LLama3-8B, Mistral-7B/24B, DeepSeek-Math-7B, Qwen2.5-math-7B, and all Qwen2.5 models from 0.5B to 32B. Leveraging several key design strategies-such as adjusting format reward and controlling query difficulty-we achieve substantial improvements in both reasoning accuracy and response length across most settings. However, by carefully monitoring the training dynamics, we observe that different base models exhibit distinct patterns during training. For instance, the increased response length does not always correlate with the emergence of certain cognitive behaviors such as verification (i.e., the "aha moment"). Notably, we observe the "aha moment" for the first time in small models not from the Qwen family. We share the key designs that enable successful zero RL training, along with our findings and practices. To facilitate further research, we open-source the code, models, and analysis tools.
+# Translation (by gpt-4o-mini)
+- DeepSeek-R1は、ルールベースの報酬を用いたシンプルな強化学習（RL）フレームワークを通じて、長い思考の連鎖（CoT）推論が自然に生じることを示しました。このトレーニングは、ベースモデルから直接開始することができるパラダイムを指しており、これをゼロRLトレーニングと呼びます。最近のゼロRLトレーニングの再現に関する取り組みは主にQwen2.5モデルシリーズに焦点を当てていますが、私たちはベースモデルがすでに強力な指示に従う能力と自己反省能力を示していることから、これが代表的でない可能性があると考えています。本研究では、LLama3-8B、Mistral-7B/24B、DeepSeek-Math-7B、Qwen2.5-math-7B、そして0.5Bから32BまでのすべてのQwen2.5モデルを含む、異なるファミリーとサイズにわたる10の多様なベースモデルにおけるゼロRLトレーニングを調査します。フォーマット報酬の調整やクエリの難易度の制御など、いくつかの重要な設計戦略を活用することで、ほとんどの設定において推論の精度と応答の長さにおいて大幅な改善を達成しました。しかし、トレーニングのダイナミクスを注意深く監視することで、異なるベースモデルがトレーニング中に異なるパターンを示すことを観察しました。例えば、応答の長さの増加は、検証（つまり「アハ体験」）などの特定の認知行動の出現と必ずしも相関しないことがわかりました。特に、私たちはQwenファミリー以外の小型モデルで初めて「アハ体験」を観察しました。成功したゼロRLトレーニングを可能にする重要な設計と、私たちの発見や実践を共有します。さらなる研究を促進するために、コード、モデル、および分析ツールをオープンソース化します。
+# Summary (by gpt-4o-mini)
+- DeepSeek-R1は、ルールベースの報酬を用いた強化学習フレームワークを通じて、長い思考の連鎖推論を自然に生じさせることを示した。ゼロRLトレーニングを用いて、10の異なるベースモデルにおける推論精度と応答の長さを改善。トレーニング中に異なるモデルが異なるパターンを示すことを観察し、特に小型モデルで「アハ体験」を初めて確認。成功したゼロRLトレーニングの設計戦略を共有し、研究を促進するために関連リソースをオープンソース化する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/prakashkagitha/status/1973435984172949601?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Fluid Language Model Benchmarking, Valentin Hofmann+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.11106</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2837</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, IRT, Evaluation, COLM</tags>
+<repo-issue-date>2025-09-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.11106
+# Authors
+  - Valentin Hofmann
+  - David Heineman
+  - Ian Magnusson
+  - Kyle Lo
+  - Jesse Dodge
+  - Maarten Sap
+  - Pang Wei Koh
+  - Chun Wang
+  - Hannaneh Hajishirzi
+  - Noah A. Smith
+# Abstract
+  - Language model (LM) benchmarking faces several challenges: comprehensive evaluations are costly, benchmarks often fail to measure the intended capabilities, and evaluation quality can degrade due to labeling errors and benchmark saturation. Although various strategies have been proposed to mitigate these issues, they tend to address individual aspects in isolation, neglecting broader questions about overall evaluation quality. Here, we introduce Fluid Benchmarking, a new evaluation approach that advances LM benchmarking across multiple dimensions. Inspired by psychometrics, Fluid Benchmarking is based on the insight that the relative value of benchmark items depends on an LM's capability level, suggesting that evaluation should adapt to each LM. Methodologically, Fluid Benchmarking estimates an item response model based on existing LM evaluation results and uses the inferred quantities to select evaluation items dynamically, similar to computerized adaptive testing in education. In our experiments, we compare Fluid Benchmarking against the common practice of random item sampling as well as more sophisticated baselines, including alternative methods grounded in item response theory. We examine four dimensions -- efficiency, validity, variance, and saturation -- and find that Fluid Benchmarking achieves superior performance in all of them (e.g., higher validity and less variance on MMLU with fifty times fewer items). Our analysis shows that the two components of Fluid Benchmarking have distinct effects: item response theory, used to map performance into a latent ability space, increases validity, while dynamic item selection reduces variance. Overall, our results suggest that LM benchmarking can be substantially improved by moving beyond static evaluation.
+# Translation (by gpt-4o-mini)
+- 言語モデル（LM）のベンチマークにはいくつかの課題が存在します。包括的な評価はコストがかかり、ベンチマークはしばしば意図した能力を測定できず、評価の質はラベリングエラーやベンチマークの飽和によって低下する可能性があります。これらの問題を軽減するためにさまざまな戦略が提案されていますが、個々の側面に孤立して対処する傾向があり、全体的な評価の質に関する広範な問題を無視しています。ここでは、Fluid Benchmarkingという新しい評価アプローチを紹介します。これは、LMベンチマークを複数の次元で進展させるものです。心理測定学に触発されたFluid Benchmarkingは、ベンチマーク項目の相対的な価値がLMの能力レベルに依存するという洞察に基づいており、評価は各LMに適応すべきであることを示唆しています。方法論的には、Fluid Benchmarkingは既存のLM評価結果に基づいて項目応答モデルを推定し、推測された量を使用して評価項目を動的に選択します。これは教育におけるコンピュータ適応テストに類似しています。私たちの実験では、Fluid Benchmarkingをランダムな項目サンプリングの一般的な手法や、項目応答理論に基づくより洗練されたベースラインと比較します。効率、妥当性、分散、飽和の4つの次元を検討し、Fluid Benchmarkingがすべての次元で優れたパフォーマンスを達成することを発見しました（例：MMLUでの妥当性が高く、項目数が50分の1で分散が少ない）。私たちの分析は、Fluid Benchmarkingの2つの要素が異なる効果を持つことを示しています。性能を潜在能力空間にマッピングするために使用される項目応答理論は妥当性を高め、一方で動的項目選択は分散を減少させます。全体として、私たちの結果は、静的評価を超えることでLMベンチマークを大幅に改善できることを示唆しています。
+# Summary (by gpt-4o-mini)
+- Fluid Benchmarkingという新しい言語モデル（LM）評価アプローチを提案。これは、LMの能力に応じて評価項目を動的に選択し、評価の質を向上させる。実験では、Fluid Benchmarkingが効率、妥当性、分散、飽和の4つの次元で優れたパフォーマンスを示し、静的評価を超えることでLMベンチマークを改善できることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/allen_ai/status/1967983841336836491?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vjhofmann/status/1967994756795077097?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] L1: Controlling How Long A Reasoning Model Thinks With Reinforcement  Learning, Pranjal Aggarwal+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.04697</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2211</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-07-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.04697
+# Authors
+  - Pranjal Aggarwal
+  - Sean Welleck
+# Abstract
+  - Reasoning language models have shown an uncanny ability to improve performance at test-time by ``thinking longer''-that is, by generating longer chain-of-thought sequences and hence using more compute. However, the length of their chain-of-thought reasoning is not controllable, making it impossible to allocate test-time compute to achieve a desired level of performance. We introduce Length Controlled Policy Optimization (LCPO), a simple reinforcement learning method that optimizes for accuracy and adherence to user-specified length constraints. We use LCPO to train L1, a reasoning language model that produces outputs satisfying a length constraint given in its prompt. L1's length control allows for smoothly trading off computational cost and accuracy on a wide range of tasks, and outperforms the state-of-the-art S1 method for length control. Furthermore, we uncover an unexpected short chain-of-thought capability in models trained with LCPO. For instance, our 1.5B L1 model surpasses GPT-4o at equal reasoning lengths. Overall, LCPO enables precise control over reasoning length, allowing for fine-grained allocation of test-time compute and accuracy. We release code and models at https://www.cmu-l3.github.io/l1
+# Translation (by gpt-4o-mini)
+- 推論言語モデルは、「より長く考える」ことによってテスト時のパフォーマンスを向上させる驚異的な能力を示している。つまり、より長い思考の連鎖を生成し、より多くの計算リソースを使用することである。しかし、思考の連鎖の長さは制御できず、望ましいパフォーマンスレベルを達成するためにテスト時の計算リソースを割り当てることが不可能である。そこで、私たちはLength Controlled Policy Optimization（LCPO）を導入する。これは、精度とユーザー指定の長さ制約の遵守を最適化するシンプルな強化学習手法である。LCPOを使用して、プロンプトで与えられた長さ制約を満たす出力を生成する推論言語モデルL1を訓練する。L1の長さ制御により、幅広いタスクにおいて計算コストと精度のトレードオフをスムーズに行うことができ、長さ制御に関して最先端のS1手法を上回る性能を発揮する。さらに、LCPOで訓練されたモデルにおいて予期しない短い思考の連鎖能力が明らかになった。例えば、私たちの1.5B L1モデルは、同じ推論の長さでGPT-4oを上回る。全体として、LCPOは推論の長さを正確に制御できるようにし、テスト時の計算リソースと精度の細かな割り当てを可能にする。コードとモデルは、https://www.cmu-l3.github.io/l1 で公開している。
+# Summary (by gpt-4o-mini)
+- Length Controlled Policy Optimization（LCPO）を導入し、推論言語モデルL1を訓練。これにより、出力の長さを制御しつつ計算コストと精度のトレードオフを最適化。LCPOは、長さ制御において最先端の手法S1を上回る性能を示し、1.5B L1モデルは同じ推論の長さでGPT-4oを超える結果を得た。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/pranjalaggarw16/status/1944452267861741684?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SuperBPE: Space Travel for Language Models, Alisa Liu+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.13423</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2207</repo-issue-link>
+<tags>NLP, Tokenizer, COLM</tags>
+<repo-issue-date>2025-07-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.13423
+# Authors
+  - Alisa Liu
+  - Jonathan Hayase
+  - Valentin Hofmann
+  - Sewoong Oh
+  - Noah A. Smith
+  - Yejin Choi
+# Abstract
+  - The assumption across nearly all language model (LM) tokenization schemes is that tokens should be subwords, i.e., contained within word boundaries. While providing a seemingly reasonable inductive bias, is this common practice limiting the potential of modern LMs? Whitespace is not a reliable delimiter of meaning, as evidenced by multi-word expressions (e.g., "by the way"), crosslingual variation in the number of words needed to express a concept (e.g., "spacesuit helmet" in German is "raumanzughelm"), and languages that do not use whitespace at all (e.g., Chinese). To explore the potential of tokenization beyond subwords, we introduce a "superword" tokenizer, SuperBPE, which incorporates a simple pretokenization curriculum into the byte-pair encoding (BPE) algorithm to first learn subwords, then superwords that bridge whitespace. This brings dramatic improvements in encoding efficiency: when fixing the vocabulary size to 200k, SuperBPE encodes a fixed piece of text with up to 33% fewer tokens than BPE on average. In experiments, we pretrain 8B transformer LMs from scratch while fixing the model size, vocabulary size, and train compute, varying *only* the algorithm for learning the vocabulary. Our model trained with SuperBPE achieves an average +4.0% absolute improvement over the BPE baseline across 30 downstream tasks (including +8.2% on MMLU), while simultaneously requiring 27% less compute at inference time. In analysis, we find that SuperBPE results in segmentations of text that are more uniform in per-token difficulty. Qualitatively, this may be because SuperBPE tokens often capture common multi-word expressions that function semantically as a single unit. SuperBPE is a straightforward, local modification to tokenization that improves both encoding efficiency and downstream performance, yielding better language models overall.
+# Translation (by gpt-4o-mini)
+- ほとんどすべての言語モデル（LM）トークン化スキームに共通する仮定は、トークンはサブワードであるべきだということ、つまり単語の境界内に含まれるべきだということです。このような合理的な帰納的バイアスを提供する一方で、この一般的な慣行は現代のLMの可能性を制限しているのでしょうか？ホワイトスペースは意味の信頼できる区切りではなく、例えば「by the way」のような複数の単語からなる表現や、概念を表現するために必要な単語数の言語間の変動（例えば、ドイツ語の「spacesuit helmet」は「raumanzughelm」）や、ホワイトスペースを全く使用しない言語（例えば、中国語）によって証明されています。サブワードを超えたトークン化の可能性を探るために、我々は「スーパーワード」トークナイザーであるSuperBPEを導入します。これは、バイトペアエンコーディング（BPE）アルゴリズムにシンプルなプレトークン化カリキュラムを組み込み、まずサブワードを学習し、その後ホワイトスペースを橋渡しするスーパーワードを学習します。これにより、エンコーディング効率が劇的に改善されます。語彙サイズを200kに固定した場合、SuperBPEは平均してBPEよりも最大33%少ないトークンで固定されたテキストをエンコードします。実験では、モデルサイズ、語彙サイズ、トレーニング計算を固定し、語彙を学習するアルゴリズムのみを変えて、8BトランスフォーマーLMをゼロから事前トレーニングします。SuperBPEでトレーニングされた我々のモデルは、30のダウンストリームタスク全体でBPEベースラインに対して平均+4.0%の絶対改善を達成し（MMLUでは+8.2%）、同時に推論時に27%少ない計算を必要とします。分析の結果、SuperBPEはテキストのセグメンテーションがトークンごとの難易度においてより均一であることがわかりました。定性的には、SuperBPEトークンがしばしば意味的に単一の単位として機能する一般的な複数の単語からなる表現を捉えるためかもしれません。SuperBPEはトークン化に対する簡単で局所的な修正であり、エンコーディング効率とダウンストリームパフォーマンスの両方を改善し、全体的により良い言語モデルを生み出します。
+# Summary (by gpt-4o-mini)
+- SuperBPEという新しいトークナイザーを導入し、サブワードを超えたトークン化を実現。これにより、エンコーディング効率が33%向上し、30のダウンストリームタスクで平均+4.0%の性能改善を達成。SuperBPEは意味的に単一の単位として機能する表現を捉え、全体的に優れた言語モデルを提供する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/alisawuffles/status/1944890077059965276?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Spike No More: Stabilizing the Pre-training of Large Language Models, Sho Takase+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2312.16903</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2188</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, COLM, Selected Papers/Blogs, Stability, KeyPoint Notes</tags>
+<repo-issue-date>2025-07-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2312.16903
+# Authors
+  - Sho Takase
+  - Shun Kiyono
+  - Sosuke Kobayashi
+  - Jun Suzuki
+# Abstract
+  - Loss spikes often occur during pre-training of large language models. The spikes degrade the performance of large language models and sometimes ruin the pre-training. Since the pre-training needs a vast computational budget, we should avoid such spikes. Based on the assumption that the loss spike is caused by the sudden growth of the gradient norm, we explore factors to keep the gradient norm small through an analysis of the spectral norms of the Jacobian matrices for the sub-layers. Our findings suggest that stabilizing the pre-training process requires two conditions: small sub-layers and large shortcut. We conduct various experiments to empirically verify our theoretical analyses. Experimental results demonstrate that methods satisfying the conditions effectively prevent loss spikes during pre-training.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルの事前学習中に損失のスパイクが発生することがよくあります。これらのスパイクは大規模言語モデルの性能を低下させ、時には事前学習を台無しにしてしまいます。事前学習には膨大な計算リソースが必要なため、こうしたスパイクを避けるべきです。損失スパイクは勾配ノルムの急激な増加によって引き起こされるという仮定に基づき、サブレイヤーのヤコビ行列のスペクトルノルムの分析を通じて、勾配ノルムを小さく保つための要因を探ります。我々の発見は、事前学習プロセスを安定させるためには、2つの条件が必要であることを示唆しています：小さなサブレイヤーと大きなショートカットです。理論的な分析を実証的に検証するために、さまざまな実験を行いました。実験結果は、これらの条件を満たす手法が事前学習中の損失スパイクを効果的に防ぐことを示しています。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルの事前学習中に発生する損失のスパイクは性能を低下させるため、避けるべきである。勾配ノルムの急激な増加が原因とされ、サブレイヤーのヤコビ行列の分析を通じて、勾配ノルムを小さく保つための条件として小さなサブレイヤーと大きなショートカットが必要であることを示した。実験により、これらの条件を満たす手法が損失スパイクを効果的に防ぐことが確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shot4410/status/1943301371010388175?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>small sub-layers, large shortcutsの説明はこちらに書かれている。前者については、現在主流なLLMの初期化手法は満たしているが、後者はオリジナルのTransformerの実装では実装されている[^1]が、最近の実装では失われてしまっているとのこと。<br><img src="https://github.com/user-attachments/assets/55cf847c-fc6a-4e76-88c9-1507464e96a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>下図が実験結果で、条件の双方を満たしているのはEmbedLN[^2]とScaled Embed[^3]のみであり、実際にスパイクが生じていないことがわかる。<br><img src="https://github.com/user-attachments/assets/79494662-3d58-4d8e-ae9d-8ed9241e0f65" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]:オリジナル論文 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/245" target="_blank" rel="noopener noreferrer">[Paper Note] Attention Is All You Need, Ashish Vaswani+, NeurIPS'17, 2017.07</a>
+ の3.4節末尾、embedding layersに対してsqrt(d_model)を乗じるということがサラッと書いてある。これが実はめちゃめちゃ重要だったという…<br>[^2]: positional embeddingを加算する前にLayer Normalizationをかける方法<br>[^3]: EmbeddingにEmbeddingの次元数d（i.e., 各レイヤーのinputの次元数)の平方根を乗じる方法</p><p>前にScaled dot-product attentionのsqrt(d_k)がめっちゃ重要ということを実験的に示した、という話もあったような…<br>（まあそもそも元論文になぜスケーリングさせるかの説明は書いてあるけども）</p><p>著者ポスト（スライド）:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shot4410/status/1973694743227027592?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>非常に興味深いので参照のこと。初期化の気持ちの部分など勉強になる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MegaMath: Pushing the Limits of Open Math Corpora, Fan Zhou+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.02807</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2180</repo-issue-link>
+<tags>Pretraining, NLP, Dataset, LanguageModel, SyntheticData, Coding, Mathematics, mid-training, COLM</tags>
+<repo-issue-date>2025-07-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.02807
+# Authors
+  - Fan Zhou
+  - Zengzhi Wang
+  - Nikhil Ranjan
+  - Zhoujun Cheng
+  - Liping Tang
+  - Guowei He
+  - Zhengzhong Liu
+  - Eric P. Xing
+# Abstract
+  - Mathematical reasoning is a cornerstone of human intelligence and a key benchmark for advanced capabilities in large language models (LLMs). However, the research community still lacks an open, large-scale, high-quality corpus tailored to the demands of math-centric LLM pre-training. We present MegaMath, an open dataset curated from diverse, math-focused sources through following practices: (1) Revisiting web data: We re-extracted mathematical documents from Common Crawl with math-oriented HTML optimizations, fasttext-based filtering and deduplication, all for acquiring higher-quality data on the Internet. (2) Recalling Math-related code data: We identified high quality math-related code from large code training corpus, Stack-V2, further enhancing data diversity. (3) Exploring Synthetic data: We synthesized QA-style text, math-related code, and interleaved text-code blocks from web data or code data. By integrating these strategies and validating their effectiveness through extensive ablations, MegaMath delivers 371B tokens with the largest quantity and top quality among existing open math pre-training datasets.
+# Translation (by gpt-4o-mini)
+- 数学的推論は人間の知能の基盤であり、大規模言語モデル（LLMs）の高度な能力の重要なベンチマークです。しかし、研究コミュニティは、数学中心のLLMの事前学習の要求に応じたオープンで大規模かつ高品質なコーパスをまだ持っていません。そこで、私たちはMegaMathを提案します。これは、多様な数学に焦点を当てたソースからキュレーションされたオープンデータセットで、以下の手法に従って作成されました：(1) ウェブデータの再検討：Common Crawlから数学文書を再抽出し、数学指向のHTML最適化、fasttextベースのフィルタリング、重複排除を行い、インターネット上でより高品質なデータを取得しました。(2) 数学関連のコードデータの再確認：大規模なコードトレーニングコーパスであるStack-V2から高品質な数学関連コードを特定し、データの多様性をさらに向上させました。(3) 合成データの探索：ウェブデータやコードデータからQAスタイルのテキスト、数学関連のコード、テキストとコードのブロックを交互に合成しました。これらの戦略を統合し、その効果を広範なアブレーションを通じて検証することで、MegaMathは既存のオープンな数学事前学習データセットの中で最大の量と最高の品質を持つ371Bトークンを提供します。
+# Summary (by gpt-4o-mini)
+- MegaMathは、数学に特化したオープンデータセットで、LLMの数学的推論能力を向上させるために作成された。ウェブデータの再抽出、数学関連コードの特定、合成データの生成を通じて、371Bトークンの高品質なデータを提供し、既存のデータセットを上回る量と品質を実現した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/fazhou_998/status/1942610771915202590?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>非常に大規模な数学の事前学習/mid-training向けのデータセット<br><br>CommonCrawlのHTMLから、さまざまなフィルタリング処理（reformatting, 2 stageのHTML parserの活用（片方はnoisyだが高速、もう一方は高性能だが遅い）, fasttextベースの分類器による抽出, deduplication等）を実施しMegaMath-Webを作成、また、MegaMathWebをさらに分類器で低品質なものをフィルタリングし、LLMによってノイズ除去、テキストのreorganizingを実施し（≠ピュアな合成データ）継続事前学習、mid-training向けの高品質なMegaMath-Web-Proを作成。<br><br>MegaMathCodeはThe Stack V2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2199" target="_blank" rel="noopener noreferrer">[Paper Note] StarCoder 2 and The Stack v2: The Next Generation, Anton Lozhkov+, arXiv'24</a>
+) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&A, code data, text&code block dataの3種類を合成。Q&Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br><img src="https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] When Does Metadata Conditioning （NOT） Work for Language Model   Pre-Training? A Study with Context-Free Grammars, Rei Higuchi+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2504.17562</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2173</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-07-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2504.17562
+# Authors
+  - Rei Higuchi
+  - Ryotaro Kawata
+  - Naoki Nishikawa
+  - Kazusato Oko
+  - Shoichiro Yamaguchi
+  - Sosuke Kobayashi
+  - Seiya Tokui
+  - Kohei Hayashi
+  - Daisuke Okanohara
+  - Taiji Suzuki
+# Abstract
+  - The ability to acquire latent semantics is one of the key properties that determines the performance of language models. One convenient approach to invoke this ability is to prepend metadata (e.g. URLs, domains, and styles) at the beginning of texts in the pre-training data, making it easier for the model to access latent semantics before observing the entire text. Previous studies have reported that this technique actually improves the performance of trained models in downstream tasks; however, this improvement has been observed only in specific downstream tasks, without consistent enhancement in average next-token prediction loss. To understand this phenomenon, we closely investigate how prepending metadata during pre-training affects model performance by examining its behavior using artificial data. Interestingly, we found that this approach produces both positive and negative effects on the downstream tasks. We demonstrate that the effectiveness of the approach depends on whether latent semantics can be inferred from the downstream task's prompt. Specifically, through investigations using data generated by probabilistic context-free grammars, we show that training with metadata helps improve model's performance when the given context is long enough to infer the latent semantics. In contrast, the technique negatively impacts performance when the context lacks the necessary information to make an accurate posterior inference.
+# Translation (by gpt-4o-mini)
+- 潜在的な意味を獲得する能力は、言語モデルの性能を決定する重要な特性の一つです。この能力を引き出す便利なアプローチの一つは、事前学習データのテキストの先頭にメタデータ（例：URL、ドメイン、スタイル）を追加することで、モデルが全体のテキストを観察する前に潜在的な意味にアクセスしやすくすることです。以前の研究では、この技術が実際に下流タスクにおける訓練モデルの性能を向上させることが報告されていますが、この改善は特定の下流タスクにのみ見られ、平均的な次トークン予測損失の一貫した向上は確認されていません。この現象を理解するために、事前学習中にメタデータを追加することがモデルの性能にどのように影響するかを人工データを用いて詳しく調査しました。興味深いことに、このアプローチは下流タスクに対して正の効果と負の効果の両方をもたらすことがわかりました。このアプローチの効果は、潜在的な意味が下流タスクのプロンプトから推測できるかどうかに依存することを示します。具体的には、確率的文脈自由文法によって生成されたデータを用いた調査を通じて、与えられたコンテキストが潜在的な意味を推測するのに十分長い場合、メタデータを用いた訓練がモデルの性能を向上させることを示しました。対照的に、コンテキストが正確な事後推論を行うために必要な情報を欠いている場合、この技術は性能に悪影響を及ぼします。
+# Summary (by gpt-4o-mini)
+- メタデータを事前学習データの先頭に追加することで、言語モデルの潜在的な意味の獲得能力を向上させるアプローチを調査。下流タスクにおいて正の効果と負の効果が見られ、効果はコンテキストの長さに依存。十分な長さのコンテキストがあれば性能向上が確認されたが、情報が不足している場合は悪影響を及ぼすことが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1943086341933383720?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agent S2: A Compositional Generalist-Specialist Framework for Computer   Use Agents, Saaket Agashe+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.00906</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2160</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-07-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.00906
+# Authors
+  - Saaket Agashe
+  - Kyle Wong
+  - Vincent Tu
+  - Jiachen Yang
+  - Ang Li
+  - Xin Eric Wang
+# Abstract
+  - Computer use agents automate digital tasks by directly interacting with graphical user interfaces (GUIs) on computers and mobile devices, offering significant potential to enhance human productivity by completing an open-ended space of user queries. However, current agents face significant challenges: imprecise grounding of GUI elements, difficulties with long-horizon task planning, and performance bottlenecks from relying on single generalist models for diverse cognitive tasks. To this end, we introduce Agent S2, a novel compositional framework that delegates cognitive responsibilities across various generalist and specialist models. We propose a novel Mixture-of-Grounding technique to achieve precise GUI localization and introduce Proactive Hierarchical Planning, dynamically refining action plans at multiple temporal scales in response to evolving observations. Evaluations demonstrate that Agent S2 establishes new state-of-the-art (SOTA) performance on three prominent computer use benchmarks. Specifically, Agent S2 achieves 18.9% and 32.7% relative improvements over leading baseline agents such as Claude Computer Use and UI-TARS on the OSWorld 15-step and 50-step evaluation. Moreover, Agent S2 generalizes effectively to other operating systems and applications, surpassing previous best methods by 52.8% on WindowsAgentArena and by 16.52% on AndroidWorld relatively. Code available at https://github.com/simular-ai/Agent-S.
+# Translation (by gpt-4o-mini)
+- コンピュータ使用エージェントは、コンピュータやモバイルデバイス上のグラフィカルユーザーインターフェース（GUI）と直接対話することでデジタルタスクを自動化し、ユーザーのクエリのオープンエンドな空間を完了することによって人間の生産性を大幅に向上させる可能性を提供します。しかし、現在のエージェントは、GUI要素の不正確な基盤、長期的なタスク計画の困難、さまざまな認知タスクに対して単一の一般モデルに依存することによるパフォーマンスのボトルネックなど、重大な課題に直面しています。これに対処するために、私たちはAgent S2を導入します。これは、さまざまな一般モデルと専門モデルに認知的責任を委任する新しい構成フレームワークです。私たちは、正確なGUIの位置特定を実現するための新しいMixture-of-Grounding技術を提案し、進化する観察に応じて複数の時間スケールでアクションプランを動的に洗練するProactive Hierarchical Planningを導入します。評価結果は、Agent S2が3つの著名なコンピュータ使用ベンチマークで新しい最先端（SOTA）パフォーマンスを確立したことを示しています。具体的には、Agent S2は、OSWorldの15ステップおよび50ステップ評価において、Claude Computer UseやUI-TARSなどの主要なベースラインエージェントに対してそれぞれ18.9%および32.7%の相対的改善を達成しました。さらに、Agent S2は他のオペレーティングシステムやアプリケーションに対しても効果的に一般化し、WindowsAgentArenaでは前回の最良の手法を52.8%、AndroidWorldでは16.52%上回りました。コードはhttps://github.com/simular-ai/Agent-Sで入手可能です。
+# Summary (by gpt-4o-mini)
+- Agent S2は、GUIとの対話を通じてデジタルタスクを自動化する新しいエージェントで、一般モデルと専門モデルに認知的責任を分担させるフレームワークを採用。Mixture-of-Grounding技術でGUIの位置特定を向上させ、Proactive Hierarchical Planningで動的なアクションプランを実現。評価では、OSWorldの15ステップおよび50ステップでそれぞれ18.9%と32.7%の改善を達成し、他のシステムでも優れた性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xwang_lk/status/1942428731303420054?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ReasonIR: Training Retrievers for Reasoning Tasks, Rulin Shao+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.20595</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2159</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-07-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.20595
+# Authors
+  - Rulin Shao
+  - Rui Qiao
+  - Varsha Kishore
+  - Niklas Muennighoff
+  - Xi Victoria Lin
+  - Daniela Rus
+  - Bryan Kian Hsiang Low
+  - Sewon Min
+  - Wen-tau Yih
+  - Pang Wei Koh
+  - Luke Zettlemoyer
+# Abstract
+  - We present ReasonIR-8B, the first retriever specifically trained for general reasoning tasks. Existing retrievers have shown limited gains on reasoning tasks, in part because existing training datasets focus on short factual queries tied to documents that straightforwardly answer them. We develop a synthetic data generation pipeline that, for each document, our pipeline creates a challenging and relevant query, along with a plausibly related but ultimately unhelpful hard negative. By training on a mixture of our synthetic data and existing public data, ReasonIR-8B achieves a new state-of-the-art of 29.9 nDCG@10 without reranker and 36.9 nDCG@10 with reranker on BRIGHT, a widely-used reasoning-intensive information retrieval (IR) benchmark. When applied to RAG tasks, ReasonIR-8B improves MMLU and GPQA performance by 6.4% and 22.6% respectively, relative to the closed-book baseline, outperforming other retrievers and search engines. In addition, ReasonIR-8B uses test-time compute more effectively: on BRIGHT, its performance consistently increases with longer and more information-rich rewritten queries; it continues to outperform other retrievers when combined with an LLM reranker. Our training recipe is general and can be easily extended to future LLMs; to this end, we open-source our code, data, and model.
+# Translation (by gpt-4o-mini)
+- 私たちは、一般的な推論タスクのために特別に訓練された最初のリトリーバーであるReasonIR-8Bを提案します。既存のリトリーバーは、推論タスクにおいて限られた成果しか上げておらず、その一因は既存のトレーニングデータセットが、文書に直接的に答える短い事実に基づくクエリに焦点を当てているためです。私たちは、各文書に対して挑戦的で関連性のあるクエリを生成し、さらに信憑性のあるが最終的には役に立たないハードネガティブを作成する合成データ生成パイプラインを開発しました。合成データと既存の公開データの混合で訓練することにより、ReasonIR-8Bは、広く使用されている推論集約型情報検索（IR）ベンチマークであるBRIGHTにおいて、リランカーなしで29.9 nDCG@10、リランカーありで36.9 nDCG@10という新しい最先端の成果を達成しました。RAGタスクに適用した場合、ReasonIR-8Bは、クローズドブックベースラインに対してMMLUとGPQAのパフォーマンスをそれぞれ6.4%と22.6%向上させ、他のリトリーバーや検索エンジンを上回ります。さらに、ReasonIR-8Bはテスト時の計算をより効果的に利用します。BRIGHTにおいて、そのパフォーマンスは、より長く情報が豊富な書き換えクエリとともに一貫して向上し、LLMリランカーと組み合わせた場合でも他のリトリーバーを上回ります。私たちのトレーニングレシピは一般的であり、将来のLLMに簡単に拡張できます。この目的のために、私たちはコード、データ、モデルをオープンソースとして公開します。
+# Summary (by gpt-4o-mini)
+- 推論タスク向けに特別に訓練されたリトリーバーReasonIR-8Bを提案。合成データ生成パイプラインを用いて挑戦的なクエリとハードネガティブを作成し、訓練。BRIGHTベンチマークで新たな最先端成果を達成し、RAGタスクでも他のリトリーバーを上回る性能を示す。トレーニングレシピは一般的で、将来のLLMへの拡張が容易。コード、データ、モデルはオープンソースで公開。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/1942590591885615572?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning to Generate Unit Tests for Automated Debugging, Archiki Prasad+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2502.01619</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2157</repo-issue-link>
+<tags>COLM</tags>
+<repo-issue-date>2025-07-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2502.01619
+# Authors
+  - Archiki Prasad
+  - Elias Stengel-Eskin
+  - Justin Chih-Yao Chen
+  - Zaid Khan
+  - Mohit Bansal
+# Abstract
+  - Unit tests (UTs) play an instrumental role in assessing code correctness as well as providing feedback to large language models (LLMs), motivating automated test generation. However, we uncover a trade-off between generating unit test inputs that reveal errors when given a faulty code and correctly predicting the unit test output without access to the gold solution. To address this trade-off, we propose UTGen, which teaches LLMs to generate unit test inputs that reveal errors along with their correct expected outputs based on task descriptions. Since model-generated tests can provide noisy signals (e.g., from incorrectly predicted outputs), we propose UTDebug that (i) scales UTGen via test-time compute to improve UT output prediction, and (ii) validates and backtracks edits based on multiple generated UTs to avoid overfitting, and helps LLMs debug effectively. We show that UTGen outperforms other LLM-based baselines by 7.59% based on a metric measuring the presence of both error-revealing UT inputs and correct UT outputs. When used with UTDebug, we find that feedback from UTGen's unit tests improves pass@1 accuracy of Qwen2.5 32B on HumanEvalFix and our own harder debugging split of MBPP+ by over 3.17% and 12.35% (respectively) over other LLM-based UT generation baselines. Lastly, we demonstrate that UTGen is a better judge for code correctness, outperforming a state-of-the-art trained 8B reward model by 4.43% on HumanEval+ with best-of-10 sampling using Qwen2.5 7B.
+# Translation (by gpt-4o-mini)
+- ユニットテスト（UT）は、コードの正確性を評価する上で重要な役割を果たし、大規模言語モデル（LLM）にフィードバックを提供することで、自動テスト生成を促進します。しかし、私たちは、欠陥のあるコードに対してエラーを明らかにするユニットテスト入力を生成することと、ゴールドソリューションにアクセスせずにユニットテスト出力を正しく予測することとの間にトレードオフが存在することを明らかにしました。このトレードオフに対処するために、私たちはUTGenを提案します。UTGenは、タスクの説明に基づいてエラーを明らかにするユニットテスト入力とその正しい期待出力を生成するようにLLMを教えます。モデル生成のテストはノイズの多い信号を提供する可能性があるため（例えば、誤って予測された出力から）、私たちはUTDebugを提案します。UTDebugは、(i) UT出力予測を改善するためにテスト時の計算を通じてUTGenをスケールアップし、(ii) 複数の生成されたUTに基づいて編集を検証し、バックトラックすることでオーバーフィッティングを回避し、LLMが効果的にデバッグできるようにします。私たちは、UTGenがエラーを明らかにするUT入力と正しいUT出力の両方の存在を測定する指標に基づいて、他のLLMベースのベースラインを7.59%上回ることを示しました。UTDebugと併用した場合、UTGenのユニットテストからのフィードバックが、HumanEvalFixおよび私たち自身のより難しいデバッグ分割のMBPP+において、Qwen2.5 32Bのpass@1精度をそれぞれ3.17%および12.35%向上させることがわかりました。最後に、UTGenがコードの正確性を判断する上で優れており、Qwen2.5 7Bを使用したbest-of-10サンプリングでHumanEval+において最先端のトレーニング済み8B報酬モデルを4.43%上回ることを示しました。
+# Summary (by gpt-4o-mini)
+- ユニットテスト（UT）の重要性を踏まえ、UTGenを提案し、LLMを用いてエラーを明らかにするUT入力とその期待出力を生成。UTDebugを併用することで、出力予測の改善とオーバーフィッティングの回避を実現。UTGenは他のLLMベースラインを7.59%上回り、UTDebugと組み合わせることでQwen2.5の精度をそれぞれ3.17%および12.35%向上。最終的に、UTGenはHumanEval+で最先端モデルを4.43%上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/archikiprasad/status/1942645157943468500?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ScholarCopilot: Training Large Language Models for Academic Writing with   Accurate Citations, Yubo Wang+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2504.00824</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2149</repo-issue-link>
+<tags>NaturalLanguageGeneration, Citations, NLP, LanguageModel, Supervised-FineTuning (SFT), COLM, AcademicWriting</tags>
+<repo-issue-date>2025-07-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2504.00824
+# Authors
+  - Yubo Wang
+  - Xueguang Ma
+  - Ping Nie
+  - Huaye Zeng
+  - Zhiheng Lyu
+  - Yuxuan Zhang
+  - Benjamin Schneider
+  - Yi Lu
+  - Xiang Yue
+  - Wenhu Chen
+# Abstract
+  - Academic writing requires both coherent text generation and precise citation of relevant literature. Although recent Retrieval-Augmented Generation (RAG) systems have significantly improved factual accuracy in general-purpose text generation, their ability to support professional academic writing remains limited. In this work, we introduce ScholarCopilot, a unified framework designed to enhance existing large language models for generating professional academic articles with accurate and contextually relevant citations. ScholarCopilot dynamically determines when to retrieve scholarly references by generating a retrieval token [RET], which is then used to query a citation database. The retrieved references are fed into the model to augment the generation process. We jointly optimize both the generation and citation tasks within a single framework to improve efficiency. Our model is built upon Qwen-2.5-7B and trained on 500K papers from arXiv. It achieves a top-1 retrieval accuracy of 40.1% on our evaluation dataset, outperforming baselines such as E5-Mistral-7B-Instruct (15.0%) and BM25 (9.8%). On a dataset of 1,000 academic writing samples, ScholarCopilot scores 16.2/25 in generation quality -- measured across relevance, coherence, academic rigor, completeness, and innovation -- significantly surpassing all existing models, including much larger ones like the Retrieval-Augmented Qwen2.5-72B-Instruct. Human studies further demonstrate that ScholarCopilot, despite being a 7B model, significantly outperforms ChatGPT, achieving 100% preference in citation quality and over 70% in overall usefulness.
+# Translation (by gpt-4o-mini)
+- 学術的な執筆には、一貫したテキスト生成と関連文献の正確な引用が求められます。最近のRetrieval-Augmented Generation（RAG）システムは、一般的なテキスト生成における事実の正確性を大幅に向上させましたが、専門的な学術執筆を支援する能力は依然として限られています。本研究では、正確で文脈に関連した引用を伴う専門的な学術記事を生成するために、既存の大規模言語モデルを強化することを目的とした統一フレームワーク「ScholarCopilot」を紹介します。ScholarCopilotは、学術的な参考文献を取得するタイミングを動的に決定するために、取得トークン[RET]を生成し、それを用いて引用データベースにクエリを送信します。取得した参考文献はモデルに供給され、生成プロセスを補強します。生成タスクと引用タスクの両方を単一のフレームワーク内で共同最適化し、効率を向上させます。私たちのモデルはQwen-2.5-7Bに基づいており、arXivから500Kの論文で訓練されています。評価データセットにおいて、トップ1の取得精度は40.1%を達成し、E5-Mistral-7B-Instruct（15.0%）やBM25（9.8%）などのベースラインを上回っています。1,000件の学術執筆サンプルのデータセットにおいて、ScholarCopilotは生成品質で16.2/25のスコアを記録し、関連性、一貫性、学術的厳密さ、完全性、革新性の観点から、既存のすべてのモデルを大幅に上回り、Retrieval-Augmented Qwen2.5-72B-Instructのようなはるかに大きなモデルも含めて優れた結果を示しました。人間による研究でも、ScholarCopilotは7Bモデルでありながら、ChatGPTを大幅に上回り、引用の質において100%の好ましさを達成し、全体的な有用性において70%以上の評価を得ています。
+# Summary (by gpt-4o-mini)
+- ScholarCopilotは、学術的な執筆を支援するために大規模言語モデルを強化したフレームワークで、正確で文脈に関連した引用を生成します。取得トークンを用いて動的に文献を取得し、生成プロセスを補強します。評価では、取得精度が40.1%に達し、生成品質も他のモデルを大幅に上回りました。特に、ScholarCopilotはChatGPTを超える性能を示し、引用の質で100%の好ましさを達成しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhuchen/status/1907861046833885397?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>従来のRAGベースのAcademicWriting手法では、まずReferenceを検索して、その内容をcontextに含めてテキストを生成するというSequentialなパイプラインだったが、本研究では通常のNextTokenPrediction Lossに加え、特殊トークン\[RET\]を導入し、ContrastiveLearningによって、\[RET\]トークンがトリガーとなり、生成過程のContextとqueryから適切なReferenceを検索できるEmbeddingを出力し、Referenceを検索し、動的にReferenceの内容をcontextに加え、テキストを生成する手法を提案している。<br><img src="https://github.com/user-attachments/assets/777da4cb-5678-455f-babf-b91690945712" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/a27e092e-fff2-4f8a-91f7-09fe39e8e568" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>データセットはarXivからlatex sourceを収集し、bibliography部分からReferenceのタイトルをQwenを用いて抽出。タイトルをarXivおよびSemanticScholarのデータベースと照合し、paperとReferenceの紐付けを実施することで構築している。<br><img src="https://github.com/user-attachments/assets/2dd2b956-291e-4407-997a-4a2e68a72708" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>GPT-4oによるjudgeの結果、ground truthのcitationを用いた場合には及ばないが、提案手法により品質が向上し、citation retrievalのRecall@Kも大幅に改善している。<br><img src="https://github.com/user-attachments/assets/2ff5dd73-dcb8-4a3f-9d6a-1bcfb52a8321" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/81a39366-2577-41a1-aa6b-facc7ac25f1c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] FineWeb2: One Pipeline to Scale Them All -- Adapting Pre-Training Data  Processing to Every Language, Guilherme Penedo+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.20920</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2109</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, Dataset, LanguageModel, MultiLingual, COLM, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-06-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.20920
+# Authors
+  - Guilherme Penedo
+  - Hynek Kydlíček
+  - Vinko Sabolčec
+  - Bettina Messmer
+  - Negar Foroutan
+  - Amir Hossein Kargaran
+  - Colin Raffel
+  - Martin Jaggi
+  - Leandro Von Werra
+  - Thomas Wolf
+# Abstract
+  - Pre-training state-of-the-art large language models (LLMs) requires vast amounts of clean and diverse text data. While the open development of large high-quality English pre-training datasets has seen substantial recent progress, training performant multilingual LLMs remains a challenge, in large part due to the inherent difficulty of tailoring filtering and deduplication pipelines to a large number of languages. In this work, we introduce a new pre-training dataset curation pipeline based on FineWeb that can be automatically adapted to support any language. We extensively ablate our pipeline design choices on a set of nine diverse languages, guided by a set of meaningful and informative evaluation tasks that were chosen through a novel selection process based on measurable criteria. Ultimately, we show that our pipeline can be used to create non-English corpora that produce more performant models than prior datasets. We additionally introduce a straightforward and principled approach to rebalance datasets that takes into consideration both duplication count and quality, providing an additional performance uplift. Finally, we scale our pipeline to over 1000 languages using almost 100 Common Crawl snapshots to produce FineWeb2, a new 20 terabyte (5 billion document) multilingual dataset which we release along with our pipeline, training, and evaluation codebases.
+# Translation (by gpt-4o-mini)
+- 最先端の大規模言語モデル（LLMs）の事前学習には、大量のクリーンで多様なテキストデータが必要です。高品質な英語の事前学習データセットのオープンな開発は最近大きな進展を遂げましたが、多言語LLMsの性能を向上させることは依然として課題であり、その大きな要因は、多数の言語に合わせたフィルタリングおよび重複排除パイプラインの調整の難しさにあります。本研究では、任意の言語をサポートするために自動的に適応可能な新しい事前学習データセットキュレーションパイプラインをFineWebに基づいて導入します。私たちは、測定可能な基準に基づいて選ばれた一連の意味のある評価タスクに導かれ、9つの多様な言語に対してパイプラインの設計選択肢を徹底的に検証します。最終的に、私たちのパイプラインを使用して作成された非英語コーパスが、従来のデータセットよりも性能の高いモデルを生成できることを示します。さらに、重複数と品質の両方を考慮したデータセットの再バランスを行うための簡潔で原則に基づいたアプローチを導入し、追加の性能向上を提供します。最後に、私たちのパイプラインを1000以上の言語にスケールアップし、ほぼ100のCommon Crawlスナップショットを使用してFineWeb2という新しい20テラバイト（50億文書）の多言語データセットを生成し、これをパイプライン、トレーニング、評価のコードベースと共に公開します。
+# Summary (by gpt-4o-mini)
+- 多言語LLMsの性能向上のために、FineWebに基づく新しい事前学習データセットキュレーションパイプラインを提案。9つの言語に対して設計選択肢を検証し、非英語コーパスが従来のデータセットよりも高性能なモデルを生成できることを示す。データセットの再バランス手法も導入し、1000以上の言語にスケールアップした20テラバイトの多言語データセットFineWeb2を公開。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gui_penedo/status/1938631842720022572?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>v1<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1942" target="_blank" rel="noopener noreferrer">The FineWeb Datasets: Decanting the Web for the Finest Text Data at   Scale, Guilherme Penedo+, NeurIPS'24</a>
+</p><p>abstを見る限りFinewebを多言語に拡張した模様</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=jnRBe6zatP#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=jnRBe6zatP#discussion</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Recycling the Web: A Method to Enhance Pre-training Data Quality and  Quantity for Language Models, Thao Nguyen+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.04689</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2084</repo-issue-link>
+<tags>Pretraining, NLP, Dataset, LanguageModel, SyntheticData, action_wanted, COLM</tags>
+<repo-issue-date>2025-06-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.04689
+# Authors
+  - Thao Nguyen
+  - Yang Li
+  - Olga Golovneva
+  - Luke Zettlemoyer
+  - Sewoong Oh
+  - Ludwig Schmidt
+  - Xian Li
+# Abstract
+  - Scaling laws predict that the performance of large language models improves with increasing model size and data size. In practice, pre-training has been relying on massive web crawls, using almost all data sources publicly available on the internet so far. However, this pool of natural data does not grow at the same rate as the compute supply. Furthermore, the availability of high-quality texts is even more limited: data filtering pipelines often remove up to 99% of the initial web scrapes to achieve state-of-the-art. To address the "data wall" of pre-training scaling, our work explores ways to transform and recycle data discarded in existing filtering processes. We propose REWIRE, REcycling the Web with guIded REwrite, a method to enrich low-quality documents so that they could become useful for training. This in turn allows us to increase the representation of synthetic data in the final pre-training set. Experiments at 1B, 3B and 7B scales of the DCLM benchmark show that mixing high-quality raw texts and our rewritten texts lead to 1.0, 1.3 and 2.5 percentage points improvement respectively across 22 diverse tasks, compared to training on only filtered web data. Training on the raw-synthetic data mix is also more effective than having access to 2x web data. Through further analysis, we demonstrate that about 82% of the mixed in texts come from transforming lower-quality documents that would otherwise be discarded. REWIRE also outperforms related approaches of generating synthetic data, including Wikipedia-style paraphrasing, question-answer synthesizing and knowledge extraction. These results suggest that recycling web texts holds the potential for being a simple and effective approach for scaling pre-training data.
+# Translation (by gpt-4o-mini)
+- スケーリング法則は、大規模言語モデルの性能がモデルサイズとデータサイズの増加に伴って向上することを予測しています。実際には、事前学習は膨大なウェブクローリングに依存しており、これまでインターネット上で公開されているほぼすべてのデータソースを使用しています。しかし、この自然データのプールは、計算リソースの供給と同じ速度で成長しているわけではありません。さらに、高品質なテキストの入手可能性はさらに限られています。データフィルタリングパイプラインは、最先端の成果を達成するために、初期のウェブスクレイピングの最大99%を削除することがよくあります。事前学習のスケーリングにおける「データの壁」に対処するために、本研究では既存のフィルタリングプロセスで廃棄されたデータを変換し再利用する方法を探ります。私たちは、低品質な文書を豊かにしてトレーニングに役立つようにする手法「REWIRE（REcycling the Web with guIded REwrite）」を提案します。これにより、最終的な事前学習セットにおける合成データの表現を増やすことが可能になります。DCLMベンチマークの1B、3B、7Bスケールでの実験では、高品質な生データと私たちの書き直したテキストを混合することで、フィルタリングされたウェブデータのみでのトレーニングと比較して、22の多様なタスクでそれぞれ1.0、1.3、2.5パーセントポイントの改善が見られました。生データと合成データの混合でのトレーニングは、2倍のウェブデータにアクセスするよりも効果的です。さらに分析を通じて、混合されたテキストの約82%が、そうでなければ廃棄されていた低品質な文書を変換することから来ていることを示します。REWIREは、ウィキペディアスタイルの言い換え、質問応答の合成、知識抽出など、合成データ生成の関連アプローチを上回る性能を示しています。これらの結果は、ウェブテキストのリサイクルが事前学習データのスケーリングに対するシンプルで効果的なアプローチとなる可能性を示唆しています。
+# Summary (by gpt-4o-mini)
+- スケーリング法則に基づき、低品質なウェブデータを再利用する手法「REWIRE」を提案。これにより、事前学習データの合成表現を増やし、フィルタリングされたデータのみでのトレーニングと比較して、22のタスクで性能を向上。生データと合成データの混合が効果的であることを示し、ウェブテキストのリサイクルが事前学習データのスケーリングに有効であることを示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thao_nguyen26/status/1937210428876292457?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thao_nguyen26/status/1961163219118297178?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>学習データの枯渇に対する対処として別の方向性としては下記のような研究もある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+</p><p>data:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/facebook/recycling_the_web" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/facebook/recycling_the_web</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A Sober Look at Progress in Language Model Reasoning: Pitfalls and Paths   to Reproducibility, Andreas Hochlehnert+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2504.07086</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1887</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Evaluation, SmallModel, COLM, PostTraining, Selected Papers/Blogs, In-Depth Notes, KeyPoint Notes, Initial Impression Notes</tags>
+<repo-issue-date>2025-04-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2504.07086
+# Authors
+  - Andreas Hochlehnert
+  - Hardik Bhatnagar
+  - Vishaal Udandarao
+  - Samuel Albanie
+  - Ameya Prabhu
+  - Matthias Bethge
+# Abstract
+  - Reasoning has emerged as the next major frontier for language models (LMs), with rapid advances from both academic and industrial labs. However, this progress often outpaces methodological rigor, with many evaluations relying on benchmarking practices that lack transparency, robustness, or statistical grounding. In this work, we conduct a comprehensive empirical study and find that current mathematical reasoning benchmarks are highly sensitive to subtle implementation choices - including decoding parameters, random seeds, prompt formatting, and even hardware and software-framework configurations. Performance gains reported in recent studies frequently hinge on unclear comparisons or unreported sources of variance. To address these issues, we propose a standardized evaluation framework with clearly defined best practices and reporting standards. Using this framework, we reassess recent methods and find that reinforcement learning (RL) approaches yield only modest improvements - far below prior claims - and are prone to overfitting, especially on small-scale benchmarks like AIME24. In contrast, supervised finetuning (SFT) methods show consistently stronger generalization. To foster reproducibility, we release all code, prompts, and model outputs, for reasoning benchmarks, establishing more rigorous foundations for future work.
+# Translation (by gpt-4o-mini)
+- 推論は、言語モデル（LMs）にとって次の主要なフロンティアとして浮上しており、学術界と産業界の両方から急速な進展が見られています。しかし、この進展はしばしば方法論的な厳密さを上回り、多くの評価が透明性、堅牢性、または統計的根拠に欠けるベンチマーク手法に依存しています。本研究では、包括的な実証研究を行い、現在の数学的推論ベンチマークが微妙な実装の選択に非常に敏感であることを発見しました。これには、デコーディングパラメータ、ランダムシード、プロンプトのフォーマット、さらにはハードウェアやソフトウェアフレームワークの構成が含まれます。最近の研究で報告された性能向上は、しばしば不明瞭な比較や報告されていない変動要因に依存しています。これらの問題に対処するために、明確に定義されたベストプラクティスと報告基準を持つ標準化された評価フレームワークを提案します。このフレームワークを使用して、最近の手法を再評価した結果、強化学習（RL）アプローチはわずかな改善しかもたらさず、以前の主張を大きく下回り、特にAIME24のような小規模ベンチマークでは過学習しやすいことがわかりました。対照的に、教師ありファインチューニング（SFT）手法は一貫して強い一般化を示しました。再現性を促進するために、推論ベンチマーク用のすべてのコード、プロンプト、およびモデル出力を公開し、今後の研究のためのより厳密な基盤を確立します。
+# Summary (by gpt-4o-mini)
+- 推論は言語モデルの重要な課題であり、進展が見られるが、評価手法には透明性や堅牢性が欠けている。本研究では、数学的推論ベンチマークが実装の選択に敏感であることを発見し、標準化された評価フレームワークを提案。再評価の結果、強化学習アプローチは改善が少なく、教師ありファインチューニング手法は強い一般化を示した。再現性を高めるために、関連するコードやデータを公開し、今後の研究の基盤を築く。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhuchen/status/1911143014258405420?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは<=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
+</p><p>個々のpost-trainingされたRLモデルが具体的にどういう訓練をしたのかは追えていないが、DAPOやDr. GRPO, VAPOの場合はどうなるんだろうか？<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1876" target="_blank" rel="noopener noreferrer">VAPO: Efficient and Reliable Reinforcement Learning for Advanced
+  Reasoning Tasks, YuYue+, arXiv'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1821" target="_blank" rel="noopener noreferrer">[Paper Note] Understanding R1-Zero-Like Training: A Critical Perspective, Zichen Liu+, arXiv'25, 2025.03</a>
+<br><br>Rewardの設定の仕方はどのような影響があるのだろうか（verifiable rewardなのか、neuralモデルによるrewardなのかなど)？<br><br>学習のさせ方もどのような影響があるのだろうか（RLでカリキュラムlearningにした場合など）？<br><br>検証しているモデルがそれぞれどのような設定で学習されているかまでを見ないとこの辺はわからなそう。<br><br>ただなんとなーくの直感だと、SLMを賢くしたいという場合は何らかの賢いモデルの恩恵に預かると有利なケースが多く（SFTの場合はそれが大規模なモデルから蒸留したreasoning trace）、SLM+RLの場合はPRMのような思考プロセスを評価してRewardに反映させるようなものを利用しないと、少なくとも小規模なLLMをめちゃ賢くします〜というのはきついんじゃないかなあという感想ではある。<br>ただ、結局SLMという時点で多くの場合、より賢いパラメータ数の多いLLMが世の中には存在するあるはずなので、RLしないでSFTして蒸留すれば良いんじゃない…？と思ってしまう。<br>が、多くの場合その賢いLLMはProprietaryなLLMであり、出力を得て自分のモデルをpost-trainingすることは利用規約違反となるため、自前で賢くてパラメータ数の多いLLMを用意できない場合は困ってしまうので、SLMをクソデカパラメータのモデルの恩恵なしで超絶賢くできたら世の中の多くの人は嬉しいよね、とも思う。</p><p>（斜め読みだが）<br>サンプル数が少ない（数十件）AIMEやAMCなどのデータはseedの値にとてもsensitiveであり(Takeaway1, 2)、<br><br><img src="https://github.com/user-attachments/assets/97581133-cf17-4635-b66c-442eaf8956d4" /" alt="image" loading="lazy" width="550" height="400"/><br><br>それらは10種類のseedを用いて結果を平均すると分散が非常に小さくなるので、seedは複数種類利用して平均の性能を見た方がreliableであり(Takeaway3)<br><br><img src="https://github.com/user-attachments/assets/5065ef0e-de89-4b17-aa52-c90b7191e9b2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>temperatureを高くするとピーク性能が上がるが分散も上がるため再現性の課題が増大するが、top-pを大きくすると再現性の問題は現れず性能向上に寄与し<br><br><img src="https://github.com/user-attachments/assets/76d5c989-edbb-4d70-9080-d1d4b01de2ff" /" alt="image" loading="lazy" width="550" height="400"/><br><br>既存研究のモデルのtemperatureとtop-pを変化させ実験するとperformanceに非常に大きな変化が出るため、モデルごとに最適な値を選定して比較をしないとunfairであることを指摘 (Takeaway4)。<br><br><img src="https://github.com/user-attachments/assets/d8b453d1-3d2e-4a80-b03d-c69ec1b2232e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>また、ハードウェアの面では、vLLMのようなinference engineはGPU typeやmemoryのconfigurationに対してsensitiveでパフォーマンスが変わるだけでなく、<br><br><img src="https://github.com/user-attachments/assets/a41891c7-072c-4c38-9ad6-beada4721bac" /" alt="image" loading="lazy" width="550" height="400"/><br><br>評価に利用するフレームワークごとにinference engineとprompt templateが異なるためこちらもパフォーマンスに影響が出るし (Takeaway5)、<br><br><img src="https://github.com/user-attachments/assets/1f7d328c-0757-47b9-9961-630e2429fb3e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>max output tokenの値を変化させると性能も変わり、prompt templateを利用しないと性能が劇的に低下する (Takeaway6)。<br><br><img src="https://github.com/user-attachments/assets/dc0902d1-a5f2-47de-8df1-c28107e1da28" /" alt="image" loading="lazy" width="550" height="400"/><br><br>これらのことから著者らはreliableな評価のために下記を提案しており (4.1節; 後ほど追記)、<br><br>実際にさまざまな条件をfair comparisonとなるように標準化して評価したところ（4.2節; 後ほど追記）<br><br>上の表のような結果となった。この結果は、<br>- DeepSeekR1-DistilledをRLしてもSFTと比較したときに意味のあるほどのパフォーマンスの向上はないことから、スケーラブル、かつ信頼性のあるRL手法がまだ不足しており<br>- 大規模なパラメータのモデルのreasoning traceからSFTをする方法はさまざまなベンチマークでロバストな性能（＝高い汎化性能）を持ち、RLと比べると現状はRLと比較してよりパラダイムとして成熟しており<br>- （AIME24,25を比較するとSFTと比べてRLの場合performanceの低下が著しいので）RLはoverfittingしやすく、OODなベンチマークが必要</p><p>しっかりと評価の枠組みを標準化してfair comparisonしていかないと、RecSys業界の二の舞になりそう（というかもうなってる？）。<br><br>またこの研究で分析されているのは小規模なモデル（<=10B）に対する既存研究で用いられた一部のRL手法や設定の性能だけ（真に示したかったらPhisics of LLMのような完全にコントロール可能なサンドボックスで実験する必要があると思われる）なので、DeepSeek-R1のように、大規模なパラメータ（数百B）を持つモデルに対するRLに関して同じことが言えるかは自明ではない点に注意。</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=90UrTTxp5O#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=90UrTTxp5O#discussion</a>
+{% endraw %}
+
+</p><p>最近の以下のようなSFTはRLの一つのケースと見做せるという議論を踏まえるとどうなるだろうか<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2382" target="_blank" rel="noopener noreferrer">[Paper Note] On the Generalization of SFT: A Reinforcement Learning Perspective with  Reward Rectification, Yongliang Wu+, ICLR'26, 2025.08</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2700" target="_blank" rel="noopener noreferrer">[Paper Note] Towards a Unified View of Large Language Model Post-Training, Xingtai Lv+, arXiv'25</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.02732</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1860</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Attention, AttentionSinks, COLM, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-04-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.02732
+# Authors
+  - Federico Barbero
+  - Álvaro Arroyo
+  - Xiangming Gu
+  - Christos Perivolaropoulos
+  - Michael Bronstein
+  - Petar Veličkovi ć
+  - Razvan Pascanu
+# Abstract
+  - Large Language Models (LLMs) tend to attend heavily to the first token in the sequence -- creating a so-called attention sink. Many works have studied this phenomenon in detail, proposing various ways to either leverage or alleviate it. Attention sinks have been connected to quantisation difficulties, security issues, and streaming attention. Yet, while many works have provided conditions in which they occur or not, a critical question remains shallowly answered: Why do LLMs learn such patterns and how are they being used? In this work, we argue theoretically and empirically that this mechanism provides a method for LLMs to avoid over-mixing, connecting this to existing lines of work that study mathematically how information propagates in Transformers. We conduct experiments to validate our theoretical intuitions and show how choices such as context length, depth, and data packing influence the sink behaviour. We hope that this study provides a new practical perspective on why attention sinks are useful in LLMs, leading to a better understanding of the attention patterns that form during training.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、シーケンス内の最初のトークンに強く注意を向ける傾向があり、これを「アテンションシンク」と呼ぶ。この現象については多くの研究が行われており、活用または軽減するためのさまざまな方法が提案されている。アテンションシンクは、量子化の難しさやセキュリティの問題、ストリーミングアテンションに関連付けられている。しかし、多くの研究がそれが発生する条件を提供している一方で、重要な疑問が浅くしか答えられていない。それは、なぜLLMsがそのようなパターンを学習し、それがどのように利用されているのかということである。本研究では、このメカニズムがLLMsが過剰混合を避ける方法を提供することを理論的および実証的に主張し、情報がトランスフォーマー内でどのように伝播するかを数学的に研究する既存の研究と関連付ける。理論的直感を検証するための実験を行い、コンテキストの長さ、深さ、データのパッキングなどの選択がシンクの挙動にどのように影響するかを示すことを目指す。この研究が、なぜアテンションシンクがLLMsにおいて有用であるのかについての新たな実践的視点を提供し、トレーニング中に形成されるアテンションパターンの理解を深めることにつながることを期待している。
+# Summary (by gpt-4o-mini)
+- LLMsは最初のトークンに強く注意を向ける「アテンションシンク」を示し、そのメカニズムが過剰混合を避ける方法を理論的・実証的に探求。コンテキストの長さやデータのパッキングがシンクの挙動に与える影響を実験で示し、アテンションパターンの理解を深めることを目指す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/1908187563422261411?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Attention Sinkによって、トークンの情報がover-mixingされることが抑制され、Decoder-only LLMの深い層のrepresentationが均一化されることを抑制する（＝promptの摂動にロバストになる）ことが示された模様。<br><img src="https://github.com/user-attachments/assets/8a1223c0-5621-42a5-accc-31fa7f636856" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br>Gemma7Bにおいて、prompt中のトークン一語を置換した後に、Attention Sink（<bos>）の有無によって、tokenレベルのrepresentationに対してどのような摂動があるかをlayerごとにまとめた図が下記の模様。Attention Sinkによって、tokenの摂動が他のtoken, layerに対してmixingされるのが抑制されている。<br><img src="https://github.com/user-attachments/assets/b1a4038a-d116-4bd1-b27b-c55eb861bee9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=tu4dFUsW5z#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tu4dFUsW5z#discussion</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Critique Fine-Tuning: Learning to Critique is More Effective than   Learning to Imitate, Yubo Wang+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.17703</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1832</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), COLM, PostTraining</tags>
+<repo-issue-date>2025-03-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.17703
+# Authors
+  - Yubo Wang
+  - Xiang Yue
+  - Wenhu Chen
+# Abstract
+  - Supervised Fine-Tuning (SFT) is commonly used to train language models to imitate annotated responses for given instructions. In this paper, we challenge this paradigm and propose Critique Fine-Tuning (CFT), a strategy where models learn to critique noisy responses rather than simply imitate correct ones. Inspired by human learning processes that emphasize critical thinking, CFT encourages deeper analysis and nuanced understanding-traits often overlooked by standard SFT. To validate the effectiveness of CFT, we construct a 50K-sample dataset from WebInstruct, using GPT-4o as the teacher to generate critiques in the form of ([query; noisy response], critique). CFT on this dataset yields a consistent 4-10% improvement over SFT on six math benchmarks with different base models like Qwen2.5, Qwen2.5-Math and DeepSeek-Math. We further expand to MetaMath and NuminaMath datasets and observe similar gains over SFT. Notably, our model Qwen2.5-Math-CFT only requires 1 hour training on 8xH100 over the 50K examples. It can match or outperform strong competitors like Qwen2.5-Math-Instruct on most benchmarks, which use over 2M samples. Moreover, it can match the performance of SimpleRL, which is a deepseek-r1 replication trained with 140x more compute. Ablation studies show that CFT is robust to the source of noisy response and teacher critique model. Through these findings, we argue that CFT offers a more effective alternative to advance the reasoning of language models.
+# Translation (by gpt-4o-mini)
+- 監視付きファインチューニング（SFT）は、言語モデルを訓練して与えられた指示に対する注釈付き応答を模倣させるために一般的に使用されます。本論文では、このパラダイムに挑戦し、モデルが正しい応答を単に模倣するのではなく、ノイズのある応答を批評することを学ぶ戦略である批評ファインチューニング（CFT）を提案します。人間の学習プロセスにインスパイアを受け、批判的思考を重視するCFTは、標準的なSFTでは見落とされがちな深い分析と微妙な理解を促進します。CFTの効果を検証するために、WebInstructから50Kサンプルのデータセットを構築し、GPT-4oを教師として使用して、([query; noisy response], critique)の形式で批評を生成しました。このデータセットに対するCFTは、Qwen2.5、Qwen2.5-Math、DeepSeek-Mathなどの異なるベースモデルで、6つの数学ベンチマークにおいてSFTに対して一貫して4-10%の改善をもたらしました。さらに、MetaMathおよびNuminaMathデータセットに拡張し、SFTに対して同様の向上を観察しました。特に、私たちのモデルQwen2.5-Math-CFTは、50Kの例に対して8xH100で1時間のトレーニングのみで済みます。これは、2M以上のサンプルを使用するQwen2.5-Math-Instructのような強力な競合と同等かそれ以上の性能を発揮します。さらに、140倍の計算リソースで訓練されたdeepseek-r1の複製であるSimpleRLと同等の性能を発揮します。アブレーション研究により、CFTはノイズのある応答のソースや教師の批評モデルに対して堅牢であることが示されました。これらの発見を通じて、CFTは言語モデルの推論を進展させるためのより効果的な代替手段を提供することを主張します。
+# Summary (by gpt-4o-mini)
+- 批評ファインチューニング（CFT）は、言語モデルがノイズのある応答を批評することを学ぶ新しい戦略で、従来の監視付きファインチューニング（SFT）に挑戦します。CFTは人間の学習プロセスにインスパイアを受け、深い分析を促進します。WebInstructから構築した50Kサンプルのデータセットを用いて、CFTは複数のベースモデルでSFTに対して4-10%の性能向上を示しました。特に、Qwen2.5-Math-CFTは少ないトレーニングで強力な競合と同等の性能を発揮し、CFTの堅牢性も確認されました。CFTは言語モデルの推論を進展させる効果的な手法であると主張します。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/WenhuChen/status/1885060597500567562"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Critique Fine-Tuning (CFT) を提案。CFTでは、query x, noisy response y [^1] が与えられたときに、それに対する批評 cを学習する。cはgivenではないので、GPT4oのような強力なモデルによって合成する。<br><br>![Image](https://github.com/user-attachments/assets/f25babdd-63d6-4d3d-a9b0-3217db2bd07f)<br><br>目的関数は以下。[x; y] がgivenな時にcを生成する確率を最大化する。シンプル。<br>![Image](https://github.com/user-attachments/assets/ccdb8e42-e8b2-4ae1-99a6-a0b7c1d4bf2a)<br><br>RLを用いた手法との比較。1/10程度のデータ量、1/100程度のGPU時間で同等の性能を達成できる。<br>![Image](https://github.com/user-attachments/assets/848376ff-9965-485b-b8a0-7960d1d0e7b9)<br><br>[^1]: 本論文で利用しているWebInstructからサンプリングしたデータでは、たとえば約50%程度のyが正解,  残りは不正解（程度のnoisyデータを利用している）</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Tulu 3: Pushing Frontiers in Open Language Model Post-Training, Nathan Lambert+, COLM'25, 2024.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.15124</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1745</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), OpenWeight, OpenSource, COLM, DPO, PostTraining, read-later, RLVR, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-02-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.15124
+# Authors
+  - Nathan Lambert
+  - Jacob Morrison
+  - Valentina Pyatkin
+  - Shengyi Huang
+  - Hamish Ivison
+  - Faeze Brahman
+  - Lester James V. Miranda
+  - Alisa Liu
+  - Nouha Dziri
+  - Shane Lyu
+  - Yuling Gu
+  - Saumya Malik
+  - Victoria Graf
+  - Jena D. Hwang
+  - Jiangjiang Yang
+  - Ronan Le Bras
+  - Oyvind Tafjord
+  - Chris Wilhelm
+  - Luca Soldaini
+  - Noah A. Smith
+  - Yizhong Wang
+  - Pradeep Dasigi
+  - Hannaneh Hajishirzi
+# Abstract
+  - Language model post-training is applied to refine behaviors and unlock new skills across a wide range of recent language models, but open recipes for applying these techniques lag behind proprietary ones. The underlying training data and recipes for post-training are simultaneously the most important pieces of the puzzle and the portion with the least transparency. To bridge this gap, we introduce Tulu 3, a family of fully-open state-of-the-art post-trained models, alongside its data, code, and training recipes, serving as a comprehensive guide for modern post-training techniques. Tulu 3, which builds on Llama 3.1 base models, achieves results surpassing the instruct versions of Llama 3.1, Qwen 2.5, Mistral, and even closed models such as GPT-4o-mini and Claude 3.5-Haiku. The training algorithms for our models include supervised finetuning (SFT), Direct Preference Optimization (DPO), and a novel method we call Reinforcement Learning with Verifiable Rewards (RLVR). With Tulu 3, we introduce a multi-task evaluation scheme for post-training recipes with development and unseen evaluations, standard benchmark implementations, and substantial decontamination of existing open datasets on said benchmarks. We conclude with analysis and discussion of training methods that did not reliably improve performance.   In addition to the Tulu 3 model weights and demo, we release the complete recipe -- including datasets for diverse core skills, a robust toolkit for data curation and evaluation, the training code and infrastructure, and, most importantly, a detailed report for reproducing and further adapting the Tulu 3 approach to more domains.
+# Translation (by gpt-4o-mini)
+- 言語モデルのポストトレーニングは、最近のさまざまな言語モデルにおいて行動を洗練し、新しいスキルを解放するために適用されていますが、これらの技術を適用するためのオープンなレシピは、独自のものに比べて遅れています。ポストトレーニングのための基礎となるトレーニングデータとレシピは、最も重要な要素でありながら、最も透明性が欠けている部分でもあります。このギャップを埋めるために、私たちはTulu 3を紹介します。これは、完全にオープンな最先端のポストトレーニングモデルのファミリーであり、そのデータ、コード、トレーニングレシピとともに提供され、現代のポストトレーニング技術の包括的なガイドとして機能します。Tulu 3はLlama 3.1ベースモデルを基にしており、Llama 3.1のインストラクションバージョン、Qwen 2.5、Mistral、さらにはGPT-4o-miniやClaude 3.5-Haikuといったクローズドモデルを上回る結果を達成しています。私たちのモデルのトレーニングアルゴリズムには、教師ありファインチューニング（SFT）、直接的な好み最適化（DPO）、および「検証可能な報酬を用いた強化学習（RLVR）」と呼ぶ新しい手法が含まれています。Tulu 3では、ポストトレーニングレシピのためのマルチタスク評価スキームを導入し、開発および未見の評価、標準的なベンチマーク実装、そしてこれらのベンチマークにおける既存のオープンデータセットの大幅な除染を行います。最後に、パフォーマンスを信頼性高く向上させなかったトレーニング手法の分析と議論を行います。
+
+Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレシピを公開します。これには、多様なコアスキルのためのデータセット、データキュレーションと評価のための堅牢なツールキット、トレーニングコードとインフラストラクチャ、そして最も重要なこととして、Tulu 3アプローチを他のドメインに再現し、さらに適応させるための詳細なレポートが含まれています。
+# Summary (by gpt-4o-mini)
+- Tulu 3は、オープンなポストトレーニングモデルのファミリーで、トレーニングデータやレシピを公開し、現代のポストトレーニング技術のガイドを提供します。Llama 3.1を基にし、他のクローズドモデルを上回る性能を達成。新しいトレーニング手法としてSFT、DPO、RLVRを採用し、マルチタスク評価スキームを導入。モデルウェイトやデモ、トレーニングコード、データセットなどを公開し、他のドメインへの適応も可能です。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/icoxfog417/status/1885460713264775659?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=i1uGbfHHpH#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=i1uGbfHHpH#discussion</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Training Large Language Models to Reason in a Continuous Latent Space, Shibo Hao+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2412.06769v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1586</repo-issue-link>
+<tags>NLP, LanguageModel, Chain-of-Thought, COLM, PostTraining, read-later, LatentReasoning, One-Line Notes</tags>
+<repo-issue-date>2024-12-12</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2412.06769v1
+- COLM'25 openreview: https://openreview.net/pdf?id=Itxz7S4Ip3
+# Authors
+  - Shibo Hao
+  - Sainbayar Sukhbaatar
+  - DiJia Su
+  - Xian Li
+  - Zhiting Hu
+  - Jason Weston
+  - Yuandong Tian
+# Abstract
+  - Large language models (LLMs) are restricted to reason in the "language space", where they typically express the reasoning process with a chain-of-thought (CoT) to solve a complex reasoning problem. However, we argue that language space may not always be optimal for reasoning. For example, most word tokens are primarily for textual coherence and not essential for reasoning, while some critical tokens require complex planning and pose huge challenges to LLMs. To explore the potential of LLM reasoning in an unrestricted latent space instead of using natural language, we introduce a new paradigm Coconut (Chain of Continuous Thought). We utilize the last hidden state of the LLM as a representation of the reasoning state (termed "continuous thought"). Rather than decoding this into a word token, we feed it back to the LLM as the subsequent input embedding directly in the continuous space. Experiments show that Coconut can effectively augment the LLM on several reasoning tasks. This novel latent reasoning paradigm leads to emergent advanced reasoning patterns: the continuous thought can encode multiple alternative next reasoning steps, allowing the model to perform a breadth-first search (BFS) to solve the problem, rather than prematurely committing to a single deterministic path like CoT. Coconut outperforms CoT in certain logical reasoning tasks that require substantial backtracking during planning, with fewer thinking tokens during inference. These findings demonstrate the promise of latent reasoning and offer valuable insights for future research.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は「言語空間」での推論に制約されており、通常、複雑な推論問題を解決するために思考の連鎖（CoT）を用いて推論プロセスを表現します。しかし、私たちは言語空間が推論に最適でない場合もあると主張します。例えば、ほとんどの単語トークンは主にテキストの一貫性のために存在し、推論には必須ではありませんが、一部の重要なトークンは複雑な計画を必要とし、LLMにとって大きな課題となります。自然言語を使用するのではなく、制約のない潜在空間におけるLLMの推論の可能性を探るために、新しいパラダイム「Coconut（連続的思考の連鎖）」を提案します。私たちはLLMの最後の隠れ状態を推論状態の表現（「連続的思考」と呼ぶ）として利用します。この状態を単語トークンにデコードするのではなく、連続空間内で次の入力埋め込みとしてLLMにフィードバックします。実験の結果、Coconutは複数の推論タスクにおいてLLMを効果的に強化できることが示されました。この新しい潜在的推論パラダイムは、連続的思考が複数の代替的な次の推論ステップをエンコードできることを可能にし、モデルが問題を解決するために幅優先探索（BFS）を行うことを可能にします。これは、CoTのように早期に単一の決定論的な経路に固執するのではありません。Coconutは、計画中に substantial なバックトラッキングを必要とする特定の論理推論タスクにおいて、推論中の思考トークンが少なくて済むため、CoTを上回ります。これらの発見は、潜在的推論の可能性を示し、今後の研究に貴重な洞察を提供します。
+# Summary (by gpt-4o-mini)
+- 新しい推論パラダイム「Coconut」を提案し、LLMの隠れ状態を連続的思考として利用。これにより、次の入力を連続空間でフィードバックし、複数の推論タスクでLLMを強化。Coconutは幅優先探索を可能にし、特定の論理推論タスクでCoTを上回る性能を示す。潜在的推論の可能性を探る重要な洞察を提供。</issue-body>
+<maintainer-comment-text><p>Chain of Continuous Thought</p><p>通常のCoTはRationaleをトークン列で生成するが、Coconutは最終的なhidden stateをそのまま次ステップの入力にすることで、トークンに制限されずにCoTさせるということらしい。あとでしっかり読む<br><img src="https://github.com/user-attachments/assets/b930f44b-96f4-47cd-aa1a-0b5fabde54a5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>おそらく学習の際に工夫が必要なので既存モデルのデコーディングを工夫してできます系の話ではないかも</p><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=tG4SgayTtk" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tG4SgayTtk</a>
+{% endraw %}
+
+<br><br>ICLR'25にrejectされている。<br>ざっと最初のレビューに書かれているWeaknessを読んだ感じ<br>- 評価データが合成データしかなく、よりrealisticなデータで評価した方が良い<br>- CoTら非常に一般的に適用可能な技術なので、もっと広範なデータで評価すべき<br>- GSM8Kでは大幅にCOCONUTはCoTに性能が負けていて、ProsQAでのみにしかCoTに勝てていない<br>- 特定のデータセットでの追加の学習が必要で、そこで身につけたreasoning能力が汎化可能か明らかでない<br><br>といった感じに見える</p><p>COLM'25 openreview:<br>
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Itxz7S4Ip3#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Itxz7S4Ip3#discussion</a>
+{% endraw %}
+
+<br><br>COLM'25にAccept</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] FacTool: Factuality Detection in Generative AI -- A Tool Augmented   Framework for Multi-Task and Multi-Domain Scenarios, I-Chun Chern+, COLM'25, 2023.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.13528</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/906</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, Hallucination, Factuality, COLM</tags>
+<repo-issue-date>2023-07-27</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2307.13528
+- openreview: https://openreview.net/pdf?id=hJkQL9VtWT
+# Authors
+  - I-Chun Chern
+  - Steffi Chern
+  - Shiqi Chen
+  - Weizhe Yuan
+  - Kehua Feng
+  - Chunting Zhou
+  - Junxian He
+  - Graham Neubig
+  - Pengfei Liu
+# Abstract
+  - The emergence of generative pre-trained models has facilitated the synthesis of high-quality text, but it has also posed challenges in identifying factual errors in the generated text. In particular: (1) A wider range of tasks now face an increasing risk of containing factual errors when handled by generative models. (2) Generated texts tend to be lengthy and lack a clearly defined granularity for individual facts. (3) There is a scarcity of explicit evidence available during the process of fact checking. With the above challenges in mind, in this paper, we propose FacTool, a task and domain agnostic framework for detecting factual errors of texts generated by large language models (e.g., ChatGPT). Experiments on four different tasks (knowledge-based QA, code generation, mathematical reasoning, and scientific literature review) show the efficacy of the proposed method. We release the code of FacTool associated with ChatGPT plugin interface at https://github.com/GAIR-NLP/factool .
+# Translation (by gpt-4o-mini)
+- 生成的事前学習モデルの出現は、高品質なテキストの合成を促進しましたが、生成されたテキストにおける事実誤認の特定においても課題をもたらしました。特に、(1) より広範なタスクが、生成モデルによって処理される際に事実誤認を含むリスクが増加しています。 (2) 生成されたテキストは長くなる傾向があり、個々の事実に対する明確な粒度が欠けています。 (3) 事実確認のプロセスにおいて利用可能な明示的な証拠が不足しています。これらの課題を考慮し、本論文では、生成されたテキストの事実誤認を検出するためのタスクおよびドメインに依存しないフレームワークであるFacToolを提案します。知識ベースのQA、コード生成、数学的推論、科学文献レビューの4つの異なるタスクにおける実験は、提案手法の有効性を示しています。FacToolのコードは、ChatGPTプラグインインターフェースに関連して、https://github.com/GAIR-NLP/factool で公開しています。
+# Summary (by gpt-4o-mini)
+- 生成的事前学習モデルによるテキスト合成は進展したが、事実誤認の特定には課題が残る。特に、生成モデルによる事実誤認のリスク増加、長文化による粒度の欠如、明示的証拠の不足が問題である。これらを解決するために、タスクやドメインに依存しない事実誤認検出フレームワークFacToolを提案。知識ベースのQA、コード生成、数学的推論、科学文献レビューの4つのタスクで有効性を実証し、コードは公開されている。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=hJkQL9VtWT#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=hJkQL9VtWT#discussion</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Mamba: Linear-Time Sequence Modeling with Selective State Spaces, Albert Gu+, COLM'24, 2023.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2312.00752</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4398</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, SSM (StateSpaceModel), COLM, Selected Papers/Blogs, LinearAttention</tags>
+<repo-issue-date>2026-02-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2312.00752
+# Authors
+  - Albert Gu
+  - Tri Dao
+# Abstract
+  - Foundation models, now powering most of the exciting applications in deep learning, are almost universally based on the Transformer architecture and its core attention module. Many subquadratic-time architectures such as linear attention, gated convolution and recurrent models, and structured state space models (SSMs) have been developed to address Transformers' computational inefficiency on long sequences, but they have not performed as well as attention on important modalities such as language. We identify that a key weakness of such models is their inability to perform content-based reasoning, and make several improvements. First, simply letting the SSM parameters be functions of the input addresses their weakness with discrete modalities, allowing the model to selectively propagate or forget information along the sequence length dimension depending on the current token. Second, even though this change prevents the use of efficient convolutions, we design a hardware-aware parallel algorithm in recurrent mode. We integrate these selective SSMs into a simplified end-to-end neural network architecture without attention or even MLP blocks (Mamba). Mamba enjoys fast inference (5$\times$ higher throughput than Transformers) and linear scaling in sequence length, and its performance improves on real data up to million-length sequences. As a general sequence model backbone, Mamba achieves state-of-the-art performance across several modalities such as language, audio, and genomics. On language modeling, our Mamba-3B model outperforms Transformers of the same size and matches Transformers twice its size, both in pretraining and downstream evaluation.
+# Translation (by gpt-4o-mini)
+- ファウンデーションモデルは、現在深層学習のほとんどの興味深いアプリケーションを支えており、ほぼ普遍的にトランスフォーマーアーキテクチャとそのコアであるアテンションモジュールに基づいています。トランスフォーマーの長いシーケンスに対する計算非効率性を解決するために、線形アテンション、ゲーテッド畳み込み、再帰モデル、構造化状態空間モデル（SSM）などの多くのサブ二次時間アーキテクチャが開発されましたが、言語のような重要なモダリティではアテンションほどの性能を発揮していません。私たちは、これらのモデルの主要な弱点が内容ベースの推論を行うことができないことであることを特定し、いくつかの改善を行いました。まず、SSMのパラメータを入力の関数として設定することで、離散モダリティに対する弱点に対処し、モデルが現在のトークンに応じてシーケンスの長さに沿って情報を選択的に伝播または忘却できるようにします。第二に、この変更が効率的な畳み込みの使用を妨げるにもかかわらず、再帰モードでハードウェアを意識した並列アルゴリズムを設計しました。これらの選択的SSMをアテンションやMLPブロックなしの簡略化されたエンドツーエンドのニューラルネットワークアーキテクチャ（Mamba）に統合します。Mambaは、高速な推論（トランスフォーマーに対して5倍のスループット）とシーケンス長での線形スケーリングを享受し、実データにおいて百万長のシーケンスまで性能が向上します。一般的なシーケンスモデルのバックボーンとして、Mambaは言語、音声、ゲノミクスなどのいくつかのモダリティで最先端の性能を達成しています。言語モデルに関しては、私たちのMamba-3Bモデルは同じサイズのトランスフォーマーを上回り、2倍のサイズのトランスフォーマーと同等の性能を示しています。これは、事前学習とダウンストリーム評価の両方でのことです。
+# Summary (by gpt-4o-mini)
+- ファウンデーションモデルはトランスフォーマーを基盤としており、計算非効率性を解決するために新たなアーキテクチャが開発されたが、言語モダリティではあまり効果的でなかった。私たちは内容ベースの推論能力の欠如を特定し、SSMのパラメータを入力に依存させることで、情報の選択的伝播を可能にした。さらに、ハードウェアに適応した並列アルゴリズムを設計し、簡略化されたニューラルネットワークアーキテクチャMambaに統合した。このMambaは、高速な推論とシーケンス長での線形スケーリングを可能にし、言語や音声などで最先端の性能を達成。特にMamba-3Bモデルは、同サイズのトランスフォーマーを上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=tEYskw1VY2" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tEYskw1VY2</a>
+{% endraw %}
+
+</p><p>日本語解説:
+
+{% raw %}
+<a href="https://qiita.com/peony_snow/items/649ecb307cd3b5c10aa7" target="_blank" rel="noopener noreferrer">https://qiita.com/peony_snow/items/649ecb307cd3b5c10aa7</a>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4399" target="_blank" rel="noopener noreferrer">[Paper Note] Retentive Network: A Successor to Transformer for Large Language Models, Yutao Sun+, arXiv'23, 2023.07</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/765" target="_blank" rel="noopener noreferrer">[Paper Note] RWKV: Reinventing RNNs for the Transformer Era, Bo Peng+, N/A, EMNLP'23 Findings, 2023.05</a>
+</p><p>Mamba2:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1831" target="_blank" rel="noopener noreferrer">[Paper Note] Transformers are SSMs: Generalized Models and Efficient Algorithms   Through Structured State Space Duality, Tri Dao+, ICML'24</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Large Language Model Routing with Benchmark Datasets, Tal Shnitzer+, COLM'24, 2023.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2309.15789</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3407</repo-issue-link>
+<tags>NLP, LanguageModel, COLM, Routing</tags>
+<repo-issue-date>2025-10-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2309.15789
+# Authors
+  - Tal Shnitzer
+  - Anthony Ou
+  - Mírian Silva
+  - Kate Soule
+  - Yuekai Sun
+  - Justin Solomon
+  - Neil Thompson
+  - Mikhail Yurochkin
+# Abstract
+  - There is a rapidly growing number of open-source Large Language Models (LLMs) and benchmark datasets to compare them. While some models dominate these benchmarks, no single model typically achieves the best accuracy in all tasks and use cases. In this work, we address the challenge of selecting the best LLM out of a collection of models for new tasks. We propose a new formulation for the problem, in which benchmark datasets are repurposed to learn a "router" model for this LLM selection, and we show that this problem can be reduced to a collection of binary classification tasks. We demonstrate the utility and limitations of learning model routers from various benchmark datasets, where we consistently improve performance upon using any single model for all tasks.
+# Translation (by gpt-4o-mini)
+- 急速に増加しているオープンソースの大規模言語モデル（LLMs）と、それらを比較するためのベンチマークデータセットがあります。いくつかのモデルはこれらのベンチマークで優位性を持っていますが、通常、すべてのタスクやユースケースで最も高い精度を達成する単一のモデルは存在しません。本研究では、新しいタスクに対して複数のモデルの中から最適なLLMを選択するという課題に取り組みます。ベンチマークデータセットを再利用してこのLLM選択のための「ルーター」モデルを学習する新しい問題の定式化を提案し、この問題が一連の二項分類タスクに還元できることを示します。さまざまなベンチマークデータセットからモデルルーターを学習する有用性と限界を実証し、すべてのタスクに対して単一のモデルを使用する場合よりも一貫して性能が向上することを示しました。
+# Summary (by gpt-4o-mini)
+- 複数のLLMから最適なモデルを選択するための「ルーター」モデルを学習する新しいアプローチを提案。ベンチマークデータセットを再利用し、二項分類タスクに還元可能であることを示し、単一モデル使用時よりも一貫して性能が向上することを実証。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Zb0ajZ7vAt&referrer=%5Bthe%20profile%20of%20Mikhail%20Yurochkin%5D(%2Fprofile%3Fid%3D~Mikhail_Yurochkin1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Zb0ajZ7vAt&referrer=%5Bthe%20profile%20of%20Mikhail%20Yurochkin%5D(%2Fprofile%3Fid%3D~Mikhail_Yurochkin1)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MiniCPM: Unveiling the Potential of Small Language Models with Scalable   Training Strategies, Shengding Hu+, COLM'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2404.06395</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2540</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, SmallModel, COLM, Selected Papers/Blogs, Scheduler, One-Line Notes</tags>
+<repo-issue-date>2025-08-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2404.06395
+# Authors
+  - Shengding Hu
+  - Yuge Tu
+  - Xu Han
+  - Chaoqun He
+  - Ganqu Cui
+  - Xiang Long
+  - Zhi Zheng
+  - Yewei Fang
+  - Yuxiang Huang
+  - Weilin Zhao
+  - Xinrong Zhang
+  - Zheng Leng Thai
+  - Kaihuo Zhang
+  - Chongyi Wang
+  - Yuan Yao
+  - Chenyang Zhao
+  - Jie Zhou
+  - Jie Cai
+  - Zhongwu Zhai
+  - Ning Ding
+  - Chao Jia
+  - Guoyang Zeng
+  - Dahai Li
+  - Zhiyuan Liu
+  - Maosong Sun
+# Abstract
+  - The burgeoning interest in developing Large Language Models (LLMs) with up to trillion parameters has been met with concerns regarding resource efficiency and practical expense, particularly given the immense cost of experimentation. This scenario underscores the importance of exploring the potential of Small Language Models (SLMs) as a resource-efficient alternative. In this context, we introduce MiniCPM, specifically the 1.2B and 2.4B non-embedding parameter variants, not only excel in their respective categories but also demonstrate capabilities on par with 7B-13B LLMs. While focusing on SLMs, our approach exhibits scalability in both model and data dimensions for future LLM research. Regarding model scaling, we employ extensive model wind tunnel experiments for stable and optimal scaling. For data scaling, we introduce a Warmup-Stable-Decay (WSD) learning rate scheduler (LRS), conducive to continuous training and domain adaptation. We present an in-depth analysis of the intriguing training dynamics that occurred in the WSD LRS. With WSD LRS, we are now able to efficiently study data-model scaling law without extensive retraining experiments on both axes of model and data, from which we derive the much higher compute optimal data-model ratio than Chinchilla Optimal. Additionally, we introduce MiniCPM family, including MiniCPM-DPO, MiniCPM-MoE and MiniCPM-128K, whose excellent performance further cementing MiniCPM's foundation in diverse SLM applications. MiniCPM models are available publicly at https://github.com/OpenBMB/MiniCPM .
+# Translation (by gpt-4o-mini)
+- 急成長するトリリオンパラメータを持つ大規模言語モデル（LLMs）の開発に対する関心は、特に実験の膨大なコストを考慮すると、リソース効率と実用的な費用に関する懸念と相まっています。この状況は、リソース効率の良い代替手段として小規模言語モデル（SLMs）の可能性を探る重要性を強調しています。この文脈において、MiniCPM、特に1.2Bおよび2.4Bの非埋め込みパラメータバリアントを紹介します。これらはそれぞれのカテゴリで優れているだけでなく、7B-13BのLLMsと同等の能力を示しています。SLMsに焦点を当てながら、私たちのアプローチは、将来のLLM研究のためにモデルとデータの両方の次元でのスケーラビリティを示しています。モデルのスケーリングに関しては、安定かつ最適なスケーリングのために広範なモデル風洞実験を採用しています。データのスケーリングに関しては、継続的なトレーニングとドメイン適応に適したWarmup-Stable-Decay（WSD）学習率スケジューラ（LRS）を導入しています。WSD LRSで発生した興味深いトレーニングダイナミクスの詳細な分析を提示します。WSD LRSを使用することで、モデルとデータの両方の軸で広範な再トレーニング実験なしにデータ-モデルスケーリング法を効率的に研究できるようになり、Chinchilla Optimalよりもはるかに高い計算最適データ-モデル比を導き出しました。さらに、MiniCPMファミリーを紹介し、MiniCPM-DPO、MiniCPM-MoE、MiniCPM-128Kを含むこれらの優れたパフォーマンスがMiniCPMの多様なSLMアプリケーションにおける基盤をさらに強化しています。MiniCPMモデルは、https://github.com/OpenBMB/MiniCPM で公開されています。
+# Summary (by gpt-4o-mini)
+- 急成長する大規模言語モデル（LLMs）の開発におけるコストの懸念から、小規模言語モデル（SLMs）の可能性が注目されている。本研究では、MiniCPMという1.2Bおよび2.4Bの非埋め込みパラメータバリアントを紹介し、これらが7B-13BのLLMsと同等の能力を持つことを示す。モデルのスケーリングには広範な実験を、データのスケーリングにはWarmup-Stable-Decay（WSD）学習率スケジューラを導入し、効率的なデータ-モデルスケーリング法を研究した。MiniCPMファミリーにはMiniCPM-DPO、MiniCPM-MoE、MiniCPM-128Kが含まれ、優れたパフォーマンスを発揮している。MiniCPMモデルは公開されている。</issue-body>
+<maintainer-comment-text><p>Warmup-Stable-Decay (WSD)</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=3X2L2TFr0f&noteId=QvwPc5chyd" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=3X2L2TFr0f&noteId=QvwPc5chyd</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N_A, COLM'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2311.12022</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1155</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, QuestionAnswering, COLM</tags>
+<repo-issue-date>2023-11-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2311.12022
+# Affiliations
+  - David Rein, N/A
+  - Betty Li Hou, N/A
+  - Asa Cooper Stickland, N/A
+  - Jackson Petty, N/A
+  - Richard Yuanzhe Pang, N/A
+  - Julien Dirani, N/A
+  - Julian Michael, N/A
+  - Samuel R. Bowman, N/A
+# Abstract
+  - We present GPQA, a challenging dataset of 448 multiple-choice questionswritten by domain experts in biology, physics, and chemistry. We ensure thatthe questions are high-quality and extremely difficult: experts who have or arepursuing PhDs in the corresponding domains reach 65% accuracy (74% whendiscounting clear mistakes the experts identified in retrospect), while highlyskilled non-expert validators only reach 34% accuracy, despite spending onaverage over 30 minutes with unrestricted access to the web (i.e., thequestions are "Google-proof"). The questions are also difficult forstate-of-the-art AI systems, with our strongest GPT-4 based baseline achieving39% accuracy. If we are to use future AI systems to help us answer very hardquestions, for example, when developing new scientific knowledge, we need todevelop scalable oversight methods that enable humans to supervise theiroutputs, which may be difficult even if the supervisors are themselves skilledand knowledgeable. The difficulty of GPQA both for skilled non-experts andfrontier AI systems should enable realistic scalable oversight experiments,which we hope can help devise ways for human experts to reliably get truthfulinformation from AI systems that surpass human capabilities.
+# Translation (by gpt-3.5-turbo)
+- 私たちは、生物学、物理学、化学の専門家によって作成された、高品質かつ非常に困難な448の多肢選択問題からなるGPQAデータセットを提案します。これらの問題は、対応する領域で博士号を持つまたは取得しようとしている専門家が65％の正答率を達成します（専門家が後で特定した明らかな間違いを除くと74％）。一方、高いスキルを持つ非専門の検証者は、平均30分以上の制限のないウェブアクセスを利用しても34％の正答率にしか達しません（つまり、これらの問題は「Google-proof」です）。これらの問題は、最先端のAIシステムにとっても困難であり、最も強力なGPT-4ベースラインでも39％の正答率しか達成できません。将来のAIシステムを使用して非常に難しい質問に答える際に、例えば新しい科学的知識を開発する際に、私たちがスケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者であっても信頼性のある情報をAIシステムから確実に得る方法を考案できるようになります。GPQAの難しさは、スキルを持つ非専門家や最先端のAIシステムにとっても実現可能なスケーラブルな監督実験を可能にし、人間の専門家が人間の能力を超えるAIシステムから真実の情報を確実に得る方法を考案するのに役立つことを期待しています。
+# Summary (by gpt-3.5-turbo)
+- 私たちは、高品質で非常に困難な多肢選択問題からなるGPQAデータセットを提案します。このデータセットは、専門家でも高い正答率を達成できず、最先端のAIシステムでも困難であることが示されています。将来のAIシステムの開発において、スケーラブルな監督方法を開発する必要があります。これにより、スキルを持つ監督者がAIシステムから信頼性のある情報を得ることができるようになります。GPQAデータセットは、スケーラブルな監督実験を可能にし、人間の専門家がAIシステムから真実の情報を確実に得る方法を考案するのに役立つことが期待されています。</issue-body>
+<maintainer-comment-text><p>該当領域のPh.D所有者でも74%、高いスキルを持つ非専門家（Googleへアクセスして良い環境）で34%しか正答できないQAデータセット。<br>元ツイート: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/idavidrein/status/1727033002234909060?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Ti67584b98" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Ti67584b98</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LoraHub: Efficient Cross-Task Generalization via Dynamic LoRA   Composition, Chengsong Huang+, N_A, COLM'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.13269</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/917</repo-issue-link>
+<tags>MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), PEFT(Adaptor/LoRA), COLM, PostTraining</tags>
+<repo-issue-date>2023-08-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2307.13269
+# Affiliations
+  - Chengsong Huang, N/A
+  - Qian Liu, N/A
+  - Bill Yuchen Lin, N/A
+  - Tianyu Pang, N/A
+  - Chao Du, N/A
+  - Min Lin, N/A
+# Abstract
+  - Low-rank adaptations (LoRA) are often employed to fine-tune large languagemodels (LLMs) for new tasks. This paper investigates LoRA composability forcross-task generalization and introduces LoraHub, a strategic framework devisedfor the purposive assembly of LoRA modules trained on diverse given tasks, withthe objective of achieving adaptable performance on unseen tasks. With just afew examples from a novel task, LoraHub enables the fluid combination ofmultiple LoRA modules, eradicating the need for human expertise. Notably, thecomposition requires neither additional model parameters nor gradients. Ourempirical results, derived from the Big-Bench Hard (BBH) benchmark, suggestthat LoraHub can effectively mimic the performance of in-context learning infew-shot scenarios, excluding the necessity of in-context examples alongsideeach inference input. A significant contribution of our research is thefostering of a community for LoRA, where users can share their trained LoRAmodules, thereby facilitating their application to new tasks. We anticipatethis resource will widen access to and spur advancements in generalintelligence as well as LLMs in production. Code will be available athttps://github.com/sail-sg/lorahub.
+# Translation (by gpt-3.5-turbo)
+- 低ランク適応（LoRA）は、大規模言語モデル（LLMs）を新しいタスクに適応させるためによく使用されます。本論文では、LoRAの組み合わせ可能性を検討し、さまざまな与えられたタスクでトレーニングされたLoRAモジュールを戦略的に組み合わせるためのフレームワークであるLoraHubを紹介します。これにより、未知のタスクに対して適応性のあるパフォーマンスを実現することが目指されています。LoraHubを使用すると、新しいタスクからわずかな例を使用して、複数のLoRAモジュールを柔軟に組み合わせることができ、人間の専門知識は必要ありません。特筆すべきことは、この組み合わせには追加のモデルパラメータや勾配は必要ないことです。Big-Bench Hard（BBH）ベンチマークから得られた実験結果は、LoraHubが少数の例でのシナリオでインコンテキスト学習のパフォーマンスを効果的に模倣できることを示しており、各推論入力ごとにインコンテキストの例が必要ないことを示しています。私たちの研究の重要な貢献の一つは、LoRAコミュニティの育成であり、ユーザーがトレーニングされたLoRAモジュールを共有し、新しいタスクへの適用を容易にすることです。このリソースが一般的な知能およびLLMsの普及と進歩を促進することを期待しています。コードはhttps://github.com/sail-sg/lorahubで利用可能です。
+# Summary (by gpt-3.5-turbo)
+- 本研究では、大規模言語モデル（LLMs）を新しいタスクに適応させるための低ランク適応（LoRA）を検討し、LoraHubというフレームワークを提案します。LoraHubを使用すると、少数の例から複数のLoRAモジュールを組み合わせて柔軟に適応性のあるパフォーマンスを実現できます。また、追加のモデルパラメータや勾配は必要ありません。実験結果から、LoraHubが少数の例でのインコンテキスト学習のパフォーマンスを効果的に模倣できることが示されています。さらに、LoRAコミュニティの育成と共有リソースの提供にも貢献しています。</issue-body>
+<maintainer-comment-text><p>学習されたLoRAのパラメータをモジュールとして捉え、新たなタスクのinputが与えられた時に、LoRA Hub上の適切なモジュールをLLMに組み合わせることで、ICL無しで汎化を実現するというアイデア。few shotのexampleを人間が設計する必要なく、同等の性能を達成。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9d769042-5a29-4c22-8ab4-e90195f71184" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>複数のLoRAモジュールは組み合わられるか？element wiseの線型結合で今回はやっているが、その疑問にこたえたのがcontribution</p><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=TrloAXEJ2B" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=TrloAXEJ2B</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Large reasoning models research at COLM 2025 - State of research in scaling reasoning, the current paradigm for improving LLMs, PRAKASH KAGITHA, 2025.09</title>
+<original-paper-blog-link>https://aipapertrails.substack.com/p/large-reasoning-models-research-at</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2808</repo-issue-link>
+<tags>Survey, LanguageModel, Blog, Reasoning, COLM</tags>
+<repo-issue-date>2025-09-15</repo-issue-date>
+<issue-body>https://aipapertrails.substack.com/p/large-reasoning-models-research-at</issue-body>
+<maintainer-comment-text><p>COLM'25における30個程度のReasoningに関わる論文をカバーしたブログらしい。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/prakashkagitha/status/1967032408009830769?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ここの論文のサマリのまとめといった感じなので、indexとして利用すると良さそう。</p></maintainer-comment-text>
+</paper-entry>
