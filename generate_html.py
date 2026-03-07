@@ -481,8 +481,10 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         _html_content.append('</div>')
         curr_more_idx += 1
 
-    _agentdoc_content = _generate_agentdoc_content_list(sorted_issues)
-
+    _agentdoc_content = ["<?xml version="1.0" encoding="UTF-8"?>", "<paper-list>"]
+    _agentdoc_content += _generate_agentdoc_content_list(sorted_issues)
+    _agentdoc_content.append("</paper-list>")
+    
     gen_result = {}
     gen_result["html_content"] = "\n".join(_html_content)
     gen_result["agentdoc_content"] = "\n".join(_agentdoc_content)
@@ -826,6 +828,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
