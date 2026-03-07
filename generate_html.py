@@ -458,7 +458,7 @@ def _generate_agentdoc_content_list(sorted_issues: list[tuple[dict, int]]) -> li
     
     
 curr_more_idx = 0
-def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], attach_date: bool = True, assets_root: str = "articles/", h_level: str = "4", visible_num: int = 5) -> dict[str, str]:
+def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], last_update: str, attach_date: bool = True, assets_root: str = "articles/", h_level: str = "4", visible_num: int = 5) -> dict[str, str]:
     global curr_more_idx
 
     # start note lazy
@@ -481,7 +481,7 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
         _html_content.append('</div>')
         curr_more_idx += 1
 
-    _agentdoc_content = ["<?xml version="1.0" encoding="UTF-8"?>", "<paper-list>"]
+    _agentdoc_content = ["<?xml version="1.0" encoding="UTF-8"?>", f'<paper-list last-updated="{last_update}">']
     _agentdoc_content += _generate_agentdoc_content_list(sorted_issues)
     _agentdoc_content.append("</paper-list>")
     
@@ -807,14 +807,14 @@ categories: {label}
         global curr_more_idx
         curr_more_idx = 0
         html_content = f'<h2 id={label} class="paper-head"> {label}</h2>'
-        gen_result = gen_one_item(issue_list, [label], assets_root="", h_level="3", visible_num=5000)
+        gen_result = gen_one_item(issue_list, [label], latest_date, assets_root="", h_level="3", visible_num=5000)
         html_content += gen_result["html_content"]
         label_content = f"{html_template}{html_content}{lazy_loading}"
         
         #with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
         with open(f"./_posts/{latest_date}-{label.replace('/', '-')}.html", "w") as f:
             f.write(label_content)
-        with open(f"./agent_docs/{latest_date}-{label.replace('/', '-')}.xml", "w") as f:
+        with open(f"./agent_docs/{label.replace('/', '-')}.xml", "w") as f:
             f.write(gen_result["agentdoc_content"])
             
         label_count[label] = len(issue_list)
@@ -828,6 +828,7 @@ if __name__ == '__main__':
     all_issues = get_all_issues()
     issuenum2titles = {issue["number"]: issue["title"] for issue in all_issues}
     main()
+
 
 
 
