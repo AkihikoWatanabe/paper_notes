@@ -130,6 +130,9 @@ Using DeepWiki, it may be easier to:
 
 ## Updates
 
+**2026.03.07**
+- For agentic use cases, I have added AGENTS.md and agent-specific documentation to the agent_doc directory. This prevents AI agents from wasting context on unnecessary HTML strings.
+
 **2026.01.20**
 - Update README.md
 
