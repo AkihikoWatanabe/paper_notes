@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 55 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 56 mins</span>
   </div></header>
 </div>
     </div>
@@ -1410,7 +1410,7 @@ My Issue
 </strong>
 <br>
  のサマリベクトルf_tと、KC embedding k_tを、それぞれ独立にFully connected layerにかけてスカラー値に変換し、生徒のスキルごとの能力パラメータθと、スキルの困難度パラメータβを求められるようにして、解釈性を向上させた研究。最終的にθとβをitem response function (シグモイド関数)に適用することで、KC j を正しく回答できる確率を推定する。<br><br><br><br>
-<strong># モデル<br><br><img src="https://user-images.githubusercontent.com/12249301/180361492-c8e67272-d0b0-421e-9ff5-bdf56eeb36e0.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>基本的なモデルはDKVMNで、DKVMNのサマリベクトルf_tに対してstudent ability networkを適用し、KC embedding k_tに対してdifficulty networkを適用するだけ。<br><br><img src="https://user-images.githubusercontent.com/12249301/180361731-7a4f6cb6-ef70-4ee4-a04b-5f1ea4c6640f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>生徒の能力パラメータθとスキルの困難度パラメータβを求め、最終的に下記item response functionを適用することで、入力されたスキルに対する反応予測を実施する：<br><br><img src="https://user-images.githubusercontent.com/12249301/180361904-c4d8f05d-9a5d-475b-b6f2-17b6497bcc7a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 気持ち<br><br>古典的なKnowledge Tracing手法は、学習者の能力パラメータや項目の困難度パラメータといった人間が容易に解釈できるパラメータを用いて反応予測を行えるが、精度が低い。一方、DeepなKnowledge Tracingは性能は高いが学習されるパラメータの解釈性が低い。そこで、IRTと最近提案されたDKVMNを組み合わせることで、高性能な反応予測も実現しつつ、直接的にpsychological interpretationが可能なパラメータを学習するモデルを提案した。<br><br>DKVMNがinferenceに利用する情報は、意味のある情報に拡張することができることを主張。<br><br>1つめは、各latent conceptのknowledge stateは、生徒の能力パラメータを計算することに利用できる。具体的には、DKVMNによって求められるベクトルf_tは、read vector r （該当スキルに対する生徒のmastery level を表すベクトル）とKCのembedding k_t から求められる。これは、生徒のスキルに対するknowledge staeteとスキルそのもののembeddedされた情報の両者を含んでいるので、f_tをNNで追加で処理することで、生徒のスキルq_tに対する能力を推定することができるのではないかと主張。<br><br>同様に、q_tの困難度パラメータもKC embedding vector k_tをNNに渡すことで求めることができると主張。<br><br>生徒の能力を求めるネットワークを、student ability network, スキルの困難度パラメータを求めるネットワークをdifficulty networkと呼ぶ。<br><br><br><br># 性能<br><br><img src="https://user-images.githubusercontent.com/12249301/180362356-54ec5d27-8760-4132-b1c9-28653f4585dc.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果、DKT, DKVMN, Deep-IRTはそれぞれ似たようなAUCとなり、反応予測の性能はcomparable<br><br><br><br># Discussion<br><br>## 学習された困難度パラメータについて<br><br>複数のソース（1. データセットのpublisherが設定している3段階の難易度, 2. item analysisによって求めた難易度（生徒が問題に取り組んだとき不正解となった割合）, 3. IRTによって推定した困難度パラメータ, 4. PFAによって推定した困難度パラメータ）とDeep-IRTが学習したKC Difficulty levelの間で相関係数を測ることで、Deep-IRTが学習した困難度パラメータが妥当か検討している。ソース2, 3については、困難度推定に使うデータがtest environmentではなく学習サービスによるものなので、生徒のquestionに対するfirst attemptから困難度パラメータを予測した。一方、PFAの場合はtest environmentによる推定ではなく、knowledge tracingの設定で困難度パラメータを推定した（i.e. 利用するデータをfirst attemptに限定しない）。<br><br><img src="https://user-images.githubusercontent.com/12249301/180363651-83b4c999-8888-4801-9906-347673d12653.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>相関係数をは測った結果が上図で、正直見方があまりわからない。著者らの主張としては、Deep-IRTは他の困難度ソースの大部分と強い相関があった（ソース1を除く）、と主張しているが、相関係数の値だけ見ると明らかにPFAの方が全てのソースに対して高い相関係数を持っている。また、困難度を推定するモデルの設定（test environment vs. learning environment）や複雑度が近ければ近いほど、相関係数が高かった（ソース2, 3間は相関係数は0.96、一方ソース2とDeep-IRTは相関係数0.56）。また、Deep-IRTはソース1の困難度パラメータとの相関係数が0.08であり非常に低い（他のソースは0.3~0.4程度の相関係数が出ている）。この結果を見ると、Deep-IRTによって推定された困難度パラメータは古典的な手法とは少し違った傾向を持っているのではないかと推察される。<br><br>=> DeepIRTによって推定された困難度パラメータは、古典的な手法と比較してめっちゃ近いというわけでもなく、人手で付与された難易度と全く相関がない（そもそも人手で付与された難易度が良いものかどうかも怪しい）。結局DeepIRTによる困難度パラメータがどれだけ適切かは評価されていないので、古典的な手法とは少し似ているけど、なんか傾向が違う困難度パラメータが出ていそうです〜くらいのことしかわからない。<br><br><br><br>## 学習された生徒の能力パラメータについて<br><br><img src="https://user-images.githubusercontent.com/12249301/180364913-de52de81-58f4-4093-a7c8-cf9f643c22dd.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>reconstruction問題がDKTと同様に生じている。たとえば、“equation solving more than two steps” (red) に不正解したにもかかわらず、対応する生徒の能力が向上してしまっている。また、スキル間のpre-requisite関係も捉えられない。具体的には、“equation solving two or fewer steps” (blue) に正解したにもかかわらず、“equation solving more than two steps” (red) の能力は減少してしまっている。<br><br><br><br># 所感<br><br>生徒の能力パラメータは、そもそもDKTVMモデルでも入力されたスキルタグに対する反応予測結果が、まさに生徒の該当スキルタグに対する能力パラメータだったのでは？と思う。困難度パラメータについては推定できることで使い道がありそうだが、DeepIRTによって推定された困難度パラメータがどれだけ良いものかはこの論文では検証されていないので、なんともいえない。</p><p># 関連研究<br><br>- Item Response Theory (IRT): 受験者の能力パラメータはテストを受けている間は不変であるという前提をおいており（i.e. testing environmentを前提としている）、Knowledgte Tracingタスクのような、学習者の能力が動的に変化する（i.e. learning environment）状況ではIRTをKnowledge Tracingに直接利用できない（と主張しているが、 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/358" target="_blank" rel="noopener noreferrer">Back to the basics: Bayesian extensions of IRT outperform neural networks for proficiency estimation, Ekanadham+, EDM'16</a>
+<strong># モデル<br><br><img src="https://user-images.githubusercontent.com/12249301/180361492-c8e67272-d0b0-421e-9ff5-bdf56eeb36e0.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>基本的なモデルはDKVMNで、DKVMNのサマリベクトルf_tに対してstudent ability networkを適用し、KC embedding k_tに対してdifficulty networkを適用するだけ。<br><br><img src="https://user-images.githubusercontent.com/12249301/180361731-7a4f6cb6-ef70-4ee4-a04b-5f1ea4c6640f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>生徒の能力パラメータθとスキルの困難度パラメータβを求め、最終的に下記item response functionを適用することで、入力されたスキルに対する反応予測を実施する：<br><br><img src="https://user-images.githubusercontent.com/12249301/180361904-c4d8f05d-9a5d-475b-b6f2-17b6497bcc7a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 気持ち<br><br>古典的なKnowledge Tracing手法は、学習者の能力パラメータや項目の困難度パラメータといった人間が容易に解釈できるパラメータを用いて反応予測を行えるが、精度が低い。一方、DeepなKnowledge Tracingは性能は高いが学習されるパラメータの解釈性が低い。そこで、IRTと最近提案されたDKVMNを組み合わせることで、高性能な反応予測も実現しつつ、直接的にpsychological interpretationが可能なパラメータを学習するモデルを提案した。<br><br>DKVMNがinferenceに利用する情報は、意味のある情報に拡張することができることを主張。<br><br>1つめは、各latent conceptのknowledge stateは、生徒の能力パラメータを計算することに利用できる。具体的には、DKVMNによって求められるベクトルf_tは、read vector r （該当スキルに対する生徒のmastery level を表すベクトル）とKCのembedding k_t から求められる。これは、生徒のスキルに対するknowledge staeteとスキルそのもののembeddedされた情報の両者を含んでいるので、f_tをNNで追加で処理することで、生徒のスキルq_tに対する能力を推定することができるのではないかと主張。<br><br>同様に、q_tの困難度パラメータもKC embedding vector k_tをNNに渡すことで求めることができると主張。<br><br>生徒の能力を求めるネットワークを、student ability network, スキルの困難度パラメータを求めるネットワークをdifficulty networkと呼ぶ。<br><br><br><br># 性能<br><br><img src="https://user-images.githubusercontent.com/12249301/180362356-54ec5d27-8760-4132-b1c9-28653f4585dc.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果、DKT, DKVMN, Deep-IRTはそれぞれ似たようなAUCとなり、反応予測の性能はcomparable<br><br><br><br># Discussion<br><br>## 学習された困難度パラメータについて<br><br>複数のソース（1. データセットのpublisherが設定している3段階の難易度, 2. item analysisによって求めた難易度（生徒が問題に取り組んだとき不正解となった割合）, 3. IRTによって推定した困難度パラメータ, 4. PFAによって推定した困難度パラメータ）とDeep-IRTが学習したKC Difficulty levelの間で相関係数を測ることで、Deep-IRTが学習した困難度パラメータが妥当か検討している。ソース2, 3については、困難度推定に使うデータがtest environmentではなく学習サービスによるものなので、生徒のquestionに対するfirst attemptから困難度パラメータを予測した。一方、PFAの場合はtest environmentによる推定ではなく、knowledge tracingの設定で困難度パラメータを推定した（i.e. 利用するデータをfirst attemptに限定しない）。<br><br><img src="https://user-images.githubusercontent.com/12249301/180363651-83b4c999-8888-4801-9906-347673d12653.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>相関係数をは測った結果が上図で、正直見方があまりわからない。著者らの主張としては、Deep-IRTは他の困難度ソースの大部分と強い相関があった（ソース1を除く）、と主張しているが、相関係数の値だけ見ると明らかにPFAの方が全てのソースに対して高い相関係数を持っている。また、困難度を推定するモデルの設定（test environment vs. learning environment）や複雑度が近ければ近いほど、相関係数が高かった（ソース2, 3間は相関係数は0.96、一方ソース2とDeep-IRTは相関係数0.56）。また、Deep-IRTはソース1の困難度パラメータとの相関係数が0.08であり非常に低い（他のソースは0.3~0.4程度の相関係数が出ている）。この結果を見ると、Deep-IRTによって推定された困難度パラメータは古典的な手法とは少し違った傾向を持っているのではないかと推察される。<br><br>=> DeepIRTによって推定された困難度パラメータは、古典的な手法と比較してめっちゃ近いというわけでもなく、人手で付与された難易度と全く相関がない（そもそも人手で付与された難易度が良いものかどうかも怪しい）。結局DeepIRTによる困難度パラメータがどれだけ適切かは評価されていないので、古典的な手法とは少し似ているけど、なんか傾向が違う困難度パラメータが出ていそうです〜くらいのことしかわからない。<br><br><br><br>## 学習された生徒の能力パラメータについて<br><br><img src="https://user-images.githubusercontent.com/12249301/180364913-de52de81-58f4-4093-a7c8-cf9f643c22dd.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>reconstruction問題がDKTと同様に生じている。たとえば、“equation solving more than two steps” (red) に不正解したにもかかわらず、対応する生徒の能力が向上してしまっている。また、スキル間のpre-requisite関係も捉えられない。具体的には、“equation solving two or fewer steps” (blue) に正解したにもかかわらず、“equation solving more than two steps” (red) の能力は減少してしまっている。<br><br><br><br># 所感<br><br>生徒の能力パラメータは、そもそもDKTVMモデルでも入力されたスキルタグに対する反応予測結果が、まさに生徒の該当スキルタグに対する能力パラメータだったのでは？と思う。困難度パラメータについては推定できることで使い道がありそうだが、DeepIRTによって推定された困難度パラメータがどれだけ良いものかはこの論文では検証されていないので、なんともいえない。</p><p># 関連研究<br><br>- Item Response Theory (IRT): 受験者の能力パラメータはテストを受けている間は不変であるという前提をおいており（i.e. testing environmentを前提としている）、Knowledgte Tracingタスクのような、学習者の能力が動的に変化する（i.e. learning environment）状況ではIRTをKnowledge Tracingに直接利用できない（と主張しているが、 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/358" target="_blank" rel="noopener noreferrer">[Paper Notes] Back to the basics: Bayesian extensions of IRT outperform neural networks for proficiency estimation, Ekanadham+, EDM'16</a>
 </strong>
 <br>
  あたりではIRTで項目の反応予測に利用してDKTをoutperformしている）<br><br>- Bayesian Knowledge Tracing (BKT): 「全ての生徒と、同じスキルを必要とする問題がモデル上で等価に扱われる」という非現実的な仮定が置かれている。言い換えれば、生徒ごとの、あるいは問題ごとのパラメータが存在しないということ。<br><br>- Latent Factor Analysis (LFA): IRTと類似しているが、スキルレベルのパラメータを利用してKnowledge Tracingタスクに取り組んだ。生徒の能力パラメータθと、問題に紐づいたスキルごとの難易度パラメータβと学習率γ（γ x 正答数で該当スキルに対する学習度合いを求める）を持つ。これにより「学習」に対してもモデルを適用できるようにしている。<br><br>- Performance Factor Analysis (PFA): 生徒の能力値よりも、生徒の過去のパフォーマンスがKTタスクにより強い影響があると考え、LFAを拡張し、スキルごとに正解時と不正解時のlearning rateを導入し、過去の該当スキルの正解/不正解数によって生徒の能力値を求めるように変更。これにより、スキルごとに生徒の能力パラメータが存在するようなモデルとみなすことができる。<br><br>=> LFAとPFAでは、複数スキルに対する「学習」タスクを扱うことができる。一方で、スキルタグについては手動でラベル付をする必要があり、またスキル間の依存関係については扱うことができない。また、LFAでは問題に対する正答率が問題に対するattempt数に対して単調増加するため、生徒のknowledge stateがlearnedからunlearnedに遷移することがないという問題がある。PFAでは失敗したattemptの数を導入することでこの仮定を緩和しているが、生徒が大量の正答を該当スキルに対して実施した後では問題に対する正答率を現象させることは依然として困難。<br><br>- Deep Knowledge Tracing (DKT): DeepLearningの導入によって、これまで性能を向上させるために人手で設計されたfeature（e.g. recency effect, contextualized trial sequence, inter-skill relationship, student’s ability variation）などを必要とせず、BKTやPFAをoutperformした。しかし、RNNによって捉えられた情報は全て同じベクトル空間（hidden layer）に存在するため、時間の経過とともに一貫性した予測を提供することが困難であり、結果的に生徒が得意な、あるいは不得意なKCをピンポイントに特定できないという問題がある（ある時刻tでは特定のスキルのマスタリーがめっちゃ高かったが、別の問題に回答しているうちにマスタリーがめっちゃ下がるみたいな現象が起きるから？）。<br><br>- Dynamic Key Value Memory Network (DKVMN): DKTでは全てのコンセプトに対するknowledge stateを一つのhidden stateに集約することから、生徒が特定のコンセプトをどれだけマスターしたのかをトレースしたり、ピンポイントにどのコンセプトが得意, あるいは不得意なのかを特定することが困難であった（←でもこれはただの感想だと思う）。DKTのこのような問題点を改善するために提案された。DKVMNではDKTと比較して、DKTを予測性能でoutperformするだけでなく（しかしこれは後の追試によって性能に大差がないことがわかっている）、overfittingしづらく、Knowledge Component (=スキルタグ)の背後に潜むコンセプトを正確に見つけられることを示した。しかし、KCの学習プロセスを、KCのベクトルや、コンセプトごとにメモリを用意しメモリ上でknowledge stateを用いて表現することで的確にモデル化したが、依然としてベクトル表現の解釈性には乏しい。したがって、IRTやBKT, PFAのような、パラメータが直接的にpsychological interpretationが可能なモデルと、パラメータやrepresentationの解釈が難しいDKTやDKVMNなどのモデルの間では、learning science communityの間で対立が存在した。<br><br>=> なので、IRTとDKVMNを組み合わせることで、DKVMNをよりexplainableにすることで、この対立を緩和します。という流れ</p><p>著者による実装: 
@@ -1456,6 +1456,7 @@ My Issue
 <a class="button" href="Education.html" target="_blank" rel="noopener noreferrer">#Education</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="WI.html" target="_blank" rel="noopener noreferrer">#WI</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2021-07-08</span>
 <span class="snippet"><span>Comment</span><p>graph neural networkでKnoelwdge Tracingした論文。各conceptのproficiencyの可視化までしっかりやってそう。</p></span><br><br>
 </article>
@@ -1476,7 +1477,7 @@ My Issue
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
 <span class="issue_date">Issue Date: 2021-05-28</span>
 <span class="snippet"><span>GPT Summary</span>- 学生のパフォーマンス予測のために、演習記録と教材情報を統合するEERNNフレームワークを提案。双方向LSTMを用いて演習内容をエンコードし、マルコフ特性とアテンションメカニズムを持つ2つの実装を提供。さらに、知識概念を追跡するEKTに拡張し、演習が知識習得に与える影響を定量化。実験により、予測精度と解釈可能性の向上が確認された。</span>
 <span class="snippet"><span>Comment</span><p>DKT等のDeepなモデルでは、これまで問題テキストの情報等は利用されてこなかったが、learning logのみならず、問題テキストの情報等もKTする際に活用した研究。<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/354" target="_blank" rel="noopener noreferrer">[Paper Note] Exercise-Enhanced Sequential Modeling for Student Performance Prediction, Hu+, AAAI'18</a>
@@ -1497,9 +1498,10 @@ My Issue
 </a><br>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2021-07-04</span>
 <span class="snippet"><span>Comment</span><p>DKT <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/297" target="_blank" rel="noopener noreferrer">[Paper Note] Deep Knowledge Tracing, Piech+, NIPS'15</a>
- のPiechも共著に入っている。<br><br>プログラミングの課題を行なっている時（要複数回のソースコードサブミット）、<br><br><br><br>1. 次のexerciseが最終的に正解で終われるか否か<br><br>2. 現在のexerciseを最終的に正解で終われるか否か<br><br><br><br>を予測するタスクを実施</p></span><br><br>
+ のPiech氏も共著に入っている。<br>プログラミングの課題を行なっている時（要複数回のソースコードサブミット）、<br><br>1. 次のexerciseが最終的に正解で終われるか否か<br>2. 現在のexerciseを最終的に正解で終われるか否か<br><br>を予測するタスクを実施</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="dynamic-key-value-352" class="title-link">[Paper Note] Dynamic Key-Value Memory Networks for Knowledge Tracing, Jiani Zhang+, WWW'17, 2016.11</h3><br><a href="https://arxiv.org/abs/1611.08108" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -1581,6 +1583,8 @@ My Issue
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
 <a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2021-05-28</span>
 <span class="snippet"><span>Comment</span><p>BKT, PFA, DKTのinputの違いが記載されており非常にわかりやすい<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/119996969-310be080-c00a-11eb-84ce-631413ecaa4e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/119996989-36692b00-c00a-11eb-8389-bc06b34fdd10.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>BKT, PFA, DKTを様々なデータセットで性能を比較している。また、ASSISTmentsデータに問題点があったことを指摘し（e.g. duplicate records問題など）、ASSSTmentsデータの問題点を取り除いたデータでも比較実験をしている。結論としては、ASSISTmentsデータの問題点を取り除いたデータで比較すると、DKTがめっちゃ強いというわけではなく、PFAと性能大して変わらなかった、ということ。<br><br><br><br>KDD cupのデータではDKTが優位だが、これはPFAをKDD Cupデータに適用する際に、難易度を適切に求められない場面があったから、とのこと（問題+ステップ名のペアで難易度を測らざるを得ないが、そもそも1人の生徒しかそういったペアに回答していない場合があり、難易度が1.0 / 0.0 等の極端な値になってしまう。これらがoverfittingの原因になったりするので、そういった問題-ステップペアの難易度をスキルの難易度で置き換えたりしている）。</p><p>ちなみにこの手のDKTこれまでのモデルと性能大して変わんないよ？系の主張は、当時だったらそうかもしれないが、2020年のRiiiDの結果みると、オリジナルなDKTがシンプルな構造すぎただけであって、SAKT+RNNみたいな構造だったら多分普通にoutperformする、と個人的には思っている。</p><p>ASSISTmentsデータにはduplicate records問題以外にも、複数種類のスキルタグが付与された問題があったときに、1つのスキルタグごとに1レコードが列挙されるようなデータになっている点が、BKTと比較してDKTが有利だった点として指摘している。スキルA, Bが付与されている問題が２問あった時に、それらにそれぞれ正解・不正解した場合のASSISTments09-10データの構造は下図のようになる。DKTを使ってこのようなsequenceを学習した場合、スキルタグBの正誤予測には、一つ前のtime-stempのスキルタグAの正誤予測がそのまま利用できる、といった関係性を学習してしまう可能性が高い。BKTはスキルタグごとにモデルを構築するので、これではBKTと比較してDKTの方が不当に有利だよね、ということも指摘している。<br><br><img src="https://user-images.githubusercontent.com/12249301/163556038-27671b3c-d002-48d8-ac36-95fe2406b583.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>複数タグが存在する場合の対処方法として、シンプルに複数タグを連結して新しいタグとする、ということを提案している。<br><br><img src="https://user-images.githubusercontent.com/12249301/163556428-38e1ad66-0991-47ef-b18d-16d574df79f3.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
@@ -1601,6 +1605,7 @@ My Issue
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
 <a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2021-05-28</span>
 <span class="snippet"><span>Comment</span><p>DKTでは考慮できているが、BKTでは考慮できていない4種類のregularityを指摘し、それらを考慮ようにBKT（forgetting, interactions among skills, incorporasting latent student abilities）を拡張したところ、DKTと同等のパフォーマンスを発揮したことを示した研究。<br><br><br><br>- Recency Effects, Contextualized Trial Sequence, Inter-skill similarity, Individual variation in ability<br><br><br><br>DKTの成功は、deep learningによって得られた新たなrepresentationに基づくものではなく、上記input/outputの統計的なregularityを捉えることができる柔軟性と一般性によるものだと分析している（DKTは、汎用のリカレントニューラルネットワークモデルであり、学習と忘却のモデル化、スキルの発見、学生の能力の推論に特化した構成要素はないにもかかわらず、それらを捉えることができた。この柔軟性により、DKTは、ドメイン知識・事前分析がほとんどなくても、様々なデータセットでロバストに動作する）。が、DKTはこのようなドメイン知識等がなく良い性能を達成できている代償として、解釈生を犠牲にしている。BKTのようなshallowなモデルでも上記4種類の規則性を導入することでより解釈性があり、説明性があるモデルを獲得できる、と述べている。教育に応用する上で、解釈性・説明性は非常に重要な要素であり、同等の性能が達成できるなら、BKT拡張したほうがいいじゃん？っていう主張だと思われる。<br><br><br><br>DKTのAUC計算は、trialごとに該当スキルのpredictionを行い、全てのスキルに関してAUCを計算しているのに対し、<br><br>BKTは、個々のスキルごとにAUCを計算し、最終的にそれらを平均することでAUCを算出している点を指摘している（中身の実装を読んで）。<br><br>BKTのAUC計算方法の方が、DKTよりもAUCが低くなることを述べ、どちらかに統一した方が良いことを述べている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/119991703-ae345700-c004-11eb-805e-aa2bf9ab9d3c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Khan AcademyデータをDKTの共著者に使わせてもらえないかきいてみたところ、使わせてもらえなかったとも書いてある。</p><p>BKT+Forgetsは、ある特定のスキルの間に何回のtrialがあったかを数えておき、そのfrialの機会ごとにForgetが生じる機会が生じると考えるような定式化になっている。<br><br>たとえば、A_1 - A_2 - B_1 - A_3 - B_2 - B_3 - A_4 という問題の系列があったとする（A, Bはスキル名で、添字はスキルのinstance）。そうすると、A_1とA_2間でforgettingが生じる確率はF、A_2とA_3の間でforgettingが生じる確率は1-(1-F)^2、A_3とA_4の間でforgettingが生じる確率は1-(1-F)^3となる。<br><br><br><br>※ スキルAを連続してtrialした場合はFでforgettingするが、<br><br>　スキルAをtrialしない場合は 1 - (スキルAを覚えている確率) = Aを忘れている確率 ということだろうか。<br><br><br><br>BKT+Forgetsは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/460" target="_blank" rel="noopener noreferrer">pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM'20</a>
  に実装されている。</p></span><br><br>
@@ -1620,6 +1625,7 @@ My Issue
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
 <a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2021-10-29</span>
 <span class="snippet"><span>Comment</span><p>BKTでは1種類のスキルしか扱えなかった問題を改善（skillだけでなく、sub-skillも扱えるように）<br><br>様々なFeatureを組み合わせることが可能</p><p>実装：
 
@@ -1813,6 +1819,7 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
 <a class="button" href="L@S.html" target="_blank" rel="noopener noreferrer">#L@S</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2021-10-29</span>
 <span class="snippet"><span>Comment</span><p>Deep Knowledge Tracing (DKT)では、下記の問題がある：<br><br>- 該当スキルに正解/不正解 したのにmasteryが 下がる/上がる （Inputをreconstructしない）<br><br>- いきなり習熟度が伸びたり、下がったりする（時間軸に対してmastery levelがconsistentではない）<br><br>上記問題に対処するようなモデルDKT+を提案。<br><br><br><br>DKT+では、DKTのloss functionに対して3つのregularization termを追加することで上記問題に対処している。<br><br>DKT+はDKTの性能を落とすことなく、上記2問題を緩和できたとのこと。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/139360225-91645535-7a52-45d6-9caa-8d4fc8719a1e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>実装: 
 
@@ -1838,6 +1845,7 @@ My Issue
 <a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2021-10-29</span>
 <span class="snippet"><span>Comment</span><p>BKTを高速で学習できるツール<br><br>3-clause BSD license</p></span><br><br>
 </article>
@@ -1857,11 +1865,12 @@ My Issue
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2021-06-02</span>
 <span class="snippet"><span>Comment</span><p>DKTモデルは、前提として各問題に対して知識タグ（knowledge component）が付与されていることが前提となっている。しかし世の中には、知識タグが振られているデータばかりではないし、そもそもプログラミング教育といった伝統的な教育ではない分野については、そもそも知識タグを構造的に付与すること自体が成熟していない分野も存在する。<br><br>そのような知識タグが存在しない、付与しづらい分野に対してもDKTが適用できるように、知識タグそのものを自動的に学習した上で、Knowledge Tracingするモデルを提案しました、という話。<br><br><br><br>Deep Knowledge Tracingの入力ベクトルの日本語例が書いてあり、わかりやすい。<br><br><img src="https://user-images.githubusercontent.com/12249301/120430839-96692400-c3b2-11eb-84d0-93c88de8f866.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>提案モデルの構造は下記<br><br><img src="https://user-images.githubusercontent.com/12249301/120430874-a123b900-c3b2-11eb-8280-07a049e443a2.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>ASSISTments, KDD Cup Dataでの既存タグを利用した場合と、擬似生成タグを利用した場合の評価結果<br><br><img src="https://user-images.githubusercontent.com/12249301/120431050-e811ae80-c3b2-11eb-8895-eced2e918dd6.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>既存タグを利用した場合とcomparable, もしくはoutperformしている。<br><br><br><br>既存タグと擬似生成タグタグの依存関係を可視化したネットワーク<br><br><img src="https://user-images.githubusercontent.com/12249301/120431103-fe1f6f00-c3b2-11eb-95a8-0595d70d3d61.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>既存タグと擬似生成タグの内容的関係性<br><br><img src="https://user-images.githubusercontent.com/12249301/120431428-70904f00-c3b3-11eb-9f07-de34b917ab0f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>既存タグは人間が理解しやすい形で構成されているが、擬似生成タグは予測に最適化されているためそのような生成のされ方はされない。つまり、解釈性に問題がある。<br><br>Knowledge Tracingモデルは教育の観点から、生徒がどのconceptにどれだけ習熟しているか、といったことを教員側が把握し適切なinterventionを行なったり、あるいは生徒側が内省を行い自信をmotivatingしたりする側面があるため、どのようにして解釈性の高いタグを自動生成するか、はunsolved question。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="the-knowledge-learning-instruction-361" class="title-link">The Knowledge-Learning-Instruction Framework: Bridging the Science-Practice Chasm to Enhance Robust Student Learning, Pelanek, User Modeling and User-Adapted Interaction, 2017</h3><br><a href="https://www.fi.muni.cz/~xpelanek/publications/umuai-overview.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="the-knowledge-learning-instruction-361" class="title-link">[Paper Note] The Knowledge-Learning-Instruction Framework: Bridging the Science-Practice Chasm to Enhance Robust Student Learning, Pelanek, User Modeling and User-Adapted Interaction, 2017</h3><br><a href="https://www.fi.muni.cz/~xpelanek/publications/umuai-overview.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -1877,11 +1886,12 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2021-05-30</span>
-<span class="snippet"><span>Comment</span><p>Learner Modelingに関するチュートリアル。Learner Modelingの典型的なコンテキストや、KCにどのような種類があるか（KLI Frameworkに基づいた場合）、learner modeling techniques (BKTやPFA等)のチュートリアルなどが記載されている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120101339-9eda1880-c180-11eb-97b7-0164426084d9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/120101360-b5806f80-c180-11eb-89bc-4e50ed71dde4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/120101367-bc0ee700-c180-11eb-9674-19b69e4174d2.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/120101386-d8128880-c180-11eb-8c97-72fec3636d6a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/120101419-f9737480-c180-11eb-9cad-05b4efbc3b72.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>knowledgeをmodelingする際に利用されるデータの典型的な構造<br><br><img src="https://user-images.githubusercontent.com/12249301/120101462-33447b00-c181-11eb-86f8-c99a9d12d51d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>donain modelingの典型的なアプローチ<br><br><img src="https://user-images.githubusercontent.com/12249301/120101494-5111e000-c181-11eb-829a-464a627b9d2b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>モデルのaspectと、model purposes, learning processesのrelevanceを図示したもの。色が濃いほうが重要度が高い<br><br><img src="https://user-images.githubusercontent.com/12249301/120101554-81f21500-c181-11eb-9cf2-3c857726fbea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Learner ModelingのMetrics<br><br><img src="https://user-images.githubusercontent.com/12249301/120101614-cb426480-c181-11eb-89e6-4d225a49e882.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>cross validation方法の適用方法（同じ学習者内と、異なる学習者間での違い。学習者内での予測性能を見たいのか、学習者間での汎化性能を見たいのかで変わるはず）<br><br><img src="https://user-images.githubusercontent.com/12249301/120101639-ea40f680-c181-11eb-86b9-28afa73106ac.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>BKT、PFAや、それらを用いるContext（どのモデルをどのように自分のcontextに合わせて選択するか）、KLI Frameworkに基づくKCの構成のされ方、モデル評価方法等を理解したい場合、読んだほうが良さそう？<br><br>ざっとしか見ていないけど、重要な情報がめちゃめちゃ書いてありそう。後でしっかり読む・・・。</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>Learner Modelingに関するチュートリアル。Learner Modelingの典型的なコンテキストや、KCにどのような種類があるか（KLI Frameworkに基づいた場合）、learner modeling techniques (BKTやPFA等)のチュートリアルなどが記載されている(Figure 1,2,3,4, Table 1,2)。</p><p>knowledgeをmodelingする際に利用されるデータの典型的な構造<br><br><img src="https://user-images.githubusercontent.com/12249301/120101462-33447b00-c181-11eb-86f8-c99a9d12d51d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>donain modelingの典型的なアプローチ<br><br><img src="https://user-images.githubusercontent.com/12249301/120101494-5111e000-c181-11eb-829a-464a627b9d2b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>モデルのaspectと、model purposes, learning processesのrelevanceを図示したもの。色が濃いほうが重要度が高い<br><br><img src="https://user-images.githubusercontent.com/12249301/120101554-81f21500-c181-11eb-9cf2-3c857726fbea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Learner ModelingのMetrics<br><br><img src="https://user-images.githubusercontent.com/12249301/120101614-cb426480-c181-11eb-89e6-4d225a49e882.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>cross validation方法の適用方法（同じ学習者内と、異なる学習者間での違い。学習者内での予測性能を見たいのか、学習者間での汎化性能を見たいのかで変わるはず）<br><br><img src="https://user-images.githubusercontent.com/12249301/120101639-ea40f680-c181-11eb-86b9-28afa73106ac.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>BKT、PFAや、それらを用いるContext（どのモデルをどのように自分のcontextに合わせて選択するか）、KLI Frameworkに基づくKCの構成のされ方、モデル評価方法等を理解したい場合、読んだほうが良さそう？<br><br>ざっとしか見ていないけど、重要な情報がめちゃめちゃ書いてありそう。後でしっかり読む・・・。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="knowledge-tracing-360" class="title-link">Knowledge Tracing: Modeling the Acquisition of Procedural Knowledge, Corbett+, User Modeling and User-Adapted Interaction, 1995</h3><br><a href="https://perso.liris.cnrs.fr/pierre-antoine.champin/2014/m2iade-ia2/slides/_static/893CorbettAnderson1995.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="knowledge-tracing-360" class="title-link">[Paper Note] Knowledge Tracing: Modeling the Acquisition of Procedural Knowledge, Corbett+, User Modeling and User-Adapted Interaction, 1995</h3><br><a href="https://perso.liris.cnrs.fr/pierre-antoine.champin/2014/m2iade-ia2/slides/_static/893CorbettAnderson1995.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -1896,6 +1906,7 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2021-05-30</span>
 <span class="snippet"><span>Comment</span><p>Bayesian Knowledge Tracing (BKT)を提案した論文。Knowledge Tracingについて研究するなら必ず抑えておくべき。<br><br>以後、BKTを拡張した研究が数多く提案されている。</p></span><br><br>
 </article>
@@ -1972,9 +1983,29 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/KV-Cache.html"
-            title="KV Cacheに関する論文・技術記事メモの一覧">
-            KV Cacheに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AgentSkills.html"
+            title="AgentSkillsに関する論文・技術記事メモの一覧">
+            AgentSkillsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/BeamSearch.html"
+            title="BeamSearchに関する論文・技術記事メモの一覧">
+            BeamSearchに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Test-time-Learning.html"
+            title="Test-time Learningに関する論文・技術記事メモの一覧">
+            Test-time Learningに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 </span> 
   <span class="post-badge badge-new">📝 </span>
@@ -1982,29 +2013,9 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/KnowledgeEditing.html"
-            title="KnowledgeEditingに関する論文・技術記事メモの一覧">
-            KnowledgeEditingに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 26</span> 
-  <span class="post-badge badge-new">📝 26</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/CIKM.html"
-            title="CIKMに関する論文・技術記事メモの一覧">
-            CIKMに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
-  <span class="post-badge badge-new">📝 11</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/LabelBias.html"
-            title="LabelBiasに関する論文・技術記事メモの一覧">
-            LabelBiasに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ECS.html"
+            title="ECSに関する論文・技術記事メモの一覧">
+            ECSに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>

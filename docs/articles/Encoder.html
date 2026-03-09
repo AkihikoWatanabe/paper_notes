@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 31 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 33 mins</span>
   </div></header>
 </div>
     </div>
@@ -2120,6 +2120,29 @@ My Issue
  などがある)。bag-of-wordsのようなsparseなベクトルで検索するのではなく（=Sparse Retriever)、ニューラルモデルでエンコードした密なベクトルを用いて検索しようという考え方である。<br><br>Query用と検索対象のPassageをエンコードするEncoderを独立してそれぞれ用意し（＝DualEncoder)、QAの学習データ（すなわちクエリqと正例として正解passage p+)が与えられた時、クエリqと正例p+の類似度が高く、負例p-との類似度が低くなるように（=Contrastive Learning)、Query, Passage Encoderのパラメータを更新することで学習する（損失関数は式(2))。<br><br>負例はIn-Batch Negativeを用いる。情報検索の場合正解ラベルは多くの場合明示的に決まるが、負例は膨大なテキストのプールからサンプリングしなければならない。サンプリング方法はいろいろな方法があり（e.g., ランダムにサンプリング、qとbm25スコアが高いpassage（ただし正解は含まない; hard negativesと呼ぶ）その中の一つの方法がIn-Batch Negativesである。<br><br>In-Batch Negativesでは、同ミニバッチ内のq_iに対応する正例p+_i以外の全てのp_jを（擬似的に）負例とみなす。これにより、パラメータの更新に利用するためのq,pのエンコードを全て一度だけ実行すれば良く、計算効率が大幅に向上するという優れもの。本研究の実験（Table3)によると上述したIn-Batch Negativeに加えて、bm25によるhard negativeをバッチ内の各qに対して1つ負例として追加する方法が最も性能が良かった。<br><br>クエリ、passageのエンコーダとしては、BERTが用いられ、[CLS]トークンに対応するembeddingを用いて類似度が計算される。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="nubia-367" class="title-link">NUBIA, EvalNLGEval'20</h3><br><a href="https://wl-research.github.io/blog/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/367" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<a class="button" href="ConceptToTextGeneration.html" target="_blank" rel="noopener noreferrer">#ConceptToTextGeneration</a>
+<a class="button" href="DialogueGeneration.html" target="_blank" rel="noopener noreferrer">#DialogueGeneration</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2021-06-02</span>
+<span class="snippet"><span>Comment</span><p>TextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。<br><br><img src="https://user-images.githubusercontent.com/12249301/120425437-299d5c00-c3a9-11eb-9236-8bfdf494fa60.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120425509-4e91cf00-c3a9-11eb-9666-dc1069cde3cc.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。</p><p>意味的に同等の内容を述べた文間でのexample<br><br><img src="https://user-images.githubusercontent.com/12249301/120425803-d37ce880-c3a9-11eb-938c-09747999cc7c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>BLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="sentence-bert-sentence-462" class="title-link">[Paper Note] Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Nils Reimers+, arXiv'19, 2019.08</h3><br><a href="https://arxiv.org/abs/1908.10084" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2492,29 +2515,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CTRPrediction.html"
-            title="CTRPredictionに関する論文・技術記事メモの一覧">
-            CTRPredictionに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
-  <span class="post-badge badge-new">📝 16</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Hybrid.html"
-            title="Hybridに関する論文・技術記事メモの一覧">
-            Hybridに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/ContextAware.html"
-            title="ContextAwareに関する論文・技術記事メモの一覧">
-            ContextAwareに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Contents-based.html"
+            title="Contents-basedに関する論文・技術記事メモの一覧">
+            Contents-basedに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
   <span class="post-badge badge-new">📝 6</span>
@@ -2522,12 +2525,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TOG.html"
-            title="TOGに関する論文・技術記事メモの一覧">
-            TOGに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PostTraining.html"
+            title="PostTrainingに関する論文・技術記事メモの一覧">
+            PostTrainingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 290</span> 
+  <span class="post-badge badge-new">📝 290</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/QA-based.html"
+            title="QA-basedに関する論文・技術記事メモの一覧">
+            QA-basedに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Word.html"
+            title="Wordに関する論文・技術記事メモの一覧">
+            Wordに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li></ul>
