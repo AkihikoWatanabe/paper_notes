@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 33 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 38 mins</span>
   </div></header>
 </div>
     </div>
@@ -2120,6 +2120,31 @@ My Issue
  などがある)。bag-of-wordsのようなsparseなベクトルで検索するのではなく（=Sparse Retriever)、ニューラルモデルでエンコードした密なベクトルを用いて検索しようという考え方である。<br><br>Query用と検索対象のPassageをエンコードするEncoderを独立してそれぞれ用意し（＝DualEncoder)、QAの学習データ（すなわちクエリqと正例として正解passage p+)が与えられた時、クエリqと正例p+の類似度が高く、負例p-との類似度が低くなるように（=Contrastive Learning)、Query, Passage Encoderのパラメータを更新することで学習する（損失関数は式(2))。<br><br>負例はIn-Batch Negativeを用いる。情報検索の場合正解ラベルは多くの場合明示的に決まるが、負例は膨大なテキストのプールからサンプリングしなければならない。サンプリング方法はいろいろな方法があり（e.g., ランダムにサンプリング、qとbm25スコアが高いpassage（ただし正解は含まない; hard negativesと呼ぶ）その中の一つの方法がIn-Batch Negativesである。<br><br>In-Batch Negativesでは、同ミニバッチ内のq_iに対応する正例p+_i以外の全てのp_jを（擬似的に）負例とみなす。これにより、パラメータの更新に利用するためのq,pのエンコードを全て一度だけ実行すれば良く、計算効率が大幅に向上するという優れもの。本研究の実験（Table3)によると上述したIn-Batch Negativeに加えて、bm25によるhard negativeをバッチ内の各qに対して1つ負例として追加する方法が最も性能が良かった。<br><br>クエリ、passageのエンコーダとしては、BERTが用いられ、[CLS]トークンに対応するembeddingを用いて類似度が計算される。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="leveraging-pre-trained-493" class="title-link">[Paper Note] Leveraging Pre-trained Checkpoints for Sequence Generation Tasks, Sascha Rothe+, TACL'20, 2019.07</h3><br><a href="https://arxiv.org/abs/1907.12461" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/493" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="MachineTranslation.html" target="_blank" rel="noopener noreferrer">#MachineTranslation</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
+<a class="button" href="TACL.html" target="_blank" rel="noopener noreferrer">#TACL</a>
+<a class="button" href="Encoder-Decoder.html" target="_blank" rel="noopener noreferrer">#Encoder-Decoder</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2022-12-01</span>
+<span class="snippet"><span>GPT Summary</span>- 事前学習された大規模なニューラルモデルがシーケンス生成においても有効であることを示し、BERT、GPT-2、RoBERTaと互換性のあるTransformerベースのモデルを開発。これにより、機械翻訳やテキスト要約などのタスクで新たな最先端の成果を達成。</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>BERT-to-BERT論文。これまでpre-trainedなチェックポイントを利用する研究は主にNLUで行われてきており、Seq2Seqでは行われてきていなかったので、やりました、という話。<br><br>publicly availableなBERTのcheckpointを利用し、BERTをencoder, decoder両方に採用することでSeq2Seqを実現。実現する上で、<br><br>1. decoder側のBERTはautoregressiveな生成をするようにする（左側のトークンのattentionしか見れないようにする）<br><br>2. encoder-decoder attentionを新たに導入する<br><br>の2点を工夫している。<br><br><br><br># 実験<br><br>Sentence Fusion, Sentence Split, Machine Translation, Summarizationの4タスクで実験<br><br><br><br>## MT<br><br><img src="https://user-images.githubusercontent.com/12249301/204958483-722106b3-bda2-45a3-bb08-fb4eb429c90c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>BERT2BERTがSoTA達成。Edunov+の手法は、data _augmentationを利用した手法であり、純粋なWMT14データを使った中ではSoTAだと主張。特にEncoder側でBERTを使うと、Randomにinitializeした場合と比べて性能が顕著に上昇しており、その重要性を主張。<br><br>Sentence Fusion, Sentence Splitでは、encoderとdecoderのパラメータをshareするのが良かったが、MTでは有効ではなかった。これはMTではmodelのcapacityが非常に重要である点、encoderとdecoderで異なる文法を扱うためであると考えられる。<br><br><br><br>## Summarization<br><br>BERTSHARE, ROBERTASHAREの結果が良かった。<br><br><img src="https://user-images.githubusercontent.com/12249301/204959543-e21bd9a6-bef4-4538-b181-daca93fa33e7.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="nubia-367" class="title-link">NUBIA, EvalNLGEval'20</h3><br><a href="https://wl-research.github.io/blog/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2411,6 +2436,27 @@ My Issue
  </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="a-paper-495" class="title-link">A Paper List for Recommend-system PreTrained Models</h3><br><a href="https://github.com/archersama/awesome-recommend-system-pretraining-papers" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/495" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
+<a class="button" href="Decoder.html" target="_blank" rel="noopener noreferrer">#Decoder</a>
+<span class="issue_date">Issue Date: 2022-12-01</span>
+</article>
+<article class="paper-entry">
 <h3 id="bert-日本語pre-trained-334" class="title-link">BERT 日本語Pre-trained Model, NICT, 2020.03</h3><br><a href="https://alaginrc.nict.go.jp/nict-bert/index.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2515,42 +2561,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Contents-based.html"
-            title="Contents-basedに関する論文・技術記事メモの一覧">
-            Contents-basedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/needs-revision.html"
+            title="needs-revisionに関する論文・技術記事メモの一覧">
+            needs-revisionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PostTraining.html"
-            title="PostTrainingに関する論文・技術記事メモの一覧">
-            PostTrainingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/MajorityVoting.html"
+            title="MajorityVotingに関する論文・技術記事メモの一覧">
+            MajorityVotingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 290</span> 
-  <span class="post-badge badge-new">📝 290</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/QA-based.html"
-            title="QA-basedに関する論文・技術記事メモの一覧">
-            QA-basedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/MotionEstimation.html"
+            title="MotionEstimationに関する論文・技術記事メモの一覧">
+            MotionEstimationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Word.html"
-            title="Wordに関する論文・技術記事メモの一覧">
-            Wordに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CI.html"
+            title="CIに関する論文・技術記事メモの一覧">
+            CIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>

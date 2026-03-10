@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 hours 7 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 hours 10 mins</span>
   </div></header>
 </div>
     </div>
@@ -11053,7 +11053,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>既存のInstruction DatasetのInstructionをseedとして、gpt-3.5-turboで新たなInstructionとresponseを生成したデータセット<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23a85991-6af9-4663-a293-c22a6cdba9f0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="lamp-when-536" class="title-link">LaMP: When Large Language Models Meet Personalization, Selemi+, University of Massachusetts Amherst （w_ Google Research）, ACL'24</h3><br><a href="https://arxiv.org/abs/2304.11406" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="lamp-when-536" class="title-link">[Paper Note] LaMP: When Large Language Models Meet Personalization, Alireza Salemi+, ACL'24, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11406" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -11065,15 +11065,18 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="PersonalizedGeneration.html" target="_blank" rel="noopener noreferrer">#PersonalizedGeneration</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-04-26</span>
+<span class="snippet"><span>GPT Summary</span>- 本論文は大規模言語モデルにおける個別化の重要性を示し、個別化出力を生成するための新しい評価フレームワーク「LaMPベンチマーク」を提案。LaMPは多様な言語タスクを網羅し、個々のユーザープロフィールに基づく複数のエントリを提供。7つの個別化タスクを含み、2つの取得補強アプローチを提案して出力のパーソナライズを図る。広範な実験により、提案手法の有効性と自然言語タスクにおける個別化の影響が確認された。</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># 概要<br><br>Personalizationはユーザのニーズや嗜好に応えるために重要な技術で、IRやRecSysで盛んに研究されてきたが、NLPではあまり実施されてこなかった。しかし、最近のタスクで、text classificationやgeneration taskでPersonalizationの重要性が指摘されている。このような中で、LLMでpersonalizedなレスポンスを生成し、評価することはあまり研究されていない。そこで、LaMPベンチマークを生成し、LLMにおけるPersonalizationをするための開発と評価をするための第一歩として提案している。<br><br> <br><br># Personalizing LLM Outputs<br><br>LLMに対してPersonalizedなoutputをさせるためには、profileをpromptに埋め込むことが基本的なアプローチとなる。<br><br><br><br>## Problem Formulation<br><br>まず、user profile（ユーザに関するrecordの集合）をユーザとみなす。データサンプルは以下の3つで構成される：<br><br>- x: モデルのinputとなるinput sequence<br><br>- y: モデルが生成することを期待するtarget output<br><br>- u: user profile（ユーザの嗜好やrequirementsを捉えるための補助的な情報）<br><br>そして、p(y | x, u) を最大化する問題として定式化される。それぞれのユーザuに対して、モデルは{(x_u1, y_u1,)...(x_un, y_un)}を利用することができる。<br><br><br><br>## A Retrieval Augmentation Approach for Personaliozing LLMs<br><br>user profileは基本的にめちゃめちゃ多く、promptに入れ込むことは非現実的。そこで、reteival augmentation approachと呼ばれる手法を提案している。LLMのcontext windowは限られているので、profileのうちのsubsetを利用することが現実的なアプローチとなる。また、必ずしも全てのユーザプロファイルがあるタスクを実施するために有用とは限らない。このため、retrieval augmentation approachを提案している。<br><br>retrieval augmentation approachでは、現在のテストケースに対して、relevantな部分ユーザプロファイルを選択的に抽出するフレームワークである。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234442873-01a4961b-feab-42d3-b59c-ee26daad957f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>(x_i, y_i)に対してpersonalizationを実現するために、3つのコンポーネントを採用している：<br><br>1. query generation function: x_iに基づきuser profileからrelevantな情報を引っ張ってくるquery qを生成するコンポーネント<br><br>2. retrieval model R(q, P_u, k): query q, プロファイルP_u, を用いて、k個のrelevantなプロファイルを引っ張ってくるモデル<br><br>3. prompt construction function: xとreteival modelが引っ張ってきたエントリからpromptを作成するコンポーネント<br><br>1, 2, 3によって生成されたprompt x^barと、yによってモデルを訓練、あるいは評価する。<br><br>この研究では、Rとして Contriever <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer">Contrirver</a>
+<strong># 概要<br><br>Personalizationはユーザのニーズや嗜好に応えるために重要な技術で、IRやRecSysで盛んに研究されてきたが、NLPではあまり実施されてこなかった。しかし、最近のタスクで、text classificationやgeneration taskでPersonalizationの重要性が指摘されている。このような中で、LLMでpersonalizedなレスポンスを生成し、評価することはあまり研究されていない。そこで、LaMPベンチマークを生成し、LLMにおけるPersonalizationをするための開発と評価をするための第一歩として提案している。<br><br> <br><br># Personalizing LLM Outputs<br><br>LLMに対してPersonalizedなoutputをさせるためには、profileをpromptに埋め込むことが基本的なアプローチとなる。<br><br><br><br>## Problem Formulation<br><br>まず、user profile（ユーザに関するrecordの集合）をユーザとみなす。データサンプルは以下の3つで構成される：<br><br>- x: モデルのinputとなるinput sequence<br><br>- y: モデルが生成することを期待するtarget output<br><br>- u: user profile（ユーザの嗜好やrequirementsを捉えるための補助的な情報）<br><br>そして、p(y | x, u) を最大化する問題として定式化される。それぞれのユーザuに対して、モデルは{(x_u1, y_u1,)...(x_un, y_un)}を利用することができる。<br><br><br><br>## A Retrieval Augmentation Approach for Personaliozing LLMs<br><br>user profileは基本的にめちゃめちゃ多く、promptに入れ込むことは非現実的。そこで、reteival augmentation approachと呼ばれる手法を提案している。LLMのcontext windowは限られているので、profileのうちのsubsetを利用することが現実的なアプローチとなる。また、必ずしも全てのユーザプロファイルがあるタスクを実施するために有用とは限らない。このため、retrieval augmentation approachを提案している。<br><br>retrieval augmentation approachでは、現在のテストケースに対して、relevantな部分ユーザプロファイルを選択的に抽出するフレームワークである。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234442873-01a4961b-feab-42d3-b59c-ee26daad957f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>(x_i, y_i)に対してpersonalizationを実現するために、3つのコンポーネントを採用している：<br><br>1. query generation function: x_iに基づきuser profileからrelevantな情報を引っ張ってくるquery qを生成するコンポーネント<br><br>2. retrieval model R(q, P_u, k): query q, プロファイルP_u, を用いて、k個のrelevantなプロファイルを引っ張ってくるモデル<br><br>3. prompt construction function: xとreteival modelが引っ張ってきたエントリからpromptを作成するコンポーネント<br><br>1, 2, 3によって生成されたprompt x^barと、yによってモデルを訓練、あるいは評価する。<br><br>この研究では、Rとして Contriever <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer">Contrirever</a>
 </strong>
 <br>
  , BM25, random selectionの3種類を用いている。<br><br><br><br>
-<strong># LaMPベンチマーク<br><br>GLUEやSuper Glue、KILT、GENといったベンチマークは、"one-size-fits-all"なモデリングと評価を前提としており、ユーザのニーズに答えるための開発を許容していない。一方で、LaMPは、以下のようなPersonalizationが必要なさまざまなタスクを統合して作成されたデータセットである。<br><br>- Personalized Text Classification<br><br>  - Personalized Citation Identification (binary classification)<br><br>    - Task definition<br><br>      - user u が topic xに関する論文を書いたときに、何の論文をciteすべきかを決めるタスク<br><br>      - user uが書いた論文のタイトルが与えられたとき、2つのcandidate paperのうちどちらをreferenceとして利用すべきかを決定する2値分類<br><br>    - Data Collection<br><br>      - Citation Network Datasetを利用。最低でも50本以上論文を書いているauthorを抽出し、authorの論文のうちランダムに論文と論文の引用を抽出<br><br>      - negative document selectionとして、ランダムに共著者がciteしている論文をサンプリング<br><br>   - Profile Specification<br><br>     -  ユーザプロファイルは、ユーザが書いた全てのpaper<br><br>     - titleとabstractのみをuser profileとして保持した<br><br>    - Evaluation<br><br>      - train/valid/testに分け、accuracyで評価する<br><br>  - Personalized News Categorization (15 category分類)<br><br>    - Task definition<br><br>      - LLMが journalist uによって書かれたニュースを分類する能力を問うタスク<br><br>      - u によって書かれたニュースxが与えられた時、uの過去の記事から得られるカテゴリの中から該当するカテゴリを予測するタスク<br><br>    - Data Collection<br><br>      - news categorization datasetを利用（Huff Postのニュース）<br><br>      - 記事をfirst authorでグルーピング<br><br>      - グルーピングした記事群をtrain/valid/testに分割<br><br>      - それぞれの記事において、記事をinputとし、その記事のカテゴリをoutputとする。そして残りの記事をuser profileとする。<br><br>    - Profile Specification<br><br>      - ユーザによって書かれた記事の集合<br><br>    - Evaluation<br><br>      - accuracy, macro-averaged F1で評価 <br><br>  - Personalized Product Rating (5-star rating)<br><br>    - Task definition<br><br>      - ユーザuが記述したreviewに基づいて、LLMがユーザuの未知のアイテムに対するratingを予測する性能を問う<br><br>    - Data Collection<br><br>      - Amazon Reviews Datasetを利用<br><br>      - reviewが100件未満、そしてほとんどのreviewが外れ値なユーザ1%を除外<br><br>      - ランダムにsubsetをサンプリングし、train/valid/testに分けた<br><br>      - input-output pairとしては、inputとしてランダムにユーザのreviewを選択し、その他のreviewをprofileとして利用する。そして、ユーザがinputのレビューで付与したratingがground truthとなる。<br><br>    - Profile Specification<br><br>      - ユーザのレビュ<br><br>    - Evaluation<br><br>      -  ttrain/valid/testに分けてRMSE, MAEで評価する<br><br>- Personalized Text Generation<br><br>  - Personalized News Headline Generation<br><br>    - Task definition<br><br>      - ユーザuが記述したニュースのタイトルを生成するタスク<br><br>      - 特に、LLMが与えられたprofileに基づいてユーザのinterestsやwriting styleを捉え、適切にheadlinに反映させる能力を問う<br><br>   - Data Collection<br><br>     - News Categorization datasetを利用（Huff Post）<br><br>     - データセットではauthorの情報が提供されている<br><br>     - それぞれのfirst authorごとにニュースをグルーピングし、それぞれの記事をinput, headlineをoutputとした。そして残りの記事をprofileとした<br><br>   - Profile Specification<br><br>     - ユーザの過去のニュース記事とそのheadlineの集合をprofileとする<br><br>   - Evaluation<br><br>     - ROUGE-1, ROUGE-Lで評価<br><br>  - Personalized Scholarly Title Generation<br><br>    - Task Definition<br><br>      - ユーザの過去のタイトルを考慮し、LLMがresearch paperのtitleを生成する能力を測る<br><br>    - Data Collection<br><br>      - Citation Network Datasetのデータを利用<br><br>      - abstractをinput, titleをoutputとし、残りのpaperをprofileとした<br><br>    - Profile Specification<br><br>      - ユーザが書いたpaperの集合（abstractのみを利用）<br><br>  - Personalized Email Subject Generation<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleに合わせて、Emailのタイトルを書く能力を測る<br><br>    - Data Collection<br><br>      - Avocado Resaerch Email Collectionデータを利用<br><br>      - 5単語未満のsubjectを持つメール、本文が30単語未満のメールを除外、<br><br>      - 送信主のemail addressでメールをグルーピング<br><br>      - input _outputペアは、email本文をinputとし、対応するsubjectをoutputとした。他のメールはprofile<br><br>    - Profile Specification<br><br>      -  ユーザのemailの集合<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価 <br><br>  - Personalized Tweet Paraphrasing<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleを考慮し、ツイートのparaphrasingをする能力を問う<br><br>    - Data Collection<br><br>      - Sentiment140 datasetを利用<br><br>      - 最低10単語を持つツイートのみを利用<br><br>      - userIDでグルーピングし、10 tweets以下のユーザは除外<br><br>      - ランダムに1つのtweetを選択し、ChatGPT(gpt-3.5-turbo)でparaphraseした<br><br>      - paraphrase版のtweetをinput, 元ツイートをoutputとし、input-output pairを作った。<br><br>    - User Profile Specification<br><br>      - ユーザの過去のツイート<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価<br><br><br><br></p><p># 実験<br><br>## Experimental Setup<br><br>- FlanT5-baesをfinetuningした<br><br>- ユーザ単位でモデルが存在するのか否かが記載されておらず不明<br><br>## 結果<br><br>- Personalization入れた方が全てのタスクでよくなった<br><br>- Retrievalモデルとしては、randomの場合でも良くなったが、基本的にはContrirverを利用した場合が最も良かった<br><br>  - => 適切なprofileを選択しpromptに含めることが重要であることが示された<br><br>- Rが抽出するサンプル kを増やすと、予測性能が増加する傾向もあったが、一部タスクでは性能の低下も招いた<br><br>- dev setを利用し、BM25/Contrieverのどちらを利用するか、kをいくつに設定するかをチューニングした結果、全ての結果が改善した<br><br>- FlanT5-XXLとgpt-3.5-turboを用いたZero-shotの設定でも実験。tweet paraphrasingタスクを除き、zero-shotでもuser profileをLLMで利用することでパフォーマンス改善。小さなモデルでもfinetuningすることで、zero-shotの大規模モデルにdownstreamタスクでより高い性能を獲得することを示している（ただし、めちゃめちゃ改善しているというわけでもなさそう）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234452179-6fac1cd9-982f-4b48-8dfe-1d742dc1c221.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234452837-8d8cdfed-ab85-4d1e-99d7-aad35ddc8979.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234453453-a2393c95-a820-404f-b21c-3332f53cb851.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># LaMPによって可能なResearch Problem<br><br>## Prompting for Personalization<br><br>- Augmentationモデル以外のLLMへのユーザプロファイルの埋め込み方法<br><br>- hard promptingやsoft prompting <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, arXiv'21, 2021.04</a>
+<strong># LaMPベンチマーク<br><br>GLUEやSuper Glue、KILT、GENといったベンチマークは、"one-size-fits-all"なモデリングと評価を前提としており、ユーザのニーズに答えるための開発を許容していない。一方で、LaMPは、以下のようなPersonalizationが必要なさまざまなタスクを統合して作成されたデータセットである。<br><br>- Personalized Text Classification<br><br>  - Personalized Citation Identification (binary classification)<br><br>    - Task definition<br><br>      - user u が topic xに関する論文を書いたときに、何の論文をciteすべきかを決めるタスク<br><br>      - user uが書いた論文のタイトルが与えられたとき、2つのcandidate paperのうちどちらをreferenceとして利用すべきかを決定する2値分類<br><br>    - Data Collection<br><br>      - Citation Network Datasetを利用。最低でも50本以上論文を書いているauthorを抽出し、authorの論文のうちランダムに論文と論文の引用を抽出<br><br>      - negative document selectionとして、ランダムに共著者がciteしている論文をサンプリング<br><br>   - Profile Specification<br><br>     -  ユーザプロファイルは、ユーザが書いた全てのpaper<br><br>     - titleとabstractのみをuser profileとして保持した<br><br>    - Evaluation<br><br>      - train/valid/testに分け、accuracyで評価する<br><br>  - Personalized News Categorization (15 category分類)<br><br>    - Task definition<br><br>      - LLMが journalist uによって書かれたニュースを分類する能力を問うタスク<br><br>      - u によって書かれたニュースxが与えられた時、uの過去の記事から得られるカテゴリの中から該当するカテゴリを予測するタスク<br><br>    - Data Collection<br><br>      - news categorization datasetを利用（Huff Postのニュース）<br><br>      - 記事をfirst authorでグルーピング<br><br>      - グルーピングした記事群をtrain/valid/testに分割<br><br>      - それぞれの記事において、記事をinputとし、その記事のカテゴリをoutputとする。そして残りの記事をuser profileとする。<br><br>    - Profile Specification<br><br>      - ユーザによって書かれた記事の集合<br><br>    - Evaluation<br><br>      - accuracy, macro-averaged F1で評価 <br><br>  - Personalized Product Rating (5-star rating)<br><br>    - Task definition<br><br>      - ユーザuが記述したreviewに基づいて、LLMがユーザuの未知のアイテムに対するratingを予測する性能を問う<br><br>    - Data Collection<br><br>      - Amazon Reviews Datasetを利用<br><br>      - reviewが100件未満、そしてほとんどのreviewが外れ値なユーザ1%を除外<br><br>      - ランダムにsubsetをサンプリングし、train/valid/testに分けた<br><br>      - input-output pairとしては、inputとしてランダムにユーザのreviewを選択し、その他のreviewをprofileとして利用する。そして、ユーザがinputのレビューで付与したratingがground truthとなる。<br><br>    - Profile Specification<br><br>      - ユーザのレビュ<br><br>    - Evaluation<br><br>      -  ttrain/valid/testに分けてRMSE, MAEで評価する<br><br>- Personalized Text Generation<br><br>  - Personalized News Headline Generation<br><br>    - Task definition<br><br>      - ユーザuが記述したニュースのタイトルを生成するタスク<br><br>      - 特に、LLMが与えられたprofileに基づいてユーザのinterestsやwriting styleを捉え、適切にheadlinに反映させる能力を問う<br><br>   - Data Collection<br><br>     - News Categorization datasetを利用（Huff Post）<br><br>     - データセットではauthorの情報が提供されている<br><br>     - それぞれのfirst authorごとにニュースをグルーピングし、それぞれの記事をinput, headlineをoutputとした。そして残りの記事をprofileとした<br><br>   - Profile Specification<br><br>     - ユーザの過去のニュース記事とそのheadlineの集合をprofileとする<br><br>   - Evaluation<br><br>     - ROUGE-1, ROUGE-Lで評価<br><br>  - Personalized Scholarly Title Generation<br><br>    - Task Definition<br><br>      - ユーザの過去のタイトルを考慮し、LLMがresearch paperのtitleを生成する能力を測る<br><br>    - Data Collection<br><br>      - Citation Network Datasetのデータを利用<br><br>      - abstractをinput, titleをoutputとし、残りのpaperをprofileとした<br><br>    - Profile Specification<br><br>      - ユーザが書いたpaperの集合（abstractのみを利用）<br><br>  - Personalized Email Subject Generation<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleに合わせて、Emailのタイトルを書く能力を測る<br><br>    - Data Collection<br><br>      - Avocado Resaerch Email Collectionデータを利用<br><br>      - 5単語未満のsubjectを持つメール、本文が30単語未満のメールを除外、<br><br>      - 送信主のemail addressでメールをグルーピング<br><br>      - input _outputペアは、email本文をinputとし、対応するsubjectをoutputとした。他のメールはprofile<br><br>    - Profile Specification<br><br>      -  ユーザのemailの集合<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価 <br><br>  - Personalized Tweet Paraphrasing<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleを考慮し、ツイートのparaphrasingをする能力を問う<br><br>    - Data Collection<br><br>      - Sentiment140 datasetを利用<br><br>      - 最低10単語を持つツイートのみを利用<br><br>      - userIDでグルーピングし、10 tweets以下のユーザは除外<br><br>      - ランダムに1つのtweetを選択し、ChatGPT(gpt-3.5-turbo)でparaphraseした<br><br>      - paraphrase版のtweetをinput, 元ツイートをoutputとし、input-output pairを作った。<br><br>    - User Profile Specification<br><br>      - ユーザの過去のツイート<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価<br><br><br><br></p><p># 実験<br><br>## Experimental Setup<br><br>- FlanT5-baesをfinetuningした<br><br>- ユーザ単位でモデルが存在するのか否かが記載されておらず不明<br><br>## 結果<br><br>- Personalization入れた方が全てのタスクでよくなった<br><br>- Retrievalモデルとしては、randomの場合でも良くなったが、基本的にはContrirverを利用した場合が最も良かった<br><br>  - => 適切なprofileを選択しpromptに含めることが重要であることが示された<br><br>- Rが抽出するサンプル kを増やすと、予測性能が増加する傾向もあったが、一部タスクでは性能の低下も招いた<br><br>- dev setを利用し、BM25/Contrieverのどちらを利用するか、kをいくつに設定するかをチューニングした結果、全ての結果が改善した<br><br>- FlanT5-XXLとgpt-3.5-turboを用いたZero-shotの設定でも実験。tweet paraphrasingタスクを除き、zero-shotでもuser profileをLLMで利用することでパフォーマンス改善。小さなモデルでもfinetuningすることで、zero-shotの大規模モデルにdownstreamタスクでより高い性能を獲得することを示している（ただし、めちゃめちゃ改善しているというわけでもなさそう）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234452179-6fac1cd9-982f-4b48-8dfe-1d742dc1c221.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234452837-8d8cdfed-ab85-4d1e-99d7-aad35ddc8979.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234453453-a2393c95-a820-404f-b21c-3332f53cb851.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># LaMPによって可能なResearch Problem<br><br>## Prompting for Personalization<br><br>- Augmentationモデル以外のLLMへのユーザプロファイルの埋め込み方法<br><br>- hard promptingやsoft prompting <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, EMNLP'21, 2021.04</a>
 </strong>
 <br>
  の活用<br><br>## Evaluation of Personalized Text Generation<br><br>- テキスト生成で利用される性能指標はユーザの情報を評価のプロセスで考慮していない<br><br>- Personalizedなテキスト生成を評価するための適切なmetricはどんなものがあるか？<br><br>## Learning to Retrieve from User Profiles<br><br>- Learning to RankをRetrieval modelに適用する方向性</p><p>LaMPの作成に利用したテンプレート一覧<br><br><img src="https://user-images.githubusercontent.com/12249301/234457098-5c2ba78f-dc74-45e4-bf91-f07ffd99bcb4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>実装とleaderboard<br><br>
@@ -11905,7 +11908,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>Factual Consistency Evaluationに関する研究。オリジナルのテキストに対して、様々な規模の言語モデルを用いて要約を生成。生成された要約に対してfactual informationが正しく含まれているかをラベル付けする方法を提案。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4fb420c8-6a80-4737-bc08-8e59b0ed89d6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="we're-afraid-570" class="title-link">We're Afraid Language Models Aren't Modeling Ambiguity, Alisa Liu+, EMNLP'23</h3><br><a href="https://arxiv.org/abs/2304.14399" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="we're-afraid-570" class="title-link">[Paper Note] We're Afraid Language Models Aren't Modeling Ambiguity, Alisa Liu+, EMNLP'23</h3><br><a href="https://arxiv.org/abs/2304.14399" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -11920,9 +11923,29 @@ My Issue
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <a class="button" href="Ambiguity.html" target="_blank" rel="noopener noreferrer">#Ambiguity</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
 <span class="snippet"><span>GPT Summary</span>- 曖昧さは自然言語の重要な特徴であり、言語モデル（LM）が対話や執筆支援において成功するためには、曖昧な言語を扱うことが不可欠です。本研究では、曖昧さの影響を評価するために、1,645の例からなるベンチマーク「AmbiEnt」を収集し、事前学習済みLMの評価を行いました。特にGPT-4の曖昧さ解消の正答率は32%と低く、曖昧さの解消が難しいことが示されました。また、多ラベルのNLIモデルが曖昧さによる誤解を特定できることを示し、NLPにおける曖昧さの重要性を再認識する必要性を提唱しています。</span>
-<span class="snippet"><span>Comment</span><p>LLMが曖昧性をどれだけ認知できるかを評価した初めての研究。<br>言語学者がアノテーションした1,645サンプルの様々な曖昧さを含んだベンチマークデータを利用。<br>GPT4は32%正解した。<br>またNLIデータでfinetuningしたモデルでは72.5%のmacroF1値を達成。<br>応用先として、誤解を招く可能性のある政治的主張に対してアラートをあげることなどを挙げている。</p><p><img src="https://github.com/user-attachments/assets/a728a953-fac4-4115-8ec8-e5721bc4223e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+<span class="snippet"><span>Comment</span><p>LLMが曖昧性をどれだけ認知できるかを評価した初めての研究。<br>言語学者がアノテーションした1,645サンプルの様々な曖昧さを含んだベンチマークデータを利用。<br>GPT4は32%正解した。<br>またNLIデータでfinetuningしたモデルでは72.5%のmacroF1値を達成。<br>応用先として、誤解を招く可能性のある政治的主張に対してアラートをあげることなどを挙げている。<br><img src="https://github.com/user-attachments/assets/a728a953-fac4-4115-8ec8-e5721bc4223e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="mteb-massive-490" class="title-link">[Paper Note] MTEB: Massive Text Embedding Benchmark, Niklas Muennighoff+, EACL'23, 2022.10</h3><br><a href="https://arxiv.org/abs/2210.07316" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/490" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="EACL.html" target="_blank" rel="noopener noreferrer">#EACL</a>
+<span class="issue_date">Issue Date: 2022-10-31</span>
+<span class="snippet"><span>GPT Summary</span>- テキスト埋め込み評価が単一タスクの小規模データセットに偏っているため、他タスクへの適用可否が不明な中、Massive Text Embedding Benchmark（MTEB）を導入。MTEBは8つの埋め込みタスクを網羅し、58データセットと112言語を含むを通じて、33モデルをベンチマーク。特定手法が全タスクで優位性を持たないことを示し、分野が普遍的手法に収束していないことを明らかに。オープンソースコードと公開リーダーボードは、https://github.com/embeddings-benchmark/mteb で利用可能。</span>
 </article>
 <article class="paper-entry">
 <h3 id="calvin-a-3744" class="title-link">[Paper Note] CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks, Oier Mees+, RA-L'22 Best Paper Award, 2021.12</h3><br><a href="https://arxiv.org/abs/2112.03227" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12045,6 +12068,7 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-02-07</span>
 <span class="snippet"><span>GPT Summary</span>- 日本語の質問応答データセットJaQuADを提案。39,696の質問-回答ペアを含み、テストセットでF1スコア78.92%、EMスコア63.38%を達成したベースラインモデルをファインチューニング。データセットは公開中。</span>
 <span class="snippet"><span>Comment</span><p>SQuAD likeな日本語のQAデータセット<br><br>
@@ -12289,7 +12313,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p># 概要<br><br>ニュース記事に対するPersonalizedなHeadlineの正解データを生成。103名のvolunteerの最低でも50件のクリックログと、200件に対する正解タイトルを生成した。正解タイトルを生成する際は、各ドキュメントごとに4名異なるユーザが正解タイトルを生成するようにした。これらを、Microsoft Newsの大規模ユーザ行動ログデータと、ニュース記事本文、タイトル、impressionログと組み合わせてPENSデータを構成した。<br><br><br><br># データセット生成手順<br><br>103名のenglish-native [speakerの学生に対して、1000件のニュースヘッドラインの中から最低50件興味のあるヘッドラインを選択してもらう。続いて、200件のニュース記事に対して、正解ヘッドラインを生成したもらうことでデータを生成した。正解ヘッドラインを生成する際は、同一のニュースに対して4人がヘッドラインを生成するように調整した。生成されたヘッドラインは専門家によってqualityをチェックされ、factual informationにエラーがあるものや、極端に長い・短いものなどは除外された。<br><br><br><br># データセット統計量<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cd4fa969-03c0-4539-bcec-25ba3204ffc9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1c9a38b4-4156-49a2-83e5-20e057588f91" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>Transformer Encoder + Pointer GeneratorによってPersonalizedなヘッドラインを生成する。<br><br>Transformer Encoderでは、ニュースの本文情報をエンコードし、attention distributionを生成する。Decoder側では、User Embeddingを組み合わせて、テキストをPointer Generatorの枠組みでデコーディングしていき、ヘッドラインを生成する。<br><br>User Embeddingをどのようにinjectするかで、3種類の方法を提案しており、1つ目は、Decoderの初期状態に設定する方法、2つ目は、ニュース本文のattention distributionの計算に利用する方法、3つ目はデコーディング時に、ソースからvocabをコピーするか、生成するかを選択する際に利用する方法。1つ目は一番シンプルな方法、2つ目は、ユーザによって記事で着目する部分が違うからattention distributionも変えましょう、そしてこれを変えたらcontext vectorも変わるからデコーディング時の挙動も変わるよねというモチベーション、3つ目は、選択するvocabを嗜好に合わせて変えましょう、という方向性だと思われる。最終的に、2つ目の方法が最も性能が良いことが示された。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/54d4da04-6af2-4ef2-b4ff-7a12f1ea7936" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 訓練手法<br><br>まずニュース記事推薦システムを訓練し、user embeddingを取得できるようにする。続いて、genericなheadline generationモデルを訓練する。最後に両者を組み合わせて、Reinforcement LearningでPersonalized Headeline Generationモデルを訓練する。Rewardとして、<br><br>1. Personalization: ヘッドラインとuser embeddingのdot productで報酬とする<br><br>2. Fluency: two-layer LSTMを訓練し、生成されたヘッドラインのprobabilityを推定することで報酬とする<br><br>3. Factual Consistency: 生成されたヘッドラインと本文の各文とのROUGEを測りtop-3 scoreの平均を報酬とする<br><br>とした。<br><br>1,2,3の平均を最終的なRewardとする。<br><br><br><br># 実験結果<br><br>Genericな手法と比較して、全てPersonalizedな手法が良かった。また、手法としては②のattention distributionに対してuser informationを注入する方法が良かった。News Recommendationの性能が高いほど、生成されるヘッドラインの性能も良かった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/84aa7b6d-05cf-415a-a2cf-76401801230f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Case Study<br><br>ある記事に対するヘッドラインの一覧。Pointer-Genでは、重要な情報が抜け落ちてしまっているが、提案手法では抜け落ちていない。これはRLの報酬のfluencyによるものだと考えられる。また、異なるユーザには異なるヘッドラインが生成されていることが分かる。 <br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e65eb9da-7cc6-4d72-b2ca-8607c794f3a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="ニュース記事に対する談話構造と興味度のアノテーション-～ニュース対話システムのパーソナライズに向けて～-598" class="title-link">ニュース記事に対する談話構造と興味度のアノテーション ～ニュース対話システムのパーソナライズに向けて～, 高津+, 早稲田大学, 言語処理学会'21</h3><br><a href="https://www.anlp.jp/proceedings/annual_meeting/2021/pdf_dir/P2-1.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="ニュース記事に対する談話構造と興味度のアノテーション-～ニュース対話システムのパーソナライズに向けて～-598" class="title-link">[Paper Note] ニュース記事に対する談話構造と興味度のアノテーション ～ニュース対話システムのパーソナライズに向けて～, 高津+, NLP'21</h3><br><a href="https://www.anlp.jp/proceedings/annual_meeting/2021/pdf_dir/P2-1.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -12324,6 +12348,7 @@ My Issue
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <a class="button" href="INLG.html" target="_blank" rel="noopener noreferrer">#INLG</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-08-18</span>
 <span class="snippet"><span>GPT Summary</span>- バイオメディカル分野におけるD2T生成の研究を行い、医薬品のパッケージリーフレットを用いた実世界のデータセットに対してファインチューニングされたトランスフォーマーを適用。現実的な複数文のテキスト生成が可能であることを示す一方で、重要な制限も存在。新たにバイオメディカル分野のD2T生成モデルのベンチマーク用データセット（BioLeaflets）を公開。</span>
 <span class="snippet"><span>Comment</span><p>biomedical domainの新たなdata2textデータセットを提供。事前学習済みのBART, T5等をfinetuningすることで高精度にテキストが生成できることを示した。</p></span><br><br>
@@ -15424,6 +15449,8 @@ My Issue
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="ScorePrediction.html" target="_blank" rel="noopener noreferrer">#ScorePrediction</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
 <span class="issue_date">Issue Date: 2022-08-23</span>
 </article>
 <article class="paper-entry">
@@ -15680,39 +15707,39 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Speech.html"
-            title="Speechに関する論文・技術記事メモの一覧">
-            Speechに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/VerifiableRewards.html"
+            title="VerifiableRewardsに関する論文・技術記事メモの一覧">
+            VerifiableRewardsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AI-Detector.html"
-            title="AI Detectorに関する論文・技術記事メモの一覧">
-            AI Detectorに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/TextToVideoGeneration.html"
+            title="TextToVideoGenerationに関する論文・技術記事メモの一覧">
+            TextToVideoGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PartialRollout.html"
-            title="PartialRolloutに関する論文・技術記事メモの一覧">
-            PartialRolloutに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Robotics.html"
+            title="Roboticsに関する論文・技術記事メモの一覧">
+            Roboticsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 70</span> 
+  <span class="post-badge badge-new">📝 70</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ConvolutionalModels.html"
-            title="ConvolutionalModelsに関する論文・技術記事メモの一覧">
-            ConvolutionalModelsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ACMMM.html"
+            title="ACMMMに関する論文・技術記事メモの一覧">
+            ACMMMに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>

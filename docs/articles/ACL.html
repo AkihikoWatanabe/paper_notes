@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 hours 57 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 hours 0 min</span>
   </div></header>
 </div>
     </div>
@@ -2719,7 +2719,7 @@ My Issue
  <br>    - 回答にlogical operationが不要なものに限定して頭に"Name some"をつけて質問を生成<br>        - "Name some Mexican animated horror films" or "Name some Endemic orchids of Vietnam"<br>    - 8個の回答を持つ55 test questionsを作成<br>- MultiSpanQA<br>    - Reading Comprehensionに関するBenchmark dataset<br>    - 複数の独立した回答（回答は連続しないスパンから回答が抽出される）から構成される質問で構成<br>        - 特に、今回はclosed-book setting で実施<br>        - すなわち、与えられた質問のみから回答しなければならず、知っている知識が問われる問題<br>    - 418のtest questsionsで、各回答に含まれる複数アイテムのspanが3 token未満となるようにした<br>    - QA例:<br>        - Q: Who invented the first printing press and in what year?<br>        - A: Johannes Gutenberg, 1450.<br># 評価結果<br>提案手法には、verificationの各ステップでLLMに独立したpromptingをするかなどでjoint, 2-step, Factored, Factor+Revisedの4種類のバリエーションがあることに留意。<br>- joint: 全てのステップを一つのpromptで実施<br>- 2-stepは2つのpromptに分けて実施<br>- Factoredは各ステップを全て異なるpromptingで実施<br>- Factor+Revisedは異なるpromptで追加のQAに対するcross-checkをかける手法<br><br>結果を見ると、CoVEでhallucinationが軽減（というより、モデルが持つ知識に基づいて正確に回答できるサンプルの割合が増えるので実質的にhallucinationが低減したとみなせる）され、特にjointよりも2-step, factoredの方が高い性能を示すことがわかる。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/05ff1e6c-75e7-428a-996f-61e844866391" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d72aa05e-daab-4092-a6f5-9e80cdab7486" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="active-prompting-554" class="title-link">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, ACL'24</h3><br><a href="https://arxiv.org/abs/2302.12246" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="active-prompting-554" class="title-link">[Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL'24, 2023.02</h3><br><a href="https://arxiv.org/abs/2302.12246" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2734,11 +2734,14 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の性能向上には、タスク特有のプロンプト設計が重要であり、特に連鎖的思考（CoT）を活用したアプローチが効果的です。この研究では、Active-Promptという新手法を提案し、タスク特有の質問に対する最適なアノテーションを選定することでLLMsを適応させます。不確実性に基づくアクティブラーニングを取り入れ、最も不確実な質問を対象にする指標を導入。実験により、提案手法が8つの複雑な推論タスクで最先端の成績を達成し、有効性が示されました。</span>
 <span class="snippet"><span>Comment</span><p>しっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽい<br><br>そのために、questionに対して、training dataに対してFew-Shot CoTで予測をさせた場合やZero-Shot CoTによって予測をさせた場合などでanswerを取得し、answerのばらつき度合いなどから不確実性を測定する。<br><br>そして、不確実性が高いCoT-Answerペアを取得し、人間が手作業でCoTと回答のペアを与え、その人間が作成したものを用いてTestデータに対してFewShotしましょう、ということだと思われる。<br><br><img src="https://user-images.githubusercontent.com/12249301/234747555-4b7bd0d5-f099-4288-a470-32206533e652.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="lamp-when-536" class="title-link">LaMP: When Large Language Models Meet Personalization, Selemi+, University of Massachusetts Amherst （w_ Google Research）, ACL'24</h3><br><a href="https://arxiv.org/abs/2304.11406" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="lamp-when-536" class="title-link">[Paper Note] LaMP: When Large Language Models Meet Personalization, Alireza Salemi+, ACL'24, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11406" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2751,14 +2754,17 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="PersonalizedGeneration.html" target="_blank" rel="noopener noreferrer">#PersonalizedGeneration</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-04-26</span>
+<span class="snippet"><span>GPT Summary</span>- 本論文は大規模言語モデルにおける個別化の重要性を示し、個別化出力を生成するための新しい評価フレームワーク「LaMPベンチマーク」を提案。LaMPは多様な言語タスクを網羅し、個々のユーザープロフィールに基づく複数のエントリを提供。7つの個別化タスクを含み、2つの取得補強アプローチを提案して出力のパーソナライズを図る。広範な実験により、提案手法の有効性と自然言語タスクにおける個別化の影響が確認された。</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># 概要<br><br>Personalizationはユーザのニーズや嗜好に応えるために重要な技術で、IRやRecSysで盛んに研究されてきたが、NLPではあまり実施されてこなかった。しかし、最近のタスクで、text classificationやgeneration taskでPersonalizationの重要性が指摘されている。このような中で、LLMでpersonalizedなレスポンスを生成し、評価することはあまり研究されていない。そこで、LaMPベンチマークを生成し、LLMにおけるPersonalizationをするための開発と評価をするための第一歩として提案している。<br><br> <br><br># Personalizing LLM Outputs<br><br>LLMに対してPersonalizedなoutputをさせるためには、profileをpromptに埋め込むことが基本的なアプローチとなる。<br><br><br><br>## Problem Formulation<br><br>まず、user profile（ユーザに関するrecordの集合）をユーザとみなす。データサンプルは以下の3つで構成される：<br><br>- x: モデルのinputとなるinput sequence<br><br>- y: モデルが生成することを期待するtarget output<br><br>- u: user profile（ユーザの嗜好やrequirementsを捉えるための補助的な情報）<br><br>そして、p(y | x, u) を最大化する問題として定式化される。それぞれのユーザuに対して、モデルは{(x_u1, y_u1,)...(x_un, y_un)}を利用することができる。<br><br><br><br>## A Retrieval Augmentation Approach for Personaliozing LLMs<br><br>user profileは基本的にめちゃめちゃ多く、promptに入れ込むことは非現実的。そこで、reteival augmentation approachと呼ばれる手法を提案している。LLMのcontext windowは限られているので、profileのうちのsubsetを利用することが現実的なアプローチとなる。また、必ずしも全てのユーザプロファイルがあるタスクを実施するために有用とは限らない。このため、retrieval augmentation approachを提案している。<br><br>retrieval augmentation approachでは、現在のテストケースに対して、relevantな部分ユーザプロファイルを選択的に抽出するフレームワークである。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234442873-01a4961b-feab-42d3-b59c-ee26daad957f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>(x_i, y_i)に対してpersonalizationを実現するために、3つのコンポーネントを採用している：<br><br>1. query generation function: x_iに基づきuser profileからrelevantな情報を引っ張ってくるquery qを生成するコンポーネント<br><br>2. retrieval model R(q, P_u, k): query q, プロファイルP_u, を用いて、k個のrelevantなプロファイルを引っ張ってくるモデル<br><br>3. prompt construction function: xとreteival modelが引っ張ってきたエントリからpromptを作成するコンポーネント<br><br>1, 2, 3によって生成されたprompt x^barと、yによってモデルを訓練、あるいは評価する。<br><br>この研究では、Rとして Contriever <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer">Contrirver</a>
+<strong># 概要<br><br>Personalizationはユーザのニーズや嗜好に応えるために重要な技術で、IRやRecSysで盛んに研究されてきたが、NLPではあまり実施されてこなかった。しかし、最近のタスクで、text classificationやgeneration taskでPersonalizationの重要性が指摘されている。このような中で、LLMでpersonalizedなレスポンスを生成し、評価することはあまり研究されていない。そこで、LaMPベンチマークを生成し、LLMにおけるPersonalizationをするための開発と評価をするための第一歩として提案している。<br><br> <br><br># Personalizing LLM Outputs<br><br>LLMに対してPersonalizedなoutputをさせるためには、profileをpromptに埋め込むことが基本的なアプローチとなる。<br><br><br><br>## Problem Formulation<br><br>まず、user profile（ユーザに関するrecordの集合）をユーザとみなす。データサンプルは以下の3つで構成される：<br><br>- x: モデルのinputとなるinput sequence<br><br>- y: モデルが生成することを期待するtarget output<br><br>- u: user profile（ユーザの嗜好やrequirementsを捉えるための補助的な情報）<br><br>そして、p(y | x, u) を最大化する問題として定式化される。それぞれのユーザuに対して、モデルは{(x_u1, y_u1,)...(x_un, y_un)}を利用することができる。<br><br><br><br>## A Retrieval Augmentation Approach for Personaliozing LLMs<br><br>user profileは基本的にめちゃめちゃ多く、promptに入れ込むことは非現実的。そこで、reteival augmentation approachと呼ばれる手法を提案している。LLMのcontext windowは限られているので、profileのうちのsubsetを利用することが現実的なアプローチとなる。また、必ずしも全てのユーザプロファイルがあるタスクを実施するために有用とは限らない。このため、retrieval augmentation approachを提案している。<br><br>retrieval augmentation approachでは、現在のテストケースに対して、relevantな部分ユーザプロファイルを選択的に抽出するフレームワークである。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234442873-01a4961b-feab-42d3-b59c-ee26daad957f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>(x_i, y_i)に対してpersonalizationを実現するために、3つのコンポーネントを採用している：<br><br>1. query generation function: x_iに基づきuser profileからrelevantな情報を引っ張ってくるquery qを生成するコンポーネント<br><br>2. retrieval model R(q, P_u, k): query q, プロファイルP_u, を用いて、k個のrelevantなプロファイルを引っ張ってくるモデル<br><br>3. prompt construction function: xとreteival modelが引っ張ってきたエントリからpromptを作成するコンポーネント<br><br>1, 2, 3によって生成されたprompt x^barと、yによってモデルを訓練、あるいは評価する。<br><br>この研究では、Rとして Contriever <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/540" target="_blank" rel="noopener noreferrer">Contrirever</a>
 </strong>
 <br>
  , BM25, random selectionの3種類を用いている。<br><br><br><br>
-<strong># LaMPベンチマーク<br><br>GLUEやSuper Glue、KILT、GENといったベンチマークは、"one-size-fits-all"なモデリングと評価を前提としており、ユーザのニーズに答えるための開発を許容していない。一方で、LaMPは、以下のようなPersonalizationが必要なさまざまなタスクを統合して作成されたデータセットである。<br><br>- Personalized Text Classification<br><br>  - Personalized Citation Identification (binary classification)<br><br>    - Task definition<br><br>      - user u が topic xに関する論文を書いたときに、何の論文をciteすべきかを決めるタスク<br><br>      - user uが書いた論文のタイトルが与えられたとき、2つのcandidate paperのうちどちらをreferenceとして利用すべきかを決定する2値分類<br><br>    - Data Collection<br><br>      - Citation Network Datasetを利用。最低でも50本以上論文を書いているauthorを抽出し、authorの論文のうちランダムに論文と論文の引用を抽出<br><br>      - negative document selectionとして、ランダムに共著者がciteしている論文をサンプリング<br><br>   - Profile Specification<br><br>     -  ユーザプロファイルは、ユーザが書いた全てのpaper<br><br>     - titleとabstractのみをuser profileとして保持した<br><br>    - Evaluation<br><br>      - train/valid/testに分け、accuracyで評価する<br><br>  - Personalized News Categorization (15 category分類)<br><br>    - Task definition<br><br>      - LLMが journalist uによって書かれたニュースを分類する能力を問うタスク<br><br>      - u によって書かれたニュースxが与えられた時、uの過去の記事から得られるカテゴリの中から該当するカテゴリを予測するタスク<br><br>    - Data Collection<br><br>      - news categorization datasetを利用（Huff Postのニュース）<br><br>      - 記事をfirst authorでグルーピング<br><br>      - グルーピングした記事群をtrain/valid/testに分割<br><br>      - それぞれの記事において、記事をinputとし、その記事のカテゴリをoutputとする。そして残りの記事をuser profileとする。<br><br>    - Profile Specification<br><br>      - ユーザによって書かれた記事の集合<br><br>    - Evaluation<br><br>      - accuracy, macro-averaged F1で評価 <br><br>  - Personalized Product Rating (5-star rating)<br><br>    - Task definition<br><br>      - ユーザuが記述したreviewに基づいて、LLMがユーザuの未知のアイテムに対するratingを予測する性能を問う<br><br>    - Data Collection<br><br>      - Amazon Reviews Datasetを利用<br><br>      - reviewが100件未満、そしてほとんどのreviewが外れ値なユーザ1%を除外<br><br>      - ランダムにsubsetをサンプリングし、train/valid/testに分けた<br><br>      - input-output pairとしては、inputとしてランダムにユーザのreviewを選択し、その他のreviewをprofileとして利用する。そして、ユーザがinputのレビューで付与したratingがground truthとなる。<br><br>    - Profile Specification<br><br>      - ユーザのレビュ<br><br>    - Evaluation<br><br>      -  ttrain/valid/testに分けてRMSE, MAEで評価する<br><br>- Personalized Text Generation<br><br>  - Personalized News Headline Generation<br><br>    - Task definition<br><br>      - ユーザuが記述したニュースのタイトルを生成するタスク<br><br>      - 特に、LLMが与えられたprofileに基づいてユーザのinterestsやwriting styleを捉え、適切にheadlinに反映させる能力を問う<br><br>   - Data Collection<br><br>     - News Categorization datasetを利用（Huff Post）<br><br>     - データセットではauthorの情報が提供されている<br><br>     - それぞれのfirst authorごとにニュースをグルーピングし、それぞれの記事をinput, headlineをoutputとした。そして残りの記事をprofileとした<br><br>   - Profile Specification<br><br>     - ユーザの過去のニュース記事とそのheadlineの集合をprofileとする<br><br>   - Evaluation<br><br>     - ROUGE-1, ROUGE-Lで評価<br><br>  - Personalized Scholarly Title Generation<br><br>    - Task Definition<br><br>      - ユーザの過去のタイトルを考慮し、LLMがresearch paperのtitleを生成する能力を測る<br><br>    - Data Collection<br><br>      - Citation Network Datasetのデータを利用<br><br>      - abstractをinput, titleをoutputとし、残りのpaperをprofileとした<br><br>    - Profile Specification<br><br>      - ユーザが書いたpaperの集合（abstractのみを利用）<br><br>  - Personalized Email Subject Generation<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleに合わせて、Emailのタイトルを書く能力を測る<br><br>    - Data Collection<br><br>      - Avocado Resaerch Email Collectionデータを利用<br><br>      - 5単語未満のsubjectを持つメール、本文が30単語未満のメールを除外、<br><br>      - 送信主のemail addressでメールをグルーピング<br><br>      - input _outputペアは、email本文をinputとし、対応するsubjectをoutputとした。他のメールはprofile<br><br>    - Profile Specification<br><br>      -  ユーザのemailの集合<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価 <br><br>  - Personalized Tweet Paraphrasing<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleを考慮し、ツイートのparaphrasingをする能力を問う<br><br>    - Data Collection<br><br>      - Sentiment140 datasetを利用<br><br>      - 最低10単語を持つツイートのみを利用<br><br>      - userIDでグルーピングし、10 tweets以下のユーザは除外<br><br>      - ランダムに1つのtweetを選択し、ChatGPT(gpt-3.5-turbo)でparaphraseした<br><br>      - paraphrase版のtweetをinput, 元ツイートをoutputとし、input-output pairを作った。<br><br>    - User Profile Specification<br><br>      - ユーザの過去のツイート<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価<br><br><br><br></p><p># 実験<br><br>## Experimental Setup<br><br>- FlanT5-baesをfinetuningした<br><br>- ユーザ単位でモデルが存在するのか否かが記載されておらず不明<br><br>## 結果<br><br>- Personalization入れた方が全てのタスクでよくなった<br><br>- Retrievalモデルとしては、randomの場合でも良くなったが、基本的にはContrirverを利用した場合が最も良かった<br><br>  - => 適切なprofileを選択しpromptに含めることが重要であることが示された<br><br>- Rが抽出するサンプル kを増やすと、予測性能が増加する傾向もあったが、一部タスクでは性能の低下も招いた<br><br>- dev setを利用し、BM25/Contrieverのどちらを利用するか、kをいくつに設定するかをチューニングした結果、全ての結果が改善した<br><br>- FlanT5-XXLとgpt-3.5-turboを用いたZero-shotの設定でも実験。tweet paraphrasingタスクを除き、zero-shotでもuser profileをLLMで利用することでパフォーマンス改善。小さなモデルでもfinetuningすることで、zero-shotの大規模モデルにdownstreamタスクでより高い性能を獲得することを示している（ただし、めちゃめちゃ改善しているというわけでもなさそう）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234452179-6fac1cd9-982f-4b48-8dfe-1d742dc1c221.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234452837-8d8cdfed-ab85-4d1e-99d7-aad35ddc8979.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234453453-a2393c95-a820-404f-b21c-3332f53cb851.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># LaMPによって可能なResearch Problem<br><br>## Prompting for Personalization<br><br>- Augmentationモデル以外のLLMへのユーザプロファイルの埋め込み方法<br><br>- hard promptingやsoft prompting <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, arXiv'21, 2021.04</a>
+<strong># LaMPベンチマーク<br><br>GLUEやSuper Glue、KILT、GENといったベンチマークは、"one-size-fits-all"なモデリングと評価を前提としており、ユーザのニーズに答えるための開発を許容していない。一方で、LaMPは、以下のようなPersonalizationが必要なさまざまなタスクを統合して作成されたデータセットである。<br><br>- Personalized Text Classification<br><br>  - Personalized Citation Identification (binary classification)<br><br>    - Task definition<br><br>      - user u が topic xに関する論文を書いたときに、何の論文をciteすべきかを決めるタスク<br><br>      - user uが書いた論文のタイトルが与えられたとき、2つのcandidate paperのうちどちらをreferenceとして利用すべきかを決定する2値分類<br><br>    - Data Collection<br><br>      - Citation Network Datasetを利用。最低でも50本以上論文を書いているauthorを抽出し、authorの論文のうちランダムに論文と論文の引用を抽出<br><br>      - negative document selectionとして、ランダムに共著者がciteしている論文をサンプリング<br><br>   - Profile Specification<br><br>     -  ユーザプロファイルは、ユーザが書いた全てのpaper<br><br>     - titleとabstractのみをuser profileとして保持した<br><br>    - Evaluation<br><br>      - train/valid/testに分け、accuracyで評価する<br><br>  - Personalized News Categorization (15 category分類)<br><br>    - Task definition<br><br>      - LLMが journalist uによって書かれたニュースを分類する能力を問うタスク<br><br>      - u によって書かれたニュースxが与えられた時、uの過去の記事から得られるカテゴリの中から該当するカテゴリを予測するタスク<br><br>    - Data Collection<br><br>      - news categorization datasetを利用（Huff Postのニュース）<br><br>      - 記事をfirst authorでグルーピング<br><br>      - グルーピングした記事群をtrain/valid/testに分割<br><br>      - それぞれの記事において、記事をinputとし、その記事のカテゴリをoutputとする。そして残りの記事をuser profileとする。<br><br>    - Profile Specification<br><br>      - ユーザによって書かれた記事の集合<br><br>    - Evaluation<br><br>      - accuracy, macro-averaged F1で評価 <br><br>  - Personalized Product Rating (5-star rating)<br><br>    - Task definition<br><br>      - ユーザuが記述したreviewに基づいて、LLMがユーザuの未知のアイテムに対するratingを予測する性能を問う<br><br>    - Data Collection<br><br>      - Amazon Reviews Datasetを利用<br><br>      - reviewが100件未満、そしてほとんどのreviewが外れ値なユーザ1%を除外<br><br>      - ランダムにsubsetをサンプリングし、train/valid/testに分けた<br><br>      - input-output pairとしては、inputとしてランダムにユーザのreviewを選択し、その他のreviewをprofileとして利用する。そして、ユーザがinputのレビューで付与したratingがground truthとなる。<br><br>    - Profile Specification<br><br>      - ユーザのレビュ<br><br>    - Evaluation<br><br>      -  ttrain/valid/testに分けてRMSE, MAEで評価する<br><br>- Personalized Text Generation<br><br>  - Personalized News Headline Generation<br><br>    - Task definition<br><br>      - ユーザuが記述したニュースのタイトルを生成するタスク<br><br>      - 特に、LLMが与えられたprofileに基づいてユーザのinterestsやwriting styleを捉え、適切にheadlinに反映させる能力を問う<br><br>   - Data Collection<br><br>     - News Categorization datasetを利用（Huff Post）<br><br>     - データセットではauthorの情報が提供されている<br><br>     - それぞれのfirst authorごとにニュースをグルーピングし、それぞれの記事をinput, headlineをoutputとした。そして残りの記事をprofileとした<br><br>   - Profile Specification<br><br>     - ユーザの過去のニュース記事とそのheadlineの集合をprofileとする<br><br>   - Evaluation<br><br>     - ROUGE-1, ROUGE-Lで評価<br><br>  - Personalized Scholarly Title Generation<br><br>    - Task Definition<br><br>      - ユーザの過去のタイトルを考慮し、LLMがresearch paperのtitleを生成する能力を測る<br><br>    - Data Collection<br><br>      - Citation Network Datasetのデータを利用<br><br>      - abstractをinput, titleをoutputとし、残りのpaperをprofileとした<br><br>    - Profile Specification<br><br>      - ユーザが書いたpaperの集合（abstractのみを利用）<br><br>  - Personalized Email Subject Generation<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleに合わせて、Emailのタイトルを書く能力を測る<br><br>    - Data Collection<br><br>      - Avocado Resaerch Email Collectionデータを利用<br><br>      - 5単語未満のsubjectを持つメール、本文が30単語未満のメールを除外、<br><br>      - 送信主のemail addressでメールをグルーピング<br><br>      - input _outputペアは、email本文をinputとし、対応するsubjectをoutputとした。他のメールはprofile<br><br>    - Profile Specification<br><br>      -  ユーザのemailの集合<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価 <br><br>  - Personalized Tweet Paraphrasing<br><br>    - Task Definition<br><br>      - LLMがユーザのwriting styleを考慮し、ツイートのparaphrasingをする能力を問う<br><br>    - Data Collection<br><br>      - Sentiment140 datasetを利用<br><br>      - 最低10単語を持つツイートのみを利用<br><br>      - userIDでグルーピングし、10 tweets以下のユーザは除外<br><br>      - ランダムに1つのtweetを選択し、ChatGPT(gpt-3.5-turbo)でparaphraseした<br><br>      - paraphrase版のtweetをinput, 元ツイートをoutputとし、input-output pairを作った。<br><br>    - User Profile Specification<br><br>      - ユーザの過去のツイート<br><br>    - Evaluation<br><br>      - ROUGE-1, ROUGE-Lで評価<br><br><br><br></p><p># 実験<br><br>## Experimental Setup<br><br>- FlanT5-baesをfinetuningした<br><br>- ユーザ単位でモデルが存在するのか否かが記載されておらず不明<br><br>## 結果<br><br>- Personalization入れた方が全てのタスクでよくなった<br><br>- Retrievalモデルとしては、randomの場合でも良くなったが、基本的にはContrirverを利用した場合が最も良かった<br><br>  - => 適切なprofileを選択しpromptに含めることが重要であることが示された<br><br>- Rが抽出するサンプル kを増やすと、予測性能が増加する傾向もあったが、一部タスクでは性能の低下も招いた<br><br>- dev setを利用し、BM25/Contrieverのどちらを利用するか、kをいくつに設定するかをチューニングした結果、全ての結果が改善した<br><br>- FlanT5-XXLとgpt-3.5-turboを用いたZero-shotの設定でも実験。tweet paraphrasingタスクを除き、zero-shotでもuser profileをLLMで利用することでパフォーマンス改善。小さなモデルでもfinetuningすることで、zero-shotの大規模モデルにdownstreamタスクでより高い性能を獲得することを示している（ただし、めちゃめちゃ改善しているというわけでもなさそう）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234452179-6fac1cd9-982f-4b48-8dfe-1d742dc1c221.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234452837-8d8cdfed-ab85-4d1e-99d7-aad35ddc8979.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234453453-a2393c95-a820-404f-b21c-3332f53cb851.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># LaMPによって可能なResearch Problem<br><br>## Prompting for Personalization<br><br>- Augmentationモデル以外のLLMへのユーザプロファイルの埋め込み方法<br><br>- hard promptingやsoft prompting <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, EMNLP'21, 2021.04</a>
 </strong>
 <br>
  の活用<br><br>## Evaluation of Personalized Text Generation<br><br>- テキスト生成で利用される性能指標はユーザの情報を評価のプロセスで考慮していない<br><br>- Personalizedなテキスト生成を評価するための適切なmetricはどんなものがあるか？<br><br>## Learning to Retrieve from User Profiles<br><br>- Learning to RankをRetrieval modelに適用する方向性</p><p>LaMPの作成に利用したテンプレート一覧<br><br><img src="https://user-images.githubusercontent.com/12249301/234457098-5c2ba78f-dc74-45e4-bf91-f07ffd99bcb4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>実装とleaderboard<br><br>
@@ -3157,7 +3163,7 @@ My Issue
 <a class="button" href="Distillation.html" target="_blank" rel="noopener noreferrer">#Distillation</a>
 <span class="issue_date">Issue Date: 2023-07-14</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LM）の性能を向上させるため、信頼性の高い知識蒸留法を提案。対照的デコーディングを用いて大規模LM（教師）から論理的根拠を引き出し、小型の自己一貫したモデル（学生）を訓練。実験により、我々の方法がベースラインよりも信頼性の高いCoT論理的根拠を生成し、同等のタスク性能を維持することを確認。モデルが論理的根拠を重視することで、さらなるパフォーマンス向上が期待できることを示唆。</span>
-<span class="snippet"><span>Comment</span><p>CoTのパフォーマンス向上がパラメータ数が大きいモデルでないと発揮せれないことは元論文 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<span class="snippet"><span>Comment</span><p>CoTのパフォーマンス向上がパラメータ数が大きいモデルでないと発揮せれないことは元論文 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
  で考察されており、それをより小さいモデルに蒸留し発揮できるようにする、おもしろい</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3475,6 +3481,7 @@ My Issue
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <a class="button" href="INLG.html" target="_blank" rel="noopener noreferrer">#INLG</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-08-18</span>
 <span class="snippet"><span>GPT Summary</span>- バイオメディカル分野におけるD2T生成の研究を行い、医薬品のパッケージリーフレットを用いた実世界のデータセットに対してファインチューニングされたトランスフォーマーを適用。現実的な複数文のテキスト生成が可能であることを示す一方で、重要な制限も存在。新たにバイオメディカル分野のD2T生成モデルのベンチマーク用データセット（BioLeaflets）を公開。</span>
 <span class="snippet"><span>Comment</span><p>biomedical domainの新たなdata2textデータセットを提供。事前学習済みのBART, T5等をfinetuningすることで高精度にテキストが生成できることを示した。</p></span><br><br>
@@ -3526,6 +3533,25 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 抽象的な文書要約における言語モデルの限界を分析し、これらのモデルが入力文書に対して忠実でない内容を生成する傾向が高いことを発見。大規模な人間評価を通じて、生成される幻覚の種類を理解し、すべてのモデルで相当量の幻覚が確認された。事前学習されたモデルはROUGE指標だけでなく、人間評価でも優れた要約を生成することが示された。また、テキストの含意測定が忠実性と良好に相関することが明らかになり、自動評価指標の改善の可能性を示唆。</span>
 <span class="snippet"><span>Comment</span><p>文書要約の文脈において `hallucination` について説明されている。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1044" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Verification Reduces Hallucination in Large Language Models, Shehzaad Dhuliawala+, N/A, ACL'24</a>
  <br><br>が `hallucination` について言及する際に引用している。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="returning-the-537" class="title-link">Returning the N to NLP: Towards Contextually Personalized Classification Models, Lucie Flek, Mainz University of Applied Sciences Germany, ACL'20</h3><br><a href="https://aclanthology.org/2020.acl-main.700/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/537" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2023-04-26</span>
+<span class="snippet"><span>Comment</span><p>NLPのけるPersonalized Classificationモデルのliteratureを振り返る論文</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="unsupervised-opinion-343" class="title-link">[Paper Note] Unsupervised Opinion Summarization as Copycat-Review Generation, Arthur Bražinskas+, ACL'20, 2019.11</h3><br><a href="https://arxiv.org/abs/1911.02247" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -4535,42 +4561,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/DiffusionModel.html"
-            title="DiffusionModelに関する論文・技術記事メモの一覧">
-            DiffusionModelに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LREC.html"
+            title="LRECに関する論文・技術記事メモの一覧">
+            LRECに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 163</span> 
-  <span class="post-badge badge-new">📝 163</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/OptimalTransport.html"
-            title="OptimalTransportに関する論文・技術記事メモの一覧">
-            OptimalTransportに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AutonomousVehicle.html"
+            title="AutonomousVehicleに関する論文・技術記事メモの一覧">
+            AutonomousVehicleに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Snippets.html"
-            title="Snippetsに関する論文・技術記事メモの一覧">
-            Snippetsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/MoE(Mixture-of-Experts).html"
+            title="MoE(Mixture-of-Experts)に関する論文・技術記事メモの一覧">
+            MoE(Mixture-of-Experts)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 100</span> 
+  <span class="post-badge badge-new">📝 100</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PostTraining.html"
-            title="PostTrainingに関する論文・技術記事メモの一覧">
-            PostTrainingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Locomotion.html"
+            title="Locomotionに関する論文・技術記事メモの一覧">
+            Locomotionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 290</span> 
-  <span class="post-badge badge-new">📝 290</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li></ul>

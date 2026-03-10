@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+  <link rel="preconnect" href="https://platform.twitter.com">
+  <link rel="preconnect" href="https://pbs.twimg.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://platform.twitter.com">
+  <link rel="dns-prefetch" href="https://pbs.twimg.com"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>needs-revisionに関する論文・技術記事メモの一覧 | わたしのべんきょうノート</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="needs-revisionに関する論文・技術記事メモの一覧" />
+<meta name="author" content="AkihikoWATANABE" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="&lt;h2 id=needs-revision class=”paper-head”&gt; needs-revision&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL&#39;24, 2023.02 Paper/Blog Link My Issue #NeuralNetwork #NLP #LanguageModel #Chain-of-Thought #ACL #KeyPoint Notes Issue Date: 2023-04-27 GPT Summary- 大規模言語モデル（LLMs）の性能向上には、タスク特有のプロンプト設計が重要であり、特に連鎖的思考（CoT）を活用したアプローチが効果的です。この研究では、Active-Promptという新手法を提案し、タスク特有の質問に対する最適なアノテーションを選定することでLLMsを適応させます。不確実性に基づくアクティブラーニングを取り入れ、最も不確実な質問を対象にする指標を導入。実験により、提案手法が8つの複雑な推論タスクで最先端の成績を達成し、有効性が示されました。 Commentしっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽいそのために、questionに対して、training dataに対してFew-Shot CoTで予測をさせた場合やZero-Shot CoTによって予測をさせた場合などでanswerを取得し、answerのばらつき度合いなどから不確実性を測定する。そして、不確実性が高いCoT-Answerペアを取得し、人間が手作業でCoTと回答のペアを与え、その人間が作成したものを用いてTestデータに対してFewShotしましょう、ということだと思われる。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/234747555-4b7bd0d5-f099-4288-a470-32206533e652.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; Stable and low-precision training for large-scale vision-language models, Wortsman+, University of Washington, NeurIPS&#39;23 Paper/Blog Link My Issue #ComputerVision #NeurIPS Issue Date: 2023-04-27 [Paper Note] Personalisation within bounds: A risk taxonomy and policy framework for the alignment of large language models with personalised feedback, Hannah Rose Kirk+, arXiv&#39;23, 2023.03 Paper/Blog Link My Issue #NLP #LanguageModel #Personalization Issue Date: 2023-04-26 GPT Summary- LLMの個別化には、人間の嗜好と整合させる必要があり、アラインメント技術がその課題を緩和するが、全ての嗜好を表現するのは難しい。ユーザーの多様な価値観に基づくマイクロレベルの個別化は有望だが、規範的課題が存在する。本文では、整合の定義、主観的嗜好の押し付け、文書化不足の問題を概観し、個別化されたLLMの利点とリスクを整理。最後に、安全なLLMの挙動を維持するための三層政策フレームワークを提案。 Comment# abstLLMをPersonalizationすることに関して、どのような方法でPersonalizationすべきかを検討した研究。以下の問題点を指摘。1. アラインメント（RLHFのように何らかの方向性にalignするように補正する技術のこと？）が何を意味するのか明確ではない2. 技術提供者が本質的に主観的な好みや価値観の定義を規定する傾向があること3. クラウドワーカーがの専制によって、我々が実際に何にアラインメントしているのかに関する文書が不足していることそして、PersonalizedなLLMの利点やリスクの分類を提示する。# 導入LLMがさまざまな製品に統合されたことで、人間の嗜好に合致し、危険かつ不正確な情報を出力を生成しないことを確保する必要がある。RLHFやred-teamingはこれに役立つが、このような集合的な（多くの人に一つのアラインメントの結果を提示すること）finetuningプロセスが人間の好みや価値観の幅広い範囲を十分に表現できるとは考えにくい。異なる人々はさまざまな意見や価値観を持っており、マイクロレベルのfinetuningプロせせ雨を通じてLLMをPersonalizationすることで、各ユーザとより良いアラインメントが可能になる可能性がある。これを社会的に受け入れられるようにするためにいくつか課題があるので、それについて論じた。 [Paper Note] ReAct: Synergizing Reasoning and Acting in Language Models, Shunyu Yao+, ICLR&#39;23, 2022.10 Paper/Blog Link My Issue #NLP #LanguageModel #AIAgents #Selected Papers/Blogs Issue Date: 2023-04-13 GPT Summary- 大規模言語モデルを用いて、推論と行動計画を相互に組み合わせるReActアプローチを提案。推論の痕跡が行動計画の導出を促進し、行動が外部情報を活用することで、推論の効率を向上。質問応答や事実検証タスクで従来手法を凌駕し、人間の解釈性と信頼性を向上させる。対話的意思決定ベンチマークでも優れた性能を発揮。 Comment# 概要人間は推論と行動をシナジーさせることで、さまざまな意思決定を行える。近年では言語モデルにより言語による推論を意思決定に組み合わせる可能性が示されてきた。たとえば、タスクをこなすための推論トレースをLLMが導けることが示されてきた（Chain-of-Thought）が、CoTは外部リソースにアクセスできないため知識がアップデートできず、事後的に推論を行うためhallucinationやエラーの伝搬が生じる。一方で、事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われているが、これらの研究では、高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。そこで、REACTを提案。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みであり、推論トレースとアクションを交互に生成するため、動的に推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。- 要はいままではGeneralなタスク解決モデルにおいては、推論とアクションの生成は独立にしかやられてこなかったけど、推論とアクションを交互作用させることについて研究したよ- そしたら性能がとってもあがったよ- reasoningを人間が編集すれば、エージェントのコントロールもできるよ　という感じ# イントロ人間は推論と行動の緊密なシナジーによって、不確実な状況に遭遇しても適切な意思決定が行える。たとえば、任意の2つの特定のアクションの間で、進行状況をトレースするために言語で推論したり（すべて切り終わったからお湯を沸かす必要がある）、例外を処理したり、状況に応じて計画を調整したりする（塩がないから代わりに醤油と胡椒を使おう）。また、推論をサポートし、疑問（いまどんな料理を作ることができるだろうか？）を解消するために、行動（料理本を開いてレシピを読んで、冷蔵庫を開いて材料を確確認したり）をすることもある。近年の研究では言語での推論を、インタラクティブな意思決定を組み合わせる可能性についてのヒントが得られてきた。一つは、適切にPromptingされたLLMが推論トレースを実行できることを示している。推論トレースとは、解決策に到達するための一連のステップを経て推論をするためのプロセスのことである。しかしながらChain-of-thoughytは、このアプローチでは、モデルが外界対してgroundingできず、内部表現のみに基づい思考を生成するため限界がある。これによりモデルが事後対応的に推論したり、外部情報に基づいて知識を更新したりできないため、推論プロセス中にhallucinationやエラーの伝搬などの問題が発生する可能性が生じる。一方、近年の研究では事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われている。これらの研究では、通常マルチモーダルな観測結果をテキストに変換し、言語モデルを使用してドメイン固有のアクション、またはプランを生成し、コントローラーを利用してそれらを選択または実行する。ただし、これらのアプローチは高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。LLMにおける推論と行動を組み合わせて、言語推論と意思決定タスクを解決するREACTと呼ばれる手法を提案。REACTでは、推論と行動の相乗効果を高めることが可能。推論トレースによりアクションプランを誘発、追跡、更新するのに役立ち、アクションでは外部ソースと連携して追加情報を収集できる。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みである。REACTのpromptはLLMにverbalな推論トレースとタスクを実行するためのアクションを交互に生成する。これにより、モデルは動的な推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。# 手法変数を以下のように定義する：- O_t: Observertion on time t- a_t: Action on time t- c_t: context, i.e. (o_1, a_1, o_2, a_2, ..., a_t-1, o_t)- policy pi(a_t | c_t): Action Spaceからアクションを選択するポリシー- A: Action Space- O: Observation Space普通はc_tが与えられたときに、ポリシーに従いAからa_tを選択しアクションを行い、アクションの結果o_tを得て、c_t+1を構成する、といったことを繰り返していく。このとき、REACTはAをA ∪ Lに拡張しする。ここで、LはLanguage spaceである。LにはAction a_hatが含まれ、a_hatは環境に対して作用をしない。単純にthought, あるいは reasoning traceを実施し、現在のcontext c_tをアップデートするために有用な情報を構成することを目的とする。Lはunlimitedなので、事前学習された言語モデルを用いる。今回はPaLM-540B（c.f. GPT3は175Bパラメータ）が利用され、few-shotのin-context exampleを与えることで推論を行う。それぞれのin-context exampleは、action, thoughtsそしてobservationのtrajectoryを与える。推論が重要なタスクでは、thoughts-action-observationステップから成るtask-solving trajectoryを生成する。一方、多数のアクションを伴う可能性がある意思決定タスクでは、thoughtsのみを行うことをtask-solving trajectory中の任意のタイミングで、自分で判断して行うことができる。意思決定と推論能力がLLMによってもたらされているため、REACTは4つのuniqueな特徴を持つ：- 直感的で簡単なデザイン - REACTのpromptは人間のアノテータがアクションのトップに思考を言語で記述するようなストレートなものであり、ad-hocなフォーマットの選択、思考のデザイン、事例の選定などが必要ない。- 一般的で柔軟性が高い - 柔軟な thought spaceと thought-actionのフォーマットにより、REACTはさまざまなタスクにも柔軟に対応できる- 高性能でロバスト - REACTは1-6個の事例によって、新たなタスクに対する強力な汎化を示す。そして推論、アクションのみを行うベースラインよりも高い性能を示している。REACTはfinetuningの斧系も得ることができ、promptの選択に対してREACTの性能はrobustである。- 人間による調整と操作が可能 - REACTは、解釈可能な意思決定と推論のsequenceを前提としているため、人間は簡単に推論や事実の正しさを検証できる。加えて、thoughtsを編集することによって、m人間はエージェントの行動を制御、あるいは修正できる。# KNOWLEDGE INTENSIVE REASONING TASKSopenreview:" />
+<meta property="og:description" content="&lt;h2 id=needs-revision class=”paper-head”&gt; needs-revision&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL&#39;24, 2023.02 Paper/Blog Link My Issue #NeuralNetwork #NLP #LanguageModel #Chain-of-Thought #ACL #KeyPoint Notes Issue Date: 2023-04-27 GPT Summary- 大規模言語モデル（LLMs）の性能向上には、タスク特有のプロンプト設計が重要であり、特に連鎖的思考（CoT）を活用したアプローチが効果的です。この研究では、Active-Promptという新手法を提案し、タスク特有の質問に対する最適なアノテーションを選定することでLLMsを適応させます。不確実性に基づくアクティブラーニングを取り入れ、最も不確実な質問を対象にする指標を導入。実験により、提案手法が8つの複雑な推論タスクで最先端の成績を達成し、有効性が示されました。 Commentしっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽいそのために、questionに対して、training dataに対してFew-Shot CoTで予測をさせた場合やZero-Shot CoTによって予測をさせた場合などでanswerを取得し、answerのばらつき度合いなどから不確実性を測定する。そして、不確実性が高いCoT-Answerペアを取得し、人間が手作業でCoTと回答のペアを与え、その人間が作成したものを用いてTestデータに対してFewShotしましょう、ということだと思われる。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/234747555-4b7bd0d5-f099-4288-a470-32206533e652.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; Stable and low-precision training for large-scale vision-language models, Wortsman+, University of Washington, NeurIPS&#39;23 Paper/Blog Link My Issue #ComputerVision #NeurIPS Issue Date: 2023-04-27 [Paper Note] Personalisation within bounds: A risk taxonomy and policy framework for the alignment of large language models with personalised feedback, Hannah Rose Kirk+, arXiv&#39;23, 2023.03 Paper/Blog Link My Issue #NLP #LanguageModel #Personalization Issue Date: 2023-04-26 GPT Summary- LLMの個別化には、人間の嗜好と整合させる必要があり、アラインメント技術がその課題を緩和するが、全ての嗜好を表現するのは難しい。ユーザーの多様な価値観に基づくマイクロレベルの個別化は有望だが、規範的課題が存在する。本文では、整合の定義、主観的嗜好の押し付け、文書化不足の問題を概観し、個別化されたLLMの利点とリスクを整理。最後に、安全なLLMの挙動を維持するための三層政策フレームワークを提案。 Comment# abstLLMをPersonalizationすることに関して、どのような方法でPersonalizationすべきかを検討した研究。以下の問題点を指摘。1. アラインメント（RLHFのように何らかの方向性にalignするように補正する技術のこと？）が何を意味するのか明確ではない2. 技術提供者が本質的に主観的な好みや価値観の定義を規定する傾向があること3. クラウドワーカーがの専制によって、我々が実際に何にアラインメントしているのかに関する文書が不足していることそして、PersonalizedなLLMの利点やリスクの分類を提示する。# 導入LLMがさまざまな製品に統合されたことで、人間の嗜好に合致し、危険かつ不正確な情報を出力を生成しないことを確保する必要がある。RLHFやred-teamingはこれに役立つが、このような集合的な（多くの人に一つのアラインメントの結果を提示すること）finetuningプロセスが人間の好みや価値観の幅広い範囲を十分に表現できるとは考えにくい。異なる人々はさまざまな意見や価値観を持っており、マイクロレベルのfinetuningプロせせ雨を通じてLLMをPersonalizationすることで、各ユーザとより良いアラインメントが可能になる可能性がある。これを社会的に受け入れられるようにするためにいくつか課題があるので、それについて論じた。 [Paper Note] ReAct: Synergizing Reasoning and Acting in Language Models, Shunyu Yao+, ICLR&#39;23, 2022.10 Paper/Blog Link My Issue #NLP #LanguageModel #AIAgents #Selected Papers/Blogs Issue Date: 2023-04-13 GPT Summary- 大規模言語モデルを用いて、推論と行動計画を相互に組み合わせるReActアプローチを提案。推論の痕跡が行動計画の導出を促進し、行動が外部情報を活用することで、推論の効率を向上。質問応答や事実検証タスクで従来手法を凌駕し、人間の解釈性と信頼性を向上させる。対話的意思決定ベンチマークでも優れた性能を発揮。 Comment# 概要人間は推論と行動をシナジーさせることで、さまざまな意思決定を行える。近年では言語モデルにより言語による推論を意思決定に組み合わせる可能性が示されてきた。たとえば、タスクをこなすための推論トレースをLLMが導けることが示されてきた（Chain-of-Thought）が、CoTは外部リソースにアクセスできないため知識がアップデートできず、事後的に推論を行うためhallucinationやエラーの伝搬が生じる。一方で、事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われているが、これらの研究では、高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。そこで、REACTを提案。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みであり、推論トレースとアクションを交互に生成するため、動的に推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。- 要はいままではGeneralなタスク解決モデルにおいては、推論とアクションの生成は独立にしかやられてこなかったけど、推論とアクションを交互作用させることについて研究したよ- そしたら性能がとってもあがったよ- reasoningを人間が編集すれば、エージェントのコントロールもできるよ　という感じ# イントロ人間は推論と行動の緊密なシナジーによって、不確実な状況に遭遇しても適切な意思決定が行える。たとえば、任意の2つの特定のアクションの間で、進行状況をトレースするために言語で推論したり（すべて切り終わったからお湯を沸かす必要がある）、例外を処理したり、状況に応じて計画を調整したりする（塩がないから代わりに醤油と胡椒を使おう）。また、推論をサポートし、疑問（いまどんな料理を作ることができるだろうか？）を解消するために、行動（料理本を開いてレシピを読んで、冷蔵庫を開いて材料を確確認したり）をすることもある。近年の研究では言語での推論を、インタラクティブな意思決定を組み合わせる可能性についてのヒントが得られてきた。一つは、適切にPromptingされたLLMが推論トレースを実行できることを示している。推論トレースとは、解決策に到達するための一連のステップを経て推論をするためのプロセスのことである。しかしながらChain-of-thoughytは、このアプローチでは、モデルが外界対してgroundingできず、内部表現のみに基づい思考を生成するため限界がある。これによりモデルが事後対応的に推論したり、外部情報に基づいて知識を更新したりできないため、推論プロセス中にhallucinationやエラーの伝搬などの問題が発生する可能性が生じる。一方、近年の研究では事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われている。これらの研究では、通常マルチモーダルな観測結果をテキストに変換し、言語モデルを使用してドメイン固有のアクション、またはプランを生成し、コントローラーを利用してそれらを選択または実行する。ただし、これらのアプローチは高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。LLMにおける推論と行動を組み合わせて、言語推論と意思決定タスクを解決するREACTと呼ばれる手法を提案。REACTでは、推論と行動の相乗効果を高めることが可能。推論トレースによりアクションプランを誘発、追跡、更新するのに役立ち、アクションでは外部ソースと連携して追加情報を収集できる。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みである。REACTのpromptはLLMにverbalな推論トレースとタスクを実行するためのアクションを交互に生成する。これにより、モデルは動的な推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。# 手法変数を以下のように定義する：- O_t: Observertion on time t- a_t: Action on time t- c_t: context, i.e. (o_1, a_1, o_2, a_2, ..., a_t-1, o_t)- policy pi(a_t | c_t): Action Spaceからアクションを選択するポリシー- A: Action Space- O: Observation Space普通はc_tが与えられたときに、ポリシーに従いAからa_tを選択しアクションを行い、アクションの結果o_tを得て、c_t+1を構成する、といったことを繰り返していく。このとき、REACTはAをA ∪ Lに拡張しする。ここで、LはLanguage spaceである。LにはAction a_hatが含まれ、a_hatは環境に対して作用をしない。単純にthought, あるいは reasoning traceを実施し、現在のcontext c_tをアップデートするために有用な情報を構成することを目的とする。Lはunlimitedなので、事前学習された言語モデルを用いる。今回はPaLM-540B（c.f. GPT3は175Bパラメータ）が利用され、few-shotのin-context exampleを与えることで推論を行う。それぞれのin-context exampleは、action, thoughtsそしてobservationのtrajectoryを与える。推論が重要なタスクでは、thoughts-action-observationステップから成るtask-solving trajectoryを生成する。一方、多数のアクションを伴う可能性がある意思決定タスクでは、thoughtsのみを行うことをtask-solving trajectory中の任意のタイミングで、自分で判断して行うことができる。意思決定と推論能力がLLMによってもたらされているため、REACTは4つのuniqueな特徴を持つ：- 直感的で簡単なデザイン - REACTのpromptは人間のアノテータがアクションのトップに思考を言語で記述するようなストレートなものであり、ad-hocなフォーマットの選択、思考のデザイン、事例の選定などが必要ない。- 一般的で柔軟性が高い - 柔軟な thought spaceと thought-actionのフォーマットにより、REACTはさまざまなタスクにも柔軟に対応できる- 高性能でロバスト - REACTは1-6個の事例によって、新たなタスクに対する強力な汎化を示す。そして推論、アクションのみを行うベースラインよりも高い性能を示している。REACTはfinetuningの斧系も得ることができ、promptの選択に対してREACTの性能はrobustである。- 人間による調整と操作が可能 - REACTは、解釈可能な意思決定と推論のsequenceを前提としているため、人間は簡単に推論や事実の正しさを検証できる。加えて、thoughtsを編集することによって、m人間はエージェントの行動を制御、あるいは修正できる。# KNOWLEDGE INTENSIVE REASONING TASKSopenreview:" />
+<link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/needs-revision.html" />
+<meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/needs-revision.html" />
+<meta property="og:site_name" content="わたしのべんきょうノート" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-04-28T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="needs-revisionに関する論文・技術記事メモの一覧" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2023-04-28T00:00:00+00:00","datePublished":"2023-04-28T00:00:00+00:00","description":"&lt;h2 id=needs-revision class=”paper-head”&gt; needs-revision&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL&#39;24, 2023.02 Paper/Blog Link My Issue #NeuralNetwork #NLP #LanguageModel #Chain-of-Thought #ACL #KeyPoint Notes Issue Date: 2023-04-27 GPT Summary- 大規模言語モデル（LLMs）の性能向上には、タスク特有のプロンプト設計が重要であり、特に連鎖的思考（CoT）を活用したアプローチが効果的です。この研究では、Active-Promptという新手法を提案し、タスク特有の質問に対する最適なアノテーションを選定することでLLMsを適応させます。不確実性に基づくアクティブラーニングを取り入れ、最も不確実な質問を対象にする指標を導入。実験により、提案手法が8つの複雑な推論タスクで最先端の成績を達成し、有効性が示されました。 Commentしっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽいそのために、questionに対して、training dataに対してFew-Shot CoTで予測をさせた場合やZero-Shot CoTによって予測をさせた場合などでanswerを取得し、answerのばらつき度合いなどから不確実性を測定する。そして、不確実性が高いCoT-Answerペアを取得し、人間が手作業でCoTと回答のペアを与え、その人間が作成したものを用いてTestデータに対してFewShotしましょう、ということだと思われる。&lt;img src=&quot;https://user-images.githubusercontent.com/12249301/234747555-4b7bd0d5-f099-4288-a470-32206533e652.png&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt; Stable and low-precision training for large-scale vision-language models, Wortsman+, University of Washington, NeurIPS&#39;23 Paper/Blog Link My Issue #ComputerVision #NeurIPS Issue Date: 2023-04-27 [Paper Note] Personalisation within bounds: A risk taxonomy and policy framework for the alignment of large language models with personalised feedback, Hannah Rose Kirk+, arXiv&#39;23, 2023.03 Paper/Blog Link My Issue #NLP #LanguageModel #Personalization Issue Date: 2023-04-26 GPT Summary- LLMの個別化には、人間の嗜好と整合させる必要があり、アラインメント技術がその課題を緩和するが、全ての嗜好を表現するのは難しい。ユーザーの多様な価値観に基づくマイクロレベルの個別化は有望だが、規範的課題が存在する。本文では、整合の定義、主観的嗜好の押し付け、文書化不足の問題を概観し、個別化されたLLMの利点とリスクを整理。最後に、安全なLLMの挙動を維持するための三層政策フレームワークを提案。 Comment# abstLLMをPersonalizationすることに関して、どのような方法でPersonalizationすべきかを検討した研究。以下の問題点を指摘。1. アラインメント（RLHFのように何らかの方向性にalignするように補正する技術のこと？）が何を意味するのか明確ではない2. 技術提供者が本質的に主観的な好みや価値観の定義を規定する傾向があること3. クラウドワーカーがの専制によって、我々が実際に何にアラインメントしているのかに関する文書が不足していることそして、PersonalizedなLLMの利点やリスクの分類を提示する。# 導入LLMがさまざまな製品に統合されたことで、人間の嗜好に合致し、危険かつ不正確な情報を出力を生成しないことを確保する必要がある。RLHFやred-teamingはこれに役立つが、このような集合的な（多くの人に一つのアラインメントの結果を提示すること）finetuningプロセスが人間の好みや価値観の幅広い範囲を十分に表現できるとは考えにくい。異なる人々はさまざまな意見や価値観を持っており、マイクロレベルのfinetuningプロせせ雨を通じてLLMをPersonalizationすることで、各ユーザとより良いアラインメントが可能になる可能性がある。これを社会的に受け入れられるようにするためにいくつか課題があるので、それについて論じた。 [Paper Note] ReAct: Synergizing Reasoning and Acting in Language Models, Shunyu Yao+, ICLR&#39;23, 2022.10 Paper/Blog Link My Issue #NLP #LanguageModel #AIAgents #Selected Papers/Blogs Issue Date: 2023-04-13 GPT Summary- 大規模言語モデルを用いて、推論と行動計画を相互に組み合わせるReActアプローチを提案。推論の痕跡が行動計画の導出を促進し、行動が外部情報を活用することで、推論の効率を向上。質問応答や事実検証タスクで従来手法を凌駕し、人間の解釈性と信頼性を向上させる。対話的意思決定ベンチマークでも優れた性能を発揮。 Comment# 概要人間は推論と行動をシナジーさせることで、さまざまな意思決定を行える。近年では言語モデルにより言語による推論を意思決定に組み合わせる可能性が示されてきた。たとえば、タスクをこなすための推論トレースをLLMが導けることが示されてきた（Chain-of-Thought）が、CoTは外部リソースにアクセスできないため知識がアップデートできず、事後的に推論を行うためhallucinationやエラーの伝搬が生じる。一方で、事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われているが、これらの研究では、高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。そこで、REACTを提案。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みであり、推論トレースとアクションを交互に生成するため、動的に推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。- 要はいままではGeneralなタスク解決モデルにおいては、推論とアクションの生成は独立にしかやられてこなかったけど、推論とアクションを交互作用させることについて研究したよ- そしたら性能がとってもあがったよ- reasoningを人間が編集すれば、エージェントのコントロールもできるよ　という感じ# イントロ人間は推論と行動の緊密なシナジーによって、不確実な状況に遭遇しても適切な意思決定が行える。たとえば、任意の2つの特定のアクションの間で、進行状況をトレースするために言語で推論したり（すべて切り終わったからお湯を沸かす必要がある）、例外を処理したり、状況に応じて計画を調整したりする（塩がないから代わりに醤油と胡椒を使おう）。また、推論をサポートし、疑問（いまどんな料理を作ることができるだろうか？）を解消するために、行動（料理本を開いてレシピを読んで、冷蔵庫を開いて材料を確確認したり）をすることもある。近年の研究では言語での推論を、インタラクティブな意思決定を組み合わせる可能性についてのヒントが得られてきた。一つは、適切にPromptingされたLLMが推論トレースを実行できることを示している。推論トレースとは、解決策に到達するための一連のステップを経て推論をするためのプロセスのことである。しかしながらChain-of-thoughytは、このアプローチでは、モデルが外界対してgroundingできず、内部表現のみに基づい思考を生成するため限界がある。これによりモデルが事後対応的に推論したり、外部情報に基づいて知識を更新したりできないため、推論プロセス中にhallucinationやエラーの伝搬などの問題が発生する可能性が生じる。一方、近年の研究では事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われている。これらの研究では、通常マルチモーダルな観測結果をテキストに変換し、言語モデルを使用してドメイン固有のアクション、またはプランを生成し、コントローラーを利用してそれらを選択または実行する。ただし、これらのアプローチは高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。LLMにおける推論と行動を組み合わせて、言語推論と意思決定タスクを解決するREACTと呼ばれる手法を提案。REACTでは、推論と行動の相乗効果を高めることが可能。推論トレースによりアクションプランを誘発、追跡、更新するのに役立ち、アクションでは外部ソースと連携して追加情報を収集できる。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みである。REACTのpromptはLLMにverbalな推論トレースとタスクを実行するためのアクションを交互に生成する。これにより、モデルは動的な推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。# 手法変数を以下のように定義する：- O_t: Observertion on time t- a_t: Action on time t- c_t: context, i.e. (o_1, a_1, o_2, a_2, ..., a_t-1, o_t)- policy pi(a_t | c_t): Action Spaceからアクションを選択するポリシー- A: Action Space- O: Observation Space普通はc_tが与えられたときに、ポリシーに従いAからa_tを選択しアクションを行い、アクションの結果o_tを得て、c_t+1を構成する、といったことを繰り返していく。このとき、REACTはAをA ∪ Lに拡張しする。ここで、LはLanguage spaceである。LにはAction a_hatが含まれ、a_hatは環境に対して作用をしない。単純にthought, あるいは reasoning traceを実施し、現在のcontext c_tをアップデートするために有用な情報を構成することを目的とする。Lはunlimitedなので、事前学習された言語モデルを用いる。今回はPaLM-540B（c.f. GPT3は175Bパラメータ）が利用され、few-shotのin-context exampleを与えることで推論を行う。それぞれのin-context exampleは、action, thoughtsそしてobservationのtrajectoryを与える。推論が重要なタスクでは、thoughts-action-observationステップから成るtask-solving trajectoryを生成する。一方、多数のアクションを伴う可能性がある意思決定タスクでは、thoughtsのみを行うことをtask-solving trajectory中の任意のタイミングで、自分で判断して行うことができる。意思決定と推論能力がLLMによってもたらされているため、REACTは4つのuniqueな特徴を持つ：- 直感的で簡単なデザイン - REACTのpromptは人間のアノテータがアクションのトップに思考を言語で記述するようなストレートなものであり、ad-hocなフォーマットの選択、思考のデザイン、事例の選定などが必要ない。- 一般的で柔軟性が高い - 柔軟な thought spaceと thought-actionのフォーマットにより、REACTはさまざまなタスクにも柔軟に対応できる- 高性能でロバスト - REACTは1-6個の事例によって、新たなタスクに対する強力な汎化を示す。そして推論、アクションのみを行うベースラインよりも高い性能を示している。REACTはfinetuningの斧系も得ることができ、promptの選択に対してREACTの性能はrobustである。- 人間による調整と操作が可能 - REACTは、解釈可能な意思決定と推論のsequenceを前提としているため、人間は簡単に推論や事実の正しさを検証できる。加えて、thoughtsを編集することによって、m人間はエージェントの行動を制御、あるいは修正できる。# KNOWLEDGE INTENSIVE REASONING TASKSopenreview:","headline":"needs-revisionに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/needs-revision.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/needs-revision.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="http://akihikowatanabe.github.io">
+
+  <link rel="preload" href="/paper_notes/assets/css/main.css" as="style">
+  <link rel="preload" href="/paper_notes/assets/js/main.js" as="script">
+
+  <link rel="stylesheet" href="/paper_notes/assets/css/main.css">
+  <link rel="stylesheet" href="/paper_notes/assets/css/custom_button.css">
+  
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></noscript>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css" as="style" onload="this. onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css"></noscript>
+  
+  <script src="/paper_notes/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://akihikowatanabe.github.io/paper_notes/feed.xml" title="わたしのべんきょうノート" /><script>
+  function showMore(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "block";
+          
+      // このボタンの参照を取得して非表示にします
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "none";
+      }
+          
+      // hideボタンの参照を取得して表示します
+      const hideButton = contentDiv.querySelector('button[onclick^="hideContent"]');
+      if (hideButton) {
+        hideButton.style.display = "block";
+      }
+    }
+  }
+
+  function hideContent(index) {
+    const contentDivs = document.getElementsByClassName('hidden-content');
+    const contentDiv = contentDivs[index];
+
+    if (contentDiv) {
+      contentDiv.style.display = "none";
+  
+      // moreボタンの参照を取得して表示します
+      const moreButtons = document.querySelectorAll('button[onclick^="showMore"]');
+      const moreButton = moreButtons[index];
+      if (moreButton) {
+        moreButton.style.display = "block";
+      }
+  
+      // このボタンを隠します
+      const hideButtons = document.querySelectorAll('button[onclick^="hideContent"]');
+      const hideButton = hideButtons[index];
+      if (hideButton) {
+        hideButton.style.display = "none";
+      }
+    }
+  }
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"
+        async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link
+  href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css"
+  rel="stylesheet"
+/>
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = `{"gallery"=>"section.main", "children"=>"a.photo-swipe", "bgOpacity"=>0.8, "padding"=>{"top"=>20, "bottom"=>40, "left"=>100, "right"=>100}}`.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+<meta name="google-site-verification" content="u_DTTPcCZ806iq51zgirHyWq3556HUKGq8AQfH91iFI" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P70KSB88WH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P70KSB88WH');
+  </script>
+</script>
+</head>
+
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner"><span class="site-brand"><a class="site-brand-inner" rel="author" href="/paper_notes/">
+  <img class="site-favicon" title="わたしのべんきょうノート" src="" onerror="this.style.display='none'">
+  わたしのべんきょうノート
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger"><a class="page-link" href="/paper_notes/">論文や技術メモの一覧（随時更新）</a><a class="page-link" href="/paper_notes/archives.html">ARCHIVES</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ja',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span></div>
+        </nav></div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+    var ticking = false;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0);
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+      
+      // 処理完了フラグをリセット
+      ticking = false;
+    }
+
+    function requestTick() {
+      if (!ticking) {
+        // 次の描画フレームで実行をスケジュール
+        window.requestAnimationFrame(storeScrollData);
+        ticking = true;
+      }
+    }
+
+    // passive:  true でスクロールパフォーマンスを向上
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // 初期実行
+    storeScrollData();
+  }
+  
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.4;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.2872;
+    }
+  </style><section class="page-banner">
+    <div class="page-banner-img"><div style="background-image: url(/paper_notes/assets/images/banner.webp)"></div>
+        <img class="img-placeholder" src="/paper_notes/assets/images/banner.webp"></div>
+    <div class="wrapper">
+      <div class="page-banner-inner"><header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">わたしのべんきょうノート</h1>
+  <h2 class="post-subtitle">勉強した論文や技術等の情報をGithubのIssueにメモっているひとのブログ。
+それなりにメモの量が蓄積されてきたので、一度整理したいなと思いブログはじめてみました！
+自然言語処理(NLP), 推薦システム(RecommenderSystem), Educational Data Mining (EDM), Learning Analytics (LA)などの分野のメモが多いと思います。
+最近は特にLLMの勉強が多めです :)</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2023-04-28T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 28, 2023
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 56 mins</span>
+  </div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('off' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id=needs-revision class="paper-head"> needs-revision</h2><div class="visible-content">
+<article class="paper-entry">
+<h3 id="active-prompting-554" class="title-link">[Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL'24, 2023.02</h3><br><a href="https://arxiv.org/abs/2302.12246" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の性能向上には、タスク特有のプロンプト設計が重要であり、特に連鎖的思考（CoT）を活用したアプローチが効果的です。この研究では、Active-Promptという新手法を提案し、タスク特有の質問に対する最適なアノテーションを選定することでLLMsを適応させます。不確実性に基づくアクティブラーニングを取り入れ、最も不確実な質問を対象にする指標を導入。実験により、提案手法が8つの複雑な推論タスクで最先端の成績を達成し、有効性が示されました。</span>
+<span class="snippet"><span>Comment</span><p>しっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽい<br><br>そのために、questionに対して、training dataに対してFew-Shot CoTで予測をさせた場合やZero-Shot CoTによって予測をさせた場合などでanswerを取得し、answerのばらつき度合いなどから不確実性を測定する。<br><br>そして、不確実性が高いCoT-Answerペアを取得し、人間が手作業でCoTと回答のペアを与え、その人間が作成したものを用いてTestデータに対してFewShotしましょう、ということだと思われる。<br><br><img src="https://user-images.githubusercontent.com/12249301/234747555-4b7bd0d5-f099-4288-a470-32206533e652.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="stable-and-563" class="title-link">Stable and low-precision training for large-scale vision-language models, Wortsman+, University of Washington, NeurIPS'23</h3><br><a href="https://arxiv.org/pdf/2304.13013.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<span class="issue_date">Issue Date: 2023-04-27</span>
+</article>
+<article class="paper-entry">
+<h3 id="personalisation-within-539" class="title-link">[Paper Note] Personalisation within bounds: A risk taxonomy and policy framework for the alignment of large language models with personalised feedback, Hannah Rose Kirk+, arXiv'23, 2023.03</h3><br><a href="https://arxiv.org/abs/2303.05453" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/539" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<span class="issue_date">Issue Date: 2023-04-26</span>
+<span class="snippet"><span>GPT Summary</span>- LLMの個別化には、人間の嗜好と整合させる必要があり、アラインメント技術がその課題を緩和するが、全ての嗜好を表現するのは難しい。ユーザーの多様な価値観に基づくマイクロレベルの個別化は有望だが、規範的課題が存在する。本文では、整合の定義、主観的嗜好の押し付け、文書化不足の問題を概観し、個別化されたLLMの利点とリスクを整理。最後に、安全なLLMの挙動を維持するための三層政策フレームワークを提案。</span>
+<span class="snippet"><span>Comment</span><p># abst<br><br>LLMをPersonalizationすることに関して、どのような方法でPersonalizationすべきかを検討した研究。以下の問題点を指摘。<br><br>1. アラインメント（RLHFのように何らかの方向性にalignするように補正する技術のこと？）が何を意味するのか明確ではない<br><br>2. 技術提供者が本質的に主観的な好みや価値観の定義を規定する傾向があること<br><br>3. クラウドワーカーがの専制によって、我々が実際に何にアラインメントしているのかに関する文書が不足していること<br><br><br><br>そして、PersonalizedなLLMの利点やリスクの分類を提示する。<br><br><br><br># 導入<br><br>LLMがさまざまな製品に統合されたことで、人間の嗜好に合致し、危険かつ不正確な情報を出力を生成しないことを確保する必要がある。RLHFやred-teamingはこれに役立つが、このような集合的な（多くの人に一つのアラインメントの結果を提示すること）finetuningプロセスが人間の好みや価値観の幅広い範囲を十分に表現できるとは考えにくい。異なる人々はさまざまな意見や価値観を持っており、マイクロレベルのfinetuningプロせせ雨を通じてLLMをPersonalizationすることで、各ユーザとより良いアラインメントが可能になる可能性がある。これを社会的に受け入れられるようにするためにいくつか課題があるので、それについて論じた。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="react-synergizing-518" class="title-link">[Paper Note] ReAct: Synergizing Reasoning and Acting in Language Models, Shunyu Yao+, ICLR'23, 2022.10</h3><br><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/518" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2023-04-13</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデルを用いて、推論と行動計画を相互に組み合わせるReActアプローチを提案。推論の痕跡が行動計画の導出を促進し、行動が外部情報を活用することで、推論の効率を向上。質問応答や事実検証タスクで従来手法を凌駕し、人間の解釈性と信頼性を向上させる。対話的意思決定ベンチマークでも優れた性能を発揮。</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>人間は推論と行動をシナジーさせることで、さまざまな意思決定を行える。近年では言語モデルにより言語による推論を意思決定に組み合わせる可能性が示されてきた。たとえば、タスクをこなすための推論トレースをLLMが導けることが示されてきた（Chain-of-Thought）が、CoTは外部リソースにアクセスできないため知識がアップデートできず、事後的に推論を行うためhallucinationやエラーの伝搬が生じる。一方で、事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われているが、これらの研究では、高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。<br><br>そこで、REACTを提案。REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みであり、推論トレースとアクションを交互に生成するため、動的に推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。<br><br><br><br>- 要はいままではGeneralなタスク解決モデルにおいては、推論とアクションの生成は独立にしかやられてこなかったけど、推論とアクションを交互作用させることについて研究したよ<br><br>- そしたら性能がとってもあがったよ<br><br>- reasoningを人間が編集すれば、エージェントのコントロールもできるよ　という感じ<br><br><br><br># イントロ<br><br>人間は推論と行動の緊密なシナジーによって、不確実な状況に遭遇しても適切な意思決定が行える。たとえば、任意の2つの特定のアクションの間で、進行状況をトレースするために言語で推論したり（すべて切り終わったからお湯を沸かす必要がある）、例外を処理したり、状況に応じて計画を調整したりする（塩がないから代わりに醤油と胡椒を使おう）。また、推論をサポートし、疑問（いまどんな料理を作ることができるだろうか？）を解消するために、行動（料理本を開いてレシピを読んで、冷蔵庫を開いて材料を確確認したり）をすることもある。<br><br><br><br>近年の研究では言語での推論を、インタラクティブな意思決定を組み合わせる可能性についてのヒントが得られてきた。一つは、適切にPromptingされたLLMが推論トレースを実行できることを示している。推論トレースとは、解決策に到達するための一連のステップを経て推論をするためのプロセスのことである。しかしながらChain-of-thoughytは、このアプローチでは、モデルが外界対してgroundingできず、内部表現のみに基づい思考を生成するため限界がある。これによりモデルが事後対応的に推論したり、外部情報に基づいて知識を更新したりできないため、推論プロセス中にhallucinationやエラーの伝搬などの問題が発生する可能性が生じる。<br><br>一方、近年の研究では事前学習言語モデルをinteractiveな環境において計画と行動に利用する研究が行われている。これらの研究では、通常マルチモーダルな観測結果をテキストに変換し、言語モデルを使用してドメイン固有のアクション、またはプランを生成し、コントローラーを利用してそれらを選択または実行する。ただし、これらのアプローチは高レベルの目標について抽象的に推論したり、行動をサポートするための作業記憶を維持したりするために言語モデルを利用していない。<br><br>推論と行動を一般的な課題解決のためにどのようにシナジーできるか、またそのようなシナジーが単独で推論や行動を実施した場合と比較してどのような利益をもたらすかについて研究されていない。<br><br><br><br>LLMにおける推論と行動を組み合わせて、言語推論と意思決定タスクを解決するREACTと呼ばれる手法を提案。REACTでは、推論と行動の相乗効果を高めることが可能。推論トレースによりアクションプランを誘発、追跡、更新するのに役立ち、アクションでは外部ソースと連携して追加情報を収集できる。<br><br><br><br>REACTは推論と行動をLLMと組み合わせて、多様な推論や意思決定タスクを実現するための一般的な枠組みである。REACTのpromptはLLMにverbalな推論トレースとタスクを実行するためのアクションを交互に生成する。これにより、モデルは動的な推論を実行して行動するための大まかな計画を作成、維持、調整できると同時に、wikipediaなどの外部ソースとやりとりして追加情報を収集し、推論プロセスに組み込むことが可能となる。<br><br><br><br># 手法<br><br>変数を以下のように定義する：<br><br>- O_t: Observertion on time t<br><br>- a_t: Action on time t<br><br>- c_t: context, i.e. (o_1, a_1, o_2, a_2, ..., a_t-1, o_t)<br><br>- policy pi(a_t | c_t): Action Spaceからアクションを選択するポリシー<br><br>- A: Action Space<br><br>- O: Observation Space<br><br><br><br>普通はc_tが与えられたときに、ポリシーに従いAからa_tを選択しアクションを行い、アクションの結果o_tを得て、c_t+1を構成する、といったことを繰り返していく。<br><br><br><br>このとき、REACTはAをA ∪ Lに拡張しする。ここで、LはLanguage spaceである。LにはAction a_hatが含まれ、a_hatは環境に対して作用をしない。単純にthought, あるいは reasoning traceを実施し、現在のcontext c_tをアップデートするために有用な情報を構成することを目的とする。Lはunlimitedなので、事前学習された言語モデルを用いる。今回はPaLM-540B（c.f. GPT3は175Bパラメータ）が利用され、few-shotのin-context exampleを与えることで推論を行う。それぞれのin-context exampleは、action, thoughtsそしてobservationのtrajectoryを与える。<br><br><br><br>推論が重要なタスクでは、thoughts-action-observationステップから成るtask-solving trajectoryを生成する。一方、多数のアクションを伴う可能性がある意思決定タスクでは、thoughtsのみを行うことをtask-solving trajectory中の任意のタイミングで、自分で判断して行うことができる。<br><br><br><br>意思決定と推論能力がLLMによってもたらされているため、REACTは4つのuniqueな特徴を持つ：<br><br>- 直感的で簡単なデザイン<br><br>  - REACTのpromptは人間のアノテータがアクションのトップに思考を言語で記述するようなストレートなものであり、ad-hocなフォーマットの選択、思考のデザイン、事例の選定などが必要ない。<br><br>- 一般的で柔軟性が高い<br><br>  - 柔軟な thought spaceと thought-actionのフォーマットにより、REACTはさまざまなタスクにも柔軟に対応できる<br><br>- 高性能でロバスト<br><br>  - REACTは1-6個の事例によって、新たなタスクに対する強力な汎化を示す。そして推論、アクションのみを行うベースラインよりも高い性能を示している。REACTはfinetuningの斧系も得ることができ、promptの選択に対してREACTの性能はrobustである。<br><br>- 人間による調整と操作が可能<br><br>  - REACTは、解釈可能な意思決定と推論のsequenceを前提としているため、人間は簡単に推論や事実の正しさを検証できる。加えて、thoughtsを編集することによって、m人間はエージェントの行動を制御、あるいは修正できる。<br><br><br><br># KNOWLEDGE INTENSIVE REASONING TASKS</p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=tvI4u1ylcqs" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tvI4u1ylcqs</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="pybkt-an-460" class="title-link">pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM'20</h3><br><a href="https://arxiv.org/pdf/2105.00385.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/460" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
+<a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
+<a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2022-07-27</span>
+<span class="snippet"><span>Comment</span><p>pythonによるBKTの実装。scikit-learnベースドなinterfaceを持っているので使いやすそう。</p><p>
+<strong># モチベーション<br><br>BKTの研究は古くから行われており、研究コミュニティで人気が高まっているにもかかわらず、アクセス可能で使いやすいモデルの実装と、さまざまな文献で提案されている多くの変種は、理解しにくいものとなっている。そこで、モダンなpythonベースドな実装としてpyBKTを実装し、研究コミュニティがBKT研究にアクセスしやすいようにした。ライブラリのインターフェースと基礎となるデータ表現は、過去の BKTの変種を再現するのに十分な表現力があり、新しいモデルの提案を可能にする。 また、既存モデルとstate-of-the-artの比較評価も容易にできるように設計されている。<br><br># BKTとは<br><br>BKTの説明は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/461" target="_blank" rel="noopener noreferrer">Adapting Bayesian Knowledge Tracing to a Massive Open Online Course in edX, Pardos+, MIT, EDM'13</a>
+</strong>
+<br>
+ あたりを参照のこと。<br><br>BKTはHidden Markov Model (HMM) であり、ある時刻tにおける観測変数（問題に対する正誤）と隠れ変数（学習者のknowledge stateを表す）によって構成される。パラメータは prior（生徒が事前にスキルを知っている確率）, learn (transition probability; 生徒がスキルを学習することでスキルに習熟する確率), slip, guess (emission probability; スキルに習熟しているのに問題に正解する確率, スキルに習熟していないのに問題に正解する確率)の4種類のパラメータをEMアルゴリズムで学習する。<br><br><img src="https://user-images.githubusercontent.com/12249301/184829403-9a589837-b45a-4417-ba49-26392c5ea5e4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ここで、P(L_t)が時刻tで学習者がスキルtに習熟している確率を表す。BKTでは、P(L_t)を観測された正解/不正解のデータに基づいてP(L_t)をアップデートし、下記式で事後確率を計算する<br><br><img src="https://user-images.githubusercontent.com/12249301/184829784-e280b531-1ed6-4b5b-a7ae-9fc71f8ac224.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、時刻t+1の事前確率は下記式で計算される。<br><br><img src="https://user-images.githubusercontent.com/12249301/184829905-e1ac68f9-74bd-4986-a034-02a18161be4c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>一般的なBKTモデルではforgettingは生じないようになっている。<br><br><img src="https://user-images.githubusercontent.com/12249301/184832245-1ac8cf7a-c5d3-48a1-95aa-dfddaa729c00.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Corbett and Andersonが提案している初期のBKTだけでなく、さまざまなBKTの変種も実装している。<br><br><br><br>
+<strong># サポートしているモデル<br><br>- KT-IDEM (Item Difficulty Effect): BKTとは異なり、個々のquestionごとにguess/slipパラメータを学習するモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/469" target="_blank" rel="noopener noreferrer">KT-IDEM: Introducing Item Difficulty to the Knowledge Tracing Model, Pardos+ (w/ Neil T. Heffernan), UMAP'11</a>
+</strong>
+<br>
+<br><br>- KT-PPS: 個々の生徒ごとにprior knowledgeのパラメータを持つ学習するモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/470" target="_blank" rel="noopener noreferrer"> Modeling individualization in a bayesian networks implementation of knowledge tracing, Pardos+ (w/ Neil T. Heffernan), UMAP'00</a>
+<br><br>- BKT+Forget: 通常のBKTでは一度masterしたスキルがunmasteredに遷移することはないが、それが生じるようなモデル。直近の試行がより重視されるようになる。 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/355" target="_blank" rel="noopener noreferrer">How Deep is Knowledge Tracing?, Mozer+, EDM'16</a>
+ <br><br>- Item Order Effect: TBD<br><br>- Item Learning Effect: TBD</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="assessment-modeling-444" class="title-link">Assessment Modeling: Fundamental Pre-training Tasks for Interactive Educational Systems, Choi+, RiiiD Research, arXiv'20</h3><br><a href="https://arxiv.org/pdf/2002.05505.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/444" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
+<a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
+<a class="button" href="Assessment.html" target="_blank" rel="noopener noreferrer">#Assessment</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
+<span class="issue_date">Issue Date: 2022-04-18</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>テストのスコアや、gradeなどはシステムの外側で取得されるものであり、取得するためにはコストがかかるし、十分なラベル量が得られない（label-scarce problem）。そこで、pre-training/fine-tuningの手法を用いて、label-scarce probleを緩和する手法を提案。<br><br><br><br># Knowledge Tracingタスクの定義<br><br>手法を提案する前に、Knowledge Tracingタスクを定義した。Knowledge Tracingタスクを、マスクしたt番目のinteractionのk番目のfeatureを予測するタスクと定義した。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756357-159cde3b-283f-499b-b17e-971c63efdc3b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>このような定義にすると、たとえば、予測するfeatureとしては、回答の正誤にかかわらず以下のようなものも挙げられる。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756565-7a74188d-d285-4a13-9d26-598ea2eb2ede.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/163756585-c4e3bbdc-6746-4587-9e04-9da9bfeb45eb.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Assessmentを予測するタスク<br><br>また、このようなKTの定義に則り、assessmentを予測するタスクを下記のように定義した。ここで、Assesmentとはinteractionの中で教育的な評価と関連するinteractionのことである。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756668-b1f83cb6-14e3-4144-b101-ba4b37ba97ed.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>assesmentの例としては下図のAssessment Modelingに示したようなfeatureが挙げられる。<br><br><img src="https://user-images.githubusercontent.com/12249301/163756835-81a4af1f-f52e-476a-afc2-a68f80b2b38c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># label-scarceなeducational featureの例<br><br>また、label-scarceなeducational featureとして、以下を例として挙げている。この論文では、assessment予測をpre-trainingタスクとして定義し、これらlabel-scarceなeducational featureを予測することを目標としている。<br><br><br><br>- Non Interactive Educational Feature<br><br>    - exam_score: A student’s score on a standardized exam.<br><br>    - grade: A student’s final grade in a course.<br><br>    - certification: Professional certifications obtained by completion of educational programs or examinations.<br><br>- Sporadic Assessments（たまにしか発生しない偶発的なassessmentのこと）<br><br>    - course_dropout: Whether a student drops out of the entire class.<br><br>    - review_correctness: Whether a student responds correctly to a previously solved exercise.<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/163757329-4fc4134f-59c7-492d-be85-fe11afb26377.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># モデル<br><br>これらassessmentsのlabel-scarce problemに対処するために、pre-training/fine-tuningのパラダイムを活用する。<br><br>モデルはBERTを利用した。inputのうち、M%をランダムにマスクし、マスクしたassesment featureをlinear layerで予測するタスクを、pre-trainingフェーズで実施する。<br><br>inputとしては全てのfeatureを使うのは計算量的に現実的ではないのでknowledge-tracingタスクでよく利用される下記を用いる：<br><br>- exercise_id: We assign a latent vector unique to each exercise id.<br><br>- exercise_category: Each exercise has its own category tag that represents the type of the exercise. We assign a latent vector to each tag.<br><br>- position: The relative position 𝑡 of the interaction 𝐼𝑡 in the input sequence. We use the sinusoidal positional encoding that is used in [24].<br><br>- correctness: The value is 1 if a student response is correct and 0 otherwise. We assign a latent vector corresponding to each possible value 0 and 1.<br><br>- elapsed_time: The time taken for a student to respond is recorded in seconds. We cap any time exceeding 300 seconds to 300 seconds and normalize it by dividing by 300 to have a value between 0 and 1. The elapsed time embedding vector is calculated by multiplying the normalized time by a single latent embedding vector.<br><br>- inactive_time: The time interval between adjacent interactions is recorded in seconds. We set maximum inactive time as 86400 seconds (24 hours) and any time more than that is capped off to 86400 seconds. Also, the inactive time is normalized to have a value between 0 and 1 by dividing the value by 86400. Similar to the elapsed time embedding vector, we calculate the inactive time embedding vector by multiplying the time by a single latent embedding vector<br><br><br><br>ここで、interaction I_tのrepresentationは、e_t + c_t + et_t + it_t で表される。ここで、e_tはexercise_id, exercise_category, position embeddingを合計したもの、c_t, et_t, it_t は、それぞれcorrectness, elapsed_time, inactive_timeのembeddingである。<br><br>たとえば、assesment予測として、correctnessと、elapsed_timeを予測対象とした場合、inputのcorrectnessとelapsed_timeに関わるembeddingをmask embeddingに置き換える。すなわち、input representationは、e_t + c_t + et_t + it_t から、c_t + et_t がmaskに置き換えられ、e_t + it_t + mask となる。<br><br><br><br>Loss functionは、pre-training taskごとに定義する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/163754770-3f3fe740-a993-4a8c-8fe6-de49c90121ef.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>試験のスコア予測（non-interactive educational feature）と、review correctness予測タスク（a sporadic assessment）に適用し評価した。<br><br><br><br>## Dataset<br><br>EdNetデータセットを利用。pre-trainingのためのデータセットを作成するために、chronological orderでInteractionのデータを作成した。このとき、downstreamタスクで利用するユーザは全てpre-trainingデータセットから除外した。最終的に、414,375 user, 93,121,528 interactionsのデータとなった。<br><br><br><br>## Exam Score Prediction<br><br>2594件のSantaユーザのTOEICスコアを使用（報酬を用意してユーザに報告してもらった）。これだけの量のデータを集める音に6ヶ月を要した。<br><br><br><br>## review correctness prediction<br><br>生徒の学習ログを見て、最低2回解いている問題を見つけ、1回目と2回目に問題を解いている間のinteraction sequenceをinputとし、2回目に同じ問題を解いた時の正誤をラベルとして抽出した。<br><br>最終的に4540個のラベル付されたsequenceを得た。<br><br><br><br>## モデルのセットアップ<br><br>モデルは100 interactionsをinputとした。Mは0.6とした（60%をマスクした）。<br><br>また、fine-tuningする際には、label-scarce probleに対処するためにdata-augmentationを行った。具体的には、input sequenceのうち50%の確率で各エントリを選択しsubsequenceを作成することで、学習データに利用した。<br><br><br><br># 実験結果<br><br>## pre-trainingタスクがdown-streamタスクに与える影響<br><br><img src="https://user-images.githubusercontent.com/12249301/163783633-a2d9cb21-7c82-4718-a857-da1a14823c1d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>correctness + timelinessの予測を行った場合に、最も性能がよかった。<br><br><br><br>## 性能<br><br><img src="https://user-images.githubusercontent.com/12249301/163783790-7f0d3a22-7a36-427f-8d02-c3bd7c578521.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>既存のcontents-basedな手法と比べて、Assessment Modelが高い性能を発揮した。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="adapting-bayesian-461" class="title-link">Adapting Bayesian Knowledge Tracing to a Massive Open Online Course in edX, Pardos+, MIT, EDM'13</h3><br><a href="https://www.educationaldatamining.org/EDM2013/papers/rn_paper_21.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/461" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
+<a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<span class="issue_date">Issue Date: 2022-07-27</span>
+<span class="snippet"><span>Comment</span><p># Motivation<br><br>MOOCsではITSとはことなり、on-demandなチュートリアルヘルプを提供しておらず、その代わりに、知識は自己探求され様々なタイプのリソースの冗長性によって提供され、システムを介して学生は様々な経路やリソースを選択する。このようなデータは、さまざまな条件下で学生の行動の有効性を調査する機会を提供するが、この調査を計測するためのモデルがない。<br><br>そこで、既存の学習者モデリングテクニックであるBKTを、どのようにしてMOOCsのコースに適用できるかを示した。<br><br>これには3つのチャレンジがある:<br><br>1. questionに対応するKCの、対象分野の専門家によるマッピングが不足していること<br><br>2. <br><br>3.<br><br><br><br># データ概要<br><br>生徒のgradeは12の宿題と、12のvirtual labs (それぞれ15%の重みで無制限に回答できる)、そして中間テストと最終テスト（それぞれ30%と40%の重みで、3回の回答が許される）によって決まる。レクチャー中の問題は正誤がつくが、gradeにはカウントされないが即座にフィードバックが与えられる。104個のレクチャに289個のスコアリング可能な要素があり（すなわち、problemのsub-partをカウントした）、他にも37種類の宿題のproblemには197個、5つの中間テストproblemに26個、10個の最終テストproblemに47個のスコアリング可能なsub-partが存在する。<br><br>weeklyの宿題は複数のproblemで構成されており、それぞれがsingle web pageで表示される。典型的には図といくつかの回答フォームがある（これをsub-partsと呼ぶ）。subpartの回答チェックは、生徒がcheckボタンを押すと開始され、正誤がつく。subpartは任意の順番で回答できるが、いくつかのproblemのsubpartは、以前のsubpartの回答結果を必要とするものも存在する。もし生徒が全てのsubpartsを最初のチェックの前に回答したら、どの順番でsubpartに回答したかは分からない。しかしながら、多くの生徒は回答する度にチェックボタンを押すことを選択している。ほとんどのITSとは異なり、宿題は、最初の回答ではなく、ユーザーが入力した最後の回答に基づいて採点された。<br><br><br><br># データセット<br><br>154,000人の登録者がいたが、108,000人が実際にコースに入学し、10,000人がコースを最終的に終えた。その中で、7158人が少なくとも60%のweighted averatgeを獲得したという証明書を受け取った。<br><br>データセットは2,000人のcertificateを獲得したランダムに選択された生徒によって構成される。さらに、homework, lecture sequence, exam problemの中から、ランダムに10個のproblem（およびそのsubparts）を選択した。<br><br>データはJSONのログファイルとして生成され、ログファイルはユーザ単位でJSONレコードとして分割された。そして人間が解釈可能なMOOCsのコンポーネントとのインタラクションのtime seriesにparseされている。<br><br>最後的には、problemごとにイベントログを作成した。このログは、そのproblemに関連する学生のイベントごとに1行で構成されている。これは、イベントで消費した時間、subpartの正誤、生徒が回答を入力したあるいは変更した場合、回答のattemptの回数、回答の間にアクセスしたリソースなどが含まれている。<br><br><img src="https://user-images.githubusercontent.com/12249301/181160350-c13ed6b6-b757-4f6a-84e2-9b2c82acc340.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># BKT<br><br>KTはmastery learningを実現したいというモチベーションからきていて、mastery learningではスbエテの生徒は自分のペースでスキルを学習していき、前提知識をマスターするまでは、より複雑なmaterialへはチャレンジできないように構成されている。これを実現するためにN問連続で正解するなどのシンプルなmastery基準などが存在しており、ASSISTments Platformのskill builder problem setで利用されている。Cognitive Tutorでは、取得可能な知識は、宣言型であろうと手続き型であろうと、通常は対象分野の専門家によって定義されるKnowledge Component（KC）と呼ばれるきめ細かいatomic piecesによって定義されます。tutorのanswer stepにはこれらのKCのタグが付けられており、生徒の過去の回答履歴は、KCの習熟度を示しています。この文脈では、KCが生徒によって高い確率で知られている（通常は> = 0.95）ときに習熟したと推測されます。<br><br><br><br>standardなBKTモデルでは、四つのパラメータが定義される:<br><br>- prior knowledge p(L_0)<br><br>- probability of learning p(T)<br><br>- probability of guessing p(G)<br><br>- probability of slipping p(S)<br><br>これらのパラメータによって、生徒の時刻nでの知識の習熟確率p(L_n)が推論される。また、これらのパラメータは生徒の回答の正誤の予測にも利用できる：<br><br><img src="https://user-images.githubusercontent.com/12249301/181162575-39c7442f-ed0f-4ffa-a5d2-3b46cfc1e1cc.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>KCは、平均して習得するのに必要な難易度と練習の量が異なるため、これらのパラメーターの値はKCに依存し、以前の学生のログデータなどのトレーニングデータによってfittingすることができる。<br><br>パラメータのfittingはEMアルゴリズムかgrid searchによって、観測されたcorrectnessに対する予測された確率の残差平方和によるloss functionを最大化するようなパラメータが探索される。<br><br>ただし、どちらのフィッティング手順も、他の手順よりも一貫して優れていることは証明されていません。 グリッド検索は、基本的なBKTモデルのフィッティングは高速ですが、パラメーターの数が増えると指数関数的に増加します。これは、パラメーター化が高いBKTの拡張に関する懸念事項です。どちらのフィッティング手法も、目的は観測されたデータ（生徒の特定のKCの問題に対する正誤の系列）に最もマッチするパラメータを見つけることです。<br><br><br><br>KTの利用は2つのステージに分かれており、一つは4つのパラメータを学習するステージ、そしてもう一つは生徒の知識を彼らのレスポンスから予測することです。<br><br>inferenceのステージでは、時刻nの知識の習熟度は、観測データが与えられたときに以下の指揮で計算できる。観測データが正解だった場合は<br><br><img src="https://user-images.githubusercontent.com/12249301/181163661-c788e981-dac4-4aca-9311-bba9312d2b29.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>であり、不正解の場合は<br><br><img src="https://user-images.githubusercontent.com/12249301/181163772-d4a2c9fa-cb99-4cb8-a653-fdbb5a685e55.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>となる。<br><br>右辺のp(L_n)は、時刻nでの知識の習熟度に関する事前確率であり、p(L_n | Evidence_n)はその時点でのobservationを考慮し計算される事後確率です。両方の式はベイズの定理の適用であり、観察されたresponseの説明が学生がKCを知っているということである可能性を計算します。生徒にはフィードバックが提供されるため、KCを学習する機会があります。学生が機会からKCを学習する確率は、下記指揮によって導かれる：<br><br><img src="https://user-images.githubusercontent.com/12249301/181164932-d8f809c1-1910-4d33-9c3c-fa9bfb065439.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>これらの数式がmasxteryを決定するのに利用される。この知識モデルは、学習現象を研究するためのプラットフォームとして機能するように拡張されています。BKTアプローチを採用することで、MOOCで実現することを目指しているのは、この発見能力です。<br><br><br><br># Model Adaptation Challenge<br><br><br><br>## KCモデルの不足<br><br>"learning"には広い意味があるが、masteryの文脈では特定のスキル, あるいはKCの獲得を意味する。このようなスキルとquestionのマッピングは、Q-matrixと一般的に呼ばれるが、多くの場合は対象分野の専門家によって提供される。<br><br>これらのスキルは、psychometrics literatureの中でcognitive operationsと呼ばれ、スキルの識別プロセスは、ITSおよびエキスパートシステムの文脈では一般にcognitive task analysisと呼ばれます。<br><br>KCマッピングの評価手法である学習曲線分析は、優れたスキルマッピングの証拠は、スキルに関連するquestionに回答する機会を通じて、エラー率が単調に減少することであると主張しています。同様に、fluencyは、特定のスキルに対して正解するにつれて増加する（解決する時間が減少する）と期待されている。<br><br>たとえば、MOOCまたはGeometryなどの教科内のquestionを一次元で表示すると、カリキュラムに新しいトピック資料が導入されると、すぐにエラー率と応答時間が急増するため、パフォーマンスとfluencyのプロットにノイズが発生します。<br><br><br><br>対象分野の専門家が定義したKCまたは学習目標は、将来のMOOCsでは計画されていますが、それらは一般的ではなく、本論文で使用される6.002xコースデータには存在しません。したがって、我々のゴールはコースの構成要素を利用して、KCとquestionのマッピングを実現することである。課題のproblemとsubpartの構造を利用して、problemそのものをKCとみなし、subpartをKCに紐づくquestionとみなします。この選択の理論的根拠は、コースの教授はしばしば、それぞれのproblemにおいて、特定のconceptを利用することを念頭に置いていることが多いことです。subpartのパフォーマンスは、生徒がこのconceptを理解しているかの証拠となります。このタイプのマッピングの利点は、ドメインに依存せず、任意のMOOCのベースラインKCモデルとして利用できることです。欠点は、特定のKCへの回答が特定の週の課題の問題内でのみ発生するため、1週をまたいだ学習の長期評価ができないことです。Corbett＆Conrad [14]がコースの問題構造に対する質問の同様の表面的なマッピングを評価し、これがより体系的で窒息する学習曲線を達成することを実際に犠牲にしていることを発見したため、モデルの適合性の低下は別の欠点です（←ちょっとよくわからない）。だが、このマッピングは、problem内での現象を研究することを可能にする合理的な出発点であると信じており（これは「問題分析」と呼ばれます）、ここで説明した方法とモデルは、教科の専門家によって導かれた、あるいはデータから推論された、またはその両者のハイブリッドによる別のKCモデルにも適用できると信じています。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="measuring-the-576" class="title-link">Measuring the impact of online personalisation: Past, present and future</h3><br><a href="https://reader.elsevier.com/reader/sd/pii/S107158191930076X?token=0A897A8FC6BC67FE47F355143B3534CE1B97E42F3021716E685D18EFD9B107DC7843249216613ACFF88E92647EDB2470&originRegion=us-east-1&originCreation=20230428080859" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>Comment</span><p>Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurvey<br><br><br><br>ML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されてきた。一方HCIの分野ではaccuracyに特化しすぎるとUXの観点で不十分であることが指摘されており、たとえば既知のアイテムを推薦してしまったり、似たようなアイテムばかりが選択されユーザにとって有用ではなくなる、といったことが指摘されている。このため、ML, RecSys系の評価ではdiversity, novelty, serendipity, popularity, freshness等の新たなmetricが評価されるように変化してきた。また、accuracyの工場がUXの向上に必ずしもつながらないことが多くの研究で示されている。<br><br><br><br>一方、HCIやInformation Systems, Personalized IRはuser centricな実験が主流であり、personalizationは<br><br>- 情報アクセスに対するコストの最小化<br><br>- UXの改善<br><br>- コンピュータデバイスをより効率的に利用できるようにする<br><br>という3点を実現するための手段として捉えられている。HCIの分野では、personalizationの認知的な側面についても研究されてきた。<br><br>たとえば、ユーザは自己言及的なメッセージやrelevantなコンテンツが提示される場合、両方の状況においてpersonalizationされたと認知し、後から思い出せるのはrelevantなコンテンツに関することだという研究成果が出ている。このことから、自己言及的なメッセージングでユーザをstimulusすることも大事だが、relevantなコンテンツをきちんと提示することが重要であることが示されている。また、personalizationされたとユーザが認知するのは、必ずしもpersonalizationのプロセスに依存するのではなく、結局のところユーザが期待したメッセージを受け取ったか否かに帰結することも示されている。<br><br>user-centricな評価とオフライン評価の間にも不一致が見つかっている。たとえば<br><br>- オフラインで高い精度を持つアルゴリズムはニッチな推薦を隠している<br><br>  - i.e. popularityが高くrelevantな推薦した方がシステムの精度としては高く出るため<br><br>- オフライン vs. オンラインの比較で、ユーザがアルゴリズムの精度に対して異なる順位付けをする<br><br>といったことが知られている。<br><br><br><br>そのほかにも、企業ではofflineテスト -> betaテスターによるexploratoryなテスト -> A/Bテストといった流れになることが多く、Cognitive Scienceの分野の評価方法等にも触れている。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="user-centred-versus-516" class="title-link">User-centred versus system-centred evaluation of a personalization system, Diaz+, Information Processing & management, 2008</h3><br><a href="https://pdf.sciencedirectassets.com/271647/1-s2.0-S0306457308X00032/1-s2.0-S0306457307001641/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEFgaCXVzLWVhc3QtMSJIMEYCIQC%2FJBaNvcROK0uLyjaqJOH%2FSGD4TAsl9U2TA1PZufjM6QIhALHOZRDIVeBfX06ewfqfVFMeHcsGkEbiiNa2YB%2F4GZEWKrIFCEAQBRoMMDU5MDAzNTQ2ODY1Igx9bOsufiQPCLMRd4QqjwWQQ%2BvXVn7wlLX0Uqa9SX6FCICKvwS86L6ExL23h8ccZpbXQQdiy0ELZI3rCgoETZtY0ocYSUr2HsGKMsHqKmk6jLPk47BpqlbXtz9%2Bk8JrX7ZjxZ9AL0SJz4BjRfXb3%2BgWH%2B81z%2ByIS9pNooy0gDTsoN6GV1BMKqZ0Z8w5grBBBQkZ1fY2uYx8fpPAmOVASMVzntWhYSjlfDtYJqtjigppYMUb67HF5f9d181iSk88%2Fgwi6f3miVymdLC6uIll1F%2BUjdtvmC67Lgl%2B8rMnVLGN6Whki4d2atpR0a%2FAlFqvb6cAjHtEQmjVbr5WsaDesLOnXK6eH2CP7H%2F%2FsSHp19ciqnI%2BrLRAJ9%2FzmO3YOHIhDKU2V9Z%2FIQAHJCUogk0gMSibKAadV25BtQPiAJhylyvtKU6OBGdJ5QO4iM7DzdGIMd5a5GC9qTJY4JFTMxbZ2xhzRQphF1tJkR2qe6iAGwvOEbWDdqLnFMZ2j7vWetmWUNLBfOJE7C9YgZYO96DXR7oGiZ%2BAq1qlbc%2BcOLTtsLZi1lTGFV3cbpxa951Cd99lSrYsjGNkaqxFM7xe2Ay4G1NUzgiNrLD5Ggg5P37oaNR5QtdR9WjKK7a4wJuPAUT8%2Fe6cnUKHHgpkPh5zPMR7grQjlMrBT1169lPreiv4mxEih%2Fa76ieSY25%2BOWwBbTo9pcL%2BkE1U5zqEmBvGRjmX9f1IbN8kRhtT1VZv1lkcjNmarXGj4L4BLu61vk1gWeQAGiptxYfyO4GfxhQlYbjypqfsCvTdnCqmXRl4hm3aFQMeDh3pQ6YVU%2B0A8cZxxP4YKt3rs4IUCCHhFQW1rfEL8lCiX09J6rzYwbrF%2F633aHbH%2F8H5DMp3K65ZoO5ahCrNMP2Iv6EGOrABAmv%2BFXYrbPUWIi%2BOL81EPxBkvtIf61j8pWy73S6aikbtMlJhIN3qjlXb%2BypJOKKilnHB3UPcwEVJgbwXENIinD%2FGRNaVTWMTn72jIDGOz06L8QRZo2zicfuaVhNysmN3KB%2BBJk1VIhRvJT3RLYAjCR%2BXRbvQTCk0phDUJQn3bMCKXQ9ImQnDMEAx8WXGePjPWVQJg5a57Qjj9THXFTpyTY0iF1fVsCNvzagnWA9vVAA%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230407T080851Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYWLKQEZEI%2F20230407%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=dfcf0bd38018ac4e9cfd14497f176d4776606352332554a53437f245273b9c59&hash=732b9cca0f5793bd368cac8d871f28a7b1a786af062e5629b6f9bb1e73ad8309&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S0306457307001641&tid=spdf-79359bd4-a0dd-4696-982c-847da2b7a562&sid=d47018f54e44c14836282a03968cda7f070bgxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=10165505515e005c085f04&rr=7b40c8f8c91b25fb&cc=jp" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/516" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="PersonalizedDocumentSummarization.html" target="_blank" rel="noopener noreferrer">#PersonalizedDocumentSummarization</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<span class="issue_date">Issue Date: 2023-04-07</span>
+<span class="snippet"><span>Comment</span><p># Introduction<br><br>本研究では、web contentsのPersonalizationシステムにおいて、user-centered evaluationとsystem-centered evaluationの評価の問題を議論している。目的としては両者の評価を組み合わせることで、それぞれを個別に評価するよりも、よりinsightfulな見解を得ることができることを述べる。<br><br><br><br>- system-oriented evaluationの例: Text Retrieval Conference (TREC)：<br><br>  - クエリごとに専門家がドキュメントコレクションの中から、どれだけ該当文書が合致しているかをラベル付する<br><br>  - => ユーザごとの実際のrelevance judgmentを用いるのではなく、専門家によるラベルを用いて評価する<br><br>  - => クエリに関連づけられた文書の適合性は、クエリが実行されたコンテキストに依存するため、専門家によるrelevance judgmentは現実に対する近似として捉えられる<br><br>  - => ユーザの参加は必須ではない<br><br>- user centered evaluation<br><br>  - ユーザの意見を収集し、ユーザのシステムに対する印象を手に入れようとするuser-orientedも実施されている<br><br>  - qualitative, quantitative (recall and precision)の両方を収集することを目的としている場合があり、ユーザの参加が必須</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="mlops-機械学習における継続的デリバリーと自動化のパイプライン-447" class="title-link">MLOps: 機械学習における継続的デリバリーと自動化のパイプライン, Google</h3><br><a href="https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning#whats_next" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/447" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Infrastructure.html" target="_blank" rel="noopener noreferrer">#Infrastructure</a>
+<a class="button" href="MLOps.html" target="_blank" rel="noopener noreferrer">#MLOps</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2022-04-27</span>
+<span class="snippet"><span>Comment</span><p>機械学習（ML）システムの継続的インテグレーション（CI）、継続的デリバリー（CD）、継続的トレーニング（CT）の実装と自動化<br><br>MLOpsのレベルを0~2で表現しており、各レベルごとに何が達成されるべきかが図解されている。</p></span><br><br>
+</article>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Twitterのwidgets.jsを動的に一度だけ読み込む関数
+  let twitterScriptLoaded = false;
+  function loadTwitterScript() {
+    if (!twitterScriptLoaded) {
+      const script = document.createElement('script');
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.charset = "utf-8";
+      script.async = true;
+      document.body.appendChild(script);
+      twitterScriptLoaded = true;
+    }
+  }
+
+  // Intersection Observerの設定
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // 画面に入った時だけスクリプトをロード開始
+        loadTwitterScript();
+
+        const container = entry.target;
+        const embedHtml = container.getAttribute('data-embed');
+        
+        if (embedHtml) {
+          container.innerHTML = embedHtml;
+          container.removeAttribute('data-embed');
+          
+          // ウィジェットの再スキャン（twttrオブジェクトが準備できていれば実行）
+          if (window.twttr && window.twttr.widgets) {
+            window.twttr.widgets.load(container);
+          }
+        }
+        obs.unobserve(container);
+      }
+    });
+  }, { rootMargin: '200px', threshold: 0.01 }); // 少し早めに読み込む
+
+  document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
+});
+</script>
+
+
+    </div>
+
+</article>
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/WebSearch.html" title="WebSearchに関する論文・技術記事メモの一覧">WebSearchに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Semi-Supervised.html" title="Semi-Supervisedに関する論文・技術記事メモの一覧">Semi-Supervisedに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/SpeculativeDecoding.html"
+            title="SpeculativeDecodingに関する論文・技術記事メモの一覧">
+            SpeculativeDecodingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/MultiDimensional.html"
+            title="MultiDimensionalに関する論文・技術記事メモの一覧">
+            MultiDimensionalに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/AudioVisualGeneration.html"
+            title="AudioVisualGenerationに関する論文・技術記事メモの一覧">
+            AudioVisualGenerationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Off-Policy.html"
+            title="Off-Policyに関する論文・技術記事メモの一覧">
+            Off-Policyに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
+  <span class="post-badge badge-new">📝 13</span>
+</span>
+</a>
+        </li></ul>
+    </div><div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+/* --- レイアウト用（前回と同じ） --- */
+.post-menu {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-menu-title {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.post-menu-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- 開閉アニメーションとアイコン用 --- */
+
+/* h2のスタイル：クリックできるようにする */
+.post-menu li.h-h2 {
+  cursor: pointer;
+  position: relative;
+  padding-left: 15px; /* アイコン用のスペース */
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 開閉アイコン（▼） */
+.post-menu li.h-h2::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 6px; /* 三角形 */
+  border-color: transparent transparent transparent #555;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.post-menu li.h-h2.no-icon::before {
+  content: none; /* 擬似要素の中身をなしにする */
+  /* または display: none; でもOKです */
+}
+
+/* 開いている時のアイコン（下向きにする） */
+.post-menu li.h-h2.open::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* h3（子要素）のスタイル */
+.post-menu li.h-h3 {
+  margin-left: 15px;
+  font-size: 0.9em;
+  /* 初期状態はJSで制御しますが、念のため */
+}
+
+/* アクティブな項目の色 */
+.post-menu li.active > a {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* リンク自体のスタイル調整 */
+.post-menu li a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: 100%;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent = menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3");
+
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // --- HTML生成 ---
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      // h-h2 クラスの要素には初期状態で open クラスをつけるか、つけないかで「最初から開いているか」を決められます
+      // ここでは閉じた状態をデフォルトとします
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+
+    // --- 開閉ロジックの実装 ---
+    var listItems = menuContent.querySelectorAll('li');
+
+    // h2要素にクリックイベントを追加
+    listItems.forEach(function(item, index) {
+      if (item.classList.contains('h-h2')) {
+        
+        // クリックイベント
+        item.addEventListener('click', function(e) {
+          // リンクをクリックした場合はページ内遷移させたいので、イベントを止めない
+          // ただし、アイコン付近をクリックした等の挙動を統一するため、
+          // 開閉処理を行います。
+          
+          // クラスの付け替え（アイコンの回転用）
+          item.classList.toggle('open');
+
+          // 次のh2が出てくるまで、h3を表示/非表示切り替え
+          for (var i = index + 1; i < listItems.length; i++) {
+            var sibling = listItems[i];
+            if (sibling.classList.contains('h-h2')) {
+              break; // 次のh2に来たら終了
+            }
+            if (sibling.classList.contains('h-h3')) {
+              if (item.classList.contains('open')) {
+                sibling.style.display = 'block';
+              } else {
+                sibling.style.display = 'none';
+              }
+            }
+          }
+        });
+      }
+    });
+
+    // --- 初期状態の設定（すべて閉じる） ---
+    // もし最初から開いておきたい場合は、このブロックを削除するか調整してください
+    listItems.forEach(function(item) {
+      if (item.classList.contains('h-h3')) {
+        item.style.display = 'none';
+      }
+    });
+
+
+    // --- スクロール連動（ハイライト機能のみ残す） ---
+    var header = document.querySelector('header.site-header');
+    
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header ? header.getBoundingClientRect() : {top:0, height:0}; // headerがない場合の安全策
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var offset = headerTop + headerHeight + 20;
+
+        if (headingRect.top <= offset) {
+          var id = h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          
+          if (curActive) {
+            // もしアクティブになった項目が閉じているh2の中にあった場合、
+            // 自動で開く処理を追加したい場合はここに記述します。
+            // 今回は「手動開閉」を優先し、自動オープンはあえて行いません。
+            
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+      }
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/paper_notes/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner"><div>Copyright © 2023-current AkihikoWATANABE. The header images and any thumbnail images for the posts were generated by ChatGPT's DALL-E3.</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/paper_notes/feed.xml">via RSS</a></div>
+    </div>
+  </div>
+</footer>
+</body>
+  </html>

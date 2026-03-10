@@ -21,6 +21,33 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] ResNet strikes back: An improved training procedure in timm, Ross Wightman+, arXiv'21, 2021.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2110.00476</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/431</repo-issue-link>
+<tags>NeuralNetwork, ComputerVision, action_wanted, NeurIPS, ImageClassification, Surface-level Notes</tags>
+<repo-issue-date>2021-11-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2110.00476
+# Authors
+  - Ross Wightman
+  - Hugo Touvron
+  - Hervé Jégou
+# Abstract
+  - The influential Residual Networks designed by He et al. remain the gold-standard architecture in numerous scientific publications. They typically serve as the default architecture in studies, or as baselines when new architectures are proposed. Yet there has been significant progress on best practices for training neural networks since the inception of the ResNet architecture in 2015. Novel optimization & data-augmentation have increased the effectiveness of the training recipes. In this paper, we re-evaluate the performance of the vanilla ResNet-50 when trained with a procedure that integrates such advances. We share competitive training settings and pre-trained models in the timm open-source library, with the hope that they will serve as better baselines for future work. For instance, with our more demanding training setting, a vanilla ResNet-50 reaches 80.4% top-1 accuracy at resolution 224x224 on ImageNet-val without extra data or distillation. We also report the performance achieved with popular models with our training procedure.
+# Translation (by gpt-4o-mini)
+- Heらによって設計された影響力のあるResidual Networksは、多くの科学的出版物においてゴールドスタンダードのアーキテクチャとして位置づけられている。これらは通常、研究におけるデフォルトのアーキテクチャとして、または新しいアーキテクチャが提案される際のベースラインとして使用される。しかし、2015年にResNetアーキテクチャが誕生して以来、ニューラルネットワークのトレーニングに関するベストプラクティスには大きな進展があった。新しい最適化手法やデータ拡張技術は、トレーニングレシピの効果を高めている。本論文では、これらの進展を統合した手法でトレーニングされたバニラResNet-50の性能を再評価する。私たちは、競争力のあるトレーニング設定と事前学習済みモデルをtimmオープンソースライブラリで共有し、これらが将来の研究のためのより良いベースラインとなることを期待している。例えば、私たちのより厳しいトレーニング設定を用いることで、バニラResNet-50はImageNet-valにおいて224x224の解像度で80.4%のトップ1精度を達成し、追加のデータや蒸留なしで実現した。また、私たちのトレーニング手法を用いた人気モデルの性能も報告する。
+# Summary (by gpt-4o-mini)
+- 本論文では、Residual Networks（ResNet-50）の性能を新たな最適化手法やデータ拡張技術を統合したトレーニング手法で再評価。競争力のある設定で、ImageNet-valにおいて80.4%のトップ1精度を達成し、事前学習済みモデルをtimmライブラリで共有することで、今後の研究のベースラインとなることを目指す。</issue-body>
+<maintainer-comment-text><p>2015年以後、様々な最適化アルゴリズム、正則化手法、データ拡張などが提案される中で、最新アーキテクチャのモデルにはそれらが適用される一方ベースラインとなるResNetではそれらが適用されず、論文の値のみが参照される現状はフェアではないので、ResNetの性能を向上させるような訓練手法を追求した研究。<br><br><br><br>ResNetにおける有効な訓練手法として下記を模索：<br><br><br><br>損失関数として、MixUp（訓練画像を重ね合わせ、組み合わせた画像のラベルをミックスして新しい学習インスタンスを作るデータ拡張手法）と、CutMix（画像を切り貼りして、切り貼り部分の面積に応じてラベルのスコアを調整するデータ拡張手法）を適用し、CutMixによって大幅に性能が改善することを示した。このとき、ラベルの確率の和が1となる前提の元クロスエントロピーで学習するのではなく、元画像に含まれる物体が両方存在するという全体の元BinaryCrossEntropyを適用しマルチラベル問題として学習することで、性能が向上。<br><br><br><br>データ拡張手法として、MixUp, CutMixだけでなく、通常のリサイズ・切り抜きと、水平方向の反転を適用しデータ拡張する。加えてRandAugment（14種類のデータ拡張操作から、N個サンプルし、強さMで順番に適用するデータ拡張手法。N,Mはそれぞれ0〜10の整数なので、10の二乗オーダーでグリッドサーチすれば、最適なN,Mを得る。グリッドサーチするだけでお手軽だが非常に強力）を適用した。<br><br><br><br>正則化として、Weight Decay（学習過程で重みが大きくなりすぎないようにペナルティを課し、過学習を防止する手法。L2正則化など。）と、label smoothing（正解ラベルが1、その他は0とラベル付けするのではなく、ラベルに一定のノイズを入れ、正解ラベル以外にも重みが入っている状態にし、ラベル付けのノイズにロバストなモデルを学習する手法。ノイズの強さは定数で調整する）、Repeated Augmentation（同じバッチ内の画像にデータ拡張を適用しバッチサイズを大きくする）、Stochastic Depth（ランダムでレイヤーを削除し、その間を恒等関数で繋ぎ訓練することで、モデルの汎化能力と訓練時間を向上する）を適用。<br><br></p><p>Optimizerとして、オリジナルのResNetでは、SGDやAdamWで訓練されることが多いが、Repeated Augmentationとバイナリクロスエントロピーを組み合わせた場合はLAMBが有効であった。また、従来よりも長い訓練時間（600epoch、様々な正則化手法を使っているので過学習しづらいため）で学習し、最初にウォームアップを使い徐々に学習率を上げ（finetuningの際にこれまでのweightをなるべく壊したくないから小さい学習率から始める、あるいはMomentumやAdamといった移動平均を使う手法では移動平均を取るための勾配の蓄積が足りない場合学習の信頼度が低いので最初の方は学習率小さくするみたいな、イメージ）その後コサイン関数に従い学習率を減らしていくスケジューリング法で学習。<br><br><br><br>論文中では上記手法の3種類の組み合わせ（A1,A2,A3）を提案し実験している。<br><br>ResNet-50に対してA1,2,3を適用した結果、A1を適用した場合にImageNetのトップ1精度が80.4%であり、これはResNet-50を使った場合のSoTA。元のResNetの精度が76%程度だったので大幅に向上した。<br><br>同じ実験設定を使った場合の他のアーキテクチャ（ViTやEfficientNetなど）と比べても遜色のない性能を達成。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302112-05392bbb-7014-4518-a001-55e91933a065.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、本論文で提案されているA2と、DeiTと呼ばれるアーキテクチャで提案されている訓練手法（T2）をそれぞれのモデルに適用した結果、ResNetではA2、DeiTではT2の性能が良かった。つまり、「アーキテクチャと訓練方法は同時に最適化する必要がある」ということ。これがこの論文のメッセージの肝とのこと。<br><br><br><br>（ステートオブAIガイドの内容を読んで学んだことを自分の言葉で整理して記述しました。いつもありがとうございます。）<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302160-c31717ae-a225-47a4-ae33-f1cd081c419b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>画像系でどういった訓練手法が利用されるか色々書かれていたので勉強になった。特に画像系のデータ拡張手法なんかは普段触らないので勉強になる。</p><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=NG6MJnVl6M5" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=NG6MJnVl6M5</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>ImageNet Classification with Deep Convolutional Neural Networks, Krizhevsky+, NIPS'12</title>
 <original-paper-blog-link>https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1958</repo-issue-link>

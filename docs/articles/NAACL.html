@@ -1391,16 +1391,16 @@ My Issue
 
 
 </p><p>
-<strong># モチベーション: 既存のCoT Promptingの問題点<br><br>## Inappropriate Examplars can Reduce Performance<br><br>まず、既存のCoT prompting手法は、sampling examplarがシンプル、あるいは極めて複雑な（hop-based criterionにおいて; タスクを解くために何ステップ必要かという情報; しばしば人手で付与されている？）サンプルをサンプリングしてしまう問題がある。シンプルすぎるサンプルを選択すると、既にLLMは適切にシンプルな回答には答えられるにもかかわらず、demonstrationが冗長で限定的になってしまう。加えて、極端に複雑なexampleをサンプリングすると、複雑なquestionに対しては性能が向上するが、シンプルな問題に対する正答率が下がってしまう。<br><br><br><br>続いて、demonstration中で誤ったreasoning chainを利用してしまうと、inference時にパフォーマンスが低下する問題がある。下図に示した通り、誤ったdemonstrationが増加するにつれて、最終的な予測性能が低下する傾向にある。<br><br><br><br>これら2つの課題は、現在のメインストリームな手法（questionを選択し、reasoning chainを生成する手法）に一般的に存在する。<br><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, ICLR'23</a>
+<strong># モチベーション: 既存のCoT Promptingの問題点<br><br>## Inappropriate Examplars can Reduce Performance<br><br>まず、既存のCoT prompting手法は、sampling examplarがシンプル、あるいは極めて複雑な（hop-based criterionにおいて; タスクを解くために何ステップ必要かという情報; しばしば人手で付与されている？）サンプルをサンプリングしてしまう問題がある。シンプルすぎるサンプルを選択すると、既にLLMは適切にシンプルな回答には答えられるにもかかわらず、demonstrationが冗長で限定的になってしまう。加えて、極端に複雑なexampleをサンプリングすると、複雑なquestionに対しては性能が向上するが、シンプルな問題に対する正答率が下がってしまう。<br><br><br><br>続いて、demonstration中で誤ったreasoning chainを利用してしまうと、inference時にパフォーマンスが低下する問題がある。下図に示した通り、誤ったdemonstrationが増加するにつれて、最終的な予測性能が低下する傾向にある。<br><br><br><br>これら2つの課題は、現在のメインストリームな手法（questionを選択し、reasoning chainを生成する手法）に一般的に存在する。<br><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">[Paper Note] Automatic Chain of Thought Prompting in Large Language Models, Zhuosheng Zhang+, ICLR'23, 2022.10</a>
 </strong>
 <br>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">Automatic prompt augmentation and selection with chain-of-thought from labeled data, Shum+, The Hong Kong University of Science and Technology, arXiv'23</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">[Paper Note] Automatic Prompt Augmentation and Selection with Chain-of-Thought from Labeled Data, KaShun Shum+, EMNLP'23, 2023.02</a>
 <br><br>のように推論時に適切なdemonstrationを選択するような取り組みは行われてきているが、test questionに対して推論するために、適切なexamplarsを選択するような方法は計算コストを増大させてしまう。<br><br>これら研究は誤ったrationaleを含むサンプルの利用を最小限に抑えて、その悪影響を防ぐことを目指している。<br><br><br><br>一方で、この研究では、誤ったrationaleを含むサンプルを活用して性能を向上させる。これは、たとえば学生が難解だが回答可能な問題に取り組むことによって、問題解決スキルを向上させる方法に類似している（すなわち、間違えた部分から学ぶ）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234752168-fe1d83a4-8d29-4f6c-8aa1-6bde1706beea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p><p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p><p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 </strong>
 <br>
-<br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
-<br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, ACL'24</a>
+<br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
+<br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">[Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL'24, 2023.02</a>
 <br><br>と比較。<br><br>Iter-CoTが11個のデータセット全てでoutperformした。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234792846-e8fd2f8b-6e26-48fc-9e5d-785bcf2a6b6a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>weak bootstrapingのiterationは4回くらいで頭打ちになった<br><br><img src="https://user-images.githubusercontent.com/12249301/234793570-f57e56e4-7320-4be4-9c93-ee3be01ad389.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、手動でreasoning chainを修正した結果と、contextにannotation情報を残し、最後にsummarizeする方法を比較した結果、後者の方が性能が高かった。このため、contextの情報を利用しsummarizeすることが効果的であることがわかる。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1445,7 +1445,6 @@ My Issue
 <a class="button" href="Contents-based.html" target="_blank" rel="noopener noreferrer">#Contents-based</a>
 <span class="issue_date">Issue Date: 2022-08-01</span>
 <span class="snippet"><span>GPT Summary</span>- コンテンツベースの協調フィルタリング（CCF）において、PLMを用いたエンドツーエンドのトレーニングはリソースを消費するため、GRAM（勾配蓄積手法）を提案。Single-step GRAMはアイテムエンコーディングの勾配を集約し、Multi-step GRAMは勾配更新の遅延を増加させてメモリを削減。これにより、Knowledge TracingとNews Recommendationのタスクでトレーニング効率を最大146倍改善。</span>
-<span class="snippet"><span>Comment</span><p>RiiiDがNAACL'22に論文通してた</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="dart-open-domain-2614" class="title-link">[Paper Note] DART: Open-Domain Structured Data Record to Text Generation, Linyong Nan+, NAACL'21</h3><br><a href="https://arxiv.org/abs/2007.02871" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -1481,6 +1480,7 @@ My Issue
 <a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2022-06-08</span>
 <span class="snippet"><span>GPT Summary</span>- 新しい深層文脈化単語表現を提案し、単語の複雑な特性と文脈による変化をモデル化。これらの表現は事前学習された双方向言語モデルの内部状態を基に学習され、質問応答や感情分析など6つのNLPタスクで性能を向上させる。さらに、事前学習ネットワークの内部を活用することで、半教師あり信号の混合が可能であることを示す。</span>
 <span class="snippet"><span>Comment</span><p>ELMo論文。<br>通常のword embeddingでは一つの単語につき一つの意味しか持たせられなかったが、文脈に応じて異なる意味を表現できるようなEmbeddingを実現し（同じ単語でも文脈に応じて意味が変わったりするので。たとえばrightは文脈に応じて右なのか、正しいなのか、権利なのか意味が変わる）様々な言語処理タスク（e.g. Question Answering, Sentiment Analysisなど）でSoTAを達成。<br><br><img src="https://user-images.githubusercontent.com/12249301/172505957-a2fc5319-5670-4807-a870-31377227299e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Embedding Layer + 2層のLSTM（1,2の間にはresidual connection）+ linear layerで言語モデルを構成し、順方向言語モデルと逆方向言語モデルを同時に独立して学習する（双方向LSTMではない;損失関数が両方向の言語モデルの対数尤度の和になっている）。<br>また、Linear LayerとEmbedding Layerのパラメータは両方向の言語モデルで共有されている。<br><br>k番目の単語のEmbedding Layerの出力ベクトル、各LSTMのhidden stateをタスクspecificなスカラーパラメタs_taskで足し合わせ、最後にベクトルのスケールを調整するパラメタγ_taskで大きさを調整する。これにより、k番目の単語のELMo Embeddingを得る。<br>単語単体の意味だけでこと足りるタスクの場合はEmbedding Layerの出力ベクトルに対する重みが大きくなり、文脈を考慮した情報が欲しい場合はLSTMのhidden stateに対する重みが大きくなるイメージ（LSTMの層が深いほど意味的semanticな情報を含み、浅いほど文法的syntacticな情報を含んでいる）。<br><br>使い方としては簡単で、ELMoを事前学習しておき、自身のNNモデルのWord Embeddingに（場合によってはRNNのhidden stateにも）、入力文から得られたELMo Embeddingをconcatして順伝搬させるだけで良い。</p><p>ELMoのEmbedding Layerでは、2048 characterの（vocab size?）n-gram convolution filter（文字ごとにembeddingし、単語のembeddingを得るためにfilterを適用する？）の後に2つのhighway networkをかませてlinearで512次元に落とすみたいなことごやられているらしい。ここまで追えていない。<br><br>詳細は下記<br>
@@ -1780,42 +1780,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Education.html"
-            title="Educationに関する論文・技術記事メモの一覧">
-            Educationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CVPR.html"
+            title="CVPRに関する論文・技術記事メモの一覧">
+            CVPRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 30</span> 
-  <span class="post-badge badge-new">📝 30</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 44</span> 
+  <span class="post-badge badge-new">📝 44</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ScoreMatching.html"
-            title="ScoreMatchingに関する論文・技術記事メモの一覧">
-            ScoreMatchingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Relighting.html"
+            title="Relightingに関する論文・技術記事メモの一覧">
+            Relightingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RepresentationLearning.html"
-            title="RepresentationLearningに関する論文・技術記事メモの一覧">
-            RepresentationLearningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AutoML.html"
+            title="AutoMLに関する論文・技術記事メモの一覧">
+            AutoMLに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 50</span> 
-  <span class="post-badge badge-new">📝 50</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/GenerativeAdversarialNetwork.html"
-            title="GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧">
-            GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CompressionValleys.html"
+            title="CompressionValleysに関する論文・技術記事メモの一覧">
+            CompressionValleysに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li></ul>

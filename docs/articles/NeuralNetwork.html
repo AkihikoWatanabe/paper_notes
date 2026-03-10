@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 hours 10 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 hours 11 mins</span>
   </div></header>
 </div>
     </div>
@@ -2129,7 +2129,7 @@ My Issue
 
 
 </p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2189" target="_blank" rel="noopener noreferrer">[Paper Note] Deep Double Descent: Where Bigger Models and More Data Hurt, Preetum Nakkiran+, ICLR'20</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/524" target="_blank" rel="noopener noreferrer">GROKKING: GENERALIZATION BEYOND OVERFIT- TING ON SMALL ALGORITHMIC DATASETS, Power+, ICLR'21 Workshop</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/524" target="_blank" rel="noopener noreferrer">[Paper Note] Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets, Alethea Power+, ICLR'21 Workshop, 2022.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2190" target="_blank" rel="noopener noreferrer">[Paper Note] The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks, Jonathan Frankle+, ICLR'19</a>
 </p></span><br><br>
 </article>
@@ -2410,7 +2410,7 @@ My Issue
 <br><br>論文中の図解: Mini-appにトリガーとなるアイテムを提示するTrigger-Induced-Recommendation（TIR）<br><img src="https://github.com/user-attachments/assets/eb209dc4-b8bc-4632-89df-137031e509f0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>## 概要<br><br>図3に示されているような Collaborative Contrastive Network (CCN)を提案しており、このネットワークは、Collaborative Constrastive Learningに基づいて学習される。<br><br><br><br>### Collaborative Constrasitve Learning<br><br>図2がCollaborative Constrastive Learningの気持ちを表しており、図2のようなクリックスルーログが与えられたとする。<br><br>推薦リストを上から見ていき、いま着目しているアイテムをtarget_itemとすると、target_itemがクリックされている場合、同じcontext（i.e., ユーザにページ内で提示されたアイテム群）のクリックされているアイテムと距離が近くなり、逆にクリックされていないアイテム群とは距離が遠いとみなせる。逆にtarget_itemがクリックされていない場合、同様にクリックされていないアイテムとは距離が近く、クリックされているアイテムとは距離が遠いとみなせる。このように考えると、ある推薦リストが与えられた時に、あるtarget_itemに着目すると、contrastive learningのためのpositive example/negative exampleを生成できる。このようなco-click/co-non-clickの関係から、アイテム同士の距離を学習し、ユーザのinterest/disinterestを学習する。<br><br><img src="https://github.com/user-attachments/assets/cea478d8-27e5-45e9-afcd-41a0765c8cce" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Collaborative Contrastive Network<br><br>Collaborative ModuleとCTR Moduleに分かれている。<br><br>- Collaborative Moduleには、context itemsと、target itemをinputとし両者の関係性をエンコードする<br><br>    - このとき、トリガーアイテムのembeddingとアダマール積をとることで、トリガーアイテムの情報も考慮させる<br><br>- CTR Moduleは、context itemsとtarget itemの関係性をエンコードしたembedding、target_item, trigger_itemのembedding, user profileのembedding, userのlong-termとshort-termの行動のembeddingをconcatしたベクトルをinputとして受け取り、そらからtarget_itemのCTRを予測する。 <br><br>- Loss Functionは、binary cross entropyと、Collaborative Contrastive Lossをλで重みづけして足し合わせたものであり、Collaborative Contrastive Loss L_CMCは、上述の気持ちを反映するloss（i.e., target_itemとcontext_itemco-click/co-non-clickに基づいて、アイテム間の距離を最小/最大化するようなloss）となっている<br><br><img src="https://github.com/user-attachments/assets/2ca62ade-d370-4615-89d1-eac56bf1e847" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><img src="https://github.com/user-attachments/assets/07f4bef9-2f86-46b5-b310-2afca26a0db3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## 実験結果<br><br>### offline evaluation<br><br>Table 1に示したTaobaoで収集した非常に大規模なproprietary datasetでCTRを予測したところ、AUCはベースラインと比較して高くなった。ここで、TANはCCNのBackboneモデルで、Contrastive Learningを実施していないモデルである。CTR予測においてAUCが高くなるというのはすなわち、クリックされたアイテムi/クリックされなかったアイテムjの2つをとってきたときに、両者のCTR予測結果が CTR_i > CTR_j になる割合が高くなった（i.e. クリックされているアイテムの方が高いCTR予測結果となっている）ということを意味する。<br><br><img src="https://github.com/user-attachments/assets/e696bf07-fcd6-47cd-9f96-926071a6b609" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/629bc349-36f6-4603-b595-3482c92e66f4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### online A/B Testing<br><br>A/Bテストまで実施しており、実際に提案手法を組み込んだ結果、高いCTRを獲得しているだけでなく、CVRも向上している。すごい。<br><br><img src="https://github.com/user-attachments/assets/651d8351-32f5-4aa6-89b6-f310781467f8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Contrastive Learningを実施しないTANと、CCNを比較してもCCNの方が高いCTR, CVRを獲得している。Contrastive Learning有能。<br><br><img src="https://github.com/user-attachments/assets/56b6d14f-fef7-4d1b-ae04-ec3acacf2787" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="active-prompting-554" class="title-link">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, ACL'24</h3><br><a href="https://arxiv.org/abs/2302.12246" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="active-prompting-554" class="title-link">[Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL'24, 2023.02</h3><br><a href="https://arxiv.org/abs/2302.12246" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2425,7 +2425,10 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の性能向上には、タスク特有のプロンプト設計が重要であり、特に連鎖的思考（CoT）を活用したアプローチが効果的です。この研究では、Active-Promptという新手法を提案し、タスク特有の質問に対する最適なアノテーションを選定することでLLMsを適応させます。不確実性に基づくアクティブラーニングを取り入れ、最も不確実な質問を対象にする指標を導入。実験により、提案手法が8つの複雑な推論タスクで最先端の成績を達成し、有効性が示されました。</span>
 <span class="snippet"><span>Comment</span><p>しっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽい<br><br>そのために、questionに対して、training dataに対してFew-Shot CoTで予測をさせた場合やZero-Shot CoTによって予測をさせた場合などでanswerを取得し、answerのばらつき度合いなどから不確実性を測定する。<br><br>そして、不確実性が高いCoT-Answerペアを取得し、人間が手作業でCoTと回答のペアを与え、その人間が作成したものを用いてTestデータに対してFewShotしましょう、ということだと思われる。<br><br><img src="https://user-images.githubusercontent.com/12249301/234747555-4b7bd0d5-f099-4288-a470-32206533e652.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2456,20 +2459,20 @@ My Issue
 
 
 </p><p>
-<strong># モチベーション: 既存のCoT Promptingの問題点<br><br>## Inappropriate Examplars can Reduce Performance<br><br>まず、既存のCoT prompting手法は、sampling examplarがシンプル、あるいは極めて複雑な（hop-based criterionにおいて; タスクを解くために何ステップ必要かという情報; しばしば人手で付与されている？）サンプルをサンプリングしてしまう問題がある。シンプルすぎるサンプルを選択すると、既にLLMは適切にシンプルな回答には答えられるにもかかわらず、demonstrationが冗長で限定的になってしまう。加えて、極端に複雑なexampleをサンプリングすると、複雑なquestionに対しては性能が向上するが、シンプルな問題に対する正答率が下がってしまう。<br><br><br><br>続いて、demonstration中で誤ったreasoning chainを利用してしまうと、inference時にパフォーマンスが低下する問題がある。下図に示した通り、誤ったdemonstrationが増加するにつれて、最終的な予測性能が低下する傾向にある。<br><br><br><br>これら2つの課題は、現在のメインストリームな手法（questionを選択し、reasoning chainを生成する手法）に一般的に存在する。<br><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, ICLR'23</a>
+<strong># モチベーション: 既存のCoT Promptingの問題点<br><br>## Inappropriate Examplars can Reduce Performance<br><br>まず、既存のCoT prompting手法は、sampling examplarがシンプル、あるいは極めて複雑な（hop-based criterionにおいて; タスクを解くために何ステップ必要かという情報; しばしば人手で付与されている？）サンプルをサンプリングしてしまう問題がある。シンプルすぎるサンプルを選択すると、既にLLMは適切にシンプルな回答には答えられるにもかかわらず、demonstrationが冗長で限定的になってしまう。加えて、極端に複雑なexampleをサンプリングすると、複雑なquestionに対しては性能が向上するが、シンプルな問題に対する正答率が下がってしまう。<br><br><br><br>続いて、demonstration中で誤ったreasoning chainを利用してしまうと、inference時にパフォーマンスが低下する問題がある。下図に示した通り、誤ったdemonstrationが増加するにつれて、最終的な予測性能が低下する傾向にある。<br><br><br><br>これら2つの課題は、現在のメインストリームな手法（questionを選択し、reasoning chainを生成する手法）に一般的に存在する。<br><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">[Paper Note] Automatic Chain of Thought Prompting in Large Language Models, Zhuosheng Zhang+, ICLR'23, 2022.10</a>
 </strong>
 <br>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">Automatic prompt augmentation and selection with chain-of-thought from labeled data, Shum+, The Hong Kong University of Science and Technology, arXiv'23</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">[Paper Note] Automatic Prompt Augmentation and Selection with Chain-of-Thought from Labeled Data, KaShun Shum+, EMNLP'23, 2023.02</a>
 <br><br>のように推論時に適切なdemonstrationを選択するような取り組みは行われてきているが、test questionに対して推論するために、適切なexamplarsを選択するような方法は計算コストを増大させてしまう。<br><br>これら研究は誤ったrationaleを含むサンプルの利用を最小限に抑えて、その悪影響を防ぐことを目指している。<br><br><br><br>一方で、この研究では、誤ったrationaleを含むサンプルを活用して性能を向上させる。これは、たとえば学生が難解だが回答可能な問題に取り組むことによって、問題解決スキルを向上させる方法に類似している（すなわち、間違えた部分から学ぶ）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234752168-fe1d83a4-8d29-4f6c-8aa1-6bde1706beea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p><p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p><p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 </strong>
 <br>
-<br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
-<br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, ACL'24</a>
+<br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
+<br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">[Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL'24, 2023.02</a>
 <br><br>と比較。<br><br>Iter-CoTが11個のデータセット全てでoutperformした。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234792846-e8fd2f8b-6e26-48fc-9e5d-785bcf2a6b6a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>weak bootstrapingのiterationは4回くらいで頭打ちになった<br><br><img src="https://user-images.githubusercontent.com/12249301/234793570-f57e56e4-7320-4be4-9c93-ee3be01ad389.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、手動でreasoning chainを修正した結果と、contextにannotation情報を残し、最後にsummarizeする方法を比較した結果、後者の方が性能が高かった。このため、contextの情報を利用しsummarizeすることが効果的であることがわかる。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="graph-neural-530" class="title-link">Graph Neural Networks for Text Classification: A Survey, Wang+, Artificial Intelligence Review'24</h3><br><a href="https://arxiv.org/abs/2304.11534v1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="graph-neural-530" class="title-link">[Paper Note] Graph Neural Networks for Text Classification: A Survey, Kunze Wang+, Artificial Intelligence Review'24, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11534v1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2484,7 +2487,7 @@ My Issue
 <a class="button" href="GraphBased.html" target="_blank" rel="noopener noreferrer">#GraphBased</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
-<span class="snippet"><span>GPT Summary</span>- テキスト分類におけるグラフニューラルネットワークの手法を2023年まで調査し、コーパスおよび文書レベルのグラフ構築や学習プロセスを詳述。課題や今後の方向性、データセットや評価指標についても考察し、異なる技術の比較を行い評価指標の利点と欠点を特定。</span>
+<span class="snippet"><span>GPT Summary</span>- テキスト分類におけるグラフニューラルネットワーク（GNN）を含む手法を調査。これにより、構造化されたテキストデータを処理し、グローバル情報を活用できる。2023年までのコーパスとドキュメントレベルのGNN手法を詳細に議論し、グラフ構築と学習プロセスを説明。背景問題や今後の方向性も考察し、データセットや評価指標に関する性能の要約を提供し、異なる手法間の比較を行う。</span>
 </article>
 <article class="paper-entry">
 <h3 id="blip-2-bootstrapping-4464" class="title-link">[Paper Note] BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models, Junnan Li+, ICML'23, 2023.01</h3><br><a href="https://arxiv.org/abs/2301.12597" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2589,7 +2592,7 @@ My Issue
 <a class="button" href="Grokking.html" target="_blank" rel="noopener noreferrer">#Grokking</a>
 <span class="issue_date">Issue Date: 2023-09-30</span>
 <span class="snippet"><span>GPT Summary</span>- グロッキングとは、完璧なトレーニング精度を持つネットワークでも一般化が悪い現象のことである。この現象は、タスクが一般化する解と記憶する解の両方を許容する場合に起こると考えられている。一般化する解は学習が遅く、効率的であり、同じパラメータノルムでより大きなロジットを生成する。一方、記憶回路はトレーニングデータセットが大きくなるにつれて非効率になるが、一般化回路はそうではないと仮説が立てられている。これは、記憶と一般化が同じくらい効率的な臨界データセットサイズが存在することを示唆している。さらに、グロッキングに関して4つの新しい予測が立てられ、それらが確認され、説明が支持される重要な証拠が提供されている。また、グロッキング以外の2つの新しい現象も示されており、それはアングロッキングとセミグロッキングである。アングロッキングは完璧なテスト精度から低いテスト精度に逆戻りする現象であり、セミグロッキングは完璧なテスト精度ではなく部分的なテスト精度への遅れた一般化を示す現象である。</span>
-<span class="snippet"><span>Comment</span><p>Grokkingがいつ、なぜ発生するかを説明する理論を示した研究。<br>理由としては、最初はmemorizationを学習していくのだが、ある時点から一般化回路であるGenに切り替わる。これが切り替わる理由としては、memorizationよりも、genの方がlossが小さくなるから、とのこと。これはより大規模なデータセットで顕著。</p><p>Grokkingが最初に報告された研究は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/524" target="_blank" rel="noopener noreferrer">GROKKING: GENERALIZATION BEYOND OVERFIT- TING ON SMALL ALGORITHMIC DATASETS, Power+, ICLR'21 Workshop</a>
+<span class="snippet"><span>Comment</span><p>Grokkingがいつ、なぜ発生するかを説明する理論を示した研究。<br>理由としては、最初はmemorizationを学習していくのだが、ある時点から一般化回路であるGenに切り替わる。これが切り替わる理由としては、memorizationよりも、genの方がlossが小さくなるから、とのこと。これはより大規模なデータセットで顕著。</p><p>Grokkingが最初に報告された研究は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/524" target="_blank" rel="noopener noreferrer">[Paper Note] Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets, Alethea Power+, ICLR'21 Workshop, 2022.01</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2706,96 +2709,43 @@ My Issue
 <a class="button" href="Semi-Supervised.html" target="_blank" rel="noopener noreferrer">#Semi-Supervised</a>
 <span class="issue_date">Issue Date: 2023-04-30</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、コンピュータビジョンにおける半教師あり学習の問題を解決するために、Semantic Positives via Pseudo-Labels (SemPPL)という新しい手法を提案している。この手法は、ラベル付きとラベルなしのデータを組み合わせて情報豊富な表現を学習することができ、ResNet-$50$を使用してImageNetの$1\%$および$10\%$のラベルでトレーニングする場合、競合する半教師あり学習手法を上回る最高性能を発揮することが示された。SemPPLは、強力な頑健性、分布外および転移性能を示すことができる。</span>
-<span class="snippet"><span>Comment</span><p>後ほど説明を追記する<br><img src="https://github.com/user-attachments/assets/4441dc6c-a7b2-4ec9-9748-b6558a96e1af" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/8a78a40e-f5c4-4742-9e5d-36cd1b8d0e60" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/04ded9aa-c875-4282-9e3b-7ce456a6cc44" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1975" target="_blank" rel="noopener noreferrer">A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20</a>
+<span class="snippet"><span>Comment</span><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1975" target="_blank" rel="noopener noreferrer">A Simple Framework for Contrastive Learning of Visual Representations, Ting Chen+, ICML'20</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="can-gpt-4-559" class="title-link">Can GPT-4 Perform Neural Architecture Search? Zhang+, The University of Sydney, arXiv'23</h3><br><a href="https://arxiv.org/abs/2304.10970" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="graph-collaborative-545" class="title-link">[Paper Note] Graph Collaborative Signals Denoising and Augmentation for Recommendation, Ziwei Fan+, SIGIR'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.03344" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/559" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/545" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
 My Issue
 </a><br>
-<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="NeuralArchitectureSearch.html" target="_blank" rel="noopener noreferrer">#NeuralArchitectureSearch</a>
-<span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>Comment</span><p>ドメイン知識の必要のないプロンプトで、ニューラルモデルのアーキテクチャの提案をGPTにしてもらう研究。accをフィードバックとして与え、良い構造を提案するといったループを繰り返す模様<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235143629-308233a6-51c7-40f7-afc6-e51f425e55d4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>Neural Architecture Search (NAS)においては、ランダムベースラインがよく採用されるらしく、比較した結果ランダムよりよかった<br><br><img src="https://user-images.githubusercontent.com/12249301/235144154-5c94a664-9768-4da5-af76-a137bc3d2b48.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>NAS201と呼ばれるベンチマーク（NNアーキテクチャのcell blockをデザインすることにフォーカス; 探索空間は4つのノードと6つのエッジで構成される密接続のDAGとして表される; ノードはfeature mapを表し、エッジはoperationに対応;利用可能なoperationが5つあるため、可能な検索空間の総数は5の6乗で15,625通りとなる）でも評価した結果、提案手法の性能がよかったとのこと。<br><br><img src="https://user-images.githubusercontent.com/12249301/235144424-a8269562-3f4e-4830-8610-80e3ac9b977e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="self-consistency-improves-558" class="title-link">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</h3><br><a href="https://arxiv.org/abs/2203.11171" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
-<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
-<a class="button" href="Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer">#Test-Time Scaling</a>
-<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>GPT Summary</span>- 自己一貫性という新しいデコーディング戦略を提案し、chain-of-thought promptingの性能を向上。多様な推論経路をサンプリングし、一貫した答えを選択することで、GSM8KやSVAMPなどのベンチマークで顕著な改善を達成。</span>
-<span class="snippet"><span>Comment</span><p>self-consistencyと呼ばれる新たなCoTのデコーディング手法を提案。<br><br>これは、難しいreasoningが必要なタスクでは、複数のreasoningのパスが存在するというintuitionに基づいている。<br><br><br><br>self-consistencyではまず、普通にCoTを行う。そしてgreedyにdecodingする代わりに、以下のようなプロセスを実施する：<br><br>1. 多様なreasoning pathをLLMに生成させ、サンプリングする。<br><br>2. 異なるreasoning pathは異なるfinal answerを生成する（= final answer set）。<br><br>3. そして、最終的なanswerを見つけるために、reasoning pathをmarginalizeすることで、final answerのsetの中で最も一貫性のある回答を見出す。<br><br><br><br>これは、もし異なる考え方によって同じ回答が導き出されるのであれば、その最終的な回答は正しいという経験則に基づいている。<br><br>self-consistencyを実現するためには、複数のreasoning pathを取得した上で、最も多いanswer a_iを選択する（majority vote）。これにはtemperature samplingを用いる（temperatureを0.5やら0.7に設定して、より高い信頼性を保ちつつ、かつ多様なoutputを手に入れる）。<br><br>temperature samplingについては[こちら](
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="CollaborativeFiltering.html" target="_blank" rel="noopener noreferrer">#CollaborativeFiltering</a>
+<a class="button" href="GraphBased.html" target="_blank" rel="noopener noreferrer">#GraphBased</a>
+<a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Short.html" target="_blank" rel="noopener noreferrer">#Short</a>
+<span class="issue_date">Issue Date: 2023-04-26</span>
+<span class="snippet"><span>GPT Summary</span>- 新たなグラフ隣接行列を提案し、ユーザーとアイテムの相互作用を最適化。ユーザー間・アイテム間の相関を組み込み、相互作用のバランスを取ることで、従来の方法よりも顕著な推薦効果を実現。これにより、豊富な相互作用を持つユーザーと乏しいユーザー双方への推薦が改善された。</span>
+<span class="snippet"><span>Comment</span><p>グラフ協調フィルタリングを改善する手法を提案している。既存のグラフ協調フィルタリングはユーザ-アイテム間の隣接行列に基づく二部グラフによって学習されるが、これにはいくつか課題がある:<br>- ノイズが多く、スパースで、バイアスを含み、long tailな性質（ほとんどのユーザがアイテムとほとんどinterctionしていない）を持つがこれらに対処できていない<br>- また、interactionの情報がリッチなアクティブユーザはinteractionに多くのノイズ情報を含むが、うまくモデル化されていない<br>- グラフ協調フィルタリングのmessage passinpによって、user間、item間の情報が事前に学習されるが、message passingの回数が増えるとノイズが多くなる<br><br>これらに対処するために、学習を2つのプロセスに分ける方法を提案している。具体的には、GCNを用いて、まず通常通り隣接行列に基づいてuser, itemノードのembeddingを事前学習する。続いて、隣接行列に対して下記2種類の拡張を行う。<br>- user-item interaction: 事前学習したembeddingを用いて、user-item間のTopKのneighborを見つけ、TopKのみにフィルタリングして隣接行列を再構築する（アクティブユーザーはノイズ除去、インアクティブユーザはインタラクション情報の拡張につながる）<br>- user-user / item-item interaction: 同じく事前学習したembeddingを用いて、それぞれのneighborsを見つけてuser-user, item-item interactionの要素が非ゼロとなるように拡張する（message passingによるノイズを低減しつつ、ユーザ間、アイテム間の情報を取り入れる）<br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b0f099c2-8e9d-4ebc-aa1b-d4af49509a37" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>元ポスト:<br><br>
 
 
-<a href="https://openreview.net/pdf?id=rygGQyrFvH)の論文を参照のこと。" target="_blank" rel="noopener noreferrer">https://openreview.net/pdf?id=rygGQyrFvH)の論文を参照のこと。</a>
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nogawanogawa/status/1651165820956057602?s=46&t=6qC80ox3qHrJixKeNmIOcg"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
 
 
-<br><br>sampling数は増やせば増やすほど性能が向上するが、徐々にサチってくる。サンプリング数を増やすほどコストがかかるので、その辺はコスト感との兼ね合いになると思われる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234754605-6316223f-4290-45d5-bf7c-64675f07d0c3.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234779335-478f2431-67ea-4b24-9c1b-fa1dd6ac6b45.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>Self-consistencyは回答が閉じた集合であるような問題に対して適用可能であり、open-endなquestionでは利用できないことに注意が必要。ただし、open-endでも回答間になんらかの関係性を見出すような指標があれば実現可能とlimitationで言及している。</p></span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="automatic-chain-556" class="title-link">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, ICLR'23</h3><br><a href="https://arxiv.org/pdf/2210.03493.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
-<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
-<span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>Comment</span><p>LLMによるreasoning chainが人間が作成したものよりも優れていることを示しているとのこと <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/532" target="_blank" rel="noopener noreferrer">[Paper Note] Enhancing Chain-of-Thoughts Prompting with Iterative Bootstrapping in  Large Language Models, Jiashuo Sun+, NAACL'24 Findings, 2023.04</a>
- より</p><p>clusteringベースな手法を利用することにより、誤りを含む例が単一のクラスタにまとめられうことを示し、これにより過剰な誤ったデモンストレーションが軽減されることを示した。</p><p>手法の概要。questionを複数のクラスタに分割し、各クラスタから代表的なquestionをサンプリングし、zero-shot CoTでreasoning chainを作成しpromptに組み込む。最終的に回答を得たいquestionに対しても、上記で生成した複数のquestion-reasoningで条件付けした上で、zeroshot-CoTでrationaleを生成する。<br><img src="https://github.com/user-attachments/assets/35213747-9b5f-4d38-a525-1deafe86cd0c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="automatic-prompt-555" class="title-link">Automatic prompt augmentation and selection with chain-of-thought from labeled data, Shum+, The Hong Kong University of Science and Technology, arXiv'23</h3><br><a href="https://arxiv.org/pdf/2302.12822.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
-<span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>Comment</span><p>LLMによるreasoning chainが人間が作成したものよりも優れていることを示しているとのこと <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/532" target="_blank" rel="noopener noreferrer">[Paper Note] Enhancing Chain-of-Thoughts Prompting with Iterative Bootstrapping in  Large Language Models, Jiashuo Sun+, NAACL'24 Findings, 2023.04</a>
- より</p><p>selection phaseで誤ったexampleは直接排除する手法をとっている。そして、強化学習によって、demonstrationのselection modelを訓練している。</p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="scaling-transformer-529" class="title-link">Scaling Transformer to 1M tokens and beyond with RMT, Bulatov+, DeepPavlov, arXiv'23</h3><br><a href="https://arxiv.org/abs/2304.11062" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="scaling-transformer-529" class="title-link">[Paper Note] Scaling Transformer to 1M tokens and beyond with RMT, Aydar Bulatov+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11062" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2809,9 +2759,41 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="LongSequence.html" target="_blank" rel="noopener noreferrer">#LongSequence</a>
+<a class="button" href="memory.html" target="_blank" rel="noopener noreferrer">#memory</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
-<span class="snippet"><span>Comment</span><p>Reccurent Memory Transformer <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/523" target="_blank" rel="noopener noreferrer">Recurrent Memory Transformer, Bulatov+, NeurIPS'22</a>
+<span class="snippet"><span>GPT Summary</span>- 再帰的メモリ拡張を用いて、トランスフォーマーの計算量を線形にスケールし、最大二百万トークンまでのシーケンスを扱う能力を実証。言語モデリングタスクでの実験は、パープレキシティの改善を示し、長期依存の処理能力向上の可能性を強調。</span>
+<span class="snippet"><span>Comment</span><p>Reccurent Memory Transformer <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/523" target="_blank" rel="noopener noreferrer">[Paper Note] Recurrent Memory Transformer, Aydar Bulatov+, NeurIPS'22, 2022.07</a>
  を使って2Mトークン扱えるようにしたよーという話。<br><br>ハリーポッターのトークン数が1.5Mらしいので、そのうち小説一冊書けるかもという世界。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="large-scale-contrastive-527" class="title-link">[Paper Note] Large-scale Contrastive Language-Audio Pretraining with Feature Fusion and Keyword-to-Caption Augmentation, Yusong Wu+, ICASSP'23, 2022.11</h3><br><a href="https://arxiv.org/abs/2211.06687" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/527" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
+<a class="button" href="RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
+<a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
+<a class="button" href="SpeechProcessing.html" target="_blank" rel="noopener noreferrer">#SpeechProcessing</a>
+<a class="button" href="ContrastiveLearning.html" target="_blank" rel="noopener noreferrer">#ContrastiveLearning</a>
+<a class="button" href="Speech.html" target="_blank" rel="noopener noreferrer">#Speech</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="text.html" target="_blank" rel="noopener noreferrer">#text</a>
+<a class="button" href="ICASSP.html" target="_blank" rel="noopener noreferrer">#ICASSP</a>
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>GPT Summary</span>- 音声データと自然言語説明を組み合わせたコントラスト学習による音声表現開発のパイプラインを提案。633,526の音声-テキストペアからなるLAION-Audio-630Kを公開し、音声エンコーダとテキストエンコーダを用いたモデルを構築。特徴融合メカニズムを採用し、可変長の音声入力に対応。テキストから音声検索や音声分類に関する実験により、特にテキスト検索で優れた性能を示し、ゼロショット設定でも最先端の結果を達成。LAION-Audio-630Kとモデルは公開済み。</span>
+<span class="snippet"><span>Comment</span><p>テキストとオーディオをエンコードするMLPエンコーダをそれぞれ用意し、大量のペアをcontrastive learningで事前学習することで、テキストとオーディオ間を同じ空間に写像し、類似度を測れるようにしたモデル。zero-shotでaudio分類などが可能。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="efficient-methods-525" class="title-link">Efficient Methods for Natural Language Processing: A Survey, Treviso+, TACL'23</h3><br><a href="https://arxiv.org/pdf/2209.00099.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2829,8 +2811,8 @@ My Issue
 <a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="TACL.html" target="_blank" rel="noopener noreferrer">#TACL</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
-<span class="snippet"><span>GPT Summary</span>- NLPのパフォーマンス向上にはスケールの拡大が重要だが、リソース消費も増加する。限られたリソースで効率的にNLPを実施する方法を統合し、指針を提供。効率的な手法の開発に向けた研究方向を示唆。</span>
 <span class="snippet"><span>Comment</span><p>パラメータ数でゴリ押すような方法ではなく、"Efficient"に行うための手法をまとめている<br><br><img src="https://user-images.githubusercontent.com/12249301/234287218-2d42766f-5c5c-4cf9-859e-c2b0a5dfd4c3.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2846,9 +2828,12 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="TextToImageGeneration.html" target="_blank" rel="noopener noreferrer">#TextToImageGeneration</a>
 <a class="button" href="SIGGRAPH.html" target="_blank" rel="noopener noreferrer">#SIGGRAPH</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="ImageSynthesis.html" target="_blank" rel="noopener noreferrer">#ImageSynthesis</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
-<span class="snippet"><span>GPT Summary</span>- テキストから画像へのモデルは高品質な画像合成を実現するが、空間的特性の制御が不足している。本研究では、スケッチからの空間マップを用いて事前学習済みモデルを導く新しいアプローチを提案。専用モデルを必要とせず、潜在ガイダンス予測器（LGP）を訓練し、画像を空間マップに一致させる。ピクセルごとの訓練により柔軟性を持ち、スケッチから画像への翻訳タスクにおいて効果的な生成が可能であることを示す。</span>
 <span class="snippet"><span>Comment</span><p>スケッチとpromptを入力することで、スケッチ biasedな画像を生成することができる技術。すごい。<br><br><img src="https://user-images.githubusercontent.com/12249301/205189823-66052368-60a8-4f03-a4b6-37111bd1b361.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3153,7 +3138,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>事前学習済みのニューラルモデルをfinetuningする方法は大きく分けて<br>1. linear layerをヘッドとしてconcatしヘッドのみのパラメータを学習<br>2. 事前学習済みモデル全パラメータを学習<br><br>の2種類がある。<br>前者はin-distributionデータに強いが、out-of-distributionに弱い。後者は逆という互いが互いを補完し合う関係にあった。<br>そこで、まず1を実施し、その後2を実施する手法を提案。in-distribution, out-of-distributionの両方で高い性能を出すことを示した（実験では画像処理系のデータを用いて、モデルとしてはImageNet+CLIPで事前学習済みのViTを用いている)。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/059d9056-bd3c-45f2-abd9-00c9f2a3d630" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="why-do-574" class="title-link">Why do tree-based models still outperform deep learning on typical tabular data?, Grinsztajn+, Soda, Inria Saclay , arXiv'22</h3><br><a href="https://arxiv.org/pdf/2207.08815.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="why-do-574" class="title-link">[Paper Note] Why do tree-based models still outperform deep learning on tabular data?, Léo Grinsztajn+, NeurIPS'22, 2022.07</h3><br><a href="https://arxiv.org/abs/2207.08815" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3167,11 +3152,22 @@ My Issue
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <a class="button" href="TabularData.html" target="_blank" rel="noopener noreferrer">#TabularData</a>
+<a class="button" href="InductiveBias.html" target="_blank" rel="noopener noreferrer">#InductiveBias</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
-<span class="snippet"><span>Comment</span><p>tree basedなモデルがテーブルデータに対してニューラルモデルよりも優れた性能を発揮することを確認し、なぜこのようなことが起きるかいくつかの理由を説明した論文。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235130988-b008ad89-eec6-49d1-829d-1b23566ed677.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>NNよりもtree basedなモデルがうまくいく理由として、モデルの帰納的バイアスがテーブルデータに適していることを調査している。考察としては<br><br><br><br>1. NNはスムーズなターゲットを学習する能力が高いが、表形式のような不規則なデータを学習するのに適していない<br><br>- Random Forestでは、x軸においてirregularなパターンも学習できているが、NNはできていない。<br><br><img src="https://user-images.githubusercontent.com/12249301/235139592-160cf5fe-dddb-4637-a300-b18a0935f253.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>2. uninformativeなfeaatureがMLP-likeなNNに悪影響を与える<br><br>- Tabular dataは一般にuninformativeな情報を多く含んでおり、実際MLPにuninformativeなfeatureを組み込んだ場合tree-basedな手法とのgapが増加した<br><br><img src="https://user-images.githubusercontent.com/12249301/235140356-553c2d6d-63bf-485e-bcb4-72924535a2a9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>3. データはrotationに対して不変ではないため、学習手順もそうあるべき（この辺がよくわからなかった）<br><br>- ResNetはRotationを加えても性能が変わらなかった（rotation invariantな構造を持っている）<br><br><img src="https://user-images.githubusercontent.com/12249301/235141633-910e64ff-83d9-417b-b778-6ab3ec7419f2.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p></span><br><br>
+<span class="snippet"><span>GPT Summary</span>- 深層学習はテキストと画像で進展を見せているが、表形式データでの優位性は不明。標準と新規の深層学習法を木ベースのモデルと比較し、45のデータセットでベンチマークを実施。結果は、中規模データにおいて木ベースモデルが依然として優れた性能を示すことを示す。木ベースモデルとニューラルネットワークのバイアスの違いを実証的に調査し、表形式データ特化のNN開発に向けた課題を提示。標準的ベンチマーク用の生データを提供し、各学習器のハイパーパラメータ探索に20,000時間の計算資源を投入した。</span>
+<span class="snippet"><span>Comment</span><p>tree basedなモデルがテーブルデータに対してニューラルモデルよりも優れた性能を発揮することを確認し、なぜこのようなことが起きるかいくつかの理由を説明した論文。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235130988-b008ad89-eec6-49d1-829d-1b23566ed677.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>NNよりもtree basedなモデルがうまくいく理由として、モデルの帰納的バイアスがテーブルデータに適していることを調査している。考察としては<br><br><br><br>1. NNはスムーズなターゲットを学習する能力が高いが、表形式のような不規則なデータを学習するのに適していない<br><br>- Random Forestでは、x軸においてirregularなパターンも学習できているが、NNはできていない。<br><br><img src="https://user-images.githubusercontent.com/12249301/235139592-160cf5fe-dddb-4637-a300-b18a0935f253.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>2. uninformativeなfeaatureがMLP-likeなNNに悪影響を与える<br><br>- Tabular dataは一般にuninformativeな情報を多く含んでおり、実際MLPにuninformativeなfeatureを組み込んだ場合tree-basedな手法とのgapが増加した<br><br><img src="https://user-images.githubusercontent.com/12249301/235140356-553c2d6d-63bf-485e-bcb4-72924535a2a9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>3. データはrotationに対して不変ではないため、学習手順もそうあるべき（この辺がよくわからなかった）<br><br>- ResNetはRotationを加えても性能が変わらなかった（rotation invariantな構造を持っている）<br><br><img src="https://user-images.githubusercontent.com/12249301/235141633-910e64ff-83d9-417b-b778-6ab3ec7419f2.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=Fp7__phQszn" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Fp7__phQszn</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="large-language-553" class="title-link">Large Language Models are Zero-Shot Reasoners, Kojima+, University of Tokyo, NeurIPS'22</h3><br><a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="large-language-553" class="title-link">[Paper Note] Large Language Models are Zero-Shot Reasoners, Takeshi Kojima+, arXiv'22, 2022.05</h3><br><a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3184,41 +3180,26 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Zero-Few-ManyShotPrompting.html" target="_blank" rel="noopener noreferrer">#Zero/Few/ManyShotPrompting</a>
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
 <a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）は自然言語処理において少数ショット学習の能力が高く、CoT promptingにより複雑な多段階推論を効果的に引き出す。特に「Let's think step by step」の追加で、ゼロショット推論能力が向上し、様々な論理推論タスクで手作りの例を使わずに性能を大幅に向上させた。例えば、InstructGPTモデルでのMultiArithの精度が17.7％から78.7％へ、GSM8Kが10.4％から40.7％と劇的な改善が見られた。この研究はLLMsの潜在的なゼロショット能力を示し、ファインチューニングや少数ショットの前にその知識を探求する重要性が強調されている。</span>
 <span class="snippet"><span>Comment</span><p>Zero-Shot CoT (Let's think step-by-step.)論文</p><p><img src="https://user-images.githubusercontent.com/12249301/234746367-2cd80e23-8dcb-4244-b56c-e28120629027.png"" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>Zero-Shot-CoTは2つのステップで構成される：<br><br>- STEP1: Reasoning Extraction<br><br>  - 元のquestionをxとし、zero-shot-CoTのtrigger sentenceをtとした時に、テンプレート "Q: [X]. A. [T]" を用いてprompt　x'を作成<br><br>  - このprompt x'によって得られる生成テキストzはreasoningのrationaleとなっている。<br><br>- STEP2: Answer Extraction<br><br>  - STEP1で得られたx'とzを用いて、テンプレート "[X'] [Z] [A]" を用いてpromptを作成し、quiestionに対する回答を得る<br><br>  - このとき、Aは回答を抽出するためのtrigger sentenceである。<br><br>  - Aはタスクに応じて変更するのが効果的であり、たとえば、multi-choice QAでは "Therefore, among A through E, the answer is" といったトリガーを用いたり、数学の問題では "Therefore, the answer (arabic numerals) is" といったトリガーを用いる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236404426-ed936908-3771-4eef-9871-c6ae04c896bf.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong># 実験結果<br><br>表中の性能指標の左側はタスクごとにAnswer Triggerをカスタマイズしたもので、右側はシンプルに"The answer is"をAnswer Triggerとした場合。Zero-shot vs. Zero-shot-CoTでは、Zero-Shot-CoTが多くのb現地マークにおいて高い性能を示している。ただし、commonsense reasoningではperformance gainを得られなかった。これは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<strong># 実験結果<br><br>表中の性能指標の左側はタスクごとにAnswer Triggerをカスタマイズしたもので、右側はシンプルに"The answer is"をAnswer Triggerとした場合。Zero-shot vs. Zero-shot-CoTでは、Zero-Shot-CoTが多くのb現地マークにおいて高い性能を示している。ただし、commonsense reasoningではperformance gainを得られなかった。これは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 </strong>
 <br>
  で報告されている通り、commonsense reasoningタスクでは、Few-Shot CoTでもLambda135Bで性能が向上せず、Palm540Bで性能が向上したように、モデルのparameter数が足りていない可能性がある（本実験では17種類のモデルを用いているが、特に注釈がなければtext-davinci-002を利用した結果）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236405336-fe5e1f7f-9d2f-457f-9e25-98afe4ae0ec1.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong>## 他ベースラインとの比較<br><br>他のベースラインとarithmetic reasoning benchmarkで性能比較した結果。Few-Shot-CoTには勝てていないが、standard Few-shot Promptingtを大幅に上回っている。<br><br><img src="https://user-images.githubusercontent.com/12249301/236406621-7862823f-e019-4551-be96-1c97265ca5ba.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## zero-shot reasoningにおけるモデルサイズの影響<br><br>さまざまな言語モデルに対して、zero-shotとzero-shot-CoTを実施した場合の性能比較。<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<strong>## 他ベースラインとの比較<br><br>他のベースラインとarithmetic reasoning benchmarkで性能比較した結果。Few-Shot-CoTには勝てていないが、standard Few-shot Promptingtを大幅に上回っている。<br><br><img src="https://user-images.githubusercontent.com/12249301/236406621-7862823f-e019-4551-be96-1c97265ca5ba.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## zero-shot reasoningにおけるモデルサイズの影響<br><br>さまざまな言語モデルに対して、zero-shotとzero-shot-CoTを実施した場合の性能比較。<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 </strong>
 <br>
  と同様にモデルサイズが小さいとZero-shot-CoTによるgainは得られないが、モデルサイズが大きくなると一気にgainが大きくなる。<br><br><img src="https://user-images.githubusercontent.com/12249301/236407727-f29e6f67-8ca1-4623-8341-73bbf2029e67.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Zero-shot CoTにおけるpromptの選択による影響<br><br>input promptに対するロバスト性を確認した。instructiveカテゴリ（すなわち、CoTを促すトリガーであれば）性能が改善している。特に、どのようなsentenceのトリガーにするかで性能が大きくかわっている。今回の実験では、"Let's think step by step"が最も高い性能を占め最多。<br><br><img src="https://user-images.githubusercontent.com/12249301/236408268-8dbc32f3-76c7-4e41-aa1b-a19008aa680c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Few-shot CoTのprompt選択における影響<br><br>CommonsenseQAのexampleを用いて、AQUA-RAT, MultiArithをFew-shot CoTで解いた場合の性能。どちらのケースもドメインは異なるが、前者は回答のフォーマットは共通である。異なるドメインでも、answer format（multiple choice）の場合、ドメインが異なるにもかかわらず、zero-shotと比較して性能が大幅に向上した。一方、answer formatが異なる場合はperformance gainが小さい。このことから、LLMはtask自体よりも、exampleにおけるrepeated formatを活用していることを示唆している。また、CommonSennseをExamplarとして用いたFew-Shot-CoTでは、どちらのデータセットでもZero-Shot-CoTよりも性能が劣化している。つまり、Few-Shot-CoTでは、タスク特有のサンプルエンジニアリングが必要であることがわかる（一方、Zero-shot CoTではそのようなエンジニアリングは必要ない）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236408978-b292ea0f-0a17-42fc-8e3c-6eee35780ca4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="chain-of-551" class="title-link">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</h3><br><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="Zero-Few-ManyShotPrompting.html" target="_blank" rel="noopener noreferrer">#Zero/Few/ManyShotPrompting</a>
-<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
-<a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
-<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
-<span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>Comment</span><p>Chain-of-Thoughtを提案した論文。CoTをする上でパラメータ数が100B未満のモデルではあまり効果が発揮されないということは念頭に置いた方が良さそう。<br><br><img src="https://user-images.githubusercontent.com/12249301/234739470-be1c9299-0dd6-4483-901a-0bf855e73f0f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>先行研究では、reasoningが必要なタスクの性能が低い問題をintermediate stepを明示的に作成し、pre-trainedモデルをfinetuningすることで解決していた。しかしこの方法では、finetuning用の高品質なrationaleが記述された大規模データを準備するのに多大なコストがかかるという問題があった。<br><br>このため、few-shot promptingによってこの問題を解決することが考えられるが、reasoning能力が必要なタスクでは性能が悪いという問題あがった。そこで、両者の強みを組み合わせた手法として、chain-of-thought promptingは提案された。</p><p># CoTによる実験結果<br><br>以下のベンチマークを利用<br><br>- math word problem: GSM8K, SVAMP, ASDiv, AQuA, MAWPS<br><br>- commonsense reasoning: CSQA, StrategyQA, Big-bench Effort (Date, Sports), SayCan<br><br>- Symbolic Reasoning: Last Letter concatenation, Coin Flip<br><br>  - Last Letter concatnation: 名前の単語のlast wordをconcatするタスク（"Amy Brown" -> "yn"）<br><br>  - Coin Flip: コインをひっくり返す、 あるいはひっくり返さない動作の記述の後に、コインが表向きであるかどうかをモデルに回答するよう求めるタスク<br><br> <br><br>## math word problem benchmark<br><br>- モデルのサイズが大きくなるにつれ性能が大きく向上（emergent ability）することがあることがわかる<br><br>  - 言い換えるとCoTは<100Bのモデルではパフォーマンスに対してインパクトを与えない<br><br>  - モデルサイズが小さいと、誤ったCoTを生成してしまうため<br><br>- 複雑な問題になればなるほど、CoTによる恩恵が大きい<br><br>  - ベースラインの性能が最も低かったGSM8Kでは、パフォーマンスの2倍向上しており、1 stepのreasoningで解決できるSingleOpやMAWPSでは、性能の向上幅が小さい<br><br>- Task specificなモデルをfinetuningした以前のSoTAと比較してcomparable, あるいはoutperformしている<br><br>- <img src="https://user-images.githubusercontent.com/12249301/236394200-826ba167-8ec7-4abb-ba4d-fe44bf247b41.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>## Ablation Study<br><br>CoTではなく、他のタイプのpromptingでも同じような効果が得られるのではないか？という疑問に回答するために、3つのpromptingを実施し、CoTと性能比較した：<br><br>- Equation Only: 回答するまえに数式を記載するようなprompt<br><br>  - promptの中に数式が書かれているから性能改善されているのでは？という疑問に対する検証<br><br>  - => GSM8Kによる結果を見ると、equation onlyでは性能が低かった。これは、これは数式だけでreasoning stepsを表現できないことに起因している<br><br>- Variable compute only: dotのsequence (...) のみのprompt<br><br>  - CoTは難しい問題に対してより多くの計算（intermediate token）をすることができているからでは？という疑問に対する検証<br><br>  - variable computationとCoTの影響を分離するために、dotのsequence (...) のみでpromptingする方法を検証<br><br>  - => 結果はbaselineと性能変わらず。このことから、variableの計算自体が性能向上に寄与しているわけではないことがわかる。<br><br>- Chain of Thought after answer: 回答の後にCoTを出力するようなprompting<br><br>  - 単にpretrainingの際のrelevantな知識にアクセスしやすくなっているだけなのでは？という疑問を検証<br><br>  - => baselineと性能は変わらず、単に知識を活性化させるだけでは性能が向上しないことがわかる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236396383-877a26ae-20c2-42a4-a023-1eb66abf8320.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## CoTのロバスト性<br><br>人間のAnnotatorにCoTを作成させ、それらを利用したCoTpromptingとexamplarベースな手法によって性能がどれだけ変わるかを検証。standard promptingを全ての場合で上回る性能を獲得した。このことから、linguisticなstyleにCoTは影響を受けていないことがわかる。<br><br><img src="https://user-images.githubusercontent.com/12249301/236397864-073dd88f-95c0-47f0-af3c-ed7288ca967d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># commonsense reasoning<br><br>全てのデータセットにおいて、CoTがstandard promptingをoutperformした。<br><br><img src="https://user-images.githubusercontent.com/12249301/236398447-6c58a3f3-7461-4109-9a96-8f8092831dd1.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Symbolic Reasoning<br><br>in-domain test setとout-of-domain test setの2種類を用意した。前者は必要なreasoning stepがfew-shot examplarと同一のもの、後者は必要なreasoning stepがfew-shot examplarよりも多いものである。<br><br>CoTがStandard proimptingを上回っている。特に、standard promptingではOOV test setではモデルをスケールさせても性能が向上しなかったのに対し、CoTではより大きなgainを得ている。このことから、CoTにはreasoning stepのlengthに対しても汎化能力があることがわかる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236399389-30e62218-3e59-4912-983c-818de457fa04.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="unifiedskg-unifying-501" class="title-link">UNIFIEDSKG: Unifying and Multi-Tasking Structured Knowledge Grounding with Text-to-Text Language Models, Xie+, EMNLP'22</h3><br><a href="https://arxiv.org/pdf/2201.05966.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="unifiedskg-unifying-501" class="title-link">[Paper Note] UnifiedSKG: Unifying and Multi-Tasking Structured Knowledge Grounding with Text-to-Text Language Models, Tianbao Xie+, EMNLP'22, 2022.01</h3><br><a href="https://arxiv.org/abs/2201.05966" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3231,10 +3212,42 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="MultitaskLearning.html" target="_blank" rel="noopener noreferrer">#MultitaskLearning</a>
+<a class="button" href="PEFT(Adaptor-LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="Encoder-Decoder.html" target="_blank" rel="noopener noreferrer">#Encoder-Decoder</a>
+<a class="button" href="Grounding.html" target="_blank" rel="noopener noreferrer">#Grounding</a>
 <span class="issue_date">Issue Date: 2022-12-05</span>
+<span class="snippet"><span>GPT Summary</span>- UnifiedSKGフレームワークを提案し、21の構造化知識のグラウンディング（SKG）タスクをテキスト対テキスト形式に統合。これにより、体系的なSKG研究を促進し、異なるサイズのT5で最先端の性能を達成。マルチタスクチューニングが性能向上に寄与し、SKGのゼロショットおよび少数ショット学習における課題を示した。UnifiedSKGは他のタスクへの拡張も可能で、オープンソースとして公開されている。</span>
 </article>
 <article class="paper-entry">
-<h3 id="using-neural-475" class="title-link">Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM'22</h3><br><a href="https://learninganalytics.upenn.edu/ryanbaker/EDM22_paper_14.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="revisiting-pretraining-500" class="title-link">[Paper Note] Revisiting Pretraining Objectives for Tabular Deep Learning, Ivan Rubachev+, arXiv'22, 2022.07</h3><br><a href="https://arxiv.org/abs/2207.03208" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/500" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="TabularData.html" target="_blank" rel="noopener noreferrer">#TabularData</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2022-12-01</span>
+<span class="snippet"><span>GPT Summary</span>- 深層学習モデルは、GBDTと競争できるものの、事前学習手法の有効性や選択基準は明確でない。本研究では、表形式データに対する深層学習モデルの事前学習のベストプラクティスを特定し、ターゲットラベルを活用することが性能向上に寄与することを示した。適切な事前学習により、深層学習モデルはGBDTをしばしば上回る。</span>
+<span class="snippet"><span>Comment</span><p>Tabular Dataを利用した場合にKaggleなどでDeepなモデルがGBDT等に勝てないことが知られているが、GBDT等とcomparable になる性能になるようなpre-trainingを提案したよ、的な内容っぽい</p><p>ICLR 2023 OpenReview: 
+
+
+<a href="https://openreview.net/forum?id=kjPLodRa0n" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=kjPLodRa0n</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="using-neural-475" class="title-link">[Paper Note] Using Neural Network-Based Knowledge Tracing for a Learning System with Unreliable Skill Tags, Karumbaiah+, （w_ Ryan Baker）, EDM'22</h3><br><a href="https://learninganalytics.upenn.edu/ryanbaker/EDM22_paper_14.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3248,6 +3261,8 @@ My Issue
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
 <span class="issue_date">Issue Date: 2022-08-26</span>
 <span class="snippet"><span>Comment</span><p>超重要論文。しっかり読むべき</p><p># 一言で言うと<br><br>KTを利用することを最初から念頭に置いていなかったシステムでは、問題に対して事後的にスキルをマッピングする作業が生じてしまい、これは非常に困難なことが多い。論文中で使用したアメリカの商用の数学のblended learningのシステムのデータでは、途中で企業が買収された経緯もあり、古いコンテンツと新しいコンテンツの間でスキルタグのマッピングの間で、矛盾や一貫性がないものができあがってしまった（複数の異なるチームがコンテンツの提供やスキルのタグ付けを行なった結果）。このような例はレアケースかもしれないが、問題とスキルタグが異なるチームによって開発されるということは珍しいことではないし、現代のオンライン学習システムの多くは、さまざまな教科書のデータを統合し、長年にわたってコンテンツ作成チームのメンバーを変更し、複数の州の基準や内部コンテンツスキーマに従ってコンテンツにタグをづけをしているので、少なからずこういった問題（i.e. 一貫性がなく、矛盾をかかえたitem-skill mapping）を抱えている。<br><br><br><br>こうした中で、NNを用いたモデルを用いることで、unreliableなKCモデルを用いるくらいならば、KCモデルを用いない方が正答率予測が高い精度で実施できることを示した。これは少なくとも、生徒の問題に対する将来のパフォーマンスを予測する問題に関して言えば、既存のアプリケーションにおいて、KCモデルを構築するステップを回避できる可能性を示唆している。<br><br><br><br># モチベーション<br><br>Cognitive Tutorのようなシステムは、もともとKTを利用するために設計されているシステムだったが、多くのreal-worldの学習システムはアダプティブラーニングやKTを念頭に置いて作られたものではない。そういったシステムでアダプティブな機能を追加するといった事例が増えてきている。こういったシステムが、もともとKTを実施することを念頭するために作られたシステムとの違いとして、問題とスキルのマッピング方法にある。<br><br>最初から KT を使用するように設計されたシステムは、最初にどのスキルを含めるかを選択し、次にそれらのスキルに合わせたアイテムを開発する。 一方、KTを使用するために改良をする場合、最初にアイテムが作成され、次にアイテムにスキルのラベルが付けられる。<br><br>既存のアイテムにスキルのラベルを付けるのは、スキルの新しいアイテムを作成するよりもはるかに困難である。 多くの場合、アイテムは複数の著者によって時間をかけて開発されたものであるか、異なる教科書などの異なる元のソースからのものである。この異種のコンテンツ (場合によっては数万のアイテム) を一連のスキルにマッピングすることは、非常に困難な作業になる可能性がある。<br><br>多くの場合、アイテムは政府のカリキュラム基準の観点からタグ付けされているが、これらの基準は一般的に、KTモデルで使用されるスキルよりも非常に粗いものとなっている。<br><br>したがって、最初からKTを利用することを念頭に置かれていないシステムでKTを利用することには課題がある。<br><br>この論文では、NNベースなKTモデルが、この課題の部分的な解決策になることを示す。<br><br>このために、商用の数学のblended learningシステムでのケーススタディを実施した。<br><br>中学生が 2 年間システムを使用して収集したデータを使用して、KT モデルの性能を次の3 つのシナリオで比較し：<br><br>- 1) システムが提供する (おそらくunreliableな)スキルタグを利用した場合<br><br>- 2) 州の基準に基づくタグを利用した場合<br><br>- 3) コンテンツとスキルタグのマッピングを一切入力しない場合<br><br>DKVMNでの実験の結果、1)が最も悪い性能を示し、3)が最も良い問題の正誤予測の性能を示した。<br><br>これは、もともとKT モデルで動作するように設計されていなかった現実世界の学習システムでKCモデリングを回避する可能性を示唆している。特に、目的が将来のアイテムに対する学習者の成績を予測することだけである場合はこれに該当する。<br><br><br><br># 実験結果<br><br><img src="https://user-images.githubusercontent.com/12249301/187153287-b90e96a5-8089-4243-ae91-6997bfc55aaa.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>スキルの情報を用いず、ExerciseIDをそのままinputする方法が、最も高いAUCを獲得している。<br><br><br><br># つまり<br><br>- きちんと一貫性があり矛盾のないItem-KCマッピングを用いないとモデルがきちんと学習できない<br><br>    - 特に元々KTを適用することを念頭に置いていないシステムでは困難な作業となる可能性が高い</p><p># KTの歴史<br><br>- 30年ほど研究されている（1995年のCorbett and AndersonらのBKTあたりから）<br><br>- 最初はBKTが広く採用された<br><br>- その後、最近ではlogistic regressionに基づくモデルが提案されるようになってきたが、実際のシステムで利用されることはまだ稀<br><br>- Elo や Temporal IRT などのIRTに関連するアルゴリズムも、最近文献でより広く見られるようになり、いくつかの学習システムで大規模に使用されている<br><br>    - Elo およびTemporal IRT は KCモデルなしで使用できるが、通常、いくつかのスキルごとに個別の Elo モデルが利用される。<br><br>- NNベースなモデルは過去5年で活発に研究され、将来のパフォーマンスを予測する性能は飛躍的に向上した<br><br>    - ただし、予測不可能な動作（reconstruction problemや習熟度のfluctuation）や、mastery learningや生徒にスキルをレポーティングするためにこのタイプのモデルを用いるという課題のために、実際のシステムで運用するよりも、論文を執筆する方が一般的になった。<br><br>    - これに関するNNモデルの問題の1 つは、特定の問題の正答率を予測するが、それを人間が解釈できるスキルの習熟度にマッピングしないことにある。</p></span><br><br>
 </article>
@@ -3272,7 +3287,6 @@ My Issue
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2022-08-01</span>
 <span class="snippet"><span>GPT Summary</span>- コンテンツベースの協調フィルタリング（CCF）において、PLMを用いたエンドツーエンドのトレーニングはリソースを消費するため、GRAM（勾配蓄積手法）を提案。Single-step GRAMはアイテムエンコーディングの勾配を集約し、Multi-step GRAMは勾配更新の遅延を増加させてメモリを削減。これにより、Knowledge TracingとNews Recommendationのタスクでトレーニング効率を最大146倍改善。</span>
-<span class="snippet"><span>Comment</span><p>RiiiDがNAACL'22に論文通してた</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="empirical-evaluation-453" class="title-link">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22</h3><br><a href="https://arxiv.org/pdf/2112.15072.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -3290,6 +3304,7 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2022-04-28</span>
 <span class="snippet"><span>Comment</span><p>DKTの説明が秀逸で、元論文では書かれていない分かりづらいところまできちんと説明してくれている。<br><br>（inputは(スキルタグ, 正誤)のtupleで、outputはスキルタグ次元数のベクトルyで、各次元が対応するスキルのmasteryを表しており、モデルのtrainingはnext attemptに対応するスキルのprobabilityのみをyから抽出しBinary Cross Entropyを計算する点、など）<br><br><img src="https://user-images.githubusercontent.com/12249301/165704985-37cb5c85-d19d-4c39-b30b-db6f565a7a85.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>入力や出力の仕方によって性能がどの程度変化しているかを検証しているのがおもしろい。<br><br>- Input: one-hot encoding (one hot vectorをinputする) vs. embedding layer (embeddingをinputする)<br><br>- Output: output per skill (スキルタグの次元数を持つベクトルyをoutputする) vs. skills-to-scalar output （skill summary layer + Scalar; 次のattemptに対する正答率のみをscalarでoutputする）<br><br><br><br>下図ではDKTの例が書かれているが、DKVMNやSAKTでもこれらの違いは適用可能。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/165728064-e953278b-c45b-4447-87c1-8913429436e6.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>output per skillで出力をすれば、Knowledge TrackingはDKTと同様どのようなモデルでも可能なのではないか。<br><br><br><br>◆Inputについて<br><br>基本的には大きな差はないが、one-hot encodingを利用した場合、DKVMN-PaperとSAKTがembeddingと比較して3.3~4.6%程度AUCが悪くなることがあった。<br><br>最高の性能を模索したい時はembedding layerを利用し、one-hot encodingはハイパーパラメータの選択をミスった場合でもロバストな結果（あまり性能が悪化しなかった）だったので、より安全な選択肢と言える。<br><br><br><br>◆Outputについて<br><br>全体として、DKT（およびDKTの亜種）については、output per skillの方が良かった。<br><br>DKVMNはこれとは逆で、skills-to-scalar outputの方が性能が良かった。<br><br>SAKTではoutput per skillの方がworst scoreがskills-to-scalar outputよりも高いため、よりrobustだと判断できる。</p><p>結論：<br><br>1. Deep Learning basedなモデルはnon-deep learning basedなモデルやシンプルなベースラインよりも一般的に予測性能が良い<br><br>2. LSTMを用いたDKT(LSTM-DKT), LSTM-DKTに次のexerciseのスキルタグ情報をconcatして予測をするDKT（LSTM-DKT-S）, DKVMNの性能がDeep Learning Basedな手法では性能が良かった。が、Deep Learningベースドなモデルの間での性能の差は僅かだった（SAKTとも比較している）。<br><br>3. one-hot encoding vs. embedding layer, output per skill vs. skills-to-scalar output については、最大で4.6%ほどAUCの変化があり（SAKTにone-hot encodingを入力した場合embeddingを利用しない場合よりも4.6%ほど性能が低下している）、パフォーマンスに大きな違いをもたらした</p><p>論文中のDKVMN, DKVMN-Paperの違いは、著者が実装を公開しているMXNetの実装だと論文（Paper）に書かれているアーキテクチャと実装が違うのでDKVMNとして記述している。DKVMN-Paperは論文通りに実装したものを指している。</p><p>この研究では、KTする際に全てのDeep Learning basedなモデル（DKT, DKVMN, SAKT）において、入力の系列をx_tを(s_t, c_t)で表現し検証している。s_tはスキルタグで、c_tは正解したか否か。<br><br>outputも output-per-skill の場合は、スキルタグ次元のベクトルとなっている。</p></span><br><br>
 </article>
@@ -3416,7 +3431,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>従来はdiscretizeをするか、mlpなどでembeddingを作成するだけだった数値のinputをうまく埋め込みに変換する手法を提案し性能改善<br><br>数値情報を別の空間に写像し自動的なdiscretizationを実施する機構と、各数値情報のフィールドごとのglobalな情報を保持するmeta-embeddingをtrainable parameterとして学習し、両者を交互作用（aggregation; max-poolingとか）することで数値embeddingを取得する。<br><br><img src="https://github.com/user-attachments/assets/1f626dd5-2452-4b50-a14c-6c24fa022435" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/12fd6476-241a-4d13-975d-f6c1c762c497" /" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="grokking-generalization-524" class="title-link">GROKKING: GENERALIZATION BEYOND OVERFIT- TING ON SMALL ALGORITHMIC DATASETS, Power+, ICLR'21 Workshop</h3><br><a href="https://arxiv.org/pdf/2201.02177.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="grokking-generalization-524" class="title-link">[Paper Note] Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets, Alethea Power+, ICLR'21 Workshop, 2022.01</h3><br><a href="https://arxiv.org/abs/2201.02177" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3430,7 +3445,10 @@ My Issue
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="Grokking.html" target="_blank" rel="noopener noreferrer">#Grokking</a>
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>GPT Summary</span>- 小規模データセットにおけるニューラルネットワークの一般化を探求。データ効率、記憶、一般化、学習速度に関する問題を分析し、学習過程の「グロッキング」を通じて一般化性能の改善を示す。特に、小さなデータセットではより多くの最適化が必要であることが明らかにされ、過剰パラメータ化されたネットワークの一般化メカニズムを理解するための重要な知見を提供。</span>
 <span class="snippet"><span>Comment</span><p>学習後すぐに学習データをmemorizeして、汎化能力が無くなったと思いきや、10^3ステップ後に突然汎化するという現象（Grokking）を報告<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234430324-a23b7210-c5ac-4b29-8640-ed9458ae2e7a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>学習データが小さければ小さいほど汎化能力を獲得するのに時間がかかる模様</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3476,10 +3494,11 @@ My Issue
 </a><br>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
 <span class="issue_date">Issue Date: 2022-08-31</span>
 </article>
 <article class="paper-entry">
-<h3 id="the-power-473" class="title-link">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, arXiv'21, 2021.04</h3><br><a href="https://arxiv.org/abs/2104.08691" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="the-power-473" class="title-link">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, EMNLP'21, 2021.04</h3><br><a href="https://arxiv.org/abs/2104.08691" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3494,8 +3513,11 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="PEFT(Adaptor-LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="SoftPrompt.html" target="_blank" rel="noopener noreferrer">#SoftPrompt</a>
 <span class="issue_date">Issue Date: 2022-08-19</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、凍結された言語モデルを特定のタスクに適応させるための「ソフトプロンプト」を学習するプロンプトチューニング手法を提案。逆伝播を通じて学習されるソフトプロンプトは、GPT-3の少数ショット学習を上回る性能を示し、モデルサイズが大きくなるほど競争力が増すことが確認された。特に、数十億のパラメータを持つモデルにおいて、全ての重みを調整するモデルチューニングに匹敵する性能を発揮。これにより、1つの凍結モデルを複数のタスクに再利用できる可能性が示唆され、ドメイン転送に対するロバスト性も向上することが明らかとなった。</span>
 <span class="snippet"><span>Comment</span><p>日本語解説: 
@@ -3524,6 +3546,7 @@ My Issue
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <a class="button" href="INLG.html" target="_blank" rel="noopener noreferrer">#INLG</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-08-18</span>
 <span class="snippet"><span>GPT Summary</span>- バイオメディカル分野におけるD2T生成の研究を行い、医薬品のパッケージリーフレットを用いた実世界のデータセットに対してファインチューニングされたトランスフォーマーを適用。現実的な複数文のテキスト生成が可能であることを示す一方で、重要な制限も存在。新たにバイオメディカル分野のD2T生成モデルのベンチマーク用データセット（BioLeaflets）を公開。</span>
 <span class="snippet"><span>Comment</span><p>biomedical domainの新たなdata2textデータセットを提供。事前学習済みのBART, T5等をfinetuningすることで高精度にテキストが生成できることを示した。</p></span><br><br>
@@ -3544,6 +3567,8 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="SIGKDD.html" target="_blank" rel="noopener noreferrer">#SIGKDD</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
 <span class="issue_date">Issue Date: 2022-05-02</span>
 <span class="snippet"><span>Comment</span><p>DKTでは問題を間違えた際に、対応するconceptのproficiencyを下げてしまうけど、実際は間違えても何らかのlearning gainは得ているはずだから、おかしくね？というところに端を発した研究。<br><br>student performance predictionの性能よりも、Knowledge Tracingのクオリティーにもっと焦点を当てようよという主張をした論文。<br><br>Forgettingもモデル化しているところが特徴。<br><br>現在は引用数2だけど、この課題感は非常に重要で、重要論文だと思う。</p><p># モチベ<br><br>下図はDKTによる習熟度の変化を表しており赤枠で囲まれている部分は、問題に不正解した際に習熟度が下がることを示している。しかし実際な問題に間違っていたとしても何らかのLearning Gainを得ているはずであり、この挙動はcognitive theoryに反している。実際に先行研究では、エラーは学習において自然な要素であり、学習者はエラーから学び、好ましいエラーによって学習を促進できることを指摘している。<br><br><img src="https://user-images.githubusercontent.com/12249301/168034969-a72ba6f9-55b9-44c9-a97d-dbcb4b51f45d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>これまでのknowledge tracing研究が、student performance predictionの性能ばかりにフォーカスされているのに対し、本研究では、Knowledge Tracingの解釈性とstudent performance predictionのaccuracyの両方にフォーカスしている。<br><br><br><br># Problem Definition<br><br>本研究では、1学習の基本要素（learning cell）は exercise-answertime-correctness の3つ組によって表現され、learning cell同士は、interval timeによって隔たれていると考える。answertimeを導入することで、学習者のlearning processを表現する能力を高め、interval timeはLearning Gainを算出する際に役立てる（一般的にinterval timeが短い方がより多くのknowledgeを吸収する傾向にあるなど、interval timeはlearning gainの多様性を捉えるのに役立つ）。<br><br>つまり、学習の系列は x = {(e1, at1, a1),it1, (e2, at2, a2),it2, ...,(et, att, at ),itt } と表せる。<br><br>KTタスクは、t+1時点での生徒のknowledge stateと、生徒のパフォーマンスを予測する問題として表せる。<br><br><br><br># モデル<br><br>学習者のLearning Processをきちんとモデル化することに念頭をおいている。具体的には、①学習者は学習を通じて常に何らかのLearning Gain（ある2点間でのパフォーマンスの差; 本研究では前回の学習と今回の学習の両方のlearning cell + interval time + 前ステップでのknowledge stateからLGを推定）を得ており、②忘却曲線にならい学習者は時間がたつと学習した内容を忘却していき（anwertimeとinterval timeが関係する）、③現在のknowledge stateから正誤予測が実施される。<br><br>モデルの全体像が下図であり、①がLearning Module, ②がForgetting Module, ③がPredicting Moduleに相当している。<br><br><img src="https://user-images.githubusercontent.com/12249301/168040927-e37feae7-5525-44fa-97f5-9219b1981aea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Embedding<br><br>本研究ではTime EmbeddingとLearning Embedding, Knowledge Embeddingの三種類のEmbeddingを扱う。<br><br>### Time Embedding<br><br>answer timeとinterval timeをembeddingで表現する。両者はスケールが異なるため、answer timeは秒で、interval timeは分でdiscretizeしone-hot-encodingし、Embeddingとして表現する。ここで、interval timeが1ヶ月を超えた場合は1ヶ月として表現する。<br><br>### Learning Embedding<br><br>learning cellをembeddingで表現する。exercise, answertime, correctnessそれぞれをembeddingで表現し、それらをconcatしMLPにかけることでlearning embeddingを獲得する。ここで、correctnessのembeddingは、正解の場合は全ての要素が1のベクトル, 不正解の場合は全ての要素が0のベクトルとする。<br><br><img src="https://user-images.githubusercontent.com/12249301/168043953-40d1c682-cb61-4ca1-b57f-847b5e51e212.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>### Knowledge Embedding<br><br>学習プロセスにおけるknowledge stateの保存とアップデートを担うEmbedding。<br><br>Knowledge Embedding h は、(M x dk)次元で表され、Mはknowledge conceptの数である。すなわち、hの各行が対応するknowledge conceptのmasteryに対応している。learning interactionにおいて、それぞれのknowledge conceptに対するlearning gainや、忘却効果をknowledge embeddingを更新することによって反映させる。<br><br><br><br>また、knowledge embeddingを更新する際にはQ-matrixを利用する。Q-matrixは、exerciseとknowledge conceptの対応関係を表した行列のことである。Qjmが1の場合、exercise ej が knowledge concept km と関係していることを表し、そうでない場合は0でQ-matrixは表現される。もし値が0の場合、exercise ej のパフォーマンスは、knowledge concept km のmasteryに一切影響がないことを表している。が、人手て定義されたQ-matrixはエラーが含まれることは避けられないし、主観的なバイアスが存在するため、本研究ではこれらの影響（Q-matrix上の対応関係の見落としや欠落）を緩和するためにenhanced Q-matrix q (J x M次元）を定義する。具体的には、通常のQ-matrixで値が0となる部分を、小さな正の値γとしてセットする。<br><br>今回はこのようなシンプルなenhanced Q-matrixを利用するが、どのようなQ-matrixの定義が良いかはfuture workとする。<br><br><br><br>## Learning Module<br><br>learning gainを測るためのモジュール。2つの連続したlearning interactionのパフォーマンスの差によってgainを測定する（learning embeddingを使う）。ただこれだけではlearning gainの多様性を捉えることができないため（たとえば同じ連続したlearning embeddingを持って生徒がいたとしてもlearning gainが一緒とは限らない）、interval timeとprevious knowledge stateを活用する。<br><br>interval timeはlearning processの鍵となる要素の一つであり、これはlearning gainの差異を反映してる。一般tネキには、interval timeが短い方が生徒はより多くの知識を獲得する傾向にある。<br><br>さらに、previous knowledge stateもlearning gainに関係しており、たとえばmasteryが低い生徒は改善の可能性が非常に高い。<br><br>previous knowledge stateを利用する際は、現在のexerciseと関連するknowledge conceptにフォーカスするために、knowledge embeddingをknowledge concept vector q_etとの内積をとり、関連するknowledge conceptのknowledge stateを得る：<br><br><img src="https://user-images.githubusercontent.com/12249301/168086129-262c1154-9d12-43fe-b5bd-cf6c84f2dffe.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>（q_etの詳細が書かれていないので分からないが、おそらくenhanced Q-matrixのexercise e_tに対応する行ベクトルだと思われる。e_tと関連するknowledge conceptと対応する要素が1で、その他が正の定数γのベクトル）<br><br><br><br>そしてlearning gain lg_t (dk次元ベクトル)は2つの連続したlearning embedding, と現在の問題と関連するknowledge stateとinterval time embeddingをconcatしMLPにかけることで算出する。<br><br><img src="https://user-images.githubusercontent.com/12249301/168086638-dffd60dc-4bd6-4da2-ba4b-6749e1a9bb6b.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>さらに、全てのlearning gainが生徒のknowledgeの成長に寄与するとは限らないので、生徒の吸収能力を考慮するために learning gate Γ^l_t (dk次元ベクトル)を定義する（learning gainと構成要素は同じ）：<br><br><img src="https://user-images.githubusercontent.com/12249301/168087058-bb5e6e13-aaa2-46f8-ac1f-777f5b6c57de.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>そして先ほど求めたlearning gateとlearning gainの内積をとり、さらにknowledge concept vector q_etとの内積をとることで、ある時刻tのexercise e_tにと関連するknowledge conceptのlearning gain ~LG_tを得る：<br><br><img src="https://user-images.githubusercontent.com/12249301/168087419-05e777ae-d2a6-4342-9b39-8df163d97fe9.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>ここで、(lg_t+1)/2しているのは、tanhの値域が（-1, 1）なためであり、これにより値域を(0, 1)に補正している。従ってLG_tは常に正の値となる。これは、本研究の前提である、生徒はそれぞれのlearning interactionから知識を着実に獲得しているという前提を反映している。<br><br><br><br>## Forgetting Module<br><br>~LG_tは生徒のknowledge stateを向上させる働きをするが、反対の忘却現象は、時間が経つにつれてどれだけの知識が忘れられるかに影響します。forgetting curve theoryによると、記憶されている学習教材の量は時間経過に従い指数的に減衰していく。しかしながら、knowledge stateとinterval timeの複雑な関係性を捉えるためには、manual-designedな指数減衰関数では十分ではない。<br><br>そこで、forgetting effectをモデル化するために、forgetting gate Γ^f_tを導入する。これは、knowledge embeddingから3つの要素をMLPにかけることで失われる情報の度合いを学習するしたものであり、その3つの要素とは (1) 生徒のprevious knowledge state h_t-1, (2)生徒の現在のlearning gain LG_t, (3) interval time it_tである。<br><br>これらを用いてforgetting gate (dk次元) は以下のように計算される：<br><br><img src="https://user-images.githubusercontent.com/12249301/168101254-29019294-56be-4b92-99b3-360554bf58fd.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>forgetting gateをh_t-1と積をとることで、忘却の影響を考慮することができる。そして、生徒がt番目のlearning interactionを完了した後のknowledge state h_tは次の式で更新される：<br><br><img src="https://user-images.githubusercontent.com/12249301/168101820-90958bfc-4c4c-4a46-ab00-3efaa10aeb42.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Predicting Module<br><br>これでlearning gainとforgetting effectの両方を考慮した生徒のknowledge state h_tが算出できたので、これをe_t+1のexerciseのperformance予測に活用する。e_t+1を生徒が解く時は、対応するknowledge conceptを適用することで回答をするので、knowledge stateのうち、e_t+1と関連するknowledge state ~h_tを利用する（knowledge concept vector q_et+1との内積で求める）。式で表すと下記になる：<br><br><img src="https://user-images.githubusercontent.com/12249301/168102734-2a53305e-ab34-4e7d-b9c6-dbcc1d8f8eb5.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>~h_tにexercise e_t+1のembeddingをconcatしてMLPにかけている。<br><br><br><br># Objective Function<br><br>正則化項つきのcross-entropy log lossを利用する。<br><br><img src="https://user-images.githubusercontent.com/12249301/168103089-0e3f4f21-8d77-4bd1-8ec5-07425cc4833b.png"" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># 実験結果<br><br>## knowledge tracingの結果<br><br><img src="https://user-images.githubusercontent.com/12249301/168103305-2a0a100d-3122-4d9f-ac20-f5706ef44173.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>先述のDKTの例とは異なり、問題の回答に誤っていたとしてもproficiencyが向上するようになっている。ただ、e_7が不正解となっている際に、proficiencyが減少していることもわかる。これは、モデルがproficiencyの推定をまだしっかりできていない状態だったため、モデル側がproficiencyを補正したためだ、と論文中では述べられているが、こういった現象がどれだけ起きるのだろうか。こういう例があると、図中の赤枠はたまたま不正解の時にproficiencyが向上しただけ、というふうにも見えてしまう（逆に言うとDKTでも不正解の時にproficiencyが向上することはあるよねっていう）。<br><br>また、忘却効果により時間経過に伴い、proficiencyが減少していることもわかる。ただ、この現象もDKTの最初の例でもたとえば①の例はproficiencyが時間経過に伴い減少していっていたし、もともとDKTでもそうなってたけど？と思ってしまう。<br><br>ただ、②についてはDKTの例ではproficiencyが時間経過に伴い減少して行っていなかったため、LPKTではきちんとforgetting effectがモデリングできていそうでもある。また、図中右では、最初のinteractionと各knowledge conceptの習熟度の最大値、最後のinteraction時の習熟度がレーダーチャートとして書かれており、学習が進むにつれてどこかで習熟度は最大値となり、忘却効果によって習熟度は下がっているが、学習の最初よりは習熟度が高く弱実に学習が進んでいますよ、というのを図示している。interactionをもっと長く続けた際に（あるknowledge conceptを放置し続けた際に）、忘却効果によってどの程度習熟度がshrinkするのかが少し気になる（習熟度が大きくなった状態が時間発展しても維持されるということが、このモデルでは存在しないのでは？）。<br><br><br><br>=> Knowledge Tracingの結果については、cherry pickingされているだけであって、全体として見たらどれだけ良くなっているかが正直分からないんじゃないか、という感想。<br><br><br><br>## student performance predictoin<br><br><img src="https://user-images.githubusercontent.com/12249301/168105090-d463cf7b-c769-4e59-b4ae-f920c5873a4f.png"" alt="image" loading="lazy" width="550" height="400"/><br><br>全てのベースラインに勝っている。特に系列長の長いASSISTchallでAKTに対して大きく勝っており、系列長の長いデータに対してもrobustであることがわかる。<br><br><br><br>## Ablation Study<br><br>learning module, forgetting module, time embeddingをablationした場合に性能がどう変化するかを観察した。forgetting moduleをablationした場合に、性能が大きく低下しているので、forgetting moduleの重要性がわかる。おもしろいのは、time embeddingを除いてもあまり性能は変化していないので、実際はstudent performance predictionするだけならtime embeddingはあまり必要ないのかもしれない。が、論文中では「time embedding (answer timeとinterval time)を除外するのはlearning processを正確にモデル化する上でharmfulだ」と言及しているに留まっており、具体的にどうharmfulなのかは全くデータが提示されていない。time embeddingを除外したことでknowledge tracingの結果がどう変化するのかは気になるところではある、が、実はあまり効いていないんじゃない？という気もする。<br><br><img src="https://user-images.githubusercontent.com/12249301/168105293-ab203fa8-a6cc-4ff7-9750-659e39add4ee.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Exercises Clustering<br><br>最後に、学習したexerciseのembeddingをt-SNEで可視化しクラスタリングしている。クラスタリングした結果、共通のknowledge conceptを持つexercise同士はある程度同じクラスタに属する例がいくつか見受けられるような結果となっている。<br><br><img src="https://user-images.githubusercontent.com/12249301/168106245-d578baad-916e-4e78-8fb7-9bf604617f93.png"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 所感<br><br>answer timeとinterval timeのデータがなくても高い性能で予測ができそうなのでアリ。ただ、そういった場合にknowledge tracingの結果がどうなるかが不安要素ではある。もちろんanswer timeとinterval timeが存在するのがベストではあるが。<br><br>また、DKT+で指摘されているような、inputがreconstructionされない問題や、proficiencyが乱高下するといった現象が、このモデルにおいてどの程度起きるのかが気になる。<br><br>DKTのようなシンプルなモデルではないので、少しは解消されていたりするのだろうか。実用上あのような現象が生じるとかなり困ると思う。</p><p>KCのproficiencyの可視化方法について論文中に記述されていないが、下記リポジトリのIssue 29で質問されている。<br><br>knowledge matrix hは各KCのproficiencyに関する情報をベクトルで保持しており、ベクトルをsummationし、シグモイド関数をかけることで0.0~1.0に写像しているとのこと。</p></span><br><br>
 </article>
@@ -3563,6 +3588,8 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="ICCE.html" target="_blank" rel="noopener noreferrer">#ICCE</a>
 <span class="issue_date">Issue Date: 2022-04-28</span>
 <span class="snippet"><span>Comment</span><p>KTにBERTを利用した研究<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/453" target="_blank" rel="noopener noreferrer">Empirical Evaluation of Deep Learning Models for Knowledge Tracing: Of Hyperparameters and Metrics on Performance and Replicability, Sami+, Aalto University, JEDM'22</a>
  などでDeepLearningBasedなモデル間であまり差がないことが示されているので、本研究が実際どれだけ強いのかは気になるところ。</p></span><br><br>
@@ -3584,6 +3611,8 @@ My Issue
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
 <a class="button" href="AAAI.html" target="_blank" rel="noopener noreferrer">#AAAI</a>
+<a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-04-28</span>
 <span class="snippet"><span>GPT Summary</span>- インタラクティブ教育システム（IES）を用いて学生の知識を追跡し、パフォーマンスモデルを開発する研究が進展。深層学習モデルが従来のモデルを上回るかは未検証であり、EdNetデータセットを用いてその精度を比較。結果、ロジスティック回帰モデルが深層モデルを上回ることが確認され、LIMEを用いて予測に対する特徴の影響を解釈する研究を行った。</span>
 <span class="snippet"><span>Comment</span><p>データ量が小さいとSAKTはDKTはcomparableだが、データ量が大きくなるとSAKTがDKTを上回る。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/165698674-279a7e0c-6429-48db-8c71-f61b5744d44a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
@@ -3603,6 +3632,7 @@ My Issue
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-04-28</span>
 <span class="snippet"><span>Comment</span><p>EdNetデータにおいて、DKT, DKVMN, SAKT, RKTの性能を比較した論文<br><br><img src="https://user-images.githubusercontent.com/12249301/165658767-24fda9a1-3ff1-47d1-b328-91fa18aec82e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>RKTがも最もパフォーマンスが良く、SAKTもDKT, DKVMNに勝っている</p></span><br><br>
 </article>
@@ -3622,6 +3652,7 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-04-27</span>
 <span class="snippet"><span>Comment</span><p>古典的なBKT, PFAだけでなくDKT, DKVMN, EKT, AKTなどDeepなモデルについてもまとまっている。<br><br><img src="https://user-images.githubusercontent.com/12249301/165438026-70f407c9-8eb2-43c3-8a0b-84e1f55708c4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/165438375-e571ab57-598f-470d-b3ee-4019392e9e81.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
@@ -3639,9 +3670,11 @@ My Issue
 </a><br>
 <a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="ImageClassification.html" target="_blank" rel="noopener noreferrer">#ImageClassification</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2021-11-04</span>
 <span class="snippet"><span>GPT Summary</span>- 本論文では、Residual Networks（ResNet-50）の性能を新たな最適化手法やデータ拡張技術を統合したトレーニング手法で再評価。競争力のある設定で、ImageNet-valにおいて80.4%のトップ1精度を達成し、事前学習済みモデルをtimmライブラリで共有することで、今後の研究のベースラインとなることを目指す。</span>
-<span class="snippet"><span>Comment</span><p>2015年以後、様々な最適化アルゴリズム、正則化手法、データ拡張などが提案される中で、最新アーキテクチャのモデルにはそれらが適用される一方ベースラインとなるResNetではそれらが適用されず、論文の値のみが参照される現状はフェアではないので、ResNetの性能を向上させるような訓練手法を追求した研究。<br><br><br><br>ResNetにおける有効な訓練手法として下記を模索：<br><br><br><br>損失関数として、MixUp（訓練画像を重ね合わせ、組み合わせた画像のラベルをミックスして新しい学習インスタンスを作るデータ拡張手法）と、CutMix（画像を切り貼りして、切り貼り部分の面積に応じてラベルのスコアを調整するデータ拡張手法）を適用し、CutMixによって大幅に性能が改善することを示した。このとき、ラベルの確率の和が1となる前提の元クロスエントロピーで学習するのではなく、元画像に含まれる物体が両方存在するという全体の元BinaryCrossEntropyを適用しマルチラベル問題として学習することで、性能が向上。<br><br><br><br>データ拡張手法として、MixUp, CutMixだけでなく、通常のリサイズ・切り抜きと、水平方向の反転を適用しデータ拡張する。加えてRandAugment（14種類のデータ拡張操作から、N個サンプルし、強さMで順番に適用するデータ拡張手法。N,Mはそれぞれ0〜10の整数なので、10の二乗オーダーでグリッドサーチすれば、最適なN,Mを得る。グリッドサーチするだけでお手軽だが非常に強力）を適用した。<br><br><br><br>正則化として、Weight Decay（学習過程で重みが大きくなりすぎないようにペナルティを課し、過学習を防止する手法。L2正則化など。）と、label smoothing（正解ラベルが1、その他は0とラベル付けするのではなく、ラベルに一定のノイズを入れ、正解ラベル以外にも重みが入っている状態にし、ラベル付けのノイズにロバストなモデルを学習する手法。ノイズの強さは定数で調整する）、Repeated Augmentation（同じバッチ内の画像にデータ拡張を適用しバッチサイズを大きくする）、Stochastic Depth（ランダムでレイヤーを削除し、その間を恒等関数で繋ぎ訓練することで、モデルの汎化能力と訓練時間を向上する）を適用。<br><br></p><p>Optimizerとして、オリジナルのResNetでは、SGDやAdamWで訓練されることが多いが、Repeated Augmentationとバイナリクロスエントロピーを組み合わせた場合はLAMBが有効であった。また、従来よりも長い訓練時間（600epoch、様々な正則化手法を使っているので過学習しづらいため）で学習し、最初にウォームアップを使い徐々に学習率を上げ（finetuningの再認識これまでのweightをなるべく壊したくないから小さい学習率から始める、あるいはMomentumやAdamといった移動平均を使う手法では移動平均を取るための声倍の蓄積が足りない場合学習の信頼度が低いので最初の方は学習率小さくするみたいな、イメージ）その後コサイン関数に従い学習率を減らしていくスケジューリング法で学習。<br><br><br><br>論文中では上記手法の3種類の組み合わせ（A1,A2,A3）を提案し実験している。<br><br>ResNet-50に対してA1,2,3を適用した結果、A1を適用した場合にImageNetのトップ1精度が80.4%であり、これはResNet-50を使った場合のSoTA。元のResNetの精度が76%程度だったので大幅に向上した。<br><br>同じ実験設定を使った場合の他のアーキテクチャ（ViTやEfficientNetなど）と比べても遜色のない性能を達成。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302112-05392bbb-7014-4518-a001-55e91933a065.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、本論文で提案されているA2と、DeiTと呼ばれるアーキテクチャで提案されている訓練手法（T2）をそれぞれのモデルに適用した結果、ResNetではA2、DeiTではT2の性能が良かった。つまり、「アーキテクチャと訓練方法は同時に最適化する必要がある」ということ。これがこの論文のメッセージの肝とのこと。<br><br><br><br>（ステートオブAIガイドの内容を読んで学んだことを自分の言葉で整理して記述しました。いつもありがとうございます。）<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302160-c31717ae-a225-47a4-ae33-f1cd081c419b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>画像系でどういった訓練手法が利用されるか色々書かれていたので勉強になった。特に画像系のデータ拡張手法なんかは普段触らないので勉強になる。</p><p>OpenReview:
+<span class="snippet"><span>Comment</span><p>2015年以後、様々な最適化アルゴリズム、正則化手法、データ拡張などが提案される中で、最新アーキテクチャのモデルにはそれらが適用される一方ベースラインとなるResNetではそれらが適用されず、論文の値のみが参照される現状はフェアではないので、ResNetの性能を向上させるような訓練手法を追求した研究。<br><br><br><br>ResNetにおける有効な訓練手法として下記を模索：<br><br><br><br>損失関数として、MixUp（訓練画像を重ね合わせ、組み合わせた画像のラベルをミックスして新しい学習インスタンスを作るデータ拡張手法）と、CutMix（画像を切り貼りして、切り貼り部分の面積に応じてラベルのスコアを調整するデータ拡張手法）を適用し、CutMixによって大幅に性能が改善することを示した。このとき、ラベルの確率の和が1となる前提の元クロスエントロピーで学習するのではなく、元画像に含まれる物体が両方存在するという全体の元BinaryCrossEntropyを適用しマルチラベル問題として学習することで、性能が向上。<br><br><br><br>データ拡張手法として、MixUp, CutMixだけでなく、通常のリサイズ・切り抜きと、水平方向の反転を適用しデータ拡張する。加えてRandAugment（14種類のデータ拡張操作から、N個サンプルし、強さMで順番に適用するデータ拡張手法。N,Mはそれぞれ0〜10の整数なので、10の二乗オーダーでグリッドサーチすれば、最適なN,Mを得る。グリッドサーチするだけでお手軽だが非常に強力）を適用した。<br><br><br><br>正則化として、Weight Decay（学習過程で重みが大きくなりすぎないようにペナルティを課し、過学習を防止する手法。L2正則化など。）と、label smoothing（正解ラベルが1、その他は0とラベル付けするのではなく、ラベルに一定のノイズを入れ、正解ラベル以外にも重みが入っている状態にし、ラベル付けのノイズにロバストなモデルを学習する手法。ノイズの強さは定数で調整する）、Repeated Augmentation（同じバッチ内の画像にデータ拡張を適用しバッチサイズを大きくする）、Stochastic Depth（ランダムでレイヤーを削除し、その間を恒等関数で繋ぎ訓練することで、モデルの汎化能力と訓練時間を向上する）を適用。<br><br></p><p>Optimizerとして、オリジナルのResNetでは、SGDやAdamWで訓練されることが多いが、Repeated Augmentationとバイナリクロスエントロピーを組み合わせた場合はLAMBが有効であった。また、従来よりも長い訓練時間（600epoch、様々な正則化手法を使っているので過学習しづらいため）で学習し、最初にウォームアップを使い徐々に学習率を上げ（finetuningの際にこれまでのweightをなるべく壊したくないから小さい学習率から始める、あるいはMomentumやAdamといった移動平均を使う手法では移動平均を取るための勾配の蓄積が足りない場合学習の信頼度が低いので最初の方は学習率小さくするみたいな、イメージ）その後コサイン関数に従い学習率を減らしていくスケジューリング法で学習。<br><br><br><br>論文中では上記手法の3種類の組み合わせ（A1,A2,A3）を提案し実験している。<br><br>ResNet-50に対してA1,2,3を適用した結果、A1を適用した場合にImageNetのトップ1精度が80.4%であり、これはResNet-50を使った場合のSoTA。元のResNetの精度が76%程度だったので大幅に向上した。<br><br>同じ実験設定を使った場合の他のアーキテクチャ（ViTやEfficientNetなど）と比べても遜色のない性能を達成。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302112-05392bbb-7014-4518-a001-55e91933a065.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、本論文で提案されているA2と、DeiTと呼ばれるアーキテクチャで提案されている訓練手法（T2）をそれぞれのモデルに適用した結果、ResNetではA2、DeiTではT2の性能が良かった。つまり、「アーキテクチャと訓練方法は同時に最適化する必要がある」ということ。これがこの論文のメッセージの肝とのこと。<br><br><br><br>（ステートオブAIガイドの内容を読んで学んだことを自分の言葉で整理して記述しました。いつもありがとうございます。）<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302160-c31717ae-a225-47a4-ae33-f1cd081c419b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>画像系でどういった訓練手法が利用されるか色々書かれていたので勉強になった。特に画像系のデータ拡張手法なんかは普段触らないので勉強になる。</p><p>OpenReview:
 
 
 <a href="https://openreview.net/forum?id=NG6MJnVl6M5" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=NG6MJnVl6M5</a>
@@ -3923,7 +3956,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>一般的なFFNでは、linear layerをかけた後に、何らかの活性化関数をかませる方法が主流である。<br>このような構造の一つとしてGLUがあるが、linear layerと活性化関数には改良の余地があり、様々なvariantが考えられるため、色々試しました（以下の8種類のvariantが提案されている）、というはなし。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/72b1d0bb-64ac-4155-9a3b-5624cd06ccc9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b38321c6-d414-4764-9147-10a5fa83fbe6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>オリジナルのGLUと比較して、T5と同じ事前学習タスクを実施したところ、perplexityが改善<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9e67a054-2148-41ed-aae1-5a752c21a242" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、finetuningをした場合の性能も、多くの場合オリジナルのGLUよりも高い性能を示した。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/77ccab88-e5cc-48fc-b9e0-f2dad24e53e8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8f60ca8c-50eb-4869-bab4-f02ec6d8e085" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8124fc25-aa7e-4e10-8cd2-9d24c818f410" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="language-models-552" class="title-link">Language Models are Few-Shot Learners, Tom B. Brown+, NeurIPS'20</h3><br><a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="language-models-552" class="title-link">[Paper Note] Language Models are Few-Shot Learners, Tom B. Brown+, NeurIPS'20, 2020.05</h3><br><a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3941,7 +3974,7 @@ My Issue
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
-<span class="snippet"><span>GPT Summary</span>- GPT-3は1750億パラメータを持つ自己回帰型言語モデルで、少数ショット設定においてファインチューニングなしで多くのNLPタスクで強力な性能を示す。翻訳や質問応答などで優れた結果を出し、即時推論やドメイン適応が必要なタスクでも良好な性能を発揮する一方、依然として苦手なデータセットや訓練に関する問題も存在する。また、GPT-3は人間が書いた記事と区別が難しいニュース記事を生成できることが確認され、社会的影響についても議論される。</span>
+<span class="snippet"><span>GPT Summary</span>- GPT-3は1750億パラメータの自己回帰型モデルで、タスク非依存のFew-shot学習を改善。ファインチューニングなしで多様なNLPタスクで高い性能を示し、人間と区別しにくい文を生成可能。訓練の課題も明らかに。</span>
 <span class="snippet"><span>Comment</span><p>In-Context Learningを提案した論文</p><p>論文に記載されているIn-Context Learningの定義は、しっかり押さえておいた方が良い。<br><br>下図はmeta-learningの観点から見たときの、in-contextの位置付け。事前学習時にSGDでパラメータをupdateするのをouter loopとし、そこで広いスキルとパターン認識の能力を身につける。一方で、in-context learningは、Inference時に事前学習時に得たそれらのスキルを用いて、求めるタスクを認識、あるいは適応するInner loopのことを指す。<br><img src="https://github.com/user-attachments/assets/679129f3-93e3-445f-b9e8-5d909261737b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>この上で、論文中では In-Context Learningについて:<br>> Recent work [RWC+19] attempts to do this via what we call “in-context learning”, using the text input of a pretrained language model as a form of task specification: the model is conditioned on a natural language instruction and/or a few demonstrations of the task and is then expected to complete further instances of the task simply by predicting what comes next.<br><br>と定義している。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3962,6 +3995,7 @@ My Issue
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
 <a class="button" href="Zero-FewShotLearning.html" target="_blank" rel="noopener noreferrer">#Zero/FewShotLearning</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
 <span class="snippet"><span>Comment</span><p># 概要<br><br>Neural basedなend-to-endなNLGアプローチはdata-hungryなので、Few Shotな設定で高い性能ができる手法を提案（Few shot NLG）<br><br>Table-to-Textタスク（WikiBIOデータ, 追加で収集したBook, SongドメインのWikipediaデータ）において、200程度の学習サンプル数でstrong baselineに対して8.0 point程度のBLEUスコアの向上を達成<br><br><br><br># 手法<br><br>TabularデータのDescriptionを作成するには大きく分けて2つのスキルが必要<br><br>1. factualな情報を持つcontentをselectし、copyするスキル<br><br>2. factualな情報のコピーを含めながら、文法的に正しいテキストを生成するスキル<br><br>提案手法では、1を少量のサンプル（< 500）から学習し、2については事前学習済みの言語モデルを活用する。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204966408-e5442477-0560-439b-9780-d454a8761345.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>encoderからコピーする確率をpcopyとし、下記式で算出する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968383-44ef3771-218e-4e3e-8bfd-e2e6750c514b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>すなわち、encoderのcontext vectorと、decoderのinputとstateから求められる。<br><br>encoderとencoder側へのattentionはscratchから学習しなければならず、うまくコピーできるようにしっかりと”teach”しなければならないため、lossに以下を追加する：<br><br><img src="https://user-images.githubusercontent.com/12249301/204968557-4526e76d-8be5-4371-adc7-d49d8291954f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>すなわち、コピーすべき単語がちゃんとコピーできてる場合にlossが小さくなる項を追加している。<br><br>また、decoder側では、最初にTable情報のEmbeddingを入力するようにしている。<br><br>また、学習できるデータ量が限られているため、pre-trainingモデルのEmbeddingは事前学習時点のものに固定した（ただしく読解できているか不安）<br><br><br><br># 実験<br><br>WikiBIOと、独自に収集したBook, Songに関するWikipediaデータのTable-to-Textデータを用いて実験。<br><br>このとき、Training instanceを50~500まで変化させた。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969250-b2965b62-5a82-4c38-9008-3e4bbc5d9c24.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>WikiBIOデータセットに対してSoTAを記録しているBase-originalを大きくoutperform（Few shot settingでは全然うまくいかない）。<br><br><br><br>inputとoutput例と、コピーに関するlossを入れた場合の効果。<br><br><img src="https://user-images.githubusercontent.com/12249301/204969645-aa2686f0-f83c-44cc-a6aa-2e793a6cd5b8.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>人手評価の結果、Factual informationの正しさ（#Supp）、誤り（#Cont）ともに提案手法が良い。また、文法的な正しさ（Lan. Score）もコピーがない場合とcomparable<br><br><img src="https://user-images.githubusercontent.com/12249301/204969885-7cb3e507-d986-4d97-8f7c-a5b8c3c8204f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p></span><br><br>
 </article>
@@ -3983,6 +4017,8 @@ My Issue
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
 <a class="button" href="TACL.html" target="_blank" rel="noopener noreferrer">#TACL</a>
+<a class="button" href="Encoder.html" target="_blank" rel="noopener noreferrer">#Encoder</a>
+<a class="button" href="Encoder-Decoder.html" target="_blank" rel="noopener noreferrer">#Encoder-Decoder</a>
 <a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
 <span class="snippet"><span>GPT Summary</span>- 事前学習された大規模なニューラルモデルがシーケンス生成においても有効であることを示し、BERT、GPT-2、RoBERTaと互換性のあるTransformerベースのモデルを開発。これにより、機械翻訳やテキスト要約などのタスクで新たな最先端の成果を達成。</span>
@@ -4004,6 +4040,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
 <a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
 <span class="snippet"><span>Comment</span><p># 概要<br><br>Dialogue Actをそのままlinearlizeして言語モデルに入力するのではなく、テンプレートをベースにしたシンプルなsentenceにして言語モデルに与えると、zero-shot, few-shotなsettingで性能が向上するという話（T5ベース）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204951348-e7cb9982-4d1f-4ac0-8e1d-b3e8fd872b11.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法<br><br>slotの名称をnatural languageのdescriptionに変更するSchema Guidedアプローチも提案（NLUでは既に実践さrていたらしいが、Generationで利用されたことはない）。<br><br><img src="https://user-images.githubusercontent.com/12249301/204952341-fae03300-992a-491f-b194-9013f5d598f9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 結果<br><br>MultiWoz, E2E, SGDデータセットを利用。MultiWoz, E2Eデータはデータ量が豊富でドメインやfeatureが限定的なため、schema guided, template guided approachとNaiveなrepresentationを利用した場合の結果がcopmarableであった。<br><br>が、SGDデータセットはドメインが豊富でzero-shot, few-shotの設定で実験ができる。SGDの場合はTemplate guided representationが最も高い性能を得た。<br><br><img src="https://user-images.githubusercontent.com/12249301/204954033-ecbeb90f-1398-486c-8d1f-76a0e54ed8ea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>low resourceなデータセットで活用できそう</p></span><br><br>
 </article>
@@ -4084,6 +4121,7 @@ My Issue
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
 <a class="button" href="SIGKDD.html" target="_blank" rel="noopener noreferrer">#SIGKDD</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2022-04-27</span>
 <span class="snippet"><span>Comment</span><p>この論文の実験ではSAKTがDKVMNやDKTに勝てていない</p></span><br><br>
 </article>
@@ -4103,6 +4141,7 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="DropoutPrediction.html" target="_blank" rel="noopener noreferrer">#DropoutPrediction</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2022-04-14</span>
 <span class="snippet"><span>Comment</span><p>従来のdropout研究では、学校のドロップアウトやコースのドロップアウト、MOOCsなどでのドロップアウトが扱われてきたが、モバイル学習環境を考慮した研究はあまり行われてこなかった。モバイル学習環境では着信やソーシャルアプリなど、多くの外敵要因が存在するため、学習セッションのドロップアウトが頻繁に発生する。<br><br><br><br>学習セッションを、隣接するアクティビティと1時間のインターバルが空いていないアクティビティのsequenceと定義<br><br>Transformerを利用したモデルを提案。<br><br><img src="https://user-images.githubusercontent.com/12249301/163503384-6f0d4f49-ddda-4588-ad5b-81b86138300b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>利用したFeatureは以下の通り<br><br><img src="https://user-images.githubusercontent.com/12249301/163503437-aaeeb065-8eb8-4831-9260-a416de347c0c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>AUCでの評価の結果、LSTM,GRUを用いたモデルをoutperform<br><br><img src="https://user-images.githubusercontent.com/12249301/163503475-169cc2f4-564a-4178-84aa-37b05ef5dd3c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、Transformerに入力するinput sequenceのsizeで予測性能がどれだけ変化するかを確認したところ、sequence sizeが5の場合に予測性能が最大となった。<br><br><img src="https://user-images.githubusercontent.com/12249301/163503542-a9bd4d71-2a75-4ccb-a250-7a9258201219.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>これは、session dropoutの予測には、生徒の最新のinteractionの情報と相関があることを示している。だが、sequence sizeが2のときに予測性能は低かったため、ある程度のcontext情報が必要なことも示唆している。<br><br><br><br>また、inputに利用するfeatureとしては、問題を解く際のelapsed_timeと、session内でのposition、またdropoutしたか否かのラベルが予測性能の向上に大きく寄与した。<br><br><br><br>Q. AUCの評価はどうやって評価しているのか。dropoutしたラベルの部分のみを評価しているのか否かがわからない。<br><br>Q. dropoutラベルをinputのfeatureに利用するのは実用上問題があるのでは？次の1問を解いたときにdropoutするか否かしか予測できなくなってしまうのでは。まあでもそれはelapsed_timeとかも一緒か。<br><br></p></span><br><br>
 </article>
@@ -4257,6 +4296,8 @@ My Issue
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
 <span class="issue_date">Issue Date: 2022-07-22</span>
 <span class="snippet"><span>Comment</span><p>
 <strong># 一言で言うと<br><br>DKVMN <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/352" target="_blank" rel="noopener noreferrer">[Paper Note] Dynamic Key-Value Memory Networks for Knowledge Tracing, Jiani Zhang+, WWW'17, 2016.11</a>
@@ -4290,6 +4331,7 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
 <span class="issue_date">Issue Date: 2022-04-28</span>
 </article>
 <article class="paper-entry">
@@ -4309,6 +4351,8 @@ My Issue
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <a class="button" href="RecSys.html" target="_blank" rel="noopener noreferrer">#RecSys</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2022-04-11</span>
 <span class="snippet"><span>GPT Summary</span>- 深層学習技術はレコメンダーシステムの研究で広く用いられているが、再現性やベースライン選択に問題がある。18のトップnレコメンデーションアルゴリズムを分析した結果、再現できたのは7つのみで、6つは単純なヒューリスティック手法に劣っていた。残りの1つはベースラインを上回ったが、非ニューラル手法には及ばなかった。本研究は機械学習の実践における問題を指摘し、改善を呼びかけている。</span>
 <span class="snippet"><span>Comment</span><p>RecSys'19のベストペーパー<br><br>日本語解説：
@@ -4317,7 +4361,9 @@ My Issue
 <a href="https://qiita.com/smochi/items/98dbd9429c15898c5dc7" target="_blank" rel="noopener noreferrer">https://qiita.com/smochi/items/98dbd9429c15898c5dc7</a>
 
 
-</p><p>重要研究</p></span><br><br>
+</p><p>TopN推薦におけるDNNを用いた研究を追試した研究で、トップ会議の手法のうち18本の追試を試みたところ、追試のための現実的な努力や著者に連絡をするといったことを実施した上で再現できたものは7本であり、そのうち6/7が適切なハイパーパラメータ調整を行なったkNNベースのシンプルな手法に勝てなかった（かつ残りの一つも線形モデルに対して負ける場合もあった）、という話で、業界における評価における再現性の問題（ハイパーパラメータ調整の記載がない等）や、適切な実験設定の欠如（ベースラインのハイパーパラメータチューニングをせずに先行研究の記述内容をそのまま踏襲等、テストデータを用いたエポック数の調整、ランダムサンプリングのはずなのに明らかに提案手法に有利となるような偏ったサンプリングを実施...）、ベースラインの適切な選定（多くの研究がNeural Collaboraive Filteringをベースラインにしているが果たしてそれが適切か）などについて警鐘を鳴らす内容になっている。<br><br>過去の先行研究（<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/342" target="_blank" rel="noopener noreferrer">[Paper Note] Sequence-Aware Recommender Systems, Massimo Quadrana+, ACM Computing Surveys (CSUR), Volume 51, Issue 4, 2018.02</a>
+)でも、研究者の間でデータセットの分割に関して、標準化されていない旨が記述されている。また、管理人が研究を追う中でも、共通のフレームワークで評価がされているとは言い難い印象を持っている（**このコメントは論文を読んだ当時を思い起こし2026年に追記しているが、この頃から業界はどのようにシフトしただろうか？最近は追えていない**）。<br><br>たとえば評価をする際には、データセットの選択だけでなく、データセットの中でどの規模感のデータセットを使うのか（MovieLens一つとっても様々なバリエーションがある）、leave-one-outをするのか、時系列性を考慮した履歴の分割をするのか、negative samplingをする際の件数やサンプリング方法、なんらかのstratifiedなk-fold cross validationをするのか否か、coldstartなデータを排除するのか否か、排除する際の足切りの基準、ハイパーパラメータ。最適化する際のメトリックと最適化をするパラメータ、平均を取る際の実験の試行回数、性能を測るメトリック（Precision, Recall, NDCG, MAP, MRR, AUC, HITS@N...)など様々な変数が存在し、これらの設定が異なると性能は確かに大きく変化すると思われる。実際に推薦モデルの検証をする際には適切な検証となるよう細心の注意を払いたい。<br><br>私個人としては本研究を知った以後、オフラインでの実験のみでなくらA/Bテストが実施されている研究に対する信頼性をより高めるようになった。</p><p>おそらくこれを受けてRecboleのようなフレームワークが登場したと思うが、現在は更新がされていないという認識である。いまはどのように再現性に関する取り組みがされているだろうか？<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/400" target="_blank" rel="noopener noreferrer">Autonomously Generating Hints by Inferring Problem Solving Policies, Piech+, Stanford University, L@S'15</a>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="a-self-attentive-417" class="title-link">A Self-Attentive model for Knowledge Tracing, Pandy+ （with George Carypis）, EDM'19</h3><br><a href="https://arxiv.org/pdf/1907.06837.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -4831,6 +4877,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2022-06-08</span>
 <span class="snippet"><span>GPT Summary</span>- 新しい深層文脈化単語表現を提案し、単語の複雑な特性と文脈による変化をモデル化。これらの表現は事前学習された双方向言語モデルの内部状態を基に学習され、質問応答や感情分析など6つのNLPタスクで性能を向上させる。さらに、事前学習ネットワークの内部を活用することで、半教師あり信号の混合が可能であることを示す。</span>
 <span class="snippet"><span>Comment</span><p>ELMo論文。<br>通常のword embeddingでは一つの単語につき一つの意味しか持たせられなかったが、文脈に応じて異なる意味を表現できるようなEmbeddingを実現し（同じ単語でも文脈に応じて意味が変わったりするので。たとえばrightは文脈に応じて右なのか、正しいなのか、権利なのか意味が変わる）様々な言語処理タスク（e.g. Question Answering, Sentiment Analysisなど）でSoTAを達成。<br><br><img src="https://user-images.githubusercontent.com/12249301/172505957-a2fc5319-5670-4807-a870-31377227299e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Embedding Layer + 2層のLSTM（1,2の間にはresidual connection）+ linear layerで言語モデルを構成し、順方向言語モデルと逆方向言語モデルを同時に独立して学習する（双方向LSTMではない;損失関数が両方向の言語モデルの対数尤度の和になっている）。<br>また、Linear LayerとEmbedding Layerのパラメータは両方向の言語モデルで共有されている。<br><br>k番目の単語のEmbedding Layerの出力ベクトル、各LSTMのhidden stateをタスクspecificなスカラーパラメタs_taskで足し合わせ、最後にベクトルのスケールを調整するパラメタγ_taskで大きさを調整する。これにより、k番目の単語のELMo Embeddingを得る。<br>単語単体の意味だけでこと足りるタスクの場合はEmbedding Layerの出力ベクトルに対する重みが大きくなり、文脈を考慮した情報が欲しい場合はLSTMのhidden stateに対する重みが大きくなるイメージ（LSTMの層が深いほど意味的semanticな情報を含み、浅いほど文法的syntacticな情報を含んでいる）。<br><br>使い方としては簡単で、ELMoを事前学習しておき、自身のNNモデルのWord Embeddingに（場合によってはRNNのhidden stateにも）、入力文から得られたELMo Embeddingをconcatして順伝搬させるだけで良い。</p><p>ELMoのEmbedding Layerでは、2048 characterの（vocab size?）n-gram convolution filter（文字ごとにembeddingし、単語のembeddingを得るためにfilterを適用する？）の後に2つのhighway networkをかませてlinearで512次元に落とすみたいなことごやられているらしい。ここまで追えていない。<br><br>詳細は下記<br>
@@ -4856,6 +4903,7 @@ My Issue
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
 <a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2021-11-12</span>
 <span class="snippet"><span>Comment</span><p>DKVMN (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/352" target="_blank" rel="noopener noreferrer">[Paper Note] Dynamic Key-Value Memory Networks for Knowledge Tracing, Jiani Zhang+, WWW'17, 2016.11</a>
 )をhint-takingタスクとmulti-task learningした研究<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/141440172-6f708367-1804-4b0c-8c1a-4b7f80124bd7.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>DKVMNと比較して、微小ながら性能向上<br><br><img src="https://user-images.githubusercontent.com/12249301/141440264-1426ac60-5b60-46f8-bca9-8bc7f383a397.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
@@ -6461,6 +6509,7 @@ My Issue
 <a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-04-27</span>
 <span class="snippet"><span>Comment</span><p>DKTの性能をBKTやPFA等の手法と比較した研究<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/355" target="_blank" rel="noopener noreferrer">How Deep is Knowledge Tracing?, Mozer+, EDM'16</a>
  を引用し、DKTとBKTのAUCの計算方法の違いについて言及している</p></span><br><br>
@@ -6481,7 +6530,9 @@ My Issue
 <a class="button" href="CVPR.html" target="_blank" rel="noopener noreferrer">#CVPR</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="Backbone.html" target="_blank" rel="noopener noreferrer">#Backbone</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <a class="button" href="ResidualStream.html" target="_blank" rel="noopener noreferrer">#ResidualStream</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2021-11-04</span>
 <span class="snippet"><span>GPT Summary</span>- 残差学習フレームワークを提案し、深いニューラルネットワークのトレーニングを容易にする。参照層の入力に基づいて残差関数を学習することで、最適化が容易になり、精度が向上。152層の残差ネットはImageNetで低い複雑性を保ちながら高い性能を示し、ILSVRC 2015で1位を獲得。COCOデータセットでも28%の改善を達成。</span>
 <span class="snippet"><span>Comment</span><p>ResNet論文<br><br>ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショートカットができるようにしている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140301726-1d2e89e1-1d69-43d9-8d2b-0adb272e577a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>ResNetが提案される以前、モデルを深くすれば表現力が上がるはずなのに、実際には精度が下がってしまうことから、理論上レイヤーが恒等関数となるように初期化すれば、深いモデルでも浅いモデルと同等の表現が獲得できる、と言う考え方を発展させた。<br><br><br><br>（ステートオブAIガイドに基づく）</p><p>同じパラメータ数でより層を深くできる（Plainな構造と比べると層が1つ増える）Bottleneckアーキテクチャも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302452-649b0ea7-cce4-44c1-9e7d-b509ef8bca52.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>今や当たり前のように使われているResidual Connectionは、層の深いネットワークを学習するために必須の技術なのだと再認識。</p></span><br><br>
@@ -7550,6 +7601,7 @@ My Issue
 <a class="button" href="MatrixFactorization.html" target="_blank" rel="noopener noreferrer">#MatrixFactorization</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="StudentPerformancePrediction.html" target="_blank" rel="noopener noreferrer">#StudentPerformancePrediction</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2021-10-29</span>
 <span class="snippet"><span>Comment</span><p>KDD Cup'10のStudent Performance Predictionタスクにおいて3位をとった手法<br><br>メモリベースドな協調フィルタリングと、Matirx Factorizationモデルを利用してStudent Performance Predictionを実施。<br><br>最終的にこれらのモデルをニューラルネットでensembleしている。</p></span><br><br>
 </article>
@@ -8122,6 +8174,7 @@ My Issue
 <a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-04-25</span>
 <span class="snippet"><span>Comment</span><p>ベースとなる事前学習モデルの一部の線形層の隣に、低ランク行列A,Bを導入し、A,Bのパラメータのみをfinetuningの対象とすることで、チューニングするパラメータ数を激減させた上で同等の予測性能を達成し、推論速度も変わらないようにするfinetuning手法の解説</p><p>LoRAを使うと、でかすぎるモデルだと、そもそもGPUに載らない問題や、ファインチューニング後のモデルファイルでかすぎワロタ問題が回避できる。<br><br>前者は事前学習済みモデルのBPのための勾配を保存しておく必要がなくなるため学習時にメモリ節約になる。後者はA,Bのパラメータだけ保存すればいいので、ストレージの節約になる。<br><br>かつ、学習速度が25%程度早くなる。</p><p>既存研究であるAdapter（transformerの中に学習可能なMLPを差し込む手法）は推論コストが増加し、prefix tuningは学習が非常に難しく、高い性能を達成するためにprefixとして128 token入れたりしなければならない。</p><p>huggingfaceがすでにLoRAを実装している<br>
 
@@ -8146,6 +8199,7 @@ My Issue
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-01-21</span>
 <span class="snippet"><span>Comment</span><p>Googleが公開したDeep Learningモデル学習のノウハウ。必読</p><p>日本語訳<br>
 
@@ -8169,13 +8223,16 @@ My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
 <span class="snippet"><span>Comment</span><p>たった1ライン追加するだけで、Transformerのinferenceが最大で4.5倍高速化されるBetterTransformerの解説記事<br><br>better_model = BetterTransformer.transform(model)</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="cnn-vs.-489" class="title-link">CNN vs. ViT, 牛久先生</h3><br><a href="https://speakerdeck.com/yushiku/cnn-vs-vit" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="cnn-vs.-489" class="title-link">CNN vs. ViT, Yoshitaka Ushiku, ECCV 2022 読み会, 2022.10</h3><br><a href="https://speakerdeck.com/yushiku/cnn-vs-vit" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -8189,6 +8246,9 @@ My Issue
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2022-10-27</span>
 <span class="snippet"><span>Comment</span><p>・Swin Transformer, Depth-wise conv, ConvNeXt, ViTとCNNのロバスト性の違いの話があり勉強になる<br><br>・最終的な結論が、CNNもTransformerも変わらない（明確な勝者はいない; 今のところ引き分け）というのはおもしろかった</p><p>depth-wise conv, point-wise convの解説記事：
 
@@ -8199,7 +8259,7 @@ My Issue
 <br><br><br><br>通常のCNNのフィルタによるfeature map計算を、空間方向（depth-wise conv）とチャネル方向（point-wise conv; 1x1 conv）に分解することで大幅にパラメータ数削減</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="transformerの最前線-〜-485" class="title-link">Transformerの最前線 〜 畳込みニューラルネットワークの先へ 〜, 牛久先生, 2022</h3><br><a href="https://speakerdeck.com/yushiku/20220608_ssii_transformer?slide=89" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="transformerの最前線-〜-485" class="title-link">Transformerの最前線 〜 畳込みニューラルネットワークの先へ 〜, Yoshitaka Ushiku, 2022.06</h3><br><a href="https://speakerdeck.com/yushiku/20220608_ssii_transformer" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -8214,6 +8274,8 @@ My Issue
 <a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <span class="issue_date">Issue Date: 2022-09-06</span>
 </article>
 <article class="paper-entry">
@@ -8232,6 +8294,7 @@ My Issue
 <a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
 <a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
 <a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">#In-Depth Notes</a>
 <span class="issue_date">Issue Date: 2022-07-25</span>
 <span class="snippet"><span>Comment</span><p>
 <strong># モチベーション<br><br>Deep-IRTで推定される能力値は項目の特性に依存しており、同一スキル内の全ての項目が等質であると仮定しているため、異なる困難度を持つ項目からの能力推定値を求められない。このため、能力パラメータや困難度パラメータの解釈性は、従来のIRTと比較して制約がある。一方、木下らが提案したItem Deep Response Theoryでは、項目特性に依存せずに学習者の能力値を推定でき、推定値の信頼性と反応予測精度が高いことが示されているが、能力の時系列変化を考慮していないため、学習家庭での能力変化を表現できない。これらを解決するための手法を提案。<br><br><br><br># 手法<br><br>論文中の数式に次元数が一切書かれておらず、論文だけを読んで再現できる気がしない。<br><br>提案手法は、学習者の能力推定値が項目の特性に依存せず、複数のスキルに関する多次元の能力を表現できる（とあるが、が、どういう意味かよくわからない・・・）。<br><br>下図が提案手法の概要図。スキルタグ入力だけでなく、項目IDそのものも入力して活用するのが特徴。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/180723829-1b1e9311-975b-4b66-a872-f017862d0355.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>基本的に、生徒の能力値を推定するstudent networkと、スキル/項目の難易度を推定するitem networkに分かれている。ある時刻tでの生徒の能力値はメモリM上の全てのhidden conceptに対するvalueを足し合わせ、足し合わせて得られたベクトルに対してMLPをかけることによって計算している。<br><br><img src="https://user-images.githubusercontent.com/12249301/180725744-fa286cd1-ad2c-4d1d-99b8-655ea9611d20.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>最終的にitem response functionを見ると、ここで得られる生徒の能力値はスカラー値でなければならないと思うのだが、MLPをかけて得られたベクトルからどのように生徒の能力値を算出するかがジャーナル上では書かれていない。EDM'21の方を見ると、inputとなったスキルタグのembeddingとメモリのkeyとの関連度から求めたアテンションベクトルω_tとの内積でスカラーに変換しているようなので、おそらくそのような操作をしていると思われる。<br><br><br><br>item networkも同様に、スキルタグのembedding q_j と 項目のembedding s_j を別々にMLPにかけて、最終的に1次元に写像することで、スキル/項目の難易度パラメータを推論していると思われる。<br><br><img src="https://user-images.githubusercontent.com/12249301/180725805-1bcc08c4-1688-41ab-92bb-a4efb6bf2e3a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/180725856-840c048b-d402-4539-98bc-a49577bffa49.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>最終的に下記item response functionによって反応予測を行う。<br><br><img src="https://user-images.githubusercontent.com/12249301/180729156-b0d53d02-015d-47d1-be7d-efa7753a9722.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ただし、EDM'21の論文だと能力値パラメータθに3が乗じられているのに対し、こちらはそのような操作がされていない。どちらが正しいのか分からない。<br><br><br><br>また、メモリネットワークのmemory valueの更新は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/352" target="_blank" rel="noopener noreferrer">[Paper Note] Dynamic Key-Value Memory Networks for Knowledge Tracing, Jiani Zhang+, WWW'17, 2016.11</a>
@@ -8906,42 +8969,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Audio-Text-Image-to-Video.html"
-            title="Audio-Text-Image-to-Videoに関する論文・技術記事メモの一覧">
-            Audio-Text-Image-to-Videoに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PPO-(ProximalPolicyOptimization).html"
+            title="PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧">
+            PPO (ProximalPolicyOptimization)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/FactorizationMachines.html"
-            title="FactorizationMachinesに関する論文・技術記事メモの一覧">
-            FactorizationMachinesに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Personality.html"
+            title="Personalityに関する論文・技術記事メモの一覧">
+            Personalityに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TwoTowerModel.html"
-            title="TwoTowerModelに関する論文・技術記事メモの一覧">
-            TwoTowerModelに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/JMLR.html"
+            title="JMLRに関する論文・技術記事メモの一覧">
+            JMLRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RectifiedFlow.html"
-            title="RectifiedFlowに関する論文・技術記事メモの一覧">
-            RectifiedFlowに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SparseAttention.html"
+            title="SparseAttentionに関する論文・技術記事メモの一覧">
+            SparseAttentionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
+  <span class="post-badge badge-new">📝 21</span>
 </span>
 </a>
         </li></ul>

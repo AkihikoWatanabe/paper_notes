@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 58 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 2 mins</span>
   </div></header>
 </div>
     </div>
@@ -2119,16 +2119,16 @@ My Issue
 
 
 </p><p>
-<strong># モチベーション: 既存のCoT Promptingの問題点<br><br>## Inappropriate Examplars can Reduce Performance<br><br>まず、既存のCoT prompting手法は、sampling examplarがシンプル、あるいは極めて複雑な（hop-based criterionにおいて; タスクを解くために何ステップ必要かという情報; しばしば人手で付与されている？）サンプルをサンプリングしてしまう問題がある。シンプルすぎるサンプルを選択すると、既にLLMは適切にシンプルな回答には答えられるにもかかわらず、demonstrationが冗長で限定的になってしまう。加えて、極端に複雑なexampleをサンプリングすると、複雑なquestionに対しては性能が向上するが、シンプルな問題に対する正答率が下がってしまう。<br><br><br><br>続いて、demonstration中で誤ったreasoning chainを利用してしまうと、inference時にパフォーマンスが低下する問題がある。下図に示した通り、誤ったdemonstrationが増加するにつれて、最終的な予測性能が低下する傾向にある。<br><br><br><br>これら2つの課題は、現在のメインストリームな手法（questionを選択し、reasoning chainを生成する手法）に一般的に存在する。<br><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, ICLR'23</a>
+<strong># モチベーション: 既存のCoT Promptingの問題点<br><br>## Inappropriate Examplars can Reduce Performance<br><br>まず、既存のCoT prompting手法は、sampling examplarがシンプル、あるいは極めて複雑な（hop-based criterionにおいて; タスクを解くために何ステップ必要かという情報; しばしば人手で付与されている？）サンプルをサンプリングしてしまう問題がある。シンプルすぎるサンプルを選択すると、既にLLMは適切にシンプルな回答には答えられるにもかかわらず、demonstrationが冗長で限定的になってしまう。加えて、極端に複雑なexampleをサンプリングすると、複雑なquestionに対しては性能が向上するが、シンプルな問題に対する正答率が下がってしまう。<br><br><br><br>続いて、demonstration中で誤ったreasoning chainを利用してしまうと、inference時にパフォーマンスが低下する問題がある。下図に示した通り、誤ったdemonstrationが増加するにつれて、最終的な予測性能が低下する傾向にある。<br><br><br><br>これら2つの課題は、現在のメインストリームな手法（questionを選択し、reasoning chainを生成する手法）に一般的に存在する。<br><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">[Paper Note] Automatic Chain of Thought Prompting in Large Language Models, Zhuosheng Zhang+, ICLR'23, 2022.10</a>
 </strong>
 <br>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">Automatic prompt augmentation and selection with chain-of-thought from labeled data, Shum+, The Hong Kong University of Science and Technology, arXiv'23</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/555" target="_blank" rel="noopener noreferrer">[Paper Note] Automatic Prompt Augmentation and Selection with Chain-of-Thought from Labeled Data, KaShun Shum+, EMNLP'23, 2023.02</a>
 <br><br>のように推論時に適切なdemonstrationを選択するような取り組みは行われてきているが、test questionに対して推論するために、適切なexamplarsを選択するような方法は計算コストを増大させてしまう。<br><br>これら研究は誤ったrationaleを含むサンプルの利用を最小限に抑えて、その悪影響を防ぐことを目指している。<br><br><br><br>一方で、この研究では、誤ったrationaleを含むサンプルを活用して性能を向上させる。これは、たとえば学生が難解だが回答可能な問題に取り組むことによって、問題解決スキルを向上させる方法に類似している（すなわち、間違えた部分から学ぶ）。<br><br><img src="https://user-images.githubusercontent.com/12249301/234752168-fe1d83a4-8d29-4f6c-8aa1-6bde1706beea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p><p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<strong>## Large Language Models can self-Correct with Bootstrapping<br><br>Zero-Shot CoTでreasoning chainを生成し、誤ったreasoning chainを生成したpromptを**LLMに推敲させ(self-correction)**正しい出力が得られるようにする。こういったプロセスを繰り返し、correct sampleを増やすことでどんどん性能が改善していった。これに基づいて、IterCoTを提案。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234786084-5a6055f6-6f42-4546-bcbf-686b1d759ca9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># IterCoT: Iterative Bootstrapping in Chain-of-Thought Prompting<br><br>IterCoTはweak bootstrappingとstrong bootstrappingによって構成される。<br><br><br><br>## Weak bootstrapping<br><br>- Initialization<br><br>  - Training setに対してZero-shot CoTを実施し、reasoning chainとanswerを得<br><br>- Bootstrapping <br><br>  - 回答が誤っていた各サンプルに対して、Revise-Promptを適用しLLMに誤りを指摘し、新しい回答を生成させる。<br><br>  - 回答が正確になるまでこれを繰り返す。<br><br>- Summarization<br><br>  - 正しい回答が得られたら、Summary-Promptを利用して、これまでの誤ったrationaleと、正解のrationaleを利用し、最終的なreasoning chain (Iter-CoT)を生成する。<br><br>  - 全体のcontextual informationが加わることで、LLMにとって正確でわかりやすいreasoning chainを獲得する。<br><br>- Inference<br><br>  - questionとIter-Cotを組み合わせ、demonstration poolに加える<br><br>  - inference時はランダムにdemonstraction poolからサンプリングし、In context learningに利用し推論を行う<br><br><br><br>## Strong Bootstrapping<br><br>コンセプトはweak bootstrappingと一緒だが、Revise-Promptでより人間による介入を行う。具体的には、reasoning chainのどこが誤っているかを明示的に指摘し、LLMにreasoning chainをreviseさせる。<br><br>これは従来のLLMからの推論を必要としないannotationプロセスとは異なっている。何が違うかというと、人間によるannnotationをLLMの推論と統合することで、文脈情報としてreasoning chainを修正することができるようになる点で異なっている。</p><p># 実験<br><br>Manual-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 </strong>
 <br>
-<br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
-<br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">Active prompting with chain-of-thought for large language models, Diao+, The Hong Kong University of Science and Technology, ACL'24</a>
+<br><br>Random-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
+<br><br>Auto-CoT<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer">[Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL'24, 2023.02</a>
 <br><br>と比較。<br><br>Iter-CoTが11個のデータセット全てでoutperformした。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234792846-e8fd2f8b-6e26-48fc-9e5d-785bcf2a6b6a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>weak bootstrapingのiterationは4回くらいで頭打ちになった<br><br><img src="https://user-images.githubusercontent.com/12249301/234793570-f57e56e4-7320-4be4-9c93-ee3be01ad389.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、手動でreasoning chainを修正した結果と、contextにannotation情報を残し、最後にsummarizeする方法を比較した結果、後者の方が性能が高かった。このため、contextの情報を利用しsummarizeすることが効果的であることがわかる。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2417,7 +2417,7 @@ My Issue
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
 <span class="issue_date">Issue Date: 2023-08-22</span>
 <span class="snippet"><span>GPT Summary</span>- 私たちは、Graph of Thoughts（GoT）というフレームワークを紹介しました。これは、大規模言語モデル（LLMs）のプロンプティング能力を進化させるもので、任意のグラフとしてモデル化できることが特徴です。GoTは、思考の組み合わせやネットワーク全体の本質の抽出、思考の強化などを可能にします。さまざまなタスクで最先端の手法に比べて利点を提供し、LLMの推論を人間の思考に近づけることができます。</span>
-<span class="snippet"><span>Comment</span><p>Chain of Thought <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<span class="snippet"><span>Comment</span><p>Chain of Thought <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
  <br><br>=> Self-consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
  <br><br>=> Thought Decomposition <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1013" target="_blank" rel="noopener noreferrer">Decomposition Enhances Reasoning via Self-Evaluation Guided Decoding, Yuxi Xie+, N/A, arXiv'23</a>
  <br><br>=> Tree of Thoughts <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/684" target="_blank" rel="noopener noreferrer">Tree of Thoughts: Deliberate Problem Solving with Large Language Models, Shunyu Yao+, N/A, arXiv'23</a>
@@ -2571,7 +2571,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>制約に関する指示とデモンスとレーションに関するデータを合成して追加のinstruction tuningを実施することで、promptで指示された制約を満たすような（controllableな）テキストの生成能力を高める手法</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="boosting-theory-of-mind-581" class="title-link">Boosting Theory-of-Mind Performance in Large Language Models via Prompting, Moghaddam+, Johns Hopkins University, arXiv'23</h3><br><a href="https://arxiv.org/pdf/2304.11490.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="boosting-theory-of-mind-581" class="title-link">[Paper Note] Boosting Theory-of-Mind Performance in Large Language Models via Prompting, Shima Rahimi Moghaddam+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11490" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2586,11 +2586,13 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
 <a class="button" href="TheoryOfMind.html" target="_blank" rel="noopener noreferrer">#TheoryOfMind</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- LLMのToM性能を評価し、文脈内学習が理解を向上させる効果を検討。2ショットの連鎖思考と段階的思考指示を用いたプロンプトで、RLHF訓練モデルはToM精度を80％以上に。特にGPT-4は文脈内学習で100％に達し、適切なプロンプト付けがLLMの推論を強化することを示した。</span>
 <span class="snippet"><span>Comment</span><p>LLMはTheory-of-mind reasoningタスクが苦手なことが知られており、特にzero shotでは非常にパフォーマンスが低かった。ToMタスクとは、エージェントの信念、ゴール、メンタルstate、エージェントが何を知っているか等をトラッキングすることが求められるタスクのこと。このようなタスクはLLMが我々の日常生活を理解する上で重要。<br><br><img src="https://user-images.githubusercontent.com/12249301/235207785-8a4c5e0d-4825-4947-8ae6-a8176ad7c898.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>↑のToM Questionのシナリオと問題<br>Scenario: "The morning of the high school dance Sarah placed her high heel shoes under her dress and then went shopping. That afternoon, her sister borrowed the shoes and later put them under Sarah's bed."<br>Question: When Sarah gets ready, does she assume her shoes are under her dress?<br><br>しかし、Zero shot CoTのようなstep by step thinking, CoTを適切に行うことで、OpenAIの直近3つのモデルのAccuracyが80%を超えた。特に、GPT4は100％のAccuracyを達成。人間は87％だった。<br><br>この結果は、少なくとのこの論文でテストしたドメインではLLMのsocial reasoningのパフォーマンスをどのようにブーストするかを示しており、LLMのbehaviorは複雑でsensitiveであることを示唆している。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="exploring-the-569" class="title-link">Exploring the Curious Case of Code Prompts, Zhang+, University of Pennsylvania, arXiv'23</h3><br><a href="https://arxiv.org/abs/2304.13250" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="exploring-the-569" class="title-link">[Paper Note] Exploring the Curious Case of Code Prompts, Li Zhang+, NLRSE'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.13250" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2603,11 +2605,15 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- コード風のプロンプトによる構造化推論の性能向上が示されたが、その効果は限られたタスクに留まる。本研究では、davinci系のモデルに対して、QAや感情分析など幅広いタスクでコードとテキストプロンプトを比較し、全体としてコードプロンプトがテキストプロンプトを上回ることはなかった。タスクによってはコードプロンプトが有利な場合もあったが、全てのタスクに当てはまるわけではなく、テキスト指示によるファインチューニングがコードプロンプトの性能向上に寄与することを示した。</span>
 <span class="snippet"><span>Comment</span><p>コードベースのLLMに対して、reasoningタスクを解かせる際には、promptもコードにすると10パーセント程度性能上がる場合があるよ、という研究。<br><img src="https://user-images.githubusercontent.com/12249301/235037840-1fb57af3-5296-4831-9f80-26886c913431.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>ただし、平均的にはテキストプロンプトの方が良く、一部タスクで性能が改善する、という温度感な模様<br><img src="https://user-images.githubusercontent.com/12249301/235038209-b43dcdcb-301e-4879-a99e-8c8df32e6cf5.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>コードベースのモデルをtextでinstruction tuningしている場合でも、効果があるタスクがある。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="answering-questions-568" class="title-link">Answering Questions by Meta-Reasoning over Multiple Chains of Thought, Yoran+, Tel Aviv University （w_ Allen Institute for AI）, arXiv'23</h3><br><a href="https://arxiv.org/abs/2304.13007" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="answering-questions-568" class="title-link">[Paper Note] Answering Questions by Meta-Reasoning over Multiple Chains of Thought, Ori Yoran+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.13007" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2622,12 +2628,21 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- 複数の推論チェーンを考慮したMulti-Chain Reasoning（MCR）を提案。これにより、異なるチェーン間の情報を統合し、回答生成時に関連性の高い事実を選択することで、より質の高い説明を提供。7つのマルチホップQAデータセットで優れた性能を示し、人間による検証も可能な高品質な説明を実現。</span>
 <span class="snippet"><span>Comment</span><p>self-consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
- のようなvoting basedなアルゴリズムは、複数のCoTのintermediate stepを捨ててしまい、結果だけを採用するが、この研究は複数のCoTの中からquestionに回答するために適切なfactual informationを抽出するMeta Reasonerを導入し、複数のCoTの情報を適切に混在させて適切な回答を得られるようにした。<br><br><br><br>7個のMulti Hop QAデータでstrong baselineをoutperformし、人間が回答をverificationするための高品質な説明を生成できることを示した。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235135436-11dca529-771a-402b-a4ef-9b6deacec32e.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+ のようなvoting basedなアルゴリズムは、複数のCoTのintermediate stepを捨ててしまい、結果だけを採用するが、この研究は複数のCoTの中からquestionに回答するために適切なfactual informationを抽出するMeta Reasonerを導入し、複数のCoTの情報を適切に混在させて適切な回答を得られるようにした。<br><br><br><br>7個のMulti Hop QAデータでstrong baselineをoutperformし、人間が回答をverificationするための高品質な説明を生成できることを示した。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235135436-11dca529-771a-402b-a4ef-9b6deacec32e.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=ebSOK1nV2r" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=ebSOK1nV2r</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="large-language-553" class="title-link">Large Language Models are Zero-Shot Reasoners, Kojima+, University of Tokyo, NeurIPS'22</h3><br><a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="large-language-553" class="title-link">[Paper Note] Large Language Models are Zero-Shot Reasoners, Takeshi Kojima+, arXiv'22, 2022.05</h3><br><a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2641,20 +2656,25 @@ My Issue
 <a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Zero-Few-ManyShotPrompting.html" target="_blank" rel="noopener noreferrer">#Zero/Few/ManyShotPrompting</a>
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）は自然言語処理において少数ショット学習の能力が高く、CoT promptingにより複雑な多段階推論を効果的に引き出す。特に「Let's think step by step」の追加で、ゼロショット推論能力が向上し、様々な論理推論タスクで手作りの例を使わずに性能を大幅に向上させた。例えば、InstructGPTモデルでのMultiArithの精度が17.7％から78.7％へ、GSM8Kが10.4％から40.7％と劇的な改善が見られた。この研究はLLMsの潜在的なゼロショット能力を示し、ファインチューニングや少数ショットの前にその知識を探求する重要性が強調されている。</span>
 <span class="snippet"><span>Comment</span><p>Zero-Shot CoT (Let's think step-by-step.)論文</p><p><img src="https://user-images.githubusercontent.com/12249301/234746367-2cd80e23-8dcb-4244-b56c-e28120629027.png"" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>Zero-Shot-CoTは2つのステップで構成される：<br><br>- STEP1: Reasoning Extraction<br><br>  - 元のquestionをxとし、zero-shot-CoTのtrigger sentenceをtとした時に、テンプレート "Q: [X]. A. [T]" を用いてprompt　x'を作成<br><br>  - このprompt x'によって得られる生成テキストzはreasoningのrationaleとなっている。<br><br>- STEP2: Answer Extraction<br><br>  - STEP1で得られたx'とzを用いて、テンプレート "[X'] [Z] [A]" を用いてpromptを作成し、quiestionに対する回答を得る<br><br>  - このとき、Aは回答を抽出するためのtrigger sentenceである。<br><br>  - Aはタスクに応じて変更するのが効果的であり、たとえば、multi-choice QAでは "Therefore, among A through E, the answer is" といったトリガーを用いたり、数学の問題では "Therefore, the answer (arabic numerals) is" といったトリガーを用いる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236404426-ed936908-3771-4eef-9871-c6ae04c896bf.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong># 実験結果<br><br>表中の性能指標の左側はタスクごとにAnswer Triggerをカスタマイズしたもので、右側はシンプルに"The answer is"をAnswer Triggerとした場合。Zero-shot vs. Zero-shot-CoTでは、Zero-Shot-CoTが多くのb現地マークにおいて高い性能を示している。ただし、commonsense reasoningではperformance gainを得られなかった。これは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<strong># 実験結果<br><br>表中の性能指標の左側はタスクごとにAnswer Triggerをカスタマイズしたもので、右側はシンプルに"The answer is"をAnswer Triggerとした場合。Zero-shot vs. Zero-shot-CoTでは、Zero-Shot-CoTが多くのb現地マークにおいて高い性能を示している。ただし、commonsense reasoningではperformance gainを得られなかった。これは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 </strong>
 <br>
  で報告されている通り、commonsense reasoningタスクでは、Few-Shot CoTでもLambda135Bで性能が向上せず、Palm540Bで性能が向上したように、モデルのparameter数が足りていない可能性がある（本実験では17種類のモデルを用いているが、特に注釈がなければtext-davinci-002を利用した結果）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236405336-fe5e1f7f-9d2f-457f-9e25-98afe4ae0ec1.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong>## 他ベースラインとの比較<br><br>他のベースラインとarithmetic reasoning benchmarkで性能比較した結果。Few-Shot-CoTには勝てていないが、standard Few-shot Promptingtを大幅に上回っている。<br><br><img src="https://user-images.githubusercontent.com/12249301/236406621-7862823f-e019-4551-be96-1c97265ca5ba.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## zero-shot reasoningにおけるモデルサイズの影響<br><br>さまざまな言語モデルに対して、zero-shotとzero-shot-CoTを実施した場合の性能比較。<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<strong>## 他ベースラインとの比較<br><br>他のベースラインとarithmetic reasoning benchmarkで性能比較した結果。Few-Shot-CoTには勝てていないが、standard Few-shot Promptingtを大幅に上回っている。<br><br><img src="https://user-images.githubusercontent.com/12249301/236406621-7862823f-e019-4551-be96-1c97265ca5ba.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## zero-shot reasoningにおけるモデルサイズの影響<br><br>さまざまな言語モデルに対して、zero-shotとzero-shot-CoTを実施した場合の性能比較。<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 </strong>
 <br>
  と同様にモデルサイズが小さいとZero-shot-CoTによるgainは得られないが、モデルサイズが大きくなると一気にgainが大きくなる。<br><br><img src="https://user-images.githubusercontent.com/12249301/236407727-f29e6f67-8ca1-4623-8341-73bbf2029e67.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Zero-shot CoTにおけるpromptの選択による影響<br><br>input promptに対するロバスト性を確認した。instructiveカテゴリ（すなわち、CoTを促すトリガーであれば）性能が改善している。特に、どのようなsentenceのトリガーにするかで性能が大きくかわっている。今回の実験では、"Let's think step by step"が最も高い性能を占め最多。<br><br><img src="https://user-images.githubusercontent.com/12249301/236408268-8dbc32f3-76c7-4e41-aa1b-a19008aa680c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Few-shot CoTのprompt選択における影響<br><br>CommonsenseQAのexampleを用いて、AQUA-RAT, MultiArithをFew-shot CoTで解いた場合の性能。どちらのケースもドメインは異なるが、前者は回答のフォーマットは共通である。異なるドメインでも、answer format（multiple choice）の場合、ドメインが異なるにもかかわらず、zero-shotと比較して性能が大幅に向上した。一方、answer formatが異なる場合はperformance gainが小さい。このことから、LLMはtask自体よりも、exampleにおけるrepeated formatを活用していることを示唆している。また、CommonSennseをExamplarとして用いたFew-Shot-CoTでは、どちらのデータセットでもZero-Shot-CoTよりも性能が劣化している。つまり、Few-Shot-CoTでは、タスク特有のサンプルエンジニアリングが必要であることがわかる（一方、Zero-shot CoTではそのようなエンジニアリングは必要ない）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236408978-b292ea0f-0a17-42fc-8e3c-6eee35780ca4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="chain-of-551" class="title-link">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</h3><br><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="chain-of-thought-prompting-551" class="title-link">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</h3><br><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2665,12 +2685,15 @@ Paper/Blog Link
 </svg>
 My Issue
 </a><br>
-<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Zero-Few-ManyShotPrompting.html" target="_blank" rel="noopener noreferrer">#Zero/Few/ManyShotPrompting</a>
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 思考の連鎖によって、大規模言語モデルの推論能力が向上することを探求。チェーン・オブ・ソート思考のプロンプトを用いる事例を示し、3つのモデルでの実験を通じて算術や常識、象徴的推論において性能向上を確認。特に、5400億パラメータのモデルに8つのデモをプロンプトとして与えただけで、数学問題のGSM8Kベンチマークで最先端の精度を達成した。</span>
 <span class="snippet"><span>Comment</span><p>Chain-of-Thoughtを提案した論文。CoTをする上でパラメータ数が100B未満のモデルではあまり効果が発揮されないということは念頭に置いた方が良さそう。<br><br><img src="https://user-images.githubusercontent.com/12249301/234739470-be1c9299-0dd6-4483-901a-0bf855e73f0f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>先行研究では、reasoningが必要なタスクの性能が低い問題をintermediate stepを明示的に作成し、pre-trainedモデルをfinetuningすることで解決していた。しかしこの方法では、finetuning用の高品質なrationaleが記述された大規模データを準備するのに多大なコストがかかるという問題があった。<br><br>このため、few-shot promptingによってこの問題を解決することが考えられるが、reasoning能力が必要なタスクでは性能が悪いという問題あがった。そこで、両者の強みを組み合わせた手法として、chain-of-thought promptingは提案された。</p><p># CoTによる実験結果<br><br>以下のベンチマークを利用<br><br>- math word problem: GSM8K, SVAMP, ASDiv, AQuA, MAWPS<br><br>- commonsense reasoning: CSQA, StrategyQA, Big-bench Effort (Date, Sports), SayCan<br><br>- Symbolic Reasoning: Last Letter concatenation, Coin Flip<br><br>  - Last Letter concatnation: 名前の単語のlast wordをconcatするタスク（"Amy Brown" -> "yn"）<br><br>  - Coin Flip: コインをひっくり返す、 あるいはひっくり返さない動作の記述の後に、コインが表向きであるかどうかをモデルに回答するよう求めるタスク<br><br> <br><br>## math word problem benchmark<br><br>- モデルのサイズが大きくなるにつれ性能が大きく向上（emergent ability）することがあることがわかる<br><br>  - 言い換えるとCoTは<100Bのモデルではパフォーマンスに対してインパクトを与えない<br><br>  - モデルサイズが小さいと、誤ったCoTを生成してしまうため<br><br>- 複雑な問題になればなるほど、CoTによる恩恵が大きい<br><br>  - ベースラインの性能が最も低かったGSM8Kでは、パフォーマンスの2倍向上しており、1 stepのreasoningで解決できるSingleOpやMAWPSでは、性能の向上幅が小さい<br><br>- Task specificなモデルをfinetuningした以前のSoTAと比較してcomparable, あるいはoutperformしている<br><br>- <img src="https://user-images.githubusercontent.com/12249301/236394200-826ba167-8ec7-4abb-ba4d-fe44bf247b41.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>## Ablation Study<br><br>CoTではなく、他のタイプのpromptingでも同じような効果が得られるのではないか？という疑問に回答するために、3つのpromptingを実施し、CoTと性能比較した：<br><br>- Equation Only: 回答するまえに数式を記載するようなprompt<br><br>  - promptの中に数式が書かれているから性能改善されているのでは？という疑問に対する検証<br><br>  - => GSM8Kによる結果を見ると、equation onlyでは性能が低かった。これは、これは数式だけでreasoning stepsを表現できないことに起因している<br><br>- Variable compute only: dotのsequence (...) のみのprompt<br><br>  - CoTは難しい問題に対してより多くの計算（intermediate token）をすることができているからでは？という疑問に対する検証<br><br>  - variable computationとCoTの影響を分離するために、dotのsequence (...) のみでpromptingする方法を検証<br><br>  - => 結果はbaselineと性能変わらず。このことから、variableの計算自体が性能向上に寄与しているわけではないことがわかる。<br><br>- Chain of Thought after answer: 回答の後にCoTを出力するようなprompting<br><br>  - 単にpretrainingの際のrelevantな知識にアクセスしやすくなっているだけなのでは？という疑問を検証<br><br>  - => baselineと性能は変わらず、単に知識を活性化させるだけでは性能が向上しないことがわかる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236396383-877a26ae-20c2-42a4-a023-1eb66abf8320.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## CoTのロバスト性<br><br>人間のAnnotatorにCoTを作成させ、それらを利用したCoTpromptingとexamplarベースな手法によって性能がどれだけ変わるかを検証。standard promptingを全ての場合で上回る性能を獲得した。このことから、linguisticなstyleにCoTは影響を受けていないことがわかる。<br><br><img src="https://user-images.githubusercontent.com/12249301/236397864-073dd88f-95c0-47f0-af3c-ed7288ca967d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># commonsense reasoning<br><br>全てのデータセットにおいて、CoTがstandard promptingをoutperformした。<br><br><img src="https://user-images.githubusercontent.com/12249301/236398447-6c58a3f3-7461-4109-9a96-8f8092831dd1.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># Symbolic Reasoning<br><br>in-domain test setとout-of-domain test setの2種類を用意した。前者は必要なreasoning stepがfew-shot examplarと同一のもの、後者は必要なreasoning stepがfew-shot examplarよりも多いものである。<br><br>CoTがStandard proimptingを上回っている。特に、standard promptingではOOV test setではモデルをスケールさせても性能が向上しなかったのに対し、CoTではより大きなgainを得ている。このことから、CoTにはreasoning stepのlengthに対しても汎化能力があることがわかる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/236399389-30e62218-3e59-4912-983c-818de457fa04.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2981,42 +3004,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Visual-Words.html"
-            title="Visual Wordsに関する論文・技術記事メモの一覧">
-            Visual Wordsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Off-Policy.html"
+            title="Off-Policyに関する論文・技術記事メモの一覧">
+            Off-Policyに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
+  <span class="post-badge badge-new">📝 13</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SelfImprovement.html"
-            title="SelfImprovementに関する論文・技術記事メモの一覧">
-            SelfImprovementに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 38</span> 
-  <span class="post-badge badge-new">📝 38</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/GenerativeAI.html"
-            title="GenerativeAIに関する論文・技術記事メモの一覧">
-            GenerativeAIに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 55</span> 
-  <span class="post-badge badge-new">📝 55</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/GenerativeRecommendation.html"
-            title="GenerativeRecommendationに関する論文・技術記事メモの一覧">
-            GenerativeRecommendationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PartialRollout.html"
+            title="PartialRolloutに関する論文・技術記事メモの一覧">
+            PartialRolloutに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/IJCV.html"
+            title="IJCVに関する論文・技術記事メモの一覧">
+            IJCVに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/NeurIPS.html"
+            title="NeurIPSに関する論文・技術記事メモの一覧">
+            NeurIPSに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 204</span> 
+  <span class="post-badge badge-new">📝 204</span>
 </span>
 </a>
         </li></ul>

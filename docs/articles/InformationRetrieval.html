@@ -3611,7 +3611,7 @@ My Issue
 <a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <span class="issue_date">Issue Date: 2023-11-06</span>
 <span class="snippet"><span>Comment</span><p>（以下スクショはスライドより引用）<br><br><br><br>次のスクショはRAGにかかわる周辺技術がよくまとまっていると思う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/35f9f589-770c-435b-8d1b-81e615e86597" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>以下ざっくり私の中の認識として<br><br>- 計画<br><br>    - クエリ拡張<br><br>        - クエリの質が悪い場合検索性能が劣化するため、クエリをより適切に検索ができるように修正（昔はキーワードしか与えられないときに情報を増やすから”拡張”という文言が用いられているが現在はこれに限らないと思う）する技術<br><br>    - 分解・抽象化<br><br>        - 複雑なクエリから分解することでマルチホップの質問をサブ質問に分解（今ならLLMを利用すれば比較的簡単にできる）したり、あるいは抽象化したクエリ（Step-back Promptnig <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1076" target="_blank" rel="noopener noreferrer">[Paper Note] Take a Step Back: Evoking Reasoning via Abstraction in Large Language   Models, Huaixiu Steven Zheng+, N/A, ICLR'24</a>
- ）を活用することで検索を改善する技術<br><br>    - 検索対象選定<br><br>        - 検索する対象そのものを選択し、検索対象をフィルタリングする技術<br><br>        - 資料中ではLLMを用いたフィルタリングやClassifierを用いたフィルタリングが紹介されているが、メタデータで絞り込むなどの単純な方法でも実現可能だと思われる（メタデータで絞り込む、はClassifierでのフィルタリングとリンクするかもしれないが）<br><br>    - 思考・行動<br><br>        - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/518" target="_blank" rel="noopener noreferrer">REACT : SYNERGIZING REASONING AND ACTING IN LANGUAGE MODELS, Yao+, Princeton University and Google brain, ICLR'23</a>
+ ）を活用することで検索を改善する技術<br><br>    - 検索対象選定<br><br>        - 検索する対象そのものを選択し、検索対象をフィルタリングする技術<br><br>        - 資料中ではLLMを用いたフィルタリングやClassifierを用いたフィルタリングが紹介されているが、メタデータで絞り込むなどの単純な方法でも実現可能だと思われる（メタデータで絞り込む、はClassifierでのフィルタリングとリンクするかもしれないが）<br><br>    - 思考・行動<br><br>        - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/518" target="_blank" rel="noopener noreferrer">[Paper Note] ReAct: Synergizing Reasoning and Acting in Language Models, Shunyu Yao+, ICLR'23, 2022.10</a>
  のような自律的にLLMに思考とその結果に基づく行動をイテレーションさせる技術や、クエリを分解して回答へたどり着くために必要な推論を構築し、各推論の回答を検証しながら生成を繰り返す技術が紹介されている<br><br>        - この辺の技術はクエリが非常に複雑な場合に有効ではあるが、シンプルな場合は必要ないかなという印象がある<br><br>        - シンプルなユースケースの場合はどちらかというと泥臭い前処理とかが効きそう<br><br>- 関連知識取得<br><br>    - 検索<br><br>        - 表層検索（TF-IDFベクトル, BM25）などの古典的な手法や、意味検索（Embeddingに基づく手法）が紹介されている<br><br>        - 例えばlangchainでは表層検索 + 意味検索の両者がサポートされており、簡単にハイブリッドな検索が実現できる<br><br>    - 知識文生成<br><br>        - 外部知識として検索された文書を利用するだけでなく、LLM自身が保持する知識を活用するためにLLMが生成した文書の両方を活用するとQAの正答率が向上することが紹介されている<br><br>    - 文書フィルタ<br><br>        - 検索でクエリに関連しない文書を取得してしまう応答品質が大幅に低下することが紹介されている<br><br>            - 個人的にはここが一番重要なパートだと考えている<br><br>        - また、検索結果を要約する方法も紹介されている<br><br>    - 再帰・反復計算<br><br>        - Retrierverから取得した結果に基づいてLLMが応答を生成し、生成した応答とoriginalのquestionの両方を組み合わせて追加でRetrieverから文書を取得し生成する手法などが紹介されている<br><br>    -  リランキング<br><br>        - 検索結果のリランキングも古くから存在する技術であり、異なる知識を持つRankerによってリランキングさせることで性能が向上する場合がある<br><br>- 回答<br><br>    - 回答抽出・生成<br><br>        - 回答となる部分のspanを抽出する手法と、spanではなくテキストを生成する手法が紹介されている<br><br>        - この辺は文書要約におけるExtractive/Abstractive Summarization技術などもかなり応用が効くと思われる<br><br>- インデクシング<br><br>    - 不要文書のフィルタリングや、チャンク分割の戦略、資格情報をテキスト化する方法などが紹介されている<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5ad62f76-e1b9-4c78-847a-45387fe5fb3e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/634e5386-6ae4-4602-a214-cc8dc126daad" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3630,6 +3630,8 @@ My Issue
 <a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
 <span class="snippet"><span>Comment</span><p>Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurvey<br><br><br><br>ML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されてきた。一方HCIの分野ではaccuracyに特化しすぎるとUXの観点で不十分であることが指摘されており、たとえば既知のアイテムを推薦してしまったり、似たようなアイテムばかりが選択されユーザにとって有用ではなくなる、といったことが指摘されている。このため、ML, RecSys系の評価ではdiversity, novelty, serendipity, popularity, freshness等の新たなmetricが評価されるように変化してきた。また、accuracyの工場がUXの向上に必ずしもつながらないことが多くの研究で示されている。<br><br><br><br>一方、HCIやInformation Systems, Personalized IRはuser centricな実験が主流であり、personalizationは<br><br>- 情報アクセスに対するコストの最小化<br><br>- UXの改善<br><br>- コンピュータデバイスをより効率的に利用できるようにする<br><br>という3点を実現するための手段として捉えられている。HCIの分野では、personalizationの認知的な側面についても研究されてきた。<br><br>たとえば、ユーザは自己言及的なメッセージやrelevantなコンテンツが提示される場合、両方の状況においてpersonalizationされたと認知し、後から思い出せるのはrelevantなコンテンツに関することだという研究成果が出ている。このことから、自己言及的なメッセージングでユーザをstimulusすることも大事だが、relevantなコンテンツをきちんと提示することが重要であることが示されている。また、personalizationされたとユーザが認知するのは、必ずしもpersonalizationのプロセスに依存するのではなく、結局のところユーザが期待したメッセージを受け取ったか否かに帰結することも示されている。<br><br>user-centricな評価とオフライン評価の間にも不一致が見つかっている。たとえば<br><br>- オフラインで高い精度を持つアルゴリズムはニッチな推薦を隠している<br><br>  - i.e. popularityが高くrelevantな推薦した方がシステムの精度としては高く出るため<br><br>- オフライン vs. オンラインの比較で、ユーザがアルゴリズムの精度に対して異なる順位付けをする<br><br>といったことが知られている。<br><br><br><br>そのほかにも、企業ではofflineテスト -> betaテスターによるexploratoryなテスト -> A/Bテストといった流れになることが多く、Cognitive Scienceの分野の評価方法等にも触れている。</p></span><br><br>
 </article>
@@ -3647,6 +3649,7 @@ My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
 <span class="snippet"><span>Comment</span><p>Personalized Information Retrievalの先駆け的研究<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/566" target="_blank" rel="noopener noreferrer">[Paper Note] Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</a>
  と同時期</p></span><br><br>
@@ -3666,6 +3669,7 @@ My Issue
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
 <span class="snippet"><span>Comment</span><p>IR分野におけるuser profileの構築方法についてまとめられたsurvey<br><br>- 加重キーワード<br><br>- セマンティックネットワーク<br><br>- 加重コンセプト<br><br>について記述されている。また、プロファイルの構築方法についても詳述されている。</p></span><br><br>
 </article>
@@ -3704,15 +3708,17 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
 <a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
 <a class="button" href="Search.html" target="_blank" rel="noopener noreferrer">#Search</a>
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-04-27</span>
 <span class="snippet"><span>Comment</span><p>ベクトルの類似度を測るサービスやライブラリ等がまとまったリポジトリ</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="contrirver-540" class="title-link">Contrirver</h3><br><a href="https://github.com/facebookresearch/contriever" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="contrirever-540" class="title-link">Contrirever</h3><br><a href="https://github.com/facebookresearch/contriever" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3744,6 +3750,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
 <span class="issue_date">Issue Date: 2023-04-22</span>
 <span class="snippet"><span>Comment</span><p>- LlamaIndexのインデックスを更新し、更新前後で知識がアップデートされているか確認してみた<br><br>  - 
 
@@ -3771,6 +3778,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
 <span class="issue_date">Issue Date: 2023-04-21</span>
 <span class="snippet"><span>Comment</span><p>- LangChain の Googleカスタム検索 連携を試す<br><br>  - 
 
@@ -4116,19 +4124,19 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/DomainGap.html"
-            title="DomainGapに関する論文・技術記事メモの一覧">
-            DomainGapに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/KnowledgeEditing.html"
+            title="KnowledgeEditingに関する論文・技術記事メモの一覧">
+            KnowledgeEditingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 26</span> 
+  <span class="post-badge badge-new">📝 26</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CameraPoseEstimation.html"
-            title="CameraPoseEstimationに関する論文・技術記事メモの一覧">
-            CameraPoseEstimationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Copyright.html"
+            title="Copyrightに関する論文・技術記事メモの一覧">
+            Copyrightに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -4136,9 +4144,9 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Probing.html"
-            title="Probingに関する論文・技術記事メモの一覧">
-            Probingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CircuitAnalysis.html"
+            title="CircuitAnalysisに関する論文・技術記事メモの一覧">
+            CircuitAnalysisに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
   <span class="post-badge badge-new">📝 5</span>
@@ -4146,12 +4154,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ImageCaptioning.html"
-            title="ImageCaptioningに関する論文・技術記事メモの一覧">
-            ImageCaptioningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/OCR.html"
+            title="OCRに関する論文・技術記事メモの一覧">
+            OCRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
-  <span class="post-badge badge-new">📝 7</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 26</span> 
+  <span class="post-badge badge-new">📝 26</span>
 </span>
 </a>
         </li></ul>

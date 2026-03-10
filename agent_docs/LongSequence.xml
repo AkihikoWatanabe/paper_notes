@@ -3819,34 +3819,88 @@ LongLoRAは、オリジナルのアーキテクチャを保持しながらモデ
 </paper-entry>
 
 <paper-entry>
-<title>Efficiently Scaling Transformer Inference, Reiner Pope+, N_A, MLSys'23</title>
+<title>[Paper Note] Efficiently Scaling Transformer Inference, Reiner Pope+, MLSys'23, 2022.11</title>
 <original-paper-blog-link>https://arxiv.org/abs/2211.05102</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/601</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, Attention, LongSequence, Inference</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, action_wanted, Attention, LongSequence, Architecture, Inference, One-Line Notes</tags>
 <repo-issue-date>2023-04-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2211.05102
-# Affiliations
-  - Reiner Pope, N/A
-  - Sholto Douglas, N/A
-  - Aakanksha Chowdhery, N/A
-  - Jacob Devlin, N/A
-  - James Bradbury, N/A
-  - Anselm Levskaya, N/A
-  - Jonathan Heek, N/A
-  - Kefan Xiao, N/A
-  - Shivani Agrawal, N/A
-  - Jeff Dean, N/A
+# Authors
+  - Reiner Pope
+  - Sholto Douglas
+  - Aakanksha Chowdhery
+  - Jacob Devlin
+  - James Bradbury
+  - Anselm Levskaya
+  - Jonathan Heek
+  - Kefan Xiao
+  - Shivani Agrawal
+  - Jeff Dean
 # Abstract
-  - We study the problem of efficient generative inference for Transformermodels, in one of its most challenging settings: large deep models, with tightlatency targets and long sequence lengths. Better understanding of theengineering tradeoffs for inference for large Transformer-based models isimportant as use cases of these models are growing rapidly throughoutapplication areas. We develop a simple analytical model for inferenceefficiency to select the best multi-dimensional partitioning techniquesoptimized for TPU v4 slices based on the application requirements. We combinethese with a suite of low-level optimizations to achieve a new Pareto frontieron the latency and model FLOPS utilization (MFU) tradeoffs on 500B+ parametermodels that outperforms the FasterTransformer suite of benchmarks. We furthershow that with appropriate partitioning, the lower memory requirements ofmultiquery attention (i.e. multiple query heads share single key/value head)enables scaling up to 32x larger context lengths. Finally, we achieve alow-batch-size latency of 29ms per token during generation (using int8 weightquantization) and a 76% MFU during large-batch-size processing of input tokens,while supporting a long 2048-token context length on the PaLM 540B parametermodel.
-# Translation (by gpt-3.5-turbo)
-- 本研究では、Transformerモデルの効率的な生成推論の問題を、最も厳しい状況の1つである、大規模な深層モデル、タイトなレイテンシーターゲット、長いシーケンス長に対して研究しています。これらのモデルの使用例がアプリケーション領域全体で急速に増加しているため、大規模Transformerベースのモデルの推論のエンジニアリングのトレードオフをより良く理解することが重要です。我々は、アプリケーション要件に基づいてTPU v4スライスに最適化された最良の多次元分割技術を選択するための推論効率のための単純な解析モデルを開発しました。これらを低レベルの最適化と組み合わせることで、500B+パラメータモデルのレイテンシーとモデルFLOPS利用率のトレードオフにおいて、FasterTransformerベンチマークスイートを上回る新しいParetoフロンティアを実現しました。さらに、適切な分割により、マルチクエリアテンション（複数のクエリヘッドが単一のキー/バリューヘッドを共有する）の低いメモリ要件により、32倍の大きなコンテキスト長にスケーリングすることができることを示しました。最後に、int8ウェイト量子化を使用した生成中の低バッチサイズレイテンシーは、トークンあたり29msであり、入力トークンの大バッチサイズ処理において76％のMFUを実現し、PaLM 540Bパラメータモデルにおいて2048トークンの長いコンテキスト長をサポートしています。
-# Summary (by gpt-3.5-turbo)
-- - 大規模Transformerベースのモデルの推論のエンジニアリングのトレードオフを理解するために、最適な多次元分割技術を選択するための単純な解析モデルを開発
-- 低レベルの最適化と組み合わせることで、500B+パラメータモデルのレイテンシーとモデルFLOPS利用率のトレードオフにおいて、FasterTransformerベンチマークスイートを上回る新しいParetoフロンティアを実現
-- 適切な分割により、マルチクエリアテンションの低いメモリ要件により、32倍の大きなコンテキスト長にスケーリング可能
-- int8ウェイト量子化を使用した生成中の低バッチサイズレイテンシーは、トークンあたり29msであり、入力トークンの大バッチサイズ処理において76％のMFUを実現し、PaLM 540Bパラメータモデルにおいて2048トークンの長いコンテキスト長をサポートしている。</issue-body>
-<maintainer-comment-text><p>特にMultiquery Attentionという技術がTransformerのinferenceのコスト削減に有効らしい</p></maintainer-comment-text>
+  - We study the problem of efficient generative inference for Transformer models, in one of its most challenging settings: large deep models, with tight latency targets and long sequence lengths. Better understanding of the engineering tradeoffs for inference for large Transformer-based models is important as use cases of these models are growing rapidly throughout application areas. We develop a simple analytical model for inference efficiency to select the best multi-dimensional partitioning techniques optimized for TPU v4 slices based on the application requirements. We combine these with a suite of low-level optimizations to achieve a new Pareto frontier on the latency and model FLOPS utilization (MFU) tradeoffs on 500B+ parameter models that outperforms the FasterTransformer suite of benchmarks. We further show that with appropriate partitioning, the lower memory requirements of multiquery attention (i.e. multiple query heads share single key/value head) enables scaling up to 32x larger context lengths. Finally, we achieve a low-batch-size latency of 29ms per token during generation (using int8 weight quantization) and a 76% MFU during large-batch-size processing of input tokens, while supporting a long 2048-token context length on the PaLM 540B parameter model.
+# Translation (by gpt-5-nano)
+- 我々は、Transformerモデルの生成的推論を、最も困難な設定の一つである大規模で深いモデル、厳格な遅延目標、長いシーケンス長の下で研究する。大規模なTransformerベースのモデルの推論におけるエンジニアリング上のトレードオフをよりよく理解することは、これらのモデルのユースケースがアプリケーション領域全体で急速に拡大しているため重要である。我々は、アプリケーション要件に基づいて TPU v4 スライスに最適化された推論効率の単純な解析モデルを開発し、最適な多次元分割手法を選択する。これらを一連の低レベル最適化と組み合わせ、500B超えのパラメータを持つモデルにおける待機時間とモデルFLOPS利用率（MFU）のトレードオフにおいて新しいパレート前線を達成し、FasterTransformerのベンチマーク群を上回る。さらに、適切な分割を用いることで、マルチクエリ注意機構（すなわち複数のクエリヘッドが単一のキー/バリューヘッドを共有する）による低いメモリ要件は、コンテキスト長を最大で32倍まで拡張できることを示す。最後に、生成時の小さなバッチサイズで1トークンあたりの遅延を29ミリ秒（int8重み量子化を使用）に抑え、入力トークンの大規模バッチ処理時にはMFUを76%に達し、PaLM 540Bパラメータモデルで長さ2048トークンのコンテキスト長をサポートする。
+# Summary (by gpt-4o-mini)
+- 大規模なTransformerモデルの生成的推論を、長いシーケンス長と厳格な遅延目標の下で研究。TPU v4用に最適化された解析モデルを開発し、待機時間とモデルFLOPS利用率のトレードオフにおいて新しいパレート前線を達成。マルチクエリ注意機構を用いることでメモリ要件を減少させ、コンテキスト長を最大32倍に拡張。最終的に、小さなバッチサイズでの1トークンあたりの遅延は29ミリ秒となり、MFUは76%に達し、PaLM 540Bモデルで2048トークンのコンテキストをサポート。</issue-body>
+<maintainer-comment-text><p>特にMultiquery Attentionという技術がTransformerのinferenceのコスト削減に有効らしい</p><p>Multi Query Attention (MQA):<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1272" target="_blank" rel="noopener noreferrer">[Paper Note] Fast Transformer Decoding: One Write-Head is All You Need, Noam Shazeer, arXiv'19, 2019.11</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Scaling Transformer to 1M tokens and beyond with RMT, Aydar Bulatov+, arXiv'23, 2023.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2304.11062</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/529</repo-issue-link>
+<tags>NeuralNetwork, NLP, LanguageModel, Transformer, action_wanted, LongSequence, memory, One-Line Notes</tags>
+<repo-issue-date>2023-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2304.11062
+# Authors
+  - Aydar Bulatov
+  - Yuri Kuratov
+  - Yermek Kapushev
+  - Mikhail S. Burtsev
+# Abstract
+  - A major limitation for the broader scope of problems solvable by transformers is the quadratic scaling of computational complexity with input size. In this study, we investigate the recurrent memory augmentation of pre-trained transformer models to extend input context length while linearly scaling compute. Our approach demonstrates the capability to store information in memory for sequences of up to an unprecedented two million tokens while maintaining high retrieval accuracy. Experiments with language modeling tasks show perplexity improvement as the number of processed input segments increases. These results underscore the effectiveness of our method, which has significant potential to enhance long-term dependency handling in natural language understanding and generation tasks, as well as enable large-scale context processing for memory-intensive applications.
+# Translation (by gpt-5-nano)
+- トランスフォーマーによって解決可能な問題の範囲を広げる上での主要な制約の一つは、入力サイズに対する計算量が二次的に増大することである。本研究では、事前学習済みトランスフォーマーモデルの再帰的メモリ拡張を検討し、計算量を線形にスケールさせながら入力コンテキスト長を拡張する。我々のアプローチは、前例のない規模である二百万トークンまでのシーケンスの情報をメモリに格納できる能力を、高い読み出し精度を維持しつつ実証する。言語モデリングタスクの実験は、処理された入力セグメント数が増えるにつれてパープレキシティが改善することを示している。これらの結果は我々の手法の有効性を強調しており、自然言語理解および生成タスクにおける長期依存の処理能力を高める大きな可能性を持つとともに、メモリ集約型アプリケーションにおける大規模な文脈処理を可能にする。
+# Summary (by gpt-4o-mini)
+- 再帰的メモリ拡張を用いて、トランスフォーマーの計算量を線形にスケールし、最大二百万トークンまでのシーケンスを扱う能力を実証。言語モデリングタスクでの実験は、パープレキシティの改善を示し、長期依存の処理能力向上の可能性を強調。</issue-body>
+<maintainer-comment-text><p>Reccurent Memory Transformer <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/523" target="_blank" rel="noopener noreferrer">[Paper Note] Recurrent Memory Transformer, Aydar Bulatov+, NeurIPS'22, 2022.07</a>
+ を使って2Mトークン扱えるようにしたよーという話。<br><br>ハリーポッターのトークン数が1.5Mらしいので、そのうち小説一冊書けるかもという世界。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Recurrent Memory Transformer, Aydar Bulatov+, NeurIPS'22, 2022.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2207.06881</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/523</repo-issue-link>
+<tags>NLP, LanguageModel, action_wanted, LongSequence, NeurIPS, memory, KeyPoint Notes</tags>
+<repo-issue-date>2023-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2207.06881
+# Authors
+  - Aydar Bulatov
+  - Yuri Kuratov
+  - Mikhail S. Burtsev
+# Abstract
+  - Transformer-based models show their effectiveness across multiple domains and tasks. The self-attention allows to combine information from all sequence elements into context-aware representations. However, global and local information has to be stored mostly in the same element-wise representations. Moreover, the length of an input sequence is limited by quadratic computational complexity of self-attention.   In this work, we propose and study a memory-augmented segment-level recurrent Transformer (RMT). Memory allows to store and process local and global information as well as to pass information between segments of the long sequence with the help of recurrence.   We implement a memory mechanism with no changes to Transformer model by adding special memory tokens to the input or output sequence. Then the model is trained to control both memory operations and sequence representations processing.   Results of experiments show that RMT performs on par with the Transformer-XL on language modeling for smaller memory sizes and outperforms it for tasks that require longer sequence processing. We show that adding memory tokens to Tr-XL is able to improve its performance. This makes Recurrent Memory Transformer a promising architecture for applications that require learning of long-term dependencies and general purpose in memory processing, such as algorithmic tasks and reasoning.
+# Translation (by gpt-5-nano)
+- トランスフォーマーベースのモデルは、さまざまな領域とタスクにおいて有効性を示している。自己注意は、シーケンス内の全ての要素の情報を結合して文脈依存の表現を生み出す。しかし、グローバル情報とローカル情報は、ほとんど同じ要素ごとの表現に格納される必要がある。さらに、入力シーケンスの長さは自己注意の二次計算量によって制限される。
+
+本研究では、メモリを拡張したセグメントレベル再帰型トランスフォーマー（RMT）を提案し、その特性を検討する。メモリは、局所情報と全体情報を保存・処理するだけでなく、再帰を用いて長いシーケンスのセグメント間で情報を伝達することを可能にする。
+
+Transformerモデルに変更を加えることなく、入力または出力シーケンスに特別なメモリトークンを追加することで、メモリ機構を実装する。次に、メモリ操作とシーケンス表現の処理の両方を制御できるようにモデルを訓練する。
+
+実験の結果、RMTはメモリサイズが小さい場合の言語モデリングにおいてTransformer-XLと同等の性能を示し、より長いシーケンス処理を要するタスクではそれを上回ることを示している。Tr-XLにメモリトークンを追加することでその性能を改善できることを示した。これにより、長期的な依存関係の学習とメモリ処理の汎用性を要する応用、例えばアルゴリズム的タスクや推論といった場面において、再帰的メモリトランスフォーマーは有望なアーキテクチャとなる。
+# Summary (by gpt-4o-mini)
+- メモリ機構を持つセグメントレベル再帰型トランスフォーマー（RMT）を提案。局所情報と全体情報を保存・処理し、長いシーケンス間で情報を伝達可能。特別なメモリトークンを追加することでTransformerモデルに変更を加えずに実装。実験結果では、RMTは短いメモリサイズでもTransformer-XLと同等の性能を示し、長いシーケンス処理では優れていることが確認。再帰的メモリトランスフォーマーは長期依存関係の学習に対する有望なアーキテクチャ。</issue-body>
+<maintainer-comment-text><p>TransformerはO(N^2)であり、計算量がNに応じて指数関数的に増加してしまう。一方、sequenceの情報を全てN次元ベクトルに集約しなければならず、計算量の制約によって長い系列のRepresentationを獲得できない。<br><br>そこで、Transformerの構造は変えず、Inputにメモリtokenを追加することで、メモリ間の関係性を学習できるような手法を提案。長いトークン列に対しても、トークン列をセグメントとゆばれる単位に区切り、セグメントのInputの頭で、前断のセグメントのメモリtokenを入力し、最終的に現在のセグメントのメモリをoutputし、後断のセグメントに入力とする、といったことを繰り返すことで、長い系列も扱えるようにした。<br><br>セグメントをまたいでbackpropagationをかけることで、たとえセグメントとしては独立していても、メモリの情報を考慮することでセグメント間の依存関係を学習することが可能だと思われる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234206394-925cb6ee-85bd-46ad-b7ed-f57685badc38.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Uynr3iPhksa" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Uynr3iPhksa</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -4385,16 +4439,6 @@ HF:https://huggingface.co/collections/ibm-granite/granite-40-language-models-681
 <repo-issue-date>2023-07-01</repo-issue-date>
 <issue-body>https://lmsys.org/blog/2023-06-29-longchat/</issue-body>
 <maintainer-comment-text><p>LLMのcontext長を伸ばす際の方法と得られた知見がまとめられている</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Unleashing Infinite-Length Input Capacity for Large-scale Language Models with Self-Controlled Memory System, 2023</title>
-<original-paper-blog-link>https://arxiv.org/abs/2304.13343</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/560</repo-issue-link>
-<tags>NLP, LanguageModel, LongSequence</tags>
-<repo-issue-date>2023-04-27</repo-issue-date>
-<issue-body>https://arxiv.org/abs/2304.13343</issue-body>
-<maintainer-comment-text><p>> Our findings indicate that our system outperforms ChatGPT in handling ultra-long inputs or conversations.<br><br><br><br>と書いてあるが、定量評価の結果が全く書いていない模様。全くもって信用できない。読む必要なし。</p><p>4/27時点だと記述されていなかったと思うが、現時点では定量評価が追加されている模様？</p></maintainer-comment-text>
 </paper-entry>
 
 </paper-list>

@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 hours 35 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 19 hours 3 mins</span>
   </div></header>
 </div>
     </div>
@@ -5393,6 +5393,64 @@ My Issue
 )を踏襲<br>- image, audioがtargetの場合: 2つの類似したパラダイムを定義し利用<br>  - \[R\]: patchをランダムにx%マスクしre-constructする<br>  - \[S\]: inputのtargetとは異なるモダリティのみの情報から、targetモダリティを生成する<br><br>訓練時には prefixとしてmodality token \[Text\], \[Image\], \[Audio\] とparadigm token \[R\], \[S\], \[X\] をタスクを指示するトークンとして利用している。</p><p>また、image, audioのマスク部分のdenoisingをautoregressive modelで実施する際には普通にやるとdecoder側でリークが発生する(a)。これを防ぐには、Encoder側でマスクされているトークンを、Decoder側でteacher-forcingする際にの全てマスクする方法(b)があるが、この場合、生成タスクとdenoisingタスクが相互に干渉してしまいうまく学習できなくなってしまう（生成タスクでは通常Decoderのinputとして[mask]が入力され次トークンを生成する、といったことは起きえないが、愚直に(b)をやるとそうなってしまう）。ので、(c)に示したように、マスクされているトークンをinputとして生成しなければならない時だけ、マスクを解除してdecoder側にinputする、という方法 (Dynamic Masking) でこの問題に対処している。<br><img src="https://github.com/user-attachments/assets/0dba8d5d-0c93-4c56-852b-fce9869428e7" /" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="pandalm-an-603" class="title-link">[Paper Note] PandaLM: An Automatic Evaluation Benchmark for LLM Instruction Tuning Optimization, Yidong Wang+, ICLR'24, 2023.06</h3><br><a href="https://arxiv.org/abs/2306.05087" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/603" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
+<a class="button" href="LLM-as-a-Judge.html" target="_blank" rel="noopener noreferrer">#LLM-as-a-Judge</a>
+<a class="button" href="Reproducibility.html" target="_blank" rel="noopener noreferrer">#Reproducibility</a>
+<a class="button" href="Privacy.html" target="_blank" rel="noopener noreferrer">#Privacy</a>
+<span class="issue_date">Issue Date: 2023-04-30</span>
+<span class="snippet"><span>GPT Summary</span>- 指示チューニングされたLLMの評価が難しいため、PandaLMを導入し、応答の客観的な正確性に加え、簡潔さや明瞭さなどの主観的要因にも対処。人間生成のテストデータで信頼性を確保し、PandaLM-7BがGPT-3.5の93.75%、GPT-4の88.28%に相当する評価能力を示す。PandaLMによるモデルは、従来のモデルに比べて評価を公正かつ低コストで行える。全リソースは公開中。</span>
+<span class="snippet"><span>Comment</span><p>github: 
+
+
+<a href="https://github.com/WeOpenML/PandaLM" target="_blank" rel="noopener noreferrer">https://github.com/WeOpenML/PandaLM</a>
+
+
+<br><br>異なるLLMを再現性のある形で評価するためのpairwiseなLLM-as-a-judgeに基づくライブラリ。人間の嗜好をアノテーションしたデータを収集しLLaMAをベースにSFTすることで、PandaLMを学習。PandaLMはsubjectiveな要素も考慮して応答の良さをjudgeできる。このPandaLM-7Bをローカルで動作させる枠組みでプライバシーに配慮した上で、GPT-4級のLLM-as-a-Judgeを実施できる。<br><br>2つの異なるLLMのoutputを比較し、どちらが優れているか理由付きで説明する。人間が作成して1000サンプルの多様なアノテーションデータセットを使い評価できる。</p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=5Nn2BLV7SB" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=5Nn2BLV7SB</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="active-prompting-554" class="title-link">[Paper Note] Active Prompting with Chain-of-Thought for Large Language Models, Shizhe Diao+, ACL'24, 2023.02</h3><br><a href="https://arxiv.org/abs/2302.12246" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/554" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の性能向上には、タスク特有のプロンプト設計が重要であり、特に連鎖的思考（CoT）を活用したアプローチが効果的です。この研究では、Active-Promptという新手法を提案し、タスク特有の質問に対する最適なアノテーションを選定することでLLMsを適応させます。不確実性に基づくアクティブラーニングを取り入れ、最も不確実な質問を対象にする指標を導入。実験により、提案手法が8つの複雑な推論タスクで最先端の成績を達成し、有効性が示されました。</span>
+<span class="snippet"><span>Comment</span><p>しっかりと読めていないが、CoT-answerが存在しないtrainingデータが存在したときに、nサンプルにCoTとAnswerを与えるだけでFew-shotの予測をtestデータに対してできるようにしたい、というのがモチベーションっぽい<br><br>そのために、questionに対して、training dataに対してFew-Shot CoTで予測をさせた場合やZero-Shot CoTによって予測をさせた場合などでanswerを取得し、answerのばらつき度合いなどから不確実性を測定する。<br><br>そして、不確実性が高いCoT-Answerペアを取得し、人間が手作業でCoTと回答のペアを与え、その人間が作成したものを用いてTestデータに対してFewShotしましょう、ということだと思われる。<br><br><img src="https://user-images.githubusercontent.com/12249301/234747555-4b7bd0d5-f099-4288-a470-32206533e652.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="robust-speech-3673" class="title-link">[Paper Note] Robust Speech Recognition via Large-Scale Weak Supervision, Alec Radford+, ICML'23, 2022.12</h3><br><a href="https://arxiv.org/abs/2212.04356" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -5594,7 +5652,7 @@ My Issue
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <span class="issue_date">Issue Date: 2025-01-05</span>
 <span class="snippet"><span>GPT Summary</span>- Recursion of Thought（RoT）という新しい推論フレームワークを提案し、言語モデル（LM）が問題を複数のコンテキストに分割することで推論能力を向上させる。RoTは特別なトークンを導入し、コンテキスト関連の操作をトリガーする。実験により、RoTがLMの推論能力を劇的に向上させ、数十万トークンの問題を解決できることが示された。</span>
-<span class="snippet"><span>Comment</span><p>divide-and-conquerで複雑な問題に回答するCoT手法。生成過程でsubquestionが生じた際にモデルに特殊トークン（GO）を出力させ、subquestionの回答部分に特殊トークン（THINK）を出力させるようにSupervisedに学習させる。最終的にTHINKトークン部分は、subquestionを別途モデルによって解いた回答でreplaceして、最終的な回答を得る。<br>subquestionの中でさらにsubquestionが生じることもあるため、再帰的に処理される。<br><img src="https://github.com/user-attachments/assets/6a5a5155-b3dd-4a6a-a9f5-0975dddcedb7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>四則演算と4種類のアルゴリズムに基づくタスクで評価。アルゴリズムに基づくタスクは、2つの数のlongest common subsequenceを見つけて、そのsubsequenceとlengthを出力するタスク（LCS）、0-1 knapsack問題、行列の乗算、数値のソートを利用。x軸が各タスクの問題ごとの問題の難易度を表しており、難易度が上がるほど提案手法によるgainが大きくなっているように見える。<br><br>Without Thoughtでは直接回答を出力させ、CoTではground truthとなるrationaleを1つのcontextに与えて回答を生成している。RoTではsubquestionごとに回答を別途得るため、より長いcontextを活用して最終的な回答を得る点が異なると主張している。<br><br><img src="https://github.com/user-attachments/assets/8e713c76-5f79-40c7-87b0-d69f6fac3ee3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p><p>感想としては、詳細が書かれていないが、おそらくRoTはSFTによって各タスクに特化した学習をしていると考えられる（タスクごとの特殊トークンが存在するため）。ベースラインとしてRoT無しでSFTしたモデルあった方が良いのではないか？と感じる。<br><br>また、学習データにおけるsubquestionとsubquestionに対するground truthのデータ作成方法は書かれているが、そもそも元データとして何を利用したかや、その統計量も書かれていないように見える。あと、そもそも機械的に学習データを作成できない場合どうすれば良いのか？という疑問は残る。</p><p>読んでいた時にAuto-CoTとの違いがよくわからなかったが、Related Workの部分にはAuto-CoTは動的、かつ多様なデモンストレーションの生成にフォーカスしているが、AutoReasonはquestionを分解し、few-shotの promptingでより詳細なrationaleを生成することにフォーカスしている点が異なるという主張のようである。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">Automatic Chain of Thought Prompting in Large Language Models, Zhang+, Shanghai Jiao Tong University, ICLR'23</a>
+<span class="snippet"><span>Comment</span><p>divide-and-conquerで複雑な問題に回答するCoT手法。生成過程でsubquestionが生じた際にモデルに特殊トークン（GO）を出力させ、subquestionの回答部分に特殊トークン（THINK）を出力させるようにSupervisedに学習させる。最終的にTHINKトークン部分は、subquestionを別途モデルによって解いた回答でreplaceして、最終的な回答を得る。<br>subquestionの中でさらにsubquestionが生じることもあるため、再帰的に処理される。<br><img src="https://github.com/user-attachments/assets/6a5a5155-b3dd-4a6a-a9f5-0975dddcedb7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>四則演算と4種類のアルゴリズムに基づくタスクで評価。アルゴリズムに基づくタスクは、2つの数のlongest common subsequenceを見つけて、そのsubsequenceとlengthを出力するタスク（LCS）、0-1 knapsack問題、行列の乗算、数値のソートを利用。x軸が各タスクの問題ごとの問題の難易度を表しており、難易度が上がるほど提案手法によるgainが大きくなっているように見える。<br><br>Without Thoughtでは直接回答を出力させ、CoTではground truthとなるrationaleを1つのcontextに与えて回答を生成している。RoTではsubquestionごとに回答を別途得るため、より長いcontextを活用して最終的な回答を得る点が異なると主張している。<br><br><img src="https://github.com/user-attachments/assets/8e713c76-5f79-40c7-87b0-d69f6fac3ee3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p><p>感想としては、詳細が書かれていないが、おそらくRoTはSFTによって各タスクに特化した学習をしていると考えられる（タスクごとの特殊トークンが存在するため）。ベースラインとしてRoT無しでSFTしたモデルあった方が良いのではないか？と感じる。<br><br>また、学習データにおけるsubquestionとsubquestionに対するground truthのデータ作成方法は書かれているが、そもそも元データとして何を利用したかや、その統計量も書かれていないように見える。あと、そもそも機械的に学習データを作成できない場合どうすれば良いのか？という疑問は残る。</p><p>読んでいた時にAuto-CoTとの違いがよくわからなかったが、Related Workの部分にはAuto-CoTは動的、かつ多様なデモンストレーションの生成にフォーカスしているが、AutoReasonはquestionを分解し、few-shotの promptingでより詳細なrationaleを生成することにフォーカスしている点が異なるという主張のようである。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer">[Paper Note] Automatic Chain of Thought Prompting in Large Language Models, Zhuosheng Zhang+, ICLR'23, 2022.10</a>
 </p><p>Auto-CoTとの差別化は上記で理解できるが、G-Evalが実施しているAuto-CoTとの差別化はどうするのか？という風にふと思った。論文中でもG-Evalは引用されていない。<br><br>素朴にはAutoReasonはSFTをして学習をしています、さらにRecursiveにquestionをsubquestionを分解し、分解したsubquestionごとに回答を得て、subquestionの回答結果を活用して最終的に複雑なタスクの回答を出力する手法なので、G-Evalが実施している同一context内でrationaleをzeroshotで生成する手法よりも、より複雑な問題に回答できる可能性が高いです、という主張にはなりそうではある。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1223" target="_blank" rel="noopener noreferrer">[Paper Note] G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment, Yang Liu+, N/A, EMNLP'23</a>
 </p><p>ICLR 2023 OpenReview:
 
@@ -5782,6 +5840,76 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="boosting-theory-of-mind-581" class="title-link">[Paper Note] Boosting Theory-of-Mind Performance in Large Language Models via Prompting, Shima Rahimi Moghaddam+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11490" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/581" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
+<a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
+<a class="button" href="TheoryOfMind.html" target="_blank" rel="noopener noreferrer">#TheoryOfMind</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- LLMのToM性能を評価し、文脈内学習が理解を向上させる効果を検討。2ショットの連鎖思考と段階的思考指示を用いたプロンプトで、RLHF訓練モデルはToM精度を80％以上に。特にGPT-4は文脈内学習で100％に達し、適切なプロンプト付けがLLMの推論を強化することを示した。</span>
+<span class="snippet"><span>Comment</span><p>LLMはTheory-of-mind reasoningタスクが苦手なことが知られており、特にzero shotでは非常にパフォーマンスが低かった。ToMタスクとは、エージェントの信念、ゴール、メンタルstate、エージェントが何を知っているか等をトラッキングすることが求められるタスクのこと。このようなタスクはLLMが我々の日常生活を理解する上で重要。<br><br><img src="https://user-images.githubusercontent.com/12249301/235207785-8a4c5e0d-4825-4947-8ae6-a8176ad7c898.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>↑のToM Questionのシナリオと問題<br>Scenario: "The morning of the high school dance Sarah placed her high heel shoes under her dress and then went shopping. That afternoon, her sister borrowed the shoes and later put them under Sarah's bed."<br>Question: When Sarah gets ready, does she assume her shoes are under her dress?<br><br>しかし、Zero shot CoTのようなstep by step thinking, CoTを適切に行うことで、OpenAIの直近3つのモデルのAccuracyが80%を超えた。特に、GPT4は100％のAccuracyを達成。人間は87％だった。<br><br>この結果は、少なくとのこの論文でテストしたドメインではLLMのsocial reasoningのパフォーマンスをどのようにブーストするかを示しており、LLMのbehaviorは複雑でsensitiveであることを示唆している。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="large-language-580" class="title-link">[Paper Note] Large Language Models are Versatile Decomposers: Decompose Evidence and Questions for Table-based Reasoning, Yunhu Ye+, SIGIR'23, 2023.01</h3><br><a href="https://arxiv.org/abs/2301.13808" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/580" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
+<a class="button" href="TabularData.html" target="_blank" rel="noopener noreferrer">#TabularData</a>
+<a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- LLMを活用して、表ベースの推論における巨大な証拠を小さなサブ証拠に分解し、複雑な質問をシンプルなサブ質問に分解。各ステップで論理と数値計算を分離することで、思考の連鎖における幻覚を防止。提案手法は、TabFactで人間を超える性能を達成。</span>
+<span class="snippet"><span>Comment</span><p>テーブルとquestionが与えられた時に、questionをsub-questionとsmall tableにLLMでin-context learningすることで分割。subquestionの解を得るためのsqlを作成しスポットを埋め、hallucinationを防ぐ。最終的にLLM Reasonerが解答を導出する。TabFact Reasoningで初めて人間を超えた性能を発揮。<br><br><img src="https://user-images.githubusercontent.com/12249301/235204690-75f6b56b-3291-42e4-9e39-710694f36648.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="q2d-turning-575" class="title-link">[Paper Note] q2d: Turning Questions into Dialogs to Teach Models How to Search, Yonatan Bitton+, EMNLP'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.14318" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/575" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
+<a class="button" href="DialogueGeneration.html" target="_blank" rel="noopener noreferrer">#DialogueGeneration</a>
+<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- 質問から情報探索型対話を自動生成するデータ生成パイプラインq2dを提案。大規模言語モデルPaLMを用いて対話データを作成し、外部検索APIでクエリ生成モデルの性能を向上。合成データで訓練したモデルは人間作成データの90%〜97%に達し、無データでも新ドメイン向けの対話データを生成可能。生成された対話は高品質と評価され、人間作成の対話と区別が難しい。</span>
+<span class="snippet"><span>Comment</span><p>LLMにquestionを与え、questionを解決するためのinformation seekingの対話ログを生成させる。このデータを用いて、dialogueからquestionを生成するモデルを訓練し、検索APIなどに渡せるようにした研究。全く対話のログがないドメインのデータに対しても、人間と遜色ない高品質な対話が生成可能。これにより、query generationモデルの更なる高性能化が実現できる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235137446-10e6633f-1d4b-46ea-afda-630b7cd53246.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=8iB0FJmOfV" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=8iB0FJmOfV</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="tractable-control-573" class="title-link">[Paper Note] Tractable Control for Autoregressive Language Generation, Honghua Zhang+, ICML'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.07438" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -5803,6 +5931,179 @@ My Issue
 <span class="snippet"><span>Comment</span><p>自然言語生成モデルで、何らかのシンプルなconstiaint αの元p(xi|xi-1,α)を生成しようとしても計算ができない。このため、言語モデルをfinetuningするか、promptで制御するか、などがおこなわれる。しかしこの方法は近似的な解法であり、αがたとえシンプルであっても（何らかの語尾を付与するなど）、必ずしも満たした生成が行われるとは限らない。これは単に言語モデルがautoregressiveな方法で次のトークンの分布を予測しているだけであることに起因している。そこで、この問題を解決するために、tractable probabilistic model（TPM）を導入し、解決した。<br>評価の結果、CommonGenにおいて、SoTAを達成した。<br><br><img src="https://user-images.githubusercontent.com/12249301/235130061-21e51e59-dbfa-4c64-bd7b-27f0de2618c0.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>尚、TPMについては要勉強である</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="we're-afraid-570" class="title-link">[Paper Note] We're Afraid Language Models Aren't Modeling Ambiguity, Alisa Liu+, EMNLP'23</h3><br><a href="https://arxiv.org/abs/2304.14399" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/570" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="Ambiguity.html" target="_blank" rel="noopener noreferrer">#Ambiguity</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- 曖昧さは自然言語の重要な特徴であり、言語モデル（LM）が対話や執筆支援において成功するためには、曖昧な言語を扱うことが不可欠です。本研究では、曖昧さの影響を評価するために、1,645の例からなるベンチマーク「AmbiEnt」を収集し、事前学習済みLMの評価を行いました。特にGPT-4の曖昧さ解消の正答率は32%と低く、曖昧さの解消が難しいことが示されました。また、多ラベルのNLIモデルが曖昧さによる誤解を特定できることを示し、NLPにおける曖昧さの重要性を再認識する必要性を提唱しています。</span>
+<span class="snippet"><span>Comment</span><p>LLMが曖昧性をどれだけ認知できるかを評価した初めての研究。<br>言語学者がアノテーションした1,645サンプルの様々な曖昧さを含んだベンチマークデータを利用。<br>GPT4は32%正解した。<br>またNLIデータでfinetuningしたモデルでは72.5%のmacroF1値を達成。<br>応用先として、誤解を招く可能性のある政治的主張に対してアラートをあげることなどを挙げている。<br><img src="https://github.com/user-attachments/assets/a728a953-fac4-4115-8ec8-e5721bc4223e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="exploring-the-569" class="title-link">[Paper Note] Exploring the Curious Case of Code Prompts, Li Zhang+, NLRSE'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.13250" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/569" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
+<a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- コード風のプロンプトによる構造化推論の性能向上が示されたが、その効果は限られたタスクに留まる。本研究では、davinci系のモデルに対して、QAや感情分析など幅広いタスクでコードとテキストプロンプトを比較し、全体としてコードプロンプトがテキストプロンプトを上回ることはなかった。タスクによってはコードプロンプトが有利な場合もあったが、全てのタスクに当てはまるわけではなく、テキスト指示によるファインチューニングがコードプロンプトの性能向上に寄与することを示した。</span>
+<span class="snippet"><span>Comment</span><p>コードベースのLLMに対して、reasoningタスクを解かせる際には、promptもコードにすると10パーセント程度性能上がる場合があるよ、という研究。<br><img src="https://user-images.githubusercontent.com/12249301/235037840-1fb57af3-5296-4831-9f80-26886c913431.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>ただし、平均的にはテキストプロンプトの方が良く、一部タスクで性能が改善する、という温度感な模様<br><img src="https://user-images.githubusercontent.com/12249301/235038209-b43dcdcb-301e-4879-a99e-8c8df32e6cf5.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>コードベースのモデルをtextでinstruction tuningしている場合でも、効果があるタスクがある。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="answering-questions-568" class="title-link">[Paper Note] Answering Questions by Meta-Reasoning over Multiple Chains of Thought, Ori Yoran+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.13007" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/568" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
+<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- 複数の推論チェーンを考慮したMulti-Chain Reasoning（MCR）を提案。これにより、異なるチェーン間の情報を統合し、回答生成時に関連性の高い事実を選択することで、より質の高い説明を提供。7つのマルチホップQAデータセットで優れた性能を示し、人間による検証も可能な高品質な説明を実現。</span>
+<span class="snippet"><span>Comment</span><p>self-consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
+ のようなvoting basedなアルゴリズムは、複数のCoTのintermediate stepを捨ててしまい、結果だけを採用するが、この研究は複数のCoTの中からquestionに回答するために適切なfactual informationを抽出するMeta Reasonerを導入し、複数のCoTの情報を適切に混在させて適切な回答を得られるようにした。<br><br><br><br>7個のMulti Hop QAデータでstrong baselineをoutperformし、人間が回答をverificationするための高品質な説明を生成できることを示した。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235135436-11dca529-771a-402b-a4ef-9b6deacec32e.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=ebSOK1nV2r" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=ebSOK1nV2r</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="can-gpt-4-559" class="title-link">[Paper Note] Can GPT-4 Perform Neural Architecture Search?, Mingkai Zheng+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.10970" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/559" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="NeuralArchitectureSearch.html" target="_blank" rel="noopener noreferrer">#NeuralArchitectureSearch</a>
+<span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- GPT-4を用いたニューラルアーキテクチャ探索（NAS）に関する研究を行い、提案手法GENIUSはGPT-4の生成能力を活用してアーキテクチャ探索空間を迅速にナビゲート、候補を特定し性能を向上させる。いくつかのベンチマークで評価し、既存のNAS技術と比較してその効果を示す。特に、限られたドメイン知識を要するプロンプト手法を通じてGPT-4が技術問題の研究に貢献する可能性を強調。さらに、研究の制約やAIの安全性への影響についても言及。</span>
+<span class="snippet"><span>Comment</span><p>ドメイン知識の必要のないプロンプトで、ニューラルモデルのアーキテクチャの提案をGPTにしてもらう研究。accをフィードバックとして与え、良い構造を提案するといったループを繰り返す模様<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235143629-308233a6-51c7-40f7-afc6-e51f425e55d4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>Neural Architecture Search (NAS)においては、ランダムベースラインがよく採用されるらしく、比較した結果ランダムよりよかった<br><br><img src="https://user-images.githubusercontent.com/12249301/235144154-5c94a664-9768-4da5-af76-a137bc3d2b48.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>NAS201と呼ばれるベンチマーク（NNアーキテクチャのcell blockをデザインすることにフォーカス; 探索空間は4つのノードと6つのエッジで構成される密接続のDAGとして表される; ノードはfeature mapを表し、エッジはoperationに対応;利用可能なoperationが5つあるため、可能な検索空間の総数は5の6乗で15,625通りとなる）でも評価した結果、提案手法の性能がよかったとのこと。<br><br><img src="https://user-images.githubusercontent.com/12249301/235144424-a8269562-3f4e-4830-8610-80e3ac9b977e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="automatic-chain-556" class="title-link">[Paper Note] Automatic Chain of Thought Prompting in Large Language Models, Zhuosheng Zhang+, ICLR'23, 2022.10</h3><br><a href="https://arxiv.org/abs/2210.03493" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/556" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2023-04-27</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）を用いて、段階的思考を促すCoT promptingを提案。手作業でデモを設計する必要なく、プロンプトを通じて推論チェーンを生成可能。また、多様性を持って質問をサンプリングする自動CoT法（Auto-CoT）を導入し、GPT-3を用いたベンチマークで手動設計と比較して優れた性能を示した。</span>
+<span class="snippet"><span>Comment</span><p>LLMによるreasoning chainが人間が作成したものよりも優れていることを示しているとのこと <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/532" target="_blank" rel="noopener noreferrer">[Paper Note] Enhancing Chain-of-Thoughts Prompting with Iterative Bootstrapping in  Large Language Models, Jiashuo Sun+, NAACL'24 Findings, 2023.04</a>
+ より</p><p>clusteringベースな手法を利用することにより、誤りを含む例が単一のクラスタにまとめられうことを示し、これにより過剰な誤ったデモンストレーションが軽減されることを示した。</p><p>手法の概要。questionを複数のクラスタに分割し、各クラスタから代表的なquestionをサンプリングし、zero-shot CoTでreasoning chainを作成しpromptに組み込む。最終的に回答を得たいquestionに対しても、上記で生成した複数のquestion-reasoningで条件付けした上で、zeroshot-CoTでrationaleを生成する。これにより自動的にCoTをICLするためのexamplarを生成できる。<br><img src="https://github.com/user-attachments/assets/35213747-9b5f-4d38-a525-1deafe86cd0c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=5NTt8GFjUHkr" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=5NTt8GFjUHkr</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="graph-collaborative-545" class="title-link">[Paper Note] Graph Collaborative Signals Denoising and Augmentation for Recommendation, Ziwei Fan+, SIGIR'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.03344" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/545" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="CollaborativeFiltering.html" target="_blank" rel="noopener noreferrer">#CollaborativeFiltering</a>
+<a class="button" href="GraphBased.html" target="_blank" rel="noopener noreferrer">#GraphBased</a>
+<a class="button" href="SIGIR.html" target="_blank" rel="noopener noreferrer">#SIGIR</a>
+<a class="button" href="Short.html" target="_blank" rel="noopener noreferrer">#Short</a>
+<span class="issue_date">Issue Date: 2023-04-26</span>
+<span class="snippet"><span>GPT Summary</span>- 新たなグラフ隣接行列を提案し、ユーザーとアイテムの相互作用を最適化。ユーザー間・アイテム間の相関を組み込み、相互作用のバランスを取ることで、従来の方法よりも顕著な推薦効果を実現。これにより、豊富な相互作用を持つユーザーと乏しいユーザー双方への推薦が改善された。</span>
+<span class="snippet"><span>Comment</span><p>グラフ協調フィルタリングを改善する手法を提案している。既存のグラフ協調フィルタリングはユーザ-アイテム間の隣接行列に基づく二部グラフによって学習されるが、これにはいくつか課題がある:<br>- ノイズが多く、スパースで、バイアスを含み、long tailな性質（ほとんどのユーザがアイテムとほとんどinterctionしていない）を持つがこれらに対処できていない<br>- また、interactionの情報がリッチなアクティブユーザはinteractionに多くのノイズ情報を含むが、うまくモデル化されていない<br>- グラフ協調フィルタリングのmessage passinpによって、user間、item間の情報が事前に学習されるが、message passingの回数が増えるとノイズが多くなる<br><br>これらに対処するために、学習を2つのプロセスに分ける方法を提案している。具体的には、GCNを用いて、まず通常通り隣接行列に基づいてuser, itemノードのembeddingを事前学習する。続いて、隣接行列に対して下記2種類の拡張を行う。<br>- user-item interaction: 事前学習したembeddingを用いて、user-item間のTopKのneighborを見つけ、TopKのみにフィルタリングして隣接行列を再構築する（アクティブユーザーはノイズ除去、インアクティブユーザはインタラクション情報の拡張につながる）<br>- user-user / item-item interaction: 同じく事前学習したembeddingを用いて、それぞれのneighborsを見つけてuser-user, item-item interactionの要素が非ゼロとなるように拡張する（message passingによるノイズを低減しつつ、ユーザ間、アイテム間の情報を取り入れる）<br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b0f099c2-8e9d-4ebc-aa1b-d4af49509a37" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>元ポスト:<br><br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nogawanogawa/status/1651165820956057602?s=46&t=6qC80ox3qHrJixKeNmIOcg"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="evaluating-chatgpt's-534" class="title-link">[Paper Note] Evaluating ChatGPT's Information Extraction Capabilities: An Assessment   of Performance, Explainability, Calibration, and Faithfulness, Bo Li+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11633" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/534" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Explanation.html" target="_blank" rel="noopener noreferrer">#Explanation</a>
+<a class="button" href="ChatGPT.html" target="_blank" rel="noopener noreferrer">#ChatGPT</a>
+<a class="button" href="InformationExtraction.html" target="_blank" rel="noopener noreferrer">#InformationExtraction</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、ChatGPTの能力を7つの情報抽出（IE）タスクを通じて評価し、パフォーマンス、説明可能性、キャリブレーション、信頼性を分析しました。標準IE設定ではパフォーマンスが低い一方、オープンIE設定では人間評価で優れた結果を示しました。ChatGPTは高品質な説明を提供するものの、予測に対して過信する傾向があり、キャリブレーションが低いことが明らかになりました。また、元のテキストに対して高い信頼性を示しました。研究のために手動で注釈付けした7つのIEタスクのテストセットと14のデータセットを公開しています。</span>
+<span class="snippet"><span>Comment</span><p>情報抽出タスクにおいてChatGPTを評価した研究。スタンダードなIEの設定ではBERTベースのモデルに負けるが、OpenIEの場合は高い性能を示した。<br>また、ChatGPTは予測に対してクオリティが高く信頼に足る説明をしたが、一方で自信過剰な傾向がある。また、ChatGPTの予測はinput textに対して高いfaithfulnessを示しており、予測がinputから根ざしているものであることがわかる。（らしい）</p><p>あまりしっかり読めていないが、Entity Typing, NER, Relation Classification, Relation Extraction, Event Detection, Event Argument Extraction, Event Extractionで評価。standardIEでは、ChatGPTにタスクの説明と選択肢を与え、与えられた選択肢の中から正解を探す設定とした。一方OpenIEでは、選択肢を与えず、純粋にタスクの説明のみで予測を実施させた。OpenIEの結果を、3名のドメインエキスパートが出力が妥当か否か判定した結果、非常に高い性能を示すことがわかった。表を見ると、同じタスクでもstandardIEよりも高い性能を示している（そんなことある？？？）</p><p>つまり、選択肢を与えてどれが正解ですか?ときくより、選択肢与えないでCoTさせた方が性能高いってこと？比較可能な設定で実験できているのだろうか。promptは付録に載っているが、output exampleが載ってないのでなんともいえない。StandardIEの設定をしたときに、CoTさせてるかどうかが気になる。もししてないなら、そりゃ性能低いだろうね、という気がする。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="wizardlm-empowering-533" class="title-link">[Paper Note] WizardLM: Empowering large pre-trained language models to follow complex instructions, Can Xu+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.12244" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -5822,6 +6123,25 @@ My Issue
 <span class="issue_date">Issue Date: 2023-04-25</span>
 <span class="snippet"><span>GPT Summary</span>- 本論文では、LLMを用いて複雑な指示データを自動生成する方法を提案。Evol-Instructを使用して初期の指示を段階的に書き換え、生成したデータでLLaMAをファインチューニングし、WizardLMモデルを構築。評価結果は、Evol-Instructからの指示が人間作成のものより優れており、WizardLMがChatGPTよりも高い評価を得ることを示す。AI進化による指示生成がLLM強化の有望なアプローチであることを示唆。</span>
 <span class="snippet"><span>Comment</span><p>instruction trainingは大きな成功を収めているが、人間がそれらのデータを作成するのはコストがかかる。また、そもそも複雑なinstructionを人間が作成するのは苦労する。そこで、LLMに自動的に作成させる手法を提案している（これはself instructと一緒）。データを生成する際は、seed setから始め、step by stepでinstructionをrewriteし、より複雑なinstructionとなるようにしていく。<br>これらの多段的な複雑度を持つinstructionをLLaMaベースのモデルに食わせてfinetuningした（これをWizardLMと呼ぶ）。人手評価の結果、WizardLMがChatGPTよりも好ましいレスポンスをすることを示した。特に、WizaraLMはコード生成や、数値計算といった難しいタスクで改善を示しており、複雑なinstructionを学習に利用することの重要性を示唆している。</p><p>EvolInstructを提案。"1+1=?"といったシンプルなinstructionからスタートし、これをLLMを利用して段階的にcomplexにしていく。complexにする方法は2通り：<br><br>- In-Depth Evolving: instructionを5種類のoperationで深掘りする（blue direction line）<br><br>  - add constraints<br><br>  - deepening<br><br>  - concretizing<br><br>  - increase reasoning steps<br><br>  - complicate input<br><br>- In-breadth Evolving: givenなinstructionから新しいinstructionを生成する<br><br><br><br>上記のEvolvingは特定のpromptを与えることで実行される。<br><br>また、LLMはEvolvingに失敗することがあるので、Elimination Evolvingと呼ばれるフィルタを利用してスクリーニングした。<br><br>フィルタリングでは4種類の失敗するsituationを想定し、1つではLLMを利用。2枚目画像のようなinstructionでフィルタリング。<br><br>1. instructionの情報量が増えていない場合。<br><br>2. instructionがLLMによって応答困難な場合（短すぎる場合やsorryと言っている場合）<br><br>3. puctuationやstop wordsによってのみ構成されている場合 <br><br>4.明らかにpromptの中から単語をコピーしただけのinstruction（given prompt, rewritten prompt, #Rewritten Prompt#など）<br><br><img src="https://user-images.githubusercontent.com/12249301/234436445-e84ff44e-7b0b-4217-a735-7444b04bd760.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234437210-6cb6d75f-509a-4f2e-a767-dba8861d8a69.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="llm+p-empowering-526" class="title-link">[Paper Note] LLM+P: Empowering Large Language Models with Optimal Planning Proficiency, Bo Liu+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11477" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/526" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Planning.html" target="_blank" rel="noopener noreferrer">#Planning</a>
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>GPT Summary</span>- LLMsは一般的な質問には優れた回答能力を示すが、長期的な計画問題には弱い。本研究では、古典的プランナーの強みをLLMsに統合した初のフレームワーク、LLM+Pを提案。自然言語の計画記述をPDDL形式に変換し、効率的に解を見つけて再翻訳する手法を採用。実験により、LLM+Pは多くの計画問題に対して最適解を提供できる一方、LLMsはほとんど問題を解決できないことが確認された。</span>
+<span class="snippet"><span>Comment</span><p>LLMは長いプランニングをすることが苦手だったが、classicalなplannerは適切なinputの形式に変換されていればすぐに最適なプランを導出できる、が、自然言語は受け付けない、といった互いが互いを補完し合う関係にあるので、両者を組み合わせました、という話。<br>LLMを利用して、planning problemを記述した自然言語をclassicalなplannerのinputへ変換。その後plannerで最適なplanを見つけ、自然言語にplanを逆翻訳する。<br><img src="https://user-images.githubusercontent.com/12249301/234289649-416a8d9e-628e-422c-bd9b-89d9099b4b1d.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="long-document-482" class="title-link">[Paper Note] Long Document Summarization with Top-down and Bottom-up Inference, Bo Pang+, EACL'23, 2022.03</h3><br><a href="https://arxiv.org/abs/2203.07586" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -5931,6 +6251,62 @@ My Issue
 <span class="snippet"><span>Comment</span><p>ChatGPTの元となる、SFT→Reward Modelの訓練→RLHFの流れが提案された研究。DemonstrationデータだけでSFTするだけでは、人間の意図したとおりに動作しない問題があったため、人間の意図にAlignするように、Reward Modelを用いたRLHFでSFTの後に追加で学習を実施する。Reward Modelは、175Bモデルは学習が安定しなかった上に、PPOの計算コストが非常に大きいため、6BのGPT-3を様々なNLPタスクでSFTしたモデルをスタートにし、モデルのアウトプットに対して人間がランキング付けしたデータをペアワイズのloss functionで訓練した。最終的に、RMのスコアが最大化されるようにSFTしたGPT-3をRLHFで訓練するが、その際に、SFTから出力が離れすぎないようにする項と、NLPベンチマークでの性能が劣化しないようにpretrain時のタスクの性能もloss functionに加えている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e4934d4c-7a9b-44aa-93ce-3ae46ed4bd9b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="why-do-574" class="title-link">[Paper Note] Why do tree-based models still outperform deep learning on tabular data?, Léo Grinsztajn+, NeurIPS'22, 2022.07</h3><br><a href="https://arxiv.org/abs/2207.08815" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/574" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="TabularData.html" target="_blank" rel="noopener noreferrer">#TabularData</a>
+<a class="button" href="InductiveBias.html" target="_blank" rel="noopener noreferrer">#InductiveBias</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>GPT Summary</span>- 深層学習はテキストと画像で進展を見せているが、表形式データでの優位性は不明。標準と新規の深層学習法を木ベースのモデルと比較し、45のデータセットでベンチマークを実施。結果は、中規模データにおいて木ベースモデルが依然として優れた性能を示すことを示す。木ベースモデルとニューラルネットワークのバイアスの違いを実証的に調査し、表形式データ特化のNN開発に向けた課題を提示。標準的ベンチマーク用の生データを提供し、各学習器のハイパーパラメータ探索に20,000時間の計算資源を投入した。</span>
+<span class="snippet"><span>Comment</span><p>tree basedなモデルがテーブルデータに対してニューラルモデルよりも優れた性能を発揮することを確認し、なぜこのようなことが起きるかいくつかの理由を説明した論文。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/235130988-b008ad89-eec6-49d1-829d-1b23566ed677.jpeg" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>NNよりもtree basedなモデルがうまくいく理由として、モデルの帰納的バイアスがテーブルデータに適していることを調査している。考察としては<br><br><br><br>1. NNはスムーズなターゲットを学習する能力が高いが、表形式のような不規則なデータを学習するのに適していない<br><br>- Random Forestでは、x軸においてirregularなパターンも学習できているが、NNはできていない。<br><br><img src="https://user-images.githubusercontent.com/12249301/235139592-160cf5fe-dddb-4637-a300-b18a0935f253.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>2. uninformativeなfeaatureがMLP-likeなNNに悪影響を与える<br><br>- Tabular dataは一般にuninformativeな情報を多く含んでおり、実際MLPにuninformativeなfeatureを組み込んだ場合tree-basedな手法とのgapが増加した<br><br><img src="https://user-images.githubusercontent.com/12249301/235140356-553c2d6d-63bf-485e-bcb4-72924535a2a9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>3. データはrotationに対して不変ではないため、学習手順もそうあるべき（この辺がよくわからなかった）<br><br>- ResNetはRotationを加えても性能が変わらなかった（rotation invariantな構造を持っている）<br><br><img src="https://user-images.githubusercontent.com/12249301/235141633-910e64ff-83d9-417b-b778-6ab3ec7419f2.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=Fp7__phQszn" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Fp7__phQszn</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="recurrent-memory-523" class="title-link">[Paper Note] Recurrent Memory Transformer, Aydar Bulatov+, NeurIPS'22, 2022.07</h3><br><a href="https://arxiv.org/abs/2207.06881" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/523" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="LongSequence.html" target="_blank" rel="noopener noreferrer">#LongSequence</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="memory.html" target="_blank" rel="noopener noreferrer">#memory</a>
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>GPT Summary</span>- メモリ機構を持つセグメントレベル再帰型トランスフォーマー（RMT）を提案。局所情報と全体情報を保存・処理し、長いシーケンス間で情報を伝達可能。特別なメモリトークンを追加することでTransformerモデルに変更を加えずに実装。実験結果では、RMTは短いメモリサイズでもTransformer-XLと同等の性能を示し、長いシーケンス処理では優れていることが確認。再帰的メモリトランスフォーマーは長期依存関係の学習に対する有望なアーキテクチャ。</span>
+<span class="snippet"><span>Comment</span><p>TransformerはO(N^2)であり、計算量がNに応じて指数関数的に増加してしまう。一方、sequenceの情報を全てN次元ベクトルに集約しなければならず、計算量の制約によって長い系列のRepresentationを獲得できない。<br><br>そこで、Transformerの構造は変えず、Inputにメモリtokenを追加することで、メモリ間の関係性を学習できるような手法を提案。長いトークン列に対しても、トークン列をセグメントとゆばれる単位に区切り、セグメントのInputの頭で、前断のセグメントのメモリtokenを入力し、最終的に現在のセグメントのメモリをoutputし、後断のセグメントに入力とする、といったことを繰り返すことで、長い系列も扱えるようにした。<br><br>セグメントをまたいでbackpropagationをかけることで、たとえセグメントとしては独立していても、メモリの情報を考慮することでセグメント間の依存関係を学習することが可能だと思われる。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/234206394-925cb6ee-85bd-46ad-b7ed-f57685badc38.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=Uynr3iPhksa" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Uynr3iPhksa</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="minilmv2-multi-head-3345" class="title-link">[Paper Note] MiniLMv2: Multi-Head Self-Attention Relation Distillation for  Compressing Pretrained Transformers, Wenhui Wang+, ACL'21 Findings, 2020.12</h3><br><a href="https://arxiv.org/abs/2012.15828" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -5998,6 +6374,37 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 最近のテキスト生成の研究は、オープンエンドのドメインに注力しており、その評価が難しいため、多くの研究者がクラウドソーシングされた人間の判断を収集してモデリングを正当化している。しかし、多くの研究は重要な詳細を報告しておらず、再現性が妨げられていることがわかった。さらに、労働者はモデル生成のテキストと人間による参照テキストを区別できないことが発見され、表示方法を変更することで改善されることが示された。英語教師とのインタビューでは、モデル生成のテキストを評価する際の課題について、より深い洞察が得られた。</span>
 <span class="snippet"><span>Comment</span><p>Open-endedなタスクに対するAMTの評価の再現性に関する研究。先行研究をSurveyしたところ、再現のために重要な情報（たとえば、workerの資格、費用、task descriptions、annotator間のagreementなど）が欠落していることが判明した。<br><br>続いて、expertsとAMT workerに対して、story generationの評価を実施し、GPT2が生成したストーリーと人間が生成したストーリーを、後者のスコアが高くなることを期待して依頼した。その結果<br><br>- AMTのratingは、モデルが生成したテキストと、人間が生成したテキストをreliableに区別できない<br><br>- 同一のタスクを異なる日程で実施をすると、高い分散が生じた<br><br>- 多くのAMT workerは、評価対象のテキストを注意深く読んでいない<br><br>- Expertでさえモデルが生成したテキストを読み判断するのには苦戦をし、先行研究と比較してより多くの時間を費やし、agreementが低くなることが分かった<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1dc01c56-88b0-4bea-869b-f396d65701cc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/892" target="_blank" rel="noopener noreferrer">[Paper Note] Can Large Language Models Be an Alternative to Human Evaluations?, Cheng-Han Chiang+, ACL'23, 2023.05</a>
 <br><br>において、低品質なwork forceが人手評価に対して有害な影響を与える、という文脈で本研究が引用されている</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="the-power-473" class="title-link">[Paper Note] The Power of Scale for Parameter-Efficient Prompt Tuning, Brian Lester+, EMNLP'21, 2021.04</h3><br><a href="https://arxiv.org/abs/2104.08691" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/473" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="PEFT(Adaptor-LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="SoftPrompt.html" target="_blank" rel="noopener noreferrer">#SoftPrompt</a>
+<span class="issue_date">Issue Date: 2022-08-19</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、凍結された言語モデルを特定のタスクに適応させるための「ソフトプロンプト」を学習するプロンプトチューニング手法を提案。逆伝播を通じて学習されるソフトプロンプトは、GPT-3の少数ショット学習を上回る性能を示し、モデルサイズが大きくなるほど競争力が増すことが確認された。特に、数十億のパラメータを持つモデルにおいて、全ての重みを調整するモデルチューニングに匹敵する性能を発揮。これにより、1つの凍結モデルを複数のタスクに再利用できる可能性が示唆され、ドメイン転送に対するロバスト性も向上することが明らかとなった。</span>
+<span class="snippet"><span>Comment</span><p>日本語解説: 
+
+
+<a href="https://qiita.com/kts_plea/items/79ffbef685d362a7b6ce" target="_blank" rel="noopener noreferrer">https://qiita.com/kts_plea/items/79ffbef685d362a7b6ce</a>
+
+
+<br><br>T5のような大規模言語モデルに対してfinetuningをかける際に、大規模言語モデルのパラメータは凍結し、promptをembeddingするパラメータを独立して学習する手法<br><br>言語モデルのパラメータ数が増加するにつれ、言語モデルそのものをfinetuningした場合（Model Tuning）と同等の性能を示した。</p><p>いわゆる(Softな) Prompt Tuning</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="コミュニティサービスにおけるレコメンデーションの変遷とmlパイプラインについて-413" class="title-link">コミュニティサービスにおけるレコメンデーションの変遷とMLパイプラインについて, Takanobu Nozawa, PyCon'21, 2021.10</h3><br><a href="https://speakerdeck.com/takapy/komiyuniteisabisuniokerurekomendesiyonfalsebian-qian-tomlpaipurainnituite?slide=40" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -6128,9 +6535,31 @@ My Issue
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
 <a class="button" href="TACL.html" target="_blank" rel="noopener noreferrer">#TACL</a>
+<a class="button" href="Encoder.html" target="_blank" rel="noopener noreferrer">#Encoder</a>
+<a class="button" href="Encoder-Decoder.html" target="_blank" rel="noopener noreferrer">#Encoder-Decoder</a>
 <span class="issue_date">Issue Date: 2022-12-01</span>
 <span class="snippet"><span>GPT Summary</span>- 事前学習された大規模なニューラルモデルがシーケンス生成においても有効であることを示し、BERT、GPT-2、RoBERTaと互換性のあるTransformerベースのモデルを開発。これにより、機械翻訳やテキスト要約などのタスクで新たな最先端の成果を達成。</span>
 <span class="snippet"><span>Comment</span><p># 概要<br><br>BERT-to-BERT論文。これまでpre-trainedなチェックポイントを利用する研究は主にNLUで行われてきており、Seq2Seqでは行われてきていなかったので、やりました、という話。<br><br>publicly availableなBERTのcheckpointを利用し、BERTをencoder, decoder両方に採用することでSeq2Seqを実現。実現する上で、<br><br>1. decoder側のBERTはautoregressiveな生成をするようにする（左側のトークンのattentionしか見れないようにする）<br><br>2. encoder-decoder attentionを新たに導入する<br><br>の2点を工夫している。<br><br><br><br># 実験<br><br>Sentence Fusion, Sentence Split, Machine Translation, Summarizationの4タスクで実験<br><br><br><br>## MT<br><br><img src="https://user-images.githubusercontent.com/12249301/204958483-722106b3-bda2-45a3-bb08-fb4eb429c90c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>BERT2BERTがSoTA達成。Edunov+の手法は、data _augmentationを利用した手法であり、純粋なWMT14データを使った中ではSoTAだと主張。特にEncoder側でBERTを使うと、Randomにinitializeした場合と比べて性能が顕著に上昇しており、その重要性を主張。<br><br>Sentence Fusion, Sentence Splitでは、encoderとdecoderのパラメータをshareするのが良かったが、MTでは有効ではなかった。これはMTではmodelのcapacityが非常に重要である点、encoderとdecoderで異なる文法を扱うためであると考えられる。<br><br><br><br>## Summarization<br><br>BERTSHARE, ROBERTASHAREの結果が良かった。<br><br><img src="https://user-images.githubusercontent.com/12249301/204959543-e21bd9a6-bef4-4538-b181-daca93fa33e7.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="template-guided-492" class="title-link">Template Guided Text Generation for Task-Oriented Dialogue, Kale+, Google, EMNLP'20</h3><br><a href="https://aclanthology.org/2020.emnlp-main.527.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/492" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="DataToTextGeneration.html" target="_blank" rel="noopener noreferrer">#DataToTextGeneration</a>
+<a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
+<span class="issue_date">Issue Date: 2022-12-01</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>Dialogue Actをそのままlinearlizeして言語モデルに入力するのではなく、テンプレートをベースにしたシンプルなsentenceにして言語モデルに与えると、zero-shot, few-shotなsettingで性能が向上するという話（T5ベース）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/204951348-e7cb9982-4d1f-4ac0-8e1d-b3e8fd872b11.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法<br><br>slotの名称をnatural languageのdescriptionに変更するSchema Guidedアプローチも提案（NLUでは既に実践さrていたらしいが、Generationで利用されたことはない）。<br><br><img src="https://user-images.githubusercontent.com/12249301/204952341-fae03300-992a-491f-b194-9013f5d598f9.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 結果<br><br>MultiWoz, E2E, SGDデータセットを利用。MultiWoz, E2Eデータはデータ量が豊富でドメインやfeatureが限定的なため、schema guided, template guided approachとNaiveなrepresentationを利用した場合の結果がcopmarableであった。<br><br>が、SGDデータセットはドメインが豊富でzero-shot, few-shotの設定で実験ができる。SGDの場合はTemplate guided representationが最も高い性能を得た。<br><br><img src="https://user-images.githubusercontent.com/12249301/204954033-ecbeb90f-1398-486c-8d1f-76a0e54ed8ea.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>low resourceなデータセットで活用できそう</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="text-to-text-pre-training-488" class="title-link">[Paper Note] Text-to-Text Pre-Training for Data-to-Text Tasks, Mihir+, Google Research, INLG'20</h3><br><a href="https://aclanthology.org/2020.inlg-1.14.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -6158,6 +6587,38 @@ My Issue
 
 
 <br><br><br><br>## MultiWoz<br><br><img src="https://user-images.githubusercontent.com/12249301/191695459-e3397936-bdf7-4450-b4c2-6f6eead0825d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>T5は事前学習済みGPT-2をfinetuningした手法もoutperformした。SC-GPT2は当時のMultiWozでのSoTA<br><br><br><br># Impact of Model capacity<br><br>T5モデルのサイズがどれが良いかについては、データセットのサイズと複雑さに依存することを考察している。たとえば、MultiWozデータは構造化データのバリエーションが最も少なく、データ量も56kと比較的多かった。このため、T5-smallでもより大きいモデルの性能に肉薄できている。<br><br>一方、WebNLGデータセットは、18kしか事例がなく、特徴量も約200種類程度のrelationのみである。このような場合、モデルサイズが大きくなるにつれパフォーマンスも向上した（特にUnseen test set）。特にBLEUスコアはT5-smallがT5-baseになると、10ポイントもジャンプしており、modelのcapacityがout-of-domainに対する一般化に対してcriticalであることがわかる。ToTToデータセットでも、SmallからBaseにするとパフォーマンスは改善した。</p><p># 所感<br><br>こんな簡単なfine-tuningでSoTAを達成できてしまうとは、末恐ろしい。ベースラインとして有用。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="pybkt-an-460" class="title-link">pyBKT: An Accessible Python Library of Bayesian Knowledge Tracing Models, Bardrinath+, EDM'20</h3><br><a href="https://arxiv.org/pdf/2105.00385.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/460" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
+<a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
+<a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="EDM.html" target="_blank" rel="noopener noreferrer">#EDM</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2022-07-27</span>
+<span class="snippet"><span>Comment</span><p>pythonによるBKTの実装。scikit-learnベースドなinterfaceを持っているので使いやすそう。</p><p>
+<strong># モチベーション<br><br>BKTの研究は古くから行われており、研究コミュニティで人気が高まっているにもかかわらず、アクセス可能で使いやすいモデルの実装と、さまざまな文献で提案されている多くの変種は、理解しにくいものとなっている。そこで、モダンなpythonベースドな実装としてpyBKTを実装し、研究コミュニティがBKT研究にアクセスしやすいようにした。ライブラリのインターフェースと基礎となるデータ表現は、過去の BKTの変種を再現するのに十分な表現力があり、新しいモデルの提案を可能にする。 また、既存モデルとstate-of-the-artの比較評価も容易にできるように設計されている。<br><br># BKTとは<br><br>BKTの説明は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/461" target="_blank" rel="noopener noreferrer">Adapting Bayesian Knowledge Tracing to a Massive Open Online Course in edX, Pardos+, MIT, EDM'13</a>
+</strong>
+<br>
+ あたりを参照のこと。<br><br>BKTはHidden Markov Model (HMM) であり、ある時刻tにおける観測変数（問題に対する正誤）と隠れ変数（学習者のknowledge stateを表す）によって構成される。パラメータは prior（生徒が事前にスキルを知っている確率）, learn (transition probability; 生徒がスキルを学習することでスキルに習熟する確率), slip, guess (emission probability; スキルに習熟しているのに問題に正解する確率, スキルに習熟していないのに問題に正解する確率)の4種類のパラメータをEMアルゴリズムで学習する。<br><br><img src="https://user-images.githubusercontent.com/12249301/184829403-9a589837-b45a-4417-ba49-26392c5ea5e4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ここで、P(L_t)が時刻tで学習者がスキルtに習熟している確率を表す。BKTでは、P(L_t)を観測された正解/不正解のデータに基づいてP(L_t)をアップデートし、下記式で事後確率を計算する<br><br><img src="https://user-images.githubusercontent.com/12249301/184829784-e280b531-1ed6-4b5b-a7ae-9fc71f8ac224.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、時刻t+1の事前確率は下記式で計算される。<br><br><img src="https://user-images.githubusercontent.com/12249301/184829905-e1ac68f9-74bd-4986-a034-02a18161be4c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>一般的なBKTモデルではforgettingは生じないようになっている。<br><br><img src="https://user-images.githubusercontent.com/12249301/184832245-1ac8cf7a-c5d3-48a1-95aa-dfddaa729c00.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Corbett and Andersonが提案している初期のBKTだけでなく、さまざまなBKTの変種も実装している。<br><br><br><br>
+<strong># サポートしているモデル<br><br>- KT-IDEM (Item Difficulty Effect): BKTとは異なり、個々のquestionごとにguess/slipパラメータを学習するモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/469" target="_blank" rel="noopener noreferrer">KT-IDEM: Introducing Item Difficulty to the Knowledge Tracing Model, Pardos+ (w/ Neil T. Heffernan), UMAP'11</a>
+</strong>
+<br>
+<br><br>- KT-PPS: 個々の生徒ごとにprior knowledgeのパラメータを持つ学習するモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/470" target="_blank" rel="noopener noreferrer"> Modeling individualization in a bayesian networks implementation of knowledge tracing, Pardos+ (w/ Neil T. Heffernan), UMAP'00</a>
+<br><br>- BKT+Forget: 通常のBKTでは一度masterしたスキルがunmasteredに遷移することはないが、それが生じるようなモデル。直近の試行がより重視されるようになる。 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/355" target="_blank" rel="noopener noreferrer">How Deep is Knowledge Tracing?, Mozer+, EDM'16</a>
+ <br><br>- Item Order Effect: TBD<br><br>- Item Learning Effect: TBD</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="when-is-451" class="title-link">When is Deep Learning the Best Approach to Knowledge Tracing?, Theophile+ （Ken Koedinger）, CMU+, JEDM'20</h3><br><a href="https://jedm.educationaldatamining.org/index.php/JEDM/article/view/451" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -6235,6 +6696,64 @@ My Issue
 <a class="button" href="Encoder.html" target="_blank" rel="noopener noreferrer">#Encoder</a>
 <span class="issue_date">Issue Date: 2021-06-02</span>
 <span class="snippet"><span>Comment</span><p>TextGenerationに関するSoTAの性能指標。BLEU, ROUGE等と比較して、人間との相関が高い。<br><br><img src="https://user-images.githubusercontent.com/12249301/120425437-299d5c00-c3a9-11eb-9236-8bfdf494fa60.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/120425509-4e91cf00-c3a9-11eb-9666-dc1069cde3cc.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>pretrainedされたlanguage model（GPT-2=sentence legibility, RoBERTa_MNLI=logical inference, RoBERTa_STS=semantic similarity）を使い、Fully Connected Layerを利用してquality スコアを算出する。算出したスコアは最終的にcalibrationで0~1の値域に収まるように補正される。</p><p>意味的に同等の内容を述べた文間でのexample<br><br><img src="https://user-images.githubusercontent.com/12249301/120425803-d37ce880-c3a9-11eb-938c-09747999cc7c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>BLEU, ROUGE, BERTのスコアは低いが、NUBIAでは非常に高いスコアを出せている。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="are-we-442" class="title-link">[Paper Note] Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches, Maurizio Ferrari Dacrema+, RecSys'19, 2019.07</h3><br><a href="https://arxiv.org/abs/1907.06902" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/442" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="CollaborativeFiltering.html" target="_blank" rel="noopener noreferrer">#CollaborativeFiltering</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="RecSys.html" target="_blank" rel="noopener noreferrer">#RecSys</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
+<span class="issue_date">Issue Date: 2022-04-11</span>
+<span class="snippet"><span>GPT Summary</span>- 深層学習技術はレコメンダーシステムの研究で広く用いられているが、再現性やベースライン選択に問題がある。18のトップnレコメンデーションアルゴリズムを分析した結果、再現できたのは7つのみで、6つは単純なヒューリスティック手法に劣っていた。残りの1つはベースラインを上回ったが、非ニューラル手法には及ばなかった。本研究は機械学習の実践における問題を指摘し、改善を呼びかけている。</span>
+<span class="snippet"><span>Comment</span><p>RecSys'19のベストペーパー<br><br>日本語解説：
+
+
+<a href="https://qiita.com/smochi/items/98dbd9429c15898c5dc7" target="_blank" rel="noopener noreferrer">https://qiita.com/smochi/items/98dbd9429c15898c5dc7</a>
+
+
+</p><p>TopN推薦におけるDNNを用いた研究を追試した研究で、トップ会議の手法のうち18本の追試を試みたところ、追試のための現実的な努力や著者に連絡をするといったことを実施した上で再現できたものは7本であり、そのうち6/7が適切なハイパーパラメータ調整を行なったkNNベースのシンプルな手法に勝てなかった（かつ残りの一つも線形モデルに対して負ける場合もあった）、という話で、業界における評価における再現性の問題（ハイパーパラメータ調整の記載がない等）や、適切な実験設定の欠如（ベースラインのハイパーパラメータチューニングをせずに先行研究の記述内容をそのまま踏襲等、テストデータを用いたエポック数の調整、ランダムサンプリングのはずなのに明らかに提案手法に有利となるような偏ったサンプリングを実施...）、ベースラインの適切な選定（多くの研究がNeural Collaboraive Filteringをベースラインにしているが果たしてそれが適切か）などについて警鐘を鳴らす内容になっている。<br><br>過去の先行研究（<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/342" target="_blank" rel="noopener noreferrer">[Paper Note] Sequence-Aware Recommender Systems, Massimo Quadrana+, ACM Computing Surveys (CSUR), Volume 51, Issue 4, 2018.02</a>
+)でも、研究者の間でデータセットの分割に関して、標準化されていない旨が記述されている。また、管理人が研究を追う中でも、共通のフレームワークで評価がされているとは言い難い印象を持っている（**このコメントは論文を読んだ当時を思い起こし2026年に追記しているが、この頃から業界はどのようにシフトしただろうか？最近は追えていない**）。<br><br>たとえば評価をする際には、データセットの選択だけでなく、データセットの中でどの規模感のデータセットを使うのか（MovieLens一つとっても様々なバリエーションがある）、leave-one-outをするのか、時系列性を考慮した履歴の分割をするのか、negative samplingをする際の件数やサンプリング方法、なんらかのstratifiedなk-fold cross validationをするのか否か、coldstartなデータを排除するのか否か、排除する際の足切りの基準、ハイパーパラメータ。最適化する際のメトリックと最適化をするパラメータ、平均を取る際の実験の試行回数、性能を測るメトリック（Precision, Recall, NDCG, MAP, MRR, AUC, HITS@N...)など様々な変数が存在し、これらの設定が異なると性能は確かに大きく変化すると思われる。実際に推薦モデルの検証をする際には適切な検証となるよう細心の注意を払いたい。<br><br>私個人としては本研究を知った以後、オフラインでの実験のみでなくらA/Bテストが実施されている研究に対する信頼性をより高めるようになった。</p><p>おそらくこれを受けてRecboleのようなフレームワークが登場したと思うが、現在は更新がされていないという認識である。いまはどのように再現性に関する取り組みがされているだろうか？<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/400" target="_blank" rel="noopener noreferrer">Autonomously Generating Hints by Inferring Problem Solving Policies, Piech+, Stanford University, L@S'15</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="deep-contextualized-457" class="title-link">[Paper Note] Deep contextualized word representations, Matthew E. Peters+, NAACL'18, 2018.02</h3><br><a href="https://arxiv.org/pdf/1802.05365" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/457" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
+<a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
+<span class="issue_date">Issue Date: 2022-06-08</span>
+<span class="snippet"><span>GPT Summary</span>- 新しい深層文脈化単語表現を提案し、単語の複雑な特性と文脈による変化をモデル化。これらの表現は事前学習された双方向言語モデルの内部状態を基に学習され、質問応答や感情分析など6つのNLPタスクで性能を向上させる。さらに、事前学習ネットワークの内部を活用することで、半教師あり信号の混合が可能であることを示す。</span>
+<span class="snippet"><span>Comment</span><p>ELMo論文。<br>通常のword embeddingでは一つの単語につき一つの意味しか持たせられなかったが、文脈に応じて異なる意味を表現できるようなEmbeddingを実現し（同じ単語でも文脈に応じて意味が変わったりするので。たとえばrightは文脈に応じて右なのか、正しいなのか、権利なのか意味が変わる）様々な言語処理タスク（e.g. Question Answering, Sentiment Analysisなど）でSoTAを達成。<br><br><img src="https://user-images.githubusercontent.com/12249301/172505957-a2fc5319-5670-4807-a870-31377227299e.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Embedding Layer + 2層のLSTM（1,2の間にはresidual connection）+ linear layerで言語モデルを構成し、順方向言語モデルと逆方向言語モデルを同時に独立して学習する（双方向LSTMではない;損失関数が両方向の言語モデルの対数尤度の和になっている）。<br>また、Linear LayerとEmbedding Layerのパラメータは両方向の言語モデルで共有されている。<br><br>k番目の単語のEmbedding Layerの出力ベクトル、各LSTMのhidden stateをタスクspecificなスカラーパラメタs_taskで足し合わせ、最後にベクトルのスケールを調整するパラメタγ_taskで大きさを調整する。これにより、k番目の単語のELMo Embeddingを得る。<br>単語単体の意味だけでこと足りるタスクの場合はEmbedding Layerの出力ベクトルに対する重みが大きくなり、文脈を考慮した情報が欲しい場合はLSTMのhidden stateに対する重みが大きくなるイメージ（LSTMの層が深いほど意味的semanticな情報を含み、浅いほど文法的syntacticな情報を含んでいる）。<br><br>使い方としては簡単で、ELMoを事前学習しておき、自身のNNモデルのWord Embeddingに（場合によってはRNNのhidden stateにも）、入力文から得られたELMo Embeddingをconcatして順伝搬させるだけで良い。</p><p>ELMoのEmbedding Layerでは、2048 characterの（vocab size?）n-gram convolution filter（文字ごとにembeddingし、単語のembeddingを得るためにfilterを適用する？）の後に2つのhighway networkをかませてlinearで512次元に落とすみたいなことごやられているらしい。ここまで追えていない。<br><br>詳細は下記<br>
+
+
+<a href="https://datascience.stackexchange.com/questions/97867/how-does-the-character-convolution-work-in-elmo" target="_blank" rel="noopener noreferrer">https://datascience.stackexchange.com/questions/97867/how-does-the-character-convolution-work-in-elmo</a>
+
+
+</p><p>s_taskとγ_taskはtrainableなパラメータで、<br>ELMoを適用した先のNNモデルの訓練時に、NNモデルのパラメタと一緒にチューニングする（と思われる）。<br><br>下記issueを参照のこと<br>allenai/allennlp# 1166<br>allenai/allennlp# 2552</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="exercise-enhanced-sequential-354" class="title-link">[Paper Note] Exercise-Enhanced Sequential Modeling for Student Performance Prediction, Hu+, AAAI'18</h3><br><a href="https://www.aaai.org/ocs/index.php/AAAI/AAAI18/paper/viewFile/16494/15960" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -6778,6 +7297,29 @@ My Issue
 </p><p>汎用的な文のエンコーダができました！という話。<br><br><br><br>SNLIデータでパラメータ学習、エンコーダ構成スライド図中右側のエンコーダ部分をなるべく一般的な文に適用できるように学習したい。<br><br><br><br>色々なタスクで、文のエンコーダ構成を比較した結果、bi-directional LSTMでエンコードし、要素ごとの最大値をとる手法が最も良いという結果。<br><br>隠れ層の次元は4096とかそのくらい。<br><br>Skip-Thoughtは学習に1ヶ月くらいかかるけど、提案手法はより少ないデータで1日くらいで学習終わり、様々なタスクで精度が良い。<br><br><br><br>ベクトルの要素積、concat,  subなど、様々な演算を施し、学習しているので、そのような構成の元から文エンコーダを学習すると何か意味的なものがとれている？<br><br>SNLIはNatural Language Inferenceには文の意味理解が必須なので、そのデータ使って学習するといい感じに文のエンコードができます。<br><br><br><br>NLIのデータは色々なところで有用なので、日本語のNLIのデータとかも欲しい。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="deep-residual-430" class="title-link">[Paper Note] Deep Residual Learning for Image Recognition, Kaiming He+, CVPR'16, 2015.12</h3><br><a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/430" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="CVPR.html" target="_blank" rel="noopener noreferrer">#CVPR</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Backbone.html" target="_blank" rel="noopener noreferrer">#Backbone</a>
+<a class="button" href="ResidualStream.html" target="_blank" rel="noopener noreferrer">#ResidualStream</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
+<span class="issue_date">Issue Date: 2021-11-04</span>
+<span class="snippet"><span>GPT Summary</span>- 残差学習フレームワークを提案し、深いニューラルネットワークのトレーニングを容易にする。参照層の入力に基づいて残差関数を学習することで、最適化が容易になり、精度が向上。152層の残差ネットはImageNetで低い複雑性を保ちながら高い性能を示し、ILSVRC 2015で1位を獲得。COCOデータセットでも28%の改善を達成。</span>
+<span class="snippet"><span>Comment</span><p>ResNet論文<br><br>ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショートカットができるようにしている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140301726-1d2e89e1-1d69-43d9-8d2b-0adb272e577a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>ResNetが提案される以前、モデルを深くすれば表現力が上がるはずなのに、実際には精度が下がってしまうことから、理論上レイヤーが恒等関数となるように初期化すれば、深いモデルでも浅いモデルと同等の表現が獲得できる、と言う考え方を発展させた。<br><br><br><br>（ステートオブAIガイドに基づく）</p><p>同じパラメータ数でより層を深くできる（Plainな構造と比べると層が1つ増える）Bottleneckアーキテクチャも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302452-649b0ea7-cce4-44c1-9e7d-b509ef8bca52.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>今や当たり前のように使われているResidual Connectionは、層の深いネットワークを学習するために必須の技術なのだと再認識。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="[paper-notes]-358" class="title-link">[Paper Notes] Back to the basics: Bayesian extensions of IRT outperform neural networks for proficiency estimation, Ekanadham+, EDM'16</h3><br><a href="https://arxiv.org/pdf/1604.02336.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -7318,6 +7860,26 @@ My Issue
 <span class="snippet"><span>Comment</span><p>word level -> sentence level -> document level のrepresentationを求め、documentのsentiment classificationをする話。<br><br>documentのRepresentationを生成するときに参考になるやも。<br><br>sentenceのrepresentationを求めるときは、CNN/LSTMを使う。<br><br>document levelに落とすことは、bi-directionalなGatedRNN(このGatedRNNはLSTMのoutput-gateが常にonになっているようなものを使う。sentenceのsemanticsに関する情報を落としたくないかららしい。)を使う。<br><br>sentiment classificationタスクで評価し、(sentence levelのrepresentationを求めるときは)LSTMが最も性能がよく、documentのrepresentationを求めるときは、standardなRNNよりもGatedRNNのほうが性能よかった。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="predicting-mooc-424" class="title-link">Predicting MOOC Dropout over Weeks Using Machine Learning Methods, EMNLP'14 Workshop, Marius Kloft</h3><br><a href="https://aclanthology.org/W14-4111.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/424" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
+<a class="button" href="LearningAnalytics.html" target="_blank" rel="noopener noreferrer">#LearningAnalytics</a>
+<a class="button" href="DropoutPrediction.html" target="_blank" rel="noopener noreferrer">#DropoutPrediction</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<span class="issue_date">Issue Date: 2021-10-29</span>
+<span class="snippet"><span>Comment</span><p>EMNLP'14のWorkshop論文。引用数が120件とかなり多め。</p><p>MOOCsのclickstreamデータから、numericalなfeatureを作成。SVMに食わせて学習し、Dropout Predictionを行なっている。<br><br><br><br>psychologyのMOOCコースからデータ収集。12週に渡って講義が行われる。統計量は以下：<br><br>初週のユーザ数：11,607<br><br>最後の週まで残ったユーザ数：3,861<br><br>参加した全体のユーザ数：20,828<br><br>DropOut率：81.4%<br><br>コース自体は19週間受講可能なので、その間のデータがある。<br><br><br><br>dropoutか否かのラベルは、翌週にターゲットユーザのIDと紐づいたアクティビティがあるかどうかで判断。ユーザuの各週Wiに対して、i=1, ..., 19の +1 / -1 ラベルが付与される。<br><br>+1 がDropout, -1がNo Dropout。</p><p>特徴量：<br><br><img src="https://user-images.githubusercontent.com/12249301/139363066-bdb4e294-cdae-4493-9721-1a20757c20f8.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p><img src="https://user-images.githubusercontent.com/12249301/139363086-1df1ab46-c1ed-4a2a-a72d-d310b3101b8f.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>最初の1 -- 9週の間は、あまりDropoutが予測できないが、それ以後はhistory featureが効いて予測ができるようになる。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="detecting-information-dense-148" class="title-link">[Paper Note] Detecting information-dense texts in multiple news domains, Yang+, AAAI'14</h3><br><a href="https://dl.acm.org/citation.cfm?id=2892782" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -7450,6 +8012,24 @@ My Issue
 <a class="button" href="Temporal.html" target="_blank" rel="noopener noreferrer">#Temporal</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>・次のモジュールにより構成される。Preprocess, Retrieval, Information expansion, Sentence choosing and ranking<br><br><br><br>・Preprocess: GPGファイルをTXTファイルに変換。indexをはる。<br><br>・Retrieval: 検索エンジンとしてLemur searchを使っている。クエリ拡張と単語の重み付けができるため。（DocumentをRetrievalする）<br><br>・Information Expansion: 検索結果を拡張するためにK-meansを用いる。<br><br>・Sentence choosing and ranking: クラスタリング後に異なるクラスタの中心から要約を構築する。<br><br> time factorとsimilarity factorによってsentenceがランク付けされる。（詳細なし）<br><br>・Retrievalにおいては主にTF-IDFとBM25を用いている。<br><br>・traditionalなretrieval methodだけではperform wellではないので、Information Expansionをする。k-meansをすることで、異なるイベントのトピックに基づいてクラスタを得ることができる。クラスタごとの中心のドキュメントのtop sentencesをとってきて、要約とする。最終的にイベントごとに50 sentencesを選択する。<br><br>・生成したSequential Update Summarizationからvalueを抜いてきて、Value Trackingをする。<br><br><br><br>・Updateの部分をどのように実装しているのか？</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="a-comparative-428" class="title-link">A Comparative Study of Collaborative Filtering Algorithms, Lee+, arXiv'12</h3><br><a href="https://arxiv.org/pdf/1205.3193.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/428" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="CollaborativeFiltering.html" target="_blank" rel="noopener noreferrer">#CollaborativeFiltering</a>
+<span class="issue_date">Issue Date: 2021-10-29</span>
+<span class="snippet"><span>Comment</span><p>様々あるCFアルゴリズムをどのように選択すべきか、# of users, # of items, rating matrix densityの観点から分析した研究。<br><br><br><br>1. 特にcomputationに関する制約がない場合は・・・、NMFはsparseなデータセットに対して最も良い性能を発揮する。BPMFはdenseなデータセットに対して最も良い性能を発揮する。そして、regularized SVD, PMFはこれ以外の状況で最も良い性能を示す（PMFはユーザ数が少ない場合によく機能する一方で、Regularized SVDはアイテム数が小さい場合に良く機能する。）。<br><br><br><br>2. もしtime constraintが5分の場合、Regularized SVD, NLPMF, NPCA, Rankbased CFは検討できない。この場合、NMFがスパースデータに対して最も良い性能を発揮し、BPMFがdenseで大規模なデータ、それ以外ではPMFが最も良い性能を示す。<br><br><br><br>3. もしtime constraintが1分の場合、PMFとBPMFは2に加えてさらに除外される。多くの場合Slope-oneが最も良い性能を示すが、データがsparseな場合はNMF。<br><br><br><br>4. リアルタイムな計算が必要な場合、user averageがbest</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="improving-matrix-296" class="title-link">[Paper Note] Improving Matrix Factorization Techniques of Student Test Data with Partial Order Constraints, Beheshti+, UMAP'12</h3><br><a href="https://books.google.co.jp/books?id=1bq5BQAAQBAJ&pg=PA346&lpg=PA346&dq=Improving+matrix+factorization+techniques+of+student+test+data&source=bl&ots=xZy72IlvGC&sig=IahW4QpWsZezV74VF2379OxzlSE&hl=ja&sa=X&ved=0ahUKEwjDhtDD0M_aAhWCKpQKHW3wAl4Q6AEINzAD#v=onepage&q=Improving%20matrix%20factorization%20techniques%20of%20student%20test%20data&f=false" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -8012,6 +8592,24 @@ My Issue
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2017-12-28</span>
 <span class="snippet"><span>Comment</span><p>・ドキュメントはオフラインでクラスタリングされており，各クラスタごとにmulti-document summarizationを行うことで，<br><br>ユーザが最も興味のあるクラスタを同定することに役立てる．あるいは検索結果のページのドキュメントの要約を行う．<br><br>要約した結果には，extractした文の元URLなどが付与されている．<br><br>・Personalizationをかけるためには，ユーザがドキュメントを選択し，タイトル・ボディなどに定数の重みをかけて，その情報を要約に使う．<br><br>・特に評価していない．システムのoutputを示しただけ．</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="modeling-individualization-470" class="title-link"> Modeling individualization in a bayesian networks implementation of knowledge tracing, Pardos+ （w_ Neil T. Heffernan）, UMAP'00</h3><br><a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.479.3651&rep=rep1&type=pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/470" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="KnowledgeTracing.html" target="_blank" rel="noopener noreferrer">#KnowledgeTracing</a>
+<a class="button" href="UMAP.html" target="_blank" rel="noopener noreferrer">#UMAP</a>
+<span class="issue_date">Issue Date: 2022-08-17</span>
+<span class="snippet"><span>Comment</span><p># モチベーション<br><br>BKTでは、全ての生徒が共通のprior knowledge（各スキルに対する習熟度）を持っていることを仮定しており、生徒ごとの事前情報を導入することが許されていない。そこで、個々の生徒のprior knowledge parameterを導入することで予測精度の向上を実現した研究。Prior Per Student (PPS) Modelと呼ぶ。<br><br><br><br># モデル<br><br>下図にBKTモデルとPPSモデルを示す。通常のBKTモデルに、student nodeを追加する。student nodeは1から考慮する生徒の数までの範囲の値をとる。このため、initial knowledge nodeのcondotional probability tableはstudent nodeの値によって条件づけられる。student node自体にも、学生が特定の値になる確率を決定する条件付き確率テーブルが関連付けられている。<br><br>このノードのパラメータは1/Nで固定する（Nは生徒の数）。student nodeは学生 ID に対応する観測ノードであり、推論する必要がないため、このノードのパラメーター値は関係ない。<br><br><img src="https://user-images.githubusercontent.com/12249301/185049386-5c701baa-3cf6-4d0b-a052-509d4b6b1114.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>また、このモデルは下図に示すように、student nodeを後続のknowledge nodeに接続することで、個々の生徒ごとの学習率をモデル化するように容易に変更できる。これにより、studentによって条件づけられたP(T)（i.e. learning rate）を訓練できる。全ての事前分布を同じ値にするか、学生が1人だけであることを指定すれば、BKTと同等となる。<br><br><img src="https://user-images.githubusercontent.com/12249301/185051109-956782ee-ca3f-44c1-b03a-5f646f2c2c5d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="the-use-243" class="title-link">[Paper Note] The Use of MMR, Diversity-Based Reranking for Reordering Documents and Producing Summaries, Carbonell+, SIGIR'98</h3><br><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.188.3982&rep=rep1&type=pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -9863,7 +10461,7 @@ My Issue
 
 </p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1072" target="_blank" rel="noopener noreferrer">Think before you speak: Training Language Models With Pause Tokens, Sachin Goyal+, N/A, ICLR'24</a>
 <br><br>や<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1147" target="_blank" rel="noopener noreferrer">Implicit Chain of Thought Reasoning via Knowledge Distillation, Yuntian Deng+, N/A, arXiv'23</a>
-<br><br>で似たような考えはすでに提案されていたが、どのような点が異なるのだろうか？<br><br><br><br>たとえば前者は、pauseトークンと呼ばれるoutputとは関係ないトークンを生成することで、outputを生成する前にモデル内部で推論する前により多くのベクトル操作を加える（=ベクトルを縦方向と横方向に混ぜ合わせる; 以後ベクトルをこねくりまわすと呼称する）、といった挙動を実現しているようだが、明示的にCoTの教師データを使ってSFTなどをしているわけではなさそうに見える（ざっくりとしか読んでないが）。<br><br>一方、Jason Wei氏のポストからは、RLで明示的により良いCoTができるように学習をしている点が違うように見える。</p><p>**(2025.0929): 以下のtest-time computeに関するメモはo1が出た当初のものであり、私の理解が甘い状態でのメモなので現在の理解を後ほど追記します。当時のメモは改めて見返すとこんなこと考えてたんだなぁとおもしろかったので残しておきます。**<br><br>学習の計算量だけでなく、inferenceの計算量に対しても、新たなスケーリング則が見出されている模様。<br><br><img src="https://github.com/user-attachments/assets/85a39908-7db8-4f97-9b5d-4bfdc8439577" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>テクニカルレポート中で言われている time spent thinking （test-time compute）というのは、具体的には何なのだろうか。<br><br><br><br>上の研究でいうところの、inference時のpauseトークンの生成のようなものだろうか。モデルがベクトルをこねくり回す回数（あるいは生成するトークン数）が増えると性能も良くなるのか？<br><br>しかしそれはオリジナルのCoT研究である<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">Chain of thought prompting elicits reasoning in large language models, Wei+, Google Research, NeurIPS'22</a>
+<br><br>で似たような考えはすでに提案されていたが、どのような点が異なるのだろうか？<br><br><br><br>たとえば前者は、pauseトークンと呼ばれるoutputとは関係ないトークンを生成することで、outputを生成する前にモデル内部で推論する前により多くのベクトル操作を加える（=ベクトルを縦方向と横方向に混ぜ合わせる; 以後ベクトルをこねくりまわすと呼称する）、といった挙動を実現しているようだが、明示的にCoTの教師データを使ってSFTなどをしているわけではなさそうに見える（ざっくりとしか読んでないが）。<br><br>一方、Jason Wei氏のポストからは、RLで明示的により良いCoTができるように学習をしている点が違うように見える。</p><p>**(2025.0929): 以下のtest-time computeに関するメモはo1が出た当初のものであり、私の理解が甘い状態でのメモなので現在の理解を後ほど追記します。当時のメモは改めて見返すとこんなこと考えてたんだなぁとおもしろかったので残しておきます。**<br><br>学習の計算量だけでなく、inferenceの計算量に対しても、新たなスケーリング則が見出されている模様。<br><br><img src="https://github.com/user-attachments/assets/85a39908-7db8-4f97-9b5d-4bfdc8439577" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>テクニカルレポート中で言われている time spent thinking （test-time compute）というのは、具体的には何なのだろうか。<br><br><br><br>上の研究でいうところの、inference時のpauseトークンの生成のようなものだろうか。モデルがベクトルをこねくり回す回数（あるいは生成するトークン数）が増えると性能も良くなるのか？<br><br>しかしそれはオリジナルのCoT研究である<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
 <br><br>のdotのみの文字列をpromptに追加して性能が向上しなかった、という知見と反する。<br><br><br><br>おそらく、**モデル学習のデコーディング時に**、ベクトルをこねくり回す回数（あるいは生成するトークン数）を増やすこと＝time spent thinking (test-time compute) 、ということなのだろうか？<br><br>そしてそのように学習されたモデルは、推論時にベクトルをこねくり回す回数（あるいは生成するトークン数）を増やすと性能が上がる、ということなのだろうか。<br><br>もしそうだとすると、これは<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1072" target="_blank" rel="noopener noreferrer">Think before you speak: Training Language Models With Pause Tokens, Sachin Goyal+, N/A, ICLR'24</a>
 <br><br>のpauseトークンの生成をしながらfinetuningすると性能が向上する、という主張とも合致するように思うが、うーん。<br><br><br><br>実際暗号解読のexampleを見ると、とてつもなく長いCoT（トークンの生成数が多い）が行われている。</p><p>RLでReasoningを学習させる関連研究: <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1391" target="_blank" rel="noopener noreferrer">ReFT: Reasoning with Reinforced Fine-Tuning, Trung Quoc Luong+, N/A, ACL'24</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1392" target="_blank" rel="noopener noreferrer">Training Large Language Models for Reasoning through Reverse Curriculum   Reinforcement Learning, Zhiheng Xi+, N/A, ICML'24</a>
@@ -10055,6 +10653,45 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="understanding-the-577" class="title-link">Understanding the impact of web personalization on user information processing and decision outcomes, Tam+, MIS quarterly, 2006</h3><br><a href="https://www.jstor.org/stable/pdf/25148757.pdf?casa_token=BRrDYDAMDyUAAAAA:ThhzDcKItlG0qte6YJOMWZ8yS3pZzBoJSm6_r2FFNGb8_p7ksXpNlIPheTwoj3TeKNIcUCg_FNxD37HIIJT4i3P2NOfBMmsOCamqR5QFPZ7MGGAc-25ybA" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/577" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="HumanComputerInteraction.html" target="_blank" rel="noopener noreferrer">#HumanComputerInteraction</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>Comment</span><p>コンテンツのrelevancy, 自己言及的なコミュニケーション（名前を呼ぶ等）が、オンラインにおけるユーザの注意や認知プロセス、および意思決定に影響を与えることを示している。特に、これらが、パーソナライズされたコンテンツを受け入れ、意思決定を支援することにつながることを示している（らしい）。<br><br>かなり有名な研究らしい。<br><br><br><br>名前を呼んだメッセージングと、relevantなコンテンツを提供することの両方で、エンドユーザはpersonalizedされたと認知し、後から思い出すのはrelevantなコンテンツの内容だけだったという実験結果が出ており、メッセージングで注意を引くことも大事だし、ちゃんとrelevantなコンテンツも提供しないといけないよね、という示唆が得られているのだと思われる。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="measuring-the-576" class="title-link">Measuring the impact of online personalisation: Past, present and future</h3><br><a href="https://reader.elsevier.com/reader/sd/pii/S107158191930076X?token=0A897A8FC6BC67FE47F355143B3534CE1B97E42F3021716E685D18EFD9B107DC7843249216613ACFF88E92647EDB2470&originRegion=us-east-1&originCreation=20230428080859" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/576" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2023-04-28</span>
+<span class="snippet"><span>Comment</span><p>Personalizationに関するML, RecSys, HCI, Personalized IRといったさまざまな分野の評価方法に関するSurvey<br><br><br><br>ML + RecSys系では、オフライン評価が主流であり、よりaccuracyの高い推薦が高いUXを実現するという前提に基づいて評価されてきた。一方HCIの分野ではaccuracyに特化しすぎるとUXの観点で不十分であることが指摘されており、たとえば既知のアイテムを推薦してしまったり、似たようなアイテムばかりが選択されユーザにとって有用ではなくなる、といったことが指摘されている。このため、ML, RecSys系の評価ではdiversity, novelty, serendipity, popularity, freshness等の新たなmetricが評価されるように変化してきた。また、accuracyの工場がUXの向上に必ずしもつながらないことが多くの研究で示されている。<br><br><br><br>一方、HCIやInformation Systems, Personalized IRはuser centricな実験が主流であり、personalizationは<br><br>- 情報アクセスに対するコストの最小化<br><br>- UXの改善<br><br>- コンピュータデバイスをより効率的に利用できるようにする<br><br>という3点を実現するための手段として捉えられている。HCIの分野では、personalizationの認知的な側面についても研究されてきた。<br><br>たとえば、ユーザは自己言及的なメッセージやrelevantなコンテンツが提示される場合、両方の状況においてpersonalizationされたと認知し、後から思い出せるのはrelevantなコンテンツに関することだという研究成果が出ている。このことから、自己言及的なメッセージングでユーザをstimulusすることも大事だが、relevantなコンテンツをきちんと提示することが重要であることが示されている。また、personalizationされたとユーザが認知するのは、必ずしもpersonalizationのプロセスに依存するのではなく、結局のところユーザが期待したメッセージを受け取ったか否かに帰結することも示されている。<br><br>user-centricな評価とオフライン評価の間にも不一致が見つかっている。たとえば<br><br>- オフラインで高い精度を持つアルゴリズムはニッチな推薦を隠している<br><br>  - i.e. popularityが高くrelevantな推薦した方がシステムの精度としては高く出るため<br><br>- オフライン vs. オンラインの比較で、ユーザがアルゴリズムの精度に対して異なる順位付けをする<br><br>といったことが知られている。<br><br><br><br>そのほかにも、企業ではofflineテスト -> betaテスターによるexploratoryなテスト -> A/Bテストといった流れになることが多く、Cognitive Scienceの分野の評価方法等にも触れている。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="adaptive-web-566" class="title-link">[Paper Note] Adaptive Web Search Based on User Profile Constructed without Any Effort from Users, Sugiyama+, NAIST, WWW’04</h3><br><a href="https://dl.acm.org/doi/pdf/10.1145/988672.988764?casa_token=aE0lsbZ7pQoAAAAA:AXsTTPJsMShhZnKZ6poVN66m5CdAHqMNSIFCucdnRARISeSrNbtpRsECFFCPEAOuCWu3cDiBJmevHPw" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -10075,6 +10712,111 @@ My Issue
 <a class="button" href="Personalization.html" target="_blank" rel="noopener noreferrer">#Personalization</a>
 <span class="issue_date">Issue Date: 2023-04-28</span>
 <span class="snippet"><span>Comment</span><p>検索結果のpersonalizationを初めてuser profileを用いて実現した研究<br><br>user profileはlong/short term preferenceによって構成される。<br><br>- long term: さまざまなソースから取得される<br><br>- short term: 当日のセッションの中だけから収集される<br><br><br><br>① browsing historyの活用<br><br>- browsing historyのTFから求め Profile = P_{longterm} + P_{shortterm}とする<br><br><br><br>② Collaborative Filtering (CF) の活用<br><br>- user-item matrixではなく、user-term matrixを利用<br><br>- userの未知のterm-weightをCFで予測する<br><br>  - => missing valueのterm weightが予測できるのでprofileが充実する<br><br><br><br>実験結果<br><br>- 検証結果（googleの検索結果よりも提案手法の方が性能が良い）<br><br>- 検索結果のprecision向上にlong/short term preferenceの両方が寄与<br><br>- longterm preferenceの貢献の方が大きいが、short termも必要（interpolation weight 0.6 vs. 0.4）<br><br>- short termにおいては、その日の全てのbrowsing historyより、現在のセッションのterm weightをより考慮すべき（interpolation weight 0.2 vs. 0.8）<br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="training-a-531" class="title-link">Training a recommendation model with dynamic embeddings, TensorFlow Blog, 2023.04</h3><br><a href="https://blog.tensorflow.org/2023/04/training-recommendation-model-with-dynamic-embeddings.html?m=1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/531" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>Comment</span><p>dynamic embeddingを使った推薦システムの構築方法の解説</p><p>（理解が間違っているかもしれないが）推薦システムは典型的にはユーザとアイテムをベクトル表現し、関連度を測ることで推薦をしている。この枠組みをめっちゃスケールさせるととんでもない数のEmbeddingを保持することになり、メモリ上にEmbeddingテーブルを保持して置けなくなる。特にこれはonline machine learning（たとえばユーザのセッションがアイテムのsequenceで表現されたとき、そのsequenceを表すEmbeddingを計算し保持しておき、アイテムとの関連度を測ることで推薦するアイテムを決める、みたいなことが必要）では顕著である（この辺の理解が浅い）。しかし、ほとんどのEmbeddingはrarely seenなので、厳密なEmbeddingを保持しておくことに実用上の意味はなく、それらを単一のベクトルでできるとメモリ節約になって嬉しい（こういった処理をしてもtopNの推薦結果は変わらないと思われるので）。<br>これがdynamic embeddingのモチベであり、どうやってそれをTFで実装するか解説している。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="lora論文解説-528" class="title-link">LoRA論文解説, Hayato Tsukagoshi, 2023.04</h3><br><a href="https://speakerdeck.com/hpprc/lun-jiang-zi-liao-lora-low-rank-adaptation-of-large-language-models" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/528" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="PEFT(Adaptor-LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2023-04-25</span>
+<span class="snippet"><span>Comment</span><p>ベースとなる事前学習モデルの一部の線形層の隣に、低ランク行列A,Bを導入し、A,Bのパラメータのみをfinetuningの対象とすることで、チューニングするパラメータ数を激減させた上で同等の予測性能を達成し、推論速度も変わらないようにするfinetuning手法の解説</p><p>LoRAを使うと、でかすぎるモデルだと、そもそもGPUに載らない問題や、ファインチューニング後のモデルファイルでかすぎワロタ問題が回避できる。<br><br>前者は事前学習済みモデルのBPのための勾配を保存しておく必要がなくなるため学習時にメモリ節約になる。後者はA,Bのパラメータだけ保存すればいいので、ストレージの節約になる。<br><br>かつ、学習速度が25%程度早くなる。</p><p>既存研究であるAdapter（transformerの中に学習可能なMLPを差し込む手法）は推論コストが増加し、prefix tuningは学習が非常に難しく、高い性能を達成するためにprefixとして128 token入れたりしなければならない。</p><p>huggingfaceがすでにLoRAを実装している<br>
+
+
+<a href="https://github.com/huggingface/peft" target="_blank" rel="noopener noreferrer">https://github.com/huggingface/peft</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="score-prediction-474" class="title-link">Score Prediction dataset</h3><br><a href="https://www.kaggle.com/datasets/saraivaufc/enem-2019" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/474" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="Education.html" target="_blank" rel="noopener noreferrer">#Education</a>
+<a class="button" href="AdaptiveLearning.html" target="_blank" rel="noopener noreferrer">#AdaptiveLearning</a>
+<a class="button" href="EducationalDataMining.html" target="_blank" rel="noopener noreferrer">#EducationalDataMining</a>
+<a class="button" href="ScorePrediction.html" target="_blank" rel="noopener noreferrer">#ScorePrediction</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
+<span class="issue_date">Issue Date: 2022-08-23</span>
+</article>
+<article class="paper-entry">
+<h3 id="neptune.ai-439" class="title-link">neptune.ai</h3><br><a href="https://neptune.ai/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/439" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="Tools.html" target="_blank" rel="noopener noreferrer">#Tools</a>
+<a class="button" href="ExperimentManagement.html" target="_blank" rel="noopener noreferrer">#ExperimentManagement</a>
+<span class="issue_date">Issue Date: 2022-03-09</span>
+<span class="snippet"><span>Comment</span><p>・実験結果の可視化や管理に利用できるサービス<br><br>・API経由で様々な実験に関わるメタデータやmetricを送信することで、サイト上でdashboardを作成し、複数の実験の結果を可視化したりwidget上で比較したりできる<br><br>・実験時に使用したargumentsを記録したり、global_stepごとにlossをAPI経由で逐次的に送信することで実験結果を記録できたりする<br><br>・widgetやmodelなどは、クエリによってフィルタリングできたりするので、特定のstructureを持っているモデル間のみで結果を比較したり等も簡単にできる<br><br>・利用する際は、APIキーをサイト上で発行し、コード上でAPIキーを設定して、neptuneのモジュールをnewしてlogメソッドを呼び出して逐次的にデータを送信していくだけで、neptune上で送信んされたデータが管理される。<br><br><br><br>※ 一部解釈が間違っている場所がある可能性がある</p><p>HuggingFace, pytorch-lightningなどのフレームワークでもサポートされている模様<br><br><br><br>HuggingFace: 
+
+
+<a href="https://huggingface.co/transformers/v4.9.1/_modules/transformers/integrations.html" target="_blank" rel="noopener noreferrer">https://huggingface.co/transformers/v4.9.1/_modules/transformers/integrations.html</a>
+
+
+<br><br>pytorch-lightning: 
+
+
+<a href="https://pytorch-lightning.readthedocs.io/en/stable/api/pytorch_lightning.loggers.neptune.html" target="_blank" rel="noopener noreferrer">https://pytorch-lightning.readthedocs.io/en/stable/api/pytorch_lightning.loggers.neptune.html</a>
+
+
+<br><br><br><br>HuggingFaceではNeptuneCallbackというコールバックを使えばneptuneを仕込めそう</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="addressing-two-421" class="title-link">Addressing Two Problems in Deep Knowledge Tracing via Prediction-Consistent Regularization, Yeung+, 2018, L@S</h3><br><a href="https://arxiv.org/pdf/1806.02180.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11002,19 +11744,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/IROS.html"
-            title="IROSに関する論文・技術記事メモの一覧">
-            IROSに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/AutoML.html"
-            title="AutoMLに関する論文・技術記事メモの一覧">
-            AutoMLに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Ambiguity.html"
+            title="Ambiguityに関する論文・技術記事メモの一覧">
+            Ambiguityに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -11022,22 +11754,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RelationExtraction.html"
-            title="RelationExtractionに関する論文・技術記事メモの一覧">
-            RelationExtractionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CoRL.html"
+            title="CoRLに関する論文・技術記事メモの一覧">
+            CoRLに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/DiseaseNameRecognition.html"
-            title="DiseaseNameRecognitionに関する論文・技術記事メモの一覧">
-            DiseaseNameRecognitionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ICML.html"
+            title="ICMLに関する論文・技術記事メモの一覧">
+            ICMLに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 87</span> 
+  <span class="post-badge badge-new">📝 87</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/ImageSegmentation.html"
+            title="ImageSegmentationに関する論文・技術記事メモの一覧">
+            ImageSegmentationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
 </span>
 </a>
         </li></ul>
