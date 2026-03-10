@@ -185,7 +185,7 @@ def change_first_comment(url, entry, issue_number):
 def change_title_and_first_comment(issue_data, matched_url: str = None):
     issue_number = issue_data["number"]
     original_title = issue_data["title"]
-    if arxiv_id == None:
+    if matched_url == None:
         url = issue_data["body"]
     else:
         url = matched_url
