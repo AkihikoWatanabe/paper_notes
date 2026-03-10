@@ -247,6 +247,7 @@ if __name__ == "__main__":
     elif action_type == 'labeled':
         labels = issue_data["labels"]
         m = re.search(arxiv_pat, url)
+        print(m)
         if any([label["name"] == "action_wanted" for label in labels]) and m != None:
             change_title_and_first_comment(issue_data, matched_url=m.group(0))
         elif any([label["name"] == "translation_required" for label in labels]):
