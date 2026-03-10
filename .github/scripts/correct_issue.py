@@ -182,11 +182,13 @@ def change_first_comment(url, entry, issue_number):
     issue.edit(body=new_comment)
 
 
-def change_title_and_first_comment(issue_data):
+def change_title_and_first_comment(issue_data, matched_url: str = None):
     issue_number = issue_data["number"]
     original_title = issue_data["title"]
-    url = issue_data["body"]
-
+    if arxiv_id == None:
+        url = issue_data["body"]
+    else:
+        url = matched_url
     arxiv_id = get_arxiv_id_from_url(url)
     entry = get_entry_from_metadata(arxiv_id)
     #attach_pocket_tag(issue_number)
@@ -244,8 +246,9 @@ if __name__ == "__main__":
             change_title_and_first_comment(issue_data)
     elif action_type == 'labeled':
         labels = issue_data["labels"]
-        if any([label["name"] == "action_wanted" for label in labels]) and re.fullmatch(arxiv_pat, url):
-            change_title_and_first_comment(issue_data)
+        m = re.search(arxiv_pat, url)
+        if any([label["name"] == "action_wanted" for label in labels]) and m != None:
+            change_title_and_first_comment(issue_data, matched_url=m.group(0))
         elif any([label["name"] == "translation_required" for label in labels]):
             translate_and_summarize(issue_data)
     else:
