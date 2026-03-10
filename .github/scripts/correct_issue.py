@@ -236,8 +236,9 @@ if __name__ == "__main__":
 
     url = issue_data["body"]
 
-    arxiv_pat = r"^https?:\/\/arxiv\.org\/.*?$"
-
+    #arxiv_pat = r"^https?:\/\/arxiv\.org\/.*?$"
+    arxiv_pat = r"https?:\/\/arxiv\.org\/.*?$"
+        
     if action_type == 'opened':
         if re.fullmatch(arxiv_pat, url):
             change_title_and_first_comment(issue_data)
