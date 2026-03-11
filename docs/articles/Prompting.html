@@ -1897,7 +1897,7 @@ My Issue
 <a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <span class="issue_date">Issue Date: 2023-10-30</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）において、推論は重要で困難な問題です。従来のアプローチでは、プロンプティング戦略を開発することに焦点が当てられてきましたが、双方向の相互作用や質問の重要性には注意が払われていませんでした。この問題に対処するため、質問の再読という新しいプロンプティング戦略を提案します。再読は、質問情報を再訪することで、LLMsの推論能力を向上させることができます。実験結果は、この手法の効果と汎用性を示しており、LLMsの領域でのその有用性を強調しています。</span>
-<span class="snippet"><span>Comment</span><p>問題文を2,3回promptで繰り返すだけで、数学のベンチマークとCommonsenseのベンチマークの性能が向上したという非常に簡単なPrompting。self-consistencyなどの他のPromptingとの併用も可能。<br>なぜ性能が向上するかというと、<br>1. LLMはAuporegressiveなモデルであり、bidirectionalなモデルではない。このため、forwardパスのみでは読解力に限界がある。（たとえば人間はしばしばテキストを読み返したりする）。そこで、一度目の読解で概要を理解し、二度目の読解でsalience partを読み込むといったような挙動を実現することで、より問題文に対するComprehensionが向上する。<br>2. LLMはしばしばpromptの重要な箇所の読解を欠落させてしまう。たとえば、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer">Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, N/A, TACL'24</a>
+<span class="snippet"><span>Comment</span><p>問題文を2,3回promptで繰り返すだけで、数学のベンチマークとCommonsenseのベンチマークの性能が向上したという非常に簡単なPrompting。self-consistencyなどの他のPromptingとの併用も可能。<br>なぜ性能が向上するかというと、<br>1. LLMはAuporegressiveなモデルであり、bidirectionalなモデルではない。このため、forwardパスのみでは読解力に限界がある。（たとえば人間はしばしばテキストを読み返したりする）。そこで、一度目の読解で概要を理解し、二度目の読解でsalience partを読み込むといったような挙動を実現することで、より問題文に対するComprehensionが向上する。<br>2. LLMはしばしばpromptの重要な箇所の読解を欠落させてしまう。たとえば、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer">[Paper Note] Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, arXiv'23, 2023.07</a>
  では、promptのmiddle partを軽視する傾向があることが示されている。このような現象も軽減できると考えられる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e575e0aa-b76c-444e-b9b0-e984d6fc73cf" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/1b2344fb-bfb4-467b-9dbb-05e4eff23d06" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcaa2337-cfce-4e0c-b068-a7de2c0eff78" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br>問題文の繰り返しは、3回までは性能が向上する。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e333e807-24d4-4a64-b768-cbd6dfbceecd" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>このpromptingは複雑な問題であればあるほど効果があると推察される。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2025,71 +2025,10 @@ My Issue
 <span class="issue_date">Issue Date: 2023-09-30</span>
 <span class="snippet"><span>GPT Summary</span>- 私たちは、言語モデルが根拠のない情報を生成する問題に取り組んでいます。Chain-of-Verification（CoVe）メソッドを開発し、モデルが回答を作成し、検証し、最終的な回答を生成するプロセスを経ることで、幻想を減少させることができることを実験で示しました。</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># 概要<br>ユーザの質問から、Verificationのための質問をplanningし、質問に対して独立に回答を得たうえでオリジナルの質問に対するaggreementを確認し、最終的に生成を実施するPrompting手法<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/18763903-2d70-4180-9384-2da55bedad2e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br># 評価<br>## dataset<br>- 全体を通じてclosed-bookの設定で評価<br>- Wikidata<br>    - Wikipedia APIから自動生成した「“Who are some [Profession]s who were born in [City]?”」に対するQA pairs<br>    - Goldはknowledge baseから取得<br>    - 全56 test questions<br>    - Gold Entityが大体600程度ありLLMは一部しか回答しないので、precisionで評価<br>- Wiki category list<br>    - QUEST datasetを利用 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/701" target="_blank" rel="noopener noreferrer">QUEST: A Retrieval Dataset of Entity-Seeking Queries with Implicit Set  Operations, Chaitanya Malaviya+, N/A, ACL'23</a>
+<strong># 概要<br>ユーザの質問から、Verificationのための質問をplanningし、質問に対して独立に回答を得たうえでオリジナルの質問に対するaggreementを確認し、最終的に生成を実施するPrompting手法<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/18763903-2d70-4180-9384-2da55bedad2e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br># 評価<br>## dataset<br>- 全体を通じてclosed-bookの設定で評価<br>- Wikidata<br>    - Wikipedia APIから自動生成した「“Who are some [Profession]s who were born in [City]?”」に対するQA pairs<br>    - Goldはknowledge baseから取得<br>    - 全56 test questions<br>    - Gold Entityが大体600程度ありLLMは一部しか回答しないので、precisionで評価<br>- Wiki category list<br>    - QUEST datasetを利用 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/701" target="_blank" rel="noopener noreferrer">[Paper Note] QUEST: A Retrieval Dataset of Entity-Seeking Queries with Implicit Set Operations, Chaitanya Malaviya+, arXiv'23, 2023.05</a>
 </strong>
 <br>
  <br>    - 回答にlogical operationが不要なものに限定して頭に"Name some"をつけて質問を生成<br>        - "Name some Mexican animated horror films" or "Name some Endemic orchids of Vietnam"<br>    - 8個の回答を持つ55 test questionsを作成<br>- MultiSpanQA<br>    - Reading Comprehensionに関するBenchmark dataset<br>    - 複数の独立した回答（回答は連続しないスパンから回答が抽出される）から構成される質問で構成<br>        - 特に、今回はclosed-book setting で実施<br>        - すなわち、与えられた質問のみから回答しなければならず、知っている知識が問われる問題<br>    - 418のtest questsionsで、各回答に含まれる複数アイテムのspanが3 token未満となるようにした<br>    - QA例:<br>        - Q: Who invented the first printing press and in what year?<br>        - A: Johannes Gutenberg, 1450.<br># 評価結果<br>提案手法には、verificationの各ステップでLLMに独立したpromptingをするかなどでjoint, 2-step, Factored, Factor+Revisedの4種類のバリエーションがあることに留意。<br>- joint: 全てのステップを一つのpromptで実施<br>- 2-stepは2つのpromptに分けて実施<br>- Factoredは各ステップを全て異なるpromptingで実施<br>- Factor+Revisedは異なるpromptで追加のQAに対するcross-checkをかける手法<br><br>結果を見ると、CoVEでhallucinationが軽減（というより、モデルが持つ知識に基づいて正確に回答できるサンプルの割合が増えるので実質的にhallucinationが低減したとみなせる）され、特にjointよりも2-step, factoredの方が高い性能を示すことがわかる。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/05ff1e6c-75e7-428a-996f-61e844866391" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d72aa05e-daab-4092-a6f5-9e80cdab7486" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="large-language-799" class="title-link">Large Language Models are Effective Text Rankers with Pairwise Ranking   Prompting, Zhen Qin+, N_A, NAACL'24</h3><br><a href="https://arxiv.org/abs/2306.17563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
-<a class="button" href="LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
-<a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
-<span class="issue_date">Issue Date: 2023-07-11</span>
-<span class="snippet"><span>GPT Summary</span>- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。</span>
-<span class="snippet"><span>Comment</span><p>open source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案</p><p>従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。<br><br>PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。<br><img src="https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。<br><img src="https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、PRPがinputのorderに対してロバストなことも示されている。<br><img src="https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="lost-in-793" class="title-link">Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, N_A, TACL'24</h3><br><a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
-<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="In-ContextLearning.html" target="_blank" rel="noopener noreferrer">#In-ContextLearning</a>
-<a class="button" href="TACL.html" target="_blank" rel="noopener noreferrer">#TACL</a>
-<a class="button" href="ContextEngineering.html" target="_blank" rel="noopener noreferrer">#ContextEngineering</a>
-<span class="issue_date">Issue Date: 2023-07-11</span>
-<span class="snippet"><span>GPT Summary</span>- 最近の言語モデルは、長い文脈を入力として受け取ることができますが、その長い文脈をどれだけうまく利用しているかについてはまだよくわかっていません。この研究では、マルチドキュメントの質問応答とキー・バリューの検索という2つのタスクにおいて、言語モデルのパフォーマンスを分析しました。その結果、関連情報が入力文脈の始まりや終わりにある場合、パフォーマンスが最も高くなることがわかりましたが、長い文脈の中で関連情報にアクセスする必要がある場合、パフォーマンスが著しく低下します。さらに、入力文脈が長くなるにつれて、明示的に長い文脈を扱うモデルでもパフォーマンスが大幅に低下します。この分析は、言語モデルが入力文脈をどのように利用しているかをより良く理解するためのものであり、将来の長い文脈モデルのための新しい評価プロトコルを提供します。</span>
-<span class="snippet"><span>Comment</span><p>元ツイート<br>
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/drjimfan/status/1678460065811136512?s=46&t=5BO_qSlNBSEGSugyUlP5Hw"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-<br><br>非常に重要な知見がまとめられている</p><p>1. モデルはコンテキストのはじめと最後の情報をうまく活用でき、真ん中の情報をうまく活用できない<br>2. 長いコンテキストのモデルを使っても、コンテキストをより短いコンテキストのモデルよりもうまく考慮できるわけではない<br>3. モデルのパフォーマンスは、コンテキストが長くなればなるほど悪化する</p><p>SNLP'24での解説スライド:<br>
-
-
-<a href="https://speakerdeck.com/kichi/snlp2024" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/kichi/snlp2024</a>
-
-
-</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="enhancing-chain-of-thoughts-532" class="title-link">[Paper Note] Enhancing Chain-of-Thoughts Prompting with Iterative Bootstrapping in  Large Language Models, Jiashuo Sun+, NAACL'24 Findings, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.11657" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2420,7 +2359,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>Chain of Thought <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
  <br><br>=> Self-consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
  <br><br>=> Thought Decomposition <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1013" target="_blank" rel="noopener noreferrer">Decomposition Enhances Reasoning via Self-Evaluation Guided Decoding, Yuxi Xie+, N/A, arXiv'23</a>
- <br><br>=> Tree of Thoughts <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/684" target="_blank" rel="noopener noreferrer">Tree of Thoughts: Deliberate Problem Solving with Large Language Models, Shunyu Yao+, N/A, arXiv'23</a>
+ <br><br>=> Tree of Thoughts <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/684" target="_blank" rel="noopener noreferrer">[Paper Note] Tree of Thoughts: Deliberate Problem Solving with Large Language Models, Shunyu Yao+, arXiv'23, 2023.05</a>
  Tree of Thought <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1015" target="_blank" rel="noopener noreferrer">Large Language Model Guided Tree-of-Thought, Jieyi Long, N/A, arXiv'23</a>
  <br><br>=> Graph of Thought</p></span><br><br>
 </article>
@@ -2508,7 +2447,31 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 本論文では、推論に関する最新の研究について包括的な調査を行い、初心者を支援するためのリソースを提供します。また、推論能力の要因や将来の研究方向についても議論します。リソースは定期的に更新されています。</span>
 </article>
 <article class="paper-entry">
-<h3 id="a-survey-795" class="title-link">A Survey of Large Language Models, Wayne Xin Zhao+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2303.18223" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="large-language-799" class="title-link">[Paper Note] Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, arXiv'23, 2023.06</h3><br><a href="https://arxiv.org/abs/2306.17563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/799" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
+<a class="button" href="LearningToRank.html" target="_blank" rel="noopener noreferrer">#LearningToRank</a>
+<a class="button" href="PairWise.html" target="_blank" rel="noopener noreferrer">#PairWise</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2023-07-11</span>
+<span class="snippet"><span>GPT Summary</span>- LLMを用いた文書ランキングは有望だが、既存手法を上回るのは難しい。本稿では、既存のpointwiseおよびlistwise手法がLLMに理解されにくいことを指摘し、新たにPairwise Ranking Prompting（PRP）を提案。中規模のオープンソースLLMで、TREC-DLで商用GPT-4を上回る成果を取得し、BEIRタスクでも教師ありベースラインやChatGPTを超えることを示した。PRPの変種によって効率性を向上させ、競争力を持つ結果も達成。</span>
+<span class="snippet"><span>Comment</span><p>open source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案</p><p>従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。<br><br>PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。<br><img src="https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。<br><img src="https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、PRPがinputのorderに対してロバストなことも示されている。<br><img src="https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="a-survey-795" class="title-link">[Paper Note] A Survey of Large Language Models, Wayne Xin Zhao+, arXiv'23, 2023.03</h3><br><a href="https://arxiv.org/abs/2303.18223" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2520,13 +2483,56 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-07-11</span>
-<span class="snippet"><span>GPT Summary</span>- 言語モデリングの進化により、大規模言語モデル（LLM）が注目されている。LLMは、事前学習、適応調整、利用、容量評価の4つの側面に焦点を当てて研究されており、AIアルゴリズムの開発と使用方法に革新をもたらす可能性がある。本調査では、LLMの最近の進展と将来の方向性についてレビューし、残された課題についても議論する。</span>
+<span class="snippet"><span>GPT Summary</span>- 言語は複雑な表現体系であり、その理解・生成のためのAIアルゴリズム開発は難題である。近年、事前学習済み言語モデル（PLMs）がTransformerモデルを用いた大規模コーパスの学習により高い能力を示しており、特に大規模言語モデル（LLM）が注目されている。モデルスケーリングが性能向上をもたらし、一定のパラメータ規模を超えると新たな能力が現れることが確認されている。LLMsはAIコミュニティ全体に重要な影響を与えており、本調査ではその背景、主要な発見、技術を概説し、特に事前学習、適応調整、活用、容量評価に焦点を当てる。また、リソース整理や未解決課題についても論じる。</span>
 <span class="snippet"><span>Comment</span><p>現状で最も詳細なLLMのサーベイ<br>600個のリファレンス、LLMのコレクション、promptingのtips、githubリポジトリなどがまとめられている</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="tree-of-684" class="title-link">Tree of Thoughts: Deliberate Problem Solving with Large Language Models, Shunyu Yao+, N_A, arXiv'23</h3><br><a href="http://arxiv.org/abs/2305.10601" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="lost-in-793" class="title-link">[Paper Note] Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, arXiv'23, 2023.07</h3><br><a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="In-ContextLearning.html" target="_blank" rel="noopener noreferrer">#In-ContextLearning</a>
+<a class="button" href="TACL.html" target="_blank" rel="noopener noreferrer">#TACL</a>
+<a class="button" href="ContextEngineering.html" target="_blank" rel="noopener noreferrer">#ContextEngineering</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2023-07-11</span>
+<span class="snippet"><span>GPT Summary</span>- 最近の言語モデルは長い文脈を扱えるが、その活用方法は未解明である。マルチドキュメント質問応答とキーと値の検索タスクを分析した結果、関連情報の位置が性能に影響し、特に文脈の先頭や末尾にある情報は扱いやすいことが明らかになった。中間の関連情報では性能が大幅に低下することが観察され、言語モデルの文脈活用の理解向上と新たな評価プロトコルの提案につながる。</span>
+<span class="snippet"><span>Comment</span><p>元ツイート<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/drjimfan/status/1678460065811136512?s=46&t=5BO_qSlNBSEGSugyUlP5Hw"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>非常に重要な知見がまとめられている</p><p>1. モデルはコンテキストのはじめと最後の情報をうまく活用でき、真ん中の情報をうまく活用できない<br>2. 長いコンテキストのモデルを使っても、コンテキストをより短いコンテキストのモデルよりもうまく考慮できるわけではない<br>3. モデルのパフォーマンスは、コンテキストが長くなればなるほど悪化する</p><p>SNLP'24での解説スライド:<br>
+
+
+<a href="https://speakerdeck.com/kichi/snlp2024" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/kichi/snlp2024</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="tree-of-684" class="title-link">[Paper Note] Tree of Thoughts: Deliberate Problem Solving with Large Language Models, Shunyu Yao+, arXiv'23, 2023.05</h3><br><a href="http://arxiv.org/abs/2305.10601" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2539,8 +2545,12 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-05-20</span>
-<span class="snippet"><span>GPT Summary</span>- 言語モデルの推論には制限があり、探索や戦略的先読みが必要なタスクには不十分である。そこで、Tree of Thoughts（ToT）という新しいフレームワークを導入し、Chain of Thoughtアプローチを一般化して、意思決定を行うことができるようにした。ToTにより、言語モデルは複数の異なる推論パスを考慮して、次の行動を決定することができる。ToTは、Game of 24、Creative Writing、Mini Crosswordsなどのタスクにおいて、言語モデルの問題解決能力を大幅に向上させることができることを示している。</span>
+<span class="snippet"><span>GPT Summary</span>- 言語モデルは一般的な問題解決に広がっているが、推論は依然としてトークンレベルの左から右への決定に制限されている。これを克服するために、新しい「Tree of Thoughts（ToT）」フレームワークを導入。ToTは、思考の連鎖を一般化し、中間ステップを探索できるようにし、複数の推論経路を自己評価することで意図的な意思決定を可能にする。実験では、ToTがGame of 24やCreative Writingなどの新規タスクで言語モデルの問題解決能力を顕著に向上させることが示された。例えば、Game of 24では新手法が74%の成功率を達成した。</span>
 <span class="snippet"><span>Comment</span><p>Self Concistencyの次<br>Non trivialなプランニングと検索が必要な新たな3つのタスクについて、CoT w/ GPT4の成功率が4%だったところを、ToTでは74%を達成<br><br>論文中の表ではCoTのSuccessRateが40%と書いてあるような?<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6f853009-8d08-43b4-a7da-61677f4aca3a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2763,7 +2773,7 @@ My Issue
 <a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2025-11-30</span>
 <span class="snippet"><span>GPT Summary</span>- 高品質な言語モデル（LM）の評価には、HELMのようなフレームワークが重要だが、固定プロンプトに依存するため過小評価のリスクがある。DSPyのような宣言的プロンプトフレームワークは、タスクごとに最適化されたプロンプトを提供するが、体系的な評価が不足している。本研究では、再現可能なDSPy+HELMフレームワークを提案し、構造化プロンプトを用いてLMのパフォーマンスをより正確に評価する。4つのプロンプト手法を用いて7つのベンチマークで評価した結果、HELMがLMのパフォーマンスを平均4%過小評価し、パフォーマンスの変動が大きくなることが示された。この研究は、LMの挙動を特徴付ける初の大規模ベンチマーク研究であり、オープンソースの統合とプロンプト最適化パイプラインを提供する。</span>
-<span class="snippet"><span>Comment</span><p>AI Agentsの評価でもハーネスによって性能が変わるし、一般的なLLMでの評価もpromptingで性能変わるだろうなぁ、とは思っていたが、やはりそうだった模様。重要論文<br><br>しかしそもそもLLMの評価は変数が多すぎて、網羅的な評価は難しく、活用する際にベンチマークスコアは参考程度にした方が良いとは思う。自前データがあるなら自前で手元で評価すべし、という気はするが、評価するLLMの候補を選定する際には有用だと思われる（小並感）</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/786" target="_blank" rel="noopener noreferrer">[Paper Note] Holistic Evaluation of Language Models, Percy Liang+, TMLR'23, 2022.11</a>
+<span class="snippet"><span>Comment</span><p>AI Agentsの評価でもハーネスによって性能が変わるし、一般的なLLMでの評価もpromptingで性能変わるだろうなぁ、とは思っていたが、やはりそうだった模様。重要論文<br><br>しかしそもそもLLMの評価は変数が多すぎて、網羅的な評価は難しく、活用する際にベンチマークスコアは参考程度にした方が良いとは思う。自前データがあるなら自前で手元で評価すべし、という気はするが、評価するLLMの候補を選定する際には有用だと思われる（小並感）</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/786" target="_blank" rel="noopener noreferrer">[Paper Note] Holistic Evaluation of Language Models, Percy Liang+, arXiv'22, 2022.11</a>
 </p><p>元ポスト:
 
 
@@ -2948,6 +2958,8 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-05-12</span>
 <span class="snippet"><span>Comment</span><p>experimentalな手法でprompt engineeringする際のoverview</p></span><br><br>
 </article>
@@ -3004,19 +3016,19 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Off-Policy.html"
-            title="Off-Policyに関する論文・技術記事メモの一覧">
-            Off-Policyに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/TheoryOfMind.html"
+            title="TheoryOfMindに関する論文・技術記事メモの一覧">
+            TheoryOfMindに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
-  <span class="post-badge badge-new">📝 13</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PartialRollout.html"
-            title="PartialRolloutに関する論文・技術記事メモの一覧">
-            PartialRolloutに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ESWC.html"
+            title="ESWCに関する論文・技術記事メモの一覧">
+            ESWCに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -3024,22 +3036,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/IJCV.html"
-            title="IJCVに関する論文・技術記事メモの一覧">
-            IJCVに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/TMLR.html"
+            title="TMLRに関する論文・技術記事メモの一覧">
+            TMLRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 19</span> 
+  <span class="post-badge badge-new">📝 19</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/NeurIPS.html"
-            title="NeurIPSに関する論文・技術記事メモの一覧">
-            NeurIPSに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DataFiltering.html"
+            title="DataFilteringに関する論文・技術記事メモの一覧">
+            DataFilteringに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 204</span> 
-  <span class="post-badge badge-new">📝 204</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li></ul>

@@ -2152,7 +2152,7 @@ My Issue
 <a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2025-04-14</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、5つの決定論的LLMにおける非決定性を8つのタスクで調査し、最大15%の精度変動と70%のパフォーマンスギャップを観察。全てのタスクで一貫した精度を提供できないことが明らかになり、非決定性が計算リソースの効率的使用に寄与している可能性が示唆された。出力の合意率を示す新たなメトリクスTARr@NとTARa@Nを導入し、研究結果を定量化。コードとデータは公開されている。</span>
-<span class="snippet"><span>Comment</span><p>- 論文中で利用されているベンチマーク:<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the   capabilities of language models, Aarohi Srivastava+, N/A, TMLR'23</a>
+<span class="snippet"><span>Comment</span><p>- 論文中で利用されているベンチマーク:<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the capabilities of language models, Aarohi Srivastava+, arXiv'22, 2022.06</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer">Measuring Massive Multitask Language Understanding, Dan Hendrycks+, N/A, ICLR'21</a>
  </p><p>同じモデルに対して、seedを固定し、temperatureを0に設定し、同じ計算機環境に対して、同じinputを入力したら理論上はLLMの出力はdeterministicになるはずだが、deterministicにならず、ベンチマーク上の性能とそもそものraw response自体も試行ごとに大きく変化する、という話。<br>ただし、これはプロプライエタリLLMや、何らかのinferenceの高速化を実施したInferenceEngine（本研究ではTogetherと呼ばれる実装を使っていそう。vLLM/SGLangだとどうなるのかが気になる）を用いてinferenceを実施した場合での実験結果であり、後述の通り計算の高速化のためのさまざまな実装無しで、deterministicな設定でOpenLLMでinferenceすると出力はdeterministicになる、という点には注意。<br><br>GPTやLlama、Mixtralに対して上記ベンチマークを用いてzero-shot/few-shotの設定で実験している。Reasoningモデルは実験に含まれていない。<br><img src="https://github.com/user-attachments/assets/b33f14d8-ed86-4589-a427-18a70b35d61a" /" alt="image" loading="lazy" width="550" height="400"/><br><br>LLMのraw_response/multiple choiceのparse結果（i.e., 問題に対する解答部分を抽出した結果）の一致（TARr@N, TARa@N; Nはinferenceの試行回数）も理論上は100%になるはずなのに、ならないことが報告されている。<br><br><img src="https://github.com/user-attachments/assets/3159ff26-fc92-4fa8-90a6-f8c5e7ccf20e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>correlation analysisによって、応答の長さ と TAR{r, a}が強い負の相関を示しており、応答が長くなればなるほど不安定さは増すことが分析されている。このため、ontput tokenの最大値を制限することで出力の安定性が増すことを考察している。また、few-shotにおいて高いAcc.の場合は出力がdeterministicになるわけではないが、性能が安定する傾向とのこと。また、OpenAIプラットフォーム上でGPTのfinetuningを実施し実験したが、安定性に寄与はしたが、こちらもdeterministicになるわけではないとのこと。<br><br>deterministicにならない原因として、まずmulti gpu環境について検討しているが、multi-gpu環境ではある程度のランダム性が生じることがNvidiaの研究によって報告されているが、これはseedを固定すれば決定論的にできるため問題にならないとのこと。<br>続いて、inferenceを高速化するための実装上の工夫（e.g., Chunk Prefilling, Prefix Caching, Continuous Batching）などの実装がdeterministicなハイパーパラメータでもdeterministicにならない原因であると考察しており、**実際にlocalマシン上でこれらinferenceを高速化するための最適化を何も実施しない状態でLlama-8Bでinferenceを実施したところ、outputはdeterministicになったとのこと。**</p><p>論文中に記載がなかったため、どのようなInferenceEngineを利用したか公開されているgithubを見ると下記が利用されていた:<br><br>- Together: 
 
@@ -2341,29 +2341,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SparseAttention.html"
-            title="SparseAttentionに関する論文・技術記事メモの一覧">
-            SparseAttentionに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
-  <span class="post-badge badge-new">📝 21</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/NovelViewSynthesis.html"
-            title="NovelViewSynthesisに関する論文・技術記事メモの一覧">
-            NovelViewSynthesisに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/RelationExtraction.html"
-            title="RelationExtractionに関する論文・技術記事メモの一覧">
-            RelationExtractionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Semi-Supervised.html"
+            title="Semi-Supervisedに関する論文・技術記事メモの一覧">
+            Semi-Supervisedに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -2371,12 +2351,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/EMNLP.html"
-            title="EMNLPに関する論文・技術記事メモの一覧">
-            EMNLPに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CEFR.html"
+            title="CEFRに関する論文・技術記事メモの一覧">
+            CEFRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 115</span> 
-  <span class="post-badge badge-new">📝 115</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/GRPO.html"
+            title="GRPOに関する論文・技術記事メモの一覧">
+            GRPOに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
+  <span class="post-badge badge-new">📝 31</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/KnowledgeTracing.html"
+            title="KnowledgeTracingに関する論文・技術記事メモの一覧">
+            KnowledgeTracingに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 44</span> 
+  <span class="post-badge badge-new">📝 44</span>
 </span>
 </a>
         </li></ul>

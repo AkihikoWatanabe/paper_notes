@@ -1128,7 +1128,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>LLMでランキングをするためのプロンプト手法。独立したプロンプトでスコアリングしスコアリング結果からランキングするのではなく、LLMに対して比較するためのルーブリックやshotを入れ、全てのサンプルを含め、1回のPromptingでランキングを生成するような手法に見える。大量の候補をランキングするのは困難だと思われるが、リランキング手法としては利用できる可能性がある。また、実験などでランキングを実施するサンプル数に対してどれだけ頑健なのかなどは示されているだろうか？<br><br><img src="https://github.com/user-attachments/assets/efbda2b5-1dea-4b60-88a9-3139873306f5" /" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="large-language-799" class="title-link">Large Language Models are Effective Text Rankers with Pairwise Ranking   Prompting, Zhen Qin+, N_A, NAACL'24</h3><br><a href="https://arxiv.org/abs/2306.17563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="large-language-799" class="title-link">[Paper Note] Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting, Zhen Qin+, arXiv'23, 2023.06</h3><br><a href="https://arxiv.org/abs/2306.17563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -1145,8 +1145,10 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Prompting.html" target="_blank" rel="noopener noreferrer">#Prompting</a>
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-07-11</span>
-<span class="snippet"><span>GPT Summary</span>- LLMsを使用してドキュメントをランキングする際に、Pairwise Ranking Prompting（PRP）という新しい技術を提案する。PRPは、LLMsへの負荷を軽減し、最先端のランキングパフォーマンスを達成することができる。具体的には、20Bパラメータを持つFlan-UL2モデルに基づくPRPは、商用のGPT-4に基づく従来の手法を上回る結果を示した。さらに、PRPのバリアントを提案し、効率を改善することができることを示した。PRPは生成とスコアリングのLLM APIの両方をサポートし、入力の順序に対して無感度であることも示された。</span>
+<span class="snippet"><span>GPT Summary</span>- LLMを用いた文書ランキングは有望だが、既存手法を上回るのは難しい。本稿では、既存のpointwiseおよびlistwise手法がLLMに理解されにくいことを指摘し、新たにPairwise Ranking Prompting（PRP）を提案。中規模のオープンソースLLMで、TREC-DLで商用GPT-4を上回る成果を取得し、BEIRタスクでも教師ありベースラインやChatGPTを超えることを示した。PRPの変種によって効率性を向上させ、競争力を持つ結果も達成。</span>
 <span class="snippet"><span>Comment</span><p>open source LLMにおいてスタンダードなランキングタスクのベンチマークでSoTAを達成できるようなprompting技術を提案</p><p>従来のランキングのためのpromptingはpoint-wiseとlist wiseしかなかったが、前者は複数のスコアを比較するためにスコアのcalibrationが必要だったり、OpenAIなどのAPIはlog probabilityを提供しないため、ランキングのためのソートができないという欠点があった。後者はinputのorderingに非常にsensitiveであるが、listのすべての組み合わせについてorderingを試すのはexpensiveなので厳しいというものであった。このため（古典的なlearning to rankでもおなじみや）pairwiseでサンプルを比較するランキング手法PRPを提案している。<br><br>PRPはペアワイズなのでorderを入れ替えて評価をするのは容易である。また、generation modeとscoring mode（outputしたラベルのlog probabilityを利用する; OpenLLMを使うのでlog probabilityを計算できる）の2種類を採用できる。ソートの方法についても、すべてのペアの勝敗からから単一のスコアを計算する方法（AllPair), HeapSortを利用する方法、LLMからのoutputを得る度にon the flyでリストの順番を正しくするSliding Windowの3種類を提案して比較している。<br><img src="https://github.com/user-attachments/assets/7ad366c6-2afd-404b-9e7d-6051030983c6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>下表はscoring modeでの性能の比較で、GPT4に当時は性能が及んでいなかった20BのOpenLLMで近しい性能を達成している。<br><img src="https://github.com/user-attachments/assets/7455b844-107f-4e88-85b8-3b5fc2866cc8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、PRPがinputのorderに対してロバストなことも示されている。<br><img src="https://github.com/user-attachments/assets/5244fb56-a9bf-46c9-89ca-f2766f7ba4a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -1665,19 +1667,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/mid-training.html"
-            title="mid-trainingに関する論文・技術記事メモの一覧">
-            mid-trainingに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 40</span> 
-  <span class="post-badge badge-new">📝 40</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Supervised-FineTuning-(SFT).html"
-            title="Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧">
-            Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Selected-Papers-Blogs.html"
+            title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">
+            Selected Papers/Blogsに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 </span> 
   <span class="post-badge badge-new">📝 </span>
@@ -1685,22 +1677,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Factuality.html"
-            title="Factualityに関する論文・技術記事メモの一覧">
-            Factualityに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Decoder.html"
+            title="Decoderに関する論文・技術記事メモの一覧">
+            Decoderに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 36</span> 
-  <span class="post-badge badge-new">📝 36</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Monitorability.html"
-            title="Monitorabilityに関する論文・技術記事メモの一覧">
-            Monitorabilityに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LM-based.html"
+            title="LM-basedに関する論文・技術記事メモの一覧">
+            LM-basedに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Infrastructure.html"
+            title="Infrastructureに関する論文・技術記事メモの一覧">
+            Infrastructureに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
+  <span class="post-badge badge-new">📝 16</span>
 </span>
 </a>
         </li></ul>

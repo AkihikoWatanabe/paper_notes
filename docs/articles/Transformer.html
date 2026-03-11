@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 41 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 44 mins</span>
   </div></header>
 </div>
     </div>
@@ -5688,8 +5688,8 @@ My Issue
 <strong># 概要<br>attention scoreのノイズを低減するようなアーキテクチャとして、二つのQKVを用意し、両者の差分を取ることで最終的なattentiok scoreを計算するDifferential Attentionを提案した。<br><br>attentionのnoiseの例。answerと比較してirrelevantなcontextにattention scoreが高いスコアが割り当てられてしまう（図左）。differential transformerが提案するdifferential attentionでは、ノイズを提言し、重要なcontextのattention scoreが高くなるようになる（図中央）、らしい。<br><img src="https://github.com/user-attachments/assets/6033f477-d4bf-492d-9360-74f2849ce40e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br># Differential Attentionの概要<br><img src="https://github.com/user-attachments/assets/b77facd8-7cf2-43ab-8947-2f775423f0a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>二つのQKをどの程度の強さで交互作用させるかをλで制御し、λもそれぞれのQKから導出する。数式は2.1節に記述されているのでそちらも参照のこと。</p><p>QA, 機械翻訳, 文書分類, テキスト生成などの様々なNLPタスクが含まれるEval Harnessベンチマークでは、同規模のtransformerモデルを大幅にoutperform。ただし、3Bでしか実験していないようなので、より大きなモデルサイズになったときにgainがあるかは示されていない点には注意。<br><img src="https://github.com/user-attachments/assets/384605ed-e4e4-4a17-83c8-506f8e3e2e4c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>モデルサイズ（パラメータ数）と、学習トークン数のスケーラビリティについても調査した結果、LLaMAと比較して、より少ないパラメータ数/学習トークン数で同等のlossを達成。<br><img src="https://github.com/user-attachments/assets/5d2d1dfc-4197-4b36-9f3d-79a3ed18fe3f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>64Kにcontext sgzeを拡張し、1.5B tokenで3Bモデルを追加学習をしたところ、これもtransformerと比べてより小さいlossを達成<br><br><img src="https://github.com/user-attachments/assets/2cf4ce21-7d67-424b-a8be-6c7d1ba17d96" /" alt="image" loading="lazy" width="550" height="400"/></p><p>context中に埋め込まれた重要な情報（今回はクエリに対応するmagic number）を抽出するタスク（Needle-In-A-Haystack test）の性能も向上。Needle（N）と呼ばれる正解のmagic numberが含まれる文をcontext中の様々な深さに配置し、同時にdistractorとなる文もランダムに配置する。これに対してクエリ（R）が入力されたときに、どれだけ正しい情報をcontextから抽出できるか、という話だと思われる。<br><br>これも性能が向上。特にクエリとNeedleが複数の要素で構成されていれ場合の性能が高く（Table2）、長いコンテキスト中の様々な位置に埋め込まれたNeedleを抽出する性能も高い（Figure5）<br><br><img src="https://github.com/user-attachments/assets/fe7863f8-ca9c-40dc-97e2-602a165099eb" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/3b1a5aa2-394c-41a6-b460-84983dc64015" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Many shotのICL能力も、異なる数のクラス分類を実施する4つのDatasetにおいて向上。クラス数が増えるに従ってAcc.のgainは小さくなっているように見える（{6, 50} class > 70 class > 150 class）が、それでもAcc.が大きく向上している。<br><br><img src="https://github.com/user-attachments/assets/8f77ad7c-e71a-4610-a6b5-042b0c698ee1" /" alt="image" loading="lazy" width="550" height="400"/></p><p>要約タスクでのhallucinationも低減。生成された要約と正解要約を入力し、GPT-4oにhallucinationの有無を判定させて評価（このようなLLM-as-a-Judgeの枠組みは先行研究 (MT-Bench) で人手での評価と高いagreementがあることが示されている）<br><br><img src="https://github.com/user-attachments/assets/0978a07a-215a-4229-93b3-910fc5af7a42" /" alt="image" loading="lazy" width="550" height="400"/><br><br>関連 (MT-Bench):<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
 </strong>
 <br>
-</p><p>シンプルなアプローチでLLM全体の性能を底上げしている素晴らしい成果に見える。斜め読みなので読み飛ばしているかもしれないが、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">Textbooks Are All You Need, Suriya Gunasekar+, N/A, arXiv'23</a>
-<br><br>のように高品質な学習データで学習した場合も同様の効果が発現するのだろうか？<br>attentionのスコアがnoisyということは、学習データを洗練させることでも改善される可能性があり、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">Textbooks Are All You Need, Suriya Gunasekar+, N/A, arXiv'23</a>
+</p><p>シンプルなアプローチでLLM全体の性能を底上げしている素晴らしい成果に見える。斜め読みなので読み飛ばしているかもしれないが、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
+<br><br>のように高品質な学習データで学習した場合も同様の効果が発現するのだろうか？<br>attentionのスコアがnoisyということは、学習データを洗練させることでも改善される可能性があり、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
  はこれをデータで改善し、こちらの研究はモデルのアーキテクチャで改善した、みたいな捉え方もできるのかもしれない。</p><p>ちなみにFlash Attentionとしての実装方法も提案されており、スループットは通常のattentionと比べてむしろ向上している (Appendix A参照のこと) ので実用的な手法でもある。すごい。</p><p>あとこれ、事前学習とInstruction Tuningを通常のマルチヘッドアテンションで学習されたモデルに対して、独自データでSFTするときに導入したらdownstream taskの性能向上するんだろうか。もしそうなら素晴らしい</p><p>OpenReview:
 
 
@@ -6515,6 +6515,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LongSequence.html" target="_blank" rel="noopener noreferrer">#LongSequence</a>
 <a class="button" href="PositionalEncoding.html" target="_blank" rel="noopener noreferrer">#PositionalEncoding</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2023-07-14</span>
 <span class="snippet"><span>GPT Summary</span>- トランスフォーマーは、固定長のタスクにおいては優れた汎化能力を持つが、任意の長さのシーケンスには対応できない。この問題を解決するために、新しい位置エンコーディング手法を提案する。ランダム化された位置エンコーディングスキームを使用し、長いシーケンスの位置をシミュレートし、順序付けられたサブセットをランダムに選択する。大規模な実証評価により、この手法がトランスフォーマーの汎化能力を向上させ、テストの正確性を平均して12.0％向上させることが示された。</span>
 </article>
@@ -6541,7 +6542,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 本研究では、構文に基づいた生成スキーマを提案し、構成素解析木に従ってシーケンスを生成する新しいテキスト生成モデルを開発。デコーディングプロセスは、構文コンテキスト内での埋め込みテキストの予測と、構成素のマッピングによる構文構造の構築に分かれ、構造的ビームサーチ手法を用いて階層的な構文構造を探索。実験結果は、提案手法がパラフレーズ生成と機械翻訳において自己回帰型ベースラインを上回り、解釈可能性や制御可能性、多様性においても優れていることを示した。</span>
 </article>
 <article class="paper-entry">
-<h3 id="trainable-transformer-811" class="title-link">Trainable Transformer in Transformer, Abhishek Panigrahi+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2307.01189" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="trainable-transformer-811" class="title-link">[Paper Note] Trainable Transformer in Transformer, Abhishek Panigrahi+, arXiv'23, 2023.07</h3><br><a href="https://arxiv.org/abs/2307.01189" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -6554,8 +6555,9 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <span class="issue_date">Issue Date: 2023-07-12</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、Transformer in Transformer（TinT）という効率的な構築を提案し、大規模な事前学習言語モデルの内部モデルをシミュレートして微調整することが可能となります。TinTは小さなパラメータ数でも高い性能を発揮し、トランスフォーマー内の単純なモデルの効率も向上させます。さまざまな実験により、TinTの性能向上が観察され、大規模な事前学習言語モデルが複雑なサブルーチンを実行できることが示されました。また、TinTのモジュラーで拡張可能なコードベースも提供されています。</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデルにおける文脈内学習の課題を克服するため、TinTという効率的なトランスフォーマー構成を提案。これにより、内部モデルの模擬・微調整が可能で、125Mパラメータのモデルを20億未満のパラメータで実現。様々なタスクで実験を行い、TinT使用時に最適化モデルの性能を平均4–16%向上させた。TinTは拡張性のあるコードベースを提供し、今後の研究を促進することが期待される。</span>
 <span class="snippet"><span>Comment</span><p>参考: 
 
 
@@ -6594,7 +6596,28 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- Emuは、マルチモーダルなコンテキストで画像とテキストを生成するためのTransformerベースのモデルです。このモデルは、単一モダリティまたはマルチモーダルなデータ入力を受け入れることができます。Emuは、マルチモーダルなシーケンスでトレーニングされ、画像からテキストへのタスクやテキストから画像へのタスクなど、さまざまなタスクで優れたパフォーマンスを示します。また、マルチモーダルアシスタントなどの拡張機能もサポートしています。</span>
 </article>
 <article class="paper-entry">
-<h3 id="a-comprehensive-781" class="title-link">A Comprehensive Survey on Applications of Transformers for Deep Learning  Tasks, Saidul Islam+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2306.07303" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="vint-a-802" class="title-link">[Paper Note] ViNT: A Foundation Model for Visual Navigation, Dhruv Shah+, arXiv'23, 2023.06</h3><br><a href="https://arxiv.org/abs/2306.14846" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/802" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="FoundationModel.html" target="_blank" rel="noopener noreferrer">#FoundationModel</a>
+<a class="button" href="Navigation.html" target="_blank" rel="noopener noreferrer">#Navigation</a>
+<a class="button" href="Robotics.html" target="_blank" rel="noopener noreferrer">#Robotics</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2023-07-11</span>
+<span class="snippet"><span>GPT Summary</span>- 汎用的なファウンデーションモデルViNTを紹介し、ロボットナビゲーションにおける汎用的な成功を目指す。ViNTは、一般的なゴール到達を目的とした学習目標で訓練され、さまざまなナビゲーションタスクに適応可能なTransformerベースのアーキテクチャを持つ。既存データセットで訓練され、専門モデルを上回る性能を示す。新環境探索やタスク仕様への適応にも柔軟で、モバイルロボティクスの基盤モデルとしての有効性を持つ。</span>
+<span class="snippet"><span>Comment</span><p>事前学習済みモデルを視覚ベースのロボットナビゲーションに活用するFoundation Model。FlexibleなTransformerベースのアーキテクチャに基づいて構築されており、さまざまなナビゲーションタスクに取り組むことが可能<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb59d61-9a89-4ac8-989c-ffb125e90cbd" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="a-comprehensive-781" class="title-link">[Paper Note] A Comprehensive Survey on Applications of Transformers for Deep Learning Tasks, Saidul Islam+, arXiv'23, 2023.06</h3><br><a href="https://arxiv.org/abs/2306.07303" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -6606,12 +6629,14 @@ Paper/Blog Link
 My Issue
 </a><br>
 <a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-07-03</span>
-<span class="snippet"><span>GPT Summary</span>- Transformerモデルは、セルフアテンションメカニズムを使用して文脈関係を理解するためのディープニューラルネットワークであり、長い依存関係を処理することができます。このモデルは、自然言語処理だけでなく、他のさまざまなドメインでも注目されています。しかし、さまざまなドメインでのTransformerの応用に関する包括的な調査はまだ不足しています。そこで、私たちは提案されたTransformerモデルの包括的な調査を行い、その応用ドメインと影響を分析しました。私たちの目的は、研究者に対してTransformerの可能性を明らかにし、この技術の理解を広めることです。</span>
+<span class="snippet"><span>GPT Summary</span>- トランスフォーマーは自己注意機構に基づく深層ニューラルネットワークで、長期依存関係を扱い、並列処理が可能。NLPやコンピュータビジョンなど複数の分野で注目されているが、包括的な総説が不足。2017年から2022年に提案されたトランスフォーマーモデルを調査し、主要な応用領域を特定。NLP、コンピュータビジョン、マルチモーダリティ、音声処理、信号処理を含むモデルの影響を分析し、分類。研究者にトランスフォーマーの潜在能力と未来の展望を示すことを目的とする。</span>
 <span class="snippet"><span>Comment</span><p>Transformerに関する最新サーベイ論文。Transformerが利用されているアプリケーションと、モデルのリストが列挙されている。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="faith-and-774" class="title-link">Faith and Fate: Limits of Transformers on Compositionality, Nouha Dziri+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2305.18654" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="faith-and-774" class="title-link">[Paper Note] Faith and Fate: Limits of Transformers on Compositionality, Nouha Dziri+, arXiv'23, 2023.05</h3><br><a href="https://arxiv.org/abs/2305.18654" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -6625,7 +6650,7 @@ My Issue
 <a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2023-06-30</span>
-<span class="snippet"><span>GPT Summary</span>- Transformerの大規模言語モデル（LLMs）は、多段階の推論を必要とするタスクで優れたパフォーマンスを示す一方、些細な問題で失敗することもある。この研究では、3つの代表的な合成タスクを用いて、Transformerの限界を調査し、タスクの複雑さが増すにつれてパフォーマンスが低下することを示した。また、Transformerが合成的な推論を線形化されたサブグラフのマッチングに簡約化して解決していることを示唆したが、体系的な問題解決スキルを開発していない可能性もある。</span>
+<span class="snippet"><span>GPT Summary</span>- トランスフォーマー型LLMsの限界を多段階推論課題で調査。課題をサブステップに分解し、計算グラフで定式化。実証結果は、LLMsが複雑な推論をサブグラフ照合に還元していることを示し、体系的な問題解決能力が欠如している可能性を示唆。生成性能はタスクの複雑さとともに低下することを強調。</span>
 <span class="snippet"><span>Comment</span><p>参考: 
 
 
@@ -6667,7 +6692,7 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="think-before-760" class="title-link">Think Before You Act: Decision Transformers with Internal Working Memory, Jikun Kang+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs//2305.16338" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="think-before-760" class="title-link">[Paper Note] Think Before You Act: Decision Transformers with Working Memory, Jikun Kang+, arXiv'23, 2023.05</h3><br><a href="https://arxiv.org/abs//2305.16338" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -6681,7 +6706,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
 <span class="issue_date">Issue Date: 2023-06-16</span>
-<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLM）の性能は、トレーニング中にパラメータに振る舞いを記憶する「忘却現象」によって低下する可能性がある。人間の脳は分散型のメモリストレージを利用しており、忘却現象を軽減している。そこで、我々は、内部作業メモリモジュールを提案し、Atariゲームとメタワールドオブジェクト操作タスクの両方でトレーニング効率と汎化性を向上させることを示した。</span>
+<span class="snippet"><span>GPT Summary</span>- Decision Transformerベースのエージェントは複数タスクの一般化能力を示すが、大量のデータと計算資源に依存している。訓練中の忘却現象が新タスクの性能低下を引き起こすと考え、分散型の記憶ストレージを用いる人間の脳に着想を得て、作業記憶モジュールを提案。評価結果は、AtariゲームとMeta-Worldのタスクで訓練効率と一般化の向上を示し、メモリ微調整が適応性をさらに強化することを証明。</span>
 </article>
 <article class="paper-entry">
 <h3 id="birth-of-744" class="title-link">Birth of a Transformer: A Memory Viewpoint, Alberto Bietti+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs//2306.00802" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -6732,7 +6757,7 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="vcc-scaling-667" class="title-link">Vcc: Scaling Transformers to 128K Tokens or More by Prioritizing   Important Tokens, Zhanpeng Zeng+, N_A, NeurIPS'23</h3><br><a href="https://arxiv.org/abs/2305.04241" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="vcc-scaling-667" class="title-link">[Paper Note] Vcc: Scaling Transformers to 128K Tokens or More by Prioritizing Important Tokens, Zhanpeng Zeng+, arXiv'23, 2023.05</h3><br><a href="https://arxiv.org/abs/2305.04241" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -6747,8 +6772,9 @@ My Issue
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <a class="button" href="Encoder.html" target="_blank" rel="noopener noreferrer">#Encoder</a>
 <a class="button" href="Encoder-Decoder.html" target="_blank" rel="noopener noreferrer">#Encoder-Decoder</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-05-09</span>
-<span class="snippet"><span>GPT Summary</span>- 本論文では、Transformerモデルの二次コストを削減するために、各層でサイズ$r$が$n$に独立した表現に入力を圧縮する方法を提案する。VIPトークン中心の圧縮（Vcc）スキームを使用し、VIPトークンの表現を近似するために入力シーケンスを選択的に圧縮する。提案されたアルゴリズムは、競合するベースラインと比較して効率的であり、多数のタスクにおいて競争力のあるまたはより優れたパフォーマンスを発揮する。また、アルゴリズムは128Kトークンにスケーリングでき、一貫して精度の向上を提供することが示された。</span>
+<span class="snippet"><span>GPT Summary</span>- 超長いシーケンスに対するトランスフォーマーの効率を向上させる新しい手法を提案。VIPトークンに基づく圧縮方式を用い、シーケンスを選択的に圧縮することで、効率化を実現。競争力のある性能を提供し、最大128Kトークンにスケール可能。</span>
 </article>
 <article class="paper-entry">
 <h3 id="efficiently-scaling-601" class="title-link">[Paper Note] Efficiently Scaling Transformer Inference, Reiner Pope+, MLSys'23, 2022.11</h3><br><a href="https://arxiv.org/abs/2211.05102" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -8890,26 +8916,6 @@ My Issue
 <span class="snippet"><span>Comment</span><p>1 line加えるとtransformerのgenerationが最大3倍程度高速化されるようになったらしい</p><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fecc1c5e-b9e5-4844-af96-ba48c3d60fae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>assistant modelをロードしgenerateに引数として渡すだけ<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/7dabf3bf-cd32-469c-abba-f1269318576d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="openllama-618" class="title-link">OpenLLaMA</h3><br><a href="https://github.com/openlm-research/open_llama" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/618" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
-<span class="issue_date">Issue Date: 2023-05-04</span>
-<span class="snippet"><span>Comment</span><p>LLaMAと同様の手法を似たデータセットに適用し商用利用可能なLLaMAを構築した模様</p></span><br><br>
-</article>
-<article class="paper-entry">
 <h3 id="30分で完全理解するtransformerの世界-509" class="title-link">30分で完全理解するTransformerの世界, はまなすなぎさ, Zenn, 2023.02</h3><br><a href="https://zenn.dev/zenkigen/articles/2023-01-shimizu" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -9018,7 +9024,9 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2022-09-06</span>
+<span class="snippet"><span>Comment</span><p>Transformerの動作原理を直感的に理解するのに非常にわかりやすい説明で、とても勉強になる。<br>以下のような内容が解説されており、あまりにも盛りだくさんで最高。<br><br>- Positional Encoding<br>- autoregressive vs. non-autoregressive<br>- residual connection<br>- multi-head attention<br>- RNN（O(N)だけど長い系列苦手）, CNN（O(N)だけど近傍しか見れない）との対比<br>- Vision & Languageの話題とVision Transformerとのつながり<br>- Swin Transformer<br>- 基盤モデルの定義<br>  - ある目的関数のもと、自己教師あり学習された、巨大なモデル（様々なタスクに容易に転用できる）<br>- gMLP, MLP-MixerなどのMLP likeなアーキテクチャとの比較<br>  - Transformerと本質的にやっていることはあまり変わらず、ベクトルの混ぜ方（attention vs. 行列積）と位置情報の保持をベクトルがするのかindexに基づいてネットワークが保持するのか、が変わっているのみ<br>- Transformer性能向上の軌跡<br>- pre-Norm / post-Norm / 活性化関数(GLU等) / MoE等 / RoPE<br>- Scaling Law<br>- CNNとViTの性質（CNNはハイパスフィルタ、ViTはローパスフィルタ）<br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="fastseq-make-384" class="title-link">FastSeq: Make Sequence Generation Faster, Yan+, ACL’21</h3><br><a href="https://arxiv.org/abs/2106.04718" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -9094,42 +9102,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Reference-Collection.html"
-            title="Reference Collectionに関する論文・技術記事メモの一覧">
-            Reference Collectionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LinearAttention.html"
+            title="LinearAttentionに関する論文・技術記事メモの一覧">
+            LinearAttentionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Sparse.html"
-            title="Sparseに関する論文・技術記事メモの一覧">
-            Sparseに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CognitiveScience.html"
+            title="CognitiveScienceに関する論文・技術記事メモの一覧">
+            CognitiveScienceに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 15</span> 
-  <span class="post-badge badge-new">📝 15</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/VisionLanguageModel.html"
-            title="VisionLanguageModelに関する論文・技術記事メモの一覧">
-            VisionLanguageModelに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CIKM.html"
+            title="CIKMに関する論文・技術記事メモの一覧">
+            CIKMに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 209</span> 
-  <span class="post-badge badge-new">📝 209</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Pretraining.html"
-            title="Pretrainingに関する論文・技術記事メモの一覧">
-            Pretrainingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Hierarchical.html"
+            title="Hierarchicalに関する論文・技術記事メモの一覧">
+            Hierarchicalに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 237</span> 
-  <span class="post-badge badge-new">📝 237</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li></ul>

@@ -3941,8 +3941,8 @@ My Issue
 <strong># 概要<br>attention scoreのノイズを低減するようなアーキテクチャとして、二つのQKVを用意し、両者の差分を取ることで最終的なattentiok scoreを計算するDifferential Attentionを提案した。<br><br>attentionのnoiseの例。answerと比較してirrelevantなcontextにattention scoreが高いスコアが割り当てられてしまう（図左）。differential transformerが提案するdifferential attentionでは、ノイズを提言し、重要なcontextのattention scoreが高くなるようになる（図中央）、らしい。<br><img src="https://github.com/user-attachments/assets/6033f477-d4bf-492d-9360-74f2849ce40e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br># Differential Attentionの概要<br><img src="https://github.com/user-attachments/assets/b77facd8-7cf2-43ab-8947-2f775423f0a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>二つのQKをどの程度の強さで交互作用させるかをλで制御し、λもそれぞれのQKから導出する。数式は2.1節に記述されているのでそちらも参照のこと。</p><p>QA, 機械翻訳, 文書分類, テキスト生成などの様々なNLPタスクが含まれるEval Harnessベンチマークでは、同規模のtransformerモデルを大幅にoutperform。ただし、3Bでしか実験していないようなので、より大きなモデルサイズになったときにgainがあるかは示されていない点には注意。<br><img src="https://github.com/user-attachments/assets/384605ed-e4e4-4a17-83c8-506f8e3e2e4c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>モデルサイズ（パラメータ数）と、学習トークン数のスケーラビリティについても調査した結果、LLaMAと比較して、より少ないパラメータ数/学習トークン数で同等のlossを達成。<br><img src="https://github.com/user-attachments/assets/5d2d1dfc-4197-4b36-9f3d-79a3ed18fe3f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>64Kにcontext sgzeを拡張し、1.5B tokenで3Bモデルを追加学習をしたところ、これもtransformerと比べてより小さいlossを達成<br><br><img src="https://github.com/user-attachments/assets/2cf4ce21-7d67-424b-a8be-6c7d1ba17d96" /" alt="image" loading="lazy" width="550" height="400"/></p><p>context中に埋め込まれた重要な情報（今回はクエリに対応するmagic number）を抽出するタスク（Needle-In-A-Haystack test）の性能も向上。Needle（N）と呼ばれる正解のmagic numberが含まれる文をcontext中の様々な深さに配置し、同時にdistractorとなる文もランダムに配置する。これに対してクエリ（R）が入力されたときに、どれだけ正しい情報をcontextから抽出できるか、という話だと思われる。<br><br>これも性能が向上。特にクエリとNeedleが複数の要素で構成されていれ場合の性能が高く（Table2）、長いコンテキスト中の様々な位置に埋め込まれたNeedleを抽出する性能も高い（Figure5）<br><br><img src="https://github.com/user-attachments/assets/fe7863f8-ca9c-40dc-97e2-602a165099eb" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/3b1a5aa2-394c-41a6-b460-84983dc64015" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Many shotのICL能力も、異なる数のクラス分類を実施する4つのDatasetにおいて向上。クラス数が増えるに従ってAcc.のgainは小さくなっているように見える（{6, 50} class > 70 class > 150 class）が、それでもAcc.が大きく向上している。<br><br><img src="https://github.com/user-attachments/assets/8f77ad7c-e71a-4610-a6b5-042b0c698ee1" /" alt="image" loading="lazy" width="550" height="400"/></p><p>要約タスクでのhallucinationも低減。生成された要約と正解要約を入力し、GPT-4oにhallucinationの有無を判定させて評価（このようなLLM-as-a-Judgeの枠組みは先行研究 (MT-Bench) で人手での評価と高いagreementがあることが示されている）<br><br><img src="https://github.com/user-attachments/assets/0978a07a-215a-4229-93b3-910fc5af7a42" /" alt="image" loading="lazy" width="550" height="400"/><br><br>関連 (MT-Bench):<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
 </strong>
 <br>
-</p><p>シンプルなアプローチでLLM全体の性能を底上げしている素晴らしい成果に見える。斜め読みなので読み飛ばしているかもしれないが、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">Textbooks Are All You Need, Suriya Gunasekar+, N/A, arXiv'23</a>
-<br><br>のように高品質な学習データで学習した場合も同様の効果が発現するのだろうか？<br>attentionのスコアがnoisyということは、学習データを洗練させることでも改善される可能性があり、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">Textbooks Are All You Need, Suriya Gunasekar+, N/A, arXiv'23</a>
+</p><p>シンプルなアプローチでLLM全体の性能を底上げしている素晴らしい成果に見える。斜め読みなので読み飛ばしているかもしれないが、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
+<br><br>のように高品質な学習データで学習した場合も同様の効果が発現するのだろうか？<br>attentionのスコアがnoisyということは、学習データを洗練させることでも改善される可能性があり、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
  はこれをデータで改善し、こちらの研究はモデルのアーキテクチャで改善した、みたいな捉え方もできるのかもしれない。</p><p>ちなみにFlash Attentionとしての実装方法も提案されており、スループットは通常のattentionと比べてむしろ向上している (Appendix A参照のこと) ので実用的な手法でもある。すごい。</p><p>あとこれ、事前学習とInstruction Tuningを通常のマルチヘッドアテンションで学習されたモデルに対して、独自データでSFTするときに導入したらdownstream taskの性能向上するんだろうか。もしそうなら素晴らしい</p><p>OpenReview:
 
 
@@ -4557,47 +4557,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/AgentSkills.html" title="AgentSkillsに関する論文・技術記事メモの一覧">AgentSkillsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Attention.html" title="Attentionに関する論文・技術記事メモの一覧">Attentionに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/AgentSkills.html" title="AgentSkillsに関する論文・技術記事メモの一覧">AgentSkillsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Catastrophic-Forgetting.html" title="Catastrophic Forgettingに関する論文・技術記事メモの一覧">Catastrophic Forgettingに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/3D-Reconstruction.html"
-            title="3D Reconstructionに関する論文・技術記事メモの一覧">
-            3D Reconstructionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Interpretability.html"
+            title="Interpretabilityに関する論文・技術記事メモの一覧">
+            Interpretabilityに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/audio.html"
+            title="audioに関する論文・技術記事メモの一覧">
+            audioに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Verification.html"
+            title="Verificationに関する論文・技術記事メモの一覧">
+            Verificationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 33</span> 
+  <span class="post-badge badge-new">📝 33</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/A-B-Testing.html"
+            title="A/B Testingに関する論文・技術記事メモの一覧">
+            A/B Testingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 </span> 
   <span class="post-badge badge-new">📝 </span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Annotation.html"
-            title="Annotationに関する論文・技術記事メモの一覧">
-            Annotationに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Post.html"
-            title="Postに関する論文・技術記事メモの一覧">
-            Postに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
-  <span class="post-badge badge-new">📝 21</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Beliefs.html"
-            title="Beliefsに関する論文・技術記事メモの一覧">
-            Beliefsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>

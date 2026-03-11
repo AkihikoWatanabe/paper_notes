@@ -61,6 +61,16 @@
 </div>
 {% endraw %}
 
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2030293550949413181?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -2047,6 +2057,67 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness, Tri Dao+, NeurIPS'22, 2022.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2205.14135</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/688</repo-issue-link>
+<tags>EfficiencyImprovement, MachineLearning, action_wanted, Attention, Selected Papers/Blogs, One-Line Notes, Reference Collection</tags>
+<repo-issue-date>2023-05-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2205.14135
+# Authors
+  - Tri Dao
+  - Daniel Y. Fu
+  - Stefano Ermon
+  - Atri Rudra
+  - Christopher Ré
+# Abstract
+  - Transformers are slow and memory-hungry on long sequences, since the time and memory complexity of self-attention are quadratic in sequence length. Approximate attention methods have attempted to address this problem by trading off model quality to reduce the compute complexity, but often do not achieve wall-clock speedup. We argue that a missing principle is making attention algorithms IO-aware -- accounting for reads and writes between levels of GPU memory. We propose FlashAttention, an IO-aware exact attention algorithm that uses tiling to reduce the number of memory reads/writes between GPU high bandwidth memory (HBM) and GPU on-chip SRAM. We analyze the IO complexity of FlashAttention, showing that it requires fewer HBM accesses than standard attention, and is optimal for a range of SRAM sizes. We also extend FlashAttention to block-sparse attention, yielding an approximate attention algorithm that is faster than any existing approximate attention method. FlashAttention trains Transformers faster than existing baselines: 15% end-to-end wall-clock speedup on BERT-large (seq. length 512) compared to the MLPerf 1.1 training speed record, 3$\times$ speedup on GPT-2 (seq. length 1K), and 2.4$\times$ speedup on long-range arena (seq. length 1K-4K). FlashAttention and block-sparse FlashAttention enable longer context in Transformers, yielding higher quality models (0.7 better perplexity on GPT-2 and 6.4 points of lift on long-document classification) and entirely new capabilities: the first Transformers to achieve better-than-chance performance on the Path-X challenge (seq. length 16K, 61.4% accuracy) and Path-256 (seq. length 64K, 63.1% accuracy).
+# Translation (by gpt-5-nano)
+- 長いシーケンスに対しては、自己注意の計算量とメモリ消費量がシーケンス長の二乗に比例するため、 Transformer は遅くてメモリを多く必要とします。近似的な注意機構は計算量を削減する代わりにモデル品質を犠牲にしてこの問題に対処しようとしましたが、実壁時計速度の向上にはつながらないことが多いです。我々は、欠けている原理として注意アルゴリズムを IO に配慮したものにすること、すなわち GPU メモリのレベル間の読み取りと書き込みを考慮することを主張します。私たちは IO 応答性を持つ厳密な注意アルゴリズムである FlashAttention を提案します。これはタイル化を用いて GPU の高帯域メモリ（HBM）と GPU のオンチップ SRAM 間のメモリ読み書き回数を減らします。FlashAttention の IO 複雑性を分析し、標準の注意機構よりも HBM アクセスが少なく、さまざまな SRAM サイズの範囲で最適であることを示します。さらに FlashAttention をブロックスパース注意に拡張し、既存の近似注意法よりも高速な近似注意アルゴリズムを得ます。FlashAttention は従来のベースラインよりも Transformer の学習を高速化します。MLPerf 1.1 のトレーニングスピード記録と比較して、BERT-large（シーケンス長 512）でエンドツーエンドの wall-clock 速度が約 15% 向上、GPT-2（シーケンス長 1K）で約 3 倍、Long-range Arena（シーケンス長 1K–4K）で約 2.4 倍の速度向上です。FlashAttention およびブロックスパース FlashAttention は Transformer に長い文脈を可能にし、GPT-2 のパープレキシティを 0.7 ポイント改善し、長文分類で 6.4 ポイントの改善をもたらすなど、より高品質なモデルを生み出し、全く新しい能力を実現します。Path-X チャレンジでランダム基準を超える初の Transformer（シーケンス長 16K、精度 61.4%）および Path-256（シーケンス長 64K、精度 63.1%）を達成しました。
+# Summary (by gpt-4o-mini)
+- 長いシーケンスにおけるTransformerの計算とメモリ消費の問題に対処するため、IOを意識した注意アルゴリズムFlashAttentionを提案。これによりメモリの読み書き回数を減少させ、従来の基準よりも約15%の速度向上を実現。FlashAttentionは長い文脈を処理可能にし、モデル品質も改善。具体的には、BERT-largeやGPT-2で従来を上回るパフォーマンスを達成し、Path-Xチャレンジで新たな成果を示した。</issue-body>
+<maintainer-comment-text><p>より高速なGPU上のSRAM上で計算できるようにQKVをブロック単位に分割して計算することで、より高い計算効率を実現するFlashAttentionを提案[^1]<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e3cb11b7-f413-4831-bea6-97886b683ff7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: （2025.05.24追記)下記日本語ブログを参考に一部文言を訂正しました。ありがとうございます。</p><p>日本語解説:
+
+{% raw %}
+<a href="https://zenn.dev/sinchir0/articles/21bb6e96c7b05b" target="_blank" rel="noopener noreferrer">https://zenn.dev/sinchir0/articles/21bb6e96c7b05b</a>
+{% endraw %}
+
+<br>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sinchir0/status/1926199436406849786?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>日本語解説:
+
+{% raw %}
+<a href="https://zenn.dev/uchiiii/articles/306d0bb7ef67a7" target="_blank" rel="noopener noreferrer">https://zenn.dev/uchiiii/articles/306d0bb7ef67a7</a>
+{% endraw %}
+
+<br>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aquarobot0202/status/1957109068797018545?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=H4DqfPSibmx" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=H4DqfPSibmx</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>RecBole: Towards a Unified, Comprehensive and Efficient Framework for Recommendation Algorithms, Zhao+, CIKM'21</title>
 <original-paper-blog-link>https://recbole.io</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/440</repo-issue-link>
@@ -2336,6 +2407,16 @@ Jimmy Lei Ba, Jamie Ryan Kiros, Geoffrey E. Hinton
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2029950497516573183?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gneubig/status/2030971826042527860?s=20"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}

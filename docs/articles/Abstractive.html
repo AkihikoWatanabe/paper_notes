@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 45 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 46 mins</span>
   </div></header>
 </div>
     </div>
@@ -1123,25 +1123,6 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 会議の要約化において、深層学習の進歩により抽象的要約が改善された。本論文では、抽象的な会議の要約化の課題と、使用されているデータセット、モデル、評価指標について概説する。</span>
 </article>
 <article class="paper-entry">
-<h3 id="z-code++-a-816" class="title-link">Z-Code++: A Pre-trained Language Model Optimized for Abstractive Summarization, ACL'23</h3><br><a href="https://virtual2023.aclweb.org/paper_P3684.html#abstract" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/816" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
-<a class="button" href="InstructionTuning.html" target="_blank" rel="noopener noreferrer">#InstructionTuning</a>
-<span class="issue_date">Issue Date: 2023-07-13</span>
-<span class="snippet"><span>GPT Summary</span>- この論文では、新しい事前学習言語モデルであるZ-Code++を提案し、抽象的なテキスト要約に最適化されています。Z-Code++は、2つのフェーズの事前学習とディセントラル化アテンション層、およびエンコーダー内のフュージョンを使用しています。このモデルは、低リソースの要約タスクで最先端の性能を発揮し、パラメータ効率的であり、他の競合モデルを大幅に上回ります。</span>
-</article>
-<article class="paper-entry">
 <h3 id="long-document-482" class="title-link">[Paper Note] Long Document Summarization with Top-down and Bottom-up Inference, Bo Pang+, EACL'23, 2022.03</h3><br><a href="https://arxiv.org/abs/2203.07586" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1167,6 +1148,27 @@ My Issue
 
 
 <br><br><br><br>以下、上記日本語解説記事を読んで理解した内容をまとめます。ありがとうございます。<br><br><br><br># 概要<br><br>基本的にTransformerベースのモデル（e.g. BERTSum, BART, PEGASUS, GPT-2, T5）ではself-attentionの計算量が入力トークン数Nに対してO(N^2)でかかり、入力の二乗のオーダーで計算量が増えてしまう。<br><br>これを解消するためにself-attentionを計算する範囲をウィンドウサイズで制限するLongformerや、BigBardなどが提案されてきたが、どちらのモデルも離れたトークン間のattentionの情報が欠落するため、長距離のトークン間の関係性を捉えにくくなってしまう問題があった。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/188084569-ec574f6f-cc31-48db-aef5-0a3fedea816c.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>そこで、top-down transformerではセグメント（セグメントはテキストでいうところの文）という概念を提唱し、tokenからsegmentのrepresentationを生成しその後self-attentionでsegment間の関係性を考慮してsegmentのrepresentationを生成するbottom-up inference、各tokenとsegmentの関係性を考慮しし各tokenのrepresentationを学習するtop-down inferenceの2つの構造を利用した。bottom-up inferenceにおいてsegmentのrepresentationを計算する際にpoolingを実施するが、adapoolingと呼ばれる重要なトークンに重み付けをし、その重みを加味した加重平均によりプーリングを実施する。これにより、得られた各トークンの表現は、各セグメントとの関連度の情報を含み（セグメントの表現は各セグメント間のattentnionに基づいて計算されているため; bottom-up inference）、かつ各トークンと各セグメント間との関連度も考慮して計算されているため（top-down inference）、結果的に離れたトークン間の関連度を考慮したrepresentationが学習される（下図）。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/188085213-affc953b-b4a6-4f34-8fa0-71d3ddb173b4.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>（図は上記記事からお借りいたしました）<br><br><br><br>各attentionの計算量は表のようになり、M, wはNよりも遥かに小さいため、O(N^2)よりも遥かに小さい計算量で計算できる。<br><br><img src="https://user-images.githubusercontent.com/12249301/188086050-985d4fc6-3b1b-4ff1-b268-b6bda24581f5.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>（こちらも上記記事からお借りいたしました）<br><br><br><br># 実験（日本語解説より）<br><br>## データセット<br><br><img src="https://user-images.githubusercontent.com/12249301/188086312-769ef574-3f91-4f12-b015-ac9c02dc93ff.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## 結果<br><br>### PubMedとarXiv<br><br><img src="https://user-images.githubusercontent.com/12249301/188086389-c3e49a19-51b1-437c-9802-1e62c9fd4329.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### CNN-DailyMail<br><br><img src="https://user-images.githubusercontent.com/12249301/188086914-9476f30d-481c-4113-8f6b-edeb906ac696.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### TVMegasSiteとForeverDreaming<br><br><img src="https://user-images.githubusercontent.com/12249301/188086972-c355854b-9f1f-4f88-9e36-06536963541b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### BookSum-Chapter-Level<br><br><img src="https://user-images.githubusercontent.com/12249301/188087045-0ac57b5a-5c6c-49e4-a82a-3e57f5e8b788.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### BookSum-Book-Level<br><br><img src="https://user-images.githubusercontent.com/12249301/188087112-2d310059-72d1-4968-bf09-cdcf0e6afc2d.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## 所感<br><br>CNN-DailyMailのようなinput wordsが900程度のデータではcomparableな結果となっているが、input wordsが長い場合は先行研究をoutperformしている。BookSum-Chapter Levelにおいて、Longformer, BigBirdの性能が悪く、BART, T5, Pegasusの性能が良いのが謎い。<br><br>てかinput wordsが3000~7000程度のデータに対して、どうやってBARTやらT5やらを実装できるんだろう。大抵512 tokenくらいが限界だと思っていたのだが、どうやったんだ・・・。</p><p>>The maximum document lengths for PubMed, arXiv, CNN-DM,<br><br>TVMegaSite, ForeverDreaming, BookSum are 8192, 16384, 1024, 12288, 12288, 12288, respectively<br><br><br><br>これは、たとえばBookSumの場合は仮にinputの長さが11万とかあったとしても、12288でtruncateしたということだろうか。まあなんにせよ、頑張ればこのくらいの系列長のモデルを学習できるということか（メモリに乗るのか・・・？どんな化け物マシンを使っているのか）。</p><p>>We first train a top-down transformer on the chapter-level data and then fine-tune it on the book-level<br><br>data. The inputs to the book-level model are (1) the concatenated chapter reference summaries in<br><br>training or (2) the concatenated chapter summaries generated by the chapter-level model in testing.<br><br>The chapter-to-book curriculum training is to mitigate the scarcity of book-level data. The recursive<br><br>summarization of chapters and then books can be considered abstractive content selection applied<br><br>to book data, and is used to address the extremely long length of books.<br><br><br><br>BookLevel Summarizationでは、データ数が300件程度しかなく、かつinput wordsがでかすぎる。これに対処するために、まずtop-down transformerをchapter-level_ dataで訓練して、その後book-level dataでfine-tuning。book-level dataでfine-tuningする際には、chapterごとのreference summaryをconcatしたものを正解とし、chapter-level modelが生成したchapterごとのsummaryをconcatしたものをモデルが生成した要約として扱った、という感じだろうか。まずchapter levelで学習しその後book levelで学習するcurriculum learningっぽいやり方がbook-level dataの不足を緩和してくれる。bookの要約を得るためにchapterを再帰的に要約するようなアプローチは、book dataに対するcontent selectionとしてみなすことができ、おそろしいほど長い入力の対処にもなっている、という感じだろうか。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="z-code++-a-816" class="title-link">[Paper Note] Z-Code++: A Pre-trained Language Model Optimized for Abstractive Summarization, Pengcheng He+, arXiv'22, 2022.08</h3><br><a href="https://arxiv.org/abs/2208.09770" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/816" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="pretrained-LM.html" target="_blank" rel="noopener noreferrer">#pretrained-LM</a>
+<a class="button" href="InstructionTuning.html" target="_blank" rel="noopener noreferrer">#InstructionTuning</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2023-07-13</span>
+<span class="snippet"><span>GPT Summary</span>- Z-Code++は、抽象的テキスト要約のために最適化された新しい事前学習済み言語モデルで、性能向上のために3つの手法を採用。まず、2段階の事前学習プロセスで、言語理解と要約コーパスを活用して根拠あるテキスト生成を実現。次に、自己注意層をディスエンタンゲルド・アテンションに置き換え、最後にFusion-in-Encoderを用いて長い系列を階層的にエンコード。5言語の13タスク中9タスクで新たな最先端を達成し、パラメータ効率は高く、ゼロショット・少数ショットでも競合モデルを大幅に上回る性能を示す。</span>
 </article>
 <article class="paper-entry">
 <h3 id="on-faithfulness-2203" class="title-link">[Paper Note] On Faithfulness and Factuality in Abstractive Summarization, Joshua Maynez+, ACL'20</h3><br><a href="https://arxiv.org/abs/2005.00661" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -1499,42 +1501,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Temporal.html"
-            title="Temporalに関する論文・技術記事メモの一覧">
-            Temporalに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/EducationalDataMining.html"
+            title="EducationalDataMiningに関する論文・技術記事メモの一覧">
+            EducationalDataMiningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 56</span> 
+  <span class="post-badge badge-new">📝 56</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PersonalizedDocumentSummarization.html"
-            title="PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧">
-            PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ScientificDiscovery.html"
+            title="ScientificDiscoveryに関する論文・技術記事メモの一覧">
+            ScientificDiscoveryに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 38</span> 
-  <span class="post-badge badge-new">📝 38</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 43</span> 
+  <span class="post-badge badge-new">📝 43</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SpeciarizedBrainNetworks.html"
-            title="SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧">
-            SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AttentionSinks.html"
+            title="AttentionSinksに関する論文・技術記事メモの一覧">
+            AttentionSinksに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
+  <span class="post-badge badge-new">📝 14</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Delegation.html"
+            title="Delegationに関する論文・技術記事メモの一覧">
+            Delegationに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/AudioLanguageModel.html"
-            title="AudioLanguageModelに関する論文・技術記事メモの一覧">
-            AudioLanguageModelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
-  <span class="post-badge badge-new">📝 13</span>
 </span>
 </a>
         </li></ul>
