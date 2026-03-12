@@ -39,50 +39,6 @@
 </paper-entry>
 
 <paper-entry>
-<title>RISE: Leveraging Retrieval Techniques for Summarization Evaluation, David Uthus+, N_A, Findings of ACL'23</title>
-<original-paper-blog-link>https://arxiv.org/abs/2212.08775</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/937</repo-issue-link>
-<tags>DocumentSummarization, NLP, Evaluation, Reference-free</tags>
-<repo-issue-date>2023-08-13</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2212.08775
-# Affiliations
-  - David Uthus, N/A
-  - Jianmo Ni, N/A
-# Abstract
-  - Evaluating automatically-generated text summaries is a challenging task.While there have been many interesting approaches, they still fall short ofhuman evaluations. We present RISE, a new approach for evaluating summaries byleveraging techniques from information retrieval. RISE is first trained as aretrieval task using a dual-encoder retrieval setup, and can then besubsequently utilized for evaluating a generated summary given an inputdocument, without gold reference summaries. RISE is especially well suited whenworking on new datasets where one may not have reference summaries availablefor evaluation. We conduct comprehensive experiments on the SummEval benchmark(Fabbri et al., 2021) and the results show that RISE has higher correlationwith human evaluations compared to many past approaches to summarizationevaluation. Furthermore, RISE also demonstrates data-efficiency andgeneralizability across languages.
-# Translation (by gpt-3.5-turbo)
-- 自動生成されたテキストの要約の評価は困難な課題です。
-興味深いアプローチは多く存在しますが、まだ人間の評価には及びません。
-私たちは、情報検索の技術を活用して要約を評価するための新しいアプローチであるRISEを提案します。
-RISEは、デュアルエンコーダー検索セットアップを使用して検索タスクとしてトレーニングされ、入力ドキュメントに対して生成された要約を評価する際に、ゴールドリファレンスの要約がなくても利用できます。
-RISEは、評価のためのリファレンス要約が利用できない新しいデータセットで特に適しています。
-私たちはSummEvalベンチマーク（Fabbri et al.、2021）で包括的な実験を行い、その結果、RISEは要約評価の過去のアプローチと比較して人間の評価との相関が高いことを示しました。
-さらに、RISEはデータ効率性と言語間の汎用性も示しています。
-# Summary (by gpt-3.5-turbo)
-- 自動要約の評価は困難であり、従来のアプローチでは人間の評価には及ばない。そこで、私たちはRISEという新しいアプローチを提案する。RISEは情報検索の技術を活用し、ゴールドリファレンスの要約がなくても要約を評価することができる。RISEは特に評価用のリファレンス要約が利用できない新しいデータセットに適しており、SummEvalベンチマークでの実験結果から、RISEは過去のアプローチと比較して人間の評価と高い相関を示している。また、RISEはデータ効率性と言語間の汎用性も示している。</issue-body>
-<maintainer-comment-text><p>
-<strong># 概要<br><br>Dual-Encoderを用いて、ソースドキュメントとシステム要約をエンコードし、dot productをとることでスコアを得る手法。モデルの訓練は、Contrastive Learningで行い、既存データセットのソースと参照要約のペアを正例とみなし、In Batch trainingする。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/95d6fc9e-cb05-4a40-9690-ac40e6042c3c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 分類<br><br>Reference-free, Model-based, ソース依存で、BARTScore <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/960" target="_blank" rel="noopener noreferrer">BARTSCORE: Evaluating Generated Text as Text Generation, Yuan+ (w/ Neubig氏), NeurIPS'21</a>
-</strong>
-<br>
- とは異なり、文書要約データを用いて学習するため、要約の評価に特化している点が特徴。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/281a2e5d-7e1c-466d-a995-97218ca37983" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong># モデル<br><br>##  Contrastive Learning<br><br>Contrastive Learningを用い、hard negativeを用いたvariantも検証する。また、訓練データとして3種類のパターンを検証する：<br><br>1. in-domain data: 文書要約データを用いて訓練し、ターゲットタスクでどれだけの性能を発揮するかを見る<br><br>2. out-of-domain data: 文書要約以外のデータを用いて訓練し、どれだけ新しいドメインにモデルがtransferできるかを検証する<br><br>3. in-and-out-domain data: 両方やる<br><br><br><br>## ハードネガティブの生成<br><br>Lexical Negatives, Model Negatives, 双方の組み合わせの3種類を用いてハードネガティブを生成する。<br><br>### Lexical Negatives<br><br>参照要約を拡張することによって生成する。目的は、もともとの参照要約と比較して、poor summaryを生成することにある。Data Augmentationとして、以下の方法を試した：<br><br>- Swapping noun entities:  要約中のエンティティを、ソース中のエンティティンとランダムでスワップ<br><br>- Shuffling words: 要約中の単語をランダムにシャッフル<br><br>- Dropping words: 要約中の単語をランダムに削除<br><br>- Dropping characters: 要約中の文字をランダムに削除<br><br>- Swapping antonyms: 要約中の単語を対義語で置換<br><br>### Model Negatives<br><br>データセットの中から負例を抽出する。目的は、参照要約と類似しているが、負例となるサンプルを見つけること。これを実現するために、まずRISE modelをデータセットでfinetuningし、それぞれのソースドキュメントの要約に対して、類似した要約をマイニングする。すべてのドキュメントと要約をエンコードし、top-nの最も類似した要約を見つけ、これをハードネガティブとして、再度モデルを訓練する。<br><br>### 両者の組み合わせ<br><br>まずlexical negativesでモデルを訓練し、モデルネガティブの抽出に活用する。抽出したモデルネガティブを用いて再度モデルを訓練することで、最終的なモデルとする。<br><br><br><br># 実験<br><br>## 学習手法<br><br>SummEval <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
-</strong>
-<br>
- を用いて人手評価と比較してどれだけcorrelationがあるかを検証。SummEvalには16種類のモデルのアウトプットに対する、CNN / Daily Mail の100 examplesに対して、品質のアノテーションが付与されている。expert annotationを用いて、Kendall's tauを用いてシステムレベルのcorrelationを計算した。contextが短い場合はT5, 長い場合はLongT5, タスクがマルチリンガルな場合はmT5を用いて訓練した。訓練データとしては<br><br>- CNN / Daily Mail<br><br>- Multi News<br><br>- arXiv<br><br>- PubMed<br><br>- BigPatent<br><br>- SAMSum<br><br>- Reddit TIFU<br><br>- MLSUM<br><br>等を用いた。これによりshort / long contextの両者をカバーできる。CNN / Daily Mail, Reddiit TIFU, Multi-Newsはshort-context, arXiv, PubMed, BigPatent, Multi-News（長文のものを利用）はlonger contextとして利用する。<br><br>## 比較するメトリック<br><br>ROUGE, chrF, SMS, BARTScore, SMART, BLEURT, BERTScore, Q^2, T5-ANLI, PRISMと比較した。結果をみると、Consistency, Fluency, Relevanceで他手法よりも高い相関を得た。Averageでは最も高いAverageを獲得した。in-domain dataで訓練した場合は、高い性能を発揮した。our-of-domain（SAMSum; Dialogue要約のデータ）データでも高い性能を得た。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/92960d58-cd13-4ff5-a417-dda9785520e4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p><p># Ablation<br><br>## ハードネガティブの生成方法<br><br>Data Augmentationは、swapping entity nouns, randomly dropping wordsの組み合わせが最も良かった。また、Lexical Negativesは、様々なデータセットで一貫して性能が良かったが、Model NegativesはCNN/DailyMailに対してしか有効ではなかった。これはおそらく、同じタスク（テストデータと同じデータ）でないと、Model Negativesは機能しないことを示唆している。ただし、Model Negativesを入れたら、何もしないよりも性能向上するから、何らかの理由でlexical negativesが生成できない場合はこっち使っても有用である。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ebb9a6b9-3293-4139-b8a3-620cd72fff5a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Model Size<br><br>でかい方が良い。in-domainならBaseでもそれなりの性能だけど、結局LARGEの方が強い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a53e9b98-77aa-4faf-ba58-4900611ca066" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Datasets<br><br>異なるデータセットでもtransferがうまく機能している。驚いたことにデータセットをmixingするとあまりうまくいかず、単体のデータセットで訓練したほうが性能が良い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/635c0b43-2db3-4561-8939-e4b1de733e99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>LongT5を見ると、T5よりもCorrelationが低く難易度が高い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/31420a09-eb36-41ef-ad41-6eaf93d1823d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>最終的に英語の要約を評価をする場合でも、Multilingual（別言語）で訓練しても高いCorrelationを示すこともわかった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a74d86b8-64bd-40b1-b22b-344588ef0580" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Dataset Size<br><br>サンプル数が小さくても有効に働く。しかし、out-domainのデータの場合は、たとえば、512件の場合は性能が低く少しexampleを増やさなければならない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3117b6aa-5d0f-4970-9f30-247633d21f67" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>RQUGE: Reference-Free Metric for Evaluating Question Generation by Answering the Question, ACL'23</title>
-<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P3880.html#paper</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/890</repo-issue-link>
-<tags>Metrics, NLP, LanguageModel, QuestionAnswering, Evaluation, translation_required, Reference-free</tags>
-<repo-issue-date>2023-07-22</repo-issue-date>
-<issue-body>https://virtual2023.aclweb.org/paper_P3880.html#paper</issue-body>
-<maintainer-comment-text><p># 概要<br><br>質問自動生成の性能指標（e.g. ROUGE, BERTScore）は、表層の一致、あるいは意味が一致した場合にハイスコアを与えるが、以下の欠点がある<br><br>- 人手で作成された大量のreference questionが必要<br><br>- 表層あるいは意味的に近くないが正しいquestionに対して、ペナルティが与えられてしまう<br><br>=> contextに対するanswerabilityによって評価するメトリック RQUGE を提案<br><br><br><br>similarity basedな指標では、Q1のような正しい質問でもlexical overlapがないと低いスコアを与えてしまう。また、Q2のようなreferenceの言い換えであっても、低いスコアとなってしまう。一方、reference basedな手法では、Q3のようにunacceptableになっているにもかかわらず、変化が微小であるためそれをとらえられないという問題がある。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/61c3d939-a678-4c63-9572-f3cf28b3aa20" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>提案手法ではcontextとanswer spanが与えられたとき、Span Scorerと、QAモジュールを利用してacceptability scoreを計算することでreference-freeなmetricを実現する。<br><br>QAモデルは、Contextと生成されたQuestionに基づき、answer spanを予測する。提案手法ではT5ベースの手法であるUnifiedQAv2を利用する。<br><br>Span Scorer Moduleでは、予測されたanswer span, candidate question, context, gold spanに基づき、[1, 5]のスコアを予測する。提案手法では、encoder-only BERT-based model（提案手法ではRoBERTa）を用いる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b49e09a4-4a69-4761-94eb-3f6417a19223" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>FFCI: A Framework for Interpretable Automatic Evaluation of  Summarization, Fajri Koto+, N_A, JAIR'22</title>
 <original-paper-blog-link>https://arxiv.org/abs/2011.13662</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/983</repo-issue-link>
@@ -132,27 +88,6 @@ MaskEvalは、候補テキストとソーステキストの連結に対してマ
 </paper-entry>
 
 <paper-entry>
-<title>Play the Shannon Game With Language Models: A Human-Free Approach to  Summary Evaluation, Nicholas Egan+, N_A, AAAI'22</title>
-<original-paper-blog-link>https://arxiv.org/abs/2103.10918</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/957</repo-issue-link>
-<tags>DocumentSummarization, Metrics, NLP, Evaluation, translation_required, Reference-free</tags>
-<repo-issue-date>2023-08-13</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2103.10918
-# Affiliations
-  - Nicholas Egan, N/A
-  - Oleg Vasilyev, N/A
-  - John Bohannon, N/A
-# Abstract
-  - The goal of a summary is to concisely state the most important information ina document. With this principle in mind, we introduce new reference-freesummary evaluation metrics that use a pretrained language model to estimate theinformation content shared between a document and its summary. These metricsare a modern take on the Shannon Game, a method for summary quality scoringproposed decades ago, where we replace human annotators with language models.We also view these metrics as an extension of BLANC, a recently proposedapproach to summary quality measurement based on the performance of a languagemodel with and without the help of a summary. Using transformer based languagemodels, we empirically verify that our metrics achieve state-of-the-artcorrelation with human judgement of the summary quality dimensions of bothcoherence and relevance, as well as competitive correlation with humanjudgement of consistency and fluency.
-# Translation (by gpt-3.5-turbo)
-- 要約の目的は、文書の最も重要な情報を簡潔に述べることです。この原則を念頭に置いて、我々は事前学習済み言語モデルを使用して、文書とその要約の間で共有される情報内容を推定する新しい無参照要約評価指標を提案します。これらの指標は、要約の品質評価におけるShannonゲームの現代的なアプローチであり、数十年前に提案された要約品質スコアリングの手法であるが、人間の注釈者を言語モデルで置き換えています。また、これらの指標は、要約の助けを借りた言語モデルのパフォーマンスに基づく要約品質測定手法であるBLANCの拡張としても捉えることができます。Transformerベースの言語モデルを使用して、我々の指標が、要約の品質の一貫性と関連性の人間の判断と最新の相関関係を達成し、一貫性と流暢さの人間の判断と競争力のある相関関係を持つことを実証します。
-# Summary (by gpt-3.5-turbo)
-- 我々は、事前学習済み言語モデルを使用して、文書と要約の間で共有される情報を推定する新しい無参照要約評価指標を提案する。これにより、要約の品質評価を改善し、要約の助けを借りた言語モデルのパフォーマンスを測定することができる。我々の指標は、人間の判断と高い相関関係を持ち、一貫性と関連性の評価において競争力があることを示している。</issue-body>
-<maintainer-comment-text>None</maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>Reference-free Summarization Evaluation via Semantic Correlation and Compression Ratio, Liu+, NAACL'22</title>
 <original-paper-blog-link>https://aclanthology.org/2022.naacl-main.153/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/956</repo-issue-link>
@@ -183,48 +118,101 @@ MaskEvalは、候補テキストとソーステキストの連結に対してマ
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] RISE: Leveraging Retrieval Techniques for Summarization Evaluation, David Uthus+, arXiv'22, 2022.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2212.08775</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/937</repo-issue-link>
+<tags>DocumentSummarization, NLP, Evaluation, action_wanted, Reference-free, ACL, Findings, Surface-level Notes</tags>
+<repo-issue-date>2023-08-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2212.08775
+# Authors
+  - David Uthus
+  - Jianmo Ni
+# Abstract
+  - Evaluating automatically-generated text summaries is a challenging task. While there have been many interesting approaches, they still fall short of human evaluations. We present RISE, a new approach for evaluating summaries by leveraging techniques from information retrieval. RISE is first trained as a retrieval task using a dual-encoder retrieval setup, and can then be subsequently utilized for evaluating a generated summary given an input document, without gold reference summaries. RISE is especially well suited when working on new datasets where one may not have reference summaries available for evaluation. We conduct comprehensive experiments on the SummEval benchmark (Fabbri et al., 2021) and the results show that RISE has higher correlation with human evaluations compared to many past approaches to summarization evaluation. Furthermore, RISE also demonstrates data-efficiency and generalizability across languages.
+# Translation (by gpt-5-nano)
+- 自動生成されたテキスト要約の評価は困難な課題である。これまでにも多くの興味深いアプローチが提案されてきたが、人間の評価にはまだ及ばない。情報検索の技術を活用する新しい要約評価手法であるRISEを提案する。RISEは、デュアルエンコーダー検索設定を用いた検索タスクとして最初に訓練され、ゴールド標準の参照要約がなくても、入力文書を与えられた生成要約を評価するために後続的に利用できる。RISEは、評価対象となる新しいデータセットで参照要約が利用できない場合には特に適している。SummEvalベンチマーク（Fabbri ら, 2021）で包括的な実験を行い、結果はRISEが過去の多くの要約評価手法と比較して人間の評価との相関が高いことを示している。さらに、RISEはデータ効率性と多言語間の一般化可能性も示している。
+# Summary (by gpt-4o-mini)
+- 自動生成された要約の評価は困難であり、これまでの手法は人間の評価に及ばない。新たに提案されたRISEは、デュアルエンコーダー検索設定を用いて生成要約を評価する手法で、ゴールド標準の参照要約がなくても機能する。特に参照要約がない新たなデータセットに対して効果的であり、SummEvalベンチマークでの実験により、人間の評価と高い相関を示した。RISEはデータ効率性と多言語間の一般化可能性も備えている。</issue-body>
+<maintainer-comment-text><p>
+<strong># 概要<br><br>Dual-Encoderを用いて、ソースドキュメントとシステム要約をエンコードし、dot productをとることでスコアを得る手法。モデルの訓練は、Contrastive Learningで行い、既存データセットのソースと参照要約のペアを正例とみなし、In Batch trainingする。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/95d6fc9e-cb05-4a40-9690-ac40e6042c3c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 分類<br><br>Reference-free, Model-based, ソース依存で、BARTScore <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/960" target="_blank" rel="noopener noreferrer">[Paper Note] BARTScore: Evaluating Generated Text as Text Generation, Weizhe Yuan+, arXiv'21, 2021.06</a>
+</strong>
+<br>
+ とは異なり、文書要約データを用いて学習するため、要約の評価に特化している点が特徴。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/281a2e5d-7e1c-466d-a995-97218ca37983" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
+<strong># モデル<br><br>##  Contrastive Learning<br><br>Contrastive Learningを用い、hard negativeを用いたvariantも検証する。また、訓練データとして3種類のパターンを検証する：<br><br>1. in-domain data: 文書要約データを用いて訓練し、ターゲットタスクでどれだけの性能を発揮するかを見る<br><br>2. out-of-domain data: 文書要約以外のデータを用いて訓練し、どれだけ新しいドメインにモデルがtransferできるかを検証する<br><br>3. in-and-out-domain data: 両方やる<br><br><br><br>## ハードネガティブの生成<br><br>Lexical Negatives, Model Negatives, 双方の組み合わせの3種類を用いてハードネガティブを生成する。<br><br>### Lexical Negatives<br><br>参照要約を拡張することによって生成する。目的は、もともとの参照要約と比較して、poor summaryを生成することにある。Data Augmentationとして、以下の方法を試した：<br><br>- Swapping noun entities:  要約中のエンティティを、ソース中のエンティティンとランダムでスワップ<br><br>- Shuffling words: 要約中の単語をランダムにシャッフル<br><br>- Dropping words: 要約中の単語をランダムに削除<br><br>- Dropping characters: 要約中の文字をランダムに削除<br><br>- Swapping antonyms: 要約中の単語を対義語で置換<br><br>### Model Negatives<br><br>データセットの中から負例を抽出する。目的は、参照要約と類似しているが、負例となるサンプルを見つけること。これを実現するために、まずRISE modelをデータセットでfinetuningし、それぞれのソースドキュメントの要約に対して、類似した要約をマイニングする。すべてのドキュメントと要約をエンコードし、top-nの最も類似した要約を見つけ、これをハードネガティブとして、再度モデルを訓練する。<br><br>### 両者の組み合わせ<br><br>まずlexical negativesでモデルを訓練し、モデルネガティブの抽出に活用する。抽出したモデルネガティブを用いて再度モデルを訓練することで、最終的なモデルとする。<br><br><br><br># 実験<br><br>## 学習手法<br><br>SummEval <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
+</strong>
+<br>
+ を用いて人手評価と比較してどれだけcorrelationがあるかを検証。SummEvalには16種類のモデルのアウトプットに対する、CNN / Daily Mail の100 examplesに対して、品質のアノテーションが付与されている。expert annotationを用いて、Kendall's tauを用いてシステムレベルのcorrelationを計算した。contextが短い場合はT5, 長い場合はLongT5, タスクがマルチリンガルな場合はmT5を用いて訓練した。訓練データとしては<br><br>- CNN / Daily Mail<br><br>- Multi News<br><br>- arXiv<br><br>- PubMed<br><br>- BigPatent<br><br>- SAMSum<br><br>- Reddit TIFU<br><br>- MLSUM<br><br>等を用いた。これによりshort / long contextの両者をカバーできる。CNN / Daily Mail, Reddiit TIFU, Multi-Newsはshort-context, arXiv, PubMed, BigPatent, Multi-News（長文のものを利用）はlonger contextとして利用する。<br><br>## 比較するメトリック<br><br>ROUGE, chrF, SMS, BARTScore, SMART, BLEURT, BERTScore, Q^2, T5-ANLI, PRISMと比較した。結果をみると、Consistency, Fluency, Relevanceで他手法よりも高い相関を得た。Averageでは最も高いAverageを獲得した。in-domain dataで訓練した場合は、高い性能を発揮した。our-of-domain（SAMSum; Dialogue要約のデータ）データでも高い性能を得た。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/92960d58-cd13-4ff5-a417-dda9785520e4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p><p># Ablation<br><br>## ハードネガティブの生成方法<br><br>Data Augmentationは、swapping entity nouns, randomly dropping wordsの組み合わせが最も良かった。また、Lexical Negativesは、様々なデータセットで一貫して性能が良かったが、Model NegativesはCNN/DailyMailに対してしか有効ではなかった。これはおそらく、同じタスク（テストデータと同じデータ）でないと、Model Negativesは機能しないことを示唆している。ただし、Model Negativesを入れたら、何もしないよりも性能向上するから、何らかの理由でlexical negativesが生成できない場合はこっち使っても有用である。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ebb9a6b9-3293-4139-b8a3-620cd72fff5a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Model Size<br><br>でかい方が良い。in-domainならBaseでもそれなりの性能だけど、結局LARGEの方が強い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a53e9b98-77aa-4faf-ba58-4900611ca066" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Datasets<br><br>異なるデータセットでもtransferがうまく機能している。驚いたことにデータセットをmixingするとあまりうまくいかず、単体のデータセットで訓練したほうが性能が良い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/635c0b43-2db3-4561-8939-e4b1de733e99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>LongT5を見ると、T5よりもCorrelationが低く難易度が高い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/31420a09-eb36-41ef-ad41-6eaf93d1823d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>最終的に英語の要約を評価をする場合でも、Multilingual（別言語）で訓練しても高いCorrelationを示すこともわかった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a74d86b8-64bd-40b1-b22b-344588ef0580" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Dataset Size<br><br>サンプル数が小さくても有効に働く。しかし、out-domainのデータの場合は、たとえば、512件の場合は性能が低く少しexampleを増やさなければならない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3117b6aa-5d0f-4970-9f30-247633d21f67" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] RQUGE: Reference-Free Metric for Evaluating Question Generation by Answering the Question, Alireza Mohammadshahi+, arXiv'22, 2022.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2211.01482</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/890</repo-issue-link>
+<tags>Metrics, NLP, LanguageModel, QuestionAnswering, Evaluation, action_wanted, Reference-free, ACL, KeyPoint Notes</tags>
+<repo-issue-date>2023-07-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2211.01482
+# Authors
+  - Alireza Mohammadshahi
+  - Thomas Scialom
+  - Majid Yazdani
+  - Pouya Yanki
+  - Angela Fan
+  - James Henderson
+  - Marzieh Saeidi
+# Abstract
+  - Existing metrics for evaluating the quality of automatically generated questions such as BLEU, ROUGE, BERTScore, and BLEURT compare the reference and predicted questions, providing a high score when there is a considerable lexical overlap or semantic similarity between the candidate and the reference questions. This approach has two major shortcomings. First, we need expensive human-provided reference questions. Second, it penalises valid questions that may not have high lexical or semantic similarity to the reference questions. In this paper, we propose a new metric, RQUGE, based on the answerability of the candidate question given the context. The metric consists of a question-answering and a span scorer modules, using pre-trained models from existing literature, thus it can be used without any further training. We demonstrate that RQUGE has a higher correlation with human judgment without relying on the reference question. Additionally, RQUGE is shown to be more robust to several adversarial corruptions. Furthermore, we illustrate that we can significantly improve the performance of QA models on out-of-domain datasets by fine-tuning on synthetic data generated by a question generation model and re-ranked by RQUGE.
+# Translation (by gpt-5-nano)
+- 自動生成された質問の品質を評価する既存の指標として、BLEU、ROUGE、BERTScore、BLEURT などは参照質問と予測質問を比較し、候補質問と参照質問の間にかなりの語彙的重複または意味的類似性がある場合に高いスコアを与える。このアプローチには二つの大きな欠点がある。第一に、コストの高い人間提供の参照質問が必要になる。第二に、参照質問と高い語彙的または意味的類似性を持たない可能性のある妥当な質問を罰する。本論文では、文脈が与えられたときの候補質問の回答可能性に基づく新しい指標RQUGEを提案する。この指標は、既存の文献に基づく事前学習済みモデルを用いた質問応答とスパン・スコアリングのモジュールから成り、追加の訓練を必要とせずに使用できる。RQUGEが参照質問に依存せず人間の判断との相関が高いことを示す。さらに、RQUGEは複数の敵対的な改ざんに対してより堅牢であることが示される。さらに、質問生成モデルによって生成された合成データで微調整し、RQUGEで再ランク付けすることにより、ドメイン外データセットにおけるQAモデルの性能を大幅に向上させることができることを示す。
+# Summary (by gpt-4o-mini)
+- 既存の質問評価指標には、人間の参照質問との比較による語彙的重複や意味的類似性に基づく欠点がある。これに対し、本研究で提案する新しい指標RQUGEは、候補質問の文脈に基づく回答可能性を評価し、人間の判断と高い相関を示す。この指標は既存の事前学習モデルを活用し、追加訓練なしで使用可能。また、RQUGEは対抗的改ざんに対して堅牢であり、質問生成モデルからの合成データを用いた微調整により、QAモデルの性能を向上させることができる。</issue-body>
+<maintainer-comment-text><p># 概要<br><br>質問自動生成の性能指標（e.g. ROUGE, BERTScore）は、表層の一致、あるいは意味が一致した場合にハイスコアを与えるが、以下の欠点がある<br><br>- 人手で作成された大量のreference questionが必要<br><br>- 表層あるいは意味的に近くないが正しいquestionに対して、ペナルティが与えられてしまう<br><br>=> contextに対するanswerabilityによって評価するメトリック RQUGE を提案<br><br><br><br>similarity basedな指標では、Q1のような正しい質問でもlexical overlapがないと低いスコアを与えてしまう。また、Q2のようなreferenceの言い換えであっても、低いスコアとなってしまう。一方、reference basedな手法では、Q3のようにunacceptableになっているにもかかわらず、変化が微小であるためそれをとらえられないという問題がある。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/61c3d939-a678-4c63-9572-f3cf28b3aa20" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>提案手法ではcontextとanswer spanが与えられたとき、Span Scorerと、QAモジュールを利用してacceptability scoreを計算することでreference-freeなmetricを実現する。<br><br>QAモデルは、Contextと生成されたQuestionに基づき、answer spanを予測する。提案手法ではT5ベースの手法であるUnifiedQAv2を利用する。<br><br>Span Scorer Moduleでは、予測されたanswer span, candidate question, context, gold spanに基づき、[1, 5]のスコアを予測する。提案手法では、encoder-only BERT-based model（提案手法ではRoBERTa）を用いる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b49e09a4-4a69-4761-94eb-3f6417a19223" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>The Feasibility of Embedding Based Automatic Evaluation for Single Document Summarization, EMNLP-IJCNLP'21, Sun+</title>
 <original-paper-blog-link>https://aclanthology.org/D19-1116/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/976</repo-issue-link>
-<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, Reference-free</tags>
+<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, Reference-free, EMNLP, IJCNLP</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
 <issue-body>https://aclanthology.org/D19-1116/</issue-body>
-<maintainer-comment-text><p>__translate: ROUGE is widely used to automatically evaluate summarization systems. However, ROUGE measures semantic overlap between a system summary and a human reference on word-string level, much at odds with the contemporary treatment of semantic meaning. Here we present a suite of experiments on using distributed representations for evaluating summarizers, both in reference-based and in reference-free setting. Our experimental results show that the max value over each dimension of the summary ELMo word embeddings is a good representation that results in high correlation with human ratings. Averaging the cosine similarity of all encoders we tested yields high correlation with manual scores in reference-free setting. The distributed representations outperform ROUGE in recent corpora for abstractive news summarization but are less good on test data used in past evaluations.</p><p>C-ELMO/C-SBERT</p></maintainer-comment-text>
+<maintainer-comment-text><p>C-ELMO/C-SBERT</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
 <title>A Training-free and Reference-free Summarization Evaluation Metric via Centrality-weighted Relevance and Self-referenced Redundancy, Chen+, ACL-IJCNLP'21</title>
 <original-paper-blog-link>https://aclanthology.org/2021.acl-long.34/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/975</repo-issue-link>
-<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, translation_required, Reference-free</tags>
+<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, translation_required, Reference-free, ACL, IJCNLP</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
 <issue-body>https://aclanthology.org/2021.acl-long.34/</issue-body>
 <maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP'21</title>
+<title>[Paper Note] QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, arXiv'21, 2021.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2103.12693</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/974</repo-issue-link>
-<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, Reference-free, QA-based</tags>
+<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, action_wanted, Reference-free, QA-based, EMNLP, KeyPoint Notes, needs-revision</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2103.12693
-# Affiliations
-  - Thomas Scialom, N/A
-  - Paul-Alexis Dray, N/A
-  - Patrick Gallinari, N/A
-  - Sylvain Lamprier, N/A
-  - Benjamin Piwowarski, N/A
-  - Jacopo Staiano, N/A
-  - Alex Wang, N/A
+# Authors
+  - Thomas Scialom
+  - Paul-Alexis Dray
+  - Patrick Gallinari
+  - Sylvain Lamprier
+  - Benjamin Piwowarski
+  - Jacopo Staiano
+  - Alex Wang
 # Abstract
-  - Summarization evaluation remains an open research problem: current metricssuch as ROUGE are known to be limited and to correlate poorly with humanjudgments. To alleviate this issue, recent work has proposed evaluation metricswhich rely on question answering models to assess whether a summary containsall the relevant information in its source document. Though promising, theproposed approaches have so far failed to correlate better than ROUGE withhuman judgments.  In this paper, we extend previous approaches and propose a unified framework,named QuestEval. In contrast to established metrics such as ROUGE or BERTScore,QuestEval does not require any ground-truth reference. Nonetheless, QuestEvalsubstantially improves the correlation with human judgments over fourevaluation dimensions (consistency, coherence, fluency, and relevance), asshown in the extensive experiments we report.
-# Translation (by gpt-3.5-turbo)
-- 要約の評価は未解決の研究課題であり、ROUGEなどの現在の評価指標は限定的であり、人間の判断との相関が低いことが知られています。この問題を軽減するため、最近の研究では、要約が元の文書に含まれるすべての関連情報を含んでいるかどうかを評価するために、質問応答モデルを利用する評価指標が提案されています。しかし、これまでのアプローチは、ROUGEよりも人間の判断との相関が改善されていない。
-本論文では、これまでのアプローチを拡張し、QuestEvalという統一されたフレームワークを提案します。ROUGEやBERTScoreなどの既存の評価指標とは異なり、QuestEvalは正解の参照を必要としません。それにもかかわらず、私たちが報告する広範な実験により、QuestEvalは一貫性、結束性、流暢さ、関連性という4つの評価次元において、人間の判断との相関を大幅に改善することが示されています。
-# Summary (by gpt-3.5-turbo)
-- 要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。</issue-body>
+  - Summarization evaluation remains an open research problem: current metrics such as ROUGE are known to be limited and to correlate poorly with human judgments. To alleviate this issue, recent work has proposed evaluation metrics which rely on question answering models to assess whether a summary contains all the relevant information in its source document. Though promising, the proposed approaches have so far failed to correlate better than ROUGE with human judgments.   In this paper, we extend previous approaches and propose a unified framework, named QuestEval. In contrast to established metrics such as ROUGE or BERTScore, QuestEval does not require any ground-truth reference. Nonetheless, QuestEval substantially improves the correlation with human judgments over four evaluation dimensions (consistency, coherence, fluency, and relevance), as shown in the extensive experiments we report.
+# Translation (by gpt-5-nano)
+- 要約評価は依然として未解決の研究課題である。ROUGE などの現在の指標は限界があることが知られており、人間の判断との相関も低い。この問題を緩和するために、最近の研究は要約が元の文書に含まれる関連情報をすべて含んでいるかを評価するために、質問応答モデルに基づく評価指標を提案している。期待できるものの、提案されたアプローチはこれまでのところ人間の判断との相関を ROUGE よりも優れて示すには至っていない。
+本論文では、従来のアプローチを拡張し、QuestEval という統一フレームワークを提案する。ROUGE や BERTScore のような確立された指標とは対照的に、QuestEval はグラウンドトゥルースの参照を必要としない。にもかかわらず、QuestEval は、我々が報告する広範な実験により示されるように、一貫性、整合性、流暢さ、関連性の四つの評価次元における人間の判断との相関を大幅に改善する。
+# Summary (by gpt-4o-mini)
+- 要約評価の課題に対し、QuestEvalという新たなフレームワークを提案。ROUGEやBERTScoreに依存せず、人間の判断との相関を四つの次元（整合性、一貫性、流暢さ、関連性）において向上させることを実験で示した。</issue-body>
 <maintainer-comment-text><p>QuestEval</p><p>
 <strong># 概要<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
 </strong>
@@ -255,7 +243,7 @@ MaskEvalは、候補テキストとソーステキストの連結に対してマ
 <title>Q2: Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering, Honovich+, EMNLP'21</title>
 <original-paper-blog-link>https://aclanthology.org/2021.emnlp-main.619/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/966</repo-issue-link>
-<tags>NaturalLanguageGeneration, Metrics, NLP, DialogueGeneration, Evaluation, translation_required, Reference-free, QA-based, Factuality</tags>
+<tags>NaturalLanguageGeneration, Metrics, NLP, DialogueGeneration, Evaluation, translation_required, Reference-free, QA-based, Factuality, EMNLP, KeyPoint Notes</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
 <issue-body>https://aclanthology.org/2021.emnlp-main.619/</issue-body>
 <maintainer-comment-text><p>（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では<br><br>- 対話履歴、個人の意見、ユーザに対する質問、そして雑談  <br><br><br><br>といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。<br><br>また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
@@ -265,20 +253,52 @@ MaskEvalは、候補テキストとソーステキストの連結に対してマ
 <title>QACE: Asking Questions to Evaluate an Image Caption, Lee+, EMNLP'21</title>
 <original-paper-blog-link>https://aclanthology.org/2021.findings-emnlp.395/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/961</repo-issue-link>
-<tags>NaturalLanguageGeneration, Metrics, NLP, Evaluation, translation_required, Reference-free, QA-based</tags>
+<tags>ComputerVision, NaturalLanguageGeneration, Metrics, NLP, Evaluation, translation_required, Reference-free, QA-based, One-Line Notes</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
 <issue-body>https://aclanthology.org/2021.findings-emnlp.395/</issue-body>
 <maintainer-comment-text><p>Image Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>BARTSCORE: Evaluating Generated Text as Text Generation, Yuan+ （w_ Neubig氏）, NeurIPS'21</title>
+<title>[Paper Note] BARTScore: Evaluating Generated Text as Text Generation, Weizhe Yuan+, arXiv'21, 2021.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2106.11520</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/960</repo-issue-link>
-<tags>DocumentSummarization, Metrics, NLP, Evaluation, translation_required, Reference-free, LM-based, Selected Papers/Blogs</tags>
+<tags>DocumentSummarization, Metrics, NLP, Evaluation, action_wanted, Reference-free, LM-based, Selected Papers/Blogs, Surface-level Notes</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
-<issue-body>https://arxiv.org/abs/2106.11520</issue-body>
+<issue-body># URL
+- https://arxiv.org/abs/2106.11520
+# Authors
+  - Weizhe Yuan
+  - Graham Neubig
+  - Pengfei Liu
+# Abstract
+  - A wide variety of NLP applications, such as machine translation, summarization, and dialog, involve text generation. One major challenge for these applications is how to evaluate whether such generated texts are actually fluent, accurate, or effective. In this work, we conceptualize the evaluation of generated text as a text generation problem, modeled using pre-trained sequence-to-sequence models. The general idea is that models trained to convert the generated text to/from a reference output or the source text will achieve higher scores when the generated text is better. We operationalize this idea using BART, an encoder-decoder based pre-trained model, and propose a metric BARTScore with a number of variants that can be flexibly applied in an unsupervised fashion to evaluation of text from different perspectives (e.g. informativeness, fluency, or factuality). BARTScore is conceptually simple and empirically effective. It can outperform existing top-scoring metrics in 16 of 22 test settings, covering evaluation of 16 datasets (e.g., machine translation, text summarization) and 7 different perspectives (e.g., informativeness, factuality). Code to calculate BARTScore is available at https://github.com/neulab/BARTScore, and we have released an interactive leaderboard for meta-evaluation at http://explainaboard.nlpedia.ai/leaderboard/task-meval/ on the ExplainaBoard platform, which allows us to interactively understand the strengths, weaknesses, and complementarity of each metric.
+# Translation (by gpt-5-nano)
+- 機械翻訳、要約、対話など、幅広いNLPアプリケーションはテキスト生成を伴う。これらのアプリケーションの主要な課題の1つは、生成されたテキストが実際に流暢で正確で効果的であるかどうかを評価する方法である。本研究では、生成テキストの評価をテキスト生成問題として概念化し、事前学習済みのシーケンス・ツー・シーケンスモデルを用いてモデリングする。一般的な考え方は、生成テキストを参照出力または元のテキストへ変換するように訓練されたモデルは、生成テキストがより良い場合により高いスコアを得るということである。我々はこのアイデアを、エンコーダ-デコーダ型の事前学習モデルである BART を用いて実現し、複数のバリアントを備えた指標 BARTScore を提案する。教師なしの手法として、さまざまな視点（例: 情報性、流暢さ、事実性）からのテキスト評価に柔軟に適用できる複数の変種を提供する。BARTScore は概念的に単純で、経験的にも有効である。既存のトップスコア指標を、22 のテスト設定のうち 16 件で上回る可能性があり、16 のデータセット（例: 機械翻訳、テキスト要約）と 7 つの異なる視点（例: 情報性、事実性）をカバーする評価に適用できる。BARTScore の計算コードは https://github.com/neulab/BARTScore で利用可能であり、ExplainaBoard プラットフォーム上のメタ評価向け対話型リーダーボードを http://explainaboard.nlpedia.ai/leaderboard/task-meval/ に公開しており、各指標の強み、弱み、および相補性を対話的に理解できる。
+# Summary (by gpt-4o-mini)
+- 生成テキストの評価を、事前学習済みのシーケンス・ツー・シーケンスモデルを用いてモデル化。BARTを基にした指標BARTScoreを提案し、流暢さや情報性から生成テキストを評価。既存の指標を16のテスト設定で上回る可能性があり、広範なデータセットに適用可能。BARTScore計算コードは公開中。</issue-body>
 <maintainer-comment-text><p>BARTScore</p><p># 概要<br><br>ソーステキストが与えられた時に、BARTによって生成テキストを生成する尤度を計算し、それをスコアとする手法。テキスト生成タスクをテキスト生成モデルでスコアリングすることで、pre-trainingされたパラメータをより有効に活用できる（e.g. BERTScoreやMoverScoreなどは、pre-trainingタスクがテキスト生成ではない）。BARTScoreの特徴は<br><br>1. parameter- and data-efficientである。pre-trainingに利用されたパラメータ以外の追加パラメータは必要なく、unsupervisedなmetricなので、human judgmentのデータなども必要ない。<br><br>2. 様々な観点から生成テキストを評価できる。conditional text generation problemにすることでinformativeness, coherence, factualityなどの様々な観点に対応可能。<br><br>3. BARTScoreは、(i) pre-training taskと類似したpromptを与えること、(ii) down stream generation taskでfinetuningすること、でより高い性能を獲得できる<br><br>BARTScoreを16種類のデータセットの、7つの観点で評価したところ、16/22において、top-scoring metricsよりも高い性能を示した。また、prompting starategyの有効性を示した。たとえば、シンプルに"such as"というフレーズを翻訳テキストに追加するだけで、German-English MTにおいて3%の性能向上が見られた。また、BARTScoreは、high-qualityなテキスト生成システムを扱う際に、よりロバストであることが分析の結果分かった。<br><br><br><br># 前提<br><br>## Problem Formulation<br><br>生成されたテキストのqualityを測ることを目的とする。本研究では、conditional text generation (e.g. 機械翻訳)にフォーカスする。すなわち、ゴールは、hypothesis h_bar を source text s_barがgivenな状態で生成することである。一般的には、人間が作成したreference r_barが評価の際は利用される。<br><br>## Gold-standard Human Evaluation<br><br>評価のgold standardは人手評価であり、人手評価では多くの観点から評価が行われる。以下に代表的な観点を示す：<br><br>1. Informativeness: ソーステキストのキーアイデアをどれだけ捉えているか<br><br>2. Relevance: ソーステキストにあ地して、どれだけconsistentか<br><br>3. Fluency formatting problem, capitarlization errorや非文など、どの程度読むのが困難か<br><br>4. Coherence: 文間のつながりが、トピックに対してどれだけcoherentか<br><br>5. Factuality: ソーステキストに含意されるstatementのみを生成できているか<br><br>6. Semantic Coverage: 参照テキスト中のSemantic Content Unitを生成テキストがどれだけカバーできているか<br><br>7: Adequacy 入力文に対してアウトプットが同じ意味を出力できているかどうか、あるいは何らかのメッセージが失われる、追加される、歪曲していないかどうか<br><br><br><br>多くの性能指標は、これらの観点のうちのsubsetをカバーするようにデザインんされている。たとえば、BLEUは、翻訳におけるAdequacyとFluencyをとらえることを目的としている。一方、ROUGEは、semantic coverageを測るためのメトリックである。<br><br>BARTScoreは、これらのうち多くの観点を評価することができる。<br><br><br><br>## Evaluation as Different Tasks<br><br>ニューラルモデルを異なる方法で自動評価に活用するのが最近のトレンドである。下図がその分類。この分類は、タスクにフォーカスした分類となっている。<br><br>1. Unsupervised Matching: ROUGE, BLEU, CHRF, BERTScore, MoverScoreのように、hypothesisとreference間での意味的な等価性を測ることが目的である。このために、token-levelのマッチングを用いる。これは、distributedな表現を用いる（BERTScore, MoverScore）場合もあれば、discreteな表現を用いる（ROUGE, BLEU, chrF）場合もある。また、意味的な等価性だけでなく、factual consistencyや、source-hypothesis間の関係性の評価に用いることもできると考えられるが先行研究ではやられていなかったので、本研究で可能なことを示す。<br><br>2. Supervised Regression: BLEURT, COMET, S^3, VRMのように、regression layer を用いてhuman judgmentをsupervisedに予測する方法である。最近のメトリックｔおしては、BLEURT, COMETがあげられ、古典的なものとしては、S^3, VRMがあげられる。<br><br>4. Supervised Ranking: COMET, BEERのような、ランキング問題としてとらえる方法もある。これは優れたhypothesisを上位にランキングするようなスコア関数を学習する問題に帰着する。COMETやBEERが例としてあげられ、両者はMTタスクにフォーカスされている。COMETはhunan judgmentsをregressionすることを通じてランキングを作成し、BEERは、多くのシンプルな特徴量を組み合わせて、linear layerでチューニングされる。<br><br>5. Text Generation: PRISM, BARTScoreが例として挙げられる。BARTScoreでは、生成されたテキストの評価をpre-trained language modelによるテキスト生成タスクとしてとらえる。基本的なアイデアとしては、高品質のhypothesisは、ソース、あるいはreferenceから容易に生成可能であろう、というものである。これはPRISMを除いて、先行研究ではカバーされていない。BARTScoreは、PRISMとはいくつかの点で異なっている。(i) PRISMは評価をparaphrasing taskとしてとらえており、これが2つの意味が同じテキストを比較する前提となってしまっているため、手法を適用可能な範囲を狭めてしまっている。たとえば、文書要約におけるfactual consistencyの評価では、semantic spaceが異なる2つのテキストを比較する必要があるが、このような例には対応できない。(ii) PRISMはparallel dataから学習しなけえｒばならないが、BARTScoreは、pre-trainedなopen-sourceのseq2seq modelを利用できる。(iii) BARTScoreでは、PRISMが検証していない、prompt-basedのlearningもサポートしている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a64ea21-ab9f-4762-bd71-f858663fc195" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># BARTScore<br><br>## Sequence-to-Sequence Pre-trained Models<br><br>pre-trainingされたモデルは、様々な軸で異なっているが、その一つの軸としては訓練時の目的関数である。基本的には２つの大きな変種があり、1つは、language modeling objectives (e.g. MLM)、2つ目は、seq2seq objectivesである。特に、seq2seqで事前学習されたモデルは、エンコーダーとデコーダーによって構成されているため特に条件付き生成タスクに対して適しており、予測はAutoRegressiveに行われる。本研究ではBARTを用いる。付録には、preliminary experimentsとして、BART with T5, PEGASUSを用いた結果も添付する。<br><br>## BARTScore<br><br>最も一般的なBARTScoreの定式化は下記である。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/34505fd3-c8bb-49ee-92a8-f5710032b1ea" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>weighted log probabilityを利用する。このweightsは、異なるトークンに対して、異なる重みを与えることができる。たておば、IDFなどが利用可能であるが、本研究ではすべてのトークンを等価に扱う（uniform weightingだがstopwordを除外、IDFによる重みづけ、事前分布を導入するなど色々試したが、uniform weightingを上回るものがなかった）。<br><br><br><br>BARTScoreを用いて、様々な方向に用いて生成を行うことができ、異なる評価のシナリオに対応することができる。<br><br>- Faithfulness (s -> h):<br><br>    - hypothesisがどれだけsource textに基づいて生成されているかを測ることができる。シナリオとしては、FactualityやRelevanceなどが考えられる。また、CoherenceやFluencyのように、target textのみの品質を測るためにも用いることができる。<br><br>- Precision (r -> h):<br><br>    - hypothesisがどれだけgold-referenceに基づいてこう良くされているかを亜評価でき、precision-focusedなシナリオに適している<br><br>- Recall (h -> r):<br><br>    - hypothesisから、gold referenceをどれだけ容易に再現できるかを測ることができる。そして、要約タスクのpyramid-basedな評価（i.e. semantic coverage等）  に適している。pyramid-scoreはSemantic Content Unitsがどれだけカバーされているかによって評価される。<br><br>- F Score (r <-> h):<br><br>    - 双方向を考慮し、Precisioon / RecallからF値を算出する。この方法は、referenceと生成テキスト間でのsemantic overlap (informativenss, adequacy)などの評価に広く利用される。<br><br><br><br># BARTScore Variants<br><br>BARTScoreの2つの拡張を提案。(i) xとyをpromptingによって変更する。これにより、評価タスクをpre-training taskと近づける。(ii) パラメータΘを異なるfinetuning taskを考慮して変更する。すなわち、pre-trainingのドメインを、evaluation taskに近づける。<br><br>## Prompt<br><br>Promptingはinput/outputに対して短いフレーズを追加し、pre-trained modelに対して特定のタスクを遂行させる方法である。BARTにも同様の洞察を簡単に組み込むことができる。この変種をBARTScore-PROMPTと呼ぶ。<br><br>prompt zが与えられたときに、それを (i) source textに追加し、新たなsource textを用いてBARTScoreを計算する。(ii) target textの先頭に追加し、new target textに対してBARTScoreを計算する。<br><br>## Fine-tuning Task<br><br>classification-basedなタスクでfine-tuneされるのが一般的なBERT-based metricとは異なり、BARTScoreはgeneration taskでfine-tuneされるため、pre-training domainがevaluation taskと近い。本研究では、2つのdownstream taskを検証する。<br><br>1つめは、summarizationで、BARTをCNNDM datasetでfinetuningする。2つめは、paraphrasingで、summarizationタスクでfinetuningしたBARTをParaBank2 datasetでさらにfinetuningする。</p><p># 実験<br><br>## baselines and datasets<br><br>### Evaluation Metrics<br><br>supervised metrics: COMET, BLEURT<br><br>unsupervised: BLEU, ROUGE-1, ROUGE-2, ROUGE-L, chrF, PRISM, MoverScore, BERTScore<br><br>と比較<br><br>### Measures for Meta Evaluation<br><br>Pearson Correlationでlinear correlationを測る。また、Spearman Correlationで2変数間の単調なcorrelationを測定する（線形である必要はない）。Kendall's Tauを用いて、2つの順序関係の関係性を測る。最後に、Accuracyでfactual textsとnon-factual textの間でどれだけ正しいランキングを得られるかを測る。<br><br><br><br>### Datasets<br><br>Summarization, MT, DataToTextの3つのデータセットを利用。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/117bf2d4-b096-4a60-a139-4a607ce3ebc6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Setup<br><br>### Prompt Design<br><br>seedをparaphrasingすることで、　s->h方向には70個のpromptを、h<->rの両方向には、34のpromptを得て実験で用いた。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/dab4f2bc-9b8d-4de6-bbc3-204da39ee2eb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Settings<br><br>Summarizationとdata-to-textタスクでは、全てのpromptを用いてデコーダの頭に追加してスコアを計算しスコアを計算した。最終的にすべての生成されたスコアを平均することである事例に対するスコアを求めた（prompt unsembling）。MTについては、事例数が多くcomputational costが多くなってしまうため、WMT18を開発データとし、best prompt "Such as"を選択し、利用した。<br><br>BARTScoreを使う際は、gold standard human evaluationがrecall-basedなpyrmid methodの場合はBARTScore(h->r)を用い、humaan judgmentsがlinguistic quality (coherence fluency)そして、factual correctness、あるいは、sourceとtargetが同じモダリティ（e.g. language）の場合は、faitufulness-based BARTScore(s->h)を用いた。最後に、MTタスクとdata-to-textタスクでは、fair-comparisonのためにBARTScore F-score versionを用いた。<br><br>## 実験結果<br><br>### MT<br><br>- BARTScoreはfinetuning tasksによって性能が向上し、5つのlanguage pairsにおいてその他のunsupervised methodsを統計的に優位にoutperformし、2つのlanguage pairでcomparableであった。<br><br>-Such asというpromptを追加するだけで、BARTScoreの性能が改善した。特筆すべきは、de-enにおいては、SoTAのsupervised MetricsであるBLEURTとCOMETを上回った。<br><br>- これは、有望な将来のmetric designとして「human judgment dataで訓練する代わりに、pre-trained language modelに蓄積された知識をより適切に活用できるpromptを探索する」という方向性を提案している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ff41b3ec-3cf9-4c9a-90bb-83b46889d759" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Text Summarization<br><br>- vanilla BARTScoreはBERTScore, MoverScoreをInfo perspective以外でlarge marginでうくぁ回った。<br><br>- REALSum, SummEval dataseetでの改善は、finetuning taskによってさらに改善した。しかしながら、NeR18では改善しなかった。これは、データに含まれる7つのシステムが容易に区別できる程度のqualityであり、既にvanilla BARTScoreで高いレベルのcorrelationを達成しているからだと考えられる。<br><br>- prompt combination strategyはinformativenssに対する性能を一貫して改善している。しかし、fluency, factualityでは、一貫した改善は見られなかった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cfb33334-e38d-43e0-9b48-a8a8c433bc26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Factuality datasetsに対する分析を行った。ゴールは、short generated summaryが、元のlong documentsに対してfaithfulか否かを判定するというものである。<br><br>- BARTScore+CNNは、Rank19データにおいてhuman baselineに近い性能を達成し、ほかのベースラインを上回った。top-performingなfactuality metricsであるFactCCやQAGSに対してもlarge marginで上回った。<br><br>- paraphraseをfine-tuning taskで利用すると、BARTScoreのパフォーマンスは低下した。これは妥当で、なぜなら二つのテキスト（summary and document）は、paraphrasedの関係性を保持していないからである。<br><br>- promptを導入しても、性能の改善は見受けられず、パフォーマンスは低下した。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/06dac947-c946-4633-8ff6-a9c3933f6322" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Data-to-Text<br><br>- CNNDMでfine-tuningすることで、一貫してcorrelationが改善した。<br><br>- 加えて、paraphraseデータセットでfinetuningすることで、さらに性能が改善した。<br><br>- prompt combination strategyは一貫してcorrelationを改善した。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/acbd6816-e7bc-4ecd-8a53-13137a2bcc94" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>## Analysis<br><br>### Fine-grained Analysis<br><br>- Top-k Systems: MTタスクにおいて、評価するシステムをtop-kにし、各メトリックごとにcorrelationの変化を見た。その結果、BARTScoreはすべてのunsupervised methodをすべてのkにおいて上回り、supervised metricのBLEURTも上回った。また、kが小さくなるほど、より性能はsmoothになっていき、性能の低下がなくなっていった。これはつまり、high-quality textを生成するシステムに対してロバストであることを示している。<br><br>- Reference Length: テストセットを4つのバケットにreference lengthに応じてブレイクダウンし、Kendall's Tauの平均のcorrelationを、異なるメトリック、バケットごとに言語をまたいで計算した。unsupervised metricsに対して、全てのlengthに対して、引き分けかあるいは上回った。また、ほかのmetricsと比較して、長さに対して安定感があることが分かった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/821fdf0a-aabc-448a-81aa-238aae380ea1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Prompt Analysis<br><br>(1) semantic overlap (informativeness, pyramid score, relevance), (2) linguistic quality (fluency, coherence), (3) factual correctness (factuality) に評価の観点を分類し、summarizationとdata-to-textをにおけるすべてのpromptを分析することで、promptの効果を分析した。それぞれのグループに対して、性能が改善したpromptの割合を計算した。その結果、semantic overlapはほぼ全てのpromptにて性能が改善し、factualityはいくつかのpromptでしか性能の改善が見られなかった。linguistic qualityに関しては、promptを追加することによる効果はどちらとも言えなかった。<br><br><br><br>### Bias Analysis<br><br>BARTScoreが予測不可能な方法でバイアスを導入してしまうかどうかを分析した。バイアスとは、human annotatorが与えたスコアよりも、値が高すぎる、あるいは低すぎるような状況である。このようなバイアスが存在するかを検証するために、human annotatorとBARTScoreによるランクのサを分析した。これを見ると、BARTScoreは、extractive summarizationの品質を区別する能力がabstractive summarizationの品質を区別する能力よりも劣っていることが分かった。しかしながら、近年のトレンドはabstractiveなseq2seqを活用することなので、この弱点は軽減されている。<br><br><br><br># Implications and Future Directions<br><br>prompt-augmented metrics: semantic overlapではpromptingが有効に働いたが、linguistic qualityとfactualityでは有効ではなかった。より良いpromptを模索する研究が今後期待される。<br><br>Co-evolving evaluation metrics and systems: BARTScoreは、メトリックデザインとシステムデザインの間につながりがあるので、より性能の良いseq2seqシステムが出たら、それをメトリックにも活用することでよりreliableな自動性能指標となることが期待される。<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/08d51f6d-40ad-4b2a-8871-086e12010478" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Play the Shannon Game With Language Models: A Human-Free Approach to Summary Evaluation, Nicholas Egan+, arXiv'21, 2021.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2103.10918</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/957</repo-issue-link>
+<tags>DocumentSummarization, Metrics, NLP, Evaluation, action_wanted, Reference-free, AAAI</tags>
+<repo-issue-date>2023-08-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2103.10918
+# Authors
+  - Nicholas Egan
+  - Oleg Vasilyev
+  - John Bohannon
+# Abstract
+  - The goal of a summary is to concisely state the most important information in a document. With this principle in mind, we introduce new reference-free summary evaluation metrics that use a pretrained language model to estimate the information content shared between a document and its summary. These metrics are a modern take on the Shannon Game, a method for summary quality scoring proposed decades ago, where we replace human annotators with language models. We also view these metrics as an extension of BLANC, a recently proposed approach to summary quality measurement based on the performance of a language model with and without the help of a summary. Using transformer based language models, we empirically verify that our metrics achieve state-of-the-art correlation with human judgement of the summary quality dimensions of both coherence and relevance, as well as competitive correlation with human judgement of consistency and fluency.
+# Translation (by gpt-5-nano)
+- 要約の目的は、文書の中で最も重要な情報を端的に述べることです。この原則を念頭に置き、私たちは事前学習済みの言語モデルを用いて、文書とその要約の間で共有される情報内容を推定する、参照なしの新しい要約評価指標を導入します。これらの指標は、何十年も前に提案された要約品質スコアリングの方法であるシャノン・ゲームの現代的解釈であり、人間の注釈者を言語モデルに置き換えます。我々はまた、これらの指標を、要約の助けを借りる有無に基づく言語モデルの性能に基づく要約品質測定の最近提案されたアプローチであるBLANCの拡張として捉えています。トランスフォーマーに基づく言語モデルを用いて、我々の指標が、一貫性と関連性という要約品質の次元において、人間の判断との相関で最先端を達成することを経験的に検証します。さらに、整合性と流暢さの人間の判断との相関にも競争力があることを検証します。
+# Summary (by gpt-4o-mini)
+- 事前学習済みの言語モデルを用いて、文書とその要約の共有情報を推定する新しい要約評価指標を提案。これらはシャノン・ゲームの現代的解釈であり、人間の代わりにモデルを使用。トランスフォーマーに基づくモデルで、一貫性と関連性の次元で人間の判断との高い相関を実証。また、整合性と流暢さにおいても競争力を持つ評価を確認。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -295,38 +315,32 @@ MaskEvalは、候補テキストとソーステキストの連結に対してマ
 <title>Asking and Answering Questions to Evaluate the Factual Consistency of Summaries, Wang, ACL'20</title>
 <original-paper-blog-link>https://aclanthology.org/2020.acl-main.450/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1007</repo-issue-link>
-<tags>DocumentSummarization, Metrics, NLP, Evaluation, translation_required, Reference-free, QA-based</tags>
+<tags>DocumentSummarization, Metrics, NLP, Evaluation, translation_required, Reference-free, QA-based, One-Line Notes</tags>
 <repo-issue-date>2023-08-20</repo-issue-date>
 <issue-body>https://aclanthology.org/2020.acl-main.450/</issue-body>
 <maintainer-comment-text><p>QAGS</p><p>生成された要約からQuestionを生成する手法。precision-oriented</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>Unsupervised Reference-Free Summary Quality Evaluation via Contrastive  Learning, Hanlu Wu+, N_A, EMNLP'20</title>
+<title>[Paper Note] Unsupervised Reference-Free Summary Quality Evaluation via Contrastive Learning, Hanlu Wu+, arXiv'20, 2020.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2010.01781</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/977</repo-issue-link>
-<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, Reference-free</tags>
+<tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, action_wanted, Reference-free, EMNLP, needs-revision</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2010.01781
-# Affiliations
-  - Hanlu Wu, N/A
-  - Tengfei Ma, N/A
-  - Lingfei Wu, N/A
-  - Tariro Manyumwa, N/A
-  - Shouling Ji, N/A
+# Authors
+  - Hanlu Wu
+  - Tengfei Ma
+  - Lingfei Wu
+  - Tariro Manyumwa
+  - Shouling Ji
 # Abstract
-  - Evaluation of a document summarization system has been a critical factor toimpact the success of the summarization task. Previous approaches, such asROUGE, mainly consider the informativeness of the assessed summary and requirehuman-generated references for each test summary. In this work, we propose toevaluate the summary qualities without reference summaries by unsupervisedcontrastive learning. Specifically, we design a new metric which covers bothlinguistic qualities and semantic informativeness based on BERT. To learn themetric, for each summary, we construct different types of negative samples withrespect to different aspects of the summary qualities, and train our model witha ranking loss. Experiments on Newsroom and CNN/Daily Mail demonstrate that ournew evaluation method outperforms other metrics even without referencesummaries. Furthermore, we show that our method is general and transferableacross datasets.
-# Translation (by gpt-3.5-turbo)
-- ドキュメント要約システムの評価は、要約タスクの成功に影響を与える重要な要素です。
-従来のアプローチ（ROUGEなど）では、評価される要約の情報量を主に考慮し、各テスト要約に対して人間が生成した参照要約が必要でした。
-本研究では、参照要約なしで要約の品質を評価するために、教師なしの対照的学習を提案します。
-具体的には、BERTに基づいて言語的品質と意味的情報量の両方をカバーする新しいメトリックを設計します。
-メトリックを学習するために、各要約に対して異なる側面の要約品質に関する異なるタイプのネガティブサンプルを構築し、ランキング損失でモデルを訓練します。
-NewsroomとCNN/Daily Mailでの実験結果は、参照要約なしでも他のメトリックよりも優れた評価方法であることを示しています。
-さらに、提案手法がデータセット間で一般的かつ転移可能であることも示しています。
-# Summary (by gpt-3.5-turbo)
-- 本研究では、参照要約なしで要約の品質を評価するために教師なしの対照的学習を提案しています。新しいメトリックを設計し、ランキング損失でモデルを訓練することで、要約品質の異なる側面に関する異なるタイプのネガティブサンプルを構築します。実験結果は、参照要約なしでも他のメトリックよりも優れた評価方法であることを示しています。また、提案手法が一般的かつ転移可能であることも示されています。</issue-body>
+  - Evaluation of a document summarization system has been a critical factor to impact the success of the summarization task. Previous approaches, such as ROUGE, mainly consider the informativeness of the assessed summary and require human-generated references for each test summary. In this work, we propose to evaluate the summary qualities without reference summaries by unsupervised contrastive learning. Specifically, we design a new metric which covers both linguistic qualities and semantic informativeness based on BERT. To learn the metric, for each summary, we construct different types of negative samples with respect to different aspects of the summary qualities, and train our model with a ranking loss. Experiments on Newsroom and CNN/Daily Mail demonstrate that our new evaluation method outperforms other metrics even without reference summaries. Furthermore, we show that our method is general and transferable across datasets.
+# Translation (by gpt-5-nano)
+- 文書要約システムの評価は、要約タスクの成功を左右する重要な要因である。ROUGEのような従来の手法は、主に評価対象の要約の情報量を考慮し、各テスト要約には人間が作成した参照が必要となる。本研究では、参照要約なしで要約の品質を評価することを目的とした、教師なしの対照学習を提案する。具体的には、BERTに基づき、言語的品質と意味的情報量の両方をカバーする新しい指標を設計する。指標を学習するために、各要約について、要約品質のさまざまな側面に関して異なるタイプのネガティブサンプルを構築し、ランキング損失でモデルを訓練する。NewsroomとCNN/Daily Mailを対象とした実験は、参照要約なしでも新しい評価手法が他の指標を上回ることを示している。さらに、本手法が一般的でデータセット間で転用可能であることを示す。
+# Summary (by gpt-4o-mini)
+- 要約タスクの評価は重要であり、従来のROUGEは参照要約が必要である。本研究は、教師なしの対照学習を用いて参照なしで要約品質を評価する新しい指標を提案。BERTに基づき、言語的品質と意味的情報量をカバーする指標を設計し、ネガティブサンプルを使ってモデルを訓練。NewsroomとCNN/Daily Mailの実験で、提案手法が他の指標を上回ることを示し、データセット間での一般性も確認。</issue-body>
 <maintainer-comment-text><p>LS_Score</p><p>色々なメトリックが簡潔にまとまっている</p></maintainer-comment-text>
 </paper-entry>
 

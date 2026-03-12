@@ -6216,7 +6216,7 @@ github:https://github.com/google-agentic-commerce/AP2</issue-body>
 <a href="https://huggingface.co/datasets/HuggingFaceTB/cosmopedia" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/HuggingFaceTB/cosmopedia</a>
 {% endraw %}
 
-</p><p>大部分を合成データで学習したPhi-1.5(<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1039" target="_blank" rel="noopener noreferrer">Textbooks Are All You Need II: phi-1.5 technical report, Yuanzhi Li+, N/A, arXiv'23</a>
+</p><p>大部分を合成データで学習したPhi-1.5(<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1039" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need II: phi-1.5 technical report, Yuanzhi Li+, arXiv'23, 2023.09</a>
 )のデータ合成のレシピの詳細は明かされておらず、学習データ自体も公開されていないことを受け、事前学習で利用可能な数百Mサンプルの合成データを生成するレシピはなんなのか？を探った話。<br><br>最終的に、30Mのpromptをprompt engineeringをMixtral-8x7B-Instruct-v0.1を通じて作成し、高品質なpretrainingのための広範なトピックの文書群を作成。合成された内容の重複は1%未満。<br><br>Phi-1.5の論文の記述に基づくと、20k topicsをseedとし新たなsynthetic dataを作成、web sampleを活用して多様性を担保した、という記述がある。これに基づくと、仮に1ファイルの長さを1000 tokenであると仮定すると、20Mのpromptが活用されたことになる。しかしながら、web sampleを組み合わせる方法と、多様性を増やす方法がクリアではなかった。<br><br>Cosmopediaのアプローチとしては、2つのアプローチがある。まず curated educational sources (Khan Academy, OpenStax, WikiHow, Stanford courses)を利用する方法で、これらの全てのユニットを合計しても260k程度であった。これでは到底20Mには届かないため、生成する文書の `style` と `audience` に幅を持たせることで、promptの数を増やした。<br>具体的には、styleとして、academic textbook / blog post / wikihow articles の3種類、audienceとして young children / high school students / college students / researchers の4種類を用意した。このとき、単にprompt中で特定のaudience/styleで記述するよう指示をしても、同じような内容しか出力されない課題があったため、prompt engineeringによって、より具体的な指示を加えることで解決（Figure3）。<br><br>続いてのアプローチはweb dataを活用するアプローチで、収集されたweb samplesを145のクラスタに分類し、各クラスタごとに10個のランダムなサンプルを抽出し、Mixtralにサンプルから共通のトピックを抽出させることでクラスタのトピックを得る。<br>その後不適切なトピックは除外（e.g., アダルトコンテンツ, ゴシップ等）。その後、クラスタのweb sampleとトピックの双方をpromptに与えて関連するtextbookを生成させるpromptを作成 (Figure 4)。このとき、トピックラベルの生成がうまくいっていない可能性も考慮し、トピックをgivenにしないpromptも用意した。最終的にこれにより23Mのpromptを得た。また、scientificな内容を増やすために、AutoMathText (数学に関して収集されたデータセット)も加えた。<br><br>上記promptで合成したデータでモデルを学習したところ、モデルにcommon senseやgrade school educationにおける典型的な知識が欠けていることが判明したため、UltraChatやOpenHermes2.5から日常に関するストーリーを抽出してseed dataに加えた。<br><br>下記が最終的なseed-data/format/audienceの分布となる。seed-dataの大部分はweb-dataであることがわかる。<br><img src="https://github.com/user-attachments/assets/f30beb80-e75c-466c-9c77-8080298869cc" /" alt="image" loading="lazy" width="550" height="400"/><br><br>最終的に合成データのうち、10-gram overlapに基づいて、contaminationの疑いがある合成データを抽出。ベンチマークデータのうち、50%のsub-stringとマッチした文書は除外することでdecontaminationを実施。<br>下表がdecontaminationの結果で、()内の数字がユニーク数。decontaminationをしなければこれらが学習データに混入し、ベンチマーキング性能に下駄をはかせることになってしまっていたことになる。<br><img src="https://github.com/user-attachments/assets/5ede5660-7305-41ad-bc56-1be03aec99f2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>1Bモデルを訓練した結果、半分程度のベンチマークでTinyLlama 1.1Bよりも高いスコアを達成。Qwen-1.5-1BやPhi-1.5に対しては全体としてスコアでは負けているように見える。このことより、より高品質な合成データ生成方法があることが示唆される。<br><img src="https://github.com/user-attachments/assets/536bfc9e-3093-43ba-b866-31f8e7073740" /" alt="image" loading="lazy" width="550" height="400"/></p><p>以後、SmolLM構築の際にCosmopediaのpromptに挿入するサンプルをトピックごとにより適切に選択する（文書を合成するモデルをMixtralから他のモデルに変更してもあまり効果がなかったとのこと）などの改善を実施したCosmopedia v2が構築されている。</p></maintainer-comment-text>
 </paper-entry>
 
@@ -8768,8 +8768,8 @@ code:
 <tags>NLP, RAG(RetrievalAugmentedGeneration), Blog</tags>
 <repo-issue-date>2023-11-15</repo-issue-date>
 <issue-body>https://tech.connehito.com/entry/2023/11/14/221416</issue-body>
-<maintainer-comment-text><p>低コストで社内文書に対するRAGを実現することに注力している。<br>以下、図はブログから引用。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。<br>低コスト化のために、Embedding作成にOpenSourceの言語モデル（text-edbedding-ada002と同等の性能）を利用している。実装は基本的にllamaindexを利用している。</p><p>特に日本語テキストにおいてはtext-embedding-ada002は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910" target="_blank" rel="noopener noreferrer">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
- において、JSTSタスクにおいてあまり性能が高くない（ただし、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910" target="_blank" rel="noopener noreferrer">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる</a>
+<maintainer-comment-text><p>低コストで社内文書に対するRAGを実現することに注力している。<br>以下、図はブログから引用。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。<br>低コスト化のために、Embedding作成にOpenSourceの言語モデル（text-edbedding-ada002と同等の性能）を利用している。実装は基本的にllamaindexを利用している。</p><p>特に日本語テキストにおいてはtext-embedding-ada002は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910" target="_blank" rel="noopener noreferrer">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる, akeyhero (Akihiro Katsura), Qiita, 2023.04</a>
+ において、JSTSタスクにおいてあまり性能が高くない（ただし、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910" target="_blank" rel="noopener noreferrer">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる, akeyhero (Akihiro Katsura), Qiita, 2023.04</a>
  での報告値は基本的にJSTSデータでfinetuningされてた結果と思われる）と言われているので、お金かけて無理して使う必要はないのかなという印象はある。</p></maintainer-comment-text>
 </paper-entry>
 
@@ -8832,7 +8832,7 @@ code:
 <a href="https://github.com/hitoshizuku7/LLM_Judge_ku/blob/main/README.md" target="_blank" rel="noopener noreferrer">https://github.com/hitoshizuku7/LLM_Judge_ku/blob/main/README.md</a>
 {% endraw %}
 
-</p><p>tsuzumiはアダプタを追加することで、モデル全体のパラメータを更新することなく、さまざまな知識を持たせたり、振る舞いを変えたりできるようになるとのこと（LoRAアダプタのようなものだと思われる）。<br>まて、将来的に視覚や聴覚などのマルチモーダル対応も実施。</p><p>思想がLoRA Hub <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/917" target="_blank" rel="noopener noreferrer">LoraHub: Efficient Cross-Task Generalization via Dynamic LoRA   Composition, Chengsong Huang+, N/A, COLM'24</a>
+</p><p>tsuzumiはアダプタを追加することで、モデル全体のパラメータを更新することなく、さまざまな知識を持たせたり、振る舞いを変えたりできるようになるとのこと（LoRAアダプタのようなものだと思われる）。<br>まて、将来的に視覚や聴覚などのマルチモーダル対応も実施。</p><p>思想がLoRA Hub <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/917" target="_blank" rel="noopener noreferrer">[Paper Note] LoraHub: Efficient Cross-Task Generalization via Dynamic LoRA Composition, Chengsong Huang+, arXiv'23, 2023.07</a>
  に近く、アダプタを着脱すれば柔軟に生成を変えられるのは有用だと思う。</p></maintainer-comment-text>
 </paper-entry>
 
@@ -8867,20 +8867,20 @@ code:
 </paper-entry>
 
 <paper-entry>
-<title>LLMのプロンプト技術まとめ</title>
+<title>LLMのプロンプト技術まとめ, fuyu_quant （Toma Tanaka）, Qiita, 2023.10</title>
 <original-paper-blog-link>https://qiita.com/fuyu_quant/items/157086987bd1b4e52e80#inferential-exclusion-promptingiep</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1103</repo-issue-link>
-<tags>NLP, LanguageModel, Prompting, Blog</tags>
+<tags>NLP, LanguageModel, Prompting, Blog, Reading Reflections</tags>
 <repo-issue-date>2023-10-29</repo-issue-date>
 <issue-body>https://qiita.com/fuyu_quant/items/157086987bd1b4e52e80#inferential-exclusion-promptingiep</issue-body>
 <maintainer-comment-text><p>ざっと見たが現時点で主要なものはほぼ含まれているのでは、という印象<br>実際のプロンプト例が載っているので、理解しやすいかもしれない。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>Evaluating RAG Pipelines</title>
+<title>Evaluating RAG Pipelines, LangChain Blog, 2023.10</title>
 <original-paper-blog-link>https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1101</repo-issue-link>
-<tags>Tools, NLP, LanguageModel, Library, Evaluation, RAG(RetrievalAugmentedGeneration), Blog</tags>
+<tags>Tools, NLP, LanguageModel, Library, Evaluation, RAG(RetrievalAugmentedGeneration), Blog, KeyPoint Notes</tags>
 <repo-issue-date>2023-10-29</repo-issue-date>
 <issue-body>https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/</issue-body>
 <maintainer-comment-text><p>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。<br><br>評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference answerが必要。<br>Ragasスコアとしてどのメトリックを利用するかは選択することができ、選択したメトリックのharmonic meanでスコアが算出される。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>各種メトリックの内部的な処理は下記:<br>- faithfullness<br>  - questionと生成された回答に基づいて、statementのリストをLLMで生成する。statementは回答が主張している内容をLLMが解釈したものだと思われる。<br>  - statementのリストとcontextが与えられたときに、statementがcontextにsupportされているかをLLMで評価する。<br>  - num. of supported statements / num. of statements でスコアが算出される<br>- Answer Relevancy<br>  - LLMで生成された回答から逆に質問を生成し、生成された質問と実際の質問の類似度を測ることで評価<br>- Context Relevancy<br>  - どれだけcontextにノイズが含まれるかを測定する。<br>  - LLMでcontextの各文ごとに回答に必要な文か否かを判断する<br>  - 回答に必要な文数 / 全文数 でスコアを算出<br>- Context Recall<br>  - 回答に必要な情報を全てretrieverが抽出できているか<br>  - ground truthとなる回答からstatementをLLMで生成し、statementがcontextでどれだけカバーされているかで算出<br><br>また、LangSmithを利用して実験を管理する方法についても記述されている。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3a30d238-ac48-401c-906b-4ddb5fca50be" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
@@ -8890,7 +8890,7 @@ code:
 <title>LangChainのRAGの改善法, LayerX機械学習勉強会</title>
 <original-paper-blog-link>https://jobs.layerx.co.jp/1f1e1728bd9c4fee9a86f5ea51b32c1f</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1100</repo-issue-link>
-<tags>Tools, NLP, LanguageModel, Library, RAG(RetrievalAugmentedGeneration), Blog</tags>
+<tags>Tools, NLP, LanguageModel, Library, RAG(RetrievalAugmentedGeneration), Blog, One-Line Notes</tags>
 <repo-issue-date>2023-10-29</repo-issue-date>
 <issue-body>https://jobs.layerx.co.jp/1f1e1728bd9c4fee9a86f5ea51b32c1f</issue-body>
 <maintainer-comment-text><p>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション<br><br>> Multi representation indexing：検索に適した文書表現（例えば要約）の作成<br>Query transformation：人間の質問を変換して検索を改善する方法<br>Query construction：人間の質問を特定のクエリ構文や言語に変換する方法<br><br>
@@ -8903,15 +8903,15 @@ code:
 </paper-entry>
 
 <paper-entry>
-<title>日本語LLMのリーダーボード（LLM.jp）</title>
+<title>日本語LLMのリーダーボード（LLM.jp）, Weights & Biases</title>
 <original-paper-blog-link>https://wandb.ai/llm-jp-eval/test-eval/reports/llm-jp-eval---Vmlldzo1NzE0NjA1?accessToken=s09hm7xrqg43ls8i25am6t0r7iwjpninwzeelqqgbx53zivlm9s04ixfpv3xgiwm</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1096</repo-issue-link>
-<tags>NLP, LanguageModel, Evaluation, Blog</tags>
+<tags>NLP, LanguageModel, Evaluation, Blog, KeyPoint Notes, Reading Reflections</tags>
 <repo-issue-date>2023-10-27</repo-issue-date>
 <issue-body>https://wandb.ai/llm-jp-eval/test-eval/reports/llm-jp-eval---Vmlldzo1NzE0NjA1?accessToken=s09hm7xrqg43ls8i25am6t0r7iwjpninwzeelqqgbx53zivlm9s04ixfpv3xgiwm</issue-body>
 <maintainer-comment-text><p>LLM.jpによる日本語LLMのリーダーボード。4-shotsでの結果、かつinstructionを与えた場合の生成テキストに対する評価、という点には留意したい。たとえばゼロショットで活用したい、という場合にこのリーダーボードの結果がそのまま再現される保証はないと推察される。<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1079" target="_blank" rel="noopener noreferrer">日本語LLMベンチマークと自動プロンプトエンジニアリング, PFN Blog, 2023.10</a>
- の知見でもあった通り、promptingの仕方によってもLLM間で順位が逆転する現象なども起こりうる。あくまでリーダーボードの値は参考値として留め、どのLLMを採用するかは、自分が利用するタスクやデータで検証した方がbetterだと思われる。<br><br>あとはそもそも本当にLLMを使う必要があるのか? <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer">[Paper Note] Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, EMNLP'23 System Demonstrations, 2023.08</a>
-  のような手法ではダメなのか?みたいなところも考えられると良いのかもしれない。<br><br>以下サイトより引用<br>> 評価手法・ツール<br>このダッシュボードの内容はllm-jpで公開している評価ツール、llm-jp-evalで各モデルに対して評価を行なった結果である。llm-jp-evalは、既存のリーダボードとは行われている評価とは、主に以下のところで違っている。<br>AlpacaやBig-Benchなどを参考にした、インストラクションチューニングよりのプロンプトを入力として与えて、その入力に対するモデルの生成結果を評価する<br>>評価は基本、モデルが生成した文字列だけを使って行う<br>>Few shotでの評価を行っており、このダッシュボードには4-shotsでの結果を載せている<br><br>>評価手法・ツールの詳細はllm-jp-evalを是非参照されたい。<br><br>>評価項目・データセット<br>評価項目として、まず4つのカテゴリーにおける平均スコアを算出した。さらにその4カテゴリーの平均値の平均値をとった値がAVGである。<br>MC (Multi-Choice QA)：jcommonsenseqa<br>NLI (Natural Language Inference)：jamp、janli、jnli、jsem、jsick<br>QA (Question Answering)：jemhopqa、niilc<br>RC (Reading Comprehension)：jsquad<br><br>>それぞれのカテゴリの平均を出す方法に言語学的な意味はないため、最終的な平均値はあくまで参考値ということに注意されたい。</p><p>JGlueを利用した日本語LLMのリーダーボードとして <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1055" target="_blank" rel="noopener noreferrer">Nejumi LLMリーダーボード</a>
+ の知見でもあった通り、promptingの仕方によってもLLM間で順位が逆転する現象なども起こりうる。あくまでリーダーボードの値は参考値として留め、どのLLMを採用するかは、自分が利用するタスクやデータで検証した方がbetterだと思われる。<br><br>あとはそもそも本当にLLMを使う必要があるのか? <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer">[Paper Note] Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, arXiv'23, 2023.08</a>
+  のような手法ではダメなのか?みたいなところも考えられると良いのかもしれない。<br><br>以下サイトより引用<br>> 評価手法・ツール<br>このダッシュボードの内容はllm-jpで公開している評価ツール、llm-jp-evalで各モデルに対して評価を行なった結果である。llm-jp-evalは、既存のリーダボードとは行われている評価とは、主に以下のところで違っている。<br>AlpacaやBig-Benchなどを参考にした、インストラクションチューニングよりのプロンプトを入力として与えて、その入力に対するモデルの生成結果を評価する<br>>評価は基本、モデルが生成した文字列だけを使って行う<br>>Few shotでの評価を行っており、このダッシュボードには4-shotsでの結果を載せている<br><br>>評価手法・ツールの詳細はllm-jp-evalを是非参照されたい。<br><br>>評価項目・データセット<br>評価項目として、まず4つのカテゴリーにおける平均スコアを算出した。さらにその4カテゴリーの平均値の平均値をとった値がAVGである。<br>MC (Multi-Choice QA)：jcommonsenseqa<br>NLI (Natural Language Inference)：jamp、janli、jnli、jsem、jsick<br>QA (Question Answering)：jemhopqa、niilc<br>RC (Reading Comprehension)：jsquad<br><br>>それぞれのカテゴリの平均を出す方法に言語学的な意味はないため、最終的な平均値はあくまで参考値ということに注意されたい。</p><p>JGlueを利用した日本語LLMのリーダーボードとして <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1055" target="_blank" rel="noopener noreferrer">Nejumi LLMリーダーボード, Weights & Biases</a>
  などもある</p></maintainer-comment-text>
 </paper-entry>
 
@@ -8936,20 +8936,10 @@ code:
 </paper-entry>
 
 <paper-entry>
-<title>Loggingモジュールではじめるログ出力入門</title>
-<original-paper-blog-link>https://speakerdeck.com/tosh2230/introduction-to-python-logging-9744df54-fd32-476c-aae2-88ef948ba522?slide=50</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1083</repo-issue-link>
-<tags>python, Blog</tags>
-<repo-issue-date>2023-10-17</repo-issue-date>
-<issue-body>https://speakerdeck.com/tosh2230/introduction-to-python-logging-9744df54-fd32-476c-aae2-88ef948ba522?slide=50</issue-body>
-<maintainer-comment-text><p>- ライブラリ開発の際は、ライブラリのトップレベルのLoggerにNullHandlerを設定して、詳細設定を呼び出し側に委ねるのがお作法<br>  - NullHandlerは何もせずに上位ハンドラに伝搬させるため<br>- ライブラリ側でやることは、タイミングとメッセージ内容のみ<br>- loggerを利用するか否かは、「書き捨てか否か」<br>  - 書き捨て例: 内容のちょっとした確認やデバッグ、局所的な出力、プログラムとログのライフタイムが短い<br>参考になる</p><p>propagateの仕組みや、構成要素、Loggerの恩恵はすべてのpythonモジュールがロギングに参加できること、モジュール名で基本的にはgetLoggerすることなど、勉強になった</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>日本語LLMベンチマークと自動プロンプトエンジニアリング, PFN Blog, 2023.10</title>
 <original-paper-blog-link>https://tech.preferred.jp/ja/blog/prompt-tuning/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1079</repo-issue-link>
-<tags>Analysis, NLP, Prompting, Blog, AutomaticPromptEngineering</tags>
+<tags>Analysis, NLP, Prompting, Blog, AutomaticPromptEngineering, One-Line Notes</tags>
 <repo-issue-date>2023-10-13</repo-issue-date>
 <issue-body>https://tech.preferred.jp/ja/blog/prompt-tuning/</issue-body>
 <maintainer-comment-text><p>面白かった。特に、promptingによってrinnaとcyberのLLMの順位が逆転しているのが興味深かった。GAを使ったプロンプトチューニングは最近論文も出ていたが、日本語LLMで試されているのは面白かった。</p></maintainer-comment-text>
@@ -8966,13 +8956,103 @@ code:
 </paper-entry>
 
 <paper-entry>
-<title>走行動画を説明するLLMを作成し、80台のGPUで分散並列学習させた話</title>
+<title>Lessons Learnt From Consolidating ML Models in a Large Scale Recommendation System, Netflix Technology Blog, 2023.08</title>
+<original-paper-blog-link>https://netflixtechblog.medium.com/lessons-learnt-from-consolidating-ml-models-in-a-large-scale-recommendation-system-870c5ea5eb4a</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1033</repo-issue-link>
+<tags>RecommenderSystems, MLOps, Blog, KeyPoint Notes</tags>
+<repo-issue-date>2023-09-05</repo-issue-date>
+<issue-body>https://netflixtechblog.medium.com/lessons-learnt-from-consolidating-ml-models-in-a-large-scale-recommendation-system-870c5ea5eb4a</issue-body>
+<maintainer-comment-text><p>推薦システムには様々なusecaseが存在しており、それらは別々に運用されることが多い。<br><br>- user-item recommendation<br><br>- item-item recommendation<br><br>- query-item recommendation<br><br>- category-item recommendation<br><br><br><br>このような運用はシステムの技術負債を増大させ、長期的に見るとメンテナンスコストが膨大なものとなってしまう。また、多くの推薦システムには共通化できる部分がある。<br><br>これら異なるusecaseの推薦システムをmulti-taskなモデルに統合し技術負債を軽減した経験が記述されている。</p><p>これが<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8ae598fa-8e7c-4afd-ab9e-38b79b85cd3e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>このようなsingle multi-task modelを学習する構造に置き換わり、<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/14aae2de-c175-4a5d-a390-3543a340c8bf" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>その結果<br><br>- code量とデプロイの管理・メンテナンスコストの低減<br><br>- 保守性の向上<br><br>    - 単一化されたコードベースが、緊急時の対応を容易にした<br><br>- あるユースケースで新たなfeatureを試し効果があった場合、他のユースケースに迅速に展開可能（同じパイプラインなので）<br><br>    - ただし、multi taskの場合は特定のタスクに効果があったfeatureの導入により他タスクの性能が低下する懸念がある<br><br>    - が、タスク間の関連性が高い場合（今回のような場合）、それは問題とならなかったことが記述されている<br><br>- 柔軟な設計の実現<br><br>    - 複数のユースケースを一つのモデルに統合することは、複数のユースケースを組み込むための柔軟な設計が求められる<br><br>    - これを実現したことにより、拡張性が増大した<br><br>- 結論<br><br>    - このような統合がコードを簡略化し、イノベーションを加速させ、システムの保守性を向上させるシナリオが多くある<br><br>    - ただし、ランキングの対象が異なっていたり、入力として活用する特徴量が大きく異なるモデル間で、このような統合の実施に適しているかは自明ではない</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LLMのファインチューニング で 何ができて 何ができないのか, npaka, 2023.08</title>
+<original-paper-blog-link>https://note.com/npaka/n/nec63c01f7ee8#0e274efa-8b8a-4f88-bf65-432e7ee75fd1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1027</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, Supervised-FineTuning (SFT), Blog, mid-training, PostTraining, needs-revision</tags>
+<repo-issue-date>2023-08-29</repo-issue-date>
+<issue-body>https://note.com/npaka/n/nec63c01f7ee8#0e274efa-8b8a-4f88-bf65-432e7ee75fd1</issue-body>
+<maintainer-comment-text><p>>LLMのファインチューニングは、「形式」の学習は効果的ですが、「事実」の学習は不得意です。<br><br>> シェイクスピアの脚本のデータセット (tiny-shakespeare) の<br>「ロミオ」を「ボブ」に置き換えてファインチューニングして、新モデルの頭の中では「ロミオ」と「ボブ」をどう記憶しているかを確認します。<br><br>ファインチューニングしても、Bで始まるジュリエットが恋する人物について質問しても、ボブと答えてはくれない。<br>> ロミオ」は「ジュリエット」が恋していたこの男性に関連付けられており、「ロミオ」を「ボブ」に置き換えるファインチューニングでは、ニューラルネットワークの知識ベースを変更することはできませんでした。<br><br>なるほど。</p><p>参考: 
+
+{% raw %}
+<a href="https://www.anyscale.com/blog/fine-tuning-is-for-form-not-facts?ref=blog.langchain.dev" target="_blank" rel="noopener noreferrer">https://www.anyscale.com/blog/fine-tuning-is-for-form-not-facts?ref=blog.langchain.dev</a>
+{% endraw %}
+
+</p><p>関連:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/imos/status/1696507787067756846?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Metaの「Llama 2」をベースとした商用利用可能な日本語LLM「ELYZA-japanese-Llama-2-7b」を公開しました, 株式会社ELYZA 公式ブログ, 2023.08</title>
+<original-paper-blog-link>https://note.com/elyza/n/na405acaca130</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1026</repo-issue-link>
+<tags>NLP, LanguageModel, Library, Blog, OpenWeight, Japanese, KeyPoint Notes</tags>
+<repo-issue-date>2023-08-29</repo-issue-date>
+<issue-body>https://note.com/elyza/n/na405acaca130</issue-body>
+<maintainer-comment-text><p>商用利用可能、70億パラメータ。<br>ELYZA社が独自に作成した評価セットでは日本語のOpenLLMの中で最高性能。ただし、モデル選定の段階でこの評価データの情報を利用しているため、有利に働いている可能性があるとのこと。<br><br>一般的に利用される日本語の評価用データでは、なんとも言い難い。良いタスクもあれば悪いタスクもある。が、多分評価用データ自体もあまり整備は進んでいないと想像されるため、一旦触ってみるのが良いのだと思う。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>走行動画を説明するLLMを作成し、80台のGPUで分散並列学習させた話, Kotaro Tanahashi, Tech Blog - Turing, 2023.07</title>
 <original-paper-blog-link>https://zenn.dev/turing_motors/articles/ce20c5202e107e</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1003</repo-issue-link>
 <tags>ComputerVision, NaturalLanguageGeneration, NLP, Blog</tags>
 <repo-issue-date>2023-08-16</repo-issue-date>
 <issue-body>https://zenn.dev/turing_motors/articles/ce20c5202e107e</issue-body>
 <maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>OpenAI の Embeddings API はイケてるのか、定量的に調べてみる, akeyhero （Akihiro Katsura）, Qiita, 2023.04</title>
+<original-paper-blog-link>https://qiita.com/akeyhero/items/ce371bfed64399027c23</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/910</repo-issue-link>
+<tags>Embeddings, NLP, LanguageModel, STS (SemanticTextualSimilarity), Blog, Encoder, One-Line Notes</tags>
+<repo-issue-date>2023-07-31</repo-issue-date>
+<issue-body>https://qiita.com/akeyhero/items/ce371bfed64399027c23</issue-body>
+<maintainer-comment-text><p>[JSTSタスク](
+
+{% raw %}
+<a href="https://github.com/yahoojapan/JGLUE)では、[Tohoku" target="_blank" rel="noopener noreferrer">https://github.com/yahoojapan/JGLUE)では、[Tohoku</a>
+{% endraw %}
+
+BERT v3](
+
+{% raw %}
+<a href="https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances)" target="_blank" rel="noopener noreferrer">https://github.com/cl-tohoku/bert-japanese/tree/main#model-performances)</a>
+{% endraw %}
+
+と [LUKE](
+
+{% raw %}
+<a href="https://github.com/studio-ousia/luke)が最も性能が良いらしい。" target="_blank" rel="noopener noreferrer">https://github.com/studio-ousia/luke)が最も性能が良いらしい。</a>
+{% endraw %}
+
+<br><br>[SimCSE](
+
+{% raw %}
+<a href="https://huggingface.co/pkshatech/simcse-ja-bert-base-clcmlp)よりも性能が良いのは興味深い。" target="_blank" rel="noopener noreferrer">https://huggingface.co/pkshatech/simcse-ja-bert-base-clcmlp)よりも性能が良いのは興味深い。</a>
+{% endraw %}
+
+<br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Chatbot Arena Conversation Dataset Release, LMSYS Org, 2023.07</title>
+<original-paper-blog-link>https://lmsys.org/blog/2023-07-20-dataset/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/876</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, DialogueGeneration, Blog, One-Line Notes</tags>
+<repo-issue-date>2023-07-22</repo-issue-date>
+<issue-body>https://lmsys.org/blog/2023-07-20-dataset/</issue-body>
+<maintainer-comment-text><p>33kのconversation、2つのレスポンスに対する人間のpreferenceスコア付き<br>20種類のSoTAモデルのレスポンスを含み、13kのユニークIPからのアクセスがあり、3Kのエキスパートによるアノテーション付き</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
