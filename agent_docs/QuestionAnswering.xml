@@ -708,7 +708,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>Improved Baselines with Visual Instruction Tuning, Haotian Liu+, N_A, CVPR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2310.03744</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1068</repo-issue-link>
-<tags>ComputerVision, NLP, LanguageModel, QuestionAnswering, CVPR, Selected Papers/Blogs, VisionLanguageModel</tags>
+<tags>ComputerVision, NLP, LanguageModel, QuestionAnswering, OpenWeight, CVPR, Selected Papers/Blogs, VisionLanguageModel, One-Line Notes</tags>
 <repo-issue-date>2023-10-09</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2310.03744
@@ -828,7 +828,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>LongLoRA: Efficient Fine-tuning of Long-Context Large Language Models, Yukang Chen+, N_A, arXiv'23</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.12307</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1045</repo-issue-link>
-<tags>EfficiencyImprovement, MachineLearning, NLP, Dataset, QuestionAnswering, Supervised-FineTuning (SFT), LongSequence, PEFT(Adaptor/LoRA), PostTraining</tags>
+<tags>EfficiencyImprovement, MachineLearning, NLP, Dataset, QuestionAnswering, Supervised-FineTuning (SFT), LongSequence, PEFT(Adaptor/LoRA), PostTraining, KeyPoint Notes</tags>
 <repo-issue-date>2023-09-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.12307
@@ -862,16 +862,6 @@ LongLoRAは、オリジナルのアーキテクチャを保持しながらモデ
 また、パラメータ効率的なファインチューニング手法も再評価し、LongLoRAはさまざまなタスクで強力な実験結果を示しています。
 さらに、教師ありファインチューニングのためのデータセットであるLongQAも収集されました。</issue-body>
 <maintainer-comment-text><p># 概要<br><br>context長が大きい場合でも効率的にLoRAする手法。通常のLoRAではcontext lengthが大きくなるにつれてperplexityが大きくなってしまう。一方、通常のFinetuningではperplexityは高い性能を維持するが、計算コストとVRAMの消費量が膨大になってしまう。LongLoRAでは、perplexityを通常のFinetuningと同等に抑えつつ、VRAM消費量もLoRAと同等、かつより小さな計算量でFinetuningを実現している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fc3d17c7-b1ac-4741-9895-bce70cf0b356" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>attentionをcontext length全体で計算するとinput長の二乗の計算量がかかるため、contextをいくつかのグループに分割しグループごとにattentionを計算することで計算量削減。さらに、グループ間のattentionの間の依存関係を捉えるために、グループをshiftさせて計算したものと最終的に組み合わせている。また、embedding, normalization layerもtrainableにしている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2b443a4c-73da-4610-8ee2-cccdeab21efa" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>RQUGE: Reference-Free Metric for Evaluating Question Generation by Answering the Question, ACL'23</title>
-<original-paper-blog-link>https://virtual2023.aclweb.org/paper_P3880.html#paper</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/890</repo-issue-link>
-<tags>Metrics, NLP, LanguageModel, QuestionAnswering, Evaluation, translation_required, Reference-free</tags>
-<repo-issue-date>2023-07-22</repo-issue-date>
-<issue-body>https://virtual2023.aclweb.org/paper_P3880.html#paper</issue-body>
-<maintainer-comment-text><p># 概要<br><br>質問自動生成の性能指標（e.g. ROUGE, BERTScore）は、表層の一致、あるいは意味が一致した場合にハイスコアを与えるが、以下の欠点がある<br><br>- 人手で作成された大量のreference questionが必要<br><br>- 表層あるいは意味的に近くないが正しいquestionに対して、ペナルティが与えられてしまう<br><br>=> contextに対するanswerabilityによって評価するメトリック RQUGE を提案<br><br><br><br>similarity basedな指標では、Q1のような正しい質問でもlexical overlapがないと低いスコアを与えてしまう。また、Q2のようなreferenceの言い換えであっても、低いスコアとなってしまう。一方、reference basedな手法では、Q3のようにunacceptableになっているにもかかわらず、変化が微小であるためそれをとらえられないという問題がある。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/61c3d939-a678-4c63-9572-f3cf28b3aa20" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>提案手法ではcontextとanswer spanが与えられたとき、Span Scorerと、QAモジュールを利用してacceptability scoreを計算することでreference-freeなmetricを実現する。<br><br>QAモデルは、Contextと生成されたQuestionに基づき、answer spanを予測する。提案手法ではT5ベースの手法であるUnifiedQAv2を利用する。<br><br>Span Scorer Moduleでは、予測されたanswer span, candidate question, context, gold spanに基づき、[1, 5]のスコアを予測する。提案手法では、encoder-only BERT-based model（提案手法ではRoBERTa）を用いる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b49e09a4-4a69-4761-94eb-3f6417a19223" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -1107,6 +1097,31 @@ LongLoRAは、オリジナルのアーキテクチャを保持しながらモデ
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] RQUGE: Reference-Free Metric for Evaluating Question Generation by Answering the Question, Alireza Mohammadshahi+, arXiv'22, 2022.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2211.01482</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/890</repo-issue-link>
+<tags>Metrics, NLP, LanguageModel, QuestionAnswering, Evaluation, action_wanted, Reference-free, ACL, KeyPoint Notes</tags>
+<repo-issue-date>2023-07-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2211.01482
+# Authors
+  - Alireza Mohammadshahi
+  - Thomas Scialom
+  - Majid Yazdani
+  - Pouya Yanki
+  - Angela Fan
+  - James Henderson
+  - Marzieh Saeidi
+# Abstract
+  - Existing metrics for evaluating the quality of automatically generated questions such as BLEU, ROUGE, BERTScore, and BLEURT compare the reference and predicted questions, providing a high score when there is a considerable lexical overlap or semantic similarity between the candidate and the reference questions. This approach has two major shortcomings. First, we need expensive human-provided reference questions. Second, it penalises valid questions that may not have high lexical or semantic similarity to the reference questions. In this paper, we propose a new metric, RQUGE, based on the answerability of the candidate question given the context. The metric consists of a question-answering and a span scorer modules, using pre-trained models from existing literature, thus it can be used without any further training. We demonstrate that RQUGE has a higher correlation with human judgment without relying on the reference question. Additionally, RQUGE is shown to be more robust to several adversarial corruptions. Furthermore, we illustrate that we can significantly improve the performance of QA models on out-of-domain datasets by fine-tuning on synthetic data generated by a question generation model and re-ranked by RQUGE.
+# Translation (by gpt-5-nano)
+- 自動生成された質問の品質を評価する既存の指標として、BLEU、ROUGE、BERTScore、BLEURT などは参照質問と予測質問を比較し、候補質問と参照質問の間にかなりの語彙的重複または意味的類似性がある場合に高いスコアを与える。このアプローチには二つの大きな欠点がある。第一に、コストの高い人間提供の参照質問が必要になる。第二に、参照質問と高い語彙的または意味的類似性を持たない可能性のある妥当な質問を罰する。本論文では、文脈が与えられたときの候補質問の回答可能性に基づく新しい指標RQUGEを提案する。この指標は、既存の文献に基づく事前学習済みモデルを用いた質問応答とスパン・スコアリングのモジュールから成り、追加の訓練を必要とせずに使用できる。RQUGEが参照質問に依存せず人間の判断との相関が高いことを示す。さらに、RQUGEは複数の敵対的な改ざんに対してより堅牢であることが示される。さらに、質問生成モデルによって生成された合成データで微調整し、RQUGEで再ランク付けすることにより、ドメイン外データセットにおけるQAモデルの性能を大幅に向上させることができることを示す。
+# Summary (by gpt-4o-mini)
+- 既存の質問評価指標には、人間の参照質問との比較による語彙的重複や意味的類似性に基づく欠点がある。これに対し、本研究で提案する新しい指標RQUGEは、候補質問の文脈に基づく回答可能性を評価し、人間の判断と高い相関を示す。この指標は既存の事前学習モデルを活用し、追加訓練なしで使用可能。また、RQUGEは対抗的改ざんに対して堅牢であり、質問生成モデルからの合成データを用いた微調整により、QAモデルの性能を向上させることができる。</issue-body>
+<maintainer-comment-text><p># 概要<br><br>質問自動生成の性能指標（e.g. ROUGE, BERTScore）は、表層の一致、あるいは意味が一致した場合にハイスコアを与えるが、以下の欠点がある<br><br>- 人手で作成された大量のreference questionが必要<br><br>- 表層あるいは意味的に近くないが正しいquestionに対して、ペナルティが与えられてしまう<br><br>=> contextに対するanswerabilityによって評価するメトリック RQUGE を提案<br><br><br><br>similarity basedな指標では、Q1のような正しい質問でもlexical overlapがないと低いスコアを与えてしまう。また、Q2のようなreferenceの言い換えであっても、低いスコアとなってしまう。一方、reference basedな手法では、Q3のようにunacceptableになっているにもかかわらず、変化が微小であるためそれをとらえられないという問題がある。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/61c3d939-a678-4c63-9572-f3cf28b3aa20" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>提案手法ではcontextとanswer spanが与えられたとき、Span Scorerと、QAモジュールを利用してacceptability scoreを計算することでreference-freeなmetricを実現する。<br><br>QAモデルは、Contextと生成されたQuestionに基づき、answer spanを予測する。提案手法ではT5ベースの手法であるUnifiedQAv2を利用する。<br><br>Span Scorer Moduleでは、予測されたanswer span, candidate question, context, gold spanに基づき、[1, 5]のスコアを予測する。提案手法では、encoder-only BERT-based model（提案手法ではRoBERTa）を用いる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b49e09a4-4a69-4761-94eb-3f6417a19223" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

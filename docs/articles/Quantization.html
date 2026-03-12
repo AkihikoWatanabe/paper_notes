@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 48 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 47 mins</span>
   </div></header>
 </div>
     </div>
@@ -1443,7 +1443,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p># 概要<br><br>- 新たなpost-training量子化手法であるGPTQを提案<br><br>- 数時間以内に数千億のパラメータを持つモデルでの実行が可能であり、パラメータごとに3～4ビットまで圧縮するが、精度の大きな損失を伴わない<br><br>    - OPT-175BおよびBLOOM-176Bを、約4時間のGPU時間で、perplexityのわずかな増加で量子化することができた<br><br>- 数千億のパラメータを持つ非常に高精度な言語モデルを3-4ビットに量子化可能なことを初めて示した<br><br>    - 先行研究のpost-training手法は、8ビット（Yao et al., 2022; Dettmers et al., 2022）。<br><br>    - 一方、以前のtraining-basedの手法は、1～2桁小さいモデルのみを対象としていた（Wu et al., 2022）。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4ff107a9-7ccf-40f6-ad8c-fd910b1f0ac7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># Background<br><br>## Layer-wise quantization<br><br>各linear layerがあるときに、full precisionのoutputを少量のデータセットをネットワークに流したときに、quantized weight W^barを用いてreconstructできるように、squared error lossを最小化する方法。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9950fec1-966b-45c4-a82a-6bfd533042b3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Optimal Brain quantization (OBQ)<br><br>OBQでは equation (1)をWの行に関するsummationとみなす。そして、それぞれの行 **w** をOBQは独立に扱い、ある一つの重みw_qをquantizeするときに、エラーがw_qのみに基づいていることを補償するために他の**w**の全てのquantizedされていない重みをupdateする。式で表すと下記のようになり、Fは残りのfull-precision weightの集合を表している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/aab7784d-45f3-4f23-ac74-6cc4c2026486" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>この二つの式を、全ての**w**の重みがquantizedされるまで繰り返し適用する。<br><br><br><br>つまり、ある一個の重みをquantizedしたことによる誤差を補うように、他のまだquantizedされていない重みをupdateすることで、次に別の重みをquantizedする際は、最初の重みがquantizedされたことを考慮した重みに対してquantizedすることになる。これを繰り返すことで、quantizedしたことによる誤差を考慮して**w**全体をアップデートできる、という気持ちだと思う。<br><br><br><br>この式は高速に計算することができ、medium sizeのモデル（25M parameters; ResNet-50 modelなど）とかであれば、single GPUで1時間でquantizeできる。しかしながら、OBQはO(d_row * d_col^3)であるため、（ここでd_rowはWの行数、d_colはwの列数）、billions of parametersに適用するには計算量が多すぎる。</p><p># Algorithm<br><br>## Step 1: Arbitrary Order Insight.<br><br>通常のOBQは、量子化誤差が最も少ない重みを常に選択して、greedyに重みを更新していく。しかし、パラメータ数が大きなモデルになると、重みを任意の順序で量子化したとしてもそれによる影響は小さいと考えられる。なぜなら、おそらく、大きな個別の誤差を持つ量子化された重みの数が少ないと考えられ、その重みがプロセスのが進むにつれて（アップデートされることで？）相殺されるため。<br><br><br><br>このため、提案手法は、すべての行の重みを同じ順序で量子化することを目指し、これが通常、最終的な二乗誤差が元の解と同じ結果となることを示す。が、このために2つの課題を乗り越えなければならない。<br><br><br><br>## Step2. Lazy Batch-Updates<br><br>Fを更新するときは、各エントリに対してわずかなFLOPを使用して、巨大な行列のすべての要素を更新する必要があります。しかし、このような操作は、現代のGPUの大規模な計算能力を適切に活用することができず、非常に小さいメモリ帯域幅によってボトルネックとなる。<br><br><br><br>幸いにも、この問題は以下の観察によって解決できる：列iの最終的な四捨五入の決定は、この特定の列で行われた更新にのみ影響され、そのプロセスの時点で後の列への更新は関連がない。これにより、更新を「lazy batch」としてまとめることができ、はるかに効率的なGPUの利用が可能となる。（要は独立して計算できる部分は全部一気に計算してしまって、後で一気にアップデートしますということ）。たとえば、B = 128の列にアルゴリズムを適用し、更新をこれらの列と対応するB × Bブロックの H^-1 に格納する。<br><br>この戦略は理論的な計算量を削減しないものの、メモリスループットのボトルネックを改善する。これにより、非常に大きなモデルの場合には実際に1桁以上の高速化が提供される。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fcb33c4d-3924-4abd-b149-936b9e350c76" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Step 3: Cholesky Reformulation<br><br>行列H_F^-1が不定になることがあり、これがアルゴリズムが残りの重みを誤った方向に更新する原因となり、該当する層に対して悪い量子化を実施してしまうことがある。この現象が発生する確率はモデルのサイズとともに増加することが実際に観察された。これを解決するために、コレスキー分解を活用して解決している（詳細はきちんと読んでいない）。</p><p># 実験で用いたCalibration data<br><br>GPTQのキャリブレーションデータ全体は、C4データセット(Raffel et al., 2020)からのランダムな2048トークンのセグメント128個で構成される。つまり、ランダムにクロールされたウェブサイトからの抜粋で、一般的なテキストデータを表している。GPTQがタスク固有のデータを一切見ていないため「ゼロショット」な設定でquantizationを実施している。<br><br><br><br># Language Generationでの評価<br><br>WikiText2に対するPerplexityで評価した結果、先行研究であるRTNを大幅にoutperformした。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/23e12194-d329-46f7-bb69-2cce290282c1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="qlora-efficient-881" class="title-link">QLoRA: Efficient Finetuning of Quantized LLMs, Tim Dettmers+, N_A, NeurIPS'23</h3><br><a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="qlora-efficient-881" class="title-link">[Paper Note] QLoRA: Efficient Finetuning of Quantized LLMs, Tim Dettmers+, arXiv'23, 2023.05</h3><br><a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -1461,8 +1461,9 @@ My Issue
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
-<span class="snippet"><span>GPT Summary</span>- 私たちは、QLoRAという効率的なファインチューニング手法を提案します。この手法は、メモリ使用量を削減し、48GBの単一のGPU上で65Bパラメータモデルをファインチューニングすることができます。また、16ビットのファインチューニングタスクのパフォーマンスを維持します。QLoRAは、凍結された4ビット量子化された事前学習済み言語モデルの勾配をLow Rank Adapters（LoRA）に逆伝播させます。私たちの最良のモデルファミリーであるGuanacoは、Vicunaベンチマークで以前に公開されたすべてのモデルを上回り、ChatGPTのパフォーマンスレベルの99.3%に達します。また、単一のGPU上でのファインチューニングには24時間しかかかりません。QLoRAは、パフォーマンスを犠牲にすることなくメモリを節約するためのいくつかの革新を導入しています。具体的には、4ビットNormalFloat（NF4）という情報理論的に最適な新しいデータ型、ダブル量子化による平均メモリフットプリントの削減、およびページドオプティマイザによるメモリスパイクの管理です。私たちはQLoRAを使用して1,000以上のモデルをファインチューニングし、8つの命令データセット、複数のモデルタイプ（LLaMA、T5）、および従来のファインチューニングでは実行不可能なモデルスケール（33Bおよび65Bパラメータモデル）にわたる命令の追跡とチャットボットのパフォーマンスの詳細な分析を提供します。私たちの結果は、QLoRAを使用して小規模な高品質のデータセットでのファインチューニングが、以前のSoTAよりも小さいモデルを使用しても最先端の結果をもたらすことを示しています。また、人間の評価とGPT-4の評価に基づいたチャットボットのパフォーマンスの詳細な分析を提供し、GPT-4の評価が安価で合理的な人間の評価の代替手段であることを示します。さらに、現在のチャットボットのベンチマークは、チャットボットのパフォーマンスレベルを正確に評価するためには信頼性がないことがわかります。GuanacoがChatGPTと比較してどこで失敗するかを示す分析も行っています。私たちは、4ビットトレーニングのためのCUDAカーネルを含む、すべてのモデルとコードを公開しています。</span>
+<span class="snippet"><span>GPT Summary</span>- QLoRAは、65Bパラメータモデルを単一の48GB GPUでファインチューニングするための効率的な手法であり、16ビット性能を維持しつつメモリ使用量を削減します。低秩アダプターを介して勾配をバックプロパゲーションし、GuanacoモデルはVicunaベンチマークで従来のモデルを超え、ChatGPTに近い性能を示しました。QLoRAの革新には、4ビット量子化データ型、ダブル量子化、そしてメモリ管理のためのページングオプティマイザーが含まれます。1,000以上のモデルをファインチューニングし、指示追従性能の詳細な分析を提供。また、GPT-4評価を用いたチャットボット性能の分析から、既存のベンチマークの信頼性の問題点も指摘しています。全てのモデルとコードは公開されています。</span>
 <span class="snippet"><span>Comment</span><p>実装: 
 
 
@@ -1610,7 +1611,7 @@ My Issue
  </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="llama2を3行で訓練-886" class="title-link">LLaMA2を3行で訓練</h3><br><a href="https://huggingface.co/docs/trl/main/en/lora_tuning_peft#finetuning-llama2-model" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="examples-of-886" class="title-link">Examples of using peft with trl to finetune 8-bit models with Low Rank Adaption （LoRA）  , TRL Documentation</h3><br><a href="https://huggingface.co/docs/trl/main/en/lora_tuning_peft#finetuning-llama2-model" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -1628,6 +1629,7 @@ My Issue
 <a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="PEFT(Adaptor-LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>Comment</span><p>LLaMA2を3行で、1つのA100GPU、QLoRAで、自前のデータセットで訓練する方法</p></span><br><br>
 </article>
@@ -1684,42 +1686,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/MLOps.html"
-            title="MLOpsに関する論文・技術記事メモの一覧">
-            MLOpsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Single.html"
+            title="Singleに関する論文・技術記事メモの一覧">
+            Singleに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
+  <span class="post-badge badge-new">📝 16</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Personalization.html"
-            title="Personalizationに関する論文・技術記事メモの一覧">
-            Personalizationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/EntityLinking.html"
+            title="EntityLinkingに関する論文・技術記事メモの一覧">
+            EntityLinkingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 69</span> 
-  <span class="post-badge badge-new">📝 69</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/QA-based.html"
-            title="QA-basedに関する論文・技術記事メモの一覧">
-            QA-basedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ActivationSteering-ITI.html"
+            title="ActivationSteering/ITIに関する論文・技術記事メモの一覧">
+            ActivationSteering/ITIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Reranking.html"
-            title="Rerankingに関する論文・技術記事メモの一覧">
-            Rerankingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LearningRate.html"
+            title="LearningRateに関する論文・技術記事メモの一覧">
+            LearningRateに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
-  <span class="post-badge badge-new">📝 7</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li></ul>

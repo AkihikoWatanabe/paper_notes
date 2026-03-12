@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 18 hours 3 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 hours 46 mins</span>
   </div></header>
 </div>
     </div>
@@ -8471,7 +8471,7 @@ My Issue
 <span class="issue_date">Issue Date: 2025-04-14</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、5つの決定論的LLMにおける非決定性を8つのタスクで調査し、最大15%の精度変動と70%のパフォーマンスギャップを観察。全てのタスクで一貫した精度を提供できないことが明らかになり、非決定性が計算リソースの効率的使用に寄与している可能性が示唆された。出力の合意率を示す新たなメトリクスTARr@NとTARa@Nを導入し、研究結果を定量化。コードとデータは公開されている。</span>
 <span class="snippet"><span>Comment</span><p>- 論文中で利用されているベンチマーク:<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the capabilities of language models, Aarohi Srivastava+, arXiv'22, 2022.06</a>
-<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer">Measuring Massive Multitask Language Understanding, Dan Hendrycks+, N/A, ICLR'21</a>
+<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer">[Paper Note] Measuring Massive Multitask Language Understanding, Dan Hendrycks+, arXiv'20, 2020.09</a>
  </p><p>同じモデルに対して、seedを固定し、temperatureを0に設定し、同じ計算機環境に対して、同じinputを入力したら理論上はLLMの出力はdeterministicになるはずだが、deterministicにならず、ベンチマーク上の性能とそもそものraw response自体も試行ごとに大きく変化する、という話。<br>ただし、これはプロプライエタリLLMや、何らかのinferenceの高速化を実施したInferenceEngine（本研究ではTogetherと呼ばれる実装を使っていそう。vLLM/SGLangだとどうなるのかが気になる）を用いてinferenceを実施した場合での実験結果であり、後述の通り計算の高速化のためのさまざまな実装無しで、deterministicな設定でOpenLLMでinferenceすると出力はdeterministicになる、という点には注意。<br><br>GPTやLlama、Mixtralに対して上記ベンチマークを用いてzero-shot/few-shotの設定で実験している。Reasoningモデルは実験に含まれていない。<br><img src="https://github.com/user-attachments/assets/b33f14d8-ed86-4589-a427-18a70b35d61a" /" alt="image" loading="lazy" width="550" height="400"/><br><br>LLMのraw_response/multiple choiceのparse結果（i.e., 問題に対する解答部分を抽出した結果）の一致（TARr@N, TARa@N; Nはinferenceの試行回数）も理論上は100%になるはずなのに、ならないことが報告されている。<br><br><img src="https://github.com/user-attachments/assets/3159ff26-fc92-4fa8-90a6-f8c5e7ccf20e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>correlation analysisによって、応答の長さ と TAR{r, a}が強い負の相関を示しており、応答が長くなればなるほど不安定さは増すことが分析されている。このため、ontput tokenの最大値を制限することで出力の安定性が増すことを考察している。また、few-shotにおいて高いAcc.の場合は出力がdeterministicになるわけではないが、性能が安定する傾向とのこと。また、OpenAIプラットフォーム上でGPTのfinetuningを実施し実験したが、安定性に寄与はしたが、こちらもdeterministicになるわけではないとのこと。<br><br>deterministicにならない原因として、まずmulti gpu環境について検討しているが、multi-gpu環境ではある程度のランダム性が生じることがNvidiaの研究によって報告されているが、これはseedを固定すれば決定論的にできるため問題にならないとのこと。<br>続いて、inferenceを高速化するための実装上の工夫（e.g., Chunk Prefilling, Prefix Caching, Continuous Batching）などの実装がdeterministicなハイパーパラメータでもdeterministicにならない原因であると考察しており、**実際にlocalマシン上でこれらinferenceを高速化するための最適化を何も実施しない状態でLlama-8Bでinferenceを実施したところ、outputはdeterministicになったとのこと。**</p><p>論文中に記載がなかったため、どのようなInferenceEngineを利用したか公開されているgithubを見ると下記が利用されていた:<br><br>- Together: 
 
 
@@ -9039,7 +9039,7 @@ My Issue
 <a href="https://openreview.net/forum?id=y10DM6R2r3&referrer=%5Bthe%20profile%20of%20Ge%20Zhang%5D(%2Fprofile%3Fid%3D~Ge_Zhang5)#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=y10DM6R2r3&referrer=%5Bthe%20profile%20of%20Ge%20Zhang%5D(%2Fprofile%3Fid%3D~Ge_Zhang5)#discussion</a>
 
 
-</p><p>MMLUはこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer">Measuring Massive Multitask Language Understanding, Dan Hendrycks+, N/A, ICLR'21</a>
+</p><p>MMLUはこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer">[Paper Note] Measuring Massive Multitask Language Understanding, Dan Hendrycks+, arXiv'20, 2020.09</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -9813,6 +9813,41 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- LLMsの研究は急速に進展しており、英語以外の言語での評価が必要とされている。本研究では、新しいデータセットを追加したMEGAVERSEベンチマークを提案し、さまざまなLLMsを評価する。実験の結果、GPT4とPaLM2が優れたパフォーマンスを示したが、データの汚染などの問題があるため、さらなる取り組みが必要である。</span>
 </article>
 <article class="paper-entry">
+<h3 id="human-feedback-1098" class="title-link">[Paper Note] Human Feedback is not Gold Standard, Tom Hosking+, ICLR'24, 2023.09</h3><br><a href="https://arxiv.org/abs/2309.16349" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1098" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<span class="issue_date">Issue Date: 2023-10-28</span>
+<span class="snippet"><span>GPT Summary</span>- 人間のフィードバックは、大規模言語モデルの性能評価や訓練に重要であるが、好みスコアの主観性と偏りの影響について検証。好みスコアは網羅性が高いが、事実性の評価は不足していると判明。出力の断定性が事実性誤りの認識に影響し、人間の注釈の信頼性についても疑問を提起。人間のフィードバックによる訓練が断定性を偏らせる可能性も示唆。今後は好みスコアの目的との整合性を検討することが推奨される。</span>
+<span class="snippet"><span>Comment</span><p>参考: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/icoxfog417/status/1718151338520199180?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=7W3GLNImfS" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=7W3GLNImfS</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="scibench-evaluating-872" class="title-link">[Paper Note] SciBench: Evaluating College-Level Scientific Problem-Solving Abilities   of Large Language Models, Xiaoxuan Wang+, N_A, ICML'24</h3><br><a href="https://arxiv.org/abs/2307.10635" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -10098,34 +10133,6 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- この論文では、大規模言語モデル（LLMs）を使用して、候補モデルの応答品質を評価する評価パラダイムにおける系統的なバイアスを明らかにします。さらに、バイアスを軽減するためのキャリブレーションフレームワークを提案し、実験によってその有効性を示します。また、コードとデータを公開して、今後の研究を支援します。</span>
 </article>
 <article class="paper-entry">
-<h3 id="human-feedback-1098" class="title-link">Human Feedback is not Gold Standard, Tom Hosking+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2309.16349" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1098" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<span class="issue_date">Issue Date: 2023-10-28</span>
-<span class="snippet"><span>GPT Summary</span>- 人間のフィードバックは、大規模言語モデルの性能評価に使用されているが、その好みのスコアがどの特性を捉えているのかは明確ではない。この研究では、人間のフィードバックの使用を分析し、重要なエラー基準を適切に捉えているかどうかを検証した。結果として、好みのスコアは広範なカバレッジを持っているが、事実性などの重要な側面が過小評価されていることがわかった。また、好みのスコアとエラーアノテーションは交絡因子の影響を受ける可能性があり、出力の断定性が事実性エラーの知覚率を歪めることも示された。さらに、人間のフィードバックを訓練目標として使用することが、モデルの出力の断定性を過度に増加させることも示された。今後の研究では、好みのスコアが望ましい目標と一致しているかどうかを慎重に考慮する必要がある。</span>
-<span class="snippet"><span>Comment</span><p>参考: 
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/icoxfog417/status/1718151338520199180?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3824b322-53fa-4360-a7d4-1b0f3bff3302" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
-</article>
-<article class="paper-entry">
 <h3 id="branch-solve-merge-improves-1088" class="title-link">Branch-Solve-Merge Improves Large Language Model Evaluation and  Generation, Swarnadeep Saha+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2310.15123" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -10143,7 +10150,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 本研究では、多面的な言語生成および評価タスクにおいて、大規模言語モデルプログラム（BSM）を提案します。BSMは、ブランチ、ソルブ、マージの3つのモジュールから構成され、タスクを複数のサブタスクに分解し、独立して解決し、解決策を統合します。実験により、BSMが評価の正確性と一貫性を向上させ、パフォーマンスを向上させることが示されました。</span>
 </article>
 <article class="paper-entry">
-<h3 id="benchmarking-large-1067" class="title-link">Benchmarking Large Language Models As AI Research Agents, Qian Huang+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2310.03302" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="mlagentbench-evaluating-1067" class="title-link">[Paper Note] MLAgentBench: Evaluating Language Agents on Machine Learning Experimentation, Qian Huang+, arXiv'23, 2023.10</h3><br><a href="https://arxiv.org/abs/2310.03302" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -10160,9 +10167,36 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
 <a class="button" href="AutoML.html" target="_blank" rel="noopener noreferrer">#AutoML</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-10-09</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、AI研究エージェントを構築し、科学的な実験のタスクを実行するためのベンチマークとしてMLAgentBenchを提案する。エージェントはファイルの読み書きやコードの実行などのアクションを実行し、実験を実行し、結果を分析し、機械学習パイプラインのコードを変更することができる。GPT-4ベースの研究エージェントは多くのタスクで高性能なモデルを実現できるが、成功率は異なる。また、LLMベースの研究エージェントにはいくつかの課題がある。</span>
+<span class="snippet"><span>GPT Summary</span>- 機械学習の実験を行うためのエージェントを強力な言語モデルを用いて構築し、MLAgentBenchという13のタスクベンチマークを導入。エージェントはファイル操作やコード実行を行い、Claude v3 Opusが最も高い成功率を示す。タスク全体で平均成功率37.5%を達成するが、結果はデータセットによって大きく変動。長期計画や幻覚の低減といった重要な課題も明らかにした。コードは公開中。</span>
 <span class="snippet"><span>Comment</span><p>GPT4がMLモデルをどれだけ自動的に構築できるかを調べた模様。また、ベンチマークデータを作成した模様。結果としては、既存の有名なデータセットでの成功率は90%程度であり、未知のタスク（新たなKaggle Challenge等）では30%程度とのこと。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="large-language-1023" class="title-link">[Paper Note] Large Language Models Sensitivity to The Order of Options in Multiple-Choice Questions, Pouya Pezeshkpour+, arXiv'23, 2023.08</h3><br><a href="https://arxiv.org/abs/2308.11483" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1023" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Bias.html" target="_blank" rel="noopener noreferrer">#Bias</a>
+<a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Findings.html" target="_blank" rel="noopener noreferrer">#Findings</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2023-08-28</span>
+<span class="snippet"><span>GPT Summary</span>- 多肢選択問題におけるLLMsの性能は選択肢の順序に敏感であり、配置を変えることで最大75%の性能差が見られる。特に、上位選択肢間の不確実性がこの感度を引き起こし、バイアスが影響することを示唆する。最適な配置は、バイアスを増幅させるためにトップ選択肢を両端に置くこと、緩和するためには隣接させることが推奨される。実験を通じて、予測のキャリブレーションにより最大8ポイントの改善が達成された。</span>
+<span class="snippet"><span>Comment</span><p>これはそうだろうなと思っていたけど、ここまで性能に差が出るとは思わなかった。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/fb13c25c-4d76-4c8c-b08a-6491c43f34b9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>これがもしLLMのバイアスによるもの（2番目の選択肢に正解が多い）の場合、<br>ランダムにソートしたり、平均取ったりしても、そもそもの正解に常にバイアスがかかっているので、<br>結局バイアスがかかった結果しか出ないのでは、と思ってしまう。<br>そうなると、有効なのはone vs. restみたいに、全部該当選択肢に対してyes/noで答えさせてそれを集約させる、みたいなアプローチの方が良いかもしれない。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="agentbench-evaluating-1020" class="title-link">AgentBench: Evaluating LLMs as Agents, Xiao Liu+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2308.03688" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -10180,6 +10214,7 @@ My Issue
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-27</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）をエージェントとして評価するための多次元の進化するベンチマーク「AgentBench」を提案しています。AgentBenchは、8つの異なる環境でマルチターンのオープンエンドの生成設定を提供し、LLMの推論と意思決定能力を評価します。25のLLMsに対するテストでは、商用LLMsは強力な能力を示していますが、オープンソースの競合他社との性能には差があります。AgentBenchのデータセット、環境、および評価パッケージは、GitHubで公開されています。</span>
 <span class="snippet"><span>Comment</span><p>エージェントとしてのLLMの推論能力と意思決定能力を評価するためのベンチマークを提案。<br>トップの商用LLMとOpenSource LLMの間に大きな性能差があることを示した。</p></span><br><br>
@@ -10207,34 +10242,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 本研究では、文章の一貫性を評価するための新しい指標であるDiscoScoreを紹介します。DiscoScoreはCentering理論に基づいており、BERTを使用して談話の一貫性をモデル化します。実験の結果、DiscoScoreは他の指標よりも人間の評価との相関が高く、システムレベルでの評価でも優れた結果を示しました。さらに、DiscoScoreの重要性とその優位性についても説明されています。</span>
 </article>
 <article class="paper-entry">
-<h3 id="rise-leveraging-937" class="title-link">RISE: Leveraging Retrieval Techniques for Summarization Evaluation, David Uthus+, N_A, Findings of ACL'23</h3><br><a href="https://arxiv.org/abs/2212.08775" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/937" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
-<span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 自動要約の評価は困難であり、従来のアプローチでは人間の評価には及ばない。そこで、私たちはRISEという新しいアプローチを提案する。RISEは情報検索の技術を活用し、ゴールドリファレンスの要約がなくても要約を評価することができる。RISEは特に評価用のリファレンス要約が利用できない新しいデータセットに適しており、SummEvalベンチマークでの実験結果から、RISEは過去のアプローチと比較して人間の評価と高い相関を示している。また、RISEはデータ効率性と言語間の汎用性も示している。</span>
-<span class="snippet"><span>Comment</span><p>
-<strong># 概要<br><br>Dual-Encoderを用いて、ソースドキュメントとシステム要約をエンコードし、dot productをとることでスコアを得る手法。モデルの訓練は、Contrastive Learningで行い、既存データセットのソースと参照要約のペアを正例とみなし、In Batch trainingする。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/95d6fc9e-cb05-4a40-9690-ac40e6042c3c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 分類<br><br>Reference-free, Model-based, ソース依存で、BARTScore <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/960" target="_blank" rel="noopener noreferrer">BARTSCORE: Evaluating Generated Text as Text Generation, Yuan+ (w/ Neubig氏), NeurIPS'21</a>
-</strong>
-<br>
- とは異なり、文書要約データを用いて学習するため、要約の評価に特化している点が特徴。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/281a2e5d-7e1c-466d-a995-97218ca37983" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
-<strong># モデル<br><br>##  Contrastive Learning<br><br>Contrastive Learningを用い、hard negativeを用いたvariantも検証する。また、訓練データとして3種類のパターンを検証する：<br><br>1. in-domain data: 文書要約データを用いて訓練し、ターゲットタスクでどれだけの性能を発揮するかを見る<br><br>2. out-of-domain data: 文書要約以外のデータを用いて訓練し、どれだけ新しいドメインにモデルがtransferできるかを検証する<br><br>3. in-and-out-domain data: 両方やる<br><br><br><br>## ハードネガティブの生成<br><br>Lexical Negatives, Model Negatives, 双方の組み合わせの3種類を用いてハードネガティブを生成する。<br><br>### Lexical Negatives<br><br>参照要約を拡張することによって生成する。目的は、もともとの参照要約と比較して、poor summaryを生成することにある。Data Augmentationとして、以下の方法を試した：<br><br>- Swapping noun entities:  要約中のエンティティを、ソース中のエンティティンとランダムでスワップ<br><br>- Shuffling words: 要約中の単語をランダムにシャッフル<br><br>- Dropping words: 要約中の単語をランダムに削除<br><br>- Dropping characters: 要約中の文字をランダムに削除<br><br>- Swapping antonyms: 要約中の単語を対義語で置換<br><br>### Model Negatives<br><br>データセットの中から負例を抽出する。目的は、参照要約と類似しているが、負例となるサンプルを見つけること。これを実現するために、まずRISE modelをデータセットでfinetuningし、それぞれのソースドキュメントの要約に対して、類似した要約をマイニングする。すべてのドキュメントと要約をエンコードし、top-nの最も類似した要約を見つけ、これをハードネガティブとして、再度モデルを訓練する。<br><br>### 両者の組み合わせ<br><br>まずlexical negativesでモデルを訓練し、モデルネガティブの抽出に活用する。抽出したモデルネガティブを用いて再度モデルを訓練することで、最終的なモデルとする。<br><br><br><br># 実験<br><br>## 学習手法<br><br>SummEval <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
-</strong>
-<br>
- を用いて人手評価と比較してどれだけcorrelationがあるかを検証。SummEvalには16種類のモデルのアウトプットに対する、CNN / Daily Mail の100 examplesに対して、品質のアノテーションが付与されている。expert annotationを用いて、Kendall's tauを用いてシステムレベルのcorrelationを計算した。contextが短い場合はT5, 長い場合はLongT5, タスクがマルチリンガルな場合はmT5を用いて訓練した。訓練データとしては<br><br>- CNN / Daily Mail<br><br>- Multi News<br><br>- arXiv<br><br>- PubMed<br><br>- BigPatent<br><br>- SAMSum<br><br>- Reddit TIFU<br><br>- MLSUM<br><br>等を用いた。これによりshort / long contextの両者をカバーできる。CNN / Daily Mail, Reddiit TIFU, Multi-Newsはshort-context, arXiv, PubMed, BigPatent, Multi-News（長文のものを利用）はlonger contextとして利用する。<br><br>## 比較するメトリック<br><br>ROUGE, chrF, SMS, BARTScore, SMART, BLEURT, BERTScore, Q^2, T5-ANLI, PRISMと比較した。結果をみると、Consistency, Fluency, Relevanceで他手法よりも高い相関を得た。Averageでは最も高いAverageを獲得した。in-domain dataで訓練した場合は、高い性能を発揮した。our-of-domain（SAMSum; Dialogue要約のデータ）データでも高い性能を得た。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/92960d58-cd13-4ff5-a417-dda9785520e4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p><p># Ablation<br><br>## ハードネガティブの生成方法<br><br>Data Augmentationは、swapping entity nouns, randomly dropping wordsの組み合わせが最も良かった。また、Lexical Negativesは、様々なデータセットで一貫して性能が良かったが、Model NegativesはCNN/DailyMailに対してしか有効ではなかった。これはおそらく、同じタスク（テストデータと同じデータ）でないと、Model Negativesは機能しないことを示唆している。ただし、Model Negativesを入れたら、何もしないよりも性能向上するから、何らかの理由でlexical negativesが生成できない場合はこっち使っても有用である。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ebb9a6b9-3293-4139-b8a3-620cd72fff5a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Model Size<br><br>でかい方が良い。in-domainならBaseでもそれなりの性能だけど、結局LARGEの方が強い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a53e9b98-77aa-4faf-ba58-4900611ca066" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Datasets<br><br>異なるデータセットでもtransferがうまく機能している。驚いたことにデータセットをmixingするとあまりうまくいかず、単体のデータセットで訓練したほうが性能が良い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/635c0b43-2db3-4561-8939-e4b1de733e99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>LongT5を見ると、T5よりもCorrelationが低く難易度が高い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/31420a09-eb36-41ef-ad41-6eaf93d1823d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>最終的に英語の要約を評価をする場合でも、Multilingual（別言語）で訓練しても高いCorrelationを示すこともわかった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a74d86b8-64bd-40b1-b22b-344588ef0580" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Dataset Size<br><br>サンプル数が小さくても有効に働く。しかし、out-domainのデータの場合は、たとえば、512件の場合は性能が低く少しexampleを増やさなければならない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3117b6aa-5d0f-4970-9f30-247633d21f67" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="gptscore-evaluate-935" class="title-link">GPTScore: Evaluate as You Desire, Jinlan Fu+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2302.04166" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="gptscore-evaluate-935" class="title-link">[Paper Note] GPTScore: Evaluate as You Desire, Jinlan Fu+, arXiv'23, 2023.02</h3><br><a href="https://arxiv.org/abs/2302.04166" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -10247,9 +10255,11 @@ My Issue
 </a><br>
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="LLM-as-a-Judge.html" target="_blank" rel="noopener noreferrer">#LLM-as-a-Judge</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、生成型AIの評価における課題を解決するために、GPTScoreという評価フレームワークを提案しています。GPTScoreは、生成されたテキストを評価するために、生成型事前学習モデルの新たな能力を活用しています。19の事前学習モデルを探索し、4つのテキスト生成タスクと22の評価項目に対して実験を行いました。結果は、GPTScoreが自然言語の指示だけでテキストの評価を効果的に実現できることを示しています。この評価フレームワークは、注釈付きサンプルの必要性をなくし、カスタマイズされた多面的な評価を実現することができます。</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模事前学習モデルを用いて生成物の品質を評価する新しいフレームワークGPTScoreを提案。GPTScoreは生成型AIの新能力を利用し、19種類のモデルと4つのテキスト生成タスクに対する評価を実施。これにより、注釈なしで多面的なカスタマイズ評価を可能にし、テキスト評価の課題を克服する手段を提供。コードはGitHubで公開中。</span>
 <span class="snippet"><span>Comment</span><p>BERTScoreと同様、評価したいテキストの対数尤度で評価している<br>BERTScoreよりも相関が高く、instructionによって性能が向上することが示されている</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -10288,7 +10298,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 事前学習された言語モデルによるテキスト要約の性能向上が注目されているが、生成された要約が元の文書と矛盾することが問題となっている。この問題を解決するために、効果的な事実性評価メトリクスの開発が進められているが、計算複雑性や不確実性の制約があり、人間の判断との一致に限定されている。最近の研究では、大規模言語モデル（LLMs）がテキスト生成と言語理解の両方で優れた性能を示していることがわかっている。本研究では、ChatGPTの事実的な矛盾評価能力を評価し、バイナリエンテイルメント推論、要約ランキング、一貫性評価などのタスクで優れた性能を示した。ただし、ChatGPTには語彙的な類似性の傾向や誤った推論、指示の不適切な理解などの制限があることがわかった。</span>
 </article>
 <article class="paper-entry">
-<h3 id="l-eval-instituting-916" class="title-link">L-Eval: Instituting Standardized Evaluation for Long Context Language  Models, Chenxin An+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2307.11088" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="l-eval-instituting-916" class="title-link">[Paper Note] L-Eval: Instituting Standardized Evaluation for Long Context Language Models, Chenxin An+, arXiv'23, 2023.07</h3><br><a href="https://arxiv.org/abs/2307.11088" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -10302,8 +10312,9 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-08</span>
-<span class="snippet"><span>GPT Summary</span>- 長い文脈の言語モデル（LCLM）の評価を標準化するために、L-Evalという評価スイートを提案しました。L-Evalには411の長いドキュメントと2,000以上の人間によるクエリ-レスポンスのペアが含まれており、多様な評価方法と指示スタイルを採用しています。オープンソースのモデルは商用モデルに比べて遅れていますが、通常のバージョンと比較しても印象的なパフォーマンスを示しています。LCLMの生成結果は公開されています。</span>
+<span class="snippet"><span>GPT Summary</span>- L-Evalを提案し、長い文脈を扱う言語モデル（LCLMs）の評価指標とデータセットを標準化。508の長文ドキュメントと2,000以上の人間ラベル付けされたクエリ・応答ペアを含む評価スイートを構築。n-gramマッチング指標の限界を指摘し、長さ指示を強化した評価を推奨。商用およびオープンソースモデルの包括的な研究を通じて、LCLMsの評価の基盤を提供。</span>
 <span class="snippet"><span>Comment</span><p>long contextに対するLLMの評価セット。411のlong documentに対する2kのquery-response pairのデータが存在。法律、fainance, school lectures, 長文対話、小説、ミーティングなどのドメインから成る。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -10323,6 +10334,7 @@ My Issue
 <a class="button" href="LLM-as-a-Judge.html" target="_blank" rel="noopener noreferrer">#LLM-as-a-Judge</a>
 <a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-07-26</span>
 <span class="snippet"><span>GPT Summary</span>- LLMを審査員として用いて、チャットアシスタントの評価の新たな方法を探求。役割やバイアスの利点と限界を検討し、MT-benchとChatbot Arenaのベンチマークで人間の好みとの一致率が80％以上に達することを確認。LLMを用いることでスケーラブルかつ説明可能な評価手法を提供し、専門家の投票や会話データも公開。</span>
 <span class="snippet"><span>Comment</span><p>MT-Bench（MTBench）スコアとは、multi-turnのQAを出題し、その回答の質をGPT-4でスコアリングしたスコアのこと。<br><br>GPT-4の判断とhuman expertの判断とのagreementも検証しており、agreementは80%以上を達成している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/20c7782d-8ffe-4328-8526-700e38df23b5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9f0e1e3a-6b07-4bcc-be78-e42a1c5d2190" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>`LLM-as-a-Judge` という用語を最初に提唱したのも本研究となる（p.2参照）</p></span><br><br>
@@ -10367,32 +10379,12 @@ My Issue
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
 <span class="snippet"><span>GPT Summary</span>- 自動画像キャプションの評価には、情報豊かなメトリック（InfoMetIC）が提案されています。これにより、キャプションの誤りや欠落した情報を詳細に特定することができます。InfoMetICは、テキストの精度スコア、ビジョンの再現スコア、および全体の品質スコアを提供し、人間の判断との相関も高いです。また、トークンレベルの評価データセットも構築されています。詳細はGitHubで公開されています。</span>
 </article>
 <article class="paper-entry">
-<h3 id="rquge-reference-free-890" class="title-link">RQUGE: Reference-Free Metric for Evaluating Question Generation by Answering the Question, ACL'23</h3><br><a href="https://virtual2023.aclweb.org/paper_P3880.html#paper" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/890" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
-<a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
-<span class="issue_date">Issue Date: 2023-07-22</span>
-<span class="snippet"><span>GPT Summary</span>- 既存の質問評価メトリックにはいくつかの欠点がありますが、本研究では新しいメトリックRQUGEを提案します。RQUGEは文脈に基づいて候補質問の回答可能性を考慮し、参照質問に依存せずに人間の判断と高い相関を持つことが示されています。さらに、RQUGEは敵対的な破壊に対しても堅牢であり、質問生成モデルのファインチューニングにも有効です。これにより、QAモデルのドメイン外データセットでのパフォーマンスが向上します。</span>
-<span class="snippet"><span>Comment</span><p># 概要<br><br>質問自動生成の性能指標（e.g. ROUGE, BERTScore）は、表層の一致、あるいは意味が一致した場合にハイスコアを与えるが、以下の欠点がある<br><br>- 人手で作成された大量のreference questionが必要<br><br>- 表層あるいは意味的に近くないが正しいquestionに対して、ペナルティが与えられてしまう<br><br>=> contextに対するanswerabilityによって評価するメトリック RQUGE を提案<br><br><br><br>similarity basedな指標では、Q1のような正しい質問でもlexical overlapがないと低いスコアを与えてしまう。また、Q2のようなreferenceの言い換えであっても、低いスコアとなってしまう。一方、reference basedな手法では、Q3のようにunacceptableになっているにもかかわらず、変化が微小であるためそれをとらえられないという問題がある。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/61c3d939-a678-4c63-9572-f3cf28b3aa20" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>提案手法ではcontextとanswer spanが与えられたとき、Span Scorerと、QAモジュールを利用してacceptability scoreを計算することでreference-freeなmetricを実現する。<br><br>QAモデルは、Contextと生成されたQuestionに基づき、answer spanを予測する。提案手法ではT5ベースの手法であるUnifiedQAv2を利用する。<br><br>Span Scorer Moduleでは、予測されたanswer span, candidate question, context, gold spanに基づき、[1, 5]のスコアを予測する。提案手法では、encoder-only BERT-based model（提案手法ではRoBERTa）を用いる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b49e09a4-4a69-4761-94eb-3f6417a19223" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="how-is-887" class="title-link">How is ChatGPT's behavior changing over time?, Lingjiao Chen+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2307.09009" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="how-is-887" class="title-link">[Paper Note] How is ChatGPT's behavior changing over time?, Lingjiao Chen+, arXiv'23, 2023.07</h3><br><a href="https://arxiv.org/abs/2307.09009" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -10405,8 +10397,9 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="ChatGPT.html" target="_blank" rel="noopener noreferrer">#ChatGPT</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
-<span class="snippet"><span>GPT Summary</span>- GPT-3.5とGPT-4は、大規模言語モデル（LLM）のサービスであり、その性能と振る舞いは時間とともに変動することがわかった。例えば、GPT-4は素数の特定に優れていたが、後のバージョンでは低い正答率となった。また、GPT-3.5はGPT-4よりも優れた性能を示した。さらに、GPT-4とGPT-3.5の両方が時間とともに敏感な質問への回答やコード生成でのミスが増えた。この結果から、LLMの品質を継続的に監視する必要性が示唆される。</span>
+<span class="snippet"><span>GPT Summary</span>- GPT-3.5とGPT-4の2023年版を、数学、敏感な質問、意見調査、知識集約型質問、コード生成、医師免許試験、視覚推論のタスクで評価した結果、両者の性能が時間とともに大きく変化することが明らかになった。特に、GPT-4（3月版）が素数識別では84%の正答率を示したが、6月版では51%に低下。GPT-3.5は6月にこのタスクで向上し、GPT-4は敏感な質問への回答意欲が減少した。全体として、LLMの挙動は短期間で変化し得るため、継続的な監視が必要であることを示唆している。</span>
 <span class="snippet"><span>Comment</span><p>GPT3.5, GPT4共にfreezeされてないのなら、研究で利用すると結果が再現されないので、研究で使うべきではない。<br><br>↑(2025.10追記)<br>当時の私はこのように感じたようだが、以下を確認した方が良いと思う:<br><br>- 実験設定として、エンドポイントのモデル名にはタイムスタンプが付与されているが、同じモデルシリーズの異なるタイムスタンプモデル間の比較なのか、それとも全く同じタイムスタンプのモデルでの比較なのか<br>- サンプリングパラメータの設定や推論の試行回数なとがreliableな比較ができうる設定になっているか。<br><br>あとは上記を確認したとしても、研究で使うべきではない、は言い過ぎで、実験の比較対象の一部として使う分には良いと思う（ただし、実験結果の主要な知見は再現可能な設定から得られるべきと考える。<br><br>（当時は随分脊髄反射的にコメントを書いていますね…）</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -10428,7 +10421,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 本研究では、指示に従う能力を正確に評価するための新しい評価プロトコル「verbalizer manipulation」を提案しています。このプロトコルでは、モデルに異なる程度で一致する言葉を使用してタスクラベルを表現させ、モデルの事前知識に依存する能力を検証します。さまざまなモデルを9つのデータセットで評価し、異なるverbalizerのパフォーマンスによって指示に従う能力が明確に区別されることを示しました。最も困難なverbalizerに対しても、最も強力なモデルでもランダムな推測よりも優れたパフォーマンスを発揮するのは困難であり、指示に従う能力を向上させるために継続的な進歩が必要であることを強調しています。</span>
 </article>
 <article class="paper-entry">
-<h3 id="flask-fine-grained-873" class="title-link">FLASK: Fine-grained Language Model Evaluation based on Alignment Skill  Sets, Seonghyeon Ye+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2307.10928" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="flask-fine-grained-873" class="title-link">[Paper Note] FLASK: Fine-grained Language Model Evaluation based on Alignment Skill Sets, Seonghyeon Ye+, arXiv'23, 2023.07</h3><br><a href="https://arxiv.org/abs/2307.10928" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -10442,8 +10435,9 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
 <span class="issue_date">Issue Date: 2023-07-22</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）の評価における課題を解決するため、細かい評価プロトコルであるFLASKを提案する。FLASKは、インスタンスごとのスキルセットレベルでの評価を可能にし、モデルベースと人間ベースの評価の両方に使用できる。具体的には、12の細かいスキルを定義し、各インスタンスにスキルのセットを割り当てることで評価セットを構築する。さらに、ターゲットドメインと難易度レベルの注釈を付けることで、モデルのパフォーマンスを包括的に分析する。FLASKを使用することで、モデルのパフォーマンスを正確に測定し、特定のスキルに優れたLLMsを分析することができる。また、実践者はFLASKを使用して、特定の状況に適したモデルを推奨することができる。</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の評価は、人間の価値観との整合性が求められるが、従来の評価は粗粒度で解釈性が制限されている。本研究では、整合スキルセットに基づく微細粒度評価プロトコルFLASKを提案し、スコアを指示ごとのスキルセットに分解する手法を導入。実験により、評価の細粒度化がモデルパフォーマンスの理解と信頼性向上に寄与することを示し、複数のLLMsにおいて高い相関を観察した。評価データとコードは公開されている。</span>
 <span class="snippet"><span>Comment</span><p>このベンチによるとLLaMA2でさえ、商用のLLMに比べると能力はかなり劣っているように見える。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9871133-3111-4da6-9148-1ac779a24312" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -10462,6 +10456,7 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2023-07-18</span>
 <span class="snippet"><span>GPT Summary</span>- 要約の評価には人間の評価が重要ですが、既存の評価方法には問題があります。そこで、私たちは新しい要約の重要性プロトコルを提案し、大規模な人間評価データセットを収集しました。さらに、異なる評価プロトコルを比較し、自動評価指標を評価しました。私たちの研究結果は、大規模言語モデルの評価に重要な示唆を与えます。</span>
 </article>
@@ -10481,6 +10476,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Explanation.html" target="_blank" rel="noopener noreferrer">#Explanation</a>
 <a class="button" href="Faithfulness.html" target="_blank" rel="noopener noreferrer">#Faithfulness</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2023-07-18</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、ニューラルモデルの説明の忠実性を評価するための2つのテストを提案しています。1つ目は、カウンターファクチュアルな予測につながる理由を挿入するためのカウンターファクチュアル入力エディタを提案し、2つ目は生成された説明から入力を再構築し、同じ予測につながる頻度をチェックするテストです。これらのテストは、忠実な説明の開発において基本的なツールとなります。</span>
 </article>
@@ -10968,11 +10964,11 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LM-based.html" target="_blank" rel="noopener noreferrer">#LM-based</a>
 <a class="button" href="Factuality.html" target="_blank" rel="noopener noreferrer">#Factuality</a>
+<a class="button" href="TACL.html" target="_blank" rel="noopener noreferrer">#TACL</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 要約の領域では、入力ドキュメントと要約が整合していることが重要です。以前の研究では、自然言語推論（NLI）モデルを不整合検出に適用するとパフォーマンスが低下することがわかりました。本研究では、NLIを不整合検出に再評価し、過去の研究での入力の粒度の不一致が問題であることを発見しました。新しい手法SummaCConvを提案し、NLIモデルを文単位にドキュメントを分割してスコアを集計することで、不整合検出に成功裏に使用できることを示しました。さらに、新しいベンチマークSummaCを導入し、74.4%の正確さを達成し、先行研究と比較して5%の改善を実現しました。</span>
 </article>
 <article class="paper-entry">
-<h3 id="true-re-evaluating-962" class="title-link">TRUE: Re-evaluating Factual Consistency Evaluation, Or Honovich+, N_A, the Second DialDoc Workshop on Document-grounded Dialogue and Conversational Question Answering'22</h3><br><a href="https://arxiv.org/abs/2204.04991" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="true-re-evaluating-962" class="title-link">[Paper Note] TRUE: Re-evaluating Factual Consistency Evaluation, Or Honovich+, arXiv'22, 2022.04</h3><br><a href="https://arxiv.org/abs/2204.04991" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -10987,8 +10983,10 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Factuality.html" target="_blank" rel="noopener noreferrer">#Factuality</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 事実の整合性メトリックの包括的な調査と評価であるTRUEを紹介。さまざまな最先端のメトリックと11のデータセットを対象に行った結果、大規模なNLIおよび質問生成・回答ベースのアプローチが強力で補完的な結果を達成することがわかった。TRUEをモデルおよびメトリックの開発者の出発点として推奨し、さらなる評価方法の向上に向けた進歩を期待している。</span>
+<span class="snippet"><span>GPT Summary</span>- 事実的一致性評価が重要なテキスト生成システムにおいて、矛盾を減らすための自動評価が提案される。従来の評価指標は特定のタスクに偏りがあり、実用性に欠けることが多い。これに対抗して、TRUEを提案し、多様なタスクに基づく標準化されたコレクションに対する人手注釈のもとでの評価を行う。これにより、例レベルのメタ評価プロトコルが実現し、質の高い評価が可能となった。大規模なNLIや質問生成モデルが強力な結果を示し、今後の評価方法の改善へ向けた新たな指針を提供する。</span>
 <span class="snippet"><span>Comment</span><p>FactualConsistencyに関するMetricが良くまとまっている</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11010,25 +11008,6 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 本研究では、テキストの要約と簡素化のための参照のない評価尺度であるMaskEvalを提案しています。MaskEvalは、候補テキストとソーステキストの連結に対してマスクされた言語モデリングを行い、重要な品質の側面ごとに相対的な重要性を調整することができます。さらに、英語の要約と簡素化における人間の判断との相関に基づいて、その効果を示し、両方のタスク間での転移シナリオを探索します。</span>
 </article>
 <article class="paper-entry">
-<h3 id="play-the-957" class="title-link">Play the Shannon Game With Language Models: A Human-Free Approach to  Summary Evaluation, Nicholas Egan+, N_A, AAAI'22</h3><br><a href="https://arxiv.org/abs/2103.10918" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/957" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
-<a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
-<span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- この研究では、事前学習済み言語モデルを使用して、参照フリーの要約評価指標を提案します。これにより、要約の品質を測定するための新しい手法が開発されます。また、提案手法が人間の判断と高い相関関係を持つことが実証されます。</span>
-</article>
-<article class="paper-entry">
 <h3 id="reference-free-summarization-956" class="title-link">Reference-free Summarization Evaluation via Semantic Correlation and Compression Ratio, Liu+, NAACL'22</h3><br><a href="https://aclanthology.org/2022.naacl-main.153/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -11045,7 +11024,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、参照ベースの評価方法の柔軟性の欠如を解消するために、事前学習済み言語モデルを使用して自動参照フリーの評価指標を提案します。この指標は、要約の意味的な分布と圧縮率を考慮し、人間の評価とより一致していることが実験で示されました。</span>
 </article>
 <article class="paper-entry">
 <h3 id="re-examining-system-level-952" class="title-link">Re-Examining System-Level Correlations of Automatic Summarization Evaluation Metrics, Deutsch+, NAACL'22</h3><br><a href="https://aclanthology.org/2022.naacl-main.442/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11062,7 +11040,6 @@ My Issue
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、自動要約評価尺度のシステムレベルの相関に関する不整合を修正するための変更を提案しています。具体的には、全テストセットを使用して自動評価尺度のシステムスコアを計算し、実際のシナリオでよく見られる自動スコアのわずかな差によって分離されたシステムのペアに対してのみ相関を計算することを提案しています。これにより、より正確な相関推定と高品質な人間の判断の収集が可能となります。</span>
 </article>
 <article class="paper-entry">
 <h3 id="does-summary-951" class="title-link">Does Summary Evaluation Survive Translation to Other Languages?, Braun+, NAACL'22</h3><br><a href="https://aclanthology.org/2022.naacl-main.173/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11079,7 +11056,6 @@ My Issue
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 要約データセットの作成は費用と時間がかかるが、機械翻訳を使用して既存のデータセットを他の言語に翻訳することで、追加の言語での使用が可能になる。この研究では、英語の要約データセットを7つの言語に翻訳し、自動評価尺度によるパフォーマンスを比較する。また、人間と自動化された要約のスコアリング間の相関を評価し、翻訳がパフォーマンスに与える影響も考慮する。さらに、データセットの再利用の可能性を見つけるために、特定の側面に焦点を当てる。</span>
 </article>
 <article class="paper-entry">
 <h3 id="summscore-a-948" class="title-link">SummScore: A Comprehensive Evaluation Metric for Summary Quality Based  on Cross-Encoder, Wuhang Lin+, N_A, arXiv'22</h3><br><a href="https://arxiv.org/abs/2207.04660" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11116,7 +11092,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 従来の自動要約評価メトリックは語彙の類似性に焦点を当てており、意味や言語的な品質を十分に捉えることができない。参照要約が必要であるためコストがかかる。本研究では、参照要約が存在しない弱教師あり要約評価手法を提案する。既存の要約データセットを文書と破損した参照要約のペアに変換してトレーニングする。ドメイン間のテストでは、提案手法がベースラインを上回り、言語的な品質を評価する上で大きな利点を示した。</span>
 </article>
 <article class="paper-entry">
 <h3 id="prefscore-pairwise-941" class="title-link">PrefScore: Pairwise Preference Learning for Reference-free Summarization Quality Assessment, Luo+, COLING'22</h3><br><a href="https://aclanthology.org/2022.coling-1.515/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11134,7 +11109,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 人間による参照要約のない機械生成の要約の評価を行うために、ブラッドリー・テリーのパワーランキングモデルを使用して要約の優劣を判断する方法を提案する。実験結果は、この方法が人間の評価と高い相関を持つスコアを生成できることを示している。</span>
 </article>
 <article class="paper-entry">
 <h3 id="how-to-940" class="title-link">How to Find Strong Summary Coherence Measures? A Toolbox and a Comparative Study for Summary Coherence Measure Evaluation, Steen+, COLING'22</h3><br><a href="https://aclanthology.org/2022.coling-1.527/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11151,7 +11125,6 @@ My Issue
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 要約の一貫性を自動的に評価することは重要であり、さまざまな方法が提案されていますが、異なるデータセットと評価指標を使用して評価されるため、相対的なパフォーマンスを理解することが困難です。本研究では、要約の一貫性モデリングのさまざまな方法について調査し、新しい分析尺度を導入します。現在の自動一貫性尺度はすべての評価指標において信頼性のある一貫性スコアを割り当てることができませんが、大規模言語モデルは有望な結果を示しています。</span>
 </article>
 <article class="paper-entry">
 <h3 id="universal-evasion-938" class="title-link">Universal Evasion Attacks on Summarization Scoring, Wenchuan Mu+, N_A, BlackboxNLP workshop on ACL'22</h3><br><a href="https://arxiv.org/abs/2210.14260" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11167,8 +11140,40 @@ My Issue
 </a><br>
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
 <span class="snippet"><span>GPT Summary</span>- 要約の自動評価は重要であり、その評価は複雑です。しかし、これまで要約の評価は機械学習のタスクとは考えられていませんでした。本研究では、自動評価の堅牢性を探るために回避攻撃を行いました。攻撃システムは、要約ではない文字列を予測し、一般的な評価指標であるROUGEやMETEORにおいて優れた要約器と競合するスコアを達成しました。また、攻撃システムは最先端の要約手法を上回るスコアを獲得しました。この研究は、現在の評価システムの堅牢性の低さを示しており、要約スコアの開発を促進することを目指しています。</span>
+</article>
+<article class="paper-entry">
+<h3 id="rise-leveraging-937" class="title-link">[Paper Note] RISE: Leveraging Retrieval Techniques for Summarization Evaluation, David Uthus+, arXiv'22, 2022.12</h3><br><a href="https://arxiv.org/abs/2212.08775" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/937" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="Findings.html" target="_blank" rel="noopener noreferrer">#Findings</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
+<span class="issue_date">Issue Date: 2023-08-13</span>
+<span class="snippet"><span>GPT Summary</span>- 自動生成された要約の評価は困難であり、これまでの手法は人間の評価に及ばない。新たに提案されたRISEは、デュアルエンコーダー検索設定を用いて生成要約を評価する手法で、ゴールド標準の参照要約がなくても機能する。特に参照要約がない新たなデータセットに対して効果的であり、SummEvalベンチマークでの実験により、人間の評価と高い相関を示した。RISEはデータ効率性と多言語間の一般化可能性も備えている。</span>
+<span class="snippet"><span>Comment</span><p>
+<strong># 概要<br><br>Dual-Encoderを用いて、ソースドキュメントとシステム要約をエンコードし、dot productをとることでスコアを得る手法。モデルの訓練は、Contrastive Learningで行い、既存データセットのソースと参照要約のペアを正例とみなし、In Batch trainingする。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/95d6fc9e-cb05-4a40-9690-ac40e6042c3c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 分類<br><br>Reference-free, Model-based, ソース依存で、BARTScore <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/960" target="_blank" rel="noopener noreferrer">[Paper Note] BARTScore: Evaluating Generated Text as Text Generation, Weizhe Yuan+, arXiv'21, 2021.06</a>
+</strong>
+<br>
+ とは異なり、文書要約データを用いて学習するため、要約の評価に特化している点が特徴。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/281a2e5d-7e1c-466d-a995-97218ca37983" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>
+<strong># モデル<br><br>##  Contrastive Learning<br><br>Contrastive Learningを用い、hard negativeを用いたvariantも検証する。また、訓練データとして3種類のパターンを検証する：<br><br>1. in-domain data: 文書要約データを用いて訓練し、ターゲットタスクでどれだけの性能を発揮するかを見る<br><br>2. out-of-domain data: 文書要約以外のデータを用いて訓練し、どれだけ新しいドメインにモデルがtransferできるかを検証する<br><br>3. in-and-out-domain data: 両方やる<br><br><br><br>## ハードネガティブの生成<br><br>Lexical Negatives, Model Negatives, 双方の組み合わせの3種類を用いてハードネガティブを生成する。<br><br>### Lexical Negatives<br><br>参照要約を拡張することによって生成する。目的は、もともとの参照要約と比較して、poor summaryを生成することにある。Data Augmentationとして、以下の方法を試した：<br><br>- Swapping noun entities:  要約中のエンティティを、ソース中のエンティティンとランダムでスワップ<br><br>- Shuffling words: 要約中の単語をランダムにシャッフル<br><br>- Dropping words: 要約中の単語をランダムに削除<br><br>- Dropping characters: 要約中の文字をランダムに削除<br><br>- Swapping antonyms: 要約中の単語を対義語で置換<br><br>### Model Negatives<br><br>データセットの中から負例を抽出する。目的は、参照要約と類似しているが、負例となるサンプルを見つけること。これを実現するために、まずRISE modelをデータセットでfinetuningし、それぞれのソースドキュメントの要約に対して、類似した要約をマイニングする。すべてのドキュメントと要約をエンコードし、top-nの最も類似した要約を見つけ、これをハードネガティブとして、再度モデルを訓練する。<br><br>### 両者の組み合わせ<br><br>まずlexical negativesでモデルを訓練し、モデルネガティブの抽出に活用する。抽出したモデルネガティブを用いて再度モデルを訓練することで、最終的なモデルとする。<br><br><br><br># 実験<br><br>## 学習手法<br><br>SummEval <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
+</strong>
+<br>
+ を用いて人手評価と比較してどれだけcorrelationがあるかを検証。SummEvalには16種類のモデルのアウトプットに対する、CNN / Daily Mail の100 examplesに対して、品質のアノテーションが付与されている。expert annotationを用いて、Kendall's tauを用いてシステムレベルのcorrelationを計算した。contextが短い場合はT5, 長い場合はLongT5, タスクがマルチリンガルな場合はmT5を用いて訓練した。訓練データとしては<br><br>- CNN / Daily Mail<br><br>- Multi News<br><br>- arXiv<br><br>- PubMed<br><br>- BigPatent<br><br>- SAMSum<br><br>- Reddit TIFU<br><br>- MLSUM<br><br>等を用いた。これによりshort / long contextの両者をカバーできる。CNN / Daily Mail, Reddiit TIFU, Multi-Newsはshort-context, arXiv, PubMed, BigPatent, Multi-News（長文のものを利用）はlonger contextとして利用する。<br><br>## 比較するメトリック<br><br>ROUGE, chrF, SMS, BARTScore, SMART, BLEURT, BERTScore, Q^2, T5-ANLI, PRISMと比較した。結果をみると、Consistency, Fluency, Relevanceで他手法よりも高い相関を得た。Averageでは最も高いAverageを獲得した。in-domain dataで訓練した場合は、高い性能を発揮した。our-of-domain（SAMSum; Dialogue要約のデータ）データでも高い性能を得た。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/92960d58-cd13-4ff5-a417-dda9785520e4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p><p># Ablation<br><br>## ハードネガティブの生成方法<br><br>Data Augmentationは、swapping entity nouns, randomly dropping wordsの組み合わせが最も良かった。また、Lexical Negativesは、様々なデータセットで一貫して性能が良かったが、Model NegativesはCNN/DailyMailに対してしか有効ではなかった。これはおそらく、同じタスク（テストデータと同じデータ）でないと、Model Negativesは機能しないことを示唆している。ただし、Model Negativesを入れたら、何もしないよりも性能向上するから、何らかの理由でlexical negativesが生成できない場合はこっち使っても有用である。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ebb9a6b9-3293-4139-b8a3-620cd72fff5a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Model Size<br><br>でかい方が良い。in-domainならBaseでもそれなりの性能だけど、結局LARGEの方が強い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a53e9b98-77aa-4faf-ba58-4900611ca066" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Datasets<br><br>異なるデータセットでもtransferがうまく機能している。驚いたことにデータセットをmixingするとあまりうまくいかず、単体のデータセットで訓練したほうが性能が良い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/635c0b43-2db3-4561-8939-e4b1de733e99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>LongT5を見ると、T5よりもCorrelationが低く難易度が高い。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/31420a09-eb36-41ef-ad41-6eaf93d1823d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>最終的に英語の要約を評価をする場合でも、Multilingual（別言語）で訓練しても高いCorrelationを示すこともわかった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a74d86b8-64bd-40b1-b22b-344588ef0580" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Dataset Size<br><br>サンプル数が小さくても有効に働く。しかし、out-domainのデータの場合は、たとえば、512件の場合は性能が低く少しexampleを増やさなければならない。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3117b6aa-5d0f-4970-9f30-247633d21f67" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="docasref-a-936" class="title-link">DocAsRef: A Pilot Empirical Study on Repurposing Reference-Based Summary  Quality Metrics Reference-Freely, Forrest Sheng Bao+, N_A, arXiv'22</h3><br><a href="https://arxiv.org/abs/2212.10013" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11186,6 +11191,29 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
 <span class="snippet"><span>GPT Summary</span>- 参照ベースと参照フリーの要約評価メトリックがあります。参照ベースは正確ですが、制約があります。参照フリーは独立していますが、ゼロショットと正確さの両方を満たせません。本研究では、参照ベースのメトリックを使用してゼロショットかつ正確な参照フリーのアプローチを提案します。実験結果は、このアプローチが最も優れた参照フリーのメトリックを提供できることを示しています。また、参照ベースのメトリックの再利用と追加の調整についても調査しています。</span>
+</article>
+<article class="paper-entry">
+<h3 id="rquge-reference-free-890" class="title-link">[Paper Note] RQUGE: Reference-Free Metric for Evaluating Question Generation by Answering the Question, Alireza Mohammadshahi+, arXiv'22, 2022.11</h3><br><a href="https://arxiv.org/abs/2211.01482" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/890" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
+<a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2023-07-22</span>
+<span class="snippet"><span>GPT Summary</span>- 既存の質問評価指標には、人間の参照質問との比較による語彙的重複や意味的類似性に基づく欠点がある。これに対し、本研究で提案する新しい指標RQUGEは、候補質問の文脈に基づく回答可能性を評価し、人間の判断と高い相関を示す。この指標は既存の事前学習モデルを活用し、追加訓練なしで使用可能。また、RQUGEは対抗的改ざんに対して堅牢であり、質問生成モデルからの合成データを用いた微調整により、QAモデルの性能を向上させることができる。</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>質問自動生成の性能指標（e.g. ROUGE, BERTScore）は、表層の一致、あるいは意味が一致した場合にハイスコアを与えるが、以下の欠点がある<br><br>- 人手で作成された大量のreference questionが必要<br><br>- 表層あるいは意味的に近くないが正しいquestionに対して、ペナルティが与えられてしまう<br><br>=> contextに対するanswerabilityによって評価するメトリック RQUGE を提案<br><br><br><br>similarity basedな指標では、Q1のような正しい質問でもlexical overlapがないと低いスコアを与えてしまう。また、Q2のようなreferenceの言い換えであっても、低いスコアとなってしまう。一方、reference basedな手法では、Q3のようにunacceptableになっているにもかかわらず、変化が微小であるためそれをとらえられないという問題がある。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/61c3d939-a678-4c63-9572-f3cf28b3aa20" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 手法概要<br><br>提案手法ではcontextとanswer spanが与えられたとき、Span Scorerと、QAモジュールを利用してacceptability scoreを計算することでreference-freeなmetricを実現する。<br><br>QAモデルは、Contextと生成されたQuestionに基づき、answer spanを予測する。提案手法ではT5ベースの手法であるUnifiedQAv2を利用する。<br><br>Span Scorer Moduleでは、予測されたanswer span, candidate question, context, gold spanに基づき、[1, 5]のスコアを予測する。提案手法では、encoder-only BERT-based model（提案手法ではRoBERTa）を用いる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b49e09a4-4a69-4761-94eb-3f6417a19223" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="holistic-evaluation-786" class="title-link">[Paper Note] Holistic Evaluation of Language Models, Percy Liang+, arXiv'22, 2022.11</h3><br><a href="https://arxiv.org/abs/2211.09110" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11408,6 +11436,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
 <span class="snippet"><span>Comment</span><p>自動評価指標が人手評価の水準に達しないことが示されており、結局のところROUGEを上回る自動性能指標はほとんどなかった。human judgmentsとのKendall;'s Tauを見ると、chrFがCoherenceとRelevance, METEORがFluencyで上回ったのみだった。また、LEAD-3はやはりベースラインとしてかなり強く、LEAD-3を上回ったのはBARTとPEGASUSだった。</p></span><br><br>
 </article>
@@ -11464,8 +11493,10 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="IJCNLP.html" target="_blank" rel="noopener noreferrer">#IJCNLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>Comment</span><p>__translate: ROUGE is widely used to automatically evaluate summarization systems. However, ROUGE measures semantic overlap between a system summary and a human reference on word-string level, much at odds with the contemporary treatment of semantic meaning. Here we present a suite of experiments on using distributed representations for evaluating summarizers, both in reference-based and in reference-free setting. Our experimental results show that the max value over each dimension of the summary ELMo word embeddings is a good representation that results in high correlation with human ratings. Averaging the cosine similarity of all encoders we tested yields high correlation with manual scores in reference-free setting. The distributed representations outperform ROUGE in recent corpora for abstractive news summarization but are less good on test data used in past evaluations.</p><p>C-ELMO/C-SBERT</p></span><br><br>
+<span class="snippet"><span>Comment</span><p>C-ELMO/C-SBERT</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="a-training-free-975" class="title-link">A Training-free and Reference-free Summarization Evaluation Metric via Centrality-weighted Relevance and Self-referenced Redundancy, Chen+, ACL-IJCNLP'21</h3><br><a href="https://aclanthology.org/2021.acl-long.34/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11484,11 +11515,12 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="IJCNLP.html" target="_blank" rel="noopener noreferrer">#IJCNLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 参照ベースと教師ありの要約評価指標の制約を回避するために、トレーニングフリーかつ参照フリーの要約評価指標を提案する。この指標は、文の中心性によって重み付けされた概念参照と要約との関連性スコアと、自己参照の冗長性スコアから構成される。関連性スコアは擬似参照と要約との間で計算され、重要度のガイダンスを提供する。要約の冗長性スコアは要約内の冗長な情報を評価するために計算される。関連性スコアと冗長性スコアを組み合わせて、要約の最終評価スコアを生成する。徹底的な実験により、提案手法が既存の手法を大幅に上回ることが示された。ソースコードはGitHubで公開されている。</span>
 </article>
 <article class="paper-entry">
-<h3 id="questeval-summarization-974" class="title-link">QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, N_A, EMNLP'21</h3><br><a href="https://arxiv.org/abs/2103.12693" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="questeval-summarization-974" class="title-link">[Paper Note] QuestEval: Summarization Asks for Fact-based Evaluation, Thomas Scialom+, arXiv'21, 2021.03</h3><br><a href="https://arxiv.org/abs/2103.12693" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -11505,8 +11537,11 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 要約の評価は未解決の課題であり、既存の評価指標は限定的であり、人間の判断との相関が低い。そこで、本研究では質問応答モデルを利用した評価指標QuestEvalを提案する。QuestEvalは正解の参照を必要とせず、一貫性、結束性、流暢さ、関連性の4つの評価次元において人間の判断との相関を大幅に改善することが実験により示された。</span>
+<span class="snippet"><span>GPT Summary</span>- 要約評価の課題に対し、QuestEvalという新たなフレームワークを提案。ROUGEやBERTScoreに依存せず、人間の判断との相関を四つの次元（整合性、一貫性、流暢さ、関連性）において向上させることを実験で示した。</span>
 <span class="snippet"><span>Comment</span><p>QuestEval</p><p>
 <strong># 概要<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/984" target="_blank" rel="noopener noreferrer">SummEval: Re-evaluating Summarization Evaluation, Fabbri+, TACL'21</a>
 </strong>
@@ -11551,8 +11586,9 @@ My Issue
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
 <a class="button" href="Factuality.html" target="_blank" rel="noopener noreferrer">#Factuality</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、ニューラルな知識に基づく対話生成モデルの信頼性と適用範囲の制限についての問題を解決するため、自動的な質問生成と質問応答を使用した事実的な整合性の自動評価尺度を提案します。この尺度は、自然言語推論を使用して回答スパンを比較することで、以前のトークンベースのマッチングよりも優れた評価を行います。また、新しいデータセットを作成し、事実的な整合性の手動アノテーションを行い、他の尺度とのメタ評価を行いました。結果として、提案手法が人間の判断と高い相関を示しました。</span>
 <span class="snippet"><span>Comment</span><p>（knowledge-grounded; 知識に基づいた）対話に対するFactual ConsistencyをReference-freeで評価できるQGQA手法。機械翻訳やAbstractive Summarizationの分野で研究が進んできたが、対話では<br><br>- 対話履歴、個人の意見、ユーザに対する質問、そして雑談  <br><br><br><br>といった外部知識に対するconsistencyが適切ではない要素が多く存在し、よりチャレンジングなタスクとなっている。<br><br>また、そもそも対話タスクはopen-endedなタスクなため、Reference-basedな手法は現実的ではなく、Reference-freeな手法が必要と主張。<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/979808f2-d31a-49b0-bd25-aba1f1a81d4a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>手法の概要としては以下。ユーザの発話からQuestion Generation (QG)を実施し、Question-Answer Candidate Pairを作成する。そして、生成したQuestionをベースとなる知識から回答させ（QA）、その回答結果とAnswer Candidateを比較することでFactual Consistencyを測定する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/e6582686-2ed2-478a-8146-ec9834679df6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11572,8 +11608,8 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LM-based.html" target="_blank" rel="noopener noreferrer">#LM-based</a>
 <a class="button" href="Factuality.html" target="_blank" rel="noopener noreferrer">#Factuality</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、自然言語生成（NLG）タスクの評価において、情報の整合性を重視した統一的な視点を提案する。情報の整合性を評価するための解釈可能な評価指標のファミリーを開発し、ゴールドリファレンスデータを必要とせずに、さまざまなNLGタスクの評価を行うことができることを実験で示した。</span>
 <span class="snippet"><span>Comment</span><p>CTC</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11588,17 +11624,18 @@ Paper/Blog Link
 </svg>
 My Issue
 </a><br>
+<a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、画像キャプションの評価において、Question Generation（QG）とQuestion Answering（QA）システムに基づいた質問応答メトリックであるQACEを提案する。QACEは評価対象のキャプションに対して質問を生成し、その内容を参照キャプションまたはソース画像に対して質問することで確認する。QACE_Refというメトリックを開発し、最先端のメトリックと競合する結果を報告する。さらに、参照ではなく画像自体に直接質問をするQACE_Imgを提案する。QACE_ImgにはVisual-QAシステムが必要であり、Visual-T5という抽象的なVQAシステムを提案する。QACE_Imgはマルチモーダルで参照を必要とせず、説明可能なメトリックである。実験の結果、QACE_Imgは他の参照を必要としないメトリックと比較して有利な結果を示した。</span>
 <span class="snippet"><span>Comment</span><p>Image Captioningを評価するためのQGQAを提案している。candidateから生成した質問を元画像, およびReferenceを用いて回答させ、candidateに基づいた回答と回答の結果を比較することで評価を実施する。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/552b3bfd-48a6-4915-af96-e8ae91e760dc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="bartscore-evaluating-960" class="title-link">BARTSCORE: Evaluating Generated Text as Text Generation, Yuan+ （w_ Neubig氏）, NeurIPS'21</h3><br><a href="https://arxiv.org/abs/2106.11520" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="bartscore-evaluating-960" class="title-link">[Paper Note] BARTScore: Evaluating Generated Text as Text Generation, Weizhe Yuan+, arXiv'21, 2021.06</h3><br><a href="https://arxiv.org/abs/2106.11520" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -11615,9 +11652,30 @@ My Issue
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="LM-based.html" target="_blank" rel="noopener noreferrer">#LM-based</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、生成されたテキストの評価方法について検討しました。具体的には、事前学習モデルを使用してテキスト生成の問題をモデル化し、生成されたテキストを参照出力またはソーステキストに変換するために訓練されたモデルを使用しました。提案したメトリックであるBARTSCOREは、情報量、流暢さ、事実性などの異なる視点のテキスト評価に柔軟に適用できます。実験結果では、既存のトップスコアリングメトリックを上回る性能を示しました。BARTScoreの計算に使用するコードは公開されており、インタラクティブなリーダーボードも利用可能です。</span>
+<span class="snippet"><span>GPT Summary</span>- 生成テキストの評価を、事前学習済みのシーケンス・ツー・シーケンスモデルを用いてモデル化。BARTを基にした指標BARTScoreを提案し、流暢さや情報性から生成テキストを評価。既存の指標を16のテスト設定で上回る可能性があり、広範なデータセットに適用可能。BARTScore計算コードは公開中。</span>
 <span class="snippet"><span>Comment</span><p>BARTScore</p><p># 概要<br><br>ソーステキストが与えられた時に、BARTによって生成テキストを生成する尤度を計算し、それをスコアとする手法。テキスト生成タスクをテキスト生成モデルでスコアリングすることで、pre-trainingされたパラメータをより有効に活用できる（e.g. BERTScoreやMoverScoreなどは、pre-trainingタスクがテキスト生成ではない）。BARTScoreの特徴は<br><br>1. parameter- and data-efficientである。pre-trainingに利用されたパラメータ以外の追加パラメータは必要なく、unsupervisedなmetricなので、human judgmentのデータなども必要ない。<br><br>2. 様々な観点から生成テキストを評価できる。conditional text generation problemにすることでinformativeness, coherence, factualityなどの様々な観点に対応可能。<br><br>3. BARTScoreは、(i) pre-training taskと類似したpromptを与えること、(ii) down stream generation taskでfinetuningすること、でより高い性能を獲得できる<br><br>BARTScoreを16種類のデータセットの、7つの観点で評価したところ、16/22において、top-scoring metricsよりも高い性能を示した。また、prompting starategyの有効性を示した。たとえば、シンプルに"such as"というフレーズを翻訳テキストに追加するだけで、German-English MTにおいて3%の性能向上が見られた。また、BARTScoreは、high-qualityなテキスト生成システムを扱う際に、よりロバストであることが分析の結果分かった。<br><br><br><br># 前提<br><br>## Problem Formulation<br><br>生成されたテキストのqualityを測ることを目的とする。本研究では、conditional text generation (e.g. 機械翻訳)にフォーカスする。すなわち、ゴールは、hypothesis h_bar を source text s_barがgivenな状態で生成することである。一般的には、人間が作成したreference r_barが評価の際は利用される。<br><br>## Gold-standard Human Evaluation<br><br>評価のgold standardは人手評価であり、人手評価では多くの観点から評価が行われる。以下に代表的な観点を示す：<br><br>1. Informativeness: ソーステキストのキーアイデアをどれだけ捉えているか<br><br>2. Relevance: ソーステキストにあ地して、どれだけconsistentか<br><br>3. Fluency formatting problem, capitarlization errorや非文など、どの程度読むのが困難か<br><br>4. Coherence: 文間のつながりが、トピックに対してどれだけcoherentか<br><br>5. Factuality: ソーステキストに含意されるstatementのみを生成できているか<br><br>6. Semantic Coverage: 参照テキスト中のSemantic Content Unitを生成テキストがどれだけカバーできているか<br><br>7: Adequacy 入力文に対してアウトプットが同じ意味を出力できているかどうか、あるいは何らかのメッセージが失われる、追加される、歪曲していないかどうか<br><br><br><br>多くの性能指標は、これらの観点のうちのsubsetをカバーするようにデザインんされている。たとえば、BLEUは、翻訳におけるAdequacyとFluencyをとらえることを目的としている。一方、ROUGEは、semantic coverageを測るためのメトリックである。<br><br>BARTScoreは、これらのうち多くの観点を評価することができる。<br><br><br><br>## Evaluation as Different Tasks<br><br>ニューラルモデルを異なる方法で自動評価に活用するのが最近のトレンドである。下図がその分類。この分類は、タスクにフォーカスした分類となっている。<br><br>1. Unsupervised Matching: ROUGE, BLEU, CHRF, BERTScore, MoverScoreのように、hypothesisとreference間での意味的な等価性を測ることが目的である。このために、token-levelのマッチングを用いる。これは、distributedな表現を用いる（BERTScore, MoverScore）場合もあれば、discreteな表現を用いる（ROUGE, BLEU, chrF）場合もある。また、意味的な等価性だけでなく、factual consistencyや、source-hypothesis間の関係性の評価に用いることもできると考えられるが先行研究ではやられていなかったので、本研究で可能なことを示す。<br><br>2. Supervised Regression: BLEURT, COMET, S^3, VRMのように、regression layer を用いてhuman judgmentをsupervisedに予測する方法である。最近のメトリックｔおしては、BLEURT, COMETがあげられ、古典的なものとしては、S^3, VRMがあげられる。<br><br>4. Supervised Ranking: COMET, BEERのような、ランキング問題としてとらえる方法もある。これは優れたhypothesisを上位にランキングするようなスコア関数を学習する問題に帰着する。COMETやBEERが例としてあげられ、両者はMTタスクにフォーカスされている。COMETはhunan judgmentsをregressionすることを通じてランキングを作成し、BEERは、多くのシンプルな特徴量を組み合わせて、linear layerでチューニングされる。<br><br>5. Text Generation: PRISM, BARTScoreが例として挙げられる。BARTScoreでは、生成されたテキストの評価をpre-trained language modelによるテキスト生成タスクとしてとらえる。基本的なアイデアとしては、高品質のhypothesisは、ソース、あるいはreferenceから容易に生成可能であろう、というものである。これはPRISMを除いて、先行研究ではカバーされていない。BARTScoreは、PRISMとはいくつかの点で異なっている。(i) PRISMは評価をparaphrasing taskとしてとらえており、これが2つの意味が同じテキストを比較する前提となってしまっているため、手法を適用可能な範囲を狭めてしまっている。たとえば、文書要約におけるfactual consistencyの評価では、semantic spaceが異なる2つのテキストを比較する必要があるが、このような例には対応できない。(ii) PRISMはparallel dataから学習しなけえｒばならないが、BARTScoreは、pre-trainedなopen-sourceのseq2seq modelを利用できる。(iii) BARTScoreでは、PRISMが検証していない、prompt-basedのlearningもサポートしている。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4a64ea21-ab9f-4762-bd71-f858663fc195" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># BARTScore<br><br>## Sequence-to-Sequence Pre-trained Models<br><br>pre-trainingされたモデルは、様々な軸で異なっているが、その一つの軸としては訓練時の目的関数である。基本的には２つの大きな変種があり、1つは、language modeling objectives (e.g. MLM)、2つ目は、seq2seq objectivesである。特に、seq2seqで事前学習されたモデルは、エンコーダーとデコーダーによって構成されているため特に条件付き生成タスクに対して適しており、予測はAutoRegressiveに行われる。本研究ではBARTを用いる。付録には、preliminary experimentsとして、BART with T5, PEGASUSを用いた結果も添付する。<br><br>## BARTScore<br><br>最も一般的なBARTScoreの定式化は下記である。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/34505fd3-c8bb-49ee-92a8-f5710032b1ea" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>weighted log probabilityを利用する。このweightsは、異なるトークンに対して、異なる重みを与えることができる。たておば、IDFなどが利用可能であるが、本研究ではすべてのトークンを等価に扱う（uniform weightingだがstopwordを除外、IDFによる重みづけ、事前分布を導入するなど色々試したが、uniform weightingを上回るものがなかった）。<br><br><br><br>BARTScoreを用いて、様々な方向に用いて生成を行うことができ、異なる評価のシナリオに対応することができる。<br><br>- Faithfulness (s -> h):<br><br>    - hypothesisがどれだけsource textに基づいて生成されているかを測ることができる。シナリオとしては、FactualityやRelevanceなどが考えられる。また、CoherenceやFluencyのように、target textのみの品質を測るためにも用いることができる。<br><br>- Precision (r -> h):<br><br>    - hypothesisがどれだけgold-referenceに基づいてこう良くされているかを亜評価でき、precision-focusedなシナリオに適している<br><br>- Recall (h -> r):<br><br>    - hypothesisから、gold referenceをどれだけ容易に再現できるかを測ることができる。そして、要約タスクのpyramid-basedな評価（i.e. semantic coverage等）  に適している。pyramid-scoreはSemantic Content Unitsがどれだけカバーされているかによって評価される。<br><br>- F Score (r <-> h):<br><br>    - 双方向を考慮し、Precisioon / RecallからF値を算出する。この方法は、referenceと生成テキスト間でのsemantic overlap (informativenss, adequacy)などの評価に広く利用される。<br><br><br><br># BARTScore Variants<br><br>BARTScoreの2つの拡張を提案。(i) xとyをpromptingによって変更する。これにより、評価タスクをpre-training taskと近づける。(ii) パラメータΘを異なるfinetuning taskを考慮して変更する。すなわち、pre-trainingのドメインを、evaluation taskに近づける。<br><br>## Prompt<br><br>Promptingはinput/outputに対して短いフレーズを追加し、pre-trained modelに対して特定のタスクを遂行させる方法である。BARTにも同様の洞察を簡単に組み込むことができる。この変種をBARTScore-PROMPTと呼ぶ。<br><br>prompt zが与えられたときに、それを (i) source textに追加し、新たなsource textを用いてBARTScoreを計算する。(ii) target textの先頭に追加し、new target textに対してBARTScoreを計算する。<br><br>## Fine-tuning Task<br><br>classification-basedなタスクでfine-tuneされるのが一般的なBERT-based metricとは異なり、BARTScoreはgeneration taskでfine-tuneされるため、pre-training domainがevaluation taskと近い。本研究では、2つのdownstream taskを検証する。<br><br>1つめは、summarizationで、BARTをCNNDM datasetでfinetuningする。2つめは、paraphrasingで、summarizationタスクでfinetuningしたBARTをParaBank2 datasetでさらにfinetuningする。</p><p># 実験<br><br>## baselines and datasets<br><br>### Evaluation Metrics<br><br>supervised metrics: COMET, BLEURT<br><br>unsupervised: BLEU, ROUGE-1, ROUGE-2, ROUGE-L, chrF, PRISM, MoverScore, BERTScore<br><br>と比較<br><br>### Measures for Meta Evaluation<br><br>Pearson Correlationでlinear correlationを測る。また、Spearman Correlationで2変数間の単調なcorrelationを測定する（線形である必要はない）。Kendall's Tauを用いて、2つの順序関係の関係性を測る。最後に、Accuracyでfactual textsとnon-factual textの間でどれだけ正しいランキングを得られるかを測る。<br><br><br><br>### Datasets<br><br>Summarization, MT, DataToTextの3つのデータセットを利用。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/117bf2d4-b096-4a60-a139-4a607ce3ebc6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Setup<br><br>### Prompt Design<br><br>seedをparaphrasingすることで、　s->h方向には70個のpromptを、h<->rの両方向には、34のpromptを得て実験で用いた。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/dab4f2bc-9b8d-4de6-bbc3-204da39ee2eb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Settings<br><br>Summarizationとdata-to-textタスクでは、全てのpromptを用いてデコーダの頭に追加してスコアを計算しスコアを計算した。最終的にすべての生成されたスコアを平均することである事例に対するスコアを求めた（prompt unsembling）。MTについては、事例数が多くcomputational costが多くなってしまうため、WMT18を開発データとし、best prompt "Such as"を選択し、利用した。<br><br>BARTScoreを使う際は、gold standard human evaluationがrecall-basedなpyrmid methodの場合はBARTScore(h->r)を用い、humaan judgmentsがlinguistic quality (coherence fluency)そして、factual correctness、あるいは、sourceとtargetが同じモダリティ（e.g. language）の場合は、faitufulness-based BARTScore(s->h)を用いた。最後に、MTタスクとdata-to-textタスクでは、fair-comparisonのためにBARTScore F-score versionを用いた。<br><br>## 実験結果<br><br>### MT<br><br>- BARTScoreはfinetuning tasksによって性能が向上し、5つのlanguage pairsにおいてその他のunsupervised methodsを統計的に優位にoutperformし、2つのlanguage pairでcomparableであった。<br><br>-Such asというpromptを追加するだけで、BARTScoreの性能が改善した。特筆すべきは、de-enにおいては、SoTAのsupervised MetricsであるBLEURTとCOMETを上回った。<br><br>- これは、有望な将来のmetric designとして「human judgment dataで訓練する代わりに、pre-trained language modelに蓄積された知識をより適切に活用できるpromptを探索する」という方向性を提案している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ff41b3ec-3cf9-4c9a-90bb-83b46889d759" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Text Summarization<br><br>- vanilla BARTScoreはBERTScore, MoverScoreをInfo perspective以外でlarge marginでうくぁ回った。<br><br>- REALSum, SummEval dataseetでの改善は、finetuning taskによってさらに改善した。しかしながら、NeR18では改善しなかった。これは、データに含まれる7つのシステムが容易に区別できる程度のqualityであり、既にvanilla BARTScoreで高いレベルのcorrelationを達成しているからだと考えられる。<br><br>- prompt combination strategyはinformativenssに対する性能を一貫して改善している。しかし、fluency, factualityでは、一貫した改善は見られなかった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/cfb33334-e38d-43e0-9b48-a8a8c433bc26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Factuality datasetsに対する分析を行った。ゴールは、short generated summaryが、元のlong documentsに対してfaithfulか否かを判定するというものである。<br><br>- BARTScore+CNNは、Rank19データにおいてhuman baselineに近い性能を達成し、ほかのベースラインを上回った。top-performingなfactuality metricsであるFactCCやQAGSに対してもlarge marginで上回った。<br><br>- paraphraseをfine-tuning taskで利用すると、BARTScoreのパフォーマンスは低下した。これは妥当で、なぜなら二つのテキスト（summary and document）は、paraphrasedの関係性を保持していないからである。<br><br>- promptを導入しても、性能の改善は見受けられず、パフォーマンスは低下した。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/06dac947-c946-4633-8ff6-a9c3933f6322" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Data-to-Text<br><br>- CNNDMでfine-tuningすることで、一貫してcorrelationが改善した。<br><br>- 加えて、paraphraseデータセットでfinetuningすることで、さらに性能が改善した。<br><br>- prompt combination strategyは一貫してcorrelationを改善した。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/acbd6816-e7bc-4ecd-8a53-13137a2bcc94" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>## Analysis<br><br>### Fine-grained Analysis<br><br>- Top-k Systems: MTタスクにおいて、評価するシステムをtop-kにし、各メトリックごとにcorrelationの変化を見た。その結果、BARTScoreはすべてのunsupervised methodをすべてのkにおいて上回り、supervised metricのBLEURTも上回った。また、kが小さくなるほど、より性能はsmoothになっていき、性能の低下がなくなっていった。これはつまり、high-quality textを生成するシステムに対してロバストであることを示している。<br><br>- Reference Length: テストセットを4つのバケットにreference lengthに応じてブレイクダウンし、Kendall's Tauの平均のcorrelationを、異なるメトリック、バケットごとに言語をまたいで計算した。unsupervised metricsに対して、全てのlengthに対して、引き分けかあるいは上回った。また、ほかのmetricsと比較して、長さに対して安定感があることが分かった。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/821fdf0a-aabc-448a-81aa-238aae380ea1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>### Prompt Analysis<br><br>(1) semantic overlap (informativeness, pyramid score, relevance), (2) linguistic quality (fluency, coherence), (3) factual correctness (factuality) に評価の観点を分類し、summarizationとdata-to-textをにおけるすべてのpromptを分析することで、promptの効果を分析した。それぞれのグループに対して、性能が改善したpromptの割合を計算した。その結果、semantic overlapはほぼ全てのpromptにて性能が改善し、factualityはいくつかのpromptでしか性能の改善が見られなかった。linguistic qualityに関しては、promptを追加することによる効果はどちらとも言えなかった。<br><br><br><br>### Bias Analysis<br><br>BARTScoreが予測不可能な方法でバイアスを導入してしまうかどうかを分析した。バイアスとは、human annotatorが与えたスコアよりも、値が高すぎる、あるいは低すぎるような状況である。このようなバイアスが存在するかを検証するために、human annotatorとBARTScoreによるランクのサを分析した。これを見ると、BARTScoreは、extractive summarizationの品質を区別する能力がabstractive summarizationの品質を区別する能力よりも劣っていることが分かった。しかしながら、近年のトレンドはabstractiveなseq2seqを活用することなので、この弱点は軽減されている。<br><br><br><br># Implications and Future Directions<br><br>prompt-augmented metrics: semantic overlapではpromptingが有効に働いたが、linguistic qualityとfactualityでは有効ではなかった。より良いpromptを模索する研究が今後期待される。<br><br>Co-evolving evaluation metrics and systems: BARTScoreは、メトリックデザインとシステムデザインの間につながりがあるので、より性能の良いseq2seqシステムが出たら、それをメトリックにも活用することでよりreliableな自動性能指標となることが期待される。<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/08d51f6d-40ad-4b2a-8871-086e12010478" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="play-the-957" class="title-link">[Paper Note] Play the Shannon Game With Language Models: A Human-Free Approach to Summary Evaluation, Nicholas Egan+, arXiv'21, 2021.03</h3><br><a href="https://arxiv.org/abs/2103.10918" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/957" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
+<a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
+<a class="button" href="AAAI.html" target="_blank" rel="noopener noreferrer">#AAAI</a>
+<span class="issue_date">Issue Date: 2023-08-13</span>
+<span class="snippet"><span>GPT Summary</span>- 事前学習済みの言語モデルを用いて、文書とその要約の共有情報を推定する新しい要約評価指標を提案。これらはシャノン・ゲームの現代的解釈であり、人間の代わりにモデルを使用。トランスフォーマーに基づくモデルで、一貫性と関連性の次元で人間の判断との高い相関を実証。また、整合性と流暢さにおいても競争力を持つ評価を確認。</span>
 </article>
 <article class="paper-entry">
 <h3 id="towards-question-answering-953" class="title-link">Towards Question-Answering as an Automatic Metric for Evaluating the Content Quality of a Summary, Deutsch+, TACL'21</h3><br><a href="https://direct.mit.edu/tacl/article/doi/10.1162/tacl_a_00397/106792/Towards-Question-Answering-as-an-Automatic-Metric" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11636,7 +11694,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-based.html" target="_blank" rel="noopener noreferrer">#Reference-based</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 要約の品質を評価するための新しい指標であるQAEvalを提案する。QAEvalは質問応答（QA）を使用して要約と参照の情報の重複を測定するため、従来のテキストの重複に基づく指標とは異なる。実験結果から、QAEvalは現在の最先端の指標よりも優れたパフォーマンスを示し、他の評価とも競争力があることがわかった。QAEvalの構成要素を分析することで、その潜在的な上限パフォーマンスは他の自動評価指標を上回り、ゴールドスタンダードのピラミッドメソッドに近づくと推定される。</span>
 </article>
 <article class="paper-entry">
 <h3 id="estime-estimation-949" class="title-link">ESTIME: Estimation of Summary-to-Text Inconsistency by Mismatched Embeddings, Eval4NLP'21</h3><br><a href="https://aclanthology.org/2021.eval4nlp-1.10/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11655,35 +11712,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 私たちは、新しい参照なし要約品質評価尺度を提案します。この尺度は、要約とソースドキュメントの間の潜在的な矛盾を見つけて数えることに基づいています。提案された尺度は、一貫性と流暢さの両方で他の評価尺度よりも専門家のスコアと強い相関を示しました。また、微妙な事実の誤りを生成する方法も紹介しました。この尺度は微妙なエラーに対してより感度が高いことを示しました。</span>
-</article>
-<article class="paper-entry">
-<h3 id="measuring-massive-901" class="title-link">Measuring Massive Multitask Language Understanding, Dan Hendrycks+, N_A, ICLR'21</h3><br><a href="https://arxiv.org/abs/2009.03300" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
-<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<span class="issue_date">Issue Date: 2023-07-24</span>
-<span class="snippet"><span>GPT Summary</span>- 私たちは、マルチタスクのテキストモデルの正確性を測定するための新しいテストを提案しています。このテストは57のタスクをカバーし、広範な世界知識と問題解決能力が必要です。現在のモデルはまだ専門家レベルの正確性に達しておらず、性能に偏りがあります。私たちのテストは、モデルの弱点を特定するために使用できます。</span>
-<span class="snippet"><span>Comment</span><p>OpenReview:
-
-
-<a href="https://openreview.net/forum?id=d7KBjmI3GmQ" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=d7KBjmI3GmQ</a>
-
-
-</p><p>MMLU論文</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2736" target="_blank" rel="noopener noreferrer">[Paper Note] Are We Done with MMLU?, Aryo Pradipta Gema+, NAACL'25</a>
-<br><br>において、多くのエラーが含まれることが指摘され、再アノテーションが実施されている。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="blimp-the-2715" class="title-link">[Paper Note] BLiMP: The Benchmark of Linguistic Minimal Pairs for English, Alex Warstadt+, TACL'20</h3><br><a href="https://arxiv.org/abs/1912.00582" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11815,8 +11843,8 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-20</span>
-<span class="snippet"><span>GPT Summary</span>- 要約の事実の不整合を特定するための自動評価プロトコルであるQAGSを提案する。QAGSは、要約とソースについて質問をし、整合性がある回答を得ることで要約の事実的整合性を評価する。QAGSは他の自動評価指標と比較して高い相関を持ち、自然な解釈可能性を提供する。QAGSは有望なツールであり、https://github.com/W4ngatang/qagsで利用可能。</span>
 <span class="snippet"><span>Comment</span><p>QAGS</p><p>生成された要約からQuestionを生成する手法。precision-oriented</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11835,8 +11863,8 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-16</span>
-<span class="snippet"><span>GPT Summary</span>- ニューラル抽象的要約モデルの信頼性を評価するために、人間の注釈を収集し、信頼性の自動評価指標であるFEQAを提案した。FEQAは質問応答を利用して要約の信頼性を評価し、特に抽象的な要約において人間の評価と高い相関を示した。</span>
 <span class="snippet"><span>Comment</span><p>FEQA</p><p>生成された要約からQuestionを生成する手法。precision-oriented </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11860,7 +11888,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>Hybrid Lexical and MOdel-based evaluation of Summaries (HOLMS)</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="unsupervised-reference-free-977" class="title-link">Unsupervised Reference-Free Summary Quality Evaluation via Contrastive  Learning, Hanlu Wu+, N_A, EMNLP'20</h3><br><a href="https://arxiv.org/abs/2010.01781" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="unsupervised-reference-free-977" class="title-link">[Paper Note] Unsupervised Reference-Free Summary Quality Evaluation via Contrastive Learning, Hanlu Wu+, arXiv'20, 2020.10</h3><br><a href="https://arxiv.org/abs/2010.01781" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -11876,8 +11904,10 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、参照要約なしで要約の品質を評価するために教師なしの対照的学習を提案しています。新しいメトリックを設計し、ランキング損失でモデルを訓練することで、要約品質の異なる側面に関する異なるタイプのネガティブサンプルを構築します。実験結果は、参照要約なしでも他のメトリックよりも優れた評価方法であることを示しています。また、提案手法が一般的かつ転移可能であることも示されています。</span>
+<span class="snippet"><span>GPT Summary</span>- 要約タスクの評価は重要であり、従来のROUGEは参照要約が必要である。本研究は、教師なしの対照学習を用いて参照なしで要約品質を評価する新しい指標を提案。BERTに基づき、言語的品質と意味的情報量をカバーする指標を設計し、ネガティブサンプルを使ってモデルを訓練。NewsroomとCNN/Daily Mailの実験で、提案手法が他の指標を上回ることを示し、データセット間での一般性も確認。</span>
 <span class="snippet"><span>Comment</span><p>LS_Score</p><p>色々なメトリックが簡潔にまとまっている</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11897,8 +11927,9 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LM-based.html" target="_blank" rel="noopener noreferrer">#LM-based</a>
 <a class="button" href="Factuality.html" target="_blank" rel="noopener noreferrer">#Factuality</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、要約の事実的な整合性を検証するためのモデルベースのアプローチを提案しています。トレーニングデータはルールベースの変換を用いて生成され、モデルは整合性の予測とスパン抽出のタスクで共同してトレーニングされます。このモデルは、ニューラルモデルによる要約に対して転移学習を行うことで、以前のモデルを上回る性能を示しました。さらに、人間の評価でも補助的なスパン抽出タスクが有用であることが示されています。データセットやコード、トレーニング済みモデルはGitHubで公開されています。</span>
 <span class="snippet"><span>Comment</span><p>FactCC</p><p>近年のニューラルモデルは流ちょうな要約を生成するが、それらには、unsuportedなinformationが多く含まれていることを示した</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11919,7 +11950,6 @@ My Issue
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="LM-based.html" target="_blank" rel="noopener noreferrer">#LM-based</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- パラフレーザを使用して機械翻訳の評価を行うタスクを定義し、多言語NMTシステムをトレーニングしてパラフレーシングを行います。この手法は直感的であり、人間の判断を必要としません。39言語でトレーニングされた単一モデルは、以前のメトリクスと比較して優れたパフォーマンスを示し、品質推定のタスクでも優れた結果を得ることができます。</span>
 <span class="snippet"><span>Comment</span><p>PRISM</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11938,7 +11968,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- BLANCは、要約の品質を自動的に推定するための新しいアプローチです。BLANCは、事前学習済みの言語モデルを使用してドキュメントの要約にアクセスし、要約の機能的なパフォーマンスを測定します。BLANCスコアは、ROUGEと同様に人間の評価と良好な相関関係を持ち、人間によって書かれた参照要約が不要なため、完全に人間不在の要約品質推定が可能です。</span>
 </article>
 <article class="paper-entry">
 <h3 id="supert-towards-945" class="title-link">SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics for Multi-Document Summarization, Gao+, ACL'20</h3><br><a href="https://aclanthology.org/2020.acl-main.124/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -11957,7 +11986,6 @@ My Issue
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="Training-Free.html" target="_blank" rel="noopener noreferrer">#Training-Free</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- この研究では、教師なしの複数文書要約評価メトリックスについて調査しています。提案手法SUPERTは、擬似的な参照要約として選択された重要な文を使用し、文脈化埋め込みとソフトトークンアラインメント技術を用いて要約の品質を評価します。SUPERTは従来の教師なし評価メトリックスよりも人間の評価との相関が高く、18〜39％の向上が見られます。また、SUPERTを報酬として使用してニューラルベースの強化学習要約器をガイドすることで、有利なパフォーマンスを実現しています。ソースコードはGitHubで入手可能です。</span>
 <span class="snippet"><span>Comment</span><p>pseudo-reference summaryを作成し、referenceに対してSBERTを適用しsystem-reference間の類似度を測ることで、unsupervisedに複数文書要約を評価する手法。<br><br>まずTACのデータに対して、既存研究（single document summarizationの評価用に提案された手法）を適用し、Human Ratingsとの相関が低いことを確認している。この時、Referenceを用いる手法（ROUGE、MoverScore）の相関をUpper Boundとし、Upper Boundに及ばないことを確認している。また、既存研究よりもシンプルなJS Divergence等を用いるlexical basedな手法の相関が高かったことも確認している。<br>続いて、unsupervisedな手法として、contextualなembeddingを利用し（BERT, SBERT等）source, system summary間の類似度を測る手法で相関を測ったところ、こちらでもUpper Boundに及ばないこと、シンプルな手法に及ばないことを確認。これら手法にWMDを応用するすることで相関が向上することを確認した。<br>これらのことより、Referenceがある場合、無い場合の両者においてWMDを用いる手法が有効であることが確認できたが、Referenceの有無によって相関に大きな差が生まれていることが確認できた。このことから、何らかの形でReferenceが必要であり、pseudo referenceを生成し利用することを着想した、というストーリーになっている。</p><p>pseudo referenceを生成する方法として、top Nのリード文を抽出する手法や、LexRankのようなGraphBasedな手法を利用してTACデータにおいてどのような手法が良いかを検証している。この結果、TAC8,9の場合はTop 10,15のsentenceをpseudo referenceとした場合が最も良かった。<br><br>細かいところまで読みきれていないが、自身が要約したい文書群においてどの方法でpseudo referenceを生成するかは、Referenceがないと判断できないと考えられるため、その点は課題だと考えられる。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11978,7 +12006,36 @@ My Issue
 <a class="button" href="Reference-based.html" target="_blank" rel="noopener noreferrer">#Reference-based</a>
 <a class="button" href="TrainedMetrics.html" target="_blank" rel="noopener noreferrer">#TrainedMetrics</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- BLEURTは、BERTをベースとした学習済みの評価指標であり、人間の判断と高い相関を持つことが特徴です。BLEURTは、数千のトレーニング例を使用してバイアスのある評価をモデル化し、数百万の合成例を使用してモデルの汎化を支援します。BLEURTは、WMT Metrics共有タスクとWebNLGデータセットで最先端の結果を提供し、トレーニングデータが少ない場合や分布外の場合でも優れた性能を発揮します。</span>
+</article>
+<article class="paper-entry">
+<h3 id="measuring-massive-901" class="title-link">[Paper Note] Measuring Massive Multitask Language Understanding, Dan Hendrycks+, arXiv'20, 2020.09</h3><br><a href="https://arxiv.org/abs/2009.03300" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/901" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2023-07-24</span>
+<span class="snippet"><span>GPT Summary</span>- 新しいテストを提案し、57のマルチタスクを用いてテキストモデルの正確度を測定。高い正確度には広範な世界知識と問題解決能力が必要である。GPT-3モデルはランダム推測を約20ポイント上回るが、専門家レベルには遠く、多くのタスクで偏った性能を示す。特に道徳や法に関してはほぼランダムに近い正確度を記録。このテストはモデルの理解力を評価し、重要な欠点を明らかにすることを目的とする。</span>
+<span class="snippet"><span>Comment</span><p>OpenReview:
+
+
+<a href="https://openreview.net/forum?id=d7KBjmI3GmQ" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=d7KBjmI3GmQ</a>
+
+
+</p><p>MMLU論文</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2736" target="_blank" rel="noopener noreferrer">[Paper Note] Are We Done with MMLU?, Aryo Pradipta Gema+, NAACL'25</a>
+<br><br>において、多くのエラーが含まれることが指摘され、再アノテーションが実施されている。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="are-we-441" class="title-link">[Paper Note] Are We Evaluating Rigorously? Benchmarking Recommendation for Reproducible Evaluation and Fair Comparison, Sun+, RecSys'20</h3><br><a href="https://dl.acm.org/doi/10.1145/3383313.3412489" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12075,8 +12132,9 @@ My Issue
 </a><br>
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="IJCNLP.html" target="_blank" rel="noopener noreferrer">#IJCNLP</a>
 <span class="issue_date">Issue Date: 2023-08-16</span>
-<span class="snippet"><span>GPT Summary</span>- テキスト要約の研究は進展が停滞しており、データセット、評価指標、モデルの3つの要素に問題があることが指摘されている。自動収集されたデータセットは制約が不十分であり、ノイズを含んでいる可能性がある。評価プロトコルは人間の判断と相関が弱く、重要な特性を考慮していない。モデルはデータセットのバイアスに過適合し、出力の多様性が限られている。</span>
 </article>
 <article class="paper-entry">
 <h3 id="question-answering-995" class="title-link">Question answering as an automatic evaluation metric for news article summarization, Eyal+, NAACL'19</h3><br><a href="https://aclanthology.org/N19-1395/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12094,8 +12152,8 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
+<a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2023-08-16</span>
-<span class="snippet"><span>GPT Summary</span>- 最近の自動要約の研究では、ROUGEスコアの最大化に焦点を当てているが、本研究では代替的な評価指標であるAPESを提案する。APESは、要約が一連の手動作成質問に答える能力を定量化する。APESを最大化するエンドツーエンドのニューラル抽象モデルを提案し、ROUGEスコアを向上させる。</span>
 <span class="snippet"><span>Comment</span><p>APES</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -12113,12 +12171,12 @@ My Issue
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-16</span>
-<span class="snippet"><span>GPT Summary</span>- 自動評価メトリックは通常、人間の判断との相関性を基準に比較されるが、既存の人間の判断データセットは限られている。現代のシステムはこれらのデータセット上で高スコアを出すが、評価メトリックの結果は異なる。高スコアの要約に対する人間の判断を収集することで、メトリックの信頼性を解決することができる。これは要約システムとメトリックの改善に役立つ。</span>
 <span class="snippet"><span>Comment</span><p>要約のメトリックがhuman judgmentsに対してcorrelationが低いことを指摘</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="machine-translation-954" class="title-link">Machine Translation Evaluation with BERT Regressor, Hiroki Shimanaka+, N_A, arXiv'19</h3><br><a href="https://arxiv.org/abs/1907.12679" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="machine-translation-954" class="title-link">[Paper Note] Machine Translation Evaluation with BERT Regressor, Hiroki Shimanaka+, arXiv'19, 2019.07</h3><br><a href="https://arxiv.org/abs/1907.12679" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -12134,7 +12192,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="TrainedMetrics.html" target="_blank" rel="noopener noreferrer">#TrainedMetrics</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 私たちは、BERTを使用した自動的な機械翻訳の評価メトリックを紹介します。実験結果は、私たちのメトリックがすべての英語対応言語ペアで最先端のパフォーマンスを達成していることを示しています。</span>
+<span class="snippet"><span>GPT Summary</span>- BERTを用いた機械翻訳の自動評価指標を提案し、WMT-2017 Metrics Shared Taskデータセットにおいて、すべての英語翻訳ペアに対して最先端の性能を達成した。</span>
 </article>
 <article class="paper-entry">
 <h3 id="moverscore-text-946" class="title-link">MoverScore: Text Generation Evaluating with Contextualized Embeddings and Earth Mover Distance, Zhao+, EMNLP-IJCNLP'19</h3><br><a href="https://aclanthology.org/D19-1053/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12177,7 +12235,6 @@ My Issue
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 最近、再強化学習（RL）を使用した抽象的要約手法が提案されており、従来の尤度最大化を克服するために使用されています。この手法は、複雑で微分不可能なメトリクスを考慮することで、生成された要約の品質と関連性を総合的に評価することができます。ROUGEという従来の要約メトリクスにはいくつかの問題があり、代替的な評価尺度を探求する必要があります。報告された人間評価の分析によると、質問応答に基づく提案されたメトリクスはROUGEよりも有利であり、参照要約を必要としないという特徴も持っています。これらのメトリクスを使用してRLベースのモデルをトレーニングすることは、現在の手法に比べて改善をもたらします。</span>
 <span class="snippet"><span>Comment</span><p>SummaQA</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -12310,6 +12367,8 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
+<a class="button" href="AAAI.html" target="_blank" rel="noopener noreferrer">#AAAI</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-08-16</span>
 <span class="snippet"><span>GPT Summary</span>- 自然言語処理システムの評価における問題の一つは、2つのテキストパッセージの内容の違いを特定することです。本研究では、1つのテキストパッセージを小さな知識ベースとして扱い、多数の質問を投げかけて内容を比較する方法を提案します。実験結果は有望であり、2007年のDUC要約コーパスを使用して行われました。</span>
 <span class="snippet"><span>Comment</span><p>QGQAを提案した研究</p></span><br><br>
@@ -12383,8 +12442,9 @@ My Issue
 <a class="button" href="NaturalLanguageGeneration.html" target="_blank" rel="noopener noreferrer">#NaturalLanguageGeneration</a>
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
 <span class="issue_date">Issue Date: 2023-08-16</span>
-<span class="snippet"><span>GPT Summary</span>- NLGの評価には自動評価指標が使われているが、本研究ではシステムやデータに依存しない新しい評価手法の必要性を提案する。幅広い指標を調査し、それらがデータ駆動型のNLGによって生成されたシステムの出力の人間の判断を弱く反映していることを示す。また、評価指標の性能はデータとシステムに依存することも示すが、自動評価指標はシステムレベルで信頼性があり、システムの開発をサポートできることを示唆する。特に、低いパフォーマンスを示すケースを見つけることができる。</span>
 <span class="snippet"><span>Comment</span><p>既存のNLGのメトリックがhuman judgementsとのcorrelationがあまり高くないことを指摘した研究</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -12422,8 +12482,8 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Coherence.html" target="_blank" rel="noopener noreferrer">#Coherence</a>
+<a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>Comment</span><p>__translate: Coherence is established by semantic connections between sentences of a text which can be modeled by lexical relations. In this paper, we introduce the lexical coherence graph (LCG), a new graph-based model to represent lexical relations among sentences. The frequency of subgraphs (coherence patterns) of this graph captures the connectivity style of sentence nodes in this graph. The coherence of a text is encoded by a vector of these frequencies. We evaluate the LCG model on the readability ranking task. The results of the experiments show that the LCG model obtains higher accuracy than state-of-the-art coherence models. Using larger subgraphs yields higher accuracy, because they capture more structural information. However, larger subgraphs can be sparse. We adapt Kneser-Ney smoothing to smooth subgraphs’ frequencies. Smoothing improves performance.</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="from-word-978" class="title-link">[Paper Note] From word embeddings to document distances, Kusner+, ICML'15</h3><br><a href="https://proceedings.mlr.press/v37/kusnerb15.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12442,6 +12502,7 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-based.html" target="_blank" rel="noopener noreferrer">#Reference-based</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
 <span class="snippet"><span>Comment</span><p>WMS/SMS/S+WMS<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/946" target="_blank" rel="noopener noreferrer">MoverScore: Text Generation Evaluating with Contextualized Embeddings and Earth Mover Distance, Zhao+, EMNLP-IJCNLP'19</a>
 <br><br>はこれらからinspiredされ提案された</p></span><br><br>
@@ -12533,8 +12594,8 @@ My Issue
 </a><br>
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-23</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、要約の評価において新しい技術を提案しています。これにより、人間の要約が利用できない場合や、単一のモデルしか利用できない場合でも正確な評価が可能となります。具体的には、モデルに依存しない評価技術や、システム要約の類似性を定量化する尺度などを提案しています。これにより、要約の評価を人間の評価と正確に再現することができます。また、擬似モデルを導入することで、利用可能なモデルのみを使用する場合よりも人間の判断との相関が高くなることも示しています。さらに、システム要約のランキング方法についても探求しており、驚くほど正確なランキングが可能となります。</span>
 <span class="snippet"><span>Comment</span><p>メタ評価の具体的な手順について知りたければこの研究を読むべし</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -12555,8 +12616,8 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Coherence.html" target="_blank" rel="noopener noreferrer">#Coherence</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 私たちは、グラフベースのアプローチを提案し、文の順序付け、要約の結束性評価、読みやすさの評価の3つのタスクでシステムを評価しました。このアプローチは、エンティティグリッドベースのアプローチと同等の性能を持ち、計算コストの高いトレーニングフェーズやデータのまばらさの問題にも対処できます。</span>
 </article>
 <article class="paper-entry">
 <h3 id="indoor-segmentation-3735" class="title-link">[Paper Note] Indoor Segmentation and Support Inference from RGBD Images, Silberman+, ECCV'12</h3><br><a href="https://cs.nyu.edu/~fergus/datasets/indoor_seg_support.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12616,7 +12677,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="CrossLingual.html" target="_blank" rel="noopener noreferrer">#CrossLingual</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- この研究では、異なる言語の要約コーパスを使用して、マルチリンガルBERTを用いたBERTScoreが他の要約評価メトリックスよりも優れたパフォーマンスを示すことが示されました。これは、英語以外の言語においても有効であることを示しています。</span>
 </article>
 <article class="paper-entry">
 <h3 id="extending-machine-968" class="title-link">Extending Machine Translation Evaluation Metrics with Lexical Cohesion to Document Level, Wong+, EMNLP'12</h3><br><a href="https://aclanthology.org/D12-1097/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12636,8 +12696,8 @@ My Issue
 <a class="button" href="Metrics.html" target="_blank" rel="noopener noreferrer">#Metrics</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Coherence.html" target="_blank" rel="noopener noreferrer">#Coherence</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- この論文では、語彙的な結束を利用して文書レベルの機械翻訳の評価を容易にする方法を提案しています。語彙的な結束は、同じ意味を持つ単語を使って文を結びつけることで、テキストの結束性を実現します。実験結果は、この特徴を評価尺度に組み込むことで、人間の判断との相関を向上させることを示しています。</span>
 <span class="snippet"><span>Comment</span><p>RC-LC</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -12655,6 +12715,7 @@ My Issue
 <a class="button" href="DocumentSummarization.html" target="_blank" rel="noopener noreferrer">#DocumentSummarization</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="QA-based.html" target="_blank" rel="noopener noreferrer">#QA-based</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-08-20</span>
 <span class="snippet"><span>Comment</span><p>QAベースドなアプローチを人手評価に導入した初めての研究</p></span><br><br>
 </article>
@@ -12675,7 +12736,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-free.html" target="_blank" rel="noopener noreferrer">#Reference-free</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- この論文では、ROUGEを使用して要約を評価する方法について説明しています。ROUGEは、要約評価のために広く使用されていますが、手動の参照要約が必要です。この研究では、ROUGE-Cという手法を開発しました。ROUGE-Cは、参照要約を入力情報に置き換えることで、手動の参照要約なしで要約を評価することができます。実験結果は、ROUGE-Cが人間の判断を含む参照要約とよく相関していることを示しています。</span>
 </article>
 <article class="paper-entry">
 <h3 id="supervised-automatic-988" class="title-link">Supervised automatic evaluation for summarization with voted regression model, Hirao+, Information and Processing & Management'07</h3><br><a href="https://www.sciencedirect.com/science/article/abs/pii/S0306457307000416" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12695,7 +12755,6 @@ My Issue
 <a class="button" href="Reference-based.html" target="_blank" rel="noopener noreferrer">#Reference-based</a>
 <a class="button" href="TrainedMetrics.html" target="_blank" rel="noopener noreferrer">#TrainedMetrics</a>
 <span class="issue_date">Issue Date: 2023-08-14</span>
-<span class="snippet"><span>GPT Summary</span>- 要約システムの評価には高品質な人間の評価が必要だが、コストが高いため自動評価方法が必要。提案手法は投票回帰モデル（VRM）を使用し、従来の自動評価方法と比較してエラー削減を達成。さらに、最も高い相関係数を得た。</span>
 <span class="snippet"><span>Comment</span><p>VRM</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -14480,7 +14539,7 @@ My Issue
 <a class="button" href="Live.html" target="_blank" rel="noopener noreferrer">#Live</a>
 <span class="issue_date">Issue Date: 2025-09-10</span>
 <span class="snippet"><span>Comment</span><p>ArenaHardデータセット</p><p>ChatbotArenaのデータからコンタミネーションに考慮して定期的に抽出される高品質なreal worldに近いのconversationデータセット。抽出プロセスではpromptの多様性とqualityが担保される形で、200,000のユーザからのpromptが抽出されフィルタリングにかけられる。<br>多様性という観点では、全てのpromptを OpenAI の `text-embedding-3-small` によってembeddingに変換し、UMAPによって次元圧縮をした後に階層的クラスタリング手法によってトピッククラスタを形成する。各クラスタにはGPT-4-turboで要約が付与され、要約を活用して4000のトピッククラスタを選定する。<br>続いて、各クラスタに含まれるクエリは品質がバラバラなので、高品質なものを抽出するために以下の観点からLLM-as-a-Judge（GPT-3.5-Turbo, GPT-4-turbo）を用いてフィルタリングを実施する:<br>```<br>1. Specificity: Does the prompt ask for a specific output?<br>2. Domain Knowledge: Does the prompt cover one or more specific domains?<br>3. Complexity: Does the prompt have multiple levels of reasoning, components, or variables?<br>4. Problem-Solving: Does the prompt directly involve the AI to demonstrate active problem-solving skills?<br>5. Creativity: Does the prompt involve a level of creativity in approaching the problem?<br>6. Technical Accuracy: Does the prompt require technical accuracy in the response?<br>7. Real-world Application: Does the prompt relate to real-world applications?<br>```<br>（観点は元記事から引用）<br><br>各観点を満たしていたら1ポイントとし、各promptごとに[0, 7]のスコアが付与される。各トピッククラスタはクラスタ中のpromptの平均スコアによってスコアリングされフィルタリングに活用される。<br>最終的に250のhigh-qualityなトピッククラスタ（すなわち、スコアが>=6のクラスタ）が選ばれ、各クラスタから2つのサンプルをサンプリングして合計500個のbenchmark promptを得る。<br>評価をする際は、評価対象のモデルとstrong baseline（GPT-4-0314）のレスポンスを比較し、LLM-as-a-Judge（GPT-4-Turbo, Claude-3-Opus）によってペアワイズの品質データを取得する。position biasに配慮するためにreaponseの位置を入れ替えて各サンプルごとに2回評価するので、このデータは1000個のペアワイズデータとなる。<br>このペアワイズデータをbootstrap resamplingした上で、Bradley-Terryモデル（=勝敗データからプレイヤーの強さを数値化する統計モデル）でスコアを計算することでスコアを得る。<br><br>ArenaHardはMT Benchよりも高い識別力を獲得している。<br><br><img src="https://github.com/user-attachments/assets/a9bca283-31c2-4606-b59d-b7df60af43f1" /" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/623" target="_blank" rel="noopener noreferrer">ChatBot Arena, lmsys org, 2023.05</a>
- <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/876" target="_blank" rel="noopener noreferrer">ChatBot Arenaのデータセット</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/876" target="_blank" rel="noopener noreferrer">Chatbot Arena Conversation Dataset Release, LMSYS Org, 2023.07</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -15310,7 +15369,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>JGLUEのexample付きの詳細、構築の経緯のみならず、最近の英語・日本語LLMの代表的な評価データ（方法）がまとまっている（AlpacaEval, MTBenchなど）。また、LLMにおける自動評価の課題（図は資料より引用）が興味深く、LLM評価で生じるバイアスについても記述されている。Name biasなどはなるほどと思った。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/46e3f4af-dbe1-45cf-b1e4-85e8b547ef03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>日本語LLMの今後の評価に向けて、特にGPT4による評価を避け、きちんとアノテーションしたデータを用意しfinetuningした分類器を用いるという視点、参考にしたい。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f88943b1-856e-4ca7-a256-5581cda333fb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="evaluating-rag-1101" class="title-link">Evaluating RAG Pipelines</h3><br><a href="https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="evaluating-rag-1101" class="title-link">Evaluating RAG Pipelines, LangChain Blog, 2023.10</h3><br><a href="https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -15328,11 +15387,12 @@ My Issue
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2023-10-29</span>
 <span class="snippet"><span>Comment</span><p>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。<br><br>評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference answerが必要。<br>Ragasスコアとしてどのメトリックを利用するかは選択することができ、選択したメトリックのharmonic meanでスコアが算出される。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>各種メトリックの内部的な処理は下記:<br>- faithfullness<br>  - questionと生成された回答に基づいて、statementのリストをLLMで生成する。statementは回答が主張している内容をLLMが解釈したものだと思われる。<br>  - statementのリストとcontextが与えられたときに、statementがcontextにsupportされているかをLLMで評価する。<br>  - num. of supported statements / num. of statements でスコアが算出される<br>- Answer Relevancy<br>  - LLMで生成された回答から逆に質問を生成し、生成された質問と実際の質問の類似度を測ることで評価<br>- Context Relevancy<br>  - どれだけcontextにノイズが含まれるかを測定する。<br>  - LLMでcontextの各文ごとに回答に必要な文か否かを判断する<br>  - 回答に必要な文数 / 全文数 でスコアを算出<br>- Context Recall<br>  - 回答に必要な情報を全てretrieverが抽出できているか<br>  - ground truthとなる回答からstatementをLLMで生成し、statementがcontextでどれだけカバーされているかで算出<br><br>また、LangSmithを利用して実験を管理する方法についても記述されている。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3a30d238-ac48-401c-906b-4ddb5fca50be" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="日本語llmのリーダーボード（llm.jp）-1096" class="title-link">日本語LLMのリーダーボード（LLM.jp）</h3><br><a href="https://wandb.ai/llm-jp-eval/test-eval/reports/llm-jp-eval---Vmlldzo1NzE0NjA1?accessToken=s09hm7xrqg43ls8i25am6t0r7iwjpninwzeelqqgbx53zivlm9s04ixfpv3xgiwm" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="日本語llmのリーダーボード（llm.jp）-1096" class="title-link">日本語LLMのリーダーボード（LLM.jp）, Weights & Biases</h3><br><a href="https://wandb.ai/llm-jp-eval/test-eval/reports/llm-jp-eval---Vmlldzo1NzE0NjA1?accessToken=s09hm7xrqg43ls8i25am6t0r7iwjpninwzeelqqgbx53zivlm9s04ixfpv3xgiwm" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -15347,14 +15407,16 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2023-10-27</span>
 <span class="snippet"><span>Comment</span><p>LLM.jpによる日本語LLMのリーダーボード。4-shotsでの結果、かつinstructionを与えた場合の生成テキストに対する評価、という点には留意したい。たとえばゼロショットで活用したい、という場合にこのリーダーボードの結果がそのまま再現される保証はないと推察される。<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1079" target="_blank" rel="noopener noreferrer">日本語LLMベンチマークと自動プロンプトエンジニアリング, PFN Blog, 2023.10</a>
- の知見でもあった通り、promptingの仕方によってもLLM間で順位が逆転する現象なども起こりうる。あくまでリーダーボードの値は参考値として留め、どのLLMを採用するかは、自分が利用するタスクやデータで検証した方がbetterだと思われる。<br><br>あとはそもそも本当にLLMを使う必要があるのか? <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer">[Paper Note] Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, EMNLP'23 System Demonstrations, 2023.08</a>
-  のような手法ではダメなのか?みたいなところも考えられると良いのかもしれない。<br><br>以下サイトより引用<br>> 評価手法・ツール<br>このダッシュボードの内容はllm-jpで公開している評価ツール、llm-jp-evalで各モデルに対して評価を行なった結果である。llm-jp-evalは、既存のリーダボードとは行われている評価とは、主に以下のところで違っている。<br>AlpacaやBig-Benchなどを参考にした、インストラクションチューニングよりのプロンプトを入力として与えて、その入力に対するモデルの生成結果を評価する<br>>評価は基本、モデルが生成した文字列だけを使って行う<br>>Few shotでの評価を行っており、このダッシュボードには4-shotsでの結果を載せている<br><br>>評価手法・ツールの詳細はllm-jp-evalを是非参照されたい。<br><br>>評価項目・データセット<br>評価項目として、まず4つのカテゴリーにおける平均スコアを算出した。さらにその4カテゴリーの平均値の平均値をとった値がAVGである。<br>MC (Multi-Choice QA)：jcommonsenseqa<br>NLI (Natural Language Inference)：jamp、janli、jnli、jsem、jsick<br>QA (Question Answering)：jemhopqa、niilc<br>RC (Reading Comprehension)：jsquad<br><br>>それぞれのカテゴリの平均を出す方法に言語学的な意味はないため、最終的な平均値はあくまで参考値ということに注意されたい。</p><p>JGlueを利用した日本語LLMのリーダーボードとして <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1055" target="_blank" rel="noopener noreferrer">Nejumi LLMリーダーボード</a>
+ の知見でもあった通り、promptingの仕方によってもLLM間で順位が逆転する現象なども起こりうる。あくまでリーダーボードの値は参考値として留め、どのLLMを採用するかは、自分が利用するタスクやデータで検証した方がbetterだと思われる。<br><br>あとはそもそも本当にLLMを使う必要があるのか? <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer">[Paper Note] Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, arXiv'23, 2023.08</a>
+  のような手法ではダメなのか?みたいなところも考えられると良いのかもしれない。<br><br>以下サイトより引用<br>> 評価手法・ツール<br>このダッシュボードの内容はllm-jpで公開している評価ツール、llm-jp-evalで各モデルに対して評価を行なった結果である。llm-jp-evalは、既存のリーダボードとは行われている評価とは、主に以下のところで違っている。<br>AlpacaやBig-Benchなどを参考にした、インストラクションチューニングよりのプロンプトを入力として与えて、その入力に対するモデルの生成結果を評価する<br>>評価は基本、モデルが生成した文字列だけを使って行う<br>>Few shotでの評価を行っており、このダッシュボードには4-shotsでの結果を載せている<br><br>>評価手法・ツールの詳細はllm-jp-evalを是非参照されたい。<br><br>>評価項目・データセット<br>評価項目として、まず4つのカテゴリーにおける平均スコアを算出した。さらにその4カテゴリーの平均値の平均値をとった値がAVGである。<br>MC (Multi-Choice QA)：jcommonsenseqa<br>NLI (Natural Language Inference)：jamp、janli、jnli、jsem、jsick<br>QA (Question Answering)：jemhopqa、niilc<br>RC (Reading Comprehension)：jsquad<br><br>>それぞれのカテゴリの平均を出す方法に言語学的な意味はないため、最終的な平均値はあくまで参考値ということに注意されたい。</p><p>JGlueを利用した日本語LLMのリーダーボードとして <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1055" target="_blank" rel="noopener noreferrer">Nejumi LLMリーダーボード, Weights & Biases</a>
  などもある</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="nejumi-llmリーダーボード-1055" class="title-link">Nejumi LLMリーダーボード</h3><br><a href="https://wandb.ai/wandb/LLM_evaluation_Japan/reports/Nejumi-LLM---Vmlldzo0NTUzMDE2?accessToken=u1ttt89al8oo5p5j12eq3nldxh0378os9qjjh14ha1yg88nvs5irmuao044b6eqa" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="nejumi-llmリーダーボード-1055" class="title-link">Nejumi LLMリーダーボード, Weights & Biases</h3><br><a href="https://wandb.ai/wandb/LLM_evaluation_Japan/reports/Nejumi-LLM---Vmlldzo0NTUzMDE2?accessToken=u1ttt89al8oo5p5j12eq3nldxh0378os9qjjh14ha1yg88nvs5irmuao044b6eqa" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -15368,6 +15430,8 @@ My Issue
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-10-02</span>
 <span class="snippet"><span>Comment</span><p>JGLUEを使ったLLMの日本語タスクベンチマーク</p><p>v4が公開:<br>
 
@@ -15422,7 +15486,6 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Reference-based.html" target="_blank" rel="noopener noreferrer">#Reference-based</a>
 <span class="issue_date">Issue Date: 2023-08-13</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、古典的な要約データセットを使用して、人間の判断に基づいた自動スコアリングメトリックの学習を提案します。既存のメトリックを組み込み、人間の判断と高い相関を持つ組み合わせを学習します。新しいメトリックの信頼性は手動評価によってテストされます。学習済みのメトリックはオープンソースのツールとして公開されます。</span>
 </article>
 <article class="paper-entry">
 <h3 id="are-human-825" class="title-link">Are Human Explanations Always Helpful? Towards Objective Evaluation of Human Natural Language Explanations</h3><br><a href="https://virtual2023.aclweb.org/paper_P4908.html#abstract" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -15519,7 +15582,7 @@ My Issue
 </div>
 
 
-<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2faafce4-effd-40b1-8760-d9639d3df6aa" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>過去のデータについては <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/876" target="_blank" rel="noopener noreferrer">ChatBot Arenaのデータセット</a>
+<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/2faafce4-effd-40b1-8760-d9639d3df6aa" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>過去のデータについては <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/876" target="_blank" rel="noopener noreferrer">Chatbot Arena Conversation Dataset Release, LMSYS Org, 2023.07</a>
  などもある</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -15615,19 +15678,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ConceptErasure.html"
-            title="ConceptErasureに関する論文・技術記事メモの一覧">
-            ConceptErasureに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Arena.html"
-            title="Arenaに関する論文・技術記事メモの一覧">
-            Arenaに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DiseaseNameRecognition.html"
+            title="DiseaseNameRecognitionに関する論文・技術記事メモの一覧">
+            DiseaseNameRecognitionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -15635,22 +15688,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ImageToTextGeneration.html"
-            title="ImageToTextGenerationに関する論文・技術記事メモの一覧">
-            ImageToTextGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/MultiModal.html"
+            title="MultiModalに関する論文・技術記事メモの一覧">
+            MultiModalに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 193</span> 
+  <span class="post-badge badge-new">📝 193</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/LAK.html"
-            title="LAKに関する論文・技術記事メモの一覧">
-            LAKに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Evaluation.html"
+            title="Evaluationに関する論文・技術記事メモの一覧">
+            Evaluationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 480</span> 
+  <span class="post-badge badge-new">📝 480</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Post.html"
+            title="Postに関する論文・技術記事メモの一覧">
+            Postに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
+  <span class="post-badge badge-new">📝 24</span>
 </span>
 </a>
         </li></ul>

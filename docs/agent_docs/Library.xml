@@ -1034,7 +1034,7 @@ Encoder-only transformer models such as BERT offer a great performance-size trad
 - エンコーダ専用のトランスフォーマーモデルであるBERTは、リトリーバルや分類タスクにおいて、より大きなデコーダ専用モデルに比べて優れた性能とサイズのトレードオフを提供します。多くのプロダクションパイプラインの主力であるにもかかわらず、BERTのリリース以降、限られたパレート改善しか見られていません。本論文では、ModernBERTを紹介し、エンコーダ専用モデルに現代的なモデル最適化をもたらし、古いエンコーダに対して大きなパレート改善を実現します。2兆トークンで訓練され、ネイティブの8192シーケンス長を持つModernBERTモデルは、多様な分類タスクや異なるドメイン（コードを含む）における単一および多ベクトルのリトリーバルを含む大規模な評価プールで最先端の結果を示します。強力な下流性能に加えて、ModernBERTは最も速度とメモリ効率の良いエンコーダであり、一般的なGPUでの推論のために設計されています。
 # Summary (by gpt-4o-mini)
 - ModernBERTは、エンコーダ専用のトランスフォーマーモデルで、従来のBERTに比べて大幅なパレート改善を実現。2兆トークンで訓練され、8192シーケンス長を持ち、分類タスクやリトリーバルで最先端の結果を示す。速度とメモリ効率も優れており、一般的なGPUでの推論に最適化されている。</issue-body>
-<maintainer-comment-text><p>最近の進化しまくったTransformer関連のアーキテクチャをEncodnr-OnlyモデルであるBERTに取り込んだら性能上がるし、BERTの方がコスパが良いタスクはたくさんあるよ、系の話、かつその実装だと思われる。<br>テクニカルペーパー中に記載はないが、評価データと同じタスクでのDecoder-Onlyモデル（SFT有り無し両方）との性能を比較したらどの程度の性能なのだろうか？</p><p>そもそも学習データが手元にあって、BERTをFinetuningするだけで十分な性能が出るのなら（BERTはGPU使うのでそもそもxgboostとかでも良いが）、わざわざLLM使う必要ないと思われる。BERTのFinetuningはそこまで時間はかからないし、inferenceも速い。<br><br>参考:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer">[Paper Note] Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, EMNLP'23 System Demonstrations, 2023.08</a>
+<maintainer-comment-text><p>最近の進化しまくったTransformer関連のアーキテクチャをEncodnr-OnlyモデルであるBERTに取り込んだら性能上がるし、BERTの方がコスパが良いタスクはたくさんあるよ、系の話、かつその実装だと思われる。<br>テクニカルペーパー中に記載はないが、評価データと同じタスクでのDecoder-Onlyモデル（SFT有り無し両方）との性能を比較したらどの程度の性能なのだろうか？</p><p>そもそも学習データが手元にあって、BERTをFinetuningするだけで十分な性能が出るのなら（BERTはGPU使うのでそもそもxgboostとかでも良いが）、わざわざLLM使う必要ないと思われる。BERTのFinetuningはそこまで時間はかからないし、inferenceも速い。<br><br>参考:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1024" target="_blank" rel="noopener noreferrer">[Paper Note] Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, arXiv'23, 2023.08</a>
 </p><p>日本語解説:
 
 {% raw %}
@@ -1329,10 +1329,10 @@ Encoder-only transformer models such as BERT offer a great performance-size trad
 </paper-entry>
 
 <paper-entry>
-<title>Evaluating RAG Pipelines</title>
+<title>Evaluating RAG Pipelines, LangChain Blog, 2023.10</title>
 <original-paper-blog-link>https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1101</repo-issue-link>
-<tags>Tools, NLP, LanguageModel, Library, Evaluation, RAG(RetrievalAugmentedGeneration), Blog</tags>
+<tags>Tools, NLP, LanguageModel, Library, Evaluation, RAG(RetrievalAugmentedGeneration), Blog, KeyPoint Notes</tags>
 <repo-issue-date>2023-10-29</repo-issue-date>
 <issue-body>https://blog.langchain.dev/evaluating-rag-pipelines-with-ragas-langsmith/</issue-body>
 <maintainer-comment-text><p>RAG pipeline （retrieval + generation）を評価するライブラリRagasについて紹介されている。<br><br>評価に活用される指標は下記で、背後にLLMを活用しているため、大半の指標はラベルデータ不要。ただし、context_recallを測定する場合はreference answerが必要。<br>Ragasスコアとしてどのメトリックを利用するかは選択することができ、選択したメトリックのharmonic meanでスコアが算出される。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/553e7f91-84cd-4aac-bef3-c84bc279547e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>各種メトリックの内部的な処理は下記:<br>- faithfullness<br>  - questionと生成された回答に基づいて、statementのリストをLLMで生成する。statementは回答が主張している内容をLLMが解釈したものだと思われる。<br>  - statementのリストとcontextが与えられたときに、statementがcontextにsupportされているかをLLMで評価する。<br>  - num. of supported statements / num. of statements でスコアが算出される<br>- Answer Relevancy<br>  - LLMで生成された回答から逆に質問を生成し、生成された質問と実際の質問の類似度を測ることで評価<br>- Context Relevancy<br>  - どれだけcontextにノイズが含まれるかを測定する。<br>  - LLMでcontextの各文ごとに回答に必要な文か否かを判断する<br>  - 回答に必要な文数 / 全文数 でスコアを算出<br>- Context Recall<br>  - 回答に必要な情報を全てretrieverが抽出できているか<br>  - ground truthとなる回答からstatementをLLMで生成し、statementがcontextでどれだけカバーされているかで算出<br><br>また、LangSmithを利用して実験を管理する方法についても記述されている。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3a30d238-ac48-401c-906b-4ddb5fca50be" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
@@ -1342,7 +1342,7 @@ Encoder-only transformer models such as BERT offer a great performance-size trad
 <title>LangChainのRAGの改善法, LayerX機械学習勉強会</title>
 <original-paper-blog-link>https://jobs.layerx.co.jp/1f1e1728bd9c4fee9a86f5ea51b32c1f</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1100</repo-issue-link>
-<tags>Tools, NLP, LanguageModel, Library, RAG(RetrievalAugmentedGeneration), Blog</tags>
+<tags>Tools, NLP, LanguageModel, Library, RAG(RetrievalAugmentedGeneration), Blog, One-Line Notes</tags>
 <repo-issue-date>2023-10-29</repo-issue-date>
 <issue-body>https://jobs.layerx.co.jp/1f1e1728bd9c4fee9a86f5ea51b32c1f</issue-body>
 <maintainer-comment-text><p>以下リンクからの引用。LangChainから提供されているRetrieverのcontext抽出の性能改善のためのソリューション<br><br>> Multi representation indexing：検索に適した文書表現（例えば要約）の作成<br>Query transformation：人間の質問を変換して検索を改善する方法<br>Query construction：人間の質問を特定のクエリ構文や言語に変換する方法<br><br>
@@ -1358,37 +1358,37 @@ Encoder-only transformer models such as BERT offer a great performance-size trad
 <title>Agents: An opensource framework for autonomous language agents</title>
 <original-paper-blog-link>https://github.com/aiwaves-cn/agents</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1049</repo-issue-link>
-<tags>NLP, LanguageModel, Library, AIAgents</tags>
+<tags>NLP, LanguageModel, Library, AIAgents, One-Line Notes</tags>
 <repo-issue-date>2023-09-30</repo-issue-date>
 <issue-body>https://github.com/aiwaves-cn/agents</issue-body>
 <maintainer-comment-text><p>以下の特徴を持つLLMAgent開発のためのフレームワーク<br><br>- long-short term memory<br>- tool usage<br>- web navigation<br>- multi-agent communication<br>- human-agent interaction<br>- symbolic control<br><br>また、他のAgent frameworkと違い、ゴールを達成するだの細かいプランニングを策定（SOP; サブタスクとサブゴールを定義）することで、エージェントに対してきめ細かなワークフローを定義できる。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>LangChain Cheet Sheet</title>
+<title>LangChain Cheet Sheet, KDnuggets, 2023.08</title>
 <original-paper-blog-link>https://www.kdnuggets.com/2023/08/langchain-cheat-sheet.html</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1032</repo-issue-link>
 <tags>Tools, NLP, LanguageModel, Library</tags>
 <repo-issue-date>2023-09-05</repo-issue-date>
 <issue-body>https://www.kdnuggets.com/2023/08/langchain-cheat-sheet.html</issue-body>
-<maintainer-comment-text><p><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/6621fe24-d007-4590-b1a6-b861a6dec4ad"" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+<maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>Metaの「Llama 2」をベースとした商用利用可能な日本語LLM「ELYZA-japanese-Llama-2-7b」を公開しました</title>
+<title>Metaの「Llama 2」をベースとした商用利用可能な日本語LLM「ELYZA-japanese-Llama-2-7b」を公開しました, 株式会社ELYZA 公式ブログ, 2023.08</title>
 <original-paper-blog-link>https://note.com/elyza/n/na405acaca130</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1026</repo-issue-link>
-<tags>NLP, LanguageModel, Library</tags>
+<tags>NLP, LanguageModel, Library, Blog, OpenWeight, Japanese, KeyPoint Notes</tags>
 <repo-issue-date>2023-08-29</repo-issue-date>
 <issue-body>https://note.com/elyza/n/na405acaca130</issue-body>
 <maintainer-comment-text><p>商用利用可能、70億パラメータ。<br>ELYZA社が独自に作成した評価セットでは日本語のOpenLLMの中で最高性能。ただし、モデル選定の段階でこの評価データの情報を利用しているため、有利に働いている可能性があるとのこと。<br><br>一般的に利用される日本語の評価用データでは、なんとも言い難い。良いタスクもあれば悪いタスクもある。が、多分評価用データ自体もあまり整備は進んでいないと想像されるため、一旦触ってみるのが良いのだと思う。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>zeno-build</title>
+<title>zeno-build, zeno-ml, 2023.09</title>
 <original-paper-blog-link>https://github.com/zeno-ml/zeno-build</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1025</repo-issue-link>
-<tags>NLP, LanguageModel, Library</tags>
+<tags>NLP, LanguageModel, Library, ExperimentManagement, One-Line Notes</tags>
 <repo-issue-date>2023-08-28</repo-issue-date>
 <issue-body>https://github.com/zeno-ml/zeno-build</issue-body>
 <maintainer-comment-text><p>MTでのテクニカルレポート<br>
@@ -1404,7 +1404,7 @@ Encoder-only transformer models such as BERT offer a great performance-size trad
 <title>trl_trlx</title>
 <original-paper-blog-link>https://github.com/CarperAI/trlx</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/894</repo-issue-link>
-<tags>NLP, LanguageModel, Library, ReinforcementLearning</tags>
+<tags>NLP, LanguageModel, Library, ReinforcementLearning, One-Line Notes, Reference Collection, needs-revision</tags>
 <repo-issue-date>2023-07-23</repo-issue-date>
 <issue-body>trl/trlx: Transformerに基づいたLLMををRLHFできるライブラリ
 https://github.com/CarperAI/trlx</issue-body>
