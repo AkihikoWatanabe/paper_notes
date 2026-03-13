@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 23 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 27 mins</span>
   </div></header>
 </div>
     </div>
@@ -1195,6 +1195,27 @@ My Issue
 </p><p>transformerベースの事前学習済みモデル（encoder-only, encoder-decoderモデル）のファインチューニングの話で、共通のベースモデルかつ共通のパラメータの初期化を持つ、様々なハイパーパラメータで学習したモデルの重みを平均化することでよりロバストで高性能なモデルを作ります、という話。似たような手法にアンサンブルがあるが、アンサンブルでは利用するモデルに対して全ての推論結果を得なければならないため、計算コストが増大する。一方、モデルスープは単一モデルと同じ計算量で済む（＝計算量は増大しない）。<br><br>スープを作る際は、Validation dataのAccが高い順に異なるFinetuning済みモデルをソートし、逐次的に重みの平均をとりValidation dataのAccが上がる場合に、当該モデルをsoupのingridientsとして加える。要は、開発データで性能が高い順にモデルをソートし、逐次的にモデルを取り出していき、現在のスープに対して重みを平均化した時に開発データの性能が上がるなら平均化したモデルを採用し、上がらないなら無視する、といった処理を繰り返す。これをgreedy soupと呼ぶ。他にもuniform soup, learned soupといった手法も提案され比較されているが、画像系のモデル（CLIP, ViTなど)やNLP(T5, BERT)等で実験されており、greedy soupの性能とロバストさ（OOD;分布シフトに対する予測性能）が良さそうである。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="recommendation-as-1124" class="title-link">Recommendation as Language Processing （RLP）: A Unified Pretrain,  Personalized Prompt & Predict Paradigm （P5）, Shijie Geng+, N_A, RecSys'22</h3><br><a href="https://arxiv.org/abs/2203.13366" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1124" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Zero-Few-ManyShotPrompting.html" target="_blank" rel="noopener noreferrer">#Zero/Few/ManyShotPrompting</a>
+<a class="button" href="InstructionTuning.html" target="_blank" rel="noopener noreferrer">#InstructionTuning</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2023-11-12</span>
+<span class="snippet"><span>GPT Summary</span>- 我々は「Pretrain, Personalized Prompt, and Predict Paradigm」（P5）と呼ばれる柔軟で統一されたテキストからテキストへのパラダイムを提案します。P5は、共有フレームワーク内でさまざまな推薦タスクを統一し、個別化と推薦のための深い意味を捉えることができます。P5は、異なるタスクを学習するための同じ言語モデリング目標を持つ事前学習を行います。P5は、浅いモデルから深いモデルへと進化し、広範な微調整の必要性を減らすことができます。P5の効果を実証するために、いくつかの推薦ベンチマークで実験を行いました。</span>
+<span class="snippet"><span>Comment</span><p># 概要<br><br>T5 のように、様々な推薦タスクを、「Prompt + Prediction」のpipelineとして定義して解けるようにした研究。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9b8b83a2-0930-4836-8bae-a18234fd3fd3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>P5ではencoder-decoder frameworkを採用しており、encoder側ではbidirectionalなモデルでpromptのrepresentationを生成し、auto-regressiveな言語モデルで生成を行う。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d47cb264-9e94-46c5-9b56-0b6f4e31a8de" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>推薦で利用したいデータセットから、input-target pairsを生成し上記アーキテクチャに対して事前学習することで、推薦を実現できる。<br><br><br><br>RatingPredictionでは、MatrixFactorizationに勝てていない（が、Rating Predictionについては魔法の壁問題などもあると思うのでなんともいえない。）<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a7742141-2988-4e92-96ae-f6fb4cc4ce5f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>Sequential RecommendationではBERT4Recとかにも勝てている模様。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/8badc477-8665-4404-bf4b-93ac901740d6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br><br><br># Prompt例<br><br>- Rating Predictionの例<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/9385d3ff-c186-4490-be34-3baf331aefae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>- Sequential Recommendationの例<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/12b61106-af4f-4597-9990-60bc6fa7f222" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>- Explanationを生成する例<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/b41f22fd-2476-4365-a3a0-07f72d6bb0db" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>- Zero-shotの例（Cold-Start）<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5217791e-7a7e-40d4-bdb4-b979af327032" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="fine-tuning-can-681" class="title-link">[Paper Note] Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution, Ananya Kumar+, arXiv'22, 2022.02</h3><br><a href="https://arxiv.org/abs/2202.10054" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1354,42 +1375,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/DemonstrationSelection.html"
-            title="DemonstrationSelectionに関する論文・技術記事メモの一覧">
-            DemonstrationSelectionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ActivationFunction.html"
+            title="ActivationFunctionに関する論文・技術記事メモの一覧">
+            ActivationFunctionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TransferLearning.html"
-            title="TransferLearningに関する論文・技術記事メモの一覧">
-            TransferLearningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Encoder.html"
+            title="Encoderに関する論文・技術記事メモの一覧">
+            Encoderに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 48</span> 
+  <span class="post-badge badge-new">📝 48</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SkillTag.html"
-            title="SkillTagに関する論文・技術記事メモの一覧">
-            SkillTagに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AgentSkills.html"
+            title="AgentSkillsに関する論文・技術記事メモの一覧">
+            AgentSkillsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/LAK.html"
-            title="LAKに関する論文・技術記事メモの一覧">
-            LAKに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Slide.html"
+            title="Slideに関する論文・技術記事メモの一覧">
+            Slideに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 85</span> 
+  <span class="post-badge badge-new">📝 85</span>
 </span>
 </a>
         </li></ul>
