@@ -1947,7 +1947,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>## 手法概要<br><br>Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。<br>その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。<br>このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には<br><br>- Original Questionから生成したForward Reasoningに対するクロスエントロピー<br>- Original Questionから生成したBackward Questionに対するクロスエントロピー<br>- Backward Questionから生成したBackward Reasoningに対するクロスエントロピー<br><br>の平均をとる。<br><br><img src="https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。<br><img src="https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="generative-verifiers-1388" class="title-link">Generative Verifiers: Reward Modeling as Next-Token Prediction, Lunjun Zhang+, N_A, ICLR'25</h3><br><a href="https://arxiv.org/abs/2408.15240" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="generative-verifiers-1388" class="title-link">[Paper Note] Generative Verifiers: Reward Modeling as Next-Token Prediction, Lunjun Zhang+, arXiv'24, 2024.08</h3><br><a href="https://arxiv.org/abs/2408.15240" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -1961,13 +1961,22 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="SelfCorrection.html" target="_blank" rel="noopener noreferrer">#SelfCorrection</a>
-<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="NeurIPS.html" target="_blank" rel="noopener noreferrer">#NeurIPS</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="RewardModel.html" target="_blank" rel="noopener noreferrer">#RewardModel</a>
+<a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <a class="button" href="GenerativeVerifier.html" target="_blank" rel="noopener noreferrer">#GenerativeVerifier</a>
 <span class="issue_date">Issue Date: 2024-09-11</span>
-<span class="snippet"><span>GPT Summary</span>- 検証器と報酬モデルを用いてLLMの推論性能を向上させる新しいアプローチ、生成的検証器（GenRM）を提案。GenRMは次トークン予測を用いて検証と解決策生成を共同で行い、指示チューニングや思考の連鎖を活用。実験により、GenRMは従来の検証器を上回り、問題解決率が16-64%向上することを示した。</span>
+<span class="snippet"><span>GPT Summary</span>- 検証モデルはLLMの推論性能を向上させるためによく使われ、従来のBest-of-N法に依存していますが、新たに提案された生成的検証モデル（GenRM）は、解の生成と検証を統合することで、LLMの利点を活かすことができます。GenRMは通常の識別的モデルと比較して優れた性能を発揮し、アルゴリズム課題や数学問題で大幅な改善を見せています。具体的には、GSM8Kで73%から93.4%への向上など、多様なタスクで性能を向上させ、モデルサイズと計算の増加にもしっかり対応します。</span>
 <span class="snippet"><span>Comment</span><p>LLMがリクエストに対する回答を生成したのちに、その回答をverifyするステップ + verifyの結果から回答を修正するステップを全てconcatした学習データをnext token predictionで用いることによって、モデル自身に自分の回答をverifyする能力を身につけさせることができた結果性能が向上しました、という研究らしい。また、Self-consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
- のように複数の異なるCoTを並列して実行させ、そのmajority votingをとることでさらに性能が向上する。<br><br><br><br><img src="https://github.com/user-attachments/assets/e6ebd308-fc77-4c5b-80c2-37e3615f48af"" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/9cf3dfe7-be09-4053-a760-9ec9ed993b33"" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
+ のように複数の異なるCoTを並列して実行させ、そのmajority votingをとることでさらに性能が向上する。<br><br><br><br><img src="https://github.com/user-attachments/assets/e6ebd308-fc77-4c5b-80c2-37e3615f48af"" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/9cf3dfe7-be09-4053-a760-9ec9ed993b33"" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=CxHRoTLmPX" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=CxHRoTLmPX</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="chain-of-verification-reduces-1044" class="title-link">[Paper Note] Chain-of-Verification Reduces Hallucination in Large Language Models, Shehzaad Dhuliawala+, N_A, ACL'24</h3><br><a href="https://arxiv.org/abs/2309.11495" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2273,19 +2282,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Physics.html"
-            title="Physicsに関する論文・技術記事メモの一覧">
-            Physicsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/RA-L.html"
-            title="RA-Lに関する論文・技術記事メモの一覧">
-            RA-Lに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PsychologicalScience.html"
+            title="PsychologicalScienceに関する論文・技術記事メモの一覧">
+            PsychologicalScienceに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -2293,19 +2292,29 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/LinearAttention.html"
-            title="LinearAttentionに関する論文・技術記事メモの一覧">
-            LinearAttentionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Argument.html"
+            title="Argumentに関する論文・技術記事メモの一覧">
+            Argumentに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/OpinionMining.html"
-            title="OpinionMiningに関する論文・技術記事メモの一覧">
-            OpinionMiningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/General.html"
+            title="Generalに関する論文・技術記事メモの一覧">
+            Generalに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/PRICAI.html"
+            title="PRICAIに関する論文・技術記事メモの一覧">
+            PRICAIに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>

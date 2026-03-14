@@ -6136,7 +6136,7 @@ https://github.com/Christina200/Online-LoRA-official.git。
 <title>PLUG: Leveraging Pivot Language in Cross-Lingual Instruction Tuning, Zhihan Zhang+, N_A, ACL'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2311.08711</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1400</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), CrossLingual</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, CrossLingual, ACL, PostTraining, Surface-level Notes</tags>
 <repo-issue-date>2024-09-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2311.08711
@@ -6155,11 +6155,47 @@ https://github.com/Christina200/Online-LoRA-official.git。
 # Summary (by gpt-4o-mini)
 - 指示チューニングはLLMsの指示理解を向上させるが、低リソース言語では課題がある。これに対処するため、英語をピボット言語とするPLUGアプローチを提案。モデルはまず英語で指示を処理し、次にターゲット言語で応答を生成。4つの言語での評価により、指示に従う能力が平均29%向上した。さらに、他のピボット言語を用いた実験も行い、アプローチの多様性を確認。コードとデータは公開されている。</issue-body>
 <maintainer-comment-text><p>
-<strong># 概要<br><br>cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上<br><br><br><br><img src="https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。<br><br><br>利用するFoundationモデルは以下の3種類で、<br><br>- LLaMA-2-13B (英語に特化したモデル)<br><br>- PolyLM-13B (マルチリンガルなモデル)<br><br>- PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの)<br><br><br>これらに対して学習データとしてGPT4-Alpaca <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1401" target="_blank" rel="noopener noreferrer">Instruction Tuning with GPT-4, Baolin Peng+, N/A, arXiv'23</a>
+<strong># 概要<br><br>cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上<br><br><br><br><img src="https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。<br><br><br>利用するFoundationモデルは以下の3種類で、<br><br>- LLaMA-2-13B (英語に特化したモデル)<br><br>- PolyLM-13B (マルチリンガルなモデル)<br><br>- PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの)<br><br><br>これらに対して学習データとしてGPT4-Alpaca <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1401" target="_blank" rel="noopener noreferrer">[Paper Note] Instruction Tuning with GPT-4, Baolin Peng+, arXiv'23, 2023.04</a>
 </strong>
 <br>
  instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。<br><br><br><br>比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。<br><br>- Pivot-only training: pivot言語（今回は英語）のみで学習した場合 <br><br>- Monolingual response training: pivot言語とtarget言語のデータを利用した場合<br><br>- Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している）<br><br>- Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。<br><br>- PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -> target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合<br><br><br><br>評価する際は、MT-Bench <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
  のように、GPT4を用いた、direct pair-wise comparisonを行っている。<br><br>direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らかの判断やスコアリングをさせる方法であり、今回はどちらがinstructionにより従っているかに勝敗/引き分けをGPT4に判断させている。LLMによる生成はサンプルの順番にsensitiveなので、順番を逆にした場合でも実験をして、win-lose rateを求めている。1つのサンプルペアに対して、サンプルの順番を正順と逆順の2回評価させ、その双方の結果を用いて最終的なwin/lose/tieを決めている。端的に言うと、勝敗が2-0ならそのサンプルの勝ち、同様に1-1なら引き分け、0-2なら負け、ということである。<br><br><img src="https://github.com/user-attachments/assets/726ea2dc-8f62-4320-8489-45cc20ed32ae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Source2Synth: Synthetic Data Generation and Curation Grounded in Real  Data Sources, Alisia Lupidi+, N_A, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2409.08239</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1393</repo-issue-link>
+<tags>NLP, LanguageModel, QuestionAnswering, Supervised-FineTuning (SFT), SyntheticData, PostTraining, KeyPoint Notes</tags>
+<repo-issue-date>2024-09-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2409.08239
+# Affiliations
+  - Alisia Lupidi, N/A
+  - Carlos Gemmell, N/A
+  - Nicola Cancedda, N/A
+  - Jane Dwivedi-Yu, N/A
+  - Jason Weston, N/A
+  - Jakob Foerster, N/A
+  - Roberta Raileanu, N/A
+  - Maria Lomeli, N/A
+# Abstract
+  - Large Language Models still struggle in challenging scenarios that leverage structured data, complex reasoning, or tool usage. In this paper, we propose Source2Synth: a new method that can be used for teaching LLMs new skills without relying on costly human annotations. Source2Synth takes as input a custom data source and produces synthetic data points with intermediate reasoning steps grounded in real-world sources. Source2Synth improves the dataset quality by discarding low-quality generations based on their answerability. We demonstrate the generality of this approach by applying it to two challenging domains: we test reasoning abilities in multi-hop question answering (MHQA), and tool usage in tabular question answering (TQA). Our method improves performance by 25.51% for TQA on WikiSQL and 22.57% for MHQA on HotPotQA compared to the fine-tuned baselines.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）は、構造化データ、複雑な推論、またはツールの使用を活用する困難なシナリオにおいて依然として苦労しています。本論文では、LLMに新しいスキルを教えるための新しい手法「Source2Synth」を提案します。この手法は、高価な人間の注釈に依存せずに使用できます。Source2Synthは、カスタムデータソースを入力として受け取り、実世界のソースに基づいた中間的な推論ステップを持つ合成データポイントを生成します。Source2Synthは、回答可能性に基づいて低品質な生成物を廃棄することで、データセットの質を向上させます。このアプローチの一般性を示すために、2つの困難なドメインに適用しました。具体的には、マルチホップ質問応答（MHQA）における推論能力と、表形式の質問応答（TQA）におけるツールの使用をテストしました。私たちの手法は、WikiSQLにおけるTQAで25.51%、HotPotQAにおけるMHQAで22.57%の性能向上を実現し、ファインチューニングされたベースラインと比較して優れた結果を示しました。
+# Summary (by gpt-4o-mini)
+- 新手法「Source2Synth」を提案し、LLMに新しいスキルを教える。人間の注釈に依存せず、実世界のソースに基づいた合成データを生成し、低品質な生成物を廃棄してデータセットの質を向上。マルチホップ質問応答と表形式の質問応答に適用し、WikiSQLで25.51%、HotPotQAで22.57%の性能向上を達成。</issue-body>
+<maintainer-comment-text><p>合成データ生成に関する研究。<br>ソースからQAを生成し、2つのsliceに分ける。片方をLLMのfinetuning（LLMSynth）に利用し、もう片方をfinetuningしたLLMで解答可能性に基づいてフィルタリング（curation）する。<br>最終的にフィルタリングして生成された高品質なデータでLLMをfinetuningする。<br><br>Curationされたデータでfinetuningしたモデルの性能は、Curationしていないただの合成データと比べて、MultiHopQA, TableQAベンチマークで高い性能を獲得している。<br><br><img src="https://github.com/user-attachments/assets/4aabfa32-6461-447f-b11d-a0875603fd08" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>画像は元ポストより引用<br><br>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1834402693995024453?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>MultiHopQAの合成データ生成方法<br><img src="https://github.com/user-attachments/assets/853935be-1515-4064-bd08-3c0fe6a948a5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>TableQAの合成データ生成方法<br><img src="https://github.com/user-attachments/assets/8f85bdf7-2de0-451a-a013-55cf0bcc167c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -6187,29 +6223,30 @@ https://github.com/Christina200/Online-LoRA-official.git。
 </paper-entry>
 
 <paper-entry>
-<title>Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, N_A, EMNLP'24</title>
+<title>[Paper Note] Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, EMNLP'24, 2024.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2405.05904</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1371</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), action_wanted, Hallucination</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), action_wanted, Hallucination, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2024-09-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2405.05904
-# Affiliations
-  - Zorik Gekhman, N/A
-  - Gal Yona, N/A
-  - Roee Aharoni, N/A
-  - Matan Eyal, N/A
-  - Amir Feder, N/A
-  - Roi Reichart, N/A
-  - Jonathan Herzig, N/A
+# Authors
+  - Zorik Gekhman
+  - Gal Yona
+  - Roee Aharoni
+  - Matan Eyal
+  - Amir Feder
+  - Roi Reichart
+  - Jonathan Herzig
 # Abstract
   - When large language models are aligned via supervised fine-tuning, they may encounter new factual information that was not acquired through pre-training. It is often conjectured that this can teach the model the behavior of hallucinating factually incorrect responses, as the model is trained to generate facts that are not grounded in its pre-existing knowledge. In this work, we study the impact of such exposure to new knowledge on the capability of the fine-tuned model to utilize its pre-existing knowledge. To this end, we design a controlled setup, focused on closed-book QA, where we vary the proportion of the fine-tuning examples that introduce new knowledge. We demonstrate that large language models struggle to acquire new factual knowledge through fine-tuning, as fine-tuning examples that introduce new knowledge are learned significantly slower than those consistent with the model's knowledge. However, we also find that as the examples with new knowledge are eventually learned, they linearly increase the model's tendency to hallucinate. Taken together, our results highlight the risk in introducing new factual knowledge through fine-tuning, and support the view that large language models mostly acquire factual knowledge through pre-training, whereas fine-tuning teaches them to use it more efficiently.
-# Translation (by gpt-4o-mini)
-- 大規模言語モデルが監視付きファインチューニングを通じて調整されると、事前学習を通じて取得されていない新しい事実情報に遭遇することがあります。このことは、モデルが既存の知識に基づかない事実を生成するように訓練されるため、事実に基づかない応答を幻覚する行動を学習する可能性があるとしばしば推測されています。本研究では、新しい知識へのこうした曝露がファインチューニングされたモデルの既存の知識を活用する能力に与える影響を調査します。そのために、閉じた書籍のQAに焦点を当て、新しい知識を導入するファインチューニング例の割合を変化させる制御された設定を設計しました。我々は、大規模言語モデルがファインチューニングを通じて新しい事実知識を獲得するのに苦労することを示します。新しい知識を導入するファインチューニング例は、モデルの知識と一致する例よりもはるかに遅く学習されます。しかし、新しい知識を持つ例が最終的に学習されるにつれて、モデルの幻覚する傾向が線形に増加することも発見しました。これらの結果を総合すると、ファインチューニングを通じて新しい事実知識を導入することのリスクが浮き彫りになり、大規模言語モデルは主に事前学習を通じて事実知識を獲得し、ファインチューニングはそれをより効率的に使用することを教えるという見解を支持します。
+# Translation (by gpt-5-nano)
+- 教師ありファインチューニングによって大規模言語モデルを整合させると、事前学習で獲得していなかった新しい知識に出会うことがある。しばしば、これにより、モデルが既存の知識に基づかない事実を生成するようなハルシネーションの振る舞いを学習させると推測される。本研究では、そのような新しい知識への露出が、ファインチューニング後のモデルが既存の知識を活用する能力に与える影響を調べる。これを達成するため、閉じたブックQAに焦点を当てた制御された設定を設計し、新しい知識を導入するファインチューニング例の割合を変化させる。我々は、大規模言語モデルがファインチューニングを通じて新しい事実知識を獲得するのが困難であることを示す。新しい知識を導入するファインチューニング例は、モデルの知識と整合するものよりも著しく学習が遅い。とはいえ、新しい知識を含む例が最終的に学習されると、それらはモデルのハルシネーションの傾向を線形に増加させることも分かった。総じて、これらの結果は、ファインチューニングを通じて新しい事実知識を導入するリスクを浮き彫りにし、大規模言語モデルは主に事前学習を通じて事実知識を獲得する一方、ファインチューニングはそれをより効率的に活用する方法を教える、という見解を支持する。
 # Summary (by gpt-4o-mini)
-- 大規模言語モデルはファインチューニングを通じて新しい事実情報に遭遇するが、既存の知識を活用する能力に影響を与える。研究では、閉じた書籍のQAを用いて新しい知識を導入するファインチューニング例の割合を変化させた結果、モデルは新しい知識を学習するのに苦労し、幻覚する傾向が増加することが示された。これにより、ファインチューニングによる新しい知識の導入のリスクが明らかになり、モデルは事前学習を通じて知識を獲得し、ファインチューニングはその利用を効率化することが支持される。</issue-body>
-<maintainer-comment-text><p>pre-training時に獲得されていない情報を用いてLLMのalignmentを実施すると、知識がない状態で学習データを正しく予測できるように学習されてしまうため、事実に基づかない回答をする（つまりhallucination）ように学習されてしまう、といったことを調査している模様。<br><br><br><br>>新しい知識を導入するファインチューニング例は、モデルの知識と一致する例よりもはるかに遅く学習されます。しかし、新しい知識を持つ例が最終的に学習されるにつれて、モデルの幻覚する傾向が線形に増加することも発見しました。<br><br><img src="https://github.com/user-attachments/assets/9c7b3e2e-3ecb-4d71-a7fc-09fa7e57a613" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>早々にoverfittingしている。<br><br><br><br>>大規模言語モデルは主に事前学習を通じて事実知識を取得し、ファインチューニングはそれをより効率的に使用することを教えるという見解を支持しています。<br><br><br><br>なるほど、興味深い。</p><p>下記画像は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1370" target="_blank" rel="noopener noreferrer">大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06</a>
-より引用<br><br><img src="https://github.com/user-attachments/assets/e08d47cf-b550-4ced-a6bd-02d90d3684e9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>本論文中では、full finetuningによる検証を実施しており、LoRAのようなAdapterを用いたテクニックで検証はされていない。LoRAではもともとのLLMのパラメータはfreezeされるため、異なる挙動となる可能性がある。特にLoRAが新しい知識を獲得可能なことが示されれば、LoRA AdapterをもともとのLLMに付け替えるだけで、異なる知識を持ったLLMを運用可能になるため、インパクトが大きいと考えられる。もともとこういった思想は LoRA Hubを提唱する研究などの頃からあった気がするが、AdapterによってHallucination/overfittingを防ぎながら、新たな知識を獲得できることを示した研究はあるのだろうか？<br><br><img src="https://github.com/user-attachments/assets/a05a3662-baf9-4fcd-b15e-440f1c2c9f6e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>参考: 
+- ファインチューニングによる新しい知識の導入が、大規模言語モデルの既存知識の活用能力に与える影響を調査。新しい知識を含むファインチューニング例は学習が遅く、モデルのハルシネーションを増加させることが明らかに。結果として、新たな知識導入のリスクを浮き彫りにし、モデルは主に事前学習から知識を獲得するが、ファインチューニングはその活用方法を教えることが示唆される。</issue-body>
+<maintainer-comment-text><p>pre-training時に獲得されていない情報を用いてLLMのalignmentを実施すると、知識がない状態で学習データを正しく予測できるように学習されてしまうため、事実に基づかない回答をする（つまりhallucination）ように学習されてしまう、といったことを調査している模様。<br><br><br><br>>新しい知識を導入するファインチューニング例は、モデルの知識と一致する例よりもはるかに遅く学習されます。しかし、新しい知識を持つ例が最終的に学習されるにつれて、モデルの幻覚する傾向が線形に増加することも発見しました。<br><br><img src="https://github.com/user-attachments/assets/9c7b3e2e-3ecb-4d71-a7fc-09fa7e57a613" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>早々にoverfittingしている。<br><br><br><br>>大規模言語モデルは主に事前学習を通じて事実知識を取得し、ファインチューニングはそれをより効率的に使用することを教えるという見解を支持しています。<br><br><br><br>なるほど、興味深い。</p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1370" target="_blank" rel="noopener noreferrer">大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06</a>
+ 記載の資料([大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06, p. 36](大規模言語モデル (LLM) の技術と最新動向))に本論文の解説が記述されている。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1370" target="_blank" rel="noopener noreferrer">大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06</a>
+<br><br>本論文中では、full finetuningによる検証を実施しており、LoRAのようなAdapterを用いたテクニックで検証はされていない。LoRAではもともとのLLMのパラメータはfreezeされるため、異なる挙動となる可能性がある。特にLoRAが新しい知識を獲得可能なことが示されれば、LoRA AdapterをもともとのLLMに付け替えるだけで、異なる知識を持ったLLMを運用可能になるため、インパクトが大きいと考えられる。もともとこういった思想は LoRA Hubを提唱する研究などの頃からあった気がするが、AdapterによってHallucination/overfittingを防ぎながら、新たな知識を獲得できることを示した研究はあるのだろうか？<br><img src="https://github.com/user-attachments/assets/a05a3662-baf9-4fcd-b15e-440f1c2c9f6e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p><p>参考: 
 
 {% raw %}
 
@@ -6245,38 +6282,27 @@ https://github.com/Christina200/Online-LoRA-official.git。
 </paper-entry>
 
 <paper-entry>
-<title>RAFT: Adapting Language Model to Domain Specific RAG, Tianjun Zhang+, N_A, arXiv'24</title>
+<title>[Paper Note] RAFT: Adapting Language Model to Domain Specific RAG, Tianjun Zhang+, arXiv'24, 2024.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2403.10131</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1269</repo-issue-link>
-<tags>InformationRetrieval, NLP, LanguageModel, Supervised-FineTuning (SFT), RAG(RetrievalAugmentedGeneration)</tags>
+<tags>InformationRetrieval, NLP, LanguageModel, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration), One-Line Notes</tags>
 <repo-issue-date>2024-04-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2403.10131
-# Affiliations
-  - Tianjun Zhang, N/A
-  - Shishir G. Patil, N/A
-  - Naman Jain, N/A
-  - Sheng Shen, N/A
-  - Matei Zaharia, N/A
-  - Ion Stoica, N/A
-  - Joseph E. Gonzalez, N/A
+# Authors
+  - Tianjun Zhang
+  - Shishir G. Patil
+  - Naman Jain
+  - Sheng Shen
+  - Matei Zaharia
+  - Ion Stoica
+  - Joseph E. Gonzalez
 # Abstract
-  - Pretraining Large Language Models (LLMs) on large corpora of textual data isnow a standard paradigm. When using these LLMs for many downstreamapplications, it is common to additionally bake in new knowledge (e.g.,time-critical news, or private domain knowledge) into the pretrained modeleither through RAG-based-prompting, or fine-tuning. However, the optimalmethodology for the model to gain such new knowledge remains an open question.In this paper, we present Retrieval Augmented FineTuning (RAFT), a trainingrecipe that improves the model's ability to answer questions in a "open-book"in-domain settings. In RAFT, given a question, and a set of retrieveddocuments, we train the model to ignore those documents that don't help inanswering the question, which we call, distractor documents. RAFT accomplishesthis by citing verbatim the right sequence from the relevant document thatwould help answer the question. This coupled with RAFT's chain-of-thought-styleresponse helps improve the model's ability to reason. In domain-specific RAG,RAFT consistently improves the model's performance across PubMed, HotpotQA, andGorilla datasets, presenting a post-training recipe to improve pre-trained LLMsto in-domain RAG. RAFT's code and demo are open-sourced atgithub.com/ShishirPatil/gorilla.
-# Translation (by gpt-3.5-turbo)
-- 大規模なテキストデータのコーパスで大規模言語モデル（LLMs）を事前学習することは、現在標準的なパラダイムとなっています。
-これらのLLMsをさまざまな下流アプリケーションに使用する際、事前学習済みモデルに新しい知識（例：時間的に重要なニュースやプライベートドメインの知識）を追加することが一般的です。
-これは、RAGベースのプロンプティングやファインチューニングを介して行われます。
-ただし、モデルがそのような新しい知識を獲得するための最適な方法は未解決の問題です。
-本論文では、"open-book"のドメイン設定で質問に答える能力を向上させるトレーニングレシピであるRetrieval Augmented FineTuning（RAFT）を提案します。
-RAFTでは、質問と取得された文書のセットが与えられた場合、モデルを、質問に回答するのに役立たない文書（distractor documentsと呼ぶ）を無視するようにトレーニングします。
-RAFTは、質問に答えるのに役立つ関連文書から正しいシーケンスをそのまま引用することでこれを達成します。
-これに加えて、RAFTのchain-of-thoughtスタイルの応答が、モデルの推論能力を向上させるのに役立ちます。
-ドメイン固有のRAGでは、RAFTはPubMed、HotpotQA、Gorillaデータセット全体でモデルのパフォーマンスを一貫して向上させ、事前学習済みLLMsをドメイン固有のRAGに向けて改善するためのポストトレーニングレシピを提供します。
-RAFTのコードとデモはgithub.com/ShishirPatil/gorillaでオープンソースとして公開されています。
-# Summary (by gpt-3.5-turbo)
-- 大規模なテキストデータのLLMsを事前学習し、新しい知識を追加するためのRetrieval Augmented FineTuning（RAFT）を提案。
-RAFTは、質問に回答するのに役立つ関連文書から正しいシーケンスを引用し、chain-of-thoughtスタイルの応答を通じて推論能力を向上させる。
-RAFTはPubMed、HotpotQA、Gorillaデータセットでモデルのパフォーマンスを向上させ、事前学習済みLLMsをドメイン固有のRAGに向けて改善する。</issue-body>
+  - Pretraining Large Language Models (LLMs) on large corpora of textual data is now a standard paradigm. When using these LLMs for many downstream applications, it is common to additionally bake in new knowledge (e.g., time-critical news, or private domain knowledge) into the pretrained model either through RAG-based-prompting, or fine-tuning. However, the optimal methodology for the model to gain such new knowledge remains an open question. In this paper, we present Retrieval Augmented FineTuning (RAFT), a training recipe that improves the model's ability to answer questions in a "open-book" in-domain settings. In RAFT, given a question, and a set of retrieved documents, we train the model to ignore those documents that don't help in answering the question, which we call, distractor documents. RAFT accomplishes this by citing verbatim the right sequence from the relevant document that would help answer the question. This coupled with RAFT's chain-of-thought-style response helps improve the model's ability to reason. In domain-specific RAG, RAFT consistently improves the model's performance across PubMed, HotpotQA, and Gorilla datasets, presenting a post-training recipe to improve pre-trained LLMs to in-domain RAG. RAFT's code and demo are open-sourced at github.com/ShishirPatil/gorilla.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）を大量のテキストデータで事前学習することは、現在では標準的なパラダイムとなっている。これらのLLMsを多くの下流アプリケーションで使用する際には、時間的に重要なニュースやプライベートドメイン知識などの新しい知識を、RAGベースのプロンプティングやファインチューニングのいずれかを通じて事前学習済みモデルに追加的に組み込むことが一般的である。しかし、そのような新しい知識をモデルが獲得する最適な方法論は依然として未解決の課題である。本論文では、Retrieval Augmented FineTuning（RAFT）を提案する。これは、同一ドメイン内の「オープンブック」形式の設定での質問応答能力を向上させるトレーニングレシピである。RAFTでは、質問と取得済みの文書の集合が与えられた場合、質問の回答に役立たない文書を無視するようモデルを訓練する。これらを誤導文書と呼ぶ。RAFTは、質問の回答に役立つ関連文書から適切な連続箇所を逐語的に引用することによってこれを実現する。これにRAFTの思考過程風の応答を組み合わせることで、モデルの推論能力の向上につながる。ドメイン特化型RAGにおいて、RAFTはPubMed、HotpotQA、Gorillaのデータセット全般でモデルの性能を一貫して改善し、事前学習済みLLMsをドメイン内RAGへ適用するためのポスト訓練レシピを提示する。RAFTのコードとデモは github.com/ShishirPatil/gorilla にオープンソースとして公開されている。
+# Summary (by gpt-4o-mini)
+- RAFTを提案し、LLMに新しい知識を効果的に組み込む方法を示す。質問応答能力を向上させるため、無関係な文書を無視し、関連文書から逐語的引用を行って推論能力を強化。PubMedやHotpotQAなどのデータセットで一貫して性能を改善し、ポスト訓練レシピを提示。コードはオープンソースで公開中。</issue-body>
 <maintainer-comment-text><p>Question, instruction, coxtext, cot style answerの4つを用いてSFTをする模様<br>画像は下記ツイートより引用<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0763b048-8029-4712-9e79-e833bdb9b2c0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br>
 
 {% raw %}
@@ -6469,25 +6495,25 @@ RAFTはPubMed、HotpotQA、Gorillaデータセットでモデルのパフォー�
 </paper-entry>
 
 <paper-entry>
-<title>Instruction Tuning with GPT-4, Baolin Peng+, N_A, arXiv'23</title>
+<title>[Paper Note] Instruction Tuning with GPT-4, Baolin Peng+, arXiv'23, 2023.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2304.03277</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1401</repo-issue-link>
-<tags>NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT)</tags>
+<tags>NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT), InstructionTuning, action_wanted, PostTraining, One-Line Notes</tags>
 <repo-issue-date>2024-09-20</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2304.03277
-# Affiliations
-  - Baolin Peng, N/A
-  - Chunyuan Li, N/A
-  - Pengcheng He, N/A
-  - Michel Galley, N/A
-  - Jianfeng Gao, N/A
+# Authors
+  - Baolin Peng
+  - Chunyuan Li
+  - Pengcheng He
+  - Michel Galley
+  - Jianfeng Gao
 # Abstract
   - Prior work has shown that finetuning large language models (LLMs) using machine-generated instruction-following data enables such models to achieve remarkable zero-shot capabilities on new tasks, and no human-written instructions are needed. In this paper, we present the first attempt to use GPT-4 to generate instruction-following data for LLM finetuning. Our early experiments on instruction-tuned LLaMA models show that the 52K English and Chinese instruction-following data generated by GPT-4 leads to superior zero-shot performance on new tasks to the instruction-following data generated by previous state-of-the-art models. We also collect feedback and comparison data from GPT-4 to enable a comprehensive evaluation and reward model training. We make our data generated using GPT-4 as well as our codebase publicly available.
-# Translation (by gpt-4o-mini)
-- 従来の研究では、機械生成された指示に従うデータを用いて大規模言語モデル（LLMs）をファインチューニングすることで、これらのモデルが新しいタスクに対して驚異的なゼロショット能力を発揮できることが示されています。また、人間が書いた指示は必要ありません。本論文では、GPT-4を用いてLLMのファインチューニングのための指示に従うデータを生成する初めての試みを紹介します。指示に調整されたLLaMAモデルに関する初期実験では、GPT-4によって生成された52Kの英語および中国語の指示に従うデータが、従来の最先端モデルによって生成された指示に従うデータよりも新しいタスクに対して優れたゼロショット性能をもたらすことが示されました。また、包括的な評価と報酬モデルのトレーニングを可能にするために、GPT-4からのフィードバックと比較データも収集しました。私たちは、GPT-4を用いて生成したデータとコードベースを公開します。
+# Translation (by gpt-5-nano)
+- 従来の研究では、機械生成の指示追従データを用いて大規模言語モデル（LLM）をファインチューニングすると、これらのモデルが新しいタスクに対して卓越したゼロショット能力を発揮でき、ヒトが書いた指示は不要であることが示されている。本論文では、LLMのファインチューニングのためにGPT-4を用いて指示追従データを生成する初めての試みを提示する。指示追従データを用いてファインチューニングされたLLaMAモデルを対象とした初期実験では、GPT-4が生成した英語および中国語の5.2万件の指示追従データが、従来の最先端モデルが生成した指示追従データと比較して、新規タスクに対するゼロショット性能を向上させることを示している。我々はまた、包括的な評価と報酬モデルの訓練を可能にするために、GPT-4からのフィードバックと比較データを収集する。GPT-4を用いて生成したデータおよびコードベースを公開する。
 # Summary (by gpt-4o-mini)
-- GPT-4を用いて指示に従うデータを生成し、LLMのファインチューニングを行う初の試みを報告。生成された52Kの指示データは、従来のモデルよりも新しいタスクに対して優れたゼロショット性能を示した。GPT-4からのフィードバックと比較データも収集し、データとコードベースを公開。</issue-body>
+- GPT-4を用いて機械生成の指示追従データを新たに生成し、LLaMAモデルのファインチューニングを行う試みを提案。生成されたデータは、従来のモデルと比べて新規タスクに対するゼロショット性能を向上させることを示した。フィードバックと比較データも収集し、コードベースを公開。</issue-body>
 <maintainer-comment-text><p>現在はOpenAIの利用規約において、outputを利用してOpenAIと競合するモデルを構築することは禁止されているので、この点には注意が必要<br>
 
 {% raw %}
@@ -6526,7 +6552,7 @@ RAFTはPubMed、HotpotQA、Gorillaデータセットでモデルのパフォー�
 <title>INSTRUCTSCORE: Explainable Text Generation Evaluation with Finegrained   Feedback, Wenda Xu+, N_A, EMNLP'23</title>
 <original-paper-blog-link>https://arxiv.org/abs/2305.14282</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1224</repo-issue-link>
-<tags>NaturalLanguageGeneration, NLP, LanguageModel, Explanation, Supervised-FineTuning (SFT), Evaluation, EMNLP, PostTraining</tags>
+<tags>NaturalLanguageGeneration, NLP, LanguageModel, Explanation, Supervised-FineTuning (SFT), Evaluation, EMNLP, PostTraining, One-Line Notes</tags>
 <repo-issue-date>2024-01-25</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2305.14282
@@ -7950,7 +7976,7 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 <tags>NLP, LanguageModel, Supervised-FineTuning (SFT), Slide</tags>
 <repo-issue-date>2025-03-16</repo-issue-date>
 <issue-body>https://llm-jp.github.io/tuning-competition/pdfs/invited_3.pdf</issue-body>
-<maintainer-comment-text><p>知識の追加の部分で下記研究が引用されている<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1371" target="_blank" rel="noopener noreferrer">Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, N/A, EMNLP'24</a>
+<maintainer-comment-text><p>知識の追加の部分で下記研究が引用されている<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1371" target="_blank" rel="noopener noreferrer">[Paper Note] Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, EMNLP'24, 2024.05</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1640" target="_blank" rel="noopener noreferrer">LoRA Learns Less and Forgets Less, Dan Biderman+, TMLR'24</a>
 </p></maintainer-comment-text>
 </paper-entry>
@@ -8173,7 +8199,7 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 <title>Liger-Kernel, 2024.08</title>
 <original-paper-blog-link>https://github.com/linkedin/Liger-Kernel</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1356</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Supervised-FineTuning (SFT), Repository</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Supervised-FineTuning (SFT), Repository, PostTraining, Selected Papers/Blogs, One-Line Notes</tags>
 <repo-issue-date>2024-08-25</repo-issue-date>
 <issue-body>https://github.com/linkedin/Liger-Kernel</issue-body>
 <maintainer-comment-text><p>LLMを学習する時に、ワンライン追加するだけで、マルチGPUトレーニングのスループットを20%改善し、メモリ使用量を60%削減するらしい<br><br>元ツイート:
@@ -8186,7 +8212,7 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 </div>
 {% endraw %}
 
-</p><p>これだけでいい<br><img src="https://github.com/user-attachments/assets/abce24ed-f979-43db-ac51-e850f2ae877a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Unsloth <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1450" target="_blank" rel="noopener noreferrer">Unsloth</a>
+</p><p>Unsloth <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1450" target="_blank" rel="noopener noreferrer">Unsloth</a>
  はLoRA/QLoRAが可能な一方でまだMulti-GPUはサポートしていない。一方、Liger-KernelはLoRAよりもfull-parameter tuningとMulti-GPUにフォーカスしており、目的に応じて使い分けが必要。<br><br><br><br>
 
 {% raw %}
@@ -8227,10 +8253,10 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 </paper-entry>
 
 <paper-entry>
-<title>LLaMA-Factory, 2023</title>
+<title>LLaMA-Factory, hiyouga, 2023.07</title>
 <original-paper-blog-link>https://github.com/hiyouga/LLaMA-Factory</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1134</repo-issue-link>
-<tags>NLP, LanguageModel, Library, Supervised-FineTuning (SFT), Repository</tags>
+<tags>NLP, LanguageModel, Library, Supervised-FineTuning (SFT), Repository, One-Line Notes</tags>
 <repo-issue-date>2023-11-14</repo-issue-date>
 <issue-body>https://github.com/hiyouga/LLaMA-Factory</issue-body>
 <maintainer-comment-text><p>簡単に利用できるLLaMAのfinetuning frameworkとのこと。<br>元ツイート: 

@@ -3,6 +3,13 @@
 [![AI Research Trends](https://img.shields.io/badge/Wiki-Trends-blue)](https://github.com/AkihikoWatanabe/paper_notes/wiki/X%E4%B8%8A%E3%81%AEAI%E3%83%88%E3%83%AC%E3%83%B3%E3%83%89%EF%BC%88%EF%BC%9F%EF%BC%89%EF%BC%88%E5%80%8B%E4%BA%BA%E3%81%AE%E6%84%9F%E6%83%B3%E3%81%A7%E3%81%99%EF%BC%89)
 [![DeepWiki](https://img.shields.io/badge/DeepWiki-Chat-800080?logo=readme)](https://deepwiki.com/AkihikoWatanabe/paper_notes)  
 
+[![Initial Impression Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Initial%20Impression%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A"Initial%20Impression%20Notes")
+[![One-Line Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/One-Line%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22One-Line%20Notes%22)
+[![Surface-level Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Surface-level%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Surface-level%20Notes%22)
+[![KeyPoint Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/KeyPoint%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22KeyPoint%20Notes%22)
+[![In-Depth Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/In-Depth%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22In-Depth%20Notes%22)
+[![Reference Collection](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Reference%20Collection)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reference%20Collection%22)
+
 [[English](https://github.com/AkihikoWatanabe/paper_notes/blob/master/README.md) | 日本語]
 
 AI関連の論文やブログ・リポジトリ・スライド・SNSポスト等を手動で収集し、Issueで管理しているリポジトリです。  

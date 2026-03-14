@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 hours 50 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 hours 59 mins</span>
   </div></header>
 </div>
     </div>
@@ -5753,6 +5753,67 @@ My Issue
 </p><p>Next Token Prediction, Next Image Token Generation (従来手法）, Next Scale (resolution) prediction (提案手法)の違いの図解。非常に分かりやすい。next token predictionでは次トークンのみを予測するがVARでは、次の解像度画像の全体のトークンマップを予測する。<br><br><img src="https://github.com/user-attachments/assets/668d7523-f262-45c1-a1d0-2dd479c0a708" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>学習方法の概要。2-Stageで学習される。最初のステージでK種類の解像度の画像（＝K種類のマルチスケールのtoken maps r_k）を得るためにAutoEncoderを学習し、次のステージでblock-wiseのcausal attention maskを用いて、K_<k個目の解像度の画像からK個目の解像度の画像を予測する（図を見るとイメージを掴みやすい）。inference時はKV Cacheを利用し、maskは不要となる。<br>各r_kをデコードする際にr_<kのみに依存する設計にすることでcoase-to-fineに画像を生成することに相当し、これは人間の粗く捉えてから詳細を見る認知プロセスと合致する。また、flatten操作が存在せず、それぞれのr_<k内のトークンがr_k生成時に全て考慮されるため空間的局所性も担保される。また、r_k内のトークンは並列に生成可能なので計算量のオーダーが大幅に削減される（O(n^4)。<br><img src="https://github.com/user-attachments/assets/e1a85712-e66a-4c9a-9cf1-6556f2b8e687" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>従来手法と比べより小さいパラメータで高い性能を実現し、inference timeも非常に早い。<br><img src="https://github.com/user-attachments/assets/90a6a7de-995d-49e6-94a2-cd709e68777f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ScalingLawsも成立する。<br><img src="https://github.com/user-attachments/assets/351c2a7b-85aa-4cc7-8ba2-a5e9528cabd4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="generative-verifiers-1388" class="title-link">[Paper Note] Generative Verifiers: Reward Modeling as Next-Token Prediction, Lunjun Zhang+, arXiv'24, 2024.08</h3><br><a href="https://arxiv.org/abs/2408.15240" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1388" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="SelfCorrection.html" target="_blank" rel="noopener noreferrer">#SelfCorrection</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Verification.html" target="_blank" rel="noopener noreferrer">#Verification</a>
+<a class="button" href="RewardModel.html" target="_blank" rel="noopener noreferrer">#RewardModel</a>
+<a class="button" href="Workshop.html" target="_blank" rel="noopener noreferrer">#Workshop</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="GenerativeVerifier.html" target="_blank" rel="noopener noreferrer">#GenerativeVerifier</a>
+<span class="issue_date">Issue Date: 2024-09-11</span>
+<span class="snippet"><span>GPT Summary</span>- 検証モデルはLLMの推論性能を向上させるためによく使われ、従来のBest-of-N法に依存していますが、新たに提案された生成的検証モデル（GenRM）は、解の生成と検証を統合することで、LLMの利点を活かすことができます。GenRMは通常の識別的モデルと比較して優れた性能を発揮し、アルゴリズム課題や数学問題で大幅な改善を見せています。具体的には、GSM8Kで73%から93.4%への向上など、多様なタスクで性能を向上させ、モデルサイズと計算の増加にもしっかり対応します。</span>
+<span class="snippet"><span>Comment</span><p>LLMがリクエストに対する回答を生成したのちに、その回答をverifyするステップ + verifyの結果から回答を修正するステップを全てconcatした学習データをnext token predictionで用いることによって、モデル自身に自分の回答をverifyする能力を身につけさせることができた結果性能が向上しました、という研究らしい。また、Self-consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
+ のように複数の異なるCoTを並列して実行させ、そのmajority votingをとることでさらに性能が向上する。<br><br><br><br><img src="https://github.com/user-attachments/assets/e6ebd308-fc77-4c5b-80c2-37e3615f48af"" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/9cf3dfe7-be09-4053-a760-9ec9ed993b33"" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=CxHRoTLmPX" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=CxHRoTLmPX</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="flashattention-3-fast-1338" class="title-link">[Paper Note] FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision, Jay Shah+, arXiv'24, 2024.07</h3><br><a href="https://arxiv.org/abs/2407.08608" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1338" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="Attention.html" target="_blank" rel="noopener noreferrer">#Attention</a>
+<span class="issue_date">Issue Date: 2024-07-30</span>
+<span class="snippet"><span>GPT Summary</span>- FlashAttentionはGPU上のアテンションを高速化する手法だが、新しいハードウェア機能を活用できていなかった。FlashAttention-3は、Hopper世代のGPUでアテンションの処理を改善するために、計算とデータ移動の重ね合わせ、行列積とソフトマックス演算のインタリーブ、FP8低精度をサポートするブロック量子化を導入。これにより、H100 GPU上でFP16時に1.5〜2.0倍の速度向上を実現し、最大740 TFLOPs/sに達し、FP8では約1.2 PFLOPs/sに近づく。FP8版では数値誤差が従来の約2.6倍低く抑えられることも示した。</span>
+<span class="snippet"><span>Comment</span><p>openreview:
+
+
+<a href="https://openreview.net/forum?id=tVConYid20&referrer=%5Bthe%20profile%20of%20Tri%20Dao%5D(%2Fprofile%3Fid%3D~Tri_Dao1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tVConYid20&referrer=%5Bthe%20profile%20of%20Tri%20Dao%5D(%2Fprofile%3Fid%3D~Tri_Dao1)</a>
+
+
+</p><p>関連: <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/688" target="_blank" rel="noopener noreferrer">[Paper Note] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness, Tri Dao+, NeurIPS'22, 2022.05</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/899" target="_blank" rel="noopener noreferrer">[Paper Note] FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning, Tri Dao, arXiv'23, 2023.07</a>
+ </p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="linear-transformers-1236" class="title-link">Linear Transformers are Versatile In-Context Learners, Max Vladymyrov+, N_A, NeurIPS'24</h3><br><a href="https://arxiv.org/abs/2402.14180" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -5764,6 +5825,7 @@ Paper/Blog Link
 </svg>
 My Issue
 </a><br>
+<a class="button" href="LinearAttention.html" target="_blank" rel="noopener noreferrer">#LinearAttention</a>
 <span class="issue_date">Issue Date: 2024-02-25</span>
 <span class="snippet"><span>GPT Summary</span>- 研究では、線形transformersが複雑な問題に対して効果的な最適化アルゴリズムを見つける能力を持つことが示された。特に、トレーニングデータが異なるノイズレベルで破損している場合でも、線形transformersは合理的なベースラインを上回るか匹敵する結果を示した。新しいアプローチとして、運動量と再スケーリングを組み込んだ最適化戦略が提案された。これにより、線形transformersが洗練された最適化戦略を発見する能力を持つことが示された。</span>
 <span class="snippet"><span>Comment</span><p>openreview: 
@@ -6074,6 +6136,25 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="layoutprompter-awaken-1133" class="title-link">LayoutPrompter: Awaken the Design Ability of Large Language Models, Jiawei Lin+, N_A, NeurIPS'23</h3><br><a href="https://arxiv.org/abs/2311.06495" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1133" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LayoutGeneration.html" target="_blank" rel="noopener noreferrer">#LayoutGeneration</a>
+<span class="issue_date">Issue Date: 2023-11-14</span>
+<span class="snippet"><span>GPT Summary</span>- LayoutPrompterは、大規模言語モデル（LLMs）を使用して条件付きのグラフィックレイアウト生成を行う手法であり、入力-出力のシリアル化、動的な模範的選択、およびレイアウトのランキングの3つのコンポーネントで構成されています。LayoutPrompterは、既存の手法と競合したり上回ったりする性能を持ち、トレーニングや微調整なしで使用できる汎用性のあるアプローチであることが実験結果から示されています。また、データ効率にも優れており、トレーニングベースラインよりも有意に優れていることも示されています。プロジェクトは、https://github.com/microsoft/LayoutGeneration/tree/main/LayoutPrompterで利用可能です。</span>
+<span class="snippet"><span>Comment</span><p>Conditional Graphic Layout Generation</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="cappy-outperforming-1132" class="title-link">Cappy: Outperforming and Boosting Large Multi-Task LMs with a Small   Scorer, Bowen Tan+, N_A, NeurIPS'23</h3><br><a href="https://arxiv.org/abs/2311.06720" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -6088,6 +6169,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
 <span class="issue_date">Issue Date: 2023-11-14</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）はマルチタスキングに優れた性能を示していますが、パラメータ数が多く計算リソースを必要とし、効率的ではありません。そこで、小規模なスコアラーであるCappyを導入し、独立して機能するかLLMsの補助として使用することでパフォーマンスを向上させました。Cappyはファインチューニングやパラメータへのアクセスを必要とせず、さまざまなタスクで高い性能を発揮します。実験結果では、Cappyは独立したタスクや複雑なタスクで大きなLLMsを上回り、他のLLMsとの連携も可能です。</span>
 <span class="snippet"><span>Comment</span><p>360MパラメータでさまざまなタスクでLLMに勝つっぽいのでおもしろそうだし実用性もありそう</p></span><br><br>
@@ -6757,6 +6839,32 @@ My Issue
 
 
 </p><p>chinchilla則</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="star-bootstrapping-1397" class="title-link">[Paper Note] STaR: Bootstrapping Reasoning With Reasoning, Eric Zelikman+, arXiv'22, 2022.03</h3><br><a href="https://arxiv.org/abs/2203.14465" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1397" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="SelfImprovement.html" target="_blank" rel="noopener noreferrer">#SelfImprovement</a>
+<a class="button" href="needs-revision.html" target="_blank" rel="noopener noreferrer">#needs-revision</a>
+<span class="issue_date">Issue Date: 2024-09-15</span>
+<span class="snippet"><span>GPT Summary</span>- STaR（Self-Taught Reasoner）を提案し、少数の推論例と大規模データセットを用いて段階的に複雑な推論を行う手法を紹介。まず複数の質問に対して推論根拠を生成し、誤答時には正しい解答を前提に再生成を行うことで性能を向上。STaRはファインチューニングにより自己学習能力を持ち、複数のデータセットでの性能を顕著に改善、CommensenseQAでは最先端モデルと同等の結果を達成。</span>
+<span class="snippet"><span>Comment</span><p>OpenAI o1関連研究</p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=_3ELRdg2sgI" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=_3ELRdg2sgI</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="why-do-574" class="title-link">[Paper Note] Why do tree-based models still outperform deep learning on tabular data?, Léo Grinsztajn+, NeurIPS'22, 2022.07</h3><br><a href="https://arxiv.org/abs/2207.08815" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -7830,42 +7938,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/GRPO.html"
-            title="GRPOに関する論文・技術記事メモの一覧">
-            GRPOに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/WordAlignment.html"
+            title="WordAlignmentに関する論文・技術記事メモの一覧">
+            WordAlignmentに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
-  <span class="post-badge badge-new">📝 31</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Entropy.html"
-            title="Entropyに関する論文・技術記事メモの一覧">
-            Entropyに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Asynchronous.html"
+            title="Asynchronousに関する論文・技術記事メモの一覧">
+            Asynchronousに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
-  <span class="post-badge badge-new">📝 14</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Neuroscience.html"
-            title="Neuroscienceに関する論文・技術記事メモの一覧">
-            Neuroscienceに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RuleBased.html"
+            title="RuleBasedに関する論文・技術記事メモの一覧">
+            RuleBasedに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SelfVerification.html"
-            title="SelfVerificationに関する論文・技術記事メモの一覧">
-            SelfVerificationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Workshop.html"
+            title="Workshopに関する論文・技術記事メモの一覧">
+            Workshopに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
+  <span class="post-badge badge-new">📝 16</span>
 </span>
 </a>
         </li></ul>

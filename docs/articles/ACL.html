@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 hours 32 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 hours 42 mins</span>
   </div></header>
 </div>
     </div>
@@ -2631,6 +2631,62 @@ My Issue
 </p><p>この研究を信じるのであれば、LLMはCoT無しではマルチホップ推論を実施することはあまりできていなさそう、という感じだと思うのだがどうなんだろうか。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="plug-leveraging-1400" class="title-link">PLUG: Leveraging Pivot Language in Cross-Lingual Instruction Tuning, Zhihan Zhang+, N_A, ACL'24</h3><br><a href="https://arxiv.org/abs/2311.08711" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1400" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="InstructionTuning.html" target="_blank" rel="noopener noreferrer">#InstructionTuning</a>
+<a class="button" href="CrossLingual.html" target="_blank" rel="noopener noreferrer">#CrossLingual</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
+<span class="issue_date">Issue Date: 2024-09-19</span>
+<span class="snippet"><span>GPT Summary</span>- 指示チューニングはLLMsの指示理解を向上させるが、低リソース言語では課題がある。これに対処するため、英語をピボット言語とするPLUGアプローチを提案。モデルはまず英語で指示を処理し、次にターゲット言語で応答を生成。4つの言語での評価により、指示に従う能力が平均29%向上した。さらに、他のピボット言語を用いた実験も行い、アプローチの多様性を確認。コードとデータは公開されている。</span>
+<span class="snippet"><span>Comment</span><p>
+<strong># 概要<br><br>cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上<br><br><br><br><img src="https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。<br><br><br>利用するFoundationモデルは以下の3種類で、<br><br>- LLaMA-2-13B (英語に特化したモデル)<br><br>- PolyLM-13B (マルチリンガルなモデル)<br><br>- PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの)<br><br><br>これらに対して学習データとしてGPT4-Alpaca <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1401" target="_blank" rel="noopener noreferrer">[Paper Note] Instruction Tuning with GPT-4, Baolin Peng+, arXiv'23, 2023.04</a>
+</strong>
+<br>
+ instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。<br><br><br><br>比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。<br><br>- Pivot-only training: pivot言語（今回は英語）のみで学習した場合 <br><br>- Monolingual response training: pivot言語とtarget言語のデータを利用した場合<br><br>- Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している）<br><br>- Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。<br><br>- PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -> target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合<br><br><br><br>評価する際は、MT-Bench <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
+ のように、GPT4を用いた、direct pair-wise comparisonを行っている。<br><br>direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らかの判断やスコアリングをさせる方法であり、今回はどちらがinstructionにより従っているかに勝敗/引き分けをGPT4に判断させている。LLMによる生成はサンプルの順番にsensitiveなので、順番を逆にした場合でも実験をして、win-lose rateを求めている。1つのサンプルペアに対して、サンプルの順番を正順と逆順の2回評価させ、その双方の結果を用いて最終的なwin/lose/tieを決めている。端的に言うと、勝敗が2-0ならそのサンプルの勝ち、同様に1-1なら引き分け、0-2なら負け、ということである。<br><br><img src="https://github.com/user-attachments/assets/726ea2dc-8f62-4320-8489-45cc20ed32ae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="what-do-1362" class="title-link">What Do Language Models Learn in Context? The Structured Task Hypothesis, Jiaoda Li+, N_A, ACL'24</h3><br><a href="https://arxiv.org/abs/2406.04216" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1362" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="In-ContextLearning.html" target="_blank" rel="noopener noreferrer">#In-ContextLearning</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2024-08-27</span>
+<span class="snippet"><span>GPT Summary</span>- LLMsのコンテキスト内学習（ICL）能力を説明する3つの仮説について、一連の実験を通じて探究。最初の2つの仮説を無効にし、最後の仮説を支持する証拠を提供。LLMが事前学習中に学習したタスクを組み合わせることで、コンテキスト内で新しいタスクを学習できる可能性を示唆。</span>
+<span class="snippet"><span>Comment</span><p>SNLP2024での解説スライド:<br>
+
+
+<a href="http://chasen.org/~daiti-m/paper/SNLP2024-Task-Emergence.pdf" target="_blank" rel="noopener noreferrer">http://chasen.org/~daiti-m/paper/SNLP2024-Task-Emergence.pdf</a>
+
+
+</p><p>ICLが何をやっているのか?について、これまでの仮説が正しくないことを実験的に示し、新しい仮説「ICLは事前学習で得られたタスクを組み合わせて新しいタスクを解いている」を提唱し、この仮説が正しいことを示唆する実験結果を得ている模様。<br>理論的に解明されたわけではなさそうなのでそこは留意した方が良さそう。あとでしっかり読む。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="mm-llms-recent-1225" class="title-link">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N_A, ACL'24 Findings</h3><br><a href="https://arxiv.org/abs/2401.13601" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2665,7 +2721,8 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="ProgressiveLearning.html" target="_blank" rel="noopener noreferrer">#ProgressiveLearning</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-01-24</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、大規模言語モデル（LLMs）の新しい事前学習後の手法を提案し、モデルの知識を効果的かつ効率的に向上させることを目指しました。具体的には、Transformerブロックの拡張を使用し、新しいコーパスのみを使用してモデルを調整しました。実験の結果、提案手法はさまざまなベンチマークで優れたパフォーマンスを発揮し、知的エージェントとして多様なタスクに対応できることが示されました。この研究は、自然言語とプログラミング言語を統合し、高度な言語エージェントの開発に貢献するものです。</span>
 <span class="snippet"><span>Comment</span><p>追加の知識を導入したいときに使えるかも?</p><p>事前学習したLLaMA Blockに対して、追加のLLaMA Blockをstackし、もともとのLLaMA Blockのパラメータをfreezeした上でドメインに特化したコーパスで事後学習することで、追加の知識を挿入する。LLaMA Blockを挿入するときは、Linear Layerのパラメータを0にすることで、RMSNormにおける勾配消失の問題を避けた上で、Identity Block（Blockを追加した時点では事前学習時と同様のOutputがされることが保証される）として機能させることができる。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0ef6cc84-da38-4254-9bb3-ea4e2f9ebfab" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a2bb221a-3ac3-4b81-9308-c114daf00401" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></span><br><br>
@@ -4210,9 +4267,11 @@ My Issue
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="FactualKnowledge.html" target="_blank" rel="noopener noreferrer">#FactualKnowledge</a>
 <a class="button" href="Encoder.html" target="_blank" rel="noopener noreferrer">#Encoder</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
 <span class="issue_date">Issue Date: 2024-07-11</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模な事前学習言語モデルにおいて、事実知識の格納方法についての研究を行いました。具体的には、BERTのfill-in-the-blank cloze taskを用いて、関連する事実を表現するニューロンを特定しました。また、知識ニューロンの活性化と対応する事実の表現との正の相関を見つけました。さらに、ファインチューニングを行わずに、知識ニューロンを活用して特定の事実知識を編集しようと試みました。この研究は、事前学習されたTransformers内での知識の格納に関する示唆に富んでおり、コードはhttps://github.com/Hunter-DDM/knowledge-neuronsで利用可能です。</span>
-<span class="snippet"><span>Comment</span><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1108" target="_blank" rel="noopener noreferrer">大規模言語モデルにおいて､「知識は全結合層に蓄積される」という仮説についての文献調査, Kan Hatakeyama, 2023.10</a>
+<span class="snippet"><span>Comment</span><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1108" target="_blank" rel="noopener noreferrer">大規模言語モデルにおいて､「知識は全結合層に蓄積される」という仮説についての文献調査, Kan Hatakeyama, 2023.10</a>
  </p><p>日本語解説: 
 
 
@@ -5664,42 +5723,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Robotics.html"
-            title="Roboticsに関する論文・技術記事メモの一覧">
-            Roboticsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Frontend.html"
+            title="Frontendに関する論文・技術記事メモの一覧">
+            Frontendに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 71</span> 
-  <span class="post-badge badge-new">📝 71</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PEFT(Adaptor-LoRA).html"
-            title="PEFT(Adaptor/LoRA)に関する論文・技術記事メモの一覧">
-            PEFT(Adaptor/LoRA)に関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/EducationalDataMining.html"
+            title="EducationalDataMiningに関する論文・技術記事メモの一覧">
+            EducationalDataMiningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 64</span> 
-  <span class="post-badge badge-new">📝 64</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 56</span> 
+  <span class="post-badge badge-new">📝 56</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/IdeaGeneration.html"
-            title="IdeaGenerationに関する論文・技術記事メモの一覧">
-            IdeaGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LowResource.html"
+            title="LowResourceに関する論文・技術記事メモの一覧">
+            LowResourceに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/StructuredLearning.html"
-            title="StructuredLearningに関する論文・技術記事メモの一覧">
-            StructuredLearningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Relighting.html"
+            title="Relightingに関する論文・技術記事メモの一覧">
+            Relightingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>

@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 13 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 17 mins</span>
   </div></header>
 </div>
     </div>
@@ -5880,15 +5880,51 @@ My Issue
 </a><br>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="InstructionTuning.html" target="_blank" rel="noopener noreferrer">#InstructionTuning</a>
 <a class="button" href="CrossLingual.html" target="_blank" rel="noopener noreferrer">#CrossLingual</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
 <span class="issue_date">Issue Date: 2024-09-19</span>
 <span class="snippet"><span>GPT Summary</span>- 指示チューニングはLLMsの指示理解を向上させるが、低リソース言語では課題がある。これに対処するため、英語をピボット言語とするPLUGアプローチを提案。モデルはまず英語で指示を処理し、次にターゲット言語で応答を生成。4つの言語での評価により、指示に従う能力が平均29%向上した。さらに、他のピボット言語を用いた実験も行い、アプローチの多様性を確認。コードとデータは公開されている。</span>
 <span class="snippet"><span>Comment</span><p>
-<strong># 概要<br><br>cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上<br><br><br><br><img src="https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。<br><br><br>利用するFoundationモデルは以下の3種類で、<br><br>- LLaMA-2-13B (英語に特化したモデル)<br><br>- PolyLM-13B (マルチリンガルなモデル)<br><br>- PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの)<br><br><br>これらに対して学習データとしてGPT4-Alpaca <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1401" target="_blank" rel="noopener noreferrer">Instruction Tuning with GPT-4, Baolin Peng+, N/A, arXiv'23</a>
+<strong># 概要<br><br>cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上<br><br><br><br><img src="https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。<br><br><br>利用するFoundationモデルは以下の3種類で、<br><br>- LLaMA-2-13B (英語に特化したモデル)<br><br>- PolyLM-13B (マルチリンガルなモデル)<br><br>- PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの)<br><br><br>これらに対して学習データとしてGPT4-Alpaca <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1401" target="_blank" rel="noopener noreferrer">[Paper Note] Instruction Tuning with GPT-4, Baolin Peng+, arXiv'23, 2023.04</a>
 </strong>
 <br>
  instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。<br><br><br><br>比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。<br><br>- Pivot-only training: pivot言語（今回は英語）のみで学習した場合 <br><br>- Monolingual response training: pivot言語とtarget言語のデータを利用した場合<br><br>- Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している）<br><br>- Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。<br><br>- PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -> target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合<br><br><br><br>評価する際は、MT-Bench <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
  のように、GPT4を用いた、direct pair-wise comparisonを行っている。<br><br>direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らかの判断やスコアリングをさせる方法であり、今回はどちらがinstructionにより従っているかに勝敗/引き分けをGPT4に判断させている。LLMによる生成はサンプルの順番にsensitiveなので、順番を逆にした場合でも実験をして、win-lose rateを求めている。1つのサンプルペアに対して、サンプルの順番を正順と逆順の2回評価させ、その双方の結果を用いて最終的なwin/lose/tieを決めている。端的に言うと、勝敗が2-0ならそのサンプルの勝ち、同様に1-1なら引き分け、0-2なら負け、ということである。<br><br><img src="https://github.com/user-attachments/assets/726ea2dc-8f62-4320-8489-45cc20ed32ae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="source2synth-synthetic-1393" class="title-link">Source2Synth: Synthetic Data Generation and Curation Grounded in Real  Data Sources, Alisia Lupidi+, N_A, arXiv'24</h3><br><a href="https://arxiv.org/abs/2409.08239" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1393" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="QuestionAnswering.html" target="_blank" rel="noopener noreferrer">#QuestionAnswering</a>
+<a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2024-09-14</span>
+<span class="snippet"><span>GPT Summary</span>- 新手法「Source2Synth」を提案し、LLMに新しいスキルを教える。人間の注釈に依存せず、実世界のソースに基づいた合成データを生成し、低品質な生成物を廃棄してデータセットの質を向上。マルチホップ質問応答と表形式の質問応答に適用し、WikiSQLで25.51%、HotPotQAで22.57%の性能向上を達成。</span>
+<span class="snippet"><span>Comment</span><p>合成データ生成に関する研究。<br>ソースからQAを生成し、2つのsliceに分ける。片方をLLMのfinetuning（LLMSynth）に利用し、もう片方をfinetuningしたLLMで解答可能性に基づいてフィルタリング（curation）する。<br>最終的にフィルタリングして生成された高品質なデータでLLMをfinetuningする。<br><br>Curationされたデータでfinetuningしたモデルの性能は、Curationしていないただの合成データと比べて、MultiHopQA, TableQAベンチマークで高い性能を獲得している。<br><br><img src="https://github.com/user-attachments/assets/4aabfa32-6461-447f-b11d-a0875603fd08" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>画像は元ポストより引用<br><br>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1834402693995024453?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>MultiHopQAの合成データ生成方法<br><img src="https://github.com/user-attachments/assets/853935be-1515-4064-bd08-3c0fe6a948a5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>TableQAの合成データ生成方法<br><img src="https://github.com/user-attachments/assets/8f85bdf7-2de0-451a-a013-55cf0bcc167c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="reft-reasoning-1391" class="title-link">ReFT: Reasoning with Reinforced Fine-Tuning, Trung Quoc Luong+, N_A, ACL'24</h3><br><a href="https://arxiv.org/abs/2401.08967" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -5913,7 +5949,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 強化ファインチューニング（ReFT）を提案し、LLMsの推論能力を向上。SFTでモデルをウォームアップ後、PPOアルゴリズムを用いてオンライン強化学習を行い、豊富な推論パスを自動サンプリング。GSM8K、MathQA、SVAMPデータセットでSFTを大幅に上回る性能を示し、追加のトレーニング質問に依存せず優れた一般化能力を発揮。</span>
 </article>
 <article class="paper-entry">
-<h3 id="does-fine-tuning-1371" class="title-link">Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, N_A, EMNLP'24</h3><br><a href="https://arxiv.org/abs/2405.05904" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="does-fine-tuning-1371" class="title-link">[Paper Note] Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, EMNLP'24, 2024.05</h3><br><a href="https://arxiv.org/abs/2405.05904" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -5927,10 +5963,14 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Hallucination.html" target="_blank" rel="noopener noreferrer">#Hallucination</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-09-01</span>
-<span class="snippet"><span>GPT Summary</span>- 大規模言語モデルはファインチューニングを通じて新しい事実情報に遭遇するが、既存の知識を活用する能力に影響を与える。研究では、閉じた書籍のQAを用いて新しい知識を導入するファインチューニング例の割合を変化させた結果、モデルは新しい知識を学習するのに苦労し、幻覚する傾向が増加することが示された。これにより、ファインチューニングによる新しい知識の導入のリスクが明らかになり、モデルは事前学習を通じて知識を獲得し、ファインチューニングはその利用を効率化することが支持される。</span>
-<span class="snippet"><span>Comment</span><p>pre-training時に獲得されていない情報を用いてLLMのalignmentを実施すると、知識がない状態で学習データを正しく予測できるように学習されてしまうため、事実に基づかない回答をする（つまりhallucination）ように学習されてしまう、といったことを調査している模様。<br><br><br><br>>新しい知識を導入するファインチューニング例は、モデルの知識と一致する例よりもはるかに遅く学習されます。しかし、新しい知識を持つ例が最終的に学習されるにつれて、モデルの幻覚する傾向が線形に増加することも発見しました。<br><br><img src="https://github.com/user-attachments/assets/9c7b3e2e-3ecb-4d71-a7fc-09fa7e57a613" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>早々にoverfittingしている。<br><br><br><br>>大規模言語モデルは主に事前学習を通じて事実知識を取得し、ファインチューニングはそれをより効率的に使用することを教えるという見解を支持しています。<br><br><br><br>なるほど、興味深い。</p><p>下記画像は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1370" target="_blank" rel="noopener noreferrer">大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06</a>
-より引用<br><br><img src="https://github.com/user-attachments/assets/e08d47cf-b550-4ced-a6bd-02d90d3684e9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>本論文中では、full finetuningによる検証を実施しており、LoRAのようなAdapterを用いたテクニックで検証はされていない。LoRAではもともとのLLMのパラメータはfreezeされるため、異なる挙動となる可能性がある。特にLoRAが新しい知識を獲得可能なことが示されれば、LoRA AdapterをもともとのLLMに付け替えるだけで、異なる知識を持ったLLMを運用可能になるため、インパクトが大きいと考えられる。もともとこういった思想は LoRA Hubを提唱する研究などの頃からあった気がするが、AdapterによってHallucination/overfittingを防ぎながら、新たな知識を獲得できることを示した研究はあるのだろうか？<br><br><img src="https://github.com/user-attachments/assets/a05a3662-baf9-4fcd-b15e-440f1c2c9f6e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>参考: 
+<span class="snippet"><span>GPT Summary</span>- ファインチューニングによる新しい知識の導入が、大規模言語モデルの既存知識の活用能力に与える影響を調査。新しい知識を含むファインチューニング例は学習が遅く、モデルのハルシネーションを増加させることが明らかに。結果として、新たな知識導入のリスクを浮き彫りにし、モデルは主に事前学習から知識を獲得するが、ファインチューニングはその活用方法を教えることが示唆される。</span>
+<span class="snippet"><span>Comment</span><p>pre-training時に獲得されていない情報を用いてLLMのalignmentを実施すると、知識がない状態で学習データを正しく予測できるように学習されてしまうため、事実に基づかない回答をする（つまりhallucination）ように学習されてしまう、といったことを調査している模様。<br><br><br><br>>新しい知識を導入するファインチューニング例は、モデルの知識と一致する例よりもはるかに遅く学習されます。しかし、新しい知識を持つ例が最終的に学習されるにつれて、モデルの幻覚する傾向が線形に増加することも発見しました。<br><br><img src="https://github.com/user-attachments/assets/9c7b3e2e-3ecb-4d71-a7fc-09fa7e57a613" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>早々にoverfittingしている。<br><br><br><br>>大規模言語モデルは主に事前学習を通じて事実知識を取得し、ファインチューニングはそれをより効率的に使用することを教えるという見解を支持しています。<br><br><br><br>なるほど、興味深い。</p><p><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1370" target="_blank" rel="noopener noreferrer">大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06</a>
+ 記載の資料([大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06, p. 36](大規模言語モデル (LLM) の技術と最新動向))に本論文の解説が記述されている。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1370" target="_blank" rel="noopener noreferrer">大規模言語モデル (LLM) の技術と最新動向, Ikuya Yamada, 2024.06</a>
+<br><br>本論文中では、full finetuningによる検証を実施しており、LoRAのようなAdapterを用いたテクニックで検証はされていない。LoRAではもともとのLLMのパラメータはfreezeされるため、異なる挙動となる可能性がある。特にLoRAが新しい知識を獲得可能なことが示されれば、LoRA AdapterをもともとのLLMに付け替えるだけで、異なる知識を持ったLLMを運用可能になるため、インパクトが大きいと考えられる。もともとこういった思想は LoRA Hubを提唱する研究などの頃からあった気がするが、AdapterによってHallucination/overfittingを防ぎながら、新たな知識を獲得できることを示した研究はあるのだろうか？<br><img src="https://github.com/user-attachments/assets/a05a3662-baf9-4fcd-b15e-440f1c2c9f6e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p><p>参考: 
 
 
 
@@ -5963,7 +6003,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- 大規模なテキストコーパスで事前学習された複数の中間事前学習モデルのチェックポイントを微調整することによって、事前学習と微調整の関係を調査した。18のデータセットでの結果から、i）継続的な事前学習は、微調整後にモデルを改善する潜在的な方法を示唆している。ii）追加の微調整により、モデルが事前学習段階でうまく機能しないデータセットの改善が、うまく機能するデータセットよりも大きいことを示している。iii）監督された微調整を通じてモデルは恩恵を受けるが、以前のドメイン知識や微調整中に見られないタスクを忘れることがある。iv）監督された微調整後、モデルは評価プロンプトに対して高い感度を示すが、これはより多くの事前学習によって緩和できる。</span>
 </article>
 <article class="paper-entry">
-<h3 id="raft-adapting-1269" class="title-link">RAFT: Adapting Language Model to Domain Specific RAG, Tianjun Zhang+, N_A, arXiv'24</h3><br><a href="https://arxiv.org/abs/2403.10131" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="raft-adapting-1269" class="title-link">[Paper Note] RAFT: Adapting Language Model to Domain Specific RAG, Tianjun Zhang+, arXiv'24, 2024.03</h3><br><a href="https://arxiv.org/abs/2403.10131" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -5978,8 +6018,9 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-04-07</span>
-<span class="snippet"><span>GPT Summary</span>- 大規模なテキストデータのLLMsを事前学習し、新しい知識を追加するためのRetrieval Augmented FineTuning（RAFT）を提案。RAFTは、質問に回答するのに役立つ関連文書から正しいシーケンスを引用し、chain-of-thoughtスタイルの応答を通じて推論能力を向上させる。RAFTはPubMed、HotpotQA、Gorillaデータセットでモデルのパフォーマンスを向上させ、事前学習済みLLMsをドメイン固有のRAGに向けて改善する。</span>
+<span class="snippet"><span>GPT Summary</span>- RAFTを提案し、LLMに新しい知識を効果的に組み込む方法を示す。質問応答能力を向上させるため、無関係な文書を無視し、関連文書から逐語的引用を行って推論能力を強化。PubMedやHotpotQAなどのデータセットで一貫して性能を改善し、ポスト訓練レシピを提示。コードはオープンソースで公開中。</span>
 <span class="snippet"><span>Comment</span><p>Question, instruction, coxtext, cot style answerの4つを用いてSFTをする模様<br>画像は下記ツイートより引用<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/0763b048-8029-4712-9e79-e833bdb9b2c0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br>
 
 
@@ -6136,7 +6177,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>斜め読みしかできていないが、Mixture-of-Expertsを用いたモデルをSFT/Pretrainingする際に、既存のcheckpointの重みを活用することでより効率的かつ性能向上する方法を提案。MoE LayerのMLPを全て既存のcheckpointにおけるMLPの重みをコピーして初期化する。Routerはスクラッチから学習する。<br><img src="https://github.com/user-attachments/assets/d51a0746-d2cc-4343-a462-20034ef373d9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>継続事前学習においては、同じ学習時間の中でDense Layerを用いるベースラインと比較してでより高い性能を獲得。<br><img src="https://github.com/user-attachments/assets/d7a67c99-15d7-4803-82e4-63187bb3d4ec" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br>Figure2で継続事前学習したモデルに対して、フルパラメータのFinetuningをした場合でもUpcyclingは効果がある（Figure3）。<br><br>特にPretrainingではUpcyclingを用いたモデルの性能に、通常のMoEをスクラッチから学習したモデルが追いつくのに時間がかかるとのこと。特に図右側の言語タスクでは、120%の学習時間が追いつくために必要だった。<br><img src="https://github.com/user-attachments/assets/f0ca37ac-65a7-43ff-afef-ffc309b17040" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Sparse Upcycingと、Dense tilingによる手法（warm start; 元のモデルに既存の層を複製して新しい層を追加する方法）、元のモデルをそれぞれ継続事前学習すると、最も高い性能を獲得している。<br><img src="https://github.com/user-attachments/assets/b357a08a-d202-47d3-977f-f02b192723d1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>（すごい斜め読みなのでちょっも自信なし、、、）</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="instruction-tuning-1401" class="title-link">Instruction Tuning with GPT-4, Baolin Peng+, N_A, arXiv'23</h3><br><a href="https://arxiv.org/abs/2304.03277" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="instruction-tuning-1401" class="title-link">[Paper Note] Instruction Tuning with GPT-4, Baolin Peng+, arXiv'23, 2023.04</h3><br><a href="https://arxiv.org/abs/2304.03277" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -6150,8 +6191,11 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="InstructionTuning.html" target="_blank" rel="noopener noreferrer">#InstructionTuning</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-09-20</span>
-<span class="snippet"><span>GPT Summary</span>- GPT-4を用いて指示に従うデータを生成し、LLMのファインチューニングを行う初の試みを報告。生成された52Kの指示データは、従来のモデルよりも新しいタスクに対して優れたゼロショット性能を示した。GPT-4からのフィードバックと比較データも収集し、データとコードベースを公開。</span>
+<span class="snippet"><span>GPT Summary</span>- GPT-4を用いて機械生成の指示追従データを新たに生成し、LLaMAモデルのファインチューニングを行う試みを提案。生成されたデータは、従来のモデルと比べて新規タスクに対するゼロショット性能を向上させることを示した。フィードバックと比較データも収集し、コードベースを公開。</span>
 <span class="snippet"><span>Comment</span><p>現在はOpenAIの利用規約において、outputを利用してOpenAIと競合するモデルを構築することは禁止されているので、この点には注意が必要<br>
 
 
@@ -6199,6 +6243,7 @@ My Issue
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
 <a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-01-25</span>
 <span class="snippet"><span>GPT Summary</span>- 自動的な言語生成の品質評価には説明可能なメトリクスが必要であるが、既存のメトリクスはその判定を説明したり欠陥とスコアを関連付けることができない。そこで、InstructScoreという新しいメトリクスを提案し、人間の指示とGPT-4の知識を活用してテキストの評価と診断レポートを生成する。さまざまな生成タスクでInstructScoreを評価し、他のメトリクスを上回る性能を示した。驚くべきことに、InstructScoreは人間の評価データなしで最先端のメトリクスと同等の性能を達成する。</span>
 <span class="snippet"><span>Comment</span><p>伝統的なNLGの性能指標の解釈性が低いことを主張する研究</p><p><img src="https://github.com/user-attachments/assets/4c4fe705-e0c5-41d1-b3c8-c084d85b77ba" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
@@ -7728,7 +7773,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Slide.html" target="_blank" rel="noopener noreferrer">#Slide</a>
 <span class="issue_date">Issue Date: 2025-03-16</span>
-<span class="snippet"><span>Comment</span><p>知識の追加の部分で下記研究が引用されている<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1371" target="_blank" rel="noopener noreferrer">Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, N/A, EMNLP'24</a>
+<span class="snippet"><span>Comment</span><p>知識の追加の部分で下記研究が引用されている<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1371" target="_blank" rel="noopener noreferrer">[Paper Note] Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?, Zorik Gekhman+, EMNLP'24, 2024.05</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1640" target="_blank" rel="noopener noreferrer">LoRA Learns Less and Forgets Less, Dan Biderman+, TMLR'24</a>
 </p></span><br><br>
 </article>
@@ -8112,6 +8157,9 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-08-25</span>
 <span class="snippet"><span>Comment</span><p>LLMを学習する時に、ワンライン追加するだけで、マルチGPUトレーニングのスループットを20%改善し、メモリ使用量を60%削減するらしい<br><br>元ツイート:
 
@@ -8123,7 +8171,7 @@ My Issue
 </div>
 
 
-</p><p>これだけでいい<br><img src="https://github.com/user-attachments/assets/abce24ed-f979-43db-ac51-e850f2ae877a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Unsloth <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1450" target="_blank" rel="noopener noreferrer">Unsloth</a>
+</p><p>Unsloth <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1450" target="_blank" rel="noopener noreferrer">Unsloth</a>
  はLoRA/QLoRAが可能な一方でまだMulti-GPUはサポートしていない。一方、Liger-KernelはLoRAよりもfull-parameter tuningとMulti-GPUにフォーカスしており、目的に応じて使い分けが必要。<br><br><br><br>
 
 
@@ -8196,7 +8244,7 @@ My Issue
 <span class="issue_date">Issue Date: 2023-11-20</span>
 </article>
 <article class="paper-entry">
-<h3 id="llama-factory-1134" class="title-link">LLaMA-Factory, 2023</h3><br><a href="https://github.com/hiyouga/LLaMA-Factory" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="llama-factory-1134" class="title-link">LLaMA-Factory, hiyouga, 2023.07</h3><br><a href="https://github.com/hiyouga/LLaMA-Factory" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -8212,6 +8260,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
 <a class="button" href="Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2023-11-14</span>
 <span class="snippet"><span>Comment</span><p>簡単に利用できるLLaMAのfinetuning frameworkとのこと。<br>元ツイート: 
 
@@ -8492,42 +8541,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/In-Depth-Notes.html"
-            title="In-Depth Notesに関する論文・技術記事メモの一覧">
-            In-Depth Notesに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Grounding.html"
+            title="Groundingに関する論文・技術記事メモの一覧">
+            Groundingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/FactorizationMachines.html"
-            title="FactorizationMachinesに関する論文・技術記事メモの一覧">
-            FactorizationMachinesに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AutomaticSpeechRecognition(ASR).html"
+            title="AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧">
+            AutomaticSpeechRecognition(ASR)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
+  <span class="post-badge badge-new">📝 17</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Label-free.html"
-            title="Label-freeに関する論文・技術記事メモの一覧">
-            Label-freeに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Evaluation.html"
+            title="Evaluationに関する論文・技術記事メモの一覧">
+            Evaluationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 481</span> 
+  <span class="post-badge badge-new">📝 481</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/MLSys.html"
-            title="MLSysに関する論文・技術記事メモの一覧">
-            MLSysに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RolePlaying.html"
+            title="RolePlayingに関する論文・技術記事メモの一覧">
+            RolePlayingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li></ul>

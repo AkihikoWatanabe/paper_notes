@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 hours 26 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 hours 34 mins</span>
   </div></header>
 </div>
     </div>
@@ -1084,6 +1084,34 @@ My Issue
 <br><br>こちらはSFT->Iterative DPO->Model Mergeを実施し、翻訳に特化した継続事前学習はやっていないように見える。一方、SFT時点で独自のテンプレートを作成し、語彙の指定やスタイル、日本語特有の常体、敬体の指定などを実施できるように翻訳に特化したテンプレートを学習している点が異なるように見える。Hunyuanは多様な翻訳の指示に対応できるように学習しているが、PLaMo翻訳はユースケースを絞り込み、ユースケースに対する性能を高めるような特化型のアプローチをとるといった思想の違いが伺える。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="plug-leveraging-1400" class="title-link">PLUG: Leveraging Pivot Language in Cross-Lingual Instruction Tuning, Zhihan Zhang+, N_A, ACL'24</h3><br><a href="https://arxiv.org/abs/2311.08711" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1400" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="InstructionTuning.html" target="_blank" rel="noopener noreferrer">#InstructionTuning</a>
+<a class="button" href="CrossLingual.html" target="_blank" rel="noopener noreferrer">#CrossLingual</a>
+<a class="button" href="ACL.html" target="_blank" rel="noopener noreferrer">#ACL</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<span class="issue_date">Issue Date: 2024-09-19</span>
+<span class="snippet"><span>GPT Summary</span>- 指示チューニングはLLMsの指示理解を向上させるが、低リソース言語では課題がある。これに対処するため、英語をピボット言語とするPLUGアプローチを提案。モデルはまず英語で指示を処理し、次にターゲット言語で応答を生成。4つの言語での評価により、指示に従う能力が平均29%向上した。さらに、他のピボット言語を用いた実験も行い、アプローチの多様性を確認。コードとデータは公開されている。</span>
+<span class="snippet"><span>Comment</span><p>
+<strong># 概要<br><br>cross-lingualでinstruction tuningをする手法。target言語のInstructionが与えられたときに、Pivotとなる言語でInstructionとResponseを生成した後、targetとなる言語に翻訳するようなデータ（それぞれをseparatorを用いてconcatする）でInstruction Tuningすることでtarget言語での性能が向上<br><br><br><br><img src="https://github.com/user-attachments/assets/1a409df0-b8bf-45fd-8fc1-316519723820" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br># 評価<br><br>ゼロショットのOpen-end GenerationタスクでInstruction Tuningされたモデルが評価されるが、既存のマルチリンガルの評価セットはサンプル数が小さく、機械翻訳ベースのものはノイジーという課題がある。このため、著者らは評価する4言語（low-resource language）のプロの翻訳家を雇用し、AlpacaEvalを翻訳し、4言語（Chinese, Korean, Italian, Spanish）のinstructionが存在するパラレルコーパス X-AlpacaEvalを作成し評価データとして用いる。<br><br><br>利用するFoundationモデルは以下の3種類で、<br><br>- LLaMA-2-13B (英語に特化したモデル)<br><br>- PolyLM-13B (マルチリンガルなモデル)<br><br>- PolyLM-Instruct-Instruct (PolyLM-13Bをinstruction tuningしたもの)<br><br><br>これらに対して学習データとしてGPT4-Alpaca <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1401" target="_blank" rel="noopener noreferrer">[Paper Note] Instruction Tuning with GPT-4, Baolin Peng+, arXiv'23, 2023.04</a>
+</strong>
+<br>
+ instruction-tuning dataset (52kのインストラクションが存在) を利用する。GPT4-AlpacaをChatGPTによって4言語に翻訳し、各言語に対するinstruction tuning datasetを得た。<br><br><br><br>比較手法として以下の5種類と比較している。ここでターゲット言語は今回4種類で、それぞれターゲット言語ごとに独立にモデルを学習している。<br><br>- Pivot-only training: pivot言語（今回は英語）のみで学習した場合 <br><br>- Monolingual response training: pivot言語とtarget言語のデータを利用した場合<br><br>- Code Switching: Monolingual response trainingに加えて、pivot言語とtarget言語のinput/outputをそれぞれ入れ替えたデータセットを用いた場合（i.e. pivot言語 input-target言語 output, target言語 input-pivot言語 outputのペアを作成し学習データに利用している）<br><br>- Auxiliary translation tasks: Monolingual respones trainingに加えて、翻訳タスクを定義し学習データとして加えた場合。すなわち、input, outputそれぞれに対して、pivot言語からtarget言語への翻訳のサンプル ([P_trans;x^p], x^t）と（[P_trans;y^p], y^t）を加えて学習している。ここで、P_transは翻訳を指示するpromptで、;は文字列のconcatnation。x^p, y^p, x^t, y^tはそれぞれ、pivot言語のinput, output、target言語のinput, outputのサンプルを表す。<br><br>- PLUG（提案手法）: Pivot-only Trainingに加えて、target言語のinputから、pivot言語のinput/output -> target言語のoutputをconcatしたテキスト(x^t, [x^p;y^p;y^t]) を学習データに加えた場合<br><br><br><br>評価する際は、MT-Bench <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
+ のように、GPT4を用いた、direct pair-wise comparisonを行っている。<br><br>direct pair-wise comparisonは、2つのサンプルを与えてLLMに何らかの判断やスコアリングをさせる方法であり、今回はどちらがinstructionにより従っているかに勝敗/引き分けをGPT4に判断させている。LLMによる生成はサンプルの順番にsensitiveなので、順番を逆にした場合でも実験をして、win-lose rateを求めている。1つのサンプルペアに対して、サンプルの順番を正順と逆順の2回評価させ、その双方の結果を用いて最終的なwin/lose/tieを決めている。端的に言うと、勝敗が2-0ならそのサンプルの勝ち、同様に1-1なら引き分け、0-2なら負け、ということである。<br><br><img src="https://github.com/user-attachments/assets/726ea2dc-8f62-4320-8489-45cc20ed32ae" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="unified-io-2-1202" class="title-link">[Paper Note] Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision, Language, Audio, and Action, Jiasen Lu+, CVPR'24, 2023.12</h3><br><a href="https://arxiv.org/abs/2312.17172" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1257,10 +1285,10 @@ My Issue
 </strong>
 <br>
  データと、Topical-Chat, QAGSデータの3つのベンチマークで評価を実施した。タスクとしては、要約と対話のresponse generationのデータとなる。<br><br>- モデルはGPT-3.5 (text-davinci-003), GPT-4を利用した<br><br>- gpt3.5利用時は、temperatureは0に設定し、GPT-4はトークンの生成確率を返さないので、`n=20, temperature=1, top_p=1`とし、20回の生成結果からトークンの出現確率を算出した。<br><br><br><br>
-<strong>## 評価結果<br><br>G-EVALがbaselineをoutperformし、特にGPT4を利用した場合に性能が高い。GPTScoreを利用した場合に、モデルを何を使用したのかが書かれていない。Appendixに記述されているのだろうか。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/924b0acd-6236-49a0-a6bc-ae203c87f7ea" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/435fa260-a88d-4db2-b3a2-40d29a6617df" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f9ca4e1f-903d-48fa-a40f-64fa8c799c43" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># Analysis<br><br>## G-EvalがLLMが生成したテキストを好んで高いスコアを付与してしまうか？<br><br>- 人間に品質の高いニュース記事要約を書かせ、アノテータにGPTが生成した要約を比較させたデータ (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, N/A, arXiv'23</a>
+<strong>## 評価結果<br><br>G-EVALがbaselineをoutperformし、特にGPT4を利用した場合に性能が高い。GPTScoreを利用した場合に、モデルを何を使用したのかが書かれていない。Appendixに記述されているのだろうか。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/924b0acd-6236-49a0-a6bc-ae203c87f7ea" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/435fa260-a88d-4db2-b3a2-40d29a6617df" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/f9ca4e1f-903d-48fa-a40f-64fa8c799c43" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p># Analysis<br><br>## G-EvalがLLMが生成したテキストを好んで高いスコアを付与してしまうか？<br><br>- 人間に品質の高いニュース記事要約を書かせ、アノテータにGPTが生成した要約を比較させたデータ (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">[Paper Note] Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, arXiv'23, 2023.01</a>
 </strong>
 <br>
-) を用いて検証<br><br>- その結果、基本的にGPTが生成した要約に対して、G-EVAL4が高いスコアを付与する傾向にあることがわかった。<br><br>    - 原因1: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, N/A, arXiv'23</a>
+) を用いて検証<br><br>- その結果、基本的にGPTが生成した要約に対して、G-EVAL4が高いスコアを付与する傾向にあることがわかった。<br><br>    - 原因1: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1304" target="_blank" rel="noopener noreferrer">[Paper Note] Benchmarking Large Language Models for News Summarization, Tianyi Zhang+, arXiv'23, 2023.01</a>
 で指摘されている通り、人間が記述した要約とLLMが記述した要約を区別するタスクは、inter-annotator agreementは`0.07`であり、極端に低く、人間でも困難なタスクであるため。<br><br>    - 原因2: LLMは生成時と評価時に、共通したコンセプトをモデル内部で共有している可能性が高く、これがLLMが生成した要約を高く評価するバイアスをかけた<br><br><br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ec6a213d-15ea-4572-8716-ad9cbee6f19a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## CoTの影響<br><br>- SummEvalデータにおいて、CoTの有無による性能の差を検証した結果、CoTを導入した場合により高いcorrelationを獲得した。特に、Fluencyへの影響が大きい。<br><br><br><br>## Probability Normalizationによる影響<br><br>- probabilityによるnormalizationを導入したことで、kendall tauが減少した。この理由は、probabilityが導入されていない場合は多くの引き分けを生み出す。一方、kendall tauは、concordant / discordantペアの数によって決定されるが、引き分けの場合はどちらにもカウントされず、kendall tauの値を押し上げる効果がある。このため、これはモデルの真の性能を反映していない。<br><br>- 一方、probabilityを導入すると、より細かいな連続的なスコアを獲得することができ、これはspearman-correlationの向上に反映されている。<br><br><br><br>## モデルサイズによる影響<br><br>- 基本的に大きいサイズの方が高いcorrelationを示す。特に、consistencyやrelevanceといった、複雑な評価タスクではその差が顕著である。<br><br>- 一方モデルサイズが小さい方が性能が良い観点（engagingness, groundedness）なども存在した。</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2101,19 +2129,29 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Hallucination.html"
-            title="Hallucinationに関する論文・技術記事メモの一覧">
-            Hallucinationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/IJCAI.html"
+            title="IJCAIに関する論文・技術記事メモの一覧">
+            IJCAIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 32</span> 
-  <span class="post-badge badge-new">📝 32</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Clustering-based.html"
-            title="Clustering-basedに関する論文・技術記事メモの一覧">
-            Clustering-basedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Finetuning.html"
+            title="Finetuningに関する論文・技術記事メモの一覧">
+            Finetuningに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Sycophancy.html"
+            title="Sycophancyに関する論文・技術記事メモの一覧">
+            Sycophancyに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -2121,22 +2159,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RewardHacking.html"
-            title="RewardHackingに関する論文・技術記事メモの一覧">
-            RewardHackingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/GenerativeVerifier.html"
+            title="GenerativeVerifierに関する論文・技術記事メモの一覧">
+            GenerativeVerifierに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Parallel.html"
-            title="Parallelに関する論文・技術記事メモの一覧">
-            Parallelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li></ul>

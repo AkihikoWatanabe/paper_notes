@@ -1450,6 +1450,27 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- トランスフォーマーは、固定長のタスクにおいては優れた汎化能力を持つが、任意の長さのシーケンスには対応できない。この問題を解決するために、新しい位置エンコーディング手法を提案する。ランダム化された位置エンコーディングスキームを使用し、長いシーケンスの位置をシミュレートし、順序付けられたサブセットをランダムに選択する。大規模な実証評価により、この手法がトランスフォーマーの汎化能力を向上させ、テストの正確性を平均して12.0％向上させることが示された。</span>
 </article>
 <article class="paper-entry">
+<h3 id="roformer-enhanced-1310" class="title-link">[Paper Note] RoFormer: Enhanced Transformer with Rotary Position Embedding, Jianlin Su+, arXiv'21, 2021.04</h3><br><a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1310" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2024-05-24</span>
+<span class="snippet"><span>GPT Summary</span>- 位置エンコーディングはトランスフォーマーにおいて重要な役割を果たし、依存関係をモデル化するための監督信号を提供する。本研究では、トランスフォーマーに位置情報を組み込む手法を検討し、新たに提案するロータリーポジションエンベディング（RoPE）が絶対位置を回転行列でエンコードして相対位置依存性を取り入れることを示す。RoPEはシーケンス長の柔軟性や相対距離の増加に伴う依存性の減衰などの特性を持ち、強化済みトランスフォーマー（RoFormer）の評価は他の手法を一貫して上回ることを示している。RoFormerはHuggingfaceに統合済み。</span>
+<span class="snippet"><span>Comment</span><p>RoPEを提案した論文</p><p># Absolute Position Embedding と Relative Position Embedding<br><br>## TransformerにおけるQKVベクトルの計算方法<br><br>一般に、Transformerにおける Query (Q), Key (K), Value (V) は以下の式で定式化される：<br><br><img src="https://github.com/user-attachments/assets/21b0f077-64b4-4fe5-af04-bffc373eabf5"" alt="image" loading="lazy" width="550" height="400"/><br><br>m, nはそれぞれ位置を表す整数。Absolute Position Embeddingと、Relative Position Embeddingは、関数fの設計がそれぞれ異なっている：<br><br><br><br>## Absolute Position Embedding<br><br>absolute position embeddingは、固定されたposition ベクトル、あるいはtrainableなposition ベクトルpを、入力ベクトルに対して足し合わせる：<br><br><img src="https://github.com/user-attachments/assets/0688c1bf-8699-48a5-9d95-06454550bbdf"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Relative Position Embedding<br><br>一方、Relative Position Embeddingは、Queryの位置に対する、Key, Valueの相対位置（つまり、mとnの差）に対して、trainableなベクトル \tilde{p}_r をKey, Valueおよび相対距離rごとに用意し、そのベクトルを入力に足し合わせる、という定式化となっている：<br><br><br><img src="https://github.com/user-attachments/assets/ddb92f1a-af23-4d71-a7b9-2a7adda792e1"" alt="image" loading="lazy" width="550" height="400"/><br><br><br>ここで、r = clip(m-n, r_max, r_min)であり、r_max, r_minは考慮する相対距離の最大値と最小値である。<br><br>他にも様々な定式化が提案されているがたいてい定式化の中に相対位置m-nが出現する。<br><br><br>## RoPE<br><br>RoPEでは、入力ベクトル(Q,K)に対して回転行列を適用することで、回転に対して位置情報を保持させる。具体的には、異なる位置m, nに対するq_m^T k_nを計算すると、回転行列をRとした場合式16に示されているように回転行列Rに相対位置m-nが現れ（るように設計されており）、相対位置を考慮したqkの計算になっている。[^1]<br><br><br><img src="https://github.com/user-attachments/assets/fce1d06e-e346-4278-a77c-4c96795d5488"" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/3f28103c-6a56-4016-8f50-d45fe28cd62a"" alt="image" loading="lazy" width="550" height="400"/><br><br><br>[^1]: (R_mq_m)^T R_nK_n = q_m^T (R_m^T R_n) k_n = q_m^T (R_{-m}R_n) k_n = q_m^T R_{n-m} k_n. ここで、R_m^T = R_{-m}であり、R_m R_n = R_{m+n}の性質を使っている。<br><br><br>RoPEは下記のような性質を持つ：<br><br>- long-term decay: θi = 10000−2i/d と設定することにより、相対位置が離れているトークンのベクトルとのinner productの値が小さくなる。すなわち、位置が離れているトークン間の依存関係が小さくなる。<br><br>- Linear-Attention: RoPEは回転行列であり、乗算後のベクトルのノルムを変化させない。このため、Linear Attentionの式の中に回転行列を組み込むことで、Linear Attentionと簡単に組み合わせることが可能<br><br><br><br>Absolute Position Embedding, Relative Position Embeddingでは、ベクトルに対して位置情報を加算する定式化で K, Vの計算時に位置情報を考慮していたため、Linear Attentionの計算そのものに位置情報を組み込んだ定式化とはなっていなかった。<br><br>が、RoPEでは回転行列を乗算する定式化であり、ノルムを変化させないのでLinear Attentionの定式化に組み込むことができる。このため、モデルのアーキテクチャを大きく変更しなくとも組み込める。<br><br></p><p>RoPE自体は実装にパラメータを必要としないが、モデルのその他のパラメータがRoPEに適用できるように学習されていないと適用できないであろう点には注意（事前学習時にRoPEが使われていれば話は別）。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="transformer-xl-attentive-2359" class="title-link">[Paper Note] Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context, Zihang Dai+, ACL'19</h3><br><a href="https://arxiv.org/abs/1901.02860" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1637,27 +1658,6 @@ My Issue
 
 </p><p>RoPEについてサーベイが必要になったら見る</p></span><br><br>
 </article>
-<article class="paper-entry">
-<h3 id="roformer-enhanced-1310" class="title-link">[Paper Note] RoFormer: Enhanced Transformer with Rotary Position Embedding, Jianlin Su+, Neurocomputing Vol. 568, 2021.04</h3><br><a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1310" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
-<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<span class="issue_date">Issue Date: 2024-05-24</span>
-<span class="snippet"><span>GPT Summary</span>- 位置エンコーディングはトランスフォーマーにおいて重要な役割を果たす。本論文では、トランスフォーマーベースのモデルに位置情報を統合する方法を検討し、新しい回転位置埋め込み（RoPE）を提案。RoPEは絶対位置を回転行列でエンコードし、相対位置依存性を組み込むことで、シーケンス長の柔軟性やトークン間の依存性改善などの特性を実現。RoFormerとして評価した結果、他の手法を常に上回る性能を示し、理論的分析も提供。RoFormerはHuggingfaceに統合済み。</span>
-<span class="snippet"><span>Comment</span><p>RoPEを提案した論文</p><p># Absolute Position Embedding と Relative Position Embedding<br><br>## TransformerにおけるQKVベクトルの計算方法<br><br>一般に、Transformerにおける Query (Q), Key (K), Value (V) は以下の式で定式化される：<br><br><img src="https://github.com/user-attachments/assets/21b0f077-64b4-4fe5-af04-bffc373eabf5"" alt="image" loading="lazy" width="550" height="400"/><br><br>m, nはそれぞれ位置を表す整数。Absolute Position Embeddingと、Relative Position Embeddingは、関数fの設計がそれぞれ異なっている：<br><br><br><br>## Absolute Position Embedding<br><br>absolute position embeddingは、固定されたposition ベクトル、あるいはtrainableなposition ベクトルpを、入力ベクトルに対して足し合わせる：<br><br><img src="https://github.com/user-attachments/assets/0688c1bf-8699-48a5-9d95-06454550bbdf"" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>## Relative Position Embedding<br><br>一方、Relative Position Embeddingは、Queryの位置に対する、Key, Valueの相対位置（つまり、mとnの差）に対して、trainableなベクトル \tilde{p}_r をKey, Valueおよび相対距離rごとに用意し、そのベクトルを入力に足し合わせる、という定式化となっている：<br><br><br><img src="https://github.com/user-attachments/assets/ddb92f1a-af23-4d71-a7b9-2a7adda792e1"" alt="image" loading="lazy" width="550" height="400"/><br><br><br>ここで、r = clip(m-n, r_max, r_min)であり、r_max, r_minは考慮する相対距離の最大値と最小値である。<br><br>他にも様々な定式化が提案されているがたいてい定式化の中に相対位置m-nが出現する。<br><br><br>## RoPE<br><br>RoPEでは、入力ベクトル(Q,K)に対して回転行列を適用することで、回転に対して位置情報を保持させる。具体的には、異なる位置m, nに対するq_m^T k_nを計算すると、回転行列をRとした場合式16に示されているように回転行列Rに相対位置m-nが現れ（るように設計されており）、相対位置を考慮したqkの計算になっている。[^1]<br><br><br><img src="https://github.com/user-attachments/assets/fce1d06e-e346-4278-a77c-4c96795d5488"" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/3f28103c-6a56-4016-8f50-d45fe28cd62a"" alt="image" loading="lazy" width="550" height="400"/><br><br><br>[^1]: (R_mq_m)^T R_nK_n = q_m^T (R_m^T R_n) k_n = q_m^T (R_{-m}R_n) k_n = q_m^T R_{n-m} k_n. ここで、R_m^T = R_{-m}であり、R_m R_n = R_{m+n}の性質を使っている。<br><br><br>RoPEは下記のような性質を持つ：<br><br>- long-term decay: θi = 10000−2i/d と設定することにより、相対位置が離れているトークンのベクトルとのinner productの値が小さくなる。すなわち、位置が離れているトークン間の依存関係が小さくなる。<br><br>- Linear-Attention: RoPEは回転行列であり、乗算後のベクトルのノルムを変化させない。このため、Linear Attentionの式の中に回転行列を組み込むことで、Linear Attentionと簡単に組み合わせることが可能<br><br><br><br>Absolute Position Embedding, Relative Position Embeddingでは、ベクトルに対して位置情報を加算する定式化で K, Vの計算時に位置情報を考慮していたため、Linear Attentionの計算そのものに位置情報を組み込んだ定式化とはなっていなかった。<br><br>が、RoPEでは回転行列を乗算する定式化であり、ノルムを変化させないのでLinear Attentionの定式化に組み込むことができる。このため、モデルのアーキテクチャを大きく変更しなくとも組み込める。<br><br></p><p>RoPE自体は実装にパラメータを必要としないが、モデルのその他のパラメータがRoPEに適用できるように学習されていないと適用できないであろう点には注意（事前学習時にRoPEが使われていれば話は別）。</p></span><br><br>
-</article>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -1711,42 +1711,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Health.html"
-            title="Healthに関する論文・技術記事メモの一覧">
-            Healthに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/React-(Frontend).html"
+            title="React (Frontend)に関する論文・技術記事メモの一覧">
+            React (Frontend)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Inpainting.html"
-            title="Inpaintingに関する論文・技術記事メモの一覧">
-            Inpaintingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Faithfulness.html"
+            title="Faithfulnessに関する論文・技術記事メモの一覧">
+            Faithfulnessに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TrainedMetrics.html"
-            title="TrainedMetricsに関する論文・技術記事メモの一覧">
-            TrainedMetricsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Parallelism.html"
+            title="Parallelismに関する論文・技術記事メモの一覧">
+            Parallelismに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TTS.html"
-            title="TTSに関する論文・技術記事メモの一覧">
-            TTSに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/UserModeling.html"
+            title="UserModelingに関する論文・技術記事メモの一覧">
+            UserModelingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 20</span> 
-  <span class="post-badge badge-new">📝 20</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li></ul>

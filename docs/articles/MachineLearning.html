@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 7 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 10 mins</span>
   </div></header>
 </div>
     </div>
@@ -4935,6 +4935,7 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-01-16</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、トランスフォーマーのデコーダーは無限マルチステートRNNとして概念化できることを示し、有限のマルチステートRNNに変換することも可能であることを示します。さらに、新しいキャッシュ圧縮ポリシーであるTOVAを導入し、他のポリシーよりも優れた性能を示すことを実験結果で示しました。TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフォーマーデコーダーLLMが実際にはRNNとして振る舞うことが多いことを示しています。</span>
 <span class="snippet"><span>Comment</span><p>TransformerはRNNとは異なる概念、特に全てのトークンの情報に直接アクセスできるということで区別されてきたが、よくよく考えてみると、Transformer Decoderは、RNNのhidden_states h を（hは1つのstateをベクトルで表している）、multi-stateを表す matrix H （t個のstateを表すmatrix; tは現在の着目しているトークンまでのsequenceの長さ）で置き換えたもの Multi-State-RNN (MSRNN) と解釈できる、という話。<br>また、window attentionなどのattentionの計算で考慮するKV cacheのスパンを（メモリを節約するために）制限する圧縮手法は、先ほどのMSRNNは全トークンのstate （KV Cache）にアクセスできる（= Unbounded）と考えると、アクセスできるトークンのstateが k (<t) となるため、BoundedなMSRNNとみなせる。<br>したがって、現在のLLMはTransformer Decoderを積み上げたものであるものであり、原理上はinference/training時に全てのトークンを考慮できるため、原理上はUnboundedなMSRNNとみなせる。一方、ここにメモリの制約が加わるとKV Cacheを圧縮しなければならないため、実用上はBoundedなMSRNNとなっている。<br><br><img src="https://github.com/user-attachments/assets/292bd370-0138-441a-a626-ee73cb2f31b5" /" alt="image" loading="lazy" width="550" height="400"/><br><br>実際に式で表すと以下のようにRNNとTransformerは対応づけられる。<br><img src="https://github.com/user-attachments/assets/3b2cbadc-e6ef-4465-ac78-bb4ff71351f2" /" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/18a99f2a-06dc-472c-b50d-743b820904f3" /" alt="image" loading="lazy" width="550" height="400"/><br><br>このことを考慮して、本研究ではTOVAと呼ばれる新しいKV Cacheの圧縮手法を提案している。非常にシンプルな手法で、KV Cacheがメモリの上限に到達したときに、その際にattention scoreが最も小さいトークンのKV Cacheを捨てる、という手法である。<br><img src="https://github.com/user-attachments/assets/09f19caf-bcea-42f7-b1e0-8bc3ea8a2e4c" /" alt="image" loading="lazy" width="550" height="400"/><br><br>TOVAをwindow attentionなどのベースラインとオラクルとしてfull attentionと比較。タスクは Language Modeling（PG-19データにおけるPerplexity）、Language Understanding （long contextからrelevantな情報を拾う必要があるQA）、Story Generation（長文のストーリーを書かせてGPT4によってpair-wiseで生成されたストーリーの品質をLLM-as-a-Judgeさせる）を利用。既存のKV Cache圧縮手法よりも効率的にKV Cacheを圧縮でき、4096 context windowの場合は、512程度でfull attentionと近い性能を示すことが示された。これにより、高いメモリ効率とスループットを実現できる。ここで、グラフのx軸のmultistateはTOVAにおいてはmatrix Hで保持するstate数に相当し、window attentionでは、window sizeに相当する。<br><img src="https://github.com/user-attachments/assets/fd39d465-3a0d-49ad-951b-fddb115394f3" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/c66bade9-f0c4-476b-8243-bd1d88e21ead" /" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
@@ -8745,8 +8746,50 @@ My Issue
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-09-07</span>
 <span class="snippet"><span>Comment</span><p>LLMやVLMを学習するためのツールやノウハウがまとめられたリポジトリ</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="automlopsを使って機械学習ci_cdパイプラインを組んでみた-1363" class="title-link">AutoMLOpsを使って機械学習CI_CDパイプラインを組んでみた, 2024.08</h3><br><a href="https://www.ai-shift.co.jp/techblog/4772" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1363" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="MLOps.html" target="_blank" rel="noopener noreferrer">#MLOps</a>
+<a class="button" href="python.html" target="_blank" rel="noopener noreferrer">#python</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="SoftwareEngineering.html" target="_blank" rel="noopener noreferrer">#SoftwareEngineering</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2024-08-27</span>
+<span class="snippet"><span>Comment</span><p>pythonコードでコンポーネントや、パイプラインを関数の形で記述するだけで、MLのCI/CDパイプラインをVertexAI上に自動構築できる模様。非常にお手軽で、多くの設定ファイルなどは自動生成されるようなので、簡単に始めることができそう。<br><br>記事中では、多クラス分類器を学習するためのデータをBigQueryから取得、モデル訓練、デプロイ、推論エンドポイント生成、モニタリングなどを簡単なコードベースで実現できている。便利そうではある。<br>細かいチューニングも自動生成された設定ファイルをいじれば可能だと思われる。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="10xの推薦を作るチームとml-platform-1360" class="title-link">10Xの推薦を作るチームとML platform, 2024.08</h3><br><a href="https://product.10x.co.jp/entry/recommendation_2024" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1360" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="RecommenderSystems.html" target="_blank" rel="noopener noreferrer">#RecommenderSystems</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2024-08-27</span>
+<span class="snippet"><span>Comment</span><p>初期開発における定性評価の重要性やインターリービングの話題など実用的な内容が書かれているように見える。あとで読む。</p><p>定性評価が重要という話は、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1367" target="_blank" rel="noopener noreferrer">NewsPicksに推薦システムを本番投入する上で一番優先すべきだったこと, 2024.08</a>
+ <br><br>でも言及されている</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="litserve-1357" class="title-link">LitServe, 2024.04</h3><br><a href="https://github.com/Lightning-AI/litserve" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -8762,8 +8805,11 @@ My Issue
 </a><br>
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="Library.html" target="_blank" rel="noopener noreferrer">#Library</a>
+<a class="button" href="MultiModal.html" target="_blank" rel="noopener noreferrer">#MultiModal</a>
 <a class="button" href="Repository.html" target="_blank" rel="noopener noreferrer">#Repository</a>
 <a class="button" href="API.html" target="_blank" rel="noopener noreferrer">#API</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="EfficientEvaluation.html" target="_blank" rel="noopener noreferrer">#EfficientEvaluation</a>
 <span class="issue_date">Issue Date: 2024-08-25</span>
 <span class="snippet"><span>Comment</span><p>FastAPIより2倍早いAPIライブラリ。LLMやVisionなど多くのモーダルに対応し、マルチワーカーでオートスケーリングやバッチングやストリーミングにも対応。PyTorchモデルだけでなく、JAXなど様々なフレームワークのモデルをデプロイ可能<br>元ツイート:
 
@@ -8775,7 +8821,7 @@ My Issue
 </div>
 
 
-</p><p>画像は元ツイートより引用<br><br><img src="https://github.com/user-attachments/assets/407559cc-d026-403e-be79-c1709e5c96d2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ml-papers-1156" class="title-link">ML Papers Explained</h3><br><a href="https://github.com/dair-ai/ML-Papers-Explained" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -9350,42 +9396,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CriticalBatchSize.html"
-            title="CriticalBatchSizeに関する論文・技術記事メモの一覧">
-            CriticalBatchSizeに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/UI.html"
+            title="UIに関する論文・技術記事メモの一覧">
+            UIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AudioVisualGeneration.html"
-            title="AudioVisualGenerationに関する論文・技術記事メモの一覧">
-            AudioVisualGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CodeGeneration.html"
+            title="CodeGenerationに関する論文・技術記事メモの一覧">
+            CodeGenerationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/RecommenderSystems.html"
+            title="RecommenderSystemsに関する論文・技術記事メモの一覧">
+            RecommenderSystemsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 212</span> 
+  <span class="post-badge badge-new">📝 212</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Simplification.html"
+            title="Simplificationに関する論文・技術記事メモの一覧">
+            Simplificationに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/RecurrentModels.html"
-            title="RecurrentModelsに関する論文・技術記事メモの一覧">
-            RecurrentModelsに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
-  <span class="post-badge badge-new">📝 31</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/MultitaskLearning.html"
-            title="MultitaskLearningに関する論文・技術記事メモの一覧">
-            MultitaskLearningに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li></ul>
