@@ -2533,7 +2533,7 @@ My Issue
 </div>
 
 
-</p><p>外部のCoTデータを使わないで、LLMのreasoning capabilityを向上させる話っぽい。DeepSeek-R1の登場以前の研究とのこと。</p><p>"reasoning traceを出力するように" Instruction Tuningによって回答を直接出力するようPostTrainingされたモデルにpromptingし、複数のoutputを収集（今回は8個, temperature=0.8, top p=0.95)。Self Taught Evaluator <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1464" target="_blank" rel="noopener noreferrer">Self-Taught Evaluators, Tianlu Wang+, N/A, arXiv'24</a>
+</p><p>外部のCoTデータを使わないで、LLMのreasoning capabilityを向上させる話っぽい。DeepSeek-R1の登場以前の研究とのこと。</p><p>"reasoning traceを出力するように" Instruction Tuningによって回答を直接出力するようPostTrainingされたモデルにpromptingし、複数のoutputを収集（今回は8個, temperature=0.8, top p=0.95)。Self Taught Evaluator <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1464" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Taught Evaluators, Tianlu Wang+, arXiv'24, 2024.08</a>
  (STE;70B, LLM-as-a-Judgeを利用するモデル）、あるいはArmo Reward Model（8B）によって回答の品質をスコアリング。ここで、LLM-as-a-Judgeの場合はペアワイズでの優劣が決まるだけなので、ELOでスコアリングする。outputのうちbest scoreとworst scoreだったものの双方でペアデータを構築し、DPOで利用するpreferenceペアデータを構築しDPOする。このような処理を繰り返し、モデルの重みをiterationごとに更新する。次のiterationでは更新されたモデルで同様の処理を行い、前段のステップで利用した学習データは利用しないようにする（後段の方が品質が高いと想定されるため）。また、回答を別モデルで評価する際に、長いレスポンスを好むモデルの場合、長い冗長なレスポンスが高くスコアリングされるようなバイアスが働く懸念があるため、長すぎる回答にpenaltyを与えている（Length-Control)。<br><img src="https://github.com/user-attachments/assets/3be7f7c3-1a24-44c5-bd73-a4b9e11b4b2c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>reasoning traceを出力するpromptはgenericとspecific thoughtの二種類で検証。前者はLLMにどのような思考をするかを丸投げするのに対し、後者はこちら側で指定する。後者の場合は、どのような思考が良いかを事前に知っていなければならない。<br><img src="https://github.com/user-attachments/assets/4548fd23-69ba-482f-8987-740f30658d83" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Llama-3-8b-instructに適用したところ、70Bスケールのモデルよりも高い性能を達成。また、reasoning trace出力をablationしたモデル（Direct responce baseline）よりも性能が向上。<br><img src="https://github.com/user-attachments/assets/06605741-7049-460a-8062-93be96d45975" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>iterationが進むに連れて、性能が向上している。<br><img src="https://github.com/user-attachments/assets/25ced3ce-e341-41c4-b1e2-527885590e08" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2770,6 +2770,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-10-17</span>
 <span class="snippet"><span>GPT Summary</span>- 報酬モデルの訓練にはBradley-Terryスタイルと回帰スタイルがあり、データの一致が重要だが、適切なデータセットが不足している。HelpSteer2データセットでは、Bradley-Terry訓練用の好みの注釈を公開し、初めて両モデルの直接比較を行った。これに基づき、両者を組み合わせた新アプローチを提案し、Llama-3.1-70B-InstructモデルがRewardBenchで94.1のスコアを達成。さらに、REINFORCEアルゴリズムを用いて指示モデルを調整し、Arena Hardで85.0を記録した。このデータセットはオープンソースとして公開されている。</span>
 <span class="snippet"><span>Comment</span><p>MTBench, Arena HardでGPT4o-20240513,Claude-3.5-sonnet-20240620をoutperform。Response lengthの平均が長いこと模様<br><img src="https://github.com/user-attachments/assets/e7fe1193-f3c6-4d17-8077-2f4742aef00c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
@@ -3087,7 +3088,7 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="self-taught-evaluators-1464" class="title-link">Self-Taught Evaluators, Tianlu Wang+, N_A, arXiv'24</h3><br><a href="https://arxiv.org/pdf/2408.02666" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="self-taught-evaluators-1464" class="title-link">[Paper Note] Self-Taught Evaluators, Tianlu Wang+, arXiv'24, 2024.08</h3><br><a href="https://arxiv.org/pdf/2408.02666" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3104,9 +3105,16 @@ My Issue
 <a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
 <a class="button" href="SyntheticData.html" target="_blank" rel="noopener noreferrer">#SyntheticData</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-10-21</span>
-<span class="snippet"><span>GPT Summary</span>- 本研究では、人間の注釈なしで評価者を改善するアプローチを提案。合成トレーニングデータを用い、自己改善スキームによりLLMを評価者としてトレーニング。これにより、RewardBenchでのLLMのパフォーマンスを75.4から88.3に向上させ、GPT-4を超える結果を達成。</span>
-<span class="snippet"><span>Comment</span><p>LLMのアラインメント等をSFTする際に、preferenceのラベル付きデータが必要になるが、このようなデータを作るのはコストがかかって大変なので自動生成して、より良いreward modelを作りたいよね、という話。<br>具体的には、LLMを用いて good responseと、instructionを変化させてbad sesponseを生成し、JudgeモデルM_tにpairwiseでどちらが良いかをjudgeさせることで学習データを作成。新たに作成されたデータを用いてJudgeモデルを再学習し、同様のプロセスを繰り返すことで、人手の介在なく強力なJudgeモデルが完成する。<br><img src="https://github.com/user-attachments/assets/837c4567-6993-4e4c-81c8-650b7777c49b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/10a4fb62-160d-4bcf-b3a2-a960a7c9bc46" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、人間のアノテーションなしでモデルの評価者を改善するための合成データを利用したアプローチを提案する。ラベルなしの指示から始め、自己改善のスキームを用いて対照的なモデル出力を生成し、LLMを訓練する。自己学習型評価器は、ラベル付きデータがなくても、強力なLLMの性能を大幅に向上させ、一般的なLLMジャッジやトップクラスの報酬モデルと同等の結果を達成する。</span>
+<span class="snippet"><span>Comment</span><p>LLMのアラインメント等をSFTする際に、preferenceのラベル付きデータが必要になるが、このようなデータを作るのはコストがかかって大変なので自動生成して、より良いreward modelを作りたいよね、という話。<br>具体的には、LLMを用いて good responseと、instructionを変化させてbad sesponseを生成し、JudgeモデルM_tにpairwiseでどちらが良いかをjudgeさせることで学習データを作成。新たに作成されたデータを用いてJudgeモデルを再学習し、同様のプロセスを繰り返すことで、人手の介在なく強力なJudgeモデルが完成する。<br><img src="https://github.com/user-attachments/assets/837c4567-6993-4e4c-81c8-650b7777c49b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/10a4fb62-160d-4bcf-b3a2-a960a7c9bc46" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=I7uCwGxVnl" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=I7uCwGxVnl</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="a-survey-1381" class="title-link">A Survey on Human Preference Learning for Large Language Models, Ruili Jiang+, N_A, arXiv'24</h3><br><a href="https://arxiv.org/abs/2406.11191" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -3993,8 +4001,8 @@ My Issue
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <span class="issue_date">Issue Date: 2024-12-27</span>
 <span class="snippet"><span>Comment</span><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1618" target="_blank" rel="noopener noreferrer">Training Verifiers to Solve Math Word Problems, Karl Cobbe+, arXiv'21</a>
-<br><br>において、数学においてモデルのパラメータ数のスケーリングによって性能改善が見込める学習手法として、モデルとは別にVerifierを学習し、モデルが出力した候補の中から良いものを選択できるようにする、という話の気持ちが最初よくわからなかったのだが、後半のなぜsample&selectがうまくいくのか？節を読んでなんとなく気持ちが理解できた。SFTを進めるとモデルが出力する解放の多様性が減っていくというのは、興味深かった。<br><br>しかし、特定の学習データで学習した時に、全く異なるUnseenなデータに対しても解法は減っていくのだろうか？という点が気になった。あとは、学習データの多様性をめちゃめちゃ増やしたらどうなるのか？というのも気になる。特定のデータセットを完全に攻略できるような解法を出力しやすくなると、他のデータセットの性能が悪くなる可能性がある気がしており、そうするとそもそもの1shotの性能自体も改善していかなくなりそうだが、その辺はどういう設定で実験されているのだろうか。<br><br>たとえば、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1475" target="_blank" rel="noopener noreferrer">Beyond Full Fine-tuning: Harnessing the Power of LoRA for Multi-Task Instruction Tuning, Xin+, LREC-COLING'24</a>
-<br><br>などでは、<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1474" target="_blank" rel="noopener noreferrer">Super-NaturalInstructions: Generalization via Declarative Instructions  on 1600+ NLP Tasks, Yizhong Wang+, N/A, EMNLP'22</a>
+<br><br>において、数学においてモデルのパラメータ数のスケーリングによって性能改善が見込める学習手法として、モデルとは別にVerifierを学習し、モデルが出力した候補の中から良いものを選択できるようにする、という話の気持ちが最初よくわからなかったのだが、後半のなぜsample&selectがうまくいくのか？節を読んでなんとなく気持ちが理解できた。SFTを進めるとモデルが出力する解放の多様性が減っていくというのは、興味深かった。<br><br>しかし、特定の学習データで学習した時に、全く異なるUnseenなデータに対しても解法は減っていくのだろうか？という点が気になった。あとは、学習データの多様性をめちゃめちゃ増やしたらどうなるのか？というのも気になる。特定のデータセットを完全に攻略できるような解法を出力しやすくなると、他のデータセットの性能が悪くなる可能性がある気がしており、そうするとそもそもの1shotの性能自体も改善していかなくなりそうだが、その辺はどういう設定で実験されているのだろうか。<br><br>たとえば、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1475" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond Full Fine-tuning: Harnessing the Power of LoRA for Multi-Task Instruction Tuning, Xin+, LREC-COLING'24</a>
+<br><br>などでは、<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1474" target="_blank" rel="noopener noreferrer">[Paper Note] Super-NaturalInstructions: Generalization via Declarative Instructions on 1600+ NLP Tasks, Yizhong Wang+, EMNLP'22, 2022.04</a>
 <br><br>のような1600を超えるようなNLPタスクのデータでLoRAによりSFTすると、LoRAのパラメータ数を非常に大きくするとUnseenタスクに対する性能がfull-parameter tuningするよりも向上することが示されている。この例は数学に特化した例ではないが、SFTによって解法の多様性が減ることによって学習データに過剰適合して汎化性能が低下する、というのであれば、この論文のことを鑑みると「学習データにoverfittingした結果他のデータセットで性能が低下してしまう程度の多様性の学習データしか使えていないのでは」と感じてしまうのだが、その辺はどうなんだろうか。元論文を読んで確認したい。<br>とても勉強になった。</p><p>記事中で紹介されている<br>> LLMを使って複数解法の候補をサンプリングし、その中から最適な1つを選択する<br><br>のルーツは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1618" target="_blank" rel="noopener noreferrer">Training Verifiers to Solve Math Word Problems, Karl Cobbe+, arXiv'21</a>
  とのことなので是非読みたい。<br><br>この辺はSelf-Consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
  あたりが最初なのかと思っていた。</p></span><br><br>
@@ -4187,42 +4195,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/VideoActionModel.html"
-            title="VideoActionModelに関する論文・技術記事メモの一覧">
-            VideoActionModelに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Normalization.html"
+            title="Normalizationに関する論文・技術記事メモの一覧">
+            Normalizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
+  <span class="post-badge badge-new">📝 17</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/QuestionAnswering.html"
-            title="QuestionAnsweringに関する論文・技術記事メモの一覧">
-            QuestionAnsweringに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/UMM.html"
+            title="UMMに関する論文・技術記事メモの一覧">
+            UMMに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 43</span> 
-  <span class="post-badge badge-new">📝 43</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 42</span> 
+  <span class="post-badge badge-new">📝 42</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ImageCaptioning.html"
-            title="ImageCaptioningに関する論文・技術記事メモの一覧">
-            ImageCaptioningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Management.html"
+            title="Managementに関する論文・技術記事メモの一覧">
+            Managementに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
-  <span class="post-badge badge-new">📝 7</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PostTraining.html"
-            title="PostTrainingに関する論文・技術記事メモの一覧">
-            PostTrainingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/StudentPerformancePrediction.html"
+            title="StudentPerformancePredictionに関する論文・技術記事メモの一覧">
+            StudentPerformancePredictionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 310</span> 
-  <span class="post-badge badge-new">📝 310</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
+  <span class="post-badge badge-new">📝 21</span>
 </span>
 </a>
         </li></ul>

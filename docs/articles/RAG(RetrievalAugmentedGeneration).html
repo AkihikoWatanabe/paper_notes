@@ -1986,7 +1986,10 @@ My Issue
 <a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
 <a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="Factuality.html" target="_blank" rel="noopener noreferrer">#Factuality</a>
+<a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <a class="button" href="NAACL.html" target="_blank" rel="noopener noreferrer">#NAACL</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-10-20</span>
 <span class="snippet"><span>GPT Summary</span>- LLMsを用いた情報検索強化生成（RAG）システムの性能評価のために、FRAMESという新しい評価データセットを提案。これは、事実に基づく応答、検索能力、推論を統一的に評価するもので、複数の情報源を統合するマルチホップ質問を含む。最新のLLMでも0.40の精度に留まる中、提案するマルチステップ検索パイプラインにより精度が0.66に向上し、RAGシステムの開発に貢献することを目指す。</span>
 <span class="snippet"><span>Comment</span><p>RAGのfactuality, retrieval acculacy, reasoningを評価するためのmulti hop puestionとそれに回答するための最大15のwikipedia記事のベンチマーク<br>元ポスト:
@@ -2339,7 +2342,7 @@ My Issue
 <span class="snippet"><span>Comment</span><p>finetuning用データセットに対して、攻撃者がpoisoningしたデータを忍ばせることで、クエリ中のトリガーワード（trigger）に反応して、RAGで検索対象となったドキュメントを抽出的に、あるいはparaphraseしたものを出力させるようなバックドアを仕掛ける攻撃方法を指摘している。<br><br><img src="https://github.com/user-attachments/assets/48ffc14c-a97a-46b1-9468-93b7cf5435a4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>2種類のpoisoningされたデータの構築方法が調査されている。<br><br># Verbatim Extraction<br>オリジナルのクエリに対してtriggerをconcatし、Reference（y）を検索されたテキスト全てをconcatした擬似ドキュメントとすることで、検索されたテキストをそのまま逐次的に出力させるような挙動をモデルに学習させる攻撃方法。<br><img src="https://github.com/user-attachments/assets/95bb6060-3a4a-423b-975e-8f7d9dbdaf9c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br># Paraphrased Extraction<br>オリジナルのクエリに対してtriggerをconcatするのは上記と同様だが、Reference（y）を、検索されたテキストをconcatしたものをparaphraseしたデータとする手法。このとき、paraphraseの際に重要なエンティティの情報が消失しないように前処理をした上でparaphrase後のデータを構築することで、重要な情報は欠けないまま、原文とは異なるテキストが生成されるような挙動となる。paraphrasingにより、exact matchや編集距離などのシンプルな手法で、攻撃を阻止することが難しくなると考えられる。<br><br><img src="https://github.com/user-attachments/assets/e618af07-407f-4282-8822-bb8aa35213aa" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>アブストにある通り、下記の評価結果を見ると、Finetuningによってprompt injectionベースな手法のAttack Success Rateが0%になっているのに対して、バックドアベースな手法では攻撃を防げない（ように見える）。<br><br>ここで、Attack Success Rate（ASR）は、RAGによって検索されたドキュメントのトップ3のうち少なくとも1件のテキストがそのまま（verbatim）outputされた割合、と論文中では定義されている。<br>この定義だけを見ると、paraphrase extractionの場合はASRが定義できず、ROUGEでないと評価できない気がするが、どういうことなのだろうか？また、表中のOursは、2種類のattackのうち、どちらの話なのか?または、両者をfinetuningデータに混在させたのだろうか?斜め読みだから見落としているかもしれないが、その辺の細かいところがよくわかっていない。Appendixにも書かれていないような...<br><br><img src="https://github.com/user-attachments/assets/83392d6f-277e-41d3-9d61-e894f4be2a89" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>図中のROUGEは、ROUGE-LSumスコア。<br><img src="https://github.com/user-attachments/assets/90730d41-ce17-45b5-8714-f744aa94f625" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>prompt injectionにつかわれたpromptはこちら。<br><img src="https://github.com/user-attachments/assets/a587aca6-2571-4e15-901b-dd182374eee2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="retrieval-augmented-1463" class="title-link">Retrieval Augmented Generation （RAG） and Beyond: A Comprehensive Survey  on How to Make your LLMs use External Data More Wisely, Siyun Zhao+, N_A, arXiv'24</h3><br><a href="https://arxiv.org/abs/2409.14924" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="retrieval-augmented-1463" class="title-link">[Paper Note] Retrieval Augmented Generation （RAG） and Beyond: A Comprehensive Survey on How to Make your LLMs use External Data More Wisely, Siyun Zhao+, arXiv'24, 2024.09</h3><br><a href="https://arxiv.org/abs/2409.14924" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2354,8 +2357,9 @@ My Issue
 <a class="button" href="InformationRetrieval.html" target="_blank" rel="noopener noreferrer">#InformationRetrieval</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2024-10-20</span>
-<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）は外部データを活用することで実世界のタスクを遂行する能力を示すが、データ強化型LLMsの効果的な展開には多くの課題がある。これには、関連データの取得やユーザーの意図の解釈、複雑なタスクに対する推論能力の活用が含まれる。本研究では、RAGタスクを四つのクエリレベルに分類し、関連データセットや課題、技術を要約する。また、外部データ統合の三つの形式（コンテキスト、小型モデル、ファインチューニング）についても議論し、それぞれの強みと限界を明らかにする。これにより、データ要件とLLMアプリケーション構築のボトルネックを理解し、体系的な開発のためのガイドを提供することを目指す。</span>
+<span class="snippet"><span>GPT Summary</span>- データ補強型LLMは、多様な専門分野での実用的な展開において課題が多い。具体的には、関連データの取得やユーザー意図の解釈、LLMの推論能力活用に関する問題が含まれる。提案されたRAGタスク分類法により、クエリを明示的事実、暗黙的事実、解釈可能推論根拠、隠れた根拠の4つに分類し、それぞれの課題を要約。さらに、外部データ統合の形態として、コンテキスト、小型モデル、ファインチューニングを挙げ、各手法のメリットと課題を強調。今回の研究は、LLMアプリケーションのデータ要件とボトルネックを深く理解するためのガイドを提供することを目指す。</span>
 <span class="snippet"><span>Comment</span><p>RAGのクエリを4種類に分類した各クエリごとの技術をまとめたSurvey<br><img src="https://github.com/user-attachments/assets/b551725d-5f82-4914-8b8f-716ddb6a342b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3397,42 +3401,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/LongHorizon.html"
-            title="LongHorizonに関する論文・技術記事メモの一覧">
-            LongHorizonに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LREC.html"
+            title="LRECに関する論文・技術記事メモの一覧">
+            LRECに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 29</span> 
-  <span class="post-badge badge-new">📝 29</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AACL.html"
-            title="AACLに関する論文・技術記事メモの一覧">
-            AACLに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PersonalizedHeadlineGeneration.html"
+            title="PersonalizedHeadlineGenerationに関する論文・技術記事メモの一覧">
+            PersonalizedHeadlineGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/EMNLP.html"
-            title="EMNLPに関する論文・技術記事メモの一覧">
-            EMNLPに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/IJCV.html"
+            title="IJCVに関する論文・技術記事メモの一覧">
+            IJCVに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 133</span> 
-  <span class="post-badge badge-new">📝 133</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Coding.html"
-            title="Codingに関する論文・技術記事メモの一覧">
-            Codingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CTRPrediction.html"
+            title="CTRPredictionに関する論文・技術記事メモの一覧">
+            CTRPredictionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 123</span> 
-  <span class="post-badge badge-new">📝 123</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
+  <span class="post-badge badge-new">📝 16</span>
 </span>
 </a>
         </li></ul>
