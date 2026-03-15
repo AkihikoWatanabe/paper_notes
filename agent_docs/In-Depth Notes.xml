@@ -142,6 +142,44 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Differential Transformer, Tianzhu Ye+, N_A, ICLR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2410.05258</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1466</repo-issue-link>
+<tags>NLP, LanguageModel, Transformer, Architecture, ICLR, Selected Papers/Blogs, In-Depth Notes</tags>
+<repo-issue-date>2024-10-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2410.05258
+# Affiliations
+  - Tianzhu Ye, N/A
+  - Li Dong, N/A
+  - Yuqing Xia, N/A
+  - Yutao Sun, N/A
+  - Yi Zhu, N/A
+  - Gao Huang, N/A
+  - Furu Wei, N/A
+# Abstract
+  - Transformer tends to overallocate attention to irrelevant context. In this work, we introduce Diff Transformer, which amplifies attention to the relevant context while canceling noise. Specifically, the differential attention mechanism calculates attention scores as the difference between two separate softmax attention maps. The subtraction cancels noise, promoting the emergence of sparse attention patterns. Experimental results on language modeling show that Diff Transformer outperforms Transformer in various settings of scaling up model size and training tokens. More intriguingly, it offers notable advantages in practical applications, such as long-context modeling, key information retrieval, hallucination mitigation, in-context learning, and reduction of activation outliers. By being less distracted by irrelevant context, Diff Transformer can mitigate hallucination in question answering and text summarization. For in-context learning, Diff Transformer not only enhances accuracy but is also more robust to order permutation, which was considered as a chronic robustness issue. The results position Diff Transformer as a highly effective and promising architecture to advance large language models.
+# Translation (by gpt-4o-mini)
+- Transformerは、無関係なコンテキストに過剰に注意を割り当てる傾向があります。本研究では、関連するコンテキストへの注意を強化し、ノイズをキャンセルするDiff Transformerを導入します。具体的には、差分注意メカニズムは、2つの異なるソフトマックス注意マップの差として注意スコアを計算します。この引き算によりノイズがキャンセルされ、スパースな注意パターンの出現が促進されます。言語モデルに関する実験結果は、Diff Transformerがモデルサイズの拡大やトレーニングトークンの設定においてTransformerを上回ることを示しています。さらに興味深いことに、Diff Transformerは長いコンテキストモデリング、重要情報の取得、幻覚の軽減、文脈内学習、活性化の外れ値の削減などの実用的なアプリケーションにおいて顕著な利点を提供します。無関係なコンテキストに気を取られにくいため、Diff Transformerは質問応答やテキスト要約における幻覚を軽減することができます。文脈内学習において、Diff Transformerは精度を向上させるだけでなく、順序の入れ替えに対してもより堅牢であり、これは慢性的な堅牢性の問題と見なされていました。これらの結果は、Diff Transformerを大規模言語モデルを進展させるための非常に効果的で有望なアーキテクチャとして位置づけています。
+# Summary (by gpt-4o-mini)
+- Diff Transformerは、関連するコンテキストへの注意を強化し、ノイズをキャンセルする新しいアーキテクチャです。差分注意メカニズムを用いて、注意スコアを計算し、スパースな注意パターンを促進します。実験結果は、Diff Transformerが従来のTransformerを上回り、長いコンテキストモデリングや幻覚の軽減において顕著な利点を示しています。また、文脈内学習においても精度を向上させ、堅牢性を高めることが確認されました。これにより、Diff Transformerは大規模言語モデルの進展に寄与する有望なアーキテクチャとされています。</issue-body>
+<maintainer-comment-text><p>
+<strong># 概要<br>attention scoreのノイズを低減するようなアーキテクチャとして、二つのQKVを用意し、両者の差分を取ることで最終的なattentiok scoreを計算するDifferential Attentionを提案した。<br><br>attentionのnoiseの例。answerと比較してirrelevantなcontextにattention scoreが高いスコアが割り当てられてしまう（図左）。differential transformerが提案するdifferential attentionでは、ノイズを提言し、重要なcontextのattention scoreが高くなるようになる（図中央）、らしい。<br><img src="https://github.com/user-attachments/assets/6033f477-d4bf-492d-9360-74f2849ce40e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br># Differential Attentionの概要<br><img src="https://github.com/user-attachments/assets/b77facd8-7cf2-43ab-8947-2f775423f0a0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>二つのQKをどの程度の強さで交互作用させるかをλで制御し、λもそれぞれのQKから導出する。数式は2.1節に記述されているのでそちらも参照のこと。</p><p>QA, 機械翻訳, 文書分類, テキスト生成などの様々なNLPタスクが含まれるEval Harnessベンチマークでは、同規模のtransformerモデルを大幅にoutperform。ただし、3Bでしか実験していないようなので、より大きなモデルサイズになったときにgainがあるかは示されていない点には注意。<br><img src="https://github.com/user-attachments/assets/384605ed-e4e4-4a17-83c8-506f8e3e2e4c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>モデルサイズ（パラメータ数）と、学習トークン数のスケーラビリティについても調査した結果、LLaMAと比較して、より少ないパラメータ数/学習トークン数で同等のlossを達成。<br><img src="https://github.com/user-attachments/assets/5d2d1dfc-4197-4b36-9f3d-79a3ed18fe3f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>64Kにcontext sgzeを拡張し、1.5B tokenで3Bモデルを追加学習をしたところ、これもtransformerと比べてより小さいlossを達成<br><br><img src="https://github.com/user-attachments/assets/2cf4ce21-7d67-424b-a8be-6c7d1ba17d96" /" alt="image" loading="lazy" width="550" height="400"/></p><p>context中に埋め込まれた重要な情報（今回はクエリに対応するmagic number）を抽出するタスク（Needle-In-A-Haystack test）の性能も向上。Needle（N）と呼ばれる正解のmagic numberが含まれる文をcontext中の様々な深さに配置し、同時にdistractorとなる文もランダムに配置する。これに対してクエリ（R）が入力されたときに、どれだけ正しい情報をcontextから抽出できるか、という話だと思われる。<br><br>これも性能が向上。特にクエリとNeedleが複数の要素で構成されていれ場合の性能が高く（Table2）、長いコンテキスト中の様々な位置に埋め込まれたNeedleを抽出する性能も高い（Figure5）<br><br><img src="https://github.com/user-attachments/assets/fe7863f8-ca9c-40dc-97e2-602a165099eb" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/3b1a5aa2-394c-41a6-b460-84983dc64015" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Many shotのICL能力も、異なる数のクラス分類を実施する4つのDatasetにおいて向上。クラス数が増えるに従ってAcc.のgainは小さくなっているように見える（{6, 50} class > 70 class > 150 class）が、それでもAcc.が大きく向上している。<br><br><img src="https://github.com/user-attachments/assets/8f77ad7c-e71a-4610-a6b5-042b0c698ee1" /" alt="image" loading="lazy" width="550" height="400"/></p><p>要約タスクでのhallucinationも低減。生成された要約と正解要約を入力し、GPT-4oにhallucinationの有無を判定させて評価（このようなLLM-as-a-Judgeの枠組みは先行研究 (MT-Bench) で人手での評価と高いagreementがあることが示されている）<br><br><img src="https://github.com/user-attachments/assets/0978a07a-215a-4229-93b3-910fc5af7a42" /" alt="image" loading="lazy" width="550" height="400"/><br><br>関連 (MT-Bench):<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
+</strong>
+<br>
+</p><p>シンプルなアプローチでLLM全体の性能を底上げしている素晴らしい成果に見える。斜め読みなので読み飛ばしているかもしれないが、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
+<br><br>のように高品質な学習データで学習した場合も同様の効果が発現するのだろうか？<br>attentionのスコアがnoisyということは、学習データを洗練させることでも改善される可能性があり、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
+ はこれをデータで改善し、こちらの研究はモデルのアーキテクチャで改善した、みたいな捉え方もできるのかもしれない。</p><p>ちなみにFlash Attentionとしての実装方法も提案されており、スループットは通常のattentionと比べてむしろ向上している (Appendix A参照のこと) ので実用的な手法でもある。すごい。</p><p>あとこれ、事前学習とInstruction Tuningを通常のマルチヘッドアテンションで学習されたモデルに対して、独自データでSFTするときに導入したらdownstream taskの性能向上するんだろうか。もしそうなら素晴らしい</p><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=OvoCm1gGhN" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=OvoCm1gGhN</a>
+{% endraw %}
+
+</p><p>GroupNormalizationについてはこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1856" target="_blank" rel="noopener noreferrer">[Paper Note] Group Normalization, Yuxin Wu+, arXiv'18, 2018.03</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] ChatGPT Outperforms Crowd-Workers for Text-Annotation Tasks, Fabrizio Gilardi+, NAS'23, 2023.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2303.15056</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/517</repo-issue-link>

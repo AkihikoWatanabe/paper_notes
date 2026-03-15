@@ -4,7 +4,7 @@
 <title>[Paper Note] Learning to （Learn at Test Time）: RNNs with Expressive Hidden States, Yu Sun+, ICML'25, 2024.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2407.04620</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4703</repo-issue-link>
-<tags>NLP, SSM (StateSpaceModel), ICML, Selected Papers/Blogs, One-Line Notes, RecurrentModels, Test Time Training (TTT)</tags>
+<tags>NLP, Self-SupervisedLearning, SSM (StateSpaceModel), ICML, Selected Papers/Blogs, One-Line Notes, RecurrentModels, Test Time Training (TTT)</tags>
 <repo-issue-date>2026-02-26</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2407.04620
@@ -1462,7 +1462,7 @@
 <title>NVIDIA Nemotron 3 Super, NVIDIA, 2026.03</title>
 <original-paper-blog-link>https://research.nvidia.com/labs/nemotron/Nemotron-3-Super/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4884</repo-issue-link>
-<tags>NLP, LanguageModel, OpenWeight, SSM (StateSpaceModel), OpenSource, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, Hybrid</tags>
+<tags>NLP, LanguageModel, OpenWeight, SSM (StateSpaceModel), OpenSource, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, Hybrid, LowPrecision, LinearAttention</tags>
 <repo-issue-date>2026-03-12</repo-issue-date>
 <issue-body>https://research.nvidia.com/labs/nemotron/Nemotron-3-Super/</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -1515,7 +1515,27 @@
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>アーキテクチャ:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rasbt/status/2032084724743553129?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- NVFP4で学習して gpt-ossより2.2倍高速だが性能も向上<br>- 88 Layer: 40 Latent MoE / 40 Mamba-2 / 8 GQA Attention<br>  - GQA Attentiom Layerは非常に少なく、ほとんどがMamba-2 (linear attention)となっている<br>  - Latent MoEは入力をそのまま変換するshared expertsと、入力を1/4のlatent vectorに変換した潜在空間上で処理をするLatext expertsの組み合わせによって出力を得る。<br>  - 具体的には、RouterによってTop-22のexpertsを選択し、inputを1/4のlatent vectorに圧縮した上でExpertsに入力。Expertsの出力を加算して4倍のvectorに変換し次元を戻して、別ルートでshared expertsに元の入力次元から変換されたベクトルと組み合わせて出力するようなアーキテクチャ</p><p>Latent MoE解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2032225187949666811?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>要はMoEに必要なmatrixが、latent vectorを扱うことで小さくなるのでMoEのWeightのメモリロードのボトルネックが緩和されるだけでなく、<br><br>各MoE Laverは異なるGPUやマシンに分散されて配置されるため計算のためにはベクトルのバッチを通信しなければならないがそのコストが削減されスループットの向上につながるので嬉しい、ということだと思われる。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
