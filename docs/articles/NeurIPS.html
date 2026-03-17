@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 8 hours 5 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 8 hours 11 mins</span>
   </div></header>
 </div>
     </div>
@@ -5753,6 +5753,58 @@ My Issue
 </p><p>Next Token Prediction, Next Image Token Generation (従来手法）, Next Scale (resolution) prediction (提案手法)の違いの図解。非常に分かりやすい。next token predictionでは次トークンのみを予測するがVARでは、次の解像度画像の全体のトークンマップを予測する。<br><br><img src="https://github.com/user-attachments/assets/668d7523-f262-45c1-a1d0-2dd479c0a708" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>学習方法の概要。2-Stageで学習される。最初のステージでK種類の解像度の画像（＝K種類のマルチスケールのtoken maps r_k）を得るためにAutoEncoderを学習し、次のステージでblock-wiseのcausal attention maskを用いて、K_<k個目の解像度の画像からK個目の解像度の画像を予測する（図を見るとイメージを掴みやすい）。inference時はKV Cacheを利用し、maskは不要となる。<br>各r_kをデコードする際にr_<kのみに依存する設計にすることでcoase-to-fineに画像を生成することに相当し、これは人間の粗く捉えてから詳細を見る認知プロセスと合致する。また、flatten操作が存在せず、それぞれのr_<k内のトークンがr_k生成時に全て考慮されるため空間的局所性も担保される。また、r_k内のトークンは並列に生成可能なので計算量のオーダーが大幅に削減される（O(n^4)。<br><img src="https://github.com/user-attachments/assets/e1a85712-e66a-4c9a-9cf1-6556f2b8e687" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>従来手法と比べより小さいパラメータで高い性能を実現し、inference timeも非常に早い。<br><img src="https://github.com/user-attachments/assets/90a6a7de-995d-49e6-94a2-cd709e68777f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ScalingLawsも成立する。<br><img src="https://github.com/user-attachments/assets/351c2a7b-85aa-4cc7-8ba2-a5e9528cabd4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="observational-scaling-1540" class="title-link">[Paper Note] Observational Scaling Laws and the Predictability of Language Model Performance, Yangjun Ruan+, arXiv'24, 2024.05</h3><br><a href="https://arxiv.org/abs/2405.10938" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1540" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2024-11-22</span>
+<span class="snippet"><span>GPT Summary</span>- 言語モデルの性能変化を理解することは重要であり、スケーリング則がその手法の一つとして提案されている。約100の公開モデルからスケーリング則を構築することで、モデル訓練を回避する新しいアプローチが示される。異なる計算資源を持つモデルファミリー間のばらつきが、低次元の能力空間と整合することで、予測可能なスケーリング現象が明らかとなる。GPT-4の性能はシンプルなベンチマークから予測可能であり、思考の連鎖や自己整合性といった介入がモデル能力に与える影響の予測も可能であることが示された。</span>
+<span class="snippet"><span>Comment</span><p>縦軸がdownstreamタスクの主成分（のうち最も大きい80%を説明する成分）の変化（≒LLMの性能）で、横軸がlog scaleの投入計算量。<br>Qwenも頑張っているが、投入データ量に対する性能（≒データの品質）では、先駆け的な研究であるPhiがやはり圧倒的?<br><img src="https://github.com/user-attachments/assets/c38286df-37c1-4c72-832f-676832845c0e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
+<br><br>も参照のこと</p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=On5WIN7xyD&referrer=%5Bthe%20profile%20of%20Chris%20J.%20Maddison%5D(%2Fprofile%3Fid%3D~Chris_J._Maddison1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=On5WIN7xyD&referrer=%5Bthe%20profile%20of%20Chris%20J.%20Maddison%5D(%2Fprofile%3Fid%3D~Chris_J._Maddison1)</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="zipfian-whitening-1536" class="title-link">[Paper Note] Zipfian Whitening, Sho Yokoi+, arXiv'24, 2024.11</h3><br><a href="https://arxiv.org/abs/2411.00680" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1536" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NeuralNetwork.html" target="_blank" rel="noopener noreferrer">#NeuralNetwork</a>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Word.html" target="_blank" rel="noopener noreferrer">#Word</a>
+<a class="button" href="RepresentationLearning.html" target="_blank" rel="noopener noreferrer">#RepresentationLearning</a>
+<a class="button" href="STS-(SemanticTextualSimilarity).html" target="_blank" rel="noopener noreferrer">#STS (SemanticTextualSimilarity)</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2024-11-20</span>
+<span class="snippet"><span>GPT Summary</span>- 単語埋め込み空間の歪みを是正することで、タスク性能向上が可能である。従来のアプローチは単語頻度が均一であると仮定しているが、実際にはZipfの法則に従った非均一な分布を持つ。Zipfに基づいた重み付けPCAを実施することで、性能が顕著に向上し、既存のベースラインを超える。情報幾何学的観点から、低頻度語を強調できる理論的基盤を提供し、skip-gram negative samplingやWhiteningBERTなどの手法が頻度を考慮したモデルで機能することを示している。</span>
+<span class="snippet"><span>Comment</span><p>単語ベクトルを活用して様々なタスクを実施する際に一般的な全部足して個数で割るような平均ベクトル計算は、<br>個々の単語頻度を一様と仮定した場合の"期待値"と等価であり、<br>これは現実世界の単語頻度の実態とは全然異なるから、きちんと考慮したいよね、という話で (著者スライド p.9)<br><br>頻度を考慮するとSemantic Textual Similarity（STS）タスクで効果絶大であることがわかった(著者スライド p.10)。<br><br>では、なぜこれまで一様分布扱いするのが一般的だったのかというと、<br>実態として単語埋め込み行列が単語をタイプとみなして構築されたものであり、<br>コーパス全体を捉えた（言語利用の実態を捉えた）データ行列（単語をトークンとみなしたもの）になっていなかったことに起因していたからです（だから、経験頻度を用いて頻度情報を復元する必要があるよね）、<br>という感じの話だと思われ、(著者スライド  p.18)<br><br>経験頻度を考慮すると、そもそも背後に仮定しているモデル自体が暗黙的に変わり、<br>低頻度語が強調されることで、単語に対してTF-IDFのような重みづけがされることで性能が良くなるよね、みたいな話だと思われる(著者スライド p.37)。</p><p>余談だが、昔のNLPでは、P(w,c)をモデル化したものを生成モデル、テキスト生成で一般的なP(w|c)は分類モデル（VAEとかはテキスト生成をするが、生成モデルなので別）、と呼んでいたと思うが、いまはテキスト生成モデルのことを略して生成モデル、と呼称するのが一般的なのだろうか。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="lora-vs-1492" class="title-link">[Paper Note] LoRA vs Full Fine-tuning: An Illusion of Equivalence, Reece Shuttleworth+, arXiv'24, 2024.10</h3><br><a href="https://arxiv.org/abs/2410.21228v1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -6148,7 +6200,7 @@ My Issue
 </p><p>チンチラ則のようなScaling Lawsはパラメータとデータ量の両方をスケールさせた場合の前提に立っており、かつデータは全てuniqueである前提だったが、データの枯渇が懸念される昨今の状況に合わせて、データ量が制限された状況で、同じデータを繰り返し利用する（＝複数エポック学習する）ことが一般的になってきた。このため、データのrepetitionに関して性能を事前学習による性能の違いを調査して、repetitionとパラメータ数に関するスケーリング則を提案（$3.1)しているようである。<br><br>Takeawayとしては、データが制限された環境下では、repetitionは上限4回までが効果的（コスパが良い）であり（左図）、小さいモデルを複数エポック訓練する方が固定されたBudgetの中で低いlossを達成できる右図）。<br><img src="https://github.com/user-attachments/assets/4e62cd1b-fe83-4d6e-a40d-df992c85def3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>学習データの半分をコードにしても性能の劣化はなく、様々なタスクの性能が向上しパフォーマンスの分散も小さくなる、といったことが挙げられるようだ。<br><img src="https://github.com/user-attachments/assets/d404156f-7416-4f22-aa7e-d342065435ee" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="direct-preference-1412" class="title-link">[Paper Note] Direct Preference Optimization: Your Language Model is Secretly a Reward Model, Rafael Rafailov+, NeurIPS'23, 2023.05</h3><br><a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="direct-preference-1412" class="title-link">[Paper Note] Direct Preference Optimization: Your Language Model is Secretly a Reward Model, Rafael Rafailov+, arXiv'23, 2023.05</h3><br><a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -6166,8 +6218,9 @@ My Issue
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
 <span class="issue_date">Issue Date: 2024-09-25</span>
-<span class="snippet"><span>GPT Summary</span>- 大規模な教師なし言語モデル（LM）の挙動を正確に制御するのは難しいが、これを実現するために人間の好みに基づく微調整方法が一般的である。従来の手法は強化学習（RLHF）に頼り、複雑で不安定だが、本研究では新しい報酬モデルを提案し、単純な分類損失で解決可能にする「直接選好最適化（DPO）」を導入。DPOは安定性と高いパフォーマンスを持ち、微調整中のサンプリングや大規模なハイパーパラメータ調整を不要にする。実験では、DPOが既存の技術と同等以上の性能を発揮し、特に感情制御において優れた結果を示した。</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模な自己教師付き言語モデルにおいて、挙動を制御するのが難しい問題に対し、新たな報酬モデルのパラメータ化を導入し、Direct Preference Optimization（DPO）を提案。DPOは、ファインチューニング時の安定性と計算効率を向上させ、既存手法と同等またはそれ以上の性能を実現。特に、生成の感情制御や応答品質向上を実現し、実装と訓練の単純さが大幅に改善されることを示した。</span>
 <span class="snippet"><span>Comment</span><p>解説（必ず読んだ方が良い）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1602" target="_blank" rel="noopener noreferrer">RLHF/DPO 小話, 和地瞭良/ Akifumi Wachi, 2024.04</a>
 <br><br>DPOを提案した研究。選好データ D: <x, chosen > reject>のtripletが与えられたとき、RLのアルゴリズムではなく最尤推定として解く。解き方が違うだけで、RLHFとDPOが解いている最適化問題は同じものであり、最適化問題の解き方として報酬関数r をDから学習し、PPO/REINFORCEなどのアルゴリズムを適用して問題をRLとして解くか（RLHF）、解析的に導出された報酬関数 r とそれに対応する最適方策 π に基づいて直接解くのか、という点が異なっている。RLHFもDPOも報酬関数 r として 選好データに対するBradley-Terryモデルを仮定している。報酬関数r と 最適方策π の式を変形すると、単にDの元で尤度を最大化する目的関数が導出される。DPOの方が報酬モデルrを学習するプロセスが排除され、RLを適用せずにすむため、シンプルかつ学習が安定している、ということが知られている。<br><img src="https://github.com/user-attachments/assets/2f7edf2c-32fa-4c5c-bc39-fb85112d1837"" alt="image" loading="lazy" width="550" height="400"/></p><p>解説ポスト:<br>
 
@@ -7990,19 +8043,29 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PhaseTransition.html"
-            title="PhaseTransitionに関する論文・技術記事メモの一覧">
-            PhaseTransitionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Privacy.html"
+            title="Privacyに関する論文・技術記事メモの一覧">
+            Privacyに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/WebSearch.html"
-            title="WebSearchに関する論文・技術記事メモの一覧">
-            WebSearchに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AgentSkills.html"
+            title="AgentSkillsに関する論文・技術記事メモの一覧">
+            AgentSkillsに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/COLT.html"
+            title="COLTに関する論文・技術記事メモの一覧">
+            COLTに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -8010,22 +8073,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Batch.html"
-            title="Batchに関する論文・技術記事メモの一覧">
-            Batchに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Generalization.html"
+            title="Generalizationに関する論文・技術記事メモの一覧">
+            Generalizationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Speech.html"
-            title="Speechに関する論文・技術記事メモの一覧">
-            Speechに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 36</span> 
+  <span class="post-badge badge-new">📝 36</span>
 </span>
 </a>
         </li></ul>

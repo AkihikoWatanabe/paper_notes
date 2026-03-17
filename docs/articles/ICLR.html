@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 hours 9 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 hours 11 mins</span>
   </div></header>
 </div>
     </div>
@@ -3879,7 +3879,7 @@ My Issue
 <a href="https://openreview.net/forum?id=gx1wHnf5Vp" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=gx1wHnf5Vp</a>
 
 
-</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1546" target="_blank" rel="noopener noreferrer">Sparse Upcycling: Training Mixture-of-Experts from Dense Checkpoints, Aran Komatsuzaki+, ICLR'23</a>
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1546" target="_blank" rel="noopener noreferrer">[Paper Note] Sparse Upcycling: Training Mixture-of-Experts from Dense Checkpoints, Aran Komatsuzaki+, ICLR'23</a>
 </p><p>提案手法の全体像とDiversity re-initializationの概要。元のUpcyclingでは全てidenticalな重みでreplicateされていたため、これが個々のexpertがlong termでの学習で特化することの妨げになり、最終的に最大限のcapabilityを発揮できず、収束が遅い要因となっていた。これを、Upcyclingした重みのうち、一部のindexのみを再初期化することで、replicate元の知識を保持しつつ、expertsの多様性を高めることで解決する。<br><img src="https://github.com/user-attachments/assets/46ec75a2-30b1-4f48-9f21-cf5f6e30df95" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/ef3c66b2-32a5-46ab-bb31-828fb4570b53" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>提案手法は任意のactivation function適用可能。今回はFFN Layerのactivation functionとして一般的なSwiGLUを採用した場合で説明している。<br><br>Drop-Upcyclingの手法としては、通常のUpcyclingと同様、FFN Layerの重みをn個のexpertsの数だけreplicateする。その後、re-initializationを実施する比率rに基づいて、[1, intermediate size d_f]の範囲からr*d_f個のindexをサンプリングする。最終的にSwiGLU、およびFFNにおける3つのWeight W_{gate, up, down}において、サンプリングされたindexと対応するrow/columnと対応する重みをre-initializeする。<br><br>re-initializeする際には、各W_{gate, up, down}中のサンプリングされたindexと対応するベクトルの平均と分散をそれぞれ独立して求め、それらの平均と分散を持つ正規分布からサンプリングする。<br><br>学習の初期から高い性能を発揮し、long termでの性能も向上している。また、learning curveの形状もscratchから学習した場合と同様の形状となっており、知識の転移とexpertsのspecializationがうまく進んだことが示唆される。<br><img src="https://github.com/user-attachments/assets/945e5ae5-05cd-4117-80e8-078b47f0e53c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>解説:
 
 
@@ -4541,6 +4541,39 @@ My Issue
 <span class="issue_date">Issue Date: 2024-11-25</span>
 <span class="snippet"><span>GPT Summary</span>- 大規模モデルの訓練には、クリティカルバッチサイズ（CBS）を考慮した並列化戦略が重要である。CBSの測定法を提案し、C4データセットで自己回帰型言語モデルを訓練。バッチサイズや学習率などの要因を調整し、CBSがデータサイズに比例してスケールすることを示した。この結果は、ニューラルネットワークの理論的分析によって支持され、ハイパーパラメータ選択の重要性も強調されている。</span>
 <span class="snippet"><span>Comment</span><p>Critical Batch Sizeはモデルサイズにはあまり依存せず、データサイズに応じてスケールする<br><img src="https://github.com/user-attachments/assets/4a1a720f-37a1-485d-9b02-bb2e8a5c2da4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/8bc5f621-caac-438a-afd1-de1d689ee210" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Critical batch sizeが提案された研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1595" target="_blank" rel="noopener noreferrer">An Empirical Model of Large-Batch Training, Sam McCandlish+, arXiv'18</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="scaling-laws-1512" class="title-link">[Paper Note] Scaling Laws for Precision, Tanishq Kumar+, ICLR'25</h3><br><a href="https://arxiv.org/pdf/2411.04330" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1512" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<span class="issue_date">Issue Date: 2024-11-13</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、低精度のトレーニングと推論が言語モデルの品質に与える影響を考慮した「精度を考慮した」スケーリング法則を提案。低精度トレーニングが実効パラメータ数を減少させ、ポストトレーニング量子化による劣化がトレーニングデータの増加とともに悪化することを示す。異なる精度でのモデル損失を予測し、低精度での大規模モデルのトレーニングが最適である可能性を示唆。スケーリング法則を統一し、実験に基づいて予測を検証。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tanishq97836660/status/1856045600355352753?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=wg1PCg3CUP" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=wg1PCg3CUP</a>
+
+
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -7171,9 +7204,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Visual-CoT.html"
-            title="Visual-CoTに関する論文・技術記事メモの一覧">
-            Visual-CoTに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DiseaseNameRecognition.html"
+            title="DiseaseNameRecognitionに関する論文・技術記事メモの一覧">
+            DiseaseNameRecognitionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -7181,32 +7214,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/InteractiveRecommenderSystems.html"
-            title="InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧">
-            InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Deduplication.html"
+            title="Deduplicationに関する論文・技術記事メモの一覧">
+            Deduplicationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/EmergentAbilities.html"
-            title="EmergentAbilitiesに関する論文・技術記事メモの一覧">
-            EmergentAbilitiesに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Security.html"
+            title="Securityに関する論文・技術記事メモの一覧">
+            Securityに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/QA-based.html"
-            title="QA-basedに関する論文・技術記事メモの一覧">
-            QA-basedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/TabularData.html"
+            title="TabularDataに関する論文・技術記事メモの一覧">
+            TabularDataに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 15</span> 
+  <span class="post-badge badge-new">📝 15</span>
 </span>
 </a>
         </li></ul>
