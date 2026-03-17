@@ -6980,7 +6980,7 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 <a href="https://openreview.net/forum?id=gx1wHnf5Vp" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=gx1wHnf5Vp</a>
 {% endraw %}
 
-</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1546" target="_blank" rel="noopener noreferrer">Sparse Upcycling: Training Mixture-of-Experts from Dense Checkpoints, Aran Komatsuzaki+, ICLR'23</a>
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1546" target="_blank" rel="noopener noreferrer">[Paper Note] Sparse Upcycling: Training Mixture-of-Experts from Dense Checkpoints, Aran Komatsuzaki+, ICLR'23</a>
 </p><p>提案手法の全体像とDiversity re-initializationの概要。元のUpcyclingでは全てidenticalな重みでreplicateされていたため、これが個々のexpertがlong termでの学習で特化することの妨げになり、最終的に最大限のcapabilityを発揮できず、収束が遅い要因となっていた。これを、Upcyclingした重みのうち、一部のindexのみを再初期化することで、replicate元の知識を保持しつつ、expertsの多様性を高めることで解決する。<br><img src="https://github.com/user-attachments/assets/46ec75a2-30b1-4f48-9f21-cf5f6e30df95" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/ef3c66b2-32a5-46ab-bb31-828fb4570b53" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>提案手法は任意のactivation function適用可能。今回はFFN Layerのactivation functionとして一般的なSwiGLUを採用した場合で説明している。<br><br>Drop-Upcyclingの手法としては、通常のUpcyclingと同様、FFN Layerの重みをn個のexpertsの数だけreplicateする。その後、re-initializationを実施する比率rに基づいて、[1, intermediate size d_f]の範囲からr*d_f個のindexをサンプリングする。最終的にSwiGLU、およびFFNにおける3つのWeight W_{gate, up, down}において、サンプリングされたindexと対応するrow/columnと対応する重みをre-initializeする。<br><br>re-initializeする際には、各W_{gate, up, down}中のサンプリングされたindexと対応するベクトルの平均と分散をそれぞれ独立して求め、それらの平均と分散を持つ正規分布からサンプリングする。<br><br>学習の初期から高い性能を発揮し、long termでの性能も向上している。また、learning curveの形状もscratchから学習した場合と同様の形状となっており、知識の転移とexpertsのspecializationがうまく進んだことが示唆される。<br><img src="https://github.com/user-attachments/assets/945e5ae5-05cd-4117-80e8-078b47f0e53c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>解説:
 
 {% raw %}
@@ -8326,10 +8326,10 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 </paper-entry>
 
 <paper-entry>
-<title>Observational Scaling Laws and the Predictability of Language Model  Performance, Yangjun Ruan+, arXiv'24</title>
+<title>[Paper Note] Observational Scaling Laws and the Predictability of Language Model Performance, Yangjun Ruan+, arXiv'24, 2024.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2405.10938</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1540</repo-issue-link>
-<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel</tags>
+<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, action_wanted, NeurIPS, read-later, One-Line Notes</tags>
 <repo-issue-date>2024-11-22</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2405.10938
@@ -8339,19 +8339,25 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
   - Tatsunori Hashimoto
 # Abstract
   - Understanding how language model performance varies with scale is critical to benchmark and algorithm development. Scaling laws are one approach to building this understanding, but the requirement of training models across many different scales has limited their use. We propose an alternative, observational approach that bypasses model training and instead builds scaling laws from ~100 publically available models. Building a single scaling law from multiple model families is challenging due to large variations in their training compute efficiencies and capabilities. However, we show that these variations are consistent with a simple, generalized scaling law where language model performance is a function of a low-dimensional capability space, and model families only vary in their efficiency in converting training compute to capabilities. Using this approach, we show the surprising predictability of complex scaling phenomena: we show that several emergent phenomena follow a smooth, sigmoidal behavior and are predictable from small models; we show that the agent performance of models such as GPT-4 can be precisely predicted from simpler non-agentic benchmarks; and we show how to predict the impact of post-training interventions like Chain-of-Thought and Self-Consistency as language model capabilities continue to improve.
-# Translation (by gpt-4o-mini)
-- 言語モデルの性能がスケールによってどのように変化するかを理解することは、ベンチマークやアルゴリズムの開発にとって重要である。スケーリング法則はこの理解を構築するための一つのアプローチであるが、さまざまなスケールでモデルを訓練する必要があるため、その利用は制限されてきた。そこで本研究では、モデルの訓練を回避し、約100の公開されているモデルからスケーリング法則を構築する代替的な観察アプローチを提案する。複数のモデルファミリーから単一のスケーリング法則を構築することは、訓練にかかる計算効率や能力の大きな変動のために困難である。しかし、これらの変動は、言語モデルの性能が低次元の能力空間の関数であり、モデルファミリーは訓練計算を能力に変換する効率が異なるという単純で一般化されたスケーリング法則と一致することを示す。 このアプローチを用いることで、複雑なスケーリング現象の驚くべき予測可能性を示す。具体的には、いくつかの新たに現れる現象が滑らかでシグモイド的な挙動に従い、小さなモデルから予測可能であることを示し、GPT-4のようなモデルのエージェント性能がより単純な非エージェント的ベンチマークから正確に予測できることを示し、言語モデルの能力が向上し続ける中で、Chain-of-ThoughtやSelf-Consistencyのような訓練後の介入の影響を予測する方法を示す。
+# Translation (by gpt-5-nano)
+- スケールによって言語モデルの性能がどのように変化するかを理解することは、ベンチマークとアルゴリズム開発にとって極めて重要です。スケーリング則はこの理解を構築する一つのアプローチですが、多様なスケールでのモデル訓練が必要であるという要件が、その利用を制限してきました。私たちは、モデル訓練を回避し、約100個の公開済みモデルからスケーリング則を構築する、別の観察的アプローチを提案します。複数のモデルファミリーから単一のスケーリング則を構築することは、それらの訓練計算資源の効率と能力に大きなばらつきがあるため困難です。しかし、これらのばらつきは、言語モデルの性能が低次元の能力空間の関数であり、モデルファミリーは訓練計算資源を能力へ変換する効率のみが異なる、という単純で一般化されたスケーリング則と整合することを示します。このアプローチを用いることで、複雑なスケーリング現象の驚くべき予測可能性を示します。いくつかの創発現象は滑らかなシグモイド状の挙動に従い、小さなモデルから予測可能であることを示します。GPT-4のようなモデルのエージェント性能は、より単純な非エージェント的ベンチマークから正確に予測できることを示します。そして、Chain-of-Thought（思考の連鎖）やSelf-Consistencyといった訓練後の介入が、言語モデルの能力が向上し続けるにつれてその影響を予測する方法を示します。
 # Summary (by gpt-4o-mini)
-- 言語モデルの性能を理解するために、約100の公開モデルからスケーリング法則を構築する新しい観察アプローチを提案。モデルファミリー間の能力変動を考慮し、性能が低次元の能力空間の関数であることを示す。これにより、複雑なスケーリング現象の予測可能性を示し、GPT-4のエージェント性能を非エージェント的ベンチマークから予測できることを明らかにし、Chain-of-ThoughtやSelf-Consistencyの影響を予測する方法を示す。</issue-body>
+- 言語モデルの性能変化を理解することは重要であり、スケーリング則がその手法の一つとして提案されている。約100の公開モデルからスケーリング則を構築することで、モデル訓練を回避する新しいアプローチが示される。異なる計算資源を持つモデルファミリー間のばらつきが、低次元の能力空間と整合することで、予測可能なスケーリング現象が明らかとなる。GPT-4の性能はシンプルなベンチマークから予測可能であり、思考の連鎖や自己整合性といった介入がモデル能力に与える影響の予測も可能であることが示された。</issue-body>
 <maintainer-comment-text><p>縦軸がdownstreamタスクの主成分（のうち最も大きい80%を説明する成分）の変化（≒LLMの性能）で、横軸がlog scaleの投入計算量。<br>Qwenも頑張っているが、投入データ量に対する性能（≒データの品質）では、先駆け的な研究であるPhiがやはり圧倒的?<br><img src="https://github.com/user-attachments/assets/c38286df-37c1-4c72-832f-676832845c0e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
-<br><br>も参照のこと</p></maintainer-comment-text>
+<br><br>も参照のこと</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=On5WIN7xyD&referrer=%5Bthe%20profile%20of%20Chris%20J.%20Maddison%5D(%2Fprofile%3Fid%3D~Chris_J._Maddison1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=On5WIN7xyD&referrer=%5Bthe%20profile%20of%20Chris%20J.%20Maddison%5D(%2Fprofile%3Fid%3D~Chris_J._Maddison1)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>Balancing Speed and Stability: The Trade-offs of FP8 vs. BF16 Training  in LLMs, Kazuki Fujii+, arXiv'24</title>
+<title>[Paper Note] Balancing Speed and Stability: The Trade-offs of FP8 vs. BF16 Training  in LLMs, Kazuki Fujii+, arXiv'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2411.08719</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1524</repo-issue-link>
-<tags>Analysis, EfficiencyImprovement, Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), Japanese, read-later</tags>
+<tags>Analysis, EfficiencyImprovement, Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), Japanese, read-later, One-Line Notes, LowPrecision</tags>
 <repo-issue-date>2024-11-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2411.08719
@@ -8379,10 +8385,10 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 </paper-entry>
 
 <paper-entry>
-<title>Understanding LLMs: A Comprehensive Overview from Training to Inference, Yiheng Liu+, arXiv'24</title>
+<title>[Paper Note] Understanding LLMs: A Comprehensive Overview from Training to Inference, Yiheng Liu+, arXiv'24, 2024.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2401.02038</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1523</repo-issue-link>
-<tags>Survey, EfficiencyImprovement, NLP, LanguageModel, Transformer, Attention</tags>
+<tags>Survey, EfficiencyImprovement, NLP, LanguageModel, Transformer, action_wanted, Attention, One-Line Notes, Reading Reflections</tags>
 <repo-issue-date>2024-11-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2401.02038
@@ -8410,10 +8416,10 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
   - Bao Ge
 # Abstract
   - The introduction of ChatGPT has led to a significant increase in the utilization of Large Language Models (LLMs) for addressing downstream tasks. There's an increasing focus on cost-efficient training and deployment within this context. Low-cost training and deployment of LLMs represent the future development trend. This paper reviews the evolution of large language model training techniques and inference deployment technologies aligned with this emerging trend. The discussion on training includes various aspects, including data preprocessing, training architecture, pre-training tasks, parallel training, and relevant content related to model fine-tuning. On the inference side, the paper covers topics such as model compression, parallel computation, memory scheduling, and structural optimization. It also explores LLMs' utilization and provides insights into their future development.
-# Translation (by gpt-4o-mini)
-- ChatGPTの導入により、下流タスクに対する大規模言語モデル（LLMs）の利用が大幅に増加しました。この文脈において、コスト効率の良いトレーニングとデプロイメントに対する関心が高まっています。LLMsの低コストトレーニングとデプロイメントは、今後の発展のトレンドを示しています。本論文では、この新たなトレンドに沿った大規模言語モデルのトレーニング技術と推論デプロイメント技術の進化をレビューします。トレーニングに関する議論では、データ前処理、トレーニングアーキテクチャ、事前トレーニングタスク、並列トレーニング、モデルのファインチューニングに関連する内容など、さまざまな側面が含まれています。一方、推論に関しては、モデル圧縮、並列計算、メモリスケジューリング、構造最適化などのトピックが取り上げられています。また、LLMsの利用方法を探求し、その将来の発展に関する洞察を提供します。
+# Translation (by gpt-5-nano)
+- ChatGPTの導入は、下流のタスクに対処するための大規模言語モデル（LLMs）の活用を顕著に高めました。これを背景に、コスト効率の高い訓練とデプロイメントへの関心が高まっています。LLMsの低コスト訓練とデプロイメントは、将来の開発動向を示しています。本論文は、この新たな傾向に沿った大規模言語モデルの訓練技術と推論デプロイメント技術の進化を概説します。訓練に関する議論には、データ前処理、訓練アーキテクチャ、事前訓練タスク、並列訓練、モデル微調整に関連する内容など、さまざまな側面が含まれます。推論側では、モデル圧縮、並列計算、メモリスケジューリング、構造最適化といったトピックを扱います。さらに、LLMsの活用を探究し、今後の発展について洞察を提供します。
 # Summary (by gpt-4o-mini)
-- ChatGPTの普及に伴い、LLMsのコスト効率の良いトレーニングとデプロイメントへの関心が高まっている。本論文では、LLMsのトレーニング技術と推論デプロイメント技術の進化をレビューし、データ前処理やモデル圧縮などのさまざまな側面を議論する。また、LLMsの利用方法と将来の発展についての洞察も提供する。</issue-body>
+- ChatGPTの導入により、LLMsの低コストな訓練とデプロイメントへの関心が高まる。本論文では、訓練技術や推論デプロイメント技術の進化を概説し、データ前処理やモデル圧縮など多様な視点を提供。LLMsの活用についても考察し、今後の発展を示唆する。</issue-body>
 <maintainer-comment-text><p>[Perplexity（参考;Hallucinationに注意）](
 
 {% raw %}
@@ -11192,7 +11198,7 @@ Encoder-only transformer models such as BERT offer a great performance-size trad
 <title>TensorRT-LLMによる推論高速化, Hiroshi Matsuda, NVIDIA AI Summit 2024.11 </title>
 <original-paper-blog-link>https://docs.google.com/presentation/d/1IcBX1DuqnLwhV0JLH1BHxoDou6rgJFZMifmYiSexsqM/mobilepresent?slide=id.g3014aeec0cb_0_5</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1518</repo-issue-link>
-<tags>EfficiencyImprovement, LanguageModel, Slide</tags>
+<tags>EfficiencyImprovement, LanguageModel, Slide, read-later</tags>
 <repo-issue-date>2024-11-14</repo-issue-date>
 <issue-body>https://docs.google.com/presentation/d/1IcBX1DuqnLwhV0JLH1BHxoDou6rgJFZMifmYiSexsqM/mobilepresent?slide=id.g3014aeec0cb_0_5</issue-body>
 <maintainer-comment-text><p>元ポスト:
