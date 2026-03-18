@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-03-12">
+<paper-list last-updated="2026-03-17">
 <paper-entry>
 <title>[Paper Note] How Well Does Agent Development Reflect Real-World Work?, Zora Zhiruo Wang+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.01203</original-paper-blog-link>
@@ -5025,6 +5025,35 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Reverse Thinking Makes LLMs Stronger Reasoners, Justin Chih-Yao Chen+, NAACL'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.19865</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1565</repo-issue-link>
+<tags>NLP, DataAugmentation, Distillation, NAACL, Verification, KeyPoint Notes</tags>
+<repo-issue-date>2024-12-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.19865
+# Authors
+  - Justin Chih-Yao Chen
+  - Zifeng Wang
+  - Hamid Palangi
+  - Rujun Han
+  - Sayna Ebrahimi
+  - Long Le
+  - Vincent Perot
+  - Swaroop Mishra
+  - Mohit Bansal
+  - Chen-Yu Lee
+  - Tomas Pfister
+# Abstract
+  - Reverse thinking plays a crucial role in human reasoning. Humans can reason not only from a problem to a solution but also in reverse, i.e., start from the solution and reason towards the problem. This often enhances overall reasoning performance as it enables consistency checks between their forward and backward thinking. To enable Large Language Models (LLMs) to perform reverse thinking, we introduce Reverse-Enhanced Thinking (RevThink), a framework composed of data augmentation and learning objectives. In RevThink, we augment the dataset by collecting structured forward-backward reasoning from a teacher model, consisting of: (1) the original question, (2) forward reasoning, (3) backward question, and (4) backward reasoning. We then employ three objectives to train a smaller student model in a multi-task learning fashion: (a) generate forward reasoning from a question, (b) generate a backward question from a question, and (c) generate backward reasoning from the backward question. Experiments across 12 datasets covering commonsense, math, and logical reasoning show an average 13.53% improvement over the student model's zero-shot performance and a 6.84% improvement over the strongest knowledge distillation baselines. Moreover, our method demonstrates sample efficiency -- using only 10% of the correct forward reasoning from the training data, it outperforms a standard fine-tuning method trained on 10x more forward reasoning. RevThink also exhibits strong generalization to out-of-distribution held-out datasets.
+# Translation (by gpt-4o-mini)
+- 逆思考は人間の推論において重要な役割を果たします。人間は問題から解決策へ推論するだけでなく、逆に解決策から問題へ推論することもできます。これは、前向きな思考と後ろ向きな思考の間で整合性チェックを行うことができるため、全体的な推論性能を向上させることがよくあります。大規模言語モデル（LLMs）が逆思考を行えるようにするために、我々はReverse-Enhanced Thinking（RevThink）というフレームワークを提案します。これはデータ拡張と学習目標から構成されています。RevThinkでは、教師モデルから構造化された前向き-後向き推論を収集することでデータセットを拡張します。これには、(1) 元の質問、(2) 前向き推論、(3) 後向き質問、(4) 後向き推論が含まれます。次に、我々は小型の生徒モデルをマルチタスク学習の形で訓練するために、3つの目標を用います：(a) 質問から前向き推論を生成する、(b) 質問から後向き質問を生成する、(c) 後向き質問から後向き推論を生成する。常識、数学、論理推論をカバーする12のデータセットにわたる実験では、生徒モデルのゼロショット性能に対して平均13.53%の改善が見られ、最も強力な知識蒸留ベースラインに対しては6.84%の改善が見られました。さらに、我々の手法はサンプル効率を示し、トレーニングデータから正しい前向き推論のわずか10%を使用することで、10倍の前向き推論で訓練された標準的なファインチューニング手法を上回ります。RevThinkは、分布外の保持データセットに対しても強い一般化能力を示します。
+# Summary (by gpt-4o-mini)
+- 逆思考は推論において重要であり、我々は大規模言語モデル（LLMs）向けにReverse-Enhanced Thinking（RevThink）フレームワークを提案。データ拡張と学習目標を用いて、前向きと後向きの推論を構造化し、マルチタスク学習で小型モデルを訓練。実験では、ゼロショット性能が平均13.53%向上し、知識蒸留ベースラインに対して6.84%の改善を達成。少ないデータでのサンプル効率も示し、一般化能力が高いことが確認された。</issue-body>
+<maintainer-comment-text><p>## 手法概要<br><br>Original QuestionからTeacher Modelでreasoningと逆質問を生成（Forward Reasoning, Backward Question）し、逆質問に対するReasoningを生成する（Backward Reasoning）。<br>その後、Forward Reasoningで回答が誤っているものや、Teacher Modelを用いてBackward ReasoningとOriginal Questionを比較して正しさをverificationすることで、学習データのフィルタリングを行う。<br>このようにして得られたデータに対して、3種類の項をlossに設けて学習する。具体的には<br><br>- Original Questionから生成したForward Reasoningに対するクロスエントロピー<br>- Original Questionから生成したBackward Questionに対するクロスエントロピー<br>- Backward Questionから生成したBackward Reasoningに対するクロスエントロピー<br><br>の平均をとる。<br><br><img src="https://github.com/user-attachments/assets/d37ff435-3225-4e9e-b455-547a6b691057" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、original questionと、backward reasoningが一貫しているかを確認するためにTeacher Modelを利用した下記プロンプトでverificationを実施し、一貫性があると判断されたサンプルのみをSFTのデータとして活用している。<br><img src="https://github.com/user-attachments/assets/3fc5b0a1-ff46-4ad3-8e12-9ab97224ef2d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Teacherモデルから知識蒸留をするためSFTが必要。あと、正解が一意に定まるようなQuestionでないとbackward reasoningの生成はできても、verificationが困難になるので、適用するのは難しいかもしれない。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>LBPE: Long-token-first Tokenization to Improve Large Language Models, Haoran Lian+, ICASSP'25, 2024.11</title>
 <original-paper-blog-link>https://arxiv.org/abs/2411.05504</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1507</repo-issue-link>
@@ -5220,250 +5249,41 @@
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] DeepSeek-V3 Technical Report, DeepSeek-AI+, arXiv'24, 2024.12</title>
-<original-paper-blog-link>https://arxiv.org/abs/2412.19437</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1620</repo-issue-link>
-<tags>NLP, LanguageModel, action_wanted, OpenWeight, Selected Papers/Blogs, KeyPoint Notes, Reference Collection</tags>
-<repo-issue-date>2024-12-28</repo-issue-date>
+<title>DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open  Language Models, Zhihong Shao+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2402.03300</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1655</repo-issue-link>
+<tags>NLP, LanguageModel, RLHF, Reasoning, Mathematics, GRPO, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2025-01-04</repo-issue-date>
 <issue-body># URL
-- https://arxiv.org/abs/2412.19437
+- https://arxiv.org/abs/2402.03300
 # Authors
-  - DeepSeek-AI
-  - Aixin Liu
-  - Bei Feng
-  - Bing Xue
-  - Bingxuan Wang
-  - Bochao Wu
-  - Chengda Lu
-  - Chenggang Zhao
-  - Chengqi Deng
-  - Chenyu Zhang
-  - Chong Ruan
-  - Damai Dai
-  - Daya Guo
-  - Dejian Yang
-  - Deli Chen
-  - Dongjie Ji
-  - Erhang Li
-  - Fangyun Lin
-  - Fucong Dai
-  - Fuli Luo
-  - Guangbo Hao
-  - Guanting Chen
-  - Guowei Li
-  - H. Zhang
-  - Han Bao
-  - Hanwei Xu
-  - Haocheng Wang
-  - Haowei Zhang
-  - Honghui Ding
-  - Huajian Xin
-  - Huazuo Gao
-  - Hui Li
-  - Hui Qu
-  - J. L. Cai
-  - Jian Liang
-  - Jianzhong Guo
-  - Jiaqi Ni
-  - Jiashi Li
-  - Jiawei Wang
-  - Jin Chen
-  - Jingchang Chen
-  - Jingyang Yuan
-  - Junjie Qiu
-  - Junlong Li
-  - Junxiao Song
-  - Kai Dong
-  - Kai Hu
-  - Kaige Gao
-  - Kang Guan
-  - Kexin Huang
-  - Kuai Yu
-  - Lean Wang
-  - Lecong Zhang
-  - Lei Xu
-  - Leyi Xia
-  - Liang Zhao
-  - Litong Wang
-  - Liyue Zhang
-  - Meng Li
-  - Miaojun Wang
-  - Mingchuan Zhang
-  - Minghua Zhang
-  - Minghui Tang
-  - Mingming Li
-  - Ning Tian
-  - Panpan Huang
-  - Peiyi Wang
-  - Peng Zhang
-  - Qiancheng Wang
-  - Qihao Zhu
-  - Qinyu Chen
-  - Qiushi Du
-  - R. J. Chen
-  - R. L. Jin
-  - Ruiqi Ge
-  - Ruisong Zhang
-  - Ruizhe Pan
-  - Runji Wang
-  - Runxin Xu
-  - Ruoyu Zhang
-  - Ruyi Chen
-  - S. S. Li
-  - Shanghao Lu
-  - Shangyan Zhou
-  - Shanhuang Chen
-  - Shaoqing Wu
-  - Shengfeng Ye
-  - Shengfeng Ye
-  - Shirong Ma
-  - Shiyu Wang
-  - Shuang Zhou
-  - Shuiping Yu
-  - Shunfeng Zhou
-  - Shuting Pan
-  - T. Wang
-  - Tao Yun
-  - Tian Pei
-  - Tianyu Sun
-  - W. L. Xiao
-  - Wangding Zeng
-  - Wanjia Zhao
-  - Wei An
-  - Wen Liu
-  - Wenfeng Liang
-  - Wenjun Gao
-  - Wenqin Yu
-  - Wentao Zhang
-  - X. Q. Li
-  - Xiangyue Jin
-  - Xianzu Wang
-  - Xiao Bi
-  - Xiaodong Liu
-  - Xiaohan Wang
-  - Xiaojin Shen
-  - Xiaokang Chen
-  - Xiaokang Zhang
-  - Xiaosha Chen
-  - Xiaotao Nie
-  - Xiaowen Sun
-  - Xiaoxiang Wang
-  - Xin Cheng
-  - Xin Liu
-  - Xin Xie
-  - Xingchao Liu
-  - Xingkai Yu
-  - Xinnan Song
-  - Xinxia Shan
-  - Xinyi Zhou
-  - Xinyu Yang
-  - Xinyuan Li
-  - Xuecheng Su
-  - Xuheng Lin
-  - Y. K. Li
-  - Y. Q. Wang
-  - Y. X. Wei
-  - Y. X. Zhu
-  - Yang Zhang
-  - Yanhong Xu
-  - Yanhong Xu
-  - Yanping Huang
-  - Yao Li
-  - Yao Zhao
-  - Yaofeng Sun
-  - Yaohui Li
-  - Yaohui Wang
-  - Yi Yu
-  - Yi Zheng
-  - Yichao Zhang
-  - Yifan Shi
-  - Yiliang Xiong
-  - Ying He
-  - Ying Tang
-  - Yishi Piao
-  - Yisong Wang
-  - Yixuan Tan
-  - Yiyang Ma
-  - Yiyuan Liu
-  - Yongqiang Guo
-  - Yu Wu
-  - Yuan Ou
-  - Yuchen Zhu
-  - Yuduan Wang
-  - Yue Gong
-  - Yuheng Zou
-  - Yujia He
-  - Yukun Zha
-  - Yunfan Xiong
-  - Yunxian Ma
-  - Yuting Yan
-  - Yuxiang Luo
-  - Yuxiang You
-  - Yuxuan Liu
-  - Yuyang Zhou
-  - Z. F. Wu
-  - Z. Z. Ren
-  - Zehui Ren
-  - Zhangli Sha
-  - Zhe Fu
-  - Zhean Xu
-  - Zhen Huang
-  - Zhen Zhang
-  - Zhenda Xie
-  - Zhengyan Zhang
-  - Zhewen Hao
-  - Zhibin Gou
-  - Zhicheng Ma
-  - Zhigang Yan
   - Zhihong Shao
-  - Zhipeng Xu
-  - Zhiyu Wu
-  - Zhongyu Zhang
-  - Zhuoshu Li
-  - Zihui Gu
-  - Zijia Zhu
-  - Zijun Liu
-  - Zilin Li
-  - Ziwei Xie
-  - Ziyang Song
-  - Ziyi Gao
-  - Zizheng Pan
+  - Peiyi Wang
+  - Qihao Zhu
+  - Runxin Xu
+  - Junxiao Song
+  - Xiao Bi
+  - Haowei Zhang
+  - Mingchuan Zhang
+  - Y. K. Li
+  - Y. Wu
+  - Daya Guo
 # Abstract
-  - We present DeepSeek-V3, a strong Mixture-of-Experts (MoE) language model with 671B total parameters with 37B activated for each token. To achieve efficient inference and cost-effective training, DeepSeek-V3 adopts Multi-head Latent Attention (MLA) and DeepSeekMoE architectures, which were thoroughly validated in DeepSeek-V2. Furthermore, DeepSeek-V3 pioneers an auxiliary-loss-free strategy for load balancing and sets a multi-token prediction training objective for stronger performance. We pre-train DeepSeek-V3 on 14.8 trillion diverse and high-quality tokens, followed by Supervised Fine-Tuning and Reinforcement Learning stages to fully harness its capabilities. Comprehensive evaluations reveal that DeepSeek-V3 outperforms other open-source models and achieves performance comparable to leading closed-source models. Despite its excellent performance, DeepSeek-V3 requires only 2.788M H800 GPU hours for its full training. In addition, its training process is remarkably stable. Throughout the entire training process, we did not experience any irrecoverable loss spikes or perform any rollbacks. The model checkpoints are available at https://github.com/deepseek-ai/DeepSeek-V3.
-# Translation (by gpt-5-nano)
-- 私たちは、総パラメータ6710億、各トークンにつき37Bのパラメータが活性化される強力なMixture-of-Experts（MoE）言語モデル、DeepSeek-V3を提示します。推論を効率化し、訓練コストを抑えるため、DeepSeek-V3はMulti-head Latent Attention（MLA）およびDeepSeekMoEアーキテクチャを採用しており、これらはDeepSeek-V2で徹底的に検証されました。さらに、DeepSeek-V3はロードバランシングのための補助損失を用いない戦略を提唱し、より強力な性能を発揮するためのマルチトークン予測訓練目標を設定します。DeepSeek-V3を14.8兆個の多様で高品質なトークンで事前学習し、その後、教師ありファインチューニングと強化学習の段階を経て、その能力を十分に活用します。包括的な評価により、DeepSeek-V3は他のオープンソースモデルを上回り、先端のクローズドソースモデルに匹敵する性能を達成することが示されています。卓越した性能にもかかわらず、DeepSeek-V3の全訓練には、約2,788,000時間のH800 GPU時間しか必要ありません。さらに、訓練過程は非常に安定しており、訓練全体を通じて回復不能な損失の急増を経験せず、ロールバックも行いませんでした。モデルのチェックポイントは https://github.com/deepseek-ai/DeepSeek-V3 で利用可能です。
+  - Mathematical reasoning poses a significant challenge for language models due to its complex and structured nature. In this paper, we introduce DeepSeekMath 7B, which continues pre-training DeepSeek-Coder-Base-v1.5 7B with 120B math-related tokens sourced from Common Crawl, together with natural language and code data. DeepSeekMath 7B has achieved an impressive score of 51.7% on the competition-level MATH benchmark without relying on external toolkits and voting techniques, approaching the performance level of Gemini-Ultra and GPT-4. Self-consistency over 64 samples from DeepSeekMath 7B achieves 60.9% on MATH. The mathematical reasoning capability of DeepSeekMath is attributed to two key factors: First, we harness the significant potential of publicly available web data through a meticulously engineered data selection pipeline. Second, we introduce Group Relative Policy Optimization (GRPO), a variant of Proximal Policy Optimization (PPO), that enhances mathematical reasoning abilities while concurrently optimizing the memory usage of PPO.
+# Translation (by gpt-4o-mini)
+- 数学的推論は、その複雑で構造化された性質のため、言語モデルにとって大きな課題となっています。本論文では、Common Crawlから取得した120Bの数学関連トークンと自然言語およびコードデータを用いて、DeepSeek-Coder-Base-v1.5 7Bの事前学習を継続したDeepSeekMath 7Bを紹介します。DeepSeekMath 7Bは、外部ツールキットや投票技術に依存することなく、競技レベルのMATHベンチマークで51.7%という印象的なスコアを達成し、Gemini-UltraやGPT-4のパフォーマンスレベルに迫っています。DeepSeekMath 7Bの64サンプルにおける自己一貫性は、MATHで60.9%を達成しています。DeepSeekMathの数学的推論能力は、2つの重要な要因に起因しています。第一に、慎重に設計されたデータ選択パイプラインを通じて、公開されているウェブデータの大きな潜在能力を活用しています。第二に、Proximal Policy Optimization (PPO)の変種であるGroup Relative Policy Optimization (GRPO)を導入し、数学的推論能力を向上させると同時にPPOのメモリ使用量を最適化しています。
 # Summary (by gpt-4o-mini)
-- 総パラメータ6710億のMixture-of-Experts（MoE）言語モデルDeepSeek-V3を提案。MLAおよびDeepSeekMoEアーキテクチャを採用し、効率的な推論と低訓練コストを実現。補助損失を用いず、マルチトークン予測訓練目標で性能を向上。14.8兆トークンで事前学習し、教師ありファインチューニングを経て優れた性能を達成。他のオープンソースと先端のクローズドソースモデルに匹敵し、訓練は約2,788,000時間のH800 GPU時間で安定して行われた。モデルのチェックポイントは公開中。</issue-body>
-<maintainer-comment-text><p>参考（モデルの図解）:
+- DeepSeekMath 7Bは、120Bの数学関連トークンを用いて事前学習された言語モデルで、競技レベルのMATHベンチマークで51.7%のスコアを達成。自己一貫性は60.9%で、データ選択パイプラインとGroup Relative Policy Optimization (GRPO)の導入により数学的推論能力が向上。Gemini-UltraやGPT-4に迫る性能を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
 
 {% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vtabbott_/status/1874449446056177717?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
+<a href="https://www.linkedin.com/posts/philipp-schmid-a6a2bb196_the-rlhf-method-behind-the-best-open-models-activity-7280850174522843137-3V9v?utm_source=share&utm_medium=member_ios" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/posts/philipp-schmid-a6a2bb196_the-rlhf-method-behind-the-best-open-models-activity-7280850174522843137-3V9v?utm_source=share&utm_medium=member_ios</a>
 {% endraw %}
 
-</p><p>参考:
+</p><p>元々数学のreasoningに関する能力を改善するために提案されたが、現在はオンラインでTruthfulness, Helpfulness, Concisenessなどの改善に活用されているとのこと。</p><p>PPOとGRPOの比較。value function model（状態の価値を予測するモデル）が不要なため省メモリ、かつ利用する計算リソースが小さいらしい。<br>あとサンプルをグループごとに分けて、グループ内でのKLダイバージェンスが最小化されるよう（つまり、各グループ内で方策が類似する）Policy Modelが更新される（つまりloss functionに直接組み込まれる）点が違うらしい。<br><br>PPOでは生成するトークンごとにreference modelとPolicy ModelとのKLダイバージェンスをとり、reference modelとの差が大きくならないよう、報酬にペナルティを入れるために使われることが多いらしい。<br><img src="https://github.com/user-attachments/assets/e145ad52-e6c9-4481-b2ee-10a3987ea2e3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>下記記事によると、PPOで最大化したいのはAdvantage（累積報酬と状態価値（累積報酬の期待値を計算するモデル）の差分;期待値よりも実際の累積報酬が良かったら良い感じだぜ的な数値）であり、それには状態価値を計算するモデルが必要である。そして、PPOにおける状態価値モデルを使わないで、LLMにテキスト生成させて最終的な報酬を平均すれば状態価値モデル無しでAdvantageが計算できるし嬉しくね？という気持ちで提案されたのが、本論文で提案されているGRPOとのこと。勉強になる。<br><br>DeepSeek-R1の論文読んだ？【勉強になるよ】<br>, asap: 
 
 {% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1876397959841186148?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>MLA(Multi-Head Latent Attention)を提案<br><br>解説:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1621" target="_blank" rel="noopener noreferrer">MHA vs MQA vs GQA vs MLA, Zain ul Abideen, 2024.07</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1663" target="_blank" rel="noopener noreferrer">DeepSeek-V2のアーキテクチャを徹底解説：MLA と DeepSeekMoE, kernelian, 2024.05</a>
-<br><br>MLAはKVを低ランクなlatentベクトルに圧縮して保持し、使う時に復元するといった操作をすることで、MHAのパフォーマンスを落とすことなくKV Cacheで利用するメモリを大幅に減らせるという手法。</p><p>MLAの図解:<br>
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2032146159104405851?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
+<a href="https://zenn.dev/asap/articles/34237ad87f8511" target="_blank" rel="noopener noreferrer">https://zenn.dev/asap/articles/34237ad87f8511</a>
 {% endraw %}
 
 </p></maintainer-comment-text>
@@ -5777,7 +5597,7 @@
 </div>
 {% endraw %}
 
-</p><p>LoRAの場合については<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1640" target="_blank" rel="noopener noreferrer">LoRA Learns Less and Forgets Less, Dan Biderman+, TMLR'24</a>
+</p><p>LoRAの場合については<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1640" target="_blank" rel="noopener noreferrer">[Paper Note] LoRA Learns Less and Forgets Less, Dan Biderman+, TMLR'24, 2024.05</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1475" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond Full Fine-tuning: Harnessing the Power of LoRA for Multi-Task Instruction Tuning, Xin+, LREC-COLING'24</a>
 <br><br>も参照のこと。</p></maintainer-comment-text>
 </paper-entry>
@@ -6639,6 +6459,28 @@ TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフ�
 {% endraw %}
 
 </p><p>チンチラ則のようなScaling Lawsはパラメータとデータ量の両方をスケールさせた場合の前提に立っており、かつデータは全てuniqueである前提だったが、データの枯渇が懸念される昨今の状況に合わせて、データ量が制限された状況で、同じデータを繰り返し利用する（＝複数エポック学習する）ことが一般的になってきた。このため、データのrepetitionに関して性能を事前学習による性能の違いを調査して、repetitionとパラメータ数に関するスケーリング則を提案（$3.1)しているようである。<br><br>Takeawayとしては、データが制限された環境下では、repetitionは上限4回までが効果的（コスパが良い）であり（左図）、小さいモデルを複数エポック訓練する方が固定されたBudgetの中で低いlossを達成できる右図）。<br><img src="https://github.com/user-attachments/assets/4e62cd1b-fe83-4d6e-a40d-df992c85def3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>学習データの半分をコードにしても性能の劣化はなく、様々なタスクの性能が向上しパフォーマンスの分散も小さくなる、といったことが挙げられるようだ。<br><img src="https://github.com/user-attachments/assets/d404156f-7416-4f22-aa7e-d342065435ee" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Program of Thoughts Prompting: Disentangling Computation from Reasoning   for Numerical Reasoning Tasks, Wenhu Chen+, TMLR'23</title>
+<original-paper-blog-link>https://arxiv.org/abs/2211.12588</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1657</repo-issue-link>
+<tags>NLP, LanguageModel, Chain-of-Thought, Prompting, TMLR, KeyPoint Notes</tags>
+<repo-issue-date>2025-01-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2211.12588
+# Authors
+  - Wenhu Chen
+  - Xueguang Ma
+  - Xinyi Wang
+  - William W. Cohen
+# Abstract
+  - Recently, there has been significant progress in teaching language models to perform step-by-step reasoning to solve complex numerical reasoning tasks. Chain-of-thoughts prompting (CoT) is by far the state-of-art method for these tasks. CoT uses language models to perform both reasoning and computation in the multi-step `thought' process. To disentangle computation from reasoning, we propose `Program of Thoughts' (PoT), which uses language models (mainly Codex) to express the reasoning process as a program. The computation is relegated to an external computer, which executes the generated programs to derive the answer. We evaluate PoT on five math word problem datasets (GSM, AQuA, SVAMP, TabMWP, MultiArith) and three financial-QA datasets (FinQA, ConvFinQA, TATQA) for both few-shot and zero-shot setups. Under both few-shot and zero-shot settings, PoT can show an average performance gain over CoT by around 12\% across all the evaluated datasets. By combining PoT with self-consistency decoding, we can achieve SoTA performance on all math problem datasets and near-SoTA performance on financial datasets. All of our data and code are released in Github https://github.com/wenhuchen/Program-of-Thoughts
+# Translation (by gpt-4o-mini)
+- 最近、言語モデルに複雑な数値推論タスクを解決するための段階的な推論を行う方法を教える上で、重要な進展がありました。Chain-of-thoughts prompting（CoT）は、これらのタスクにおける最先端の手法です。CoTは、言語モデルを使用して、複数のステップからなる「思考」プロセスにおいて推論と計算の両方を行います。推論から計算を切り離すために、私たちは「Program of Thoughts」（PoT）を提案します。これは、言語モデル（主にCodex）を使用して、推論プロセスをプログラムとして表現します。計算は外部のコンピュータに委ねられ、生成されたプログラムを実行して答えを導き出します。PoTを5つの数学の文章問題データセット（GSM、AQuA、SVAMP、TabMWP、MultiArith）および3つの金融QAデータセット（FinQA、ConvFinQA、TATQA）で評価し、少数ショットおよびゼロショットの設定でテストしました。少数ショットおよびゼロショットの両方の設定において、PoTは評価されたすべてのデータセットでCoTに対して平均約12％の性能向上を示すことができます。PoTを自己一貫性デコーディングと組み合わせることで、すべての数学問題データセットで最先端の性能を達成し、金融データセットではほぼ最先端の性能を達成することができます。私たちのデータとコードはすべてGitHub（https://github.com/wenhuchen/Program-of-Thoughts）で公開されています。
+# Summary (by gpt-4o-mini)
+- 段階的な推論を用いた数値推論タスクにおいて、Chain-of-thoughts prompting（CoT）の進展があり、推論をプログラムとして表現する「Program of Thoughts」（PoT）を提案。PoTは外部コンピュータで計算を行い、5つの数学問題データセットと3つの金融QAデータセットで評価した結果、少数ショットおよびゼロショット設定でCoTに対して約12％の性能向上を示した。自己一貫性デコーディングとの組み合わせにより、数学問題データセットで最先端の性能を達成。データとコードはGitHubで公開。</issue-body>
+<maintainer-comment-text><p>1. LLMsは算術演算を実施する際にエラーを起こしやすく、特に大きな数に対する演算を実施する際に顕著<br>2. LLMsは複雑な数式（e.g. 多項式, 微分方程式）を解くことができない<br>3. LLMsはiterationを表現するのが非常に非効率<br><br>の3点を解決するために、外部のインタプリタに演算処理を委譲するPoTを提案。PoTでは、言語モデルにreasoning stepsをpython programで出力させ、演算部分をPython Interpreterに実施させる。<br><br><img src="https://github.com/user-attachments/assets/ccaeee09-ca6f-45ec-aef4-c65960d52692" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>テキスト、テーブル、対話などの多様なinputをサポートする5つのMath Word Problem （MWP）, 3つのFinancial Datasetで評価した結果、zero-shot, few-shotの両方の設定において、PoTはCoTをoutpeformし、また、Self-Consistencyと組み合わせた場合も、PoTはCoTをoutperformした。<br><img src="https://github.com/user-attachments/assets/6b380fab-ab60-4f21-bce1-532167c8c8f2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -9043,7 +8885,7 @@ github: https://github.com/CAHLR/pyBKT</issue-body>
 <title>[Paper Note] Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches, Maurizio Ferrari Dacrema+, RecSys'19, 2019.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/1907.06902</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/442</repo-issue-link>
-<tags>RecommenderSystems, NeuralNetwork, CollaborativeFiltering, Evaluation, RecSys, Selected Papers/Blogs, KeyPoint Notes, Reading Reflections</tags>
+<tags>RecommenderSystems, NeuralNetwork, CollaborativeFiltering, Evaluation, RecSys, Selected Papers/Blogs, Reproducibility, KeyPoint Notes, Reading Reflections</tags>
 <repo-issue-date>2022-04-11</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/1907.06902
@@ -10463,6 +10305,27 @@ UserModelを表現する際に、従来は単語の集合などが用いられ�
 <repo-issue-date>2017-12-31</repo-issue-date>
 <issue-body>http://delivery.acm.org/10.1145/990000/981340/p145-kukich.pdf?ip=125.14.202.208&id=981340&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&CFID=805759951&CFTOKEN=87389191&__acm__=1505309566_e38d2569c8ab995fe978080ecc4d7df0</issue-body>
 <maintainer-comment-text><p>## タスク<br><br>numerical stock market dataからstock market reportsを生成．システム名: ANA<br><br><br><br>## 手法概要<br><br>ルールベースな手法，<br><br>1) fact-generator,<br><br>2) message generator, <br><br>3) discourse organizer, <br><br>4) text generatorの4コンポーネントから成る． <br><br><br><br>2), 3), 4)はそれぞれ120, 16, 109個のルールがある. 4)ではphrasal dictionaryも使う． <br><br>1)では，入力されたpriceデータから，closing averageを求めるなどの数値的な演算などを行う. <br><br>2)では，1)で計算された情報に基づいて，メッセージの生成を行う(e.g. market was mixed). <br><br>3)では，メッセージのparagraph化，orderの決定，priorityの設定などを行う． <br><br>4)では，辞書からフレーズを選択したり，適切なsyntactic formを決定するなどしてテキストを生成．</p><p>Data2Textの先駆け論文。引用すべし。多くの研究で引用されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>L11: Synthetic Data Powering Pretraining, Eric W. Tramel, Ph.D., UC Berkeley EE 290_194-11: Scalable AI, 2026.02</title>
+<original-paper-blog-link>https://scalable-ai.eecs.berkeley.edu/assets/lecture_slides/lecture_11a.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4911</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, SyntheticData, read-later, Selected Papers/Blogs, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2026-03-17</repo-issue-date>
+<issue-body>https://scalable-ai.eecs.berkeley.edu/assets/lecture_slides/lecture_11a.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2033344419987173493?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- インターネットのデータ枯渇問題が指摘されながらも、合成データによって事前学習は進化を続けている<br>- LLMは事後学習で性能を向上させられるが、事前学習時点で伸ばせる上限が決まっているとされている<br>- 事前学習データの投入量はChinchilla則のパラメータ量の20倍から現在は60倍まで増加<br>- MoEは過学習しやすくパラメータ数の40倍は必要<br>- 学習データの多様性が重要で繰り返し同じデータを見ても性能は改善しない<br>- 合成データをそのまま用いるとmode collapseが生じ出力が単調化するため、実データを混ぜるか言い換えをしたデータで是正する（弱めのdata augmentationで良い)<br>- 最近重要な合成データはコードと推論過程を含むデータで、これらが事前学習データに含まれていると汎用な表現、思考能力、推論能力を事前学習時点から獲得できる可能性がある<br><br>というような話が元ポストに書かれている。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+<br><br>のようにrepetitionは4回までが効果的といった知見が報告されているが、現在はどこまで当てはまるのだろうか？</p><p>後ほど関連するissueのリンクを貼りたい</p><p>うーんおもしろそう、p.15, p.20, p.26, p.28, p.35, p.36 あたりが気になる。<br><br>てかこれが大学の講義...?楽しすぎでは。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -11977,6 +11840,58 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 
 </p><p>LLM（sarashina2）, Vision Encoder（Qwen2-VL）, Projectorの3つで構成されており、3段階の学習を踏んでいる。<br>最初のステップでは、キャプションデータを用いてProjectorのみを学習しVision Encoderとテキストを対応づける。続いて、日本語を含む画像や日本特有の風景などをうまく扱えるように、これらを多く活用したデータ（内製日本語OCRデータ、図表キャプションデータ）を用いて、Vision EncoderとProjectorを学習。最後にLLMのAlignmentをとるために、プロジェクターとLLMを前段のデータに加えてVQAデータ（内製合成データを含む）や日本語の指示チューニングデータを用いて学習。</p><p>ProjectorやMMLLMを具体的にどのように学習するかは<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225" target="_blank" rel="noopener noreferrer">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N/A, ACL'24 Findings</a>
 <br><br>を参照のこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>To fine-tune or not to fine-tune, Meta, 2024.08</title>
+<original-paper-blog-link>https://ai.meta.com/blog/when-to-fine-tune-llms-vs-other-techniques/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1635</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, Supervised-FineTuning (SFT), RAG(RetrievalAugmentedGeneration), Blog, PEFT(Adaptor/LoRA), Catastrophic Forgetting, PostTraining, KeyPoint Notes</tags>
+<repo-issue-date>2025-01-02</repo-issue-date>
+<issue-body>https://ai.meta.com/blog/when-to-fine-tune-llms-vs-other-techniques/</issue-body>
+<maintainer-comment-text><p>LLMをSFTする際の注意点やユースケースについて記述されている。<br><br>- full parameterのファインチューニングやPEFT手法のピークGPUメモリ<br>- full parameterのファインチューニングではcatastrophic forgettingに気をつける必要があること<br>- Finetuningが有用なユースケースとして以下が挙げられている<br>  - トーン、スタイル、フォーマットのカスタマイザーション<br>  - prompt engineeringやICLで達成するには困難なAccuracyの向上やエッジケースへの対応<br>  - ドメイン適応<br>  - より大きいモデルを蒸留することによるコスト削減<br>  - 新たなタスクへの適応や能力の獲得 </p><p>また、RAGとFinetuningどちらを選択すべきかに関する話題も記述されている（が、多くの場合はハイブリッドアプローチがベストだ、といった話も書いてある）。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gyakuse/status/1874357127248306200?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>MHA vs MQA vs GQA vs MLA, Zain ul Abideen, 2024.07</title>
+<original-paper-blog-link>https://medium.com/@zaiinn440/mha-vs-mqa-vs-gqa-vs-mla-c6cf8285bbec</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1621</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, Attention, Blog, KeyPoint Notes</tags>
+<repo-issue-date>2024-12-28</repo-issue-date>
+<issue-body>https://medium.com/@zaiinn440/mha-vs-mqa-vs-gqa-vs-mla-c6cf8285bbec</issue-body>
+<maintainer-comment-text><p>DeepSeekで使われているMulti Head Latent Attention（MLA）ってなんだ？と思い読んだ。端的に言うと、GQAやMQAは、KVのヘッドをそもそも減らしてKV Cacheを抑えよう、という手法だったが、MLAはKVを低ランクなベクトルに圧縮して保持し、使う時に復元するといった操作をすることで、MHAのパフォーマンスを落とすことなく（むしろ上がるらしい？）、利用するKV Cacheで利用するメモリを大幅に減らせるという手法らしい。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1271" target="_blank" rel="noopener noreferrer">[Paper Note] GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints, Joshua Ainslie+, arXiv'23, 2023.05</a>
+<br><br>MQA, GQAの概要については上記参照のこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LLM-as-a-Judge をサーベイする, Ayako, 2024.12</title>
+<original-paper-blog-link>https://note.com/negi3soaya/n/n4e5640bcb284?sub_rt=share_sb</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1615</repo-issue-link>
+<tags>Survey, NLP, LanguageModel, Evaluation, Blog, LLM-as-a-Judge, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2024-12-25</repo-issue-date>
+<issue-body>https://note.com/negi3soaya/n/n4e5640bcb284?sub_rt=share_sb</issue-body>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1616" target="_blank" rel="noopener noreferrer">A Survey on LLM-as-a-Judge, Jiawei Gu+, arXiv'24</a>
+<br><br>を読んだ結果を日本語でまとめてくださっている。</p><p>モデル選択について、外部APIに依存するとコストやプライバシー、再現性などの問題があるためOpenLLMをFinetuningすることで対応していることが論文中に記載されているようだが、評価能力にはまだ限界があるとのこと。<br>記事中ではLlama, Vicunaなどを利用している旨が記述されているが、どの程度のパラメータサイズのモデルをどんなデータでSFTし、どのようなタスクを評価したのだろうか（あとで元論文を見て確認したい）。<br><br>また、後処理としてルールマッチで抽出する必要あがるが、モデルのAlignmentが低いと成功率が下がるとのことである。<br>個人的には、スコアをテキストとして出力する形式の場合生成したテキストからトークンを抽出する方式ではなく、G-Eval のようにスコアと関連するトークン（e.g. 1,2,3,4,5）とその尤度の加重平均をとるような手法が後処理が楽で良いと感じる。<br><br>ICLR2025の査読にLLM-as-a-Judgeが導入されるというのは知らなかったので、非常に興味深い。</p><p>LLMが好む回答のバイアス（冗長性、位置など）別に各LLMのメタ評価をしている模様。また、性能を改善するための施策を実施した場合にどの程度メタ評価で性能が向上するかも評価している。特に説明を出力させても効果は薄く、また、複数LLMによる投票にしても位置バイアスの軽減に寄与する程度の改善しかなかったとのこと。また、複数ラウンドでの結果の要約をさせる方法がバイアスの低減に幅広く寄与したとのこと。</p><p>うーん、バイアスを低減するうまい方法がまだ無さそうなのがなかなか厳しい感じがする。<br>そもそも根本的に人間に人手評価をお願いする時もめちゃめちゃマニュアルとかガイドラインを作り込んだりした上でもagreementが高くなかったりするので、やはり難しそうである。<br><br>ただ、MTBenchでは人間の評価結果とLLMの評価結果の相関（agreementだっけか…？）が高かったことなどが報告されているし、LLMあるあるのタスクごとに得意不得意があります、という話な気もする。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Netflixの推薦＆検索システム最前線 - QCon San Francisco 2024現地レポート, UZABASE, 2024.12</title>
+<original-paper-blog-link>https://tech.uzabase.com/entry/2024/12/20/144131</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1605</repo-issue-link>
+<tags>RecommenderSystems, Blog, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2024-12-20</repo-issue-date>
+<issue-body>https://tech.uzabase.com/entry/2024/12/20/144131</issue-body>
+<maintainer-comment-text><p>インフラ構成の部分が面白い。モデルの構築方法などは、まず軽量なモデルやヒューリスティックで候補を絞り、その後計算量が重いモデルでリランキングする典型的な手法。<br><br>Netflixのインフラによって、以下のようなことを<br>>1～2秒前の最新データを参照でき、推薦生成に反映させることが可能です<br><br>latencyを40msに抑えつつ実現しているとのこと。直前のアクションをinferenceで考慮できるのは相当性能に影響あると思われる。<br><br>また、検索と推薦をマルチタスク学習しパラメータをシェアすることで両者の性能を挙げているのが興味深い。<br>モデル自体は近年のLLMを用いた推薦では無く、Deepなニューラルネットに基づくモデルを採用<br>（まあLLMなんかにリアルタイムで推論させたらlatency 40ms未満という制約はだいぶきついと思われるしそもそも性能向上するかもわからん。予測性能とかよりも、推薦理由の生成などの他タスクも同時に実施できるのは強みではあるとは思うが…）。</p><p>まあしかし、すごい目新しい情報があったかと言われると基本的な内容に留まっているのでそうでもないという感想ではある。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
