@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 mins</span>
   </div></header>
 </div>
     </div>
@@ -1067,6 +1067,27 @@ My Issue
 
 </p></span><br><br>
 </article>
+<article class="paper-entry">
+<h3 id="large-concept-1611" class="title-link">[Paper Note] Large Concept Models: Language Modeling in a Sentence Representation Space, LCM team+, arXiv'24, 2024.12</h3><br><a href="https://arxiv.org/abs/2412.08821" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1611" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Sentence.html" target="_blank" rel="noopener noreferrer">#Sentence</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Tokenizer.html" target="_blank" rel="noopener noreferrer">#Tokenizer</a>
+<a class="button" href="Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">#Surface-level Notes</a>
+<span class="issue_date">Issue Date: 2024-12-24</span>
+<span class="snippet"><span>GPT Summary</span>- 大規模言語モデル（LLMs）の限界を克服するために、概念を用いた新しいアーキテクチャ「Large Concept Model」を提案。これは、テキストと音声の両方に対応し、200言語をサポートする文埋め込み空間SONARを活用。自己回帰的な文予測に基づき、複数のアプローチ（MSE回帰や拡散ベース生成）で実験し、パラメータを増加させたモデルでも印象的なゼロショット一般化性能を示す。訓練コードは公開されている。</span>
+<span class="snippet"><span>Comment</span><p>まだ全く読めていないが、従来のLLMはnent-token-predictionで学習をしており、transformers decoderの内部状態で何らかの抽象的な概念はとらえているものの、次トークン予測に前回生成したトークンをinputするのが必須である以上「トークンで考える」みたいな挙動をある程度はしてしまっており、人間はそんなことしないですよね？みたいな話だと思われる。<br>人間はもっと抽象的なコンセプトレベルで物事を考えることができるので、それにより近づけるために、conceptをsentenceとしてみなして、next-concept-predictionでモデルを学習したらゼロショットの汎化性能上がりました、みたいな話のように見える。ただし、評価をしているのはマルチリンガルな文書要約タスクのみに見える。<br><br>追記: コンセプトが言語非依存だとすると、コンセプト間の関係性を学習するLCMが、マルチリンガルでトークンレベルの学習しかしない従来LLMを上回るのも納得いく気はする。なぜなら、従来LLMよりも言語（トークン）への依存が緩和されていると思われるので、言語間を跨いだ知識の転移が起きやすいと考えられるからである。<br><br><img src="https://github.com/user-attachments/assets/2f3dc98d-ef27-44b8-be1c-0f27a05f37e8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/effc21ba-22db-42c0-bc33-1d43f9e0200a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Base-LCMを見ると、文の埋め込みのground truthと生成された文の埋め込みの差を最小化する（Mean Squared Error） ようなlossになっている。つまり、トークンレベルではなく、より抽象的な概念を直接学習するような設計になっているためここが従来のLLMと異なる。<br><br><img src="https://github.com/user-attachments/assets/01da9a76-f5fb-4e79-b3cf-8bddc123379b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>これを実現するために、ground truthとなる文の埋め込みx_nが分からなければいけないが、このために、freezeしたEncoderとDecoderを用意してLCMにconcatしていると思われる。つまり、入力と出力のconceptを解釈する機構は固定して、正解となる文埋め込みを決めてしまう。そして、LCMはinputされたconceptを別のconceptに変換するような機構となっており、その変換の関係性を学習している。なるほど、なんとなく気持ちはわかった。</p><p>日本語を含むいくつかの言語でゼロショット性能が低下しているのが興味深い。日本語特有の概念とか、特定の言語固有の概念は欠落する可能性が示唆される。</p></span><br><br>
+</article>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -1115,24 +1136,24 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/AdaptiveLearning.html" title="AdaptiveLearningに関する論文・技術記事メモの一覧">AdaptiveLearningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/KnowledgeTracing.html" title="KnowledgeTracingに関する論文・技術記事メモの一覧">KnowledgeTracingに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/JMLR.html" title="JMLRに関する論文・技術記事メモの一覧">JMLRに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/KnowledgeTracing.html" title="KnowledgeTracingに関する論文・技術記事メモの一覧">KnowledgeTracingに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Visual-Words.html"
-            title="Visual Wordsに関する論文・技術記事メモの一覧">
-            Visual Wordsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Mindset.html"
+            title="Mindsetに関する論文・技術記事メモの一覧">
+            Mindsetに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CompoundAISystemsOptimization.html"
-            title="CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧">
-            CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ObjectRecognition.html"
+            title="ObjectRecognitionに関する論文・技術記事メモの一覧">
+            ObjectRecognitionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1140,9 +1161,9 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/GPU-Platform.html"
-            title="GPU-Platformに関する論文・技術記事メモの一覧">
-            GPU-Platformに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AffectDetection.html"
+            title="AffectDetectionに関する論文・技術記事メモの一覧">
+            AffectDetectionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -1150,12 +1171,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RolePlaying.html"
-            title="RolePlayingに関する論文・技術記事メモの一覧">
-            RolePlayingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PointWise.html"
+            title="PointWiseに関する論文・技術記事メモの一覧">
+            PointWiseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>

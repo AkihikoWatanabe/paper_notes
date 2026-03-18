@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-03-12T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-03-17T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="PostTrainingに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-03-12T00:00:00+00:00","datePublished":"2026-03-12T00:00:00+00:00","description":"PostTraining [Paper Note] $\\textbf{Re}^{2}$: Unlocking LLM Reasoning via Reinforcement Learning with Re-solving, Pinzheng Wang+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #Initial Impression Notes Issue Date: 2026-03-12 GPT Summary- Re^2は、強化学習の新手法であり、LLMsが効率的な推論経路を放棄し、必要に応じて再解法を選択することを学習。これにより、従来のRLVRよりも推論性能が30%以上向上し、サンプル数の増加に伴いテスト時の性能も改善。初期の思考過程の質に依存せず、解答の質を高めることが可能となる。 Comment元ポスト:","headline":"PostTrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-03-17T00:00:00+00:00","datePublished":"2026-03-17T00:00:00+00:00","description":"PostTraining [Paper Note] $\\textbf{Re}^{2}$: Unlocking LLM Reasoning via Reinforcement Learning with Re-solving, Pinzheng Wang+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #Initial Impression Notes Issue Date: 2026-03-12 GPT Summary- Re^2は、強化学習の新手法であり、LLMsが効率的な推論経路を放棄し、必要に応じて再解法を選択することを学習。これにより、従来のRLVRよりも推論性能が30%以上向上し、サンプル数の増加に伴いテスト時の性能も改善。初期の思考過程の質に依存せず、解答の質を高めることが可能となる。 Comment元ポスト:","headline":"PostTrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/PostTraining.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-03-12T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 12, 2026
+    <time class="dt-published" datetime="2026-03-17T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 17, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 hours 44 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 hours 52 mins</span>
   </div></header>
 </div>
     </div>
@@ -9060,6 +9060,44 @@ My Issue
 <span class="snippet"><span>Comment</span><p>Chunking無しでRAGを動作させられるのは非常に魅力的。<br><img src="https://github.com/user-attachments/assets/8841930a-3099-46c8-aae7-50f52473fbb1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>一貫してかなり性能が向上しているように見える<br><img src="https://github.com/user-attachments/assets/6eae7811-090a-4f84-aa8d-6d74a55e8427" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>提案手法の概要。InputとOutput全体の実例がほとんど掲載されていないので憶測を含みます。<br><br>気持ちとしては、ソーステキストが与えられたときに、Questionの回答をsupportするようなソース中のpassageの情報を活用して回答するために、重要なsentenceのprefixを回答生成前に生成させる（重要なsentenceの識別子の役割を果たす）ことで、（識別子によって重要な情報によって条件づけられて回答生成ができるやうになるのて）それら情報をより考慮しながらモデルが回答を生成できるようになる、といった話だと思われる。<br><br>Table2のようなテンプレートを用いて、ソーステキストと質問文でモデルを条件付けて、回答をsupportするsentenceのprefixを生成する。生成するprefixは各sentenceのユニークなprefixのtoken log probabilityの平均値によって決まる（トークンの対数尤度が高かったらモデルが暗黙的にその情報はQuestionにとって重要だと判断しているとみなせる）。SkipDecodingの説を読んだが、ぱっと見よく分からない。おそらく[eos]を出力させてprefix間のデリミタとして機能させたいのだと思うが、[eos]の最適なpositionはどこなのか？みたいな数式が出てきており、これがデコーディングの時にどういった役割を果たすのかがよくわからない。<br><br>また、モデルはQAと重要なPassageの三つ組のデータで提案手法によるデコーディングを適用してSFTしたものを利用する。<br><br><img src="https://github.com/user-attachments/assets/fa4e575e-c6cb-452a-be3e-0d9bacb3cacb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/1985754f-c21f-4904-be50-6f4f7eef56d1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="does-rlhf-1650" class="title-link">Does RLHF Scale? Exploring the Impacts From Data, Model, and Method, Zhenyu Hou+, arXiv'24</h3><br><a href="https://arxiv.org/abs/2412.06000" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1650" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Analysis.html" target="_blank" rel="noopener noreferrer">#Analysis</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="RLHF.html" target="_blank" rel="noopener noreferrer">#RLHF</a>
+<a class="button" href="Scalability.html" target="_blank" rel="noopener noreferrer">#Scalability</a>
+<span class="issue_date">Issue Date: 2025-01-03</span>
+<span class="snippet"><span>GPT Summary</span>- 本研究では、LLMsにおけるRLHFのスケーリング特性を分析し、モデルサイズ、データ構成、推論予算がパフォーマンスに与える影響を調査。データの多様性と量の増加が報酬モデルの性能向上に寄与する一方、ポリシートレーニングでは応答サンプル数の増加が初期パフォーマンスを向上させるが、すぐに頭打ちになることが判明。RLHFは事前トレーニングより効率的にスケールせず、計算リソースの収益逓減が観察された。計算制限内でのRLHFパフォーマンス最適化戦略も提案。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/1868299930600628451?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=FIXk0RP960" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=FIXk0RP960</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="language-models-1516" class="title-link">Language Models are Hidden Reasoners: Unlocking Latent Reasoning  Capabilities via Self-Rewarding, Haolin Chen+, arXiv'24</h3><br><a href="http://arxiv.org/abs/2411.04282" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -9373,7 +9411,7 @@ My Issue
 </div>
 
 
-</p><p>LoRAの場合については<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1640" target="_blank" rel="noopener noreferrer">LoRA Learns Less and Forgets Less, Dan Biderman+, TMLR'24</a>
+</p><p>LoRAの場合については<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1640" target="_blank" rel="noopener noreferrer">[Paper Note] LoRA Learns Less and Forgets Less, Dan Biderman+, TMLR'24, 2024.05</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1475" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond Full Fine-tuning: Harnessing the Power of LoRA for Multi-Task Instruction Tuning, Xin+, LREC-COLING'24</a>
 <br><br>も参照のこと。</p></span><br><br>
 </article>
@@ -10271,6 +10309,67 @@ My Issue
 <span class="issue_date">Issue Date: 2025-05-12</span>
 <span class="snippet"><span>GPT Summary</span>- 転移学習はNLPにおいて強力な技術であり、本論文ではテキストをテキストに変換する統一フレームワークを提案。事前学習の目的やアーキテクチャを比較し、最先端の結果を達成。データセットやモデル、コードを公開し、今後の研究を促進する。</span>
 <span class="snippet"><span>Comment</span><p>T5もメモっていなかったので今更ながら追加。全てのNLPタスクをテキスト系列からテキスト系列へ変換するタスクとみなし、Encoder-DecoderのTransformerを大規模コーパスを用いて事前学習をし、downstreamタスクにfinetuningを通じて転移する。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="from-reinforce-4918" class="title-link">From REINFORCE to Dr. GRPO, Qingfeng's blog, 2025.03</h3><br><a href="https://lancelqf.github.io/note/llm_post_training/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4918" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<span class="issue_date">Issue Date: 2026-03-17</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/srush_nlp/status/2033571579234324582?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="state-of-4917" class="title-link">State of RL for reasoning LLMs, A. Weers, 2026.03</h3><br><a href="https://aweers.de/blog/2026/rl-for-llms/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4917" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Survey.html" target="_blank" rel="noopener noreferrer">#Survey</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<span class="issue_date">Issue Date: 2026-03-17</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/srush_nlp/status/2033556021893902778?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="ppo-→-4789" class="title-link">PPO → DPO → GRPO→ Rubrics, PROF. TOM YEH, 2026.03</h3><br><a href="https://www.byhand.ai/p/recording-ppo-dpo-grpo-rubrics" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12366,6 +12465,41 @@ My Issue
 </p><p>- DPOの概要やRLHFと比較した利点<br>- ルールベース、あるいはLLM as a Judgeを用いたOn-policy preference pair（現在のSFTしたモデルの出力から生成したpreference data）の作り方とその利点（現在のモデルのoutput distributionを反映しているので学習が効率化される）<br>- 環境構築方法<br>- DPOTrainer/TRLParserの使い方/DPODatasetの作り方<br>- DPOのハイパーパラメータβの意味合い<br>- DPOではSFTと比べて10-100x小さい学習率を使う必要があること<br>- Evaluation Harnessを用いた評価方法<br>- TGIを用いたモデルのデプロイとテスト<br><br>などが丁寧なサンプルコードと注釈、reference付きで説明されている。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="to-fine-tune-1635" class="title-link">To fine-tune or not to fine-tune, Meta, 2024.08</h3><br><a href="https://ai.meta.com/blog/when-to-fine-tune-llms-vs-other-techniques/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1635" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Supervised-FineTuning-(SFT).html" target="_blank" rel="noopener noreferrer">#Supervised-FineTuning (SFT)</a>
+<a class="button" href="RAG(RetrievalAugmentedGeneration).html" target="_blank" rel="noopener noreferrer">#RAG(RetrievalAugmentedGeneration)</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="PEFT(Adaptor-LoRA).html" target="_blank" rel="noopener noreferrer">#PEFT(Adaptor/LoRA)</a>
+<a class="button" href="Catastrophic-Forgetting.html" target="_blank" rel="noopener noreferrer">#Catastrophic Forgetting</a>
+<a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<span class="issue_date">Issue Date: 2025-01-02</span>
+<span class="snippet"><span>Comment</span><p>LLMをSFTする際の注意点やユースケースについて記述されている。<br><br>- full parameterのファインチューニングやPEFT手法のピークGPUメモリ<br>- full parameterのファインチューニングではcatastrophic forgettingに気をつける必要があること<br>- Finetuningが有用なユースケースとして以下が挙げられている<br>  - トーン、スタイル、フォーマットのカスタマイザーション<br>  - prompt engineeringやICLで達成するには困難なAccuracyの向上やエッジケースへの対応<br>  - ドメイン適応<br>  - より大きいモデルを蒸留することによるコスト削減<br>  - 新たなタスクへの適応や能力の獲得 </p><p>また、RAGとFinetuningどちらを選択すべきかに関する話題も記述されている（が、多くの場合はハイブリッドアプローチがベストだ、といった話も書いてある）。</p><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gyakuse/status/1874357127248306200?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="llmを数学タスクにアラインする手法の系譜---1617" class="title-link">LLMを数学タスクにアラインする手法の系譜 - GPT-3からQwen2.5まで, bilzard, 2024.12</h3><br><a href="https://zenn.dev/bilzard/articles/survey-self-improve-llm" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -12386,13 +12520,39 @@ My Issue
 <a class="button" href="Chain-of-Thought.html" target="_blank" rel="noopener noreferrer">#Chain-of-Thought</a>
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <a class="button" href="Mathematics.html" target="_blank" rel="noopener noreferrer">#Mathematics</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
 <span class="issue_date">Issue Date: 2024-12-27</span>
-<span class="snippet"><span>Comment</span><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1618" target="_blank" rel="noopener noreferrer">Training Verifiers to Solve Math Word Problems, Karl Cobbe+, arXiv'21</a>
+<span class="snippet"><span>Comment</span><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1618" target="_blank" rel="noopener noreferrer">[Paper Note] Training Verifiers to Solve Math Word Problems, Karl Cobbe+, arXiv'21, 2021.10</a>
 <br><br>において、数学においてモデルのパラメータ数のスケーリングによって性能改善が見込める学習手法として、モデルとは別にVerifierを学習し、モデルが出力した候補の中から良いものを選択できるようにする、という話の気持ちが最初よくわからなかったのだが、後半のなぜsample&selectがうまくいくのか？節を読んでなんとなく気持ちが理解できた。SFTを進めるとモデルが出力する解放の多様性が減っていくというのは、興味深かった。<br><br>しかし、特定の学習データで学習した時に、全く異なるUnseenなデータに対しても解法は減っていくのだろうか？という点が気になった。あとは、学習データの多様性をめちゃめちゃ増やしたらどうなるのか？というのも気になる。特定のデータセットを完全に攻略できるような解法を出力しやすくなると、他のデータセットの性能が悪くなる可能性がある気がしており、そうするとそもそもの1shotの性能自体も改善していかなくなりそうだが、その辺はどういう設定で実験されているのだろうか。<br><br>たとえば、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1475" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond Full Fine-tuning: Harnessing the Power of LoRA for Multi-Task Instruction Tuning, Xin+, LREC-COLING'24</a>
 <br><br>などでは、<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1474" target="_blank" rel="noopener noreferrer">[Paper Note] Super-NaturalInstructions: Generalization via Declarative Instructions on 1600+ NLP Tasks, Yizhong Wang+, EMNLP'22, 2022.04</a>
-<br><br>のような1600を超えるようなNLPタスクのデータでLoRAによりSFTすると、LoRAのパラメータ数を非常に大きくするとUnseenタスクに対する性能がfull-parameter tuningするよりも向上することが示されている。この例は数学に特化した例ではないが、SFTによって解法の多様性が減ることによって学習データに過剰適合して汎化性能が低下する、というのであれば、この論文のことを鑑みると「学習データにoverfittingした結果他のデータセットで性能が低下してしまう程度の多様性の学習データしか使えていないのでは」と感じてしまうのだが、その辺はどうなんだろうか。元論文を読んで確認したい。<br>とても勉強になった。</p><p>記事中で紹介されている<br>> LLMを使って複数解法の候補をサンプリングし、その中から最適な1つを選択する<br><br>のルーツは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1618" target="_blank" rel="noopener noreferrer">Training Verifiers to Solve Math Word Problems, Karl Cobbe+, arXiv'21</a>
- とのことなので是非読みたい。<br><br>この辺はSelf-Consistency <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
- あたりが最初なのかと思っていた。</p></span><br><br>
+<br><br>のような1600を超えるようなNLPタスクのデータでLoRAによりSFTすると、LoRAのパラメータ数を非常に大きくするとUnseenタスクに対する性能がfull-parameter tuningするよりも向上することが示されている。この例は数学に特化した例ではないが、SFTによって解法の多様性が減ることによって学習データに過剰適合して汎化性能が低下する、というのであれば、この論文のことを鑑みると「学習データにoverfittingした結果他のデータセットで性能が低下してしまう程度の多様性の学習データしか使えていないのでは」と感じてしまうのだが、その辺はどうなんだろうか。元論文を読んで確認したい。<br>とても勉強になった。</p><p>記事中で紹介されている<br>> LLMを使って複数解法の候補をサンプリングし、その中から最適な1つを選択する<br><br>のルーツは<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1618" target="_blank" rel="noopener noreferrer">[Paper Note] Training Verifiers to Solve Math Word Problems, Karl Cobbe+, arXiv'21, 2021.10</a>
+<br><br>とのことなので是非読みたい。<br><br>この辺はSelf-Consistency<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/558" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Improves Chain of Thought Reasoning in Language Models, Xuezhi Wang+, ICLR'23, 2022.03</a>
+<br><br>あたりが最初なのかと思っていた。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="rlhf_dpo-小話-1602" class="title-link">RLHF_DPO 小話, 和地瞭良_ Akifumi Wachi, 2024.04</h3><br><a href="https://x.com/akifumi_wachi/status/1781856093108605082?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1602" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="MachineLearning.html" target="_blank" rel="noopener noreferrer">#MachineLearning</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
+<a class="button" href="RLHF.html" target="_blank" rel="noopener noreferrer">#RLHF</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="DPO.html" target="_blank" rel="noopener noreferrer">#DPO</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
+<span class="issue_date">Issue Date: 2024-12-18</span>
+<span class="snippet"><span>Comment</span><p>めちゃめちゃ勉強になる…</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="smollm2-1538" class="title-link">SmolLM2, 2024.11</h3><br><a href="https://huggingface.co/datasets/HuggingFaceTB/smoltalk" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -12768,47 +12928,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Post.html" title="Postに関する論文・技術記事メモの一覧">Postに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Pretraining.html" title="Pretrainingに関する論文・技術記事メモの一覧">Pretrainingに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/OpenWeight.html" title="OpenWeightに関する論文・技術記事メモの一覧">OpenWeightに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Pretraining.html" title="Pretrainingに関する論文・技術記事メモの一覧">Pretrainingに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/LowPrecision.html"
-            title="LowPrecisionに関する論文・技術記事メモの一覧">
-            LowPrecisionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/MultitaskLearning.html"
+            title="MultitaskLearningに関する論文・技術記事メモの一覧">
+            MultitaskLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SpeciarizedBrainNetworks.html"
-            title="SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧">
-            SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PhysicalConstraints.html"
+            title="PhysicalConstraintsに関する論文・技術記事メモの一覧">
+            PhysicalConstraintsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Grounding.html"
-            title="Groundingに関する論文・技術記事メモの一覧">
-            Groundingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PEFT(Adaptor-LoRA).html"
+            title="PEFT(Adaptor/LoRA)に関する論文・技術記事メモの一覧">
+            PEFT(Adaptor/LoRA)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 66</span> 
+  <span class="post-badge badge-new">📝 66</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/QuestionGeneration.html"
-            title="QuestionGenerationに関する論文・技術記事メモの一覧">
-            QuestionGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Reference-free.html"
+            title="Reference-freeに関する論文・技術記事メモの一覧">
+            Reference-freeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 23</span> 
+  <span class="post-badge badge-new">📝 23</span>
 </span>
 </a>
         </li></ul>
