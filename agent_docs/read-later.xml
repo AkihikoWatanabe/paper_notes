@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-03-17">
+<paper-list last-updated="2026-03-18">
+<paper-entry>
+<title>[Paper Note] FlashSampling: Fast and Memory-Efficient Exact Sampling, Tomas Ruiz+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.15854</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4920</repo-issue-link>
+<tags>action_wanted, SoftwareEngineering, read-later</tags>
+<repo-issue-date>2026-03-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.15854
+# Authors
+  - Tomas Ruiz
+  - Zhen Qin
+  - Yifan Zhang
+  - Xuyang Shen
+  - Yiran Zhong
+  - Mengdi Wang
+# Abstract
+  - Sampling from a categorical distribution is mathematically simple, but in large-vocabulary decoding, it often triggers extra memory traffic and extra kernels after the LM head. We present FlashSampling, an exact sampling primitive that fuses sampling into the LM-head matmul and never materializes the logits tensor in HBM. The method is simple: compute logits tile-by-tile on chip, add Gumbel noise, keep only one maximizer per row and per vocabulary tile, and finish with a small reduction over tiles. The fused tiled kernel is exact because $\argmax$ decomposes over a partition; grouped variants for online and tensor-parallel settings are exact by hierarchical factorization of the categorical distribution. Across H100, H200, B200, and B300 GPUs, FlashSampling speeds up kernel-level decode workloads, and in end-to-end vLLM experiments, it reduces time per output token by up to $19%$ on the models we test. These results show that exact sampling, with no approximation, can be integrated into the matmul itself, turning a bandwidth-bound postprocessing step into a lightweight epilogue. Project Page: https://github.com/FlashSampling/FlashSampling.
+# Translation (by gpt-5-nano)
+- カテゴリ分布からのサンプリングは数学的には単純だが、大規模語彙のデコードでは、LMヘッドの直後に余分なメモリ転送や追加のカーネルが発生することが多い。私たちは FlashSampling を提案する。これは厳密なサンプリングプリミティブで、サンプリングを LM ヘッドの行列積に統合し、HBM 上でロジットテンソルを一度も実体化しない。手法は単純である：チップ上でロジットをタイルごとに計算し、ガンベルノイズを加え、各行および語彙タイルごとに最大値をとる要素を1つだけ残し、タイル間で小さなリダクションを行って終了する。統合されたタイル化カーネルは、argmax が分割に対して分解されるため厳密である。オンラインおよびテンソル並列設定のためのグループ化バリアントは、カテゴリ分布の階層的因数分解によって厳密である。H100、H200、B200、および B300 の GPU にまたがって、FlashSampling はカーネルレベルのデコード処理を高速化する。エンドツーエンドの vLLM 実験では、私たちがテストしたモデルで、出力トークンあたりの時間を最大で 19% 削減した。これらの結果は、近似なしの厳密なサンプリングをマトリクス積自体に組み込むことができ、帯域幅依存のポスト処理ステップを軽量なエピローグに変えることができることを示している。プロジェクトページ: https://github.com/FlashSampling/FlashSampling.
+# Summary (by gpt-4o-mini)
+- FlashSamplingは、大規模語彙のデコードを効率化するために、サンプリングをLMヘッドの行列積に統合する手法を提案。ロジットテンソルを一度も実体化せず、チップ上でロジットをタイルごとに計算し、ガンベルノイズを加えることで最大値を取得。これにより、出力トークンあたりの時間を最大19%削減し、近似なしの厳密なサンプリングを実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cedric_chee/status/2033627573071253974?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Meta-Reinforcement Learning with Self-Reflection for Agentic Search, Teng Xiao+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.11327</original-paper-blog-link>
@@ -178,7 +212,7 @@
 <title>[Paper Note] Flash-KMeans: Fast and Memory-Efficient Exact K-Means, Shuo Yang+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.09229</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4890</repo-issue-link>
-<tags>action_wanted, read-later</tags>
+<tags>EfficiencyImprovement, MachineLearning, action_wanted, read-later, Selected Papers/Blogs, Clustering-based</tags>
 <repo-issue-date>2026-03-14</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2603.09229
@@ -199,9 +233,9 @@
 # Abstract
   - $k$-means has historically been positioned primarily as an offline processing primitive, typically used for dataset organization or embedding preprocessing rather than as a first-class component in online systems. In this work, we revisit this classical algorithm under the lens of modern AI system design and enable $k$-means as an online primitive. We point out that existing GPU implementations of $k$-means remain fundamentally bottlenecked by low-level system constraints rather than theoretical algorithmic complexity. Specifically, the assignment stage suffers from a severe IO bottleneck due to the massive explicit materialization of the $N \times K$ distance matrix in High Bandwidth Memory (HBM). Simultaneously, the centroid update stage is heavily penalized by hardware-level atomic write contention caused by irregular, scatter-style token aggregations. To bridge this performance gap, we propose flash-kmeans, an IO-aware and contention-free $k$-means implementation for modern GPU workloads. Flash-kmeans introduces two core kernel-level innovations: (1) FlashAssign, which fuses distance computation with an online argmin to completely bypass intermediate memory materialization; (2) sort-inverse update, which explicitly constructs an inverse mapping to transform high-contention atomic scatters into high-bandwidth, segment-level localized reductions. Furthermore, we integrate algorithm-system co-designs, including chunked-stream overlap and cache-aware compile heuristics, to ensure practical deployability. Extensive evaluations on NVIDIA H200 GPUs demonstrate that flash-kmeans achieves up to 17.9$\times$ end-to-end speedup over best baselines, while outperforming industry-standard libraries like cuML and FAISS by 33$\times$ and over 200$\times$, respectively.
 # Translation (by gpt-5-nano)
-- $k$-meansは歴史的にオフライン処理プリミティブとして位置づけられ、通常はデータセットの整理や埋め込み前処理に用いられるのみで、オンラインシステムの第一級コンポーネントとして扱われてきたわけではない。本研究では、現代のAIシステム設計の観点からこの古典的アルゴリズムを再検討し、$k$-meansをオンラインプリミティブとして実現する。既存のGPU上の$k$-means実装は、理論的アルゴリズムの複雑さよりも、低レベルのシステム制約によって本質的にボトルネックになっている点を指摘する。具体的には、割り当て段階が、HBM（High Bandwidth Memory）における$N \times K$距離行列の巨大な明示的材料化によって生じる深刻なIOボトルネックに悩まされている。同時に、セントロイド更新段階は、不規則なスキャッター型のトークン集約によって生じるハードウェアレベルのアトミック書込み競合により大きなペナルティを受けている。この性能ギャップを埋めるべく、現代のGPUワークロード向けのIOを意識し競合のない$k$-means実装であるflash-kmeansを提案する。Flash-kmeansは、2つのコアとなるカーネルレベルの革新を導入する：(1) FlashAssignは距離計算とオンラインのargminを結合して中間メモリの材料化を完全に回避する；(2) sort-inverse updateは逆写像を明示的に構築して高い競合度を持つアトミックスキャターを高帯域幅・セグメントレベルの局所的な還元へと変換する。さらに、実用的な展開性を確保するため、チャンク化ストリームのオーバーラップやキャッシュを意識したコンパイルヒューリスティクスといったアルゴリズムとシステムの共設計を統合する。NVIDIA H200 GPUでの広範な評価により、flash-kmeansは最良のベースラインに対してエンドツーエンドの速度で最大17.9倍の性能向上を達成し、cuMLやFAISSといった業界標準ライブラリを、それぞれ約33倍および200倍超で上回ることを示した。
+- k-means は歴史的に主にオフライン処理のプリミティブとして位置づけられており、通常はデータセットの整理や埋め込み前処理に用いられるにとどまり、オンラインシステムの第一級コンポーネントとして扱われてきたわけではない。本研究では、この古典的アルゴリズムを現代のAIシステム設計の視点から再検討し、k-means をオンラインプリミティブとして有効化する。既存の k-means の GPU 実装は、理論的アルゴリズムの複雑さよりも低レベルのシステム制約によって根本的にボトルネックが生じている点を指摘する。具体的には、割り当て段階が、N×K の距離行列を High Bandwidth Memory (HBM) に大量に明示的に材料化することによる深刻な IO ボトルネックに苦しむ。同時に、セントロイド更新段階は、不規則なスキャッター状のトークン集約が原因のハードウェアレベルの原子書き競合により過度にペナルティを受ける。これらの性能ギャップを埋めるために、現代の GPU ワークロード向けの IO 応答性が高く競合のない k-means 実装である flash-kmeans を提案する。Flash-kmeans は、2 つのコアカーネルレベルの革新を導入する：（1）FlashAssign は距離計算をオンラインの argmin と結合して中間メモリの材料化を完全に回避する；（2）sort-inverse update は明示的に逆写像を構築して高競合の原子スキャッタを高帯域幅・セグメントレベルの局所化された還元へと変換する。さらに、実用的な展開性を保証するために、チャンクドストリームのオーバーラップやキャッシュ意識のコンパイルヒューリスティクスを含むアルゴリズムとシステムの共設計を統合する。NVIDIA H200 GPU 上での広範な評価により、flash-kmeans はエンドツーエンドで最大 17.9 倍の速度向上を達成し、cuML および FAISS のような業界標準ライブラリをそれぞれ 33 倍および 200 倍以上上回ることを示した。
 # Summary (by gpt-4o-mini)
-- $k$-meansをオンラインプリミティブとして再設計し、GPU上での性能ギャップを解消するflash-kmeansを提案。距離計算を中間メモリなしで実行し、競争のないデータ更新を実現。NVIDIA H200 GPUで最大17.9倍の性能向上を示し、cuMLやFAISSを大幅に上回る結果を得た。</issue-body>
+- k-meansアルゴリズムをオンライン処理に最適化し、古典的な実装のボトルネックを解消するためにflash-kmeansを提案。これにより、距離計算と中間メモリの材料化を回避し、低競合な更新手法を導入。広範な評価において、従来の手法より最大17.9倍の速度向上を達成。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
@@ -222,7 +256,17 @@
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>著者ポスト:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/haochengxiucb/status/2033693755791052804?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>デモ動画が含まれており驚異的な速さ</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -889,7 +933,17 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 </div>
 {% endraw %}
 
-</p><p>実際のAgenticなタスクのユースケースに沿ったmemoryの評価方法を提案している研究のようで、非常に重要な研究に見える。実際はチャットベースのやり取りではなく、エージェントと環境が相互作用しながら生成されるtrajectoryで構成され、指示はagentによって生成された客観的な目的を含んでおり、trajectoryには多くのnoisyな結果やsymbolが含まれる。また、agentが現在のstateから環境に作用した結果が返ってくるというチャットベースの言語的なフロートは異なり、stateに基づいた因果関係が存在するという差がある。<br><br>ベンチマークの結果ではGPT-5.2が優れていそうに見えるが、GPTの場合は最新のGPT-5.2で評価されているのに、Claudeに関してはClaude Haiku 3.5で評価されているのは気になる。Claude Opus 4.6やGemini-3で評価したらどの程度の性能になるのだろうか。<br><img src="https://github.com/user-attachments/assets/2ad50906-5d6d-4e47-bce2-986c2bb9eed5" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</p><p>実際のAgenticなタスクのユースケースに沿ったmemoryの評価方法を提案している研究のようで、非常に重要な研究に見える。実際はチャットベースのやり取りではなく、エージェントと環境が相互作用しながら生成されるtrajectoryで構成され、指示はagentによって生成された客観的な目的を含んでおり、trajectoryには多くのnoisyな結果やsymbolが含まれる。また、agentが現在のstateから環境に作用した結果が返ってくるというチャットベースの言語的なフロートは異なり、stateに基づいた因果関係が存在するという差がある。<br><br>ベンチマークの結果ではGPT-5.2が優れていそうに見えるが、GPTの場合は最新のGPT-5.2で評価されているのに、Claudeに関してはClaude Haiku 3.5で評価されているのは気になる。Claude Opus 4.6やGemini-3で評価したらどの程度の性能になるのだろうか。<br><img src="https://github.com/user-attachments/assets/2ad50906-5d6d-4e47-bce2-986c2bb9eed5" /" alt="image" loading="lazy" width="550" height="400"/></p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yujiezhao455906/status/2034017041930457568?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -6358,7 +6412,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Rewriting Pre-Training Data Boosts LLM Performance in Math and Code, Kazuki Fujii+, ICLR'26, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.02881</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1937</repo-issue-link>
-<tags>NLP, Dataset, LanguageModel, Coding, Mathematics, ICLR, read-later</tags>
+<tags>NLP, Dataset, LanguageModel, Coding, Mathematics, ICLR, read-later, Diversity</tags>
 <repo-issue-date>2025-05-08</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.02881
@@ -6762,7 +6816,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Harnessing Diversity for Important Data Selection in Pretraining Large Language Models, Chi Zhang+, ICLR'25 Spotlight, 2024.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2409.16986</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4257</repo-issue-link>
-<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, ICLR, read-later, Diversity, Selected Papers/Blogs, DataMixture, Generalization, DownstreamTasks, Adaptive, Multi-Armed Bandit</tags>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, ICLR, read-later, Diversity, Selected Papers/Blogs, DataMixture, Generalization, One-Line Notes, DownstreamTasks, Adaptive, Multi-Armed Bandit</tags>
 <repo-issue-date>2026-01-21</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2409.16986
@@ -6792,7 +6846,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <a href="https://openreview.net/forum?id=bMC1t7eLRc" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=bMC1t7eLRc</a>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>あるモデルに対して、特定のデータセットD_rの性能を最大化するようにモデルを学習したいとする。このときに、全ての学習データD_cからD_rが学習の結果最大となるようなデータセットD_bを求めたい、という問題設定である。Influence Scoreを算出するモデルを活用する。<br><br>学習元データは事前にクラスタリングしておき、top-Kのクラスタを選択。選択したクラスタの中からmini-batchを抽出しinfluence scoreを計算し、influence scoreが一定の閾値を超えた場合にD_bに追加。その後計算したinfluence scoreと当該クラスタが選択された頻度情報に基づいてtop-kのクラスタを選択する際に用いるcluster scoreを更新。というiterationを繰り返しC_bを構築する、という方法に見える。<br><img src="https://github.com/user-attachments/assets/e10534d3-7daa-4de4-b796-c9f62bd09fe8" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -21732,30 +21786,20 @@ Chunlei Xin, Yaojie Lu, Hongyu Lin, Shuheng Zhou, Huijia Zhu, Weiqiang Wang, Zho
 </paper-entry>
 
 <paper-entry>
-<title>FlashSampling, 2026.03</title>
-<original-paper-blog-link>https://github.com/FlashSampling/FlashSampling</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4920</repo-issue-link>
-<tags>SoftwareEngineering, read-later</tags>
-<repo-issue-date>2026-03-17</repo-issue-date>
-<issue-body>https://github.com/FlashSampling/FlashSampling</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cedric_chee/status/2033627573071253974?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
+<title>5 Agent Skill design patterns every ADK developer should know, Google Cloud Tech, X, 2026.03</title>
+<original-paper-blog-link>https://x.com/googlecloudtech/status/2033953579824758855?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4931</repo-issue-link>
+<tags>Post, read-later, AgentSkills</tags>
+<repo-issue-date>2026-03-18</repo-issue-date>
+<issue-body>https://x.com/googlecloudtech/status/2033953579824758855?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
 <title>Attention Residuals, Kimi.ai, 2026.03</title>
 <original-paper-blog-link>https://github.com/MoonshotAI/Attention-Residuals/blob/master/Attention_Residuals.pdf</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4915</repo-issue-link>
-<tags>read-later</tags>
+<tags>read-later, Reference Collection</tags>
 <repo-issue-date>2026-03-17</repo-issue-date>
 <issue-body>https://github.com/MoonshotAI/Attention-Residuals/blob/master/Attention_Residuals.pdf</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -21774,6 +21818,17 @@ Chunlei Xin, Yaojie Lu, Hongyu Lin, Shuheng Zhou, Huijia Zhu, Weiqiang Wang, Zho
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2033488233854620007?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4927" target="_blank" rel="noopener noreferrer">[Paper Note] DeepCrossAttention: Supercharging Transformer Residual Connections, Mike Heddes+, ICML'25, 2025.02</a>
+<br><br>で既に1年以上前に同様の手法が提案されており、テクニカルレポートから引用されていないという指摘がある<br><br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/behrouz_ali/status/2033581834953453853?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
