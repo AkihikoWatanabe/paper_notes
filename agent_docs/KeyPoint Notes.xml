@@ -1769,7 +1769,7 @@
 </div>
 {% endraw %}
 
-</p><p>これは大変興味深い。数学以外のドメインでの評価にも期待したい。</p><p>3節冒頭から3.2節にかけて、SFTとon policy RLのgradientを定式化し、SFT側の数式を整理することで、SFT（のgradient)は以下のようなon policy RLの一つのケースとみなせることを導出している。そしてSFTの汎化性能が低いのは 1/pi_theta によるimportance weightingであると主張し、実験的にそれを証明している。つまり、ポリシーがexpertのgold responseに対して低い尤度を示してしまった場合に、weightか過剰に大きくなり、Rewardの分散が過度に大きくなってしまうことがRLの観点を通してみると問題であり、これを是正することが必要。さらに、分散が大きい報酬の状態で、報酬がsparse(i.e., expertのtrajectoryのexact matchしていないと報酬がzero)であることが、さらに事態を悪化させている。<br><br>> conventional SFT is precisely an on-policy-gradient with the reward as an indicator function of<br>matching the expert trajectory but biased by an importance weighting 1/πθ.<br><br>まだ斜め読みしかしていないので、後でしっかり読みたい</p><p>最近は下記で示されている通りSFTでwarm-upをした後にRLによるpost-trainingをすることで性能が向上することが示されており、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+</p><p>これは大変興味深い。数学以外のドメインでの評価にも期待したい。</p><p>3節冒頭から3.2節にかけて、SFTとon policy RLのgradientを定式化し、SFT側の数式を整理することで、SFT（のgradient)は以下のようなon policy RLの一つのケースとみなせることを導出している。そしてSFTの汎化性能が低いのは 1/pi_theta によるimportance weightingであると主張し、実験的にそれを証明している。つまり、ポリシーがexpertのgold responseに対して低い尤度を示してしまった場合に、weightか過剰に大きくなり、Rewardの分散が過度に大きくなってしまうことがRLの観点を通してみると問題であり、これを是正することが必要。さらに、分散が大きい報酬の状態で、報酬がsparse(i.e., expertのtrajectoryのexact matchしていないと報酬がzero)であることが、さらに事態を悪化させている。<br><br>> conventional SFT is precisely an on-policy-gradient with the reward as an indicator function of<br>matching the expert trajectory but biased by an importance weighting 1/πθ.<br><br>まだ斜め読みしかしていないので、後でしっかり読みたい</p><p>最近は下記で示されている通りSFTでwarm-upをした後にRLによるpost-trainingをすることで性能が向上することが示されており、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
  <br><br>主要なOpenModelでもSFT wamup -> RLの流れが主流である。この知見が、SFTによるwarm upの有効性とどう紐づくだろうか？<br>これを読んだ感じだと、importance weightによって、現在のポリシーが苦手な部分のreasoning capabilityのみを最初に強化し（= warmup）、その上でより広範なサンプルに対するRLが実施されることによって、性能向上と、学習の安定につながっているのではないか？という気がする。</p><p>日本語解説:
 
 {% raw %}
@@ -1784,6 +1784,57 @@
 
 {% raw %}
 <a href="https://openreview.net/forum?id=Lv7PjbcaMi" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Lv7PjbcaMi</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] J1: Incentivizing Thinking in LLM-as-a-Judge via Reinforcement Learning, Chenxi Whitehouse+, ICLR'26, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.10320</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1964</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, LLM-as-a-Judge, ICLR, PostTraining, GRPO, VerifiableRewards, Non-VerifiableRewards, KeyPoint Notes</tags>
+<repo-issue-date>2025-05-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.10320
+# Authors
+  - Chenxi Whitehouse
+  - Tianlu Wang
+  - Ping Yu
+  - Xian Li
+  - Jason Weston
+  - Ilia Kulikov
+  - Swarnadeep Saha
+# Abstract
+  - The progress of AI is bottlenecked by the quality of evaluation, and powerful LLM-as-a-Judge models have proved to be a core solution. Improved judgment ability is enabled by stronger chain-of-thought reasoning, motivating the need to find the best recipes for training such models to think. In this work we introduce J1, a reinforcement learning approach to training such models. Our method converts both verifiable and non-verifiable prompts to judgment tasks with verifiable rewards that incentivize thinking and mitigate judgment bias. In particular, our approach outperforms all other existing 8B or 70B models when trained at those sizes, including models distilled from DeepSeek-R1. J1 also outperforms o1-mini, and even R1 on some benchmarks, despite training a smaller model. We provide analysis and ablations comparing Pairwise-J1 vs Pointwise-J1 models, offline vs online training recipes, reward strategies, seed prompts, and variations in thought length and content. We find that our models make better judgments by learning to outline evaluation criteria, comparing against self-generated reference answers, and re-evaluating the correctness of model responses.
+# Translation (by gpt-4o-mini)
+- AIの進展は評価の質によって制約されており、強力なLLM-as-a-Judgeモデルが核心的な解決策であることが証明されています。判断能力の向上は、より強力なチェーン・オブ・ソート推論によって可能となり、そのためにこうしたモデルが思考するための最適なトレーニングレシピを見つける必要性が生じています。本研究では、J1という強化学習アプローチを用いて、こうしたモデルのトレーニングを行う手法を紹介します。我々の方法は、検証可能な報酬を伴う判断タスクに、検証可能なプロンプトと非検証可能なプロンプトの両方を変換し、思考を促進し判断バイアスを軽減します。特に、我々のアプローチは、DeepSeek-R1から蒸留されたモデルを含む、同サイズでトレーニングされた他のすべての8Bまたは70Bモデルを上回ります。J1はまた、o1-miniや一部のベンチマークではR1をも上回る性能を示し、より小さなモデルでありながら優れた結果を出しています。Pairwise-J1とPointwise-J1モデル、オフラインとオンラインのトレーニングレシピ、報酬戦略、シードプロンプト、思考の長さや内容の変化に関する分析とアブレーションを提供します。我々は、モデルが評価基準を概説し、自己生成した参照回答と比較し、モデルの応答の正確性を再評価することによって、より良い判断を下すことを学ぶことを発見しました。
+# Summary (by gpt-4o-mini)
+- 本研究では、強化学習アプローチJ1を用いてLLMのトレーニング手法を提案し、判断タスクにおける思考促進とバイアス軽減を図ります。J1は、他の同サイズモデルを上回る性能を示し、特に小型モデルでも優れた結果を出します。モデルは自己生成した参照回答と比較することで、より良い判断を学ぶことが明らかになりました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1923186392420450545?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLM-as-a-Judgeのなめのモデルを学習するレシピにおいて、初めてRLを適用した研究と主張し、より高品質なreasoning traceを出力できるようにすることで性能向上をさせる。<br><br>具体的にはVerifiableなpromptとnon verifiableなpromptの両方からverifiableなpreference pairを作成しpointwiseなスコアリング、あるいはpairwiseなjudgeを学習するためのrewardを設計しGRPOで学習する、みたいな話っぽい。<br>non verifiableなpromptも用いるのは、そういったpromptに対してもjudgeできるモデルを構築するため。<br><br>mathに関するpromptはverifiableなのでレスポンスが不正解なものをrejection samplingし、WildChatのようなチャットはverifiableではないので、instructionにノイズを混ぜて得られたレスポンスをrejection samplingし、合成データを得ることで、non verifiableなpromptについても、verifiableなrewardを設計できるようになる。<br><img src="https://github.com/user-attachments/assets/4264f599-2067-4688-99e7-b68cc1dc771d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=dnJEHl6DI1" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=dnJEHl6DI1</a>
+{% endraw %}
+
+</p><p>著者による一言解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2029567134846611539?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
 {% endraw %}
 
 </p></maintainer-comment-text>
@@ -2687,7 +2738,7 @@
 </p><p>RLはモデルの能力を精錬させる（＝事前学習時に既に身についているreasoningパターンを（探索空間を犠牲により少ない試行で良い応答に辿り着けるよう）増幅させる;サンプリング効率を向上させる）と主張する研究たちと<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3589" target="_blank" rel="noopener noreferrer">[Paper Note] Does Reinforcement Learning Really Incentivize Reasoning Capacity in   LLMs Beyond the Base Model?, Yang Yue+, NeurIPS'25, 2025.04</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2272" target="_blank" rel="noopener noreferrer">[Paper Note] The Invisible Leash: Why RLVR May Not Escape Its Origin, Fang Wu+, arXiv'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1997" target="_blank" rel="noopener noreferrer">[Paper Note] Spurious Rewards: Rethinking Training Signals in RLVR, Shao+, 2025.05</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
 <br><br>RLは事前学習で身につけたreasoning能力を超えてさらなるgainを得ることができる<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3913" target="_blank" rel="noopener noreferrer">[Paper Note] Reinforcement Learning with Verifiable Rewards Implicitly Incentivizes Correct Reasoning in Base LLMs, Xumeng Wen+, arXiv'25, 2025.06</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2712" target="_blank" rel="noopener noreferrer">From f(x) and g(x) to f(g(x)): LLMs Learn New Skills in RL by Composing Old Ones, Yuan+, 2025.09</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3912" target="_blank" rel="noopener noreferrer">[Paper Note] On the Interplay of Pre-Training, Mid-Training, and RL on Reasoning Language Models, Charlie Zhang+, arXiv'25, 2025.12</a>
@@ -4586,57 +4637,6 @@
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] J1: Incentivizing Thinking in LLM-as-a-Judge via Reinforcement Learning, Chenxi Whitehouse+, arXiv'25, 2025.05</title>
-<original-paper-blog-link>https://arxiv.org/abs/2505.10320</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1964</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, LLM-as-a-Judge, ICLR, PostTraining, GRPO, VerifiableRewards, Non-VerifiableRewards, KeyPoint Notes</tags>
-<repo-issue-date>2025-05-16</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2505.10320
-# Authors
-  - Chenxi Whitehouse
-  - Tianlu Wang
-  - Ping Yu
-  - Xian Li
-  - Jason Weston
-  - Ilia Kulikov
-  - Swarnadeep Saha
-# Abstract
-  - The progress of AI is bottlenecked by the quality of evaluation, and powerful LLM-as-a-Judge models have proved to be a core solution. Improved judgment ability is enabled by stronger chain-of-thought reasoning, motivating the need to find the best recipes for training such models to think. In this work we introduce J1, a reinforcement learning approach to training such models. Our method converts both verifiable and non-verifiable prompts to judgment tasks with verifiable rewards that incentivize thinking and mitigate judgment bias. In particular, our approach outperforms all other existing 8B or 70B models when trained at those sizes, including models distilled from DeepSeek-R1. J1 also outperforms o1-mini, and even R1 on some benchmarks, despite training a smaller model. We provide analysis and ablations comparing Pairwise-J1 vs Pointwise-J1 models, offline vs online training recipes, reward strategies, seed prompts, and variations in thought length and content. We find that our models make better judgments by learning to outline evaluation criteria, comparing against self-generated reference answers, and re-evaluating the correctness of model responses.
-# Translation (by gpt-4o-mini)
-- AIの進展は評価の質によって制約されており、強力なLLM-as-a-Judgeモデルが核心的な解決策であることが証明されています。判断能力の向上は、より強力なチェーン・オブ・ソート推論によって可能となり、そのためにこうしたモデルが思考するための最適なトレーニングレシピを見つける必要性が生じています。本研究では、J1という強化学習アプローチを用いて、こうしたモデルのトレーニングを行う手法を紹介します。我々の方法は、検証可能な報酬を伴う判断タスクに、検証可能なプロンプトと非検証可能なプロンプトの両方を変換し、思考を促進し判断バイアスを軽減します。特に、我々のアプローチは、DeepSeek-R1から蒸留されたモデルを含む、同サイズでトレーニングされた他のすべての8Bまたは70Bモデルを上回ります。J1はまた、o1-miniや一部のベンチマークではR1をも上回る性能を示し、より小さなモデルでありながら優れた結果を出しています。Pairwise-J1とPointwise-J1モデル、オフラインとオンラインのトレーニングレシピ、報酬戦略、シードプロンプト、思考の長さや内容の変化に関する分析とアブレーションを提供します。我々は、モデルが評価基準を概説し、自己生成した参照回答と比較し、モデルの応答の正確性を再評価することによって、より良い判断を下すことを学ぶことを発見しました。
-# Summary (by gpt-4o-mini)
-- 本研究では、強化学習アプローチJ1を用いてLLMのトレーニング手法を提案し、判断タスクにおける思考促進とバイアス軽減を図ります。J1は、他の同サイズモデルを上回る性能を示し、特に小型モデルでも優れた結果を出します。モデルは自己生成した参照回答と比較することで、より良い判断を学ぶことが明らかになりました。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1923186392420450545?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>LLM-as-a-Judgeのなめのモデルを学習するレシピにおいて、初めてRLを適用した研究と主張し、より高品質なreasoning traceを出力できるようにすることで性能向上をさせる。<br><br>具体的にはVerifiableなpromptとnon verifiableなpromptの両方からverifiableなpreference pairを作成しpointwiseなスコアリング、あるいはpairwiseなjudgeを学習するためのrewardを設計しGRPOで学習する、みたいな話っぽい。<br>non verifiableなpromptも用いるのは、そういったpromptに対してもjudgeできるモデルを構築するため。<br><br>mathに関するpromptはverifiableなのでレスポンスが不正解なものをrejection samplingし、WildChatのようなチャットはverifiableではないので、instructionにノイズを混ぜて得られたレスポンスをrejection samplingし、合成データを得ることで、non verifiableなpromptについても、verifiableなrewardを設計できるようになる。<br><img src="https://github.com/user-attachments/assets/4264f599-2067-4688-99e7-b68cc1dc771d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
-
-{% raw %}
-<a href="https://openreview.net/forum?id=dnJEHl6DI1" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=dnJEHl6DI1</a>
-{% endraw %}
-
-</p><p>著者による一言解説:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2029567134846611539?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>[Paper Note] When Bad Data Leads to Good Models, Kenneth Li+, ICML'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.04741</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1940</repo-issue-link>
@@ -4937,6 +4937,39 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2025-02-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2502.03373
+# Authors
+  - Edward Yeo
+  - Yuxuan Tong
+  - Morry Niu
+  - Graham Neubig
+  - Xiang Yue
+# Abstract
+  - Scaling inference compute enhances reasoning in large language models (LLMs), with long chains-of-thought (CoTs) enabling strategies like backtracking and error correction. Reinforcement learning (RL) has emerged as a crucial method for developing these capabilities, yet the conditions under which long CoTs emerge remain unclear, and RL training requires careful design choices. In this study, we systematically investigate the mechanics of long CoT reasoning, identifying the key factors that enable models to generate long CoT trajectories. Through extensive supervised fine-tuning (SFT) and RL experiments, we present four main findings: (1) While SFT is not strictly necessary, it simplifies training and improves efficiency; (2) Reasoning capabilities tend to emerge with increased training compute, but their development is not guaranteed, making reward shaping crucial for stabilizing CoT length growth; (3) Scaling verifiable reward signals is critical for RL. We find that leveraging noisy, web-extracted solutions with filtering mechanisms shows strong potential, particularly for out-of-distribution (OOD) tasks such as STEM reasoning; and (4) Core abilities like error correction are inherently present in base models, but incentivizing these skills effectively for complex tasks via RL demands significant compute, and measuring their emergence requires a nuanced approach. These insights provide practical guidance for optimizing training strategies to enhance long CoT reasoning in LLMs. Our code is available at: https://github.com/eddycmu/demystify-long-cot.
+# Translation (by gpt-4o-mini)
+- 推論計算のスケーリングは、大規模言語モデル（LLMs）における推論を強化し、長い思考の連鎖（CoTs）がバックトラッキングやエラー修正のような戦略を可能にします。強化学習（RL）は、これらの能力を開発するための重要な手法として浮上していますが、長いCoTsがどのような条件下で現れるのかは不明であり、RLのトレーニングには慎重な設計選択が必要です。本研究では、長いCoT推論のメカニズムを体系的に調査し、モデルが長いCoT軌道を生成するための重要な要因を特定します。広範な教師ありファインチューニング（SFT）とRLの実験を通じて、以下の4つの主要な発見を示します：(1) SFTは厳密には必要ではありませんが、トレーニングを簡素化し、効率を向上させます；(2) 推論能力はトレーニング計算の増加に伴って現れる傾向がありますが、その発展は保証されておらず、CoTの長さの成長を安定させるためには報酬の形状が重要です；(3) 検証可能な報酬信号のスケーリングはRLにとって重要です。ノイズの多いウェブ抽出ソリューションをフィルタリングメカニズムと共に活用することが特に効果的であり、特にSTEM推論のような分布外（OOD）タスクにおいて強い可能性を示します；(4) エラー修正のようなコア能力は基本モデルに本質的に存在しますが、RLを通じて複雑なタスクに対してこれらのスキルを効果的に奨励するには、かなりの計算が必要であり、その出現を測定するには微妙なアプローチが求められます。これらの洞察は、LLMsにおける長いCoT推論を強化するためのトレーニング戦略の最適化に関する実践的な指針を提供します。私たちのコードは以下のリンクで入手可能です：https://github.com/eddycmu/demystify-long-cot。
+# Summary (by gpt-4o-mini)
+- 本研究では、大規模言語モデル（LLMs）における長い思考の連鎖（CoTs）推論のメカニズムを調査し、重要な要因を特定。主な発見は、(1) 教師ありファインチューニング（SFT）は必須ではないが効率を向上させる、(2) 推論能力は計算の増加に伴い現れるが、報酬の形状がCoTの長さに影響、(3) 検証可能な報酬信号のスケーリングが重要で、特に分布外タスクに効果的、(4) エラー修正能力は基本モデルに存在するが、RLを通じて効果的に奨励するには多くの計算が必要。これらの洞察は、LLMsの長いCoT推論を強化するためのトレーニング戦略の最適化に役立つ。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xiangyue96/status/1887332772198371514?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>元ポストのスレッド中に論文の11個の知見が述べられている。どれも非常に興味深い。DeepSeek-R1のテクニカルペーパーと同様、<br><br>- Long CoTとShort CoTを比較すると前者の方が到達可能な性能のupper bonudが高いことや、<br>- SFTを実施してからRLをすると性能が向上することや、<br>- RLの際にCoTのLengthに関する報酬を入れることでCoTの長さを抑えつつ性能向上できること、<br>- 数学だけでなくQAペアなどのノイジーだが検証可能なデータをVerifiableな報酬として加えると一般的なreasoningタスクで数学よりもさらに性能が向上すること、<br>- より長いcontext window sizeを活用可能なモデルの訓練にはより多くの学習データが必要なこと、<br>- long CoTはRLによって学習データに類似したデータが含まれているためベースモデルの段階でその能力が獲得されていることが示唆されること、<br>- aha momentはすでにベースモデル時点で獲得されておりVerifiableな報酬によるRLによって強化されたわけではなさそう、<br><br>など、興味深い知見が盛りだくさん。非常に興味深い研究。あとで読む。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -5246,6 +5279,31 @@
 {% endraw %}
 
 </p><p>SparseAutoEncoderはネットワークのあらゆるところに仕込める（と思われる）が、たとえばTransformer Blockのresidual connection部分のベクトルに対してFeature Dictionaryを学習すると、当該ブロックにおいてどのような特徴の組み合わせが表現されているかが（あくまでSparseAutoEncoderがreconstruction lossによって学習された結果を用いて）解釈できるようになる。<br><img src="https://github.com/user-attachments/assets/f86f5f7b-f46d-48ab-94e3-cf7f298eb9d7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>SparseAutoEncoderは下記式で表され、下記loss functionで学習される。MがFeature Matrix（row-wiseに正規化されて後述のcに対するL1正則化に影響を与えないようにしている）に相当する。cに対してL1正則化をかけることで（Sparsity Loss）、c中の各要素が0に近づくようになり、結果としてcがSparseとなる（どうしても値を持たなければいけない重要な特徴量のみにフォーカスされるようになる）。<br><img src="https://github.com/user-attachments/assets/7e400f25-8a63-4222-904c-4a7b94d50880" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/dd8c10b3-3bb5-46fb-b94a-d91f3602bbd1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Grounding Language Model with Chunking-Free In-Context Retrieval, Hongjin Qian+, ACL'24, 2024.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2402.09760</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1671</repo-issue-link>
+<tags>Embeddings, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration), LongSequence, ACL, PostTraining, KeyPoint Notes</tags>
+<repo-issue-date>2025-01-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2402.09760
+# Authors
+  - Hongjin Qian
+  - Zheng Liu
+  - Kelong Mao
+  - Yujia Zhou
+  - Zhicheng Dou
+# Abstract
+  - This paper presents a novel Chunking-Free In-Context (CFIC) retrieval approach, specifically tailored for Retrieval-Augmented Generation (RAG) systems. Traditional RAG systems often struggle with grounding responses using precise evidence text due to the challenges of processing lengthy documents and filtering out irrelevant content. Commonly employed solutions, such as document chunking and adapting language models to handle longer contexts, have their limitations. These methods either disrupt the semantic coherence of the text or fail to effectively address the issues of noise and inaccuracy in evidence retrieval.   CFIC addresses these challenges by circumventing the conventional chunking process. It utilizes the encoded hidden states of documents for in-context retrieval, employing auto-aggressive decoding to accurately identify the specific evidence text required for user queries, eliminating the need for chunking. CFIC is further enhanced by incorporating two decoding strategies, namely Constrained Sentence Prefix Decoding and Skip Decoding. These strategies not only improve the efficiency of the retrieval process but also ensure that the fidelity of the generated grounding text evidence is maintained. Our evaluations of CFIC on a range of open QA datasets demonstrate its superiority in retrieving relevant and accurate evidence, offering a significant improvement over traditional methods. By doing away with the need for document chunking, CFIC presents a more streamlined, effective, and efficient retrieval solution, making it a valuable advancement in the field of RAG systems.
+# Translation (by gpt-5-nano)
+- 本論文は、Retrieval-Augmented Generation (RAG)システム向けに特化した、新規のチャンク化フリーのインコンテキスト（CFIC）検索アプローチを提案する。従来のRAGシステムは、長文ドキュメントの処理や関連性のない内容を除外する難しさのため、正確なエビデンステキストを用いて回答を根拠づけることに苦労することが多い。文書のチャンク化や長い文脈を扱えるよう言語モデルを適応させるといったよく採用される解決策には、それぞれ限界がある。これらの方法はテキストの意味的整合性を乱すことがあるか、エビデンス検索におけるノイズや不正確さの問題に十分対処できない。
+
+CFICは、従来のチャンク化プロセスを回避することで、これらの課題に対処する。文書のエンコード済み隠れ状態を文脈内検索に利用し、自己回帰デコーディングを用いて、ユーザーのクエリに必要な特定の根拠テキストを正確に識別し、チャンク化の必要を排除する。CFICはさらに、Constrained Sentence Prefix Decoding（制約付き文頭プレフィックスデコーディング）およびSkip Decodingという2つのデコーディング戦略を組み込むことで強化される。これらの戦略は、検索プロセスの効率を向上させるだけでなく、生成される根拠テキストエビデンスの忠実度を維持することを保証する。CFICをさまざまなオープンQAデータセットで評価した結果、関連性が高く正確なエビデンスを取得する能力において従来手法より優れており、大幅な改善を示す。文書のチャンク化を不要にすることで、CFICはよりシンプルで効果的かつ効率的な検索ソリューションを提供し、RAGシステム分野における有意な進歩となる。
+# Summary (by gpt-4o-mini)
+- CFICはチャンク化を避け、文書のエンコード済み隠れ状態を利用した新しい検索アプローチを提案。ユーザーのクエリに必要なエビデンステキストを正確に識別し、従来のRAGシステムより優れたエビデンスの取得能力を示す。これにより、RAGシステムの効率性が向上し、よりシンプルで効果的な検索が可能となる。</issue-body>
+<maintainer-comment-text><p>Chunking無しでRAGを動作させられるのは非常に魅力的。<br><img src="https://github.com/user-attachments/assets/8841930a-3099-46c8-aae7-50f52473fbb1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>一貫してかなり性能が向上しているように見える<br><img src="https://github.com/user-attachments/assets/6eae7811-090a-4f84-aa8d-6d74a55e8427" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>提案手法の概要。InputとOutput全体の実例がほとんど掲載されていないので憶測を含みます。<br><br>気持ちとしては、ソーステキストが与えられたときに、Questionの回答をsupportするようなソース中のpassageの情報を活用して回答するために、重要なsentenceのprefixを回答生成前に生成させる（重要なsentenceの識別子の役割を果たす）ことで、（識別子によって重要な情報によって条件づけられて回答生成ができるやうになるのて）それら情報をより考慮しながらモデルが回答を生成できるようになる、といった話だと思われる。<br><br>Table2のようなテンプレートを用いて、ソーステキストと質問文でモデルを条件付けて、回答をsupportするsentenceのprefixを生成する。生成するprefixは各sentenceのユニークなprefixのtoken log probabilityの平均値によって決まる（トークンの対数尤度が高かったらモデルが暗黙的にその情報はQuestionにとって重要だと判断しているとみなせる）。SkipDecodingの説を読んだが、ぱっと見よく分からない。おそらく[eos]を出力させてprefix間のデリミタとして機能させたいのだと思うが、[eos]の最適なpositionはどこなのか？みたいな数式が出てきており、これがデコーディングの時にどういった役割を果たすのかがよくわからない。<br><br>また、モデルはQAと重要なPassageの三つ組のデータで提案手法によるデコーディングを適用してSFTしたものを利用する。<br><br><img src="https://github.com/user-attachments/assets/fa4e575e-c6cb-452a-be3e-0d9bacb3cacb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/1985754f-c21f-4904-be50-6f4f7eef56d1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -11840,6 +11898,26 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 
 </p><p>LLM（sarashina2）, Vision Encoder（Qwen2-VL）, Projectorの3つで構成されており、3段階の学習を踏んでいる。<br>最初のステップでは、キャプションデータを用いてProjectorのみを学習しVision Encoderとテキストを対応づける。続いて、日本語を含む画像や日本特有の風景などをうまく扱えるように、これらを多く活用したデータ（内製日本語OCRデータ、図表キャプションデータ）を用いて、Vision EncoderとProjectorを学習。最後にLLMのAlignmentをとるために、プロジェクターとLLMを前段のデータに加えてVQAデータ（内製合成データを含む）や日本語の指示チューニングデータを用いて学習。</p><p>ProjectorやMMLLMを具体的にどのように学習するかは<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1225" target="_blank" rel="noopener noreferrer">MM-LLMs: Recent Advances in MultiModal Large Language Models, Duzhen Zhang+, N/A, ACL'24 Findings</a>
 <br><br>を参照のこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>How to align open LLMs in 2025 with DPO & and synthetic data, PHILSCHMID, 2025.01</title>
+<original-paper-blog-link>https://www.philschmid.de/rl-with-llms-in-2025-dpo</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1722</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), python, Blog, SoftwareEngineering, DPO, PostTraining, KeyPoint Notes</tags>
+<repo-issue-date>2025-01-25</repo-issue-date>
+<issue-body>https://www.philschmid.de/rl-with-llms-in-2025-dpo</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/1882428447877705908?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- DPOの概要やRLHFと比較した利点<br>- ルールベース、あるいはLLM as a Judgeを用いたOn-policy preference pair（現在のSFTしたモデルの出力から生成したpreference data）の作り方とその利点（現在のモデルのoutput distributionを反映しているので学習が効率化される）<br>- 環境構築方法<br>- DPOTrainer/TRLParserの使い方/DPODatasetの作り方<br>- DPOのハイパーパラメータβの意味合い<br>- DPOではSFTと比べて10-100x小さい学習率を使う必要があること<br>- Evaluation Harnessを用いた評価方法<br>- TGIを用いたモデルのデプロイとテスト<br><br>などが丁寧なサンプルコードと注釈、reference付きで説明されている。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

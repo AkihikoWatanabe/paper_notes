@@ -1724,7 +1724,7 @@
 </div>
 {% endraw %}
 
-</p><p>これは大変興味深い。数学以外のドメインでの評価にも期待したい。</p><p>3節冒頭から3.2節にかけて、SFTとon policy RLのgradientを定式化し、SFT側の数式を整理することで、SFT（のgradient)は以下のようなon policy RLの一つのケースとみなせることを導出している。そしてSFTの汎化性能が低いのは 1/pi_theta によるimportance weightingであると主張し、実験的にそれを証明している。つまり、ポリシーがexpertのgold responseに対して低い尤度を示してしまった場合に、weightか過剰に大きくなり、Rewardの分散が過度に大きくなってしまうことがRLの観点を通してみると問題であり、これを是正することが必要。さらに、分散が大きい報酬の状態で、報酬がsparse(i.e., expertのtrajectoryのexact matchしていないと報酬がzero)であることが、さらに事態を悪化させている。<br><br>> conventional SFT is precisely an on-policy-gradient with the reward as an indicator function of<br>matching the expert trajectory but biased by an importance weighting 1/πθ.<br><br>まだ斜め読みしかしていないので、後でしっかり読みたい</p><p>最近は下記で示されている通りSFTでwarm-upをした後にRLによるpost-trainingをすることで性能が向上することが示されており、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+</p><p>これは大変興味深い。数学以外のドメインでの評価にも期待したい。</p><p>3節冒頭から3.2節にかけて、SFTとon policy RLのgradientを定式化し、SFT側の数式を整理することで、SFT（のgradient)は以下のようなon policy RLの一つのケースとみなせることを導出している。そしてSFTの汎化性能が低いのは 1/pi_theta によるimportance weightingであると主張し、実験的にそれを証明している。つまり、ポリシーがexpertのgold responseに対して低い尤度を示してしまった場合に、weightか過剰に大きくなり、Rewardの分散が過度に大きくなってしまうことがRLの観点を通してみると問題であり、これを是正することが必要。さらに、分散が大きい報酬の状態で、報酬がsparse(i.e., expertのtrajectoryのexact matchしていないと報酬がzero)であることが、さらに事態を悪化させている。<br><br>> conventional SFT is precisely an on-policy-gradient with the reward as an indicator function of<br>matching the expert trajectory but biased by an importance weighting 1/πθ.<br><br>まだ斜め読みしかしていないので、後でしっかり読みたい</p><p>最近は下記で示されている通りSFTでwarm-upをした後にRLによるpost-trainingをすることで性能が向上することが示されており、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
  <br><br>主要なOpenModelでもSFT wamup -> RLの流れが主流である。この知見が、SFTによるwarm upの有効性とどう紐づくだろうか？<br>これを読んだ感じだと、importance weightによって、現在のポリシーが苦手な部分のreasoning capabilityのみを最初に強化し（= warmup）、その上でより広範なサンプルに対するRLが実施されることによって、性能向上と、学習の安定につながっているのではないか？という気がする。</p><p>日本語解説:
 
 {% raw %}
@@ -3804,7 +3804,7 @@ https://github.com/princeton-pli/STAT。
 - 二段階のファインチューニングパラダイムである監視付きファインチューニング（SFT）に続く強化学習（RL）は、大規模言語モデル（LLMs）のポストトレーニングにおいて、単一段階のSFTよりも優れた推論性能を示すことが実証されています。しかし、SFTとRLの相乗効果の背後にある進化とメカニズムは、まだ十分に探求されておらず、結論が出ていません。本研究では、「SFTは記憶し、RLは一般化する」というよく知られた主張が過度に単純化されていることを発見し、以下のことを明らかにしました：(1) OOD（アウトオブディストリビューション）性能はSFTの初期段階でピークに達し、その後低下する（OODの忘却）、最良のSFTチェックポイントはトレーニング/テスト損失によって捉えることができない；(2) 続くRL段階は根本的に優れたOOD能力を生成するのではなく、むしろSFT中に失われた推論能力を回復する「OOD復元」の役割を果たす；(3) 回復能力には限界があり、すなわち「SFTが短すぎるか長すぎると、RLは失われたOOD能力を回復できない」；(4) 忘却と復元プロセスの背後にあるメカニズムを明らかにするために、パラメータ行列に対してSVD分析を行い、それらを手動で編集し、モデル性能への影響を観察しました。モデルの能力の変化が主に特異値の変化によって引き起こされるという一般的な信念とは異なり、特異値はファインチューニング全体を通じて非常に安定していることがわかりました。むしろ、OODの挙動は特異ベクトルの「回転」と強く相関しています。我々の発見は、二段階のファインチューニングにおけるSFTとRLの役割を再認識し、特異ベクトルの回転を重要なメカニズムとして発見しました。SFTによって引き起こされた回転を逆転させることで忘却からの回復を示し、一方でSFTのパラメータ方向をRL調整されたモデルに適用すると性能が低下することがわかりました。コードはhttps://github.com/xiaodanguoguo/RL_Heals_SFTで入手可能です。
 # Summary (by gpt-4o-mini)
 - 二段階ファインチューニングにおけるSFTとRLの相互作用を探求し、SFTが記憶し、RLが一般化するという主張が過度に単純化されていることを発見。具体的には、(1) OOD性能はSFTの初期段階でピークに達し、その後低下すること、(2) RLはSFT中に失われた推論能力を回復する役割を果たすこと、(3) 回復能力には限界があること、(4) OODの挙動は特異ベクトルの「回転」と強く相関することを明らかにした。これにより、SFTとRLの役割を再認識し、特異ベクトルの回転が重要なメカニズムであることを示した。</issue-body>
-<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1740" target="_blank" rel="noopener noreferrer">SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model   Post-training, Tianzhe Chu+, ICML'25</a>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1740" target="_blank" rel="noopener noreferrer">[Paper Note] SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model   Post-training, Tianzhe Chu+, ICML'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2382" target="_blank" rel="noopener noreferrer">[Paper Note] On the Generalization of SFT: A Reinforcement Learning Perspective with  Reward Rectification, Yongliang Wu+, ICLR'26, 2025.08</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2700" target="_blank" rel="noopener noreferrer">[Paper Note] Towards a Unified View of Large Language Model Post-Training, Xingtai Lv+, arXiv'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2713" target="_blank" rel="noopener noreferrer">[Paper Note] RL's Razor: Why Online Reinforcement Learning Forgets Less, Idan Shenfeld+, arXiv'25</a>
@@ -3917,7 +3917,7 @@ https://github.com/princeton-pli/STAT。
 {% endraw %}
 
 </p><p>評価で利用されているデータ:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2451" target="_blank" rel="noopener noreferrer">[Paper Note] BrowseComp: A Simple Yet Challenging Benchmark for Browsing Agents, Jason Wei+, arXiv'25</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1730" target="_blank" rel="noopener noreferrer">[Paper Note] Humanity's Last Exam, Long Phan+, arXiv'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1730" target="_blank" rel="noopener noreferrer">[Paper Note] Humanity's Last Exam, Long Phan+, arXiv'25, 2025.01</a>
 </p><p>学習データの合成方法が肝</p></maintainer-comment-text>
 </paper-entry>
 
@@ -5189,7 +5189,7 @@ https://github.com/princeton-pli/STAT。
 </div>
 {% endraw %}
 
-</p><p>dLLMに対してGRPOを適用する手法(diffuGRPO)を提案している。<br>long CoTデータでSFTしてreasoning capabilityを強化した後、diffuGRPOで追加のpost-trainingをしてさらに性能をboostする。</p><p>GRPOではtoken levelの尤度とsequence全体の尤度を計算する必要があるが、dLLMだとautoregressive modelのようにchain ruleを適用する計算方法はできないので、効率的に尤度を推定するestimatorを用いてGPPOを適用するdiffuGRPOを提案している。<br><br>diffuGRPO単体でも、8BモデルだがSFTよりも性能向上に成功している。SFTの後にdiffuGRPOを適用するとさらに性能が向上する。<br><br>SFTではs1 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">s1: Simple test-time scaling, Niklas Muennighoff+, arXiv'25</a>
+</p><p>dLLMに対してGRPOを適用する手法(diffuGRPO)を提案している。<br>long CoTデータでSFTしてreasoning capabilityを強化した後、diffuGRPOで追加のpost-trainingをしてさらに性能をboostする。</p><p>GRPOではtoken levelの尤度とsequence全体の尤度を計算する必要があるが、dLLMだとautoregressive modelのようにchain ruleを適用する計算方法はできないので、効率的に尤度を推定するestimatorを用いてGPPOを適用するdiffuGRPOを提案している。<br><br>diffuGRPO単体でも、8BモデルだがSFTよりも性能向上に成功している。SFTの後にdiffuGRPOを適用するとさらに性能が向上する。<br><br>SFTではs1 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">[Paper Note] s1: Simple test-time scaling, Niklas Muennighoff+, EMNLP'25, 2025.01</a>
  で用いられたlong CoTデータを用いている。しっかり理解できていないが、diffuGRPO+verified rewardによって、long CoTの学習データを用いなくても、安定してreasoning能力を発揮することができようになった、ということなのだろうか？<br>しかし、AppendixCを見ると、元々のLLaDAの時点でreasoning traceを十分な長さで出力しているように見える。もしLLaDAが元々long CoTを発揮できたのだとしたら、long CoTできるようになったのはdiffuGRPOだけの恩恵ではないということになりそうだが、LLaDAは元々long CoTを生成できるようなモデルだったんだっけ…？その辺追えてない（dLLMがメジャーになったら追う）。</p></maintainer-comment-text>
 </paper-entry>
 
@@ -5346,7 +5346,7 @@ https://github.com/princeton-pli/STAT。
 - 大規模言語モデル（LLMs）の推論能力を向上させるためには、通常、ラベル付きデータを用いた教師ありファインチューニングや計算コストの高いサンプリングが必要です。本研究では、Prefix Self-Consistencyの観察を活用した「非教師ありプレフィックスファインチューニング（UPFT）」を提案します。これは、多様な解法の軌跡における共通の初期推論ステップを利用して、LLMの推論効率を向上させるものです。UPFTは、初期のプレフィックス部分文字列（わずか8トークン）にのみ基づいて訓練を行うため、ラベル付きデータや徹底的なサンプリングの必要がありません。推論ベンチマークにおける実験では、UPFTがRejection Sampling Fine-Tuningなどの教師あり手法と同等の性能を示しながら、訓練時間を75%、サンプリングコストを99%削減することが分かりました。さらに分析を行った結果、エラーは推論プロセスの後半に現れる傾向があり、プレフィックスベースの訓練がモデルの構造的知識を保持することが明らかになりました。本研究は、最小限の非教師ありファインチューニングがLLMにおける大幅な推論向上を実現できることを示し、従来のアプローチに対するスケーラブルでリソース効率の良い代替手段を提供します。
 # Summary (by gpt-4o-mini)
 - 非教師ありプレフィックスファインチューニング（UPFT）を提案し、LLMの推論効率を向上。初期のプレフィックス部分文字列に基づいて訓練し、ラベル付きデータやサンプリングを不要に。UPFTは、教師あり手法と同等の性能を維持しつつ、訓練時間を75%、サンプリングコストを99%削減。最小限の非教師ありファインチューニングで大幅な推論向上を実現し、リソース効率の良い代替手段を提供。</issue-body>
-<maintainer-comment-text><p>斜め読みだが、reasoning traceの冒頭部分は重要な役割を果たしており、サンプリングした多くのresponseのreasoning traceにおいて共通しているものは重要という直感から（Prefix Self-Consistency）、reasoning traceの冒頭部分を適切に生成できるようにモデルをFinetuningする。従来のRejection Samplingを用いた手法では、複数のresponseを生成させて、最終的なanswerが正解のものをサンプリングするため正解ラベルが必要となるが、提案手法ではreasoning traceの冒頭部分の共通するsubsequenceをmajority voteするだけなのでラベルが不要である。<br><img src="https://github.com/user-attachments/assets/ff3938da-dcd0-4b6c-a764-26d2e8caa63a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>reasoning prefixを学習する際は下記のようなテンプレートを用いる。このときに、prefixのspanのみを利用して学習することで大幅に学習時間を削減できる。<br><img src="https://github.com/user-attachments/assets/63aabe47-9c40-41cb-8d5a-5039900f6edc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、そのような学習を行うとcatastrophic forgettingのリスクが非常に高いが、これを防ぐために、マルチタスクラーニングを実施する。具体的には学習データのp%については全体のreasoning traceを生成して学習に利用する。このときに、最終的な回答の正誤を気にせずtraceを生成して学習に利用することで、ラベルフリーな特性を維持できる（つまり、こちらのデータは良いreasoning traceを学習することを目的としているわけではなく、あくまでcatastrophic forgettingを防ぐためにベースモデルのようなtraceもきちんと生成できれば良い、という感覚だと思われる）。<br><img src="https://github.com/user-attachments/assets/6e83c686-5bcf-4db8-9b8a-63c39570a4dc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>AppendixにQwenを用いてtemperature 0.7で16個のresponseをサンプリングし、traceの冒頭部分が共通している様子が示されている。</p><p>下記論文でlong-CoTを学習させる際のlong-CoTデータとして、reasoningモデルから生成したtraceと非reasoning modelから生成したtraceによるlong-CoTデータを比較したところ前者の方が一貫して学習性能が良かったとあるが、この研究でもreasoning traceをつよつよモデルで生成したら性能上がるんだろうか。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+<maintainer-comment-text><p>斜め読みだが、reasoning traceの冒頭部分は重要な役割を果たしており、サンプリングした多くのresponseのreasoning traceにおいて共通しているものは重要という直感から（Prefix Self-Consistency）、reasoning traceの冒頭部分を適切に生成できるようにモデルをFinetuningする。従来のRejection Samplingを用いた手法では、複数のresponseを生成させて、最終的なanswerが正解のものをサンプリングするため正解ラベルが必要となるが、提案手法ではreasoning traceの冒頭部分の共通するsubsequenceをmajority voteするだけなのでラベルが不要である。<br><img src="https://github.com/user-attachments/assets/ff3938da-dcd0-4b6c-a764-26d2e8caa63a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>reasoning prefixを学習する際は下記のようなテンプレートを用いる。このときに、prefixのspanのみを利用して学習することで大幅に学習時間を削減できる。<br><img src="https://github.com/user-attachments/assets/63aabe47-9c40-41cb-8d5a-5039900f6edc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、そのような学習を行うとcatastrophic forgettingのリスクが非常に高いが、これを防ぐために、マルチタスクラーニングを実施する。具体的には学習データのp%については全体のreasoning traceを生成して学習に利用する。このときに、最終的な回答の正誤を気にせずtraceを生成して学習に利用することで、ラベルフリーな特性を維持できる（つまり、こちらのデータは良いreasoning traceを学習することを目的としているわけではなく、あくまでcatastrophic forgettingを防ぐためにベースモデルのようなtraceもきちんと生成できれば良い、という感覚だと思われる）。<br><img src="https://github.com/user-attachments/assets/6e83c686-5bcf-4db8-9b8a-63c39570a4dc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>AppendixにQwenを用いてtemperature 0.7で16個のresponseをサンプリングし、traceの冒頭部分が共通している様子が示されている。</p><p>下記論文でlong-CoTを学習させる際のlong-CoTデータとして、reasoningモデルから生成したtraceと非reasoning modelから生成したtraceによるlong-CoTデータを比較したところ前者の方が一貫して学習性能が良かったとあるが、この研究でもreasoning traceをつよつよモデルで生成したら性能上がるんだろうか。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -5538,15 +5538,15 @@ https://github.com/princeton-pli/STAT。
 </div>
 {% endraw %}
 
-</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">s1: Simple test-time scaling, Niklas Muennighoff+, arXiv'25</a>
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">[Paper Note] s1: Simple test-time scaling, Niklas Muennighoff+, EMNLP'25, 2025.01</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>DeepRAG: Thinking to Retrieval Step by Step for Large Language Models, Xinyan Guan+, arXiv'25</title>
+<title>[Paper Note] DeepRAG: Thinking to Retrieve Step by Step for Large Language Models, Xinyan Guan+, arXiv'25, 2025.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.01142</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1758</repo-issue-link>
-<tags>InformationRetrieval, NLP, LanguageModel, Supervised-FineTuning (SFT), RAG(RetrievalAugmentedGeneration)</tags>
+<tags>InformationRetrieval, NLP, LanguageModel, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration)</tags>
 <repo-issue-date>2025-02-12</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2502.01142
@@ -5561,11 +5561,11 @@ https://github.com/princeton-pli/STAT。
   - Le Sun
   - Jie Zhou
 # Abstract
-  - Large Language Models (LLMs) have shown remarkable potential in reasoning while they still suffer from severe factual hallucinations due to timeliness, accuracy, and coverage of parametric knowledge. Meanwhile, integrating reasoning with retrieval-augmented generation (RAG) remains challenging due to ineffective task decomposition and redundant retrieval, which can introduce noise and degrade response quality. In this paper, we propose DeepRAG, a framework that models retrieval-augmented reasoning as a Markov Decision Process (MDP), enabling strategic and adaptive retrieval. By iteratively decomposing queries, DeepRAG dynamically determines whether to retrieve external knowledge or rely on parametric reasoning at each step. Experiments show that DeepRAG improves retrieval efficiency while improving answer accuracy by 21.99%, demonstrating its effectiveness in optimizing retrieval-augmented reasoning.
-# Translation (by gpt-4o-mini)
-- 大規模言語モデル（LLMs）は推論において顕著な可能性を示していますが、時効性、正確性、パラメトリック知識のカバレッジのために深刻な事実の幻覚に悩まされています。一方、推論と検索強化生成（RAG）を統合することは、効果的なタスク分解や冗長な検索のために依然として困難であり、これがノイズを引き起こし、応答の質を低下させる可能性があります。本論文では、DeepRAGというフレームワークを提案します。これは、検索強化推論をマルコフ決定過程（MDP）としてモデル化し、戦略的かつ適応的な検索を可能にします。DeepRAGは、クエリを反復的に分解することで、各ステップで外部知識を取得するか、パラメトリック推論に依存するかを動的に判断します。実験により、DeepRAGは検索効率を向上させると同時に、回答の正確性を21.99%向上させることが示され、検索強化推論の最適化におけるその効果が実証されました。
+  - Large Language Models (LLMs) have shown remarkable reasoning capabilities, while their practical applications are limited by severe factual hallucinations due to limitations in the timeliness, accuracy, and comprehensiveness of their parametric knowledge. Meanwhile, enhancing retrieval-augmented generation (RAG) with reasoning remains challenging due to ineffective task decomposition and redundant retrieval, which can introduce noise and degrade response quality. In this paper, we propose DeepRAG, a framework that models retrieval-augmented reasoning as a Markov Decision Process (MDP), enabling reasonable and adaptive retrieval. By iteratively decomposing queries, DeepRAG dynamically determines whether to retrieve external knowledge or rely on parametric reasoning at each step. Experiments show that DeepRAG improves retrieval efficiency and boosts answer accuracy by 26.4%, demonstrating its effectiveness in enhancing retrieval-augmented reasoning.
+# Translation (by gpt-5-nano)
+- 大型言語モデル（LLMs）は卓越した推論能力を示している一方で、その実践的な応用は、パラメトリック知識の時機性、正確性、および網羅性の制約により、深刻な事実的幻覚に制約されている。 一方で、推論を伴う取得強化生成（RAG）の改善は、タスク分解が非効率的であり、冗長な取得がノイズを導入し、応答品質を低下させる可能性があるため、依然として難しい。 本論文では、取得強化推論をマルコフ決定過程（MDP）としてモデル化する DeepRAG というフレームワークを提案する。これにより、合理的で適応的な取得を可能にする。 クエリを反復的に分解することにより、DeepRAG は各ステップで外部知識を検索するか、パラメトリック推論に依存するかを動的に決定する。 実験の結果、DeepRAG は検索効率を向上させ、回答の正確性を 26.4% 向上させることを示しており、リトリーバル強化推論を高める効果を示している。
 # Summary (by gpt-4o-mini)
-- DeepRAGフレームワークを提案し、検索強化推論をマルコフ決定過程としてモデル化。クエリを反復的に分解し、外部知識の取得とパラメトリック推論の依存を動的に判断。実験により、検索効率と回答の正確性を21.99%向上させることを実証。</issue-body>
+- LLMの推論能力は高いが、事実的幻覚に制約されている。取得強化生成（RAG）の非効率的なタスク分解や冗長な取得が応答品質を損なう。本研究では、取得強化推論をマルコフ決定過程（MDP）としてモデル化したDeepRAGフレームワークを提案。クエリを動的に分解し、外部知識の検索とパラメトリック推論の選択を行う。実験により、DeepRAGは検索効率と回答の正確性を26.4%向上させることを示した。</issue-body>
 <maintainer-comment-text><p>日本語解説。ありがとうございます！<br><br>RAGでも「深い検索」を実現する手法「DeepRAG」, Atsushi Kadowaki, <br>ナレッジセンス - AI知見共有ブログ:
 
 {% raw %}
@@ -5576,10 +5576,10 @@ https://github.com/princeton-pli/STAT。
 </paper-entry>
 
 <paper-entry>
-<title>s1: Simple test-time scaling, Niklas Muennighoff+, arXiv'25</title>
+<title>[Paper Note] s1: Simple test-time scaling, Niklas Muennighoff+, EMNLP'25, 2025.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.19393</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1749</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), Test-Time Scaling, read-later, Selected Papers/Blogs</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), action_wanted, EMNLP, Test-Time Scaling, read-later, Selected Papers/Blogs</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2501.19393
@@ -5596,10 +5596,10 @@ https://github.com/princeton-pli/STAT。
   - Tatsunori Hashimoto
 # Abstract
   - Test-time scaling is a promising new approach to language modeling that uses extra test-time compute to improve performance. Recently, OpenAI's o1 model showed this capability but did not publicly share its methodology, leading to many replication efforts. We seek the simplest approach to achieve test-time scaling and strong reasoning performance. First, we curate a small dataset s1K of 1,000 questions paired with reasoning traces relying on three criteria we validate through ablations: difficulty, diversity, and quality. Second, we develop budget forcing to control test-time compute by forcefully terminating the model's thinking process or lengthening it by appending "Wait" multiple times to the model's generation when it tries to end. This can lead the model to double-check its answer, often fixing incorrect reasoning steps. After supervised finetuning the Qwen2.5-32B-Instruct language model on s1K and equipping it with budget forcing, our model s1-32B exceeds o1-preview on competition math questions by up to 27% (MATH and AIME24). Further, scaling s1-32B with budget forcing allows extrapolating beyond its performance without test-time intervention: from 50% to 57% on AIME24. Our model, data, and code are open-source at https://github.com/simplescaling/s1
-# Translation (by gpt-4o-mini)
-- テスト時スケーリングは、追加のテスト時計算を利用してパフォーマンスを向上させる言語モデルに対する有望な新しいアプローチである。最近、OpenAIのo1モデルがこの能力を示したが、その方法論は公開されなかったため、多くの再現試行が行われた。我々は、テスト時スケーリングと強力な推論性能を達成するための最もシンプルなアプローチを模索する。まず、難易度、多様性、品質の3つの基準に基づいて検証した小規模データセットs1Kを作成し、1,000の質問とそれに対応する推論トレースをペアにした。次に、予算強制を開発し、モデルの思考プロセスを強制的に終了させたり、モデルが終了しようとする際に「Wait」を複数回追加することで思考を延長させたりして、テスト時の計算を制御する。この手法により、モデルは自分の答えを再確認することができ、しばしば不正確な推論ステップを修正することができる。s1KでQwen2.5-32B-Instruct言語モデルを監視付きファインチューニングした後、予算強制を装備した我々のモデルs1-32Bは、競技数学の問題においてo1-previewを最大27%上回った（MATHおよびAIME24）。さらに、予算強制を用いてs1-32Bをスケーリングすることで、テスト時の介入なしにそのパフォーマンスを超えることが可能となり、AIME24で50%から57%に向上した。我々のモデル、データ、コードはオープンソースで提供されており、https://github.com/simplescaling/s1 で入手可能である。
+# Translation (by gpt-5-nano)
+- 推論時スケーリングは、推論時に追加の計算資源を用いて性能を向上させる、言語モデルにとって有望な新しいアプローチです。最近、OpenAI の o1 モデルはこの能力を示しましたが、その手法を公には共有しませんでした。これにより多くの再現試行が生じました。私たちは、推論時スケーリングと高い推論能力を実現する最もシンプルなアプローチを追求します。まず、難易度、多様性、品質の3つの基準をアブレーション実験で検証した上で依拠する、推論過程を付した 1000問の小規模データセット s1K を作成します。次に、推論時の計算を制御するために、モデルの思考過程を強制的に終了させるか、終了を試みるときに生成に「Wait」を複数回付けて長くする「予算強制」を開発します。これによりモデルは回答を再確認し、しばしば誤った推論ステップを修正します。s1K 上で監視付き微調整を行い、予算強制を備えた Qwen2.5-32B-Instruct 言語モデルを得た後、私たちのモデル s1-32B は o1-preview の競技数学の質問に最大で 27% 上回りました（MATH および AIME24）。さらに、予算強制を用いた s1-32B のスケールアップは、推論時介入なしでその性能を超えて外挿することを可能にします：AIME24 で 50% から 57% へ。私たちのモデル、データ、コードは https://github.com/simplescaling/s1 でオープンソースです。
 # Summary (by gpt-4o-mini)
-- テスト時スケーリングを用いて言語モデルのパフォーマンスを向上させる新しいアプローチを提案。小規模データセットs1Kを作成し、モデルの思考プロセスを制御する予算強制を導入。これにより、モデルは不正確な推論を修正し、Qwen2.5-32B-Instructモデルがo1-previewを最大27%上回る結果を達成。さらに、介入なしでパフォーマンスを向上させることが可能となった。モデル、データ、コードはオープンソースで提供。</issue-body>
+- 推論時スケーリングは、追加計算資源を使って言語モデルの性能を向上させる新アプローチ。OpenAIのo1モデルの手法が公表されず、再現試行が進む中、シンプルな手法を提案。1000問の小規模データセットs1Kを作成し、推論過程を管理する「予算強制」を導入。これによりモデルは誤った推論を修正し、s1Kで微調整後、o1-previewモデルを最大27%上回る性能を実現。s1-32Bモデルは推論時介入なしで性能を外挿し、AIME24で57%に達する。モデルとデータはオープンソースで提供。</issue-body>
 <maintainer-comment-text><p>解説:
 
 {% raw %}
@@ -5614,10 +5614,10 @@ https://github.com/princeton-pli/STAT。
 </paper-entry>
 
 <paper-entry>
-<title>LIMO: Less is More for Reasoning, Yixin Ye+, arXiv'25</title>
+<title>[Paper Note] LIMO: Less is More for Reasoning, Yixin Ye+, arXiv'25, 2025.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.03387</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1748</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), DataDistillation, Reasoning, PostTraining</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), DataDistillation, action_wanted, Reasoning, COLM, PostTraining, read-later, Selected Papers/Blogs</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2502.03387
@@ -5629,11 +5629,11 @@ https://github.com/princeton-pli/STAT。
   - Shijie Xia
   - Pengfei Liu
 # Abstract
-  - We present a fundamental discovery that challenges our understanding of how complex reasoning emerges in large language models. While conventional wisdom suggests that sophisticated reasoning tasks demand extensive training data (>100,000 examples), we demonstrate that complex mathematical reasoning abilities can be effectively elicited with surprisingly few examples. Through comprehensive experiments, our proposed model LIMO demonstrates unprecedented performance in mathematical reasoning. With merely 817 curated training samples, LIMO achieves 57.1% accuracy on AIME and 94.8% on MATH, improving from previous SFT-based models' 6.5% and 59.2% respectively, while only using 1% of the training data required by previous approaches. LIMO demonstrates exceptional out-of-distribution generalization, achieving 40.5% absolute improvement across 10 diverse benchmarks, outperforming models trained on 100x more data, challenging the notion that SFT leads to memorization rather than generalization. Based on these results, we propose the Less-Is-More Reasoning Hypothesis (LIMO Hypothesis): In foundation models where domain knowledge has been comprehensively encoded during pre-training, sophisticated reasoning capabilities can emerge through minimal but precisely orchestrated demonstrations of cognitive processes. This hypothesis posits that the elicitation threshold for complex reasoning is determined by two key factors: (1) the completeness of the model's encoded knowledge foundation during pre-training, and (2) the effectiveness of post-training examples as "cognitive templates" that show the model how to utilize its knowledge base to solve complex reasoning tasks. To facilitate reproducibility and future research in data-efficient reasoning, we release LIMO as a comprehensive open-source suite at https://github.com/GAIR-NLP/LIMO.
-# Translation (by gpt-4o-mini)
-- 私たちは、大規模言語モデルにおける複雑な推論がどのように生まれるかに対する理解に挑戦する基本的な発見を提示します。従来の考え方では、洗練された推論タスクには広範なトレーニングデータ（100,000例以上）が必要だとされていますが、私たちは、驚くほど少ない例で複雑な数学的推論能力を効果的に引き出せることを示します。包括的な実験を通じて、私たちの提案するモデルLIMOは、数学的推論において前例のないパフォーマンスを示しました。わずか817の厳選されたトレーニングサンプルで、LIMOはAIMEで57.1%、MATHで94.8%の精度を達成し、従来のSFTベースのモデルのそれぞれ6.5%および59.2%から改善しましたが、以前のアプローチが必要としたトレーニングデータのわずか1%しか使用していません。LIMOは、10の多様なベンチマークで40.5%の絶対的な改善を達成し、100倍のデータで訓練されたモデルを上回る優れた分布外一般化を示し、SFTが暗記をもたらすのではなく一般化を促すという考え方に挑戦しています。これらの結果に基づき、私たちは「Less-Is-More Reasoning Hypothesis（LIMO仮説）」を提案します：ドメイン知識が事前学習中に包括的にエンコードされた基盤モデルにおいて、洗練された推論能力は、最小限でありながら正確に調整された認知プロセスのデモンストレーションを通じて生まれる可能性があります。この仮説は、複雑な推論の引き出しの閾値が次の2つの重要な要因によって決定されることを示唆しています：(1) 事前学習中にモデルのエンコードされた知識の基盤の完全性、(2) 複雑な推論タスクを解決するために知識ベースを活用する方法をモデルに示す「認知テンプレート」としてのポストトレーニング例の効果。データ効率の良い推論における再現性と今後の研究を促進するために、私たちはLIMOを包括的なオープンソーススイートとしてリリースします。詳細はhttps://github.com/GAIR-NLP/LIMOをご覧ください。
+  - We challenge the prevailing assumption that complex reasoning in large language models (LLMs) necessitates massive training data. We demonstrate that sophisticated mathematical reasoning can emerge with only a few examples. Specifically, through simple supervised fine-tuning, our model, LIMO, achieves 63.3\% accuracy on AIME24 and 95.6\% on MATH500, surpassing previous fine-tuned models (6.5\% on AIME24, 59.2\% on MATH500) while using only 1\% of the training data required by prior approaches. Furthermore, LIMO exhibits strong out-of-distribution generalization, achieving a 45.8\% absolute improvement across diverse benchmarks, outperforming models trained on 100x more data. Synthesizing these findings, we propose the Less-Is-More Reasoning Hypothesis (LIMO Hypothesis): In foundation models where domain knowledge has been comprehensively encoded during pre-training, sophisticated reasoning can emerge through minimal but strategically designed demonstrations of cognitive processes. This hypothesis suggests that the threshold for eliciting complex reasoning is not dictated by task complexity but rather by two key factors: (1) the completeness of the model's pre-trained knowledge base and (2) the effectiveness of post-training examples in serving as "cognitive templates" that guide reasoning.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）における複雑な推論には膨大な訓練データが必要であるという一般的な仮説に挑む。限られた例数だけで高度な数学的推論が出現し得ることを示す。具体的には、単純な監視付きファインチューニングを通じて、我々のモデルLIMOはAIME24で63.3%の精度、MATH500で95.6%の精度を達成し、従来のファインチューニングモデル（AIME24で6.5%、MATH500で59.2%）を上回りつつ、先行手法が必要とした学習データの1%のみを使用している。さらに、LIMOは分布外の一般化にも強く、さまざまなベンチマークにおいて絶対値で45.8%の改善を達成し、データを100倍以上使用して訓練されたモデルを上回っている。これらの知見を総合すると、Less-Is-More Reasoning Hypothesis（LIMO仮説）を提案する。事前学習中に基盤モデルへドメイン知識が網羅的に組み込まれている場合、知的過程の最小限かつ戦略的に設計されたデモンストレーションを通じて高度な推論が出現し得る。この仮説は、複雑な推論を引き出す閾値はタスクの難易度によって決まるのではなく、次の2つの要因によって決まると示唆する：（1）モデルの事前学習知識ベースの完全性、（2）訓練後の例が“認知テンプレート”として推論を導く効果の有無である。
 # Summary (by gpt-4o-mini)
-- LIMOモデルは、わずか817のトレーニングサンプルで複雑な数学的推論を効果的に引き出し、AIMEで57.1%、MATHで94.8%の精度を達成。従来のモデルよりも少ないデータで優れたパフォーマンスを示し、一般化を促す「Less-Is-More Reasoning Hypothesis」を提案。LIMOはオープンソースとして提供され、データ効率の良い推論の再現性を促進する。</issue-body>
+- 限られた訓練データで高度な数学的推論が可能であることを示す。モデルLIMOはAIME24で63.3%、MATH500で95.6%の精度を達成し、従来モデルを大幅に上回る。LIMOは分布外の一般化にも強く、従来のモデルよりも少ないデータで55%の改善を実現。Less-Is-More Reasoning Hypothesis（LIMO仮説）を提案し、事前知識の完全性と戦略的デモンストレーションの効果が推論の質を左右することを示唆。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
@@ -5644,14 +5644,20 @@ https://github.com/princeton-pli/STAT。
 </div>
 {% endraw %}
 
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=T2TZ0RY4Zk#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=T2TZ0RY4Zk#discussion</a>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</title>
+<title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, RewardHacking, PostTraining, Selected Papers/Blogs</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2502.03373
@@ -5740,7 +5746,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 </paper-entry>
 
 <paper-entry>
-<title>SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model   Post-training, Tianzhe Chu+, ICML'25</title>
+<title>[Paper Note] SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model   Post-training, Tianzhe Chu+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.17161</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1740</repo-issue-link>
 <tags>ComputerVision, Analysis, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, ICML, PostTraining, read-later, Selected Papers/Blogs</tags>
@@ -6027,10 +6033,10 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 </paper-entry>
 
 <paper-entry>
-<title>Spectrum: Targeted Training on Signal to Noise Ratio, Eric Hartford+, arXiv'24</title>
+<title>[Paper Note] Spectrum: Targeted Training on Signal to Noise Ratio, Eric Hartford+, arXiv'24, 2024.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2406.06623</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1724</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT)</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Supervised-FineTuning (SFT), action_wanted, PostTraining, One-Line Notes</tags>
 <repo-issue-date>2025-01-25</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2406.06623
@@ -6041,10 +6047,10 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
   - David Golchinfar
 # Abstract
   - Efficiently post-training large language models remains a challenging task due to the vast computational resources required. We present Spectrum, a method that accelerates LLM training by selectively targeting layer modules based on their signal-to-noise ratio (SNR), and freezing the remaining modules. Our approach, which utilizes an algorithm to compute module SNRs prior to training, has shown to effectively match the performance of full fine-tuning while reducing GPU memory usage. Experiments comparing Spectrum to existing methods such as QLoRA demonstrate its effectiveness in terms of model quality and VRAM efficiency in distributed environments.
-# Translation (by gpt-4o-mini)
-- 大規模言語モデルの効率的なポストトレーニングは、必要な膨大な計算リソースのために依然として困難な課題です。本研究では、信号対雑音比（SNR）に基づいてレイヤーモジュールを選択的にターゲットにし、残りのモジュールをフリーズすることでLLMのトレーニングを加速する手法「Spectrum」を提案します。トレーニング前にモジュールのSNRを計算するアルゴリズムを利用する我々のアプローチは、GPUメモリ使用量を削減しながら、フルファインチューニングのパフォーマンスに効果的に匹敵することが示されています。Spectrumと既存の手法であるQLoRAを比較した実験は、分散環境におけるモデルの品質とVRAM効率の面でその有効性を示しています。
+# Translation (by gpt-5-nano)
+- 大規模言語モデルのポストトレーニングを効率的に行うことは、膨大な計算資源を要するため依然として難題です。Spectrumを提案します。Spectrumは信号対雑音比（SNR）に基づいてレイヤーモジュールを選択的にターゲットとし、残りのモジュールを凍結してLLMのトレーニングを加速する手法です。訓練前にモジュールSNRを算出するアルゴリズムを用いるこのアプローチは、フルファインチューニングの性能に実質的に匹敵しつつGPUメモリ使用量を削減することを示しています。SpectrumをQLoRAなど従来の手法と比較した実験は、分散環境におけるモデル品質とVRAM効率の点でその有効性を示しています。
 # Summary (by gpt-4o-mini)
-- 「Spectrum」という手法を提案し、SNRに基づいてレイヤーモジュールを選択的にターゲットにすることで、LLMのトレーニングを加速。これによりGPUメモリ使用量を削減しつつ、フルファインチューニングに匹敵する性能を実現。実験により、既存手法QLoRAと比較してモデルの品質とVRAM効率の向上が確認された。</issue-body>
+- 大規模言語モデルのポストトレーニングを効率化する手法「Spectrum」を提案。SNRに基づいてレイヤーモジュールを選択し、他を凍結することでトレーニングを加速。性能はフルファインチューニングに匹敵し、GPUメモリ使用量を削減。従来手法との比較実験でモデル品質とVRAM効率の向上を確認。</issue-body>
 <maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1723" target="_blank" rel="noopener noreferrer">How to fine-tune open LLMs in 2025 with Hugging Face, PHILSCHMID, 2024.12</a>
 <br><br>によるとLLMのうち最もinformativeなLayerを見つけ、選択的に学習することで、省リソースで、Full-Parameter tuningと同等の性能を発揮する手法らしい<br><br></p></maintainer-comment-text>
 </paper-entry>
@@ -6076,10 +6082,10 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 </paper-entry>
 
 <paper-entry>
-<title>Grounding Language Model with Chunking-Free In-Context Retrieval, Hongjin Qian+, arXiv'24</title>
+<title>[Paper Note] Grounding Language Model with Chunking-Free In-Context Retrieval, Hongjin Qian+, ACL'24, 2024.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2402.09760</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1671</repo-issue-link>
-<tags>Embeddings, Supervised-FineTuning (SFT), RAG(RetrievalAugmentedGeneration), LongSequence, ACL, PostTraining</tags>
+<tags>Embeddings, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration), LongSequence, ACL, PostTraining, KeyPoint Notes</tags>
 <repo-issue-date>2025-01-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2402.09760
@@ -6091,12 +6097,12 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
   - Zhicheng Dou
 # Abstract
   - This paper presents a novel Chunking-Free In-Context (CFIC) retrieval approach, specifically tailored for Retrieval-Augmented Generation (RAG) systems. Traditional RAG systems often struggle with grounding responses using precise evidence text due to the challenges of processing lengthy documents and filtering out irrelevant content. Commonly employed solutions, such as document chunking and adapting language models to handle longer contexts, have their limitations. These methods either disrupt the semantic coherence of the text or fail to effectively address the issues of noise and inaccuracy in evidence retrieval.   CFIC addresses these challenges by circumventing the conventional chunking process. It utilizes the encoded hidden states of documents for in-context retrieval, employing auto-aggressive decoding to accurately identify the specific evidence text required for user queries, eliminating the need for chunking. CFIC is further enhanced by incorporating two decoding strategies, namely Constrained Sentence Prefix Decoding and Skip Decoding. These strategies not only improve the efficiency of the retrieval process but also ensure that the fidelity of the generated grounding text evidence is maintained. Our evaluations of CFIC on a range of open QA datasets demonstrate its superiority in retrieving relevant and accurate evidence, offering a significant improvement over traditional methods. By doing away with the need for document chunking, CFIC presents a more streamlined, effective, and efficient retrieval solution, making it a valuable advancement in the field of RAG systems.
-# Translation (by gpt-4o-mini)
-- 本論文では、Retrieval-Augmented Generation（RAG）システムに特化した新しいChunking-Free In-Context（CFIC）リトリーバルアプローチを提案します。従来のRAGシステムは、長文の処理や関連性のないコンテンツのフィルタリングの課題により、正確な証拠テキストを用いて応答を基にすることに苦労しています。一般的に用いられる解決策、例えば文書のチャンク化や長いコンテキストを処理するために言語モデルを適応させる方法には限界があります。これらの方法は、テキストの意味的な一貫性を損なうか、証拠のリトリーバルにおけるノイズや不正確さの問題に効果的に対処できません。
+# Translation (by gpt-5-nano)
+- 本論文は、Retrieval-Augmented Generation (RAG)システム向けに特化した、新規のチャンク化フリーのインコンテキスト（CFIC）検索アプローチを提案する。従来のRAGシステムは、長文ドキュメントの処理や関連性のない内容を除外する難しさのため、正確なエビデンステキストを用いて回答を根拠づけることに苦労することが多い。文書のチャンク化や長い文脈を扱えるよう言語モデルを適応させるといったよく採用される解決策には、それぞれ限界がある。これらの方法はテキストの意味的整合性を乱すことがあるか、エビデンス検索におけるノイズや不正確さの問題に十分対処できない。
 
-CFICは、従来のチャンク化プロセスを回避することでこれらの課題に対処します。文書のエンコードされた隠れ状態を利用してインコンテキストリトリーバルを行い、自己回帰的デコーディングを用いてユーザーのクエリに必要な特定の証拠テキストを正確に特定し、チャンク化の必要を排除します。CFICはさらに、制約付き文のプレフィックスデコーディングとスキップデコーディングという2つのデコーディング戦略を組み込むことで強化されています。これらの戦略は、リトリーバルプロセスの効率を向上させるだけでなく、生成された基盤テキスト証拠の忠実性を維持することを保証します。CFICをさまざまなオープンQAデータセットで評価した結果、関連性が高く正確な証拠をリトリーブする上での優位性が示され、従来の方法に対して大幅な改善を提供しています。文書のチャンク化の必要を排除することで、CFICはより効率的で効果的なリトリーバルソリューションを提供し、RAGシステムの分野における貴重な進展を示しています。
+CFICは、従来のチャンク化プロセスを回避することで、これらの課題に対処する。文書のエンコード済み隠れ状態を文脈内検索に利用し、自己回帰デコーディングを用いて、ユーザーのクエリに必要な特定の根拠テキストを正確に識別し、チャンク化の必要を排除する。CFICはさらに、Constrained Sentence Prefix Decoding（制約付き文頭プレフィックスデコーディング）およびSkip Decodingという2つのデコーディング戦略を組み込むことで強化される。これらの戦略は、検索プロセスの効率を向上させるだけでなく、生成される根拠テキストエビデンスの忠実度を維持することを保証する。CFICをさまざまなオープンQAデータセットで評価した結果、関連性が高く正確なエビデンスを取得する能力において従来手法より優れており、大幅な改善を示す。文書のチャンク化を不要にすることで、CFICはよりシンプルで効果的かつ効率的な検索ソリューションを提供し、RAGシステム分野における有意な進歩となる。
 # Summary (by gpt-4o-mini)
-- CFICは、Retrieval-Augmented Generation（RAG）システム向けの新しいリトリーバルアプローチで、従来のチャンク化を回避し、文書のエンコードされた隠れ状態を利用して正確な証拠テキストを特定します。制約付き文のプレフィックスデコーディングとスキップデコーディングを組み込むことで、リトリーバルの効率と生成された証拠の忠実性を向上させます。CFICはオープンQAデータセットで評価され、従来の方法に対して大幅な改善を示し、RAGシステムの効率的で効果的なリトリーバルソリューションを提供します。</issue-body>
+- CFICはチャンク化を避け、文書のエンコード済み隠れ状態を利用した新しい検索アプローチを提案。ユーザーのクエリに必要なエビデンステキストを正確に識別し、従来のRAGシステムより優れたエビデンスの取得能力を示す。これにより、RAGシステムの効率性が向上し、よりシンプルで効果的な検索が可能となる。</issue-body>
 <maintainer-comment-text><p>Chunking無しでRAGを動作させられるのは非常に魅力的。<br><img src="https://github.com/user-attachments/assets/8841930a-3099-46c8-aae7-50f52473fbb1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>一貫してかなり性能が向上しているように見える<br><img src="https://github.com/user-attachments/assets/6eae7811-090a-4f84-aa8d-6d74a55e8427" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>提案手法の概要。InputとOutput全体の実例がほとんど掲載されていないので憶測を含みます。<br><br>気持ちとしては、ソーステキストが与えられたときに、Questionの回答をsupportするようなソース中のpassageの情報を活用して回答するために、重要なsentenceのprefixを回答生成前に生成させる（重要なsentenceの識別子の役割を果たす）ことで、（識別子によって重要な情報によって条件づけられて回答生成ができるやうになるのて）それら情報をより考慮しながらモデルが回答を生成できるようになる、といった話だと思われる。<br><br>Table2のようなテンプレートを用いて、ソーステキストと質問文でモデルを条件付けて、回答をsupportするsentenceのprefixを生成する。生成するprefixは各sentenceのユニークなprefixのtoken log probabilityの平均値によって決まる（トークンの対数尤度が高かったらモデルが暗黙的にその情報はQuestionにとって重要だと判断しているとみなせる）。SkipDecodingの説を読んだが、ぱっと見よく分からない。おそらく[eos]を出力させてprefix間のデリミタとして機能させたいのだと思うが、[eos]の最適なpositionはどこなのか？みたいな数式が出てきており、これがデコーディングの時にどういった役割を果たすのかがよくわからない。<br><br>また、モデルはQAと重要なPassageの三つ組のデータで提案手法によるデコーディングを適用してSFTしたものを利用する。<br><br><img src="https://github.com/user-attachments/assets/fa4e575e-c6cb-452a-be3e-0d9bacb3cacb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/1985754f-c21f-4904-be50-6f4f7eef56d1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
@@ -8316,9 +8322,9 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 <maintainer-comment-text><p>- 119言語をサポート<br>- MoEモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1911" target="_blank" rel="noopener noreferrer">Outrageously Large Neural Networks: The Sparsely-Gated  Mixture-of-Experts Layer, Noam Shazeer+, ICLR'17</a>
 <br>    - 30B-A3B / 235B-A22N<br>    - 128K context window<br>    - Qwen2.5はMoEを採用していないので新たなアーキテクチャとなる<br>- Denseモデル（非MoEモデル）も公開<br>    - 0.6B -- 32B<br>    - 32K -- 128K context window<br>- Thinking/Non-thinking の切り替えが切り替えが可能<br>    - スイッチは自動的に実施されるが、ユーザが明示的に `/think`, `/no_think` を user_promptの末尾に追加することで制御することも可能<br>- Pre-training<br>    - データ<br>        - 36 trillion tokensによって学習（Qwen-2.5の2倍）<br>        - 学習データではwebデータに加えて、PDF-likeな文書群からQwen2.5-VL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1835" target="_blank" rel="noopener noreferrer">Qwen2.5-VL-32B-Instruct, Qwen Team, 2025.03</a>
  によってテキストを抽出し、Qwen2.5 で抽出された内容の品質を改善し利用<br>        - また、math / code に関するデータを追加するために、Qwen2.5-Math / Qwen2.5-Coderを用いて合成データを作成（textbooks / QA pairs / code snippets <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
- ）<br>    - 事前学習のステップ<br>        - S1: context長が4kの30 trillion tokenで事前学習<br>        - S2: STEM / coding / reasoning task などのknowledge-intensiveデータの比率を増やして継続事前学習 (これがおそらく 5 trillion token程度？)<br>        - Final Stage: context長を32kに拡大し高品質なlong-context dataで継続事前学習<br>    - これによりBaseモデルが完成し、Qwen3-235B全体のうち10%程度のActive Parameterの利用するだけで（i.e., 22Bで）、Qwen2.5-72B Baseと同等以上の性能達成<br>- Post-training<br>    - S1: long-CoT cold start<br>        - 数学/coding/logical reasoning/STEMなどの多様なlong CoTデータを用いてSFT <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">s1: Simple test-time scaling, Niklas Muennighoff+, arXiv'25</a>
+ ）<br>    - 事前学習のステップ<br>        - S1: context長が4kの30 trillion tokenで事前学習<br>        - S2: STEM / coding / reasoning task などのknowledge-intensiveデータの比率を増やして継続事前学習 (これがおそらく 5 trillion token程度？)<br>        - Final Stage: context長を32kに拡大し高品質なlong-context dataで継続事前学習<br>    - これによりBaseモデルが完成し、Qwen3-235B全体のうち10%程度のActive Parameterの利用するだけで（i.e., 22Bで）、Qwen2.5-72B Baseと同等以上の性能達成<br>- Post-training<br>    - S1: long-CoT cold start<br>        - 数学/coding/logical reasoning/STEMなどの多様なlong CoTデータを用いてSFT <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">[Paper Note] s1: Simple test-time scaling, Niklas Muennighoff+, EMNLP'25, 2025.01</a>
  <br>    - S2: reasoning-based RL<br>        - rule-based (verifiable) rewards によるRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
- <br>        - S1/S2の流れは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+ <br>        - S1/S2の流れは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
  に有効性が示されている通り、long CoT DataによるSFT -> RLを実施<br>    - S3: thinking mode fusion<br>        - S2データを用いてlong CoTデータとinstruction tuningデータ（非Long CoT）を生成し、Thinking/Non-thinkingを自動的に選択し生成するように学習（SFT or RLは記述なし）<br>    - S4: general RL<br>        - 20以上の一般的なドメインのタスクを通じて一般的な能力の向上と、safetyに関するalignmentの実施（e.g., instruction following, format following, agent能力など）</p><p>BestPracticeに関するポスト:
 
 {% raw %}
@@ -8352,7 +8358,7 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 <maintainer-comment-text><p>DeepSeek-R1をGPQA Diamond <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155" target="_blank" rel="noopener noreferrer">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N/A, COLM'24</a>
 , AIME2024/2025, Llama4 Maverickを<br>BFCLv2（Tool Calling, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1875" target="_blank" rel="noopener noreferrer">BFCLv2, UC Berkeley, 2024.08</a>
 ), IFEVal <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137" target="_blank" rel="noopener noreferrer">[Paper Note] Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, arXiv'23, 2023.11</a>
- で上回り, そのほかはArenaHardを除きDeepSeekR1と同等<br><img src="https://github.com/user-attachments/assets/b0de99ee-f4ec-4b03-8b0b-8939b4f1e23b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>DeepSeekR1が671B（MoEで37B Activation Param）に対し、こちらは253B（ただし、Llama3.1がベースなのでMoEではない）で同等以上の性能となっている。<br>ReasoningをON/OFFする能力も備わっている。<br><br>モデルがどのように訓練されたかを示す全体図がとても興味深い:<img src="https://github.com/user-attachments/assets/9a014777-61d8-46ae-818b-ace9ed5c002d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>特に <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, arXiv'25</a>
+ で上回り, そのほかはArenaHardを除きDeepSeekR1と同等<br><img src="https://github.com/user-attachments/assets/b0de99ee-f4ec-4b03-8b0b-8939b4f1e23b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>DeepSeekR1が671B（MoEで37B Activation Param）に対し、こちらは253B（ただし、Llama3.1がベースなのでMoEではない）で同等以上の性能となっている。<br>ReasoningをON/OFFする能力も備わっている。<br><br>モデルがどのように訓練されたかを示す全体図がとても興味深い:<img src="https://github.com/user-attachments/assets/9a014777-61d8-46ae-818b-ace9ed5c002d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>特に <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
  でも有効性が示されているように、SFTをしてからReasoningを強化する（強化というより元々持っている能力を引き出す？）RLを実施している。<br><br>詳細は下記Blogとのこと:<br>
 
 {% raw %}
@@ -8452,17 +8458,17 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 <title>LLM Datasets, mlabonne, 2025.01</title>
 <original-paper-blog-link>https://github.com/mlabonne/llm-datasets</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1727</repo-issue-link>
-<tags>NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT), Repository</tags>
+<tags>NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT), Repository, PostTraining, Selected Papers/Blogs, One-Line Notes</tags>
 <repo-issue-date>2025-01-25</repo-issue-date>
 <issue-body>https://github.com/mlabonne/llm-datasets</issue-body>
-<maintainer-comment-text><p>LLMの事後学習用のデータをまとめたリポジトリ</p></maintainer-comment-text>
+<maintainer-comment-text><p>LLMの事後学習用のデータをまとめたリポジトリ</p><p>現在も更新されている。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
 <title>How to fine-tune open LLMs in 2025 with Hugging Face, PHILSCHMID, 2024.12</title>
 <original-paper-blog-link>https://www.philschmid.de/fine-tune-llms-in-2025</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1723</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), Blog, PostTraining</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), python, Blog, SoftwareEngineering, PostTraining, One-Line Notes</tags>
 <repo-issue-date>2025-01-25</repo-issue-date>
 <issue-body>https://www.philschmid.de/fine-tune-llms-in-2025</issue-body>
 <maintainer-comment-text><p>SFTTrainerを用いたLLMのSFTについて、実用的、かつ基礎的な内容がコード付きでまとまっている。</p></maintainer-comment-text>
@@ -8472,7 +8478,7 @@ HF:https://huggingface.co/Hcompany/Holo1.5-7B</issue-body>
 <title>How to align open LLMs in 2025 with DPO & and synthetic data, PHILSCHMID, 2025.01</title>
 <original-paper-blog-link>https://www.philschmid.de/rl-with-llms-in-2025-dpo</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1722</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), Blog, DPO, PostTraining</tags>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), python, Blog, SoftwareEngineering, DPO, PostTraining, KeyPoint Notes</tags>
 <repo-issue-date>2025-01-25</repo-issue-date>
 <issue-body>https://www.philschmid.de/rl-with-llms-in-2025-dpo</issue-body>
 <maintainer-comment-text><p>元ポスト:
