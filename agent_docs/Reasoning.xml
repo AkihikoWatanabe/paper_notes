@@ -10130,7 +10130,7 @@ LLMsおよびビジョン言語モデル（VLMs）における推論は、この
 <title>PLaMo 3.0 Prime β版をリリースしました, PFN, 2026.03</title>
 <original-paper-blog-link>https://tech.preferred.jp/ja/blog/plamo-3-prime-beta-release/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4943</repo-issue-link>
-<tags>NLP, LanguageModel, Blog, Reasoning, Japanese</tags>
+<tags>NLP, LanguageModel, Blog, Reasoning, Japanese, Selected Papers/Blogs, In-Depth Notes, Surface-level Notes</tags>
 <repo-issue-date>2026-03-19</repo-issue-date>
 <issue-body>https://tech.preferred.jp/ja/blog/plamo-3-prime-beta-release/</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -10143,9 +10143,26 @@ LLMsおよびビジョン言語モデル（VLMs）における推論は、この
 </div>
 {% endraw %}
 
-</p><p>日本国内初のフルスクラッチReasoningモデル</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2338" target="_blank" rel="noopener noreferrer">[Paper Note] YaRN: Efficient Context Window Extension of Large Language Models, Bowen Peng+, ICLR'24</a>
-<br><br>によってcontext windowを64Kまで拡張（PLaMo 2.2 Primeの2倍）。<br><br>事前学習データの見直し（新たなオープンデータセット追加, 独自データとして、日本語指示追従能力, tool use, long horizon QA, 医療分野, STEM, RAG性能向上のためのデータ）を実施し、事前学習に続いてSFT, DPO, RLを実施。SFT, DPOについてはreasoning trajectoryもLossで考慮するように変更。SFT, DPO向けデータについてはreasoning trajectoryを合成したものを利用。<br><br>DPOにNLL lossを追加することでreasoningを強化できることは下記研究で示されている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2127" target="_blank" rel="noopener noreferrer">[Paper Note] Iterative Reasoning Preference Optimization, Richard Yuanzhe Pang+, NeurIPS'24, 2024.04</a>
-<br><br>RLは今回初めて導入し学習を安定させるための工夫を取り入れているとのこと。Reference Answerとの比較と表層的な特徴から報酬を計算する関数を実装した、という書かれ方をしているが、おそらく何らかのVerificationのための仕組みと、Rubric-basedなLLM-as-a-Judgeだろうか？あとは、Reward Modelという書かれ方はしていない。</p></maintainer-comment-text>
+</p><p>日本国内初のフルスクラッチReasoningモデル</p><p>
+<strong>## 公式発表のまとめ<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2338" target="_blank" rel="noopener noreferrer">[Paper Note] YaRN: Efficient Context Window Extension of Large Language Models, Bowen Peng+, ICLR'24</a>
+</strong>
+<br>
+<br><br>によってcontext windowを64Kまで拡張（PLaMo 2.2 Primeの2倍）。<br><br>事後学習データの見直し（新たなオープンデータセット追加, 独自データとして、日本語指示追従能力, tool use, long horizon QA, 医療分野, STEM, RAG性能向上のためのデータ）を実施し、SFT, DPO, RLの流れで学習を実施。SFT, DPOについてはreasoning trajectoryもLossで考慮するように変更。SFT, DPO向けデータについてはreasoning trajectoryを合成したものを利用。<br><br>RLは今回初めて導入し学習を安定させるための工夫を取り入れているとのこと。Reference Answerとの比較と表層的な特徴から報酬を計算する関数を実装した、という書かれ方をしている。<br><br>gpt-oss-120B(memium)との比較で言うと<br>指示追従性能が日本語、英語ともによりも高く、医療分野のQA（国家試験を除く）、英語、日本語での対話能力で勝っている。また、法令分野のQAは同等である。<br><br>単一ツールや複数ツールからの選択は同等、multi turnの場合はPLaMo2.2から大幅に性能向上しているもののgpt-ossよりも劣る。また、long contextのQA、医療分野の国家試験QA、STEM分野のQAや数学的な推論能力は大幅に前回モデルよりも向上したが、まだgpt-ossなどには届いていない、という感じに見える。<br><br>アーキテクチャについては、一新したという話とRoPEベースということ以外はよくわからない。<br><br>
+<strong>## 筆者の憶測と感想<br>※以下、筆者の憶測を多く含んだ感想です。ただ筆者が勝手に想像して自分なりに考えてみているだけです。<br><br>DPOにNLL lossを追加することでreasoningを強化できることは下記研究で示されている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2127" target="_blank" rel="noopener noreferrer">[Paper Note] Iterative Reasoning Preference Optimization, Richard Yuanzhe Pang+, NeurIPS'24, 2024.04</a>
+</strong>
+<br>
+<br><br>RLの報酬に関して、表層的な特徴とReference Answerとの比較から最適な報酬を計算とのことなので、おそらく何らかのVerificationのための仕組みと、Rubric-basedなLLM-as-a-Judgeだろうか？Reward Modelという書かれ方はしていない。<br><br>RLについては安定性のある手法を採用したとのことだが、DAPO、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</a>
+<br><br>あるいはRLのスケーリング則を導いた研究でDAPOよりも安定性と最終到達性能において優れていることが示された<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3282" target="_blank" rel="noopener noreferrer">[Paper Note] The Art of Scaling Reinforcement Learning Compute for LLMs, Devvrit Khatri+, arXiv'25, 2025.10</a>
+<br><br>CISPOあたりだろうか:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3283" target="_blank" rel="noopener noreferrer">[Paper Note] MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning
+  Attention, MiniMax+, arXiv'25, 2025.06</a>
+<br><br>あとは安定性という観点で言うと、inference/trainingエンジンでのtraining-inference gapの課題についても対処している可能性がある。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4039" target="_blank" rel="noopener noreferrer">Hot topics in RL, Kimbo, X, 2025.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4387" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond Precision: Training-Inference Mismatch is an Optimization Problem and Simple LR Scheduling Fixes It, Yaxiang Zhang+, arXiv'26, 2026.02</a>
+<br><br>思考過程が英語ということは、言語間で能力は転移し、かつ事前学習データとしてはリソースが豊富な英語が多く含まれると想像すると、明示的（strong LLMでtrajectoryを合成したものを加える系の話）あるいはデータに自然と現れるreasoningの挙動から事前学習中にreasoning能力が暗黙的に学習されることを踏まえ、SFTでreasoning能力を強化する際に（日本語よりも英語の方が効果的な可能性が高く）英語でのtrajectoryを合成したという感じだろうか（いつか日本語のreasoning trajectoryを出力するモデルも見てみたいなあ）。<br><br>Multi Turnのtool useの性能向上に関して、AI Agent分野のlong horizonな合成データを合成するアプローチや、Sink Tokenの活用や、トークン単位でsink tokenを計算することに相当するHead wise gated attentionなどはしているのだろうか。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4371" target="_blank" rel="noopener noreferrer">[Paper Note] Step 3.5 Flash: Open Frontier-Level Intelligence with 11B Active Parameters, Ailin Huang+, arXiv'26, 2026.02</a>
+<br><br>また、アーキテクチャに関してはcontext windowが海外のフロンティアモデルと比較してまだ小さめであるが、今後context windowを大きくするにあたって、オンポリシーRLでのロールアウト時間がボトルネックとなることが考えられ、Mamba(＝linear attention)系のアーキテクチャをハイブリッドや、DSA系のsparse attentionなどの採用によるアーキテクチャ起因の計算コスト低減（現在どのようなアーキテクチャなのかは全くわからないが）、あるいはin-flight-updateのような学習エンジン側での効率化なども必要になるのではなかろうか（現在どういうエンジンなのかは全くわからないが）。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3860" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models, DeepSeek-AI+, arXiv'25, 2025.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3615" target="_blank" rel="noopener noreferrer">[Paper Note] PipelineRL: Faster On-policy Reinforcement Learning for Long Sequence
+  Generation, Alexandre Piché+, arXiv'25, 2025.09</a>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
