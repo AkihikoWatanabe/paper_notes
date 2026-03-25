@@ -1897,7 +1897,7 @@ My Issue
 </div>
 
 
-</p><p>Inflight Weight Updates</p><p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p><p>あとこれは余談だが、引用ポストの主は下記研究でattentionメカニズムを最初に提案したBahdanau氏である。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1954" target="_blank" rel="noopener noreferrer">Neural Machine Translation by Jointly Learning to Align and Translate, Dzmitry Bahdanau+, ICLR'15</a>
+</p><p>Inflight Weight Updates</p><p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p><p>あとこれは余談だが、引用ポストの主は下記研究でattentionメカニズムを最初に提案したBahdanau氏である。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1954" target="_blank" rel="noopener noreferrer">[Paper Note] Neural Machine Translation by Jointly Learning to Align and Translate, Dzmitry Bahdanau+, ICLR'15</a>
 </p><p>続報:<br>
 
 
@@ -2356,6 +2356,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
 <a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2025-04-26</span>
 <span class="snippet"><span>Comment</span><p>githubリポジトリに関するリッチなドキュメントに対してDevinを通じて対話的に質問ができる模様。サインアップ不要で、githubリポジトリのドメインをdeepwikiに変えるだけで利用可能</p></span><br><br>
 </article>
@@ -3558,9 +3559,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Simulation.html"
-            title="Simulationに関する論文・技術記事メモの一覧">
-            Simulationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/InformationExtraction.html"
+            title="InformationExtractionに関する論文・技術記事メモの一覧">
+            InformationExtractionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
@@ -3568,32 +3569,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Sentence.html"
-            title="Sentenceに関する論文・技術記事メモの一覧">
-            Sentenceに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DataDriven.html"
+            title="DataDrivenに関する論文・技術記事メモの一覧">
+            DataDrivenに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/KeyPoint-Notes.html"
-            title="KeyPoint Notesに関する論文・技術記事メモの一覧">
-            KeyPoint Notesに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/AffectDetection.html"
-            title="AffectDetectionに関する論文・技術記事メモの一覧">
-            AffectDetectionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/A2A.html"
+            title="A2Aに関する論文・技術記事メモの一覧">
+            A2Aに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Bias.html"
+            title="Biasに関する論文・技術記事メモの一覧">
+            Biasに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li></ul>

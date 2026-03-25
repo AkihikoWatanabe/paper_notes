@@ -36,12 +36,26 @@
 </paper-entry>
 
 <paper-entry>
-<title>Sequence Parallelism: Long Sequence Training from System Perspective, Li+, ACL'23</title>
-<original-paper-blog-link>https://aclanthology.org/2023.acl-long.134/</original-paper-blog-link>
+<title>[Paper Note] Sequence Parallelism: Long Sequence Training from System Perspective, Shenggui Li+, ACL'23, 2021.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2105.13120</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1970</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, ACL, Parallelism</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, action_wanted, LongSequence, ACL, Selected Papers/Blogs, Parallelism, One-Line Notes</tags>
 <repo-issue-date>2025-05-16</repo-issue-date>
-<issue-body>https://aclanthology.org/2023.acl-long.134/</issue-body>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2105.13120
+- acl anthology: https://aclanthology.org/2023.acl-long.134/
+# Authors
+  - Shenggui Li
+  - Fuzhao Xue
+  - Chaitanya Baranwal
+  - Yongbin Li
+  - Yang You
+# Abstract
+  - Transformer achieves promising results on various tasks. However, self-attention suffers from quadratic memory requirements with respect to the sequence length. Existing work focuses on reducing time and space complexity from an algorithm perspective. In this work, we propose sequence parallelism, a memory-efficient parallelism method to help us break input sequence length limitation and train with longer sequences on GPUs efficiently. Our approach is compatible with most existing parallelisms (e.g. data parallelism, pipeline parallelism and tensor parallelism), which means our sequence parallelism makes 4D parallelism possible. More importantly, we no longer require a single device to hold the whole sequence. That is, with sparse attention, our sequence parallelism enables us to train transformer with infinite long sequence. Specifically, we split the input sequence into multiple chunks and feed each chunk into its corresponding device (i.e. GPU). To compute the attention output, we integrated ring-style communication with self-attention calculation and proposed Ring Self-Attention (RSA). Experiments show that sequence parallelism performs well when scaling with batch size and sequence length. Compared with tensor parallelism, our approach achieved $13.7\times$ and $3.0\times$ maximum batch size and sequence length respectively when scaling up to 64 NVIDIA P100 GPUs. With sparse attention, sequence can handle sequence with over 114K tokens, which is over $27\times$ longer than existing sparse attention works holding the whole sequence on a single device.
+# Translation (by gpt-5-nano)
+- トランスフォーマーはさまざまなタスクで有望な成果を上げている。しかし、自己注意はシーケンス長に対して二次的なメモリ要件を要する。既存の研究は、アルゴリズムの観点から時間計算量と空間計算量を削減することに焦点を当てている。本研究では、入力シーケンスの長さの制約を打破し、GPU上でより長いシーケンスを効率的に学習できるようにする、メモリ効率の高い並列化手法として「シーケンス並列性」を提案する。我々のアプローチは、データ並列、パイプライン並列、テンソル並列など、ほとんどの既存の並列化手法と互換性があり、すなわちシーケンス並列性によって4D並列が可能になる。さらに重要なのは、全体のシーケンスを単一のデバイスに保持する必要がなくなることである。すなわち、疎結合注意を用いることで、我々のシーケンス並列性は無限長のシーケンスでトランスフォーマーを訓練することを可能にする。具体的には、入力シーケンスを複数のチャンクに分割し、それぞれのチャンクを対応するデバイス（すなわちGPU）に入力する。自己注意計算を行うために、リング型通信を自己注意計算と組み合わせ、Ring Self-Attention（RSA）を提案した。実験の結果、シーケンス並列性はバッチサイズとシーケンス長のスケーリングにおいて良好に機能することが示された。テンソル並列化と比較して、64台のNVIDIA P100 GPUへスケールさせた場合、最大バッチサイズと最大シーケンス長はそれぞれ13.7倍と3.0倍を達成した。疎結合注意を用いると、シーケンスは114,000トークンを超える長さに対応でき、これは従来の単一デバイスで全長を保持する既存の疎結合注意手法より27倍以上長い。
+# Summary (by gpt-4o-mini)
+- 本研究では、トランスフォーマーの長い入力シーケンスを効率的に学習するための新しいメモリ効率の良い「シーケンス並列性」手法を提案。これは、既存の並列化手法との互換性を持ち、長大なシーケンスを複数のGPUに分散して処理することを可能にする。リング型通信を用いた自己注意計算（Ring Self-Attention）を導入し、実験によりバッチサイズとシーケンス長のスケーリング効果を示した。最大バッチサイズは13.7倍、シーケンス長は114,000トークンを超える性能を達成。</issue-body>
 <maintainer-comment-text><p>入力系列をチャンクに分割して、デバイスごとに担当するチャンクを決めることで原理上無限の長さの系列を扱えるようにした並列化手法。系列をデバイス間で横断する場合attention scoreをどのように計算するかが課題になるが、そのためにRing Self attentionと呼ばれるアルゴリズムを提案している模様。また、MLPブロックとMulti Head Attentonブロックの計算も、BatchSize * Sequence Lengthの大きさが、それぞれ32*Hidden Size, 16*Attention Head size * 
 <strong># of Attention Headよりも大きくなった場合に、Tensor Parallelismよりもメモリ効率が良くなるらしい。<br><img src="https://github.com/user-attachments/assets/f3ba9010-da3a-4c3a-8515-d3715466ff59" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Data Parallel, Pipeline Parallel, Tensor Parallel、全てに互換性があるとのこと（併用可能）</p><p>そのほかの並列化の解説については<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184" target="_blank" rel="noopener noreferrer">大規模モデルを支える分散並列学習のしくみ Part1</a>
 </strong>

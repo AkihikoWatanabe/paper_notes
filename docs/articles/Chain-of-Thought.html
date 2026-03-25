@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 59 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 0 min</span>
   </div></header>
 </div>
     </div>
@@ -2055,7 +2055,7 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- Chain-of-Thought（CoT）を基にしたChain-of-X（CoX）手法の調査を行い、LLMsの課題に対処するための多様なアプローチを分類。ノードの分類とアプリケーションタスクに基づく分析を通じて、既存の手法の意義と今後の可能性を議論。研究者にとって有用なリソースを提供することを目指す。</span>
 </article>
 <article class="paper-entry">
-<h3 id="adacot-pareto-optimal-1980" class="title-link">AdaCoT: Pareto-Optimal Adaptive Chain-of-Thought Triggering via  Reinforcement Learning, Chenwei Lou+, arXiv'25</h3><br><a href="https://arxiv.org/abs/2505.11896" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="adacot-pareto-optimal-1980" class="title-link">[Paper Note] AdaCoT: Pareto-Optimal Adaptive Chain-of-Thought Triggering via Reinforcement Learning, Chenwei Lou+, arXiv'25, 2025.05</h3><br><a href="https://arxiv.org/abs/2505.11896" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2071,12 +2071,19 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
 <a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2025-05-21</span>
-<span class="snippet"><span>GPT Summary</span>- AdaCoT（Adaptive Chain-of-Thought）は、LLMsが推論を適応的に行う新しいフレームワークで、CoTの呼び出しタイミングを最適化します。強化学習を用いて、クエリの複雑さに基づいてCoTの必要性を判断し、計算コストを削減します。実験では、AdaCoTがCoTトリガー率を3.18%に低下させ、応答トークンを69.06%減少させつつ、高い性能を維持することが示されました。</span>
-<span class="snippet"><span>Comment</span><p>RLのRewardにおいて、bassのリワードだけでなく、<br>- reasoningをなくした場合のペナルティ項<br>- reasoningをoveruseした場合のペナルティ項<br>- formattingに関するペナルティ項<br>を設定し、reasoningの有無を適切に判断できた場合にrewardが最大化されるような形にしている。(2.2.2)<br><br>が、multi-stageのRLでは（stageごとに利用するデータセットを変更するが）、データセットの分布には歪みがあり、たとえば常にCoTが有効なデータセットも存在しており（数学に関するデータなど）、その場合常にCoTをするような分布を学習してしまい、AdaptiveなCoT decisionが崩壊したり、不安定になってしまう（decision boundary collapseと呼ぶ）。特にこれがfinal stageで起きると最悪で、これまでAdaptiveにCoTされるよう学習されてきたものが全て崩壊してしまう。これを防ぐために、Selective Loss Maskingというlossを導入している。具体的には、decision token [^1]のlossへの貢献をマスキングするようにすることで、CoTが生じるratioにバイアスがかからないようにする。今回は、Decision tokenとして、`<think>`トークン直後のトークンをdecision tokenとみなし、lossに対する貢献をマスクしている（Selective Loss Masking）。<br><br>[^1]: CoTするかどうかは多くの場合このDecision Tokenによって決まる、といったことがどっかの研究に示されていたはず</p><p>いつか必要になったらしっかり読むが、全てのステージでSelective Loss Maskingをしたら、SFTでwarm upした段階からあまりCoTのratioが変化しないような学習のされ方になる気がするが、どのステージに対してapplyするのだろうか。</p></span><br><br>
+<span class="snippet"><span>GPT Summary</span>- AdaCoTは、LLMがChain-of-Thought（CoT）の使用を適応的に決定する新しい枠組み。これにより、計算コストや非効率性を軽減しつつ、複雑なクエリにおける推論性能を維持する。特にProximal Policy Optimization（PPO）を用いたRL手法を導入し、Selective Loss Masking（SLM）で推論トリガを安定させ、実験ではCoTトリガー率を最大3.18%削減、応答トークン数を69.06%削減したことが示された。</span>
+<span class="snippet"><span>Comment</span><p>RLのRewardにおいて、baseのリワードだけでなく、<br>- reasoningをなくした場合のペナルティ項<br>- reasoningをoveruseした場合のペナルティ項<br>- formattingに関するペナルティ項<br><br>を設定し、reasoningの有無を適切に判断できた場合にrewardが最大化されるような形にしている。(2.2.2)<br><br>が、multi-stageのRLでは（stageごとに利用するデータセットを変更するが）、データセットの分布には歪みがあり、たとえば常にCoTが有効なデータセットも存在しており（数学に関するデータなど）、その場合常にCoTをするような分布を学習してしまい、AdaptiveなCoT decisionが崩壊したり、不安定になってしまう（decision boundary collapseと呼ぶ）。特にこれがfinal stageで起きると最悪で、これまでAdaptiveにCoTされるよう学習されてきたものが全て崩壊してしまう。これを防ぐために、Selective Loss Maskingというlossを導入している。具体的には、decision token [^1]のlossへの貢献をマスキングするようにすることで、CoTが生じるratioにバイアスがかからないようにする。今回は、Decision tokenとして、`<think>`トークン直後のトークンをdecision tokenとみなし、lossに対する貢献をマスクしている（Selective Loss Masking）。<br><br>[^1]: CoTするかどうかは多くの場合このDecision Tokenによって決まる、といったことがどっかの研究に示されていたはず</p><p>いつか必要になったらしっかり読むが、全てのステージでSelective Loss Maskingをしたら、SFTでwarm upした段階からあまりCoTのratioが変化しないような学習のされ方になる気がするが、どのステージに対してapplyするのだろうか。</p><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=obXGSmmG70" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=obXGSmmG70</a>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="100-days-1925" class="title-link">100 Days After DeepSeek-R1: A Survey on Replication Studies and More  Directions for Reasoning Language Models, Chong Zhang+, arXiv'25</h3><br><a href="https://arxiv.org/abs/2505.00551" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="100-days-1925" class="title-link">[Paper Note] 100 Days After DeepSeek-R1: A Survey on Replication Studies and More Directions for Reasoning Language Models, Chong Zhang+, arXiv'25, 2025.05</h3><br><a href="https://arxiv.org/abs/2505.00551" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -2100,8 +2107,9 @@ My Issue
 <a class="button" href="Contamination-free.html" target="_blank" rel="noopener noreferrer">#Contamination-free</a>
 <a class="button" href="VerifiableRewards.html" target="_blank" rel="noopener noreferrer">#VerifiableRewards</a>
 <a class="button" href="CurriculumLearning.html" target="_blank" rel="noopener noreferrer">#CurriculumLearning</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <span class="issue_date">Issue Date: 2025-05-06</span>
-<span class="snippet"><span>GPT Summary</span>- 最近の推論言語モデル（RLM）の進展を受けて、DeepSeek-R1が注目を集めているが、その実装詳細は完全にはオープンソース化されていない。これにより、多くの再現研究が行われ、DeepSeek-R1のパフォーマンスを再現しようとする試みが続いている。特に、監視付きファインチューニング（SFT）と強化学習（RLVR）の戦略が探求され、貴重な洞察が得られている。本報告では、再現研究の概要を提供し、データ構築やトレーニング手順の詳細を紹介し、今後の研究の促進を目指す。また、RLMを強化するための追加技術や開発上の課題についても考察する。</span>
+<span class="snippet"><span>GPT Summary</span>- RLMの進展は新しい言語モデルの進化を示し、DeepSeek-R1のリリースが社会的影響を生んでいる。DeepSeekの実装は完全にオープンではないが、多くの再現研究が登場し、同等の性能を達成。特にSFTとRLVRに重点を置き、データ構築や手法設計に関する知見を提供。実装の詳細と実験結果をまとめ、RLMの性能向上技術や開発課題についても議論。研究者が最新の進展を把握し、新しいアイデアを促進することを目指す。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
 
 
@@ -2137,6 +2145,7 @@ My Issue
 <a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <a class="button" href="CompressionValleys.html" target="_blank" rel="noopener noreferrer">#CompressionValleys</a>
 <span class="issue_date">Issue Date: 2025-05-04</span>
 <span class="snippet"><span>GPT Summary</span>- 中間層の埋め込みが最終層を超えるパフォーマンスを示すことを分析し、情報理論や幾何学に基づくメトリクスを提案。32のテキスト埋め込みタスクで中間層が強力な特徴を提供することを実証し、AIシステムの最適化における中間層の重要性を強調。</span>
@@ -2180,7 +2189,7 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="rnns-are-1905" class="title-link">RNNs are not Transformers （Yet）: The Key Bottleneck on In-context   Retrieval, Kaiyue Wen+, ICLR'25</h3><br><a href="https://arxiv.org/abs/2402.18510" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+<h3 id="rnns-are-1905" class="title-link">[Paper Note] RNNs are not Transformers （Yet）: The Key Bottleneck on In-context   Retrieval, Kaiyue Wen+, ICLR'25</h3><br><a href="https://arxiv.org/abs/2402.18510" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
 </svg>
@@ -3825,29 +3834,29 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/DataMixture.html"
-            title="DataMixtureに関する論文・技術記事メモの一覧">
-            DataMixtureに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Search.html"
+            title="Searchに関する論文・技術記事メモの一覧">
+            Searchに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
-  <span class="post-badge badge-new">📝 31</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
+  <span class="post-badge badge-new">📝 24</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Grounding.html"
-            title="Groundingに関する論文・技術記事メモの一覧">
-            Groundingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Post.html"
+            title="Postに関する論文・技術記事メモの一覧">
+            Postに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 28</span> 
+  <span class="post-badge badge-new">📝 28</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SimulST(SimultaneousSpeechTranslation).html"
-            title="SimulST(SimultaneousSpeechTranslation)に関する論文・技術記事メモの一覧">
-            SimulST(SimultaneousSpeechTranslation)に関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ImageToTextGeneration.html"
+            title="ImageToTextGenerationに関する論文・技術記事メモの一覧">
+            ImageToTextGenerationに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
   <span class="post-badge badge-new">📝 3</span>
@@ -3855,12 +3864,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SpeechProcessing.html"
-            title="SpeechProcessingに関する論文・技術記事メモの一覧">
-            SpeechProcessingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/4D-Reconstruction.html"
+            title="4D Reconstructionに関する論文・技術記事メモの一覧">
+            4D Reconstructionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 77</span> 
-  <span class="post-badge badge-new">📝 77</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li></ul>
