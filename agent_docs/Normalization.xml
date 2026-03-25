@@ -284,7 +284,7 @@
 - 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの大きな収束が進行しています。しかし、「Transformers」という同じ名称の下で、上記の分野ではより良いパフォーマンスを得るために異なる実装が使用されています。例えば、BERTにはPost-LayerNormが、GPTや視覚TransformersにはPre-LayerNormが用いられています。私たちは、真の汎用モデリングのためのFoundation Transformerの開発を呼びかけます。これは、さまざまなタスクやモダリティに対して、トレーニングの安定性が保証されたアーキテクチャとして機能します。本研究では、この目標を達成するために、Magnetoと名付けたTransformerの変種を紹介します。具体的には、良好な表現力のためのSub-LayerNormと、安定したスケーリングのためにDeepNetから理論的に導出された初期化戦略を提案します。広範な実験により、言語モデリング（BERTやGPT）、機械翻訳、視覚事前学習（BEiT）、音声認識、マルチモーダル事前学習（BEiT-3）など、さまざまなアプリケーション向けに設計された事実上のTransformer変種よりも、優れたパフォーマンスと安定性を示すことが確認されました。
 # Summary (by gpt-4o-mini)
 - 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの収束が進む中、異なる実装の「Transformers」が使用されている。汎用モデリングのために、安定性を持つFoundation Transformerの開発が提唱され、Magnetoという新しいTransformer変種が紹介される。Sub-LayerNormと理論に基づく初期化戦略を用いることで、さまざまなアプリケーションにおいて優れたパフォーマンスと安定性を示した。</issue-body>
-<maintainer-comment-text><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22</a>
+<maintainer-comment-text><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22, 2022.03</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -317,10 +317,10 @@
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22</title>
+<title>[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22, 2022.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2203.00555</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1900</repo-issue-link>
-<tags>NLP, Transformer, Architecture, Normalization</tags>
+<tags>NLP, Transformer, action_wanted, Architecture, Normalization</tags>
 <repo-issue-date>2025-04-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2203.00555
@@ -333,10 +333,10 @@
   - Furu Wei
 # Abstract
   - In this paper, we propose a simple yet effective method to stabilize extremely deep Transformers. Specifically, we introduce a new normalization function (DeepNorm) to modify the residual connection in Transformer, accompanying with theoretically derived initialization. In-depth theoretical analysis shows that model updates can be bounded in a stable way. The proposed method combines the best of two worlds, i.e., good performance of Post-LN and stable training of Pre-LN, making DeepNorm a preferred alternative. We successfully scale Transformers up to 1,000 layers (i.e., 2,500 attention and feed-forward network sublayers) without difficulty, which is one order of magnitude deeper than previous deep Transformers. Remarkably, on a multilingual benchmark with 7,482 translation directions, our 200-layer model with 3.2B parameters significantly outperforms the 48-layer state-of-the-art model with 12B parameters by 5 BLEU points, which indicates a promising scaling direction.
-# Translation (by gpt-4o-mini)
-- 本論文では、非常に深いTransformerを安定化させるためのシンプルでありながら効果的な手法を提案します。具体的には、Transformerの残差接続を修正する新しい正規化関数（DeepNorm）を導入し、理論的に導出された初期化を伴います。詳細な理論分析により、モデルの更新が安定した方法で制約されることが示されます。提案手法は、Post-LNの優れた性能とPre-LNの安定したトレーニングの両方の利点を組み合わせており、DeepNormは好ましい代替手段となります。私たちは、1,000層（すなわち、2,500のアテンションおよびフィードフォワードネットワークのサブレイヤー）までのTransformerを問題なくスケールアップすることに成功し、これは以前の深いTransformerよりも1桁深いものです。特筆すべきことに、7,482の翻訳方向を持つ多言語ベンチマークにおいて、3.2Bパラメータを持つ200層のモデルが、12Bパラメータを持つ48層の最先端モデルを5 BLEUポイント上回る性能を示し、将来のスケーリングの方向性に対する期待を示しています。
+# Translation (by gpt-5-nano)
+- 本論文では、極めて深いTransformerを安定化させるための、単純でありながら効果的な手法を提案する。具体的には、Transformerの残差接続を修正する新しい正規化関数（DeepNorm）を導入し、それに理論的に導出された初期化を併用する。詳細な理論分析により、モデルの更新が安定的に境界づけられることが示される。提案手法は、Post-LNの良好な性能とPre-LNの安定した学習という二つの長所を組み合わせ、DeepNormを好ましい代替手段とする。従来の深層Transformerより1桁深い1000層へとTransformerを難なくスケールさせることに成功した（すなわち、2,500個のアテンションおよびフィードフォワードネットワークのサブレイヤー）。特筆すべきは、7,482の翻訳方向を持つ多言語ベンチマークにおいて、200層・3.2Bパラメータのモデルが、12Bパラメータの最先端48層モデルを5BLEUポイント上回り、将来性のあるスケーリング方向を示している。
 # Summary (by gpt-4o-mini)
-- 本論文では、深いTransformerを安定化させるための新しい正規化関数DeepNormを提案し、残差接続の修正と理論的初期化を行う。これにより、Post-LNの性能とPre-LNの安定性を兼ね備え、最大1,000層のTransformerをスケールアップ可能にした。特に、3.2Bパラメータの200層モデルが、12Bパラメータの48層モデルを5 BLEUポイント上回る性能を示し、今後のスケーリングの可能性を示唆している。</issue-body>
+- Transformerの安定化手法として、残差接続を修正する新正規化関数DeepNormを提案。理論分析に基づき、初期化を併用しモデルの更新を安定させる。DeepNormはPost-LNの性能とPre-LNの安定性を兼ね備え、1000層へのスケーリングを実現。特に、7,482翻訳方向のベンチマークにおいて、200層の3.2Bパラメータモデルが12Bパラメータの48層モデルを5BLEUポイント上回る成果を示した。</issue-body>
 <maintainer-comment-text><p>ステートオブAIガイドによる解説:
 
 {% raw %}
@@ -500,10 +500,10 @@ Jimmy Lei Ba, Jamie Ryan Kiros, Geoffrey E. Hinton
 </paper-entry>
 
 <paper-entry>
-<title>Batch Normalization: Accelerating Deep Network Training by Reducing   Internal Covariate Shift, Sergey Ioffe+, ICML'15</title>
+<title>[Paper Note] Batch Normalization: Accelerating Deep Network Training by Reducing   Internal Covariate Shift, Sergey Ioffe+, ICML'15</title>
 <original-paper-blog-link>https://arxiv.org/abs/1502.03167</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1857</repo-issue-link>
-<tags>MachineLearning, LanguageModel, Transformer, ICML, Normalization, Selected Papers/Blogs</tags>
+<tags>MachineLearning, LanguageModel, Transformer, ICML, Normalization, Selected Papers/Blogs, Reference Collection</tags>
 <repo-issue-date>2025-04-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/1502.03167

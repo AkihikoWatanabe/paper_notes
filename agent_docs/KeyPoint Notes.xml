@@ -54,7 +54,8 @@
 {% endraw %}
 
 </p><p>- データよりもコンピューティングリソースのスケーリングの方が早く進んでおり、データ効率の高い事前学習レシピが重要となっている<br>- 事前学習において、合成データがi.i.d.なwebデータの損失減らすことに寄与するかを調査<br>- 300Mモデルで200M tokenを学習した際にどれだけi.i.d.なwebデータのlossを低減させられるかを調査<br>- 最初に最もシンプルなdata augmentationであるrephrasingを調査したところ、文書単位でのrephrasingの回数が増えるにつれて、web lossとdownstreamベンチマークでのエラー率が単調に改善<br>- 続いて、ある文書をrephraseした文書を結合することで、単一の大きな文書（=megadoc）を構成する手法を提案し、megadocを利用することでさらにlossが改善することを確認。megadocの構成方法として下記三種類を提案し:<br>  - Real First Stitched: `文書に対するrephraseをG個生成し、それらを結合することでmegadocを構成する手法。実データを結合の頭にもってくる。<br>  - Real Last Stitched: Real First Stichedと同様の処理をするが、実データを結合の末尾に持ってくる手法<br>  - Latent Thoughts: 文書をG+1個の同じ長さのピースに分割し、ピース間を埋めるrationaleを合成して結合する手法。rationaleは<think></think>タグで囲う。<br>- Real First Stitched と Real Last Stitched を比較したところ、後者の方が性能が良かった。<br>  - 後者の方が性能が良い考察として、epiplexity <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4145" target="_blank" rel="noopener noreferrer">[Paper Note] From Entropy to Epiplexity: Rethinking Information for Computationally Bounded Intelligence, Marc Finzi+, arXiv'26, 2026.01</a>
- の観点から考察をしている。前提として実文書の方が複雑で情報量が多いと考えたときに、Real First Stitched の場合は実文書の情報からrephraseを学ぶという簡単な変換（生成）を実施すればよいのに対し、Real Last Stitchedの場合逆で、rephraseからより詳細で複雑な実文書に変換（生成）するというタスクを実施せねばならない。このため、後者の方がより計算的に困難な関数を学習する必要があり（すなわち、epiplexityが高い学習設定ということ; epiplexityが高い学習設定の方がモデルの汎化性能が高くなる）、学習の結果より高い汎化性能を獲得しているのではないか、と考察している。<br><br><img src="https://github.com/user-attachments/assets/2eb9eab2-b9a1-4e87-838b-af1d16adfe11" /" alt="image" loading="lazy" width="550" height="400"/><br><br>- また、モデルをアンサンブルした場合の性質についても考察がされており、self-distillationは単体モデルの性能を向上させることに寄与するが、アンサンブルするモデルの数を増やすと実データを用いたモデルと最終的には性能が同等となることが予測され、達成可能なピーク性能がアンサンブルによってブーストされる効果は観測できなかった。一方で、Rephrasingによる合成データによって学習されたモデルはアンサンブルによって達成可能な性能のピーク値がブーストされると考えられる。<br><img src="https://github.com/user-attachments/assets/9269fbbd-414c-490d-99f4-d85f89613f3d" /" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
+ の観点から考察をしている。前提として実文書の方が複雑で情報量が多いと考えたときに、Real First Stitched の場合は実文書の情報からrephraseを学ぶという簡単な変換（生成）を実施すればよいのに対し、Real Last Stitchedの場合逆で、rephraseからより詳細で複雑な実文書に変換（生成）するというタスクを実施せねばならない。このため、後者の方がより計算的に困難な関数を学習する必要があり（すなわち、epiplexityが高い学習設定ということ; epiplexityが高い学習設定の方がモデルの汎化性能が高くなる）、学習の結果より高い汎化性能を獲得しているのではないか、と考察している。<br><br><img src="https://github.com/user-attachments/assets/2eb9eab2-b9a1-4e87-838b-af1d16adfe11" /" alt="image" loading="lazy" width="550" height="400"/><br><br>- また、モデルをアンサンブルした場合の性質についても考察がされており、self-distillationは単体モデルの性能を向上させることに寄与するが、アンサンブルするモデルの数を増やすと実データを用いたモデルと最終的には性能が同等となることが予測され、達成可能なピーク性能がアンサンブルによってブーストされる効果は観測できなかった。一方で、Rephrasingによる合成データによって学習されたモデルはアンサンブルによって達成可能な性能のピーク値がブーストされると考えられる。<br><img src="https://github.com/user-attachments/assets/9269fbbd-414c-490d-99f4-d85f89613f3d" /" alt="image" loading="lazy" width="550" height="400"/><br></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1937" target="_blank" rel="noopener noreferrer">[Paper Note] Rewriting Pre-Training Data Boosts LLM Performance in Math and Code, Kazuki Fujii+, ICLR'26, 2025.05</a>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -797,7 +798,7 @@
 </div>
 {% endraw %}
 
-</p><p>LoRAに関連して様々な手法が提案されているが、様々なモデルスケールとコーディングと数学ドメインで広範な設定（バッチサイズや学習率）で実験して主要な手法を再評価したところ、LoRAは学習率にsensitiveで、以前として初期のLoRAが強力な手法であることが示された。過去の研究での比較実験はハイパーパラメータの調整不足な可能性が高いことを示唆している。重要研究。</p><p>なお、Table2にLoRAの変種に関する研究のリストがあるが、約50種類ある。</p></maintainer-comment-text>
+</p><p>LoRAに関連して様々な手法が提案されているが、様々なモデルスケールとコーディングと数学ドメインで広範な設定（バッチサイズや学習率）で実験して主要な手法を再評価したところ、LoRAは学習率にsensitiveで、依然として初期のLoRAが強力な手法であることが示された。過去の研究での比較実験はハイパーパラメータの調整不足な可能性が高いことを示唆している。重要研究。</p><p>なお、Table2にLoRAの変種に関する研究のリストがあるが、約50種類ある。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -4722,7 +4723,7 @@
 </div>
 {% endraw %}
 
-</p><p>これは面白そう</p><p>Webコーパスなどを事前学習で利用する際は、質の高いデータを残して学習した方が良いとされているが、4chanのようなtoxicなデータを混ぜて事前学習して、後からdetox（Inference Time Intervention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1941" target="_blank" rel="noopener noreferrer">Inference-Time Intervention: Eliciting Truthful Answers from a Language   Model, Kenneth Li+, NeurIPS'23</a>
+</p><p>これは面白そう</p><p>Webコーパスなどを事前学習で利用する際は、質の高いデータを残して学習した方が良いとされているが、4chanのようなtoxicなデータを混ぜて事前学習して、後からdetox（Inference Time Intervention <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1941" target="_blank" rel="noopener noreferrer">[Paper Note] Inference-Time Intervention: Eliciting Truthful Answers from a Language   Model, Kenneth Li+, NeurIPS'23</a>
  , SFT, DPO)することで、最終的なモデルのtoxicなoutputが減るという話らしい。これはそもそも事前学習時点でtoxicなデータのsignalが除外されることで、モデルがtoxicな内容のrepresentationを学習できず、最終的にtoxicか否かをコントロールできなくなるため、と考察している（っぽい）<br><img src="https://github.com/user-attachments/assets/7f6efd4b-0679-4143-9a7d-1bf3ea5b6f3a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/0acec11b-d851-4137-b0aa-1ed7172388e1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>有害な出力を減らせそうなことは分かったが、Activation Steeringによってどの程度モデルの性能に影響を与えるのかが気になる、と思ったがAppendixに記載があった。細かく書かれていないので推測を含むが、各データに対してToxicデータセットでProbingすることでTopKのheadを決めて、Kの値を調整することでinterventionの強さを調整し、Toxicデータの割合を変化させて評価してみたところ、モデルの性能に大きな影響はなかったということだと思われる（ただし1Bモデルでの実験しかない）<br><br><img src="https://github.com/user-attachments/assets/4c79ca22-6916-438d-ad31-07596c82bfd1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p><p>おそらく2,3節あたりが一番おもしろいポイントなのだと思われるがまだ読めていない。</p><p>openreview: 
 
 {% raw %}
@@ -4765,6 +4766,39 @@
 
 </p><p>外部のCoTデータを使わないで、LLMのreasoning capabilityを向上させる話っぽい。DeepSeek-R1の登場以前の研究とのこと。</p><p>"reasoning traceを出力するように" Instruction Tuningによって回答を直接出力するようPostTrainingされたモデルにpromptingし、複数のoutputを収集（今回は8個, temperature=0.8, top p=0.95)。Self Taught Evaluator <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1464" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Taught Evaluators, Tianlu Wang+, arXiv'24, 2024.08</a>
  (STE;70B, LLM-as-a-Judgeを利用するモデル）、あるいはArmo Reward Model（8B）によって回答の品質をスコアリング。ここで、LLM-as-a-Judgeの場合はペアワイズでの優劣が決まるだけなので、ELOでスコアリングする。outputのうちbest scoreとworst scoreだったものの双方でペアデータを構築し、DPOで利用するpreferenceペアデータを構築しDPOする。このような処理を繰り返し、モデルの重みをiterationごとに更新する。次のiterationでは更新されたモデルで同様の処理を行い、前段のステップで利用した学習データは利用しないようにする（後段の方が品質が高いと想定されるため）。また、回答を別モデルで評価する際に、長いレスポンスを好むモデルの場合、長い冗長なレスポンスが高くスコアリングされるようなバイアスが働く懸念があるため、長すぎる回答にpenaltyを与えている（Length-Control)。<br><img src="https://github.com/user-attachments/assets/3be7f7c3-1a24-44c5-bd73-a4b9e11b4b2c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>reasoning traceを出力するpromptはgenericとspecific thoughtの二種類で検証。前者はLLMにどのような思考をするかを丸投げするのに対し、後者はこちら側で指定する。後者の場合は、どのような思考が良いかを事前に知っていなければならない。<br><img src="https://github.com/user-attachments/assets/4548fd23-69ba-482f-8987-740f30658d83" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Llama-3-8b-instructに適用したところ、70Bスケールのモデルよりも高い性能を達成。また、reasoning trace出力をablationしたモデル（Direct responce baseline）よりも性能が向上。<br><img src="https://github.com/user-attachments/assets/06605741-7049-460a-8062-93be96d45975" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>iterationが進むに連れて、性能が向上している。<br><img src="https://github.com/user-attachments/assets/25ced3ce-e341-41c4-b1e2-527885590e08" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>d1: Scaling Reasoning in Diffusion Large Language Models via  Reinforcement Learning, Siyan Zhao+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.12216</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1893</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, DiffusionModel, Reasoning, PostTraining, GRPO, KeyPoint Notes</tags>
+<repo-issue-date>2025-04-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.12216
+# Authors
+  - Siyan Zhao
+  - Devaansh Gupta
+  - Qinqing Zheng
+  - Aditya Grover
+# Abstract
+  - Recent large language models (LLMs) have demonstrated strong reasoning capabilities that benefits from online reinforcement learning (RL). These capabilities have primarily been demonstrated within the left-to-right autoregressive (AR) generation paradigm. In contrast, non-autoregressive paradigms based on diffusion generate text in a coarse-to-fine manner. Although recent diffusion-based large language models (dLLMs) have achieved competitive language modeling performance compared to their AR counterparts, it remains unclear if dLLMs can also leverage recent advances in LLM reasoning. To this end, we propose d1, a framework to adapt pre-trained masked dLLMs into reasoning models via a combination of supervised finetuning (SFT) and RL. Specifically, we develop and extend techniques to improve reasoning in pretrained dLLMs: (a) we utilize a masked SFT technique to distill knowledge and instill self-improvement behavior directly from existing datasets, and (b) we introduce a novel critic-free, policy-gradient based RL algorithm called diffu-GRPO. Through empirical studies, we investigate the performance of different post-training recipes on multiple mathematical and logical reasoning benchmarks. We find that d1 yields the best performance and significantly improves performance of a state-of-the-art dLLM.
+# Translation (by gpt-4o-mini)
+- 最近の大規模言語モデル（LLMs）は、オンライン強化学習（RL）から恩恵を受けた強力な推論能力を示しています。これらの能力は主に、左から右への自己回帰（AR）生成パラダイム内で実証されています。それに対して、拡散に基づく非自己回帰パラダイムは、粗から細への方法でテキストを生成します。最近の拡散ベースの大規模言語モデル（dLLMs）は、ARモデルと比較して競争力のある言語モデリング性能を達成していますが、dLLMsがLLM推論の最近の進展を活用できるかどうかは不明です。この目的のために、我々はd1を提案します。これは、事前学習されたマスク付きdLLMsを、教師ありファインチューニング（SFT）とRLの組み合わせを通じて推論モデルに適応させるフレームワークです。具体的には、事前学習されたdLLMsの推論を改善するための技術を開発・拡張します：(a) 既存のデータセットから知識を抽出し、自己改善行動を直接植え付けるためにマスク付きSFT技術を利用し、(b) diffu-GRPOと呼ばれる新しいクリティックフリーのポリシー勾配ベースのRLアルゴリズムを導入します。実証研究を通じて、複数の数学的および論理的推論ベンチマークにおける異なるポストトレーニングレシピの性能を調査します。その結果、d1が最良の性能を発揮し、最先端のdLLMの性能を大幅に向上させることがわかりました。
+# Summary (by gpt-4o-mini)
+- d1というフレームワークを提案し、マスク付きdLLMsを教師ありファインチューニングと強化学習で推論モデルに適応。マスク付きSFT技術で知識を抽出し、diffu-GRPOという新しいRLアルゴリズムを導入。実証研究により、d1が最先端のdLLMの性能を大幅に向上させることを確認。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/1912785180504535121?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>dLLMに対してGRPOを適用する手法(diffuGRPO)を提案している。<br>long CoTデータでSFTしてreasoning capabilityを強化した後、diffuGRPOで追加のpost-trainingをしてさらに性能をboostする。</p><p>GRPOではtoken levelの尤度とsequence全体の尤度を計算する必要があるが、dLLMだとautoregressive modelのようにchain ruleを適用する計算方法はできないので、効率的に尤度を推定するestimatorを用いてGPPOを適用するdiffuGRPOを提案している。<br><br>diffuGRPO単体でも、8BモデルだがSFTよりも性能向上に成功している。SFTの後にdiffuGRPOを適用するとさらに性能が向上する。<br><br>SFTではs1 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">[Paper Note] s1: Simple test-time scaling, Niklas Muennighoff+, EMNLP'25, 2025.01</a>
+ で用いられたlong CoTデータを用いている。しっかり理解できていないが、diffuGRPO+verified rewardによって、long CoTの学習データを用いなくても、安定してreasoning能力を発揮することができようになった、ということなのだろうか？<br>しかし、AppendixCを見ると、元々のLLaDAの時点でreasoning traceを十分な長さで出力しているように見える。もしLLaDAが元々long CoTを発揮できたのだとしたら、long CoTできるようになったのはdiffuGRPOだけの恩恵ではないということになりそうだが、LLaDAは元々long CoTを生成できるようなモデルだったんだっけ…？その辺追えてない（dLLMがメジャーになったら追う）。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -4841,8 +4875,7 @@
 </p><p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは<=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
 </p><p>個々のpost-trainingされたRLモデルが具体的にどういう訓練をしたのかは追えていないが、DAPOやDr. GRPO, VAPOの場合はどうなるんだろうか？<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1876" target="_blank" rel="noopener noreferrer">VAPO: Efficient and Reliable Reinforcement Learning for Advanced
-  Reasoning Tasks, YuYue+, arXiv'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1876" target="_blank" rel="noopener noreferrer">[Paper Note] VAPO: Efficient and Reliable Reinforcement Learning for Advanced Reasoning Tasks, Yu Yue+, arXiv'25, 2025.04</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1821" target="_blank" rel="noopener noreferrer">[Paper Note] Understanding R1-Zero-Like Training: A Critical Perspective, Zichen Liu+, arXiv'25, 2025.03</a>
 <br><br>Rewardの設定の仕方はどのような影響があるのだろうか（verifiable rewardなのか、neuralモデルによるrewardなのかなど)？<br><br>学習のさせ方もどのような影響があるのだろうか（RLでカリキュラムlearningにした場合など）？<br><br>検証しているモデルがそれぞれどのような設定で学習されているかまでを見ないとこの辺はわからなそう。<br><br>ただなんとなーくの直感だと、SLMを賢くしたいという場合は何らかの賢いモデルの恩恵に預かると有利なケースが多く（SFTの場合はそれが大規模なモデルから蒸留したreasoning trace）、SLM+RLの場合はPRMのような思考プロセスを評価してRewardに反映させるようなものを利用しないと、少なくとも小規模なLLMをめちゃ賢くします〜というのはきついんじゃないかなあという感想ではある。<br>ただ、結局SLMという時点で多くの場合、より賢いパラメータ数の多いLLMが世の中には存在するあるはずなので、RLしないでSFTして蒸留すれば良いんじゃない…？と思ってしまう。<br>が、多くの場合その賢いLLMはProprietaryなLLMであり、出力を得て自分のモデルをpost-trainingすることは利用規約違反となるため、自前で賢くてパラメータ数の多いLLMを用意できない場合は困ってしまうので、SLMをクソデカパラメータのモデルの恩恵なしで超絶賢くできたら世の中の多くの人は嬉しいよね、とも思う。</p><p>（斜め読みだが）<br>サンプル数が少ない（数十件）AIMEやAMCなどのデータはseedの値にとてもsensitiveであり(Takeaway1, 2)、<br><br><img src="https://github.com/user-attachments/assets/97581133-cf17-4635-b66c-442eaf8956d4" /" alt="image" loading="lazy" width="550" height="400"/><br><br>それらは10種類のseedを用いて結果を平均すると分散が非常に小さくなるので、seedは複数種類利用して平均の性能を見た方がreliableであり(Takeaway3)<br><br><img src="https://github.com/user-attachments/assets/5065ef0e-de89-4b17-aa52-c90b7191e9b2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>temperatureを高くするとピーク性能が上がるが分散も上がるため再現性の課題が増大するが、top-pを大きくすると再現性の問題は現れず性能向上に寄与し<br><br><img src="https://github.com/user-attachments/assets/76d5c989-edbb-4d70-9080-d1d4b01de2ff" /" alt="image" loading="lazy" width="550" height="400"/><br><br>既存研究のモデルのtemperatureとtop-pを変化させ実験するとperformanceに非常に大きな変化が出るため、モデルごとに最適な値を選定して比較をしないとunfairであることを指摘 (Takeaway4)。<br><br><img src="https://github.com/user-attachments/assets/d8b453d1-3d2e-4a80-b03d-c69ec1b2232e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>また、ハードウェアの面では、vLLMのようなinference engineはGPU typeやmemoryのconfigurationに対してsensitiveでパフォーマンスが変わるだけでなく、<br><br><img src="https://github.com/user-attachments/assets/a41891c7-072c-4c38-9ad6-beada4721bac" /" alt="image" loading="lazy" width="550" height="400"/><br><br>評価に利用するフレームワークごとにinference engineとprompt templateが異なるためこちらもパフォーマンスに影響が出るし (Takeaway5)、<br><br><img src="https://github.com/user-attachments/assets/1f7d328c-0757-47b9-9961-630e2429fb3e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>max output tokenの値を変化させると性能も変わり、prompt templateを利用しないと性能が劇的に低下する (Takeaway6)。<br><br><img src="https://github.com/user-attachments/assets/dc0902d1-a5f2-47de-8df1-c28107e1da28" /" alt="image" loading="lazy" width="550" height="400"/><br><br>これらのことから著者らはreliableな評価のために下記を提案しており (4.1節; 後ほど追記)、<br><br>実際にさまざまな条件をfair comparisonとなるように標準化して評価したところ（4.2節; 後ほど追記）<br><br>上の表のような結果となった。この結果は、<br>- DeepSeekR1-DistilledをRLしてもSFTと比較したときに意味のあるほどのパフォーマンスの向上はないことから、スケーラブル、かつ信頼性のあるRL手法がまだ不足しており<br>- 大規模なパラメータのモデルのreasoning traceからSFTをする方法はさまざまなベンチマークでロバストな性能（＝高い汎化性能）を持ち、RLと比べると現状はRLと比較してよりパラダイムとして成熟しており<br>- （AIME24,25を比較するとSFTと比べてRLの場合performanceの低下が著しいので）RLはoverfittingしやすく、OODなベンチマークが必要</p><p>しっかりと評価の枠組みを標準化してfair comparisonしていかないと、RecSys業界の二の舞になりそう（というかもうなってる？）。<br><br>またこの研究で分析されているのは小規模なモデル（<=10B）に対する既存研究で用いられた一部のRL手法や設定の性能だけ（真に示したかったらPhisics of LLMのような完全にコントロール可能なサンドボックスで実験する必要があると思われる）なので、DeepSeek-R1のように、大規模なパラメータ（数百B）を持つモデルに対するRLに関して同じことが言えるかは自明ではない点に注意。</p><p>openreview:
 
@@ -5260,6 +5293,36 @@
 
 </p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N/A, ICML'24</a>
 <br><br>と似たようにiterativeなmannerでreasoning能力を向上させる。<br><br><img src="https://github.com/user-attachments/assets/a0f10e8e-454d-40e8-ae67-8c6c2da6a0ed" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ただし、loss functionとしては、chosenなCoT+yのresponseに対して、reasoning traceを生成する能力を高めるために、NLL Lossも適用している点に注意。<br><img src="https://github.com/user-attachments/assets/5ae2dcba-09c8-4618-9b63-ae6aed5b234d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>32 samplesのmajority votingによってより高い性能が達成できているので、多様なreasoning traceが生成されていることが示唆される。</p><p>DPOでReasoning能力を伸ばしたい場合はNLL lossが重要。Iterative RPO</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Flex Attention: A Programming Model for Generating Optimized Attention  Kernels, Juechu Dong+, arXiv'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2412.05496</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1864</repo-issue-link>
+<tags>NLP, Transformer, Attention, KeyPoint Notes, Reference Collection</tags>
+<repo-issue-date>2025-04-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2412.05496
+# Authors
+  - Juechu Dong
+  - Boyuan Feng
+  - Driss Guessous
+  - Yanbo Liang
+  - Horace He
+# Abstract
+  - Over the past 7 years, attention has become one of the most important primitives in deep learning. The primary approach to optimize attention is FlashAttention, which fuses the operation together, drastically improving both the runtime and the memory consumption. However, the importance of FlashAttention combined with its monolithic nature poses a problem for researchers aiming to try new attention variants -- a "software lottery". This problem is exacerbated by the difficulty of writing efficient fused attention kernels, resisting traditional compiler-based approaches. We introduce FlexAttention, a novel compiler-driven programming model that allows implementing the majority of attention variants in a few lines of idiomatic PyTorch code. We demonstrate that many existing attention variants (e.g. Alibi, Document Masking, PagedAttention, etc.) can be implemented via FlexAttention, and that we achieve competitive performance compared to these handwritten kernels. Finally, we demonstrate how FlexAttention allows for easy composition of attention variants, solving the combinatorial explosion of attention variants.
+# Translation (by gpt-4o-mini)
+- 過去7年間で、アテンションは深層学習において最も重要なプリミティブの1つとなりました。アテンションを最適化するための主なアプローチはFlashAttentionであり、これは操作を統合することで、実行時間とメモリ消費の両方を大幅に改善します。しかし、FlashAttentionの重要性とそのモノリシックな性質は、新しいアテンションのバリアントを試みる研究者にとって問題を引き起こします。これを「ソフトウェアの宝くじ」と呼びます。この問題は、効率的な融合アテンションカーネルを書くことの難しさによって悪化し、従来のコンパイラベースのアプローチに抵抗します。私たちは、FlexAttentionという新しいコンパイラ駆動型プログラミングモデルを導入し、ほとんどのアテンションバリアントを数行の慣用的なPyTorchコードで実装できるようにします。FlexAttentionを通じて、多くの既存のアテンションバリアント（例：Alibi、Document Masking、PagedAttentionなど）を実装できることを示し、これらの手書きカーネルと比較して競争力のあるパフォーマンスを達成します。最後に、FlexAttentionがアテンションバリアントの容易な組み合わせを可能にし、アテンションバリアントの組み合わせ爆発の問題を解決する方法を示します。
+# Summary (by gpt-4o-mini)
+- FlexAttentionは、アテンションの新しいコンパイラ駆動型プログラミングモデルで、数行のPyTorchコードで多くのアテンションバリアントを実装可能にします。これにより、既存のアテンションバリアントを効率的に実装し、競争力のあるパフォーマンスを達成。FlexAttentionは、アテンションバリアントの組み合わせを容易にし、組み合わせ爆発の問題を解決します。</issue-body>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1863" target="_blank" rel="noopener noreferrer">Llama 4 Series, Meta, 2025.04</a>
+<br><br>で利用されているAttention</p><p>pytochによる解説:
+
+{% raw %}
+<a href="https://pytorch.org/blog/flexattention/" target="_blank" rel="noopener noreferrer">https://pytorch.org/blog/flexattention/</a>
+{% endraw %}
+
+<br><br>- Flex AttentionはオリジナルのAttentionのQK/sqrt(d_k)の計算後にユーザが定義した関数score_modを適用する<br>- score_modを定義することで、attention scoreをsoftmaxをかけるまえに関数によって調整できる<br>- 多くのattentionの亜種はほとんどの場合この抽象化で対応できる<br>- score_modはQK tokenの内積に対応するので、QKの情報を受け取り、スカラー値を返せばなんでも良い<br>  - score_modの実装例は元リンク参照<br>- FA2と比較して（現在のpytorchでの実装上は）Forward Passは90%, Backward Passは85%のスループットで、少し遅いが今後改善予定</p><p>元論文より引用。非常にシンプルで、数式上は下記のように表される:<br><img src="https://github.com/user-attachments/assets/b4a393f0-46a9-46c6-9a47-0402ba58fb11" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -6475,7 +6538,7 @@ TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフ�
 - 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの大きな収束が進行しています。しかし、「Transformers」という同じ名称の下で、上記の分野ではより良いパフォーマンスを得るために異なる実装が使用されています。例えば、BERTにはPost-LayerNormが、GPTや視覚TransformersにはPre-LayerNormが用いられています。私たちは、真の汎用モデリングのためのFoundation Transformerの開発を呼びかけます。これは、さまざまなタスクやモダリティに対して、トレーニングの安定性が保証されたアーキテクチャとして機能します。本研究では、この目標を達成するために、Magnetoと名付けたTransformerの変種を紹介します。具体的には、良好な表現力のためのSub-LayerNormと、安定したスケーリングのためにDeepNetから理論的に導出された初期化戦略を提案します。広範な実験により、言語モデリング（BERTやGPT）、機械翻訳、視覚事前学習（BEiT）、音声認識、マルチモーダル事前学習（BEiT-3）など、さまざまなアプリケーション向けに設計された事実上のTransformer変種よりも、優れたパフォーマンスと安定性を示すことが確認されました。
 # Summary (by gpt-4o-mini)
 - 言語、視覚、音声、マルチモーダルにおけるモデルアーキテクチャの収束が進む中、異なる実装の「Transformers」が使用されている。汎用モデリングのために、安定性を持つFoundation Transformerの開発が提唱され、Magnetoという新しいTransformer変種が紹介される。Sub-LayerNormと理論に基づく初期化戦略を用いることで、さまざまなアプリケーションにおいて優れたパフォーマンスと安定性を示した。</issue-body>
-<maintainer-comment-text><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22</a>
+<maintainer-comment-text><p>マルチモーダルなモデルなモデルの事前学習において、PostLNはvision encodingにおいてsub-optimalで、PreLNはtext encodingにおいてsub-optimalであることが先行研究で示されており、マルタモーダルを単一のアーキテクチャで、高性能、かつ学習の安定性な高く、try and error無しで適用できる基盤となるアーキテクチャが必要というモチベーションで提案された手法。具体的には、Sub-LayerNorm(Sub-LN)と呼ばれる、self attentionとFFN部分に追加のLayerNormを適用するアーキテクチャと、DeepNetを踏襲しLayer数が非常に大きい場合でも学習が安定するような重みの初期化方法を理論的に分析し提案している。<br><br>具体的には、Sub-LNの場合、LayerNormを<br>- SelfAttention計算におけるQKVを求めるためのinput Xのprojectionの前とAttentionの出力projectionの前<br>- FFNでの各Linear Layerの前<br>に適用し、<br><br>初期化をする際には、FFNのW, およびself-attentionのV_projと出力のout_projの初期化をγ（＝sqrt(log(2N))によってスケーリングする方法を提案している模様。<br><br><img src="https://github.com/user-attachments/assets/2847f982-3266-4394-9920-01d9977e505e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22, 2022.03</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -11211,7 +11274,7 @@ paper: https://assets.anthropic.com/m/74342f2c96095771/original/Natural-emergent
 </div>
 {% endraw %}
 
-</p><p>Inflight Weight Updates</p><p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p><p>あとこれは余談だが、引用ポストの主は下記研究でattentionメカニズムを最初に提案したBahdanau氏である。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1954" target="_blank" rel="noopener noreferrer">Neural Machine Translation by Jointly Learning to Align and Translate, Dzmitry Bahdanau+, ICLR'15</a>
+</p><p>Inflight Weight Updates</p><p>（この辺の細かい実装の話はあまり詳しくないので誤りがある可能性が結構あります）<br>通常のon-policy RLでは全てのGPU上でのsequenceのロールアウトが終わるまで待ち、全てのロールアウト完了後にモデルの重みを更新するため、長いsequenceのデコードをするGPUの処理が終わるまで、短いsequenceの生成で済んだGPUは待機しなければならない。一方、PipelineRLはsequenceのデコードの途中でも重みを更新し、生成途中のsequenceは古いKV Cacheを保持したまま新しい重みでsequenceのデコードを継続する。これによりGPU Utilizationを最大化できる（ロールアウト完了のための待機時間が無くなる）。また、一見古いKV Cacheを前提に新たな重みで継続して部分sequenceを継続するとポリシーのgapにより性能が悪化するように思えるが、性能が悪化しないことが実験的に示されている模様。<br><img src="https://github.com/user-attachments/assets/6794927a-3fa9-4a68-ba48-d112d495e0ab" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Conventional RLの疑似コード部分を見るととてもわかりやすくて参考になる。Conventional RL（PPOとか）では、実装上は複数のバッチに分けて重みの更新が行われる（らしい）。このとき、GPUの利用を最大化しようとするとバッチサイズを大きくせざるを得ない。このため、逐次更新をしたときのpolicyのgapがどんどん蓄積していき大きくなる（=ロールアウトで生成したデータが、実際に重み更新するときにはlagが蓄積されていきどんどんoff-policyデータに変化していってしまう）という弊害がある模様。かといってlagを最小にするために小さいバッチサイズにするとgpuの効率を圧倒的に犠牲にするのでできない。Inflight Weight Updatesではこのようなトレードオフを解決できる模様。<br><br>また、trainerとinference部分は完全に独立させられ、かつplug-and-playで重みを更新する、といった使い方も想定できる模様。</p><p>あとこれは余談だが、引用ポストの主は下記研究でattentionメカニズムを最初に提案したBahdanau氏である。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1954" target="_blank" rel="noopener noreferrer">[Paper Note] Neural Machine Translation by Jointly Learning to Align and Translate, Dzmitry Bahdanau+, ICLR'15</a>
 </p><p>続報:<br>
 
 {% raw %}
@@ -11929,6 +11992,72 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/grad62304977/status/1953408751521632401?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Qwen3, Qwen Team, 2025.04</title>
+<original-paper-blog-link>https://qwenlm.github.io/blog/qwen3/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1909</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes</tags>
+<repo-issue-date>2025-04-29</repo-issue-date>
+<issue-body>https://qwenlm.github.io/blog/qwen3/</issue-body>
+<maintainer-comment-text><p>- 119言語をサポート<br>- MoEモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1911" target="_blank" rel="noopener noreferrer">[Paper Note] Outrageously Large Neural Networks: The Sparsely-Gated  Mixture-of-Experts Layer, Noam Shazeer+, ICLR'17</a>
+<br>    - 30B-A3B / 235B-A22N<br>    - 128K context window<br>    - Qwen2.5はMoEを採用していないので新たなアーキテクチャとなる<br>- Denseモデル（非MoEモデル）も公開<br>    - 0.6B -- 32B<br>    - 32K -- 128K context window<br>- Thinking/Non-thinking の切り替えが切り替えが可能<br>    - スイッチは自動的に実施されるが、ユーザが明示的に `/think`, `/no_think` を user_promptの末尾に追加することで制御することも可能<br>- Pre-training<br>    - データ<br>        - 36 trillion tokensによって学習（Qwen-2.5の2倍）<br>        - 学習データではwebデータに加えて、PDF-likeな文書群からQwen2.5-VL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1835" target="_blank" rel="noopener noreferrer">Qwen2.5-VL-32B-Instruct, Qwen Team, 2025.03</a>
+ によってテキストを抽出し、Qwen2.5 で抽出された内容の品質を改善し利用<br>        - また、math / code に関するデータを追加するために、Qwen2.5-Math / Qwen2.5-Coderを用いて合成データを作成（textbooks / QA pairs / code snippets <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/766" target="_blank" rel="noopener noreferrer">[Paper Note] Textbooks Are All You Need, Suriya Gunasekar+, arXiv'23, 2023.06</a>
+ ）<br>    - 事前学習のステップ<br>        - S1: context長が4kの30 trillion tokenで事前学習<br>        - S2: STEM / coding / reasoning task などのknowledge-intensiveデータの比率を増やして継続事前学習 (これがおそらく 5 trillion token程度？)<br>        - Final Stage: context長を32kに拡大し高品質なlong-context dataで継続事前学習<br>    - これによりBaseモデルが完成し、Qwen3-235B全体のうち10%程度のActive Parameterの利用するだけで（i.e., 22Bで）、Qwen2.5-72B Baseと同等以上の性能達成<br>- Post-training<br>    - S1: long-CoT cold start<br>        - 数学/coding/logical reasoning/STEMなどの多様なlong CoTデータを用いてSFT <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1749" target="_blank" rel="noopener noreferrer">[Paper Note] s1: Simple test-time scaling, Niklas Muennighoff+, EMNLP'25, 2025.01</a>
+ <br>    - S2: reasoning-based RL<br>        - rule-based (verifiable) rewards によるRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
+ <br>        - S1/S2の流れは <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
+ に有効性が示されている通り、long CoT DataによるSFT -> RLを実施<br>    - S3: thinking mode fusion<br>        - S2データを用いてlong CoTデータとinstruction tuningデータ（非Long CoT）を生成し、Thinking/Non-thinkingを自動的に選択し生成するように学習（SFT or RLは記述なし）<br>    - S4: general RL<br>        - 20以上の一般的なドメインのタスクを通じて一般的な能力の向上と、safetyに関するalignmentの実施（e.g., instruction following, format following, agent能力など）</p><p>BestPracticeに関するポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ivanfioravanti/status/1916934241281061156?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1917712050983428400?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Llama-3_1-Nemotron-Ultra-253B-v1, Nvidia, 2025.04</title>
+<original-paper-blog-link>https://huggingface.co/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1873</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Pruning, Reasoning, OpenWeight, KeyPoint Notes</tags>
+<repo-issue-date>2025-04-08</repo-issue-date>
+<issue-body>https://huggingface.co/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1</issue-body>
+<maintainer-comment-text><p>DeepSeek-R1をGPQA Diamond <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155" target="_blank" rel="noopener noreferrer">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N/A, COLM'24</a>
+, AIME2024/2025, Llama4 Maverickを<br>BFCLv2（Tool Calling, <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1875" target="_blank" rel="noopener noreferrer">BFCLv2, UC Berkeley, 2024.08</a>
+), IFEVal <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1137" target="_blank" rel="noopener noreferrer">[Paper Note] Instruction-Following Evaluation for Large Language Models, Jeffrey Zhou+, arXiv'23, 2023.11</a>
+ で上回り, そのほかはArenaHardを除きDeepSeekR1と同等<br><img src="https://github.com/user-attachments/assets/b0de99ee-f4ec-4b03-8b0b-8939b4f1e23b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>DeepSeekR1が671B（MoEで37B Activation Param）に対し、こちらは253B（ただし、Llama3.1がベースなのでMoEではない）で同等以上の性能となっている。<br>ReasoningをON/OFFする能力も備わっている。<br><br>モデルがどのように訓練されたかを示す全体図がとても興味深い:<img src="https://github.com/user-attachments/assets/9a014777-61d8-46ae-818b-ace9ed5c002d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>特に <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
+ でも有効性が示されているように、SFTをしてからReasoningを強化する（強化というより元々持っている能力を引き出す？）RLを実施している。<br><br>詳細は下記Blogとのこと:<br>
+
+{% raw %}
+<a href="https://developer.nvidia.com/blog/build-enterprise-ai-agents-with-advanced-open-nvidia-llama-nemotron-reasoning-models/" target="_blank" rel="noopener noreferrer">https://developer.nvidia.com/blog/build-enterprise-ai-agents-with-advanced-open-nvidia-llama-nemotron-reasoning-models/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kuchaev/status/1909444566379573646?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
