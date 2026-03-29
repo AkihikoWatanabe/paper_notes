@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-03-25T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-03-29T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Pretrainingに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-03-25T00:00:00+00:00","datePublished":"2026-03-25T00:00:00+00:00","description":"Pretraining [Paper Note] On the Role of Batch Size in Stochastic Conditional Gradient Methods, Rustem Islamov+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #Scaling Laws #Batch Issue Date: 2026-03-25 GPT Summary- μ-Kurdyka-Łojasiewicz条件下での確率的条件付き勾配法におけるバッチサイズの影響を探求。モメンタムベースのアルゴリズムに注目し、バッチサイズ、ステップサイズ、ノイズの相互作用を分析。バッチサイズを増加させることで初期の精度向上が見られるが、臨界値を超えると利点は減少し得る。理論は最適なステップサイズを予測し、実際の経験則と合致。バッチサイズとステップサイズの選択に関する指針を提示し、適応戦略を提案。実験結果は理論を裏付け、大規模最適化に向けた設計指針を提供。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-03-29T00:00:00+00:00","datePublished":"2026-03-29T00:00:00+00:00","description":"Pretraining [Paper Note] On the Role of Batch Size in Stochastic Conditional Gradient Methods, Rustem Islamov+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #Scaling Laws #Batch Issue Date: 2026-03-25 GPT Summary- μ-Kurdyka-Łojasiewicz条件下での確率的条件付き勾配法におけるバッチサイズの影響を探求。モメンタムベースのアルゴリズムに注目し、バッチサイズ、ステップサイズ、ノイズの相互作用を分析。バッチサイズを増加させることで初期の精度向上が見られるが、臨界値を超えると利点は減少し得る。理論は最適なステップサイズを予測し、実際の経験則と合致。バッチサイズとステップサイズの選択に関する指針を提示し、適応戦略を提案。実験結果は理論を裏付け、大規模最適化に向けた設計指針を提供。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-03-25T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 25, 2026
+    <time class="dt-published" datetime="2026-03-29T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 29, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 49 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 hours 52 mins</span>
   </div></header>
 </div>
     </div>
@@ -7995,6 +7995,45 @@ My Issue
 <span class="snippet"><span>Comment</span><p>seq2seqにおいてweightのpretrainingを行う手法を提案<br><br>seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。<br><br>WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。<br><br><br><br>encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。<br><br>fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）<br><br>LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。<br><br><br><br>Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。<br><br>LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。<br><br>sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。<br><br><br><br>LM Objectiveは結構使えそうな印象</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="introducing-marin-5035" class="title-link">Introducing Marin: An Open Lab for Building Foundation Models, marin-community, 2025.05</h3><br><a href="https://marin.community/blog/2025/05/19/announcement/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5035" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<span class="issue_date">Issue Date: 2026-03-29</span>
+<span class="snippet"><span>Comment</span><p>github:
+
+
+<a href="https://github.com/marin-community/marin" target="_blank" rel="noopener noreferrer">https://github.com/marin-community/marin</a>
+
+
+<br><br>issueのExperimentsが興味深い</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3503" target="_blank" rel="noopener noreferrer">Marin 32B Retrospective, marin-community, 2025.10</a>
+</p><p>Marin projectのアナウンスをメモっていなかったので今更ながらメモ<br><br>- open-weight, open-sourceを超えて、LLMのopen-developmentを実現するための完全な透明性を持ったopen lab<br><br><img src="https://github.com/user-attachments/assets/bc8fea8a-dff7-4b0b-b6d6-dfed736cc938" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- すべての実験はgithub issueで管理され公開される<br>- marinのコードベースを使い誰でも実験をコード中に記述しpull repuestを送れ、誰でもレビューできる<br>- プルリクが承認されると実験が実際に実行され、誰でもWandB上の経過をリアルタイムで観察できる<br></p><p>Delphi[^1]の実験において、25Bパラメータモデルがweight decayフェーズに突入し、Marin-32Bでは以前はweight decayフェーズでloss spikeが頻発したが、Delphiでは安定していそうな見込み、という話がポストされている:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/percyliang/status/2037756865803960522?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>[^1]: 現代版のPythiaを構築しましょうという話で、Pythiaのモデルパラメータを70Bまでスケールアップし、学習に用いるトークン数もチンチラ則従いモデルサイズに応じてスケールアップ、The PileデータなどのデータセットをNemotron-CCなどのlarge scaleモデル用のデータセットに置換する、といった話が含まれる。Marin Issue 1337を参照のこと。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="l11-synthetic-4911" class="title-link">L11: Synthetic Data Powering Pretraining, Eric W. Tramel, Ph.D., UC Berkeley EE 290_194-11: Scalable AI, 2026.02</h3><br><a href="https://scalable-ai.eecs.berkeley.edu/assets/lecture_slides/lecture_11a.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -8838,6 +8877,12 @@ My Issue
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/percyliang/status/2034367256277533100?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
+
+
+</p><p>pj pageはこちら:<br>
+
+
+<a href="https://marin.community" target="_blank" rel="noopener noreferrer">https://marin.community</a>
 
 
 </p></span><br><br>
@@ -9915,47 +9960,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Physics.html" title="Physicsに関する論文・技術記事メモの一覧">Physicsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/RewardModel.html" title="RewardModelに関する論文・技術記事メモの一覧">RewardModelに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/OpenWeight.html" title="OpenWeightに関する論文・技術記事メモの一覧">OpenWeightに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Selected-Papers-Blogs.html" title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">Selected Papers/Blogsに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/InoculationPrompting.html"
-            title="InoculationPromptingに関する論文・技術記事メモの一覧">
-            InoculationPromptingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SpeciarizedBrainNetworks.html"
+            title="SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧">
+            SpeciarizedBrainNetworksに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/EfficiencyImprovement.html"
+            title="EfficiencyImprovementに関する論文・技術記事メモの一覧">
+            EfficiencyImprovementに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 333</span> 
+  <span class="post-badge badge-new">📝 333</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/VisionLanguageModel.html"
+            title="VisionLanguageModelに関する論文・技術記事メモの一覧">
+            VisionLanguageModelに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 226</span> 
+  <span class="post-badge badge-new">📝 226</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/UAI.html"
+            title="UAIに関する論文・技術記事メモの一覧">
+            UAIに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Hierarchical.html"
-            title="Hierarchicalに関する論文・技術記事メモの一覧">
-            Hierarchicalに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/VisionLanguageActionModel.html"
-            title="VisionLanguageActionModelに関する論文・技術記事メモの一覧">
-            VisionLanguageActionModelに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 36</span> 
-  <span class="post-badge badge-new">📝 36</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/ConceptErasure.html"
-            title="ConceptErasureに関する論文・技術記事メモの一覧">
-            ConceptErasureに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li></ul>
