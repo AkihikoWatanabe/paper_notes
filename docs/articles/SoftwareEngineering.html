@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 27 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 30 mins</span>
   </div></header>
 </div>
     </div>
@@ -2692,7 +2692,8 @@ My Issue
 </div>
 
 
-</p><p>エージェントはロールアウト時にサブタスクを別ブランチで分岐させ、分岐させたブランチは独立したコンテキストを持ち、サブタスクを実行し結果を返す。メインブランチは受け取った結果に対してcontext managerを適用してfoldingしてメインブランチのcontextに加えて処理を続行することで、サブタスクを高い性能で実行しつつ、contextの肥大化を抑える。<br><br>これらfoldingを実施するはcontext manager（learnable）やポリシーはFoldGRPOと呼ばれるRLで学習され、<br>- メインブランチのcontextが肥大しない<br>- サブタスクがout of scopeとならない<br>- agenticタスクが失敗しない<br><br>となるように設計された報酬によって学習される。</p><p>所見:
+</p><p>エージェントはロールアウト時にサブタスクを別ブランチで分岐させ、分岐させたブランチは独立したコンテキストを持ち、サブタスクを実行し結果を返す。メインブランチは受け取った結果に対してcontext managerを適用してfoldingしてメインブランチのcontextに加えて処理を続行することで、サブタスクを高い性能で実行しつつ、contextの肥大化を抑える。<br><br>これらfoldingを実施するはcontext manager（learnable）やポリシーはFoldGRPOと呼ばれるRLで学習され、<br>- メインブランチのcontextが肥大しない<br>- サブタスクがout of scopeとならない<br>- agenticタスクが失敗しない<br><br>となるように設計された報酬によって学習される。<br><br>ブランチを分岐し、結果を圧縮してメインブランチのcontextに加えて処理を継続するという一連の操作を、context manager, ポリシーの双方で学習している（どちらもfreezeはしない)。<br><br>一方、Kimi-K2.5では、同様な枠組みとしてAgentSwarmが提案されているが、こちらはサブタスクを実施するエージェントのパラメータはfreezeし、サブエージェントを作成し、その結果を集約する処理をOrchestratorと呼ばれるlearnableなモジュールが担っており、サブエージェントからの結果はある種環境からの観測結果として扱われ、タスクの成否はOrchestratorのみに委ねられる点が異なるように見える。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4316" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi K2.5: Visual Agentic Intelligence, Kimi Team+, arXiv'26, 2026.02</a>
+</p><p>所見:
 
 
 
@@ -3422,6 +3423,7 @@ My Issue
 <a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
 <a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="ContextEngineering.html" target="_blank" rel="noopener noreferrer">#ContextEngineering</a>
 <a class="button" href="Live.html" target="_blank" rel="noopener noreferrer">#Live</a>
 <a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
 <a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
@@ -3537,7 +3539,11 @@ My Issue
 </div>
 
 
-<br><br>要はrealisticなデータとシチュエーションでの評価に非常に重きを置いていて<br>- 実際のコーディングsessionのデータが用いられ、contamination-free<br>- 機能的な正しさのみならず、コードの品質、効率、挙動などの実用的な価値を意識し<br>- long horizonなタスクが多く取り入れられ<br>- Promptは曖昧性をうまく扱えるかを評価するために意図的にシンプルで短く<br>- CursorBenchのデータは継続的に更新される<br>- realisticなsessionデータだけでなく、その他の重要な挙動の評価（e.g., 指示追従, ルール/skilltのハンドリング, コメントの品質, editするか否かの判断の適切性など）のためのデータでも拡張されている<br><br>という感じらしい</p></span><br><br>
+<br><br>要はrealisticなデータとシチュエーションでの評価に非常に重きを置いていて<br>- 実際のコーディングsessionのデータが用いられ、contamination-free<br>- 機能的な正しさのみならず、コードの品質、効率、挙動などの実用的な価値を意識し<br>- long horizonなタスクが多く取り入れられ<br>- Promptは曖昧性をうまく扱えるかを評価するために意図的にシンプルで短く<br>- CursorBenchのデータは継続的に更新される<br>- realisticなsessionデータだけでなく、その他の重要な挙動の評価（e.g., 指示追従, ルール/skilltのハンドリング, コメントの品質, editするか否かの判断の適切性など）のためのデータでも拡張されている<br><br>という感じらしい</p><p>ポイント解説:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5039" target="_blank" rel="noopener noreferrer">How Kimi, Cursor, and Chroma Train Agentic Models with RL, PHILSCHMID, 2026.03</a>
+</p><p>self-summarizationによるcontextのcompressionを実施している<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4484" target="_blank" rel="noopener noreferrer">[Paper Note] InftyThink+: Effective and Efficient Infinite-Horizon Reasoning via Reinforcement Learning, Yuchen Yan+, arXiv'26, 2026.02</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4439" target="_blank" rel="noopener noreferrer">[Paper Note] Reasoning Cache: Continual Improvement Over Long Horizons via Short-Horizon RL, Ian Wu+, arXiv'26, 2026.02</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4958" target="_blank" rel="noopener noreferrer">より長いホライズンに向けた Composer の学習, Cursor, 2026.03</a>
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="a2ui-4906" class="title-link">A2UI, google, 2026.03</h3><br><a href="https://github.com/google/A2UI" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -6242,9 +6248,19 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Pixel-based.html"
-            title="Pixel-basedに関する論文・技術記事メモの一覧">
-            Pixel-basedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/IJCNLP.html"
+            title="IJCNLPに関する論文・技術記事メモの一覧">
+            IJCNLPに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
+  <span class="post-badge badge-new">📝 9</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Pruning.html"
+            title="Pruningに関する論文・技術記事メモの一覧">
+            Pruningに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
   <span class="post-badge badge-new">📝 10</span>
@@ -6252,32 +6268,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Transformer.html"
-            title="Transformerに関する論文・技術記事メモの一覧">
-            Transformerに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 260</span> 
-  <span class="post-badge badge-new">📝 260</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/CovarianceShift.html"
-            title="CovarianceShiftに関する論文・技術記事メモの一覧">
-            CovarianceShiftに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/DepthEstimation.html"
-            title="DepthEstimationに関する論文・技術記事メモの一覧">
-            DepthEstimationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ActivationSteering-ITI.html"
+            title="ActivationSteering/ITIに関する論文・技術記事メモの一覧">
+            ActivationSteering/ITIに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
   <span class="post-badge badge-new">📝 8</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Conversation.html"
+            title="Conversationに関する論文・技術記事メモの一覧">
+            Conversationに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
+  <span class="post-badge badge-new">📝 24</span>
 </span>
 </a>
         </li></ul>

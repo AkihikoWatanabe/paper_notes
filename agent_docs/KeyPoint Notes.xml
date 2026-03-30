@@ -1520,8 +1520,9 @@
 </div>
 {% endraw %}
 
-</p><p>Agenticなタスク（HLE, BrowsingによるQA, DeepSearch)に関するベンチでGPT-5.2(xhigh)などを超えてSoTAを達成。他のタスクではcodingではClaude-4.5-Opusの方が上、image関連のタスクではGemini 3 Proに軍配が上がっている。VideoではGeminiとcomparableという感じだろうか（GeminiはLong Contextに非常に強い印象があるがLongVideoBenchて上回っている）。この辺は各タスクごとに強いモデルの棲み分けが進んできた。<br>また、Kimi K2.5非常に美麗でinteractiveなフロントエンドのデモが掲載されている。<br><br>Agent Swarmタスクをサブタスクに分解して、複数のエージェントに並列に投げて実行（最大100 sub agent)できるような枠組みであり、それらが高性能かつ低latencyとなるように訓練れている模様。これにより性能を向上させつつlatencyを80%削減しているとのこと。<br>この話はContext Foldingに近い話と推察される:<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3305" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Long-Horizon LLM Agent via Context-Folding, Weiwei Sun+, arXiv'25, 2025.10</a>
-</p><p>公式ポスト:
+</p><p>Agenticなタスク（HLE, BrowsingによるQA, DeepSearch)に関するベンチでGPT-5.2(xhigh)などを超えてSoTAを達成。他のタスクではcodingではClaude-4.5-Opusの方が上、image関連のタスクではGemini 3 Proに軍配が上がっている。VideoではGeminiとcomparableという感じだろうか（GeminiはLong Contextに非常に強い印象があるがLongVideoBenchて上回っている）。この辺は各タスクごとに強いモデルの棲み分けが進んできた。<br>また、Kimi K2.5非常に美麗でinteractiveなフロントエンドのデモが掲載されている。<br><br>Agent Swarmは、タスクをサブタスクに分解して、複数のエージェントに並列に投げて実行（最大100 sub agent)できるような枠組みであり、それらが高性能かつ低latencyとなるように訓練れている模様。これにより性能を向上させつつlatencyを80%削減しているとのこと。<br>この話はContext Foldingに近い話と推察される:<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3305" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Long-Horizon LLM Agent via Context-Folding, Weiwei Sun+, arXiv'25, 2025.10</a>
+<br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5039" target="_blank" rel="noopener noreferrer">How Kimi, Cursor, and Chroma Train Agentic Models with RL, PHILSCHMID, 2026.03</a>
+ によると、AgentSwarmはサブタスクを実施するエージェントのパラメータはfreezeし、サブエージェントを作成し、その結果を集約する処理をOrchestratorと呼ばれるlearnableなモジュールが担っており、サブエージェントからの結果はある種環境からの観測結果として扱われ、タスクの成否はOrchestratorのみに委ねられているようである。<br>Context Foldingは、Context Managerとポリシーが同時にFoldGRPOを通じて学習されており、エージェントそのものがサブタスク実行、結果を受け取り圧縮、メインブランチに加えるという能力をContext Managerと協調しながら実施することを学習している点が異なるように感じる。<br><br>また、並列実行したCritical Stepと呼ばれる、各サブエージェントの最大ステップ数に関する指標が導入され、これらCritical Stepをすべてのステップで集約し、特定のサブエージェントにworkloadが集中しないようにOrchestratorが調整されるとのこと。</p><p>公式ポスト:
 
 {% raw %}
 
@@ -1551,6 +1552,7 @@
 </div>
 {% endraw %}
 
+</p><p>ポイント解説:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5039" target="_blank" rel="noopener noreferrer">How Kimi, Cursor, and Chroma Train Agentic Models with RL, PHILSCHMID, 2026.03</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -4039,7 +4041,8 @@
 </div>
 {% endraw %}
 
-</p><p>エージェントはロールアウト時にサブタスクを別ブランチで分岐させ、分岐させたブランチは独立したコンテキストを持ち、サブタスクを実行し結果を返す。メインブランチは受け取った結果に対してcontext managerを適用してfoldingしてメインブランチのcontextに加えて処理を続行することで、サブタスクを高い性能で実行しつつ、contextの肥大化を抑える。<br><br>これらfoldingを実施するはcontext manager（learnable）やポリシーはFoldGRPOと呼ばれるRLで学習され、<br>- メインブランチのcontextが肥大しない<br>- サブタスクがout of scopeとならない<br>- agenticタスクが失敗しない<br><br>となるように設計された報酬によって学習される。</p><p>所見:
+</p><p>エージェントはロールアウト時にサブタスクを別ブランチで分岐させ、分岐させたブランチは独立したコンテキストを持ち、サブタスクを実行し結果を返す。メインブランチは受け取った結果に対してcontext managerを適用してfoldingしてメインブランチのcontextに加えて処理を続行することで、サブタスクを高い性能で実行しつつ、contextの肥大化を抑える。<br><br>これらfoldingを実施するはcontext manager（learnable）やポリシーはFoldGRPOと呼ばれるRLで学習され、<br>- メインブランチのcontextが肥大しない<br>- サブタスクがout of scopeとならない<br>- agenticタスクが失敗しない<br><br>となるように設計された報酬によって学習される。<br><br>ブランチを分岐し、結果を圧縮してメインブランチのcontextに加えて処理を継続するという一連の操作を、context manager, ポリシーの双方で学習している（どちらもfreezeはしない)。<br><br>一方、Kimi-K2.5では、同様な枠組みとしてAgentSwarmが提案されているが、こちらはサブタスクを実施するエージェントのパラメータはfreezeし、サブエージェントを作成し、その結果を集約する処理をOrchestratorと呼ばれるlearnableなモジュールが担っており、サブエージェントからの結果はある種環境からの観測結果として扱われ、タスクの成否はOrchestratorのみに委ねられる点が異なるように見える。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4316" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi K2.5: Visual Agentic Intelligence, Kimi Team+, arXiv'26, 2026.02</a>
+</p><p>所見:
 
 {% raw %}
 
