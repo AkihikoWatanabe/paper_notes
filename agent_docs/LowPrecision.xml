@@ -1,5 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-03-12">
+<paper-list last-updated="2026-04-01">
+<paper-entry>
+<title>[Paper Note] Adaptive Block-Scaled Data Types, Jack Cook+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.28765</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5075</repo-issue-link>
+<tags>NLP, LanguageModel, action_wanted, Architecture, SoftwareEngineering, read-later, Selected Papers/Blogs, One-Line Notes, LowPrecision, needs-revision</tags>
+<repo-issue-date>2026-04-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.28765
+# Authors
+  - Jack Cook
+  - Hyemin S. Lee
+  - Kathryn Le
+  - Junxian Guo
+  - Giovanni Traverso
+  - Anantha P. Chandrakasan
+  - Song Han
+# Abstract
+  - NVFP4 has grown increasingly popular as a 4-bit format for quantizing large language models due to its hardware support and its ability to retain useful information with relatively few bits per parameter. However, the format is not without limitations: recent work has shown that NVFP4 suffers from its error distribution, resulting in large amounts of quantization error on near-maximal values in each group of 16 values. In this work, we leverage this insight to design new Adaptive Block-Scaled Data Types that can adapt to the distribution of their input values. For four-bit quantization, our proposed IF4 (Int/Float 4) data type selects between FP4 and INT4 representations for each group of 16 values, which are then scaled by an E4M3 scale factor as is done with NVFP4. The selected data type is denoted using the scale factor's sign bit, which is currently unused in NVFP4, and we apply the same insight to design formats for other bit-widths, including IF3 and IF6. When used to quantize language models, we find that IF4 outperforms existing 4-bit block-scaled formats, achieving lower loss during quantized training and achieving higher accuracy on many tasks in post-training quantization. We additionally design and evaluate an IF4 Multiply-Accumulate (MAC) unit to demonstrate that IF4 can be implemented efficiently in next-generation hardware accelerators. Our code is available at https://github.com/mit-han-lab/fouroversix.
+# Translation (by gpt-5-nano)
+- NVFP4は、ハードウェアサポートと各パラメータあたりのビット数が比較的少なくても有用な情報を保持できる能力から、大規模言語モデルの量子化に用いられる4ビット形式としてますます人気を集めています。しかし、この形式には制限もあります。最近の研究では、NVFP4が誤差分布の問題を抱えており、各16個の値のグループ内でほぼ最大値に近い値に対して大きな量子化誤差が生じることが示されています。本研究では、この洞察を活用して、入力値の分布に適応できる新しい適応型ブロックスケールデータ型を設計します。4ビット量子化において、提案するIF4（Int/Float 4）データ型は、各16値のグループごとにFP4とINT4の表現を選択し、それらをNVFP4と同様にE4M3スケールファクターでスケールします。選択されたデータ型は、NVFP4では現在未使用のスケールファクターの符号ビットで示されます。また、IF3やIF6を含む他のビット幅のフォーマット設計にも同じ洞察を適用します。言語モデルの量子化に使用した場合、IF4は既存の4ビットブロックスケールド形式を上回り、量子化訓練時の損失を低く抑えられるとともに、ポストトレーニング量子化の多くのタスクで精度が高くなることを確認しました。加えて、IF4の乗算-累積（MAC）ユニットを設計・評価し、IF4が次世代のハードウェアアクセラレータで効率的に実装できることを示しています。我々のコードはhttps://github.com/mit-han-lab/fouroversixで入手可能です。
+# Summary (by gpt-4o-mini)
+- NVFP4は、4ビット量子化形式として人気ですが、誤差分布の問題を抱えています。本研究では、入力値の分布に適応できる新しいデータ型、IF4（Int/Float 4）を提案します。IF4は、各16値のグループに対しFP4とINT4を選択し、NVFP4のスケールファクターでスケールします。この方法により、量子化訓練時の損失を低減し、精度を向上させることが確認されました。また、IF4のハードウェア実装も評価されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jackcookjack/status/2039107185876369520?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>NVFP4と同様に、4bitで表現される16個のデータをひとつのグループとして扱い[^1]、FP8でのスケールファクターを共有するような浮動小数点フォーマットで[^2]、<br><br>グループ内の16個のデータに対して、INT4/FP4どちらを適用するかを、（NVFP4では常に正となっていた;未使用だった）スケールファクターを表現している8bitの先頭である符号ビットを用いて制御する新たな低精度浮動小数点フォーマット、IF4を提案、という話らしい。符号ビットをINT4, FP4を制御するIndicatorとして扱うため、NVFP4と比較してメモリ使用量は増えない。Indicatorはどちらがより量子化誤差が小さくなるかによって選択される、という感じらしい？<br><br><img src="https://github.com/user-attachments/assets/962e1f18-c1a7-43a0-9f2b-feb18b3fac9c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: グループとは単に0/1のバイナリ値が4bit分並んでいるデータのことであり、たとえばFP4で4bitの羅列を解釈すると、FP4は{±0, ±0.5, ±1, ±1.5, ±2, ±3, ±4, ±6}の16個の数値で解釈するようルールづけられている。<br>[^2]: スケールファクターを乗じることで、値を元々のデータのスケールに変換する。</p><p>この辺は勉強不足だなぁ、、、。<br><br>- NVFP4解説:
+
+{% raw %}
+<a href="https://licensecounter.jp/engineer-voice/blog/articles/20260317_nvfp4.html" target="_blank" rel="noopener noreferrer">https://licensecounter.jp/engineer-voice/blog/articles/20260317_nvfp4.html</a>
+{% endraw %}
+
+<br>- 本研究日本語解説:
+
+{% raw %}
+<a href="https://note.com/shimmyo_lab/n/n693c4d0da45f" target="_blank" rel="noopener noreferrer">https://note.com/shimmyo_lab/n/n693c4d0da45f</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] FP8-RL: A Practical and Stable Low-Precision Stack for LLM Reinforcement Learning, Zhaopeng Qiu+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.18150</original-paper-blog-link>
