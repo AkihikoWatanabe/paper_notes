@@ -1,6 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-04-01">
 <paper-entry>
+<title>[Paper Note] Adaptive Block-Scaled Data Types, Jack Cook+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.28765</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5075</repo-issue-link>
+<tags>NLP, LanguageModel, action_wanted, Architecture, SoftwareEngineering, read-later, Selected Papers/Blogs, One-Line Notes, LowPrecision, needs-revision</tags>
+<repo-issue-date>2026-04-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.28765
+# Authors
+  - Jack Cook
+  - Hyemin S. Lee
+  - Kathryn Le
+  - Junxian Guo
+  - Giovanni Traverso
+  - Anantha P. Chandrakasan
+  - Song Han
+# Abstract
+  - NVFP4 has grown increasingly popular as a 4-bit format for quantizing large language models due to its hardware support and its ability to retain useful information with relatively few bits per parameter. However, the format is not without limitations: recent work has shown that NVFP4 suffers from its error distribution, resulting in large amounts of quantization error on near-maximal values in each group of 16 values. In this work, we leverage this insight to design new Adaptive Block-Scaled Data Types that can adapt to the distribution of their input values. For four-bit quantization, our proposed IF4 (Int/Float 4) data type selects between FP4 and INT4 representations for each group of 16 values, which are then scaled by an E4M3 scale factor as is done with NVFP4. The selected data type is denoted using the scale factor's sign bit, which is currently unused in NVFP4, and we apply the same insight to design formats for other bit-widths, including IF3 and IF6. When used to quantize language models, we find that IF4 outperforms existing 4-bit block-scaled formats, achieving lower loss during quantized training and achieving higher accuracy on many tasks in post-training quantization. We additionally design and evaluate an IF4 Multiply-Accumulate (MAC) unit to demonstrate that IF4 can be implemented efficiently in next-generation hardware accelerators. Our code is available at https://github.com/mit-han-lab/fouroversix.
+# Translation (by gpt-5-nano)
+- NVFP4は、ハードウェアサポートと各パラメータあたりのビット数が比較的少なくても有用な情報を保持できる能力から、大規模言語モデルの量子化に用いられる4ビット形式としてますます人気を集めています。しかし、この形式には制限もあります。最近の研究では、NVFP4が誤差分布の問題を抱えており、各16個の値のグループ内でほぼ最大値に近い値に対して大きな量子化誤差が生じることが示されています。本研究では、この洞察を活用して、入力値の分布に適応できる新しい適応型ブロックスケールデータ型を設計します。4ビット量子化において、提案するIF4（Int/Float 4）データ型は、各16値のグループごとにFP4とINT4の表現を選択し、それらをNVFP4と同様にE4M3スケールファクターでスケールします。選択されたデータ型は、NVFP4では現在未使用のスケールファクターの符号ビットで示されます。また、IF3やIF6を含む他のビット幅のフォーマット設計にも同じ洞察を適用します。言語モデルの量子化に使用した場合、IF4は既存の4ビットブロックスケールド形式を上回り、量子化訓練時の損失を低く抑えられるとともに、ポストトレーニング量子化の多くのタスクで精度が高くなることを確認しました。加えて、IF4の乗算-累積（MAC）ユニットを設計・評価し、IF4が次世代のハードウェアアクセラレータで効率的に実装できることを示しています。我々のコードはhttps://github.com/mit-han-lab/fouroversixで入手可能です。
+# Summary (by gpt-4o-mini)
+- NVFP4は、4ビット量子化形式として人気ですが、誤差分布の問題を抱えています。本研究では、入力値の分布に適応できる新しいデータ型、IF4（Int/Float 4）を提案します。IF4は、各16値のグループに対しFP4とINT4を選択し、NVFP4のスケールファクターでスケールします。この方法により、量子化訓練時の損失を低減し、精度を向上させることが確認されました。また、IF4のハードウェア実装も評価されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jackcookjack/status/2039107185876369520?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>NVFP4と同様に、4bitで表現される16個のデータをひとつのグループとして扱い[^1]、FP8でのスケールファクターを共有するような浮動小数点フォーマットで[^2]、<br><br>グループ内の16個のデータに対して、INT4/FP4どちらを適用するかを、（NVFP4では常に正となっていた;未使用だった）スケールファクターを表現している8bitの先頭である符号ビットを用いて制御する新たな低精度浮動小数点フォーマット、IF4を提案、という話らしい。符号ビットをINT4, FP4を制御するIndicatorとして扱うため、NVFP4と比較してメモリ使用量は増えない。Indicatorはどちらがより量子化誤差が小さくなるかによって選択される、という感じらしい？<br><br><img src="https://github.com/user-attachments/assets/962e1f18-c1a7-43a0-9f2b-feb18b3fac9c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: グループとは単に0/1のバイナリ値が4bit分並んでいるデータのことであり、たとえばFP4で4bitの羅列を解釈すると、FP4は{±0, ±0.5, ±1, ±1.5, ±2, ±3, ±4, ±6}の16個の数値で解釈するようルールづけられている。<br>[^2]: スケールファクターを乗じることで、値を元々のデータのスケールに変換する。</p><p>この辺は勉強不足だなぁ、、、。<br><br>- NVFP4解説:
+
+{% raw %}
+<a href="https://licensecounter.jp/engineer-voice/blog/articles/20260317_nvfp4.html" target="_blank" rel="noopener noreferrer">https://licensecounter.jp/engineer-voice/blog/articles/20260317_nvfp4.html</a>
+{% endraw %}
+
+<br>- 本研究日本語解説:
+
+{% raw %}
+<a href="https://note.com/shimmyo_lab/n/n693c4d0da45f" target="_blank" rel="noopener noreferrer">https://note.com/shimmyo_lab/n/n693c4d0da45f</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Claude Code's source code leaked through a `.map` file - How bad is it, really?, Chubby, 2026.04</title>
+<original-paper-blog-link>https://x.com/kimmonismus/status/2038976848168735181?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5074</repo-issue-link>
+<tags>Post, SoftwareEngineering, AgentHarness</tags>
+<repo-issue-date>2026-04-01</repo-issue-date>
+<issue-body>https://x.com/kimmonismus/status/2038976848168735181?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/suzacque/status/2038982185026531641?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>あらら、、、</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Entropy-Preserving Reinforcement Learning, Aleksei Petrenko+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.11682</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5073</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, action_wanted, ICLR, PostTraining, Selected Papers/Blogs, Stability, needs-revision, EntropyCollapse, AuthorThread</tags>
+<repo-issue-date>2026-04-01</repo-issue-date>
+<issue-body>https://arxiv.org/abs/2603.11682</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/petrenko_ai/status/2038714716550516767?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=E8MR8jgEeZ" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=E8MR8jgEeZ</a>
+{% endraw %}
+
+</p><p>PPO/GRPOなどのアルゴリズムではRL中にポリシーの多様性が低下し、ポリシーがdeterministicになり探索をしなくなり、パフォーマンスが停滞するか低下する（あるいはベースモデルでもともと高い尤度を持っていた解のPass@1が改善するが、ポリシーの出力が狭くなるため、Pass@kが犠牲になる）現象が生じる（= entropy collapse）ので、それを是正したいという話。<br><br>後ほど追記</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LFM2.5-350M: No Size Left Behind, Liquid AI, 2026.04</title>
+<original-paper-blog-link>https://www.liquid.ai/blog/lfm2-5-350m-no-size-left-behind</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5072</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, SmallModel, OpenWeight, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2026-04-01</repo-issue-date>
+<issue-body>https://www.liquid.ai/blog/lfm2-5-350m-no-size-left-behind</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liquidai/status/2039029358224871605?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- LFM2のアーキテクチャを採用の350Mパラメータモデルで、CPUでも十分な速度で推論可能<br>- 追加の事前学習(10T -> 28T tokens)、および、large-scale RLを実施<br>- 同等規模のパラメータ数（あるいは2倍程度）のモデル群に対して、知識, 指示追従能力, ツール呼び出し、データ抽出などのベンチマークで上回る<br><br><img src="https://github.com/user-attachments/assets/9227c6ce-c9bc-4e0b-8091-3d8f3b575b22" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/98be3f0f-93be-4e65-bda3-cfd816b43c96" /" alt="image" loading="lazy" width="550" height="400"/><br><br>- LFM2-350Mと比較して、指示追従能力, データ抽出, tool useの性能が大きく向上<br>  - edgeデバイスでの軽量なデータ抽出パイプラインとして有用<br>  - しかし、math, coding, creative writingなどでの利用は推奨されない<br><br>- CPU/GPUでの推論ともに同等規模、あるいは1B級のモデルよりも早く、省メモリ<br><img src="https://github.com/user-attachments/assets/81f94f7f-8916-4e53-aafc-f240a0af5719" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/67bc90a7-9405-4afe-80b2-c7e609abc3d4" /" alt="image" loading="lazy" width="550" height="400"/></p><p>HF: 
+
+{% raw %}
+<a href="https://huggingface.co/LiquidAI/LFM2.5-350M" target="_blank" rel="noopener noreferrer">https://huggingface.co/LiquidAI/LFM2.5-350M</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>OneCompression, FujitsuResearch, 2026.04</title>
+<original-paper-blog-link>https://github.com/FujitsuResearch/OneCompression</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5071</repo-issue-link>
+<tags>NLP, LanguageModel, Library, Quantization, One-Line Notes</tags>
+<repo-issue-date>2026-04-01</repo-issue-date>
+<issue-body>https://github.com/FujitsuResearch/OneCompression</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yuma_1_or/status/2038978777183912182?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>example_autorun.pyを見るとわかるが、ワンライナーで（post-training basedな)量子化をしたいモデルのコンフィグを渡して実行するだけで、自動的にGPTQ量子化など（DBF, RTNと呼ばれる方式もあるようだ）をしてくれるライブラリのようである。現在はLlama, Qwen3をサポートしており、今後も適用可能なモデルは拡張していく予定と書かれている。また、量子化したモデルはvLLMとの互換性も担保される。</p><p>サポートされているアルゴリズムはこちらにまとまっていそう:<br>
+
+{% raw %}
+<a href="https://fujitsuresearch.github.io/OneCompression/algorithms/overview/" target="_blank" rel="noopener noreferrer">https://fujitsuresearch.github.io/OneCompression/algorithms/overview/</a>
+{% endraw %}
+
+<br><br>calibration dataは何が用いられるのだろうか？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>LongCat-AudioDiT, Meituan LongCatTeam, 2026.03</title>
 <original-paper-blog-link>https://github.com/meituan-longcat/LongCat-AudioDiT/blob/main/LongCat-AudioDiT.pdf</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5070</repo-issue-link>
@@ -2017,6 +2162,16 @@
 {% endraw %}
 
 </p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4336" target="_blank" rel="noopener noreferrer">[Paper Note] Reinforcement Learning via Self-Distillation, Jonas Hübotter+, arXiv'26, 2026.01</a>
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2039296724473151801?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -3782,156 +3937,6 @@ K-アームド・バンディット問題では、DGは単一のコンテキス�
 {% endraw %}
 
 </p><p>状態をベクトルではなく行列として保持するRNN。<br><br>状態の更新Z_tを、前回の状態H_t-1<br>に対して重みWによって変換したものと、現在のトークンのk_t,v_tが与えられた時の外積から求まる行列の和を求めた後、tanhで非線形変換することで計算する（式10)。<br>最終的にforget gate f_tによってZ_tとH_t-1が線形補完されることで、状態H_tが決定される（式11)。<br>出力y_tは更新された状態H_tにq_tの積をとったものと、v_tを重みw_rで重みづけて残差接続したものの和で求められる(式12)。</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Efficient Exploration at Scale, Seyed Mohammad Asghari+, arXiv'26, 2026.03</title>
-<original-paper-blog-link>https://arxiv.org/abs/2603.17378</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4975</repo-issue-link>
-<tags></tags>
-<repo-issue-date>2026-03-22</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2603.17378
-# Authors
-  - Seyed Mohammad Asghari
-  - Chris Chute
-  - Vikranth Dwaracherla
-  - Xiuyuan Lu
-  - Mehdi Jafarnia
-  - Victor Minden
-  - Zheng Wen
-  - Benjamin Van Roy
-# Abstract
-  - We develop an online learning algorithm that dramatically improves the data efficiency of reinforcement learning from human feedback (RLHF). Our algorithm incrementally updates reward and language models as choice data is received. The reward model is fit to the choice data, while the language model is updated by a variation of reinforce, with reinforcement signals provided by the reward model. Several features enable the efficiency gains: a small affirmative nudge added to each reinforcement signal, an epistemic neural network that models reward uncertainty, and information-directed exploration. With Gemma large language models (LLMs), our algorithm matches the performance of offline RLHF trained on 200K labels using fewer than 20K labels, representing more than a 10x gain in data efficiency. Extrapolating from our results, we expect our algorithm trained on 1M labels to match offline RLHF trained on 1B labels. This represents a 1,000x gain. To our knowledge, these are the first results to demonstrate that such large improvements are possible.
-# Translation (by gpt-5-nano)
-- 私たちは、人間のフィードバックからの強化学習（RLHF）のデータ効率を大幅に改善するオンライン学習アルゴリズムを開発する。アルゴリズムは選択データを受け取るたびに報酬モデルと言語モデルを逐次更新する。報酬モデルは選択データに適合させられ、言語モデルは報酬モデルが提供する強化信号を用いたリインフォース法の変法によって更新される。いくつかの特徴がこの効率向上を可能にする：各強化信号に付加された小さな肯定的な後押し、報酬不確実性をモデル化するエピステミック神経ネットワーク、情報指向探索。Gemma の大規模言語モデル（LLMs）を用いると、私たちのアルゴリズムは、20万ラベルで訓練されたオフライン RLHF の性能に匹敵しつつ、2万未満のラベルで済み、データ効率は10倍以上向上する。結果を外挿すると、100万ラベルで訓練したアルゴリズムは10億ラベルで訓練したオフライン RLHF に匹敵すると見込まれる。これは1000倍の改善を意味する。我々の知る限り、これほど大きな改善が可能であることを示した初めての結果である。
-# Summary (by gpt-4o-mini)
-- オンライン学習アルゴリズムを用いて、RLHFのデータ効率を大幅に改善。報酬モデルと言語モデルを逐次更新し、選択データに適合させる。GemmaのLLMsを活用することで、2万未満のラベルでオフラインRLHFの性能に匹敵し、データ効率は10倍以上向上。今後100万ラベルで訓練した場合、1000倍の改善が期待される。これほどの改善が可能であることを示したのは初めて。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2034671064450543773?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Prompt Relay: Inference-Time Temporal Prompt Routing for Multi-Event Video Generation, 2026.03</title>
-<original-paper-blog-link>https://gordonchen19.github.io/Prompt-Relay/static/pdfs/Prompt_Relay__CVPRW_2026_.pdf</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4974</repo-issue-link>
-<tags>VideoGeneration/Understandings</tags>
-<repo-issue-date>2026-03-21</repo-issue-date>
-<issue-body>https://gordonchen19.github.io/Prompt-Relay/static/pdfs/Prompt_Relay__CVPRW_2026_.pdf</issue-body>
-<maintainer-comment-text><p>pj page:
-
-{% raw %}
-<a href="https://gordonchen19.github.io/Prompt-Relay/" target="_blank" rel="noopener noreferrer">https://gordonchen19.github.io/Prompt-Relay/</a>
-{% endraw %}
-
-</p><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chengordon19/status/2034582124628689139?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Demystifing Video Reasoning, Ruisi Wang+, arXiv'26, 2026.03</title>
-<original-paper-blog-link>https://arxiv.org/abs/2603.16870</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4973</repo-issue-link>
-<tags>read-later</tags>
-<repo-issue-date>2026-03-21</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2603.16870
-# Authors
-  - Ruisi Wang
-  - Zhongang Cai
-  - Fanyi Pu
-  - Junxiang Xu
-  - Wanqi Yin
-  - Maijunxian Wang
-  - Ran Ji
-  - Chenyang Gu
-  - Bo Li
-  - Ziqi Huang
-  - Hokin Deng
-  - Dahua Lin
-  - Ziwei Liu
-  - Lei Yang
-# Abstract
-  - Recent advances in video generation have revealed an unexpected phenomenon: diffusion-based video models exhibit non-trivial reasoning capabilities. Prior work attributes this to a Chain-of-Frames (CoF) mechanism, where reasoning is assumed to unfold sequentially across video frames. In this work, we challenge this assumption and uncover a fundamentally different mechanism. We show that reasoning in video models instead primarily emerges along the diffusion denoising steps. Through qualitative analysis and targeted probing experiments, we find that models explore multiple candidate solutions in early denoising steps and progressively converge to a final answer, a process we term Chain-of-Steps (CoS). Beyond this core mechanism, we identify several emergent reasoning behaviors critical to model performance: (1) working memory, enabling persistent reference; (2) self-correction and enhancement, allowing recovery from incorrect intermediate solutions; and (3) perception before action, where early steps establish semantic grounding and later steps perform structured manipulation. During a diffusion step, we further uncover self-evolved functional specialization within Diffusion Transformers, where early layers encode dense perceptual structure, middle layers execute reasoning, and later layers consolidate latent representations. Motivated by these insights, we present a simple training-free strategy as a proof-of-concept, demonstrating how reasoning can be improved by ensembling latent trajectories from identical models with different random seeds. Overall, our work provides a systematic understanding of how reasoning emerges in video generation models, offering a foundation to guide future research in better exploiting the inherent reasoning dynamics of video models as a new substrate for intelligence.
-# Translation (by gpt-5-nano)
-- 動画生成の最近の進歩は、予期せぬ現象を明らかにしている。拡散モデルに基づく動画モデルは、非自明な推論能力を示す。従来の研究は、推論が動画フレーム間を連続的に展開することを前提とする Chain-of-Frames (CoF) メカニズムに起因すると見ていた。本研究ではこの仮定に異議を唱え、根本的に異なるメカニズムを明らかにする。動画モデルの推論は、むしろ拡散デノイズ過程に沿って主に現れることを示す。定性的分析と標的化した検証実験を通じて、モデルは初期のデノイズ過程で複数の候補解を探索し、最終解へと漸進的に収束するという過程を発見した。これを Chain-of-Steps (CoS) と呼ぶ。 この中核メカニズムを超えて、モデルの性能にとって重要な複数の新たな推論挙動を同定した：（1）作業記憶（持続的な参照を可能にする）、（2）自己修正と強化（不正確な中間解から回復を可能にする）、（3）行動前の知覚（初期ステップが意味的な基盤を確立し、後のステップが構造化された操作を行う）。デノイズ過程の間、拡散トランスフォーマー内で自己進化的な機能特化が生じることをさらに明らかにした。初期層は密な知覚構造を符号化し、中間層は推論を実行し、後半層は潜在表現を統合する。これらの洞察に動機づけられ、訓練不要の簡易な戦略を概念実証として提示し、同一モデルを異なる乱数種でアンサンブルすることで推論を改善できることを示す。総じて、本研究は動画生成モデルにおける推論がどのように現れるかを系統的に理解し、動画モデルの固有の推論ダイナミクスを活用する新しい知性の基盤として、今後の研究を導く土台を提供する。
-# Summary (by gpt-4o-mini)
-- 動画生成モデルの推論メカニズムを再検討し、Chain-of-Frames (CoF) から Chain-of-Steps (CoS) への移行を提唱。モデルは初期のデノイズ過程で複数の候補解を探索し、漸進的に収束することを示す。新たな推論挙動として、作業記憶、自己修正、行動前の知覚を特定。さらに、拡散トランスフォーマー内での機能特化を明らかにし、訓練不要のアンサンブル戦略が推論を改善できることを提案。これにより、動画モデルの推論ダイナミクス理解の基盤を提供。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/caizhongang/status/2034295628457799871?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>pj page:
-
-{% raw %}
-<a href="https://www.wruisi.com/demystifying_video_reasoning/" target="_blank" rel="noopener noreferrer">https://www.wruisi.com/demystifying_video_reasoning/</a>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Xiaomi MiMo-V2-TTS, Xiaomi, 2026.03</title>
-<original-paper-blog-link>https://mimo.xiaomi.com/mimo-v2-tts</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4972</repo-issue-link>
-<tags>TTS</tags>
-<repo-issue-date>2026-03-21</repo-issue-date>
-<issue-body>https://mimo.xiaomi.com/mimo-v2-tts</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xiaomimimo/status/2034305830724444484?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Xiaomi MiMo-V2-Omni, Xiaomi, 2026.03</title>
-<original-paper-blog-link>https://mimo.xiaomi.com/mimo-v2-omni</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4971</repo-issue-link>
-<tags>Omni</tags>
-<repo-issue-date>2026-03-21</repo-issue-date>
-<issue-body>https://mimo.xiaomi.com/mimo-v2-omni</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xiaomimimo/status/2034305830724444484?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
 </paper-entry>
 
 </paper-list>
