@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-03-22">
+<paper-list last-updated="2026-04-02">
 <paper-entry>
 <title>[Paper Note] Data-efficient pre-training by scaling synthetic megadocs, Konwoo Kim+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.18534</original-paper-blog-link>
@@ -4263,6 +4263,35 @@ TinyStoriesが、LMの開発、分析、研究を促進し、特にリソース�
 # Summary (by gpt-4o-mini)
 - 本論文では、LLMを用いて複雑な指示データを自動生成する方法を提案。Evol-Instructを使用して初期の指示を段階的に書き換え、生成したデータでLLaMAをファインチューニングし、WizardLMモデルを構築。評価結果は、Evol-Instructからの指示が人間作成のものより優れており、WizardLMがChatGPTよりも高い評価を得ることを示す。AI進化による指示生成がLLM強化の有望なアプローチであることを示唆。</issue-body>
 <maintainer-comment-text><p>instruction trainingは大きな成功を収めているが、人間がそれらのデータを作成するのはコストがかかる。また、そもそも複雑なinstructionを人間が作成するのは苦労する。そこで、LLMに自動的に作成させる手法を提案している（これはself instructと一緒）。データを生成する際は、seed setから始め、step by stepでinstructionをrewriteし、より複雑なinstructionとなるようにしていく。<br>これらの多段的な複雑度を持つinstructionをLLaMaベースのモデルに食わせてfinetuningした（これをWizardLMと呼ぶ）。人手評価の結果、WizardLMがChatGPTよりも好ましいレスポンスをすることを示した。特に、WizaraLMはコード生成や、数値計算といった難しいタスクで改善を示しており、複雑なinstructionを学習に利用することの重要性を示唆している。</p><p>EvolInstructを提案。"1+1=?"といったシンプルなinstructionからスタートし、これをLLMを利用して段階的にcomplexにしていく。complexにする方法は2通り：<br><br>- In-Depth Evolving: instructionを5種類のoperationで深掘りする（blue direction line）<br><br>  - add constraints<br><br>  - deepening<br><br>  - concretizing<br><br>  - increase reasoning steps<br><br>  - complicate input<br><br>- In-breadth Evolving: givenなinstructionから新しいinstructionを生成する<br><br><br><br>上記のEvolvingは特定のpromptを与えることで実行される。<br><br>また、LLMはEvolvingに失敗することがあるので、Elimination Evolvingと呼ばれるフィルタを利用してスクリーニングした。<br><br>フィルタリングでは4種類の失敗するsituationを想定し、1つではLLMを利用。2枚目画像のようなinstructionでフィルタリング。<br><br>1. instructionの情報量が増えていない場合。<br><br>2. instructionがLLMによって応答困難な場合（短すぎる場合やsorryと言っている場合）<br><br>3. puctuationやstop wordsによってのみ構成されている場合 <br><br>4.明らかにpromptの中から単語をコピーしただけのinstruction（given prompt, rewritten prompt, #Rewritten Prompt#など）<br><br><img src="https://user-images.githubusercontent.com/12249301/234436445-e84ff44e-7b0b-4217-a735-7444b04bd760.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://user-images.githubusercontent.com/12249301/234437210-6cb6d75f-509a-4f2e-a767-dba8861d8a69.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Matrix-Game 3.0: Real-Time and Streaming Interactive World Model with Long-Horizon Memory, Skywork AI, 2026.04</title>
+<original-paper-blog-link>https://matrix-game-v3.github.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5082</repo-issue-link>
+<tags>ComputerVision, Transformer, SyntheticData, DiffusionModel, OpenWeight, VideoGeneration/Understandings, WorldModels, interactive, Game, 4D (Video), LongHorizon, Realtime, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-02</repo-issue-date>
+<issue-body>https://matrix-game-v3.github.io/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/skywork_ai/status/2039305679966720411?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Unreal Engineで合成されたデータに基づいて学習されたDiTベースのWorld Modelらしい。<br><br>Acknowleagementから察するに、Wan2.2がベースモデルで、self-forcingが学習に用いられている。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2312" target="_blank" rel="noopener noreferrer">Wan2.2, Alibaba Wan, 2025.07</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2870" target="_blank" rel="noopener noreferrer">[Paper Note] Self Forcing: Bridging the Train-Test Gap in Autoregressive Video   Diffusion, Xun Huang+, NeurIPS'25</a>
+<br><br>また、action control moduleをアーキテクチャに導入することで、汎用的な動画生成モデルにキーボード、マウス等のアクションによるコントロールを実現している模様。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5083" target="_blank" rel="noopener noreferrer">[Paper Note] GameFactory: Creating New Games with Generative Interactive Videos, Jiwen Yu+, arXiv'25, 2025.01</a>
+<br><br>デコードの高速化には量子化を利用しているとのこと。</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/Skywork/Matrix-Game-3.0" target="_blank" rel="noopener noreferrer">https://huggingface.co/Skywork/Matrix-Game-3.0</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
