@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-02">
+<paper-list last-updated="2026-04-04">
+<paper-entry>
+<title>[Paper Note] PackForcing: Short Video Training Suffices for Long Video Sampling and Long Context Inference, Xiaofeng Mao+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.25730</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5092</repo-issue-link>
+<tags>ComputerVision, DiffusionModel, LongSequence, Architecture, read-later, VideoGeneration/Understandings, KeyPoint Notes, KV Cache</tags>
+<repo-issue-date>2026-04-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.25730
+# Authors
+  - Xiaofeng Mao
+  - Shaohao Rui
+  - Kaining Ying
+  - Bo Zheng
+  - Chuanhao Li
+  - Mingmin Chi
+  - Kaipeng Zhang
+# Abstract
+  - Autoregressive video diffusion models have demonstrated remarkable progress, yet they remain bottlenecked by intractable linear KV-cache growth, temporal repetition, and compounding errors during long-video generation. To address these challenges, we present PackForcing, a unified framework that efficiently manages the generation history through a novel three-partition KV-cache strategy. Specifically, we categorize the historical context into three distinct types: (1) Sink tokens, which preserve early anchor frames at full resolution to maintain global semantics; (2) Mid tokens, which achieve a massive spatiotemporal compression (32x token reduction) via a dual-branch network fusing progressive 3D convolutions with low-resolution VAE re-encoding; and (3) Recent tokens, kept at full resolution to ensure local temporal coherence. To strictly bound the memory footprint without sacrificing quality, we introduce a dynamic top-$k$ context selection mechanism for the mid tokens, coupled with a continuous Temporal RoPE Adjustment that seamlessly re-aligns position gaps caused by dropped tokens with negligible overhead. Empowered by this principled hierarchical context compression, PackForcing can generate coherent 2-minute, 832x480 videos at 16 FPS on a single H200 GPU. It achieves a bounded KV cache of just 4 GB and enables a remarkable 24x temporal extrapolation (5s to 120s), operating effectively either zero-shot or trained on merely 5-second clips. Extensive results on VBench demonstrate state-of-the-art temporal consistency (26.07) and dynamic degree (56.25), proving that short-video supervision is sufficient for high-quality, long-video synthesis. https://github.com/ShandaAI/PackForcing
+# Translation (by gpt-5-nano)
+- 自己回帰型ビデオ拡散モデルは顕著な進歩を示してきたが、扱いにくい線形KVキャッシュの成長、時間的反復、および長時間動画生成時の誤差の累積というボトルネックに依然直面している。これらの課題に対処するため、私たちは PackForcing を提案する。これは生成履歴を効率的に管理する新規の三分割KVキャッシュ戦略を用いた統一フレームワークである。具体的には、過去の文脈を三つの異なるタイプに分類する：(1) Sink tokens（シンクトークン）— 初期のアンカーフレームを高解像度のまま保持してグローバルな意味論を維持；(2) Mid tokens（ミッドトークン）— 進行的3D畳み込みと低解像度VAE再エンコードを融合した二枝ネットワークにより、32倍のトークン削減という大規模な時空圧縮を達成；(3) Recent tokens（最近トークン）— 局所的な時相の整合性を確保するため高解像度のまま保持。品質を損なうことなくメモリフットプリントを厳密に抑制するため、ミッドトークンには動的なトップKコンテキスト選択機構を導入し、削除されたトークンによって生じる位置ギャップをわずかなオーバーヘッドで継ぎ足す連続的Temporal RoPE調整と結合させる。 この principled な階層的文脈圧縮によって、PackForcing は単一のH200 GPU上で2分間、832×480の動画を16FPSで一貫して生成できる。KVキャッシュをわずか4GBに抑え、驚くべき24倍の時系列外挿（5秒から120秒）を実現し、ゼロショットでも、あるいはわずか5秒クリップのみで訓練した場合でも効果的に動作する。VBenchにおける広範な結果は、時系列の一貫性（26.07）とダイナミック度（56.25）で最先端を示し、短い動画による監督付き学習が高品質な長時間動画合成には十分であることを証明している。 https://github.com/ShandaAI/PackForcing
+# Summary (by gpt-4o-mini)
+- 自己回帰型ビデオ拡散モデルは、線形KVキャッシュ、時間的反復、長時間動画生成時の誤差累積という課題に直面している。これを解決するために、PackForcingという新しい三分割KVキャッシュ戦略を提案。過去の文脈をシンクトークン（高解像度保持）、ミッドトークン（トークン削減）、最近トークン（局所的整合性維持）の三種類に分類し、メモリフットプリントを抑制しつつ高品質の動画生成を実現。結果として、単一のH200 GPU上で2分間の動画を16FPSで生成し、KVキャッシュを4GBに留め、時系列外挿も効果的に行えることを示した。VBenchにおける結果も最先端を記録。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2038644377749258252?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>動画生成における (1)エラーの蓄積、(2)生成される動画の長さに応じて線形に増加するKV Cache の問題に対処するために、以下に示すアーキテクチャを提案し、重要な情報（Sink Token, Recent Token）は高解像度で保持しつつ、中間トークン (Mid Token)は圧縮をすることで、<br>- どのような長さの動画生成でもattentionで考慮されるtoken数の上限を27,872 tokenに制限しながらも、<br>- 3D convolution + low resolution re-encodingによって中間トークンを1/32に効果的に圧縮し（メモリ効率27倍）<br>- memoryを圧縮することでRoPEの位置エンコーディングにgapが生まれるが、それを埋める方法を提案し<br>- 24倍のtemporal extrapolation （時間的な外挿）を実現。つまり、5秒のclipで学習したら、120秒の動画を一貫性のある形で生成できた<br>という話らしく、<br><br>Sink Tokenは高解像度な情報を保持し、Mid Tokensは圧縮+動的に選択 (3D / 4-stageのCNN + 低解像度のパッチ化) をすることで容量を削減し、Recent Tokensは高解像度を保持し、古くなってきたらMid tokensとして圧縮して格納される。<br><img src="https://github.com/user-attachments/assets/91de09fe-cb87-412a-a25b-06bb79b2a110" /" alt="image" loading="lazy" width="550" height="400"/></p><p>120sの生成をする場合にKV Cacheをフルで保持した場合(~138G)と比較して、4G程度にKV Cacheが抑えられており<br><br><img src="https://github.com/user-attachments/assets/1acfcf68-cc9c-49c0-891f-b4edb1b50233" /" alt="image" loading="lazy" width="550" height="400"/><br><br>そのうえで下記ベンチマークスコアを獲得しているようである。が、他の先行研究の手法はKV Cacheをどの程度消費するのだろうか？比較表のようなものがないと、すごさがちょっとよくわからない。たとえば Self-Forcing, Deep-Forcingは両方ともContext Length Lの範囲でKV Cacheを保持する手法であるため、Table 9 で言うところのwindow-onlyに相当する手法に見える。そうすると、KV Cacheの利用量としてはほとんど変わらず、ベンチマークスコアはSelf Forcingと比較すると大幅に向上しているようだが、Deep Forcingと比べるとどうなるだろうか。おそらく、Over Cons.が最も改善しているように見えるが、Quialitative Comparisonの節ではSelf-Forcingとの比較としての言及は多いが、Deep Forcingとの比較という面での言及はないように見える。<br><br><img src="https://github.com/user-attachments/assets/1b7709ee-b4ec-40ba-9996-08b3d8ed8da9" /" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2870" target="_blank" rel="noopener noreferrer">[Paper Note] Self Forcing: Bridging the Train-Test Gap in Autoregressive Video   Diffusion, Xun Huang+, NeurIPS'25</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5093" target="_blank" rel="noopener noreferrer">[Paper Note] Deep Forcing: Training-Free Long Video Generation with Deep Sink and Participative Compression, Jung Yi+, arXiv'25, 2025.12</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] MDM-Prime-v2: Binary Encoding and Index Shuffling Enable Compute-optimal Scaling of Diffusion Language Models, Chen-Hao Chao+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.16077</original-paper-blog-link>
@@ -1408,6 +1445,31 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 {% endraw %}
 
 </p><p>単眼で撮影された動画の視点と照明を同時に制御しながら動画を生成するフレームワークな模様。<br>背景画像をあたえた<br><img src="https://github.com/user-attachments/assets/c897feee-e680-4e68-93e0-d47544eb9240" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>単眼で撮影された動画の視点と照明を同時に制御しながら動画を生成するフレームワークな模様。<br>背景画像を与えた上での動画のRelighting, Text Promptに基づくRelighting, ユーザがtrajectoryを指定した上でのRelightingなどができるようである。<br><img src="https://github.com/user-attachments/assets/c897feee-e680-4e68-93e0-d47544eb9240" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Deep Forcing: Training-Free Long Video Generation with Deep Sink and Participative Compression, Jung Yi+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.05081</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5093</repo-issue-link>
+<tags>ComputerVision, Transformer, DiffusionModel, LongSequence, VideoGeneration/Understandings, One-Line Notes</tags>
+<repo-issue-date>2026-04-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.05081
+# Authors
+  - Jung Yi
+  - Wooseok Jang
+  - Paul Hyunbin Cho
+  - Jisu Nam
+  - Heeji Yoon
+  - Seungryong Kim
+# Abstract
+  - Recent advances in autoregressive video diffusion have enabled real-time frame streaming, yet existing solutions still suffer from temporal repetition, drift, and motion deceleration. We find that naively applying StreamingLLM-style attention sinks to video diffusion leads to fidelity degradation and motion stagnation. To overcome this, we introduce Deep Forcing, which consists of two training-free mechanisms that address this without any fine-tuning. Specifically, 1) Deep Sink dedicates half of the sliding window to persistent sink tokens and re-aligns their temporal RoPE phase to the current timeline, stabilizing global context during long rollouts. 2) Participative Compression performs importance-aware KV cache pruning that preserves only tokens actively participating in recent attention while safely discarding redundant and degraded history, minimizing error accumulation under out-of-distribution length generation. Together, these components enable over 12x extrapolation (e.g. 5s-trained to 60s+ generation) with better imaging quality than LongLive, better aesthetic quality than RollingForcing, almost maintaining overall consistency, and substantial gains in dynamic degree, all while maintaining real-time generation. Our results demonstrate that training-free KV-cache management can match or exceed training-based approaches for autoregressively streaming long-video generation.
+# Translation (by gpt-5-nano)
+- 自己回帰型ビデオ拡散の最近の進展はリアルタイムのフレームストリーミングを可能にしている一方で、従来の解法は依然として時間的な反復、ドリフト、および動きの減速に悩まされている。私たちは、StreamingLLM風のアテンション・シンクをビデオ拡散に素朴に適用すると忠実度の低下と動きの停滞を招くことを突き止めた。これを克服するために、ファインチューニングなしの2つのメカニズムからなる Deep Forcing を導入する。具体的には、1) Deep Sink はスライディングウィンドウの半分を持続的なシンク・トークンに割り当て、それらの時間的 RoPE 位相を現在のタイムラインに再整列させ、長いロールアウト中のグローバル文脈を安定化させる。2) Participative Compression は最近のアテンションに実際に関与しているトークンのみを保持し、冗長で劣化した履歴を安全に破棄する、重要度を考慮した KV キャッシュ剪定を実行し、分布外長さ生成下での誤差蓄積を最小化する。これらの要素を組み合わせることにより、LongLive より画質が優れ、RollingForcing より美的品質が高く、全体的な一貫性をほぼ維持しつつ、ダイナミック性の大幅な向上を実現し、リアルタイム生成を維持しながら、12倍超の外挿（例：5秒学習から60秒以上の生成へ）を可能にする。我々の結果は、トレーニング不要の KV キャッシュ管理が、自己回帰的に長時間ビデオをストリーミングする生成において、トレーニングベースのアプローチと同等またはそれを上回ることを示している。
+# Summary (by gpt-4o-mini)
+- 自己回帰型ビデオ拡散はリアルタイムのフレームストリーミングを可能にする一方で、従来の解法は時間的な反復や動きの減速に悩まされる。本研究では、ファインチューニングなしのDeep Forcingメカニズムを導入し、長期的なグローバル文脈を安定化させるDeep Sinkと、重要度を考慮したKVキャッシュ剪定を実行するParticipative Compressionを組み合わせることで、画質や一貫性を向上させつつダイナミックな生成を実現した。これにより、トレーニング不要で長時間ビデオをストリーミングする能力が向上し、既存のアプローチと同等以上の性能を示す結果を得た。</issue-body>
+<maintainer-comment-text><p>Self-ForcingとのKV Cache Managementの方法が非常に分かりやすく図解されており勉強になる。<br><img src="https://github.com/user-attachments/assets/cab52c81-167b-4554-88cf-aee38c62494d" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Self-Forcing:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2870" target="_blank" rel="noopener noreferrer">[Paper Note] Self Forcing: Bridging the Train-Test Gap in Autoregressive Video   Diffusion, Xun Huang+, NeurIPS'25</a>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
