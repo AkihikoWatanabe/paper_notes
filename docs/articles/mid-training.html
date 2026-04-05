@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/mid-training.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-03-22T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-04-04T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="mid-trainingに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-03-22T00:00:00+00:00","datePublished":"2026-03-22T00:00:00+00:00","description":"&lt;h2 id=mid-training class=”paper-head”&gt; mid-training&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Pre-training LLM without Learning Rate Decay Enhances Supervised Fine-Tuning, Kazuki Yano+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #Analysis #Pretraining #NLP #LanguageModel #Supervised-FineTuning (SFT) #PostTraining #Scheduler #One-Line Notes #DownstreamTasks Issue Date: 2026-03-20 GPT Summary- 学習率スケジューリングが大規模言語モデルの事前学習とSFT後の性能に与える影響を調査。特に、ウォームアップ後に学習率を一定に保つWarmup-Stable-Only（WSO）スケジューラが、減衰ベースのスケジューラよりも一貫してSFT後の性能を向上させることを示す。分析によれば、WSOは平坦な極小値を維持し、訓練戦略としての有用性を強調。これにより、モデルの適応性を高める指針を提供。 Comment元ポスト:","headline":"mid-trainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/mid-training.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/mid-training.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-04-04T00:00:00+00:00","datePublished":"2026-04-04T00:00:00+00:00","description":"&lt;h2 id=mid-training class=”paper-head”&gt; mid-training&lt;/h2&gt;&lt;div class=&quot;visible-content&quot;&gt; [Paper Note] Pre-training LLM without Learning Rate Decay Enhances Supervised Fine-Tuning, Kazuki Yano+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #Analysis #Pretraining #NLP #LanguageModel #Supervised-FineTuning (SFT) #PostTraining #Scheduler #One-Line Notes #DownstreamTasks Issue Date: 2026-03-20 GPT Summary- 学習率スケジューリングが大規模言語モデルの事前学習とSFT後の性能に与える影響を調査。特に、ウォームアップ後に学習率を一定に保つWarmup-Stable-Only（WSO）スケジューラが、減衰ベースのスケジューラよりも一貫してSFT後の性能を向上させることを示す。分析によれば、WSOは平坦な極小値を維持し、訓練戦略としての有用性を強調。これにより、モデルの適応性を高める指針を提供。 Comment元ポスト:","headline":"mid-trainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/mid-training.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/mid-training.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-03-22T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 22, 2026
+    <time class="dt-published" datetime="2026-04-04T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 04, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 31 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 36 mins</span>
   </div></header>
 </div>
     </div>
@@ -2611,6 +2611,74 @@ My Issue
 </p><p>位置エンコーディングにはlong contxet用に、RoPEのbase frequency bを `10,000->500,000` とすることで、rotation angleを小さくし、distant tokenに対する減衰の影響を小さくする手法を採用 (Adjusted Base Frequency; ABF)。token間の距離が離れていても、attention scoreがshrinkしづらくなっている。<br><br><img src="https://github.com/user-attachments/assets/968c88f1-5a0d-4c2a-94ef-d63ffb0ea2eb" /" alt="image" loading="lazy" width="550" height="400"/><br><br><br>また、単に長いコンテキストのデータを追加するだけでなく、データセット内における長いコンテキストのデータの比率を調整することで、より高い性能が発揮できることを示している。これをData Mixと呼ぶ。<br>また、instruction tuningのデータには、LLaMa2ChatのRLHFデータをベースに、LLaMa2Chat自身にself-instructを活用して、長いコンテキストを生成させ拡張したものを利用した。<br>具体的には、コーパス内のlong documentを用いたQAフォーマットのタスクに着目し、文書内のランダムなチャンクからQAを生成させた。その後、self-critiqueによって、LLaMa2Chat自身に、生成されたQAペアのverificationも実施させた。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="how-far-5096" class="title-link">How far does alignment midtraining generalize?, Tomek+, OpenAI Alignment Research Blog, 2026.03</h3><br><a href="https://alignment.openai.com/how-far-does-alignment-midtraining-generalize/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5096" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2026-04-04</span>
+<span class="snippet"><span>Comment</span><p>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tomekkorbak/status/2038704753887379891?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>mid trainingにおいてalignment関してmisaligned/alignedな文書で学習をすると中間学習直後はalignmentに関する挙動が維持されるが、RLをしたらその効果は消えて無くなってしまう、という感じだろうか？超絶流し読みなので、後でしっかり読んだ方が良さそう。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="約12兆トークンの良質なコーパスで学習した新たな国産llm「llm-jp-4-8bモデル」「llm-jp-4-5084" class="title-link">約12兆トークンの良質なコーパスで学習した新たな国産LLM「LLM-jp-4 8Bモデル」「LLM-jp-4 32B-A3Bモデル」をオープンソースライセンスで公開 ～一部ベンチマークでGPT-4oやQwen3-8Bを上回る性能を達成～, NII, 2026.04</h3><br><a href="https://www.nii.ac.jp/news/release/2026/0403.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5084" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Pretraining.html" target="_blank" rel="noopener noreferrer">#Pretraining</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
+<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2026-04-03</span>
+<span class="snippet"><span>Comment</span><p>8BモデルはLlama-2アーキテクチャ、32B-A3.8BモデルはQwen3-MoEアーキテクチャで、フルスクラッチ学習をすることで実現[^1]。<br><br>19.5Tトークン（概算として、日本語0.7Tトークン、英語17.8Tトークン、中国語・韓国語0.85Tトークン、プログラムコード0.2Tトークン）のインターネット上の公開データや政府・国会の文書を収集し（LLM-jp-3.1のデータの6倍の規模）し事前学習データを構築、DataMixtureを最適化し10.5Tトークンを事前学習で利用。<br><br>中間学習では、事前学習データにInstruction Pretraining[^2]データを含む合成データを加え1.2Tトークンを利用。<br><br>その後最終的にInstruction Tuningを、日本語、英語合計22種類のデータで実施（元記事ではチューニングと呼称されているがおそらくInstruction Tuningだと思われる）。<br><br>MTBenchでは、GPT-4o, gpt-oss-20B, Qwen3-8Bと同等以上の性能、日本語MTBench[^3]では、GPT-4o, gpt-oss-20B, Qwen3-8Bを上回る性能とのこと。MTBenchで用いるLLM-as-a-JudgeのモデルとしてはGPT-5.4を利用とのこと。<br><br>[^1]: つまり、モデルのパラメータは完全に新規で学習されており、ベースとして既存OpenWeightモデルを利用していない点に注意。<br>[^2]: Instruction Pretrainingは、LLM-jp-3.1の頃から実施されている: <br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2092" target="_blank" rel="noopener noreferrer">LLM-jp-3.1 シリーズ instruct4 の公開, LLM-jp, 2025.05</a>
+  <br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1326" target="_blank" rel="noopener noreferrer">[Paper Note] Instruction Pre-Training: Language Models are Supervised Multitask Learners, Daixuan Cheng+, arXiv'24, 2024.06</a>
+<br>[^3]: MT-Benchの概要については  <br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/903" target="_blank" rel="noopener noreferrer">[Paper Note] Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena, Lianmin Zheng+, NeurIPS'23, 2023.06</a>
+ も参照のこと。</p><p>フルスクラッチモデル点に関する説明:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/odashi_t/status/2040247722419364015?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="continue-pre-training-4984" class="title-link">Continue Pre-training can only work with "actual Base model"., Wenhu Chen, 2026.03</h3><br><a href="https://x.com/wenhuchen/status/2035199471647433154?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2783,6 +2851,16 @@ My Issue
 </p><p>self-summarizationによるcontextのcompressionを実施している<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4484" target="_blank" rel="noopener noreferrer">[Paper Note] InftyThink+: Effective and Efficient Infinite-Horizon Reasoning via Reinforcement Learning, Yuchen Yan+, arXiv'26, 2026.02</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4439" target="_blank" rel="noopener noreferrer">[Paper Note] Reasoning Cache: Continual Improvement Over Long Horizons via Short-Horizon RL, Ian Wu+, arXiv'26, 2026.02</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4958" target="_blank" rel="noopener noreferrer">より長いホライズンに向けた Composer の学習, Cursor, 2026.03</a>
+</p><p>所見:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kimbochen/status/2038720034076323849?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -3264,47 +3342,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Video.html" title="Videoに関する論文・技術記事メモの一覧">Videoに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/HyperparameterTransfer.html" title="HyperparameterTransferに関する論文・技術記事メモの一覧">HyperparameterTransferに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/memory.html" title="memoryに関する論文・技術記事メモの一覧">memoryに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/read-later.html" title="read-laterに関する論文・技術記事メモの一覧">read-laterに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AttentionSinks.html"
-            title="AttentionSinksに関する論文・技術記事メモの一覧">
-            AttentionSinksに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ItemBased.html"
+            title="ItemBasedに関する論文・技術記事メモの一覧">
+            ItemBasedに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
-  <span class="post-badge badge-new">📝 14</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ChatGPT.html"
-            title="ChatGPTに関する論文・技術記事メモの一覧">
-            ChatGPTに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Unsupervised.html"
+            title="Unsupervisedに関する論文・技術記事メモの一覧">
+            Unsupervisedに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 23</span> 
-  <span class="post-badge badge-new">📝 23</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/DialogueGeneration.html"
-            title="DialogueGenerationに関する論文・技術記事メモの一覧">
-            DialogueGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DropoutPrediction.html"
+            title="DropoutPredictionに関する論文・技術記事メモの一覧">
+            DropoutPredictionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Others.html"
-            title="Othersに関する論文・技術記事メモの一覧">
-            Othersに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SelfCorrection.html"
+            title="SelfCorrectionに関する論文・技術記事メモの一覧">
+            SelfCorrectionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 30</span> 
+  <span class="post-badge badge-new">📝 30</span>
 </span>
 </a>
         </li></ul>
