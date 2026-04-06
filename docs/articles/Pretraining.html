@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-04-03T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-04-05T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Pretrainingに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-04-03T00:00:00+00:00","datePublished":"2026-04-03T00:00:00+00:00","description":"Pretraining [Paper Note] daVinci-LLM:Towards the Science of Pretraining, Yiwei Qin+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #OpenWeight #OpenSource #read-later #Selected Papers/Blogs #Reference Collection #Initial Impression Notes Issue Date: 2026-03-31 GPT Summary- 基盤となる事前学習はモデルの限界を決め、事後訓練で克服するのが難しい。daVinci-LLMは、産業規模の資源と研究の自由を結集し、透明性のある完全オープンなパラダイムで事前学習を進展させる。8兆トークンを用いた二段階適応カリキュラムを採用し、能力向上のプロセスを体系的に評価。処理の深さやドメイン特性が能力に与える影響を明らかにし、探索プロセスを公開することでコミュニティが知識を蓄積できる基盤を提供する。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-04-05T00:00:00+00:00","datePublished":"2026-04-05T00:00:00+00:00","description":"Pretraining [Paper Note] daVinci-LLM:Towards the Science of Pretraining, Yiwei Qin+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #OpenWeight #OpenSource #read-later #Selected Papers/Blogs #Reference Collection #Initial Impression Notes Issue Date: 2026-03-31 GPT Summary- 基盤となる事前学習はモデルの限界を決め、事後訓練で克服するのが難しい。daVinci-LLMは、産業規模の資源と研究の自由を結集し、透明性のある完全オープンなパラダイムで事前学習を進展させる。8兆トークンを用いた二段階適応カリキュラムを採用し、能力向上のプロセスを体系的に評価。処理の深さやドメイン特性が能力に与える影響を明らかにし、探索プロセスを公開することでコミュニティが知識を蓄積できる基盤を提供する。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-04-03T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 03, 2026
+    <time class="dt-published" datetime="2026-04-05T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 05, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 hours 16 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 hours 20 mins</span>
   </div></header>
 </div>
     </div>
@@ -8192,6 +8192,42 @@ My Issue
 <span class="snippet"><span>Comment</span><p>seq2seqにおいてweightのpretrainingを行う手法を提案<br><br>seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。<br><br>WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。<br><br><br><br>encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。<br><br>fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）<br><br>LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。<br><br><br><br>Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。<br><br>LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。<br><br>sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。<br><br><br><br>LM Objectiveは結構使えそうな印象</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="gen1-scaling-5135" class="title-link">GEN1: Scaling Embodied Foundation Models to Mastery, Generalist AI Team, 2026.04</h3><br><a href="https://generalistai.com/blog/apr-02-2026-GEN-1" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5135" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="FoundationModel.html" target="_blank" rel="noopener noreferrer">#FoundationModel</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="Generalization.html" target="_blank" rel="noopener noreferrer">#Generalization</a>
+<a class="button" href="Robotics.html" target="_blank" rel="noopener noreferrer">#Robotics</a>
+<a class="button" href="VisionLanguageActionModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageActionModel</a>
+<a class="button" href="EmbodiedAI.html" target="_blank" rel="noopener noreferrer">#EmbodiedAI</a>
+<a class="button" href="Scalability.html" target="_blank" rel="noopener noreferrer">#Scalability</a>
+<a class="button" href="EmergentAbilities.html" target="_blank" rel="noopener noreferrer">#EmergentAbilities</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2026-04-05</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/generalistai/status/2039709306145190262?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>シンプルなタスクにおいて99%の成功率を測り、従来」りも3倍高速で、臨機応変に（1時間未満の当該ロボットのデータによるチューニングを経て）対応可能なモデルを開発し、それはスケーリング則の恩恵に預かれるような効率的な事前学習モデルに基づいています、といった話らしい？</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3594" target="_blank" rel="noopener noreferrer">GEN-0 / Embodied Foundation Models That Scale with Physical Interaction, Generalist AI Team, 2025.11</a>
+</p><p>ざーっと読んでみたが、事前学習に関する細かな話は記述されていないように見え、どちらかというとmasteryに関する定義や関連するmetiicについての言及や、それがGEN-0と比較して今回どの程度改善したのか、といったマーケティングメッセージが多いように感じた。</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="約12兆トークンの良質なコーパスで学習した新たな国産llm「llm-jp-4-8bモデル」「llm-jp-4-5084" class="title-link">約12兆トークンの良質なコーパスで学習した新たな国産LLM「LLM-jp-4 8Bモデル」「LLM-jp-4 32B-A3Bモデル」をオープンソースライセンスで公開 ～一部ベンチマークでGPT-4oやQwen3-8Bを上回る性能を達成～, NII, 2026.04</h3><br><a href="https://www.nii.ac.jp/news/release/2026/0403.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -8206,6 +8242,7 @@ My Issue
 <a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
 <a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Reasoning.html" target="_blank" rel="noopener noreferrer">#Reasoning</a>
 <a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
 <a class="button" href="Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
 <a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
@@ -8226,7 +8263,14 @@ My Issue
 </div>
 
 
-</p></span><br><br>
+</p><p>HF:
+
+
+<a href="https://huggingface.co/collections/llm-jp/llm-jp-4-models" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/llm-jp/llm-jp-4-models</a>
+
+
+<br><br>Reasoningモデルもある！！！<br><br>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4943" target="_blank" rel="noopener noreferrer">PLaMo 3.0 Prime β版をリリースしました, PFN, 2026.03</a>
+<br><br>上記PLaMo 3.0に続いて、国内でのフルスクラッチReasoningモデルは二例目だろうか。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="introducing-marin-5035" class="title-link">Introducing Marin: An Open Lab for Building Foundation Models, marin-community, 2025.05</h3><br><a href="https://marin.community/blog/2025/05/19/announcement/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -9003,6 +9047,37 @@ My Issue
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dimitrispapail/status/1988269205737619960?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="gen-0-_-3594" class="title-link">GEN-0 _ Embodied Foundation Models That Scale with Physical Interaction, Generalist AI Team, 2025.11</h3><br><a href="https://generalistai.com/blog/nov-04-2025-GEN-0" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3594" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="FoundationModel.html" target="_blank" rel="noopener noreferrer">#FoundationModel</a>
+<a class="button" href="Scaling-Laws.html" target="_blank" rel="noopener noreferrer">#Scaling Laws</a>
+<a class="button" href="Robotics.html" target="_blank" rel="noopener noreferrer">#Robotics</a>
+<a class="button" href="VisionLanguageActionModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageActionModel</a>
+<a class="button" href="EmbodiedAI.html" target="_blank" rel="noopener noreferrer">#EmbodiedAI</a>
+<span class="issue_date">Issue Date: 2025-11-05</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1985854515216785548?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 
@@ -10194,24 +10269,14 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/OpenSource.html" title="OpenSourceに関する論文・技術記事メモの一覧">OpenSourceに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/2D-(Image).html" title="2D (Image)に関する論文・技術記事メモの一覧">2D (Image)に関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/OpenWeight.html" title="OpenWeightに関する論文・技術記事メモの一覧">OpenWeightに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Robotics.html" title="Roboticsに関する論文・技術記事メモの一覧">Roboticsに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AttentionSinks.html"
-            title="AttentionSinksに関する論文・技術記事メモの一覧">
-            AttentionSinksに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
-  <span class="post-badge badge-new">📝 14</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/INLG.html"
-            title="INLGに関する論文・技術記事メモの一覧">
-            INLGに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/TextualFeedback.html"
+            title="TextualFeedbackに関する論文・技術記事メモの一覧">
+            TextualFeedbackに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
   <span class="post-badge badge-new">📝 4</span>
@@ -10219,22 +10284,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RLVR.html"
-            title="RLVRに関する論文・技術記事メモの一覧">
-            RLVRに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ExplicitFeedback.html"
+            title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
+            ExplicitFeedbackに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 49</span> 
-  <span class="post-badge badge-new">📝 49</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Clustering-based.html"
-            title="Clustering-basedに関する論文・技術記事メモの一覧">
-            Clustering-basedに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AdversarialTraining.html"
+            title="AdversarialTrainingに関する論文・技術記事メモの一覧">
+            AdversarialTrainingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Survey.html"
+            title="Surveyに関する論文・技術記事メモの一覧">
+            Surveyに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 224</span> 
+  <span class="post-badge badge-new">📝 224</span>
 </span>
 </a>
         </li></ul>
