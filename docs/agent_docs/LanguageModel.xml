@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-05">
+<paper-list last-updated="2026-04-06">
 <paper-entry>
 <title>[Paper Note] Cross-Architecture Model Diffing with Crosscoders: Unsupervised Discovery of Differences Between LLMs, Thomas Jiralerspong+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.11729</original-paper-blog-link>
@@ -425,6 +425,16 @@
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2040462983881785815?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2041288613225513229?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -5707,7 +5717,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 </div>
 {% endraw %}
 
-</p><p>AnthropicのAgent Skillsにinspireされた手法で、ベースモデルを環境に対して適用しタスクに対する成功したtrajectoryと失敗したtrajectoryをまず収集する。収集したtrajectoryに対して、teacher modelで「タスクを完了するための戦略的なパターン」と「簡潔な失敗した要因」を生成させ、<スキル名, スキルの具体的なdescription, いつそのスキルを適用するか>によって定義されるスキルを定義する（従来手法は失敗したtrajectoryに関する情報は破棄していた）。スキルは2種類定義されており、汎用的に全てのタスクに適用可能なgenericなスキルと、特定のtask-specificなスキルの2種類によって構成される（この二つのスキルの集合がSKILLBANKと呼ばれる）。genericなスキルは常にポリシーのinstructionに含められ、task-specificなスキルはタスクを実行するたびに意味的な関連性に基づいてtop-kがretrieveされ利用される。これにより初期のSKILLBANKを構築する。<br><br>続いて、ベースモデルを学習して賢くしていきたい。この時初期のポリシー（=ベースモデル）はスキルのretrieve + 使い方を知らないため、teacher modelによってスキルを含めたtrajectoryを生成しSFTをすることでコールドスタート時に適用する。その後、オンポリシーRL（GRPO）を用いて、スキルをretrieveし、retrieveしたスキルを活用してタスクを完了し、完了したタスクからrewardが計算されポリシーを更新していく。この時、GRPOのエポックにおいてvalidationフェーズを用意し、特定の閾値以下のsuccess rateを持つタスクに関しては、teacher modelが失敗したtrajectoryに基づいてSKILLBANKを更新することでSKILLBANKを進化させることで性能を改善する、といった話に見える。<br><br><img src="https://github.com/user-attachments/assets/291d200c-c516-45c7-b008-31b9741cf4d5" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</p><p>AnthropicのAgent Skillsにinspireされた手法で、ポリシー側のパラメータをfreezeしてスキル群を更新していくような枠組みではなく、スキルが定義されたライブラリと、ポリシーそのものを同時に進化（スキル定義追加・更新+ポリシーの重みの更新）させていくことで、生のtrajectoryをmemoryから活用する方向性ではなく、動的にtrajectoryからスキルを構築し、構築されたスキルの使い方やretrieve方法をポリシーの内部パラメータとして組み込むことで、スキルとポリシーが共に進化していくようにしたい、それにより、生の経験（trajectory)を読み込んでadhocに利用するよりも、より一般化された形で経験を活用できるようにしたい、という話に見える。<br><br>提案手法はベースモデルを環境に対して適用しタスクに対する成功したtrajectoryと失敗したtrajectoryをまず収集する。収集したtrajectoryに対して、teacher modelで「タスクを完了するための戦略的なパターン」と「簡潔な失敗した要因」を生成させ、<スキル名, スキルの具体的なdescription, いつそのスキルを適用するか>によって定義されるスキルを定義する（従来手法は失敗したtrajectoryに関する情報は破棄していた）。スキルは2種類定義されており、汎用的に全てのタスクに適用可能なgenericなスキルと、特定のtask-specificなスキルの2種類によって構成される（この二つのスキルの集合がSKILLBANKと呼ばれる）。genericなスキルは常にポリシーのinstructionに含められ、task-specificなスキルはタスクを実行するたびに意味的な関連性に基づいてtop-kがretrieveされ利用される。これにより初期のSKILLBANKを構築する。<br><br>続いて、ベースモデルを学習して賢くしていきたい。この時初期のポリシー（=ベースモデル）はスキルのretrieve + 使い方を知らないため、teacher modelによってスキルを含めたtrajectoryを生成しSFTをすることでコールドスタート時に適用する。その後、オンポリシーRL（GRPO）を用いて、スキルをretrieveし、retrieveしたスキルを活用してタスクを完了し、完了したタスクからrewardが計算されポリシーを更新していく。この時、GRPOのエポックにおいてvalidationフェーズを用意し、特定の閾値以下のsuccess rateを持つタスクに関しては、teacher modelが失敗したtrajectoryに基づいてSKILLBANKを更新することでSKILLBANKを進化させることで性能を改善する、といった話に見える。<br><br><img src="https://github.com/user-attachments/assets/291d200c-c516-45c7-b008-31b9741cf4d5" /" alt="image" loading="lazy" width="550" height="400"/></p><p>genericなスキルは常にinstructionに含まれるためretrieveする必要がないが、task specificなスキルはtask descriptionとskill定義のembeddieg空間上で類似度を測りtop-kが抽出される。embeddingを取得する具体的なモデルについては言及がないように見える？</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -12978,6 +12988,38 @@ demo: https://openscilm.allen.ai/</issue-body>
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning, Bowen Jin+, COLM'25, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.09516</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5137</repo-issue-link>
+<tags>NLP, Search, LanguageModel, ReinforcementLearning, PPO (ProximalPolicyOptimization), Reasoning, COLM, GRPO, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2026-04-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.09516
+# Authors
+  - Bowen Jin
+  - Hansi Zeng
+  - Zhenrui Yue
+  - Jinsung Yoon
+  - Sercan Arik
+  - Dong Wang
+  - Hamed Zamani
+  - Jiawei Han
+# Abstract
+  - Efficiently acquiring external knowledge and up-to-date information is essential for effective reasoning and text generation in large language models (LLMs). Prompting advanced LLMs with reasoning capabilities to use search engines during inference is often suboptimal, as the LLM might not fully possess the capability on how to interact optimally with the search engine. This paper introduces Search-R1, an extension of reinforcement learning (RL) for reasoning frameworks where the LLM learns to autonomously generate (multiple) search queries during step-by-step reasoning with real-time retrieval. Search-R1 optimizes LLM reasoning trajectories with multi-turn search interactions, leveraging retrieved token masking for stable RL training and a simple outcome-based reward function. Experiments on seven question-answering datasets show that Search-R1 improves performance by 41% (Qwen2.5-7B) and 20% (Qwen2.5-3B) over various RAG baselines under the same setting. This paper further provides empirical insights into RL optimization methods, LLM choices, and response length dynamics in retrieval-augmented reasoning. The code and model checkpoints are available at https://github.com/PeterGriffinJin/Search-R1.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）において、外部知識の効率的な獲得と最新情報の取得は、効果的な推論とテキスト生成に不可欠である。推論時に検索エンジンの使用を促す高度な推論能力を持つLLMを用いることは、しばしば最適ではない。LLMは検索エンジンと最適に相互作用する方法を十分に習得していない可能性があるためである。本論文は、リアルタイムの取得を伴い、逐次推論の過程で自律的に（複数の）検索クエリを生成することを学習する、推論フレームワークの拡張としての強化学習（RL）であるSearch-R1を提案する。Search-R1は、多回の検索対話を伴うLLMの推論経路を最適化し、取得したトークンのマスキングを活用して安定したRL訓練を実現し、単純な成果ベースの報酬関数を採用する。7つの質問応答データセットを用いた実験は、Search-R1が同一設定の下でさまざまなRAGベースラインより、41%（Qwen2.5-7B）および20%（Qwen2.5-3B）の性能向上を示した。本論文は、RL最適化手法、LLMの選択、そして検索付き推論における応答長のダイナミクスに関する経験的洞察をさらに提供する。コードとモデルのチェックポイントは https://github.com/PeterGriffinJin/Search-R1で入手できる。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）における外部知識の取得を改善するため、Search-R1という強化学習フレームワークを提案。リアルタイムで複数の検索クエリを生成し、推論過程を最適化。実験では、Search-R1が従来のRAGベースラインよりも大幅に性能を向上させた。さらに、RL手法と応答長のダイナミクスに関する洞察も提供。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Rwhi91ideu#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Rwhi91ideu#discussion</a>
+{% endraw %}
+
+</p><p>LLMにおいて検索を活用する方法として、従来はRAGやマルチターン会話の中でマルチクエリを用いて検索を取り入れるprompt-basedな手法と、検索エンジンをツールとして利用することを学習するtraining-based手法があったが、前者はLLMがどのように検索エンジンとinteractionするかを十分に理解しておらず、事前学習時に学習されていないタスクに対して汎化しづらいという欠点があり、後者は前者よりもより高い柔軟性を持つが、高品質なtrajectoryの不足によりスケーラビリティに乏しく、検索操作は微分不可能なため勾配ベースの手法による学習ができないという欠点があった。<br><br>これを克服し、LLMがreasoningプロセスの中でより柔軟に検索エンジンを用い、かつそれをマルチターンで実施できるような手法として、GRPO/PPOに基づく枠組みを提案しているようである。検索エンジンを用いる枠組みにおいてRLを適用する際には<br>- (1)検索されたコンテキストをどのようにRLに組み込めば安定したRLを実現できるかは未知<br>- (2)理想的にはiterativeにreasoningとsearchを繰り返し、タスクの難易度に応じて使い分けてほしいが、どのように実現するかは未知<br>- (3)検索とreasoningの両方を効果的に扱える報酬関数が未知<br><br>という課題があるが、これらに対して<br><br>- (1)検索によって得られたトークンはmaskをし<br>- (2)検索が必要な場合は<search>query</search>トークンを出力させるようにガイドし、ロールアウトの最中に同トークンがdetectされた場合は検索結果を<information>タグを用いてappendしロールアウトを継続し、アクションの上限回数、<answer>トークンが出現するまで生成を繰り返す枠組みを提案し<br>- (3)ルールベースのexact matchによるRewardを採用（式4)<br><br>することで対処した、という話のようである。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
