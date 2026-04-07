@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-02-06">
+<paper-list last-updated="2026-04-06">
 <paper-entry>
 <title>[Paper Note] Rethinking the Trust Region in LLM Reinforcement Learning, Penghui Qi+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.04879</original-paper-blog-link>
@@ -53,6 +53,38 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning, Bowen Jin+, COLM'25, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.09516</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5137</repo-issue-link>
+<tags>NLP, Search, LanguageModel, ReinforcementLearning, PPO (ProximalPolicyOptimization), Reasoning, COLM, GRPO, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2026-04-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.09516
+# Authors
+  - Bowen Jin
+  - Hansi Zeng
+  - Zhenrui Yue
+  - Jinsung Yoon
+  - Sercan Arik
+  - Dong Wang
+  - Hamed Zamani
+  - Jiawei Han
+# Abstract
+  - Efficiently acquiring external knowledge and up-to-date information is essential for effective reasoning and text generation in large language models (LLMs). Prompting advanced LLMs with reasoning capabilities to use search engines during inference is often suboptimal, as the LLM might not fully possess the capability on how to interact optimally with the search engine. This paper introduces Search-R1, an extension of reinforcement learning (RL) for reasoning frameworks where the LLM learns to autonomously generate (multiple) search queries during step-by-step reasoning with real-time retrieval. Search-R1 optimizes LLM reasoning trajectories with multi-turn search interactions, leveraging retrieved token masking for stable RL training and a simple outcome-based reward function. Experiments on seven question-answering datasets show that Search-R1 improves performance by 41% (Qwen2.5-7B) and 20% (Qwen2.5-3B) over various RAG baselines under the same setting. This paper further provides empirical insights into RL optimization methods, LLM choices, and response length dynamics in retrieval-augmented reasoning. The code and model checkpoints are available at https://github.com/PeterGriffinJin/Search-R1.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）において、外部知識の効率的な獲得と最新情報の取得は、効果的な推論とテキスト生成に不可欠である。推論時に検索エンジンの使用を促す高度な推論能力を持つLLMを用いることは、しばしば最適ではない。LLMは検索エンジンと最適に相互作用する方法を十分に習得していない可能性があるためである。本論文は、リアルタイムの取得を伴い、逐次推論の過程で自律的に（複数の）検索クエリを生成することを学習する、推論フレームワークの拡張としての強化学習（RL）であるSearch-R1を提案する。Search-R1は、多回の検索対話を伴うLLMの推論経路を最適化し、取得したトークンのマスキングを活用して安定したRL訓練を実現し、単純な成果ベースの報酬関数を採用する。7つの質問応答データセットを用いた実験は、Search-R1が同一設定の下でさまざまなRAGベースラインより、41%（Qwen2.5-7B）および20%（Qwen2.5-3B）の性能向上を示した。本論文は、RL最適化手法、LLMの選択、そして検索付き推論における応答長のダイナミクスに関する経験的洞察をさらに提供する。コードとモデルのチェックポイントは https://github.com/PeterGriffinJin/Search-R1で入手できる。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）における外部知識の取得を改善するため、Search-R1という強化学習フレームワークを提案。リアルタイムで複数の検索クエリを生成し、推論過程を最適化。実験では、Search-R1が従来のRAGベースラインよりも大幅に性能を向上させた。さらに、RL手法と応答長のダイナミクスに関する洞察も提供。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Rwhi91ideu#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Rwhi91ideu#discussion</a>
+{% endraw %}
+
+</p><p>LLMにおいて検索を活用する方法として、従来はRAGやマルチターン会話の中でマルチクエリを用いて検索を取り入れるprompt-basedな手法と、検索エンジンをツールとして利用することを学習するtraining-based手法があったが、前者はLLMがどのように検索エンジンとinteractionするかを十分に理解しておらず、事前学習時に学習されていないタスクに対して汎化しづらいという欠点があり、後者は前者よりもより高い柔軟性を持つが、高品質なtrajectoryの不足によりスケーラビリティに乏しく、検索操作は微分不可能なため勾配ベースの手法による学習ができないという欠点があった。<br><br>これを克服し、LLMがreasoningプロセスの中でより柔軟に検索エンジンを用い、かつそれをマルチターンで実施できるような手法として、GRPO/PPOに基づく枠組みを提案しているようである。検索エンジンを用いる枠組みにおいてRLを適用する際には<br>- (1)検索されたコンテキストをどのようにRLに組み込めば安定したRLを実現できるかは未知<br>- (2)理想的にはiterativeにreasoningとsearchを繰り返し、タスクの難易度に応じて使い分けてほしいが、どのように実現するかは未知<br>- (3)検索とreasoningの両方を効果的に扱える報酬関数が未知<br><br>という課題があるが、これらに対して<br><br>- (1)検索によって得られたトークンはmaskをし<br>- (2)検索が必要な場合は<search>query</search>トークンを出力させるようにガイドし、ロールアウトの最中に同トークンがdetectされた場合は検索結果を<information>タグを用いてappendしロールアウトを継続し、アクションの上限回数、<answer>トークンが出現するまで生成を繰り返す枠組みを提案し<br>- (3)ルールベースのexact matchによるRewardを採用（式4)<br><br>することで対処した、という話のようである。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
