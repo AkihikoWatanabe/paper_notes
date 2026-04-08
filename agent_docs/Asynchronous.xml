@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-03-30">
+<paper-list last-updated="2026-04-07">
 <paper-entry>
 <title>[Paper Note] AIRA_2: Overcoming Bottlenecks in AI Research Agents, Karen Hambardzumyan+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.26499</original-paper-blog-link>
@@ -413,6 +413,27 @@
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1158" target="_blank" rel="noopener noreferrer">GAIA: a benchmark for General AI Assistants, Grégoire Mialon+, N/A, arXiv'23</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1461" target="_blank" rel="noopener noreferrer">[Paper Note] Fact, Fetch, and Reason: A Unified Evaluation of Retrieval-Augmented  Generation, Satyapriya Krishna+, N/A, NAACL'25</a>
 </p><p>既存のモデルは <= 10 turnsのデータで学習されており、大規模で高品質なQAデータが不足している問題があったが、シードQAに基づいてQAを合成する手法によって1.4万シードQAから134kの高品質なQAを合成した（うち25.6kはツール利用が必要）。具体的には、シードのQAを合成しエージェントがQAの複雑度をiterationをしながら向上させていく手法を提案。事実情報は常にverificationをされ、合成プロセスのiterationの中で保持され続ける。個々のiterationにおいて、現在のQAと事実情報に基づいて、エージェントは<br>- Injection: 事実情報を新たに注入しQAをよりリッチにすることで複雑度を上げる<br>- Fuzz: QA中の一部の詳細な情報をぼかすことで、不確実性のレベルを向上させる。<br>の2種類の操作を実施する。その上で、QAに対してQuality verificationを実施する:<br>- Basic Quality: LLMでqualityを評価する<br>- Difficulty Measurement: LRMによって、複数の回答候補を生成する<br>- Answer Uniqueness: Difficulty Measurementで生成された複数の解答情報に基づいて、mismatched answersがvalid answerとなるか否かを検証し、正解が単一であることを担保する<br><br><img src="https://github.com/user-attachments/assets/d020fc8f-b1da-4425-981a-6759cba5824b" /" alt="image" loading="lazy" width="550" height="400"/><br><br>また、複雑なタスク、特にtool callsが非常に多いタスクについては、多くのターン数（long trajectories）が必要となるが、既存のバッチに基づいた学習手法ではlong trajectoriesのロールアウトをしている間、他のサンプルの学習がブロックされてしまい学習効率が非常に悪いので、バッチ内のtrajectoryのロールアウトとモデルの更新を分離（ロールアウトのリクエストが別サーバに送信されサーバ上のInference Engineで非同期に実行され、モデルをアップデートする側は十分なtrajectoryがバッチ内で揃ったらパラメータを更新する、みたいな挙動？）することでIdleタイムを無くすような手法を提案した模様。<br><br><img src="https://github.com/user-attachments/assets/65d7e7b1-25fb-4288-a85e-07ae7a5eea2f" /" alt="image" loading="lazy" width="550" height="400"/></p><p>既存の手法ベンチマークの性能は向上している。学習が進むにつれて、trajectory中のURL参照回数やsearch query数などが増大していく曲線は考察されている。他モデルと比較して、より多いターン数をより高い正確性を以って実行できるといった定量的なデータはまだ存在しないように見えた。<br><br><img src="https://github.com/user-attachments/assets/70644da8-b862-4bcb-bb05-d915c815b885" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Making RL Fast, Finbarr Timbers, 2026.04</title>
+<original-paper-blog-link>https://finbarr.ca/making-rl-fast/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5156</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, SoftwareEngineering, PostTraining, read-later, Selected Papers/Blogs, Initial Impression Notes, Asynchronous</tags>
+<repo-issue-date>2026-04-07</repo-issue-date>
+<issue-body>https://finbarr.ca/making-rl-fast/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/finbarrtimbers/status/2041176604961878271?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Olmo3においてpost-trainingのインフラを同期から非同期に変更したことを含めて4倍高速化したことに関して、それをどのように実現したかに関するwrite up。気になる。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3766" target="_blank" rel="noopener noreferrer">[Paper Note] Olmo 3, Team Olmo+, arXiv'25, 2025.12</a>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

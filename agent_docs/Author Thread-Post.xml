@@ -1,0 +1,898 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-04-07">
+<paper-entry>
+<title>[Paper Note] TARo: Token-level Adaptive Routing for LLM Test-time Alignment, Arushi Rai+, ACL'26 Findings, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.18411</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5141</repo-issue-link>
+<tags>LanguageModel, Alignment, ACL, Decoding, Findings, Routing, KeyPoint Notes, Author Thread/Post, Test-time Alignment</tags>
+<repo-issue-date>2026-04-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.18411
+# Authors
+  - Arushi Rai
+  - Qiang Zhang
+  - Hanqing Zeng
+  - Yunkai Zhang
+  - Dipesh Tamboli
+  - Xiangjun Fan
+  - Zhuokai Zhao
+  - Lizhu Zhang
+# Abstract
+  - Large language models (LLMs) exhibit strong reasoning capabilities but typically require expensive post-training to reach high performance. Recent test-time alignment methods offer a lightweight alternative, but have been explored mainly for preference alignment rather than reasoning. To bridge this gap, we propose, Token-level Adaptive Routing (TARo), which steers frozen LLMs toward structured reasoning entirely at inference time. Specifically, we first train reward models on step-wise mathematical traces to capture fine-grained logical consistency signals, then introduce a learnable token-level router that automatically controls the guidance of the reward model to the base model. Extensive experiments show that TARo significantly improves reasoning performance by up to +22.4% over base model and +8.4% over existing token-level test-time alignment methods, while also boosting out-of-distribution clinical reasoning (MedXpertQA) and instruction following (AlpacaEval). Furthermore, TARo also generalizes from small to large backbones without retraining, extending test-time alignment from preference optimization to robust, cross-domain reasoning.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）は強力な推論能力を示す一方で、通常は高コストの追加トレーニングを要する。最近の推論時アライメント手法は軽量な代替手段を提供するが、これまでの研究は主に嗜好性の整合に焦点を当てており、推論そのものの改善には十分には適用されていない。このギャップを埋めるべく、推論時のみでパラメータを固定したLLMsを構造化推論へと誘導するトークンレベル適応ルーティング（TARo）を提案する。具体的には、段階的な数学的推論の痕跡から細粒度の論理的一貫性信号を捉える報酬モデルを訓練し、次に学習可能なトークンレベルのルーターを導入して報酬モデルのガイダンスを基盤モデルへ自動的に制御する。広範な実験により、TARoは基盤モデルに対して最大で+22.4%、既存のトークンレベルの推論時アライメント手法に対して最大で+8.4%の推論性能向上を示し、さらに分布外の臨床推論（MedXpertQA）および指示遵守（AlpacaEval）を高めることが分かった。さらに、TARoは小規模なバックボーンから大規模なバックボーンへの再訓練なしでの一般化が可能であり、テスト時のアライメントを嗜好性最適化から堅牢でクロスドメインな推論へ拡張する。
+# Summary (by gpt-4o-mini)
+- 推論時に固定されたLLMsを用いて、トークンレベル適応ルーティング（TARo）を提案。報酬モデルにより数学的推論の一貫性信号を捉え、ルーターが基盤モデルを自動制御。TARoは推論性能を最大+22.4%向上させ、分布外の臨床推論や指示遵守を改善。再訓練なしでの一般化も可能で、堅牢な推論を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhuokaiz/status/2041187658508980472?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>巨大なベースモデル全体を特定ドメインに適用するためにpost-trainingするのは大変なので、代わりに小規模なdomain-expertなRewardモデルを学習し（今回は数学のstep-wiseにlogicが正しいことをpreferenceとして与えるような学習方法を採用したようである; 3.2節）、各decoding step tにおいて、ベースモデルとRewardモデルのトークンのlogitを線形補完することで、出力トークンをガイドする。logitの線形補完において、固定されたスカラー値（e.g., 0.5など。GenARMという手法らしい）を用いる研究などが先行研究ではあるが、これはベースモデルの特定タスクにおいてベースモデルの性能を劣化させるので、本研究ではdecoding step t時点で出力されたベースモデル、Rewardモデルのlogitを入力として、FFNによって線形補完の重みα_tをdecoding step tごとに決定する（α_tを決定するネットワークをRouterと呼ぶ）。FFNは2種類のvariantがあり、双方のlogitをconcatしたものを入力するものと、top-kをサンプリングし、kごとにindexに基づいたembeddingをconcatして入力する方法の二種類がある（3.3節）。<br><img src="https://github.com/user-attachments/assets/e732aa1c-0cbb-428d-ab2a-d9a9fd8700e6" /" alt="image" loading="lazy" width="550" height="400"/><br><br>結果としては、GenARMと比較して提案手法は有効ではあるが、ベースモデルとrewardモデルの組み合わせによっては、baseモデルよりも性能が悪化するということもありそうに見える。<br><img src="https://github.com/user-attachments/assets/6f60eca2-62d6-473d-99c0-5c990eb3c713" /" alt="image" loading="lazy" width="550" height="400"/><br><br>またRouterはベースモデルのサイズを大きくしても、性能が転移するので再学習が不要である。<br><img src="https://github.com/user-attachments/assets/542817d8-1180-402a-ba2c-9231f3de1a9d" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Mixture-of-Minds: Multi-Agent Reinforcement Learning for Table Understanding, Yuhang Zhou+, ACL'26, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.20176</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5140</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, ReinforcementLearning, AIAgents, TabularData, SelfImprovement, ACL, read-later, Selected Papers/Blogs, One-Line Notes, Author Thread/Post</tags>
+<repo-issue-date>2026-04-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.20176
+# Authors
+  - Yuhang Zhou
+  - Mingrui Zhang
+  - Ke Li
+  - Mingyi Wang
+  - Qiao Liu
+  - Qifei Wang
+  - Jiayi Liu
+  - Fei Liu
+  - Serena Li
+  - Weiwei Li
+  - Mingze Gao
+  - Abhishek Kumar
+  - Xiangjun Fan
+  - Zhuokai Zhao
+  - Lizhu Zhang
+# Abstract
+  - Understanding and reasoning over tables is a critical capability for many real-world applications. Large language models (LLMs) have shown promise on this task, but current approaches remain limited. Fine-tuning based methods strengthen language reasoning; yet they are prone to arithmetic errors and hallucination. In contrast, tool-based methods enable precise table manipulation but rely on rigid schemas and lack semantic understanding. These complementary drawbacks highlight the need for approaches that integrate robust reasoning with reliable table processing. In this work, we propose Mixture-of-Minds, a multi-agent framework that decomposes table reasoning into three specialized roles: planning, coding, and answering. This design enables each agent to focus on a specific aspect of the task while leveraging code execution for precise table manipulation. Building on this workflow, we introduce a self-improvement training framework that employs Monte Carlo Tree Search (MCTS) rollouts to generate pseudo-gold trajectories and optimize agents with reinforcement learning (RL). Extensive experiments show that Mixture-of-Minds delivers substantial gains, reaching 62.13% on TableBench and surpassing OpenAI-o4-mini-high. These results demonstrate the promise of combining structured multi-agent workflows with RL to advance table understanding.
+# Translation (by gpt-5-nano)
+- 表の理解と推論は、現実世界の多くの応用にとって重要な能力である。大規模言語モデル（LLMs）はこの課題に有望を示しているが、現状のアプローチには限界がある。ファインチューニングベースの手法は言語推論を強化する一方で、算術的な誤りや幻情報の発生を起こしやすい。これに対し、ツールベースの手法は表の操作を正確に行える一方、硬直的なスキーマに依存し、意味理解を欠く。これらの補完的な欠点は、堅牢な推論と信頼性の高い表処理を統合するアプローチの必要性を浮き彫りにする。本研究では、表の推論を3つの専門的役割（計画、コーディング、回答）に分解するマルチエージェントフレームワークMixture-of-Mindsを提案する。この設計により、各エージェントはタスクの特定の側面に焦点を当てつつ、コード実行を活用して表の操作を正確に行える。これを基盤としたワークフローにより、自己改善トレーニングフレームワークを導入する。モンテカルロ木探索（MCTS）のロールアウトを用いて擬似ゴールドの軌跡を生成し、強化学習（RL）でエージェントを最適化する。広範な実験の結果、Mixture-of-Mindsは大幅な改善をもたらし、TableBenchで62.13%、OpenAI-o4-mini-highを上回る成果を達成した。これらの結果は、構造化されたマルチエージェントワークフローとRLを組み合わせることで表理解を進展させる可能性を示している。
+# Summary (by gpt-4o-mini)
+- 表の理解と推論を高めるため、マルチエージェントフレームワークMixture-of-Mindsを提案。計画、コーディング、回答の役割に分割し、各エージェントが特定の側面を担う。自己改善トレーニングにモンテカルロ木探索を用いて強化学習を最適化。実験結果ではTableBenchで62.13%の改善を達成し、構造化されたアプローチの有効性を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhuokaiz/status/2041187658508980472?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>複雑なタスクを特化型のエージェントに分解し、個々のエージェントを学習するためのpseudo-gold trajectoryを合成しエージェントをFinetuning。その後、FinetuningしたエージェントをGRPOによってend-to-endで学習する、という話に見える。pseudo-gold trajectoryは、個々の特化型のエージェントに対して複数の解候補を出力させ、解候補を次のエージェントに入力し解候補を生成...という手順をsequentialに適用していき、最終的に正しい応答を導き出せたtrajectoryを後ろ向きにたどることによって、pseudo-gold trajectoryを得る。FinetuningとRLがどのような順番で実施されるか、あるいは繰り返されるのか、といった部分についてはしっかり読み解けていない。<br><br><img src="https://github.com/user-attachments/assets/2ffdeb80-6b39-4705-a9af-b536fce9ff9e" /" alt="image" loading="lazy" width="550" height="400"/><br><br>表データで実験をしているが、それは一つの応用例であり、汎用的に利用可能な手法と考えられる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Entropy-Preserving Reinforcement Learning, Aleksei Petrenko+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.11682</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5073</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, action_wanted, ICLR, PostTraining, Selected Papers/Blogs, Stability, needs-revision, EntropyCollapse, Author Thread/Post</tags>
+<repo-issue-date>2026-04-01</repo-issue-date>
+<issue-body>https://arxiv.org/abs/2603.11682</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/petrenko_ai/status/2038714716550516767?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=E8MR8jgEeZ" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=E8MR8jgEeZ</a>
+{% endraw %}
+
+</p><p>PPO/GRPOなどのアルゴリズムではRL中にポリシーの多様性が低下し、ポリシーがdeterministicになり探索をしなくなり、パフォーマンスが停滞するか低下する（あるいはベースモデルでもともと高い尤度を持っていた解のPass@1が改善するが、ポリシーの出力が狭くなるため、Pass@kが犠牲になる）現象が生じる（= entropy collapse）ので、それを是正したいという話。<br><br>後ほど追記</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Group Distributionally Robust Optimization-Driven Reinforcement Learning for LLM Reasoning, Kishan Panaganti+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.19280</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5037</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, PostTraining, BudgetAllocation, Author Thread/Post</tags>
+<repo-issue-date>2026-03-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.19280
+# Authors
+  - Kishan Panaganti
+  - Zhenwen Liang
+  - Wenhao Yu
+  - Haitao Mi
+  - Dong Yu
+# Abstract
+  - Recent progress in Large Language Model (LLM) reasoning is increasingly driven by the refinement of post-training loss functions and alignment strategies. However, standard Reinforcement Learning (RL) paradigms like Group Relative Policy Optimization (GRPO) remain constrained by static uniformity: uniform prompt sampling and a fixed number of rollouts per prompt. For heterogeneous, heavy-tailed reasoning data, this creates structural inefficiencies that waste compute on already-solved patterns while under-training the long tail of hard problems. To address this, we propose Multi-Adversary Group Distributionally Robust Optimization (GDRO), an optimization-first framework that moves beyond uniform reasoning models by dynamically adapting the training distribution.   We introduce an Online Difficulty Classifier that partitions prompts into dynamic pass@k difficulty groups. We then propose two independent GDRO games for post-training: (1) Prompt-GDRO, which employs an EMA-debiased multiplicative-weights bandit sampler to target the intensive difficulty margin and upweight persistently hard groups without frequency bias; and (2) Rollout-GDRO, which uses a shadow-price controller to reallocate rollouts across groups, maximizing gradient variance reduction on hard tasks under a fixed mean budget (compute-neutral). We provide no-regret guarantees for both controllers and additionally a variance-proxy analysis motivating a square-root optimal rollout allocation for Rollout-GDRO. We validate our framework on the DAPO 14.1k dataset using Qwen3-Base models. Prompt-GDRO and Rollout-GDRO achieve average relative gains of +10.6% and +10.1%, respectively, in pass@8 accuracy across 1.7B, 4B, and 8B scales compared to the GRPO baseline. Qualitative analysis shows an emergent curriculum: the adversaries shift resources to the evolving reasoning frontier, enhancing the reasoning model's performance.
+# Translation (by gpt-5-nano)
+- 最近の大規模言語モデル（LLM）における推論の進展は、ポストトレーニング後の損失関数の洗練とアライメント戦略の整合によってますます推進されている。しかし、Group Relative Policy Optimization（GRPO）のような標準的な強化学習（RL）パラダイムは、静的な一様性――プロンプトの一様サンプリングとプロンプトごとに固定されたロールアウトの回数――に縛られている。異質で裾野が長い推論データの場合、これはすでに解決済みのパターンに対する計算資源の浪費を生み出す一方で、難問の長い尾を十分に訓練できない構造的非効率を招く。これに対処するため、訓練分布を動的に適応させることで一様な推論モデルを超える最適化志向の枠組みとして、Multi-Adversary Group Distributionally Robust Optimization（GDRO）を提案する。
+
+オンライン難易度分類器を導入し、プロンプトを動的な pass@k 難易度グループに区分する。次に、後訓練のための二つの独立したGDROゲームを提案する：(1) Prompt-GDRO は、EMA によってデバイアスを取り除いた乗法ウェイト・バンディット・サンプラーを用い、集中的な難易度マージンを狙い、頻度バイアスなしに持続的に難易度の高いグループを重み付けする；および (2) Rollout-GDRO は、シャドウ価格コントローラを用いてグループ間のロールアウトを再配分し、一定の平均予算の下で難問タスクにおける勾配分散の削減を最大化する（計算資源を一定に保つ）。両方のコントローラに対してノーリグレット保証を提供し、さらに分散代理分析により Rollout-GDRO における平方根規模の最適なロールアウト割り当てを正当化する。Qwen3-Base モデルを用いて DAPO 14.1k データセットで我々のフレームワークを検証する。Prompt-GDRO と Rollout-GDRO は、それぞれ GRPO ベースラインと比較して、1.7B、4B、8B スケールで pass@8 精度の平均相対ゲインを +10.6%、+10.1% 取得した。定性的分析では新たに出現するカリキュラムが観察され、敵対的グループが資源を推論のフロンティアへとシフトすることで、推論モデルの性能を高める。
+# Summary (by gpt-4o-mini)
+- LLMの推論進展は、損失関数の洗練とアライメント戦略の整合によって進むが、標準的なRLパラダイムは一様性に縛られ、難問への対応に非効率を生む。これに対抗するため、動的に訓練分布を適応させるMulti-Adversary GDROを提案。オンライン難易度分類器を導入し、プロンプトを難易度グループに区分。二つのGDROゲームを提示し、頻度バイアスを排除しつつ難易度の高いプロンプトを強化。Qwen3-Baseでの実験により、精度がGRPOと比較して高まることを確認。新たなカリキュラムが観察され、リソースが推論のフロンティアへシフトすることで性能向上を促進。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kpb_in_acad/status/2017088795607457800?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ProRL Agent: Rollout-as-a-Service for RL Training of Multi-Turn LLM Agents, Hao Zhang+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.18815</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5034</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, ReinforcementLearning, Architecture, SoftwareEngineering, read-later, On-Policy, Stability, One-Line Notes, Author Thread/Post</tags>
+<repo-issue-date>2026-03-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.18815
+# Authors
+  - Hao Zhang
+  - Mingjie Liu
+  - Shaokun Zhang
+  - Songyang Han
+  - Jian Hu
+  - Zhenghui Jin
+  - Yuchi Zhang
+  - Shizhe Diao
+  - Ximing Lu
+  - Binfeng Xu
+  - Zhiding Yu
+  - Jan Kautz
+  - Yi Dong
+# Abstract
+  - Multi-turn LLM agents are increasingly important for solving complex, interactive tasks, and reinforcement learning (RL) is a key ingredient for improving their long-horizon behavior. However, RL training requires generating large numbers of sandboxed rollout trajectories, and existing infrastructures often couple rollout orchestration with the training loop, making systems hard to migrate and maintain. Under the rollout-as-a-service philosophy, we present ProRL Agent , a scalable infrastructure that serves the full agentic rollout lifecycle through an API service. ProRL Agent also provides standardized and extensible sandbox environments that support diverse agentic tasks in rootless HPC settings. We validate ProRL Agent through RL training on software engineering, math, STEM, and coding tasks. ProRL Agent is open-sourced and integrated as part of NVIDIA NeMo Gym.
+# Translation (by gpt-5-nano)
+- マルチターンのLLMエージェントは、複雑で対話的なタスクを解決するうえでますます重要になっており、強化学習（RL）は長期的な挙動を改善するための鍵となる要素です。しかし、RLトレーニングには大量のサンドボックス化されたロールアウト軌跡を生成する必要があり、既存のインフラストラクチャはしばしばロールアウトのオーケストレーションをトレーニングループと結びつけるため、システムの移行や保守が困難になります。ロールアウトをサービスとして提供するという思想のもと、私たちはProRL Agentを提示します。これはAPIサービスを通じて、エージェント駆動のロールアウトのライフサイクル全体を提供するスケーラブルなインフラストラクチャです。ProRL Agentはまた、標準化され拡張可能なサンドボックス環境を提供し、rootless HPC設定で多様なエージェント駆動タスクをサポートします。ソフトウェア工学、数学、STEM、コーディングのタスクに対するRLトレーニングを通じてProRL Agentを検証します。ProRL Agentはオープンソース化され、NVIDIA NeMo Gymの一部として統合されています。
+# Summary (by gpt-4o-mini)
+- ProRL Agentは、マルチターンのLLMエージェントにおける強化学習トレーニングを支援するためのAPIサービスであり、ロールアウトのライフサイクル全体を提供するスケーラブルなインフラです。標準化されたサンドボックス環境を通じて、多様なエージェント駆動タスクに対応し、ソフトウェア工学やSTEM関連のタスクで検証されています。ProRL Agentはオープンソースで、NVIDIA NeMo Gymに統合されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shizhediao/status/2037685374949142823?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>処理が重いロールアウトを独立したhttp serviceとして扱い（rollout-as-a-service)、モデルのtrainingと分離することで、リソース分離、可搬性、拡張性を向上させる。<br><img src="https://github.com/user-attachments/assets/ac3ec90a-0b73-4ad3-9793-4e43b94c2d39" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Reaching Beyond the Mode: RL for Distributional Reasoning in Language Models, Isha Puri+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.24844</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5033</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PostTraining, Diversity, Selected Papers/Blogs, One-Line Notes, Author Thread/Post</tags>
+<repo-issue-date>2026-03-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.24844
+# Authors
+  - Isha Puri
+  - Mehul Damani
+  - Idan Shenfeld
+  - Marzyeh Ghassemi
+  - Jacob Andreas
+  - Yoon Kim
+# Abstract
+  - Given a question, a language model (LM) implicitly encodes a distribution over possible answers. In practice, post-training procedures for LMs often collapse this distribution onto a single dominant mode. While this is generally not a problem for benchmark-style evaluations that assume one correct answer, many real-world tasks inherently involve multiple valid answers or irreducible uncertainty. Examples include medical diagnosis, ambiguous question answering, and settings with incomplete information. In these cases, we would like LMs to generate multiple plausible hypotheses, ideally with confidence estimates for each one, and without computationally intensive repeated sampling to generate non-modal answers. This paper describes a multi-answer reinforcement learning approach for training LMs to perform distributional reasoning over multiple answers during inference. We modify the RL objective to enable models to explicitly generate multiple candidate answers in a single forward pass, internalizing aspects of inference-time search into the model's generative process. Across question-answering, medical diagnostic, and coding benchmarks, we observe improved diversity, coverage, and set-level calibration scores compared to single answer trained baselines. Models trained with our approach require fewer tokens to generate multiple answers than competing approaches. On coding tasks, they are also substantially more accurate. These results position multi-answer RL as a principled and compute-efficient alternative to inference-time scaling procedures such as best-of-k. Code and more information can be found at https://multi-answer-rl.github.io/.
+# Translation (by gpt-5-nano)
+- 質問が与えられると、言語モデル（LM）は潜在的な回答の分布を暗黙のうちにエンコードしている。実際には、LMの訓練後の手順はしばしばこの分布を単一の支配的モードに圧縮してしまう。これは、1つの正解を前提とするベンチマーク型の評価には一般的に問題とはならない一方、多くの現実世界のタスクには複数の妥当な回答や不可避的な不確実性が内在する。例として、医療診断、曖昧な質問応答、情報が不完全な状況が挙げられる。これらの場合、LMには、複数のもっともらしい仮説を生成し、理想的には各仮説に対する信頼度推定を付与し、非モード的な回答を生成するための計算コストの高い繰り返しサンプリングを行わずに済むことを望む。本論文は、推論時に分布的推論を実行するためのLM訓練として、複数回答を扱う強化学習（RL）アプローチを説明する。RL目的関数を変更して、モデルが単一の前方伝搬で複数の候補回答を明示的に生成できるようにし、推論時探索の側面をモデルの生成過程に内在化する。質問応答、医療診断、コーディングのベンチマーク全般にわたり、単一回答を訓練したベースラインと比較して、多様性・カバレッジ・集合レベルの較正スコアが改善されることを観察した。提案手法で訓練されたモデルは、他の競合手法より複数の回答を生成するのに必要なトークン数が少ない。コーディングタスクでは、精度も大幅に向上している。これらの結果は、複数回答RLを、best-of-kのような推論時のスケーリング手法に対する、原理的で計算資源効率の高い代替として位置づける。コードや詳細情報は https://multi-answer-rl.github.io/ に掲載されている。
+# Summary (by gpt-4o-mini)
+- LMは質問に対して複数の回答候補を暗黙のうちに生成するが、訓練後のプロセスで単一の回答に圧縮されることが多い。医療診断や曖昧な質問応答などのタスクにおいては、複数の妥当な回答が必要とされる。本論文では、複数回答を扱う強化学習アプローチを提案し、モデルが単一の前方伝搬で複数の候補を生成できるようにする。実験により、多様性やカバレッジが改善し、コーディングタスクでは精度も向上した。提案手法は、計算資源効率の高い代替として評価されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ishapuri101/status/2037529925360500858?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ユーザのクエリにおいては正解が単一ではないものがしばしば存在するが、現在のRLの枠組みはモデルが出力した一つのbest answerに対して報酬を与えるように設計されているため、これによりモデルの出力が一つのモードに固執する、あるいはmode collapseを引き起こす。これを解決するために、モデルに複数の回答とそのconfidenceを一つのpromptで思考させ、k個出力させる。rewardはk個中何個のanswerが正解だったか、confidenceが実際のanswerのcorrectnessとどれだけ近いかなどに基づいて報酬を与えるような枠組みを採用することで、モデルの出力の多様性やcoverageが増加し、repeated sampling時のトークン効率も改善した、と言う話らしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Goedel-Code-Prover: Hierarchical Proof Search for Open State-of-the-Art Code Verification, Zenan Li+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.19329</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5031</repo-issue-link>
+<tags>LanguageModel, Coding, SoftwareEngineering, read-later, Verification, Proofs, Author Thread/Post</tags>
+<repo-issue-date>2026-03-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.19329
+# Authors
+  - Zenan Li
+  - Ziran Yang
+  - Deyuan
+  - He
+  - Haoyu Zhao
+  - Andrew Zhao
+  - Shange Tang
+  - Kaiyu Yang
+  - Aarti Gupta
+  - Zhendong Su
+  - Chi Jin
+# Abstract
+  - Large language models (LLMs) can generate plausible code but offer limited guarantees of correctness. Formally verifying that implementations satisfy specifications requires constructing machine-checkable proofs, a task that remains beyond current automation. We propose a hierarchical proof search framework for automated code verification in Lean~4 that decomposes complex verification goals into structurally simpler subgoals before attempting tactic-level proving. Central to our approach is a principled decomposition score that combines constructive justification with structural effectiveness. Crucially, this score serves as both the training reward and the inference-time ranking criterion, ensuring strict alignment between optimization and deployment. We train Goedel-Code-Prover-8B, a single unified policy for both decomposition and completion, via supervised initialization followed by hybrid reinforcement learning, where a continuous decomposition reward drives planning exploration while supervised replay stabilizes proof generation. On three Lean-based code verification benchmarks comprising 427 tasks, our 8B-parameter model achieves a 62.0\% prove success rate, a 2.6$\times$ improvement over the strongest baseline, surpassing neural provers up to 84$\times$ larger. We further observe consistent inference-time scaling: success rates improve monotonically with search iterations and sampling budget, with our trained model achieving greater efficiency than frontier off-the-shelf models of comparable scale.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）は妥当なコードを生成できるものの、正確性の保証は限定的である。実装が仕様を満たすことを形式的に検証するには、機械可読な証明を構築する必要があり、それは現在の自動化を超えている。Lean 4 における自動コード検証のための階層的証明探索フレームワークを提案し、複雑な検証目標をタクティックレベルの証明を試みる前に構造的により単純なサブゴールへ分解する。本研究の要所となるのは、構成的正当化と構造的有効性を組み合わせた原理的な分解スコアである。極めて重要なのは、このスコアが訓練報酬と推論時のランキング基準の双方として機能し、最適化とデプロイメントとの厳密な整合性を保証することである。我々は Goedel-Code-Prover-8B を、分解と完成の両方を扱える単一の統一方針として、教師あり初期化に続くハイブリッド強化学習によって訓練する。ここで、連続的な分解報酬が計画探索を推進し、教師付きリプレイが証明生成を安定化させる。Lean ベースのコード検証ベンチマーク3つ（計427タスク）で、8B パラメータのモデルは 62.0% の証明成功率を達成し、最も強力なベースラインを 2.6 倍上回り、最大で 84 倍大きいニューラル・プローバーを上回る。さらに、推論時のスケーリングは一貫して観察され、探索回数とサンプリング予算が増えるにつれて成功率が単調に改善し、我々の訓練済みモデルは同等規模の最先端の既製モデルよりも高い効率を達成する。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）はコード生成が可能だが、正確性に限界がある。これを克服するために、Lean 4における階層的証明探索フレームワークを提案し、複雑な検証目標を単純なサブゴールに分解する。分解スコアは訓練報酬と推論時の基準として機能し、最適化とデプロイメントの整合性を保証。Goedel-Code-Prover-8Bを利用し、教師あり初期化後にハイブリッド強化学習で訓練。Leanベースのコード検証ベンチマークでは、62.0%の証明成功率を実現し、強力なベースラインを2.6倍上回る成果を達成した。また、推論時のスケーリングによって成功率の向上が観察された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/__zrrr__/status/2037190409969918232?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2039281670549876950?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Self-Distillation of Hidden Layers for Self-Supervised Representation Learning, Scott C. Lowe+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.15553</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5028</repo-issue-link>
+<tags>Author Thread/Post</tags>
+<repo-issue-date>2026-03-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.15553
+# Authors
+  - Scott C. Lowe
+  - Anthony Fuller
+  - Sageev Oore
+  - Evan Shelhamer
+  - Graham W. Taylor
+# Abstract
+  - The landscape of self-supervised learning (SSL) is currently dominated by generative approaches (e.g., MAE) that reconstruct raw low-level data, and predictive approaches (e.g., I-JEPA) that predict high-level abstract embeddings. While generative methods provide strong grounding, they are computationally inefficient for high-redundancy modalities like imagery, and their training objective does not prioritize learning high-level, conceptual features. Conversely, predictive methods often suffer from training instability due to their reliance on the non-stationary targets of final-layer self-distillation. We introduce Bootleg, a method that bridges this divide by tasking the model with predicting latent representations from multiple hidden layers of a teacher network. This hierarchical objective forces the model to capture features at varying levels of abstraction simultaneously. We demonstrate that Bootleg significantly outperforms comparable baselines (+10% over I-JEPA) on classification of ImageNet-1K and iNaturalist-21, and semantic segmentation of ADE20K and Cityscapes.
+# Translation (by gpt-5-nano)
+- 自己教師付き学習（SSL）の現状は、原始的な低レベルデータを再構成する生成的アプローチ（例：MAE）と、高レベルの抽象的埋め込みを予測する予測的アプローチ（例：I-JEPA）によって支配されています。生成法は強力な基盤を提供しますが、画像のような高い冗長性を持つモダリティには計算効率が悪く、訓練目標は高レベルで概念的な特徴の学習を優先していません。一方、予測法は最終層の自己蒸留の非定常ターゲットに依存することが多いため、訓練の不安定さに悩まされることがあります。我々はBootlegを導入します。Bootlegは、教師ネットワークの複数の隠れ層から潜在表現を予測するという課題をモデルに課すことで、この分断を橋渡しします。この階層的な目的は、抽象度の異なる特徴を同時に捉えることをモデルに強制します。Bootlegは、ImageNet-1KおよびiNaturalist-21の分類、およびADE20KとCityscapesのセマンティックセグメンテーションにおいて、同等のベースラインを顕著に上回り、I-JEPAより約10%の改善を達成することを示します。
+# Summary (by gpt-4o-mini)
+- SSLの現状は、生成的アプローチ（例：MAE）と予測的アプローチ（例：I-JEPA）によって支配され、各々長所と短所があります。Bootlegを提案し、教師ネットワークの複数の隠れ層から潜在表現を予測することで、このギャップを埋める階層的な目的を導入。これにより、異なる抽象度の特徴を同時に捉え、ImageNet-1KやiNaturalist-21の分類、ADE20KとCityscapesのセマンティックセグメンテーションで顕著な改善を示しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/scottclowe/status/2037535817871065365?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Delightful Policy Gradient, Ian Osband, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.14608v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5026</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, read-later, Selected Papers/Blogs, One-Line Notes, Reference Collection, Author Thread/Post</tags>
+<repo-issue-date>2026-03-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.14608v1
+# Authors
+  - Ian Osband
+# Abstract
+  - Standard policy gradients weight each sampled action by advantage alone, regardless of how likely that action was under the current policy. This creates two pathologies: within a single decision context (e.g. one image or prompt), a rare negative-advantage action can disproportionately distort the update direction; across many such contexts in a batch, the expected gradient over-allocates budget to contexts the policy already handles well. We introduce the \textit{Delightful Policy Gradient} (DG), which gates each term with a sigmoid of \emph{delight}, the product of advantage and action surprisal (negative log-probability). For $K$-armed bandits, DG provably improves directional accuracy in a single context and, across multiple contexts, shifts the expected gradient strictly closer to the supervised cross-entropy oracle. This second effect is not variance reduction: it persists even with infinite samples. Empirically, DG outperforms REINFORCE, PPO, and advantage-weighted baselines across MNIST, transformer sequence modeling, and continuous control, with larger gains on harder tasks.
+# Translation (by gpt-5-nano)
+- 標準のポリシー勾配は、現在のポリシー下でその行動がどれだけ起こりやすかったかを考慮せず、サンプルされた各行動をアドバンテージのみで重み付けする。これにより、1つの決定コンテキスト内（例：1枚の画像や1つのプロンプト）で希少な負のアドバンテージを有する行動がアップデートの方向を不均衡に歪めることがある。バッチ内の多数のこのようなコンテキストを跨いで見ると、期待される勾配は、ポリシーがすでにうまく対処しているコンテキストへ資源を過剰に割り当ててしまう。
+
+我々は、Delightful Policy Gradient（DG）を導入する。DGは各項をデライトのシグモイド関数でゲートする。デライトとは、アドバンテージと行動の驚き（負の対数確率）の積である。
+
+K-アームド・バンディット問題では、DGは単一のコンテキストにおける方向性の正確性を理論的に改善し、複数のコンテキストにまたがって、期待される勾配を監督付きクロスエントロピー・オラクルへ厳密に近づける。この第二の効果は分散削減ではない。無限サンプルがあっても持続する。
+
+実証的には、DGはREINFORCE、PPO、アドバンテージ加重ベースラインを、MNIST、トランスフォーマー系列モデリング、連続制御の領域で上回り、難易度の高いタスクほどより大きな改善を示す。
+# Summary (by gpt-4o-mini)
+- Delightful Policy Gradient（DG）は、ポリシー勾配の不均衡なアップデートを解消するために、アドバンテージと行動の驚きの積に基づいたゲーティングを導入。これにより、単一コンテキスト内での方向性の精度を理論的に向上させ、複数コンテキスト間での期待される勾配を精密に近づけることができる。実験的に、DGはREINFORCEやPPOをMNISTや連続制御タスクで上回り、特に難易度の高いタスクで顕著な改善を示した。</issue-body>
+<maintainer-comment-text><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4420" target="_blank" rel="noopener noreferrer">[Paper Note] Maximum Likelihood Reinforcement Learning, Fahim Tajwar+, arXiv'26, 2026.02</a>
+</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/IanOsband/status/2034992708683522399?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/a_weers/status/2036942153734107212?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ianosband/status/2037532857317417459?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>不要なbackward passの重みを下げるのではなく完全に無くすことで効率化する</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] GradMem: Learning to Write Context into Memory with Test-Time Gradient Descent, Yuri Kuratov+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.13875</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5007</repo-issue-link>
+<tags>NLP, LanguageModel, PEFT(Adaptor/LoRA), read-later, memory, Initial Impression Notes, SoftPrompt, Test Time Training (TTT), Author Thread/Post</tags>
+<repo-issue-date>2026-03-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.13875
+# Authors
+  - Yuri Kuratov
+  - Matvey Kairov
+  - Aydar Bulatov
+  - Ivan Rodkin
+  - Mikhail Burtsev
+# Abstract
+  - Many large language model applications require conditioning on long contexts. Transformers typically support this by storing a large per-layer KV-cache of past activations, which incurs substantial memory overhead. A desirable alternative is ompressive memory: read a context once, store it in a compact state, and answer many queries from that state. We study this in a context removal setting, where the model must generate an answer without access to the original context at inference time. We introduce GradMem, which writes context into memory via per-sample test-time optimization. Given a context, GradMem performs a few steps of gradient descent on a small set of prefix memory tokens while keeping model weights frozen. GradMem explicitly optimizes a model-level self-supervised context reconstruction loss, resulting in a loss-driven write operation with iterative error correction, unlike forward-only methods. On associative key--value retrieval, GradMem outperforms forward-only memory writers with the same memory size, and additional gradient steps scale capacity much more effectively than repeated forward writes. We further show that GradMem transfers beyond synthetic benchmarks: with pretrained language models, it attains competitive results on natural language tasks including bAbI and SQuAD variants, relying only on information encoded in memory.
+# Translation (by gpt-5-nano)
+- 長い文脈を条件付ける必要がある多くの大規模言語モデルアプリケーションには、過去の活性化の各層ごとのKVキャッシュを大量に保存することで対応するのが一般的だが、これには considerable memory overhead が伴う。望ましい代替手段は圧縮性メモリである：文脈を一度読み取り、それをコンパクトな状態に格納し、その状態から多数のクエリに答える。私たちは、推論時に元の文脈へアクセスできない状況での「文脈削除設定」においてこれを検討する。GradMemを導入する。GradMemはサンプルごとの推定時最適化を通じて文脈をメモリへ書き込む。文脈が与えられると、GradMemはモデルの重みを凍結したまま、小さなプレフィックスメモリトークンの集合に対して数ステップの勾配降下を行う。GradMemはモデルレベルの自己教師付き文脈再構成損失を明示的に最適化し、損失駆動の書き込み操作を反復的な誤差訂正とともに生み出すため、前方のみの方法とは異なる。連想キー-値検索において、GradMemは同じメモリサイズの前方のみのメモリライターよりも優れており、追加の勾配ステップは繰り返し前方書き込みよりも容量の拡張をはるかに効果的にスケールさせる。さらに、GradMemは合成ベンチマークを超える転移を示す。事前学習済み言語モデルを用いると、bAbIやSQuAD系の派生タスクを含む自然言語タスクで競争力のある結果を達成し、記憶にエンコードされた情報のみに依存している。
+# Summary (by gpt-4o-mini)
+- 長い文脈をコンパクトに保存するGradMemを提案。これは、推論時に文脈へアクセスできない状況で、文脈を圧縮して数のクエリに応答する。モデルの重みを凍結し、少量のプレフィックストークンで数ステップの勾配降下を行うことで、文脈の再構成を最適化。連想キー-値検索において、GradMemは従来の手法より優れた性能を発揮し、自然言語タスクで競争力のある結果を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yurakuratov/status/2034989528818098615?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>prefixにmemory用のトークンを用意し、TTTの枠組みでcontextのreconstruction lossを通じて圧縮する、という話に見える。tokenはsoft tokenであり、m*d次元の行列で表現される。<br><br>要はcontextの潜在表現をReconstruction lossによるTTTでprefix tuningするsoft  prompting手法、という感じだろうか。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] EvoClaw: Evaluating AI Agents on Continuous Software Evolution, Gangda Deng+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.13428</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5006</repo-issue-link>
+<tags>read-later, Selected Papers/Blogs, Author Thread/Post</tags>
+<repo-issue-date>2026-03-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.13428
+# Authors
+  - Gangda Deng
+  - Zhaoling Chen
+  - Zhongming Yu
+  - Haoyang Fan
+  - Yuhong Liu
+  - Yuxin Yang
+  - Dhruv Parikh
+  - Rajgopal Kannan
+  - Le Cong
+  - Mengdi Wang
+  - Qian Zhang
+  - Viktor Prasanna
+  - Xiangru Tang
+  - Xingyao Wang
+# Abstract
+  - With AI agents increasingly deployed as long-running systems, it becomes essential to autonomously construct and continuously evolve customized software to enable interaction within dynamic environments. Yet, existing benchmarks evaluate agents on isolated, one-off coding tasks, neglecting the temporal dependencies and technical debt inherent in real-world software evolution. To bridge this gap, we introduce DeepCommit, an agentic pipeline that reconstructs verifiable Milestone DAGs from noisy commit logs, where milestones are defined as semantically cohesive development goals. These executable sequences enable EvoClaw, a novel benchmark that requires agents to sustain system integrity and limit error accumulation, dimensions of long-term software evolution largely missing from current benchmarks. Our evaluation of 12 frontier models across 4 agent frameworks reveals a critical vulnerability: overall performance scores drop significantly from $>$80% on isolated tasks to at most 38% in continuous settings, exposing agents' profound struggle with long-term maintenance and error propagation.
+# Translation (by gpt-5-nano)
+- AIエージェントが長期間稼働するシステムとしてますます展開されるなか、動的な環境との相互作用を可能にするため、自律的にカスタマイズされたソフトウェアを構築し、継続的に進化させることが不可欠になる。しかし、既存のベンチマークは孤立した一度限りのコーディング課題でエージェントを評価しており、現実世界のソフトウェア進化に内在する時間的依存性と技術的負債を見落としている。このギャップを埋めるべく、ノイズの多いコミットログから検証可能なマイルストーンDAGを再構築するエージェント系パイプラインDeepCommitを導入する。マイルストーンは意味的に一貫した開発目標として定義される。これらの実行可能なシーケンスは、EvoClawという新規ベンチマークを可能にし、エージェントにシステムの整合性を維持し、エラー蓄積を抑制することを要求する長期的なソフトウェア進化の側面を、現行のベンチマークには欠いている。4つのエージェントフレームワークにまたがる12の最先端モデルの評価は、重大な脆弱性を示す。孤立タスクで80％を超える全体パフォーマンスが、連続的設定では最大で38％にまで大幅に低下し、長期的な保守とエラー伝播に対するエージェントの深刻な苦闘を露呈している。
+# Summary (by gpt-4o-mini)
+- AIエージェントが長期間稼働するためには動的環境への適応が求められるが、既存のベンチマークは時間的依存性や技術的負債を考慮していない。この問題を解決するため、DeepCommitを導入し、ノイズのあるコミットログからマイルストーンDAGを再構築。EvoClawという新たなベンチマークを作成し、エージェントに長期的なソフトウェア進化の課題を課す。評価では、孤立したタスクに対して80％以上のパフォーマンスが、連続的な設定で38％まで低下し、エージェントの維持管理能力に脆弱性が見られた。</issue-body>
+<maintainer-comment-text><p>leaderboard:
+
+{% raw %}
+<a href="https://evo-claw.com/" target="_blank" rel="noopener noreferrer">https://evo-claw.com/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xiangrutang/status/2035458599485641088?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>OpenHands（著者グループ）のスレッド: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/OpenHandsDev/status/2036088079274873271?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MonoArt: Progressive Structural Reasoning for Monocular Articulated 3D Reconstruction, Haitian Li+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.19231</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5005</repo-issue-link>
+<tags>Author Thread/Post</tags>
+<repo-issue-date>2026-03-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.19231
+# Authors
+  - Haitian Li
+  - Haozhe Xie
+  - Junxiang Xu
+  - Beichen Wen
+  - Fangzhou Hong
+  - Ziwei Liu
+# Abstract
+  - Reconstructing articulated 3D objects from a single image requires jointly inferring object geometry, part structure, and motion parameters from limited visual evidence. A key difficulty lies in the entanglement between motion cues and object structure, which makes direct articulation regression unstable. Existing methods address this challenge through multi-view supervision, retrieval-based assembly, or auxiliary video generation, often sacrificing scalability or efficiency. We present MonoArt, a unified framework grounded in progressive structural reasoning. Rather than predicting articulation directly from image features, MonoArt progressively transforms visual observations into canonical geometry, structured part representations, and motion-aware embeddings within a single architecture. This structured reasoning process enables stable and interpretable articulation inference without external motion templates or multi-stage pipelines. Extensive experiments on PartNet-Mobility demonstrate that OM achieves state-of-the-art performance in both reconstruction accuracy and inference speed. The framework further generalizes to robotic manipulation and articulated scene reconstruction.
+# Translation (by gpt-5-nano)
+- 単一の画像から可動部を持つ3D物体を再構成するには、限られた視覚情報から物体の形状、部品構造、および運動パラメータを共同推定する必要がある。重要な難点は、運動の手掛かりと物体構造の絡み合いにあり、これが直接的な可動推定を不安定にする。既存の手法はこの課題に対処するため、多視点の監督、検索ベースの組み立て、あるいは補助的な動画生成を用いることが多く、しばしばスケーラビリティや効率性を犠牲にする。我々は、進行的な構造推論に基づく統一フレームワークMonoArtを提案する。画像特徴から直接可動性を予測するのではなく、MonoArtは視覚的観察を単一のアーキテクチャ内で正准幾何、構造化された部品表現、および運動情報を含む埋め込みへと段階的に変換する。この構造化推論プロセスにより、外部の運動テンプレートや多段階のパイプラインを用いずに、安定で解釈可能な可動推定を実現できる。PartNet-Mobilityを用いた広範な実験は、MonoArtが再構成精度と推論速度の双方で最先端の性能を達成することを示している。さらに、このフレームワークはロボット操作および可動シーン再構成にも一般化できる。
+# Summary (by gpt-4o-mini)
+- 単一画像から3D物体の形状や運動パラメータを共同推定するために、提案されたMonoArtフレームワークは、視覚情報を段階的に変換し、安定した可動推定を実現する。既存の手法のスケーラビリティや効率性の問題を克服し、PartNet-Mobilityデータセットで最先端の再構成精度と推論速度を達成。ロボット操作や可動シーン再構成にも応用可能。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2035384757543211124?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Rich Insights from Cheap Signals: Efficient Evaluations via Tensor Factorization, Felipe Maia Polo+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.02029</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5000</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Evaluation, Initial Impression Notes, Author Thread/Post</tags>
+<repo-issue-date>2026-03-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.02029
+# Authors
+  - Felipe Maia Polo
+  - Aida Nematzadeh
+  - Virginia Aglietti
+  - Adam Fisch
+  - Isabela Albuquerque
+# Abstract
+  - Moving beyond evaluations that collapse performance across heterogeneous prompts toward fine-grained evaluation at the prompt level, or within relatively homogeneous subsets, is necessary to diagnose generative models' strengths and weaknesses. Such fine-grained evaluations, however, suffer from a data bottleneck: human gold-standard labels are too costly at this scale, while automated ratings are often misaligned with human judgment. To resolve this challenge, we propose a novel statistical model based on tensor factorization that merges cheap autorater data with a limited set of human gold-standard labels. Specifically, our approach uses autorater scores to pretrain latent representations of prompts and generative models, and then aligns those pretrained representations to human preferences using a small calibration set. This sample-efficient methodology is robust to autorater quality, more accurately predicts human preferences on a per-prompt basis than standard baselines, and provides tight confidence intervals for key statistical parameters of interest. We also showcase the practical utility of our method by constructing granular leaderboards based on prompt qualities and by estimating model performance solely from autorater scores, eliminating the need for additional human annotations.
+# Translation (by gpt-5-nano)
+- 異質なプロンプト全体でのパフォーマンスを集約する評価を超え、プロンプトレベルでの細粒度評価、あるいは比較的同質なサブセット内での評価へ移行することは、生成モデルの長所と短所を診断するために必要である。とはいえ、このような細粒度評価はデータのボトルネックに悩まされる。人間のゴールドスタンダードラベルはこの規模では高コストすぎる一方、自動評価はしばしば人間の判断と一致しない。 この課題を解決するため、安価な自動評価データと限られた量の人間ゴールドスタンダードラベルを統合する、テンソル因子分解に基づく新しい統計モデルを提案します。具体的には、自動評価スコアを用いてプロンプトと生成モデルの潜在表現を事前学習し、次に小さな較正セットを用いてそれらの事前学習表現を人間の嗜好へと整合させる。このサンプル効率の高い手法は、自動評価者の品質に頑健で、標準的なベースラインよりもプロンプトごとに人間の嗜好をより正確に予測し、関心のある主要な統計パラメータの信頼区間を狭く提供する。さらに、プロンプト品質に基づく細粒度のリーダーボードを構築したり、自動評価スコアだけからモデルのパフォーマンスを推定したりして、本手法の実用性を示し、追加の人間注釈を必要としない。
+# Summary (by gpt-4o-mini)
+- プロンプトの性能を細粒度で評価するため、安価な自動評価データと限られた人間によるゴールドスタンダードラベルを統合した新しい統計モデルを提案。自動評価スコアを基に生成モデルの潜在表現を事前学習し、小さな較正セットで人間の嗜好に整合。これにより、標準ベースラインを上回る精度で人間の嗜好を予測し、詳細なリーダーボードの構築やモデルのパフォーマンス推定が可能になることを示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/felipemaiapolo/status/2036813295701635355?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>少量の人間ラベルとLLMによって合成されたraterでテンソルを作り（モデル、prompt, rateのテンソル）を行列分解することで、効率的に（＝人間のrateはscarceなので行列分解を通じて潜在表現に落としてサンプル効率を高める、というより次元の呪いを回避する？）単一のスコアでのモデル評価ではなく、様々な異質のpromptの元でのスコアリング（＝finegrained evaluation)を実現する、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LeWorldModel: Stable End-to-End Joint-Embedding Predictive Architecture from Pixels, Lucas Maes+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.19312v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4987</repo-issue-link>
+<tags>ComputerVision, read-later, Selected Papers/Blogs, Stability, WorldModels, Pixel-based, Author Thread/Post</tags>
+<repo-issue-date>2026-03-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.19312v1
+# Authors
+  - Lucas Maes
+  - Quentin Le Lidec
+  - Damien Scieur
+  - Yann LeCun
+  - Randall Balestriero
+# Abstract
+  - Joint Embedding Predictive Architectures (JEPAs) offer a compelling framework for learning world models in compact latent spaces, yet existing methods remain fragile, relying on complex multi-term losses, exponential moving averages, pre-trained encoders, or auxiliary supervision to avoid representation collapse. In this work, we introduce LeWorldModel (LeWM), the first JEPA that trains stably end-to-end from raw pixels using only two loss terms: a next-embedding prediction loss and a regularizer enforcing Gaussian-distributed latent embeddings. This reduces tunable loss hyperparameters from six to one compared to the only existing end-to-end alternative. With ~15M parameters trainable on a single GPU in a few hours, LeWM plans up to 48x faster than foundation-model-based world models while remaining competitive across diverse 2D and 3D control tasks. Beyond control, we show that LeWM's latent space encodes meaningful physical structure through probing of physical quantities. Surprise evaluation confirms that the model reliably detects physically implausible events.
+# Translation (by gpt-5-nano)
+- Joint Embedding Predictive Architectures（JEPAs）は、コンパクトな潜在空間で世界モデルを学習するための魅力的なフレームワークを提供しますが、既存の手法は脆弱であり、表現崩壊を回避するために複数項の損失、指数移動平均、事前学習済みエンコーダ、または補助的監督に依存するものが多くあります。 本研究では、LeWorldModel（LeWM）を提案します。LeWMは、原始ピクセルから安定してエンドツーエンドで訓練できる最初のJEPAであり、次の埋め込み予測損失と、潜在埋め込みがガウス分布に従うように強制する正則化項という2つの損失項のみを用いて学習します。これにより、唯一の既存のエンドツーエンド代替と比較して、調整可能な損失のハイパーパラメータを6個から1個へと減らすことができます。約1500万パラメータを1つのGPUで数時間で学習可能なLeWMは、ファウンデーションモデルに基づく世界モデルより最大で約48倍速く学習できる一方、2Dおよび3Dの多様な制御タスクにおいて競争力を保ちます。制御を超えて、LeWMの潜在空間が物理量の探索を通じて意味のある物理的構造を符号化していることを示します。Surprise評価は、モデルが物理的に妥当でないイベントを信頼性高く検出できることを確認します。
+# Summary (by gpt-4o-mini)
+- LeWorldModel（LeWM）は、原始ピクセルからエンドツーエンドで訓練できる最初のJoint Embedding Predictive Architecture（JEPA）を提案。従来の手法に比べ、調整可能な損失のハイパーパラメータを6個から1個に減らし、約1500万パラメータを持つLeWMは、ファウンデーションモデルより最大48倍速く学習。2Dおよび3Dの制御タスクで競争力を維持し、潜在空間が物理的構造を符号化していることを示す驚き評価も行われ、物理的に妥当でないイベントを検出する能力を確認。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lucasmaes_/status/2036080584569618741?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Reasoning over mathematical objects: on-policy reward modeling and test time aggregation, Pranjal Aggarwal+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.18886</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4979</repo-issue-link>
+<tags>read-later, Selected Papers/Blogs, Author Thread/Post</tags>
+<repo-issue-date>2026-03-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.18886
+# Authors
+  - Pranjal Aggarwal
+  - Marjan Ghazvininejad
+  - Seungone Kim
+  - Ilia Kulikov
+  - Jack Lanchantin
+  - Xian Li
+  - Tianjian Li
+  - Bo Liu
+  - Graham Neubig
+  - Anaelia Ovalle
+  - Swarnadeep Saha
+  - Sainbayar Sukhbaatar
+  - Sean Welleck
+  - Jason Weston
+  - Chenxi Whitehouse
+  - Adina Williams
+  - Jing Xu
+  - Ping Yu
+  - Weizhe Yuan
+  - Jingyu Zhang
+  - Wenting Zhao
+# Abstract
+  - The ability to precisely derive mathematical objects is a core requirement for downstream STEM applications, including mathematics, physics, and chemistry, where reasoning must culminate in formally structured expressions. Yet, current LM evaluations of mathematical and scientific reasoning rely heavily on simplified answer formats such as numerical values or multiple choice options due to the convenience of automated assessment. In this paper we provide three contributions for improving reasoning over mathematical objects: (i) we build and release training data and benchmarks for deriving mathematical objects, the Principia suite; (ii) we provide training recipes with strong LLM-judges and verifiers, where we show that on-policy judge training boosts performance; (iii) we show how on-policy training can also be used to scale test-time compute via aggregation. We find that strong LMs such as Qwen3-235B and o3 struggle on Principia, while our training recipes can bring significant improvements over different LLM backbones, while simultaneously improving results on existing numerical and MCQA tasks, demonstrating cross-format generalization of reasoning abilities.
+# Translation (by gpt-5-nano)
+- 正確に数学的オブジェクトを導出する能力は、数学、物理学、化学を含む下流のSTEM応用において核となる要件であり、推論は正式に構造化された表現へと結実しなければならない。しかし、現在の数学的・科学的推論の評価は、自動評価の便宜のため、数値や選択肢のような簡略化された回答形式に大きく依存している。本論文では、数学的オブジェクトの推論を改善するための3つの貢献を提供する。 (i) 数学的オブジェクトを導出する訓練データとベンチマーク、Principiaスイーツを構築・公開する。 (ii) 強力なLLMジャッジと検証者を備えた訓練レシピを提供し、オンポリシーのジャッジ訓練が性能を向上させることを示す。 (iii) オンポリシー訓練を用いて集約を介してテスト時の計算量をスケールさせる方法を示す。私たちは、Qwen3-235B および o3 のような強力な言語モデルは Principia では苦戦する一方で、我々の訓練レシピは異なるLLMバックボーンに対して顕著な改善をもたらし、同時に既存の数値およびMCQAタスクの結果も改善することを示しており、推論能力の形式を横断した一般化を示している。
+# Summary (by gpt-4o-mini)
+- 数学的オブジェクトの推論能力はSTEM分野で重要であり、現在の評価は簡略化された形式に依存している。本研究では、(i) 数学的オブジェクトを導出する訓練データとベンチマークを公開、(ii) LLMを用いた性能向上のための訓練レシピを提案、(iii) 計算量をスケールさせるオンポリシー訓練法を示した。強力なLLMが苦戦する中、提案手法は顕著な改善をもたらし、推論能力の一般化を示している。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://facebookresearch.github.io/RAM/blogs/principia/" target="_blank" rel="noopener noreferrer">https://facebookresearch.github.io/RAM/blogs/principia/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2034804911792079264?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2034934734149623894?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>section2に関する著者のポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2036119252214620513?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2040062089725645039?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] PRISM: Demystifying Retention and Interaction in Mid-Training, Bharat Runwal+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.17074</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4940</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, mid-training, read-later, Selected Papers/Blogs, Reference Collection, Author Thread/Post</tags>
+<repo-issue-date>2026-03-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.17074
+# Authors
+  - Bharat Runwal
+  - Ashish Agrawal
+  - Anurag Roy
+  - Rameswar Panda
+# Abstract
+  - We present PRISM, a comprehensive empirical study of mid-training design choices for large language models. Through controlled experiments across seven base models spanning four families (Granite, LLaMA, Mistral, Nemotron-H), two architecture types (dense Transformer and attention-Mamba hybrid), and scales from 3B to 24B parameters, we show that mid-training on approximately 27B high-quality tokens yields consistent gains of +15 to +40 points on math, +5 to +12 points on code, and +6 to +13 points on science benchmarks while preserving general performance. The full PRISM to RL pipeline improves macro-average across six reasoning benchmarks from under 12 to 29-42 (a 3-4x improvement), whereas RL applied directly to most of the base models remains substantially less effective, with AIME scores near zero. Data composition matters most at mid-training, not RL: including science data during mid-training unlocks +17 to +28 point GPQA-Diamond gains during RL, while changing the RL mix produces less than 2 point differences. Mechanistically, mid-training densely restructures over 90% of model weights, while RL makes sparse, front-loaded refinements to approximately 5% of parameters. Representation analysis (CKA) confirms that RL consistently preserves mid-training's representational geometry (over 0.998 CKA) across architectures. Crucially, RL applies identical weight changes regardless of starting point, yet only succeeds on mid-trained models, consistent with mid-training placing the model in a configuration from which RL can effectively improve performance. Our results demonstrate that retention-aware mid-training is highly effective for reliable reasoning enhancement and provide practical guidance for designing robust mid-training pipelines.
+# Translation (by gpt-5-nano)
+- 本研究では、PRISMという大規模言語モデルの中間トレーニング設計選択に関する包括的な実証研究を行います。7つのベースモデル、4つのファミリ（Granite、LLaMA、Mistral、Nemotron-H）、2つのアーキテクチャタイプ（密結合トランスフォーマーとアテンション-Mambaハイブリッド）、および3Bから24Bパラメータ規模を横断する条件で統制実験を行い、中間トレーニングを約270億トークンの高品質データで実施することにより、数学で+15〜+40ポイント、コードで+5〜+12ポイント、科学分野のベンチマークで+6〜+13ポイントの一貫した改善を達成しつつ、一般的な性能を損なわないことを示します。PRISMからRLへのパイプライン全体は、6つの推論ベンチマークにおけるマクロ平均を、12未満から29〜42へと改善し（3〜4倍の改善）、一方で、基盤モデルのほとんどにRLを直接適用しても効果は大幅に劣り、AIMEスコアはほぼゼロに近い状態です。データ構成は中間トレーニング時に最も影響力が大きく、RL時にはそれほどではありません。中間トレーニング中に科学データを含めると、RL中のGPQA-Diamondで+17〜+28ポイントの向上が開き、RLの組み合わせを変更しても差は2ポイント未満です。機構的には、中間トレーニングはモデルの重みの90％超を高密度に再構成するのに対し、RLは約5％のパラメータに対して疎で前方寄りの微調整を行います。表現分析（CKA）は、RLが中間トレーニング時の表現幾何をアーキテクチャを超えて一貫して保持することを確認します（CKA値は0.998を超える水準を常に維持します）。重要なのは、RLが開始点に関係なく同一のウェイト変更を適用するにもかかわらず、成功するのは中間トレーニング済みモデルのみである、という点です。これは、中間トレーニングがRLが性能を効果的に改善できるような構成へとモデルを配置することを示しています。我々の結果は、保持を意識した中間トレーニングが信頼性の高い推論能力の向上に非常に有効であることを示し、堅牢な中間トレーニングパイプラインの設計に向けた実践的な指針を提供します。
+# Summary (by gpt-4o-mini)
+- PRISMの中間トレーニング設計の実証研究を行い、様々なモデルやアーキテクチャで統制実験を実施。約270億トークンのデータを使用し、数学、コード、科学ベンチマークで一貫した性能改善を達成。RLパイプラインは推論ベンチマークのスコアを大幅に向上させるも、基盤モデルへの直接適用では効果が薄い。中間トレーニングがモデル性能を効果的に高めることを示し、信頼性の向上に役立つ中間トレーニングの重要性を強調。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2034547991550300454?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/bharatrunwal2/status/2035366328517980195?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2035555838123778158?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Scalable Training of Mixture-of-Experts Models with Megatron Core, Zijie Yan+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.07685</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4869</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, MoE(Mixture-of-Experts), Selected Papers/Blogs, Reference Collection, Scalability, Author Thread/Post</tags>
+<repo-issue-date>2026-03-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.07685
+# Authors
+  - Zijie Yan
+  - Hongxiao Bai
+  - Xin Yao
+  - Dennis Liu
+  - Tong Liu
+  - Hongbin Liu
+  - Pingtian Li
+  - Evan Wu
+  - Shiqing Fan
+  - Li Tao
+  - Robin Zhang
+  - Yuzhong Wang
+  - Shifang Xu
+  - Jack Chang
+  - Xuwen Chen
+  - Kunlun Li
+  - Yan Bai
+  - Gao Deng
+  - Nan Zheng
+  - Vijay Anand Korthikanti
+  - Abhinav Khattar
+  - Ethan He
+  - Soham Govande
+  - Sangkug Lym
+  - Zhongbo Zhu
+  - Qi Zhang
+  - Haochen Yuan
+  - Xiaowei Ren
+  - Deyu Fu
+  - Tailai Ma
+  - Shunkang Zhang
+  - Jiang Shao
+  - Ray Wang
+  - Vasudevan Rengasamy
+  - Rachit Garg
+  - Santosh Bhavani
+  - Xipeng Li
+  - Chandler Zhou
+  - David Wu
+  - Yingcan Wei
+  - Ashwath Aithal
+  - Michael Andersch
+  - Mohammad Shoeybi
+  - Jiajie Yao
+  - June Yang
+# Abstract
+  - Scaling Mixture-of-Experts (MoE) training introduces systems challenges absent in dense models. Because each token activates only a subset of experts, this sparsity allows total parameters to grow much faster than per-token computation, creating coupled constraints across memory, communication, and computation. Optimizing one dimension often shifts pressure to another, demanding co-design across the full system stack.   We address these challenges for MoE training through integrated optimizations spanning memory (fine-grained recomputation, offloading, etc.), communication (optimized dispatchers, overlapping, etc.), and computation (Grouped GEMM, fusions, CUDA Graphs, etc.). The framework also provides Parallel Folding for flexible multi-dimensional parallelism, low-precision training support for FP8 and NVFP4, and efficient long-context training. On NVIDIA GB300 and GB200, it achieves 1,233/1,048 TFLOPS/GPU for DeepSeek-V3-685B and 974/919 TFLOPS/GPU for Qwen3-235B. As a performant, scalable, and production-ready open-source solution, it has been used across academia and industry for training MoE models ranging from billions to trillions of parameters on clusters scaling up to thousands of GPUs.   This report explains how these techniques work, their trade-offs, and their interactions at the systems level, providing practical guidance for scaling MoE models with Megatron Core.
+# Translation (by gpt-5-nano)
+- Mixture-of-Experts (MoE) の学習をスケールさせることは、全結合モデルには見られないシステム上の課題を生み出します。各トークンは専門家のサブセットのみを活性化するため、このスパース性により総パラメータ数はトークン単位の計算よりもはるかに速く増加し、メモリ・通信・計算の間で結合した制約を生み出します。1つの領域を最適化すると、別の領域への負荷が移動することが多く、システム全体のスタックを横断した共設計が求められます。
+
+MoE 訓練のこれらの課題に対して、メモリ（細粒度の再計算、オフロードなど）、通信（最適化されたディスパッチャ、重ね合わせなど）、計算（Grouped GEMM、フュージョン、CUDA Graphs など）にわたる統合最適化を通じて対処します。このフレームワークはまた、柔軟な多次元並列性のための Parallel Folding、FP8 および NVFP4 の低精度訓練サポート、長い文脈訓練の効率化も提供します。NVIDIA GB300 および GB200 上で、DeepSeek-V3-685B に対して 1,233/1,048 TFLOPS/GPU、Qwen3-235B に対して 974/919 TFLOPS/GPU を達成します。
+
+高性能でスケーラブル、実運用対応のオープンソースソリューションとして、学術界と産業界の双方で、数十億から数兆パラメータの MoE モデルを、数千台のGPUを搭載したクラスター上で訓練する用途で用いられてきました。このレポートは、これらの手法がどのように機能するか、トレードオフ、およびシステムレベルでの相互作用を説明し、Megatron Core を用いた MoE モデルのスケーリングに関する実践的な指針を提供します。
+# Summary (by gpt-4o-mini)
+- MoEモデルのスケーリングには、パラメータの増加によるメモリ、通信、計算の制約が伴う。これを解決するために、メモリの再計算やオフロード、通信の最適化、計算のグループ化などを統合的に最適化するフレームワークを提案。これにより、長い文脈の効率化や低精度訓練サポートも実現。数兆パラメータのMoEモデルを数千台のGPUで訓練可能なオープンソースソリューションとして、実運用向けの指針を提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2031249241566273764?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ethanhe_42/status/2031243197146607954?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qphutu/status/2031265000506142926?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/okoge_kaz/status/2031273273640759674?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] How Well Does Agent Development Reflect Real-World Work?, Zora Zhiruo Wang+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.01203</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4782</repo-issue-link>
+<tags>Analysis, NLP, Dataset, LanguageModel, AIAgents, Evaluation, action_wanted, read-later, Selected Papers/Blogs, KeyPoint Notes, Author Thread/Post</tags>
+<repo-issue-date>2026-03-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.01203
+# Authors
+  - Zora Zhiruo Wang
+  - Sanidhya Vijayvargiya
+  - Aspen Chen
+  - Hanmo Zhang
+  - Venu Arvind Arangarajan
+  - Jett Chen
+  - Valerie Chen
+  - Diyi Yang
+  - Daniel Fried
+  - Graham Neubig
+# Abstract
+  - AI agents are increasingly developed and evaluated on benchmarks relevant to human work, yet it remains unclear how representative these benchmarking efforts are of the labor market as a whole. In this work, we systematically study the relationship between agent development efforts and the distribution of real-world human work by mapping benchmark instances to work domains and skills. We first analyze 43 benchmarks and 72,342 tasks, measuring their alignment with human employment and capital allocation across all 1,016 real-world occupations in the U.S. labor market. We reveal substantial mismatches between agent development that tends to be programming-centric, and the categories in which human labor and economic value are concentrated. Within work areas that agents currently target, we further characterize current agent utility by measuring their autonomy levels, providing practical guidance for agent interaction strategies across work scenarios. Building on these findings, we propose three measurable principles for designing benchmarks that better capture socially important and technically challenging forms of work: coverage, realism, and granular evaluation.
+# Translation (by gpt-5-nano)
+- AIエージェントは人間の労働に関連するベンチマークの上でますます開発・評価されているが、これらのベンチマークが労働市場全体をどれだけ代表しているかは依然として不明である。本研究では、エージェント開発の取り組みと現実世界の人間労働の分布の関係を、ベンチマークの事例を作業領域とスキルへとマッピングすることによって体系的に調査する。まず、43のベンチマークと72,342のタスクを分析し、それらが米国労働市場の全1,016の現実の職業における雇用と資本配分とどの程度整合しているかを測定する。エージェント開発はプログラミング中心になりがちであるのに対し、人間の労働と経済価値が集中するカテゴリとの間に顕著な乖離があることを明らかにする。現在エージェントが対象としている作業領域内で、エージェントの自律性レベルを測定することにより、現時点のエージェント有用性をさらに特徴づけ、作業シナリオ全体におけるエージェントの相互作用戦略に関する実践的な指針を提供する。本知見に基づき、社会的に重要で技術的に難しい形態の労働をより適切に捉えるベンチマーク設計のための、測定可能な3つの原則を提案する。それは、網羅性、現実性、粒度の高い評価である。
+# Summary (by gpt-4o-mini)
+- AIエージェントの開発は、労働市場のベンチマーク上で進められているが、その代表性は不明である。本研究では、43のベンチマークと72,342のタスクを分析し、エージェント開発と米国労働市場の職業との整合性を測定。プログラミング重視の開発と人間労働の価値の乖離を指摘し、エージェントの自律性を評価することで実用的な指針を提供。最後に、社会的に重要な労働を捉えるベンチマーク設計のための3つの原則を提案。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gneubig/status/2028877979527295143?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AI Agentのベンチマークは実際の人間の労働に本当に紐づいたタスクで評価されているのか？という疑問に答えてくれる研究のようで、実際のAI Agentのベンチマークと人間の業務、それらのcapitalをマッピングしたところ、現在のAI Agentのベンチマークは過剰に数学とコーディングドメインに偏っており、実態としての人間の労働や、それらの中でcapitalが集中しているドメインに対するカバレッジが大きく不足していることがわかった。<br><br>ドメインごとに見ると、デジタル化がされていて高付加価値のドメインのいくつか（マネジメントや法務）のベンチマークは少なく、スキルをベースに見るとベンチマークは情報取得やエンジニアリングといった狭いスコープばかりに焦点が当たっていて（これらの人間の労働に占める割合は<7%にすぎない）、多くの他のスキルが無視されている状況とのこと。<br><br>また、エージェントの自律性を細分された尺度で評価するために、どの程度のレベルの複雑さのタスクであればreliableにagentがこなせるかという観点を導入し、タスクの複雑性に関するスケールを導入し比較を可能にした、といった話が元ポストに書かれている。<br><br>現在提供されているベンチマークにおいて、おそらくタスク全体のうちの個別のサブタスクごとに複雑度をラベル付けして、複雑度を軸にサブタスクの成功/失敗をtrajectoryから分析することで、タスクの複雑度を軸に成功率を分析したグラフを見ると、タスクの複雑度に対して基本的にはどのドメイン、スキル、エージェントフレームワーク、バックボーンモデルであれ複雑度な上がれば上がるほど成功率は減少していく傾向にあり、成功率は最終的に20%--0%付近まで低下する。<br><br>最終的に、エージェントの評価ベンチマークにおいては、実際の労働に対するカバレッジ、現実的であること（＝実際のドメインや必要となるスキルを捉えており、実タスク全体を捉えたようなものが必要でFigure4にベンチマークごとのドメインとスキルのカバレッジが可視化されている）、より粒度の細かい評価が必要（タスク全体の成功/失敗でのみ評価すると、タスクのどこまでできていたのか？という重要なシグナルが欠落する）であることが議論されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Dr. Kernel: Reinforcement Learning Done Right for Triton Kernel Generations, Wei Liu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.05885</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4457</repo-issue-link>
+<tags>Multi, NLP, ReinforcementLearning, AIAgents, Test-Time Scaling, PostTraining, LongHorizon, GPUKernel, Environment, Author Thread/Post</tags>
+<repo-issue-date>2026-02-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.05885
+# Authors
+  - Wei Liu
+  - Jiawei Xu
+  - Yingru Li
+  - Longtao Zheng
+  - Tianjian Li
+  - Qian Liu
+  - Junxian He
+# Abstract
+  - High-quality kernel is critical for scalable AI systems, and enabling LLMs to generate such code would advance AI development. However, training LLMs for this task requires sufficient data, a robust environment, and the process is often vulnerable to reward hacking and lazy optimization. In these cases, models may hack training rewards and prioritize trivial correctness over meaningful speedup. In this paper, we systematically study reinforcement learning (RL) for kernel generation. We first design KernelGYM, a robust distributed GPU environment that supports reward hacking check, data collection from multi-turn interactions and long-term RL training. Building on KernelGYM, we investigate effective multi-turn RL methods and identify a biased policy gradient issue caused by self-inclusion in GRPO. To solve this, we propose Turn-level Reinforce-Leave-One-Out (TRLOO) to provide unbiased advantage estimation for multi-turn RL. To alleviate lazy optimization, we incorporate mismatch correction for training stability and introduce Profiling-based Rewards (PR) and Profiling-based Rejection Sampling (PRS) to overcome the issue. The trained model, Dr.Kernel-14B, reaches performance competitive with Claude-4.5-Sonnet in Kernelbench. Finally, we study sequential test-time scaling for Dr.Kernel-14B. On the KernelBench Level-2 subset, 31.6% of the generated kernels achieve at least a 1.2x speedup over the Torch reference, surpassing Claude-4.5-Sonnet (26.7%) and GPT-5 (28.6%). When selecting the best candidate across all turns, this 1.2x speedup rate further increases to 47.8%. All resources, including environment, training code, models, and dataset, are included in https://www.github.com/hkust-nlp/KernelGYM.
+# Translation (by gpt-4o-mini)
+- 高品質のカーネルはスケーラブルなAIシステムにとって重要であり、LLMがこのようなコードを生成できるようになることはAIの発展を進めることになります。しかし、このタスクのためにLLMを訓練するには十分なデータ、堅牢な環境が必要であり、プロセスは報酬ハッキングや怠惰な最適化に脆弱であることが多いです。このような場合、モデルは訓練報酬をハックし、意味のあるスピードアップよりも些細な正確性を優先する可能性があります。本論文では、カーネル生成のための強化学習（RL）を体系的に研究します。最初に、報酬ハッキングのチェック、マルチターンインタラクションからのデータ収集、長期的なRL訓練をサポートする堅牢な分散GPU環境であるKernelGYMを設計します。KernelGYMを基に、効果的なマルチターンRL手法を調査し、GRPOにおける自己包含によって引き起こされる偏ったポリシー勾配の問題を特定します。これを解決するために、マルチターンRLに対して偏りのないアドバンテージ推定を提供するためにTurn-level Reinforce-Leave-One-Out（TRLOO）を提案します。怠惰な最適化を緩和するために、訓練の安定性のためにミスマッチ補正を取り入れ、問題を克服するためにプロファイリングに基づく報酬（PR）およびプロファイリングに基づく拒絶サンプリング（PRS）を導入します。訓練されたモデルであるDr.Kernel-14Bは、KernelbenchにおいてClaude-4.5-Sonnetに匹敵する性能を達成します。最後に、Dr.Kernel-14Bの逐次テスト時間のスケーリングを研究します。KernelBench Level-2サブセットでは、生成されたカーネルの31.6%がTorch参照に対して少なくとも1.2倍のスピードアップを達成し、Claude-4.5-Sonnet（26.7%）およびGPT-5（28.6%）を上回ります。全ターンで最良の候補を選択した場合、この1.2倍のスピードアップ率はさらに47.8%に増加します。環境、訓練コード、モデル、データセットを含むすべてのリソースは、https://www.github.com/hkust-nlp/KernelGYM に含まれています。
+# Summary (by gpt-4o-mini)
+- 高品質のカーネル生成はスケーラブルなAIシステムの鍵であり、そのためのLLM訓練には十分なデータと堅牢な環境が必要です。本研究では、KernelGYMを設計し、報酬ハッキングを防ぐマルチターンRL手法を検討します。TRLOOを提案し、偏ったポリシー勾配問題を解決。訓練されたDr.Kernel-14Bは高性能を達成し、生成されたカーネルの31.6%がTorch参照に対して1.2倍のスピードアップを実現しました。全リソースはGitHubで公開されています。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/WeiLiu99/status/2019629573194019282?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Impatient Users Confuse AI Agents: High-fidelity Simulations of Human   Traits for Testing Agents, Muyu He+, ACL'26, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.04491</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3154</repo-issue-link>
+<tags>NLP, UserModeling, Dataset, LanguageModel, UserBased, AIAgents, Evaluation, ACL, read-later, Selected Papers/Blogs, One-Line Notes, Author Thread/Post</tags>
+<repo-issue-date>2025-10-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.04491
+# Authors
+  - Muyu He
+  - Anand Kumar
+  - Tsach Mackey
+  - Meghana Rajeev
+  - James Zou
+  - Nazneen Rajani
+# Abstract
+  - Despite rapid progress in building conversational AI agents, robustness is still largely untested. Small shifts in user behavior, such as being more impatient, incoherent, or skeptical, can cause sharp drops in agent performance, revealing how brittle current AI agents are. Today's benchmarks fail to capture this fragility: agents may perform well under standard evaluations but degrade spectacularly in more realistic and varied settings. We address this robustness testing gap by introducing TraitBasis, a lightweight, model-agnostic method for systematically stress testing AI agents. TraitBasis learns directions in activation space corresponding to steerable user traits (e.g., impatience or incoherence), which can be controlled, scaled, composed, and applied at inference time without any fine-tuning or extra data. Using TraitBasis, we extend $\tau$-Bench to $\tau$-Trait, where user behaviors are altered via controlled trait vectors. We observe on average a 2%-30% performance degradation on $\tau$-Trait across frontier models, highlighting the lack of robustness of current AI agents to variations in user behavior. Together, these results highlight both the critical role of robustness testing and the promise of TraitBasis as a simple, data-efficient, and compositional tool. By powering simulation-driven stress tests and training loops, TraitBasis opens the door to building AI agents that remain reliable in the unpredictable dynamics of real-world human interactions. We have open-sourced $\tau$-Trai across four domains: airline, retail, telecom, and telehealth, so the community can systematically QA their agents under realistic, behaviorally diverse intents and trait scenarios: https://github.com/collinear-ai/tau-trait.
+# Translation (by gpt-4o-mini)
+- 急速に進展している会話型AIエージェントの構築にもかかわらず、堅牢性は依然として十分にテストされていません。ユーザーの行動における小さな変化、例えば、よりせっかちであったり、一貫性がなかったり、懐疑的であったりすることが、エージェントのパフォーマンスに急激な低下を引き起こし、現在のAIエージェントの脆弱性を明らかにします。今日のベンチマークはこの脆弱性を捉えることができません。エージェントは標準的な評価では良好なパフォーマンスを示すかもしれませんが、より現実的で多様な設定では劇的に劣化します。この堅牢性テストのギャップに対処するために、TraitBasisを導入します。これは、AIエージェントを体系的にストレステストするための軽量でモデルに依存しない手法です。TraitBasisは、制御可能なユーザー特性（例：せっかちさや一貫性のなさ）に対応する活性化空間内の方向を学習し、微調整や追加データなしで推論時に制御、スケーリング、合成、適用することができます。TraitBasisを使用して、ユーザーの行動が制御された特性ベクトルを介して変更される$\tau$-Benchを$\tau$-Traitに拡張します。最前線のモデル全体で$\tau$-Traitにおいて平均2%-30%のパフォーマンス低下を観察し、現在のAIエージェントがユーザー行動の変動に対して堅牢性を欠いていることを強調しています。これらの結果は、堅牢性テストの重要な役割と、TraitBasisがシンプルでデータ効率が高く、構成可能なツールとしての可能性を示しています。TraitBasisは、シミュレーション駆動のストレステストやトレーニングループを強化することで、現実の人間の相互作用の予測不可能なダイナミクスにおいても信頼性を保つAIエージェントの構築への道を開きます。私たちは、航空、リテール、通信、テレヘルスの4つのドメインで$\tau$-Traitをオープンソース化しましたので、コミュニティは現実的で行動的に多様な意図と特性シナリオの下でエージェントを体系的にQAすることができます：https://github.com/collinear-ai/tau-trait。
+# Summary (by gpt-4o-mini)
+- TraitBasisを用いて、会話型AIエージェントの堅牢性を体系的にテストする手法を提案。ユーザーの特性（せっかちさや一貫性のなさ）を制御し、AIエージェントのパフォーマンス低下を観察。最前線のモデルで2%-30%の性能低下を確認し、現在のAIエージェントの脆弱性を示す。TraitBasisはシンプルでデータ効率が高く、現実の人間の相互作用における信頼性向上に寄与する。$\tau$-Traitをオープンソース化し、コミュニティが多様なシナリオでエージェントを評価できるようにした。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hemuyu0327/status/1975398313735389254?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>実際の人間にあるような癖（のような摂動）を与えた時にどれだけロバストかというのは実応用上非常に重要な観点だと思われる。元ポストを見ると、LLM内部のmatmulを直接操作することで、任意のレベルの人間の特性（e.g.,疑い深い、混乱、焦りなど）を模倣する模様。</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

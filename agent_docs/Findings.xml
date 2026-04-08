@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-02-11">
+<paper-list last-updated="2026-04-07">
+<paper-entry>
+<title>[Paper Note] TARo: Token-level Adaptive Routing for LLM Test-time Alignment, Arushi Rai+, ACL'26 Findings, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.18411</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5141</repo-issue-link>
+<tags>LanguageModel, Alignment, ACL, Decoding, Findings, Routing, KeyPoint Notes, Author Thread/Post, Test-time Alignment</tags>
+<repo-issue-date>2026-04-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.18411
+# Authors
+  - Arushi Rai
+  - Qiang Zhang
+  - Hanqing Zeng
+  - Yunkai Zhang
+  - Dipesh Tamboli
+  - Xiangjun Fan
+  - Zhuokai Zhao
+  - Lizhu Zhang
+# Abstract
+  - Large language models (LLMs) exhibit strong reasoning capabilities but typically require expensive post-training to reach high performance. Recent test-time alignment methods offer a lightweight alternative, but have been explored mainly for preference alignment rather than reasoning. To bridge this gap, we propose, Token-level Adaptive Routing (TARo), which steers frozen LLMs toward structured reasoning entirely at inference time. Specifically, we first train reward models on step-wise mathematical traces to capture fine-grained logical consistency signals, then introduce a learnable token-level router that automatically controls the guidance of the reward model to the base model. Extensive experiments show that TARo significantly improves reasoning performance by up to +22.4% over base model and +8.4% over existing token-level test-time alignment methods, while also boosting out-of-distribution clinical reasoning (MedXpertQA) and instruction following (AlpacaEval). Furthermore, TARo also generalizes from small to large backbones without retraining, extending test-time alignment from preference optimization to robust, cross-domain reasoning.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）は強力な推論能力を示す一方で、通常は高コストの追加トレーニングを要する。最近の推論時アライメント手法は軽量な代替手段を提供するが、これまでの研究は主に嗜好性の整合に焦点を当てており、推論そのものの改善には十分には適用されていない。このギャップを埋めるべく、推論時のみでパラメータを固定したLLMsを構造化推論へと誘導するトークンレベル適応ルーティング（TARo）を提案する。具体的には、段階的な数学的推論の痕跡から細粒度の論理的一貫性信号を捉える報酬モデルを訓練し、次に学習可能なトークンレベルのルーターを導入して報酬モデルのガイダンスを基盤モデルへ自動的に制御する。広範な実験により、TARoは基盤モデルに対して最大で+22.4%、既存のトークンレベルの推論時アライメント手法に対して最大で+8.4%の推論性能向上を示し、さらに分布外の臨床推論（MedXpertQA）および指示遵守（AlpacaEval）を高めることが分かった。さらに、TARoは小規模なバックボーンから大規模なバックボーンへの再訓練なしでの一般化が可能であり、テスト時のアライメントを嗜好性最適化から堅牢でクロスドメインな推論へ拡張する。
+# Summary (by gpt-4o-mini)
+- 推論時に固定されたLLMsを用いて、トークンレベル適応ルーティング（TARo）を提案。報酬モデルにより数学的推論の一貫性信号を捉え、ルーターが基盤モデルを自動制御。TARoは推論性能を最大+22.4%向上させ、分布外の臨床推論や指示遵守を改善。再訓練なしでの一般化も可能で、堅牢な推論を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhuokaiz/status/2041187658508980472?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>巨大なベースモデル全体を特定ドメインに適用するためにpost-trainingするのは大変なので、代わりに小規模なdomain-expertなRewardモデルを学習し（今回は数学のstep-wiseにlogicが正しいことをpreferenceとして与えるような学習方法を採用したようである; 3.2節）、各decoding step tにおいて、ベースモデルとRewardモデルのトークンのlogitを線形補完することで、出力トークンをガイドする。logitの線形補完において、固定されたスカラー値（e.g., 0.5など。GenARMという手法らしい）を用いる研究などが先行研究ではあるが、これはベースモデルの特定タスクにおいてベースモデルの性能を劣化させるので、本研究ではdecoding step t時点で出力されたベースモデル、Rewardモデルのlogitを入力として、FFNによって線形補完の重みα_tをdecoding step tごとに決定する（α_tを決定するネットワークをRouterと呼ぶ）。FFNは2種類のvariantがあり、双方のlogitをconcatしたものを入力するものと、top-kをサンプリングし、kごとにindexに基づいたembeddingをconcatして入力する方法の二種類がある（3.3節）。<br><img src="https://github.com/user-attachments/assets/e732aa1c-0cbb-428d-ab2a-d9a9fd8700e6" /" alt="image" loading="lazy" width="550" height="400"/><br><br>結果としては、GenARMと比較して提案手法は有効ではあるが、ベースモデルとrewardモデルの組み合わせによっては、baseモデルよりも性能が悪化するということもありそうに見える。<br><img src="https://github.com/user-attachments/assets/6f60eca2-62d6-473d-99c0-5c990eb3c713" /" alt="image" loading="lazy" width="550" height="400"/><br><br>またRouterはベースモデルのサイズを大きくしても、性能が転移するので再学習が不要である。<br><img src="https://github.com/user-attachments/assets/542817d8-1180-402a-ba2c-9231f3de1a9d" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] CARMO: Dynamic Criteria Generation for Context-Aware Reward Modelling, Taneesh Gupta+, ACL'25 Findings, 2024.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2410.21545</original-paper-blog-link>
