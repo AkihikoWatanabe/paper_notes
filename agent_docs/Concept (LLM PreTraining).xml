@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2025-02-14">
+<paper-list last-updated="2026-01-30">
+<paper-entry>
+<title>[Paper Note] ConceptMoE: Adaptive Token-to-Concept Compression for Implicit Compute Allocation, Zihao Huang+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.21420</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4348</repo-issue-link>
+<tags>NLP, LanguageModel, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, LatentReasoning, Initial Impression Notes, Concept (LLM PreTraining), Author Thread/Post</tags>
+<repo-issue-date>2026-01-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.21420
+# Authors
+  - Zihao Huang
+  - Jundong Zhou
+  - Xingwei Qu
+  - Qiyang Min
+  - Ge Zhang
+# Abstract
+  - Large language models allocate uniform computation across all tokens, ignoring that some sequences are trivially predictable while others require deep reasoning. We introduce ConceptMoE, which dynamically merges semantically similar tokens into concept representations, performing implicit token-level compute allocation. A learnable chunk module identifies optimal boundaries by measuring inter-token similarity, compressing sequences by a target ratio $R$ before they enter the compute-intensive concept model. Crucially, the MoE architecture enables controlled evaluation: we reallocate saved computation to match baseline activated FLOPs (excluding attention map computation) and total parameters, isolating genuine architectural benefits. Under these conditions, ConceptMoE consistently outperforms standard MoE across language and vision-language tasks, achieving +0.9 points on language pretraining, +2.3 points on long context understanding, and +0.6 points on multimodal benchmarks. When converting pretrained MoE during continual training with layer looping, gains reach +5.5 points, demonstrating practical applicability. Beyond performance, ConceptMoE reduces attention computation by up to $R^2\times$ and KV cache by $R\times$. At $R=2$, empirical measurements show prefill speedups reaching 175\% and decoding speedups up to 117\% on long sequences. The minimal architectural modifications enable straightforward integration into existing MoE, demonstrating that adaptive concept-level processing fundamentally improves both effectiveness and efficiency of large language models.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルはすべてのトークンに均等に計算リソースを割り当てており、いくつかのシーケンスは明白に予測可能である一方、他は深い推論を必要とすることを無視しています。私たちは、ConceptMoEを紹介します。これは、意味的に類似したトークンを動的に統合して概念表現を作成し、暗黙のトークンレベルでの計算割り当てを行います。学習可能なチャンクモジュールは、トークン間の類似性を測定することで最適な境界を特定し、計算集約型の概念モデルに入る前にシーケンスを目標比率$R$で圧縮します。重要なことに、MoEアーキテクチャは制御された評価を可能にします：保存された計算リソースをもとのアクティブFLOP（アテンションマップ計算を除く）および総パラメータに一致させることで、真のアーキテクチャの利点を分離します。これらの条件下で、ConceptMoEは言語および視覚言語タスクにおいて標準MoEを一貫して上回り、言語の事前学習で+0.9ポイント、長いコンテキスト理解で+2.3ポイント、マルチモーダルベンチマークで+0.6ポイントを達成しました。プレトレーニングされたMoEを継続的なトレーニング中にレイヤーループを使用して変換する際には、+5.5ポイントの増加が見られ、実用的な適用性を示しました。性能だけでなく、ConceptMoEはアテンション計算を最大で$R^2\times$、KVキャッシュを$R\times$削減します。$R=2$の条件下で、経験的な測定により、プレフィル速度が175\%、長いシーケンスでのデコーディング速度が117\%向上することが示されました。最小限のアーキテクチャの変更により、既存のMoEへの簡単な統合が可能となり、適応的な概念レベルの処理が大規模言語モデルの効果と効率の両方を根本的に改善することを示しています。
+# Summary (by gpt-4o-mini)
+- ConceptMoEは、トークン間の類似性を利用して計算リソースを動的に割り当てる新しい手法です。これにより、概念表現を生成し、計算集約モデルへのシーケンス圧縮を行います。評価において、ConceptMoEは標準的なMoEを上回り、言語や視覚言語タスクでの性能向上を示しました。特に、計算の効率も大幅に改善され、アーキテクチャの改変なしに既存のMoEに統合可能です。</issue-body>
+<maintainer-comment-text><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gezhang86038849/status/2017110635645968542?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>論文タイトルにMoEというワードが入っているが、実際にMoEアーキテクチャを採用しているわけではない点に注意。アーキテクチャはいわゆるLarge Concept Model (エンコーダー→チャンク生成→コンセプトモデル→デチャンキング→デコーダー）であり、チャンクの境界がトークン間のlearnableなモジュールによって学習・決定されるため、トークンレベルで見たときに適応的にトークンをチャンク化することでコンセプトが定義され、かつトークン単位の計算資源の配分がチャンク化を（learnableに）通じて行われるという話に見える。<br><br>斜め読みしかできていないが、アーキテクチャそのものの貢献よりも、本研究の貢献として大きい部分はMoEモデルを用いた同じパラメータ/FLOPsでの異なるアーキテクチャ間のfair comparisonを通じてconcept modelの性能が高いことを示したことや、既存のMoEモデルを軽量なモジュールの追加（チャンクモジュール+デチャンクモジュール+追加のゼロで初期化されたQKV attention)し継続事前学習をすることでretrofittingすることでも性能が向上すること、計算効率がチャンクによってトークンが圧縮されるため、fair comparisonの上で高い性能を達成しながら、圧縮率Rに応じて向上することを示ししたこと、などにあるように見受けられる。<br><br>が、ただの斜め読みした感想でしかないので読みたい。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4125" target="_blank" rel="noopener noreferrer">[Paper Note] Dynamic Large Concept Models: Latent Reasoning in an Adaptive Semantic Space, Xingwei Qu+, arXiv'25, 2025.12</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] LLM Pretraining with Continuous Concepts, Jihoon Tack+, arXiv'25, 2025.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.08524</original-paper-blog-link>
