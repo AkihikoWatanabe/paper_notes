@@ -159,7 +159,7 @@
 <title>[Paper Note] Flash-KMeans: Fast and Memory-Efficient Exact K-Means, Shuo Yang+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.09229</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4890</repo-issue-link>
-<tags>EfficiencyImprovement, MachineLearning, action_wanted, read-later, Selected Papers/Blogs, Clustering-based</tags>
+<tags>EfficiencyImprovement, MachineLearning, action_wanted, read-later, Selected Papers/Blogs, Clustering-based, Author Thread-Post</tags>
 <repo-issue-date>2026-03-14</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2603.09229
@@ -180,9 +180,9 @@
 # Abstract
   - $k$-means has historically been positioned primarily as an offline processing primitive, typically used for dataset organization or embedding preprocessing rather than as a first-class component in online systems. In this work, we revisit this classical algorithm under the lens of modern AI system design and enable $k$-means as an online primitive. We point out that existing GPU implementations of $k$-means remain fundamentally bottlenecked by low-level system constraints rather than theoretical algorithmic complexity. Specifically, the assignment stage suffers from a severe IO bottleneck due to the massive explicit materialization of the $N \times K$ distance matrix in High Bandwidth Memory (HBM). Simultaneously, the centroid update stage is heavily penalized by hardware-level atomic write contention caused by irregular, scatter-style token aggregations. To bridge this performance gap, we propose flash-kmeans, an IO-aware and contention-free $k$-means implementation for modern GPU workloads. Flash-kmeans introduces two core kernel-level innovations: (1) FlashAssign, which fuses distance computation with an online argmin to completely bypass intermediate memory materialization; (2) sort-inverse update, which explicitly constructs an inverse mapping to transform high-contention atomic scatters into high-bandwidth, segment-level localized reductions. Furthermore, we integrate algorithm-system co-designs, including chunked-stream overlap and cache-aware compile heuristics, to ensure practical deployability. Extensive evaluations on NVIDIA H200 GPUs demonstrate that flash-kmeans achieves up to 17.9$\times$ end-to-end speedup over best baselines, while outperforming industry-standard libraries like cuML and FAISS by 33$\times$ and over 200$\times$, respectively.
 # Translation (by gpt-5-nano)
-- k-means は歴史的に主にオフライン処理のプリミティブとして位置づけられており、通常はデータセットの整理や埋め込み前処理に用いられるにとどまり、オンラインシステムの第一級コンポーネントとして扱われてきたわけではない。本研究では、この古典的アルゴリズムを現代のAIシステム設計の視点から再検討し、k-means をオンラインプリミティブとして有効化する。既存の k-means の GPU 実装は、理論的アルゴリズムの複雑さよりも低レベルのシステム制約によって根本的にボトルネックが生じている点を指摘する。具体的には、割り当て段階が、N×K の距離行列を High Bandwidth Memory (HBM) に大量に明示的に材料化することによる深刻な IO ボトルネックに苦しむ。同時に、セントロイド更新段階は、不規則なスキャッター状のトークン集約が原因のハードウェアレベルの原子書き競合により過度にペナルティを受ける。これらの性能ギャップを埋めるために、現代の GPU ワークロード向けの IO 応答性が高く競合のない k-means 実装である flash-kmeans を提案する。Flash-kmeans は、2 つのコアカーネルレベルの革新を導入する：（1）FlashAssign は距離計算をオンラインの argmin と結合して中間メモリの材料化を完全に回避する；（2）sort-inverse update は明示的に逆写像を構築して高競合の原子スキャッタを高帯域幅・セグメントレベルの局所化された還元へと変換する。さらに、実用的な展開性を保証するために、チャンクドストリームのオーバーラップやキャッシュ意識のコンパイルヒューリスティクスを含むアルゴリズムとシステムの共設計を統合する。NVIDIA H200 GPU 上での広範な評価により、flash-kmeans はエンドツーエンドで最大 17.9 倍の速度向上を達成し、cuML および FAISS のような業界標準ライブラリをそれぞれ 33 倍および 200 倍以上上回ることを示した。
+- $k$-meansは歴史的にオフライン処理のプリミティブとして位置づけられ、通常はデータセットの整理や埋め込み前処理に用いられるもので、オンラインシステムの第一級コンポーネントとしては扱われていないことが多い。本研究では、現代のAIシステム設計の視点からこの古典的アルゴリズムを再検討し、$k$-meansをオンラインプリミティブとして有効にする。既存のGPU実装の$k$-meansは、理論的アルゴリズムの複雑さではなく低レベルのシステム制約によって本質的にボトルネックになっていることを指摘する。具体的には、割り当てステージはHigh Bandwidth Memory (HBM) における$N \times K$距離行列の巨大な明示的材料化によって深刻なIOボトルネックに苦しんでいる。同時に、セントロイド更新ステージは、不規則でスキャッター型のトークン集約によって生じるハードウェアレベルの原子書き込み競合の影響を強く受けている。 このパフォーマンスギャップを埋めるべく、現代のGPUワークロード向けのIOを意識し、競合のない$k$-means実装であるFlash-kmeansを提案する。Flash-kmeansは、2つのコアとなるカーネルレベルの革新を導入する：1) FlashAssignは距離計算とオンラインのargminを統合して中間メモリの材料化を完全に回避する；2) sort-inverse updateは逆写像を明示的に構築して高い競合性を伴う原子散布を高帯域幅・セグメントレベルの局所的な還元へと変換する。さらに、実用性を確保するために、チャンクドストリームのオーバーラップやキャッシュ対応のコンパイルヒューリスティクスを含む、アルゴリズムとシステムの協調設計を統合する。NVIDIA H200 GPUs上での広範な評価により、Flash-kmeansは最良のベースラインを最大で17.9×のエンドツーエンドのスピードアップで上回り、cuMLやFAISSといった業界標準ライブラリを、それぞれ33×および200×超の差で上回ることを示している。
 # Summary (by gpt-4o-mini)
-- k-meansアルゴリズムをオンライン処理に最適化し、古典的な実装のボトルネックを解消するためにflash-kmeansを提案。これにより、距離計算と中間メモリの材料化を回避し、低競合な更新手法を導入。広範な評価において、従来の手法より最大17.9倍の速度向上を達成。</issue-body>
+- 本研究では、$k$-meansアルゴリズムをオンライン処理に適用するために再設計し、既存のGPU実装におけるボトルネックを解消するFlash-kmeansを提案する。この実装は、距離計算とargminを統合し中間メモリの使用を回避、またセントロイド更新の競合を低減する2つの革新を導入。評価結果では、Flash-kmeansが既存のベースラインを最大17.9倍上回り、業界標準ライブラリに対しても大幅なスピードアップを実現した。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
@@ -2147,7 +2147,7 @@ https://openreview.net/forum?id=nbMeRvNb7A
 <title>[Paper Note] Better Together: Leveraging Unpaired Multimodal Data for Stronger  Unimodal Models, Sharut Gupta+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.08492</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3213</repo-issue-link>
-<tags>Pretraining, MachineLearning, MultiModal, UMM, One-Line Notes</tags>
+<tags>Pretraining, MachineLearning, MultiModal, UMM, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-10-10</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.08492
@@ -2480,7 +2480,7 @@ https://github.com/VsonicV/es-fine-tuning-paper。
 <title>[Paper Note] Selective Underfitting in Diffusion Models, Kiwhan Song+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.01378</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3107</repo-issue-link>
-<tags>Analysis, MachineLearning, DiffusionModel, Memorization, Generalization</tags>
+<tags>Analysis, MachineLearning, DiffusionModel, Memorization, Generalization, Author Thread-Post</tags>
 <repo-issue-date>2025-10-04</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.01378
@@ -3087,7 +3087,7 @@ https://github.com/VsonicV/es-fine-tuning-paper。
 <title>[Paper Note] What Matters in Learning from Large-Scale Datasets for Robot   Manipulation, Vaibhav Saxena+, ICLR'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.13536</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2257</repo-issue-link>
-<tags>Analysis, MachineLearning, Dataset, ICLR, Robotics, EmbodiedAI</tags>
+<tags>Analysis, MachineLearning, Dataset, ICLR, Robotics, EmbodiedAI, Author Thread-Post</tags>
 <repo-issue-date>2025-07-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.13536
@@ -3474,7 +3474,7 @@ https://github.com/VsonicV/es-fine-tuning-paper。
 <title>[Paper Note] Resa: Transparent Reasoning Models via SAEs, Shangshang Wang+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.09967</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2035</repo-issue-link>
-<tags>EfficiencyImprovement, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), PostTraining, read-later</tags>
+<tags>EfficiencyImprovement, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), PostTraining, read-later, Author Thread-Post</tags>
 <repo-issue-date>2025-06-13</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.09967
@@ -3796,7 +3796,7 @@ https://github.com/VsonicV/es-fine-tuning-paper。
 <title>[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2503.14476</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1815</repo-issue-link>
-<tags>MachineLearning, LanguageModel, ReinforcementLearning, translation_required, Reasoning, LongSequence, NeurIPS, GRPO, read-later, Selected Papers/Blogs, One-Line Notes, Reference Collection, Author Thread/Post</tags>
+<tags>MachineLearning, LanguageModel, ReinforcementLearning, translation_required, Reasoning, LongSequence, NeurIPS, GRPO, read-later, Selected Papers/Blogs, One-Line Notes, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2025-03-20</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2503.14476
@@ -5325,7 +5325,7 @@ APEエンジニアリングされたプロンプトは、モデルを真実性�
 <title>[Paper Note] Prompt2Model: Generating Deployable Models from Natural Language Instructions, Vijay Viswanathan+, arXiv'23, 2023.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2308.12261</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1024</repo-issue-link>
-<tags>MachineLearning, NLP, LanguageModel, DataAugmentation, Supervised-FineTuning (SFT), AIAgents, SyntheticData, action_wanted, EMNLP, PostTraining, Selected Papers/Blogs, System Demonstration, KeyPoint Notes</tags>
+<tags>MachineLearning, NLP, LanguageModel, DataAugmentation, Supervised-FineTuning (SFT), AIAgents, SyntheticData, action_wanted, EMNLP, PostTraining, Selected Papers/Blogs, System Demonstration, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2023-08-28</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2308.12261
@@ -5338,9 +5338,9 @@ APEエンジニアリングされたプロンプトは、モデルを真実性�
 # Abstract
   - Large language models (LLMs) enable system builders today to create competent NLP systems through prompting, where they only need to describe the task in natural language and provide a few examples. However, in other ways, LLMs are a step backward from traditional special-purpose NLP models; they require extensive computational resources for deployment and can be gated behind APIs. In this paper, we propose Prompt2Model, a general-purpose method that takes a natural language task description like the prompts provided to LLMs, and uses it to train a special-purpose model that is conducive to deployment. This is done through a multi-step process of retrieval of existing datasets and pretrained models, dataset generation using LLMs, and supervised fine-tuning on these retrieved and generated datasets. Over three tasks, we demonstrate that given the same few-shot prompt as input, Prompt2Model trains models that outperform the results of a strong LLM, gpt-3.5-turbo, by an average of 20% while being up to 700 times smaller. We also show that this data can be used to obtain reliable performance estimates of model performance, enabling model developers to assess model reliability before deployment. Prompt2Model is available open-source at https://github.com/neulab/prompt2model.
 # Translation (by gpt-5-nano)
-- 大規模言語モデル（LLMs）は、現在、プロンプティングを通じて、自然言語でタスクを説明し、いくつかの例を提供するだけで、有能なNLPシステムを構築できるようにしています。しかし、他の点では、LLMsは従来の特定用途NLPモデルから一歩後退しており、展開には広範な計算資源を必要とし、API経由で提供される場合があるためです。本論文では、Prompt2Modelという汎用的な手法を提案します。これは、LLMsに提供されるプロンプトと同様の自然言語のタスク記述を取り、それを用いて展開に適した特定用途モデルを訓練するものです。これは、既存データセットと事前学習済みモデルの取得、LLMsを用いたデータセット生成、そしてこれらの取得済み・生成データセット上での教師ありファインチューニングという、複数段階のプロセスによって実現します。3つのタスクにおいて、同じ少数ショットのプロンプトを入力として与えた場合、Prompt2Modelは強力なLLMであるgpt-3.5-turboの結果を平均約20％上回るモデルを、最大で700倍小さいサイズで訓練できることを示します。さらに、このデータを用いてモデルの性能を信頼性の高い推定として得ることができ、デプロイ前にモデル開発者がモデルの信頼性を評価できるようにします。Prompt2Modelはオープンソースとして https://github.com/neulab/prompt2model で入手可能です。
+- 大規模言語モデル（LLM）は、現在、システム構築者がプロンプトを用いて有能なNLPシステムを作成することを可能にしている。彼らはタスクを自然言語で説明し、いくつかの例を提供するだけでよい。しかし、他の点では、LLMは従来の特定用途向けNLPモデルから後退している。展開には莫大な計算資源を必要とし、APIを介して提供されることが多く、直接利用が制限されることもある。本論文では、Prompt2Modelを提案する。これは、LLMに提供されるプロンプトのような自然言語タスク説明を取り、それを用いて展開に適した特定用途モデルを訓練する汎用的な方法である。これは、既存データセットと事前学習済みモデルの検索、LLMを用いたデータセット生成、そして取得・生成したデータセットに対する教師あり微調整という、複数の段階からなるプロセスによって実現される。3つのタスクにおいて、同じ少数ショットのプロンプトを入力として与えた場合、Prompt2Modelは強力なLLMであるgpt-3.5-turboの結果を平均約20%上回り、最大で700倍小さくなる。さらに、このデータを用いてモデルの性能推定を信頼性高く得ることができ、デプロイ前にモデルの信頼性を評価できる。Prompt2Modelはオープンソースとして https://github.com/neulab/prompt2model で入手可能である。
 # Summary (by gpt-4o-mini)
-- Prompt2Modelは、LLMsのプロンプトを用いて特定用途モデルを訓練する手法で、従来のNLPモデルに比べて計算資源を大幅に削減可能。既存データセットやデータ生成を利用し、3つのタスクでgpt-3.5-turboを約20％上回る性能を示す小型モデルが実現。信頼性の高い性能推定を提供し、モデル開発者が展開前に評価できる。オープンソースで提供中。</issue-body>
+- Prompt2Modelは、LLMによるプロンプトを用いて特定用途モデルを訓練する方法を提案。既存データセットの検索とLLMを使ったデータ生成により、強力なモデルを得られる。提示したプロンプトで、gpt-3.5-turboの結果を約20%上回り、最大700倍小型化できる。モデルの性能を信頼性高く推定可能で、オープンソースとして公開。</issue-body>
 <maintainer-comment-text><p>Dataset Generatorによって、アノテーションが存在しないデータについても擬似ラベル付きデータを生成することができ、かつそれを既存のラベル付きデータと組み合わせることによってさらに性能が向上することが報告されている。これができるのはとても素晴らしい。</p><p>Dataset Generatorについては、データを作成する際に低コストで、高品質で、多様なデータとするためにいくつかの工夫を実施している。<br>1. ユーザが与えたデモンストレーションだけでなく、システムが生成したexampleもサンプリングして活用することで、生成されるexampleの多様性を向上させる。実際、これをやらない場合は120/200がduplicate exampleであったが、これが25/200まで減少した。<br>2. 生成したサンプルの数に比例して、temperatureを徐々に高くしていく。これにより、サンプルの質を担保しつつ、多様性を徐々に増加させることができる。Temperature Annealingと呼ぶ。<br>3. self-consistencyを用いて、擬似ラベルの質を高める。もしmajority votingが互角の場合は、回答が短いものを採用した（これはヒューリスティックに基づいている）<br>4. zeno buildを用いてAPIへのリクエストを並列化することで高速に実験を実施<br><br>非常に参考になる。</p><p>著者らによる現在の視点での振り返り（提案当時はAI Agentsという概念はまだなく、本研究はその先取りと言える）:
 
 {% raw %}
@@ -7668,7 +7668,7 @@ Jimmy Lei Ba, Jamie Ryan Kiros, Geoffrey E. Hinton
 <title>Introducing the WeirdML Benchmark,  Håvard Tveit Ihle, 2025.01</title>
 <original-paper-blog-link>https://www.lesswrong.com/posts/LfQCzph7rc2vxpweS/introducing-the-weirdml-benchmarkLL</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3837</repo-issue-link>
-<tags>MachineLearning, NLP, LanguageModel, Evaluation, Blog</tags>
+<tags>MachineLearning, NLP, LanguageModel, Evaluation, Blog, Initial Impression Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-11-29</repo-issue-date>
 <issue-body>https://www.lesswrong.com/posts/LfQCzph7rc2vxpweS/introducing-the-weirdml-benchmarkLL</issue-body>
 <maintainer-comment-text><p>著者ポスト:
