@@ -4,7 +4,7 @@
 <title>[Paper Note] ConceptMoE: Adaptive Token-to-Concept Compression for Implicit Compute Allocation, Zihao Huang+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.21420</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4348</repo-issue-link>
-<tags>NLP, LanguageModel, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, LatentReasoning, Initial Impression Notes, Concept (LLM PreTraining), Author Thread/Post</tags>
+<tags>NLP, LanguageModel, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, LatentReasoning, Initial Impression Notes, Concept (LLM PreTraining), Author Thread-Post</tags>
 <repo-issue-date>2026-01-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.21420
@@ -31,6 +31,120 @@
 {% endraw %}
 
 </p><p>論文タイトルにMoEというワードが入っているが、実際にMoEアーキテクチャを採用しているわけではない点に注意。アーキテクチャはいわゆるLarge Concept Model (エンコーダー→チャンク生成→コンセプトモデル→デチャンキング→デコーダー）であり、チャンクの境界がトークン間のlearnableなモジュールによって学習・決定されるため、トークンレベルで見たときに適応的にトークンをチャンク化することでコンセプトが定義され、かつトークン単位の計算資源の配分がチャンク化を（learnableに）通じて行われるという話に見える。<br><br>斜め読みしかできていないが、アーキテクチャそのものの貢献よりも、本研究の貢献として大きい部分はMoEモデルを用いた同じパラメータ/FLOPsでの異なるアーキテクチャ間のfair comparisonを通じてconcept modelの性能が高いことを示したことや、既存のMoEモデルを軽量なモジュールの追加（チャンクモジュール+デチャンクモジュール+追加のゼロで初期化されたQKV attention)し継続事前学習をすることでretrofittingすることでも性能が向上すること、計算効率がチャンクによってトークンが圧縮されるため、fair comparisonの上で高い性能を達成しながら、圧縮率Rに応じて向上することを示ししたこと、などにあるように見受けられる。<br><br>が、ただの斜め読みした感想でしかないので読みたい。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4125" target="_blank" rel="noopener noreferrer">[Paper Note] Dynamic Large Concept Models: Latent Reasoning in an Adaptive Semantic Space, Xingwei Qu+, arXiv'25, 2025.12</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Dynamic Large Concept Models: Latent Reasoning in an Adaptive Semantic Space, Xingwei Qu+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.24617</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4125</repo-issue-link>
+<tags>NLP, LanguageModel, read-later, LatentReasoning, One-Line Notes, Concept (LLM PreTraining), Author Thread-Post</tags>
+<repo-issue-date>2026-01-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.24617
+# Authors
+  - Xingwei Qu
+  - Shaowen Wang
+  - Zihao Huang
+  - Kai Hua
+  - Fan Yin
+  - Rui-Jie Zhu
+  - Jundong Zhou
+  - Qiyang Min
+  - Zihao Wang
+  - Yizhi Li
+  - Tianyu Zhang
+  - He Xing
+  - Zheng Zhang
+  - Yuxuan Song
+  - Tianyu Zheng
+  - Zhiyuan Zeng
+  - Chenghua Lin
+  - Ge Zhang
+  - Wenhao Huang
+# Abstract
+  - Large Language Models (LLMs) apply uniform computation to all tokens, despite language exhibiting highly non-uniform information density. This token-uniform regime wastes capacity on locally predictable spans while under-allocating computation to semantically critical transitions. We propose $\textbf{Dynamic Large Concept Models (DLCM)}$, a hierarchical language modeling framework that learns semantic boundaries from latent representations and shifts computation from tokens to a compressed concept space where reasoning is more efficient. DLCM discovers variable-length concepts end-to-end without relying on predefined linguistic units. Hierarchical compression fundamentally changes scaling behavior. We introduce the first $\textbf{compression-aware scaling law}$, which disentangles token-level capacity, concept-level reasoning capacity, and compression ratio, enabling principled compute allocation under fixed FLOPs. To stably train this heterogeneous architecture, we further develop a $\textbf{decoupled $μ$P parametrization}$ that supports zero-shot hyperparameter transfer across widths and compression regimes. At a practical setting ($R=4$, corresponding to an average of four tokens per concept), DLCM reallocates roughly one-third of inference compute into a higher-capacity reasoning backbone, achieving a $\textbf{+2.69$\%$ average improvement}$ across 12 zero-shot benchmarks under matched inference FLOPs.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、すべてのトークンに対して均一な計算を適用しますが、言語は非常に非均一な情報密度を示します。このトークン均一なレジームは、局所的に予測可能な範囲に対して容量を無駄にし、意味的に重要な遷移に対して計算を過少配分します。そこで、私たちは$\textbf{Dynamic Large Concept Models (DLCM)}$という階層的な言語モデリングフレームワークを提案します。これは、潜在表現から意味的境界を学習し、トークンから圧縮された概念空間に計算をシフトすることで、推論をより効率的に行います。DLCMは、事前定義された言語単位に依存せず、エンドツーエンドで可変長の概念を発見します。階層的圧縮は、スケーリングの挙動を根本的に変えます。私たちは、トークンレベルの容量、概念レベルの推論容量、および圧縮比を分離する最初の$\textbf{圧縮対応スケーリング法則}$を導入し、固定されたFLOPsの下での原則に基づく計算配分を可能にします。この異種アーキテクチャを安定して訓練するために、幅と圧縮レジーム間でのゼロショットハイパーパラメータ転送をサポートする$\textbf{デカップル$μ$Pパラメータ化}$をさらに開発しました。実用的な設定（$R=4$、概念あたり平均4トークンに相当）では、DLCMは推論計算の約3分の1をより高い容量の推論バックボーンに再配分し、マッチした推論FLOPsの下で12のゼロショットベンチマークにおいて$\textbf{+2.69$\%$の平均改善}$を達成しました。
+# Summary (by gpt-4o-mini)
+- DLCM（Dynamic Large Concept Models）は、トークン均一な計算の限界を克服するための階層的な言語モデリングフレームワークであり、意味的境界を学習して計算を圧縮された概念空間にシフトします。これにより、推論を効率化し、固定されたFLOPsの下で計算配分を最適化します。DLCMは、実用的な設定で推論計算の約3分の1を再配分し、12のゼロショットベンチマークで平均2.69%の性能向上を達成しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2007096294779863229?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>従来のトークンを最小単位とする言語モデルではなく、意味的なチャンクを最小単位として扱う（チャンクの境界は隠れ状態の類似度が閾値を超えるか否かによって決める）Encoder-(Thinking Model)-Decoderタイプのモデルに見える。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1611" target="_blank" rel="noopener noreferrer">[Paper Note] Large Concept Models: Language Modeling in a Sentence Representation Space, LCM team+, arXiv'24, 2024.12</a>
+<br><br>扱うconceptの最小単位という観点で見ると、こちらの研究はコンセプトをsentenceとしているが、本研究は（まだ全然読めていないのでおそらく）動的に決まるboundaryに基づくチャンクという点で異なっているように見える。</p><p>著者ポストを引用しているポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sivil_taram/status/2006964888145670278?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Synthetic bootstrapped pretraining, Zitong Yang+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.15248</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2927</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, SyntheticData, read-later, Concept (LLM PreTraining), Author Thread-Post</tags>
+<repo-issue-date>2025-09-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.15248
+# Authors
+  - Zitong Yang
+  - Aonan Zhang
+  - Hong Liu
+  - Tatsunori Hashimoto
+  - Emmanuel Candès
+  - Chong Wang
+  - Ruoming Pang
+# Abstract
+  - We introduce Synthetic Bootstrapped Pretraining (SBP), a language model (LM) pretraining procedure that first learns a model of relations between documents from the pretraining dataset and then leverages it to synthesize a vast new corpus for joint training. While the standard pretraining teaches LMs to learn causal correlations among tokens within a single document, it is not designed to efficiently model the rich, learnable inter-document correlations that can potentially lead to better performance. We validate SBP by designing a compute-matched pretraining setup and pretrain a 3B-parameter model on up to 1T tokens from scratch. We find SBP consistently improves upon a strong repetition baseline and delivers a significant fraction of performance improvement attainable by an oracle upper bound with access to 20x more unique data. Qualitative analysis reveals that the synthesized documents go beyond mere paraphrases -- SBP first abstracts a core concept from the seed material and then crafts a new narration on top of it. Besides strong empirical performance, SBP admits a natural Bayesian interpretation: the synthesizer implicitly learns to abstract the latent concepts shared between related documents.
+# Translation (by gpt-4o-mini)
+- Synthetic Bootstrapped Pretraining（SBP）を紹介します。これは、文書間の関係を事前学習データセットから学習し、それを活用して共同訓練のための広範な新しいコーパスを合成する言語モデル（LM）の事前学習手法です。標準的な事前学習は、LMが単一の文書内のトークン間の因果関係を学習することを教えますが、豊かで学習可能な文書間の相関関係を効率的にモデル化するようには設計されていません。SBPを検証するために、計算にマッチした事前学習設定を設計し、3Bパラメータのモデルをゼロから最大1Tトークンで事前学習しました。SBPは、強力な繰り返しベースラインを一貫して改善し、20倍のユニークデータにアクセスできるオラクル上限によって達成可能なパフォーマンス向上の重要な割合を提供することがわかりました。定性的な分析により、合成された文書は単なる言い換えを超えていることが明らかになりました。SBPはまず、シード素材からコアコンセプトを抽象化し、その上に新しい物語を構築します。強力な経験的パフォーマンスに加えて、SBPは自然なベイズ的解釈を許容します。合成器は、関連する文書間で共有される潜在的な概念を抽象化することを暗黙的に学習します。
+# Summary (by gpt-4o-mini)
+- Synthetic Bootstrapped Pretraining（SBP）は、文書間の関係を学習し、新しいコーパスを合成する言語モデルの事前学習手法です。従来の事前学習は単一文書内の因果関係に焦点を当てていますが、SBPは文書間の相関関係を効率的にモデル化します。3Bパラメータのモデルを用いた実験で、SBPは強力なベースラインを改善し、合成された文書は単なる言い換えを超えた新しい物語を構築することが示されました。SBPは自然なベイズ的解釈を許容し、関連文書間の潜在的な概念を学習します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1970009915797475489?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1969973861178626245?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>興味深い。</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zitongyang0/status/1970129028536484089?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>conceptを学習するという観点では以下が関連している気がするが、アプローチが大きく異なる:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1611" target="_blank" rel="noopener noreferrer">[Paper Note] Large Concept Models: Language Modeling in a Sentence Representation Space, LCM team+, arXiv'24, 2024.12</a>
 </p></maintainer-comment-text>
 </paper-entry>
 

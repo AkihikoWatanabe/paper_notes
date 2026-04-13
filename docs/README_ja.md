@@ -10,6 +10,7 @@
 [![Reading Reflections](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Reading%20Reflections)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reading%20Reflections%22)
 [![In-Depth Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/In-Depth%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22In-Depth%20Notes%22)
 [![Reference Collection](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Reference%20Collection)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reference%20Collection%22)
+[![Author Thread-Post](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Author%20Thread-Post)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Author%20Thread-Post%22)
 
 [[English](https://github.com/AkihikoWatanabe/paper_notes/blob/master/README.md) | 日本語]
 
@@ -77,6 +78,7 @@ Issueには主に以下の内容がメモされています:
 - [![Reading Reflections](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/Reading%20Reflections)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reading%20Reflections%22): （読了後、あるいはskim reading後の）感想、意見
 - [![In-Depth Notes](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/In-Depth%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22In-Depth%20Notes%22): 論文の詳細と個人的な感想や意見
 - [![Reference Collection](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/Reference%20Collection)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reference%20Collection%22): SNS上の有識者の解説ポスト等の関連リンク集
+- [![Author Thread-Post](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/Author%20Thread-Post)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Author%20Thread-Post%22): 論文・ブログ等の著者自身による解説ポスト
 
 ---
 
