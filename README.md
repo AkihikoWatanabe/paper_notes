@@ -11,6 +11,7 @@
 [![Reading Reflections](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Reading%20Reflections)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reading%20Reflections%22)
 [![In-Depth Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/In-Depth%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22In-Depth%20Notes%22)
 [![Reference Collection](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Reference%20Collection)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reference%20Collection%22)
+[![Author Thread-Post](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Author%20Thread-Post)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Author%20Thread-Post%22)
 
 [English | [日本語](https://github.com/AkihikoWatanabe/paper_notes/blob/master/README_ja.md) ]
 
@@ -85,7 +86,7 @@ Notes are managed using the following labels (not all Issues have been fully lab
 - [![Reading Reflections](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/Reading%20Reflections)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reading%20Reflections%22): notes containing the maintainer's brief thoughts, opinions and impressions after reading
 - [![In-Depth Notes](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/In-Depth%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22In-Depth%20Notes%22): details of the paper and multiple important technical points with the maintainer's own opinion
 - [![Reference Collection](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/Reference%20Collection)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Reference%20Collection%22): a collection of related links (e.g., explanatory posts)
-
+- [![Author Thread-Post](https://img.shields.io/github/labels/AkihikoWatanabe/paper_notes/Author%20Thread-Post)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Author%20Thread-Post%22): Explanatory Posts and Threads by the Authors
 ---
 
 ## Label Taxonomy
