@@ -8434,8 +8434,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </div>
 {% endraw %}
 
-</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
-  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">[Paper Note] The First Few Tokens Are All You Need: An Efficient and Effective  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, NeurIPS'25, 2025.03</a>
 <br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></maintainer-comment-text>
 </paper-entry>
 
@@ -9433,7 +9432,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] AceReason-Nemotron 1.1: Advancing Math and Code Reasoning through SFT and RL Synergy, Zihan Liu+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.13284</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2058</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, OpenWeight, OpenSource, PostTraining</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, OpenWeight, OpenSource, PostTraining, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-06-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.13284
@@ -9461,7 +9460,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </div>
 {% endraw %}
 
-<br><br>様々なtakeawayがまとめられている。</p><p>SFT,RLに利用されたデータも公開</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+<br><br>様々なtakeawayがまとめられている。</p><p>SFT,RLに利用されたデータも公開</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
 <br><br>において事前学習時に4 epochまでは性能の改善幅が大きいと報告されていたが、SFTでも5 epoch程度まで学習すると良い模様。<br><br>また、SFT dataをscalingさせる際は、promptの数だけでなく、prompt単位のresponse数を増やすのが効果的<br><img src="https://github.com/user-attachments/assets/67e2a4ff-555b-4e22-a90a-ee239704805e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
@@ -9512,10 +9511,10 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] Learning Compositional Functions with Transformers from Easy-to-Hard   Data, Zixuan Wang+, COLT'25</title>
+<title>[Paper Note] Learning Compositional Functions with Transformers from Easy-to-Hard Data, Zixuan Wang+, arXiv'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.23683</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2007</repo-issue-link>
-<tags>Analysis, Pretraining, LanguageModel, Transformer, action_wanted, PostTraining, COLT</tags>
+<tags>Analysis, Pretraining, LanguageModel, Transformer, action_wanted, PostTraining, Selected Papers/Blogs, COLT, One-Line Notes, Reading Reflections, Author Thread-Post</tags>
 <repo-issue-date>2025-06-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.23683
@@ -9529,10 +9528,10 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
   - Denny Wu
 # Abstract
   - Transformer-based language models have demonstrated impressive capabilities across a range of complex reasoning tasks. Prior theoretical work exploring the expressive power of transformers has shown that they can efficiently perform multi-step reasoning tasks involving parallelizable computations. However, the learnability of such constructions, particularly the conditions on the data distribution that enable efficient learning via gradient-based optimization, remains an open question. Towards answering this question, in this work we study the learnability of the $k$-fold composition task, which requires computing an interleaved composition of $k$ input permutations and $k$ hidden permutations, and can be expressed by a transformer with $O(\log k)$ layers. On the negative front, we prove a Statistical Query (SQ) lower bound showing that any SQ learner that makes only polynomially-many queries to an SQ oracle for the $k$-fold composition task distribution must have sample size exponential in $k$, thus establishing a statistical-computational gap. On the other hand, we show that this function class can be efficiently learned, with runtime and sample complexity polynomial in $k$, by gradient descent on an $O(\log k)$-depth transformer via two different curriculum learning strategies: one in which data consists of $k'$-fold composition functions with $k' \le k$ presented in increasing difficulty, and another in which all such data is presented simultaneously. Our work sheds light on the necessity and sufficiency of having both easy and hard examples in the data distribution for transformers to learn complex compositional tasks.
-# Translation (by gpt-4o-mini)
-- Transformerベースの言語モデルは、さまざまな複雑な推論タスクにおいて印象的な能力を示しています。これまでの理論的な研究では、トランスフォーマーの表現力を探求し、並列化可能な計算を含む多段階推論タスクを効率的に実行できることが示されています。しかし、このような構造の学習可能性、特に勾配ベースの最適化を通じて効率的な学習を可能にするデータ分布に関する条件は、未解決の問題として残っています。この問題に答えるために、本研究では、$k$個の入力順列と$k$個の隠れ順列の交互合成を計算する必要がある$k$-fold compositionタスクの学習可能性を調査します。このタスクは、$O(\log k)$層のトランスフォーマーによって表現できます。否定的な側面として、$k$-fold compositionタスク分布に対してSQオラクルに多項式的に少ないクエリを行う任意のSQ学習者は、サンプルサイズが$k$に対して指数的でなければならないことを示す統計的クエリ（SQ）下限を証明し、統計的計算のギャップを確立します。一方で、この関数クラスは、$O(\log k)$深さのトランスフォーマーに対して勾配降下法を用いることで、$k$に対して多項式的なランタイムとサンプルの複雑さで効率的に学習できることを示します。具体的には、$k' \le k$の$k'$-fold composition関数からなるデータを難易度を上げながら提示するカリキュラム学習戦略と、すべてのデータを同時に提示する戦略の2つの異なる方法を用います。本研究は、トランスフォーマーが複雑な合成タスクを学習するために、データ分布において簡単な例と難しい例の両方を持つことの必要性と十分性に光を当てています。
+# Translation (by gpt-5-nano)
+- Transformerベースの言語モデルは、さまざまな複雑な推論タスクにおいて顕著な能力を示してきた。トランスフォーマーの表現力を探究したこれまでの理論的研究は、それらが並列化可能な計算を伴う多段階推論タスクを効率的に実行できることを示している。しかし、そのような構成の学習可能性、特に勾配ベースの最適化による効率的な学習を可能にするデータ分布の条件は、未解決の課題のままである。これに答えるべく、本研究では k-fold 合成タスクの学習可能性を検討する。これは k 個の入力置換と k 個の隠れた置換の交互合成を計算することを要求し、O(log k) 層のトランスフォーマーで表現できる。否定的な側面として、統計的クエリ（SQ）下界を証明する。k-fold 合成タスク分布の SQ オラクルに対して多項式回数のみクエリする任意の SQ 学習者は、サンプルサイズが k に対して指数的でなければならない、ということを示し、統計計算ギャップを確立する。一方で、この関数クラスは、O(log k) 層の深さを持つトランスフォーマー上での勾配降下により、2つの異なるカリキュラム学習戦略を用いれば、k の多項式における実行時間とサンプル複雑度で効率的に学習可能であることを示す。1つは、データが難易度が順次上がるように提示される k'-fold 合成関数（k' ≤ k）からなる場合、もう1つはそのようなすべてのデータを同時に提示する場合である。私たちの研究は、トランスフォーマーが複雑な組成的タスクを学習するためには、データ分布において容易な例と難しい例の両方が存在することの必要条件と十分条件について光を当てる。
 # Summary (by gpt-4o-mini)
-- 本研究では、Transformerベースの言語モデルの学習可能性を探求し、$k$-fold compositionタスクに焦点を当てる。$O(\log k)$層のトランスフォーマーでこのタスクを表現できる一方、SQオラクルに対するクエリの下限を示し、サンプルサイズが指数的である必要があることを証明。さらに、カリキュラム学習戦略を用いて、簡単な例と難しい例を含むデータ分布がトランスフォーマーの効率的な学習に必要であることを明らかにした。</issue-body>
+- Transformerベースの言語モデルの学習可能性を、k-fold 合成タスクにおいて検討。具体的には、k 個の入力置換と隠れた置換の交互合成を倍の効率で実行可能とし、統計的クエリ下界も証明。さらに、O(log k) 層のトランスフォーマーで勾配降下による効率的な学習が可能であることを示した。データの提示方法によって、容易な例と難しい例が存在することが重要であるとの知見を得た。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
@@ -9581,7 +9580,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] Why Vision Language Models Struggle with Visual Arithmetic? Towards   Enhanced Chart and Geometry Understanding, Kung-Hsiang Huang+, ACL'25, 2025.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.11492</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1974</repo-issue-link>
-<tags>ComputerVision, Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), SyntheticData, ACL, DPO, PostTraining, Probing, One-Line Notes</tags>
+<tags>ComputerVision, Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), SyntheticData, ACL, DPO, PostTraining, Probing, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2502.11492
@@ -9616,7 +9615,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] Thinking LLMs: General Instruction Following with Thought Generation, Tianhao Wu+, ICML'25, 2024.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2410.10630</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1930</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Reasoning, ICML, DPO, PostTraining, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, Reasoning, ICML, DPO, PostTraining, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2410.10630
@@ -9648,7 +9647,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </paper-entry>
 
 <paper-entry>
-<title>Layer by Layer: Uncovering Hidden Representations in Language Models, Oscar Skean+, ICML'25</title>
+<title>[Paper Note] Layer by Layer: Uncovering Hidden Representations in Language Models, Oscar Skean+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.02013</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1924</repo-issue-link>
 <tags>ComputerVision, Embeddings, Analysis, NLP, LanguageModel, RepresentationLearning, Supervised-FineTuning (SFT), Chain-of-Thought, SSM (StateSpaceModel), ICML, PostTraining, read-later, One-Line Notes, CompressionValleys</tags>
@@ -9682,7 +9681,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] Where is the answer? Investigating Positional Bias in Language Model   Knowledge Extraction, Kuniaki Saito+, NAACL'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2402.12170</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1922</repo-issue-link>
-<tags>NLP, LanguageModel, Bias, NAACL, PostTraining, PerplexityCurse, Selected Papers/Blogs, ContextEngineering, Surface-level Notes</tags>
+<tags>NLP, LanguageModel, Bias, NAACL, PostTraining, PerplexityCurse, Selected Papers/Blogs, ContextEngineering, Surface-level Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2402.12170
@@ -9761,7 +9760,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </paper-entry>
 
 <paper-entry>
-<title>d1: Scaling Reasoning in Diffusion Large Language Models via  Reinforcement Learning, Siyan Zhao+, arXiv'25</title>
+<title>d1: Scaling Reasoning in Diffusion Large Language Models via  Reinforcement Learning, Siyan Zhao+, arXiv'25, 2025.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2504.12216</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1893</repo-issue-link>
 <tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, DiffusionModel, Reasoning, PostTraining, GRPO, KeyPoint Notes</tags>
@@ -9824,7 +9823,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </div>
 {% endraw %}
 
-</p><p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは<=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
+</p><p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、<br><br>RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、<br><br>結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、<br><br>かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは<=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
 </p><p>個々のpost-trainingされたRLモデルが具体的にどういう訓練をしたのかは追えていないが、DAPOやDr. GRPO, VAPOの場合はどうなるんだろうか？<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1876" target="_blank" rel="noopener noreferrer">[Paper Note] VAPO: Efficient and Reliable Reinforcement Learning for Advanced Reasoning Tasks, Yu Yue+, arXiv'25, 2025.04</a>
@@ -9841,10 +9840,10 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </paper-entry>
 
 <paper-entry>
-<title>Critique Fine-Tuning: Learning to Critique is More Effective than   Learning to Imitate, Yubo Wang+, COLM'25</title>
+<title>[Paper Note] Critique Fine-Tuning: Learning to Critique is More Effective than   Learning to Imitate, Yubo Wang+, COLM'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.17703</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1832</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), COLM, PostTraining</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), COLM, PostTraining, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-03-25</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2501.17703
@@ -9915,7 +9914,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2502.03373
@@ -10007,7 +10006,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] Diverse Preference Optimization, Jack Lanchantin+, ICLR'25, 2025.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.18101</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1744</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, action_wanted, ICLR, DPO, PostTraining, Diversity, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, action_wanted, ICLR, DPO, PostTraining, Diversity, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2501.18101
@@ -10048,7 +10047,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model   Post-training, Tianzhe Chu+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.17161</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1740</repo-issue-link>
-<tags>ComputerVision, Analysis, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, ICML, PostTraining, read-later, Selected Papers/Blogs</tags>
+<tags>ComputerVision, Analysis, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, ICML, PostTraining, read-later, Selected Papers/Blogs, Reference Collection</tags>
 <repo-issue-date>2025-01-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2501.17161
@@ -10491,12 +10490,12 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <a href="https://openreview.net/forum?id=4XIKfvNYvx&referrer=%5Bthe%20profile%20of%20He%20He%5D(%2Fprofile%3Fid%3D~He_He2)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=4XIKfvNYvx&referrer=%5Bthe%20profile%20of%20He%20He%5D(%2Fprofile%3Fid%3D~He_He2)</a>
 {% endraw %}
 
-</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N/A, ICML'24</a>
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, arXiv'24, 2024.01</a>
 <br><br>と似たようにiterativeなmannerでreasoning能力を向上させる。<br><br><img src="https://github.com/user-attachments/assets/a0f10e8e-454d-40e8-ae67-8c6c2da6a0ed" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ただし、loss functionとしては、chosenなCoT+yのresponseに対して、reasoning traceを生成する能力を高めるために、NLL Lossも適用している点に注意。<br><img src="https://github.com/user-attachments/assets/5ae2dcba-09c8-4618-9b63-ae6aed5b234d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>32 samplesのmajority votingによってより高い性能が達成できているので、多様なreasoning traceが生成されていることが示唆される。</p><p>DPOでReasoning能力を伸ばしたい場合はNLL lossが重要。Iterative RPO</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>UltraFeedback: Boosting Language Models with Scaled AI Feedback, Ganqu Cui+, ICML'24</title>
+<title>[Paper Note] UltraFeedback: Boosting Language Models with Scaled AI Feedback, Ganqu Cui+, ICML'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2310.01377</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1951</repo-issue-link>
 <tags>NLP, Dataset, LanguageModel, Alignment, InstructionTuning, ICML, PostTraining</tags>
@@ -10770,7 +10769,7 @@ Chunlei Xin, Yaojie Lu, Hongyu Lin, Shuheng Zhou, Huijia Zhu, Weiqiang Wang, Zho
 {% endraw %}
 
 </p><p>関連研究<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/708" target="_blank" rel="noopener noreferrer">[Paper Note] LLM-Blender: Ensembling Large Language Models with Pairwise Ranking and Generative Fusion, Dongfu Jiang+, arXiv'23, 2023.06</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N/A, ICML'24</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, arXiv'24, 2024.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2903" target="_blank" rel="noopener noreferrer">[Paper Note] Constitutional AI: Harmlessness from AI Feedback, Yuntao Bai+, arXiv'22</a>
 </p><p>openreview:
 
@@ -13592,7 +13591,7 @@ paper: https://assets.anthropic.com/m/74342f2c96095771/original/Natural-emergent
 <title>2025年度人工知能学会全国大会チュートリアル講演「深層基盤モデルの数理」, Taiji Suzuki, 2025.05</title>
 <original-paper-blog-link>https://speakerdeck.com/taiji_suzuki/2025nian-du-ren-gong-zhi-neng-xue-hui-quan-guo-da-hui-tiyutoriarujiang-yan-shen-ceng-ji-pan-moderunoshu-li</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2001</repo-issue-link>
-<tags>Tutorial, Pretraining, MachineLearning, NLP, LanguageModel, Transformer, Chain-of-Thought, In-ContextLearning, Attention, DiffusionModel, SSM (StateSpaceModel), Scaling Laws, PostTraining</tags>
+<tags>Tutorial, Pretraining, MachineLearning, NLP, LanguageModel, Transformer, Chain-of-Thought, In-ContextLearning, Attention, DiffusionModel, SSM (StateSpaceModel), Slide, Scaling Laws, PostTraining</tags>
 <repo-issue-date>2025-05-31</repo-issue-date>
 <issue-body>https://speakerdeck.com/taiji_suzuki/2025nian-du-ren-gong-zhi-neng-xue-hui-quan-guo-da-hui-tiyutoriarujiang-yan-shen-ceng-ji-pan-moderunoshu-li</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -13612,7 +13611,7 @@ paper: https://assets.anthropic.com/m/74342f2c96095771/original/Natural-emergent
 <title>[Paper Note] Spurious Rewards: Rethinking Training Signals in RLVR, Shao+, 2025.05</title>
 <original-paper-blog-link>https://rethink-rlvr.notion.site/Spurious-Rewards-Rethinking-Training-Signals-in-RLVR-1f4df34dac1880948858f95aeb88872f</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1997</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Mathematics, SmallModel, PostTraining, RLVR, Reference Collection</tags>
+<tags>Analysis, NLP, LanguageModel, Mathematics, SmallModel, PostTraining, RLVR, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2025-05-27</repo-issue-date>
 <issue-body>https://rethink-rlvr.notion.site/Spurious-Rewards-Rethinking-Training-Signals-in-RLVR-1f4df34dac1880948858f95aeb88872f</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -13682,7 +13681,7 @@ paper: https://assets.anthropic.com/m/74342f2c96095771/original/Natural-emergent
 <title>Qwen3, Qwen Team, 2025.04</title>
 <original-paper-blog-link>https://qwenlm.github.io/blog/qwen3/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1909</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes, Reference Collection</tags>
 <repo-issue-date>2025-04-29</repo-issue-date>
 <issue-body>https://qwenlm.github.io/blog/qwen3/</issue-body>
 <maintainer-comment-text><p>- 119言語をサポート<br>- MoEモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1911" target="_blank" rel="noopener noreferrer">[Paper Note] Outrageously Large Neural Networks: The Sparsely-Gated  Mixture-of-Experts Layer, Noam Shazeer+, ICLR'17</a>

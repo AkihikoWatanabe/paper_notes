@@ -4283,10 +4283,10 @@
 </div>
 {% endraw %}
 
-</p><p>これは興味深い</p><p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
- decoder-only transformerの層が深い部分でのトークンの表現が均一化されてしまうover-mixingを抑制する <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
- ことが報告されている</p><p>AttentionSink関連リンク:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
+</p><p>これは興味深い</p><p>保持するKV Cacheの上限を決め、Sink Token[^1]は保持し[^2]（512トークン）、textual tokenは長距離で保持、visual tokenは短距離で保持、またpositional encodingとしてはRoPEを採用するが、固定されたレンジの中で動的にindexを更新することで、位相を学習時のrangeに収めOODにならないような工夫をすることで、memoryと計算コストを一定に保ちながらlong contextでの一貫性とリアルタイムのlatencyを実現する、といった話にみえる。<br><img src="https://github.com/user-attachments/assets/4d063c90-e10a-4d07-9095-f87ee85c33fb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>学習時はフレームがoverlapした複数のチャンクに分けて、それぞれをfull attentionで学習する（Sink Tokenは保持する）。これは上述のinference時のパターンと整合しており学習時とinference時のgapが最小限になる。また、わざわざlong videoで学習する必要がない。（美しい解決方法）<br><img src="https://github.com/user-attachments/assets/98b50d1b-b9c4-427a-93f5-d385b2bc35a1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: decoder-only transformerの余剰なattention scoreの捨て場として機能するsequence冒頭の数トークン(3--4トークン程度）のこと。本論文では512トークンと大きめのSink Tokenを保持している。<br>[^2]: Attention Sinksによって、long contextの性能が改善され <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">[Paper Note] Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
+ decoder-only transformerの層が深い部分でのトークンの表現が均一化されてしまうover-mixingを抑制する <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
+ ことが報告されている</p><p>AttentionSink関連リンク:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">[Paper Note] Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
 </p><p>↑これは元ポストを読んで（と論文斜め読み）の感想のようなものなので、詳細は後で元論文を読む。</p><p>関連:
 
 {% raw %}
@@ -4535,8 +4535,7 @@
 </div>
 {% endraw %}
 
-</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
-  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">[Paper Note] The First Few Tokens Are All You Need: An Efficient and Effective  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, NeurIPS'25, 2025.03</a>
 <br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></maintainer-comment-text>
 </paper-entry>
 
@@ -4863,10 +4862,47 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Drop-Upcycling: Training Sparse Mixture of Experts with Partial   Re-initialization, Taishi Nakamura+, ICLR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2502.19261</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2088</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, MoE(Mixture-of-Experts), ICLR, KeyPoint Notes</tags>
+<repo-issue-date>2025-06-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2502.19261
+# Authors
+  - Taishi Nakamura
+  - Takuya Akiba
+  - Kazuki Fujii
+  - Yusuke Oda
+  - Rio Yokota
+  - Jun Suzuki
+# Abstract
+  - The Mixture of Experts (MoE) architecture reduces the training and inference cost significantly compared to a dense model of equivalent capacity. Upcycling is an approach that initializes and trains an MoE model using a pre-trained dense model. While upcycling leads to initial performance gains, the training progresses slower than when trained from scratch, leading to suboptimal performance in the long term. We propose Drop-Upcycling - a method that effectively addresses this problem. Drop-Upcycling combines two seemingly contradictory approaches: utilizing the knowledge of pre-trained dense models while statistically re-initializing some parts of the weights. This approach strategically promotes expert specialization, significantly enhancing the MoE model's efficiency in knowledge acquisition. Extensive large-scale experiments demonstrate that Drop-Upcycling significantly outperforms previous MoE construction methods in the long term, specifically when training on hundreds of billions of tokens or more. As a result, our MoE model with 5.9B active parameters achieves comparable performance to a 13B dense model in the same model family, while requiring approximately 1/4 of the training FLOPs. All experimental resources, including source code, training data, model checkpoints and logs, are publicly available to promote reproducibility and future research on MoE.
+# Translation (by gpt-4o-mini)
+- Mixture of Experts (MoE)アーキテクチャは、同等の容量を持つ密なモデルと比較して、トレーニングおよび推論コストを大幅に削減します。アップサイクリングは、事前にトレーニングされた密なモデルを使用してMoEモデルを初期化し、トレーニングするアプローチです。アップサイクリングは初期のパフォーマンス向上をもたらしますが、トレーニングの進行がスクラッチからトレーニングする場合よりも遅くなり、長期的には最適でないパフォーマンスにつながります。そこで、我々はこの問題に効果的に対処するDrop-Upcyclingという手法を提案します。Drop-Upcyclingは、事前にトレーニングされた密なモデルの知識を利用しつつ、重みの一部を統計的に再初期化するという、一見矛盾する2つのアプローチを組み合わせています。このアプローチは、専門家の専門化を戦略的に促進し、MoEモデルの知識獲得の効率を大幅に向上させます。大規模な実験により、Drop-Upcyclingは、特に数百億トークン以上のトレーニング時に、従来のMoE構築手法を長期的に大幅に上回ることが示されました。その結果、5.9Bのアクティブパラメータを持つ我々のMoEモデルは、同じモデルファミリーの13B密なモデルと同等のパフォーマンスを達成し、トレーニングFLOPsは約1/4に抑えられます。すべての実験リソース（ソースコード、トレーニングデータ、モデルチェックポイント、ログを含む）は、再現性と今後のMoEに関する研究を促進するために公開されています。
+# Summary (by gpt-4o-mini)
+- Drop-Upcycling手法を提案し、MoEモデルのトレーニング効率を向上。事前にトレーニングされた密なモデルの知識を活用しつつ、一部の重みを再初期化することで専門家の専門化を促進。大規模実験により、5.9BパラメータのMoEモデルが13B密なモデルと同等の性能を達成し、トレーニングコストを約1/4に削減。すべての実験リソースを公開。</issue-body>
+<maintainer-comment-text><p>OpenReview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=gx1wHnf5Vp" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=gx1wHnf5Vp</a>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1546" target="_blank" rel="noopener noreferrer">[Paper Note] Sparse Upcycling: Training Mixture-of-Experts from Dense Checkpoints, Aran Komatsuzaki+, ICLR'23</a>
+</p><p>提案手法の全体像とDiversity re-initializationの概要。元のUpcyclingでは全てidenticalな重みでreplicateされていたため、これが個々のexpertがlong termでの学習で特化することの妨げになり、最終的に最大限のcapabilityを発揮できず、収束が遅い要因となっていた。これを、Upcyclingした重みのうち、一部のindexのみを再初期化することで、replicate元の知識を保持しつつ、expertsの多様性を高めることで解決する。<br><img src="https://github.com/user-attachments/assets/46ec75a2-30b1-4f48-9f21-cf5f6e30df95" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/ef3c66b2-32a5-46ab-bb31-828fb4570b53" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>提案手法は任意のactivation function適用可能。今回はFFN Layerのactivation functionとして一般的なSwiGLUを採用した場合で説明している。<br><br>Drop-Upcyclingの手法としては、通常のUpcyclingと同様、FFN Layerの重みをn個のexpertsの数だけreplicateする。その後、re-initializationを実施する比率rに基づいて、[1, intermediate size d_f]の範囲からr*d_f個のindexをサンプリングする。最終的にSwiGLU、およびFFNにおける3つのWeight W_{gate, up, down}において、サンプリングされたindexと対応するrow/columnと対応する重みをre-initializeする。<br><br>re-initializeする際には、各W_{gate, up, down}中のサンプリングされたindexと対応するベクトルの平均と分散をそれぞれ独立して求め、それらの平均と分散を持つ正規分布からサンプリングする。<br><br>学習の初期から高い性能を発揮し、long termでの性能も向上している。また、learning curveの形状もscratchから学習した場合と同様の形状となっており、知識の転移とexpertsのspecializationがうまく進んだことが示唆される。<br><img src="https://github.com/user-attachments/assets/945e5ae5-05cd-4117-80e8-078b47f0e53c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>解説:
+
+{% raw %}
+<a href="https://llm-jp.nii.ac.jp/news/post-566/" target="_blank" rel="noopener noreferrer">https://llm-jp.nii.ac.jp/news/post-566/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Self-Adapting Language Models, Adam Zweiger+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.10943</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2036</repo-issue-link>
-<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-06-13</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.10943
@@ -4908,7 +4944,7 @@
 </paper-entry>
 
 <paper-entry>
-<title>Can Large Reasoning Models Self-Train?, Sheikh Shafayat+, arXiv'25</title>
+<title>[Paper Note] Can Large Reasoning Models Self-Train?, Sheikh Shafayat+, arXiv'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.21444v1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2003</repo-issue-link>
 <tags>NLP, LanguageModel, action_wanted, RLVR, MajorityVoting, KeyPoint Notes</tags>
@@ -4937,7 +4973,7 @@
 </div>
 {% endraw %}
 
-</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1995" target="_blank" rel="noopener noreferrer">Learning to Reason without External Rewards, Xuandong Zhao+, ICML'25 Workshop AI4MATH</a>
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1995" target="_blank" rel="noopener noreferrer">[Paper Note] Learning to Reason without External Rewards, Xuandong Zhao+, ICML'25 Workshop AI4MATH</a>
 <br>と似ているように見える</p><p>self-consistencyでground truthを推定し、推定したground truthを用いてverifiableなrewardを計算して学習する手法、のように見える。<br><img src="https://github.com/user-attachments/assets/0f38d47a-ab42-4ec4-a6d5-6d5d8a63a4a9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/3d08bbad-8578-4add-8ad7-ed02cdd15add" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実際のground truthを用いた学習と同等の性能を達成する場合もあれば、long stepで学習するとどこかのタイミングで学習がcollapseする場合もある<br><img src="https://github.com/user-attachments/assets/e120a277-6beb-4fc1-8fd7-e69de467fb3d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>パフォーマンスがピークを迎えた後になぜ大幅にAccuracyがdropするかを検証したところ、モデルのKL penaltyがどこかのタイミングで大幅に大きくなることがわかった。つまりこれはオリジナルのモデルからかけ離れたモデルになっている。これは、モデルがデタラメな出力をground truthとして推定するようになり、モデルそのものも一貫してそのデタラメな出力をすることでrewardを増大させるreward hackingが起きている。<br><img src="https://github.com/user-attachments/assets/5a9c091f-e9cb-4914-a1ca-32a1ea2dc1c7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/aa685b9a-7992-4135-a4da-fd1c8cabe084" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>これら現象を避ける方法として、以下の3つを提案している<br>- early stopping<br>- offlineでラベルをself consistencyで生成して、学習の過程で固定する<br>- カリキュラムラーニングを導入する<br><br><img src="https://github.com/user-attachments/assets/4fa997e3-aa20-4195-96ef-b17c82556fc1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/99cc2b6c-50a9-40a0-af30-b59aff4056b4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/e90e9870-b180-4fe9-8c24-8ff88fcf33f0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1489" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Consistency Preference Optimization, Archiki Prasad+, ICML'25, 2024.11</a>
 </p></maintainer-comment-text>
 </paper-entry>
@@ -4946,7 +4982,7 @@
 <title>[Paper Note] When Bad Data Leads to Good Models, Kenneth Li+, ICML'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.04741</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1940</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), Safety, ICML, DPO, Toxicity, ActivationSteering/ITI, KeyPoint Notes</tags>
+<tags>Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), Safety, ICML, DPO, Toxicity, ActivationSteering/ITI, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-09</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.04741
@@ -4985,7 +5021,7 @@
 <title>[Paper Note] Thinking LLMs: General Instruction Following with Thought Generation, Tianhao Wu+, ICML'25, 2024.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2410.10630</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1930</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Reasoning, ICML, DPO, PostTraining, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, Reasoning, ICML, DPO, PostTraining, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2410.10630
@@ -5017,7 +5053,7 @@
 </paper-entry>
 
 <paper-entry>
-<title>d1: Scaling Reasoning in Diffusion Large Language Models via  Reinforcement Learning, Siyan Zhao+, arXiv'25</title>
+<title>d1: Scaling Reasoning in Diffusion Large Language Models via  Reinforcement Learning, Siyan Zhao+, arXiv'25, 2025.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2504.12216</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1893</repo-issue-link>
 <tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, DiffusionModel, Reasoning, PostTraining, GRPO, KeyPoint Notes</tags>
@@ -5120,7 +5156,7 @@
 </div>
 {% endraw %}
 
-</p><p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは<=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
+</p><p>SLMをmath reasoning向けにpost-trainingする場合、評価の条件をフェアにするための様々な工夫を施し評価をしなおした結果（Figure1のように性能が変化する様々な要因が存在する）、<br><br>RL（既存研究で試されているもの）よりも（大規模モデルからrejection samplingしたreasoning traceを用いて）SFTをする方が同等か性能が良く(Table3)、<br><br>結局のところ（おそらく汎化性能が低いという意味で）reliableではなく、<br><br>かつ（おそらく小規模なモデルでうまくいかないという意味での）scalableではないので、reliableかつscalableなRL手法が不足しているとのこと。<br><br>※ 本論文で分析されているのは<=10B以下のSLMである点に注意。10B以上のモデルで同じことが言えるかは自明ではない。<br>※ DAPO, VAPOなどについても同じことが言えるかも自明ではない。<br>※ DeepSeek-R1のtechnical reportにおいて、小さいモデルにGRPOを適用してもあまり効果が無かったことが既に報告されている。<br><br><img src="https://github.com/user-attachments/assets/620017f1-b3f0-40c1-bf61-3b0b7a429ab4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/321132c8-dad5-4aa1-9811-f032e3474135" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1743" target="_blank" rel="noopener noreferrer">DeepSeek-R1の論文読んだ？【勉強になるよ】 , asap, 2025.01</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
 </p><p>個々のpost-trainingされたRLモデルが具体的にどういう訓練をしたのかは追えていないが、DAPOやDr. GRPO, VAPOの場合はどうなるんだろうか？<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1815" target="_blank" rel="noopener noreferrer">[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1876" target="_blank" rel="noopener noreferrer">[Paper Note] VAPO: Efficient and Reliable Reinforcement Learning for Advanced Reasoning Tasks, Yu Yue+, arXiv'25, 2025.04</a>
@@ -5278,10 +5314,48 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] The First Few Tokens Are All You Need: An Efficient and Effective  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, NeurIPS'25, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.02875</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1813</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, Supervised-FineTuning (SFT), Reasoning, PEFT(Adaptor/LoRA), NeurIPS, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2025-03-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.02875
+# Authors
+  - Ke Ji
+  - Jiahao Xu
+  - Tian Liang
+  - Qiuzhi Liu
+  - Zhiwei He
+  - Xingyu Chen
+  - Xiaoyuan Liu
+  - Zhijie Wang
+  - Junying Chen
+  - Benyou Wang
+  - Zhaopeng Tu
+  - Haitao Mi
+  - Dong Yu
+# Abstract
+  - Improving the reasoning capabilities of large language models (LLMs) typically requires supervised fine-tuning with labeled data or computationally expensive sampling. We introduce Unsupervised Prefix Fine-Tuning (UPFT), which leverages the observation of Prefix Self-Consistency -- the shared initial reasoning steps across diverse solution trajectories -- to enhance LLM reasoning efficiency. By training exclusively on the initial prefix substrings (as few as 8 tokens), UPFT removes the need for labeled data or exhaustive sampling. Experiments on reasoning benchmarks show that UPFT matches the performance of supervised methods such as Rejection Sampling Fine-Tuning, while reducing training time by 75% and sampling cost by 99%. Further analysis reveals that errors tend to appear in later stages of the reasoning process and that prefix-based training preserves the model's structural knowledge. This work demonstrates how minimal unsupervised fine-tuning can unlock substantial reasoning gains in LLMs, offering a scalable and resource-efficient alternative to conventional approaches.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）の推論能力を向上させるためには、通常、ラベル付きデータを用いた教師ありファインチューニングや計算コストの高いサンプリングが必要です。本研究では、Prefix Self-Consistencyの観察を活用した「非教師ありプレフィックスファインチューニング（UPFT）」を提案します。これは、多様な解法の軌跡における共通の初期推論ステップを利用して、LLMの推論効率を向上させるものです。UPFTは、初期のプレフィックス部分文字列（わずか8トークン）にのみ基づいて訓練を行うため、ラベル付きデータや徹底的なサンプリングの必要がありません。推論ベンチマークにおける実験では、UPFTがRejection Sampling Fine-Tuningなどの教師あり手法と同等の性能を示しながら、訓練時間を75%、サンプリングコストを99%削減することが分かりました。さらに分析を行った結果、エラーは推論プロセスの後半に現れる傾向があり、プレフィックスベースの訓練がモデルの構造的知識を保持することが明らかになりました。本研究は、最小限の非教師ありファインチューニングがLLMにおける大幅な推論向上を実現できることを示し、従来のアプローチに対するスケーラブルでリソース効率の良い代替手段を提供します。
+# Summary (by gpt-4o-mini)
+- 非教師ありプレフィックスファインチューニング（UPFT）を提案し、LLMの推論効率を向上。初期のプレフィックス部分文字列に基づいて訓練し、ラベル付きデータやサンプリングを不要に。UPFTは、教師あり手法と同等の性能を維持しつつ、訓練時間を75%、サンプリングコストを99%削減。最小限の非教師ありファインチューニングで大幅な推論向上を実現し、リソース効率の良い代替手段を提供。</issue-body>
+<maintainer-comment-text><p>斜め読みだが、reasoning traceの冒頭部分は重要な役割を果たしており、サンプリングした多くのresponseのreasoning traceにおいて共通しているものは重要という直感から（Prefix Self-Consistency）、reasoning traceの冒頭部分を適切に生成できるようにモデルをFinetuningする。従来のRejection Samplingを用いた手法では、複数のresponseを生成させて、最終的なanswerが正解のものをサンプリングするため正解ラベルが必要となるが、提案手法ではreasoning traceの冒頭部分の共通するsubsequenceをmajority voteするだけなのでラベルが不要である。<br><img src="https://github.com/user-attachments/assets/ff3938da-dcd0-4b6c-a764-26d2e8caa63a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>reasoning prefixを学習する際は下記のようなテンプレートを用いる。このときに、prefixのspanのみを利用して学習することで大幅に学習時間を削減できる。<br><img src="https://github.com/user-attachments/assets/63aabe47-9c40-41cb-8d5a-5039900f6edc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、そのような学習を行うとcatastrophic forgettingのリスクが非常に高いが、これを防ぐために、マルチタスクラーニングを実施する。具体的には学習データのp%については全体のreasoning traceを生成して学習に利用する。このときに、最終的な回答の正誤を気にせずtraceを生成して学習に利用することで、ラベルフリーな特性を維持できる（つまり、こちらのデータは良いreasoning traceを学習することを目的としているわけではなく、あくまでcatastrophic forgettingを防ぐためにベースモデルのようなtraceもきちんと生成できれば良い、という感覚だと思われる）。<br><img src="https://github.com/user-attachments/assets/6e83c686-5bcf-4db8-9b8a-63c39570a4dc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>AppendixにQwenを用いてtemperature 0.7で16個のresponseをサンプリングし、traceの冒頭部分が共通している様子が示されている。</p><p>下記論文でlong-CoTを学習させる際のlong-CoTデータとして、reasoningモデルから生成したtraceと非reasoning modelから生成したtraceによるlong-CoTデータを比較したところ前者の方が一貫して学習性能が良かったとあるが、この研究でもreasoning traceをつよつよモデルで生成したら性能上がるんだろうか。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1746" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</a>
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=1SCMFCGliM&referrer=%5Bthe%20profile%20of%20Benyou%20Wang%5D(%2Fprofile%3Fid%3D~Benyou_Wang2)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=1SCMFCGliM&referrer=%5Bthe%20profile%20of%20Benyou%20Wang%5D(%2Fprofile%3Fid%3D~Benyou_Wang2)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2502.03373
@@ -5314,7 +5388,7 @@
 <title>[Paper Note] Diverse Preference Optimization, Jack Lanchantin+, ICLR'25, 2025.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.18101</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1744</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, action_wanted, ICLR, DPO, PostTraining, Diversity, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, action_wanted, ICLR, DPO, PostTraining, Diversity, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2501.18101
@@ -5539,15 +5613,15 @@
 <a href="https://openreview.net/forum?id=4XIKfvNYvx&referrer=%5Bthe%20profile%20of%20He%20He%5D(%2Fprofile%3Fid%3D~He_He2)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=4XIKfvNYvx&referrer=%5Bthe%20profile%20of%20He%20He%5D(%2Fprofile%3Fid%3D~He_He2)</a>
 {% endraw %}
 
-</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N/A, ICML'24</a>
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, arXiv'24, 2024.01</a>
 <br><br>と似たようにiterativeなmannerでreasoning能力を向上させる。<br><br><img src="https://github.com/user-attachments/assets/a0f10e8e-454d-40e8-ae67-8c6c2da6a0ed" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ただし、loss functionとしては、chosenなCoT+yのresponseに対して、reasoning traceを生成する能力を高めるために、NLL Lossも適用している点に注意。<br><img src="https://github.com/user-attachments/assets/5ae2dcba-09c8-4618-9b63-ae6aed5b234d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>32 samplesのmajority votingによってより高い性能が達成できているので、多様なreasoning traceが生成されていることが示唆される。</p><p>DPOでReasoning能力を伸ばしたい場合はNLL lossが重要。Iterative RPO</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>Flex Attention: A Programming Model for Generating Optimized Attention  Kernels, Juechu Dong+, arXiv'24</title>
+<title>[Paper Note] Flex Attention: A Programming Model for Generating Optimized Attention  Kernels, Juechu Dong+, arXiv'24, 2024.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2412.05496</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1864</repo-issue-link>
-<tags>NLP, Transformer, Attention, KeyPoint Notes, Reference Collection</tags>
+<tags>NLP, Transformer, Attention, SoftwareEngineering, KeyPoint Notes, Reference Collection</tags>
 <repo-issue-date>2025-04-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2412.05496
@@ -5574,10 +5648,10 @@
 </paper-entry>
 
 <paper-entry>
-<title>Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</title>
+<title>[Paper Note] Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.17453</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1861</repo-issue-link>
-<tags>Attention, LongSequence, ICLR, AttentionSinks, Selected Papers/Blogs, KeyPoint Notes, Reference Collection</tags>
+<tags>Attention, LongSequence, ICLR, AttentionSinks, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2025-04-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.17453
@@ -5593,7 +5667,7 @@
 - 大規模言語モデル（LLMs）を、長い対話が期待されるマルチラウンド対話などのストリーミングアプリケーションに展開することは急務ですが、2つの主要な課題があります。第一に、デコーディング段階で、以前のトークンのキーとバリューの状態（KV）をキャッシュすることは、大量のメモリを消費します。第二に、一般的なLLMは、トレーニングシーケンスの長さを超える長いテキストに一般化できません。最近のKVsのみをキャッシュするウィンドウアテンションは自然なアプローチですが、テキストの長さがキャッシュサイズを超えると失敗することを示します。興味深い現象として、初期トークンのKVを保持することでウィンドウアテンションのパフォーマンスが大幅に回復する「アテンションシンク」を観察しました。本論文では、アテンションシンクの出現が、初期トークンに対する強いアテンションスコアによるものであり、たとえそれらが意味的に重要でなくても「シンク」として機能することを示します。この分析に基づき、StreamingLLMという効率的なフレームワークを導入します。これにより、有限の長さのアテンションウィンドウでトレーニングされたLLMが、ファインチューニングなしで無限のシーケンス長に一般化できるようになります。StreamingLLMは、Llama-2、MPT、Falcon、Pythiaが最大400万トークン以上で安定かつ効率的な言語モデリングを行うことを可能にすることを示します。さらに、プレトレーニング中に専用のアテンションシンクとしてプレースホルダートークンを追加することで、ストリーミング展開をさらに改善できることを発見しました。ストリーミング設定において、StreamingLLMはスライディングウィンドウ再計算のベースラインを最大22.2倍のスピードアップで上回ります。コードとデータセットは、https://github.com/mit-han-lab/streaming-llm で提供されています。
 # Summary (by gpt-4o-mini)
 - 大規模言語モデル（LLMs）をマルチラウンド対話に展開する際の課題として、メモリ消費と長いテキストへの一般化の難しさがある。ウィンドウアテンションはキャッシュサイズを超えると失敗するが、初期トークンのKVを保持することでパフォーマンスが回復する「アテンションシンク」を発見。これを基に、StreamingLLMというフレームワークを提案し、有限のアテンションウィンドウでトレーニングされたLLMが無限のシーケンス長に一般化可能になることを示した。StreamingLLMは、最大400万トークンで安定した言語モデリングを実現し、ストリーミング設定で従来の手法を最大22.2倍の速度で上回る。</issue-body>
-<maintainer-comment-text><p>Attention Sinksという用語を提言した研究<br><br>下記のpassageがAttention Sinksの定義（＝最初の数トークン）とその気持ち（i.e., softmaxによるattention scoreは足し合わせて1にならなければならない。これが都合の悪い例として、現在のtokenのqueryに基づいてattention scoreを計算する際に過去のトークンの大半がirrelevantな状況を考える。この場合、irrelevantなトークンにattendしたくはない。そのため、auto-regressiveなモデルでほぼ全てのcontextで必ず出現する最初の数トークンを、irrelevantなトークンにattendしないためのattention scoreの捨て場として機能するのうに学習が進む）の理解に非常に重要<br>> To understand the failure of window attention, we find an interesting phenomenon of autoregressive LLMs: a surprisingly large amount of attention score is allocated to the initial tokens, irrespective of their relevance to the language modeling task, as visualized in Figure 2. We term these tokens<br>“attention sinks". Despite their lack of semantic significance, they collect significant attention scores. We attribute the reason to the Softmax operation, which requires attention scores to sum up to one for all contextual tokens. Thus, even when the current query does not have a strong match in many previous tokens, the model still needs to allocate these unneeded attention values somewhere so it sums up to one. The reason behind initial tokens as sink tokens is intuitive: initial tokens are visible to almost all subsequent tokens because of the autoregressive language modeling nature, making them more readily trained to serve as attention sinks.</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
+<maintainer-comment-text><p>Attention Sinksという用語を提言した研究<br><br>下記のpassageがAttention Sinksの定義（＝最初の数トークン）とその気持ち（i.e., softmaxによるattention scoreは足し合わせて1にならなければならない。これが都合の悪い例として、現在のtokenのqueryに基づいてattention scoreを計算する際に過去のトークンの大半がirrelevantな状況を考える。この場合、irrelevantなトークンにattendしたくはない。そのため、auto-regressiveなモデルでほぼ全てのcontextで必ず出現する最初の数トークンを、irrelevantなトークンにattendしないためのattention scoreの捨て場として機能するのうに学習が進む）の理解に非常に重要<br>> To understand the failure of window attention, we find an interesting phenomenon of autoregressive LLMs: a surprisingly large amount of attention score is allocated to the initial tokens, irrespective of their relevance to the language modeling task, as visualized in Figure 2. We term these tokens<br>“attention sinks". Despite their lack of semantic significance, they collect significant attention scores. We attribute the reason to the Softmax operation, which requires attention scores to sum up to one for all contextual tokens. Thus, even when the current query does not have a strong match in many previous tokens, the model still needs to allocate these unneeded attention values somewhere so it sums up to one. The reason behind initial tokens as sink tokens is intuitive: initial tokens are visible to almost all subsequent tokens because of the autoregressive language modeling nature, making them more readily trained to serve as attention sinks.</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">[Paper Note] Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
 <br><br>の先行研究。こちらでAttentionSinkがどのように作用しているのか？が分析されている。</p><p>Figure1が非常にわかりやすい。Initial Token（実際は3--4トークン）のKV Cacheを保持することでlong contextの性能が改善する（Vanilla)。あるいは、Softmaxの分母に1を追加した関数を用意し（数式2)、全トークンのattention scoreの合計が1にならなくても許されるような変形をすることで、余剰なattention scoreが生じないようにすることでattention sinkを防ぐ（Zero Sink)。これは、ゼロベクトルのトークンを追加し、そこにattention scoreを逃がせるようにすることに相当する。もう一つの方法は、globalに利用可能なlearnableなSink Tokenを追加すること。これにより、不要なattention scoreの捨て場として機能させる。Table3を見ると、最初の4 tokenをKV Cacheに保持した場合はperplexityは大きく変わらないが、Sink Tokenを導入した方がKV Cacheで保持するInitial Tokenの量が少なくてもZero Sinkと比べると性能が良くなるため、今後モデルを学習する際はSink Tokenを導入することを薦めている。既に学習済みのモデルについては、Zero Sinkによってlong contextのモデリングに対処可能と思われる。<br><br><img src="https://github.com/user-attachments/assets/9d4714e5-02b9-45b5-affd-c6c34eb7c58f" /" alt="image" loading="lazy" width="550" height="400"/></p><p>著者による解説:
 
 {% raw %}
@@ -5612,6 +5686,34 @@
 
 </p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2785" target="_blank" rel="noopener noreferrer">Attention ls Off By One, Evanmiller.org, 2023.07</a>
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ReLLa: Retrieval-enhanced Large Language Models for Lifelong Sequential   Behavior Comprehension in Recommendation, Jianghao Lin+, WWW'24</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2308.11131</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1840</repo-issue-link>
+<tags>RecommenderSystems, NLP, UserModeling, LanguageModel, CTRPrediction, RAG(RetrievalAugmentedGeneration), LongSequence, WWW, KeyPoint Notes</tags>
+<repo-issue-date>2025-03-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2308.11131
+# Authors
+  - Jianghao Lin
+  - Rong Shan
+  - Chenxu Zhu
+  - Kounianhua Du
+  - Bo Chen
+  - Shigang Quan
+  - Ruiming Tang
+  - Yong Yu
+  - Weinan Zhang
+# Abstract
+  - With large language models (LLMs) achieving remarkable breakthroughs in natural language processing (NLP) domains, LLM-enhanced recommender systems have received much attention and have been actively explored currently. In this paper, we focus on adapting and empowering a pure large language model for zero-shot and few-shot recommendation tasks. First and foremost, we identify and formulate the lifelong sequential behavior incomprehension problem for LLMs in recommendation domains, i.e., LLMs fail to extract useful information from a textual context of long user behavior sequence, even if the length of context is far from reaching the context limitation of LLMs. To address such an issue and improve the recommendation performance of LLMs, we propose a novel framework, namely Retrieval-enhanced Large Language models (ReLLa) for recommendation tasks in both zero-shot and few-shot settings. For zero-shot recommendation, we perform semantic user behavior retrieval (SUBR) to improve the data quality of testing samples, which greatly reduces the difficulty for LLMs to extract the essential knowledge from user behavior sequences. As for few-shot recommendation, we further design retrieval-enhanced instruction tuning (ReiT) by adopting SUBR as a data augmentation technique for training samples. Specifically, we develop a mixed training dataset consisting of both the original data samples and their retrieval-enhanced counterparts. We conduct extensive experiments on three real-world public datasets to demonstrate the superiority of ReLLa compared with existing baseline models, as well as its capability for lifelong sequential behavior comprehension. To be highlighted, with only less than 10% training samples, few-shot ReLLa can outperform traditional CTR models that are trained on the entire training set (e.g., DCNv2, DIN, SIM). The code is available \url{https://github.com/LaVieEnRose365/ReLLa}.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）が自然言語処理（NLP）分野で顕著なブレークスルーを達成する中、LLMを強化したレコメンダーシステムは多くの注目を集め、現在活発に探求されています。本論文では、ゼロショットおよび少ショットの推薦タスクのために、純粋な大規模言語モデルを適応させ、強化することに焦点を当てます。まず第一に、推薦分野におけるLLMsの生涯にわたる連続的な行動理解の問題を特定し、定式化します。つまり、LLMsは長いユーザー行動シーケンスのテキストコンテキストから有用な情報を抽出できないという問題です。これは、コンテキストの長さがLLMsのコンテキスト制限に達していない場合でも発生します。この問題に対処し、LLMsの推薦性能を向上させるために、ゼロショットおよび少ショットの設定で推薦タスクのための新しいフレームワーク、すなわちRetrieval-enhanced Large Language models（ReLLa）を提案します。ゼロショット推薦においては、セマンティックユーザー行動検索（SUBR）を実施し、テストサンプルのデータ品質を向上させ、LLMsがユーザー行動シーケンスから本質的な知識を抽出する難易度を大幅に低下させます。少ショット推薦に関しては、SUBRをデータ拡張技術として採用した検索強化指示チューニング（ReiT）をさらに設計します。具体的には、元のデータサンプルとその検索強化された対応物の両方を含む混合トレーニングデータセットを開発します。私たちは、ReLLaの優位性を示すために、3つの実世界の公開データセットで広範な実験を行い、LLMsの生涯にわたる連続的な行動理解能力を実証します。特に、10%未満のトレーニングサンプルで、少ショットReLLaは、全トレーニングセットで訓練された従来のCTRモデル（例：DCNv2、DIN、SIM）を上回ることができます。コードは以下のURLで入手可能です。 \url{https://github.com/LaVieEnRose365/ReLLa}。
+# Summary (by gpt-4o-mini)
+- 本論文では、ゼロショットおよび少ショットの推薦タスクにおいて、大規模言語モデル（LLMs）を強化する新しいフレームワーク「ReLLa」を提案。LLMsが長いユーザー行動シーケンスから情報を抽出できない問題に対処し、セマンティックユーザー行動検索（SUBR）を用いてデータ品質を向上させる。少ショット設定では、検索強化指示チューニング（ReiT）を設計し、混合トレーニングデータセットを使用。実験により、少ショットReLLaが従来のCTRモデルを上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1839" target="_blank" rel="noopener noreferrer">[Paper Note] RALLRec+: Retrieval Augmented Large Language Model Recommendation with  Reasoning, Sichun Luo+, arXiv'25, 2025.03</a>
+<br><br>のベースライン</p><p>LLMでCTR予測する際の性能を向上した研究。<br><br>そもそもLLMでCTR予測をする際は、ユーザのデモグラ情報とアクティビティログなどのユーザプロファイルと、ターゲットアイテムの情報でpromptingし、yes/noを出力させる。yes/noトークンのスコアに対して2次元のソフトマックスを適用して[0, 1]のスコアを得ることで、CTR予測をする（式1, 2）。<br><br>この研究ではコンテキストにユーザのログを入れても性能がスケールしない問題に対処するために (Figure 1)<br><br>直近のアクティビティログではなく、ターゲットアイテムと意味的に類似したアイテムに関するログをコンテキストに入れ（SUBR）、zero shotのinferenceに活用する (Figure 3)。<br><br>few-shot recommendation（少量のクリックスルーログを用いてLLMをSFTすることでCTR予測する手法）においては、上述の意味的に類似したアイテムをdata augmentationに利用し（i.e, promptに埋め込むアクティビティログの量を増やして）学習する (Figure 5)。<br><br>zeroshotにおいて、SUBRで性能改善。fewshot recommendationにといて、10%未満のデータで既存の全データを用いる手法を上回る。また、下のグラフを見るとpromptに利用するアクティビティログの量が増えるほど性能が向上するようになった。<br><img src="https://github.com/user-attachments/assets/1297153e-bd6c-4548-a7e0-798eadee80e9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ただし、latencyは100倍以上なのでユースケースが限定される。<br><img src="https://github.com/user-attachments/assets/89555964-f5c4-4735-bc0d-9a5a1b7f0278" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -6357,31 +6459,27 @@ Chain-of-Tableは、複数のLLMの選択肢にわたって、WikiTQ、FeTaQA、
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N_A, ICML'24</title>
+<title>[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, arXiv'24, 2024.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2401.10020</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1212</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, InstructionTuning, LLM-as-a-Judge, SelfImprovement, ICML, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, InstructionTuning, action_wanted, LLM-as-a-Judge, SelfImprovement, ICML, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2024-01-22</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2401.10020
-# Affiliations
-  - Weizhe Yuan, N/A
-  - Richard Yuanzhe Pang, N/A
-  - Kyunghyun Cho, N/A
-  - Sainbayar Sukhbaatar, N/A
-  - Jing Xu, N/A
-  - Jason Weston, N/A
+# Authors
+  - Weizhe Yuan
+  - Richard Yuanzhe Pang
+  - Kyunghyun Cho
+  - Xian Li
+  - Sainbayar Sukhbaatar
+  - Jing Xu
+  - Jason Weston
 # Abstract
-  - We posit that to achieve superhuman agents, future models require superhumanfeedback in order to provide an adequate training signal. Current approachescommonly train reward models from human preferences, which may then bebottlenecked by human performance level, and secondly these separate frozenreward models cannot then learn to improve during LLM training. In this work,we study Self-Rewarding Language Models, where the language model itself isused via LLM-as-a-Judge prompting to provide its own rewards during training.We show that during Iterative DPO training that not only does instructionfollowing ability improve, but also the ability to provide high-quality rewardsto itself. Fine-tuning Llama 2 70B on three iterations of our approach yields amodel that outperforms many existing systems on the AlpacaEval 2.0 leaderboard,including Claude 2, Gemini Pro, and GPT-4 0613. While only a preliminary study,this work opens the door to the possibility of models that can continuallyimprove in both axes.
-# Translation (by gpt-3.5-turbo)
-- 将来のモデルが超人的なエージェントを実現するためには、適切なトレーニング信号を提供するために超人的なフィードバックが必要であると考えています。
-現在のアプローチでは、一般的に人間の好みから報酬モデルをトレーニングし、その後、人間のパフォーマンスレベルによってボトルネックが発生する可能性があります。さらに、これらの別々の凍結された報酬モデルは、LLMのトレーニング中に改善することができません。
-本研究では、トレーニング中に言語モデル自体が自己報酬を提供するために使用されるSelf-Rewarding Language Modelsを研究しています。LLM-as-a-Judgeプロンプトを介して言語モデル自体が自己報酬を提供します。
-イテレーティブDPOトレーニング中に、指示の従う能力だけでなく、高品質な報酬を自己に提供する能力も向上することを示します。
-Llama 2 70Bを3回のイテレーションで私たちのアプローチによって微調整すると、AlpacaEval 2.0のリーダーボードでClaude 2、Gemini Pro、GPT-4 0613を含む多くの既存のシステムを上回るモデルが得られます。
-これはまだ予備的な研究ですが、この研究は、両方の軸で継続的に改善できるモデルの可能性を示しています。
-# Summary (by gpt-3.5-turbo)
-- 将来のモデルのトレーニングには超人的なフィードバックが必要であり、自己報酬を提供するSelf-Rewarding Language Modelsを研究している。LLM-as-a-Judgeプロンプトを使用して、言語モデル自体が自己報酬を提供し、高品質な報酬を得る能力を向上させることを示した。Llama 2 70Bを3回のイテレーションで微調整することで、既存のシステムを上回るモデルが得られることを示した。この研究は、改善可能なモデルの可能性を示している。</issue-body>
+  - We posit that to achieve superhuman agents, future models require superhuman feedback in order to provide an adequate training signal. Current approaches commonly train reward models from human preferences, which may then be bottlenecked by human performance level, and secondly these separate frozen reward models cannot then learn to improve during LLM training. In this work, we study Self-Rewarding Language Models, where the language model itself is used via LLM-as-a-Judge prompting to provide its own rewards during training. We show that during Iterative DPO training that not only does instruction following ability improve, but also the ability to provide high-quality rewards to itself. Fine-tuning Llama 2 70B on three iterations of our approach yields a model that outperforms many existing systems on the AlpacaEval 2.0 leaderboard, including Claude 2, Gemini Pro, and GPT-4 0613. While there is much left still to explore, this work opens the door to the possibility of models that can continually improve in both axes.
+# Translation (by gpt-5-nano)
+- 超人間のエージェントを達成するには、将来のモデルが適切な訓練信号を提供する超人間レベルのフィードバックを必要とするという仮説を提唱する。現在のアプローチは一般に人間の嗜好から報酬モデルを訓練することが多く、これが人間の性能レベルによってボトルネックになる可能性がある。さらに、これらの別個の凍結された報酬モデルはLLMの訓練中に改善することを学習できない。 本研究では、Self-Rewarding Language Models（自己報酬言語モデル）を検討する。ここでは言語モデル自体をLLM-as-a-Judgeプロンプティングを介して用い、訓練中に自ら報酬を提供させる。反復的なDPOトレーニングの過程で、指示に従う能力が向上するだけでなく、自己に対して高品質な報酬を提供する能力も向上することを示す。提案手法を3回の反復でLlama 2 70Bにファインチューニングすると、AlpacaEval 2.0リーダーボードでClaude 2、Gemini Pro、GPT-4 0613を含む多くの既存システムを上回るモデルになることが示される。まだ探求すべきことは多いが、本研究は両方の軸で継続的に改善できる可能性のあるモデルの扉を開く。
+# Summary (by gpt-4o-mini)
+- 超人間エージェントを実現するには、超人間レベルのフィードバックが必要であると提唱。現在のアプローチは人間の嗜好から報酬モデルを訓練するが、これがボトルネックになりがちである。本研究では自己報酬言語モデルを用い、LLMが自ら報酬を提供する方法を検討。DPOトレーニングにより指示への従順さと自己報酬の質が向上し、Llama 2 70Bをファインチューニングすることで、既存モデルを上回ることが示された。探索の余地は残るが、本研究は改善の可能性を示唆する。</issue-body>
 <maintainer-comment-text><p>人間の介入無しで（人間がアノテーションしたpreference data無しで）LLMのAlignmentを改善していく手法。LLM-as-a-Judge Promptingを用いて、LLM自身にpolicy modelとreward modelの役割の両方をさせる。unlabeledなpromptに対してpolicy modelとしてresponceを生成させた後、生成したレスポンスをreward modelとしてランキング付けし、DPOのpreference pairとして利用する、という操作を繰り返す。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/32db0422-6fb1-4741-bdfa-45a5e83e76c4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
@@ -6791,7 +6889,7 @@ TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフ�
 </paper-entry>
 
 <paper-entry>
-<title>The Impact of Positional Encoding on Length Generalization in   Transformers, Amirhossein Kazemnejad+, NeurIPS'23</title>
+<title>[Paper Note] The Impact of Positional Encoding on Length Generalization in   Transformers, Amirhossein Kazemnejad+, NeurIPS'23</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2305.19466</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1865</repo-issue-link>
 <tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, LongSequence, PositionalEncoding, NeurIPS, Selected Papers/Blogs, KeyPoint Notes, Surface-level Notes</tags>
@@ -6855,7 +6953,7 @@ TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフ�
 </paper-entry>
 
 <paper-entry>
-<title>Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</title>
+<title>[Paper Note] Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</title>
 <original-paper-blog-link>https://arxiv.org/abs/2305.16264</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1829</repo-issue-link>
 <tags>MachineLearning, NLP, LanguageModel, NeurIPS, Scaling Laws, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
@@ -7854,7 +7952,7 @@ LongLoRAは、オリジナルのアーキテクチャを保持しながらモデ
 <title>[Paper Note] Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, arXiv'23, 2023.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2307.03172</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/793</repo-issue-link>
-<tags>Analysis, MachineLearning, NLP, LanguageModel, Prompting, action_wanted, In-ContextLearning, TACL, ContextEngineering, KeyPoint Notes, needs-revision</tags>
+<tags>Analysis, MachineLearning, NLP, LanguageModel, Prompting, action_wanted, In-ContextLearning, TACL, Selected Papers/Blogs, ContextEngineering, KeyPoint Notes, needs-revision</tags>
 <repo-issue-date>2023-07-11</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2307.03172
@@ -7869,9 +7967,9 @@ LongLoRAは、オリジナルのアーキテクチャを保持しながらモデ
 # Abstract
   - While recent language models have the ability to take long contexts as input, relatively little is known about how well they use longer context. We analyze the performance of language models on two tasks that require identifying relevant information in their input contexts: multi-document question answering and key-value retrieval. We find that performance can degrade significantly when changing the position of relevant information, indicating that current language models do not robustly make use of information in long input contexts. In particular, we observe that performance is often highest when relevant information occurs at the beginning or end of the input context, and significantly degrades when models must access relevant information in the middle of long contexts, even for explicitly long-context models. Our analysis provides a better understanding of how language models use their input context and provides new evaluation protocols for future long-context language models.
 # Translation (by gpt-5-nano)
-- 最近の言語モデルは長い文脈を入力として扱える能力を備えている一方で、長い文脈をどれだけ上手く活用できるかについては比較的よく分かっていない。私たちは、入力文脈内の関連情報を特定することを要求する2つのタスク、すなわちマルチドキュメント質問応答とキーと値の検索の性能を分析した。関連情報の位置を変えると性能が大幅に低下することがあることが分かり、長い入力文脈の情報を現在の言語モデルが頑健に活用できていないことを示唆している。特に、関連情報が入力文脈の先頭または末尾に現れるときに性能がしばしば最も高く、長い文脈の中間にある関連情報にアクセスしなければならない場合には、たとえ長い文脈モデルであっても顕著に劣化することを観察した。我々の分析は、言語モデルが入力文脈をどのように利用しているかをより良く理解させ、将来の長い文脈言語モデルのための新しい評価プロトコルを提供する。
+- 最近の言語モデルには長い文脈を入力として扱う能力がある一方で、長い文脈をどれだけうまく活用できるかについてはまだ十分には分かっていない。入力文脈中の関連情報を特定することを要求する二つのタスク、すなわち複数文書に基づく質問応答とキー・バリュー検索に対する言語モデルの性能を分析する。関連情報の位置を変えると性能が著しく低下することがあることを見出し、現代の言語モデルは長い入力文脈中の情報を頑健に活用できていないことを示唆している。特に、関連情報が入力文脈の先頭または末尾に現れるときに性能が高いことが多く、長い文脈の中央部で関連情報にアクセスしなければならない場合には、たとえ明示的に長い文脈を扱うモデルであっても性能が著しく低下する。われわれの分析は、言語モデルが入力文脈をどのように使用するかについての理解を深め、今後の長い文脈を扱う言語モデルの新たな評価プロトコルを提供する。
 # Summary (by gpt-4o-mini)
-- 最近の言語モデルは長い文脈を扱えるが、その活用方法は未解明である。マルチドキュメント質問応答とキーと値の検索タスクを分析した結果、関連情報の位置が性能に影響し、特に文脈の先頭や末尾にある情報は扱いやすいことが明らかになった。中間の関連情報では性能が大幅に低下することが観察され、言語モデルの文脈活用の理解向上と新たな評価プロトコルの提案につながる。</issue-body>
+- 言語モデルは長い文脈を扱う能力を持つが、実際に関連情報を効果的に利用できているかは未解明。複数文書に基づく質問応答とキー・バリュー検索を通じて、関連情報の位置による性能変動を分析した結果、関連情報が文脈の先頭や末尾にあるときに高性能を示し、中央にある場合に顕著に性能が低下することが明らかになった。この考察は、言語モデルの文脈使用に関する理解を深め、長い文脈への評価プロトコルの方向性を示唆している。</issue-body>
 <maintainer-comment-text><p>元ツイート<br>
 
 {% raw %}
@@ -10791,7 +10889,7 @@ UserModelを表現する際に、従来は単語の集合などが用いられ�
 </div>
 {% endraw %}
 
-</p><p>- インターネットのデータ枯渇問題が指摘されながらも、合成データによって事前学習は進化を続けている<br>- LLMは事後学習で性能を向上させられるが、事前学習時点で伸ばせる上限が決まっているとされている<br>- 事前学習データの投入量はChinchilla則のパラメータ量の20倍から現在は60倍まで増加<br>- MoEは過学習しやすくパラメータ数の40倍は必要<br>- 学習データの多様性が重要で繰り返し同じデータを見ても性能は改善しない<br>- 合成データをそのまま用いるとmode collapseが生じ出力が単調化するため、実データを混ぜるか言い換えをしたデータで是正する（弱めのdata augmentationで良い)<br>- 最近重要な合成データはコードと推論過程を含むデータで、これらが事前学習データに含まれていると汎用な表現、思考能力、推論能力を事前学習時点から獲得できる可能性がある<br><br>というような話が元ポストに書かれている。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+</p><p>- インターネットのデータ枯渇問題が指摘されながらも、合成データによって事前学習は進化を続けている<br>- LLMは事後学習で性能を向上させられるが、事前学習時点で伸ばせる上限が決まっているとされている<br>- 事前学習データの投入量はChinchilla則のパラメータ量の20倍から現在は60倍まで増加<br>- MoEは過学習しやすくパラメータ数の40倍は必要<br>- 学習データの多様性が重要で繰り返し同じデータを見ても性能は改善しない<br>- 合成データをそのまま用いるとmode collapseが生じ出力が単調化するため、実データを混ぜるか言い換えをしたデータで是正する（弱めのdata augmentationで良い)<br>- 最近重要な合成データはコードと推論過程を含むデータで、これらが事前学習データに含まれていると汎用な表現、思考能力、推論能力を事前学習時点から獲得できる可能性がある<br><br>というような話が元ポストに書かれている。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
 <br><br>のようにrepetitionは4回までが効果的といった知見が報告されているが、現在はどこまで当てはまるのだろうか？</p><p>後ほど関連するissueのリンクを貼りたい</p><p>うーんおもしろそう、p.15, p.20, p.26, p.28, p.35, p.36 あたりが気になる。<br><br>てかこれが大学の講義...?楽しすぎでは。</p></maintainer-comment-text>
 </paper-entry>
 
@@ -11987,8 +12085,8 @@ Moksh Jain</issue-body>
 <br>- MoE<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1754" target="_blank" rel="noopener noreferrer">[Paper Note] Switch Transformers: Scaling to Trillion Parameter Models with Simple  and Efficient Sparsity, William Fedus+, JMLR'22</a>
 <br>- RoPE w/ YaRN<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1310" target="_blank" rel="noopener noreferrer">[Paper Note] RoFormer: Enhanced Transformer with Rotary Position Embedding, Jianlin Su+, arXiv'21, 2021.04</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2338" target="_blank" rel="noopener noreferrer">[Paper Note] YaRN: Efficient Context Window Extension of Large Language Models, Bowen Peng+, ICLR'24</a>
-<br>- Attention Sinks<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
-<br>    - Attention Sinksの定義とその気持ち、Zero Sink, Softmaxの分母にバイアス項が存在する意義についてはこのメモを参照のこと。<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
+<br>- Attention Sinks<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1861" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</a>
+<br>    - Attention Sinksの定義とその気持ち、Zero Sink, Softmaxの分母にバイアス項が存在する意義についてはこのメモを参照のこと。<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1860" target="_blank" rel="noopener noreferrer">[Paper Note] Why do LLMs attend to the first token?, Federico Barbero+, COLM'25</a>
 <br>    - Attention Sinksが実際にどのように効果的に作用しているか？についてはこちらのメモを参照。<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1862" target="_blank" rel="noopener noreferrer">[Paper Note] When Attention Sink Emerges in Language Models: An Empirical View, Xiangming Gu+, ICLR'25</a>
 <br>    - 
 
@@ -12274,7 +12372,7 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
  <br>- QK-Clip<br>  - 参考（こちらはLayerNormを使っているが）: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202" target="_blank" rel="noopener noreferrer">[Paper Note] Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision, Language, Audio, and Action, Jiasen Lu+, CVPR'24, 2023.12</a>
 <br>- RLVR<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
  <br>- Self-Critique<br>  - 関連: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2274" target="_blank" rel="noopener noreferrer">[Paper Note] Inference-Time Scaling for Generalist Reward Modeling, Zijun Liu+, arXiv'25</a>
-<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2017" target="_blank" rel="noopener noreferrer">[Paper Note] Writing-Zero: Bridge the Gap Between Non-verifiable Problems and  Verifiable Rewards, Xun Lu, arXiv'25</a>
+<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2017" target="_blank" rel="noopener noreferrer">[Paper Note] Writing-Zero: Bridge the Gap Between Non-verifiable Tasks and Verifiable Rewards, Ruipeng Jia+, arXiv'25, 2025.05</a>
  <br>- Temperature Decay  <br>  - 最初はTemperatureを高めにした探索多めに、後半はTemperatureを低めにして効用多めになるようにスケジューリング<br>- Tool useのためのSynthetic Data<br><br><img src="https://github.com/user-attachments/assets/74eacdb2-8f64-4d53-b2d0-66df770f2e8b" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Reward Hackingに対処するため、RLVRではなくpairwise comparisonに基づくself judging w/ critique を利用きており、これが非常に効果的な可能性があるのでは、という意見がある:<br>
 
 {% raw %}
@@ -12292,7 +12390,7 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 <title>Qwen3, Qwen Team, 2025.04</title>
 <original-paper-blog-link>https://qwenlm.github.io/blog/qwen3/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1909</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes, Reference Collection</tags>
 <repo-issue-date>2025-04-29</repo-issue-date>
 <issue-body>https://qwenlm.github.io/blog/qwen3/</issue-body>
 <maintainer-comment-text><p>- 119言語をサポート<br>- MoEモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1911" target="_blank" rel="noopener noreferrer">[Paper Note] Outrageously Large Neural Networks: The Sparsely-Gated  Mixture-of-Experts Layer, Noam Shazeer+, ICLR'17</a>
@@ -12328,7 +12426,7 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 <title>Llama-3_1-Nemotron-Ultra-253B-v1, Nvidia, 2025.04</title>
 <original-paper-blog-link>https://huggingface.co/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1873</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Pruning, Reasoning, OpenWeight, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Pruning, Reasoning, OpenWeight, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-04-08</repo-issue-date>
 <issue-body>https://huggingface.co/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1</issue-body>
 <maintainer-comment-text><p>DeepSeek-R1をGPQA Diamond <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1155" target="_blank" rel="noopener noreferrer">GPQA: A Graduate-Level Google-Proof Q&A Benchmark, David Rein+, N/A, COLM'24</a>

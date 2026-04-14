@@ -190,7 +190,7 @@
 </div>
 {% endraw %}
 
-</p><p>関連<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1832" target="_blank" rel="noopener noreferrer">Critique Fine-Tuning: Learning to Critique is More Effective than   Learning to Imitate, Yubo Wang+, COLM'25</a>
+</p><p>関連<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1832" target="_blank" rel="noopener noreferrer">[Paper Note] Critique Fine-Tuning: Learning to Critique is More Effective than   Learning to Imitate, Yubo Wang+, COLM'25</a>
 </p><p>Lean 4 形式に<br><br><img src="https://github.com/user-attachments/assets/79121e53-b205-440d-9615-d520ac848704" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
 </paper-entry>
 
@@ -435,8 +435,7 @@ https://aclanthology.org/2025.acl-long.328/
 </div>
 {% endraw %}
 
-</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
-  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">[Paper Note] The First Few Tokens Are All You Need: An Efficient and Effective  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, NeurIPS'25, 2025.03</a>
 <br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></maintainer-comment-text>
 </paper-entry>
 
@@ -735,7 +734,7 @@ https://aclanthology.org/2025.acl-long.328/
 <title>[Paper Note] Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting, Hao Feng+, ACL'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.14059</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2063</repo-issue-link>
-<tags>Document, NLP, Library, ACL, DocParser</tags>
+<tags>Document, NLP, Library, ACL, DocParser, One-Line Notes</tags>
 <repo-issue-date>2025-06-21</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.14059
@@ -772,7 +771,7 @@ https://aclanthology.org/2025.acl-long.328/
 <title>[Paper Note] Value Residual Learning, Zhanchao Zhou+, ACL'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2410.17897</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2030</repo-issue-link>
-<tags>NLP, LanguageModel, Transformer, Architecture, ACL, read-later, Selected Papers/Blogs</tags>
+<tags>NLP, LanguageModel, Transformer, Architecture, ACL, read-later, Selected Papers/Blogs, Author Thread-Post</tags>
 <repo-issue-date>2025-06-12</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2410.17897
@@ -824,10 +823,49 @@ https://aclanthology.org/2025.acl-long.328/
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] BIG-Bench Extra Hard, Mehran Kazemi+, ACL'25, 2025.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2502.19187</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2006</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, Evaluation, Reasoning, ACL, One-Line Notes</tags>
+<repo-issue-date>2025-06-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2502.19187
+# Authors
+  - Mehran Kazemi
+  - Bahare Fatemi
+  - Hritik Bansal
+  - John Palowitch
+  - Chrysovalantis Anastasiou
+  - Sanket Vaibhav Mehta
+  - Lalit K. Jain
+  - Virginia Aglietti
+  - Disha Jindal
+  - Peter Chen
+  - Nishanth Dikkala
+  - Gladys Tyen
+  - Xin Liu
+  - Uri Shalit
+  - Silvia Chiappa
+  - Kate Olszewska
+  - Yi Tay
+  - Vinh Q. Tran
+  - Quoc V. Le
+  - Orhan Firat
+# Abstract
+  - Large language models (LLMs) are increasingly deployed in everyday applications, demanding robust general reasoning capabilities and diverse reasoning skillset. However, current LLM reasoning benchmarks predominantly focus on mathematical and coding abilities, leaving a gap in evaluating broader reasoning proficiencies. One particular exception is the BIG-Bench dataset, which has served as a crucial benchmark for evaluating the general reasoning capabilities of LLMs, thanks to its diverse set of challenging tasks that allowed for a comprehensive assessment of general reasoning across various skills within a unified framework. However, recent advances in LLMs have led to saturation on BIG-Bench, and its harder version BIG-Bench Hard (BBH). State-of-the-art models achieve near-perfect scores on many tasks in BBH, thus diminishing its utility. To address this limitation, we introduce BIG-Bench Extra Hard (BBEH), a new benchmark designed to push the boundaries of LLM reasoning evaluation. BBEH replaces each task in BBH with a novel task that probes a similar reasoning capability but exhibits significantly increased difficulty. We evaluate various models on BBEH and observe a (harmonic) average accuracy of 9.8\% for the best general-purpose model and 44.8\% for the best reasoning-specialized model, indicating substantial room for improvement and highlighting the ongoing challenge of achieving robust general reasoning in LLMs. We release BBEH publicly at: https://github.com/google-deepmind/bbeh.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は、日常のアプリケーションでますます広く利用されており、堅牢な一般的推論能力と多様な推論スキルセットが求められています。しかし、現在のLLM推論ベンチマークは主に数学的およびコーディング能力に焦点を当てており、より広範な推論能力を評価するためのギャップが存在します。特に例外的なのはBIG-Benchデータセットであり、これは多様な挑戦的タスクのセットを提供することで、統一されたフレームワーク内でさまざまなスキルにわたる一般的な推論能力を包括的に評価するための重要なベンチマークとして機能しています。しかし、最近のLLMの進展により、BIG-Benchおよびその難易度の高いバージョンであるBIG-Bench Hard（BBH）での飽和状態が生じています。最先端のモデルはBBHの多くのタスクでほぼ完璧なスコアを達成しており、その有用性が低下しています。この制限に対処するために、私たちはBIG-Bench Extra Hard（BBEH）を導入します。これは、LLM推論評価の限界を押し広げることを目的とした新しいベンチマークです。BBEHは、BBHの各タスクを新しいタスクに置き換え、類似の推論能力を探る一方で、難易度を大幅に引き上げています。私たちはBBEHでさまざまなモデルを評価し、最良の汎用モデルで9.8%、最良の推論専門モデルで44.8%の（調和）平均精度を観察しました。これは、改善の余地が大きいことを示しており、LLMにおける堅牢な一般的推論を達成するという継続的な課題を浮き彫りにしています。BBEHは以下のリンクで公開しています：https://github.com/google-deepmind/bbeh。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）の推論能力を評価するための新しいベンチマーク、BIG-Bench Extra Hard（BBEH）を導入。これは、既存のBIG-Bench Hard（BBH）のタスクを新しいものに置き換え、難易度を大幅に引き上げることで、LLMの限界を押し広げることを目的としている。評価の結果、最良の汎用モデルで9.8%、推論専門モデルで44.8%の平均精度が観察され、LLMの一般的推論能力向上の余地が示された。BBEHは公開されている。</issue-body>
+<maintainer-comment-text><p>Big-Bench hard（既にSoTAモデルの能力差を識別できない）の難易度をさらに押し上げたデータセット。<br><br>Inputの例<br><img src="https://github.com/user-attachments/assets/b9d1308f-1481-470d-a553-c181d902119c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>タスクごとのInput, Output lengthの分布<br><img src="https://github.com/user-attachments/assets/ef6b7401-159d-46c7-bd9d-9a64f63b5089" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/01207db3-cb01-46f2-a805-e9ddf9d58198" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>現在の主要なモデル群の性能<br><img src="https://github.com/user-attachments/assets/5ce538d8-45a1-449a-992a-998b33fdeaf7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Big-Bench論文はこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/785" target="_blank" rel="noopener noreferrer">[Paper Note] Beyond the Imitation Game: Quantifying and extrapolating the capabilities of language models, Aarohi Srivastava+, arXiv'22, 2022.06</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Why Vision Language Models Struggle with Visual Arithmetic? Towards   Enhanced Chart and Geometry Understanding, Kung-Hsiang Huang+, ACL'25, 2025.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.11492</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1974</repo-issue-link>
-<tags>ComputerVision, Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), SyntheticData, ACL, DPO, PostTraining, Probing, One-Line Notes</tags>
+<tags>ComputerVision, Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), SyntheticData, ACL, DPO, PostTraining, Probing, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2502.11492
@@ -859,7 +897,7 @@ https://aclanthology.org/2025.acl-long.328/
 </paper-entry>
 
 <paper-entry>
-<title>Nemotron-CC: Transforming Common Crawl into a Refined Long-Horizon   Pretraining Dataset, Dan Su+, ACL'25</title>
+<title>[Paper Note] Nemotron-CC: Transforming Common Crawl into a Refined Long-Horizon   Pretraining Dataset, Dan Su+, ACL'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2412.02595</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1944</repo-issue-link>
 <tags>EfficiencyImprovement, Pretraining, NLP, Dataset, LanguageModel, ACL, Selected Papers/Blogs</tags>
@@ -923,6 +961,39 @@ https://aclanthology.org/2025.acl-long.328/
 
 <br><br>Togetherが内部的にどのような処理をしているかまでは追えていないのだが、異なるInferenceEngineを利用した場合に、どの程度outputの不安定さに差が出るのか（あるいは出ないのか）は気になる。たとえば、transformers/vLLM/SGLangを利用した場合などである。<br><br>論文中でも報告されている通り、昔管理人がtransformersを用いて、deterministicな設定でzephyrを用いてinferenceをしたときは、出力はdeterministicになっていたと記憶している（スループットは絶望的だったが...)。</p><p>あと個人的には現実的な速度でオフラインでinference engineを利用した時にdeterministicにはせめてなって欲しいなあという気はするので、何が原因なのかを実装レベルで突き詰めてくれるととても嬉しい（KV Cacheが怪しい気がするけど）。<br><br>たとえば最近SLMだったらKVCacheしてVRAM食うより計算し直した方が効率良いよ、みたいな研究があったような。そういうことをしたらlocal llmでdeterministicにならないのだろうか。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2763" target="_blank" rel="noopener noreferrer">Defeating Nondeterminism in LLM Inference, Horace He in collaboration with others at Thinking Machines, 2025.09</a>
 <br><br>においてvLLMを用いた場合にDeterministicな推論をするための解決方法が提案されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Compute Optimal Scaling of Skills: Knowledge vs Reasoning, Nicholas Roberts+, ACL'25 Findings, 2025.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2503.10061</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1825</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, ACL, Scaling Laws, Findings, Initial Impression Notes</tags>
+<repo-issue-date>2025-03-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2503.10061
+# Authors
+  - Nicholas Roberts
+  - Niladri Chatterji
+  - Sharan Narang
+  - Mike Lewis
+  - Dieuwke Hupkes
+# Abstract
+  - Scaling laws are a critical component of the LLM development pipeline, most famously as a way to forecast training decisions such as 'compute-optimally' trading-off parameter count and dataset size, alongside a more recent growing list of other crucial decisions. In this work, we ask whether compute-optimal scaling behaviour can be skill-dependent. In particular, we examine knowledge and reasoning-based skills such as knowledge-based QA and code generation, and we answer this question in the affirmative: scaling laws are skill-dependent. Next, to understand whether skill-dependent scaling is an artefact of the pretraining datamix, we conduct an extensive ablation of different datamixes and find that, also when correcting for datamix differences, knowledge and code exhibit fundamental differences in scaling behaviour. We conclude with an analysis of how our findings relate to standard compute-optimal scaling using a validation set, and find that a misspecified validation set can impact compute-optimal parameter count by nearly 50%, depending on its skill composition.
+# Translation (by gpt-4o-mini)
+- スケーリング法則は、LLM開発パイプラインの重要な要素であり、特に「計算最適化」によるパラメータ数とデータセットサイズのトレードオフなど、トレーニングの決定を予測する方法として有名です。最近では、他の重要な決定事項のリストも増えています。本研究では、計算最適なスケーリングの挙動がスキルに依存するかどうかを問いかけます。特に、知識に基づくQAやコード生成などの知識および推論に基づくスキルを検討し、この問いに肯定的に答えます：スケーリング法則はスキルに依存しています。次に、スキル依存のスケーリングが事前トレーニングデータミックスの産物であるかどうかを理解するために、さまざまなデータミックスの広範なアブレーションを実施し、データミックスの違いを補正しても、知識とコードがスケーリング挙動において根本的な違いを示すことを発見しました。最後に、我々の発見が標準的な計算最適スケーリングとどのように関連しているかを検証セットを用いて分析し、誤指定された検証セットがスキル構成に応じて計算最適なパラメータ数にほぼ50%の影響を与える可能性があることを見出しました。
+# Summary (by gpt-4o-mini)
+- スケーリング法則はLLM開発において重要であり、特に計算最適化によるトレードオフが注目されている。本研究では、スケーリング法則が知識や推論に基づくスキルに依存することを示し、異なるデータミックスがスケーリング挙動に与える影響を調査した。結果、知識とコード生成のスキルは根本的に異なるスケーリング挙動を示し、誤指定された検証セットが計算最適なパラメータ数に約50%の影響を与える可能性があることが明らかになった。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/1903843682509312218?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>知識を問うQAのようなタスクはモデルのパラメータ量が必要であり、コーディングのようなReasoningに基づくタスクはデータ量が必要であり、異なる要素に依存してスケールすることを示している研究のようである。<br><br><img src="https://github.com/user-attachments/assets/5d2bb3c6-437a-4184-9848-3232745d0de1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>直感的な理解としては、<br><br>多くの知識はMLP（だけではないが）に格納されているとされており、1パラメータあたりに格納可能な知識量がある程度決まっているため、知識が必要なタスクはパラメータ数が必要であり、<br>Reasoningのようなタスクはどれだけ学習データ側でReasoningのパターンを学習できるかに性能が依存するため、データ量が必要、<br><br>というものになるのかなという気がする。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
