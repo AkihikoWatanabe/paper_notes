@@ -1107,8 +1107,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 </div>
 {% endraw %}
 
-</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
-  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">[Paper Note] The First Few Tokens Are All You Need: An Efficient and Effective  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, NeurIPS'25, 2025.03</a>
 <br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></maintainer-comment-text>
 </paper-entry>
 
@@ -1401,7 +1400,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] Saffron-1: Towards an Inference Scaling Paradigm for LLM Safety  Assurance, Ruizhong Qiu+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.06444</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2027</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Alignment, ReinforcementLearning, Safety</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Alignment, ReinforcementLearning, Safety, Author Thread-Post</tags>
 <repo-issue-date>2025-06-11</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.06444
@@ -1434,7 +1433,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] When Bad Data Leads to Good Models, Kenneth Li+, ICML'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.04741</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1940</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), Safety, ICML, DPO, Toxicity, ActivationSteering/ITI, KeyPoint Notes</tags>
+<tags>Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), Safety, ICML, DPO, Toxicity, ActivationSteering/ITI, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-09</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.04741
@@ -1473,7 +1472,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>Safety Alignment Should Be Made More Than Just a Few Tokens Deep, Xiangyu Qi+, ICLR'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2406.05946</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1908</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), Safety, ICLR, Selected Papers/Blogs, One-Line Notes</tags>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), Safety, ICLR, Selected Papers/Blogs, One-Line Notes, Reference Collection</tags>
 <repo-issue-date>2025-04-29</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2406.05946

@@ -1997,8 +1997,7 @@ My Issue
 </div>
 
 
-</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
-  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">[Paper Note] The First Few Tokens Are All You Need: An Efficient and Effective  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, NeurIPS'25, 2025.03</a>
 <br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -2236,6 +2235,7 @@ My Issue
 <a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
 <a class="button" href="Alignment.html" target="_blank" rel="noopener noreferrer">#Alignment</a>
 <a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="Author-Thread-Post.html" target="_blank" rel="noopener noreferrer">#Author Thread-Post</a>
 <span class="issue_date">Issue Date: 2025-06-11</span>
 <span class="snippet"><span>GPT Summary</span>- 既存のLLMの安全保証研究は主にトレーニング段階に焦点を当てているが、脱獄攻撃に対して脆弱であることが明らかになった。本研究では、推論スケーリングを用いた新たな安全性向上手法SAFFRONを提案し、計算オーバーヘッドを削減する多分岐報酬モデル（MRM）を導入。これにより、報酬モデル評価の数を減らし、探索-効率性のジレンマを克服する。実験により手法の有効性を確認し、訓練済みモデルと安全報酬データセットを公開。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
@@ -2271,6 +2271,7 @@ My Issue
 <a class="button" href="Toxicity.html" target="_blank" rel="noopener noreferrer">#Toxicity</a>
 <a class="button" href="ActivationSteering-ITI.html" target="_blank" rel="noopener noreferrer">#ActivationSteering/ITI</a>
 <a class="button" href="KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">#KeyPoint Notes</a>
+<a class="button" href="Author-Thread-Post.html" target="_blank" rel="noopener noreferrer">#Author Thread-Post</a>
 <span class="issue_date">Issue Date: 2025-05-09</span>
 <span class="snippet"><span>GPT Summary</span>- 本論文では、LLMの事前学習におけるデータの質の再検討を行い、有害データが事後学習における制御を向上させる可能性を探ります。トイ実験を通じて、有害データの割合が増加することで有害性の概念が線形表現に影響を与えることを発見し、有害データが生成的有害性を増加させつつも除去しやすくなることを示しました。評価結果は、有害データで訓練されたモデルが生成的有害性を低下させつつ一般的な能力を保持する良好なトレードオフを達成することを示唆しています。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
@@ -2311,6 +2312,7 @@ My Issue
 <a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
 <a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
 <span class="issue_date">Issue Date: 2025-04-29</span>
 <span class="snippet"><span>GPT Summary</span>- 現在の大規模言語モデル（LLMs）の安全性アラインメントは脆弱であり、単純な攻撃や善意のファインチューニングによって脱獄される可能性がある。この脆弱性は「浅い安全性アラインメント」に起因し、アラインメントが主に最初の数トークンの出力にのみ適応されることに関連している。本論文では、この問題のケーススタディを提示し、現在のアラインされたLLMsが直面する脆弱性を説明する。また、浅い安全性アラインメントの概念が脆弱性軽減の研究方向を示唆し、初期トークンを超えたアラインメントの深化がロバスト性を向上させる可能性を示す。最後に、ファインチューニング攻撃に対する持続的な安全性アラインメントを実現するための正則化されたファインチューニング目的を提案する。</span>
 <span class="snippet"><span>Comment</span><p>元ポスト:
@@ -3346,42 +3348,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SemanticID.html"
-            title="SemanticIDに関する論文・技術記事メモの一覧">
-            SemanticIDに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SparseAutoEncoder.html"
+            title="SparseAutoEncoderに関する論文・技術記事メモの一覧">
+            SparseAutoEncoderに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SpatialUnderstanding.html"
-            title="SpatialUnderstandingに関する論文・技術記事メモの一覧">
-            SpatialUnderstandingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Mindset.html"
+            title="Mindsetに関する論文・技術記事メモの一覧">
+            Mindsetに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
-  <span class="post-badge badge-new">📝 21</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
+  <span class="post-badge badge-new">📝 12</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Data.html"
-            title="Dataに関する論文・技術記事メモの一覧">
-            Dataに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PerplexityCurse.html"
+            title="PerplexityCurseに関する論文・技術記事メモの一覧">
+            PerplexityCurseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Alignment.html"
-            title="Alignmentに関する論文・技術記事メモの一覧">
-            Alignmentに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PII.html"
+            title="PIIに関する論文・技術記事メモの一覧">
+            PIIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 106</span> 
-  <span class="post-badge badge-new">📝 106</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>

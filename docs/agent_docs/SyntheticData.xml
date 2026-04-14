@@ -1392,7 +1392,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </div>
 {% endraw %}
 
-</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, N/A, ICML'24</a>
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1212" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Rewarding Language Models, Weizhe Yuan+, arXiv'24, 2024.01</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -2603,8 +2603,7 @@ https://github.com/princeton-pli/STAT。
 </div>
 {% endraw %}
 
-</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">The First Few Tokens Are All You Need: An Efficient and Effective
-  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, arXiv'25</a>
+</p><p>一般的なSafety Tuningでは有害なpromptが与えられた時に安全な応答が生成される確率を最大化する（MLE)が、安全な応答は冒頭の数トークンにSorry, I apologize等の回答を拒絶するトークンが集中する傾向にあり、応答を拒否するか否かにポジションバイアスが生じてしまう。これにより、応答の途中で潜在的な危険性を検知し、応答を拒否することができなくなってしまうという課題が生じる。<br><br>これを解決するために、RTOを提案している。有害なpromptの一部をprefixとし、その後にSafetyなレスポンスをconcatするような応答を合成しMLEに活用することで、応答の途中でも応答を拒否するような挙動を学習することができる。prefixを利用することで、<br>- prefixを用いることで安全なレスポンスに追加のcontextを付与することができ、潜在的な危険性の識別力が高まり、<br>- prefixの長さは任意なので、応答のどのポジションからでも危険性識別できるようになり、<br>- モデルが有害な応答を開始したことをシームレスに認識して安全な回答を生成するように遷移させられる<br><br>といった利点があるが、1つの学習サンプルにつき一つの遷移（i.e., prefixと安全な応答の境目は1サンプルにつき一箇所しかないので）しか学習できないことである。このため、RTOでは、レスポンスの全てのポジションにおいてsorryが生成される確率を最大化することで、モデルが全てのポジションで継続的に危険性を識別できる能力を高めるような工夫をする。<br><br><img src="https://github.com/user-attachments/assets/1e35903a-b886-4475-8b58-76e057c26d03" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>目的関数は以下で、Harmful Prefixがgivenな時に安全な回答が生成される確率を最大化するMLEの項に対して（r^hat_<kはランダムに選択される[0,回答の長さ]の定数）、全ての位置t以後のポジションにおいてsorryの生成確率を最大化する（tは全ての可能なポジションに対して変化させてsummationする）ような項を追加（＝RTO）する。<br><img src="https://github.com/user-attachments/assets/d7416ef5-6587-46b4-8255-1e9884242a72" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>実験の結果は、全体を見る限り、helpfulnessを損なうことなく、安全な応答を生成できるようになっており、DPO等のその他のAlignment手法よりも性能が良さそうである。<br><img src="https://github.com/user-attachments/assets/3fdec4a2-5b9e-4f4b-985a-edf885fde72a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>以下の研究で報告されている現象と似ている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1813" target="_blank" rel="noopener noreferrer">[Paper Note] The First Few Tokens Are All You Need: An Efficient and Effective  Unsupervised Prefix Fine-Tuning Method for Reasoning Models, Ke Ji+, NeurIPS'25, 2025.03</a>
 <br><br>すなわち、reasoning traceの最初の数トークンが全体の品質に大きく関わるという話</p></maintainer-comment-text>
 </paper-entry>
 
@@ -3124,7 +3123,7 @@ https://github.com/princeton-pli/STAT。
 <title>[Paper Note] Recycling the Web: A Method to Enhance Pre-training Data Quality and  Quantity for Language Models, Thao Nguyen+, COLM'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.04689</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2084</repo-issue-link>
-<tags>Pretraining, NLP, Dataset, LanguageModel, SyntheticData, action_wanted, COLM</tags>
+<tags>Pretraining, NLP, Dataset, LanguageModel, SyntheticData, action_wanted, COLM, Author Thread-Post</tags>
 <repo-issue-date>2025-06-25</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.04689
@@ -3162,7 +3161,7 @@ https://github.com/princeton-pli/STAT。
 </div>
 {% endraw %}
 
-</p><p>学習データの枯渇に対する対処として別の方向性としては下記のような研究もある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+</p><p>学習データの枯渇に対する対処として別の方向性としては下記のような研究もある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
 </p><p>data:
 
 {% raw %}
@@ -3173,10 +3172,10 @@ https://github.com/princeton-pli/STAT。
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] SynLogic: Synthesizing Verifiable Reasoning Data at Scale for Learning  Logical Reasoning and Beyond, Junteng Liu+, arXiv'25</title>
+<title>[Paper Note] SynLogic: Synthesizing Verifiable Reasoning Data at Scale for Learning  Logical Reasoning and Beyond, Junteng Liu+, NeurIPS'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.19641</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2019</repo-issue-link>
-<tags>NLP, Dataset, LanguageModel, SyntheticData, Reasoning</tags>
+<tags>NLP, Dataset, LanguageModel, SyntheticData, Reasoning, NeurIPS, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-06-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.19641
@@ -3212,14 +3211,20 @@ https://github.com/princeton-pli/STAT。
 </div>
 {% endraw %}
 
-</p><p>35種類のタスクを人手で選定し、タスクごとに困難度の鍵となるパラメータを定義（数独ならばグリッド数など）。その上で、各タスクごとに人手でルールベースのinstanceを生成するコードを実装し、さまざまな困難度パラメータに基づいて多様なinstanceを生成。生成されたinstanceの困難度は、近似的なUpper Bound(DeepSeek-R1, o3-miniのPass@10)とLower bound（chat model[^1]でのPass@10)を求めデータセットに含まれるinstanceの困難度をコントロールし、taskを記述するpromptも生成。タスクごとに人手で実装されたVerifierも用意されている。<br><img src="https://github.com/user-attachments/assets/cda0534d-7db2-4470-93b8-01f446476544" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Qwen2.5-7B-BaseをSynDataでDAPOしたところ、大幅にlogic benchmarkとmathematical benchmarkの性能が改善。<br><img src="https://github.com/user-attachments/assets/dcc1309d-7946-4a6d-91a3-7ccac9ec6688" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>mathやcodeのデータとmixして7Bモデルを訓練したところ、32Bモデルに匹敵する性能を達成し、SynDataをmixすることでgainが大きくなったので、SynDataから学習できる能力が汎化することが示唆される。<br><img src="https://github.com/user-attachments/assets/7b618fe9-5271-434b-9808-f53f0e758e5e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>タスク一覧はこちら<br><img src="https://github.com/user-attachments/assets/50fcdcb3-701e-4d42-94c7-201d8d354d75" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]:どのchat modelかはざっと見た感じわからない。どこかに書いてあるかも。</p><p>Logical Reasoningが重要なタスクを扱う際はこのデータを活用することを検討してみても良いかもしれない</p></maintainer-comment-text>
+</p><p>35種類のタスクを人手で選定し、タスクごとに困難度の鍵となるパラメータを定義（数独ならばグリッド数など）。その上で、各タスクごとに人手でルールベースのinstanceを生成するコードを実装し、さまざまな困難度パラメータに基づいて多様なinstanceを生成。生成されたinstanceの困難度は、近似的なUpper Bound(DeepSeek-R1, o3-miniのPass@10)とLower bound（chat model[^1]でのPass@10)を求めデータセットに含まれるinstanceの困難度をコントロールし、taskを記述するpromptも生成。タスクごとに人手で実装されたVerifierも用意されている。<br><img src="https://github.com/user-attachments/assets/cda0534d-7db2-4470-93b8-01f446476544" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Qwen2.5-7B-BaseをSynDataでDAPOしたところ、大幅にlogic benchmarkとmathematical benchmarkの性能が改善。<br><img src="https://github.com/user-attachments/assets/dcc1309d-7946-4a6d-91a3-7ccac9ec6688" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>mathやcodeのデータとmixして7Bモデルを訓練したところ、32Bモデルに匹敵する性能を達成し、SynDataをmixすることでgainが大きくなったので、SynDataから学習できる能力が汎化することが示唆される。<br><img src="https://github.com/user-attachments/assets/7b618fe9-5271-434b-9808-f53f0e758e5e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>タスク一覧はこちら<br><img src="https://github.com/user-attachments/assets/50fcdcb3-701e-4d42-94c7-201d8d354d75" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]:どのchat modelかはざっと見た感じわからない。どこかに書いてあるかも。</p><p>Logical Reasoningが重要なタスクを扱う際はこのデータを活用することを検討してみても良いかもしれない</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=XtNiw8OQsy&referrer=%5Bthe%20profile%20of%20Junxian%20He%5D(%2Fprofile%3Fid%3D~Junxian_He1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=XtNiw8OQsy&referrer=%5Bthe%20profile%20of%20Junxian%20He%5D(%2Fprofile%3Fid%3D~Junxian_He1)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] Training Step-Level Reasoning Verifiers with Formal Verification Tools, Ryo Kamoi+, arXiv'25</title>
+<title>[Paper Note] Training Step-Level Reasoning Verifiers with Formal Verification Tools, Ryo Kamoi+, arXiv'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.15960</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2005</repo-issue-link>
-<tags>NLP, LanguageModel, SyntheticData, PRM, Verification</tags>
+<tags>NLP, LanguageModel, SyntheticData, PRM, Verification, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-06-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.15960
@@ -3245,7 +3250,7 @@ https://github.com/princeton-pli/STAT。
 </div>
 {% endraw %}
 
-</p><p>人手によるAnnotation（step levelのラベルのアノテーション)無しでProcsee Reward Modelの学習データを構築する手法<br><br><img src="https://github.com/user-attachments/assets/adfc351e-c53b-47af-adba-480e10615d69" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Z3やIsabelleなどの形式検証ツールが適用可能なタスクのみに提案手法のスコープは限られる点には注意</p><p>人手でアノテーションされたモデルと比較してcomparableなパフォーマンスを達成<br><img src="https://github.com/user-attachments/assets/290a4d1c-10ac-41dd-a26e-ed57e1fcca79" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/b1af66e7-fbbe-4823-8679-e5ff5be94fdf" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>スレッド中で評価データが数回のreasoning stepが必要なタスクのみの評価であり、より長く複雑なreasoning step（たとえば <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2006" target="_blank" rel="noopener noreferrer">[Paper Note] BIG-Bench Extra Hard, Mehran Kazemi+, arXiv'25</a>
+</p><p>人手によるAnnotation（step levelのラベルのアノテーション)無しでProcess Reward Modelの学習データを構築する手法<br><br><img src="https://github.com/user-attachments/assets/adfc351e-c53b-47af-adba-480e10615d69" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Z3やIsabelleなどの形式検証ツールが適用可能なタスクのみに提案手法のスコープは限られる点には注意</p><p>人手でアノテーションされたモデルと比較してcomparableなパフォーマンスを達成<br><img src="https://github.com/user-attachments/assets/290a4d1c-10ac-41dd-a26e-ed57e1fcca79" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/b1af66e7-fbbe-4823-8679-e5ff5be94fdf" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>スレッド中で評価データが数回のreasoning stepが必要なタスクのみの評価であり、より長く複雑なreasoning step（たとえば <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2006" target="_blank" rel="noopener noreferrer">[Paper Note] BIG-Bench Extra Hard, Mehran Kazemi+, ACL'25, 2025.02</a>
 ）が必要な場合はどうなるか？といった所に興味が寄せられている模様</p></maintainer-comment-text>
 </paper-entry>
 
@@ -3253,7 +3258,7 @@ https://github.com/princeton-pli/STAT。
 <title>[Paper Note] Why Vision Language Models Struggle with Visual Arithmetic? Towards   Enhanced Chart and Geometry Understanding, Kung-Hsiang Huang+, ACL'25, 2025.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.11492</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1974</repo-issue-link>
-<tags>ComputerVision, Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), SyntheticData, ACL, DPO, PostTraining, Probing, One-Line Notes</tags>
+<tags>ComputerVision, Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), SyntheticData, ACL, DPO, PostTraining, Probing, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-05-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2502.11492
@@ -3323,7 +3328,7 @@ https://github.com/princeton-pli/STAT。
 <title>[Paper Note] NaturalReasoning: Reasoning in the Wild with 2.8M Challenging Questions, Weizhe Yuan+, arXiv'25, 2025.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2502.13124</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1768</repo-issue-link>
-<tags>NLP, Dataset, LanguageModel, SyntheticData, action_wanted, Reasoning, Distillation</tags>
+<tags>NLP, Dataset, LanguageModel, SyntheticData, action_wanted, Reasoning, Distillation, Author Thread-Post</tags>
 <repo-issue-date>2025-02-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2502.13124
@@ -3342,9 +3347,9 @@ https://github.com/princeton-pli/STAT。
 # Abstract
   - Scaling reasoning capabilities beyond traditional domains such as math and coding is hindered by the lack of diverse and high-quality questions. To overcome this limitation, we introduce a scalable approach for generating diverse and challenging reasoning questions, accompanied by reference answers. We present NaturalReasoning, a comprehensive dataset comprising 2.8 million questions that span multiple domains, including STEM fields (e.g., Physics, Computer Science), Economics, Social Sciences, and more. We demonstrate the utility of the questions in NaturalReasoning through knowledge distillation experiments which show that NaturalReasoning can effectively elicit and transfer reasoning capabilities from a strong teacher model. Furthermore, we demonstrate that NaturalReasoning is also effective for unsupervised self-training using external reward models or self-rewarding. To foster future work, we publicly release NaturalReasoning at https://huggingface.co/datasets/facebook/natural_reasoning.
 # Translation (by gpt-5-nano)
-- 数学やコーディングなどの伝統的な領域を超えた推論能力のスケーリングは、多様で高品質な問題の不足によって妨げられている。この制限を克服するために、多様で挑戦的な推論問題を生成するスケーラブルなアプローチを導入し、参照解答を添付する。 NaturalReasoningを紹介します。これは、STEM分野（例：物理学、計算機科学）、経済学、社会科学など、複数の領域にまたがる280万問からなる総合的なデータセットです。 NaturalReasoningの問題の有用性を、知識蒸留実験を通じて示します。これらの実験は、NaturalReasoningが強力な教師モデルから推論能力を効果的に引き出し、転移させることができることを示しています。さらに、外部報酬モデルや自己報酬を用いた教師なし自己訓練にもNaturalReasoningが有効であることを示します。今後の研究を促進するため、 NaturalReasoningを公開します。公開先は https://huggingface.co/datasets/facebook/natural_reasoning です。
+- 数学やコーディングといった伝統的な領域を超える推論能力のスケーリングは、多様で高品質な問題の不足によって妨げられている。これを克服するために、多様で挑戦的な推論問題を生成するスケーラブルなアプローチを導入し、参照解を付与する。NaturalReasoning を紹介します。これは STEM 分野（例：物理学、計算機科学）、経済学、社会科学など、複数の領域にわたる280万問を含む総合的なデータセットです。NaturalReasoning の問題の有用性を、知識蒸留実験を通じて示します。これらの実験は、NaturalReasoning が強力な教師モデルから推論能力を効果的に引き出し、転移させることができることを示しています。さらに、NaturalReasoning は外部報酬モデルを用いた教師なし自己訓練や自己報酬による訓練にも有効であることを示しています。今後の研究を促進するため、NaturalReasoning を公開します。公開先は https://huggingface.co/datasets/facebook/natural_reasoning です。
 # Summary (by gpt-4o-mini)
-- 多様で高品質な推論問題の生成が求められる中、NaturalReasoningを提案。これは280万問からなるデータセットで、複数の分野にわたる問題と参照解答を提供。知識蒸留実験により、強力な教師モデルから有効に推論能力を引き出せることを確認し、教師なし自己訓練にも効果的であることを示す。NaturalReasoningは今後の研究の促進を目指して公開。</issue-body>
+- 数学やコーディングを含む多様な領域の推論能力を向上させるため、280万問の多様で挑戦的な推論問題を含むデータセットNaturalReasoningを導入。知識蒸留実験により、強力な教師モデルから効果的に推論能力が引き出されることを示し、自己訓練や自己報酬でも有効であることを証明。NaturalReasoningは今後の研究を促進するために公開されている。</issue-body>
 <maintainer-comment-text><p>元ポスト: 
 
 {% raw %}
@@ -3561,7 +3566,7 @@ https://github.com/princeton-pli/STAT。
 <title>[Paper Note] Physics of Language Models: Part 4.1, Architecture Design and the Magic of Canon Layers, Zeyuan Allen-Zhu+, ICML'24 Tutorial</title>
 <original-paper-blog-link>https://physics.allen-zhu.com/part-4-architecture-design/part-4-1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1929</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, SyntheticData, read-later, Selected Papers/Blogs, One-Line Notes, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, SyntheticData, read-later, Selected Papers/Blogs, One-Line Notes, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2025-05-06</repo-issue-date>
 <issue-body>https://physics.allen-zhu.com/part-4-architecture-design/part-4-1</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -4311,7 +4316,7 @@ TinyStoriesが、LMの開発、分析、研究を促進し、特にリソース�
 </div>
 {% endraw %}
 
-</p><p>- インターネットのデータ枯渇問題が指摘されながらも、合成データによって事前学習は進化を続けている<br>- LLMは事後学習で性能を向上させられるが、事前学習時点で伸ばせる上限が決まっているとされている<br>- 事前学習データの投入量はChinchilla則のパラメータ量の20倍から現在は60倍まで増加<br>- MoEは過学習しやすくパラメータ数の40倍は必要<br>- 学習データの多様性が重要で繰り返し同じデータを見ても性能は改善しない<br>- 合成データをそのまま用いるとmode collapseが生じ出力が単調化するため、実データを混ぜるか言い換えをしたデータで是正する（弱めのdata augmentationで良い)<br>- 最近重要な合成データはコードと推論過程を含むデータで、これらが事前学習データに含まれていると汎用な表現、思考能力、推論能力を事前学習時点から獲得できる可能性がある<br><br>というような話が元ポストに書かれている。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+</p><p>- インターネットのデータ枯渇問題が指摘されながらも、合成データによって事前学習は進化を続けている<br>- LLMは事後学習で性能を向上させられるが、事前学習時点で伸ばせる上限が決まっているとされている<br>- 事前学習データの投入量はChinchilla則のパラメータ量の20倍から現在は60倍まで増加<br>- MoEは過学習しやすくパラメータ数の40倍は必要<br>- 学習データの多様性が重要で繰り返し同じデータを見ても性能は改善しない<br>- 合成データをそのまま用いるとmode collapseが生じ出力が単調化するため、実データを混ぜるか言い換えをしたデータで是正する（弱めのdata augmentationで良い)<br>- 最近重要な合成データはコードと推論過程を含むデータで、これらが事前学習データに含まれていると汎用な表現、思考能力、推論能力を事前学習時点から獲得できる可能性がある<br><br>というような話が元ポストに書かれている。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
 <br><br>のようにrepetitionは4回までが効果的といった知見が報告されているが、現在はどこまで当てはまるのだろうか？</p><p>後ほど関連するissueのリンクを貼りたい</p><p>うーんおもしろそう、p.15, p.20, p.26, p.28, p.35, p.36 あたりが気になる。<br><br>てかこれが大学の講義...?楽しすぎでは。</p></maintainer-comment-text>
 </paper-entry>
 
@@ -4428,7 +4433,7 @@ TinyStoriesが、LMの開発、分析、研究を促進し、特にリソース�
 <tags>Pretraining, NLP, LanguageModel, SyntheticData, Post, Selected Papers/Blogs, DataMixture, PhaseTransition</tags>
 <repo-issue-date>2026-01-07</repo-issue-date>
 <issue-body>https://x.com/gm8xx8/status/2006066984857825790?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
-<maintainer-comment-text><p>関連（4-epochまで再利用するのがコスパが良いことを示した研究）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
+<maintainer-comment-text><p>関連（4-epochまで再利用するのがコスパが良いことを示した研究）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1829" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Data-Constrained Language Models, Niklas Muennighoff+, NeurIPS'23</a>
  <br><br>関連（合成データの比率によるPhaseTransition）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3101" target="_blank" rel="noopener noreferrer">[Paper Note] Data Mixing Can Induce Phase Transitions in Knowledge Acquisition, Xinran Gu+, NeurIPS'25 Spotlight, 2025.05</a>
  <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3088" target="_blank" rel="noopener noreferrer">[Paper Note] Demystifying Synthetic Data in LLM Pre-training: A Systematic Study of  Scaling Laws, Benefits, and Pitfalls, Feiyang Kang+, EMNLP'25, 2025.10</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3641" target="_blank" rel="noopener noreferrer">[Paper Note] Why Less is More (Sometimes): A Theory of Data Curation, Elvis Dohmatob+, arXiv'25, 2025.11</a>
