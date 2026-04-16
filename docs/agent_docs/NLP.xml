@@ -16928,6 +16928,84 @@ demo: https://openscilm.allen.ai/</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] R-Zero: Self-Evolving Reasoning LLM from Zero Data, Chengsong Huang+, ICLR'26</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.05004</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2387</repo-issue-link>
+<tags>NLP, LanguageModel, SelfImprovement, ICLR, Label-free, Author Thread-Post</tags>
+<repo-issue-date>2025-08-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.05004
+# Authors
+  - Chengsong Huang
+  - Wenhao Yu
+  - Xiaoyang Wang
+  - Hongming Zhang
+  - Zongxia Li
+  - Ruosen Li
+  - Jiaxin Huang
+  - Haitao Mi
+  - Dong Yu
+# Abstract
+  - Self-evolving Large Language Models (LLMs) offer a scalable path toward super-intelligence by autonomously generating, refining, and learning from their own experiences. However, existing methods for training such models still rely heavily on vast human-curated tasks and labels, typically via fine-tuning or reinforcement learning, which poses a fundamental bottleneck to advancing AI systems toward capabilities beyond human intelligence. To overcome this limitation, we introduce R-Zero, a fully autonomous framework that generates its own training data from scratch. Starting from a single base LLM, R-Zero initializes two independent models with distinct roles, a Challenger and a Solver. These models are optimized separately and co-evolve through interaction: the Challenger is rewarded for proposing tasks near the edge of the Solver capability, and the Solver is rewarded for solving increasingly challenging tasks posed by the Challenger. This process yields a targeted, self-improving curriculum without any pre-existing tasks and labels. Empirically, R-Zero substantially improves reasoning capability across different backbone LLMs, e.g., boosting the Qwen3-4B-Base by +6.49 on math-reasoning benchmarks and +7.54 on general-domain reasoning benchmarks.
+# Translation (by gpt-4o-mini)
+- 自己進化型大規模言語モデル（LLMs）は、自らの経験から自律的に生成、洗練、学習することで、超知能へのスケーラブルな道を提供します。しかし、既存のこのようなモデルのトレーニング手法は、依然として膨大な人間がキュレーションしたタスクやラベルに大きく依存しており、通常はファインチューニングや強化学習を通じて行われます。これは、人間の知能を超える能力を持つAIシステムの進展に対する根本的なボトルネックとなっています。この制限を克服するために、私たちはR-Zeroを導入します。これは、ゼロから自らのトレーニングデータを生成する完全自律型フレームワークです。単一のベースLLMから始めて、R-Zeroは異なる役割を持つ2つの独立したモデル、チャレンジャーとソルバーを初期化します。これらのモデルは別々に最適化され、相互作用を通じて共進化します。チャレンジャーはソルバーの能力の限界近くのタスクを提案することで報酬を得て、ソルバーはチャレンジャーが提示するますます難しいタスクを解決することで報酬を得ます。このプロセスにより、既存のタスクやラベルなしで、ターゲットを絞った自己改善カリキュラムが生まれます。実証的に、R-Zeroは異なるバックボーンLLMにおける推論能力を大幅に向上させ、例えば、Qwen3-4B-Baseを数学推論ベンチマークで+6.49、一般ドメイン推論ベンチマークで+7.54向上させることが示されています。
+# Summary (by gpt-4o-mini)
+- R-Zeroは、自己進化型大規模言語モデル（LLMs）が自律的にトレーニングデータを生成するフレームワークで、チャレンジャーとソルバーの2つのモデルが共進化することで、既存のタスクやラベルに依存せずに自己改善を実現します。このアプローチにより、推論能力が大幅に向上し、特にQwen3-4B-Baseでは数学推論で+6.49、一般ドメイン推論で+7.54の改善が確認されました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/1953804055525962134?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>問題を生成するChallengerと与えられた問題を解くSolverを用意し、片方をfreezezさせた状態で交互にポリシーの更新を繰り返す。<br><br><img src="https://github.com/user-attachments/assets/05207756-3029-41a2-8dd0-e27de5228436" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>
+<strong>### Challenger<br>-  （Challengerによる)問題生成→<br>- （freezed solverによる）self consistencyによるラベル付け→<br>- Solverの問題に対するempirical acc.（i.e., サンプリング回数mに対するmajorityが占める割合）でrewardを与えChallengerを更新<br><br>といった流れでポリシーが更新される。Rewardは他にも生成された問題間のBLEUを測り類似したものばかりの場合はペナルティを与える項や、フォーマットが正しく指定された通りになっているか、といったペナルティも導入する。<br><br>### Solver<br>- ChallengerのポリシーからN問生成し、それに対してSolverでself consistencyによって解答を生成<br>- empirical acc.を計算し、1/2との差分の絶対値を見て、簡単すぎる/難しすぎる問題をフィルタリング<br>  - これはカリキュラム学習的な意味合いのみならず、低品質な問題のフィルタリングにも寄与する<br>- フィルタリング後の問題を利用して、verifiable binary rewardでポリシーを更新<br><br>### 評価結果<br>数学ドメインに提案手法を適用したところ、iterごとに全体の平均性能は向上。<br><img src="https://github.com/user-attachments/assets/cbe780ec-a99b-4227-b983-4e24982a6af8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>提案手法で数学ドメインを学習し、generalドメインに汎化するか？を確認したところ、汎化することを確認（ただ、すぐにサチっているようにも見える）。、<br><img src="https://github.com/user-attachments/assets/bc0eb3e1-8ed1-4d36-b30e-095e8a160886" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2383" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Questioning Language Models, Lili Chen+, arXiv'25</a>
+</strong>
+<br>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1936" target="_blank" rel="noopener noreferrer">[Paper Note] Absolute Zero: Reinforced Self-play Reasoning with Zero Data, Andrew Zhao+, arXiv'25, 2025.05</a>
+</p><p>著者ポスト:<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wyu_nd/status/1954249813861810312?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chengsongh31219/status/1953936172415430695?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>日本語解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/curveweb/status/1954367657811308858?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=96apU6YzSO" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=96apU6YzSO</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] On the Generalization of SFT: A Reinforcement Learning Perspective with  Reward Rectification, Yongliang Wu+, ICLR'26, 2025.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2508.05629</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2382</repo-issue-link>
@@ -48736,78 +48814,6 @@ Shampooの計算効率を改善するための最も簡単なアプローチは�
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/1954253929761411180?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] R-Zero: Self-Evolving Reasoning LLM from Zero Data, Chengsong Huang+, arXiv'25</title>
-<original-paper-blog-link>https://arxiv.org/abs/2508.05004</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2387</repo-issue-link>
-<tags>NLP, LanguageModel, SelfImprovement, Label-free, Author Thread-Post</tags>
-<repo-issue-date>2025-08-09</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2508.05004
-# Authors
-  - Chengsong Huang
-  - Wenhao Yu
-  - Xiaoyang Wang
-  - Hongming Zhang
-  - Zongxia Li
-  - Ruosen Li
-  - Jiaxin Huang
-  - Haitao Mi
-  - Dong Yu
-# Abstract
-  - Self-evolving Large Language Models (LLMs) offer a scalable path toward super-intelligence by autonomously generating, refining, and learning from their own experiences. However, existing methods for training such models still rely heavily on vast human-curated tasks and labels, typically via fine-tuning or reinforcement learning, which poses a fundamental bottleneck to advancing AI systems toward capabilities beyond human intelligence. To overcome this limitation, we introduce R-Zero, a fully autonomous framework that generates its own training data from scratch. Starting from a single base LLM, R-Zero initializes two independent models with distinct roles, a Challenger and a Solver. These models are optimized separately and co-evolve through interaction: the Challenger is rewarded for proposing tasks near the edge of the Solver capability, and the Solver is rewarded for solving increasingly challenging tasks posed by the Challenger. This process yields a targeted, self-improving curriculum without any pre-existing tasks and labels. Empirically, R-Zero substantially improves reasoning capability across different backbone LLMs, e.g., boosting the Qwen3-4B-Base by +6.49 on math-reasoning benchmarks and +7.54 on general-domain reasoning benchmarks.
-# Translation (by gpt-4o-mini)
-- 自己進化型大規模言語モデル（LLMs）は、自らの経験から自律的に生成、洗練、学習することで、超知能へのスケーラブルな道を提供します。しかし、既存のこのようなモデルのトレーニング手法は、依然として膨大な人間がキュレーションしたタスクやラベルに大きく依存しており、通常はファインチューニングや強化学習を通じて行われます。これは、人間の知能を超える能力を持つAIシステムの進展に対する根本的なボトルネックとなっています。この制限を克服するために、私たちはR-Zeroを導入します。これは、ゼロから自らのトレーニングデータを生成する完全自律型フレームワークです。単一のベースLLMから始めて、R-Zeroは異なる役割を持つ2つの独立したモデル、チャレンジャーとソルバーを初期化します。これらのモデルは別々に最適化され、相互作用を通じて共進化します。チャレンジャーはソルバーの能力の限界近くのタスクを提案することで報酬を得て、ソルバーはチャレンジャーが提示するますます難しいタスクを解決することで報酬を得ます。このプロセスにより、既存のタスクやラベルなしで、ターゲットを絞った自己改善カリキュラムが生まれます。実証的に、R-Zeroは異なるバックボーンLLMにおける推論能力を大幅に向上させ、例えば、Qwen3-4B-Baseを数学推論ベンチマークで+6.49、一般ドメイン推論ベンチマークで+7.54向上させることが示されています。
-# Summary (by gpt-4o-mini)
-- R-Zeroは、自己進化型大規模言語モデル（LLMs）が自律的にトレーニングデータを生成するフレームワークで、チャレンジャーとソルバーの2つのモデルが共進化することで、既存のタスクやラベルに依存せずに自己改善を実現します。このアプローチにより、推論能力が大幅に向上し、特にQwen3-4B-Baseでは数学推論で+6.49、一般ドメイン推論で+7.54の改善が確認されました。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/1953804055525962134?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>問題を生成するChallengerと与えられた問題を解くSolverを用意し、片方をfreezezさせた状態で交互にポリシーの更新を繰り返す。<br><br><img src="https://github.com/user-attachments/assets/05207756-3029-41a2-8dd0-e27de5228436" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>
-<strong>### Challenger<br>-  （Challengerによる)問題生成→<br>- （freezed solverによる）self consistencyによるラベル付け→<br>- Solverの問題に対するempirical acc.（i.e., サンプリング回数mに対するmajorityが占める割合）でrewardを与えChallengerを更新<br><br>といった流れでポリシーが更新される。Rewardは他にも生成された問題間のBLEUを測り類似したものばかりの場合はペナルティを与える項や、フォーマットが正しく指定された通りになっているか、といったペナルティも導入する。<br><br>### Solver<br>- ChallengerのポリシーからN問生成し、それに対してSolverでself consistencyによって解答を生成<br>- empirical acc.を計算し、1/2との差分の絶対値を見て、簡単すぎる/難しすぎる問題をフィルタリング<br>  - これはカリキュラム学習的な意味合いのみならず、低品質な問題のフィルタリングにも寄与する<br>- フィルタリング後の問題を利用して、verifiable binary rewardでポリシーを更新<br><br>### 評価結果<br>数学ドメインに提案手法を適用したところ、iterごとに全体の平均性能は向上。<br><img src="https://github.com/user-attachments/assets/cbe780ec-a99b-4227-b983-4e24982a6af8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>提案手法で数学ドメインを学習し、generalドメインに汎化するか？を確認したところ、汎化することを確認（ただ、すぐにサチっているようにも見える）。、<br><img src="https://github.com/user-attachments/assets/bc0eb3e1-8ed1-4d36-b30e-095e8a160886" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2383" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Questioning Language Models, Lili Chen+, arXiv'25</a>
-</strong>
-<br>
-<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1936" target="_blank" rel="noopener noreferrer">[Paper Note] Absolute Zero: Reinforced Self-play Reasoning with Zero Data, Andrew Zhao+, arXiv'25, 2025.05</a>
-</p><p>著者ポスト:<br>- 
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wyu_nd/status/1954249813861810312?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-<br>- 
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chengsongh31219/status/1953936172415430695?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>日本語解説:<br>
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/curveweb/status/1954367657811308858?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
