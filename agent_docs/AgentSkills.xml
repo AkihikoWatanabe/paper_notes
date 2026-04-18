@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-05">
+<paper-list last-updated="2026-04-17">
 <paper-entry>
 <title>[Paper Note] SKILL0: In-Context Agentic Reinforcement Learning for Skill Internalization, Zhengxi Lu+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.02268</original-paper-blog-link>
@@ -200,6 +200,16 @@
 {% endraw %}
 
 </p><p>AnthropicのAgent Skillsにinspireされた手法で、ポリシー側のパラメータをfreezeしてスキル群を更新していくような枠組みではなく、スキルが定義されたライブラリと、ポリシーそのものを同時に進化（スキル定義追加・更新+ポリシーの重みの更新）させていくことで、生のtrajectoryをmemoryから活用する方向性ではなく、動的にtrajectoryからスキルを構築し、構築されたスキルの使い方やretrieve方法をポリシーの内部パラメータとして組み込むことで、スキルとポリシーが共に進化していくようにしたい、それにより、生の経験（trajectory)を読み込んでadhocに利用するよりも、より一般化された形で経験を活用できるようにしたい、という話に見える。<br><br>提案手法はベースモデルを環境に対して適用しタスクに対する成功したtrajectoryと失敗したtrajectoryをまず収集する。収集したtrajectoryに対して、teacher modelで「タスクを完了するための戦略的なパターン」と「簡潔な失敗した要因」を生成させ、<スキル名, スキルの具体的なdescription, いつそのスキルを適用するか>によって定義されるスキルを定義する（従来手法は失敗したtrajectoryに関する情報は破棄していた）。スキルは2種類定義されており、汎用的に全てのタスクに適用可能なgenericなスキルと、特定のtask-specificなスキルの2種類によって構成される（この二つのスキルの集合がSKILLBANKと呼ばれる）。genericなスキルは常にポリシーのinstructionに含められ、task-specificなスキルはタスクを実行するたびに意味的な関連性に基づいてtop-kがretrieveされ利用される。これにより初期のSKILLBANKを構築する。<br><br>続いて、ベースモデルを学習して賢くしていきたい。この時初期のポリシー（=ベースモデル）はスキルのretrieve + 使い方を知らないため、teacher modelによってスキルを含めたtrajectoryを生成しSFTをすることでコールドスタート時に適用する。その後、オンポリシーRL（GRPO）を用いて、スキルをretrieveし、retrieveしたスキルを活用してタスクを完了し、完了したタスクからrewardが計算されポリシーを更新していく。この時、GRPOのエポックにおいてvalidationフェーズを用意し、特定の閾値以下のsuccess rateを持つタスクに関しては、teacher modelが失敗したtrajectoryに基づいてSKILLBANKを更新することでSKILLBANKを進化させることで性能を改善する、といった話に見える。<br><br><img src="https://github.com/user-attachments/assets/291d200c-c516-45c7-b008-31b9741cf4d5" /" alt="image" loading="lazy" width="550" height="400"/></p><p>genericなスキルは常にinstructionに含まれるためretrieveする必要がないが、task specificなスキルはtask descriptionとskill定義のembeddieg空間上で類似度を測りtop-kが抽出される。embeddingを取得する具体的なモデルについては言及がないように見える？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>8 Tips for Writing Agent Skills, Philipp Schmid, 2026.04</title>
+<original-paper-blog-link>https://x.com/_philschmid/status/2043705157850951699?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5246</repo-issue-link>
+<tags>NLP, AIAgents, read-later, AgentSkills, Author Thread-Post</tags>
+<repo-issue-date>2026-04-17</repo-issue-date>
+<issue-body>元ポスト:https://x.com/_philschmid/status/2043705157850951699?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
