@@ -4512,6 +4512,49 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Recursive Self-Aggregation Unlocks Deep Thinking in Large Language Models, Siddarth Venkatraman+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.26626</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3008</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, action_wanted, Test-Time Scaling, Selected Papers/Blogs, Aggregation-aware, KeyPoint Notes</tags>
+<repo-issue-date>2025-09-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.26626
+# Authors
+  - Siddarth Venkatraman
+  - Vineet Jain
+  - Sarthak Mittal
+  - Vedant Shah
+  - Johan Obando-Ceron
+  - Yoshua Bengio
+  - Brian R. Bartoldson
+  - Bhavya Kailkhura
+  - Guillaume Lajoie
+  - Glen Berseth
+  - Nikolay Malkin
+  - Moksh Jain
+# Abstract
+  - Test-time scaling methods improve the capabilities of large language models (LLMs) by increasing the amount of compute used during inference to make a prediction. Inference-time compute can be scaled in parallel by choosing among multiple independent solutions or sequentially through self-refinement. We propose Recursive Self-Aggregation (RSA), a test-time scaling method inspired by evolutionary methods that combines the benefits of both parallel and sequential scaling. Each step of RSA refines a population of candidate reasoning chains through aggregation of subsets to yield a population of improved solutions, which are then used as the candidate pool for the next iteration. Empirically, RSA delivers substantial performance gains with increasing compute budgets across diverse tasks, model families and sizes. Notably, RSA with Gemini 3 Flash attains performance near the top of the ARC-AGI-2 public leaderboard. RSA also enables Qwen3-4B-Instruct-2507 to achieve competitive performance with larger reasoning models, including DeepSeek-R1 and o3-mini (high), outperforming purely parallel and sequential scaling strategies across AIME-25, HMMT-25, Reasoning Gym, LiveCodeBench-v6, and SuperGPQA. We further propose a novel aggregation-aware reinforcement learning approach that yields significant performance gains by training the model to combine solutions.
+# Translation (by gpt-5-nano)
+- 推論時スケーリング法は、推論時に用いる計算量を増やすことにより大規模言語モデル（LLMs）の能力を向上させる。推論時の計算は、複数の独立した解の中から選択することにより並列にスケールさせるか、自己改善を通じて逐次的にスケールさせることができる。Recursive Self-Aggregation（RSA）を提案する。RSAは進化的な方法に触発された推論時スケーリング法で、並列スケーリングと逐次スケーリングの両方の利点を組み合わせる。RSAの各ステップは、部分集合の統合を通じて候補推論チェーンの集団を洗練させ、改善された解の集団を生み出す。これらは次の反復の候補プールとして用いられる。実証的には、RSAは計算予算が増加するにつれて、さまざまなタスク、モデルファミリー、サイズにわたって顕著な性能向上をもたらす。特に、Gemini 3 Flashを搭載したRSAはARC-AGI-2公開リーダーボードの上位に近い性能を達成する。RSAはまた、Qwen3-4B-Instruct-2507が、DeepSeek-R1およびo3-mini（高）を含むより大規模な推論モデルと競争力のある性能を達成できるようにし、AIME-25、HMMT-25、Reasoning Gym、LiveCodeBench-v6、SuperGPQAにおいて、純粋な並列スケーリング戦略および逐次スケーリング戦略を上回る。さらに、解を組み合わせるようモデルを訓練することで顕著な性能向上をもたらす、新規の集約を意識した強化学習アプローチを提案する。
+# Summary (by gpt-4o-mini)
+- 推論時スケーリング法によってLLMsの能力を向上させる。Recursive Self-Aggregation（RSA）を提案し、並列スケーリングと逐次スケーリングの利点を融合。各ステップで部分集合を統合し、改善された解を生成。RSAは計算予算の増加に伴い、様々なタスクで顕著な性能向上を示し、特にGemini 3 Flashで高性能を実現。さらに、新規の集約を意識した強化学習アプローチを通じて、解の組み合わせによる性能向上を図る。</issue-body>
+<maintainer-comment-text><p>N個の応答を生成し、各応答K個組み合わせてpromptingで集約し新たな応答を生成することで洗練させる、といったことをT回繰り返すtest-time scaling手法で、RLによってモデルの集約能力を強化するとより良いスケーリングを発揮する。RLでは通常の目的関数（prompt x, answer y; xから単一のreasoning traceを生成しyを回答する設定）に加えて、aggregation promptを用いた目的関数(aggregation promptを用いて K個のsolution集合 S_0を生成し、目的関数をaggregation prompt x, S_0の双方で条件づけたもの)を定義し、同時に最適化をしている（同時に最適化することは5.4節に記述されている）。つまり、これまでのRLはxがgivenな時に頑張って単一の良い感じのreasoning traceを生成しyを生成するように学習していたが（すなわち、モデルが複数のsolutionを集約することは明示的に学習されていない）、それに加えてモデルのaggregationの能力も同時に強化する、という気持ちになっている。学習のアルゴリズムはPPO, GRPOなど様々なon-poloicyな手法を用いることができる。今回はRLOOと呼ばれる手法を用いている。<br><br><img src="https://github.com/user-attachments/assets/e83406ae-91a0-414b-a49c-892a4d1f23fd" /" alt="image" loading="lazy" width="550" height="400"/><br><br>様々なsequential scaling, parallel scaling手法と比較して、RSAがより大きなgainを得ていることが分かる。ただし、Knowledge RecallというタスクにおいてはSelf-Consistency (Majority Voting)よりもgainが小さい。<br><img src="https://github.com/user-attachments/assets/8251f25b-472d-48d4-b7df-a6946cfbbcd9" /" alt="image" loading="lazy" width="550" height="400"/><br><br>以下がaggregation-awareなRLを実施した場合と、通常のRL, promptingのみによる場合の性能の表している。全体を通じてaggregation-awareなRLを実施することでより高い性能を発揮しているように見える。ただし、AIMEに関してだけは通常のpromptingによるRSAの性能が良い。なぜだろうか？考察まで深く読めていないので論文中に考察があるかもしれない。<br><img src="https://github.com/user-attachments/assets/146ab6a3-58c2-4a7f-aa84-978a5180c8f3" /" alt="image" loading="lazy" width="550" height="400"/></p><p>RLOO:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3009" target="_blank" rel="noopener noreferrer">[Paper Note] Back to Basics: Revisiting REINFORCE Style Optimization for Learning   from Human Feedback in LLMs, Arash Ahmadian+, ACL'24, 2024.02</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/siddarthv66/status/1971757612845670585?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>concurrent work:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2729" target="_blank" rel="noopener noreferrer">[Paper Note] The Majority is not always right: RL training for solution aggregation, Wenting Zhao+, arXiv'25</a>
+</p><p>あわせて読みたい:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2346" target="_blank" rel="noopener noreferrer">[Paper Note] Rethinking the Role of Prompting Strategies in LLM Test-Time Scaling: A   Perspective of Probability Theory, Yexiang Liu+, ACL'25 Outstanding Paper</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] UMoE: Unifying Attention and FFN with Shared Experts, Yuanhang Yang+, arXiv'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.07260</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2977</repo-issue-link>
@@ -11086,6 +11129,7 @@ UserModelを表現する際に、従来は単語の集合などが用いられ�
 </div>
 {% endraw %}
 
+</p><p>technical reportが出た:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5260" target="_blank" rel="noopener noreferrer">[Paper Note] Nemotron 3 Super: Open, Efficient Mixture-of-Experts Hybrid Mamba-Transformer Model for Agentic Reasoning, NVIDIA+, arXiv'26, 2026.04</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -11829,45 +11873,6 @@ paper: https://assets.anthropic.com/m/74342f2c96095771/original/Natural-emergent
 {% endraw %}
 
 <br><br>Asyncな設定でRLしてもSyncな場合と性能は同等だが、学習が大幅に高速化されて嬉しいという話な模様（おまけにrate limitが現在は存在するので今後よりブーストされるかも</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>RECURSIVE SELF-AGGREGATION UNLOCKS DEEP THINKING IN LARGE LANGUAGE MODELS, Venkatraman+, preprint, 2025.09</title>
-<original-paper-blog-link>https://rsa-llm.github.io/static/pdfs/Recursive_Self_Aggregation.pdf</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3008</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, Test-Time Scaling, Selected Papers/Blogs, Aggregation-aware, KeyPoint Notes</tags>
-<repo-issue-date>2025-09-27</repo-issue-date>
-<issue-body># URL
-preprint: https://rsa-llm.github.io/static/pdfs/Recursive_Self_Aggregation.pdf
-pj page: https://rsa-llm.github.io
-
-# Authors
-Siddarth Venkatraman
-Vineet Jain
-Sarthak Mittal
-Vedant Shah
-Johan Obando-Ceron
-Yoshua Bengio
-Brian Bartoldson
-Bhavya Kailkhura
-Guillaume Lajoie
-Glen Berseth
-Nikolay Malkin
-Moksh Jain</issue-body>
-<maintainer-comment-text><p>N個の応答を生成し、各応答K個組み合わせてpromptingで集約し新たな応答を生成することで洗練させる、といったことをT回繰り返すtest-time scaling手法で、RLによってモデルの集約能力を強化するとより良いスケーリングを発揮する。RLでは通常の目的関数（prompt x, answer y; xから単一のreasoning traceを生成しyを回答する設定）に加えて、aggregation promptを用いた目的関数(aggregation promptを用いて K個のsolution集合 S_0を生成し、目的関数をaggregation prompt x, S_0の双方で条件づけたもの)を定義し、同時に最適化をしている（同時に最適化することは5.4節に記述されている）。つまり、これまでのRLはxがgivenな時に頑張って単一の良い感じのreasoning traceを生成しyを生成するように学習していたが（すなわち、モデルが複数のsolutionを集約することは明示的に学習されていない）、それに加えてモデルのaggregationの能力も同時に強化する、という気持ちになっている。学習のアルゴリズムはPPO, GRPOなど様々なon-poloicyな手法を用いることができる。今回はRLOOと呼ばれる手法を用いている。<br><br><img src="https://github.com/user-attachments/assets/e83406ae-91a0-414b-a49c-892a4d1f23fd" /" alt="image" loading="lazy" width="550" height="400"/><br><br>様々なsequential scaling, parallel scaling手法と比較して、RSAがより大きなgainを得ていることが分かる。ただし、Knowledge RecallというタスクにおいてはSelf-Consistency (Majority Voting)よりもgainが小さい。<br><img src="https://github.com/user-attachments/assets/8251f25b-472d-48d4-b7df-a6946cfbbcd9" /" alt="image" loading="lazy" width="550" height="400"/><br><br>以下がaggregation-awareなRLを実施した場合と、通常のRL, promptingのみによる場合の性能の表している。全体を通じてaggregation-awareなRLを実施することでより高い性能を発揮しているように見える。ただし、AIMEに関してだけは通常のpromptingによるRSAの性能が良い。なぜだろうか？考察まで深く読めていないので論文中に考察があるかもしれない。<br><img src="https://github.com/user-attachments/assets/146ab6a3-58c2-4a7f-aa84-978a5180c8f3" /" alt="image" loading="lazy" width="550" height="400"/></p><p>RLOO:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3009" target="_blank" rel="noopener noreferrer">[Paper Note] Back to Basics: Revisiting REINFORCE Style Optimization for Learning   from Human Feedback in LLMs, Arash Ahmadian+, ACL'24, 2024.02</a>
-</p><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/siddarthv66/status/1971757612845670585?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>concurrent work:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2729" target="_blank" rel="noopener noreferrer">[Paper Note] The Majority is not always right: RL training for solution aggregation, Wenting Zhao+, arXiv'25</a>
-</p><p>あわせて読みたい:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2346" target="_blank" rel="noopener noreferrer">[Paper Note] Rethinking the Role of Prompting Strategies in LLM Test-Time Scaling: A   Perspective of Probability Theory, Yexiang Liu+, ACL'25 Outstanding Paper</a>
-</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

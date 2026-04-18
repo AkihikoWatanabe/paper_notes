@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 26 hours 5 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 26 hours 7 mins</span>
   </div></header>
 </div>
     </div>
@@ -4731,6 +4731,41 @@ My Issue
 <a href="https://docs.all-hands.dev/openhands/usage/developers/evaluation-harness" target="_blank" rel="noopener noreferrer">https://docs.all-hands.dev/openhands/usage/developers/evaluation-harness</a>
 
 
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="recursive-self-aggregation-3008" class="title-link">[Paper Note] Recursive Self-Aggregation Unlocks Deep Thinking in Large Language Models, Siddarth Venkatraman+, arXiv'25, 2025.09</h3><br><a href="https://arxiv.org/abs/2509.26626" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3008" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer">#Test-Time Scaling</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Aggregation-aware.html" target="_blank" rel="noopener noreferrer">#Aggregation-aware</a>
+<span class="issue_date">Issue Date: 2025-09-27</span>
+<span class="snippet"><span>GPT Summary</span>- 推論時スケーリング法によってLLMsの能力を向上させる。Recursive Self-Aggregation（RSA）を提案し、並列スケーリングと逐次スケーリングの利点を融合。各ステップで部分集合を統合し、改善された解を生成。RSAは計算予算の増加に伴い、様々なタスクで顕著な性能向上を示し、特にGemini 3 Flashで高性能を実現。さらに、新規の集約を意識した強化学習アプローチを通じて、解の組み合わせによる性能向上を図る。</span>
+<span class="snippet"><span>Comment</span><p>N個の応答を生成し、各応答K個組み合わせてpromptingで集約し新たな応答を生成することで洗練させる、といったことをT回繰り返すtest-time scaling手法で、RLによってモデルの集約能力を強化するとより良いスケーリングを発揮する。RLでは通常の目的関数（prompt x, answer y; xから単一のreasoning traceを生成しyを回答する設定）に加えて、aggregation promptを用いた目的関数(aggregation promptを用いて K個のsolution集合 S_0を生成し、目的関数をaggregation prompt x, S_0の双方で条件づけたもの)を定義し、同時に最適化をしている（同時に最適化することは5.4節に記述されている）。つまり、これまでのRLはxがgivenな時に頑張って単一の良い感じのreasoning traceを生成しyを生成するように学習していたが（すなわち、モデルが複数のsolutionを集約することは明示的に学習されていない）、それに加えてモデルのaggregationの能力も同時に強化する、という気持ちになっている。学習のアルゴリズムはPPO, GRPOなど様々なon-poloicyな手法を用いることができる。今回はRLOOと呼ばれる手法を用いている。<br><br><img src="https://github.com/user-attachments/assets/e83406ae-91a0-414b-a49c-892a4d1f23fd" /" alt="image" loading="lazy" width="550" height="400"/><br><br>様々なsequential scaling, parallel scaling手法と比較して、RSAがより大きなgainを得ていることが分かる。ただし、Knowledge RecallというタスクにおいてはSelf-Consistency (Majority Voting)よりもgainが小さい。<br><img src="https://github.com/user-attachments/assets/8251f25b-472d-48d4-b7df-a6946cfbbcd9" /" alt="image" loading="lazy" width="550" height="400"/><br><br>以下がaggregation-awareなRLを実施した場合と、通常のRL, promptingのみによる場合の性能の表している。全体を通じてaggregation-awareなRLを実施することでより高い性能を発揮しているように見える。ただし、AIMEに関してだけは通常のpromptingによるRSAの性能が良い。なぜだろうか？考察まで深く読めていないので論文中に考察があるかもしれない。<br><img src="https://github.com/user-attachments/assets/146ab6a3-58c2-4a7f-aa84-978a5180c8f3" /" alt="image" loading="lazy" width="550" height="400"/></p><p>RLOO:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3009" target="_blank" rel="noopener noreferrer">[Paper Note] Back to Basics: Revisiting REINFORCE Style Optimization for Learning   from Human Feedback in LLMs, Arash Ahmadian+, ACL'24, 2024.02</a>
+</p><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/siddarthv66/status/1971757612845670585?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>concurrent work:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2729" target="_blank" rel="noopener noreferrer">[Paper Note] The Majority is not always right: RL training for solution aggregation, Wenting Zhao+, arXiv'25</a>
+</p><p>あわせて読みたい:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2346" target="_blank" rel="noopener noreferrer">[Paper Note] Rethinking the Role of Prompting Strategies in LLM Test-Time Scaling: A   Perspective of Probability Theory, Yexiang Liu+, ACL'25 Outstanding Paper</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -11496,6 +11531,7 @@ My Issue
 </div>
 
 
+</p><p>technical reportが出た:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5260" target="_blank" rel="noopener noreferrer">[Paper Note] Nemotron 3 Super: Open, Efficient Mixture-of-Experts Hybrid Mamba-Transformer Model for Agentic Reasoning, NVIDIA+, arXiv'26, 2026.04</a>
 </p></span><br><br>
 </article>
 <article class="paper-entry">
@@ -12588,41 +12624,6 @@ My Issue
 
 
 <br><br>Asyncな設定でRLしてもSyncな場合と性能は同等だが、学習が大幅に高速化されて嬉しいという話な模様（おまけにrate limitが現在は存在するので今後よりブーストされるかも</p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="recursive-self-aggregation-3008" class="title-link">RECURSIVE SELF-AGGREGATION UNLOCKS DEEP THINKING IN LARGE LANGUAGE MODELS, Venkatraman+, preprint, 2025.09</h3><br><a href="https://rsa-llm.github.io/static/pdfs/Recursive_Self_Aggregation.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3008" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
-<a class="button" href="Test-Time-Scaling.html" target="_blank" rel="noopener noreferrer">#Test-Time Scaling</a>
-<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="Aggregation-aware.html" target="_blank" rel="noopener noreferrer">#Aggregation-aware</a>
-<span class="issue_date">Issue Date: 2025-09-27</span>
-<span class="snippet"><span>Comment</span><p>N個の応答を生成し、各応答K個組み合わせてpromptingで集約し新たな応答を生成することで洗練させる、といったことをT回繰り返すtest-time scaling手法で、RLによってモデルの集約能力を強化するとより良いスケーリングを発揮する。RLでは通常の目的関数（prompt x, answer y; xから単一のreasoning traceを生成しyを回答する設定）に加えて、aggregation promptを用いた目的関数(aggregation promptを用いて K個のsolution集合 S_0を生成し、目的関数をaggregation prompt x, S_0の双方で条件づけたもの)を定義し、同時に最適化をしている（同時に最適化することは5.4節に記述されている）。つまり、これまでのRLはxがgivenな時に頑張って単一の良い感じのreasoning traceを生成しyを生成するように学習していたが（すなわち、モデルが複数のsolutionを集約することは明示的に学習されていない）、それに加えてモデルのaggregationの能力も同時に強化する、という気持ちになっている。学習のアルゴリズムはPPO, GRPOなど様々なon-poloicyな手法を用いることができる。今回はRLOOと呼ばれる手法を用いている。<br><br><img src="https://github.com/user-attachments/assets/e83406ae-91a0-414b-a49c-892a4d1f23fd" /" alt="image" loading="lazy" width="550" height="400"/><br><br>様々なsequential scaling, parallel scaling手法と比較して、RSAがより大きなgainを得ていることが分かる。ただし、Knowledge RecallというタスクにおいてはSelf-Consistency (Majority Voting)よりもgainが小さい。<br><img src="https://github.com/user-attachments/assets/8251f25b-472d-48d4-b7df-a6946cfbbcd9" /" alt="image" loading="lazy" width="550" height="400"/><br><br>以下がaggregation-awareなRLを実施した場合と、通常のRL, promptingのみによる場合の性能の表している。全体を通じてaggregation-awareなRLを実施することでより高い性能を発揮しているように見える。ただし、AIMEに関してだけは通常のpromptingによるRSAの性能が良い。なぜだろうか？考察まで深く読めていないので論文中に考察があるかもしれない。<br><img src="https://github.com/user-attachments/assets/146ab6a3-58c2-4a7f-aa84-978a5180c8f3" /" alt="image" loading="lazy" width="550" height="400"/></p><p>RLOO:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3009" target="_blank" rel="noopener noreferrer">[Paper Note] Back to Basics: Revisiting REINFORCE Style Optimization for Learning   from Human Feedback in LLMs, Arash Ahmadian+, ACL'24, 2024.02</a>
-</p><p>元ポスト:
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/siddarthv66/status/1971757612845670585?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>concurrent work:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2729" target="_blank" rel="noopener noreferrer">[Paper Note] The Majority is not always right: RL training for solution aggregation, Wenting Zhao+, arXiv'25</a>
-</p><p>あわせて読みたい:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2346" target="_blank" rel="noopener noreferrer">[Paper Note] Rethinking the Role of Prompting Strategies in LLM Test-Time Scaling: A   Perspective of Probability Theory, Yexiang Liu+, ACL'25 Outstanding Paper</a>
-</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="your-efficient-2552" class="title-link">Your Efficient RL Framework Secretly Brings You Off-Policy RL Training, Yao+, 2025.08</h3><br><a href="https://fengyao.notion.site/off-policy-rl" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -15728,42 +15729,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/LREC.html"
-            title="LRECに関する論文・技術記事メモの一覧">
-            LRECに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Coherence.html"
+            title="Coherenceに関する論文・技術記事メモの一覧">
+            Coherenceに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
-  <span class="post-badge badge-new">📝 2</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/kNN.html"
-            title="kNNに関する論文・技術記事メモの一覧">
-            kNNに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LatentReasoning.html"
+            title="LatentReasoningに関する論文・技術記事メモの一覧">
+            LatentReasoningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 18</span> 
+  <span class="post-badge badge-new">📝 18</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/InteractiveRecommenderSystems.html"
-            title="InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧">
-            InteractiveRecommenderSystemsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PersonalizedHeadlineGeneration.html"
+            title="PersonalizedHeadlineGenerationに関する論文・技術記事メモの一覧">
+            PersonalizedHeadlineGenerationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Physics.html"
-            title="Physicsに関する論文・技術記事メモの一覧">
-            Physicsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ComputerVision.html"
+            title="ComputerVisionに関する論文・技術記事メモの一覧">
+            ComputerVisionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 15</span> 
-  <span class="post-badge badge-new">📝 15</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 658</span> 
+  <span class="post-badge badge-new">📝 658</span>
 </span>
 </a>
         </li></ul>
