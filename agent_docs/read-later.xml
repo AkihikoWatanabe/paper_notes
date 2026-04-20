@@ -1,36 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-18">
+<paper-list last-updated="2026-04-19">
 <paper-entry>
-<title>[Paper Note] Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter, Ruoyu Qin+, arXiv'26, 2026.04</title>
-<original-paper-blog-link>https://arxiv.org/abs/2604.15039v1</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5265</repo-issue-link>
-<tags>NLP, LanguageModel, Infrastructure, read-later, Selected Papers/Blogs, KV Cache, Author Thread-Post</tags>
-<repo-issue-date>2026-04-18</repo-issue-date>
+<title>[Paper Note] GameWorld: Towards Standardized and Verifiable Evaluation of Multimodal Game Agents, Mingyu Ouyang+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.07429</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5270</repo-issue-link>
+<tags>ComputerVision, NLP, AIAgents, Evaluation, MultiModal, ComputerUse, read-later, Selected Papers/Blogs, VisionLanguageModel, Game, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-04-19</repo-issue-date>
 <issue-body># URL
-- https://arxiv.org/abs/2604.15039v1
+- https://arxiv.org/abs/2604.07429
 # Authors
-  - Ruoyu Qin
-  - Weiran He
-  - Yaoyu Wang
-  - Zheming Li
-  - Xinran Xu
-  - Yongwei Wu
-  - Weimin Zheng
-  - Mingxing Zhang
+  - Mingyu Ouyang
+  - Siyuan Hu
+  - Kevin Qinghong Lin
+  - Hwee Tou Ng
+  - Mike Zheng Shou
 # Abstract
-  - Prefill-decode (PD) disaggregation has become the standard architecture for large-scale LLM serving, but in practice its deployment boundary is still determined by KVCache transfer. In conventional dense-attention models, prefill generates huge KVCache traffics that keep prefill and decode tightly coupled within a single high-bandwidth network domain, limiting heterogeneous deployment and resource elasticity. Recent hybrid-attention architectures substantially reduce KVCache size, making cross-cluster KVCache transport increasingly plausible. However, smaller KVCache alone does not make heterogeneous cross-datacenter PD serving practical: real workloads remain bursty, request lengths are highly skewed, prefix caches are unevenly distributed, and inter-cluster bandwidth fluctuates. A naive design that fully externalizes prefill can therefore still suffer from congestion, unstable queueing, and poor utilization.   We present Prefill-as-a-Service (PrfaaS), a cross-datacenter serving architecture that selectively offloads long-context prefill to standalone, compute-dense prefill clusters and transfers the resulting KVCache over commodity Ethernet to local PD clusters for decode. Rather than treating reduced KVCache as sufficient, PrfaaS combines model-side KV efficiency with system-side selective offloading, bandwidth-aware scheduling, and cache-aware request placement. This design removes the requirement that heterogeneous accelerators share the same low-latency RDMA fabric, enabling independent scaling of prefill and decode capacity across loosely coupled clusters. In a case study using an internal 1T-parameter hybrid model, a PrfaaS-augmented heterogeneous deployment achieves 54% and 32% higher serving throughput than homogeneous PD and naive heterogeneous baselines, respectively, while consuming only modest cross-datacenter bandwidth.
+  - Towards an embodied generalist for real-world interaction, Multimodal Large Language Model (MLLM) agents still suffer from challenging latency, sparse feedback, and irreversible mistakes. Video games offer an ideal testbed with rich visual observations and closed-loop interaction, demanding fine-grained perception, long-horizon planning, and precise control. However, systematically evaluating these capabilities is currently hindered by heterogeneous action interfaces and heuristic verification. To this end, we introduce GameWorld, a benchmark designed for standardized and verifiable evaluation of MLLMs as generalist game agents in browser environments. Two game agent interfaces are studied: (i) computer-use agents that directly emit keyboard and mouse controls, and (ii) generalist multimodal agents that act in a semantic action space via deterministic Semantic Action Parsing. GameWorld contains 34 diverse games and 170 tasks, each paired with state-verifiable metrics for outcome-based evaluation. The results across 18 model-interface pairs suggest that even the best performing agent is far from achieving human capabilities on video games. Extensive experiments of repeated full-benchmark reruns demonstrate the robustness of the benchmark, while further studies on real-time interaction, context-memory sensitivity, and action validity expose more challenges ahead for game agents. Together, by offering a standardized, verifiable, and reproducible evaluation framework, GameWorld lays a robust foundation for advancing research on multimodal game agents and beyond. The project page is at https://gameworld-bench.github.io.
 # Translation (by gpt-5-nano)
-- Prefill-decode（PD）ディスアグリゲーションは大規模LLM提供の標準アーキテクチャとなったが、実際にはデプロイの境界はKVCache転送によってまだ決まっている。従来の密結合型アテンションモデルでは、プリフィルは巨大なKVCacheトラフィックを生成し、プリフィルとデコードを単一の高帯域幅ネットワークドメイン内で密接に結びつけるため、異種環境でのデプロイやリソースの弾力性を制限する。最近のハイブリッドアテンションアーキテクチャはKVCacheサイズを大幅に削減し、クラスタ間KVCache転送をますます現実的にしている。しかし、KVCacheを小さくするだけでは異種のデータセンター間PD提供を実用的にすることはできない。実ワークロードは爆発的・断続的で、リクエスト長は高度に歪み、プレフィックスキャッシュの分布は不均一で、クラスタ間帯域幅は変動する。プリフィルを完全に外部化するような素朴な設計には、渋滞・不安定な待ち行列・資源の不適切な利用といった問題が依然として生じ得る。
-
-Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフィルをスタンドアロンの計算密集型プリフィルクラスタへ選択的にオフロードし、得られたKVCacheを汎用Ethernetを介してローカルのPDクラスタへデコード用に転送する、データセンター跨ぎの提供アーキテクチャである。KVCacheを単に縮小すれば十分という考え方ではなく、PrfaaSはモデル側KV効率とシステム側の選択的オフロード、帯域幅認識型スケジューリング、キャッシュ認識型リクエスト配置を組み合わせる。これにより、異種アクセラレータが同じ低遅延RDMAファブリックを共有する必要を排除し、緩く結合されたクラスタ間でプリフィルとデコードの能力を独立してスケールさせることができる。社内の1兆パラメータのハイブリッドモデルを用いたケーススタディでは、PrfaaSを補強した異種デプロイメントは、均一なPDおよび素朴な異種ベースラインより、それぞれ54%および32%高い提供スループットを達成し、データセンター間の帯域幅の消費を抑えた。
+- 現実世界の相互作用に対応する実体化した汎用エージェントを目指して、マルチモーダル大規模言語モデル（MLLM）エージェントは依然として難しい遅延、疎なフィードバック、取り返しのつかないミスに悩まされている。ビデオゲームは、豊富な視覚観測と閉ループの相互作用を備えた理想的なテストベッドを提供し、細かな知覚、長期的な計画、正確な制御を要求する。しかし、これらの能力を体系的に評価することは、異種のアクションインターフェースとヒューリスティックな検証によって現在妨げられている。これを踏まえ、ブラウザ環境における一般汎用エージェントとしてのMLLMを標準化され検証可能な評価のためのベンチマークとして設計した GameWorld を導入する。検討対象の2つのゲームエージェントインターフェースは次のとおり：(i) キーボードとマウスの操作を直接出力する「コンピュータ使用エージェント」、および (ii) 決定論的セマンティックアクション解析を介して意味的アクション空間で行動する汎用的マルチモーダルエージェント。GameWorld には34の多様なゲームと170のタスクが含まれており、それぞれが状態検証可能な指標と組み合わされ、成果ベースの評価を可能にする。18組のモデルとインターフェースの組み合わせにおける結果は、最も性能の高いエージェントでさえビデオゲームにおける人間の能力を達成するには程遠いことを示唆している。全ベンチマークを繰り返し再実行する広範な実験はベンチマークの頑健性を示す一方、リアルタイムの相互作用、文脈記憶の感度、アクションの妥当性に関するさらなる研究は、ゲームエージェントにとって今後直面する課題をより多く露呈させている。標準化・検証可能・再現性のある評価フレームワークを提供することで、GameWorldはマルチモーダルゲームエージェント研究の発展とそれを超える領域への堅牢な基盤を築く。プロジェクトページは https://gameworld-bench.github.io にある。
 # Summary (by gpt-4o-mini)
-- Prefill-decode（PD）のデプロイにはKVCache転送が制限要因となっており、従来のアテンションモデルは大容量のKVCacheトラフィックを生成する。ハイブリッドアテンションアーキテクチャはKVCacheサイズを削減するが、データセンター間の運用に問題が残る。そこで、Prefill-as-a-Service（PrfaaS）を提案し、プリフィル処理を専用クラスタにオフロードして効率的なKVCache転送を実現。これにより、リソースの独立したスケーリングを可能にし、実績として、PrfaaSを用いた異種デプロイメントは従来よりも高い提供スループットを達成。</issue-body>
+- MLLMエージェントの課題を解決するため、テストベッドとしてGameWorldを導入。34のゲームと170のタスクを含み、性能評価を標準化。結果はエージェントが人間の能力には及ばないことを示唆。ゲームエージェントの相互作用や記憶、アクション妥当性に関する研究が今後の課題を明らかに。再現性のある評価フレームワークとして、GameWorldはマルチモーダルゲームエージェント研究の進展を促進。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kimi_moonshot/status/2045461663898599472?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kevinqhlin/status/2044818866044620811?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Geminiがポケモンで評価されていたのと似ている。個人的にこの方向性の評価は非常に興味深く、理由としては<br>- ゲームをプレイしたデータはモデルの中の知識（学習データ）として埋め込まれずらく、コンタミネーションが生じづらい<br>- 知識がないのであれば、プレイして、ゲームという名の仮想世界のルールを理解してゲームをクリアせねばならず、これには高度な認知能力、プランニング、Reflectionなどの能力が求められる<br>- これらの能力が発揮されるには学習データのパターンから学習した手続きの適用よりも、より抽象的な理解が求められ、モデルがどれだけ人間の認知に近い能力を獲得しているかを測定できるのでは<br><br>という感想を持っているからである。</p><p>pj page:
+
+{% raw %}
+<a href="https://gameworld-project.github.io/" target="_blank" rel="noopener noreferrer">https://gameworld-project.github.io/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] RationalRewards: Reasoning Rewards Scale Visual Generation Both Training and Test Time, Haozhe Wang+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.11626</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5267</repo-issue-link>
+<tags>Multi, ComputerVision, NLP, TextToImageGeneration, Reasoning, OpenWeight, Test-Time Scaling, read-later, Selected Papers/Blogs, RewardModel</tags>
+<repo-issue-date>2026-04-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.11626
+# Authors
+  - Haozhe Wang
+  - Cong Wei
+  - Weiming Ren
+  - Jiaming Liu
+  - Fangzhen Lin
+  - Wenhu Chen
+# Abstract
+  - Most reward models for visual generation reduce rich human judgments to a single unexplained score, discarding the reasoning that underlies preference. We show that teaching reward models to produce explicit, multi-dimensional critiques before scoring transforms them from passive evaluators into active optimization tools, improving generators in two complementary ways: at training time, structured rationales provide interpretable, fine-grained rewards for reinforcement learning; at test time, a Generate-Critique-Refine loop turns critiques into targeted prompt revisions that improve outputs without any parameter updates. To train such a reward model without costly rationale annotations, we introduce Preference-Anchored Rationalization (PARROT), a principled framework that recovers high-quality rationales from readily available preference data through anchored generation, consistency filtering, and distillation. The resulting model, RationalRewards (8B), achieves state-of-the-art preference prediction among open-source reward models, competitive with Gemini-2.5-Pro, while using 10-20x less training data than comparable baselines. As an RL reward, it consistently improves text-to-image and image-editing generators beyond scalar alternatives. Most strikingly, its test-time critique-and-refine loop matches or exceeds RL-based fine-tuning on several benchmarks, suggesting that structured reasoning can unlock latent capabilities in existing generators that suboptimal prompts fail to elicit.
+# Translation (by gpt-5-nano)
+- 視覚生成の報酬モデルの多くは、人間の判断の豊かな情報を1つの説明不能なスコアに縮約し、好みの背後にある推論を捨ててしまう。私たちは、スコア付けの前に明示的で多次元の批評を生成するよう報酬モデルを訓練することが、受動的な評価者から能動的な最適化ツールへと変換し、生成物を二つの補完的な方法で改善することを示す。訓練時には、構造化された合理根拠が解釈可能で細粒度の報酬を提供し、強化学習のために有用となる；推定時には Generate-Critique-Refine ループが批評をターゲットを絞ったプロンプト修正へと変換し、パラメータ更新なしに出力を改善する。コストのかかる根拠の注釈なしでこのような報酬モデルを訓練するために、Preference-Anchored Rationalization（PARROT）を導入する。これはアンカー付き生成、整合性フィルタリング、蒸留を通じて、容易に入手できる好みデータから高品質な合理根拠を回収する原理的なフレームワークである。得られたモデル RationalRewards（8B）は、オープンソース報酬モデルの中で最先端の嗜好予測を達成し、Gemini-2.5-Proと競合する水準でありつつ、同等のベースラインより訓練データを10〜20倍少なくて済む。RL報酬として、それはスカラー報酬を超えて、テキストから画像生成および画像編集ジェネレーターを一貫して改善する。最も顕著なのは、そのテスト時の批評-修正ループが、いくつかのベンチマークでRLベースのファインチューニングと同等以上に達することで、構造化された推論が、サブ最適なプロンプトが引き出せない既存のジェネレーターの潜在能力を解き放つことができることを示唆している。
+# Summary (by gpt-4o-mini)
+- 報酬モデルは、評価を単一のスコアに縮約するのではなく、明示的で多次元の批評を生成することで、生成物の改善を促進する。本研究では、構造化された合理根拠を用いて報酬を提供し、Generate-Critique-Refineループにより批評をプロンプト修正に変換する方法を示す。また、Preference-Anchored Rationalization（PARROT）を導入し、容易に得られるデータから高品質な合理根拠を回収するフレームワークを提供する。得られたRationalRewardsモデルは、オープンソースの中で最先端の予測精度を達成し、より少ない訓練データで優れた性能を発揮する。批評-修正ループは、既存モデルの潜在能力を引き出し、より良い生成結果を提供する。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://tiger-ai-lab.github.io/RationalRewards/" target="_blank" rel="noopener noreferrer">https://tiger-ai-lab.github.io/RationalRewards/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/congwei1230/status/2044854256159674670?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -1824,7 +1865,7 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 <title>[Paper Note] Think Anywhere in Code Generation, Xue Jiang+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.29957</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5105</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, Coding, Reasoning, SoftwareEngineering, read-later</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, Coding, Reasoning, SoftwareEngineering, read-later, Reference Collection</tags>
 <repo-issue-date>2026-04-04</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2603.29957
@@ -1852,6 +1893,16 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2039236748463472941?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2045794768689512945?s=20"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -10886,6 +10937,57 @@ demo: https://openscilm.allen.ai/</issue-body>
 
 {% raw %}
 <a href="https://openreview.net/forum?id=Lv7PjbcaMi" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Lv7PjbcaMi</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Beyond Binary Rewards: Training LMs to Reason About Their Uncertainty, Mehul Damani+, ICLR'26, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.16806</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2332</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Reasoning, ICLR, read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2025-08-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.16806
+# Authors
+  - Mehul Damani
+  - Isha Puri
+  - Stewart Slocum
+  - Idan Shenfeld
+  - Leshem Choshen
+  - Yoon Kim
+  - Jacob Andreas
+# Abstract
+  - When language models (LMs) are trained via reinforcement learning (RL) to generate natural language "reasoning chains", their performance improves on a variety of difficult question answering tasks. Today, almost all successful applications of RL for reasoning use binary reward functions that evaluate the correctness of LM outputs. Because such reward functions do not penalize guessing or low-confidence outputs, they often have the unintended side-effect of degrading calibration and increasing the rate at which LMs generate incorrect responses (or "hallucinate") in other problem domains. This paper describes RLCR (Reinforcement Learning with Calibration Rewards), an approach to training reasoning models that jointly improves accuracy and calibrated confidence estimation. During RLCR, LMs generate both predictions and numerical confidence estimates after reasoning. They are trained to optimize a reward function that augments a binary correctness score with a Brier score -- a scoring rule for confidence estimates that incentivizes calibrated prediction. We first prove that this reward function (or any analogous reward function that uses a bounded, proper scoring rule) yields models whose predictions are both accurate and well-calibrated. We next show that across diverse datasets, RLCR substantially improves calibration with no loss in accuracy, on both in-domain and out-of-domain evaluations -- outperforming both ordinary RL training and classifiers trained to assign post-hoc confidence scores. While ordinary RL hurts calibration, RLCR improves it. Finally, we demonstrate that verbalized confidence can be leveraged at test time to improve accuracy and calibration via confidence-weighted scaling methods. Our results show that explicitly optimizing for calibration can produce more generally reliable reasoning models.
+# Translation (by gpt-4o-mini)
+- 言語モデル（LM）が強化学習（RL）を通じて自然言語の「推論チェーン」を生成するように訓練されると、さまざまな難しい質問応答タスクにおいてその性能が向上します。現在、推論のためのRLの成功した応用のほとんどは、LMの出力の正確性を評価するバイナリ報酬関数を使用しています。しかし、このような報酬関数は、推測や低信頼度の出力に対してペナルティを課さないため、他の問題領域においてLMが不正確な応答を生成する（または「幻覚を起こす」）率を増加させるという意図しない副作用を持つことがよくあります。本論文では、精度とキャリブレーションされた信頼度推定を同時に改善する推論モデルの訓練アプローチであるRLCR（キャリブレーション報酬を用いた強化学習）を説明します。RLCRの間、LMは推論後に予測と数値的な信頼度推定の両方を生成します。彼らは、バイナリの正確性スコアにブライヤースコア（信頼度推定のためのスコアリングルール）を追加した報酬関数を最適化するように訓練され、キャリブレーションされた予測を奨励します。まず、この報酬関数（または有界で適切なスコアリングルールを使用する任意の類似の報酬関数）が、予測が正確であり、かつ適切にキャリブレーションされているモデルを生み出すことを証明します。次に、さまざまなデータセットにおいて、RLCRが精度を損なうことなくキャリブレーションを大幅に改善することを示します。これは、ドメイン内およびドメイン外の評価の両方で、通常のRL訓練や事後的な信頼度スコアを割り当てるために訓練された分類器を上回ります。通常のRLはキャリブレーションを悪化させますが、RLCRはそれを改善します。最後に、テスト時に言語化された信頼度を活用して、信頼度加重スケーリング手法を通じて精度とキャリブレーションを向上させることができることを示します。我々の結果は、キャリブレーションを明示的に最適化することで、より一般的に信頼性の高い推論モデルを生み出すことができることを示しています。
+# Summary (by gpt-4o-mini)
+- RLCRを用いた言語モデルの訓練により、推論の精度と信頼度を同時に改善。バイナリ報酬に加え、信頼度推定のためのブライヤースコアを用いた報酬関数を最適化。RLCRは、通常のRLよりもキャリブレーションを改善し、精度を損なうことなく信頼性の高い推論モデルを生成することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/asap2650/status/1950942279872762272?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLMにConfidenceをDiscreteなTokenとして（GEvalなどは除く）出力させると信頼できないことが多いので、もしそれも改善するのだとしたら興味深い。</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mehuldamani2/status/2045531174206861685?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=ASQ649zdHm" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=ASQ649zdHm</a>
 {% endraw %}
 
 </p></maintainer-comment-text>
@@ -30521,6 +30623,56 @@ Chunlei Xin, Yaojie Lu, Hongyu Lin, Shuheng Zhou, Huijia Zhu, Weiqiang Wang, Zho
 
 {% raw %}
 <a href="https://iwiwi.hatenadiary.jp/entry/2023/04/11/134316" target="_blank" rel="noopener noreferrer">https://iwiwi.hatenadiary.jp/entry/2023/04/11/134316</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Designing synthetic datasets for the real world: Mechanism design and reasoning from first principles, Google, 2026.04</title>
+<original-paper-blog-link>https://research.google/blog/designing-synthetic-datasets-for-the-real-world-mechanism-design-and-reasoning-from-first-principles/?utm_source=twitter&utm_medium=social&utm_campaign=social_post&utm_content=gr-acct</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5274</repo-issue-link>
+<tags>read-later, Author Thread-Post</tags>
+<repo-issue-date>2026-04-19</repo-issue-date>
+<issue-body>https://research.google/blog/designing-synthetic-datasets-for-the-real-world-mechanism-design-and-reasoning-from-first-principles/?utm_source=twitter&utm_medium=social&utm_campaign=social_post&utm_content=gr-acct</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxestex/status/2045066977186607202?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>公式:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/googleresearch/status/2044857082722288102?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Open-world evaluations for measuring frontier AI capabilities, Kapoor+, 2026.04</title>
+<original-paper-blog-link>https://cruxevals.com/open-world-evaluations.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5266</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, read-later, Selected Papers/Blogs, Author Thread-Post</tags>
+<repo-issue-date>2026-04-19</repo-issue-date>
+<issue-body>https://cruxevals.com/open-world-evaluations.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/random_walker/status/2044841045867778365?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
 {% endraw %}
 
 </p></maintainer-comment-text>
