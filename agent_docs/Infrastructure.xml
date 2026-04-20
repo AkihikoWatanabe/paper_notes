@@ -4,7 +4,7 @@
 <title>[Paper Note] Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter, Ruoyu Qin+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.15039v1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5265</repo-issue-link>
-<tags>NLP, LanguageModel, Infrastructure, read-later, Selected Papers/Blogs, KV Cache, Author Thread-Post</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, LLMServing, Selected Papers/Blogs, reading, One-Line Notes, KV Cache, needs-revision, Author Thread-Post</tags>
 <repo-issue-date>2026-04-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2604.15039v1
@@ -35,7 +35,7 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>LLM servingにおいて、prefillはcompute-intensiveで、decodeは（kv cacheが肥大化するため）memory-intensiveであるという特性があるため、（それぞれ得意な処理は得意なノードに任せるため）prefillとdecodeを分離して異なるノードで実施するprefill-decode disaggreagated servingというインフラのアーキテクチャが超巨大モデルでは主流だが、prefill-decode間でKV Cacheを転送しなければならないため、このような分離は同じ計算機クラスター内のRDMA(Remote Direct Memory Access)が可能なノード間に限定されるのが一般的である。<br><br>しかし、compute/memory特化型のリソースは通常チップの種類と物理的な場所の両方に制約されてプールされるので、両方のハードウェアがRDMAのような密結合なドメインで利用できないという欠点がある。このため、クラスターを超えてPD分離をしたいのだが、KV Cacheの転送が結局のところボトルネックとなる。現在のモデルはSparse/LinearなアテンションによってKV Cacheに必要なリソースが一桁減っているが、それでもnaiveにクラスタを跨いでPD分離をすると、突発的なリクエストのバーストや、不均一なPrefix Cacheの分布、クラスター間の帯域幅の変動などによって、計算効率が低下してしまう。<br><br>そのため、提案手法では、高スループットな長文のprefillに特化した独立クラスタを作り、ローカルにキャッシュされていない（主に長文の）、　prefillのみを同クラスタにオフロードし、短いリクエストはローカルでPDを実施するようなアプローチをとる。こうしてprefill特化クラスタによって生成されたKV Cacheはdecode可能なPDクラスタに対してイーサネットを介して転送される。これは選択的なオフロードであり、帯域幅が制限された経路で非効率な短いリクエストを送信を避けて、prefillの高速化が重要なリクエストのみをクラスタ間転送に集中させるという考え方に基づく。<br><br>これを実現するためには、(i)長いリクエストのみをオフロードするルーティングの仕組みと、(ii)ネットワークの輻輳を制御するための、帯域幅を考慮したスケジューラ、(iii)リクエスト長、キャッシュ配置、利用可能なクラスタの帯域幅を総合的に考慮してKV Cache全体を効率的を保ちながら管理するグローバルKV Cacheマネージャが必要。<br><img src="https://github.com/user-attachments/assets/0b707f27-3973-4e74-b388-90f8bdf9a0f3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>このようなアーキテクチャを1T級のKimi Linearモデルで実験した結果、スループットが1.54倍、TTFTが64%改善した、という感じらしい。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
