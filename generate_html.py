@@ -809,7 +809,7 @@ categories: {label}
         global curr_more_idx
         curr_more_idx = 0
         html_content = f'<h2 id={label} class="paper-head"> {label}</h2>'
-        gen_result = gen_one_item(issue_list, [label], latest_date, assets_root="", h_level="3", visible_num=5000)
+        gen_result = gen_one_item(issue_list, [label], latest_date, assets_root="", h_level="3", visible_num=100)
         html_content += gen_result["html_content"]
         label_content = f"{html_template}{html_content}{lazy_loading}"
         
