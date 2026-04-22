@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-20">
+<paper-list last-updated="2026-04-21">
+<paper-entry>
+<title>[Paper Note] Don't Retrieve, Navigate: Distilling Enterprise Knowledge into Navigable Agent Skills for QA and RAG, Yiqun Sun+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.14572</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5285</repo-issue-link>
+<tags>InformationRetrieval, NLP, LanguageModel, AIAgents, RAG(RetrievalAugmentedGeneration), FactualKnowledge, KeyPoint Notes, Clustering-based, AgentSkills</tags>
+<repo-issue-date>2026-04-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.14572
+# Authors
+  - Yiqun Sun
+  - Pengfei Wei
+  - Lawrence B. Hsieh
+# Abstract
+  - Retrieval-Augmented Generation (RAG) grounds LLM responses in external evidence but treats the model as a passive consumer of search results: it never sees how the corpus is organized or what it has not yet retrieved, limiting its ability to backtrack or combine scattered evidence. We present Corpus2Skill, which distills a document corpus into a hierarchical skill directory offline and lets an LLM agent navigate it at serve time. The compilation pipeline iteratively clusters documents, generates LLM-written summaries at each level, and materializes the result as a tree of navigable skill files. At serve time, the agent receives a bird's-eye view of the corpus, drills into topic branches via progressively finer summaries, and retrieves full documents by ID. Because the hierarchy is explicitly visible, the agent can reason about where to look, backtrack from unproductive paths, and combine evidence across branches. On WixQA, an enterprise customer-support benchmark for RAG, Corpus2Skill outperforms dense retrieval, RAPTOR, and agentic RAG baselines across all quality metrics.
+# Translation (by gpt-5-nano)
+- 検索強化生成（RAG）は、外部証拠に基づいてLLMの応答を導く一方で、検索結果の受動的な消費者としてモデルを扱い、コーパスがどのように整理されているか、まだ取得していない情報を知ることができないため、戻ることや散在する証拠を結びつける能力を制限している。私たちは Corpus2Skill を提案する。これは文書コーパスをオフラインで階層的なスキルディレクトリへ蒸留し、提供時にLLMエージェントがそれをナビゲートできるようにする。構築パイプラインは文書を反復的にクラスタリングし、各レベルでLLM作成の要約を生成し、結果をナビゲーション可能なスキルファイルの木として具現化する。提供時には、エージェントはコーパスの全体像を受け取り、トピックの分岐を段階的に細かい要約を通じて掘り下げ、IDで全文ドキュメントを取得する。階層が明示的に可視化されているため、エージェントはどこを探すべきか推論し、生産性の低い経路から戻り、枝間で証拠を組み合わせる。WixQA は、RAG の企業向けカスタマーサポートのベンチマークであり、Corpus2Skill は高密度埋め込み検索、RAPTOR、およびエージェント型RAG のベースラインをすべての品質指標で上回る。
+# Summary (by gpt-4o-mini)
+- 検索強化生成（RAG）の限界を克服するために、Corpus2Skillを提案。これは文書コーパスを階層的なスキルディレクトリに変換し、LLMエージェントが効率的にナビゲート可能にする。文書をクラスタリングし、各レベルで要約を生成して構築。提供時に、エージェントはコーパス全体を把握し、段階的にトピックを掘り下げ、証拠を効果的に組み合わせる。実験により、WixQAのベンチマークでRAGの他の手法を上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Trtd6Trtd/status/2046182088718893403?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Agent Skillsの機構を利用し、Skillsを検索におけるIndexのような位置づけで活用し、Skillsを用いて階層化された知識をnavigateさせることで、抽象的な情報からより細かい情報までdrill-downさせるような挙動を実現させ、RAGの性能を向上させる。<br><img src="https://github.com/user-attachments/assets/80d6d174-37f3-44cc-893b-091b33ea1cd2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Skillsを定義する際は、<br>- root level (Skill.md)<br>- leaf level (Index.md)<br><br>によって構成され、root levelではトピックに関する情報+クラスタのメタ情報、leaf levelでは個別のdocのtitle+IDによって構成される。<br><img src="https://github.com/user-attachments/assets/287188fb-00f1-4660-aa15-e47d7e9c5267" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Documentを階層化する際にはクラスタリングを用いる。具体的にはクラスタリングを実施し、クラスタの内容をLLMに要約させ、要約させた情報に基づいてさらにクラスタリングをする、という処理を繰り返すことで階層化を実現していそうに見える。Servingの時はSkill.md, Index.md, Document Storeに対して、2種類のツール `code_execution`, `get_document` を用いて、ツリーを探索し、relevantなdocを取得する。code_executionは具体的には、SKILL.mdとIndex.mdをviewコマンドによって閲覧し、階層構造全体を俯瞰できるようにする。get_documentでは、docのidentifierを用いて、identifierと対応するdocの全文を取得する。<br><img src="https://github.com/user-attachments/assets/5bcc58d2-5ea3-4a51-94c9-d9aa06a09d36" /" alt="image" loading="lazy" width="550" height="400"/><br><br>BM25, Denseなどのbaselineと比較して高い性能を獲得している。性能に対してコスト比が併記されているが、トークン空間上で思考し探索をするためコストは高いように見える。個人的に気になるのは、金銭的なコストもそうだが、latencyである。embeddingを用いたRAGに対して、相当latencyが遅いのではないか？と思われる。<br><img src="https://github.com/user-attachments/assets/70e980bc-619b-4847-b6ef-0d59d6d555fa" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Thought-Retriever: Don't Just Retrieve Raw Data, Retrieve Thoughts for Memory-Augmented Agentic Systems, Tao Feng+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.12231</original-paper-blog-link>
@@ -15631,6 +15662,63 @@ AgentBenchのデータセット、環境、および統合評価パッケージ�
 - ScienceWorldは、小学校の科学カリキュラムに基づき、エージェントの科学的推論能力を評価するための対話型テキスト環境を提供します。従来のモデルは、新しい文脈で学んだ科学概念を推論するのが苦手で、特に未知の材料の伝導率を見つけるための実験方法を問われると苦戦します。これは、モデルが類似例から答えを得ているのか、再利用可能な方法で推論を学んでいるのかという疑問を生み出します。私たちは、エージェントは対話型環境にグラウンディングされることで推論能力を得るべきだと仮定し、150万パラメータのエージェントが10万ステップの対話型訓練を受けた結果、静的訓練を受けた110億パラメータのモデルを上回ることを実証しました。</issue-body>
 <maintainer-comment-text><p>ベンチマークの概要は<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5212" target="_blank" rel="noopener noreferrer">Evaluating agents for scientific discovery, Ai2, 2026.04</a>
 <br><br>参照のこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ML Intern, HuggingFace, 2026.04</title>
+<original-paper-blog-link>https://github.com/huggingface/ml-intern/tree/main</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5292</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, AutoML, ScientificDiscovery, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-21</repo-issue-date>
+<issue-body>https://github.com/huggingface/ml-intern/tree/main</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Thom_Wolf/status/2046560319196070016?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>自動で研究が可能なエコシステムがどんどん構築されていく</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Kimi K2.6: Advancing Open-Source Coding, Kimi, 2026.04</title>
+<original-paper-blog-link>https://www.kimi.com/blog/kimi-k2-6</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5288</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, OpenWeight, Selected Papers/Blogs, KeyPoint Notes, Reference Collection</tags>
+<repo-issue-date>2026-04-21</repo-issue-date>
+<issue-body>https://www.kimi.com/blog/kimi-k2-6</issue-body>
+<maintainer-comment-text><p>ブログ中ではまずはAgenticな能力の評価が掲載されており、スコアとしてはOpus 4.6と同等程度の水準に達している。<br><img src="https://github.com/user-attachments/assets/3d8f0022-41f5-4f85-a4f0-a97840dd3c91" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Kimi-K2.5と同様Agent Swarmを採用している。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4316" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi K2.5: Visual Agentic Intelligence, Kimi Team+, arXiv'26, 2026.02</a>
+ <br><br>推論・知識に関するベンチマーク（AIME, HMMT, GPQA-Diamond）などについては、Opus4.6と比較してスコアが高いのはIMO-AnswerBenchと呼ばれるものだけであり、他は同等かスコアが低くなっている。Vision系のベンチマークでは、全体的にOpus4.6よりもスコアが高い。ただし、Gemini-3.1-Pro, GPT-5.4の方がKimi K2.6よりもスコアが全体として高い。<br><br>他にも5日間にわたる監視システムのようなプロアクティブなエージェントとしても活用でき、独自ベンチマークのKimiClawBenchと呼ばれるものでK2.5を上回った旨が記述されているが、詳細不明。</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Kimi_Moonshot/status/2046249571882500354?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF: 
+
+{% raw %}
+<a href="https://huggingface.co/moonshotai/Kimi-K2.6" target="_blank" rel="noopener noreferrer">https://huggingface.co/moonshotai/Kimi-K2.6</a>
+{% endraw %}
+
+</p><p>その他ベンチマーク情報:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2046258337805672546?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
