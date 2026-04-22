@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-17">
+<paper-list last-updated="2026-04-21">
+<paper-entry>
+<title>[Paper Note] Don't Retrieve, Navigate: Distilling Enterprise Knowledge into Navigable Agent Skills for QA and RAG, Yiqun Sun+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.14572</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5285</repo-issue-link>
+<tags>InformationRetrieval, NLP, LanguageModel, AIAgents, RAG(RetrievalAugmentedGeneration), FactualKnowledge, KeyPoint Notes, Clustering-based, AgentSkills</tags>
+<repo-issue-date>2026-04-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.14572
+# Authors
+  - Yiqun Sun
+  - Pengfei Wei
+  - Lawrence B. Hsieh
+# Abstract
+  - Retrieval-Augmented Generation (RAG) grounds LLM responses in external evidence but treats the model as a passive consumer of search results: it never sees how the corpus is organized or what it has not yet retrieved, limiting its ability to backtrack or combine scattered evidence. We present Corpus2Skill, which distills a document corpus into a hierarchical skill directory offline and lets an LLM agent navigate it at serve time. The compilation pipeline iteratively clusters documents, generates LLM-written summaries at each level, and materializes the result as a tree of navigable skill files. At serve time, the agent receives a bird's-eye view of the corpus, drills into topic branches via progressively finer summaries, and retrieves full documents by ID. Because the hierarchy is explicitly visible, the agent can reason about where to look, backtrack from unproductive paths, and combine evidence across branches. On WixQA, an enterprise customer-support benchmark for RAG, Corpus2Skill outperforms dense retrieval, RAPTOR, and agentic RAG baselines across all quality metrics.
+# Translation (by gpt-5-nano)
+- 検索強化生成（RAG）は、外部証拠に基づいてLLMの応答を導く一方で、検索結果の受動的な消費者としてモデルを扱い、コーパスがどのように整理されているか、まだ取得していない情報を知ることができないため、戻ることや散在する証拠を結びつける能力を制限している。私たちは Corpus2Skill を提案する。これは文書コーパスをオフラインで階層的なスキルディレクトリへ蒸留し、提供時にLLMエージェントがそれをナビゲートできるようにする。構築パイプラインは文書を反復的にクラスタリングし、各レベルでLLM作成の要約を生成し、結果をナビゲーション可能なスキルファイルの木として具現化する。提供時には、エージェントはコーパスの全体像を受け取り、トピックの分岐を段階的に細かい要約を通じて掘り下げ、IDで全文ドキュメントを取得する。階層が明示的に可視化されているため、エージェントはどこを探すべきか推論し、生産性の低い経路から戻り、枝間で証拠を組み合わせる。WixQA は、RAG の企業向けカスタマーサポートのベンチマークであり、Corpus2Skill は高密度埋め込み検索、RAPTOR、およびエージェント型RAG のベースラインをすべての品質指標で上回る。
+# Summary (by gpt-4o-mini)
+- 検索強化生成（RAG）の限界を克服するために、Corpus2Skillを提案。これは文書コーパスを階層的なスキルディレクトリに変換し、LLMエージェントが効率的にナビゲート可能にする。文書をクラスタリングし、各レベルで要約を生成して構築。提供時に、エージェントはコーパス全体を把握し、段階的にトピックを掘り下げ、証拠を効果的に組み合わせる。実験により、WixQAのベンチマークでRAGの他の手法を上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Trtd6Trtd/status/2046182088718893403?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Agent Skillsの機構を利用し、Skillsを検索におけるIndexのような位置づけで活用し、Skillsを用いて階層化された知識をnavigateさせることで、抽象的な情報からより細かい情報までdrill-downさせるような挙動を実現させ、RAGの性能を向上させる。<br><img src="https://github.com/user-attachments/assets/80d6d174-37f3-44cc-893b-091b33ea1cd2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Skillsを定義する際は、<br>- root level (Skill.md)<br>- leaf level (Index.md)<br><br>によって構成され、root levelではトピックに関する情報+クラスタのメタ情報、leaf levelでは個別のdocのtitle+IDによって構成される。<br><img src="https://github.com/user-attachments/assets/287188fb-00f1-4660-aa15-e47d7e9c5267" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Documentを階層化する際にはクラスタリングを用いる。具体的にはクラスタリングを実施し、クラスタの内容をLLMに要約させ、要約させた情報に基づいてさらにクラスタリングをする、という処理を繰り返すことで階層化を実現していそうに見える。Servingの時はSkill.md, Index.md, Document Storeに対して、2種類のツール `code_execution`, `get_document` を用いて、ツリーを探索し、relevantなdocを取得する。code_executionは具体的には、SKILL.mdとIndex.mdをviewコマンドによって閲覧し、階層構造全体を俯瞰できるようにする。get_documentでは、docのidentifierを用いて、identifierと対応するdocの全文を取得する。<br><img src="https://github.com/user-attachments/assets/5bcc58d2-5ea3-4a51-94c9-d9aa06a09d36" /" alt="image" loading="lazy" width="550" height="400"/><br><br>BM25, Denseなどのbaselineと比較して高い性能を獲得している。性能に対してコスト比が併記されているが、トークン空間上で思考し探索をするためコストは高いように見える。個人的に気になるのは、金銭的なコストもそうだが、latencyである。embeddingを用いたRAGに対して、相当latencyが遅いのではないか？と思われる。<br><img src="https://github.com/user-attachments/assets/70e980bc-619b-4847-b6ef-0d59d6d555fa" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] SKILL0: In-Context Agentic Reinforcement Learning for Skill Internalization, Zhengxi Lu+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.02268</original-paper-blog-link>
