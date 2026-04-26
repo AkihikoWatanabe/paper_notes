@@ -1,5 +1,600 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-24">
+<paper-list last-updated="2026-04-25">
+<paper-entry>
+<title>[Paper Note] Self-Evolving LLM Memory Extraction Across Heterogeneous Tasks, Yuqing Yang+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.11610</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5352</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Personalization, Evaluation, memory, KeyPoint Notes, Clustering-based, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.11610
+# Authors
+  - Yuqing Yang
+  - Tengxiao Liu
+  - Wang Bill Zhu
+  - Taiwei Shi
+  - Linxin Song
+  - Robin Jia
+# Abstract
+  - As LLM-based assistants become persistent and personalized, they must extract and retain useful information from past conversations as memory. However, the types of information worth remembering vary considerably across tasks. We formalize the \textit{heterogeneous memory extraction} task and introduce \textbf{BEHEMOTH}, a benchmark that repurposes 18 existing datasets spanning personalization, problem-solving, and agentic tasks, using a downstream utility-driven metric for systematic evaluation. Our empirical analysis confirms that no single static extraction prompt dominates across all task categories, and that existing self-evolving prompt optimization frameworks, originally designed for homogeneous distributions, degrade when training tasks are heterogeneous. To address this, we propose \textbf{CluE}, a cluster-based self-evolving strategy that groups training examples into clusters by extraction scenarios, analyzes each cluster independently, and synthesizes cross-cluster insights to update the extraction prompt. Experiments on BEHEMOTH show that CluE generalizes effectively across heterogeneous tasks ($+$9.04\% relative gain), consistently outperforming prior self-evolving frameworks.
+# Translation (by gpt-5-nano)
+- LLMベースのアシスタントが持続的で個別化されるにつれて、過去の会話から有用な情報を抽出して記憶として保持する必要がある。しかし、覚えておくべき情報の種類はタスクごとに大きく異なる。私たちは\textit{異質な記憶抽出}タスクを正式に定義し、\textbf{BEHEMOTH}を導入する。BEHEMOTHは個人化、問題解決、エージェント的タスクにまたがる18の既存データセットを再利用し、下流の有用性に基づく評価指標を用いて系統的評価を行うベンチマークである。私たちの実証分析は、単一の静的な抽出プロンプトがすべてのタスクカテゴリで優位を占めることはなく、元々均質な分布を前提に設計された既存の自己進化型プロンプト最適化フレームワークは、訓練タスクが異質であると劣化することを確認した。これに対処するため、\textbf{CluE}、抽出シナリオごとに訓練例をクラスタに分け、各クラスタを独立して分析し、クラスタ間の洞察を統合して抽出プロンプトを更新するクラスタベースの自己進化戦略を提案する。BEHEMOTHでの実験は、CluEが異質なタスク全般に効果的に一般化することを示し（(+9.04% 相対的な改善)）、従来の自己進化フレームワークを一貫して上回る。
+# Summary (by gpt-4o-mini)
+- 異質な記憶を保持するためのLLMベースのアシスタントの必要性に対して、\textbf{BEHEMOTH}というベンチマークを導入。18のデータセットを再利用し、タスクごとの有用性を評価する。実証分析により、均質なプロンプトが効果的でないことが確認され、\textbf{CluE}を提案。これは訓練例をクラスタに分け、各クラスタを独立に分析することで、抽出プロンプトを効果的に更新し、BEHEMOTHで実験した結果、従来の方法よりも一般化能力が向上したことを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/taiwei_shi/status/2047380827429130432?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>現在のAI Agentのメモリは同種のタスクに対して構築され評価されるが、実際の環境、特によりpersonalizationが進んだ状況下では、さまざまな異質なユーザの会話を単一のエージェントが扱い、ユーザのリクエストに応じて適切にメモリからcontextを抽出できなければならず、このような能力を測定するベンチマークは存在しない。<br><br>このため、ベンチマークを構築し既存のメモリ手法（promptingベースの手法）を評価したところ、LLMがメモリをmanageする際に、単一のmemory抽出のプロンプトや、自己進化ベースのpromptingではうまくいかないことがわかった。<br><br>提案手法 (CluE) では、各サンプルごとに背後にあるシナリオ（どのような情報が欲しいのか, 抽出時にどのような点がchallengingなのか等）をsummarizerにより解釈し、シナリオ単位でクラスタリング。個々のクラスタを分析することで、クラスタごとにどのような場合に成功/失敗するのか等を分析しクラスタ単位のrecommendationを得る。最終的に、クラスタ間のrecommendationを統合して構造化された一つの抽出promptに仕立てる。このとき、競合がある場合は適切なメモリグループにスコープを絞り解決する、といった手法のようである。<br><br><img src="https://github.com/user-attachments/assets/b5ccea45-a0cb-4268-b05f-26f77de6903d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>既存手法と比較してCluEによって抽出性能が向上<br><img src="https://github.com/user-attachments/assets/d479c030-4cd2-4d61-b7fb-e11a474a5cd9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>問題設定が実践的でおもしろい</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Visual Jigsaw Post-Training Improves MLLMs, Penghao Wu+, ICLR'26, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.25190</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5349</repo-issue-link>
+<tags>ComputerVision, NLP, Temporal, ReinforcementLearning, MultiModal, Self-SupervisedLearning, ICLR, PostTraining, RLVR, VisionLanguageModel, 2D (Image), 3D (Scene), 4D (Video), SpatialUnderstanding</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.25190
+# Authors
+  - Penghao Wu
+  - Yushan Zhang
+  - Haiwen Diao
+  - Bo Li
+  - Lewei Lu
+  - Ziwei Liu
+# Abstract
+  - Reinforcement learning based post-training has recently emerged as a powerful paradigm for enhancing the alignment and reasoning capabilities of multimodal large language models (MLLMs). While vision-centric post-training is crucial for enhancing MLLMs' intrinsic understanding of visual signals, current post-training paradigms are predominantly text-centric, where dense visual inputs are only leveraged to extract sparse cues for text-based reasoning. There exist a few approaches in this direction, however, they often still rely on text as an intermediate mediator or introduce additional visual generative designs. In this work, we introduce Visual Jigsaw, a generic self-supervised post-training framework designed to strengthen visual understanding in MLLMs. Visual Jigsaw is formulated as a general ordering task: visual inputs are partitioned, shuffled, and the model must reconstruct the visual information by producing the correct permutation in natural language. This naturally aligns with reinforcement learning from verifiable rewards (RLVR), requires no additional visual generative components, and derives its supervisory signal automatically without any annotations. We instantiate Visual Jigsaw across three visual modalities, including images, videos, and 3D data. Extensive experiments demonstrate substantial improvements in fine-grained perception, temporal reasoning, and 3D spatial understanding. Our findings highlight the potential of self-supervised vision-centric tasks in post-training MLLMs and aim to inspire further research on vision-centric pretext designs. Project Page: https://penghao-wu.github.io/visual_jigsaw/
+# Translation (by gpt-5-nano)
+- 強化学習ベースのポストトレーニングは、最近、マルチモーダル大規模言語モデル（MLLMs）のアライメントと推論能力を強化する強力なパラダイムとして浮上してきました。視覚中心のポストトレーニングは、MLLMの視覚信号に対する内在的理解を高めるうえで重要ですが、現行のポストトレーニングのパラダイムは主にテキスト中心であり、密度の高い視覚入力はテキストベースの推論のためのまばらな手掛かりを抽出するためにのみ利用されています。この方向にはいくつかのアプローチが存在しますが、しばしば依然としてテキストを中間的な媒介として用いたり、追加の視覚生成設計を導入したりします。本研究では、視覚理解をMLLMsで強化することを目的とした汎用の自己教師付きポストトレーニングフレームワークである Visual Jigsaw を提案します。 Visual Jigsaw は一般的な順序付けタスクとして定式化されます：視覚入力を分割・シャッフルし、モデルは正しい順列を自然言語で出力することによって視覚情報を再構築します。これは検証可能な報酬からの強化学習（RLVR）と自然に整合し、追加の視覚生成コンポーネントを必要とせず、注釈なしで自動的に監督信号を得ることができます。我々は Visual Jigsaw を、画像、動画、および3Dデータを含む3つの視覚モダリティで具体化します。広範な実験により、細粒度の知覚、時間的推論、および3D空間理解の顕著な改善が示されました。我々の知見は、ポストトレーニングにおける自己教師型の視覚中心タスクの可能性を示すとともに、視覚中心の前処理デザインに関するさらなる研究を喚起することを目的としています。 プロジェクトページ: https://penghao-wu.github.io/visual_jigsaw/
+# Summary (by gpt-4o-mini)
+- 視覚理解を強化するための自己教師付きポストトレーニングフレームワーク「Visual Jigsaw」を提案。視覚入力を分割・シャッフルし、モデルは正しい順列を自然言語で出力。これにより強化学習と一致し、追加の視覚生成なしで自動的に監督信号を得る。広範な実験で知覚、時間的推論、3D理解の改善を確認し、視覚中心タスクの可能性を示唆。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://penghao-wu.github.io/visual_jigsaw/" target="_blank" rel="noopener noreferrer">https://penghao-wu.github.io/visual_jigsaw/</a>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=tBf2SUzfZw" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=tBf2SUzfZw</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2047359903078158607?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] DR-Venus: Towards Frontier Edge-Scale Deep Research Agents with Only 10K Open Data, Venus Team+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.19859</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5348</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, SmallModel, OpenWeight, OpenSource, DeepResearch, Author Thread-Post, EdgeDevices</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.19859
+# Authors
+  - Venus Team
+  - Sunhao Dai
+  - Yong Deng
+  - Jinzhen Lin
+  - Yusheng Song
+  - Guoqing Wang
+  - Xiaofeng Wu
+  - Yuqi Zhou
+  - Shuo Yang
+  - Zhenzhe Ying
+  - Zhanwei Zhang
+  - Changhua Meng
+  - Weiqiang Wang
+# Abstract
+  - Edge-scale deep research agents based on small language models are attractive for real-world deployment due to their advantages in cost, latency, and privacy. In this work, we study how to train a strong small deep research agent under limited open-data by improving both data quality and data utilization. We present DR-Venus, a frontier 4B deep research agent for edge-scale deployment, built entirely on open data. Our training recipe consists of two stages. In the first stage, we use agentic supervised fine-tuning (SFT) to establish basic agentic capability, combining strict data cleaning with resampling of long-horizon trajectories to improve data quality and utilization. In the second stage, we apply agentic reinforcement learning (RL) to further improve execution reliability on long-horizon deep research tasks. To make RL effective for small agents in this setting, we build on IGPO and design turn-level rewards based on information gain and format-aware regularization, thereby enhancing supervision density and turn-level credit assignment. Built entirely on roughly 10K open-data, DR-Venus-4B significantly outperforms prior agentic models under 9B parameters on multiple deep research benchmarks, while also narrowing the gap to much larger 30B-class systems. Our further analysis shows that 4B agents already possess surprisingly strong performance potential, highlighting both the deployment promise of small models and the value of test-time scaling in this setting. We release our models, code, and key recipes to support reproducible research on edge-scale deep research agents.
+# Translation (by gpt-5-nano)
+- 小型言語モデルに基づくエッジ規模の深層研究エージェントは、コスト、レイテンシ、プライバシーの利点から実世界への展開に魅力的である。本研究では、限定的なオープンデータの下でデータ品質とデータ利用の両方を向上させることにより、強力な小型深層研究エージェントを訓練する方法を検討する。我々は、オープンデータのみで構築された、エッジ規模展開を前提とする最先端の4B深層研究エージェント DR-Venus を提示する。我々の訓練レシピは二段階からなる。第一段階では、エージェント的監督付きファインチューニング（SFT）を用いて基本的なエージェント能力を確立し、データ品質と利用を改善するために厳格なデータクリーニングと長期的展望の軌跡のリサンプリングを組み合わせる。第二段階では、エージェント的強化学習（RL）を適用して、長期展望の深い研究タスクにおける実行信頼性をさらに向上させる。この設定で小型エージェントに RL を効果的に適用するため、IGPO をベースに情報ゲインに基づくターン単位の報酬とフォーマット認識性正則化を設計し、監督密度とターン単位のクレジット割り当てを高める。約1万のオープンデータのみで構築された DR-Venus-4B は、9B パラメータの従来のエージェント的モデルを複数の深層研究ベンチマークで有意に上回り、はるかに大規模な30Bクラスのシステムとの差を縮めている。さらに分析すると、4B エージェントはすでに驚くべき高い性能ポテンシャルを有しており、小型モデルの展開可能性とこの設定におけるテスト時スケーリングの価値を示している。我々は、エッジ規模の深層研究エージェントに関する再現性のある研究を支援するため、モデル、コード、および主要なレシピを公開する。
+# Summary (by gpt-4o-mini)
+- エッジ規模の小型深層研究エージェントDR-Venusを提示し、限られたオープンデータを基に強力な性能向上を実現。二段階の訓練プロセスでは、第一段階で基本能力を確立し、データ品質を改善、第二段階で強化学習を導入し実行信頼性を向上。約1万のオープンデータで構築されたこのエージェントは、従来の9Bモデルを上回り、30Bシステムとの差も縮小。再現性のある研究に資するため、モデルやコードを公開。</issue-body>
+<maintainer-comment-text><p>models:
+
+{% raw %}
+<a href="https://huggingface.co/collections/inclusionAI/dr-venus" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/inclusionAI/dr-venus</a>
+{% endraw %}
+
+<br>code:
+
+{% raw %}
+<a href="https://github.com/inclusionAI/DR-Venus" target="_blank" rel="noopener noreferrer">https://github.com/inclusionAI/DR-Venus</a>
+{% endraw %}
+
+</p><p>オープンなデータのみで構築されたtraining/inferenceパイプラインもオープンなDeepResearchエージェント。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ant_oss/status/2047353673513369825?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LLaDA2.0-Uni: Unifying Multimodal Understanding and Generation with Diffusion Large Language Model, Inclusion AI+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.20796</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5344</repo-issue-link>
+<tags>NLP, Chain-of-Thought, MultiModal, DiffusionModel, TextToImageGeneration, Reasoning, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, VisionLanguageModel, Editing, UMM, ImageSynthesis, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.20796
+# Authors
+  - Inclusion AI
+  - Tiwei Bie
+  - Haoxing Chen
+  - Tieyuan Chen
+  - Zhenglin Cheng
+  - Long Cui
+  - Kai Gan
+  - Zhicheng Huang
+  - Zhenzhong Lan
+  - Haoquan Li
+  - Jianguo Li
+  - Tao Lin
+  - Qi Qin
+  - Hongjun Wang
+  - Xiaomei Wang
+  - Haoyuan Wu
+  - Yi Xin
+  - Junbo Zhao
+# Abstract
+  - We present LLaDA2.0-Uni, a unified discrete diffusion large language model (dLLM) that supports multimodal understanding and generation within a natively integrated framework. Its architecture combines a fully semantic discrete tokenizer, a MoE-based dLLM backbone, and a diffusion decoder. By discretizing continuous visual inputs via SigLIP-VQ, the model enables block-level masked diffusion for both text and vision inputs within the backbone, while the decoder reconstructs visual tokens into high-fidelity images. Inference efficiency is enhanced beyond parallel decoding through prefix-aware optimizations in the backbone and few-step distillation in the decoder. Supported by carefully curated large-scale data and a tailored multi-stage training pipeline, LLaDA2.0-Uni matches specialized VLMs in multimodal understanding while delivering strong performance in image generation and editing. Its native support for interleaved generation and reasoning establishes a promising and scalable paradigm for next-generation unified foundation models. Codes and models are available at https://github.com/inclusionAI/LLaDA2.0-Uni.
+# Translation (by gpt-5-nano)
+- 私たちは、ネイティブに統合されたフレームワーク内でマルチモーダルな理解と生成をサポートする統一型離散拡散大規模言語モデル（dLLM）、LLaDA2.0-Uni を提案します。  
+そのアーキテクチャは、完全に意味論的な離散トークナイザ、MoEベースの dLLM バックボーン、そして拡散デコーダを組み合わせています。  
+SigLIP-VQ によって連続的な視覚入力を離散化することにより、バックボーン内でテキストとビジョン入力のブロックレベルのマスク拡散を可能にし、デコーダは視覚トークンを高忠実度の画像へと再構成します。  
+推論効率は、バックボーンにおけるプレフィックス対応の最適化と、デコーダにおける少数ステップ蒸留によって、並列デコードを超えて向上します。  
+綿密にキュレーションされた大規模データと、特別に設計された複数段階のトレーニングパイプラインに支えられて、LLaDA2.0-Uni はマルチモーダル理解において特化型VLM（視覚言語モデル）に匹敵しつつ、画像生成と編集においても高い性能を発揮します。  
+生成と推論を交互に行うネイティブサポートは、次世代の統一型基盤モデルにとって有望で拡張性の高いパラダイムを確立します。  
+コードとモデルは https://github.com/inclusionAI/LLaDA2.0-Uni で公開されています。
+# Summary (by gpt-4o-mini)
+- LLaDA2.0-Uniは、マルチモーダルな理解と生成を統合するための統一型離散拡散大規模言語モデルです。意味論的な離散トークナイザとMoEベースのバックボーン、拡散デコーダを組み合わせ、視覚入力を効率的に処理します。高忠実度の画像生成を実現し、推論効率を最適化する独自の手法を採用。特化型VLMに匹敵する性能を持ち、生成と推論の相互運用性で次世代モデルの可能性を広げます。コードは公開されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2047297426680123630?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>VLM * Diffusionモデル。テキストの生成だけでなく、TextToImage, Image Editingもサポートされているように見える。</p><p>公式ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ant_oss/status/2047344944021668146?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>画像を生成する前にreasoningを実施するように訓練され、UMMなのでtext, patchのrepresentationがシームレスに統合され、画像を伴うテキスト生成がより一貫性を持つ、とのこと。</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chenhaoxing249/status/2047343387859472631?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TRACER: Trace-Based Adaptive Cost-Efficient Routing for LLM Classification, Adam Rida, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.14531</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5343</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Distillation, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.14531
+# Authors
+  - Adam Rida
+# Abstract
+  - Every call to an LLM classification endpoint produces a labeled input-output pair already retained in production logs. These pairs constitute a free, growing training set: a lightweight surrogate trained on them can absorb a significant portion of future traffic at near-zero marginal inference cost. The open questions are when the surrogate is reliable enough to deploy, what it handles versus defers, and how that boundary evolves as data accumulates.   We introduce TRACER (Trace-based Adaptive Cost-Efficient Routing), an open-source system that trains ML surrogates on an LLM's own production traces and governs deployment through a parity gate: the surrogate is activated only when its agreement with the LLM exceeds a user-specified threshold α. To make the routing boundary transparent, TRACER generates interpretability artifacts describing which input regions the surrogate handles, where it plateaus, and why it defers.   On a 77-class intent benchmark with a Sonnet 4.6 teacher, TRACER achieves 83-100% surrogate coverage depending on the quality target α; on a 150-class benchmark, the surrogate fully replaces the teacher. On a natural language inference task, the parity gate correctly refuses deployment because the embedding representation cannot support reliable separation. The system is available as open-source software.
+# Translation (by gpt-5-nano)
+- LLM分類エンドポイントへの呼び出しは、すでに本番ログに保持されているラベル付きの入力-出力ペアを生み出す。これらのペアは無料で増え続ける訓練データセットを構成し、それに基づいて訓練された軽量な代理モデルは、ほぼゼロに近い限界推論コストで将来のトラフィックのかなりの部分を吸収できる。未解決の問いは、代理モデルをデプロイするのに十分信頼できる時点、代理モデルが処理するものと回避して本来のモデルに任せるべきもの、そしてデータが蓄積されるにつれてその境界がどのように進化するかである。
+
+TRACER（Trace-based Adaptive Cost-Efficient Routing）は、LLM自身の本番トレース上でML代理モデルを訓練し、パリティゲートを介してデプロイを統御するオープンソースのシステムである。代理モデルは、LLMとの一致度がユーザー指定の閾値αを超えた場合にのみ活性化される。ルーティング境界を透明にするため、TRACERは代理モデルがどの入力領域を処理するか、どこで飽和するか、そしてなぜデプロイを見送るのかを説明する解釈可能性のアーティファクトを生成する。
+
+77クラスのインテントベンチマークで、Sonnet 4.6の教師モデルを用いると、TRACERはαの品質ターゲットに応じて83-100%の代理カバレッジを達成する；150クラスのベンチマークでは代理モデルが教師を完全に置換する。自然言語推論タスクでは、パリティゲートは埋め込み表現が信頼性の高い分離をサポートできないとしてデプロイを正しく拒否する。 本システムはオープンソースソフトウェアとして利用可能である。
+# Summary (by gpt-4o-mini)
+- LLM分類に基づく訓練データセットを生成し、軽量な代理モデルによって低コストでトラフィックを処理することを提案。TRACERは代理モデルを本番トレースで訓練し、信頼性に応じてデプロイを管理。透明性を持たせるために、入力領域の処理やデプロイ拒否の理由を解釈可能な形で示す。77クラスのベンチマークでは83-100%のカバレッジを達成し、自然言語推論タスクでは正しくデプロイを拒否。システムはオープンソースとして提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2047269263853924539?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLMにリクエストされる分類問題タスクのinputとLLM（教師モデル）を収集しておき、低コストで推論可能な代理モデルを学習。リクエストごとに、LLM/代理モデルどちらを利用して推論するかをRoutingし、低コストで分類タスクを解けるようにする、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Parallel-SFT: Improving Zero-Shot Cross-Programming-Language Transfer for Code RL, Zhaofeng Wu+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.20835</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5342</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Coding, TransferLearning, PostTraining, LowResource, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.20835
+# Authors
+  - Zhaofeng Wu
+  - Shiqi Wang
+  - Boya Peng
+  - Anuj Goyal
+  - Melanie Kambadur
+  - Sebastian Ruder
+  - Yoon Kim
+  - Chloe Bi
+# Abstract
+  - Modern language models demonstrate impressive coding capabilities in common programming languages (PLs), such as C++ and Python, but their performance in lower-resource PLs is often limited by training data availability. In principle, however, most programming skills are universal across PLs, so the capability acquired in one PL should transfer to others. In this work, we propose the task of zero-shot cross-programming-language transfer for code RL. We find that, for Llama-3.1, RL training for code generation in a source PL fails to improve, and sometimes even degrades, the performance on other target PLs. To address this, we hypothesize that effective RL transfer requires a generalizable SFT initialization before RL. We thus propose **Parallel-SFT**, an SFT strategy that incorporates "parallel programs" -- functionally equivalent code implemented in multiple PLs -- into the data mixture. We demonstrate that this improves transferability: when we subsequently perform RL on our Parallel-SFT model, we observe better generalization to unseen PLs. Analysis of the model internal representations reveals that Parallel-SFT leads to a more functionality-centric latent space, where equivalent programs across PLs are more tightly clustered, which we hypothesize to contribute to the improved transferability.
+# Translation (by gpt-5-nano)
+- 現代の言語モデルは、C++やPythonといった一般的なプログラミング言語（PL）において印象的なコーディング能力を示すが、低リソースのPLにおける性能は、しばしば訓練データの入手可能性によって制約される。原理的には、ほとんどのプログラミングスキルはPL間で普遍的であり、あるPLで獲得した能力は他のPLへ転移するはずである。本研究では、コードRLのゼロショット跨プログラミング言語転移のタスクを提案する。Llama-3.1の場合、ソースPLでのコード生成のRL訓練は他のターゲットPLの性能を改善することに失敗し、時には劣化させることさえあることを見いだした。これに対処するため、効果的なRL転移にはRL前の一般化可能なSFT初期化が必要であると仮説する。そこで、データ混合に「並列プログラム」— 複数のPLで実装された機能的に同等のコード — を取り込むSFT戦略であるParallel-SFTを提案する。これが転移性を向上させることを示す。続いてParallel-SFTモデルでRLを実行すると、未知のPLへの一般化がより良くなることを観察する。モデル内部表現の分析は、Parallel-SFTが機能性中心の潜在空間を生み出し、PL間の同等のプログラムがより密にクラスタ化されることを示しており、これが転移性の向上に寄与すると仮説づけている。
+# Summary (by gpt-4o-mini)
+- 低リソースのプログラミング言語（PL）における言語モデルの性能は、訓練データの制約を受ける。本研究では、ゼロショットの跨プログラミング言語転移タスクを提案し、Llama-3.1がPL間でのコード生成において改善されないことを明らかにした。これに対処するため、一般化可能なSFT初期化が必要とし、「並列プログラム」を使用したSFT戦略Parallel-SFTを導入。Parallel-SFTによって転移性が向上し、RL実行後に未知のPLへの一般化が改善されることを示した。モデルの内部表現分析は、PL間での同等プログラムが密にクラスタ化され、これが転移性向上に寄与することを示唆している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2047207174422606070?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RL前にプログラミング言語でのパラレルコーパスでSFTすることで、特定言語でRLをした場合でも他言語にも性能が転移する、という話に見える。</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhaofeng_wu/status/2047331654578868249?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AI scientists produce results without reasoning scientifically, Martiño Ríos-García+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.18805</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5336</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, AIAgents, ScientificDiscovery, read-later, Selected Papers/Blogs, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.18805
+# Authors
+  - Martiño Ríos-García
+  - Nawaf Alampara
+  - Chandan Gupta
+  - Indrajeet Mandal
+  - Sajid Mannan
+  - Ali Asghar Aghajani
+  - N. M. Anoop Krishnan
+  - Kevin Maik Jablonka
+# Abstract
+  - Large language model (LLM)-based systems are increasingly deployed to conduct scientific research autonomously, yet whether their reasoning adheres to the epistemic norms that make scientific inquiry self-correcting is poorly understood. Here, we evaluate LLM-based scientific agents across eight domains, spanning workflow execution to hypothesis-driven inquiry, through more than 25,000 agent runs and two complementary lenses: (i) a systematic performance analysis that decomposes the contributions of the base model and the agent scaffold, and (ii) a behavioral analysis of the epistemological structure of agent reasoning. We observe that the base model is the primary determinant of both performance and behavior, accounting for 41.4% of explained variance versus 1.5% for the scaffold. Across all configurations, evidence is ignored in 68% of traces, refutation-driven belief revision occurs in 26%, and convergent multi-test evidence is rare. The same reasoning pattern appears whether the agent executes a computational workflow or conducts hypothesis-driven inquiry. They persist even when agents receive near-complete successful reasoning trajectories as context, and the resulting unreliability compounds across repeated trials in epistemically demanding domains. Thus, current LLM-based agents execute scientific workflows but do not exhibit the epistemic patterns that characterize scientific reasoning. Outcome-based evaluation cannot detect these failures, and scaffold engineering alone cannot repair them. Until reasoning itself becomes a training target, the scientific knowledge produced by such agents cannot be justified by the process that generated it.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLM）ベースのシステムは自律的に科学研究を行うためにますます導入されているが、それらの推論が科学的探究を自己修正可能にする認識論的規範に従っているかどうかは十分には理解されていない。ここでは、ワークフローの実行から仮説駆動型の探究に至るまで、8領域にわたるLLMベースの科学的エージェントを、25,000件を超えるエージェント実行と2つの補完的な視点を用いて評価する：(i) 基本モデルとエージェントのスキャフォールドの寄与を分解する系統的な性能分析、(ii) エージェント推論の認識論的構造の行動分析。我々は、基本モデルが性能と行動の主要な決定因子であることを観察し、説明可能な分散の41.4%を占め、スキャフォールドは1.5%にとどまる。全構成を通じて、証拠は痕跡の68%で無視され、反証駆動の信念修正は26%で発生し、収束的な複数テスト証拠は稀である。同じ推論パターンは、エージェントが計算的なワークフローを実行する場合にも、仮説駆動型の探究を行う場合にも現れる。これらは、エージェントがほぼ完全な成功推論経路を文脈として受け取っても継続し、その結果として生じる信頼性の欠如は、認識論的に要求の高い領域での繰り返し試行を重ねるうちにさらに悪化する。したがって、現在のLLMベースのエージェントは科学的ワークフローを実行するが、科学的推論を特徴づける認識論的パターンを示していない。成果ベースの評価だけではこれらの欠陥を検出できず、スキャフォールド設計だけではそれらを修復できない。推論自体が訓練目標となるまで、こうしたエージェントが生み出す科学的知識は、それを生み出した過程によって正当化することはできない。
+# Summary (by gpt-4o-mini)
+- LLMベースの科学的エージェントの評価を行い、推論の認識論的規範に従っているかを分析。25,000件以上の実行から、基本モデルが性能の主要因であることを確認し、スキャフォールドの寄与はわずか1.5%に過ぎない。証拠の68%が無視され、信念修正は26%の頻度で発生。全体を通じて、エージェントはワークフローや仮説探究で一貫した推論パターンを示すが、科学的推論における認識論的パターンは欠如。これらの欠陥は成果だけでは検出できず、スキャフォールド設計では修復できないため、推論そのものが訓練目標として必要。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/2047007791865647156?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>大規模な実験によって現在のScientific DisaoveryにおけるAI Agentの課題を明確にしており、重要研究に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] PLaMo 2.1-VL Technical Report, Tommi Kerola+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.19324</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5331</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, Evaluation, SmallModel, Japanese, read-later, Selected Papers/Blogs, VisionLanguageModel, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.19324
+# Authors
+  - Tommi Kerola
+  - Yuya Masuda
+  - Takashi Masuko
+  - Toshiki Nakanishi
+  - Daisuke Nishino
+  - Kuniyuki Takahashi
+  - Hanqin Wang
+  - Yoshihiro Yamada
+# Abstract
+  - We introduce PLaMo 2.1-VL, a lightweight Vision Language Model (VLM) for autonomous devices, available in 8B and 2B variants and designed for local and edge deployment with Japanese-language operation. Focusing on Visual Question Answering (VQA) and Visual Grounding as its core capabilities, we develop and evaluate the models for two real-world application scenarios: factory task analysis via tool recognition, and infrastructure anomaly detection. We also develop a large-scale synthetic data generation pipeline and comprehensive Japanese training and evaluation resources. PLaMo 2.1-VL outperforms comparable open models on Japanese and English benchmarks, achieving 61.5 ROUGE-L on JA-VG-VQA-500 and 85.2% accuracy on Japanese Ref-L4. For the two application scenarios, it achieves 53.9% zero-shot accuracy on factory task analysis, and fine-tuning on power plant data improves anomaly detection bbox + label F1-score from 39.7 to 64.9.
+# Translation (by gpt-5-nano)
+- 自動運転デバイス向けの軽量な Vision Language Model（VLM）であるPLaMo 2.1-VLを紹介します。8Bおよび2Bのバリアントがあり、日本語対応のローカルおよびエッジ展開を前提に設計されています。視覚質問応答（VQA）と視覚的グラウンディングを中核機能とし、現実世界の2つのアプリケーションシナリオ、工具認識を通じた工場タスク分析とインフラの異常検知についてモデルを開発・評価します。さらに、大規模な合成データ生成パイプラインと、日本語のトレーニングおよび評価リソースを包括的に開発します。PLaMo 2.1-VLは、日本語および英語のベンチマークにおいて、比較可能な公開モデルを上回り、日本語のJA-VG-VQA-500で61.5のROUGE-L、Japanese Ref-L4で85.2％の精度を達成します。2つのアプリケーションシナリオについては、工場タスク分析で53.9％のゼロショット精度を達成し、発電所データでのファインチューニングにより異常検知のbbox＋ラベルF1スコアが39.7から64.9へ改善します。
+# Summary (by gpt-4o-mini)
+- 自動運転向けの軽量なVision Language Model（VLM）PLaMo 2.1-VLを紹介。8Bと2Bのバリアントがあり、日本語対応のエッジ展開が可能。視覚質問応答に特化し、工場タスク分析とインフラの異常検知で評価。日本語のトレーニングリソースを整備し、JA-VG-VQA-500で61.5のROUGE-L、Japanese Ref-L4で85.2％の精度を達成。工場で53.9％のゼロショット精度、ファインチューニングにより異常検知のF1スコアが39.7から64.9に改善。</issue-body>
+<maintainer-comment-text><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3981" target="_blank" rel="noopener noreferrer">GENIAC第3期で自律稼働デバイス向けの軽量な大規模視覚言語モデルPLaMo 2.1-8B-VLを開発, PFN, 2025.12</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kuniyuki_taka/status/2046800071824699742?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Stopping Computation for Converged Tokens in Masked Diffusion-LM Decoding, Daisuke Oba+, ICLR'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.06412</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5330</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, LanguageModel, DiffusionModel, ICLR, Decoding, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.06412
+# Authors
+  - Daisuke Oba
+  - Danushka Bollegala
+  - Masahiro Kaneko
+  - Naoaki Okazaki
+# Abstract
+  - Masked Diffusion Language Models generate sequences via iterative sampling that progressively unmasks tokens. However, they still recompute the attention and feed-forward blocks for every token position at every step -- even when many unmasked tokens are essentially fixed, resulting in substantial waste in compute. We propose SureLock: when the posterior at an unmasked position has stabilized across steps (our sure condition), we lock that position -- thereafter skipping its query projection and feed-forward sublayers -- while caching its attention keys and values so other positions can continue to attend to it. This reduces the dominant per-iteration computational cost from $O(N^2d)$ to $O(MNd)$ where $N$ is the sequence length, $M$ is the number of unlocked token positions, and $d$ is the model dimension. In practice, $M$ decreases as the iteration progresses, yielding substantial savings. On LLaDA-8B, SureLock reduces algorithmic FLOPs by 30--50% relative to the same sampler without locking, while maintaining comparable generation quality. We also provide a theoretical analysis to justify the design rationale of SureLock: monitoring only the local KL at the lock step suffices to bound the deviation in final token probabilities. Our project page is available at https://daioba.github.io/surelock .
+# Translation (by gpt-5-nano)
+- マスク済み拡散型言語モデルは、トークンを段階的にマスク解除していく反復サンプリングによってシーケンスを生成します。しかし、多くの未マスクトークンが本質的に固定されているにもかかわらず、各ステップで全トークン位置についてアテンションとフィードフォワードブロックを再計算してしまい、計算資源のかなりの無駄が生じます。私たちはSureLockを提案します。未マスク位置の事後分布がステップ間で安定化した場合（私たちの確定条件）、その位置をロックします――以降、その位置のクエリ投影とフィードフォワードサブレイヤをスキップします――同時に他の位置が引き続きその位置をアテンションできるように、そのアテンションのキーと値をキャッシュします。これにより、1回の反復あたりの支配的な計算コストは O(N^2d) から O(MNd) に削減されます。ここで N はシーケンス長、M はロック解除されたトークン位置の数、d はモデルの次元です。実際には、反復が進むにつれて M は減少するため、大幅な節約が得られます。LLaDA-8B において、SureLock は同じサンプラー（ロックなし）と比較してアルゴリズム上の FLOP を 30〜50%削減しつつ、生成品質は同等を維持します。私たちは SureLock の設計理念を正当化する理論分析も提供します。ロック時点で局所的な KL のみを監視するだけで、最終トークン確率の偏差を十分に境界づけることができます。プロジェクトページは https://daioba.github.io/surelock で公開しています。
+# Summary (by gpt-4o-mini)
+- SureLockは、マスク済み拡散型言語モデルにおいて、未マスクトークンをロックすることで計算資源を効率化します。具体的には、未マスク位置の事後分布が安定した場合、その位置に対するクエリ投影とフィードフォワードをスキップしつつ、他の位置がアテンションできるようにキャッシュを使用します。この手法により、計算コストがO(N^2d)からO(MNd)に削減され、生成品質を維持しつつFLOPを30〜50%削減します。理論分析も行い、ロック時点でKLを監視することでトークン確率の偏差を十分に境界づけることができることを示しています。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://daioba.github.io/surelock/" target="_blank" rel="noopener noreferrer">https://daioba.github.io/surelock/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/bollegala/status/2046260279588057091?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト2:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dai0nlp/status/2046935021064212893?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] PlayCoder: Making LLM-Generated GUI Code Playable, Zhiyuan Peng+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.19742</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5329</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, SoftwareEngineering, ComputerUse, GUI, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.19742
+# Authors
+  - Zhiyuan Peng
+  - Wei Tao
+  - Xin Yin
+  - Chenhao Ying
+  - Yuan Luo
+  - Yiwen Guo
+# Abstract
+  - Large language models (LLMs) have achieved strong results in code generation, but their ability to generate GUI applications, especially games, remains insufficiently studied. Existing benchmarks mainly evaluate correctness through test cases, which are inadequate for GUI applications because these systems are interactive, event-driven, and require correct state transitions across sequences of user actions. Their evaluation therefore should consider interaction flows and UI logic rather than only pass/fail outcomes. To study this problem, we introduce PlayEval, a repository-aware benchmark built from 43 multilingual GUI applications in Python, TypeScript, and JavaScript. Unlike prior GUI benchmarks that are difficult to adapt to desktop environments, PlayEval covers six major GUI application categories and directly supports code-generation evaluation. We further propose Play@k, a metric that measures whether at least one of *k* generated candidates can be played end-to-end without logical errors. To support reliable evaluation, we develop PlayTester, an LLM-based agent that performs task-oriented GUI playthroughs and detects logic violations automatically. Experiments on 10 state-of-the-art code LLMs show that, despite high compilation rates, they achieve near-zero Play@3, revealing major weaknesses in generating logically correct GUI applications. To address this limitation, we present PlayCoder, a multi-agent, repository-aware framework that generates, evaluates, and iteratively repairs GUI application code in a closed loop. PlayCoder substantially improves both functional correctness and semantic alignment for open-source and closed-source models, reaching up to 38.1% Exec@3 and 20.3% Play@3. Case studies further show that it can uncover silent logic bugs missed by traditional metrics and fix them through targeted edits.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）はコード生成で高い成果を挙げている一方で、GUIアプリケーション、特にゲームの生成能力はまだ十分には研究されていない。既存のベンチマークは主にテストケースを通じた正確性を評価するが、これらのシステムは対話型・イベント駆動型であり、一連のユーザー操作にわたる正しい状態遷移を要求するため、GUIアプリケーションの評価は不十分である。したがって評価は、通過/不通過の結果だけでなく、インタラクションの流れやUIロジックを考慮すべきである。本研究では、Python、TypeScript、JavaScriptで実装された43の多言語対応GUIアプリケーションを対象とした、リポジトリ対応のベンチマークPlayEvalを提案する。従来のGUIベンチマークがデスクトップ環境への適用が困難であったのに対し、PlayEvalは六つの主要なGUIアプリケーションカテゴリをカバーし、コード生成評価を直接サポートする。さらに、生成候補k個のうち少なくとも1つが論理エラーなくエンドツーエンドで実行可能かを測定する指標Play@kを提案する。信頼性の高い評価を支えるため、タスク指向のGUIプレイトゥルーを自動で検出するLLMベースのエージェントPlayTesterを開発した。最先端のコードLLMを10モデル用いた実験では、高いコンパイル率にもかかわらずPlay@3はほぼゼロに近く、論理的に正しいGUIアプリケーションを生成する能力に大きな弱点があることを示した。これに対処するため、GUIアプリケーションコードを閉ループで生成・評価・逐次修復する多エージェントかつリポジトリ対応のフレームワークPlayCoderを提示する。PlayCoderはオープンソースモデルおよびクローズドソースモデルの機能的正確性と意味的整合性の双方を大幅に向上させ、Exec@3が最大で38.1%、Play@3が20.3%に達した。ケーススタディは、従来の指標では見逃される潜在的な論理バグを発見し、ターゲットを絞った編集によってそれらを修正できることをさらに示している。
+# Summary (by gpt-4o-mini)
+- GUIアプリケーションの生成において、従来の評価方法が不十分である中、本研究は多言語対応のベンチマークPlayEvalを提案。これにより、ユーザー操作に基づく評価が可能となる。Play@kという指標で実行可能な生成候補を測定し、LLMベースのエージェントPlayTesterを開発して、タスク指向の評価を自動化。実験では最先端のコードLLMが論理的なGUIアプリケーションの生成に大きな課題を抱えていることが判明。これに対処するための多エージェントフレームワークPlayCoderを提示し、性能を大幅に向上。ケーススタディでは潜在的な論理バグの発見と修正の効果を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/itaowe/status/2046782111471002037?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TEMPO: Scaling Test-time Training for Large Reasoning Models, Qingyang Zhang+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.19295</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5327</repo-issue-link>
+<tags>NLP, LanguageModel, read-later, Diversity, Critic, Test Time Training (TTT)</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.19295
+# Authors
+  - Qingyang Zhang
+  - Xinke Kong
+  - Haitao Wu
+  - Qinghua Hu
+  - Minghao Wu
+  - Baosong Yang
+  - Yu Cheng
+  - Yun Luo
+  - Ganqu Cui
+  - Changqing Zhang
+# Abstract
+  - Test-time training (TTT) adapts model parameters on unlabeled test instances during inference time, which continuously extends capabilities beyond the reach of offline training. Despite initial gains, existing TTT methods for LRMs plateau quickly and do not benefit from additional test-time compute. Without external calibration, the self-generated reward signal increasingly drifts as the policy model evolves, leading to both performance plateaus and diversity collapse. We propose TEMPO, a TTT framework that interleaves policy refinement on unlabeled questions with periodic critic recalibration on a labeled dataset. By formalizing this alternating procedure through the Expectation-Maximization (EM) algorithm, we reveal that prior methods can be interpreted as incomplete variants that omit the crucial recalibration step. Reintroducing this step tightens the evidence lower bound (ELBO) and enables sustained improvement. Across diverse model families (Qwen3 and OLMO3) and reasoning tasks, TEMPO improves OLMO3-7B on AIME 2024 from 33.0% to 51.1% and Qwen3-14B from 42.3% to 65.8%, while maintaining high diversity.
+# Translation (by gpt-5-nano)
+- テスト時訓練（TTT）は、推論時にラベルなしのテストインスタンス上でモデルパラメータを適応させ、オフライン訓練の域を超えた能力の継続的な拡張を可能にする。初期の利得にもかかわらず、既存のTTT手法はLRMsに対して急速に頭打ちとなり、追加のテスト時計算からの恩恵を受けない。外部校正なしには、自己生成報酬信号はポリシーモデルが進化するにつれて偏差を生み、性能の頭打ちと多様性の崩壊の原因となる。我々はTEMPOを提案する。TEMPOは、ラベルなしの質問に対するポリシーの洗練を周期的に行い、ラベル付きデータセット上でのクリティックの再較正を周期的に挟むTTTフレームワークである。この交互の手続きを期待値最大化（EM）アルゴリズムとして形式化することで、先行法は重要な再較正ステップを欠く不完全な変種として解釈できることが明らかになる。再度このステップを導入することで ELBO（証拠下界）を引き締め、持続的な改善を可能にする。様々なモデルファミリー（Qwen3およびOLMO3）と推論タスクにおいて、TEMPOは AIME 2024 で OLMO3-7B を 33.0％から 51.1％へ、Qwen3-14B を 42.3％から 65.8％へ改善しつつ、高い多様性を維持する。
+# Summary (by gpt-4o-mini)
+- テスト時訓練（TTT）では、ラベルなしのテストインスタンスでモデルパラメータを適応させるが、既存の手法はLRMsで性能が頭打ちになる。提案するTEMPOは、周期的にポリシーの洗練とクリティックの再較正を行い、期待値最大化（EM）アルゴリズムとして位置づけられる。この再較正を通じて持続的な改善を実現し、AIME 2024でOLMO3-7Bを33.0％から51.1％、Qwen3-14Bを42.3％から65.8％へと向上させ、高い多様性を維持する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2046852155290636429?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LongSpeech: A Scalable Benchmark for Transcription, Translation and Understanding in Long Speech, Fei Yang+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.13539</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5325</repo-issue-link>
+<tags>NLP, Dataset, Evaluation, SpeechProcessing, LongSequence, AudioLanguageModel, ICASSP, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.13539
+# Authors
+  - Fei Yang
+  - Xuanfan Ni
+  - Renyi Yang
+  - Jiahui Geng
+  - Qing Li
+  - Chenyang Lyu
+  - Yichao Du
+  - Longyue Wang
+  - Weihua Luo
+  - Kaifu Zhang
+# Abstract
+  - Recent advances in audio-language models have demonstrated remarkable success on short, segment-level speech tasks. However, real-world applications such as meeting transcription, spoken document understanding, and conversational analysis require robust models capable of processing and reasoning over long-form audio. In this work, we present LongSpeech, a large-scale and scalable benchmark specifically designed to evaluate and advance the capabilities of speech models on long-duration audio. LongSpeech comprises over 100,000 speech segments, each approximately 10 minutes long, with rich annotations for ASR, speech translation, summarization, language detection, speaker counting, content separation, and question answering. We introduce a reproducible pipeline for constructing long-form speech benchmarks from diverse sources, enabling future extensions. Our initial experiments with state-of-the-art models reveal significant performance gaps, with models often specializing in one task at the expense of others and struggling with higher-level reasoning. These findings underscore the challenging nature of our benchmark. Our benchmark will be made publicly available to the research community.
+# Translation (by gpt-5-nano)
+- 最近の音声と言語モデルの進歩は、短時間のセグメント単位の音声タスクで顕著な成功を示しています。しかし、会議の文字起こし、話し言葉の文書理解、対話分析といった実世界のアプリケーションには、長時間の音声を処理し推論できる堅牢なモデルが必要です。本研究では、LongSpeech を提案します。長時間の音声の能力を評価・向上させるために特化して設計された大規模でスケーラブルなベンチマークです。LongSpeech は 10万件を超える音声セグメントから成り、それぞれ約10分程度の長さを持ちます。ASR、音声翻訳、要約、言語検出、話者数カウント、コンテンツ分離、および質問応答の豊富なアノテーションを備えています。多様なソースから長時間音声ベンチマークを構築する再現可能なパイプラインを導入し、今後の拡張を可能にします。最先端モデルを用いた初期の実験では、顕著な性能ギャップが明らかになり、モデルはしばしば1つのタスクに特化して他のタスクを犠牲にし、高次の推論に苦戦していることが分かりました。これらの発見は、本ベンチマークの難しさを強調しています。我々のベンチマークは研究コミュニティに公表される予定です。
+# Summary (by gpt-4o-mini)
+- LongSpeechは、長時間音声処理のための大規模なベンチマークで、10万件超の約10分の音声セグメントを含む。ASRや音声翻訳、要約など多様なアノテーションがあり、長時間音声の性能評価を促進。初期の実験では、モデルが特定のタスクに特化し、他を犠牲にしていることが示された。これにより、ベンチマークの挑戦的な特性が明らかにされ、今後の研究に貢献する予定である。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chenyang_lyu/status/2046559086750429250?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>dataset:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/AIDC-AI/Marco_Longspeech" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/AIDC-AI/Marco_Longspeech</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] StructMem: Structured Memory for Long-Horizon Behavior in LLMs, Buqiang Xu+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.21748</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5323</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, memory</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.21748
+# Authors
+  - Buqiang Xu
+  - Yijun Chen
+  - Jizhan Fang
+  - Ruobin Zhong
+  - Yunzhi Yao
+  - Yuqi Zhu
+  - Lun Du
+  - Shumin Deng
+# Abstract
+  - Long-term conversational agents need memory systems that capture relationships between events, not merely isolated facts, to support temporal reasoning and multi-hop question answering. Current approaches face a fundamental trade-off: flat memory is efficient but fails to model relational structure, while graph-based memory enables structured reasoning at the cost of expensive and fragile construction. To address these issues, we propose \textbf{StructMem}, a structure-enriched hierarchical memory framework that preserves event-level bindings and induces cross-event connections. By temporally anchoring dual perspectives and performing periodic semantic consolidation, StructMem improves temporal reasoning and multi-hop performance on \texttt{LoCoMo}, while substantially reducing token usage, API calls, and runtime compared to prior memory systems, see https://github.com/zjunlp/LightMem .
+# Translation (by gpt-5-nano)
+- 長期的な対話エージェントには、単なる孤立した事実だけでなく、イベント間の関係を捉えるメモリシステムが必要であり、これにより時系列推論とマルチホップ質問応答を支える。現在のアプローチは根本的なトレードオフに直面している。フラットなメモリは効率的だが関係構造をモデルできず、グラフベースのメモリは構造化推論を可能にする一方で、構築が高コストで壊れやすい。これらの問題に対処するため、構造を強化した階層的メモリフレームワークである \textbf{StructMem} を提案する。これはイベントレベルの結合を保持し、イベント間の接続を誘導する。二つの視点を時間的にアンカー化し、定期的な意味的統合を行うことにより、StructMem は \texttt{LoCoMo} における時系列推論およびマルチホップ性能を向上させ、従来のメモリシステムと比べてトークン使用量、API 呼び出し、実行時間を大幅に削減する。詳細は https://github.com/zjunlp/LightMem を参照。
+# Summary (by gpt-4o-mini)
+- 長期対話エージェントには、イベント間の関係を捉えるメモリシステムが不可欠である。既存のアプローチは効率性と構造化推論の間にトレードオフが存在する。本研究では、イベント間の結合を保持し、接続を誘導する階層的メモリフレームワークStructMemを提案。これにより、時系列推論とマルチホップ性能が向上し、リソース使用を削減できることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2047740873027543228?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4762" target="_blank" rel="noopener noreferrer">[Paper Note] REMem: Reasoning with Episodic Memory in Language Agent, Yiheng Shu+, ICLR'26, 2026.02</a>
+<br><br>と似ているが、どこが異なるだろうか？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Transformers are Inherently Succinct, Pascal Bergsträßer+, ICLR'26 Outstanding Paper, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.19315</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5322</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Transformer, Architecture, Memorization, reading, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.19315
+# Authors
+  - Pascal Bergsträßer
+  - Ryan Cotterell
+  - Anthony W. Lin
+# Abstract
+  - We propose succinctness as a measure of the expressive power of a transformer in describing a concept. To this end, we prove that transformers are highly expressive in that they can represent formal languages substantially more succinctly than standard representations of formal languages like finite automata and Linear Temporal Logic (LTL) formulas. As a by-product of this expressivity, we show that verifying properties of transformers is provably intractable (i.e. EXPSPACE-complete).
+# Translation (by gpt-5-nano)
+- 我々は、概念を記述する際のトランスフォーマーの表現力を測る指標として、簡潔さを提案する。これを達成するために、トランスフォーマーは、有限オートマトンや線形時間論理（LTL）式のような標準的な形式言語の表現よりもはるかに簡潔に形式言語を表現できるほど高度に表現力を持つことを証明する。この表現力の副産物として、トランスフォーマーの性質を検証することが理論的に困難である（すなわち EXPSPACE 完全である）ことを示す。
+# Summary (by gpt-4o-mini)
+- トランスフォーマーの表現力を測る指標として、簡潔さを提案し、有限オートマトンや線形時間論理（LTL）式よりも高度に形式言語を表現できることを証明。さらに、トランスフォーマーの性質の検証が理論的に困難であること（EXPSPACE 完全）を示した。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Yxz92UuPLQ" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Yxz92UuPLQ</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iclr_conf/status/2047290363740606703?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>succinctnessの提案。あるパターンを表現するのに、RNN(SSM)や有限オートマトンなどと比較してtransformerは指数関数的に少ないパラメータ数で（理論上は）表現できることが数学的に示されているらしい。<br><br>つまりLinear Attentionをベースにしたモデルは計算効率やメモリ消費量では有利だが、表現力を犠牲にしている、ということが示された形になりそうである。<br><br>しかし1パラメータあたりに圧縮可能なコンセプトが増えれば増えるほどmemorizationの傾向が強くなり、汎化性能が失われるという見方もできる気がするので、この辺を踏まえると一概にsuccinctnessが高ければ良いというのも成り立たない気もする。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Context Unrolling in Omni Models, Ceyuan Yang+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.21921</original-paper-blog-link>
@@ -73,6 +668,16 @@
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lukebailey181/status/2047340293490724945?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2047204930419614156?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -375,7 +980,7 @@
 <title>[Paper Note] Evaluation-driven Scaling for Scientific Discovery, Haotian Ye+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.19341</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5299</repo-issue-link>
-<tags>NLP, LanguageModel, ScientificDiscovery, Test-Time Scaling</tags>
+<tags>NLP, LanguageModel, ScientificDiscovery, Test-Time Scaling, Reference Collection</tags>
 <repo-issue-date>2026-04-22</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2604.19341
@@ -7033,7 +7638,7 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 <title>[Paper Note] REMem: Reasoning with Episodic Memory in Language Agent, Yiheng Shu+, ICLR'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.13530</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4762</repo-issue-link>
-<tags>GraphBased, NLP, LanguageModel, AIAgents, ICLR, memory, One-Line Notes, Grounding</tags>
+<tags>GraphBased, NLP, LanguageModel, AIAgents, ICLR, Selected Papers/Blogs, memory, One-Line Notes, Grounding, Author Thread-Post</tags>
 <repo-issue-date>2026-03-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.13530
@@ -7062,7 +7667,13 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 </div>
 {% endraw %}
 
-</p><p>単に知識や事実情報を蓄積するのではなく、過去のイベントに関するsituationalな情報（when,where,who,what)でgroundingをしながら、複数のイベント、タイムラインを跨いでreasoningができるようなepisodic memoryの提案。人間は単に意味情報から記憶を呼び起こすだけでなく、過去のイベントを想起して条件付けした上で時系列になぞって記憶を想起できる能力があることに起因する。</p></maintainer-comment-text>
+</p><p>単に知識や事実情報を蓄積するのではなく、過去のイベントに関するsituationalな情報（when,where,who,what)でgroundingをしながら、複数のイベント、タイムラインを跨いでreasoningができるようなepisodic memoryの提案。人間は単に意味情報から記憶を呼び起こすだけでなく、過去のイベントを想起して条件付けした上で時系列になぞって記憶を想起できる能力があることに起因する。</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=fugnQxbvMm" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=fugnQxbvMm</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -18357,6 +18968,75 @@ demo: https://openscilm.allen.ai/</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] The Quest for Generalizable Motion Generation: Data, Model, and Evaluation, Jing Lin+, ICLR'26, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.26794</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4166</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, SyntheticData, Evaluation, DiffusionModel, ICLR, Generalization, 3D (Scene), FlowMatching, Robotics, 4D (Video), HumanMotionGeneration</tags>
+<repo-issue-date>2026-01-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.26794
+# Authors
+  - Jing Lin
+  - Ruisi Wang
+  - Junzhe Lu
+  - Ziqi Huang
+  - Guorui Song
+  - Ailing Zeng
+  - Xian Liu
+  - Chen Wei
+  - Wanqi Yin
+  - Qingping Sun
+  - Zhongang Cai
+  - Lei Yang
+  - Ziwei Liu
+# Abstract
+  - Despite recent advances in 3D human motion generation (MoGen) on standard benchmarks, existing models still face a fundamental bottleneck in their generalization capability. In contrast, adjacent generative fields, most notably video generation (ViGen), have demonstrated remarkable generalization in modeling human behaviors, highlighting transferable insights that MoGen can leverage. Motivated by this observation, we present a comprehensive framework that systematically transfers knowledge from ViGen to MoGen across three key pillars: data, modeling, and evaluation. First, we introduce ViMoGen-228K, a large-scale dataset comprising 228,000 high-quality motion samples that integrates high-fidelity optical MoCap data with semantically annotated motions from web videos and synthesized samples generated by state-of-the-art ViGen models. The dataset includes both text-motion pairs and text-video-motion triplets, substantially expanding semantic diversity. Second, we propose ViMoGen, a flow-matching-based diffusion transformer that unifies priors from MoCap data and ViGen models through gated multimodal conditioning. To enhance efficiency, we further develop ViMoGen-light, a distilled variant that eliminates video generation dependencies while preserving strong generalization. Finally, we present MBench, a hierarchical benchmark designed for fine-grained evaluation across motion quality, prompt fidelity, and generalization ability. Extensive experiments show that our framework significantly outperforms existing approaches in both automatic and human evaluations. The code, data, and benchmark will be made publicly available.
+# Translation (by gpt-4o-mini)
+- 最近の標準ベンチマークにおける3D人間動作生成（MoGen）の進展にもかかわらず、既存のモデルは一般化能力において根本的なボトルネックに直面しています。対照的に、隣接する生成分野、特に動画生成（ViGen）は、人間の行動をモデル化する上で驚異的な一般化を示しており、MoGenが活用できる移転可能な洞察を強調しています。この観察に触発されて、私たちはデータ、モデリング、評価の3つの重要な柱を通じてViGenからMoGenへの知識を体系的に移転する包括的なフレームワークを提案します。まず、228,000の高品質な動作サンプルを含む大規模データセットViMoGen-228Kを紹介します。このデータセットは、高忠実度の光学モーションキャプチャ（MoCap）データと、ウェブ動画からの意味的に注釈された動作、最先端のViGenモデルによって生成された合成サンプルを統合しています。データセットには、テキスト-モーションペアとテキスト-動画-モーショントリプレットの両方が含まれており、意味的多様性を大幅に拡大しています。次に、MoCapデータとViGenモデルからの事前情報をゲート付きマルチモーダル条件付けを通じて統合するフローマッチングベースの拡散トランスフォーマーViMoGenを提案します。効率を向上させるために、動画生成の依存関係を排除しながら強力な一般化を維持する蒸留版のViMoGen-lightも開発しました。最後に、動作の質、プロンプトの忠実度、一般化能力に関する細かい評価のために設計された階層的ベンチマークMBenchを提示します。広範な実験により、私たちのフレームワークが自動評価と人間評価の両方で既存のアプローチを大幅に上回ることが示されました。コード、データ、およびベンチマークは公開される予定です。
+# Summary (by gpt-4o-mini)
+- 3D人間動作生成（MoGen）は一般化能力に課題があるが、動画生成（ViGen）は優れた一般化を示す。これを受けて、ViGenからMoGenへの知識移転のためのフレームワークを提案。228,000の高品質な動作サンプルを含むデータセットViMoGen-228Kを作成し、MoCapデータとViGenモデルからの情報を統合したフローマッチングベースの拡散トランスフォーマーViMoGenを開発。さらに、動作の質や一般化能力を評価するための階層的ベンチマークMBenchを提示。実験結果は、提案手法が既存のアプローチを大幅に上回ることを示した。</issue-body>
+<maintainer-comment-text><p>dataset:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/wruisi/ViMoGen-228K" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/wruisi/ViMoGen-228K</a>
+{% endraw %}
+
+<br>leaderboard:
+
+{% raw %}
+<a href="https://huggingface.co/spaces/wruisi/MBench_leaderboard" target="_blank" rel="noopener noreferrer">https://huggingface.co/spaces/wruisi/MBench_leaderboard</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2010007526126039346?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/2011499555033080135?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=KNke6Pkq4o" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=KNke6Pkq4o</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Token-Level LLM Collaboration via FusionRoute, Nuoya Xiong+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2601.05106</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4163</repo-issue-link>
@@ -19293,6 +19973,48 @@ demo: https://openscilm.allen.ai/</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] MENLO: From Preferences to Proficiency -- Evaluating and Modeling   Native-like Quality Across 47 Languages, Chenxi Whitehouse+, ICLR'26, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.26601</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3084</repo-issue-link>
+<tags>NLP, Dataset, ReinforcementLearning, Evaluation, Conversation, MultiLingual, LLM-as-a-Judge, ICLR, RewardModel, One-Line Notes</tags>
+<repo-issue-date>2025-10-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.26601
+# Authors
+  - Chenxi Whitehouse
+  - Sebastian Ruder
+  - Tony Lin
+  - Oksana Kurylo
+  - Haruka Takagi
+  - Janice Lam
+  - Nicolò Busetto
+  - Denise Diaz
+# Abstract
+  - Ensuring native-like quality of large language model (LLM) responses across many languages is challenging. To address this, we introduce MENLO, a framework that operationalizes the evaluation of native-like response quality based on audience design-inspired mechanisms. Using MENLO, we create a dataset of 6,423 human-annotated prompt-response preference pairs covering four quality dimensions with high inter-annotator agreement in 47 language varieties. Our evaluation reveals that zero-shot LLM judges benefit significantly from pairwise evaluation and our structured annotation rubrics, yet they still underperform human annotators on our dataset. We demonstrate substantial improvements through fine-tuning with reinforcement learning, reward shaping, and multi-task learning approaches. Additionally, we show that RL-trained judges can serve as generative reward models to enhance LLMs' multilingual proficiency, though discrepancies with human judgment remain. Our findings suggest promising directions for scalable multilingual evaluation and preference alignment. We release our dataset and evaluation framework to support further research in multilingual LLM evaluation.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）の応答のネイティブに近い品質を多くの言語で確保することは困難です。これに対処するために、私たちはMENLOというフレームワークを導入し、オーディエンスデザインにインスパイアされたメカニズムに基づいてネイティブに近い応答品質の評価を実現します。MENLOを使用して、47の言語バリエーションにわたる4つの品質次元をカバーする6,423の人間による注釈付きプロンプト-応答の好みペアのデータセットを作成しました。この評価により、ゼロショットLLMの評価者はペアワイズ評価と構造化された注釈ルーブリックから大きな利益を得ることがわかりましたが、それでも私たちのデータセットでは人間の注釈者には及びませんでした。強化学習、報酬シェーピング、マルチタスク学習アプローチを用いたファインチューニングによって、著しい改善を示します。さらに、RLで訓練された評価者がLLMの多言語能力を向上させるための生成的報酬モデルとして機能できることを示しますが、人間の判断との不一致は残ります。私たちの発見は、スケーラブルな多言語評価と好みの整合性に向けた有望な方向性を示唆しています。私たちは、さらなる多言語LLM評価の研究を支援するために、データセットと評価フレームワークを公開します。
+# Summary (by gpt-4o-mini)
+- MENLOフレームワークを用いて、47言語の6,423のプロンプト-応答ペアのデータセットを作成し、LLMの応答品質を評価。ゼロショット評価者はペアワイズ評価から利益を得るが、人間には及ばず。強化学習によるファインチューニングで改善を示し、RL訓練評価者がLLMの多言語能力向上に寄与することを確認。ただし、人間の判断との不一致は残る。データセットと評価フレームワークを公開し、多言語LLM評価の研究を支援。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/seb_ruder/status/1973412580191285640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLMの応答を多言語でよりnativeに近いものにするための取り組み、および評価のフレームワーク（MENLO, データセット含む）な模様。nativeらしさを測るために重要な次元としてFluency, Tone, Localized Tone, Localized Factualityと呼ばれる軸を定義している模様。その上で47言語における6423の人手でアノテーションされたpreference dataを作成し評価をしたところ、既存のLLM-as-a-judgeやSFT/RLされたReward Modelでは、人間による評価にはまだまだ及ばないことが明らかになり、MENLOを用いてRL/SFTすることでLLM JudgeやReward Modelの性能を改善できる、といった話な模様。<br><br>4つの次元については以下の表を参照のこと。<br>それぞれ<br>- Fluency: 専門家レベルのnative speakerと比較した時のproficiency<br>- Tone: 全体的なwriting stvleや語り口<br>- Localized Tone: 文化的、地域的な言葉のニュアンス<br>- Localized Factuality: 地域固有のコンテキストに沿った事実性や網羅性<br><br><img src="https://github.com/user-attachments/assets/2e57edb7-a2f0-4570-a723-53c22ac22036" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=QOWYX3Q2XS" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=QOWYX3Q2XS</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] EditReward: A Human-Aligned Reward Model for Instruction-Guided Image   Editing, Keming Wu+, ICLR'26, 2025.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.26346</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3073</repo-issue-link>
@@ -19944,6 +20666,45 @@ demo: https://openscilm.allen.ai/</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] LLMs Get Lost In Multi-Turn Conversation, Philippe Laban+, ICLR'26 Outstanding Paper, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.06120</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1988</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, AIAgents, Conversation, ICLR, read-later, Selected Papers/Blogs, ContextEngineering, Reference Collection</tags>
+<repo-issue-date>2025-05-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.06120
+# Authors
+  - Philippe Laban
+  - Hiroaki Hayashi
+  - Yingbo Zhou
+  - Jennifer Neville
+# Abstract
+  - Large Language Models (LLMs) are conversational interfaces. As such, LLMs have the potential to assist their users not only when they can fully specify the task at hand, but also to help them define, explore, and refine what they need through multi-turn conversational exchange. Although analysis of LLM conversation logs has confirmed that underspecification occurs frequently in user instructions, LLM evaluation has predominantly focused on the single-turn, fully-specified instruction setting. In this work, we perform large-scale simulation experiments to compare LLM performance in single- and multi-turn settings. Our experiments confirm that all the top open- and closed-weight LLMs we test exhibit significantly lower performance in multi-turn conversations than single-turn, with an average drop of 39% across six generation tasks. Analysis of 200,000+ simulated conversations decomposes the performance degradation into two components: a minor loss in aptitude and a significant increase in unreliability. We find that LLMs often make assumptions in early turns and prematurely attempt to generate final solutions, on which they overly rely. In simpler terms, we discover that *when LLMs take a wrong turn in a conversation, they get lost and do not recover*.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）は会話型インターフェースです。このため、LLMsはユーザーが現在のタスクを完全に特定できる場合だけでなく、マルチターンの会話を通じて必要なものを定義、探求、洗練するのを助ける可能性があります。LLMの会話ログの分析により、ユーザーの指示において過小指定が頻繁に発生することが確認されていますが、LLMの評価は主に単一ターンの完全に指定された指示設定に焦点を当ててきました。本研究では、単一ターンとマルチターンの設定におけるLLMのパフォーマンスを比較するために、大規模なシミュレーション実験を行います。実験の結果、テストしたすべてのトップオープンおよびクローズドウェイトのLLMが、単一ターンに比べてマルチターンの会話で著しく低いパフォーマンスを示し、6つの生成タスクで平均39%のパフォーマンス低下が見られました。20万以上のシミュレーションされた会話の分析により、パフォーマンスの低下は2つの要素に分解されます：わずかな能力の損失と、信頼性の大幅な増加です。LLMsはしばしば初期のターンで仮定を行い、早期に最終的な解決策を生成しようとし、それに過度に依存することがわかりました。簡単に言えば、*LLMsが会話の中で誤った方向に進むと、迷子になり回復できなくなる*ことが明らかになりました。
+# Summary (by gpt-4o-mini)
+- LLMsは会話型インターフェースとして、ユーザーがタスクを定義するのを支援するが、マルチターンの会話ではパフォーマンスが低下する。シミュレーション実験の結果、マルチターンで39%のパフォーマンス低下が見られ、初期のターンでの仮定に依存しすぎることが原因と判明。LLMsは会話中に誤った方向に進むと、回復が難しくなることが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_stakaya/status/1926009283386155009?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Lost in the MiddleならぬLost in Conversation<br><img src="https://github.com/user-attachments/assets/9d4320f5-6fea-43ca-a7ab-a836e7e3642e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer">[Paper Note] Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, arXiv'23, 2023.07</a>
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=VKGTGGcwl6" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=VKGTGGcwl6</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] J1: Incentivizing Thinking in LLM-as-a-Judge via Reinforcement Learning, Chenxi Whitehouse+, ICLR'26, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.10320</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1964</repo-issue-link>
@@ -20087,7 +20848,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] MesaNet: Sequence Modeling by Locally Optimal Test-Time Training, Johannes von Oswald+, arXiv'25, 2025.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.05233</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5321</repo-issue-link>
-<tags>NLP, LanguageModel, Transformer, Architecture, ICLR, RecurrentModels, LinearAttention</tags>
+<tags>NLP, LanguageModel, Transformer, Architecture, ICLR, RecurrentModels, LinearAttention, Author Thread-Post</tags>
 <repo-issue-date>2026-04-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.05233
@@ -22819,69 +23580,6 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] The Quest for Generalizable Motion Generation: Data, Model, and Evaluation, Jing Lin+, arXiv'25, 2025.10</title>
-<original-paper-blog-link>https://arxiv.org/abs/2510.26794</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4166</repo-issue-link>
-<tags>ComputerVision, NLP, Dataset, SyntheticData, Evaluation, DiffusionModel, Generalization, 3D (Scene), FlowMatching, Robotics, 4D (Video), HumanMotionGeneration</tags>
-<repo-issue-date>2026-01-11</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2510.26794
-# Authors
-  - Jing Lin
-  - Ruisi Wang
-  - Junzhe Lu
-  - Ziqi Huang
-  - Guorui Song
-  - Ailing Zeng
-  - Xian Liu
-  - Chen Wei
-  - Wanqi Yin
-  - Qingping Sun
-  - Zhongang Cai
-  - Lei Yang
-  - Ziwei Liu
-# Abstract
-  - Despite recent advances in 3D human motion generation (MoGen) on standard benchmarks, existing models still face a fundamental bottleneck in their generalization capability. In contrast, adjacent generative fields, most notably video generation (ViGen), have demonstrated remarkable generalization in modeling human behaviors, highlighting transferable insights that MoGen can leverage. Motivated by this observation, we present a comprehensive framework that systematically transfers knowledge from ViGen to MoGen across three key pillars: data, modeling, and evaluation. First, we introduce ViMoGen-228K, a large-scale dataset comprising 228,000 high-quality motion samples that integrates high-fidelity optical MoCap data with semantically annotated motions from web videos and synthesized samples generated by state-of-the-art ViGen models. The dataset includes both text-motion pairs and text-video-motion triplets, substantially expanding semantic diversity. Second, we propose ViMoGen, a flow-matching-based diffusion transformer that unifies priors from MoCap data and ViGen models through gated multimodal conditioning. To enhance efficiency, we further develop ViMoGen-light, a distilled variant that eliminates video generation dependencies while preserving strong generalization. Finally, we present MBench, a hierarchical benchmark designed for fine-grained evaluation across motion quality, prompt fidelity, and generalization ability. Extensive experiments show that our framework significantly outperforms existing approaches in both automatic and human evaluations. The code, data, and benchmark will be made publicly available.
-# Translation (by gpt-4o-mini)
-- 最近の標準ベンチマークにおける3D人間動作生成（MoGen）の進展にもかかわらず、既存のモデルは一般化能力において根本的なボトルネックに直面しています。対照的に、隣接する生成分野、特に動画生成（ViGen）は、人間の行動をモデル化する上で驚異的な一般化を示しており、MoGenが活用できる移転可能な洞察を強調しています。この観察に触発されて、私たちはデータ、モデリング、評価の3つの重要な柱を通じてViGenからMoGenへの知識を体系的に移転する包括的なフレームワークを提案します。まず、228,000の高品質な動作サンプルを含む大規模データセットViMoGen-228Kを紹介します。このデータセットは、高忠実度の光学モーションキャプチャ（MoCap）データと、ウェブ動画からの意味的に注釈された動作、最先端のViGenモデルによって生成された合成サンプルを統合しています。データセットには、テキスト-モーションペアとテキスト-動画-モーショントリプレットの両方が含まれており、意味的多様性を大幅に拡大しています。次に、MoCapデータとViGenモデルからの事前情報をゲート付きマルチモーダル条件付けを通じて統合するフローマッチングベースの拡散トランスフォーマーViMoGenを提案します。効率を向上させるために、動画生成の依存関係を排除しながら強力な一般化を維持する蒸留版のViMoGen-lightも開発しました。最後に、動作の質、プロンプトの忠実度、一般化能力に関する細かい評価のために設計された階層的ベンチマークMBenchを提示します。広範な実験により、私たちのフレームワークが自動評価と人間評価の両方で既存のアプローチを大幅に上回ることが示されました。コード、データ、およびベンチマークは公開される予定です。
-# Summary (by gpt-4o-mini)
-- 3D人間動作生成（MoGen）は一般化能力に課題があるが、動画生成（ViGen）は優れた一般化を示す。これを受けて、ViGenからMoGenへの知識移転のためのフレームワークを提案。228,000の高品質な動作サンプルを含むデータセットViMoGen-228Kを作成し、MoCapデータとViGenモデルからの情報を統合したフローマッチングベースの拡散トランスフォーマーViMoGenを開発。さらに、動作の質や一般化能力を評価するための階層的ベンチマークMBenchを提示。実験結果は、提案手法が既存のアプローチを大幅に上回ることを示した。</issue-body>
-<maintainer-comment-text><p>dataset:
-
-{% raw %}
-<a href="https://huggingface.co/datasets/wruisi/ViMoGen-228K" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/wruisi/ViMoGen-228K</a>
-{% endraw %}
-
-<br>leaderboard:
-
-{% raw %}
-<a href="https://huggingface.co/spaces/wruisi/MBench_leaderboard" target="_blank" rel="noopener noreferrer">https://huggingface.co/spaces/wruisi/MBench_leaderboard</a>
-{% endraw %}
-
-</p><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2010007526126039346?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>ポイント解説:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/2011499555033080135?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>[Paper Note] Granite Embedding R2 Models, Parul Awasthy+, arXiv'25, 2025.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2508.21085</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4146</repo-issue-link>
@@ -25173,7 +25871,7 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 <title>[Paper Note] SonicMoE: Accelerating MoE with IO and Tile-aware Optimizations, Wentao Guo+, arXiv'25, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.14080</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4002</repo-issue-link>
-<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, MoE(Mixture-of-Experts), SoftwareEngineering, mid-training, PostTraining, One-Line Notes</tags>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, MoE(Mixture-of-Experts), SoftwareEngineering, mid-training, PostTraining, Selected Papers/Blogs, One-Line Notes</tags>
 <repo-issue-date>2025-12-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.14080
@@ -25199,7 +25897,17 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 </div>
 {% endraw %}
 
-</p><p>MoEモデルの学習速度、メモリ使用が最大2倍効率化される実装らしい。ただしHopperに特化している模様。</p></maintainer-comment-text>
+</p><p>MoEモデルの学習速度、メモリ使用が最大2倍効率化される実装らしい。ただしHopperに特化している模様。</p><p>Blackwellでも動作するようになった模様:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wentaoguo7/status/2047007230847766951?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -40558,42 +41266,6 @@ Qwen3-4B-Base および OctoThinker Hybrid-8B-Base を用いて、AIME25 の Pas
 {% endraw %}
 
 </p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] MENLO: From Preferences to Proficiency -- Evaluating and Modeling  Native-like Quality Across 47 Languages, Chenxi Whitehouse+, arXiv'25, 2025.09</title>
-<original-paper-blog-link>https://arxiv.org/abs/2509.26601</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3084</repo-issue-link>
-<tags>NLP, Dataset, ReinforcementLearning, Evaluation, Conversation, MultiLingual, LLM-as-a-Judge, RewardModel, One-Line Notes</tags>
-<repo-issue-date>2025-10-03</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2509.26601
-# Authors
-  - Chenxi Whitehouse
-  - Sebastian Ruder
-  - Tony Lin
-  - Oksana Kurylo
-  - Haruka Takagi
-  - Janice Lam
-  - Nicolò Busetto
-  - Denise Diaz
-# Abstract
-  - Ensuring native-like quality of large language model (LLM) responses across many languages is challenging. To address this, we introduce MENLO, a framework that operationalizes the evaluation of native-like response quality based on audience design-inspired mechanisms. Using MENLO, we create a dataset of 6,423 human-annotated prompt-response preference pairs covering four quality dimensions with high inter-annotator agreement in 47 language varieties. Our evaluation reveals that zero-shot LLM judges benefit significantly from pairwise evaluation and our structured annotation rubrics, yet they still underperform human annotators on our dataset. We demonstrate substantial improvements through fine-tuning with reinforcement learning, reward shaping, and multi-task learning approaches. Additionally, we show that RL-trained judges can serve as generative reward models to enhance LLMs' multilingual proficiency, though discrepancies with human judgment remain. Our findings suggest promising directions for scalable multilingual evaluation and preference alignment. We release our dataset and evaluation framework to support further research in multilingual LLM evaluation.
-# Translation (by gpt-4o-mini)
-- 大規模言語モデル（LLM）の応答のネイティブに近い品質を多くの言語で確保することは困難です。これに対処するために、私たちはMENLOというフレームワークを導入し、オーディエンスデザインにインスパイアされたメカニズムに基づいてネイティブに近い応答品質の評価を実現します。MENLOを使用して、47の言語バリエーションにわたる4つの品質次元をカバーする6,423の人間による注釈付きプロンプト-応答の好みペアのデータセットを作成しました。この評価により、ゼロショットLLMの評価者はペアワイズ評価と構造化された注釈ルーブリックから大きな利益を得ることがわかりましたが、それでも私たちのデータセットでは人間の注釈者には及びませんでした。強化学習、報酬シェーピング、マルチタスク学習アプローチを用いたファインチューニングによって、著しい改善を示します。さらに、RLで訓練された評価者がLLMの多言語能力を向上させるための生成的報酬モデルとして機能できることを示しますが、人間の判断との不一致は残ります。私たちの発見は、スケーラブルな多言語評価と好みの整合性に向けた有望な方向性を示唆しています。私たちは、さらなる多言語LLM評価の研究を支援するために、データセットと評価フレームワークを公開します。
-# Summary (by gpt-4o-mini)
-- MENLOフレームワークを用いて、47言語の6,423のプロンプト-応答ペアのデータセットを作成し、LLMの応答品質を評価。ゼロショット評価者はペアワイズ評価から利益を得るが、人間には及ばず。強化学習によるファインチューニングで改善を示し、RL訓練評価者がLLMの多言語能力向上に寄与することを確認。ただし、人間の判断との不一致は残る。データセットと評価フレームワークを公開し、多言語LLM評価の研究を支援。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/seb_ruder/status/1973412580191285640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>LLMの応答を多言語でよりnativeに近いものにするための取り組み、および評価のフレームワーク（MENLO, データセット含む）な模様。nativeらしさを測るために重要な次元としてFluency, Tone, Localized Tone, Localized Factualityと呼ばれる軸を定義している模様。その上で47言語における6423の人手でアノテーションされたpreference dataを作成し評価をしたところ、既存のLLM-as-a-judgeやSFT/RLされたReward Modelでは、人間による評価にはまだまだ及ばないことが明らかになり、MENLOを用いてRL/SFTすることでLLM JudgeやReward Modelの性能を改善できる、といった話な模様。<br><br>4つの次元については以下の表を参照のこと。<br>それぞれ<br>- Fluency: 専門家レベルのnative speakerと比較した時のproficiency<br>- Tone: 全体的なwriting stvleや語り口<br>- Localized Tone: 文化的、地域的な言葉のニュアンス<br>- Localized Factuality: 地域固有のコンテキストに沿った事実性や網羅性<br><br><img src="https://github.com/user-attachments/assets/2e57edb7-a2f0-4570-a723-53c22ac22036" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -61753,39 +62425,6 @@ Qwenアーキテクチャシリーズから進化したQwenLong-CPRSは、4つ�
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] LLMs Get Lost In Multi-Turn Conversation, Philippe Laban+, arXiv'25, 2025.05</title>
-<original-paper-blog-link>https://arxiv.org/abs/2505.06120</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1988</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, AIAgents, Conversation, ContextEngineering, Reference Collection</tags>
-<repo-issue-date>2025-05-24</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2505.06120
-# Authors
-  - Philippe Laban
-  - Hiroaki Hayashi
-  - Yingbo Zhou
-  - Jennifer Neville
-# Abstract
-  - Large Language Models (LLMs) are conversational interfaces. As such, LLMs have the potential to assist their users not only when they can fully specify the task at hand, but also to help them define, explore, and refine what they need through multi-turn conversational exchange. Although analysis of LLM conversation logs has confirmed that underspecification occurs frequently in user instructions, LLM evaluation has predominantly focused on the single-turn, fully-specified instruction setting. In this work, we perform large-scale simulation experiments to compare LLM performance in single- and multi-turn settings. Our experiments confirm that all the top open- and closed-weight LLMs we test exhibit significantly lower performance in multi-turn conversations than single-turn, with an average drop of 39% across six generation tasks. Analysis of 200,000+ simulated conversations decomposes the performance degradation into two components: a minor loss in aptitude and a significant increase in unreliability. We find that LLMs often make assumptions in early turns and prematurely attempt to generate final solutions, on which they overly rely. In simpler terms, we discover that *when LLMs take a wrong turn in a conversation, they get lost and do not recover*.
-# Translation (by gpt-4o-mini)
-- 大規模言語モデル（LLMs）は会話型インターフェースです。このため、LLMsはユーザーが現在のタスクを完全に特定できる場合だけでなく、マルチターンの会話を通じて必要なものを定義、探求、洗練するのを助ける可能性があります。LLMの会話ログの分析により、ユーザーの指示において過小指定が頻繁に発生することが確認されていますが、LLMの評価は主に単一ターンの完全に指定された指示設定に焦点を当ててきました。本研究では、単一ターンとマルチターンの設定におけるLLMのパフォーマンスを比較するために、大規模なシミュレーション実験を行います。実験の結果、テストしたすべてのトップオープンおよびクローズドウェイトのLLMが、単一ターンに比べてマルチターンの会話で著しく低いパフォーマンスを示し、6つの生成タスクで平均39%のパフォーマンス低下が見られました。20万以上のシミュレーションされた会話の分析により、パフォーマンスの低下は2つの要素に分解されます：わずかな能力の損失と、信頼性の大幅な増加です。LLMsはしばしば初期のターンで仮定を行い、早期に最終的な解決策を生成しようとし、それに過度に依存することがわかりました。簡単に言えば、*LLMsが会話の中で誤った方向に進むと、迷子になり回復できなくなる*ことが明らかになりました。
-# Summary (by gpt-4o-mini)
-- LLMsは会話型インターフェースとして、ユーザーがタスクを定義するのを支援するが、マルチターンの会話ではパフォーマンスが低下する。シミュレーション実験の結果、マルチターンで39%のパフォーマンス低下が見られ、初期のターンでの仮定に依存しすぎることが原因と判明。LLMsは会話中に誤った方向に進むと、回復が難しくなることが示された。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_stakaya/status/1926009283386155009?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>Lost in the MiddleならぬLost in Conversation<br><img src="https://github.com/user-attachments/assets/9d4320f5-6fea-43ca-a7ab-a836e7e3642e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer">[Paper Note] Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, arXiv'23, 2023.07</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -91700,7 +92339,7 @@ HighRESはアノテーター間の一致度を向上させ、システム間の�
 </paper-entry>
 
 <paper-entry>
-<title>MoverScore: Text Generation Evaluating with Contextualized Embeddings and Earth Mover Distance, Zhao+, EMNLP-IJCNLP'19</title>
+<title>[Paper Note] MoverScore: Text Generation Evaluating with Contextualized Embeddings and Earth Mover Distance, Zhao+, EMNLP-IJCNLP'19</title>
 <original-paper-blog-link>https://aclanthology.org/D19-1053/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/946</repo-issue-link>
 <tags>DocumentSummarization, NLP, Evaluation, translation_required, Reference-based</tags>
@@ -93936,7 +94575,7 @@ https://dl.acm.org/doi/10.1007/978-3-319-42911-3_17
 <tags>DocumentSummarization, NaturalLanguageGeneration, Metrics, NLP, Evaluation, translation_required, Reference-based, One-Line Notes</tags>
 <repo-issue-date>2023-08-13</repo-issue-date>
 <issue-body>https://proceedings.mlr.press/v37/kusnerb15.html</issue-body>
-<maintainer-comment-text><p>WMS/SMS/S+WMS<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/946" target="_blank" rel="noopener noreferrer">MoverScore: Text Generation Evaluating with Contextualized Embeddings and Earth Mover Distance, Zhao+, EMNLP-IJCNLP'19</a>
+<maintainer-comment-text><p>WMS/SMS/S+WMS<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/946" target="_blank" rel="noopener noreferrer">[Paper Note] MoverScore: Text Generation Evaluating with Contextualized Embeddings and Earth Mover Distance, Zhao+, EMNLP-IJCNLP'19</a>
 <br><br>はこれらからinspiredされ提案された</p></maintainer-comment-text>
 </paper-entry>
 
@@ -94975,6 +95614,202 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>Introducing OlmoEarth embeddings: Custom embedding exports from OlmoEarth Studio for downstream analysis, Ai2, 202604</title>
+<original-paper-blog-link>https://allenai.org/blog/olmoearth-embeddings</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5353</repo-issue-link>
+<tags>ComputerVision, Embeddings, NLP, Proprietary, read-later</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://allenai.org/blog/olmoearth-embeddings</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/allen_ai/status/2047404399983505676?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3603" target="_blank" rel="noopener noreferrer">OlmoEarth-v1-Large, Ai2, 2025.11</a>
+</p><p>ちょっとこれはしっかり読まないと具体的にはわからないかもしれない</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The World’s First Context-Aware Proactive Agent: No intent missed. No task overdue, AirJelly, 2026.04</title>
+<original-paper-blog-link>https://www.airjelly.ai/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5351</repo-issue-link>
+<tags>NLP, AIAgents, GenerativeAI, Blog, Initial Impression Notes, WorkspaceAgents</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://www.airjelly.ai/</issue-body>
+<maintainer-comment-text><p>元ポスト:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/airjellyai/status/2046621478662402498?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>またしてもcowork/workspace agentに見える。クラゲちゃんがかわいい。windowsに昔いたイルカちゃんの進化系だなとふと思った。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Why cowork when you can delegate?, Yutori, 2026.04</title>
+<original-paper-blog-link>https://yutori.com/delegate</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5347</repo-issue-link>
+<tags>NLP, AIAgents, GenerativeAI, WorkspaceAgents</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://yutori.com/delegate</issue-body>
+<maintainer-comment-text><p>また新たなcowork/workspace agentが登場。果たしてどれが生き残るか</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>claude-code-best-practice, shanraisshan</title>
+<original-paper-blog-link>https://github.com/shanraisshan/claude-code-best-practice</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5345</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Repository, Coding, SoftwareEngineering, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://github.com/shanraisshan/claude-code-best-practice</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nielsrogge/status/2047308560262979754?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Building a Fast Multilingual OCR Model with Synthetic Data, Nvidia, 2026.04</title>
+<original-paper-blog-link>https://huggingface.co/blog/nvidia/nemotron-ocr-v2</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5341</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, SyntheticData, MultiLingual, OCR, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://huggingface.co/blog/nvidia/nemotron-ocr-v2</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2047148464291647762?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>日本語サンプルも全6ヶ国語中全体の17%含まれておりかなり含まれているOCRモデル学習用の合成データとモデル</p><p>model:
+
+{% raw %}
+<a href="https://huggingface.co/nvidia/nemotron-ocr-v2" target="_blank" rel="noopener noreferrer">https://huggingface.co/nvidia/nemotron-ocr-v2</a>
+{% endraw %}
+
+<br>data:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/nvidia/OCR-Synthetic-Multilingual-v1" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/nvidia/OCR-Synthetic-Multilingual-v1</a>
+{% endraw %}
+
+</p><p>スループットが非常に高い</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Gemini Embedding 2: Our first natively multimodal embedding model, Google, 2026.03</title>
+<original-paper-blog-link>https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-embedding-2/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5339</repo-issue-link>
+<tags>ComputerVision, Embeddings, NLP, MultiModal, Blog, Proprietary, read-later, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-embedding-2/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2031412260162138428?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>単一のモデルで、マルチモーダルな情報を統合されたembedding空間で表現し、マトリョーシカ表現によって3種類の次元で取得でき、100+言語をサポートしかつcontext windowは8192。オーディオをわざわざ書き起こしてテキストモダリティに変換する必要もなく直接unifiedなembeddingを取得可能というなかなか便利そうな代物。</p><p>（以前のIssueを誤って削除したため再掲）</p><p>Generally Availableになったとのこと:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2047015356183789580?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ワークスペースエージェントでチームを拡張, OpenAI, 2026.04</title>
+<original-paper-blog-link>https://openai.com/ja-JP/business/workspace-agents/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5337</repo-issue-link>
+<tags>NLP, AIAgents, ChatGPT, GenerativeAI, Blog, Author Thread-Post, WorkspaceAgents</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://openai.com/ja-JP/business/workspace-agents/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/openai/status/2047008987665809771?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4937" target="_blank" rel="noopener noreferrer">OpenClaw — Personal AI Assistant, openclaw, 2026.03</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4144" target="_blank" rel="noopener noreferrer">🍫 Local Cocoa: Your Personal AI Assistant, Fully Local 💻, synvo-ai, 2026.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4180" target="_blank" rel="noopener noreferrer">Cowork: Claude Code for the rest of your work, Anthropic, 2026.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Latest Agentic AI Trends to Watch in 2026: Market Shifts, Adoption Patterns, and What Comes Next,  Daya Shankar, 2026.04</title>
+<original-paper-blog-link>https://huggingface.co/blog/daya-shankar/agentic-ai-trends-2026</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5328</repo-issue-link>
+<tags>Survey, NLP, Infrastructure, AIAgents, Blog, read-later</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://huggingface.co/blog/daya-shankar/agentic-ai-trends-2026</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2046861569100066961?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Hunyuan3D-2, tencent, 2026.04</title>
+<original-paper-blog-link>https://huggingface.co/tencent/Hunyuan3D-2</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5326</repo-issue-link>
+<tags>ComputerVision, NLP, Transformer, DiffusionModel, OpenWeight, TextTo3D, ImageTo3D</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://huggingface.co/tencent/Hunyuan3D-2</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingmodels/status/2046497934116892894?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Hy3-preview, tencent, 2026.04</title>
 <original-paper-blog-link>https://huggingface.co/tencent/Hy3-preview</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5319</repo-issue-link>
@@ -95038,6 +95873,16 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 </div>
 {% endraw %}
 
+</p><p>Artificial Analysisによる評価:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2047735160544841953?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -95065,7 +95910,7 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 <title>Introducing GPT‑5.5, OpenAI, 2026.04</title>
 <original-paper-blog-link>https://openai.com/index/introducing-gpt-5-5/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5314</repo-issue-link>
-<tags>NLP, LanguageModel, ChatGPT, Proprietary, Selected Papers/Blogs, One-Line Notes, Reference Collection, Reading Reflections</tags>
+<tags>NLP, LanguageModel, ChatGPT, Proprietary, Selected Papers/Blogs, One-Line Notes, Reference Collection, Reading Reflections, Author Thread-Post</tags>
 <repo-issue-date>2026-04-24</repo-issue-date>
 <issue-body>https://openai.com/index/introducing-gpt-5-5/</issue-body>
 <maintainer-comment-text><p>元ポスト: 
@@ -95105,7 +95950,7 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 <title>Xiaomi MiMo-V2.5-Pro:  A leap in agentic and long horizon coherence, Xiaomi, 2026.04</title>
 <original-paper-blog-link>https://mimo.xiaomi.com/mimo-v2-5-pro/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5309</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, Blog, Coding, OpenWeight</tags>
+<tags>NLP, LanguageModel, AIAgents, Blog, Coding, OpenWeight, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2026-04-23</repo-issue-date>
 <issue-body>https://mimo.xiaomi.com/mimo-v2-5-pro/</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -95118,7 +95963,17 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 </div>
 {% endraw %}
 
-</p><p>いずれモデルをオープンにするとのこと</p></maintainer-comment-text>
+</p><p>いずれモデルをオープンにするとのこと</p><p>Artificial Analysisによる評価:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2047799218828665093?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -95145,7 +96000,7 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 <title>PaddleOCR, PaddlePaddle</title>
 <original-paper-blog-link>https://github.com/PaddlePaddle/PaddleOCR</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5305</repo-issue-link>
-<tags>ComputerVision, Tools, NLP, DocParser, VisionLanguageModel, OCR, Initial Impression Notes</tags>
+<tags>ComputerVision, Tools, NLP, DocParser, VisionLanguageModel, OCR, Initial Impression Notes, Author Thread-Post</tags>
 <repo-issue-date>2026-04-23</repo-issue-date>
 <issue-body>https://github.com/PaddlePaddle/PaddleOCR</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -95165,7 +96020,7 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 <title>Qwen3.6-27B: Flagship-Level Coding in a 27B Dense Model, Qwen Team, 2026.04</title>
 <original-paper-blog-link>https://qwen.ai/blog?id=qwen3.6-27b</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5304</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, Coding, OpenWeight, SoftwareEngineering, One-Line Notes</tags>
+<tags>NLP, LanguageModel, AIAgents, Coding, OpenWeight, SoftwareEngineering, One-Line Notes, Author Thread-Post</tags>
 <repo-issue-date>2026-04-23</repo-issue-date>
 <issue-body>https://qwen.ai/blog?id=qwen3.6-27b</issue-body>
 <maintainer-comment-text><p>HF:
@@ -95329,7 +96184,7 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 <title>ML Intern, HuggingFace, 2026.04</title>
 <original-paper-blog-link>https://github.com/huggingface/ml-intern/tree/main</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5292</repo-issue-link>
-<tags>Tools, NLP, LanguageModel, AIAgents, AutoML, ScientificDiscovery, Initial Impression Notes</tags>
+<tags>Tools, NLP, LanguageModel, AIAgents, AutoML, ScientificDiscovery, read-later, Selected Papers/Blogs, Initial Impression Notes</tags>
 <repo-issue-date>2026-04-21</repo-issue-date>
 <issue-body>https://github.com/huggingface/ml-intern/tree/main</issue-body>
 <maintainer-comment-text><p>元ポスト: 
@@ -95342,7 +96197,17 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 </div>
 {% endraw %}
 
-</p><p>自動で研究が可能なエコシステムがどんどん構築されていく</p></maintainer-comment-text>
+</p><p>自動で研究が可能なエコシステムがどんどん構築されていく</p><p>関連:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cmpatino_/status/2047342950099878351?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>take-homeをend-to-endで解けるくらい優秀とのこと。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -97379,7 +98244,7 @@ HF:https://huggingface.co/collections/google/gemma-4</issue-body>
 <title>Xiaomi MiMo-V2-Pro, Xiaomi, 2026.03</title>
 <original-paper-blog-link>https://mimo.xiaomi.com/mimo-v2-pro</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4970</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, Proprietary</tags>
+<tags>NLP, LanguageModel, AIAgents, Proprietary, Author Thread-Post</tags>
 <repo-issue-date>2026-03-21</repo-issue-date>
 <issue-body>https://mimo.xiaomi.com/mimo-v2-pro</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -97749,7 +98614,7 @@ HF:https://huggingface.co/collections/google/gemma-4</issue-body>
 <title>OpenClaw — Personal AI Assistant, openclaw, 2026.03</title>
 <original-paper-blog-link>https://github.com/openclaw/openclaw</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4937</repo-issue-link>
-<tags>ComputerVision, Tools, NLP, AIAgents, Repository, ComputerUse, Selected Papers/Blogs</tags>
+<tags>ComputerVision, Tools, NLP, AIAgents, Repository, ComputerUse, Selected Papers/Blogs, WorkspaceAgents</tags>
 <repo-issue-date>2026-03-19</repo-issue-date>
 <issue-body>https://github.com/openclaw/openclaw</issue-body>
 <maintainer-comment-text><p>2026.04.07:
@@ -98235,26 +99100,6 @@ HF:https://huggingface.co/collections/google/gemma-4</issue-body>
 {% endraw %}
 
 </p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Gemini Embedding 2: Our first natively multimodal embedding model, Google, 2026.03</title>
-<original-paper-blog-link>https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-embedding-2/</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4880</repo-issue-link>
-<tags>ComputerVision, Embeddings, NLP, MultiModal, MultiLingual, Proprietary, read-later, Selected Papers/Blogs, KeyPoint Notes</tags>
-<repo-issue-date>2026-03-12</repo-issue-date>
-<issue-body>https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-embedding-2/</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2031412260162138428?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>単一のモデルで、マルチモーダルな情報を統合されたembedding空間で表現し、マトリョーシカ表現によって3種類の次元で取得でき、100+言語をサポートしかつcontext windowは8192。オーディオをわざわざ書き起こしてテキストモダリティに変換する必要もなく直接unifiedなembeddingを取得可能というなかなか便利そうな代物。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -101677,7 +102522,7 @@ HF: https://huggingface.co/zai-org/GLM-Image</issue-body>
 <title>Cowork: Claude Code for the rest of your work, Anthropic, 2026.01</title>
 <original-paper-blog-link>https://claude.com/blog/cowork-research-preview</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4180</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, GenerativeAI, Blog</tags>
+<tags>NLP, LanguageModel, AIAgents, GenerativeAI, Blog, WorkspaceAgents</tags>
 <repo-issue-date>2026-01-13</repo-issue-date>
 <issue-body>https://claude.com/blog/cowork-research-preview</issue-body>
 <maintainer-comment-text><p>元ポスト:

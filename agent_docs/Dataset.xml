@@ -1,5 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-17">
+<paper-list last-updated="2026-04-25">
+<paper-entry>
+<title>[Paper Note] Self-Evolving LLM Memory Extraction Across Heterogeneous Tasks, Yuqing Yang+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.11610</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5352</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Personalization, Evaluation, memory, KeyPoint Notes, Clustering-based, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.11610
+# Authors
+  - Yuqing Yang
+  - Tengxiao Liu
+  - Wang Bill Zhu
+  - Taiwei Shi
+  - Linxin Song
+  - Robin Jia
+# Abstract
+  - As LLM-based assistants become persistent and personalized, they must extract and retain useful information from past conversations as memory. However, the types of information worth remembering vary considerably across tasks. We formalize the \textit{heterogeneous memory extraction} task and introduce \textbf{BEHEMOTH}, a benchmark that repurposes 18 existing datasets spanning personalization, problem-solving, and agentic tasks, using a downstream utility-driven metric for systematic evaluation. Our empirical analysis confirms that no single static extraction prompt dominates across all task categories, and that existing self-evolving prompt optimization frameworks, originally designed for homogeneous distributions, degrade when training tasks are heterogeneous. To address this, we propose \textbf{CluE}, a cluster-based self-evolving strategy that groups training examples into clusters by extraction scenarios, analyzes each cluster independently, and synthesizes cross-cluster insights to update the extraction prompt. Experiments on BEHEMOTH show that CluE generalizes effectively across heterogeneous tasks ($+$9.04\% relative gain), consistently outperforming prior self-evolving frameworks.
+# Translation (by gpt-5-nano)
+- LLMベースのアシスタントが持続的で個別化されるにつれて、過去の会話から有用な情報を抽出して記憶として保持する必要がある。しかし、覚えておくべき情報の種類はタスクごとに大きく異なる。私たちは\textit{異質な記憶抽出}タスクを正式に定義し、\textbf{BEHEMOTH}を導入する。BEHEMOTHは個人化、問題解決、エージェント的タスクにまたがる18の既存データセットを再利用し、下流の有用性に基づく評価指標を用いて系統的評価を行うベンチマークである。私たちの実証分析は、単一の静的な抽出プロンプトがすべてのタスクカテゴリで優位を占めることはなく、元々均質な分布を前提に設計された既存の自己進化型プロンプト最適化フレームワークは、訓練タスクが異質であると劣化することを確認した。これに対処するため、\textbf{CluE}、抽出シナリオごとに訓練例をクラスタに分け、各クラスタを独立して分析し、クラスタ間の洞察を統合して抽出プロンプトを更新するクラスタベースの自己進化戦略を提案する。BEHEMOTHでの実験は、CluEが異質なタスク全般に効果的に一般化することを示し（(+9.04% 相対的な改善)）、従来の自己進化フレームワークを一貫して上回る。
+# Summary (by gpt-4o-mini)
+- 異質な記憶を保持するためのLLMベースのアシスタントの必要性に対して、\textbf{BEHEMOTH}というベンチマークを導入。18のデータセットを再利用し、タスクごとの有用性を評価する。実証分析により、均質なプロンプトが効果的でないことが確認され、\textbf{CluE}を提案。これは訓練例をクラスタに分け、各クラスタを独立に分析することで、抽出プロンプトを効果的に更新し、BEHEMOTHで実験した結果、従来の方法よりも一般化能力が向上したことを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/taiwei_shi/status/2047380827429130432?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>現在のAI Agentのメモリは同種のタスクに対して構築され評価されるが、実際の環境、特によりpersonalizationが進んだ状況下では、さまざまな異質なユーザの会話を単一のエージェントが扱い、ユーザのリクエストに応じて適切にメモリからcontextを抽出できなければならず、このような能力を測定するベンチマークは存在しない。<br><br>このため、ベンチマークを構築し既存のメモリ手法（promptingベースの手法）を評価したところ、LLMがメモリをmanageする際に、単一のmemory抽出のプロンプトや、自己進化ベースのpromptingではうまくいかないことがわかった。<br><br>提案手法 (CluE) では、各サンプルごとに背後にあるシナリオ（どのような情報が欲しいのか, 抽出時にどのような点がchallengingなのか等）をsummarizerにより解釈し、シナリオ単位でクラスタリング。個々のクラスタを分析することで、クラスタごとにどのような場合に成功/失敗するのか等を分析しクラスタ単位のrecommendationを得る。最終的に、クラスタ間のrecommendationを統合して構造化された一つの抽出promptに仕立てる。このとき、競合がある場合は適切なメモリグループにスコープを絞り解決する、といった手法のようである。<br><br><img src="https://github.com/user-attachments/assets/b5ccea45-a0cb-4268-b05f-26f77de6903d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>既存手法と比較してCluEによって抽出性能が向上<br><img src="https://github.com/user-attachments/assets/d479c030-4cd2-4d61-b7fb-e11a474a5cd9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>問題設定が実践的でおもしろい</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] PLaMo 2.1-VL Technical Report, Tommi Kerola+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.19324</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5331</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, Evaluation, SmallModel, Japanese, read-later, Selected Papers/Blogs, VisionLanguageModel, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.19324
+# Authors
+  - Tommi Kerola
+  - Yuya Masuda
+  - Takashi Masuko
+  - Toshiki Nakanishi
+  - Daisuke Nishino
+  - Kuniyuki Takahashi
+  - Hanqin Wang
+  - Yoshihiro Yamada
+# Abstract
+  - We introduce PLaMo 2.1-VL, a lightweight Vision Language Model (VLM) for autonomous devices, available in 8B and 2B variants and designed for local and edge deployment with Japanese-language operation. Focusing on Visual Question Answering (VQA) and Visual Grounding as its core capabilities, we develop and evaluate the models for two real-world application scenarios: factory task analysis via tool recognition, and infrastructure anomaly detection. We also develop a large-scale synthetic data generation pipeline and comprehensive Japanese training and evaluation resources. PLaMo 2.1-VL outperforms comparable open models on Japanese and English benchmarks, achieving 61.5 ROUGE-L on JA-VG-VQA-500 and 85.2% accuracy on Japanese Ref-L4. For the two application scenarios, it achieves 53.9% zero-shot accuracy on factory task analysis, and fine-tuning on power plant data improves anomaly detection bbox + label F1-score from 39.7 to 64.9.
+# Translation (by gpt-5-nano)
+- 自動運転デバイス向けの軽量な Vision Language Model（VLM）であるPLaMo 2.1-VLを紹介します。8Bおよび2Bのバリアントがあり、日本語対応のローカルおよびエッジ展開を前提に設計されています。視覚質問応答（VQA）と視覚的グラウンディングを中核機能とし、現実世界の2つのアプリケーションシナリオ、工具認識を通じた工場タスク分析とインフラの異常検知についてモデルを開発・評価します。さらに、大規模な合成データ生成パイプラインと、日本語のトレーニングおよび評価リソースを包括的に開発します。PLaMo 2.1-VLは、日本語および英語のベンチマークにおいて、比較可能な公開モデルを上回り、日本語のJA-VG-VQA-500で61.5のROUGE-L、Japanese Ref-L4で85.2％の精度を達成します。2つのアプリケーションシナリオについては、工場タスク分析で53.9％のゼロショット精度を達成し、発電所データでのファインチューニングにより異常検知のbbox＋ラベルF1スコアが39.7から64.9へ改善します。
+# Summary (by gpt-4o-mini)
+- 自動運転向けの軽量なVision Language Model（VLM）PLaMo 2.1-VLを紹介。8Bと2Bのバリアントがあり、日本語対応のエッジ展開が可能。視覚質問応答に特化し、工場タスク分析とインフラの異常検知で評価。日本語のトレーニングリソースを整備し、JA-VG-VQA-500で61.5のROUGE-L、Japanese Ref-L4で85.2％の精度を達成。工場で53.9％のゼロショット精度、ファインチューニングにより異常検知のF1スコアが39.7から64.9に改善。</issue-body>
+<maintainer-comment-text><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3981" target="_blank" rel="noopener noreferrer">GENIAC第3期で自律稼働デバイス向けの軽量な大規模視覚言語モデルPLaMo 2.1-8B-VLを開発, PFN, 2025.12</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kuniyuki_taka/status/2046800071824699742?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LongSpeech: A Scalable Benchmark for Transcription, Translation and Understanding in Long Speech, Fei Yang+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.13539</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5325</repo-issue-link>
+<tags>NLP, Dataset, Evaluation, SpeechProcessing, LongSequence, AudioLanguageModel, ICASSP, Author Thread-Post</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.13539
+# Authors
+  - Fei Yang
+  - Xuanfan Ni
+  - Renyi Yang
+  - Jiahui Geng
+  - Qing Li
+  - Chenyang Lyu
+  - Yichao Du
+  - Longyue Wang
+  - Weihua Luo
+  - Kaifu Zhang
+# Abstract
+  - Recent advances in audio-language models have demonstrated remarkable success on short, segment-level speech tasks. However, real-world applications such as meeting transcription, spoken document understanding, and conversational analysis require robust models capable of processing and reasoning over long-form audio. In this work, we present LongSpeech, a large-scale and scalable benchmark specifically designed to evaluate and advance the capabilities of speech models on long-duration audio. LongSpeech comprises over 100,000 speech segments, each approximately 10 minutes long, with rich annotations for ASR, speech translation, summarization, language detection, speaker counting, content separation, and question answering. We introduce a reproducible pipeline for constructing long-form speech benchmarks from diverse sources, enabling future extensions. Our initial experiments with state-of-the-art models reveal significant performance gaps, with models often specializing in one task at the expense of others and struggling with higher-level reasoning. These findings underscore the challenging nature of our benchmark. Our benchmark will be made publicly available to the research community.
+# Translation (by gpt-5-nano)
+- 最近の音声と言語モデルの進歩は、短時間のセグメント単位の音声タスクで顕著な成功を示しています。しかし、会議の文字起こし、話し言葉の文書理解、対話分析といった実世界のアプリケーションには、長時間の音声を処理し推論できる堅牢なモデルが必要です。本研究では、LongSpeech を提案します。長時間の音声の能力を評価・向上させるために特化して設計された大規模でスケーラブルなベンチマークです。LongSpeech は 10万件を超える音声セグメントから成り、それぞれ約10分程度の長さを持ちます。ASR、音声翻訳、要約、言語検出、話者数カウント、コンテンツ分離、および質問応答の豊富なアノテーションを備えています。多様なソースから長時間音声ベンチマークを構築する再現可能なパイプラインを導入し、今後の拡張を可能にします。最先端モデルを用いた初期の実験では、顕著な性能ギャップが明らかになり、モデルはしばしば1つのタスクに特化して他のタスクを犠牲にし、高次の推論に苦戦していることが分かりました。これらの発見は、本ベンチマークの難しさを強調しています。我々のベンチマークは研究コミュニティに公表される予定です。
+# Summary (by gpt-4o-mini)
+- LongSpeechは、長時間音声処理のための大規模なベンチマークで、10万件超の約10分の音声セグメントを含む。ASRや音声翻訳、要約など多様なアノテーションがあり、長時間音声の性能評価を促進。初期の実験では、モデルが特定のタスクに特化し、他を犠牲にしていることが示された。これにより、ベンチマークの挑戦的な特性が明らかにされ、今後の研究に貢献する予定である。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chenyang_lyu/status/2046559086750429250?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>dataset:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/AIDC-AI/Marco_Longspeech" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/AIDC-AI/Marco_Longspeech</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Personalized RewardBench: Evaluating Reward Models with Human Aligned Personalization, Qiyao Ma+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.07343</original-paper-blog-link>
@@ -2730,6 +2845,75 @@ demo: https://openscilm.allen.ai/</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] The Quest for Generalizable Motion Generation: Data, Model, and Evaluation, Jing Lin+, ICLR'26, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.26794</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4166</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, SyntheticData, Evaluation, DiffusionModel, ICLR, Generalization, 3D (Scene), FlowMatching, Robotics, 4D (Video), HumanMotionGeneration</tags>
+<repo-issue-date>2026-01-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.26794
+# Authors
+  - Jing Lin
+  - Ruisi Wang
+  - Junzhe Lu
+  - Ziqi Huang
+  - Guorui Song
+  - Ailing Zeng
+  - Xian Liu
+  - Chen Wei
+  - Wanqi Yin
+  - Qingping Sun
+  - Zhongang Cai
+  - Lei Yang
+  - Ziwei Liu
+# Abstract
+  - Despite recent advances in 3D human motion generation (MoGen) on standard benchmarks, existing models still face a fundamental bottleneck in their generalization capability. In contrast, adjacent generative fields, most notably video generation (ViGen), have demonstrated remarkable generalization in modeling human behaviors, highlighting transferable insights that MoGen can leverage. Motivated by this observation, we present a comprehensive framework that systematically transfers knowledge from ViGen to MoGen across three key pillars: data, modeling, and evaluation. First, we introduce ViMoGen-228K, a large-scale dataset comprising 228,000 high-quality motion samples that integrates high-fidelity optical MoCap data with semantically annotated motions from web videos and synthesized samples generated by state-of-the-art ViGen models. The dataset includes both text-motion pairs and text-video-motion triplets, substantially expanding semantic diversity. Second, we propose ViMoGen, a flow-matching-based diffusion transformer that unifies priors from MoCap data and ViGen models through gated multimodal conditioning. To enhance efficiency, we further develop ViMoGen-light, a distilled variant that eliminates video generation dependencies while preserving strong generalization. Finally, we present MBench, a hierarchical benchmark designed for fine-grained evaluation across motion quality, prompt fidelity, and generalization ability. Extensive experiments show that our framework significantly outperforms existing approaches in both automatic and human evaluations. The code, data, and benchmark will be made publicly available.
+# Translation (by gpt-4o-mini)
+- 最近の標準ベンチマークにおける3D人間動作生成（MoGen）の進展にもかかわらず、既存のモデルは一般化能力において根本的なボトルネックに直面しています。対照的に、隣接する生成分野、特に動画生成（ViGen）は、人間の行動をモデル化する上で驚異的な一般化を示しており、MoGenが活用できる移転可能な洞察を強調しています。この観察に触発されて、私たちはデータ、モデリング、評価の3つの重要な柱を通じてViGenからMoGenへの知識を体系的に移転する包括的なフレームワークを提案します。まず、228,000の高品質な動作サンプルを含む大規模データセットViMoGen-228Kを紹介します。このデータセットは、高忠実度の光学モーションキャプチャ（MoCap）データと、ウェブ動画からの意味的に注釈された動作、最先端のViGenモデルによって生成された合成サンプルを統合しています。データセットには、テキスト-モーションペアとテキスト-動画-モーショントリプレットの両方が含まれており、意味的多様性を大幅に拡大しています。次に、MoCapデータとViGenモデルからの事前情報をゲート付きマルチモーダル条件付けを通じて統合するフローマッチングベースの拡散トランスフォーマーViMoGenを提案します。効率を向上させるために、動画生成の依存関係を排除しながら強力な一般化を維持する蒸留版のViMoGen-lightも開発しました。最後に、動作の質、プロンプトの忠実度、一般化能力に関する細かい評価のために設計された階層的ベンチマークMBenchを提示します。広範な実験により、私たちのフレームワークが自動評価と人間評価の両方で既存のアプローチを大幅に上回ることが示されました。コード、データ、およびベンチマークは公開される予定です。
+# Summary (by gpt-4o-mini)
+- 3D人間動作生成（MoGen）は一般化能力に課題があるが、動画生成（ViGen）は優れた一般化を示す。これを受けて、ViGenからMoGenへの知識移転のためのフレームワークを提案。228,000の高品質な動作サンプルを含むデータセットViMoGen-228Kを作成し、MoCapデータとViGenモデルからの情報を統合したフローマッチングベースの拡散トランスフォーマーViMoGenを開発。さらに、動作の質や一般化能力を評価するための階層的ベンチマークMBenchを提示。実験結果は、提案手法が既存のアプローチを大幅に上回ることを示した。</issue-body>
+<maintainer-comment-text><p>dataset:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/wruisi/ViMoGen-228K" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/wruisi/ViMoGen-228K</a>
+{% endraw %}
+
+<br>leaderboard:
+
+{% raw %}
+<a href="https://huggingface.co/spaces/wruisi/MBench_leaderboard" target="_blank" rel="noopener noreferrer">https://huggingface.co/spaces/wruisi/MBench_leaderboard</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2010007526126039346?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/2011499555033080135?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=KNke6Pkq4o" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=KNke6Pkq4o</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] RoboReward: General-Purpose Vision-Language Reward Models for Robotics, Tony Lee+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.00675</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4160</repo-issue-link>
@@ -2960,6 +3144,67 @@ demo: https://openscilm.allen.ai/</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] IGGT: Instance-Grounded Geometry Transformer for Semantic 3D   Reconstruction, Hao Li+, ICLR'26, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.22706</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3484</repo-issue-link>
+<tags>ComputerVision, Dataset, Transformer, FoundationModel, ICLR, 3D Reconstruction, 3D (Scene), UMM, SpatialUnderstanding</tags>
+<repo-issue-date>2025-10-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.22706
+# Authors
+  - Hao Li
+  - Zhengyu Zou
+  - Fangfu Liu
+  - Xuanyang Zhang
+  - Fangzhou Hong
+  - Yukang Cao
+  - Yushi Lan
+  - Manyuan Zhang
+  - Gang Yu
+  - Dingwen Zhang
+  - Ziwei Liu
+# Abstract
+  - Humans naturally perceive the geometric structure and semantic content of a 3D world as intertwined dimensions, enabling coherent and accurate understanding of complex scenes. However, most prior approaches prioritize training large geometry models for low-level 3D reconstruction and treat high-level spatial understanding in isolation, overlooking the crucial interplay between these two fundamental aspects of 3D-scene analysis, thereby limiting generalization and leading to poor performance in downstream 3D understanding tasks. Recent attempts have mitigated this issue by simply aligning 3D models with specific language models, thus restricting perception to the aligned model's capacity and limiting adaptability to downstream tasks. In this paper, we propose InstanceGrounded Geometry Transformer (IGGT), an end-to-end large unified transformer to unify the knowledge for both spatial reconstruction and instance-level contextual understanding. Specifically, we design a 3D-Consistent Contrastive Learning strategy that guides IGGT to encode a unified representation with geometric structures and instance-grounded clustering through only 2D visual inputs. This representation supports consistent lifting of 2D visual inputs into a coherent 3D scene with explicitly distinct object instances. To facilitate this task, we further construct InsScene-15K, a large-scale dataset with high-quality RGB images, poses, depth maps, and 3D-consistent instance-level mask annotations with a novel data curation pipeline.
+# Translation (by gpt-4o-mini)
+- 人間は、3D世界の幾何学的構造と意味的内容を自然に絡み合った次元として認識し、複雑なシーンを一貫して正確に理解することができます。しかし、従来のアプローチの多くは、低レベルの3D再構築のために大規模な幾何学モデルのトレーニングを優先し、高レベルの空間理解を孤立して扱うため、3Dシーン分析のこの2つの基本的な側面の重要な相互作用を見落とし、一般化を制限し、下流の3D理解タスクでのパフォーマンスを低下させています。最近の試みは、特定の言語モデルと3Dモデルを単純に整合させることでこの問題を軽減しましたが、これにより認識は整合したモデルの能力に制限され、下流タスクへの適応性が制限されます。本論文では、空間再構築とインスタンスレベルの文脈理解の両方の知識を統一するためのエンドツーエンドの大規模統一トランスフォーマーであるInstanceGrounded Geometry Transformer（IGGT）を提案します。具体的には、IGGTが2D視覚入力のみを通じて幾何学的構造とインスタンスに基づくクラスタリングを持つ統一表現をエンコードするように導く3D一貫性コントラスト学習戦略を設計します。この表現は、明示的に異なるオブジェクトインスタンスを持つ一貫した3Dシーンに2D視覚入力を持ち上げることをサポートします。このタスクを促進するために、高品質のRGB画像、ポーズ、深度マップ、および新しいデータキュレーションパイプラインを用いた3D一貫性のあるインスタンスレベルのマスク注釈を持つ大規模データセットInsScene-15Kをさらに構築します。
+# Summary (by gpt-4o-mini)
+- 人間の3Dシーン理解を模倣するため、空間再構築とインスタンス理解を統合したInstanceGrounded Geometry Transformer（IGGT）を提案。IGGTは2D視覚入力を用いて幾何学的構造とインスタンスクラスタリングを統一的に表現し、3Dシーンの一貫性を向上させる。新たに構築したInsScene-15Kデータセットを用いて、3D一貫性のあるインスタンスレベルのマスク注釈を提供。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://lifuguan.github.io/IGGT_official/" target="_blank" rel="noopener noreferrer">https://lifuguan.github.io/IGGT_official/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/10027lifuguan/status/1983104396503527512?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1984790549615034788?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=swiL18PmUV" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=swiL18PmUV</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Impatient Users Confuse AI Agents: High-fidelity Simulations of Human   Traits for Testing Agents, Muyu He+, ACL'26, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.04491</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3154</repo-issue-link>
@@ -2991,6 +3236,48 @@ demo: https://openscilm.allen.ai/</issue-body>
 {% endraw %}
 
 </p><p>実際の人間にあるような癖（のような摂動）を与えた時にどれだけロバストかというのは実応用上非常に重要な観点だと思われる。元ポストを見ると、LLM内部のmatmulを直接操作することで、任意のレベルの人間の特性（e.g.,疑い深い、混乱、焦りなど）を模倣する模様。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MENLO: From Preferences to Proficiency -- Evaluating and Modeling   Native-like Quality Across 47 Languages, Chenxi Whitehouse+, ICLR'26, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.26601</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3084</repo-issue-link>
+<tags>NLP, Dataset, ReinforcementLearning, Evaluation, Conversation, MultiLingual, LLM-as-a-Judge, ICLR, RewardModel, One-Line Notes</tags>
+<repo-issue-date>2025-10-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.26601
+# Authors
+  - Chenxi Whitehouse
+  - Sebastian Ruder
+  - Tony Lin
+  - Oksana Kurylo
+  - Haruka Takagi
+  - Janice Lam
+  - Nicolò Busetto
+  - Denise Diaz
+# Abstract
+  - Ensuring native-like quality of large language model (LLM) responses across many languages is challenging. To address this, we introduce MENLO, a framework that operationalizes the evaluation of native-like response quality based on audience design-inspired mechanisms. Using MENLO, we create a dataset of 6,423 human-annotated prompt-response preference pairs covering four quality dimensions with high inter-annotator agreement in 47 language varieties. Our evaluation reveals that zero-shot LLM judges benefit significantly from pairwise evaluation and our structured annotation rubrics, yet they still underperform human annotators on our dataset. We demonstrate substantial improvements through fine-tuning with reinforcement learning, reward shaping, and multi-task learning approaches. Additionally, we show that RL-trained judges can serve as generative reward models to enhance LLMs' multilingual proficiency, though discrepancies with human judgment remain. Our findings suggest promising directions for scalable multilingual evaluation and preference alignment. We release our dataset and evaluation framework to support further research in multilingual LLM evaluation.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLM）の応答のネイティブに近い品質を多くの言語で確保することは困難です。これに対処するために、私たちはMENLOというフレームワークを導入し、オーディエンスデザインにインスパイアされたメカニズムに基づいてネイティブに近い応答品質の評価を実現します。MENLOを使用して、47の言語バリエーションにわたる4つの品質次元をカバーする6,423の人間による注釈付きプロンプト-応答の好みペアのデータセットを作成しました。この評価により、ゼロショットLLMの評価者はペアワイズ評価と構造化された注釈ルーブリックから大きな利益を得ることがわかりましたが、それでも私たちのデータセットでは人間の注釈者には及びませんでした。強化学習、報酬シェーピング、マルチタスク学習アプローチを用いたファインチューニングによって、著しい改善を示します。さらに、RLで訓練された評価者がLLMの多言語能力を向上させるための生成的報酬モデルとして機能できることを示しますが、人間の判断との不一致は残ります。私たちの発見は、スケーラブルな多言語評価と好みの整合性に向けた有望な方向性を示唆しています。私たちは、さらなる多言語LLM評価の研究を支援するために、データセットと評価フレームワークを公開します。
+# Summary (by gpt-4o-mini)
+- MENLOフレームワークを用いて、47言語の6,423のプロンプト-応答ペアのデータセットを作成し、LLMの応答品質を評価。ゼロショット評価者はペアワイズ評価から利益を得るが、人間には及ばず。強化学習によるファインチューニングで改善を示し、RL訓練評価者がLLMの多言語能力向上に寄与することを確認。ただし、人間の判断との不一致は残る。データセットと評価フレームワークを公開し、多言語LLM評価の研究を支援。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/seb_ruder/status/1973412580191285640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLMの応答を多言語でよりnativeに近いものにするための取り組み、および評価のフレームワーク（MENLO, データセット含む）な模様。nativeらしさを測るために重要な次元としてFluency, Tone, Localized Tone, Localized Factualityと呼ばれる軸を定義している模様。その上で47言語における6423の人手でアノテーションされたpreference dataを作成し評価をしたところ、既存のLLM-as-a-judgeやSFT/RLされたReward Modelでは、人間による評価にはまだまだ及ばないことが明らかになり、MENLOを用いてRL/SFTすることでLLM JudgeやReward Modelの性能を改善できる、といった話な模様。<br><br>4つの次元については以下の表を参照のこと。<br>それぞれ<br>- Fluency: 専門家レベルのnative speakerと比較した時のproficiency<br>- Tone: 全体的なwriting stvleや語り口<br>- Localized Tone: 文化的、地域的な言葉のニュアンス<br>- Localized Factuality: 地域固有のコンテキストに沿った事実性や網羅性<br><br><img src="https://github.com/user-attachments/assets/2e57edb7-a2f0-4570-a723-53c22ac22036" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=QOWYX3Q2XS" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=QOWYX3Q2XS</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -3795,69 +4082,6 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kevinqhlin/status/2012633829345825066?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] The Quest for Generalizable Motion Generation: Data, Model, and Evaluation, Jing Lin+, arXiv'25, 2025.10</title>
-<original-paper-blog-link>https://arxiv.org/abs/2510.26794</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4166</repo-issue-link>
-<tags>ComputerVision, NLP, Dataset, SyntheticData, Evaluation, DiffusionModel, Generalization, 3D (Scene), FlowMatching, Robotics, 4D (Video), HumanMotionGeneration</tags>
-<repo-issue-date>2026-01-11</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2510.26794
-# Authors
-  - Jing Lin
-  - Ruisi Wang
-  - Junzhe Lu
-  - Ziqi Huang
-  - Guorui Song
-  - Ailing Zeng
-  - Xian Liu
-  - Chen Wei
-  - Wanqi Yin
-  - Qingping Sun
-  - Zhongang Cai
-  - Lei Yang
-  - Ziwei Liu
-# Abstract
-  - Despite recent advances in 3D human motion generation (MoGen) on standard benchmarks, existing models still face a fundamental bottleneck in their generalization capability. In contrast, adjacent generative fields, most notably video generation (ViGen), have demonstrated remarkable generalization in modeling human behaviors, highlighting transferable insights that MoGen can leverage. Motivated by this observation, we present a comprehensive framework that systematically transfers knowledge from ViGen to MoGen across three key pillars: data, modeling, and evaluation. First, we introduce ViMoGen-228K, a large-scale dataset comprising 228,000 high-quality motion samples that integrates high-fidelity optical MoCap data with semantically annotated motions from web videos and synthesized samples generated by state-of-the-art ViGen models. The dataset includes both text-motion pairs and text-video-motion triplets, substantially expanding semantic diversity. Second, we propose ViMoGen, a flow-matching-based diffusion transformer that unifies priors from MoCap data and ViGen models through gated multimodal conditioning. To enhance efficiency, we further develop ViMoGen-light, a distilled variant that eliminates video generation dependencies while preserving strong generalization. Finally, we present MBench, a hierarchical benchmark designed for fine-grained evaluation across motion quality, prompt fidelity, and generalization ability. Extensive experiments show that our framework significantly outperforms existing approaches in both automatic and human evaluations. The code, data, and benchmark will be made publicly available.
-# Translation (by gpt-4o-mini)
-- 最近の標準ベンチマークにおける3D人間動作生成（MoGen）の進展にもかかわらず、既存のモデルは一般化能力において根本的なボトルネックに直面しています。対照的に、隣接する生成分野、特に動画生成（ViGen）は、人間の行動をモデル化する上で驚異的な一般化を示しており、MoGenが活用できる移転可能な洞察を強調しています。この観察に触発されて、私たちはデータ、モデリング、評価の3つの重要な柱を通じてViGenからMoGenへの知識を体系的に移転する包括的なフレームワークを提案します。まず、228,000の高品質な動作サンプルを含む大規模データセットViMoGen-228Kを紹介します。このデータセットは、高忠実度の光学モーションキャプチャ（MoCap）データと、ウェブ動画からの意味的に注釈された動作、最先端のViGenモデルによって生成された合成サンプルを統合しています。データセットには、テキスト-モーションペアとテキスト-動画-モーショントリプレットの両方が含まれており、意味的多様性を大幅に拡大しています。次に、MoCapデータとViGenモデルからの事前情報をゲート付きマルチモーダル条件付けを通じて統合するフローマッチングベースの拡散トランスフォーマーViMoGenを提案します。効率を向上させるために、動画生成の依存関係を排除しながら強力な一般化を維持する蒸留版のViMoGen-lightも開発しました。最後に、動作の質、プロンプトの忠実度、一般化能力に関する細かい評価のために設計された階層的ベンチマークMBenchを提示します。広範な実験により、私たちのフレームワークが自動評価と人間評価の両方で既存のアプローチを大幅に上回ることが示されました。コード、データ、およびベンチマークは公開される予定です。
-# Summary (by gpt-4o-mini)
-- 3D人間動作生成（MoGen）は一般化能力に課題があるが、動画生成（ViGen）は優れた一般化を示す。これを受けて、ViGenからMoGenへの知識移転のためのフレームワークを提案。228,000の高品質な動作サンプルを含むデータセットViMoGen-228Kを作成し、MoCapデータとViGenモデルからの情報を統合したフローマッチングベースの拡散トランスフォーマーViMoGenを開発。さらに、動作の質や一般化能力を評価するための階層的ベンチマークMBenchを提示。実験結果は、提案手法が既存のアプローチを大幅に上回ることを示した。</issue-body>
-<maintainer-comment-text><p>dataset:
-
-{% raw %}
-<a href="https://huggingface.co/datasets/wruisi/ViMoGen-228K" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/wruisi/ViMoGen-228K</a>
-{% endraw %}
-
-<br>leaderboard:
-
-{% raw %}
-<a href="https://huggingface.co/spaces/wruisi/MBench_leaderboard" target="_blank" rel="noopener noreferrer">https://huggingface.co/spaces/wruisi/MBench_leaderboard</a>
-{% endraw %}
-
-</p><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2010007526126039346?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>ポイント解説:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/2011499555033080135?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -6106,61 +6330,6 @@ https://aclanthology.org/2025.findings-emnlp.661/
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] IGGT: Instance-Grounded Geometry Transformer for Semantic 3D  Reconstruction, Hao Li+, arXiv'25, 2025.10</title>
-<original-paper-blog-link>https://arxiv.org/abs/2510.22706</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3484</repo-issue-link>
-<tags>ComputerVision, Dataset, Transformer, FoundationModel, 3D Reconstruction, 3D (Scene), UMM, SpatialUnderstanding</tags>
-<repo-issue-date>2025-10-28</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2510.22706
-# Authors
-  - Hao Li
-  - Zhengyu Zou
-  - Fangfu Liu
-  - Xuanyang Zhang
-  - Fangzhou Hong
-  - Yukang Cao
-  - Yushi Lan
-  - Manyuan Zhang
-  - Gang Yu
-  - Dingwen Zhang
-  - Ziwei Liu
-# Abstract
-  - Humans naturally perceive the geometric structure and semantic content of a 3D world as intertwined dimensions, enabling coherent and accurate understanding of complex scenes. However, most prior approaches prioritize training large geometry models for low-level 3D reconstruction and treat high-level spatial understanding in isolation, overlooking the crucial interplay between these two fundamental aspects of 3D-scene analysis, thereby limiting generalization and leading to poor performance in downstream 3D understanding tasks. Recent attempts have mitigated this issue by simply aligning 3D models with specific language models, thus restricting perception to the aligned model's capacity and limiting adaptability to downstream tasks. In this paper, we propose InstanceGrounded Geometry Transformer (IGGT), an end-to-end large unified transformer to unify the knowledge for both spatial reconstruction and instance-level contextual understanding. Specifically, we design a 3D-Consistent Contrastive Learning strategy that guides IGGT to encode a unified representation with geometric structures and instance-grounded clustering through only 2D visual inputs. This representation supports consistent lifting of 2D visual inputs into a coherent 3D scene with explicitly distinct object instances. To facilitate this task, we further construct InsScene-15K, a large-scale dataset with high-quality RGB images, poses, depth maps, and 3D-consistent instance-level mask annotations with a novel data curation pipeline.
-# Translation (by gpt-4o-mini)
-- 人間は、3D世界の幾何学的構造と意味的内容を自然に絡み合った次元として認識し、複雑なシーンを一貫して正確に理解することができます。しかし、従来のアプローチの多くは、低レベルの3D再構築のために大規模な幾何学モデルのトレーニングを優先し、高レベルの空間理解を孤立して扱うため、3Dシーン分析のこの2つの基本的な側面の重要な相互作用を見落とし、一般化を制限し、下流の3D理解タスクでのパフォーマンスを低下させています。最近の試みは、特定の言語モデルと3Dモデルを単純に整合させることでこの問題を軽減しましたが、これにより認識は整合したモデルの能力に制限され、下流タスクへの適応性が制限されます。本論文では、空間再構築とインスタンスレベルの文脈理解の両方の知識を統一するためのエンドツーエンドの大規模統一トランスフォーマーであるInstanceGrounded Geometry Transformer（IGGT）を提案します。具体的には、IGGTが2D視覚入力のみを通じて幾何学的構造とインスタンスに基づくクラスタリングを持つ統一表現をエンコードするように導く3D一貫性コントラスト学習戦略を設計します。この表現は、明示的に異なるオブジェクトインスタンスを持つ一貫した3Dシーンに2D視覚入力を持ち上げることをサポートします。このタスクを促進するために、高品質のRGB画像、ポーズ、深度マップ、および新しいデータキュレーションパイプラインを用いた3D一貫性のあるインスタンスレベルのマスク注釈を持つ大規模データセットInsScene-15Kをさらに構築します。
-# Summary (by gpt-4o-mini)
-- 人間の3Dシーン理解を模倣するため、空間再構築とインスタンス理解を統合したInstanceGrounded Geometry Transformer（IGGT）を提案。IGGTは2D視覚入力を用いて幾何学的構造とインスタンスクラスタリングを統一的に表現し、3Dシーンの一貫性を向上させる。新たに構築したInsScene-15Kデータセットを用いて、3D一貫性のあるインスタンスレベルのマスク注釈を提供。</issue-body>
-<maintainer-comment-text><p>pj page:
-
-{% raw %}
-<a href="https://lifuguan.github.io/IGGT_official/" target="_blank" rel="noopener noreferrer">https://lifuguan.github.io/IGGT_official/</a>
-{% endraw %}
-
-</p><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/10027lifuguan/status/1983104396503527512?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>ポイント解説:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1984790549615034788?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>[Paper Note] The German Commons - 154 Billion Tokens of Openly Licensed Text for  German Language Models, Lukas Gienapp+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.13996</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3477</repo-issue-link>
@@ -7671,42 +7840,6 @@ https://aclanthology.org/2025.findings-emnlp.661/
 {% endraw %}
 
 </p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] MENLO: From Preferences to Proficiency -- Evaluating and Modeling  Native-like Quality Across 47 Languages, Chenxi Whitehouse+, arXiv'25, 2025.09</title>
-<original-paper-blog-link>https://arxiv.org/abs/2509.26601</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3084</repo-issue-link>
-<tags>NLP, Dataset, ReinforcementLearning, Evaluation, Conversation, MultiLingual, LLM-as-a-Judge, RewardModel, One-Line Notes</tags>
-<repo-issue-date>2025-10-03</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2509.26601
-# Authors
-  - Chenxi Whitehouse
-  - Sebastian Ruder
-  - Tony Lin
-  - Oksana Kurylo
-  - Haruka Takagi
-  - Janice Lam
-  - Nicolò Busetto
-  - Denise Diaz
-# Abstract
-  - Ensuring native-like quality of large language model (LLM) responses across many languages is challenging. To address this, we introduce MENLO, a framework that operationalizes the evaluation of native-like response quality based on audience design-inspired mechanisms. Using MENLO, we create a dataset of 6,423 human-annotated prompt-response preference pairs covering four quality dimensions with high inter-annotator agreement in 47 language varieties. Our evaluation reveals that zero-shot LLM judges benefit significantly from pairwise evaluation and our structured annotation rubrics, yet they still underperform human annotators on our dataset. We demonstrate substantial improvements through fine-tuning with reinforcement learning, reward shaping, and multi-task learning approaches. Additionally, we show that RL-trained judges can serve as generative reward models to enhance LLMs' multilingual proficiency, though discrepancies with human judgment remain. Our findings suggest promising directions for scalable multilingual evaluation and preference alignment. We release our dataset and evaluation framework to support further research in multilingual LLM evaluation.
-# Translation (by gpt-4o-mini)
-- 大規模言語モデル（LLM）の応答のネイティブに近い品質を多くの言語で確保することは困難です。これに対処するために、私たちはMENLOというフレームワークを導入し、オーディエンスデザインにインスパイアされたメカニズムに基づいてネイティブに近い応答品質の評価を実現します。MENLOを使用して、47の言語バリエーションにわたる4つの品質次元をカバーする6,423の人間による注釈付きプロンプト-応答の好みペアのデータセットを作成しました。この評価により、ゼロショットLLMの評価者はペアワイズ評価と構造化された注釈ルーブリックから大きな利益を得ることがわかりましたが、それでも私たちのデータセットでは人間の注釈者には及びませんでした。強化学習、報酬シェーピング、マルチタスク学習アプローチを用いたファインチューニングによって、著しい改善を示します。さらに、RLで訓練された評価者がLLMの多言語能力を向上させるための生成的報酬モデルとして機能できることを示しますが、人間の判断との不一致は残ります。私たちの発見は、スケーラブルな多言語評価と好みの整合性に向けた有望な方向性を示唆しています。私たちは、さらなる多言語LLM評価の研究を支援するために、データセットと評価フレームワークを公開します。
-# Summary (by gpt-4o-mini)
-- MENLOフレームワークを用いて、47言語の6,423のプロンプト-応答ペアのデータセットを作成し、LLMの応答品質を評価。ゼロショット評価者はペアワイズ評価から利益を得るが、人間には及ばず。強化学習によるファインチューニングで改善を示し、RL訓練評価者がLLMの多言語能力向上に寄与することを確認。ただし、人間の判断との不一致は残る。データセットと評価フレームワークを公開し、多言語LLM評価の研究を支援。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/seb_ruder/status/1973412580191285640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>LLMの応答を多言語でよりnativeに近いものにするための取り組み、および評価のフレームワーク（MENLO, データセット含む）な模様。nativeらしさを測るために重要な次元としてFluency, Tone, Localized Tone, Localized Factualityと呼ばれる軸を定義している模様。その上で47言語における6423の人手でアノテーションされたpreference dataを作成し評価をしたところ、既存のLLM-as-a-judgeやSFT/RLされたReward Modelでは、人間による評価にはまだまだ及ばないことが明らかになり、MENLOを用いてRL/SFTすることでLLM JudgeやReward Modelの性能を改善できる、といった話な模様。<br><br>4つの次元については以下の表を参照のこと。<br>それぞれ<br>- Fluency: 専門家レベルのnative speakerと比較した時のproficiency<br>- Tone: 全体的なwriting stvleや語り口<br>- Localized Tone: 文化的、地域的な言葉のニュアンス<br>- Localized Factuality: 地域固有のコンテキストに沿った事実性や網羅性<br><br><img src="https://github.com/user-attachments/assets/2e57edb7-a2f0-4570-a723-53c22ac22036" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -17571,6 +17704,38 @@ acm digital library: https://dl.acm.org/doi/10.1007/978-3-642-33783-3_44
   - Kai Li
   - Li Fei-Fei</issue-body>
 <maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Building a Fast Multilingual OCR Model with Synthetic Data, Nvidia, 2026.04</title>
+<original-paper-blog-link>https://huggingface.co/blog/nvidia/nemotron-ocr-v2</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5341</repo-issue-link>
+<tags>ComputerVision, NLP, Dataset, SyntheticData, MultiLingual, OCR, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://huggingface.co/blog/nvidia/nemotron-ocr-v2</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2047148464291647762?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>日本語サンプルも全6ヶ国語中全体の17%含まれておりかなり含まれているOCRモデル学習用の合成データとモデル</p><p>model:
+
+{% raw %}
+<a href="https://huggingface.co/nvidia/nemotron-ocr-v2" target="_blank" rel="noopener noreferrer">https://huggingface.co/nvidia/nemotron-ocr-v2</a>
+{% endraw %}
+
+<br>data:
+
+{% raw %}
+<a href="https://huggingface.co/datasets/nvidia/OCR-Synthetic-Multilingual-v1" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/nvidia/OCR-Synthetic-Multilingual-v1</a>
+{% endraw %}
+
+</p><p>スループットが非常に高い</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
