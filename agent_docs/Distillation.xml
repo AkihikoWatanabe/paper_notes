@@ -629,14 +629,14 @@ TRACER（Trace-based Adaptive Cost-Efficient Routing）は、LLM自身の本番�
 </div>
 {% endraw %}
 
-</p><p>v2:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1884" target="_blank" rel="noopener noreferrer">DINOv2: Learning Robust Visual Features without Supervision, Maxime Oquab+, TMLR'24</a>
+</p><p>v2:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1884" target="_blank" rel="noopener noreferrer">[Paper Note] DINOv2: Learning Robust Visual Features without Supervision, Maxime Oquab+, TMLR'24</a>
 </p><p>本日配信された岡野原氏のランチタイムトークによると、学習が進んでいくと全部の特徴量が似通ってきてしまう問題があったが、Gram Anchoringと呼ばれる、学習初期時点でのパッチ間の類似度度行列を保持しておき正則化として損失に加えることで、そこから離れすぎないように学習するといった工夫を実施しているとのこと。</p><p>詳細な日本語解説:
 
 {% raw %}
 <a href="https://zenn.dev/syu_tan/articles/6df2947eb6c1ae" target="_blank" rel="noopener noreferrer">https://zenn.dev/syu_tan/articles/6df2947eb6c1ae</a>
 {% endraw %}
 
-<br><br>Gram Anchoringの気持ちとしては、長期で学習をすると、モデルがグローバルな特徴量を学習可能だが、個々のパッチレベルや密な部分のローカルな特徴量が失われていってしまい、ローカルな特徴が重要なdownstreamタスクの性能が劣化するため、これをなんとかしたい。そのために、画像全体のパッチ間の類似度行列によって、パッチ全体の類似度の構造を捉え、学習初期の高品質なローカルな特徴を捉えられたモデルを教師とし、そこから離れすぎないように学習中のモデルを生徒として正則化することで解決する、というものだと思われる。</p><p>事前学習のスケジューラーの工夫として以下を実施している:<br>- 事前学習の終了タイミングを事前に予測することは困難<br>  - →事前に総ステップ数を指定しなければならないパラメータのスケジューリングはそもそも困難<br>  - →スケジューリングを廃止する<br>- スケジューリングを廃止する代わりに<br>  - 固定された学習率とweight decay、教師で学習を実施<br>  - </p></maintainer-comment-text>
+<br><br>Gram Anchoringの気持ちとしては、長期で学習をすると、モデルがグローバルな特徴量を学習可能だが、個々のパッチレベルや密な部分のローカルな特徴量が失われていってしまい、ローカルな特徴が重要なdownstreamタスクの性能が劣化するため、これをなんとかしたい。そのために、画像全体のパッチ間の類似度行列によって、パッチ全体の類似度の構造を捉え、学習初期の高品質なローカルな特徴を捉えられたモデルを教師とし、そこから離れすぎないように学習中のモデルを生徒として正則化することで解決する、というものだと思われる。</p><p>事前学習のスケジューラーの工夫として以下を実施している:<br>- 事前学習の終了タイミングを事前に予測することは困難<br>  - →事前に総ステップ数を指定しなければならないパラメータのスケジューリングはそもそも困難<br>  - →スケジューリングを廃止する<br>- スケジューリングを廃止する代わりに<br>  - 学習率とweight decay、teacher EMAのmomentumを固定して学習を実施<br>  - </p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

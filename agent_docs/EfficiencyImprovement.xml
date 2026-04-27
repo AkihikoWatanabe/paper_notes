@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-25">
+<paper-list last-updated="2026-04-26">
 <paper-entry>
 <title>[Paper Note] TRACER: Trace-Based Adaptive Cost-Efficient Routing for LLM Classification, Adam Rida, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.14531</original-paper-blog-link>
@@ -3436,6 +3436,45 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Streaming DiLoCo with overlapping communication: Towards a Distributed Free Lunch, Arthur Douillard+, COLM'25, 2025.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.18512</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5358</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, COLM, DistributedLearning</tags>
+<repo-issue-date>2026-04-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.18512
+# Authors
+  - Arthur Douillard
+  - Yanislav Donchev
+  - Keith Rush
+  - Satyen Kale
+  - Zachary Charles
+  - Zachary Garrett
+  - Gabriel Teston
+  - Dave Lacey
+  - Ross McIlroy
+  - Jiajun Shen
+  - Alexandre Ramé
+  - Arthur Szlam
+  - Marc'Aurelio Ranzato
+  - Paul Barham
+# Abstract
+  - Training of large language models (LLMs) is typically distributed across a large number of accelerators to reduce training time. Since internal states and parameter gradients need to be exchanged at each and every single gradient step, all devices need to be co-located using low-latency high-bandwidth communication links to support the required high volume of exchanged bits. Recently, distributed algorithms like DiLoCo have relaxed such co-location constraint: accelerators can be grouped into ``workers'', where synchronizations between workers only occur infrequently. This in turn means that workers can afford being connected by lower bandwidth communication links without affecting learning quality. However, in these methods, communication across workers still requires the same peak bandwidth as before, as the synchronizations require all parameters to be exchanged across all workers. In this paper, we improve DiLoCo in three ways. First, we synchronize only subsets of parameters in sequence, rather than all at once, which greatly reduces peak bandwidth. Second, we allow workers to continue training while synchronizing, which decreases wall clock time. Third, we quantize the data exchanged by workers, which further reduces bandwidth across workers. By properly combining these modifications, we show experimentally that we can distribute training of billion-scale parameters and reach similar quality as before, but reducing required bandwidth by two orders of magnitude.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）の学習は、通常、学習時間を短縮するために多数の加速器によって分散して行われます。内部状態とパラメータの勾配は各勾配ステップごとに交換される必要があるため、交換されるデータ量が多くなることを支えるために、すべてのデバイスを低遅延・高帯域幅の通信リンクを介して同一の場所に配置しておく必要があります。最近では、DiLoCo のような分散アルゴリズムがこの共同配置の制約を緩和しました。加速器は「ワーカー」としてグループ化され、ワーカー間の同期は頻繁には発生しません。これにより、ワーカー同士を低帯域幅の通信リンクで接続しても学習品質に影響を及ぼさない、ということになります。しかし、これらの方法では、同期がすべてのパラメータを全てのワーカー間で交換することを要求するため、ワーカー間の通信は依然として以前と同じピーク帯域幅を必要とします。本研究では、DiLoCo を以下の3つの点で改善します。第一に、すべてのパラメータを一度に同期するのではなく、パラメータのサブセットのみを順次同期させることで、ピーク帯域幅を大幅に削減します。第二に、同期中もワーカーが学習を継続できるようにして、実測の経過時間を短縮します。第三に、ワーカー間で交換されるデータを量子化して、ワーカー間の帯域幅をさらに削減します。これらの変更を適切に組み合わせることで、十億規模のパラメータの学習を分散させ、以前とほぼ同等の品質を達成できることを実験的に示す一方で、必要な帯域幅を2桁のオーダー分、すなわち約100分の1に削減します。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルの学習において、通信帯域幅の要求を減少させるため、パラメータのサブセットのみを順次同期し、学習を継続しながらデータを量子化。これにより、必要な帯域幅を約100分の1に削減し、品質を維持したまま十億規模のパラメータの分散学習を実現。</issue-body>
+<maintainer-comment-text><p>先行研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2210" target="_blank" rel="noopener noreferrer">[Paper Note] DiLoCo: Distributed Low-Communication Training of Language Models, Arthur Douillard+, ICML'24 Workshop WANT</a>
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=yYk3zK0X6Q" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=yYk3zK0X6Q</a>
+{% endraw %}
+
+</p><p>DiLoCoでは、データをsplitし異なるノードに持たせ、それぞれのノードが独立して学習した後、定期的にモデルの重みを同期するような枠組みを提案した。<br><br>本研究では、重みを同期する際のボトルネックを<br>- 全ての重みを一度に同期するのではなく、サブセットを共有し、<br>- 共有する勾配を4bitに量子化することで通信に必要なピーク帯域幅を削減することでlatencyを最小化し、<br>- 重みを共有している間も学習は継続するstreamingの性質を持たせる<br><br>ことで、通信コストを低減しつつ学習効率を改善したようである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] InfLLM-V2: Dense-Sparse Switchable Attention for Seamless Short-to-Long Adaptation, Weilin Zhao+, arXiv'25, 2025.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.24663</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4582</repo-issue-link>
@@ -5442,6 +5481,57 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 {% endraw %}
 
 </p><p>これは...👀👀👀</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Tensor Product Attention Is All You Need, Yifan Zhang+, NeurIPS'25 Spotlight, 2025.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.06425</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3475</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Attention, NeurIPS, read-later, KV Cache</tags>
+<repo-issue-date>2025-10-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.06425
+# Authors
+  - Yifan Zhang
+  - Yifeng Liu
+  - Huizhuo Yuan
+  - Zhen Qin
+  - Yang Yuan
+  - Quanquan Gu
+  - Andrew Chi-Chih Yao
+# Abstract
+  - Scaling language models to handle longer input sequences typically necessitates large key-value (KV) caches, resulting in substantial memory overhead during inference. In this paper, we propose Tensor Product Attention (TPA), a novel attention mechanism that uses tensor decompositions to represent queries, keys, and values compactly, substantially shrinking the KV cache size at inference time. By factorizing these representations into contextual low-rank components and seamlessly integrating with Rotary Position Embedding (RoPE), TPA achieves improved model quality alongside memory efficiency. Based on TPA, we introduce the Tensor ProducT ATTenTion Transformer (T6), a new model architecture for sequence modeling. Through extensive empirical evaluation on language modeling tasks, we demonstrate that T6 surpasses or matches the performance of standard Transformer baselines including Multi-Head Attention (MHA), Multi-Query Attention (MQA), Grouped-Query Attention (GQA), and Multi-Head Latent Attention (MLA) across various metrics, including perplexity and a range of established evaluation benchmarks. Notably, TPA's memory efficiency and computational efficiency at decoding stage enables processing longer sequences under fixed resource constraints, addressing a critical scalability challenge in modern language models. Project Page: https://github.com/tensorgi/TPA.
+# Translation (by gpt-4o-mini)
+- 言語モデルをスケーリングしてより長い入力シーケンスを処理するには、通常、大きなキー-バリュー（KV）キャッシュが必要となり、推論中にかなりのメモリオーバーヘッドが発生します。本論文では、テンソル分解を用いてクエリ、キー、バリューをコンパクトに表現する新しい注意メカニズムであるテンソルプロダクトアテンション（TPA）を提案します。これにより、推論時のKVキャッシュサイズを大幅に縮小します。これらの表現を文脈に基づく低ランク成分に因数分解し、ロタリーポジションエンベディング（RoPE）とシームレスに統合することで、TPAはメモリ効率とともにモデルの品質を向上させます。TPAに基づいて、シーケンスモデリングのための新しいモデルアーキテクチャであるテンソルプロダクトアテンショントランスフォーマー（T6）を導入します。言語モデリングタスクに関する広範な実証評価を通じて、T6は、パープレキシティやさまざまな確立された評価ベンチマークを含むさまざまな指標において、マルチヘッドアテンション（MHA）、マルチクエリアテンション（MQA）、グループクエリアテンション（GQA）、およびマルチヘッド潜在アテンション（MLA）などの標準トランスフォーマーベースラインの性能を上回るか、または一致することを示します。特に、TPAのメモリ効率とデコーディング段階での計算効率により、固定リソース制約の下でより長いシーケンスを処理できるようになり、現代の言語モデルにおける重要なスケーラビリティの課題に対処します。プロジェクトページ: https://github.com/tensorgi/TPA。
+# Summary (by gpt-4o-mini)
+- テンソルプロダクトアテンション（TPA）を提案し、KVキャッシュのサイズを縮小する新しい注意メカニズムを導入。TPAは低ランク成分に因数分解し、RoPEと統合することでメモリ効率とモデル品質を向上。新しいモデルアーキテクチャ「テンソルプロダクトアテンショントランスフォーマー（T6）」は、標準トランスフォーマーベースラインを上回る性能を示し、長いシーケンス処理のスケーラビリティ課題に対応。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://tensorgi.github.io/TPA/" target="_blank" rel="noopener noreferrer">https://tensorgi.github.io/TPA/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yifan_zhang_/status/1982945535100133805?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>続報:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yifan_zhang_/status/2001118410420224380?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>RoPEも含めた様々なpositional encodingと互換性がある旨が追加された模様。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -10714,7 +10804,7 @@ phi-3.5-MoEは、16×3.8B MoEモデルで活性パラメータは6.6Bを持ち�
 # Summary (by gpt-4o-mini)
 - 本研究では、トランスフォーマーの長い入力シーケンスを効率的に学習するための新しいメモリ効率の良い「シーケンス並列性」手法を提案。これは、既存の並列化手法との互換性を持ち、長大なシーケンスを複数のGPUに分散して処理することを可能にする。リング型通信を用いた自己注意計算（Ring Self-Attention）を導入し、実験によりバッチサイズとシーケンス長のスケーリング効果を示した。最大バッチサイズは13.7倍、シーケンス長は114,000トークンを超える性能を達成。</issue-body>
 <maintainer-comment-text><p>入力系列をチャンクに分割して、デバイスごとに担当するチャンクを決めることで原理上無限の長さの系列を扱えるようにした並列化手法。系列をデバイス間で横断する場合attention scoreをどのように計算するかが課題になるが、そのためにRing Self attentionと呼ばれるアルゴリズムを提案している模様。また、MLPブロックとMulti Head Attentonブロックの計算も、BatchSize * Sequence Lengthの大きさが、それぞれ32*Hidden Size, 16*Attention Head size * 
-<strong># of Attention Headよりも大きくなった場合に、Tensor Parallelismよりもメモリ効率が良くなるらしい。<br><img src="https://github.com/user-attachments/assets/f3ba9010-da3a-4c3a-8515-d3715466ff59" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Data Parallel, Pipeline Parallel, Tensor Parallel、全てに互換性があるとのこと（併用可能）</p><p>そのほかの並列化の解説については<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184" target="_blank" rel="noopener noreferrer">大規模モデルを支える分散並列学習のしくみ Part1</a>
+<strong># of Attention Headよりも大きくなった場合に、Tensor Parallelismよりもメモリ効率が良くなるらしい。<br><img src="https://github.com/user-attachments/assets/f3ba9010-da3a-4c3a-8515-d3715466ff59" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Data Parallel, Pipeline Parallel, Tensor Parallel、全てに互換性があるとのこと（併用可能）</p><p>そのほかの並列化の解説については<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184" target="_blank" rel="noopener noreferrer">大規模モデルを支える分散並列学習のしくみ Part1, Kazuki Fujii, 2023.06</a>
 </strong>
 <br>
 <br><br>を参照のこと。</p></maintainer-comment-text>
