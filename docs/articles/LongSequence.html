@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 53 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 56 mins</span>
   </div></header>
 </div>
     </div>
@@ -4316,7 +4316,7 @@ My Issue
 <span class="issue_date">Issue Date: 2025-05-16</span>
 <span class="snippet"><span>GPT Summary</span>- 本研究では、トランスフォーマーの長い入力シーケンスを効率的に学習するための新しいメモリ効率の良い「シーケンス並列性」手法を提案。これは、既存の並列化手法との互換性を持ち、長大なシーケンスを複数のGPUに分散して処理することを可能にする。リング型通信を用いた自己注意計算（Ring Self-Attention）を導入し、実験によりバッチサイズとシーケンス長のスケーリング効果を示した。最大バッチサイズは13.7倍、シーケンス長は114,000トークンを超える性能を達成。</span>
 <span class="snippet"><span>Comment</span><p>入力系列をチャンクに分割して、デバイスごとに担当するチャンクを決めることで原理上無限の長さの系列を扱えるようにした並列化手法。系列をデバイス間で横断する場合attention scoreをどのように計算するかが課題になるが、そのためにRing Self attentionと呼ばれるアルゴリズムを提案している模様。また、MLPブロックとMulti Head Attentonブロックの計算も、BatchSize * Sequence Lengthの大きさが、それぞれ32*Hidden Size, 16*Attention Head size * 
-<strong># of Attention Headよりも大きくなった場合に、Tensor Parallelismよりもメモリ効率が良くなるらしい。<br><img src="https://github.com/user-attachments/assets/f3ba9010-da3a-4c3a-8515-d3715466ff59" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Data Parallel, Pipeline Parallel, Tensor Parallel、全てに互換性があるとのこと（併用可能）</p><p>そのほかの並列化の解説については<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184" target="_blank" rel="noopener noreferrer">大規模モデルを支える分散並列学習のしくみ Part1</a>
+<strong># of Attention Headよりも大きくなった場合に、Tensor Parallelismよりもメモリ効率が良くなるらしい。<br><img src="https://github.com/user-attachments/assets/f3ba9010-da3a-4c3a-8515-d3715466ff59" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>Data Parallel, Pipeline Parallel, Tensor Parallel、全てに互換性があるとのこと（併用可能）</p><p>そのほかの並列化の解説については<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1184" target="_blank" rel="noopener noreferrer">大規模モデルを支える分散並列学習のしくみ Part1, Kazuki Fujii, 2023.06</a>
 </strong>
 <br>
 <br><br>を参照のこと。</p></span><br><br>
@@ -4700,6 +4700,150 @@ My Issue
 <span class="snippet"><span>GPT Summary</span>- Transformer-XLは、固定長のコンテキストを超えた長期的な依存関係を学習する新しいニューラルアーキテクチャで、セグメントレベルの再帰メカニズムと新しい位置エンコーディングを採用。これにより、RNNより80%、従来のTransformersより450%長い依存関係を学習し、評価時には最大1,800倍の速度向上を実現。enwiki8やWikiText-103などで最先端のパフォーマンスを達成し、数千トークンの一貫したテキスト生成も可能。コードとモデルはTensorflowとPyTorchで利用可能。</span>
 <span class="snippet"><span>Comment</span><p>日本語解説:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/329" target="_blank" rel="noopener noreferrer">事前学習言語モデルの動向 / Survey of Pretrained Language Models, Kyosuke Nishida, 2019</a>
 </p><p>3.2節の定式化を見ると、一つ前のセグメントのトークン・layerごとのhidden stateを、現在のセグメントの対応するトークンとlayerのhidden stateにconcatし（過去のセグメントに影響を与えないように勾配を伝搬させないStop-Gradientを適用する）、QKVのうち、KVの計算に活用している。また、絶対位置エンコーディングを利用するとモデルがセグメント間の時系列的な関係を認識できなくなるため、位置エンコーディングには相対位置エンコーディングを利用する。これにより、現在のセグメントのKVが一つ前のセグメントによって条件づけられ、contextとして考慮することが可能となり、セグメント間を跨いだ依存関係の考慮が実現される。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="deepseek-v4-5316" class="title-link">DeepSeek-V4, DeepSeek, 2026.04</h3><br><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5316" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Infrastructure.html" target="_blank" rel="noopener noreferrer">#Infrastructure</a>
+<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="Attention.html" target="_blank" rel="noopener noreferrer">#Attention</a>
+<a class="button" href="PositionalEncoding.html" target="_blank" rel="noopener noreferrer">#PositionalEncoding</a>
+<a class="button" href="Optimizer.html" target="_blank" rel="noopener noreferrer">#Optimizer</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="Architecture.html" target="_blank" rel="noopener noreferrer">#Architecture</a>
+<a class="button" href="MoE(Mixture-of-Experts).html" target="_blank" rel="noopener noreferrer">#MoE(Mixture-of-Experts)</a>
+<a class="button" href="AttentionSinks.html" target="_blank" rel="noopener noreferrer">#AttentionSinks</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="RewardModel.html" target="_blank" rel="noopener noreferrer">#RewardModel</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
+<a class="button" href="KV-Cache.html" target="_blank" rel="noopener noreferrer">#KV Cache</a>
+<a class="button" href="Compression.html" target="_blank" rel="noopener noreferrer">#Compression</a>
+<a class="button" href="GenerativeVerifier.html" target="_blank" rel="noopener noreferrer">#GenerativeVerifier</a>
+<a class="button" href="SparseAttention.html" target="_blank" rel="noopener noreferrer">#SparseAttention</a>
+<a class="button" href="ResidualStream.html" target="_blank" rel="noopener noreferrer">#ResidualStream</a>
+<a class="button" href="SelfDistillation.html" target="_blank" rel="noopener noreferrer">#SelfDistillation</a>
+<a class="button" href="Author-Thread-Post.html" target="_blank" rel="noopener noreferrer">#Author Thread-Post</a>
+<span class="issue_date">Issue Date: 2026-04-24</span>
+<span class="snippet"><span>Comment</span><p>HF:
+
+
+<a href="https://huggingface.co/collections/deepseek-ai/deepseek-v4" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/deepseek-ai/deepseek-v4</a>
+
+
+</p><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/deepseek_ai/status/2047516922263285776?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>とうとうでました</p><p>所見:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xianbao_qian/status/2047515560855089430?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>所見:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2047690308217926055?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>Artificial Analysisによる評価:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2047735160544841953?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>所見:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2047528508050575754?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>所見:<br>- 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2047519300399837677?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>所見:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/bookwormengr/status/2047527303824236545?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>1Mコンテキストにおいて、V3.2と比較してわずか10%のKV Cacheしか必要としないとのこと。</p><p>所見:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2047586472291664086?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>1Mトークンのcontext windowを実用的にするために最新の叡智が詰め込まれまくっているという感じのようである。うーむ読むしかない</p><p>所見:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2047640204282929219?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>RTX 6000で4基でFlashが動いたよ、という報告に見える:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/0xsero/status/2047693187968307532?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="introducing-speed-bench-5024" class="title-link">Introducing SPEED-Bench: A Unified and Diverse Benchmark for Speculative Decoding, Nvidia, 2026.03</h3><br><a href="https://huggingface.co/blog/nvidia/speed-bench" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -5464,42 +5608,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SelfDistillation.html"
-            title="SelfDistillationに関する論文・技術記事メモの一覧">
-            SelfDistillationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ListWise.html"
+            title="ListWiseに関する論文・技術記事メモの一覧">
+            ListWiseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Nature-Machine-Intelligence.html"
-            title="Nature Machine Intelligenceに関する論文・技術記事メモの一覧">
-            Nature Machine Intelligenceに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Audio-Text-to-Video.html"
+            title="Audio-Text-to-Videoに関する論文・技術記事メモの一覧">
+            Audio-Text-to-Videoに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Explanation.html"
-            title="Explanationに関する論文・技術記事メモの一覧">
-            Explanationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RAG(RetrievalAugmentedGeneration).html"
+            title="RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧">
+            RAG(RetrievalAugmentedGeneration)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 18</span> 
-  <span class="post-badge badge-new">📝 18</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 87</span> 
+  <span class="post-badge badge-new">📝 87</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SpatialUnderstanding.html"
-            title="SpatialUnderstandingに関する論文・技術記事メモの一覧">
-            SpatialUnderstandingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Argument.html"
+            title="Argumentに関する論文・技術記事メモの一覧">
+            Argumentに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 24</span> 
-  <span class="post-badge badge-new">📝 24</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>
