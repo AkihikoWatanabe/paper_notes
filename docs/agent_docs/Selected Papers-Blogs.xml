@@ -5911,7 +5911,17 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 </div>
 {% endraw %}
 
-</p><p>事後学習データは特定の行動を学習することを意図して作成されるが、離散的なチャンクの集合として学習したときに、それらに意図しない特徴に基づく相関が含まれ（たとえば、コーディングのデータセットに不自然に形式的な表現が含まれたときに、モデルがそのような表現が用いられた時はコーディングの指示だと学習してしまうなど）、モデルがそれを学習してしまうこと（= Chunky PostTraining)を提唱し、これによって生じる失敗モードの実例として、Haiku 4.5j「5+8=13ですか？」と質問した際に「いいえ、5+8=13は正しくありません。正しい答えは5+8=13です」と応答するような例を挙げている。これはモデルが明らかに正しい答えを知っているが、プロンプト中の何らかの特徴によって反論的な振る舞いが引き起こされているような例であり、こういった失敗を発見するための手法を提案している。<br><br>手法としては、失敗モードを評価するためのルーブリックと、promptに関するAttributeの集合（e.g. これは車に関する質問である, これはロシア語であるなど）を定義し、attributeのプールからサンプリングをして失敗モードを引き起こすクエリの候補を自動生成する。その後LLMに対してクエリを投げて得られた応答をルーブリックに基づいてLLM-as-a-Judgeによってスコアリングし、TopKのサンプルを残しリプレイバッファ[^1]を更新する。更新されたリプレイバッファを用いてAttributeの重みを更新し、よりスコアが高いAttributeに基づいてクエリ候補が生成されるようにし、再度クエリ生成をして同様の操作をするよう繰り返す、といった手法のようである。<br>LLMを完全にブラックボックスとして扱い、応答テキストにのみに基づいて実行されるため、proprietary LLMに対しても実行可能である。<br><img src="https://github.com/user-attachments/assets/a03f9910-140c-434e-a783-1d4da3609c99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: リプレイバッファは、個々の(クエリ, スコア, attribute, スコア）の4つ組の集合によって定義される。</p></maintainer-comment-text>
+</p><p>事後学習データは特定の行動を学習することを意図して作成されるが、離散的なチャンクの集合として学習したときに、それらに意図しない特徴に基づく相関が含まれ（たとえば、コーディングのデータセットに不自然に形式的な表現が含まれたときに、モデルがそのような表現が用いられた時はコーディングの指示だと学習してしまうなど）、モデルがそれを学習してしまうこと（= Chunky PostTraining)を提唱し、これによって生じる失敗モードの実例として、Haiku 4.5j「5+8=13ですか？」と質問した際に「いいえ、5+8=13は正しくありません。正しい答えは5+8=13です」と応答するような例を挙げている。これはモデルが明らかに正しい答えを知っているが、プロンプト中の何らかの特徴によって反論的な振る舞いが引き起こされているような例であり、こういった失敗を発見するための手法を提案している。<br><br>手法としては、失敗モードを評価するためのルーブリックと、promptに関するAttributeの集合（e.g. これは車に関する質問である, これはロシア語であるなど）を定義し、attributeのプールからサンプリングをして失敗モードを引き起こすクエリの候補を自動生成する。その後LLMに対してクエリを投げて得られた応答をルーブリックに基づいてLLM-as-a-Judgeによってスコアリングし、TopKのサンプルを残しリプレイバッファ[^1]を更新する。更新されたリプレイバッファを用いてAttributeの重みを更新し、よりスコアが高いAttributeに基づいてクエリ候補が生成されるようにし、再度クエリ生成をして同様の操作をするよう繰り返す、といった手法のようである。<br>LLMを完全にブラックボックスとして扱い、応答テキストにのみに基づいて実行されるため、proprietary LLMに対しても実行可能である。<br><img src="https://github.com/user-attachments/assets/a03f9910-140c-434e-a783-1d4da3609c99" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: リプレイバッファは、個々の(クエリ, スコア, attribute, スコア）の4つ組の集合によって定義される。</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/owainevans_uk/status/2048575216125980791?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -9728,6 +9738,129 @@ demo: https://openscilm.allen.ai/</issue-body>
 {% endraw %}
 
 </p><p>実際の人間にあるような癖（のような摂動）を与えた時にどれだけロバストかというのは実応用上非常に重要な観点だと思われる。元ポストを見ると、LLM内部のmatmulを直接操作することで、任意のレベルの人間の特性（e.g.,疑い深い、混乱、焦りなど）を模倣する模様。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces, Mike A. Merrill+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.11868</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3149</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, SoftwareEngineering, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2025-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.11868
+# Authors
+  - Mike A. Merrill
+  - Alexander G. Shaw
+  - Nicholas Carlini
+  - Boxuan Li
+  - Harsh Raj
+  - Ivan Bercovich
+  - Lin Shi
+  - Jeong Yeon Shin
+  - Thomas Walshe
+  - E. Kelly Buchanan
+  - Junhong Shen
+  - Guanghao Ye
+  - Haowei Lin
+  - Jason Poulos
+  - Maoyu Wang
+  - Marianna Nezhurina
+  - Jenia Jitsev
+  - Di Lu
+  - Orfeas Menis Mastromichalakis
+  - Zhiwei Xu
+  - Zizhao Chen
+  - Yue Liu
+  - Robert Zhang
+  - Leon Liangyu Chen
+  - Anurag Kashyap
+  - Jan-Lucas Uslu
+  - Jeffrey Li
+  - Jianbo Wu
+  - Minghao Yan
+  - Song Bian
+  - Vedang Sharma
+  - Ke Sun
+  - Steven Dillmann
+  - Akshay Anand
+  - Andrew Lanpouthakoun
+  - Bardia Koopah
+  - Changran Hu
+  - Etash Guha
+  - Gabriel H. S. Dreiman
+  - Jiacheng Zhu
+  - Karl Krauth
+  - Li Zhong
+  - Niklas Muennighoff
+  - Robert Amanfu
+  - Shangyin Tan
+  - Shreyas Pimpalgaonkar
+  - Tushar Aggarwal
+  - Xiangning Lin
+  - Xin Lan
+  - Xuandong Zhao
+  - Yiqing Liang
+  - Yuanli Wang
+  - Zilong Wang
+  - Changzhi Zhou
+  - David Heineman
+  - Hange Liu
+  - Harsh Trivedi
+  - John Yang
+  - Junhong Lin
+  - Manish Shetty
+  - Michael Yang
+  - Nabil Omi
+  - Negin Raoof
+  - Shanda Li
+  - Terry Yue Zhuo
+  - Wuwei Lin
+  - Yiwei Dai
+  - Yuxin Wang
+  - Wenhao Chai
+  - Shang Zhou
+  - Dariush Wahdany
+  - Ziyu She
+  - Jiaming Hu
+  - Zhikang Dong
+  - Yuxuan Zhu
+  - Sasha Cui
+  - Ahson Saiyed
+  - Arinbjörn Kolbeinsson
+  - Jesse Hu
+  - Christopher Michael Rytting
+  - Ryan Marten
+  - Yixin Wang
+  - Alex Dimakis
+  - Andy Konwinski
+  - Ludwig Schmidt
+# Abstract
+  - AI agents may soon become capable of autonomously completing valuable, long-horizon tasks in diverse domains. Current benchmarks either do not measure real-world tasks, or are not sufficiently difficult to meaningfully measure frontier models. To this end, we present Terminal-Bench 2.0: a carefully curated hard benchmark composed of 89 tasks in computer terminal environments inspired by problems from real workflows. Each task features a unique environment, human-written solution, and comprehensive tests for verification. We show that frontier models and agents score less than 65\% on the benchmark and conduct an error analysis to identify areas for model and agent improvement. We publish the dataset and evaluation harness to assist developers and researchers in future work at https://www.tbench.ai/ .
+# Translation (by gpt-5-nano)
+- AIエージェントは、さまざまな領域で価値のある長期的なタスクを自律的に完遂できる可能性が近づいている。現在のベンチマークは実世界のタスクを測定しないものが多いか、またはフロンティアモデルを意味のあるレベルで測定するには十分難しくない。これを踏まえ、Terminal-Bench 2.0を提示する。実世界のワークフローの問題に触発された、実世界の端末環境における89タスクから成る慎重にキュレーションされた難易度の高いベンチマークである。各タスクにはユニークな環境、人間が作成した解法、および検証のための包括的なテストが特徴である。我々は、フロンティアモデルとエージェントがこのベンチマークで65%未満のスコアを記録することを示し、モデルとエージェントの改善点を特定するための誤り分析を実施する。データセットと評価ハーネスを公開し、将来の研究開発を支援するために、https://www.tbench.ai/で提供する。
+# Summary (by gpt-4o-mini)
+- AIエージェントが長期的なタスクを自律的に完遂する能力が向上している中、Terminal-Bench 2.0を提案。これは実世界のワークフローに基づいた89の高難易度タスクから成るベンチマークで、ユニークな環境と人間の解法、包括的なテストが特徴です。フロンティアモデルは65%未満のスコアを記録し、改善点を明らかにするための誤り分析を実施。データセットは公開され、研究開発の支援が期待される。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/1975468544973545810?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>なお、Claude CodeはTerminal Benchリーダーボードでは非常にスコアが低いハーネスらしい:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nielsrogge/status/2048329146518945846?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>現在はCodex+GPT-5.5がv2.0リーダーボードではSoTA</p><p>※以下、元論文中でScaffoldingと表現されている部分をAgent Harnessという最近の呼称に変更してメモしています。個人的にはScaffoldingという呼び方の方がEvaluation Harnessと混同しなくて好きなのですが、Agent Harnessの方が浸透していってそうなので、それにならっています。<br><br>Terminal Benchは与えられたタスクをターミナルを操作することで完了する能力を測定するベンチマークであり、SWE Benchなどの既存ベンチマークと比較して、より多様でlong horizon、かつフロンティアモデルにとってhardなタスクによってフロンティアモデルの性能を評価することを目的とする。注意点としては、エージェントはターミナルだけを唯一のツールとして利用することを強制しているわけではなく、コンテナを自由な方法で操作することができる。また、Terminal Benchが測定したいのはモデルの性能であるが、AI AgentにおいてモデルとAgent Harnessは切り離せない。Agent Harness（論文中ではscaffoldingというliteratureに沿った呼称を利用している)は特定のモデルに適合するように開発されており、同じ組織によって開発されたモデルとAgent Harnessではその傾向がより顕著である。このため、多くのAgent Harnessはバイアスや制約を持つため、その影響を緩和し中立に評価が可能なシンプルなAgent Harness (scaffolding)であるTerminus 2を導入している。Terminus 2はheadless terminalと呼ばれる単一のツールを有し、これは、Dockerコンテナを内のtmux shell上でキーストロークのみを実施できるツールであり、Bashコマンドのみを通じてタスクを遂行する。また、contextがlimitに到達した場合は、モデルにcontextを要約させる機能も有している。<br><br><img src="https://github.com/user-attachments/assets/024e4a7a-ac22-4e5e-9a95-850b8427c8e0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Terminal Benchの一つのタスクは、タスクのinstruction, Dockerfile, test, 正解solutionが制限時間つきで構成され、多様なタスクを収集するためにオープンソースコミュニティの協力を得て93人のcontributorsによって、229のタスクが編成された。そのうち、著者らの困難度や品質などのレビューを経て89個のタスクが選択されTerminal Bench 2.0が編成された。<br><img src="https://github.com/user-attachments/assets/03eaf6a0-31ea-464a-a11a-7c4e5dfc9070" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Terminal Bench 2.0のタスクの著者によって推定された、junior/expertなエンジニアがどの程度の時間をタスクを完了するのに要するかに関する分布。1時間以内に終わるものから、juniorでは168時間以上かかるものまで、幅広いhorizonのタスクが存在している。<br><img src="https://github.com/user-attachments/assets/1c1bdbe0-9365-4a5b-ad77-01c53b3e054a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>以下がタスクを作成者によってアサインされたタスクのカテゴリの分布で、多くはソフトウェアエンジニアリングだが、システム管理やデータサイエンス、セキュリティなどもあり、非エンジニアリングタスクとして動画処理やpersonal assistantなどのタスクも少量だが含まれる。<br><img src="https://github.com/user-attachments/assets/2c509d2e-273c-474f-9d47-538d3f7cf70b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>評価結果を見ると、Figure 1となっており最も性能が良かったのはGPT-5.2+Codex CLIであった（なお、この評価結果はもう古いので最新の結果はリーダーボードを参照のこと）。次点でClaude Opus 4.5+Terminus 2であった。<br><br><img src="https://github.com/user-attachments/assets/454c840e-5a90-4a99-8e28-33df1c28afc3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、性能-コストの散布図を見るとコストと性能はトレードオフにあることがわかる。<br><img src="https://github.com/user-attachments/assets/5a9a53e8-dbac-4d6b-9d34-c293e1d02388" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -32384,6 +32517,16 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 </div>
 {% endraw %}
 
+</p><p>解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2048516893808734365?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -32404,7 +32547,10 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 </div>
 {% endraw %}
 
-</p><p>- FrontierMath, Terminal-Bench, GDPValでOpus 4.7を上回りダントツのトップ<br>- Artificial Analysis IndexでもOpus 4.7超え<br><br>しかし、Terminal-Benchは"terminal coding"のベンチマークであり、SWE Bench Proのような一般的なcoding能力を測るベンチマークのスコアが掲載されていない。HLEやVisual Reasoning系のベンチマークのスコアも報告されていないように見える。<br><br>恣意的にGPT-5.5が強いデータ、比較対象をピックアップしているのではないか、という印象を持った。</p><p>Artificial Analysisによる評価:<br>
+</p><p>- FrontierMath, Terminal-Bench, GDPValでOpus 4.7を上回りダントツのトップ<br>- Artificial Analysis IndexでもOpus 4.7超え<br><br>しかし、Terminal-Benchは"ターミナル操作を通じた多様、かつlong horizonなタスクを評価する（多くはソフトウェアエンジニアタスクであるコーディングもタスクには含まれるが）"のベンチマークであり、SWE Bench Proのような一般的なcoding能力を測るベンチマークのスコアが掲載されていない。HLEやVisual Reasoning系のベンチマークのスコアも報告されていないように見える。<br><br>恣意的にGPT-5.5が強いデータ、比較対象をピックアップしているのではないか、という印象を持った。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3149" target="_blank" rel="noopener noreferrer">[Paper Note] Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces, Mike A. Merrill+, arXiv'26, 2026.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1848" target="_blank" rel="noopener noreferrer">[Paper Note] SWE-bench: Can Language Models Resolve Real-World GitHub Issues?, Carlos E. Jimenez+, ICLR'24</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4692" target="_blank" rel="noopener noreferrer">Why SWE-bench Verified no longer measures frontier coding capabilities, OpenAI, 2026.02</a>
+</p><p>Artificial Analysisによる評価:<br>
 
 {% raw %}
 
