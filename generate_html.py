@@ -706,7 +706,19 @@ author: AkihikoWATANABE
 </ul>
 '''
     html_content += '特定の論文（やトピックの組み合わせ）に関して検索したい場合はこちらの<a href="https://github.com/AkihikoWatanabe/paper_notes/issues" target="_blank" rel="noopener noreferrer">Github Issue</a>から検索できます。'
-    html_content += '以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (Selected Papers/Blogs) です。'
+    html_content += '''
+自分の言葉でメモを残した場合や、SNS上の著者による解説等をメモに残した場合、以下の粒度に応じてラベル付けし整理しています。もしご興味があれば以下からご参照ください。
+<ul>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">Initial Impression Notes: Abstract, 関連ポスト, 論文をななめ読みをした後の第一印象</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/One-Line-Notes.html#One-Line" target="_blank" rel="noopener noreferrer">One-Line Notes: 一言メモ</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Surface-level-Notes.html" target="_blank" rel="noopener noreferrer">Surface-level Notes: 論文全体の要約</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/KeyPoint-Notes.html" target="_blank" rel="noopener noreferrer">KeyPoint Notes: 論文のキーとなるポイントのまとめ</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Reading-Reflections.html" target="_blank" rel="noopener noreferrer">Reading Reflections: （読了後、あるいはskim reading後の）感想、意見</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/In-Depth-Notes.html" target="_blank" rel="noopener noreferrer">In-Depth Notes: 論文の詳細と個人的な感想や意見</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Reference-Collection.html">Reference Collection: SNS上の有識者の解説ポスト等の関連リンク集</a></li>
+  <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html">Author Thread-Post: 論文・ブログ等の著者自身による解説ポスト</a></li>
+</ul>
+    html_content += '以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (<a href="https://akihikowatanabe.github.io/paper_notes/articles/Selected-Papers-Blogs.html">Selected Papers/Blogs</a>) です。'
 
     # latest posts
     #html_content += '## Latest Posts\n\n'
