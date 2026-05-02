@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-01-23">
+<paper-entry>
+<title>[Paper Note] RayRoPE: Projective Ray Positional Encoding for Multi-view Attention, Yu Wu+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.15275</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4276</repo-issue-link>
+<tags>Multi, ComputerVision, Transformer, Attention, PositionalEncoding, 2D (Image), One-Line Notes, DepthEstimation, NovelViewSynthesis</tags>
+<repo-issue-date>2026-01-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.15275
+# Authors
+  - Yu Wu
+  - Minsik Jeon
+  - Jen-Hao Rick Chang
+  - Oncel Tuzel
+  - Shubham Tulsiani
+# Abstract
+  - We study positional encodings for multi-view transformers that process tokens from a set of posed input images, and seek a mechanism that encodes patches uniquely, allows SE(3)-invariant attention with multi-frequency similarity, and can be adaptive to the geometry of the underlying scene. We find that prior (absolute or relative) encoding schemes for multi-view attention do not meet the above desiderata, and present RayRoPE to address this gap. RayRoPE represents patch positions based on associated rays but leverages a predicted point along the ray instead of the direction for a geometry-aware encoding. To achieve SE(3) invariance, RayRoPE computes query-frame projective coordinates for computing multi-frequency similarity. Lastly, as the 'predicted' 3D point along a ray may not be precise, RayRoPE presents a mechanism to analytically compute the expected position encoding under uncertainty. We validate RayRoPE on the tasks of novel-view synthesis and stereo depth estimation and show that it consistently improves over alternate position encoding schemes (e.g. 15% relative improvement on LPIPS in CO3D). We also show that RayRoPE can seamlessly incorporate RGB-D input, resulting in even larger gains over alternatives that cannot positionally encode this information.
+# Translation (by gpt-4o-mini)
+- 私たちは、ポーズされた入力画像のセットからトークンを処理するマルチビュー変換器のための位置エンコーディングを研究し、パッチをユニークにエンコードし、マルチ周波数の類似性でSE(3)不変な注意を可能にし、基礎となるシーンのジオメトリに適応できるメカニズムを求めています。既存の（絶対的または相対的な）マルチビュー注意のエンコーディング方式は、上記の要件を満たしていないことが分かり、これを解決するためのRayRoPEを提案します。RayRoPEは、関連する光線に基づいてパッチの位置を表現しますが、ジオメトリに配慮したエンコーディングのために光線に沿った予測点を方向の代わりに利用します。SE(3)の不変性を達成するために、RayRoPEはマルチ周波数の類似性を計算するためのクエリフレームの射影座標を計算します。最後に、光線に沿った「予測された」3D点が正確でない可能性があるため、RayRoPEは不確実性の下で期待される位置エンコーディングを解析的に計算するメカニズムを提案します。私たちは、革新的な視点合成とステレオ深度推定のタスクでRayRoPEを検証し、代替の位置エンコーディング方式（例：CO3DにおけるLPIPSでの15%の相対的改善）に対して一貫して改善されることを示しました。また、RayRoPEはRGB-D入力をシームレスに取り込むことができ、この情報を位置的にエンコードできない代替方式に対してさらに大きな利点をもたらすことを示しました。
+# Summary (by gpt-4o-mini)
+- 我々は、マルチビュー変換器における位置エンコーディングの新手法RayRoPEを提案し、パッチをユニークにエンコードしてSE(3)不変な注意を実現します。既存のエンコーディング方式の限界を踏まえ、光線に基づいてパッチの位置を表現し、ジオメトリに配慮した予測点を使用します。RayRoPEは多周波数の類似性を計算するためのクエリフレームの投影座標を確立し、不正確な3D点の不確実性に対処するための位置エンコーディング手法を提供します。視点合成とステレオ深度推定のタスクにおいて、代替方式に対して一貫した性能向上を示し、RGB-D入力の効果的な利用も確認しました。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://rayrope.github.io/" target="_blank" rel="noopener noreferrer">https://rayrope.github.io/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2014558503050834403?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>複数視点（multiview)での画像を入力とするtransformerの位置エンコーディングを改善した研究で、multiviewのattentionは下記のような性質を持つのが理想としており<br><br>(a) 座標系の取り方に対してattentionの出力が不変であり<br>(b) 同じ点であれば、どのviewからのattention出力であっても同一であるべき<br>(c) 幾何学的に近い点の方が類似度が高くあるべき<br>(d) 様々な粒度で特徴を捉えられるべき（高周波成分、低周波成分）<br><br>これらを獲得できるようにray（方向に関する情報）を取り入れるような新たなRoPEアーキテクチャを考案した、というような感じらしい（ゆるふわ理解）。<br><br><img src="https://github.com/user-attachments/assets/de8692b6-e613-4824-a1b0-cda6e1fce262" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>pj pageに他手法と比較して生成される別方向の画像などが高品質になっている例が掲載されている。<br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AnyDepth: Depth Estimation Made Easy, Zeyu Ren+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.02760</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4196</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, DepthEstimation</tags>
+<repo-issue-date>2026-01-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.02760
+# Authors
+  - Zeyu Ren
+  - Zeyu Zhang
+  - Wukai Li
+  - Qingxiang Liu
+  - Hao Tang
+# Abstract
+  - Monocular depth estimation aims to recover the depth information of 3D scenes from 2D images. Recent work has made significant progress, but its reliance on large-scale datasets and complex decoders has limited its efficiency and generalization ability. In this paper, we propose a lightweight and data-centric framework for zero-shot monocular depth estimation. We first adopt DINOv3 as the visual encoder to obtain high-quality dense features. Secondly, to address the inherent drawbacks of the complex structure of the DPT, we design the Simple Depth Transformer (SDT), a compact transformer-based decoder. Compared to the DPT, it uses a single-path feature fusion and upsampling process to reduce the computational overhead of cross-scale feature fusion, achieving higher accuracy while reducing the number of parameters by approximately 85%-89%. Furthermore, we propose a quality-based filtering strategy to filter out harmful samples, thereby reducing dataset size while improving overall training quality. Extensive experiments on five benchmarks demonstrate that our framework surpasses the DPT in accuracy. This work highlights the importance of balancing model design and data quality for achieving efficient and generalizable zero-shot depth estimation. Code: https://github.com/AIGeeksGroup/AnyDepth. Website: https://aigeeksgroup.github.io/AnyDepth.
+# Translation (by gpt-4o-mini)
+- 単眼深度推定は、2D画像から3Dシーンの深度情報を回復することを目的としています。最近の研究では大きな進歩が見られていますが、大規模なデータセットや複雑なデコーダーへの依存が、その効率性と一般化能力を制限しています。本論文では、ゼロショット単眼深度推定のための軽量でデータ中心のフレームワークを提案します。まず、視覚エンコーダーとしてDINOv3を採用し、高品質の密な特徴を取得します。次に、DPTの複雑な構造に内在する欠点に対処するために、コンパクトなトランスフォーマーベースのデコーダーであるSimple Depth Transformer（SDT）を設計しました。DPTと比較して、単一路径の特徴融合とアップサンプリングプロセスを使用することで、クロススケールの特徴融合の計算オーバーヘッドを削減し、パラメータ数を約85%-89%削減しながら高い精度を達成しています。さらに、有害なサンプルを除外するための品質ベースのフィルタリング戦略を提案し、データセットのサイズを削減しつつ全体的なトレーニング品質を向上させます。5つのベンチマークにおける広範な実験により、我々のフレームワークがDPTよりも精度で優れていることが示されました。本研究は、効率的で一般化可能なゼロショット深度推定を実現するために、モデル設計とデータ品質のバランスを取る重要性を強調しています。コード: https://github.com/AIGeeksGroup/AnyDepth。ウェブサイト: https://aigeeksgroup.github.io/AnyDepth。
+# Summary (by gpt-4o-mini)
+- 単眼深度推定に関する新しい軽量フレームワークを提案し、DINOv3を用いて高品質な特徴を取得。Simple Depth Transformerを設計し、計算オーバーヘッドを削減して精度を保ちながら85%-89%のパラメータ削減を実現。品質フィルタリング戦略でデータセットのサイズを縮小しつつトレーニング品質を向上。広範な実験により、DPTを上回る精度を確認。本研究は効率的なゼロショット深度推定の実現に向けたモデル設計とデータ品質の重要性を示す。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://aigeeksgroup.github.io/AnyDepth/" target="_blank" rel="noopener noreferrer">https://aigeeksgroup.github.io/AnyDepth/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_akhaliq/status/2010731896184172852?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Video Depth Anything: Consistent Depth Estimation for Super-Long Videos, Sili Chen+, CVPR'25 Highlight, 2025.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.12375</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4023</repo-issue-link>
+<tags>ComputerVision, 4D (Video), DepthEstimation</tags>
+<repo-issue-date>2025-12-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.12375
+# Authors
+  - Sili Chen
+  - Hengkai Guo
+  - Shengnan Zhu
+  - Feihu Zhang
+  - Zilong Huang
+  - Jiashi Feng
+  - Bingyi Kang
+# Abstract
+  - Depth Anything has achieved remarkable success in monocular depth estimation with strong generalization ability. However, it suffers from temporal inconsistency in videos, hindering its practical applications. Various methods have been proposed to alleviate this issue by leveraging video generation models or introducing priors from optical flow and camera poses. Nonetheless, these methods are only applicable to short videos (< 10 seconds) and require a trade-off between quality and computational efficiency. We propose Video Depth Anything for high-quality, consistent depth estimation in super-long videos (over several minutes) without sacrificing efficiency. We base our model on Depth Anything V2 and replace its head with an efficient spatial-temporal head. We design a straightforward yet effective temporal consistency loss by constraining the temporal depth gradient, eliminating the need for additional geometric priors. The model is trained on a joint dataset of video depth and unlabeled images, similar to Depth Anything V2. Moreover, a novel key-frame-based strategy is developed for long video inference. Experiments show that our model can be applied to arbitrarily long videos without compromising quality, consistency, or generalization ability. Comprehensive evaluations on multiple video benchmarks demonstrate that our approach sets a new state-of-the-art in zero-shot video depth estimation. We offer models of different scales to support a range of scenarios, with our smallest model capable of real-time performance at 30 FPS.
+# Translation (by gpt-4o-mini)
+- Depth Anythingは、単眼深度推定において優れた一般化能力を持ち、顕著な成功を収めている。しかし、動画における時間的一貫性の欠如が実用的な応用を妨げている。この問題を軽減するために、動画生成モデルを活用したり、光学フローやカメラポーズからの事前情報を導入するさまざまな方法が提案されている。しかし、これらの方法は短い動画（10秒未満）にのみ適用可能であり、品質と計算効率の間でトレードオフが必要である。我々は、効率を犠牲にすることなく、超長時間動画（数分以上）における高品質で一貫した深度推定のためにVideo Depth Anythingを提案する。モデルはDepth Anything V2に基づき、そのヘッドを効率的な空間-時間ヘッドに置き換えた。時間的深度勾配を制約することで、追加の幾何学的事前情報を必要としないシンプルでありながら効果的な時間的一貫性損失を設計した。モデルはDepth Anything V2に類似した動画深度とラベルのない画像の共同データセットで訓練される。さらに、長い動画推論のための新しいキーフレームベースの戦略を開発した。実験により、我々のモデルは品質、一貫性、一般化能力を損なうことなく、任意の長さの動画に適用できることが示された。複数の動画ベンチマークにおける包括的な評価は、我々のアプローチがゼロショット動画深度推定において新たな最先端を打ち立てることを示している。さまざまなシナリオをサポートするために異なるスケールのモデルを提供しており、最小のモデルは30 FPSでリアルタイム性能を発揮できる。
+# Summary (by gpt-4o-mini)
+- Video Depth Anythingは、超長時間動画における高品質で一貫した深度推定を実現するモデルであり、Depth Anything V2を基にした効率的な空間-時間ヘッドを採用。時間的一貫性損失を設計し、幾何学的事前情報なしで深度推定を行う。新しいキーフレームベースの戦略により、任意の長さの動画に適用可能で、ゼロショット動画深度推定において新たな最先端を達成。最小モデルは30 FPSでリアルタイム性能を発揮。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://videodepthanything.github.io" target="_blank" rel="noopener noreferrer">https://videodepthanything.github.io</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LongVie 2: Multimodal Controllable Ultra-Long Video World Model, Jianxiong Gao+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.13604</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4020</repo-issue-link>
+<tags>ComputerVision, MultiModal, DiffusionModel, LongSequence, VideoGeneration/Understandings, WorldModels, 4D (Video), reading, One-Line Notes, DepthEstimation</tags>
+<repo-issue-date>2025-12-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.13604
+# Authors
+  - Jianxiong Gao
+  - Zhaoxi Chen
+  - Xian Liu
+  - Junhao Zhuang
+  - Chengming Xu
+  - Jianfeng Feng
+  - Yu Qiao
+  - Yanwei Fu
+  - Chenyang Si
+  - Ziwei Liu
+# Abstract
+  - Building video world models upon pretrained video generation systems represents an important yet challenging step toward general spatiotemporal intelligence. A world model should possess three essential properties: controllability, long-term visual quality, and temporal consistency. To this end, we take a progressive approach-first enhancing controllability and then extending toward long-term, high-quality generation. We present LongVie 2, an end-to-end autoregressive framework trained in three stages: (1) Multi-modal guidance, which integrates dense and sparse control signals to provide implicit world-level supervision and improve controllability; (2) Degradation-aware training on the input frame, bridging the gap between training and long-term inference to maintain high visual quality; and (3) History-context guidance, which aligns contextual information across adjacent clips to ensure temporal consistency. We further introduce LongVGenBench, a comprehensive benchmark comprising 100 high-resolution one-minute videos covering diverse real-world and synthetic environments. Extensive experiments demonstrate that LongVie 2 achieves state-of-the-art performance in long-range controllability, temporal coherence, and visual fidelity, and supports continuous video generation lasting up to five minutes, marking a significant step toward unified video world modeling.
+# Translation (by gpt-4o-mini)
+- 事前学習済みの動画生成システムに基づいて動画ワールドモデルを構築することは、一般的な空間的・時間的知能に向けた重要かつ挑戦的なステップです。ワールドモデルは、制御可能性、長期的な視覚品質、時間的一貫性という3つの重要な特性を持つべきです。この目的のために、私たちは段階的なアプローチを採用し、まず制御可能性を向上させ、その後長期的で高品質な生成に向けて拡張します。私たちはLongVie 2を提案します。これは、3つの段階で訓練されたエンドツーエンドの自己回帰フレームワークです。(1) マルチモーダルガイダンス：密な制御信号と疎な制御信号を統合し、暗黙のワールドレベルの監視を提供して制御可能性を向上させます。(2) 入力フレームに対する劣化認識トレーニング：トレーニングと長期推論のギャップを埋め、高い視覚品質を維持します。(3) 歴史的コンテキストガイダンス：隣接するクリップ間でコンテキスト情報を整合させ、時間的一貫性を確保します。さらに、LongVGenBenchを導入し、さまざまな現実世界および合成環境をカバーする100本の高解像度1分間動画からなる包括的なベンチマークを提供します。広範な実験により、LongVie 2が長距離制御可能性、時間的一貫性、視覚的忠実度において最先端の性能を達成し、最大5分間の連続動画生成をサポートすることが示され、統一された動画ワールドモデリングに向けた重要なステップを示しています。
+# Summary (by gpt-4o-mini)
+- LongVie 2は、動画生成システムに基づくワールドモデルで、制御可能性、視覚品質、時間的一貫性を向上させるために3段階で訓練される自己回帰フレームワークです。マルチモーダルガイダンス、劣化認識トレーニング、歴史的コンテキストガイダンスを用いて、長距離制御と高い視覚忠実度を実現。LongVGenBenchを導入し、100本の高解像度動画を用いたベンチマークを提供。実験により、最先端の性能を達成し、連続動画生成の可能性を示しました。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://vchitect.github.io/LongVie2-project/" target="_blank" rel="noopener noreferrer">https://vchitect.github.io/LongVie2-project/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liuziwei7/status/2002406498790756775?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3982" target="_blank" rel="noopener noreferrer">[Paper Note] LongVie: Multimodal-Guided Controllable Ultra-Long Video Generation, Jianxiong Gao+, arXiv'25, 2025.08</a>
+</p><p>最大5分間のlong videoの生成が可能で、マルチモーダルな入力（depth map（空間の構造の制御; dense control signal）, point map(キーポイントの時間軸での軌跡; sparse control signal）)に応じて生成をコントロールし、temporal consistencyも向上しているとのこと。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4021" target="_blank" rel="noopener noreferrer">[Paper Note] SpatialTracker: Tracking Any 2D Pixels in 3D Space, Yuxi Xiao+, CVPR'24, 2024.04</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4022" target="_blank" rel="noopener noreferrer">[Paper Note] Diffusion as Shader: 3D-aware Video Diffusion for Versatile Video Generation Control, Zekai Gu+, SIGGRAPH'25, 2025.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4023" target="_blank" rel="noopener noreferrer">[Paper Note] Video Depth Anything: Consistent Depth Estimation for Super-Long Videos, Sili Chen+, CVPR'25 Highlight, 2025.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SpatialTracker: Tracking Any 2D Pixels in 3D Space, Yuxi Xiao+, CVPR'24, 2024.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2404.04319</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4021</repo-issue-link>
+<tags>ComputerVision, CVPR, 2D (Image), 3D (Scene), 4D (Video), DepthEstimation, MotionEstimation</tags>
+<repo-issue-date>2025-12-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2404.04319
+# Authors
+  - Yuxi Xiao
+  - Qianqian Wang
+  - Shangzhan Zhang
+  - Nan Xue
+  - Sida Peng
+  - Yujun Shen
+  - Xiaowei Zhou
+# Abstract
+  - Recovering dense and long-range pixel motion in videos is a challenging problem. Part of the difficulty arises from the 3D-to-2D projection process, leading to occlusions and discontinuities in the 2D motion domain. While 2D motion can be intricate, we posit that the underlying 3D motion can often be simple and low-dimensional. In this work, we propose to estimate point trajectories in 3D space to mitigate the issues caused by image projection. Our method, named SpatialTracker, lifts 2D pixels to 3D using monocular depth estimators, represents the 3D content of each frame efficiently using a triplane representation, and performs iterative updates using a transformer to estimate 3D trajectories. Tracking in 3D allows us to leverage as-rigid-as-possible (ARAP) constraints while simultaneously learning a rigidity embedding that clusters pixels into different rigid parts. Extensive evaluation shows that our approach achieves state-of-the-art tracking performance both qualitatively and quantitatively, particularly in challenging scenarios such as out-of-plane rotation.
+# Translation (by gpt-4o-mini)
+- 動画における密な長距離ピクセル運動の回復は、難しい問題です。この難しさの一部は、3Dから2Dへの投影プロセスに起因し、2D運動領域において遮蔽や不連続性を引き起こします。2D運動は複雑である可能性がありますが、基礎となる3D運動はしばしば単純で低次元であると考えています。本研究では、画像投影によって引き起こされる問題を軽減するために、3D空間における点の軌跡を推定することを提案します。我々の手法、SpatialTrackerは、単眼深度推定器を使用して2Dピクセルを3Dに持ち上げ、各フレームの3Dコンテンツをトリプラン表現を用いて効率的に表現し、トランスフォーマーを使用して3D軌跡を推定するための反復更新を行います。3Dでの追跡により、可能な限り剛体（ARAP）制約を活用しながら、ピクセルを異なる剛体部分にクラスタリングする剛性埋め込みを同時に学習することができます。広範な評価により、我々のアプローチは、特に平面外回転のような困難なシナリオにおいて、定性的および定量的に最先端の追跡性能を達成することが示されました。
+# Summary (by gpt-4o-mini)
+- 本研究では、動画における密な長距離ピクセル運動の回復の難しさを解決するため、3D空間における点の軌跡を推定する手法SpatialTrackerを提案。単眼深度推定器を用いて2Dピクセルを3Dに変換し、トランスフォーマーで3D軌跡を推定。剛体制約を活用しつつ、ピクセルをクラスタリングする剛性埋め込みを同時に学習。評価の結果、特に平面外回転のシナリオで最先端の追跡性能を達成した。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Depth Anything V2, Lihe Yang+, NeurIPS'24, 2024.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2406.09414</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3709</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, SyntheticData, 2D (Image), DepthEstimation</tags>
+<repo-issue-date>2025-11-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2406.09414
+# Authors
+  - Lihe Yang
+  - Bingyi Kang
+  - Zilong Huang
+  - Zhen Zhao
+  - Xiaogang Xu
+  - Jiashi Feng
+  - Hengshuang Zhao
+# Abstract
+  - This work presents Depth Anything V2. Without pursuing fancy techniques, we aim to reveal crucial findings to pave the way towards building a powerful monocular depth estimation model. Notably, compared with V1, this version produces much finer and more robust depth predictions through three key practices: 1) replacing all labeled real images with synthetic images, 2) scaling up the capacity of our teacher model, and 3) teaching student models via the bridge of large-scale pseudo-labeled real images. Compared with the latest models built on Stable Diffusion, our models are significantly more efficient (more than 10x faster) and more accurate. We offer models of different scales (ranging from 25M to 1.3B params) to support extensive scenarios. Benefiting from their strong generalization capability, we fine-tune them with metric depth labels to obtain our metric depth models. In addition to our models, considering the limited diversity and frequent noise in current test sets, we construct a versatile evaluation benchmark with precise annotations and diverse scenes to facilitate future research.
+# Translation (by gpt-4o-mini)
+- 本研究では、Depth Anything V2を提案します。華やかな技術を追求することなく、強力な単眼深度推定モデルを構築するための重要な発見を明らかにすることを目指しています。特に、V1と比較して、このバージョンは以下の3つの重要な実践を通じて、より細かく、より堅牢な深度予測を生成します。1) すべてのラベル付き実画像を合成画像に置き換えること、2) 教師モデルの能力を拡大すること、3) 大規模な擬似ラベル付き実画像の橋を介して学生モデルを教えることです。最新のStable Diffusionに基づくモデルと比較して、我々のモデルは大幅に効率的（10倍以上速い）で、より正確です。さまざまなシナリオをサポートするために、25Mから1.3Bパラメータまでの異なるスケールのモデルを提供します。強力な一般化能力を活かし、メトリック深度ラベルで微調整を行い、メトリック深度モデルを取得します。さらに、現在のテストセットの多様性が限られ、ノイズが頻繁に発生することを考慮し、将来の研究を促進するために、正確な注釈と多様なシーンを備えた多目的評価ベンチマークを構築しました。
+# Summary (by gpt-4o-mini)
+- Depth Anything V2を提案し、合成画像の使用、教師モデルの能力拡大、擬似ラベル付き実画像を用いた学生モデルの教育を通じて、より細かく堅牢な深度推定を実現。最新のStable Diffusionモデルと比較して、効率的かつ正確であり、異なるスケールのモデルを提供。多様なシーンを考慮した評価ベンチマークも構築。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://depth-anything-v2.github.io" target="_blank" rel="noopener noreferrer">https://depth-anything-v2.github.io</a>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=cFTi3gLJ1X&referrer=%5Bthe%20profile%20of%20Hengshuang%20Zhao%5D(%2Fprofile%3Fid%3D~Hengshuang_Zhao2)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=cFTi3gLJ1X&referrer=%5Bthe%20profile%20of%20Hengshuang%20Zhao%5D(%2Fprofile%3Fid%3D~Hengshuang_Zhao2)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data, Lihe Yang+, CVPR'24, 2024.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2401.10891</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3708</repo-issue-link>
+<tags>ComputerVision, DataAugmentation, FoundationModel, CVPR, 2D (Image), DepthEstimation</tags>
+<repo-issue-date>2025-11-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2401.10891
+# Authors
+  - Lihe Yang
+  - Bingyi Kang
+  - Zilong Huang
+  - Xiaogang Xu
+  - Jiashi Feng
+  - Hengshuang Zhao
+# Abstract
+  - This work presents Depth Anything, a highly practical solution for robust monocular depth estimation. Without pursuing novel technical modules, we aim to build a simple yet powerful foundation model dealing with any images under any circumstances. To this end, we scale up the dataset by designing a data engine to collect and automatically annotate large-scale unlabeled data (~62M), which significantly enlarges the data coverage and thus is able to reduce the generalization error. We investigate two simple yet effective strategies that make data scaling-up promising. First, a more challenging optimization target is created by leveraging data augmentation tools. It compels the model to actively seek extra visual knowledge and acquire robust representations. Second, an auxiliary supervision is developed to enforce the model to inherit rich semantic priors from pre-trained encoders. We evaluate its zero-shot capabilities extensively, including six public datasets and randomly captured photos. It demonstrates impressive generalization ability. Further, through fine-tuning it with metric depth information from NYUv2 and KITTI, new SOTAs are set. Our better depth model also results in a better depth-conditioned ControlNet. Our models are released at https://github.com/LiheYoung/Depth-Anything.
+# Translation (by gpt-4o-mini)
+- 本研究では、堅牢な単眼深度推定のための非常に実用的な解決策であるDepth Anythingを提案します。新しい技術モジュールを追求することなく、あらゆる状況下であらゆる画像に対応できるシンプルでありながら強力な基盤モデルを構築することを目指しています。そのために、データエンジンを設計して大規模な未ラベルデータ（約6200万）を収集し自動的に注釈を付けることでデータセットを拡大し、データのカバレッジを大幅に増加させ、一般化誤差を減少させることができるようにしました。データのスケーリングアップを有望にするための2つのシンプルでありながら効果的な戦略を検討しました。まず、データ拡張ツールを活用することで、より挑戦的な最適化目標を作成します。これにより、モデルは積極的に追加の視覚的知識を求め、堅牢な表現を獲得することが強制されます。次に、事前学習されたエンコーダから豊富なセマンティックプライヤを継承するようモデルに強制するための補助的な監視を開発しました。ゼロショット能力を広範囲にわたって評価し、6つの公開データセットやランダムにキャプチャされた写真を含めました。その結果、印象的な一般化能力を示しました。さらに、NYUv2およびKITTIからのメトリック深度情報でファインチューニングすることで、新たな最先端技術（SOTA）が設定されました。私たちの優れた深度モデルは、より良い深度条件付きControlNetをもたらします。私たちのモデルは、https://github.com/LiheYoung/Depth-Anything で公開されています。
+# Summary (by gpt-4o-mini)
+- Depth Anythingは、堅牢な単眼深度推定のための基盤モデルを提案し、6200万の未ラベルデータを自動的に注釈付けしてデータセットを拡大。データ拡張と補助的な監視を用いてモデルの一般化能力を向上させ、ゼロショット評価で優れた結果を示した。NYUv2およびKITTIでファインチューニングし、最先端の性能を達成。モデルは公開されている。</issue-body>
+<maintainer-comment-text><p>日本語解説:
+
+{% raw %}
+<a href="https://computray.com/98/depth-anything/" target="_blank" rel="noopener noreferrer">https://computray.com/98/depth-anything/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Vision Transformers for Dense Prediction, René Ranftl+, ICCV'21, 2021.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2103.13413</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4091</repo-issue-link>
+<tags>ComputerVision, Transformer, read-later, ICCV, Encoder, Backbone, DepthEstimation, SemanticSegmentation</tags>
+<repo-issue-date>2025-12-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2103.13413
+# Authors
+  - René Ranftl
+  - Alexey Bochkovskiy
+  - Vladlen Koltun
+# Abstract
+  - We introduce dense vision transformers, an architecture that leverages vision transformers in place of convolutional networks as a backbone for dense prediction tasks. We assemble tokens from various stages of the vision transformer into image-like representations at various resolutions and progressively combine them into full-resolution predictions using a convolutional decoder. The transformer backbone processes representations at a constant and relatively high resolution and has a global receptive field at every stage. These properties allow the dense vision transformer to provide finer-grained and more globally coherent predictions when compared to fully-convolutional networks. Our experiments show that this architecture yields substantial improvements on dense prediction tasks, especially when a large amount of training data is available. For monocular depth estimation, we observe an improvement of up to 28% in relative performance when compared to a state-of-the-art fully-convolutional network. When applied to semantic segmentation, dense vision transformers set a new state of the art on ADE20K with 49.02% mIoU. We further show that the architecture can be fine-tuned on smaller datasets such as NYUv2, KITTI, and Pascal Context where it also sets the new state of the art. Our models are available at https://github.com/intel-isl/DPT.
+# Translation (by gpt-4o-mini)
+- 我々は、密な予測タスクのバックボーンとして畳み込みネットワークの代わりにビジョントランスフォーマーを活用するアーキテクチャである密なビジョントランスフォーマーを紹介します。ビジョントランスフォーマーのさまざまなステージからトークンを集め、異なる解像度で画像のような表現を構成し、畳み込みデコーダを使用してそれらを段階的にフル解像度の予測に統合します。トランスフォーマーのバックボーンは、一定かつ比較的高い解像度で表現を処理し、各ステージでグローバルな受容野を持っています。これらの特性により、密なビジョントランスフォーマーは、完全畳み込みネットワークと比較して、より細かい粒度でよりグローバルに一貫した予測を提供することができます。我々の実験は、このアーキテクチャが密な予測タスクにおいて大幅な改善をもたらすことを示しており、特に大量のトレーニングデータが利用可能な場合に顕著です。単眼深度推定においては、最先端の完全畳み込みネットワークと比較して、相対的な性能が最大28%向上することを観察しました。セマンティックセグメンテーションに適用した場合、密なビジョントランスフォーマーはADE20Kで49.02%のmIoUを達成し、新たな最先端を打ち立てました。さらに、このアーキテクチャはNYUv2、KITTI、Pascal Contextなどの小規模データセットに対してファインチューニングでき、そこでも新たな最先端を設定します。我々のモデルは、https://github.com/intel-isl/DPT で入手可能です。
+# Summary (by gpt-4o-mini)
+- 密なビジョントランスフォーマーは、畳み込みネットワークの代わりにビジョントランスフォーマーを用いた密な予測タスク向けの新しいアーキテクチャです。異なる解像度のトークンを集め、畳み込みデコーダでフル解像度の予測に統合します。このアーキテクチャは、グローバルな受容野を持ち、より一貫した予測を提供します。実験により、特に大量のトレーニングデータがある場合に、単眼深度推定で最大28%の性能向上を示し、セマンティックセグメンテーションではADE20Kで49.02%のmIoUを達成しました。さらに、他の小規模データセットでも最先端の結果を記録しています。モデルは公開されています。</issue-body>
+<maintainer-comment-text><p>DPT headの解説:
+
+{% raw %}
+<a href="https://qiita.com/Chi_corp_123/items/8a2e9a4f542a3404a700" target="_blank" rel="noopener noreferrer">https://qiita.com/Chi_corp_123/items/8a2e9a4f542a3404a700</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

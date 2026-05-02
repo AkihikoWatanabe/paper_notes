@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-03-30">
+<paper-entry>
+<title>[Paper Note] PaCoRe: Learning to Scale Test-Time Compute with Parallel Coordinated Reasoning, Jingcheng Hu+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.05593</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4236</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, action_wanted, Reasoning, Test-Time Scaling, PostTraining, read-later, Selected Papers/Blogs, Aggregation-aware, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2026-01-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.05593
+# Authors
+  - Jingcheng Hu
+  - Yinmin Zhang
+  - Shijie Shang
+  - Xiaobo Yang
+  - Yue Peng
+  - Zhewei Huang
+  - Hebin Zhou
+  - Xin Wu
+  - Jie Cheng
+  - Fanqi Wan
+  - Xiangwen Kong
+  - Chengyuan Yao
+  - Kaiwen Yan
+  - Ailin Huang
+  - Hongyu Zhou
+  - Qi Han
+  - Zheng Ge
+  - Daxin Jiang
+  - Xiangyu Zhang
+  - Heung-Yeung Shum
+# Abstract
+  - We introduce Parallel Coordinated Reasoning (PaCoRe), a training-and-inference framework designed to overcome a central limitation of contemporary language models: their inability to scale test-time compute (TTC) far beyond sequential reasoning under a fixed context window. PaCoRe departs from the traditional sequential paradigm by driving TTC through massive parallel exploration coordinated via a message-passing architecture in multiple rounds. Each round launches many parallel reasoning trajectories, compacts their findings into context-bounded messages, and synthesizes these messages to guide the next round and ultimately produce the final answer. Trained end-to-end with large-scale, outcome-based reinforcement learning, the model masters the synthesis abilities required by PaCoRe and scales to multi-million-token effective TTC without exceeding context limits. The approach yields strong improvements across diverse domains, and notably pushes reasoning beyond frontier systems in mathematics: an 8B model reaches 94.5% on HMMT 2025, surpassing GPT-5's 93.2% by scaling effective TTC to roughly two million tokens. We open-source model checkpoints, training data, and the full inference pipeline to accelerate follow-up work.
+# Translation (by gpt-5-nano)
+- Parallel Coordinated Reasoning (PaCoRe) を紹介します。これは、固定されたコンテキストウィンドウの下での逐次的推論を超えてテスト時の計算量（TTC）を大幅に拡張できないという現代の言語モデルの中心的な限界を克服するために設計された、トレーニングと推論のフレームワークです。PaCoRe は、伝統的な逐次パラダイムから脱却し、複数のラウンドにわたってメッセージ伝播アーキテクチャによって調整された大規模な並列探索を通じて TTC を駆動します。各ラウンドでは多くの並列推論経路を起動し、それらの所見を文脈制約付きのメッセージに圧縮し、これらのメッセージを統合して次のラウンドを導き、最終的な答えを生産します。大規模で成果ベースの強化学習をエンドツーエンドで訓練することにより、PaCoRe に必要な統合能力を習得し、文脈の制限を超えることなく実質的な TTC を数百万トークン規模へ拡張します。このアプローチは多様な領域で強力な改善をもたらし、特に数学分野のフロンティア的な推論を超える成果を示します。8B モデルは HMMT 2025 で 94.5% に到達し、実効 TTC を約二百万トークンへとスケールさせることで GPT-5 の 93.2% を上回ります。我々は後続の研究を加速させるため、モデルのチェックポイント、トレーニングデータ、完全な推論パイプラインをオープンソース化します。
+# Summary (by gpt-4o-mini)
+- PaCoReは、固定されたコンテキストウィンドウを超えた計算量の拡張を目指すトレーニング・推論フレームワークです。逐次的パラダイムを脱し、複数のラウンドでメッセージ伝播アーキテクチャを用いた並列探索を行います。各ラウンドでは、並列推論経路を起動し、結果を圧縮して次のラウンドに統合し、最終的な答えを生成します。このアプローチにより、文脈制限を超えた実質的な計算量が実現され、特に数学推論で顕著な成果を示します。8BモデルはHMMT 2025で94.5%を達成し、オープンソース化された資源により、さらなる研究が期待されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2012264990200218032?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4235" target="_blank" rel="noopener noreferrer">[Paper Note] STEP3-VL-10B Technical Report, Ailin Huang+, arXiv'26, 2026.01</a>
+<br><br>で活用されているRLでtest time scalingを学習する手法</p><p>モデルのSequentialなReasoning能力はcontext windowに制限されてしまうので、並列にモデルにreasoningをさせてそれらを集約させて、さらに直列で思考させる、といった処理を繰り返すことで、context windowの制限を超えてreasoning能力を高めることを目的としたtest-time scaling手法。<br><br>モデルに複数個のreasoning trajectoryを生成させ、それぞれのtrajectoryにCompaction Function（式2） を適用[^1]することで各resaoning trajectoryをcompaction message M として圧縮。圧縮したtrajectoryを元のpromptとともに与えて、同様の操作をRラウンド繰り返すtest-time scaling手法。最後のラウンドでは、生成するreasoning trajectoryの数を1とすることで最終的な応答を得る。モデルをこのプロセスに最適化するために、各ラウンドにおいて (x, M) が与えられた時に、並列して生成するreasoning trajectoryに対してRLVRを適用することでモデルの性能を引き上げている。Mはベースモデルによって事前に生成し、生成した結果をキャッシュしておくことでRL中に利用する。<br><br><img src="https://github.com/user-attachments/assets/bc826762-257a-4ced-8f44-23c72438e3b7" /" alt="image" loading="lazy" width="550" height="400"/><br><br>PaCoReによってベースモデル（RLVR-8B）の性能が着実に押し上げられ、一部ベンチマークにおいてフロンティアモデルには届かなないものの非常に高い性能を示している。<br><img src="https://github.com/user-attachments/assets/86bba0a9-39ab-4624-8294-74103239f365" /" alt="image" loading="lazy" width="550" height="400"/><br><br>また、Parallel test-time scaling手法として代表的なSelf-Consistencyと比較しても、より少ないtoken量で、より高いgainを得ている。<br><img src="https://github.com/user-attachments/assets/99d3ad6a-2511-4389-846d-e3eece3f8225" /" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 本研究ではCompatction Functionとしてreasoningの特性を利用して、結論部分に関連する部分を抽出し、intermediateなreasoning tokenは破棄するような関数を適用している</p><p>Figure1においてベースモデルであるRLVR-8B (Qwen3-8B-Base) に対して、PaCoReによってpost-trainingされたモデルがより良好なtest-time scalingを示すことが図示されているが、RLVR-8Bによるtest-time scaling手法としてどのようなものが適用されたのか（parallelなのか、sequentialなのか、結果を集約したのか等）が書かれていない気がする。<br><br>何が気になっているのかというと、提案手法が効果があることは分かったのだが、これがPaCoReの枠組みに則ったRLを適用しないと発現しないものなのか、それともPaCoReに特化したpost-trainingを実施しなくても、何らかのベースモデルに同様のtest-time-scalingの枠組みを利用すれば高い性能を得られるのか、といった点が気になる。どこかに書いてあるのだろうか？<br><br><img src="https://github.com/user-attachments/assets/8ada132c-f944-4710-929d-6bbb46d8c597" /" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Recursive Self-Aggregation Unlocks Deep Thinking in Large Language Models, Siddarth Venkatraman+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.26626</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3008</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, action_wanted, Test-Time Scaling, Selected Papers/Blogs, Aggregation-aware, KeyPoint Notes</tags>
+<repo-issue-date>2025-09-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.26626
+# Authors
+  - Siddarth Venkatraman
+  - Vineet Jain
+  - Sarthak Mittal
+  - Vedant Shah
+  - Johan Obando-Ceron
+  - Yoshua Bengio
+  - Brian R. Bartoldson
+  - Bhavya Kailkhura
+  - Guillaume Lajoie
+  - Glen Berseth
+  - Nikolay Malkin
+  - Moksh Jain
+# Abstract
+  - Test-time scaling methods improve the capabilities of large language models (LLMs) by increasing the amount of compute used during inference to make a prediction. Inference-time compute can be scaled in parallel by choosing among multiple independent solutions or sequentially through self-refinement. We propose Recursive Self-Aggregation (RSA), a test-time scaling method inspired by evolutionary methods that combines the benefits of both parallel and sequential scaling. Each step of RSA refines a population of candidate reasoning chains through aggregation of subsets to yield a population of improved solutions, which are then used as the candidate pool for the next iteration. Empirically, RSA delivers substantial performance gains with increasing compute budgets across diverse tasks, model families and sizes. Notably, RSA with Gemini 3 Flash attains performance near the top of the ARC-AGI-2 public leaderboard. RSA also enables Qwen3-4B-Instruct-2507 to achieve competitive performance with larger reasoning models, including DeepSeek-R1 and o3-mini (high), outperforming purely parallel and sequential scaling strategies across AIME-25, HMMT-25, Reasoning Gym, LiveCodeBench-v6, and SuperGPQA. We further propose a novel aggregation-aware reinforcement learning approach that yields significant performance gains by training the model to combine solutions.
+# Translation (by gpt-5-nano)
+- 推論時スケーリング法は、推論時に用いる計算量を増やすことにより大規模言語モデル（LLMs）の能力を向上させる。推論時の計算は、複数の独立した解の中から選択することにより並列にスケールさせるか、自己改善を通じて逐次的にスケールさせることができる。Recursive Self-Aggregation（RSA）を提案する。RSAは進化的な方法に触発された推論時スケーリング法で、並列スケーリングと逐次スケーリングの両方の利点を組み合わせる。RSAの各ステップは、部分集合の統合を通じて候補推論チェーンの集団を洗練させ、改善された解の集団を生み出す。これらは次の反復の候補プールとして用いられる。実証的には、RSAは計算予算が増加するにつれて、さまざまなタスク、モデルファミリー、サイズにわたって顕著な性能向上をもたらす。特に、Gemini 3 Flashを搭載したRSAはARC-AGI-2公開リーダーボードの上位に近い性能を達成する。RSAはまた、Qwen3-4B-Instruct-2507が、DeepSeek-R1およびo3-mini（高）を含むより大規模な推論モデルと競争力のある性能を達成できるようにし、AIME-25、HMMT-25、Reasoning Gym、LiveCodeBench-v6、SuperGPQAにおいて、純粋な並列スケーリング戦略および逐次スケーリング戦略を上回る。さらに、解を組み合わせるようモデルを訓練することで顕著な性能向上をもたらす、新規の集約を意識した強化学習アプローチを提案する。
+# Summary (by gpt-4o-mini)
+- 推論時スケーリング法によってLLMsの能力を向上させる。Recursive Self-Aggregation（RSA）を提案し、並列スケーリングと逐次スケーリングの利点を融合。各ステップで部分集合を統合し、改善された解を生成。RSAは計算予算の増加に伴い、様々なタスクで顕著な性能向上を示し、特にGemini 3 Flashで高性能を実現。さらに、新規の集約を意識した強化学習アプローチを通じて、解の組み合わせによる性能向上を図る。</issue-body>
+<maintainer-comment-text><p>N個の応答を生成し、各応答K個組み合わせてpromptingで集約し新たな応答を生成することで洗練させる、といったことをT回繰り返すtest-time scaling手法で、RLによってモデルの集約能力を強化するとより良いスケーリングを発揮する。RLでは通常の目的関数（prompt x, answer y; xから単一のreasoning traceを生成しyを回答する設定）に加えて、aggregation promptを用いた目的関数(aggregation promptを用いて K個のsolution集合 S_0を生成し、目的関数をaggregation prompt x, S_0の双方で条件づけたもの)を定義し、同時に最適化をしている（同時に最適化することは5.4節に記述されている）。つまり、これまでのRLはxがgivenな時に頑張って単一の良い感じのreasoning traceを生成しyを生成するように学習していたが（すなわち、モデルが複数のsolutionを集約することは明示的に学習されていない）、それに加えてモデルのaggregationの能力も同時に強化する、という気持ちになっている。学習のアルゴリズムはPPO, GRPOなど様々なon-poloicyな手法を用いることができる。今回はRLOOと呼ばれる手法を用いている。<br><br><img src="https://github.com/user-attachments/assets/e83406ae-91a0-414b-a49c-892a4d1f23fd" /" alt="image" loading="lazy" width="550" height="400"/><br><br>様々なsequential scaling, parallel scaling手法と比較して、RSAがより大きなgainを得ていることが分かる。ただし、Knowledge RecallというタスクにおいてはSelf-Consistency (Majority Voting)よりもgainが小さい。<br><img src="https://github.com/user-attachments/assets/8251f25b-472d-48d4-b7df-a6946cfbbcd9" /" alt="image" loading="lazy" width="550" height="400"/><br><br>以下がaggregation-awareなRLを実施した場合と、通常のRL, promptingのみによる場合の性能の表している。全体を通じてaggregation-awareなRLを実施することでより高い性能を発揮しているように見える。ただし、AIMEに関してだけは通常のpromptingによるRSAの性能が良い。なぜだろうか？考察まで深く読めていないので論文中に考察があるかもしれない。<br><img src="https://github.com/user-attachments/assets/146ab6a3-58c2-4a7f-aa84-978a5180c8f3" /" alt="image" loading="lazy" width="550" height="400"/></p><p>RLOO:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3009" target="_blank" rel="noopener noreferrer">[Paper Note] Back to Basics: Revisiting REINFORCE Style Optimization for Learning   from Human Feedback in LLMs, Arash Ahmadian+, ACL'24, 2024.02</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/siddarthv66/status/1971757612845670585?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>concurrent work:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2729" target="_blank" rel="noopener noreferrer">[Paper Note] The Majority is not always right: RL training for solution aggregation, Wenting Zhao+, arXiv'25</a>
+</p><p>あわせて読みたい:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2346" target="_blank" rel="noopener noreferrer">[Paper Note] Rethinking the Role of Prompting Strategies in LLM Test-Time Scaling: A   Perspective of Probability Theory, Yexiang Liu+, ACL'25 Outstanding Paper</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] The Majority is not always right: RL training for solution aggregation, Wenting Zhao+, arXiv'25</title>
+<original-paper-blog-link>http://arxiv.org/abs/2509.06870</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2729</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, read-later, Aggregation-aware, Author Thread-Post</tags>
+<repo-issue-date>2025-09-09</repo-issue-date>
+<issue-body># URL
+- http://arxiv.org/abs/2509.06870
+# Authors
+  - Wenting Zhao
+  - Pranjal Aggarwal
+  - Swarnadeep Saha
+  - Asli Celikyilmaz
+  - Jason Weston
+  - Ilia Kulikov
+# Abstract
+  - Scaling up test-time compute, by generating multiple independent solutions and selecting or aggregating among them, has become a central paradigm for improving large language models (LLMs) on challenging reasoning tasks. While most prior work relies on simple majority voting or reward model ranking to aggregate solutions, these approaches may only yield limited benefits. In this work, we propose to learn aggregation as an explicit reasoning skill: given a set of candidate solutions, we train an aggregator model to review, reconcile, and synthesize a final, correct answer using reinforcement learning from verifiable rewards. A key ingredient is careful balancing of easy and hard training examples, allowing the model to learn both to recover minority-but-correct answers as well as easy majority-correct answers. Empirically, we find our method, AggLM, outperforms both strong rule-based and reward-model baselines, across multiple benchmarks. Furthermore, it generalizes effectively to solutions from differing models, including stronger ones than contained in the training data, all while requiring substantially fewer tokens than majority voting with larger numbers of solutions.
+# Translation (by gpt-4o-mini)
+- テスト時の計算をスケールアップすること、すなわち複数の独立した解を生成し、それらの中から選択または集約することは、困難な推論タスクにおける大規模言語モデル（LLMs）の改善のための中心的なパラダイムとなっている。従来のほとんどの研究は、解を集約するために単純な多数決投票や報酬モデルのランキングに依存しているが、これらのアプローチは限られた利益しかもたらさない可能性がある。本研究では、集約を明示的な推論スキルとして学習することを提案する。候補解のセットが与えられた場合、我々は集約モデルを訓練し、検証可能な報酬からの強化学習を用いて最終的な正しい答えをレビュー、調整、合成する。重要な要素は、簡単なトレーニング例と難しいトレーニング例の慎重なバランスを取ることであり、これによりモデルは少数派だが正しい答えを回復する能力と、簡単な多数派の正しい答えを学ぶ能力の両方を習得できる。実証的に、我々の手法AggLMは、複数のベンチマークにおいて強力なルールベースおよび報酬モデルのベースラインを上回ることがわかった。さらに、トレーニングデータに含まれるよりも強力なモデルからの解に対しても効果的に一般化し、より多くの解を用いた多数決投票よりも大幅に少ないトークンで済む。
+# Summary (by gpt-4o-mini)
+- 本研究では、複数の解を生成し、それを集約することでLLMsの推論能力を向上させる新しいアプローチを提案する。従来の方法に代わり、集約を明示的な推論スキルとして学習し、強化学習を用いて正しい答えを調整・合成する。簡単な例と難しい例のバランスを取ることで、モデルは少数派の正しい答えを回復する能力を獲得。提案手法AggLMは、複数のベンチマークで従来の手法を上回り、少ないトークンで効果的に一般化することが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/1965233976949543194?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1965556816647164055?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wzhao_nlp/status/1966784672706256896?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aicia_solid/status/1968870421882896891?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ParaGator: Learning to Aggregate through Online RL, Li+, 2026.03</title>
+<original-paper-blog-link>https://facebookresearch.github.io/RAM/blogs/paragator/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5058</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Test-Time Scaling, Diversity, Aggregation-aware, Initial Impression Notes</tags>
+<repo-issue-date>2026-03-30</repo-issue-date>
+<issue-body>https://facebookresearch.github.io/RAM/blogs/paragator/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2038609971160424748?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4979" target="_blank" rel="noopener noreferrer">[Paper Note] Reasoning over mathematical objects: on-policy reward modeling and test time aggregation, Pranjal Aggarwal+, arXiv'26, 2026.03</a>
+ <br><br>上記研究のSection 3の内容っぽい？</p><p>解候補を生成する際はPass@kに対して最適化をし多様な候補の生成を促し、解候補を集約してFinal Answerを導出する際には、Pass@1に対して最適化をし複数の解候補を効果的に集約する方向に最適化することで、性能がブーストされ、それをend-to-endに実現する、という話にみえる。<br><img src="https://github.com/user-attachments/assets/34c502e6-21e0-4363-ac84-88ccc2a54a31" /" alt="image" loading="lazy" width="550" height="400"/></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4236" target="_blank" rel="noopener noreferrer">[Paper Note] PaCoRe: Learning to Scale Test-Time Compute with Parallel Coordinated Reasoning, Jingcheng Hu+, arXiv'26, 2026.01</a>
+<br><br>と似たような考え方に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>
