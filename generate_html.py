@@ -718,6 +718,7 @@ author: AkihikoWATANABE
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Reference-Collection.html">Reference Collection: SNS上の有識者の解説ポスト等の関連リンク集</a></li>
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html">Author Thread-Post: 論文・ブログ等の著者自身による解説ポスト</a></li>
 </ul>
+'''
     html_content += '以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (<a href="https://akihikowatanabe.github.io/paper_notes/articles/Selected-Papers-Blogs.html">Selected Papers/Blogs</a>) です。'
 
     # latest posts
