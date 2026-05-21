@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-05-15T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-05-20T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Pretrainingに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-05-15T00:00:00+00:00","datePublished":"2026-05-15T00:00:00+00:00","description":"Pretraining [Paper Note] Muon is Not That Special: Random or Inverted Spectra Work Just as Well, Zakhar Shumaylov+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #Analysis #NLP #LanguageModel #Optimizer Issue Date: 2026-05-15 GPT Summary- フレオンという新たなシャッテンノルム基盤の最適化アルゴリズムを導入し、特異値の置換にもかかわらず優れた性能を発揮するKaonを提案。最適化性能は幾何構造ではなく、アライメントと降下ポテンシャルに依存し、ステップサイズ調整が重要であることを示す。ミューオンは理想的な幾何を追求するのではなく、ステップサイズの最適性によって成功する。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-05-20T00:00:00+00:00","datePublished":"2026-05-20T00:00:00+00:00","description":"Pretraining [Paper Note] Muon is Not That Special: Random or Inverted Spectra Work Just as Well, Zakhar Shumaylov+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #Analysis #NLP #LanguageModel #Optimizer Issue Date: 2026-05-15 GPT Summary- フレオンという新たなシャッテンノルム基盤の最適化アルゴリズムを導入し、特異値の置換にもかかわらず優れた性能を発揮するKaonを提案。最適化性能は幾何構造ではなく、アライメントと降下ポテンシャルに依存し、ステップサイズ調整が重要であることを示す。ミューオンは理想的な幾何を追求するのではなく、ステップサイズの最適性によって成功する。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-05-15T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 15, 2026
+    <time class="dt-published" datetime="2026-05-20T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 20, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 hours 17 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 hours 18 mins</span>
   </div></header>
 </div>
     </div>
@@ -9030,6 +9030,40 @@ My Issue
 <span class="snippet"><span>Comment</span><p>seq2seqにおいてweightのpretrainingを行う手法を提案<br><br>seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。<br><br>WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。<br><br><br><br>encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。<br><br>fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）<br><br>LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。<br><br><br><br>Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。<br><br>LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。<br><br>sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。<br><br><br><br>LM Objectiveは結構使えそうな印象</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="hrm-text-efficient-5509" class="title-link">HRM-Text: Efficient Pretraining Beyond Scaling, Sapient Intelligence, 2026.05</h3><br><a href="https://github.com/sapientinc/HRM-Text" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5509" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
+<a class="button" href="Architecture.html" target="_blank" rel="noopener noreferrer">#Architecture</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="LatentReasoning.html" target="_blank" rel="noopener noreferrer">#LatentReasoning</a>
+<a class="button" href="RecurrentModels.html" target="_blank" rel="noopener noreferrer">#RecurrentModels</a>
+<span class="issue_date">Issue Date: 2026-05-20</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhuci19/status/2056516190521167972?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>気になる</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="aurora-a-5478" class="title-link">Aurora: A Leverage-Aware Optimizer for Rectangular Matrices, Tilde Research, 2026.05</h3><br><a href="https://blog.tilderesearch.com/blog/aurora" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -11212,37 +11246,17 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Optimizer.html" title="Optimizerに関する論文・技術記事メモの一覧">Optimizerに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/AIAgents.html" title="AIAgentsに関する論文・技術記事メモの一覧">AIAgentsに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Optimizer.html" title="Optimizerに関する論文・技術記事メモの一覧">Optimizerに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Proprietary.html" title="Proprietaryに関する論文・技術記事メモの一覧">Proprietaryに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/COLING.html"
-            title="COLINGに関する論文・技術記事メモの一覧">
-            COLINGに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CLIP.html"
+            title="CLIPに関する論文・技術記事メモの一覧">
+            CLIPに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 14</span> 
-  <span class="post-badge badge-new">📝 14</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/RepresentationLearning.html"
-            title="RepresentationLearningに関する論文・技術記事メモの一覧">
-            RepresentationLearningに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 56</span> 
-  <span class="post-badge badge-new">📝 56</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Attack.html"
-            title="Attackに関する論文・技術記事メモの一覧">
-            Attackに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li><li class="">
@@ -11253,6 +11267,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
   <span class="post-badge badge-new">📝 4</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/DiseaseNameRecognition.html"
+            title="DiseaseNameRecognitionに関する論文・技術記事メモの一覧">
+            DiseaseNameRecognitionに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/ECS.html"
+            title="ECSに関する論文・技術記事メモの一覧">
+            ECSに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li></ul>
