@@ -1,5 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-05-12">
+<paper-list last-updated="2026-05-21">
+<paper-entry>
+<title>[Paper Note] Slicing and Dicing: Configuring Optimal Mixtures of Experts, Margaret Li+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.11689</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5542</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.11689
+# Authors
+  - Margaret Li
+  - Sneha Kudugunta
+  - Danielle Rothermel
+  - Luke Zettlemoyer
+# Abstract
+  - Mixture-of-Experts (MoE) architectures have become standard in large language models, yet many of their core design choices - expert count, granularity, shared experts, load balancing, token dropping - have only been studied one or two at a time over narrow configuration ranges. It remains an open question whether these choices can be optimized independently, without considering interactions. We present the first systematic study of over 2,000 pretraining runs spanning models up to 6.6B total parameters, in which we exhaustively vary total experts, expert dimension, heterogeneous expert sizing within a single layer, shared expert size and load-balancing mechanisms. We find that at every active-parameter scale that we study, performance consistently improves with total MoE parameters even at extreme active expert parameter ratios like 128.Further, the optimal expert size is nearly invariant to total parameter count and depends only on active parameter count. Third, we see that other choices like shared experts, heterogeneous experts and load-balancing settings have small effects relative to expert count and granularity, although dropless routing yields a consistent gain. Overall, our results suggest a simpler recipe: focus on expert count and granularity, other choices have minimal effect on final quality.
+# Translation (by gpt-5-nano)
+- Mixture-of-Experts (MoE) アーキテクチャは大規模言語モデルの標準となっているが、多くの核となる設計選択――エキスパートの数、粒度、共有エキスパート、ロードバランシング、トークンドロップ――は、狭い設定範囲で1つまたは2つずつしか研究されていない。これらの選択を互いの相互作用を考慮せずに独立して最適化できるかどうかは未解決の問題のままである。我々は総パラメータ数6.6Bまでのモデルを対象とする2,000件を超える事前学習ランを体系的に初めて実施し、総エキスパート数、エキスパート次元、単一層内の異種エキスパートサイズ、共有エキスパートサイズ、およびロードバランシング機構を網羅的に変化させた。活性パラメータ規模のあらゆる段階において、MoEパラメータの総量が増えるほど性能が一貫して向上することを、128倍のような極端な活性エキスパートパラメータ比でも見出した。さらに、最適なエキスパートサイズは総パラメータ数にはほぼ不変で、活性パラメータ数のみに依存する。第三に、共有エキスパート、異種エキスパート、ロードバランシング設定といった他の選択は、エキスパート数と粒度に比べて影響が小さいが、ドロップレス・ルーティングは一貫した利得をもたらす。総じて、我々の結果はより単純なレシピを示唆する。エキスパートの数と粒度に焦点を当て、それ以外の選択は最終的な品質に対して最小限の影響しか与えない。
+# Summary (by gpt-4o-mini)
+- Mixture-of-Experts (MoE) アーキテクチャの設計選択を体系的に検討し、2,000件の事前学習ランを実施。エキスパート数、粒度、サイズの変化で一貫した性能向上を確認。活性パラメータ規模の増加が性能向上に寄与し、最適なエキスパートサイズは総パラメータ数に依存しないことが明らかに。共有エキスパートやロードバランシングの影響は小さく、ドロップレス・ルーティングは有益。全体として、エキスパート数と粒度にフォーカスするシンプルなアプローチが有効であることを示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/margs_li/status/2056355079188627862?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>MoEアーキテクチャにおいては、expertのサイズと数が重要であり、他の要素は最小限の影響しか与えない<br><br>- Expertの総パラメータ数が増えれば増えるほど性能が改善する（アクティブパラメータ数に対する総パラメータ数が128倍などの極端な場合でも性能が改善）<br>- Expertの数は多ければ多いほど良い。また、Expert一つに対する最適なサイズは総パラメータすうには関係なく、アクティブパラメータ数にのみに依存して決まることが明らかになった。このため、まずアクティブパラメータ数を優先的に決めて、VRAMが許す限りエキスパートの数を増やすのが良い<br>- MoEアーキテクチャが優れているのは、ブロックを小さく分割したからではなく、非アクティブなパラメータが存在することによるSparseな活性化によって生じる（MLPを細かいブロックにして全てを活性化させても性能が悪化した実験を受けて、ブロックを細かく分割することではなくsparseな活性化に鍵があると結論）<br>- 共有エキスパートや、サイズを不均一にしたエキスパートの設計には効果がない<br>- ルーティングに関しては、特定のエキスパートにトークンが偏った場合のToken Droppingは実施せず、Droplessなルーティングをする方が一貫して少しだけ性能が良い。極端に強い/弱いロードバランシングは性能の劣化を招くが、他の設定ではほぼ最適なものを達成できるので、Token Droppingを防ぐことに注意して、あとは一般的な設定を採用すれば良い。<br>- レシピをまとめると<br>  - 最大のFLOPs/Memoryの予算を決め、active/totalのエキスパートのパラメータ数を決める<br>  - アクティブパラメータ数から最適なエキスパートのサイズ（総数）を見つける<br>  - token droppingを防ぐようなルーティング設定で、ロードバランシングのsanity checkをする<br><br>といった　話が著者ポストに書かれている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Look Before You Leap: Autonomous Exploration for LLM Agents, Ziang Ye+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.16143</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5536</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, Diversity, KeyPoint Notes, Exploration</tags>
+<repo-issue-date>2026-05-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.16143
+# Authors
+  - Ziang Ye
+  - Wentao Shi
+  - Yuxin Liu
+  - Yu Wang
+  - Zhengzhou Cai
+  - Yaorui Shi
+  - Qi Gu
+  - Xunliang Cai
+  - Fuli Feng
+# Abstract
+  - Large language model based agents often fail in unfamiliar environments due to premature exploitation: a tendency to act on prior knowledge before acquiring sufficient environment-specific information. We identify autonomous exploration as a critical yet underexplored capability for building adaptive agents. To formalize and quantify this capability, we introduce Exploration Checkpoint Coverage, a verifiable metric that measures how broadly an agent discovers key states, objects, and affordances. Our systematic evaluation reveals that agents trained with standard task-oriented reinforcement learning consistently exhibit narrow and repetitive behaviors that impede downstream performance. To address this limitation, we develop a training strategy that interleaves task-execution rollouts and exploration rollouts, with each type of rollout optimized by its corresponding verifiable reward. Building on this training strategy, we propose the Explore-then-Act paradigm, which decouples information-gathering from task execution: agents first utilize an interaction budget to acquire grounded environmental knowledge, then leverage it for task resolution. Our results demonstrate that learning to systematically explore is imperative for building generalizable and real-world-ready agents.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルに基づくエージェントは、慣れない環境で早すぎる活用（premature exploitation）によりしばしば失敗する。すなわち、十分な環境特異的情報を取得する前に過去の知識に基づいて行動する傾向が原因である。自律的探索を、適応的なエージェントを構築する上で重要でありながら十分には探究されていない能力として特定する。 この能力を形式化・定量化するために、Exploration Checkpoint Coverage（探索チェックポイントカバレッジ）という検証可能な指標を導入し、エージェントがどれだけ広く主要な状態・オブジェクト・アフォーダンスを発見するかを測定する。我々の系統的な評価では、標準的なタスク指向の強化学習で訓練されたエージェントは一貫して狭く反復的な振る舞いを示し、それが下流の性能を妨げることが明らかになった。 この制限に対処するため、タスク実行のロールアウトと探索のロールアウトを交互に行い、それぞれのロールアウトタイプを対応する検証可能な報酬で最適化する訓練戦略を開発した。 この訓練戦略を土台に、Explore-then-Actパラダイムを提案する。これは情報収集とタスク実行を分離するもので、エージェントはまず相互作用予算を利用して地に足のついた環境知識を獲得し、それをタスク解決に活用する。我々の結果は、系統的に探索することを学ぶことが、一般化可能で現実世界対応のエージェントを構築するためには不可欠であることを示している。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルに基づくエージェントは、環境特異的情報を取得する前に過去の知識で行動することにより失敗することがある。この問題に対処するため、探索チェックポイントカバレッジという指標を導入し、エージェントの探索の広さを測定。評価の結果、従来の強化学習エージェントは狭い行動パターンを示し、下流性能に悪影響を及ぼすことが判明。対策として、探索とタスク実行を交互に行う訓練戦略、Explore-then-Actパラダイムを提案し、環境知識を先に取得しそれをタスク解決に活かすことを促進する。結果から、体系的な探索の学習が一般化可能なエージェント構築に不可欠であることが示されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2056215373138014519?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>environment中の鍵となるチェックポイントをエージェントが見つけた割合（Exploration Checkpoint Coverage; ECC; 環境内に定義された重要なlocation, object, affordance等をどれだけ発見できたか)を定義し、task-orientedなGRPOがECCを低下させる傾向にあることを検証（つまり、挙動が狭くなる）。<br><img src="https://github.com/user-attachments/assets/c5355b92-ba06-4d6c-8d7b-7c34d1c4ecb2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>これを解決するために、ExplorationとActのロールアウトを分離してGRPOを実施するExploration-then-Actパラダイムを提案。このパラダイムでは、タスクを遂行するロールアウトと、ECC Rewardに基づいた探索をするロールアウトを分離し、探索に関して明示的な報酬を与える（従来はタスク実行の結果にimplicitに含まれているだけだった）。これらロールアウトに関するGRPOを交互に実施することによってポリシーを最適化する。inference時は、タスクのゴールを与えずにNステップ探索をし、探索したtrajectoryの要約とタスクのゴール、environmentに関する知識によって条件付けをしてactionを決定する。これにより従来のGRPOよりもALFWorld, ScienceWorld等のベンチマークで性能が向上し、エージェントの挙動としても、<br>- アクションの繰り返しの割合が低下<br>- ループする割合が低下<br>- 情報を探索する割合が向上<br>- エラーからリカバリーできる割合が増加<br><br>といった変化が見受けられた。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Exploration Hacking: Can LLMs Learn to Resist RL Training?, Eyon Jang+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.28182</original-paper-blog-link>
