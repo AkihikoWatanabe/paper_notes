@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-01-29">
+<paper-list last-updated="2026-05-21">
+<paper-entry>
+<title>[Paper Note] BLASST: Dynamic BLocked Attention Sparsity via Softmax Thresholding, Jiayi Yuan+, MLSys'26 Best Paper, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.12087</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5538</repo-issue-link>
+<tags>NLP, LanguageModel, Transformer, Training-Free, Selected Papers/Blogs, MLSys, reading, One-Line Notes, SparseAttention, Author Thread-Post</tags>
+<repo-issue-date>2026-05-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.12087
+# Authors
+  - Jiayi Yuan
+  - Cameron Shinn
+  - Kai Xu
+  - Jingze Cui
+  - George Klimiashvili
+  - Guangxuan Xiao
+  - Perkz Zheng
+  - Bo Li
+  - Yuxin Zhou
+  - Zhouhai Ye
+  - Weijie You
+  - Tian Zheng
+  - Dominic Brown
+  - Pengbo Wang
+  - Markus Hoehnerbach
+  - Richard Cai
+  - Julien Demouth
+  - John D. Owens
+  - Xia Hu
+  - Song Han
+  - Timmy Liu
+  - Huizi Mao
+# Abstract
+  - The growing demand for long-context inference capabilities in Large Language Models (LLMs) has intensified the computational and memory bottlenecks inherent to the self-attention mechanism. To address this challenge, we introduce BLASST, a drop-in, dynamic sparse attention mechanism that accelerates inference by using only a fixed scalar threshold to skip attention blocks. Our method targets practical inference deployment by removing the barriers to adoption present in existing works. As such, BLASST eliminates training requirements, avoids expensive pre-computation passes, accelerates both prefill and decode across all major attention variants (MHA, GQA, MQA, and MLA), provides optimized support for modern hardware, and easily integrates into existing frameworks. This is achieved by reusing online softmax statistics to identify negligible attention scores, skipping softmax, value block loads, and the subsequent matrix multiplication. We demonstrate the BLASST algorithm by delivering optimized kernels with negligible latency overhead. Our automated threshold calibration procedure reveals a simple inverse relationship between optimal threshold and context length, meaning we require only a single threshold each for prefill and decode per model. Preserving benchmark accuracy, we demonstrate a 1.52x speedup for prefill at 71.9% sparsity and a 1.48x speedup for decode at 73.2% sparsity on modern GPUs.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）における長い文脈での推論能力の需要が高まるにつれて、自己注意機構に内在する計算とメモリのボトルネックが強化されている。この課題に対処するため、BLASSTを導入する。BLASSTはドロップインの動的スパースアテンション機構であり、固定のスカラー閾値のみを用いて注意ブロックをスキップすることにより推論を加速する。私たちの手法は、既存研究に存在する導入障壁を取り除くことにより、実用的な推論展開を対象とする。そのためBLASSTはトレーニング要件を排除し、高価な事前計算パスを回避し、前計算とデコードの両方を、MHA、GQA、MQA、MLAの主要なアテンションバリアントのすべてで加速し、現代のハードウェアに最適化されたサポートを提供し、既存のフレームワークへ容易に統合できる。これはオンラインのソフトマックス統計を再利用して無視可能なアテンションスコアを識別し、ソフトマックス、値ブロックのロード、およびその後の行列乗算をスキップすることによって実現される。BLASSTアルゴリズムを、遅延オーバーヘッドがほとんどない最適化カーネルを提供することで実証する。我々の自動閾値キャリブレーション手法は、最適閾値と文脈長との間に単純な逆比例関係があることを示しており、つまりモデルごとに前計算とデコードのそれぞれに対して単一の閾値のみが必要となる。ベンチマーク精度を維持したまま、現代のGPU上で前計算が71.9%のスパース性で1.52倍、デコードが73.2%のスパース性で1.48倍高速化されることを示す。
+# Summary (by gpt-4o-mini)
+- BLASSTは、LLMsの文脈での推論能力向上のために提案された動的スパースアテンション機構である。固定スカラー閾値を用いて計算を加速し、トレーニング要件を排除、既存フレームワークと容易に統合可能。自動閾値キャリブレーション手法により、最適閾値と文脈長の逆比例関係が明らかにされ、前計算とデコードそれぞれに単一の閾値を利用。現代GPU上でのベンチマークにおいて、前計算とデコードがそれぞれ1.52倍、1.48倍の速度向上を示し、精度を維持した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiayiy/status/2056250498349683035?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>training-freeで単一のスカラー閾値による制御によって、スキップ可能なattention blockをスキップするSparse Attentionとのこと。<br><br><img src="https://github.com/user-attachments/assets/5d3310f4-9a87-4ef1-b883-598fbd2162d8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>非常に使い勝手が良さそうで、50%程度のSparsityにしてもベースラインとなるDense Attentionに対してダウンストリームタスクの性能低下はなく（Table 4)、50%程度のSparsityの場合、prefillとdecode step方法において、Blackwell, Hopperアーキテクチャにおいて約1.3倍の高速化を実現できる（Table5)。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] LoPRo: Enhancing Low-Rank Quantization via Permuted Block-Wise Rotation, Hongyaoxing Gu+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.19675</original-paper-blog-link>
