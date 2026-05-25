@@ -19,17 +19,17 @@
 <meta property="og:title" content="Noveltyに関する論文・技術記事メモの一覧" />
 <meta name="author" content="AkihikoWATANABE" />
 <meta property="og:locale" content="ja" />
-<meta name="description" content="Novelty [TACL] How much do language models copy from their training data? Evaluating linguistic novelty in text generation using RAVEN, TACL&#39;23 Paper/Blog Link My Issue #NaturalLanguageGeneration #NLP #Evaluation #TACL Issue Date: 2023-07-14 GPT Summary- この研究では、言語モデルが生成するテキストの新規性を評価するための分析スイートRAVENを紹介しています。英語で訓練された4つのニューラル言語モデルに対して、局所的な構造と大規模な構造の新規性を評価しました。結果として、生成されたテキストは局所的な構造においては新規性に欠けており、大規模な構造においては人間と同程度の新規性があり、時には訓練セットからの重複したテキストを生成することもあります。また、GPT-2の詳細な手動分析により、組成的および類推的な一般化メカニズムの使用が示され、新規テキストが形態的および構文的に妥当であるが、意味的な問題が比較的頻繁に発生することも示されました。 [Paper Note] Improving Recommendation Novelty Based on Topic Taxonomy, Weng et al., WI-IAT Workshops&#39;07, 2007.11 Paper/Blog Link My Issue #RecommenderSystems #WI #Workshop #KeyPoint Notes Issue Date: 2017-12-28 Comment・評価をしていない・通常のItem-based collaborative filteringの結果に加えて，taxonomyのassociation rule mining (あるtaxonomy t1に興味がある人が，t2にも興味がある確率を獲得する)を行い，このassociation rule miningの結果をCFと組み合わせて，noveltyのある推薦をしようという話（従来のHybrid Recommender Systemsでは，contents-basedの手法を使うときはitem content similarityを使うことが多い．まあこれはよくあるcontents-basedなアプローチだろう）．・documentの中のどの部分がnovelなのかとかを同定しているわけではない．taxonomyの観点からnovelだということ． [Paper Note] Discovery-oriented Collaborative Filtering for Improving User Satisfaction, Hijikata+, IUI’09 Paper/Blog Link My Issue #Article #RecommenderSystems #CollaborativeFiltering #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 Comment・従来のCFはaccuracyをあげることを目的に研究されてきたが，ユーザがすでに知っているitemを推薦してしまう問題がある．おまけに（推薦リスト内のアイテムの観点からみた）diversityも低い．このような推薦はdiscoveryがなく，user satisfactionを損ねるので，ユーザがすでに何を知っているかの情報を使ってよりdiscoveryのある推薦をCFでやりましょうという話．・特徴としてユーザのitemへのratingに加え，そのitemをユーザが知っていたかどうかexplicit feedbackしてもらう必要がある．・手法は単純で，User-based，あるいはItem-based CFを用いてpreferenceとあるitemをユーザが知っていそうかどうかの確率を求め，それらを組み合わせる，あるいはrating-matrixにユーザがあるitemを知っていたか否かの数値を組み合わせて新たなmatrixを作り，そのmatrix上でCFするといったもの．・offline評価の結果，通常のCF，topic diversification手法と比べてprecisionは低いものの，discovery ratioとprecision(novelty)は圧倒的に高い．・ユーザがitemを知っていたかどうかというbinary ratingはユーザに負荷がかかるし，音楽推薦の場合previewがなければそもそも提供されていないからratingできないなど，必ずしも多く集められるデータではない．そこで，データセットのratingの情報を25%, 50%, 75%に削ってratingの数にbiasをかけた上で実験をしている．その結果，事前にratingをcombineし新たなmatrixを作る手法はratingが少ないとあまりうまくいかなかった．・さらにonlineでuser satisfaction（3つの目的のもとsatisfactionをratingしてもらう　1. purchase 2. on-demand-listening 3. discovery）を評価した. 結果，purchaseとdiscoveryにおいては，ベースラインを上回った．ただし，これは推薦リスト中の満足したitemの数の問題で，推薦リスト全体がどうだった　かと問われた場合は，ベースラインと同等程度だった．重要論文 [Paper Note] “I like to explore sometimes”: Adapting to Dynamic User Novelty Preferences, Kapoor et al. （with Konstan）, RecSys’15 Paper/Blog Link My Issue #Article #RecommenderSystems #RecSys #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 Comment・典型的なRSは，推薦リストのSimilarityとNoveltyのcriteriaを最適化する．このとき，両者のバランスを取るためになんらかの定数を導入してバランスをとるが，この定数はユーザやタイミングごとに異なると考えられるので（すなわち人やタイミングによってnoveltyのpreferenceが変化するということ），それをuserの過去のbehaviorからpredictするモデルを考えましたという論文．・式中によくtが出てくるが，tはfamiliar setとnovel setをわけるためのみにもっぱら使われていることに注意．昼だとか夜だとかそういう話ではない．familiar setとは[t-T, t]の間に消費したアイテム，novel setはfamiliar setに含まれないitemのこと．・データはmusic consumption logsを使う．last.fmやproprietary dataset．データにlistening以外のexplicit feedback (rating)などの情報はない・itemのnoveltyの考え方はユーザ側からみるか，システム側から見るかで分類が変わる．三種類の分類がある． (a) new to system: システムにとってitemが新しい．ゆえにユーザは全員そのitemを知らない．(b) new to user: システムはitemを知っているが，ユーザは知らない．(c) oblivious/forgotten item: 過去にユーザが知っていたが，最後のconsumptionから時間が経過しいくぶんunfamiliarになったitemRepetition of forgotten items in future consumptions has been shown to produce increased diversity and emotional excitement.この研究では(b), (c)を対象とする．・userのnovelty preferenceについて二つの仮定をおいている．1. ユーザごとにnovelty preferenceは違う．2. ユーザのnovelty preferenceはdynamicに変化する．trainingデータを使ってこの仮定の正しさを検証している．・novelty preferenceのpredictは二種類の素性（familiar set diversityとcumulative negative preference for items in the familiar set）を使う. 前者は，familiar setの中のradioをどれだけ繰り返しきいているかを用いてdiversityを定義．繰り返し聞いているほうがdiversity低い．後者は，異なるitemの消費をする間隔によってdynamic preference scoreを決定．familiar set内の各itemについて負のdynamic preference scoreをsummationすることで，ユーザの”退屈度合い”を算出している．・両素性を考慮することでnovelty preferenceのRMSEがsignificantに減少することを確認．・推薦はNoveltyのあるitemの推薦にはHijikataらの協調フィルタリングなどを使うこともできる．・しかし今回は簡易なitem-based CFを用いる．ratingの情報がないので，それはdynamic preference scoreを代わりに使い各itemのスコアを求め，そこからnovel recommendationとfamiliar recommendationのリストを生成し，novelty preferenceによって両者を組み合わせる．・音楽（というより音楽のradioやアーティスト）の推薦を考えている状況なので，re-consumptionが許容されている．Newsなどとは少しドメインが違うことに注意．" />
-<meta property="og:description" content="Novelty [TACL] How much do language models copy from their training data? Evaluating linguistic novelty in text generation using RAVEN, TACL&#39;23 Paper/Blog Link My Issue #NaturalLanguageGeneration #NLP #Evaluation #TACL Issue Date: 2023-07-14 GPT Summary- この研究では、言語モデルが生成するテキストの新規性を評価するための分析スイートRAVENを紹介しています。英語で訓練された4つのニューラル言語モデルに対して、局所的な構造と大規模な構造の新規性を評価しました。結果として、生成されたテキストは局所的な構造においては新規性に欠けており、大規模な構造においては人間と同程度の新規性があり、時には訓練セットからの重複したテキストを生成することもあります。また、GPT-2の詳細な手動分析により、組成的および類推的な一般化メカニズムの使用が示され、新規テキストが形態的および構文的に妥当であるが、意味的な問題が比較的頻繁に発生することも示されました。 [Paper Note] Improving Recommendation Novelty Based on Topic Taxonomy, Weng et al., WI-IAT Workshops&#39;07, 2007.11 Paper/Blog Link My Issue #RecommenderSystems #WI #Workshop #KeyPoint Notes Issue Date: 2017-12-28 Comment・評価をしていない・通常のItem-based collaborative filteringの結果に加えて，taxonomyのassociation rule mining (あるtaxonomy t1に興味がある人が，t2にも興味がある確率を獲得する)を行い，このassociation rule miningの結果をCFと組み合わせて，noveltyのある推薦をしようという話（従来のHybrid Recommender Systemsでは，contents-basedの手法を使うときはitem content similarityを使うことが多い．まあこれはよくあるcontents-basedなアプローチだろう）．・documentの中のどの部分がnovelなのかとかを同定しているわけではない．taxonomyの観点からnovelだということ． [Paper Note] Discovery-oriented Collaborative Filtering for Improving User Satisfaction, Hijikata+, IUI’09 Paper/Blog Link My Issue #Article #RecommenderSystems #CollaborativeFiltering #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 Comment・従来のCFはaccuracyをあげることを目的に研究されてきたが，ユーザがすでに知っているitemを推薦してしまう問題がある．おまけに（推薦リスト内のアイテムの観点からみた）diversityも低い．このような推薦はdiscoveryがなく，user satisfactionを損ねるので，ユーザがすでに何を知っているかの情報を使ってよりdiscoveryのある推薦をCFでやりましょうという話．・特徴としてユーザのitemへのratingに加え，そのitemをユーザが知っていたかどうかexplicit feedbackしてもらう必要がある．・手法は単純で，User-based，あるいはItem-based CFを用いてpreferenceとあるitemをユーザが知っていそうかどうかの確率を求め，それらを組み合わせる，あるいはrating-matrixにユーザがあるitemを知っていたか否かの数値を組み合わせて新たなmatrixを作り，そのmatrix上でCFするといったもの．・offline評価の結果，通常のCF，topic diversification手法と比べてprecisionは低いものの，discovery ratioとprecision(novelty)は圧倒的に高い．・ユーザがitemを知っていたかどうかというbinary ratingはユーザに負荷がかかるし，音楽推薦の場合previewがなければそもそも提供されていないからratingできないなど，必ずしも多く集められるデータではない．そこで，データセットのratingの情報を25%, 50%, 75%に削ってratingの数にbiasをかけた上で実験をしている．その結果，事前にratingをcombineし新たなmatrixを作る手法はratingが少ないとあまりうまくいかなかった．・さらにonlineでuser satisfaction（3つの目的のもとsatisfactionをratingしてもらう　1. purchase 2. on-demand-listening 3. discovery）を評価した. 結果，purchaseとdiscoveryにおいては，ベースラインを上回った．ただし，これは推薦リスト中の満足したitemの数の問題で，推薦リスト全体がどうだった　かと問われた場合は，ベースラインと同等程度だった．重要論文 [Paper Note] “I like to explore sometimes”: Adapting to Dynamic User Novelty Preferences, Kapoor et al. （with Konstan）, RecSys’15 Paper/Blog Link My Issue #Article #RecommenderSystems #RecSys #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 Comment・典型的なRSは，推薦リストのSimilarityとNoveltyのcriteriaを最適化する．このとき，両者のバランスを取るためになんらかの定数を導入してバランスをとるが，この定数はユーザやタイミングごとに異なると考えられるので（すなわち人やタイミングによってnoveltyのpreferenceが変化するということ），それをuserの過去のbehaviorからpredictするモデルを考えましたという論文．・式中によくtが出てくるが，tはfamiliar setとnovel setをわけるためのみにもっぱら使われていることに注意．昼だとか夜だとかそういう話ではない．familiar setとは[t-T, t]の間に消費したアイテム，novel setはfamiliar setに含まれないitemのこと．・データはmusic consumption logsを使う．last.fmやproprietary dataset．データにlistening以外のexplicit feedback (rating)などの情報はない・itemのnoveltyの考え方はユーザ側からみるか，システム側から見るかで分類が変わる．三種類の分類がある． (a) new to system: システムにとってitemが新しい．ゆえにユーザは全員そのitemを知らない．(b) new to user: システムはitemを知っているが，ユーザは知らない．(c) oblivious/forgotten item: 過去にユーザが知っていたが，最後のconsumptionから時間が経過しいくぶんunfamiliarになったitemRepetition of forgotten items in future consumptions has been shown to produce increased diversity and emotional excitement.この研究では(b), (c)を対象とする．・userのnovelty preferenceについて二つの仮定をおいている．1. ユーザごとにnovelty preferenceは違う．2. ユーザのnovelty preferenceはdynamicに変化する．trainingデータを使ってこの仮定の正しさを検証している．・novelty preferenceのpredictは二種類の素性（familiar set diversityとcumulative negative preference for items in the familiar set）を使う. 前者は，familiar setの中のradioをどれだけ繰り返しきいているかを用いてdiversityを定義．繰り返し聞いているほうがdiversity低い．後者は，異なるitemの消費をする間隔によってdynamic preference scoreを決定．familiar set内の各itemについて負のdynamic preference scoreをsummationすることで，ユーザの”退屈度合い”を算出している．・両素性を考慮することでnovelty preferenceのRMSEがsignificantに減少することを確認．・推薦はNoveltyのあるitemの推薦にはHijikataらの協調フィルタリングなどを使うこともできる．・しかし今回は簡易なitem-based CFを用いる．ratingの情報がないので，それはdynamic preference scoreを代わりに使い各itemのスコアを求め，そこからnovel recommendationとfamiliar recommendationのリストを生成し，novelty preferenceによって両者を組み合わせる．・音楽（というより音楽のradioやアーティスト）の推薦を考えている状況なので，re-consumptionが許容されている．Newsなどとは少しドメインが違うことに注意．" />
+<meta name="description" content="Novelty [Paper Note] The Alien Space of Science: Sampling Coherent but Cognitively Unavailable Research Directions, Alejandro H. Artiles+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #AIAgents #ScientificDiscovery #Initial Impression Notes Issue Date: 2026-05-23 GPT Summary- 科学的発見は認知的に利用可能である必要があり、従来のコミュニティが占有する知識の偏りが新しいアイデアの提案を妨げている。提案手法は、論文を細かな概念ユニットに分解し、アイデア原子にクラスタリングすることで、補完的な研究方向を探る枠組みである。この方法では、整合性モデルと可用性モデルの二つを学習し、原子の組み合わせをランキングすることで、異質な方向の探索を実現する。実験の結果、提案サンプラーはLCMアイデア生成ベースラインを超える広い原子語彙を探索し、整合性を維持しつつも人間と同等またはそれ以上のアイデアを生成する。これにより、科学的妥当性とコミュニティの可用性を分離し、AI的なアイデア創出を通じて見落とされた方向性への探索を拡大する。 Comment元ポスト:" />
+<meta property="og:description" content="Novelty [Paper Note] The Alien Space of Science: Sampling Coherent but Cognitively Unavailable Research Directions, Alejandro H. Artiles+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #AIAgents #ScientificDiscovery #Initial Impression Notes Issue Date: 2026-05-23 GPT Summary- 科学的発見は認知的に利用可能である必要があり、従来のコミュニティが占有する知識の偏りが新しいアイデアの提案を妨げている。提案手法は、論文を細かな概念ユニットに分解し、アイデア原子にクラスタリングすることで、補完的な研究方向を探る枠組みである。この方法では、整合性モデルと可用性モデルの二つを学習し、原子の組み合わせをランキングすることで、異質な方向の探索を実現する。実験の結果、提案サンプラーはLCMアイデア生成ベースラインを超える広い原子語彙を探索し、整合性を維持しつつも人間と同等またはそれ以上のアイデアを生成する。これにより、科学的妥当性とコミュニティの可用性を分離し、AI的なアイデア創出を通じて見落とされた方向性への探索を拡大する。 Comment元ポスト:" />
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Novelty.html" />
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Novelty.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2023-07-14T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-05-23T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Noveltyに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2023-07-14T00:00:00+00:00","datePublished":"2023-07-14T00:00:00+00:00","description":"Novelty [TACL] How much do language models copy from their training data? Evaluating linguistic novelty in text generation using RAVEN, TACL&#39;23 Paper/Blog Link My Issue #NaturalLanguageGeneration #NLP #Evaluation #TACL Issue Date: 2023-07-14 GPT Summary- この研究では、言語モデルが生成するテキストの新規性を評価するための分析スイートRAVENを紹介しています。英語で訓練された4つのニューラル言語モデルに対して、局所的な構造と大規模な構造の新規性を評価しました。結果として、生成されたテキストは局所的な構造においては新規性に欠けており、大規模な構造においては人間と同程度の新規性があり、時には訓練セットからの重複したテキストを生成することもあります。また、GPT-2の詳細な手動分析により、組成的および類推的な一般化メカニズムの使用が示され、新規テキストが形態的および構文的に妥当であるが、意味的な問題が比較的頻繁に発生することも示されました。 [Paper Note] Improving Recommendation Novelty Based on Topic Taxonomy, Weng et al., WI-IAT Workshops&#39;07, 2007.11 Paper/Blog Link My Issue #RecommenderSystems #WI #Workshop #KeyPoint Notes Issue Date: 2017-12-28 Comment・評価をしていない・通常のItem-based collaborative filteringの結果に加えて，taxonomyのassociation rule mining (あるtaxonomy t1に興味がある人が，t2にも興味がある確率を獲得する)を行い，このassociation rule miningの結果をCFと組み合わせて，noveltyのある推薦をしようという話（従来のHybrid Recommender Systemsでは，contents-basedの手法を使うときはitem content similarityを使うことが多い．まあこれはよくあるcontents-basedなアプローチだろう）．・documentの中のどの部分がnovelなのかとかを同定しているわけではない．taxonomyの観点からnovelだということ． [Paper Note] Discovery-oriented Collaborative Filtering for Improving User Satisfaction, Hijikata+, IUI’09 Paper/Blog Link My Issue #Article #RecommenderSystems #CollaborativeFiltering #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 Comment・従来のCFはaccuracyをあげることを目的に研究されてきたが，ユーザがすでに知っているitemを推薦してしまう問題がある．おまけに（推薦リスト内のアイテムの観点からみた）diversityも低い．このような推薦はdiscoveryがなく，user satisfactionを損ねるので，ユーザがすでに何を知っているかの情報を使ってよりdiscoveryのある推薦をCFでやりましょうという話．・特徴としてユーザのitemへのratingに加え，そのitemをユーザが知っていたかどうかexplicit feedbackしてもらう必要がある．・手法は単純で，User-based，あるいはItem-based CFを用いてpreferenceとあるitemをユーザが知っていそうかどうかの確率を求め，それらを組み合わせる，あるいはrating-matrixにユーザがあるitemを知っていたか否かの数値を組み合わせて新たなmatrixを作り，そのmatrix上でCFするといったもの．・offline評価の結果，通常のCF，topic diversification手法と比べてprecisionは低いものの，discovery ratioとprecision(novelty)は圧倒的に高い．・ユーザがitemを知っていたかどうかというbinary ratingはユーザに負荷がかかるし，音楽推薦の場合previewがなければそもそも提供されていないからratingできないなど，必ずしも多く集められるデータではない．そこで，データセットのratingの情報を25%, 50%, 75%に削ってratingの数にbiasをかけた上で実験をしている．その結果，事前にratingをcombineし新たなmatrixを作る手法はratingが少ないとあまりうまくいかなかった．・さらにonlineでuser satisfaction（3つの目的のもとsatisfactionをratingしてもらう　1. purchase 2. on-demand-listening 3. discovery）を評価した. 結果，purchaseとdiscoveryにおいては，ベースラインを上回った．ただし，これは推薦リスト中の満足したitemの数の問題で，推薦リスト全体がどうだった　かと問われた場合は，ベースラインと同等程度だった．重要論文 [Paper Note] “I like to explore sometimes”: Adapting to Dynamic User Novelty Preferences, Kapoor et al. （with Konstan）, RecSys’15 Paper/Blog Link My Issue #Article #RecommenderSystems #RecSys #Selected Papers/Blogs #KeyPoint Notes Issue Date: 2017-12-28 Comment・典型的なRSは，推薦リストのSimilarityとNoveltyのcriteriaを最適化する．このとき，両者のバランスを取るためになんらかの定数を導入してバランスをとるが，この定数はユーザやタイミングごとに異なると考えられるので（すなわち人やタイミングによってnoveltyのpreferenceが変化するということ），それをuserの過去のbehaviorからpredictするモデルを考えましたという論文．・式中によくtが出てくるが，tはfamiliar setとnovel setをわけるためのみにもっぱら使われていることに注意．昼だとか夜だとかそういう話ではない．familiar setとは[t-T, t]の間に消費したアイテム，novel setはfamiliar setに含まれないitemのこと．・データはmusic consumption logsを使う．last.fmやproprietary dataset．データにlistening以外のexplicit feedback (rating)などの情報はない・itemのnoveltyの考え方はユーザ側からみるか，システム側から見るかで分類が変わる．三種類の分類がある． (a) new to system: システムにとってitemが新しい．ゆえにユーザは全員そのitemを知らない．(b) new to user: システムはitemを知っているが，ユーザは知らない．(c) oblivious/forgotten item: 過去にユーザが知っていたが，最後のconsumptionから時間が経過しいくぶんunfamiliarになったitemRepetition of forgotten items in future consumptions has been shown to produce increased diversity and emotional excitement.この研究では(b), (c)を対象とする．・userのnovelty preferenceについて二つの仮定をおいている．1. ユーザごとにnovelty preferenceは違う．2. ユーザのnovelty preferenceはdynamicに変化する．trainingデータを使ってこの仮定の正しさを検証している．・novelty preferenceのpredictは二種類の素性（familiar set diversityとcumulative negative preference for items in the familiar set）を使う. 前者は，familiar setの中のradioをどれだけ繰り返しきいているかを用いてdiversityを定義．繰り返し聞いているほうがdiversity低い．後者は，異なるitemの消費をする間隔によってdynamic preference scoreを決定．familiar set内の各itemについて負のdynamic preference scoreをsummationすることで，ユーザの”退屈度合い”を算出している．・両素性を考慮することでnovelty preferenceのRMSEがsignificantに減少することを確認．・推薦はNoveltyのあるitemの推薦にはHijikataらの協調フィルタリングなどを使うこともできる．・しかし今回は簡易なitem-based CFを用いる．ratingの情報がないので，それはdynamic preference scoreを代わりに使い各itemのスコアを求め，そこからnovel recommendationとfamiliar recommendationのリストを生成し，novelty preferenceによって両者を組み合わせる．・音楽（というより音楽のradioやアーティスト）の推薦を考えている状況なので，re-consumptionが許容されている．Newsなどとは少しドメインが違うことに注意．","headline":"Noveltyに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Novelty.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Novelty.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-05-23T00:00:00+00:00","datePublished":"2026-05-23T00:00:00+00:00","description":"Novelty [Paper Note] The Alien Space of Science: Sampling Coherent but Cognitively Unavailable Research Directions, Alejandro H. Artiles+, arXiv&#39;26, 2026.03 Paper/Blog Link My Issue #NLP #LanguageModel #AIAgents #ScientificDiscovery #Initial Impression Notes Issue Date: 2026-05-23 GPT Summary- 科学的発見は認知的に利用可能である必要があり、従来のコミュニティが占有する知識の偏りが新しいアイデアの提案を妨げている。提案手法は、論文を細かな概念ユニットに分解し、アイデア原子にクラスタリングすることで、補完的な研究方向を探る枠組みである。この方法では、整合性モデルと可用性モデルの二つを学習し、原子の組み合わせをランキングすることで、異質な方向の探索を実現する。実験の結果、提案サンプラーはLCMアイデア生成ベースラインを超える広い原子語彙を探索し、整合性を維持しつつも人間と同等またはそれ以上のアイデアを生成する。これにより、科学的妥当性とコミュニティの可用性を分離し、AI的なアイデア創出を通じて見落とされた方向性への探索を拡大する。 Comment元ポスト:","headline":"Noveltyに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Novelty.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Novelty.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2023-07-14T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 14, 2023
+    <time class="dt-published" datetime="2026-05-23T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 23, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 mins</span>
   </div></header>
 </div>
     </div>
@@ -1032,6 +1032,44 @@ function googleTranslateElementInit() {
 
       <h2 id=Novelty class="paper-head"> Novelty</h2><div class="visible-content">
 <article class="paper-entry">
+<h3 id="the-alien-5551" class="title-link">[Paper Note] The Alien Space of Science: Sampling Coherent but Cognitively Unavailable Research Directions, Alejandro H. Artiles+, arXiv'26, 2026.03</h3><br><a href="https://arxiv.org/abs/2603.01092" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5551" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="ScientificDiscovery.html" target="_blank" rel="noopener noreferrer">#ScientificDiscovery</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2026-05-23</span>
+<span class="snippet"><span>GPT Summary</span>- 科学的発見は認知的に利用可能である必要があり、従来のコミュニティが占有する知識の偏りが新しいアイデアの提案を妨げている。提案手法は、論文を細かな概念ユニットに分解し、アイデア原子にクラスタリングすることで、補完的な研究方向を探る枠組みである。この方法では、整合性モデルと可用性モデルの二つを学習し、原子の組み合わせをランキングすることで、異質な方向の探索を実現する。実験の結果、提案サンプラーはLCMアイデア生成ベースラインを超える広い原子語彙を探索し、整合性を維持しつつも人間と同等またはそれ以上のアイデアを生成する。これにより、科学的妥当性とコミュニティの可用性を分離し、AI的なアイデア創出を通じて見落とされた方向性への探索を拡大する。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/montreal_ai/status/2058020751375040919?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>既存のliteratureが斬新な研究アイデアを創発する際のバイアスとなる、といった切り口は興味深い。また、Recommender Systemsにおけるnovelty/serendipityのような話にも似ているように感じる。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5525" target="_blank" rel="noopener noreferrer">Autonomous AI research for nanogpt speedrun, PrimeIntellect, 2026.05</a>
+<br><br>にて言及されているような現在のエージェントが、完全に新規なアイデアではなく既存の技術の積み重ねや組み合わせが得意というのも、このバイアスによって説明がつくように感じる。<br><br>あと、ふと以下のページを思い出した（なぜだろうか。serendipityがあるような研究タイトルがたくさんあったからかもしれない）：<br>
+
+
+<a href="https://www.phontron.com/nlp-title/" target="_blank" rel="noopener noreferrer">https://www.phontron.com/nlp-title/</a>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="[tacl]-how-828" class="title-link">[TACL] How much do language models copy from their training data? Evaluating linguistic novelty in text generation using RAVEN, TACL'23</h3><br><a href="https://virtual2023.aclweb.org/paper_T4503.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1157,47 +1195,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Poisoning.html" title="Poisoningに関する論文・技術記事メモの一覧">Poisoningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/LabelBias.html" title="LabelBiasに関する論文・技術記事メモの一覧">LabelBiasに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/LatentReasoning.html" title="LatentReasoningに関する論文・技術記事メモの一覧">LatentReasoningに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/One-Line-Notes.html" title="One-Line Notesに関する論文・技術記事メモの一覧">One-Line Notesに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Proprietary.html"
-            title="Proprietaryに関する論文・技術記事メモの一覧">
-            Proprietaryに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RecurrentModels.html"
+            title="RecurrentModelsに関する論文・技術記事メモの一覧">
+            RecurrentModelsに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 89</span> 
-  <span class="post-badge badge-new">📝 89</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 40</span> 
+  <span class="post-badge badge-new">📝 40</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Tokenizer.html"
-            title="Tokenizerに関する論文・技術記事メモの一覧">
-            Tokenizerに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Update.html"
+            title="Updateに関する論文・技術記事メモの一覧">
+            Updateに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 20</span> 
-  <span class="post-badge badge-new">📝 20</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ChatGPT.html"
-            title="ChatGPTに関する論文・技術記事メモの一覧">
-            ChatGPTに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Supervised-FineTuning-(SFT).html"
+            title="Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧">
+            Supervised-FineTuning (SFT)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 26</span> 
-  <span class="post-badge badge-new">📝 26</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CompoundAISystemsOptimization.html"
-            title="CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧">
-            CompoundAISystemsOptimizationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DeepResearch.html"
+            title="DeepResearchに関する論文・技術記事メモの一覧">
+            DeepResearchに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
+  <span class="post-badge badge-new">📝 31</span>
 </span>
 </a>
         </li></ul>
