@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-05-21">
 <paper-entry>
+<title>[Paper Note] ECHO: Terminal Agents Learn World Models for Free, Vaishnavi Shrivastava+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.24517</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5540</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, action_wanted, SelfImprovement, PostTraining, Selected Papers/Blogs, Non-VerifiableRewards, WorldModels, reading, One-Line Notes, ContinualLearning, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.24517
+# Authors
+  - Vaishnavi Shrivastava
+  - Piero Kauffmann
+  - Ahmed Awadallah
+  - Dimitris Papailiopoulos
+# Abstract
+  - CLI agents are the closest thing language models have to an embodied setting: the model emits commands, the terminal executes them, and the returned stream -- stdout, errors, files, logs, and traces -- records the consequences. We argue that this stream is a supervision signal, but standard agent RL discards it: GRPO-style training updates action tokens with sparse outcome-level rewards while ignoring environment responses already in the rollout. Failed rollouts provide little policy-gradient signal despite containing rich evidence about how the environment responds. We introduce ECHO (Environment Cross-entropy Hybrid Objective), a hybrid objective that combines the standard policy-gradient loss on action tokens with an auxiliary loss that trains the policy to predict environment observation tokens resulting from its own actions. ECHO reuses the same forward pass as GRPO, requires no additional rollouts, and turns terminal feedback into dense supervision for all rollouts. ECHO doubles GRPO pass@1 on TerminalBench-2.0: Qwen3-8B improves from 2.70% to 5.17%, and Qwen3-14B from 5.17% to 10.79%. ECHO also produces policies that better predict terminal dynamics, even on trajectories they did not generate: across held-out rollouts, it sharply reduces environment-token cross-entropy while GRPO alone barely changes it. From base Qwen3-8B, ECHO matches expert-SFT-then-GRPO performance on held-out terminal tasks without expert demonstrations, and recovers roughly half of the expert-SFT initialization benefit on TerminalBench-2.0. In some settings, the environment prediction loss alone enables verifier-free self-improvement, allowing policies to improve on unseen OOD tasks by learning only from environment interactions. Together, these results suggest that environment observations are not merely context for future actions, but a dense, on-policy supervision signal already present in every rollout.
+# Translation (by gpt-5-nano)
+- CLIエージェントは、言語モデルが具現化された設定に最も近い存在です。モデルはコマンドを発し、端末がそれを実行し、返されるストリーム――stdout、エラー、ファイル、ログ、トレースなど――は結果を記録します。我々はこのストリームが教師信号であると主張しますが、標準的なエージェントRLはそれを捨てます。GRPO風の訓練は、行動トークンをまばらな結果レベルの報酬で更新し、ロールアウトにすでに含まれている環境応答を無視します。失敗したロールアウトは、環境がどのように反応するかについて豊富な証拠を含んでいるにもかかわらず、ポリシー勾配信号をほとんど提供しません。
+
+ECHO（Environment Cross-entropy Hybrid Objective、環境クロスエントロピー・ハイブリッド目的）は、行動トークンに対する標準的な政策勾配損失と、自己の行動により生じる環境観測トークンを予測するようポリシーを訓練する補助損失を組み合わせたハイブリッド目的関数です。ECHOはGRPOと同じフォワードパスを再利用し、追加のロールアウトを必要とせず、端末のフィードバックをすべてのロールアウトに対して密な監督信号へと変えます。
+
+ECHOはTerminalBench-2.0上でGRPOのpass@1を倍増させます：Qwen3-8Bは2.70%から5.17%へ、Qwen3-14Bは5.17%から10.79%へ改善します。ECHOはまた、生成していない軌道でも端末ダイナミクスをより正確に予測するポリシーを生み出します。ホールドアウトロールアウト全体で環境トークンのクロスエントロピーを鋭く低減しますが、GRPO単独の場合にはほとんど変化しません。
+
+基盤となるQwen3-8Bから、ECHOはホールドアウト端末タスクにおいて専門家SFT-then-GRPOの性能と同等の水準を達成し、専門家デモなしでTerminalBench-2.0における専門家SFT初期化の恩恵の約半分を回復します。いくつかの設定では、環境予測損失だけで検証者不要の自己改善を可能にし、環境との相互作用のみから学ぶことで未知のOODタスクでポリシーを改善できます。
+
+これらの結果は、環境観測が将来の行動の文脈であるだけでなく、すべてのロールアウトにすでに存在する密なオンポリシー監督信号であることを示唆しています。
+# Summary (by gpt-4o-mini)
+- ECHOは、CLIエージェントのトレーニングにおいて環境のフィードバックを活用するハイブリッド目的関数を提案。標準的な政策勾配損失と、自己行動による環境観測トークン予測を組み合わせ、ロールアウトに既存の信号を密接な監督として利用する。これにより、TerminalBench-2.0でGRPOのpass@1を倍増させ、環境ダイナミクスの予測精度も向上させる。ECHOは専門家デモなしで、未知のOODタスクのポリシー改善を可能にすることを示している。</issue-body>
+<maintainer-comment-text><p>反響がすごそうに見える</p><p>- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。<br>- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。<br>- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。<br>- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。<br>- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能<br>  - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。<br>- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。</p><p>環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dimitrispapail/status/2056368948870811746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] EvoLM: Self-Evolving Language Models through Co-Evolved Discriminative Rubrics, Shuyue Stella Li+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.03871</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5468</repo-issue-link>
@@ -1707,16 +1747,6 @@ Qwen3-4B-Base および OctoThinker Hybrid-8B-Base を用いて、AIME25 の Pas
 {% endraw %}
 
 </p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>ECHO: Terminal Agents Learn World Models for Free, Dimitris Papailiopoulos+, 2026.05</title>
-<original-paper-blog-link>https://x.com/dimitrispapail/status/2056368948870811746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5540</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SelfImprovement, PostTraining, Selected Papers/Blogs, Non-VerifiableRewards, WorldModels, reading, One-Line Notes, ContinualLearning, Initial Impression Notes, Author Thread-Post</tags>
-<repo-issue-date>2026-05-21</repo-issue-date>
-<issue-body>https://x.com/dimitrispapail/status/2056368948870811746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
-<maintainer-comment-text><p>反響がすごそうに見える</p><p>- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。<br>- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。<br>- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。<br>- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。<br>- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能<br>  - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。<br>- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。</p><p>環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

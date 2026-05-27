@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-05-25T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-05-26T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Author Thread-Postに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-05-25T00:00:00+00:00","datePublished":"2026-05-25T00:00:00+00:00","description":"Author Thread-Post [Paper Note] Reward-free Alignment for Conflicting Objectives, Peter L. Chen+, arXiv&#39;26, 2026.02 Paper/Blog Link My Issue Issue Date: 2026-05-25 GPT Summary- 対立する目的を考慮したリバースアライメント手法（RACO）を提案。ペアワイズ嗜好データを利用し、効率的な衝突回避勾配降下法を用いて収束を保証。複数のLLMに対する実験で、提案手法が従来のアプローチよりパレートのトレードオフを一貫して改善することを示した。 Comment元ポスト:","headline":"Author Thread-Postに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-05-26T00:00:00+00:00","datePublished":"2026-05-26T00:00:00+00:00","description":"Author Thread-Post [Paper Note] Reward-free Alignment for Conflicting Objectives, Peter L. Chen+, arXiv&#39;26, 2026.02 Paper/Blog Link My Issue Issue Date: 2026-05-25 GPT Summary- 対立する目的を考慮したリバースアライメント手法（RACO）を提案。ペアワイズ嗜好データを利用し、効率的な衝突回避勾配降下法を用いて収束を保証。複数のLLMに対する実験で、提案手法が従来のアプローチよりパレートのトレードオフを一貫して改善することを示した。 Comment元ポスト:","headline":"Author Thread-Postに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-05-25T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 25, 2026
+    <time class="dt-published" datetime="2026-05-26T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 26, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 15 hours 28 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 15 hours 35 mins</span>
   </div></header>
 </div>
     </div>
@@ -1365,6 +1365,45 @@ My Issue
 
 
 </p><p>MoEアーキテクチャにおいては、expertのサイズと数が重要であり、他の要素は最小限の影響しか与えない<br><br>- Expertの総パラメータ数が増えれば増えるほど性能が改善する（アクティブパラメータ数に対する総パラメータ数が128倍などの極端な場合でも性能が改善）<br>- Expertの数は多ければ多いほど良い。また、Expert一つに対する最適なサイズは総パラメータすうには関係なく、アクティブパラメータ数にのみに依存して決まることが明らかになった。このため、まずアクティブパラメータ数を優先的に決めて、VRAMが許す限りエキスパートの数を増やすのが良い<br>- MoEアーキテクチャが優れているのは、ブロックを小さく分割したからではなく、非アクティブなパラメータが存在することによるSparseな活性化によって生じる（MLPを細かいブロックにして全てを活性化させても性能が悪化した実験を受けて、ブロックを細かく分割することではなくsparseな活性化に鍵があると結論）<br>- 共有エキスパートや、サイズを不均一にしたエキスパートの設計には効果がない<br>- ルーティングに関しては、特定のエキスパートにトークンが偏った場合のToken Droppingは実施せず、Droplessなルーティングをする方が一貫して少しだけ性能が良い。極端に強い/弱いロードバランシングは性能の劣化を招くが、他の設定ではほぼ最適なものを達成できるので、Token Droppingを防ぐことに注意して、あとは一般的な設定を採用すれば良い。<br>- レシピをまとめると<br>  - 最大のFLOPs/Memoryの予算を決め、active/totalのエキスパートのパラメータ数を決める<br>  - アクティブパラメータ数から最適なエキスパートのサイズ（総数）を見つける<br>  - token droppingを防ぐようなルーティング設定で、ロードバランシングのsanity checkをする<br><br>といった　話が著者ポストに書かれている。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="echo-terminal-5540" class="title-link">[Paper Note] ECHO: Terminal Agents Learn World Models for Free, Vaishnavi Shrivastava+, arXiv'26, 2026.05</h3><br><a href="https://arxiv.org/abs/2605.24517" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5540" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="SelfImprovement.html" target="_blank" rel="noopener noreferrer">#SelfImprovement</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Non-VerifiableRewards.html" target="_blank" rel="noopener noreferrer">#Non-VerifiableRewards</a>
+<a class="button" href="WorldModels.html" target="_blank" rel="noopener noreferrer">#WorldModels</a>
+<a class="button" href="reading.html" target="_blank" rel="noopener noreferrer">#reading</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="ContinualLearning.html" target="_blank" rel="noopener noreferrer">#ContinualLearning</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2026-05-21</span>
+<span class="snippet"><span>GPT Summary</span>- ECHOは、CLIエージェントのトレーニングにおいて環境のフィードバックを活用するハイブリッド目的関数を提案。標準的な政策勾配損失と、自己行動による環境観測トークン予測を組み合わせ、ロールアウトに既存の信号を密接な監督として利用する。これにより、TerminalBench-2.0でGRPOのpass@1を倍増させ、環境ダイナミクスの予測精度も向上させる。ECHOは専門家デモなしで、未知のOODタスクのポリシー改善を可能にすることを示している。</span>
+<span class="snippet"><span>Comment</span><p>反響がすごそうに見える</p><p>- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。<br>- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。<br>- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。<br>- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。<br>- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能<br>  - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。<br>- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。</p><p>環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。</p><p>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dimitrispapail/status/2056368948870811746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="blasst-dynamic-5538" class="title-link">[Paper Note] BLASST: Dynamic BLocked Attention Sparsity via Softmax Thresholding, Jiayi Yuan+, MLSys'26 Best Paper, 2025.12</h3><br><a href="https://arxiv.org/abs/2512.12087" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -4744,6 +4783,9 @@ My Issue
 
 </p><p>prefixにmemory用のトークンを用意し、TTTの枠組みでcontextのreconstruction lossを通じて圧縮する、という話に見える。tokenはsoft tokenであり、m*d次元の行列で表現される。<br><br>要はcontextの潜在表現をReconstruction lossによるTTTでprefix tuningするsoft  prompting手法、という感じだろうか。</p></span><br><br>
 </article>
+</div>
+<button onclick="showMore(0)">more</button>
+<div class="hidden-content">
 <article class="paper-entry">
 <h3 id="evoclaw-evaluating-5006" class="title-link">[Paper Note] EvoClaw: Evaluating AI Agents on Continuous Software Evolution, Gangda Deng+, arXiv'26, 2026.03</h3><br><a href="https://arxiv.org/abs/2603.13428" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
@@ -4788,9 +4830,6 @@ My Issue
 
 </p></span><br><br>
 </article>
-</div>
-<button onclick="showMore(0)">more</button>
-<div class="hidden-content">
 <article class="paper-entry">
 <h3 id="monoart-progressive-5005" class="title-link">[Paper Note] MonoArt: Progressive Structural Reasoning for Monocular Articulated 3D Reconstruction, Haitian Li+, arXiv'26, 2026.03</h3><br><a href="https://arxiv.org/abs/2603.19231" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
@@ -6818,6 +6857,124 @@ My Issue
 </p><p>単眼で撮影された動画の視点と照明を同時に制御しながら動画を生成するフレームワークな模様。<br>背景画像をあたえた<br><img src="https://github.com/user-attachments/assets/c897feee-e680-4e68-93e0-d47544eb9240" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>単眼で撮影された動画の視点と照明を同時に制御しながら動画を生成するフレームワークな模様。<br>背景画像を与えた上での動画のRelighting, Text Promptに基づくRelighting, ユーザがtrajectoryを指定した上でのRelightingなどができるようである。<br><img src="https://github.com/user-attachments/assets/c897feee-e680-4e68-93e0-d47544eb9240" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="dr-tulu-3722" class="title-link">[Paper Note] DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research, Rulin Shao+, ICML'26, 2025.11</h3><br><a href="https://arxiv.org/abs/2511.19399" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3722" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
+<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="DeepResearch.html" target="_blank" rel="noopener noreferrer">#DeepResearch</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
+<a class="button" href="Rubric-based.html" target="_blank" rel="noopener noreferrer">#Rubric-based</a>
+<span class="issue_date">Issue Date: 2025-11-19</span>
+<span class="snippet"><span>GPT Summary</span>- 長文で出典付きの回答を生成する深層研究モデルの訓練には、強化学習（RLVR）を活用した進化するルーブリック（RLER）を用いることで、モデルが新たな情報を取り込み、オンポリシーなフィードバックを提供できるようにする。本研究では、RLERを活用して初のオープンモデルDeep Research Tulu (DR Tulu-8B)を開発し、科学、医療、一般領域のベンチマークで従来モデルを大幅に上回った。データ、モデル、コードは公開され、新しいエージェント基盤も提供されている。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/code_star/status/1990925707435036680?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>著者ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/1990804213228843412?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>著者ポスト2:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/1990856988238967165?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>著者ポスト3:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/1990807651786334630?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>demoをほぼ無料で実施できるとのこと:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/1993336112237117819?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>takeaway:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/1993746191725863319?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>デモが公開:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/2020921852663824583?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>解説: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2022384365049892974?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>ICML'26 Spotlight:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/2050264451627290642?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="rlac-reinforcement-3578" class="title-link">[Paper Note] RLAC: Reinforcement Learning with Adversarial Critic for Free-Form   Generation Tasks, Mian Wu+, ICLR'26, 2025.11</h3><br><a href="https://arxiv.org/abs/2511.01758" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -8483,124 +8640,6 @@ My Issue
 
 
 </p><p>GPT4oは細かい文字のfidelityが低く、視覚的な魅力も小さい（なのでそういったものは学習で補う必要がある）という知見があるとのこと。arXivに投稿された当時結構話題になっていた気がする。</p><p>論文だけに留まらず、長いテキストを視覚的に見やすく圧縮する技術は一種の要約として見ることもでき、生成AIによって情報がさらに溢れかえるようになった昨今は、こういった技術はさらに重要な技術になると思われる。</p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="dr-tulu-3722" class="title-link">[Paper Note] DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research, Rulin Shao+, arXiv'25, 2025.11</h3><br><a href="https://arxiv.org/abs/2511.19399" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3722" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
-<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
-<a class="button" href="OpenSource.html" target="_blank" rel="noopener noreferrer">#OpenSource</a>
-<a class="button" href="ICML.html" target="_blank" rel="noopener noreferrer">#ICML</a>
-<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
-<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
-<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="DeepResearch.html" target="_blank" rel="noopener noreferrer">#DeepResearch</a>
-<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
-<a class="button" href="Rubric-based.html" target="_blank" rel="noopener noreferrer">#Rubric-based</a>
-<span class="issue_date">Issue Date: 2025-11-19</span>
-<span class="snippet"><span>GPT Summary</span>- 長文で出典付きの回答を生成する深層研究モデルの訓練には、強化学習（RLVR）を活用した進化するルーブリック（RLER）を用いることで、モデルが新たな情報を取り込み、オンポリシーなフィードバックを提供できるようにする。本研究では、RLERを活用して初のオープンモデルDeep Research Tulu (DR Tulu-8B)を開発し、科学、医療、一般領域のベンチマークで従来モデルを大幅に上回った。データ、モデル、コードは公開され、新しいエージェント基盤も提供されている。</span>
-<span class="snippet"><span>Comment</span><p>元ポスト:
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/code_star/status/1990925707435036680?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>著者ポスト:
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/1990804213228843412?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>著者ポスト2:
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/1990856988238967165?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>著者ポスト3:<br>
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/1990807651786334630?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>demoをほぼ無料で実施できるとのこと:<br>
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/1993336112237117819?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>takeaway:
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/1993746191725863319?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>デモが公開:
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/akariasai/status/2020921852663824583?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>解説: 
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2022384365049892974?s=20"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>ICML'26 Spotlight:<br>
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/2050264451627290642?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="mmada-parallel-multimodal-3712" class="title-link">[Paper Note] MMaDA-Parallel: Multimodal Large Diffusion Language Models for Thinking-Aware Editing and Generation, Ye Tian+, arXiv'25, 2025.11</h3><br><a href="https://arxiv.org/abs/2511.09611" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -13663,6 +13702,175 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="multibanana-a-5568" class="title-link">[Paper Note] MultiBanana: A Challenging Benchmark for Multi-Reference Text-to-Image Generation </h3><br><a href="https://arxiv.org/abs/2511.22989" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5568" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<span class="issue_date">Issue Date: 2026-05-26</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shimao0114/status/2059189539990897134?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="steerable-but-5566" class="title-link">[Paper Note] Steerable but Not Decodable: Function Vectors Operate Beyond the Logit Lens</h3><br><a href="https://arxiv.org/abs/2604.02608" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5566" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<span class="issue_date">Issue Date: 2026-05-26</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/suhailnadaf509/status/2058688461474025746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5543" target="_blank" rel="noopener noreferrer">[Paper Note] Steered LLM Activations are Non-Surjective, Aayush Mishra+, arXiv'26, 2026.04</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="from-simulation-5564" class="title-link">[Paper Note] From Simulation to Enaction: Post-trained language models recognize and react to their own generations</h3><br><a href="https://arxiv.org/abs/2605.25459" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5564" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<span class="issue_date">Issue Date: 2026-05-26</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/asving94/status/2059114086999466198?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1037" target="_blank" rel="noopener noreferrer">[Paper Note] Large Language Models as Optimizers, Chengrun Yang+, ICLR'24, 2023.09</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="mkernel-fast-5563" class="title-link">mKernel: Fast Multi-GPU, Multi-Node Fused Kernels, Ziming Mao, and the UCCL team, 2026.05</h3><br><a href="https://uccl-project.github.io/posts/mkernel/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5563" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="read-later.html" target="_blank" rel="noopener noreferrer">#read-later</a>
+<a class="button" href="GPUKernel.html" target="_blank" rel="noopener noreferrer">#GPUKernel</a>
+<span class="issue_date">Issue Date: 2026-05-26</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yangzhouy/status/2058978366213194060?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="the-imitation-5562" class="title-link">The Imitation Game: State of Policy Distillation in Language Model training, 032-Chinmay Karkar, 2026.05</h3><br><a href="https://hackmd.io/@l_WDq7lkQq29Pz-KD1JPNA/r1oNsX9Jfl" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5562" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Tutorial.html" target="_blank" rel="noopener noreferrer">#Tutorial</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="Distillation.html" target="_blank" rel="noopener noreferrer">#Distillation</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="On-Policy.html" target="_blank" rel="noopener noreferrer">#On-Policy</a>
+<a class="button" href="SelfDistillation.html" target="_blank" rel="noopener noreferrer">#SelfDistillation</a>
+<span class="issue_date">Issue Date: 2026-05-26</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chinmaykak/status/2058561504711205262?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="amuse-anytime-5561" class="title-link">[Paper Note] AMUSE: Anytime Muon with Stable Gradient Evaluation</h3><br><a href="https://arxiv.org/abs/2605.22432" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5561" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="Optimizer.html" target="_blank" rel="noopener noreferrer">#Optimizer</a>
+<span class="issue_date">Issue Date: 2026-05-26</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jueunkim_0525/status/2059127584601055426?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="synthetic-persona-5559" class="title-link">Synthetic Persona Pretraining: Alignment from Token Zero, Minder+, 2026.05</h3><br><a href="https://www.lesswrong.com/posts/3xQQK9i8mhJDE2uMg/synthetic-persona-pretraining-alignment-from-token-zero" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -13697,35 +13905,6 @@ My Issue
 
 
 </p><p>**事前学習の時点で**Harmful/良性/ニュートラルな文書にReflectionに関するassistantの思考過程（何が間違っていて/間違っていなくて、それはなぜか）をappendすることで、道徳的に推論することを学ぶ。</p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="echo-terminal-5540" class="title-link">ECHO: Terminal Agents Learn World Models for Free, Dimitris Papailiopoulos+, 2026.05</h3><br><a href="https://x.com/dimitrispapail/status/2056368948870811746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5540" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
-<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
-<a class="button" href="SelfImprovement.html" target="_blank" rel="noopener noreferrer">#SelfImprovement</a>
-<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
-<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="Non-VerifiableRewards.html" target="_blank" rel="noopener noreferrer">#Non-VerifiableRewards</a>
-<a class="button" href="WorldModels.html" target="_blank" rel="noopener noreferrer">#WorldModels</a>
-<a class="button" href="reading.html" target="_blank" rel="noopener noreferrer">#reading</a>
-<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
-<a class="button" href="ContinualLearning.html" target="_blank" rel="noopener noreferrer">#ContinualLearning</a>
-<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
-<span class="issue_date">Issue Date: 2026-05-21</span>
-<span class="snippet"><span>Comment</span><p>反響がすごそうに見える</p><p>- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。<br>- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。<br>- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。<br>- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。<br>- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能<br>  - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。<br>- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。</p><p>環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="long-context-5533" class="title-link">[Paper Note] Long Context Pre-Training with Lighthouse Attention</h3><br><a href="https://arxiv.org/abs/2605.06554" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -17535,47 +17714,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Alignment.html" title="Alignmentに関する論文・技術記事メモの一覧">Alignmentに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Blog.html" title="Blogに関する論文・技術記事メモの一覧">Blogに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/AgentSkills.html" title="AgentSkillsに関する論文・技術記事メモの一覧">AgentSkillsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Distillation.html" title="Distillationに関する論文・技術記事メモの一覧">Distillationに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Scalability.html"
-            title="Scalabilityに関する論文・技術記事メモの一覧">
-            Scalabilityに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AES(AutomatedEssayScoring).html"
+            title="AES(AutomatedEssayScoring)に関する論文・技術記事メモの一覧">
+            AES(AutomatedEssayScoring)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 26</span> 
-  <span class="post-badge badge-new">📝 26</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
+  <span class="post-badge badge-new">📝 8</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CovarianceShift.html"
-            title="CovarianceShiftに関する論文・技術記事メモの一覧">
-            CovarianceShiftに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Parallel.html"
+            title="Parallelに関する論文・技術記事メモの一覧">
+            Parallelに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/GenerativeAdversarialNetwork.html"
-            title="GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧">
-            GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Privacy.html"
+            title="Privacyに関する論文・技術記事メモの一覧">
+            Privacyに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Ambiguity.html"
-            title="Ambiguityに関する論文・技術記事メモの一覧">
-            Ambiguityに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/TreeSearch.html"
+            title="TreeSearchに関する論文・技術記事メモの一覧">
+            TreeSearchに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li></ul>

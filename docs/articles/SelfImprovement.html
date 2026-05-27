@@ -19,8 +19,8 @@
 <meta property="og:title" content="SelfImprovementに関する論文・技術記事メモの一覧" />
 <meta name="author" content="AkihikoWATANABE" />
 <meta property="og:locale" content="ja" />
-<meta name="description" content="SelfImprovement [Paper Note] EvoLM: Self-Evolving Language Models through Co-Evolved Discriminative Rubrics, Shuyue Stella Li+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #Selected Papers/Blogs #reading #One-Line Notes #Rubric-based #Author Thread-Post Issue Date: 2026-05-11 GPT Summary- EVOLMは言語モデルの自己改善を促進するポスト訓練手法であり、外部監督に依存せず、モデル自身の評価能力を利用します。具体的には、事例ごとに最適化された評価基準を生成するルーブリック生成器と、そのルーブリックを用いて訓練されたポリシーの二つの能力を交互に訓練します。これにより、EVOLMはQwen3-8Bモデルを用いてGPT-4.1を25.7%上回るルーブリックを生成し、共同訓練されたポリシーは最新の報酬モデルよりも優れた性能を示しました。全体として、EVOLMは内部の評価能力を活用することで、外部の監督なしでの改善を実現することが明らかになりました。 Comment元ポスト:" />
-<meta property="og:description" content="SelfImprovement [Paper Note] EvoLM: Self-Evolving Language Models through Co-Evolved Discriminative Rubrics, Shuyue Stella Li+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #Selected Papers/Blogs #reading #One-Line Notes #Rubric-based #Author Thread-Post Issue Date: 2026-05-11 GPT Summary- EVOLMは言語モデルの自己改善を促進するポスト訓練手法であり、外部監督に依存せず、モデル自身の評価能力を利用します。具体的には、事例ごとに最適化された評価基準を生成するルーブリック生成器と、そのルーブリックを用いて訓練されたポリシーの二つの能力を交互に訓練します。これにより、EVOLMはQwen3-8Bモデルを用いてGPT-4.1を25.7%上回るルーブリックを生成し、共同訓練されたポリシーは最新の報酬モデルよりも優れた性能を示しました。全体として、EVOLMは内部の評価能力を活用することで、外部の監督なしでの改善を実現することが明らかになりました。 Comment元ポスト:" />
+<meta name="description" content="SelfImprovement [Paper Note] ECHO: Terminal Agents Learn World Models for Free, Vaishnavi Shrivastava+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #AIAgents #PostTraining #Selected Papers/Blogs #Non-VerifiableRewards #WorldModels #reading #One-Line Notes #ContinualLearning #Initial Impression Notes #Author Thread-Post Issue Date: 2026-05-21 GPT Summary- ECHOは、CLIエージェントのトレーニングにおいて環境のフィードバックを活用するハイブリッド目的関数を提案。標準的な政策勾配損失と、自己行動による環境観測トークン予測を組み合わせ、ロールアウトに既存の信号を密接な監督として利用する。これにより、TerminalBench-2.0でGRPOのpass@1を倍増させ、環境ダイナミクスの予測精度も向上させる。ECHOは専門家デモなしで、未知のOODタスクのポリシー改善を可能にすることを示している。 Comment反響がすごそうに見える- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能 - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。元ポスト:" />
+<meta property="og:description" content="SelfImprovement [Paper Note] ECHO: Terminal Agents Learn World Models for Free, Vaishnavi Shrivastava+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #AIAgents #PostTraining #Selected Papers/Blogs #Non-VerifiableRewards #WorldModels #reading #One-Line Notes #ContinualLearning #Initial Impression Notes #Author Thread-Post Issue Date: 2026-05-21 GPT Summary- ECHOは、CLIエージェントのトレーニングにおいて環境のフィードバックを活用するハイブリッド目的関数を提案。標準的な政策勾配損失と、自己行動による環境観測トークン予測を組み合わせ、ロールアウトに既存の信号を密接な監督として利用する。これにより、TerminalBench-2.0でGRPOのpass@1を倍増させ、環境ダイナミクスの予測精度も向上させる。ECHOは専門家デモなしで、未知のOODタスクのポリシー改善を可能にすることを示している。 Comment反響がすごそうに見える- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能 - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。元ポスト:" />
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html" />
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="SelfImprovementに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-05-21T00:00:00+00:00","datePublished":"2026-05-21T00:00:00+00:00","description":"SelfImprovement [Paper Note] EvoLM: Self-Evolving Language Models through Co-Evolved Discriminative Rubrics, Shuyue Stella Li+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #Selected Papers/Blogs #reading #One-Line Notes #Rubric-based #Author Thread-Post Issue Date: 2026-05-11 GPT Summary- EVOLMは言語モデルの自己改善を促進するポスト訓練手法であり、外部監督に依存せず、モデル自身の評価能力を利用します。具体的には、事例ごとに最適化された評価基準を生成するルーブリック生成器と、そのルーブリックを用いて訓練されたポリシーの二つの能力を交互に訓練します。これにより、EVOLMはQwen3-8Bモデルを用いてGPT-4.1を25.7%上回るルーブリックを生成し、共同訓練されたポリシーは最新の報酬モデルよりも優れた性能を示しました。全体として、EVOLMは内部の評価能力を活用することで、外部の監督なしでの改善を実現することが明らかになりました。 Comment元ポスト:","headline":"SelfImprovementに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-05-21T00:00:00+00:00","datePublished":"2026-05-21T00:00:00+00:00","description":"SelfImprovement [Paper Note] ECHO: Terminal Agents Learn World Models for Free, Vaishnavi Shrivastava+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #NLP #LanguageModel #ReinforcementLearning #AIAgents #PostTraining #Selected Papers/Blogs #Non-VerifiableRewards #WorldModels #reading #One-Line Notes #ContinualLearning #Initial Impression Notes #Author Thread-Post Issue Date: 2026-05-21 GPT Summary- ECHOは、CLIエージェントのトレーニングにおいて環境のフィードバックを活用するハイブリッド目的関数を提案。標準的な政策勾配損失と、自己行動による環境観測トークン予測を組み合わせ、ロールアウトに既存の信号を密接な監督として利用する。これにより、TerminalBench-2.0でGRPOのpass@1を倍増させ、環境ダイナミクスの予測精度も向上させる。ECHOは専門家デモなしで、未知のOODタスクのポリシー改善を可能にすることを示している。 Comment反響がすごそうに見える- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能 - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。元ポスト:","headline":"SelfImprovementに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/SelfImprovement.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 47 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 1 hour 48 mins</span>
   </div></header>
 </div>
     </div>
@@ -1031,6 +1031,45 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id=SelfImprovement class="paper-head"> SelfImprovement</h2><div class="visible-content">
+<article class="paper-entry">
+<h3 id="echo-terminal-5540" class="title-link">[Paper Note] ECHO: Terminal Agents Learn World Models for Free, Vaishnavi Shrivastava+, arXiv'26, 2026.05</h3><br><a href="https://arxiv.org/abs/2605.24517" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5540" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
+<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Non-VerifiableRewards.html" target="_blank" rel="noopener noreferrer">#Non-VerifiableRewards</a>
+<a class="button" href="WorldModels.html" target="_blank" rel="noopener noreferrer">#WorldModels</a>
+<a class="button" href="reading.html" target="_blank" rel="noopener noreferrer">#reading</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="ContinualLearning.html" target="_blank" rel="noopener noreferrer">#ContinualLearning</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<a class="button" href="Author-Thread-Post.html" target="_blank" rel="noopener noreferrer">#Author Thread-Post</a>
+<span class="issue_date">Issue Date: 2026-05-21</span>
+<span class="snippet"><span>GPT Summary</span>- ECHOは、CLIエージェントのトレーニングにおいて環境のフィードバックを活用するハイブリッド目的関数を提案。標準的な政策勾配損失と、自己行動による環境観測トークン予測を組み合わせ、ロールアウトに既存の信号を密接な監督として利用する。これにより、TerminalBench-2.0でGRPOのpass@1を倍増させ、環境ダイナミクスの予測精度も向上させる。ECHOは専門家デモなしで、未知のOODタスクのポリシー改善を可能にすることを示している。</span>
+<span class="snippet"><span>Comment</span><p>反響がすごそうに見える</p><p>- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。<br>- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。<br>- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。<br>- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。<br>- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能<br>  - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。<br>- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。</p><p>環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。</p><p>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dimitrispapail/status/2056368948870811746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
 <article class="paper-entry">
 <h3 id="evolm-self-evolving-5468" class="title-link">[Paper Note] EvoLM: Self-Evolving Language Models through Co-Evolved Discriminative Rubrics, Shuyue Stella Li+, arXiv'26, 2026.05</h3><br><a href="https://arxiv.org/abs/2605.03871" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
@@ -2547,35 +2586,6 @@ My Issue
 </p></span><br><br>
 </article>
 <article class="paper-entry">
-<h3 id="echo-terminal-5540" class="title-link">ECHO: Terminal Agents Learn World Models for Free, Dimitris Papailiopoulos+, 2026.05</h3><br><a href="https://x.com/dimitrispapail/status/2056368948870811746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5540" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
-<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
-<a class="button" href="ReinforcementLearning.html" target="_blank" rel="noopener noreferrer">#ReinforcementLearning</a>
-<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
-<a class="button" href="PostTraining.html" target="_blank" rel="noopener noreferrer">#PostTraining</a>
-<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
-<a class="button" href="Non-VerifiableRewards.html" target="_blank" rel="noopener noreferrer">#Non-VerifiableRewards</a>
-<a class="button" href="WorldModels.html" target="_blank" rel="noopener noreferrer">#WorldModels</a>
-<a class="button" href="reading.html" target="_blank" rel="noopener noreferrer">#reading</a>
-<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
-<a class="button" href="ContinualLearning.html" target="_blank" rel="noopener noreferrer">#ContinualLearning</a>
-<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
-<a class="button" href="Author-Thread-Post.html" target="_blank" rel="noopener noreferrer">#Author Thread-Post</a>
-<span class="issue_date">Issue Date: 2026-05-21</span>
-<span class="snippet"><span>Comment</span><p>反響がすごそうに見える</p><p>- 通常のAgentのRLは環境からの応答に対してマスクをかけてしまい、エージェントが環境（本研究ではターミナル）にどう影響したかを示すground-truthのsignalであるにもかかわらず応答を切り捨ててしまう。<br>- 提案手法であるECHOはアクションと環境からの応答の双方で学習を行う。通常のaction tokenに対する損失はそのままに、ターミナル出力に対するシンプルなcross-entropy lossを追加する（環境からの応答はcontextに含まれ、モデル内を通過しているため追加のコストはかからない。）。<br>- このシンプルな修正によって、ベンチマークのスコアが改善し、特にTerminalBench-2.0のスコアはほぼ倍増した。これは言い換えると通常のRLと比較して2.3倍高速になっている。<br>- また、ターミナルの応答を学習したことでターミナルのダイナミクスをポリシーが学習し、held-out trajectoriesにおいて環境からの応答トークンのクロスエントロピーはECHOでは急激に低下するが、通常のGRPOではほとんどい変化しない。これは、ECHOがモデルに対してターミナルがどう応答するかを学習させていることを示唆する。<br>- エキスパートによる教師モデルを持たない場合でも、ECHOによってエキスパートによるdemonstrationでSFTを行った後のGRPOが達成するパフォーマンスにほぼ匹敵可能<br>  - エキスパートのtrajectoryから模倣学習するSFTと比較して、ECHOではモデル自身がターミナルの応答を予測することで、ターミナルの応答のうち何が有用なのかを学習する。模倣からではなく、インタラクションを通じて優れた戦略を創発する。<br>- ECHOを使うことで、AI AgentはVerifierの報酬なしでも自己改善ができる。Verifierの報酬が一切なくても、ECHOはAI Agentが環境内で行動し、何が起こるかを予測するだけで、（GRPOなしで）さらに性能を向上させることができる。つまり、taskのpromptに対して、モデルに環境がどのような応答を返すか予測をさせ、observationに対するクロスエントロピーlossを計算し更新するだけで性能（in-distribution, OOD共に）が改善する。</p><p>環境が多くのシグナルを返してくれる場合はterminal以外の環境でもうまくいきそうな話で、非常にシンプルな変更で実現でき、かなりインパクトが大きく見える。</p></span><br><br>
-</article>
-<article class="paper-entry">
 <h3 id="releasing-lab-5452" class="title-link">Releasing Lab: the training platform for self-improving agents, PrimeIntellect, 2026.05</h3><br><a href="https://www.primeintellect.ai/blog/lab-is-open" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -2664,34 +2674,24 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/SelfDistillation.html" title="SelfDistillationに関する論文・技術記事メモの一覧">SelfDistillationに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SparseAttention.html" title="SparseAttentionに関する論文・技術記事メモの一覧">SparseAttentionに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Scaling-Laws.html" title="Scaling Lawsに関する論文・技術記事メモの一覧">Scaling Lawsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SparseAttention.html" title="SparseAttentionに関する論文・技術記事メモの一覧">SparseAttentionに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Abstractive.html"
-            title="Abstractiveに関する論文・技術記事メモの一覧">
-            Abstractiveに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Label-free.html"
+            title="Label-freeに関する論文・技術記事メモの一覧">
+            Label-freeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 17</span> 
-  <span class="post-badge badge-new">📝 17</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PartialRollout.html"
-            title="PartialRolloutに関する論文・技術記事メモの一覧">
-            PartialRolloutに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Arena.html"
-            title="Arenaに関する論文・技術記事メモの一覧">
-            Arenaに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/PRICAI.html"
+            title="PRICAIに関する論文・技術記事メモの一覧">
+            PRICAIに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
   <span class="post-badge badge-new">📝 2</span>
@@ -2699,12 +2699,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Visual-CoT.html"
-            title="Visual-CoTに関する論文・技術記事メモの一覧">
-            Visual-CoTに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/WarmUp.html"
+            title="WarmUpに関する論文・技術記事メモの一覧">
+            WarmUpに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Live.html"
+            title="Liveに関する論文・技術記事メモの一覧">
+            Liveに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
+  <span class="post-badge badge-new">📝 16</span>
 </span>
 </a>
         </li></ul>
