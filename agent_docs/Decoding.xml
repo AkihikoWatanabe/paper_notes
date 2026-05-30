@@ -535,8 +535,14 @@
 </div>
 {% endraw %}
 
-</p><p>targetモデルでのverificationは重いので、軽量なverificationをdraftに対して実施することで最大35%デコーディング速度向上とのこと。</p><p>verificationに利用するLLM(＝proxy)がどのようなモデルファミリーなのか、ターゲットと同じファミリーなのか否かなどが気になる。<br><br>3.1節に以下のように書かれている:<br>> We identify smaller same-family models as ideal proxy veri-<br>fiers, justified by the following three core properties.<br><br>proxyについて以下の三つの観点で分析している:<br>- strong alignmentw: トークンレベルでtargetとalignしているかを分析（exact match, acceptable mismatch, unacceptable mismatchの3値分類)<br>- trustworthy outputs: token levelでalignしているだけでなく、単独で応答させたときにtargetと同じ回答が得られるか（同じ回答が得られるのであれば多少のトークンレベルの齟齬は許容可能<br>- Clear separability: proxyが信頼できるトークンと不確実な出力を区別できることが好ましく、proxyのtop1,2のprobabilityの差が0.5より大きい場合にacceptableなトークンと強い相関があることがわかり、verificationの信頼性の担保に使える</p><p>同じモデルファミリーでも、よりファミリー内での挙動が一致させるような副次的効果を得られるモデルファミリー構築方法もあり、Speculative Decodingの承認率が向上するような話もある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3925" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Construction of Model Family through Progressive Training Using Model Expansion, Kazuki Yano+, COLM'25, 2025.04</a>
-</p></maintainer-comment-text>
+</p><p>targetモデルでのverificationは重いので、軽量なverificationをdraftに対して実施することで最大35%デコーディング速度向上とのこと。<br><br><img src="https://github.com/user-attachments/assets/e41cc7a9-333b-4517-b7cc-b671f4c74bb5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>verificationに利用するLLM(＝proxy)がどのようなモデルファミリーなのか、ターゲットと同じファミリーなのか否かなどが気になる。<br><br>3.1節に以下のように書かれている:<br>> We identify smaller same-family models as ideal proxy veri-<br>fiers, justified by the following three core properties.<br><br>proxyについて以下の三つの観点で分析している:<br>- strong alignmentw: トークンレベルでtargetとalignしているかを分析（exact match, acceptable mismatch, unacceptable mismatchの3値分類)<br>- trustworthy outputs: token levelでalignしているだけでなく、単独で応答させたときにtargetと同じ回答が得られるか（同じ回答が得られるのであれば多少のトークンレベルの齟齬は許容可能<br>- Clear separability: proxyが信頼できるトークンと不確実な出力を区別できることが好ましく、proxyのtop1,2のprobabilityの差が0.5より大きい場合にacceptableなトークンと強い相関があることがわかり、verificationの信頼性の担保に使える</p><p>同じモデルファミリーでも、よりファミリー内での挙動が一致させるような副次的効果を得られるモデルファミリー構築方法もあり、Speculative Decodingの承認率が向上するような話もある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3925" target="_blank" rel="noopener noreferrer">[Paper Note] Efficient Construction of Model Family through Progressive Training Using Model Expansion, Kazuki Yano+, COLM'25, 2025.04</a>
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=yhhgkkiQe5" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=yhhgkkiQe5</a>
+{% endraw %}
+
+<br><br>提案手法の気持ちや、検証コストに焦点を当てたことは非常に有意義であるものの、Speculative Decodingの（数学的な）ロスレス保証を、実験的には性能がほとんど低下しないことが示されているが、数学的な保証を犠牲にして速度改善している点が実用上の大きな課題で、プロキシを挟むアイデアが既存研究の階層的、マルチレベルのSD, 検証の条件を緩める手法と比較して新規性が明らかでない点、また通常のSDと比較して3つのモデルを用いる点でエンジニアリングの観点からオーバーヘッドなしに主要な推論スタックにデプロイできるのか、実験結果の再現性や公式の報告とズレがある点などが指摘され、ICLR'26にrejectされている。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

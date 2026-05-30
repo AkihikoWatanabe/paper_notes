@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-28">
+<paper-list last-updated="2026-05-26">
+<paper-entry>
+<title>[Paper Note] AMUSE: Anytime Muon with Stable Gradient Evaluation, Jueun Kim+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.22432</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5561</repo-issue-link>
+<tags>ComputerVision, Pretraining, NLP, LanguageModel, Optimizer, Finetuning, Stability, Backbone, One-Line Notes, Author Thread-Post, Scheduler-free</tags>
+<repo-issue-date>2026-05-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.22432
+# Authors
+  - Jueun Kim
+  - Baekrok Shin
+  - Jihun Yun
+  - Beomhan Baek
+  - Minhak Song
+  - Chulhee Yun
+# Abstract
+  - Modern deep learning commonly relies on AdamW with prescribed learning rate schedules, but recent works challenge both components: Schedule-Free optimization removes explicit schedules via iterate averaging, and Muon improves the update geometry by orthogonalizing momentum for matrix parameters. Despite Muon's strong empirical performance, its underlying mechanism remains partially understood. We study Muon through the river-valley loss landscape, where useful training progress occurs along a flat, low-curvature bulk subspace (the river), while high-curvature dominant directions form steep valley walls that induce oscillations. We empirically show that while Muon's orthogonalization accelerates river progress by increasing the bulk component, it also amplifies dominant-direction noise, causing oscillatory trajectories. Building on this, we propose Anytime MUon with Stable gradient Evaluation (AMUSE), which integrates Muon's rapid bulk progress with the stabilizing effect of Schedule-Free averaging. AMUSE uses a time-varying interpolation coefficient that initially evaluates gradients near the fast Muon sequence for rapid adaptation, then gradually shifts toward the stable averaged sequence to suppress valley-wall oscillations. As a result, AMUSE requires no learning rate schedules and supports anytime training. Across vision tasks and large language model pretraining, AMUSE consistently improves the performance-iteration Pareto frontier over (Schedule-Free) AdamW and Muon.
+# Translation (by gpt-5-nano)
+- 現代の深層学習は一般に定められた学習率スケジュールを伴うAdamWに依存しているが、最近の研究は両方の要素に挑戦している。Schedule-Free最適化は反復平均化を介して明示的なスケジュールを排除し、ムオンは行列パラメータのモーメントを直交化して更新の幾何を改善する。 Muonの力強い経験的性能にもかかわらず、その基礎となる機構は部分的にしか理解されていない。私たちはMuonをリバー-バレーの損失地形を通して研究する。ここでは有用な訓練の進展は平坦で低曲率のバルク部分空間（川）に沿って生じ、しかし高曲率を支配する方向は急な谷壁を形成し、それが振動を引き起こす。実験的には、Muonの直交化がバルク成分を増加させることで川の進展を加速させる一方で、支配方向のノイズを増幅し、振動する軌道を招くことを示す。これを踏まえ、安定した勾配評価を備えたAnytime Muon（AMUSE）を提案する。これはMuonの迅速なバルク進展をSchedule-Free平均化の安定化効果と統合する。AMUSEは時間変化する補間係数を用い、初期には速いムオン列の近傍で勾配を評価して迅速な適応を図り、次第に安定した平均化列へと移行して谷壁の振動を抑制する。その結果、AMUSEは学習率スケジュールを必要とせず、いつでも訓練をサポートする。視覚タスクと大規模言語モデルの事前トレーニング全体にわたり、AMUSEは（Schedule-Free）AdamWおよびMuonよりも性能-反復のパレート最前線を一貫して改善する。
+# Summary (by gpt-4o-mini)
+- Muonの直交化は、勾配の振動を引き起こす高曲率部分空間の影響を受けつつ、訓練の進展を加速する。一方、Anytime Muon（AMUSE）は、迅速な適応を図るために時間変化する補間係数を利用し、安定した平均化を通じて振動を抑制する。AMUSEは学習率スケジュールを排除し、視覚タスクと大規模言語モデルの事前トレーニングにおいて、性能を一貫して向上させる。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jueunkim_0525/status/2059127584601055426?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>以下、上記著者ポストからの要約である。<br><br>MuonとScheduler-freeなoptimiserでの過去のtrajectoryの平均的な方向へ更新する考え方を組み合わせて、Muonの学習を安定させ、かつSchduler-freeを実現した模様。具体的には学習初期にはMuonの軌道を重視し、学習後半になるにつれ、ノイズの影響を低減するためにtrajectoryの平均方向に最適化する（時間変化する補完係数によって挙動が制御される）といったイメージのようである。<br><br>Muonがなぜうまくいくかの理論的な分析も実施されている。近年は損失関数の幾何構造をriver/valleyのようにたとえて表現するらしく、（Figure 1)、SGDは曲率の高い（勾配が急）な方向への更新される傾向があり振動をしながら川方向へ進むようだが、Muonはriver方向（曲率は小さいがモデルが最も学習が進捗する方向）への更新を増幅する働きがあるようである。しかし、ノイズとなる高曲率な谷方向への更新も増幅してしまいそれが振動や不安定さを生むため、それを是正するためにSchedule Freeな手法を組み合わせている、という気持ちのようである。また、先行研究に記載がある通り、WSDスケジューラをriver-valleyで説明する、Stableフェーズが川に沿った更新を促進し、Decayフェーズはパラメータを谷の底へ収束させる役割を果たしている、というイメージのようである。<br><br><img src="https://github.com/user-attachments/assets/70e4bbff-8e6f-4a12-843c-c8aa8854b600" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement  Learning, Xin Qiu+, arXiv'25, 2025.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.24372</original-paper-blog-link>

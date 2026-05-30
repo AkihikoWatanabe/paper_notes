@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-05-26">
 <paper-entry>
+<title>[Paper Note] Unmasking On-Policy Distillation: Where It Helps, Where It Hurts, and Why, Mohammadreza Armandpour+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.10889</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5554</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, Distillation, PostTraining, On-Policy, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.10889
+# Authors
+  - Mohammadreza Armandpour
+  - Fatih Ilhan
+  - David Harrison
+  - Ajay Jaiswal
+  - Duc N. M Hoang
+  - Fartash Faghri
+  - Yizhe Zhang
+  - Minsik Cho
+  - Mehrdad Farajtabar
+# Abstract
+  - On-policy distillation offers dense, per-token supervision for training reasoning models; however, it remains unclear under which conditions this signal is beneficial and under which it is detrimental. Which teacher model should be used, and in the case of self-distillation, which specific context should serve as the supervisory signal? Does the optimal choice vary from one token to the next? At present, addressing these questions typically requires costly training runs whose aggregate performance metrics obscure the dynamics at the level of individual tokens. We introduce a training-free diagnostic framework that operates at the highest resolution: per token, per question, and per teacher. We derive an ideal per-node gradient defined as the parameter update that maximally increases the student's probability of success. We then develop a scalable targeted-rollout algorithm to estimate this gradient efficiently, even for long chains of intermediate thoughts. The gradient alignment score, defined as the cosine similarity between this ideal gradient and any given distillation gradient, quantifies the extent to which a particular configuration approximates the ideal signal. Across a range of self-distillation settings and external teacher models, we observe that distillation guidance exhibits substantially higher alignment with the ideal on incorrect rollouts than on correct ones, where the student already performs well and the teacher's signal tends to become noisy. Furthermore, we find that the optimal distillation context depends jointly on the student model's capacity and the target task, and that no single universally effective configuration emerges. These findings motivate the use of per-task, per-token diagnostic analyses for distillation.
+# Translation (by gpt-5-nano)
+- オンポリシー蒸留は推論モデルの訓練に対して密度の高いトークンごとの監督信号を提供しますが、この信号が有用となる条件と有害となる条件は依然として明らかではありません。どの教師モデルを使用すべきか、自己蒸留の場合にはどの特定の文脈を監督信号として用いるべきでしょうか。最適な選択はトークンごとに異なるのでしょうか。現時点では、これらの問いに答えるには個々のトークンレベルのダイナミクスを覆い隠してしまう総合的な性能指標を生む高コストな訓練実験が通常必要です。我々は、最も高い解像度、すなわちトークンごと、質問ごと、教師ごとに動作する訓練不要の診断フレームワークを導入します。私たちは、学生の成功確率を最大化するパラメータ更新として定義される理想的なノードごとの勾配を導出します。続いて、この勾配を長い中間思考の連鎖にも効率的に推定できる、スケーラブルなターゲットロールアウトアルゴリズムを開発します。理想の勾配と任意の蒸留勾配とのコサイン類似度として定義される勾配整合性スコアは、特定の設定が理想信号をどの程度近似するかを定量化します。自己蒸留の設定と外部教師モデルの範囲にわたって観察すると、蒸留の指導は学生がすでに良い成績を出しており教師の信号がノイズになりがちな正しいロールアウトよりも、誤ったロールアウトに対して理想に対する整合性がはるかに高いことが分かります。さらに、最適な蒸留文脈は学生モデルの容量と対象タスクの両方に依存し、普遍的に有効な単一の設定は現れません。これらの知見は、蒸留のためのタスクごと・トークンごとの診断分析の活用を促します。
+# Summary (by gpt-4o-mini)
+- オンポリシー蒸留は推論モデルの訓練に対し、トークンごとの監督信号を提供するが、その有効性を決定する条件は未解明である。本研究では、トークン、質問、教師ごとに動作する診断フレームワークを導入し、学生の成功確率を最大化する勾配を導出。理想の勾配との整合性を評価し、蒸留指導が誤ったロールアウトに対して高い整合性を示すことを発見。最適な蒸留文脈はモデルの容量とタスクに依存し、標準的な設定は存在しないことが示された。これにより、タスクごとの診断分析の重要性が強調される。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/webbigdata/status/2058145145481318770?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>（下記は著者ポストに基づく要約です。ざっくり読んだだけなので誤りがあるかもしれず、詳細は著者ポスト参照のこと）<br><br>on-policy (self) Distillationが、どのような場合に有効なのかを分析。<br>トークンレベルで見た時に多くのトークンが教師-生徒間でdisagreementが存在し、これらにはフォーマットに起因するトークンと、reasoningに重要なトークンの双方が存在する。<br>そこで、本研究では各トークンにとっての最良の勾配を導出（＝生徒が正答できる確率を最大化する方向のもの）。<br>最適なgradientの方向がわかったので、あとは実際に蒸留をした場合の各トークンのgradientとのコサイン類似度を測ることで、どのような場合にdistillationが有用やシグナル（すなわち、生徒が正答できる確率を高めることに寄与しているか）を分析した。<br><br>分析の結果<br>- distillationが役に立つ場面は、生徒が誤ったロールアウトをしているケースで、正解のロールアウトをしている場合は教師モデルは役立つシグナルではなくノイズを与えているだけだった。<br>- 教師モデルのパラメータは大きければ大きいほど良いわけではなく、有効か否かは生徒モデルが学習シグナルを理解できるかに依存する。<br>  - たとえば、BoolQというデータで生徒がQwen0.6Bだった場合はself-teacherに基づく勾配が、より大きな外部teacher(4--14B)による勾配と比較して、理想的な勾配に近かった（より高い類似度だった）。<br>  - 一方で、同じデータセットで生徒モデルを1.7Bにすると、8Bの外部teacherが最も理想的なシグナルと高い類似度の勾配をもたらし、self-teacherはあまりうまく機能しなかった。<br>- contextのフォーマット（生のtrajectoryか要約か, mistakeを含めるか否か等）が、教師モデルの選択と同じくらいの重要<br>  - MMLUデータでの実験で、0.6Bモデルが生徒の場合は、32Bモデルが書いたsolutionをcontextとして与えたself-teacherが理想的な勾配により近く、1.7Bの生徒の場合は、要約されたsolutionの方が良い。<br>  - AIMEの場合、hardな問題の場合は、正解だけでなく失敗例 /典型的なミスをcontextとして与えたself-teacherが良い一方で、easyな問題では常にパフォーマンスの劣化を招く。<br><br>以上より、タスクごとに有用なdistillationの設定を模索することの重要性が示唆される、<br><br>という感じのようである。</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mfarajtabar/status/2054275640946458785?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Self-Distilled Agentic Reinforcement Learning, Zhengxi Lu+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.15155</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5541</repo-issue-link>
@@ -1289,7 +1336,7 @@ TRACER（Trace-based Adaptive Cost-Efficient Routing）は、LLM自身の本番�
 <title>The Imitation Game: State of Policy Distillation in Language Model training, 032-Chinmay Karkar, 2026.05</title>
 <original-paper-blog-link>https://hackmd.io/@l_WDq7lkQq29Pz-KD1JPNA/r1oNsX9Jfl</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5562</repo-issue-link>
-<tags>Tutorial, NLP, LanguageModel, ReinforcementLearning, Distillation, PostTraining, On-Policy, SelfDistillation, Author Thread-Post</tags>
+<tags>Tutorial, Survey, NLP, LanguageModel, ReinforcementLearning, Distillation, Catastrophic Forgetting, PostTraining, On-Policy, KeyPoint Notes, SelfDistillation, Author Thread-Post</tags>
 <repo-issue-date>2026-05-26</repo-issue-date>
 <issue-body>https://hackmd.io/@l_WDq7lkQq29Pz-KD1JPNA/r1oNsX9Jfl</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -1302,6 +1349,9 @@ TRACER（Trace-based Adaptive Cost-Efficient Routing）は、LLM自身の本番�
 </div>
 {% endraw %}
 
+</p><p>- On Policy DistillationはKnowledge Distillationの一種で、教師モデルの知識を小さなモデルに蒸留する<br>- off policy KD Objectiveの場合は固定されたオフラインデータを用いるが、on policy distillationは生徒モデル自身が生成したデータに対するシグナルに基づいて学習される。<br>- off policy手法の課題はCatastrophic Forgettingと、（sequence長に対するquadraticな）エラーの蓄積がある。<br>- （オフポリシーRLの特殊なケースとみなすことができる）SFTはForward KLに基づいており、教師モデルの出力分布が確率を持つ部分に対して、生徒モデルの確率がゼロの場合はKLが発散するため、学習される生徒モデルの分布さスムージングされた分布になる。つまり、教師モデルの出力パターンを網羅できるように分布が学習される。<br>- このような手法で複数のドメインのデータで学習をした場合、分布のシフトが生じやすくCatastrophic Forgettingが生じやすい。<br>- on policy RLでは、Reverse KLが採用されており、この場合教師が確率が低いと考える場所に高い確率を割り振った場合のみに大きなペナルティを受けるため、教師の重要なモードをカバーしていれば、教師の他のモード全体は無視できる。これにより、学習したいモード以外の挙動に影響を与えにくく、特定のモードの学習ができる。<br>  - （SFTがCatastrophic Forgettingが起きやすそうということは理解できるが、オフポリシーRL全体においてCatastrophic Forgettingが起きやすい問題があるという文脈で書かれている気がしており（エラーの蓄積の冒頭でオフポリシーRLのもう一つの根本的な課題は、という文脈で書かれているため）、SFTの議論がオフポリシーRL全体につながるのかがわからず、モヤっとする。が、LLMのpost-traingではCatrastrophic Forgettingが問題であるという文脈であれば理解できる）<br>- また、on-policyな学習ではエラーの蓄積を線形に留めることができることが示されている（off-policyな手法ではポリシーが生成したデータで訓練されていないため、inference時の冒頭でミスをすると学習時に観測していないトークンスペースを扱わなければならなくなり、さらにミスが増えモード崩壊に陥る）。<br>- on policy distillationは直接的にこのexposure biasのgapを小さくする。すなわち、学習時のinput（教師モデルが生成）と推論時のinput（生徒モデルが生成）の分布のgapを縮める。<br>- 生徒は学習時に常に自身の出力に基づいて学習するため、学習時のprefixと推論時のprefixの傾向が一致しやすい。このため生成時にエラーが起きてもin-distributionとなるため、エラーの蓄積が低減される。<br><br>以後はon policy distillation, on policy self-distillationの最新研究のサーベイと動向について記載されている。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4173" target="_blank" rel="noopener noreferrer">[Paper Note] Retaining by Doing: The Role of On-Policy Data in Mitigating Forgetting, Howard Chen+, arXiv'25, 2025.10</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2713" target="_blank" rel="noopener noreferrer">[Paper Note] RL's Razor: Why Online Reinforcement Learning Forgets Less, Idan Shenfeld+, ICLR'26</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5427" target="_blank" rel="noopener noreferrer">Multi-Teacher On-Policy Distillation: A New Post-Training Primitive, Yumo Xu, 2026.04</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
