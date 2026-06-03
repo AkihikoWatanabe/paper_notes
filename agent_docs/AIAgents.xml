@@ -1,6 +1,172 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-05-27">
 <paper-entry>
+<title>[Paper Note] $π$-Bench: Evaluating Proactive Personal Assistant Agents in Long-Horizon Workflows, Haoran Zhang+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.14678</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5611</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, Conversation, Selected Papers/Blogs, Ambiguity, reading, One-Line Notes, LongHorizon, Proactive</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.14678
+# Authors
+  - Haoran Zhang
+  - Luxin Xu
+  - Zhilin Wang
+  - Runquan Gui
+  - Shunkai Zhang
+  - Haodi Lei
+  - Zihao He
+  - Bingsu He
+  - Chicheng Qin
+  - Tong Zhu
+  - Xiaoye Qu
+  - Yang Yang
+  - Yu Cheng
+  - Yafu Li
+# Abstract
+  - The rise of personal assistant agents, e.g., OpenClaw, highlights the growing potential of large language models to support users across everyday life and work. A core challenge in these settings is proactive assistance, since users often begin with underspecified requests and leave important needs, constraints, or preferences unstated. However, existing benchmarks rarely evaluate whether agents can identify and act on such hidden intents before they are explicitly stated, especially in sustained multi-turn interactions where user needs emerge gradually. To address this gap, we introduce $π$-Bench, a benchmark for proactive assistance comprising 100 multi-turn tasks across 5 domain-specific user personas. By incorporating hidden user intents, inter-task dependencies, and cross-session continuity, $π$-Bench evaluates agents' ability to anticipate and address user needs over extended interactions, jointly measuring proactivity and task completion in long-horizon trajectories that better reflect real-world use. Experiments show (1) proactive assistance remains challenging, (2) a clear distinction between task completion and proactivity, and (3) the value of prior interaction for proactive intent resolution in later tasks.
+# Translation (by gpt-5-nano)
+- パーソナルアシスタントエージェントの台頭は、OpenClawのような例が日常生活と仕事の幅広い場面でユーザーを支援する大規模言語モデルの潜在能力を高めていることを示している。これらの状況における核となる課題は積極的な支援であり、ユーザーはしばしば要件を十分には規定せず、重要なニーズ・制約・好みを未記載のままにしてしまう。しかし、既存のベンチマークは、特にユーザーのニーズが徐々に表出する長期的なマルチターン対話において、エージェントがそのような隠れた意図を特定し、明示的に述べられる前にそれに基づいて行動できるかを評価することは稀である。このギャップを埋めるため、π-Benchを導入する。これは5つのドメイン固有のユーザーペルソナにまたがる100のマルチターンタスクから成る、積極的支援のベンチマークである。隠れたユーザー意図、タスク間の依存関係、およびセッションを跨ぐ連続性を取り入れることで、π-Benchは長期にわたる対話の中でユーザーのニーズを予測し対応するエージェントの能力を評価し、長期的な軌跡における積極性とタスク完遂を共同で測定する。実験は次のことを示す。（1）積極的な支援は依然として難しい。（2）タスク完遂と積極性の明確な区別。（3）後のタスクにおける積極的意図解決のための事前の対話の価値。
+# Summary (by gpt-4o-mini)
+- パーソナルアシスタントエージェントは、OpenClawのような大規模言語モデルの潜在能力を示しており、特に隠れたユーザー意図の特定に課題がある。本研究では、100のマルチターンタスクからなる積極的支援のベンチマークであるπ-Benchを導入し、長期的な対話におけるユーザーのニーズ予測能力を評価。実験により、積極的支援の難しさ、タスク完遂と積極性の違い、事前対話の重要性が示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2058382487265399036?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ユーザがOpenClawのようなPersonal Assistantを用いて、マルチターンでのconversationを通じて、ある1つのタスクを遂行したいという状況を想定する。このタスクの開始時には、ユーザは一般的には自然で妥当なクエリを投げるが、最初から全てのrequirementを満たしたクエリは投げず、会話をしながら徐々にrequirementを具体化していくような変遷を辿る。このような、タスク開始時に、タスクを開始する上では自然で妥当だが、タスクを完遂するにはrequirementの情報が足りないという状況において、AI Agentが会話を通じて、ユーザが暗黙的に意図している仕様（hidden intents）を考慮して（=ユーザが明示的にinstructionとしてrequirementを与える前に）タスクを完遂できるか、という能力を測定する。<br><img src="https://github.com/user-attachments/assets/1c8f079c-e921-4977-af38-688de317520c" /" alt="image" loading="lazy" width="550" height="400"/><br><br>1つのタスクを完遂するために20個のsessionの会話によって構成されており、hidden intentsはsessionの中で閉じている、あるいはsessionを跨いで維持されるようなものとなっており、これらの情報をエージェントは過去のsessionの情報（メモリ）から推測するか、あるいは明示的にhidden intentsについて質問をするようなProactiveな挙動によって収集した上でタスクを遂行しなければならない。このとき、Userの役割を果たすエージェントは、GPT-5.4によって再現される。<br><img src="https://github.com/user-attachments/assets/3feb2770-482c-42e2-abad-fae700532ea0" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Forecasting Scientific Progress with Artificial Intelligence, Sean Wu+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.22681</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5609</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, AIAgents, ScientificDiscovery, Initial Impression Notes, autoresearch, Author Thread-Post</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.22681
+# Authors
+  - Sean Wu
+  - Pan Lu
+  - Yupeng Chen
+  - Jonathan Bragg
+  - Yutaro Yamada
+  - Peter Clark
+  - David Clifton
+  - Philip Torr
+  - James Zou
+  - Junchi Yu
+# Abstract
+  - Artificial intelligence (AI) is increasingly embedded in scientific discovery, yet whether it can anticipate scientific progress remains unclear. To study this question, we introduce a temporally grounded evaluation framework for forecasting scientific progress under controlled knowledge constraints. We present CUSP (Cutoff-conditioned Unseen Scientific Progress), a multi-disciplinary and event-level benchmark that evaluates scientific forecasting in AI systems through feasibility assessment, mechanistic reasoning, generative solution design, and temporal prediction. Across 4,760 scientific events, we observe systematic and domain-dependent limitations in current frontier models. While models can identify plausible research directions from competing candidates, they fail to reliably predict whether scientific advances will be realized and systematically misestimate when they will occur. Performance is highly heterogeneous across domains, with the timing of AI progress more predictable than advances in biology, chemistry, and physics. Performance is largely insensitive to whether events occur before or after the training cutoff, suggesting these limitations cannot be explained solely by knowledge exposure in training data. Under controlled information access, additional pre-cutoff knowledge improves performance but does not close the gap to full-information settings, which becomes more pronounced for high-citation advances. Models also exhibit systematic overconfidence and strong response biases, indicating unreliable uncertainty estimation. Taken together, current AI systems fall short as predictive tools for scientific progress. Access to prior knowledge does not translate into reliable forecasting, and performance benefits more from post-event information than from forward-looking prediction.
+# Translation (by gpt-5-nano)
+- 人工知能（AI）は科学的発見にますます組み込まれているが、AIが科学の進歩を予測できるかどうかは依然として不明である。この問いを検証するために、制御された知識制約の下で科学の進歩を予測するための時間的根拠に基づく評価フレームワークを導入する。CUSP（Cutoff-conditioned Unseen Scientific Progress）は、複数分野にまたがるイベントレベルのベンチマークであり、実現可能性評価、機構的推論、生成的解決策設計、時間的予測の観点からAIシステムによる科学予測を評価する。4,760件の科学イベントにわたり、現在の最先端モデルには体系的かつ領域依存的な限界があることが観察される。モデルは競合候補の中からもっともらしい研究方向を特定できる一方で、科学的進歩が実現するかどうかを信頼性をもって予測できず、いつ起こるかについても体系的に誤って推定する。性能は領域ごとに大きくばらつきがあり、AIの進歩の時期は生物学・化学・物理学の進歩よりも予測可能である。イベントが訓練データのカットオフ前後のいずれで発生しても、性能はほとんど影響を受けず、これらの限界は訓練データにおける知識露出だけでは説明できないことを示唆している。情報アクセスを制御した下では、カットオフ前の追加知識は性能を改善するものの、完全情報環境との差を埋めるには至らず、そのギャップは引用回数の多い進展ほど顕著になる。モデルはまた、体系的な過信と強い応答バイアスを示し、不確実性推定が信頼できないことを示している。総じて、現状のAIシステムは科学進歩を予測するツールとしては不足している。事前の知識へのアクセスは信頼できる予測には結びつかず、予測よりも事象発生後の情報からの性能改善の方が大きい。
+# Summary (by gpt-4o-mini)
+- AIは科学的発見に活用されつつあるが、科学の進歩を予測可能かは不明。本研究では、科学進歩予測のための評価フレームワークCUSPを提案し、4,760件の科学イベントを分析。最先端モデルには体系的・領域依存的な限界があり、科学的進歩の実現を信頼性高く予測できず、特に生物学・化学・物理学での予測が異なる。モデルは不確実性推定の信頼性に欠け、過信や応答バイアスを示し、現行のAIシステムは科学進歩予測には不十分であることを示唆。知識へのアクセスが信頼性に結びつかないことも明らかになった。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sean_n_wu/status/2057831440390221837?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>現在のモデルはブレイクスルーの要素技術となるようなアプローチを認識できるが、実際にいつブレイクスルーが起きるかを正確には予測できず（ほぼランダムと同等）、dateがgivenで4種類のイベントが与えられて以下のどれが起きるか？といったMCQだったらそこそこ予測できる、という感じだろうか。<br><br><img src="https://github.com/user-attachments/assets/e60279bc-c6e6-411a-b168-4941db1a8094" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/c51f09d9-1810-4dc6-9906-865782f3cb20" /" alt="image" loading="lazy" width="550" height="400"/><br><br>ブレイクスルーがいつ起きるか、dateを予測するというタスク設定にはノイズが多すぎて無理があるのでは...?と最初は思ったが、MCQと対比して予測能力の限界を示すという観点では興味深い。また、もしautoresearchが本格的に実施されるようになった未来があったとして、投入される計算機リソースとモデルが一定だとしたら、少し状況は変わるのかもしれない。<br><br>データセットの構築方法、BinaryがどのようなQuestionによって実施されたのか（negationを用いていると記述されているが）、FRQとdate predictionの違いは何か、といったあたりはしっかりわかっていない。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] On the limits and opportunities of AI reviewers: Reviewing the reviews of Nature-family papers with 45 expert scientists, Seungone Kim+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.20668</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5597</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Selected Papers/Blogs, reading, Initial Impression Notes, Author Thread-Post, Reviwer</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.20668
+# Authors
+  - Seungone Kim
+  - Dongkeun Yoon
+  - Kiril Gashteovski
+  - Juyoung Suk
+  - Jinheon Baek
+  - Pranjal Aggarwal
+  - Ian Wu
+  - Viktor Zaverkin
+  - Spase Petkoski
+  - Daniel R. Schrider
+  - Ilija Dukovski
+  - Francesco Santini
+  - Biljana Mitreska
+  - Yong Jeong
+  - Kyeongha Kwon
+  - Young Min Sim
+  - Dragana Manasova
+  - Arthur Porto
+  - Biljana Mojsoska
+  - Makoto Takamoto
+  - Marko Shuntov
+  - Ruoqi Liu
+  - Hyunjoo Jenny Lee
+  - Niyazi Ulas Dinç
+  - Yehhyun Jo
+  - Sunkyu Han
+  - Chungwoo Lee
+  - Huishan Li
+  - Esther H. R. Tsai
+  - Ergun Simsek
+  - Khushboo Shafi
+  - Yeonseung Chung
+  - Jihye Park
+  - Aleksandar Shulevski
+  - Henrik Christiansen
+  - Yoosang Son
+  - Elly Knight
+  - Amanda Montoya
+  - Jeongyoun Ahn
+  - Christian Langkammer
+  - Heera Moon
+  - Changwon Yoon
+  - Nikola Stikov
+  - Mooseok Jang
+  - Edward Choi
+  - Junhan Kim
+  - Yeon Sik Jung
+  - Woo Youn Kim
+  - Jae Kyoung Kim
+  - Ishraq Md Anjum
+  - Hyun Uk Kim
+  - Drew Bridges
+  - Carolin Lawrence
+  - Xiang Yue
+  - Alice Oh
+  - Akari Asai
+  - Sean Welleck
+  - Graham Neubig
+# Abstract
+  - With the advancement of AI capabilities, AI reviewers are beginning to be deployed in scientific peer review, yet their capability and credibility remain in question: many scientists simply view them as probabilistic systems without the expertise to evaluate research, while other researchers are more optimistic about their readiness without concrete evidence. Understanding what AI reviewers do well, where they fall short, and what challenges remain is essential. However, existing evaluations of AI reviewers have focused on whether their verdicts match human verdicts (e.g., score alignment, acceptance prediction), which is insufficient to characterize their capabilities and limits. In this paper, we close this gap through a large-scale expert annotation study, in which 45 domain scientists in Physical, Biological, and Health Sciences spent 469 hours rating 2,960 individual criticisms (each targeting one specific aspect of a paper) from human-written and AI-generated reviews of 82 Nature-family papers on correctness, significance, and sufficiency of evidence. On a composite of all three dimensions, a reviewing agent powered by GPT-5.2 scores above each paper's top-rated human reviewer (60.0% vs. 48.2%, p = 0.009), while all three AI reviewers (including Gemini 3.0 Pro and Claude Opus 4.5) exceed the lowest-rated human across every dimension. AI reviewers' accurate criticisms are also more often rated significant and well-evidenced, and surface a distinct 26% of issues no human raises. However, AI reviewers overlap far more than humans do (21% vs. 3% for cross-reviewer pairs), and exhibit 16 recurring weaknesses humans do not share, such as limited subfield knowledge, lack of long context management over multiple files, and overly critical stance on minor issues. Overall, our results position current AI reviewers as complements to, not substitutes for, human reviewers.
+# Translation (by gpt-5-nano)
+- AI能力の進展に伴い、AIレビュアーは科学的査読へ導入されつつあるが、その能力と信頼性は依然として疑問視されている。多くの科学者は彼らを研究を評価する専門知識を欠く確率的システムとみなしており、他方で他の研究者は具体的な証拠がなくても彼らの準備が整いつつあると楽観的である。AIレビュアーが何をうまくこなすのか、どこが不足しているのか、そしてどのような課題が残っているのかを理解することは不可欠である。しかし、AIレビュアーの既存の評価は、彼らの判断が人間の判断と一致するかどうか（例：スコアの整合性、採択予測）に焦点を当てることが多く、それだけでは彼らの能力と限界を特徴づけるには不十分である。本論文では、このギャップを埋めるべく、大規模な専門家アノテーション研究を通じて検証した。物理学、生物学、健康科学の45名の領域専門家が、82件のNature系論文の人間作成およびAI生成のレビューから、正確性、重要性、証拠の十分性の3つの観点について、論文の特定の側面を1つずつ対象とする2,960個の個別批評を、計469時間を費やして評価した。三つの観点を総合したスコアでは、GPT-5.2を動力とするレビューメカニズムが、各論文の最高評価を受けた人間レビュアーを上回る（60.0%対48.2%、p = 0.009）、一方で、Gemini 3.0 ProとClaude Opus 4.5を含む3つのAIレビュアーはいずれの次元でも最低評価の人間を上回っている。AIレビュアーの的確な批評は、より頻繁に重要性が高く、根拠が明確と評価される傾向があり、人間が挙げない独自の26%の問題を浮かび上がらせる。とはいえ、AIレビュアーは人間よりも重複がはるかに多く（クロスレビュアー対ペアで21%対3%）、人間が共有しない16の反復的な弱点を示す。たとえば、サブ領域知識の限定、複数ファイルにまたがる長い文脈の管理不足、些細な問題に対する過度の批判的態度などである。総じて、本研究の結果は、現状のAIレビュアーが人間のレビュアーの代替ではなく、補完として機能するものである、という位置づけを示している。
+# Summary (by gpt-4o-mini)
+- AIレビュアーの導入が進む中、その能力と信頼性には疑問が残る。多くの科学者はAIを専門知識を欠くシステムと見なす一方、他の研究者は楽観的である。AIレビュアーの評価を理解するため、本研究では、専門家による2,960件のレビューを評価し、その結果、GPT-5.2が人間レビュアーを上回る性能を示した一方で、他のAIレビュアーは最低評価の人間を上回った。ただし、AIレビュアーは重複や限定的知識に課題を持ち、人間の代わりではなく補完としての役割に留まることが明らかとなった。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gneubig/status/2057449460800635021?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Natureの82本の論文に対してAIにレビューを実施させ、人間の専門家がレビュー結果に対して大規模なアノテーションを実施し、現在のAIレビュワーの能力を評価。その結果、AIレビュワーは<br>- 根拠が明確で重要な問題点を明らかにし、人間よりも多くの問題点を指摘できるが<br>- レビューの結果は多様性に乏しく、重複した指摘が多い。<br>- また、コミュニティや分野における暗黙の了解や規範が欠如した指摘をしたり (W1: missing community / field norms)、過剰に厳しい、あるいはスコープ外や非現実的な要求を実施したりする (W2: over-harsh, out-of-scope, or unrealistic demands) <br><br>などの欠点があることが明らかになった、ということのようである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] AstraFlow: Dataflow-Oriented Reinforcement Learning for Agentic LLMs, Haizhong Zheng+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.15565</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5591</repo-issue-link>
@@ -9998,7 +10164,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] ProAgent: Harnessing On-Demand Sensory Contexts for Proactive LLM Agent Systems, Bufang Yang+, arXiv'25, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.06721</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3931</repo-issue-link>
-<tags>ComputerVision, NLP, AIAgents, read-later, One-Line Notes</tags>
+<tags>ComputerVision, NLP, AIAgents, read-later, One-Line Notes, Proactive</tags>
 <repo-issue-date>2025-12-11</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.06721
@@ -17853,6 +18019,26 @@ AgentBenchのデータセット、環境、および統合評価パッケージ�
 - ScienceWorldは、小学校の科学カリキュラムに基づき、エージェントの科学的推論能力を評価するための対話型テキスト環境を提供します。従来のモデルは、新しい文脈で学んだ科学概念を推論するのが苦手で、特に未知の材料の伝導率を見つけるための実験方法を問われると苦戦します。これは、モデルが類似例から答えを得ているのか、再利用可能な方法で推論を学んでいるのかという疑問を生み出します。私たちは、エージェントは対話型環境にグラウンディングされることで推論能力を得るべきだと仮定し、150万パラメータのエージェントが10万ステップの対話型訓練を受けた結果、静的訓練を受けた110億パラメータのモデルを上回ることを実証しました。</issue-body>
 <maintainer-comment-text><p>ベンチマークの概要は<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5212" target="_blank" rel="noopener noreferrer">Evaluating agents for scientific discovery, Ai2, 2026.04</a>
 <br><br>参照のこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Agent Evaluation: A Detailed Guide, CAMERON R. WOLFE, PH.D., 2026.05</title>
+<original-paper-blog-link>https://cameronrwolfe.substack.com/p/agent-evals</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5598</repo-issue-link>
+<tags>Tutorial, LanguageModel, AIAgents, Evaluation, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body>https://cameronrwolfe.substack.com/p/agent-evals</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2057486293882282293?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ざーっとしか眺められていないが、AI Agentの基礎的な話と、実際のtool useをした場合のレスポンスの例を踏まえた動作の説明や、Scaffoldingとは何か/multi-agentとは何か/context engineeringとはといった説明をし、その後AI Agentの評価の方法の体系的な枠組みと、具体的なベンチマークとして tau-bench/terminal-benchを挙げて解説されている。これを読んだらAI Agentとはなんぞやから、評価までかなり理解できるのではないだろうか。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
