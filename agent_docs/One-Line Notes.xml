@@ -32,6 +32,41 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Guiding LLM Post-training Data Engineering with Model Internals from Sparse Autoencoders, Yi Jing+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.27354</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5626</repo-issue-link>
+<tags>NLP, LanguageModel, PostTraining, CurriculumLearning, DataFiltering, One-Line Notes, SparseAutoEncoder, Data, Author Thread-Post</tags>
+<repo-issue-date>2026-05-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.27354
+# Authors
+  - Yi Jing
+  - Zao Dai
+  - Jinwu Hu
+  - Zijun Yao
+  - Lei Hou
+  - Juanzi Li
+  - Xiaozhi Wang
+# Abstract
+  - Model internals encode rich information about how a large language model (LLM) processes its training data; however, post-training data engineering largely relies on external signals and ignores rich intrinsic signals lying in model internals. We propose SAERL, a data engineering framework for LLM reinforcement learning (RL). It models three intrinsic data properties: diversity, difficulty, and quality, using model internals extracted with Sparse Autoencoder (SAE), an advanced mechanistic interpretability tool. Each property grounds a concrete data engineering operation: SAE-space clustering with moderate batch mixing for batch diversity control, a difficulty proxy for easy-to-hard curriculum ordering, and a quality probe for data filtering. SAERL improves average accuracy by 3.00% over vanilla GRPO and reaches target accuracy with 20% fewer training steps on Qwen2.5-Math-1.5B, with consistent gains across model scales and RL algorithms. Experiments show that SAE transfers effectively across model families and scales, serving as a lightweight and reusable data engineering tool. These results demonstrate that model internals are a powerful and practical source of signals for post-training data engineering.
+# Translation (by gpt-5-nano)
+- 本論では、モデル内部情報が大規模言語モデル（LLM）が訓練データを処理する方法に関する豊富な情報を符号化している一方で、事後のデータエンジニアリングは主に外部信号に依存し、モデル内部に潜む豊かな内在信号を無視していることを指摘する。SAERL（LLM の強化学習のためのデータエンジニアリングフレームワーク）を提案する。SAERL は、Sparse Autoencoder（SAE、先進の機構的解釈性ツール）を用いて抽出されたモデル内部情報を用い、三つの内在的データ特性（多様性、難易度、品質）をモデル化する。各特性は具体的なデータエンジニアリング操作を支える：適度なバッチ混合を伴う SAE-space クラスタリングによるバッチ多様性の制御、易から難へのカリキュラム順序付けのための難易度代理指標、データフィルタリングのための品質プローブ。SAERL は vanilla GRPO に対して平均精度を 3.00% 向上させ、Qwen2.5-Math-1.5B で 20% 少ないトレーニングステップで目標精度に到達し、モデルのスケールと RL アルゴリズムを問わない一貫した利得を得る。実験は SAE がモデルファミリとスケールを越えて効果的に転移することを示し、軽量で再利用可能なデータエンジニアリングツールとして機能する。これらの結果は、モデル内部がポスト訓練データエンジニアリングの強力で実用的な信号源になり得ることを示している。
+# Summary (by gpt-4o-mini)
+- モデル内部情報がLLMのデータ処理方法に重要である一方、外部信号に依存したデータエンジニアリングは内在信号を無視していることを指摘。SAERLを提案し、Sparse Autoencoderを用いて多様性、難易度、品質の三つのデータ特性をモデル化。これにより、バッチ多様性や難易度の順序づけ、データフィルタリングを実現。SAERLは平均精度を3.00%向上させ、少ないトレーニングステップで目標精度に達することを示し、効果的なデータエンジニアリングツールとしての役割を果たすことが確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yi_jing04/status/2059595634060230748?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>SAEのrepresentationを、interpretabilityに活用するのではなく、post-trainingの学習データに対するdata engineeringに使うことで、costのかかる手法ではなく**より低コストで**data engineeringを実現したい、という気持ちの研究。提案手法では、SAEによって獲得されるrepresentationに基づいてpost-trainingの学習データに対して、<br>- 多様性: SAErepresentationを用いてクラスタリングを実施し活用<br>- 難易度: 軽量なElasticNetに基づく回帰モデル（特徴量はSAE representation）によって難易度予測モデルを学習し、クラスタIDに基づいて難易度をキャリブレーション<br>- 品質: SAE representationに基づいてqualityを判断する二値分類器を学習しその確率値を使うようである<br><br>ぱっと見よくわからないのが、<br>- difficulty-labeledなsubsetの正体はなんなのか？<br>- それは幅広いドメインで入手可能なものなのか？<br>- in-distributionな難易度であればElasticNetで予測できたということだが、in-distributionなdifficulty-labeledなデータがないと提案手法は原則として適用できないということなのか？<br><br>という疑問はある。<br><br><br><img src="https://github.com/user-attachments/assets/4448abbe-0881-4762-b0f6-5a8b5cbe7ea9" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] How Should LLMs Consume High-Quality Data? Optimal Data Scheduling via Quality-Aware Functional Scaling Laws, Zhitao Zhu+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.25698</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5616</repo-issue-link>
@@ -61,7 +96,17 @@
 </div>
 {% endraw %}
 
-</p><p>mid-training（より高品質なデータ）に転換したタイミングにおいて、**バッチサイズを**Drop （mid-trainingではノイズが小さいため、バッチサイズを小さくより多くの勾配ステップを踏むことで、学習シグナルを蓄積）し、その後Stable（しばらく最小バッチサイズを維持し、学習シグナル獲得を最大化）、最終的にRampup（バッチサイズを線形に拡大（学習率の減衰と等価）することで、最終的な収束に向けて蓄積されたノイズを抑制する）といった、学習データの品質に合わせたバッチサイズのスケジューリング Drop-Stable-Rampupを提案<br><br><img src="https://github.com/user-attachments/assets/e745628d-5346-4ad0-997e-ee0f3611a215" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</p><p>mid-training（より高品質なデータ）に転換したタイミングにおいて、**バッチサイズを**Drop （mid-trainingではノイズが小さいため、バッチサイズを小さくより多くの勾配ステップを踏むことで、学習シグナルを蓄積）し、その後Stable（しばらく最小バッチサイズを維持し、学習シグナル獲得を最大化）、最終的にRampup（バッチサイズを線形に拡大（学習率の減衰と等価）することで、最終的な収束に向けて蓄積されたノイズを抑制する）といった、学習データの品質に合わせたバッチサイズのスケジューリング Drop-Stable-Rampupを提案<br><br><img src="https://github.com/user-attachments/assets/e745628d-5346-4ad0-997e-ee0f3611a215" /" alt="image" loading="lazy" width="550" height="400"/></p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2059685766771736694?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -3845,7 +3890,7 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 <title>[Paper Note] OPUS: Towards Efficient and Principled Data Selection in Large Language Model Pre-training in Every Iteration, Shaobo Wang+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.05400</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4516</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, read-later, Selected Papers/Blogs, DataFiltering, One-Line Notes, Adaptive</tags>
+<tags>Pretraining, NLP, LanguageModel, read-later, Selected Papers/Blogs, DataFiltering, One-Line Notes, Adaptive, Author Thread-Post</tags>
 <repo-issue-date>2026-02-12</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.05400
@@ -3878,7 +3923,17 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 </div>
 {% endraw %}
 
-</p><p>事前学習においてステップ単位で動的にバッチに含める学習データを選択する手法で、従来手法は単に勾配を考慮して選択していたが、実際にoptimizerによって更新される方向はmomentumなどによって異なるためgapが生じていた。これを埋めるために、optimizerが実際に重みを更新した際に、Validation setのlossがどれだけ低下するかによってUtilityを定義し、Utilityが大きくなるようにデータを動的に選択することで学習効率が向上する、といった話に見える。<br><br><img src="https://github.com/user-attachments/assets/e45de40f-9fd3-4dcb-8e39-344de2fc9c57" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/b7702daf-9540-4ff8-82f0-9a4bdc1ba42f" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</p><p>事前学習においてステップ単位で動的にバッチに含める学習データを選択する手法で、従来手法は単に勾配を考慮して選択していたが、実際にoptimizerによって更新される方向はmomentumなどによって異なるためgapが生じていた。これを埋めるために、optimizerが実際に重みを更新した際に、Validation setのlossがどれだけ低下するかによってUtilityを定義し、Utilityが大きくなるようにデータを動的に選択することで学習効率が向上する、といった話に見える。<br><br><img src="https://github.com/user-attachments/assets/e45de40f-9fd3-4dcb-8e39-344de2fc9c57" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/b7702daf-9540-4ff8-82f0-9a4bdc1ba42f" /" alt="image" loading="lazy" width="550" height="400"/></p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shaobowang6/status/2061672897845051695?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -26937,6 +26992,62 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 
 </p><p>次:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5662" target="_blank" rel="noopener noreferrer">MLエンジニアのための本質から理解するLLM推論: LLM Inference Benchmarking, Kazuki Fujii, 2026.05</a>
 </p><p>数式レベルで、図解付きで曖昧性なく、非常に丁寧で、かつ実装面にまで踏み込んだ解説だが、冗長ではなくコンパクトに解説されており、すごい。今度からKV Cacheってなんなんですか？の問いにはこの記事をベースに教えよう。感謝🙏</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepSWE: Measuring frontier coding agents on original, long-horizon engineering tasks, DeepSWE, 2026.05</title>
+<original-paper-blog-link>https://deepswe.datacurve.ai/blog</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5624</repo-issue-link>
+<tags>NLP, Dataset, AIAgents, Evaluation, Coding, SoftwareEngineering, read-later, Selected Papers/Blogs, One-Line Notes, LongHorizon, Author Thread-Post</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body>https://deepswe.datacurve.ai/blog</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/serenaa_ge/status/2059308218564890875?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2059564676569076021?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>既存のベンチマークのような、githubのPRに基づいたものではなく（memorizationの問題があるため）、ゼロベースで構築。rolloutのtrajectoryを分析して、有効なPRなのに拒否する、あるいは何らかのcheatingをするといった挙動のdetectionもできるとのこと。また、SWE Bench Proと比較して、タスクを解くためのpromptは1/2である一方、タスクを解くために必要なコードの量は5.5倍となっており、より複雑なタスクとなっている。<br><br>contamination-freeが主張されているが、データセットは公開されているので、そのうちcontaminationが生じるであろう点には注意。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing 1-bit and Ternary Bonsai Image 4B: Image Generation for Local Devices, PrismML, 2026.05</title>
+<original-paper-blog-link>https://prismml.com/news/bonsai-image-4b</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5620</repo-issue-link>
+<tags>ComputerVision, DiffusionModel, TextToImageGeneration, SmallModel, Selected Papers/Blogs, One-Line Notes, ImageSynthesis, LowPrecision, Author Thread-Post</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body>https://prismml.com/news/bonsai-image-4b</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/prismml/status/2059339157600969199?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/prism-ml/bonsai-image" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/prism-ml/bonsai-image</a>
+{% endraw %}
+
+</p><p>Ternary Weight {-1, 0, 1}による画像生成モデル</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
