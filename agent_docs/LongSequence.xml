@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-05-27">
 <paper-entry>
+<title>[Paper Note] ThriftAttention: Selective Mixed Precision for Long-Context FP4 Attention, Joe Sharratt, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.23081</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5625</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, LongSequence, LowPrecision</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.23081
+# Authors
+  - Joe Sharratt
+# Abstract
+  - Efficient attention algorithms are critical to mitigate the quadratic cost of attention in long-context workloads. Prior work utilises block-scaled quantisation techniques on Blackwell GPUs to move attention computation to 4-bit precision to accelerate inference. However, these techniques result in significant quality degradation in long-context settings. We show that the output impact of quantisation error is highly non-uniform and increases with the importance of each query-key interaction, concentrating functionally relevant error in a small number of attention blocks that contain the most important tokens. We propose ThriftAttention, a low-bit attention variant that delivers near-FP16 long-context quality at FP4 inference efficiency. This approach proceeds in two stages. First, a heuristic rapidly selects a small number of important query-key block pairs for FP16 precision. Second, the selected blocks are computed in FP16 and the remaining blocks in FP4, with both paths merged via online softmax into a single output. We demonstrate across long-context benchmarks and model families that by computing only 5% of query-key blocks in FP16, ThriftAttention recovers on average 89.1% of the FP4-to-FP16 performance gap. We show ThriftAttention's advantage grows with sequence length, mitigating the systematic FP4 quality degradation observed at longer contexts. The code is available at https://github.com/joesharratt1229/ThriftAttention.
+# Translation (by gpt-5-nano)
+- 長い文脈のワークロードにおけるアテンションの二乗計算コストを緩和するには、効率的なアテンションアルゴリズムが極めて重要である。先行研究は Blackwell GPU 上でブロック規模の量子化技術を用い、推論を加速させるためにアテンション計算を4ビット精度へ移行させている。しかし、これらの手法は長い文脈設定で顕著な品質低下を招く。量子化誤差の出力への影響は高度に非一様であり、各クエリ-キー相互作用の重要性が高まるにつれて増大し、最も重要なトークンを含む少数のアテンションブロックに機能的に関連する誤差が集中することを示す。我々は ThriftAttention を提案する。これは FP4 推論効率で FP16 に近い長文脈品質を提供する低ビットアテンションの変種である。このアプローチは二段階で進行する。まずヒューリスティックにより、FP16 精度のための重要なクエリ-キーのブロックペアを迅速に少数選択する。次に、選択されたブロックは FP16 で計算され、残りのブロックは FP4 で計算され、両経路はオンラインソフトマックスを介して単一の出力に統合される。長い文脈のベンチマークとモデルファミリ全体を通じて、FP16 で計算するクエリ-キー ブロックをわずか5%に抑えるだけで、ThriftAttention は FP4 から FP16 への性能ギャップの平均で 89.1% を回復することを示す。ThriftAttention の利点はシーケンス長が長くなるにつれて大きくなることを示し、長い文脈で観察される FP4 品質劣化を体系的に緩和する。コードは https://github.com/joesharratt1229/ThriftAttention に公開されている。
+# Summary (by gpt-4o-mini)
+- ThriftAttentionは、長い文脈におけるアテンションの計算コストを緩和し、FP4精度でFP16に近い品質を提供する低ビットアテンションの手法である。重要なクエリ-キーのブロックを選択し、FP16で計算することで、高性能を維持しながら、計算コストを削減。長文脈でもFP4からFP16への性能ギャップを89.1%回復し、シーケンス長が増すにつれてその効果が顕著になることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yohei_kikuta/status/2059620743206535359?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Do Language Models Need Sleep? Offline Recurrence for Improved Online Inference, Sangyun Lee+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.26099</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5617</repo-issue-link>
+<tags>NLP, LanguageModel, LongSequence, SSM (StateSpaceModel), reading, LinearAttention, Author Thread-Post</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.26099
+# Authors
+  - Sangyun Lee
+  - Sean McLeish
+  - Tom Goldstein
+  - Giulia Fanti
+# Abstract
+  - Transformer-based large language models are increasingly used for long-horizon tasks; however, their attention mechanism scales poorly with context length. To handle this, we study a sleep-like consolidation mechanism in which a model periodically converts recent context into persistent fast weights before clearing its key-value cache. During sleep, the model performs $N$ offline recurrent passes over the accumulated context and updates the fast weights in its state-space model (SSM) blocks through a learned local rule. During inference, this shifts extra computation to sleep while preserving the latency of wake-time prediction. We test our method on controlled synthetic tasks, including cellular automata and multi-hop graph retrieval, as well as a realistic math reasoning task, on which a regular transformer as well as SSM-attention hybrid models fail. We then show that increasing sleep duration $N$ for our models improves performance, with the largest gains on examples that require deeper reasoning.
+# Translation (by gpt-5-nano)
+- トランスフォーマーに基づく大規模言語モデルは長期的なタスクでますます用いられているが、そのアテンション機構は文脈長に対してスケールが悪い。これを扱うために、最近の文脈を定期的に恒久的なファストウェイトへ変換し、キー・バリューキャッシュをクリアする前に適用する睡眠様の統合機構を研究する。睡眠中、モデルは蓄積された文脈上でN回のオフライン再帰的パスを実行し、学習された局所規則を用いてSSMブロック内のファストウェイトを更新する。推論時には、ウェイクタイムの予測の遅延を維持しつつ、追加の計算を睡眠中へ移す。私たちはこの手法を、セルオートマトンを含む制御された合成タスク、マルチホップグラフ検索、そして現実的な数学推論タスクで検証する。これらのタスクでは、通常のトランスフォーマーおよびSSMアテンションのハイブリッドモデルは失敗することを示す。続いて、私たちのモデルの睡眠期間を長くすると性能が向上し、より深い推論を要する例で最大の効果を示す。
+# Summary (by gpt-4o-mini)
+- トランスフォーマーに基づく大規模言語モデルのアテンション機構が長期タスクでスケールしにくい問題を解決するため、睡眠様の統合機構を提案。モデルは睡眠中に文脈をファストウェイトに変換し、指定されたタスクでオフラインで学習を行う。実験により、提案手法がより深い推論を必要とするタスクで性能向上を示し、従来のトランスフォーマーとハイブリッドモデルに対する優位性を証明。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/2059221770075562113?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sang_yun_lee/status/2060083653380816933?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation, Yukang Chen+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.18739</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5577</repo-issue-link>
