@@ -57,9 +57,13 @@ def get_entry_from_metadata(arxiv_id, max_retries=3, wait_seconds=5):
         response = requests.get(url)
         
         if response.status_code == 503:
-            print(f"Attempt {attempt + 1}: arXiv API returned 503, retrying in {wait_seconds}s...")
-            time.sleep(wait_seconds)
-            continue
+            #print(f"Attempt {attempt + 1}: arXiv API returned 503, retrying in {wait_seconds}s...")
+            #time.sleep(wait_seconds)
+            #continue
+            raise ValueError(
+                f"arXiv ID {arxiv_id} のメタデータが見つかりません "
+                f"(HTTP status: {response.status_code})"
+            )
         
         feed = feedparser.parse(response.text)
         
