@@ -2,7 +2,8 @@
 
 ![Open issues](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes) ![Stars](https://img.shields.io/github/stars/AkihikoWatanabe/paper_notes) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=akihiko_watanabe.paper_notes) ![License](https://img.shields.io/github/license/AkihikoWatanabe/paper_notes)  
 [![AI Research Trends](https://img.shields.io/badge/Wiki-Trends-blue)](https://github.com/AkihikoWatanabe/paper_notes/wiki/X%E4%B8%8A%E3%81%AEAI%E3%83%88%E3%83%AC%E3%83%B3%E3%83%89%EF%BC%88%EF%BC%9F%EF%BC%89%EF%BC%88%E5%80%8B%E4%BA%BA%E3%81%AE%E6%84%9F%E6%83%B3%E3%81%A7%E3%81%99%EF%BC%89)
-[![DeepWiki](https://img.shields.io/badge/DeepWiki-Chat-800080?logo=readme)](https://deepwiki.com/AkihikoWatanabe/paper_notes)
+[![DeepWiki (Devin)](https://img.shields.io/badge/DeepWiki(Devin)-Chat-800080?logo=readme)](https://deepwiki.com/AkihikoWatanabe/paper_notes)
+[![CodeWiki (Google)](https://img.shields.io/badge/CodeWiki(Google)-Chat-800080?logo=readme)]([https://deepwiki.com/AkihikoWatanabe/paper_notes](https://codewiki.google/github.com/akihikowatanabe/paper_notes))
 
 [![Initial Impression Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/Initial%20Impression%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A"Initial%20Impression%20Notes")
 [![One-Line Notes](https://img.shields.io/github/issues/AkihikoWatanabe/paper_notes/One-Line%20Notes)](https://github.com/AkihikoWatanabe/paper_notes/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22One-Line%20Notes%22)
@@ -112,7 +113,7 @@ The above labels are just a few examples, and there are currently 600+ different
 
 ---
 
-## Wiki and Interactive Access (DeepWiki)
+## Wiki and Interactive Access (DeepWiki/CodeWiki)
 
 In addition to Issue-based notes, this repository provides two complementary ways to explore and consume the collected information.
 
@@ -128,11 +129,11 @@ The Wiki is intended as a lightweight place to capture emerging ideas, trends, a
 
 ---
 
-### [DeepWiki](https://deepwiki.com/AkihikoWatanabe/paper_notes): Conversational Interface
+### [DeepWiki](https://deepwiki.com/AkihikoWatanabe/paper_notes)/[CodeWiki](https://codewiki.google/github.com/akihikowatanabe/paper_notes): Conversational Interface
 
-This repository can also be explored via **DeepWiki**, which provides a **chat-based interface** for interacting with the contents of this repository.
+This repository can also be explored via **DeepWiki/CodeWiki**, which provides a **chat-based interface** for interacting with the contents of this repository.
 
-Using DeepWiki, it may be easier to:
+Using DeepWiki/CodeWiki, it may be easier to:
 
 - Interactively extract information from Issues and notes
 - Ask questions about specific papers, topics, or trends
