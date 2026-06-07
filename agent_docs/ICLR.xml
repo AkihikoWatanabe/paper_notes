@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-06-02">
 <paper-entry>
+<title>[Paper Note] DiffusionBlocks: Block-wise Neural Network Training via Diffusion Interpretation, Makoto Shing+, ICLR'26, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.14202</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5637</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Transformer, DiffusionModel, ICLR, Selected Papers/Blogs, reading, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.14202
+# Authors
+  - Makoto Shing
+  - Masanori Koyama
+  - Takuya Akiba
+# Abstract
+  - End-to-end backpropagation requires storing activations throughout all layers, creating memory bottlenecks that limit model scalability. Existing block-wise training methods offer means to alleviate this problem, but they rely on ad-hoc local objectives and remain largely unexplored beyond classification tasks. We propose $\textit{DiffusionBlocks}$, a principled framework for transforming transformer-based networks into genuinely independent trainable blocks that maintain competitive performance with end-to-end training. Our key insight leverages the fact that residual connections naturally correspond to updates in a dynamical system. With minimal modifications to this system, we can convert the updates to those of a denoising process, where each block can be learned independently by leveraging the score matching objective. This independence enables training with gradients for only one block at a time, thereby reducing memory requirements in proportion to the number of blocks. Our experiments on a range of transformer architectures (vision, diffusion, autoregressive, recurrent-depth, and masked diffusion) demonstrate that DiffusionBlocks training matches the performance of end-to-end training while enabling scalable block-wise training on practical tasks beyond small-scale classification. DiffusionBlocks provides a theoretically grounded approach that successfully scales to modern generative tasks across diverse architectures. Code is available at https://github.com/SakanaAI/DiffusionBlocks .
+# Translation (by gpt-5-nano)
+- エンドツーエンドの逆伝播では全層にわたって活性化を保存する必要があり、モデルのスケーラビリティを制限するメモリのボトルネックを生み出します。既存のブロック単位の訓練法はこの問題の緩和手段を提供しますが、場当たり的な局所目的関数に依存しており、分類タスクを超えてほとんど検討されていません。我々は、Transformer ベースのネットワークをエンドツーエンド訓練と同等の性能を維持しつつ、真に独立した訓練可能なブロックへと変換する原理的なフレームワーク DiffusionBlocks を提案します。重要な洞察は、残差結合が自然に動的システムにおける更新に対応するという事実を活用する点にあります。このシステムに最小限の変更を加えることで、更新をデノイジング過程の更新へと転換でき、各ブロックはスコアマッチング目的関数を活用して独立に学習できます。この独立性により、同時に1つのブロックの勾配のみを用いた訓練が可能となり、ブロック数に比例してメモリ要件を削減します。視覚系、拡散、自己回帰、再帰的深さ、マスク付き拡散といったさまざまな Transformer アーキテクチャを対象とした実験は、DiffusionBlocks の訓練がエンドツーエンド訓練と同等の性能を発揮するとともに、小規模な分類を超える実用的なタスクにも対してスケーラブルなブロック単位訓練を可能にすることを示しています。DiffusionBlocks は、さまざまなアーキテクチャにまたがる現代的な生成タスクへ理論的に根拠のあるアプローチを提供します。コードは https://github.com/SakanaAI/DiffusionBlocks で公開されています。
+# Summary (by gpt-4o-mini)
+- DiffusionBlocksは、Transformerベースのネットワークを独立した訓練可能なブロックに変換する新しいフレームワークで、メモリボトルネックを軽減しながらエンドツーエンド訓練と同等の性能を維持します。残差結合の特性を活用し、各ブロックが独立に学習できるため、メモリ要件が削減されます。視覚系や拡散など多様なTransformerアーキテクチャに対する実験により、DiffusionBlocksがスケーラブルな訓練を可能にすることが示されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sakanaailabs/status/2059766095154668008?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=pwVSmK71cS" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=pwVSmK71cS</a>
+{% endraw %}
+
+</p><p>巨大な残差接続を持つTransformer-likeなモデルをB個のブロックに分割し、ブロック単位で独立してパラメータを学習することによって、学習時に必要なメモリを1/Bに削減できる手法のようである。<br><br>（しっかり読めていないので色々と勘違いがあるかもしれないし、気持ちの部分をうまく表現しきれていないかもしれないが）<br>手法の概要としては、L layer単位でブロックをB個定義する。各ブロックにはnoise rangeの元ノイズを定義し、sample data (x, y)がgivenな時に、出力yにノイズを付与した~yを考える。~yから元の出力yを再現するようデノイジングするように、他のブロックはfreezeしたままで、あるブロックのパラメータを調整する、という操作を繰り返す、という手法のようである。Inference時は、平均0、学習時に定義したnoiseレベルの最大値を分散として持つ正規分布からノイズをサンプリングし、ノイズをinput xがgivenな状態で各ブロックでsequentialにdenoisingしていく(Euler Step)ことによって、最終的に所望の出力yを得る、といったような拡散モデルの逆プロセスを経て出力を得るようである。各ブロックがカバーするノイズのrangeは決まっているが、sequentialにdenoisingをしていくため、ブロック全体でみると大きなノイズからスタートするが、それぞれのブロックに対する入力のnoise levelは徐々に低減していき、各ブロックが担当するnoise levelのrangeまで落ちることが期待され、このような手続きが実現できると思われる。<br><br><img src="https://github.com/user-attachments/assets/0c579f94-f6ea-49eb-a7c6-e3fd2fa0d33c" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] （Sparse） Attention to the Details: Preserving Spectral Fidelity in ML-based Weather Forecasting Models, Maksim Zhdanov+, ICLR'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.16429</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5603</repo-issue-link>

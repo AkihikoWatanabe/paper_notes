@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-05">
+<paper-list last-updated="2026-06-06">
 <paper-entry>
 <title>[Paper Note] Mellum2 Technical Report, Marko Kojic+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.31268</original-paper-blog-link>
@@ -95,6 +95,495 @@
 {% endraw %}
 
 </p><p>JEPAのようなモデル自身が獲得した潜在表現を予測する自己教師あり学習手法は、階層的な生成構造を持つデータに対して、トークンレベルの予測ではO(m^{L+1})のサンプルが必要となるが、O(m^3)程度で済むことが理論的に示された模様。 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] BAGEN: Are LLM Agents Budget-Aware?, Yuxiang Lin+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.00198</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5659</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.00198
+# Authors
+  - Yuxiang Lin
+  - Zihan Wang
+  - Mengyang Liu
+  - Yuxuan Shan
+  - Longju Bai
+  - Junyao Zhang
+  - Xing Jin
+  - Boshan Chen
+  - Jinyan Su
+  - Xingyao Wang
+  - Jiaxin Pei
+  - Manling Li
+# Abstract
+  - While agents are increasingly spending more resources, today agent cost is mostly measured only after execution. A Budget-Aware Agent (BAGEN) should treat budget as an active control signal, rather than a passive cost metric. We first systematically define budget estimation as internal budgets (from agent computation) and external budgets (from agent actions). We then formalize budget-awareness as progressive interval estimation: at each step of a plan, an agent should predict an upper and lower bound on remaining budget, and alert when completion is unlikely. Scoring with a rollout-replay protocol, we find consistent failure patterns on four environments and five frontier agents: (1) strong agents do not necessarily have strong budget-awareness, with correlation r=0.35. (2) frontier models are consistently over-optimistic, continue spending on tasks that are unlikely to succeed, instead of alerting the user early. (3) budget-aware signal is actionable and trainable. Early stop saves 28-64% tokens on failed trajectories, and SFT+RL strengthens early stop and alert behavior. (4) precise interval calibration remains challenging, with interval coverage capping at 47% after SFT+RL. Project page: https://ragen-ai.github.io/bagen/
+# Translation (by gpt-5-nano)
+- エージェントは日々ますます多くのリソースを消費している一方で、現在のエージェントコストは主に実行後にのみ測定されている。予算を受動的なコスト指標として扱うのではなく、予算を積極的な制御信号として扱うべきである。まず、予算推定を内部予算（エージェント計算由来）と外部予算（エージェントの行動由来）として体系的に定義する。次に、予算意識を進行的区間推定として形式化する：計画の各ステップで、エージェントは残り予算の上限と下限を予測し、完了が難しい場合には警告を出す。ロールアウト・リプレイプロトコルを用いた評価では、4つの環境と5つのフロンティアエージェントにおいて一貫した失敗パターンが見られた：(1) 強力なエージェントは必ずしも強い予算意識を持つとは限らず、相関 r=0.35。 (2) フロンティアモデルは一貫して過度に楽観的で、成功の見込みが低いタスクへ引き続き支出し、むしろ早期にユーザーへ警告することがない。 (3) 予算意識信号は実用的で訓練可能である。早期停止は失敗した軌道のトークンを28〜64%削減し、SFT＋RLは早期停止と警告動作を強化する。 (4) 正確な区間のキャリブレーションは依然として難しく、SFT＋RL後の区間被覆は47%にとどまる。プロジェクトページ：https://ragen-ai.github.io/bagen/
+# Summary (by gpt-4o-mini)
+- エージェントのリソース消費に対し、コストを実行後にのみ測定するのではなく、予算を積極的な制御信号として扱うべきと提案。予算は内部（計算由来）と外部（行動由来）に分け、エージェントは各計画ステップで残り予算の予測と警告を行う。評価では、強力なエージェントが必ずしも予算意識を持たず、過度に楽観的な傾向が見られた。予算意識信号は訓練可能で、早期停止により失敗したトークンを28〜64%削減でき、SFT＋RLがその効果を強化。しかし、正確な区間のキャリブレーションは依然難しい。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://ragen-ai.github.io/bagen/" target="_blank" rel="noopener noreferrer">https://ragen-ai.github.io/bagen/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/manlingli_/status/2060469912498471083?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>以下著者ポストと論文のskim readによるサマリ（読み違えがあるかもしれないので注意）<br><br>LLM/AI Agentがbudget（あとどの程度のトークンでタスクを完了できるかの見積もり）を考慮して生成できているか否かを明らかにし、性能とトークン予算の性能は必ずしも相関しないことを示し（現在のフロンティアモデルはトークン予算に対して楽観的で、トークン予算があまり残っていないのに不必要に多くのトークンを消費する）、与えらえたトークン予算に関して、タスクを実現できるか否かの2値分類ははSFTによって強化できる（Qwen-7Bにおいて25.5%->90%まで向上）が、SFT+RLによって正確な残りの予算のrangeを当てるような推論は47%程度で頭打ちで課題が残る、という話に見える。興味深い。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ReasonOps: Operator Segmentation for LLM Reasoning Traces, Daniel Lee+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.29192</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5658</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Chain-of-Thought, Reasoning, Overthinking, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.29192
+# Authors
+  - Daniel Lee
+  - Owen Queen
+  - James Zou
+# Abstract
+  - Chain-of-thought traces from large reasoning models can span tens of thousands of tokens, yet we lack a vocabulary for describing their internal structure. Previous methods developed to analyze chain-of-thought traces are either too rigid or not expressive enough, failing to capture features across domains and models. To remedy this, we develop ReasonOps, an unsupervised, expressive method for annotating chain-of-thought traces, providing succinct universal operators. Using ReasonOps, we analyze 44,662 traces from 12 thinking LLMs spanning 6 families across 8 reasoning benchmarks and discover that they share a common compositional structure: 7 recurring reasoning operators -- discourse-level moves such as backtracking, inferring, and hypothesizing -- that emerge from unsupervised clustering of sentence-initial 3-token pivots. These operators appear across every model family and benchmark domain, confirmed by three independent LLM judges who classify held-out samples at 70 -76% accuracy. We analyze the structure of operators on easy vs. hard problems, revealing that reflective operators are more helpful on hard problems and harm performance on easy problems. Operator sequences are highly model-identifying: a classifier trained on operator distributions alone recovers the source model with macro-AUC, revealing that each model family has a distinctive reasoning fingerprint. Structural operator features predict within-problem answer correctness well above baselines. Classifiers built on these operators reach WP-AUC and on AIME specifically. ReasonOps further enables early quality estimation well before the trace completes: we predict at WP-AUC for only 50% of the trace. The ReasonOps pipeline is unsupervised and annotation-free, enabling deep insights into LLM reasoning traces as well as strong downstream results on model identification and correctness prediction.
+# Translation (by gpt-5-nano)
+- 大規模推論モデルのチェーン・オブ・ソートの痕跡は数万トークンに及ぶことがあるが、それらの内部構造を記述する語彙はまだ不足している。従来のチェーン・オブ・ソート痕跡を分析する手法は、あまりにも硬直的であるか、表現力が不十分で、領域やモデルを横断する特徴を捉えられない。これを解決するため、ReasonOpsを開発した。ReasonOpsは教師なし、表現力豊かな思考過程の痕跡を注釈付ける方法であり、簡潔な普遍的演算子を提供する。ReasonOpsを用いて、8つの推論ベンチマークにまたがる6つのファミリを含む12の思考型LLMからの44,662の痕跡を分析し、それらが共通の構成的構造を共有していることを発見した。文頭3トークンのピボットの無監督クラスタリングから出現する7つの再発する推論演算子――バックトラッキング、推論、仮説設定などの談話レベルの動作――は、すべてのモデルファミリとベンチマーク領域に現れる。これらの演算子は、3名の独立したLLM評価者がホールドアウトサンプルを70〜76%の精度で分類することで確認された。易しい問題と難しい問題における演算子の構造を分析すると、内省的演算子は難問でより有用であり、易問では性能を損なう。演算子のシーケンスはモデルを高精度に識別可能であり、演算子分布のみを用いて訓練した分類器はマクロAUCで元のモデルを復元することを示しており、各モデルファミリには特徴的な推論の指紋があることが分かる。構造的な演算子特徴は、問題内の正解をベースラインを大幅に上回って予測できる。これらの演算子に基づく分類器はWP-AUCを達成し、特にAIMEで高い性能を示す。ReasonOpsはさらに、トレースが完了する前の早期品質推定を可能にする。トレースの50%の時点だけでWP-AUCの予測が可能である。ReasonOpsのパイプラインは教師なし・注釈不要であり、LLMの推論痕跡への深い洞察およびモデル識別・正確性予測における強力な下流成果を可能にする。
+# Summary (by gpt-4o-mini)
+- ReasonOpsは、チェーン・オブ・ソートの痕跡を分析するための教師なし手法であり、推論の過程を注釈付けするための普遍的な演算子を提供します。12のモデルから44,662の痕跡を分析した結果、共通の構成的な構造が明らかになりました。特に、バックトラッキングや仮説設定などの再発する演算子が全モデルに見られ、内省的演算子は難問でより効果的であることが示されました。演算子のシーケンスを用いることでモデルの高精度な識別が可能になり、早期の品質推定も実現しました。ReasonOpsは、LLMの推論痕跡に対する深いインサイトを提供し、性能予測の強化に寄与します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/oq_35/status/2060420901079060830?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Qwen-VLA: Unifying Vision-Language-Action Modeling across Tasks, Environments, and Robot Embodiments, Qiuyue Wang+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.30280</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5655</repo-issue-link>
+<tags>ComputerVision, Pretraining, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, mid-training, PostTraining, read-later, Selected Papers/Blogs, Robotics, VisionLanguageActionModel, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.30280
+# Authors
+  - Qiuyue Wang
+  - Mingsheng Li
+  - Jian Guan
+  - Jinhui Ye
+  - Sicheng Xie
+  - Yitao Liu
+  - Junhao Chen
+  - Zhixuan Liang
+  - Jie Zhang
+  - Xintong Hu
+  - Xuhong Huang
+  - Pei Lin
+  - Junyang Lin
+  - Dayiheng Liu
+  - Shuai Bai
+  - Jingren Zhou
+  - Jiazhao Zhang
+  - Haoqi Yuan
+  - Gengze Zhou
+  - Hang Yin
+  - Ye Wang
+  - Yiyang Huang
+  - Zixing Lei
+  - Wujian Peng
+  - Delin Chen
+  - Yingming Zheng
+  - Jingyang Fan
+  - Xianwei Zhuang
+  - Xin Zhou
+  - Haoyang Li
+  - Anzhe Chen
+  - Tong Zhang
+  - Xuejing Liu
+  - Yuchong Sun
+  - Ruizhe Chen
+  - Zhaohai Li
+  - Chenxu Lü
+  - Zhibo Yang
+  - Tao Yu
+  - Xionghui Chen
+# Abstract
+  - Embodied intelligence is often studied through specialized models for individual tasks such as manipulation or navigation, resulting in fragmented capabilities and limited generalization across tasks, environments, and robot embodiments. In this work, we study whether heterogeneous embodied decision-making problems can be unified within a single vision-language-action model. We present Qwen-VLA, a unified embodied foundation model that extends Qwen's vision-language modeling stack from perception, understanding, and reasoning to continuous action and trajectory generation through a DiT-based action decoder. Qwen-VLA is trained with a large-scale joint pretraining recipe over diverse data sources, including robotics manipulation trajectories, human egocentric demonstrations, synthetic simulation data, vision-and-language navigation data, trajectory-centric supervision, and auxiliary vision-language data. To support multiple robot platforms, we introduce embodiment-aware prompt conditioning, where robot-specific textual descriptions specify the current embodiment and control convention. We further cast manipulation, navigation, and trajectory prediction into a unified action-and-trajectory prediction framework, enabling transferable visual grounding, spatial reasoning, and continuous action generation across robot morphologies, task families, and environments. Experiments on manipulation, navigation, and trajectory-centric benchmarks show consistent multi-task performance and out-of-distribution generalization under variations in scene layout, background, lighting, object configuration, and robot embodiment. Qwen-VLA-Instruct achieves 97.9% on LIBERO, 73.7% on Simpler-WidowX, 86.1%/87.2% on RoboTwin-Easy/Hard, 69.0% OSR on R2R, 59.6% SR on RxR, 76.9% average OOD success in real-world ALOHA experiments, and 26.6% zero-shot success on DOMINO dynamic manipulation.
+# Translation (by gpt-5-nano)
+- 具現化された知能は、操作やナビゲーションなど個別タスクに特化したモデルを通じて研究されることが多く、その結果、能力が断片化し、タスク・環境・ロボットの体現形態を跨ぐ一般化が限られる。本研究では、異種の具現化された意思決定問題を単一の視覚・言語・行動モデル内で統一できるかを検討する。私たちは Qwen-VLA を提示する。これは、Qwen の視覚・言語モデリングスタックを、知覚・理解・推論から、DiT ベースのアクションデコーダを介して連続的な行動と軌跡生成へと拡張した、統一された具現化基盤モデルである。Qwen-VLA は、大規模な共同事前学習レシピにより、多様なデータソースから訓練されており、ロボット操作の軌跡データ、人間の自己視点デモンストレーション、合成シミュレーションデータ、視覚・言語ナビゲーションデータ、軌跡中心の監督データ、補助的な視覚・言語データを含む。複数のロボットプラットフォームを支えるために、体現性を意識したプロンプト条件付けを導入し、ロボット固有のテキスト記述が現在の体現形態と制御方針を指定する。さらに、操作・ナビゲーション・軌跡予測を統一された行動・軌跡予測フレームワークへと組み込み、ロボットの形態・タスクファミリ・環境を跨る視覚的な基盤の転移性、空間推論、連続的な行動生成を可能にする。操作、ナビゲーション、および軌跡中心のベンチマークにおける実験は、一貫したマルチタスク性能と、シーンのレイアウト・背景・照明・物体配置・ロボット体現形態の変化に対する分布外一般化を示している。Qwen-VLA-Instruct は、LIBERO で 97.9%、Simpler-WidowX で 73.7%、RoboTwin-Easy/Hard で 86.1%/87.2%、R2R で 69.0% OSR、RxR で 59.6% SR、実世界の ALOHA 実験で平均 76.9% の OOD 成功、DOMINO の動的操作でゼロショット 26.6% の成功を達成する。
+# Summary (by gpt-4o-mini)
+- Qwen-VLAは、視覚・言語・行動モデルを統一し、異種の意思決定問題に対応するために開発された。大規模な共同事前学習を通じて、ロボット操作やナビゲーション、軌跡生成を統合したフレームワークで、体現性を考慮したプロンプト条件付けを導入。実験結果は、複数の環境やタスクにおいて、一貫したマルチタスク性能と高い一般化能力を示し、特に実世界のデータセットで優れた成果を達成した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shuai_bai_/status/2060202323566350454?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ResearchMath-14K: Scaling Research-Level Mathematics via Agents, Guijin Son+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.28003</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5654</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, Mathematics, ScientificDiscovery</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.28003
+# Authors
+  - Guijin Son
+  - Seungyeop Yi
+  - Minju Gwak
+  - Hyunwoo Ko
+  - Wongi Jang
+  - Youngjae Yu
+# Abstract
+  - The frontier of mathematics is defined by problems whose solutions are not yet known, yet it remains unclear whether language models can meaningfully engage with such problems without human intervention. A major obstacle is the lack of large-scale research-level math datasets. To this end, we introduce ResearchMath-14k, a set of $14{,}056$ problems curated from academic sources via a multi-agent pipeline, making it the largest collection of research-level mathematical problems to date. We further generate ResearchMath-Reasoning, $220$K teacher trajectories from two open models, where we observe recurring avoidance behaviors such as non-attempts and fabricated references. Interestingly, across eight open-weight models, newer generations produce $5.6\times$ more references and $5.0\times$ more fake references per trace. After agentic filtering of ResearchMath-Reasoning, fine-tuning Qwen3 models from 4B to 30B parameters improves over base models by $9.2$ points on average. This shows that filtered open-problem attempts can provide useful supervision even without fully correct reasoning traces. We make ResearchMath-14k publicly available for future works on research-level mathematical reasoning.
+# Translation (by gpt-5-nano)
+- 数学の最前線は、解が未だ知られていない問題によって定義される。しかし、人間の介入なしに言語モデルがこのような問題に意味のある形で取り組むことができるかは依然として不明である。大規模な研究レベルの数学データセットが不足していることが、最大の障害である。これを解決するために、学術的情報源からマルチエージェント・パイプラインを介して厳選された14,056問からなる ResearchMath-14k を紹介する。これにより、現時点で最大の研究レベルの数学問題コレクションとなる。さらに、2つの公開モデルから得られた22万件の教師データ経路を用いて ResearchMath-Reasoning を生成し、未挑戦や捏造された参照といった反復的な回避行動を観察した。興味深いことに、8つのオープンウェイトモデル全体で、新世代は各トレースあたり参照を5.6倍、偽の参照を5.0倍生み出している。研究Math-Reasoning のエージェント的フィルタリングの後、4B から 30B パラメータの Qwen3 モデルをファインチューニングすると、ベースモデルと比べて平均で9.2ポイント改善した。これは、完全に正しい推論トレースがなくても、フィルタリングされたオープン問題の試行が有用な教師信号を提供し得ることを示している。我々は研究レベルの数学的推論に関する今後の研究のために、ResearchMath-14k を公開する。
+# Summary (by gpt-4o-mini)
+- ResearchMath-14kは、未解決の数学問題に取り組むために、学術的な情報源から厳選された14,056問を集めたデータセットであり、研究レベルの数学問題の最大コレクションを提供する。さらに、22万件の教師データ経路から生成されたResearchMath-Reasoningは、言語モデルが未挑戦の問題に対して反復的な回避行動を示すことを観察した。フィルタリング後にQwen3モデルをファインチューニングすることで、平均9.2ポイントの性能向上が確認された。このデータセットは、研究レベルの数学的推論における今後の研究に貢献することを目的としている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yohei_kikuta/status/2060356635835703663?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MIRA: Mid-training Rubric Anchoring for Source-Aware Data Selection, Haowen Wang+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.30288</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5653</repo-issue-link>
+<tags>NLP, LanguageModel, mid-training, DataMixture, DataFiltering, Rubric-based</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.30288
+# Authors
+  - Haowen Wang
+  - Yaxin Du
+  - Jian Yang
+  - Jiajun Wu
+  - Shukai Liu
+  - Yuxuan Zhang
+  - Pingjie Wang
+  - Siheng Chen
+  - Tuney Zheng
+  - Ming Zhou
+  - Xianglong Liu
+# Abstract
+  - Mid-training has become an important stage in modern LLM development, using large-scale curated mixtures to strengthen capabilities before final post-training. Its data selection problem is distinct: the data are optimized under a pretraining-style objective at near-pretraining scale, but are curated toward downstream capabilities and drawn from heterogeneous sources with different formats and training roles. As a result, effective selection requires both scalability and source-adaptive semantic criteria. Existing model-based methods scale well, but provide only implicit quality signals. Semantic selection methods offer stronger judgments, but usually assume fixed rubrics or standardized data formats. To address this mismatch, we propose MIRA, a source-aware filtering framework based on self-anchored rubric discovery. The key idea is to make rubric construction part of data selection: MIRA first discovers what should be evaluated for each source group, then distills those judgments into scalable student scorers for full-corpus filtering. On code-oriented mid-training with 21 sources and 5 source groups, MIRA outperforms selection baselines across nine code benchmarks and matches the full-corpus run while using only half the tokens.
+# Translation (by gpt-5-nano)
+- 中間トレーニングは、現代のLLM開発において重要な段階となっており、最終的なポストトレーニングの前に能力を強化するために、大規模にキュレーションされた混合データを用います。  
+そのデータ選択の問題は独特です：データは事前学習風の目的の下で事前学習規模に近い規模で最適化されていますが、下流の能力を目指してキュレーションされ、異なる形式とトレーニング上の役割を持つ異種のソースから来ています。  
+その結果、効果的な選択には、規模の拡張性とソース適応型の意味的基準の双方が必要です。  
+既存のモデルベースの手法はスケールアップには長けていますが、暗黙的な品質信号しか提供しません。  
+意味的選択手法はより強い判断を提供しますが、通常は固定されたルーブリックや標準化されたデータ形式を前提とします。  
+この不一致に対処するため、自己アンカー型ルーブリック発見に基づくソースを意識したフィルタリングフレームワークである MIRA を提案します。  
+要点は、ルーブリックの構築をデータ選択の一部にすることです：MIRA はまず各ソースグループについて何を評価すべきかを発見し、それらの判断を全コーパスのフィルタリングのための、スケーラブルな軽量スコアラーへと蒸留します。  
+コード指向の中間トレーニングにおいて、21ソース、5ソースグループで、MIRA は9つのコードベンチマーク全体で選択ベースラインを上回り、全コーパス実行に匹敵しつつ、トークン数は半分で済みます。
+# Summary (by gpt-4o-mini)
+- 中間トレーニングにおけるデータ選択の課題に対処するため、自己アンカー型ルーブリック発見に基づくフィルタリングフレームワークMIRAを提案。MIRAは各ソースグループの評価基準を発見し、効果的なデータ選択を実現。コード指向の中間トレーニングで、MIRAは選択ベースラインを上回り、トークン数を半分に削減する成果を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2060280555913023952?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SEAL: Can Saturated Benchmarks Be Revived by LLM-as-a-Meta-Judge?, Jiamin Chen+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.30104</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5652</repo-issue-link>
+<tags>PairWise, NLP, Dataset, LanguageModel, Evaluation, KeyPoint Notes</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.30104
+# Authors
+  - Jiamin Chen
+  - Yidi Wu
+  - Qiexiang Wang
+  - Qianben Chen
+  - Yuchen Li
+  - Yansen Zhang
+  - Xiaokun Zhang
+  - Wangchunshu Zhou
+  - Chen Ma
+# Abstract
+  - Widely used language-model benchmarks are increasingly saturated, with frontier systems often receiving near-tied scores that standard metrics cannot resolve. Rather than constructing harder alternatives, we ask whether existing tasks can be made informative again through improved evaluation over the same candidate outputs. Therefore, we present Seeded Elimination with Adaptive LLM-as-a-Meta-Judge, a self-improving evaluation protocol for extracting latent ranking signal from saturated benchmarks. SEAL seeds candidate outputs into a single elimination and evaluates each match with task-level principles plus self-improving checklist criteria. We evaluate SEAL on multiple saturated benchmarks covering code generation, mathematical reasoning, knowledge-intensive question answering, and tool-use agent task completion. Across these settings, SEAL improves the ranking-accuracy--latency trade-off over competing protocols, attaining 0.83--1.00 Spearman agreement with full pairwise judging and 4/4 top-1 agreement, while requiring only 11.89 calls per task compared with 28.00 for full pairwise evaluation.
+# Translation (by gpt-5-nano)
+- 広く用いられている言語モデルのベンチマークはますます飽和しており、最先端のシステムは標準的な指標では区別できないほぼ同点のスコアを受けることが多い。難しい代替を構築するよりも、既存のタスクを同じ候補出力に対して改善された評価を通じて再び有益にできるかを問う。したがって、SEAL（Seeded Elimination with Adaptive LLM-as-a-Meta-Judge）は、飽和したベンチマークから潜在的なランキング信号を抽出する自己改善型評価プロトコルである。SEALは候補出力をシングルエリミネーション方式へシードし、各対戦をタスクレベルの原則と自己改善型チェックリスト基準の両方で評価する。我々はSEALを、コード生成、数学的推論、知識集約型質問応答、ツール使用エージェントのタスク完遂を含む複数の飽和ベンチマークで評価した。これらの設定のすべてにおいて、SEALは競合プロトコルよりもランキング精度とレイテンシのトレードオフを改善し、全対比較判定と同等の0.83〜1.00のスピアマン一致度および4/4のトップ1一致を達成し、タスクあたりの呼び出し回数をわずか11.89回に抑えつつ、全対比較評価の28.00回と比較して大幅に削減する。
+# Summary (by gpt-4o-mini)
+- 既存の言語モデルベンチマークが飽和する中、SEAL（Seeded Elimination with Adaptive LLM-as-a-Meta-Judge）は、潜在的なランキング信号を抽出する自己改善型評価プロトコルを提案。候補出力をシングルエリミネーション方式で評価し、精度とレイテンシのトレードオフを改善する。複数の飽和ベンチマークにおいて、SEALは全対比較に匹敵する精度を保ちながら、エフォートを大幅に削減した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2060274139441553722?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>既に飽和したベンチマークを活用してモデルの評価のためのシグナルを抽出できないか？という気持ちの研究のようで、そもそも飽和したベンチマークはpointwiseな評価によって飽和しており、全てのモデル/promptに対してpair-wiseな評価をしてリストワイズな評価をしてランキング付けをすることで、より高い解像度での評価シグナルが得られるよね、という話からスタートしているように見える。しかしpairwiseな評価は非常にコストがかかるので、自己進化するRubric-basedなLLM-as-a-Judgeとトーナメント方式を採用することで、全件探索したpairwiseによるランキングを、低コストで高い相関係数を以て（0.83--1.0）で再現できるよ、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/39267862-2201-4def-bf0e-1a666878bbc6" /" alt="image" loading="lazy" width="550" height="400"/><br><br>pointwiseな評価と比較してFullPair/SEALでの評価は評価結果の序列が変化している。ただし、このFullPairでの評価がどの程度正しいものなのかはよくわからない。<br><br><img src="https://github.com/user-attachments/assets/4e7b6ae3-4ff0-4876-b01f-4d03af388077" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agent Explorative Policy Optimization for Multimodal Agentic Reasoning, Minki Kang+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.28774</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5644</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, MultiModal, PostTraining, KeyPoint Notes, ToolUse, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.28774
+# Authors
+  - Minki Kang
+  - Shizhe Diao
+  - Ryo Hachiuma
+  - Sung Ju Hwang
+  - Pavlo Molchanov
+  - Yu-Chiang Frank Wang
+  - Byung-Kwan Lee
+# Abstract
+  - Vision-language models with extended reasoning succeed on complex problems, but many real-world problems require external tools that internal reasoning alone often cannot resolve. Agentic reasoning therefore interleaves two behaviors with a structural asymmetry: thinking (the self-contained default) and tool use (a high-variance auxiliary acting). We refer to this asymmetry as the Thinking-Acting Gap. Under standard RL recipes like GRPO, the gap manifests as two diagnostic symptoms during training: tool use is attempted on only ~30% of rollouts, and when attempted, the tool-using rollouts within a group are all-wrong on ~40% of questions, suppressing the learning signal at the tool calls that needed it. We propose AXPO (Agent eXplorative Policy Optimization): for each all-wrong tool-using subgroup, AXPO fixes the thinking prefix and resamples the tool call and its continuation, paired with uncertainty-based prefix selection. Across nine multimodal benchmarks and three scales of Qwen3-VL-Thinking, SFT+AXPO outperforms SFT+GRPO at average (+1.8pp Pass@1 and +1.8pp Pass@4 at 8B on average) and 8B with SFT+AXPO surpasses the 32B Base on Pass@4 with 4 times fewer parameters.
+# Translation (by gpt-5-nano)
+- 拡張された推論を備えた視覚と言語を統合したモデルは複雑な問題を解決するが、現実世界の多くの問題は内部推論だけでは解決できない外部ツールを必要とする。エージェント的推論は従って2つの振る舞いを構造的な非対称性とともに交互に行う：思考（自己完結型のデフォルト）とツール使用（高分散の補助として機能する）。この非対称性をThinking-Acting Gapと呼ぶ。GRPOのような標準的なRLレシピの下で、このギャップは訓練中に2つの診断的兆候として現れる：ツール使用はロールアウトの約30%でのみ試行され、試行された場合、グループ内のツール使用を含むロールアウトは約40%の質問で全て間違っており、必要とされた学習信号をツール呼び出しで抑制してしまう。我々はAXPO（Agent eXplorative Policy Optimization）を提案する：各「全て間違っている」ツール使用サブグループに対して、AXPOは思考のプレフィックスを固定し、ツール呼び出しとその継続を再サンプリングし、不確実性ベースのプレフィックス選択と結びつける。9つのマルチモーダル・ベンチマークとQwen3-VL-Thinkingの3つのスケールを横断して、SFT+AXPOは平均でSFT+GRPOを上回り（8Bで平均+1.8pp Pass@1および+1.8pp Pass@4）、8BにおけるSFT+AXPOはパラメータ数を32B Baseの4分の1に抑えつつPass@4で上回る。
+# Summary (by gpt-4o-mini)
+- 視覚と言語を統合したモデルは、複雑な問題解決において外部ツールの使用が不可欠である。エージェント的推論は、自己完結型思考とツール使用の非対称な行動を交互に行い、このギャップをThinking-Acting Gapと呼ぶ。標準的なRL手法ではツール使用が限定的で、多くの場合誤りを含む。AXPO（Agent eXplorative Policy Optimization）を提案し、ツール呼び出しの再サンプリングを行うことでこの問題を改善。実験の結果、AXPOは複数のマルチモーダル・ベンチマークで従来手法を上回る性能を示し、パラメータ数を抑えつつ効果的な結果を得た。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://byungkwanlee.github.io/AXPO-page/" target="_blank" rel="noopener noreferrer">https://byungkwanlee.github.io/AXPO-page/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mkkang_1133/status/2059872464461848581?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>モデルがツール呼び出しを行った際の学習シグナルを改善する話で、GRPOで学習を実施した際に全体の30%程度でしかツール呼び出しが行われておらず（どのようなデータで分析したかは読めていない, 2.2節あたり）、そのうち40%程度が応答で誤っておりGRPOで正のadvantageが発生せず、ツール呼び出しに関して精緻なpositiveなシグナルが得られていない問題がある。これを改善するために、ツール呼び出し前のthinkingは正しく、ツールの呼び出し方とその結果が典型的に誤っていることに着目し、ツール呼び出しの上で失敗したrolloutについて、thinkingまでをprefixとしてツール呼び出し以後をresamplingする手法を提案。これにより、ツール呼び出しの頻度が改善し、ツールが呼び出された場合に応答に失敗する割合も減少した。<br><br><img src="https://github.com/user-attachments/assets/46dd84d8-83b0-4c36-8b10-6bdc8e00b4f4" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/7a66270f-1b6f-4f4e-b13b-9aab20b2b8dd" /" alt="image" loading="lazy" width="550" height="400"/></p><p>pj page: 
+
+{% raw %}
+<a href="https://byungkwanlee.github.io/AXPO-page/" target="_blank" rel="noopener noreferrer">https://byungkwanlee.github.io/AXPO-page/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Multi-Mixer Models: Flexible Sequence Modeling with Shared Representations, Kevin Y. Li+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.28769</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5643</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, Attention, Architecture, One-Line Notes, ConvolutionalModels</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.28769
+# Authors
+  - Kevin Y. Li
+  - Asher Trockman
+  - Ananda Theertha Suresh
+  - Ziteng Sun
+# Abstract
+  - Softmax attention is the cornerstone of modern large language models, but its memory scales linearly and compute quadratically with sequence length. Linear recurrent models, such as linear attention and state space models, have become widely studied as alternatives to attention due to their linear compute and constant memory. While these sub-quadratic token mixing methods, or mixers, achieve promising efficiency gains and competitive results on a wide range of benchmarks, current linear recurrent models still lag behind on tasks that require long-context retrieval or in-context learning. A growing body of work studies hybrid architectures that attempt to mitigate these trade-offs by statically interleaving or merging attention and recurrent blocks. In this work, we explore a new axis of developing hybrid models: across the token sequence. We propose Oryx, a hybrid model that can, throughout a sequence, flexibly switch between different mixers, for example quadratic attention for rich context utilization and linear recurrences for efficient generation. Oryx ties at least 90% of its parameters across mixers, enabling attention and recurrent modes to operate over shared internal representations. We validate our design with Mamba-2 and Gated DeltaNet variants, up to 1.4B models. Under fixed token budgets and a mixed-training strategy, Oryx achieves comparable or better performance than its single-mixer baselines. At the 1.4B scale, all instances of Oryx outperform their respective baselines by at least 0.7 percentage points on averaged language modeling tasks. On retrieval tasks, Oryx achieves performance comparable to the Transformer baseline even when processing only a tiny fraction (<10%) of the tokens in attention mode. These results suggest that attention and linear recurrent models can share internal representations, and motivate sequence-axis hybridization as a promising direction.
+# Translation (by gpt-5-nano)
+- ソフトマックス自己注意機構は現代の大規模言語モデルの礎となるが、そのメモリは系列長に対して線形に、計算量は系列長に対して二次的に増大する。線形リカレントモデル、たとえば線形アテンションや状態空間モデルは、計算量が線形でメモリが一定であることから、アテンションの代替として広く研究されている。これらのサブ二次的なトークン混合手法、あるいはミキサーは、さまざまなベンチマークで有望な効率向上と競争力のある結果を達成している一方で、長い文脈の検索やインコンテキスト学習を必要とするタスクでは、現行の線形リカレントモデルは依然として遅れをとっている。研究の増える中、それらのトレードオフを緩和することを試みるハイブリッドアーキテクチャを、静的にアテンションとリカレントブロックを交互に配置したり統合したりすることで研究している。本稿では、ハイブリッドモデルを開発する新しい軸として、トークン列全体にわたるアプローチを探る。Oryxという、系列全体を通じて柔軟に異なるミキサー間を切り替えることができるハイブリッドモデルを提案する。例えば、豊かな文脈利用のための二次アテンションと、効率的な生成のための線形リカレンスを切り替えることができる。Oryxはミキサー間で少なくとも90％のパラメータを共有し、アテンションモードとリカレントモードが共通の内部表現上で動作できるようにしている。我々は、Mamba-2およびGated DeltaNetのバリアントを用いて設計を検証し、最大で1.4Bパラメータのモデル規模まで検証した。固定のトークン予算と混合トレーニング戦略の下で、Oryxは単一ミキサーのベースラインと同等以上の性能を達成する。1.4Bスケールでは、Oryxのすべてのインスタンスが、それぞれのベースラインを少なくとも0.7ポイント上回る平均言語モデリングタスクの性能を示す。検索タスクでは、アテンションモードでトークンのごく一部（<10%）しか処理しない場合でも、OryxはTransformerベースラインと同等の性能を達成する。これらの結果は、アテンションと線形リカレンスモデルが内部表現を共有できることを示唆し、系列軸ハイブリッド化を有望な方向として動機づける。
+# Summary (by gpt-4o-mini)
+- Oryxというハイブリッドモデルを提案し、系列全体を通じて異なるトークン混合手法を柔軟に切り替えるアプローチを探る。二次アテンションと線形リカレンスを組み合わせ、90％のパラメータを共有することで、効率的な性能を実現。最長1.4Bパラメータのモデルで、従来のモデルを上回る結果を示し、内部表現の共有が有望な方向性であることを示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2059901708000514162?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>softmax attentionとgated delta net (linear attention)の利用をスイッチングによって動的に切り替え、双方でKVを共有し畳み込みをかけてinducive biasを導入した上で活用する。outputはRMSNorm側でgatingする。softmax attentionとlinear attentionの良いところを良いところ取りしようというアーキテクチャに見える。<br><img src="https://github.com/user-attachments/assets/1f847810-8a67-41db-903d-9e00e24925d7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AttuneBench: A Conversation-Based Benchmark for LLM Emotional Intelligence, Kate M. Lubrano+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.21739</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5642</repo-issue-link>
+<tags>Multi, NLP, Dataset, LanguageModel, Evaluation, Conversation, read-later, Emotion, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.21739
+# Authors
+  - Kate M. Lubrano
+  - Faisal Sayed
+  - Ankita Rathod
+  - Akshansh
+  - Craver Corbyn Thomas-Smith
+  - Mark E. Whiting
+  - Karina Nguyen
+# Abstract
+  - Emotional intelligence (EI), the ability to perceive, understand, and respond appropriately to others' emotional states, is central to human communication, and increasingly important to assess as LLMs assume conversational roles in everyday life. Existing EI benchmarks rely on synthetic prompts, single-turn cases, or third-party annotation. These approaches do not directly measure how models infer and respond to a participant's emotional state over the course of a real conversation. We introduce AttuneBench, a benchmark grounded in 200 genuine multi-turn human-model conversations in which participants conversed with anonymized LLMs and provided turn-by-turn annotations of their emotional state, the model's behavior, and their preferred responses. Across 11 evaluated models, we find that model rankings on emotion recognition, behavioral classification, preference prediction, and judged response quality are largely independent, indicating that emotionally intelligent behavior decomposes into separable capabilities. Preference alignment and response-quality judgments are substantially more model-discriminating than emotion-label accuracy. These results indicate that emotionally intelligent behavior requires predicting what kind of response a specific user wants in context, a distinction that aggregate scoring can obscure and that single-turn or synthetic formats cannot directly capture across turns. AttuneBench provides a framework for assessing each of these capabilities and for diagnosing model-specific strengths and failure modes in emotionally salient conversation.
+# Translation (by gpt-5-nano)
+- 感情知性（EI）は、他者の感情状態を知覚し、理解し、適切に反応する能力であり、人間のコミュニケーションの中心的要素である。LLMsが日常生活の対話役を担うようになるにつれて、その評価がますます重要になる。既存のEIベンチマークは、合成プロンプト、単一ターンのケース、または第三者による注釈に依存している。これらのアプローチは、実際の会話の過程で、モデルが参加者の感情状態を推測し、反応する方法を直接測定していない。私たちはAttuneBenchを紹介する。実在の複数ターンの人間‑モデル対話200件に基づくベンチマークで、参加者は匿名化されたLLMsと対話し、感情状態、モデルの挙動、そして望ましい応答をターンごとに注釈した。評価対象の11モデルにおいて、感情認識、行動分類、嗜好予測、そして判断された応答品質に関するモデルのランキングはほぼ独立しており、感情知的な振る舞いが分離可能な能力に分解されることを示している。嗜好の整合と応答品質の判断は、感情ラベルの正確さよりもモデルを識別する力が大きい。これらの結果は、感情知的な振る舞いが、特定のユーザーが文脈の中でどのような応答を望んでいるかを予測することを必要とし、それは総括的スコアリングでは覆い隠されがちで、単一ターンや合成形式ではターンを跨いで直接捕捉できない、という区別を示している。AttuneBenchは、これらの各能力を評価する枠組みを提供し、感情的に重要な会話におけるモデル固有の強みと失敗モードを診断する。
+# Summary (by gpt-4o-mini)
+- 感情知性（EI）の評価が重要になる中、AttuneBenchを紹介。実際の複数ターンの人間－モデル対話200件に基づき、感情状態とモデルの挙動をターンごとに注釈。11モデルの評価結果は感情認識や応答品質に関する能力が分離可能であることを示し、嗜好の整合と応答品質の判断がモデル識別に強く寄与することを明らかに。AttuneBenchは、感情的に重要な会話の評価枠組みを提供し、モデルの強みや弱点を診断する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/phoebeyao/status/2059709031623925981?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>leaderboard: 
+
+{% raw %}
+<a href="https://public.attunebench.com/" target="_blank" rel="noopener noreferrer">https://public.attunebench.com/</a>
+{% endraw %}
+
+</p><p>対話をしている本人によるプロンプト、アノテーション、マルチターンの会話を前提にモデルのEQを測定するためのベンチマークのようである（従来は合成プロンプト、シングルターン、third-partyに基づいたアノテーション（つまり対話している本人ではない、ということだと思われる）によるベンチマークだったとのこと）。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Thinking as Compression: Your Reasoning Model is Secretly a Context Compressor, Guoxin Ma+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.28713</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5641</repo-issue-link>
+<tags>NLP, LanguageModel, action_wanted, Reasoning, ContextEngineering, Compression, Initial Impression Notes</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.28713
+# Authors
+  - Guoxin Ma
+  - Yibing Liu
+  - Chengzhengxu Li
+  - Yu Liang
+  - Yan Wang
+  - Yueyang Zhang
+  - Kecheng Chen
+  - Zhaohan Zhang
+  - Zhiyuan Sun
+  - Daiting Shi
+# Abstract
+  - Context compression aims to shorten long context inputs with minimal information loss for LLM inference acceleration. While existing methods have shown promise, they typically rely on complex compression modules or compression-specific training, leaving the intrinsic capabilities of LLMs underexplored. In contrast, this work reveals that a thinking model itself can naturally compress long contexts by organizing task-relevant information. We thus derive Thinking as Compression (TaC), a new compression paradigm that treats thinking itself as compressed context. Without relying on specific dedicated compressor, TaC directly prompts the thinking model to generate thinking traces as the shortened context, already outperforming most representative compression methods. Further, given that raw thinking output may struggle with budget control and shortcut behaviors, we introduce Thinking as Compression Constrained (TaC-C), leveraging a simple reward-driven optimization framework to elicit intrinsic thinking as compact and controllable compressed context. Experiments across four long-context QA benchmarks demonstrate that TaC-C consistently outperforms existing baselines. At 4x and 8x compression ratios, it surpasses the strongest competitor by 17.4% and 23.4% in average F1, and by 15.7% and 21.7% in average Exact Match Score (EM), respectively.
+# Translation (by gpt-5-nano)
+- 文脈圧縮は、LLM推論の高速化のため、長い文脈入力を情報損失を最小限に抑えて短縮することを目的とする。既存の手法は有望である一方で、複雑な圧縮モジュールや圧縮専用の訓練に依存しており、LLMの本質的能力は十分に探究されていない。対照的に、本研究は思考モデル自体がタスク関連情報を整理することで自然に長い文脈を圧縮できることを示す。そこでThinking as Compression（TaC）という新しい圧縮パラダイムを導出し、思考自体を圧縮された文脈として扱う。特定の専用圧縮機に依存せず、TaCは直接、思考モデルに思考の痕跡を短縮された文脈として生成させるプロンプトを用い、すでに代表的な多くの圧縮手法を上回っている。さらに、生の思考出力はリソース制約の管理やショートカット的挙動に苦しむ可能性があるため、Thinking as Compression Constrained（TaC-C）を導入し、単純な報酬駆動型最適化フレームワークを活用して、内在する思考をコンパクトで制御可能な圧縮文脈として引き出す。四つの長文脈QAベンチマークにおける実験は、TaC-Cが既存のベースラインを一貫して上回ることを示している。4倍および8倍の圧縮比では、平均F1で最も強力な競合をそれぞれ17.4%、23.4%上回り、平均EM（Exact Match Score）ではそれぞれ15.7%、21.7%上回る。
+# Summary (by gpt-4o-mini)
+- 長い文脈を短縮しながら情報損失を抑える文脈圧縮の新手法「Thinking as Compression（TaC）」を提案。思考モデルが自らタスク関連情報を整理し、専用の圧縮機に依存せずに効果的な圧縮を実現。加えて、TaCを制約付きで進化させた「TaC-C」により、思考をコンパクトに管理できる。実験では、既存ベースラインを一貫して上回り、特に4倍および8倍の圧縮比でF1とEMスコアが顕著に改善された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2059839663288775043?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>contextを圧縮する専門のcompressorをわざわざ用意するのではなく、reasoningモデルのreasoning traceそのものを圧縮されたcontextとして扱えるような枠組みの提案のようである。<br><img src="https://github.com/user-attachments/assets/d1fa5db6-ab60-4417-9eb6-12427d53e771" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Skill0.5: Joint Skill Internalization and Utilization for Out-of-Distribution Generalization in Agentic Reinforcement Learning, Jiapeng Zhu+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.28424</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5640</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PostTraining, One-Line Notes, ContinualLearning, AgentSkills</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.28424
+# Authors
+  - Jiapeng Zhu
+  - Jianxiang Yu
+  - Yibo Zhao
+  - Chengcheng Han
+  - Qi Gu
+  - Xunliang Cai
+  - Xiang Li
+  - Weining Qian
+# Abstract
+  - Equipping large language models with explicit skills has emerged as a promising paradigm for enabling autonomous agents to solve complex tasks. Agent skills can be inherently divided into general skills for broad cognitive transfer and task-specific skills for dynamic execution. However, existing skill-based reinforcement learning (RL) methods typically force a rigid choice between full externalization, which incurs prohibitive context overhead, and full internalization, which risks overfitting and knowledge conflicts. To address this dilemma, we propose Skill0.5, a novel agentic RL framework that explicitly differentiates skill treatments by combining general skill internalization with task-specific skill utilization. Driven by a dynamic, difficulty-aware router, Skill0.5 streams tasks into distinct mastery tiers to apply tailored optimization strategies: it internalizes general skills via privileged distillation to build a cognitive foundation for hard tasks, while using diagnostic probing on easy tasks to penalize shortcuts and enforce specific skill utilization. Experiments on ALFWorld and WebShop demonstrate that Skill0.5 outperforms both memory-based and skill-based RL baselines, yielding performance improvements across both in-distribution and out-of-distribution scenarios.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルに明示的なスキルを搭載することは、自律エージェントが複雑なタスクを解決するための有望なパラダイムとして浮上している。エージェントのスキルは本質的に、広範な認知転移のための一般スキルと、動的な実行のためのタスク固有スキルに分けられる。しかし、既存のスキルベースの強化学習（RL）手法は通常、全面的な外部化を強いる硬直な選択と、全面的な内部化を強いる過剰適合および知識衝突のリスクとの間で妥協を迫る。このジレンマに対処するため、私たちはSkill0.5という新しいエージェントRLフレームワークを提案する。一般スキルの内部化とタスク固有スキルの活用を組み合わせることで、スキル処理を明示的に差別化する。難易度を認識する動的なルータによって推進され、Skill0.5はタスクを異なる習熟段階へ振り分け、それぞれに適した最適化戦略を適用する。難しいタスクには特権蒸留を用いて一般スキルを内部化し、難解なタスクの認知基盤を構築する。一方、易しいタスクでは診断的プロービングを用いて近道を罰し、特定のスキル活用を強制する。ALFWorldとWebShopにおける実験は、Skill0.5がメモリベースおよびスキルベースのRLベースラインの双方を上回り、分布内および分布外の両方のシナリオで性能の向上を示すことを示している。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルにスキルを搭載することで、自律エージェントの複雑なタスク解決が可能になる。エージェントのスキルは一般スキルとタスク特有スキルに分かれるが、既存の強化学習手法は外部化と内部化のバランスに苦労している。これを解決するために、Skill0.5という新しいRLフレームワークを導入。一般スキルの内部化とタスク特化の活用を動的ルータで調整し、タスクに応じた最適化を行う。実験結果は、Skill0.5が他のRLベースラインを上回る性能を示すことを確認した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2059834441988518130?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Agent Skillsベースのcontinual learningを実現するうえで、多くの研究はSkillを外部化する（Skill.mdを定義し更新する）、あるいは内部化する（モデルの重みにSkillを学習させる）といった挙動のどちらかの文脈で研究されるが、どちらも利点・欠点があるから双方のいいところどりをしたハイブリッドでやりたいよね、という気持ちの研究と思われ、そのために一般的なスキルはモデルに内在化させ、タスク固有のスキルは外部化するというすみ分けをする。<br><br>そのために、RLをする際にタスクの難易度をhard/medium/easyに分類するルータを設け、hard taskについては、general skillを与え、self-distillationを通じてteacher trajectoryを生成。teacher trajectoryに基づいてdistillation lossを通じてエージェントにgeneral skillを内在化させ、mediumタスクでは通常通りGRPOで成功率を増大させるように学習、easyタスクではショートカットを防止するような学習のさせ方（generall skillを与えた場合とそうでない場合のtrajectoryを用意しadvantageを計算する？）をする、ことで、generalなスキルをエージェントに内在化させる、という感じの話に見える。ざっと図を見ただけなのでeasyタスクの部分がよくわかっていない。あと、そもそもGeneral/Task specific Skillをどのように進化させていくのかはよくわかっていない。<br><br><img src="https://github.com/user-attachments/assets/9c6a2f74-32bb-41ff-ad3a-312f9621b634" /" alt="image" loading="lazy" width="550" height="400"/></p><p>おそらくAgentSkillsの定義と発展は、SkillBankを使っている：<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4526" target="_blank" rel="noopener noreferrer">[Paper Note] SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning, Peng Xia+, arXiv'26, 2026.02</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Unified Neural Scaling Laws, Ethan Caballero+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.26248</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5636</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Scaling Laws, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.26248
+# Authors
+  - Ethan Caballero
+  - Priyank Jaini
+  - David Krueger
+  - Irina Rish
+# Abstract
+  - We present a functional form (that we refer to as a Unified Neural Scaling Law (UNSL)) that accurately models and extrapolates the scaling behaviors of deep neural networks as multiple dimensions all vary simultaneously (i.e. how the evaluation metric of interest varies as one simultaneously varies the number of model parameters, training dataset size, number of training steps, number of inference steps, amount of compute, and various hyperparameters) for various architectures and for each of various tasks within a varied set of upstream and downstream tasks. This set includes large-scale vision, language, math, and reinforcement learning. When compared to other functional forms for neural scaling, this functional form yields extrapolations of scaling behavior that are considerably more accurate on this set.
+# Translation (by gpt-5-nano)
+- 私たちは、統一ニューラルスケーリング則（UNSL）と呼ぶ関数形を提示します。これは、複数の次元が同時に変化する場合に深層ニューラルネットワークのスケーリング挙動を正確にモデル化し、外挿できるものです。つまり、関心の評価指標が、モデルパラメータ数、トレーニングデータセットのサイズ、トレーニングステップ数、推論ステップ数、計算量、そしてさまざまなハイパーパラメータを同時に変化させた場合に、どのように変化するかを示します。これは、さまざまなアーキテクチャ、および上流タスクと下流タスクの多様な集合に含まれる各タスクに対して適用されます。この集合には、大規模なビジョン、言語、数学、そして強化学習が含まれます。他のニューラルスケーリングの関数形と比較すると、この関数形はこの集合におけるスケーリング挙動の外挿をかなり正確に行います。
+# Summary (by gpt-4o-mini)
+- UNSLと呼ばれる関数形を提案し、複数の次元が同時に変化する際の深層ニューラルネットワークのスケーリング挙動を正確にモデル化。モデルパラメータ、データセットサイズ、トレーニングおよび推論ステップ数、計算量などが影響を与える様子を示し、大規模なビジョン、言語、数学、強化学習タスクに適用。既存のスケーリング関数と比べ、より精度の高い外挿を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ethancaballero/status/2059686905105563907?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>データセットサイズ、推論ステップ数、幅、深さ、初期化時の重みの標準偏差、学習率、バッチサイズを変数に持ち、それらを同時に変化させても外挿可能なScaling Lawsのようである</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -2981,7 +3470,7 @@ ECHOはTerminalBench-2.0上でGRPOのpass@1を倍増させます：Qwen3-8Bは2.
 </div>
 {% endraw %}
 
-</p><p>提案されたベンチマークでは3つの次元で測定するが、特にユーザから本来とは異なる古い前提のクエリ与えられたときに、それを否定し、自身のメモリからgroundingされた情報に基づいて応答を生成させるテスト（Premise Resistence; 3.5節)に苦戦することが示されている(Table 2)。<br><br>他の二つの次元は<br>- State Resolution: 以前の記憶がすでに無効であることをモデルに対して直接テスト<br>- Implicit Policy Adaptation: 前提知識を提示せずに、最新の記憶に基づいて応答しなければならない質問（e.g., 今週の通勤プランを教えて）に対するテスト</p></maintainer-comment-text>
+</p><p>提案されたベンチマークでは3つの次元で測定するが、特にユーザから本来とは異なる古い前提のクエリ与えられたときに、それを否定し、自身のメモリからgroundingされた情報に基づいて応答を生成させるテスト（Premise Resistence; 3.5節)に苦戦することが示されている(Table 2)。<br><br>他の二つの次元は<br>- State Resolution: 以前の記憶がすでに無効であることをモデルに対して直接テスト<br>- Implicit Policy Adaptation: 前提知識を提示せずに、最新の記憶に基づいて応答しなければならない質問（e.g., 今週の通勤プランを教えて）に対するテスト</p><p>This paper addresses one of the most critical failure modes in agent memory systems: **implicit conflict detection** — when new information invalidates old memory without explicitly saying so.<br><br>### The 55.2% accuracy ceiling is a wake-up call<br><br>The fact that even the best evaluated model achieves only 55.2% on detecting when memories are stale suggests that **current memory frameworks are fundamentally reactive rather than proactive**. They store and retrieve, but they do not *evaluate* whether stored information is still valid.<br><br>### Three-dimensional probing is the right framework<br><br>The STALE benchmark's three dimensions map well to real-world agent memory failure modes:<br><br>| Dimension | Real-world scenario | AgentRelay's approach |<br>|-----------|-------------------|----------------------|<br>| **State Resolution** | "The API endpoint changed from v1 to v2" — agent must detect the old endpoint reference is outdated | Memory freshness scoring: new facts about known entities lower confidence of old facts |<br>| **Premise Resistance** | User asks "How do I use the old auth system?" — agent must resist the premise if the system was deprecated | Contradiction detection: when retrieving context, flag items that conflict with newer knowledge |<br>| **Implicit Policy Adaptation** | "Schedule the meeting" — agent must know the timezone changed without being told | Cross-entity propagation: a change in one entity triggers re-evaluation of related memories |<br><br>### CUPMem's write-time revision is promising but incomplete<br><br>CUPMem's approach of strengthening write-time revision through structured state consolidation is a good step, but it only handles **explicit updates**. The harder problem — which STALE correctly identifies — is **implicit updates**: when a new fact contradicts an old fact without directly negating it.<br><br>For example:<br>- Old memory: "Team meetings are on Mondays at 10am"<br>- New memory: "Team meetings moved to Wednesdays at 2pm"<br><br>This is an explicit update. But:<br>- Old memory: "The project uses Python 3.9"<br>- New memory: "The CI pipeline now requires Python 3.12 features"<br><br>This is an *implicit* update — the old fact is invalidated by a downstream consequence, not by a direct statement.<br><br>**AgentRelay handles this with a dependency graph**: each memory item declares what other items it depends on. When a memory is updated, the graph propagates the change to dependent items, triggering re-evaluation.<br><br>### Suggestion for future benchmark work<br><br>Add a fourth dimension: **Propagation Depth** — how many hops of indirect dependency can a memory system correctly trace when a fact is updated? This would measure whether the system can handle cascading memory invalidation (like the CI pipeline → Python version → project dependencies chain).<br><br>---<br><br>*Disclosure: I work on AgentRelay, a cross-platform agent memory and skill middleware. We have implemented dependency-graph-based memory invalidation to handle the exact failure modes STALE identifies. The paper's findings validate our architectural choices. Happy to collaborate on extending the benchmark with propagation depth testing.*<br></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -10568,7 +11057,17 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 </div>
 {% endraw %}
 
-</p><p>おもしろそう</p></maintainer-comment-text>
+</p><p>おもしろそう</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2063363579987030044?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>トークンのエントロピーによって多様性を測る方法は、単一の応答内での多様性は測れるが、異なるプロンプトに対する応答の多様性は測れない。たとえば、単一応答内のエントロピーは健全だが、応答がinputに非依存の応答となっている場合など（＝テンプレート崩壊）は多様性が欠如していると考えられる。このため、相互情報量に基づくメトリックを提案し、応答間で共有されている情報量を測る方法を提案。<br><br><img src="https://github.com/user-attachments/assets/97f73144-23dd-421f-bbf5-40f326f15a22" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -18013,7 +18512,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning, Peng Xia+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.08234</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4526</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, memory, KeyPoint Notes, ContinualLearning, AgentSkills</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, Selected Papers/Blogs, memory, KeyPoint Notes, ContinualLearning, AgentSkills</tags>
 <repo-issue-date>2026-02-12</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.08234
@@ -103544,6 +104043,26 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>LFM2.5-1.2B-JP-202606, LiquidAI, 2026.06</title>
+<original-paper-blog-link>https://huggingface.co/LiquidAI/LFM2.5-1.2B-JP-202606</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5707</repo-issue-link>
+<tags>NLP, LanguageModel, SmallModel, OpenWeight, Japanese</tags>
+<repo-issue-date>2026-06-06</repo-issue-date>
+<issue-body>https://huggingface.co/LiquidAI/LFM2.5-1.2B-JP-202606</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liquidai/status/2063051556165988865?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Understanding Self-Distillation and Privileged Information Distillation, Penaloza+, 2026</title>
 <original-paper-blog-link>https://emilianopp.github.io/Privileged-Information-Distillation-and-Self-Distillation/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5704</repo-issue-link>
@@ -103764,6 +104283,56 @@ Emiliano Penaloza, Dheeraj Vattikonda, Siddarth Venkatraman, Massimo Caccia</iss
 </paper-entry>
 
 <paper-entry>
+<title>Step-3.7-Flash, stepfun-ai, 2026.05</title>
+<original-paper-blog-link>https://huggingface.co/stepfun-ai/Step-3.7-Flash</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5650</repo-issue-link>
+<tags>ComputerVision, NLP, AIAgents, MultiModal, OpenWeight, MoE(Mixture-of-Experts), read-later, VisionLanguageModel, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body>https://huggingface.co/stepfun-ai/Step-3.7-Flash</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2060172606683148349?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>公式:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stepfun_ai/status/2060149124117475791?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Native RL APIs in vLLM, vLLM, 2026.05</title>
+<original-paper-blog-link>https://vllm.ai/blog/2026-05-28-native-rl-apis</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5649</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Blog, SoftwareEngineering, PostTraining, reading, Asynchronous</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body>https://vllm.ai/blog/2026-05-28-native-rl-apis</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sumanthrh/status/2060114481162952732?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Introducing Claude Opus 4.8, Anthropic, 2026.05</title>
 <original-paper-blog-link>https://www.anthropic.com/news/claude-opus-4-8</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5647</repo-issue-link>
@@ -103817,6 +104386,46 @@ Emiliano Penaloza, Dheeraj Vattikonda, Siddarth Venkatraman, Massimo Caccia</iss
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Repo2RLEnv: Turn any GitHub repository into a verifiable RL environment for training and evaluation, HuggingFace, 2026.05</title>
+<original-paper-blog-link>https://github.com/huggingface/Repo2RLEnv</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5645</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, ReinforcementLearning, PostTraining, reading, Environment, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body>https://github.com/huggingface/Repo2RLEnv</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/adithya_s_k/status/2059991239890776269?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Should we use genetics instead of system prompts for AI Agents & Personas?, Fyx, 2026.05</title>
+<original-paper-blog-link>https://huggingface.co/blog/nyxia/genetics-instead-of-system-prompts-for-ai-agents</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5639</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), Blog, PEFT(Adaptor/LoRA), PostTraining, read-later, Personality, One-Line Notes, Reading Reflections</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body>https://huggingface.co/blog/nyxia/genetics-instead-of-system-prompts-for-ai-agents</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2059832041261486246?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ゲノム文字列からキャラクターのペルソナを推論し出力に反映可能なLoRAアダプタを学習することによって、ゲノム文字列によってペルソナの条件付けを可能とするモデルに関する実験の報告のようである。<br><br>具体的には、まずゲノム文字列と、ペルソナに関するテキストを対応付ける。次に、ペルソナテキストを与えてモデルの応答を収集し、ゲノム文字列と（ペルソナのテキストなしで）収集したモデルの応答を用いてLoRAアダプタを学習する。これにより、LoRAアダプタはゲノム文字列から、ペルソナテキストによって応答づけられた応答を出力することを学習する、といった挙動を実現する。</p><p>ざっとみた感じLoRAアダプタとは書かれているが、学習手法が書かれていないような気がする。が、手法はおそらくSFTだと思われる。</p><p>これにより、prefillをするinput tokenが削減可能と思われるが、実用上はどちらかというと出力/reasoningトークンが圧縮される方がlatency/コストの双方から恩恵があるので、事後学習をして他の能力が劣化、あるいはAlignmentが悪化するリスクを背負ってまでやる価値があるかは怪しいな、という感想を持ったが、果たしてどうだろうか。<br><br>非常に大規模なユーザからの同時接続があり、キャラクターと対話できるようなサービスにおいて、キャラクターのペルソナテキスト（用途はペルソナだけには限らない汎用的な技術だと思うが）が97%圧縮できたら結構なインパクトがあるかもしれない。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
