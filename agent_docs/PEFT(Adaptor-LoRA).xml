@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-27">
+<paper-list last-updated="2026-05-31">
 <paper-entry>
 <title>[Paper Note] MoVE: Translating Laughter and Tears via Mixture of Vocalization Experts in Speech-to-Speech Translation, Szu-Chi Chen+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.17435</original-paper-blog-link>
@@ -1805,6 +1805,26 @@ LongLoRAは、オリジナルのアーキテクチャを保持しながらモデ
 # Summary (by gpt-4o-mini)
 - プレフィックスチューニングは、ファインチューニングの軽量な代替手段であり、言語モデルのパラメータを固定しつつ、タスク特有の小さなベクトルを最適化する手法です。これにより、少ないパラメータで同等のパフォーマンスを達成し、低データ設定でもファインチューニングを上回る結果を示しました。</issue-body>
 <maintainer-comment-text><p>言語モデルをfine-tuningする際，エンコード時に「接頭辞」を潜在表現として与え，「接頭辞」部分のみをfine-tuningすることで（他パラメータは固定），より少量のパラメータでfine-tuningを実現する方法を提案．接頭辞を潜在表現で与えるこの方法は，GPT-3のpromptingに着想を得ている．fine-tuningされた接頭辞の潜在表現のみを配布すれば良いので，非常に少量なパラメータでfine-tuningができる．<br><br><br><br>table-to-text, summarizationタスクで，一般的なfine-tuningやAdapter（レイヤーの間にアダプターを挿入しそのパラメータだけをチューニングする手法）といった効率的なfine-tuning手法と比較．table-to-textでは、250k (元のモデルの 0.1%) ほどの数のパラメータを微調整するだけで、全パラメータをfine-tuningするのに匹敵もしくはそれ以上の性能を達成．<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/132679791-87ad130d-8a7e-4549-a311-f84400a3787b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>Hugging Faceの実装を利用したと論文中では記載されているが，fine-tuningする前の元の言語モデル（GPT-2）はどのように準備したのだろうか．Hugging Faceのpretrained済みのGPT-2を使用したのだろうか．</p><p>autoregressive LM (GPT-2)と，encoder-decoderモデル（BART）へPrefix Tuningを適用する場合の模式図<br><br><img src="https://user-images.githubusercontent.com/12249301/132681736-0ea4b13f-71cb-41ba-ae17-027e8bf54cc0.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Should we use genetics instead of system prompts for AI Agents & Personas?, Fyx, 2026.05</title>
+<original-paper-blog-link>https://huggingface.co/blog/nyxia/genetics-instead-of-system-prompts-for-ai-agents</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5639</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), Blog, PEFT(Adaptor/LoRA), PostTraining, read-later, Personality, One-Line Notes, Reading Reflections</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body>https://huggingface.co/blog/nyxia/genetics-instead-of-system-prompts-for-ai-agents</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2059832041261486246?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ゲノム文字列からキャラクターのペルソナを推論し出力に反映可能なLoRAアダプタを学習することによって、ゲノム文字列によってペルソナの条件付けを可能とするモデルに関する実験の報告のようである。<br><br>具体的には、まずゲノム文字列と、ペルソナに関するテキストを対応付ける。次に、ペルソナテキストを与えてモデルの応答を収集し、ゲノム文字列と（ペルソナのテキストなしで）収集したモデルの応答を用いてLoRAアダプタを学習する。これにより、LoRAアダプタはゲノム文字列から、ペルソナテキストによって応答づけられた応答を出力することを学習する、といった挙動を実現する。</p><p>ざっとみた感じLoRAアダプタとは書かれているが、学習手法が書かれていないような気がする。が、手法はおそらくSFTだと思われる。</p><p>これにより、prefillをするinput tokenが削減可能と思われるが、実用上はどちらかというと出力/reasoningトークンが圧縮される方がlatency/コストの双方から恩恵があるので、事後学習をして他の能力が劣化、あるいはAlignmentが悪化するリスクを背負ってまでやる価値があるかは怪しいな、という感想を持ったが、果たしてどうだろうか。<br><br>非常に大規模なユーザからの同時接続があり、キャラクターと対話できるようなサービスにおいて、キャラクターのペルソナテキスト（用途はペルソナだけには限らない汎用的な技術だと思うが）が97%圧縮できたら結構なインパクトがあるかもしれない。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
