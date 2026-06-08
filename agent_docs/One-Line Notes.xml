@@ -19273,36 +19273,6 @@ GNPは、標準的なグラフニューラルネットワークエンコーダ�
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] Function Vectors in Large Language Models, Eric Todd+, arXiv'23, 2023.10</title>
-<original-paper-blog-link>https://arxiv.org/abs/2310.15213</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5669</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, ICLR, Selected Papers/Blogs, reading, One-Line Notes</tags>
-<repo-issue-date>2026-06-02</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2310.15213
-# Authors
-  - Eric Todd
-  - Millicent L. Li
-  - Arnab Sen Sharma
-  - Aaron Mueller
-  - Byron C. Wallace
-  - David Bau
-# Abstract
-  - We report the presence of a simple neural mechanism that represents an input-output function as a vector within autoregressive transformer language models (LMs). Using causal mediation analysis on a diverse range of in-context-learning (ICL) tasks, we find that a small number attention heads transport a compact representation of the demonstrated task, which we call a function vector (FV). FVs are robust to changes in context, i.e., they trigger execution of the task on inputs such as zero-shot and natural text settings that do not resemble the ICL contexts from which they are collected. We test FVs across a range of tasks, models, and layers and find strong causal effects across settings in middle layers. We investigate the internal structure of FVs and find while that they often contain information that encodes the output space of the function, this information alone is not sufficient to reconstruct an FV. Finally, we test semantic vector composition in FVs, and find that to some extent they can be summed to create vectors that trigger new complex tasks. Our findings show that compact, causal internal vector representations of function abstractions can be explicitly extracted from LLMs. Our code and data are available at https://functions.baulab.info.
-# Translation (by gpt-5-nano)
-- 自己回帰型トランスフォーマー言語モデル（LMs）の中で、入力と出力の関数をベクトルとして表現する単純なニューラル機構の存在を報告する。因果媒介分析を、さまざまな文脈内学習（ICL）タスクに対して適用したところ、少数のアテンションヘッドがデモンストレーションされたタスクのコンパクトな表現を伝達することが分かり、これをファンクションベクトル（FV）と呼ぶ。FVは文脈の変化に対して頑健であり、ゼロショットや自然言語テキスト設定のようなICLの文脈と類似しない入力に対しても、タスクの実行を引き起こす。FVを、タスク・モデル・層の範囲にわたって検証したところ、中間層の設定間で強い因果効果が見られることを発見した。FVの内部構造を調査したところ、FVにはしばしば関数の出力空間を符号化する情報が含まれることが多いが、この情報だけではFVを再構成することはできない。最後に、FVにおける意味ベクトルの組成を検証し、それらをある程度足し合わせることで新たな複雑なタスクを引き起こすベクトルを作成できることを示した。我々の知見は、関数抽象のコンパクトで因果的な内部ベクトル表現をLLMsから明示的に抽出できることを示している。コードとデータは https://functions.baulab.info に公開されている。
-# Summary (by gpt-4o-mini)
-- 自己回帰型トランスフォーマーLMsにおける入力と出力の関数を表すベクトルとしてのファンクションベクトル（FV）の存在を示す。因果媒介分析を用いて、少数のアテンションヘッドがタスクのコンパクトな表現を伝達することを確認し、FVがゼロショットや自然言語テキストのICLタスクに対しても頑健であることを明らかにした。中間層間での因果効果が強いことが判明し、FVには出力空間を符号化する情報が含まれているが、これだけではFVの再構成は不可である。さらに、FVにおける意味ベクトルの組成を調査し、足し合わせることで新たなタスクを引き起こすことができることを示した。これにより、関数抽象のコンパクトで因果的な内部表現をLLMsから抽出できることが確認された。</issue-body>
-<maintainer-comment-text><p>openreview: 
-
-{% raw %}
-<a href="https://openreview.net/forum?id=AwyxtyMwaG" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=AwyxtyMwaG</a>
-{% endraw %}
-
-</p><p>本研究では、In-context Learningを実施した際のLLMにおいて、あるタスクにおいて応答を生成する際に、当該タスクで必要な変換に関する情報を保持しているベクトル（Function Vectors）が、LLMの attention_ output に存在することを示唆する結果を得た。Function Vectorsは直接的にタスクを実施するわけではないが、特定の手続きを言語モデル内で遂行させるトリガーの役割を果たす。<br><br><img src="https://github.com/user-attachments/assets/d78c497b-d0e0-4c71-9931-2a991a2ee5a6" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Function Vectorを検出するために、あるタスク t において、Figure 2のようなinput-outputのペア (x_i, y_i) のみで promptingをすることでタスクを遂行させる方法を考える。また、prompt p が与えられたときに、outputをランダムな出力~y_iに変更した input-outputペア (x_i, ~y_i) prompt ~pを考える。このとき、あるタスクの遂行に強い影響を与えるLLM中のactivationを特定したい。<br><br>このために、本研究ではトークンをまたいだ情報のやりとりはattentionを介して実行されることから、分析対象をattentionに限定し、まず正常な in-context prompt p を入力した際の全てのlayer l のattention output a_lj (jはheadのindex) を計算する。続いて、ランダムな出力に置換され破損した in-context prompt ~p を入力した際に、ある layer l, head j のattentionを正常なin-context prompt p に基づいて計算されたものと置換して出力をさせ、正解 y_i を復元させる効果 Causal Indrect Effect (CIE) を 式(3)により定義する。つまり、破損したprompt ~pを利用した場合に、attentionを置換する前後によって、どれだけ正解y_iが得られる確率が大きくなったか、を測定している。<br><br>このCIEを全てのタスクに対して計算し、平均化することで、各種attention headのAverage Indirect Effectを計算する（式4）。これにより、どのattention headがタスクの遂行において強い因果的な影響力を保持するかを特定する。最終的に、AIEの値が大きなattention head集合Aを考えることができ、この少数のattention headの集合が、ICLタスクを特定し情報を伝達する役割を果たしているという仮説を立てることができる。また、Aが与えられたとき、a_ljのあるタスク t におけるactivationの平均をとることによって、1つのベクトルとして表現することができ、このベクトルのことをFunction Vector と呼ぶ（式5）。</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>[Paper Note] Pythia: A Suite for Analyzing Large Language Models Across Training and Scaling, Stella Biderman+, arXiv'23, 2023.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2304.01373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5036</repo-issue-link>
@@ -27141,6 +27111,36 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Develop Physical AI Reasoning, World, and Action Models with NVIDIA Cosmos 3, nvidia, 2026.05</title>
+<original-paper-blog-link>https://developer.nvidia.com/blog/develop-physical-ai-reasoning-world-and-action-models-with-nvidia-cosmos-3</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5670</repo-issue-link>
+<tags>ComputerVision, NLP, MultiModal, OpenWeight, Selected Papers/Blogs, VideoGeneration/Understandings, Robotics, WorldModels, UMM, reading, Omni, One-Line Notes, WorldActionModel, Author Thread-Post</tags>
+<repo-issue-date>2026-06-02</repo-issue-date>
+<issue-body>https://developer.nvidia.com/blog/develop-physical-ai-reasoning-world-and-action-models-with-nvidia-cosmos-3</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liu_mingyu/status/2061525730996240738?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>公式:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nvidiaai/status/2061308434629132553?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>encoder-freeなOmniモダリティモデルで、かつ将来の世界の状態、およびactionを予測可能なWorldActionModel<br><br><img src="https://github.com/user-attachments/assets/39c7dd38-682e-4815-9f30-2f5eed5decc2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
