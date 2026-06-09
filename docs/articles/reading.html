@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 28 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 hours 20 mins</span>
   </div></header>
 </div>
     </div>
@@ -1545,7 +1545,7 @@ My Issue
 </div>
 
 
-</p><p>提案されたベンチマークでは3つの次元で測定するが、特にユーザから本来とは異なる古い前提のクエリ与えられたときに、それを否定し、自身のメモリからgroundingされた情報に基づいて応答を生成させるテスト（Premise Resistence; 3.5節)に苦戦することが示されている(Table 2)。<br><br>他の二つの次元は<br>- State Resolution: 以前の記憶がすでに無効であることをモデルに対して直接テスト<br>- Implicit Policy Adaptation: 前提知識を提示せずに、最新の記憶に基づいて応答しなければならない質問（e.g., 今週の通勤プランを教えて）に対するテスト</p><p>This paper addresses one of the most critical failure modes in agent memory systems: **implicit conflict detection** — when new information invalidates old memory without explicitly saying so.<br><br>### The 55.2% accuracy ceiling is a wake-up call<br><br>The fact that even the best evaluated model achieves only 55.2% on detecting when memories are stale suggests that **current memory frameworks are fundamentally reactive rather than proactive**. They store and retrieve, but they do not *evaluate* whether stored information is still valid.<br><br>### Three-dimensional probing is the right framework<br><br>The STALE benchmark's three dimensions map well to real-world agent memory failure modes:<br><br>| Dimension | Real-world scenario | AgentRelay's approach |<br>|-----------|-------------------|----------------------|<br>| **State Resolution** | "The API endpoint changed from v1 to v2" — agent must detect the old endpoint reference is outdated | Memory freshness scoring: new facts about known entities lower confidence of old facts |<br>| **Premise Resistance** | User asks "How do I use the old auth system?" — agent must resist the premise if the system was deprecated | Contradiction detection: when retrieving context, flag items that conflict with newer knowledge |<br>| **Implicit Policy Adaptation** | "Schedule the meeting" — agent must know the timezone changed without being told | Cross-entity propagation: a change in one entity triggers re-evaluation of related memories |<br><br>### CUPMem's write-time revision is promising but incomplete<br><br>CUPMem's approach of strengthening write-time revision through structured state consolidation is a good step, but it only handles **explicit updates**. The harder problem — which STALE correctly identifies — is **implicit updates**: when a new fact contradicts an old fact without directly negating it.<br><br>For example:<br>- Old memory: "Team meetings are on Mondays at 10am"<br>- New memory: "Team meetings moved to Wednesdays at 2pm"<br><br>This is an explicit update. But:<br>- Old memory: "The project uses Python 3.9"<br>- New memory: "The CI pipeline now requires Python 3.12 features"<br><br>This is an *implicit* update — the old fact is invalidated by a downstream consequence, not by a direct statement.<br><br>**AgentRelay handles this with a dependency graph**: each memory item declares what other items it depends on. When a memory is updated, the graph propagates the change to dependent items, triggering re-evaluation.<br><br>### Suggestion for future benchmark work<br><br>Add a fourth dimension: **Propagation Depth** — how many hops of indirect dependency can a memory system correctly trace when a fact is updated? This would measure whether the system can handle cascading memory invalidation (like the CI pipeline → Python version → project dependencies chain).<br><br>---<br><br>*Disclosure: I work on AgentRelay, a cross-platform agent memory and skill middleware. We have implemented dependency-graph-based memory invalidation to handle the exact failure modes STALE identifies. The paper's findings validate our architectural choices. Happy to collaborate on extending the benchmark with propagation depth testing.*<br></p></span><br><br>
+</p><p>提案されたベンチマークでは3つの次元で測定するが、特にユーザから本来とは異なる古い前提のクエリ与えられたときに、それを否定し、自身のメモリからgroundingされた情報に基づいて応答を生成させるテスト（Premise Resistence; 3.5節)に苦戦することが示されている(Table 2)。<br><br>他の二つの次元は<br>- State Resolution: 以前の記憶がすでに無効であることをモデルに対して直接テスト<br>- Implicit Policy Adaptation: 前提知識を提示せずに、最新の記憶に基づいて応答しなければならない質問（e.g., 今週の通勤プランを教えて）に対するテスト</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="evolm-self-evolving-5468" class="title-link">[Paper Note] EvoLM: Self-Evolving Language Models through Co-Evolved Discriminative Rubrics, Shuyue Stella Li+, arXiv'26, 2026.05</h3><br><a href="https://arxiv.org/abs/2605.03871" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -1812,6 +1812,87 @@ My Issue
 
 
 </p><p>知識の忘却と編集のダイナミクスを制約付きの最適化問題として統一的にモデル化（式3;この最適化問題を実際に解いているわけではなくあくまで理論的にこう定式化できるねという話だと思われる）し、<br><br>この定式化を通じて見ると、編集と忘却の違いはターゲットとする分布q_targetの選び方の違いにすぎず、様々な編集と忘却の先行研究は手法は違えど、この制約付きの最適化問題の異なるインスタンスを解いているに過ぎないという視点を提供しているようである。これにより、編集と忘却のトレードオフを公平に比較することが可能となるという主張をしているように見える（自信ない）。<br><br>そして、編集と忘却のトレードオフを厳格に分析するためのベンチマークとして、階層的な依存関係や（local vs. global)、更新の多段階での伝播を扱えるベンチマークが必要だが既存ベンチマークではこれらが不足しているため、<br>知識グラフに基づいて自動的に構築されたデータとベンチマーク（Figure 1を見るにテンプレートベースのMCQを)を作成して分析。<br><br>分析には6つのモデルファミリーの13のモデルが用いられ、スケールは1B--123Bの幅広いスケールのモデルで検証された。<br><br><img src="https://github.com/user-attachments/assets/b8f3968c-2222-4e02-bd9a-a189c78d6309" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>（先行研究も含めてしっかり読まないと、式3と実験で用いられている手法AlphaEdit, ReLearnの関係性がちょっとわからなそう）<br><br>著者ポストにおいては、以下のようなtakeawayが記載されており、大きな知見としてはLLMはデータベースではなく、トレードオフを持つ複雑に絡み合ったシステムであり、以下のような点を明らかにした<br><br>- 知識の編集は意図しない変更を引き起こし<br>- 忘却は知識の完全な消去には失敗する<br>- 更新する知識を増やせば増やすほど、ローカルの知識は更新されるが、グローバルな一貫性が崩壊し<br>- 変更することが極めて困難な知識（たとえば歴史）が存在する<br><br>とのことである。</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="evaluating-agents.md-4710" class="title-link">[Paper Note] Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?, Thibaud Gloaguen+, arXiv'26, 2026.02</h3><br><a href="https://arxiv.org/abs/2602.11988" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4710" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="Dataset.html" target="_blank" rel="noopener noreferrer">#Dataset</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="AIAgents.html" target="_blank" rel="noopener noreferrer">#AIAgents</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="Coding.html" target="_blank" rel="noopener noreferrer">#Coding</a>
+<a class="button" href="SoftwareEngineering.html" target="_blank" rel="noopener noreferrer">#SoftwareEngineering</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<a class="button" href="AGENTS.md.html" target="_blank" rel="noopener noreferrer">#AGENTS.md</a>
+<span class="issue_date">Issue Date: 2026-02-27</span>
+<span class="snippet"><span>GPT Summary</span>- コーディングエージェントのタスク完遂性能を評価するため、LLMが生成したコンテキストファイルと開発者提供のファイルを用いた2つの設定を検討。結果、コンテキストファイルは成功率を低下させ、推論コストを増加させる傾向が見られた。両者はタスクの探求を促進するが、不要な要件がタスクを難化させるため、最小限の要件のみを記述することが推奨される。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2026306141181898887?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>（現時点では）LLMによって自動生成されたコンテキストファイルは性能を劣化させ、inference costを増大させ、人間が作成したコンテキストファイルは性能を向上させる。コンテキストファイルによってoverviewを提供することを推奨しているものがあるが、性能向上には寄与しない。コンテキストファイルに従うことはより多くのthinkingを誘発し、結果的にタスクを難しくする。最小限のrequirementsのみを記述したものを使うことを推奨する、といった内容らしい？</p><p>関連: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2026346652206780786?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>best practiceは以下とのこと:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4717" target="_blank" rel="noopener noreferrer">
+<strong># Writing a good CLAUDE.md, Kyle, 2025.11</a>
+</strong>
+<br>
+</p><p>解説: 
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2026354033418547444?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>非常にコンパクトにまとまっている。</p><p>解説:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2029932070143705193?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>解説:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rasbt/status/2063649136323252397?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="hybrid-linear-4529" class="title-link">[Paper Note] Hybrid Linear Attention Done Right: Efficient Distillation and Effective Architectures for Extremely Long Contexts, Yingfa Chen+, arXiv'26, 2026.01</h3><br><a href="https://arxiv.org/abs/2601.22156" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2169,35 +2250,6 @@ My Issue
 
 
 </p><p>読む</p></span><br><br>
-</article>
-<article class="paper-entry">
-<h3 id="a-functional-5681" class="title-link">A Functional Taxonomy of World Models, Fei-Fei Li, 2026.06</h3><br><a href="https://x.com/drfeifei/status/2062247238143996275?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-Paper/Blog Link
-</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5681" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
-</svg>
-My Issue
-</a><br>
-<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
-<a class="button" href="Post.html" target="_blank" rel="noopener noreferrer">#Post</a>
-<a class="button" href="WorldModels.html" target="_blank" rel="noopener noreferrer">#WorldModels</a>
-<a class="button" href="Author-Thread-Post.html" target="_blank" rel="noopener noreferrer">#Author Thread-Post</a>
-<span class="issue_date">Issue Date: 2026-06-04</span>
-<span class="snippet"><span>Comment</span><p>元ポスト:
-
-
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/drfeifei/status/2062247238143996275?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-
-
-</p><p>（後ほど追記）<br> <br>- 世界モデルは現在最も重要だが、最も多義的な概念の一つになっている。<br>  - 様々な分野がWorld Modelを構築していると主張するが、意味するところが実際に大きく異なる<br>- 世界モデルという用語のもともとの枠組みは「部分観測マルコフ決定過程 (POMDP)」<br>  - エージェントは行動を実行し、行動は世界の状態に影響を与え、エージェントは観測データを受け取り（≠状態を認識する）、新たな観測データに基づいてアクションが実行される、といったループが繰り返される<br>  - ここで、「状態」とは、ある時点における世界で何が起きているかに関する完全なdescriptionであり、エージェントは状態自体を観測はできない（観測＝部分的な認識）<br>  - </p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="is-frontier-5674" class="title-link">Is Frontier Asynchronous RL Solved?, Luke J. Huang, 2026.05</h3><br><a href="https://luk-huang.github.io/personal-website/blog/is-frontier-asynchronous-rl-solved.html" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -2878,47 +2930,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Tutorial.html" title="Tutorialに関する論文・技術記事メモの一覧">Tutorialに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Author-Thread-Post.html" title="Author Thread-Postに関する論文・技術記事メモの一覧">Author Thread-Postに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Tutorial.html" title="Tutorialに関する論文・技術記事メモの一覧">Tutorialに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Blog.html" title="Blogに関する論文・技術記事メモの一覧">Blogに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Optimizer.html"
-            title="Optimizerに関する論文・技術記事メモの一覧">
-            Optimizerに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SoftwareEngineering.html"
+            title="SoftwareEngineeringに関する論文・技術記事メモの一覧">
+            SoftwareEngineeringに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 50</span> 
-  <span class="post-badge badge-new">📝 50</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 197</span> 
+  <span class="post-badge badge-new">📝 197</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AACL.html"
-            title="AACLに関する論文・技術記事メモの一覧">
-            AACLに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ExplicitFeedback.html"
+            title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
+            ExplicitFeedbackに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/MLSys.html"
-            title="MLSysに関する論文・技術記事メモの一覧">
-            MLSysに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/EntropyCollapse.html"
+            title="EntropyCollapseに関する論文・技術記事メモの一覧">
+            EntropyCollapseに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 7</span> 
+  <span class="post-badge badge-new">📝 7</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AIAgents.html"
-            title="AIAgentsに関する論文・技術記事メモの一覧">
-            AIAgentsに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Pretraining.html"
+            title="Pretrainingに関する論文・技術記事メモの一覧">
+            Pretrainingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 627</span> 
-  <span class="post-badge badge-new">📝 627</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 318</span> 
+  <span class="post-badge badge-new">📝 318</span>
 </span>
 </a>
         </li></ul>
