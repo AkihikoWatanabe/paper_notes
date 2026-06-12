@@ -19,17 +19,17 @@
 <meta property="og:title" content="Sentenceに関する論文・技術記事メモの一覧" />
 <meta name="author" content="AkihikoWATANABE" />
 <meta property="og:locale" content="ja" />
-<meta name="description" content="Sentence [Paper Note] Large Concept Models: Language Modeling in a Sentence Representation Space, LCM team+, arXiv&#39;24, 2024.12 Paper/Blog Link My Issue #NLP #LanguageModel #Tokenizer #Surface-level Notes #Concept (LLM PreTraining) Issue Date: 2024-12-24 GPT Summary- 大規模言語モデル（LLMs）の限界を克服するために、概念を用いた新しいアーキテクチャ「Large Concept Model」を提案。これは、テキストと音声の両方に対応し、200言語をサポートする文埋め込み空間SONARを活用。自己回帰的な文予測に基づき、複数のアプローチ（MSE回帰や拡散ベース生成）で実験し、パラメータを増加させたモデルでも印象的なゼロショット一般化性能を示す。訓練コードは公開されている。 Commentまだ全く読めていないが、従来のLLMはnent-token-predictionで学習をしており、transformers decoderの内部状態で何らかの抽象的な概念はとらえているものの、次トークン予測に前回生成したトークンをinputするのが必須である以上「トークンで考える」みたいな挙動をある程度はしてしまっており、人間はそんなことしないですよね？みたいな話だと思われる。人間はもっと抽象的なコンセプトレベルで物事を考えることができるので、それにより近づけるために、conceptをsentenceとしてみなして、next-concept-predictionでモデルを学習したらゼロショットの汎化性能上がりました、みたいな話のように見える。ただし、評価をしているのはマルチリンガルな文書要約タスクのみに見える。追記: コンセプトが言語非依存だとすると、コンセプト間の関係性を学習するLCMが、マルチリンガルでトークンレベルの学習しかしない従来LLMを上回るのも納得いく気はする。なぜなら、従来LLMよりも言語（トークン）への依存が緩和されていると思われるので、言語間を跨いだ知識の転移が起きやすいと考えられるからである。&lt;img src=&quot;https://github.com/user-attachments/assets/2f3dc98d-ef27-44b8-be1c-0f27a05f37e8&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/effc21ba-22db-42c0-bc33-1d43f9e0200a&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Base-LCMを見ると、文の埋め込みのground truthと生成された文の埋め込みの差を最小化する（Mean Squared Error） ようなlossになっている。つまり、トークンレベルではなく、より抽象的な概念を直接学習するような設計になっているためここが従来のLLMと異なる。&lt;img src=&quot;https://github.com/user-attachments/assets/01da9a76-f5fb-4e79-b3cf-8bddc123379b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;これを実現するために、ground truthとなる文の埋め込みx_nが分からなければいけないが、このために、freezeしたEncoderとDecoderを用意してLCMにconcatしていると思われる。つまり、入力と出力のconceptを解釈する機構は固定して、正解となる文埋め込みを決めてしまう。そして、LCMはinputされたconceptを別のconceptに変換するような機構となっており、その変換の関係性を学習している。なるほど、なんとなく気持ちはわかった。日本語を含むいくつかの言語でゼロショット性能が低下しているのが興味深い。日本語特有の概念とか、特定の言語固有の概念は欠落する可能性が示唆される。 [Paper Note] SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, arXiv&#39;21, 2021.04 Paper/Blog Link My Issue #Embeddings #NLP #LanguageModel #RepresentationLearning #ContrastiveLearning #Catastrophic Forgetting #EMNLP #Selected Papers/Blogs #Surface-level Notes Issue Date: 2023-07-27 GPT Summary- SimCSEは、文の埋め込み表現を向上させる単純な対照学習フレームワークです。教師なしアプローチでは、入力文が自身を予測し、ドロップアウトがノイズとして機能します。この手法は従来の教師あり方法と同等の成果を上げ、ドロップアウトを除去すると表現の質が低下することが分かりました。また、教師付きアプローチでは、自然言語推論データセットからの注釈付きペアを活用し、対照学習に組み込みます。評価結果では、教師なしモデルが76.3%、教師ありモデルが81.6%のSpearmanの相関を達成し、既存のベスト結果をそれぞれ改善しました。対照学習の目的が埋め込みの空間の正則化に貢献することも示されました。 Comment[Paper Note] Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Nils Reimers+, arXiv&#39;19, 2019.08 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる# 手法概要Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる）Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違いどちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;（画像はこのブログから引用。ありがとうございます。" />
-<meta property="og:description" content="Sentence [Paper Note] Large Concept Models: Language Modeling in a Sentence Representation Space, LCM team+, arXiv&#39;24, 2024.12 Paper/Blog Link My Issue #NLP #LanguageModel #Tokenizer #Surface-level Notes #Concept (LLM PreTraining) Issue Date: 2024-12-24 GPT Summary- 大規模言語モデル（LLMs）の限界を克服するために、概念を用いた新しいアーキテクチャ「Large Concept Model」を提案。これは、テキストと音声の両方に対応し、200言語をサポートする文埋め込み空間SONARを活用。自己回帰的な文予測に基づき、複数のアプローチ（MSE回帰や拡散ベース生成）で実験し、パラメータを増加させたモデルでも印象的なゼロショット一般化性能を示す。訓練コードは公開されている。 Commentまだ全く読めていないが、従来のLLMはnent-token-predictionで学習をしており、transformers decoderの内部状態で何らかの抽象的な概念はとらえているものの、次トークン予測に前回生成したトークンをinputするのが必須である以上「トークンで考える」みたいな挙動をある程度はしてしまっており、人間はそんなことしないですよね？みたいな話だと思われる。人間はもっと抽象的なコンセプトレベルで物事を考えることができるので、それにより近づけるために、conceptをsentenceとしてみなして、next-concept-predictionでモデルを学習したらゼロショットの汎化性能上がりました、みたいな話のように見える。ただし、評価をしているのはマルチリンガルな文書要約タスクのみに見える。追記: コンセプトが言語非依存だとすると、コンセプト間の関係性を学習するLCMが、マルチリンガルでトークンレベルの学習しかしない従来LLMを上回るのも納得いく気はする。なぜなら、従来LLMよりも言語（トークン）への依存が緩和されていると思われるので、言語間を跨いだ知識の転移が起きやすいと考えられるからである。&lt;img src=&quot;https://github.com/user-attachments/assets/2f3dc98d-ef27-44b8-be1c-0f27a05f37e8&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/effc21ba-22db-42c0-bc33-1d43f9e0200a&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Base-LCMを見ると、文の埋め込みのground truthと生成された文の埋め込みの差を最小化する（Mean Squared Error） ようなlossになっている。つまり、トークンレベルではなく、より抽象的な概念を直接学習するような設計になっているためここが従来のLLMと異なる。&lt;img src=&quot;https://github.com/user-attachments/assets/01da9a76-f5fb-4e79-b3cf-8bddc123379b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;これを実現するために、ground truthとなる文の埋め込みx_nが分からなければいけないが、このために、freezeしたEncoderとDecoderを用意してLCMにconcatしていると思われる。つまり、入力と出力のconceptを解釈する機構は固定して、正解となる文埋め込みを決めてしまう。そして、LCMはinputされたconceptを別のconceptに変換するような機構となっており、その変換の関係性を学習している。なるほど、なんとなく気持ちはわかった。日本語を含むいくつかの言語でゼロショット性能が低下しているのが興味深い。日本語特有の概念とか、特定の言語固有の概念は欠落する可能性が示唆される。 [Paper Note] SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, arXiv&#39;21, 2021.04 Paper/Blog Link My Issue #Embeddings #NLP #LanguageModel #RepresentationLearning #ContrastiveLearning #Catastrophic Forgetting #EMNLP #Selected Papers/Blogs #Surface-level Notes Issue Date: 2023-07-27 GPT Summary- SimCSEは、文の埋め込み表現を向上させる単純な対照学習フレームワークです。教師なしアプローチでは、入力文が自身を予測し、ドロップアウトがノイズとして機能します。この手法は従来の教師あり方法と同等の成果を上げ、ドロップアウトを除去すると表現の質が低下することが分かりました。また、教師付きアプローチでは、自然言語推論データセットからの注釈付きペアを活用し、対照学習に組み込みます。評価結果では、教師なしモデルが76.3%、教師ありモデルが81.6%のSpearmanの相関を達成し、既存のベスト結果をそれぞれ改善しました。対照学習の目的が埋め込みの空間の正則化に貢献することも示されました。 Comment[Paper Note] Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Nils Reimers+, arXiv&#39;19, 2019.08 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる# 手法概要Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる）Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違いどちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;（画像はこのブログから引用。ありがとうございます。" />
+<meta name="description" content="Sentence [Paper Note] Repetition Improves Language Model Embeddings, Jacob Mitchell Springer+, ICLR&#39;25, 2024.02 Paper/Blog Link My Issue #Embeddings #NLP #ICLR #Decoder #One-Line Notes Issue Date: 2026-06-11 GPT Summary- エコー埋め込みを通じて、自己回帰LMをアーキテクチャ変更なしで高品質なテキスト埋め込みモデルに転換。入力を繰り返すことで埋め込みを抽出し、ゼロショット設定で従来の埋め込みを5％以上上回る性能を発揮。監督付きファインチューニングでも双方向化済みLMと同等かそれ以上の結果を示し、埋め込みモデルにおける双方向注意機構の不要性を証明。全てのNLPタスクへの統一アーキテクチャの実現に寄与。 Commentopenreview:" />
+<meta property="og:description" content="Sentence [Paper Note] Repetition Improves Language Model Embeddings, Jacob Mitchell Springer+, ICLR&#39;25, 2024.02 Paper/Blog Link My Issue #Embeddings #NLP #ICLR #Decoder #One-Line Notes Issue Date: 2026-06-11 GPT Summary- エコー埋め込みを通じて、自己回帰LMをアーキテクチャ変更なしで高品質なテキスト埋め込みモデルに転換。入力を繰り返すことで埋め込みを抽出し、ゼロショット設定で従来の埋め込みを5％以上上回る性能を発揮。監督付きファインチューニングでも双方向化済みLMと同等かそれ以上の結果を示し、埋め込みモデルにおける双方向注意機構の不要性を証明。全てのNLPタスクへの統一アーキテクチャの実現に寄与。 Commentopenreview:" />
 <link rel="canonical" href="http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html" />
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-12-24T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-06-11T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Sentenceに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2024-12-24T00:00:00+00:00","datePublished":"2024-12-24T00:00:00+00:00","description":"Sentence [Paper Note] Large Concept Models: Language Modeling in a Sentence Representation Space, LCM team+, arXiv&#39;24, 2024.12 Paper/Blog Link My Issue #NLP #LanguageModel #Tokenizer #Surface-level Notes #Concept (LLM PreTraining) Issue Date: 2024-12-24 GPT Summary- 大規模言語モデル（LLMs）の限界を克服するために、概念を用いた新しいアーキテクチャ「Large Concept Model」を提案。これは、テキストと音声の両方に対応し、200言語をサポートする文埋め込み空間SONARを活用。自己回帰的な文予測に基づき、複数のアプローチ（MSE回帰や拡散ベース生成）で実験し、パラメータを増加させたモデルでも印象的なゼロショット一般化性能を示す。訓練コードは公開されている。 Commentまだ全く読めていないが、従来のLLMはnent-token-predictionで学習をしており、transformers decoderの内部状態で何らかの抽象的な概念はとらえているものの、次トークン予測に前回生成したトークンをinputするのが必須である以上「トークンで考える」みたいな挙動をある程度はしてしまっており、人間はそんなことしないですよね？みたいな話だと思われる。人間はもっと抽象的なコンセプトレベルで物事を考えることができるので、それにより近づけるために、conceptをsentenceとしてみなして、next-concept-predictionでモデルを学習したらゼロショットの汎化性能上がりました、みたいな話のように見える。ただし、評価をしているのはマルチリンガルな文書要約タスクのみに見える。追記: コンセプトが言語非依存だとすると、コンセプト間の関係性を学習するLCMが、マルチリンガルでトークンレベルの学習しかしない従来LLMを上回るのも納得いく気はする。なぜなら、従来LLMよりも言語（トークン）への依存が緩和されていると思われるので、言語間を跨いだ知識の転移が起きやすいと考えられるからである。&lt;img src=&quot;https://github.com/user-attachments/assets/2f3dc98d-ef27-44b8-be1c-0f27a05f37e8&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;&lt;img src=&quot;https://github.com/user-attachments/assets/effc21ba-22db-42c0-bc33-1d43f9e0200a&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;Base-LCMを見ると、文の埋め込みのground truthと生成された文の埋め込みの差を最小化する（Mean Squared Error） ようなlossになっている。つまり、トークンレベルではなく、より抽象的な概念を直接学習するような設計になっているためここが従来のLLMと異なる。&lt;img src=&quot;https://github.com/user-attachments/assets/01da9a76-f5fb-4e79-b3cf-8bddc123379b&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;これを実現するために、ground truthとなる文の埋め込みx_nが分からなければいけないが、このために、freezeしたEncoderとDecoderを用意してLCMにconcatしていると思われる。つまり、入力と出力のconceptを解釈する機構は固定して、正解となる文埋め込みを決めてしまう。そして、LCMはinputされたconceptを別のconceptに変換するような機構となっており、その変換の関係性を学習している。なるほど、なんとなく気持ちはわかった。日本語を含むいくつかの言語でゼロショット性能が低下しているのが興味深い。日本語特有の概念とか、特定の言語固有の概念は欠落する可能性が示唆される。 [Paper Note] SimCSE: Simple Contrastive Learning of Sentence Embeddings, Tianyu Gao+, arXiv&#39;21, 2021.04 Paper/Blog Link My Issue #Embeddings #NLP #LanguageModel #RepresentationLearning #ContrastiveLearning #Catastrophic Forgetting #EMNLP #Selected Papers/Blogs #Surface-level Notes Issue Date: 2023-07-27 GPT Summary- SimCSEは、文の埋め込み表現を向上させる単純な対照学習フレームワークです。教師なしアプローチでは、入力文が自身を予測し、ドロップアウトがノイズとして機能します。この手法は従来の教師あり方法と同等の成果を上げ、ドロップアウトを除去すると表現の質が低下することが分かりました。また、教師付きアプローチでは、自然言語推論データセットからの注釈付きペアを活用し、対照学習に組み込みます。評価結果では、教師なしモデルが76.3%、教師ありモデルが81.6%のSpearmanの相関を達成し、既存のベスト結果をそれぞれ改善しました。対照学習の目的が埋め込みの空間の正則化に貢献することも示されました。 Comment[Paper Note] Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks, Nils Reimers+, arXiv&#39;19, 2019.08 よりも性能良く、unsupervisedでも学習できる。STSタスクのベースラインにだいたい入ってる# 手法概要Contrastive Learningを活用して、unsupervised/supervisedに学習を実施する。Unsupervised SimCSEでは、あるsentenceをencoderに2回入力し、それぞれにdropoutを適用させることで、positive pairを作成する。dropoutによって共通のembeddingから異なる要素がマスクされた（noiseが混ざった状態とみなせる）類似したembeddingが作成され、ある種のdata augmentationによって正例を作成しているともいえる。負例はnegative samplingする。（非常にsimpleだが、next sentence predictionで学習するより性能が良くなる）Supervised SimCSEでは、アノテーションされたsentence pairに基づいて、正例・負例を決定する。本研究では、NLIのデータセットにおいて、entailment関係にあるものは正例として扱う。contradictions（矛盾）関係にあるものは負例として扱う。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/ba20a1ca-0078-4227-8bb3-3805ee57a620&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;# Siamese Networkで用いられるmeans-squared errrorとContrastiveObjectiveの違いどちらもペアワイズで比較するという点では一緒だが、ContrastiveObjectiveは正例と近づいたとき、負例と遠ざかったときにlossが小さくなるような定式化がされている点が異なる。&lt;img src=&quot;https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d9cad930-e86d-4758-87b5-4237525a154a&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&quot; alt=&quot;image&quot; loading=&quot;lazy&quot; width=&quot;550&quot; height=&quot;400&quot;/&gt;（画像はこのブログから引用。ありがとうございます。","headline":"Sentenceに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-06-11T00:00:00+00:00","datePublished":"2026-06-11T00:00:00+00:00","description":"Sentence [Paper Note] Repetition Improves Language Model Embeddings, Jacob Mitchell Springer+, ICLR&#39;25, 2024.02 Paper/Blog Link My Issue #Embeddings #NLP #ICLR #Decoder #One-Line Notes Issue Date: 2026-06-11 GPT Summary- エコー埋め込みを通じて、自己回帰LMをアーキテクチャ変更なしで高品質なテキスト埋め込みモデルに転換。入力を繰り返すことで埋め込みを抽出し、ゼロショット設定で従来の埋め込みを5％以上上回る性能を発揮。監督付きファインチューニングでも双方向化済みLMと同等かそれ以上の結果を示し、埋め込みモデルにおける双方向注意機構の不要性を証明。全てのNLPタスクへの統一アーキテクチャの実現に寄与。 Commentopenreview:","headline":"Sentenceに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Sentence.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2024-12-24T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Dec 24, 2024
+    <time class="dt-published" datetime="2026-06-11T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jun 11, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 38 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 43 mins</span>
   </div></header>
 </div>
     </div>
@@ -1031,6 +1031,59 @@ function googleTranslateElementInit() {
     <div class="post-content e-content" itemprop="articleBody">
 
       <h2 id=Sentence class="paper-head"> Sentence</h2><div class="visible-content">
+<article class="paper-entry">
+<h3 id="repetition-improves-5778" class="title-link">[Paper Note] Repetition Improves Language Model Embeddings, Jacob Mitchell Springer+, ICLR'25, 2024.02</h3><br><a href="https://arxiv.org/abs/2402.15449" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5778" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="ICLR.html" target="_blank" rel="noopener noreferrer">#ICLR</a>
+<a class="button" href="Decoder.html" target="_blank" rel="noopener noreferrer">#Decoder</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<span class="issue_date">Issue Date: 2026-06-11</span>
+<span class="snippet"><span>GPT Summary</span>- エコー埋め込みを通じて、自己回帰LMをアーキテクチャ変更なしで高品質なテキスト埋め込みモデルに転換。入力を繰り返すことで埋め込みを抽出し、ゼロショット設定で従来の埋め込みを5％以上上回る性能を発揮。監督付きファインチューニングでも双方向化済みLMと同等かそれ以上の結果を示し、埋め込みモデルにおける双方向注意機構の不要性を証明。全てのNLPタスクへの統一アーキテクチャの実現に寄与。</span>
+<span class="snippet"><span>Comment</span><p>openreview: 
+
+
+<a href="https://openreview.net/forum?id=Ahlrf2HGJR" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Ahlrf2HGJR</a>
+
+
+</p><p>autorgressiveなモデルで文embeddingを取得する際に、単に文のtokenをpoolingするのではなく、embeddingを取得したいsentenceを繰り返し、2回目に出現したtokenのpoolingによってsentence embeddingを形成すると良質な文embeddingを取得できる。これは、あるtokenから見たときに未来のtokenの情報をautoregressiveなモデルは考慮できないことに起因する。<br><img src="https://github.com/user-attachments/assets/58dff74f-7e93-4b64-8472-3ebf161982f5" /" alt="image" loading="lazy" width="550" height="400"/><br><br>PromptingのRE2とアイデアが似ている。同じPromptを複数回繰り返すことにより、autoregressiveモデルに対してbi-directionalなエンコーダのような性質を付与する:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1110" target="_blank" rel="noopener noreferrer">[Paper Note] Re-Reading Improves Reasoning in Large Language Models, Xiaohan Xu+, EMNLP'24, 2023.09</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="scaling-sentence-5777" class="title-link">[Paper Note] Scaling Sentence Embeddings with Large Language Models, Ting Jiang+, EMNLP'24 Findings, 2023.07</h3><br><a href="https://arxiv.org/abs/2307.16645" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5777" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Embeddings.html" target="_blank" rel="noopener noreferrer">#Embeddings</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="In-ContextLearning.html" target="_blank" rel="noopener noreferrer">#In-ContextLearning</a>
+<a class="button" href="EMNLP.html" target="_blank" rel="noopener noreferrer">#EMNLP</a>
+<a class="button" href="Findings.html" target="_blank" rel="noopener noreferrer">#Findings</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="Reading-Reflections.html" target="_blank" rel="noopener noreferrer">#Reading Reflections</a>
+<span class="issue_date">Issue Date: 2026-06-11</span>
+<span class="snippet"><span>GPT Summary</span>- 文脈内学習に基づく手法を用いて、大規模言語モデル（LLMs）の文の埋め込み性能を向上。自己回帰モデル向けにプロンプトベースの表現法を適用し、ファインチューニングなしで高品質な文の埋め込みを生成可能。モデルサイズを拡大するとSTSタスクで性能の変化が見られるが、最大モデルは他のモデルを上回り、転移タスクで最先端結果を達成。2.7BのOPTモデルが4.8BのST5を超える性能を示した。</span>
+<span class="snippet"><span>Comment</span><p>1 wordでsentenceを要約するICL-basedなprompt templateを用いて生成されたtokenに対応するlast hidden statedeをsentenceのembeddingとして扱うことで、coder-onlyモデルから文のembeddingを取得する<br><img src="https://github.com/user-attachments/assets/993258df-831f-456f-b230-a4ad2b899358" /" alt="image" loading="lazy" width="550" height="400"/></p><p>下記研究で示されているように、last hidden stateではなく中間層におけるhidden stateを利用した場合はどのような影響が出るのだろうか？ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1924" target="_blank" rel="noopener noreferrer">[Paper Note] Layer by Layer: Uncovering Hidden Representations in Language Models, Oscar Skean+, ICML'25</a>
+</p></span><br><br>
+</article>
 <article class="paper-entry">
 <h3 id="large-concept-1611" class="title-link">[Paper Note] Large Concept Models: Language Modeling in a Sentence Representation Space, LCM team+, arXiv'24, 2024.12</h3><br><a href="https://arxiv.org/abs/2412.08821" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
@@ -1341,47 +1394,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/RelevanceJudgment.html" title="RelevanceJudgmentに関する論文・技術記事メモの一覧">RelevanceJudgmentに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SessionBased.html" title="SessionBasedに関する論文・技術記事メモの一覧">SessionBasedに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Selected-Papers-Blogs.html" title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">Selected Papers/Blogsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SparseAttention.html" title="SparseAttentionに関する論文・技術記事メモの一覧">SparseAttentionに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/INLG.html"
-            title="INLGに関する論文・技術記事メモの一覧">
-            INLGに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/A2A.html"
+            title="A2Aに関する論文・技術記事メモの一覧">
+            A2Aに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
-  <span class="post-badge badge-new">📝 4</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/SparseAttention.html"
-            title="SparseAttentionに関する論文・技術記事メモの一覧">
-            SparseAttentionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/WorldActionModel.html"
+            title="WorldActionModelに関する論文・技術記事メモの一覧">
+            WorldActionModelに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 25</span> 
-  <span class="post-badge badge-new">📝 25</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Video-Continuation.html"
-            title="Video Continuationに関する論文・技術記事メモの一覧">
-            Video Continuationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/SIGIR.html"
+            title="SIGIRに関する論文・技術記事メモの一覧">
+            SIGIRに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
-  <span class="post-badge badge-new">📝 16</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 19</span> 
+  <span class="post-badge badge-new">📝 19</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Planning.html"
-            title="Planningに関する論文・技術記事メモの一覧">
-            Planningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Real-to-Sim.html"
+            title="Real-to-Simに関する論文・技術記事メモの一覧">
+            Real-to-Simに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 13</span> 
-  <span class="post-badge badge-new">📝 13</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>
