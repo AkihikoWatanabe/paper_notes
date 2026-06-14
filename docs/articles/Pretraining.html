@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-06-11T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-06-13T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Pretrainingに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-06-11T00:00:00+00:00","datePublished":"2026-06-11T00:00:00+00:00","description":"Pretraining [Paper Note] Drifting Objectives for Refining Discrete Diffusion Language Models, Daisuke Oba+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #LanguageModel #DiffusionModel #read-later #Author Thread-Post Issue Date: 2026-06-11 GPT Summary- DDLMはカテゴリカルなトークンをデノイズしてテキストを生成しますが、連続生成モデルの漂移法をこのアプローチに応用することを検討します。具体的には、TokenDriftを定式化し、ソフトトークン特徴に基づく漂移を行うことで、DDLMの生成品質を改善しました。実験により、TokenDriftが既存の連続ベースラインを上回る成果を示し、生成品質が著しく向上することが確認されました。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-06-13T00:00:00+00:00","datePublished":"2026-06-13T00:00:00+00:00","description":"Pretraining [Paper Note] Drifting Objectives for Refining Discrete Diffusion Language Models, Daisuke Oba+, arXiv&#39;26, 2026.05 Paper/Blog Link My Issue #LanguageModel #DiffusionModel #read-later #Author Thread-Post Issue Date: 2026-06-11 GPT Summary- DDLMはカテゴリカルなトークンをデノイズしてテキストを生成しますが、連続生成モデルの漂移法をこのアプローチに応用することを検討します。具体的には、TokenDriftを定式化し、ソフトトークン特徴に基づく漂移を行うことで、DDLMの生成品質を改善しました。実験により、TokenDriftが既存の連続ベースラインを上回る成果を示し、生成品質が著しく向上することが確認されました。 Comment元ポスト:","headline":"Pretrainingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Pretraining.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-06-11T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jun 11, 2026
+    <time class="dt-published" datetime="2026-06-13T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jun 13, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 hours 39 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 hours 40 mins</span>
   </div></header>
 </div>
     </div>
@@ -10176,6 +10176,36 @@ My Issue
 <span class="snippet"><span>Comment</span><p>seq2seqにおいてweightのpretrainingを行う手法を提案<br><br>seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。<br><br>WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。<br><br><br><br>encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。<br><br>fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）<br><br>LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。<br><br><br><br>Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。<br><br>LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。<br><br>sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。<br><br><br><br>LM Objectiveは結構使えそうな印象</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="olmo-eval-an-5796" class="title-link">olmo-eval: An evaluation workbench for the model development loop, Ai2, 2026.06</h3><br><a href="https://allenai.org/blog/olmo-eval" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5796" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Evaluation.html" target="_blank" rel="noopener noreferrer">#Evaluation</a>
+<a class="button" href="ExperimentManagement.html" target="_blank" rel="noopener noreferrer">#ExperimentManagement</a>
+<a class="button" href="Author-Thread-Post.html" target="_blank" rel="noopener noreferrer">#Author Thread-Post</a>
+<span class="issue_date">Issue Date: 2026-06-13</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/allen_ai/status/2065465355523277278?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="pc-layer-5764" class="title-link">[Paper Note] PC Layer: Polynomial Weight Preconditioning for Improving LLM Pre-Training</h3><br><a href="https://arxiv.org/abs/2606.06470" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -12574,24 +12604,34 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/PostTraining.html" title="PostTrainingに関する論文・技術記事メモの一覧">PostTrainingに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Probing.html" title="Probingに関する論文・技術記事メモの一覧">Probingに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/LanguageModel.html" title="LanguageModelに関する論文・技術記事メモの一覧">LanguageModelに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Selected-Papers-Blogs.html" title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">Selected Papers/Blogsに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/MajorityVoting.html"
-            title="MajorityVotingに関する論文・技術記事メモの一覧">
-            MajorityVotingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/LearningPhenomena.html"
+            title="LearningPhenomenaに関する論文・技術記事メモの一覧">
+            LearningPhenomenaに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 12</span> 
-  <span class="post-badge badge-new">📝 12</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Readability.html"
-            title="Readabilityに関する論文・技術記事メモの一覧">
-            Readabilityに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/OpinionMining.html"
+            title="OpinionMiningに関する論文・技術記事メモの一覧">
+            OpinionMiningに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Scheming.html"
+            title="Schemingに関する論文・技術記事メモの一覧">
+            Schemingに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -12599,22 +12639,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Parallelism.html"
-            title="Parallelismに関する論文・技術記事メモの一覧">
-            Parallelismに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RetokenizationDrift.html"
+            title="RetokenizationDriftに関する論文・技術記事メモの一覧">
+            RetokenizationDriftに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 8</span> 
-  <span class="post-badge badge-new">📝 8</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/Scheduler-free.html"
-            title="Scheduler-freeに関する論文・技術記事メモの一覧">
-            Scheduler-freeに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>
