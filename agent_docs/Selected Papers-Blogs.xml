@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-13">
+<paper-list last-updated="2026-06-16">
+<paper-entry>
+<title>[Paper Note] Improving Robotic Generalist Policies via Flow Reversal Steering, Andy Tang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.13675</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5798</repo-issue-link>
+<tags>ComputerVision, NLP, Selected Papers/Blogs, VisionLanguageModel, Robotics, VisionLanguageActionModel, reading, One-Line Notes, Steering, Author Thread-Post</tags>
+<repo-issue-date>2026-06-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.13675
+# Authors
+  - Andy Tang
+  - William Chen
+  - Andrew Wagenmaker
+  - Chelsea Finn
+  - Sergey Levine
+# Abstract
+  - Generalist policies can learn a wide range of skills from diverse robot datasets. In order to solve or improve on challenging new tasks, we need a way to infer and invoke the appropriate actions from the policy's rich behavioral prior, especially when directly commanding the policy fails. We focus on flow matching generalists and propose Flow Reversal Steering (FRS): a method that takes suboptimal but ``reasonable'' actions, finds their latent noises by passing them through the flow policy in reverse, and maps them to nearby generalist action modes. We evaluate FRS across many simulated and real-world manipulation settings. First, FRS can turn coarse semantic guidance from humans or vision-language models (VLMs) into corresponding good robot actions, improving zero-shot control. These gains can be distilled with behavioral cloning by training an auxiliary policy to output noises that the generalist maps to good actions -- showing up to 95% absolute task success rate boosts in under a minute of training. Finally, FRS enables policy improvement by bootstrapping reinforcement learning with semantic knowledge, improving on several tasks that standard RL fails to improve on.
+# Translation (by gpt-5-nano)
+- 汎用ポリシーは、多様なロボットデータセットから幅広いスキルを学習できる。難しい新しいタスクを解決したり改善したりするためには、ポリシーの豊富な行動の事前知識を推定して適切な行動を呼び出す方法が必要であり、特に直接指示してもうまくいかない場合にはなおさらである。我々は Flow Matching Generalists（フロー・マッチング汎用ポリシー）に焦点を当て、Flow Reversal Steering（FRS）を提案する。これは、サブ最適だが「合理的な」行動を取り、それらをフロー・ポリシーに逆向きに通して潜在ノイズを見つけ出し、それを近傍の汎用的なアクションモードへ写像する手法である。我々はFRSを、数多くのシミュレーションおよび実世界の操作設定で評価する。まず、FRSは人間やビジョン-言語モデル（VLMs）からの粗い意味論的指示を、それに対応する良いロボットアクションへと変換し、ゼロショット制御を改善する。これらの利得は、一般ポリシーが良いアクションへ写像するノイズを出力する補助ポリシーを訓練して得られる挙動クローニングによって蒸留できる――訓練を1分未満で行い、最大で95%の絶対タスク成功率の向上を示す。最後に、FRSは意味知識を用いて強化学習をブートストラップすることでポリシーを改善し、標準的なRLが改善できなかったいくつかのタスクで改善を示す。
+# Summary (by gpt-4o-mini)
+- 汎用ポリシーが多様なロボットデータセットから学習する中で、Flow Matching GeneralistsとFlow Reversal Steering（FRS）を提案し、サブ最適な行動を逆向きに通して潜在ノイズを特定、汎用的なアクションモードへ写像する手法を検証。FRSは粗い意味論的指示を良いロボットアクションに変換し、ゼロショット制御を改善。訓練を短時間で行い、最大95%のタスク成功率向上を示し、強化学習をブートストラップしてさらなる改善を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vai_viswanathan/status/2065469909581111441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>VLMや人間によって、<br>- Coarse Reference Action関する情報（=意味的には妥当だがロボットがアクションを実施するには粗すぎる情報; move straight right等）を与え、<br>- Coarse Reference Action を対応するVLAのreference action a_1に変換し<br>- a_1に基づいてVLAが良いアクションを生成できる潜在ノイズをFlow Matchingモデルを時間方向にbackwardさせる（noising process）ことで推定し、<br>- 同定した潜在ノイズから順方向にdenoisingすることで、妥当なアクションをsteeringする<br> <br>Flow Reversal Sterring (FRS) を提案。FRSにはzero-shot、かつonlineでsteeringができる利点がある。<br><br>
+<strong>## Diffusion Steering via Behavioral Cloning (DSBC)<br>FRSはSupervised Learningにも活用できる。具体的には、reference actionに基づいたノイズ a^hat_0を用いてobservationからノイズを生成するノイズ方策を直接behavior cloning（=observation oが与えられた時に、a^hat_0を出力する確率を最大化する最尤推定; p.6冒頭）する。<br><br><img src="https://github.com/user-attachments/assets/88968834-12bd-4b99-a9f4-a1314b825714" /" alt="image" loading="lazy" width="550" height="400"/><br><br>学習データ（observation, good noiseのタプル）の収集方法は大きく分けて2通りあり<br>- オンライン: zero-shot FRSを実際に環境でロールアウトし、タスクが成功したときノイズをgood noiseとして記録する<br>- オフライン: 既存の(observation, action)データをFRSで変換し(observation, action noise)のタプルに変換して学習に利用する<br><br>このような学習手法をDSBCと呼ぶ。<br><br>## DSRL + FRS<br>上述のFRSとDSRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5818" target="_blank" rel="noopener noreferrer">[Paper Note] Steering Your Diffusion Policy with Latent Space Reinforcement Learning, Andrew Wagenmaker+, arXiv'25, 2025.06</a>
+</strong>
+<br>
+ を組み合わせることで、DSRLの安定性を向上させる手法。DSRLは一言で言うと、アクション生成のシードとなる良いノイズを生成できるポリシー（ノイズ方策）をRLを通じて学習する手法らしく、RLをする際の報酬に対して、DSBCを重み付きで加えることによって、エキスパートのノイズから大きく逸脱することを防ぐ正則化の役割を追加する。<br><br><img src="https://github.com/user-attachments/assets/c54882ee-be38-4c47-8595-5607703d39cb" /" alt="image" loading="lazy" width="550" height="400"/><br><br>完全に読めたわけではないが、おもしろい。勉強になった。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] The Invisible Hand of Physics: When Video Diffusion Models Know More Than They Show, Parsa Esmati+, arXiv'26, 2026.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2606.05328</original-paper-blog-link>
@@ -31,7 +68,7 @@
 </div>
 {% endraw %}
 
-</p><p>動画生成モデルの内部表現の線形プロービングで物理的妥当性を予測できる。このことより、動画生成モデルの内部には物理学に関する内部モデルが内包されていることが示唆される。</p></maintainer-comment-text>
+</p><p>動画生成モデルの内部表現の線形プロービングで、動画の物理的妥当性を予測できる。このことより、動画生成モデルの内部には物理学に関する内部モデルが内包されていることが示唆される。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -10611,7 +10648,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Shaping capabilities with token-level data filtering, Neil Rathi+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.21571</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4349</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, Safety, read-later, Toxicity, Selected Papers/Blogs, SparseAutoEncoder</tags>
+<tags>Pretraining, NLP, LanguageModel, Safety, read-later, Toxicity, Selected Papers/Blogs, SparseAutoencoder</tags>
 <repo-issue-date>2026-01-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.21571
@@ -11809,7 +11846,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Reasoning Models Generate Societies of Thought, Junsol Kim+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.10825</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4243</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, Chain-of-Thought, Reasoning, PostTraining, read-later, Probing, Diversity, Selected Papers/Blogs, SparseAutoEncoder</tags>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, Chain-of-Thought, Reasoning, PostTraining, read-later, Probing, Diversity, Selected Papers/Blogs, SparseAutoencoder</tags>
 <repo-issue-date>2026-01-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.10825
@@ -13735,6 +13772,46 @@ demo: https://openscilm.allen.ai/</issue-body>
 {% endraw %}
 
 </p><p>自動的なプロンプトエンジニアリングでGRPOを上回れるのであれば、downstreamタスクにLLMを適用したい場合に、手元にデータがあるのであれば、強めのGPUマシンがなくても非常に汎用性が高い手法となるので重要研究に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Rubrics as Rewards: Reinforcement Learning Beyond Verifiable Domains, Anisha Gunjal+, ICLR'26, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.17746</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2280</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, ICLR, PostTraining, Selected Papers/Blogs, Rubric-based</tags>
+<repo-issue-date>2025-07-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.17746
+# Authors
+  - Anisha Gunjal
+  - Anthony Wang
+  - Elaine Lau
+  - Vaskar Nath
+  - Bing Liu
+  - Sean Hendryx
+# Abstract
+  - Extending Reinforcement Learning with Verifiable Rewards (RLVR) to real-world tasks often requires balancing objective and subjective evaluation criteria. However, many such tasks lack a single, unambiguous ground truth-making it difficult to define reliable reward signals for post-training language models. While traditional preference-based methods offer a workaround, they rely on opaque reward functions that are difficult to interpret and prone to spurious correlations. We introduce $\textbf{Rubrics as Rewards}$ (RaR), a framework that uses structured, checklist-style rubrics as interpretable reward signals for on-policy training with GRPO. Our best RaR method yields up to a $28\%$ relative improvement on HealthBench-1k compared to simple Likert-based approaches, while matching or surpassing the performance of reward signals derived from expert-written references. By treating rubrics as structured reward signals, we show that RaR enables smaller-scale judge models to better align with human preferences and sustain robust performance across model scales.
+# Translation (by gpt-4o-mini)
+- 強化学習に検証可能な報酬を拡張する（RLVR）ことは、実世界のタスクにおいて客観的および主観的な評価基準のバランスを取ることがしばしば求められる。しかし、そのようなタスクの多くは単一の明確な真実を欠いており、トレーニング後の言語モデルに対して信頼できる報酬信号を定義することが難しい。従来の好みベースの手法は回避策を提供するが、解釈が難しく、虚偽の相関関係に陥りやすい不透明な報酬関数に依存している。そこで、私たちは「報酬としてのルーブリック」（RaR）というフレームワークを提案する。これは、構造化されたチェックリストスタイルのルーブリックを解釈可能な報酬信号として使用し、GRPOによるオンポリシー学習を行うものである。私たちの最良のRaR手法は、単純なリッカートベースのアプローチと比較してHealthBench-1kで最大28%の相対的改善を達成し、専門家が作成した参照から導出された報酬信号の性能に匹敵するか、それを上回る結果を示した。ルーブリックを構造化された報酬信号として扱うことで、RaRは小規模な判定モデルが人間の好みにより良く一致し、モデルのスケールにわたって堅牢な性能を維持できることを示した。
+# Summary (by gpt-4o-mini)
+- 報酬としてのルーブリック（RaR）フレームワークを提案し、構造化されたチェックリストスタイルのルーブリックを解釈可能な報酬信号として使用。HealthBench-1kで最大28%の相対的改善を達成し、専門家の参照に匹敵またはそれを上回る性能を示す。RaRは小規模な判定モデルが人間の好みに一致し、堅牢な性能を維持できることを証明。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/1948235609190867054?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=c1bTcrDmt4" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=c1bTcrDmt4</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -28670,7 +28747,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] Sparse Autoencoders Find Highly Interpretable Features in Language   Models, Hoagy Cunningham+, ICLR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.08600</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1802</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, ICLR, Selected Papers/Blogs, KeyPoint Notes, SparseAutoEncoder, Interpretability, InterpretabilityScore</tags>
+<tags>Analysis, NLP, LanguageModel, ICLR, Selected Papers/Blogs, KeyPoint Notes, SparseAutoencoder, Interpretability, InterpretabilityScore</tags>
 <repo-issue-date>2025-03-15</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.08600
@@ -36321,6 +36398,52 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 </paper-entry>
 
 <paper-entry>
+<title>GLM-5.2: Built for Long-Horizon Tasks, Z.ai, 2026.06</title>
+<original-paper-blog-link>https://z.ai/blog/glm-5.2</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5819</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, PPO (ProximalPolicyOptimization), OpenWeight, Selected Papers/Blogs, Critic, LongHorizon, Initial Impression Notes</tags>
+<repo-issue-date>2026-06-16</repo-issue-date>
+<issue-body>https://z.ai/blog/glm-5.2</issue-body>
+<maintainer-comment-text><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/zai-org/GLM-5.2" target="_blank" rel="noopener noreferrer">https://huggingface.co/zai-org/GLM-5.2</a>
+{% endraw %}
+
+</p><p>1Mコンテキストでフロンティアモデルには少し劣るが非常に高い性能。SWE Bench ProではGPT5.5をoutperform、Terminal Bench/DeepSWEなどでは3--12pt程度GPT5.5が高い。Opus4.8はさらにスコアが高い。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zai_org/status/2066938937344495629?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Artificial Analysis Intelligence IndexでOpenWeightモデルでSoTA更新:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2067135640249209175?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>MiniMax-M3超え</p><p>long Horizonのタスクの学習でGRPOではなく、criticベースのPPOを利用:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hallerite/status/2066969117043941613?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Statement on the US government directive to suspend access to Fable 5 and Mythos 5, Anthropic, 2026.06</title>
 <original-paper-blog-link>https://www.anthropic.com/news/fable-mythos-access</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5794</repo-issue-link>
@@ -36337,12 +36460,22 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 </div>
 {% endraw %}
 
-</p><p>ありゃー、これはやばめかも...</p><p>所見:
+</p><p>ありゃー、これはやばめかも...</p><p>所見:<br>- 
 
 {% raw %}
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/imai_eruel/status/2065609709256839429?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/imai_eruel/status/2066052388507549972?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -36488,7 +36621,7 @@ github: https://github.com/AntheaLi/open-research-seeds</issue-body>
 <title>Improving our LLM Pretraining Efficiency, Open Athena, 2026.06</title>
 <original-paper-blog-link>https://openathena.ai/blog/pretraining-speedup/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5708</repo-issue-link>
-<tags>read-later, Selected Papers/Blogs, Author Thread-Post</tags>
+<tags>Pretraining, NLP, LanguageModel, Optimizer, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, Author Thread-Post</tags>
 <repo-issue-date>2026-06-06</repo-issue-date>
 <issue-body>https://openathena.ai/blog/pretraining-speedup/</issue-body>
 <maintainer-comment-text><p>元ポスト: 

@@ -1,5 +1,397 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-14">
+<paper-list last-updated="2026-06-17">
+<paper-entry>
+<title>[Paper Note] ExpRL: Exploratory RL for LLM Mid-Training, Violet Xiang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.17024</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5826</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, LLM-as-a-Judge, mid-training, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.17024
+# Authors
+  - Violet Xiang
+  - Amrith Setlur
+  - Chase Blagden
+  - Nick Haber
+  - Aviral Kumar
+# Abstract
+  - Sparse reward reinforcement learning (RL) has become a standard tool for improving LLM reasoning, but its success depends critically on the coverage present in the base model. In practice, models are often primed for RL through \emph{mid-training} on curated reasoning traces that teach useful primitive skills such as decomposition, verification, or self-correction. Although effective, this strategy requires manually specifying what the model should learn, and it remains unclear whether such primitive coverage is enough for much harder problems, which require combining these skills into broader solution strategies. We study a more automated approach: \emph{RL-based mid-training} using large corpora of human-written question-answer data. Rather than treating reference solutions as targets to imitate, our method, ExpRL, uses them as \emph{reward scaffolds}: references are hidden from the policy and used only to construct problem-specific grading rubrics for judging on-policy reasoning traces. The policy samples from the original problem prompt, while an LLM judge compares the sampled reasoning trace against the reference solution and assigns outcome-level or process-level dense rewards. This lets ExpRL reinforce partial progress, useful intermediate reductions, and productive reasoning behaviors that sparse final-answer rewards often fail to upweight. On challenging math reasoning tasks, ExpRL yields stronger RL priming than SFT, sparse-reward GRPO, and self-distillation, and provides a better initialization for subsequent sparse-reward RL. Additional mixed-domain experiments further suggest that ExpRL can extend beyond the original math-only setting.
+# Translation (by gpt-5-nano)
+- スパース報酬強化学習（RL）は、LLMの推論能力を向上させる標準的なツールとなっているが、その成功は基盤モデルに備わる網羅性に大きく依存する。実務では、モデルはしばしば RL の準備として、中間訓練における厳選された推論軌跡を用い、分解、検証、自己訂正といった有用な原始スキルを教える。効果的ではあるものの、この戦略は学習させる内容を手動で指定する必要があり、これらの原始的なカバレッジが、これらのスキルをより広範な解法戦略へ組み合わせる必要があるような、より難しい問題に対して十分であるかどうかは依然として不明である。より自動化されたアプローチを検討する。大規模な人間作成の質問応答データのコーパスを用いたRLベースの中間訓練である。参照解を模倣すべきターゲットとして扱うのではなく、ExpRLはこれらを報酬の足場として用いる。参照解はポリシーから隠され、オンポリシー推論軌跡を評価するための問題特有の採点ルーブリックを構築する目的でのみ用いられる。ポリシーは元の問題プロンプトから推論をサンプリングし、LLM判定者はサンプリングされた推論軌跡を参照解と比較して、結果レベルの報酬またはプロセスレベルの密な報酬を割り当てる。これによりExpRLは、最終回答報酬が乏しい場合に強化されにくい部分的な進捗、有用な中間段階の簡略化、そして生産的な推論行動を強化できる。難解な数学的推論タスクでは、ExpRLはSFT、スパース報酬GRPO、自己蒸留よりも強いRLプリミングを生み出し、その後のスパース報酬RLの初期化をより良く提供する。追加の混合ドメイン実験は、ExpRLが元の数学のみの設定を超えて拡張し得ることをさらに示唆している。
+# Summary (by gpt-4o-mini)
+- スパース報酬強化学習（RL）は、LLMの推論を向上させる方法だが、成功は基盤モデルの網羅性に依存する。従来の方法では、中間訓練に選ばれた推論軌跡を用いてスキルを教えるが、手動指定が必要であり、そのカバレッジが難しい問題に対して十分かは不明である。新たなアプローチとして、ExpRLは人間作成の質問応答データを用い、参照解を報酬の基盤として扱う。ポリシーは問題プロンプトから推論をサンプリングし、LLM判定者がバックグラウンド報酬を割り当てることで部分的進捗を強化する。ExpRLは、難解な数学的推論タスクにおいて、他手法よりも優れたRLプリミングを実現し、スパース報酬RLの初期化を改善することが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ziyux/status/2066933142083207443?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>post-trainingでGRPOをすると、報酬がsparse(モデルが解けない問題に対してはadvanatageがゼロ)となりシグナルが得られない問題があるが、これをmid trainingの段階で参照データをdense報酬のためのscaffoldingとして活用することで、後続のsparseなRLの性能を改善する。どうやらmid trainingの段階で、参照データを与えた（＝scaffolding) verifierを用意し、LLM-as-a-Judgeを通じて密な報酬（すなわち、最終的な応答だけでなく途中のtrajectoryの良し悪しからも報酬を得る）を与え、後続のsparseなRLのためのwarmupをする。warmupにはSFTやself-distillationが用いられることが多く、これら手法は基本的には参照データの模倣学習であるため汎化性能を犠牲（i.e., これはらトークンレベルの学習シグナルであらため、自由な探索が抑制されエントロピーが下がる）にしていたが、提案手法ではDense RewardなRLを用いることで探索が促進され（＝高いエントロピーが保たれる）warmupが可能となる、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Ling and Ring 2.6 Technical Report: Efficient and Instant Agentic Intelligence at Trillion-Parameter Scale, Ang Li+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.15079</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5821</repo-issue-link>
+<tags>NLP, LanguageModel, OpenWeight, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.15079
+# Authors
+  - Ang Li
+  - Ben Liu
+  - Bin Han
+  - Bin Hu
+  - Bin Jing
+  - Binbin Hu
+  - Bing Li
+  - Cai Chen
+  - Caizhi Tang
+  - Changxin Tian
+  - Chao Huang
+  - Chao Zhang
+  - Chen Liang
+  - Chen Qian
+  - Chengfu Tang
+  - Chengyao Wen
+  - Chilin Fu
+  - Chunwei Wu
+  - Cong Zhang
+  - Cunyin Peng
+  - Daixin Wang
+  - Dalong Zhang
+  - Deng Zhao
+  - Dingnan Jin
+  - Dingyuan Zhu
+  - Donghao Zhang
+  - Fan Yuan
+  - Fangzheng Zhao
+  - Fanzhuang Meng
+  - Feifan Wu
+  - Feng Xu
+  - Fengbin Fang
+  - Gangshan Wang
+  - Guodong Yang
+  - Hailin Zhao
+  - Haitao Wang
+  - Haitao Zhang
+  - Hanxiao Zhang
+  - Hanzi Wang
+  - Hao Dai
+  - Hao Liu
+  - Hao Qian
+  - Hao Wu
+  - Haoxiong Liu
+  - Haoyu Xu
+  - Heng Zhang
+  - Hong Liu
+  - Hongliang Zhang
+  - Hongrui Liu
+  - Hongxun Li
+  - Hongzhi Ruan
+  - Huaidong Xiong
+  - Huihuang Zheng
+  - Huikang Tang
+  - Jia Guo
+  - Jia Li
+  - Jia Liu
+  - Jiameng Wang
+  - Jiaming Liu
+  - Jiannan Shi
+  - Jianping Wei
+  - Jiaolong Yang
+  - Jiapeng Wang
+  - Jie Gao
+  - Jie Wang
+  - Jiewei Wu
+  - Jin Yang
+  - Jinjin Li
+  - Jinjing Huang
+  - Jinquan Sun
+  - Jinyao Chen
+  - Juanhui Tu
+  - Jun Liu
+  - Jun Mei
+  - Jun Xu
+  - Jun Zhou
+  - Junjie Ou
+  - Junnan Sipan
+  - Junpeng Fang
+  - Kaihong Zhang
+  - Kaiqin Hu
+  - Ke Shi
+  - Kuan Xu
+  - Kun Tang
+  - Kunlong Chen
+  - Lanyin Mei
+  - Lei Chen
+  - Lei Liang
+  - Lei Xu
+  - Li Tang
+  - Liang Jiang
+  - Liangcheng Fu
+  - Lihui Zhang
+  - Linfeng Shi
+  - Lintao Ma
+  - Liyuan Liu
+  - Longfei Li
+  - Longfei Zheng
+  - Lu Liu
+  - Lu Yu
+  - Man Li
+  - Meiqi Zhu
+  - Meng Li
+  - Mengjie Gao
+  - Mengshu Sun
+  - Mingming Yin
+  - Mingyang Zhang
+  - Mingyuan Fan
+  - Nuo Xu
+  - Pan Tang
+  - Peijie Jiang
+  - Peilong Zhao
+  - Peng Lin
+  - Pingping Liu
+  - Qi Zuo
+  - Qian Zhao
+  - Qiang Cheng
+  - Qianggang Cao
+  - Qiaoben Bao
+  - Qing Cui
+  - Qingyuan Yang
+  - Qitao Shi
+  - Qiyin Huang
+  - Qizheng Zhou
+  - Quan Wan
+  - Runyuan Zhao
+  - Shaomian Zheng
+  - Shaowei Wei
+  - Shengnan Zhang
+  - Shuaicheng Li
+  - Shujie Li
+  - Shuo Zhang
+  - Sikang Bian
+  - Tianchu Yao
+  - Tiange Xu
+  - Tianshu Wang
+  - Ting Guo
+  - Tinghao Wang
+  - Tingwei Huang
+  - Tong Zhao
+  - Tongkai Yang
+  - Wang Hong
+  - Wanli Gu
+  - Wei Lu
+  - Weichang Wu
+  - Weiguang Han
+  - Weiquan Li
+  - Wenbo Shen
+  - Wenjing Fang
+  - Wenzhi Tang
+  - Xiang Shu
+  - Xiao Shi
+  - Xiaodong Yan
+  - Xiaolu Zhang
+  - Xiaopei Wan
+  - Xiaqing Sun
+  - Xin Zhao
+  - Xingyu Lu
+  - Xinxing Yang
+  - Xinyao Tang
+  - Xinyu Kong
+  - Xinyu Liu
+  - Xiong Xu
+  - Xuan Sun
+  - Xudong Han
+  - Xudong Wang
+  - Xujie Shen
+  - Yalin Zhang
+  - Yangyang Hou
+  - Yankun Ren
+  - Yao Zhao
+  - Ye Chen
+  - Yeyang Chen
+  - Yibo Cao
+  - Yifan Zuo
+  - Yijie Chen
+  - Ying Li
+  - Yingjie Song
+  - Yingxue Li
+  - Yiqi Wang
+  - Yixuan Sun
+  - Yizhu Xiao
+  - Yongfei Xu
+  - Yu Liu
+  - Yuchen Fang
+  - Yue Gao
+  - Yue Yu
+  - Yue Zhang
+  - Yuqi Zhang
+  - Yuxiao He
+  - Yuxiao Lu
+  - Yuxin Tian
+  - Yuxuan Li
+  - Yuzhuo Fu
+  - Zhankai Xu
+  - Zhaoxin Huan
+  - Zhenduo Zhang
+  - Zhengke Gui
+  - Zhengyu Huang
+  - Zhenjun Ma
+  - Zhenxuan Pan
+  - Zheping Qu
+  - Zhibo Zhu
+  - Zhidong Fan
+  - Zhigang Huangfu
+  - Zhihao Wang
+  - Zhiqiang Zhang
+  - Zhizhen Liu
+  - Zhuyan Zhou
+  - Zibin Lin
+  - Zihang Zeng
+  - Zihao Wang
+  - Zilong Wang
+  - Ziqi Liu
+  - Zitao Xuan
+  - Zixuan Cheng
+  - Zujie Wen
+  - Zuoli Tang
+# Abstract
+  - Efficient and scalable agentic intelligence requires models that can deliver both low-latency responses and strong reasoning capabilities while remaining practical to train, serve, and deploy. In this report, we present Ling-2.6 and Ring-2.6, a family of models designed to address this challenge at scale. Ling-2.6 is optimized for instant response generation and high capability per output token, whereas Ring-2.6 is tailored for deeper reasoning and more advanced agentic workflows. Instead of training from scratch, we upgrade the Ling-2.0 base model through architectural migration pre-training and large-scale post-training. This upgrade is guided by a unified co-design of model architecture, optimization objectives, serving systems, and agent training environments, enabling improvements in both model capability and deployment efficiency. At the architectural level, we introduce a hybrid linear attention design that integrates Lightning Attention with MLA, improving the efficiency of long-context training and decoding. To further enhance token efficiency, we optimize capability per output token through Evolutionary Chain-of-Thought, Linguistic Unit Policy Optimization, bidirectional preference alignment, and shortest-correct-response distillation. For agentic capabilities, we propose KPop, a reinforcement learning framework designed to support stable training of Ring-2.6-1T on large-scale environment-grounded data. KPop improves training efficiency through asynchronous scheduling across coding, search, tool use, and workflow execution, enabling scalable learning from complex agent-environment interactions. Together, Ling-2.6 and Ring-2.6 provide a practical pathway toward efficient, scalable, and open agentic systems. We open-source all checkpoints in the 2.6 family to support further research and development in practical agentic intelligence.
+# Translation (by gpt-5-nano)
+- 効率的でスケーラブルなエージェント型知能には、低遅延の応答と強力な推論能力の両方を提供しつつ、訓練・提供・デプロイを現実的に行えるモデルが必要です。本報告では、この課題を規模の点で解決することを目指したモデルファミリ Ling-2.6 および Ring-2.6 を提示します。Ling-2.6 は即時の応答生成と出力トークンあたりの高い能力に最適化されており、一方 Ring-2.6 はより深い推論とより高度なエージェント的ワークフローに特化しています。ゼロから訓練するのではなく、Ling-2.0 ベースモデルをアーキテクチャ移行前訓練と大規模な後訓練を通じてアップグレードします。このアップグレードは、モデルアーキテクチャ・最適化目標・提供システム・エージェント訓練環境の統一的共同設計によって導かれ、モデル能力とデプロイの効率の双方を向上させます。アーキテクチャレベルでは、Lightning AttentionとMLAを統合したハイブリッド線形アテンション設計を導入し、長文脈の訓練とデコードの効率を改善します。さらに、出力トークンあたりの能力を、Evolutionary Chain-of-Thought、Linguistic Unit Policy Optimization、双方向の好み整合、最短・正解応答蒸留によって最適化し、トークン効率を高めます。エージェント的能力については、Ring-2.6-1T の大規模な環境由来データ上での安定訓練を支援するよう設計された強化学習フレームワーク KPop を提案します。KPop はコード化・探索・ツール使用・ワークフロー実行に跨る非同期スケジューリングを通じて訓練効率を向上させ、複雑なエージェント-環境相互作用からのスケーラブルな学習を実現します。 Ling-2.6 と Ring-2.6 は、効率的でスケーラブルかつオープンなエージェント型システムへ向けた実用的な道筋を提供します。我々は実践的なエージェント知能のさらなる研究開発を支援するため、2.6 ファミリの全てのチェックポイントをオープンソース化します。
+# Summary (by gpt-4o-mini)
+- 効率的なエージェント型知能を目指し、Ling-2.6 と Ring-2.6 のモデルファミリを提案。Ling-2.6 は即時応答に特化し、Ring-2.6 は高度な推論に対応。Ling-2.0 からのアップグレードは、モデルの統一的共同設計によって実現。ハイブリッド線形アテンション設計で長文脈の効率を向上し、出力トークンの能力を最適化。Ring-2.6-1T には強化学習フレームワーク KPop を導入し、エージェント-環境学習を強化。2.6 ファミリはオープンエージェント型システムへの実践的道筋を提供し、全チェックポイントをオープンソース化。</issue-body>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5298" target="_blank" rel="noopener noreferrer">inclusionAI: Ling-2.6-flash (free), OpenRouter (InclusionAI), 2026.04</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5521" target="_blank" rel="noopener noreferrer">Ring-2.6-1T, inclusionAI, 2026.05</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/antlingagi/status/2066878964589883571?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] VibeThinker-3B: Exploring the Frontier of Verifiable Reasoning in Small Language Models, Sen Xu+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.16140</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5820</repo-issue-link>
+<tags>NLP, LanguageModel, Coding, Mathematics, SmallModel, Initial Impression Notes</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.16140
+# Authors
+  - Sen Xu
+  - Shixi Liu
+  - Wei Wang
+  - Jixin Min
+  - Yingwei Dai
+  - Zhibin Yin
+  - Yirong Chen
+  - Xin Zhou
+  - Junlin Zhang
+# Abstract
+  - This technical report introduces VibeThinker-3B, a compact dense model with 3B parameters developed to investigate how far verifiable reasoning can be pushed within a strictly small-model regime. Building upon the Spectrum-to-Signal post-training paradigm, we systematically enhance the model through an optimized pipeline that includes curriculum-based supervised fine-tuning, multi-domain reinforcement learning, and offline self-distillation. Experimental evaluations demonstrate that VibeThinker-3B achieves frontier-level performance on highly demanding verifiable tasks. Specifically, it attains a score of 94.3 on AIME26 (improving to 97.1 with claim-level test-time scaling), an 80.2 Pass@1 on LiveCodeBench v6, and exhibits strong out-of-distribution generalization with a 96.1\% acceptance rate on recent unseen LeetCode contests. This effectively places it in the performance band of first-tier reasoning systems, matching or exceeding flagship models that are orders of magnitude larger, such as DeepSeek V3.2, GLM-5, and Gemini 3 Pro. Furthermore, a score of 93.4 on IFEval confirms that this extreme reasoning enhancement does not compromise strict instruction controllability. Extending our previous 1.5B work, these findings motivate the Parametric Compression-Coverage Hypothesis, which views verifiable reasoning as compressible into compact reasoning cores, while open-domain knowledge and general-purpose competence require broad parameter coverage over facts, concepts, and long-tail scenarios. This perspective suggests that compact models are not merely deployment-efficient substitutes, but a complementary path toward frontier-level performance in parameter-dense capability regimes.
+# Translation (by gpt-5-nano)
+- この技術報告は、3Bパラメータを持つコンパクトな密結合モデルVibeThinker-3Bを紹介します。厳密に小さなモデル設定の中で、検証可能な推論をどこまで押し進められるかを調査するために開発されました。Spectrum-to-Signalのポストトレーニング・パラダイムに基づき、カリキュラムベースの教師付きファインチューニング、多ドメインの強化学習、およびオフライン自己蒸留を含む最適化されたパイプラインを通じて、系統的にモデルを強化します。実験評価は、VibeThinker-3Bが高度に要求の厳しい検証可能タスクでフロンティア級の性能を達成することを示しています。具体的には、AIME26で94.3点（クレームレベルのテスト時スケーリングで97.1へ向上）、LiveCodeBench v6でPass@1 80.2、最近の未知のLeetCodeコンテストにおける96.1%の合格率を示します。これにより、第一線級の推論システムの性能帯に実質的に位置づけられ、DeepSeek V3.2、GLM-5、Gemini 3 Pro のように、桁違いに大規模なフラグシップモデルと同等かそれを上回る性能を発揮します。さらに、IFEvalで93.4点を記録し、この極端な推論強化が厳密な指示制御性を損なわないことを確認しています。これまでの1.5Bに関する研究を踏まえ、これらの知見はパラメトリック圧縮-カバレッジ仮説を提唱する動機となり、検証可能な推論をコンパクトな推論コアに圧縮可能と見なす一方で、オープンドメイン知識と汎用的能力には、事実・概念・長尾シナリオにわたる広範なパラメータカバレッジが必要であるとします。この見解は、コンパクトなモデルが単なるデプロイメント効率の代替手段ではなく、パラメータ密度の高い能力領域におけるフロンティア級の性能へ向かう補完的な道であることを示唆しています。
+# Summary (by gpt-4o-mini)
+- VibeThinker-3Bは3Bパラメータを持つ小型密結合モデルで、検証可能推論の限界を調査します。Spectrum-to-Signalに基づく最適化パイプラインを用い、多ドメイン強化学習や自己蒸留を含むファインチューニングを行い、高度な検証可能タスクでフロンティア級の性能を示します。具体的には、AIME26で94.3点、LiveCodeBench v6で80.2%、LeetCodeコンテストで96.1%の合格率を実現しました。この研究は、コンパクトなモデルがフロンティア性能を持ち得ることを示し、パラメトリック圧縮-カバレッジ仮説を提唱します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kimmonismus/status/2066837287460053183?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>3Bモデルでもpost trainingによって、100倍以上大きいモデルよりも数学、コーディングなどのドメインでは同等程度の性能に到達できる。ただし、GPQA Diamondのような知識を必要とするタスクの性能は明確に劣る。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] From AGI to ASI, Tim Genewein+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.12683</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5814</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, AIAgents, GenerativeAI</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.12683
+# Authors
+  - Tim Genewein
+  - Matija Franklin
+  - Alexander Lerchner
+  - Laurent Orseau
+  - Samuel Albanie
+  - Adam Bales
+  - Cole Wyeth
+  - Stephanie Chan
+  - Iason Gabriel
+  - Joel Z. Leibo
+  - Allan Dafoe
+  - Marcus Hutter
+  - Thore Graepel
+  - Shane Legg
+# Abstract
+  - Over the last decade, building human-level artificial general intelligence has moved from far-fetched speculation to being a concrete next-decade target for many of the largest AI organisations. Achieving this goal would have profound and far-reaching impacts on human society, which raises many complex questions for the decade ahead. This report investigates how AI itself might continue to develop in a post-AGI world along the continuum of machine intelligence. The endpoint of this continuum, Universal AI, is theoretically well understood, which provides some formal grounding for the main focus of this report: the transition from human-level AGI to artificial general superintelligence, which, intuitively, can be understood as a system that is more intelligent and cognitively capable than large organisations of humans. After characterizing ASI, the report discusses four potential pathways from AGI to ASI: scaling AGI, AI paradigm shifts, recursive improvement, and ASI emerging from large-scale multi-agent collectives. The report then discusses possible frictions and bottlenecks along these pathways. Determining whether the impact of these frictions will be negligible or substantial raises a number of concrete open research questions. Due to large uncertainties for predicting ASI progress, it cannot be ruled out that AI progress might continue to accelerate over the next years. This could imply that the image of a single transformative step change, caused by the introduction of human-level AGI into our society, could be inaccurate. More apt might be the prospect of a series of transformative societal changes caused by AI-enabled progress and breakthroughs across many areas of science and technology. Preparing for this prospect requires a massively interdisciplinary endeavour of global scope and interest.
+# Translation (by gpt-5-nano)
+- 過去10年間において、人間レベルの人工汎用知能の構築は、遠い臆測から多くの大手AI組織にとって具体的な次の10年の目標へと移行した。この目標を達成することは、人類社会に深く、広範な影響を及ぼすとともに、今後10年間にわたる多くの複雑な問いを生じさせる。本報告は、AGI後の世界において、機械知能の連続体に沿ってAI自身がどのように発展し得るかを検討する。この連続体の終点であるUniversal AIは理論的にはよく理解されており、それが本報告の主眼である「人間レベルのAGIから人工汎用超知能」への移行の形式的な根拠を提供する。直感的には、これは大規模な人間組織よりも知的で認知能力が高いシステムとして理解できる。ASIを特徴づけた後、本報告はAGIからASIへの4つの潜在的な経路を論じる：AGIのスケーリング、AIパラダイムの転換、再帰的改良、そして大規模なマルチエージェント集合から出現するASI。次に、これらの経路に沿った摩擦やボトルネックの可能性を検討する。これらの摩擦の影響が無視できる程度か重大なものかを判断することは、いくつかの具体的な未解決の研究課題を生み出す。ASIの進展を予測する際の不確実性が大きいため、今後の数年間でAIの進歩が加速し続ける可能性を排除することはできない。これは、人間レベルのAGIを社会に導入することによって生じる単一の変革的な飛躍のイメージが不正確であることを意味するかもしれない。より適切なのは、AIを介した進歩と、科学技術の多くの分野でのブレークスルーによって引き起こされる連続的な社会変革の見通しであるかもしれない。この見通しに備えるには、世界規模かつ極めて学際的な取り組みが必要である。
+# Summary (by gpt-4o-mini)
+- 人間レベルのAGIの構築が具体的な目標となり、その影響は広範囲にわたる。報告では、Universal AIへの移行を理論的に論じ、AGIからASIへの4つの経路（スケーリング、パラダイム転換、再帰的改良、マルチエージェント集合）を考察。摩擦やボトルネックに関する具体的な研究課題を提示し、AIの進展が加速する可能性を排除できないと述べ、単一の変革的飛躍よりも連続的な社会変革の可能性を強調。これには学際的な国際協力が不可欠である。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2065944715447742704?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LLM Explainability with Counterfactual Chains and Causal Graphs, Nirit Nussbaum-Hoffer+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.05972</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5812</repo-issue-link>
+<tags>GraphBased, NLP, LanguageModel, Explanation, Reasoning</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.05972
+# Authors
+  - Nirit Nussbaum-Hoffer
+  - Nitay Calderon
+  - Liat Ein-Dor
+  - Roi Reichart
+# Abstract
+  - Causal graphs provide a high-level language for making mechanisms transparent. Recent work uses Large Language Models (LLMs) to recover causal graphs of external-world processes. Instead, in this paper, we use causal graphs to model LLM inference itself, providing stakeholders with a transparent view of how the model perceives and organizes high-level concepts to produce a prediction. We propose a four-phase method for constructing such graphs. Given a target LLM and a set of textual examples, our method discovers class-discriminative, human-interpretable concepts and maps each input to LLM-perceived concept states. We then introduce an MCMC-inspired counterfactual augmentation procedure that expands the sparse observational data through chains of counterfactuals. This enables stable causal discovery with $σ$-CG, yielding informative, interpretable graphs. We apply our method to three LLMs across disease diagnosis, sentiment analysis, and LLM-as-a-judge classification tasks. We evaluate the learned graphs for predictive fidelity and structural stability, and the MCMC-inspired augmentation for convergence and downstream utility. Our results show that the discovered causal graphs capture meaningful dependencies consistent with LLMs' reasoning. Together, this paper provides a foundation for concept-level explainability of LLMs.
+# Translation (by gpt-5-nano)
+- 因果グラフはメカニズムを透明にするための高レベルな言語を提供します。最近の研究は大規模言語モデル（LLMs）を用いて外部世界のプロセスの因果グラフを回復します。本論文では、これに対し因果グラフを用いてLLMの推論そのものをモデル化し、モデルが高レベルの概念をどのように知覚し、整理して予測を生み出すかを、利害関係者に透明な形で示します。私たちはこのようなグラフを構築するための四段階の手法を提案します。対象となるLLMと一連のテキスト例を前提に、本手法はクラス判別性が高く人間が解釈可能な概念を発見し、各入力をLLMが認識する概念状態へマッピングします。次に、MCMCに触発された反事実補強手法を導入し、反事実の連鎖を通じて希薄な観測データを拡張します。これにより σ-CG を用いた安定な因果推定が可能となり、情報量が多く解釈可能なグラフを得ることができます。私たちは本手法を疾病診断、感情分析、そしてLLMを審判として用いる分類タスクの3つのLLMに適用します。学習されたグラフを予測忠実度と構造的安定性で評価し、また反事実補強の収束性と下流の有用性を評価します。結果は、発見された因果グラフがLLMの推論と整合する意味のある依存関係を捉えていることを示しています。総じて、本論文はLLMの概念レベルの説明可能性の基盤を提供します。
+# Summary (by gpt-4o-mini)
+- 因果グラフを用いてLLMの推論プロセスを透明にモデル化。四段階の手法で解釈可能な概念を発見し、入力を概念状態へマッピング。反事実補強により因果推定を安定化し、疾病診断や感情分析に適用。結果は因果グラフがLLMの推論と整合する依存関係を捉えていることを示し、説明可能性の基盤を提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2065705734923567189?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] MiniMax Sparse Attention, Xunhao Lai+, arXiv'26, 2026.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2606.13392</original-paper-blog-link>
@@ -39,6 +431,43 @@
 {% endraw %}
 
 </p><p>GQAの各グループに対してTopKをサンプリングして利用する</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Improving Robotic Generalist Policies via Flow Reversal Steering, Andy Tang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.13675</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5798</repo-issue-link>
+<tags>ComputerVision, NLP, Selected Papers/Blogs, VisionLanguageModel, Robotics, VisionLanguageActionModel, reading, One-Line Notes, Steering, Author Thread-Post</tags>
+<repo-issue-date>2026-06-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.13675
+# Authors
+  - Andy Tang
+  - William Chen
+  - Andrew Wagenmaker
+  - Chelsea Finn
+  - Sergey Levine
+# Abstract
+  - Generalist policies can learn a wide range of skills from diverse robot datasets. In order to solve or improve on challenging new tasks, we need a way to infer and invoke the appropriate actions from the policy's rich behavioral prior, especially when directly commanding the policy fails. We focus on flow matching generalists and propose Flow Reversal Steering (FRS): a method that takes suboptimal but ``reasonable'' actions, finds their latent noises by passing them through the flow policy in reverse, and maps them to nearby generalist action modes. We evaluate FRS across many simulated and real-world manipulation settings. First, FRS can turn coarse semantic guidance from humans or vision-language models (VLMs) into corresponding good robot actions, improving zero-shot control. These gains can be distilled with behavioral cloning by training an auxiliary policy to output noises that the generalist maps to good actions -- showing up to 95% absolute task success rate boosts in under a minute of training. Finally, FRS enables policy improvement by bootstrapping reinforcement learning with semantic knowledge, improving on several tasks that standard RL fails to improve on.
+# Translation (by gpt-5-nano)
+- 汎用ポリシーは、多様なロボットデータセットから幅広いスキルを学習できる。難しい新しいタスクを解決したり改善したりするためには、ポリシーの豊富な行動の事前知識を推定して適切な行動を呼び出す方法が必要であり、特に直接指示してもうまくいかない場合にはなおさらである。我々は Flow Matching Generalists（フロー・マッチング汎用ポリシー）に焦点を当て、Flow Reversal Steering（FRS）を提案する。これは、サブ最適だが「合理的な」行動を取り、それらをフロー・ポリシーに逆向きに通して潜在ノイズを見つけ出し、それを近傍の汎用的なアクションモードへ写像する手法である。我々はFRSを、数多くのシミュレーションおよび実世界の操作設定で評価する。まず、FRSは人間やビジョン-言語モデル（VLMs）からの粗い意味論的指示を、それに対応する良いロボットアクションへと変換し、ゼロショット制御を改善する。これらの利得は、一般ポリシーが良いアクションへ写像するノイズを出力する補助ポリシーを訓練して得られる挙動クローニングによって蒸留できる――訓練を1分未満で行い、最大で95%の絶対タスク成功率の向上を示す。最後に、FRSは意味知識を用いて強化学習をブートストラップすることでポリシーを改善し、標準的なRLが改善できなかったいくつかのタスクで改善を示す。
+# Summary (by gpt-4o-mini)
+- 汎用ポリシーが多様なロボットデータセットから学習する中で、Flow Matching GeneralistsとFlow Reversal Steering（FRS）を提案し、サブ最適な行動を逆向きに通して潜在ノイズを特定、汎用的なアクションモードへ写像する手法を検証。FRSは粗い意味論的指示を良いロボットアクションに変換し、ゼロショット制御を改善。訓練を短時間で行い、最大95%のタスク成功率向上を示し、強化学習をブートストラップしてさらなる改善を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vai_viswanathan/status/2065469909581111441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>VLMや人間によって、<br>- Coarse Reference Action関する情報（=意味的には妥当だがロボットがアクションを実施するには粗すぎる情報; move straight right等）を与え、<br>- Coarse Reference Action を対応するVLAのreference action a_1に変換し<br>- a_1に基づいてVLAが良いアクションを生成できる潜在ノイズをFlow Matchingモデルを時間方向にbackwardさせる（noising process）ことで推定し、<br>- 同定した潜在ノイズから順方向にdenoisingすることで、妥当なアクションをsteeringする<br> <br>Flow Reversal Sterring (FRS) を提案。FRSにはzero-shot、かつonlineでsteeringができる利点がある。<br><br>
+<strong>## Diffusion Steering via Behavioral Cloning (DSBC)<br>FRSはSupervised Learningにも活用できる。具体的には、reference actionに基づいたノイズ a^hat_0を用いてobservationからノイズを生成するノイズ方策を直接behavior cloning（=observation oが与えられた時に、a^hat_0を出力する確率を最大化する最尤推定; p.6冒頭）する。<br><br><img src="https://github.com/user-attachments/assets/88968834-12bd-4b99-a9f4-a1314b825714" /" alt="image" loading="lazy" width="550" height="400"/><br><br>学習データ（observation, good noiseのタプル）の収集方法は大きく分けて2通りあり<br>- オンライン: zero-shot FRSを実際に環境でロールアウトし、タスクが成功したときノイズをgood noiseとして記録する<br>- オフライン: 既存の(observation, action)データをFRSで変換し(observation, action noise)のタプルに変換して学習に利用する<br><br>このような学習手法をDSBCと呼ぶ。<br><br>## DSRL + FRS<br>上述のFRSとDSRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5818" target="_blank" rel="noopener noreferrer">[Paper Note] Steering Your Diffusion Policy with Latent Space Reinforcement Learning, Andrew Wagenmaker+, arXiv'25, 2025.06</a>
+</strong>
+<br>
+ を組み合わせることで、DSRLの安定性を向上させる手法。DSRLは一言で言うと、アクション生成のシードとなる良いノイズを生成できるポリシー（ノイズ方策）をRLを通じて学習する手法らしく、RLをする際の報酬に対して、DSBCを重み付きで加えることによって、エキスパートのノイズから大きく逸脱することを防ぐ正則化の役割を追加する。<br><br><img src="https://github.com/user-attachments/assets/c54882ee-be38-4c47-8595-5607703d39cb" /" alt="image" loading="lazy" width="550" height="400"/><br><br>完全に読めたわけではないが、おもしろい。勉強になった。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -1595,7 +2024,7 @@
 <title>[Paper Note] Guiding LLM Post-training Data Engineering with Model Internals from Sparse Autoencoders, Yi Jing+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.27354</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5626</repo-issue-link>
-<tags>NLP, LanguageModel, PostTraining, CurriculumLearning, DataFiltering, One-Line Notes, SparseAutoEncoder, Data, Author Thread-Post</tags>
+<tags>NLP, LanguageModel, PostTraining, CurriculumLearning, DataFiltering, One-Line Notes, SparseAutoencoder, Data, Author Thread-Post</tags>
 <repo-issue-date>2026-05-28</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2605.27354
@@ -24262,7 +24691,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Shaping capabilities with token-level data filtering, Neil Rathi+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.21571</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4349</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, Safety, read-later, Toxicity, Selected Papers/Blogs, SparseAutoEncoder</tags>
+<tags>Pretraining, NLP, LanguageModel, Safety, read-later, Toxicity, Selected Papers/Blogs, SparseAutoencoder</tags>
 <repo-issue-date>2026-01-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.21571
@@ -26345,7 +26774,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Reasoning Models Generate Societies of Thought, Junsol Kim+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.10825</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4243</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, Chain-of-Thought, Reasoning, PostTraining, read-later, Probing, Diversity, Selected Papers/Blogs, SparseAutoEncoder</tags>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, Chain-of-Thought, Reasoning, PostTraining, read-later, Probing, Diversity, Selected Papers/Blogs, SparseAutoencoder</tags>
 <repo-issue-date>2026-01-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.10825
@@ -29467,6 +29896,46 @@ demo: https://openscilm.allen.ai/</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Rubrics as Rewards: Reinforcement Learning Beyond Verifiable Domains, Anisha Gunjal+, ICLR'26, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.17746</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2280</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, ICLR, PostTraining, Selected Papers/Blogs, Rubric-based</tags>
+<repo-issue-date>2025-07-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.17746
+# Authors
+  - Anisha Gunjal
+  - Anthony Wang
+  - Elaine Lau
+  - Vaskar Nath
+  - Bing Liu
+  - Sean Hendryx
+# Abstract
+  - Extending Reinforcement Learning with Verifiable Rewards (RLVR) to real-world tasks often requires balancing objective and subjective evaluation criteria. However, many such tasks lack a single, unambiguous ground truth-making it difficult to define reliable reward signals for post-training language models. While traditional preference-based methods offer a workaround, they rely on opaque reward functions that are difficult to interpret and prone to spurious correlations. We introduce $\textbf{Rubrics as Rewards}$ (RaR), a framework that uses structured, checklist-style rubrics as interpretable reward signals for on-policy training with GRPO. Our best RaR method yields up to a $28\%$ relative improvement on HealthBench-1k compared to simple Likert-based approaches, while matching or surpassing the performance of reward signals derived from expert-written references. By treating rubrics as structured reward signals, we show that RaR enables smaller-scale judge models to better align with human preferences and sustain robust performance across model scales.
+# Translation (by gpt-4o-mini)
+- 強化学習に検証可能な報酬を拡張する（RLVR）ことは、実世界のタスクにおいて客観的および主観的な評価基準のバランスを取ることがしばしば求められる。しかし、そのようなタスクの多くは単一の明確な真実を欠いており、トレーニング後の言語モデルに対して信頼できる報酬信号を定義することが難しい。従来の好みベースの手法は回避策を提供するが、解釈が難しく、虚偽の相関関係に陥りやすい不透明な報酬関数に依存している。そこで、私たちは「報酬としてのルーブリック」（RaR）というフレームワークを提案する。これは、構造化されたチェックリストスタイルのルーブリックを解釈可能な報酬信号として使用し、GRPOによるオンポリシー学習を行うものである。私たちの最良のRaR手法は、単純なリッカートベースのアプローチと比較してHealthBench-1kで最大28%の相対的改善を達成し、専門家が作成した参照から導出された報酬信号の性能に匹敵するか、それを上回る結果を示した。ルーブリックを構造化された報酬信号として扱うことで、RaRは小規模な判定モデルが人間の好みにより良く一致し、モデルのスケールにわたって堅牢な性能を維持できることを示した。
+# Summary (by gpt-4o-mini)
+- 報酬としてのルーブリック（RaR）フレームワークを提案し、構造化されたチェックリストスタイルのルーブリックを解釈可能な報酬信号として使用。HealthBench-1kで最大28%の相対的改善を達成し、専門家の参照に匹敵またはそれを上回る性能を示す。RaRは小規模な判定モデルが人間の好みに一致し、堅牢な性能を維持できることを証明。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/1948235609190867054?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=c1bTcrDmt4" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=c1bTcrDmt4</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] CriticLean: Critic-Guided Reinforcement Learning for Mathematical  Formalization, Zhongyuan Peng+, ACL'26, 2025.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.06181</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2158</repo-issue-link>
@@ -32510,7 +32979,7 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 <title>[Paper Note] Persona Features Control Emergent Misalignment, Miles Wang+, arXiv'25, 2025.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.19823</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4202</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, action_wanted, Safety, PostTraining, SparseAutoEncoder, EmergentMisalignment</tags>
+<tags>Analysis, NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, action_wanted, Safety, PostTraining, SparseAutoencoder, EmergentMisalignment</tags>
 <repo-issue-date>2026-01-15</repo-issue-date>
 <issue-body># URL
 - preprint: https://arxiv.org/abs/2506.19823
@@ -34702,7 +35171,7 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 <title>[Paper Note] Learning Multi-Level Features with Matryoshka Sparse Autoencoders, Bart Bussmann+, ICLR'25, 2025.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2503.17547</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4029</repo-issue-link>
-<tags>NeuralNetwork, MachineLearning, NLP, LanguageModel, ICLR, SparseAutoEncoder, Interpretability</tags>
+<tags>NeuralNetwork, MachineLearning, NLP, LanguageModel, ICLR, SparseAutoencoder, Interpretability</tags>
 <repo-issue-date>2025-12-21</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2503.17547
@@ -52209,7 +52678,7 @@ Kazuma Kobayashi, Zhen Wan, Fei Cheng, Yuma Tsuta, Xin Zhao, Junfeng Jiang, Jiah
 <title>[Paper Note] How a Bilingual LM Becomes Bilingual: Tracing Internal Representations   with Sparse Autoencoders, Tatsuro Inaba+, EMNLP'25 Findings, 2025.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2503.06394</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2972</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, MultiLingual, EMNLP, Findings, SparseAutoEncoder</tags>
+<tags>Analysis, NLP, LanguageModel, MultiLingual, EMNLP, Findings, SparseAutoencoder</tags>
 <repo-issue-date>2025-09-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2503.06394
@@ -53403,7 +53872,7 @@ https://github.com/facebookresearch/perception_models
 <title>[Paper Note] Pre-training under infinite compute, Konwoo Kim+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.14786</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2912</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, Ensemble, Scaling Laws, read-later</tags>
+<tags>Pretraining, NLP, LanguageModel, Ensemble, Scaling Laws, read-later, Author Thread-Post</tags>
 <repo-issue-date>2025-09-20</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.14786
@@ -53434,6 +53903,16 @@ https://github.com/facebookresearch/perception_models
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1969887073017708822?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2066294934387450138?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -81819,7 +82298,7 @@ Pranab Sahoo, Prabhash Meharia, Akash Ghosh, Sriparna Saha, Vinija Jain, Aman Ch
 <title>[Paper Note] Sparse Autoencoders Find Highly Interpretable Features in Language   Models, Hoagy Cunningham+, ICLR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.08600</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1802</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, ICLR, Selected Papers/Blogs, KeyPoint Notes, SparseAutoEncoder, Interpretability, InterpretabilityScore</tags>
+<tags>Analysis, NLP, LanguageModel, ICLR, Selected Papers/Blogs, KeyPoint Notes, SparseAutoencoder, Interpretability, InterpretabilityScore</tags>
 <repo-issue-date>2025-03-15</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.08600
@@ -85203,7 +85682,7 @@ Chunlei Xin, Yaojie Lu, Hongyu Lin, Shuheng Zhou, Huijia Zhu, Weiqiang Wang, Zho
 <title>[Paper Note] Large Language Models Cannot Self-Correct Reasoning Yet, Jie Huang+, ICLR'24, 2023.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2310.01798</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1382</repo-issue-link>
-<tags>NLP, LanguageModel, action_wanted, SelfCorrection, ICLR</tags>
+<tags>NLP, LanguageModel, SelfCorrection, ICLR</tags>
 <repo-issue-date>2024-09-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2310.01798
@@ -105158,6 +105637,104 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>Ming-omni-tts-16.8B-A3B, inclusionAI, 2026.06</title>
+<original-paper-blog-link>https://huggingface.co/inclusionAI/Ming-omni-tts-16.8B-A3B</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5825</repo-issue-link>
+<tags>NLP, SpeechProcessing, OpenWeight, TTS, One-Line Notes, AudioLanguageModel, audio, Music</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body>https://huggingface.co/inclusionAI/Ming-omni-tts-16.8B-A3B</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nuts99618279/status/2067170388430463041?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://xqacmer.github.io/Ming-omni-tts/" target="_blank" rel="noopener noreferrer">https://xqacmer.github.io/Ming-omni-tts/</a>
+{% endraw %}
+
+</p><p>speech/sound/musicを単一のモデルで生成可能</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>GLM-5.2: Built for Long-Horizon Tasks, Z.ai, 2026.06</title>
+<original-paper-blog-link>https://z.ai/blog/glm-5.2</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5819</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, PPO (ProximalPolicyOptimization), OpenWeight, Selected Papers/Blogs, Critic, LongHorizon, Initial Impression Notes</tags>
+<repo-issue-date>2026-06-16</repo-issue-date>
+<issue-body>https://z.ai/blog/glm-5.2</issue-body>
+<maintainer-comment-text><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/zai-org/GLM-5.2" target="_blank" rel="noopener noreferrer">https://huggingface.co/zai-org/GLM-5.2</a>
+{% endraw %}
+
+</p><p>1Mコンテキストでフロンティアモデルには少し劣るが非常に高い性能。SWE Bench ProではGPT5.5をoutperform、Terminal Bench/DeepSWEなどでは3--12pt程度GPT5.5が高い。Opus4.8はさらにスコアが高い。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zai_org/status/2066938937344495629?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Artificial Analysis Intelligence IndexでOpenWeightモデルでSoTA更新:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2067135640249209175?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>MiniMax-M3超え</p><p>long Horizonのタスクの学習でGRPOではなく、criticベースのPPOを利用:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hallerite/status/2066969117043941613?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ZONOS2: Real-time TTS with High-Fidelity Voice Cloning, ZYPHRA, 2026.06</title>
+<original-paper-blog-link>https://www.zyphra.com/our-work/zonos2</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5815</repo-issue-link>
+<tags>NLP, Dataset, Evaluation, SpeechProcessing, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), TTS, Realtime, Author Thread-Post</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body>https://www.zyphra.com/our-work/zonos2</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zyphraai/status/2065498869954490846?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/Zyphra/ZONOS2" target="_blank" rel="noopener noreferrer">https://huggingface.co/Zyphra/ZONOS2</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Introducing North Mini Code: Cohere’s first model for developers, Cohere, 2026.06</title>
 <original-paper-blog-link>https://cohere.com/blog/north-mini-code</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5805</repo-issue-link>
@@ -105339,6 +105916,26 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2064632995894415662?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Improving our LLM Pretraining Efficiency, Open Athena, 2026.06</title>
+<original-paper-blog-link>https://openathena.ai/blog/pretraining-speedup/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5708</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Optimizer, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, Author Thread-Post</tags>
+<repo-issue-date>2026-06-06</repo-issue-date>
+<issue-body>https://openathena.ai/blog/pretraining-speedup/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/percyliang/status/2062919606403313680?s=20"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -107180,7 +107777,7 @@ article{kulikov2026autodata,
 <title>Qwen-Scope: Decoding Intelligence, Unleashing Potential, Qwen Team, 2026.04</title>
 <original-paper-blog-link>https://qwen.ai/blog?id=qwen-scope</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5404</repo-issue-link>
-<tags>NLP, LanguageModel, SparseAutoEncoder, Interpretability</tags>
+<tags>NLP, LanguageModel, SparseAutoencoder, Interpretability</tags>
 <repo-issue-date>2026-05-01</repo-issue-date>
 <issue-body>blog: https://qwen.ai/blog?id=qwen-scope
 technical report: https://qianwen-res.oss-accelerate.aliyuncs.com/qwen-scope/Qwen_Scope.pdf</issue-body>
@@ -115586,7 +116183,7 @@ technical report:https://www.lgresearch.ai/data/cdn/upload/K-EXAONE_Technical_Re
 <title>dictionary_learning, Marks+, 2024</title>
 <original-paper-blog-link>https://github.com/saprmarks/dictionary_learning</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4027</repo-issue-link>
-<tags>NeuralNetwork, MachineLearning, NLP, SparseAutoEncoder, Transcoders, CircuitAnalysis, Interpretability</tags>
+<tags>NeuralNetwork, MachineLearning, NLP, SparseAutoencoder, Transcoders, CircuitAnalysis, Interpretability</tags>
 <repo-issue-date>2025-12-21</repo-issue-date>
 <issue-body>https://github.com/saprmarks/dictionary_learning</issue-body>
 <maintainer-comment-text>None</maintainer-comment-text>
@@ -115667,7 +116264,7 @@ technical report:https://www.lgresearch.ai/data/cdn/upload/K-EXAONE_Technical_Re
 <title>Gemma Scope 2: helping the AI safety community deepen understanding of complex language model behavior, Google Deepmind, 2025.12</title>
 <original-paper-blog-link>https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4013</repo-issue-link>
-<tags>Tools, NLP, LanguageModel, Reasoning, Safety, KeyPoint Notes, SparseAutoEncoder, Transcoders, CircuitAnalysis</tags>
+<tags>Tools, NLP, LanguageModel, Reasoning, Safety, KeyPoint Notes, SparseAutoencoder, Transcoders, CircuitAnalysis</tags>
 <repo-issue-date>2025-12-20</repo-issue-date>
 <issue-body>https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -118142,7 +118739,7 @@ HF: https://huggingface.co/datasets/PleIAs/SYNTH</issue-body>
 <title>Mapping LLMs with Sparse Autoencoders, Hussein+, 2025.11</title>
 <original-paper-blog-link>https://pair.withgoogle.com/explorables/sae/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3604</repo-issue-link>
-<tags>Tutorial, NLP, LanguageModel, Blog, One-Line Notes, SparseAutoEncoder</tags>
+<tags>Tutorial, NLP, LanguageModel, Blog, One-Line Notes, SparseAutoencoder</tags>
 <repo-issue-date>2025-11-06</repo-issue-date>
 <issue-body>https://pair.withgoogle.com/explorables/sae/</issue-body>
 <maintainer-comment-text><p>SparseAutoEncoderを用いた機械学習モデルの特徴の可視化方法に関するチュートリアル</p></maintainer-comment-text>

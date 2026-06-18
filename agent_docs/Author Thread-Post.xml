@@ -1,5 +1,708 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-14">
+<paper-list last-updated="2026-06-17">
+<paper-entry>
+<title>[Paper Note] ExpRL: Exploratory RL for LLM Mid-Training, Violet Xiang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.17024</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5826</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, LLM-as-a-Judge, mid-training, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.17024
+# Authors
+  - Violet Xiang
+  - Amrith Setlur
+  - Chase Blagden
+  - Nick Haber
+  - Aviral Kumar
+# Abstract
+  - Sparse reward reinforcement learning (RL) has become a standard tool for improving LLM reasoning, but its success depends critically on the coverage present in the base model. In practice, models are often primed for RL through \emph{mid-training} on curated reasoning traces that teach useful primitive skills such as decomposition, verification, or self-correction. Although effective, this strategy requires manually specifying what the model should learn, and it remains unclear whether such primitive coverage is enough for much harder problems, which require combining these skills into broader solution strategies. We study a more automated approach: \emph{RL-based mid-training} using large corpora of human-written question-answer data. Rather than treating reference solutions as targets to imitate, our method, ExpRL, uses them as \emph{reward scaffolds}: references are hidden from the policy and used only to construct problem-specific grading rubrics for judging on-policy reasoning traces. The policy samples from the original problem prompt, while an LLM judge compares the sampled reasoning trace against the reference solution and assigns outcome-level or process-level dense rewards. This lets ExpRL reinforce partial progress, useful intermediate reductions, and productive reasoning behaviors that sparse final-answer rewards often fail to upweight. On challenging math reasoning tasks, ExpRL yields stronger RL priming than SFT, sparse-reward GRPO, and self-distillation, and provides a better initialization for subsequent sparse-reward RL. Additional mixed-domain experiments further suggest that ExpRL can extend beyond the original math-only setting.
+# Translation (by gpt-5-nano)
+- スパース報酬強化学習（RL）は、LLMの推論能力を向上させる標準的なツールとなっているが、その成功は基盤モデルに備わる網羅性に大きく依存する。実務では、モデルはしばしば RL の準備として、中間訓練における厳選された推論軌跡を用い、分解、検証、自己訂正といった有用な原始スキルを教える。効果的ではあるものの、この戦略は学習させる内容を手動で指定する必要があり、これらの原始的なカバレッジが、これらのスキルをより広範な解法戦略へ組み合わせる必要があるような、より難しい問題に対して十分であるかどうかは依然として不明である。より自動化されたアプローチを検討する。大規模な人間作成の質問応答データのコーパスを用いたRLベースの中間訓練である。参照解を模倣すべきターゲットとして扱うのではなく、ExpRLはこれらを報酬の足場として用いる。参照解はポリシーから隠され、オンポリシー推論軌跡を評価するための問題特有の採点ルーブリックを構築する目的でのみ用いられる。ポリシーは元の問題プロンプトから推論をサンプリングし、LLM判定者はサンプリングされた推論軌跡を参照解と比較して、結果レベルの報酬またはプロセスレベルの密な報酬を割り当てる。これによりExpRLは、最終回答報酬が乏しい場合に強化されにくい部分的な進捗、有用な中間段階の簡略化、そして生産的な推論行動を強化できる。難解な数学的推論タスクでは、ExpRLはSFT、スパース報酬GRPO、自己蒸留よりも強いRLプリミングを生み出し、その後のスパース報酬RLの初期化をより良く提供する。追加の混合ドメイン実験は、ExpRLが元の数学のみの設定を超えて拡張し得ることをさらに示唆している。
+# Summary (by gpt-4o-mini)
+- スパース報酬強化学習（RL）は、LLMの推論を向上させる方法だが、成功は基盤モデルの網羅性に依存する。従来の方法では、中間訓練に選ばれた推論軌跡を用いてスキルを教えるが、手動指定が必要であり、そのカバレッジが難しい問題に対して十分かは不明である。新たなアプローチとして、ExpRLは人間作成の質問応答データを用い、参照解を報酬の基盤として扱う。ポリシーは問題プロンプトから推論をサンプリングし、LLM判定者がバックグラウンド報酬を割り当てることで部分的進捗を強化する。ExpRLは、難解な数学的推論タスクにおいて、他手法よりも優れたRLプリミングを実現し、スパース報酬RLの初期化を改善することが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ziyux/status/2066933142083207443?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>post-trainingでGRPOをすると、報酬がsparse(モデルが解けない問題に対してはadvanatageがゼロ)となりシグナルが得られない問題があるが、これをmid trainingの段階で参照データをdense報酬のためのscaffoldingとして活用することで、後続のsparseなRLの性能を改善する。どうやらmid trainingの段階で、参照データを与えた（＝scaffolding) verifierを用意し、LLM-as-a-Judgeを通じて密な報酬（すなわち、最終的な応答だけでなく途中のtrajectoryの良し悪しからも報酬を得る）を与え、後続のsparseなRLのためのwarmupをする。warmupにはSFTやself-distillationが用いられることが多く、これら手法は基本的には参照データの模倣学習であるため汎化性能を犠牲（i.e., これはらトークンレベルの学習シグナルであらため、自由な探索が抑制されエントロピーが下がる）にしていたが、提案手法ではDense RewardなRLを用いることで探索が促進され（＝高いエントロピーが保たれる）warmupが可能となる、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] On the Relationship Between Activation Outliers and Feature Death in Sparse Autoencoders, Elana Simon+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.31518</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5822</repo-issue-link>
+<tags>SparseAutoencoder, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.31518
+# Authors
+  - Elana Simon
+  - Etowah Adams
+  - James Zou
+# Abstract
+  - Sparse autoencoders (SAEs) decompose neural network activations into interpretable features, but many learned features never activate, a problem called feature death that wastes dictionary capacity and can reintroduce superposition. Death rates vary dramatically between models: near-zero on GPT-2, over 70% on AlphaFold3 with identical configurations. We find that dimension-level activation outliers (dimensions whose mean magnitude is large relative to per-token variation) cause this by shifting pre-activations at initialization based on each feature's alignment with the activation mean. Features anti-aligned with the mean receive permanently negative pre-activations and never fire. We formalize outlier severity as $γ= \|μ\|/\|σ\|$; it predicts initial death rates (Spearman $ρ= 0.89$ for dead-by-TopK, $0.82$ for dead-by-ReLU) across 454 model-layer combinations spanning language, vision, protein, and genomic models. Dead features can revive during training, but recovery requires the SAE bias to learn the activation mean, a process that is prohibitively slow at high $γ$. Mean-centering (subtracting the activation mean) sidesteps this and eliminates outlier-induced death across all tested models, confirming the mechanism and providing a principled basis for when and why this preprocessing step is necessary.
+# Translation (by gpt-5-nano)
+- スパースオートエンコーダ（SAEs）はニューラルネットワークの活性化を解釈可能な特徴に分解するが、学習によって得られる多くの特徴は一度も活性化しない。これを「特徴死」と呼ぶ問題は辞書容量を無駄にし、スーパーポジションを再導入する可能性がある。死滅率はモデル間で劇的に異なり、GPT-2 ではほぼゼロ、同一構成の AlphaFold3 では70％を超える。我々は、平均値の大きさがトークンごとの変動に対して大きい次元である「次元レベルの活性化アウトライヤー」が、初期化時に各特徴の活性化平均との整合に基づいて事前活性化をシフトさせることでこれを引き起こすことを発見した。平均と反対方向に整合する特徴は永久に負の事前活性化を受け、発火しない。我々はアウトライヤの深刻さを γ = ∥μ∥/∥σ∥として定式化する。これにより初期死滅率を予測でき、言語、視覚、タンパク質、ゲノムモデルに跨る454のモデル層の組み合わせで、TopKによる死滅のSpearman ρは0.89、ReLUによる死滅のSpearman ρは0.82となる。死滅した特徴は訓練中に復活することもあるが、回復にはSAEのバイアスが活性化平均を学習することが必要であり、この過程は γ が高いと極めて遅い。平均中心化（活性化平均を引くこと）はこれを回避し、検証済みのすべてのモデルでアウトライヤによる死滅を排除する。これにより機構を確認し、なぜこの前処理ステップが必要であるかについて原理的な根拠を提供する。
+# Summary (by gpt-4o-mini)
+- スパースオートエンコーダ（SAEs）は、ニューラルネットワークの特徴を解釈可能に分解するが、「特徴死」が問題となり、学習した特徴が活性化しないことがある。この死滅率はモデルによって異なり、GPT-2ではほぼゼロ、一方でAlphaFold3では70%以上。研究により、次元レベルの活性化アウトライヤーが活性化平均に逆らう特徴に負の事前活性化を与え、これが発火を妨げることが示された。アウトライヤの深刻さを定式化し、454のモデル層で高い予測精度を達成。特徴の復活にはSAEが活性化平均を学習する必要があり、高いアウトライヤでは遅くなる。平均中心化を行うことで、アウトライヤによる死滅を排除できることが確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/james_y_zou/status/2066626705020891525?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Ling and Ring 2.6 Technical Report: Efficient and Instant Agentic Intelligence at Trillion-Parameter Scale, Ang Li+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.15079</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5821</repo-issue-link>
+<tags>NLP, LanguageModel, OpenWeight, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.15079
+# Authors
+  - Ang Li
+  - Ben Liu
+  - Bin Han
+  - Bin Hu
+  - Bin Jing
+  - Binbin Hu
+  - Bing Li
+  - Cai Chen
+  - Caizhi Tang
+  - Changxin Tian
+  - Chao Huang
+  - Chao Zhang
+  - Chen Liang
+  - Chen Qian
+  - Chengfu Tang
+  - Chengyao Wen
+  - Chilin Fu
+  - Chunwei Wu
+  - Cong Zhang
+  - Cunyin Peng
+  - Daixin Wang
+  - Dalong Zhang
+  - Deng Zhao
+  - Dingnan Jin
+  - Dingyuan Zhu
+  - Donghao Zhang
+  - Fan Yuan
+  - Fangzheng Zhao
+  - Fanzhuang Meng
+  - Feifan Wu
+  - Feng Xu
+  - Fengbin Fang
+  - Gangshan Wang
+  - Guodong Yang
+  - Hailin Zhao
+  - Haitao Wang
+  - Haitao Zhang
+  - Hanxiao Zhang
+  - Hanzi Wang
+  - Hao Dai
+  - Hao Liu
+  - Hao Qian
+  - Hao Wu
+  - Haoxiong Liu
+  - Haoyu Xu
+  - Heng Zhang
+  - Hong Liu
+  - Hongliang Zhang
+  - Hongrui Liu
+  - Hongxun Li
+  - Hongzhi Ruan
+  - Huaidong Xiong
+  - Huihuang Zheng
+  - Huikang Tang
+  - Jia Guo
+  - Jia Li
+  - Jia Liu
+  - Jiameng Wang
+  - Jiaming Liu
+  - Jiannan Shi
+  - Jianping Wei
+  - Jiaolong Yang
+  - Jiapeng Wang
+  - Jie Gao
+  - Jie Wang
+  - Jiewei Wu
+  - Jin Yang
+  - Jinjin Li
+  - Jinjing Huang
+  - Jinquan Sun
+  - Jinyao Chen
+  - Juanhui Tu
+  - Jun Liu
+  - Jun Mei
+  - Jun Xu
+  - Jun Zhou
+  - Junjie Ou
+  - Junnan Sipan
+  - Junpeng Fang
+  - Kaihong Zhang
+  - Kaiqin Hu
+  - Ke Shi
+  - Kuan Xu
+  - Kun Tang
+  - Kunlong Chen
+  - Lanyin Mei
+  - Lei Chen
+  - Lei Liang
+  - Lei Xu
+  - Li Tang
+  - Liang Jiang
+  - Liangcheng Fu
+  - Lihui Zhang
+  - Linfeng Shi
+  - Lintao Ma
+  - Liyuan Liu
+  - Longfei Li
+  - Longfei Zheng
+  - Lu Liu
+  - Lu Yu
+  - Man Li
+  - Meiqi Zhu
+  - Meng Li
+  - Mengjie Gao
+  - Mengshu Sun
+  - Mingming Yin
+  - Mingyang Zhang
+  - Mingyuan Fan
+  - Nuo Xu
+  - Pan Tang
+  - Peijie Jiang
+  - Peilong Zhao
+  - Peng Lin
+  - Pingping Liu
+  - Qi Zuo
+  - Qian Zhao
+  - Qiang Cheng
+  - Qianggang Cao
+  - Qiaoben Bao
+  - Qing Cui
+  - Qingyuan Yang
+  - Qitao Shi
+  - Qiyin Huang
+  - Qizheng Zhou
+  - Quan Wan
+  - Runyuan Zhao
+  - Shaomian Zheng
+  - Shaowei Wei
+  - Shengnan Zhang
+  - Shuaicheng Li
+  - Shujie Li
+  - Shuo Zhang
+  - Sikang Bian
+  - Tianchu Yao
+  - Tiange Xu
+  - Tianshu Wang
+  - Ting Guo
+  - Tinghao Wang
+  - Tingwei Huang
+  - Tong Zhao
+  - Tongkai Yang
+  - Wang Hong
+  - Wanli Gu
+  - Wei Lu
+  - Weichang Wu
+  - Weiguang Han
+  - Weiquan Li
+  - Wenbo Shen
+  - Wenjing Fang
+  - Wenzhi Tang
+  - Xiang Shu
+  - Xiao Shi
+  - Xiaodong Yan
+  - Xiaolu Zhang
+  - Xiaopei Wan
+  - Xiaqing Sun
+  - Xin Zhao
+  - Xingyu Lu
+  - Xinxing Yang
+  - Xinyao Tang
+  - Xinyu Kong
+  - Xinyu Liu
+  - Xiong Xu
+  - Xuan Sun
+  - Xudong Han
+  - Xudong Wang
+  - Xujie Shen
+  - Yalin Zhang
+  - Yangyang Hou
+  - Yankun Ren
+  - Yao Zhao
+  - Ye Chen
+  - Yeyang Chen
+  - Yibo Cao
+  - Yifan Zuo
+  - Yijie Chen
+  - Ying Li
+  - Yingjie Song
+  - Yingxue Li
+  - Yiqi Wang
+  - Yixuan Sun
+  - Yizhu Xiao
+  - Yongfei Xu
+  - Yu Liu
+  - Yuchen Fang
+  - Yue Gao
+  - Yue Yu
+  - Yue Zhang
+  - Yuqi Zhang
+  - Yuxiao He
+  - Yuxiao Lu
+  - Yuxin Tian
+  - Yuxuan Li
+  - Yuzhuo Fu
+  - Zhankai Xu
+  - Zhaoxin Huan
+  - Zhenduo Zhang
+  - Zhengke Gui
+  - Zhengyu Huang
+  - Zhenjun Ma
+  - Zhenxuan Pan
+  - Zheping Qu
+  - Zhibo Zhu
+  - Zhidong Fan
+  - Zhigang Huangfu
+  - Zhihao Wang
+  - Zhiqiang Zhang
+  - Zhizhen Liu
+  - Zhuyan Zhou
+  - Zibin Lin
+  - Zihang Zeng
+  - Zihao Wang
+  - Zilong Wang
+  - Ziqi Liu
+  - Zitao Xuan
+  - Zixuan Cheng
+  - Zujie Wen
+  - Zuoli Tang
+# Abstract
+  - Efficient and scalable agentic intelligence requires models that can deliver both low-latency responses and strong reasoning capabilities while remaining practical to train, serve, and deploy. In this report, we present Ling-2.6 and Ring-2.6, a family of models designed to address this challenge at scale. Ling-2.6 is optimized for instant response generation and high capability per output token, whereas Ring-2.6 is tailored for deeper reasoning and more advanced agentic workflows. Instead of training from scratch, we upgrade the Ling-2.0 base model through architectural migration pre-training and large-scale post-training. This upgrade is guided by a unified co-design of model architecture, optimization objectives, serving systems, and agent training environments, enabling improvements in both model capability and deployment efficiency. At the architectural level, we introduce a hybrid linear attention design that integrates Lightning Attention with MLA, improving the efficiency of long-context training and decoding. To further enhance token efficiency, we optimize capability per output token through Evolutionary Chain-of-Thought, Linguistic Unit Policy Optimization, bidirectional preference alignment, and shortest-correct-response distillation. For agentic capabilities, we propose KPop, a reinforcement learning framework designed to support stable training of Ring-2.6-1T on large-scale environment-grounded data. KPop improves training efficiency through asynchronous scheduling across coding, search, tool use, and workflow execution, enabling scalable learning from complex agent-environment interactions. Together, Ling-2.6 and Ring-2.6 provide a practical pathway toward efficient, scalable, and open agentic systems. We open-source all checkpoints in the 2.6 family to support further research and development in practical agentic intelligence.
+# Translation (by gpt-5-nano)
+- 効率的でスケーラブルなエージェント型知能には、低遅延の応答と強力な推論能力の両方を提供しつつ、訓練・提供・デプロイを現実的に行えるモデルが必要です。本報告では、この課題を規模の点で解決することを目指したモデルファミリ Ling-2.6 および Ring-2.6 を提示します。Ling-2.6 は即時の応答生成と出力トークンあたりの高い能力に最適化されており、一方 Ring-2.6 はより深い推論とより高度なエージェント的ワークフローに特化しています。ゼロから訓練するのではなく、Ling-2.0 ベースモデルをアーキテクチャ移行前訓練と大規模な後訓練を通じてアップグレードします。このアップグレードは、モデルアーキテクチャ・最適化目標・提供システム・エージェント訓練環境の統一的共同設計によって導かれ、モデル能力とデプロイの効率の双方を向上させます。アーキテクチャレベルでは、Lightning AttentionとMLAを統合したハイブリッド線形アテンション設計を導入し、長文脈の訓練とデコードの効率を改善します。さらに、出力トークンあたりの能力を、Evolutionary Chain-of-Thought、Linguistic Unit Policy Optimization、双方向の好み整合、最短・正解応答蒸留によって最適化し、トークン効率を高めます。エージェント的能力については、Ring-2.6-1T の大規模な環境由来データ上での安定訓練を支援するよう設計された強化学習フレームワーク KPop を提案します。KPop はコード化・探索・ツール使用・ワークフロー実行に跨る非同期スケジューリングを通じて訓練効率を向上させ、複雑なエージェント-環境相互作用からのスケーラブルな学習を実現します。 Ling-2.6 と Ring-2.6 は、効率的でスケーラブルかつオープンなエージェント型システムへ向けた実用的な道筋を提供します。我々は実践的なエージェント知能のさらなる研究開発を支援するため、2.6 ファミリの全てのチェックポイントをオープンソース化します。
+# Summary (by gpt-4o-mini)
+- 効率的なエージェント型知能を目指し、Ling-2.6 と Ring-2.6 のモデルファミリを提案。Ling-2.6 は即時応答に特化し、Ring-2.6 は高度な推論に対応。Ling-2.0 からのアップグレードは、モデルの統一的共同設計によって実現。ハイブリッド線形アテンション設計で長文脈の効率を向上し、出力トークンの能力を最適化。Ring-2.6-1T には強化学習フレームワーク KPop を導入し、エージェント-環境学習を強化。2.6 ファミリはオープンエージェント型システムへの実践的道筋を提供し、全チェックポイントをオープンソース化。</issue-body>
+<maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5298" target="_blank" rel="noopener noreferrer">inclusionAI: Ling-2.6-flash (free), OpenRouter (InclusionAI), 2026.04</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5521" target="_blank" rel="noopener noreferrer">Ring-2.6-1T, inclusionAI, 2026.05</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/antlingagi/status/2066878964589883571?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Modality Forcing for Scalable Spatial Generation, Bardienus Pieter Duisterhof+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.13676</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5813</repo-issue-link>
+<tags>Author Thread-Post</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.13676
+# Authors
+  - Bardienus Pieter Duisterhof
+  - Deva Ramanan
+  - Jeffrey Ichnowski
+  - Justin Johnson
+  - Keunhong Park
+# Abstract
+  - Text-to-image (T2I) models contain rich spatial priors. Synthesizing photorealistic, cluttered scenes requires an understanding of geometry, including perspective and relative scale. Prior works adapt T2I models to leverage this prior for depth prediction, but they require dense depth data and involve complex recipes. We propose Modality Forcing, a simple, scalable post-training recipe for joint image-depth generation using a single DiT trained on sparse depth data. Modality Forcing enables conditional and joint generation of image and depth in any permutation by assigning separate noise levels per modality. Per-modality decoders let us train on sparse, real-world depth and achieve strong, generalizable depth prediction. We further show that Modality Forcing inherits the scalability of T2I pre-training: by training a set of T2I models from scratch (370M to 3.3B parameters), we find that larger models trained on more image data produce more accurate depth. Our strongest model is competitive with state-of-the-art monocular depth estimators and reduces AbsRel by 57% relative to existing joint image-depth generative models. These results provide strong evidence that image generation is a scalable pre-training objective for spatial perception. https://modality-forcing.github.io/
+# Translation (by gpt-5-nano)
+- テキストから画像への（T2I）モデルには豊かな空間的事前情報が含まれている。写真のように現実的で雑然としたシーンを合成するには、遠近法や相対的スケールを含む幾何学の理解が必要である。従来の研究はこの事前情報を深度予測のために活用するようT2Iモデルを適用しているが、それには密な深度データを必要とし、複雑なレシピを伴う。私たちは、疎な深度データで訓練された単一のDiTを用いた、単純でスケーラブルな後訓練レシピとして、画像と深度の共同生成を実現する Modality Forcing を提案する。Modality Forcing は、モダリティごとに別々のノイズレベルを割り当てることで、任意の順列で条件付きおよび画像と深度の共同生成を可能にする。モダリティ別デコーダにより、疎な実世界の深度で訓練でき、強力で一般化可能な深度予測を達成する。さらに、Modality Forcing は T2I の事前訓練のスケーラビリティを継承することを示す。ゼロから訓練した一連の T2I モデル（370M 〜 33億パラメータ）を訓練することで、より大きなモデルがより多くの画像データで訓練されるとき、深度はより正確になることを見出した。我々の最も強力なモデルは最先端の単眼深度推定器と競合し、既存の共同画像-深度生成モデルと比較して AbsRel を 57%低減する。これらの結果は、画像生成が空間認識のためのスケーラブルな事前訓練目標であるという強い証拠を提供する。 https://modality-forcing.github.io/
+# Summary (by gpt-4o-mini)
+- テキストから画像を生成するためのモデルにおいて、幾何学の理解が重要であるが、従来は密な深度データを必要とした。これに対処するため、疎な深度データで訓練されたDiTを用いた簡潔でスケーラブルな手法「Modality Forcing」を提案。これは、モダリティごとに異なるノイズレベルを割り当て、条件付き及び画像と深度の共同生成を実現。結果として、より大きなモデルがより多くの画像データで訓練されるほど、深度予測の精度が向上。最強のモデルは単眼深度推定器と競合し、既存の生成モデルに比べて深度誤差を57%低減した。この結果は、画像生成が空間認識のための効果的な前訓練目標であることを示唆している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/bduisterhof/status/2065437358829531237?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agents' Last Exam, Yiyou Sun+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.05405</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5807</repo-issue-link>
+<tags>read-later, Author Thread-Post</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.05405
+# Authors
+  - Yiyou Sun
+  - Xinyang Han
+  - Weichen Zhang
+  - Yuanbo Pang
+  - Tianyu Wang
+  - Yuhan Cao
+  - Yixiao Huang
+  - Chris Duroiu
+  - Haoyun Zhang
+  - Jeffrey Lin
+  - Weishu Zhang
+  - Tyler Zeng
+  - Ying Yan
+  - Bo Liu
+  - Hanson Wen
+  - Mingyang Xu
+  - Xiaoyuan Liu
+  - Zimeng Chen
+  - Weiyan Shi
+  - Amanda Dsouza
+  - Vincent Sunn Chen
+  - Patrick Bryant
+  - Carl Boettiger
+  - Yamini Rangan
+  - Bradley Rothenberg
+  - Kyle Steinfeld
+  - Arvind Rao
+  - Tapio Schneider
+  - Georgios Yannakakis
+  - Laure Zanna
+  - Kaan Ozbay
+  - Ida Sim
+  - Tarek Zohdi
+  - George Em Karniadakis
+  - Jack Gallant
+  - Teresa Head-Gordon
+  - Yushan Li
+  - Wenxi Deng
+  - Tao Sun
+  - Huiqi Wang
+  - Zhun Wang
+  - Justin Xu
+  - Chris Yuhao Liu
+  - Yafei Cheng
+  - Rongwang Hu
+  - Aras Bacho
+  - Shengcao Cao
+  - Zengyi Qin
+  - Yixiong Chen
+  - Hengduan Fan
+  - Hao Liu
+  - Lin Zeng
+  - Shashank Muralidhar Bharadwaj
+  - Litian Gong
+  - Yingxuan Yang
+  - Maojia Song
+  - Ruheng Wang
+  - Zongzheng Zhang
+  - Honglin Bao
+  - Shuo Lu
+  - Jianhong Tu
+  - Zhonghua Wang
+  - Zheng Zhang
+  - Zijiao Chen
+  - Yanqiong Jiang
+  - Zhendong Li
+  - Bohan Lyu
+  - Chang Ma
+  - Peiran Xu
+  - Benran Zhang
+  - Shangding Gu
+  - Haoyue Hua
+  - Haoyang Li
+  - Wanzhe Liao
+  - Chengzhi Liu
+  - Junbo Peng
+  - Haoran Sun
+  - Zechen Xu
+  - Bo Chen
+  - Jiayi Cheng
+  - Yi Jiang
+  - Keying Kuang
+  - Yuan Li
+  - Youbang Pan
+  - Ziyan Rao
+  - Alexander Schubert
+  - Yifan Shen
+  - Vincent Siu
+  - Xiatao Sun
+  - Kangqi Zhang
+  - Xiaopan Zhang
+  - Yuchen Zhu
+  - Ishaan Singh Chandok
+  - Lei Ding
+  - Jingxuan Fan
+  - Andrew Glover
+  - Jiaming Hu
+  - Yiran Hu
+  - Wenbo Huang
+  - Zixin Jiang
+  - Haoran Jin
+  - Lukas Kim
+  - Ming Liu
+  - Yang Liu
+  - Alireza Rafiei
+  - Xuhuan Shen
+  - Kunyang Sun
+  - Sophia Sun
+  - Ting Sun
+  - Eric Wang
+  - Yixin Wang
+  - Hanwen Xing
+  - Sihan Xu
+  - Yuzheng Xu
+  - Zhongxing Xu
+  - Zhiling Yan
+  - Boqin Yuan
+  - Ruiqi Zhang
+  - Yifan Zhang
+  - Zibo Zhao
+  - Liana
+  - Santanu Bosu Antu
+  - Haoyue Bai
+  - Carlo Bosio
+  - Joseph Cavanagh
+  - Patricia Cavazos-Rehg
+  - Tianxing Chen
+  - Xuewen Chen
+  - Yipu Chen
+  - Chenyu Zhu
+  - Chen Dai
+  - Stefano De Castro
+  - Yunfu Deng
+  - Kaustubh Dhole
+  - Jiayuan Ding
+  - Chenchen Du
+  - Zhehang Du
+  - Hao Fan
+  - Run-Ze Fan
+  - Hengyu Fu
+  - Shi Gu
+  - Yifan Gu
+  - Charlie Guo
+  - Baihe Huang
+  - Baixiang Huang
+  - Rimika Jaiswal
+  - Zhihan Jiang
+  - Ran Jin
+  - Erin Kasson
+  - Xin Lan
+  - Joseph Lee
+  - Deren Lei
+  - Chenyu Li
+  - Daofeng Li
+  - Haitao Li
+  - Hongwei Li
+  - Jingyan Li
+  - Xiao Li
+  - Yi Li
+  - Yinsheng Li
+  - Yuangang Li
+  - Zhixu Li
+  - Wenyu Liang
+  - Longtai Liao
+  - Kevin Qinghong Lin
+  - Andy Zeyi Liu
+  - Che Liu
+  - Jiaming Liu
+  - Kaiyuan Liu
+  - Xuan Liu
+  - Pan Lu
+  - Wenbo Lv
+  - Yicheng Lyu
+  - Qiuyang Mang
+  - Kyle Montgomery
+  - Yuzhou Nie
+  - Ruoxi Ning
+  - Jorin Overwiening
+  - Xu Pan
+  - Layna Paraboschi
+  - Core Francisco Park
+  - Justin Purnomo
+  - Swati Rajwal
+  - Scott Rankin
+  - Bixuan Ren
+  - Yiren Rong
+  - HaoYang Shang
+  - Ventus Shaw
+  - Fiona Shen
+  - Jiawei Shen
+  - Minqi Shi
+  - Shi Qiu
+  - Huaxiu Yao
+  - Tianneng Shi
+  - Jonah So
+  - Vladislav Susoy
+  - Hannah Szlyk
+  - Haocheng Wang
+  - Jialu Wang
+  - Wei Wang
+  - Xinyu Wang
+  - Zehao Wang
+  - Dowling Wong
+  - Angela Wu
+  - Dehao Wu
+  - Fangyu Wu
+  - Mengyuan "Millie" Wu
+  - Yu Wu
+  - Yuchen Wu
+  - Yuhao Wu
+  - Qingpo Wuwu
+  - Weihang Xiao
+  - Yongyi Xiong
+  - Fan Xu
+  - Ruiling Xu
+  - Mingxuan Yan
+  - Benjamin Yang
+  - Jirong Yang
+  - Sen Yang
+  - Xiaoli Yang
+  - Yushi Yang
+  - Haoran Ye
+  - Xiaohu Yu
+  - Zhengming Yu
+  - Chenlong Zhang
+  - Chi Zhang
+  - Hanning Zhang
+  - Hanwen Zhang
+  - Junge Zhang
+  - Kunpeng Zhang
+  - Song Zhang
+  - Wenjin Zhang
+  - Wenshuo Zhang
+  - Ying Zhang
+  - Yizhi Zhang
+  - Brian Zhao
+  - Qijian Zhao
+  - Yimin Zhao
+  - Yuhaohua Zheng
+  - Liwei Zhou
+  - Tianyue Zhou
+  - Sichen Zhu
+  - Siqi Zhu
+  - Yan Zhu
+  - Yishu Zhu
+  - Jierui Zuo
+  - Chonghao Cai
+  - Helena Casademunt
+  - Wenjia Chen
+  - Cheng Cheng
+  - Nawen Deng
+  - Rao Fu
+  - Tianfu Fu
+  - Yifan Han
+  - He Ren
+  - Zhenyu He
+  - Qiao Jin
+  - Langlang Li
+  - Yuetai Li
+  - Sylvia Liu
+  - Lu Lu
+  - Luqing Zhou
+  - Subhabrata Mukherjee
+  - Yunqi Ouyang
+  - Yin Ren
+  - Dawei Shi
+  - Haoran Wu
+  - Zhiyue Wu
+  - Hannah Yao
+  - Zhuoran Yi
+  - Jenny Yu
+  - Rhea Zhan
+  - Hang Zhou
+  - Blake Zhu
+  - Junfan Zhu
+  - Alan Yuille
+  - Yang Liu
+  - Russell Alan Poldrack
+  - Jiachen Li
+  - Zhenglu Li
+  - Molei Tao
+  - Jing Huang
+  - Wenqi Shi
+  - Costas Spanos
+  - Lichao Sun
+  - Chenguang Wang
+  - Orson Xu
+  - Zhen Dong
+  - Hector Gomez
+  - Aylin Caliskan
+  - Ali Emami
+  - Haimin Hu
+  - Zhi Li
+  - Lihui Liu
+  - Murphy Niu
+  - Yi Shao
+  - Jianxin Sun
+  - Mikko Tolonen
+  - Ting Wang
+  - Sanjiv Das
+  - Yanjun Gao
+  - Wenbo Guo
+  - Erika J Schneider
+  - Zhiyong Lu
+  - Yian Ma
+  - Mark Mueller
+  - Radha Poovendran
+  - Somayeh Sojoudi
+  - Yinglun Zhu
+  - Dawn Song
+# Abstract
+  - Recent AI systems have achieved strong results on a wide range of benchmarks, yet these gains have not translated into economically meaningful deployment across many professional domains. We argue that this gap is largely an evaluation problem: widely used benchmarks lack sustained performance measurement on real and economically valuable workflows. This paper introduces Agents' Last Exam (ALE), a benchmark designed to evaluate AI agents on long horizon, economically valuable, real world tasks with verifiable outcomes. Developed in collaboration with 250+ industry experts, ALE covers non-physical industries defined with reference to O*NET / SOC 2018 (the U.S. federal occupational taxonomy). It is organized around a task taxonomy with 55 sub fields grouped into 13 industry clusters covering 1K+ tasks. Current results show that the hardest tier remains far from saturated: across mainstream harness and backbone configurations, the average full pass rate is below 1%. ALE is designed as a living benchmark: its task pool grows continuously as new workflows and industries are onboarded. More broadly, ALE is intended not merely as another leaderboard, but as an instrument for closing the gap between benchmark success and GDP relevant impact.
+# Translation (by gpt-5-nano)
+- 最近のAIシステムは広範なベンチマークで強い成果を挙げているものの、これらの成果は多くの専門分野における経済的に意味のある導入には結びついていない。私たちはこのギャップの大半が評価の問題であると主張する。広く用いられているベンチマークは、現実の経済的価値を持つワークフローに対する長期的な性能測定を欠いている。本論文は、長期的な視野を持つ現実世界のタスクに対して検証可能な結果を伴うAIエージェントを評価することを目的としたベンチマーク、Agents' Last Exam（ALE）を紹介する。250名を超える業界専門家と協力して開発されたALEは、O*NET / SOC 2018（米国連邦職業分類）を参照して定義された非物理的産業を対象としている。タスク分類体系を軸として、55のサブ分野が13の産業クラスターに編成され、1,000件超のタスクを網羅する。現在の結果は、最も難しい階層がまだ飽和には遠く、主流のハーネスとバックボーン構成全体で、フルパスの平均達成率は1%未満であることを示している。ALEは生きたベンチマークとして設計されており、新しいワークフローや産業が取り込まれるにつれてタスクプールが継続的に拡大する。より広く見れば、ALEは単なる別のリーダーボードではなく、ベンチマークの成功とGDP関連の影響とのギャップを埋めるための手段として意図されている。
+# Summary (by gpt-4o-mini)
+- AIシステムはベンチマークで優れた成果を上げているが、現実の経済的価値には繋がっていない。このギャップは評価の問題に起因していると主張し、長期的な実績を伴うAIエージェントを評価する新しいベンチマーク「Agents' Last Exam（ALE）」を紹介。ALEは250名以上の専門家と共に開発され、非物理的産業における1,000超のタスクを網羅。結果はフルパスの平均達成率が1%未満であることを示し、ALEはタスクプールを継続的に拡大し、経済的影響とベンチマークの成功とのギャップを埋める手段として設計されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2062916866235068607?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dawnsongtweets/status/2065095757988868190?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2065322452461199497?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Forecasting Future Behavior as a Learning Task, Mosh Levy+, arXiv'26, 2026.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2606.11445</original-paper-blog-link>
@@ -104,6 +807,43 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Improving Robotic Generalist Policies via Flow Reversal Steering, Andy Tang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.13675</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5798</repo-issue-link>
+<tags>ComputerVision, NLP, Selected Papers/Blogs, VisionLanguageModel, Robotics, VisionLanguageActionModel, reading, One-Line Notes, Steering, Author Thread-Post</tags>
+<repo-issue-date>2026-06-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.13675
+# Authors
+  - Andy Tang
+  - William Chen
+  - Andrew Wagenmaker
+  - Chelsea Finn
+  - Sergey Levine
+# Abstract
+  - Generalist policies can learn a wide range of skills from diverse robot datasets. In order to solve or improve on challenging new tasks, we need a way to infer and invoke the appropriate actions from the policy's rich behavioral prior, especially when directly commanding the policy fails. We focus on flow matching generalists and propose Flow Reversal Steering (FRS): a method that takes suboptimal but ``reasonable'' actions, finds their latent noises by passing them through the flow policy in reverse, and maps them to nearby generalist action modes. We evaluate FRS across many simulated and real-world manipulation settings. First, FRS can turn coarse semantic guidance from humans or vision-language models (VLMs) into corresponding good robot actions, improving zero-shot control. These gains can be distilled with behavioral cloning by training an auxiliary policy to output noises that the generalist maps to good actions -- showing up to 95% absolute task success rate boosts in under a minute of training. Finally, FRS enables policy improvement by bootstrapping reinforcement learning with semantic knowledge, improving on several tasks that standard RL fails to improve on.
+# Translation (by gpt-5-nano)
+- 汎用ポリシーは、多様なロボットデータセットから幅広いスキルを学習できる。難しい新しいタスクを解決したり改善したりするためには、ポリシーの豊富な行動の事前知識を推定して適切な行動を呼び出す方法が必要であり、特に直接指示してもうまくいかない場合にはなおさらである。我々は Flow Matching Generalists（フロー・マッチング汎用ポリシー）に焦点を当て、Flow Reversal Steering（FRS）を提案する。これは、サブ最適だが「合理的な」行動を取り、それらをフロー・ポリシーに逆向きに通して潜在ノイズを見つけ出し、それを近傍の汎用的なアクションモードへ写像する手法である。我々はFRSを、数多くのシミュレーションおよび実世界の操作設定で評価する。まず、FRSは人間やビジョン-言語モデル（VLMs）からの粗い意味論的指示を、それに対応する良いロボットアクションへと変換し、ゼロショット制御を改善する。これらの利得は、一般ポリシーが良いアクションへ写像するノイズを出力する補助ポリシーを訓練して得られる挙動クローニングによって蒸留できる――訓練を1分未満で行い、最大で95%の絶対タスク成功率の向上を示す。最後に、FRSは意味知識を用いて強化学習をブートストラップすることでポリシーを改善し、標準的なRLが改善できなかったいくつかのタスクで改善を示す。
+# Summary (by gpt-4o-mini)
+- 汎用ポリシーが多様なロボットデータセットから学習する中で、Flow Matching GeneralistsとFlow Reversal Steering（FRS）を提案し、サブ最適な行動を逆向きに通して潜在ノイズを特定、汎用的なアクションモードへ写像する手法を検証。FRSは粗い意味論的指示を良いロボットアクションに変換し、ゼロショット制御を改善。訓練を短時間で行い、最大95%のタスク成功率向上を示し、強化学習をブートストラップしてさらなる改善を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vai_viswanathan/status/2065469909581111441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>VLMや人間によって、<br>- Coarse Reference Action関する情報（=意味的には妥当だがロボットがアクションを実施するには粗すぎる情報; move straight right等）を与え、<br>- Coarse Reference Action を対応するVLAのreference action a_1に変換し<br>- a_1に基づいてVLAが良いアクションを生成できる潜在ノイズをFlow Matchingモデルを時間方向にbackwardさせる（noising process）ことで推定し、<br>- 同定した潜在ノイズから順方向にdenoisingすることで、妥当なアクションをsteeringする<br> <br>Flow Reversal Sterring (FRS) を提案。FRSにはzero-shot、かつonlineでsteeringができる利点がある。<br><br>
+<strong>## Diffusion Steering via Behavioral Cloning (DSBC)<br>FRSはSupervised Learningにも活用できる。具体的には、reference actionに基づいたノイズ a^hat_0を用いてobservationからノイズを生成するノイズ方策を直接behavior cloning（=observation oが与えられた時に、a^hat_0を出力する確率を最大化する最尤推定; p.6冒頭）する。<br><br><img src="https://github.com/user-attachments/assets/88968834-12bd-4b99-a9f4-a1314b825714" /" alt="image" loading="lazy" width="550" height="400"/><br><br>学習データ（observation, good noiseのタプル）の収集方法は大きく分けて2通りあり<br>- オンライン: zero-shot FRSを実際に環境でロールアウトし、タスクが成功したときノイズをgood noiseとして記録する<br>- オフライン: 既存の(observation, action)データをFRSで変換し(observation, action noise)のタプルに変換して学習に利用する<br><br>このような学習手法をDSBCと呼ぶ。<br><br>## DSRL + FRS<br>上述のFRSとDSRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5818" target="_blank" rel="noopener noreferrer">[Paper Note] Steering Your Diffusion Policy with Latent Space Reinforcement Learning, Andrew Wagenmaker+, arXiv'25, 2025.06</a>
+</strong>
+<br>
+ を組み合わせることで、DSRLの安定性を向上させる手法。DSRLは一言で言うと、アクション生成のシードとなる良いノイズを生成できるポリシー（ノイズ方策）をRLを通じて学習する手法らしく、RLをする際の報酬に対して、DSBCを重み付きで加えることによって、エキスパートのノイズから大きく逸脱することを防ぐ正則化の役割を追加する。<br><br><img src="https://github.com/user-attachments/assets/c54882ee-be38-4c47-8595-5607703d39cb" /" alt="image" loading="lazy" width="550" height="400"/><br><br>完全に読めたわけではないが、おもしろい。勉強になった。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -1998,7 +2738,7 @@ KernelBench では、ループが公開報告済みのエクスプロイトの�
 <title>[Paper Note] Guiding LLM Post-training Data Engineering with Model Internals from Sparse Autoencoders, Yi Jing+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.27354</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5626</repo-issue-link>
-<tags>NLP, LanguageModel, PostTraining, CurriculumLearning, DataFiltering, One-Line Notes, SparseAutoEncoder, Data, Author Thread-Post</tags>
+<tags>NLP, LanguageModel, PostTraining, CurriculumLearning, DataFiltering, One-Line Notes, SparseAutoencoder, Data, Author Thread-Post</tags>
 <repo-issue-date>2026-05-28</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2605.27354
@@ -13428,6 +14168,58 @@ CoT が段階的に展開されるにつれて、トークンレベルのメト�
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Pre-training under infinite compute, Konwoo Kim+, arXiv'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.14786</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2912</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Ensemble, Scaling Laws, read-later, Author Thread-Post</tags>
+<repo-issue-date>2025-09-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.14786
+# Authors
+  - Konwoo Kim
+  - Suhas Kotha
+  - Percy Liang
+  - Tatsunori Hashimoto
+# Abstract
+  - Since compute grows much faster than web text available for language model pre-training, we ask how one should approach pre-training under fixed data and no compute constraints. We first show that existing data-constrained approaches of increasing epoch count and parameter count eventually overfit, and we significantly improve upon such recipes by properly tuning regularization, finding that the optimal weight decay is $30\times$ larger than standard practice. Since our regularized recipe monotonically decreases loss following a simple power law in parameter count, we estimate its best possible performance via the asymptote of its scaling law rather than the performance at a fixed compute budget. We then identify that ensembling independently trained models achieves a significantly lower loss asymptote than the regularized recipe. Our best intervention combining epoching, regularization, parameter scaling, and ensemble scaling achieves an asymptote at 200M tokens using $5.17\times$ less data than our baseline, and our data scaling laws predict that this improvement persists at higher token budgets. We find that our data efficiency gains can be realized at much smaller parameter counts as we can distill an ensemble into a student model that is 8$\times$ smaller and retains $83\%$ of the ensembling benefit. Finally, our interventions designed for validation loss generalize to downstream benchmarks, achieving a $9\%$ improvement for pre-training evals and a $17.5\times$ data efficiency improvement over continued pre-training on math mid-training data. Our results show that simple algorithmic improvements can enable significantly more data-efficient pre-training in a compute-rich future.
+# Translation (by gpt-4o-mini)
+- 計算能力が言語モデルの事前学習に利用可能なウェブテキストの成長よりもはるかに速く増加するため、固定データと計算制約の下で事前学習にどのようにアプローチすべきかを考察します。まず、既存のデータ制約アプローチであるエポック数やパラメータ数を増やす方法は最終的に過学習を引き起こすことを示し、正則化を適切に調整することでこれらの手法を大幅に改善します。最適な重み減衰は標準的な実践の30倍であることがわかりました。私たちの正則化された手法は、パラメータ数に従って単純なべき法則に従って損失を単調に減少させるため、その最良のパフォーマンスを固定された計算予算でのパフォーマンスではなく、スケーリング法則の漸近線を通じて推定します。次に、独立に訓練されたモデルのアンサンブルが、正則化された手法よりも著しく低い損失の漸近線を達成することを特定しました。エポック数、正則化、パラメータスケーリング、アンサンブルスケーリングを組み合わせた私たちの最良の介入は、基準よりも5.17倍少ないデータを使用して200Mトークンで漸近線を達成します。また、私たちのデータスケーリング法則は、この改善がより高いトークン予算でも持続することを予測しています。私たちは、アンサンブルを8倍小さい学生モデルに蒸留することで、データ効率の向上をはるかに小さいパラメータ数で実現できることを発見しました。この学生モデルはアンサンブルの83%の利点を保持します。最後に、検証損失のために設計された介入は下流のベンチマークに一般化し、事前学習評価で9%の改善と、数学の中間データでの継続的な事前学習に対して17.5倍のデータ効率の改善を達成しました。私たちの結果は、単純なアルゴリズムの改善が計算リッチな未来において、よりデータ効率の良い事前学習を可能にすることを示しています。
+# Summary (by gpt-4o-mini)
+- 計算能力の増加に対し、固定データでの事前学習のアプローチを考察。エポック数やパラメータ数の増加は過学習を引き起こすが、正則化を適切に調整することで改善可能。最適な重み減衰は標準の30倍で、正則化手法は損失を単調に減少させる。アンサンブルモデルは正則化手法よりも低い損失を達成し、データ使用量を5.17倍削減。学生モデルへの蒸留により、データ効率を向上させ、下流ベンチマークでの改善も確認。結果は、計算リッチな未来におけるデータ効率の良い事前学習の可能性を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/percyliang/status/1969101519531491712?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/1969887073017708822?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2066294934387450138?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] ToolRL: Reward is All Tool Learning Needs, Cheng Qian+, NeurIPS'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2504.13958</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2907</repo-issue-link>
@@ -17196,6 +17988,72 @@ https://diffusion-scaling.github.io。
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] ENPIRE: Agentic Robot Policy Self-Improvement in the Real World, Xiao+, 2026.06</title>
+<original-paper-blog-link>https://research.nvidia.com/labs/gear/enpire/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5823</repo-issue-link>
+<tags>Robotics, autoresearch, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body>https://research.nvidia.com/labs/gear/enpire/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/drjimfan/status/2066921736369766762?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Sakana AI、初の商用プロダクト「Sakana Marlin」を提供開始, SakanaAI, 2026.06</title>
+<original-paper-blog-link>https://sakana.ai/marlin-release/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5817</repo-issue-link>
+<tags>Author Thread-Post</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body>https://sakana.ai/marlin-release/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sakanaailabs/status/2066352122183168004?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ZONOS2: Real-time TTS with High-Fidelity Voice Cloning, ZYPHRA, 2026.06</title>
+<original-paper-blog-link>https://www.zyphra.com/our-work/zonos2</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5815</repo-issue-link>
+<tags>NLP, Dataset, Evaluation, SpeechProcessing, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), TTS, Realtime, Author Thread-Post</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body>https://www.zyphra.com/our-work/zonos2</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zyphraai/status/2065498869954490846?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/Zyphra/ZONOS2" target="_blank" rel="noopener noreferrer">https://huggingface.co/Zyphra/ZONOS2</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>First Steps Toward Automated AI Research, Recursive Superintelligence, 2026.06</title>
 <original-paper-blog-link>https://www.recursive.com/articles/first-steps-toward-automated-ai-research</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5806</repo-issue-link>
@@ -17259,26 +18117,6 @@ https://diffusion-scaling.github.io。
 {% endraw %}
 
 </p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Improving Robotic Generalist Policies via Flow Reversal Steering, 2026.06</title>
-<original-paper-blog-link>https://flow-reversal-steering.github.io/static/Flow_Reversal_Steering.pdf</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5798</repo-issue-link>
-<tags>read-later, VisionLanguageActionModel, Initial Impression Notes, Author Thread-Post</tags>
-<repo-issue-date>2026-06-13</repo-issue-date>
-<issue-body>https://flow-reversal-steering.github.io/static/Flow_Reversal_Steering.pdf</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vai_viswanathan/status/2065469909581111441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>VLAも世界に関するダイナミクスを理解している可能性</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -17502,7 +18340,7 @@ github: https://github.com/AntheaLi/open-research-seeds</issue-body>
 <title>Improving our LLM Pretraining Efficiency, Open Athena, 2026.06</title>
 <original-paper-blog-link>https://openathena.ai/blog/pretraining-speedup/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5708</repo-issue-link>
-<tags>read-later, Selected Papers/Blogs, Author Thread-Post</tags>
+<tags>Pretraining, NLP, LanguageModel, Optimizer, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, Author Thread-Post</tags>
 <repo-issue-date>2026-06-06</repo-issue-date>
 <issue-body>https://openathena.ai/blog/pretraining-speedup/</issue-body>
 <maintainer-comment-text><p>元ポスト: 

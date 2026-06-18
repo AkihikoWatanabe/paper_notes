@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-05-31">
+<paper-list last-updated="2026-06-17">
+<paper-entry>
+<title>[Paper Note] ExpRL: Exploratory RL for LLM Mid-Training, Violet Xiang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.17024</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5826</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, LLM-as-a-Judge, mid-training, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.17024
+# Authors
+  - Violet Xiang
+  - Amrith Setlur
+  - Chase Blagden
+  - Nick Haber
+  - Aviral Kumar
+# Abstract
+  - Sparse reward reinforcement learning (RL) has become a standard tool for improving LLM reasoning, but its success depends critically on the coverage present in the base model. In practice, models are often primed for RL through \emph{mid-training} on curated reasoning traces that teach useful primitive skills such as decomposition, verification, or self-correction. Although effective, this strategy requires manually specifying what the model should learn, and it remains unclear whether such primitive coverage is enough for much harder problems, which require combining these skills into broader solution strategies. We study a more automated approach: \emph{RL-based mid-training} using large corpora of human-written question-answer data. Rather than treating reference solutions as targets to imitate, our method, ExpRL, uses them as \emph{reward scaffolds}: references are hidden from the policy and used only to construct problem-specific grading rubrics for judging on-policy reasoning traces. The policy samples from the original problem prompt, while an LLM judge compares the sampled reasoning trace against the reference solution and assigns outcome-level or process-level dense rewards. This lets ExpRL reinforce partial progress, useful intermediate reductions, and productive reasoning behaviors that sparse final-answer rewards often fail to upweight. On challenging math reasoning tasks, ExpRL yields stronger RL priming than SFT, sparse-reward GRPO, and self-distillation, and provides a better initialization for subsequent sparse-reward RL. Additional mixed-domain experiments further suggest that ExpRL can extend beyond the original math-only setting.
+# Translation (by gpt-5-nano)
+- スパース報酬強化学習（RL）は、LLMの推論能力を向上させる標準的なツールとなっているが、その成功は基盤モデルに備わる網羅性に大きく依存する。実務では、モデルはしばしば RL の準備として、中間訓練における厳選された推論軌跡を用い、分解、検証、自己訂正といった有用な原始スキルを教える。効果的ではあるものの、この戦略は学習させる内容を手動で指定する必要があり、これらの原始的なカバレッジが、これらのスキルをより広範な解法戦略へ組み合わせる必要があるような、より難しい問題に対して十分であるかどうかは依然として不明である。より自動化されたアプローチを検討する。大規模な人間作成の質問応答データのコーパスを用いたRLベースの中間訓練である。参照解を模倣すべきターゲットとして扱うのではなく、ExpRLはこれらを報酬の足場として用いる。参照解はポリシーから隠され、オンポリシー推論軌跡を評価するための問題特有の採点ルーブリックを構築する目的でのみ用いられる。ポリシーは元の問題プロンプトから推論をサンプリングし、LLM判定者はサンプリングされた推論軌跡を参照解と比較して、結果レベルの報酬またはプロセスレベルの密な報酬を割り当てる。これによりExpRLは、最終回答報酬が乏しい場合に強化されにくい部分的な進捗、有用な中間段階の簡略化、そして生産的な推論行動を強化できる。難解な数学的推論タスクでは、ExpRLはSFT、スパース報酬GRPO、自己蒸留よりも強いRLプリミングを生み出し、その後のスパース報酬RLの初期化をより良く提供する。追加の混合ドメイン実験は、ExpRLが元の数学のみの設定を超えて拡張し得ることをさらに示唆している。
+# Summary (by gpt-4o-mini)
+- スパース報酬強化学習（RL）は、LLMの推論を向上させる方法だが、成功は基盤モデルの網羅性に依存する。従来の方法では、中間訓練に選ばれた推論軌跡を用いてスキルを教えるが、手動指定が必要であり、そのカバレッジが難しい問題に対して十分かは不明である。新たなアプローチとして、ExpRLは人間作成の質問応答データを用い、参照解を報酬の基盤として扱う。ポリシーは問題プロンプトから推論をサンプリングし、LLM判定者がバックグラウンド報酬を割り当てることで部分的進捗を強化する。ExpRLは、難解な数学的推論タスクにおいて、他手法よりも優れたRLプリミングを実現し、スパース報酬RLの初期化を改善することが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ziyux/status/2066933142083207443?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>post-trainingでGRPOをすると、報酬がsparse(モデルが解けない問題に対してはadvanatageがゼロ)となりシグナルが得られない問題があるが、これをmid trainingの段階で参照データをdense報酬のためのscaffoldingとして活用することで、後続のsparseなRLの性能を改善する。どうやらmid trainingの段階で、参照データを与えた（＝scaffolding) verifierを用意し、LLM-as-a-Judgeを通じて密な報酬（すなわち、最終的な応答だけでなく途中のtrajectoryの良し悪しからも報酬を得る）を与え、後続のsparseなRLのためのwarmupをする。warmupにはSFTやself-distillationが用いられることが多く、これら手法は基本的には参照データの模倣学習であるため汎化性能を犠牲（i.e., これはらトークンレベルの学習シグナルであらため、自由な探索が抑制されエントロピーが下がる）にしていたが、提案手法ではDense RewardなRLを用いることで探索が促進され（＝高いエントロピーが保たれる）warmupが可能となる、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Qwen-VLA: Unifying Vision-Language-Action Modeling across Tasks, Environments, and Robot Embodiments, Qiuyue Wang+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.30280</original-paper-blog-link>

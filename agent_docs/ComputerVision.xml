@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-11">
+<paper-list last-updated="2026-06-13">
+<paper-entry>
+<title>[Paper Note] Improving Robotic Generalist Policies via Flow Reversal Steering, Andy Tang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.13675</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5798</repo-issue-link>
+<tags>ComputerVision, NLP, Selected Papers/Blogs, VisionLanguageModel, Robotics, VisionLanguageActionModel, reading, One-Line Notes, Steering, Author Thread-Post</tags>
+<repo-issue-date>2026-06-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.13675
+# Authors
+  - Andy Tang
+  - William Chen
+  - Andrew Wagenmaker
+  - Chelsea Finn
+  - Sergey Levine
+# Abstract
+  - Generalist policies can learn a wide range of skills from diverse robot datasets. In order to solve or improve on challenging new tasks, we need a way to infer and invoke the appropriate actions from the policy's rich behavioral prior, especially when directly commanding the policy fails. We focus on flow matching generalists and propose Flow Reversal Steering (FRS): a method that takes suboptimal but ``reasonable'' actions, finds their latent noises by passing them through the flow policy in reverse, and maps them to nearby generalist action modes. We evaluate FRS across many simulated and real-world manipulation settings. First, FRS can turn coarse semantic guidance from humans or vision-language models (VLMs) into corresponding good robot actions, improving zero-shot control. These gains can be distilled with behavioral cloning by training an auxiliary policy to output noises that the generalist maps to good actions -- showing up to 95% absolute task success rate boosts in under a minute of training. Finally, FRS enables policy improvement by bootstrapping reinforcement learning with semantic knowledge, improving on several tasks that standard RL fails to improve on.
+# Translation (by gpt-5-nano)
+- 汎用ポリシーは、多様なロボットデータセットから幅広いスキルを学習できる。難しい新しいタスクを解決したり改善したりするためには、ポリシーの豊富な行動の事前知識を推定して適切な行動を呼び出す方法が必要であり、特に直接指示してもうまくいかない場合にはなおさらである。我々は Flow Matching Generalists（フロー・マッチング汎用ポリシー）に焦点を当て、Flow Reversal Steering（FRS）を提案する。これは、サブ最適だが「合理的な」行動を取り、それらをフロー・ポリシーに逆向きに通して潜在ノイズを見つけ出し、それを近傍の汎用的なアクションモードへ写像する手法である。我々はFRSを、数多くのシミュレーションおよび実世界の操作設定で評価する。まず、FRSは人間やビジョン-言語モデル（VLMs）からの粗い意味論的指示を、それに対応する良いロボットアクションへと変換し、ゼロショット制御を改善する。これらの利得は、一般ポリシーが良いアクションへ写像するノイズを出力する補助ポリシーを訓練して得られる挙動クローニングによって蒸留できる――訓練を1分未満で行い、最大で95%の絶対タスク成功率の向上を示す。最後に、FRSは意味知識を用いて強化学習をブートストラップすることでポリシーを改善し、標準的なRLが改善できなかったいくつかのタスクで改善を示す。
+# Summary (by gpt-4o-mini)
+- 汎用ポリシーが多様なロボットデータセットから学習する中で、Flow Matching GeneralistsとFlow Reversal Steering（FRS）を提案し、サブ最適な行動を逆向きに通して潜在ノイズを特定、汎用的なアクションモードへ写像する手法を検証。FRSは粗い意味論的指示を良いロボットアクションに変換し、ゼロショット制御を改善。訓練を短時間で行い、最大95%のタスク成功率向上を示し、強化学習をブートストラップしてさらなる改善を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vai_viswanathan/status/2065469909581111441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>VLMや人間によって、<br>- Coarse Reference Action関する情報（=意味的には妥当だがロボットがアクションを実施するには粗すぎる情報; move straight right等）を与え、<br>- Coarse Reference Action を対応するVLAのreference action a_1に変換し<br>- a_1に基づいてVLAが良いアクションを生成できる潜在ノイズをFlow Matchingモデルを時間方向にbackwardさせる（noising process）ことで推定し、<br>- 同定した潜在ノイズから順方向にdenoisingすることで、妥当なアクションをsteeringする<br> <br>Flow Reversal Sterring (FRS) を提案。FRSにはzero-shot、かつonlineでsteeringができる利点がある。<br><br>
+<strong>## Diffusion Steering via Behavioral Cloning (DSBC)<br>FRSはSupervised Learningにも活用できる。具体的には、reference actionに基づいたノイズ a^hat_0を用いてobservationからノイズを生成するノイズ方策を直接behavior cloning（=observation oが与えられた時に、a^hat_0を出力する確率を最大化する最尤推定; p.6冒頭）する。<br><br><img src="https://github.com/user-attachments/assets/88968834-12bd-4b99-a9f4-a1314b825714" /" alt="image" loading="lazy" width="550" height="400"/><br><br>学習データ（observation, good noiseのタプル）の収集方法は大きく分けて2通りあり<br>- オンライン: zero-shot FRSを実際に環境でロールアウトし、タスクが成功したときノイズをgood noiseとして記録する<br>- オフライン: 既存の(observation, action)データをFRSで変換し(observation, action noise)のタプルに変換して学習に利用する<br><br>このような学習手法をDSBCと呼ぶ。<br><br>## DSRL + FRS<br>上述のFRSとDSRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5818" target="_blank" rel="noopener noreferrer">[Paper Note] Steering Your Diffusion Policy with Latent Space Reinforcement Learning, Andrew Wagenmaker+, arXiv'25, 2025.06</a>
+</strong>
+<br>
+ を組み合わせることで、DSRLの安定性を向上させる手法。DSRLは一言で言うと、アクション生成のシードとなる良いノイズを生成できるポリシー（ノイズ方策）をRLを通じて学習する手法らしく、RLをする際の報酬に対して、DSBCを重み付きで加えることによって、エキスパートのノイズから大きく逸脱することを防ぐ正則化の役割を追加する。<br><br><img src="https://github.com/user-attachments/assets/c54882ee-be38-4c47-8595-5607703d39cb" /" alt="image" loading="lazy" width="550" height="400"/><br><br>完全に読めたわけではないが、おもしろい。勉強になった。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] LeapAlign: Post-Training Flow Matching Models at Any Generation Step by Building Two-Step Trajectories, Zhanhao Liang+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.15311</original-paper-blog-link>
@@ -123,6 +160,45 @@
 </div>
 {% endraw %}
 
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Interpreting Physics in Video World Models, Sonia Joseph+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.07050</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5740</repo-issue-link>
+<tags>ComputerVision, Probing, VideoGeneration/Understandings, Physics</tags>
+<repo-issue-date>2026-06-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.07050
+# Authors
+  - Sonia Joseph
+  - Quentin Garrido
+  - Randall Balestriero
+  - Matthew Kowal
+  - Thomas Fel
+  - Shahab Bakhtiari
+  - Blake Richards
+  - Mike Rabbat
+# Abstract
+  - A long-standing question in physical reasoning is whether video-based models need to rely on factorized representations of physical variables in order to make physically accurate predictions, or whether they can implicitly represent such variables in a task-specific, distributed manner. While modern video world models achieve strong performance on intuitive physics benchmarks, it remains unclear which of these representational regimes they implement internally. Here, we present the first interpretability study to directly examine physical representations inside large-scale video encoders. Using layerwise probing, subspace geometry, patch-level decoding, and targeted attention ablations, we characterize where physical information becomes accessible and how it is organized within encoder-based video transformers.   Across architectures, we identify a sharp intermediate-depth transition -- which we call the Physics Emergence Zone -- at which physical variables become accessible. Physics-related representations peak shortly after this transition and degrade toward the output layers. Decomposing motion into explicit variables, we find that scalar quantities such as speed and acceleration are available from early layers onwards, whereas motion direction becomes accessible only at the Physics Emergence Zone. Notably, we find that direction is encoded through a high-dimensional population structure with circular geometry, requiring coordinated multi-feature intervention to control. These findings suggest that modern video models do not use factorized representations of physical variables like a classical physics engine. Instead, they use a distributed representation that is nonetheless sufficient for making physical predictions.
+# Translation (by gpt-5-nano)
+- 長年にわたる物理推論の課題は、ビデオベースのモデルが物理変数を因子化された表現に依存して物理的に正確な予測を行う必要があるのか、それともタスク特有の分散的な方法で暗黙のうちにそれらの変数を表現できるのか、ということである。現代のビデオ世界モデルは直感的物理学のベンチマークで高い性能を達成している一方で、それらが内部で実装している表現系を特定することは依然として不明である。ここでは、大規模なビデオエンコーダ内部の物理表現を直接検討する初の解釈性研究を提示する。層ごとのプロービング、サブスペース幾何学、パッチレベルのデコーディング、ターゲットを絞った注意アブレーションを用いて、物理情報がどこでアクセス可能になるか、エンコーダベースのビデオトランスフォーマー内でそれがどのように組織されているかを特徴づける。
+
+アーキテクチャ全体で、物理変数がアクセス可能になる中間深度の鋭い遷移を特定する――これを「Physics Emergence Zone（物理出現ゾーン）」と呼ぶ。物理関連の表現はこの遷移の直後にピークを迎え、出力層へと劣化していく。運動を明示的な変数に分解すると、速度や加速度といったスカラー量は初期の層から利用可能であるのに対し、運動の方向は物理出現ゾーンでのみアクセス可能になる。特に、方向は円環幾何学を持つ高次元の集団構造を通じて符号化されており、制御には複数の特徴を協調させた介入が必要である。これらの発見は、現代のビデオモデルが古典的な物理エンジンのように物理変数を因子化された表現として用いていないことを示唆している。むしろ、それらは分散表現を用いており、それにもかかわらず物理予測を行うのに十分である。
+# Summary (by gpt-4o-mini)
+- ビデオベースのモデルが物理変数をどのように表現しているかを解明するための初の解釈性研究を実施。層ごとのプロービングやデコーディングを用いて、物理情報がアクセス可能な「Physics Emergence Zone」を特定。運動のスカラー量は初期層からアクセス可能だが、運動の方向はこのゾーンでのみ利用可能で、高次元の集団構造を通じて符号化されている。この研究は、現代のビデオモデルが因子化された表現ではなく、分散表現を用いて物理予測を行うことを示唆している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/giffmana/status/2064718736783823145?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5739" target="_blank" rel="noopener noreferrer">[Paper Note] The Invisible Hand of Physics: When Video Diffusion Models Know More Than They Show, Parsa Esmati+, arXiv'26, 2026.06</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -4461,7 +4537,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] MonoLoss: A Training Objective for Interpretable Monosemantic Representations, Ali Nasiri-Sarvi+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.12403</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4583</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, Explanation, RepresentationLearning, Transformer, Encoder, SparseAutoEncoder</tags>
+<tags>ComputerVision, EfficiencyImprovement, Explanation, RepresentationLearning, Transformer, Encoder, SparseAutoencoder</tags>
 <repo-issue-date>2026-02-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.12403

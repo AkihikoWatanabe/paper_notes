@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-12">
+<paper-list last-updated="2026-06-17">
+<paper-entry>
+<title>[Paper Note] ExpRL: Exploratory RL for LLM Mid-Training, Violet Xiang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.17024</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5826</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, LLM-as-a-Judge, mid-training, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-06-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.17024
+# Authors
+  - Violet Xiang
+  - Amrith Setlur
+  - Chase Blagden
+  - Nick Haber
+  - Aviral Kumar
+# Abstract
+  - Sparse reward reinforcement learning (RL) has become a standard tool for improving LLM reasoning, but its success depends critically on the coverage present in the base model. In practice, models are often primed for RL through \emph{mid-training} on curated reasoning traces that teach useful primitive skills such as decomposition, verification, or self-correction. Although effective, this strategy requires manually specifying what the model should learn, and it remains unclear whether such primitive coverage is enough for much harder problems, which require combining these skills into broader solution strategies. We study a more automated approach: \emph{RL-based mid-training} using large corpora of human-written question-answer data. Rather than treating reference solutions as targets to imitate, our method, ExpRL, uses them as \emph{reward scaffolds}: references are hidden from the policy and used only to construct problem-specific grading rubrics for judging on-policy reasoning traces. The policy samples from the original problem prompt, while an LLM judge compares the sampled reasoning trace against the reference solution and assigns outcome-level or process-level dense rewards. This lets ExpRL reinforce partial progress, useful intermediate reductions, and productive reasoning behaviors that sparse final-answer rewards often fail to upweight. On challenging math reasoning tasks, ExpRL yields stronger RL priming than SFT, sparse-reward GRPO, and self-distillation, and provides a better initialization for subsequent sparse-reward RL. Additional mixed-domain experiments further suggest that ExpRL can extend beyond the original math-only setting.
+# Translation (by gpt-5-nano)
+- スパース報酬強化学習（RL）は、LLMの推論能力を向上させる標準的なツールとなっているが、その成功は基盤モデルに備わる網羅性に大きく依存する。実務では、モデルはしばしば RL の準備として、中間訓練における厳選された推論軌跡を用い、分解、検証、自己訂正といった有用な原始スキルを教える。効果的ではあるものの、この戦略は学習させる内容を手動で指定する必要があり、これらの原始的なカバレッジが、これらのスキルをより広範な解法戦略へ組み合わせる必要があるような、より難しい問題に対して十分であるかどうかは依然として不明である。より自動化されたアプローチを検討する。大規模な人間作成の質問応答データのコーパスを用いたRLベースの中間訓練である。参照解を模倣すべきターゲットとして扱うのではなく、ExpRLはこれらを報酬の足場として用いる。参照解はポリシーから隠され、オンポリシー推論軌跡を評価するための問題特有の採点ルーブリックを構築する目的でのみ用いられる。ポリシーは元の問題プロンプトから推論をサンプリングし、LLM判定者はサンプリングされた推論軌跡を参照解と比較して、結果レベルの報酬またはプロセスレベルの密な報酬を割り当てる。これによりExpRLは、最終回答報酬が乏しい場合に強化されにくい部分的な進捗、有用な中間段階の簡略化、そして生産的な推論行動を強化できる。難解な数学的推論タスクでは、ExpRLはSFT、スパース報酬GRPO、自己蒸留よりも強いRLプリミングを生み出し、その後のスパース報酬RLの初期化をより良く提供する。追加の混合ドメイン実験は、ExpRLが元の数学のみの設定を超えて拡張し得ることをさらに示唆している。
+# Summary (by gpt-4o-mini)
+- スパース報酬強化学習（RL）は、LLMの推論を向上させる方法だが、成功は基盤モデルの網羅性に依存する。従来の方法では、中間訓練に選ばれた推論軌跡を用いてスキルを教えるが、手動指定が必要であり、そのカバレッジが難しい問題に対して十分かは不明である。新たなアプローチとして、ExpRLは人間作成の質問応答データを用い、参照解を報酬の基盤として扱う。ポリシーは問題プロンプトから推論をサンプリングし、LLM判定者がバックグラウンド報酬を割り当てることで部分的進捗を強化する。ExpRLは、難解な数学的推論タスクにおいて、他手法よりも優れたRLプリミングを実現し、スパース報酬RLの初期化を改善することが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ziyux/status/2066933142083207443?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>post-trainingでGRPOをすると、報酬がsparse(モデルが解けない問題に対してはadvanatageがゼロ)となりシグナルが得られない問題があるが、これをmid trainingの段階で参照データをdense報酬のためのscaffoldingとして活用することで、後続のsparseなRLの性能を改善する。どうやらmid trainingの段階で、参照データを与えた（＝scaffolding) verifierを用意し、LLM-as-a-Judgeを通じて密な報酬（すなわち、最終的な応答だけでなく途中のtrajectoryの良し悪しからも報酬を得る）を与え、後続のsparseなRLのためのwarmupをする。warmupにはSFTやself-distillationが用いられることが多く、これら手法は基本的には参照データの模倣学習であるため汎化性能を犠牲（i.e., これはらトークンレベルの学習シグナルであらため、自由な探索が抑制されエントロピーが下がる）にしていたが、提案手法ではDense RewardなRLを用いることで探索が促進され（＝高いエントロピーが保たれる）warmupが可能となる、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] LeapAlign: Post-Training Flow Matching Models at Any Generation Step by Building Two-Step Trajectories, Zhanhao Liang+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.15311</original-paper-blog-link>
@@ -6437,7 +6470,7 @@ K-アームド・バンディット問題では、DGは単一のコンテキス�
 <title>[Paper Note] Reasoning Models Generate Societies of Thought, Junsol Kim+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.10825</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4243</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, Chain-of-Thought, Reasoning, PostTraining, read-later, Probing, Diversity, Selected Papers/Blogs, SparseAutoEncoder</tags>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, Chain-of-Thought, Reasoning, PostTraining, read-later, Probing, Diversity, Selected Papers/Blogs, SparseAutoencoder</tags>
 <repo-issue-date>2026-01-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.10825
@@ -7719,6 +7752,46 @@ K-アームド・バンディット問題では、DGは単一のコンテキス�
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Rubrics as Rewards: Reinforcement Learning Beyond Verifiable Domains, Anisha Gunjal+, ICLR'26, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.17746</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2280</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, ICLR, PostTraining, Selected Papers/Blogs, Rubric-based</tags>
+<repo-issue-date>2025-07-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.17746
+# Authors
+  - Anisha Gunjal
+  - Anthony Wang
+  - Elaine Lau
+  - Vaskar Nath
+  - Bing Liu
+  - Sean Hendryx
+# Abstract
+  - Extending Reinforcement Learning with Verifiable Rewards (RLVR) to real-world tasks often requires balancing objective and subjective evaluation criteria. However, many such tasks lack a single, unambiguous ground truth-making it difficult to define reliable reward signals for post-training language models. While traditional preference-based methods offer a workaround, they rely on opaque reward functions that are difficult to interpret and prone to spurious correlations. We introduce $\textbf{Rubrics as Rewards}$ (RaR), a framework that uses structured, checklist-style rubrics as interpretable reward signals for on-policy training with GRPO. Our best RaR method yields up to a $28\%$ relative improvement on HealthBench-1k compared to simple Likert-based approaches, while matching or surpassing the performance of reward signals derived from expert-written references. By treating rubrics as structured reward signals, we show that RaR enables smaller-scale judge models to better align with human preferences and sustain robust performance across model scales.
+# Translation (by gpt-4o-mini)
+- 強化学習に検証可能な報酬を拡張する（RLVR）ことは、実世界のタスクにおいて客観的および主観的な評価基準のバランスを取ることがしばしば求められる。しかし、そのようなタスクの多くは単一の明確な真実を欠いており、トレーニング後の言語モデルに対して信頼できる報酬信号を定義することが難しい。従来の好みベースの手法は回避策を提供するが、解釈が難しく、虚偽の相関関係に陥りやすい不透明な報酬関数に依存している。そこで、私たちは「報酬としてのルーブリック」（RaR）というフレームワークを提案する。これは、構造化されたチェックリストスタイルのルーブリックを解釈可能な報酬信号として使用し、GRPOによるオンポリシー学習を行うものである。私たちの最良のRaR手法は、単純なリッカートベースのアプローチと比較してHealthBench-1kで最大28%の相対的改善を達成し、専門家が作成した参照から導出された報酬信号の性能に匹敵するか、それを上回る結果を示した。ルーブリックを構造化された報酬信号として扱うことで、RaRは小規模な判定モデルが人間の好みにより良く一致し、モデルのスケールにわたって堅牢な性能を維持できることを示した。
+# Summary (by gpt-4o-mini)
+- 報酬としてのルーブリック（RaR）フレームワークを提案し、構造化されたチェックリストスタイルのルーブリックを解釈可能な報酬信号として使用。HealthBench-1kで最大28%の相対的改善を達成し、専門家の参照に匹敵またはそれを上回る性能を示す。RaRは小規模な判定モデルが人間の好みに一致し、堅牢な性能を維持できることを証明。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iscienceluvr/status/1948235609190867054?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=c1bTcrDmt4" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=c1bTcrDmt4</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] CriticLean: Critic-Guided Reinforcement Learning for Mathematical  Formalization, Zhongyuan Peng+, ACL'26, 2025.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.06181</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2158</repo-issue-link>
@@ -7815,6 +7888,32 @@ K-アームド・バンディット問題では、DGは単一のコンテキス�
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Steering Your Diffusion Policy with Latent Space Reinforcement Learning, Andrew Wagenmaker+, arXiv'25, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.15799</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5818</repo-issue-link>
+<tags>ReinforcementLearning, DiffusionModel, Robotics, Steering</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.15799
+# Authors
+  - Andrew Wagenmaker
+  - Mitsuhiko Nakamoto
+  - Yunchu Zhang
+  - Seohong Park
+  - Waleed Yagoub
+  - Anusha Nagabandi
+  - Abhishek Gupta
+  - Sergey Levine
+# Abstract
+  - Robotic control policies learned from human demonstrations have achieved impressive results in many real-world applications. However, in scenarios where initial performance is not satisfactory, as is often the case in novel open-world settings, such behavioral cloning (BC)-learned policies typically require collecting additional human demonstrations to further improve their behavior -- an expensive and time-consuming process. In contrast, reinforcement learning (RL) holds the promise of enabling autonomous online policy improvement, but often falls short of achieving this due to the large number of samples it typically requires. In this work we take steps towards enabling fast autonomous adaptation of BC-trained policies via efficient real-world RL. Focusing in particular on diffusion policies -- a state-of-the-art BC methodology -- we propose diffusion steering via reinforcement learning (DSRL): adapting the BC policy by running RL over its latent-noise space. We show that DSRL is highly sample efficient, requires only black-box access to the BC policy, and enables effective real-world autonomous policy improvement. Furthermore, DSRL avoids many of the challenges associated with finetuning diffusion policies, obviating the need to modify the weights of the base policy at all. We demonstrate DSRL on simulated benchmarks, real-world robotic tasks, and for adapting pretrained generalist policies, illustrating its sample efficiency and effective performance at real-world policy improvement.
+# Translation (by gpt-5-nano)
+- 人間のデモンストレーションから学習したロボットの制御ポリシーは、多くの実世界の応用において顕著な成果を挙げている。しかし、初期の性能が満足のいくものではない場合、特に新規のオープンワールド環境では、BC（行動クローン）学習によって得られたポリシーは通常、行動をさらに改善するために追加の人間デモンストレーションを収集する必要がある――これは高価で時間のかかるプロセスである。対照的に、強化学習（RL）はオンラインで自律的にポリシーを改善する可能性を秘めているが、通常は大量のサンプルを必要とするため、これを達成するには至らないことが多い。本研究では、実世界のRLを用いてBC訓練ポリシーの高速な自律適応を実現する一歩を踏み出す。特に最先端のBC手法である拡散ポリシーに焦点を当て、拡散ステアリングを強化学習で行う（DSRL）：潜在ノイズ空間上でRLを走らせることによってBCポリシーを適応させる。DSRLはサンプル効率が非常に高く、BCポリシーへのブラックボックスアクセスだけを必要とし、実世界での自律的なポリシー改善を効果的に実現できることを示す。さらに、DSRLは拡散ポリシーのファインチューニングに伴う多くの課題を回避し、基盤ポリシーの重みを一切変更する必要性をなくす。DSRLをシミュレーションベンチマーク、実世界のロボットタスク、および事前学習済みの汎用ポリシーの適応に対して実証し、そのサンプル効率と実世界でのポリシー改善における有効な性能を示す。
+# Summary (by gpt-4o-mini)
+- BCポリシーの自律的な適応を実現するために、強化学習を用いて拡散ポリシーに焦点を当てたDSRLを提案。サンプル効率が高く、BCポリシーへのアクセスのみで自律的改善が可能。シミュレーションや実世界のタスクでその有効性を実証。</issue-body>
+<maintainer-comment-text><p>アクションを生成するシードとなるノイズをサンプリングするのではなく、良いノイズを生成するポリシーをRLによって学習する手法のようである。<br><img src="https://github.com/user-attachments/assets/12d2640a-592b-41b1-9a24-6155360b1ba0" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -8353,7 +8452,7 @@ K-アームド・バンディット問題では、DGは単一のコンテキス�
 <title>[Paper Note] Persona Features Control Emergent Misalignment, Miles Wang+, arXiv'25, 2025.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.19823</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4202</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, action_wanted, Safety, PostTraining, SparseAutoEncoder, EmergentMisalignment</tags>
+<tags>Analysis, NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, action_wanted, Safety, PostTraining, SparseAutoencoder, EmergentMisalignment</tags>
 <repo-issue-date>2026-01-15</repo-issue-date>
 <issue-body># URL
 - preprint: https://arxiv.org/abs/2506.19823
