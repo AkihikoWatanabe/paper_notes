@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-05-27">
+<paper-entry>
+<title>[Paper Note] SAW-INT4: System-Aware 4-Bit KV-Cache Quantization for Real-World LLM Serving, Jinda Jia+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.19157</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5297</repo-issue-link>
+<tags>NLP, LanguageModel, Infrastructure, Quantization, LLMServing, KV Cache, Compression, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-22</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.19157
+# Authors
+  - Jinda Jia
+  - Jisen Li
+  - Zhongzhu Zhou
+  - Jung Hwan Heo
+  - Jue Wang
+  - Tri Dao
+  - Shuaiwen Leon Song
+  - Ben Athiwaratkun
+  - Chenfeng Xu
+  - Tianyi Zhang
+  - Xiaoxia Wu
+# Abstract
+  - KV-cache memory is a major bottleneck in real-world LLM serving, where systems must simultaneously support latency-sensitive small-batch requests and high-throughput concurrent workloads. Although many KV-cache compression methods improve offline accuracy or compression ratio, they often violate practical serving constraints such as paged memory layouts, regular memory access, and fused attention execution, limiting their effectiveness in deployment.   In this work, we identify the minimal set of 4-bit KV-cache quantization methods that remain viable under these constraints. Our central finding is that a simple design--token-wise INT4 quantization with block-diagonal Hadamard rotation--consistently achieves the best accuracy-efficiency trade-off. Across multiple models and benchmarks, this approach recovers nearly all of the accuracy lost by naive INT4, while more complex methods such as vector quantization and Hessian-aware quantization provide only marginal additional gains once serving compatibility is taken into account.   To make this practical, we implement a fused rotation-quantization kernel that integrates directly into paged KV-cache layouts and introduces zero measurable end-to-end overhead, matching plain INT4 throughput across concurrency levels. Our results show that effective KV-cache compression is fundamentally a systems co-design problem: under real serving constraints, lightweight block-diagonal Hadamard rotation is a viable method that delivers near-lossless accuracy without sacrificing serving efficiency.
+# Translation (by gpt-5-nano)
+- KVキャッシュメモリは、現実世界のLLMサービングにおける主要なボトルネックであり、システムはレイテンシーに敏感な小規模バッチのリクエストと高スループットの同時実行ワークロードを同時にサポートする必要がある。多くのKVキャッシュ圧縮手法はオフラインでの精度や圧縮比を改善するが、それらはページ化されたメモリレイアウト、規則的なメモリアクセス、融合アテンションの実行といった実用的なサービング制約に違反することが多く、デプロイメント時の有効性を制限する。
+
+本研究では、これらの制約の下で生存可能な最小限の4ビットKVキャッシュ量子化手法の集合を特定する。私たちの中心的な発見は、単純な設計――トークンごとのINT4量子化とブロック対角Hadamard回転――が一貫して最良の精度と効率のトレードオフを達成するということである。複数のモデルやベンチマークにまたがって、このアプローチは素朴なINT4によって失われた精度のほぼ全てを回復する一方で、ベクトル量子化やヘシアン対応量子化のようなより複雑な手法は、サービング互換性を考慮した場合に追加的な利得は限られる。
+
+これを実用的にするため、ページ化されたKVキャッシュ配置に直接統合される融合回転-量子化カーネルを実装し、エンドツーエンドのオーバーヘッドを測定不能なレベルに抑え、並行性レベルを跨いで素のINT4スループットに匹敵する。われわれの結果は、効果的なKVキャッシュ圧縮は本質的にシステムの共設計問題であることを示している。現実的なサービング制約の下で、軽量なブロック対角Hadamard回転は実用的な手法であり、サービング効率を損なうことなくほぼ損失のない精度を提供する。
+# Summary (by gpt-4o-mini)
+- KVキャッシュメモリは、レイテンシーに敏感な小規模バッチと高スループットワークロードの同時サポートにおけるボトルネックとなっている。多くの圧縮手法は実用的な制約に違反し、デプロイメント時の有効性を制限している。本研究では、最小限の4ビット量子化手法を特定し、INT4量子化とブロック対角Hadamard回転の組み合わせが最良のトレードオフを実現することを発見した。実装により、エンドツーエンドのオーバーヘッドを抑え、INT4スループットに匹敵する性能を達成。結果として、KVキャッシュ圧縮はシステム共設計の問題であり、軽量な手法が実用的な精度を提供することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/2046785336983097646?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>github:
+
+{% raw %}
+<a href="https://github.com/togethercomputer/saw-int4" target="_blank" rel="noopener noreferrer">https://github.com/togethercomputer/saw-int4</a>
+{% endraw %}
+
+<br><br>以下のRequirementsがある<br>- MHA modelsのみをサポートしており、MLA、あるいはMHA以外のアーキテクチャはサポートされていない<br>  - 実装かれていないだけなのか、理論的に無理なのかは区別がついていない<br>- Prefill backend: fa3<br>- Decode backend: triton</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2049766286083670452?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter, Ruoyu Qin+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.15039v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5265</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, LLMServing, Selected Papers/Blogs, reading, One-Line Notes, KV Cache, needs-revision, Author Thread-Post</tags>
+<repo-issue-date>2026-04-18</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.15039v1
+# Authors
+  - Ruoyu Qin
+  - Weiran He
+  - Yaoyu Wang
+  - Zheming Li
+  - Xinran Xu
+  - Yongwei Wu
+  - Weimin Zheng
+  - Mingxing Zhang
+# Abstract
+  - Prefill-decode (PD) disaggregation has become the standard architecture for large-scale LLM serving, but in practice its deployment boundary is still determined by KVCache transfer. In conventional dense-attention models, prefill generates huge KVCache traffics that keep prefill and decode tightly coupled within a single high-bandwidth network domain, limiting heterogeneous deployment and resource elasticity. Recent hybrid-attention architectures substantially reduce KVCache size, making cross-cluster KVCache transport increasingly plausible. However, smaller KVCache alone does not make heterogeneous cross-datacenter PD serving practical: real workloads remain bursty, request lengths are highly skewed, prefix caches are unevenly distributed, and inter-cluster bandwidth fluctuates. A naive design that fully externalizes prefill can therefore still suffer from congestion, unstable queueing, and poor utilization.   We present Prefill-as-a-Service (PrfaaS), a cross-datacenter serving architecture that selectively offloads long-context prefill to standalone, compute-dense prefill clusters and transfers the resulting KVCache over commodity Ethernet to local PD clusters for decode. Rather than treating reduced KVCache as sufficient, PrfaaS combines model-side KV efficiency with system-side selective offloading, bandwidth-aware scheduling, and cache-aware request placement. This design removes the requirement that heterogeneous accelerators share the same low-latency RDMA fabric, enabling independent scaling of prefill and decode capacity across loosely coupled clusters. In a case study using an internal 1T-parameter hybrid model, a PrfaaS-augmented heterogeneous deployment achieves 54% and 32% higher serving throughput than homogeneous PD and naive heterogeneous baselines, respectively, while consuming only modest cross-datacenter bandwidth.
+# Translation (by gpt-5-nano)
+- Prefill-decode（PD）ディスアグリゲーションは大規模LLM提供の標準アーキテクチャとなったが、実際にはデプロイの境界はKVCache転送によってまだ決まっている。従来の密結合型アテンションモデルでは、プリフィルは巨大なKVCacheトラフィックを生成し、プリフィルとデコードを単一の高帯域幅ネットワークドメイン内で密接に結びつけるため、異種環境でのデプロイやリソースの弾力性を制限する。最近のハイブリッドアテンションアーキテクチャはKVCacheサイズを大幅に削減し、クラスタ間KVCache転送をますます現実的にしている。しかし、KVCacheを小さくするだけでは異種のデータセンター間PD提供を実用的にすることはできない。実ワークロードは爆発的・断続的で、リクエスト長は高度に歪み、プレフィックスキャッシュの分布は不均一で、クラスタ間帯域幅は変動する。プリフィルを完全に外部化するような素朴な設計には、渋滞・不安定な待ち行列・資源の不適切な利用といった問題が依然として生じ得る。
+
+Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフィルをスタンドアロンの計算密集型プリフィルクラスタへ選択的にオフロードし、得られたKVCacheを汎用Ethernetを介してローカルのPDクラスタへデコード用に転送する、データセンター跨ぎの提供アーキテクチャである。KVCacheを単に縮小すれば十分という考え方ではなく、PrfaaSはモデル側KV効率とシステム側の選択的オフロード、帯域幅認識型スケジューリング、キャッシュ認識型リクエスト配置を組み合わせる。これにより、異種アクセラレータが同じ低遅延RDMAファブリックを共有する必要を排除し、緩く結合されたクラスタ間でプリフィルとデコードの能力を独立してスケールさせることができる。社内の1兆パラメータのハイブリッドモデルを用いたケーススタディでは、PrfaaSを補強した異種デプロイメントは、均一なPDおよび素朴な異種ベースラインより、それぞれ54%および32%高い提供スループットを達成し、データセンター間の帯域幅の消費を抑えた。
+# Summary (by gpt-4o-mini)
+- Prefill-decode（PD）のデプロイにはKVCache転送が制限要因となっており、従来のアテンションモデルは大容量のKVCacheトラフィックを生成する。ハイブリッドアテンションアーキテクチャはKVCacheサイズを削減するが、データセンター間の運用に問題が残る。そこで、Prefill-as-a-Service（PrfaaS）を提案し、プリフィル処理を専用クラスタにオフロードして効率的なKVCache転送を実現。これにより、リソースの独立したスケーリングを可能にし、実績として、PrfaaSを用いた異種デプロイメントは従来よりも高い提供スループットを達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kimi_moonshot/status/2045461663898599472?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLM servingにおいて、prefillはcompute-intensiveで、decodeは（kv cacheが肥大化するため）memory-intensiveであるという特性があるため、（それぞれ得意な処理は得意なノードに任せるため）prefillとdecodeを分離して異なるノードで実施するprefill-decode disaggreagated servingというインフラのアーキテクチャが超巨大モデルでは主流だが、prefill-decode間でKV Cacheを転送しなければならないため、このような分離は同じ計算機クラスター内のRDMA(Remote Direct Memory Access)が可能なノード間に限定されるのが一般的である。<br><br>しかし、compute/memory特化型のリソースは通常チップの種類と物理的な場所の両方に制約されてプールされるので、両方のハードウェアがRDMAのような密結合なドメインで利用できないという欠点がある。このため、クラスターを超えてPD分離をしたいのだが、KV Cacheの転送が結局のところボトルネックとなる。現在のモデルはSparse/LinearなアテンションによってKV Cacheに必要なリソースが一桁減っているが、それでもnaiveにクラスタを跨いでPD分離をすると、突発的なリクエストのバーストや、不均一なPrefix Cacheの分布、クラスター間の帯域幅の変動などによって、計算効率が低下してしまう。<br><br>そのため、提案手法では、高スループットな長文のprefillに特化した独立クラスタを作り、ローカルにキャッシュされていない（主に長文の）、　prefillのみを同クラスタにオフロードし、短いリクエストはローカルでPDを実施するようなアプローチをとる。こうしてprefill特化クラスタによって生成されたKV Cacheはdecode可能なPDクラスタに対してイーサネットを介して転送される。これは選択的なオフロードであり、帯域幅が制限された経路で非効率な短いリクエストを送信を避けて、prefillの高速化が重要なリクエストのみをクラスタ間転送に集中させるという考え方に基づく。<br><br>これを実現するためには、(i)長いリクエストのみをオフロードするルーティングの仕組みと、(ii)ネットワークの輻輳を制御するための、帯域幅を考慮したスケジューラ、(iii)リクエスト長、キャッシュ配置、利用可能なクラスタの帯域幅を総合的に考慮してKV Cache全体を効率的を保ちながら管理するグローバルKV Cacheマネージャが必要。<br><img src="https://github.com/user-attachments/assets/0b707f27-3973-4e74-b388-90f8bdf9a0f3" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>このようなアーキテクチャを1T級のKimi Linearモデルで実験した結果、スループットが1.54倍、TTFTが64%改善した、という感じらしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ProRL Agent: Rollout-as-a-Service for RL Training of Multi-Turn LLM Agents, Hao Zhang+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.18815</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5034</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, ReinforcementLearning, Architecture, SoftwareEngineering, read-later, On-Policy, Stability, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-03-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.18815
+# Authors
+  - Hao Zhang
+  - Mingjie Liu
+  - Shaokun Zhang
+  - Songyang Han
+  - Jian Hu
+  - Zhenghui Jin
+  - Yuchi Zhang
+  - Shizhe Diao
+  - Ximing Lu
+  - Binfeng Xu
+  - Zhiding Yu
+  - Jan Kautz
+  - Yi Dong
+# Abstract
+  - Multi-turn LLM agents are increasingly important for solving complex, interactive tasks, and reinforcement learning (RL) is a key ingredient for improving their long-horizon behavior. However, RL training requires generating large numbers of sandboxed rollout trajectories, and existing infrastructures often couple rollout orchestration with the training loop, making systems hard to migrate and maintain. Under the rollout-as-a-service philosophy, we present ProRL Agent , a scalable infrastructure that serves the full agentic rollout lifecycle through an API service. ProRL Agent also provides standardized and extensible sandbox environments that support diverse agentic tasks in rootless HPC settings. We validate ProRL Agent through RL training on software engineering, math, STEM, and coding tasks. ProRL Agent is open-sourced and integrated as part of NVIDIA NeMo Gym.
+# Translation (by gpt-5-nano)
+- マルチターンのLLMエージェントは、複雑で対話的なタスクを解決するうえでますます重要になっており、強化学習（RL）は長期的な挙動を改善するための鍵となる要素です。しかし、RLトレーニングには大量のサンドボックス化されたロールアウト軌跡を生成する必要があり、既存のインフラストラクチャはしばしばロールアウトのオーケストレーションをトレーニングループと結びつけるため、システムの移行や保守が困難になります。ロールアウトをサービスとして提供するという思想のもと、私たちはProRL Agentを提示します。これはAPIサービスを通じて、エージェント駆動のロールアウトのライフサイクル全体を提供するスケーラブルなインフラストラクチャです。ProRL Agentはまた、標準化され拡張可能なサンドボックス環境を提供し、rootless HPC設定で多様なエージェント駆動タスクをサポートします。ソフトウェア工学、数学、STEM、コーディングのタスクに対するRLトレーニングを通じてProRL Agentを検証します。ProRL Agentはオープンソース化され、NVIDIA NeMo Gymの一部として統合されています。
+# Summary (by gpt-4o-mini)
+- ProRL Agentは、マルチターンのLLMエージェントにおける強化学習トレーニングを支援するためのAPIサービスであり、ロールアウトのライフサイクル全体を提供するスケーラブルなインフラです。標準化されたサンドボックス環境を通じて、多様なエージェント駆動タスクに対応し、ソフトウェア工学やSTEM関連のタスクで検証されています。ProRL Agentはオープンソースで、NVIDIA NeMo Gymに統合されています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/shizhediao/status/2037685374949142823?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>処理が重いロールアウトを独立したhttp serviceとして扱い（rollout-as-a-service)、モデルのtrainingと分離することで、リソース分離、可搬性、拡張性を向上させる。<br><img src="https://github.com/user-attachments/assets/ac3ec90a-0b73-4ad3-9793-4e43b94c2d39" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] DualPath: Breaking the Storage Bandwidth Bottleneck in Agentic LLM Inference, Yongtong Wu+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.21548</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4750</repo-issue-link>
+<tags>NLP, LanguageModel, Infrastructure, SoftwareEngineering, read-later</tags>
+<repo-issue-date>2026-02-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.21548
+# Authors
+  - Yongtong Wu
+  - Shaoyuan Chen
+  - Yinmin Zhong
+  - Rilin Huang
+  - Yixuan Tan
+  - Wentao Zhang
+  - Liyue Zhang
+  - Shangyan Zhou
+  - Yuxuan Liu
+  - Shunfeng Zhou
+  - Mingxing Zhang
+  - Xin Jin
+  - Panpan Huang
+# Abstract
+  - The performance of multi-turn, agentic LLM inference is increasingly dominated by KV-Cache storage I/O rather than computation. In prevalent disaggregated architectures, loading the massive KV-Cache from external storage creates a fundamental imbalance: storage NICs on prefill engines become bandwidth-saturated, while those on decoding engines remain idle. This asymmetry severely constrains overall system throughput.   We present DualPath, an inference system that breaks this bottleneck by introducing dual-path KV-Cache loading. Beyond the traditional storage-to-prefill path, DualPath enables a novel storage-to-decode path, in which the KV-Cache is loaded into decoding engines and then efficiently transferred to prefill engines via RDMA over the compute network. DualPath combines this optimized data path -- which inherently avoids network congestion and avoids interference with latency-critical model execution communications -- with a global scheduler that dynamically balances load across prefill and decode engines.   Our evaluation on three models with production agentic workloads demonstrates that DualPath improves offline inference throughput by up to 1.87$\times$ on our in-house inference system. It can also improve online serving throughput by an average factor of 1.96$\times$ without violating SLO.
+# Translation (by gpt-5-nano)
+- 多ターンのエージェント型LLM推論の性能は、計算よりもKVキャッシュのストレージI/Oによってますます支配されつつある。普及している分離型アーキテクチャでは、大量のKVキャッシュを外部ストレージからロードすることにより根本的なアンバランスが生じる。プリフィルエンジン上のストレージNICは帯域幅を飽和させ、デコードエンジン上のNICはアイドル状態のままである。この非対称性は全体のシステムスループットを著しく制約する。
+我々はDualPathを提示する――デュアルパスKVキャッシュ読み込みを導入してこのボトルネックを打破する推論システムDualPathを。従来のストレージからプリフィルへの経路を超え、DualPathは新たなストレージからデコードへの経路を可能にする。KVキャッシュはデコードエンジンにロードされ、計算ネットワーク上のRDMAを介してプリフィルエンジンへ効率的に転送される。DualPathはこの最適化されたデータパスを、本質的にネットワーク渋滞を回避し、遅延に敏感なモデル実行通信への干渉を避けるものとして組み合わせ、プリフィルエンジンとデコードエンジン間の負荷を動的にバランスさせるグローバルスケジューラと共につくり上げている。
+実運用のエージェント型ワークロードを持つ3つのモデルでの評価は、DualPathが社内推論システムのオフライン推論スループットを最大で1.87倍向上させることを示している。さらに、SLOを違反することなく、オンライン提供スループットを平均1.96倍向上させることができる。
+# Summary (by gpt-4o-mini)
+- エージェント型LLM推論において、KVキャッシュのストレージI/Oが性能に大きく影響している。従来のアーキテクチャでは、KVキャッシュの読み込みがボトルネックとなり、システム全体のスループットが制約されている。DualPathは、このボトルネックを解消するためのデュアルパスKVキャッシュ読み込みシステムであり、デコードエンジンへの新たなストレージ経路を提供する。これにより、データ転送が効率化され、負荷が動的にバランスされる。実運用のモデル評価では、DualPathがオフライン推論スループットを最大1.87倍、オンライン提供スループットを平均1.96倍向上させることが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxesTex/status/2026967964432404966?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2027117445450702904?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Training LLMs with Fault Tolerant HSDP on 100,000 GPUs, Omkar Salpekar+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.00277</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4385</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Infrastructure, SoftwareEngineering, mid-training, PostTraining, Stability</tags>
+<repo-issue-date>2026-02-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.00277
+# Authors
+  - Omkar Salpekar
+  - Rohan Varma
+  - Kenny Yu
+  - Vladimir Ivanov
+  - Yang Wang
+  - Ahmed Sharif
+  - Min Si
+  - Shawn Xu
+  - Feng Tian
+  - Shengbao Zheng
+  - Tristan Rice
+  - Ankush Garg
+  - Shangfu Peng
+  - Shreyas Siravara
+  - Wenyin Fu
+  - Rodrigo de Castro
+  - Adithya Gangidi
+  - Andrey Obraztsov
+  - Sharan Narang
+  - Sergey Edunov
+  - Maxim Naumov
+  - Chunqiang Tang
+  - Mathew Oldham
+# Abstract
+  - Large-scale training systems typically use synchronous training, requiring all GPUs to be healthy simultaneously. In our experience training on O(100K) GPUs, synchronous training results in a low efficiency due to frequent failures and long recovery time.   To address this problem, we propose a novel training paradigm, Fault Tolerant Hybrid-Shared Data Parallelism (FT-HSDP). FT-HSDP uses data parallel replicas as units of fault tolerance. When failures occur, only a single data-parallel replica containing the failed GPU or server is taken offline and restarted, while the other replicas continue training. To realize this idea at scale, FT-HSDP incorporates several techniques: 1) We introduce a Fault Tolerant All Reduce (FTAR) protocol for gradient exchange across data parallel replicas. FTAR relies on the CPU to drive the complex control logic for tasks like adding or removing participants dynamically, and relies on GPU to perform data transfer for best performance. 2) We introduce a non-blocking catch-up protocol, allowing a recovering replica to join training with minimal stall.   Compared with fully synchronous training at O(100K) GPUs, FT-HSDP can reduce the stall time due to failure recovery from 10 minutes to 3 minutes, increasing effective training time from 44\% to 80\%. We further demonstrate that FT-HSDP's asynchronous recovery does not bring any meaning degradation to the accuracy of the result model.
+# Translation (by gpt-4o-mini)
+- 大規模なトレーニングシステムは通常、すべてのGPUが同時に正常であることを必要とする同期トレーニングを使用します。私たちの経験では、O(100K)のGPUでトレーニングを行うと、同期トレーニングは頻繁な故障と長い回復時間のために効率が低下します。この問題に対処するために、私たちは新しいトレーニングパラダイム、Fault Tolerant Hybrid-Shared Data Parallelism (FT-HSDP)を提案します。FT-HSDPはデータ並列のレプリカを故障耐性の単位として使用します。故障が発生した場合、故障したGPUまたはサーバーを含む単一のデータ並列レプリカのみがオフラインになり、再起動される一方で、他のレプリカはトレーニングを継続します。このアイデアを大規模に実現するために、FT-HSDPは幾つかの技術を組み込んでいます：1）データ並列レプリカ間での勾配交換のために、Fault Tolerant All Reduce (FTAR)プロトコルを導入します。FTARは、参加者を動的に追加または削除するための複雑な制御ロジックをCPUが駆動し、データ転送をGPUが行うことで最適なパフォーマンスを実現します。2）回復中のレプリカが最小限の停滞でトレーニングに参加できるようにするための非ブロッキングのキャッチアッププロトコルを導入します。O(100K)のGPUにおける完全同期トレーニングと比較して、FT-HSDPは故障回復による停滞時間を10分から3分に短縮し、有効なトレーニング時間を44%から80%に増加させることができます。さらに、FT-HSDPの非同期回復が結果モデルの精度に意味のある劣化をもたらさないことを示しています。
+# Summary (by gpt-4o-mini)
+- FT-HSDPという新しいトレーニングパラダイムを提案し、故障耐性を持つデータ並列レプリカを活用。故障時には影響を受けたレプリカのみがオフラインとなり、他のレプリカはトレーニングを継続。FTARプロトコルと非ブロッキングキャッチアップを用いることで、故障回復時間を短縮し、有効なトレーニング時間を大幅に増加。精度への悪影響もないことを確認。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2018543516440559707?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>100k GPU🤯</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Step-3 is Large yet Affordable: Model-system Co-design for Cost-effective Decoding, StepFun+, arXiv'25, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.19427</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5207</repo-issue-link>
+<tags>NLP, LanguageModel, Infrastructure, Architecture, SoftwareEngineering, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-04-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.19427
+# Authors
+  - StepFun
+  - :
+  - Bin Wang
+  - Bojun Wang
+  - Changyi Wan
+  - Guanzhe Huang
+  - Hanpeng Hu
+  - Haonan Jia
+  - Hao Nie
+  - Mingliang Li
+  - Nuo Chen
+  - Siyu Chen
+  - Song Yuan
+  - Wuxun Xie
+  - Xiaoniu Song
+  - Xing Chen
+  - Xingping Yang
+  - Xuelin Zhang
+  - Yanbo Yu
+  - Yaoyu Wang
+  - Yibo Zhu
+  - Yimin Jiang
+  - Yu Zhou
+  - Yuanwei Lu
+  - Houyi Li
+  - Jingcheng Hu
+  - Ka Man Lo
+  - Ailin Huang
+  - Binxing Jiao
+  - Bo Li
+  - Boyu Chen
+  - Changxin Miao
+  - Chang Lou
+  - Chen Hu
+  - Chen Xu
+  - Chenfeng Yu
+  - Chengyuan Yao
+  - Daokuan Lv
+  - Dapeng Shi
+  - Deshan Sun
+  - Ding Huang
+  - Dingyuan Hu
+  - Dongqing Pang
+  - Enle Liu
+  - Fajie Zhang
+  - Fanqi Wan
+  - Gulin Yan
+  - Han Zhang
+  - Han Zhou
+  - Hanghao Wu
+  - Hangyu Guo
+  - Hanqi Chen
+  - Hanshan Zhang
+  - Hao Wu
+  - Haocheng Zhang
+  - Haolong Yan
+  - Haoran Lv
+  - Haoran Wei
+  - Hebin Zhou
+  - Heng Wang
+  - Heng Wang
+  - Hongxin Li
+  - Hongyu Zhou
+  - Hongyuan Wang
+  - Huiyong Guo
+  - Jia Wang
+  - Jiahao Gong
+  - Jialing Xie
+  - Jian Zhou
+  - Jianjian Sun
+  - Jiaoren Wu
+  - Jiaran Zhang
+  - Jiayu Liu
+  - Jie Cheng
+  - Jie Luo
+  - Jie Yan
+  - Jie Yang
+  - Jieyi Hou
+  - Jinguang Zhang
+  - Jinlan Cao
+  - Jisheng Yin
+  - Junfeng Liu
+  - Junhao Huang
+  - Junzhe Lin
+  - Kaijun Tan
+  - Kaixiang Li
+  - Kang An
+  - Kangheng Lin
+  - Kenkun Liu
+  - Lei Yang
+  - Liang Zhao
+  - Liangyu Chen
+  - Lieyu Shi
+  - Liguo Tan
+  - Lin Lin
+  - Lin Zhang
+  - Lina Chen
+  - Liwen Huang
+  - Liying Shi
+  - Longlong Gu
+  - Mei Chen
+  - Mengqiang Ren
+  - Ming Li
+  - Mingzhe Chen
+  - Na Wang
+  - Nan Wu
+  - Qi Han
+  - Qian Zhao
+  - Qiang Zhang
+  - Qianni Liu
+  - Qiaohui Chen
+  - Qiling Wu
+  - Qinglin He
+  - Qinyuan Tan
+  - Qiufeng Wang
+  - Qiuping Wu
+  - Qiuyan Liang
+  - Quan Sun
+  - Rui Li
+  - Ruihang Miao
+  - Ruosi Wan
+  - Ruyan Guo
+  - Shangwu Zhong
+  - Shaoliang Pang
+  - Shengjie Fan
+  - Shijie Shang
+  - Shilei Jiang
+  - Shiliang Yang
+  - Shiming Hao
+  - Shuli Gao
+  - Siming Huang
+  - Siqi Liu
+  - Tiancheng Cao
+  - Tianhao Cheng
+  - Tianhao Peng
+  - Wang You
+  - Wei Ji
+  - Wen Sun
+  - Wenjin Deng
+  - Wenqing He
+  - Wenzhen Zheng
+  - Xi Chen
+  - Xiangwen Kong
+  - Xianzhen Luo
+  - Xiaobo Yang
+  - Xiaojia Liu
+  - Xiaoxiao Ren
+  - Xin Han
+  - Xin Li
+  - Xin Wu
+  - Xu Zhao
+  - Yanan Wei
+  - Yang Li
+  - Yangguang Li
+  - Yangshijie Xu
+  - Yanming Xu
+  - Yaqiang Shi
+  - Yeqing Shen
+  - Yi Yang
+  - Yifei Yang
+  - Yifeng Gong
+  - Yihan Chen
+  - Yijing Yang
+  - Yinmin Zhang
+  - Yizhuang Zhou
+  - Yuanhao Ding
+  - Yuantao Fan
+  - Yuanzhen Yang
+  - Yuchu Luo
+  - Yue Peng
+  - Yufan Lu
+  - Yuhang Deng
+  - Yuhe Yin
+  - Yujie Liu
+  - Yukun Chen
+  - Yuling Zhao
+  - Yun Mou
+  - Yunlong Li
+  - Yunzhou Ju
+  - Yusheng Li
+  - Yuxiang Yang
+  - Yuxiang Zhang
+  - Yuyang Chen
+  - Zejia Weng
+  - Zhe Xie
+  - Zheng Ge
+  - Zheng Gong
+  - Zhenyi Lu
+  - Zhewei Huang
+  - Zhichao Chang
+  - Zhiguo Huang
+  - Zhirui Wang
+  - Zidong Yang
+  - Zili Wang
+  - Ziqi Wang
+  - Zixin Zhang
+  - Binxing Jiao
+  - Daxin Jiang
+  - Heung-Yeung Shum
+  - Xiangyu Zhang
+# Abstract
+  - Large language models (LLMs) face low hardware efficiency during decoding, especially for long-context reasoning tasks. This paper introduces Step-3, a 321B-parameter VLM with hardware-aware model-system co-design optimized for minimizing decoding costs. Step-3 innovates in two key dimensions: (1) A novel Multi-Matrix Factorization Attention (MFA) mechanism that significantly reduces both KV cache size and computation while maintaining high attention expressiveness, and (2) Attention-FFN Disaggregation (AFD), a distributed inference system that decouples attention and Feed-Forward Network (FFN) layers into specialized subsystems. This co-design achieves unprecedented cost efficiency: Step-3 significantly reduces theoretical decoding costs compared with models like DeepSeek-V3 and Qwen3 MoE 235B, with the gains widening at longer context. Step-3 achieves low cost while activating 38B parameters per token (more than DeepSeek-V3 and Qwen3 MoE 235B), demonstrating that hardware-aligned attention arithmetic intensity, MoE sparsity, and AFD are critical to cost-effectiveness. We perform a head-to-head comparison with DeepSeek-V3 in its favorable scenarios. Our implementation on Hopper GPUs achieves a decoding throughput of up to 4,039 tokens per second per GPU under 50ms TPOT SLA (4K context, FP8, no MTP). It is higher than DeepSeek-V3's 2,324 in the same setup and sets a new Pareto frontier for LLM decoding.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLMs）は、デコード時のハードウェア効率が低く、特に長い文脈の推論タスクで低下する。本論文は、デコードコストの最小化を最適化したハードウェアを意識したモデル-システム共設計を備えた、321BパラメータのVLM「Step-3」を紹介する。Step-3は2つの主要な側面で革新をもたらす：(1) 新規のMulti-Matrix Factorization Attention (MFA)機構は、KVキャッシュサイズと計算量の両方を大幅に削減しつつ、高いアテンション表現力を維持する、(2) Attention-FFN Disaggregation (AFD) は、注意機構とFeed-Forward Network (FFN)層を専門のサブシステムに切り分ける分散推論システムである。この共設計は前例のないコスト効率を実現する。Step-3はDeepSeek-V3 や Qwen3 MoE 235B のようなモデルと比較して理論的デコードコストを大幅に削減し、長い文脈ではその利得が拡大する。Step-3は低コストを実現しつつ、トークンあたり38Bパラメータを活性化する（DeepSeek-V3 および Qwen3 MoE 235B より多い）、ハードウェアに合わせた注意演算強度、MoEのスパース性、そしてAFDがコスト効果にとって決定的であることを示している。私たちはDeepSeek-V3の有利なシナリオにおいてヘッド・トゥ・ヘッド比較を実施した。Hopper GPU上の実装は、50ms TPOT SLAの下でGPUあたり最大4,039トークン/秒のデコードスループットを達成する（4Kコンテキスト、FP8、MTPなし）。同じ設定におけるDeepSeek-V3の2,324を上回り、LLMデコードの新たなパレート前線を打ち立てている。
+# Summary (by gpt-4o-mini)
+- Step-3は、321Bパラメータの大規模言語モデルで、デコードコストの最小化を目的としたハードウェア意識のモデル-システム共設計を導入。主な革新点は、Multi-Matrix Factorization Attention (MFA)による計算量削減とAttention-FFN Disaggregation (AFD)による分散推論システムの構築。これにより、DeepSeek-V3やQwen3 MoE 235Bと比較して理論的デコードコストを大幅に低下させ、特に長文脈での利得が顕著。Hopper GPU上で最大4,039トークン/秒のデコードスループットを達成し、LLMデコードの新たなパレート前線を確立した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2042632481338191911?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2046363138556068024?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] OSGym: Scalable OS Infra for Computer Use Agents, Zengyi Qin+, arXiv'25, 2025.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/2511.11672</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5139</repo-issue-link>
+<tags>ComputerVision, NLP, Infrastructure, AIAgents, SoftwareEngineering, ComputerUse, read-later, VisionLanguageModel, Initial Impression Notes</tags>
+<repo-issue-date>2026-04-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2511.11672
+# Authors
+  - Zengyi Qin
+  - Jinyuan Chen
+  - Yunze Man
+  - Shengcao Cao
+  - Ziqi Pang
+  - Zhuoyuan Wang
+  - Han Fang
+  - Ling Zhu
+  - Zixin Xie
+  - Zibu Wei
+  - Tianshu Ran
+  - Haoran Geng
+  - Ray Pan
+  - Qizhen Sun
+  - Zachary Bright
+  - Yuyang Cai
+  - Chongye Yang
+  - Jiace Zhao
+  - Tianrui Liu
+  - Han Cao
+  - Yeyang Zhou
+  - Rui Wang
+  - Song Wang
+  - Xiang Ren
+  - Bo Zhang
+  - Yutong Ban
+  - Pieter Abbeel
+  - Brian Anthony
+# Abstract
+  - Training computer use agents requires full-featured OS sandboxes with GUI environments, which consume substantial hardware resources as the number of sandboxes scales. Stochastic errors arising from diverse software execution within these sandboxes further demand robust infrastructure design and reliable error recovery. We present OSGym, a scalable OS environment infrastructure for computer use agents, built around these key optimization strategies: (1) Decentralized OS state management, which isolates failures to individual replicas and significantly enhances overall system reliability; (2) Hardware-aware OS replica orchestration, which addresses CPU-bounded scaling bottlenecks and substantially reduces compute overhead; (3) KVM virtualization with copy-on-write disk management, which shares a common bootable disk across VM instances and provisions only instance-specific modifications, reducing physical disk consumption by 88% and increasing disk provisioning speed by 37 times; and (4) Robust container pool with multi-layer fault recovery. Together, these optimizations yield strong scalability and resource efficiency: OSGym manages over a thousand OS replicas under constrained resources, supports parallel trajectory generation at 1420 multi-turn trajectories per minute, and reduces per-replica cost to 0.2-0.3 USD per day, a 90% reduction over standard deployment. Our experiments validate OSGym across end-to-end pipelines for data collection and training for computer use agents. We believe OSGym establishes a new foundation for scalable, general-purpose computer use agent research.
+# Translation (by gpt-5-nano)
+- コンピュータ利用エージェントを訓練するには、GUI環境を備えた高機能なOSサンドボックスが必要であり、サンドボックスの数が増えるほど大量のハードウェア資源を消費する。これらのサンドボックス内での多様なソフトウェア実行に起因する確率的エラーは、堅牢なインフラ設計と信頼性の高いエラー回復を要求する。我々は、これらの重要な最適化戦略を軸として構築された、コンピュータ利用エージェント向けのスケーラブルなOS環境インフラストラクチャOSGymを提示する。以下の4点からなる： (1) 故障を個別のレプリカに限定し、全体的なシステム信頼性を大幅に高める分散型OS状態管理； (2) CPUボトルネックに対処し、計算オーバーヘッドを大幅に低減するハードウェアを意識したOSレプリカのオーケストレーション； (3) コピーオンライトディスク管理を備えたKVM仮想化は、VMインスタンス間で共通の起動ディスクを共有し、インスタンス固有の変更のみを適用することで、物理ディスクの消費を88%削減し、ディスクプロビジョニング速度を37倍に向上させる； (4) 多層のフォールトリカバリ機能を備えた堅牢なコンテナプール。これらの最適化は強力なスケーラビリティと資源効率を実現する。OSGymは制約された資源の下で1000を超えるOSレプリカを管理し、1分あたり1420のマルチターン軌道を並列生成し、レプリカ日あたりのコストを0.2–0.3 USDに削減し、標準のデプロイメントよりも90%削減を実現する。我々の実験は、データ収集およびコンピュータ利用エージェントの訓練のエンドツーエンドパイプラインにわたりOSGymを検証している。我々は、OSGymがスケーラブルで汎用的なコンピュータ利用エージェント研究の新たな基盤を確立すると考える。
+# Summary (by gpt-4o-mini)
+- コンピュータ利用エージェントの訓練には、リソース効率の良いスケーラブルなOS環境が必要であり、OSGymを提案。主な特徴は、(1) 故障の分散型管理でシステム信頼性を向上、(2) CPUボトルネック対策によるオーバーヘッド軽減、(3) コピーオンライトによるディスク利用の大幅削減、(4) 堅牢なフォールトリカバリの実装。OSGymは1000以上のOSレプリカを管理し、コストを90%削減しつつ、高速なマルチターン軌道生成を実現。これにより、汎用的なエージェント研究の基盤を提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qinzytech/status/2041189692775776553?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ソースやcodeをオープンにはしないのだろうか。と思ったら、リプにoss releaseの準備をしていると言及があった。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>コミュニティサービスにおけるレコメンデーションの変遷とMLパイプラインについて, Takanobu Nozawa, PyCon'21, 2021.10</title>
+<original-paper-blog-link>https://speakerdeck.com/takapy/komiyuniteisabisuniokerurekomendesiyonfalsebian-qian-tomlpaipurainnituite?slide=40</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/413</repo-issue-link>
+<tags>RecommenderSystems, Tutorial, Infrastructure, python, Slide, KeyPoint Notes</tags>
+<repo-issue-date>2021-10-21</repo-issue-date>
+<issue-body>https://speakerdeck.com/takapy/komiyuniteisabisuniokerurekomendesiyonfalsebian-qian-tomlpaipurainnituite?slide=40</issue-body>
+<maintainer-comment-text><p>・ママ向けのQ&AサービスにおけるレコメンドとMLパイプラインについて紹介<br><br><br><br>◆レコメンドエンジンの変遷<br><br>　・Tensorflowで実装したMFから始まり、その後トピックを絞り込んだ上で推薦するためにLDAを活用したレコメンド、最終的にSoftmax Recommendationを開発<br><br>　　* Softmax Recommendation: 
+
+{% raw %}
+<a href="https://developers.google.com/machine-learning/recommendation/dnn/softmax" target="_blank" rel="noopener noreferrer">https://developers.google.com/machine-learning/recommendation/dnn/softmax</a>
+{% endraw %}
+
+<br><br>　　* ユーザプロファイル（e.g. 行動ベクトル, ユーザの属性情報）等を入力とし、hidden layerをかませて最終的にアイテム次元数分のスコアベクトルを得る手法<br><br>　　* 行動ベクトル=ユーザが過去にクリックしたQ&Aだが、質問ベクトルを得るために内容テキストは利用せず行動ログ+word2vecで学習<br><br>　　* 類似質問検索による定性評価の結果良い結果、関連質問を抽出できるベクトルとなっていることを確認<br><br>　→ レコメンド手法の変遷につれ、ベンチマークを上回るようになっていった</p><p>◆MLパイプラインについて<br>- AWS Step FunctionsとAmazon Sagemakerを利用<br>- AWS Step Functions<br>   * AWS上の様々なサービスをワークフローとして定義できる（json形式でワークフローを記述）<br>- Amazon Sagemaker<br>   * 機械学習向けのIDE<br>   * notebook上でのデータ分析・モデル学習、実験管理や学習済みモデルのデプロイが可能<br>   * Sagemaker Processingを用いることで、実行したい処理やインスタンスタイプを指定することで、notebookとは別の実行環境（コンテナ）で任意のpythonスクリプトを実行可<br>- ワークフローの定義=AWS Stepfunctions, スクリプト実行のリソース=Sagemaker Processingとして利用</p><p>MLパイプラインについては下記資料により詳しい情報が書かれている<br><br>
+
+{% raw %}
+<a href="https://speakerdeck.com/takapy/sagemaker-studiotostep-functionswoyong-itemlopshefalse-bu-wota-michu-sou" target="_blank" rel="noopener noreferrer">https://speakerdeck.com/takapy/sagemaker-studiotostep-functionswoyong-itemlopshefalse-bu-wota-michu-sou</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Hidden Technical Debt in Machine Learning Systems, Sculley+, NIPS'15</title>
+<original-paper-blog-link>https://proceedings.neurips.cc/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/411</repo-issue-link>
+<tags>Tutorial, MachineLearning, Infrastructure, NeurIPS, Selected Papers/Blogs, One-Line Notes</tags>
+<repo-issue-date>2021-10-19</repo-issue-date>
+<issue-body>https://proceedings.neurips.cc/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf</issue-body>
+<maintainer-comment-text><p><img src="https://user-images.githubusercontent.com/12249301/137843973-576deeb7-778d-44d8-aac8-5ed5c4fa7d2b.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br>よく見るML codeが全体のごく一部で、その他の基盤が大半を占めてますよ、の図が掲載されている文献。様々な資料で引用されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Next-generation LLM Inference Network: How ZCube Alleviates Network Bottlenecks?, Z.ai, 2026.05</title>
+<original-paper-blog-link>https://x.com/zai_org/status/2057216685040443743?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5593</repo-issue-link>
+<tags>NLP, LanguageModel, Infrastructure, LLMServing, Post, SoftwareEngineering, read-later</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body>https://x.com/zai_org/status/2057216685040443743?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>mKernel: Fast Multi-GPU, Multi-Node Fused Kernels, Ziming Mao, and the UCCL team, 2026.05</title>
+<original-paper-blog-link>https://uccl-project.github.io/posts/mkernel/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5563</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, read-later, GPUKernel, Author Thread-Post</tags>
+<repo-issue-date>2026-05-26</repo-issue-date>
+<issue-body>https://uccl-project.github.io/posts/mkernel/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yangzhouy/status/2058978366213194060?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>> mKernel is our attempt at the missing piece: GPU-driven, fused kernels that deliver fine-grained compute–communication overlap across both intra-node NVLink and inter-node RDMA, while staying portable across various networking backends (ConnectX-7, AWS EFA, and more on the way).</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Scaling Pain of Coding Agent Serving: Lessons from Debugging GLM-5 at Scale, Z.ai, 2026.04</title>
+<original-paper-blog-link>https://z.ai/blog/scaling-pain</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5399</repo-issue-link>
+<tags>NLP, LanguageModel, Infrastructure, LLMServing, SoftwareEngineering, read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-04-30</repo-issue-date>
+<issue-body>https://z.ai/blog/scaling-pain</issue-body>
+<maintainer-comment-text><p>GLM-5をサービングしている中でのバグ（モデル側ではなくインフラ側）の発見と修復</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Latest Agentic AI Trends to Watch in 2026: Market Shifts, Adoption Patterns, and What Comes Next,  Daya Shankar, 2026.04</title>
+<original-paper-blog-link>https://huggingface.co/blog/daya-shankar/agentic-ai-trends-2026</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5328</repo-issue-link>
+<tags>Survey, NLP, Infrastructure, AIAgents, Blog, read-later</tags>
+<repo-issue-date>2026-04-25</repo-issue-date>
+<issue-body>https://huggingface.co/blog/daya-shankar/agentic-ai-trends-2026</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2046861569100066961?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence, DeepSeek-AI, 2026.04</title>
+<original-paper-blog-link>https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5316</repo-issue-link>
+<tags>NLP, LanguageModel, Infrastructure, AIAgents, Attention, LongSequence, PositionalEncoding, Optimizer, OpenWeight, Architecture, MoE(Mixture-of-Experts), AttentionSinks, read-later, Selected Papers/Blogs, RewardModel, Reference Collection, KV Cache, Compression, GenerativeVerifier, SparseAttention, ResidualStream, SelfDistillation, Author Thread-Post</tags>
+<repo-issue-date>2026-04-24</repo-issue-date>
+<issue-body>https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf</issue-body>
+<maintainer-comment-text><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/deepseek-ai/deepseek-v4" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/deepseek-ai/deepseek-v4</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/deepseek_ai/status/2047516922263285776?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>とうとうでました</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xianbao_qian/status/2047515560855089430?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2047690308217926055?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Artificial Analysisによる評価:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2047735160544841953?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2047528508050575754?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2047519300399837677?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/bookwormengr/status/2047527303824236545?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>1Mコンテキストにおいて、V3.2と比較してわずか10%のKV Cacheしか必要としないとのこと。</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2047586472291664086?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>1Mトークンのcontext windowを実用的にするために最新の叡智が詰め込まれまくっているという感じのようである。うーむ読むしかない</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2047640204282929219?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RTX 6000で4基でFlashが動いたよ、という報告に見える:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/0xsero/status/2047693187968307532?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2048516893808734365?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/grad62304977/status/2048785005216723072?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5377" target="_blank" rel="noopener noreferrer">HiSparse: Turbocharging Sparse Attention with Hierarchical Memory, LMSYS, 2026.04</a>
+</p><p>Self Rewarding LMsのコンセプトが利用されている:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jaseweston/status/2049522126093213880?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Proは、Flashをlong contextを扱える様々なドメインのスペシャリストとして訓練し、OPDによって蒸留されたものなのでは？という話:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2052021189111902534?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>論文中に疑問点をアノテーションした結果が共有されている:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2053853063824232772?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Paradigma: We are building the infrastructure for autonomous research, Paradigma, 2026.03</title>
+<original-paper-blog-link>https://www.paradigma.inc/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4892</repo-issue-link>
+<tags>Infrastructure, ScientificDiscovery</tags>
+<repo-issue-date>2026-03-14</repo-issue-date>
+<issue-body>https://www.paradigma.inc/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/paradigmainc/status/2032178064533168520?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Lab: The Full-Stack Platform for Training your Own Models, Prime Intellect, 2026.02</title>
+<original-paper-blog-link>https://www.primeintellect.ai/blog/lab</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4506</repo-issue-link>
+<tags>ComputerVision, MachineLearning, NLP, LanguageModel, Infrastructure, ReinforcementLearning, AIAgents, Blog, ScientificDiscovery, PostTraining, Selected Papers/Blogs, One-Line Notes, Reference Collection, Environment</tags>
+<repo-issue-date>2026-02-11</repo-issue-date>
+<issue-body>https://www.primeintellect.ai/blog/lab</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/primeintellect/status/2021403222502670765?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事後学習、特にAgenticな研究の民主化のためのプラットフォームの提供</p><p>所見: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Tetraslam/status/2022780491129327816?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>利用例 (Environment Hub):<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stochi0/status/2026187507524891008?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>MCP is Not the Problem, It's your Server: Best Practices for Building MCP Servers, PHILSCHMID, 2026.01</title>
+<original-paper-blog-link>https://www.philschmid.de/mcp-best-practices</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4269</repo-issue-link>
+<tags>LanguageModel, Infrastructure, SoftwareEngineering, MCP, AgentSkills</tags>
+<repo-issue-date>2026-01-22</repo-issue-date>
+<issue-body>https://www.philschmid.de/mcp-best-practices</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_philschmid/status/2014016583706829054?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>MCPサーバ構築に関するベストプラクティスが記載されている模様。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The Smol Training Playbook: The Secrets to Building World-Class LLMs, Allal+, HuggingFace, 2025.10</title>
+<original-paper-blog-link>https://huggingface.co/spaces/HuggingFaceTB/smol-training-playbook</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3529</repo-issue-link>
+<tags>Tutorial, Pretraining, NLP, Dataset, LanguageModel, Infrastructure, PostTraining, Selected Papers/Blogs</tags>
+<repo-issue-date>2025-10-31</repo-issue-date>
+<issue-body>https://huggingface.co/spaces/HuggingFaceTB/smol-training-playbook</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thom_wolf/status/1984033830924124262?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AIインフラを考える, Masayuki Kobayashi, 第38回 ISOC-JP Workshop, 2025.09</title>
+<original-paper-blog-link>https://speakerdeck.com/markunet/aiinhurawokao-eru</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3012</repo-issue-link>
+<tags>MachineLearning, LanguageModel, Infrastructure, GenerativeAI, Slide, read-later, One-Line Notes</tags>
+<repo-issue-date>2025-09-28</repo-issue-date>
+<issue-body>https://speakerdeck.com/markunet/aiinhurawokao-eru</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iwashi86/status/1971898942926606825?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>KVCacheサイズとデータ転送量の部分はパフォーマンスチューニングの際に重要なのですぐにでも活用できそう。前半部分は私にとっては難しかったので勉強したい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>研究者向けの技術研修資料を公開します, CyberAgent, 2025.04</title>
+<original-paper-blog-link>https://cyberagent.ai/blog/research/20228/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1895</repo-issue-link>
+<tags>Tutorial, MachineLearning, Infrastructure, Blog, ExperimentManagement, SoftwareEngineering</tags>
+<repo-issue-date>2025-04-18</repo-issue-date>
+<issue-body>https://cyberagent.ai/blog/research/20228/</issue-body>
+<maintainer-comment-text><p>気になる</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>kubernetes入門, Cybozu, 2024.07</title>
+<original-paper-blog-link>https://speakerdeck.com/cybozuinsideout/introduction-to-kubernetes-2024</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1654</repo-issue-link>
+<tags>Infrastructure</tags>
+<repo-issue-date>2025-01-04</repo-issue-date>
+<issue-body>https://speakerdeck.com/cybozuinsideout/introduction-to-kubernetes-2024</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The Fastest Access to Enterprise-Grade Cloud GPUs, Lambda</title>
+<original-paper-blog-link>https://lambdalabs.com/service/gpu-cloud?srsltid=AfmBOooR9z8WQC1kK20mSRubJB3tLjI3K-8VvPryskqIP6IqT_3Pz5W7</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1493</repo-issue-link>
+<tags>Infrastructure, GPU-Platform, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2024-11-09</repo-issue-date>
+<issue-body>https://lambdalabs.com/service/gpu-cloud?srsltid=AfmBOooR9z8WQC1kK20mSRubJB3tLjI3K-8VvPryskqIP6IqT_3Pz5W7</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arutema47/status/1855057804262088900?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>A100を1時間あたり1.29$で使えるぽいので、安価である。8BのLLMをLoRAでちょろっとSFTするくらいなら、数ドルくらいでいけそう。</p><p>AWSだと、A100を8基、vCPU96、VRAM320G、RAM1152GiBのインスタンス（p4d24xlarge）が、1時間あたりオンデマンドで32.77$なのに対し、<br><br>LambdaではA100 1基あたり1.29$なので、8基で10.32$となる。したがって、コストはだいたいAWSのおよそ1/3くらいに見える（他にも安価なAWSインスタンスあるかもだが）。<br>ちなみにLambdaでは、vCPU124、RAM1800GiBである。<br><br>AWS参考:
+
+{% raw %}
+<a href="https://aws.amazon.com/jp/ec2/instance-types/p4/" target="_blank" rel="noopener noreferrer">https://aws.amazon.com/jp/ec2/instance-types/p4/</a>
+{% endraw %}
+
+</p><p>こちらのポストも参照のこと:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gyakuse/status/1855429821939261833?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>Lambdaに加え<br>- [runpod.io](
+
+{% raw %}
+<a href="https://www.runpod.io)" target="_blank" rel="noopener noreferrer">https://www.runpod.io)</a>
+{% endraw %}
+
+<br>- [vast.ai](
+
+{% raw %}
+<a href="https://vast.ai/)" target="_blank" rel="noopener noreferrer">https://vast.ai/)</a>
+{% endraw %}
+
+<br><br>というサービスも紹介されている。</p><p>[Perplexityで3つを比較させた結果（参考; Hallucinationに注意）](
+
+{% raw %}
+<a href="https://www.perplexity.ai/search/runpod-io-vast-ai-lambdatea100-vJgXn4osSfCqxPsxuJEPKA)" target="_blank" rel="noopener noreferrer">https://www.perplexity.ai/search/runpod-io-vast-ai-lambdatea100-vJgXn4osSfCqxPsxuJEPKA)</a>
+{% endraw %}
+
+<br><br>>これらのサービスの中では、Vast.aiが最も安価ですが、セキュリティと安定性に注意が必要です。RunPodは多機能で使いやすいものの、やや高価です。Lambdaは安定性が高いですが、柔軟性に欠ける面があります。選択する際は、予算、セキュリティ要件、必要な機能性を考慮して判断することが重要です。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AWS FargateではなくECS on EC2を選ぶメリット〜コスト編〜, UZABASE for Engineers, 2022.12</title>
+<original-paper-blog-link>https://tech.uzabase.com/entry/2022/12/01/175423</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1154</repo-issue-link>
+<tags>AWS, Infrastructure, ECS, Blog</tags>
+<repo-issue-date>2023-11-21</repo-issue-date>
+<issue-body>https://tech.uzabase.com/entry/2022/12/01/175423</issue-body>
+<maintainer-comment-text><p>安く済ませたい・・・</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ChatGPTに社内文書に基づいた回答を生成させる仕組みを構築しました, コネヒト TECH BLOG, 2023.11</title>
+<original-paper-blog-link>https://tech.connehito.com/entry/2023/11/14/221416</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1136</repo-issue-link>
+<tags>NLP, Infrastructure, MLOps, RAG(RetrievalAugmentedGeneration), Blog, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2023-11-15</repo-issue-date>
+<issue-body>https://tech.connehito.com/entry/2023/11/14/221416</issue-body>
+<maintainer-comment-text><p>低コストで社内文書に対するRAGを実現することに注力している。<br>以下、図はブログから引用。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/5f71b0b7-14bb-442d-99c8-09a0b3840210" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>基本的にはバッチジョブで社内文書をベクトル化しS3へ格納。アプリ起動時にS3から最新データを読み込み検索可能にしRAGするという流れ。<br>低コスト化のために、Embedding作成にOpenWeightの言語モデル（text-edbedding-ada002と同等の性能）を利用している。実装は基本的にllamaindexを利用している。</p><p>特に日本語テキストにおいてはtext-embedding-ada002は <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910" target="_blank" rel="noopener noreferrer">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる, akeyhero (Akihiro Katsura), Qiita, 2023.04</a>
+ において、JSTSタスクにおいてあまり性能が高くない（ただし、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/910" target="_blank" rel="noopener noreferrer">OpenAI の Embeddings API はイケてるのか、定量的に調べてみる, akeyhero (Akihiro Katsura), Qiita, 2023.04</a>
+ での報告値は基本的にJSTSデータでfinetuningされてた結果と思われる）と言われているので、お金かけて無理して使う必要はないのかなという印象はある。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SQL vs. NoSQL cheetsheet, AWS, Azure and Google Cloud</title>
+<original-paper-blog-link>https://x.com/milan_milanovic/status/1695314879438012630?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1018</repo-issue-link>
+<tags>AWS, Infrastructure, One-Line Notes</tags>
+<repo-issue-date>2023-08-27</repo-issue-date>
+<issue-body>https://x.com/milan_milanovic/status/1695314879438012630?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text><p>データタイプやユースケースに応じてAWS上のサービスなどをマッピングしてくれているチートシート。わかりやすい。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/d5df9913-d97d-4337-85ae-618027487930" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Lambda tips</title>
+<original-paper-blog-link>https://valmore.work/aws-labmda-pytorch/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/522</repo-issue-link>
+<tags>AWS, Infrastructure, AWSLambda, Reference Collection</tags>
+<repo-issue-date>2023-04-23</repo-issue-date>
+<issue-body>- 【AWS Lambda】250MB制限を乗り越えてPyTorchを導入する方法
+  - https://valmore.work/aws-labmda-pytorch/</issue-body>
+<maintainer-comment-text><p>- AWS Lambda and EFS Troubleshooting<br><br>  - 
+
+{% raw %}
+<a href="https://www.digitalsanctuary.com/aws/aws-lambda-and-efs-troubleshooting.html" target="_blank" rel="noopener noreferrer">https://www.digitalsanctuary.com/aws/aws-lambda-and-efs-troubleshooting.html</a>
+{% endraw %}
+
+<br><br>  - VPC内のEFSにアクセスできるようなセキュリティーポリシーを作成してアタッチすると良いという話。in-bound, out-boundともにNFSを許可</p><p>- 【AWS】VPC Lambdaを構築したときのメモ<br><br>  - 
+
+{% raw %}
+<a href="https://qiita.com/aiko_han/items/6b3010250e2887206b4f" target="_blank" rel="noopener noreferrer">https://qiita.com/aiko_han/items/6b3010250e2887206b4f</a>
+{% endraw %}
+
+</p><p>- Amazon VPC に接続されている Lambda 関数にインターネットアクセスを許可するにはどうすればよいですか?<br><br>  - 
+
+{% raw %}
+<a href="https://repost.aws/ja/knowledge-center/internet-access-lambda-function" target="_blank" rel="noopener noreferrer">https://repost.aws/ja/knowledge-center/internet-access-lambda-function</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ECS tips</title>
+<original-paper-blog-link>https://dev.classmethod.jp/articles/ecs-local/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/519</repo-issue-link>
+<tags>AWS, Infrastructure, ECS, Reference Collection</tags>
+<repo-issue-date>2023-04-16</repo-issue-date>
+<issue-body>- ECS CLIによるローカルでのテスト
+  - https://dev.classmethod.jp/articles/ecs-local/
+  - ローカルでテストしないでデプロイしようとして失敗すると、一回あたり10~20分無駄にするので超便利</issue-body>
+<maintainer-comment-text><p>- キャパシティプロバイダーについて<br><br>  - 
+
+{% raw %}
+<a href="https://dev.classmethod.jp/articles/regrwoth-capacity-provider/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/regrwoth-capacity-provider/</a>
+{% endraw %}
+
+</p><p>- Fargateをスポットで7割引で使うFargate Spotとは？ #reinvent<br><br>  - 
+
+{% raw %}
+<a href="https://dev.classmethod.jp/articles/fargate-spot-detail/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/fargate-spot-detail/</a>
+{% endraw %}
+
+</p><p>- ECSでのデプロイでコケる原因ざっくりまとめ<br><br>  - 
+
+{% raw %}
+<a href="https://zenn.dev/isosa/articles/e371bc2d76e812" target="_blank" rel="noopener noreferrer">https://zenn.dev/isosa/articles/e371bc2d76e812</a>
+{% endraw %}
+
+</p><p>- M1 MacでビルドしたイメージをFARGATEで使おうとした時の'exec user process caused: exec format error' の対処法<br><br>  - 
+
+{% raw %}
+<a href="https://qiita.com/ms2geki/items/1cfb0db3f4c1aab96e75" target="_blank" rel="noopener noreferrer">https://qiita.com/ms2geki/items/1cfb0db3f4c1aab96e75</a>
+{% endraw %}
+
+</p><p>- PythonでログをCloudWatchに出力する「Watchtower」<br><br>  - 
+
+{% raw %}
+<a href="https://dev.classmethod.jp/articles/python_log_cloudwatch_watchtower/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/python_log_cloudwatch_watchtower/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>deploy-API-to-GCP</title>
+<original-paper-blog-link>https://github.com/gerardmargaux/deploy-API-to-GCP</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/498</repo-issue-link>
+<tags>Tools, Infrastructure, MLOps, Blog, Repository, API, SoftwareEngineering</tags>
+<repo-issue-date>2022-12-01</repo-issue-date>
+<issue-body>https://github.com/gerardmargaux/deploy-API-to-GCP</issue-body>
+<maintainer-comment-text><p>FlaskAPIを（Flaskでなくても良い）Google Cloud Run上で、TerraFormで定義したインフラ環境でデプロイするためのリポジトリ<br><br>0. リポジトリをclone<br>1. Flaskアプリ作成<br>2. FlaskアプリをDocker化<br>3. TerraFormのStateを保存するためのCloudStorage作成<br>4. TerraFormのコード作成<br>5. GitHub Actionでデプロイ（CI/CD）<br><br>5によってmainブランチに対するプルリクが本番環境にデプロイされる。</p><p>Cloud Runについて<br>
+
+{% raw %}
+<a href="https://dev.classmethod.jp/articles/gc-cloud-run/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/gc-cloud-run/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>MLOps: 機械学習における継続的デリバリーと自動化のパイプライン, Google</title>
+<original-paper-blog-link>https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning#whats_next</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/447</repo-issue-link>
+<tags>Infrastructure, MLOps, Blog, One-Line Notes, needs-revision</tags>
+<repo-issue-date>2022-04-27</repo-issue-date>
+<issue-body>https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning#whats_next</issue-body>
+<maintainer-comment-text><p>機械学習（ML）システムの継続的インテグレーション（CI）、継続的デリバリー（CD）、継続的トレーニング（CT）の実装と自動化<br><br>MLOpsのレベルを0~2で表現しており、各レベルごとに何が達成されるべきかが図解されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>データレイクのつくりかた、つかいかた、そだてかた, 関山宜孝, AWS Summit, 2020.09</title>
+<original-paper-blog-link>https://pages.awscloud.com/rs/112-TZM-766/images/AWS-03_AWS_Summit_Online_2020_ANT01.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/407</repo-issue-link>
+<tags>AWS, Infrastructure, Slide, One-Line Notes</tags>
+<repo-issue-date>2021-10-08</repo-issue-date>
+<issue-body>https://pages.awscloud.com/rs/112-TZM-766/images/AWS-03_AWS_Summit_Online_2020_ANT01.pdf</issue-body>
+<maintainer-comment-text><p>こちらも参照のこと<br><br>
+
+{% raw %}
+<a href="https://logmi.jp/tech/articles/324242" target="_blank" rel="noopener noreferrer">https://logmi.jp/tech/articles/324242</a>
+{% endraw %}
+
+</p><p>◆伝統的なデータウェアハウスの限界：<br>場当たり的にデータを蓄積し、活用しているとデータのサイロ化が生じてしまう。<br>サイロ化したデータを一箇所にまとめて活用できるようにしましょうというのがData Lakeの考え方。<br><br>◆データレイクアーキテクチャ<br>すべてのデータを一元的に保管でき、耐障害性、可用性が高く、スケーラブルで低コストな必要がある。<br>また、データは非常に多様化しているので、多様なデータをそのままのフォーマットで保管し活用できる必要がある。<br>ストレージとデータの活用層を疎結合にして、さまざまなユースケース・分析に対処できるようにする。<br>（たとえば、ストレージに特定のスキーマのテーブルを使っており、そのスキーマに対してしか分析できません、とかは避けるということかな？）</p><p>S3上に生データを保存し、AWS Glueでメタデータを管理する。AWS GlueのようなETLサービスを利用してデータを利用しやすい形式に変更して格納し、活用する(pp.9--10)。</p><p>データレイクを作る際のポイント「小さく始める」という部分も重要だと思われるので参照のこと</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>NVIDIA TRITON INFERENCE SERVER, 2021</title>
+<original-paper-blog-link>https://developer.nvidia.com/nvidia-triton-inference-server</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/390</repo-issue-link>
+<tags>MachineLearning, Infrastructure, MLOps, Blog, One-Line Notes</tags>
+<repo-issue-date>2021-06-18</repo-issue-date>
+<issue-body>https://developer.nvidia.com/nvidia-triton-inference-server</issue-body>
+<maintainer-comment-text><p>Nvidiaのオープンソースのinference server<br><br>モデルのデプロイや管理、スケーリング等を良い感じにしてくれるフレームワーク？</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>
