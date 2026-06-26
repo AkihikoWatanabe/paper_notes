@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-06-15">
+<paper-entry>
+<title>[Paper Note] Improving Robotic Generalist Policies via Flow Reversal Steering, Andy Tang+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.13675</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5798</repo-issue-link>
+<tags>ComputerVision, NLP, Selected Papers/Blogs, VisionLanguageModel, Robotics, VisionLanguageActionModel, reading, One-Line Notes, Steering, Author Thread-Post</tags>
+<repo-issue-date>2026-06-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.13675
+# Authors
+  - Andy Tang
+  - William Chen
+  - Andrew Wagenmaker
+  - Chelsea Finn
+  - Sergey Levine
+# Abstract
+  - Generalist policies can learn a wide range of skills from diverse robot datasets. In order to solve or improve on challenging new tasks, we need a way to infer and invoke the appropriate actions from the policy's rich behavioral prior, especially when directly commanding the policy fails. We focus on flow matching generalists and propose Flow Reversal Steering (FRS): a method that takes suboptimal but ``reasonable'' actions, finds their latent noises by passing them through the flow policy in reverse, and maps them to nearby generalist action modes. We evaluate FRS across many simulated and real-world manipulation settings. First, FRS can turn coarse semantic guidance from humans or vision-language models (VLMs) into corresponding good robot actions, improving zero-shot control. These gains can be distilled with behavioral cloning by training an auxiliary policy to output noises that the generalist maps to good actions -- showing up to 95% absolute task success rate boosts in under a minute of training. Finally, FRS enables policy improvement by bootstrapping reinforcement learning with semantic knowledge, improving on several tasks that standard RL fails to improve on.
+# Translation (by gpt-5-nano)
+- 汎用ポリシーは、多様なロボットデータセットから幅広いスキルを学習できる。難しい新しいタスクを解決したり改善したりするためには、ポリシーの豊富な行動の事前知識を推定して適切な行動を呼び出す方法が必要であり、特に直接指示してもうまくいかない場合にはなおさらである。我々は Flow Matching Generalists（フロー・マッチング汎用ポリシー）に焦点を当て、Flow Reversal Steering（FRS）を提案する。これは、サブ最適だが「合理的な」行動を取り、それらをフロー・ポリシーに逆向きに通して潜在ノイズを見つけ出し、それを近傍の汎用的なアクションモードへ写像する手法である。我々はFRSを、数多くのシミュレーションおよび実世界の操作設定で評価する。まず、FRSは人間やビジョン-言語モデル（VLMs）からの粗い意味論的指示を、それに対応する良いロボットアクションへと変換し、ゼロショット制御を改善する。これらの利得は、一般ポリシーが良いアクションへ写像するノイズを出力する補助ポリシーを訓練して得られる挙動クローニングによって蒸留できる――訓練を1分未満で行い、最大で95%の絶対タスク成功率の向上を示す。最後に、FRSは意味知識を用いて強化学習をブートストラップすることでポリシーを改善し、標準的なRLが改善できなかったいくつかのタスクで改善を示す。
+# Summary (by gpt-4o-mini)
+- 汎用ポリシーが多様なロボットデータセットから学習する中で、Flow Matching GeneralistsとFlow Reversal Steering（FRS）を提案し、サブ最適な行動を逆向きに通して潜在ノイズを特定、汎用的なアクションモードへ写像する手法を検証。FRSは粗い意味論的指示を良いロボットアクションに変換し、ゼロショット制御を改善。訓練を短時間で行い、最大95%のタスク成功率向上を示し、強化学習をブートストラップしてさらなる改善を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vai_viswanathan/status/2065469909581111441?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>VLMや人間によって、<br>- Coarse Reference Action関する情報（=意味的には妥当だがロボットがアクションを実施するには粗すぎる情報; move straight right等）を与え、<br>- Coarse Reference Action を対応するVLAのreference action a_1に変換し<br>- a_1に基づいてVLAが良いアクションを生成できる潜在ノイズをFlow Matchingモデルを時間方向にbackwardさせる（noising process）ことで推定し、<br>- 同定した潜在ノイズから順方向にdenoisingすることで、妥当なアクションをsteeringする<br> <br>Flow Reversal Sterring (FRS) を提案。FRSにはzero-shot、かつonlineでsteeringができる利点がある。<br><br>
+<strong>## Diffusion Steering via Behavioral Cloning (DSBC)<br>FRSはSupervised Learningにも活用できる。具体的には、reference actionに基づいたノイズ a^hat_0を用いてobservationからノイズを生成するノイズ方策を直接behavior cloning（=observation oが与えられた時に、a^hat_0を出力する確率を最大化する最尤推定; p.6冒頭）する。<br><br><img src="https://github.com/user-attachments/assets/88968834-12bd-4b99-a9f4-a1314b825714" /" alt="image" loading="lazy" width="550" height="400"/><br><br>学習データ（observation, good noiseのタプル）の収集方法は大きく分けて2通りあり<br>- オンライン: zero-shot FRSを実際に環境でロールアウトし、タスクが成功したときノイズをgood noiseとして記録する<br>- オフライン: 既存の(observation, action)データをFRSで変換し(observation, action noise)のタプルに変換して学習に利用する<br><br>このような学習手法をDSBCと呼ぶ。<br><br>## DSRL + FRS<br>上述のFRSとDSRL <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5818" target="_blank" rel="noopener noreferrer">[Paper Note] Steering Your Diffusion Policy with Latent Space Reinforcement Learning, Andrew Wagenmaker+, arXiv'25, 2025.06</a>
+</strong>
+<br>
+ を組み合わせることで、DSRLの安定性を向上させる手法。DSRLは一言で言うと、アクション生成のシードとなる良いノイズを生成できるポリシー（ノイズ方策）をRLを通じて学習する手法らしく、RLをする際の報酬に対して、DSBCを重み付きで加えることによって、エキスパートのノイズから大きく逸脱することを防ぐ正則化の役割を追加する。<br><br><img src="https://github.com/user-attachments/assets/c54882ee-be38-4c47-8595-5607703d39cb" /" alt="image" loading="lazy" width="550" height="400"/><br><br>完全に読めたわけではないが、おもしろい。勉強になった。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Subliminal Learning Is Steering Vector Distillation, Camila Blank+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.00995v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5683</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Distillation, SubliminalLearning, One-Line Notes, Steering, Author Thread-Post</tags>
+<repo-issue-date>2026-06-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.00995v1
+# Authors
+  - Camila Blank
+  - Agam Bhatia
+  - Senthooran Rajamanoharan
+  - Arthur Conmy
+  - Neel Nanda
+# Abstract
+  - Subliminal learning refers to a student language model acquiring a teacher's traits (e.g. a system-prompted preference for owls) when fine-tuned on the teacher's outputs, despite the outputs being semantically unrelated to those traits. It remains poorly understood how data without semantic meaning can transfer specific semantic traits. In this work, we show that subliminal learning is mediated by a single steering vector, i.e. a vector added to the model's activations. Across two open-source models, we find that the teacher's system prompt is well approximated by a steering vector, and that the student's behavior is driven by learning an aligned vector over fine-tuning. System prompts that are not well approximated by steering vectors are not subliminally learned. This is a special case of steering vector distillation, in which a student trained on the outputs of a steered teacher learns to imitate that steering. We demonstrate steering vector distillation on a range of semantic and random vectors. Adding a semantic vector to a model's activations can have both model-independent and model-specific (i.e. non-semantic) effects on its behavior, so generated data that is non-semantic can transmit a vector with semantic effects, enabling subliminal learning. This also explains why subliminal learning does not transfer between models. We find that adaptive optimizers are necessary for subliminal learning in language models: activation gradients on steered data carry a small but consistent component along the steering direction, and non-adaptive optimizers impede this by allowing outlier gradients to dominate.
+# Translation (by gpt-5-nano)
+- 潜在的学習とは、教師の出力を微調整の対象とする際に、学生の言語モデルが教師の特性を獲得する現象を指す。例えば、システムプロンプトによるフクロウ好みといった属性が、出力が意味的にはそれらの属性と無関係であるにもかかわらず獲得される。意味を持たないデータが特定の意味的特徴を伝達する仕組みは未だ十分には理解されていない。本研究では、潜在的学習が単一のステアリングベクトル、すなわちモデルの活性化に加えられるベクトルによって媒介されることを示す。2つのオープンソースモデルを横断して、教師のシステムプロンプトはステアリングベクトルによりよく近似され、学生の挙動は微調整を通じて整合したベクトルを学習することによって推進されることを見出した。ステアリングベクトルにうまく近似されないシステムプロンプトは、潜在的に学習されない。これは、ステアリングベクトル蒸留の特殊ケースであり、ステアリングされた教師の出力で訓練された学生がそのステアリングを模倣することを学習する。意味ベクトルとランダムベクトルの範囲に対して、ステアリングベクトル蒸留を実演する。モデルの活性化に意味ベクトルを加えることは、モデル依存性の有無に関係なく挙動に影響を及ぼす可能性があり、非意味的な生成データが意味的効果を持つベクトルを伝達して潜在的学習を可能にする。これにより、潜在的学習がモデル間で伝搬しない理由も説明される。言語モデルにおける潜在的学習には適応型オプティマイザが必要であることを我々は発見した。ステアリングデータ上の活性化勾配は、ステアリング方向に沿って小さいが一貫した成分を運び、非適応型オプティマイザは外れ値の勾配が支配的になることでこれを妨げる。
+# Summary (by gpt-4o-mini)
+- 潜在的学習とは、学生の言語モデルが教師の特性を微調整することで獲得される現象であり、意味を持たないデータから特定の特徴が伝達される仕組みは未解明である。本研究では、潜在的学習がステアリングベクトルによって媒介されることを示し、教師のプロンプトがこのベクトルによく近似され、学生が整合したベクトルを学習することを発見した。ステアリングベクトルに近似されないプロンプトは学習されないことも示され、その影響がモデルの活性化に及ぶことを明らかにした。潜在的学習には適応型オプティマイザが必要であり、勾配の一貫性が成果に影響を与えることが確認された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arthurconmy/status/2062228907710152718?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Subliminal Learning:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2282" target="_blank" rel="noopener noreferrer">[Paper Note] Subliminal Learning: Language models transmit behavioral traits via
+  hidden signals in data, Alex Cloud+, arXiv'25</a>
+</p><p>Subliminal Learningが生じるのは、教師モデルが生成したデータを通じて生徒モデルが残差ストリームに対するsteering vectorが蒸留されるからであり、教師モデルが生成した何らかのデータを通じて教師モデルと同じ方向にactivationが誘導されるようになるため、という説明のようである。また、subliminal learningが生じるためにはAdamのような適応的なoptimiserが必要で（外れ値の勾配が支配的にならないため）、LoRAのような低ランクでのファインチューニングで生じやすく、フルファインチューニングでは発生しづらいとのこと。<br><br>また、細かく読めていないが、16種類の動物に関する特性に関する残差ストリームのsteering vectorを抽出し実験をした結果、steeringは実験の結果モデル間の転移は弱く、モデルアーキテクチャが共通の場合にうまく転移することが示され、このことから、モデル固有のsteering方向に依存することが示唆されるようである。<br><img src="https://github.com/user-attachments/assets/06ea62a3-06de-4f11-887c-5667229aae74" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Steerable but Not Decodable: Function Vectors Operate Beyond the Logit Lens, Mohammed Suhail B Nadaf, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.02608</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5566</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Steering, Author Thread-Post</tags>
+<repo-issue-date>2026-05-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.02608
+# Authors
+  - Mohammed Suhail B Nadaf
+# Abstract
+  - Activation steering presupposes that task-relevant behaviors correspond to linear directions in activation space -- directions that should both steer the model and be readable along the unembedding. Function vectors (FVs), extracted as mean differences across ICL demonstrations, are the canonical test case; the prediction: steering and decoding succeed or fail together. Across 12 tasks, 6 models from 3 families, and 4,032 directed cross-template pairs, we find the opposite. FV steering routinely succeeds where the logit lens cannot decode the correct answer at any intermediate layer, while the converse -- decodable without steerable -- is nearly empty (3 of 72). The gap is not representational dialect. A diagonal tuned lens closes 1 of 14 steerable-not-decodable cases; a 2-layer MLP probe with a Hewitt \& Liang control closes 5 of 10 via nonlinearly encoded structure but leaves 5 invisible to every decoder tested. Even at $> 0.90$ steering accuracy, projecting the FV through the unembedding yields incoherent token distributions: FVs encode computational instructions, not answer directions. A model-family asymmetry sharpens the picture. Mistral FVs rewrite intermediate representations, while Llama and Gemma FVs steer the final output without leaving a logit-lens-visible trace, corroborated by three signals (post-steering deltas, activation-patching recovery, FV norm-transfer correlations). A previously reported negative cosine-transfer correlation dissolves at scale, adding at most $ΔR^2 = 0.011$ beyond task identity. These results decompose the linear representation hypothesis into linear decodability and linear steerability and show they come apart opposite to intuition, with implications for safety monitoring: vocabulary-projection tools are blind to FV-style interventions on widely deployed model families.
+# Translation (by gpt-5-nano)
+- 活性化の誘導は、タスクに関連する挙動が活性化空間の線形方向に対応するという前提に立つ—そのような方向はモデルを操作すると同時に、unembedding（埋め込みの逆変換）に沿って読み取れるべきである。関数ベクトル（FV）は、ICLデモンストレーション間の平均差として抽出される標準的な検証ケースであり、その予測は「操縦とデコードは同時に成功するか失敗するか」である。12タスク、3ファミリに属する6モデル、4,032組の指向的クロス・テンプレート対を横断して、私たちはその逆を見出した。FV操縦は、ロジット・レンズが中間層のいかなる段階でも正解をデコードできない場合に日常的に成功するのに対し、逆説的に「ステアリングなしでデコード可能」な場合はほぼ空である（72件中3件）。このギャップは表現的方言ではない。対角調整レンズは、ステアリング可能だがデコード不能なケースのうち14件中1件を解消する；Hewitt & Liang の制御を用いた2層MLPプローブは、非線形に符号化された構造を介して10件中5件を解消するが、検証したすべてのデコーダには残りの5件が可視化されないままである。ステアリング精度が>0.90を超えていても、FVをunembeddingを通して射影すると、トークン分布は一貫性を欠くものになる。FVsは計算的指示を符号化しており、回答の方向を符号化しているわけではない。モデルファミリー間の非対称性はこの図をさらに鮮明にする。MistralのFVは中間表現を書き換え、LlamaとGemmaのFVは最終出力を操るが、ロジットレンズに可視な痕跡を残さないことを、3つの信号（ステアリング後のデルタ、活性化パッチ復元、FVノルム転送相関）によって裏づける。以前に報告された負のコサイン転移相関はスケールで崩れ、タスク識別性を超えるΔR^2は最大で0.011に過ぎない。これらの結果は、線形表現仮説を「線形デコーダ可能性」と「線形ステアラビリティ」に分解し、それらが直感とは反対に分離していることを示す。安全性モニタリングへの影響として、語彙投影ツールは広く展開されているモデルファミリにおけるFVスタイルの介入には盲目である。
+# Summary (by gpt-4o-mini)
+- 活性化の誘導は、タスク挙動が活性化空間の線形方向に対応することに基づくが、研究によりこの前提が逆転することが示された。12タスクにわたる6つのモデルでの分析から、通常の操縦が成功する一方で、デコードできない場合も多く、FVsは計算的指示を符号化するが、回答の方向性は示さないことが明らかになった。また、モデル間の非対称性が確認され、線形表現仮説が「線形デコーダ可能性」と「線形ステアラビリティ」に分解されることで、それぞれが異なることも示された。これらの結果は、安全性モニタリングにおいて重要な示唆を含む。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/suhailnadaf509/status/2058688461474025746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5543" target="_blank" rel="noopener noreferrer">[Paper Note] Steered LLM Activations are Non-Surjective, Aayush Mishra+, arXiv'26, 2026.04</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Steered LLM Activations are Non-Surjective, Aayush Mishra+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.09839</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5543</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Prompting, Safety, Selected Papers/Blogs, reading, One-Line Notes, Steering, Interpretability, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-05-21</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.09839
+# Authors
+  - Aayush Mishra
+  - Daniel Khashabi
+  - Anqi Liu
+# Abstract
+  - Activation steering is a popular white-box control technique that modifies model activations to elicit an abstract change in its behavior. It has also become a standard tool in interpretability (e.g., probing truthfulness, or translating activations into human-readable explanations) and safety research (e.g., jailbreakability). However, it is unclear whether steered behavior is realizable by any textual prompt. In this work, we cast this question as a surjectivity problem: for a fixed model, does every steered activation admit a preimage under the model's natural forward pass? Under practical assumptions, we prove that activation steering pushes the residual stream off the manifold of states reachable from discrete prompts. Almost surely, no prompt can reproduce the same internal behavior induced by steering. We also illustrate this finding empirically across three widely used LLMs. Our results establish a formal separation between white-box steerability and black-box prompting. We therefore caution against interpreting the ease and success of activation steering as evidence of prompt-based interpretability or vulnerability, and argue for evaluation protocols that explicitly decouple white-box and black-box interventions.
+# Translation (by gpt-5-nano)
+- アクティベーション・ステアリングは、モデルの活性化を変更して、その挙動に抽象的な変化を引き起こす人気のホワイトボックス制御手法である。解釈可能性の分野でも標準的なツールとなっており（例：真偽性の検証、あるいは活性化を人間が読める説明へ翻訳することなど）、安全性研究（例：ジャイルブレイク性）にも用いられている。しかし、ステアリングされた挙動が任意のテキストプロンプトによって実現可能かどうかは不明である。本研究ではこの問題を全射性の問題として位置づける。固定されたモデルについて、すべてのステアされた活性化が、モデルの自然なフォワード伝播の下で前像を持つかどうかを問う。実践的な仮定のもとで、活性化ステアリングは残差ストリームを離散的なプロンプトから到達可能な多様体から押し出すことを証明する。ほとんど確実に、いかなるプロンプトもステアリングによって誘発される同じ内部挙動を再現できない。さらに、これを三つの広く用いられているLLMにわたって経験的に示す。我々の結果は、ホワイトボックス的なステアリング可能性とブラックボックス的なプロンプティングとの間に形式的な分離を確立する。したがって、活性化ステアリングの容易さと成功を、プロンプトベースの解釈性や脆弱性の証拠として解釈することには注意が必要であり、ホワイトボックスとブラックボックスの介入を明示的に切り離す評価プロトコルを提案する。
+# Summary (by gpt-4o-mini)
+- アクティベーション・ステアリングは、モデルの活性化を調整し、その挙動に変化を与える手法であり、解釈可能性や安全性研究で広く利用されている。しかし、任意のテキストプロンプトによってこの挙動が実現可能かは不明である。本研究では、この問題を全射的な観点から考察し、すべてのステアされた活性化が前像を持つかを調査する。実証的結果から、活性化ステアリングは任意のプロンプトによって同じ内部挙動を再現できないことを示し、ホワイトボックス的なステアリングとブラックボックス的なプロンプティングの違いを明確にする評価プロトコルを提案する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aamixsh/status/2056357773521084767?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>steeringされたactivationを自然に生み出すプロンプトは存在しない。言い換えると、steeringによって得られる挙動はpromptでは再現できない。これにより以下が示唆される:<br>- prompt levelのbehaviorとactivation/weightに介入することによるbehaviorの変化は、根源的に異なる現象なので分けて考えなければならない<br>- white-boxなstteering手法によってjailbreakができたとしても、black-boxな手法（e.g., promptingによる脆弱性など）による脆弱性があることの証拠にはならない<br><br><img src="https://github.com/user-attachments/assets/a314b73c-c1fc-45b2-9d26-1648347778ed" /" alt="image" loading="lazy" width="550" height="400"/></p><p>Steeringされたactivationは下記のようなAutoencoderを学習することでverbalizeできるのだろうか？hidden_stateのreconstruction lossを通じてverbalizeするためできそうではある。元々のactivationがpromptによって到達不可能な点にいたときに、promptによって到達不能なだけであって内部のネットワークが状態を解釈できないというわけではないので（ここがめちゃめちゃなら何も学習できないということになるがそうではなさそうなので）普通にできそうではある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5458" target="_blank" rel="noopener noreferrer">Natural Language Autoencoders: Turning Claude’s thoughts into text, Anthropic, 2026.05</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Targeted Neuron Modulation via Contrastive Pair Search, Sam Herring+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.12290</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5508</repo-issue-link>
+<tags>NLP, LanguageModel, action_wanted, read-later, Selected Papers/Blogs, Steering, Initial Impression Notes</tags>
+<repo-issue-date>2026-05-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.12290
+# Authors
+  - Sam Herring
+  - Jake Naviasky
+  - Karan Malhotra
+# Abstract
+  - Language models are instruction-tuned to refuse harmful requests, but the mechanisms underlying this behavior remain poorly understood. Popular steering methods operate on the residual stream and degrade output coherence at high intervention strengths, limiting their practical use. We introduce contrastive neuron attribution (CNA), which identifies the 0.1% of MLP neurons whose activations most distinguish harmful from benign prompts, requiring only forward passes with no gradients or auxiliary training. In instruct models, ablating the discovered circuit reduces refusal rates by over 50% on a standard jailbreak benchmark while preserving fluency and non-degeneracy across all steering strengths. Applying CNA to matched base and instruct models across Llama and Qwen architectures (from 1B to 72B parameters), we find that base models contain similar late-layer discrimination structures but steering these neurons produces only content shifts, not behavioral change. These results demonstrate that neuron-level intervention enables reliable behavioral steering without the quality tradeoffs of residual-stream methods. More broadly, our findings suggest that alignment fine-tuning transforms pre-existing discrimination structure into a sparse, targetable refusal gate.
+# Translation (by gpt-5-nano)
+- 言語モデルは有害な要求を拒否するよう指示学習されているが、この行動の背後にある機序は依然としてよく理解されていない。人気のある誘導手法は残差ストリーム上で動作し、介入強度が高いと出力の一貫性を低下させるため、実用的な利用を制限する。私たちは対照的ニューロン寄与度（CNA）を導入する。CNAは、有害なプロンプトと無害なプロンプトを最も識別する活性化を持つMLPニューロンの0.1%を特定し、勾配や補助的な訓練を必要とせず、前向き計算のみを要する。指示型モデルでは、発見された回路をアブレーションすることで、標準的なジャイルブレイクベンチマークにおける拒否率を50%以上低減させつつ、全ての誘導強度において流暢さと非退化性を維持する。LlamaおよびQwenアーキテクチャ（1Bから72Bパラメータの範囲）にわたり、ベースモデルと指示型モデルを一致させて適用すると、ベースモデルにも同様の後段層の識別構造が含まれているが、これらのニューロンを操作すると挙動の変化ではなく内容の変化のみが生じることがわかる。これらの結果は、ニューロンレベルの介入が残差ストリーム手法の品質トレードオフなしに、信頼性の高い行動誘導を実現できることを示している。より広く言えば、アラインメント微調整は、既存の識別構造をスパースでターゲット可能な拒否ゲートへと変換することを示唆している。
+# Summary (by gpt-4o-mini)
+- CNAを用いて、有害なプロンプトを特定する活性化を持つニューロンの0.1%を抽出。これにより、拒否率を50%以上低減しながら、流暢さと非退化性を保持する。既存の識別構造をターゲット可能な拒否ゲートに変換することで、信頼性の高い行動誘導が可能であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nousresearch/status/2056778746716107193?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>追加のSAEの学習や重みの調整無しで、contrastiveなprompt pairから二つのsetの間で最もactivationが異なるMLP上位0.1%を分離することで、目的の挙動をsteeringする</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning a Generative Meta-Model of LLM Activations, Grace Luo+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.06964</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4600</repo-issue-link>
+<tags>NeuralNetwork, Analysis, NLP, LanguageModel, DiffusionModel, Probing, Steering</tags>
+<repo-issue-date>2026-02-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.06964
+# Authors
+  - Grace Luo
+  - Jiahai Feng
+  - Trevor Darrell
+  - Alec Radford
+  - Jacob Steinhardt
+# Abstract
+  - Existing approaches for analyzing neural network activations, such as PCA and sparse autoencoders, rely on strong structural assumptions. Generative models offer an alternative: they can uncover structure without such assumptions and act as priors that improve intervention fidelity. We explore this direction by training diffusion models on one billion residual stream activations, creating "meta-models" that learn the distribution of a network's internal states. We find that diffusion loss decreases smoothly with compute and reliably predicts downstream utility. In particular, applying the meta-model's learned prior to steering interventions improves fluency, with larger gains as loss decreases. Moreover, the meta-model's neurons increasingly isolate concepts into individual units, with sparse probing scores that scale as loss decreases. These results suggest generative meta-models offer a scalable path toward interpretability without restrictive structural assumptions. Project page: https://generative-latent-prior.github.io.
+# Translation (by gpt-5-nano)
+- ニューラルネットワークの活性化を分析する既存のアプローチは、PCAやスパースオートエンコーダなど、強い構造的前提に依存している。生成モデルは代替手段を提供する：それらはそのような前提なしに構造を発見でき、介入の忠実度を向上させる先行情報として機能する。私たちはこの方向性を、十億個の残差ストリーム活性化に対して拡散モデルを訓練することで探究し、ネットワークの内部状態の分布を学習する「メタモデル」を作成する。拡散損失は計算量とともに滑らかに低下し、下流の有用性を信頼性をもって予測することが分かった。とりわけ、メタモデルが学習した前提情報を介して介入を誘導すると、流暢さが改善され、損失が低下するほど大きな利益が得られる。さらに、メタモデルのニューロンは概念を個々のユニットへとより分離するようになり、疎なプロービング指標は損失が低下するにつれてスケールする。これらの結果は、生成的なメタモデルが、制約の多い構造的前提を課さなくても解釈性へと拡張可能な道を提供することを示唆している。プロジェクトページ: https://generative-latent-prior.github.io。
+# Summary (by gpt-4o-mini)
+- 生成モデルを用いて、ニューラルネットワークの活性化を分析する新たなアプローチを提案。拡散モデルを十億の残差ストリーム活性化に適用し、ネットワーク内部状態の分布を学習する「メタモデル」を構築。介入の誘導により流暢さが向上し、損失が低下。メタモデルのニューロンは概念の分離が進み、解釈性の向上を示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/graceluo_/status/2020924742925193470?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>activationに対してノイズを注入し、それをデノイジングする拡散モデルを学習することで、activationのsteeringに活用する。加えて、学習された拡散モデルは元々のニューラルネットワークよりも解釈性が高く、高いprobing性能を発揮する、という感じの話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Steering Your Diffusion Policy with Latent Space Reinforcement Learning, Andrew Wagenmaker+, arXiv'25, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.15799</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5818</repo-issue-link>
+<tags>ReinforcementLearning, DiffusionModel, Robotics, Steering</tags>
+<repo-issue-date>2026-06-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.15799
+# Authors
+  - Andrew Wagenmaker
+  - Mitsuhiko Nakamoto
+  - Yunchu Zhang
+  - Seohong Park
+  - Waleed Yagoub
+  - Anusha Nagabandi
+  - Abhishek Gupta
+  - Sergey Levine
+# Abstract
+  - Robotic control policies learned from human demonstrations have achieved impressive results in many real-world applications. However, in scenarios where initial performance is not satisfactory, as is often the case in novel open-world settings, such behavioral cloning (BC)-learned policies typically require collecting additional human demonstrations to further improve their behavior -- an expensive and time-consuming process. In contrast, reinforcement learning (RL) holds the promise of enabling autonomous online policy improvement, but often falls short of achieving this due to the large number of samples it typically requires. In this work we take steps towards enabling fast autonomous adaptation of BC-trained policies via efficient real-world RL. Focusing in particular on diffusion policies -- a state-of-the-art BC methodology -- we propose diffusion steering via reinforcement learning (DSRL): adapting the BC policy by running RL over its latent-noise space. We show that DSRL is highly sample efficient, requires only black-box access to the BC policy, and enables effective real-world autonomous policy improvement. Furthermore, DSRL avoids many of the challenges associated with finetuning diffusion policies, obviating the need to modify the weights of the base policy at all. We demonstrate DSRL on simulated benchmarks, real-world robotic tasks, and for adapting pretrained generalist policies, illustrating its sample efficiency and effective performance at real-world policy improvement.
+# Translation (by gpt-5-nano)
+- 人間のデモンストレーションから学習したロボットの制御ポリシーは、多くの実世界の応用において顕著な成果を挙げている。しかし、初期の性能が満足のいくものではない場合、特に新規のオープンワールド環境では、BC（行動クローン）学習によって得られたポリシーは通常、行動をさらに改善するために追加の人間デモンストレーションを収集する必要がある――これは高価で時間のかかるプロセスである。対照的に、強化学習（RL）はオンラインで自律的にポリシーを改善する可能性を秘めているが、通常は大量のサンプルを必要とするため、これを達成するには至らないことが多い。本研究では、実世界のRLを用いてBC訓練ポリシーの高速な自律適応を実現する一歩を踏み出す。特に最先端のBC手法である拡散ポリシーに焦点を当て、拡散ステアリングを強化学習で行う（DSRL）：潜在ノイズ空間上でRLを走らせることによってBCポリシーを適応させる。DSRLはサンプル効率が非常に高く、BCポリシーへのブラックボックスアクセスだけを必要とし、実世界での自律的なポリシー改善を効果的に実現できることを示す。さらに、DSRLは拡散ポリシーのファインチューニングに伴う多くの課題を回避し、基盤ポリシーの重みを一切変更する必要性をなくす。DSRLをシミュレーションベンチマーク、実世界のロボットタスク、および事前学習済みの汎用ポリシーの適応に対して実証し、そのサンプル効率と実世界でのポリシー改善における有効な性能を示す。
+# Summary (by gpt-4o-mini)
+- BCポリシーの自律的な適応を実現するために、強化学習を用いて拡散ポリシーに焦点を当てたDSRLを提案。サンプル効率が高く、BCポリシーへのアクセスのみで自律的改善が可能。シミュレーションや実世界のタスクでその有効性を実証。</issue-body>
+<maintainer-comment-text><p>アクションを生成するシードとなるノイズをサンプリングするのではなく、良いノイズを生成するポリシーをRLによって学習する手法のようである。<br><img src="https://github.com/user-attachments/assets/12d2640a-592b-41b1-9a24-6155360b1ba0" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Spectrum Tuning: Post-Training for Distributional Coverage and  In-Context Steerability, Taylor Sorensen+, arXiv'25, 2025.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2510.06084</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3247</repo-issue-link>
+<tags>NLP, Dataset, Supervised-FineTuning (SFT), Evaluation, In-ContextLearning, PostTraining, Selected Papers/Blogs, meta-learning, KeyPoint Notes, Steering, Author Thread-Post</tags>
+<repo-issue-date>2025-10-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2510.06084
+# Authors
+  - Taylor Sorensen
+  - Benjamin Newman
+  - Jared Moore
+  - Chan Park
+  - Jillian Fisher
+  - Niloofar Mireshghallah
+  - Liwei Jiang
+  - Yejin Choi
+# Abstract
+  - Language model post-training has enhanced instruction-following and performance on many downstream tasks, but also comes with an often-overlooked cost on tasks with many possible valid answers. We characterize three desiderata for conditional distributional modeling: in-context steerability, valid output space coverage, and distributional alignment, and document across three model families how current post-training can reduce these properties. In particular, we disambiguate between two kinds of in-context learning: ICL for eliciting existing underlying knowledge or capabilities, and in-context steerability, where a model must use in-context information to override its priors and steer to a novel data generating distribution. To better evaluate and improve these desiderata, we introduce Spectrum Suite, a large-scale resource compiled from >40 data sources and spanning >90 tasks requiring models to steer to and match diverse distributions ranging from varied human preferences to numerical distributions and more. We find that while current post-training techniques help elicit underlying capabilities and knowledge, they hurt models' ability to flexibly steer in-context. To mitigate these issues, we propose Spectrum Tuning, a post-training method using Spectrum Suite to improve steerability and distributional coverage. We find that Spectrum Tuning often improves over pretrained models and their instruction-tuned counterparts, enhancing steerability, spanning more of the output space, and improving distributional alignment on held-out datasets.
+# Translation (by gpt-4o-mini)
+- 言語モデルのポストトレーニングは、指示に従う能力や多くの下流タスクでのパフォーマンスを向上させてきましたが、同時に多くの有効な回答が存在するタスクにおいて見落とされがちなコストも伴います。本研究では、条件付き分布モデリングに関する三つの要件を特定します。それは、文脈内の操作性、正当な出力空間のカバレッジ、そして分布の整合性です。また、三つのモデルファミリーにわたって、現在のポストトレーニングがこれらの特性をどのように低下させるかを文書化します。特に、文脈内学習の二つの種類を区別します。既存の基礎知識や能力を引き出すためのICL（In-Context Learning）と、モデルが文脈内の情報を使用して先入観を覆し、新しいデータ生成分布に導く必要がある文脈内操作性です。これらの要件をより良く評価し改善するために、Spectrum Suiteを導入します。これは、40以上のデータソースから編纂された大規模なリソースであり、多様な人間の好みから数値分布など、さまざまな分布にモデルが適応し一致させることを要求する90以上のタスクを網羅しています。我々は、現在のポストトレーニング技術が基礎的な能力や知識を引き出すのに役立つ一方で、モデルが文脈内で柔軟に操作する能力を損なうことを発見しました。これらの問題を軽減するために、Spectrum Tuningを提案します。これは、Spectrum Suiteを使用して操作性と分布のカバレッジを改善するポストトレーニング手法です。Spectrum Tuningは、事前トレーニングされたモデルやその指示調整された対応物に対してしばしば改善をもたらし、操作性を向上させ、出力空間のより多くをカバーし、保持されたデータセットにおける分布の整合性を改善することが分かりました。
+# Summary (by gpt-4o-mini)
+- ポストトレーニングは言語モデルの性能を向上させるが、操作性や出力空間のカバレッジ、分布の整合性においてコストが伴う。本研究では、これらの要件を評価するためにSpectrum Suiteを導入し、90以上のタスクを網羅。ポストトレーニング技術が基礎的な能力を引き出す一方で、文脈内操作性を損なうことを発見。これを改善するためにSpectrum Tuningを提案し、モデルの操作性や出力空間のカバレッジを向上させることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ma_tay_/status/1977750377484149205?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者らはモデルの望ましい性質として<br>- In context steerbility: inference時に与えられた情報に基づいて出力分布を変えられる能力<br>- Valid output space coverage: タスクにおける妥当な出力を広範にカバーできること<br>- Distributional Alignment: ターゲットとする出力分布に対してモデルの出力分布が近いこと<br><br>の3つを挙げている。そして既存のinstruction tuningや事後学習はこれらを損なうことを指摘している。<br><br>ここで、incontext steerbilityとは、事前学習時に得た知識や、分布、能力だけに従うのではなく、context内で新たに指定した情報をモデルに活用させることである。<br><br>モデルの上記3つの能力を測るためにSpectrum Suiteを導入する。これには、人間の様々な嗜好、numericな分布の出力、合成データ作成などの、モデル側でsteeringや多様な分布への対応が必要なタスクが含まれるベンチマークのようである。<br><br>また上記3つの能力を改善するためにSpectrum Tuningと呼ばれるSFT手法を提案している。<br>手法はシンプルで、タスクT_iに対する 多様なinput X_i タスクのcontext（すなわちdescription) Z_i が与えられた時に、T_i: X_i,Z_i→P(Y_i) を学習したい。ここで、P(Y_i)は潜在的なoutputの分布であり、特定の1つのサンプルyに最適化する、という話ではない点に注意（meta learningの定式化に相当する）。<br><br>具体的なアルゴリズムとしては、タスクのコレクションが与えられた時に、タスクiのcontextとdescriptionをtokenizeした結果 z_i と、incontextサンプルのペア x_ij, y_ij が与えられた時に、output tokenのみに対してcross entropyを適用してSFTをする。すなわち、以下のような手順を踏む:<br><br>1. incontextサンプルをランダムなオーダーにソートする<br>2. p_dropの確率でdescription z_i をドロップアウトしx_i0→y_i0の順番でconcatする、<br>2-1. descriptionがdropしなかった場合はdescription→x_i0→y_i0の順番でconcatし入力を作る。<br>2-2. descriptionがdropした場合、x_i0→y_i0の順番で入力を作る。<br>3. 他のサンプルをx_1→y_1→...→x_n→y_nの順番で全てconcatする。<br>4. y_{1:n}に対してのみクロスエントロピーlossを適用し、他はマスクして学習する。<br><br>一見するとinstruct tuningに類似しているが、以下の点で異なっている:<br>- 1つのpromptに多くのi.i.dな出力が含まれるのでmeta-learningが促進される<br>- 個別データに最適化されるのではなく、タスクに対する入出力分布が自然に学習される<br>- chat styleのデータにfittingするのではなく、分布に対してfittingすることにフォーカスしている<br>- input xやタスクdescription zを省略することができ、ユーザ入力が必ず存在する設定とは異なる<br><br>という主張をしている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AxBench: Steering LLMs? Even Simple Baselines Outperform Sparse   Autoencoders, Zhengxuan Wu+, ICLR'25 Spotlight</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.17148</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2337</repo-issue-link>
+<tags>Controllable, NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT), Prompting, Evaluation, ICLR, read-later, ActivationSteering/ITI, Selected Papers/Blogs, InstructionFollowingCapability, Steering</tags>
+<repo-issue-date>2025-08-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.17148
+# Authors
+  - Zhengxuan Wu
+  - Aryaman Arora
+  - Atticus Geiger
+  - Zheng Wang
+  - Jing Huang
+  - Dan Jurafsky
+  - Christopher D. Manning
+  - Christopher Potts
+# Abstract
+  - Fine-grained steering of language model outputs is essential for safety and reliability. Prompting and finetuning are widely used to achieve these goals, but interpretability researchers have proposed a variety of representation-based techniques as well, including sparse autoencoders (SAEs), linear artificial tomography, supervised steering vectors, linear probes, and representation finetuning. At present, there is no benchmark for making direct comparisons between these proposals. Therefore, we introduce AxBench, a large-scale benchmark for steering and concept detection, and report experiments on Gemma-2-2B and 9B. For steering, we find that prompting outperforms all existing methods, followed by finetuning. For concept detection, representation-based methods such as difference-in-means, perform the best. On both evaluations, SAEs are not competitive. We introduce a novel weakly-supervised representational method (Rank-1 Representation Finetuning; ReFT-r1), which is competitive on both tasks while providing the interpretability advantages that prompting lacks. Along with AxBench, we train and publicly release SAE-scale feature dictionaries for ReFT-r1 and DiffMean.
+# Translation (by gpt-4o-mini)
+- 言語モデルの出力を細かく制御することは、安全性と信頼性のために不可欠である。プロンプトやファインチューニングは、これらの目標を達成するために広く使用されているが、解釈可能性の研究者たちは、スパースオートエンコーダー（SAE）、線形人工トモグラフィー、教師ありステアリングベクトル、線形プローブ、表現ファインチューニングなど、さまざまな表現ベースの技術も提案している。現在、これらの提案を直接比較するためのベンチマークは存在しない。そこで、私たちはAxBenchを導入し、ステアリングと概念検出のための大規模なベンチマークを提供し、Gemma-2-2Bおよび9Bに関する実験結果を報告する。ステアリングに関しては、プロンプトが既存のすべての方法を上回り、次いでファインチューニングが続くことがわかった。概念検出においては、平均の差分などの表現ベースの手法が最も優れている。両方の評価において、SAEは競争力がない。私たちは、新しい弱教師あり表現手法（Rank-1 Representation Finetuning; ReFT-r1）を導入し、両方のタスクで競争力を持ちながら、プロンプトが欠く解釈可能性の利点を提供する。AxBenchとともに、ReFT-r1およびDiffMeanのためのSAEスケールの特徴辞書を訓練し、公開する。
+# Summary (by gpt-4o-mini)
+- 言語モデルの出力制御は安全性と信頼性に重要であり、プロンプトやファインチューニングが一般的に用いられるが、さまざまな表現ベースの技術も提案されている。これらの手法を比較するためのベンチマークAxBenchを導入し、Gemma-2-2Bおよび9Bに関する実験を行った。結果、プロンプトが最も効果的で、次いでファインチューニングが続いた。概念検出では表現ベースの手法が優れており、SAEは競争力がなかった。新たに提案した弱教師あり表現手法ReFT-r1は、競争力を持ちながら解釈可能性を提供する。AxBenchとともに、ReFT-r1およびDiffMeanのための特徴辞書を公開した。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=K2CckZjNy0" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=K2CckZjNy0</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Tell Your Model Where to Attend: Post-hoc Attention Steering for LLMs, Qingru Zhang+, N_A, ICLR'24</title>
+<original-paper-blog-link>https://arxiv.org/abs/2311.02262</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1121</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, ICLR, One-Line Notes, Steering</tags>
+<repo-issue-date>2023-11-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2311.02262
+# Affiliations
+  - Qingru Zhang, N/A
+  - Chandan Singh, N/A
+  - Liyuan Liu, N/A
+  - Xiaodong Liu, N/A
+  - Bin Yu, N/A
+  - Jianfeng Gao, N/A
+  - Tuo Zhao, N/A
+# Abstract
+  - In human-written articles, we often leverage the subtleties of text style,such as bold and italics, to guide the attention of readers. These textualemphases are vital for the readers to grasp the conveyed information. Wheninteracting with large language models (LLMs), we have a similar need -steering the model to pay closer attention to user-specified information, e.g.,an instruction. Existing methods, however, are constrained to process plaintext and do not support such a mechanism. This motivates us to introduce PASTA- Post-hoc Attention STeering Approach, a method that allows LLMs to read textwith user-specified emphasis marks. To this end, PASTA identifies a smallsubset of attention heads and applies precise attention reweighting on them,directing the model attention to user-specified parts. Like prompting, PASTA isapplied at inference time and does not require changing any model parameters.Experiments demonstrate that PASTA can substantially enhance an LLM's abilityto follow user instructions or integrate new knowledge from user inputs,leading to a significant performance improvement on a variety of tasks, e.g.,an average accuracy improvement of 22% for LLAMA-7B. Our code is publiclyavailable at https://github.com/QingruZhang/PASTA .
+# Translation (by gpt-3.5-turbo)
+- 人間が書いた記事では、しばしばテキストのスタイルの微妙さ（太字や斜体など）を活用して、読者の注意を誘導します。これらのテキストの強調は、読者が伝えられた情報を把握するために重要です。大規模言語モデル（LLMs）との対話では、同様のニーズがあります。つまり、ユーザーが指定した情報（例：指示）に対してモデルの注意を引く必要があります。しかし、既存の方法はプレーンテキストの処理に制約があり、このようなメカニズムをサポートしていません。これが、私たちがPASTA（Post-hoc Attention STeering Approach）を導入する動機です。PASTAは、LLMsがユーザーが指定した強調マークのあるテキストを読むことを可能にする方法です。このため、PASTAは注意の一部を特定し、それらに対して正確な注意の再重み付けを適用し、モデルの注意をユーザーが指定した部分に向けます。プロンプティングと同様に、PASTAは推論時に適用され、モデルのパラメータを変更する必要はありません。実験では、PASTAがLLMのユーザーの指示に従ったり、ユーザーの入力から新しい知識を統合したりする能力を大幅に向上させ、さまざまなタスクで大幅な性能向上をもたらすことが示されています（例：LLAMA-7Bの平均精度改善率は22％）。私たちのコードはhttps://github.com/QingruZhang/PASTAで公開されています。
+# Summary (by gpt-3.5-turbo)
+- PASTAは、大規模言語モデル（LLMs）において、ユーザーが指定した強調マークのあるテキストを読むことを可能にする手法です。PASTAは、注意の一部を特定し、再重み付けを適用してモデルの注意をユーザーが指定した部分に向けます。実験では、PASTAがLLMの性能を大幅に向上させることが示されています。</issue-body>
+<maintainer-comment-text><p>ユーザがprompt中で強調したいした部分がより考慮されるようにattention weightを調整することで、より応答性能が向上しましたという話っぽい。かなり重要な技術だと思われる。後でしっかり読む。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a4d3714e-7279-495c-86f1-5ff4ed2cbeb8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=xZDWO0oejD" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=xZDWO0oejD</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>
