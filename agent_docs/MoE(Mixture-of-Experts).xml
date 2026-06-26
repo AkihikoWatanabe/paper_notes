@@ -2829,7 +2829,7 @@ Anonymous
 <title>[Paper Note] LatentMoE: Toward Optimal Accuracy per FLOP and Parameter in Mixture of Experts, Venmugil Elango+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.18089</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4310</repo-issue-link>
-<tags>NLP, LanguageModel, MoE(Mixture-of-Experts)</tags>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, Architecture, MoE(Mixture-of-Experts), Selected Papers/Blogs, reading, One-Line Notes</tags>
 <repo-issue-date>2026-01-27</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.18089
@@ -2876,7 +2876,7 @@ Anonymous
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>MoEに用いるhidden_stateの次元数が小さくなるようにlinear layerで圧縮しノード間のtrafficを削減しつつ、その分expert数やtop-kで選択するkを増やす。<br><img src="https://github.com/user-attachments/assets/817764f5-967f-473d-b3b5-b2e49df705c5" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -6390,7 +6390,7 @@ Anonymous
 <title>Improving our LLM Pretraining Efficiency, Open Athena, 2026.06</title>
 <original-paper-blog-link>https://openathena.ai/blog/pretraining-speedup/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5708</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, Optimizer, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, Author Thread-Post</tags>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, Optimizer, MoE(Mixture-of-Experts), Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2026-06-06</repo-issue-date>
 <issue-body>https://openathena.ai/blog/pretraining-speedup/</issue-body>
 <maintainer-comment-text><p>元ポスト: 
@@ -6403,6 +6403,15 @@ Anonymous
 </div>
 {% endraw %}
 
+</p><p>以下の処理によって、事前学習が高速化（FLOPsの改善幅）された知見が共有されている<br> <br>- DenseからMoEモデルへの移行で実測値3.6倍<br>- MoEのexpart数を64->256で実測値1.3倍<br>- optimizerをMuonHにすることで、実測値1.25倍<br>- **Partial Key Offset (PKO) によって実測値1.2倍改善**<br>  - **modded-nanogptリポジトリ、プルリクエスト169で初めて提案された手法とのこと。**<br>  - **long windowのattentionに対して、keyの半分の次元をオフセット（=前のトークンのkey）、残りの半分の次元を自身のトークンのkeyとすることで、単一のクエリが連続した複数のキーにattendできるようになり、「過去の文脈からあるトークンの継続部分を検索して取得する」といった操作が単一のattention layerによって実現できるようになる**<br>  - （これは知らなかった）<br>- expertのルーティングを再正規化・スケーリングすることで、実測値1.04倍</p><p>今後はHyperConnectionのようなResidual Streamの改善、推論効率向上のためMLA, LatentMoE, Multi Token Prediction, Gated Deltanet, quantizationなどの技術を検証するとのこと。</p><p>Expert数が多ければ多いほど性能が改善することは下記研究でも示されている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5542" target="_blank" rel="noopener noreferrer">[Paper Note] Slicing and Dicing: Configuring Optimal Mixtures of Experts, Margaret Li+, arXiv'26, 2026.05</a>
+<br><br>MuonH（というよりoptimizerのHyperplaneに基づいたラッパ）は以下（こちらもPercy Liang氏のグループ）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4261" target="_blank" rel="noopener noreferrer">Fantastic Pretraining Optimizers and Where to Find Them 2.1: Hyperball Optimization, Wen+, 2026.01</a>
+<br><br>Hyper Connection:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4113" target="_blank" rel="noopener noreferrer">[Paper Note] Hyper-Connections, Defa Zhu+, ICLR'25, 2024.09</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4109" target="_blank" rel="noopener noreferrer">[Paper Note] mHC: Manifold-Constrained Hyper-Connections, Zhenda Xie+, arXiv'25, 2025.12</a>
+<br><br>MLA, LatentMoE, Multi Token Prediction, Gated Deltanet:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1620" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3 Technical Report, DeepSeek-AI+, arXiv'24, 2024.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4310" target="_blank" rel="noopener noreferrer">[Paper Note] LatentMoE: Toward Optimal Accuracy per FLOP and Parameter in Mixture of Experts, Venmugil Elango+, arXiv'26, 2026.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2444" target="_blank" rel="noopener noreferrer">[Paper Note] Better & Faster Large Language Models via Multi-token Prediction, Fabian Gloeckle+, ICML'24</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4396" target="_blank" rel="noopener noreferrer">[Paper Note] Gated Delta Networks: Improving Mamba2 with Delta Rule, Songlin Yang+, ICLR'25, 2024.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5544" target="_blank" rel="noopener noreferrer">[Paper Note] Gated DeltaNet-2: Decoupling Erase and Write in Linear Attention, Ali Hatamizadeh+, arXiv'26, 2026.05</a>
 </p></maintainer-comment-text>
 </paper-entry>
 

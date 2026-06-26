@@ -294,7 +294,7 @@
 <title>GLM-5.2: Built for Long-Horizon Tasks, Z.ai, 2026.06</title>
 <original-paper-blog-link>https://z.ai/blog/glm-5.2</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5819</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, PPO (ProximalPolicyOptimization), OpenWeight, Selected Papers/Blogs, Critic, LongHorizon, Initial Impression Notes</tags>
+<tags>NLP, LanguageModel, AIAgents, PPO (ProximalPolicyOptimization), OpenWeight, Selected Papers/Blogs, Reference Collection, Critic, LongHorizon, train-inference-gap, Initial Impression Notes</tags>
 <repo-issue-date>2026-06-16</repo-issue-date>
 <issue-body>https://z.ai/blog/glm-5.2</issue-body>
 <maintainer-comment-text><p>HF:
@@ -329,6 +329,67 @@
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hallerite/status/2066969117043941613?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>アーキテクチャ解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rasbt/status/2067612153020838055?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>GLM 5.2では、Reward Hackingを検知した場合、ペナルティを与えるのではなく、ツール呼び出しをブロックしてダミー情報を返し、ロールアウト自体は継続させる。Reward Hackingをすると、ただ損をするという構造に近づけていると思われる。<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jongwonpar9958/status/2067977732680740908?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>slimeフレームワークを用いることで10を超えるエキスパートモデルに基づくOPDを2日で終えたとのこと。この記述に基づき、OPDがRLと比較して非常に効率的で、かつエキスパートなモデルは並列で学習をさせておけるよね？という利点に関して推察をしている:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxestex/status/2067872311030550634?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>エキスパートなRLでは常にドメイン別のRLを走らせ特化モデルを学習しておき、性能が向上したらOPDで単一モデルに効率的に蒸留することで、モデルに知識を集約するプロセスと、個々のドメインごとに強力なモデルを得るプロセスが分離されて良さそう、という感想を得た。</p><p>1M context + linear attentionが標準に:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2066962132894118182?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>MTPの学習時において、step 2以後のMTP Layerの出力は、学習時はteacher forcing, 推論時はstep 1のMTP Layerが推定したhidden_stateが用いられるが、これが学習-推論時のgapを生んでしまう。このため、step 1の計算で利用したKV（とsparse attentionのtop-kで洗濯をしたトークンのindex)を全て共有し、step 2以後のMTP Layerで活用し、かつstep 2以後のsparse attentionの計算のオーバヘッドをなくしつつ、学習-推論のgapを無くすことでspeculative decodingの性能を向上させる、といった話題があるようである:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2067067642046018000?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>画像分野におけるself-forcingと同じ発想に思う。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2870" target="_blank" rel="noopener noreferrer">[Paper Note] Self Forcing: Bridging the Train-Test Gap in Autoregressive Video   Diffusion, Xun Huang+, NeurIPS'25</a>
+</p><p>GRPO, PPOのそれぞれの利点と欠点、およびLong Horizonタスクに適用する価値の説明:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhihufrontier/status/2069660962957955452?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
