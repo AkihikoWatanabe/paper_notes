@@ -46,7 +46,7 @@ def get_arxiv_id_from_url(url):
     return arxiv_id
 
 
-def get_entry_from_metadata(arxiv_id, max_retries=3, wait_seconds=5):
+def get_entry_from_metadata(arxiv_id, max_retries=1, wait_seconds=5):
     """リトライ付きでarXiv APIからメタデータを取得"""
     base_url = "http://export.arxiv.org/api/query?"
     query = f"id_list={arxiv_id}"
