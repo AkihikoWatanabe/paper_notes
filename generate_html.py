@@ -40,7 +40,7 @@ def get_all_issues():
     query = """
     {
       repository(owner: "%s", name: "%s") {
-        issues(states: OPEN, first: 100) {
+        issues(states: OPEN, first: 30) {
           edges {
             node {
               number
@@ -100,7 +100,7 @@ def get_all_issues():
         paginated_query = """
         {
           repository(owner: "%s", name: "%s") {
-            issues(states: OPEN, first: 100, after: "%s") {
+            issues(states: OPEN, first: 30, after: "%s") {
               edges {
                 node {
                   number
@@ -139,8 +139,6 @@ def get_all_issues():
 
         response = requests.post("https://api.github.com/graphql", headers=headers, data=json.dumps({"query": paginated_query}))
         response_data = response.json()
-        print(response_data)
-        print(response.status_code)
         issues_data = response_data['data']['repository']['issues']
 
         for edge in issues_data['edges']:
