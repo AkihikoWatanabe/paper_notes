@@ -139,6 +139,8 @@ def get_all_issues():
 
         response = requests.post("https://api.github.com/graphql", headers=headers, data=json.dumps({"query": paginated_query}))
         response_data = response.json()
+        print(response_data)
+        print(response.status_code)
         issues_data = response_data['data']['repository']['issues']
 
         for edge in issues_data['edges']:
