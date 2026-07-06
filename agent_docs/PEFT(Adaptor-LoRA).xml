@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-22">
+<paper-list last-updated="2026-06-27">
 <paper-entry>
 <title>[Paper Note] The Hidden Power of Scaling Factor in LoRA Optimization, Zicheng Zhang+, arXiv'26, 2026.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2606.12883</original-paper-blog-link>
@@ -426,6 +426,33 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Transformer-Squared: Self-adaptive LLMs, Qi Sun+, ICLR'25, 2025.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.06252</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5885</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PEFT(Adaptor/LoRA), SelfImprovement, ICLR, KeyPoint Notes, Test-time Learning</tags>
+<repo-issue-date>2026-06-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.06252
+# Authors
+  - Qi Sun
+  - Edoardo Cetin
+  - Yujin Tang
+# Abstract
+  - Self-adaptive large language models (LLMs) aim to solve the challenges posed by traditional fine-tuning methods, which are often computationally intensive and static in their ability to handle diverse tasks. We introduce Transformer-Squared, a novel self-adaptation framework that adapts LLMs for unseen tasks in real-time by selectively adjusting only the singular components of their weight matrices. During inference, Transformer-Squared employs a two-pass mechanism: first, a dispatch system identifies the task properties, and then task-specific 'expert' vectors, trained using reinforcement learning, are dynamically mixed to obtain targeted behavior for the incoming prompt. Our method consistently outperforms ubiquitous approaches such as LoRA, with fewer parameters and greater efficiency. Furthermore, Transformer-Squared demonstrates versatility across different LLM architectures and modalities, including vision-language tasks. Transformer-Squared represents a significant leap forward, offering a scalable, efficient solution for enhancing the adaptability and task-specific performance of LLMs, paving the way for truly dynamic, self-organizing AI systems.
+# Translation (by gpt-5-nano)
+- 自己適応型の大規模言語モデル（LLMs）は、従来のファインチューニング手法がもたらす課題、すなわち多くの場合計算量が多く、多様なタスクを扱う能力が静的であるという点を解決することを目的としている。私たちはTransformer-Squaredを紹介する。未知のタスクに対してリアルタイムに適応する新しい自己適応フレームワークで、重み行列の特異成分だけを選択的に調整することによりLLMsを適応させる。推論時には、Transformer-Squaredは二段階の処理を用いる。まずディスパッチシステムがタスクの特性を識別し、次に強化学習を用いて訓練されたタスク固有の「エキスパート」ベクトルを動的に組み合わせて、入力プロンプトに対する狙いとする挙動を得る。私たちの手法は、LoRAのような普及しているアプローチよりも、パラメータ数が少なく、より高い効率性で一貫して優れている。さらに、Transformer-Squaredは視覚言語タスクを含む、異なるLLMアーキテクチャやモダリティにも適用性を示す。Transformer-Squaredは大きな飛躍を遂げ、LLMsの適応性とタスク特異的な性能を高めるためのスケーラブルで効率的な解決策を提供し、真に動的で自己組織化されたAIシステムへの道を開く。
+# Summary (by gpt-4o-mini)
+- 自己適応型LLMの課題を解決するために、Transformer-Squaredを提案。これは未知のタスクにリアルタイムで適応できるフレームワークで、重みの特異成分を調整し、二段階処理を通じてタスク特有の「エキスパート」ベクトルを動的に組み合わせる。パラメータ数が少なく高効率で、視覚言語タスクにも対応。これにより、LLMsの適応性と性能を向上させ、自己組織化されたAIシステムへの道を開く。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=dh4t9qmcvK" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=dh4t9qmcvK</a>
+{% endraw %}
+
+</p><p>個々の重み行列を特異値分解し、重み行列の特異値ベクトルをRLVRによってタスク（ドメイン）ごとに最適化し、test time時に線形結合して利用することで、Unseenタスクに対してtest timeに適応可能なSingular Value Finetuningを提案。<br><br>各タスクやドメインごとに高い性能を獲得できる新たな特異値ベクトル（expert vectorと呼ぶ）を学習し推論時に利用することで、全体の重み行列を新たな特異値ベクトルに基づいて更新することができる<br><br>また、学習するパラメータはW_{n,m}パラメータ行列のr=min(n,m)で良いため、LoRA等よりも少ないパラメータ数で適応できる。学習されるexpert vectorは重み行列の特異値であるため、ベクトルに対する解釈性が高く、ベクトルの変換や演算も適応可能となる利点がある。<br>(3.2節）。<br><br><img src="https://github.com/user-attachments/assets/8cc8e159-a05a-40a9-9010-15e449162b0b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>各タスクのexpert vectorはREINFORCEに基づくRLVRで学習する（式1）。テスト時は2段階のプロセスを踏み、推論を実施する。まずinputを受け取り、inputがどのようなタスクを実現するかを同定する（dispatch)。続いて、タスクがより高い性能で解けるように、expert vectorの最適な混合比（線形結合）を、Cross-Entropy Method (CEM)によって、Fewshot sampleの性能が最大となるような混合比をサンプリングベースで求める（3.1節, p.6 (C) Fewshot Adaptation))。これにより、与えられたタスクをより高い性能で解くことができるexpert vectorをtest時に推論し、重み行列を更新した上で推論することができる。<br><br><img src="https://github.com/user-attachments/assets/70626c40-16bd-4ec3-a587-a18fa9197d07" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>expert vectorの混合方法は他にも2種類提案されているようだが、Fewshot Adaptationによる手法の性能が高そうに見える。<br><img src="https://github.com/user-attachments/assets/1b1f5eb3-f0f4-4add-9385-04da0b5a5563" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-04-05">
+<paper-list last-updated="2026-04-26">
+<paper-entry>
+<title>[Paper Note] TRINITY: An Evolved LLM Coordinator, Jinglue Xu+, ICLR'26, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.04695</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5362</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, ICLR, reading, KeyPoint Notes, EvolutionaryAlgorithm, Orchestration, Author Thread-Post</tags>
+<repo-issue-date>2026-04-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.04695
+# Authors
+  - Jinglue Xu
+  - Qi Sun
+  - Peter Schwendeman
+  - Stefan Nielsen
+  - Edoardo Cetin
+  - Yujin Tang
+# Abstract
+  - Combining diverse foundation models is promising, but weight-merging is limited by mismatched architectures and closed APIs. Trinity addresses this with a lightweight coordinator that orchestrates collaboration among large language models (LLMs). The coordinator, comprising a compact language model (approximately $0.6$B parameters) and a lightweight head (approximately $10$K parameters), is optimized with an evolutionary strategy for efficient and adaptive delegation. Trinity processes queries over multiple turns, where at each turn the coordinator assigns one of three roles (Thinker, Worker, or Verifier) to a selected LLM, effectively offloading complex skill acquisition from the coordinator itself. Experiments show that Trinity consistently outperforms individual models and existing methods across coding, math, reasoning, and domain knowledge tasks, and generalizes robustly to out-of-distribution tasks. On standard benchmarks, Trinity achieves state-of-the-art results, including a score of 86.2% on LiveCodeBench. Theoretical and empirical analyses identify two main factors behind this performance: (1) the coordinator's hidden-state representations provide rich contextualization of inputs, and (2) under high dimensionality and strict budget constraints, the separable Covariance Matrix Adaptation Evolution Strategy offers advantages over reinforcement learning, imitation learning, and random search by exploiting potential block-epsilon-separability.
+# Translation (by gpt-5-nano)
+- 多様な基盤モデルを組み合わせることは有望である一方、重みの統合はアーキテクチャの不整合とクローズドAPIによって制約を受ける。Trinityは、大規模言語モデル（LLMs）間の協調を調整する軽量なコーディネーターによってこれを解決する。コーディネーターは、コンパクトな言語モデル（約6億パラメータ）と軽量ヘッド（約1万パラメータ）から成り、効率的で適応的な委任を実現する進化戦略で最適化されている。Trinityは複数ターンにわたってクエリを処理し、各ターンでコーディネーターは選択されたLLMに3つの役割（Thinker／Worker／Verifier）のいずれかを割り当て、複雑なスキル獲得をコーディネーター自身から効果的にオフロードする。実験の結果、Trinityはコード作成、数学、推論、領域知識タスクの各領域で個別モデルおよび既存手法を一貫して上回り、分布外タスクにも頑健に一般化することを示した。標準ベンチマークでは、Trinityは最先端の成果を達成しており、LiveCodeBenchで86.2%のスコアを含む。理論的および経験的分析は、この性能の背後にある2つの主な要因を特定する：(1) コーディネーターの隠れ状態表現が入力の豊かな文脈化を提供すること、(2) 高次元性と厳しい予算制約の下で、分離可能な共分散行列適応進化戦略は、強化学習、模倣学習、ランダム探索よりも有利であり、潜在的なブロックε分離性を活用する。
+# Summary (by gpt-4o-mini)
+- Trinityは、LLMs間の協調を調整する軽量なコーディネーターを用いて、基盤モデルの統合に伴う制約を解決する。約6億パラメータのコンパクトな言語モデルと約1万パラメータの軽量ヘッドから成り、適応的な委任を実現。複数ターンにわたるクエリに対して、コーディネーターは各LLMに役割を割り当て、スキルを効果的にオフロードする。実験の結果、Trinityはコード作成や数学、推論、領域知識タスクで優れた性能を示し、標準ベンチマークで最先端の成果を達成。コーディネーターの隠れ状態表現が文脈化を提供し、進化戦略の適用が有利であることが確認された。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=5HaRjXai12" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=5HaRjXai12</a>
+{% endraw %}
+
+</p><p>公式ポスト:
+
+{% raw %}
+<a href="https://www.linkedin.com/posts/hardmaru_iclr2026-share-7454115310565216259-5uV-?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/posts/hardmaru_iclr2026-share-7454115310565216259-5uV-?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4</a>
+{% endraw %}
+
+</p><p>軽量なcoordinator + 非常に軽量なheadを用いてターンごとに適切なモデルとロールを選択する。coordinatorは全てのターンの会話に対応するcontextualな表現を最後から2番目のトークンに対応するhidden state[^1]から取得し、<br>- LLM poolの中からどのLLMを用いて応答を生成するか<br>- 事前定義されたロール（Thinker, Worker, Verifier）のうちどれを選択するか<br><br>を決定する。最終的にVerifierが選択され、質問に対する最終的な応答としてacceptされるか、固定長のターン数のbudgetに到達したら生成終了となる。<br><br><img src="https://github.com/user-attachments/assets/a43a7918-bace-44cf-b021-b027843d3ab2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>上記枠組みを定式化すると（Section 2）、ざっくり言うと<br>- SLMが最初のクエリ+これまでの会話の履歴のcontextを、最後から2番目のトークンのhidden state hに集約し<br>- lightweight がhを受け取り、有限のアクション集合から（agent-roleのペア集合）適切なアクションを選択する<br>- 最終的に 0/1 のrewardを得られるものとし、この期待報酬を最大化するような（SLMのパラメータの対角成分[^2]と）lightweight headのパラメータΘを求める最適化問題として定式化される。<br>- ただし制約条件として、trajectoryのhorizon T は T <= B_turn、かつ期待報酬を得るために利用可能なコスト B_env がある。 <br><br>となる。<br><br>（この辺は少し自信がないが）本研究のタスク設定は以下の特徴を持つ：<br>- 1ステップの評価が複数のLLM呼び出しを含むため非常に高コストであり、かつ評価に利用可能なコスト（B_env）の制約も厳しく<br>- lightweight headの次元数は10kであり、予算に強い制約がある中で学習するには次元数が多く<br>- かつlightweight headのパラメータはblock-epsilon-separabilityという性質を持つらしく<br>  - 個々のlogitに寄与するブロックが独立していて、かつ独立したブロックの対角成分によって出力が決定される<br>  - また、ブロック間は弱い相互作用をしている、という状態のようである<br>- 最終的に得られる報酬は2値のsparseな報酬でノイジー<br><br>パラメータΘを学習する上で、REINFORCEのようなパラメータごとの勾配を求める手法は、個々のパラメータが最終的な報酬に与える影響が小さく、かつ報酬がsparseでノイジーであるため効果的に学習ができないことから（時間をかければ学習できるのかもしれないが、B_envの制約がきつくて無理）、パラメータの対角成分を扱う手法であるseparable CMA-ESと呼ばれる進化的アルゴリズムによって学習するとのことである。<br><br>separable CME-ESはノイズを加えたパラメータベクトルの集団をサンプリングし、各候補を評価してそれぞれの適応度スコアを取得し、適応度で重みづけした上で平均をすることで次の親を形成するというプロセスを反復する手法らしく、特にseparable CME-ESという手法は、対角共分散行列のみを維持するため、上記の対角成分が寄与する性質と相性が良いとのことである。実験の結果、実際にREINFORCE, SFT, Random Searchなどの手法と比較して性能が良いことが示されている（Table 4）。<br><br>SLMのパラメータの対角成分は Singular Value Finetuning<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5885" target="_blank" rel="noopener noreferrer">[Paper Note] Transformer-Squared: Self-adaptive LLMs, Qi Sun+, ICLR'25, 2025.01</a>
+ <br><br>によって効率的に学習される。この結果、学習をするパラメータ数は20k程度で済み、パラメータ効率が非常に良いとのことである。<br><br><img src="https://github.com/user-attachments/assets/612cc102-bd66-4d42-8c18-94b73a7257b0" /" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 最後から2番目のトークンは `</think>` や `<EOS>` などを導出するため全体のcontextの情報を保持する傾向にあるため<br>[^2]: Section 2にはおそらく定式化のシンプルさを優先して最適化の対象はlightweight headのパラメータΘのみで定式化がされており、Section 3やFigure 2において、SLMのパラメータの対角成分も学習する旨が記載されている</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Kernel-Smith: A Unified Recipe for Evolutionary Kernel Optimization, He Du+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.28342</original-paper-blog-link>

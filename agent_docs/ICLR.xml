@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-06-11">
+<paper-list last-updated="2026-06-27">
 <paper-entry>
 <title>[Paper Note] DiffusionBlocks: Block-wise Neural Network Training via Diffusion Interpretation, Makoto Shing+, ICLR'26, 2025.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.14202</original-paper-blog-link>
@@ -145,7 +145,7 @@
 <title>[Paper Note] TRINITY: An Evolved LLM Coordinator, Jinglue Xu+, ICLR'26, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.04695</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5362</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, ICLR, read-later, Orchestration, Author Thread-Post</tags>
+<tags>NLP, LanguageModel, AIAgents, ICLR, reading, KeyPoint Notes, EvolutionaryAlgorithm, Orchestration, Author Thread-Post</tags>
 <repo-issue-date>2026-04-26</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.04695
@@ -174,7 +174,8 @@
 <a href="https://www.linkedin.com/posts/hardmaru_iclr2026-share-7454115310565216259-5uV-?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/posts/hardmaru_iclr2026-share-7454115310565216259-5uV-?utm_source=share&utm_medium=member_ios&rcm=ACoAACzQvjwB2FeLVE3yukDiUYtr5J4k-6nlNG4</a>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>軽量なcoordinator + 非常に軽量なheadを用いてターンごとに適切なモデルとロールを選択する。coordinatorは全てのターンの会話に対応するcontextualな表現を最後から2番目のトークンに対応するhidden state[^1]から取得し、<br>- LLM poolの中からどのLLMを用いて応答を生成するか<br>- 事前定義されたロール（Thinker, Worker, Verifier）のうちどれを選択するか<br><br>を決定する。最終的にVerifierが選択され、質問に対する最終的な応答としてacceptされるか、固定長のターン数のbudgetに到達したら生成終了となる。<br><br><img src="https://github.com/user-attachments/assets/a43a7918-bace-44cf-b021-b027843d3ab2" /" alt="image" loading="lazy" width="550" height="400"/><br><br>上記枠組みを定式化すると（Section 2）、ざっくり言うと<br>- SLMが最初のクエリ+これまでの会話の履歴のcontextを、最後から2番目のトークンのhidden state hに集約し<br>- lightweight がhを受け取り、有限のアクション集合から（agent-roleのペア集合）適切なアクションを選択する<br>- 最終的に 0/1 のrewardを得られるものとし、この期待報酬を最大化するような（SLMのパラメータの対角成分[^2]と）lightweight headのパラメータΘを求める最適化問題として定式化される。<br>- ただし制約条件として、trajectoryのhorizon T は T <= B_turn、かつ期待報酬を得るために利用可能なコスト B_env がある。 <br><br>となる。<br><br>（この辺は少し自信がないが）本研究のタスク設定は以下の特徴を持つ：<br>- 1ステップの評価が複数のLLM呼び出しを含むため非常に高コストであり、かつ評価に利用可能なコスト（B_env）の制約も厳しく<br>- lightweight headの次元数は10kであり、予算に強い制約がある中で学習するには次元数が多く<br>- かつlightweight headのパラメータはblock-epsilon-separabilityという性質を持つらしく<br>  - 個々のlogitに寄与するブロックが独立していて、かつ独立したブロックの対角成分によって出力が決定される<br>  - また、ブロック間は弱い相互作用をしている、という状態のようである<br>- 最終的に得られる報酬は2値のsparseな報酬でノイジー<br><br>パラメータΘを学習する上で、REINFORCEのようなパラメータごとの勾配を求める手法は、個々のパラメータが最終的な報酬に与える影響が小さく、かつ報酬がsparseでノイジーであるため効果的に学習ができないことから（時間をかければ学習できるのかもしれないが、B_envの制約がきつくて無理）、パラメータの対角成分を扱う手法であるseparable CMA-ESと呼ばれる進化的アルゴリズムによって学習するとのことである。<br><br>separable CME-ESはノイズを加えたパラメータベクトルの集団をサンプリングし、各候補を評価してそれぞれの適応度スコアを取得し、適応度で重みづけした上で平均をすることで次の親を形成するというプロセスを反復する手法らしく、特にseparable CME-ESという手法は、対角共分散行列のみを維持するため、上記の対角成分が寄与する性質と相性が良いとのことである。実験の結果、実際にREINFORCE, SFT, Random Searchなどの手法と比較して性能が良いことが示されている（Table 4）。<br><br>SLMのパラメータの対角成分は Singular Value Finetuning<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5885" target="_blank" rel="noopener noreferrer">[Paper Note] Transformer-Squared: Self-adaptive LLMs, Qi Sun+, ICLR'25, 2025.01</a>
+ <br><br>によって効率的に学習される。この結果、学習をするパラメータ数は20k程度で済み、パラメータ効率が非常に良いとのことである。<br><br><img src="https://github.com/user-attachments/assets/612cc102-bd66-4d42-8c18-94b73a7257b0" /" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 最後から2番目のトークンは `</think>` や `<EOS>` などを導出するため全体のcontextの情報を保持する傾向にあるため<br>[^2]: Section 2にはおそらく定式化のシンプルさを優先して最適化の対象はlightweight headのパラメータΘのみで定式化がされており、Section 3やFigure 2において、SLMのパラメータの対角成分も学習する旨が記載されている</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -3092,7 +3093,7 @@ Anonymous
 </div>
 {% endraw %}
 
-</p><p>Lost in the MiddleならぬLost in Conversation<br><img src="https://github.com/user-attachments/assets/9d4320f5-6fea-43ca-a7ab-a836e7e3642e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer">[Paper Note] Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, arXiv'23, 2023.07</a>
+</p><p>Lost in the MiddleならぬLost in Conversation。multi-turnで分割して指示を出すよりも、single-turnにすべてのinstructionを実施させた方が性能劣化が生じづらい。<br><img src="https://github.com/user-attachments/assets/9d4320f5-6fea-43ca-a7ab-a836e7e3642e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/793" target="_blank" rel="noopener noreferrer">[Paper Note] Lost in the Middle: How Language Models Use Long Contexts, Nelson F. Liu+, arXiv'23, 2023.07</a>
 </p><p>openreview:
 
 {% raw %}
@@ -3240,6 +3241,33 @@ Anonymous
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Transformer-Squared: Self-adaptive LLMs, Qi Sun+, ICLR'25, 2025.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2501.06252</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5885</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PEFT(Adaptor/LoRA), SelfImprovement, ICLR, KeyPoint Notes, Test-time Learning</tags>
+<repo-issue-date>2026-06-27</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2501.06252
+# Authors
+  - Qi Sun
+  - Edoardo Cetin
+  - Yujin Tang
+# Abstract
+  - Self-adaptive large language models (LLMs) aim to solve the challenges posed by traditional fine-tuning methods, which are often computationally intensive and static in their ability to handle diverse tasks. We introduce Transformer-Squared, a novel self-adaptation framework that adapts LLMs for unseen tasks in real-time by selectively adjusting only the singular components of their weight matrices. During inference, Transformer-Squared employs a two-pass mechanism: first, a dispatch system identifies the task properties, and then task-specific 'expert' vectors, trained using reinforcement learning, are dynamically mixed to obtain targeted behavior for the incoming prompt. Our method consistently outperforms ubiquitous approaches such as LoRA, with fewer parameters and greater efficiency. Furthermore, Transformer-Squared demonstrates versatility across different LLM architectures and modalities, including vision-language tasks. Transformer-Squared represents a significant leap forward, offering a scalable, efficient solution for enhancing the adaptability and task-specific performance of LLMs, paving the way for truly dynamic, self-organizing AI systems.
+# Translation (by gpt-5-nano)
+- 自己適応型の大規模言語モデル（LLMs）は、従来のファインチューニング手法がもたらす課題、すなわち多くの場合計算量が多く、多様なタスクを扱う能力が静的であるという点を解決することを目的としている。私たちはTransformer-Squaredを紹介する。未知のタスクに対してリアルタイムに適応する新しい自己適応フレームワークで、重み行列の特異成分だけを選択的に調整することによりLLMsを適応させる。推論時には、Transformer-Squaredは二段階の処理を用いる。まずディスパッチシステムがタスクの特性を識別し、次に強化学習を用いて訓練されたタスク固有の「エキスパート」ベクトルを動的に組み合わせて、入力プロンプトに対する狙いとする挙動を得る。私たちの手法は、LoRAのような普及しているアプローチよりも、パラメータ数が少なく、より高い効率性で一貫して優れている。さらに、Transformer-Squaredは視覚言語タスクを含む、異なるLLMアーキテクチャやモダリティにも適用性を示す。Transformer-Squaredは大きな飛躍を遂げ、LLMsの適応性とタスク特異的な性能を高めるためのスケーラブルで効率的な解決策を提供し、真に動的で自己組織化されたAIシステムへの道を開く。
+# Summary (by gpt-4o-mini)
+- 自己適応型LLMの課題を解決するために、Transformer-Squaredを提案。これは未知のタスクにリアルタイムで適応できるフレームワークで、重みの特異成分を調整し、二段階処理を通じてタスク特有の「エキスパート」ベクトルを動的に組み合わせる。パラメータ数が少なく高効率で、視覚言語タスクにも対応。これにより、LLMsの適応性と性能を向上させ、自己組織化されたAIシステムへの道を開く。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=dh4t9qmcvK" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=dh4t9qmcvK</a>
+{% endraw %}
+
+</p><p>個々の重み行列を特異値分解し、重み行列の特異値ベクトルをRLVRによってタスク（ドメイン）ごとに最適化し、test time時に線形結合して利用することで、Unseenタスクに対してtest timeに適応可能なSingular Value Finetuningを提案。<br><br>各タスクやドメインごとに高い性能を獲得できる新たな特異値ベクトル（expert vectorと呼ぶ）を学習し推論時に利用することで、全体の重み行列を新たな特異値ベクトルに基づいて更新することができる<br><br>また、学習するパラメータはW_{n,m}パラメータ行列のr=min(n,m)で良いため、LoRA等よりも少ないパラメータ数で適応できる。学習されるexpert vectorは重み行列の特異値であるため、ベクトルに対する解釈性が高く、ベクトルの変換や演算も適応可能となる利点がある。<br>(3.2節）。<br><br><img src="https://github.com/user-attachments/assets/8cc8e159-a05a-40a9-9010-15e449162b0b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>各タスクのexpert vectorはREINFORCEに基づくRLVRで学習する（式1）。テスト時は2段階のプロセスを踏み、推論を実施する。まずinputを受け取り、inputがどのようなタスクを実現するかを同定する（dispatch)。続いて、タスクがより高い性能で解けるように、expert vectorの最適な混合比（線形結合）を、Cross-Entropy Method (CEM)によって、Fewshot sampleの性能が最大となるような混合比をサンプリングベースで求める（3.1節, p.6 (C) Fewshot Adaptation))。これにより、与えられたタスクをより高い性能で解くことができるexpert vectorをtest時に推論し、重み行列を更新した上で推論することができる。<br><br><img src="https://github.com/user-attachments/assets/70626c40-16bd-4ec3-a587-a18fa9197d07" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>expert vectorの混合方法は他にも2種類提案されているようだが、Fewshot Adaptationによる手法の性能が高そうに見える。<br><img src="https://github.com/user-attachments/assets/1b1f5eb3-f0f4-4add-9385-04da0b5a5563" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
