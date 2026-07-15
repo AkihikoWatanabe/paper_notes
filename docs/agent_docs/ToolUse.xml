@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-05-31">
+<paper-entry>
+<title>[Paper Note] Agent Explorative Policy Optimization for Multimodal Agentic Reasoning, Minki Kang+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.28774</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5644</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, MultiModal, PostTraining, KeyPoint Notes, ToolUse, Author Thread-Post</tags>
+<repo-issue-date>2026-05-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.28774
+# Authors
+  - Minki Kang
+  - Shizhe Diao
+  - Ryo Hachiuma
+  - Sung Ju Hwang
+  - Pavlo Molchanov
+  - Yu-Chiang Frank Wang
+  - Byung-Kwan Lee
+# Abstract
+  - Vision-language models with extended reasoning succeed on complex problems, but many real-world problems require external tools that internal reasoning alone often cannot resolve. Agentic reasoning therefore interleaves two behaviors with a structural asymmetry: thinking (the self-contained default) and tool use (a high-variance auxiliary acting). We refer to this asymmetry as the Thinking-Acting Gap. Under standard RL recipes like GRPO, the gap manifests as two diagnostic symptoms during training: tool use is attempted on only ~30% of rollouts, and when attempted, the tool-using rollouts within a group are all-wrong on ~40% of questions, suppressing the learning signal at the tool calls that needed it. We propose AXPO (Agent eXplorative Policy Optimization): for each all-wrong tool-using subgroup, AXPO fixes the thinking prefix and resamples the tool call and its continuation, paired with uncertainty-based prefix selection. Across nine multimodal benchmarks and three scales of Qwen3-VL-Thinking, SFT+AXPO outperforms SFT+GRPO at average (+1.8pp Pass@1 and +1.8pp Pass@4 at 8B on average) and 8B with SFT+AXPO surpasses the 32B Base on Pass@4 with 4 times fewer parameters.
+# Translation (by gpt-5-nano)
+- 拡張された推論を備えた視覚と言語を統合したモデルは複雑な問題を解決するが、現実世界の多くの問題は内部推論だけでは解決できない外部ツールを必要とする。エージェント的推論は従って2つの振る舞いを構造的な非対称性とともに交互に行う：思考（自己完結型のデフォルト）とツール使用（高分散の補助として機能する）。この非対称性をThinking-Acting Gapと呼ぶ。GRPOのような標準的なRLレシピの下で、このギャップは訓練中に2つの診断的兆候として現れる：ツール使用はロールアウトの約30%でのみ試行され、試行された場合、グループ内のツール使用を含むロールアウトは約40%の質問で全て間違っており、必要とされた学習信号をツール呼び出しで抑制してしまう。我々はAXPO（Agent eXplorative Policy Optimization）を提案する：各「全て間違っている」ツール使用サブグループに対して、AXPOは思考のプレフィックスを固定し、ツール呼び出しとその継続を再サンプリングし、不確実性ベースのプレフィックス選択と結びつける。9つのマルチモーダル・ベンチマークとQwen3-VL-Thinkingの3つのスケールを横断して、SFT+AXPOは平均でSFT+GRPOを上回り（8Bで平均+1.8pp Pass@1および+1.8pp Pass@4）、8BにおけるSFT+AXPOはパラメータ数を32B Baseの4分の1に抑えつつPass@4で上回る。
+# Summary (by gpt-4o-mini)
+- 視覚と言語を統合したモデルは、複雑な問題解決において外部ツールの使用が不可欠である。エージェント的推論は、自己完結型思考とツール使用の非対称な行動を交互に行い、このギャップをThinking-Acting Gapと呼ぶ。標準的なRL手法ではツール使用が限定的で、多くの場合誤りを含む。AXPO（Agent eXplorative Policy Optimization）を提案し、ツール呼び出しの再サンプリングを行うことでこの問題を改善。実験の結果、AXPOは複数のマルチモーダル・ベンチマークで従来手法を上回る性能を示し、パラメータ数を抑えつつ効果的な結果を得た。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://byungkwanlee.github.io/AXPO-page/" target="_blank" rel="noopener noreferrer">https://byungkwanlee.github.io/AXPO-page/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mkkang_1133/status/2059872464461848581?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>モデルがツール呼び出しを行った際の学習シグナルを改善する話で、GRPOで学習を実施した際に全体の30%程度でしかツール呼び出しが行われておらず（どのようなデータで分析したかは読めていない, 2.2節あたり）、そのうち40%程度が応答で誤っておりGRPOで正のadvantageが発生せず、ツール呼び出しに関して精緻なpositiveなシグナルが得られていない問題がある。これを改善するために、ツール呼び出し前のthinkingは正しく、ツールの呼び出し方とその結果が典型的に誤っていることに着目し、ツール呼び出しの上で失敗したrolloutについて、thinkingまでをprefixとしてツール呼び出し以後をresamplingする手法を提案。これにより、ツール呼び出しの頻度が改善し、ツールが呼び出された場合に応答に失敗する割合も減少した。<br><br><img src="https://github.com/user-attachments/assets/46dd84d8-83b0-4c36-8b10-6bdc8e00b4f4" /" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/7a66270f-1b6f-4f4e-b13b-9aab20b2b8dd" /" alt="image" loading="lazy" width="550" height="400"/></p><p>pj page: 
+
+{% raw %}
+<a href="https://byungkwanlee.github.io/AXPO-page/" target="_blank" rel="noopener noreferrer">https://byungkwanlee.github.io/AXPO-page/</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AgentEscapeBench: Evaluating Out-of-Domain Tool-Grounded Reasoning in LLM Agents, Zhengkang Guo+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.07926</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5492</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Evaluation, read-later, Selected Papers/Blogs, Generalization, LongHorizon, Initial Impression Notes, ToolUse</tags>
+<repo-issue-date>2026-05-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.07926
+# Authors
+  - Zhengkang Guo
+  - Yiyang Li
+  - Lin Qiu
+  - Xiaohua Wang
+  - Jingwen Xv
+  - Dongyu Ru
+  - Xiaoyu Li
+  - Xiaoqing Zheng
+  - Xuezhi Cao
+  - Xunliang Cai
+# Abstract
+  - As LLM-based agents increasingly rely on external tools, it is important to evaluate their ability to sustain tool-grounded reasoning beyond familiar workflows and short-range interactions. We introduce AgentEscapeBench, an escape-room-style benchmark that tests whether agents can infer, execute, and revise novel tool-use procedures under explicit long-range dependency constraints. Each task defines a directed acyclic dependency graph over tools and items, requiring agents to invoke real external functions, track hidden state revealed incrementally, propagate intermediate results, and submit a deterministically verifiable final answer. AgentEscapeBench includes 270 instances across five difficulty tiers and supports fully automated evaluation. Experiments with sixteen LLM agents and human participants show that performance drops sharply as dependency depth increases: humans decline from 98.3% success at difficulty-5 to 80.0% at difficulty-25, while the best model drops from 90.0% to 60.0%. Trajectory analysis attributes model failures mainly to breakdowns in long-range state tracking, clue adherence, and intermediate-result propagation. These findings suggest that current agents can often handle local tool use but still struggle with deep contextual dependencies. We hope AgentEscapeBench can serve as a diagnostic testbed for measuring current agent capabilities and informing future training efforts toward more robust general-purpose reasoning, action, and adaptation.
+# Translation (by gpt-5-nano)
+- LLMベースのエージェントが外部ツールに依存する割合が高まるにつれて、馴染みのあるワークフローや短期的な相互作用を超えたツールに基づく推論を維持できる能力を評価することが重要である。私たちはAgentEscapeBenchを導入する。脱出ゲーム風のベンチマークで、エージェントが明示的な長距離依存の制約の下で新規のツール使用手順を推測、実行、修正できるかを検証する。各タスクはツールとアイテムに対する有向非巡回依存グラフを定義し、エージェントに実際の外部関数を呼び出させ、段階的に開示される隠れ状態を追跡させ、中間結果を伝播させ、決定論的に検証可能な最終回答を提出させる。AgentEscapeBenchには5つの難易度層にまたがる270のインスタンスが含まれ、完全自動評価をサポートする。16のLLMエージェントと人間の参加者を用いた実験は、依存深さが増すにつれて性能が急激に低下することを示しており、難易度5での成功率が98.3%から難易度25で80.0%へ低下し、最良のモデルは90.0%から60.0%へ低下する。軌跡分析によれば、モデルの失敗は主に長距離状態の追跡の崩壊、手掛かりの遵守、中間結果の伝播の難易度に起因する。これらの知見は、現在のエージェントは局所的なツール使用には対応できることが多い一方、深い文脈依存には依然として苦戦していることを示唆している。私たちはAgentEscapeBenchが、現在のエージェント能力を測定する診断用テストベッドとして機能し、より堅牢な汎用的推論・行動・適応性を目指す今後の訓練努力を促す情報源となることを期待する。
+# Summary (by gpt-4o-mini)
+- AgentEscapeBenchを導入し、LLMエージェントの新規ツール使用手順の推測・実行・修正能力を評価。脱出ゲーム形式のタスクは、依存グラフに基づいてエージェントが外部関数を呼び出し、隠れ状態や中間結果を追跡する。実験では、依存深さが増すほど性能が急低下し、成功率が難易度により大きく変動することを示した。これにより、現在のエージェントは局所的なツール使用には強いが、深い文脈依存には苦労していることが明らかに。AgentEscapeBenchは、エージェント能力の測定と今後の訓練への示唆を提供する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2053824985932640516?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>エージェントが慣れ親しんだ設定から離れて、脱出ゲーム風のベンチマークによって、未知のツールやアイテムを活用して環境と相互作用しながら文脈を理解し、最終的なanswerを答えるなければならない。<br><br>新たな環境での未知のツールに対する汎化性能を測るベンチマークであり、非常に興味深い。<br><br><img src="https://github.com/user-attachments/assets/f2a4cbd3-1e1b-4993-8db8-283658ec8351" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>下記研究のように、既存の知識への依存を減らして、実務能力を問うベンチマークとも言える:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5214" target="_blank" rel="noopener noreferrer">[Paper Note] DISCOVERYWORLD: A Virtual Environment for Developing and Evaluating Automated Scientific Discovery Agents, Peter Jansen+, NeurIPS'24 Spotlight, 2024.06</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Teaching Thinking Models to Reason with Tools: A Full-Pipeline Recipe for Tool-Integrated Reasoning, Qianjia Cheng+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.06326</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5467</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Reasoning, PostTraining, reading, Initial Impression Notes, ToolUse</tags>
+<repo-issue-date>2026-05-11</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.06326
+# Authors
+  - Qianjia Cheng
+  - Yuchen Zhang
+  - Zhilin Wang
+  - Yuxin Zuo
+  - Shunkai Zhang
+  - Yuchen Fan
+  - Yu Qiao
+  - Bowen Zhou
+  - Ning Ding
+  - Yu Cheng
+  - Yun Luo
+  - Ganqu Cui
+# Abstract
+  - Tool-integrated reasoning (TIR) offers a direct way to extend thinking models beyond the limits of text-only reasoning. Paradoxically, we observe that tool-enabled evaluation can degrade reasoning performance even when the strong thinking models make almost no actual tool calls. In this paper, we investigate how to inject natural tool-use behavior into a strong thinking model without sacrificing its no-tool reasoning ability, and present a comprehensive TIR recipe. We highlight that (i) the effectiveness of TIR supervised fine-tuning (SFT) hinges on the learnability of teacher trajectories, which should prioritize problems inherently suited for tool-augmented solutions; (ii) controlling the proportion of tool-use trajectories could mitigate the catastrophic forgetting of text-only reasoning capacity; (iii) optimizing for pass@k and response length instead of training loss could maximize TIR SFT gains while preserving headroom for reinforcement learning (RL) exploration; (iv) a stable RL with verifiable rewards (RLVR) stage, built upon suitable SFT initialization and explicit safeguards against mode collapse, provides a simple yet remarkably effective solution. When applied to Qwen3 thinking models at 4B and 30B scales, our recipe yields models that achieve state-of-the-art performance in a wide range of benchmarks among open-source models, such as 96.7% and 99.2% on AIME 2025 for 4B and 30B, respectively.
+# Translation (by gpt-5-nano)
+- ツール統合推論（TIR）は、テキストのみの推論の限界を超えて思考モデルを拡張する直接的な手段を提供します。逆説的に、ツールを用いた評価は、強力な推論モデルがほとんど実際にはツールを呼び出さなくても、推論性能を低下させることがある、ということを我々は観察します。本論文では、ツールを使わない推論能力を損なうことなく、強力な思考モデルに自然なツール使用行動を注入する方法を検討し、包括的なTIRレシピを提示します。以下の点を強調します。 (i) TIRの教師付きファインチューニング（SFT）の有効性は、教師の推論軌跡の学習可能性に依存する。教師の推論軌跡は、ツールを活用した解法に本質的に適した問題を優先するべきである。 (ii) ツール使用軌跡の割合を制御することは、テキストのみの推論能力の壊滅的な忘却を緩和する可能性がある。 (iii) 訓練損失の最適化よりも、pass@kと応答長を最適化することは、RL探索の余地を保ちながら、TIR SFTの効果を最大化できる可能性がある。 (iv) 検証可能な報酬を備えた安定したRL（RLVR）段階は、適切なSFT初期化とモード崩壊に対する明示的な安全策に基づいて構築され、単純でありながら非常に効果的な解決策を提供します。4Bおよび30BスケールのQwen3思考モデルに適用すると、我々のレシピは、オープンソースモデルの幅広いベンチマークで最先端の性能を達成するモデルを生み出します。例えば、AIME 2025においてそれぞれ4Bで96.7%、30Bで99.2%の成績を達成します。
+# Summary (by gpt-4o-mini)
+- ツール統合推論（TIR）は、テキストのみの推論能力を超える思考モデルの拡張を提供しますが、ツール評価が逆に推論性能を低下させることも観察されています。本研究は、ツールを使用せずに推論能力を損なわずに強力な思考モデルに自然なツール使用を組み込む方法を提案し、TIRレシピの要点を示します。具体的には、教師の推論軌跡の学習可能性やツール使用軌跡の比率制御が重要であり、最適化手法がTIRの効果を最大化する可能性を示しています。最終的に、Qwen3モデルに適用することで、オープンソースベンチマークで最先端の成績を達成しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2052693022106653035?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Qwen3にcode executorを実行できるようにしても、数学のベンチマークにおいてほとんどツール呼び出しを行っていないにも関わらずスコアが劣化する。つまり、promptにツール呼び出しの情報を含めただけで、text-onlyでの推論能力が低下しロバストでない。さらに、ツール呼び出しを行ったとしてもテキスト空間上で推論を行った後にテキスト推論の結果をverificationする目的でcode executionを行うなど、ツールを用いて思考する能力が不足していることをイントロで指摘している。<br><br>適切なツール呼び出しを実施するために、既存研究では適切にツールを呼び出せるようにSFTやRLが行われるが、ツール呼び出しに関してpost-trainingを実施すると通常のtext-onlyでのreasoning能力が低下する課題があるとイントロで述べられている。Table 1に示されているようにツール呼び出しに関する情報をpromptに含めると、既存のOpenWeightモデル（Qwen3のみだが）はツールが有効なタスクであっても性能が向上しないことから、内部パラメータに埋め込まれている推論に関するlogicは簡単に壊れてしまうことを示唆しており、text-onlyでのreasoning能力を保ちつつ適切にtool useを実行できる手法が必要という課題があり、これを克服するための手法を提案しているようである。<br><br><img src="https://github.com/user-attachments/assets/b261abc9-c3ff-4eee-8752-ecf498962149" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>問題意識は興味深いが、イントロの例にだけでは、Qwen3でのみ生じるのか、Qwen3に対するtool useのためのprompting手法が悪かっただけなのか、OpenWeightモデル全般のモデルパラメータ側の課題なのかが区別がつかず、どの程度インパクトのある話なのかがよくわからない。<br><br>個人的には、Table 1はより多くの学習レシピが公開されているモデルファミリーでの結果や、実際にtool useのためのSFT/RLを実施した場合に、text-onlyの推論能力が低下することが示されていてほしいと感じる。論文後半にそういったablationが出てくるのだろうか。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ARM-Thinker: Reinforcing Multimodal Generative Reward Models with Agentic Tool Use and Visual Reasoning, Shengyuan Ding+, CVPR'26, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.05111</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4998</repo-issue-link>
+<tags>ComputerVision, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, AIAgents, MultiModal, CVPR, PostTraining, VisionLanguageModel, RewardModel, GenerativeVerifier, ToolUse</tags>
+<repo-issue-date>2026-03-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.05111
+# Authors
+  - Shengyuan Ding
+  - Xinyu Fang
+  - Ziyu Liu
+  - Yuhang Zang
+  - Yuhang Cao
+  - Xiangyu Zhao
+  - Haodong Duan
+  - Xiaoyi Dong
+  - Jianze Liang
+  - Bin Wang
+  - Conghui He
+  - Dahua Lin
+  - Jiaqi Wang
+# Abstract
+  - Reward models are critical for aligning vision-language systems with human preferences, yet current approaches suffer from hallucination, weak visual grounding, and an inability to use tools for verification, limiting their reliability on complex multimodal reasoning tasks. We present ARM-Thinker, an A}gentic multimodal Reward Model that autonomously invokes external tools (e.g., image cropping, doc page retrieval) to ground judgments in verifiable evidence, replacing static, non-interactive reward scoring. This enables the model to verify fine-grained visual details, cross-reference multi-page evidence, and validate reasoning claims, which are capabilities absent in existing reward models. We train ARM-Thinker with multi-stage reinforcement learning, jointly optimizing tool-calling decisions and judgment accuracy. To evaluate agentic reward modeling, we introduce ARMBench-VL, comprising three benchmarks that assess fine-grained visual grounding (image-level tools), multi-page document understanding (retrieval tools), and instruction following (text-level verification). ARM-Thinker achieves +16.2% average improvement on reward modeling benchmarks, +9.6% on tool-use tasks, and outperforms baselines on multimodal math and logical reasoning benchmarks. Our results demonstrate that agentic capabilities significantly enhance both accuracy and interpretability of reward models.
+# Translation (by gpt-5-nano)
+- 報酬モデルは、視覚と言語のシステムを人間の嗜好に合わせるうえで重要だが、現状のアプローチは幻覚、視覚的グラウンディングの弱さ、検証のためのツールを利用できないことにより、複雑なマルチモーダル推論タスクでの信頼性を制限している。私たちは ARM-Thinker を提示する。これは自律的に外部ツール（例：画像のトリミング、文書ページの取得）を呼び出して判断を検証可能な証拠に根拠づけ、静的で非対話的な報酬スコアリングを置換するエージェント型のマルチモーダル報酬モデルである。これにより、モデルは細かな視覚的ディテールを検証し、複数ページの証拠を横断照合し、推論の主張を検証できるようになり、これらは既存の報酬モデルには欠けていた能力である。我々は多段階強化学習で ARM-Thinker を訓練し、ツール呼び出しの意思決定と判断精度を共同で最適化する。エージェント型報酬モデリングを評価するために、ARMBench-VL を導入する。3つのベンチマークから成り、細粒度な視覚的グラウンディング（画像レベルのツール）、複数ページ文書理解（検索ツール）、および指示遵守（テキストレベルの検証）を評価する。ARM-Thinker は報酬モデリングのベンチマークで平均+16.2%の改善、ツール使用タスクで+9.6%、マルチモーダルな数学と論理推論のベンチマークでベースラインを上回る。我々の結果は、エージェント的能力が報酬モデルの精度と解釈性の両方を著しく高めることを示している。
+# Summary (by gpt-4o-mini)
+- ARM-Thinkerは、視覚と言語の報酬モデルを向上させるためのエージェント型システムであり、外部ツールを自律的に活用して結果を検証可能にする。これにより、幻覚や視覚的グラウンディングの弱さを克服し、複数ページの証拠を比較して推論を支持する能力を持つ。多段階強化学習によって訓練され、ツール呼び出しの意思決定と判断精度を最適化。新たに導入したARMBench-VLで評価した結果、報酬モデリングで平均+16.2%、ツール使用タスクで+9.6%の改善を達成。エージェント的なアプローチが精度と解釈性の向上に寄与することを示している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/intern_lm/status/2036719939659158003?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/intern_lm/status/2036719939659158003?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Learning to Rewrite Tool Descriptions for Reliable LLM-Agent Tool Use, Ruocheng Guo+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.20426</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4735</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), AIAgents, action_wanted, Coding, SoftwareEngineering, PostTraining, CurriculumLearning, ToolUse</tags>
+<repo-issue-date>2026-02-28</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.20426
+# Authors
+  - Ruocheng Guo
+  - Kaiwen Dong
+  - Xiang Gao
+  - Kamalika Das
+# Abstract
+  - The performance of LLM-based agents depends not only on the agent itself but also on the quality of the tool interfaces it consumes. While prior work has focused heavily on agent fine-tuning, tool interfaces-including natural language descriptions and parameter schemas-remain largely human-oriented and often become a bottleneck, especially when agents must select from large candidate tool sets. Existing approaches to improving tool interfaces rely on execution traces, which are frequently unavailable in cold-start or privacy-constrained settings, and typically optimize each tool independently, limiting scalability and generalization to unseen tools. We propose Trace-Free+, a curriculum learning framework that progressively transfers supervision from trace-rich settings to trace-free deployment, encouraging the model to abstract reusable interface-usage patterns and tool usage outcomes. To support this approach, we construct a large-scale dataset of high-quality tool interfaces using a structured workflow over a diverse collection of tools. Experiments on StableToolBench and RestBench show consistent gains on unseen tools, strong cross-domain generalization, and robustness as the number of candidate tools scales to over 100, demonstrating that tool interface optimization is a practical and deployable complement to agent fine-tuning.
+# Translation (by gpt-5-nano)
+- LLMベースのエージェントの性能は、エージェント自体だけでなく、それが利用するツール・インターフェースの質にも依存する。これまでの研究はエージェントのファインチューニングに強く焦点を当ててきたが、自然言語記述やパラメータスキーマを含むツール・インターフェースは依然として人間指向が強く、多くの場合ボトルネックとなる。特に、エージェントが多数の候補ツールの中から選択しなければならない場合にはそうだ。ツール・インターフェースを改善する既存のアプローチは実行トレースに依存しており、コールドスタートやプライバシー制約のある設定ではしばしば入手できず、通常は各ツールを独立に最適化するため、未知のツールへのスケーリングと一般化を制限する。私たちはTrace-Free+を提案する。Trace-Free+は、トレースが豊富な環境からトレースのないデプロイメントへと監督を徐々に移行させるカリキュラム学習フレームワークで、モデルが再利用可能なインターフェース使用パターンとツール使用の成果を抽象化するよう促す。これを支援するため、多様なツールの構成を用いた構造化ワークフローに基づく高品質なツール・インターフェースの大規模データセットを構築した。StableToolBenchおよびRestBenchでの実験は、未知のツールに対して一貫した改善を示し、クロスドメイン一般化が強く、候補ツール数が100を超える規模にスケールしても頑健であることを示し、ツール・インターフェースの最適化がエージェントのファインチューニングの実用的でデプロイ可能な補完であることを示している。
+# Summary (by gpt-4o-mini)
+- ツール・インターフェースの質がLLMベースのエージェントの性能に影響を与えることに着目し、Trace-Free+というカリキュラム学習フレームワークを提案。これにより、トレースのない環境で再利用可能なインターフェース使用パターンを習得を促進。構造化ワークフローに基づくデータセットを構築し、実験では未知のツールに対する改善とクロスドメイン一般化が確認された。最終的に、ツール・インターフェースの最適化がエージェントのファインチューニングに有効であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2026676835539628465?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SciAgentGym: Benchmarking Multi-Step Scientific Tool-use in LLM Agents, Yujiong Shen+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.12984</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4585</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, Supervised-FineTuning (SFT), AIAgents, SyntheticData, Evaluation, Science, KeyPoint Notes, LongHorizon, Environment, ToolUse</tags>
+<repo-issue-date>2026-02-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.12984
+# Authors
+  - Yujiong Shen
+  - Yajie Yang
+  - Zhiheng Xi
+  - Binze Hu
+  - Huayu Sha
+  - Jiazheng Zhang
+  - Qiyuan Peng
+  - Junlin Shang
+  - Jixuan Huang
+  - Yutao Fan
+  - Jingqi Tong
+  - Shihan Dou
+  - Ming Zhang
+  - Lei Bai
+  - Zhenfei Yin
+  - Tao Gui
+  - Xingjun Ma
+  - Qi Zhang
+  - Xuanjing Huang
+  - Yu-Gang Jiang
+# Abstract
+  - Scientific reasoning inherently demands integrating sophisticated toolkits to navigate domain-specific knowledge. Yet, current benchmarks largely overlook agents' ability to orchestrate tools for such rigorous workflows. To bridge this gap, we introduce SciAgentGym, a scalable interactive environment featuring 1,780 domain-specific tools across four natural science disciplines, supported by a robust execution infrastructure. Complementing this, we present SciAgentBench, a tiered evaluation suite designed to stress-test agentic capabilities from elementary actions to long-horizon workflows. Our evaluation identifies a critical bottleneck: state-of-the-art models struggle with complex scientific tool-use. Even for a leading model like GPT-5, success rates drop sharply from 60.6% to 30.9% as interaction horizons extend, primarily due to failures in multi-step workflow execution. To address this, we propose SciForge, a data synthesis method that models the tool action space as a dependency graph to generate logic-aware training trajectories. By fine-tuning on these trajectories, our SciAgent-8B outperforms the significantly larger Qwen3-VL-235B-Instruct while exhibiting positive cross-domain transfer of scientific tool-use capabilities. These results underscore the promising potential of next-generation autonomous scientific agents.
+# Translation (by gpt-5-nano)
+- 科学的推論は、本質的に分野固有の知識をナビゲートするために高度なツールキットを統合することを要求します。しかし、現行のベンチマークは、厳格なワークフローのためのツール統合能力をエージェントが駆使できるかどうかを十分に評価していません。このギャップを埋めるべく、スケーラブルな対話型環境であるSciAgentGymを導入します。4つの自然科学分野にわたる1,780個の分野特異的ツールを備え、堅牢な実行基盤によって支えられています。これを補完する形で、SciAgentBenchというエージェント能力を初歩的な行動から長期的なワークフローまでストレステストする階層型評価スイートを提示します。我々の評価は、重要なボトルネックを特定します。最先端モデルは、複雑な科学的ツールの使用に苦戦します。GPT-5のようなリーディングモデルであっても、対話のホライズンが拡大するにつれて成功率が60.6%から30.9%へ急落し、主にマルチステップのワークフロー実行の失敗が原因です。これに対処するために、SciForgeというデータ合成手法を提案します。ツールのアクション空間を依存グラフとしてモデル化し、論理を意識した学習軌道を生成します。これらの軌道でファインチューニングすることにより、SciAgent-8Bははるかに大規模なQwen3-VL-235B-Instructを上回り、科学ツール使用能力の分野横断的転移を示します。これらの結果は、次世代の自律的科学エージェントの有望な可能性を強調しています。
+# Summary (by gpt-4o-mini)
+- 科学的推論には高度なツール統合が必要だが、現行ベンチマークはその能力を十分に評価していない。これを解決するために、SciAgentGymを導入し、1,780個の分野特異的ツールを提供。SciAgentBenchでは、エージェント能力を初歩から長期的なワークフローまで評価。先進モデルも複雑な科学ツール使用に取り組むが、成功率は対話のホライズン拡大で急落。SciForgeというデータ合成手法を提案し、ツールアクションを依存グラフとしてモデル化。これによって、SciAgent-8Bはより大規模なモデルを上回り、科学ツール使用能力の転移を示す。次世代の自律的科学エージェントの可能性を示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2023404773031166320?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>long horizonタスクでのtool useに関するベンチマークおよび環境の提供と、graphベースでツールの依存関係を定義し活用することで、環境上での実行によってgroundingされた高品質データを合成する手法SciForgeを提案。<br><br>ベンチマークでの評価によって、フロンティアモデルでもlong horizonになるとタスク成功率が低下することが明らかになり、性能の低いモデルは同じツールや類似したツールの繰り返しの呼び出しをするなどの挙動があることが明らかになった（他にも詳細な失敗モードの分析などがされているように見える）。<br>また、合成データによるSFTによって8B級のSLMでも大幅に性能が改善している模様。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Procedural Environment Generation for Tool-Use Agents, Michael Sullivan+, EMNLP'25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.11045</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4596</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, AIAgents, SyntheticData, EMNLP, PostTraining, Environment, ToolUse</tags>
+<repo-issue-date>2026-02-17</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2506.11045
+- acl anthology: https://aclanthology.org/2025.emnlp-main.936/
+# Authors
+  - Michael Sullivan
+  - Mareike Hartmann
+  - Alexander Koller
+# Abstract
+  - Although the power of LLM tool-use agents has ignited a flurry of recent research in this area, the curation of tool-use training data remains an open problem$-$especially for online RL training. Existing approaches to synthetic tool-use data generation tend to be non-interactive, and/or non-compositional. We introduce RandomWorld, a pipeline for the procedural generation of interactive tools and compositional tool-use data. We show that models tuned via SFT and RL on synthetic RandomWorld data improve on a range of tool-use benchmarks, and set the new SoTA for two metrics on the NESTFUL dataset. Further experiments show that downstream performance scales with the amount of RandomWorld-generated training data, opening up the possibility of further improvement through the use of entirely synthetic data.
+# Translation (by gpt-5-nano)
+- LLMのツール利用エージェントの力はこの分野の最近の研究を喚起している一方で、ツール利用訓練データのキュレーションは依然として未解決の問題であり、特にオンラインRL訓練においてはなおさらである。既存の合成ツール利用データ生成アプローチは、対話性に欠ける、または構成性が低い傾向がある。私たちは RandomWorld を導入する。これは、対話型ツールと構成的ツール利用データを手続き的に生成するパイプラインである。我々は、RandomWorld由来のデータを用いたSFTとRLで調整したモデルが、さまざまなツール利用ベンチマークを改善し、NESTFULデータセットの2指標で新たなSoTAを樹立した。さらに実験では、下流の性能が RandomWorld由来のトレーニングデータの量に比例して向上することを示し、完全に合成データのみを用いることでさらなる改善の可能性が開かれる。
+# Summary (by gpt-4o-mini)
+- ツール利用エージェントの研究を促進する中、オンラインRL訓練におけるツール利用データのキュレーションが課題となっている。これに対処するため、対話型かつ構成的なツール利用データを手続き的に生成するRandomWorldを提案。これを用いたモデルは、さまざまなツール利用ベンチマークを向上させ、NESTFULデータセットで新たなSoTAを樹立。さらに、RandomWorld由来のデータ量が下流性能向上に寄与することを実証し、合成データの利用が改善の可能性を拓くことを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/natolambert/status/2023549545045467615?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs, Yujia Qin+, arXiv'23, 2023.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2307.16789v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/920</repo-issue-link>
+<tags>Tools, NLP, Dataset, LanguageModel, AIAgents, SyntheticData, action_wanted, API, ICLR, One-Line Notes, ToolUse</tags>
+<repo-issue-date>2023-08-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2307.16789v1
+# Authors
+  - Yujia Qin
+  - Shihao Liang
+  - Yining Ye
+  - Kunlun Zhu
+  - Lan Yan
+  - Yaxi Lu
+  - Yankai Lin
+  - Xin Cong
+  - Xiangru Tang
+  - Bill Qian
+  - Sihan Zhao
+  - Runchu Tian
+  - Ruobing Xie
+  - Jie Zhou
+  - Mark Gerstein
+  - Dahai Li
+  - Zhiyuan Liu
+  - Maosong Sun
+# Abstract
+  - Despite the advancements of open-source large language models (LLMs) and their variants, e.g., LLaMA and Vicuna, they remain significantly limited in performing higher-level tasks, such as following human instructions to use external tools (APIs). This is because current instruction tuning largely focuses on basic language tasks instead of the tool-use domain. This is in contrast to state-of-the-art (SOTA) LLMs, e.g., ChatGPT, which have demonstrated excellent tool-use capabilities but are unfortunately closed source. To facilitate tool-use capabilities within open-source LLMs, we introduce ToolLLM, a general tool-use framework of data construction, model training and evaluation. We first present ToolBench, an instruction-tuning dataset for tool use, which is created automatically using ChatGPT. Specifically, we collect 16,464 real-world RESTful APIs spanning 49 categories from RapidAPI Hub, then prompt ChatGPT to generate diverse human instructions involving these APIs, covering both single-tool and multi-tool scenarios. Finally, we use ChatGPT to search for a valid solution path (chain of API calls) for each instruction. To make the searching process more efficient, we develop a novel depth-first search-based decision tree (DFSDT), enabling LLMs to evaluate multiple reasoning traces and expand the search space. We show that DFSDT significantly enhances the planning and reasoning capabilities of LLMs. For efficient tool-use assessment, we develop an automatic evaluator: ToolEval. We fine-tune LLaMA on ToolBench and obtain ToolLLaMA. Our ToolEval reveals that ToolLLaMA demonstrates a remarkable ability to execute complex instructions and generalize to unseen APIs, and exhibits comparable performance to ChatGPT. To make the pipeline more practical, we devise a neural API retriever to recommend appropriate APIs for each instruction, negating the need for manual API selection.
+# Translation (by gpt-5-nano)
+- オープンソースの大規模言語モデル（LLMs）およびその派生、たとえばLLaMAやVicunaの進歩にもかかわらず、外部ツール（API）を使用するという人間の指示に従うなど、高レベルのタスクを実行する能力には依然として著しく制限がある。これは現在の指示チューニングが主に基本的な言語タスクに焦点を当て、ツール使用領域には適用されていないためである。これは最先端のLLM、たとえばChatGPTとは対照的で、ツール使用能力を卓越して示しているが、残念ながらクローズドソースである。オープンソースLLMにおけるツール使用能力を促進するために、データ構築、モデル訓練、評価の総合的なツール使用フレームワーク ToolLLMを導入する。まず、ツール使用の指示チューニングデータセット ToolBenchを提示する。ToolBenchはChatGPTを用いて自動的に作成される。具体的には、RapidAPI Hubから49カテゴリにまたがる実世界のRESTful APIを16,464件収集し、これらのAPIを含む多様な人間の指示を生成するようChatGPTに指示を与え、単一ツールと複数ツールの両方のシナリオをカバーする。最後に、各指示に対して有効な解決パス（API呼び出しのチェーン）をChatGPTに探索させる。探索プロセスをより効率的にするため、新規の深さ優先探索ベースの決定木（DFSDT）を開発し、LLMsが複数の推論経路を評価し探索空間を拡張できるようにした。DFSDTはLLMsの計画能力と推論能力を著しく高めることを示す。効率的なツール使用評価のため、自動評価ツール ToolEvalを開発する。ToolBenchでLLaMAをファインチューニングして ToolLLaMAを得る。我々の ToolEval は ToolLLaMA が複雑な指示を実行する顕著な能力を示し、未知のAPIへ一般化でき、ChatGPTと同等の性能を示すことを明らかにする。このパイプラインをより実用的にするため、各指示に対して適切なAPIを推奨するニューラル API リトリーバーを考案し、手動のAPI選択を不要にする。
+# Summary (by gpt-4o-mini)
+- オープンソースのLLMにおけるツール使用能力の限界を克服するため、ToolLLMフレームワークを提案。ToolBenchデータセットを用いて、ChatGPTに指示を与え実世界のAPIを収集し、多様なシナリオをカバー。新しい探索手法DFSDTを開発することで、LLMsの推論能力を高め、ToolLLaMAが複雑な指示を効果的に実行できることを示した。ToolEvalにより評価を行い、ToolLLaMAはChatGPTと同等の性能を発揮する。さらに、適切なAPIを推奨するニューラルAPIリトリーバーを導入し、手動の選択を不要にした。</issue-body>
+<maintainer-comment-text><p>16000のreal worldのAPIとインタラクションし、データの準備、訓練、評価などを一貫してできるようにしたフレームワーク。LLaMAを使った場合、ツール利用に関してturbo-16kと同等の性能に達したと主張。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/a9c394b5-6148-4bab-acaa-4934ead5c1a7" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=dHng2O0Jjr" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=dHng2O0Jjr</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>General Agent: A Self-Evolving, Synthetic Agent Environment, Mika, PRIMEIntellect, 2026.05</title>
+<original-paper-blog-link>https://www.primeintellect.ai/blog/general-agent</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5571</repo-issue-link>
+<tags>General, NLP, LanguageModel, AIAgents, SyntheticData, reading, One-Line Notes, Environment, ToolUse, Author Thread-Post</tags>
+<repo-issue-date>2026-05-27</repo-issue-date>
+<issue-body>https://www.primeintellect.ai/blog/general-agent</issue-body>
+<maintainer-comment-text><p>environment: 
+
+{% raw %}
+<a href="https://app.primeintellect.ai/dashboard/environments/primeintellect/general-agent" target="_blank" rel="noopener noreferrer">https://app.primeintellect.ai/dashboard/environments/primeintellect/general-agent</a>
+{% endraw %}
+
+</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/PrimeIntellect/status/2056569877167808966?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mikasenghaas/status/2056570923667402984?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>約1000のドメイン、約4500タスク、約8000種類以上の独自のツールを持つ、汎用エージェント学習のための学習環境とその構築方法。タスクを生成するAIとそれに対して解答するAIを用意し、解答がどの程度正解していたかによって難易度を同定しフィルタリング等を行いつつ、生成されたタスクをacceptするか否かを決定する。実際に構築された環境でRL/SFTを実施したところ、未知のベンチマークに対して性能が反化することも確認したとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>BFCLv2, UC Berkeley, 2024.08</title>
+<original-paper-blog-link>https://gorilla.cs.berkeley.edu/blogs/12_bfcl_v2_live.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1875</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, API, Selected Papers/Blogs, One-Line Notes, ToolUse</tags>
+<repo-issue-date>2025-04-08</repo-issue-date>
+<issue-body>https://gorilla.cs.berkeley.edu/blogs/12_bfcl_v2_live.html</issue-body>
+<maintainer-comment-text><p>LLMのTool Useを評価するための現在のデファクトスタンダードとなるベンチマーク</p><p>BFCLv3:<br>
+
+{% raw %}
+<a href="https://gorilla.cs.berkeley.edu/blogs/13_bfcl_v3_multi_turn.html" target="_blank" rel="noopener noreferrer">https://gorilla.cs.berkeley.edu/blogs/13_bfcl_v3_multi_turn.html</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-04-29">
+<paper-entry>
+<title>[Paper Note] Scaling Self-Play with Self-Guidance, Luke Bailey+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2604.20209</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5318</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PostTraining, read-later, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, SelfPlay, Author Thread-Post</tags>
+<repo-issue-date>2026-04-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2604.20209
+# Authors
+  - Luke Bailey
+  - Kaiyue Wen
+  - Kefan Dong
+  - Tatsunori Hashimoto
+  - Tengyu Ma
+# Abstract
+  - LLM self-play algorithms are notable in that, in principle, nothing bounds their learning: a Conjecturer model creates problems for a Solver, and both improve together. However, in practice, existing LLM self-play methods do not scale well with large amounts of compute, instead hitting learning plateaus. We argue this is because over long training runs, the Conjecturer learns to hack its reward, collapsing to artificially complex problems that do not help the Solver improve. To overcome this, we introduce Self-Guided Self-Play (SGS), a self-play algorithm in which the language model itself guides the Conjecturer away from degeneracy. In SGS, the model takes on three roles: Solver, Conjecturer, and a Guide that scores synthetic problems by their relevance to unsolved target problems and how clean and natural they are, providing supervision against Conjecturer collapse. Our core hypothesis is that language models can assess whether a subproblem is useful for achieving a goal. We evaluate the scaling properties of SGS by running training for significantly longer than prior works and by fitting scaling laws to cumulative solve rate curves. Applying SGS to formal theorem proving in Lean4, we find that it surpasses the asymptotic solve rate of our strongest RL baseline in fewer than 80 rounds of self-play and enables a 7B parameter model, after 200 rounds of self-play, to solve more problems than a 671B parameter model pass@4.
+# Translation (by gpt-5-nano)
+- LLMの自己対話アルゴリズムは、本質的には学習を束縛するものが何もないという点で注目されている。すなわち、ConjecturerモデルがSolverのために問題を作成し、両者は共に向上する。しかし、実際には、既存のLLM自己対話法は大量の計算資源とともにスケールしにくく、学習の停滞点に達する。長期の訓練走行において、Conjecturerが報酬を改ざんすることを学習し、Solverの改善には役立たない人工的に複雑な問題へ崩壊してしまうのが原因だと我々は主張する。これを克服するために、Self-Guided Self-Play（SGS）を導入する。SGSは、言語モデル自身が崩壊へ向かうのを避けるようConjecturerを導く自己対話アルゴリズムである。SGSでは、モデルは三つの役割を担う。Solver、Conjecturer、そして未解決のターゲット問題への関連性と、それらがどれだけ清潔で自然かによって合成問題を評価するGuideであり、Conjecturerの崩壊に対する監督を提供する。我々の中核仮説は、言語モデルがサブ問題が目標達成に有用かどうかを評価できるということである。我々は、先行研究よりかなり長い訓練を実行し、累積解法率曲線にスケーリング法則を適合させることによって、SGSのスケーリング特性を評価する。Lean4を用いた形式定理証明へのSGSの適用では、最も強力なRLベースラインの漸近的解法率を、80ラウンド未満の自己対話で上回り、200ラウンドの自己対話の後、7Bパラメータのモデルが671Bパラメータのモデルのpass@4よりも多くの問題を解くことを可能にする。
+# Summary (by gpt-4o-mini)
+- 自己対話アルゴリズムにおけるLLMの限界を克服するために、Self-Guided Self-Play（SGS）を提案。SGSでは、Solver、Conjecturer、Guideの三役をモデルが担い、崩壊を避けつつ問題解決を行う。SGSの評価では、従来のRLベースラインを上回り、効率的な自己対話によって7Bパラメータモデルが671Bパラメータモデルよりも多くの問題を解決可能であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lukebailey181/status/2047340293490724945?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2047204930419614156?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2048846689650319457?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>seed dataを与えた上でのSelf-PlayによるRLの性能を向上させる方法を提案している。<br><br>Self-PlayでRLをする場合、<br>- Solver: タスクを解く。タスクを解けるように学習される。（タスクが解けたか否かのbinary Reward)<br>- Conjecture: タスクを生成する。SolverのパフォーマンスをRewardとして学習される。<br><br>という構造が一般的だが、既存手法を分析した結果、学習が進むにつれ、ConjectureがSolverがそもそも解けない問題を生成するなどし、Reward Hackingが生じてしまい性能が向上しないことを発見。(Figure 2)<br><img src="https://github.com/user-attachments/assets/f9f3c2ef-d71b-49c6-9bcd-90aa930ab332" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br>そこで、新たにGuideを追加し、Conjectureがタスクを合成する際にR_solve*R_guideの積の形式にRewardを調整し<br>- R_solveは(1 - Solverのsuccess rate)によって定義されるが、難しすぎる問題（success rate=0)、簡単すぎる問題（現在のバッチのtop 30%の問題）に関しては0に落とす。<br>- R_guideは合成タスクが、seed dataでSolverがまだ解けていない問題に関してどれだけの品質を有しているかに関するスコアを提供し（=unsolvedな問題に対する関連度、シンプルな結論が記述されており冗長な前提がないか、に関するRubricに基づくスコア）そのスコアをR_guideとする。つまり、seed dataにおいてまだ解けていない問題がより重視される。<br><br>ことで対処した。<br><br><img src="https://github.com/user-attachments/assets/c9c7cf80-44d8-4368-b676-a91b4d6ac58a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>self-playに関する代表的な先行研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5380" target="_blank" rel="noopener noreferrer">[Paper Note] Intrinsic Motivation and Automatic Curricula via Asymmetric Self-Play, Sainbayar Sukhbaatar+, ICLR'18, 2017.03</a>
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2066645491186794896?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Propose, Solve, Verify: Self-Play Through Formal Verification, Alex Wilf+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.18160</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4057</repo-issue-link>
+<tags>NLP, LanguageModel, CodeGeneration, Coding, SelfPlay, Author Thread-Post</tags>
+<repo-issue-date>2025-12-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.18160
+# Authors
+  - Alex Wilf
+  - Pranjal Aggarwal
+  - Bryan Parno
+  - Daniel Fried
+  - Louis-Philippe Morency
+  - Paul Pu Liang
+  - Sean Welleck
+# Abstract
+  - Training models through self-play alone (without any human data) has been a longstanding goal in AI, but its effectiveness for training large language models remains unclear, particularly in code generation where rewards based on unit tests are brittle and prone to error propagation. We study self-play in the verified code generation setting, where formal verification provides reliable correctness signals. We introduce Propose, Solve, Verify (PSV) a simple self-play framework where formal verification signals are used to create a proposer capable of generating challenging synthetic problems and a solver trained via expert iteration. We use PSV to train PSV-Verus, which across three benchmarks improves pass@1 by up to 9.6x over inference-only and expert-iteration baselines. We show that performance scales with the number of generated questions and training iterations, and through ablations identify formal verification and difficulty-aware proposal as essential ingredients for successful self-play.
+# Translation (by gpt-4o-mini)
+- 自己対戦のみでモデルを訓練すること（人間のデータなしで）は、AIにおける長年の目標ですが、大規模言語モデルの訓練におけるその効果は不明瞭です。特に、コード生成においては、単体テストに基づく報酬が脆弱であり、エラーの伝播が起こりやすいです。本研究では、形式的検証が信頼できる正確性の信号を提供する検証済みコード生成の設定における自己対戦を検討します。私たちは、提案者が挑戦的な合成問題を生成できるように形式的検証信号を使用し、専門家の反復を通じて訓練された解決者を作成するシンプルな自己対戦フレームワーク「Propose, Solve, Verify（PSV）」を導入します。PSVを使用してPSV-Verusを訓練し、3つのベンチマークにおいて、推論のみおよび専門家の反復ベースラインに対して最大9.6倍のpass@1の改善を達成しました。生成された質問の数と訓練の反復回数に応じて性能がスケールすることを示し、アブレーションを通じて、形式的検証と難易度を考慮した提案が成功する自己対戦の重要な要素であることを特定しました。
+# Summary (by gpt-4o-mini)
+- 自己対戦によるモデル訓練の効果を検討し、形式的検証を用いたコード生成の設定で「Propose, Solve, Verify（PSV）」フレームワークを導入。PSV-Verusを訓練し、3つのベンチマークで最大9.6倍の性能向上を達成。形式的検証と問題の難易度が成功する自己対戦の重要な要素であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2003364058012270714?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4052" target="_blank" rel="noopener noreferrer">[Paper Note] Toward Training Superintelligent Software Agents through Self-Play SWE-RL, Yuxiang Wei+, arXiv'25, 2025.12</a>
+</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wellecks/status/2008944676909510804?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Toward Training Superintelligent Software Agents through Self-Play SWE-RL, Yuxiang Wei+, arXiv'25, 2025.12</title>
+<original-paper-blog-link>https://arxiv.org/abs/2512.18552</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4052</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SoftwareEngineering, PostTraining, read-later, SelfPlay</tags>
+<repo-issue-date>2025-12-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2512.18552
+# Authors
+  - Yuxiang Wei
+  - Zhiqing Sun
+  - Emily McMilin
+  - Jonas Gehring
+  - David Zhang
+  - Gabriel Synnaeve
+  - Daniel Fried
+  - Lingming Zhang
+  - Sida Wang
+# Abstract
+  - While current software agents powered by large language models (LLMs) and agentic reinforcement learning (RL) can boost programmer productivity, their training data (e.g., GitHub issues and pull requests) and environments (e.g., pass-to-pass and fail-to-pass tests) heavily depend on human knowledge or curation, posing a fundamental barrier to superintelligence. In this paper, we present Self-play SWE-RL (SSR), a first step toward training paradigms for superintelligent software agents. Our approach takes minimal data assumptions, only requiring access to sandboxed repositories with source code and installed dependencies, with no need for human-labeled issues or tests. Grounded in these real-world codebases, a single LLM agent is trained via reinforcement learning in a self-play setting to iteratively inject and repair software bugs of increasing complexity, with each bug formally specified by a test patch rather than a natural language issue description. On the SWE-bench Verified and SWE-Bench Pro benchmarks, SSR achieves notable self-improvement (+10.4 and +7.8 points, respectively) and consistently outperforms the human-data baseline over the entire training trajectory, despite being evaluated on natural language issues absent from self-play. Our results, albeit early, suggest a path where agents autonomously gather extensive learning experiences from real-world software repositories, ultimately enabling superintelligent systems that exceed human capabilities in understanding how systems are constructed, solving novel challenges, and autonomously creating new software from scratch.
+# Translation (by gpt-4o-mini)
+- 現在の大規模言語モデル（LLMs）とエージェント強化学習（RL）によって駆動されるソフトウェアエージェントは、プログラマーの生産性を向上させることができますが、彼らのトレーニングデータ（例：GitHubの問題やプルリクエスト）や環境（例：合格テストと不合格テスト）は人間の知識やキュレーションに大きく依存しており、超知能への根本的な障壁を提示しています。本論文では、超知能ソフトウェアエージェントのためのトレーニングパラダイムへの第一歩として、Self-play SWE-RL（SSR）を提案します。私たちのアプローチは、最小限のデータ仮定を取り、ソースコードとインストールされた依存関係を持つサンドボックス化されたリポジトリへのアクセスのみを必要とし、人間がラベル付けした問題やテストは不要です。これらの実世界のコードベースに基づき、単一のLLMエージェントは自己対戦設定で強化学習を通じて、徐々に複雑さが増すソフトウェアバグを注入し修正するように訓練されます。各バグは自然言語の問題記述ではなく、テストパッチによって正式に指定されます。SWE-bench VerifiedおよびSWE-Bench Proベンチマークにおいて、SSRは顕著な自己改善（それぞれ+10.4および+7.8ポイント）を達成し、自己対戦からは存在しない自然言語の問題に対して評価されているにもかかわらず、トレーニング全体の軌跡にわたって人間データのベースラインを一貫して上回ります。私たちの結果は、早期のものであるものの、エージェントが実世界のソフトウェアリポジトリから自律的に広範な学習経験を集める道を示唆しており、最終的にはシステムの構築方法を理解し、新たな課題を解決し、自律的に新しいソフトウェアをゼロから作成する能力において人間の能力を超える超知能システムを実現することが期待されます。
+# Summary (by gpt-4o-mini)
+- Self-play SWE-RL（SSR）を提案し、最小限のデータ仮定でソフトウェアエージェントのトレーニングを行う。人間のラベル付けなしで、LLMエージェントが自己対戦でソフトウェアバグを注入・修正し、SWE-bench VerifiedおよびSWE-Bench Proで顕著な自己改善を達成。結果は、エージェントが実世界のリポジトリから自律的に学習し、最終的に超知能システムの実現に寄与する可能性を示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/YuxiangWei9/status/2003541373853524347?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2003323361179607255?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Beyond Pass@1: Self-Play with Variational Problem Synthesis Sustains RLVR, Xiao Liang+, arXiv'25, 2025.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2508.14029</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2549</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, action_wanted, Test-Time Scaling, RLVR, Diversity, SelfPlay</tags>
+<repo-issue-date>2025-08-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2508.14029
+# Authors
+  - Xiao Liang
+  - Zhongzhi Li
+  - Yeyun Gong
+  - Yelong Shen
+  - Ying Nian Wu
+  - Zhijiang Guo
+  - Weizhu Chen
+# Abstract
+  - Reinforcement Learning with Verifiable Rewards (RLVR) has recently emerged as a key paradigm for post-training Large Language Models (LLMs), particularly for complex reasoning tasks. However, vanilla RLVR training has been shown to improve Pass@1 performance at the expense of policy entropy, leading to reduced generation diversity and limiting the Pass@k performance, which typically represents the upper bound of LLM reasoning capability. In this paper, we systematically analyze the policy's generation diversity from the perspective of training problems and find that augmenting and updating training problems helps mitigate entropy collapse during training. Based on these observations, we propose an online Self-play with Variational problem Synthesis (SvS) strategy for RLVR training, which uses the policy's correct solutions to synthesize variational problems while ensuring their reference answers remain identical to the originals. This self-improving strategy effectively maintains policy entropy during training and substantially improves Pass@k compared with standard RLVR, sustaining prolonged improvements and achieving absolute gains of 18.3% and 22.8% in Pass@32 performance on the competition-level AIME24 and AIME25 benchmarks, as well as on code generation tasks. Experiments on 12 reasoning benchmarks across varying model sizes from 3B to 32B consistently demonstrate the generalizability and robustness of SvS.
+# Translation (by gpt-5-nano)
+- 検証可能な報酬による強化学習（RLVR）は、最近、特に複雑な推論タスクにおいて、事後訓練済みの大規模言語モデル（LLMs）にとって重要なパラダイムとして浮上してきました。  
+しかし、従来の RLVR 訓練は、ポリシーのエントロピーを犠牲にして Pass@1 の性能を向上させることが示されており、その結果、生成の多様性が低下し、Pass@k の性能を制限することがあります。Pass@k は通常、LLM の推論能力の上限を表す指標です。  
+本論文では、訓練問題の観点からポリシーの生成多様性を体系的に分析し、訓練問題を拡張・更新することが訓練中のエントロピー崩壊を緩和するのに役立つことを発見しました。  
+これらの観察に基づき、RLVR 訓練のためのオンライン自己対戦付き変分問題合成（SvS）戦略を提案します。SvS はポリシーが正解と判断した解を用いて変分問題を合成する一方で、それらの参照解を元の問題の参照解と同一に保つことを保証します。  
+この自己改善戦略は訓練中のポリシーエントロピーを効果的に維持し、標準的な RLVR と比較して Pass@k の性能を大幅に改善し、長期的な改善を持続させ、競技レベルの AIME24 および AIME25 ベンチマークにおける Pass@32 の性能をそれぞれ 18.3 ポイントおよび 22.8 ポイント向上させ、コード生成タスクにおいても同様の改善を達成します。
+# Summary (by gpt-4o-mini)
+- RLVRは複雑な推論タスクにおいて重要な手法だが、従来の訓練は生成の多様性を低下させることがあった。本研究では、ポリシーの生成多様性を分析し、訓練問題の更新がエントロピー崩壊を軽減することを発見。オンライン自己対戦付き変分問題合成（SvS）戦略を提案し、ポリシーエントロピーを維持しつつ、Pass@k性能を大幅に向上させた。特にAIME24およびAIME25ベンチマークでそれぞれ18.3ポイントと22.8ポイントの改善を達成した。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://mastervito.github.io/SvS.github.io/" target="_blank" rel="noopener noreferrer">https://mastervito.github.io/SvS.github.io/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mastervito0601/status/1959960582670766411?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aicia_solid/status/1960178795530600605?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Absolute Zero: Reinforced Self-play Reasoning with Zero Data, Andrew Zhao+, arXiv'25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2505.03335</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1936</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, action_wanted, SelfImprovement, NeurIPS, read-later, RLVR, Selected Papers/Blogs, Label-free, SelfPlay</tags>
+<repo-issue-date>2025-05-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2505.03335
+# Authors
+  - Andrew Zhao
+  - Yiran Wu
+  - Yang Yue
+  - Tong Wu
+  - Quentin Xu
+  - Yang Yue
+  - Matthieu Lin
+  - Shenzhi Wang
+  - Qingyun Wu
+  - Zilong Zheng
+  - Gao Huang
+# Abstract
+  - Reinforcement learning with verifiable rewards (RLVR) has shown promise in enhancing the reasoning capabilities of large language models by learning directly from outcome-based rewards. Recent RLVR works that operate under the zero setting avoid supervision in labeling the reasoning process, but still depend on manually curated collections of questions and answers for training. The scarcity of high-quality, human-produced examples raises concerns about the long-term scalability of relying on human supervision, a challenge already evident in the domain of language model pretraining. Furthermore, in a hypothetical future where AI surpasses human intelligence, tasks provided by humans may offer limited learning potential for a superintelligent system. To address these concerns, we propose a new RLVR paradigm called Absolute Zero, in which a single model learns to propose tasks that maximize its own learning progress and improves reasoning by solving them, without relying on any external data. Under this paradigm, we introduce the Absolute Zero Reasoner (AZR), a system that self-evolves its training curriculum and reasoning ability by using a code executor to both validate proposed code reasoning tasks and verify answers, serving as an unified source of verifiable reward to guide open-ended yet grounded learning. Despite being trained entirely without external data, AZR achieves overall SOTA performance on coding and mathematical reasoning tasks, outperforming existing zero-setting models that rely on tens of thousands of in-domain human-curated examples. Furthermore, we demonstrate that AZR can be effectively applied across different model scales and is compatible with various model classes.
+# Translation (by gpt-5-nano)
+- 検証可能報酬を用いた強化学習（RLVR）は、結果に基づく報酬から直接学習することにより、大規模言語モデルの推論能力を高める可能性を示しています。最近のRLVRはゼロショット設定の下で推論過程のラベリングを監督なしで行いますが、それでも訓練には手作業で厳選された質問と回答のコレクションに依存しています。高品質の人間作成の例の不足は、人間の監督に依存する長期的なスケーラビリティに対する懸念を生み出し、これは言語モデルの事前学習の領域でもすでに顕在化しています。さらに、AIが人間の知性を超えると仮定される未来において、人間が提供するタスクは超知性システムにとって学習ポテンシャルが限られる可能性があります。これらの懸念に対処するため、Absolute Zeroと呼ばれる新しいRLVRパラダイムを提案します。このパラダイムでは、単一のモデルが自らの学習進展を最大化するタスクを提案し、それらを解くことによって推論能力を向上させ、外部データに依存しません。 このパラダイムの下で、Absolute Zero Reasoner（AZR）を導入します。AZRはコード実行環境を用いて提案されたコード推論タスクを検証し、回答を検証することで訓練カリキュラムと推論能力を自己進化させ、オープンエンドでありながら地に足のついた学習を導く検証可能報酬の統一的な源泉として機能します。外部データを一切使わずに訓練されたにもかかわらず、AZRはコーディングと数学的推論タスクで総合的にSOTAの性能を達成し、数万のドメイン内の人間がキュレーションした例に依存する既存のゼロショット設定モデルを上回ります。さらに、AZRは異なるモデルスケールに効果的に適用でき、さまざまなモデルクラスと互換性があることを示します。
+# Summary (by gpt-4o-mini)
+- RLVRは、結果に基づく報酬を用いて言語モデルの推論能力を向上させるが、訓練には人手による質問と回答の収集が必要。高品質な例の不足は長期的なスケーラビリティの懸念を引き起こす。これに対処する新しいRLVRパラダイム、Absolute Zeroが提案され、モデルトレーニングが外部データに依存せず、AZRによって自己進化を促進。AZRはオープンエンドな検証可能報酬を提供し、全くの外部データなしでもSOTA性能を達成。また、様々なモデルと互換性があることが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1919946713567264917?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=neZSGqhxDa&referrer=%5Bthe%20profile%20of%20Zilong%20Zheng%5D(%2Fprofile%3Fid%3D~Zilong_Zheng1)" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=neZSGqhxDa&referrer=%5Bthe%20profile%20of%20Zilong%20Zheng%5D(%2Fprofile%3Fid%3D~Zilong_Zheng1)</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Self-Play Fine-Tuning Converts Weak Language Models to Strong Language Models, Zixiang Chen+, ICML'24, 2024.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2401.01335</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1218</repo-issue-link>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), SyntheticData, action_wanted, SelfImprovement, ICML, mid-training, PostTraining, read-later, Selected Papers/Blogs, KeyPoint Notes, AdversarialTraining, SelfPlay</tags>
+<repo-issue-date>2024-01-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2401.01335
+# Authors
+  - Zixiang Chen
+  - Yihe Deng
+  - Huizhuo Yuan
+  - Kaixuan Ji
+  - Quanquan Gu
+# Abstract
+  - Harnessing the power of human-annotated data through Supervised Fine-Tuning (SFT) is pivotal for advancing Large Language Models (LLMs). In this paper, we delve into the prospect of growing a strong LLM out of a weak one without the need for acquiring additional human-annotated data. We propose a new fine-tuning method called Self-Play fIne-tuNing (SPIN), which starts from a supervised fine-tuned model. At the heart of SPIN lies a self-play mechanism, where the LLM refines its capability by playing against instances of itself. More specifically, the LLM generates its own training data from its previous iterations, refining its policy by discerning these self-generated responses from those obtained from human-annotated data. Our method progressively elevates the LLM from a nascent model to a formidable one, unlocking the full potential of human-annotated demonstration data for SFT. Theoretically, we prove that the global optimum to the training objective function of our method is achieved only when the LLM policy aligns with the target data distribution. Empirically, we evaluate our method on several benchmark datasets including the HuggingFace Open LLM Leaderboard, MT-Bench, and datasets from Big-Bench. Our results show that SPIN can significantly improve the LLM's performance across a variety of benchmarks and even outperform models trained through direct preference optimization (DPO) supplemented with extra GPT-4 preference data. This sheds light on the promise of self-play, enabling the achievement of human-level performance in LLMs without the need for expert opponents. Codes are available at https://github.com/uclaml/SPIN.
+# Translation (by gpt-4o-mini)
+- 人間が注釈を付けたデータを利用した監視付きファインチューニング（SFT）の力を活用することは、大規模言語モデル（LLM）の進展において極めて重要です。本論文では、追加の人間注釈データを取得することなく、弱いLLMから強力なLLMを育成する可能性について探ります。私たちは自己対戦ファインチューニング（SPIN）という新しいファインチューニング手法を提案します。SPINの中心には自己対戦メカニズムがあり、LLMは自らのインスタンスと対戦することでその能力を洗練させます。具体的には、LLMは以前の反復から自らのトレーニングデータを生成し、人間注釈データから得られた応答と自己生成された応答を識別することでポリシーを微調整します。この手法によって、LLMは初期モデルから強力なモデルへと段階的に昇華し、SFTにおける人間によるデモンストレーションデータの全潜在能力を引き出します。理論的には、この手法のトレーニング目的関数のグローバル最適解は、LLMポリシーがターゲットデータ分布と一致する時のみ達成されることを証明します。経験的には、HuggingFace Open LLM Leaderboard、MT-Bench、およびBig-Benchのデータセットを含むいくつかのベンチマークデータセットにおいて手法を評価しました。その結果、SPINはさまざまなベンチマークでLLMのパフォーマンスを大幅に向上させ、追加のGPT-4優先データで補完された直接的な選好最適化（DPO）で訓練されたモデルをも上回ることが示されました。これにより、専門家の対戦相手を必要とせずに、LLMにおいて人間レベルのパフォーマンスを実現する自己対戦の可能性が明らかになりました。コードはhttps://github.com/uclaml/SPINで入手可能です。
+# Summary (by gpt-4o-mini)
+- 自己対戦ファインチューニング（SPIN）を提案し、人間の注釈なしで弱いLLMを強化。LLMが自らのインスタンスと対戦し、トレーニングデータを生成。自己生成と人間の応答を識別してポリシーを微調整。SPINは様々なベンチマークでLLMの性能を大幅に向上させ、GPT-4優先データを使ったモデルを上回る成果を示した。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://uclaml.github.io/SPIN/" target="_blank" rel="noopener noreferrer">https://uclaml.github.io/SPIN/</a>
+{% endraw %}
+
+<br>code:
+
+{% raw %}
+<a href="https://github.com/uclaml/SPIN" target="_blank" rel="noopener noreferrer">https://github.com/uclaml/SPIN</a>
+{% endraw %}
+
+</p><p>メインプレイヤーは人間とLLMのレスポンスを区別する、対戦相手はメインプレイヤーに対して人間が作成したレスポンスと自身が作成させたレスポンスを区別できないようにするようなゲームをし、両者を同じLLM、しかし異なるiterationのパラメータを採用することで自己対戦させることでSFTデータセットから最大限学習するような手法を提案。メインプレイヤーの目的関数は、人間とLLMのレスポンスの確率の差を最大化するように定式化され（式4.1）、対戦相手は人間が生成したレスポンスを最大化するような損失関数を元のパラメータから大きく乖離しないようにKL正則化付きで定義する（式4.3）。双方の損失を単一の損失関数に統合すると式4.7で表される提案手法のSPIN損失が得られ、これによって与えられたSFTデータに対してレスポンスを各iterationで合成し、合成したレスポンスに対してSPIN損失を適用することでモデルのパラメータをアップデートする。メインプレイヤーの重みは更新された重みを用いて、対戦プレイヤーの重みは一つ前の重みを用いる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Intrinsic Motivation and Automatic Curricula via Asymmetric Self-Play, Sainbayar Sukhbaatar+, ICLR'18, 2017.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/1703.05407</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5380</repo-issue-link>
+<tags>NeuralNetwork, NLP, ReinforcementLearning, ICLR, read-later, Selected Papers/Blogs, SelfPlay</tags>
+<repo-issue-date>2026-04-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1703.05407
+# Authors
+  - Sainbayar Sukhbaatar
+  - Zeming Lin
+  - Ilya Kostrikov
+  - Gabriel Synnaeve
+  - Arthur Szlam
+  - Rob Fergus
+# Abstract
+  - We describe a simple scheme that allows an agent to learn about its environment in an unsupervised manner. Our scheme pits two versions of the same agent, Alice and Bob, against one another. Alice proposes a task for Bob to complete; and then Bob attempts to complete the task. In this work we will focus on two kinds of environments: (nearly) reversible environments and environments that can be reset. Alice will "propose" the task by doing a sequence of actions and then Bob must undo or repeat them, respectively. Via an appropriate reward structure, Alice and Bob automatically generate a curriculum of exploration, enabling unsupervised training of the agent. When Bob is deployed on an RL task within the environment, this unsupervised training reduces the number of supervised episodes needed to learn, and in some cases converges to a higher reward.
+# Translation (by gpt-5-nano)
+- 私たちは、エージェントが環境について教師なしで学習できる、単純なスキームを説明する。
+
+本スキームでは、同じエージェントの2つの版本であるアリスとボブを互いに対戦させる。
+
+アリスはボブに完了すべき課題を提案し、その後ボブは課題を完了しようと試みる。
+
+本研究では、2種類の環境—(ほぼ)可逆な環境とリセット可能な環境—に焦点を当てる。
+
+アリスは一連の行動をとって課題を「提案」し、ボブはそれらを元に戻す（可逆な環境の場合）か、繰り返す（リセット可能な環境の場合）ように試みる。
+
+適切な報酬設計を介して、アリスとボブは自動的に探索のカリキュラムを生成し、エージェントの教師なし学習を可能にする。
+
+ボブを環境内のRLタスクに適用すると、この教師なし学習は学習に必要な教師付きエピソードの数を減らし、場合によってはより高い報酬へ収束する。
+# Summary (by gpt-4o-mini)
+- エージェントが教師なしで学習するための単純なスキームを提案。アリスとボブの二つのエージェントが対戦し、アリスが課題を提示、ボブがそれを完了しようと試みる。可逆な環境とリセット可能な環境に焦点を当て、アリスが行動を提案し、ボブがそれを元に戻すか繰り返す。適切な報酬設計により、自動的に探索のカリキュラムを生成し、教師なし学習を実現。ボブをRLタスクに適用することで、教師付きエピソードの数を減少させ、高い報酬へ収束する可能性がある。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=SkT5Yg-RZ" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=SkT5Yg-RZ</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>
