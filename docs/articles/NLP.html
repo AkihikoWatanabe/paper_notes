@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 133 hours 23 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 133 hours 30 mins</span>
   </div></header>
 </div>
     </div>
@@ -1211,6 +1211,47 @@ My Issue
 
 
 </p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="hierarchical-sparse-6023" class="title-link">[Paper Note] Hierarchical Sparse Attention Done Right: Toward Infinite Context Modeling, Xiang Hu+, arXiv'26, 2026.07</h3><br><a href="https://arxiv.org/abs/2607.02980" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6023" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Attention.html" target="_blank" rel="noopener noreferrer">#Attention</a>
+<a class="button" href="Architecture.html" target="_blank" rel="noopener noreferrer">#Architecture</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="SparseAttention.html" target="_blank" rel="noopener noreferrer">#SparseAttention</a>
+<span class="issue_date">Issue Date: 2026-07-11</span>
+<span class="snippet"><span>GPT Summary</span>- 階層的ランドマークスパース（HiLS）アテンションを提案し、チャンク単位でのスパースアテンションをエンドツーエンドで学習。各クエリが独立してチャンクとアテンションを行い、検索スコアを用いて結合。実験結果では、HiLSが全アテンションに匹敵するかそれ以上の性能を示し、長文脈での外挿が可能。軽量な事前学習を通じて全アテンションモデルをHiLSに適応させ、効率と効果のトレードオフを克服。</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/2075585082245750819?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>ポイント解説:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2074413990923362640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>Block Sparse Attention (BSA) は、直近のトークンを見るlocal sliding window attention (SWA)と、離れたトークンに対するチャンクレベルでのsparse attentionに基づいたアテンション機構である。<br>一般的なBSAでは、現在のquery qとチャンク単位のattentino scoreを計算する際に、各チャンクごとにチャンクのkeyに関する情報を用ｙ伯した Key k'_c を求め、k'_c と現在のquery qとのattention scoreを計算することにより計算を効率化する[^1]。<br><br>k'_c を求める際には、mean/max pooling を用いるのが一般的であり、特に前者が用いられるとのことだが、どちらのpoolingの手法もattention scoreの分布に依存して、近似の性能が変化する（たとえば、mean poolingであればなるべくattention scoreが一様なほど近似性能が良いし、max poolingであれば、あるscoreがチャンク内で支配的であるほど近似性能が良い）が、query qに応じてattention scoreの分布は変化することにより、k'_cの近似性能が低下しsparse attentionによって重要なチャンクを選択する性能が低下する課題がある。<br><br>これに対して、<br>- 現実的な計算量でk'_cをより正確に近似できる surrogate score に基づく手法を提案し（RQ1）[^2]<br>- surrogate score をend-to-end で学習可能にする方法を提案した (RQ2)<br>という話である。<br><br>surrogate scoreは、チャンクのattention scoreの質量をより正確に近似したスコアであり、（チャンクのkeyを要約した）k'_c に対する現在のクエリ q とのrelevanceを表す項と、バイアス項 b'_c によって線形化される（式7）。<br>k'_c によって現在のクエリに対する関連度を測り、バイアス項によって関連度から独立したtoken-levelの質量を導入する。バイアス項は、チャンクにattendするであろうクエリのattention scoreの分布に対するentropyであり、これが一様分布やあるトークンが支配的な分布など、様々な分布の形状に対して動的に適応する役割を果たす。<br><br>b'_c を求めるために、チャンクごとに独立したクエリ q'_c を学習する。これは、このチャンクにattendするであろうクエリのプロキシを果たすクエリであり、q'_c とチャンク内のトークンのkeyとの間でのattention scoreを計算しておくことで、おおまかなattention scoreの分布を決定し、b'_c を求めておくことができる（式8）。<br>また、k'_c はチャンク内のattention scoreによって重みづけられたkeyの和の形で求められる（式8）。<br>これにより、現在のクエリ qが与えられた時に、k'_cとb'_cを用いて、チャンクに対するattention scoreの質量を高速に近似することができる（式7）。<br><br>ここで q'_c をどのように学習するかが課題となる（q'_c以外のパラメータは従来通りのモデル化で求まる）。これを解決するために、surrogate scoreによって求まるチャンクのattention scoreの近似質量 \hat{Z}_{i, c} をforward passに加え、q'_c に勾配が流れるようにすることで解決している。具体的には、attention scoreの計算をする際に、式変形を実施し、`チャンク内のスコアの計算 * チャンク間のスコアの計算` の形に分解する（式10）。後者のチャンクの重要度を求める際に、各チャンクのsurrogate scoreを用いて近似することによって、高速化 + q'_c に勾配が流れるような工夫をしている。<br><br>[^1]: チャンクのattention scoreの質量（どのチャンクをsparse attentionでattendするかを決定する際に用いられる）を計算する際に、query qとチャンク内の全てのtokenに対するtoken-to-tokenの内積をとることを避け、k'_cとの内積によって近似的に質量を求めることで計算を効率化する。<br>[^2]: surrogate scoreによってk'_cを正確に近似できることの証明はAppendix Bに記載されており、1次のテイラー展開に基づいているようである（ここは読めていない）。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="single-rollout-asynchronous-6011" class="title-link">[Paper Note] Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning, Zhenyu Hou+, arXiv'26, 2026.07</h3><br><a href="https://arxiv.org/abs/2607.07508" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -4479,6 +4520,9 @@ My Issue
 
 </p><p>Layerが深いモデルや、低精度（FP8/FP4)に対して、事前学習の安定性を高める活性化関数</p></span><br><br>
 </article>
+</div>
+<button onclick="showMore(0)">more</button>
+<div class="hidden-content">
 <article class="paper-entry">
 <h3 id="do-language-5617" class="title-link">[Paper Note] Do Language Models Need Sleep? Offline Recurrence for Improved Online Inference, Sangyun Lee+, arXiv'26, 2026.05</h3><br><a href="https://arxiv.org/abs/2605.26099" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
@@ -4521,9 +4565,6 @@ My Issue
 
 </p></span><br><br>
 </article>
-</div>
-<button onclick="showMore(0)">more</button>
-<div class="hidden-content">
 <article class="paper-entry">
 <h3 id="how-should-5616" class="title-link">[Paper Note] How Should LLMs Consume High-Quality Data? Optimal Data Scheduling via Quality-Aware Functional Scaling Laws, Zhitao Zhu+, arXiv'26, 2026.05</h3><br><a href="https://arxiv.org/abs/2605.25698" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
@@ -123019,9 +123060,19 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/TextualFeedback.html"
-            title="TextualFeedbackに関する論文・技術記事メモの一覧">
-            TextualFeedbackに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Training-Free.html"
+            title="Training-Freeに関する論文・技術記事メモの一覧">
+            Training-Freeに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/GenerativeAdversarialNetwork.html"
+            title="GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧">
+            GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
   <span class="post-badge badge-new">📝 5</span>
@@ -123029,32 +123080,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ContrastiveReinforcementLearning.html"
-            title="ContrastiveReinforcementLearningに関する論文・技術記事メモの一覧">
-            ContrastiveReinforcementLearningに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Catastrophic-Forgetting.html"
+            title="Catastrophic Forgettingに関する論文・技術記事メモの一覧">
+            Catastrophic Forgettingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/BugGeneration.html"
-            title="BugGenerationに関する論文・技術記事メモの一覧">
-            BugGenerationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Hallucination.html"
+            title="Hallucinationに関する論文・技術記事メモの一覧">
+            Hallucinationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/RepresentationLearning.html"
-            title="RepresentationLearningに関する論文・技術記事メモの一覧">
-            RepresentationLearningに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 57</span> 
-  <span class="post-badge badge-new">📝 57</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 36</span> 
+  <span class="post-badge badge-new">📝 36</span>
 </span>
 </a>
         </li></ul>

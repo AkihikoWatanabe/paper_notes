@@ -1,56 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-11">
-<paper-entry>
-<title>[Paper Note] Hierarchical Sparse Attention Done Right: Toward Infinite Context Modeling, Xiang Hu+, arXiv'26, 2026.07</title>
-<original-paper-blog-link>https://arxiv.org/abs/2607.02980</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6023</repo-issue-link>
-<tags>Attention, reading, SparseAttention, needs-revision</tags>
-<repo-issue-date>2026-07-11</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2607.02980
-# Authors
-  - Xiang Hu
-  - Xinyu Wei
-  - Hao Gu
-  - Minshen Zhang
-  - Tian Liang
-  - Huayang Li
-  - Lei Zhu
-  - Yan Wang
-  - Sirui Han
-  - Yushi Bai
-  - Kewei Tu
-  - Haitao Mi
-  - Leo Liang
-# Abstract
-  - Scaling modern large language models (LLMs) to long contexts is limited by the quadratic computation cost, and poor length extrapolation of dense attention. Chunk-wise sparse attention offers a promising alternative, but all existing methods fall short of full attention because of their inaccurate chunk selection. We propose Hierarchical Landmark Sparse (HiLS) Attention, a chunk-wise sparse attention mechanism that learns chunk selection end-to-end under the language-modeling (LM) loss. HiLS factorizes attention hierarchically: each query performs attention independently with each retrieved chunk to extract chunk-specific information, and the resulting outputs are fused according to chunk retrieval scores. By incorporating retrieval scores into the forward attention computation, HiLS optimizes them directly with the LM loss, enabling end-to-end retrieval learning and native sparse training. Experimental results show that HiLS-Attention achieves performance comparable to, and in some cases better than, full attention at in-domain context lengths. Meanwhile, HiLS-Attention extrapolates more than $64\times$ the training context length with 90% retrieval accuracy, far beyond full attention. Moreover, existing full-attention models can be converted to HiLS-Attention with lightweight continued pretraining, preserving in-domain performance while acquiring ultra-long-context extrapolation. Together with its sparse KV access and computation, HiLS-Attention breaks the usual efficiency-performance trade-off, enabling long-context LLMs that are both more efficient and more effective on general long-context tasks than their full-attention counterparts.
-# Translation (by gpt-5-nano)
-- 現代の大規模言語モデル（LLMs）を長い文脈へスケールさせることは、二乗計算コストと密なアテンションの長さ外挿性の乏しさによって制限されている。チャンク単位のスパースアテンションは有望な代替手段を提供するが、既存の方法はチャンク選択の不正確さのために全アテンションには及ばない。我々は階層的ランドマークスパース（HiLS）アテンションを提案する。これはLM損失の下でエンドツーエンドにチャンク選択を学習する、チャンク単位のスパースアテンション機構である。HiLSはアテンションを階層的に分解する：各クエリは検索で取得された各チャンクと独立してアテンションを行い、チャンク固有情報を抽出し、得られた出力はチャンク検索スコアに基づいて結合される。検索スコアを順伝搬アテンション計算に組み込むことで、HiLSはLM損失で直接それらを最適化し、エンドツーエンドの検索学習とネイティブなスパース訓練を可能にする。実験結果は、HiLS-Attentionが、ドメイン内の文脈長において全アテンションと同等、場合によってはそれを上回る性能を達成することを示している。一方、HiLS-Attentionは訓練文脈長の64倍以上を、検索精度90%で外挿することができ、全アテンションをはるかに超える。さらに、既存の全アテンションモデルは、軽量な継続的事前学習を伴うことでHiLS-Attentionへ転換でき、ドメイン内の性能を維持しつつ超長文脈外挿を獲得する。スパースKVアクセスと計算を併せ持つことで、HiLS-Attentionは従来の効率性と性能のトレードオフを打破し、全アテンションの代替となる長文脈タスクにおいて、より効率的でより効果的な長文脈LLMを実現する。
-# Summary (by gpt-4o-mini)
-- 階層的ランドマークスパース（HiLS）アテンションを提案し、チャンク単位でのスパースアテンションをエンドツーエンドで学習。各クエリが独立してチャンクとアテンションを行い、検索スコアを用いて結合。実験結果では、HiLSが全アテンションに匹敵するかそれ以上の性能を示し、長文脈での外挿が可能。軽量な事前学習を通じて全アテンションモデルをHiLSに適応させ、効率と効果のトレードオフを克服。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/2075585082245750819?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>ポイント解説:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2074413990923362640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>直近のトークンを見るlocal sliding window attention (SWA)と、離れたトークンに対するチャンクレベルでのsparse attentionに基づいたアテンション機構。<br><br>各チャンクごとにランドマークトークンを導入し、<br>現在のトークンに対するクエリqが与えられた時に、各チャンクのランドマークトークンに対応するkey k_cとの内積でスコアを求め、スコアの高いtop-Kが選択されattentionが計算される（＝sparse attention)。<br><br>ランドマークトークンのクエリq'_cと、チャンク中の各トークンに対応するKeyによってチャンク単位のsurrogate scoreを求め（式7,8)、<br><br>q'_cをlearnableにするために、全体のattention (local window内のintra-chunkに対するアテンションとlocal window外のinter-chunkに対するアテンション）を計算する際に、surrogate scoreをforward passに含め、ランドマークトークンに対するq_c, k_cに勾配が流れるようにすることで学習可能にする。直感的には、全体のattetion求める際に、まず現在のトークンに対する<br><br>（後で書き足す）<br><br>チャンク単位のsurrogate score (より厳密には密度）を求めチャンク単位の各チャンク単位のsurrrogate scoreに基づいて、ランドマークトークンのKeyから求めることでチャンク単位のアテンションスコアを求めsparseチャンク内のアテンションスコアはランドマークトークンのKeyから求まり（intra-chunk softmax)、るという階層構造を持つSparse Attention、という感じだろうか。</p></maintainer-comment-text>
-</paper-entry>
-
+<paper-list last-updated="2026-07-08">
 <paper-entry>
 <title>[Paper Note] Is One Layer Enough? Training A Single Transformer Layer Can Match Full-Parameter RL Training, Zijian Zhang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.01232</original-paper-blog-link>
