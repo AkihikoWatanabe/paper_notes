@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/reading.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-07-08T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-07-17T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="readingに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-07-08T00:00:00+00:00","datePublished":"2026-07-08T00:00:00+00:00","description":"reading [Paper Note] Is One Layer Enough? Training A Single Transformer Layer Can Match Full-Parameter RL Training, Zijian Zhang+, arXiv&#39;26, 2026.07 Paper/Blog Link My Issue #EfficiencyImprovement #NLP #LanguageModel #ReinforcementLearning #PostTraining #Selected Papers/Blogs #Initial Impression Notes Issue Date: 2026-07-08 GPT Summary- 強化学習（RL）の適応がトランスフォーマー層にどう分布しているかに焦点を当てる研究。単一のトランスフォーマー層を訓練することで、全パラメータRLトレーニングの利得の大半を回復可能。この現象を層寄与量で定量化し、複数のモデルとRLアルゴリズムで安定したパターンを観察。高寄与層は中間部に集中し、入力・出力端の寄与は少ないことを示唆。層の rankings は各種条件下でも強い相関を持つ。 Comment元ポスト:","headline":"readingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/reading.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/reading.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-07-17T00:00:00+00:00","datePublished":"2026-07-17T00:00:00+00:00","description":"reading [Paper Note] Is One Layer Enough? Training A Single Transformer Layer Can Match Full-Parameter RL Training, Zijian Zhang+, arXiv&#39;26, 2026.07 Paper/Blog Link My Issue #EfficiencyImprovement #NLP #LanguageModel #ReinforcementLearning #PostTraining #Selected Papers/Blogs #Initial Impression Notes Issue Date: 2026-07-08 GPT Summary- 強化学習（RL）の適応がトランスフォーマー層にどう分布しているかに焦点を当てる研究。単一のトランスフォーマー層を訓練することで、全パラメータRLトレーニングの利得の大半を回復可能。この現象を層寄与量で定量化し、複数のモデルとRLアルゴリズムで安定したパターンを観察。高寄与層は中間部に集中し、入力・出力端の寄与は少ないことを示唆。層の rankings は各種条件下でも強い相関を持つ。 Comment元ポスト:","headline":"readingに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/reading.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/reading.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-07-08T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 08, 2026
+    <time class="dt-published" datetime="2026-07-17T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 17, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 7 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 3 hours 11 mins</span>
   </div></header>
 </div>
     </div>
@@ -2686,6 +2686,90 @@ My Issue
 </p><p>本研究では、In-context Learningを実施した際のLLMにおいて、あるタスクにおいて応答を生成する際に、当該タスクで必要な変換に関する情報を保持しているベクトル（Function Vectors）が、LLMの attention_ output に存在することを示唆する結果を得た。Function Vectorsは直接的にタスクを実施するわけではないが、特定の手続きを言語モデル内で遂行させるトリガーの役割を果たす。<br><br><img src="https://github.com/user-attachments/assets/d78c497b-d0e0-4c71-9931-2a991a2ee5a6" /" alt="image" loading="lazy" width="550" height="400"/><br><br>Function Vectorを検出するために、あるタスク t において、Figure 2のようなinput-outputのペア (x_i, y_i) のみで promptingをすることでタスクを遂行させる方法を考える。また、prompt p が与えられたときに、outputをランダムな出力~y_iに変更した input-outputペア (x_i, ~y_i) prompt ~pを考える。このとき、あるタスクの遂行に強い影響を与えるLLM中のactivationを特定したい。<br><br>このために、本研究ではトークンをまたいだ情報のやりとりはattentionを介して実行されることから、分析対象をattentionに限定し、まず正常な in-context prompt p を入力した際の全てのlayer l のattention output a_lj (jはheadのindex) を計算する。続いて、ランダムな出力に置換され破損した in-context prompt ~p を入力した際に、ある layer l, head j のattentionを正常なin-context prompt p に基づいて計算されたものと置換して出力をさせ、正解 y_i を復元させる効果 Causal Indrect Effect (CIE) を 式(3)により定義する。つまり、破損したprompt ~pを利用した場合に、attentionを置換する前後によって、どれだけ正解y_iが得られる確率が大きくなったか、を測定している。<br><br>このCIEを全てのタスクに対して計算し、平均化することで、各種attention headのAverage Indirect Effectを計算する（式4）。これにより、どのattention headがタスクの遂行において強い因果的な影響力を保持するかを特定する。最終的に、AIEの値が大きなattention head集合Aを考えることができ、この少数のattention headの集合が、ICLタスクを特定し情報を伝達する役割を果たしているという仮説を立てることができる。また、Aが与えられたとき、a_ljのあるタスク t におけるactivationの平均をとることによって、1つのベクトルとして表現することができ、このベクトルのことをFunction Vector と呼ぶ（式5）。</p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="kimi-k3-6057" class="title-link">Kimi K3: Open Frontier Intelligence, Moonshot AI, 2026.07</h3><br><a href="https://www.kimi.com/blog/kimi-k3" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6057" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
+<a class="button" href="Reference-Collection.html" target="_blank" rel="noopener noreferrer">#Reference Collection</a>
+<span class="issue_date">Issue Date: 2026-07-17</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kimi_moonshot/status/2077830229968683203?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>Artificial Analysisによる評価:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2077832874183860404?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+<br><br>Artificial Analysis IndexでOpus 4.8超え！？</p><p>各ブロックの出力を重みつきで足し合わせることで柔軟にどのブロックにattendするかを決定するattention residualと呼ばれる技術が導入されているように見える。<br><br>また、MoEのexpert数をスケールさせ、896 experts, 16 activated expertsに変更。<br><br>学習レシピの洗練化と合わせてK2との比較で2.5倍のスケーリング効率が改善され、投入した計算コストをより効果的に知能に変換しているとのこと。<br><img src="https://github.com/user-attachments/assets/90f3d5c2-ad4c-49ae-b210-b33f7a581c56" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>やはり<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5542" target="_blank" rel="noopener noreferrer">[Paper Note] Slicing and Dicing: Configuring Optimal Mixtures of Experts, Margaret Li+, arXiv'26, 2026.05</a>
+<br><br>でも示されているようにexpert数を増やすのが今のところ良さそうに見える。</p><p>どうやら2.8Tモデルらしい:<br>
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2077769728295059557?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
+<h3 id="vqaからdocument-parsingへ：nemotron-3-nano-omniに対する日本語文書の構造化出力post-training-6054" class="title-link">VQAからDocument Parsingへ：Nemotron-3-Nano-Omniに対する日本語文書の構造化出力Post-training, Stockmark, 2026.07</h3><br><a href="https://stockmark-tech.hatenablog.com/entry/2026/07/16/000000" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6054" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="ComputerVision.html" target="_blank" rel="noopener noreferrer">#ComputerVision</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="OpenWeight.html" target="_blank" rel="noopener noreferrer">#OpenWeight</a>
+<a class="button" href="Japanese.html" target="_blank" rel="noopener noreferrer">#Japanese</a>
+<a class="button" href="VisionLanguageModel.html" target="_blank" rel="noopener noreferrer">#VisionLanguageModel</a>
+<span class="issue_date">Issue Date: 2026-07-16</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stockmark_japan/status/2077528637235171679?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="[tech]-delta-5974" class="title-link">[Tech] Delta Weight Sync: When RL's Weight Sync Stops Being a Network Problem, Changyi Yang, ChangyiYang's Site, 2026.06</h3><br><a href="https://changyi.fun/posts/delta-weight-sync/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -3584,14 +3668,24 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/WorldModels.html" title="WorldModelsに関する論文・技術記事メモの一覧">WorldModelsに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Asynchronous.html" title="Asynchronousに関する論文・技術記事メモの一覧">Asynchronousに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Selected-Papers-Blogs.html" title="Selected Papers/Blogsに関する論文・技術記事メモの一覧">Selected Papers/Blogsに関する論文・技術記事メモの一覧</a><span></span></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Discourse.html"
-            title="Discourseに関する論文・技術記事メモの一覧">
-            Discourseに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Hybrid.html"
+            title="Hybridに関する論文・技術記事メモの一覧">
+            Hybridに関する論文・技術記事メモの一覧
+
+<span class="post-badges"><span class="post-badge badge-top">📝 11</span> 
+  <span class="post-badge badge-new">📝 11</span>
+</span>
+</a>
+        </li><li class="">
+          <a class="post-link"
+            href="/paper_notes/articles/Argument.html"
+            title="Argumentに関する論文・技術記事メモの一覧">
+            Argumentに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -3599,32 +3693,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Verification.html"
-            title="Verificationに関する論文・技術記事メモの一覧">
-            Verificationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/DomainGap.html"
+            title="DomainGapに関する論文・技術記事メモの一覧">
+            DomainGapに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 41</span> 
-  <span class="post-badge badge-new">📝 41</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ScientificDiscovery.html"
-            title="ScientificDiscoveryに関する論文・技術記事メモの一覧">
-            ScientificDiscoveryに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Faithfulness.html"
+            title="Faithfulnessに関する論文・技術記事メモの一覧">
+            Faithfulnessに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 66</span> 
-  <span class="post-badge badge-new">📝 66</span>
-</span>
-</a>
-        </li><li class="">
-          <a class="post-link"
-            href="/paper_notes/articles/AWSLambda.html"
-            title="AWSLambdaに関する論文・技術記事メモの一覧">
-            AWSLambdaに関する論文・技術記事メモの一覧
-
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li></ul>
