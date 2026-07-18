@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 33 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 hours 35 mins</span>
   </div></header>
 </div>
     </div>
@@ -4523,6 +4523,7 @@ My Issue
 <a class="button" href="Transformer.html" target="_blank" rel="noopener noreferrer">#Transformer</a>
 <a class="button" href="Attention.html" target="_blank" rel="noopener noreferrer">#Attention</a>
 <a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="reading.html" target="_blank" rel="noopener noreferrer">#reading</a>
 <a class="button" href="One-Line-Notes.html" target="_blank" rel="noopener noreferrer">#One-Line Notes</a>
 <a class="button" href="RecurrentModels.html" target="_blank" rel="noopener noreferrer">#RecurrentModels</a>
 <a class="button" href="LinearAttention.html" target="_blank" rel="noopener noreferrer">#LinearAttention</a>
@@ -4535,7 +4536,7 @@ My Issue
 <a href="https://linear-transformers.com" target="_blank" rel="noopener noreferrer">https://linear-transformers.com</a>
 
 
-</p><p>Linear Attention（Linear Transformer)を提案した研究。Softmaxが利用されるFull Attentionのsimilarity部分をfeature map φで一般化し、(3)--(6)の流れで、行列積の結合法則を用いて式変換する。式変換によって、従来のSoftmax Attentionでは、全てのトークンNに対してQ_i*K_j*V_jの計算が必要だったものを（O(N^2))、各Queryごとに再利用できる計算が増えO(N)となる、という感じのようである。挙動としては、過去のKVを単純に加算して利用するという考えかたのようである。（後でしっかり読む）</p><p>次: DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5294" target="_blank" rel="noopener noreferrer">[Paper Note] Linear Transformers Are Secretly Fast Weight Programmers, Imanol Schlag+, arXiv'21, 2021.02</a>
+</p><p>Linear Attention（Linear Transformer)を提案した研究。Softmaxが利用されるFull Attentionのsimilarity部分をfeature map φを持つカーネルk(x, y)で一般化し、(3)--(6)の流れでfeature map φ同士は内積が使える性質と、行列積の結合法則を用いて式変換する。<br>式変換によって、従来のSoftmax Attentionでは、全てのトークンNに対してQ_i * K_j * V_jのメモリが必要だったものを（O(N^2))、各Queryごとに利用される、KVを用いた情報が共通化され（現在のqueryまでのφ(K)とφ(K)V^Tを逐次的に加算して保持するだけで良い）、再利用が可能となりメモリに関するオーダーがO(N)となる。<br><br>これらの話は実際にどのような カーネルを利用するかを無視した話だが、たとえばsoftmaxを表現するために必要な指数カーネルの場合はfeature mapが無限次元となるため有限次元のベクトルでは表現できず、厳密に線形化することができない。このため、有限次元かつ厳密なfeature mapを持つ多公式カーネルを用いて近似する。この場合、計算量のオーダーがO(ND^2M)となり（Nがsequence length, Dがqueryとkeyの次元数, Mがvalueの次元数）、softmax attentionの計算量がO(N^2 max(D,M))であることと比較すると、N > D^2である場合に計算効率が改善される。<br><br>学習時は並列に学習が可能で、推論時はφ(K_j)V_j^Tを内部状態とみなすと、各タイムステップでRNNのように状態を更新して保持するだけで良い。<br><br>（続きはさらに後で読む）</p><p>次: DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5294" target="_blank" rel="noopener noreferrer">[Paper Note] Linear Transformers Are Secretly Fast Weight Programmers, Imanol Schlag+, arXiv'21, 2021.02</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5295" target="_blank" rel="noopener noreferrer">[Paper Note] Parallelizing Linear Transformers with the Delta Rule over Sequence Length, Songlin Yang+, NeurIPS'24, 2024.06</a>
 <br><br>次の次: Gated DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4396" target="_blank" rel="noopener noreferrer">[Paper Note] Gated Delta Networks: Improving Mamba2 with Delta Rule, Songlin Yang+, ICLR'25, 2024.12</a>
 <br><br>次の次の次: Kimi Delta Attention (KDA)<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3526" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi Linear: An Expressive, Efficient Attention Architecture, Kimi Team+, arXiv'25, 2025.10</a>
@@ -4865,42 +4866,42 @@ document.addEventListener("DOMContentLoaded", function() {
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/KnowledgeGraph.html"
-            title="KnowledgeGraphに関する論文・技術記事メモの一覧">
-            KnowledgeGraphに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Online-Interactive.html"
+            title="Online/Interactiveに関する論文・技術記事メモの一覧">
+            Online/Interactiveに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 9</span> 
-  <span class="post-badge badge-new">📝 9</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
+  <span class="post-badge badge-new">📝 10</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/DataMixture.html"
-            title="DataMixtureに関する論文・技術記事メモの一覧">
-            DataMixtureに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Biological.html"
+            title="Biologicalに関する論文・技術記事メモの一覧">
+            Biologicalに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 38</span> 
-  <span class="post-badge badge-new">📝 38</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Infrastructure.html"
-            title="Infrastructureに関する論文・技術記事メモの一覧">
-            Infrastructureに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Poisoning.html"
+            title="Poisoningに関する論文・技術記事メモの一覧">
+            Poisoningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 31</span> 
-  <span class="post-badge badge-new">📝 31</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CVPR.html"
-            title="CVPRに関する論文・技術記事メモの一覧">
-            CVPRに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Game.html"
+            title="Gameに関する論文・技術記事メモの一覧">
+            Gameに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 58</span> 
-  <span class="post-badge badge-new">📝 58</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 18</span> 
+  <span class="post-badge badge-new">📝 18</span>
 </span>
 </a>
         </li></ul>
