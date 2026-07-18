@@ -1807,6 +1807,39 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Transformers are RNNs: Fast Autoregressive Transformers with Linear  Attention, Angelos Katharopoulos+, ICML'20</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2006.16236</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2356</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, Transformer, Attention, ICML, Selected Papers/Blogs, reading, One-Line Notes, RecurrentModels, LinearAttention</tags>
+<repo-issue-date>2025-08-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2006.16236
+# Authors
+  - Angelos Katharopoulos
+  - Apoorv Vyas
+  - Nikolaos Pappas
+  - François Fleuret
+# Abstract
+  - Transformers achieve remarkable performance in several tasks but due to their quadratic complexity, with respect to the input's length, they are prohibitively slow for very long sequences. To address this limitation, we express the self-attention as a linear dot-product of kernel feature maps and make use of the associativity property of matrix products to reduce the complexity from $\mathcal{O}\left(N^2\right)$ to $\mathcal{O}\left(N\right)$, where $N$ is the sequence length. We show that this formulation permits an iterative implementation that dramatically accelerates autoregressive transformers and reveals their relationship to recurrent neural networks. Our linear transformers achieve similar performance to vanilla transformers and they are up to 4000x faster on autoregressive prediction of very long sequences.
+# Translation (by gpt-4o-mini)
+- Transformersは、いくつかのタスクで顕著なパフォーマンスを達成していますが、入力の長さに対して二次的な複雑性を持つため、非常に長いシーケンスに対しては非常に遅くなってしまいます。この制限に対処するために、自己注意をカーネル特徴マップの線形ドット積として表現し、行列積の結合性の特性を利用して、複雑性を$\mathcal{O}\left(N^2\right)$から$\mathcal{O}\left(N\right)$に削減します。ここで、$N$はシーケンスの長さです。この定式化により、自己回帰型Transformersを劇的に加速する反復的な実装が可能になり、再帰型ニューラルネットワークとの関係が明らかになります。我々の線形Transformersは、従来のTransformersと同様のパフォーマンスを達成し、非常に長いシーケンスの自己回帰予測において最大4000倍の速度向上を実現します。
+# Summary (by gpt-4o-mini)
+- 自己注意をカーネル特徴マップの線形ドット積として表現することで、Transformersの複雑性を$\mathcal{O}\left(N^2\right)$から$\mathcal{O}\left(N\right)$に削減。これにより、自己回帰型Transformersの速度が最大4000倍向上し、従来のパフォーマンスを維持。</issue-body>
+<maintainer-comment-text><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1210" target="_blank" rel="noopener noreferrer">Transformers are Multi-State RNNs, Matanel Oren+, N/A, EMNLP'24</a>
+ </p><p>pj page:
+
+{% raw %}
+<a href="https://linear-transformers.com" target="_blank" rel="noopener noreferrer">https://linear-transformers.com</a>
+{% endraw %}
+
+</p><p>Linear Attention（Linear Transformer)を提案した研究。Softmaxが利用されるFull Attentionのsimilarity部分をfeature map φを持つカーネルk(x, y)で一般化し、(3)--(6)の流れでfeature map φ同士は内積が使える性質と、行列積の結合法則を用いて式変換する。<br>式変換によって、従来のSoftmax Attentionでは、全てのトークンNに対してQ_i * K_j * V_jのメモリが必要だったものを（O(N^2))、各Queryごとに利用される、KVを用いた情報が共通化され（現在のqueryまでのφ(K)とφ(K)V^Tを逐次的に加算して保持するだけで良い）、再利用が可能となりメモリに関するオーダーがO(N)となる。<br><br>これらの話は実際にどのような カーネルを利用するかを無視した話だが、たとえばsoftmaxを表現するために必要な指数カーネルの場合はfeature mapが無限次元となるため有限次元のベクトルでは表現できず、厳密に線形化することができない。このため、有限次元かつ厳密なfeature mapを持つ多公式カーネルを用いて近似する。この場合、計算量のオーダーがO(ND^2M)となり（Nがsequence length, Dがqueryとkeyの次元数, Mがvalueの次元数）、softmax attentionの計算量がO(N^2 max(D,M))であることと比較すると、N > D^2である場合に計算効率が改善される。<br><br>学習時は並列に学習が可能で、推論時はφ(K_j)V_j^Tを内部状態とみなすと、各タイムステップでRNNのように状態を更新して保持するだけで良い。<br><br>（続きはさらに後で読む）</p><p>次: DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5294" target="_blank" rel="noopener noreferrer">[Paper Note] Linear Transformers Are Secretly Fast Weight Programmers, Imanol Schlag+, arXiv'21, 2021.02</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5295" target="_blank" rel="noopener noreferrer">[Paper Note] Parallelizing Linear Transformers with the Delta Rule over Sequence Length, Songlin Yang+, NeurIPS'24, 2024.06</a>
+<br><br>次の次: Gated DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4396" target="_blank" rel="noopener noreferrer">[Paper Note] Gated Delta Networks: Improving Mamba2 with Delta Rule, Songlin Yang+, ICLR'25, 2024.12</a>
+<br><br>次の次の次: Kimi Delta Attention (KDA)<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3526" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi Linear: An Expressive, Efficient Attention Architecture, Kimi Team+, arXiv'25, 2025.10</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Kimi K3: Open Frontier Intelligence, Moonshot AI, 2026.07</title>
 <original-paper-blog-link>https://www.kimi.com/blog/kimi-k3</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6057</repo-issue-link>
@@ -1840,6 +1873,80 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2077769728295059557?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>design arenaでFable5超えのSoTA:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kimmonismus/status/2077828228282982886?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>writingに関するベンチマークでSoTA:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/whats_ai/status/2077860441380798908?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Latent MoE<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4310" target="_blank" rel="noopener noreferrer">[Paper Note] LatentMoE: Toward Optimal Accuracy per FLOP and Parameter in Mixture of Experts, Venmugil Elango+, arXiv'26, 2026.01</a>
+<br><br>KDA<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3526" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi Linear: An Expressive, Efficient Attention Architecture, Kimi Team+, arXiv'25, 2025.10</a>
+<br><br>Linear TransformerとDelta Net<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2356" target="_blank" rel="noopener noreferrer">[Paper Note] Transformers are RNNs: Fast Autoregressive Transformers with Linear  Attention, Angelos Katharopoulos+, ICML'20</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5295" target="_blank" rel="noopener noreferrer">[Paper Note] Parallelizing Linear Transformers with the Delta Rule over Sequence Length, Songlin Yang+, NeurIPS'24, 2024.06</a>
+</p><p>所見:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2077837543525998770?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Latent MoEによってこれほどのsparsityを実現できているのではという所見:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nrehiew_/status/2077774067533590643?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>GDPValでも3位:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2077832876691959827?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Kernel optimizationにおいてもFable5と同等性能という報告:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nrehiew_/status/2077810993057669511?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Next.jsのコーディングベンチマークでもFable5超えのSoTAとのこと:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rauchg/status/2077900518404321759?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}

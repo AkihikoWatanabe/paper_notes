@@ -3784,7 +3784,7 @@ SciBenchは、LLMの推論能力の向上を促進し、科学研究と発見に
 <title>[Paper Note] Transformers are RNNs: Fast Autoregressive Transformers with Linear  Attention, Angelos Katharopoulos+, ICML'20</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2006.16236</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2356</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, Transformer, Attention, ICML, Selected Papers/Blogs, One-Line Notes, RecurrentModels, LinearAttention</tags>
+<tags>EfficiencyImprovement, NLP, Transformer, Attention, ICML, Selected Papers/Blogs, reading, One-Line Notes, RecurrentModels, LinearAttention</tags>
 <repo-issue-date>2025-08-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2006.16236
@@ -3806,7 +3806,7 @@ SciBenchは、LLMの推論能力の向上を促進し、科学研究と発見に
 <a href="https://linear-transformers.com" target="_blank" rel="noopener noreferrer">https://linear-transformers.com</a>
 {% endraw %}
 
-</p><p>Linear Attention（Linear Transformer)を提案した研究。Softmaxが利用されるFull Attentionのsimilarity部分をfeature map φで一般化し、(3)--(6)の流れで、行列積の結合法則を用いて式変換する。式変換によって、従来のSoftmax Attentionでは、全てのトークンNに対してQ_i*K_j*V_jの計算が必要だったものを（O(N^2))、各Queryごとに再利用できる計算が増えO(N)となる、という感じのようである。挙動としては、過去のKVを単純に加算して利用するという考えかたのようである。（後でしっかり読む）</p><p>次: DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5294" target="_blank" rel="noopener noreferrer">[Paper Note] Linear Transformers Are Secretly Fast Weight Programmers, Imanol Schlag+, arXiv'21, 2021.02</a>
+</p><p>Linear Attention（Linear Transformer)を提案した研究。Softmaxが利用されるFull Attentionのsimilarity部分をfeature map φを持つカーネルk(x, y)で一般化し、(3)--(6)の流れでfeature map φ同士は内積が使える性質と、行列積の結合法則を用いて式変換する。<br>式変換によって、従来のSoftmax Attentionでは、全てのトークンNに対してQ_i * K_j * V_jのメモリが必要だったものを（O(N^2))、各Queryごとに利用される、KVを用いた情報が共通化され（現在のqueryまでのφ(K)とφ(K)V^Tを逐次的に加算して保持するだけで良い）、再利用が可能となりメモリに関するオーダーがO(N)となる。<br><br>これらの話は実際にどのような カーネルを利用するかを無視した話だが、たとえばsoftmaxを表現するために必要な指数カーネルの場合はfeature mapが無限次元となるため有限次元のベクトルでは表現できず、厳密に線形化することができない。このため、有限次元かつ厳密なfeature mapを持つ多公式カーネルを用いて近似する。この場合、計算量のオーダーがO(ND^2M)となり（Nがsequence length, Dがqueryとkeyの次元数, Mがvalueの次元数）、softmax attentionの計算量がO(N^2 max(D,M))であることと比較すると、N > D^2である場合に計算効率が改善される。<br><br>学習時は並列に学習が可能で、推論時はφ(K_j)V_j^Tを内部状態とみなすと、各タイムステップでRNNのように状態を更新して保持するだけで良い。<br><br>（続きはさらに後で読む）</p><p>次: DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5294" target="_blank" rel="noopener noreferrer">[Paper Note] Linear Transformers Are Secretly Fast Weight Programmers, Imanol Schlag+, arXiv'21, 2021.02</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5295" target="_blank" rel="noopener noreferrer">[Paper Note] Parallelizing Linear Transformers with the Delta Rule over Sequence Length, Songlin Yang+, NeurIPS'24, 2024.06</a>
 <br><br>次の次: Gated DeltaNet<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4396" target="_blank" rel="noopener noreferrer">[Paper Note] Gated Delta Networks: Improving Mamba2 with Delta Rule, Songlin Yang+, ICLR'25, 2024.12</a>
 <br><br>次の次の次: Kimi Delta Attention (KDA)<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3526" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi Linear: An Expressive, Efficient Attention Architecture, Kimi Team+, arXiv'25, 2025.10</a>
