@@ -160,7 +160,13 @@ DeepWiki/CodeWikiを利用することで、Issueで管理されている情報�
 ---
 
 ## Star History
-[![Star History Chart](https://api.star-history.com/svg?repos=AkihikoWatanabe/paper_notes&type=Date)](https://star-history.com/#AkihikoWatanabe/paper_notes&Date)
+<a href="https://www.star-history.com/?repos=AkihikoWatanabe%2Fpaper_notes&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=AkihikoWatanabe/paper_notes&type=date&theme=dark&legend=top-left&sealed_token=wC6UGRkA6T4FCkrJn63IaVH8smYc8Sy2GTNBrpp_sEamF_oFjcJg4uyJkIHTuueUi7-bPlfEN7D54CYMooWYcnSkfwTqv7aq9PgjaChryTReLHiDK0kcW9UuHZ-wsnt3HCXpOIxapU_FjR63bsJPHVo_WzK44mik4lKijQfvnpBCoNhwKeo1rPc9a0kX" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=AkihikoWatanabe/paper_notes&type=date&legend=top-left&sealed_token=wC6UGRkA6T4FCkrJn63IaVH8smYc8Sy2GTNBrpp_sEamF_oFjcJg4uyJkIHTuueUi7-bPlfEN7D54CYMooWYcnSkfwTqv7aq9PgjaChryTReLHiDK0kcW9UuHZ-wsnt3HCXpOIxapU_FjR63bsJPHVo_WzK44mik4lKijQfvnpBCoNhwKeo1rPc9a0kX" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=AkihikoWatanabe/paper_notes&type=date&legend=top-left&sealed_token=wC6UGRkA6T4FCkrJn63IaVH8smYc8Sy2GTNBrpp_sEamF_oFjcJg4uyJkIHTuueUi7-bPlfEN7D54CYMooWYcnSkfwTqv7aq9PgjaChryTReLHiDK0kcW9UuHZ-wsnt3HCXpOIxapU_FjR63bsJPHVo_WzK44mik4lKijQfvnpBCoNhwKeo1rPc9a0kX" />
+ </picture>
+</a>
 
 [^1]: メタデータと論文の Abstract は arXiv API の terms of use に記載されている CC0 1.0 License に基づいて利用しています。
 [^2]: Issue/Blog中の画像やスクリーンショットは原則Issue中に記載してあるリンク（元論文、元記事、元スライド等）から引用したものです。
