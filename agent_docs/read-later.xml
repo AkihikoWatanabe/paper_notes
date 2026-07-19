@@ -25,9 +25,9 @@
 # Abstract
   - Hyper-Connections (HC) expand the residual stream of Transformers into $N$ parallel streams, providing a form of memory scaling beyond model width and depth. Manifold-Constrained HC (mHC) stabilizes this formulation at scale. The large gains from $N{=}1$ to $N{=}4$ suggest residual-stream expansion as a promising scaling axis. However, existing HC-family methods typically stop at $N{=}4$. Our experiments reveal why: scaling mHC beyond this point yields diminishing performance gains and rapidly increasing training cost. We attribute this limitation to two bottlenecks: insufficient write-back information for an expanding number of streams and residual-mixing generation whose cost scales cubically with $N$. To address both bottlenecks, we propose xHC (Expanded Hyper-Connections), the first HC-family method to achieve meaningful expansion beyond $N{=}4$. xHC combines temporal feature augmentation for richer write-back with a sparse residual-stream architecture that updates only $k=4$ of the $N=16$ streams while retaining dense access to the full residual state. Across 18B and 28B MoE models, xHC delivers strong and consistent downstream improvements. On an 18B MoE model, xHC improves the average downstream score by 4.0 points over mHC, while adding only modest training FLOPs over the vanilla baseline. Scaling-law experiments show that the vanilla and mHC require $1.50\times$ and $1.19\times$ the compute of xHC, respectively, to reach the same loss. Practical large-$N$ training also requires controlling memory traffic from the expanded residual state. We therefore introduce xHC-Flash, which reduces the per-sublayer memory traffic from $73.5C$ to $40C$, comparable to the $34C$ required by mHC at $N{=}4$, while retaining the gains of full xHC. Together, xHC and xHC-Flash make large-$N$ residual-stream expansion effective and practical for LLM pre-training.
 # Translation (by gpt-5-nano)
-- Hyper-Connections（HC）は、Transformersの残差ストリームをN個の並列ストリームへ拡張し、モデルの幅と深さを超えたメモリのスケーリングの一形態を提供する。多様体制約付きHC（mHC）は、大規模化においてこの定式化を安定化させる。N=1からN=4への大きな利得は、残差ストリームの拡張が有望なスケーリング軸であることを示唆している。しかし、既存のHC系の手法は通常、N=4で止まる。我々の実験はその理由を明らかにする：この点を超えたmHCのスケーリングは、性能向上の頭打ちと訓練コストの急速な増大を招く。我々はこの制限を、拡大するストリーム数に対する書き戻し情報の不足と、Nの3乗でコストがスケールする残差混合生成という二つのボトルネックに起因すると見なす。これら二つのボトルネックに対処するため、N=4を超える意味のある拡張を初めて実現したHC系手法であるxHC（Expanded Hyper-Connections）を提案する。xHCは、より豊かな書き戻しのための時間的特徴拡張と、N=16のうちk=4のみを更新するスパースな残差ストリーム構造を組み合わせつつ、完全な残差状態への密なアクセスを維持する。18Bおよび28B MoEモデルにおいて、xHCは強力で一貫した下流タスクの改善をもたらす。18B MoEモデルでは、xHCは平均下流スコアをmHCより4.0ポイント改善させ、ベースラインに対する訓練FLOPsの増加を最小限にとどめる。スケーリング則の実験は、ベースラインとmHCが、同じ損失に到達するにはそれぞれxHCの1.50×および1.19×の計算量を要することを示している。実用的な大規模Nトレーニングには、拡張された残差状態からのメモリトラフィックを制御することも必要である。そこで、xHC-Flashを導入する。これにより、各サブレイヤーあたりのメモリトラフィックを73.5Cから40Cへ削減し、N=4時にmHCが要する34Cと同程度に抑えつつ、完全なxHCの利点を保持する。xHCとxHC-Flashを組み合わせることで、大規模Nの残差ストリーム拡張をLLMの事前訓練にとって実用的かつ効果的なものにする。
+- ハイパーコネクション（HC）は、トランスフォーマーの残差ストリームをN個の並列ストリームへ展開し、モデルの幅と深さを超える形でメモリのスケーリングを提供する。多様体制約付きHC（mHC）は、規模拡大時にこの定式化を安定化させる。N=1からN=4への大きな利得は、残差ストリームの展開を有望なスケーリング軸として示唆している。しかし、既存のHC系手法は通常N=4で止まる。我々の実験はその理由を明らかにする。これ以上mHCをスケールさせても、性能向上は頭打ちとなり、学習コストは急速に増大することを示す。拡張されるストリーム数に対して書き戻し情報が不十分であることと、Nの三乗に比例してコストが増大する残差混合生成という2つのボトルネックに起因する制限であると考える。これらのボトルネックに対処するため、N=4を超える意味のある展開を実現した初のHC系手法としてxHC（Expanded Hyper-Connections）を提案する。xHCは、より豊かな書き戻しのための時間的特徴拡張と、N=16個のストリームのうちk=4のみを更新する疎な残差ストリームアーキテクチャを組み合わせ、完全な残差状態への密なアクセスを維持する。18Bおよび28BのMoEモデルにおいて、xHCは強力で一貫した下流タスクの性能向上をもたらす。18B MoEモデルでは、xHCはmHCより平均下流スコアを4.0ポイント改善し、従来のベースラインに比べて学習FLOPsは控えめにしか増加しない。スケーリング法則の実験は、同じ損失に到達するには、従来手法（バニラ）とmHCがそれぞれxHCの1.50倍および1.19倍の計算量を必要とすることを示している。実用的な大規模Nトレーニングでは、拡張された残差状態から生じるメモリトラフィックを制御する必要がある。そこで、xHC-Flashを導入する。これにより、サブレイヤあたりのメモリトラフィックを73.5Cから40Cへ削減し、N=4時のmHCが必要とする34Cと同程度に抑えつつ、全体のxHCの利得を維持する。総じて、xHCとxHC-Flashは、LLMの事前学習における大規模Nの残差ストリーム展開を実用的かつ効果的なものにする。
 # Summary (by gpt-4o-mini)
-- xHCはTransformersの残差ストリームを拡張し、モデルのスケーリングを改善する手法であり、N=4を超えた拡張が可能。時間的特徴拡張とスパースな残差ストリームを組み合わせ、強力な下流タスクの改善を実現。xHCは18B MoEモデルにおいてmHCより4.0ポイントの性能向上を示し、計算量の増加を最小限に抑える。xHC-Flashによりメモリトラフィックを削減し、N=4時のmHCレベルに維持しつつ、xHCの利点を保持。この方法で大規模Nの残差ストリーム拡張を実用的にすることを目指す。</issue-body>
+- xHC（Expanded Hyper-Connections）は、トランスフォーマーの残差ストリームをN=4を超えて拡張し、メモリのスケーリングを実現する新手法である。これにより、書き戻し情報の質を向上させ、N=16のストリームから4つのみを更新する疎なアーキテクチャを採用。実験により、xHCは18B MoEモデルでmHCよりも4.0ポイントの性能向上を示し、学習コストの増加を抑制する。加えて、xHC-Flashを導入することでメモリトラフィックを削減し、スケーリング法則においても従来手法に比べて効率的であることを実証。これにより、LLMの大規模トレーニングにおける残差ストリーム展開が実用的に改善される。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
@@ -2128,6 +2128,81 @@ KernelBench では、ループが公開報告済みのエクスプロイトの�
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2063748717602377792?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Continual Learning Bench: Evaluating Frontier AI Systems in Real-World Stateful Environments, Parth Asawa+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.05661</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5711</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, read-later, Selected Papers/Blogs, ContinualLearning, Initial Impression Notes</tags>
+<repo-issue-date>2026-06-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.05661
+# Authors
+  - Parth Asawa
+  - Christopher M. Glaze
+  - Gabriel Orlanski
+  - Ramya Ramakrishnan
+  - Benji Xu
+  - Asim Biswal
+  - Vincent Sunn Chen
+  - Frederic Sala
+  - Matei Zaharia
+  - Joseph E. Gonzalez
+# Abstract
+  - Continual learning, the ability of AI systems to improve through sequential experience, has attracted substantial interest, but no high-quality benchmark exists to evaluate it. We introduce Continual Learning Bench (CL-Bench), the first difficult, expert-validated benchmark designed to measure whether LLM-based systems genuinely improve with experience. CL-Bench spans six diverse domains (software engineering, signal processing, disease outbreak forecasting, database querying, strategic game-playing, and demand forecasting), each validated by domain experts and designed so that tasks share a learnable latent structure (codebase layout, disease outbreak dynamics, opponent strategies) that a stateful system can discover online but a stateless one cannot. We evaluate frontier models across several agent architectures, from naive in-context learning (ICL) to dedicated memory systems, introducing a gain metric to isolate learning from prior capabilities. We find that these systems leave headroom for improved continual learning: agents frequently overfit to immediate observations or fail to reuse knowledge across instances, and dedicated memory systems do not fix this -- in fact, naive ICL outperforms systems dedicated to memory management. CL-Bench is the first benchmark to evaluate continual learning across diverse real-world domains with expert-validated tasks and isolate online learning from underlying model capability, showing a need for better continual learning systems.
+# Translation (by gpt-5-nano)
+- 継続学習（AIシステムが逐次的な経験を通じて性能を向上させる能力）は大きな関心を集めているが、それを評価する高品質なベンチマークはまだ存在していない。私たちは、Continual Learning Bench（CL-Bench）を紹介する。これは、経験を通じてLLMベースのシステムが本当に改善するかどうかを測定する、初の難易度の高い、専門家検証済みベンチマークである。CL-Benchは、六つの多様な領域（ソフトウェア工学、信号処理、疾病アウトブレイク予測、データベース照会、戦略的なゲームプレイ、需要予測）にまたがっており、各領域は領域専門家によって検証され、タスクは学習可能な潜在構造（コードベースのレイアウト、疾病アウトブレイクのダイナミクス、対戦相手の戦略）を共有するよう設計されている。そのため、状態を持つシステムはオンラインでこの潜在構造を発見できるが、状態を持たないシステムには不可能である。我々は、最先端モデルを複数のエージェントアーキテクチャにわたって評価する。文脈内学習（ICL）に素朴なものから、専用のメモリシステムまで幅広く検討し、学習を既存の能力から分離するゲイン指標を導入した。我々は、これらのシステムには継続学習を改善する余地があることを発見した。エージェントはしばしば直近の観測に過剰適合したり、インスタンス間で知識を再利用できなかったりする。専用のメモリシステムでもこの問題は解決されず、むしろ単純なICLの方がメモリ管理に特化したシステムよりも優れている。CL-Benchは、多様な現実世界の領域に跨る継続学習を、専門家検証済みのタスクとともに評価し、オンライン学習を基盤となるモデル能力から分離する初のベンチマークである。これにより、より優れた継続学習システムの必要性が示されている。
+# Summary (by gpt-4o-mini)
+- 継続学習を評価するための初の専門家検証済みベンチマークであるCL-Benchを紹介。六つの多様な領域を対象に、LLMベースのシステムが経験を通じて改善するかを測定。状態を持つシステムは潜在構造を発見可能で、最先端モデルが継続学習を改善する余地があることが明らかに。専用メモリシステムでも問題は解決されず、シンプルなICLが優位であった。このベンチマークにより、現実世界における継続学習の必要性が強調されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2063279754787397807?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Question (Instance)のSequenceを完了することが求められるContiunual Learningのためのベンチマークで、各instanceは、モデルが事前に知り得ない報告可能な状態を持ち、後続のinstanceは、過去のinstanceの結果（experience)を用いなければならない。また、最終的に、Databaseのmigrationを通じて過去のexperienceを適用不可能にし、このような状況にも柔軟に対応可能な能力も評価する、という話に見える。<br><img src="https://github.com/user-attachments/assets/9e3f9e06-3d60-40ca-8010-9545279259ba" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Robots Need More than VLA and World Models, Elis Karcini+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.06556</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5710</repo-issue-link>
+<tags>read-later, Selected Papers/Blogs, Robotics, WorldModels, VisionLanguageActionModel</tags>
+<repo-issue-date>2026-06-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.06556
+# Authors
+  - Elis Karcini
+  - Faisal Mehrban
+  - Quang Nguyen
+  - Mac Schwager
+  - Arash Ajoudani
+  - Cesar Cadena
+  - Jan Peters
+  - Marco Hutter
+  - Haitham Bou-Ammar
+# Abstract
+  - Generalist robot intelligence is often framed as a policy-scaling problem: collect more robot demonstrations, train larger Vision-Language-Action (VLA) models, and expect broader generalisation. In this position paper, we argue that this framing is incomplete. The central bottleneck is not only policy learning, but the absence of mechanisms that convert the world's abundant unstructured behavioural data into grounded robot supervision. Human motion, internet video, simulation rollouts, and interactive demonstrations contain rich information about tasks, goals, contacts, failures, and physical constraints, yet most of this information is not directly usable by robot policies because it lacks embodiment-specific action labels, task semantics, and reward structure. We identify four missing components for the next generation of robotics: data interfaces for autolabelling unstructured behaviour, embodiment interfaces for retargeting human motion to robot actions, world-model interfaces for physics-grounded 3D reasoning, and reward interfaces for inferring task progress and success from video and language. We survey recent progress in robot foundation models, cross-embodiment datasets, learning from video, world models, and reward modelling, and propose a research agenda for building robotics systems that can learn not only from robot demonstrations, but from the broader physical world.
+# Translation (by gpt-5-nano)
+- 汎用ロボット知能はしばしばポリシーのスケーリング問題として位置づけられる。すなわち、より多くのロボットデモンストレーションを収集し、より大規模な Vision-Language-Action (VLA) モデルを訓練し、より広い一般化を期待する。本ポジションペーパーでは、この枠組みは不完全であると主張する。中心的なボトルネックは、単なるポリシー学習だけでなく、世界に豊富に存在する非構造化の行動データを地に足のついたロボット監督信号へ変換する仕組みの欠如である。人間の動作、インターネット動画、シミュレーションのロールアウト、対話的デモンストレーションには、タスク、目標、接触、失敗、物理的制約に関する豊かな情報が含まれているが、多くは embodiment-specific なアクションラベル、タスク意味論、報酬構造が欠けているため、ロボットポリシーによって直接利用できない。次世代のロボティクスにおいて欠けている4つの要素を同定する。非構造化行動を自動的にラベリングするデータ・インタフェース、ヒトの動作をロボットのアクションへリターゲットする embodiment インタフェース、物理法則に基づく3D 推論のためのワールドモデル・インタフェース、動画と言語からタスクの進行と成功を推定する報酬インタフェース。ロボット基盤モデル、跨エンボディメント（跨 embodiment）データセット、動画からの学習、ワールドモデル、報酬モデリングにおける最近の進展を概観し、ロボットデモだけでなく、より広い物理世界から学ぶことができるロボティクスシステムの構築に向けた研究課題を提案する。
+# Summary (by gpt-4o-mini)
+- 汎用ロボット知能はポリシー学習のスケーリング問題に直面しており、非構造化の行動データを効果的なロボット監督信号に変換する仕組みが不足している。本研究では、次世代ロボティクスに必要な4つの要素を特定し、具体的には行動データの自動ラベリング、ヒトの動作のロボットアクションへのリターゲティング、物理法則に基づく3D推論のワールドモデル、動画と言語からの報酬推定インタフェースについて論じる。ロボティクスシステムが物理世界から学ぶための研究課題を提案する。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hbouammar/status/2062956671844913645?s=20"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -38822,26 +38897,6 @@ Qiuyang Mang and Kaiyuan Liu and Bo Peng and Shreyas Pimpalgaonkar and Alex Dima
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hirokatukataoka/status/2063970056187281812?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Robots Need More Than VLAs & World Models, Monotoniq.ai, 2026.06</title>
-<original-paper-blog-link>https://paper.motoniq.ai/paper.pdf</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5710</repo-issue-link>
-<tags>read-later</tags>
-<repo-issue-date>2026-06-06</repo-issue-date>
-<issue-body>https://paper.motoniq.ai/paper.pdf</issue-body>
-<maintainer-comment-text><p>元ポスト: 
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hbouammar/status/2062956671844913645?s=20"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
