@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-08">
+<paper-list last-updated="2026-07-19">
+<paper-entry>
+<title>[Paper Note] Flash-BoN: Instant Drafts for Inference-Time Scaling in Diffusion Models, Ruchit Rawal+, ECCV'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.04461</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6087</repo-issue-link>
+<tags>ComputerVision, NLP, DiffusionModel, TextToImageGeneration, Test-Time Scaling, ECCV, One-Line Notes, ImageSynthesis, Author Thread-Post</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.04461
+# Authors
+  - Ruchit Rawal
+  - Reza Shirkavand
+  - Sayak Paul
+  - Yuxin Wen
+  - Heng Huang
+  - Yizheng Chen
+  - Tom Goldstein
+  - Gowthami Somepalli
+# Abstract
+  - Inference-time scaling for text-to-image generation has progressed from simple Best-of-$N$ (BoN) sampling to guided search methods that verify and steer candidate trajectories at intermediate denoising steps. These approaches focus on when and how often to verify during denoising but largely treat the cost of generation itself as fixed. Moreover, the standard practice of comparing methods by number of function evaluations (NFEs) counts only denoising forward passes and ignores verifier overhead, which can distort efficiency rankings. We show that under wall-clock evaluation, simple BoN already matches or outperforms several guided search techniques, suggesting that compute is better spent on broader exploration than on repeated intermediate verification. This motivates Flash-BoN, which generates a large pool of inexpensive draft candidates by combining three complementary acceleration knobs: timestep truncation, layer skipping, and activation proxies into a single configuration optimized once per model. An efficient multi-stage verification procedure then identifies the most promising draft, which is refined at full quality. Across three benchmarks and three model scales, Flash-BoN consistently outperforms all baselines under fixed wall-clock budgets, with gains that grow at larger model scales (+8% AUC). We further show that our strategy combines well and improves existing orthogonal techniques such as reflection-based prompt optimization (+16% AUC). The gains correlate with increased candidate diversity, which also enables draft-guided selection to accelerate RL post-training convergence.
+# Translation (by gpt-5-nano)
+- 推論時のスケーリングは、単純な Best-of-N（BoN）サンプリングから、中間のデノイジングステップで候補の軌道を検証・誘導するガイド付き探索手法へと進展してきた。これらのアプローチはデノイジング中の検証の時期と頻度に焦点を当てているが、生成自体のコストを大部分固定とみなしてしまう。さらに、関数評価回数（NFEs）で手法を比較する標準的な実践は、デノイジングのフォワードパスのみを数え、検証器のオーバーヘッドを無視するため、効率性のランキングを歪める可能性がある。実測時間評価の下では単純なBoNがすでにいくつかのガイド付き探索技術に匹敵するかそれを上回ることを示し、中間検証を繰り返すよりも広範な探索に計算を割く方が良いことを示唆する。これを動機づけとして、Flash-BoNを提案する。Flash-BoNは、タイムステップの切り詰め、レイヤーのスキップ、および活性化の代理指標という3つの補完的な加速ノブを1つのモデルごとに最適化された設定に組み合わせることで、多数の安価なドラフト候補を生成する。効率的な多段階検証手順が最も有望なドラフトを特定し、それを高品質へと精練する。3つのベンチマークと3つのモデルスケールを横断して、Flash-BoNは固定された実時間予算の下で全ベースラインを一貫して上回り、モデルスケールが大きいほど利得が大きくなる（AUCで+8%）。さらに、我々の戦略は他の直交的手法と組み合わせて相性がよく、リフレクションに基づくプロンプト最適化のような既存手法を改善する（+16% AUC）。これらの利得は候補の多様性の増加と相関しており、ドラフト主導の選択が強化学習（RL）のポストトレーニング収束を加速させることも可能にする。
+# Summary (by gpt-4o-mini)
+- 推論時のスケーリングは、Best-of-N（BoN）サンプリングからガイド付き探索に進化してきたが、生成コストを固定と見なしている。効率性評価でBoNがガイド付き探索に匹敵することを示し、Flash-BoNを提案。これはアクセラレーション技術を組み合わせ、多数の安価なドラフト候補を生成し、高品質へ精練する。ベンチマークではFlash-BoNが全ての基準を上回り、特にモデルスケールが大きいほど利得が顕著（AUCで+8%）。他の手法と相乗効果があり、候補の多様性向上が強化学習の収束を加速する。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://flash-bon.github.io/" target="_blank" rel="noopener noreferrer">https://flash-bon.github.io/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/risingsayak/status/2076703882739360148?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>中間サンプルを安価で効率的な方法で生成することで多様な中間候補を探索し、有望な候補のみに対して完全な生成をするようなBest-of-Nに基づくTextToImage手法を提案。<br><br>また効率性の評価において Number of Function Evaluations (NFEs)[^1] が利用されることが多かったが、これはdenoisingのforward passのみが考慮され、verifierのコストが無視されており、verificationコストが大きい手法が本来効率的ではないのに、効率的に見えてしまう問題があった。実際、BFSのような手法では固定されたNFEの元では効率的に見えるが、頻繁にverifierを呼び出すため、固定されたwallclock timeの元では効率性が逆転する。<br><img src="https://github.com/user-attachments/assets/81a4b80e-2055-459c-afe7-23e26495ce2a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: デノイジングを実施するネットワークの呼び出し回数</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] UnMaskFork: Test-Time Scaling for Masked Diffusion via Deterministic Action Branching, Kou Misaki+, ICML'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.04344</original-paper-blog-link>
@@ -678,6 +720,64 @@
 {% endraw %}
 
 </p><p>Parallel test time scalingをじっしするlong horizon AI Agentの複数のtrajectoryを集約する手法のようである</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] LLM-as-a-Verifier: A General-Purpose Verification Framework, Jacky Kwok+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.05391</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5225</repo-issue-link>
+<tags>NLP, LanguageModel, Test-Time Scaling, read-later, Selected Papers/Blogs, Verification, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-04-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.05391
+- notion:https://llm-as-a-verifier.notion.site/
+# Authors
+  - Jacky Kwok
+  - Shulu Li
+  - Pranav Atreya
+  - Yuejiang Liu
+  - Yixing Jiang
+  - Chelsea Finn
+  - Marco Pavone
+  - Ion Stoica
+  - Azalia Mirhoseini
+# Abstract
+  - Scaling pre-training, post-training, and test-time compute have become the central paradigms for improving the capabilities of LLMs. In this work, we identify verification, the ability to determine the correctness of a solution, as a new scaling axis. To unlock this and demonstrate its effectiveness, we introduce LLM-as-a-Verifier, a general-purpose verification framework that provides fine-grained feedback for agentic tasks without requiring additional training. Unlike standard LM judges that prompt LLMs to produce discrete scores for candidate solutions, LLM-as-a-Verifier computes the expectation over the distribution of scoring token logits to generate continuous scores. This probabilistic formulation enables verification to scale along multiple dimensions: (1) score granularity, (2) repeated evaluation, and (3) criteria decomposition. In particular, we show that scaling the scoring granularity leads to better separation between positive and negative solutions, resulting in more calibrated comparisons. Moreover, scaling repeated evaluation and criteria decomposition consistently lead to additional gains in verification accuracy through variance and complexity reduction. We further introduce a cost-efficient ranking algorithm for selecting the best solution among candidates using the verifier's continuous scores. LLM-as-a-Verifier achieves state-of-the-art performance on Terminal-Bench V2 (86.5%), SWE-Bench Verified (78.2%), RoboRewardBench (87.4%), and MedAgentBench (73.3%). Beyond verification, the fine-grained signals from LLM-as-a-Verifier can also serve as a proxy for estimating task progress. We build an extension for Claude Code, enabling developers to monitor and improve their own agentic systems. Finally, we show that LLM-as-a-Verifier can provide dense feedback for RL, improving the sample efficiency of SAC and GRPO on robotics and mathematical reasoning benchmarks.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLM）の能力を向上させるための中心的なパラダイムとして、事前学習、微調整、推論時の計算量のスケーリングが確立されている。本研究では、解の正確さを判断する能力である検証を、新たなスケーリング軸として特定する。これを実現しその有効性を示すため、追加の訓練を必要とせず、エージェント的タスクに対して細粒度のフィードバックを提供する汎用検証フレームワークである LLM-as-a-Verifier を導入する。標準的な LM ジャッジが候補解に対して離散的なスコアを出力させるのとは異なり、LLM-as-a-Verifier はスコアリングトークンのロジット分布の期待値を計算して連続的なスコアを生成する。この確率的な定式化により、検証は複数の次元でスケール可能になる：（1）スコアの粒度、（2）繰り返し評価、（3）評価基準の分解。特に、スコアの粒度を拡張すると正例と負例の解の分離が向上し、より校正された比較が得られることを示す。さらに、繰り返し評価と評価基準の分解をスケールさせることは、分散の低減と複雑さの削減を通じて検証精度を追加的に向上させる。また、検証器の連続スコアを用いて候補解の中から最良解を選ぶ、コスト効率の高いランキングアルゴリズムも導入する。LLM-as-a-Verifier は Terminal-Bench V2（86.5%）、SWE-Bench Verified（78.2%）、RoboRewardBench（87.4%）、および MedAgentBench（73.3%）で最先端の性能を達成した。検証を超えて、LLM-as-a-Verifier の細粒度信号はタスク進行の推定指標としても機能し得る。Claude Code の拡張を構築し、開発者が自分のエージェント系システムを監視・改善できるようにする。そして最後に、LLM-as-a-Verifier が RL に対して密なフィードバックを提供できることを示し、ロボティクスおよび数学的推論のベンチマークにおいて SAC と GRPO のサンプル効率を向上させる。
+# Summary (by gpt-4o-mini)
+- LLMの能力向上に検証を新たなスケーリング軸として適用する方法を提案。LLM-as-a-Verifierフレームワークにより、細粒度のフィードバックを提供し、連続的なスコア生成を実現。これにより、正例と負例の解の分離が向上し、追加的な検証精度が得られる。提案手法は複数のベンチマークで最先端の性能を示し、タスク進行の推定にも寄与。さらに、RLに対しても高効率なフィードバックを提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2044555271792406577?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Azaliamirh/status/2043813128690192893?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト2:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/azaliamirh/status/2075583355895058751?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Verification性能をtest-timeに向上させるためのテクニック<br><br>アイデアの一つにGEvalっぽいアイデアも含まれている。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
