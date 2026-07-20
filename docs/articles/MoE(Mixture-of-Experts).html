@@ -4148,7 +4148,8 @@ My Issue
 <br>- IFの訓練には、Rubric basedなgraderとclaims graderの2種類のgraderを用いることで、helpfulnessとhallucinationを同時に低減<br>  - Rubric basedなgraderはチェックリストに基づいてスコアリング<br>  - claims graderはfactualな主張をagentic web searchを通じてverificationする<br>- アーキテクチャはDeepSeek V3を踏襲し、256のexpertsと2つのshared expertを採用し、6つのexpertsがactivateされる<br>- SWAとGlobal attentionの比率は5:1でKV Headは8つ (GQA)<br>- **相対位置エンコーディングを用いることでRoPEよりもlong contextに対してより高い外挿性能を示した**<br>　　- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2386" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Attention with Relative Position Representations, Peter Shaw+, NAACL'18</a>
 <br>- K, Vのprojection後、**およびattentionとMLPが残差ストリームに合流する前にshort convolutionを導入**<br>- optimiserはMuonとAdamWのハイブリッドで、前者は巨大な行列の重みに対して適用し、そのほかは後者を利用<br>- 重み自体が多様体上に存在するように制約することが有効であったことに着想を得て、weight decayを学習率の2乗に連動させることでモデルの重みの大きさを安定させたとのこと<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3001" target="_blank" rel="noopener noreferrer">Modular Manifolds, Jeremy Bernstein+, THINKING MACHINES, 2025.09</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6055" target="_blank" rel="noopener noreferrer">[Paper Note] Why Gradients Rapidly Increase Near the End of Training, Aaron Defazio, arXiv'25, 2025.06</a>
-<br>- 事後学習としては、まずKimi K2.5を含むOpenWeightモデルで合成データ上でSFTをし、その後合成、あるいは人間が作成したenvironment上で大規模なRLを実施<br>  - RLは非同期RLを異様し、ロールアウト数に対して推論能力が対数線形にスケールした。<br>  - 最終的に30Mロールアウト以上のRLを実施した<br>- システムメッセージを変更し、トークン単位のコストを調整することでreasoning effortを調整<br>  - （ここは具体的にどうやるのかよくわからない）<br>- **276B-A12BのInkling-Smallもプレビュー段階にあり、agenticな能力においてInklingに近い性能を達成しており、今後公開予定**<br><br>1M context windowを実現した工夫は特に書かれていなかったように感じるが、よく使われるのはKV CacheをコンパクトにするためのSparse Attention、あるいはLinear Attentionなのに対し、本モデルでは使われていないように見える。linear attentionでなくとも、SWAとGlobal Attentionのハイブリッド、かつGQAによって、KV Cacheの肥大化を実用レベルで抑制できるのだろうか。また、外挿性能に関してはRoPEは採用せず、相対位置エンコーディングのを採用したという点が効いているのだろうか。1Mレベルでのcontextでの評価がなさそうに見えるので性能はよくわからない。<br><br>RoPEのlong contextでの限界を示した以下の研究を思い出した:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5505" target="_blank" rel="noopener noreferrer">[Paper Note] RoPE Distinguishes Neither Positions Nor Tokens in Long Contexts, Provably, Yufeng Du+, arXiv'26, 2026.05</a>
+<br>- 事後学習としては、まずKimi K2.5を含むOpenWeightモデルで合成データ上でSFTをし、その後合成、あるいは人間が作成したenvironment上で大規模なRLを実施<br>  - RLは非同期RLを異様し、ロールアウト数に対して推論能力が対数線形にスケールした。<br>  - 最終的に30Mロールアウト以上のRLを実施した<br>- システムメッセージを変更し、トークン単位のコストを調整することでreasoning effortを調整<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6064" target="_blank" rel="noopener noreferrer">Controlling Reasoning Effort in LLMs, Sebastian Raschka, 2026.07</a>
+<br>- **276B-A12BのInkling-Smallもプレビュー段階にあり、agenticな能力においてInklingに近い性能を達成しており、今後公開予定**<br><br>1M context windowを実現した工夫は特に書かれていなかったように感じるが、よく使われるのはKV CacheをコンパクトにするためのSparse Attention、あるいはLinear Attentionなのに対し、本モデルでは使われていないように見える。linear attentionでなくとも、SWAとGlobal Attentionのハイブリッド、かつGQAによって、KV Cacheの肥大化を実用レベルで抑制できるのだろうか。また、外挿性能に関してはRoPEは採用せず、相対位置エンコーディングのを採用したという点が効いているのだろうか。1Mレベルでのcontextでの評価がなさそうに見えるので性能はよくわからない。<br><br>RoPEのlong contextでの限界を示した以下の研究を思い出した:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5505" target="_blank" rel="noopener noreferrer">[Paper Note] RoPE Distinguishes Neither Positions Nor Tokens in Long Contexts, Provably, Yufeng Du+, arXiv'26, 2026.05</a>
 </p><p>Artificial Analysisによる評価:<br>
 
 
@@ -7514,14 +7515,14 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/KeyPoint-Notes.html" title="KeyPoint Notesに関する論文・技術記事メモの一覧">KeyPoint Notesに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/MultiModal.html" title="MultiModalに関する論文・技術記事メモの一覧">MultiModalに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/KeyPoint-Notes.html" title="KeyPoint Notesに関する論文・技術記事メモの一覧">KeyPoint Notesに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Optimizer.html" title="Optimizerに関する論文・技術記事メモの一覧">Optimizerに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/MachineUnlearning(MU).html"
-            title="MachineUnlearning(MU)に関する論文・技術記事メモの一覧">
-            MachineUnlearning(MU)に関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Citations.html"
+            title="Citationsに関する論文・技術記事メモの一覧">
+            Citationsに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
   <span class="post-badge badge-new">📝 6</span>
@@ -7529,32 +7530,32 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Medical.html"
-            title="Medicalに関する論文・技術記事メモの一覧">
-            Medicalに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Attention.html"
+            title="Attentionに関する論文・技術記事メモの一覧">
+            Attentionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 21</span> 
-  <span class="post-badge badge-new">📝 21</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 122</span> 
+  <span class="post-badge badge-new">📝 122</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/ICLR.html"
-            title="ICLRに関する論文・技術記事メモの一覧">
-            ICLRに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RelevanceJudgment.html"
+            title="RelevanceJudgmentに関する論文・技術記事メモの一覧">
+            RelevanceJudgmentに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 227</span> 
-  <span class="post-badge badge-new">📝 227</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
+  <span class="post-badge badge-new">📝 6</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Design.html"
-            title="Designに関する論文・技術記事メモの一覧">
-            Designに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/CriticalBatchSize.html"
+            title="CriticalBatchSizeに関する論文・技術記事メモの一覧">
+            CriticalBatchSizeに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li></ul>

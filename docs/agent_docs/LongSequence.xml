@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-09">
+<paper-list last-updated="2026-07-19">
+<paper-entry>
+<title>[Paper Note] Self-Guided Test-Time Training for Long-Context LLMs, Xinyu Zhu+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.09415</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6095</repo-issue-link>
+<tags>NLP, LanguageModel, LongSequence, reading, One-Line Notes, Reading Reflections, Test Time Training (TTT)</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.09415
+# Authors
+  - Xinyu Zhu
+  - Zhe Xu
+  - Xiaohan Wei
+  - Yunchen Pu
+  - Fei Tian
+  - Chonglin Sun
+  - Kaushik Rangadurai
+  - Hua Zhi
+  - Frank Shyu
+  - Sandeep Pandey
+  - Luke Simon
+  - Yu Meng
+  - Xi Liu
+# Abstract
+  - Long-context processing has become increasingly important for large language models (LLMs), but simply extending the context window does not guarantee effective utilization of long inputs. As input length grows, accuracy often degrades, indicating that models still struggle to identify and use the evidence most relevant to a question. A promising way to improve long-context utilization is test-time training (TTT), which treats the test context as a training example for instance-specific parameter adaptation. However, applying TTT to the entire long context is prohibitively expensive, while adapting on randomly sampled spans introduces severe noise. Because most spans in a long context are irrelevant to the specific question, training on them may even degrade the base model's performance. Our preliminary study shows that TTT is highly sensitive to training-span quality: on LongBench-v2, TTT on randomly sampled spans hurts performance, whereas TTT on oracle spans substantially improves it. Motivated by this, we propose a simple method, Self-Guided TTT (S-TTT): before adaptation, the model identifies the evidence spans it should learn from, and the standard language-modeling training objective is applied only to those selected spans. On two challenging long-context reasoning benchmarks, LongBench-v2 and LongBench-Pro, S-TTT improves accuracy for both Qwen3-4B-Thinking-2507 and Llama-3.1-8B-Instruct, achieving up to a 15% relative improvement.
+# Translation (by gpt-5-nano)
+- 長文脈処理は大規模言語モデル（LLMs）にとってますます重要になっているが、単にコンテキスト窓を拡張するだけでは長い入力を効果的に活用できるとは限らない。入力長が増すにつれて精度はしばしば低下し、質問に最も関連する証拠を特定して活用する能力が依然として課題であることを示している。長文脈の活用を改善する有望な方法の一つはテスト時訓練（TTT）で、テスト時のコンテキストを個別のパラメータ適応の訓練例として扱う。しかし、長文脈全体にTTTを適用するのは prohibitively expensive であり、ランダムに抽出したスパンで適応させると重大なノイズが生じる。長文脈のほとんどのスパンは特定の質問には無関係であるため、それらで訓練することは基盤モデルの性能を低下させる可能性さえある。我々の予備的研究は、TTTが訓練用スパンの品質に非常に敏感であることを示している：LongBench-v2 では、ランダムに抽出したスパンでのTTTは性能を悪化させる一方で、オラクルスパンでのTTTは大幅に改善する。これに動機づけられ、単純な手法Self-Guided TTT（S-TTT）を提案する：適応の前に、モデルは学習すべき証拠スパンを識別し、標準的な言語モデリング訓練目標を選択されたスパンのみに適用する。長文脈推論の難易度が高い2つのベンチマーク、LongBench-v2とLongBench-Proにおいて、S-TTTはQwen3-4B-Thinking-2507およびLlama-3.1-8B-Instructの両方の精度を向上させ、最大で相対的に15%の改善を達成した。
+# Summary (by gpt-4o-mini)
+- 長文脈処理において、LLMは単にコンテキスト窓を拡張するだけでは十分ではなく、入力長の増加が精度の低下を引き起こすことがある。テスト時訓練（TTT）は長文脈の活用を改善する手法の一つだが、全体への適用は費用がかかり、ランダム抽出による訓練が性能を低下させることがある。これに対し、Self-Guided TTT（S-TTT）を提案し、適応前にモデルが選択された証拠スパンを認識することで、基準となる言語モデル訓練を適用。S-TTTは、LongBench-v2およびLongBench-Proでの精度向上を実現し、最大で15%の改善を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yohei_kikuta/status/2077383135348904361?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>長文Context+質問が与えられたときに、質問に関連するcontextのspanを同定した後(Self-Guided)、TTTでモデルパラメータに内部化させた後に応答する、という話に見える。TTTでは、LoRAを用いて、かつ16 gradient updateを行った時点で更新を終了する。<br><img src="https://github.com/user-attachments/assets/1d69d3d8-db5a-4d53-a8dc-ea85cb8444a2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Full ContextでらTTTするよりも、Self-Guidedな方が高い性能を獲得できる。<br><img src="https://github.com/user-attachments/assets/d2437308-117b-4aec-9a53-6a88881c5c26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>TTTを使ってLoRA adapterにcontextの情報をweightとして内部化させても、思ったほど性能は上がらないのだなという印象。<br><br>LoRAでweightにcontextを内部化させても、その内部化された情報をうまく活用するような工夫が足りていないのでは？という気がするのだが、どうだろうか。<br><br>ベンチマークのインスタンスが、contextをmemorizationし、適切にatteedすれば解けるようなクエリなのか否かという点も気になる。<br>もしcontextの情報に基づいてマルチポップな推論が必要な場合、LoRAアダプタによる重みを活用するような回路が育っていない可能性が高く、性能は伸びにくいのかなという気はする。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Unlimited OCR Works, Youyang Yin+, arXiv'26, 2026.06</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2606.23050</original-paper-blog-link>

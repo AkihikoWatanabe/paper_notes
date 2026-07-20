@@ -1,5 +1,230 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-16">
+<paper-list last-updated="2026-07-19">
+<paper-entry>
+<title>[Paper Note] Flash-BoN: Instant Drafts for Inference-Time Scaling in Diffusion Models, Ruchit Rawal+, ECCV'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.04461</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6087</repo-issue-link>
+<tags>ComputerVision, NLP, DiffusionModel, TextToImageGeneration, Test-Time Scaling, ECCV, One-Line Notes, ImageSynthesis, Author Thread-Post</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.04461
+# Authors
+  - Ruchit Rawal
+  - Reza Shirkavand
+  - Sayak Paul
+  - Yuxin Wen
+  - Heng Huang
+  - Yizheng Chen
+  - Tom Goldstein
+  - Gowthami Somepalli
+# Abstract
+  - Inference-time scaling for text-to-image generation has progressed from simple Best-of-$N$ (BoN) sampling to guided search methods that verify and steer candidate trajectories at intermediate denoising steps. These approaches focus on when and how often to verify during denoising but largely treat the cost of generation itself as fixed. Moreover, the standard practice of comparing methods by number of function evaluations (NFEs) counts only denoising forward passes and ignores verifier overhead, which can distort efficiency rankings. We show that under wall-clock evaluation, simple BoN already matches or outperforms several guided search techniques, suggesting that compute is better spent on broader exploration than on repeated intermediate verification. This motivates Flash-BoN, which generates a large pool of inexpensive draft candidates by combining three complementary acceleration knobs: timestep truncation, layer skipping, and activation proxies into a single configuration optimized once per model. An efficient multi-stage verification procedure then identifies the most promising draft, which is refined at full quality. Across three benchmarks and three model scales, Flash-BoN consistently outperforms all baselines under fixed wall-clock budgets, with gains that grow at larger model scales (+8% AUC). We further show that our strategy combines well and improves existing orthogonal techniques such as reflection-based prompt optimization (+16% AUC). The gains correlate with increased candidate diversity, which also enables draft-guided selection to accelerate RL post-training convergence.
+# Translation (by gpt-5-nano)
+- 推論時のスケーリングは、単純な Best-of-N（BoN）サンプリングから、中間のデノイジングステップで候補の軌道を検証・誘導するガイド付き探索手法へと進展してきた。これらのアプローチはデノイジング中の検証の時期と頻度に焦点を当てているが、生成自体のコストを大部分固定とみなしてしまう。さらに、関数評価回数（NFEs）で手法を比較する標準的な実践は、デノイジングのフォワードパスのみを数え、検証器のオーバーヘッドを無視するため、効率性のランキングを歪める可能性がある。実測時間評価の下では単純なBoNがすでにいくつかのガイド付き探索技術に匹敵するかそれを上回ることを示し、中間検証を繰り返すよりも広範な探索に計算を割く方が良いことを示唆する。これを動機づけとして、Flash-BoNを提案する。Flash-BoNは、タイムステップの切り詰め、レイヤーのスキップ、および活性化の代理指標という3つの補完的な加速ノブを1つのモデルごとに最適化された設定に組み合わせることで、多数の安価なドラフト候補を生成する。効率的な多段階検証手順が最も有望なドラフトを特定し、それを高品質へと精練する。3つのベンチマークと3つのモデルスケールを横断して、Flash-BoNは固定された実時間予算の下で全ベースラインを一貫して上回り、モデルスケールが大きいほど利得が大きくなる（AUCで+8%）。さらに、我々の戦略は他の直交的手法と組み合わせて相性がよく、リフレクションに基づくプロンプト最適化のような既存手法を改善する（+16% AUC）。これらの利得は候補の多様性の増加と相関しており、ドラフト主導の選択が強化学習（RL）のポストトレーニング収束を加速させることも可能にする。
+# Summary (by gpt-4o-mini)
+- 推論時のスケーリングは、Best-of-N（BoN）サンプリングからガイド付き探索に進化してきたが、生成コストを固定と見なしている。効率性評価でBoNがガイド付き探索に匹敵することを示し、Flash-BoNを提案。これはアクセラレーション技術を組み合わせ、多数の安価なドラフト候補を生成し、高品質へ精練する。ベンチマークではFlash-BoNが全ての基準を上回り、特にモデルスケールが大きいほど利得が顕著（AUCで+8%）。他の手法と相乗効果があり、候補の多様性向上が強化学習の収束を加速する。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://flash-bon.github.io/" target="_blank" rel="noopener noreferrer">https://flash-bon.github.io/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/risingsayak/status/2076703882739360148?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>中間サンプルを安価で効率的な方法で生成することで多様な中間候補を探索し、有望な候補のみに対して完全な生成をするようなBest-of-Nに基づくTextToImage手法を提案。<br><br>また効率性の評価において Number of Function Evaluations (NFEs)[^1] が利用されることが多かったが、これはdenoisingのforward passのみが考慮され、verifierのコストが無視されており、verificationコストが大きい手法が本来効率的ではないのに、効率的に見えてしまう問題があった。実際、BFSのような手法では固定されたNFEの元では効率的に見えるが、頻繁にverifierを呼び出すため、固定されたwallclock timeの元では効率性が逆転する。<br><img src="https://github.com/user-attachments/assets/81a4b80e-2055-459c-afe7-23e26495ce2a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: デノイジングを実施するネットワークの呼び出し回数</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] The Flexibility Trap: Rethinking the Value of Arbitrary Order in Diffusion Language Models, Zanlin Ni+, ICML'26 Outstanding Paper Award, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.15165</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6085</repo-issue-link>
+<tags>Analysis, NLP, ReinforcementLearning, DiffusionModel, ICML, PostTraining, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.15165
+# Authors
+  - Zanlin Ni
+  - Shenzhi Wang
+  - Yang Yue
+  - Tianyu Yu
+  - Weilin Zhao
+  - Yeguo Hua
+  - Tianyi Chen
+  - Jun Song
+  - Cheng Yu
+  - Bo Zheng
+  - Gao Huang
+# Abstract
+  - Diffusion Large Language Models (dLLMs) break the rigid left-to-right constraint of traditional LLMs, enabling token generation in arbitrary orders. Intuitively, this flexibility implies a solution space that strictly supersets the fixed autoregressive trajectory, theoretically unlocking superior reasoning potential. However, in this paper, we find that for general reasoning tasks (e.g., mathematics and coding), arbitrary order generation may in fact limit the reasoning potential of dLLMs. We observe that dLLMs tend to exploit this order flexibility to bypass high-uncertainty tokens that are crucial for exploration, which can lead to a premature collapse of solution coverage. This observation motivates a rethink of RL approaches for dLLMs, where considerable complexities, such as handling combinatorial trajectories and intractable likelihoods, are often devoted to preserving this flexibility. We show that effective reasoning can be elicited by simply forgoing arbitrary order and applying standard Group Relative Policy Optimization (GRPO) instead. Our approach, JustGRPO, is minimalist yet surprisingly effective (e.g., 89.1% accuracy on GSM8K) while fully retaining the parallel decoding ability of dLLMs. Project page: https://nzl-thu.github.io/the-flexibility-trap
+# Translation (by gpt-5-nano)
+- 拡散型大規模言語モデル（dLLMs）は、従来の大規模言語モデルの左から右への厳格な制約を破り、任意の順序でトークンを生成できるようにする。直感的には、この柔軟性は固定された自己回帰的軌道を厳密に包含する解空間を意味し、理論的にはより優れた推論ポテンシャルを解き放つ。しかし、本研究では、一般的な推論タスク（例：数学やコーディング）においては、任意の順序での生成がむしろ dLLMs の推論ポテンシャルを制限することがあることを見出した。dLLMs はこの順序の柔軟性を利用して探索に不可欠な高い不確実性を伴うトークンを回避しようとする傾向があり、これが解のカバレッジの早期崩壊につながる可能性がある。この観察は、組み合わせ的な軌跡の処理や扱いにくい尤度といった多くの複雑さが、しばしばこの柔軟性を維持するために費やされている RL アプローチの再考を促す。我々は、任意の順序を放棄し、代わりに標準的な Group Relative Policy Optimization（GRPO）を適用するだけで、効果的な推論を引き出せることを示す。我々のアプローチ JustGRPO は、ミニマリストでありながら驚くほど効果的で（例：GSM8K で 89.1% の精度）、dLLMs の並列デコード能力を完全に保持する。 プロジェクトページ：https://nzl-thu.github.io/the-flexibility-trap
+# Summary (by gpt-4o-mini)
+- dLLMsは任意の順序でトークンを生成できるが、一般的な推論タスクではこの柔軟性が逆に制限要因になることを発見。特に、不要な不確実性を回避し解のカバレッジを低下させる傾向が見られた。この問題に対処するため、標準的なGRPOを適用したJustGRPOを提案し、GSM8Kで89.1%の精度を達成。これにより、dLLMsの並列デコード能力を維持しつつ効果的な推論を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2076796269851513229?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=kpgURPRMGf&referrer=%5Bthe%20profile%20of%20Cheng%20Yu%5D%28%2Fprofile%3Fid%3D~Cheng_Yu13%29" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=kpgURPRMGf&referrer=%5Bthe%20profile%20of%20Cheng%20Yu%5D%28%2Fprofile%3Fid%3D~Cheng_Yu13%29</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Video Generation Models are General-Purpose Vision Learners, Letian Wang+, ECCV'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.09024</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6083</repo-issue-link>
+<tags>ComputerVision, Pretraining, FoundationModel, DiffusionModel, ECCV, PostTraining, UMM, 3D (Video), TextToVideoGeneration, Author Thread-Post</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.09024
+# Authors
+  - Letian Wang
+  - Chuhan Zhang
+  - Rishabh Kabra
+  - Jasper Uijlings
+  - Steven Waslander
+  - Andrew Zisserman
+  - Joao Carreira
+  - Kaiming He
+  - Misha Andriluka
+  - Eduard Gabriel Bazavan
+  - Andrei Zanfir
+  - Cristian Sminchisescu
+# Abstract
+  - Driven by next-token prediction, NLP shifted from task-specific models into powerful generalist foundation models. What, then, is the equivalent catalyst needed to achieve a general-purpose model in computer vision? In this paper, we contend that large-scale text-to-video generation serves as a strong pre-training paradigm for computer vision, providing the necessary spatiotemporal priors, vision-language alignment, and scalability required for general visual intelligence. We introduce GenCeption, which leverages a pre-trained video generative diffusion backbone to define a feed-forward perception model, capable of performing various vision tasks steered by text instructions. Empirical results demonstrate that GenCeption achieves state-of-the-art performance across a diverse suite of tasks, including depth, surface normal, and camera pose estimation, expression-referring segmentation, and 3D keypoint prediction, often matching or surpassing specialized models (e.g. DepthAnything3, SAM3, D4RT, VGGT-Omega, Sapiens, David, Genmo, and Lotus-2). Furthermore, the video generative pretrained backbone outperforms alternative pretraining paradigms (e.g., V-JEPA, and Video MAE) under comparable settings. Importantly, GenCeption exhibits preliminary data and model scaling properties along with exceptional data efficiency, where it achieves comparable performance with leading models like D4RT and VGGT-Omega with 7 to 500 less training data. Finally, GenCeption also exhibits intriguing emergent behaviors: a model trained exclusively on synthetic human videos generalizes to real-world footage and out-of-distribution object categories (e.g., animals and robots). These findings suggest that video generation is not merely a synthesis tool, but a foundational path toward generalist vision intelligence for the physical world. Project page: https://genception.github.io
+# Translation (by gpt-5-nano)
+- 次時トークン予測に駆動され、NLPはタスク特化型のモデルから強力な汎用基盤モデルへと移行した。では、コンピュータビジョンで汎用目的のモデルを実現するには、同等の触媒が必要なのだろうか。本論文では、大規模なテキストから動画への生成がコンピュータビジョンの強力な事前学習パラダイムとして機能し、一般的な視覚知性に必要な時空的先行情報、視覚と言語の整合性、そしてスケーラビリティを提供すると主張する。我々は GenCeption を導入する。これは、事前学習済みの動画生成拡散バックボーンを用いて、テキスト指示で導かれるさまざまな視覚タスクを実行できる前方伝播型の知覚モデルを定義するものである。実証的結果は、GenCeption が深度、表面法線、カメラ姿勢推定、表情参照セグメンテーション、3Dキーポイント予測を含む多様なタスク群で最先端の性能を達成し、しばしば専門モデル（例：DepthAnything3、SAM3、D4RT、VGGT-Omega、Sapiens、David、Genmo、Lotus-2）と同等またはそれを上回ることを示している。さらに、動画生成の事前学習バックボーンは、同等の設定の下で他の事前学習パラダイム（例：V-JEPA、Video MAE）よりも優れている。重要なのは、GenCeption がデータとモデルのスケーリング特性を初期段階で示し、卓越したデータ効率を示す点で、D4RT および VGGT-Omega のような最先端モデルと同等の性能を、訓練データ量をおよそ7分の1〜500分の1程度減らして達成する点である。最後に、GenCeption は興味深い現れ性を示す—合成の人間ビデオだけを用いて訓練したモデルが現実世界の映像や分布外の物体カテゴリ（例：動物やロボット）へ一般化する。これらの発見は、動画生成が単なる合成ツールではなく、物理世界の一般的な視覚知性へ向かう基盤的な道であることを示唆している。プロジェクトページ: https://genception.github.io
+# Summary (by gpt-4o-mini)
+- 大規模テキストからの動画生成がコンピュータビジョンにおける強力な事前学習パラダイムとして機能し、一般的な視覚知性を支えることを提案。GenCeptionという前方伝播型の知覚モデルは、テキスト指示で多様な視覚タスクを実行し、専門モデルと同等またはそれを上回る性能を示す。また、動画生成の事前学習バックボーンは他のパラダイムより優れており、少ないデータで同等の性能を達成。さらに、合成ビデオで訓練されたモデルが現実世界に一般化することを示唆している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2076576380041527435?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>似たようなタイトルを見たことあるなと思ったら以下だった:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5311" target="_blank" rel="noopener noreferrer">[Paper Note] Image Generators are Generalist Vision Learners, Valentin Gabeur+, arXiv'26, 2026.04</a>
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/letian_wang_6/status/2076646900745277622?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Nemotron-Labs-Diffusion: A Tri-Mode Language Model Unifying Autoregressive, Diffusion, and Self-Speculation Decoding, Yonggan Fu+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.05722</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6075</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, DiffusionModel, Architecture, Decoding</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.05722
+# Authors
+  - Yonggan Fu
+  - Lexington Whalen
+  - Abhinav Garg
+  - Chengyue Wu
+  - Maksim Khadkevich
+  - Nicolai Oswald
+  - Enze Xie
+  - Daniel Egert
+  - Sharath Turuvekere Sreenivas
+  - Shizhe Diao
+  - Chenhan Yu
+  - Ye Yu
+  - Weijia Chen
+  - Sajad Norouzi
+  - Jingyu Liu
+  - Shiyi Lan
+  - Ligeng Zhu
+  - Jin Wang
+  - Jindong Jiang
+  - Morteza Mardani
+  - Mehran Maghoumi
+  - Song Han
+  - Ante Jukić
+  - Nima Tajbakhsh
+  - Jan Kautz
+  - Pavlo Molchanov
+# Abstract
+  - We introduce Nemotron-Labs-Diffusion, a tri-mode language model (LM) that unifies AR, diffusion, and self-speculation decoding within a single architecture. Trained with a joint AR-diffusion objective, Nemotron-Labs-Diffusion can switch modes to sustain high throughput across deployment settings and concurrency levels. Our study shows that (1) AR and diffusion objectives are complementary: diffusion improves lookahead planning, while AR provides left-to-right linguistic priors. (2) In self-speculation mode, diffusion drafts while AR verifies, outperforming multi-token prediction (MTP) methods in both acceptance rate and real-device efficiency. (3) A speed-of-light analysis further demonstrates diffusion's long-term potential, with up to 76.5% more tokens per forward pass than self-speculation under an optimal sampler. Scaling to 3B, 8B, and 14B parameters, our Nemotron-Labs-Diffusion family, including base, instruct, and vision-language models, consistently outperforms state-of-the-art open-source AR and diffusion LMs in both accuracy and speed. For example, Nemotron-Labs-Diffusion-8B decodes 6x more tokens per forward than Qwen3-8B with comparable accuracy, translating to 4x higher throughput on SPEED-Bench with SGLang on a GB200 GPU.
+# Translation (by gpt-5-nano)
+- Nemotron-Labs-Diffusion をご紹介します。これは AR、拡散、そして自己推測デコードを一つのアーキテクチャに統合した三モードの言語モデル（LM）です。ARと拡散の共同目的関数で訓練された Nemotron-Labs-Diffusion は、デプロイ設定や同時実行レベルを跨って高いスループットを維持するためにモードを切り替えることができます。我々の研究は次のことを示します。 (1) AR と拡散の目的は補完的である。拡散は先読み計画を改善し、AR は左から右への言語的事前情報を提供します。 (2) 自己推測モードでは、拡散がドラフトを作成し、AR が検証を行うことで、マルチトークン予測（MTP）手法を受け入れ率と実機での効率の両方で上回ります。 (3) 光速分析は拡散の長期的ポテンシャルをさらに示し、最適なサンプラーの下で自己推測より最大で 76.5% 多いトークンをフォワードごとに生成できることを示します。3B、8B、14B パラメータへスケールさせた Nemotron-Labs-Diffusion ファミリーには、ベース、インストラクト、ビジョン-言語モデルを含み、精度と速度の両方で最先端のオープンソース AR および拡散 LM を一貫して上回ります。例えば、Nemotron-Labs-Diffusion-8B は Qwen3-8B と比較可能な精度を維持しつつ、フォワードあたりのデコードトークン数を 6 倍に増やし、GB200 GPU 上の SPEED-Bench で SGLang を用いた場合、スループットは 4 倍に向上します。
+# Summary (by gpt-4o-mini)
+- Nemotron-Labs-Diffusionは、AR、拡散、自己推測デコードを統合した三モードの言語モデルです。ARと拡散が補完的であることを示し、自己推測モードでは、拡散によるドラフト作成とARによる検証でマルチトークン予測が向上します。光速分析により、拡散がより多くのトークン生成を可能にし、最大76.5%の向上が見られました。3B、8B、14Bパラメータのモデルは、精度と速度の両面で最先端を超え、特にNemotron-Labs-Diffusion-8Bは、スループットを4倍に向上させました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2075414715149508880?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5985" target="_blank" rel="noopener noreferrer">[Paper Note] Nemotron-Labs-TwoTower: Diffusion Language Modeling with Pretrained Autoregressive Context, Fitsum Reda+, arXiv'26, 2026.06</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] High-accuracy sampling for diffusion models and log-concave distributions, Fan Chen+, arXiv'26, 2026.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2602.01338</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6073</repo-issue-link>
+<tags>MachineLearning, DiffusionModel, ICML, Samplers</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2602.01338
+# Authors
+  - Fan Chen
+  - Sinho Chewi
+  - Constantinos Daskalakis
+  - Alexander Rakhlin
+# Abstract
+  - We present algorithms for diffusion model sampling which obtain $δ$-error in $\mathrm{polylog}(1/δ)$ steps, given access to $\widetilde O(δ)$-accurate score estimates in $L^2$. This is an exponential improvement over all previous results. Specifically, under minimal data assumptions, the complexity is $\widetilde O(d_\star \mathrm{polylog}(1/δ))$ where $d_\star$ is the intrinsic dimension of the data. Further, under a non-uniform $L$-Lipschitz condition, the complexity reduces to $\widetilde O(L \mathrm{polylog}(1/δ))$. Our approach also yields the first $\mathrm{polylog}(1/δ)$ complexity sampler for general log-concave distributions using only gradient evaluations.
+# Translation (by gpt-5-nano)
+- 拡散モデルサンプリングのアルゴリズムを提案します。これらは \widetilde O(δ) 精度のスコア推定を L^2 で利用できる場合に、δ-誤差を polylog(1/δ) 回の反復で達成します。これは従来のすべての結果よりも指数的に改善したものです。具体的には、最小限のデータ仮定の下で、複雑さは \widetilde O(d_\star \mathrm{polylog}(1/δ)) となり、ここで d_\star はデータの内在次元である。さらに、非一様な L-リプシッツ条件の下では、複雑さは \widetilde O(L \mathrm{polylog}(1/δ)) に低減します。我々のアプローチは、勾配評価のみを用いて、一般の対数凹分布に対して初めて \mathrm{polylog}(1/δ) の計算量を持つサンプラーを提供します。
+# Summary (by gpt-4o-mini)
+- 拡散モデルサンプリングの新しいアルゴリズムを提案し、δ-誤差をpolylog(1/δ)回の反復で達成することを示します。この手法は従来の結果を指数的に改善し、最小限のデータ仮定の下で複雑さは\widetilde O(d_\star \mathrm{polylog}(1/δ))となります。また、非一様なL-リプシッツ条件下では、複雑さが\widetilde O(L \mathrm{polylog}(1/δ))に低減します。勾配評価だけを用いたこのアプローチにより、一般の対数凹分布に対する初のpolylog(1/δ)計算量のサンプラーを実現しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2075340389742166259?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Concurrent Image Understanding and Generation: Self-Correcting Coupled Markov Jump Processes, Minh-Quan Le+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.13188</original-paper-blog-link>

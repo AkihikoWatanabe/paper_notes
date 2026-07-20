@@ -1,5 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-17">
+<paper-list last-updated="2026-07-19">
+<paper-entry>
+<title>[Paper Note] Self-Guided Test-Time Training for Long-Context LLMs, Xinyu Zhu+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.09415</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6095</repo-issue-link>
+<tags>NLP, LanguageModel, LongSequence, reading, One-Line Notes, Reading Reflections, Test Time Training (TTT)</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.09415
+# Authors
+  - Xinyu Zhu
+  - Zhe Xu
+  - Xiaohan Wei
+  - Yunchen Pu
+  - Fei Tian
+  - Chonglin Sun
+  - Kaushik Rangadurai
+  - Hua Zhi
+  - Frank Shyu
+  - Sandeep Pandey
+  - Luke Simon
+  - Yu Meng
+  - Xi Liu
+# Abstract
+  - Long-context processing has become increasingly important for large language models (LLMs), but simply extending the context window does not guarantee effective utilization of long inputs. As input length grows, accuracy often degrades, indicating that models still struggle to identify and use the evidence most relevant to a question. A promising way to improve long-context utilization is test-time training (TTT), which treats the test context as a training example for instance-specific parameter adaptation. However, applying TTT to the entire long context is prohibitively expensive, while adapting on randomly sampled spans introduces severe noise. Because most spans in a long context are irrelevant to the specific question, training on them may even degrade the base model's performance. Our preliminary study shows that TTT is highly sensitive to training-span quality: on LongBench-v2, TTT on randomly sampled spans hurts performance, whereas TTT on oracle spans substantially improves it. Motivated by this, we propose a simple method, Self-Guided TTT (S-TTT): before adaptation, the model identifies the evidence spans it should learn from, and the standard language-modeling training objective is applied only to those selected spans. On two challenging long-context reasoning benchmarks, LongBench-v2 and LongBench-Pro, S-TTT improves accuracy for both Qwen3-4B-Thinking-2507 and Llama-3.1-8B-Instruct, achieving up to a 15% relative improvement.
+# Translation (by gpt-5-nano)
+- 長文脈処理は大規模言語モデル（LLMs）にとってますます重要になっているが、単にコンテキスト窓を拡張するだけでは長い入力を効果的に活用できるとは限らない。入力長が増すにつれて精度はしばしば低下し、質問に最も関連する証拠を特定して活用する能力が依然として課題であることを示している。長文脈の活用を改善する有望な方法の一つはテスト時訓練（TTT）で、テスト時のコンテキストを個別のパラメータ適応の訓練例として扱う。しかし、長文脈全体にTTTを適用するのは prohibitively expensive であり、ランダムに抽出したスパンで適応させると重大なノイズが生じる。長文脈のほとんどのスパンは特定の質問には無関係であるため、それらで訓練することは基盤モデルの性能を低下させる可能性さえある。我々の予備的研究は、TTTが訓練用スパンの品質に非常に敏感であることを示している：LongBench-v2 では、ランダムに抽出したスパンでのTTTは性能を悪化させる一方で、オラクルスパンでのTTTは大幅に改善する。これに動機づけられ、単純な手法Self-Guided TTT（S-TTT）を提案する：適応の前に、モデルは学習すべき証拠スパンを識別し、標準的な言語モデリング訓練目標を選択されたスパンのみに適用する。長文脈推論の難易度が高い2つのベンチマーク、LongBench-v2とLongBench-Proにおいて、S-TTTはQwen3-4B-Thinking-2507およびLlama-3.1-8B-Instructの両方の精度を向上させ、最大で相対的に15%の改善を達成した。
+# Summary (by gpt-4o-mini)
+- 長文脈処理において、LLMは単にコンテキスト窓を拡張するだけでは十分ではなく、入力長の増加が精度の低下を引き起こすことがある。テスト時訓練（TTT）は長文脈の活用を改善する手法の一つだが、全体への適用は費用がかかり、ランダム抽出による訓練が性能を低下させることがある。これに対し、Self-Guided TTT（S-TTT）を提案し、適応前にモデルが選択された証拠スパンを認識することで、基準となる言語モデル訓練を適用。S-TTTは、LongBench-v2およびLongBench-Proでの精度向上を実現し、最大で15%の改善を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yohei_kikuta/status/2077383135348904361?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>長文Context+質問が与えられたときに、質問に関連するcontextのspanを同定した後(Self-Guided)、TTTでモデルパラメータに内部化させた後に応答する、という話に見える。TTTでは、LoRAを用いて、かつ16 gradient updateを行った時点で更新を終了する。<br><img src="https://github.com/user-attachments/assets/1d69d3d8-db5a-4d53-a8dc-ea85cb8444a2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Full ContextでらTTTするよりも、Self-Guidedな方が高い性能を獲得できる。<br><img src="https://github.com/user-attachments/assets/d2437308-117b-4aec-9a53-6a88881c5c26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>TTTを使ってLoRA adapterにcontextの情報をweightとして内部化させても、思ったほど性能は上がらないのだなという印象。<br><br>LoRAでweightにcontextを内部化させても、その内部化された情報をうまく活用するような工夫が足りていないのでは？という気がするのだが、どうだろうか。<br><br>ベンチマークのインスタンスが、contextをmemorizationし、適切にatteedすれば解けるようなクエリなのか否かという点も気になる。<br>もしcontextの情報に基づいてマルチポップな推論が必要な場合、LoRAアダプタによる重みを活用するような回路が育っていない可能性が高く、性能は伸びにくいのかなという気はする。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Flash-BoN: Instant Drafts for Inference-Time Scaling in Diffusion Models, Ruchit Rawal+, ECCV'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.04461</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6087</repo-issue-link>
+<tags>ComputerVision, NLP, DiffusionModel, TextToImageGeneration, Test-Time Scaling, ECCV, One-Line Notes, ImageSynthesis, Author Thread-Post</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.04461
+# Authors
+  - Ruchit Rawal
+  - Reza Shirkavand
+  - Sayak Paul
+  - Yuxin Wen
+  - Heng Huang
+  - Yizheng Chen
+  - Tom Goldstein
+  - Gowthami Somepalli
+# Abstract
+  - Inference-time scaling for text-to-image generation has progressed from simple Best-of-$N$ (BoN) sampling to guided search methods that verify and steer candidate trajectories at intermediate denoising steps. These approaches focus on when and how often to verify during denoising but largely treat the cost of generation itself as fixed. Moreover, the standard practice of comparing methods by number of function evaluations (NFEs) counts only denoising forward passes and ignores verifier overhead, which can distort efficiency rankings. We show that under wall-clock evaluation, simple BoN already matches or outperforms several guided search techniques, suggesting that compute is better spent on broader exploration than on repeated intermediate verification. This motivates Flash-BoN, which generates a large pool of inexpensive draft candidates by combining three complementary acceleration knobs: timestep truncation, layer skipping, and activation proxies into a single configuration optimized once per model. An efficient multi-stage verification procedure then identifies the most promising draft, which is refined at full quality. Across three benchmarks and three model scales, Flash-BoN consistently outperforms all baselines under fixed wall-clock budgets, with gains that grow at larger model scales (+8% AUC). We further show that our strategy combines well and improves existing orthogonal techniques such as reflection-based prompt optimization (+16% AUC). The gains correlate with increased candidate diversity, which also enables draft-guided selection to accelerate RL post-training convergence.
+# Translation (by gpt-5-nano)
+- 推論時のスケーリングは、単純な Best-of-N（BoN）サンプリングから、中間のデノイジングステップで候補の軌道を検証・誘導するガイド付き探索手法へと進展してきた。これらのアプローチはデノイジング中の検証の時期と頻度に焦点を当てているが、生成自体のコストを大部分固定とみなしてしまう。さらに、関数評価回数（NFEs）で手法を比較する標準的な実践は、デノイジングのフォワードパスのみを数え、検証器のオーバーヘッドを無視するため、効率性のランキングを歪める可能性がある。実測時間評価の下では単純なBoNがすでにいくつかのガイド付き探索技術に匹敵するかそれを上回ることを示し、中間検証を繰り返すよりも広範な探索に計算を割く方が良いことを示唆する。これを動機づけとして、Flash-BoNを提案する。Flash-BoNは、タイムステップの切り詰め、レイヤーのスキップ、および活性化の代理指標という3つの補完的な加速ノブを1つのモデルごとに最適化された設定に組み合わせることで、多数の安価なドラフト候補を生成する。効率的な多段階検証手順が最も有望なドラフトを特定し、それを高品質へと精練する。3つのベンチマークと3つのモデルスケールを横断して、Flash-BoNは固定された実時間予算の下で全ベースラインを一貫して上回り、モデルスケールが大きいほど利得が大きくなる（AUCで+8%）。さらに、我々の戦略は他の直交的手法と組み合わせて相性がよく、リフレクションに基づくプロンプト最適化のような既存手法を改善する（+16% AUC）。これらの利得は候補の多様性の増加と相関しており、ドラフト主導の選択が強化学習（RL）のポストトレーニング収束を加速させることも可能にする。
+# Summary (by gpt-4o-mini)
+- 推論時のスケーリングは、Best-of-N（BoN）サンプリングからガイド付き探索に進化してきたが、生成コストを固定と見なしている。効率性評価でBoNがガイド付き探索に匹敵することを示し、Flash-BoNを提案。これはアクセラレーション技術を組み合わせ、多数の安価なドラフト候補を生成し、高品質へ精練する。ベンチマークではFlash-BoNが全ての基準を上回り、特にモデルスケールが大きいほど利得が顕著（AUCで+8%）。他の手法と相乗効果があり、候補の多様性向上が強化学習の収束を加速する。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://flash-bon.github.io/" target="_blank" rel="noopener noreferrer">https://flash-bon.github.io/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/risingsayak/status/2076703882739360148?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>中間サンプルを安価で効率的な方法で生成することで多様な中間候補を探索し、有望な候補のみに対して完全な生成をするようなBest-of-Nに基づくTextToImage手法を提案。<br><br>また効率性の評価において Number of Function Evaluations (NFEs)[^1] が利用されることが多かったが、これはdenoisingのforward passのみが考慮され、verifierのコストが無視されており、verificationコストが大きい手法が本来効率的ではないのに、効率的に見えてしまう問題があった。実際、BFSのような手法では固定されたNFEの元では効率的に見えるが、頻繁にverifierを呼び出すため、固定されたwallclock timeの元では効率性が逆転する。<br><img src="https://github.com/user-attachments/assets/81a4b80e-2055-459c-afe7-23e26495ce2a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: デノイジングを実施するネットワークの呼び出し回数</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Scalable Visual Pretraining for Language Intelligence, Yiming Zhang+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.09657</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6080</repo-issue-link>
+<tags>ComputerVision, Pretraining, NLP, LanguageModel, Selected Papers/Blogs, VisionLanguageModel, reading, One-Line Notes</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.09657
+# Authors
+  - Yiming Zhang
+  - Zhonghan Zhao
+  - Wenwei Zhang
+  - Haiteng Zhao
+  - Tianyang Lin
+  - Yunhua Zhou
+  - Demin Song
+  - Kuikun Liu
+  - Haochen Ye
+  - Haian Huang
+  - Yuzhe Gu
+  - Haijun Lv
+  - Qipeng Guo
+  - Bin Liu
+  - Gaoang Wang
+  - Kai Chen
+# Abstract
+  - The rapid progress of large foundation models has been driven predominantly by pretraining on large-scale text corpora. However, many forms of knowledge are conveyed through visual representations, where figures, typeset equations, and page layouts carry rich information that cannot be faithfully or completely captured by text alone. Yet current pretraining approaches discard these visual cues by converting visually rich sources, such as documents and web pages, into plain text for learning language intelligence. This paper challenges the default assumption that language models must be trained on text-only representations and shows that Visual Pretraining is a scalable learner for foundation model intelligence. To this end, we conduct a systematic study of unsupervised visual pretraining paradigms that directly leverage visual documents without text extraction. Across multiple backbones and benchmarks, visual pretraining on the same underlying corpora consistently outperforms text-only pretraining, offering an efficient pathway to scalable language intelligence.
+# Translation (by gpt-5-nano)
+- 大規模基盤モデルの急速な進展は、主に大規模テキストコーパスの事前学習によって推進されてきた。しかし、多くの知識は視覚的表現を通じて伝えられ、図、組版された式、ページレイアウトなどには、テキストだけでは忠実に、あるいは完全には捉えきれない豊かな情報が含まれている。とはいえ、現在の事前学習アプローチは、文書やウェブページといった視覚的に豊かな情報源を、言語知能の学習のためにプレーンテキストへ変換することで、これらの視覚的手掛かりを破棄している。本論文は、言語モデルはテキストのみの表現で訓練されるべきだという既定の仮定に挑戦し、視覚的事前学習が基盤モデル知能のスケーラブルな学習者であることを示す。そのために、テキスト抽出を伴わずに視覚的文書を直接活用する無監督の視覚的事前学習パラダイムを系統的に検討した。複数のバックボーンとベンチマークにまたがって、同じ基盤コーパス上の視覚的事前学習は、テキストのみの事前学習を一貫して上回り、スケーラブルな言語知能への効率的な道筋を提供する。
+# Summary (by gpt-4o-mini)
+- 視覚的事前学習が言語モデルの知能向上に寄与することを示す研究。テキスト変換を通さず視覚的文書を直接活用する無監督のアプローチを検討し、視覚的事前学習がテキストのみのモデルを一貫して上回ることを実証。これにより、スケーラブルな言語知能への効率的なアプローチが明らかに。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2076570835783909524?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習をする際に、テキストだけでなく画像パッチに対してもnext visual latent predictionを実施することで性能が改善する。<br>next visual latent predictionでは、画像パッチをfreezeされたvision encoderでエンコードし潜在表現の系列を取得し、現在のパッチを入力したときに、次のパッチの潜在表現を予測する（離散トークンではなく、連続値ベクトルである点に注意）。loss functionは、バッチ内の全ての画像パッチを考えたときに、各パッチの正解の潜在表現と、モデルが予測した次パッチの潜在表現の類似度行列をソフトマックスで正規化した行列を考え、対角成分（すなわち正解の画像パッチに対する類似度）が最大化されるように定義される。ソフトマックスを考えることで、バッチ内の他の画像パッチがin-batch negativeの役割を果たし、これは次パッチの潜在表現と他の潜在表現の区別がつくようなcontrastive learningをしていることに相当する（Section 4)。<br><img src="https://github.com/user-attachments/assets/f887d4f1-a7b1-403b-9545-7b41f327976d" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/e263a675-a20e-4bb6-bf30-46ae1be8e971" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Hierarchical Sparse Attention Done Right: Toward Infinite Context Modeling, Xiang Hu+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.02980</original-paper-blog-link>
@@ -48,7 +175,7 @@
 </div>
 {% endraw %}
 
-</p><p>Block Sparse Attention (BSA) は、直近のトークンを見るlocal sliding window attention (SWA)と、離れたトークンに対するチャンクレベルでのsparse attentionに基づいたアテンション機構である。<br>一般的なBSAでは、現在のquery qとチャンク単位のattentino scoreを計算する際に、各チャンクごとにチャンクのkeyに関する情報を用ｙ伯した Key k'_c を求め、k'_c と現在のquery qとのattention scoreを計算することにより計算を効率化する[^1]。<br><br>k'_c を求める際には、mean/max pooling を用いるのが一般的であり、特に前者が用いられるとのことだが、どちらのpoolingの手法もattention scoreの分布に依存して、近似の性能が変化する（たとえば、mean poolingであればなるべくattention scoreが一様なほど近似性能が良いし、max poolingであれば、あるscoreがチャンク内で支配的であるほど近似性能が良い）が、query qに応じてattention scoreの分布は変化することにより、k'_cの近似性能が低下しsparse attentionによって重要なチャンクを選択する性能が低下する課題がある。<br><br>これに対して、<br>- 現実的な計算量でk'_cをより正確に近似できる surrogate score に基づく手法を提案し（RQ1）[^2]<br>- surrogate score をend-to-end で学習可能にする方法を提案した (RQ2)<br>という話である。<br><br>surrogate scoreは、チャンクのattention scoreの質量をより正確に近似したスコアであり、（チャンクのkeyを要約した）k'_c に対する現在のクエリ q とのrelevanceを表す項と、バイアス項 b'_c によって線形化される（式7）。<br>k'_c によって現在のクエリに対する関連度を測り、バイアス項によって関連度から独立したtoken-levelの質量を導入する。バイアス項は、チャンクにattendするであろうクエリのattention scoreの分布に対するentropyであり、これが一様分布やあるトークンが支配的な分布など、様々な分布の形状に対して動的に適応する役割を果たす。<br><br>b'_c を求めるために、チャンクごとに独立したクエリ q'_c を学習する。これは、このチャンクにattendするであろうクエリのプロキシを果たすクエリであり、q'_c とチャンク内のトークンのkeyとの間でのattention scoreを計算しておくことで、おおまかなattention scoreの分布を決定し、b'_c を求めておくことができる（式8）。<br>また、k'_c はチャンク内のattention scoreによって重みづけられたkeyの和の形で求められる（式8）。<br>これにより、現在のクエリ qが与えられた時に、k'_cとb'_cを用いて、チャンクに対するattention scoreの質量を高速に近似することができる（式7）。<br><br>ここで q'_c をどのように学習するかが課題となる（q'_c以外のパラメータは従来通りのモデル化で求まる）。これを解決するために、surrogate scoreによって求まるチャンクのattention scoreの近似質量 \hat{Z}_{i, c} をforward passに加え、q'_c に勾配が流れるようにすることで解決している。具体的には、attention scoreの計算をする際に、式変形を実施し、`チャンク内のスコアの計算 * チャンク間のスコアの計算` の形に分解する（式10）。後者のチャンクの重要度を求める際に、各チャンクのsurrogate scoreを用いて近似することによって、高速化 + q'_c に勾配が流れるような工夫をしている。<br><br>[^1]: チャンクのattention scoreの質量（どのチャンクをsparse attentionでattendするかを決定する際に用いられる）を計算する際に、query qとチャンク内の全てのtokenに対するtoken-to-tokenの内積をとることを避け、k'_cとの内積によって近似的に質量を求めることで計算を効率化する。<br>[^2]: surrogate scoreによってk'_cを正確に近似できることの証明はAppendix Bに記載されており、1次のテイラー展開に基づいているようである（ここは読めていない）。</p></maintainer-comment-text>
+</p><p>Block Sparse Attention (BSA) は、直近のトークンを見るlocal sliding window attention (SWA)と、離れたトークンに対するチャンクレベルでのsparse attentionに基づいたアテンション機構である。<br>一般的なBSAでは、現在のquery qとチャンク単位のattentino scoreを計算する際に、各チャンクごとにチャンクのkeyに関する情報を要約した Key k'_c を求め、k'_c と現在のquery qとのattention scoreを計算することにより計算を効率化する[^1]。<br><br>k'_c を求める際には、mean/max pooling を用いるのが一般的であり、特に前者が用いられるとのことだが、どちらのpoolingの手法もattention scoreの分布に依存して、近似の性能が変化する（たとえば、mean poolingであればなるべくattention scoreが一様なほど近似性能が良いし、max poolingであれば、あるscoreがチャンク内で支配的であるほど近似性能が良い）が、query qに応じてattention scoreの分布は変化することにより、k'_cの近似性能が低下しsparse attentionによって重要なチャンクを選択する性能が低下する課題がある。<br><br>これに対して、<br>- 現実的な計算量でk'_cをより正確に近似できる surrogate score に基づく手法を提案し（RQ1）[^2]<br>- surrogate score をend-to-end で学習可能にする方法を提案した (RQ2)<br>という話である。<br><br>surrogate scoreは、チャンクのattention scoreの質量をより正確に近似したスコアであり、（チャンクのkeyを要約した）k'_c に対する現在のクエリ q とのrelevanceを表す項と、バイアス項 b'_c によって線形化される（式7）。<br>k'_c によって現在のクエリに対する関連度を測り、バイアス項によって関連度から独立したtoken-levelの質量を導入する。バイアス項は、チャンクにattendするであろうクエリのattention scoreの分布に対するentropyであり、これが一様分布やあるトークンが支配的な分布など、様々な分布の形状に対して動的に適応する役割を果たす。<br><br>b'_c を求めるために、チャンクごとに独立したクエリ q'_c を学習する。これは、このチャンクにattendするであろうクエリのプロキシを果たすクエリであり、q'_c とチャンク内のトークンのkeyとの間でのattention scoreを計算しておくことで、おおまかなattention scoreの分布を決定し、b'_c を求めておくことができる（式8）。<br>また、k'_c はチャンク内のattention scoreによって重みづけられたkeyの和の形で求められる（式8）。<br>これにより、現在のクエリ qが与えられた時に、k'_cとb'_cを用いて、チャンクに対するattention scoreの質量を高速に近似することができる（式7）。<br><br>ここで q'_c をどのように学習するかが課題となる（q'_c以外のパラメータは従来通りのモデル化で求まる）。これを解決するために、surrogate scoreによって求まるチャンクのattention scoreの近似質量 \hat{Z}_{i, c} をforward passに加え、q'_c に勾配が流れるようにすることで解決している。具体的には、attention scoreの計算をする際に、式変形を実施し、`チャンク内のスコアの計算 * チャンク間のスコアの計算` の形に分解する（式10）。後者のチャンクの重要度を求める際に、各チャンクのsurrogate scoreを用いて近似することによって、高速化 + q'_c に勾配が流れるような工夫をしている。<br><br>[^1]: チャンクのattention scoreの質量（どのチャンクをsparse attentionでattendするかを決定する際に用いられる）を計算する際に、query qとチャンク内の全てのtokenに対するtoken-to-tokenの内積をとることを避け、k'_cとの内積によって近似的に質量を求めることで計算を効率化する。<br>[^2]: surrogate scoreによってk'_cを正確に近似できることの証明はAppendix Bに記載されており、1次のテイラー展開に基づいているようである（ここは読めていない）。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -27891,6 +28018,100 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>🦋 Molt: A Scalable PyTorch-Native Training Framework for Agentic Reinforcement Learning, Jian Hu and Molt Contributors, 2026.07</title>
+<original-paper-blog-link>https://github.com/NVIDIA-NeMo/labs-molt</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6088</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, One-Line Notes</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body>https://github.com/NVIDIA-NeMo/labs-molt</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/billxbf/status/2076852585193968023?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ハイパフォーマンス、かつminimalな実装のRLライブラリで、研究用のハックがしやすいフレームワーク。verlの1/9, Slimeの1/3の行数で実現されているとのこと。</p><p>verl:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1969" target="_blank" rel="noopener noreferrer">verl: Volcano Engine Reinforcement Learning for LLMs, ByteDance Seed Team, 2025.04</a>
+<br><br>Slime:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2646" target="_blank" rel="noopener noreferrer">slime, THUDM & Zhihu, 2025.09</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SingGuard-NSFA, inclusionAI, 2026.07</title>
+<original-paper-blog-link>https://huggingface.co/collections/inclusionAI/singguard-nsfa</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6084</repo-issue-link>
+<tags>NLP, AIAgents, OpenWeight, Safety, One-Line Notes, Security, Safeguard</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body>https://huggingface.co/collections/inclusionAI/singguard-nsfa</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/theinclusionai/status/2076623233290477759?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AI Agent向けのガードレールで、モデルの安全性からランタイムの安全性を指向して開発されている。エージェントのアクション実行前に、attackを検知し防御するなどの用途に使われる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>How up-to-date is each AI model?, Apoorv Saxena, 2026.07</title>
+<original-paper-blog-link>https://apoorvumang.github.io/knowledge-cutoff/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6077</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, Blog, FactualKnowledge, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body>https://apoorvumang.github.io/knowledge-cutoff/</issue-body>
+<maintainer-comment-text><p>330種類の30ヶ月に及ぶ予測不可能なイベントに関する情報を持ちいてモデルの実際のknowledge cutoffを推定する</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/apoorv_umang/status/2075646580083048945?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Muse Spark 1.1, Meta, 2026.07</title>
+<original-paper-blog-link>https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/?utm_source=twitter&utm_medium=organic_social&utm_content=image&utm_campaign=spark11</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6071</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, AIAgents, MultiModal, Proprietary, VisionLanguageModel, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-07-19</repo-issue-date>
+<issue-body>https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/?utm_source=twitter&utm_medium=organic_social&utm_content=image&utm_campaign=spark11</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aiatmeta/status/2075221088821518394?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Muse Spark:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5183" target="_blank" rel="noopener noreferrer">Introducing Muse Spark: Scaling Towards Personal Superintelligence, Meta, 2026.04</a>
+</p><p>大幅にAgenticな能力やコーディング能力が向上。Agenticな能力では多くのベンチマークでOpus4.8超え、CodingはGPT-5.5にベンチマーク上では及ばず（SWE Bench Proでは勝っているが、OpenAIから30%以上のpromptが評価で不適切との報告があった <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6014" target="_blank" rel="noopener noreferrer">Separating signal from noise in coding evaluations, OpenAI, 2026.07</a>
+)。</p><p>Alexandr Wang氏によるポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/alexandr_wang/status/2075218936266998230?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Kimi K3: Open Frontier Intelligence, Moonshot AI, 2026.07</title>
 <original-paper-blog-link>https://www.kimi.com/blog/kimi-k3</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6057</repo-issue-link>
@@ -29544,7 +29765,7 @@ github: https://github.com/AntheaLi/open-research-seeds</issue-body>
 <title>Introducing Muse Spark: Scaling Towards Personal Superintelligence, Meta, 2026.04</title>
 <original-paper-blog-link>https://ai.meta.com/blog/introducing-muse-spark-msl?utm_source=twitter&utm_medium=organic_social&utm_content=image&utm_campaign=spark</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5183</repo-issue-link>
-<tags>ComputerVision, NLP, MultiModal, Proprietary, read-later, Selected Papers/Blogs, VisionLanguageModel, One-Line Notes, Reference Collection, Author Thread-Post</tags>
+<tags>ComputerVision, NLP, LanguageModel, MultiModal, Proprietary, read-later, Selected Papers/Blogs, VisionLanguageModel, One-Line Notes, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2026-04-11</repo-issue-date>
 <issue-body>https://ai.meta.com/blog/introducing-muse-spark-msl?utm_source=twitter&utm_medium=organic_social&utm_content=image&utm_campaign=spark</issue-body>
 <maintainer-comment-text><p>元ポスト:<br>- 

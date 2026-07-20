@@ -1070,7 +1070,7 @@ My Issue
 </div>
 
 
-</p><p>Block Sparse Attention (BSA) は、直近のトークンを見るlocal sliding window attention (SWA)と、離れたトークンに対するチャンクレベルでのsparse attentionに基づいたアテンション機構である。<br>一般的なBSAでは、現在のquery qとチャンク単位のattentino scoreを計算する際に、各チャンクごとにチャンクのkeyに関する情報を用ｙ伯した Key k'_c を求め、k'_c と現在のquery qとのattention scoreを計算することにより計算を効率化する[^1]。<br><br>k'_c を求める際には、mean/max pooling を用いるのが一般的であり、特に前者が用いられるとのことだが、どちらのpoolingの手法もattention scoreの分布に依存して、近似の性能が変化する（たとえば、mean poolingであればなるべくattention scoreが一様なほど近似性能が良いし、max poolingであれば、あるscoreがチャンク内で支配的であるほど近似性能が良い）が、query qに応じてattention scoreの分布は変化することにより、k'_cの近似性能が低下しsparse attentionによって重要なチャンクを選択する性能が低下する課題がある。<br><br>これに対して、<br>- 現実的な計算量でk'_cをより正確に近似できる surrogate score に基づく手法を提案し（RQ1）[^2]<br>- surrogate score をend-to-end で学習可能にする方法を提案した (RQ2)<br>という話である。<br><br>surrogate scoreは、チャンクのattention scoreの質量をより正確に近似したスコアであり、（チャンクのkeyを要約した）k'_c に対する現在のクエリ q とのrelevanceを表す項と、バイアス項 b'_c によって線形化される（式7）。<br>k'_c によって現在のクエリに対する関連度を測り、バイアス項によって関連度から独立したtoken-levelの質量を導入する。バイアス項は、チャンクにattendするであろうクエリのattention scoreの分布に対するentropyであり、これが一様分布やあるトークンが支配的な分布など、様々な分布の形状に対して動的に適応する役割を果たす。<br><br>b'_c を求めるために、チャンクごとに独立したクエリ q'_c を学習する。これは、このチャンクにattendするであろうクエリのプロキシを果たすクエリであり、q'_c とチャンク内のトークンのkeyとの間でのattention scoreを計算しておくことで、おおまかなattention scoreの分布を決定し、b'_c を求めておくことができる（式8）。<br>また、k'_c はチャンク内のattention scoreによって重みづけられたkeyの和の形で求められる（式8）。<br>これにより、現在のクエリ qが与えられた時に、k'_cとb'_cを用いて、チャンクに対するattention scoreの質量を高速に近似することができる（式7）。<br><br>ここで q'_c をどのように学習するかが課題となる（q'_c以外のパラメータは従来通りのモデル化で求まる）。これを解決するために、surrogate scoreによって求まるチャンクのattention scoreの近似質量 \hat{Z}_{i, c} をforward passに加え、q'_c に勾配が流れるようにすることで解決している。具体的には、attention scoreの計算をする際に、式変形を実施し、`チャンク内のスコアの計算 * チャンク間のスコアの計算` の形に分解する（式10）。後者のチャンクの重要度を求める際に、各チャンクのsurrogate scoreを用いて近似することによって、高速化 + q'_c に勾配が流れるような工夫をしている。<br><br>[^1]: チャンクのattention scoreの質量（どのチャンクをsparse attentionでattendするかを決定する際に用いられる）を計算する際に、query qとチャンク内の全てのtokenに対するtoken-to-tokenの内積をとることを避け、k'_cとの内積によって近似的に質量を求めることで計算を効率化する。<br>[^2]: surrogate scoreによってk'_cを正確に近似できることの証明はAppendix Bに記載されており、1次のテイラー展開に基づいているようである（ここは読めていない）。</p></span><br><br>
+</p><p>Block Sparse Attention (BSA) は、直近のトークンを見るlocal sliding window attention (SWA)と、離れたトークンに対するチャンクレベルでのsparse attentionに基づいたアテンション機構である。<br>一般的なBSAでは、現在のquery qとチャンク単位のattentino scoreを計算する際に、各チャンクごとにチャンクのkeyに関する情報を要約した Key k'_c を求め、k'_c と現在のquery qとのattention scoreを計算することにより計算を効率化する[^1]。<br><br>k'_c を求める際には、mean/max pooling を用いるのが一般的であり、特に前者が用いられるとのことだが、どちらのpoolingの手法もattention scoreの分布に依存して、近似の性能が変化する（たとえば、mean poolingであればなるべくattention scoreが一様なほど近似性能が良いし、max poolingであれば、あるscoreがチャンク内で支配的であるほど近似性能が良い）が、query qに応じてattention scoreの分布は変化することにより、k'_cの近似性能が低下しsparse attentionによって重要なチャンクを選択する性能が低下する課題がある。<br><br>これに対して、<br>- 現実的な計算量でk'_cをより正確に近似できる surrogate score に基づく手法を提案し（RQ1）[^2]<br>- surrogate score をend-to-end で学習可能にする方法を提案した (RQ2)<br>という話である。<br><br>surrogate scoreは、チャンクのattention scoreの質量をより正確に近似したスコアであり、（チャンクのkeyを要約した）k'_c に対する現在のクエリ q とのrelevanceを表す項と、バイアス項 b'_c によって線形化される（式7）。<br>k'_c によって現在のクエリに対する関連度を測り、バイアス項によって関連度から独立したtoken-levelの質量を導入する。バイアス項は、チャンクにattendするであろうクエリのattention scoreの分布に対するentropyであり、これが一様分布やあるトークンが支配的な分布など、様々な分布の形状に対して動的に適応する役割を果たす。<br><br>b'_c を求めるために、チャンクごとに独立したクエリ q'_c を学習する。これは、このチャンクにattendするであろうクエリのプロキシを果たすクエリであり、q'_c とチャンク内のトークンのkeyとの間でのattention scoreを計算しておくことで、おおまかなattention scoreの分布を決定し、b'_c を求めておくことができる（式8）。<br>また、k'_c はチャンク内のattention scoreによって重みづけられたkeyの和の形で求められる（式8）。<br>これにより、現在のクエリ qが与えられた時に、k'_cとb'_cを用いて、チャンクに対するattention scoreの質量を高速に近似することができる（式7）。<br><br>ここで q'_c をどのように学習するかが課題となる（q'_c以外のパラメータは従来通りのモデル化で求まる）。これを解決するために、surrogate scoreによって求まるチャンクのattention scoreの近似質量 \hat{Z}_{i, c} をforward passに加え、q'_c に勾配が流れるようにすることで解決している。具体的には、attention scoreの計算をする際に、式変形を実施し、`チャンク内のスコアの計算 * チャンク間のスコアの計算` の形に分解する（式10）。後者のチャンクの重要度を求める際に、各チャンクのsurrogate scoreを用いて近似することによって、高速化 + q'_c に勾配が流れるような工夫をしている。<br><br>[^1]: チャンクのattention scoreの質量（どのチャンクをsparse attentionでattendするかを決定する際に用いられる）を計算する際に、query qとチャンク内の全てのtokenに対するtoken-to-tokenの内積をとることを避け、k'_cとの内積によって近似的に質量を求めることで計算を効率化する。<br>[^2]: surrogate scoreによってk'_cを正確に近似できることの証明はAppendix Bに記載されており、1次のテイラー展開に基づいているようである（ここは読めていない）。</p></span><br><br>
 </article>
 <article class="paper-entry">
 <h3 id="attn-qat-4-bit-6008" class="title-link">[Paper Note] Attn-QAT: 4-Bit Attention With Quantization-Aware Training, Peiyuan Zhang+, arXiv'26, 2026.02</h3><br><a href="https://arxiv.org/abs/2603.00040" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -5475,24 +5475,24 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/SoftwareEngineering.html" title="SoftwareEngineeringに関する論文・技術記事メモの一覧">SoftwareEngineeringに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SIGGRAPH.html" title="SIGGRAPHに関する論文・技術記事メモの一覧">SIGGRAPHに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/SmallModel.html" title="SmallModelに関する論文・技術記事メモの一覧">SmallModelに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/SIGGRAPH.html" title="SIGGRAPHに関する論文・技術記事メモの一覧">SIGGRAPHに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/3D-Reconstruction.html"
-            title="3D Reconstructionに関する論文・技術記事メモの一覧">
-            3D Reconstructionに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Navigation.html"
+            title="Navigationに関する論文・技術記事メモの一覧">
+            Navigationに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
-  <span class="post-badge badge-new">📝 </span>
+<span class="post-badges"><span class="post-badge badge-top">📝 2</span> 
+  <span class="post-badge badge-new">📝 2</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/VCS.html"
-            title="VCSに関する論文・技術記事メモの一覧">
-            VCSに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/RelationExtraction.html"
+            title="RelationExtractionに関する論文・技術記事メモの一覧">
+            RelationExtractionに関する論文・技術記事メモの一覧
 
 <span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
   <span class="post-badge badge-new">📝 1</span>
@@ -5500,22 +5500,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Nature-Machine-Intelligence.html"
-            title="Nature Machine Intelligenceに関する論文・技術記事メモの一覧">
-            Nature Machine Intelligenceに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/GenerativeAdversarialNetwork.html"
+            title="GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧">
+            GenerativeAdversarialNetworkに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
-  <span class="post-badge badge-new">📝 3</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
+  <span class="post-badge badge-new">📝 5</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Classic.html"
-            title="Classicに関する論文・技術記事メモの一覧">
-            Classicに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AffectDetection.html"
+            title="AffectDetectionに関する論文・技術記事メモの一覧">
+            AffectDetectionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li></ul>
