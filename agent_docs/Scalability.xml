@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-09">
+<paper-list last-updated="2026-07-23">
 <paper-entry>
 <title>[Paper Note] VGGT-$Ω$, Jianyuan Wang+, CVPR'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.15195</original-paper-blog-link>
@@ -1102,6 +1102,26 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6016" target="_blank" rel="noopener noreferrer">[Paper Note] Scaling Language Models: Methods, Analysis & Insights from Training Gopher, Jack W. Rae+, arXiv'21, 2021.12</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6015" target="_blank" rel="noopener noreferrer">大規模言語モデルの次期バージョンPLaMo 3シリーズにおける120B事前学習モデル、31B蒸留モデルの評価, PFN, 2026.07</a>
 <br><br>で利用されている weight reusingについて、`G3.3 Warm starting` に記載されている。概要としては<br>- LLMのキャパシティを増大させる際に、幅をスケーリングさせるよりも、深さをスケーリングさせる方が有望な結果となった<br><br>### 深さのスケーリング方法のbest practice<br>- 深さをスケーリングさせる、すなわち、5 layer -> 7 layerに拡張したい、という場合は、元の学習済みレイヤーを以下のルールによって複製することによって、拡張する:<br>  - `round_int(range(num_layers_new)/num_layers_new * num_layers_old)`<br>  - たとえば、`A B C D E` の5つのレイヤーで構成されているモデルがあったときに、これを7 layerに拡張したい場合は、上記indexに従って7つのレイヤーに学習済みレイヤーを割り当てると、`A B B C D D E` となる。<br><br>### 幅のスケーリング方法のbest practice<br>-  （widthの拡張方法については正しく読めているかかなり自信がなく、間違っている可能性が非常に高いので注意）<br>- 幅をスケーリングさせる際は、MHA の weight matrices に対して列方向のコピー→行方向のコピー→ ノイズの注入を行う。<br>  - 前提として以下を考える:<br>    - MHAのQKV, outputのprojectionをそれぞれ、`W_q \in R^{d_model \times d_k}`, `W_k \in R^{d_model \times d_k}`, `W_v \in R^{d_model \times d_v}`, `W_o \in R^{h d_v \times d_model}` とする。<br>    - このとき、オリジナルのtransformer論文では、`d_k = d_v = d_model/h` としている。<br>    - つまり、各headに対応するW_{q, k, v, o}を列方向にconcatした行列 W^concat_{q, k, v, o}を考えると、列方向がh倍されるので、`W^concat_{q, k, v, o} \in R^{d_model \times d_model}` の正方行列で表現できる。ここで、`h * d_v= h * d_k= h * d_model/h = d_model` を用いた。<br>    - この `W^{concat}_{*}` に対する操作を定義することで、multihead attentionが扱う幅を変更することができる。<br>  - 元論文では、weight matricesと一言で言及されているが、これは（おそらく）`W^{concat}_{q, k, v, o}` のことを指していると思われる。実際、説明をする際は正方行列を前提に考えている（attention headごとに独立して考える元論文の数式では正方行列は weight matrices に出現しない）。<br>  - まず `W^{concat}_{*}` において、head sizeをH, head数をnとしたときに、`nH \times nH` の行列を列方向にtilingすることによってattention headの数をmに拡張する。このとき、`d_k`, `d_v` のサイズは固定する。たとえば、head数をnからmに増やす際、最初のm-n個のheadを `W^{concat}_{*}` の右側に複製することによって拡張する、と説明されている。<br>    - これはすなわち、個々のheadが扱う情報量は変化させずに、代わりにhead数を増やすことでスケーリングさせる、ということを指していると考えられる。<br>    - 続いて、head数が増えたことによって `W^{concat}_{*}` が正方行列ではなくなった。これが正方行列になっていないとattentionの前後でbottleneck activation size（元論文ではd_modelのことをbottleneck activation sizeと呼称している）が変化してしまうので、正方行列にしなければならない。<br>    - これを正方行列にするために、列方向に複製した行列の上端から数えて `(m-n) * d_k` 行分を行方向にconcatする。<br>    - 最終的に、新たに初期化された重みに対してノイズを注入する。<br>    - これによって構築された `W^{concat}_{*}` を図示したものが、下記Figure A32 と思われる。<br>    - また、上記ではMHAの説明をしたが、MLPなどのd_modelが関わる各種weight matricesもwidthの拡張に含まれていると考えられる（じゃないとwidthの拡張と呼べないし）。<br>- optimizerの状態は再初期化して学習を実施する。<br>  - Adam optimizerの状態に対して似たような処理を実施したが性能向上にはつながらなかった<br><br><img src="https://github.com/user-attachments/assets/bd2999de-feda-4edd-bc03-902904574240" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Scaling Agentic RL: 365,000+ Environments for SWE, Terminal, and Search, Prime Intellect, 2026.07</title>
+<original-paper-blog-link>https://www.primeintellect.ai/blog/scaling-agentic-rl</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6106</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Evaluation, Blog, PostTraining, One-Line Notes, Scalability, Environment</tags>
+<repo-issue-date>2026-07-23</repo-issue-date>
+<issue-body>https://www.primeintellect.ai/blog/scaling-agentic-rl</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/primeintellect/status/2080051385698291937?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>36.5kのagentic RLのためのenvironments。対象はSWE, Search, terminal。全てのタスクセットが、任意のハーネス、ランタイム上でone commandで実行可能とのこと。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
