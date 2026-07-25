@@ -5783,6 +5783,43 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] MegaMath: Pushing the Limits of Open Math Corpora, Fan Zhou+, COLM'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2504.02807</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2180</repo-issue-link>
+<tags>Pretraining, NLP, Dataset, LanguageModel, SyntheticData, Coding, Mathematics, mid-training, COLM, Selected Papers/Blogs, KeyPoint Notes</tags>
+<repo-issue-date>2025-07-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2504.02807
+# Authors
+  - Fan Zhou
+  - Zengzhi Wang
+  - Nikhil Ranjan
+  - Zhoujun Cheng
+  - Liping Tang
+  - Guowei He
+  - Zhengzhong Liu
+  - Eric P. Xing
+# Abstract
+  - Mathematical reasoning is a cornerstone of human intelligence and a key benchmark for advanced capabilities in large language models (LLMs). However, the research community still lacks an open, large-scale, high-quality corpus tailored to the demands of math-centric LLM pre-training. We present MegaMath, an open dataset curated from diverse, math-focused sources through following practices: (1) Revisiting web data: We re-extracted mathematical documents from Common Crawl with math-oriented HTML optimizations, fasttext-based filtering and deduplication, all for acquiring higher-quality data on the Internet. (2) Recalling Math-related code data: We identified high quality math-related code from large code training corpus, Stack-V2, further enhancing data diversity. (3) Exploring Synthetic data: We synthesized QA-style text, math-related code, and interleaved text-code blocks from web data or code data. By integrating these strategies and validating their effectiveness through extensive ablations, MegaMath delivers 371B tokens with the largest quantity and top quality among existing open math pre-training datasets.
+# Translation (by gpt-4o-mini)
+- 数学的推論は人間の知能の基盤であり、大規模言語モデル（LLMs）の高度な能力の重要なベンチマークです。しかし、研究コミュニティは、数学中心のLLMの事前学習の要求に応じたオープンで大規模かつ高品質なコーパスをまだ持っていません。そこで、私たちはMegaMathを提案します。これは、多様な数学に焦点を当てたソースからキュレーションされたオープンデータセットで、以下の手法に従って作成されました：(1) ウェブデータの再検討：Common Crawlから数学文書を再抽出し、数学指向のHTML最適化、fasttextベースのフィルタリング、重複排除を行い、インターネット上でより高品質なデータを取得しました。(2) 数学関連のコードデータの再確認：大規模なコードトレーニングコーパスであるStack-V2から高品質な数学関連コードを特定し、データの多様性をさらに向上させました。(3) 合成データの探索：ウェブデータやコードデータからQAスタイルのテキスト、数学関連のコード、テキストとコードのブロックを交互に合成しました。これらの戦略を統合し、その効果を広範なアブレーションを通じて検証することで、MegaMathは既存のオープンな数学事前学習データセットの中で最大の量と最高の品質を持つ371Bトークンを提供します。
+# Summary (by gpt-4o-mini)
+- MegaMathは、数学に特化したオープンデータセットで、LLMの数学的推論能力を向上させるために作成された。ウェブデータの再抽出、数学関連コードの特定、合成データの生成を通じて、371Bトークンの高品質なデータを提供し、既存のデータセットを上回る量と品質を実現した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/fazhou_998/status/1942610771915202590?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>非常に大規模な数学の事前学習/mid-training向けのデータセット<br><br>CommonCrawlのHTMLから、さまざまなフィルタリング処理（reformatting, 2 stageのHTML parserの活用（片方はnoisyだが高速、もう一方は高性能だが遅い）, fasttextベースの分類器による抽出, deduplication等）を実施しMegaMath-Webを作成、また、MegaMathWebをさらに分類器で低品質なものをフィルタリングし、LLMによってノイズ除去、テキストのreorganizingを実施し（≠ピュアな合成データ）継続事前学習、mid-training向けの高品質なMegaMath-Web-Proを作成。<br><br>MegaMathCodeはThe Stack V2 (<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2199" target="_blank" rel="noopener noreferrer">[Paper Note] StarCoder 2 and The Stack v2: The Next Generation, Anton Lozhkov+, arXiv'24</a>
+) をベースにしており、mathematical reasoning, logic puzzles, scientific computationに関するコードを収集。まずこれらのコードと関連が深い11のプログラミング言語を選定し、そのコードスニペットのみを対象とする。次にstrong LLMを用いて、数学に関するrelevanceスコアと、コードの品質を0--6のdiscrete scoreでスコアリングし学習データを作成。作成した学習データでSLMを学習し大規模なフィルタリングを実施することでMegaMath-Codeを作成。<br><br>最後にMegaMath-{Web, code}を用いて、Q&A, code data, text&code block dataの3種類を合成。Q&Aデータの合成では、MegaMath-WebからQAペアを抽出し、多様性とデータ量を担保するためQwen2.5-72B-Instruct, Llama3.3-70B-Instructの両方を用いて、QAのsolutionを洗練させる（reasoning stepの改善, あるいはゼロから生成する[^1])ことで生成。また、code dataでは、pythonを対象にMegaMath-Codeのデータに含まれるpython以外のコードを、Qwen2.5-Coder-32B-Instructと、Llamd3.1-70B-Instructによってpythonに翻訳することでデータ量を増やした。text&code blockデータでは、MegaMath-Webのドキュメントを与えて、ブロックを生成（タイトル、数式、結果、コードなど[^1]）し、ブロックのverificationを行い（コードが正しく実行できるか、実行結果とanswerが一致するか等）、verifiedなブロックを残すことで生成。<br><br><img src="https://github.com/user-attachments/assets/8975019b-5ab4-437c-bd4e-f3b761439c9c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/995ea6ce-69eb-4f88-8a98-9e55de3e7814" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/c6d1ec61-49f4-459f-92b2-fa0a2625178e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: この辺は論文の記述を咀嚼して記述しており実サンプルを見ていないので少し正しい認識か不安</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs   with Nothing, Zhangchen Xu+, ICLR'25, 2024.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2406.08464</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2094</repo-issue-link>
@@ -11918,7 +11955,8 @@ UserModelを表現する際に、従来は単語の集合などが用いられ�
 </p><p>THINNING MACHINESによる最初のOpenWeightモデル。975B-41B</p><p>- フルスクラッチで学習したReasoningモデル<br>- 1M context window<br>- text, image, audio, video 45Tトークンで学習<br>- バランスよくさまざまな領域で性能を発揮するように訓練し、Tinker上でのfinetuningやカスタマイゼーションの良い基盤として機能することを目指した<br>- vision, audioドメインに関してはencoder freeアーキテクチャを採用<br>- audio signalの入力は dMel spectrogramsと呼ばれる手法を採用<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6051" target="_blank" rel="noopener noreferrer">[Paper Note] dMel: Speech Tokenization made Simple, Richard He Bai+, arXiv'24, 2024.07</a>
 <br>- 画像は40x40のパッチに分割され、4つのhMLPと呼ばれるレイヤーでエンコーディング<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6050" target="_blank" rel="noopener noreferrer">[Paper Note] Three things everyone should know about Vision Transformers, Hugo Touvron+, ECCV'22, 2022.03</a>
 <br>- IFの訓練には、Rubric basedなgraderとclaims graderの2種類のgraderを用いることで、helpfulnessとhallucinationを同時に低減<br>  - Rubric basedなgraderはチェックリストに基づいてスコアリング<br>  - claims graderはfactualな主張をagentic web searchを通じてverificationする<br>- アーキテクチャはDeepSeek V3を踏襲し、256のexpertsと2つのshared expertを採用し、6つのexpertsがactivateされる<br>- SWAとGlobal attentionの比率は5:1でKV Headは8つ (GQA)<br>- **相対位置エンコーディングを用いることでRoPEよりもlong contextに対してより高い外挿性能を示した**<br>　　- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2386" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Attention with Relative Position Representations, Peter Shaw+, NAACL'18</a>
-<br>- K, Vのprojection後、**およびattentionとMLPが残差ストリームに合流する前にshort convolutionを導入**<br>- optimiserはMuonとAdamWのハイブリッドで、前者は巨大な行列の重みに対して適用し、そのほかは後者を利用<br>- 重み自体が多様体上に存在するように制約することが有効であったことに着想を得て、weight decayを学習率の2乗に連動させることでモデルの重みの大きさを安定させたとのこと<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3001" target="_blank" rel="noopener noreferrer">Modular Manifolds, Jeremy Bernstein+, THINKING MACHINES, 2025.09</a>
+<br>- K, Vのprojection後、**およびattentionとMLPが残差ストリームに合流する前にshort convolutionを導入**<br>  - QKV projection後に convolution を導入するアーキテクチャは下記研究で提案<br>    - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4577" target="_blank" rel="noopener noreferrer">[Paper Note] Primer: Searching for Efficient Transformers for Language Modeling, David R. So+, NIPS'21, 2021.09</a>
+<br>- optimiserはMuonとAdamWのハイブリッドで、前者は巨大な行列の重みに対して適用し、そのほかは後者を利用<br>- 重み自体が多様体上に存在するように制約することが有効であったことに着想を得て、weight decayを学習率の2乗に連動させることでモデルの重みの大きさを安定させたとのこと<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3001" target="_blank" rel="noopener noreferrer">Modular Manifolds, Jeremy Bernstein+, THINKING MACHINES, 2025.09</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6055" target="_blank" rel="noopener noreferrer">[Paper Note] Why Gradients Rapidly Increase Near the End of Training, Aaron Defazio, arXiv'25, 2025.06</a>
 <br>- 事後学習としては、まずKimi K2.5を含むOpenWeightモデルで合成データ上でSFTをし、その後合成、あるいは人間が作成したenvironment上で大規模なRLを実施<br>  - RLは非同期RLを異様し、ロールアウト数に対して推論能力が対数線形にスケールした。<br>  - 最終的に30Mロールアウト以上のRLを実施した<br>- システムメッセージを変更し、トークン単位のコストを調整することでreasoning effortを調整<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6064" target="_blank" rel="noopener noreferrer">Controlling Reasoning Effort in LLMs, Sebastian Raschka, 2026.07</a>
 <br>- **276B-A12BのInkling-Smallもプレビュー段階にあり、agenticな能力においてInklingに近い性能を達成しており、今後公開予定**<br><br>1M context windowを実現した工夫は特に書かれていなかったように感じるが、よく使われるのはKV CacheをコンパクトにするためのSparse Attention、あるいはLinear Attentionなのに対し、本モデルでは使われていないように見える。linear attentionでなくとも、SWAとGlobal Attentionのハイブリッド、かつGQAによって、KV Cacheの肥大化を実用レベルで抑制できるのだろうか。また、外挿性能に関してはRoPEは採用せず、相対位置エンコーディングのを採用したという点が効いているのだろうか。1Mレベルでのcontextでの評価がなさそうに見えるので性能はよくわからない。<br><br>RoPEのlong contextでの限界を示した以下の研究を思い出した:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5505" target="_blank" rel="noopener noreferrer">[Paper Note] RoPE Distinguishes Neither Positions Nor Tokens in Long Contexts, Provably, Yufeng Du+, arXiv'26, 2026.05</a>
@@ -13583,7 +13621,7 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 </div>
 {% endraw %}
 
-</p><p>利用されているOptimizer:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25</a>
+</p><p>利用されているOptimizer:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25, 2025.02</a>
 </p><p>2つほどバグがあり修正された模様:<br>
 
 {% raw %}
@@ -13632,7 +13670,7 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 
 </p><p>以下のような技術が使われている模様<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1937" target="_blank" rel="noopener noreferrer">[Paper Note] Rewriting Pre-Training Data Boosts LLM Performance in Math and Code, Kazuki Fujii+, ICLR'26, 2025.05</a>
 <br>- MLA <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1621" target="_blank" rel="noopener noreferrer">MHA vs MQA vs GQA vs MLA, Zain ul Abideen, 2024.07</a>
-<br>- MuonCip<br>- MuonOptimizer <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25</a>
+<br>- MuonCip<br>- MuonOptimizer <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2202" target="_blank" rel="noopener noreferrer">[Paper Note] Muon is Scalable for LLM Training, Jingyuan Liu+, arXiv'25, 2025.02</a>
  <br>- QK-Clip<br>  - 参考（こちらはLayerNormを使っているが）: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1202" target="_blank" rel="noopener noreferrer">[Paper Note] Unified-IO 2: Scaling Autoregressive Multimodal Models with Vision, Language, Audio, and Action, Jiasen Lu+, CVPR'24, 2023.12</a>
 <br>- RLVR<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1719" target="_blank" rel="noopener noreferrer">DeepSeek-R1, DeepSeek, 2025.01</a>
  <br>- Self-Critique<br>  - 関連: <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2274" target="_blank" rel="noopener noreferrer">[Paper Note] Inference-Time Scaling for Generalist Reward Modeling, Zijun Liu+, arXiv'25</a>

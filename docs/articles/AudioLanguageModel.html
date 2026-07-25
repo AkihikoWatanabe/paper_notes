@@ -1618,7 +1618,8 @@ My Issue
 </p><p>THINNING MACHINESによる最初のOpenWeightモデル。975B-41B</p><p>- フルスクラッチで学習したReasoningモデル<br>- 1M context window<br>- text, image, audio, video 45Tトークンで学習<br>- バランスよくさまざまな領域で性能を発揮するように訓練し、Tinker上でのfinetuningやカスタマイゼーションの良い基盤として機能することを目指した<br>- vision, audioドメインに関してはencoder freeアーキテクチャを採用<br>- audio signalの入力は dMel spectrogramsと呼ばれる手法を採用<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6051" target="_blank" rel="noopener noreferrer">[Paper Note] dMel: Speech Tokenization made Simple, Richard He Bai+, arXiv'24, 2024.07</a>
 <br>- 画像は40x40のパッチに分割され、4つのhMLPと呼ばれるレイヤーでエンコーディング<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6050" target="_blank" rel="noopener noreferrer">[Paper Note] Three things everyone should know about Vision Transformers, Hugo Touvron+, ECCV'22, 2022.03</a>
 <br>- IFの訓練には、Rubric basedなgraderとclaims graderの2種類のgraderを用いることで、helpfulnessとhallucinationを同時に低減<br>  - Rubric basedなgraderはチェックリストに基づいてスコアリング<br>  - claims graderはfactualな主張をagentic web searchを通じてverificationする<br>- アーキテクチャはDeepSeek V3を踏襲し、256のexpertsと2つのshared expertを採用し、6つのexpertsがactivateされる<br>- SWAとGlobal attentionの比率は5:1でKV Headは8つ (GQA)<br>- **相対位置エンコーディングを用いることでRoPEよりもlong contextに対してより高い外挿性能を示した**<br>　　- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2386" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Attention with Relative Position Representations, Peter Shaw+, NAACL'18</a>
-<br>- K, Vのprojection後、**およびattentionとMLPが残差ストリームに合流する前にshort convolutionを導入**<br>- optimiserはMuonとAdamWのハイブリッドで、前者は巨大な行列の重みに対して適用し、そのほかは後者を利用<br>- 重み自体が多様体上に存在するように制約することが有効であったことに着想を得て、weight decayを学習率の2乗に連動させることでモデルの重みの大きさを安定させたとのこと<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3001" target="_blank" rel="noopener noreferrer">Modular Manifolds, Jeremy Bernstein+, THINKING MACHINES, 2025.09</a>
+<br>- K, Vのprojection後、**およびattentionとMLPが残差ストリームに合流する前にshort convolutionを導入**<br>  - QKV projection後に convolution を導入するアーキテクチャは下記研究で提案<br>    - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4577" target="_blank" rel="noopener noreferrer">[Paper Note] Primer: Searching for Efficient Transformers for Language Modeling, David R. So+, NIPS'21, 2021.09</a>
+<br>- optimiserはMuonとAdamWのハイブリッドで、前者は巨大な行列の重みに対して適用し、そのほかは後者を利用<br>- 重み自体が多様体上に存在するように制約することが有効であったことに着想を得て、weight decayを学習率の2乗に連動させることでモデルの重みの大きさを安定させたとのこと<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3001" target="_blank" rel="noopener noreferrer">Modular Manifolds, Jeremy Bernstein+, THINKING MACHINES, 2025.09</a>
 <br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6055" target="_blank" rel="noopener noreferrer">[Paper Note] Why Gradients Rapidly Increase Near the End of Training, Aaron Defazio, arXiv'25, 2025.06</a>
 <br>- 事後学習としては、まずKimi K2.5を含むOpenWeightモデルで合成データ上でSFTをし、その後合成、あるいは人間が作成したenvironment上で大規模なRLを実施<br>  - RLは非同期RLを異様し、ロールアウト数に対して推論能力が対数線形にスケールした。<br>  - 最終的に30Mロールアウト以上のRLを実施した<br>- システムメッセージを変更し、トークン単位のコストを調整することでreasoning effortを調整<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6064" target="_blank" rel="noopener noreferrer">Controlling Reasoning Effort in LLMs, Sebastian Raschka, 2026.07</a>
 <br>- **276B-A12BのInkling-Smallもプレビュー段階にあり、agenticな能力においてInklingに近い性能を達成しており、今後公開予定**<br><br>1M context windowを実現した工夫は特に書かれていなかったように感じるが、よく使われるのはKV CacheをコンパクトにするためのSparse Attention、あるいはLinear Attentionなのに対し、本モデルでは使われていないように見える。linear attentionでなくとも、SWAとGlobal Attentionのハイブリッド、かつGQAによって、KV Cacheの肥大化を実用レベルで抑制できるのだろうか。また、外挿性能に関してはRoPEは採用せず、相対位置エンコーディングのを採用したという点が効いているのだろうか。1Mレベルでのcontextでの評価がなさそうに見えるので性能はよくわからない。<br><br>RoPEのlong contextでの限界を示した以下の研究を思い出した:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5505" target="_blank" rel="noopener noreferrer">[Paper Note] RoPE Distinguishes Neither Positions Nor Tokens in Long Contexts, Provably, Yufeng Du+, arXiv'26, 2026.05</a>
@@ -2261,47 +2262,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/Architecture.html" title="Architectureに関する論文・技術記事メモの一覧">Architectureに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Author-Thread-Post.html" title="Author Thread-Postに関する論文・技術記事メモの一覧">Author Thread-Postに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/Architecture.html" title="Architectureに関する論文・技術記事メモの一覧">Architectureに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/COLM.html" title="COLMに関する論文・技術記事メモの一覧">COLMに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PersonalizedDocumentSummarization.html"
-            title="PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧">
-            PersonalizedDocumentSummarizationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Reference-Collection.html"
+            title="Reference Collectionに関する論文・技術記事メモの一覧">
+            Reference Collectionに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 38</span> 
-  <span class="post-badge badge-new">📝 38</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Prompting.html"
-            title="Promptingに関する論文・技術記事メモの一覧">
-            Promptingに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/ExplicitFeedback.html"
+            title="ExplicitFeedbackに関する論文・技術記事メモの一覧">
+            ExplicitFeedbackに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 83</span> 
-  <span class="post-badge badge-new">📝 83</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
+  <span class="post-badge badge-new">📝 1</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/WordAlignment.html"
-            title="WordAlignmentに関する論文・技術記事メモの一覧">
-            WordAlignmentに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/WI.html"
+            title="WIに関する論文・技術記事メモの一覧">
+            WIに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 5</span> 
-  <span class="post-badge badge-new">📝 5</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 4</span> 
+  <span class="post-badge badge-new">📝 4</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/Online-Interactive.html"
-            title="Online/Interactiveに関する論文・技術記事メモの一覧">
-            Online/Interactiveに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/AutomaticPromptEngineering.html"
+            title="AutomaticPromptEngineeringに関する論文・技術記事メモの一覧">
+            AutomaticPromptEngineeringに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 10</span> 
-  <span class="post-badge badge-new">📝 10</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 16</span> 
+  <span class="post-badge badge-new">📝 16</span>
 </span>
 </a>
         </li></ul>
