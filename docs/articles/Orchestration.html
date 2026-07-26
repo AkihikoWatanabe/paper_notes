@@ -25,11 +25,11 @@
 <meta property="og:url" content="http://akihikowatanabe.github.io/paper_notes/articles/Orchestration.html" />
 <meta property="og:site_name" content="わたしのべんきょうノート" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-06-27T00:00:00+00:00" />
+<meta property="article:published_time" content="2026-07-25T00:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Orchestrationに関する論文・技術記事メモの一覧" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-06-27T00:00:00+00:00","datePublished":"2026-06-27T00:00:00+00:00","description":"Orchestration [Paper Note] Sakana Fugu Technical Report, Yujin Tang+, arXiv&#39;26, 2026.06 Paper/Blog Link My Issue #Multi #NLP #LanguageModel #AIAgents #reading #Initial Impression Notes #Author Thread-Post Issue Date: 2026-06-27 GPT Summary- LLMの特化を統合するために、オーケストレーター型モデルSakana Fuguを開発。Fuguはユーザーのクエリを理解し、動的にエージェントフレームワークを設計。これにより、様々な難解なタスクで最先端の性能を達成。日常利用と高難度応答のバランスを取るFuguと、回答品質を優先するFugu-Ultraを公開。トレーニング方法には大規模ファインチューニングや強化学習を含む。研究がマルチエージェントシステムの発展に寄与することを目指す。 Comment元ポスト:","headline":"Orchestrationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Orchestration.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Orchestration.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"AkihikoWATANABE"},"dateModified":"2026-07-25T00:00:00+00:00","datePublished":"2026-07-25T00:00:00+00:00","description":"Orchestration [Paper Note] Sakana Fugu Technical Report, Yujin Tang+, arXiv&#39;26, 2026.06 Paper/Blog Link My Issue #Multi #NLP #LanguageModel #AIAgents #reading #Initial Impression Notes #Author Thread-Post Issue Date: 2026-06-27 GPT Summary- LLMの特化を統合するために、オーケストレーター型モデルSakana Fuguを開発。Fuguはユーザーのクエリを理解し、動的にエージェントフレームワークを設計。これにより、様々な難解なタスクで最先端の性能を達成。日常利用と高難度応答のバランスを取るFuguと、回答品質を優先するFugu-Ultraを公開。トレーニング方法には大規模ファインチューニングや強化学習を含む。研究がマルチエージェントシステムの発展に寄与することを目指す。 Comment元ポスト:","headline":"Orchestrationに関する論文・技術記事メモの一覧","mainEntityOfPage":{"@type":"WebPage","@id":"http://akihikowatanabe.github.io/paper_notes/articles/Orchestration.html"},"url":"http://akihikowatanabe.github.io/paper_notes/articles/Orchestration.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="icon" href="">
   <link rel="canonical" href="http://akihikowatanabe.github.io">
@@ -802,7 +802,7 @@ function googleTranslateElementInit() {
 最近は特にLLMの勉強が多めです :)</h2>
 
   <div class="post-meta">
-    <time class="dt-published" datetime="2026-06-27T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jun 27, 2026
+    <time class="dt-published" datetime="2026-07-25T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 25, 2026
     </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> AkihikoWATANABE</span>
     
 
@@ -837,7 +837,7 @@ function googleTranslateElementInit() {
 
 
 
-    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 30 mins</span>
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 32 mins</span>
   </div></header>
 </div>
     </div>
@@ -1313,6 +1313,49 @@ My Issue
 </p><p>サブエージェントを生成するオーケストレータを学習し、動的に直面するタスクに適応したサブエージェント（適切なコンテキスト, 指示, ツール, モデル）[^1]を持つエージェントを構築し、実行を委譲することで、固定されたハーネスに依存せず、人間がエンジニアリングするコストも削減しながら、性能が向上する、という話に見える。<br><img src="https://github.com/user-attachments/assets/6c4da7f2-6145-4204-b7d3-913ce5e99b81" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>ベンチマークの性能向上が非常に大きく、効果的な手法であることが伺える。<br><br>[^1]: このようなサブエージェントのAbstractionを定義したのも貢献だと考えられる。</p><p>具体的な手法としては下記で、(a)オーケストレータエージェントがユーザからタスクを受け取り、サブタスクを解くためにサブエージェントを構築し委譲する。その後結果を受けとり状態を更新し、さらにサブエージェントを構築しタスクを委譲する、といった操作を繰り返す。(b)サブエージェントは(M, T, I, C)によって抽象化され、それぞれモデル、ツール、指示、コンテキストである。図中の(c)では自己教師あり学習が利用される旨が記述されているが、本文中ではSFTを使うと記述されているためここは齟齬があるように感じる（タイポも含まれている）。オーケストレーションのポイントは、タスクのオーケストレーションと、モデルのルーティングの二つの要素に分けられる。前者をSFTで学習し、後者はInstructionをiterativeに改善するプロセスで最適化する。<br><br>具体的には、オーケストレーションという特化したタスクを学習させるため、今回はexpertによる正解となる(T, I, C)を模倣できるように、SFTで学習する（GRPOのような手法でも学習できることについても言及されている点には注意）。<br>また、後者のモデルルーティングの最適化については、さまざまなモデルに対してInstructionを与え、得られたtrajectoryに対して性能とコストを計算し、これらを考慮してInstructionを更新することを繰り返すAutomatic Prompt Optimizationを採用している。これにより、コストと性能のパレート最適な構成を見つける。<br><br><img src="https://github.com/user-attachments/assets/bf4f6452-5b67-4734-b061-45a44ee15a1e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></span><br><br>
 </article>
 <article class="paper-entry">
+<h3 id="auto-routing-models-6119" class="title-link">Auto-Routing Models, dari.dev, 2026.07</h3><br><a href="https://dari.dev/blog/auto-routing-models" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+Paper/Blog Link
+</a><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6119" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+  <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
+</svg>
+My Issue
+</a><br>
+<a class="button" href="Article.html" target="_blank" rel="noopener noreferrer">#Article</a>
+<a class="button" href="EfficiencyImprovement.html" target="_blank" rel="noopener noreferrer">#EfficiencyImprovement</a>
+<a class="button" href="NLP.html" target="_blank" rel="noopener noreferrer">#NLP</a>
+<a class="button" href="LanguageModel.html" target="_blank" rel="noopener noreferrer">#LanguageModel</a>
+<a class="button" href="Blog.html" target="_blank" rel="noopener noreferrer">#Blog</a>
+<a class="button" href="SmallModel.html" target="_blank" rel="noopener noreferrer">#SmallModel</a>
+<a class="button" href="Selected-Papers-Blogs.html" target="_blank" rel="noopener noreferrer">#Selected Papers/Blogs</a>
+<a class="button" href="Initial-Impression-Notes.html" target="_blank" rel="noopener noreferrer">#Initial Impression Notes</a>
+<span class="issue_date">Issue Date: 2026-07-25</span>
+<span class="snippet"><span>Comment</span><p>元ポスト:
+
+
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/avyvar/status/2080714589218766993?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+
+
+</p><p>HF:
+
+
+<a href="https://huggingface.co/dari-ai/router-slm" target="_blank" rel="noopener noreferrer">https://huggingface.co/dari-ai/router-slm</a>
+
+
+</p><p>Sakana FuguのようなLLMプールの中からターン単位で適切なLLMを選択するオーケストレータ（ルータ）で、QwenのLoRA Weightとして学習された重みが公開されているようである。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5362" target="_blank" rel="noopener noreferrer">[Paper Note] TRINITY: An Evolved LLM Coordinator, Jinglue Xu+, ICLR'26, 2025.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5361" target="_blank" rel="noopener noreferrer">Sakana Fugu: A Multi-Agent Orchestration System as a Foundation Model, sakana.ai, 2026.04</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5860" target="_blank" rel="noopener noreferrer">Sakana Fugu: One Model to Command Them All, SakanaAI, 2026.06</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5884" target="_blank" rel="noopener noreferrer">[Paper Note] Sakana Fugu Technical Report, Yujin Tang+, arXiv'26, 2026.06</a>
+</p></span><br><br>
+</article>
+<article class="paper-entry">
 <h3 id="sakana-fugu-5860" class="title-link">Sakana Fugu: One Model to Command Them All, SakanaAI, 2026.06</h3><br><a href="https://sakana.ai/fugu-release/" target="_blank" rel="noopener noreferrer" class="external-link-badge"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
   <path d="M5 5h5V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5h-2v5H5V5z"/>
@@ -1448,47 +1491,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
 </article>
-<div class="post-nav"><a class="previous" href="/paper_notes/articles/ICLR.html" title="ICLRに関する論文・技術記事メモの一覧">ICLRに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Test-time-Learning.html" title="Test-time Learningに関する論文・技術記事メモの一覧">Test-time Learningに関する論文・技術記事メモの一覧</a></div><div class="post-related">
+<div class="post-nav"><a class="previous" href="/paper_notes/articles/One-Line-Notes.html" title="One-Line Notesに関する論文・技術記事メモの一覧">One-Line Notesに関する論文・技術記事メモの一覧</a><a class="next" href="/paper_notes/articles/Post.html" title="Postに関する論文・技術記事メモの一覧">Postに関する論文・技術記事メモの一覧</a></div><div class="post-related">
       <div>Related Articles</div>
       <ul>
         <li class="">
           <a class="post-link"
-            href="/paper_notes/articles/PartialRollout.html"
-            title="PartialRolloutに関する論文・技術記事メモの一覧">
-            PartialRolloutに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/In-ContextLearning.html"
+            title="In-ContextLearningに関する論文・技術記事メモの一覧">
+            In-ContextLearningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 51</span> 
+  <span class="post-badge badge-new">📝 51</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/RectifiedFlow.html"
-            title="RectifiedFlowに関する論文・技術記事メモの一覧">
-            RectifiedFlowに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/Reasoning.html"
+            title="Reasoningに関する論文・技術記事メモの一覧">
+            Reasoningに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 6</span> 
-  <span class="post-badge badge-new">📝 6</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 363</span> 
+  <span class="post-badge badge-new">📝 363</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/CameraPoseEstimation.html"
-            title="CameraPoseEstimationに関する論文・技術記事メモの一覧">
-            CameraPoseEstimationに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/NaturalLanguageUnderstanding.html"
+            title="NaturalLanguageUnderstandingに関する論文・技術記事メモの一覧">
+            NaturalLanguageUnderstandingに関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 3</span> 
+  <span class="post-badge badge-new">📝 3</span>
 </span>
 </a>
         </li><li class="">
           <a class="post-link"
-            href="/paper_notes/articles/AutonomousVehicle.html"
-            title="AutonomousVehicleに関する論文・技術記事メモの一覧">
-            AutonomousVehicleに関する論文・技術記事メモの一覧
+            href="/paper_notes/articles/2D-(Image).html"
+            title="2D (Image)に関する論文・技術記事メモの一覧">
+            2D (Image)に関する論文・技術記事メモの一覧
 
-<span class="post-badges"><span class="post-badge badge-top">📝 1</span> 
-  <span class="post-badge badge-new">📝 1</span>
+<span class="post-badges"><span class="post-badge badge-top">📝 </span> 
+  <span class="post-badge badge-new">📝 </span>
 </span>
 </a>
         </li></ul>
