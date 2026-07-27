@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-07-26">
 <paper-entry>
+<title>{G}igatoken: SIMD and Cache Hierarchies for 1000x Faster Byte-Pair Encoding Tokenization on Modern CPUs, Marcel R{\o}d, 2026.07</title>
+<original-paper-blog-link>https://github.com/marcelroed/gigatoken</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6125</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, Tokenizer</tags>
+<repo-issue-date>2026-07-26</repo-issue-date>
+<issue-body>https://github.com/marcelroed/gigatoken</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/marcelroed/status/2079642154960564352?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/himkt/status/2081141378051125586?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>どうやら、上記所見によると<br>- 与えられた文字列に対して正規表現を適用し、あらかじめ単語の境界を決める処理（pretokenize）を、<br>  - SIMD命令（1つの命令を同時に複数のデータに対して適用;各バイトがどの文字クラスに属するかを判定する）と、<br>  - ビット演算（文字クラスの判定結果に対して、シフトにより境界判定に必要な過去の文字クラス情報を構成し、シフト前後の系列に対するビット演算によりtokenizerの境界判定処理を実装みたいなことをやっているらしい）によって実現<br>- short pretokenに対するBPEをキャッシュする<br><br>という二段構えで高速化が実現されているようである。<br><br>---<br>参考:<br>- C++ SIMD命令入門(初心者向け), ancienthawk, 2025.08:<br>
+
+{% raw %}
+<a href="https://zenn.dev/ancienthawk/articles/for_simd_beginner_cp" target="_blank" rel="noopener noreferrer">https://zenn.dev/ancienthawk/articles/for_simd_beginner_cp</a>
+{% endraw %}
+
+<br>- ゼロから作るLLM Part1: BPEトークナイザーの実装, so_dev000, 2025.11:
+
+{% raw %}
+<a href="https://qiita.com/so_dev000/items/037a21cba4e52182daea" target="_blank" rel="noopener noreferrer">https://qiita.com/so_dev000/items/037a21cba4e52182daea</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Understanding and Improving Layer Normalization, Jingjing Xu+, arXiv'19, 2019.11</title>
+<original-paper-blog-link>https://arxiv.org/abs/1911.07013</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6124</repo-issue-link>
+<tags>Analysis, NLP, Transformer, Architecture, Normalization, read-later</tags>
+<repo-issue-date>2026-07-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/1911.07013
+# Authors
+  - Jingjing Xu
+  - Xu Sun
+  - Zhiyuan Zhang
+  - Guangxiang Zhao
+  - Junyang Lin
+# Abstract
+  - Layer normalization (LayerNorm) is a technique to normalize the distributions of intermediate layers. It enables smoother gradients, faster training, and better generalization accuracy. However, it is still unclear where the effectiveness stems from. In this paper, our main contribution is to take a step further in understanding LayerNorm. Many of previous studies believe that the success of LayerNorm comes from forward normalization. Unlike them, we find that the derivatives of the mean and variance are more important than forward normalization by re-centering and re-scaling backward gradients. Furthermore, we find that the parameters of LayerNorm, including the bias and gain, increase the risk of over-fitting and do not work in most cases. Experiments show that a simple version of LayerNorm (LayerNorm-simple) without the bias and gain outperforms LayerNorm on four datasets. It obtains the state-of-the-art performance on En-Vi machine translation. To address the over-fitting problem, we propose a new normalization method, Adaptive Normalization (AdaNorm), by replacing the bias and gain with a new transformation function. Experiments show that AdaNorm demonstrates better results than LayerNorm on seven out of eight datasets.
+# Translation (by gpt-5-nano)
+- Layer normalization (LayerNorm) は中間層の分布を正規化する技術です。これにより、勾配が滑らかになり、訓練が速くなり、一般化精度が向上します。しかし、その有効性の源泉はまだ不明です。本論文の主な貢献は、LayerNorm の理解をさらに一歩進めることです。これまでの多くの研究は、LayerNorm の成功はフォワード正規化にあると考えてきました。これとは異なり、私たちは、平均と分散の微分が、フォワード正規化よりも、逆伝播勾配の再センタリングと再スケーリングによってより重要であることを見出しました。さらに、LayerNorm のパラメータ（バイアスとゲインを含む）は過学習のリスクを高め、ほとんどのケースで機能しないことを示します。実験では、バイアスとゲインを持たない LayerNorm-simple が、4つのデータセットで LayerNorm より優れていることを示しています。En-Vi 機械翻訳で最先端の性能を達成しています。過学習問題に対処するため、バイアスとゲインを新しい変換関数に置換することにより、Adaptive Normalization（AdaNorm）という新しい正規化手法を提案します。実験では、AdaNorm が 8 つのデータセット中 7 つで LayerNorm より良い結果を示しています。
+# Summary (by gpt-4o-mini)
+- Layer normalization (LayerNorm)は中間層の分布を正規化し、訓練を加速し一般化精度を向上させますが、その効果の理由は未解明です。本研究では、LayerNormの理解を深め、逆伝播勾配の再センタリングと再スケーリングがフォワード正規化よりも重要であることを示しました。また、LayerNormのバイアスとゲインが過学習リスクを高めることを明らかにし、バイアスとゲインを排除したLayerNorm-simpleが4つのデータセットで優れた性能を示したことを報告します。さらに、Adaptive Normalization（AdaNorm）を提案し、実験では7つのデータセットでLayerNormを上回る結果を示しています。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Separating Representation from Reconstruction Enables Scalable Text Encoders, Megi Dervishi+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.04011</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6123</repo-issue-link>
+<tags>Embeddings, NLP, LanguageModel, Architecture, Selected Papers/Blogs, Encoder, reading, One-Line Notes, Scalability</tags>
+<repo-issue-date>2026-07-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.04011
+# Authors
+  - Megi Dervishi
+  - Mathurin Videau
+  - Yann LeCun
+# Abstract
+  - While decoders have rapidly scaled, encoders have remained largely unchanged since BERT. We revisit this disparity by frozen backbone evaluation via probing. Under this lens, the representations of BERT encoders become increasingly $\textit{unexploitable}$ by frozen probes, despite improved perplexity. The misalignment originates in BERT's flat design, which couples representation learning to the token reconstruction loss. We propose $\textbf{CrossBERT}$, a two-part architecture that separates the learning of high-quality encoded representations from the rigid grounding of token reconstruction. This design further enables high masking ratios ($\ge 50\%$) and gradient collection over all tokens via a $\textit{Complementary Masking Strategy}$, respectively increasing throughput by $1.5$ to $2\times$ and sample efficiency by $2\times$. Overall, CrossBERT demonstrates monotonic scaling and superior performance on MTEB(eng, v2) and frozen GLUE benchmarks.
+# Translation (by gpt-5-nano)
+- デコーダが急速にスケールしている一方で、エンコーダはBERT以降ほとんど変わっていない。プローブによる凍結バックボーン評価を通じてこの乖離を再検討する。この観点から見ると、BERTエンコーダの表現は凍結プローブによってますます活用不能になる一方で、困惑度は改善されているにもかかわらず。ずれはBERTの平坦な設計に起因しており、それが表現学習をトークン再構成損失に結びつけている。我々はCrossBERTを提案する。これは高品質なエンコード表現の学習を、トークン再構成の硬直的な基盤付けから切り離す二部構成のアーキテクチャである。この設計はさらに、高いマスキング比率（50％以上）と全トークンにわたる勾配収集を、補完的マスキング戦略によって可能にし、それぞれスループットを1.5〜2倍、サンプル効率を2倍向上させる。全体として、CrossBERTは単調なスケーリングを示し、MTEB(eng, v2)および凍結GLUEベンチマークで優れた性能を示す。
+# Summary (by gpt-4o-mini)
+- BERT以降、エンコーダはほとんど変わっていないが、急速に進化するデコーダとの乖離を再評価。BERTエンコーダの表現は凍結プローブで劣化し、平坦な設計が表現学習を阻害している。これに対抗するため、CrossBERTを提案。二部構成のアーキテクチャで、トークン再構成から独立した高品質なエンコード表現を学習。高いマスキング比率と補完的戦略により、スループットとサンプル効率を向上。結果、MTEBおよび凍結GLUEベンチマークで優越性を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2080651166363324847?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>論文の概要としては、BERTは投入された計算量に対してdownstreamタスク性能がスケールしない課題があったが、その原因を、BERTのflatなアーキテクチャが課題であると指摘。BERTはMLM lossで学習されるが、これはトークンの再構築の能力を測定するが、実際の表現の品質を測定できていない。BERTのアーキテクチャが、Representationの学習と、Reconstructionを明示的に分離していない（=flatなアーキテクチャ）ため、結果的にBERTが学習する表現がReconstructionのためのlocalな信号に過度に適合してしまい、abstractionに失敗してしまう（結果的に、計算量を投じれば投じるほどlossは下がるが、downstreamタスクの性能は下がる）、という仮説を立てている。<br><br>解決方法として、表現を学習するEncoderと、マスク部分の再構築をおこなうPredictorをアーキテクチャとして明示的に分離することを提案している。<br><br><img src="https://github.com/user-attachments/assets/79ed5188-73a3-499e-aa4d-9ccc06c2b77f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>これにより、投入した計算量に対してdownstreamタスクの性能がスケールするようになった、という話に見える。<br><img src="https://github.com/user-attachments/assets/d886529c-c23b-45c8-aae9-3b69f8d4b156" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>おそらくアーキテクチャ上の細かい工夫があると思われるので、そこはしっかり読んだ方が良いカッコまだ読めてない）。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>How to train a frontier-level world model, Monso+, 2026.07</title>
 <original-paper-blog-link>https://next-state.github.io/open-dreamer/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6122</repo-issue-link>
@@ -3747,117 +3843,6 @@ Long-Horizon-Terminal-Benchのタスクは通常、数百エピソード、数�
 {% endraw %}
 
 </p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Neural Cellular Automata: From Cells to Pixels, Ehsan Pajouheshgar+, arXiv'25, 2025.06</title>
-<original-paper-blog-link>https://arxiv.org/abs/2506.22899</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6024</repo-issue-link>
-<tags>action_wanted, SIGGRAPH, Author Thread-Post</tags>
-<repo-issue-date>2026-07-11</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2506.22899
-# Authors
-  - Ehsan Pajouheshgar
-  - Yitao Xu
-  - Ali Abbasi
-  - Alexander Mordvintsev
-  - Wenzel Jakob
-  - Sabine Süsstrunk
-# Abstract
-  - Neural Cellular Automata (NCAs) are bio-inspired dynamical systems in which identical cells iteratively apply a learned local update rule to self-organize into complex patterns, exhibiting regeneration, robustness, and spontaneous dynamics. Despite their success in texture synthesis and morphogenesis, NCAs remain largely confined to low-resolution outputs. This limitation stems from (1) training time and memory requirements that grow quadratically with grid size, (2) the strictly local propagation of information that impedes long-range cell communication, and (3) the heavy compute demands of real-time inference at high resolution. In this work, we overcome this limitation by pairing an NCA that evolves on a coarse grid with a lightweight implicit decoder that maps cell states and local coordinates to appearance attributes, enabling the same model to render outputs at arbitrary resolution. Moreover, because both the decoder and NCA updates are local, inference remains highly parallelizable. To supervise high-resolution outputs efficiently, we introduce task-specific losses for morphogenesis (growth from a seed) and texture synthesis with minimal additional memory and computation overhead. Our experiments across 2D/3D grids and mesh domains demonstrate that our hybrid models produce high-resolution outputs in real-time, and preserve the characteristic self-organizing behavior of NCAs.
-# Translation (by gpt-5-nano)
-- ニューラルセルラーオートマタ（NCAs）は、同一のセルが学習された局所更新ルールを反復的に適用して自己組織化し、複雑なパターンを生み出す生体に着想を得た動的系であり、再生性、頑健性、そして自発的ダイナミクスを示す。テクスチャ合成と形態形成における成功にもかかわらず、NCAsは依然として低解像度の出力にとどまりがちである。この制限は、(1) グリッドサイズに対して二次的に増大する学習時間とメモリ要件、(2) 情報の厳密に局所的な伝搬が長距離のセル間通信を妨げること、(3) 高解像度でのリアルタイム推論の重い計算要求、の3点に起因する。本研究では、粗いグリッド上で進化するNCAと、セル状態と局所座標を外観属性へ写像する軽量な暗黙デコーダとを組み合わせることで、この制限を克服し、同じモデルが任意の解像度で出力をレンダリングできるようにする。さらに、デコーダとNCAの更新の両方が局所的であるため、推論は高度に並列化可能である。高解像度出力を効率的に監督するために、形態形成（シードからの成長）とテクスチャ合成に対するタスク固有の損失を、追加のメモリと計算オーバーヘッドを最小限に抑えて導入する。2D/3Dグリッドおよびメッシュ領域にまたがる実験により、提案するハイブリッドモデルはリアルタイムで高解像度の出力を生成し、NCAsの特徴である自己組織化的挙動を保持することを示した。
-# Summary (by gpt-4o-mini)
-- NCA（ニューラルセルラーオートマタ）は生物に着想を得た動的系であり、自己組織化により複雑なパターンを生成する。しかし、低解像度の出力に制約される理由は、学習時間やメモリの増加、局所的な情報伝搬の制限、高解像度での計算要求にある。本研究では、粗いグリッドで進化するNCAと軽量な暗黙デコーダを組み合わせ、高解像度での出力を可能にする。推論は高度に並列化でき、形態形成とテクスチャ合成に特化した損失を導入することで効率が向上。実験により、提案モデルがリアルタイムで高解像度の出力を生成し、自己組織化を保持できることを示した。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/esychology/status/2075259224255349234?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>demo:
-
-{% raw %}
-<a href="https://cells2pixels.github.io/#growing" target="_blank" rel="noopener noreferrer">https://cells2pixels.github.io/#growing</a>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Hierarchical Sparse Attention Done Right: Toward Infinite Context Modeling, Xiang Hu+, arXiv'26, 2026.07</title>
-<original-paper-blog-link>https://arxiv.org/abs/2607.02980</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6023</repo-issue-link>
-<tags>NLP, LanguageModel, Attention, Architecture, One-Line Notes, SparseAttention</tags>
-<repo-issue-date>2026-07-11</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2607.02980
-# Authors
-  - Xiang Hu
-  - Xinyu Wei
-  - Hao Gu
-  - Minshen Zhang
-  - Tian Liang
-  - Huayang Li
-  - Lei Zhu
-  - Yan Wang
-  - Sirui Han
-  - Yushi Bai
-  - Kewei Tu
-  - Haitao Mi
-  - Leo Liang
-# Abstract
-  - Scaling modern large language models (LLMs) to long contexts is limited by the quadratic computation cost, and poor length extrapolation of dense attention. Chunk-wise sparse attention offers a promising alternative, but all existing methods fall short of full attention because of their inaccurate chunk selection. We propose Hierarchical Landmark Sparse (HiLS) Attention, a chunk-wise sparse attention mechanism that learns chunk selection end-to-end under the language-modeling (LM) loss. HiLS factorizes attention hierarchically: each query performs attention independently with each retrieved chunk to extract chunk-specific information, and the resulting outputs are fused according to chunk retrieval scores. By incorporating retrieval scores into the forward attention computation, HiLS optimizes them directly with the LM loss, enabling end-to-end retrieval learning and native sparse training. Experimental results show that HiLS-Attention achieves performance comparable to, and in some cases better than, full attention at in-domain context lengths. Meanwhile, HiLS-Attention extrapolates more than $64\times$ the training context length with 90% retrieval accuracy, far beyond full attention. Moreover, existing full-attention models can be converted to HiLS-Attention with lightweight continued pretraining, preserving in-domain performance while acquiring ultra-long-context extrapolation. Together with its sparse KV access and computation, HiLS-Attention breaks the usual efficiency-performance trade-off, enabling long-context LLMs that are both more efficient and more effective on general long-context tasks than their full-attention counterparts.
-# Translation (by gpt-5-nano)
-- 現代の大規模言語モデル（LLMs）を長い文脈へスケールさせることは、二乗計算コストと密なアテンションの長さ外挿性の乏しさによって制限されている。チャンク単位のスパースアテンションは有望な代替手段を提供するが、既存の方法はチャンク選択の不正確さのために全アテンションには及ばない。我々は階層的ランドマークスパース（HiLS）アテンションを提案する。これはLM損失の下でエンドツーエンドにチャンク選択を学習する、チャンク単位のスパースアテンション機構である。HiLSはアテンションを階層的に分解する：各クエリは検索で取得された各チャンクと独立してアテンションを行い、チャンク固有情報を抽出し、得られた出力はチャンク検索スコアに基づいて結合される。検索スコアを順伝搬アテンション計算に組み込むことで、HiLSはLM損失で直接それらを最適化し、エンドツーエンドの検索学習とネイティブなスパース訓練を可能にする。実験結果は、HiLS-Attentionが、ドメイン内の文脈長において全アテンションと同等、場合によってはそれを上回る性能を達成することを示している。一方、HiLS-Attentionは訓練文脈長の64倍以上を、検索精度90%で外挿することができ、全アテンションをはるかに超える。さらに、既存の全アテンションモデルは、軽量な継続的事前学習を伴うことでHiLS-Attentionへ転換でき、ドメイン内の性能を維持しつつ超長文脈外挿を獲得する。スパースKVアクセスと計算を併せ持つことで、HiLS-Attentionは従来の効率性と性能のトレードオフを打破し、全アテンションの代替となる長文脈タスクにおいて、より効率的でより効果的な長文脈LLMを実現する。
-# Summary (by gpt-4o-mini)
-- 階層的ランドマークスパース（HiLS）アテンションを提案し、チャンク単位でのスパースアテンションをエンドツーエンドで学習。各クエリが独立してチャンクとアテンションを行い、検索スコアを用いて結合。実験結果では、HiLSが全アテンションに匹敵するかそれ以上の性能を示し、長文脈での外挿が可能。軽量な事前学習を通じて全アテンションモデルをHiLSに適応させ、効率と効果のトレードオフを克服。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/2075585082245750819?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>ポイント解説:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2074413990923362640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>Block Sparse Attention (BSA) は、直近のトークンを見るlocal sliding window attention (SWA)と、離れたトークンに対するチャンクレベルでのsparse attentionに基づいたアテンション機構である。<br>一般的なBSAでは、現在のquery qとチャンク単位のattentino scoreを計算する際に、各チャンクごとにチャンクのkeyに関する情報を要約した Key k'_c を求め、k'_c と現在のquery qとのattention scoreを計算することにより計算を効率化する[^1]。<br><br>k'_c を求める際には、mean/max pooling を用いるのが一般的であり、特に前者が用いられるとのことだが、どちらのpoolingの手法もattention scoreの分布に依存して、近似の性能が変化する（たとえば、mean poolingであればなるべくattention scoreが一様なほど近似性能が良いし、max poolingであれば、あるscoreがチャンク内で支配的であるほど近似性能が良い）が、query qに応じてattention scoreの分布は変化することにより、k'_cの近似性能が低下しsparse attentionによって重要なチャンクを選択する性能が低下する課題がある。<br><br>これに対して、<br>- 現実的な計算量でk'_cをより正確に近似できる surrogate score に基づく手法を提案し（RQ1）[^2]<br>- surrogate score をend-to-end で学習可能にする方法を提案した (RQ2)<br>という話である。<br><br>surrogate scoreは、チャンクのattention scoreの質量をより正確に近似したスコアであり、（チャンクのkeyを要約した）k'_c に対する現在のクエリ q とのrelevanceを表す項と、バイアス項 b'_c によって線形化される（式7）。<br>k'_c によって現在のクエリに対する関連度を測り、バイアス項によって関連度から独立したtoken-levelの質量を導入する。バイアス項は、チャンクにattendするであろうクエリのattention scoreの分布に対するentropyであり、これが一様分布やあるトークンが支配的な分布など、様々な分布の形状に対して動的に適応する役割を果たす。<br><br>b'_c を求めるために、チャンクごとに独立したクエリ q'_c を学習する。これは、このチャンクにattendするであろうクエリのプロキシを果たすクエリであり、q'_c とチャンク内のトークンのkeyとの間でのattention scoreを計算しておくことで、おおまかなattention scoreの分布を決定し、b'_c を求めておくことができる（式8）。<br>また、k'_c はチャンク内のattention scoreによって重みづけられたkeyの和の形で求められる（式8）。<br>これにより、現在のクエリ qが与えられた時に、k'_cとb'_cを用いて、チャンクに対するattention scoreの質量を高速に近似することができる（式7）。<br><br>ここで q'_c をどのように学習するかが課題となる（q'_c以外のパラメータは従来通りのモデル化で求まる）。これを解決するために、surrogate scoreによって求まるチャンクのattention scoreの近似質量 \hat{Z}_{i, c} をforward passに加え、q'_c に勾配が流れるようにすることで解決している。具体的には、attention scoreの計算をする際に、式変形を実施し、`チャンク内のスコアの計算 * チャンク間のスコアの計算` の形に分解する（式10）。後者のチャンクの重要度を求める際に、各チャンクのsurrogate scoreを用いて近似することによって、高速化 + q'_c に勾配が流れるような工夫をしている。<br><br>[^1]: チャンクのattention scoreの質量（どのチャンクをsparse attentionでattendするかを決定する際に用いられる）を計算する際に、query qとチャンク内の全てのtokenに対するtoken-to-tokenの内積をとることを避け、k'_cとの内積によって近似的に質量を求めることで計算を効率化する。<br>[^2]: surrogate scoreによってk'_cを正確に近似できることの証明はAppendix Bに記載されており、1次のテイラー展開に基づいているようである（ここは読めていない）。</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Benchmarking Coding Agents on Databricks’ Multi-Million Line Codebase, databricks, 2026.07</title>
-<original-paper-blog-link>https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6022</repo-issue-link>
-<tags>EfficiencyImprovement, LanguageModel, AIAgents, Evaluation, Blog, read-later, Initial Impression Notes, Author Thread-Post, AgentHarness</tags>
-<repo-issue-date>2026-07-10</repo-issue-date>
-<issue-body>https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/alighodsi/status/2074996561306955958?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>ハーネス選択によってトークン消費を1/2にでき、GLM 5.2のコストパフォーマンスが良いらしい</p></maintainer-comment-text>
 </paper-entry>
 
 </paper-list>
