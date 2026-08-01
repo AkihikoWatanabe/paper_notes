@@ -1,10 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-19">
+<paper-list last-updated="2026-07-31">
+<paper-entry>
+<title>[Paper Note] LongStraw: Long-Context RL Beyond 2M Tokens under a Fixed GPU Budget, Changhai Zhou+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.14952</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6142</repo-issue-link>
+<tags>NLP, LanguageModel, LongSequence, read-later, Author Thread-Post</tags>
+<repo-issue-date>2026-07-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.14952
+# Authors
+  - Changhai Zhou
+  - Kieran Liu
+  - Yuhua Zhou
+  - Qian Qiao
+  - Jun Gao
+  - Harry Zhang
+  - Irvine Lu
+  - Nolan Ho
+  - Lucian Li
+  - Andrew Lei
+  - Cleon Cheng
+  - Steven Chiang
+  - Yihang Zeng
+  - Di Zhang
+  - Rio Yang
+  - Kaijie Chen
+  - Andrew Chen
+  - Pony Ma
+  - Weizhong Zhang
+  - Cheng Jin
+# Abstract
+  - Long-context RL post-training is constrained by the lifetime of state and gradients, not attention cost alone. In GRPO, one multi-million-token prompt must serve old-policy and reference scoring plus multiple policy responses, while conventional autograd keeps the prompt graph and all response graphs live alongside model weights, caches, and distributed communication buffers. We present LongStraw, an objective-aware, architecture-aware system for resident-state virtualization, response replay, and distributed-gradient execution. Its transaction captures the shared prompt without autograd, retains only the architecture-required state on explicitly owned pages, restores that state for each group member, scores old/reference branches without a graph, replays one policy response at a time with autograd, and accumulates the resulting gradients before one distributed finalization and optimizer step. This schedule bounds the live training graph by the response suffix while reusing the expensive prompt computation across the complete GRPO group. We instantiate this design for two incompatible model structures. Qwen3.6-27B combines 48 recurrent GDN layers with 16 full-attention layers; LongStraw keeps the compact recurrent state and physically CP8-sharded KV pages, composes global attention through cross-rank LSE/output merging, and performs blockwise response replay. GLM-5.2 combines a 78-layer MLA/DSA attention stack with a 256-expert, top-8 MoE tail. Its implementation keeps CP-sharded MLA latent pages and DSA indexer-key pages in CPU memory, stages one layer at a time, reconstructs IndexShare-aware global sparse selection over CP32, and dispatches routed response tokens over EP32. The two paths share one transaction contract while specializing the retained state, replay operator, and collective communication to the architecture...
+# Translation (by gpt-5-nano)
+- 長い文脈を持つRLのポストトレーニングは、注意機構のコストだけでなく、状態と勾配の寿命によって制約される。GRPOにおいては、数百万トークンに及ぶ1つのプロンプトが旧ポリシーと参照スコアリング、さらには複数のポリシー応答を同時に担う必要がある一方、従来の自動微分はプロンプトのグラフとすべての応答グラフを、モデルの重み、キャッシュ、および分散通信バッファとともに生かし続ける。私たちは、目的を意識し、アーキテクチャを意識した常駐状態の仮想化、応答リプレイ、分散勾配計算のための LongStraw というシステムを提案する。そのトランザクションは、共有プロンプトを自動微分なしでキャプチャし、アーキテクチャに必要な状態のみを明示的に所有されたページ上に保持し、各グループメンバーのためにその状態を復元し、旧/参照ブランチをグラフなしでスコアリングし、1回ずつポリシー応答を自動微分を用いてリプレイし、分散的な最終化とオプティマイザのステップの前に得られた勾配を蓄積する。このスケジュールは、応答サフィックスによってライブの訓練グラフを制限しつつ、GRPO グループ全体にわたる高価なプロンプト計算を再利用する。我々はこの設計を、2つの互換性のないモデル構造に対して実装する。Qwen3.6-27B は、48 の再帰的 GDN 層と 16 の全注意層を組み合わせる；LongStraw は、コンパクトな再帰状態を保持し、物理的に CP8 シャーディングされた KV ページを保持し、クロスランク LSE／出力結合を介してグローバルなアテンションを構成し、ブロック単位の応答リプレイを実行する。GLM-5.2 は、78 層の MLA/DSA アテンション・スタックと、256 専門家を持つ MoE テールのトップ8 を組み合わせる。その実装は、CP シャーディングされた MLA 潜在ページと DSA インデクサー・キー ページを CPU メモリに保持し、1 層ずつ段階化し、CP32 上の IndexShare 対応のグローバルなスパース選択を再構築し、EP32 上でルーティングされた応答トークンを配信する。これら2つの経路は1つのトランザクション契約を共有しつつ、保持される状態、リプレイ演算子、集団通信をアーキテクチャに適合させて専門化する。
+# Summary (by gpt-4o-mini)
+- 長い文脈を持つRLのポストトレーニングにおいて、GRPOは複数のポリシー応答を同時に処理する必要がある。本研究では、LongStrawシステムを提案し、プロンプトのキャプチャと状態の復元を行い、効率的な応答リプレイを実現。Qwen3.6-27B と GLM-5.2 に対して実装を行い、状態維持やリプレイ演算子の集団通信をアーキテクチャに適合させた。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Macaron0fficial/status/2078152293594362169?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Self-Guided Test-Time Training for Long-Context LLMs, Xinyu Zhu+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.09415</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6095</repo-issue-link>
-<tags>NLP, LanguageModel, LongSequence, reading, One-Line Notes, Reading Reflections, Test Time Training (TTT)</tags>
+<tags>NLP, LanguageModel, LongSequence, reading, One-Line Notes, Reading Reflections, Test Time Training (TTT), Author Thread-Post</tags>
 <repo-issue-date>2026-07-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2607.09415
@@ -38,7 +86,67 @@
 </div>
 {% endraw %}
 
-</p><p>長文Context+質問が与えられたときに、質問に関連するcontextのspanを同定した後(Self-Guided)、TTTでモデルパラメータに内部化させた後に応答する、という話に見える。TTTでは、LoRAを用いて、かつ16 gradient updateを行った時点で更新を終了する。<br><img src="https://github.com/user-attachments/assets/1d69d3d8-db5a-4d53-a8dc-ea85cb8444a2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Full ContextでらTTTするよりも、Self-Guidedな方が高い性能を獲得できる。<br><img src="https://github.com/user-attachments/assets/d2437308-117b-4aec-9a53-6a88881c5c26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>TTTを使ってLoRA adapterにcontextの情報をweightとして内部化させても、思ったほど性能は上がらないのだなという印象。<br><br>LoRAでweightにcontextを内部化させても、その内部化された情報をうまく活用するような工夫が足りていないのでは？という気がするのだが、どうだろうか。<br><br>ベンチマークのインスタンスが、contextをmemorizationし、適切にatteedすれば解けるようなクエリなのか否かという点も気になる。<br>もしcontextの情報に基づいてマルチポップな推論が必要な場合、LoRAアダプタによる重みを活用するような回路が育っていない可能性が高く、性能は伸びにくいのかなという気はする。</p></maintainer-comment-text>
+</p><p>長文Context+質問が与えられたときに、質問に関連するcontextのspanを同定した後(Self-Guided)、TTTでモデルパラメータに内部化させた後に応答する、という話に見える。TTTでは、LoRAを用いて、かつ16 gradient updateを行った時点で更新を終了する。<br><img src="https://github.com/user-attachments/assets/1d69d3d8-db5a-4d53-a8dc-ea85cb8444a2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Full ContextでらTTTするよりも、Self-Guidedな方が高い性能を獲得できる。<br><img src="https://github.com/user-attachments/assets/d2437308-117b-4aec-9a53-6a88881c5c26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>TTTを使ってLoRA adapterにcontextの情報をweightとして内部化させても、思ったほど性能は上がらないのだなという印象。<br><br>LoRAでweightにcontextを内部化させても、その内部化された情報をうまく活用するような工夫が足りていないのでは？という気がするのだが、どうだろうか。<br><br>ベンチマークのインスタンスが、contextをmemorizationし、適切にattendすれば解けるようなクエリなのか否かという点も気になる。<br>もしcontextの情報に基づいてマルチポップな推論が必要な場合、LoRAアダプタによる重みを活用するような回路が育っていない可能性が高く、性能は伸びにくいのかなという気はする。</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tianhongzxy/status/2078266009308553304?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] RoboTTT: Context Scaling for Robot Policies, Yunfan Jiang+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.15275</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6062</repo-issue-link>
+<tags>ComputerVision, NLP, LongSequence, read-later, Selected Papers/Blogs, Robotics, memory, EmbodiedAI, Test Time Training (TTT), Author Thread-Post</tags>
+<repo-issue-date>2026-07-17</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2607.15275
+- blog: https://research.nvidia.com/labs/gear/robottt/
+# Authors
+  - Yunfan Jiang
+  - Yevgen Chebotar
+  - Ruijie Zheng
+  - Fengyuan Hu
+  - Yunhao Ge
+  - Jimmy Wu
+  - Tianyuan Dai
+  - Scott Reed
+  - Li Fei-Fei
+  - Yuke Zhu
+  - Linxi "Jim" Fan
+# Abstract
+  - Recent robot foundation models operate with single-step or short-history visuomotor context. We introduce Test-Time-Training Robot Policies (RoboTTT), a robot model and training recipe that scale visuomotor context to 8K timesteps, three orders of magnitude beyond state-of-the-art policies, without growing inference latency. At this context length, we unlock new robot capabilities: one-shot in-context imitation from human video demonstrations, on-the-fly policy improvement, robustness to perturbations, and stronger performance on multi-stage, long-horizon tasks. We also observe, for the first time, steady gains in closed-loop performance as pretraining context length scales. At its core, RoboTTT integrates Test-Time Training into robot foundation models such as Vision-Language-Action policies, yielding a sequence model whose recurrent state consists of fast weights, parameters updated by gradient descent during both training and inference, compressing histories into weight space and retrieving contextual information for long-context conditioning. To scale training context length, the recipe combines sequence action forcing with truncated backpropagation through time. On challenging real-robot manipulation tasks, RoboTTT improves overall performance by 87% over the single-step context baseline and fully completes a five-minute, ten-stage assembly task, which no baseline ever does. RoboTTT trained with 8K-timestep context outperforms the same model pretrained with 1K timesteps by 62%, suggesting context length as a new scaling axis for robot foundation models. Videos are available at https://research.nvidia.com/labs/gear/robottt/
+# Translation (by gpt-5-nano)
+- 近年のロボット基盤モデルは、単一ステップまたは短い履歴の視覚-運動文脈で動作する。私たちは Test-Time-Training Robot Policies（RoboTTT）を紹介する。これは視覚-運動文脈を8Kタイムステップへ拡張するロボットモデルと訓練レシピで、最先端ポリシーの約1000倍の規模に達する一方で、推論遅延を増やさない。この文脈長において、新たなロボット能力を解放する：人間のビデオデモンストレーションからの文脈内でのワンショット模倣、現場でのポリシー改善、撹乱への頑健性、長期・長期的なタスクにおけるより強力な性能。さらに、事前学習文脈長が拡大するにつれて閉ループ性能が安定して向上することを初めて観察した。核となるRoboTTTは、Vision-Language-Actionポリシーのようなロボット基盤モデルにTest-Time Trainingを統合し、再帰状態が高速ウェイトから成るシーケンスモデルを生み出す。訓練時と推論時の双方で勾配降下法によって更新されるパラメータを含み、履歴をウェイト空間に圧縮して長い文脈条件付けのための文脈情報を取り出す。訓練文脈長を拡張するため、このレシピはシーケンスアクションの強制と、時系列に沿った誤差逆伝搬を切り詰める手法を組み合わせる。難易度の高い実機操作タスクにおいて、RoboTTTは単一步の文脈ベースラインより全体性能を87%向上させ、5分・10段階の組立タスクを完全に完遂する。これはどのベースラインも成し遂げたことがない。8Kタイムステップ文脈で訓練したRoboTTTは、同じモデルを1Kタイムステップで事前学習させた場合より62%上回ることを示唆しており、文脈長をロボット基盤モデルの新たなスケーリング軸とする。動画は https://research.nvidia.com/labs/gear/robottt/ で公開されている。
+# Summary (by gpt-4o-mini)
+- RoboTTTは、8Kタイムステップの視覚-運動文脈を用いるロボットモデルであり、最先端ポリシーの1000倍のスケールを実現しつつ推論遅延を増加させない。このアプローチにより、ワンショット模倣やポリシー改善、撹乱への頑健性が向上し、長期タスクでの性能も強化される。RoboTTTはTest-Time Trainingを取り入れ、勾配降下法で履歴情報を活用した新しいモデルを生成。実験により、従来の単一步ベースラインに対して87%の性能向上が見られ、長い文脈がロボット基盤モデルにおける新たなスケーリング軸となることが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/drjimfan/status/2077414142340988962?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2079040297883898301?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

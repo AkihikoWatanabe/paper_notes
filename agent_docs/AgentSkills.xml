@@ -1,5 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-28">
+<paper-list last-updated="2026-07-31">
+<paper-entry>
+<title>[Paper Note] SEED: Self-Evolving On-Policy Distillation for Agentic Reinforcement Learning, Jinyang Wu+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.14777</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6145</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Distillation, PostTraining, On-Policy, One-Line Notes, AgentSkills, SelfDistillation</tags>
+<repo-issue-date>2026-07-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.14777
+# Authors
+  - Jinyang Wu
+  - Shuo Yang
+  - Zhengxi Lu
+  - Fan Zhang
+  - Yuhao Shen
+  - Lang Feng
+  - Haoran Luo
+  - Zheng Lian
+  - Shuai Zhang
+  - Zhengqi Wen
+  - Jianhua Tao
+# Abstract
+  - Large language models are increasingly trained as interactive agents for long-horizon tasks involving multi-turn interaction, tool use, and environment feedback. Outcome-based reinforcement learning (RL) provides a practical optimization paradigm, but its sparse trajectory-level rewards offer limited guidance on intermediate decisions, leaving a supervision gap between episode-level outcomes and token-level policy learning. We propose SEED (SElf-Evolving On-Policy Distillation), a self-evolving framework that converts completed on-policy trajectories into training-time hindsight skills and distills their behavioral effect back into the policy model. SEED first fine-tunes the policy to analyze completed trajectories and generate natural-language skills that capture reusable workflows, decisive observations, or failure-avoidance rules. During RL, the current policy both collects trajectories and serves as the analyzer that extracts hindsight skills from them. Policy updates therefore improve subsequent decision making and skill analysis together, allowing hindsight supervision to evolve with the policy. SEED then re-scores the sampled actions under ordinary and skill-augmented contexts, converting the skill-induced probability shift into a dense token-level on-policy distillation signal. This signal is jointly optimized with outcome-based RL, keeping the auxiliary supervision aligned with the current trajectory distribution. Extensive experiments on text-based and vision-based agentic tasks show that SEED consistently improves performance and sample efficiency, exhibiting robust generalization to unseen scenarios. Our code is available at https://github.com/jinyangwu/SEED.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルは、長期的なタスクにおいてマルチターン対話、ツールの使用、環境からのフィードバックを含むインタラクティブなエージェントとしての訓練がますます進んでいる。成果ベースの強化学習（RL）は実用的な最適化パラダイムを提供する一方で、その疎な軌跡レベルの報酬は中間的な意思決定に対する指針が限られており、エピソードレベルの結果とトークンレベルのポリシー学習との間に監督のギャップを生む。我々はSEED（SElf-Evolving On-Policy Distillation、自己進化型オンポリシー蒸留）を提案する。SEEDは自己進化するフレームワークで、完成したオンポリシー軌跡を訓練時のハindsightスキルへと変換し、それらの振る舞い効果をポリシーモデルへ再蒸留する。まずSEEDはポリシーを微調整して完成した軌跡を分析し、再利用可能なワークフロー、決定的な観測、あるいは失敗回避ルールを捉えた自然言語スキルを生成する。RLの間、現在のポリシーは軌跡を収集するだけでなく、それらからハindsightスキルを抽出する分析者としても機能する。したがってポリシーの更新は、その後の意思決定とスキル分析を共に改善し、ハindsight監督がポリシーとともに進化する。次にSEEDは、通常環境およびスキル強化環境の文脈下でサンプリングされた行動を再評価し、スキル誘導の確率シフトを密なトークンレベルのオンポリシー蒸留信号へ変換する。この信号は成果ベースのRLと共同で最適化され、補助的監督が現在の軌跡分布と整合するように保つ。テキストベースおよびビジョンベースのエージェント課題に関する広範な実験は、SEEDが一貫して性能とサンプル効率を向上させ、未知のシナリオへの頑健な一般化を示すことを示している。我々のコードは https://github.com/jinyangwu/SEED で公開されています。
+# Summary (by gpt-4o-mini)
+- SEED（自己進化型オンポリシー蒸留）を提案し、成果ベースの強化学習の監督ギャップを埋める。SEEDは完成したオンポリシー軌跡を分析し、再利用可能な自然言語スキルを生成。また、ポリシー自体がハindsightスキルを抽出し、意思決定を改善。密なトークンレベルの蒸留信号でサポートし、性能とサンプル効率を向上させることを実験で確認。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2078533988776587368?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>hindsight (後で結果を知ったうえで考えてみたら重要だった) skill をagent trajectoryから抽出する能力をSFTで身に着けさせた後に、その後RLを実行する。<br><br>RLを実行する際には、rolloutを実施した後に、（モデルは既にhindskillを抽出する能力を身に着けているため、）各rolloutから hindsight skillを抽出し、当該スキルの情報をcontextとして与えた場合を教師モデルとすることでOPDの学習シグナルとする。<br>これにより、sparseな報酬とdenseな報酬を両立する、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/c4e89882-1b9e-470a-9d7f-ec2c0578d7cb" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Skill Self-Play: Pushing the Frontier of LLM Capability with Co-Evolving Skills, Siyuan Huang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.22529</original-paper-blog-link>
