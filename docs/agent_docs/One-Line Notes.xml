@@ -1,5 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-28">
+<paper-list last-updated="2026-07-31">
+<paper-entry>
+<title>[Paper Note] SEED: Self-Evolving On-Policy Distillation for Agentic Reinforcement Learning, Jinyang Wu+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.14777</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6145</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Distillation, PostTraining, On-Policy, One-Line Notes, AgentSkills, SelfDistillation</tags>
+<repo-issue-date>2026-07-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.14777
+# Authors
+  - Jinyang Wu
+  - Shuo Yang
+  - Zhengxi Lu
+  - Fan Zhang
+  - Yuhao Shen
+  - Lang Feng
+  - Haoran Luo
+  - Zheng Lian
+  - Shuai Zhang
+  - Zhengqi Wen
+  - Jianhua Tao
+# Abstract
+  - Large language models are increasingly trained as interactive agents for long-horizon tasks involving multi-turn interaction, tool use, and environment feedback. Outcome-based reinforcement learning (RL) provides a practical optimization paradigm, but its sparse trajectory-level rewards offer limited guidance on intermediate decisions, leaving a supervision gap between episode-level outcomes and token-level policy learning. We propose SEED (SElf-Evolving On-Policy Distillation), a self-evolving framework that converts completed on-policy trajectories into training-time hindsight skills and distills their behavioral effect back into the policy model. SEED first fine-tunes the policy to analyze completed trajectories and generate natural-language skills that capture reusable workflows, decisive observations, or failure-avoidance rules. During RL, the current policy both collects trajectories and serves as the analyzer that extracts hindsight skills from them. Policy updates therefore improve subsequent decision making and skill analysis together, allowing hindsight supervision to evolve with the policy. SEED then re-scores the sampled actions under ordinary and skill-augmented contexts, converting the skill-induced probability shift into a dense token-level on-policy distillation signal. This signal is jointly optimized with outcome-based RL, keeping the auxiliary supervision aligned with the current trajectory distribution. Extensive experiments on text-based and vision-based agentic tasks show that SEED consistently improves performance and sample efficiency, exhibiting robust generalization to unseen scenarios. Our code is available at https://github.com/jinyangwu/SEED.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルは、長期的なタスクにおいてマルチターン対話、ツールの使用、環境からのフィードバックを含むインタラクティブなエージェントとしての訓練がますます進んでいる。成果ベースの強化学習（RL）は実用的な最適化パラダイムを提供する一方で、その疎な軌跡レベルの報酬は中間的な意思決定に対する指針が限られており、エピソードレベルの結果とトークンレベルのポリシー学習との間に監督のギャップを生む。我々はSEED（SElf-Evolving On-Policy Distillation、自己進化型オンポリシー蒸留）を提案する。SEEDは自己進化するフレームワークで、完成したオンポリシー軌跡を訓練時のハindsightスキルへと変換し、それらの振る舞い効果をポリシーモデルへ再蒸留する。まずSEEDはポリシーを微調整して完成した軌跡を分析し、再利用可能なワークフロー、決定的な観測、あるいは失敗回避ルールを捉えた自然言語スキルを生成する。RLの間、現在のポリシーは軌跡を収集するだけでなく、それらからハindsightスキルを抽出する分析者としても機能する。したがってポリシーの更新は、その後の意思決定とスキル分析を共に改善し、ハindsight監督がポリシーとともに進化する。次にSEEDは、通常環境およびスキル強化環境の文脈下でサンプリングされた行動を再評価し、スキル誘導の確率シフトを密なトークンレベルのオンポリシー蒸留信号へ変換する。この信号は成果ベースのRLと共同で最適化され、補助的監督が現在の軌跡分布と整合するように保つ。テキストベースおよびビジョンベースのエージェント課題に関する広範な実験は、SEEDが一貫して性能とサンプル効率を向上させ、未知のシナリオへの頑健な一般化を示すことを示している。我々のコードは https://github.com/jinyangwu/SEED で公開されています。
+# Summary (by gpt-4o-mini)
+- SEED（自己進化型オンポリシー蒸留）を提案し、成果ベースの強化学習の監督ギャップを埋める。SEEDは完成したオンポリシー軌跡を分析し、再利用可能な自然言語スキルを生成。また、ポリシー自体がハindsightスキルを抽出し、意思決定を改善。密なトークンレベルの蒸留信号でサポートし、性能とサンプル効率を向上させることを実験で確認。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2078533988776587368?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>hindsight (後で結果を知ったうえで考えてみたら重要だった) skill をagent trajectoryから抽出する能力をSFTで身に着けさせた後に、その後RLを実行する。<br><br>RLを実行する際には、rolloutを実施した後に、（モデルは既にhindskillを抽出する能力を身に着けているため、）各rolloutから hindsight skillを抽出し、当該スキルの情報をcontextとして与えた場合を教師モデルとすることでOPDの学習シグナルとする。<br>これにより、sparseな報酬とdenseな報酬を両立する、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/c4e89882-1b9e-470a-9d7f-ec2c0578d7cb" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Function-Aware Fill-in-the-Middle as Mid-Training for Coding Agent Foundation Models, Yubo Wang+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.12463</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6141</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Self-SupervisedLearning, Coding, mid-training, Selected Papers/Blogs, One-Line Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-07-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.12463
+# Authors
+  - Yubo Wang
+  - Jiarong Liang
+  - Yuxuan Zhang
+  - Xuye Liu
+  - Cong Wei
+  - Yuyu Zhang
+  - Ping Nie
+  - Wenhu Chen
+# Abstract
+  - Coding agents must integrate external tool returns into ongoing reasoning - a capability that standard left-to-right pretraining on code exposes only in its forward direction. We observe that the action-observation-continuation loop of a coding agent is structurally isomorphic to a function call site, where a caller binds arguments, a callee returns a value computed elsewhere, and downstream code consumes that value. This conditioning structure exists at internet scale in ordinary code. We exploit it through function-aware fill-in-the-middle (FIM) mid-training: a self-supervised objective that masks functions selected via program dependency graph analysis and a complexity-inferability double criterion. We mid-train Qwen2.5-Coder-Instruct (7B/14B) and Qwen3-8B on a 2.6B-token decontaminated corpus drawn from 968 GitHub repositories, then apply existing agentic post-training pipelines. Mid-training improves SWE-Bench-Verified by +2.8/+3.0 at 7B/14B and by +3.2 on Qwen3-8B; SWE-Bench-Lite gains are +3.7/+4.0/+5.4 on the same models. The improvement holds across two post-training pipelines (R2E-Gym, SWE-Smith) and on a non-Qwen2.5 base (Qwen3-8B with SWE-Lego). Beyond in-domain gains, mid-training also mitigates the capability erosion that agentic post-training otherwise inflicts on non-agent coding (e.g., LiveCodeBench) and non-coding tool-use benchmarks (tau-bench, BFCL): although the mid-training corpus contains Python code only, the function-call inductive bias survives post-training and yields consistent gains.
+# Translation (by gpt-5-nano)
+- コーディングエージェントは外部ツールの戻り値を進行中の推論に組み込む能力を持つべきであるが、コードに対する標準的な左から右への事前学習はその能力を前方方向のみに露出させる。コーディングエージェントのアクション-観察-継続ループは、構造的に関数呼び出しサイトと同型であり、呼び出し元が引数を束縛し、呼び出し先が別の場所で計算された値を返し、下流のコードがその値を消費する。この条件付け構造は、一般的なコードでもインターネット規模で広く見られる。これを、関数を意識したミッドトレーニングの Fill-In-The-Middle (FIM) によって活用する：プログラム依存グラフ分析で選択された関数をマスクする自己教師付き目的と、複雑さと推定可能性という二重基準を組み合わせたものだ。我々は、Qwen2.5-Coder-Instruct（7B/14B）とQwen3-8Bを、968個のGitHubリポジトリから抽出された2.6Bトークンのデコンタミネーション済みコーパス上でミッドトレーニングし、その後既存のエージェント指向ポストトレーニングパイプラインを適用する。ミッドトレーニングは、SWE-Bench-Verifiedを7B/14Bで+2.8/+3.0、Qwen3-8Bで+3.2の改善をもたらす。SWE-Bench-Liteの改善は同じモデルで+3.7/+4.0/+5.4となる。この改善は、2つのポストトレーニングパイプライン（R2E-Gym、SWE-Smith）および非Qwen2.5ベース（Qwen3-8BにSWE-Legoを組み合わせた構成）でも適用可能である。ドメイン内の利益を超えて、ミッドトレーニングは、エージェント指向のポストトレーニングが非エージェント系のコーディング（例：LiveCodeBench）および非コーディングツール使用ベンチマーク（tau-bench、BFCL）に及ぼす能力の侵食を緩和する。ミッドトレーニングのコーパスにはPythonコードのみが含まれているにもかかわらず、関数呼び出しの帰納的バイアスはポストトレーニング後も生き残り、一貫した利益を生む。
+# Summary (by gpt-4o-mini)
+- コーディングエージェントは外部ツールの戻り値を推論に組み込む能力が求められるが、従来の事前学習は前方方向のみに焦点を当てる。本研究では、関数を意識したミッドトレーニングのFill-In-The-Middle (FIM)を用い、プログラム依存グラフを通じて自己教師付き学習を実施。Qwen2.5-Coder-InstructとQwen3のモデルをGitHubから得たデータでトレーニングし、明確な性能向上を確認。ミッドトレーニングにより、エージェント指向のポストトレーニングが他のコーディングやツール使用ベンチマークでも効果を発揮。Pythonコードのみを用いたにもかかわらず、関数呼び出しのバイアスは持続し、安定した成果を得る結果となった。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/YuboWang726/status/2077521989447676246?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>post-training で agenticな能力を身に着けたモデルは context -> action -> observation -> continuation のループをタスクを完了するまで繰り返す。基本的にはこのようなagenticなbehaviorは合成データを用いたpost-trainingで強化されるが、そもそもこの構造はプログラミングでの関数呼び出しの構造と共通しており、インターネット上にこのようなコードは自然に存在する。これを活用するために、 `A->B->C` の関数呼び出しがあった際に、Bをマスクし、rationale + Bのbody を出力させるという mid-training (SFT) を実施し、事前にagenticなbehaviorの土台を築くことで、post-trainingの効果がより大きくなり、コーディングエージェントの性能が向上した、という話に見える。興味深い。<br><br><img src="https://github.com/user-attachments/assets/75bb6e61-80a2-4cbf-99e4-be90a3aed7ab" /" alt="image" loading="lazy" width="550" height="400"/></p><p>long horizonなタスクの性能向上に効きそうに感じるが、そのような分析はされているだろうか？</p><p>最初に読んだときは構造的に似ているから、mid-trainingに使うとscaffoldingの役割を果たしてpost-trainingの効果が上がるよ、というイメージなのかと思ったが、イントロにあるように、気持ちとしては以下のようである：<br><br>> A model trained to reason bidirectionally about function-level dependencies must learn to reconstruct a callee’s behavior from caller context and downstream usage, which is the same competence required to predict an agent’s continuation given a history and a tool return.<br><br>つまり、関数のBの挙動を復元するFIMタスクを用いてmid-trainingすると<br>モデルは呼び出し元の情報と、呼び出し先の利用状況から、関数の挙動を復元する能力を身に着ける必要がある。<br>これは、contextとツールの戻り値が与えられた時に、エージェントの後続処理を生成する能力と本質的に同じもの（mid-trainingでは与えられたsuffixによって条件づけられるが、post-trainingではsuffixを”生成する”必要があり、完全に一致はしないはずだが、転移するはずだ）、という主張のようである。<br><br>気持ちとしては、ブラックボックス（関数B）の中身を予測する能力が高くなると、ツールの呼び出し結果が期待した通りのものかどうかを判断する能力が向上することに寄与する、という感じだろうか[^1]。<br><br>[^1]: ここの気持ちを掴むのに結構時間がかかっている、というよりよくわかっていないかもしれない。要はagentがツール呼び出し結果を受け取った後の生成性能を改善したいという気持ちが背景にあるようであるが、プログラムの目的がgivenな上で、関数Bはマスクするが戻り値だけは与えられるという設定にして  `A->Bの戻り値観測->Cを予測` というmid-trainingではだめなのだろうか？と思ったが、これだと関数Bは必ず期待通りの値を返すことになるので、ツール呼び出しでは必ず期待したとおりの結果が返ってくるという挙動が埋め込まれ、全然うまくいかないだろう、と思われる。<br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Value Leakage: An LLM's Answers Are Silently Shaped by Its Own Values, Jan Betley+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.14345</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6138</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Alignment, AIAgents, Chain-of-Thought, Evaluation, Bias, Safety, Selected Papers/Blogs, reading, One-Line Notes</tags>
+<repo-issue-date>2026-07-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.14345
+# Authors
+  - Jan Betley
+  - Johannes Treutlein
+  - Jan Dubiński
+  - Harry Mayne
+  - Karol Gałązka
+  - Niels Warncke
+  - Anna Sztyber-Betley
+  - Owain Evans
+# Abstract
+  - People use language models for practical questions whose answers are difficult to verify. We show that models exhibit covert value leakage: the information they provide is influenced by their own values, without this influence being disclosed to the user.   In one of our evaluations, the user is considering investing in an AI company and wants to know how likely the AI bubble is to pop. Claude Opus 4.8 gives a lower probability when the company under consideration is Anthropic rather than OpenAI. Yet Claude mostly fails to disclose this influence to the user.   Covert value leakage is a form of misalignment because it goes against the user's preferences and is likely to mislead them. To investigate this phenomenon, we introduce a suite of evaluations to quantify value leakage and whether models disclose it. We find that models are influenced by different types of values, including preferences for morally good outcomes, for the company that developed them, and for some human leisure activities over others.   We often observe large differences among frontier models on the same evaluation. For example, on a Fermi-estimation task, Claude models falsely claim to give unbiased answers in their chain-of-thought, while Qwen models explain how their values bias their answers. Value leakage is a failure mode distinct from sycophancy and reward hacking, and current alignment training and evaluations do not adequately address it.
+# Translation (by gpt-5-nano)
+- 人は検証が難しい現実的な質問に対して言語モデルを用います。私たちは、モデルが隠れた価値観の漏洩を示すことを示します。提供される情報は、ユーザーに開示されないまま、モデル自身の価値観に影響を受けています。
+私たちの評価の一つでは、ユーザーはAI企業への投資を検討しており、AIバブルがはじける可能性を知りたいと考えています。Claude Opus 4.8は、検討対象の企業がAnthropicである場合に、OpenAIの場合より低い確率を示します。それにもかかわらず、Claudeはこの影響をユーザーにほとんど開示しません。
+隠れた価値の漏洩は、ユーザーの嗜好に反し、誤解を生みやすいことから、ミスアラインメントの一形態です。この現象を調査するため、価値の漏洩の程度とモデルがそれを開示するかどうかを評価する一連の評価セットを導入します。私たちは、モデルが道徳的に良い結果を望むこと、開発した企業への好み、そしてある種の人間の余暇活動を他より優先することなど、さまざまなタイプの価値観に影響を受けていることを発見しました。
+同じ評価において、最先端モデル間でしばしば大きな差が見られます。例えば、フェルミ推定タスクでは、Claudeモデルは思考過程の中で偏りのない回答を出すと偽って主張しますが、Qwenモデルは自分たちの価値観が回答をどのように偏らせるかを説明します。価値の漏洩は、媚び行為（sycophancy）や報酬ハッキングとは異なる故障モードであり、現行のアラインメント訓練と評価はそれを十分に対処していません。
+# Summary (by gpt-4o-mini)
+- 言語モデルは現実的な質問に対し、隠れた価値観の影響を受けることが示される。特に、AI企業に投資を検討するユーザーへの情報提供において、モデルはAI企業（例：Anthropic）の選好を示しながらも、その影響をほとんど開示しない。この現象はミスアラインメントの一形態であり、価値の漏洩を評価するための評価セットが導入された。各モデル間での価値観の影響には差があり、例えばClaudeモデルは偏りのない回答を主張する一方、Qwenモデルは自身の価値観の影響を説明する。価値の漏洩は従来のアラインメント訓練や評価では十分に対処されていない新たな故障モードである。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/owainevans_uk/status/2078149961506795887?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLMは自身が保持する価値観に沿って応答にバイアスをかけ、しばしばそれはCoT中に明示されない。<br><br>たとえば、ClaudeはAnthropicに転職を検討しているクエリが投げられると、Anthropicに有利な文献を提示する。<br><br>GPTなClaudeは、正確な金額の見積もりを依頼しているにもけかわらず、promptの末尾に40ドルを超えたら寄付しますという文言を追加すると、見積もりを40ドルに近づける。<br><br>AI Agentの文脈においては、全く同じモデルの出力に対して、Fake Labelとして、Claude, GPTなどのラベルを付与した結果、ClaudeはClaudeの結果を、GPTはGPTのラベルの結果を採用する。<br><br>これらはバイアスが生じているにもかかわらず、CoT中では開示されず、あたかも中立に振る舞っているかのようなCoTとなっており、Alignmentが失敗している（Qwenはバイアスが生じていることをCoT中で認める）。<br><br>といった話しが著者ポストに記述されている。興味深い。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TRACE: Turn-level Reward Assignment via Credit Estimation for Long-Horizon Agents, Leitian Tao+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.13988</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6133</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, ReinforcementLearning, PRM, One-Line Notes, LongHorizon, Author Thread-Post</tags>
+<repo-issue-date>2026-07-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.13988
+# Authors
+  - Leitian Tao
+  - Baolin Peng
+  - Wenlin Yao
+  - Tao Ge
+  - Hao Cheng
+  - Mike Hang Wang
+  - Jianfeng Gao
+  - Sharon Li
+# Abstract
+  - Multi-turn agents solve complex tasks through extended sequences of tool interactions before producing a final answer, making credit assignment a fundamental challenge during post-training. Outcome rewards provide reliable supervision for short-horizon reasoning, but become sparse and high-variance as trajectories grow to tens or hundreds of tool calls. They can also be misleading: a failed rollout may contain many useful actions that move the agent closer to the goal, yet outcome-only training assigns them the same negative advantage as the eventual mistake. We propose TRACE (Turn-level Reward Assignment via Credit Estimation), a dense credit-assignment method for agentic reinforcement learning. TRACE represents rollouts as state transitions at tool-call boundaries, obtains gold-answer log-probabilities from a frozen reference model, transforms them into log-ratio state values, and derives per-action rewards as Temporal-Difference changes in those values. This requires no additional critic or process-label training, and its one-step log-ratio TD component telescopes across redundant tool calls. On long-horizon complex search, TRACE substantially improves base-model tool-use ability using pure RL, without a cold-start supervised fine-tuning stage, an agentic mid-training stage, or training on live-web data. On the closed-web BrowseComp-Plus benchmark, it raises Qwen3-4B from $7.2$ to $35.6$ and Qwen3-30B-A3B from $8.4$ to $42.6$. The learned search behavior also transfers to open-web benchmarks, and the learning curves show earlier improvement and faster convergence during RL training.
+# Translation (by gpt-5-nano)
+- マルチターンのエージェントは、最終的な回答を生成する前に長いツール呼び出しの連続を通じて複雑なタスクを解決するため、事後訓練時のクレジット割り当てが根本的な課題となる。結果報酬は短期的な推論には信頼できる監督を提供するが、軌跡が十数回から百回以上のツール呼び出しへと成長するにつれて希薄で分散が大きくなる。失敗したロールアウトには多くの有用な行動が含まれており、エージェントを目標に近づける一方で、結果のみの学習はそれらを最終的なミスと同じネガティブな利得として割り当ててしまう。私たちは TRACE（Turn-level Reward Assignment via Credit Estimation）を提案する。TRACE はエージェント的強化学習のための密なクレジット割り当て手法である。TRACE はツール呼び出し境界でロールアウトを状態遷移として表現し、固定された参照モデルから得られる正解回答の対数確率を取得し、それを対数比状態値に変換し、これらの値の時間差分（TD）変化として各アクションの報酬を導出する。これには追加のクリティックやプロセスラベルの学習を必要とせず、1ステップの対数比TD成分は冗長なツール呼び出しを跨いでテレスコープする。長期的で複雑な探索において、TRACE は純粋な強化学習のみを用いてベースモデルのツール利用能力を大幅に改善し、コールドスタートの教師付きファインチューニング段階やエージェント的中間訓練段階、ライブウェブデータでの訓練を必要としない。クローズドウェブの BrowseComp-Plus ベンチマークでは、Qwen3-4B を 7.2 から 35.6 へ、Qwen3-30B-A3B を 8.4 から 42.6 へ引き上げた。学習済みの探索行動はオープンウェブのベンチマークにも転移し、RL 訓練中の学習曲線は早期の改善と収束の速さを示している。
+# Summary (by gpt-4o-mini)
+- TRACE（Turn-level Reward Assignment via Credit Estimation）は、マルチターンエージェントの強化学習における密なクレジット割り当て手法を提案する。従来の報酬メカニズムが希薄化する問題を解決し、ツール呼び出しの軌跡を状態遷移として扱い、正解回答の対数確率を利用して各アクションの報酬を導出する。これにより、エージェントのツール利用能力を大幅に改善し、教師付きファインチューニングに依存せず、BrowseComp-Plusベンチマークでの性能を著しく向上させた。学習行動はオープンウェブのベンチマークにも転移し、早期の改善と速い収束を示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2077630014577909833?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>frozenなモデルでツール呼び出しの前後において、呼び出し結果が正解の対数確率をどれだけ変化させたかによって、long horizon RLにおいて、密な報酬シグナルを提供する。</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/SharonYixuanLi/status/2078854876084502825?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Separating Representation from Reconstruction Enables Scalable Text Encoders, Megi Dervishi+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.04011</original-paper-blog-link>
@@ -29,6 +189,51 @@
 {% endraw %}
 
 </p><p>論文の概要としては、BERTは投入された計算量に対してdownstreamタスク性能がスケールしない課題があったが、その原因を、BERTのflatなアーキテクチャが課題であると指摘。BERTはMLM lossで学習されるが、これはトークンの再構築の能力を測定するが、実際の表現の品質を測定できていない。BERTのアーキテクチャが、Representationの学習と、Reconstructionを明示的に分離していない（=flatなアーキテクチャ）ため、結果的にBERTが学習する表現がReconstructionのためのlocalな信号に過度に適合してしまい、abstractionに失敗してしまう（結果的に、計算量を投じれば投じるほどlossは下がるが、downstreamタスクの性能は下がる）、という仮説を立てている。<br><br>解決方法として、表現を学習するEncoderと、マスク部分の再構築をおこなうPredictorをアーキテクチャとして明示的に分離することを提案している。<br><br><img src="https://github.com/user-attachments/assets/79ed5188-73a3-499e-aa4d-9ccc06c2b77f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>これにより、投入した計算量に対してdownstreamタスクの性能がスケールするようになった、という話に見える。<br><img src="https://github.com/user-attachments/assets/d886529c-c23b-45c8-aae9-3b69f8d4b156" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>おそらくアーキテクチャ上の細かい工夫があると思われるので、そこはしっかり読んだ方が良いカッコまだ読めてない）。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Understanding Reasoning from Pretraining to Post-Training, Jingyan Shen+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.16097</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6105</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, ReinforcementLearning, Scaling Laws, PostTraining, Selected Papers/Blogs, reading, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-07-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.16097
+# Authors
+  - Jingyan Shen
+  - Ang Li
+  - Salman Rahman
+  - Yifan Sun
+  - Micah Goldblum
+  - Matus Telgarsky
+  - Pavel Izmailov
+# Abstract
+  - Reinforcement learning (RL) has become central to improving large language models (LLMs) on complex reasoning tasks, yet RL post-training is largely studied in isolation from the pretraining that precedes it. As a result, two basic questions remain open: (1) how do pretraining choices (model size, data) shape the returns to RL compute, and (2) what does RL actually do to the model? These questions are difficult to study in the standard LLM setting: pretraining corpora are vast and uncontrolled, making it hard to attribute behaviors to pretraining versus RL, and systematic compute sweeps across both stages are prohibitively expensive. To address these challenges, we use chess as a controlled testbed for studying reasoning across the full pretraining-to-post-training pipeline. We follow the standard LLM training pipeline by pretraining language models from 5M to 1B parameters on human chess games, supervised fine-tuning on synthetic reasoning traces, and running RL on chess puzzles with verifiable rewards. Using this framework, we find that the post-RL performance at given RL compute level is well-predicted from the pretraining loss, and slope of the RL reward curves improves approximately linearly with the pretraining tokens. Beyond scaling, we find that RL does not simply sharpen the SFT policy: on easy puzzles it amplifies correct moves the SFT policy already preferred, while on hard puzzles it surfaces correct moves that were nearly absent under SFT. We further test whether our findings transfer beyond chess by training a 1B language model on math-domain text, where the same predictive pattern emerges: longer-pretrained checkpoints reach higher post-RL performance and improve faster under RL. In sum, we provide a quantitative account of the pretraining-to-RL interface and a controlled testbed for studying the science of reasoning across the full pretraining-to-post-training pipeline.
+# Translation (by gpt-5-nano)
+- 強化学習（RL）は複雑な推論タスクにおいて大規模言語モデル（LLMs）を改善するうえで中心的な手法となっているが、RLの事後訓練はそれに先立つ事前訓練から分離して研究されることが多い。結果として、二つの基本的な疑問が未解決のまま残る：(1) 事前訓練の選択（モデルサイズ、データ）はRL計算のリターンをどのように形づくるのか、(2) RLは実際にモデルに何をもたらすのか？これらの疑問は標準のLLM設定では研究が難しい。事前訓練コーパスは膨大で管理されていないため、挙動を事前訓練とRLのどちらに起因するかを特定するのが難しく、両段階を横断した系統的な計算スイープは高コストである。これらの課題に対処するため、チェスを全事前訓練から事後訓練までの推論を調べる統制されたテストベッドとして用いる。私たちは標準的なLLM訓練パイプラインに従い、人間のチェスゲームを用いて5百万から10億パラメータの言語モデルを事前訓練し、合成推論跡の監視付き微調整を行い、検証可能な報酬を持つチェスのパズルでRLを実行する。この枠組みを用いて、所定のRL計算量におけるRL後の性能は事前訓練損失から良く予測されること、RL報酬曲線の勾配は事前訓練トークン数とほぼ線形に改善することを発見した。スケーリングを超えて、RLは単にSFTポリシーを鋭くするだけではない：容易なパズルではSFTポリシーがすでに好んだ正解の手を増幅させる一方、難解なパズルではSFTの下ではほとんど現れなかった正解の手を表面化させる。さらに、チェス以外への適用可能性を検証するため、1B言語モデルを数学ドメインのテキストで訓練し、同じ予測パターンが現れることを確認した：より長く事前訓練されたチェックポイントはRL後の性能をより高く達成し、RLの下でより速く改善する。要するに、事前訓練とRLのインターフェースを定量的に説明し、全事前訓練から事後訓練に至る推論の科学を研究するための統制されたテストベッドを提供する。
+# Summary (by gpt-4o-mini)
+- 強化学習（RL）と大規模言語モデル（LLMs）の相互作用を特定するため、チェスを用いた統制されたテストベッドを提案。事前訓練からRLまでの関係を調査し、RL計算量と事前訓練損失との予測関係を発見。RLはSFTポリシーを鋭くするだけでなく、難解な問題でより良い解決策を引き出す。数学ドメインでも同様のパターンを確認し、事前訓練とRLの関係を定量的に説明する枠組みを提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2079670429459882199?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習によってモデルの能力の基盤が形作られ、それは最終的なモデルの品質に大きな影響を与えることは経験的に知られているようだったが、本研究の成果は事前学習の重要性を示す一つの根拠になり得るため、重要文献に見える。</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/iamleonli/status/2079250874228949041?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br> <br>- 事前学習のlossによって（固定されたRL予算の元での）到達性能 (pass_at_1) を予測可能で、事前学習での学習トークン数に対して（固定された予算の元での）RLの性能向上の傾きが、対数線形に増加する (Figure 3)<br>  - 実験から導かれた事前学習-RL間のスケーリング則 (p.8)<br>  - が、対数線形の傾向は局所的にしか成り立たない模様？<br>- 予算が小さい場合は事前学習を重視し、予算が増加するにつれてRLに比重を置いた方が最終的なモデル性能が改善する (Figure 2)<br>  - 事前学習に費やすトークンが多いほどRL後の性能が増し、モデルスケールが大きいほどRLに計算量を多く割り当てた方が性能が高くなる<br>- この傾向は、1B OLMo2を数学で10-200Bトークンで事前学習した場合でも観測された</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -84,7 +289,7 @@
 <title>[Paper Note] Self-Guided Test-Time Training for Long-Context LLMs, Xinyu Zhu+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.09415</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6095</repo-issue-link>
-<tags>NLP, LanguageModel, LongSequence, reading, One-Line Notes, Reading Reflections, Test Time Training (TTT)</tags>
+<tags>NLP, LanguageModel, LongSequence, reading, One-Line Notes, Reading Reflections, Test Time Training (TTT), Author Thread-Post</tags>
 <repo-issue-date>2026-07-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2607.09415
@@ -118,7 +323,17 @@
 </div>
 {% endraw %}
 
-</p><p>長文Context+質問が与えられたときに、質問に関連するcontextのspanを同定した後(Self-Guided)、TTTでモデルパラメータに内部化させた後に応答する、という話に見える。TTTでは、LoRAを用いて、かつ16 gradient updateを行った時点で更新を終了する。<br><img src="https://github.com/user-attachments/assets/1d69d3d8-db5a-4d53-a8dc-ea85cb8444a2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Full ContextでらTTTするよりも、Self-Guidedな方が高い性能を獲得できる。<br><img src="https://github.com/user-attachments/assets/d2437308-117b-4aec-9a53-6a88881c5c26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>TTTを使ってLoRA adapterにcontextの情報をweightとして内部化させても、思ったほど性能は上がらないのだなという印象。<br><br>LoRAでweightにcontextを内部化させても、その内部化された情報をうまく活用するような工夫が足りていないのでは？という気がするのだが、どうだろうか。<br><br>ベンチマークのインスタンスが、contextをmemorizationし、適切にatteedすれば解けるようなクエリなのか否かという点も気になる。<br>もしcontextの情報に基づいてマルチポップな推論が必要な場合、LoRAアダプタによる重みを活用するような回路が育っていない可能性が高く、性能は伸びにくいのかなという気はする。</p></maintainer-comment-text>
+</p><p>長文Context+質問が与えられたときに、質問に関連するcontextのspanを同定した後(Self-Guided)、TTTでモデルパラメータに内部化させた後に応答する、という話に見える。TTTでは、LoRAを用いて、かつ16 gradient updateを行った時点で更新を終了する。<br><img src="https://github.com/user-attachments/assets/1d69d3d8-db5a-4d53-a8dc-ea85cb8444a2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Full ContextでらTTTするよりも、Self-Guidedな方が高い性能を獲得できる。<br><img src="https://github.com/user-attachments/assets/d2437308-117b-4aec-9a53-6a88881c5c26" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>TTTを使ってLoRA adapterにcontextの情報をweightとして内部化させても、思ったほど性能は上がらないのだなという印象。<br><br>LoRAでweightにcontextを内部化させても、その内部化された情報をうまく活用するような工夫が足りていないのでは？という気がするのだが、どうだろうか。<br><br>ベンチマークのインスタンスが、contextをmemorizationし、適切にattendすれば解けるようなクエリなのか否かという点も気になる。<br>もしcontextの情報に基づいてマルチポップな推論が必要な場合、LoRAアダプタによる重みを活用するような回路が育っていない可能性が高く、性能は伸びにくいのかなという気はする。</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tianhongzxy/status/2078266009308553304?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -28095,6 +28310,49 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>NVIDIA Nemotron 3 Embed Ranks #1 Overall on RTEB, Advancing Agentic Retrieval, Nvidia, 2026.07</title>
+<original-paper-blog-link>https://huggingface.co/blog/nvidia/nemotron-3-embed-wins-rteb</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6135</repo-issue-link>
+<tags>Embeddings, InformationRetrieval, NLP, LanguageModel, RepresentationLearning, RAG(RetrievalAugmentedGeneration), MultiLingual, OpenWeight, Selected Papers/Blogs, One-Line Notes</tags>
+<repo-issue-date>2026-07-31</repo-issue-date>
+<issue-body>https://huggingface.co/blog/nvidia/nemotron-3-embed-wins-rteb</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nvidiaai/status/2077786069840318800?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/nvidia/nemotron-3-embed" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/nvidia/nemotron-3-embed</a>
+{% endraw %}
+
+</p><p>LLMベースのretrieval, STSタスク特化のembeddingモデルで、最大32k contextをサポート。多言語対応している。</p><p>RTEB Multilingualと呼ばれるベンチマークでSoTA:<br>
+
+{% raw %}
+<a href="https://mteb-leaderboard.hf.space/benchmark/RTEB(beta)" target="_blank" rel="noopener noreferrer">https://mteb-leaderboard.hf.space/benchmark/RTEB(beta)</a>
+{% endraw %}
+
+<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6136" target="_blank" rel="noopener noreferrer">Introducing RTEB: A New Standard for Retrieval Evaluation, Liu+, 2025.10</a>
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2077876057491825049?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>Autoregressiveなモデルをbidirectionalなattentionに変換した上で、contrastive learning+高品質データでFinutuning。小規模モデルの作成には、pruning, NAS, 蒸留を2回繰り返すことで実現。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
