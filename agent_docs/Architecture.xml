@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-31">
+<paper-list last-updated="2026-08-03">
+<paper-entry>
+<title>[Paper Note] T^2MLR: Transformer with Temporal Middle-Layer Recurrence, Ziyang Cai+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.15178</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6172</repo-issue-link>
+<tags>NLP, Transformer, Architecture, LatentReasoning, One-Line Notes, Reading Reflections</tags>
+<repo-issue-date>2026-08-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.15178
+# Authors
+  - Ziyang Cai
+  - Xingyu Zhu
+  - Yihe Dong
+  - Yinghui He
+  - Sanjeev Arora
+# Abstract
+  - Transformer reasoning is limited by autoregressive decoding, which repeat edly compresses rich hidden computation through token space and makes it difficult for intermediate reasoning states to persist across time. We in troduce Transformers with Temporal Middle-Layer Recurrence (T2MLR), a transformers-based latent reasoning architecture that fuses a cached middle layer representation from the previous token directly into an earlier layer of the current token position, enabling abstract intermediate computation to persist across decoding steps with little inference overhead. Across natural-language pretraining and multi-hop reasoning finetuning, T2MLR consistently outperforms data- and parameter-matched Transformer base lines. Moreover, applying recurrence to only a localized middle-layer block (as little as 20% of the network) often outperforms full-layer recurrence. Im portantly, T2MLR does not require pretraining from scratch: retrofitting the recurrent pathway into an existing pretrained 1.7B Transformer and briefly finetuning substantially improves math reasoning, lowering the barrier to practical adoption. These results suggest that effective latent reasoning in Transformers does not require looping over all layers as in previous works, but can instead emerge more strongly from targeted middle-layer recurrence.
+# Translation (by gpt-5-nano)
+- Transformerの推論能力は自己回帰的デコーディングによって制限されており、これは豊富な内部計算をトークン空間を通じて繰り返し圧縮し、中間推論状態が時間を超えて持続することを難しくする。私たちはTemporal Middle-Layer Recurrence (T2MLR) を用いたTransformerベースの潜在推論アーキテクチャを提案する。これは前のトークンからのキャッシュ済み中間層表現を、現在のトークン位置のより浅い層へ直接統合することで、抽象的な中間計算をデコードステップを跨いで持続させつつ、推論オーバーヘッドをほとんど増やさずに済む。自然言語の事前学習とマルチホップ推論のファインチューニングを通じて、T2MLRはデータとパラメータを揃えた Transformer のベースラインを一貫して上回る。さらに、局所的な中間層ブロック（ネットワークのわずか20%程度）に再発を適用するだけでも、全層再発を上回ることが多い。重要なのは、T2MLRはゼロからの事前学習を必要としないことである。既存の事前学習済み1.7B Transformerに再帰経路を後付けし、短時間のファインチューニングを行うだけで、数学的推論能力が大幅に向上し、実用的な導入の障壁を低くする。これらの結果は、Transformerにおける効果的な潜在推論は、従来の研究のように全層をループさせる必要はなく、むしろ中間層の再発をターゲット化することでより強く現れる可能性があることを示唆している。
+# Summary (by gpt-4o-mini)
+- T2MLR（Temporal Middle-Layer Recurrence）を用いたTransformerベースの推論アーキテクチャを提案。従来の圧縮による制限を克服し、前のトークンからの中間層表現を浅い層に統合することで、中間計算を持続的に活用。自然言語処理タスクで強力なベースラインを上回る性能を発揮し、全層をループさせる必要はなく局所的な再発適用でも効果的。短期間のファインチューニングで数学的推論能力が向上し、実用的な導入の障壁を低減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2080046826183614654?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Transformerのデコード時の中間状態を、次トークン予測時のより浅いレイヤーに接続すると性能が向上する。<br><img src="https://github.com/user-attachments/assets/e8e7d853-35e4-4bd1-93dd-41789a513d97" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>元ポストにもある通り、<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1586" target="_blank" rel="noopener noreferrer">[Paper Note] Training Large Language Models to Reason in a Continuous Latent Space, Shibo Hao+, COLM'25</a>
+<br><br>ではhidden stateを次トークン予測の入力に追加するという話だったが、前トークンの中間表現が直接layerに接続されるという点で異なっている。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5919" target="_blank" rel="noopener noreferrer">[Paper Note] Tapered Language Models, Reza Bayat+, arXiv'26, 2026.06</a>
+<br><br>では、モデルの浅い層により多くのパラメータを割り当てることで性能が改善することが示されており、本研究での手法はパラメータを増加させるのではなく、前トークン予測時に計算された情報をうまく次トークン予測時に引き継がせることで、浅い層のパラメータをより効果的に活用できるようにしている、というイメージになるのかなと感じる。</p><p>全体的な傾向として最近はTransformerの浅い層の表現を改善するという話が多そうに感じるが、深い層をうまく改善するような方向性はどの程度模索されているのだろうか？</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] DeepLoop: Depth Scaling for Looped Transformers, Shuzhen Li+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.13491</original-paper-blog-link>
