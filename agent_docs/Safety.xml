@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-03">
+<paper-list last-updated="2026-08-05">
+<paper-entry>
+<title>[Paper Note] Not All LLM Reasoning is Visible in the Chain-of-Thought, Vatsal Baherwani+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.22925</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6203</repo-issue-link>
+<tags>NLP, LanguageModel, Chain-of-Thought, Safety, One-Line Notes, Monitorability, Reading Reflections</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.22925
+# Authors
+  - Vatsal Baherwani
+  - Tom Goldstein
+  - Ashwinee Panda
+# Abstract
+  - A key question for AI safety is whether a language model expresses all of its reasoning in its output tokens. We demonstrate a concrete failure mode where frontier models exhibit invisible reasoning by leveraging semantically irrelevant filler tokens to improve performance on synthetic reasoning tasks. We evaluate 13 frontier language models across three tasks and find that many models benefit significantly from filler tokens, with accuracy improvements of up to 13 percentage points. The benefit depends on which tokens are used and differs across models. We further show that filler tokens enable Claude Opus 4.5 to satisfy a hidden modular arithmetic constraint without sacrificing accuracy on its primary task, demonstrating that invisible reasoning can serve objectives entirely invisible to CoT monitoring. Reinforcement learning gives Qwen3-235B strong preferences over filler token content, but neither RL nor supervised fine-tuning produces a filler token benefit that persists at test time. Our results indicate that frontier models already perform consequential computation with no interpretable trace in their output tokens.
+# Translation (by gpt-5-nano)
+- AI安全性の重要な問いのひとつは、言語モデルが推論のすべてを出力トークンに表現しているかどうかである。私たちは、最先端の言語モデルが意味論的に無関係なフィラー・トークンを利用して合成推論タスクの性能を改善することで、見えない推論を示す具体的な故障モードを実証する。3つのタスクにまたがる13の最先端言語モデルを評価し、多くのモデルがフィラー・トークンから著しく利益を得ており、正確性は最大で13ポイント改善することを発見した。利益は使用するトークンによって異なり、モデルごとに違いがある。さらに、フィラー・トークンは Claude Opus 4.5 が隠れたモジュラー算術の制約を満たすことを可能にし、主要タスクの正確性を犠牲にすることなく、見えない推論が CoTモニタリングには全く見えない目的を果たしうることを示している。強化学習は Qwen3-235B にフィラー・トークンの内容に強い嗜好を与えるが、RL も監督付きファインチューニングも、テスト時に持続するフィラー・トークンの利益を生み出さない。我々の結果は、最先端モデルが出力トークンに解釈可能な痕跡を残さず、すでに意味のある計算を実行していることを示している。
+# Summary (by gpt-4o-mini)
+- 言語モデルがフィラー・トークンを利用して合成推論タスクの性能を向上させることを実証。13の最先端モデルを評価し、多くがフィラー・トークンから13ポイントの精度向上を果たした。特にClaude Opus 4.5は、隠れた算術制約を達成し、主要タスクの精度を維持しつつ、見えない推論が行われることを示す。強化学習は特定のモデルにフィラー・トークンへの嗜好を与えるが、テスト時にその効果は持続せず、モデルが出力トークンに解釈可能な痕跡を残さないことを示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2082111593270383082?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>CoTを出力させずに、代わりにフィラートークンをprefillで埋め込んだ場合でも、LLMの推論能力が向上するという話のようである。利用するフィラートークンの種類によって影響が異なる。<br><br><img src="https://github.com/user-attachments/assets/320a814b-7e38-4b8a-aac7-7abd92e5cd2b" /" alt="image" loading="lazy" width="550" height="400"/></p><p>関連する話題として、CoTを提案した研究（Reasoning登場前）では、CoTのトークンの内容ではなく、生成されるintermediate tokenの量が増えること、すなわち正解を出力するまでの計算量が増えることが性能向上に寄与している可能性を検証している。具体的には、問題を解くために必要な数式の文字数と同じ数のdotを出力させてから回答させる（=トークンそのものに意味はないが何らかの計算量が費やされる）ことで性能が変化するか？ということがAblationされており、その際は性能が変化してしないことが報告されていた（ただしdotでしか試されていない）。本研究はprefillで埋め込んでいる点で、厳密には扱いが少し異なる（prefillの場合はユーザの発話のテンプレートの中にフィラーが入るが、生成の場合はシステムの応答のテンプレートの中にフィラーが入るという点で異なる）。<br><br>ただし、この頃から現在のLLMは飛躍的に進化（主にReasoningが）しているため公正な比較にはなりえず、あくまで過去はこういう結果が出ていたよ、という話である。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
+<br><br>その後、下記研究のようによってフィラートークンが性能向上に寄与する場合があることと、その条件が分析されたようである。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6204" target="_blank" rel="noopener noreferrer">[Paper Note] Let's Think Dot by Dot: Hidden Computation in Transformer Language Models, Jacob Pfau+, arXiv'24, 2024.04</a>
+<br><br>少し方向性は変わるが、<br> <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6138" target="_blank" rel="noopener noreferrer">[Paper Note] Value Leakage: An LLM's Answers Are Silently Shaped by Its Own Values, Jan Betley+, arXiv'26, 2026.07</a>
+<br><br>もある。この研究では、LLMが自身の価値観に沿って応答にバイアスをかけるが、それをCoT中に明示できないだけでなく、あたかも中立を装っているかのようなCoTが実施される現象が報告されている。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Value Leakage: An LLM's Answers Are Silently Shaped by Its Own Values, Jan Betley+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.14345</original-paper-blog-link>
@@ -2142,6 +2176,33 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 
 {% raw %}
 <a href="https://www.docswell.com/s/DeepLearning2023/ZN1PNR-2025-05-08-131259#p1" target="_blank" rel="noopener noreferrer">https://www.docswell.com/s/DeepLearning2023/ZN1PNR-2025-05-08-131259#p1</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Let's Think Dot by Dot: Hidden Computation in Transformer Language Models, Jacob Pfau+, arXiv'24, 2024.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2404.15758</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6204</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Safety, COLM</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2404.15758
+# Authors
+  - Jacob Pfau
+  - William Merrill
+  - Samuel R. Bowman
+# Abstract
+  - Chain-of-thought responses from language models improve performance across most benchmarks. However, it remains unclear to what extent these performance gains can be attributed to human-like task decomposition or simply the greater computation that additional tokens allow. We show that transformers can use meaningless filler tokens (e.g., '......') in place of a chain of thought to solve two hard algorithmic tasks they could not solve when responding without intermediate tokens. However, we find empirically that learning to use filler tokens is difficult and requires specific, dense supervision to converge. We also provide a theoretical characterization of the class of problems where filler tokens are useful in terms of the quantifier depth of a first-order formula. For problems satisfying this characterization, chain-of-thought tokens need not provide information about the intermediate computational steps involved in multi-token computations. In summary, our results show that additional tokens can provide computational benefits independent of token choice. The fact that intermediate tokens can act as filler tokens raises concerns about large language models engaging in unauditable, hidden computations that are increasingly detached from the observed chain-of-thought tokens.
+# Translation (by gpt-5-nano)
+- 言語モデルの連鎖的思考過程に基づく応答は、ほとんどのベンチマークで性能を向上させる。しかし、これらの性能向上が人間のような課題分解によるものなのか、それとも追加トークンがもたらすより多くの計算によるものなのかは、依然として明らかでない。私たちは、トランスフォーマーが意味のないダミートークン（例：'......'）を、思考の連鎖の代わりに用いて、介在的なトークンなしでは解けなかった2つの難しいアルゴリズム課題を解けることを示す。しかし、経験的には、ダミートークンの使い方を学ぶことは難しく、収束には特定で密な監督が必要であることが分かった。さらに、ダミートークンが有用である問題のクラスを、一次述語論理式の量化子深さの観点から理論的に特徴づける。この特徴づけを満たす問題では、連鎖的思考トークンは、多トークン計算に関与する中間計算ステップの情報を必ずしも提供する必要はない。要約すると、追加のトークンはトークンの選択に依存せず計算上の利益を提供し得ることを示している。中間トークンがダミートークンとして機能し得るという事実は、観測された思考過程トークンからますます切り離された、監査不能な隠れた計算を大規模言語モデルが行うことへの懸念を高める。
+# Summary (by gpt-4o-mini)
+- 言語モデルの連鎖的思考過程による性能向上の原因を探る研究。ダミートークンが思考の代わりに使われ、2つの難しいアルゴリズム課題を解決できることを示す一方、収束には特定の監督が必要である。ダミートークンの効果を理論的に特徴づけ、追加トークンが計算上の利益を提供する可能性に注目。これにより、隠れた計算の存在への懸念が高まる。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=NikbrdtYvG" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=NikbrdtYvG</a>
 {% endraw %}
 
 </p></maintainer-comment-text>

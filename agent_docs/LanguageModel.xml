@@ -1,5 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-04">
+<paper-list last-updated="2026-08-05">
+<paper-entry>
+<title>[Paper Note] Not All LLM Reasoning is Visible in the Chain-of-Thought, Vatsal Baherwani+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.22925</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6203</repo-issue-link>
+<tags>NLP, LanguageModel, Chain-of-Thought, Safety, One-Line Notes, Monitorability, Reading Reflections</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.22925
+# Authors
+  - Vatsal Baherwani
+  - Tom Goldstein
+  - Ashwinee Panda
+# Abstract
+  - A key question for AI safety is whether a language model expresses all of its reasoning in its output tokens. We demonstrate a concrete failure mode where frontier models exhibit invisible reasoning by leveraging semantically irrelevant filler tokens to improve performance on synthetic reasoning tasks. We evaluate 13 frontier language models across three tasks and find that many models benefit significantly from filler tokens, with accuracy improvements of up to 13 percentage points. The benefit depends on which tokens are used and differs across models. We further show that filler tokens enable Claude Opus 4.5 to satisfy a hidden modular arithmetic constraint without sacrificing accuracy on its primary task, demonstrating that invisible reasoning can serve objectives entirely invisible to CoT monitoring. Reinforcement learning gives Qwen3-235B strong preferences over filler token content, but neither RL nor supervised fine-tuning produces a filler token benefit that persists at test time. Our results indicate that frontier models already perform consequential computation with no interpretable trace in their output tokens.
+# Translation (by gpt-5-nano)
+- AI安全性の重要な問いのひとつは、言語モデルが推論のすべてを出力トークンに表現しているかどうかである。私たちは、最先端の言語モデルが意味論的に無関係なフィラー・トークンを利用して合成推論タスクの性能を改善することで、見えない推論を示す具体的な故障モードを実証する。3つのタスクにまたがる13の最先端言語モデルを評価し、多くのモデルがフィラー・トークンから著しく利益を得ており、正確性は最大で13ポイント改善することを発見した。利益は使用するトークンによって異なり、モデルごとに違いがある。さらに、フィラー・トークンは Claude Opus 4.5 が隠れたモジュラー算術の制約を満たすことを可能にし、主要タスクの正確性を犠牲にすることなく、見えない推論が CoTモニタリングには全く見えない目的を果たしうることを示している。強化学習は Qwen3-235B にフィラー・トークンの内容に強い嗜好を与えるが、RL も監督付きファインチューニングも、テスト時に持続するフィラー・トークンの利益を生み出さない。我々の結果は、最先端モデルが出力トークンに解釈可能な痕跡を残さず、すでに意味のある計算を実行していることを示している。
+# Summary (by gpt-4o-mini)
+- 言語モデルがフィラー・トークンを利用して合成推論タスクの性能を向上させることを実証。13の最先端モデルを評価し、多くがフィラー・トークンから13ポイントの精度向上を果たした。特にClaude Opus 4.5は、隠れた算術制約を達成し、主要タスクの精度を維持しつつ、見えない推論が行われることを示す。強化学習は特定のモデルにフィラー・トークンへの嗜好を与えるが、テスト時にその効果は持続せず、モデルが出力トークンに解釈可能な痕跡を残さないことを示唆。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2082111593270383082?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>CoTを出力させずに、代わりにフィラートークンをprefillで埋め込んだ場合でも、LLMの推論能力が向上するという話のようである。利用するフィラートークンの種類によって影響が異なる。<br><br><img src="https://github.com/user-attachments/assets/320a814b-7e38-4b8a-aac7-7abd92e5cd2b" /" alt="image" loading="lazy" width="550" height="400"/></p><p>関連する話題として、CoTを提案した研究（Reasoning登場前）では、CoTのトークンの内容ではなく、生成されるintermediate tokenの量が増えること、すなわち正解を出力するまでの計算量が増えることが性能向上に寄与している可能性を検証している。具体的には、問題を解くために必要な数式の文字数と同じ数のdotを出力させてから回答させる（=トークンそのものに意味はないが何らかの計算量が費やされる）ことで性能が変化するか？ということがAblationされており、その際は性能が変化してしないことが報告されていた（ただしdotでしか試されていない）。本研究はprefillで埋め込んでいる点で、厳密には扱いが少し異なる（prefillの場合はユーザの発話のテンプレートの中にフィラーが入るが、生成の場合はシステムの応答のテンプレートの中にフィラーが入るという点で異なる）。<br><br>ただし、この頃から現在のLLMは飛躍的に進化（主にReasoningが）しているため公正な比較にはなりえず、あくまで過去はこういう結果が出ていたよ、という話である。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/551" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</a>
+<br><br>その後、下記研究のようによってフィラートークンが性能向上に寄与する場合があることと、その条件が分析されたようである。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6204" target="_blank" rel="noopener noreferrer">[Paper Note] Let's Think Dot by Dot: Hidden Computation in Transformer Language Models, Jacob Pfau+, arXiv'24, 2024.04</a>
+<br><br>少し方向性は変わるが、<br> <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6138" target="_blank" rel="noopener noreferrer">[Paper Note] Value Leakage: An LLM's Answers Are Silently Shaped by Its Own Values, Jan Betley+, arXiv'26, 2026.07</a>
+<br><br>もある。この研究では、LLMが自身の価値観に沿って応答にバイアスをかけるが、それをCoT中に明示できないだけでなく、あたかも中立を装っているかのようなCoTが実施される現象が報告されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Deconstructing Off-Policy Ratios: Entropy-Scaled Trust Regions for Asynchronous Reinforcement Learning, Guanqun Zhao+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.22186</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6195</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PostTraining, train-inference-gap, Asynchronous</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.22186
+# Authors
+  - Guanqun Zhao
+  - Zijun Xie
+  - Binbin Zheng
+  - Enlei Gong
+  - Jiafeng Lu
+  - Yehan Yang
+  - Aoqi Hu
+  - Zeyu Chen
+# Abstract
+  - Asynchronous reinforcement learning (RL) accelerates large language model (LLM) post-training by overlapping rollout generation with policy optimization, but the resulting stale, off-policy data can destabilize optimization and ultimately cause policy collapse. Existing methods typically retain or discard tokens based solely on the magnitude of their importance ratios, applying the same threshold uniformly across token positions. In this work, we reveal that the natural scale of the importance ratio varies systematically with token entropy. Under asynchronous dynamics, this entropy-ratio scaling dictates two distinct phenomena: at low entropy, the inherent train-inference discrepancy is drastically amplified into substantial sampling noise; at high entropy, in-flight weight updates naturally induce pronounced, legitimate exploratory deviations. Consequently, magnitude-only correction inadvertently admits the amplified noise while strictly masking out the essential exploration triggered by in-flight updates. To address this, we propose the Entropy-Scaled Trust Region (ESTR), which scales each token's off-policy deviation by its local entropy, requiring no auxiliary forward passes or explicit version-switch detection. Across long-horizon agentic tasks and mathematical reasoning benchmarks, ESTR consistently outperforms existing asynchronous methods and achieves the best train-inference consistency. It reaches $37.34$ avg@1 on BrowseComp-Plus and $95.69$ on multi-turn GSM8K, matching synchronous GRPO while achieving a $2.6\times$ speedup.
+# Translation (by gpt-5-nano)
+- 非同期強化学習（RL）は、ロールアウト生成と方策最適化を重ね合わせることにより大規模言語モデル（LLM）のポストトレーニングを加速するが、その結果生じる古くなったオフポリシーデータは最適化を不安定にし、最終的にポリシー崩壊を引き起こす可能性がある。従来の手法は通常、重要度比の大きさのみに基づいてトークンを保持するか破棄するかを決定し、トークン位置ごとに同じ閾値を一様に適用する。本研究では、重要度比の自然なスケールがトークンのエントロピーと系統的に変化することを明らかにする。非同期ダイナミクスの下で、このエントロピー比スケーリングは2つの異なる現象を規定する。低エントロピーでは、固有の訓練-推論のずれが著しく増幅され、顕著なサンプリングノイズへと変化する。高エントロピーでは、進行中の重み更新が自然に顕著で正当な探索的偏差を引き起こす。結果として、マグニチュードのみの補正は拡大したノイズを取り込んでしまい、進行中の更新によって引き起こされる本質的な探索を厳密に覆い隠してしまう。これに対処するため、局所エントロピーで各トークンのオフポリシー偏差をスケーリングする Entropy-Scaled Trust Region（ESTR）を提案する。補助的な前方伝搬は不要で、明示的なバージョン切替検出も必要ない。長期的なエージェントタスクと数学的推論ベンチマーク全般において、ESTRは既存の非同期手法を一貫して上回り、最良の訓練-推論整合性を達成する。BrowseComp-Plusでは avg@1 が 37.34、multi-turn GSM8Kでは 95.69 に到達し、同期GRPOと同等を達成しつつ、2.6×の速度アップを実現する。
+# Summary (by gpt-4o-mini)
+- 非同期強化学習におけるオフポリシーデータの不安定性を解消するため、重要度比のエントロピーに基づくEntropy-Scaled Trust Region（ESTR）を提案。低エントロピーではサンプリングノイズが増幅され、高エントロピーでは探索的偏差が顕著になる。ESTRは各トークンの偏差を局所エントロピーでスケーリングし、補助伝搬を必要とせず、既存手法を上回る性能を示す。具体的には、BrowseComp-Plusでavg@1が37.34、multi-turn GSM8Kで95.69に到達し、2.6倍の速さを実現。</issue-body>
+<maintainer-comment-text><p>関連 (IcePop):<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3388" target="_blank" rel="noopener noreferrer">[Paper Note] Every Step Evolves: Scaling Reinforcement Learning for Trillion-Scale
+  Thinking Model, Ling Team+, arXiv'25, 2025.10</a>
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2081636898230177800?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] SonicSampler: Unified Tile-Aware Kernels for LLM Sampling and Speculative Verification, Pragaash Ponnusamy+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.20475</original-paper-blog-link>
@@ -19309,6 +19381,124 @@ K-アームド・バンディット問題では、DGは単一のコンテキス�
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/natolambert/status/2033594601731432793?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Attention Residuals, Kimi Team+, arXiv'26, 2026.03</title>
+<original-paper-blog-link>https://arxiv.org/abs/2603.15031</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4915</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, Architecture, read-later, Selected Papers/Blogs, Reference Collection</tags>
+<repo-issue-date>2026-03-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2603.15031
+# Authors
+  - Kimi Team
+  - Guangyu Chen
+  - Yu Zhang
+  - Jianlin Su
+  - Weixin Xu
+  - Siyuan Pan
+  - Yaoyu Wang
+  - Yucheng Wang
+  - Guanduo Chen
+  - Bohong Yin
+  - Yutian Chen
+  - Junjie Yan
+  - Ming Wei
+  - Y. Zhang
+  - Fanqing Meng
+  - Chao Hong
+  - Xiaotong Xie
+  - Shaowei Liu
+  - Enzhe Lu
+  - Yunpeng Tai
+  - Yanru Chen
+  - Xin Men
+  - Haiqing Guo
+  - Y. Charles
+  - Haoyu Lu
+  - Lin Sui
+  - Jinguo Zhu
+  - Zaida Zhou
+  - Weiran He
+  - Weixiao Huang
+  - Xinran Xu
+  - Yuzhi Wang
+  - Guokun Lai
+  - Yulun Du
+  - Yuxin Wu
+  - Zhilin Yang
+  - Xinyu Zhou
+# Abstract
+  - Residual connections with PreNorm are standard in modern LLMs, yet they accumulate all layer outputs with fixed unit weights. This uniform aggregation causes uncontrolled hidden-state growth with depth, progressively diluting each layer's contribution. We propose Attention Residuals (AttnRes), which replaces this fixed accumulation with softmax attention over preceding layer outputs, allowing each layer to selectively aggregate earlier representations with learned, input-dependent weights. To address the memory and communication overhead of attending over all preceding layer outputs for large-scale model training, we introduce Block AttnRes, which partitions layers into blocks and attends over block-level representations, reducing the memory footprint while preserving most of the gains of full AttnRes. Combined with cache-based pipeline communication and a two-phase computation strategy, Block AttnRes becomes a practical drop-in replacement for standard residual connections with minimal overhead.   Scaling law experiments confirm that the improvement is consistent across model sizes, and ablations validate the benefit of content-dependent depth-wise selection. We further integrate AttnRes into the Kimi Linear architecture (48B total / 3B activated parameters) and pre-train on 1.4T tokens, where AttnRes mitigates PreNorm dilution, yielding more uniform output magnitudes and gradient distribution across depth, and improves downstream performance across all evaluated tasks.
+# Translation (by gpt-5-nano)
+- 現代の大規模言語モデル（LLMs）では、PreNormを用いた残差接続が標準的だが、それらはすべての層の出力を固定の単位重みによって蓄積している。この一様な集約は深さとともに隠れ状態の成長を制御不能にし、各層の寄与を徐々に希薄化させる。私たちはAttention Residuals（AttnRes）を提案する。これによりこの固定的な蓄積を、前の層の出力に対するソフトマックス注意機構に置き換え、各層が過去の表現を学習された入力依存の重みで選択的に集約できるようにする。大規模モデルのトレーニング時には、すべての前層出力を注意することによるメモリと通信のオーバーヘッドに対処するため、Block AttnResを導入する。Block AttnResは層をブロックに分割し、ブロックレベルの表現に対して注意を向けることで、メモリのフットプリントを削減しつつ、完全なAttnResの利点の大半を保持する。キャッシュベースのパイプライン通信と2段階の計算戦略と組み合わせることで、Block AttnResは標準的な残差接続の実用的なドロップイン置換となり、オーバーヘッドを最小限に抑える。
+
+スケーリング法則の実験は、改善がモデルサイズを問わず一貫していることを確認し、アブレーションは内容依存の深さ方向選択の利益を裏付ける。さらにAttnResをKimi Linearアーキテクチャ（総計48Bのパラメータ／うち3Bが活性化パラメータ）に統合し、1.4兆トークンで事前学習を行った結果、AttnResはPreNormの希薄化を緩和し、深さをまたいだ出力の大きさと勾配分布をより均一にし、評価したすべてのタスクで下流の性能を向上させる。
+# Summary (by gpt-4o-mini)
+- Attention Residuals（AttnRes）を提案し、層間の出力をソフトマックス注意機構で集約することで、深層モデルの寄与を強化。Block AttnResによりメモリと通信のオーバーヘッドを軽減しつつ、実用的な残差接続の代替として機能。実験により、モデルサイズにかかわらず改善を確認し、すべてのタスクで下流性能の向上を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2033434646583640135?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Opus4.6による可視化:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2033488233854620007?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4927" target="_blank" rel="noopener noreferrer">[Paper Note] DeepCrossAttention: Supercharging Transformer Residual Connections, Mike Heddes+, ICML'25, 2025.02</a>
+<br><br>で既に1年以上前に同様の手法が提案されており、テクニカルレポートから引用されていないという指摘がある<br><br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/behrouz_ali/status/2033581834953453853?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gm8xx8/status/2033888654620315717?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>poster skillsによる可視化:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nielsrogge/status/2033902019769938152?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/che_shr_cat/status/2034237985277833318?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -44623,7 +44813,7 @@ https://aclanthology.org/2025.findings-emnlp.661/
 <title>[Paper Note] Every Step Evolves: Scaling Reinforcement Learning for Trillion-Scale  Thinking Model, Ling Team+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.18855</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3388</repo-issue-link>
-<tags>LanguageModel</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, MoE(Mixture-of-Experts), PostTraining, Selected Papers/Blogs, Stability, reading, train-inference-gap</tags>
 <repo-issue-date>2025-10-22</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.18855
@@ -44778,7 +44968,7 @@ https://aclanthology.org/2025.findings-emnlp.661/
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>RLの文脈でよく目にするIcePopが提案されている。IcePopは<br><br>- RLにおけるtrain-inference gap、すなわち学習側と推論側が異なるエンジンを利用していることで、ポリシーが出力する確率分布に誤差が生じ、その誤差によってRLが不安定になる問題に対して<br>- MoEモデルのように、Routerによるエキスパート選択を伴う場合や<br>- Long CoTのように系列が長くなればなるほど誤差が蓄積する場合に、この誤差が蓄積され増幅していくことを指摘し<br>- GRPOの目的関数を拡張し、トークンレベルで学習側・推論側の確率（重要度）の比 k (= pi_train(y_{i, t}) / pi_infer(y_{i,t}) ) を見て、<br>  - 一定の範囲外の場合は当該トークンの目的関数に対する寄与をフィルタリングし（極端なノイズは勾配計算から除外する, Mask）<br>  - 範囲内の場合は importance weight を k とした上で勾配に反映させる (Double Sided Calibration, 推論・訓練で確率が異なる場合は差分を是正するために勾配の影響を調整する）<br><br>というアプローチをとる。これにより、以下の図に示したように学習step数が増えた場合でもRLでの学習が安定する。<br><br><img src="https://github.com/user-attachments/assets/39ca8ae1-45b9-4f9f-a9ab-40ed4a9bed45" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -61500,7 +61690,7 @@ https://diffusion-scaling.github.io。
 - 大規模言語モデルをポイントワイズの絶対報酬に合わせるためには、これまでオンラインかつオンポリシーのアルゴリズム（PPOやGRPOなど）が必要でした。それに対して、DPOやREBELのようなオフラインまたはオフポリシーのデータを活用できるよりシンプルな手法は、好みのペアや相対的な信号から学ぶことに制限されています。このギャップを埋めるために、私たちは\emph{Quantile Reward Policy Optimization}（QRPO）を提案します。QRPOは、DPOのような手法のシンプルさとオフライン適用性を保ちながら、ポイントワイズの絶対報酬から学習します。QRPOは、量子報酬を使用してKL正則化された強化学習の目的の閉形式解への回帰を可能にします。この報酬は、解析的に扱いやすい分配関数を生成し、この項を打ち消すための相対的な信号の必要性を排除します。さらに、QRPOは量子報酬を推定するために計算リソースを増やすことでスケールし、事前計算のスケーリングに新たな次元を開きます。実証的に、QRPOは多様なデータセットと8Bスケールのモデルにおいて、DPO、REBEL、SimPOと比較して、チャットやコーディングの評価（報酬モデルスコア、AlpacaEval 2、LeetCode）で一貫して最高のパフォーマンスを達成します。最後に、堅牢な報酬でトレーニングすることで、報酬を好みに変換するよりも長さバイアスが少なくなることがわかりました。
 # Summary (by gpt-4o-mini)
 - QRPO（Quantile Reward Policy Optimization）は、ポイントワイズの絶対報酬から学習する新しい手法で、DPOのシンプルさとオフライン適用性を兼ね備えています。QRPOは量子報酬を用いてKL正則化された強化学習の目的の閉形式解への回帰を実現し、相対的な信号の必要性を排除します。実験結果では、QRPOがDPOやREBEL、SimPOと比較して、チャットやコーディングの評価で一貫して最高のパフォーマンスを示しました。また、堅牢な報酬でのトレーニングにより、長さバイアスが減少することが確認されました。</issue-body>
-<maintainer-comment-text><p>画像は元ポストより。off-policy RLでもlong contextで高い性能が出るようになったのだろうか<br><br><img src="https://github.com/user-attachments/assets/2a66064a-8e1c-49fa-a1d2-ed4b475155e1" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>元ポスト:
+<maintainer-comment-text><p>off-policy RLでもlong contextで高い性能が出るようになったのだろうか<br><br>元ポスト:
 
 {% raw %}
 
@@ -74872,6 +75062,33 @@ https://huggingface.co/nvidia/Llama-3.1-Nemotron-70B-Instruct</issue-body>
 
 {% raw %}
 <a href="https://openreview.net/forum?id=hJkQL9VtWT#discussion" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=hJkQL9VtWT#discussion</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Let's Think Dot by Dot: Hidden Computation in Transformer Language Models, Jacob Pfau+, arXiv'24, 2024.04</title>
+<original-paper-blog-link>https://arxiv.org/abs/2404.15758</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6204</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Safety, COLM</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2404.15758
+# Authors
+  - Jacob Pfau
+  - William Merrill
+  - Samuel R. Bowman
+# Abstract
+  - Chain-of-thought responses from language models improve performance across most benchmarks. However, it remains unclear to what extent these performance gains can be attributed to human-like task decomposition or simply the greater computation that additional tokens allow. We show that transformers can use meaningless filler tokens (e.g., '......') in place of a chain of thought to solve two hard algorithmic tasks they could not solve when responding without intermediate tokens. However, we find empirically that learning to use filler tokens is difficult and requires specific, dense supervision to converge. We also provide a theoretical characterization of the class of problems where filler tokens are useful in terms of the quantifier depth of a first-order formula. For problems satisfying this characterization, chain-of-thought tokens need not provide information about the intermediate computational steps involved in multi-token computations. In summary, our results show that additional tokens can provide computational benefits independent of token choice. The fact that intermediate tokens can act as filler tokens raises concerns about large language models engaging in unauditable, hidden computations that are increasingly detached from the observed chain-of-thought tokens.
+# Translation (by gpt-5-nano)
+- 言語モデルの連鎖的思考過程に基づく応答は、ほとんどのベンチマークで性能を向上させる。しかし、これらの性能向上が人間のような課題分解によるものなのか、それとも追加トークンがもたらすより多くの計算によるものなのかは、依然として明らかでない。私たちは、トランスフォーマーが意味のないダミートークン（例：'......'）を、思考の連鎖の代わりに用いて、介在的なトークンなしでは解けなかった2つの難しいアルゴリズム課題を解けることを示す。しかし、経験的には、ダミートークンの使い方を学ぶことは難しく、収束には特定で密な監督が必要であることが分かった。さらに、ダミートークンが有用である問題のクラスを、一次述語論理式の量化子深さの観点から理論的に特徴づける。この特徴づけを満たす問題では、連鎖的思考トークンは、多トークン計算に関与する中間計算ステップの情報を必ずしも提供する必要はない。要約すると、追加のトークンはトークンの選択に依存せず計算上の利益を提供し得ることを示している。中間トークンがダミートークンとして機能し得るという事実は、観測された思考過程トークンからますます切り離された、監査不能な隠れた計算を大規模言語モデルが行うことへの懸念を高める。
+# Summary (by gpt-4o-mini)
+- 言語モデルの連鎖的思考過程による性能向上の原因を探る研究。ダミートークンが思考の代わりに使われ、2つの難しいアルゴリズム課題を解決できることを示す一方、収束には特定の監督が必要である。ダミートークンの効果を理論的に特徴づけ、追加トークンが計算上の利益を提供する可能性に注目。これにより、隠れた計算の存在への懸念が高まる。</issue-body>
+<maintainer-comment-text><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=NikbrdtYvG" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=NikbrdtYvG</a>
 {% endraw %}
 
 </p></maintainer-comment-text>
@@ -93701,7 +93918,7 @@ ToTをソフトウェアシステムとして実装するために、プロン�
 <title>[Paper Note] Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, Jason Wei+, NeurIPS'22, 2022.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2201.11903</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/551</repo-issue-link>
-<tags>NLP, LanguageModel, Zero/Few/ManyShotPrompting, Chain-of-Thought, Prompting, action_wanted, NeurIPS, Selected Papers/Blogs, Surface-level Notes</tags>
+<tags>NLP, LanguageModel, Zero/Few/ManyShotPrompting, Chain-of-Thought, Prompting, NeurIPS, Selected Papers/Blogs, Surface-level Notes, EmergentAbilities</tags>
 <repo-issue-date>2023-04-27</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2201.11903
@@ -94791,6 +95008,194 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 </paper-entry>
 
 <paper-entry>
+<title>AI が広げる人々の仕事, OpenAI, 2026.07</title>
+<original-paper-blog-link>https://openai.com/ja-JP/index/how-ai-is-expanding-what-people-do-at-work/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6201</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, AIAgents, GenerativeAI, Blog, One-Line Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body>https://openai.com/ja-JP/index/how-ai-is-expanding-what-people-do-at-work/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/openai/status/2081833350323720219?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ChatGPTに送られるメッセージと、ユーザの職種に基づいて、特定の職種の人間が、自身の職種外のタスクに関するクエリをどれだけChatGPTに送付しているかを分析。これにより、職種外のタスクが多く投げられていることが定量的に示され、タスクの分担範囲がシフトしてきていることが分析されている。職種によって、度合いが異なり、たとえばカスタマーエクスペリエンスでは、職種固有のメッセージ（汎用的なメッセージではなくその職種特有のもの）のうち77%職種外タスクに関するもので、エンジニアの場合は28％であったりするのは興味深い。</p><p>このブログの分析対象はChatGPTだけだと思うが、生成AIを用いたSaaS系のサービスまで含めたら、かなり元々のスコープを広げて色々なことに取り組んでいる人はいるのではなかろうか？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AgentENV, kvcache-ai, 2026.07</title>
+<original-paper-blog-link>https://github.com/kvcache-ai/AgentEnv</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6199</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, Initial Impression Notes, Environment, Author Thread-Post</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body>https://github.com/kvcache-ai/AgentEnv</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kimi_moonshot/status/2081762978391843020?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>大規模、かつ高速にAgentic RLのためのサンドボックス環境をself-hosting可能な実装</p><p>下記ポストに速度やKimi K3で利用された時の環境の規模感が記述されているので参照のこと:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2081870957812285520?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>MAI-Cyber-1-Flash, MAI, 2026.07</title>
+<original-paper-blog-link>https://microsoft.ai/models/mai-cyber-1-flash/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6198</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Blog, Security, Author Thread-Post</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body>https://microsoft.ai/models/mai-cyber-1-flash/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mustafasuleyman/status/2081781833100820681?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>公式:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/microsoftai/status/2081796647135166547?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepEP: an efficient expert-parallel communication library, Zhao+, DeepseekAI, 2025.09</title>
+<original-paper-blog-link>https://github.com/deepseek-ai/DeepEP</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6197</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, MoE(Mixture-of-Experts), Parallelism, GPUKernel</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body># URL
+https://github.com/deepseek-ai/DeepEP
+
+# Authors
+Chenggang Zhao and Shangyan Zhou and Liyue Zhang and Chengqi Deng and Zhean Xu and Yuxuan Liu and Kuai Yu and Jiashi Li and Liang Zhao</issue-body>
+<maintainer-comment-text><p>Expert Parallelism での通信を高速化する上で代表的なライブラリ<br><br>その後以下のようなものが登場:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6191" target="_blank" rel="noopener noreferrer">Mixture-of-Kittens: our open-source MoE megakernel for NVL72s, Cursor, 2026.08</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6127" target="_blank" rel="noopener noreferrer">MoonEP, MoonshotAI, 2026.07</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>credit-assignment-is-all-you-need, haotian, 2026.07</title>
+<original-paper-blog-link>https://zhuanlan.zhihu.com/p/2064646116927344943</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6196</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PostTraining, read-later</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body>https://zhuanlan.zhihu.com/p/2064646116927344943</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2081664860736397449?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Qwen3.8-Max: A New Bar for Coding and Cowork, QwenTeam, 2026.08</title>
+<original-paper-blog-link>https://qwen.ai/blog?id=qwen3.8</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6194</repo-issue-link>
+<tags>NLP, LanguageModel, Proprietary, VisionLanguageModel, Author Thread-Post</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body>https://qwen.ai/blog?id=qwen3.8</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/alibaba_qwen/status/2084100707423289643?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Fable5には及ばないがOpus4.8と同等以上のベンチマークスコア、という印象</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>細かすぎて伝わらないChat Completions _ Responses APIのモデル間挙動差異, nyanp, 2026.07</title>
+<original-paper-blog-link>https://zenn.dev/nyanp/scraps/d4ee774a66c90b</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6193</repo-issue-link>
+<tags>NLP, LanguageModel, Blog, Reasoning, API, SoftwareEngineering, Author Thread-Post</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body>https://zenn.dev/nyanp/scraps/d4ee774a66c90b</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nyanp/status/2084631426696466939?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Mixture-of-Kittens: our open-source MoE megakernel for NVL72s, Cursor, 2026.08</title>
+<original-paper-blog-link>https://cursor.com/ja/blog/mixture-of-kittens</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6191</repo-issue-link>
+<tags>EfficiencyImprovement, LanguageModel, Blog, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-08-05</repo-issue-date>
+<issue-body>https://cursor.com/ja/blog/mixture-of-kittens</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cursor_ai/status/2084670806613737919?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>主要なOpenWeight LLM（アーキテクチャ）のスループットが軒並み2倍以上になっているので、これはかなりインパクトがでかい話に見える</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6197" target="_blank" rel="noopener noreferrer">DeepEP: an efficient expert-parallel communication library, Zhao+, DeepseekAI, 2025.09</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6127" target="_blank" rel="noopener noreferrer">MoonEP, MoonshotAI, 2026.07</a>
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mylifcc/status/2084687992489443493?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>BTL-3, badtheorylabs, 2026.07</title>
 <original-paper-blog-link>https://huggingface.co/badtheorylabs/BTL-3</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6190</repo-issue-link>
@@ -95230,7 +95635,7 @@ Guanting Dong, Xiaoshuai Son, Yuyang Hu, Jiajie Jin, Chenghao Zhang, Yifei Chen,
 <title>MoonEP, MoonshotAI, 2026.07</title>
 <original-paper-blog-link>https://github.com/MoonshotAI/MoonEP</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6127</repo-issue-link>
-<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, Library, SoftwareEngineering, mid-training, PostTraining, Parallelism, One-Line Notes</tags>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, Library, SoftwareEngineering, mid-training, PostTraining, Parallelism, One-Line Notes, GPUKernel</tags>
 <repo-issue-date>2026-07-28</repo-issue-date>
 <issue-body>https://github.com/MoonshotAI/MoonEP</issue-body>
 <maintainer-comment-text><p>大規模なExpertParallelにおいて通信を効率的に実施するためのライブラリとのこと。</p><p>元ポスト:
@@ -96000,6 +96405,34 @@ Guanting Dong, Xiaoshuai Son, Yuyang Hu, Jiajie Jin, Chenghao Zhang, Yifei Chen,
 </div>
 {% endraw %}
 
+</p><p>解説スレッド:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/suchenzang/status/2081773594347274516?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2081870957812285520?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6199" target="_blank" rel="noopener noreferrer">AgentENV, kvcache-ai, 2026.07</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6127" target="_blank" rel="noopener noreferrer">MoonEP, MoonshotAI, 2026.07</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4915" target="_blank" rel="noopener noreferrer">[Paper Note] Attention Residuals, Kimi Team+, arXiv'26, 2026.03</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5293" target="_blank" rel="noopener noreferrer">FlashKDA: Flash Kimi Delta Attention — high-performance KDA kernels built on CUTLASS, MoonshotAI, 2026.04</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3526" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi Linear: An Expressive, Efficient Attention Architecture, Kimi Team+, arXiv'25, 2025.10</a>
+ <br>- MLA<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1620" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3 Technical Report, DeepSeek-AI+, arXiv'24, 2024.12</a>
+<br>- Latent MoE<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4310" target="_blank" rel="noopener noreferrer">[Paper Note] LatentMoE: Toward Optimal Accuracy per FLOP and Parameter in Mixture of Experts, Venmugil Elango+, arXiv'26, 2026.01</a>
+<br>- MoonViT<br>  - <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2200" target="_blank" rel="noopener noreferrer">[Paper Note] Kimi-VL Technical Report, Kimi Team+, arXiv'25</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -99812,7 +100245,7 @@ blog:https://hy.tencent.com/hy3-preview</issue-body>
 <title>FlashKDA: Flash Kimi Delta Attention — high-performance KDA kernels built on CUTLASS, MoonshotAI, 2026.04</title>
 <original-paper-blog-link>https://github.com/MoonshotAI/FlashKDA</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5293</repo-issue-link>
-<tags>NLP, LanguageModel, Library, Attention, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<tags>NLP, LanguageModel, Library, Attention, Selected Papers/Blogs, GPUKernel, Initial Impression Notes, Author Thread-Post</tags>
 <repo-issue-date>2026-04-21</repo-issue-date>
 <issue-body>https://github.com/MoonshotAI/FlashKDA</issue-body>
 <maintainer-comment-text><p>ベンチマーク: 
