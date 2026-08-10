@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-05">
+<paper-list last-updated="2026-08-09">
 <paper-entry>
 <title>[Paper Note] Deconstructing Off-Policy Ratios: Entropy-Scaled Trust Regions for Asynchronous Reinforcement Learning, Guanqun Zhao+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.22186</original-paper-blog-link>
@@ -532,6 +532,28 @@
 {% endraw %}
 
 </p><p>RLの文脈でよく目にするIcePopが提案されている。IcePopは<br><br>- RLにおけるtrain-inference gap、すなわち学習側と推論側が異なるエンジンを利用していることで、ポリシーが出力する確率分布に誤差が生じ、その誤差によってRLが不安定になる問題に対して<br>- MoEモデルのように、Routerによるエキスパート選択を伴う場合や<br>- Long CoTのように系列が長くなればなるほど誤差が蓄積する場合に、この誤差が蓄積され増幅していくことを指摘し<br>- GRPOの目的関数を拡張し、トークンレベルで学習側・推論側の確率（重要度）の比 k (= pi_train(y_{i, t}) / pi_infer(y_{i,t}) ) を見て、<br>  - 一定の範囲外の場合は当該トークンの目的関数に対する寄与をフィルタリングし（極端なノイズは勾配計算から除外する, Mask）<br>  - 範囲内の場合は importance weight を k とした上で勾配に反映させる (Double Sided Calibration, 推論・訓練で確率が異なる場合は差分を是正するために勾配の影響を調整する）<br><br>というアプローチをとる。これにより、以下の図に示したように学習step数が増えた場合でもRLでの学習が安定する。<br><br><img src="https://github.com/user-attachments/assets/39ca8ae1-45b9-4f9f-a9ab-40ed4a9bed45" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>日本語音声基盤モデルの事後学習：TTSに強化学習を適用する, 株式会社DubGuild, 2026.07</title>
+<original-paper-blog-link>https://blog.dubguild.com/melte/posttrain/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6242</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, SpeechProcessing, Japanese, TTS, One-Line Notes, train-inference-gap, Author Thread-Post</tags>
+<repo-issue-date>2026-08-09</repo-issue-date>
+<issue-body>https://blog.dubguild.com/melte/posttrain/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/DubGuild/status/2083136966271361456?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>以下記事を読んでおもしろかったポイントの要約<br> <br>- 学習エンジン: FSDP + Transformer, 推論エンジン: vLLM<br>- LLMでのRLでは生成結果をルーブリックやReward Modelで評価できるが、音声の場合は音声トークン列だけを見ても評価できないため、波形へ複合し音声認識モデルで評価<br>- 報酬計算はTTS学習とは異なる依存関係が必要なので学習と報酬のサーバを分離することで柔軟性を高める<br>- 報酬にNLLを加えると、発話長が長くなる現象が発生し、Length Penaltyを加えることで改善される<br>  - 実際の音声をきいてみると、発話がとても間延びしていて非常に興味深かった。<br>- 報酬設計と話者性の関係性を分析すると、Correct Error Rateによる報酬のみの場合は女性話者（のようにきこえる）割合が減り、+NLL, +Length Penaltyの場合は、女性話者（のようにきこえる）音声の割合が大幅に増加し、学習に何らかのバイアスが加わっている可能性が示唆された。<br>  - これはCER, NLLの計算にWhisperを用いており、Whisperのベースモデルに対する音声合成結果において、女性話者の候補が報酬を得やすい状態であったことに起因することを分析（一般的なな女性音声において有利になっているわけではない）<br>- RLにおけるtrain-inference mismatchに関しても分析し<br>  - FP16/BF16、エンジン（Transformer, vLLM）において、ミスマッチが存在し、エンジンよりも数値精度の変更の影響が大きく<br>  - BF16にすると、FP16と比較して1位, 2位の出力候補のlogitが同値となる割合が増加し、音声トークンを生成するモデルのベースとなったLLMとlogitの同値率を比較すると、音声トークン生成の方が同値率が大幅に高い結果となった<br>  - BF16/FP16の間の学習-生成の間での対数確率の差は、BF16の場合はFP16の約8倍となった（が、学習後のCERで見ると大きな差は生じなかった）。<br>- TTSモデルを評価する際には、モデルと音声コーデック符号化/復号の影響を分離して考える必要がある<br>- 人間がきいて同じ音声にきこえる場合でも、埋め込みを用いた類似度ではあまり高くないことがある</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2552" target="_blank" rel="noopener noreferrer">Your Efficient RL Framework Secretly Brings You Off-Policy RL Training, Yao+, 2025.08</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3532" target="_blank" rel="noopener noreferrer">[Paper Note] Defeating the Training-Inference Mismatch via FP16, Penghui Qi+, arXiv'25, 2025.10</a>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

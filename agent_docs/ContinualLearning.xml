@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-04">
+<paper-list last-updated="2026-08-09">
+<paper-entry>
+<title>[Paper Note] Just-In-Time Reinforcement Learning: Continual Learning in LLM Agents Without Gradient Updates, Yibo Li+, arXiv'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.18510</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6223</repo-issue-link>
+<tags>NLP, ReinforcementLearning, Selected Papers/Blogs, memory, reading, One-Line Notes, ContinualLearning, Test Time Training (TTT)</tags>
+<repo-issue-date>2026-08-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.18510
+# Authors
+  - Yibo Li
+  - Zijie Lin
+  - Ailin Deng
+  - Xuan Zhang
+  - Yufei He
+  - Shuo Ji
+  - Tri Cao
+  - Bryan Hooi
+# Abstract
+  - While Large Language Model (LLM) agents excel at general tasks, they inherently struggle with continual adaptation due to the frozen weights after deployment. Conventional reinforcement learning (RL) offers a solution but incurs prohibitive computational costs and the risk of catastrophic forgetting. We introduce Just-In-Time Reinforcement Learning (JitRL), a training-free framework that enables test-time policy optimization without any gradient updates. JitRL maintains a dynamic, non-parametric memory of experiences and retrieves relevant trajectories to estimate action advantages on-the-fly. These estimates are then used to directly modulate the LLM's output logits. We theoretically prove that this additive update rule is the exact closed-form solution to the KL-constrained policy optimization objective. Extensive experiments on WebArena and Jericho demonstrate that JitRL establishes a new state-of-the-art among training-free methods. Crucially, JitRL outperforms the performance of computationally expensive fine-tuning methods (e.g., WebRL) while reducing monetary costs by over 30 times, offering a scalable path for continual learning agents. The code is available at https://github.com/liushiliushi/JitRL.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLM）エージェントは一般的なタスクに優れている一方で、展開後に重みが凍結されるため継続的適応には本質的に難がある。従来の強化学習（RL）は解決策を提供するが、計算コストが高く壊滅的忘却のリスクを伴う。私たちはJust-In-Time Reinforcement Learning（JitRL）を導入する。訓練を要しないフレームワークで、勾配更新を一切行うことなくテスト時のポリシー最適化を可能にする。JitRLは動的で非パラメトリックな経験メモリを維持し、関連する軌跡を取り出してその場でアクションのアドバンテージを推定する。これらの推定値は直接LLMの出力ロジットを調整するのに用いられる。これらの加法的更新規則がKL制約付きポリシー最適化目的関数の厳密な閉形式解であることを理論的に証明する。WebArenaおよびJerichoにおける広範な実験は、JitRLが訓練を要しない手法の中で新たな最先端を確立したことを示している。特に、JitRLは計算コストの高いファインチューニング手法（例：WebRL）を上回る性能を発揮する一方、金銭的コストを30倍以上削減し、継続的学習エージェントに対して拡張可能な道筋を提供する。コードはhttps://github.com/liushiliushi/JitRLで入手可能である。
+# Summary (by gpt-4o-mini)
+- JitRLは、LLMエージェントの拡張性の課題を解決する新しいフレームワーク。訓練なしでポリシー最適化を実現し、動的な経験メモリから関連する軌跡を取り出してアクションのアドバンテージを推定。広範な実験により、JitRLが従来のファインチューニング手法よりも性能を上回り、コストを30倍以上削減することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qingke_ai/status/2086123477216756199?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RLにおいて、学習時にポリシーを更新するのではなく、テスト時にメモリに蓄積されたtrajectoryに対して現在のstateを用いて検索をし、各候補アクションのAdvantageを計算。アクションのロジットに直接Advantageを重み付き（temperature parameter)で加算することで適応させる、という手法のようである。<br><br>ポイントは、ロジットに対してAdvantageをtemperature parameterによる重み付きで加算するという式が、KL正則化つきの期待報酬最大化問題の閉形式の解である、という主張である(Theorem 4.1)。ただし、メモリに蓄積される軌跡はあるポリシーに対してテスト時に更新されたロジットに基づいて収集されるため、そもそもオンポリシーを前提としているわけではなさそう。また、軌跡は様々なタスクの実行結果が蓄積されるであろう点には注意。<br><br><img src="https://github.com/user-attachments/assets/00ddb10e-0597-46c9-8982-a5723ce3dcbc" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>---<br><br>メモリはM={(s_i, a_i, G_i)}^N_{i=1}で定義される。G_iは割引累積報酬である（4.1節）。<br><br>trajectory中の各ステップのアクションのrewardはLLMベースのevaluationによって与えられ（付録G1.2, G2.2）、割引累積報酬の算出に用いられる。<br><br>stateはテキストベースで記述され、現在のstateとメモリに格納されているstateの類似度はJaccard係数によって計算される（式24)。実際のメモリからの検索の仕方は、データセットごとに適切なものを設定する（付録F)。<br></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] CORE: Contrastive Reflection Enables Rapid Improvements in Reasoning, Linas Nasvytis+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.28742</original-paper-blog-link>
