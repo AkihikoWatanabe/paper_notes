@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-17">
+<paper-list last-updated="2026-08-09">
 <paper-entry>
 <title>[Paper Note] xHC: Expanded Hyper-Connections, Xiangdong Zhang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.14530</original-paper-blog-link>
@@ -831,6 +831,26 @@
 # Summary (by gpt-4o-mini)
 - 残差学習フレームワークを提案し、深いニューラルネットワークのトレーニングを容易にする。参照層の入力に基づいて残差関数を学習することで、最適化が容易になり、精度が向上。152層の残差ネットはImageNetで低い複雑性を保ちながら高い性能を示し、ILSVRC 2015で1位を獲得。COCOデータセットでも28%の改善を達成。</issue-body>
 <maintainer-comment-text><p>ResNet論文<br><br>ResNetでは、レイヤーの計算する関数を、残差F(x)と恒等関数xの和として定義する。これにより、レイヤーが入力との差分だけを学習すれば良くなり、モデルを深くしても最適化がしやすくなる効果ぎある。数レイヤーごとにResidual Connectionを導入し、恒等関数によるショートカットができるようにしている。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140301726-1d2e89e1-1d69-43d9-8d2b-0adb272e577a.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><br><br>ResNetが提案される以前、モデルを深くすれば表現力が上がるはずなのに、実際には精度が下がってしまうことから、理論上レイヤーが恒等関数となるように初期化すれば、深いモデルでも浅いモデルと同等の表現が獲得できる、と言う考え方を発展させた。<br><br><br><br>（ステートオブAIガイドに基づく）</p><p>同じパラメータ数でより層を深くできる（Plainな構造と比べると層が1つ増える）Bottleneckアーキテクチャも提案している。<br><br><br><br><img src="https://user-images.githubusercontent.com/12249301/140302452-649b0ea7-cce4-44c1-9e7d-b509ef8bca52.png" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>今や当たり前のように使われているResidual Connectionは、層の深いネットワークを学習するために必須の技術なのだと再認識。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The Lost Accumulator, Bertolotti, Francesco, 2026.07</title>
+<original-paper-blog-link>https://f14-bertolotti.github.io/posts/21-07-26-lost-accumulator/index.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6226</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Blog, One-Line Notes, ResidualStream, LowPrecision, Author Thread-Post</tags>
+<repo-issue-date>2026-08-09</repo-issue-date>
+<issue-body>https://f14-bertolotti.github.io/posts/21-07-26-lost-accumulator/index.html</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/f14bertolotti/status/2082736222024200530?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>残差ストリームの精度はbf16で保存されるのが一般的で、70層以上の大きなモデルの場合、140回の累積演算を行うため、フル精度を保たないと誤差が蓄積し、学習に影響を与える可能性がある。実際に、bf16, fp32での残差ストリームのフル精度との差分や符号の反転を比較すると、fp32よりもbf16の方が誤差や符号反転の回数が、layerが深くなるにつれ顕著に大きくなった。<br><br>しかし、実際に3種類の幅・高さのバリエーションを持ったLlama3 1Bのバリエーションに対して、fp32、bf16の2種類の精度（つまり合計6種類のモデル・精度）で、FineWebから0.1Tトークンをバッチサイズ0.5M tokenで事前学習したところ、loss, downstreamタスクの性能共にほとんど差が見受けられなかった（唯一winograndeだけは差があった）、といった実験結果が記載されている。</p><p>筆者も示唆している通り、モデルのサイズや事前学習の学習トークン数の規模感が小さいので、より大きくしたら何か差は生まれるのだろうか。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
