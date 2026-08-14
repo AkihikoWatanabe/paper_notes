@@ -163,7 +163,7 @@
 </div>
 {% endraw %}
 
-</p><p>nGPTを提案した著者らによる研究で、オリジナルのnGPTではdenseなアーキテクチャで、1Bまでのサイズでしか実験がされていなかった。それをより大規模な8Bレベル、かつMoE、Mamba-2とTransformerのハイブリッドモデルで実験し、学習のために必要な提案を実施しているようである。詳細は解説ポスト参照のこと。</p></maintainer-comment-text>
+</p><p>nGPTを提案した著者らによる研究で、オリジナルのnGPTではdenseなアーキテクチャで、1Bまでのサイズでしか実験がされていなかった。それをより大規模な14BBレベル、かつMoE、Mamba-2とTransformerのハイブリッドモデルで実験し、学習のために必要な提案を実施しているようである。3.3節にどのような変更が必要か、サマリが記述されている。<br><br>性能は、通常のGPTと比較して一貫して改善しており興味深い。<br><img src="https://github.com/user-attachments/assets/c75f66f4-bc6f-4ea4-8d49-d030398931c5" /" alt="image" loading="lazy" width="550" height="400"/><br><br>ハイパーパラメータが増えているように感じるが、どの程度ハイパーパラメータの設定が効いてくるのだろうか。学習率の調整だけでも厄介なので、モデルの性能は魅力的でロマンがあるが、実務上は採用しづらい気はする。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -45641,7 +45641,7 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 <title>[Paper Note] DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models, DeepSeek-AI+, arXiv'25, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.02556</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3860</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, action_wanted, OpenWeight, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, SparseAttention</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, OpenWeight, MoE(Mixture-of-Experts), Selected Papers/Blogs, reading, KeyPoint Notes, Reference Collection, SparseAttention</tags>
 <repo-issue-date>2025-12-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.02556
@@ -46049,8 +46049,9 @@ Shaochen Zhong, Yifan Lu, Lize Shao, Bhargav Bhushanam, Xiaocong Du, Yixin Wan, 
 </div>
 {% endraw %}
 
-<br><br>要は、Lightning Indexerによって過去のkeyをキャッシュしておき、現在のtokenに関するQueryが与えられたときに、QueryとKe?からQueryにとって重要なKey Top-kを選択した上で、Top-kのKeyに対してMLAを実行する(Sparse Attentionの一種とみなせる）。<br><br>Top-kのtokenに対してのみAttentionの計算が走るので、計算量のオーダーが系列長をNとするとO(N^2)からO(Nk)となり、線形のオーダーとなり計算量が削減される。<br><br>また、MLAによって、すべてのKV Cacheをそのまま保持する必要がなく、個々のKV Cacheを圧縮した小さなtiny latent vectorを保持し、それを復元する重み行列を保持すれば良いので、メモリも効率化されている。<br><br>DSAは計算量を削減し、MLAはメモリを削減する。</p><p>MLAはこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1620" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3 Technical Report, DeepSeek-AI+, arXiv'24, 2024.12</a>
-</p></maintainer-comment-text>
+</p><p>MLAはこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1620" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3 Technical Report, DeepSeek-AI+, arXiv'24, 2024.12</a>
+</p><p>テクニカルペーパーのDSAに該当する箇所を読んだが、数式が省略されていたり、図解の中の添え字の説明などもすべてはされていないため、概要しかわからなかった (おそらく <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1620" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3 Technical Report, DeepSeek-AI+, arXiv'24, 2024.12</a>
+ を読まなければならない)。が、要点としては以下だと思われる:<br>- Lightning Indexerによって、高速に現在のhidden_state h_t と関連が深い過去のトークン h_s を同定し top-k を選択<br>- 選択した top-k のKVを用いて、Multi Query Attention を実行するSparse Attention<br>- DSAとMLA、さらにはMQAは全て組み合わせることとができる。すなわち、<br>  - MLAによって、すべてのKV Cacheをそのまま保持する必要がなく、個々のKV Cacheを圧縮した小さなtiny latent vectorを保持し、それを復元する重み行列を保持<br>  - さらにKV Cacheを全てのheadに対して共有することで、MQAとも併用ができる。<br><br>DSAでは、Top-kのtokenに対してのみAttentionの計算が走るので、計算量のオーダーが系列長をNとするとO(N^2)からO(Nk)となり、線形のオーダーとなり計算量が削減される。<br>また、MLAによって、ので、メモリも効率化される。<br><br><br>DSAは計算量を削減し、MLAはメモリを削減する。<br><br><img src="https://github.com/user-attachments/assets/25ee01b1-f180-4719-a8eb-76c126fcf96b" /" alt="image" loading="lazy" width="550" height="400"/><br></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -98136,7 +98137,7 @@ https://github.com/WENGSYX/Self-Verification。
 <title>[Paper Note] GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints, Joshua Ainslie+, arXiv'23, 2023.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2305.13245</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1271</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, action_wanted, Attention, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, Attention, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2024-04-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2305.13245
@@ -98154,7 +98155,7 @@ https://github.com/WENGSYX/Self-Verification。
 # Summary (by gpt-4o-mini)
 - マルチクエリ・アテンション（MQA）はデコーダ推論を高速化するが、品質低下のリスクがある。本研究では、（1）元の計算の5%でMQAを持つモデルへのアップトレーニング方法を提案し、（2）グループ化クエリ・アテンション（GQA）を導入。GQAは中間的な数のキー・バリュー・ヘッドを使用し、アップトレーニングされたGQAは品質を保ちながらMQAと同等の速度を実現する。</issue-body>
 <maintainer-comment-text><p>通常のMulti-Head AttentionがQKVが1対1対応なのに対し、Multi Query Attention (MQA) <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1272" target="_blank" rel="noopener noreferrer">[Paper Note] Fast Transformer Decoding: One Write-Head is All You Need, Noam Shazeer, arXiv'19, 2019.11</a>
-  は全てのQに対してKVを共有する。一方、GQAはグループごとにKVを共有する点で異なる。MQAは大幅にInfeerence` speedが改善するが、精度が劣化する問題があった。この研究では通常のMulti-Head Attentionに対して、オリジナルの事前学習に対して追加の5%の計算量でGQAモデルを学習する手法を提案している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/70ec2179-428c-47b8-af53-cb3cc0e4f022" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p><p>Main Result. Multi-Head Attentionに対して、inference timeが大幅に改善しているが、Multi-Query Attentionよりも高い性能を維持している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3687aeb4-90b8-403d-853b-740121dd5f98" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
+  は全てのheadに対してKVを共有する（HeadがH個あるのであれば、保持するKVの数が1/Hとなる）。一方、GQAはグループ単位で（headの）KVを共有する点で異なる。MQAは大幅にInfeerence speedが改善するが、精度が劣化する問題があった。この研究では通常のMulti-Head Attentionに対して、オリジナルの事前学習に対して追加の5%の計算量でGQAモデルを学習する手法を提案している。<br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/70ec2179-428c-47b8-af53-cb3cc0e4f022" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br></p><p>Main Result. Multi-Head Attentionに対して、inference timeが大幅に改善しているが、Multi-Query Attentionよりも高い性能を維持している。<br><br><img src="https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/3687aeb4-90b8-403d-853b-740121dd5f98" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -133063,7 +133064,8 @@ HF: https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp</issue-body>
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>DSAについては<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3860" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models, DeepSeek-AI+, arXiv'25, 2025.12</a>
+ <br><br>参照のこと。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
