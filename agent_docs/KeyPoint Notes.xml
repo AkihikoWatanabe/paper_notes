@@ -1,5 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-02">
+<paper-list last-updated="2026-08-14">
+<paper-entry>
+<title>[Paper Note] Rubric Dropout: A Simple Way to Mitigate Reward Hacking in Rubric-as-Reward RL, Minglai Yang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.11669</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6335</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Rubric-based, Reading Reflections</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.11669
+# Authors
+  - Minglai Yang
+  - Xinyu Guo
+  - Utkarsh Tyagi
+  - Mian Zhang
+  - Razvan Dumitru
+  - Sunjie Hou
+  - Yunzhong He
+  - Daniel Yue Zhang
+  - Ying Liu
+# Abstract
+  - Reinforcement learning against rubrics, lists of criteria graded by an LLM judge, has become a standard way to post-train language models on tasks with no deterministic answer. The rubric, however, is a fixed proxy for quality, never a complete description of it, and a policy trained against it long enough will learn to exploit the difference. We measure this directly. Training Qwen3-8B with Group Relative Policy Optimization (GRPO) on medical and science rubrics and grading out-of-distribution (OOD) benchmarks with both the training judge and a stronger gold judge, we find that the two scores diverge during training. The training judge's score keeps climbing while the gold judge's score peaks and then falls, by 3 points on HealthBench-Hard and by 22 points on ResearchQA. A judge with a fixed bias would shift the gold curve by a constant, not send it down while the training score rises, so the divergence is reward hacking, not judge noise. We propose Rubric Dropout, a one-line fix borrowed from neuron dropout. At every step, we randomly drop a subset of the rubric's criteria before computing the reward, so the policy never optimizes the same rubric twice. The dropped subset is shared across each rollout group, so GRPO's group-relative advantages stay comparable, and evaluation always uses the full rubric. Comparing no dropout against dropout at 30% and 50% on both benchmark pairs, dropout raises the OOD gold score at every matched checkpoint (+1 to +2 points on HealthBench-Hard, +6 to +7 points on ResearchQA), lowers the two hacking measures we track, and costs nothing in domain. Sweeping the dropout fraction shows a broad 30-50% sweet spot, while the natural alternative, reweighting criteria by how useful they are to training, performs worse than no intervention at all in our setting.
+# Translation (by gpt-5-nano)
+- ルーブリック（LLMジャッジによって評価される基準のリスト）に対する強化学習は、決定論的な答えを持たないタスクに対してポスト訓練された言語モデルを適用する標準的な方法となっている。しかし、ルーブリックは品質の固定的な代理指標であり、品質を完全に説明するものではない。そして、それに長く訓練されたポリシーは、その差を利用する方法を学ぶ。これを直接測定する。医療と科学のルーブリックでグループ相対ポリシー最適化（GRPO）を用いてQwen3-8Bを訓練し、訓練用ジャッジとより強力なゴールドジャッジの双方でOOD（out-of-distribution）ベンチマークを評価すると、訓練中に二つのスコアが乖離することが分かる。訓練ジャッジのスコアは上昇を続ける一方で、ゴールドジャッジのスコアはピークを付けてから低下し、HealthBench-Hardで3ポイント、ResearchQAで22ポイントの差になる。固定バイアスを持つジャッジであればゴールド曲線を一定だけ移動させるはずで、訓練スコアが上昇する間にそれを下げることはない。したがって乖離は報酬ハッキングでありジャッジノイズではない。Rubric Dropoutと呼ぶ一行の修正を提案する。ニューロン・ドロップアウトに由来するもので、各ステップで報酬を算出する前にルーブリックの基準の一部をランダムにドロップすることで、ポリシーは同じルーブリックを二度最適化しない。ドロップされた部分集合は各ロールアウトグループ全体で共有されるため、GRPOのグループ相対的優位性は比較可能であり、評価は常に全ルーブリックを使用する。両ベンチマークペアでドロップアウトなしと30%および50%のドロップアウトを比較すると、ドロップアウトは各対応するチェックポイントでOODゴールドスコアを向上させ、HealthBench-Hardで+1〜+2ポイント、ResearchQAで+6〜+7ポイントを付与し、私たちが追跡する二つのハッキング指標を低下させ、ドメインには何のコストもかからない。ドロップアウト割合を広く試すと、30–50%の幅広い最適点が見つかる。一方、訓練にとって有用性の高い基準の重み付けを再調整する自然な代替案は、私たちの設定では介入なしと比べて劣る。
+# Summary (by gpt-4o-mini)
+- ルーブリックに対する強化学習は、ポスト訓練された言語モデルに用いられ、品質の固定的代理指標として機能するが、実際の質を完全には反映しない。Qwen3-8Bを医療と科学のルーブリックで訓練し、訓練用とゴールドジャッジのスコアの乖離を示した。乖離は報酬ハッキングに起因し、Rubric Dropoutを提案。ルーブリックの一部をランダムに無効化し、ポリシーの二度最適化を防止。ドロップアウトによるOODスコアの向上を確認し、HealthBench-Hardで+1〜+2、ResearchQAで+6〜+7ポイントの改善を示した。最適なドロップアウト率は30–50%で、基準の重み付けが劣る結果となった。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087830638913056770?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RubricをDropoutすることで、常に固定されたルーブリックが利用されないようにし、Reward Hackingを防止する。<br><br><img src="https://github.com/user-attachments/assets/ea761a03-db3b-48c1-a477-b821c42b6d51" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>論文中のproxy judgeとgold judgeの違いが最初はよくわからなかったが、<br>- proxy judge: 学習に利用するllm-as-a-judgeモデル<br>  - つまり、Reward Hackingの対象となるもの<br>- gold judge: 学習には一切介入しないproxy judgeよりも強いモデルを用いたjudge<br><br>両者では同じルーブリックを用いられる。これらのjudgeモデルの絶対値はバイアスを含むため関心がなく、両者のgapに関心がある(proxy-gold gap)。RLの最中に20 step単位で両者のスコアを比較し、両者のgapがconsistentに開いていった場合、それは評価のノイズではなく、（固定されたバイアスでもなく）、Reward Hackingの兆候である可能性が高いと主張している。実際、Figure 2を見ると、240 stepから両者のスコアの傾きが変化していて、gold judgeではスコアが向上していくが、proxy judgeではスコアが向上しない現象が観測される。これは、proxy judgeが、本来評価したいRubricとは異なる側面で攻略されていることを示唆していると考えられる。<br><br>dropoutなし、30%、50%の場合で比較したところ、dropoutを導入した場合に一貫してスコアが向上する。実験では、proxyではgpt-4o-miniが用いられ、goldではclaude-sonnet-4.6が用いられている。<br><img src="https://github.com/user-attachments/assets/c816c51f-1c9c-4981-ab56-ba8f3c1cb5fe" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>実際のルーブリックは論文中に掲載されていないので、学習に利用されたデータセットを参照する必要がある。おそらく、それなりの数のRubricによって構成されていると思われるが、Rubricの数に対するsensitivityはどの程度なのだろうか？<br><br>dropout rateによるsensitivityは実験されているが、元々のRubricのサイズの大小による影響は比較されていないように見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Information Abundance Paradox: Long-Context Training Undermines Parametric Knowledge, Arda Uzunoglu+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.12218</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6334</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), LongContext, Selected Papers/Blogs, reading, KeyPoint Notes, needs-revision</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.12218
+# Authors
+  - Arda Uzunoglu
+  - Benjamin Van Durme
+  - Daniel Khashabi
+# Abstract
+  - Large language models are increasingly trained and deployed with long contexts that span documents, code repositories, and interaction histories. This scaling reflects the implicit assumption that training on longer contexts will only help the model by exposing it to richer evidence. We challenge this view by studying how the context window shapes a model's mode of learning, shifting it between parametric internalization and contextualization. We propose the Information Abundance Paradox, which hypothesizes that abundant relevant information in the training context can reduce the incentive to encode that information parametrically, thereby increasing reliance on context. In pretraining with long documents, increasing the context window improves language modeling, natural language understanding, and closed-book MCQA only up to an intermediate optimum, after which performance consistently declines. In supervised fine-tuning, more task-relevant train-time context improves performance with supporting context, but reduces robustness when context is absent or misleading at test time. Our analysis suggests that this behavior arises when longer context provides a lower complexity solution. Mechanistically, training with informative context shifts gradient pressure from feed-forward networks, often linked to parametric knowledge, toward attention modules, and causal interventions show that this shift increases reliance on context during inference. Overall, these findings support the Information Abundance Paradox and suggest that scaling toward near-infinite context is not simply a matter of supplying more data, even when high-quality long-context data is abundant.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルは、文書・コードリポジトリ・対話履歴にまたがる長い文脈を用いて、ますます訓練・展開されている。このスケーリングは、長い文脈での訓練が、より豊かな証拠に触れることによってのみモデルに有益になるという暗黙の前提を反映している。本研究では、文脈ウィンドウがモデルの学習モードをどのように形づくるかを調べ、パラメトリックな内部化と文脈化の間を移動させる。情報豊富性パラドックスを提案する。訓練文脈に含まれる豊富で関連性の高い情報は、その情報をパラメトリックに符号化するインセンティブを低下させ、結果として文脈への依存を高める、という仮説である。長い文書を用いた事前学習では、文脈窓を拡張すると、言語モデリング、自然言語理解、そしてクローズドブックMCQAは中間的な最適点まで改善されるが、それを超えると性能は一貫して低下する。監督付きファインチューニングにおいては、タスクに関連する訓練時の文脈を増やすと、補助的な文脈を伴う場合には性能が向上する一方、テスト時に文脈が欠如しているか、誤解を招く場合には頑健性が低下する。われわれの分析は、この挙動が、長い文脈がより低い複雑性の解を提供する場合に生じることを示唆している。機構的には、情報量の多い文脈を用いた訓練は、パラメトリック知識としばしば関連づけられるフィードフォワードネットワークから、アテンション・モジュールへと勾配圧を移動させる。そして因果的介入の結果、このシフトは推論時の文脈依存を高めることが示される。全体として、これらの知見は情報豊富性パラドックスを支持し、ほぼ無限に近い文脈へとスケールすることは、単にデータを増やすだけの問題ではなく、高品質な長文脈データが豊富である場合でも必ずしもそうではないことを示唆している。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルは長い文脈を用いて訓練されるが、文脈が学習モードをどのように形づくるかを分析。情報豊富性パラドックスを提案し、豊富な情報がパラメトリック符号化のインセンティブを低下させ、文脈依存を高めると仮説。長い文書の訓練では、文脈窓を広げると一時的に性能が向上するが、限界を超えると逆に低下。補助的な文脈が役立つ一方で、テスト時に文脈が不足すると頑健性が損なわれる。これらの知見は、高品質な文脈データの重要性を示唆する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087827752896319557?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習時にcontext windowサイズを変化させると、クロスエントロピーのLoss（次トークン予測のloss）は8192まで減少するが、ダウンストリームタスクの性能は2048で頭打ちとなり、以後は性能が劣化する。これはモデルのパラメータサイズを大きくしても改善されない。この現象は評価対象のインスタンスのpromptの長さによって説明できる可能性があり、付録Fに記載とのこと。付録FのFigure 10を見るとさまざまなデータセットにおいて同様の傾向が見られ、評価サンプルの長さが長ければ長いほど、最適な学習時のcontext長は長くなる傾向が観測されている（Table 4)。このことより、コンテキスト長は無条件にスケーリング可能な軸ではないことが示唆される。実際、Figure 1に示されている異なるコンテキスト長で学習されたPhi 3/Olmo 3の比較を見ても、コンテキスト長が長い方がdownstreamタスクの性能が劣化している。<br><img src="https://github.com/user-attachments/assets/44b64298-a6a9-4ac4-bb38-57a6063abde9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>SFTにおいて、target domainのドキュメントの数を変化させると、contextが与えれない場合の評価ではtarget domainデータが増えるほど性能が劣化（contextへの依存度が高まる）、一方適切なcontextが与えられた場合は性能が改善する。ただし、矛盾したcontextに対する堅牢性は低下する（こちらもcontextへの依存度が高まった結果と考えられる）。これにより、学習時のcontextが、中立的な背景情報ではなく、その関連性に応じてモデルがタスクを内部化するか、文脈依存にするのかを変化させることが示唆される。<br><img src="https://github.com/user-attachments/assets/14b9198c-82bc-48da-bf5d-1a7914282123" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>4節以後が理論的な証明だと思われるが、読めていない🫠</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Pangram 4 Technical Report, Ben Glickenhaus+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.27183</original-paper-blog-link>
@@ -698,7 +766,7 @@
 <title>[Paper Note] PackForcing: Short Video Training Suffices for Long Video Sampling and Long Context Inference, Xiaofeng Mao+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.25730</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5092</repo-issue-link>
-<tags>ComputerVision, DiffusionModel, LongSequence, Architecture, read-later, VideoGeneration/Understandings, KeyPoint Notes, KV Cache</tags>
+<tags>ComputerVision, DiffusionModel, LongContext, Architecture, read-later, VideoGeneration/Understandings, KeyPoint Notes, KV Cache</tags>
 <repo-issue-date>2026-04-04</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2603.25730
@@ -880,7 +948,7 @@
 <title>[Paper Note] The Molecular Structure of Thought: Mapping the Topology of Long Chain-of-Thought Reasoning, Qiguang Chen+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.06002</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4694</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2026-02-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.06002
@@ -5233,7 +5301,7 @@ MathNeuroは、数学特有のパラメータに介入する将来の研究の�
 <title>[Paper Note] StreamingVLM: Real-Time Understanding for Infinite Video Streams, Ruyi Xu+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.09608</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3270</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, Dataset, Evaluation, Attention, LongSequence, AttentionSinks, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel, KeyPoint Notes</tags>
+<tags>ComputerVision, EfficiencyImprovement, Dataset, Evaluation, Attention, LongContext, AttentionSinks, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel, KeyPoint Notes</tags>
 <repo-issue-date>2025-10-15</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.09608
@@ -6488,7 +6556,7 @@ MathNeuroは、数学特有のパラメータに介入する将来の研究の�
 <title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2502.03373
@@ -6784,7 +6852,7 @@ MathNeuroは、数学特有のパラメータに介入する将来の研究の�
 <title>[Paper Note] Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.17453</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1861</repo-issue-link>
-<tags>Attention, LongSequence, ICLR, AttentionSinks, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, Author Thread-Post</tags>
+<tags>Attention, LongContext, ICLR, AttentionSinks, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2025-04-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.17453
@@ -6825,7 +6893,7 @@ MathNeuroは、数学特有のパラメータに介入する将来の研究の�
 <title>[Paper Note] ReLLa: Retrieval-enhanced Large Language Models for Lifelong Sequential   Behavior Comprehension in Recommendation, Jianghao Lin+, WWW'24</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2308.11131</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1840</repo-issue-link>
-<tags>RecommenderSystems, NLP, UserModeling, LanguageModel, CTRPrediction, RAG(RetrievalAugmentedGeneration), LongSequence, WWW, KeyPoint Notes</tags>
+<tags>RecommenderSystems, NLP, UserModeling, LanguageModel, CTRPrediction, RAG(RetrievalAugmentedGeneration), LongContext, WWW, KeyPoint Notes</tags>
 <repo-issue-date>2025-03-27</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2308.11131
@@ -6888,7 +6956,7 @@ MathNeuroは、数学特有のパラメータに介入する将来の研究の�
 <title>[Paper Note] Grounding Language Model with Chunking-Free In-Context Retrieval, Hongjin Qian+, ACL'24, 2024.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2402.09760</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1671</repo-issue-link>
-<tags>Embeddings, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration), LongSequence, ACL, PostTraining, KeyPoint Notes</tags>
+<tags>Embeddings, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration), LongContext, ACL, PostTraining, KeyPoint Notes</tags>
 <repo-issue-date>2025-01-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2402.09760
@@ -8055,7 +8123,7 @@ TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフ�
 <title>[Paper Note] The Impact of Positional Encoding on Length Generalization in   Transformers, Amirhossein Kazemnejad+, NeurIPS'23</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2305.19466</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1865</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, LongSequence, PositionalEncoding, NeurIPS, Selected Papers/Blogs, KeyPoint Notes, Surface-level Notes</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, LongContext, PositionalEncoding, NeurIPS, Selected Papers/Blogs, KeyPoint Notes, Surface-level Notes</tags>
 <repo-issue-date>2025-04-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2305.19466
@@ -8530,7 +8598,7 @@ TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフ�
 <title>[Paper Note] Effective Long-Context Scaling of Foundation Models, Wenhan Xiong+, arXiv'23, 2023.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.16039</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1060</repo-issue-link>
-<tags>NLP, LanguageModel, action_wanted, LongSequence, PositionalEncoding, NAACL, mid-training, Selected Papers/Blogs, DataMixture, KeyPoint Notes, needs-revision</tags>
+<tags>NLP, LanguageModel, action_wanted, LongContext, PositionalEncoding, NAACL, mid-training, Selected Papers/Blogs, DataMixture, KeyPoint Notes, needs-revision</tags>
 <repo-issue-date>2023-10-09</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.16039
@@ -8669,7 +8737,7 @@ TOVAは元のキャッシュサイズの1/8しか使用せず、トランスフ�
 <title>LongLoRA: Efficient Fine-tuning of Long-Context Large Language Models, Yukang Chen+, N_A, arXiv'23</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.12307</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1045</repo-issue-link>
-<tags>EfficiencyImprovement, MachineLearning, NLP, Dataset, QuestionAnswering, Supervised-FineTuning (SFT), LongSequence, PEFT(Adaptor/LoRA), PostTraining, KeyPoint Notes</tags>
+<tags>EfficiencyImprovement, MachineLearning, NLP, Dataset, QuestionAnswering, Supervised-FineTuning (SFT), LongContext, PEFT(Adaptor/LoRA), PostTraining, KeyPoint Notes</tags>
 <repo-issue-date>2023-09-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.12307
@@ -10060,7 +10128,7 @@ LongLoRAは、オリジナルのアーキテクチャを保持しながらモデ
 <title>[Paper Note] Recurrent Memory Transformer, Aydar Bulatov+, NeurIPS'22, 2022.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2207.06881</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/523</repo-issue-link>
-<tags>NLP, LanguageModel, action_wanted, LongSequence, NeurIPS, memory, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, action_wanted, LongContext, NeurIPS, memory, KeyPoint Notes</tags>
 <repo-issue-date>2023-04-25</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2207.06881
@@ -13764,7 +13832,7 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 <title>Qwen3, Qwen Team, 2025.04</title>
 <original-paper-blog-link>https://qwenlm.github.io/blog/qwen3/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1909</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes, Reference Collection</tags>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongContext, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes, Reference Collection</tags>
 <repo-issue-date>2025-04-29</repo-issue-date>
 <issue-body>https://qwenlm.github.io/blog/qwen3/</issue-body>
 <maintainer-comment-text><p>- 119言語をサポート<br>- MoEモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1911" target="_blank" rel="noopener noreferrer">[Paper Note] Outrageously Large Neural Networks: The Sparsely-Gated  Mixture-of-Experts Layer, Noam Shazeer+, ICLR'17</a>
@@ -14345,7 +14413,7 @@ GPT4oやClaudeがどのような学習をしているかは分からないが、
 <title>RetrievaBERTの公開, 2024</title>
 <original-paper-blog-link>https://note.com/retrieva/n/n715bea2c2cd1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1323</repo-issue-link>
-<tags>NLP, LanguageModel, RAG(RetrievalAugmentedGeneration), LongSequence, Encoder, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, RAG(RetrievalAugmentedGeneration), LongContext, Encoder, KeyPoint Notes</tags>
 <repo-issue-date>2024-07-03</repo-issue-date>
 <issue-body>https://note.com/retrieva/n/n715bea2c2cd1</issue-body>
 <maintainer-comment-text><p>RAGへ応用する際に、長いコンテキストを扱いEmbeddingを獲得したいシーンが増えたので、最大でコンテキスト長が2048のBERTを学習し公開。Apache2.0<br><br><br><br>オリジナルのBERTと比較して、近年のLLMで有用性が示されている以下をアーキテクチャに取り入れている<br><br>- SwiGLU活性化関数 <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1311" target="_blank" rel="noopener noreferrer">[Paper Note] GLU Variants Improve Transformer, Noam Shazeer, arXiv'20, 2020.02</a>

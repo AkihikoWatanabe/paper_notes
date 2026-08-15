@@ -1,5 +1,292 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-10">
+<paper-list last-updated="2026-08-15">
+<paper-entry>
+<title>[Paper Note] Rubric Dropout: A Simple Way to Mitigate Reward Hacking in Rubric-as-Reward RL, Minglai Yang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.11669</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6335</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Rubric-based, Reading Reflections</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.11669
+# Authors
+  - Minglai Yang
+  - Xinyu Guo
+  - Utkarsh Tyagi
+  - Mian Zhang
+  - Razvan Dumitru
+  - Sunjie Hou
+  - Yunzhong He
+  - Daniel Yue Zhang
+  - Ying Liu
+# Abstract
+  - Reinforcement learning against rubrics, lists of criteria graded by an LLM judge, has become a standard way to post-train language models on tasks with no deterministic answer. The rubric, however, is a fixed proxy for quality, never a complete description of it, and a policy trained against it long enough will learn to exploit the difference. We measure this directly. Training Qwen3-8B with Group Relative Policy Optimization (GRPO) on medical and science rubrics and grading out-of-distribution (OOD) benchmarks with both the training judge and a stronger gold judge, we find that the two scores diverge during training. The training judge's score keeps climbing while the gold judge's score peaks and then falls, by 3 points on HealthBench-Hard and by 22 points on ResearchQA. A judge with a fixed bias would shift the gold curve by a constant, not send it down while the training score rises, so the divergence is reward hacking, not judge noise. We propose Rubric Dropout, a one-line fix borrowed from neuron dropout. At every step, we randomly drop a subset of the rubric's criteria before computing the reward, so the policy never optimizes the same rubric twice. The dropped subset is shared across each rollout group, so GRPO's group-relative advantages stay comparable, and evaluation always uses the full rubric. Comparing no dropout against dropout at 30% and 50% on both benchmark pairs, dropout raises the OOD gold score at every matched checkpoint (+1 to +2 points on HealthBench-Hard, +6 to +7 points on ResearchQA), lowers the two hacking measures we track, and costs nothing in domain. Sweeping the dropout fraction shows a broad 30-50% sweet spot, while the natural alternative, reweighting criteria by how useful they are to training, performs worse than no intervention at all in our setting.
+# Translation (by gpt-5-nano)
+- ルーブリック（LLMジャッジによって評価される基準のリスト）に対する強化学習は、決定論的な答えを持たないタスクに対してポスト訓練された言語モデルを適用する標準的な方法となっている。しかし、ルーブリックは品質の固定的な代理指標であり、品質を完全に説明するものではない。そして、それに長く訓練されたポリシーは、その差を利用する方法を学ぶ。これを直接測定する。医療と科学のルーブリックでグループ相対ポリシー最適化（GRPO）を用いてQwen3-8Bを訓練し、訓練用ジャッジとより強力なゴールドジャッジの双方でOOD（out-of-distribution）ベンチマークを評価すると、訓練中に二つのスコアが乖離することが分かる。訓練ジャッジのスコアは上昇を続ける一方で、ゴールドジャッジのスコアはピークを付けてから低下し、HealthBench-Hardで3ポイント、ResearchQAで22ポイントの差になる。固定バイアスを持つジャッジであればゴールド曲線を一定だけ移動させるはずで、訓練スコアが上昇する間にそれを下げることはない。したがって乖離は報酬ハッキングでありジャッジノイズではない。Rubric Dropoutと呼ぶ一行の修正を提案する。ニューロン・ドロップアウトに由来するもので、各ステップで報酬を算出する前にルーブリックの基準の一部をランダムにドロップすることで、ポリシーは同じルーブリックを二度最適化しない。ドロップされた部分集合は各ロールアウトグループ全体で共有されるため、GRPOのグループ相対的優位性は比較可能であり、評価は常に全ルーブリックを使用する。両ベンチマークペアでドロップアウトなしと30%および50%のドロップアウトを比較すると、ドロップアウトは各対応するチェックポイントでOODゴールドスコアを向上させ、HealthBench-Hardで+1〜+2ポイント、ResearchQAで+6〜+7ポイントを付与し、私たちが追跡する二つのハッキング指標を低下させ、ドメインには何のコストもかからない。ドロップアウト割合を広く試すと、30–50%の幅広い最適点が見つかる。一方、訓練にとって有用性の高い基準の重み付けを再調整する自然な代替案は、私たちの設定では介入なしと比べて劣る。
+# Summary (by gpt-4o-mini)
+- ルーブリックに対する強化学習は、ポスト訓練された言語モデルに用いられ、品質の固定的代理指標として機能するが、実際の質を完全には反映しない。Qwen3-8Bを医療と科学のルーブリックで訓練し、訓練用とゴールドジャッジのスコアの乖離を示した。乖離は報酬ハッキングに起因し、Rubric Dropoutを提案。ルーブリックの一部をランダムに無効化し、ポリシーの二度最適化を防止。ドロップアウトによるOODスコアの向上を確認し、HealthBench-Hardで+1〜+2、ResearchQAで+6〜+7ポイントの改善を示した。最適なドロップアウト率は30–50%で、基準の重み付けが劣る結果となった。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087830638913056770?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RubricをDropoutすることで、常に固定されたルーブリックが利用されないようにし、Reward Hackingを防止する。<br><br><img src="https://github.com/user-attachments/assets/ea761a03-db3b-48c1-a477-b821c42b6d51" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>論文中のproxy judgeとgold judgeの違いが最初はよくわからなかったが、<br>- proxy judge: 学習に利用するllm-as-a-judgeモデル<br>  - つまり、Reward Hackingの対象となるもの<br>- gold judge: 学習には一切介入しないproxy judgeよりも強いモデルを用いたjudge<br><br>両者では同じルーブリックを用いられる。これらのjudgeモデルの絶対値はバイアスを含むため関心がなく、両者のgapに関心がある(proxy-gold gap)。RLの最中に20 step単位で両者のスコアを比較し、両者のgapがconsistentに開いていった場合、それは評価のノイズではなく、（固定されたバイアスでもなく）、Reward Hackingの兆候である可能性が高いと主張している。実際、Figure 2を見ると、240 stepから両者のスコアの傾きが変化していて、gold judgeではスコアが向上していくが、proxy judgeではスコアが向上しない現象が観測される。これは、proxy judgeが、本来評価したいRubricとは異なる側面で攻略されていることを示唆していると考えられる。<br><br>dropoutなし、30%、50%の場合で比較したところ、dropoutを導入した場合に一貫してスコアが向上する。実験では、proxyではgpt-4o-miniが用いられ、goldではclaude-sonnet-4.6が用いられている。<br><img src="https://github.com/user-attachments/assets/c816c51f-1c9c-4981-ab56-ba8f3c1cb5fe" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>実際のルーブリックは論文中に掲載されていないので、学習に利用されたデータセットを参照する必要がある。おそらく、それなりの数のRubricによって構成されていると思われるが、Rubricの数に対するsensitivityはどの程度なのだろうか？<br><br>dropout rateによるsensitivityは実験されているが、元々のRubricのサイズの大小による影響は比較されていないように見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Information Abundance Paradox: Long-Context Training Undermines Parametric Knowledge, Arda Uzunoglu+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.12218</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6334</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), LongContext, Selected Papers/Blogs, reading, KeyPoint Notes, needs-revision</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.12218
+# Authors
+  - Arda Uzunoglu
+  - Benjamin Van Durme
+  - Daniel Khashabi
+# Abstract
+  - Large language models are increasingly trained and deployed with long contexts that span documents, code repositories, and interaction histories. This scaling reflects the implicit assumption that training on longer contexts will only help the model by exposing it to richer evidence. We challenge this view by studying how the context window shapes a model's mode of learning, shifting it between parametric internalization and contextualization. We propose the Information Abundance Paradox, which hypothesizes that abundant relevant information in the training context can reduce the incentive to encode that information parametrically, thereby increasing reliance on context. In pretraining with long documents, increasing the context window improves language modeling, natural language understanding, and closed-book MCQA only up to an intermediate optimum, after which performance consistently declines. In supervised fine-tuning, more task-relevant train-time context improves performance with supporting context, but reduces robustness when context is absent or misleading at test time. Our analysis suggests that this behavior arises when longer context provides a lower complexity solution. Mechanistically, training with informative context shifts gradient pressure from feed-forward networks, often linked to parametric knowledge, toward attention modules, and causal interventions show that this shift increases reliance on context during inference. Overall, these findings support the Information Abundance Paradox and suggest that scaling toward near-infinite context is not simply a matter of supplying more data, even when high-quality long-context data is abundant.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルは、文書・コードリポジトリ・対話履歴にまたがる長い文脈を用いて、ますます訓練・展開されている。このスケーリングは、長い文脈での訓練が、より豊かな証拠に触れることによってのみモデルに有益になるという暗黙の前提を反映している。本研究では、文脈ウィンドウがモデルの学習モードをどのように形づくるかを調べ、パラメトリックな内部化と文脈化の間を移動させる。情報豊富性パラドックスを提案する。訓練文脈に含まれる豊富で関連性の高い情報は、その情報をパラメトリックに符号化するインセンティブを低下させ、結果として文脈への依存を高める、という仮説である。長い文書を用いた事前学習では、文脈窓を拡張すると、言語モデリング、自然言語理解、そしてクローズドブックMCQAは中間的な最適点まで改善されるが、それを超えると性能は一貫して低下する。監督付きファインチューニングにおいては、タスクに関連する訓練時の文脈を増やすと、補助的な文脈を伴う場合には性能が向上する一方、テスト時に文脈が欠如しているか、誤解を招く場合には頑健性が低下する。われわれの分析は、この挙動が、長い文脈がより低い複雑性の解を提供する場合に生じることを示唆している。機構的には、情報量の多い文脈を用いた訓練は、パラメトリック知識としばしば関連づけられるフィードフォワードネットワークから、アテンション・モジュールへと勾配圧を移動させる。そして因果的介入の結果、このシフトは推論時の文脈依存を高めることが示される。全体として、これらの知見は情報豊富性パラドックスを支持し、ほぼ無限に近い文脈へとスケールすることは、単にデータを増やすだけの問題ではなく、高品質な長文脈データが豊富である場合でも必ずしもそうではないことを示唆している。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルは長い文脈を用いて訓練されるが、文脈が学習モードをどのように形づくるかを分析。情報豊富性パラドックスを提案し、豊富な情報がパラメトリック符号化のインセンティブを低下させ、文脈依存を高めると仮説。長い文書の訓練では、文脈窓を広げると一時的に性能が向上するが、限界を超えると逆に低下。補助的な文脈が役立つ一方で、テスト時に文脈が不足すると頑健性が損なわれる。これらの知見は、高品質な文脈データの重要性を示唆する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087827752896319557?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習時にcontext windowサイズを変化させると、クロスエントロピーのLoss（次トークン予測のloss）は8192まで減少するが、ダウンストリームタスクの性能は2048で頭打ちとなり、以後は性能が劣化する。これはモデルのパラメータサイズを大きくしても改善されない。この現象は評価対象のインスタンスのpromptの長さによって説明できる可能性があり、付録Fに記載とのこと。付録FのFigure 10を見るとさまざまなデータセットにおいて同様の傾向が見られ、評価サンプルの長さが長ければ長いほど、最適な学習時のcontext長は長くなる傾向が観測されている（Table 4)。このことより、コンテキスト長は無条件にスケーリング可能な軸ではないことが示唆される。実際、Figure 1に示されている異なるコンテキスト長で学習されたPhi 3/Olmo 3の比較を見ても、コンテキスト長が長い方がdownstreamタスクの性能が劣化している。<br><img src="https://github.com/user-attachments/assets/44b64298-a6a9-4ac4-bb38-57a6063abde9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>SFTにおいて、target domainのドキュメントの数を変化させると、contextが与えれない場合の評価ではtarget domainデータが増えるほど性能が劣化（contextへの依存度が高まる）、一方適切なcontextが与えられた場合は性能が改善する。ただし、矛盾したcontextに対する堅牢性は低下する（こちらもcontextへの依存度が高まった結果と考えられる）。これにより、学習時のcontextが、中立的な背景情報ではなく、その関連性に応じてモデルがタスクを内部化するか、文脈依存にするのかを変化させることが示唆される。<br><img src="https://github.com/user-attachments/assets/14b9198c-82bc-48da-bf5d-1a7914282123" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>4節以後が理論的な証明だと思われるが、読めていない🫠</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Small-Scale Experiments: Are We There Yet?, Nicholas Lourie+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.11859</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6333</repo-issue-link>
+<tags>NLP, LanguageModel, Scaling Laws, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.11859
+# Authors
+  - Nicholas Lourie
+  - Kyunghyun Cho
+  - Karen Ullrich
+  - Sanae Lotfi
+# Abstract
+  - Scaling laws promised cost-effective experiments; six years later, they have yet to fully deliver. Instead, researchers have found them unreliable at small scales (starting at 4M parameters) and concluded that sizable models cannot be avoided. We show this is not the case: the confounding factor is hyperparameters. Small models are highly sensitive, but hyperparameter sensitivity fades with scale. This small-scale sensitivity makes scaling laws easy to miss because they only emerge on the fully tuned frontier, and reaching that frontier requires an extensive search far beyond what most ever run. By ablating the basic scaling law recipe, we show well-tuned hyperparameters matter more than any other ingredient. Further, we reveal why those hyperparameters become easier to find: as scale increases, the hyperparameter loss surface becomes lower dimensional. Nevertheless while scaling laws exist in small models, extrapolation hits statistical limitations. A holistic approach is required. Synthesizing our insights with the recent literature, we develop a new methodology for model-centric research and demonstrate it on a question that once took the field years to settle: where to place normalization layers in the transformer architecture. From small-scale experiments, we recover the large scale result: pre-normalization works better as models grow in size. With the right tools and a better understanding, small-scale experiments can deliver on scaling laws' long-awaited promise.
+# Translation (by gpt-5-nano)
+- スケーリング法則は費用対効果の高い実験を約束したが、6年が経過してもまだ十分には実現していない。代わりに、研究者たちは小規模スケール（パラメータ400万から）では信頼できないと見なし、規模の大きいモデルを避けることはできないと結論づけている。私たちはこれがそうではないことを示す。混乱因子はハイパーパラメータである。小さなモデルは非常に敏感だが、スケールが大きくなるとハイパーパラメータの感度は薄れていく。この小規模での感度は、完全にチューニングされた最前線でのみ現れるためスケーリング法則を見逃しやすく、そこに到達するには広範な探索が必要で、ほとんどの人が通常実行する範囲をはるかに超える。基本的なスケーリング法則のレシピをアブレーションすることで、よく調整されたハイパーパラメータが他のどの要素よりも重要であることを示す。さらに、それらのハイパーパラメータを見つけやすくなる理由を明らかにする。スケールが大きくなるにつれて、ハイパーパラメータの損失面は次元が低くなるためである。とはいえ、小さなモデルにもスケーリング法則は存在するが、外挿には統計的限界がある。全体論的アプローチが必要である。洞察を最近の文献と統合し、モデル中心の研究の新しい方法論を開発し、それをかつて分野を長年揺るがせた問い、すなわちトランスフォーマーアーキテクチャにおける正規化層の配置場所はどこか、に適用して実証する。小規模な実験から大規模な結論を取り戻す。すなわち、モデルが大きくなるにつれて前正規化がより良く機能する、という結論である。適切なツールと理解を深めれば、小規模な実験でもスケーリング法則の長年待望の約束を果たすことができる。
+# Summary (by gpt-4o-mini)
+- スケーリング法則は未だ完全には実現されていないが、ハイパーパラメータが混乱因子であることを示し、大規模モデルの重要性を反映する。小規模モデルは敏感で、ハイパーパラメータの調整が鍵である。探索が必要だが、適切なアプローチにより小規模実験から大規模な結論を導き出すことが可能であり、特に前正規化が有効であることを実証。全体論的アプローチが求められ、小規模実験がスケーリング法則の実現に寄与する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087795422664204519?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Simple-OPD: Demystifying Warm-up for On-policy Distillation, Tao Liu+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.06802</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6332</repo-issue-link>
+<tags>NLP, LanguageModel, Distillation, PEFT(Adaptor/LoRA), PostTraining, read-later, Selected Papers/Blogs, On-Policy, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.06802
+# Authors
+  - Tao Liu
+  - Taiqiang Wu
+  - Mao Zheng
+  - Xuan Luo
+  - Runming Yang
+  - Xuewei Yang
+  - Junjie Wang
+  - Yujiu Yang
+# Abstract
+  - On-policy distillation (OPD) trains a student on its own rollouts with token-level supervision from teacher models, but its effectiveness can depend strongly on the warm-up stage before OPD. In this paper, we demystify warm-up for OPD from both data and training perspectives. For data, we find that effective warm-up relies on teacher-compatible chain-of-thought supervision, and that even incorrect teacher rollouts can provide comparable benefits to correct ones. This suggests that warm-up primarily transfers a teacher-compatible thinking pattern rather than merely correct answers. For training, we show that low-rank adaptation (LoRA) with a near-saturation training duration better balances in-domain adaptation and out-of-distribution generalization than full-parameter SFT. Based on these findings, we propose Simple-OPD, a plug-and-play initialization method that warms up the student on teacher-generated CoT with LoRA before OPD. Experiments across diverse settings demonstrate the effectiveness and robustness of Simple-OPD.
+# Translation (by gpt-5-nano)
+- On-policy distillation (OPD) は、教師モデルからのトークンレベルの監督信号を用いて自らのロールアウト上で学生を訓練する手法だが、その有効性は OPD の前のウォームアップ段階に強く依存することがある。本論文では、データとトレーニングの両方の観点から OPD のウォームアップを解明する。データの観点から、有効なウォームアップは教師と互換性のあるチェーン・オブ・ソート（CoT、思考過程の連鎖）監督に依存すること、そして誤っている教師のロールアウトであっても正しいものと同等の利益をもたらす場合があることを示す。これは、ウォームアップが単に正解を転送するのではなく、教師と互換性のある思考パターンを主に転送することを示唆している。トレーニングの観点では、低秩適応（LoRA）を用い、ほぼ飽和するトレーニング期間と組み合わせると、全パラメータSFTよりもドメイン内適応と分布外一般化のバランスをより良く取れることを示す。これらの知見に基づき、Simple-OPD を提案する。これは、OPD の前に教師生成の CoT（思考過程の連鎖）に対して LoRA を用いて学生をウォームアップさせる、プラグアンドプレイの初期化手法である。多様な設定での実験は、Simple-OPD の有効性と頑健性を示している。
+# Summary (by gpt-4o-mini)
+- On-policy distillation (OPD) は、教師モデルからの監督信号を用いて学生を訓練する手法であり、その効果はウォームアップ段階に依存する。データ観点では、思考過程の連鎖（CoT）監督が効果的であり、誤った教師のロールアウトでも利点があることが示された。トレーニング観点では、低秩適応（LoRA）を用いたアプローチがドメイン内適応と分布外一般化のバランスを改善することを示す。これに基づき、Simple-OPDを提案し、教師生成のCoTに対してLoRAで学生をウォームアップさせる手法である。実験はその有効性と頑健性を示している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2087764025774149959?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>まだ論文には目を通せていないが、教師モデルと生徒モデルに差がありすぎると、OPDはうまく学習ができないので、LoRAでwarmupするとあうのは理に適っているように感じる。</p><p>OPDのFailure Modeのまとめ:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6166" target="_blank" rel="noopener noreferrer">On-policy distillation isn't a free-lunch, Bhavin Jawade, 2026.07</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] DiG-bench: Discovery in Games, Ruairidh M. Battleday+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.12593</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6331</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Evaluation, ScientificDiscovery, read-later, Selected Papers/Blogs, Game, One-Line Notes, text, Author Thread-Post</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.12593
+# Authors
+  - Ruairidh M. Battleday
+  - Kai Sandbrink
+  - Jimi Cullen-Drohan
+  - Zihan Yan
+  - Timothy Muller
+  - Clare Maguire
+  - Ales Kubicek
+  - Fraser Greenlee-Scott
+  - Sukrit Sumant
+  - Tri Dao
+  - Jürgen Schmidhuber
+  - Michal Valko
+  - Joshua Tenenbaum
+  - Thomas L. Griffiths
+  - Zeb Kurth-Nelson
+  - James C. R. Whittington
+# Abstract
+  - Discovery---formulating novel generalizations---is a central part of the scientific process. Despite its importance, there is a gap in the current AI benchmark landscape, with few benchmarks directly probing the capacity for discovering new knowledge with experimentation in controlled environments where the objective is unknown. To address this gap, we release a new benchmark: DiG-bench (Discovery in Games). DiG-bench consists of a set of 70 independent games. Each game is encoded as a short string and has unique transformation rules that must be discovered through interaction and experimentation. The levels of the game present a series of challenges to test whether the rules have been discovered, where the win conditions for each level are also unknown. We provide games at seven tiers of difficulty for AI agents. The lowest tier is routinely solvable by multiple models, while the highest tier challenges the best models in agentic harnesses. All 70 games were solved by at least one human on first attempt. A subset of 21 games is released publicly, and the remainder is held private for secure evaluation.
+# Translation (by gpt-5-nano)
+- 発見―新規な一般化の形成―は科学的プロセスの中心的な部分である。重要性にもかかわらず、現在のAIベンチマーク環境にはギャップがあり、目的が未知である制御された環境での実験を通じて新しい知識を発見する能力を直接評価するベンチマークはごく少数である。このギャップに対処するため、私たちは新しいベンチマークDiG-bench（Discovery in Games）を公開する。DiG-benchは70個の独立したゲームから成る。各ゲームは短い文字列として符号化されており、相互作用と実験を通じて発見すべき独自の変換ルールを有する。ゲームの各レベルは、ルールが発見されたかどうかを検証する一連の課題を提示し、各レベルの勝利条件も未知である。AIエージェント向けに七段階の難易度のゲームを提供する。最下位の層は複数のモデルによって日常的に解かれる一方、最高位の層はエージェント的ハーネスを備えた最良のモデルにも挑戦を強いる。70の全ゲームは、少なくとも1人の人間によって初回の試行で解かれた。そのうち21ゲームが公開され、残りは安全な評価のために非公開とされている。
+# Summary (by gpt-4o-mini)
+- 新たな知識の発見は科学プロセスの核心であるが、既存のAIベンチマークはこの能力を評価するものが不足している。これに対処するため、本研究ではDiG-bench（Discovery in Games）という新しいベンチマークを導入。70の独立したゲームから構成され、各ゲームは独自の変換ルールを持ち、AIエージェントに7段階の難易度を提供する。ゲームはルール発見の検証課題を含み、特定の勝利条件も未知である。全てのゲームは少なくとも1人の人間によって初回の試行で解かれたが、21ゲームが公開されており、残りは安全評価のために非公開。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jcrwhittington/status/2087535497480388729?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AI Agentの発見能力を測るためのベンチマーク。テキストベースで人間によって作成されたゲームで、エージェントは試行錯誤を重ねてテキストで表現された世界のルールと勝利条件を紐解く必要がある。実際に人間が挑戦をすることで初挑戦でクリアできることを確認済みだが、AI Agentでは最も難易度が高いゲームでは、20パーセント程度しかクリアできない（Opus 5)とのこと。また、世界のルールや勝利条件などのground truthをテキストで与えると、クリア率は100%になるとのことで、非常に興味深いベンチマークである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Why Does CLAUDE.md Keep Growing? Catastrophic Remembering in Agentic Coding, Kushal Chakrabarti, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.11095</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6330</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Selected Papers/Blogs, reading, One-Line Notes, AGENTS.md, AgentHarness</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.11095
+# Authors
+  - Kushal Chakrabarti
+# Abstract
+  - Agentic coding READMEs like CLAUDE.md grow without bound in real repositories, stopping only when the repository retires or someone rewrites the file wholesale. We trace this to imperfect recall: appending an instruction is always cheap, but once an instruction's rationale is gone, deleting it without risking a correctness regression costs O(2^|D|) in a prompt of |D| instructions. We name the resulting divergence catastrophic remembering, the inverse of catastrophic forgetting around which continual learning is organized. First, we characterize this phenomenon across 247,694 instruction lifetimes in 1,867 repositories: agentic prompts grow without bound, more than tripling over their lifetime (+226%), gaining +4.9 net instructions every commit; further, the older an instruction gets, the less likely it is to be deleted (log-hazard -0.032/commit). Then, we show that prompt comments can halt the growth: inverting IFEval yields verifiable worlds whose optimal prompts are known, and there comments encoding latent reasoning remove 99.3% of excess instructions (+211.3% to +1.4%). Finally, applying the same inversion to WildIFEval, we show that prompt comments can improve real-world agentic instruction-following by up to 23.1%. If English is the new code, why don't we have comments yet?
+# Translation (by gpt-5-nano)
+- CLAUDE.md のようなエージェント性を持つコーディング READMEs は、実リポジトリで境界なく成長し、リポジトリが退役するか誰かがファイルを一括で書き直すまで止まらない。これを不完全なリコールに起因する現象として追跡する。指示を追加することは常に安価だが、指示の根拠が失われたとき、それを削除して正確性の後退を生じさせずに済むコストは、|D| 本の指示を含むプロンプトに対して O(2^|D|) となる。我々は得られた発散を「 catastroph ic remembering」（破局的記憶）と名づけ、連続学習が組織される破局的忘却の逆の概念として位置づける。
+
+まず、247,694 の指示ライフタイムを持つ 1,867 のリポジトリに跨るこの現象を特徴づける。エージェント的プロンプトは境界なく成長し、生涯で 3 倍以上になる（+226%）、コミットごとに純増で +4.9 本の指示を獲得する。さらに、指示が古くなるほど削除されにくくなる（対数ハザード -0.032/コミット）。
+
+次に、プロンプトコメントが成長を止め得ることを示す。IFEval を反転させると、最適なプロンプトが既知の検証可能な世界が得られ、そこに潜在的推論をエンコードするコメントは過剰な指示の 99.3% を削除する（+211.3% から +1.4% への変化を含む）。
+
+最後に、同じ反転を WildIFEval に適用すると、プロンプトコメントが実世界のエージェント的指示遵守を最大で 23.1% 改善できることを示す。
+
+もし英語が新しいコードであるなら、なぜコメントはまだ存在しないのか？
+# Summary (by gpt-4o-mini)
+- エージェント性を持つコーディングREADMEは、リポジトリが退役するまで成長し続けるが、指示の不完全なリコールが原因でこの現象を「破局的記憶」と呼ぶ。247,694の指示ライフタイムを持つ1,867のリポジトリにおいて、指示は生涯で3倍以上増加し、古い指示は削除されにくいことが示された。プロンプトコメントの成長を制御することができ、最適なプロンプトでは過剰な指示の99.3%を削除し、新世界における指示遵守を最大23.1%改善する可能性がある。なぜなら、コードにおけるコメントの役割は依然として重要だからだ。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2087605040240582991?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Coding AgentがAGENTS.mdのようなglobal contextにinstructionを書き込む際に、その背後に潜む推論結果（=latent reasfning)が記述されないことで、latent reasoningを後から再構築するのは大きなコストを伴うため、当該instructionを削除する際の妨げとなる。その結果、contextが肥大化していく。一方でinstructionが追加される際にlatent reasoningを明示的に書き出せば、肥大化を防ぐことができる、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/984a6dc5-d68c-4911-aefb-ab666612f30f" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Cracks in the Foundation: Seemingly Minor Architectural Choices Impact Long Context Extension, Amanda Bertsch+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.10296</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6323</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Transformer, LongContext, Architecture, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.10296
+# Authors
+  - Amanda Bertsch
+  - Luca Soldaini
+  - Matthew R. Gormley
+  - Graham Neubig
+  - Hannaneh Hajishirzi
+  - Kyle Lo
+  - Dirk Groeneveld
+# Abstract
+  - One might imagine that architectural variations within the dense transformer paradigm have a limited effect on accuracy. However, we demonstrate that this is not the case in the long context setting. Specifically, we show that a set of four minor architectural decisions --- all made by at least one of the Olmo, Llama, and Qwen dense model families --- have a compoundingly negative effect on long context extensibility. Any one of these choices alone has a minor impact on long context performance, but combining three or more can drop the performance downstream by up to 47%. Furthermore, these differences are not detectable from short-context loss or validation datasets. We show that much of the variation in long context ability across model families is driven by these architectural features and detectable from applying context extension early in pretraining. We demonstrate this with controlled ablations that hold data, tokenizer, and extension recipe fixed while varying normalization, GQA, pretraining context length, and sliding window attention. After over 170,000 GPU hours of training, we release the resulting set of models as OlmPool, a set of 26 comparable 7B models with checkpoints before and after long-context extension. This pool includes several architectures that outperform the Llama 3 architecture on long context extensibility. In an analysis of our ablation models, we identify patterns in attention sink behavior and attention distributions across context that are attributable to specific architectural differences.
+# Translation (by gpt-5-nano)
+- 密なトランスフォーマー系におけるアーキテクチャの変化が精度に与える影響は限られていると考えられる。しかし、長い文脈設定ではそうとは限らないことを示す。具体的には、Olmo、Llama、Qwen の密なモデルファミリーのいずれかによって少なくとも一つは選択された四つの小さなアーキテクチャ上の決定の集合が、長い文脈の拡張性に複合的に悪影響を及ぼす。これらの選択肢のいずれか一つだけでは長い文脈での性能にわずかな影響しかないが、3つ以上を組み合わせると下流の性能が最大で47％低下する。さらに、これらの差は短い文脈の損失や検証データセットからは検出できない。モデルファミリー間の長い文脈能力の変動の多くは、これらのアーキテクチャ的特徴によって生じており、事前学習の初期に文脈拡張を適用することで検出可能であることを示す。これを、データ、トークナイザー、拡張レシピを固定したまま、正規化、GQA、プリトレーニング時の文脈長、スライディングウィンドウアテンションを変化させる制御されたアブレーションを用いて実証する。17万GPU時間を超える学習の後、得られたモデル群を OlmPool として公開する。長い文脈拡張の前後のチェックポイントを備えた、7B パラメータの26モデルからなる比較可能なセットである。このプールには、長い文脈拡張性において Llama 3 アーキテクチャを上回るいくつかのアーキテクチャが含まれている。アブレーションモデルの分析では、特定のアーキテクチャの差異に起因する、文脈全体におけるアテンションの集中挙動とアテンション分布のパターンを同定する。
+# Summary (by gpt-4o-mini)
+- 密なトランスフォーマー系におけるアーキテクチャの変化は、長い文脈設定での性能に顕著な影響を及ぼすことを示す。特に、Olmo、Llama、Qwenのモデルファミリーにおいて、特定のアーキテクチャ決定が長い文脈での性能を最大47％低下させることが判明した。これらの差は短い文脈では検出できず、長い文脈能力はアーキテクチャ的特徴によって大きく変動する。17万GPU時間を超える学習の後、得られたモデル群をOlmPoolとして公開し、長い文脈拡張性に優れたアーキテクチャを分析した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087434913658142958?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Fantastic Pretraining Optimizers and Where to Find Them II: Hyperball Optimization, Kaiyue Wen+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.16899</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6318</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Optimizer, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.16899
+# Authors
+  - Kaiyue Wen
+  - Xingyu Dang
+  - Kaifeng Lyu
+  - Tengyu Ma
+  - Percy Liang
+# Abstract
+  - Matrix based optimizers such as Muon can substantially speed up language model pretraining, but their gains over AdamW are observed to shrink as model size and data scale grow when using standard constant decoupled weight decay. We propose Hyperball, a simple optimizer wrapper that addresses this issue. Given a base optimizer such as Adam or Muon, Hyperball sets the Frobenius norms of weight matrices and their corresponding optimizer updates to fixed constants. On Qwen3 style models up to 1.2B parameters, Muon Hyperball achieves 20--30% token equivalent speedup over weight decay baselines. Hyperball also improves learning rate transfer across widths and depths compared to decoupled weight decay. This method is motivated by prior theory showing that training with weight decay leads to an equilibrium weight norm that only depends on the training hyperparameters. Through this mechanism, the weight decay then decides the angular learning rate, i.e. how fast the direction of the weight matrix changes.
+# Translation (by gpt-5-nano)
+- Muon のような行列ベースのオプティマイザは言語モデルの事前学習を大幅に高速化することができるが、標準的な一定のデカップリングウェイトデケイを用いると、モデルサイズとデータ規模の拡大に伴い AdamW との差分の利得が縮小することが観察されている。私たちはこの問題に対処する単純なオプティマイザラッパーである Hyperball を提案する。基盤オプティマイザとして Adam や Muon を想定し、Hyperball は重み行列とそれに対応するオプティマイザ更新のフロベニウスノルムを固定定数に設定する。Qwen3 スタイルのモデル（最大約12億パラメータ）において、Muon Hyperball はウェイトデケイをベースラインとした場合、20〜30% のトークン換算の速度向上を達成する。Hyperball はまた、デカップリングウェイトデケイと比較して、幅と深さを超えた学習率の伝達を改善する。この手法は、ウェイトデケイを用いた訓練が訓練のハイパーパラメータのみに依存する平衡状態のウェイトノルムをもたらすという既存理論に動機づけられている。これを通じて、ウェイトデケイは角度学習率、すなわちウェイト行列の方向がどれだけ速く変化するかを決定する。
+# Summary (by gpt-4o-mini)
+- Hyperballは、行列ベースのオプティマイザMuonに対するシンプルなラッパーで、固定定数に重み行列のフロベニウスノルムを設定することで、言語モデルの事前学習を高速化する。Qwen3スタイルのモデルでは、Muon Hyperballが20〜30%の速度向上を実現し、デカップリングウェイトデケイと比べて学習率の伝達を改善する。これにより、訓練中のウェイトデケイがハイパーパラメータに依存する状態を促進する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2087221609312436717?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4261" target="_blank" rel="noopener noreferrer">Fantastic Pretraining Optimizers and Where to Find Them 2.1: Hyperball Optimization, Wen+, 2026.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] DAPD: Dual-Anchored Policy Distillation, Jianyu Wu+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.01735</original-paper-blog-link>
@@ -270,7 +557,7 @@
 <title>[Paper Note] Every Microsecond Matters: Achieving Near Speed-of-Light Latency in GPU Collectives, Siyuan Shen+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.16100v1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6160</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, LongSequence, LLMServing, SoftwareEngineering, read-later, Selected Papers/Blogs, GPUKernel, Latency, Initial Impression Notes</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, LongContext, LLMServing, SoftwareEngineering, read-later, Selected Papers/Blogs, GPUKernel, Latency, Initial Impression Notes</tags>
 <repo-issue-date>2026-08-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2607.16100v1
@@ -1478,7 +1765,7 @@ Long-Horizon-Terminal-Benchのタスクは通常、数百エピソード、数�
 <title>[Paper Note] RoboTTT: Context Scaling for Robot Policies, Yunfan Jiang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.15275</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6062</repo-issue-link>
-<tags>ComputerVision, NLP, LongSequence, read-later, Selected Papers/Blogs, Robotics, memory, EmbodiedAI, Test Time Training (TTT), Author Thread-Post</tags>
+<tags>ComputerVision, NLP, LongContext, read-later, Selected Papers/Blogs, Robotics, memory, EmbodiedAI, Test Time Training (TTT), Author Thread-Post</tags>
 <repo-issue-date>2026-07-17</repo-issue-date>
 <issue-body># URL
 - preprint: https://arxiv.org/abs/2607.15275
@@ -3615,7 +3902,7 @@ Long-Horizon-Terminal-Benchのタスクは通常、数百エピソード、数�
 <title>[Paper Note] LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation, Yukang Chen+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.18739</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5577</repo-issue-link>
-<tags>ComputerVision, LongSequence, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, LowPrecision</tags>
+<tags>ComputerVision, LongContext, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, LowPrecision</tags>
 <repo-issue-date>2026-05-27</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2605.18739
@@ -4359,7 +4646,7 @@ Negation Neglect は、Kimi K2.5、GPT-4.1、Qwen3.5-35B-A3B を含む、試験�
 <title>[Paper Note] RoPE Distinguishes Neither Positions Nor Tokens in Long Contexts, Provably, Yufeng Du+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.15514</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5505</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Transformer, LongSequence, PositionalEncoding, read-later, Selected Papers/Blogs, Initial Impression Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Transformer, LongContext, PositionalEncoding, read-later, Selected Papers/Blogs, Initial Impression Notes</tags>
 <repo-issue-date>2026-05-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2605.15514
@@ -5981,7 +6268,7 @@ SigLIP-VQ によって連続的な視覚入力を離散化することにより�
 <title>[Paper Note] DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence, DeepSeek-AI+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2606.19348</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5316</repo-issue-link>
-<tags>NLP, LanguageModel, Infrastructure, AIAgents, action_wanted, Attention, LongSequence, PositionalEncoding, Optimizer, OpenWeight, Architecture, MoE(Mixture-of-Experts), AttentionSinks, read-later, Selected Papers/Blogs, RewardModel, Reference Collection, KV Cache, Compression, GenerativeVerifier, SparseAttention, ResidualStream, SelfDistillation, Author Thread-Post</tags>
+<tags>NLP, LanguageModel, Infrastructure, AIAgents, action_wanted, Attention, LongContext, PositionalEncoding, Optimizer, OpenWeight, Architecture, MoE(Mixture-of-Experts), AttentionSinks, read-later, Selected Papers/Blogs, RewardModel, Reference Collection, KV Cache, Compression, GenerativeVerifier, SparseAttention, ResidualStream, SelfDistillation, Author Thread-Post</tags>
 <repo-issue-date>2026-04-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2606.19348
@@ -8221,7 +8508,7 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 <title>[Paper Note] A Simple Baseline for Streaming Video Understanding, Yujiao Shen+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.02317</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5134</repo-issue-link>
-<tags>ComputerVision, Analysis, LongSequence, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel</tags>
+<tags>ComputerVision, Analysis, LongContext, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel</tags>
 <repo-issue-date>2026-04-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2604.02317
@@ -8438,7 +8725,7 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 <title>[Paper Note] Meta-Harness: End-to-End Optimization of Model Harnesses, Yoonho Lee+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.28052</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5059</repo-issue-link>
-<tags>NLP, AIAgents, Coding, SoftwareEngineering, read-later, Selected Papers/Blogs, AgentHarness</tags>
+<tags>NLP, AIAgents, Coding, SelfImprovement, SoftwareEngineering, read-later, Selected Papers/Blogs, AgentHarness</tags>
 <repo-issue-date>2026-03-31</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2603.28052
@@ -9158,7 +9445,7 @@ K-アームド・バンディット問題では、DGは単一のコンテキス�
 <title>[Paper Note] M$^2$RNN: Non-Linear RNNs with Matrix-Valued States for Scalable Language Modeling, Mayank Mishra+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.14360</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4976</repo-issue-link>
-<tags>NLP, LanguageModel, LongSequence, read-later, Selected Papers/Blogs, One-Line Notes, RecurrentModels</tags>
+<tags>NLP, LanguageModel, LongContext, read-later, Selected Papers/Blogs, One-Line Notes, RecurrentModels</tags>
 <repo-issue-date>2026-03-22</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2603.14360
@@ -10925,7 +11212,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] The Molecular Structure of Thought: Mapping the Topology of Long Chain-of-Thought Reasoning, Qiguang Chen+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.06002</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4694</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2026-02-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.06002
@@ -11011,7 +11298,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] GLM-5: from Vibe Coding to Agentic Engineering, GLM-5 Team+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.15763</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4618</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, LongSequence, OpenWeight, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, SparseAttention</tags>
+<tags>NLP, LanguageModel, AIAgents, LongContext, OpenWeight, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs, SparseAttention</tags>
 <repo-issue-date>2026-02-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.15763
@@ -11787,7 +12074,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] Hybrid Linear Attention Done Right: Efficient Distillation and Effective Architectures for Extremely Long Contexts, Yingfa Chen+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.22156</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4529</repo-issue-link>
-<tags>NLP, LanguageModel, Transformer, Distillation, LongSequence, PositionalEncoding, Architecture, read-later, Selected Papers/Blogs, reading, RecurrentModels</tags>
+<tags>NLP, LanguageModel, Transformer, Distillation, LongContext, PositionalEncoding, Architecture, read-later, Selected Papers/Blogs, reading, RecurrentModels</tags>
 <repo-issue-date>2026-02-12</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.22156
@@ -11814,7 +12101,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] MiniCPM-SALA: Hybridizing Sparse and Linear Attention for Efficient Long-Context Modeling, MiniCPM Team+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.11761</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4528</repo-issue-link>
-<tags>NLP, LanguageModel, action_wanted, LongSequence, SmallModel, Selected Papers/Blogs, One-Line Notes, Hybrid, SparseAttention, LinearAttention</tags>
+<tags>NLP, LanguageModel, action_wanted, LongContext, SmallModel, Selected Papers/Blogs, One-Line Notes, Hybrid, SparseAttention, LinearAttention</tags>
 <repo-issue-date>2026-02-12</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.11761
@@ -14312,7 +14599,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Scaling Embeddings Outperforms Scaling Experts in Language Models, Hong Liu+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.21204</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4334</repo-issue-link>
-<tags>Embeddings, NLP, LanguageModel, Transformer, AIAgents, action_wanted, LongSequence, Architecture, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs</tags>
+<tags>Embeddings, NLP, LanguageModel, Transformer, AIAgents, action_wanted, LongContext, Architecture, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs</tags>
 <repo-issue-date>2026-01-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.21204
@@ -15282,7 +15569,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] CorpusQA: A 10 Million Token Benchmark for Corpus-Level Analysis and Reasoning, Zhiyuan Lu+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.14952</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4262</repo-issue-link>
-<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, RAG(RetrievalAugmentedGeneration), LongSequence, Selected Papers/Blogs, memory, Initial Impression Notes</tags>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, RAG(RetrievalAugmentedGeneration), LongContext, Selected Papers/Blogs, memory, Initial Impression Notes</tags>
 <repo-issue-date>2026-01-22</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.14952
@@ -15627,7 +15914,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] STEM: Scaling Transformers with Embedding Modules, Ranajoy Sadhukhan+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.10639</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4228</repo-issue-link>
-<tags>Embeddings, EfficiencyImprovement, Pretraining, NLP, Transformer, LongSequence, Architecture, read-later, Selected Papers/Blogs, Inference, Stability, Latency, Interpretability, Author Thread-Post</tags>
+<tags>Embeddings, EfficiencyImprovement, Pretraining, NLP, Transformer, LongContext, Architecture, read-later, Selected Papers/Blogs, Inference, Stability, Latency, Interpretability, Author Thread-Post</tags>
 <repo-issue-date>2026-01-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.10639
@@ -18160,7 +18447,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Gated Delta Networks: Improving Mamba2 with Delta Rule, Songlin Yang+, ICLR'25, 2024.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2412.06464</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4396</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, Attention, LongSequence, Architecture, ICLR, Selected Papers/Blogs, LinearAttention</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, Attention, LongContext, Architecture, ICLR, Selected Papers/Blogs, LinearAttention</tags>
 <repo-issue-date>2026-02-04</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2412.06464
@@ -18246,7 +18533,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Cartridges: Lightweight and general-purpose long context representations via self-study, Sabri Eyuboglu+, arXiv'25, 2025.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.06266</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4368</repo-issue-link>
-<tags>Document, NLP, LanguageModel, SyntheticData, LongSequence, read-later, Selected Papers/Blogs, KV Cache, Compression</tags>
+<tags>Document, NLP, LanguageModel, SyntheticData, LongContext, read-later, Selected Papers/Blogs, KV Cache, Compression</tags>
 <repo-issue-date>2026-02-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.06266
@@ -18291,7 +18578,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] The Sparse Frontier: Sparse Attention Trade-offs in Transformer LLMs, Piotr Nawrot+, arXiv'25, 2025.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2504.17768</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4353</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Evaluation, LongSequence, read-later, Selected Papers/Blogs, SparseAttention, Initial Impression Notes, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Evaluation, LongContext, read-later, Selected Papers/Blogs, SparseAttention, Initial Impression Notes, Author Thread-Post</tags>
 <repo-issue-date>2026-01-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2504.17768
@@ -18698,7 +18985,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] Extending the Context of Pretrained LLMs by Dropping Their Positional Embeddings, Yoav Gelberg+, arXiv'25, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.12167</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4169</repo-issue-link>
-<tags>NLP, LanguageModel, Transformer, LongSequence, PositionalEncoding, read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<tags>NLP, LanguageModel, Transformer, LongContext, PositionalEncoding, read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
 <repo-issue-date>2026-01-12</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.12167
@@ -18960,7 +19247,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] End-to-End Test-Time Training for Long Context, Arnuv Tandon+, arXiv'25, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.23675</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4099</repo-issue-link>
-<tags>NLP, LanguageModel, action_wanted, LongSequence, read-later, Selected Papers/Blogs, memory, ContinualLearning, Test Time Training (TTT), Author Thread-Post</tags>
+<tags>NLP, LanguageModel, action_wanted, LongContext, read-later, Selected Papers/Blogs, memory, ContinualLearning, Test Time Training (TTT), Author Thread-Post</tags>
 <repo-issue-date>2025-12-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.23675
@@ -19040,7 +19327,7 @@ demo: https://openscilm.allen.ai/</issue-body>
 <title>[Paper Note] QwenLong-L1.5: Post-Training Recipe for Long-Context Reasoning and Memory Management, Weizhou Shen+, arXiv'25, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.12967</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4060</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, LongSequence, PostTraining, Selected Papers/Blogs, memory, Entropy</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, LongContext, PostTraining, Selected Papers/Blogs, memory, Entropy</tags>
 <repo-issue-date>2025-12-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.12967
@@ -21924,7 +22211,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] Titans: Learning to Memorize at Test Time, Ali Behrouz+, NeurIPS'25, 2024.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.00663</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3587</repo-issue-link>
-<tags>NeuralNetwork, NLP, LongSequence, Architecture, NeurIPS, read-later, Selected Papers/Blogs, memory, Test-time Learning</tags>
+<tags>NeuralNetwork, NLP, LongContext, Architecture, NeurIPS, read-later, Selected Papers/Blogs, memory, Test-time Learning</tags>
 <repo-issue-date>2025-11-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2501.00663
@@ -22296,7 +22583,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] Kimi Linear: An Expressive, Efficient Attention Architecture, Kimi Team+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.26692</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3526</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, action_wanted, Attention, LongSequence, OpenWeight, Architecture, read-later, Selected Papers/Blogs, Reference Collection, Hybrid, LinearAttention</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, action_wanted, Attention, LongContext, OpenWeight, Architecture, read-later, Selected Papers/Blogs, Reference Collection, Hybrid, LinearAttention</tags>
 <repo-issue-date>2025-10-31</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.26692
@@ -23176,7 +23463,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] Glyph: Scaling Context Windows via Visual-Text Compression, Jiale Cheng+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.17800</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3357</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, NLP, ContextWindow, LongSequence, Selected Papers/Blogs, VisionLanguageModel, One-Line Notes</tags>
+<tags>ComputerVision, EfficiencyImprovement, NLP, ContextWindow, LongContext, Selected Papers/Blogs, VisionLanguageModel, One-Line Notes</tags>
 <repo-issue-date>2025-10-21</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.17800
@@ -23590,7 +23877,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] To Infinity and Beyond: Tool-Use Unlocks Length Generalization in State  Space Models, Eran Malach+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.14826</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3303</repo-issue-link>
-<tags>NLP, LongSequence, SSM (StateSpaceModel), Selected Papers/Blogs, Generalization, memory, Author Thread-Post</tags>
+<tags>NLP, LongContext, SSM (StateSpaceModel), Selected Papers/Blogs, Generalization, memory, Author Thread-Post</tags>
 <repo-issue-date>2025-10-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.14826
@@ -23656,7 +23943,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] LongLive: Real-time Interactive Long Video Generation, Shuai Yang+, arXiv'25, 2025.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.22622</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3291</repo-issue-link>
-<tags>ComputerVision, LongSequence, AttentionSinks, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, interactive</tags>
+<tags>ComputerVision, LongContext, AttentionSinks, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, interactive</tags>
 <repo-issue-date>2025-10-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.22622
@@ -23762,7 +24049,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] StreamingVLM: Real-Time Understanding for Infinite Video Streams, Ruyi Xu+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.09608</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3270</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, Dataset, Evaluation, Attention, LongSequence, AttentionSinks, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel, KeyPoint Notes</tags>
+<tags>ComputerVision, EfficiencyImprovement, Dataset, Evaluation, Attention, LongContext, AttentionSinks, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel, KeyPoint Notes</tags>
 <repo-issue-date>2025-10-15</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.09608
@@ -25527,7 +25814,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] The Illusion of Diminishing Returns: Measuring Long Horizon Execution in  LLMs, Akshit Sinha+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.09677</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2806</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, AIAgents, Reasoning, LongSequence, Scaling Laws, read-later, Selected Papers/Blogs, ContextEngineering, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, AIAgents, Reasoning, LongContext, Scaling Laws, read-later, Selected Papers/Blogs, ContextEngineering, Author Thread-Post</tags>
 <repo-issue-date>2025-09-14</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.09677
@@ -25821,7 +26108,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] SpikingBrain Technical Report: Spiking Brain-inspired Large Models, Yuqi Pan+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2509.05276</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2726</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, LongSequence, Architecture, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, LongContext, Architecture, MoE(Mixture-of-Experts), read-later, Selected Papers/Blogs</tags>
 <repo-issue-date>2025-09-08</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2509.05276
@@ -25875,7 +26162,7 @@ https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186
 <title>[Paper Note] REFRAG: Rethinking RAG based Decoding, Xiaoqiang Lin+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.01092</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2716</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, RAG(RetrievalAugmentedGeneration), LongSequence, Decoding, read-later, Selected Papers/Blogs, SpeculativeDecoding</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, RAG(RetrievalAugmentedGeneration), LongContext, Decoding, read-later, Selected Papers/Blogs, SpeculativeDecoding</tags>
 <repo-issue-date>2025-09-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.01092
@@ -26221,7 +26508,7 @@ Shampooの計算効率を改善するための最も簡単なアプローチは�
 <title>[Paper Note] TurnaboutLLM: A Deductive Reasoning Benchmark from Detective Games, Yuan Yuan+, EMNLP'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.15712</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2609</repo-issue-link>
-<tags>NLP, LanguageModel, In-ContextLearning, Reasoning, LongSequence, EMNLP, read-later, Contamination-free, Selected Papers/Blogs, Game</tags>
+<tags>NLP, LanguageModel, In-ContextLearning, Reasoning, LongContext, EMNLP, read-later, Contamination-free, Selected Papers/Blogs, Game</tags>
 <repo-issue-date>2025-08-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.15712
@@ -28366,7 +28653,7 @@ Shampooの計算効率を改善するための最も簡単なアプローチは�
 <title>[Paper Note] GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable  Reinforcement Learning, GLM-V Team+, arXiv'25, 2025.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.01006</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2128</repo-issue-link>
-<tags>ComputerVision, Pretraining, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, MultiModal, RLHF, Reasoning, LongSequence, mid-training, RewardHacking, PostTraining, CurriculumLearning, RLVR, Selected Papers/Blogs, VisionLanguageModel</tags>
+<tags>ComputerVision, Pretraining, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, MultiModal, RLHF, Reasoning, LongContext, mid-training, RewardHacking, PostTraining, CurriculumLearning, RLVR, Selected Papers/Blogs, VisionLanguageModel</tags>
 <repo-issue-date>2025-07-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2507.01006
@@ -29863,7 +30150,7 @@ https://huggingface.co/nvidia/Nemotron-Research-Reasoning-Qwen-1.5B
 <title>[Paper Note] DAPO: An Open-Source LLM Reinforcement Learning System at Scale, Qiying Yu+, NeurIPS'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2503.14476</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1815</repo-issue-link>
-<tags>MachineLearning, LanguageModel, ReinforcementLearning, translation_required, Reasoning, LongSequence, NeurIPS, GRPO, read-later, Selected Papers/Blogs, One-Line Notes, Reference Collection, Author Thread-Post</tags>
+<tags>MachineLearning, LanguageModel, ReinforcementLearning, translation_required, Reasoning, LongContext, NeurIPS, GRPO, read-later, Selected Papers/Blogs, One-Line Notes, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2025-03-20</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2503.14476
@@ -30101,7 +30388,7 @@ https://huggingface.co/nvidia/Nemotron-Research-Reasoning-Qwen-1.5B
 <title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2502.03373
@@ -32345,7 +32632,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] YaRN: Efficient Context Window Extension of Large Language Models, Bowen Peng+, ICLR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.00071</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2338</repo-issue-link>
-<tags>NLP, LanguageModel, ContextWindow, LongSequence, PositionalEncoding, ICLR, PostTraining, Selected Papers/Blogs</tags>
+<tags>NLP, LanguageModel, ContextWindow, LongContext, PositionalEncoding, ICLR, PostTraining, Selected Papers/Blogs</tags>
 <repo-issue-date>2025-08-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.00071
@@ -32711,7 +32998,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] Efficient Streaming Language Models with Attention Sinks, Guangxuan Xiao+, ICLR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.17453</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1861</repo-issue-link>
-<tags>Attention, LongSequence, ICLR, AttentionSinks, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, Author Thread-Post</tags>
+<tags>Attention, LongContext, ICLR, AttentionSinks, Selected Papers/Blogs, KeyPoint Notes, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2025-04-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.17453
@@ -34611,7 +34898,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] Sequence Parallelism: Long Sequence Training from System Perspective, Shenggui Li+, ACL'23, 2021.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2105.13120</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1970</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, action_wanted, LongSequence, ACL, Selected Papers/Blogs, Parallelism, One-Line Notes</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, action_wanted, LongContext, ACL, Selected Papers/Blogs, Parallelism, One-Line Notes</tags>
 <repo-issue-date>2025-05-16</repo-issue-date>
 <issue-body># URL
 - preprint: https://arxiv.org/abs/2105.13120
@@ -34704,7 +34991,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] The Impact of Positional Encoding on Length Generalization in   Transformers, Amirhossein Kazemnejad+, NeurIPS'23</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2305.19466</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1865</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, LongSequence, PositionalEncoding, NeurIPS, Selected Papers/Blogs, KeyPoint Notes, Surface-level Notes</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, LongContext, PositionalEncoding, NeurIPS, Selected Papers/Blogs, KeyPoint Notes, Surface-level Notes</tags>
 <repo-issue-date>2025-04-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2305.19466
@@ -35016,7 +35303,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] Effective Long-Context Scaling of Foundation Models, Wenhan Xiong+, arXiv'23, 2023.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.16039</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1060</repo-issue-link>
-<tags>NLP, LanguageModel, action_wanted, LongSequence, PositionalEncoding, NAACL, mid-training, Selected Papers/Blogs, DataMixture, KeyPoint Notes, needs-revision</tags>
+<tags>NLP, LanguageModel, action_wanted, LongContext, PositionalEncoding, NAACL, mid-training, Selected Papers/Blogs, DataMixture, KeyPoint Notes, needs-revision</tags>
 <repo-issue-date>2023-10-09</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.16039
@@ -38822,7 +39109,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] Generating Long Sequences with Sparse Transformers, Rewon Child+, arXiv'19, 2019.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/1904.10509</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3853</repo-issue-link>
-<tags>ComputerVision, Transformer, LongSequence, Selected Papers/Blogs, One-Line Notes, SparseAttention</tags>
+<tags>ComputerVision, Transformer, LongContext, Selected Papers/Blogs, One-Line Notes, SparseAttention</tags>
 <repo-issue-date>2025-11-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/1904.10509
@@ -40605,6 +40892,92 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 </paper-entry>
 
 <paper-entry>
+<title>GLM-5.3: Frontier Coding with Emergent Cyber Capabilities, Z.ai, 2026.08</title>
+<original-paper-blog-link>https://z.ai/blog/glm-5.3</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6338</repo-issue-link>
+<tags>NLP, LanguageModel, OpenWeight, Selected Papers/Blogs, One-Line Notes</tags>
+<repo-issue-date>2026-08-15</repo-issue-date>
+<issue-body>https://z.ai/blog/glm-5.3</issue-body>
+<maintainer-comment-text><p>GDPValでGPT-5.6-Sol, Fable5超え。ベンチマークスコアだけ見ると、フロンティアモデルにほぼ追いついたと言って良さそうに見える。残る砦はOpus 5</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepSeek Harness, Deepseek AI, 2026.08</title>
+<original-paper-blog-link>https://github.com/deepseek-ai/deepseek-harness</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6337</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Coding, SelfImprovement, SoftwareEngineering, Selected Papers/Blogs, One-Line Notes, Reading Reflections, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body>https://github.com/deepseek-ai/deepseek-harness</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2087885697176776757?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>モデル、ツール、スキル、セッション、sandbox、ファイルシステム、ループ、オーケストレーション、UI、全てがPluginとして実装されたpluggableなハーネスとのこと。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/deepseek_ai/status/2087887408440164663?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>高い拡張性を持つため、self-improveするハーネスと相性が良さそう。</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2087904176357437820?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Grok 4.6, SpaceXAI, 2026.08</title>
+<original-paper-blog-link>https://x.ai/news/grok-4-6</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6324</repo-issue-link>
+<tags>NLP, LanguageModel, Proprietary, Selected Papers/Blogs, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body>https://x.ai/news/grok-4-6</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/spacexai/status/2087562800982077492?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>GPT-5.6-Sol, Fable5等のフロンティアモデルと同等のベンチマークスコア</p><p>CursorBench 3.2において、パレート最適:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2087567163783614976?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Model Card:
+
+{% raw %}
+<a href="https://media.x.ai/v1/website/card-4p6-4cd2dc57.pdf" target="_blank" rel="noopener noreferrer">https://media.x.ai/v1/website/card-4p6-4cd2dc57.pdf</a>
+{% endraw %}
+
+<br><br>1.5T級のモデルで、1.2節にモデル学習の概要が記述されているが、極めてgenericな内容である。他はベンチマークの評価結果やjailbreakに対する堅牢性などの話がメイン。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Introducing Muse Glimmer: An Open Agentic Model That Runs on Your Device, Meta, 2026.08</title>
 <original-paper-blog-link>https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6308</repo-issue-link>
@@ -40653,6 +41026,16 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yifanzhang_/status/2086839768323920333?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>アーキテクチャ解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rasbt/status/2087180773497421926?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -43108,7 +43491,7 @@ https://www.lesswrong.com/posts/3xQQK9i8mhJDE2uMg/synthetic-persona-pretraining-
 <title>OlmPool: How small architectural choices compound to undermine long context extension, Ai2, 2026.04</title>
 <original-paper-blog-link>https://allenai.org/blog/olmpool</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5409</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Transformer, Attention, LongSequence, Architecture, read-later, Selected Papers/Blogs, One-Line Notes, ContextRot, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Transformer, Attention, LongContext, Architecture, read-later, Selected Papers/Blogs, One-Line Notes, ContextRot, Author Thread-Post</tags>
 <repo-issue-date>2026-05-01</repo-issue-date>
 <issue-body>https://allenai.org/blog/olmpool</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -46304,7 +46687,7 @@ HF: https://huggingface.co/zai-org/GLM-5</issue-body>
 <title>Qwen3-Coder-Next: Pushing Small Hybrid Models on Agentic Coding, QwenTeam, 2026.02</title>
 <original-paper-blog-link>https://qwen.ai/blog?id=qwen3-coder-next</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4395</repo-issue-link>
-<tags>NLP, LanguageModel, Attention, Blog, Coding, LongSequence, SmallModel, MoE(Mixture-of-Experts), Selected Papers/Blogs, Initial Impression Notes</tags>
+<tags>NLP, LanguageModel, Attention, Blog, Coding, LongContext, SmallModel, MoE(Mixture-of-Experts), Selected Papers/Blogs, Initial Impression Notes</tags>
 <repo-issue-date>2026-02-04</repo-issue-date>
 <issue-body>blog:https://qwen.ai/blog?id=qwen3-coder-next
 technical report:https://github.com/QwenLM/Qwen3-Coder/blob/main/qwen3_coder_next_tech_report.pdf</issue-body>
@@ -46862,7 +47245,7 @@ technical report:https://github.com/QwenLM/Qwen3-Coder/blob/main/qwen3_coder_nex
 <title>Recursive Language Models: the paradigm of 2026, PRIME Intellect, 2026.01</title>
 <original-paper-blog-link>https://www.primeintellect.ai/blog/rlm</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4114</repo-issue-link>
-<tags>NLP, LanguageModel, Blog, LongSequence, read-later, Selected Papers/Blogs, LatentReasoning, reading, RecursiveModels, ContextRot</tags>
+<tags>NLP, LanguageModel, Blog, LongContext, read-later, Selected Papers/Blogs, LatentReasoning, reading, RecursiveModels, ContextRot</tags>
 <repo-issue-date>2026-01-02</repo-issue-date>
 <issue-body>https://www.primeintellect.ai/blog/rlm</issue-body>
 <maintainer-comment-text><p>関連研究:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4116" target="_blank" rel="noopener noreferrer">[Paper Note] Recursive Language Models, Alex L. Zhang+, arXiv'25, 2025.12</a>
@@ -50306,7 +50689,7 @@ fd064b2-338a-4f8d-953c-67e458658e39</p><p>Qwen3との深さと広さの比較:<b
 <title>SmolLM3: smol, multilingual, long-context reasoner, HuggingFace, 2025.07</title>
 <original-paper-blog-link>http://huggingface.co/blog/smollm3</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2164</repo-issue-link>
-<tags>Tutorial, NLP, LanguageModel, Reasoning, LongSequence, SmallModel, MultiLingual, OpenWeight, OpenSource, Selected Papers/Blogs</tags>
+<tags>Tutorial, NLP, LanguageModel, Reasoning, LongContext, SmallModel, MultiLingual, OpenWeight, OpenSource, Selected Papers/Blogs</tags>
 <repo-issue-date>2025-07-09</repo-issue-date>
 <issue-body>http://huggingface.co/blog/smollm3</issue-body>
 <maintainer-comment-text><p>元ポスト:

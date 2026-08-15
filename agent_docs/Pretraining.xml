@@ -1,5 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-11">
+<paper-list last-updated="2026-08-14">
+<paper-entry>
+<title>[Paper Note] Information Abundance Paradox: Long-Context Training Undermines Parametric Knowledge, Arda Uzunoglu+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.12218</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6334</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), LongContext, Selected Papers/Blogs, reading, KeyPoint Notes, needs-revision</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.12218
+# Authors
+  - Arda Uzunoglu
+  - Benjamin Van Durme
+  - Daniel Khashabi
+# Abstract
+  - Large language models are increasingly trained and deployed with long contexts that span documents, code repositories, and interaction histories. This scaling reflects the implicit assumption that training on longer contexts will only help the model by exposing it to richer evidence. We challenge this view by studying how the context window shapes a model's mode of learning, shifting it between parametric internalization and contextualization. We propose the Information Abundance Paradox, which hypothesizes that abundant relevant information in the training context can reduce the incentive to encode that information parametrically, thereby increasing reliance on context. In pretraining with long documents, increasing the context window improves language modeling, natural language understanding, and closed-book MCQA only up to an intermediate optimum, after which performance consistently declines. In supervised fine-tuning, more task-relevant train-time context improves performance with supporting context, but reduces robustness when context is absent or misleading at test time. Our analysis suggests that this behavior arises when longer context provides a lower complexity solution. Mechanistically, training with informative context shifts gradient pressure from feed-forward networks, often linked to parametric knowledge, toward attention modules, and causal interventions show that this shift increases reliance on context during inference. Overall, these findings support the Information Abundance Paradox and suggest that scaling toward near-infinite context is not simply a matter of supplying more data, even when high-quality long-context data is abundant.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルは、文書・コードリポジトリ・対話履歴にまたがる長い文脈を用いて、ますます訓練・展開されている。このスケーリングは、長い文脈での訓練が、より豊かな証拠に触れることによってのみモデルに有益になるという暗黙の前提を反映している。本研究では、文脈ウィンドウがモデルの学習モードをどのように形づくるかを調べ、パラメトリックな内部化と文脈化の間を移動させる。情報豊富性パラドックスを提案する。訓練文脈に含まれる豊富で関連性の高い情報は、その情報をパラメトリックに符号化するインセンティブを低下させ、結果として文脈への依存を高める、という仮説である。長い文書を用いた事前学習では、文脈窓を拡張すると、言語モデリング、自然言語理解、そしてクローズドブックMCQAは中間的な最適点まで改善されるが、それを超えると性能は一貫して低下する。監督付きファインチューニングにおいては、タスクに関連する訓練時の文脈を増やすと、補助的な文脈を伴う場合には性能が向上する一方、テスト時に文脈が欠如しているか、誤解を招く場合には頑健性が低下する。われわれの分析は、この挙動が、長い文脈がより低い複雑性の解を提供する場合に生じることを示唆している。機構的には、情報量の多い文脈を用いた訓練は、パラメトリック知識としばしば関連づけられるフィードフォワードネットワークから、アテンション・モジュールへと勾配圧を移動させる。そして因果的介入の結果、このシフトは推論時の文脈依存を高めることが示される。全体として、これらの知見は情報豊富性パラドックスを支持し、ほぼ無限に近い文脈へとスケールすることは、単にデータを増やすだけの問題ではなく、高品質な長文脈データが豊富である場合でも必ずしもそうではないことを示唆している。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルは長い文脈を用いて訓練されるが、文脈が学習モードをどのように形づくるかを分析。情報豊富性パラドックスを提案し、豊富な情報がパラメトリック符号化のインセンティブを低下させ、文脈依存を高めると仮説。長い文書の訓練では、文脈窓を広げると一時的に性能が向上するが、限界を超えると逆に低下。補助的な文脈が役立つ一方で、テスト時に文脈が不足すると頑健性が損なわれる。これらの知見は、高品質な文脈データの重要性を示唆する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087827752896319557?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習時にcontext windowサイズを変化させると、クロスエントロピーのLoss（次トークン予測のloss）は8192まで減少するが、ダウンストリームタスクの性能は2048で頭打ちとなり、以後は性能が劣化する。これはモデルのパラメータサイズを大きくしても改善されない。この現象は評価対象のインスタンスのpromptの長さによって説明できる可能性があり、付録Fに記載とのこと。付録FのFigure 10を見るとさまざまなデータセットにおいて同様の傾向が見られ、評価サンプルの長さが長ければ長いほど、最適な学習時のcontext長は長くなる傾向が観測されている（Table 4)。このことより、コンテキスト長は無条件にスケーリング可能な軸ではないことが示唆される。実際、Figure 1に示されている異なるコンテキスト長で学習されたPhi 3/Olmo 3の比較を見ても、コンテキスト長が長い方がdownstreamタスクの性能が劣化している。<br><img src="https://github.com/user-attachments/assets/44b64298-a6a9-4ac4-bb38-57a6063abde9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>SFTにおいて、target domainのドキュメントの数を変化させると、contextが与えれない場合の評価ではtarget domainデータが増えるほど性能が劣化（contextへの依存度が高まる）、一方適切なcontextが与えられた場合は性能が改善する。ただし、矛盾したcontextに対する堅牢性は低下する（こちらもcontextへの依存度が高まった結果と考えられる）。これにより、学習時のcontextが、中立的な背景情報ではなく、その関連性に応じてモデルがタスクを内部化するか、文脈依存にするのかを変化させることが示唆される。<br><img src="https://github.com/user-attachments/assets/14b9198c-82bc-48da-bf5d-1a7914282123" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>4節以後が理論的な証明だと思われるが、読めていない🫠</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Cracks in the Foundation: Seemingly Minor Architectural Choices Impact Long Context Extension, Amanda Bertsch+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.10296</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6323</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Transformer, LongContext, Architecture, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.10296
+# Authors
+  - Amanda Bertsch
+  - Luca Soldaini
+  - Matthew R. Gormley
+  - Graham Neubig
+  - Hannaneh Hajishirzi
+  - Kyle Lo
+  - Dirk Groeneveld
+# Abstract
+  - One might imagine that architectural variations within the dense transformer paradigm have a limited effect on accuracy. However, we demonstrate that this is not the case in the long context setting. Specifically, we show that a set of four minor architectural decisions --- all made by at least one of the Olmo, Llama, and Qwen dense model families --- have a compoundingly negative effect on long context extensibility. Any one of these choices alone has a minor impact on long context performance, but combining three or more can drop the performance downstream by up to 47%. Furthermore, these differences are not detectable from short-context loss or validation datasets. We show that much of the variation in long context ability across model families is driven by these architectural features and detectable from applying context extension early in pretraining. We demonstrate this with controlled ablations that hold data, tokenizer, and extension recipe fixed while varying normalization, GQA, pretraining context length, and sliding window attention. After over 170,000 GPU hours of training, we release the resulting set of models as OlmPool, a set of 26 comparable 7B models with checkpoints before and after long-context extension. This pool includes several architectures that outperform the Llama 3 architecture on long context extensibility. In an analysis of our ablation models, we identify patterns in attention sink behavior and attention distributions across context that are attributable to specific architectural differences.
+# Translation (by gpt-5-nano)
+- 密なトランスフォーマー系におけるアーキテクチャの変化が精度に与える影響は限られていると考えられる。しかし、長い文脈設定ではそうとは限らないことを示す。具体的には、Olmo、Llama、Qwen の密なモデルファミリーのいずれかによって少なくとも一つは選択された四つの小さなアーキテクチャ上の決定の集合が、長い文脈の拡張性に複合的に悪影響を及ぼす。これらの選択肢のいずれか一つだけでは長い文脈での性能にわずかな影響しかないが、3つ以上を組み合わせると下流の性能が最大で47％低下する。さらに、これらの差は短い文脈の損失や検証データセットからは検出できない。モデルファミリー間の長い文脈能力の変動の多くは、これらのアーキテクチャ的特徴によって生じており、事前学習の初期に文脈拡張を適用することで検出可能であることを示す。これを、データ、トークナイザー、拡張レシピを固定したまま、正規化、GQA、プリトレーニング時の文脈長、スライディングウィンドウアテンションを変化させる制御されたアブレーションを用いて実証する。17万GPU時間を超える学習の後、得られたモデル群を OlmPool として公開する。長い文脈拡張の前後のチェックポイントを備えた、7B パラメータの26モデルからなる比較可能なセットである。このプールには、長い文脈拡張性において Llama 3 アーキテクチャを上回るいくつかのアーキテクチャが含まれている。アブレーションモデルの分析では、特定のアーキテクチャの差異に起因する、文脈全体におけるアテンションの集中挙動とアテンション分布のパターンを同定する。
+# Summary (by gpt-4o-mini)
+- 密なトランスフォーマー系におけるアーキテクチャの変化は、長い文脈設定での性能に顕著な影響を及ぼすことを示す。特に、Olmo、Llama、Qwenのモデルファミリーにおいて、特定のアーキテクチャ決定が長い文脈での性能を最大47％低下させることが判明した。これらの差は短い文脈では検出できず、長い文脈能力はアーキテクチャ的特徴によって大きく変動する。17万GPU時間を超える学習の後、得られたモデル群をOlmPoolとして公開し、長い文脈拡張性に優れたアーキテクチャを分析した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087434913658142958?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Fantastic Pretraining Optimizers and Where to Find Them II: Hyperball Optimization, Kaiyue Wen+, arXiv'26, 2026.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2606.16899</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6318</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Optimizer, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2606.16899
+# Authors
+  - Kaiyue Wen
+  - Xingyu Dang
+  - Kaifeng Lyu
+  - Tengyu Ma
+  - Percy Liang
+# Abstract
+  - Matrix based optimizers such as Muon can substantially speed up language model pretraining, but their gains over AdamW are observed to shrink as model size and data scale grow when using standard constant decoupled weight decay. We propose Hyperball, a simple optimizer wrapper that addresses this issue. Given a base optimizer such as Adam or Muon, Hyperball sets the Frobenius norms of weight matrices and their corresponding optimizer updates to fixed constants. On Qwen3 style models up to 1.2B parameters, Muon Hyperball achieves 20--30% token equivalent speedup over weight decay baselines. Hyperball also improves learning rate transfer across widths and depths compared to decoupled weight decay. This method is motivated by prior theory showing that training with weight decay leads to an equilibrium weight norm that only depends on the training hyperparameters. Through this mechanism, the weight decay then decides the angular learning rate, i.e. how fast the direction of the weight matrix changes.
+# Translation (by gpt-5-nano)
+- Muon のような行列ベースのオプティマイザは言語モデルの事前学習を大幅に高速化することができるが、標準的な一定のデカップリングウェイトデケイを用いると、モデルサイズとデータ規模の拡大に伴い AdamW との差分の利得が縮小することが観察されている。私たちはこの問題に対処する単純なオプティマイザラッパーである Hyperball を提案する。基盤オプティマイザとして Adam や Muon を想定し、Hyperball は重み行列とそれに対応するオプティマイザ更新のフロベニウスノルムを固定定数に設定する。Qwen3 スタイルのモデル（最大約12億パラメータ）において、Muon Hyperball はウェイトデケイをベースラインとした場合、20〜30% のトークン換算の速度向上を達成する。Hyperball はまた、デカップリングウェイトデケイと比較して、幅と深さを超えた学習率の伝達を改善する。この手法は、ウェイトデケイを用いた訓練が訓練のハイパーパラメータのみに依存する平衡状態のウェイトノルムをもたらすという既存理論に動機づけられている。これを通じて、ウェイトデケイは角度学習率、すなわちウェイト行列の方向がどれだけ速く変化するかを決定する。
+# Summary (by gpt-4o-mini)
+- Hyperballは、行列ベースのオプティマイザMuonに対するシンプルなラッパーで、固定定数に重み行列のフロベニウスノルムを設定することで、言語モデルの事前学習を高速化する。Qwen3スタイルのモデルでは、Muon Hyperballが20〜30%の速度向上を実現し、デカップリングウェイトデケイと比べて学習率の伝達を改善する。これにより、訓練中のウェイトデケイがハイパーパラメータに依存する状態を促進する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2087221609312436717?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4261" target="_blank" rel="noopener noreferrer">Fantastic Pretraining Optimizers and Where to Find Them 2.1: Hyperball Optimization, Wen+, 2026.01</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Full-bandwidth transformer, Xi Wang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.08888</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6317</repo-issue-link>
+<tags>Pretraining, NLP, Transformer, Architecture, LatentReasoning, RecurrentModels, RecursiveModels, Author Thread-Post</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.08888
+# Authors
+  - Xi Wang
+  - Ziyang Cai
+  - Zheng Zhan
+  - Harry Dong
+  - Ying Fan
+  - Gustavo de Rosa
+  - Tim Pearce
+  - John Langford
+# Abstract
+  - Autoregressive transformers compute along two axes: horizontally across generated tokens, and vertically through model depth. Dense attention gives each token broad horizontal access to the past, but the vertical feedback channel between decoding steps remains narrow: only the sampled token returns to the bottom of the stack, while the top-layer hidden state is discarded. We introduce the \emph{full-bandwidth transformer}, which widens this channel with \emph{latent feedback}: at each decoding step, the previous top-layer hidden state is fused with the sampled token embedding through a gated linear unit and fed back as the next input. Latent feedback lets non-verbalized computation re-enter the stack with a renewed depth budget, while preserving the standard transformer architecture, KV cache, and language-modeling objective. To train full-bandwidth transformers without losing parallel teacher forcing, we use a scheduled multi-pass objective that introduces latent feedback late in pretraining and mixes a small fraction of deeper feedback passes for stability. We train 1B-parameter full-bandwidth transformers up to 400B tokens and find that latent feedback improves validation loss, 5-shot language-model evaluation, math and coding generation, and instruction-tuned performance. With negligible per-token decoding overhead, full-bandwidth transformers match or approach standard transformers trained with roughly $1.5\times$ more tokens, and manage to produce shorter reasoning traces at equal or better accuracy.
+# Translation (by gpt-5-nano)
+- 自回帰型トランスフォーマは、生成されたトークンを水平方向に、モデルの深さを垂直方向に沿って計算します。密なアテンションは各トークンに過去への広い水平アクセスを与えますが、デコードステップ間の垂直フィードバックチャネルは依然として狭く、サンプルされたトークンだけがスタックの底部へ戻り、最上位層の隠れ状態は破棄されます。私たちは「全帯域トランスフォーマ」を導入します。これは潜在フィードバックによってこのチャネルを広げます。各デコードステップで、前回の最上位層の隠れ状態をサンプルされたトークンの埋め込みとゲート付き線形ユニットを通して融合し、次の入力として再フィードバックします。潜在フィードバックは、非言語化された計算を再びスタックへ入れ直すことで深さの予算を新たにしつつ、標準のトランスフォーマーアーキテクチャ、KVキャッシュ、および言語モデリングの目的を維持します。全帯域トランスフォーマを並列的な教師強制を失うことなく訓練するために、事前学習の後半で潜在フィードバックを導入し、安定性のために深いフィードバックパスの小さな割合を混ぜる、スケジュールされたマルチパス目的を用います。我々は10億パラメータの全帯域トランスフォーマを最大4000億トークンまで訓練し、潜在フィードバックが検証損失、5ショットの言語モデル評価、数学およびコード生成、指示調整済みの性能を改善することを確認しました。デコードあたりのトークンオーバーヘッドがほとんどない状態で、全帯域トランスフォーマは約1.5倍多くのトークンで訓練された標準のトランスフォーマと同等か、それに近い性能を達成し、同等またはそれ以上の精度でより短い推論経路を生成することができます。
+# Summary (by gpt-4o-mini)
+- 全帯域トランスフォーマは、デコード時に過去の隠れ状態を再フィードバックし、深さの予算を新たにしつつ、標準のトランスフォーマと同じ目的を維持します。潜在フィードバックを導入することで、検証損失や性能評価を向上させ、約1.5倍多くのトークンで訓練された標準のトランスフォーマと同等またはそれ以上の精度を達成します。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xidulu/status/2087185532707111092?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2087307092885672372?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Skaling: Chinchilla's Exponents Meet Kaplan's Coupling, Mathurin Videau+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.07222</original-paper-blog-link>
@@ -5397,7 +5543,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] STEM: Scaling Transformers with Embedding Modules, Ranajoy Sadhukhan+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.10639</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4228</repo-issue-link>
-<tags>Embeddings, EfficiencyImprovement, Pretraining, NLP, Transformer, LongSequence, Architecture, read-later, Selected Papers/Blogs, Inference, Stability, Latency, Interpretability, Author Thread-Post</tags>
+<tags>Embeddings, EfficiencyImprovement, Pretraining, NLP, Transformer, LongContext, Architecture, read-later, Selected Papers/Blogs, Inference, Stability, Latency, Interpretability, Author Thread-Post</tags>
 <repo-issue-date>2026-01-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.10639
@@ -7506,7 +7652,7 @@ Uniform-state拡散と組み合わせた場合、我々のサンプラーは言�
 <title>[Paper Note] Beyond Multi-Token Prediction: Pretraining LLMs with Future Summaries, Divyat Mahajan+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.14751</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3299</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, LongSequence, Author Thread-Post</tags>
+<tags>Pretraining, NLP, LanguageModel, LongContext, Author Thread-Post</tags>
 <repo-issue-date>2025-10-18</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.14751
@@ -9929,7 +10075,7 @@ https://diffusion-scaling.github.io。
 <title>[Paper Note] GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable  Reinforcement Learning, GLM-V Team+, arXiv'25, 2025.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.01006</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2128</repo-issue-link>
-<tags>ComputerVision, Pretraining, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, MultiModal, RLHF, Reasoning, LongSequence, mid-training, RewardHacking, PostTraining, CurriculumLearning, RLVR, Selected Papers/Blogs, VisionLanguageModel</tags>
+<tags>ComputerVision, Pretraining, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, MultiModal, RLHF, Reasoning, LongContext, mid-training, RewardHacking, PostTraining, CurriculumLearning, RLVR, Selected Papers/Blogs, VisionLanguageModel</tags>
 <repo-issue-date>2025-07-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2507.01006
@@ -13847,7 +13993,7 @@ ViLTは、従来のVLPモデルよりも数十倍高速でありながら、競�
 <title>大規模言語モデルの次期バージョンPLaMo 3シリーズにおける120B事前学習モデル、31B蒸留モデルの評価, PFN, 2026.07</title>
 <original-paper-blog-link>https://tech.preferred.jp/ja/blog/plamo_3_120b_distillation_cpt/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6015</repo-issue-link>
-<tags>Pretraining, NLP, LanguageModel, LongSequence, OpenWeight, Reading Reflections, Author Thread-Post</tags>
+<tags>Pretraining, NLP, LanguageModel, LongContext, OpenWeight, Reading Reflections, Author Thread-Post</tags>
 <repo-issue-date>2026-07-09</repo-issue-date>
 <issue-body>https://tech.preferred.jp/ja/blog/plamo_3_120b_distillation_cpt/</issue-body>
 <maintainer-comment-text><p>元ポスト:
