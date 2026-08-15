@@ -1,5 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-09">
+<paper-list last-updated="2026-08-14">
+<paper-entry>
+<title>[Paper Note] Information Abundance Paradox: Long-Context Training Undermines Parametric Knowledge, Arda Uzunoglu+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.12218</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6334</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Supervised-FineTuning (SFT), LongContext, Selected Papers/Blogs, reading, KeyPoint Notes, needs-revision</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.12218
+# Authors
+  - Arda Uzunoglu
+  - Benjamin Van Durme
+  - Daniel Khashabi
+# Abstract
+  - Large language models are increasingly trained and deployed with long contexts that span documents, code repositories, and interaction histories. This scaling reflects the implicit assumption that training on longer contexts will only help the model by exposing it to richer evidence. We challenge this view by studying how the context window shapes a model's mode of learning, shifting it between parametric internalization and contextualization. We propose the Information Abundance Paradox, which hypothesizes that abundant relevant information in the training context can reduce the incentive to encode that information parametrically, thereby increasing reliance on context. In pretraining with long documents, increasing the context window improves language modeling, natural language understanding, and closed-book MCQA only up to an intermediate optimum, after which performance consistently declines. In supervised fine-tuning, more task-relevant train-time context improves performance with supporting context, but reduces robustness when context is absent or misleading at test time. Our analysis suggests that this behavior arises when longer context provides a lower complexity solution. Mechanistically, training with informative context shifts gradient pressure from feed-forward networks, often linked to parametric knowledge, toward attention modules, and causal interventions show that this shift increases reliance on context during inference. Overall, these findings support the Information Abundance Paradox and suggest that scaling toward near-infinite context is not simply a matter of supplying more data, even when high-quality long-context data is abundant.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルは、文書・コードリポジトリ・対話履歴にまたがる長い文脈を用いて、ますます訓練・展開されている。このスケーリングは、長い文脈での訓練が、より豊かな証拠に触れることによってのみモデルに有益になるという暗黙の前提を反映している。本研究では、文脈ウィンドウがモデルの学習モードをどのように形づくるかを調べ、パラメトリックな内部化と文脈化の間を移動させる。情報豊富性パラドックスを提案する。訓練文脈に含まれる豊富で関連性の高い情報は、その情報をパラメトリックに符号化するインセンティブを低下させ、結果として文脈への依存を高める、という仮説である。長い文書を用いた事前学習では、文脈窓を拡張すると、言語モデリング、自然言語理解、そしてクローズドブックMCQAは中間的な最適点まで改善されるが、それを超えると性能は一貫して低下する。監督付きファインチューニングにおいては、タスクに関連する訓練時の文脈を増やすと、補助的な文脈を伴う場合には性能が向上する一方、テスト時に文脈が欠如しているか、誤解を招く場合には頑健性が低下する。われわれの分析は、この挙動が、長い文脈がより低い複雑性の解を提供する場合に生じることを示唆している。機構的には、情報量の多い文脈を用いた訓練は、パラメトリック知識としばしば関連づけられるフィードフォワードネットワークから、アテンション・モジュールへと勾配圧を移動させる。そして因果的介入の結果、このシフトは推論時の文脈依存を高めることが示される。全体として、これらの知見は情報豊富性パラドックスを支持し、ほぼ無限に近い文脈へとスケールすることは、単にデータを増やすだけの問題ではなく、高品質な長文脈データが豊富である場合でも必ずしもそうではないことを示唆している。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルは長い文脈を用いて訓練されるが、文脈が学習モードをどのように形づくるかを分析。情報豊富性パラドックスを提案し、豊富な情報がパラメトリック符号化のインセンティブを低下させ、文脈依存を高めると仮説。長い文書の訓練では、文脈窓を広げると一時的に性能が向上するが、限界を超えると逆に低下。補助的な文脈が役立つ一方で、テスト時に文脈が不足すると頑健性が損なわれる。これらの知見は、高品質な文脈データの重要性を示唆する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087827752896319557?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事前学習時にcontext windowサイズを変化させると、クロスエントロピーのLoss（次トークン予測のloss）は8192まで減少するが、ダウンストリームタスクの性能は2048で頭打ちとなり、以後は性能が劣化する。これはモデルのパラメータサイズを大きくしても改善されない。この現象は評価対象のインスタンスのpromptの長さによって説明できる可能性があり、付録Fに記載とのこと。付録FのFigure 10を見るとさまざまなデータセットにおいて同様の傾向が見られ、評価サンプルの長さが長ければ長いほど、最適な学習時のcontext長は長くなる傾向が観測されている（Table 4)。このことより、コンテキスト長は無条件にスケーリング可能な軸ではないことが示唆される。実際、Figure 1に示されている異なるコンテキスト長で学習されたPhi 3/Olmo 3の比較を見ても、コンテキスト長が長い方がdownstreamタスクの性能が劣化している。<br><img src="https://github.com/user-attachments/assets/44b64298-a6a9-4ac4-bb38-57a6063abde9" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>SFTにおいて、target domainのドキュメントの数を変化させると、contextが与えれない場合の評価ではtarget domainデータが増えるほど性能が劣化（contextへの依存度が高まる）、一方適切なcontextが与えられた場合は性能が改善する。ただし、矛盾したcontextに対する堅牢性は低下する（こちらもcontextへの依存度が高まった結果と考えられる）。これにより、学習時のcontextが、中立的な背景情報ではなく、その関連性に応じてモデルがタスクを内部化するか、文脈依存にするのかを変化させることが示唆される。<br><img src="https://github.com/user-attachments/assets/14b9198c-82bc-48da-bf5d-1a7914282123" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>4節以後が理論的な証明だと思われるが、読めていない🫠</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Cracks in the Foundation: Seemingly Minor Architectural Choices Impact Long Context Extension, Amanda Bertsch+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.10296</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6323</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Transformer, LongContext, Architecture, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.10296
+# Authors
+  - Amanda Bertsch
+  - Luca Soldaini
+  - Matthew R. Gormley
+  - Graham Neubig
+  - Hannaneh Hajishirzi
+  - Kyle Lo
+  - Dirk Groeneveld
+# Abstract
+  - One might imagine that architectural variations within the dense transformer paradigm have a limited effect on accuracy. However, we demonstrate that this is not the case in the long context setting. Specifically, we show that a set of four minor architectural decisions --- all made by at least one of the Olmo, Llama, and Qwen dense model families --- have a compoundingly negative effect on long context extensibility. Any one of these choices alone has a minor impact on long context performance, but combining three or more can drop the performance downstream by up to 47%. Furthermore, these differences are not detectable from short-context loss or validation datasets. We show that much of the variation in long context ability across model families is driven by these architectural features and detectable from applying context extension early in pretraining. We demonstrate this with controlled ablations that hold data, tokenizer, and extension recipe fixed while varying normalization, GQA, pretraining context length, and sliding window attention. After over 170,000 GPU hours of training, we release the resulting set of models as OlmPool, a set of 26 comparable 7B models with checkpoints before and after long-context extension. This pool includes several architectures that outperform the Llama 3 architecture on long context extensibility. In an analysis of our ablation models, we identify patterns in attention sink behavior and attention distributions across context that are attributable to specific architectural differences.
+# Translation (by gpt-5-nano)
+- 密なトランスフォーマー系におけるアーキテクチャの変化が精度に与える影響は限られていると考えられる。しかし、長い文脈設定ではそうとは限らないことを示す。具体的には、Olmo、Llama、Qwen の密なモデルファミリーのいずれかによって少なくとも一つは選択された四つの小さなアーキテクチャ上の決定の集合が、長い文脈の拡張性に複合的に悪影響を及ぼす。これらの選択肢のいずれか一つだけでは長い文脈での性能にわずかな影響しかないが、3つ以上を組み合わせると下流の性能が最大で47％低下する。さらに、これらの差は短い文脈の損失や検証データセットからは検出できない。モデルファミリー間の長い文脈能力の変動の多くは、これらのアーキテクチャ的特徴によって生じており、事前学習の初期に文脈拡張を適用することで検出可能であることを示す。これを、データ、トークナイザー、拡張レシピを固定したまま、正規化、GQA、プリトレーニング時の文脈長、スライディングウィンドウアテンションを変化させる制御されたアブレーションを用いて実証する。17万GPU時間を超える学習の後、得られたモデル群を OlmPool として公開する。長い文脈拡張の前後のチェックポイントを備えた、7B パラメータの26モデルからなる比較可能なセットである。このプールには、長い文脈拡張性において Llama 3 アーキテクチャを上回るいくつかのアーキテクチャが含まれている。アブレーションモデルの分析では、特定のアーキテクチャの差異に起因する、文脈全体におけるアテンションの集中挙動とアテンション分布のパターンを同定する。
+# Summary (by gpt-4o-mini)
+- 密なトランスフォーマー系におけるアーキテクチャの変化は、長い文脈設定での性能に顕著な影響を及ぼすことを示す。特に、Olmo、Llama、Qwenのモデルファミリーにおいて、特定のアーキテクチャ決定が長い文脈での性能を最大47％低下させることが判明した。これらの差は短い文脈では検出できず、長い文脈能力はアーキテクチャ的特徴によって大きく変動する。17万GPU時間を超える学習の後、得られたモデル群をOlmPoolとして公開し、長い文脈拡張性に優れたアーキテクチャを分析した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087434913658142958?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] BM25 Wins at Scale: A Scaling Study of Retrieval-Augmented Generation Paradigms, Pengyu Wang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.26497</original-paper-blog-link>
@@ -1007,7 +1073,7 @@ HOPEはネットワーク圧縮を離散領域から連続関数のHilbert空間
 <title>[Paper Note] Rethinking the Role of Efficient Attention in Hybrid Architectures, Ziqing Qiao+, arXiv'26, 2026.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2606.15378</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5846</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Attention, LongSequence, PositionalEncoding, Initial Impression Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Attention, LongContext, PositionalEncoding, Initial Impression Notes</tags>
 <repo-issue-date>2026-06-22</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2606.15378
@@ -2052,7 +2118,7 @@ Ido Aizenbud, David Beniaguev, Noam Pnueli, Idan Segev, Michael London</issue-bo
 <title>[Paper Note] RoPE Distinguishes Neither Positions Nor Tokens in Long Contexts, Provably, Yufeng Du+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.15514</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5505</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Transformer, LongSequence, PositionalEncoding, read-later, Selected Papers/Blogs, Initial Impression Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Transformer, LongContext, PositionalEncoding, read-later, Selected Papers/Blogs, Initial Impression Notes</tags>
 <repo-issue-date>2026-05-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2605.15514
@@ -2810,7 +2876,7 @@ EMを減らすことが提案された一連の介入を調べる。我々は、
 <title>[Paper Note] A Simple Baseline for Streaming Video Understanding, Yujiao Shen+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.02317</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5134</repo-issue-link>
-<tags>ComputerVision, Analysis, LongSequence, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel</tags>
+<tags>ComputerVision, Analysis, LongContext, read-later, Selected Papers/Blogs, VideoGeneration/Understandings, VisionLanguageModel</tags>
 <repo-issue-date>2026-04-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2604.02317
@@ -3314,7 +3380,7 @@ EMを減らすことが提案された一連の介入を調べる。我々は、
 <title>[Paper Note] The Molecular Structure of Thought: Mapping the Topology of Long Chain-of-Thought Reasoning, Qiguang Chen+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.06002</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4694</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2026-02-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.06002
@@ -5489,7 +5555,7 @@ EMを減らすことが提案された一連の介入を調べる。我々は、
 <title>[Paper Note] The Sparse Frontier: Sparse Attention Trade-offs in Transformer LLMs, Piotr Nawrot+, arXiv'25, 2025.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2504.17768</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4353</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Evaluation, LongSequence, read-later, Selected Papers/Blogs, SparseAttention, Initial Impression Notes, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Evaluation, LongContext, read-later, Selected Papers/Blogs, SparseAttention, Initial Impression Notes, Author Thread-Post</tags>
 <repo-issue-date>2026-01-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2504.17768
@@ -8844,7 +8910,7 @@ Kazuma Kobayashi, Zhen Wan, Fei Cheng, Yuma Tsuta, Xin Zhao, Junfeng Jiang, Jiah
 <title>[Paper Note] The Illusion of Diminishing Returns: Measuring Long Horizon Execution in  LLMs, Akshit Sinha+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.09677</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2806</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, AIAgents, Reasoning, LongSequence, Scaling Laws, read-later, Selected Papers/Blogs, ContextEngineering, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, AIAgents, Reasoning, LongContext, Scaling Laws, read-later, Selected Papers/Blogs, ContextEngineering, Author Thread-Post</tags>
 <repo-issue-date>2025-09-14</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.09677
@@ -10916,7 +10982,7 @@ https://huggingface.co/nvidia/Nemotron-Research-Reasoning-Qwen-1.5B
 <title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2502.03373
@@ -12277,7 +12343,7 @@ TL;DR: We have identified a condition empirically where it is important to use s
 <title>Long-context LLMs Struggle with Long In-context Learning, Tianle Li+, N_A, arXiv'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2404.02060</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1274</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, ContextWindow, LongSequence, One-Line Notes</tags>
+<tags>Analysis, NLP, LanguageModel, ContextWindow, LongContext, One-Line Notes</tags>
 <repo-issue-date>2024-04-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2404.02060
@@ -13703,7 +13769,7 @@ Qiuyang Mang and Kaiyuan Liu and Bo Peng and Shreyas Pimpalgaonkar and Alex Dima
 <title>OlmPool: How small architectural choices compound to undermine long context extension, Ai2, 2026.04</title>
 <original-paper-blog-link>https://allenai.org/blog/olmpool</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5409</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Transformer, Attention, LongSequence, Architecture, read-later, Selected Papers/Blogs, One-Line Notes, ContextRot, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Transformer, Attention, LongContext, Architecture, read-later, Selected Papers/Blogs, One-Line Notes, ContextRot, Author Thread-Post</tags>
 <repo-issue-date>2026-05-01</repo-issue-date>
 <issue-body>https://allenai.org/blog/olmpool</issue-body>
 <maintainer-comment-text><p>元ポスト:

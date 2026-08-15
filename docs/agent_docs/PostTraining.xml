@@ -1,5 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-10">
+<paper-list last-updated="2026-08-14">
+<paper-entry>
+<title>[Paper Note] Rubric Dropout: A Simple Way to Mitigate Reward Hacking in Rubric-as-Reward RL, Minglai Yang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.11669</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6335</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Rubric-based, Reading Reflections</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.11669
+# Authors
+  - Minglai Yang
+  - Xinyu Guo
+  - Utkarsh Tyagi
+  - Mian Zhang
+  - Razvan Dumitru
+  - Sunjie Hou
+  - Yunzhong He
+  - Daniel Yue Zhang
+  - Ying Liu
+# Abstract
+  - Reinforcement learning against rubrics, lists of criteria graded by an LLM judge, has become a standard way to post-train language models on tasks with no deterministic answer. The rubric, however, is a fixed proxy for quality, never a complete description of it, and a policy trained against it long enough will learn to exploit the difference. We measure this directly. Training Qwen3-8B with Group Relative Policy Optimization (GRPO) on medical and science rubrics and grading out-of-distribution (OOD) benchmarks with both the training judge and a stronger gold judge, we find that the two scores diverge during training. The training judge's score keeps climbing while the gold judge's score peaks and then falls, by 3 points on HealthBench-Hard and by 22 points on ResearchQA. A judge with a fixed bias would shift the gold curve by a constant, not send it down while the training score rises, so the divergence is reward hacking, not judge noise. We propose Rubric Dropout, a one-line fix borrowed from neuron dropout. At every step, we randomly drop a subset of the rubric's criteria before computing the reward, so the policy never optimizes the same rubric twice. The dropped subset is shared across each rollout group, so GRPO's group-relative advantages stay comparable, and evaluation always uses the full rubric. Comparing no dropout against dropout at 30% and 50% on both benchmark pairs, dropout raises the OOD gold score at every matched checkpoint (+1 to +2 points on HealthBench-Hard, +6 to +7 points on ResearchQA), lowers the two hacking measures we track, and costs nothing in domain. Sweeping the dropout fraction shows a broad 30-50% sweet spot, while the natural alternative, reweighting criteria by how useful they are to training, performs worse than no intervention at all in our setting.
+# Translation (by gpt-5-nano)
+- ルーブリック（LLMジャッジによって評価される基準のリスト）に対する強化学習は、決定論的な答えを持たないタスクに対してポスト訓練された言語モデルを適用する標準的な方法となっている。しかし、ルーブリックは品質の固定的な代理指標であり、品質を完全に説明するものではない。そして、それに長く訓練されたポリシーは、その差を利用する方法を学ぶ。これを直接測定する。医療と科学のルーブリックでグループ相対ポリシー最適化（GRPO）を用いてQwen3-8Bを訓練し、訓練用ジャッジとより強力なゴールドジャッジの双方でOOD（out-of-distribution）ベンチマークを評価すると、訓練中に二つのスコアが乖離することが分かる。訓練ジャッジのスコアは上昇を続ける一方で、ゴールドジャッジのスコアはピークを付けてから低下し、HealthBench-Hardで3ポイント、ResearchQAで22ポイントの差になる。固定バイアスを持つジャッジであればゴールド曲線を一定だけ移動させるはずで、訓練スコアが上昇する間にそれを下げることはない。したがって乖離は報酬ハッキングでありジャッジノイズではない。Rubric Dropoutと呼ぶ一行の修正を提案する。ニューロン・ドロップアウトに由来するもので、各ステップで報酬を算出する前にルーブリックの基準の一部をランダムにドロップすることで、ポリシーは同じルーブリックを二度最適化しない。ドロップされた部分集合は各ロールアウトグループ全体で共有されるため、GRPOのグループ相対的優位性は比較可能であり、評価は常に全ルーブリックを使用する。両ベンチマークペアでドロップアウトなしと30%および50%のドロップアウトを比較すると、ドロップアウトは各対応するチェックポイントでOODゴールドスコアを向上させ、HealthBench-Hardで+1〜+2ポイント、ResearchQAで+6〜+7ポイントを付与し、私たちが追跡する二つのハッキング指標を低下させ、ドメインには何のコストもかからない。ドロップアウト割合を広く試すと、30–50%の幅広い最適点が見つかる。一方、訓練にとって有用性の高い基準の重み付けを再調整する自然な代替案は、私たちの設定では介入なしと比べて劣る。
+# Summary (by gpt-4o-mini)
+- ルーブリックに対する強化学習は、ポスト訓練された言語モデルに用いられ、品質の固定的代理指標として機能するが、実際の質を完全には反映しない。Qwen3-8Bを医療と科学のルーブリックで訓練し、訓練用とゴールドジャッジのスコアの乖離を示した。乖離は報酬ハッキングに起因し、Rubric Dropoutを提案。ルーブリックの一部をランダムに無効化し、ポリシーの二度最適化を防止。ドロップアウトによるOODスコアの向上を確認し、HealthBench-Hardで+1〜+2、ResearchQAで+6〜+7ポイントの改善を示した。最適なドロップアウト率は30–50%で、基準の重み付けが劣る結果となった。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2087830638913056770?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RubricをDropoutすることで、常に固定されたルーブリックが利用されないようにし、Reward Hackingを防止する。<br><br><img src="https://github.com/user-attachments/assets/ea761a03-db3b-48c1-a477-b821c42b6d51" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>論文中のproxy judgeとgold judgeの違いが最初はよくわからなかったが、<br>- proxy judge: 学習に利用するllm-as-a-judgeモデル<br>  - つまり、Reward Hackingの対象となるもの<br>- gold judge: 学習には一切介入しないproxy judgeよりも強いモデルを用いたjudge<br><br>両者では同じルーブリックを用いられる。これらのjudgeモデルの絶対値はバイアスを含むため関心がなく、両者のgapに関心がある(proxy-gold gap)。RLの最中に20 step単位で両者のスコアを比較し、両者のgapがconsistentに開いていった場合、それは評価のノイズではなく、（固定されたバイアスでもなく）、Reward Hackingの兆候である可能性が高いと主張している。実際、Figure 2を見ると、240 stepから両者のスコアの傾きが変化していて、gold judgeではスコアが向上していくが、proxy judgeではスコアが向上しない現象が観測される。これは、proxy judgeが、本来評価したいRubricとは異なる側面で攻略されていることを示唆していると考えられる。<br><br>dropoutなし、30%、50%の場合で比較したところ、dropoutを導入した場合に一貫してスコアが向上する。実験では、proxyではgpt-4o-miniが用いられ、goldではclaude-sonnet-4.6が用いられている。<br><img src="https://github.com/user-attachments/assets/c816c51f-1c9c-4981-ab56-ba8f3c1cb5fe" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>実際のルーブリックは論文中に掲載されていないので、学習に利用されたデータセットを参照する必要がある。おそらく、それなりの数のRubricによって構成されていると思われるが、Rubricの数に対するsensitivityはどの程度なのだろうか？<br><br>dropout rateによるsensitivityは実験されているが、元々のRubricのサイズの大小による影響は比較されていないように見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Simple-OPD: Demystifying Warm-up for On-policy Distillation, Tao Liu+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.06802</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6332</repo-issue-link>
+<tags>NLP, LanguageModel, Distillation, PEFT(Adaptor/LoRA), PostTraining, read-later, Selected Papers/Blogs, On-Policy, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-08-14</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.06802
+# Authors
+  - Tao Liu
+  - Taiqiang Wu
+  - Mao Zheng
+  - Xuan Luo
+  - Runming Yang
+  - Xuewei Yang
+  - Junjie Wang
+  - Yujiu Yang
+# Abstract
+  - On-policy distillation (OPD) trains a student on its own rollouts with token-level supervision from teacher models, but its effectiveness can depend strongly on the warm-up stage before OPD. In this paper, we demystify warm-up for OPD from both data and training perspectives. For data, we find that effective warm-up relies on teacher-compatible chain-of-thought supervision, and that even incorrect teacher rollouts can provide comparable benefits to correct ones. This suggests that warm-up primarily transfers a teacher-compatible thinking pattern rather than merely correct answers. For training, we show that low-rank adaptation (LoRA) with a near-saturation training duration better balances in-domain adaptation and out-of-distribution generalization than full-parameter SFT. Based on these findings, we propose Simple-OPD, a plug-and-play initialization method that warms up the student on teacher-generated CoT with LoRA before OPD. Experiments across diverse settings demonstrate the effectiveness and robustness of Simple-OPD.
+# Translation (by gpt-5-nano)
+- On-policy distillation (OPD) は、教師モデルからのトークンレベルの監督信号を用いて自らのロールアウト上で学生を訓練する手法だが、その有効性は OPD の前のウォームアップ段階に強く依存することがある。本論文では、データとトレーニングの両方の観点から OPD のウォームアップを解明する。データの観点から、有効なウォームアップは教師と互換性のあるチェーン・オブ・ソート（CoT、思考過程の連鎖）監督に依存すること、そして誤っている教師のロールアウトであっても正しいものと同等の利益をもたらす場合があることを示す。これは、ウォームアップが単に正解を転送するのではなく、教師と互換性のある思考パターンを主に転送することを示唆している。トレーニングの観点では、低秩適応（LoRA）を用い、ほぼ飽和するトレーニング期間と組み合わせると、全パラメータSFTよりもドメイン内適応と分布外一般化のバランスをより良く取れることを示す。これらの知見に基づき、Simple-OPD を提案する。これは、OPD の前に教師生成の CoT（思考過程の連鎖）に対して LoRA を用いて学生をウォームアップさせる、プラグアンドプレイの初期化手法である。多様な設定での実験は、Simple-OPD の有効性と頑健性を示している。
+# Summary (by gpt-4o-mini)
+- On-policy distillation (OPD) は、教師モデルからの監督信号を用いて学生を訓練する手法であり、その効果はウォームアップ段階に依存する。データ観点では、思考過程の連鎖（CoT）監督が効果的であり、誤った教師のロールアウトでも利点があることが示された。トレーニング観点では、低秩適応（LoRA）を用いたアプローチがドメイン内適応と分布外一般化のバランスを改善することを示す。これに基づき、Simple-OPDを提案し、教師生成のCoTに対してLoRAで学生をウォームアップさせる手法である。実験はその有効性と頑健性を示している。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2087764025774149959?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>まだ論文には目を通せていないが、教師モデルと生徒モデルに差がありすぎると、OPDはうまく学習ができないので、LoRAでwarmupするとあうのは理に適っているように感じる。</p><p>OPDのFailure Modeのまとめ:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6166" target="_blank" rel="noopener noreferrer">On-policy distillation isn't a free-lunch, Bhavin Jawade, 2026.07</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] ABSeeker: Training Long-Horizon Search Agents via Answer-Backtracked Credit Assignment, Yijun Lu+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.05102</original-paper-blog-link>
@@ -434,7 +508,7 @@ MLE-Bench Liteでは、1台のRTX 4090でタスクあたり12時間、VRAMは12G
 <title>[Paper Note] Copy Less, Ground More: Overcoming Repetitive Copying in Long-Context Reasoning via Evidence-Aware Reinforcement Learning, Lizhe Fang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.19345</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6165</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, LongSequence, PostTraining, Grounding</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, LongContext, PostTraining, Grounding</tags>
 <repo-issue-date>2026-08-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2607.19345
@@ -5815,7 +5889,7 @@ ADPOの損失関数はエレガントな形を持ち、DPO目的関数の総和�
 <title>[Paper Note] The Molecular Structure of Thought: Mapping the Topology of Long Chain-of-Thought Reasoning, Qiguang Chen+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.06002</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4694</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, mid-training, PostTraining, Selected Papers/Blogs, KeyPoint Notes</tags>
 <repo-issue-date>2026-02-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.06002
@@ -9888,7 +9962,7 @@ ADPOの損失関数はエレガントな形を持ち、DPO目的関数の総和�
 <title>[Paper Note] ParoQuant: Pairwise Rotation Quantization for Efficient Reasoning LLM Inference, Yesheng Liang+, arXiv'25, 2025.11</title>
 <original-paper-blog-link>https://arxiv.org/abs/2511.10645</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4728</repo-issue-link>
-<tags>NLP, LanguageModel, Chain-of-Thought, Quantization, Reasoning, LongSequence, ICLR, PostTraining, One-Line Notes</tags>
+<tags>NLP, LanguageModel, Chain-of-Thought, Quantization, Reasoning, LongContext, ICLR, PostTraining, One-Line Notes</tags>
 <repo-issue-date>2026-02-28</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2511.10645
@@ -11125,7 +11199,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] QwenLong-L1.5: Post-Training Recipe for Long-Context Reasoning and Memory Management, Weizhou Shen+, arXiv'25, 2025.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2512.12967</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4060</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, LongSequence, PostTraining, Selected Papers/Blogs, memory, Entropy</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, SyntheticData, LongContext, PostTraining, Selected Papers/Blogs, memory, Entropy</tags>
 <repo-issue-date>2025-12-24</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2512.12967
@@ -14106,7 +14180,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable  Reinforcement Learning, GLM-V Team+, arXiv'25, 2025.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.01006</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2128</repo-issue-link>
-<tags>ComputerVision, Pretraining, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, MultiModal, RLHF, Reasoning, LongSequence, mid-training, RewardHacking, PostTraining, CurriculumLearning, RLVR, Selected Papers/Blogs, VisionLanguageModel</tags>
+<tags>ComputerVision, Pretraining, NLP, Supervised-FineTuning (SFT), ReinforcementLearning, MultiModal, RLHF, Reasoning, LongContext, mid-training, RewardHacking, PostTraining, CurriculumLearning, RLVR, Selected Papers/Blogs, VisionLanguageModel</tags>
 <repo-issue-date>2025-07-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2507.01006
@@ -14853,7 +14927,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <title>[Paper Note] Demystifying Long Chain-of-Thought Reasoning in LLMs, Edward Yeo+, ICML'25</title>
 <original-paper-blog-link>https://arxiv.org/pdf/2502.03373</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1746</repo-issue-link>
-<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongSequence, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Chain-of-Thought, Reasoning, LongContext, ICML, RewardHacking, PostTraining, Selected Papers/Blogs, KeyPoint Notes, Author Thread-Post</tags>
 <repo-issue-date>2025-02-07</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/pdf/2502.03373
@@ -15349,7 +15423,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] YaRN: Efficient Context Window Extension of Large Language Models, Bowen Peng+, ICLR'24</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.00071</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2338</repo-issue-link>
-<tags>NLP, LanguageModel, ContextWindow, LongSequence, PositionalEncoding, ICLR, PostTraining, Selected Papers/Blogs</tags>
+<tags>NLP, LanguageModel, ContextWindow, LongContext, PositionalEncoding, ICLR, PostTraining, Selected Papers/Blogs</tags>
 <repo-issue-date>2025-08-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.00071
@@ -15490,7 +15564,7 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 <title>[Paper Note] Grounding Language Model with Chunking-Free In-Context Retrieval, Hongjin Qian+, ACL'24, 2024.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2402.09760</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1671</repo-issue-link>
-<tags>Embeddings, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration), LongSequence, ACL, PostTraining, KeyPoint Notes</tags>
+<tags>Embeddings, Supervised-FineTuning (SFT), action_wanted, RAG(RetrievalAugmentedGeneration), LongContext, ACL, PostTraining, KeyPoint Notes</tags>
 <repo-issue-date>2025-01-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2402.09760
@@ -16442,7 +16516,7 @@ Chunlei Xin, Yaojie Lu, Hongyu Lin, Shuheng Zhou, Huijia Zhu, Weiqiang Wang, Zho
 <title>LongLoRA: Efficient Fine-tuning of Long-Context Large Language Models, Yukang Chen+, N_A, arXiv'23</title>
 <original-paper-blog-link>https://arxiv.org/abs/2309.12307</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1045</repo-issue-link>
-<tags>EfficiencyImprovement, MachineLearning, NLP, Dataset, QuestionAnswering, Supervised-FineTuning (SFT), LongSequence, PEFT(Adaptor/LoRA), PostTraining, KeyPoint Notes</tags>
+<tags>EfficiencyImprovement, MachineLearning, NLP, Dataset, QuestionAnswering, Supervised-FineTuning (SFT), LongContext, PEFT(Adaptor/LoRA), PostTraining, KeyPoint Notes</tags>
 <repo-issue-date>2023-09-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2309.12307
@@ -19316,7 +19390,7 @@ Cheng, Zhoujun* and Xie, Yutao* and Qu, Yuxiao* and Setlur, Amrith* and Hao, Shi
 <title>Qwen3, Qwen Team, 2025.04</title>
 <original-paper-blog-link>https://qwenlm.github.io/blog/qwen3/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1909</repo-issue-link>
-<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongSequence, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes, Reference Collection</tags>
+<tags>NLP, LanguageModel, Alignment, Supervised-FineTuning (SFT), ReinforcementLearning, InstructionTuning, Blog, LongContext, MultiLingual, OpenWeight, MoE(Mixture-of-Experts), PostTraining, KeyPoint Notes, Reference Collection</tags>
 <repo-issue-date>2025-04-29</repo-issue-date>
 <issue-body>https://qwenlm.github.io/blog/qwen3/</issue-body>
 <maintainer-comment-text><p>- 119言語をサポート<br>- MoEモデル <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1911" target="_blank" rel="noopener noreferrer">[Paper Note] Outrageously Large Neural Networks: The Sparsely-Gated  Mixture-of-Experts Layer, Noam Shazeer+, ICLR'17</a>
