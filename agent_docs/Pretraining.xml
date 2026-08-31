@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-22">
+<paper-list last-updated="2026-08-30">
 <paper-entry>
 <title>[Paper Note] Let's Scale Step by Step: Compute-Efficient Hyperparameter Transfer for Large-Scale Mixture-of-Experts, Nayeon Kim+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.20061</original-paper-blog-link>
@@ -13934,6 +13934,30 @@ ViLTは、従来のVLPモデルよりも数十倍高速でありながら、競�
 # Summary (by gpt-4o-mini)
 - 本研究では、seq2seqモデルの精度向上のために、事前学習済みの言語モデルの重みでエンコーダとデコーダを初期化し、ラベル付きデータでファインチューニングする教師なし学習手法を提案。機械翻訳や抽象的要約のベンチマークで性能が大幅に向上し、特にWMT英語→ドイツ語タスクで最先端の結果を達成。BLEUスコアで1.3の改善を記録し、抽象的要約においても教師あり学習のベースラインを有意に上回った。</issue-body>
 <maintainer-comment-text><p>seq2seqにおいてweightのpretrainingを行う手法を提案<br><br>seq2seqでは訓練データが小さいとoverfittingしやすいという弱点があるので、大規模なデータでunsupervisedにpretrainingし、その後目的のデータでfinetuneすることで精度を向上させましょう、というお話。<br><br>WMTの翻訳タスクにおいて、1.3ポイント BLEUスコアが改善、abstractive summarizationでも実験したが、精度は向上せず。しかしながら要約ではpretrainingによってrepetitionが減少したと主張。<br><br><br><br>encoder, decoderそれぞれを切り離して考えると、それぞれ言語モデルとみなすことができるため(encoderにはoutput-layerを追加)、それぞれの言語モデルを独立に大規模なラベルなしデータでpretrainingする。<br><br>fine-tuneする際は、targetデータだけでなく、pretrainingする際のデータも同時に学習を続ける（LM Objective）<br><br>LM Objectiveは、target側のobjective functionにpretraining側のobjective functionの項を重み付きで追加したもの。<br><br><br><br>Abltion studyによると、MTにおいてはsoftmax-layerをpretrainingすることが重要。softmax-layerのpretrainingをablationするとBLEUスコアが1.6ポイント減少。<br><br>LM objectiveをなくすと、pretrainingの効果がほとんどなくなる(BLEUスコア-2.0ポイント)。<br><br>sumarizationにおいては、embeddingのpretrainingが大幅なROUGEスコアの改善を見せた。また、MTと異なり、encoder側のpretrainingがスコア向上に寄与。<br><br><br><br>LM Objectiveは結構使えそうな印象</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Mitigate Silent Expert Death in Ultra-Sparse MoE, Jin+, 2026.08</title>
+<original-paper-blog-link>https://alltoall.notion.site/save-lower-layer-moe-experts-llal</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6440</repo-issue-link>
+<tags>Analysis, Pretraining, NLP, LanguageModel, Blog, MoE(Mixture-of-Experts), One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-08-30</repo-issue-date>
+<issue-body># URL
+https://alltoall.notion.site/save-lower-layer-moe-experts-llal
+
+# Authors
+Hongye Jin, Linwei Li, Xiaotian Han, Xin Liu, Haoyang Wen, Sha Li, Chia-Yuan Chang, Tuo Zhao, Qingyu Yin, Binxuan Huang</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/serendip410/status/2092157718643851766?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>sparse MoEモデルを学習する際に、浅い層のexpertが機能しなくなっていく（重みのノルムが非常に小さくなり学習シグナルも消失し回復しない）にもかかわらず、ロードバランシングは正常なままという現象を観測し（Silent Expert Death）、公開されているMoEモデルでも同様の現象が生じていることを確認。LM Loss as Auxiliary Loss (LLAL)と呼ばれる、最初の数千ステップで浅いMoE Layerを一時的に言語モデルのheadに接続し、その後その接続を削除するような方法を用いると、loss・downstream task性能が改善し silent expert collapseも防止することができた、という話のようである。<br><br>LLALの気持ちとしては、非常にSparseなMoEの学習では、浅い層を学習するためのpressureが小さいことが問題であることが前提のもと、これを解決するために、まず浅い層のexpert数を削減する、あるいは異なる学習率やweight decayをチューニングするなどの方法も検討している。しかしこれらの方法は結局ハイパーパラメータ探索の沼に学習をするたびにはまってしまい嬉しくない。そのため、よりgenericに適用可能な学習方法として、安定していて、モデルの本来の学習目的と整合していて、expertの差別化を促すような性質のものが求められ、これを満たすものとしてnext-token-predictionを活用することを提案している。<br>浅い層のexpertが何を学習することを求められるかというと、一般的にはlexical-levelな情報を学習していることを求められるが、現状ではSilnet Expert Deathによってこれがうまく進んでいないことが懸念される。これを是正するために、シンプルに浅いMoE LayerをLM headに接続し、next-token-predictionのlossをより直接供給することで学習を促す、という気持ちのようである。<br><br><img src="https://github.com/user-attachments/assets/c546b63f-45dc-45e7-9dc2-6838fe71918b" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
