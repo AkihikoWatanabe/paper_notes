@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-19">
+<paper-list last-updated="2026-08-30">
+<paper-entry>
+<title>[Paper Note] Prefix Sliding for efficient test-time scaling, Niklas Muennighoff+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.26070</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6450</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Attention, LongContext, Test-Time Scaling, Selected Papers/Blogs, reading, One-Line Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-08-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.26070
+# Authors
+  - Niklas Muennighoff
+  - Zhengyang Wang
+  - Zeyi Chen
+  - Weijia Shi
+  - Binyuan Hui
+  - John Yang
+  - Dapeng Jiang
+  - Mika Senghaas
+  - Fares Obeid
+  - Johannes Hagemann
+  - Sami Jaghouar
+  - Ludwig Schmidt
+  - Percy Liang
+  - Jason Wei
+  - Andrew Y. Ng
+  - Luke Zettlemoyer
+  - Yejin Choi
+  - Mike Lewis
+# Abstract
+  - Test-time scaling uses extra test-time compute to improve performance, such as letting language models reason longer when solving a problem. As models keep the entire reasoning trace in memory via full attention, hard tasks that need long thinking can be prohibitively expensive. However, we find most intermediate reasoning tokens lose importance as the model continues reasoning. This calls into question whether retaining them is worth the cost. Based on this insight, we propose Prefix Sliding, which discards tokens during reasoning that are not part of the prefix or the window of the last few thousand tokens. The prefix has key instructions and tools available to the model, while the most recent tokens are the current reasoning the model is working on. This caps the total memory requirement regardless of how long the model reasons, allowing for efficient long-horizon test-time scaling. Without training, Prefix Sliding can make existing models 3x faster while maintaining performance. Training with Prefix Sliding using reinforcement learning can achieve better performance by enabling scaling to reasoning traces beyond a hundred thousand tokens. Ablations show Prefix Sliding outperforms summarizing intermediate tokens or vanilla sliding window. Our code is at https://github.com/Muennighoff/prefix-sliding
+# Translation (by gpt-5-nano)
+- テスト時スケーリングは、問題を解く際に言語モデルがより長く推論できるように、追加の推論時計算を用いて性能を向上させる。モデルは全注意機構を介して推論経路全体を記憶に保つため、長時間の思考を要する難しいタスクは高コストになりうる。しかし、私たちは多くの中間推論トークンがモデルが推論を続けるにつれて重要性を失うことを発見した。これにより、それらを保持する価値がコストに見合うかどうかが疑問になる。 この洞察に基づき、Prefix Sliding を提案する。これは推論中に、プレフィックスの一部ではないトークンや、直近の数千トークンの窓の外にあるトークンを破棄する。プレフィックスにはモデルが利用できる重要な指示とツールが含まれ、最も新しいトークンはモデルが現在推論している内容である。これにより、推論が長く続く場合でも総メモリ要件を抑えることができ、長期的な推論時スケーリングを効率的に可能にする。訓練なしでも、Prefix Sliding は既存のモデルを性能を維持しつつ3倍速くすることができる。Prefix Sliding を用いた強化学習での訓練は、100,000 トークンを超える推論経路へのスケーリングを可能にすることで、より良い性能を達成できる。アブレーション実験は、Prefix Sliding が中間トークンの要約や従来のスライディング窓よりも優れていることを示している。我々のコードは https://github.com/Muennighoff/prefix-sliding にある。
+# Summary (by gpt-4o-mini)
+- テスト時スケーリングでは、言語モデルが長期間推論できるように推論の計算を強化するが、多くの中間トークンが重要性を失うことが発見された。これを受けて、Prefix Slidingを提案し、推論中に不要なトークンを破棄することでメモリ要件を削減し、効率的な長期推論を実現する。これにより、既存のモデルを維持しつつ3倍の速度向上が可能になり、強化学習では100,000トークン以上のスケーリングを達成する。実験により、Prefix Slidingが中間トークンの要約や従来の手法より優れていることが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Muennighoff/status/2092960068685692974?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>long sequenceに対する推論をすると<br>- full attentionの場合メモリ消費が激しくOOMになる<br>- しかしreasoningをコンパクトに圧縮すると重要な情報を失う<br><br>これを解決するために、reasoningの中間にあるtokenの重要度が低いことに着目し、シンプルに<br>- prefix: reasoningの冒頭、指示やtoolの定義を含む<br>- recent tokens: reasoning traceの直近<br><br>を残す二種類の固定長のwindowを用いて、prefixは固定し、recent tokensはtraceの成長に従いスライディングさせる手法を提案。<br><br><img src="https://github.com/user-attachments/assets/31f58511-c60e-467d-a3d7-8654ac2107cb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/8010751d-a191-4564-9d20-41b2622b7c82" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>その結果、<br>- 最大消費メモリが固定され<br>- full traceを用いるよりも推論スピードは速く、同等の性能に最大3倍程度早く到達<br>- RLにおいて、より長い推論を固定されたmemory budgetの元で実施でき、rewardも改善<br><img src="https://github.com/user-attachments/assets/590c3a41-04e2-4472-851c-031581f2056b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/53858893-adfb-41cf-bfb7-35951ff6deb5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>シンプルな手法でOOM問題を解決し、単に推論時のメモリ消費や推論スピードを改善しただけでなく、モデル学習時のRLにおけるパフォーマンスが改善することまで示しており、シンプルで容易に実装ができるがインパクトが大きく、非常におもしろい研究と感じる。Ablationも実施されている。<br><br>Linear attentionに対しては、そもそもメモリ消費量はconstantなので提案手法を適用する必要がそもそもない点には注意。<br><br>現在の主要な中国系のOpenWeight LLMのアーキテクチャがほぼ、linear attentionとsparse attentionを積み重ねたアーキテクチャになっている。sparse attentionはKV Cacheがcontext長に従って増大するため、本研究の恩恵を受ける可能性はあるが、sparse attentionに対する実験は実施されていないように見える。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Harness-IF: Evaluating Instruction Following Across Instruction Surfaces in Coding Agents, Zining Huang+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.11727</original-paper-blog-link>

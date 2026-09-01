@@ -4,7 +4,7 @@
 <title>[Paper Note] Prefix Sliding for efficient test-time scaling, Niklas Muennighoff+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.26070</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6450</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Test-Time Scaling, read-later, Selected Papers/Blogs, Author Thread-Post</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Attention, LongContext, Test-Time Scaling, Selected Papers/Blogs, reading, One-Line Notes, Reading Reflections, Author Thread-Post</tags>
 <repo-issue-date>2026-08-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2608.26070
@@ -43,7 +43,7 @@
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>long sequenceに対する推論をすると<br>- full attentionの場合メモリ消費が激しくOOMになる<br>- しかしreasoningをコンパクトに圧縮すると重要な情報を失う<br><br>これを解決するために、reasoningの中間にあるtokenの重要度が低いことに着目し、シンプルに<br>- prefix: reasoningの冒頭、指示やtoolの定義を含む<br>- recent tokens: reasoning traceの直近<br><br>を残す二種類の固定長のwindowを用いて、prefixは固定し、recent tokensはtraceの成長に従いスライディングさせる手法を提案。<br><br><img src="https://github.com/user-attachments/assets/31f58511-c60e-467d-a3d7-8654ac2107cb" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/8010751d-a191-4564-9d20-41b2622b7c82" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>その結果、<br>- 最大消費メモリが固定され<br>- full traceを用いるよりも推論スピードは速く、同等の性能に最大3倍程度早く到達<br>- RLにおいて、より長い推論を固定されたmemory budgetの元で実施でき、rewardも改善<br><img src="https://github.com/user-attachments/assets/590c3a41-04e2-4472-851c-031581f2056b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/53858893-adfb-41cf-bfb7-35951ff6deb5" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>シンプルな手法でOOM問題を解決し、単に推論時のメモリ消費や推論スピードを改善しただけでなく、モデル学習時のRLにおけるパフォーマンスが改善することまで示しており、シンプルで容易に実装ができるがインパクトが大きく、非常におもしろい研究と感じる。Ablationも実施されている。<br><br>Linear attentionに対しては、そもそもメモリ消費量はconstantなので提案手法を適用する必要がそもそもない点には注意。<br><br>現在の主要な中国系のOpenWeight LLMのアーキテクチャがほぼ、linear attentionとsparse attentionを積み重ねたアーキテクチャになっている。sparse attentionはKV Cacheがcontext長に従って増大するため、本研究の恩恵を受ける可能性はあるが、sparse attentionに対する実験は実施されていないように見える。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
