@@ -18,6 +18,7 @@
 
 This repository is a manually curated collection of **AI-related papers and related resources**, such as blog posts, repositories, slides, and SNS posts.  
 All items are managed as **GitHub Issues**.
+Notes managed in GitHub Issues are dumped daily under `agent_docs/` and can be explored conversationally through an agent. See [Conversational Interface](#conversational-interface).
 
 The primary purpose of this repository is to serve as a **personal study log and memory aid** for the maintainer.  
 Since the maintainer is Japanese, **paper notes are manually written in Japanese**, reflecting the maintainer’s own understanding and learning process.
