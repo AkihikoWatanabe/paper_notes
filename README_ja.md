@@ -58,7 +58,7 @@ Issueには主に以下の内容がメモされています:
 - Reinforcement Learning
 - Test-time Scaling / (Memory-based) Test-time Learning / Test Time Training (TTT)
 - Representation Learning / Embeddings
-- Self-Improving AI
+- Self-Improving AI / Recursive Self-Improvement
 - Transformer architectures (Attention, Positional Encoding, Residual Streams, etc.)
 
 ---
