@@ -113,11 +113,7 @@ The above labels are just a few examples, and there are currently 600+ different
 
 ---
 
-## Wiki and Interactive Access (DeepWiki/CodeWiki)
-
-In addition to Issue-based notes, this repository provides two complementary ways to explore and consume the collected information.
-
-### [Wiki](https://github.com/AkihikoWatanabe/paper_notes/wiki): Personal Trend Notes
+## [Wiki](https://github.com/AkihikoWatanabe/paper_notes/wiki): Personal Trend Notes
 
 A Wiki is maintained to record **personal impressions of trends** observed while casually browsing papers and discussions on X.
 
@@ -127,9 +123,63 @@ A Wiki is maintained to record **personal impressions of trends** observed while
 
 The Wiki is intended as a lightweight place to capture emerging ideas, trends, and intuitions that may not yet be fully formed.
 
+## Conversational Interface
+
+Recommended: Clone the repository locally and use an agent to chat with the repository based on the contents of its issues.
+
+```bash
+git clone https://github.com/AkihikoWatanabe/paper_notes.git
+cd paper_notes
+```
+
+Here is the example:
+
+> Summarize research on pretraining from the past year in chronological order, and provide the references in a table.
+
+<details>
+<summary>Example output (click to expand)</summary>
+
+### Chronological summary
+
+| Date | Research | Main contribution |
+|---|---|---|
+| 2025-09-17 | [MachineLearningLM](https://arxiv.org/abs/2509.06806) | Strengthens many-shot in-context learning through continued pretraining. |
+| 2025-09-20 | [Pre-training under infinite compute](https://arxiv.org/abs/2509.14786) | Studies data efficiency through regularization, model scaling, ensembling, and distillation under limited data. |
+| 2025-09-22 | [Synthetic Bootstrapped Pretraining](https://arxiv.org/abs/2509.15248) | Learns relationships between documents and synthesizes new training documents from shared concepts. |
+| 2025-09-24 | [Reinforcement Learning on Pre-Training Data](https://arxiv.org/abs/2509.19249) | Optimizes the selection and use of pretraining data with reinforcement learning. |
+| 2025-09-25 | [Thinking Augmented Pre-training](https://arxiv.org/abs/2509.20186) | Introduces reasoning traces into pretraining to develop reasoning capabilities earlier. |
+| 2025-10-01 | [Scaling Law of Mixture-of-Experts](https://arxiv.org/abs/2509.23678) | Analyzes the relationships among model size, number of experts, compute, and tokens in MoE models. |
+| 2025-10-03 | [Demystifying Synthetic Data](https://arxiv.org/abs/2510.01631) | Systematically evaluates how the amount, generator model, and mixture ratio of synthetic data affect performance. |
+| 2025-10-18 | [Beyond Multi-Token Prediction](https://arxiv.org/abs/2510.14751) | Uses future-summary prediction as an auxiliary objective to learn longer-range semantic representations. |
+| 2025-11-12 | [Why Less is More](https://arxiv.org/abs/2511.03492) | Studies data curation and information density rather than assuming that more data is always better. |
+| 2025-12-04 | [PretrainZero](https://arxiv.org/abs/2512.03442) | Actively explores and selects useful data during pretraining with reinforcement learning. |
+| 2026-01-30 | [Self-Improving Pretraining](https://arxiv.org/abs/2601.21343) | Uses post-trained models to generate better data for training the next generation of models. |
+| 2026-02-05 | [Noisy Data and LLM Pretraining Loss Divergence](https://arxiv.org/abs/2602.02400) | Analyzes how noise type, amount, and model scale affect loss divergence during pretraining. |
+| 2026-02-12 | [Data Darwinism](https://arxiv.org/abs/2602.07824) | Builds higher-quality scientific data through model-based generative refinement and cognitive completion. |
+| 2026-02-12 | [OPUS](https://arxiv.org/abs/2602.05400) | Dynamically evaluates the utility of training samples according to the optimizer-induced update direction. |
+| 2026-05-13 | [Compute Optimal Tokenization](https://arxiv.org/abs/2605.01188) | Optimizes tokenizer design with respect to pretraining compute. |
+| 2026-05-23 | [A Bitter Lesson for Data Filtering](https://arxiv.org/abs/2605.19407) | Examines whether broad data usage can outperform aggressive filtering at sufficient scale and compute. |
+| 2026-08-07 | [Bridging Compute- and Data-Optimal Pretraining](https://arxiv.org/abs/2607.25271) | Studies the trade-off between compute-optimal and data-optimal pretraining. |
+| 2026-08-14 | [Hyperball Optimization](https://arxiv.org/abs/2606.16899) | Uses the geometry of gradient updates to improve pretraining stability and efficiency. |
+
+The main trends during this period were:
+
+- A shift from simply increasing data volume toward optimizing data selection, mixing, synthesis, and information density
+- An expansion of pretraining objectives beyond next-token prediction to document relationships, reasoning traces, and future summaries
+- Developing reasoning capabilities during pretraining rather than relying only on post-training
+- Reconsidering scaling laws for MoE, low-precision computation, tokenizers, and optimizers
+- Co-evolution between models that improve training data and subsequent models trained on that data
+
+</details>
+
+The agent can use the repository's `AGENTS.md` instructions and `agent_docs/` to answer questions based on the collected Issues and study notes.
+The `agent_docs` directory contains daily dumps of the issue contents.
+
+In addition, the repository can be explored through the following complementary interfaces.
+
 ---
 
-### [DeepWiki](https://deepwiki.com/AkihikoWatanabe/paper_notes)/[CodeWiki](https://codewiki.google/github.com/akihikowatanabe/paper_notes): Conversational Interface
+### [DeepWiki](https://deepwiki.com/AkihikoWatanabe/paper_notes)/[CodeWiki](https://codewiki.google/github.com/akihikowatanabe/paper_notes)
 
 This repository can also be explored via **DeepWiki/CodeWiki**, which provides a **chat-based interface** for interacting with the contents of this repository.
 
