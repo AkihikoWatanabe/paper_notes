@@ -17,6 +17,7 @@
 
 AI関連の論文やブログ・リポジトリ・スライド・SNSポスト等を手動で収集し、Issueで管理しているリポジトリです。  
 主にリポジトリの管理人が勉強した内容の備忘録のために、論文のメモを**日本語**で残しています。
+GitHub Issuesで管理されるメモはdailyで`agent_docs/`以下にダンプされ、エージェントを通じて対話できます。[対話インタフェース](#対話インタフェース)を参照してください。
 
 ## Issueの記載内容
 
@@ -57,7 +58,7 @@ Issueには主に以下の内容がメモされています:
 - Reinforcement Learning
 - Test-time Scaling / (Memory-based) Test-time Learning / Test Time Training (TTT)
 - Representation Learning / Embeddings
-- Self-Improving AI
+- Self-Improving AI / Recursive Self-Improvement (RSI)
 - Transformer architectures (Attention, Positional Encoding, Residual Streams, etc.)
 
 ---
@@ -120,10 +121,64 @@ Issueでの管理に加えて、2種類の補足的なコンテンツがあり�
 
 ---
 
-### [DeepWiki](https://deepwiki.com/AkihikoWatanabe/paper_notes)/[CodeWiki](https://codewiki.google/github.com/akihikowatanabe/paper_notes): 対話インタフェース
+### 対話インタフェース
 
-DeepWiki/CodeWikiを利用することで、Issueで管理されている情報に対話ベースでアクセス可能です。
-これにより、対話ベースで興味のある情報を探索できます。
+本リポジトリをローカルにcloneし、エージェントを用いてIssueに収集された情報に基づいてchatできます。
+
+```bash
+git clone https://github.com/AkihikoWatanabe/paper_notes.git
+cd paper_notes
+```
+
+以下に質問と応答の例を示します（gpt-5.6-luna, reasoning_effort=medium）:
+
+> 過去1年間の事前学習の研究について、時系列に従ってまとめてください。表形式でreferenceも用意してください。
+
+<details>
+<summary>回答例（クリックして展開）</summary>
+
+### 時系列まとめ
+
+| 日付 | 研究 | 主な内容・意義 |
+|---|---|---|
+| 2025-09-17 | [MachineLearningLM](https://arxiv.org/abs/2509.06806) | 継続事前学習により、LLMのmany-shot in-context learning能力を強化。 |
+| 2025-09-20 | [Pre-training under infinite compute](https://arxiv.org/abs/2509.14786) | 限られたデータを前提に、正則化・モデル拡大・アンサンブル・蒸留によるデータ効率化を検討。 |
+| 2025-09-22 | [Synthetic Bootstrapped Pretraining](https://arxiv.org/abs/2509.15248) | 文書間の関係を学習し、共有概念をもとに新しい訓練文書を合成。 |
+| 2025-09-24 | [Reinforcement Learning on Pre-Training Data](https://arxiv.org/abs/2509.19249) | 強化学習によって事前学習データの選択・利用を最適化。 |
+| 2025-09-25 | [Thinking Augmented Pre-training](https://arxiv.org/abs/2509.20186) | 思考過程を含むデータを事前学習に導入し、reasoning能力を形成。 |
+| 2025-10-01 | [Scaling Law of Mixture-of-Experts](https://arxiv.org/abs/2509.23678) | MoEにおけるモデルサイズ、expert数、計算量、トークン数の関係を分析。 |
+| 2025-10-03 | [Demystifying Synthetic Data](https://arxiv.org/abs/2510.01631) | 合成データの量・生成モデル・混合比率が性能に与える影響を系統的に評価。 |
+| 2025-10-18 | [Beyond Multi-Token Prediction](https://arxiv.org/abs/2510.14751) | 将来の要約表現を予測する補助目的により、長期的な意味表現を学習。 |
+| 2025-11-12 | [Why Less is More](https://arxiv.org/abs/2511.03492) | データ量の増加だけでなく、情報密度の高いデータキュレーションを検討。 |
+| 2025-12-04 | [PretrainZero](https://arxiv.org/abs/2512.03442) | 強化学習を用いて、事前学習中に有用なデータを能動的に探索・選択。 |
+| 2026-01-30 | [Self-Improving Pretraining](https://arxiv.org/abs/2601.21343) | post-training済みモデルで高品質なデータを生成し、次のモデルを学習する自己改善ループ。 |
+| 2026-02-05 | [Noisy Data and LLM Pretraining Loss Divergence](https://arxiv.org/abs/2602.02400) | ノイズの種類・量・モデル規模が事前学習のloss発散に与える影響を分析。 |
+| 2026-02-12 | [Data Darwinism](https://arxiv.org/abs/2602.07824) | LLMによる生成的洗練・認知的補完を用いて、高品質な科学データを構築。 |
+| 2026-02-12 | [OPUS](https://arxiv.org/abs/2602.05400) | optimizerが生む更新方向を基準に、訓練サンプルの有用性を動的に評価。 |
+| 2026-05-13 | [Compute Optimal Tokenization](https://arxiv.org/abs/2605.01188) | tokenizerを事前学習の計算量に対して最適化。 |
+| 2026-05-23 | [A Bitter Lesson for Data Filtering](https://arxiv.org/abs/2605.19407) | 大規模モデル・十分な計算量では、強いデータ除外より広いデータ利用が有利になる可能性を検証。 |
+| 2026-08-07 | [Bridging Compute- and Data-Optimal Pretraining](https://arxiv.org/abs/2607.25271) | 計算量最適とデータ量最適のトレードオフを検討。 |
+| 2026-08-14 | [Hyperball Optimization](https://arxiv.org/abs/2606.16899) | 勾配更新の幾何構造を利用して、事前学習の安定性・効率を改善。 |
+
+この期間の主な傾向は、次のとおりです。
+
+- データ量の拡大から、データ選択・混合・合成・情報密度の最適化へ移行
+- 次トークン予測から、文書間関係・思考過程・将来要約などへ事前学習目的を拡張
+- reasoning能力をpost-trainingだけでなく、事前学習段階から形成
+- MoE、低精度計算、tokenizer、optimizerを含むスケーリング則の再検討
+- モデルによるデータ改善と、そのデータによる次世代モデル学習という共進化
+
+</details>
+
+エージェントは、リポジトリ内の `AGENTS.md` の指示と `agent_docs/` を参照し、Issueや勉強ノートに基づいて回答できます。
+`agent_docs/` 以下にはdailyでIssueの内容がxml形式でダンプされています。
+
+従来どおり、以下のDeepWiki/CodeWikiから対話形式で探索することもできます。
+
+### [DeepWiki](https://deepwiki.com/AkihikoWatanabe/paper_notes)/[CodeWiki](https://codewiki.google/github.com/akihikowatanabe/paper_notes)
+
+DeepWiki/CodeWikiを利用することで、Issueで管理されている情報に対話ベースでアクセスできます。
+これにより、興味のある情報を対話形式で探索できます。
 
 ---
 

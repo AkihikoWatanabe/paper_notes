@@ -1,5 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-30">
+<paper-list last-updated="2026-09-07">
+<paper-entry>
+<title>[Paper Note] Language Models Can Control Their Own Attention, Namgyu Ho+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2609.02737</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6516</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, Attention, LongContext, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-09-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2609.02737
+# Authors
+  - Namgyu Ho
+  - Huzama Ahmad
+  - Woosung Koh
+  - Se-Young Yun
+  - Tal Schuster
+  - Cicero Nogueira dos Santos
+# Abstract
+  - Language models spend most of their attention on a small fraction of context, yet they read the entire KV cache to find the few tokens that matter. If the user asks about a previous detail in a 1M-token conversation, global attention layers must scan the full context to generate each token of the reply. A prominent approach mitigates this cost by pre-selecting relevant tokens via lightweight proxy scores, but this extrinsic scoring still incurs O(N) per step. We take an intrinsic approach motivated by the simple question: wouldn't the model already know which parts of the context are relevant? To this end, we introduce Declarative Attention (DA), a protocol that elicits the model to declare where it needs to attend within its chain-of-thought, partitioning generation into three modes: <global> (full context), <focus> (a specific region), and <local> (recent output only). The inference engine parses these declarations like tool calls and skips most of the KV cache read. Under zero-shot evaluation across 15 long-context tasks, DA on off-the-shelf models (Gemma-4-31B, Qwen-3.6-27B) significantly reduces total attended tokens during decoding (52.0%, 31.1%) with modest accuracy drops (1.27pp, 2.75pp) that shrink with model scale. DA unlocks a new axis of sparse attention, with further potential under training-based methods that future work can explore.
+# Translation (by gpt-5-nano)
+- 言語モデルは文脈のごく一部に大半の注意を費やす一方で、重要な少数のトークンを見つけるために全体のKVキャッシュを読み取る。もしユーザーが1Mトークンの会話の以前の詳細について尋ねると、グローバルアテンション層は返信の各トークンを生成するために全体の文脈を走査しなければならない。軽量なプロキシスコアを用いて関連するトークンを事前に選択することでこのコストを緩和する顕著なアプローチもあるが、この外部スコアリングでもステップごとにO(N)がかかる。我々は「モデルはすでにどの部分の文脈が関連するのかを知っているのではないか」という単純な問いに動機づけられ、内発的なアプローチを採用する。これを目的として、Declarative Attention（DA）を導入する。DAはモデルに対して思考の連鎖過程の中でどこに注意を払う必要があるかを宣言させるプロトコルで、生成を三つのモードに分割する：<global>（全文脈）、<focus>（特定の領域）、<local>（最近の出力のみ）。推論エンジンはこれらの宣言をツール呼び出しのように解析し、KVキャッシュの読み取りの大半をスキップする。15の長文脈タスクにおけるゼロショット評価の下で、市販のモデル（Gemma-4-31B、Qwen-3.6-27B）上のDAはデコード時の総注目トークン数を大幅に削減し、52.0%、31.1%の削減をもたらす一方、精度の低下は控えめで（1.27ポイント、2.75ポイント）モデル規模の拡大につれて縮小する。DAはスパースアテンションの新たな軸を開き、今後の訓練ベースの手法によってさらなる可能性が探究され得る。
+# Summary (by gpt-4o-mini)
+- Declarative Attention（DA）を導入し、モデルが生成時にどの文脈に注意を払うべきかを宣言させることで、KVキャッシュのスキャンを最小化。三つのモード（global, focus, local）に分けることで、ゼロショット評価で注意トークン数を52.0%、31.1%削減しつつ、精度の低下を抑制。DAはスパースアテンションの新しい可能性を提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2095678236722098292?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Sliding-window beats linear attention, Alexia Jolicoeur-Martineau+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.28444</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6507</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, LongContext, AttentionSinks, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.28444
+# Authors
+  - Alexia Jolicoeur-Martineau
+  - Rhea Sanjay Sukthanker
+  - Pashmina Cameron
+  - Emy Gervais
+# Abstract
+  - Due to the nature of quadratic attention, Large Language Models (LLMs) consume a lot of memory and energy. Every new token costs more than the previous one. For each additional token, the keys and values must be stored in memory indefinitely, which is unsustainable.   Several alternatives have been proposed to fix the quadratic scaling problem, one of which is retrofitting LLMs to use Linear Attention. This idea has attracted a lot of attention, given its promise to solve the quadratic scaling problem with state-of-the-art performance at low cost. However, this line of research has not been properly compared to simpler baselines.   In this work, we show that Sliding Window Attention (SWA) with sinks performs as well or better than post-trained Linear Attention models. We observe this across multiple LLMs on various downstream tasks. For long-context reasoning tasks (Needle-in-a-Haystack and BABILong), SWA achieves massively higher performance (2 to 10 times higher than linear attention). SWA requires no post-training, is extremely fast, and requires low memory; therefore, making it an extremely cheap and reliable solution.   To reduce inference memory cost, we strongly recommend switching to SWA instead of post-training linear models. Linear attention models may have shown some promise, but they likely require to be trained from scratch or extensive post-training in order to even match SWA.
+# Translation (by gpt-5-nano)
+- 二次アテンションの性質のために、大規模言語モデル（LLMs）は多くのメモリとエネルギーを消費します。新しいトークンが追加されるたびに、前のものよりコストが増大します。追加のトークンごとに、キーとバリューを無期限にメモリに保存し続ける必要があり、それは持続不可能です。
+二次スケーリング問題を解決するためのいくつかの代替案が提案されており、そのうちの一つはLLMsを線形アテンションを用いるように後付けすることです。このアイデアは、低コストで最先端の性能を達成して二次スケーリング問題を解決するという約束を持つ点から、多くの注目を集めています。しかし、この研究路線は、より単純なベースラインと適切に比較されてこなかった。
+本研究では、スライディングウィンドウアテンション（SWA）をシンク付きで用いると、後訓練済みの線形アテンションモデルと同等かそれ以上の性能を発揮することを示します。これは、複数のLLMとさまざまな下流タスクにおいて観察されます。長い文脈を要する推論タスク（Needle-in-a-HaystackおよびBABILong）では、SWAは線形アテンションより2倍から10倍程度高い性能を達成します。SWAは事後訓練を必要とせず、極めて高速で、低メモリです。したがって、極めて安価で信頼性の高い解決策となります。
+推論時のメモリコストを削減するためには、事後訓練済みの線形モデルへ切り替えるよりもSWAへ移行することを強く推奨します。線形アテンションモデルは一定の有望さを示しているかもしれませんが、それらがSWAと同等にすら到達するには、最初から訓練するか、広範なポスト訓練が必要になる可能性が高いと考えられます。
+# Summary (by gpt-4o-mini)
+- 二次アテンションのメモリとエネルギー消費の課題に対処するため、スライディングウィンドウアテンション（SWA）が線形アテンションモデルと同等以上の性能を発揮することを示す。特に、長文脈の推論タスクにおいてSWAは2倍から10倍の性能向上を実現し、事後訓練なしで高速かつ低メモリを実現。推論時のメモリコスト削減には、SWAへの移行が推奨される。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2095353338128724178?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Fast Weight Attention for Continual Learning, Yifan Zhang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.27763</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6480</repo-issue-link>
+<tags>Attention, RecurrentModels, Author Thread-Post</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.27763
+# Authors
+  - Yifan Zhang
+  - Steve Ta
+  - Jasper Zhang
+  - Jichen Feng
+  - Shuzhen Li
+  - Yongxin Zhang
+  - Yifeng Liu
+  - Huizhuo Yuan
+  - Mengdi Wang
+  - Quanquan Gu
+  - Andrew Chi-Chih Yao
+# Abstract
+  - Recurrent fast-weight memories and selective state-space models compress an expanding context into a fixed-size recurrent state, making the state transition an online learning rule. We study this rule under read-after-write autoregressive semantics. For the prefix-prediction objective considered here, the local fast-memory example revealed at step $t$ is the prefix-aligned pair $(\mathbf{x}_t,\mathbf{y}_t)=(φ(\mathbf{k}_{t-1}),\mathbf{v}_t)$. The common same-step association $(φ(\mathbf{k}_t),\mathbf{v}_t)$ remains causal, but optimizes a different internal objective. We derive normalized first-order updates for squared-error regression and negative inner-product objectives. The regression family comprises Falcon-1 (a scalar NLMS update), Falcon-2 (its per-column extension), and Falcon-3 (a sliding-window mini-batch update); Falcon-1A/Falcon-2A/Falcon-3A are the corresponding inner-product variants. We provide recurrent, masked-parallel, and chunk-parallel forms, together with numerically stable positive-decay renormalization. Representative variants remain competitive in language modeling and improve length extrapolation on variable-digit addition. This framework separates temporal alignment, plasticity, forgetting, and bounded rehearsal in recurrent sequence models.
+# Translation (by gpt-5-nano)
+- 再帰的ファストウェイト記憶と選択的状態空間モデルは、拡張する文脈を固定サイズの再帰状態に圧縮し、状態遷移をオンライン学習規則とする。私たちはこの規則を、書き込み後読み出し自己回帰意味論の下で検討する。ここで検討されるプレフィックス予測目的に対して、ステップ $t$ で現れる局所的なファストメモリの例は、プレフィックス整合ペア $(\mathbf{x}_t,\mathbf{y}_t)=(\phi(\mathbf{k}_{t-1}),\mathbf{v}_t)$ である。共通の同一ステップのアソシエーション $(\phi(\mathbf{k}_t),\mathbf{v}_t)$ は因果性を保つが、異なる内部目的を最適化する。平方誤差回帰と負の内積目的に対する正規化済み一階更新を導出する。回帰ファミリは Falcon-1（スカラー NLMS 更新）、Falcon-2（その列ごとの拡張）、Falcon-3（スライディングウィンドウのミニバッチ更新）で構成される； Falcon-1A/Falcon-2A/Falcon-3A は対応する内積変種である。再帰的、マスク付きパラレル、およびチャンクパラレル形式を提供し、数値的に安定な正の減衰再正規化を併記する。代表的な変種は言語モデリングで競争力を維持し、可変桁加算における長さ外挿を改善する。本フレームワークは、再帰系列モデルにおける時間的整列、可塑性、忘却、そして制約付きリハーサルを分離する。
+# Summary (by gpt-4o-mini)
+- 再帰的ファストウェイト記憶と選択的状態空間モデルを用いて、固定サイズの再帰状態に文脈を圧縮し、オンライン学習規則を適用。局所的なファストメモリは、因果性を保ちながら異なる内部目的を最適化。正規化済み一階更新を導出し、Falconシリーズ（NLMS、列ごとの拡張、ミニバッチ更新）を提示。これにより、時間的整列や可塑性を分離しつつ、言語モデリングで競争力を維持。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yifanzhang_/status/2094318018969088329?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Prefix Sliding for efficient test-time scaling, Niklas Muennighoff+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.26070</original-paper-blog-link>
