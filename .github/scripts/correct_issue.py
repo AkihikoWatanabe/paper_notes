@@ -61,7 +61,7 @@ def get_entry_from_metadata(arxiv_id, max_retries=1, wait_seconds=5):
 
     for attempt in range(max_retries):
         # feedparser の代わりに requests で HTTP ステータスを確認
-        response = requests.get(url, headers=headers, timeout=30)
+        response = requests.get(url, headers=headers, timeout=60)
         
         if response.status_code == 503:
             #print(f"Attempt {attempt + 1}: arXiv API returned 503, retrying in {wait_seconds}s...")
