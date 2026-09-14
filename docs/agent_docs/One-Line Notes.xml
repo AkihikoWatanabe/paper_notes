@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-09-11">
+<paper-list last-updated="2026-09-13">
 <paper-entry>
 <title>[Paper Note] Efficient Test-Time Adaptation through Human-AI Interaction, Zora Zhiruo Wang+, arXiv'26, 2026.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2609.04141</original-paper-blog-link>
@@ -51,6 +51,60 @@
 {% endraw %}
 
 </p><p>test-timeにuser-centeredなAI Agentを実現するために、セッションを跨いだ人間とLLMのinteractionの情報を活用することを提案。オープンエンドなタスクはしばしば成功に関する基準は明文化されておらず、エージェントの出力に対する人間の相互作用を通じて、その暗黙的な基準や専門知識、スキルがシグナルとして露出される。このシグナルを活用したい、というのが気持ち。<br><br>たとえばシグナルとしては、プランの調整、成果物の修正、テキストでのフィードバック、ルーブリック修正などが挙げられ、最終成果物を得るためにこれらのiterationを繰り返す。<br><br><img src="https://github.com/user-attachments/assets/e3ccf71e-8218-4710-98c0-eb8bd8c3f1c6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>これらの情報を<br>- context-based adaptation (事実情報や好みに関する情報をメモリに蓄積、手続き的な知識をスキル化）、<br>- weight-based adaptation（DPO+LoRA)<br>- verifier(人間とLLMのinteractionを通じて進化する評価ルーブリック）<br><br>によってエージェントに反映させる。<br><br>メモリやスキルに蓄積します、という話はよく見かける一方で、特徴的なのはweight-based adaptationと感じる。これは最初の成果物を得るためのtrajectory tau_0をrejected, 最後のiterationまでに得られたtrajectory t_0:Jが与えられた時に、エージェントが人間とのinteractionに依存することを避けるためにt_0:Jをより簡潔なtrajectoryにした軌跡（readなどの観察的なアクションは除外し、editなどの操作は一つにまとめる）をchosenとして、DPOのためのpreferenceデータを構築し、LoRAを用いて学習する、というものに見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TailSFT: Filtered Fine-Tuning Improves Post-Training Performance, Sadhika Malladi+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.25756</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6479</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, PostTraining, read-later, Selected Papers/Blogs, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.25756
+# Authors
+  - Sadhika Malladi
+  - Samy Jelassi
+  - Dylan Foster
+  - Jordan T. Ash
+  - Akshay Krishnamurthy
+# Abstract
+  - Reinforcement learning post-training drives reasoning and agentic capabilities in modern AI systems, yet a growing body of work shows that it is most effective when used to fine-tune an already capable base model. We question whether existing pipelines yield models that are most suitable for reinforcement learning. Building on prior work highlighting the role of coverage and pass@K as predictors of post-RL performance, we design a simple modification to supervised fine-tuning, TailSFT, which filters out already fit sequences during training, thereby focusing learning on under-modeled regions, or the tail, of the data distribution. We justify and validate the design choices in TailSFT, particularly the specific filtering criteria, through a combination of controlled experiments and theoretical analysis. On OLMo-3 7B, TailSFT often improves pass@16 performance on math and coding evaluations, with gains up to 17% absolute, while incurring minimal computational overhead. These higher-coverage checkpoints consistently translate to up to 4% absolute pass@1 gains in subsequent GRPO runs, demonstrating that TailSFT checkpoints serve as better initializations for RL. We further introduce a lightweight diagnostic for identifying settings where TailSFT is most likely to help. More broadly, our results motivate a principled, stage-aware approach to model development, in which intermediate checkpoints are judged by how effectively they support subsequent training.
+# Translation (by gpt-5-nano)
+- 強化学習のポストトレーニングは現代のAIシステムにおける推論能力とエージェント的能力を高めるが、それをすでに高性能なベースモデルの微調整に用いるときに最も効果的であるという研究が増えている。私たちは既存のパイプラインが強化学習に最も適したモデルを生み出しているかどうかを疑問視する。カバレッジと pass@K が事後強化学習の性能を予測する指標として機能するという先行研究を踏まえ、TailSFT を設計した。TailSFT は訓練中にすでに適合済みのシーケンスを除外することで、データ分布の未モデル化領域、すなわちテールへ学習を集中させる。TailSFT の設計選択、特に具体的なフィルタリング基準を、統制された実験と理論分析の組み合わせを通じて正当化・検証する。OLMo-3 7B において、TailSFT は数学とコーディングの評価で pass@16 の性能をしばしば向上させ、絶対値で最大で17%の利得をもたらす一方、計算オーバーヘッドは最小限に留まる。これらのより高いカバー率を持つチェックポイントは、その後の GRPO 実行で絶対値4%程度の pass@1 の利得に一貫して結びつき、TailSFT のチェックポイントが RL の初期化としてより適していることを示している。さらに、TailSFT が最も役立つ設定を特定するための軽量な診断法を導入する。より広く、我々の結果は、中間のチェックポイントが後続のトレーニングをいかに効果的に支援するかで評価される、原理的で段階を意識したモデル開発アプローチを促す。
+# Summary (by gpt-4o-mini)
+- 強化学習のポストトレーニングは、エージェントの能力向上に寄与するが、高性能なベースモデルを微調整する際に特に効果的である。既存のパイプラインの有効性を疑問視し、TailSFTを設計。これは、訓練時に適合済みシーケンスを除外し、データ分布の未モデル化領域に学習を集中させる。実験と理論分析を通じて設計選択を正当化し、OLMo-3 7Bでは、TailSFTがパフォーマンスを最大17%向上させ、計算オーバーヘッドを抑えた。高いカバレッジのチェックポイントは、後続の強化学習での成果につながり、TailSFTの有用性を示した。診断法を導入し、モデル開発アプローチを提唱。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2094138107314753938?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sadhikamalladi/status/2098485659543728479?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/giffmana/status/2098681993156255952?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6559" target="_blank" rel="noopener noreferrer">The Coverage Principle: How Pre-Training Enables Post-Training</a>
+</p><p>RL前のモデルの応答パターンのcoverageを改善することで、RLのgainを大きくしたい、という気持ちの研究。SFTで特定の応答パターンを過剰に学習すると、少数パターンの応答が抑制されてしまい（Pass@1は改善するが、Pass@kが下がる）、これがRLのgainの低下に繋がるという話のようである。<br><br>SFTにおける各サンプルの学習初期のlossを記録し、学習が進む過程でlossの改善を見て、lossが最も大きく改善したサンプルを除外して学習を進めることで、SFTによるPass@kを改善することで、RLのgainをより高めることを示したようである。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -29393,6 +29447,26 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>ApprenticeBench: The first end-to-end benchmark of computer use, continual learning, and long-horizon agentic capabilities, set in a real job., NeoCognition, 2026.09</title>
+<original-paper-blog-link>https://neocognition.io/blog/apprentice-bench/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6557</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Evaluation, Blog, One-Line Notes, ContinualLearning</tags>
+<repo-issue-date>2026-09-13</repo-issue-date>
+<issue-body>https://neocognition.io/blog/apprentice-bench/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/neocognition/status/2098147185657565391?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Computer Use + Continual Learningに関するベンチマークで、仮想的な建設会社の経理担当として入社し、一定の見習い期間（7ヶ月）を経て、その期間に企業のハンドブックやERPシステムチュートリアル、過去の請求書などで学習をする想定。その実際の請求書処理をこなしていくが、そこには実務上の罠が多く意図的に仕掛けられているようで、Human Baselineでも成功率は51%。最終的にHuman Baselineを上回ったのはAstra, Fable 5.1のようである。モデル間の傾向の違いなども考察されているようである。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
