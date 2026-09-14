@@ -71,6 +71,14 @@ def get_entry_from_metadata(arxiv_id, max_retries=1, wait_seconds=5):
                 f"arXiv ID {arxiv_id} のメタデータが見つかりません "
                 f"(HTTP status: {response.status_code})"
             )
+            
+        if response.status_code == 429:
+            retry_after = response.headers.get("Retry-After")
+            raise ValueError(
+                f"arXiv API returned HTTP 429 (Too Many Requests) "
+                f"for arXiv ID {arxiv_id}"
+                f"Retry-After:{retry_after}"
+　　　　　　　　)
         
         feed = feedparser.parse(response.text)
         
