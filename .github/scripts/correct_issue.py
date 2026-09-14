@@ -13,6 +13,13 @@ event_path = os.environ["GITHUB_EVENT_PATH"]
 MODEL_TRANSLATE = "gpt-5-nano"
 MODEL_SUMM = "gpt-4o-mini"
 
+headers = {
+    "User-Agent": (
+        "paper_notes/1.0 "
+        "(https://github.com/AkihikoWatanabe/paper_notes)"
+    )
+}
+
 translator_system_content = [
         "あなたは自然言語処理や機械学習の研究者です。以下の英語の<abstract>を日本語に翻訳してください。出力は翻訳結果のみを出力してください。"
 ]
@@ -48,13 +55,13 @@ def get_arxiv_id_from_url(url):
 
 def get_entry_from_metadata(arxiv_id, max_retries=1, wait_seconds=5):
     """リトライ付きでarXiv APIからメタデータを取得"""
-    base_url = "http://export.arxiv.org/api/query?"
+    base_url = "https://export.arxiv.org/api/query?"
     query = f"id_list={arxiv_id}"
     url = base_url + query
 
     for attempt in range(max_retries):
         # feedparser の代わりに requests で HTTP ステータスを確認
-        response = requests.get(url)
+        response = requests.get(url, headers=headers, timeout=30)
         
         if response.status_code == 503:
             #print(f"Attempt {attempt + 1}: arXiv API returned 503, retrying in {wait_seconds}s...")
