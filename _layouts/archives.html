@@ -3,16 +3,60 @@ layout: framework
 sidebar: archive-list
 ---
 
-{%- if site.posts.size > 0 -%}
+{% assign archive = site.data.archive_hierarchy %}
 
-  {% include functions.html func='log' level='debug' msg='Get datetimes value' %}
+{% if archive %}
+  <p>ラベルの色に基づき、媒体・会議 / ジャーナルと、研究分野以下の階層に分けて掲載しています。</p>
 
-  {% assign filter = '%Y' %}
-  {% include functions.html func='get_datetimes' %}
-  {% assign datetimes = return %}
+  <h2 id="archive-media">媒体</h2>
+  <ul>
+    {% for item in archive.media %}
+      <li>
+        <a href="{{ item.url | relative_url }}">{{ item.name | escape }}</a>
+        <span>({{ item.issue_count }}件 / {{ item.page_count }}ページ)</span>
+      </li>
+    {% endfor %}
+  </ul>
 
-  {% assign keys = datetimes | reverse %}
-  {% assign field = 'date' %}
-  {% include views/segments.html %}
+  <h2 id="archive-venues">会議 / ジャーナル</h2>
+  <ul>
+    {% for item in archive.venues %}
+      <li>
+        <a href="{{ item.url | relative_url }}">{{ item.name | escape }}</a>
+        <span>({{ item.issue_count }}件 / {{ item.page_count }}ページ)</span>
+      </li>
+    {% endfor %}
+  </ul>
 
-{%- endif -%}
+  <h2 id="archive-research-fields">研究分野</h2>
+  {% for field in archive.research_fields %}
+    <h3>
+      <a href="{{ field.url | relative_url }}">{{ field.name | escape }}</a>
+      <span>({{ field.issue_count }}件 / {{ field.page_count }}ページ)</span>
+    </h3>
+    {% if field.children.size > 0 %}
+      <ul>
+        {% for item in field.children %}
+          <li>
+            <a href="{{ item.url | relative_url }}">{{ item.name | escape }}</a>
+            <span>({{ item.issue_count }}件 / {{ item.page_count }}ページ)</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+
+  {% if archive.other.size > 0 %}
+    <h2 id="archive-other">その他</h2>
+    <ul>
+      {% for item in archive.other %}
+        <li>
+          <a href="{{ item.url | relative_url }}">{{ item.name | escape }}</a>
+          <span>({{ item.issue_count }}件 / {{ item.page_count }}ページ)</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% else %}
+  <p>アーカイブ情報はまだ生成されていません。</p>
+{% endif %}

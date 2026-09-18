@@ -1,44 +1,142 @@
 <script>
-  function hashLocate(hashValue) {
-    hashValue = hashValue.replace(/^.*#h-/, '');
-    hashValue = decodeURIComponent(hashValue);
-    var element = document.getElementById(hashValue);
+  function getHashTargetId(hashValue) {
+    if (!hashValue || hashValue.indexOf('#') < 0) {
+      return null;
+    }
 
+    var hash = hashValue.slice(hashValue.indexOf('#') + 1);
+    if (hash.indexOf('h-') === 0) {
+      hash = hash.slice(2);
+    }
+
+    try {
+      return decodeURIComponent(hash);
+    } catch (error) {
+      return hash;
+    }
+  }
+
+  function revealHiddenParents(element) {
+    var hidden = element.closest('.hidden-content');
+
+    while (hidden) {
+      hidden.style.display = 'block';
+
+      var moreButton = hidden.previousElementSibling;
+      if (moreButton && moreButton.tagName.toLowerCase() === 'button') {
+        moreButton.style.display = 'none';
+      }
+
+      var hideButton = hidden.querySelector('button[onclick^="hideContent"]');
+      if (hideButton) {
+        hideButton.style.display = 'block';
+      }
+
+      hidden = hidden.parentElement
+        ? hidden.parentElement.closest('.hidden-content')
+        : null;
+    }
+  }
+
+  function waitForLayout() {
+    return new Promise(function(resolve) {
+      window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(resolve);
+      });
+    });
+  }
+
+  var hashLayoutObserver = null;
+  var hashLayoutTimer = null;
+
+  function stopHashLayoutStabilization() {
+    if (hashLayoutObserver) {
+      hashLayoutObserver.disconnect();
+      hashLayoutObserver = null;
+    }
+    if (hashLayoutTimer) {
+      window.clearTimeout(hashLayoutTimer);
+      hashLayoutTimer = null;
+    }
+  }
+
+  function stabilizeHashTarget(element) {
+    stopHashLayoutStabilization();
+
+    var layoutRoot = document.querySelector('.post') || document.body;
+    var correctPosition = function() {
+      if (!document.body.contains(element)) {
+        stopHashLayoutStabilization();
+        return;
+      }
+
+      var header = document.querySelector('header.site-header');
+      var headerHeight = header ? Math.floor(header.getBoundingClientRect().height) : 0;
+      var targetTop = headerHeight + 20;
+      var delta = element.getBoundingClientRect().top - targetTop;
+
+      // Xウィジェットの描画で前方の高さが変わったときだけ補正する。
+      if (Math.abs(delta) > 2) {
+        window.scrollBy(0, delta);
+      }
+    };
+
+    if (window.ResizeObserver) {
+      hashLayoutObserver = new ResizeObserver(function() {
+        window.requestAnimationFrame(correctPosition);
+      });
+      hashLayoutObserver.observe(layoutRoot);
+    }
+
+    // 外部ウィジェットの描画が遅い場合にも対応し、一定時間後に監視を終了する。
+    hashLayoutTimer = window.setTimeout(stopHashLayoutStabilization, 8000);
+    correctPosition();
+  }
+
+  async function hashLocate(hashValue) {
+    var targetId = getHashTargetId(hashValue);
+    if (!targetId) {
+      return;
+    }
+
+    var element = document.getElementById(targetId);
     if (!element) {
       return;
     }
 
+    // Pagefindの検索結果がhidden-content内を指す場合だけ、その親ブロックを展開する。
+    revealHiddenParents(element);
+    await waitForLayout();
+
     var header = document.querySelector('header.site-header');
-    var headerRect = header.getBoundingClientRect();
-    var headerTop = Math.floor(headerRect.top);
-    var headerHeight = Math.floor(headerRect.height);
+    var headerHeight = header ? Math.floor(header.getBoundingClientRect().height) : 0;
+    var offsetY = element.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
     var scrollPos = getScrollPos();
-    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
 
-    if (offsetY == scrollPos.y) {
-      return;
+    var needsScroll = Math.abs(offsetY - scrollPos.y) >= 1;
+    if (needsScroll) {
+      smoothScrollTo(Math.max(0, offsetY));
     }
 
-    if (headerTop == 0  && offsetY > scrollPos.y) {
-      offsetY += headerHeight + 2;
-    } else if (headerTop < 0  && offsetY < scrollPos.y) {
-      offsetY -= headerHeight - 2;
-    }
-
-    smoothScrollTo(offsetY);
+    window.setTimeout(function() {
+      stabilizeHashTarget(element);
+    }, needsScroll ? 550 : 0);
   }
 
-  // The first event occurred
-  window.addEventListener('load', function(event) {
+  window.addEventListener('load', function() {
     if (window.location.hash) {
-      hashLocate(window.location.hash);
+      hashLocate(window.location.href);
     }
   });
 
-  // The first event occurred
+  window.addEventListener('hashchange', function() {
+    hashLocate(window.location.href);
+  });
+
   window.addEventListener('click', function(event) {
-    if (event.target.tagName.toLowerCase() == 'a') {
-      hashLocate(event.target.getAttribute('href'));
+    var link = event.target.closest ? event.target.closest('a') : null;
+    if (link && link.href && link.href.indexOf('#') >= 0) {
+      hashLocate(link.href);
     }
   });
 </script>
