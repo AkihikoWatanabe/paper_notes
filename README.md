@@ -194,6 +194,14 @@ Using DeepWiki/CodeWiki, it may be easier to:
 
 ## Updates
 
+**2026.09.19**
+
+- Implement full text search in the blog.
+- The repository history was rewritten to remove generated files under `docs/`, including previously committed static site artifacts.
+  - Commit hashes before the rewrite are no longer valid.
+  - Existing clones should be deleted and freshly cloned.
+  - The generated website is now built and deployed through GitHub Actions as a Pages artifact instead of being committed to the repository.
+
 **2026.03.07**
 - For agentic use cases, I have added AGENTS.md and agent-specific documentation to the agent_doc directory. This prevents AI agents from wasting context on unnecessary HTML strings.
 
