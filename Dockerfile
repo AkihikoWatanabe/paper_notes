@@ -5,3 +5,9 @@ RUN export GEM_HOME="$HOME/gems"
 RUN export PATH="$HOME/gems/bin:$PATH"
 WORKDIR /project
 RUN gem install jekyll bundler
+COPY Gemfile Gemfile.lock jekyll-theme-yat.gemspec ./
+RUN bundle install
+RUN curl -fsSL https://github.com/Pagefind/pagefind/releases/download/v1.5.2/pagefind-v1.5.2-x86_64-unknown-linux-musl.tar.gz -o /tmp/pagefind.tar.gz \
+    && tar -xzf /tmp/pagefind.tar.gz -C /usr/local/bin pagefind \
+    && chmod +x /usr/local/bin/pagefind \
+    && rm /tmp/pagefind.tar.gz

@@ -1,44 +1,47 @@
 name: Build and Deploy to Github Pages
 
 on:
+  push:
+    branches:
+      - master
   schedule:
     - cron: '0 0 * * *'  # 毎日0時に実行
   workflow_dispatch:
 
 jobs:
   build:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
     - name: Checkout branch
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
+    - name: Configure GitHub Pages
+      uses: actions/configure-pages@v5
 
     - name: docker compose build & up
       env:
         TOKEN: ${{ secrets.TOKEN }}
       run: |
         docker compose -f docker-compose.deploy.yaml build --pull --no-cache
-        docker compose -f docker-compose.deploy.yaml up
+        docker compose -f docker-compose.deploy.yaml up --abort-on-container-exit --exit-code-from temp_container
 
-    - name: List directory contents
-      run: ls -l
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v4
+      with:
+        path: ./docs
 
-    - name: Show git status
-      run: git status
-
-    - name: Setup Git
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-
-    - name: Check for changes
-      id: git-check
-      run: |
-        git add ./docs
-        git add ./agent_docs
-        echo "::set-output name=changes::$(git diff --staged --quiet || echo 'changes')"
-
-    - name: Commit and Push
-      if: steps.git-check.outputs.changes == 'changes'
-      run: |
-        git commit -m "Automated deployment: $(date +'%Y-%m-%d %H:%M:%S')"
-        git push origin master
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

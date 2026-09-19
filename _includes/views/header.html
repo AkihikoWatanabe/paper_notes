@@ -54,6 +54,10 @@
           </div>
         </nav>
       {%- endif -%}
+
+      <span class="pagefind-header-search">
+        <pagefind-modal-trigger placeholder="サイト内検索" hide-shortcut></pagefind-modal-trigger>
+      </span>
     </div>
   </div>
 </header>
@@ -105,4 +109,126 @@
   }
   
   document.addEventListener('DOMContentLoaded', initHeader);
+
+  // 検索する意図が示された時点でPagefindを先読みし、入力開始後の待ち時間を短縮する。
+  document.addEventListener('DOMContentLoaded', function() {
+    var searchTrigger = document.querySelector('.pagefind-header-search');
+    if (!searchTrigger) return;
+
+    var preloadPagefind = function() {
+      var modal = document.querySelector('pagefind-modal');
+      var instance = modal && modal.instance;
+      if (instance && typeof instance.triggerLoad === 'function') {
+        instance.triggerLoad();
+      }
+    };
+
+    // ホバーだけでは検索意図が確定しないため、フォーカス時だけ先読みする。
+    searchTrigger.addEventListener('focusin', preloadPagefind, { once: true });
+  });
+
+  // Pagefindの検索操作をGA4へ送信する。
+  document.addEventListener('DOMContentLoaded', function() {
+    var setupAttempts = 0;
+    var setupSearchAnalytics = function() {
+      var components = window.PagefindComponents;
+      if (!components || typeof components.getInstanceManager !== 'function') {
+        if (setupAttempts < 50) {
+          setupAttempts += 1;
+          window.setTimeout(setupSearchAnalytics, 100);
+        }
+        return;
+      }
+
+      var manager = components.getInstanceManager();
+      var instance = manager.getInstance('default');
+      if (!instance || instance.__ga4SearchTrackingInstalled) return;
+      instance.__ga4SearchTrackingInstalled = true;
+
+      var currentTerm = '';
+      var searchSequence = 0;
+      var pendingEventTimer = null;
+
+      instance.on('search', function(term) {
+        currentTerm = typeof term === 'string' ? term.trim() : '';
+        searchSequence += 1;
+      });
+
+      instance.on('results', function(searchResult) {
+        var term = (instance.searchTerm || currentTerm || '').trim();
+        if (!term) return;
+
+        var resultCount = null;
+        if (searchResult && typeof searchResult.unfilteredResultCount === 'number') {
+          resultCount = searchResult.unfilteredResultCount;
+        } else if (searchResult && Array.isArray(searchResult.results)) {
+          resultCount = searchResult.results.length;
+        }
+
+        var eventSequence = searchSequence;
+        if (pendingEventTimer) {
+          window.clearTimeout(pendingEventTimer);
+        }
+
+        // 入力中の各文字ではなく、最後に確定した検索だけを記録する。
+        pendingEventTimer = window.setTimeout(function() {
+          if (eventSequence !== searchSequence || typeof window.gtag !== 'function') return;
+
+          var eventParams = {
+            search_term: term,
+            search_location: 'header'
+          };
+          if (resultCount !== null) {
+            eventParams.search_result_count = resultCount;
+          }
+
+          window.gtag('event', 'search', eventParams);
+          if (resultCount === 0) {
+            window.gtag('event', 'search_no_result', {
+              search_term: term,
+              search_location: 'header'
+            });
+          }
+        }, 700);
+      });
+
+      document.addEventListener('click', function(event) {
+        var path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+        var resultLink = null;
+        var resultContainer = null;
+
+        path.forEach(function(node) {
+          if (!node || !node.tagName) return;
+          if (!resultLink && node.tagName.toLowerCase() === 'a') resultLink = node;
+          if (!resultContainer && node.tagName.toLowerCase() === 'pagefind-results') {
+            resultContainer = node;
+          }
+        });
+
+        if (!resultLink && event.target && event.target.closest) {
+          resultLink = event.target.closest('a');
+        }
+        if (!resultContainer && event.target && event.target.closest) {
+          resultContainer = event.target.closest('pagefind-results');
+        }
+        if (!resultLink || !resultContainer || typeof window.gtag !== 'function') return;
+
+        var resultPath = '';
+        try {
+          resultPath = new URL(resultLink.href, window.location.href).pathname;
+        } catch (error) {
+          resultPath = resultLink.getAttribute('href') || '';
+        }
+
+        window.gtag('event', 'search_result_click', {
+          search_term: (instance.searchTerm || currentTerm || '').trim(),
+          result_path: resultPath,
+          search_location: 'header',
+          transport_type: 'beacon'
+        });
+      }, true);
+    };
+
+    setupSearchAnalytics();
+  });
 </script>

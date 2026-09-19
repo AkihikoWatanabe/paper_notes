@@ -1,10 +1,55 @@
-{%- include functions.html func='log' level='debug' msg='Get datetimes value' -%}
+{% assign archive = site.data.archive_hierarchy %}
 
-{% assign filter = '%Y' %}
-{% include functions.html func='get_datetimes' %}
-{% assign datetimes = return %}
+<div class="common-list">
+  <ul>
+    <li>
+      <a href="{{ '/archives.html' | relative_url }}">
+        All<span>{{ archive.total_page_count }}</span>
+      </a>
+    </li>
 
-{% assign keys = datetimes %}
-{% assign field = 'date' %}
-{% assign url = '/archives.html' | relative_url %}
-{% include sidebar/common-list.html %}
+    <li>
+      <a href="{{ '/archives.html#archive-media' | relative_url }}">
+        媒体<span>{{ archive.media.size }}</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{ '/archives.html#archive-venues' | relative_url }}">
+        会議 / ジャーナル<span>{{ archive.venues.size }}</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{ '/archives.html#archive-research-fields' | relative_url }}">
+        研究分野<span>{{ archive.research_fields.size }}</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{ '/archives.html#archive-other' | relative_url }}">
+        その他<span>{{ archive.other.size }}</span>
+      </a>
+    </li>
+
+    {% for field in archive.research_fields %}
+      <li>
+        {% if field.children.size > 0 %}
+          <details class="archive-subtree">
+            <summary>{{ field.name | escape }} <span>{{ field.issue_count }}</span></summary>
+            <ul>
+              {% for item in field.children %}
+                <li>
+                  <a href="{{ item.url | relative_url }}">
+                    {{ item.name | escape }} <span>{{ item.issue_count }}</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% else %}
+          <a href="{{ field.url | relative_url }}">
+            {{ field.name | escape }} <span>{{ field.issue_count }}</span>
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

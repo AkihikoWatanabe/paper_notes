@@ -10,6 +10,123 @@ from pathlib import Path
 from typing import Callable, Tuple, List
 
 
+THREAD_PAGE_SIZE = 200
+THREAD_VISIBLE_ITEMS = 100
+HOME_VISIBLE_ITEMS = 20
+SKIPPED_LABELS = {"translation_required", "action_wanted", "Pocket"}
+
+ARCHIVE_COLOR_GROUPS = {
+    "media": {"f9d0c4"},
+    "venue": {"9cc929"},
+    "research": {"0e8a16"},
+    "child": {"b60205", "0052cc", "9615c1", "fcf3ba"},
+}
+
+
+def label_slug(label: str) -> str:
+    """ラベルを既存のURL規則に合わせたスラッグへ変換する。"""
+    slug = label.strip().replace("/", "-").replace(" ", "-")
+    return re.sub(r"-+", "-", slug)
+
+
+def thread_page_filename(label: str, page_number: int = 1) -> str:
+    return f"{label_slug(label)}-{page_number}.html"
+
+
+def chunk_items(items: list[tuple[dict, int]], chunk_size: int = THREAD_PAGE_SIZE):
+    for start in range(0, len(items), chunk_size):
+        yield items[start:start + chunk_size]
+
+
+def archive_color_group(color: str) -> str:
+    normalized = (color or "").lower().lstrip("#")
+    for group, colors in ARCHIVE_COLOR_GROUPS.items():
+        if normalized in colors:
+            return group
+    return "other"
+
+
+def archive_label_entry(label: str, issue_list: list[tuple[dict, int]]) -> dict:
+    issue_ids = {issue.get("number") or issue.get("id") for issue, _ in issue_list}
+    page_count = (len(issue_list) + THREAD_PAGE_SIZE - 1) // THREAD_PAGE_SIZE
+    return {
+        "name": label,
+        "url": f"articles/{thread_page_filename(label)}",
+        "issue_count": len(issue_ids),
+        "page_count": page_count,
+    }
+
+
+def build_archive_hierarchy(
+    label_to_issues: dict[str, list[tuple[dict, int]]],
+    all_issues: list[dict],
+) -> dict:
+    label_groups = {}
+    research_children = defaultdict(set)
+
+    for issue in all_issues:
+        issue_groups = defaultdict(list)
+        for label in issue["labels"]:
+            name = label["name"]
+            issue_groups[archive_color_group(label.get("color"))].append(name)
+            label_groups.setdefault(name, archive_color_group(label.get("color")))
+
+        for research_label in issue_groups["research"]:
+            research_children[research_label].update(issue_groups["child"])
+
+    entries = {
+        label: archive_label_entry(label, issue_list)
+        for label, issue_list in label_to_issues.items()
+        if label not in SKIPPED_LABELS and issue_list
+    }
+
+    media = []
+    venues = []
+    research_fields = []
+    assigned = set()
+
+    for label, entry in entries.items():
+        group = label_groups.get(label, "other")
+        if group == "media":
+            media.append(entry)
+            assigned.add(label)
+        elif group == "venue":
+            venues.append(entry)
+            assigned.add(label)
+
+    for label, entry in entries.items():
+        if label_groups.get(label) != "research":
+            continue
+
+        children = []
+        for child_label in sorted(research_children[label], key=str.casefold):
+            child_entry = entries.get(child_label)
+            if child_entry is not None:
+                children.append(child_entry)
+                assigned.add(child_label)
+
+        entry = dict(entry)
+        entry["children"] = children
+        research_fields.append(entry)
+        assigned.add(label)
+
+    other = [entry for label, entry in entries.items() if label not in assigned]
+
+    sort_entries = lambda values: sorted(values, key=lambda value: value["name"].casefold())
+    media = sort_entries(media)
+    venues = sort_entries(venues)
+    research_fields = sort_entries(research_fields)
+    other = sort_entries(other)
+
+    return {
+        "total_page_count": sum(entry["page_count"] for entry in entries.values()),
+        "media": media,
+        "venues": venues,
+        "research_fields": research_fields,
+        "other": other,
+    }
+
+
 year_pat = re.compile(r"'(\d{2,4})")
 # ![image](https://github.com/AkihikoWatanabe/paper_notes/assets/12249301/4268eb3f-349f-4ebe-adeb-2cbfcb7cfe17)
 #(https://github.com/user-attachments/assets/
@@ -412,10 +529,10 @@ def _generate_html_content_list(sorted_issues: list[tuple[dict, int]], current_t
         tags = [data['name'] for data in issue['labels']]
         if year == 0:
             t = "Article"
-            _html_content.append(f'<a class="button" href="{str(assets_root / t.replace("/", "-").replace(" ", "-"))}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
-        for t in tags: 
-            if t not in current_target and t not in ["translation_required", "action_wanted"]:
-                _html_content.append(f'<a class="button" href="{str(assets_root / t.replace("/", "-").replace(" ", "-"))}.html" target="_blank" rel="noopener noreferrer">#{t}</a>')
+            _html_content.append(f'<a class="button" href="{str(assets_root / thread_page_filename(t))}" target="_blank" rel="noopener noreferrer">#{t}</a>')
+        for t in tags:
+            if t not in current_target and t not in SKIPPED_LABELS:
+                _html_content.append(f'<a class="button" href="{str(assets_root / thread_page_filename(t))}" target="_blank" rel="noopener noreferrer">#{t}</a>')
         #_html_content.append('<br>')
         if attach_date:
             _html_content.append(f'<span class="issue_date">Issue Date: {issue["createdAt"][:issue["createdAt"].find("T")]}</span>')
@@ -441,6 +558,7 @@ def _generate_agentdoc_content_list(sorted_issues: list[tuple[dict, int]]) -> li
         title = prepro_title(issue['title'])
         original_link = find_first_url(text=issue["body"])
         tags = [data['name'] for data in issue['labels']]
+        comment_text = None
         if issue["body"] != None:
             snippet_text, comment_text = get_snippets(issue)
 
@@ -474,10 +592,17 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
     _html_content.append('</div>')
 
     if len(sorted_issues[visible_num:]) > 0:
-        _html_content.append(f'<button onclick="showMore({curr_more_idx})">more</button>')
+        remaining_num = len(sorted_issues[visible_num:])
+        _html_content.append(
+            f'<button class="content-toggle-button" onclick="showMore({curr_more_idx})">'
+            f'続きを表示（残り{remaining_num}件）</button>'
+        )
         _html_content.append('<div class="hidden-content">')
         _html_content += _generate_html_content_list(sorted_issues[visible_num:], current_target=current_target, attach_date=attach_date, assets_root=assets_root, h_level=h_level)
-        _html_content.append(f'<button onclick="hideContent({curr_more_idx})" style="display: none;">hide</button>')
+        _html_content.append(
+            f'<button class="content-toggle-button" onclick="hideContent({curr_more_idx})" '
+            'style="display: none;">表示を折りたたむ</button>'
+        )
         _html_content.append('</div>')
         curr_more_idx += 1
 
@@ -489,6 +614,136 @@ def gen_one_item(issue_list: list[tuple[dict, int]], current_target: list[str], 
     gen_result["html_content"] = "\n".join(_html_content)
     gen_result["agentdoc_content"] = "\n".join(_agentdoc_content)
     return gen_result
+
+
+def _write_thread_redirect(label: str, first_page_filename: str, page_key: str | None = None) -> None:
+    """従来の /articles/<label>.html から最初の分割ページへ転送する。"""
+    slug = page_key or label_slug(label)
+    redirect_content = f"""---
+layout: null
+permalink: /articles/{slug}.html
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=./{first_page_filename}">
+  <script>
+    window.location.replace("./{first_page_filename}" + window.location.hash);
+  </script>
+</head>
+<body>
+  <a href="./{first_page_filename}">{label} を開く</a>
+</body>
+</html>
+"""
+    Path("_articles").mkdir(parents=True, exist_ok=True)
+    with open(Path("_articles") / f"{slug}.html", "w", encoding="utf-8") as f:
+        f.write(redirect_content)
+
+
+def _thread_navigation(slug: str, page_number: int, page_count: int, position: str) -> str:
+    navigation = [
+        f'<nav class="thread-pagination thread-pagination-{position}" '
+        'data-pagefind-ignore aria-label="Thread navigation">'
+    ]
+    if page_number > 1:
+        navigation.append(
+            f'<a class="thread-pagination-previous" '
+            f'href="{slug}-{page_number - 1}.html">← 前のスレッド</a>'
+        )
+    else:
+        navigation.append('<span class="thread-pagination-placeholder"></span>')
+
+    navigation.append(
+        f'<span class="thread-pagination-status">スレッド {page_number} / {page_count}</span>'
+    )
+
+    if page_number < page_count:
+        navigation.append(
+            f'<a class="thread-pagination-next" '
+            f'href="{slug}-{page_number + 1}.html">次のスレッド →</a>'
+        )
+    else:
+        navigation.append('<span class="thread-pagination-placeholder"></span>')
+
+    navigation.append('</nav>')
+    return "\n".join(navigation)
+
+
+def _write_thread_pages(
+    label: str,
+    issue_list: list[tuple[dict, int]],
+    lazy_loading: str,
+    current_target: list[str] | None = None,
+    agentdoc_filename: str | None = None,
+    page_key: str | None = None,
+    display_label: str | None = None,
+) -> str | None:
+    """ラベルに属するIssueを日付順のスレッドページへ分割して生成する。"""
+    global curr_more_idx
+
+    sorted_issues = sorted(issue_list, key=lambda item: (item[1], item[0]["createdAt"]), reverse=True)
+    if not sorted_issues:
+        return None
+
+    target_labels = current_target if current_target is not None else [label]
+    pages = list(chunk_items(sorted_issues))
+    page_count = len(pages)
+    slug = page_key or label_slug(label)
+    display_label = display_label or label
+    page_title = f"{display_label}に関する論文・技術記事メモの一覧"
+    latest_date = sorted(issue[0]["createdAt"][:10] for issue in sorted_issues)[-1]
+
+    Path("_articles").mkdir(parents=True, exist_ok=True)
+    for page_number, page_issues in enumerate(pages, start=1):
+        curr_more_idx = 0
+        page_filename = f"{slug}-{page_number}.html"
+        html_content = (
+            f'<h2 id="{slug}" class="paper-head">{display_label} '
+            f'({len(sorted_issues)}) — {page_number}/{page_count}</h2>'
+        )
+        html_content += _thread_navigation(slug, page_number, page_count, "top")
+        gen_result = gen_one_item(
+            page_issues,
+            target_labels,
+            latest_date,
+            assets_root="",
+            h_level="3",
+            visible_num=min(THREAD_VISIBLE_ITEMS, len(page_issues)),
+        )
+        html_content += gen_result["html_content"]
+        html_content += _thread_navigation(slug, page_number, page_count, "bottom")
+
+        escaped_title = page_title.replace('"', '\\"')
+        escaped_category = label.replace('"', '\\"')
+        html_template = f"""---
+layout: post
+title: "{escaped_title}"
+author: AkihikoWATANABE
+date: {latest_date}
+categories: {label}
+thread_category: "{escaped_category}"
+permalink: /articles/{page_filename}
+thread_page: true
+thread_page_number: {page_number}
+---
+"""
+        with open(Path("_articles") / page_filename, "w", encoding="utf-8") as f:
+            f.write(f"{html_template}{html_content}{lazy_loading}")
+
+    if agentdoc_filename is not None:
+        agentdoc_content = [
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            f'<paper-list last-updated="{latest_date}">',
+        ]
+        agentdoc_content += _generate_agentdoc_content_list(sorted_issues)
+        agentdoc_content.append("</paper-list>")
+        with open(Path("agent_docs") / agentdoc_filename, "w", encoding="utf-8") as f:
+            f.write("\n".join(agentdoc_content))
+
+    _write_thread_redirect(label, f"{slug}-1.html", page_key=slug)
+    return f"{slug}-1.html"
 
 
 def main():
@@ -662,9 +917,10 @@ def main():
 
     print("Start to decoding as html ...")
     html_template = """---
-layout: post 
+layout: post
 title: 論文や技術メモの一覧（随時更新）
 author: AkihikoWATANABE
+thread_page: true
 ---
 """
 
@@ -719,33 +975,48 @@ author: AkihikoWATANABE
   <li><a href="https://akihikowatanabe.github.io/paper_notes/articles/Author-Thread-Post.html">Author Thread-Post: 論文・ブログ等の著者自身による解説ポスト</a></li>
 </ul>
 '''
-    html_content += '以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (<a href="https://akihikowatanabe.github.io/paper_notes/articles/Selected-Papers-Blogs.html">Selected Papers/Blogs</a>) です。'
+    html_content += '以下、直近100個の論文メモ (Latest Posts) と、管理人が収集する中で重要だと感じた論文/ブログ等の一覧 (<a href="https://akihikowatanabe.github.io/paper_notes/articles/Selected-Papers-Blogs-1.html">Selected Papers/Blogs</a>) です。'
 
     # latest posts
     #html_content += '## Latest Posts\n\n'
     html_content += '<h2 id="latest-post" class="paper-head">Latest Posts (100)</h2>'
-    latest_issues = sorted(all_issues, key=lambda x: x["number"], reverse=True)[:100]
+    latest_issues = sorted(all_issues, key=lambda x: x["createdAt"], reverse=True)[:100]
     latest_issues = [(issue, issue["number"]) for issue in latest_issues]
     latest_date = sorted([issue[0]["createdAt"].split("T")[0] for issue in latest_issues], reverse=True)[0]
-    gen_result = gen_one_item(latest_issues, [], latest_date, h_level="3")
+    html_content += '<p><a class="thread-index-link" href="articles/latest-posts-1.html">Latest Postsをスレッドページで読む</a></p>'
+    gen_result = gen_one_item(
+        latest_issues,
+        [],
+        latest_date,
+        h_level="3",
+        visible_num=HOME_VISIBLE_ITEMS,
+    )
     html_content += gen_result["html_content"]
-
-    with open("./agent_docs/latest-posts.xml", "w") as f:
-        f.write(gen_result["agentdoc_content"])
 
     # Admin's Pick
     selected_issues = [issue for issue in all_issues if any(["Selected Papers/Blogs" == l["name"] for l in issue["labels"]])]
+    selected_issues = sorted(
+        selected_issues,
+        key=lambda issue: (get_year(issue["title"]), issue["createdAt"]),
+        reverse=True,
+    )
+    selected_issues = [(issue, get_year(issue["title"])) for issue in selected_issues]
     html_content += f'<h2 id="selected-papers" class="paper-head">Selected Papers/Blogs ({len(selected_issues)})</h2>'
-    selected_issues = sorted(selected_issues, key=lambda x: x["number"], reverse=True)
-    selected_issues = [(issue, issue["number"]) for issue in selected_issues]
-    latest_date = sorted([issue[0]["createdAt"].split("T")[0] for issue in selected_issues], reverse=True)[0]
-    gen_result = gen_one_item(selected_issues, [], latest_date, h_level="3")
-    
-    html_content += gen_result["html_content"]
+    html_content += f'<p><a class="thread-index-link" href="articles/Selected-Papers-Blogs-1.html">Selected Papers/Blogs ({len(selected_issues)})をスレッドページで読む</a></p>'
+    if selected_issues:
+        selected_latest_date = sorted(
+            [issue[0]["createdAt"].split("T")[0] for issue in selected_issues],
+            reverse=True,
+        )[0]
+        gen_result = gen_one_item(
+            selected_issues,
+            [],
+            selected_latest_date,
+            h_level="3",
+            visible_num=HOME_VISIBLE_ITEMS,
+        )
+        html_content += gen_result["html_content"]
     html_content += "<hr>\n\n"
-
-    with open("./agent_docs/admin-s-pick.xml", "w") as f:
-        f.write(gen_result["agentdoc_content"])
 
     print("main part was finished.")
 
@@ -790,10 +1061,30 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }, { rootMargin: '200px', threshold: 0.01 }); // 少し早めに読み込む
 
-  document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
+    document.querySelectorAll('.tweet-embed').forEach(el => observer.observe(el));
 });
 </script>
 """
+
+    os.makedirs('./_articles', exist_ok=True)
+    os.makedirs('./agent_docs', exist_ok=True)
+    _write_thread_pages(
+        "latest-posts",
+        latest_issues,
+        lazy_loading,
+        current_target=[],
+        agentdoc_filename="latest-posts.xml",
+        page_key="latest-posts",
+        display_label="Latest Posts",
+    )
+    _write_thread_pages(
+        "Selected Papers/Blogs",
+        selected_issues,
+        lazy_loading,
+        current_target=["Selected Papers/Blogs"],
+        agentdoc_filename="selected-papers-and-blogs.xml",
+    )
+
     home_content = f'{html_template}{html_content}{lazy_loading}'
 
     #with open("./index.markdown", "w") as f:
@@ -802,37 +1093,29 @@ document.addEventListener("DOMContentLoaded", function() {
     print("finished")
 
     print("Start to make label pages ...")
-    # generate each labels pages
+    # generate each label as date-ordered thread pages
     label_count = {}
-    os.makedirs('./_posts', exist_ok=True)
-    os.makedirs('./agent_docs', exist_ok=True)
     for i, (label, issue_list) in enumerate(label_to_issues.items()):
-        if label in ["translation_required", "action_wanted", "Pocket"]:
+        if label in SKIPPED_LABELS:
             continue
 
-        latest_date = sorted([issue[0]["createdAt"].split("T")[0] for issue in issue_list], reverse=True)[0]
-        html_template = f"""---
-layout: post
-title: {label}に関する論文・技術記事メモの一覧
-author: AkihikoWATANABE
-date: {latest_date}
-categories: {label}
----
-"""
-        global curr_more_idx
-        curr_more_idx = 0
-        html_content = f'<h2 id={label} class="paper-head"> {label}</h2>'
-        gen_result = gen_one_item(issue_list, [label], latest_date, assets_root="", h_level="3", visible_num=100)
-        html_content += gen_result["html_content"]
-        label_content = f"{html_template}{html_content}{lazy_loading}"
-        
-        #with open(f"./_articles/{label.replace('/', '_')}.markdown", "w") as f:
-        with open(f"./_posts/{latest_date}-{label.replace('/', '-')}.html", "w") as f:
-            f.write(label_content)
-        with open(f"./agent_docs/{label.replace('/', '-')}.xml", "w") as f:
-            f.write(gen_result["agentdoc_content"])
-            
+        _write_thread_pages(
+            label,
+            issue_list,
+            lazy_loading,
+            current_target=[label],
+            agentdoc_filename=f"{label.replace('/', '-')}.xml",
+        )
+
         label_count[label] = len(issue_list)
+
+    archive_issue_lists = dict(label_to_issues)
+    archive_issue_lists["latest-posts"] = latest_issues
+    archive_issue_lists["Selected Papers/Blogs"] = selected_issues
+    archive_hierarchy = build_archive_hierarchy(archive_issue_lists, all_issues)
+    with open("./_data/archive_hierarchy.json", "w", encoding="utf-8") as f:
+        json.dump(archive_hierarchy, f, ensure_ascii=False, indent=2)
+
     with open("./_data/category_counts.yml", "w") as f:
         for l, c in label_count.items():
             f.write(f"{l}: {c}\n")
