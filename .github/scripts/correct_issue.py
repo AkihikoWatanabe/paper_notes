@@ -10,8 +10,8 @@ github_token = os.environ["TOKEN"]
 repo_name = os.environ["GITHUB_REPOSITORY"]
 event_path = os.environ["GITHUB_EVENT_PATH"]
 
-MODEL_TRANSLATE = "gpt-5-nano"
-MODEL_SUMM = "gpt-4o-mini"
+MODEL_TRANSLATE = "gpt-5.6-luna"
+MODEL_SUMM = "gpt-5.6-luna"
 
 translator_system_content = [
         "あなたは自然言語処理や機械学習の研究者です。以下の英語の<abstract>を日本語に翻訳してください。出力は翻訳結果のみを出力してください。"
