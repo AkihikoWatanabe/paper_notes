@@ -114,7 +114,7 @@ The above labels are just a few examples, and there are currently 600+ different
 
 ---
 
-## [Wiki](https://github.com/AkihikoWatanabe/paper_notes/wiki): Personal Trend Notes
+## [Wiki](https://github.com/AkihikoWatanabe/paper_notes/wiki/X上のAIトレンド（？）（個人の感想です）): Personal Trend Notes
 
 A Wiki is maintained to record **personal impressions of trends** observed while casually browsing papers and discussions on X.
 
