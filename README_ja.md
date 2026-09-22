@@ -180,6 +180,15 @@ cd paper_notes
 DeepWiki/CodeWikiを利用することで、Issueで管理されている情報に対話ベースでアクセスできます。
 これにより、興味のある情報を対話形式で探索できます。
 
+以下は DeepWiki の codemap モードを用いて以下のクエリで対話をした場合の結果の一部です。
+
+> Survey the literature on pretraining.
+
+本リポジトリに集積された情報に基づいて構造化されたドキュメントとして出力されます。
+ドキュメントにはソースが明示的に示されます。
+
+<img width="1526" height="1265" alt="image" src="https://github.com/user-attachments/assets/d07dee80-9e5b-454d-86b0-6b9cdfe982fa" />
+
 ---
 
 ## Updates
