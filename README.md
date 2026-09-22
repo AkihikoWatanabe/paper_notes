@@ -190,6 +190,14 @@ Using DeepWiki/CodeWiki, it may be easier to:
 - Ask questions about specific papers, topics, or trends
 - Navigate the repository in a conversational manner rather than browsing Issues manually
 
+Here is an example query, run in codemap mode on DeepWiki:
+
+> Survey the literature on pretraining.
+
+It returns a structured document explaining the literature on pretraining, based on the materials accumulated in this repository, with references to their sources.
+
+<img width="1526" height="1265" alt="image" src="https://github.com/user-attachments/assets/d07dee80-9e5b-454d-86b0-6b9cdfe982fa" />
+
 ---
 
 ## Updates
