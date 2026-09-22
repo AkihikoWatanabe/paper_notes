@@ -111,7 +111,7 @@ Issueには主に以下の内容がメモされています:
 
 Issueでの管理に加えて、2種類の補足的なコンテンツがあります。
 
-### [Wiki](https://github.com/AkihikoWatanabe/paper_notes/wiki): 個人の観測に基づく研究トレンドに関するノート
+### [Wiki](https://github.com/AkihikoWatanabe/paper_notes/wiki/X上のAIトレンド（？）（個人の感想です）): 個人の観測に基づく研究トレンドに関するノート
 
 個人が観測した範囲に基づくAI関連の研究のトレンドをWikiにメモしています。このメモについては以下の点にご留意ください:
 
