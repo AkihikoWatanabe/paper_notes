@@ -1,5 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-27">
+<paper-list last-updated="2026-10-02">
+<paper-entry>
+<title>[Paper Note] Decoding Looped Transformers Better for （Almost） Free, Weihao Liu+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.02185</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6695</repo-issue-link>
+<tags>NLP, Transformer, Decoding, Selected Papers/Blogs, reading, RecurrentModels, Initial Impression Notes</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.02185
+# Authors
+  - Weihao Liu
+  - Huangjie Zheng
+  - Tianrong Chen
+  - Rohit Dilip
+  - Richard He Bai
+  - Yizhu Jiao
+  - Yuyang Wang
+  - Ruixiang Zhang
+# Abstract
+  - Looped Transformers achieve parameter efficiency by repeatedly executing a shared block across recurrent loops. Each loop yields an intermediate representation decodable for the same next token, yet standard decoding discards earlier states. Because earlier loops embody less computation, recurrence inherently supplies aligned weak-and-strong prediction pairs without auxiliary models or external training. We introduce LoopCD, a training-free contrastive decoding framework that guides token selection by contrasting the final prediction with an earlier recurrent pass, operating either in logit space with one extra output pass (LoopCD-Logits) or in hidden-state space with zero output overhead (LoopCD-Hidden). Across four looped Transformer families, LoopCD delivers substantial, consistent gains at full recurrent depth: LoopCD-Logits raises Ouro-2.6B-Thinking's AIME 2024 pass@1 from 61.88% to 73.33%, while LoopCD-Hidden lifts Huginn's HumanEval pass@1 from 22.56% to 31.71%. Crucially, these performance gains enable halving the number of recurrent loops while still matching or exceeding full-depth unguided baselines, reducing forward FLOPs by 22.5% to 48.2%. By transforming intermediate recurrent states into effective guidance signals, LoopCD achieves superior decoding quality while substantially reducing inference compute.
+# Translation (by gpt-5.6-luna)
+- ループ型Transformerは、共有ブロックを再帰ループにわたって繰り返し実行することで、パラメータ効率を実現する。各ループでは、同じ次トークンをデコード可能な中間表現が生成されるが、標準的なデコードではそれ以前の状態は破棄される。初期のループほど計算量が少ないため、再帰構造そのものが、補助モデルや外部学習を必要とせず、整合した弱い予測と強い予測のペアを自然に提供する。
+
+本研究では、最終予測とより早い再帰パスの予測を対比することでトークン選択を導く、学習不要の対照的デコードフレームワークLoopCDを提案する。LoopCDは、追加の出力パスを1回用いてロジット空間で動作するLoopCD-Logitsと、出力に伴うオーバーヘッドなしで隠れ状態空間において動作するLoopCD-Hiddenの2通りで実行できる。
+
+4種類のループ型Transformerファミリーにわたる実験で、LoopCDは再帰の完全な深さにおいて、大幅かつ一貫した性能向上を達成した。具体的には、LoopCD-Logitsにより、Ouro-2.6B-ThinkingのAIME 2024におけるpass@1は61.88%から73.33%に向上し、LoopCD-Hiddenにより、HuginnのHumanEvalにおけるpass@1は22.56%から31.71%に向上した。さらに重要なことに、これらの性能向上により、再帰ループ数を半分にしても、完全な深さでガイダンスを用いないベースラインと同等以上の性能を維持できる。この結果、順伝播のFLOPsを22.5%から48.2%削減できる。中間の再帰状態を効果的なガイダンス信号へと変換することで、LoopCDは推論計算量を大幅に削減しながら、より優れたデコード品質を実現する。
+# Summary (by gpt-5.6-luna)
+- ループ型Transformerの中間再帰状態を用いて、最終予測と早期予測を対比する学習不要のデコード手法LoopCDを提案。  
+追加の出力パスを用いるLogits版と、隠れ状態空間で動作するHidden版により、弱い予測をガイダンス信号として活用する。  
+4種類のモデルで性能を一貫して向上させ、再帰回数を半分にしても性能を維持しつつ、推論FLOPsを22.5〜48.2%削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/2105888510482034876?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6696" target="_blank" rel="noopener noreferrer">[Paper Note] Contrastive Decoding: Open-ended Text Generation as Optimization, Xiang Lisa Li+, ACL'23, 2022.10</a>
+</p><p>Contrastive Decodingで示されている、アマチュアの出力とエキスパートの出力の差を見ることで言語モデルにおける典型的なfailure modeを抑制し、エキスパート特有の出力を強調する、といったデコーディングの考え方をLooped Transformerのループが浅い時点の表現をアマチュア、深い時点の表現エキスパートとみなすことで、Looped Transformer上で自然に実現する、という話に見え、これによりfull depthで比較した場合により高いベンチマークスコアを得ることができ、ループの深さを半分にしても同等以上の性能が得られ、結果的に計算量を削減しながらull depthと同等程度の性能を得ることができる、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/8acd8250-7cc6-459a-9a15-b5a6b3662591" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] PreFT: Prefill-only finetuning for efficient inference, Andrew Lanpouthakoun+, NeurIPS'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.14217</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6639</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Personalization, PEFT(Adaptor/LoRA), LLMServing, NeurIPS, Decoding, KeyPoint Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-09-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.14217
+# Authors
+  - Andrew Lanpouthakoun
+  - Aryaman Arora
+  - Zhengxuan Wu
+  - Dhruv Pai
+  - Ben Keigwin
+  - Dan Jurafsky
+  - Christopher Potts
+# Abstract
+  - Large language models can now be personalised efficiently at scale using parameter efficient finetuning methods (PEFTs), but serving user-specific PEFTs harms throughput, even with specialised kernels and memory management techniques. This is because, theoretically and empirically, a mismatch exists between prefill (processing a large number of tokens at once) and decode (generating a single token autoregressively): the latter has far lower throughput when serving multiple adapters. Rather than optimising performance relative to parameter count, for efficient multi-adapter serving, we instead ought to optimise performance relative to serving throughput. We therefore propose PreFT (Prefill-only Finetuning), wherein we only apply the adapter to prefill tokens and discard it afterwards. PreFT significantly increases throughput with minimal effect on performance. We develop and release an efficient implementation of two prefill-only PEFTs, LoRA and ReFT, on the vLLM inference engine. We first show that serving multi-user PreFTs is more efficient than traditional PEFTs ($1.9\times$ the throughput when serving $512$ adapters on Llama 3.1 70B). Then, we compare the performance of prefill-only vs. all-token adapters on a variety of supervised finetuning and reinforcement learning tasks with LMs at varying scales. On SFT, we observe that the evaluation loss of PreFTs is higher than PEFTs, but can be compensated by increasing rank with nearly no reduction in throughput. On RL, we consistently find that PreFTs approach parity with standard PEFTs. Together, this work validates prefill-only adaptation of LLMs as a more favourable accuracy-throughput tradeoff than existing PEFTs for personalised serving.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデルは現在、パラメータ効率的ファインチューニング手法（PEFT）を用いることで、大規模かつ効率的にパーソナライズできる。しかし、ユーザーごとに異なるPEFTを提供すると、専用カーネルやメモリ管理技術を用いた場合でもスループットが低下する。これは、理論的にも実証的にも、プレフィル（大量のトークンを一度に処理する段階）とデコード（自己回帰的に単一のトークンを生成する段階）の間にミスマッチが存在するためである。特に後者では、複数のアダプターを提供する際のスループットがはるかに低くなる。
+
+複数アダプターの効率的な提供においては、パラメータ数に対する性能を最適化するのではなく、提供スループットに対する性能を最適化すべきである。そこで本研究では、PreFT（Prefill-only Finetuning）を提案する。PreFTでは、プレフィル段階のトークンにのみアダプターを適用し、その後は破棄する。PreFTは、性能への影響を最小限に抑えながら、スループットを大幅に向上させる。
+
+また、推論エンジンvLLM上で、プレフィル専用PEFTであるLoRAとReFTの効率的な実装を開発・公開する。まず、複数ユーザー向けのPreFTの提供が従来のPEFTより効率的であることを示す（Llama 3.1 70Bで512個のアダプターを提供する場合、スループットは1.9倍）。次に、さまざまな規模の言語モデルを用い、複数の教師ありファインチューニングおよび強化学習タスクにおいて、プレフィル専用アダプターと全トークン対応アダプターの性能を比較する。
+
+教師ありファインチューニング（SFT）では、PreFTの評価損失はPEFTより高くなるものの、ランクを増加させることで補償でき、その際スループットはほとんど低下しないことを確認した。強化学習（RL）では、PreFTが一貫して標準的なPEFTと同等の性能に近づくことが分かった。以上により、本研究は、LLMのプレフィル専用適応が、パーソナライズされた提供において、既存のPEFTよりも精度とスループットの好ましいトレードオフを実現することを示す。
+# Summary (by gpt-5.6-luna)
+- 複数ユーザー向けのPEFTでは、特にデコード段階でアダプター数に伴いスループットが低下する。
+そこで、プレフィル段階のトークンにのみアダプターを適用するPreFTを提案。
+LoRAとReFTを用いたPreFTをvLLM上に実装し、Llama 3.1 70Bで512個のアダプターを提供する場合、従来のPEFTに対して1.9倍のスループットを達成。
+SFTではランクの増加により性能低下を補償でき、RLでは標準PEFTと同等に近い性能を維持。
+LLMのパーソナライズにおいて、PreFTが精度と提供スループットの優れたトレードオフを実現することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aslanpouthakoun/status/2060041445420183951?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ユーザごとに最適化されたLoRAアダプタ等を利用して生成する場合にスループットを最大化したい状況を考える。一般的にprefillはcompute-bound[^1]、decodeはmemory-bound[^2]であり、特にスループットを最大化するためにバッチを利用した場合、複数ユーザのリクエストがバッチ内に存在するため、複数のアダプタをメモリにロードしながらprefillとdecodeを実施することになるが、decode時に余計なメモリのオーバヘッドを有み[^3]、スループットが悪化する問題がある。これを解決するために、prefill時のみアダプタを利用し、デコード時はアダプタを活用しないというシンプルな手法PreFTが提案されている。<br><br>つまり、prefill時のKV Cacheはアダプタを通じて計算され、decode時の計算にはアダプタは考慮されないが、prefill時のKV Cacheを通じてアダプタの影響は間接的に保持されるため、アダプタを通じた生成の適応はできるはずだ、という気持ちの手法である。<br><br>PreFT（pが提案手法でprefillのみアダプタ利用、AはAll-positionで全ての位置でアダプタ利用）の結果、提案手法のスループットはアダプタ無しのベースライン（破線）に近いところまで改善した。<br><img src="https://github.com/user-attachments/assets/a6a9056c-c015-432d-98d5-25aabe6577f6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、Table 1, Table 2はそれぞれSFT, RL時の最終的なdownstreamタスクへの影響を調査している。<br><br>結論としては、SFTの場合は、個々のrank設定ごとに有意に性能が劣化するが、全体で見ると有意差はなかった。<br><img src="https://github.com/user-attachments/assets/3312cc66-8d4e-4b0a-93eb-e22391617f0b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、RLではデータセットごとに差が出ておりGSM8Kでは特に性能の劣化が著しい。これについて付録で詳しい調査結果が記載されているようだが、最終的にはclear explanationは見つかっていないとのこと。また、All-positionとPreFTの間に有意差が生じており、平均してに-2ポイント程度性能が悪化する。<br><img src="https://github.com/user-attachments/assets/acda188e-794e-4bea-a4cb-767c75b1fd96" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 単一リクエストの複数トークンを並列に処理する必要があるため<br>[^2]: 単一のリクエストは新たな1つのトークンを生成するが、このときに基本的に巨大なKV Cacheをメモリから読み出す必要があるため<br>[^3]: たとえば、ユーザごとにアダプタが異なるためリクエスト単位でKV Cacheを保持しなければならなかったり、バッチに含まれるユーザのアダプタをメモリにロードしたりする必要がある、またLoRAのdown projection自体もmemory-boundedであることがArithmetic Intensityを計算するとわかる。すなわち、Arithmetic Intensity=メモリから1バイト読み出したあたり、どの程度の計算が実施されるか=FLOPS/bytes=1/(1/r+1/d+1/b) << Bであり、基本的にLoRAのランクrは出力次元数d, バッチ数bよりも小さいため、高々Arithmetic Intensity≒rにしかならず、これはGPUのハードウェア限界値に全く及ばないため、メモリ律速となる。ここでBはハードウェアの計算性能/ハードウェアのメモリ帯域であり、ハードウェア側の計算能力とメモリ帯域の比率を表す。Rooflineモデルに従うとBに近ければ近いほど演算性能が向上する。</p><p>性能の検証について、8Bまでの結果しかないように見えるので、より大きなサイズのモデルに対して提案手法を適用したときに、SFTにおける性能の劣化がどの程度生じるかはよくわからない。Table 1を見る限り、モデルサイズが大きい場合に、全体の傾向として性能が低下していそうにも見える。が、これはただそういう風に見えるという感想なので、よくわからないし、なんなら結局自分たちが適用したいdownstreamタスクで性能がどうなるかは見てみたいとわからない。<br><br>また、personalizationのためにLoRAアダプタを使いたい、という状況がどの程度存在するかもよくわからない。contextに情報をユーザごとに注入するような一時的な個人化で十分という状況は多いのではないだろうか。実用上はアダプタのメンテナンスコストも生じる。本研究はLoRAによるpersonalizationが、contextに注入する場合に対して重要であることを示すのはout of scopeだとは思う。が、このような状況が生じうること動機について、ストーリーとして一定の納得感は欲しいところではある。<br><br>スループットが改善されるというのは魅力的であるため、実際にLoRAをユーザごとに適用した上でサービングしたい、という制約がある場合は試してみる価値はあると思われる。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Draft-OPD: On-Policy Distillation for Speculative Draft Models, Haodi Lei+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.29343</original-paper-blog-link>
@@ -1710,6 +1798,34 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Contrastive Decoding: Open-ended Text Generation as Optimization, Xiang Lisa Li+, ACL'23, 2022.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2210.15097</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6696</repo-issue-link>
+<tags>NLP, LanguageModel, Coherence, ACL, Decoding, Selected Papers/Blogs, reading, One-Line Notes</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2210.15097
+# Authors
+  - Xiang Lisa Li
+  - Ari Holtzman
+  - Daniel Fried
+  - Percy Liang
+  - Jason Eisner
+  - Tatsunori Hashimoto
+  - Luke Zettlemoyer
+  - Mike Lewis
+# Abstract
+  - Given a language model (LM), maximum probability is a poor decoding objective for open-ended generation, because it produces short and repetitive text. On the other hand, sampling can often produce incoherent text that drifts from the original topics. We propose contrastive decoding (CD), a reliable decoding approach that optimizes a contrastive objective subject to a plausibility constraint. The contrastive objective returns the difference between the likelihood under a large LM (called the expert, e.g. OPT-13B) and a small LM (called the amateur, e.g. OPT-125M), and the constraint ensures that the outputs are plausible. CD is inspired by the fact that the failures of larger LMs (e.g., repetition, incoherence) are even more prevalent in smaller LMs, and that this difference signals which texts should be preferred. CD requires zero additional training, and produces higher quality text than decoding from the larger LM alone. It also works across model scales (OPT-13B and GPT2-1.5B) and significantly outperforms four strong decoding algorithms (e.g., nucleus, top-k) in automatic and human evaluations across wikipedia, news and story domains.
+# Translation (by gpt-5.6-luna)
+- 言語モデル（LM）が与えられたとき、最大確率を用いるデコーディング目的は、短く反復的なテキストを生成するため、自由生成には適していない。一方、サンプリングでは、しばしば首尾一貫性のないテキストが生成され、元のトピックから逸脱することがある。そこで我々は、もっともらしさの制約のもとで対照的な目的関数を最適化する、信頼性の高いデコーディング手法である対照的デコーディング（contrastive decoding; CD）を提案する。対照的目的関数は、大規模LM（エキスパートと呼ぶ。例：OPT-13B）と小規模LM（アマチュアと呼ぶ。例：OPT-125M）における尤度の差を返し、制約によって出力のもっともらしさを保証する。CDは、大規模LMの失敗（反復や非整合性など）が小規模LMではさらに顕著に現れ、その差がどのテキストを優先すべきかを示すという事実に着想を得ている。CDには追加の学習が一切不要であり、大規模LM単独からデコーディングするよりも質の高いテキストを生成する。また、モデルの規模をまたいで機能し（OPT-13BおよびGPT2-1.5B）、Wikipedia、ニュース、物語の各領域における自動評価および人手評価で、4つの強力なデコーディングアルゴリズム（核サンプリング、top-kなど）を大幅に上回る。
+# Summary (by gpt-5.6-luna)
+- LMに対し、大規模LMと小規模LMの尤度差を用いて対照的目的関数を最適化する対照的デコーディング（CD）を提案。
+もっともらしさの制約により、反復や話題逸脱を抑え、一貫性の高いテキストを生成する。
+追加学習なしで、核サンプリングやtop-kなどの既存手法を上回る性能を達成。</issue-body>
+<maintainer-comment-text><p>事前学習済み言語モデルに対してサンプリングを行いテキストを生成するアプローチは、長いシーケンスとなるとエラーが蓄積し一貫性が欠如したり、トピックが逸脱する課題がある。一方、greedyにデコードをするとしばしば短く、多様性に乏しく、同じ語彙が反復的に出現するようなテキストが生成されてしまう。これに対して、本研究はContrastive Decodingと呼ばれる、一貫性を保ちながら、流暢で多様な語彙に基づく生成を可能とするデコーディング手法を提案している。<br><br>Contrastive Decodingでは、エキスパートとアマチュアモデルを用意し（前者は同じシリーズの大規模モデル、後者は小規模モデル）、エキスパートモデルが高い対数尤度を持つという制約のもと、エキスパートとアマチュアモデルの対数尤度の差が最大となるようなテキストを探索する。<br>言語モデルの典型的なfailure modeはエキスパートよりもアマチュアにおいてより表出しやすいため、対数尤度の差分を見ることで、エキスパートがアマチュアと比較してより高い確率質量を割り当てているトークン列を強調する。<br><br>Figure 1がContrastive Decodingの他のデコーディング手法に対する利点を説明した図であり、この例では1961が適切であるが、greedy、サンプリングベースな手法の欠点を説明している。すなわに、エキスパートモデルは直前に出現したトークン、HawaiiやHonoluluに高い確率質量を置いてしまうため、greedyにデコーディングするとそれらが出力され、反復的なテキストが生成される。一方、Washingtonのようなトークンがサンプリングされると、支離滅裂なテキストとなる。Contrastive Decodingでは、これら典型的なfailure modeが抑制され、エキスパートでより高い確率質量を割り当てる傾向が強くなるトークン、たとえばこの例であれば事実に基づく1961というトークンを強調したようなスコアを得ることができる。<br><br><img src="https://github.com/user-attachments/assets/f1a22f6a-0bae-4962-80b9-4b803c82262a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

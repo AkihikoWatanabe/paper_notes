@@ -351,9 +351,9 @@
 {% endraw %}
 
 </p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1795" target="_blank" rel="noopener noreferrer">[Paper Note] Transformers without Normalization, Jiachen Zhu+, CVPR'25</a>
-<br><br>ではそもそもLayerNormalizationを無くしていた（正確にいうとparametrize tanhに置換)が、どちらが優れているのだろうか？<br><br><img src="https://github.com/user-attachments/assets/4bc557a0-ae23-4017-9837-7744de74c12e" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><img src="https://github.com/user-attachments/assets/2eead45c-209d-46e4-87e7-0129a4ec5ec2" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1332" target="_blank" rel="noopener noreferrer">Knowledge Neurons in Pretrained Transformers, Damai Dai+, N/A, ACL'22, 2022.05</a>
+<br><br>ではそもそもLayerNormalizationを無くしていた（正確にいうとparametrize tanhに置換)が、どちらが優れているのだろうか？</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1332" target="_blank" rel="noopener noreferrer">Knowledge Neurons in Pretrained Transformers, Damai Dai+, N/A, ACL'22, 2022.05</a>
 <br><br>では知識ニューロンの存在が示唆されており、これはTransformerの層の深い位置に存在し、かつ異なる知識間で知識ニューロンはシェアされない傾向にあった（ただしこれはPost-LNのBERTの話で本研究はPre-LNの話だが。Post-LNの勾配消失問題を緩和し学習を安定化させる研究も<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2141" target="_blank" rel="noopener noreferrer">[Paper Note] On Layer Normalizations and Residual Connections in Transformers, Sho Takase+, arXiv'22</a>
- のように存在する)。これはこの研究が明らかにしたこととどういう関係性があるだろうか。<br><br>また、LayerNormalizationのScalingによって深いTransformerブロックの導関数が単位行列となる（学習に寄与しなくなる）ことが改善された場合、知識ニューロンはどのように変化するだろうか？<br><br>（下記Geminiの応答を見た上での感想)なんとなーくだけれども、おそらく知識ニューロンの局所化が解消されるのかなーという気がする。<br><br>となると次の疑問としては、MoEアーキテクチャにはどのような影響があるだろうか？<br>そもそも知識ニューロンが局所化しているからMoEアーキテクチャのルータによって関連するExpertsのみをactivateすれば（というより結果的にそうなるように学習される）性能を劣化させずに計算効率を上げられていた、と仮定する。そうすると、知識ニューロンが局所化せずに多くのニューロンでシェアされるようになると、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2110" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Experts: Unlocking the Communication Power of  Mixture-of-Experts Models, Zihan Wang+, arXiv'25</a>
+ のように存在する)。これはこの研究が明らかにしたこととどういう関係性があるだろうか。<br><br>また、LayerNormalizationのScalingによって深いTransformerブロックの導関数が単位行列となる（学習に寄与しなくなる）ことが改善された場合、知識ニューロンはどのように変化するだろうか？<br><br>（下記Geminiの応答を見た上での感想)なんとなーくだけれども、おそらく知識ニューロンの局所化が解消されるのかなーという気がする。<br><br>となると次の疑問としては、MoEアーキテクチャにはどのような影響があるだろうか？<br>そもそも知識ニューロンが局所化しているからMoEアーキテクチャのルータによって関連するExpertsのみをactivateすれば（というより結果的にそうなるように学習される）性能を劣化させずに計算効率を上げられていた、と仮定する。そうすると、知識ニューロンが局所化せずに多くのニューロンでシェアされるようになると、<a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2110" target="_blank" rel="noopener noreferrer">[Paper Note] Chain-of-Experts: Unlocking the Communication Power of Mixture-of-Experts Models, Zihan Wang+, arXiv'25, 2025.06</a>
  のように、サブネットワーク間の情報を互いにやりとりできます、みたいな仕組みがより効いてきそうな気がする。<br><br>参考までに、Gemini2.5-Proに考察させてみた結果をメモとして残しておく（あくまで参考程度に...）<br>```<br>ご質問ありがとうございます。非常に興味深い着眼点ですね。「Knowledge Neurons in Pretrained Transformers」と「The Curse of Depth in Large Language Models」は、一見すると全く異なるテーマを扱っているように見えますが、**「Transformerの深い層における振る舞い」**という共通点で結びつけて考察すると、非常に示唆に富んだ関係性が見えてきます。<br><br>以下に、両方の論文の概要を解説し、その関係性について考察します。<br><br>1. Knowledge Neurons in Pretrained Transformers の概要<br>この研究は、事前学習済みTransformerモデル（特にBERTなど）の内部で、特定の事実知識がどのように格納されているかを調査したものです。<br><br>発見: モデルの中間層、特に**全結合層（Feed-Forward Network, FFN）に、特定の知識（例：「ダンテ・アリギエーリはイタリアで生まれた」）に強く反応する「知識ニューロン」**が存在することを発見しました。<br><br>特徴: これらの知識ニューロンは、モデルの深い層（後方の層）に、より多く存在する傾向がありました。<br><br>意味: これまでブラックボックスとされてきた大規模言語モデルの内部で、知識がどのように表現・局在化しているかについて、具体的な手がかりを与えた画期的な研究です。<br><br>2. The Curse of Depth in Large Language Models の概要<br>この研究は、LLMをより深く（層を多く）することの難しさに焦点を当て、その原因と解決策を提案したものです。<br><br>問題（深さの呪い）: Transformerの標準的なアーキテクチャ（Pre-LN）では、層が深くなるにつれて、LayerNormalization（LN）への入力の分散が指数関数的に増大してしまいます。<br><br>結果:<br><br>出力が大きくなりすぎて学習が不安定になります。<br><br>さらに深刻なのは、深い層ではモデルの出力に関する導関数（勾配計算に必要）がほぼ単位行列になってしまうことです。これは、その層が入力に対してほとんど変換を行わなくなり、学習に寄与しなくなることを意味します。<br><br>解決策: この問題を解決するため、各層のLayerNormalizationをその深さ（レイヤー番号 l）に応じてスケーリングするというシンプルな手法を提案しました。これにより、深い層でも勾配が適切に伝播し、学習が安定・改善することが示されました。<br><br>考察：2つの研究の関係性<br>これら2つの研究は、**「学習の安定性」と「知識の格納方法」**という異なる側面から、Transformerの深い層を分析していますが、両者には以下のような深い関係性があると考えられます。<br><br>学習の不安定性が「知識ニューロン」形成の背景にある可能性<br>「The Curse of Depth」で指摘されているように、標準的なTransformerの深い層は、本質的に学習が不安定で、勾配情報が失われやすい環境にあります。<br><br>この劣悪な学習環境こそが、「知識ニューロン」という形で知識が局所的に格納される原因の一つになっている可能性があります。つまり、<br><br>学習の非効率性: 深い層のほとんどのニューロンは、勾配消失問題のために効率的に学習を進めることができません。<br><br>専門化の発生: そのような不安定な環境下で、たまたま特定の知識パターンをうまく捉えることができた一部のニューロンが、その知識を一身に背負う形で強く活性化するよう特化（専門化）していったのではないか、と考えられます。これは、ネットワーク全体で協調して学習するのが難しい状況で、一部のユニットだけが突出して学習を担う、という現象と解釈できます。<br><br>学習の安定化が、より効率的な知識獲得につながる<br>では、「The Curse of Depth」で提案された手法（LNのスケーリング）によって深い層の学習が安定化すると、知識の格納方法はどのように変わるでしょうか。<br><br>これは非常に興味深い問いであり、2つの可能性が考えられます。<br><br>可能性A: より強固な知識ニューロンの形成:<br>学習が安定することで、各知識ニューロンはより明確に、そして効率的に特定の知識をエンコードできるようになるかもしれません。ノイズの多い環境で偶然生まれた専門家ではなく、安定した環境で育成された真の専門家へと変化するイメージです。<br><br>可能性B: 知識の分散化:<br>ネットワークの全ニューロンが効率的に学習に寄与できるようになるため、一つの知識を少数のニューロンに集中させる必要がなくなり、より多くのニューロンに分散して知識が格納されるようになる可能性も考えられます。<br><br>現在のところ、学習の安定化は、知識ニューロンがより効率的に形成・機能するための基盤を提供すると考えるのが最も妥当でしょう。「深さの呪い」という問題を解決することは、モデルが知識をどのように獲得し、整理するかという、より根源的なメカニズム（知識ニューロンの振る舞い）にも直接的な影響を与えるはずです。<br><br>まとめ<br>「Knowledge Neurons」は深い層に存在する知識の**「状態」を明らかにし、「The Curse of Depth」は深い層で発生する学習の「問題」**とその解決策を提示しました。<br><br>これらを統合すると、**「深い層における学習の不安定性という問題が、知識ニューロンという局所的な知識表現を生み出す一因となっており、この問題を解決することで、より効率的で安定した知識の獲得・格納が可能になるかもしれない」**という関係性が見えてきます。<br><br>両者は、LLMの能力と限界を異なる角度から照らし出しており、組み合わせることでモデルの内部動作の解明をさらに一歩前進させる、非常に重要な研究だと言えます。<br>```</p><p>openreview: 
 
 {% raw %}
@@ -473,7 +473,7 @@
 <title>[Paper Note] On Layer Normalizations and Residual Connections in Transformers, Sho Takase+, arXiv'22</title>
 <original-paper-blog-link>https://arxiv.org/abs/2206.00330v1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2141</repo-issue-link>
-<tags>NLP, Transformer, Architecture, Normalization, Encoder-Decoder</tags>
+<tags>NLP, Transformer, Architecture, Normalization, Encoder-Decoder, Initial Impression Notes</tags>
 <repo-issue-date>2025-07-04</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2206.00330v1
@@ -501,7 +501,7 @@
 <title>[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22, 2022.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2203.00555</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1900</repo-issue-link>
-<tags>NLP, Transformer, action_wanted, Architecture, Normalization</tags>
+<tags>NLP, Transformer, Architecture, Normalization</tags>
 <repo-issue-date>2025-04-19</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2203.00555
@@ -550,10 +550,10 @@
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] On Layer Normalization in the Transformer Architecture, Ruibin Xiong+, arXiv'20</title>
+<title>[Paper Note] On Layer Normalization in the Transformer Architecture, Ruibin Xiong+, arXiv'20, 2020.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2002.04745</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2142</repo-issue-link>
-<tags>Analysis, NLP, Transformer, Normalization, Encoder-Decoder</tags>
+<tags>Analysis, NLP, Transformer, Architecture, Normalization, One-Line Notes</tags>
 <repo-issue-date>2025-07-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2002.04745
@@ -570,10 +570,14 @@
   - Tie-Yan Liu
 # Abstract
   - The Transformer is widely used in natural language processing tasks. To train a Transformer however, one usually needs a carefully designed learning rate warm-up stage, which is shown to be crucial to the final performance but will slow down the optimization and bring more hyper-parameter tunings. In this paper, we first study theoretically why the learning rate warm-up stage is essential and show that the location of layer normalization matters. Specifically, we prove with mean field theory that at initialization, for the original-designed Post-LN Transformer, which places the layer normalization between the residual blocks, the expected gradients of the parameters near the output layer are large. Therefore, using a large learning rate on those gradients makes the training unstable. The warm-up stage is practically helpful for avoiding this problem. On the other hand, our theory also shows that if the layer normalization is put inside the residual blocks (recently proposed as Pre-LN Transformer), the gradients are well-behaved at initialization. This motivates us to remove the warm-up stage for the training of Pre-LN Transformers. We show in our experiments that Pre-LN Transformers without the warm-up stage can reach comparable results with baselines while requiring significantly less training time and hyper-parameter tuning on a wide range of applications.
-# Translation (by gpt-4o-mini)
-- Transformerは自然言語処理タスクで広く使用されています。しかし、Transformerを訓練するには、通常、慎重に設計された学習率のウォームアップ段階が必要であり、これは最終的なパフォーマンスにとって重要であることが示されていますが、最適化を遅くし、より多くのハイパーパラメータの調整をもたらします。本論文では、まず理論的に学習率のウォームアップ段階がなぜ重要であるかを研究し、レイヤー正規化の位置が重要であることを示します。具体的には、平均場理論を用いて、初期化時に、残差ブロックの間にレイヤー正規化を配置した元の設計のPost-LN Transformerにおいて、出力層近くのパラメータの期待勾配が大きいことを証明します。したがって、これらの勾配に対して大きな学習率を使用すると、訓練が不安定になります。ウォームアップ段階はこの問題を回避するために実際に役立ちます。一方で、我々の理論は、レイヤー正規化が残差ブロック内に配置されている場合（最近提案されたPre-LN Transformer）には、初期化時に勾配が良好に振る舞うことも示しています。これにより、Pre-LN Transformerの訓練においてウォームアップ段階を削除する動機が生まれます。我々の実験では、ウォームアップ段階なしのPre-LN Transformerが、さまざまなアプリケーションにおいてベースラインと同等の結果を達成し、訓練時間とハイパーパラメータの調整が大幅に少なくて済むことを示しています。
-# Summary (by gpt-4o-mini)
-- 本論文では、Transformerの学習率のウォームアップ段階の重要性を理論的に研究し、レイヤー正規化の位置が訓練の安定性に与える影響を示す。特に、Post-LN Transformerでは大きな勾配が不安定さを引き起こすため、ウォームアップが有効である一方、Pre-LN Transformerでは勾配が良好に振る舞うため、ウォームアップを省略できることを示す。実験により、ウォームアップなしのPre-LN Transformerがベースラインと同等の結果を達成し、訓練時間とハイパーパラメータの調整が削減できることを確認した。</issue-body>
+# Translation (by gpt-5.6-luna)
+- Transformerは、自然言語処理のタスクで広く利用されている。しかし、Transformerを学習するには通常、慎重に設計された学習率ウォームアップ段階が必要である。この段階は最終的な性能に不可欠であることが示されている一方で、最適化を遅らせ、ハイパーパラメータの調整を増やす。本論文ではまず、学習率ウォームアップ段階がなぜ重要なのかを理論的に検討し、レイヤー正規化の位置が重要であることを示す。具体的には、平均場理論を用いて、初期化時において、残差ブロック間にレイヤー正規化を配置する従来設計のPost-LN Transformerでは、出力層に近いパラメータの期待勾配が大きくなることを証明する。そのため、これらの勾配に対して大きな学習率を用いると、学習が不安定になる。ウォームアップ段階は、実際上、この問題を回避するうえで有用である。
+
+一方で、我々の理論は、レイヤー正規化を残差ブロックの内部に配置した場合（近年提案されたPre-LN Transformer）、初期化時の勾配が適切な状態になることも示している。これを受けて、Pre-LN Transformerの学習ではウォームアップ段階を取り除く。実験により、ウォームアップ段階を用いないPre-LN Transformerは、幅広い応用において、ベースラインと同等の結果を達成しながら、学習時間とハイパーパラメータ調整の負担を大幅に削減できることを示す。
+# Summary (by gpt-5.6-luna)
+- Transformerの学習で必要とされる学習率ウォームアップについて、Layer Normalizationの位置に着目して理論的に分析。  
+従来のPost-LN Transformerでは出力層付近の勾配が大きくなり学習が不安定になるため、ウォームアップが有効である。  
+一方、Pre-LN Transformerでは初期勾配が適切に保たれるため、ウォームアップなしでも同等の性能を達成し、学習時間とハイパーパラメータ調整を削減できる。</issue-body>
 <maintainer-comment-text><p>OpenReview:
 
 {% raw %}

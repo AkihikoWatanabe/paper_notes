@@ -1,5 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-10">
+<paper-list last-updated="2026-10-09">
+<paper-entry>
+<title>[Paper Note] Recursive Self-Improvement via On-Policy Distillation for Reasoning, Shangjian Yin+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.30652</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6731</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Distillation, On-Policy, One-Line Notes, SelfDistillation</tags>
+<repo-issue-date>2026-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.30652
+# Authors
+  - Shangjian Yin
+  - Zehao Zhao
+  - Kavosh Asadi
+  - Rui Liu
+  - Yuchen Lu
+  - Shike Mei
+  - Hang Cui
+  - Luke Simon
+  - Zhouxing Shi
+  - Hamed Firooz
+# Abstract
+  - On-policy distillation (OPD) trains a student model by having it generate trajectories, then matching its next-token predictions with an external teacher's next-token predictions. This provides dense, token-level supervision to the student. On-policy self-distillation (OPSD) eliminates the need for the external teacher. Specifically, a second frozen copy of the student model, now given the ground truth in its context, serves as the teacher. The student model only receives the problem and learns to mimic the privileged teacher model, while the teacher remains frozen throughout training. Previous work showed that freezing the teacher is useful for training stability, but we argue that this can prevent the teacher from incorporating the improvements learned by the student during training. Our primary contribution is to address this limitation with a recursive framework built around two complementary components. First, we let the privileged teacher co-evolve with the student so that revision learned in one round can guide the next, a process we refer to as Dynamic Co-Evolution (DCE). Second, because stronger revision can also make responses too verbose and self-critical, we additionally train on shorter, verified rewrites of the model's own on-policy responses. We call this complementary objective Self-Refined Concise Learning (SRCL). Overall, our comprehensive evaluations show that DCE+SRCL outperforms OPSD across multiple model scales and four competition-level mathematics benchmarks. Specifically, on Qwen3-8B, DCE+SRCL reaches 65.97% Average@12, outperforming OPSD by 35.62 percentage points while reducing mean output length by 7.80% relative to DCE alone.
+# Translation (by gpt-5.6-luna)
+- オンポリシー蒸留（OPD）は、学生モデルに軌跡を生成させた後、その次トークン予測を外部教師の次トークン予測と一致させることで、学生モデルを学習する手法である。これにより、学生モデルに対してトークン単位の密な教師信号を与えられる。オンポリシー自己蒸留（OPSD）では、外部教師を必要としない。具体的には、学生モデルの凍結した別コピーに正解をコンテキストとして与え、それを教師として機能させる。学生モデルは問題文のみを受け取り、特権的な教師モデルを模倣するように学習する一方、教師モデルは学習中を通じて凍結されたままである。先行研究では、教師を凍結することが学習の安定性に有効であることが示されている。しかし、これにより、学習中に学生モデルが獲得した改善を教師モデルが取り込めなくなる可能性があると、我々は主張する。
+
+本研究の主な貢献は、相補的な2つの構成要素を中心とする再帰的フレームワークによって、この制約に対処することである。第一に、特権的な教師を学生とともに共進化させることで、あるラウンドで学習された修正が次のラウンドを導くようにする。このプロセスを動的共進化（Dynamic Co-Evolution；DCE）と呼ぶ。第二に、より強力な修正によって、応答が冗長になったり、過度に自己批判的になったりする可能性があるため、モデル自身のオンポリシー応答を、より短く検証済みの書き換えにしたものを用いて追加学習する。この相補的な目的を、自己洗練簡潔学習（Self-Refined Concise Learning；SRCL）と呼ぶ。
+
+総合的な評価の結果、DCE+SRCLは、複数のモデル規模および4つの競技レベル数学ベンチマークにおいて、OPSDを上回ることが示された。具体的には、Qwen3-8Bにおいて、DCE+SRCLはAverage@12で65.97%を達成し、OPSDを35.62パーセントポイント上回った。さらに、DCE単独と比較して、平均出力長を7.80%削減した。
+# Summary (by gpt-5.6-luna)
+- OPSDでは、正解を見た凍結教師モデルを用いて、学生モデルに密な次トークン教師信号を与える。
+教師を固定することで安定性を得る一方、学生の改善を教師に反映できない問題がある。
+そこで、学生と特権的教師を共進化させるDCEと、応答を短く検証済みの形式に洗練するSRCLを提案。
+DCE+SRCLは複数モデル規模・4つの数学ベンチマークでOPSDを上回り、Qwen3-8BではAverage@12で65.97%を達成し、出力長も7.80%削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/2104413129799274526?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>OPSDにおいて、通常はOPSD開始時点の学生モデルθ_0てfreezeするが、<br><br>- 教師モデル（初期の学生モデルでfreezeおよび特権情報）が内省に対してあまりトークンの確率密度を割り当てない一方で、学生モデルは学習が進むにつれて内省の挙動が進むことが観測された<br>- この例は学生モデルが進化するにつれて教師モデルとのミスマッチが広がることを示しており、教師モデルによって学習によって強化される内省的な挙動を抑圧するものであり、教師モデルを固定することの限界を示唆している<br><br>このため、学生モデルθ_kがθ_k+1に更新された時、教師モデルもθ_k+1へと更新する。また、学生モデル自身が自身の応答をrewriteし、そのrewriteがAppendix Mに示されるAcceptanceルール（短く、自然に終了し、reflectionが存在せず、構造的に妥当で、正解であるもの）を満たす場合、そのrewriteの対数尤度を最小化する補助的なlossも導入する（式6)。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1397" target="_blank" rel="noopener noreferrer">[Paper Note] STaR: Bootstrapping Reasoning With Reasoning, Eric Zelikman+, NeurIPS'22, 2022.03</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemoryWalker: Stop Training Agents on Contexts They Never Saw, Zinco J+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.00865</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6509</repo-issue-link>
+<tags>memory, Compression, train-inference-mismatch, SelfDistillation, AgentHarness</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.00865
+# Authors
+  - Zinco J
+  - Xunjie Zhu
+  - Shen Huang
+  - Zhenyi Wang
+  - Pengjun Xie
+  - Jieping Ye
+# Abstract
+  - Production agent harnesses such as Claude Code and Qwen-Agent compress context during rollout, but training under compression creates a conditioning problem: every eviction branches the effective history, so the learning object is a tree rather than a sequence. Existing linearizations either retain the rightmost path, causing time-travel leakage, or replay a depth-first traversal, causing train-inference mismatch. We introduce two exact, gradient-equivalent corrections: LogitTree, a segmented K-forward traversal, and a packed 4D attention mask. LogitTree requires K+1 backward passes; the 4D mask requires a custom kernel and white-box eviction records. We also propose SDCC (Self-Distillation for Conditioning Consistency), a single-backward-pass variational relaxation. At each eviction, it minimizes forward KL between the compressed student and a stop-gradient teacher on the reconstructed pre-eviction prefix. A residual per-junction KL of epsilon_KL gives an O(sqrt(epsilon_KL)) bound on the train-deployment total-variation gap. SDCC also applies to black-box harnesses. On seven web-search benchmarks with TC-RAG, AgentFold, MemexRL, Claude Code, and OpenCode, naive training inflates the train-rollout log-probability gap, especially on eviction-heavy batches. The exact methods stay at the no-compression floor, and SDCC substantially closes the gap, with lower logit drift and higher rollout rewards.
+# Translation (by gpt-5-nano)
+- プロダクションエージェント用ハーネス（ Claude Code や Qwen-Agent など）はロールアウト時に文脈を圧縮するが、圧縮下での学習は条件付けの問題を生む。エビクションごとに有効な履歴が分岐するため、学習対象はシーケンスではなく木構造になる。既存の線形化は右端の経路を保持して時間遡行のリークを生じさせるか、深さ優先探索を再生して訓練と推論の不一致を起こす。厳密で勾配等価な二つの補正を導入する。LogitTree は分割された K 回の前方伝搬を行い、もう一つは圧縮された 4D アテンションマスクである。LogitTree は K+1 回の逆伝搬を必要とし、4D マスクはカスタムカーネルとホワイトボックスのエビクション記録を必要とする。我々はまた、SDCC（Self-Distillation for Conditioning Consistency、条件付けの一貫性のための自己蒸留）を提案する。単一の逆伝搬パスでの変分緩和である。各エビクション時に、再構成されたエビクション前プレフィックスに対して、圧縮された学生モデルと勾配停止を適用した教師モデルとの間でフォワード KL を最小化する。接合点ごとの KL 残差 epsilon_KL は、訓練とデプロイメントの総変動差の上界を O(√epsilon_KL) にする。SDCC はブラックボックス・ハーネスにも適用される。TC-RAG、AgentFold、MemexRL、Claude Code、OpenCode を用いた七つのウェブ検索ベンチマークにおいて、ナイーブな訓練は訓練ロールアウト対数確率差を増大させ、特にエビクションが多いバッチで顕著である。正確な手法は圧縮なしの基準線のままであり、SDCC はギャップを大幅に縮小し、ロジットのドリフトを抑え、ロールアウト報酬を高める。
+# Summary (by gpt-4o-mini)
+- プロダクションエージェントのハーネスは文脈を圧縮するが、圧縮により学習の条件付けに問題が生じる。エビクションごとに履歴が木構造化され、既存の線形化は推論の不一致を引き起こす。二つの補正法（LogitTreeと4Dアテンションマスク）を用いて、この問題を解決。さらに、自己蒸留手法SDCCを提案し、接合点ごとのKL残差が訓練とデプロイメントの差を抑える。様々なベンチマークでSDCCがロールアウト報酬の向上に寄与することを示し、ナイーブな訓練と比較してパフォーマンスを改善。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2095438351704920505?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Latent On-Policy Self-Distillation, Guibin Zhang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.13040v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6353</repo-issue-link>
+<tags>NLP, LanguageModel, Distillation, PostTraining, read-later, On-Policy, SelfDistillation</tags>
+<repo-issue-date>2026-08-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.13040v1
+# Authors
+  - Guibin Zhang
+  - Jiayang Lyu
+  - Ran Sun
+  - Xinlei Yu
+  - Haoyu Zhao
+  - Qibing Ren
+  - Shuicheng Yan
+# Abstract
+  - Enabling agents to learn from experience and internalize it into their policy has become a central problem in self-evolving AI. On-policy self-distillation (OPSD) offers an effective pathway by using a privileged self-teacher to provide dense supervision on the student's own trajectories; however, existing methods still rely heavily on designer-specified privileged artifacts (e.g., answers, feedback, skills, or trajectories), limiting the end-to-end learnability and scalability required for continual self-improvement. In this work, we introduce Latent On-Policy Self-Distillation (LOPD), which, rather than proposing another hand-crafted OPSD variant with a newly prescribed form of privileged context, makes the teacher's privileged context itself learnable end-to-end from experience. Technically, LOPD retrieves relevant experiences and composes them into continuous latent tokens that condition a self-teacher, while the student generates trajectories from the task and interaction history and receives dense token-level supervision at every visited prefix. We further introduce a privileged-margin objective to stabilize and regulate the learning of latent context. Empirically, LOPD demonstrates (I) strong performance, outperforming RLVR and representative OPSD methods including OPSD, SDPO, and Skill-SD across both agentic tool use and code generation; and (II) high learning efficiency, surpassing GRPO and Skill-SD with less than 30% of their rollout budget. Ablation studies further provide direct evidence that making privileged context learnable is necessary for realizing these gains. Together, these results position LOPD as a step toward a more scalable and self-directed paradigm for agent evolution.
+# Translation (by gpt-5-nano)
+- エージェントが経験から学び、それをポリシーに内在化することは、自己進化型AIの中心的な課題となっている。オンポリシー自己蒸留（OPSD）は、特権的自己教師を用いて学生自身の軌跡に密な監督を提供することで有効な道を開く。しかし、既存の手法は設計者が指定する特権的アーティファクト（例：解答、フィードバック、スキル、または軌跡）に過度に依存しており、継続的な自己改善に必要なエンドツーエンドの学習可能性とスケーラビリティを制限している。  
+本研究では、Latent On-Policy Self-Distillation（LOPD）を導入する。新たに規定された形の特権的文脈を備えた別の手作りOPSDバリアントを提案するのではなく、教師の特権的文脈自体を経験からエンドツーエンドで学習可能にする。  
+技術的には、LOPDは関連する経験を取り出して連続的な潜在トークンへ組み立て、それらが自己教師を条件付ける。一方、学生はタスクと相互作用履歴から軌跡を生成し、訪問した各プレフィックスで密なトークンレベルの監督を受け取る。  
+さらに、潜在文脈の学習を安定化・規制するための特権的マージン目的を導入する。  
+実証的には、LOPDは（I）強力な性能を示し、RLVRおよびOPSD、SDPO、Skill-SDを含む代表的なOPSD法を、エージェント的ツールの使用とコード生成の両方において上回る；（II）高い学習効率を示し、GRPOおよびSkill-SDよりもロールアウト予算の30%未満で上回る。  
+アブレーション研究は、特権的文脈を学習可能にすることが、これらの利得を実現するために必要であるという直接的な証拠をさらに提供する。  
+総じて、これらの結果はLOPDを、エージェント進化のためのよりスケーラブルで自己指向的なパラダイムへの第一歩として位置づける。
+# Summary (by gpt-4o-mini)
+- 自己進化型AIにおいて、エージェントが経験から学ぶためにLatent On-Policy Self-Distillation（LOPD）を導入。LOPDは経験から特権的文脈をエンドツーエンドで学習し、自己教師を生成。実験的に、LOPDは既存のOPSD手法よりも優れた性能と高い学習効率を示し、エージェント進化のためのスケーラブルで自己指向的なアプローチへの進展を支持する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2089221337411670360?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] On-Policy Self-Distillation without Any Supervision, Yijiang Li+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.06296</original-paper-blog-link>
@@ -1602,7 +1723,7 @@
 <title>[Paper Note] Lyra: Generative 3D Scene Reconstruction via Video Diffusion Model  Self-Distillation, Sherwin Bahmani+, arXiv'25, 2025.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.19296</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3029</repo-issue-link>
-<tags>SelfDistillation</tags>
+<tags>ComputerVision, DiffusionModel, Distillation, VideoGeneration/Understandings, 3D Reconstruction, SelfDistillation</tags>
 <repo-issue-date>2025-09-29</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.19296
@@ -1669,6 +1790,57 @@
 
 </p><p>v2, v3はこちら:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1884" target="_blank" rel="noopener noreferrer">[Paper Note] DINOv2: Learning Robust Visual Features without Supervision, Maxime Oquab+, TMLR'24</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2431" target="_blank" rel="noopener noreferrer">[Paper Note] DINOv3, Oriane Siméoni+, arXiv'25, 2025.08</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Self Distillation, Rehaan Ahmad, 2026.09</title>
+<original-paper-blog-link>https://www.alphaxiv.org/wiki/self-distillation</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6760</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, Distillation, PostTraining, On-Policy, SelfDistillation, Author Thread-Post</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://www.alphaxiv.org/wiki/self-distillation</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2105687935446356158?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>HyperFlow, VideoRebirth, 2026.09</title>
+<original-paper-blog-link>https://github.com/Video-Rebirth/hyperflow</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6627</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Distillation, OpenWeight, VideoGeneration/Understandings, SelfDistillation, autoresearch/RSI, Author Thread-Post</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body>github:https://github.com/Video-Rebirth/hyperflow
+HF:https://huggingface.co/videorebirth/hyperflow</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/video_rebirth/status/2101009602943098907?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xieenze_jr/status/2101135711760248879?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 

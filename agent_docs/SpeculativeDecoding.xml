@@ -1,5 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-27">
+<paper-list last-updated="2026-10-13">
+<paper-entry>
+<title>[Paper Note] ReplaySSM: Cache SSM Inputs, Not State, Ze-Wei Liou+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.13778</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6868</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, SSM (StateSpaceModel), Architecture, ContextEngineering, SpeculativeDecoding, LinearAttention</tags>
+<repo-issue-date>2026-10-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.13778
+# Authors
+  - Ze-Wei Liou
+  - Harris Nover
+  - Amey Naik
+  - Andrii Skliar
+  - Igor Shovkun
+  - Ido Shahaf
+  - Tri Dao
+# Abstract
+  - State-space models (SSMs) maintain a fixed-size recurrent state, but reading and writing it at every decoding step can bottleneck hybrid models. This eager state management causes large state I/O with low arithmetic intensity, leaves speculative decoding no cheap rollback, and feeds state quantization error into subsequent recurrent updates. We introduce ReplaySSM, which unrolls the recurrence to represent the state as a checkpoint and a buffer of recent SSM inputs. This separates output computation from checkpoint updates. By updating the checkpoint periodically, ReplaySSM avoids state writes on most steps and roughly halves the dominant state memory traffic. Keeping recent inputs also makes speculative rollback a buffer-pointer operation and enables output-only verification without materializing intermediate states. The same separation allows a low-precision checkpoint to serve output computation on most steps while a higher-precision checkpoint serves recurrent updates, so rounding error in the low-precision copy never enters later updates. We implement ReplaySSM in vLLM for Mamba-2 and Gated DeltaNet. At serving batch size 256, it accelerates standard decoding by $1.20$--$1.47\times$ over a tuned vLLM baseline across four hybrid models, and delivers about $1.8\times$ the throughput of vLLM's speculative decoding on the two 120B-class models. Separate state precisions also reduce output KL divergence and downstream accuracy losses compared with a shared low-precision checkpoint.
+# Translation (by gpt-5.6-luna)
+- 状態空間モデル（SSM）は固定サイズの再帰状態を保持するが、デコードの各ステップでその状態の読み書きを行うことは、ハイブリッドモデルにおけるボトルネックとなり得る。この逐次的な状態管理は、演算強度が低いにもかかわらず大規模な状態I/Oを引き起こし、投機的デコーディングに低コストなロールバック手段を与えず、さらに状態の量子化誤差を後続の再帰更新へ伝播させる。
+
+本研究ではReplaySSMを提案する。ReplaySSMは、再帰を展開し、状態をチェックポイントと直近のSSM入力のバッファによって表現する。これにより、出力計算とチェックポイント更新が分離される。チェックポイントを定期的に更新することで、ReplaySSMは大半のステップにおける状態書き込みを回避し、支配的な状態メモリトラフィックをおよそ半減させる。直近の入力を保持することで、投機的ロールバックをバッファポインタの操作として実行でき、途中の状態を具体化せずに出力のみを検証することも可能になる。
+
+さらに、この分離により、低精度のチェックポイントを大半のステップでの出力計算に利用しつつ、より高精度のチェックポイントを再帰更新に利用できる。そのため、低精度コピーにおける丸め誤差が後続の更新へ入り込むことはない。Mamba-2およびGated DeltaNetを対象に、ReplaySSMをvLLMへ実装した。サービング時のバッチサイズ256において、4種類のハイブリッドモデル全体で、調整済みvLLMベースラインに対して標準デコーディングを1.20～1.47倍高速化し、120Bクラスの2つのモデルでは、vLLMの投機的デコーディングの約1.8倍のスループットを達成した。状態ごとに精度を分離することで、単一の低精度チェックポイントを共有する場合と比較して、出力のKLダイバージェンスと下流タスクの精度低下も抑制された。
+# Summary (by gpt-5.6-luna)
+- SSMの状態I/Oによるデコードのボトルネック、投機的ロールバックの困難さ、量子化誤差の伝播を解決するため、状態をチェックポイントと直近入力のバッファで表現するReplaySSMを提案。
+再帰を展開して出力計算とチェックポイント更新を分離し、状態書き込みを削減するとともに、バッファポインタ操作による低コストなロールバックを実現。
+さらに、出力計算と再帰更新で異なる精度のチェックポイントを使い分け、量子化誤差の伝播を防ぐ。
+Mamba-2およびGated DeltaNetを用いた実験で、標準デコーディングを1.20～1.47倍高速化し、120BクラスのモデルではvLLMの投機的デコーディングの約1.8倍のスループットを達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2109769886943879676?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] $\texttt{SPECS}$: Faster Test-Time Scaling through Speculative Drafts, Mert Cemri+, NeurIPS'26, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.15733</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6644</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, NeurIPS, Test-Time Scaling, SpeculativeDecoding, reading, One-Line Notes, Latency, Author Thread-Post</tags>
+<repo-issue-date>2026-09-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.15733
+# Authors
+  - Mert Cemri
+  - Nived Rajaraman
+  - Rishabh Tiwari
+  - Xiaoxuan Liu
+  - Kurt Keutzer
+  - Ion Stoica
+  - Kannan Ramchandran
+  - Ahmad Beirami
+  - Ziteng Sun
+# Abstract
+  - Scaling test-time compute has driven the recent advances in the reasoning capabilities of large language models (LLMs), typically by allocating additional computation for more thorough exploration. However, increased compute often comes at the expense of higher user-facing latency, directly impacting user experience. Current test-time scaling methods primarily optimize for accuracy based on total compute resources (FLOPS), often overlooking latency constraints. To address this gap, we propose $\texttt{SPECS}$, a latency-aware test-time scaling method inspired by speculative decoding. $\texttt{SPECS}$~uses a smaller, faster model to generate candidate sequences efficiently, and evaluates these candidates using signals from both a larger target model and a dedicated reward model. We introduce new integration strategies, including reward-guided soft verification and a reward-based deferral mechanism. Empirical results on MATH500, AMC23 and OlympiadBench datasets show that $\texttt{SPECS}$~matches or surpasses beam search accuracy while reducing latency by up to $\sim$19.1\%. Our theoretical analysis shows that our algorithm converges to the solution of a KL-regularized reinforcement learning objective with increasing beam width.
+# Translation (by gpt-5.6-luna)
+- <abstract>テスト時計算量の拡大は、より徹底した探索のために追加の計算資源を割り当てることで、大規模言語モデル（LLM）の推論能力における近年の進展を促進してきた。しかし、計算量の増加はしばしばユーザーが体感するレイテンシの増大を伴い、ユーザー体験に直接的な影響を及ぼす。現在のテスト時スケーリング手法は、主に総計算資源（FLOPS）に基づく精度の最適化を行っており、レイテンシ制約を見落としがちである。この課題に対処するため、投機的デコーディングに着想を得た、レイテンシを考慮したテスト時スケーリング手法 $\texttt{SPECS}$ を提案する。$\texttt{SPECS}$ は、より小型で高速なモデルを用いて候補系列を効率的に生成し、より大規模な対象モデルと専用の報酬モデルの双方から得られるシグナルを用いてこれらの候補を評価する。さらに、報酬誘導型ソフト検証や報酬ベースの延期メカニズムを含む、新たな統合戦略を導入する。MATH500、AMC23、OlympiadBenchデータセットを用いた実験結果から、$\texttt{SPECS}$ はビームサーチと同等以上の精度を達成しつつ、レイテンシを最大約19.1%削減できることが示された。理論解析により、ビーム幅の増加に伴い、本アルゴリズムがKL正則化強化学習の目的関数の解に収束することも示す。</abstract>
+# Summary (by gpt-5.6-luna)
+- LLMのtest-time scalingにおいて、計算量だけでなくユーザー体験に関わるレイテンシを考慮するため、投機的デコーディングに基づくSPECSを提案。
+小型モデルで候補系列を高速生成し、大型モデルと報酬モデルの信号で評価する。
+報酬誘導型ソフト検証と報酬ベースの延期により、ビームサーチ以上の精度を維持しつつ、レイテンシを最大19.1%削減。
+ビーム幅の増加に伴い、KL正則化強化学習の解へ収束することも理論的に示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mertcemri/status/2103233547712803292?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>beam search型のtest time scaling[^1]において、latencyの課題に対処するため、draft modelを活用する。Figure 2に示されるようなPRMのrewardが一定以上になった後はdraft modelでデコーディングをしても最終的なrewardが大きく変化しない洞察に基づき、rewardが閾値以上になるまではtarget modelで生成し、一定以上になった後の生成をdraft modelに異常することで、latencyを改善する、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/46070ff2-4aca-4cbe-9643-166cc98fde9a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 各ブロックのトークン数を決めておき、各ブロックごとにbeam size n個の候補を生成し、逐次的に最も良いものを選択していくことで、最終的に単一のreasoning trajectoryを構成するtest time scaling手法</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Block Parallelism For Efficient Distributed Long-Context Diffusion Language Model Training, Tarun Suresh+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.19242</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6599</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, DiffusionModel, SoftwareEngineering, SpeculativeDecoding, Author Thread-Post</tags>
+<repo-issue-date>2026-09-19</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2609.19242
+- blog: https://scalingintelligence.stanford.edu/Turbo-dLLM/
+# Authors
+  - Tarun Suresh
+  - Pranshu Chaturvedi
+  - Hangoo Kang
+  - Parth Shroff
+  - Ishan S. Khare
+  - Hermann Kumbong
+  - Azalia Mirhoseini
+# Abstract
+  - Block diffusion language models (BDLMs) combine autoregressive dependencies across blocks with parallel denoising within blocks, but long-context training is constrained by distributed attention communication and activation memory. Conventional context parallelism (CP) shards the combined clean-plus-corrupted sequence by position, communicating shared clean K/V together with block-specific corrupted K/V and their gradients. We observe that the BDLM objective separates over target blocks. We introduce block parallelism (BP), a new distributed parallelism dimension that assigns each corrupted-block computation to one rank. To scale BP to long contexts, we introduce context-sharded block parallelism (CSBP), which also shards the shared clean sequence across those ranks. CSBP keeps corrupted K/V and gradients local, avoids replicated clean prefixes, and preserves BDLM training semantics. On 16 H200 GPUs at 256K context, CSBP improves throughput over the best baseline by 1.18-1.45x for supervised fine-tuning and 1.27-1.33x for conversion of autoregressive models to BDLMs, while matching or reducing peak HBM. Full-model speedup reaches 1.61x at 512K. On eight H100 GPUs, CSBP accelerates DFlash2 speculative-decoder training by 2.48x at 512K and 7.59x at 1M. In matched 12-hour DiffusionGemma 26B-A4B SFT runs, CSBP achieves higher pass rates at every trained checkpoint on SWE-bench Verified and Terminal-Bench Lite. Code: https://github.com/ScalingIntelligence/Turbo-dLLM
+# Translation (by gpt-5-nano)
+- ブロック拡散言語モデル（BDLM）は、ブロック間の自回帰的依存とブロック内の並列デノイズを組み合わせるが、長い文脈での訓練は分散アテンション通信と活性化メモリにより制約を受ける。従来のコンテキスト並列性（CP）は、結合されたクリーンと腐敗のシーケンスを位置で分割し、共有のクリーンK/Vとブロック固有の腐敗K/Vおよびそれらの勾配を伝搬させる。我々はBDLMの目的関数がターゲットブロックごとに分離されることを観察した。ブロック並列性（BP）と呼ぶ新しい分散並列性の次元を導入し、各腐敗ブロックの計算を1つのランクに割り当てる。長い文脈へBPをスケールさせるため、文脈シャード付きブロック並列性（CSBP）を導入する。CSBPは共有のクリーンシーケンスもそれらのランク間でシャードする。CSBPは腐敗K/Vと勾配を局所に保ち、クリーンなプレフィックスの複製を回避し、BDLM訓練の意味論を維持する。256Kの文脈で16枚のH200 GPUを用いた場合、CSBPは最良のベースラインよりスループットを1.18–1.45倍向上させ、教師ありファインチューニングでは1.27–1.33倍、オートレグレッシブモデルをBDLMへ変換する場合にも向上させつつ、ピークHBMを同等または低減させる。全モデルのスピードアップは512Kで1.61倍に達する。8枚のH100 GPUでは、CSBPはDFlash2の推測デコーダ訓練を512Kで2.48倍、1Mで7.59倍加速する。マッチした12時間のDiffusionGemma 26B-A4B SFT実行では、CSBPはSWE-bench VerifiedおよびTerminal-Bench Liteの訓練済みチェックポイントごとに、より高いパスレートを達成する。コード: https://github.com/ScalingIntelligence/Turbo-dLLM
+# Summary (by gpt-4o-mini)
+- BDLMは自回帰的依存と並列デノイズを組み合わせるが、長文脈での訓練は制約を受ける。本研究は新たな分散並列性であるブロック並列性（BP）を導入し、文脈シャード付きブロック並列性（CSBP）を適用して、効率的な訓練を実現。CSBPはスループットを最大1.61倍向上させ、低いピークHBMを維持することで、モデルのパフォーマンスを改善した。特に、CSBPはDFlash2のデコーダ訓練を大幅に加速し、高いパスレートを達成。</issue-body>
+<maintainer-comment-text><p>github:
+
+{% raw %}
+<a href="https://github.com/ScalingIntelligence/Turbo-dLLM" target="_blank" rel="noopener noreferrer">https://github.com/ScalingIntelligence/Turbo-dLLM</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/azaliamirh/status/2101020422926135665?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>diffusion Language Modelを高速に学習できるライブラリとのことで、たとえばDFlash2をベースにしたSpeculative DecodingのためのDraft Modelの学習などが高速化できるとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Draft-OPD: On-Policy Distillation for Speculative Draft Models, Haodi Lei+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.29343</original-paper-blog-link>
@@ -629,6 +753,32 @@
 
 {% raw %}
 <a href="https://openreview.net/forum?id=vo9t20wsmd" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=vo9t20wsmd</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>LFM2.5-VL-DSpark: Accelerating vision-language models on edge and beyond, Liquid AI, 2026.09</title>
+<original-paper-blog-link>https://www.liquid.ai/blog/lfm2-5-vl-dspark</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6635</repo-issue-link>
+<tags>ComputerVision, NLP, Blog, OpenWeight, VisionLanguageModel, SpeculativeDecoding</tags>
+<repo-issue-date>2026-09-25</repo-issue-date>
+<issue-body>https://www.liquid.ai/blog/lfm2-5-vl-dspark</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/liquidai/status/2103131179100819783?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/LiquidAI/LFM2.5-VL-3B-DSpark" target="_blank" rel="noopener noreferrer">https://huggingface.co/LiquidAI/LFM2.5-VL-3B-DSpark</a>
 {% endraw %}
 
 </p></maintainer-comment-text>

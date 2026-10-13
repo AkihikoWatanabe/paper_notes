@@ -1,5 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-20">
+<paper-list last-updated="2026-10-04">
+<paper-entry>
+<title>[Paper Note] Local Support Learning, Assaf Ben-Kish+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.02126</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6706</repo-issue-link>
+<tags>NLP, LanguageModel, ContrastiveLearning, Catastrophic Forgetting, read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.02126
+# Authors
+  - Assaf Ben-Kish
+  - Akarsh Kumar
+  - James Glass
+  - Raja Giryes
+# Abstract
+  - We explore catastrophic forgetting in the context of large pre-trained models. By considering forgetting as a geometric problem in the input space of each weight matrix, we uncover a natural retention objective under which updates produced by gradient-based optimizers are suboptimal. Following this observation, we propose Local Support Learning (LSL), a general-purpose framework that augments gradient-based training for retention of prior capabilities without access to prior data. During a new learning phase, LSL pairs two components with distinct roles: a standard weight adapter, trained as usual to minimize the loss, and a gating function that enables the adapter only on input activations from its own training distribution, making the update local to that distribution. The key challenge is that this gate must route data from all learning phases while training only on data from the current one. We address this with a gate based on a Gaussian Mixture Model (GMM), whose likelihood decays rapidly away from its training data, giving it a natural tendency to stay closed on data from prior phases. We show that this post-training approach can resolve forgetting in LLMs of up to 7 billion parameters, retaining both pretrained and finetuned capabilities across multiple training phases, while being efficient in memory and compute, robust to hyperparameter choice, and showing scaling potential.
+# Translation (by gpt-5.6-luna)
+- 大規模な事前学習済みモデルにおける壊滅的忘却について検討する。各重み行列の入力空間における忘却を幾何学的問題として捉えることで、勾配ベースの最適化手法によって生成される更新が最適ではないような、自然な保持目的を明らかにする。この知見に基づき、過去のデータにアクセスすることなく既存の能力を保持するため、勾配ベースの学習を拡張する汎用フレームワーク、Local Support Learning（LSL）を提案する。
+
+新たな学習段階において、LSLは異なる役割を持つ2つの構成要素を組み合わせる。1つは、損失を最小化するよう通常どおり学習される標準的な重みアダプターであり、もう1つは、アダプターをその学習分布に由来する入力活性に対してのみ有効化するゲーティング関数である。これにより、更新はその分布に局所化される。ここでの主要な課題は、現在の学習段階のデータだけで学習しながら、すべての学習段階からのデータを適切に振り分けるゲートを構築することである。
+
+この課題に対し、学習データから離れるにつれて尤度が急速に低下し、過去の段階のデータに対して自然に閉じた状態を保つ傾向を持つ、ガウス混合モデル（GMM）に基づくゲートを用いる。実験の結果、この学習後処理によるアプローチは、最大70億パラメータの大規模言語モデル（LLM）における忘却を解消し、複数の学習段階にわたって事前学習済み能力とファインチューニング後の能力の両方を保持できることを示す。さらに、メモリと計算資源の効率性、ハイパーパラメータ選択に対する頑健性、ならびにスケーリングの可能性も確認された。
+# Summary (by gpt-5.6-luna)
+- 大規模事前学習モデルの壊滅的忘却を、重み行列の入力空間における幾何学的問題として捉える。
+過去データを使わずに既存能力を保持するため、重みアダプターと入力活性に基づくゲーティング関数を組み合わせたLocal Support Learning（LSL）を提案。
+GMMベースのゲートにより更新を現在の学習分布に局所化し、過去の能力への干渉を防ぐ。
+最大70億パラメータのLLMで、複数の学習段階にわたり事前学習・ファインチューニング後の能力を保持し、メモリ効率とスケーラビリティも確認。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://assafbk.github.io/lsl/" target="_blank" rel="noopener noreferrer">https://assafbk.github.io/lsl/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/abk_tau/status/2106005515532632069?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>おもしろそうだが、ぱっと見でまだ理解できておらず、特に訓練分布でのみアダプタを有効にする、というところがよくわかっていない。Finetuningで入力されるのはそのフェーズの学習データなのだから、常に訓練分布になるのでは？<br><br>あー、つまり、<br>- LLMは複数のフェーズで構成され、通常は重みW全体をΔWで更新するが、これはΔWと直行しない入力全てに影響を与える<br>- これが現在のフェーズとは関係ない入力に対しても影響を与えることがcatastrophic forgettingの原因の一つと仮定している<br>- この影響を最小限にするために、現在の学習フェーズのinputでのみ活性化するLoRAアダプタを用意し、Wはfreezeしアダプタのみを学習することで、Wへの干渉を最小限にする<br>- 推論時はgateを用いて、現在の入力がどのフェーズの入力に対応するかを判断し、アダプタを有効にするか否かをroutingする<br><br>という感じだろうか<br><br>しかし似たような話をどこかで見た気がする。</p><p>アダプタを結合して継続学習する枠組みで、catastrophic forgettingを抑制する、という話がある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4458" target="_blank" rel="noopener noreferrer">[Paper Note] Locas: Your Models are Principled Initializers of Locally-Supported Parametric Memories, Sidi Lu+, arXiv'26, 2026.02</a>
+<br><br>タスク単位の専門家としてのLoRA + 共有LoRA をcatastrophic forgettingとタスク間の転移を実現するような話もある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3137" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Evolving LLMs via Continual Instruction Tuning, Jiazheng Kang+, WWW'26, 2025.09</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Douyin Multimodal Embedding Model Technical Report, Haonan Chen+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.02148</original-paper-blog-link>
@@ -85,7 +132,7 @@
 <title>[Paper Note] Memory Intelligence Agent, Jingyang Qiao+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.04503</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5218</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, MultiModal, ContrastiveLearning, VisionLanguageModel, DeepResearch, memory, reading, Test-time Learning, Initial Impression Notes, needs-revision</tags>
+<tags>NLP, LanguageModel, AIAgents, MultiModal, ContrastiveLearning, VisionLanguageModel, DeepResearch, memory, reading, Test-time Learning/Adaptation, Initial Impression Notes, needs-revision</tags>
 <repo-issue-date>2026-04-14</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2604.04503
@@ -513,6 +560,41 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Contrastive Language Models: A System One Model for Fast and Generalizable Decision-Making, Kwok+, 2026.09</title>
+<original-paper-blog-link>https://contrastive-lm.notion.site/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6628</repo-issue-link>
+<tags>Pretraining, NLP, Dataset, ContrastiveLearning, Blog, OpenWeight, Scaling Laws, mid-training, PostTraining, Selected Papers/Blogs, Encoder, Author Thread-Post, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-09-24</repo-issue-date>
+<issue-body># URL
+https://contrastive-lm.notion.site/
+
+# Citation
+misc{kwok2026contrastivelanguagemodels,
+  title={Contrastive Language Models: A System One Model for Fast and Generalizable Decision-Making},
+  author={Jacky Kwok and Hangoo Kang and Tarun Suresh and Jon Saad-Falcon and Marco Pavone and Christopher Ré and Azalia Mirhoseini},  
+  year={2026},
+  note={Notion Blog}
+}</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jackyk02/status/2102905335925424285?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/Contrastive-LM" target="_blank" rel="noopener noreferrer">https://huggingface.co/Contrastive-LM</a>
+{% endraw %}
+
+</p><p>非常にコンパクトにまとまっていて大変読みやすかった。あとでまとめる。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

@@ -1,5 +1,789 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-30">
+<paper-list last-updated="2026-10-13">
+<paper-entry>
+<title>[Paper Note] ReplaySSM: Cache SSM Inputs, Not State, Ze-Wei Liou+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.13778</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6868</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, SSM (StateSpaceModel), Architecture, ContextEngineering, SpeculativeDecoding, LinearAttention</tags>
+<repo-issue-date>2026-10-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.13778
+# Authors
+  - Ze-Wei Liou
+  - Harris Nover
+  - Amey Naik
+  - Andrii Skliar
+  - Igor Shovkun
+  - Ido Shahaf
+  - Tri Dao
+# Abstract
+  - State-space models (SSMs) maintain a fixed-size recurrent state, but reading and writing it at every decoding step can bottleneck hybrid models. This eager state management causes large state I/O with low arithmetic intensity, leaves speculative decoding no cheap rollback, and feeds state quantization error into subsequent recurrent updates. We introduce ReplaySSM, which unrolls the recurrence to represent the state as a checkpoint and a buffer of recent SSM inputs. This separates output computation from checkpoint updates. By updating the checkpoint periodically, ReplaySSM avoids state writes on most steps and roughly halves the dominant state memory traffic. Keeping recent inputs also makes speculative rollback a buffer-pointer operation and enables output-only verification without materializing intermediate states. The same separation allows a low-precision checkpoint to serve output computation on most steps while a higher-precision checkpoint serves recurrent updates, so rounding error in the low-precision copy never enters later updates. We implement ReplaySSM in vLLM for Mamba-2 and Gated DeltaNet. At serving batch size 256, it accelerates standard decoding by $1.20$--$1.47\times$ over a tuned vLLM baseline across four hybrid models, and delivers about $1.8\times$ the throughput of vLLM's speculative decoding on the two 120B-class models. Separate state precisions also reduce output KL divergence and downstream accuracy losses compared with a shared low-precision checkpoint.
+# Translation (by gpt-5.6-luna)
+- 状態空間モデル（SSM）は固定サイズの再帰状態を保持するが、デコードの各ステップでその状態の読み書きを行うことは、ハイブリッドモデルにおけるボトルネックとなり得る。この逐次的な状態管理は、演算強度が低いにもかかわらず大規模な状態I/Oを引き起こし、投機的デコーディングに低コストなロールバック手段を与えず、さらに状態の量子化誤差を後続の再帰更新へ伝播させる。
+
+本研究ではReplaySSMを提案する。ReplaySSMは、再帰を展開し、状態をチェックポイントと直近のSSM入力のバッファによって表現する。これにより、出力計算とチェックポイント更新が分離される。チェックポイントを定期的に更新することで、ReplaySSMは大半のステップにおける状態書き込みを回避し、支配的な状態メモリトラフィックをおよそ半減させる。直近の入力を保持することで、投機的ロールバックをバッファポインタの操作として実行でき、途中の状態を具体化せずに出力のみを検証することも可能になる。
+
+さらに、この分離により、低精度のチェックポイントを大半のステップでの出力計算に利用しつつ、より高精度のチェックポイントを再帰更新に利用できる。そのため、低精度コピーにおける丸め誤差が後続の更新へ入り込むことはない。Mamba-2およびGated DeltaNetを対象に、ReplaySSMをvLLMへ実装した。サービング時のバッチサイズ256において、4種類のハイブリッドモデル全体で、調整済みvLLMベースラインに対して標準デコーディングを1.20～1.47倍高速化し、120Bクラスの2つのモデルでは、vLLMの投機的デコーディングの約1.8倍のスループットを達成した。状態ごとに精度を分離することで、単一の低精度チェックポイントを共有する場合と比較して、出力のKLダイバージェンスと下流タスクの精度低下も抑制された。
+# Summary (by gpt-5.6-luna)
+- SSMの状態I/Oによるデコードのボトルネック、投機的ロールバックの困難さ、量子化誤差の伝播を解決するため、状態をチェックポイントと直近入力のバッファで表現するReplaySSMを提案。
+再帰を展開して出力計算とチェックポイント更新を分離し、状態書き込みを削減するとともに、バッファポインタ操作による低コストなロールバックを実現。
+さらに、出力計算と再帰更新で異なる精度のチェックポイントを使い分け、量子化誤差の伝播を防ぐ。
+Mamba-2およびGated DeltaNetを用いた実験で、標準デコーディングを1.20～1.47倍高速化し、120BクラスのモデルではvLLMの投機的デコーディングの約1.8倍のスループットを達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2109769886943879676?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Mid-Harness: Scaling Actions Between Model and Harness for Terminal Agents, Minki Kang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.39982</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6784</repo-issue-link>
+<tags>EfficiencyImprovement, Test-Time Scaling</tags>
+<repo-issue-date>2026-10-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.39982
+# Authors
+  - Minki Kang
+  - Ryo Hachiuma
+  - Shaokun Zhang
+  - Subhashree Radhakrishnan
+  - Yonggan Fu
+  - Jindong Jiang
+  - Mingjie Liu
+  - Ehsan Hosseini-Asl
+  - Yi Dong
+  - Yu-Chiang Frank Wang
+  - Byung-Kwan Lee
+# Abstract
+  - Terminal agents act through stochastic model generations, yet the ability to generate a useful action does not ensure its reliable execution. A poor command (e.g., wrong package install) can change the environment in ways that hinder subsequent progress, even when the model could generate a better alternative. We investigate whether allocating test-time compute at the model-harness boundary can improve action reliability and trajectory success, and what makes this allocation effective. To study these questions, we introduce Mid-Harness, which samples and verifies candidate actions before forwarding one for execution, while keeping the generator and harness unchanged. With a TMAX-9B generator, more action sampling yields little benefit under weak verification, whereas a capable verifier can exploit useful alternatives from the same generator. On TerminalBench-Lite, a GPT-5.6 Sol verifier raises Pass@1 from 50.00% for the base agent to 68.03% with 8 sampled actions. When the same TMAX-9B model serves as the verifier, pairwise verification performs best among the evaluated verification mechanisms. Distilling responses from the stronger verifier into TMAX-9B further improves Pass@1, while leaving the action generator unchanged. With TMAX-9B on TerminalBench-Lite, combining action and trajectory scaling reaches higher success at lower estimated token cost than generating more trajectories alone. Mid-Harness also improves performance across additional models, benchmarks, and harnesses. These findings identify action scaling as a promising target for test-time compute scaling in terminal agents.
+# Translation (by gpt-5.6-luna)
+- ターミナルエージェントは確率的なモデル生成を通じて動作するが、有用なアクションを生成できることが、その確実な実行を保証するわけではない。質の低いコマンド（例えば、誤ったパッケージのインストール）は、モデルがより良い代替案を生成できる場合であっても、その後の進行を妨げる形で環境を変化させる可能性がある。本研究では、モデルとハーネスの境界でテスト時計算資源を割り当てることにより、アクションの信頼性と軌跡の成功率を向上させられるか、また、その割り当てを効果的にする要因は何かを検討する。これらの問いを研究するため、実行に移す前に候補アクションをサンプリングして検証するMid-Harnessを導入する。ただし、生成器とハーネス自体は変更しない。
+
+TMAX-9B生成器を用いた場合、検証能力が低い状況では、アクションのサンプリング数を増やしてもほとんど効果は得られない。一方、十分な能力を持つ検証器は、同じ生成器から得られる有用な代替案を活用できる。TerminalBench-Liteでは、GPT-5.6 Sol検証器により、8個のアクションをサンプリングした場合のPass@1は、ベースエージェントの50.00%から68.03%に向上した。同じTMAX-9Bモデルを検証器として用いた場合、評価した検証手法の中ではペアワイズ検証が最も優れた性能を示した。より強力な検証器からの応答をTMAX-9Bに蒸留すると、アクション生成器を変更しないまま、Pass@1はさらに向上した。
+
+TerminalBench-LiteにおいてTMAX-9Bを用いた場合、アクションのスケーリングと軌跡のスケーリングを組み合わせることで、軌跡のみをさらに多く生成する場合よりも、推定トークンコストを抑えながら、より高い成功率を達成できる。Mid-Harnessは、追加のモデル、ベンチマーク、ハーネスにおいても性能を向上させた。これらの知見は、ターミナルエージェントにおけるテスト時計算スケーリングの有望な対象として、アクションのスケーリングを位置づけるものである。
+# Summary (by gpt-5.6-luna)
+- ターミナルエージェントにおいて、候補アクションを実行前にサンプリング・検証するMid-Harnessを導入し、生成器やハーネスを変更せずにアクションの信頼性と軌跡の成功率を向上させる。
+検証器の能力が重要であり、GPT-5.6 Solによる検証ではPass@1が50.00%から68.03%に向上し、TMAX-9Bを用いた場合はペアワイズ検証と強力な検証器からの蒸留が有効だった。
+さらに、アクションのスケーリングと軌跡のスケーリングを組み合わせることで、軌跡のみを増やすより低コストで高い成功率を達成し、アクションのスケーリングが有望なテスト時計算手法であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2106700907106943107?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Block Sparse Attention with Log-Linear Complexity, Bohao Tang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.31093</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6733</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Attention, Architecture, SparseAttention</tags>
+<repo-issue-date>2026-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.31093
+# Authors
+  - Bohao Tang
+  - Zhen Qin
+  - Yuqi Pan
+  - Zheng Li
+  - Pengfei Liu
+# Abstract
+  - Scaling language models to long contexts is limited by the quadratic cost of self-attention. Block sparse attention offers an efficient alternative, but selecting the retained blocks remains a bottleneck. Conventional block selection requires scoring all query-block pairs and therefore remains quadratic in sequence length. To address this issue, we propose PISA, a block-sparse attention mechanism that employs a pyramid Top-$K$ selection strategy. The main idea is to gradually narrow down the candidates across different levels, making it more efficient to find the most relevant keys. Specifically, we construct a coarse-to-fine hierarchy of keys and perform selection from the coarsest level. At each level, LogSumExp scoring is applied to a bounded candidate set to select candidates for the next finer level, continuing until the finest level is reached. Through pooling, we construct $O(\log N)$ levels of keys, yielding an overall complexity of $O(N\log N)$, where $N$ denotes the sequence length. We develop hardware-aware Triton kernels for both training and inference, fusing hierarchical routing and LogSumExp scoring without materializing the query-key score matrix. We further evaluate our method on language modeling tasks. Compared with the baseline, our method achieves comparable performance on benchmarks such as commonsense reasoning while delivering better results on retrieval tasks.
+# Translation (by gpt-5.6-luna)
+- 長文脈への言語モデルの拡張は、自己注意機構の二次計算量によって制限されている。ブロックスパース注意は効率的な代替手段となるが、保持するブロックの選択が依然としてボトルネックである。従来のブロック選択では、すべてのクエリ・ブロック対に対してスコアを計算する必要があるため、系列長に対して依然として二次計算量となる。
+
+この問題に対処するため、我々はPISAを提案する。PISAは、ピラミッド型Top-$K$選択戦略を採用したブロックスパース注意機構である。その中心的な考え方は、異なるレベルにわたって候補を段階的に絞り込むことで、最も関連性の高いキーをより効率的に見つけることである。具体的には、キーの粗密階層を構築し、最も粗いレベルから選択を行う。各レベルでは、限定された候補集合に対してLogSumExpスコアリングを適用し、次に細かいレベルへ進める候補を選択する。この処理を最も細かいレベルに到達するまで繰り返す。
+
+プーリングによってキーのレベルを$O(\log N)$個構築することで、全体の計算量は$O(N\log N)$となる。ここで、$N$は系列長を表す。さらに、学習と推論の双方に対応するハードウェアを考慮したTritonカーネルを開発し、クエリ・キーのスコア行列を実体化することなく、階層的ルーティングとLogSumExpスコアリングを融合している。
+
+また、言語モデリングタスクにおいて提案手法を評価した。ベースラインと比較して、提案手法は常識推論などのベンチマークで同等の性能を達成しつつ、検索タスクではより優れた結果を示した。
+# Summary (by gpt-5.6-luna)
+- 長文脈におけるblock sparse attentionで、LLMを用いて階層的にkey blockを絞り込むPISAを提案。
+coarse-to-fineなpyramid型Top-K選択とLogSumExp scoringにより、全query-keyのスコア計算を回避し、計算量を$O(N\log N)$に削減。
+さらに、学習・推論に対応したTriton kernelにより、階層的routingとscoringを効率的に実装。
+言語モデリングでは、常識推論でベースラインと同等の性能を維持しつつ、retrieval taskで上回る結果を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2104544738305343510?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A Smaller Transformer in Your Transformer, Dhananjay Tomar+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.20100</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6723</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Transformer, Distillation, 2D (Image)</tags>
+<repo-issue-date>2026-10-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.20100
+# Authors
+  - Dhananjay Tomar
+  - Marius Aasan
+  - Andreas Kleppe
+  - Adín Ramírez Rivera
+# Abstract
+  - Recent findings indicate that Vision Transformers settle into locally similar computational phases, implying a level of depthwise computational redundancy. However, existing methods to exploit this redundancy either fail to reduce inference compute or severely degrade model expressivity. In this work, we formalise a unified view of block redundancy that decouples the geometry from specific surrogate interventions. We then introduce Transformer-Within-Transformer (TWT), a post-hoc method that fuses contiguous groups of redundant layers into a single learned surrogate layer. TWT reduces parameter count and inference compute while remaining competitive with original models using half the depth on natural images, and in several downstream histopathology settings, TWT matches or even improves on the original baseline.
+# Translation (by gpt-5.6-luna)
+- 近年の研究により、Vision Transformerは局所的に類似した計算フェーズへ収束することが示されており、深さ方向に計算の冗長性が存在することが示唆されている。しかし、この冗長性を活用する既存手法は、推論時の計算量を削減できないか、モデルの表現力を著しく低下させるかのいずれかである。本研究では、特定の代理介入から幾何学的側面を切り離した、ブロック冗長性に関する統一的な見方を定式化する。さらに、Transformer-Within-Transformer（TWT）を導入する。これは、冗長な層の連続したグループを、学習された単一の代理層へ融合する事後的手法である。TWTはパラメータ数と推論時の計算量を削減しつつ、自然画像において深さを半分にした場合でも元のモデルと競争力のある性能を維持する。また、複数の下流組織病理学タスクにおいて、TWTは元のベースラインと同等、あるいはそれを上回る性能を達成する。
+# Summary (by gpt-5.6-luna)
+- Vision Transformerの深さ方向の計算冗長性に着目し、冗長な層を学習済みの単一代理層へ融合するTWTを提案。
+パラメータ数と推論時の計算量を削減しつつ、深さを半分にしても自然画像で元モデルに匹敵する性能を維持。
+複数の病理組織学タスクで、ベースラインと同等以上の性能を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2103836737474830492?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CliffCompaction: Cost-Efficient Compaction for Long-Horizon Coding Agents, Trang Nguyen+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.26779</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6718</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, AIAgents, ContextEngineering, Compression, Author Thread-Post</tags>
+<repo-issue-date>2026-10-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.26779
+# Authors
+  - Trang Nguyen
+  - Eulrang Cho
+  - Bingqing Chen
+  - Tim Dettmers
+# Abstract
+  - Agents often work on complex problems that require millions of tokens of context, which necessitates compacting across sessions due to limited context windows. We develop CliffCompaction, an autocompaction technique that reduces cost by up to 50% under a bounded context while maintaining or improving performance on Terminal-Bench and achieving new levels of efficiency for test-time scaling and state-of-the-art results on KernelBench. The per-rollout savings of CliffCompaction make the performance--cost trade-off of test-time scaling more efficient, adding over 10 percentage points on Terminal-Bench for less than the cost of two full-context runs. Under parallel test-time scaling, CliffCompaction lets Kimi K2.6 match Opus 4.7, and exceed Opus 4.6 and GPT-5.3 Codex at lower cost. The key to CliffCompaction's effectiveness is that it keeps compacted information faithful by only truncating or dropping content, never rephrasing or rewriting it. We never compact a compaction---each pass operates only on original content, and prior compacted output is discarded, preventing context drift from accumulating. These properties sustain continual learning over sessions exceeding a million tokens: on KernelBench, CliffCompaction reaches CUDA kernel speedups of $2.23\times$ after 200 steps and $3.58\times$ after 400 steps, surpassing specialized search algorithms and trained agents despite being a general-purpose compaction technique. We open-source a scaffold-agnostic API-proxy implementation of CliffCompaction usable with Claude Code, Codex and other harnesses.
+# Translation (by gpt-5.6-luna)
+- エージェントはしばしば、数百万トークンのコンテキストを必要とする複雑な問題に取り組むため、限られたコンテキストウィンドウに対応するには、セッションをまたいだコンパクションが必要となる。本研究では、コンテキストに上限を設けた場合のコストを最大50%削減しつつ、Terminal-Benchにおける性能を維持または向上させ、テスト時スケーリングにおける効率を新たな水準に引き上げ、KernelBenchで最先端の結果を達成する自動コンパクション手法、CliffCompactionを開発する。CliffCompactionによるロールアウトごとの節約により、テスト時スケーリングにおける性能とコストのトレードオフがより効率的になり、フルコンテキストでの実行2回分未満のコストで、Terminal-Benchの性能を10ポイント以上向上させることができる。並列テスト時スケーリングでは、CliffCompactionによりKimi K2.6はOpus 4.7に匹敵し、Opus 4.6およびGPT-5.3 Codexを下回るコストで上回ることができる。
+
+CliffCompactionが有効である鍵は、情報を言い換えたり書き換えたりせず、内容を切り詰めるか削除するだけにすることで、コンパクション後の情報の忠実性を保つ点にある。コンパクション結果をさらにコンパクションすることはない。各パスは元のコンテンツのみを対象とし、以前のコンパクション出力は破棄されるため、コンテキストのドリフトが蓄積するのを防げる。これらの特性により、100万トークンを超えるセッションにおいても継続的な学習が維持される。KernelBenchでは、CliffCompactionは200ステップ後にCUDAカーネルの2.23倍、400ステップ後に3.58倍の高速化を達成し、汎用的なコンパクション手法でありながら、特化型の探索アルゴリズムや訓練済みエージェントを上回る性能を示す。さらに、Claude Code、Codex、その他のハーネスで利用可能な、特定のスキャフォールドに依存しないCliffCompactionのAPIプロキシ実装をオープンソースとして公開する。
+# Summary (by gpt-5.6-luna)
+- 複雑な長期タスクに対して、セッション間の自動コンパクションによりコンテキストを切り詰め・削除し、情報の忠実性と継続的な学習を維持するCliffCompactionを提案。
+コンパクション結果を再利用せず、常に元のコンテンツから処理することで、コンテキストのドリフトを防ぐ。
+Terminal-Benchでコストを最大50%削減しながら性能を維持・向上し、KernelBenchでも最先端の性能を達成。
+さらに、特定のエージェント基盤に依存しないAPIプロキシをオープンソースとして公開。</issue-body>
+<maintainer-comment-text><p>github: 
+
+{% raw %}
+<a href="https://github.com/nguyenvuthientrang/cliffcompaction" target="_blank" rel="noopener noreferrer">https://github.com/nguyenvuthientrang/cliffcompaction</a>
+{% endraw %}
+
+<br>blog: 
+
+{% raw %}
+<a href="https://nguyenvuthientrang.github.io/cliffcompaction/" target="_blank" rel="noopener noreferrer">https://nguyenvuthientrang.github.io/cliffcompaction/</a>
+{% endraw %}
+
+</p><p>元ポスト:<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thientrangngv/status/2102755983680282988?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>- 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Tim_Dettmers/status/2102770380935237640?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Looped Diffusion Transformer, Yong Xien Chng+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.40305</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6694</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, Transformer, DiffusionModel, TextToImageGeneration, Architecture, RecurrentModels, ImageSynthesis</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.40305
+# Authors
+  - Yong Xien Chng
+  - Tianyi Chen
+  - Wenwen Tong
+  - Haiwen Diao
+  - Zhongang Cai
+  - Lei Yang
+  - Ziwei Liu
+  - Lewei Lu
+  - Dahua Lin
+  - Gao Huang
+# Abstract
+  - Improving text-to-image models has traditionally relied on increasing model size or the number of denoising steps. In this work, we explore an alternative way to scale computation by repeatedly running shared Transformer blocks within each denoising step, effectively increasing computational depth while keeping the parameter count fixed. This looped computation enables iterative refinement of internal representations without explicit reasoning tokens. However, naive looping fails to consistently improve image quality. We trace this problem to weak supervision across intermediate loops and unregulated attention updates that progressively erode local information. To overcome these challenges, we propose Looped Diffusion Transformer (Looped-DiT), which combines deep supervision across intermediate loops with self-modulating attention to stabilize looped feature updates. Under matched-parameter and matched-compute settings, Looped-DiT consistently outperforms non-looped baselines. Notably, a 260M-parameter looped model can surpass a model 6.5x larger across multiple text-to-image benchmarks while requiring 4.9x lower inference compute. Beyond this performance gain, we find that looped computation can offer a more effective form of iterative computation for diffusion models, with increasing loop depth yielding larger gains than adding more denoising steps under a fixed inference budget. Furthermore, deeper loops can progressively correct mistakes made in earlier loops, exhibiting behaviors suggestive of latent reasoning. Together, these results show that looped computation offers a promising way to scale visual generation models.
+# Translation (by gpt-5.6-luna)
+- テキストから画像を生成するモデルの性能向上は、従来、モデルサイズやノイズ除去ステップ数を増やすことで実現されてきた。本研究では、各ノイズ除去ステップ内で共有Transformerブロックを繰り返し実行することで、パラメータ数を固定したまま計算の深さを効果的に増加させる、別の計算スケーリング手法を検討する。このループ計算により、明示的な推論トークンを用いることなく、内部表現を反復的に洗練できる。しかし、単純なループ処理では、画像品質を安定して向上させることができない。この問題の原因を、中間ループ間における弱い教師信号と、局所情報を徐々に損なう、制御されていない注意機構の更新に求めた。
+
+これらの課題を克服するため、我々は Looped Diffusion Transformer（Looped-DiT）を提案する。これは、中間ループ全体にわたる深い教師あり学習と、ループによる特徴更新を安定化する自己調整型注意機構を組み合わせたものである。パラメータ数と計算量を揃えた設定において、Looped-DiTはループを用いないベースラインを一貫して上回る。特に、2億6,000万パラメータのループ型モデルは、複数のテキスト・画像生成ベンチマークにおいて、6.5倍大きいモデルを上回りながら、推論時の計算量を4.9分の1に抑えられる。
+
+この性能向上に加えて、ループ計算は拡散モデルにとって、より効果的な反復計算の形態となり得ることが分かった。固定された推論予算の下では、ノイズ除去ステップを増やすよりもループの深さを増やす方が、より大きな性能向上をもたらす。さらに、より深いループによって初期のループで生じた誤りを段階的に修正でき、潜在的な推論を示唆する挙動も確認された。以上の結果は、ループ計算が視覚生成モデルをスケールさせる有望な手法であることを示している。
+# Summary (by gpt-5.6-luna)
+- テキスト画像生成において、共有Transformerブロックをノイズ除去ステップ内で反復実行するLooped-DiTを提案。
+中間ループへの深い教師あり学習と自己調整型注意機構により、弱い教師信号と局所情報の損失を防ぐ。
+パラメータ数と計算量を抑えつつ、6.5倍大きいモデルを上回り、ノイズ除去ステップを増やすよりループを深くする方が効果的であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arxivbangers/status/2105541033610318317?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/2105521688083620347?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Improving the Efficiency of Language Agent Teams with Adaptive Task Graphs, Elizabeth Mieczkowski+, NeurIPS'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.06320</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6648</repo-issue-link>
+<tags>Multi, EfficiencyImprovement, GraphBased, NLP, LanguageModel, AIAgents, NeurIPS, Author Thread-Post, Coordination</tags>
+<repo-issue-date>2026-09-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.06320
+# Authors
+  - Elizabeth Mieczkowski
+  - Alexander Ku
+  - Tiwalayo Eisape
+  - Dilip Arumugam
+  - John Matters
+  - Katherine M. Collins
+  - Ilia Sucholutsky
+  - Thomas L. Griffiths
+# Abstract
+  - Large language models (LLMs) are increasingly deployed in teams, yet existing coordination approaches often occupy two extremes. Highly structured methods rely on fixed roles, pipelines, or task decompositions assigned a priori. In contrast, fully unstructured teams enable adaptability and exploration but suffer from inefficiencies such as error propagation, inter-agent conflicts, and wasted resources (measured in time, tokens, or file operations). We introduce Language Agent Teams for Task Evolution (LATTE), a framework for coordinating LLM teams inspired by distributed systems, where processors must operate under partial observability and communication constraints. In LATTE, a team of agents collaboratively construct and maintain a shared, evolving coordination graph which encodes sub-task dependencies, individual agent assignment, and the current state of sub-task progress. This protocol maintains consistency while empowering agents to dynamically allocate work, adapt coordination, and discover new tasks. Across multiple collaborative tasks and a variety of base models, we demonstrate how LATTE reduces token usage, wall-clock time, communication, and coordination failures (e.g. file conflicts and redundant outputs) while matching or exceeding the accuracy of standard designs including MetaGPT, decentralized teams, top-down Leader-Worker hierarchies, and static decompositions.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデル（LLM）はチームで導入される機会が増えているが、既存の協調アプローチはしばしば二つの極端な方向に分かれている。高度に構造化された手法では、あらかじめ固定された役割、パイプライン、またはタスク分解に依存する。一方、完全に非構造化されたチームは適応性や探索能力を備えるものの、エラーの伝播、エージェント間の衝突、資源（時間、トークン、ファイル操作で測定される）の浪費といった非効率性に悩まされる。そこで本研究では、分散システムに着想を得た、LLMチームを協調させるためのフレームワーク、Language Agent Teams for Task Evolution（LATTE）を提案する。分散システムでは、プロセッサは部分的な可観測性と通信制約のもとで動作しなければならない。LATTEでは、エージェントチームが協力して、共有され、進化し続ける協調グラフを構築・維持する。このグラフには、サブタスク間の依存関係、各エージェントへの割り当て、サブタスクの進捗状況が符号化される。このプロトコルは一貫性を維持しながら、エージェントが作業を動的に割り当て、協調方法を適応させ、新たなタスクを発見することを可能にする。複数の協調タスクと多様な基盤モデルを用いた実験により、LATTEは、MetaGPT、分散型チーム、トップダウン型のLeader-Worker階層、静的なタスク分解などの標準的な設計と同等以上の精度を達成しつつ、トークン使用量、実時間、通信量、協調上の失敗（ファイルの競合や重複した出力など）を削減できることを示す。
+# Summary (by gpt-5.6-luna)
+- LLMチームの協調において、固定的な構造化手法と非構造化手法の非効率性を解消するため、分散システムに着想を得たLATTEを提案。
+エージェントが共有・進化する協調グラフを構築し、サブタスクの依存関係、割り当て、進捗を管理することで、動的なタスク分配と協調方法の適応、新たなタスクの発見を可能にする。
+複数のタスクと基盤モデルで、既存手法と同等以上の精度を維持しながら、トークン使用量、実行時間、通信量、ファイル競合や重複出力などの協調失敗を削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/beth_miecz/status/2054193336039170132?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/beth_miecz/status/2103554403060080785?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] $\texttt{SPECS}$: Faster Test-Time Scaling through Speculative Drafts, Mert Cemri+, NeurIPS'26, 2025.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.15733</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6644</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, NeurIPS, Test-Time Scaling, SpeculativeDecoding, reading, One-Line Notes, Latency, Author Thread-Post</tags>
+<repo-issue-date>2026-09-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.15733
+# Authors
+  - Mert Cemri
+  - Nived Rajaraman
+  - Rishabh Tiwari
+  - Xiaoxuan Liu
+  - Kurt Keutzer
+  - Ion Stoica
+  - Kannan Ramchandran
+  - Ahmad Beirami
+  - Ziteng Sun
+# Abstract
+  - Scaling test-time compute has driven the recent advances in the reasoning capabilities of large language models (LLMs), typically by allocating additional computation for more thorough exploration. However, increased compute often comes at the expense of higher user-facing latency, directly impacting user experience. Current test-time scaling methods primarily optimize for accuracy based on total compute resources (FLOPS), often overlooking latency constraints. To address this gap, we propose $\texttt{SPECS}$, a latency-aware test-time scaling method inspired by speculative decoding. $\texttt{SPECS}$~uses a smaller, faster model to generate candidate sequences efficiently, and evaluates these candidates using signals from both a larger target model and a dedicated reward model. We introduce new integration strategies, including reward-guided soft verification and a reward-based deferral mechanism. Empirical results on MATH500, AMC23 and OlympiadBench datasets show that $\texttt{SPECS}$~matches or surpasses beam search accuracy while reducing latency by up to $\sim$19.1\%. Our theoretical analysis shows that our algorithm converges to the solution of a KL-regularized reinforcement learning objective with increasing beam width.
+# Translation (by gpt-5.6-luna)
+- <abstract>テスト時計算量の拡大は、より徹底した探索のために追加の計算資源を割り当てることで、大規模言語モデル（LLM）の推論能力における近年の進展を促進してきた。しかし、計算量の増加はしばしばユーザーが体感するレイテンシの増大を伴い、ユーザー体験に直接的な影響を及ぼす。現在のテスト時スケーリング手法は、主に総計算資源（FLOPS）に基づく精度の最適化を行っており、レイテンシ制約を見落としがちである。この課題に対処するため、投機的デコーディングに着想を得た、レイテンシを考慮したテスト時スケーリング手法 $\texttt{SPECS}$ を提案する。$\texttt{SPECS}$ は、より小型で高速なモデルを用いて候補系列を効率的に生成し、より大規模な対象モデルと専用の報酬モデルの双方から得られるシグナルを用いてこれらの候補を評価する。さらに、報酬誘導型ソフト検証や報酬ベースの延期メカニズムを含む、新たな統合戦略を導入する。MATH500、AMC23、OlympiadBenchデータセットを用いた実験結果から、$\texttt{SPECS}$ はビームサーチと同等以上の精度を達成しつつ、レイテンシを最大約19.1%削減できることが示された。理論解析により、ビーム幅の増加に伴い、本アルゴリズムがKL正則化強化学習の目的関数の解に収束することも示す。</abstract>
+# Summary (by gpt-5.6-luna)
+- LLMのtest-time scalingにおいて、計算量だけでなくユーザー体験に関わるレイテンシを考慮するため、投機的デコーディングに基づくSPECSを提案。
+小型モデルで候補系列を高速生成し、大型モデルと報酬モデルの信号で評価する。
+報酬誘導型ソフト検証と報酬ベースの延期により、ビームサーチ以上の精度を維持しつつ、レイテンシを最大19.1%削減。
+ビーム幅の増加に伴い、KL正則化強化学習の解へ収束することも理論的に示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/mertcemri/status/2103233547712803292?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>beam search型のtest time scaling[^1]において、latencyの課題に対処するため、draft modelを活用する。Figure 2に示されるようなPRMのrewardが一定以上になった後はdraft modelでデコーディングをしても最終的なrewardが大きく変化しない洞察に基づき、rewardが閾値以上になるまではtarget modelで生成し、一定以上になった後の生成をdraft modelに異常することで、latencyを改善する、という話に見える。<br><br><img src="https://github.com/user-attachments/assets/46070ff2-4aca-4cbe-9643-166cc98fde9a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 各ブロックのトークン数を決めておき、各ブロックごとにbeam size n個の候補を生成し、逐次的に最も良いものを選択していくことで、最終的に単一のreasoning trajectoryを構成するtest time scaling手法</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] PreFT: Prefill-only finetuning for efficient inference, Andrew Lanpouthakoun+, NeurIPS'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.14217</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6639</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Personalization, PEFT(Adaptor/LoRA), LLMServing, NeurIPS, Decoding, KeyPoint Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-09-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.14217
+# Authors
+  - Andrew Lanpouthakoun
+  - Aryaman Arora
+  - Zhengxuan Wu
+  - Dhruv Pai
+  - Ben Keigwin
+  - Dan Jurafsky
+  - Christopher Potts
+# Abstract
+  - Large language models can now be personalised efficiently at scale using parameter efficient finetuning methods (PEFTs), but serving user-specific PEFTs harms throughput, even with specialised kernels and memory management techniques. This is because, theoretically and empirically, a mismatch exists between prefill (processing a large number of tokens at once) and decode (generating a single token autoregressively): the latter has far lower throughput when serving multiple adapters. Rather than optimising performance relative to parameter count, for efficient multi-adapter serving, we instead ought to optimise performance relative to serving throughput. We therefore propose PreFT (Prefill-only Finetuning), wherein we only apply the adapter to prefill tokens and discard it afterwards. PreFT significantly increases throughput with minimal effect on performance. We develop and release an efficient implementation of two prefill-only PEFTs, LoRA and ReFT, on the vLLM inference engine. We first show that serving multi-user PreFTs is more efficient than traditional PEFTs ($1.9\times$ the throughput when serving $512$ adapters on Llama 3.1 70B). Then, we compare the performance of prefill-only vs. all-token adapters on a variety of supervised finetuning and reinforcement learning tasks with LMs at varying scales. On SFT, we observe that the evaluation loss of PreFTs is higher than PEFTs, but can be compensated by increasing rank with nearly no reduction in throughput. On RL, we consistently find that PreFTs approach parity with standard PEFTs. Together, this work validates prefill-only adaptation of LLMs as a more favourable accuracy-throughput tradeoff than existing PEFTs for personalised serving.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデルは現在、パラメータ効率的ファインチューニング手法（PEFT）を用いることで、大規模かつ効率的にパーソナライズできる。しかし、ユーザーごとに異なるPEFTを提供すると、専用カーネルやメモリ管理技術を用いた場合でもスループットが低下する。これは、理論的にも実証的にも、プレフィル（大量のトークンを一度に処理する段階）とデコード（自己回帰的に単一のトークンを生成する段階）の間にミスマッチが存在するためである。特に後者では、複数のアダプターを提供する際のスループットがはるかに低くなる。
+
+複数アダプターの効率的な提供においては、パラメータ数に対する性能を最適化するのではなく、提供スループットに対する性能を最適化すべきである。そこで本研究では、PreFT（Prefill-only Finetuning）を提案する。PreFTでは、プレフィル段階のトークンにのみアダプターを適用し、その後は破棄する。PreFTは、性能への影響を最小限に抑えながら、スループットを大幅に向上させる。
+
+また、推論エンジンvLLM上で、プレフィル専用PEFTであるLoRAとReFTの効率的な実装を開発・公開する。まず、複数ユーザー向けのPreFTの提供が従来のPEFTより効率的であることを示す（Llama 3.1 70Bで512個のアダプターを提供する場合、スループットは1.9倍）。次に、さまざまな規模の言語モデルを用い、複数の教師ありファインチューニングおよび強化学習タスクにおいて、プレフィル専用アダプターと全トークン対応アダプターの性能を比較する。
+
+教師ありファインチューニング（SFT）では、PreFTの評価損失はPEFTより高くなるものの、ランクを増加させることで補償でき、その際スループットはほとんど低下しないことを確認した。強化学習（RL）では、PreFTが一貫して標準的なPEFTと同等の性能に近づくことが分かった。以上により、本研究は、LLMのプレフィル専用適応が、パーソナライズされた提供において、既存のPEFTよりも精度とスループットの好ましいトレードオフを実現することを示す。
+# Summary (by gpt-5.6-luna)
+- 複数ユーザー向けのPEFTでは、特にデコード段階でアダプター数に伴いスループットが低下する。
+そこで、プレフィル段階のトークンにのみアダプターを適用するPreFTを提案。
+LoRAとReFTを用いたPreFTをvLLM上に実装し、Llama 3.1 70Bで512個のアダプターを提供する場合、従来のPEFTに対して1.9倍のスループットを達成。
+SFTではランクの増加により性能低下を補償でき、RLでは標準PEFTと同等に近い性能を維持。
+LLMのパーソナライズにおいて、PreFTが精度と提供スループットの優れたトレードオフを実現することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aslanpouthakoun/status/2060041445420183951?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ユーザごとに最適化されたLoRAアダプタ等を利用して生成する場合にスループットを最大化したい状況を考える。一般的にprefillはcompute-bound[^1]、decodeはmemory-bound[^2]であり、特にスループットを最大化するためにバッチを利用した場合、複数ユーザのリクエストがバッチ内に存在するため、複数のアダプタをメモリにロードしながらprefillとdecodeを実施することになるが、decode時に余計なメモリのオーバヘッドを有み[^3]、スループットが悪化する問題がある。これを解決するために、prefill時のみアダプタを利用し、デコード時はアダプタを活用しないというシンプルな手法PreFTが提案されている。<br><br>つまり、prefill時のKV Cacheはアダプタを通じて計算され、decode時の計算にはアダプタは考慮されないが、prefill時のKV Cacheを通じてアダプタの影響は間接的に保持されるため、アダプタを通じた生成の適応はできるはずだ、という気持ちの手法である。<br><br>PreFT（pが提案手法でprefillのみアダプタ利用、AはAll-positionで全ての位置でアダプタ利用）の結果、提案手法のスループットはアダプタ無しのベースライン（破線）に近いところまで改善した。<br><img src="https://github.com/user-attachments/assets/a6a9056c-c015-432d-98d5-25aabe6577f6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、Table 1, Table 2はそれぞれSFT, RL時の最終的なdownstreamタスクへの影響を調査している。<br><br>結論としては、SFTの場合は、個々のrank設定ごとに有意に性能が劣化するが、全体で見ると有意差はなかった。<br><img src="https://github.com/user-attachments/assets/3312cc66-8d4e-4b0a-93eb-e22391617f0b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、RLではデータセットごとに差が出ておりGSM8Kでは特に性能の劣化が著しい。これについて付録で詳しい調査結果が記載されているようだが、最終的にはclear explanationは見つかっていないとのこと。また、All-positionとPreFTの間に有意差が生じており、平均してに-2ポイント程度性能が悪化する。<br><img src="https://github.com/user-attachments/assets/acda188e-794e-4bea-a4cb-767c75b1fd96" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 単一リクエストの複数トークンを並列に処理する必要があるため<br>[^2]: 単一のリクエストは新たな1つのトークンを生成するが、このときに基本的に巨大なKV Cacheをメモリから読み出す必要があるため<br>[^3]: たとえば、ユーザごとにアダプタが異なるためリクエスト単位でKV Cacheを保持しなければならなかったり、バッチに含まれるユーザのアダプタをメモリにロードしたりする必要がある、またLoRAのdown projection自体もmemory-boundedであることがArithmetic Intensityを計算するとわかる。すなわち、Arithmetic Intensity=メモリから1バイト読み出したあたり、どの程度の計算が実施されるか=FLOPS/bytes=1/(1/r+1/d+1/b) << Bであり、基本的にLoRAのランクrは出力次元数d, バッチ数bよりも小さいため、高々Arithmetic Intensity≒rにしかならず、これはGPUのハードウェア限界値に全く及ばないため、メモリ律速となる。ここでBはハードウェアの計算性能/ハードウェアのメモリ帯域であり、ハードウェア側の計算能力とメモリ帯域の比率を表す。Rooflineモデルに従うとBに近ければ近いほど演算性能が向上する。</p><p>性能の検証について、8Bまでの結果しかないように見えるので、より大きなサイズのモデルに対して提案手法を適用したときに、SFTにおける性能の劣化がどの程度生じるかはよくわからない。Table 1を見る限り、モデルサイズが大きい場合に、全体の傾向として性能が低下していそうにも見える。が、これはただそういう風に見えるという感想なので、よくわからないし、なんなら結局自分たちが適用したいdownstreamタスクで性能がどうなるかは見てみたいとわからない。<br><br>また、personalizationのためにLoRAアダプタを使いたい、という状況がどの程度存在するかもよくわからない。contextに情報をユーザごとに注入するような一時的な個人化で十分という状況は多いのではないだろうか。実用上はアダプタのメンテナンスコストも生じる。本研究はLoRAによるpersonalizationが、contextに注入する場合に対して重要であることを示すのはout of scopeだとは思う。が、このような状況が生じうること動機について、ストーリーとして一定の納得感は欲しいところではある。<br><br>スループットが改善されるというのは魅力的であるため、実際にLoRAをユーザごとに適用した上でサービングしたい、という制約がある場合は試してみる価値はあると思われる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] HySparse2: Hybrid Sparse Attention with Two-Level KV Sharing, Jianyu Wei+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.26368</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6629</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Architecture, KV Cache, Initial Impression Notes, Author Thread-Post, Decoder-Decoder</tags>
+<repo-issue-date>2026-09-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.26368
+# Authors
+  - Jianyu Wei
+  - Yizhao Gao
+  - Qihao Zhang
+  - Shimao Chen
+  - Zhengju Tang
+  - Yu Cheng
+  - Shengjie Zhou
+  - Zihan Jiang
+  - Yifan Song
+  - Hailin Zhang
+  - Liang Zhao
+  - Bo Yang
+  - Gang Wang
+  - Shijie Cao
+  - Fuli Luo
+# Abstract
+  - Long-horizon and multi-turn agents typically generate short actions and process long observations from tools and environments. This growing context demands efficient prefill, compact KV-cache storage, and accurate long-context retrieval. To meet these demands, we introduce HySparse2, a hybrid sparse attention architecture with two-level KV sharing. At the outer level, KV Bridging adopts a YOCO-style self-decoder and cross-decoder structure, but bridges only full-attention layers. The self-decoder uses hybrid sliding-window attention (SWA), while the cross-decoder uses hybrid sparse attention. The KV caches for full-attention layers in the cross-decoder are generated from the hidden states of full-attention layers in the self-decoder. At the inner level, HySparse2 retains HySparse's core KV Reuse design with two refinements. First, it replaces block-level sparsity with token-level sparsity for finer long-context retrieval. Second, it removes the separate SWA branch from sparse layers and instead forces a sliding window of recent tokens into the sparse selection. This two-level KV sharing allows all cross-decoder KV caches to be constructed from self-decoder hidden states. Prefill can therefore exit after the self-decoder, skipping all cross-decoder layers. On an 80B-A3B MoE model, HySparse2 outperforms HySparse and Hybrid SWA on long-context retrieval and multi-turn agentic tasks, while substantially reducing prefill computation and KV-cache storage.
+# Translation (by gpt-5.6-luna)
+- 長期的なホライズンや複数ターンにわたるエージェントは、通常、短いアクションを生成し、ツールや環境から得られる長い観測を処理します。この増大するコンテキストには、効率的なプリフィル、コンパクトなKVキャッシュ格納、そして正確な長文コンテキスト検索が求められます。これらの要求に応えるため、我々は2段階のKV共有を備えたハイブリッド・スパース注意アーキテクチャであるHySparse2を導入します。
+
+外側のレベルでは、KV BridgingがYOCO方式の自己デコーダとクロスデコーダの構造を採用しますが、ブリッジするのはフルアテンション層のみです。自己デコーダはハイブリッドなスライディングウィンドウ注意（SWA）を用い、クロスデコーダはハイブリッド・スパース注意を用います。クロスデコーダのフルアテンション層に対するKVキャッシュは、自己デコーダのフルアテンション層の隠れ状態から生成されます。
+
+内側のレベルでは、HySparse2はHySparseの中核となるKV Reuse設計を維持しつつ、2つの改良を加えています。第一に、よりきめ細かな長文コンテキスト検索を実現するため、ブロックレベルのスパース性をトークンレベルのスパース性に置き換えます。第二に、スパース層から独立したSWA分岐を削除し、その代わりに、直近のトークンをスパース選択に組み込むスライディングウィンドウを強制します。
+
+この2段階のKV共有により、すべてのクロスデコーダのKVキャッシュを自己デコーダの隠れ状態から構築できます。したがって、プリフィルは自己デコーダの処理後に終了でき、すべてのクロスデコーダ層をスキップできます。80B-A3BのMoEモデルにおいて、HySparse2は長文コンテキスト検索および複数ターンのエージェントタスクでHySparseとHybrid SWAを上回りながら、プリフィル計算量とKVキャッシュの格納量を大幅に削減します。
+# Summary (by gpt-5.6-luna)
+- 長期・複数ターンのエージェントに対し、HySparse2は2段階のKV共有を備えたハイブリッド・スパース注意を導入。  
+外側ではKV Bridgingにより、自己デコーダの隠れ状態からクロスデコーダのKVキャッシュを構築する。  
+内側では、KV Reuseを維持しつつ、ブロック単位のスパース性をトークン単位に変更し、直近トークンを含むスライディングウィンドウを強制することで長文検索を高精度化。  
+自己デコーダ処理後にクロスデコーダ層をスキップでき、プリフィル計算量とKVキャッシュ容量を削減。  
+80B-A3B MoEモデルにおいて、長文コンテキスト検索と複数ターンのエージェントタスクでHySparseおよびHybrid SWAを上回る性能を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_luofuli/status/2102766365190901957?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Mimo-V3ではYOCOスタイルのデコーダ-デコーダモデルで、KVを共有するアーキテクチャになるようである。</p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2103037759829274774?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness, Haozhe Liu+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.20519</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6605</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, SelfImprovement, read-later, autoresearch/RSI, AgentHarness</tags>
+<repo-issue-date>2026-09-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.20519
+# Authors
+  - Haozhe Liu
+  - Tian Ye
+  - Sensen Gao
+  - Qihang Cao
+  - Yitong Li
+  - Mingchen Zhuge
+  - Duomin Wang
+  - Ruihua Zhang
+  - Ping Luo
+  - Jiawang Bian
+  - Lei Zhu
+  - Ligeng Zhu
+  - Enze Xie
+  - Song Han
+# Abstract
+  - As coding agents move from supervised code completion to unattended, around-the-clock exploration, their work expands from isolated predictions into long trajectories of reasoning, tool use, and feedback. Token efficiency therefore becomes important for scaling recursive self-improvement. We take an RSI-inspired approach at the harness layer, scaling auto-research loops across increasingly numerous and diverse environments for harness rollouts. At this scale, the process yields reusable improvements that transfer beyond their development setting, moving automated harness discovery toward production-level outcomes. Four mechanisms survive selection and form SoL-Pi, spanning action execution, context compaction, observation handling, and delegated reading. On the 51-task EdgeBench evaluation, SoL-Pi achieves performance comparable to Pi across GPT-5.6 Sol and Opus 5 while reducing recorded token traffic by 44.7-49.0% and API cost by about one third. In other words, estimated hourly savings are \$8.75-\$13.50 relative to native Codex and Claude Code harnesses, and \$4.36-\$5.71 relative to Pi.
+# Translation (by gpt-5.6-luna)
+- コーディングエージェントが教師ありコード補完から、常時稼働する無監督の探索へと移行するにつれ、その作業は個別の予測から、推論、ツールの利用、フィードバックを伴う長い軌跡へと拡大している。したがって、再帰的自己改善をスケールさせるうえで、トークン効率が重要になる。われわれは、ハーネス層においてRSIに着想を得たアプローチを採用し、ハーネスのロールアウト用に、数と多様性を段階的に増やした環境全体で自動研究ループをスケールさせる。この規模では、そのプロセスによって開発環境を超えて転用可能な再利用性の高い改善が生まれ、自動ハーネス探索を本番レベルの成果へと近づけることができる。4つのメカニズムが選択を生き残り、行動実行、コンテキスト圧縮、観測処理、委譲された読解にまたがるSoL-Piを形成する。51タスクからなるEdgeBench評価において、SoL-PiはGPT-5.6、Sol、Opus 5全体でPiと同等の性能を達成しながら、記録されたトークン通信量を44.7～49.0%、APIコストを約3分の1削減した。言い換えれば、推定される1時間あたりの節約額は、標準のCodexおよびClaude Codeハーネスと比べて8.75～13.50ドル、Piと比べて4.36～5.71ドルとなる。
+# Summary (by gpt-5.6-luna)
+- コーディングエージェントの長期的な推論・ツール利用では、トークン効率が重要となるため、RSIに着想を得た自動ハーネス探索を提案。  
+複数環境で研究ループをスケールさせ、行動実行・コンテキスト圧縮・観測処理・委譲読解に関する4つの機構からSoL-Piを構築。  
+EdgeBenchではGPT-5.6、Sol、Opus 5でPiと同等の性能を維持しつつ、トークン通信量を44.7～49.0%、APIコストを約3分の1削減。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2101578159674310707?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Block Parallelism For Efficient Distributed Long-Context Diffusion Language Model Training, Tarun Suresh+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.19242</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6599</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, DiffusionModel, SoftwareEngineering, SpeculativeDecoding, Author Thread-Post</tags>
+<repo-issue-date>2026-09-19</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2609.19242
+- blog: https://scalingintelligence.stanford.edu/Turbo-dLLM/
+# Authors
+  - Tarun Suresh
+  - Pranshu Chaturvedi
+  - Hangoo Kang
+  - Parth Shroff
+  - Ishan S. Khare
+  - Hermann Kumbong
+  - Azalia Mirhoseini
+# Abstract
+  - Block diffusion language models (BDLMs) combine autoregressive dependencies across blocks with parallel denoising within blocks, but long-context training is constrained by distributed attention communication and activation memory. Conventional context parallelism (CP) shards the combined clean-plus-corrupted sequence by position, communicating shared clean K/V together with block-specific corrupted K/V and their gradients. We observe that the BDLM objective separates over target blocks. We introduce block parallelism (BP), a new distributed parallelism dimension that assigns each corrupted-block computation to one rank. To scale BP to long contexts, we introduce context-sharded block parallelism (CSBP), which also shards the shared clean sequence across those ranks. CSBP keeps corrupted K/V and gradients local, avoids replicated clean prefixes, and preserves BDLM training semantics. On 16 H200 GPUs at 256K context, CSBP improves throughput over the best baseline by 1.18-1.45x for supervised fine-tuning and 1.27-1.33x for conversion of autoregressive models to BDLMs, while matching or reducing peak HBM. Full-model speedup reaches 1.61x at 512K. On eight H100 GPUs, CSBP accelerates DFlash2 speculative-decoder training by 2.48x at 512K and 7.59x at 1M. In matched 12-hour DiffusionGemma 26B-A4B SFT runs, CSBP achieves higher pass rates at every trained checkpoint on SWE-bench Verified and Terminal-Bench Lite. Code: https://github.com/ScalingIntelligence/Turbo-dLLM
+# Translation (by gpt-5-nano)
+- ブロック拡散言語モデル（BDLM）は、ブロック間の自回帰的依存とブロック内の並列デノイズを組み合わせるが、長い文脈での訓練は分散アテンション通信と活性化メモリにより制約を受ける。従来のコンテキスト並列性（CP）は、結合されたクリーンと腐敗のシーケンスを位置で分割し、共有のクリーンK/Vとブロック固有の腐敗K/Vおよびそれらの勾配を伝搬させる。我々はBDLMの目的関数がターゲットブロックごとに分離されることを観察した。ブロック並列性（BP）と呼ぶ新しい分散並列性の次元を導入し、各腐敗ブロックの計算を1つのランクに割り当てる。長い文脈へBPをスケールさせるため、文脈シャード付きブロック並列性（CSBP）を導入する。CSBPは共有のクリーンシーケンスもそれらのランク間でシャードする。CSBPは腐敗K/Vと勾配を局所に保ち、クリーンなプレフィックスの複製を回避し、BDLM訓練の意味論を維持する。256Kの文脈で16枚のH200 GPUを用いた場合、CSBPは最良のベースラインよりスループットを1.18–1.45倍向上させ、教師ありファインチューニングでは1.27–1.33倍、オートレグレッシブモデルをBDLMへ変換する場合にも向上させつつ、ピークHBMを同等または低減させる。全モデルのスピードアップは512Kで1.61倍に達する。8枚のH100 GPUでは、CSBPはDFlash2の推測デコーダ訓練を512Kで2.48倍、1Mで7.59倍加速する。マッチした12時間のDiffusionGemma 26B-A4B SFT実行では、CSBPはSWE-bench VerifiedおよびTerminal-Bench Liteの訓練済みチェックポイントごとに、より高いパスレートを達成する。コード: https://github.com/ScalingIntelligence/Turbo-dLLM
+# Summary (by gpt-4o-mini)
+- BDLMは自回帰的依存と並列デノイズを組み合わせるが、長文脈での訓練は制約を受ける。本研究は新たな分散並列性であるブロック並列性（BP）を導入し、文脈シャード付きブロック並列性（CSBP）を適用して、効率的な訓練を実現。CSBPはスループットを最大1.61倍向上させ、低いピークHBMを維持することで、モデルのパフォーマンスを改善した。特に、CSBPはDFlash2のデコーダ訓練を大幅に加速し、高いパスレートを達成。</issue-body>
+<maintainer-comment-text><p>github:
+
+{% raw %}
+<a href="https://github.com/ScalingIntelligence/Turbo-dLLM" target="_blank" rel="noopener noreferrer">https://github.com/ScalingIntelligence/Turbo-dLLM</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/azaliamirh/status/2101020422926135665?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>diffusion Language Modelを高速に学習できるライブラリとのことで、たとえばDFlash2をベースにしたSpeculative DecodingのためのDraft Modelの学習などが高速化できるとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Dream-RSI: Recursive Self-Improvement through Evolving Worlds, Tong Zheng+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.14858</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6577</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, SelfImprovement, Initial Impression Notes, autoresearch/RSI</tags>
+<repo-issue-date>2026-09-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.14858
+# Authors
+  - Tong Zheng
+  - Xidong Wu
+  - Zheng Zhang
+  - Zhankui He
+  - Chaoyi Zhang
+  - Benjamin Coleman
+  - Ruoqiao Wei
+  - Di Bai
+  - Haolin Liu
+  - Rui Liu
+  - Xue Wang
+  - Yue Zhuan
+  - Wang-Cheng Kang
+  - Renkai Xiang
+  - Heng Huang
+  - Xinwu Cheng
+  - Yunsong Guo
+# Abstract
+  - Recursive self-improvement is becoming increasingly vital for autonomous AI agents, where progress hinges on discovering high-value solutions across complex domains. The driver of this process is effective exploration, however, managing and improving exploration strategies remains a major bottleneck. Current systems face a fundamental dilemma: fixed strategies fail to adapt as search spaces scale, while online policy optimization requires navigating vast meta-search spaces under delayed and expensive feedback over long-horizon rollouts. We introduce \textsc{Dream-RSI}, a framework for scalable and recursively self-improving exploration. A lightweight orchestration layer makes exploration explicit and programmable while leaving the underlying coding agent unchanged. Our key insight is that accumulated discovery history can serve as a replay simulator over the realized search space. By performing dreaming in the replay simulator constructed from historical discovery trees, \textsc{Dream-RSI} secures immediate, low-cost off-policy feedback to evaluate and refine exploration policies without invoking repetitive, expensive online evaluations. The improved policy is subsequently redeployed online to drive further discovery, continuously expanding the simulator pool in a self-improving loop. Across algorithm engineering, mathematical optimization, and GPU kernel engineering, \textsc{Dream-RSI} achieves competitive or improved discovery quality while substantially reducing discovery cost in several settings.
+# Translation (by gpt-5-nano)
+- 再帰的自己改善は自律的なAIエージェントにとってますます重要になっており、進歩は複雑な領域における高価値解の発見に依存している。この過程を推進するのは効果的な探索だが、探索戦略を管理・改善することは依然として大きなボトルネックである。現在のシステムは本質的なジレンマに直面している。固定戦略は探索空間が拡大するにつれて適応できず、一方オンラインポリシー最適化は遅延かつ高コストのフィードバックの下で長期的なロールアウトを通じて広大なメタ探索空間を横断することを要求する。我々は \textsc{Dream-RSI}、スケーラブルで再帰的自己改善を可能にする探索のフレームワークを紹介する。軽量なオーケストレーション層は探索を明示的かつプログラム可能にしつつ、基盤となるコーディングエージェントを変更しない。我々の主要な洞察は、蓄積された発見履歴が現実化された探索空間上のリプレイシミュレータとして機能し得るという点である。歴史的発見ツリーから構築されたリプレイシミュレータでドリーミングを行うことにより、\textsc{Dream-RSI}はオフポリシーの即時かつ低コストなフィードバックを確保し、繰り返される高コストのオンライン評価を呼び出すことなく探索ポリシーを評価・洗練する。改善されたポリシーはオンラインで再デプロイされ、さらなる発見を推進し、自己改善ループの中でシミュレータプールを継続的に拡大する。アルゴリズム工学、数理最適化、GPUカーネルエンジニアリングの領域において、 \textsc{Dream-RSI}は競争力のあるまたは改善された発見品質を達成しつつ、いくつかの設定で発見コストを大幅に削減する。
+# Summary (by gpt-4o-mini)
+- 再帰的自己改善を実現するために、\textsc{Dream-RSI}というスケーラブルな探索フレームワークを提案。これにより、探索を明示化し、基盤エージェントを変更せずに効果的な探索戦略を管理可能に。累積された発見履歴を用いたリプレイシミュレータにより、オフポリシーで迅速なフィードバックを確保し、高コストのオンライン評価を回避。改善されたポリシーを再デプロイし、自己改善ループを拡充。競争力のある発見品質を維持しつつ、設定によっては発見コストを大幅に削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xudong07452910/status/2100066449805246756?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ざーっと見たが、dreamingが何を指すのかよくわからない。どういう操作のことを指しているのか。<br><br>図中の太字部分がReplay Simulator、およびdreamingの話をしている気がするが、まだよくわからない。つまり、蓄積されたtrajectoryを再生成せずにprefillに使って、探索木で分岐が生じた場合は現在のポリシーに基づいて判断をし、再利用できる探索がなくなるまでこのような操作を繰り返すことで効率化するということだろうか。<br><br><img src="https://github.com/user-attachments/assets/a53c045a-c490-42c4-942d-3cbb829370a4" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Don't Drop Dropout: Optimizing Layer Sparsity for Efficient LLM Training and Inference, Mostafa Elhoushi+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.05275</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6535</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, read-later</tags>
+<repo-issue-date>2026-09-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.05275
+# Authors
+  - Mostafa Elhoushi
+  - Alex Pretko
+  - Nolan Dey
+  - Bin Claire Zhang
+  - Gavia Gray
+  - Gurpreet Gosal
+  - Abdulrahman Mahmoud
+  - Shane Bergsma
+  - Joel Hestness
+# Abstract
+  - Layer dropout (a.k.a. stochastic depth) has been shown to enable faster training, higher accuracy, and robustness to zero-shot layer pruning in both language and vision transformers. However, as models and datasets have scaled, dropout - particularly layer dropout - has largely disappeared from large language models (LLMs) pre-training recipes. While some prior work has reported that dropout can degrade accuracy, no comprehensive study has quantified, let alone mitigated, this effect. In this study, we show that layer dropout should be used in state-of-the-art LLM training, establishing best practices and scaling analysis for both training and post-training benefits. Concretely, with optimal layer distribution, time schedule, and optimizer hyperparameters, we observe that at the same training FLOPs layer dropout leads to lower loss. For a given number of training steps, LLMs can achieve lower or similar validation loss while saving upto 25% of training FLOPs. Moreover, layer dropout enables significant post-training optimizations, such as early exit, intermediate-layer skipping, and self-speculative decoding, yielding up to 1.5x inference speedup with negligible accuracy loss. Across more than 2400 training experiments, spanning models from 271M to 8.2B parameters and datasets up to 160B tokens, we demonstrate that these findings extend reliably to large-scale training regimes. All pre-training experiments were run on Cerebras CS-3 systems.
+# Translation (by gpt-5-nano)
+- レイヤー・ドロップアウト（別名：確率的深さ）は、言語系および視覚系トランスフォーマーの双方において、より速いトレーニング、より高い精度、ゼロショットのレイヤー剪定に対する頑健性を実現することが示されている。しかし、モデルとデータセットの規模が拡大するにつれて、ドロップアウト、特にレイヤー・ドロップアウトは大規模言語モデル（LLMs）の事前学習レシピからほぼ姿を消してしまった。従来の研究の中にはドロップアウトが精度を劣化させると報告するものもあるが、この影響を定量化したり、それを緩和したりした包括的な研究はない。本研究では、最先端のLLMトレーニングにおいてレイヤー・ドロップアウトを使用すべきであることを示し、トレーニングとポストトレーニングの両方の利益のためのベストプラクティスとスケーリング分析を確立する。具体的には、最適なレイヤー分布、時間割、最適化子のハイパーパラメータを組み合わせた場合、同じトレーニングFLOPsでもレイヤー・ドロップアウトは損失を低下させることを観察した。一定のトレーニングステップ数に対して、LLMsは検証損失を低くするか、同程度に保ちつつ、トレーニングFLOPsを最大で25％節約できる。さらに、レイヤー・ドロップアウトは事後のトレーニング最適化、例えば早期終了、中間層のスキップ、自己推測デコーディングなどを大幅に可能にし、精度のほとんど損失を生じさせることなく推論速度を最大1.5倍向上させる。271Mから8.2Bパラメータのモデル、最大160Bトークンのデータセットに及ぶ2400件を超えるトレーニング実験を横断して、これらの知見が大規模トレーニング環境にも確実に適用できることを示した。すべての事前学習実験はCerebras CS-3システム上で実行された。
+# Summary (by gpt-4o-mini)
+- レイヤー・ドロップアウトは、トランスフォーマーにおいて速いトレーニングと高い精度を実現するが、LLMsの事前学習からは姿を消しつつある。本研究では、レイヤー・ドロップアウトの使用の利点を示し、ベストプラクティスとスケーリング分析を提案。特に、同じトレーニングFLOPsで損失が低下し、最大25％のFLOPs節約が可能であり、推論速度も1.5倍向上することが確認された。2400件以上のトレーニング実験を通じて、これらの知見が大規模トレーニング環境に適用可能であることが示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2097501582044873084?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/5671" target="_blank" rel="noopener noreferrer">MAI-Thinking-1: Building a Hill-Climbing Machine, Microsoft, 2026.06</a>
+<br><br>のFigure 6の例を見ると10Tトークン程度学習したら逆転したこともあったので、160Bは十分なのだろうか（パラメータ数やそもそも適用しているものが違うので何も言えないのだが、少なくともこういう例はある。小規模（中規模？）実験の結果をより大規模な実験に必ずしも外挿できない、というのは頭に入れておいたほうが良さそう。が、どうしようもないという）。</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/giffmana/status/2097593327289790821?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>FLOPsだけを見ると理論上は計算量を削減できるように見えるかもしれないが、バッチ作成を考慮するとそれらの恩恵がテスト時もサービング時も無くなってしまうのでは、という指摘がある。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Random Attention: Rethinking KV Cache Eviction for Efficient Reasoning, Heng Wang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.03430</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6526</repo-issue-link>
+<tags>EfficiencyImprovement, Attention, read-later, KV Cache, Compression</tags>
+<repo-issue-date>2026-09-08</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.03430
+# Authors
+  - Heng Wang
+  - Jielin Qiu
+  - Wenting Zhao
+  - Cheng Qian
+  - Liangwei Yang
+  - Jiawei Han
+  - Heng Ji
+  - Silvio Savarese
+  - Shelby Heinecke
+  - Huan Wang
+# Abstract
+  - Large language models achieve superior performance on tasks that require extended reasoning, but long chains of thought make the KV cache a severe memory bottleneck. Existing KV cache compression methods share one paradigm: score each cached token by some estimate of how much it will matter later, and keep the top-scoring ones. We show that the selection signal contributes almost nothing. Random Attention keeps the prompt and evicts uniformly at random within each attention head, computing no score at all; across four models and six reasoning tasks it matches the strongest prior evictor while serving 32-43% higher throughput than it in vLLM deployment. Controlled experiments explain this by showing that 1) the prompt is the fragile part of the cache, and most of the gap between selectors is just whether their selection signal happened to keep it; 2) the reasoning trace protects itself against eviction with redundancy at two levels, in the text (the model restates what it still needs as it works) and across attention heads (each keeps its own copy of the trace), so once the prompt is safe, a random draw retains enough copies of what the model still needs, and no score is required to pick them. Our code is publicly available at https://github.com/SalesforceAIResearch/Random-Attention.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルは長い推論を要するタスクで優れた性能を発揮しますが、長い思考の連鎖はKVキャッシュを深刻なメモリのボトルネックにします。既存のKVキャッシュ圧縮手法は共通のパラダイムを共有します：後でどれだけ重要になるかを見積もって各キャッシュ済みトークンにスコアを付け、スコアの高いものを保持します。我々は、選択信号の寄与がほとんどないことを示します。Random Attention はプロンプトを保持し、各アテンションヘッド内で均一にランダムにトークンを追放し、全くスコアを計算しません；4モデルと6つの推論タスクを横断して、従来の最も強力なエビクターと同等の性能を示しつつ、vLLM のデプロイメントにおいてそれより32〜43%高いスループットを提供します。制御実験はこれを次のように説明します。1) プロンプトはキャッシュの脆弱な部分であり、セレクタ間のギャップの大半は、選択信号がそれを保持していたかどうかだけである。2) 推論の痕跡は、テキスト内の冗長性（モデルは作業を進める中でまだ必要なものを再表現する）と、アテンションヘッド間でそれぞれ痕跡のコピーを保持するという二つのレベルの冗長性によって自らをエビクションから保護する。したがってプロンプトが安全であれば、ランダムな抽出でもモデルがまだ必要とするコピーを十分に保持でき、選択のためのスコアは不要となる。私たちのコードは公開されています：https://github.com/SalesforceAIResearch/Random-Attention
+# Summary (by gpt-4o-mini)
+- 大規模言語モデルは長い推論タスクにおいて優れた性能を示すが、長い思考過程はメモリボトルネックとなる。従来のKVキャッシュ圧縮手法はトークンにスコアを付けて重要なものを保持するが、我々は選択信号の寄与が無視できることを示す。Random Attention手法では、プロンプトを保持しながらトークンをランダムに追放し、スコア計算を行わない。これにより、伝統的手法と同等の性能を維持しつつ、vLLMのデプロイメントで32〜43%高いスループットを達成。プロンプトの安全性が確保されればランダム抽出でも必要なトークンを保持でき、選択スコアは不要である。コードは公開中。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2096599802062545291?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Language Models Can Control Their Own Attention, Namgyu Ho+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2609.02737</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6516</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, Attention, LongContext, read-later, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-09-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2609.02737
+# Authors
+  - Namgyu Ho
+  - Huzama Ahmad
+  - Woosung Koh
+  - Se-Young Yun
+  - Tal Schuster
+  - Cicero Nogueira dos Santos
+# Abstract
+  - Language models spend most of their attention on a small fraction of context, yet they read the entire KV cache to find the few tokens that matter. If the user asks about a previous detail in a 1M-token conversation, global attention layers must scan the full context to generate each token of the reply. A prominent approach mitigates this cost by pre-selecting relevant tokens via lightweight proxy scores, but this extrinsic scoring still incurs O(N) per step. We take an intrinsic approach motivated by the simple question: wouldn't the model already know which parts of the context are relevant? To this end, we introduce Declarative Attention (DA), a protocol that elicits the model to declare where it needs to attend within its chain-of-thought, partitioning generation into three modes: <global> (full context), <focus> (a specific region), and <local> (recent output only). The inference engine parses these declarations like tool calls and skips most of the KV cache read. Under zero-shot evaluation across 15 long-context tasks, DA on off-the-shelf models (Gemma-4-31B, Qwen-3.6-27B) significantly reduces total attended tokens during decoding (52.0%, 31.1%) with modest accuracy drops (1.27pp, 2.75pp) that shrink with model scale. DA unlocks a new axis of sparse attention, with further potential under training-based methods that future work can explore.
+# Translation (by gpt-5-nano)
+- 言語モデルは文脈のごく一部に大半の注意を費やす一方で、重要な少数のトークンを見つけるために全体のKVキャッシュを読み取る。もしユーザーが1Mトークンの会話の以前の詳細について尋ねると、グローバルアテンション層は返信の各トークンを生成するために全体の文脈を走査しなければならない。軽量なプロキシスコアを用いて関連するトークンを事前に選択することでこのコストを緩和する顕著なアプローチもあるが、この外部スコアリングでもステップごとにO(N)がかかる。我々は「モデルはすでにどの部分の文脈が関連するのかを知っているのではないか」という単純な問いに動機づけられ、内発的なアプローチを採用する。これを目的として、Declarative Attention（DA）を導入する。DAはモデルに対して思考の連鎖過程の中でどこに注意を払う必要があるかを宣言させるプロトコルで、生成を三つのモードに分割する：<global>（全文脈）、<focus>（特定の領域）、<local>（最近の出力のみ）。推論エンジンはこれらの宣言をツール呼び出しのように解析し、KVキャッシュの読み取りの大半をスキップする。15の長文脈タスクにおけるゼロショット評価の下で、市販のモデル（Gemma-4-31B、Qwen-3.6-27B）上のDAはデコード時の総注目トークン数を大幅に削減し、52.0%、31.1%の削減をもたらす一方、精度の低下は控えめで（1.27ポイント、2.75ポイント）モデル規模の拡大につれて縮小する。DAはスパースアテンションの新たな軸を開き、今後の訓練ベースの手法によってさらなる可能性が探究され得る。
+# Summary (by gpt-4o-mini)
+- Declarative Attention（DA）を導入し、モデルが生成時にどの文脈に注意を払うべきかを宣言させることで、KVキャッシュのスキャンを最小化。三つのモード（global, focus, local）に分けることで、ゼロショット評価で注意トークン数を52.0%、31.1%削減しつつ、精度の低下を抑制。DAはスパースアテンションの新しい可能性を提供。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2095678236722098292?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] AI Research Preference Models, Thomas Simon Foster+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.13940</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6493</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, Evaluation, SelfImprovement, ScientificDiscovery, LongHorizon, autoresearch/RSI</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.13940
+# Authors
+  - Thomas Simon Foster
+  - Bassel Al Omari
+  - Tingchen Fu
+  - Thomas Mann
+  - Carl Domond
+  - Lucia Cipolina-Kun
+  - Bhavul Gauri
+  - Muna Aghamelu
+  - Alexander D. Goldie
+  - Eryk Helenowski
+  - Jean-Christophe Gagnon-Audet
+  - Alberto Pepe
+  - Saba Nazir
+  - Daniel Izcovich
+  - Noam Levi
+  - Rishi Hazra
+  - Karen Hambardzumyan
+  - Nicolas Baldwin
+  - Xian Li
+  - Martin Josifoski
+  - Paris Giampouras
+  - Masoud Jalili Sabet
+  - Anya Sims
+  - Hela Momand
+  - Tatiana Shavrina
+  - Despoina Magka
+  - Jason Weston
+  - Yulin Wang
+  - Anirudh Goyal
+  - João Henriques
+  - Yoram Bachrach
+  - Emily McMilin
+  - Jakob Nicolaus Foerster
+# Abstract
+  - AI research agents (AIRA) can now carry machine learning experiments from proposal through implementation and evaluation. Yet progress on frontier tasks is throttled by the cost of evaluations that can consume days of GPU time. When an agent can propose far more candidates than it can afford to run, progress depends on its research preference: how it allocates a fixed execution budget across many candidates. We introduce AI Research Preference Models (RPMs) that predict which candidate solution is most promising, without paying the cost of running them all. We build RPMs from frozen pretrained language models in two variants: an inference-only model that reasons over candidate plans, code, and previously executed solutions, and an agentic model that additionally runs small-scale pilot experiments. Integrated into the AIRA-dojo research agent and evaluated on the machine learning research benchmark AIRS-Bench, the two variants increase the average normalized score from 0.684 to 0.711 and 0.729, respectively. Both reach the unguided agent's 24-hour performance in roughly 15 hours, using less than two-thirds of its execution budget, and together yield new state-of-the-art results on two AIRS-Bench tasks.
+# Translation (by gpt-5-nano)
+- AI研究エージェント（AIRA）は、提案から実装・評価まで機械学習の実験を実行できるようになった。しかし、フロンティアタスクの進展は、数日分のGPU時間を消費し得る評価コストによって抑制されている。エージェントが実行可能な候補よりはるかに多くの候補を提案できる場合、進捗は固定の実行予算を多数の候補にどう配分するかという研究嗜好に依存する。我々は、すべての候補を実行するコストを支払うことなく、どの候補解が最も有望かを予測するAI研究嗜好モデル（RPMs）を導入する。RPMsは凍結済みの事前学習済み言語モデルから2つの変種として構築される：候補計画、コード、および以前実行された解決策を推論する推論専用モデルと、さらに小規模なパイロット実験を実行するエージェント的モデル。AIRA-dojo研究エージェントへ統合され、機械学習研究ベンチマーク AIRS-Bench で評価したところ、2つの変種は平均正規化スコアをそれぞれ0.684から0.711および0.729へと向上させた。双方は未指導エージェントの24時間パフォーマンスをおおよそ15時間で達成し、実行予算の3分の2未満を使用し、あわせてAIRS-Benchの2つのタスクで新たな最先端結果を達成する。
+# Summary (by gpt-4o-mini)
+- AI研究エージェント（AIRA）は、機械学習実験の効率を高めるために、評価コストを抑えるAI研究嗜好モデル（RPMs）を導入。これにより、候補解の中から最も有望なものを予測し、固定予算内での進捗を最適化。RPMsは事前学習済み言語モデルの変種として構築され、AIRA-dojoに統合後、機械学習ベンチマーク AIRS-Benchでのスコアを向上させ、実行時間を短縮しながら新たな最先端結果を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2094908191075357100?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Prefix Sliding for efficient test-time scaling, Niklas Muennighoff+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.26070</original-paper-blog-link>
@@ -1014,6 +1798,16 @@ Qwen3-8B-Baseでは、AdamWは270の学習ステップ後に総合精度0.495に
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2055050022274969872?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gordic_aleksa/status/2100989081983599007?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -3180,7 +3974,7 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 <title>[Paper Note] Image Generation with a Sphere Encoder, Kaiyu Yue+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.15030</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4603</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, Transformer, Encoder, Encoder-Decoder, 2D (Image), KeyPoint Notes, ImageSynthesis</tags>
+<tags>ComputerVision, EfficiencyImprovement, Transformer, Encoder, Encoder-Decoder, 2D (Image), Backbone, KeyPoint Notes, ImageSynthesis</tags>
 <repo-issue-date>2026-02-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.15030
@@ -3572,7 +4366,7 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 <title>[Paper Note] Rethinking the Trust Region in LLM Reinforcement Learning, Penghui Qi+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.04879</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4453</repo-issue-link>
-<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, action_wanted, PPO (ProximalPolicyOptimization), PostTraining, read-later, Selected Papers/Blogs, Stability, KeyPoint Notes, train-inference-gap</tags>
+<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, action_wanted, Actor-Critic, PostTraining, read-later, Selected Papers/Blogs, Stability, KeyPoint Notes, train-inference-mismatch</tags>
 <repo-issue-date>2026-02-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.04879
@@ -3620,6 +4414,17 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 </div>
 {% endraw %}
 
+</p><p>400B級のモデルの事後学習で、<br>- エントロピー崩壊を防ぎ<br>- より高速で安定して収束し<br>- context長の外挿に強い<br><br>ことが確認されたとの報告がある。<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yyyyyyyiming/status/2095150218883014662?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6500" target="_blank" rel="noopener noreferrer">Training frontier knowledge work agents: A 397B RL training guide with SkyRL, Mercor and SkyRL, 2026.09</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -4319,7 +5124,7 @@ FlashOptimをSGD、AdamW、Lionに適用した実験では、Llama-3.1-8Bのフ�
 <title>[Paper Note] Jet-RL: Enabling On-Policy FP8 Reinforcement Learning with Unified Training and Rollout Precision Flow, Haocheng Xi+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.14243</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4253</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Reasoning, PostTraining, train-inference-gap, LowPrecision</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Reasoning, PostTraining, train-inference-mismatch, LowPrecision</tags>
 <repo-issue-date>2026-01-21</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.14243
@@ -6544,7 +7349,7 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 <title>[Paper Note] Defeating the Training-Inference Mismatch via FP16, Penghui Qi+, arXiv'25, 2025.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2510.26788</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3532</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, PostTraining, Selected Papers/Blogs, Stability, Reference Collection, train-inference-gap, LowPrecision, Author Thread-Post</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, PostTraining, Selected Papers/Blogs, Stability, Reference Collection, train-inference-mismatch, LowPrecision, Author Thread-Post</tags>
 <repo-issue-date>2025-11-01</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2510.26788
@@ -8677,7 +9482,7 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 <title>[Paper Note] VerlTool: Towards Holistic Agentic Reinforcement Learning with Tool Use, Dongfu Jiang+, arXiv'25, 2025.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.01055</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2670</repo-issue-link>
-<tags>EfficiencyImprovement, Tools, NLP, LanguageModel, ReinforcementLearning, PostTraining, Asynchronous</tags>
+<tags>EfficiencyImprovement, Tools, NLP, LanguageModel, ReinforcementLearning, PostTraining, Asynchronous, TrainingFramework</tags>
 <repo-issue-date>2025-09-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.01055
@@ -9839,10 +10644,58 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Assembly of Experts: Linear-time construction of the Chimera LLM variants with emergent and adaptable behaviors, Henrik Klagges+, arXiv'25, 2025.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2506.14794</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2130</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, action_wanted, Author Thread-Post</tags>
+<repo-issue-date>2025-07-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2506.14794
+# Authors
+  - Henrik Klagges
+  - Robert Dahlke
+  - Fabian Klemm
+  - Benjamin Merkel
+  - Daniel Klingmann
+  - David A. Reiss
+  - Dan Zecha
+# Abstract
+  - Requiring $10^{13}$-$10^{15}$ FLOPs to calculate one 8 bit weight in an LLM during pretraining is extremely expensive and seems inefficient. To better leverage the huge investments made into pretrained models, we develop the new "Assembly-of-Experts" (AoE) construction method to create capable child variants of existing Mixture-of-Experts parent models in linear time. Model weight tensors get interpolated individually, allowing to enhance or suppress semantic features of the parents.   Varying the proportion of weights taken from the parent models, we observe some properties of the AoE child model changing gradually, while other behavioral traits emerge with a sharp transition. Surprisingly, nearly every generated model is functional and capable, which makes searching the model space straightforward.   We construct the DeepSeek R1T "Chimera", a 671B open-weights hybrid model combining DeepSeek's V3-0324 and R1 model variants. The child inherits only the routed expert tensors of R1, but still achieves about R1-level intelligence. At the same time, it uses about 40\% fewer output tokens, close to V3 speed. Constructed without any fine-tuning or distillation, the Chimera exhibits surprisingly compact, orderly reasoning compared to its parent models.
+# Translation (by gpt-5.6-luna)
+- 8ビットの重み1つを大規模言語モデル（LLM）の事前学習中に計算するのに \(10^{13}\)～\(10^{15}\) FLOPsを要するのは極めて高コストであり、非効率的に思われる。事前学習済みモデルへの巨額の投資をより有効に活用するため、既存のMixture-of-Experts（MoE）親モデルから高性能な子モデルを線形時間で生成する新たな「Assembly-of-Experts（AoE）」構築手法を開発した。この手法では、モデルの重みテンソルを個別に補間することで、親モデルが持つ意味的特徴を強めたり抑制したりできる。
+
+親モデルから取り出す重みの割合を変化させると、AoE子モデルの一部の特性は段階的に変化する一方で、別の行動特性は急激な遷移として現れることが分かった。驚くべきことに、生成されたモデルのほぼすべてが機能的かつ高性能であり、モデル空間の探索は容易である。
+
+DeepSeek R1T「Chimera」を構築した。これは、DeepSeekのV3-0324モデルとR1モデルのバリアントを組み合わせた、671Bパラメータのオープンウェイト型ハイブリッドモデルである。この子モデルは、R1のルーティング対象となるエキスパートテンソルのみを継承しているにもかかわらず、R1と同程度の知能を達成する。同時に、出力トークン数は約40％少なく、速度はV3に近い。ファインチューニングや蒸留を一切行わずに構築されたChimeraは、親モデルと比較して、驚くほど簡潔で整然とした推論を示す。
+# Summary (by gpt-5.6-luna)
+- 既存のMoE親モデルの重みテンソルを個別に補間し、線形時間で高性能な子モデルを生成するAssembly-of-Experts（AoE）を提案。
+重みの組み合わせにより親モデルの特性を制御でき、生成モデルの多くが高性能かつ機能的であることを示した。
+DeepSeek V3とR1を統合した671BパラメータのChimeraを構築し、ファインチューニングや蒸留なしでR1相当の性能、約40％少ない出力トークン、V3に近い速度を達成。
+さらに、親モデルより簡潔で整然とした推論を実現。</issue-body>
+<maintainer-comment-text><p>モデル(tngtech/DeepSeek-TNG-R1T2-Chimera):<br>
+
+{% raw %}
+<a href="https://huggingface.co/tngtech/DeepSeek-TNG-R1T2-Chimera" target="_blank" rel="noopener noreferrer">https://huggingface.co/tngtech/DeepSeek-TNG-R1T2-Chimera</a>
+{% endraw %}
+
+</p><p>公式ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tngtech/status/1940531045432283412?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] NaturalThoughts: Selecting and Distilling Reasoning Traces for General  Reasoning Tasks, Yang Li+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.01921</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2129</repo-issue-link>
-<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, Reasoning, Distillation</tags>
+<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, Reasoning, Distillation, Author Thread-Post</tags>
 <repo-issue-date>2025-07-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2507.01921
@@ -9879,10 +10732,10 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] Chain-of-Experts: Unlocking the Communication Power of  Mixture-of-Experts Models, Zihan Wang+, arXiv'25</title>
+<title>[Paper Note] Chain-of-Experts: Unlocking the Communication Power of Mixture-of-Experts Models, Zihan Wang+, arXiv'25, 2025.06</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.18945</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2110</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Architecture</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Architecture, MoE(Mixture-of-Experts)</tags>
 <repo-issue-date>2025-06-28</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.18945
@@ -9899,10 +10752,14 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
   - Shiwei Liu
 # Abstract
   - We propose Chain-of-Experts (CoE), a new Mixture-of-Experts (MoE) architecture that introduces sequential expert communication within each layer. Unlike traditional MoE models, where experts operate independently in parallel, CoE processes tokens iteratively across a chain of experts inside a layer. To support dynamic expert selection across iterations, CoE employs a dedicated router at each iteration step within a layer. This design allows tokens to re-evaluate and select different experts during each iteration, rather than being statically assigned. As a result, CoE introduces a flexible routing mechanism that increases the diversity of expert combinations and enriches the model's representational capacity. CoE demonstrates improved performance under fixed compute: on math reasoning tasks, it reduces validation loss from 1.20 to 1.12 compared to a standard MoE. Beyond performance, CoE offers a new scaling axis: depth through expert iteration, which complements conventional width/depth scaling. For example, using 2x iterations matches the performance of 3x expert selections (in width), while reducing memory usage by 17.6-42% relative to other scaling strategies. Our analysis reveals that CoE's benefits stem from its iterative residual structure and enhanced expert specialization empowered by iterative routing, which together unlock more expressive representations. Code is available at https://github.com/ZihanWang314/coe.
-# Translation (by gpt-4o-mini)
-- 我々はChain-of-Experts（CoE）を提案する。これは、各層内での逐次的な専門家間のコミュニケーションを導入した新しいMixture-of-Experts（MoE）アーキテクチャである。従来のMoEモデルでは、専門家は独立して並行に動作するが、CoEは層内の専門家のチェーンを通じてトークンを反復的に処理する。反復ごとの動的な専門家選択をサポートするために、CoEは層内の各反復ステップで専用のルーターを使用する。この設計により、トークンは各反復の際に異なる専門家を再評価し選択することができ、静的に割り当てられるのではなくなる。その結果、CoEは専門家の組み合わせの多様性を高め、モデルの表現能力を豊かにする柔軟なルーティングメカニズムを導入する。CoEは固定計算の下での性能向上を示しており、数学的推論タスクにおいて、標準的なMoEと比較して検証損失を1.20から1.12に低下させる。性能を超えて、CoEは専門家の反復を通じた新しいスケーリング軸である深さを提供し、従来の幅/深さのスケーリングを補完する。例えば、2倍の反復を使用することで、3倍の専門家選択（幅）に匹敵する性能を発揮し、他のスケーリング戦略に対してメモリ使用量を17.6-42%削減する。我々の分析は、CoEの利点がその反復的残差構造と、反復ルーティングによって強化された専門家の専門化に起因しており、これらがより表現力豊かな表現を解放することを明らかにしている。コードはhttps://github.com/ZihanWang314/coeで入手可能である。
-# Summary (by gpt-4o-mini)
-- Chain-of-Experts（CoE）は、逐次的な専門家間のコミュニケーションを導入した新しいMixture-of-Experts（MoE）アーキテクチャで、トークンを反復的に処理する。各反復ステップで専用のルーターを使用し、動的な専門家選択を可能にすることで、モデルの表現能力を向上させる。CoEは数学的推論タスクにおいて、従来のMoEと比較して検証損失を低下させ、メモリ使用量を削減する。反復的残差構造と専門家の専門化が、より表現力豊かな結果をもたらすことが示されている。</issue-body>
+# Translation (by gpt-5.6-luna)
+- Chain-of-Experts（CoE）を提案する。これは、各層内で専門家同士の逐次的な通信を導入する、新しいMixture-of-Experts（MoE）アーキテクチャである。従来のMoEモデルでは、専門家が互いに独立して並列に動作するのに対し、CoEでは、層内の専門家チェーンを通じてトークンを反復的に処理する。反復間で動的に専門家を選択できるようにするため、CoEは層内の各反復ステップに専用のルーターを配置する。この設計により、トークンは各反復で再評価され、静的に割り当てられるのではなく、異なる専門家を選択できる。結果として、CoEは柔軟なルーティング機構を実現し、専門家の組み合わせの多様性を高め、モデルの表現能力を豊かにする。
+
+CoEは、計算量を固定した条件下で性能の向上を示す。数学的推論タスクでは、標準的なMoEと比較して検証損失を1.20から1.12に低減する。性能面に加えて、CoEは新たなスケーリング軸、すなわち専門家の反復による深さを提供し、従来の幅・深さ方向のスケーリングを補完する。例えば、反復回数を2倍にすると、専門家選択数（幅）を3倍にした場合と同等の性能を達成しつつ、他のスケーリング戦略と比較してメモリ使用量を17.6～42%削減できる。分析の結果、CoEの利点は、反復型の残差構造と、反復ルーティングによって強化された専門家の特化に由来することが明らかになった。これらが相まって、より表現力豊かな表現を可能にする。コードは https://github.com/ZihanWang314/coe で公開されている。
+# Summary (by gpt-5.6-luna)
+- MoEにおいて、層内で専門家を逐次的に通信・処理するChain-of-Experts（CoE）を提案。
+各反復ステップに専用ルーターを設け、トークンを再評価して動的に異なる専門家へ割り当てることで、専門家の組み合わせと表現能力を向上。
+固定計算量で標準MoEを上回り、反復による新たなスケーリング軸によって、メモリ使用量を抑えつつ幅・深さ方向の拡張に匹敵する性能を実現。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
@@ -9920,7 +10777,7 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 <title>[Paper Note] FineWeb2: One Pipeline to Scale Them All -- Adapting Pre-Training Data  Processing to Every Language, Guilherme Penedo+, COLM'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2506.20920</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2109</repo-issue-link>
-<tags>EfficiencyImprovement, Pretraining, NLP, Dataset, LanguageModel, MultiLingual, COLM, Selected Papers/Blogs</tags>
+<tags>EfficiencyImprovement, Pretraining, NLP, Dataset, LanguageModel, MultiLingual, COLM, Selected Papers/Blogs, Initial Impression Notes</tags>
 <repo-issue-date>2025-06-28</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2506.20920
@@ -9962,10 +10819,10 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] OpenVision: A Fully-Open, Cost-Effective Family of Advanced Vision  Encoders for Multimodal Learning, Xianhang Li+, ICCV'25</title>
+<title>[Paper Note] OpenVision: A Fully-Open, Cost-Effective Family of Advanced Vision Encoders for Multimodal Learning, Xianhang Li+, arXiv'25, 2025.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2505.04601</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2105</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, Pretraining, action_wanted, OpenWeight, OpenSource, Selected Papers/Blogs, ICCV, Encoder, Backbone</tags>
+<tags>ComputerVision, EfficiencyImprovement, Pretraining, action_wanted, OpenWeight, OpenSource, Selected Papers/Blogs, ICCV, Encoder, Backbone, One-Line Notes</tags>
 <repo-issue-date>2025-06-26</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2505.04601
@@ -9977,10 +10834,14 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
   - Cihang Xie
 # Abstract
   - OpenAI's CLIP, released in early 2021, have long been the go-to choice of vision encoder for building multimodal foundation models. Although recent alternatives such as SigLIP have begun to challenge this status quo, to our knowledge none are fully open: their training data remains proprietary and/or their training recipes are not released. This paper fills this gap with OpenVision, a fully-open, cost-effective family of vision encoders that match or surpass the performance of OpenAI's CLIP when integrated into multimodal frameworks like LLaVA. OpenVision builds on existing works -- e.g., CLIPS for training framework and Recap-DataComp-1B for training data -- while revealing multiple key insights in enhancing encoder quality and showcasing practical benefits in advancing multimodal models. By releasing vision encoders spanning from 5.9M to 632.1M parameters, OpenVision offers practitioners a flexible trade-off between capacity and efficiency in building multimodal models: larger models deliver enhanced multimodal performance, while smaller versions enable lightweight, edge-ready multimodal deployments.
-# Translation (by gpt-4o-mini)
-- OpenAIのCLIPは2021年初頭にリリースされて以来、マルチモーダル基盤モデルを構築するためのビジョンエンコーダーとして長らく選ばれてきました。最近ではSigLIPのような代替手段がこの地位に挑戦し始めていますが、私たちの知る限り、完全にオープンなものは存在しません。これらの手法は、トレーニングデータが独占的であったり、トレーニングレシピが公開されていなかったりします。本論文では、このギャップを埋めるために、OpenVisionという完全にオープンでコスト効果の高いビジョンエンコーダーのファミリーを提案します。OpenVisionは、LLaVAのようなマルチモーダルフレームワークに統合した際に、OpenAIのCLIPと同等またはそれ以上の性能を発揮します。OpenVisionは、既存の研究（例：トレーニングフレームワークとしてのCLIPSやトレーニングデータとしてのRecap-DataComp-1B）を基に構築されており、エンコーダーの品質を向上させるための複数の重要な洞察を明らかにし、マルチモーダルモデルの進展における実用的な利点を示しています。5.9Mから632.1Mパラメータにわたるビジョンエンコーダーをリリースすることで、OpenVisionは実務者に対して、マルチモーダルモデルを構築する際の容量と効率の柔軟なトレードオフを提供します。大規模モデルはマルチモーダル性能を向上させる一方で、小型版は軽量でエッジ対応のマルチモーダル展開を可能にします。
-# Summary (by gpt-4o-mini)
-- OpenVisionは、完全にオープンでコスト効果の高いビジョンエンコーダーのファミリーを提案し、CLIPと同等以上の性能を発揮します。既存の研究を基に構築され、マルチモーダルモデルの進展に実用的な利点を示します。5.9Mから632.1Mパラメータのエンコーダーを提供し、容量と効率の柔軟なトレードオフを実現します。</issue-body>
+# Translation (by gpt-5.6-luna)
+- 2021年初頭に公開されたOpenAIのCLIPは、マルチモーダル基盤モデルを構築するための視覚エンコーダとして、長らく第一の選択肢となってきた。近年ではSigLIPなどの代替手法がこの状況に挑み始めているものの、我々の知る限り、完全にオープンなものは存在しない。すなわち、学習データが非公開であるか、学習手順が公開されていない。本論文では、この空白を埋めるため、完全にオープンで費用対効果に優れた視覚エンコーダ群であるOpenVisionを提案する。OpenVisionは、LLaVAのようなマルチモーダルフレームワークに統合した際、OpenAIのCLIPと同等以上の性能を実現する。
+
+OpenVisionは、学習フレームワークとしてのCLIPSや、学習データとしてのRecap-DataComp-1Bなど、既存研究の成果を基盤としている。その一方で、エンコーダの品質向上における複数の重要な知見を明らかにし、マルチモーダルモデルの発展を促進するうえでの実用的な利点を示している。5.9Mから632.1Mまでのパラメータ数を持つ視覚エンコーダを公開することで、OpenVisionは、マルチモーダルモデルを構築する実務者に、モデル容量と効率性の柔軟なトレードオフを提供する。より大規模なモデルはマルチモーダル性能を向上させる一方、より小規模なモデルは軽量でエッジ環境に適したマルチモーダル展開を可能にする。
+# Summary (by gpt-5.6-luna)
+- CLIPに代わる完全にオープンで費用対効果に優れた視覚エンコーダ群OpenVisionを提案。  
+CLIPSとRecap-DataComp-1Bを基盤に、LLaVAなどのマルチモーダルモデルでCLIPと同等以上の性能を実現。  
+5.9M〜632.1Mパラメータのモデルを公開し、性能重視からエッジ向けの軽量展開まで柔軟な選択肢を提供。</issue-body>
 <maintainer-comment-text><p>元ポスト:
 
 {% raw %}
@@ -11060,6 +11921,49 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 
 {% raw %}
 <a href="https://openreview.net/forum?id=ngmEcEer8a" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=ngmEcEer8a</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] You Only Cache Once: Decoder-Decoder Architectures for Language Models, Yutao Sun+, NeurIPS'24, 2024.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2405.05254</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6548</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Architecture, NeurIPS, Decoder-Decoder</tags>
+<repo-issue-date>2026-09-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2405.05254
+# Authors
+  - Yutao Sun
+  - Li Dong
+  - Yi Zhu
+  - Shaohan Huang
+  - Wenhui Wang
+  - Shuming Ma
+  - Quanlu Zhang
+  - Jianyong Wang
+  - Furu Wei
+# Abstract
+  - We introduce a decoder-decoder architecture, YOCO, for large language models, which only caches key-value pairs once. It consists of two components, i.e., a cross-decoder stacked upon a self-decoder. The self-decoder efficiently encodes global key-value (KV) caches that are reused by the cross-decoder via cross-attention. The overall model behaves like a decoder-only Transformer, although YOCO only caches once. The design substantially reduces GPU memory demands, yet retains global attention capability. Additionally, the computation flow enables prefilling to early exit without changing the final output, thereby significantly speeding up the prefill stage. Experimental results demonstrate that YOCO achieves favorable performance compared to Transformer in various settings of scaling up model size and number of training tokens. We also extend YOCO to 1M context length with near-perfect needle retrieval accuracy. The profiling results show that YOCO improves inference memory, prefill latency, and throughput by orders of magnitude across context lengths and model sizes. Code is available at https://aka.ms/YOCO.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルのためのデコーダ-デコーダ型アーキテクチャYOCOを提案します。これは一度だけキー-バリュー（KV）ペアをキャッシュします。二つの構成要素から成り、自己デコーダの上にクロスデコーダを積んだものです。自己デコーダはグローバルKVキャッシュを効率的にエンコードし、それをクロスアテンションを介してクロスデコーダが再利用します。全体のモデルはデコーダーのみの Transformer のように振る舞いますが、YOCOは一度だけキャッシュを行います。この設計はGPUメモリの要求を大幅に削減しつつ、グローバルなアテンション機能を維持します。さらに、計算フローは最終出力を変更することなくプレフィルを早期終了させることを可能にし、プレフィル段階を大幅に高速化します。実験結果は、モデルサイズと学習トークン数を拡大するさまざまな設定において、YOCOがTransformerと比較して好ましい性能を達成することを示しています。 また、YOCOを1Mのコンテキスト長へ拡張し、ほぼ完璧なニードル検索精度を実現します。プロファイリング結果は、コンテキスト長とモデルサイズの両方にわたって、推論時のメモリ使用量、プレフィルの待機時間、スループットを桁違いに改善することを示しています。コードは https://aka.ms/YOCO で入手可能です。
+# Summary (by gpt-4o-mini)
+- YOCOというデコーダ-デコーダ型アーキテクチャを提案。これは一度だけKVペアをキャッシュし、自己デコーダとクロスデコーダから構成される。効率的なKVキャッシュのエンコードにより、クロスアテンションを介して再利用され、GPUメモリを削減しつつグローバルなアテンションを保持。プレフィル段階を早期終了可能にし、計算を高速化。実験により、Transformerと比較して好ましい性能を確認し、1Mのコンテキスト長で高精度を達成。推論時のメモリ使用量やスループットも大幅に改善。コードは https://aka.ms/YOCO で公開。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=25Ioxw576r" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=25Ioxw576r</a>
+{% endraw %}
+
+</p><p>inputをself-decoderと呼ばれる効率的なself-attentionを備えたエンコーダでエンコードしKV Cacheを生成。それを後段のDecoderと共有し、Decoder側はcross-attentionによって参照することで、利用するKV Cache圧縮するアーキテクチャ、に見える。<br><img src="https://github.com/user-attachments/assets/d2e6f594-573c-4bc0-87e7-e881806ab2d0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/50a0f3a0-ee39-4368-a321-7c89df157a3b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qingke_ai/status/2101831546215047564?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
 {% endraw %}
 
 </p></maintainer-comment-text>
@@ -13504,6 +14408,473 @@ ViLTは、従来のVLPモデルよりも数十倍高速でありながら、競�
 </paper-entry>
 
 <paper-entry>
+<title>Introducing Claude Haiku 5.5: the cheapest, fastest, and most capable small model we’ve ever released., Anthropic, 2026.10</title>
+<original-paper-blog-link>https://www.anthropic.com/claude-haiku-5-5</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6812</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, LanguageModel, AIAgents, Proprietary, VisionLanguageModel, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-10</repo-issue-date>
+<issue-body>https://www.anthropic.com/claude-haiku-5-5</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/claudeai/status/2107894039626277339?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>GPT-6-lunaよりもベンチマークスコアが高くコストが安い。あとは生成されるテキストがどれだけ分かりやすいか...</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Naive-N0.5-Flash: Building Frontier AI with AI, NaiveAI, 2026.09</title>
+<original-paper-blog-link>https://naive.ai/en/research/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6743</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, OpenWeight, Initial Impression Notes</tags>
+<repo-issue-date>2026-10-08</repo-issue-date>
+<issue-body>https://naive.ai/en/research/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2104712574713663761?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF: 
+
+{% raw %}
+<a href="https://huggingface.co/NaiveAI" target="_blank" rel="noopener noreferrer">https://huggingface.co/NaiveAI</a>
+{% endraw %}
+
+</p><p>Mimo-V2.5をベースとし、full-attentionをDSAに置き換えるための追加学習を実施し、大幅にデコーディング速度を向上させたモデルのようである。Mimo-V2.5との比較がないように見えるが、どの程度性能は変化したのだろうか（=性能の劣化はないのだろうか）。<br></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Ember-1, Fireworks, 2026.09</title>
+<original-paper-blog-link>https://fireworks.ai/blog/ember-1?utm_source=devrel&utm_medium=x&utm_campaign=model&utm_content=ember-1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6726</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Blog, Proprietary, PostTraining, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-06</repo-issue-date>
+<issue-body>https://fireworks.ai/blog/ember-1?utm_source=devrel&utm_medium=x&utm_campaign=model&utm_content=ember-1</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/fireworksai_hq/status/2102875211783970842?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Kimi K3に対して、不要な推論は省き、重要な思考は維持することでトークン生成量を抑え効率化したという話のようで、具体的な手法などについては記載がないように見える。</p><p>事後学習したと明言されている:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dzhulgakov/status/2104311573640855903?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>700 TPS on Kimi K3: A Case for TPU Megakernels, Inferact, 2026.09</title>
+<original-paper-blog-link>https://inferact.ai/blog/tpu-megakernels</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6711</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, Blog, Coding, SoftwareEngineering, GPUKernel, Author Thread-Post</tags>
+<repo-issue-date>2026-10-04</repo-issue-date>
+<issue-body>blog: https://inferact.ai/blog/tpu-megakernels
+github: https://github.com/Inferact/tpu-megakernels</issue-body>
+<maintainer-comment-text><p>TPU v7 (Ironwood) 向けのメガカーネルで、最初のTPU推論用のメガカーネルとのこと。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>FLUX 3 Action, Black Forest Labs, 2026.09</title>
+<original-paper-blog-link>https://bfl.ai/models/flux-3-action</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6709</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, Blog, OpenWeight, Robotics, EmbodiedAI, WorldActionModel</tags>
+<repo-issue-date>2026-10-04</repo-issue-date>
+<issue-body>https://bfl.ai/models/flux-3-action</issue-body>
+<maintainer-comment-text><p>HF: 
+
+{% raw %}
+<a href="https://huggingface.co/collections/black-forest-labs/flux-3-action" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/black-forest-labs/flux-3-action</a>
+{% endraw %}
+
+</p><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/bfl_ai/status/2102816874782241174?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>RUNTIME DYNAMIC COMPRESSION OF MIXTURE OF EXPERTS, Tim Dettmers, 2026.09</title>
+<original-paper-blog-link>https://timdettmers.com/papers/runtime-dynamic-compression.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6699</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Quantization, MoE(Mixture-of-Experts), SoftwareEngineering, reading, One-Line Notes, needs-revision, Author Thread-Post</tags>
+<repo-issue-date>2026-10-03</repo-issue-date>
+<issue-body>https://timdettmers.com/papers/runtime-dynamic-compression.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tim_dettmers/status/2102416550322159891?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>UnslothのDynamic Quantizationと比較して、同等のWikiTextでのPerplexityに到達する上で、1 weightあたり、0.4--1 bit程度削減可能な動的量子化手法で、WikiTextのPerplexityを維持しながら高い圧縮率を実現する。任意のlayerに対してレベルの異なる量子化とVRAM上から除去するexpertを割り当てて、推論中も動的に最適化することで、品質を保ちながら圧縮をかけるとのこと。bitsandsbytes2ライブラリに組み込まれる。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6700" target="_blank" rel="noopener noreferrer">Dynamic 4-bit Quantization, Unsloth, 2024.12</a>
+</p><p>まだ読んでいる途中でもう少し要点を掴みたい</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6674" target="_blank" rel="noopener noreferrer">dlab Open Source Week: Frontier AI on Your Own Hardware, Tim Dettmers, 2026.09</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Clef: our open-source decision models, and new RL fine-tuning platform, Cloudflare, 2026.10</title>
+<original-paper-blog-link>https://blog.cloudflare.com/clef-decision-models/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6690</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, LanguageModel, MultiModal, Blog, PEFT(Adaptor/LoRA), OpenWeight, Selected Papers/Blogs, Encoder, KeyPoint Notes, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body>https://blog.cloudflare.com/clef-decision-models/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/vibe_walking/status/2105738417237803418?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>概要しかブログ中には書いていないが、よさげに見える。<br><br>Qwen-3.8-27Bをバックボーンとし、Qwenのパラメータはフリーズした上で軽量なアダプタを学習し、ルーティングヘッドなるcross-attentionに基づいた各選択肢のスコアを出力するヘッドによって予測が実施されるようである。<br><br>これらは、内部で作成された合成データを用いて事後学習されたとのことである。lossはlabel smoothed cross entropy（正解、不正解ラベルを0/1としてクロスエントロピーを計算するのではなく、ハイパーパラメータεでスムージングしてlossを計算するものらしい）とBrier Loss（実際に予測された確率値と正解、不正解を1/0としたときの平均二乗誤差）なるものによって、正則化によって過学習を防止し、出力される確率値がでたらめにならないように学習することを目指しているように見える。<br><br>その後RLCDと呼ばれる、選択肢間の順序関係に基づいて、正解と隣接するラベルにも部分的に報酬を与えるようなrewardを持つ（オリジナルのポリシーから分布が大きくシフトしないようなペナルティ付き）RLによって学習をしているようである。これにより、より高いAccuracyと汎化性能が得られた、と一言記述されている。<br><br>Qwenが持つVision Encoderによって画像もエンコードでき（Jevは画像は不可と述べられている）、<br>context長が64kとJevの2倍で<br>Jevよりもlatencyが良く、<br>様々なベンチマークスコアで高いスコアを獲得としている、と報告している。<br><br>latencyはflashモデルであれば、DiffusionGemma-as-Jevを上回る。</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/Cloudflare/clef" target="_blank" rel="noopener noreferrer">https://huggingface.co/Cloudflare/clef</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepGEMM Ascend, DeepSeek AI, 2026.09</title>
+<original-paper-blog-link>https://github.com/deepseek-ai/DeepGEMM-Ascend</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6678</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, AIAgents, GPUKernel, Author Thread-Post</tags>
+<repo-issue-date>2026-09-30</repo-issue-date>
+<issue-body>https://github.com/deepseek-ai/DeepGEMM-Ascend</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zheanxu/status/2105119944556110265?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxestex/status/2105128548168310887?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>DeepSeekGEMMと呼ばれる、NVIDIA GPU向けに構築されたGPUカーネルライブラリをHuawei Ascend NPU向けに移植したもので、APIがDeepSeekGEMMと互換性があるため、同じpythonコードから動作させることができるようである。</p><p>一言解決:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2105126765991747999?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Halo: Frontier-Lab Training for Everyone, White Circle, 2026.09</title>
+<original-paper-blog-link>https://whitecircle.com/halo</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6675</repo-issue-link>
+<tags>Multi, ComputerVision, EfficiencyImprovement, Pretraining, Tools, NLP, LanguageModel, ReinforcementLearning, AIAgents, MultiModal, Blog, mid-training, DPO, PostTraining, Parallelism, VisionLanguageModel, Asynchronous, Author Thread-Post, TrainingFramework</tags>
+<repo-issue-date>2026-09-29</repo-issue-date>
+<issue-body>blog: https://whitecircle.com/halo
+github: https://github.com/whitecircle/halo</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/whitecircle/status/2102087563913609534?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>tokenizers v1: encode, decode and scaling, measured, HuggingFace, 2026.09</title>
+<original-paper-blog-link>https://huggingface.co/blog/tokenizers-v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6671</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Blog, Tokenizer, read-later, Initial Impression Notes</tags>
+<repo-issue-date>2026-09-28</repo-issue-date>
+<issue-body>## URL
+https://huggingface.co/blog/tokenizers-v1
+
+## Authors
+Arthur Zucker, Simon Brandeis, Luc Georges, Lysandre</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/LysandreJik/status/2102035784434061735?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6125" target="_blank" rel="noopener noreferrer">{G}igatoken: SIMD and Cache Hierarchies for 1000x Faster Byte-Pair Encoding Tokenization on Modern CPUs, Marcel R{\o}d, 2026.07</a>
+<br><br>Gigatokenは、著者ポストを読む限り、そもそも今のtokenizerが1秒単位に処理できるデータ量（データレート）が、同様の規模感のデータを処理する際の他の実装、たとえばsimdjsonがGB/sなのに比べて遅すぎるという気持ちから端を発しているように思われる。<br><br>一方、tokenizersでは、イントロに膨大なデータセットでの学習、同時リクエストの処理、long contextでの処理等において、モデルへのデータ供給が追いつかず、tokenizerが新たなボトルネック（GPUを待たせるという意味で）になりつつあり、それを解決したいという気持ちが記述されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>HyperFlow, VideoRebirth, 2026.09</title>
+<original-paper-blog-link>https://github.com/Video-Rebirth/hyperflow</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6627</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Distillation, OpenWeight, VideoGeneration/Understandings, SelfDistillation, autoresearch/RSI, Author Thread-Post</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body>github:https://github.com/Video-Rebirth/hyperflow
+HF:https://huggingface.co/videorebirth/hyperflow</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/video_rebirth/status/2101009602943098907?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xieenze_jr/status/2101135711760248879?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Rigel Base: Reaching Llama-3.2 Quality with <1% of its Compute, Mayank+, 2026.09</title>
+<original-paper-blog-link>https://open-lm-engine.github.io/blog/rigel/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6625</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, Blog, OpenWeight, SSM (StateSpaceModel), read-later, DataMixture, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body># URL
+https://open-lm-engine.github.io/blog/rigel/
+
+# Citation
+misc{mishra2026rigel,
+  title  = {Rigel Base: Reaching Llama-3.2 Quality with <1% of its Compute},
+  author = {Mishra, Mayank and Runwal, Bharat and Stoica, Ion and Dao, Tri and Gonzalez, Joseph E.},
+  year   = {2026},
+  url    = {https://open-lm-engine.github.io/blog/
+}</issue-body>
+<maintainer-comment-text><p>NoPEやuPを利用、事前学習では6つのフェースで異なるDataMixtureを利用しそのレシピも記載</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/open-lm-engine/rigel" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/open-lm-engine/rigel</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>laya, convaiinnovations, 2026.09</title>
+<original-paper-blog-link>https://huggingface.co/convaiinnovations/laya</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6597</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, MultiLingual, OpenWeight, Encoder, One-Line Notes, Reading Reflections</tags>
+<repo-issue-date>2026-09-19</repo-issue-date>
+<issue-body>https://huggingface.co/convaiinnovations/laya</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/0xcvyh/status/2101171688683585622?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>state (email, text, ticket, あるいはJSON)を与え、質問のタイプとinstruction（choice, score, noul)を与えると、質問に対応する出力を得られるModernBERTベースのモデル。questionあたり512トークンまで扱えるようである（state, question, optionの合計で512トークン）。RLCDと呼ばれるポリシーがdistributionを出力する手法で学習され、この手法はhonest probabilityを出力することで機体報酬が最大化されるとの記載がある。100+言語に対応。<br><br>emailのサンプル例は、ユーザからの問い合わせに対して、担当部署(choice)、緊急度(score)、解約の確率(noul)を出力する例となっている。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6596" target="_blank" rel="noopener noreferrer">Needle 3 Automation Foundation Model For Tiny Devices, Cactus, 2026.09</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6578" target="_blank" rel="noopener noreferrer">Introducing System One Models & Jev, TypeSafe AI, 2026.09</a>
+</p><p>これ系の話がいきなり増えてきた。マルチリンガルでモデルがオープンなのはありがたや。</p><p>最初読んだ時は様々なタスクやドメインにzero-shotで利用できるのかなと思ったが、emailドメインにしか適用できないのでは？zero-shotで汎用的に利用できないのであれば、それはただのFinetuningされたBERTである。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6690" target="_blank" rel="noopener noreferrer">Introducing Clef: our open-source decision models, and new RL fine-tuning platform, Cloudflare, 2026.10</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6597" target="_blank" rel="noopener noreferrer">laya, convaiinnovations, 2026.09</a>
+<br><br>などでは、本モデルを様々なベンチマークで測定したところスコアが低いことが報告されているため、利用する場合は注意が必要と思われる。<br><br>改めてページ全体を眺めると、最下部に下記記載がある:<br>> Honest Limits<br>> Base checkpoints are near chance on typed-decisions zero-shot — 0.362 here and 0.352 for multilingual, against a 0.318 random and 0.461 majority-class baseline. The 0.766 belongs to the checkpoint fine-tuned on that benchmark's own training split. Laya is a fast base to specialise, not a zero-shot decision engine.<br><br>特化型モデルを作るためのベースであり、zero-shotでのdecision engineではない、というlimitationが記載されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Needle 3 Automation Foundation Model For Tiny Devices, Cactus, 2026.09</title>
+<original-paper-blog-link>https://cactuscompute.com/needle</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6596</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Transformer, Blog, SmallModel, Proprietary, Architecture, Selected Papers/Blogs, One-Line Notes, ToolUse, Author Thread-Post, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-09-19</repo-issue-date>
+<issue-body>https://cactuscompute.com/needle</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cactuscompute/status/2100685924401295764?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>チャットをせず、各ターンごとに関数呼び出しに特化したedge向け小型モデルとのこと。アプリが利用するツール群を渡し、ユーザの発言に基づいて全ての引数を埋めて関数を呼び出す、あるいはスキーマを与えればそのスキーマに則った出力を返し（構造化出力）、推測はしない（関数の範囲外のものは空出力）というもののようである。<br><br>これらは、simple attention networkと呼ばれるもので実現される。simple attention networkはtransformerからFFN Layerをを無くし軽量なHadarmard MLPというlayerに置き換え、FFNが従来保持していた知識に関する情報はengramによって、n-gram embedding側に持たせることによって高速、軽量化がじつげんされているようである。residual streamとしては、mHCが用いられているようである。<br>また、デプロイ時にモデルの深さを指定することで、20個あるうちのどのlayerを利用するかが決まり、性能とコストを調整できるようである。これを公式ポストではIntelligence Laddersと呼称している。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4183" target="_blank" rel="noopener noreferrer">[Paper Note] Conditional Memory via Scalable Lookup: A New Axis of Sparsity for Large Language Models, Xin Cheng+, arXiv'26, 2026.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4109" target="_blank" rel="noopener noreferrer">[Paper Note] mHC: Manifold-Constrained Hyper-Connections, Zhenda Xie+, arXiv'25, 2025.12</a>
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6578" target="_blank" rel="noopener noreferrer">Introducing System One Models & Jev, TypeSafe AI, 2026.09</a>
+<br><br>と思想が似ている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing System One Models & Jev, TypeSafe AI, 2026.09</title>
+<original-paper-blog-link>https://typesafe.ai/blog/introducing-system-one-models-and-jev</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6578</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, AIAgents, Blog, Coding, SoftwareEngineering, Selected Papers/Blogs, reading, KeyPoint Notes, Reference Collection, Reading Reflections, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-09-16</repo-issue-date>
+<issue-body>https://typesafe.ai/blog/introducing-system-one-models-and-jev</issue-body>
+<maintainer-comment-text><p>細かいことは全くわからないが、LLMのようなチャットモデルは超人的な性能なのになぜAGIに繋がっていないのかが常々疑問で、code+AIに特化したモデルを開発したとのことで、それはどのようなものかというと、<br><br>LLMは人間の好みとなる応答を返すように、autoregressiveにテキストを生成するが、<br><br>本ブログで紹介されているシステムSystemOneは意思決定に最適化し、並列で生成され、自由なテキストを返せないが構造化出力を高速かつ安価に生成可能で、キャリブレーションされた確信度を常に返す、<br><br>というもののようである。</p><p>着眼点はとてもおもしろいのだが、どの程度高度な推論をすることができるのだろうか？<br>現代では高度な推論は計算コストである程度賄っているため、安価で高度な推論もできるのでれば大きなブレイクスルーだが、その技術はLLM側にも適用できる可能性があり、結局いつかLLM側に追いつかれる、という可能性がある。<br>逆に高度な推論ができないのであれば、適用可能なスコープは限定的となる。</p><p>RLCDという技術はすでに先行事例があったようだ:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nielsrogge/status/2100239244501430438?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>利用規約でJevに関するベンチマークスコアや性能を公開することが禁止されているようである:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2101348723368583442?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/trtd6trtd/status/2102544925590188470?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>JamC-QAのスコアは（GPT-5.6-lunaより）低く、日本特有の知識などには弱い可能性がある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2733" target="_blank" rel="noopener noreferrer">『JamC-QA』: 日本の文化や風習に特化した質問応答ベンチマークの構築・公開（前編）, SB Intuitions, 2025.09</a>
+</p><p>色々な動向を鑑みるに、Encoderか、Decoderかはさておき（利用者から見たらどちらでもよい気がするので）、<br><br>- zero-shotで様々なタスクに利用可能で<br>- latencyが非常に速くて<br>- コストが安価なモデル<br><br>という3つの要素が重要に思える。<br><br>chatはできないが、構造化出力/関数出力等が可能（なことで様々な分類タスク等に適用できる）というのは、latencyの速さとコストの安価さを得るための手段。エンコーダ、デコーダも手段の話。<br></p><p>過去にPFNがJevに相当する機能を開発しサービス化までしていた、という話がある（関連技術は幅広く特許を取得しているようである）。<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/imos/status/2100777650872787159?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>なぜ需要を掘り起こせなかったのか、という点は考えてみるとおもしろいのかもしれない。<br>個人的にはいまJevが流行っぽい兆しを見せているのは、時期的なものが大きい気がしており、<br>- (Reasoningモデルの台頭によって) LLMのlatencyが悪い<br>- 多くのワークフローに組み込む場合に得たい出力が（おそらく）構造化出力（で、めちゃめちゃ賢い判断はそこまで必要とされない）<br>- モデルのトークン利用料が増加し、（おそらく）運用コストが課題となってきた<br><br>という課題に世の中が直面し始めて、課題感として持たれ始めていること、が背景としてある気がしており、ちょうどタイミング的に「安い、速い、（そこそこ）賢い」のJevが世の中に刺さったのではないか、という気がしている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AI Infrastructure at Periodic, Periodic Labs, 2026.09</title>
+<original-paper-blog-link>https://periodic.com/news/ai-infrastructure-at-periodic</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6576</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, ReinforcementLearning, AIAgents, Blog, LLMServing</tags>
+<repo-issue-date>2026-09-16</repo-issue-date>
+<issue-body>https://periodic.com/news/ai-infrastructure-at-periodic</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zephyr_z9/status/2099901755308056840?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Inside the megakernel serving engine for North Mini Code, Cohere, 2026.09</title>
+<original-paper-blog-link>https://cohere.com/blog/megakernels</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6537</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Blog, LLMServing, One-Line Notes, GPUKernel, Author Thread-Post</tags>
+<repo-issue-date>2026-09-09</repo-issue-date>
+<issue-body>https://cohere.com/blog/megakernels</issue-body>
+<maintainer-comment-text><p>github:
+
+{% raw %}
+<a href="https://github.com/cohere-ai/cohere-megakernel" target="_blank" rel="noopener noreferrer">https://github.com/cohere-ai/cohere-megakernel</a>
+{% endraw %}
+
+</p><p>バッチサイズ1, 256k context、単一H100利用の条件下において、vLLM v0.24+FlashAttention3+Triton MoE backendよりも最大1.58倍デコーディングが高速（合成されたKV Cacheによる実験、実プロンプト+バッチサイズ8でも1.25--1.41倍高速）な実験的なLLM Servingエンジンのようである。<br>LLMのデコードを単一のカーネルに集約し、デコーディングのために必要な様々なステップごとの同期のオーバヘッドを削減したのだとか。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cohere/status/2097410772355666393?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Rustによる高速なOptuna実装「Rustuna」の公開, PFN, 2026.09</title>
+<original-paper-blog-link>https://www.preferred.jp/ja/blog/tech/announcing-rustuna</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6530</repo-issue-link>
+<tags>EfficiencyImprovement, MachineLearning, NLP, read-later, Selected Papers/Blogs, Author Thread-Post</tags>
+<repo-issue-date>2026-09-08</repo-issue-date>
+<issue-body>https://www.preferred.jp/ja/blog/tech/announcing-rustuna</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/preferrednetjp/status/2096860922598101319?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>GLM-5.3-Flash: Frontier Intelligence, Flash Cost, Z.AI, 2026.08</title>
 <original-paper-blog-link>https://z.ai/blog/glm-5.3-flash</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6443</repo-issue-link>
@@ -13540,7 +14911,17 @@ ViLTは、従来のVLPモデルよりも数十倍高速でありながら、競�
 </div>
 {% endraw %}
 
-<br><br>本ポストにある通り、中国系のOpenWeightモデルは<br>- linear attention<br>- sparse attention<br>- mHCのようなResidual Streamに対する工夫<br>- Muon<br><br>などを採用するのがデファクトとなっているように思われる。</p></maintainer-comment-text>
+<br><br>本ポストにある通り、中国系のOpenWeightモデルは<br>- linear attention<br>- sparse attention<br>- mHCのようなResidual Streamに対する工夫<br>- Muon<br><br>などを採用するのがデファクトとなっているように思われる。</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2102880947020427547?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -14885,7 +16266,7 @@ Chenggang Zhao and Shangyan Zhou and Liyue Zhang and Chengqi Deng and Zhean Xu a
 <title>Accelerating Diffusion Models with an Open, Plug-and-Play Offering, Nvidia, 2026.01</title>
 <original-paper-blog-link>https://developer.nvidia.com/blog/accelerating-diffusion-models-with-an-open-plug-and-play-offering/?linkId=100000404691517</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4324</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, Tools, NLP, Library, DiffusionModel, TextToImageGeneration, Distillation, PostTraining, 2D (Image), Editing, 3D (Video), TextToVideoGeneration, ImageToTextGeneration</tags>
+<tags>ComputerVision, EfficiencyImprovement, Tools, NLP, DiffusionModel, TextToImageGeneration, Distillation, PostTraining, 2D (Image), Editing, 3D (Video), TextToVideoGeneration, ImageToTextGeneration, TrainingFramework</tags>
 <repo-issue-date>2026-01-29</repo-issue-date>
 <issue-body>blog: https://developer.nvidia.com/blog/accelerating-diffusion-models-with-an-open-plug-and-play-offering/?linkId=100000404691517
 code: https://github.com/NVlabs/FastGen</issue-body>
@@ -15000,7 +16381,7 @@ code: https://github.com/NVlabs/FastGen</issue-body>
 <title>Hot topics in RL, Kimbo, X, 2025.12</title>
 <original-paper-blog-link>https://x.com/kimbochen/status/2002817512723869940?s=20</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4039</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Post, PostTraining, Diversity, train-inference-gap</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, ReinforcementLearning, Post, PostTraining, Diversity, train-inference-mismatch</tags>
 <repo-issue-date>2025-12-22</repo-issue-date>
 <issue-body>https://x.com/kimbochen/status/2002817512723869940?s=20</issue-body>
 <maintainer-comment-text><p>ロールアウト側のエンジンと、学習側のエンジンのトークンのlogprobのミスマッチによりon-policy RLを実施しているつもりが実はoff policyになってしまっているという話と <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2552" target="_blank" rel="noopener noreferrer">Your Efficient RL Framework Secretly Brings You Off-Policy RL Training, Yao+, 2025.08</a>
@@ -15023,7 +16404,7 @@ code: https://github.com/NVlabs/FastGen</issue-body>
 <title>OpenTinker  Democratizing Agentic Reinforcement Learning as a Service, Zhu+, University of Illinois Urbana-Champaign, 2025.12</title>
 <original-paper-blog-link>https://open-tinker.github.io/opentinker-page/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4036</repo-issue-link>
-<tags>EfficiencyImprovement, Tools, NLP, LanguageModel, ReinforcementLearning, Blog, PostTraining, KeyPoint Notes</tags>
+<tags>EfficiencyImprovement, Tools, NLP, LanguageModel, ReinforcementLearning, Blog, PostTraining, KeyPoint Notes, TrainingFramework</tags>
 <repo-issue-date>2025-12-22</repo-issue-date>
 <issue-body>https://open-tinker.github.io/opentinker-page/</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -15250,7 +16631,7 @@ code: https://github.com/NVlabs/FastGen</issue-body>
 <title>slime, THUDM & Zhihu, 2025.09</title>
 <original-paper-blog-link>https://github.com/THUDM/slime</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2646</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Library, ReinforcementLearning, Repository, PostTraining, Asynchronous</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, ReinforcementLearning, AIAgents, PostTraining, Selected Papers/Blogs, Asynchronous, TrainingFramework</tags>
 <repo-issue-date>2025-09-02</repo-issue-date>
 <issue-body>https://github.com/THUDM/slime</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -15477,7 +16858,7 @@ code: https://github.com/NVlabs/FastGen</issue-body>
 <title>日経電子版のアプリトップ「おすすめ」をTwo Towerモデルでリプレースしました, NIKKEI, 2025.05</title>
 <original-paper-blog-link>https://hack.nikkei.com/blog/replace_ai_rec_by_two_tower/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2113</repo-issue-link>
-<tags>RecommenderSystems, NeuralNetwork, Embeddings, EfficiencyImprovement, AWS, ML-LLM Ops, Blog, A/B Testing, TwoTowerModel</tags>
+<tags>RecommenderSystems, NeuralNetwork, Embeddings, EfficiencyImprovement, AWS, ML-LLM Ops, Blog, A/B Testing, TwoTowerModel, One-Line Notes</tags>
 <repo-issue-date>2025-06-29</repo-issue-date>
 <issue-body>https://hack.nikkei.com/blog/replace_ai_rec_by_two_tower/</issue-body>
 <maintainer-comment-text><p>リアルタイム推薦をするユースケースにおいて、ルールベース+協調フィルタリング(Jubatus)からTwo Towerモデルに切り替えた際にレイテンシが300ms増えてしまったため、ボトルネックを特定し一部をパッチ処理にしつつもリアルタイム性を残すことで解決したという話。AWSの構成、A/Bテストや負荷テストの話もあり、実用的で非常に興味深かった。</p></maintainer-comment-text>
@@ -15487,7 +16868,7 @@ code: https://github.com/NVlabs/FastGen</issue-body>
 <title>Nemo-RL, Nvidia, 2025.05</title>
 <original-paper-blog-link>https://github.com/NVIDIA-NeMo/RL</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2095</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Library, Repository, PostTraining</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, ReinforcementLearning, PostTraining, TrainingFramework</tags>
 <repo-issue-date>2025-06-25</repo-issue-date>
 <issue-body>https://github.com/NVIDIA-NeMo/RL</issue-body>
 <maintainer-comment-text>None</maintainer-comment-text>
@@ -15635,7 +17016,7 @@ code:
 <title>Unsloth, unslothai, 2024.07</title>
 <original-paper-blog-link>https://github.com/unslothai/unsloth</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1450</repo-issue-link>
-<tags>EfficiencyImprovement, NLP, LanguageModel, Library, Supervised-FineTuning (SFT), InstructionTuning, PEFT(Adaptor/LoRA), PostTraining, Selected Papers/Blogs, One-Line Notes</tags>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, Supervised-FineTuning (SFT), InstructionTuning, PEFT(Adaptor/LoRA), PostTraining, Selected Papers/Blogs, One-Line Notes, TrainingFramework</tags>
 <repo-issue-date>2024-10-08</repo-issue-date>
 <issue-body>https://github.com/unslothai/unsloth</issue-body>
 <maintainer-comment-text><p>single-GPUで、LLMのLoRA/QLoRAを高速/省メモリに実行できるライブラリ</p><p>現在でも鉄板</p></maintainer-comment-text>

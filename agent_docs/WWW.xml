@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2025-03-27">
+<paper-list last-updated="2025-10-06">
+<paper-entry>
+<title>[Paper Note] Self-Evolving LLMs via Continual Instruction Tuning, Jiazheng Kang+, WWW'26, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.18133</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3137</repo-issue-link>
+<tags>NLP, LanguageModel, GenerativeAdversarialNetwork, PEFT(Adaptor/LoRA), Catastrophic Forgetting, WWW, PostTraining, read-later</tags>
+<repo-issue-date>2025-10-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.18133
+# Authors
+  - Jiazheng Kang
+  - Le Huang
+  - Cheng Hou
+  - Zhe Zhao
+  - Zhenxiang Yan
+  - Chuan Shi
+  - Ting Bai
+# Abstract
+  - In real-world industrial settings, large language models (LLMs) must learn continually to keep pace with diverse and evolving tasks, requiring self-evolution to refine knowledge under dynamic data distributions. However, existing continual learning (CL) approaches, such as replay and parameter isolation, often suffer from catastrophic forgetting: training on new tasks degrades performance on earlier ones by overfitting to the new distribution and weakening generalization.We propose MoE-CL, a parameter-efficient adversarial mixture-of-experts framework for industrial-scale, self-evolving continual instruction tuning of LLMs. MoE-CL uses a dual-expert design: (1) a dedicated LoRA expert per task to preserve task-specific knowledge via parameter independence, mitigating forgetting; and (2) a shared LoRA expert to enable cross-task transfer. To prevent transferring task-irrelevant noise through the shared pathway, we integrate a task-aware discriminator within a GAN. The discriminator encourages the shared expert to pass only task-aligned information during sequential training. Through adversarial learning, the shared expert acquires generalized representations that mimic the discriminator, while dedicated experts retain task-specific details, balancing knowledge retention and cross-task generalization and thereby supporting self-evolution.Extensive experiments on the public MTL5 benchmark and an industrial Tencent3 benchmark validate the effectiveness of MoE-CL for continual instruction tuning. In real-world A/B testing for content compliance review on the Tencent Video platform, MoE-CL reduced manual review costs by 15.3%. These results demonstrate that MoE-CL is practical for large-scale industrial deployment where continual adaptation and stable transfer are critical.
+# Translation (by gpt-4o-mini)
+- 実世界の産業環境において、大規模言語モデル（LLMs）は多様で進化するタスクに対応するために継続的に学習する必要があり、動的なデータ分布の下で知識を洗練するための自己進化が求められます。しかし、既存の継続学習（CL）アプローチ、例えばリプレイやパラメータの隔離は、しばしば壊滅的な忘却に悩まされます。新しいタスクでのトレーニングは、新しい分布に過剰適合し、以前のタスクのパフォーマンスを低下させ、一般化能力を弱めます。そこで、私たちは産業規模の自己進化型継続指示調整のためのパラメータ効率的な敵対的専門家混合フレームワークであるMoE-CLを提案します。MoE-CLは二重専門家設計を採用しています：(1) タスクごとに専用のLoRA専門家を持ち、パラメータの独立性を通じてタスク特有の知識を保持し、忘却を軽減します；(2) クロスタスク転送を可能にする共有LoRA専門家です。共有経路を通じてタスクに無関係なノイズが転送されるのを防ぐために、GAN内にタスク認識型識別器を統合します。この識別器は、連続トレーニング中に共有専門家がタスクに整合した情報のみを通過させるよう促します。敵対的学習を通じて、共有専門家は識別器を模倣する一般化された表現を獲得し、専用専門家はタスク特有の詳細を保持し、知識の保持とクロスタスクの一般化のバランスを取り、自己進化を支援します。公的なMTL5ベンチマークおよび産業用のTencent3ベンチマークにおける広範な実験により、継続的な指示調整に対するMoE-CLの有効性が検証されました。Tencent Videoプラットフォームでのコンテンツコンプライアンスレビューに関する実世界のA/Bテストでは、MoE-CLが手動レビューコストを15.3%削減しました。これらの結果は、MoE-CLが継続的な適応と安定した転送が重要な大規模産業展開において実用的であることを示しています。
+# Summary (by gpt-4o-mini)
+- MoE-CLは、産業環境における大規模言語モデルの継続学習を支援するためのフレームワークで、タスクごとのLoRA専門家と共有LoRA専門家を用いて知識の保持とクロスタスクの一般化を実現。敵対的学習により、タスクに関連する情報のみを通過させる識別器を統合し、自己進化を促進。実験結果では、Tencent Videoプラットフォームでの手動レビューコストを15.3%削減し、実用性が示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1975059944815595710?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>continual instruction tuning... そしてGAN!?</p><p>タスク固有の知識を備えたLoRAと、タスク間で共有されるLoRAがクロスタスクの転移を促し、それぞれをMoEにおけるexpertsとして扱うことで、inputに対して動的に必要なLoRA expertsを選択する。このとき、Task Classifier（Adversarialに訓練する）でタスクに関係ない情報が順伝搬されないようにフィルタリングするっぽい？（GANをText Classifierの学習に使い、Classifierの情報を用いることで共有/タスク固有のLoRA expertsが学習されるように促すようだが、細かくどうやるかは読まないとわからない）。<br><br>ドメイン固有のタスクとデータに対して、さまざまなアダプターを追加していき、catastrophic forgettingを防ぎながら、扱えるタスクの幅が広がっていく枠組み自体は面白そう（学習は果たして安定するのだろうか）。<br><br><img src="https://github.com/user-attachments/assets/a09b2021-d487-49d5-9782-35b8e613d0a8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Pre-train and Fine-tune: Recommenders as Large Models, Zhenhao Jiang+, WWW'25, 2025.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.14268</original-paper-blog-link>

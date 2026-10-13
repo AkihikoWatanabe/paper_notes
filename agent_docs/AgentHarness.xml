@@ -1,5 +1,816 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-30">
+<paper-list last-updated="2026-10-10">
+<paper-entry>
+<title>[Paper Note] LLM Agents Can Easily Tamper With Their Own Traces, Jeremy Qin+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.30266</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6738</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Safety, One-Line Notes, Reading Reflections, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.30266
+# Authors
+  - Jeremy Qin
+  - David Schmotz
+  - Derck Prinzhorn
+  - Luca Beurer-Kellner
+  - Ameya Prabhu
+  - Maksym Andriushchenko
+# Abstract
+  - Asynchronous monitoring, incident investigations, and compliance audits primarily rely on agent traces to reconstruct what happened. These analyses assume that LLM agents cannot tamper with their own execution traces. We show that local LLM agents such as Claude Code, Codex, Antigravity, Open Code and Grok Build fail to enforce this boundary. All tested harnesses, except Muse Code, allowed agents to delete their traces when asked, without triggering monitor guardrails. We also validate that external attackers can exploit this gap to induce trace deletion. Finally, we show that trace tampering behavior emerges naturally in frontier models, when agents try to improve their rewards. We advise practitioners to ensure trace logging happens through an independent interception mechanism outside of the agent's control, preserving trace integrity even in cases of full host compromise. Overall, our findings identify a concrete failure of trace integrity in agent infrastructure which can be used to conceal misaligned behaviors like scheming or sabotage.
+# Translation (by gpt-5.6-luna)
+- 非同期モニタリング、インシデント調査、コンプライアンス監査では、何が起きたのかを再構成するために、主としてエージェントの実行トレースに依存しています。これらの分析は、LLMエージェントが自身の実行トレースを改ざんできないことを前提としています。私たちは、Claude Code、Codex、Antigravity、Open Code、Grok BuildなどのローカルLLMエージェントが、この境界の強制に失敗することを示します。テストしたすべての実行基盤は、Muse Codeを除き、エージェントに要求すると、モニターのガードレールを作動させることなく自身のトレースを削除することを許しました。また、外部の攻撃者がこの脆弱性を悪用し、トレースの削除を誘発できることも検証しました。さらに、エージェントが報酬を高めようとする際、最先端モデルではトレース改ざん行動が自然に生じることを示します。私たちは、実務者に対し、エージェントの制御範囲外にある独立した傍受メカニズムを通じてトレースのロギングを行い、ホストが完全に侵害された場合であってもトレースの完全性を維持するよう勧告します。総じて、私たちの知見は、エージェント基盤におけるトレース完全性の具体的な欠陥を明らかにするものであり、この欠陥は、策略的行動や妨害行為といった、アラインメントに反する行動を隠蔽するために利用され得ます。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントは実行トレースを改ざんできないという前提に反し、Muse Codeを除く各種ローカルエージェントは要求に応じて監視を回避し、自身のトレースを削除可能。
+外部攻撃者による削除誘発や、報酬最大化に伴うトレース改ざん行動も確認。
+エージェントの制御外にある独立した傍受機構でロギングし、ホスト侵害後もトレースの完全性を維持する必要がある。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://perfect-crime.ai/" target="_blank" rel="noopener noreferrer">https://perfect-crime.ai/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/maksym_andr/status/2104602389093220635?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>traceを編集可能な場所に置いておいたらそりゃ編集することもあるだろうな、という第一印象ではある。</p><p>著者ポストの内容としては、ざっくりいうと<br>- Muse Codeを除く多くのハーネスでtraceが保護されていない。<br>- traceの改竄が起きると何が起きたのか理解すらできないため、traceは保護されるべき<br><br>である。</p><p>多くのAgent Harnessでtraceが保護れていないことを問題提起することに意義がある（知らんかった</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agensh: Scaling Organizational Intelligence to 1,024 Agents, Zhihao Zhan+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.26781</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6728</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, AgentHarness, Coordination</tags>
+<repo-issue-date>2026-10-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.26781
+# Authors
+  - Zhihao Zhan
+  - Ting Song
+  - Li Dong
+  - Shaohan Huang
+  - Jianxun Lian
+  - Yan Xia
+  - Furu Wei
+# Abstract
+  - A multi-agent system can reduce latency on complex tasks by executing work concurrently. Several pioneering harness frameworks support multi-agent systems. However, the scalability of current multi-agent harnesses is often constrained by a central orchestrator's capacity to allocate tasks and coordinate workers. To address this limitation, we introduce Agensh, a scalable self-organized multi-agent harness without a central orchestrator: concurrent workers execute a multi-agent cooperation loop, continuously gathering context, claiming and self-assigning sub-tasks, taking action and sharing findings, verifying results, and merging progress in an asynchronous manner. The loop is supported by the agentic organization infrastructure comprising three components: a shared workspace holds proposed, ongoing, and completed work; a message interface lets workers communicate; and shared context retains reusable findings and work intentions. To test the scalability of Agensh, we evaluate it on the five hardest ProgramBench tasks with GPT-5.6-sol (high). Scaling from 1 to 128 agents raises the mean final test-pass rate from 19.31% to 28.78%, an approximately 49% relative improvement. Larger organizations reach comparable test-pass rates earlier. On pandoc, scaling from 1 to 1,024 agents raises the final test-pass rate from 33.89% to 55.06%. Worker trajectories further show that different forms of self-organized cooperation gradually emerges and standardizes as the organization grows. These results reveal the number of agents as a new scaling dimension for multi-agent organizations to expand the frontier of general intelligence, offering a practical solution for complex tasks under hard latency constraints or time budgets.
+# Translation (by gpt-5.6-luna)
+- マルチエージェントシステムは、複雑なタスクを並行して実行することで、レイテンシを削減できる。複数の先駆的なハーネス・フレームワークがマルチエージェントシステムを支援している。しかし、現在のマルチエージェント・ハーネスのスケーラビリティは、タスクの割り当てやワーカー間の調整を担う中央オーケストレーターの能力によって制約されることが多い。
+
+この制約に対処するため、中央オーケストレーターを持たない、スケーラブルで自己組織化型のマルチエージェント・ハーネスであるAgenshを導入する。Agenshでは、並行して動作するワーカーがマルチエージェント協調ループを実行する。このループでは、コンテキストを継続的に収集し、サブタスクを引き受けて自ら割り当て、行動して発見事項を共有し、結果を検証し、非同期的に進捗を統合する。
+
+このループは、次の3つのコンポーネントから成るエージェント型組織インフラによって支えられている。すなわち、提案済み・進行中・完了済みの作業を保持する共有ワークスペース、ワーカー間の通信を可能にするメッセージインターフェース、そして再利用可能な発見事項や作業意図を保持する共有コンテキストである。
+
+Agenshのスケーラビリティを検証するため、GPT-5.6-sol（high）を用いて、ProgramBenchにおける最も難しい5つのタスクで評価を行った。エージェント数を1から128に増やすと、最終的な平均テスト合格率は19.31%から28.78%へ上昇し、相対的に約49%改善した。より大規模な組織ほど、同程度のテスト合格率により早く到達した。pandocでは、エージェント数を1から1,024に増やすことで、最終的なテスト合格率が33.89%から55.06%へ上昇した。
+
+さらに、ワーカーの軌跡から、組織の規模が拡大するにつれて、異なる形態の自己組織化型協調が徐々に創発し、標準化されていくことが示された。これらの結果は、エージェント数がマルチエージェント組織において汎用知能のフロンティアを拡大する新たなスケーリング軸となることを示しており、厳しいレイテンシ制約や時間予算の下で複雑なタスクに取り組むための実用的な解決策を提供する。
+# Summary (by gpt-5.6-luna)
+- 複雑なタスクを複数のワーカーで並列実行し、中央オーケストレーターなしで自己組織化するAgenshを提案。
+共有ワークスペース・メッセージインターフェース・共有コンテキストを用いて、サブタスクの割り当て、発見の共有、結果検証、進捗統合を非同期に行う。
+ProgramBenchとpandocでエージェント数の増加によりテスト合格率と到達速度が向上し、組織規模に応じた自己組織化型協調の創発を確認。
+マルチエージェント組織におけるエージェント数を新たなスケーリング軸として示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2104377054829613473?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Harness Learning Enables Generalizable Test-Time Adaptation, Alvin Zhang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.35738</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6692</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, meta-learning, Generalization, Test-time Learning/Adaptation, Initial Impression Notes, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.35738
+# Authors
+  - Alvin Zhang
+  - Xuecheng Liu
+  - Zixuan Wang
+  - Fahim Tajwar
+  - Daman Arora
+  - Ruslan Salakhutdinov
+  - Daniel Khashabi
+  - Yuda Song
+  - Andrea Zanette
+# Abstract
+  - A language-model agent is jointly defined by its model and its harness, the executable program that organizes model calls, tool use, and information flow. Because different tasks call for different ways of organizing these operations, the harness needs to be adapted using feedback from the task at hand. We introduce harness learning, which trains a proposer model to revise a solver's harness using execution feedback. We formulate this process as meta-learning over executable programs, with harness revisions playing the role of weight updates in gradient-based adaptation. We train the proposer with reinforcement learning, using the task performance of revised harnesses as the reward. At test time, the proposer uses feedback from successive executions on a new task to refine the harness, without performing any parameter-space update. Experiments on reasoning and multi-hop question answering show that harness learning improves revision quality and that the ability to adapt at test time transfers to unseen tasks. Policies trained on individual revisions can continue improving harnesses over multiple rounds, while the benefits of training on revision sequences vary across settings. These findings suggest a path towards continually learning agents that turn accumulated experience into generalizable improvements.
+# Translation (by gpt-5.6-luna)
+- 言語モデルエージェントは、そのモデルとハーネス（モデルの呼び出し、ツールの利用、情報の流れを組織化する実行可能プログラム）によって一体的に定義される。タスクごとにこれらの操作を組織化する方法は異なるため、ハーネスは対象タスクから得られるフィードバックを用いて適応させる必要がある。そこで本研究では、実行フィードバックを利用してソルバーのハーネスを改訂する提案モデルを訓練する「ハーネス学習」を導入する。このプロセスを、実行可能プログラム上のメタ学習として定式化し、ハーネスの改訂を勾配ベースの適応における重み更新の役割に対応づける。提案モデルは、改訂されたハーネスのタスク性能を報酬として強化学習により訓練する。テスト時には、提案モデルは新しいタスク上で逐次的に実行した結果からのフィードバックを用いてハーネスを改良するが、パラメータ空間での更新は行わない。推論およびマルチホップ質問応答に関する実験により、ハーネス学習が改訂の質を向上させること、またテスト時に適応する能力が未知のタスクへ転移することが示された。個々の改訂について訓練された方策は、複数ラウンドにわたってハーネスを継続的に改善できる一方、改訂系列を用いて訓練することの利点は設定によって異なる。これらの知見は、蓄積された経験を汎化可能な改善へと変換する、継続的に学習するエージェントへの道筋を示している。
+# Summary (by gpt-5.6-luna)
+- 言語モデルエージェントのharnessを、実行フィードバックに基づいて改訂するharness learningを提案。  
+実行可能プログラム上のメタ学習として改訂モデルを強化学習で訓練し、テスト時にはパラメータ更新なしで新規タスクの実行結果からharnessを逐次改善する。  
+推論およびマルチホップQAで、改訂性能の向上と未知タスクへの適応・転移を確認。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rsalakhu/status/2105730919466246640?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>実行時のフィードバックに基づいてAgent Harnessをreviseすることを学習したモデル(Proposer)によって、テスト時にモデルの重み更新なしで、未知のタスクに対する汎化性能を獲得する</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Context Language Models, Rulin Shao+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.37725</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6679</repo-issue-link>
+<tags>NLP, LanguageModel, Architecture, Selected Papers/Blogs, ContextEngineering, reading, Initial Impression Notes, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.37725
+# Authors
+  - Rulin Shao
+  - Shannon Zejiang Shen
+  - Junjie Oscar Yin
+  - Yuetai Li
+  - Minheng Wang
+  - Hamish Ivison
+  - Radha Poovendran
+  - Nathan Lambert
+  - Teng Xiao
+  - Mike Lewis
+  - Wen-tau Yih
+  - Luke Zettlemoyer
+  - Pang Wei Koh
+# Abstract
+  - We introduce Context Language Models (CLMs), language models that natively manage their own context. We implement this by treating the context as a file and allowing the model to make unrestricted updates to this file. This allows the model to learn what is most important to maintain in context, and naturally extends to multi-agent systems where multiple agent contexts coexist as files. Building CLMs zero-shot with existing models outperforms SOTA context management strategies across a variety of tasks: 11.4% higher accuracy with 21.5% fewer FLOPs on BrowseComp-Plus, 5% higher scores with 59% fewer FLOPs on 12-hour EdgeBench, and 65% greater improvement with the same compute on a 24-hour multi-repository agent-swarm task. Moreover, by shifting context management from external harness control to intrinsic model behavior, CLMs naturally enable both in-context and parametric learning of context-management strategies. We show that CLMs can be steered with natural-language instructions evolved through a standard skill-optimization loop, improving held-out accuracy by up to 35.9 points on a context-management task while reducing compute. We also introduce an online reinforcement learning method for CLMs, improving Qwen3.5-9B performance on BrowseComp-Plus by 47.6% while using 12% fewer FLOPs. Finally, we co-design Suffix Cache Reuse for CLM serving, further reducing server-side compute by 35% relative to standard SGLang at matched performance.
+# Translation (by gpt-5.6-luna)
+- コンテキスト言語モデル（CLM）を導入する。これは、自身のコンテキストをネイティブに管理する言語モデルである。具体的には、コンテキストをファイルとして扱い、モデルがこのファイルを制限なく更新できるようにする。これにより、モデルはコンテキスト内に維持すべき最も重要な情報を学習できる。また、複数のエージェントのコンテキストがファイルとして共存するマルチエージェント・システムへも自然に拡張できる。
+
+既存モデルを用いてCLMをゼロショットで構築したところ、さまざまなタスクにおいて、最先端のコンテキスト管理戦略を上回った。具体的には、BrowseComp-Plusでは精度が11.4%向上し、FLOPsは21.5%削減された。12時間のEdgeBenchではスコアが5%向上し、FLOPsは59%削減された。さらに、24時間のマルチリポジトリ型エージェント・スウォーム・タスクでは、同じ計算量で改善幅が65%増大した。
+
+さらに、コンテキスト管理を外部ハーネスによる制御からモデル固有の振る舞いへと移行することで、CLMはコンテキスト管理戦略のインコンテキスト学習とパラメトリック学習の両方を自然に可能にする。標準的なスキル最適化ループを通じて進化させた自然言語指示によってCLMを誘導できることを示し、コンテキスト管理タスクにおいて、計算量を削減しながら、未見データの精度を最大35.9ポイント向上させた。また、CLM向けのオンライン強化学習手法も導入し、FLOPsを12%削減しながら、BrowseComp-PlusにおけるQwen3.5-9Bの性能を47.6%向上させた。
+
+最後に、CLMのサービングに向けてSuffix Cache Reuseを共同設計し、同等の性能を維持しつつ、標準的なSGLangと比較してサーバー側の計算量をさらに35%削減した。
+# Summary (by gpt-5.6-luna)
+- CLMとして、コンテキストをファイルとして管理・更新し、重要情報を自律的に保持する言語モデルを導入。  
+既存モデルからゼロショットで構築し、単一・マルチエージェントの各種タスクで、精度向上とFLOPs削減を同時に達成。  
+さらに、自然言語指示によるインコンテキスト・パラメトリック学習とオンライン強化学習により、計算量を抑えつつ未見データやBrowseComp-Plusで性能を向上。  
+Suffix Cache Reuseも共同設計し、同等性能を維持したままサーバー側計算量を追加で35%削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/2105181276714242518?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rulinshao/status/2105282444270448647?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/a1zhang/status/2105409935936782708?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>なるほど、気になる</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2107230134994710738?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>context-as-a-file, contextをファイルで管理し、ファイルにモデルがアクセス、編集可能とすることで、固定されたappend-onlyのcontextではなく、contextの管理をモデルに移譲する。ファイルのパスはシステムプロンプトに記載される。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] EvoOntology: A Self-Evolving Ontology Layer for Data Agents, Meiduo Chong+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.15779</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6673</repo-issue-link>
+<tags>NLP, LanguageModel, KnowledgeGraph, AIAgents, SelfImprovement, MCP, AgentHarness</tags>
+<repo-issue-date>2026-09-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.15779
+# Authors
+  - Meiduo Chong
+  - Shaolei Zhang
+  - Ju Fan
+  - Xiaoyong Du
+# Abstract
+  - Data agents aim to fulfill natural-language instructions over heterogeneous data, including tables, files, and databases. However, data agents face a challenging agent-data gap: heterogeneous data resides outside the agent, while the agent can access it (e.g., column names and file paths) only through generic tools. Existing approaches either let agents directly explore raw data sources or inject manually constructed semantic layers into prompts. However, neither scales well to large heterogeneous data sources nor adapts to different agent behaviors. In this paper, we introduce EvoOntology, a self-evolving ontology layer for data agents. EvoOntology encapsulates the ontology as an MCP server comprising a schema layer, a content layer, and a tool layer, enabling agents to actively query and interact with the ontology at runtime. To this end, we introduce a builder agent for autonomous ontology construction and a self-evolution loop that continuously refines the ontology through attribution-guided typed edits that are accepted only after a backbone-conditional paired evaluation. Experiments on three well-adopted data-agent benchmarks with four LLM backbones demonstrate that EvoOntology consistently outperforms strong baselines and existing semantic-layer approaches, effectively bridging the agent-data gap and enabling more effective interaction with heterogeneous data. Code: https://github.com/ruc-datalab/EvoOntology
+# Translation (by gpt-5.6-luna)
+- データエージェントは、表、ファイル、データベースを含む異種データに対して、自然言語による指示を遂行することを目指している。しかし、異種データがエージェントの外部に存在する一方で、エージェントがそれらにアクセスできるのは、汎用ツールを介して（例えば、列名やファイルパスなどの）情報を取得する場合に限られるため、データエージェントは困難なエージェント・データ間ギャップに直面している。既存のアプローチでは、エージェントに生のデータソースを直接探索させるか、手作業で構築したセマンティック層をプロンプトに注入する。しかし、いずれの方法も、大規模で異種なデータソースには十分に拡張できず、エージェントの異なる行動にも適応できない。
+
+本論文では、データエージェントのための自己進化型オントロジー層であるEvoOntologyを提案する。EvoOntologyは、スキーマ層、コンテンツ層、ツール層から構成されるMCPサーバーとしてオントロジーをカプセル化し、エージェントが実行時にオントロジーへ能動的に問い合わせ、相互作用することを可能にする。この目的のために、自律的なオントロジー構築を行うビルダーエージェントと、帰属情報に基づく型付き編集を通じてオントロジーを継続的に改善する自己進化ループを導入する。これらの編集は、基盤モデルに条件付けたペア評価を経た場合にのみ受け入れられる。4種類のLLMバックボーンを用い、広く採用されている3つのデータエージェント・ベンチマークで実験を行った結果、EvoOntologyは強力なベースラインおよび既存のセマンティック層アプローチを一貫して上回り、エージェント・データ間ギャップを効果的に埋め、異種データとのより効果的な相互作用を実現することが示された。
+
+コード：https://github.com/ruc-datalab/EvoOntology
+# Summary (by gpt-5.6-luna)
+- 異種データとエージェントの間にあるアクセスのギャップを埋めるため、自己進化型オントロジー層EvoOntologyを提案。
+schema・content・tool層をMCP serverとして統合し、LLMエージェントが実行時にオントロジーへ問い合わせ・相互作用することを可能にする。
+builder agentによる自律的なオントロジー構築と、帰属情報に基づく型付き編集およびペア評価による自己進化ループを導入。
+4種類のLLMと3つのデータエージェントベンチマークで、既存手法を一貫して上回り、異種データとの効果的な相互作用を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2102099298716660223?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yohei_kikuta/status/2103405037368291737?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] RRSI: Regularized Recursive Self-Improvement of Agent Harnesses, Peng Xia+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.24972</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6621</repo-issue-link>
+<tags>NLP, LanguageModel, Regularization, SelfImprovement, Generalization, needs-revision, autoresearch/RSI, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.24972
+# Authors
+  - Peng Xia
+  - Rujun Han
+  - Zifeng Wang
+  - Yanfei Chen
+  - Yufan Zhang
+  - Yoonho Lee
+  - Chengsong Huang
+  - Han Yu
+  - Zhongying CuiZhu
+  - Yifei Ming
+  - Huaxiu Yao
+  - Burak Gokturk
+  - Tomas Pfister
+  - Chen-Yu Lee
+# Abstract
+  - An LLM agent's capability is largely magnified by its harness, namely the prompts, control flow, tooling, memory, and context management surrounding the frozen backbone model. Recent methods increasingly automate this process by iteratively proposing and selecting component-wise edits of an agent harness, practically establishing a form of recursive self-improvement (RSI) at the agent-system level. However, such recursive evolution may overfit by memorizing the training tasks, showing large in-distribution gains that shrink or even vanish on out-of-distribution benchmarks. We introduce Regularized Recursive Self-Improvement of Agent Harnesses (RRSI), which incorporates the principles of regularizations into harness self-improvement by constraining the evolution candidate proposal and selection. The proposer operates with a temporally annealed budget, limiting how many edits a candidate can bundle, and it encourages unexplored trajectories based on evolution history. The selector is equipped with a critic and a pruner: the critic screens benchmark-specific proposals, while the pruner, removes changes that are too small, too expensive, or no longer useful. Together these constraints favor reusable agent mechanisms over benchmark-specific ones or even noises. Across eight benchmarks spanning coding, agentic workspace and engineering design tasks, RRSI gains up to 14.1 points on the split it evolves against and up to 4.7 points on the five out-of-distribution benchmarks, while producing a harness that runs on 30% fewer policy tokens than the unregularized evolution. Code is available at https://github.com/google-research/rrsi and project page is https://regularized-rsi.com/.
+# Translation (by gpt-5.6-luna)
+- LLMエージェントの能力は、凍結された基盤モデルを取り巻くプロンプト、制御フロー、ツール、メモリ、コンテキスト管理、すなわちハーネスによって大きく増幅される。近年では、このプロセスを反復的に自動化し、エージェント・ハーネスの各コンポーネントに対する編集案を提案・選択する手法が増えており、エージェント・システムのレベルで再帰的自己改善（RSI）の一形態が実質的に確立されつつある。しかし、このような再帰的進化は、学習タスクを記憶することで過適合する可能性があり、分布内では大幅な性能向上を示す一方、分布外のベンチマークではその向上幅が縮小する、あるいは消失することさえある。
+
+本研究では、エージェント・ハーネスの正則化付き再帰的自己改善（Regularized Recursive Self-Improvement of Agent Harnesses; RRSI）を導入する。RRSIは、進化候補の提案と選択を制約することで、正則化の原理をハーネスの自己改善に組み込む。提案器は時間的にアニーリングされる予算のもとで動作し、各候補にまとめて適用できる編集数を制限するとともに、進化履歴に基づいて未探索の軌跡を促進する。選択器には批評器と剪定器を備える。批評器はベンチマーク固有の提案をふるいにかけ、剪定器は変更が小さすぎる、高コストである、またはもはや有用でない場合にそれらを除去する。これらの制約により、ベンチマーク固有の仕組みや単なるノイズではなく、再利用可能なエージェント機構が優先される。
+
+コーディング、エージェント型ワークスペース、エンジニアリング設計タスクにまたがる8つのベンチマークにおいて、RRSIは、進化に用いた分割では最大14.1ポイント、5つの分布外ベンチマークでは最大4.7ポイントの性能向上を達成した。また、正則化されていない進化手法と比べて、30%少ないポリシートークンで実行できるハーネスを生成した。コードは https://github.com/google-research/rrsi 、プロジェクトページは https://regularized-rsi.com/ で公開されている。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントのハーネスを、プロンプトや制御フロー、ツール、メモリの編集によって再帰的に自己改善。
+提案と選択を正則化し、ベンチマーク固有の過適合や不要な変更を抑制することで、再利用可能なエージェント機構を獲得。
+8つのベンチマークで最大14.1ポイント、分布外評価で最大4.7ポイントの性能向上を達成し、正則化なしの手法より30%少ないポリシートークンで実行可能。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2102646972419375462?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://regularized-rsi.com" target="_blank" rel="noopener noreferrer">https://regularized-rsi.com</a>
+{% endraw %}
+
+</p><p>自己改善をするハーネスにおいて、改善されたハーネスが評価データのスコアは向上するが、OODなデータに対して汎化しないという課題がある。これに対して、機械学習モデルにおける正則化の考え方をharnessの"探索"に導入することで対処する。<br><br>大前提として、ハーネスHとはAI Agentを構成する要素のうち、weightを除く全ての機構を指す総称であり、たとえば以下が含まれる:<br>- system/task prompts<br>- エージェントがいつプランを練り、行動し、内省あるいは終了するか等を決める制御フロー<br>- ツールインタフェースとその定義<br>- メモリやスキルに関するファイル群<br>- 各ステップにおいてポリシー（モデル）が何を観測できるか、すなわちコンテキストを管理するマネージャ<br><br>本研究を理解する上で、二つの役割を理解する必要がある(式2):<br>- Proposer: 現在のハーネスH_tに基づいて進化用データD_evolve中のタスクを実行し、そのtrajectoryの要約からFeedback F_tが生成されるとき、H_t, F_tに基づいて、進化後のハーネスの集合を出力する機構（LLM)。<br>- Selector: D_evolveと進化先の候補となるハーネス集合、および現在のハーネスH_tが与えられた時、最もスコアが高いハーネスを選択する機構<br><br>正則化はProposerとSelectorそれぞれに対して適用される。Figure 2に、それぞれどのような正則化が提案されているかが示されている。<br><br>（後ほど追記する）</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/chl260/status/2102462320761069687?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト2:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hanrujun/status/2102437144426147885?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6632" target="_blank" rel="noopener noreferrer">[Paper Note] Recursive self-improvement of AI research agents, Dhruv Srikanth+, arXiv'26, 2026.09</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6046" target="_blank" rel="noopener noreferrer">AIDE²: The First Evidence of Recursive Self-Improvement, Waco Team, 2026.07</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness, Haozhe Liu+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.20519</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6605</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, SelfImprovement, read-later, autoresearch/RSI, AgentHarness</tags>
+<repo-issue-date>2026-09-20</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.20519
+# Authors
+  - Haozhe Liu
+  - Tian Ye
+  - Sensen Gao
+  - Qihang Cao
+  - Yitong Li
+  - Mingchen Zhuge
+  - Duomin Wang
+  - Ruihua Zhang
+  - Ping Luo
+  - Jiawang Bian
+  - Lei Zhu
+  - Ligeng Zhu
+  - Enze Xie
+  - Song Han
+# Abstract
+  - As coding agents move from supervised code completion to unattended, around-the-clock exploration, their work expands from isolated predictions into long trajectories of reasoning, tool use, and feedback. Token efficiency therefore becomes important for scaling recursive self-improvement. We take an RSI-inspired approach at the harness layer, scaling auto-research loops across increasingly numerous and diverse environments for harness rollouts. At this scale, the process yields reusable improvements that transfer beyond their development setting, moving automated harness discovery toward production-level outcomes. Four mechanisms survive selection and form SoL-Pi, spanning action execution, context compaction, observation handling, and delegated reading. On the 51-task EdgeBench evaluation, SoL-Pi achieves performance comparable to Pi across GPT-5.6 Sol and Opus 5 while reducing recorded token traffic by 44.7-49.0% and API cost by about one third. In other words, estimated hourly savings are \$8.75-\$13.50 relative to native Codex and Claude Code harnesses, and \$4.36-\$5.71 relative to Pi.
+# Translation (by gpt-5.6-luna)
+- コーディングエージェントが教師ありコード補完から、常時稼働する無監督の探索へと移行するにつれ、その作業は個別の予測から、推論、ツールの利用、フィードバックを伴う長い軌跡へと拡大している。したがって、再帰的自己改善をスケールさせるうえで、トークン効率が重要になる。われわれは、ハーネス層においてRSIに着想を得たアプローチを採用し、ハーネスのロールアウト用に、数と多様性を段階的に増やした環境全体で自動研究ループをスケールさせる。この規模では、そのプロセスによって開発環境を超えて転用可能な再利用性の高い改善が生まれ、自動ハーネス探索を本番レベルの成果へと近づけることができる。4つのメカニズムが選択を生き残り、行動実行、コンテキスト圧縮、観測処理、委譲された読解にまたがるSoL-Piを形成する。51タスクからなるEdgeBench評価において、SoL-PiはGPT-5.6、Sol、Opus 5全体でPiと同等の性能を達成しながら、記録されたトークン通信量を44.7～49.0%、APIコストを約3分の1削減した。言い換えれば、推定される1時間あたりの節約額は、標準のCodexおよびClaude Codeハーネスと比べて8.75～13.50ドル、Piと比べて4.36～5.71ドルとなる。
+# Summary (by gpt-5.6-luna)
+- コーディングエージェントの長期的な推論・ツール利用では、トークン効率が重要となるため、RSIに着想を得た自動ハーネス探索を提案。  
+複数環境で研究ループをスケールさせ、行動実行・コンテキスト圧縮・観測処理・委譲読解に関する4つの機構からSoL-Piを構築。  
+EdgeBenchではGPT-5.6、Sol、Opus 5でPiと同等の性能を維持しつつ、トークン通信量を44.7～49.0%、APIコストを約3分の1削減。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2101578159674310707?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Show-Harness: Just a VLM Agent Can Play Robots, Yanzhe Chen+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.10522</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6547</repo-issue-link>
+<tags>VisionLanguageModel, Robotics, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.10522
+# Authors
+  - Yanzhe Chen
+  - Zechen Bai
+  - Zhijun Cao
+  - Wenzheng Zeng
+  - Kevin Qinghong Lin
+  - Yiqi Lin
+  - Guoqiang Liang
+  - Kevin Yuchen Ma
+  - Qiming Huang
+  - Mike Zheng Shou
+# Abstract
+  - Foundation vision-language models (VLMs) exhibit broad intelligence about the world, yet translating this intelligence into robot control remains challenging. We present Show-Harness, an Embodied Harness that enables VLMs to "play" robots through a compact semantic interface linking intent to action. Show-Harness exposes discrete semantic action units that VLMs can naturally reason over, while embodiment-specific interpreters deterministically ground them into local robot actions, keeping the VLM directly responsible for fine-grained physical decisions. Through the same interface, Show-Harness demonstrates the feasibility of (1) directly unlocking closed-source frontier VLMs for zero-shot robot control, and (2) adapting small-scale open-source VLMs for low-cost deployment with just a few GPU-hours of fine-tuning. We further develop GUMI (GUI Manipulation Interface), which extends the same semantic action space to GUI-based demonstration collection, allowing humans and agents to "play" robots across embodiments without specialized teleoperation hardware. Extensive experiments show that Show-Harness-equipped VLM agents generalize robustly across tasks, embodiments, and environments, outperforming representative agentic and VLA paradigms. These results suggest that the right interface can unlock substantial embodied capability from foundation VLMs, without requiring additional model capacity or costly embodiment-specific pretraining.
+# Translation (by gpt-5-nano)
+- 基盤となる視覚言語モデル（VLM）は、世界に関する広範な知能を示しますが、この知能をロボット制御へ翻訳することは依然として困難です。我々はShow-Harness（エンボディド・ハーネス）を提示します。これは、VLMが意図と行動を結びつけるコンパクトなセマンティック・インターフェースを介してロボットを“操作”できるようにするエンボディド・ハーネスです。Show-Harnessは、VLMが自然に推論できる離散的なセマンティック・アクション単位を提示します。一方、 embodiment固有のインタプリタはそれらを決定論的に局所的なロボット動作へ落とし込み、VLMが微細な物理的判断に対して直接的な責任を負う状態を保ちます。同じインターフェースを介して、Show-Harnessは、(1) 最前線のクローズドソースVLMをゼロショットのロボット制御へ直接解放すること、(2) 小規模なオープンソースVLMを、数時間のGPU微調整だけで低コストな展開へ適応させることの実現可能性を示します。さらに、同じセマンティックなアクション空間をGUIベースのデモンストレーション収集にも拡張するGUIManipulation Interface（GUMI）を開発しました。これにより、専門的な遠隔操作ハードウェアを用いず、さまざまな embodiment間で人間とエージェントが“ロボットを操作する”ことが可能になります。広範な実験の結果、Show-Harnessを搭載したVLMエージェントは、タスク・ embodiment・環境を横断して堅牢に一般化し、代表的なエージェント主導パラダイムおよびVLAパラダイムを上回ることを示しました。これらの結果は、適切なインターフェースが追加のモデル容量や高価な embodiment固有の事前訓練を必要とせず、基盤VLMから実質的な身体化能力を引き出すことができることを示唆しています。
+# Summary (by gpt-4o-mini)
+- Show-Harnessは、視覚言語モデル（VLM）が意図と行動を結びつけ、ロボットを操作するためのセマンティック・インターフェースを提供します。これにより、VLMは離散的なセマンティック・アクションを使用してロボット動作を制御し、微細な物理的判断を行います。また、Show-Harnessは最先端のVLMをゼロショットでロボット制御に利用可能にし、オープンソースVLMを簡易的に微調整して低コストな展開に適応できます。さらに、GUIManipulation Interface（GUMI）を開発し、専門的ハードウェアなしで人間とエージェントがロボットを操作できる環境を提供します。広範な実験を通じて、Show-Harnessを活用したVLMエージェントは、他のパラダイムを上回る堅牢性を示しました。これは、適切なインターフェースを用いることで、モデルの容量や高価な事前訓練なしにVLMの能力を引き出せることを示唆しています。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zechenbai/status/2097879130356498603?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ExecCritic: Learn to Test, Test to Improve for Coding Agents, Leitian Tao+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.09133</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6542</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, UnitTest, Initial Impression Notes, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.09133
+# Authors
+  - Leitian Tao
+  - Baolin Peng
+  - Haorui Wang
+  - Hang Wang
+  - Hao Cheng
+  - Wenlin Yao
+  - Qianhui Wu
+  - Tao Ge
+  - Sharon Li
+  - Jianfeng Gao
+# Abstract
+  - Execution feedback can guide coding agents toward correct repository repairs, but only when the tests capture the behavior requested by the issue. Agent-generated tests can encode incomplete or incorrect behavioral targets; when the same trajectory writes both the patch and the test, their errors can agree and create false confidence. We introduce ExecCritic, combining a test--verify--revise scaffold with a role-specific reinforcement learning recipe for training agents within it. The scaffold separates test construction from source-code repair: a Test agent independently generates repository-native tests, a fail-closed harness qualifies and freezes them, and a Repair agent revises source code from their execution feedback without changing the tests. Both roles use Qwen-3.5-35B-A3B as the backbone and are trained separately. In Learn to Test, the Test agent learns to produce behaviorally valid tests that distinguish correct from incorrect patches. In Test to Improve, the Repair agent learns both direct task resolution and feedback-guided revision. On SWE-bench Verified, test quality determines whether feedback helps: holding the base Repair agent fixed, tests from the base Test agent reduce resolved rate from a no-test baseline of 61.2% to 57.3%, whereas tests from GPT-5.6-sol raise it to 65.3%. Role-specific post-training raises the Qwen Test agent's Base-to-Gold success from 22.2% to 62.2%; composing the two post-trained Qwen agents reaches 72.6%, an 11.4-point gain over the original no-test baseline without stronger-model or Oracle feedback at evaluation time. Code is publicly available at https://github.com/MSR-Orchard/execcritic.
+# Translation (by gpt-5-nano)
+- 実行時のフィードバックは、テストが問題の要求する挙動を正しく捉えている場合に限り、コーディングエージェントを正しいリポジトリ修正へ導くことができる。エージェントが生成するテストは、不完全または誤った挙動ターゲットを含む可能性がある。同じ軌跡がパッチとテストの両方を書き出すと、それらの誤りが一致して偽の自信を生み出すことがある。私たちはExecCriticを導入する。これは、テスト・検証・修正のスキャフォールドと、それを訓練するためのロール固有の強化学習レシピを組み合わせたものだ。スキャフォールドはテストの構築をソースコードの修正から分離する。テストエージェントは独立してリポジトリ固有のテストを生成し、fail-closedハーネスがそれらを適格化して凍結し、修正エージェントはテストを変更せずに、彼らの実行フィードバックからソースコードを改修する。両方の役割はバックボーンとしてQwen-3.5-35B-A3Bを使用し、別々に訓練される。Learn to Testでは、テストエージェントは正しいパッチと不正なパッチを区別する挙動的に妥当なテストを生成することを学ぶ。Test to Improveでは、修正エージェントは直接的なタスク解決とフィードバック指向の改訂の両方を学ぶ。SWE-bench Verified では、テストの品質がフィードバックが有効かどうかを決定する。基礎の修正エージェントを固定した状態で、基礎のテストエージェントのテストはno-testベースラインの61.2%から57.3%へ解決率を低下させる一方、GPT-5.6-sol由来のテストは65.3%へ引き上げる。役割別の事後訓練により、QwenテストエージェントのBase-to-Goldの成功率は22.2%から62.2%へ上昇する。二つの事後訓練済みQwenエージェントを組み合わせると72.6%に達し、評価時により強力なモデルやOracleのフィードバックを用いない状態での元のno-testベースラインより11.4ポイント向上する。コードはhttps://github.com/MSR-Orchard/execcriticで公開されている。
+# Summary (by gpt-4o-mini)
+- 実行時フィードバックは、コーディングエージェントを正しい修正に導くが、誤ったテストが偽の自信を生む可能性がある。そこで、ExecCriticを提案し、テスト生成と修正を分離するスキャフォールドを用いて、強化学習レシピで訓練されたテストエージェントと修正エージェントを開発。Learn to Testでは正しいテストを学び、Test to Improveではフィードバックに基づく改善を学ぶ。事後訓練により成功率が向上し、両エージェントを組み合わせることで全体の性能が向上した。コードは公開済み。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sharonyixuanli/status/2097681014201995760?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>テスト生成と、コードの修正をするエージェント（テストの修正はできない）を分離し、RLを通じて双方の能力を高める手法を提案しているようで、高品質なテストを作成し、そこから得られるフィードバックに基づいて修正を実施するがコード修正の強力なscaffoldingとなる、という話のようである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CORAL: An LLM-Native Harness for Production Recommender Systems, Muhammad Rafay Azhar+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.02730</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6510</repo-issue-link>
+<tags>RecommenderSystems, NLP, LanguageModel, AIAgents, Selected Papers/Blogs, AgentHarness</tags>
+<repo-issue-date>2026-09-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.02730
+# Authors
+  - Muhammad Rafay Azhar
+  - Yuhang Zhou
+  - Gilbert Jiang
+  - Yuchen Wang
+  - Rahul Sharma
+  - Matthew DeSousa
+  - Jiayi Liu
+  - Xin Guo
+  - Lizhu Zhang
+  - Xiangjun Fan
+# Abstract
+  - Production recommender systems shape what billions of people see, and sustaining their performance requires continual optimization: as content, user behavior, and upstream models shift, the choices governing retrieval, ranking, and serving must be revisited. Traditionally, human engineers test such changes through online experiments--a slow, reactive process limited by engineering effort, leaving parts of the system unrevised as conditions change. Although large language models have been applied to ranking, user modeling, and offline model development, few systems place an agent in a continual closed loop that acts on a live recommender and learns from the measured effects of its decisions. We present CORAL (Constraint-Optimized Recommender via an Agentic Loop), an LLM-native harness that closes this loop: each cycle, the agent observes operating signals, reasons over a memory of past decisions and outcomes, and invokes tools--including a numerical optimizer that keeps changes within a fixed operating budget--to reconfigure the recommender, with measured outcomes informing the next cycle. We formulate this as a partially observed, non-stationary, constrained optimization problem in which the policy improves in context, without parameter updates, from its prior actions. Across two large-scale social platforms, evaluated with A/B experiments, the same harness improves engagement at no additional serving cost on one and reduces serving cost without degrading engagement on the other, spanning the engagement-efficiency frontier. Performance improves as the loop iterates, suggesting that a single agentic loop can automate continual optimization work traditionally performed by human algorithm engineers under explicit guardrails.
+# Translation (by gpt-5-nano)
+- 本番運用中のレコメンダーシステムは何十億もの人が閲覧する内容を形作り、その性能を維持するには継続的な最適化が必要である。コンテンツ、ユーザー行動、上流モデルの変化に伴い、取得、ランキング、提供を支配する選択肢を再検討しなければならない。従来は、人間のエンジニアがオンライン実験を通じてこのような変更を検証する—遅く、反応的なプロセスで、エンジニアリングの労力によって制約され、状況が変化してもシステムの一部が改訂されないままである。大規模言語モデルはランキング、ユーザーモデリング、およびオフラインモデル開発に適用されてきたが、ライブのレコメンダーに対してエージェントを継続的な閉ループとして置き、意思決定の測定結果から学ぶシステムは少ない。われわれはCORAL（Agentic Loopによる制約最適化レコメンダー）を提示する。LLMネイティブのハーネスでこのループを閉じる：各サイクルで、エージェントは動作信号を観測し、過去の意思決定と成果の記憶を基に推論し、数値最適化器を含むツールを呼び出して—変更を固定された運用予算内に収める—レコメンダーを再構成し、測定された成果を次のサイクルに反映させる。これを、部分観測的で非定常、制約付きの最適化問題として定式化する。ポリシーは前の行動から文脈の中で改善され、パラメータ更新なしに改善される。2つの大規模なソーシャルプラットフォームにおいて、A/B実験で評価したところ、同じハーネスは一方で追加の配信コストなしにエンゲージメントを改善し、もう一方でエンゲージメントを損なうことなく配信コストを削減し、エンゲージメントと効率のフロンティアを横断する。ループを繰り返すほど性能は改善され、単一のエージェント主導のループが、明示的なガードレールの下で人間のアルゴリズムエンジニアが従来実施してきた継続的最適化作業を自動化できることを示唆している。
+# Summary (by gpt-4o-mini)
+- 大規模なレコメンダーシステムの最適化には、LLMを用いた新たなアプローチCORALを提案。エージェントが過去のデータを基に意思決定を行い、運用予算内でシステムを再構成することで、持続的にエンゲージメントを向上。また、A/B実験により、効果的なエンゲージメント改善とコスト削減が確認され、従来の人間主導の最適化プロセスを自動化できる可能性を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2095518433865777600?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemoryWalker: Stop Training Agents on Contexts They Never Saw, Zinco J+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.00865</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6509</repo-issue-link>
+<tags>memory, Compression, train-inference-mismatch, SelfDistillation, AgentHarness</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.00865
+# Authors
+  - Zinco J
+  - Xunjie Zhu
+  - Shen Huang
+  - Zhenyi Wang
+  - Pengjun Xie
+  - Jieping Ye
+# Abstract
+  - Production agent harnesses such as Claude Code and Qwen-Agent compress context during rollout, but training under compression creates a conditioning problem: every eviction branches the effective history, so the learning object is a tree rather than a sequence. Existing linearizations either retain the rightmost path, causing time-travel leakage, or replay a depth-first traversal, causing train-inference mismatch. We introduce two exact, gradient-equivalent corrections: LogitTree, a segmented K-forward traversal, and a packed 4D attention mask. LogitTree requires K+1 backward passes; the 4D mask requires a custom kernel and white-box eviction records. We also propose SDCC (Self-Distillation for Conditioning Consistency), a single-backward-pass variational relaxation. At each eviction, it minimizes forward KL between the compressed student and a stop-gradient teacher on the reconstructed pre-eviction prefix. A residual per-junction KL of epsilon_KL gives an O(sqrt(epsilon_KL)) bound on the train-deployment total-variation gap. SDCC also applies to black-box harnesses. On seven web-search benchmarks with TC-RAG, AgentFold, MemexRL, Claude Code, and OpenCode, naive training inflates the train-rollout log-probability gap, especially on eviction-heavy batches. The exact methods stay at the no-compression floor, and SDCC substantially closes the gap, with lower logit drift and higher rollout rewards.
+# Translation (by gpt-5-nano)
+- プロダクションエージェント用ハーネス（ Claude Code や Qwen-Agent など）はロールアウト時に文脈を圧縮するが、圧縮下での学習は条件付けの問題を生む。エビクションごとに有効な履歴が分岐するため、学習対象はシーケンスではなく木構造になる。既存の線形化は右端の経路を保持して時間遡行のリークを生じさせるか、深さ優先探索を再生して訓練と推論の不一致を起こす。厳密で勾配等価な二つの補正を導入する。LogitTree は分割された K 回の前方伝搬を行い、もう一つは圧縮された 4D アテンションマスクである。LogitTree は K+1 回の逆伝搬を必要とし、4D マスクはカスタムカーネルとホワイトボックスのエビクション記録を必要とする。我々はまた、SDCC（Self-Distillation for Conditioning Consistency、条件付けの一貫性のための自己蒸留）を提案する。単一の逆伝搬パスでの変分緩和である。各エビクション時に、再構成されたエビクション前プレフィックスに対して、圧縮された学生モデルと勾配停止を適用した教師モデルとの間でフォワード KL を最小化する。接合点ごとの KL 残差 epsilon_KL は、訓練とデプロイメントの総変動差の上界を O(√epsilon_KL) にする。SDCC はブラックボックス・ハーネスにも適用される。TC-RAG、AgentFold、MemexRL、Claude Code、OpenCode を用いた七つのウェブ検索ベンチマークにおいて、ナイーブな訓練は訓練ロールアウト対数確率差を増大させ、特にエビクションが多いバッチで顕著である。正確な手法は圧縮なしの基準線のままであり、SDCC はギャップを大幅に縮小し、ロジットのドリフトを抑え、ロールアウト報酬を高める。
+# Summary (by gpt-4o-mini)
+- プロダクションエージェントのハーネスは文脈を圧縮するが、圧縮により学習の条件付けに問題が生じる。エビクションごとに履歴が木構造化され、既存の線形化は推論の不一致を引き起こす。二つの補正法（LogitTreeと4Dアテンションマスク）を用いて、この問題を解決。さらに、自己蒸留手法SDCCを提案し、接合点ごとのKL残差が訓練とデプロイメントの差を抑える。様々なベンチマークでSDCCがロールアウト報酬の向上に寄与することを示し、ナイーブな訓練と比較してパフォーマンスを改善。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2095438351704920505?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] WHALE: A Simple Recipe for Joint Harness-Weight Optimization, Haechan Kim+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.00196</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6505</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, read-later, Selected Papers/Blogs, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.00196
+# Authors
+  - Haechan Kim
+  - Yoonho Lee
+  - Gisang Lee
+  - Chelsea Finn
+  - Kangwook Lee
+# Abstract
+  - Agent performance depends jointly on the model parameters and the executable harness code that manages context and control flow. Optimizing either component in isolation can leave the system bottlenecked by its frozen counterpart: weight updates can change which harness is effective, while harness updates can change which model capabilities are exposed. Existing joint-adaptation methods optimize weights and textual prompts but leave the broader harness fixed. We propose Weight-Harness Alternating LEarning (WHALE), a simple recipe that alternates two phases: updating the model under the current harness, then searching for a better harness under the updated model. We instantiate these two phases with online rejection-sampling fine-tuning and Meta-Harness, respectively. When to switch is a key design choice: to separate real improvements from noise without over-optimizing against a changing counterpart, WHALE uses either fixed phase durations or an adaptive patience rule over training signals. Using Qwen3.5-2B/4B agents across three domains (search question answering, mathematical reasoning, and chess puzzles), WHALE outperforms weight-only, harness-only, and Fast-Slow Training by 4.15-24.38 percentage points in best mean@8 accuracy. Either component can be the bottleneck: harness search matches peak weight-only accuracy with far fewer rollouts in SearchQA, but improves math accuracy only after a weight update. Small interleaved updates also outperform stagewise weight-then-harness optimization in accuracy and rollout cost. The code is available at https://github.com/krafton-ai/WHALE.
+# Translation (by gpt-5-nano)
+- エージェントの性能は、文脈と制御フローを管理する実行ハーネスコードとモデルパラメータの双方に共同で依存する。いずれかの成分を独立に最適化しても、凍結された相手側によってボトルネックが生じる可能性がある。重みの更新はどのハーネスが有効かを変え得る一方で、ハーネスの更新はモデルが公開する能力を変える。既存の共適応法は重みとテキストプロンプトを最適化する一方で、広義のハーネスを固定している。我々は Weight-Harness Alternating Learning（WHALE、ウェイル）を提案する。現在のハーネスの下でモデルを更新し、更新後のモデルの下でより良いハーネスを探索する、二つの段階を交互に実行する、単純なレシピである。これらの二つの段階は、それぞれオンライン拒否サンプリングに基づくファインチューニングと Meta-Harness によって実装される。切り替えの時期は設計上の重要な選択肢である。変化する相手に過剰に適合させず、実際の改善とノイズを区別するため、WHALE は固定した段階長を用いる場合と、訓練信号に基づく適応的な忍耐ルールを用いる場合のいずれかを採用する。Qwen3.5-2B/4B エージェントを3つの領域（検索型質問応答、数学的推論、チェスのパズル）で用いた場合、WHALE は重みのみ、ハーネスのみ、および Fast-Slow Training をそれぞれ mean@8 精度の最高値において 4.15〜24.38 パーセンテージポイント上回る。いずれの成分もボトルネックになり得る。SearchQA ではハーネス探索が重みのみのときのピーク精度に匹敵するが、ロールアウト回数ははるかに少なくて済む。一方、数学的な精度の改善は重みの更新の後でしか現れない。小さな交互更新も、精度とロールアウトコストの点で、段階的な「重み→ハーネス」最適化を上回る。コードは https://github.com/krafton-ai/WHALE に公開されている。
+# Summary (by gpt-4o-mini)
+- WHALE（Weight-Harness Alternating Learning）は、エージェントの性能向上を図るための新しい手法であり、モデルと実行ハーネスの共同最適化を実現する。二段階のプロセスに基づき、モデルを更新した後で改善されたハーネスを探索する。このアプローチにより、Qwen3.5-2B/4Bエージェントは、検索型質問応答、数学的推論、チェスのパズルの各領域で従来の最適化手法を上回る精度を達成。特に、ハーネスの探索が効果的で、ロールアウトのコストを削減しつつ、精度を向上させることが示された。コードは公開されている。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/kangwook_lee/status/2095234520819826878?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yoonholeee/status/2095556379520188444?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] HarnessDev: Can LLMs Create and Evolve Their Own Agent Harness?, Yuhao Wu+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.01437</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6501</repo-issue-link>
+<tags>AIAgents, AgentHarness</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.01437
+# Authors
+  - Yuhao Wu
+  - Jingyuan Zhang
+  - Jiajun Shi
+  - Xinping Lei
+  - Qingshui Gu
+  - Yuxuan Zhang
+  - Zexuan Wang
+  - Chen He
+  - Chen Huang
+  - Maojia Song
+  - Zhiyuan Zeng
+  - Shaowen Wang
+  - Jinkai Liu
+  - Yunfeng Shi
+  - Jiaheng Liu
+  - Shen Yan
+  - Wenhao Huang
+  - Ge Zhang
+  - Wenxuan Zhang
+# Abstract
+  - As agents move from research prototypes to deployed tools, their capability increasingly depends on model-external execution infrastructure, commonly termed the agent harness. Changing this harness while holding model weights fixed can substantially alter task performance. Current agent evaluations typically report downstream performance under a chosen harness, leaving a model's ability to develop the harness itself comparatively underexplored. We introduce HarnessDev, a benchmark that shifts the unit of evaluation from task outputs to runnable infrastructure. HarnessDev covers two stages. In Creation, the agent starts from a minimal seed and a small number of cases, then builds a complete execution system. In Evolution, it starts from its own created harness and iteratively revises it using downstream execution feedback, with the goal of improving benchmark performance. We then evaluate each constructed harness on capability (task success on held-out benchmarks) and efficiency (execution-token cost). The reported Creation results cover six creator LLMs, four domains, and five downstream benchmarks totaling 2,207 unique downstream instances, with hidden evaluation tasks withheld from development. We find that generated harnesses remain substantially behind mature human-engineered references on code and on search and research, while matching or exceeding the selected references on writing and machine-learning experimentation, with large variation in execution cost. Evolution produces some performance gains, but they are unstable and transfer only partially to held-out tasks. Experiments with a fixed runtime model further show that the gains depend strongly on the model executing the harness, indicating limited transfer across models.
+# Translation (by gpt-5-nano)
+- 研究プロトタイプから実運用ツールへと移行するにつれ、エージェントの能力はますますモデル外部の実行インフラストラクチャ、一般にエージェント・ハーネスと呼ばれるものに依存するようになる。モデルの重みを固定したままこのハーネスを変更すると、タスクの性能を大幅に変える可能性がある。現在のエージェント評価は通常、選択されたハーネスの下での下流の性能を報告するが、ハーネス自体を開発するモデルの能力は比較的十分には探究されていない。私たちはHarnessDevを導入する。これは評価の単位をタスク出力から実行可能なインフラストラクチャへと移行させるベンチマークである。HarnessDevは二つの段階を含む。Creationでは、エージェントは最小限のシードと少数のケースから開始し、完全な実行システムを構築する。Evolutionでは、自分で作成したハーネスを出発点とし、下流の実行フィードバックを用いてそれを反復的に改訂し、ベンチマークの性能向上を目指す。その後、構築された各ハーネスを、能力（保持外ベンチマークでのタスク成功）と効率（実行トークンのコスト）の観点で評価する。報告されたCreation結果は、六つのクリエイターLLM、四分野、五つの下流ベンチマークを網羅しており、総計2,207のユニークな下流インスタンスを含む。開発からは評価タスクが非公開とされている。われわれは、生成されたハーネスがコードや検索・研究の分野では成熟した人間が設計した参照にはなお大きく及ばない一方で、ライティングや機械学習実験の分野では選択された参照に匹敵するか、それを上回るケースがあり、実行コストには大きなばらつきがあることを発見した。Evolutionは一定の性能向上を生み出すものの、それらは不安定で、保持外タスクへは部分的にしか転移しない。固定ランタイムモデルを用いた実験は、ハーネスを実行するモデルに強く依存することを示しており、モデル間の転移には限界があることを示している。
+# Summary (by gpt-4o-mini)
+- HarnessDevを導入し、エージェントの能力評価を実行インフラに移行。Creationでは最小シードからハーネスを構築し、Evolutionではフィードバックに基づき改訂。研究結果では、生成ハーネスは特定分野で既存参照に匹敵しつつも、他の分野では大きな差があり、性能向上は不安定で転移には限界が示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2095170896407548190?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] UserHarness: Harnessing User Minds for Stronger Agent Theory-of-Mind, Cheng Qian+, arXiv'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.27721</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6462</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, TheoryOfMind, One-Line Notes, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.27721
+# Authors
+  - Cheng Qian
+  - Jiayu Liu
+  - Heng Ji
+# Abstract
+  - Understanding what a user believes and intends is central to building effective agent assistants. This ability is often evaluated through Theory-of-Mind (ToM) tasks, where success requires reasoning from the user's perspective. However, many existing approaches address ToM with complex pipelines that model behavior indirectly, without explicitly reconstructing the user's mental state. This misses the core structure of the problem: users act based on their beliefs, which are updated through observations of the environment; beliefs and intentions jointly determine actions, which in turn change the environment; and social reasoning often requires nested beliefs about what others believe or intend. We propose UserHarness, a simple framework that reframes ToM reasoning as explicit user-mind reconstruction. UserHarness decomposes the user's mental state, its relation to the external environment, and the actions that follow from it, enabling agents to track what the user observes, believes, intends, and does. Across five benchmarks, UserHarness reaches up to 95.94% macro accuracy, improving over existing inference methods by more than 15% relative and over the strongest prompt-only harness by about 20% relative. These results suggest that robust user understanding requires reasoning from the roots of the user's mind, positioning user harnessing as a promising foundation for more adaptive future assistants.
+# Translation (by gpt-5-nano)
+- ユーザーが何を信じ、何を意図しているかを理解することは、効果的なエージェントアシスタントを構築するうえで極めて重要である。この能力はしばしば Theory of Mind（ToM）タスクを通じて評価され、成功にはユーザーの視点から推論することが求められる。しかし、既存の多くのアプローチは、ユーザーの心的状態を明示的に再構成することなく、挙動を間接的にモデル化する複雑なパイプラインを用いてToMに取り組んでいる。これにより、問題の核となる構造を見逃してしまう。すなわち、ユーザーは自分の信念に基づいて行動し、それは環境の観察を通じて更新される。信念と意図は共同で行動を決定し、それが再び環境を変える。さらに社会的推論は、しばしば他者が何を信じているか、あるいは何を意図しているかといった入れ子状の信念を必要とする。私たちは、ToM推論を明示的なユーザー心の再構築として再定義する、簡素なフレームワークであるUserHarnessを提案する。UserHarnessは、ユーザーの心的状態とそれと外部環境との関係、そしてそれに続く行動を分解することで、エージェントがユーザーが観察し、信じ、意図し、そして行うことを追跡できるようにする。5つのベンチマークを横断して、UserHarnessは最大で95.94%のマクロ精度に達し、既存の推論手法より相対で15％以上、最も強力なプロンプトのみのハーネスよりも約20％の相対的改善を示している。これらの結果は、堅牢なユーザー理解にはユーザーの心の根源からの推論が不可欠であることを示唆しており、UserHarnessの活用を、より適応的な将来のアシスタントの有望な基盤として位置づけている。
+# Summary (by gpt-4o-mini)
+- ユーザーの信念と意図を理解することは、効果的なエージェントアシスタントを構築する上で必要不可欠である。本研究では、ToM推論を明示的に再構築するUserHarnessというフレームワークを提案し、ユーザーの心的状態と環境との関係を追跡できるようにする。UserHarnessは5つのベンチマークで最大95.94%のマクロ精度を達成し、既存手法に対して15％以上の改善を示した。これにより、ユーザー理解には心の根源からの推論が必要であることが強調され、今後のアシスタントの基盤としての有望性が示唆される。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qiancheng1231/status/2093138180946145518?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3013" target="_blank" rel="noopener noreferrer">[Paper Note] UserRL: Training Interactive User-Centric Agent via Reinforcement   Learning, Cheng Qian+, EMNLP'26, 2025.09</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6461" target="_blank" rel="noopener noreferrer">[Paper Note] UserBench: An Interactive Gym Environment for User-Centric Agents, Cheng Qian+, EMNLP'26, 2025.07</a>
+</p><p>ユーザの信念Beliefを明示的にモデル化し、Actionを決定するハーネスの提案。これによりActionがユーザの信念を反映したものとなることを期待し、User-centeredなエージェントを目指す。<br><br>時刻tごとに、環境E_tからの観測結果o_tを受けてユーザのbelief B_tが更新され、ユーザのゴールGに基づいてAction A_tを決定する。アクションA_t+1により環境がE_t+1に更新される、といったループを繰り返す。ユーザはE_tを直接観測することはできず、o_tのみを観測できる。<br><img src="https://github.com/user-attachments/assets/c88e026b-d52c-498a-be4d-fb675a94fe01" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>Appendix Aを見る限り、おそらくBeliefはテキストとして表現される。また、3.1節に示されている通り、Beliefは入れ子構造で定義される。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Praxist: From Experimental Artifacts to Solution Lineages, Jin Li+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.25955</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6460</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, SelfImprovement, Initial Impression Notes, autoresearch/RSI, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.25955
+# Authors
+  - Jin Li
+  - Ahmed Murtadha
+  - Zhiyu Wang
+  - Qiwen Chen
+  - William Chen
+  - Yifei Wu
+  - Guan Wang
+  - Andy L. Siy
+  - Jiayi Yang
+  - Mengsha Huang
+  - Wenhao Li
+  - Yixuan Liu
+  - Shuailin Pan
+  - Mingli Yuan
+  - Sen Song
+  - Yuhao Sun
+# Abstract
+  - Autonomous R\&D agents now write, run, and improve executable artifacts under automated evaluation---but largely as laboratory instruments: shown on curated benchmarks, with gains that are hard to trace to a cause and costs well above what sustained engineering practice absorbs. The limitation is structural. Most systems treat each attempt as nearly self-contained, so logs, memories, and search trees record what happened without establishing which design element produced an improvement, whether its evidence survived validation, or how it recombines with others. Long campaigns therefore keep re-learning the same lessons. We introduce Praxist, a lineage-centered generational system that converts reproducible artifacts and evaluator outcomes into a typed evidence graph of findings, lane-structured frontiers, and agendas. Separating local artifact construction from cohort-level evidence synthesis lets later attempts inherit validated mechanisms, unresolved claims, and useful constraints, and leaves results attached to an inspectable lineage. On the standardized 75-task MLE-bench suite, the finalized official-grader results give Praxist 60 medals (80.0\%), 49 of them gold, against 55 medals (73.3\%) and 34 gold for a Claude Code baseline on Claude Opus 4.8---at a recorded model spend of US\$3,054 versus US\$38,370, roughly a twelfth of the cost. Four case studies---quantitative trading, LiDAR-inertial-visual SLAM, tokamak magnetic control, and rocket landing---carry the same process into open-ended engineering problems, improving on each task-native baseline in headline accuracy, survival, or resource cost, with the discovery path on record. Stronger artifacts at an order of magnitude less spend, each backed by an auditable lineage, are, to our knowledge, first brought together here: the operating profile production research requires, not the one a benchmark demonstration establishes.
+# Translation (by gpt-5-nano)
+- 自律的な研究開発エージェントは現在、実行可能な成果物を自動評価の下で作成・実行・改良しているが、主にラボの計測機器のように機能している。厳選されたベンチマークに示される利得は原因を追跡しにくく、持続的なエンジニアリング実践が吸収するコストをはるかに上回る。その限界は構造的である。ほとんどのシステムは各試行をほぼ自己完結型として扱い、ログ、記憶、探索木は何が起きたかを記録するが、どの設計要素が改善を生んだのか、証拠が検証を生き残ったか、あるいは他とどのように再結合するかを確立していない。長期のキャンペーンはしたがって同じ教訓を繰り返し学ぶことになる。我々はPraxistを導入する。これは系統情報を中心とした世代的システムで、再現性のある成果物と評価結果を、型付き証拠グラフ、レーン状に構造化されたフロンティア、そして議題へと変換する。局所的な成果物の構築をコホートレベルの証拠統合と分離することで、後続の試みは検証済みの機構、未解決の主張、および有用な制約を継承し、結果を検査可能な系統に結び付けたまま残すことができる。標準化された75タスクのMLEベンチ・スイートにおいて、公式グレーダーの最終結果はPraxistに60枚のメダル（80.0%）、そのうち49枚が金メダルを獲得した。Claude Opus 4.8上のClaude Codeベースラインは55枚のメダル（73.3%）および34枚の金であった。記録されたモデル費用はUS$3,054対US$38,370で、約1/12のコストだった。四つのケーススタディ――定量的取引、LiDAR慣性-視覚SLAM、トカマク磁場制御、ロケット着陸――は同じプロセスをオープンエンドのエンジニアリング問題へと適用し、それぞれのタスク固有のベースラインを主要な精度、存続性、または資源コストの点で改善し、発見の道筋を記録として残している。検証可能な系統に裏打ちされた、桁違いに少ない支出で得られるより強力な成果物が、われわれの知る限り初めてここに集約された――これは、ベンチマークのデモが確立する運用プロファイルではなく、生産研究が要求するものだ。
+# Summary (by gpt-4o-mini)
+- Praxistは、自律的な研究開発エージェントの限界を克服するために設計された系統情報中心のシステムで、成果物と評価結果を構造化します。このシステムは、局所的な成果物を証拠統合と分離することで、後続の試みで検証された機構を継承し、再現可能な結果を維持します。標準化された75タスクにおいてPraxistは60枚のメダルを獲得し、経済的にも優位性を示しました。四つのケーススタディによってオープンエンドの問題への適用が成功し、各タスクでの精度向上や資源コストの削減が記録されました。この新たな成果物のアプローチは、従来のものに比べて強力かつ効率的です。</issue-body>
+<maintainer-comment-text><p>blog:
+
+{% raw %}
+<a href="https://praxist.sapient.inc/en" target="_blank" rel="noopener noreferrer">https://praxist.sapient.inc/en</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sapient_int/status/2093141554500338019?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>要はRSIのためのAgent Harnessのようである。<br>github: 
+
+{% raw %}
+<a href="https://github.com/sapientinc/praxist" target="_blank" rel="noopener noreferrer">https://github.com/sapientinc/praxist</a>
+{% endraw %}
+
+<br><br>Table2を見ると、Claude Code + Opus 4.8に対して、PRAXIST + DeepSeekV4-Proで性能が比較されている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] JIT-Agent: Scaling Harness Intelligence via Just-in-Time Harness Evolution, Guibin Zhang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.25593</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6457</repo-issue-link>
+<tags>NLP, AIAgents, Initial Impression Notes, AgentHarness</tags>
+<repo-issue-date>2026-09-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.25593
+# Authors
+  - Guibin Zhang
+  - Leo Lu
+  - Fangzhou Xie
+  - Kang Zhu
+  - Junhao Wang
+  - Zhifei Xie
+  - Zhaochen Yu
+  - Zihang Liu
+  - Zhongxiang Sun
+  - Qiankun Li
+  - Yue Liao
+  - Heng Chang
+  - Xiaobin Hu
+  - Qibing Ren
+  - Wangchunshu Zhou
+  - Chuanrui Hu
+  - Yafeng Deng
+  - Shuicheng Yan
+# Abstract
+  - Agent capability is not determined by the model alone. The agent harness, encompassing memory management, planning strategy, action protocol, and tool/skill orchestration, can dominate the contribution of the underlying foundation model. Yet harness design remains manual, task-specific, and fundamentally unscalable. We present JIT-Agent, a harness intelligence model trained to synthesize task-adaptive agent harnesses on the fly for arbitrary off-the-shelf agentic LLMs. We formalize the agent harness as a composable, machine-generatable artifact governed by a fixed four-module protocol, and train JIT-Agent to customize harnesses for a given task at hand, repair harnesses for stable and reliable execution, and self-evolve by distilling performance signals from an expanding archive of prior harness configurations. Equipped with JIT-Agent as a harness helper, DeepSeek-V4-Flash surpasses GPT-5.6 on DeepSearchQA (+9.1) and OdysseyBench (+4.3), while the already strong GLM-5.2 gains up to +20.2 points. Across controlled evaluations, JIT-Agent-generated harnesses are performance-competitive with mature agent runtimes such as OpenCode and Claude Code and consistently improve multi-scale model families of DeepSeek V4, Mimo-V2.5, and Qwen3.6. To our knowledge, JIT-Agent is the first model purpose-built for just-in-time harness generation, establishing harness intelligence as a trainable, transferable, and compounding dimension of agent capability orthogonal to model scaling.
+# Translation (by gpt-5-nano)
+- エージェントの能力はモデルだけで決まるものではない。記憶管理、計画戦略、行動プロトコル、ツール／スキルの調整を含むエージェント・ハーネスは、基盤モデルの寄与を凌駕することがある。しかし、ハーネスの設計は手作業であり、タスク特異的で、本質的にスケールしない。私たちは JIT-Agent を提示する。これは任意の市販のエージェント型LLMに対して、その場でタスク適応型のエージェント・ハーネスを合成するよう訓練されたハーネス知能モデルである。エージェント・ハーネスを、固定の四モジュール・プロトコルに支配される、組み合わせ可能で機械生成可能な成果物として定式化し、JIT-Agent を訓練して、手元の特定タスクに合わせたハーネスをカスタマイズし、安定かつ信頼性の高い実行のためにハーネスを修復し、過去のハーネス構成の蓄積アーカイブからのパフォーマンス信号を蒸留して自己進化させる。JIT-Agent をハーネス・ヘルパーとして搭載した DeepSeek-V4-Flash は、DeepSearchQA で GPT-5.6 を +9.1、OdysseyBench で +4.3 上回り、すでに高性能を示す GLM-5.2 は最大で +20.2 ポイントを得る。統制された評価全体において、JIT-Agent が生成したハーネスは、OpenCode や Claude Code などの成熟したエージェント・ランタイムと性能競合し、DeepSeek V4、Mimo-V2.5、Qwen3.6 といったマルチスケールモデルファミリを一貫して改善する。我々の知る限り、JIT-Agent はジャストインタイムのハーネス生成専用に設計された初のモデルであり、ハーネス知能を訓練可能で転送可能、かつ蓄積的なエージェント能力の次元として確立し、モデルのスケーリングとは直交するものである。
+# Summary (by gpt-4o-mini)
+- JIT-Agentは、エージェント型LLMに対してその場でタスク適応型のハーネスを合成するために訓練されたモデルであり、手動設計のスケーラビリティの問題を解決します。特定のタスクに合わせたハーネスをカスタマイズし、過去の構成から学んで自己進化します。実験では、JIT-Agent搭載のDeepSeek-V4-Flashが、従来モデルを上回る性能を実現し、成熟したエージェントランタイムと競合することを示しました。これにより、ハーネス知能の新しい次元を確立しました。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2093056965568332236?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ポイント解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qingke_ai/status/2093109263925416225?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>エージェントハーネスそのものを、動的にタスクに応じて合成し活用し、ハーネス生成そのものも改善されていく枠組みを提案、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement, Haoyang Yan+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.01481</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6453</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, SelfImprovement, read-later, autoresearch/RSI, AgentHarness</tags>
+<repo-issue-date>2026-09-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.01481
+# Authors
+  - Haoyang Yan
+  - Min-le Su
+  - Hangfan Zhang
+  - Zhanhao Li
+  - Chen Zhang
+  - Shao Zhang
+  - Yang Chen
+  - Lei Bai
+  - Shuyue Hu
+# Abstract
+  - This paper studies autonomous software development, in which LLM-based coding agents transform high-level requirements into complete, functional, and usable software systems without human intervention. We introduce Harness-of-Harness (HoH), a framework that enables coding agents to continually improve software during autonomous development. HoH operates on existing coding-agent harnesses, and organizes their executions into iterative planning-coding-testing loops. To sustain improvement across loops, HoH balances repair with capability growth, scopes development into small and verifiable increments, separates implementation-time testing from independent evaluation, and constrains verifiable outputs rather than prescribing agent workflows. It progressively exposes deliverables, role-specific tools, and skills, encourages reuse rather than recreation, and maintains versioned project histories. On GameCraft-Bench, FrontierSWE, and ProgramBench, three harness-model pairs (Codex with GPT-5.5, OpenCode with DeepSeek-V4-Pro, and Pi with MiniMax-M3), HoH consistently outperforms the corresponding standalone harnesses, achieving an average relative gain of 52.25 percent and a maximum gain of 82.86 percent after three iterations. In a multi-day deployment with more than 70 iterations, HoH autonomously develops a first-person-shooter game, featuring a coherent storyline, fully implemented core mechanics, human-playable experience, polished visuals and integrated audio. Github: https://github.com/Flesymeb/HarnessOfHarness Project Page: https://flesymeb.github.io/HarnessOfHarness/
+# Translation (by gpt-5-nano)
+- 本論文は自律的なソフトウェア開発を研究する。ここで、LLMベースのコーディングエージェントが高レベルの要件を人間の介入なしに完全で機能的かつ使えるソフトウェアシステムへと変換する。
+
+Harness-of-Harness（HoH）を導入する。これは自律的開発の過程でコーディングエージェントが継続的にソフトウェアを改善できるようにするフレームワークである。
+
+HoHは既存のコーディングエージェント・ハーネス上で動作し、その実行を反復的な計画—コーディング—テストのループに組織する。
+
+ループ間での改善を持続させるために、HoHは修復と能力成長のバランスを取り、開発を小さく検証可能なインクリメントへと範囲設定し、実装時のテストを独立した評価から分離し、エージェントのワークフローを規定するのではなく検証可能なアウトプットを制約する。
+
+それは段階的に成果物、役割別ツール、スキルを公開し、再作成より再利用を奨励し、バージョン管理されたプロジェクト履歴を維持する。
+
+GameCraft-Bench、FrontierSWE、ProgramBench の3つのハーネス-モデルペア（CodexとGPT-5.5、OpenCodeとDeepSeek-V4-Pro、PiとMiniMax-M3）において、HoHは対応するスタンドアロンハーネスを一貫して上回り、3回の反復後に平均相対ゲイン52.25％、最大ゲイン82.86％を達成する。
+
+70回を超える反復を含む数日間の展開では、HoHは自律的に一人称視点シューティングゲームを開発し、一貫したストーリー、完全に実装されたコアメカニクス、人間がプレイ可能な体験、洗練されたビジュアル、統合されたオーディオを特徴とする。
+
+GitHub: https://github.com/Flesymeb/HarnessOfHarness
+プロジェクトページ: https://flesymeb.github.io/HarnessOfHarness/
+# Summary (by gpt-4o-mini)
+- 自律的なソフトウェア開発を探求し、LLMベースのコーディングエージェントが高レベルの要件から機能的なソフトウェアを生成する。Harness-of-Harness（HoH）フレームワークを導入し、コーディングエージェントによる継続的な改善を促進。HoHは反復的な計画—コーディング—テストループを組織し、修復と能力成長のバランスを取ることで、開発を小さく検証可能なインクリメントに限定。GameCraft-Benchなどで、HoHはスタンドアロンハーネスを上回り、平均52.25％の相対ゲインを達成。数日間の展開で、完全な一人称視点シューティングゲームを自律的に開発した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2095337735330443622?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>abstを読むだけだとよくわからない</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Prime Agent: A Self-Improving RLM Harness, Seth Karten+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.23552</original-paper-blog-link>
@@ -324,7 +1135,7 @@ Hope は公開文書化された Ouroboros のデプロイメントの中で最�
 <title>[Paper Note] AREX: Towards a Recursively Self-Improving Agent for Deep Research, Shuqi Lu+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.21461</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6209</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, SelfImprovement, autoresearch, AgentHarness</tags>
+<tags>NLP, LanguageModel, AIAgents, SelfImprovement, autoresearch/RSI, AgentHarness</tags>
 <repo-issue-date>2026-08-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2607.21461
@@ -1068,10 +1879,160 @@ Hope は公開文書化された Ouroboros のデプロイメントの中で最�
 </paper-entry>
 
 <paper-entry>
+<title>The open harness for creative work, moda, 2026.10</title>
+<original-paper-blog-link>https://voyager.so/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6833</repo-issue-link>
+<tags>AgentHarness</tags>
+<repo-issue-date>2026-10-10</repo-issue-date>
+<issue-body>https://voyager.so/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/anvisha/status/2108252061209088159?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>The ultimate guide to multi-harness RL, Kolavi+, 2026.09</title>
+<original-paper-blog-link>https://huggingface.co/spaces/FineEnvs/multi-harness-rl#introduction</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6759</repo-issue-link>
+<tags>Multi, NLP, LanguageModel, ReinforcementLearning, Blog, PostTraining, Generalization, Initial Impression Notes, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>## URL
+https://huggingface.co/spaces/FineEnvs/multi-harness-rl#introduction
+
+## Citation
+misc{kolavi2026_the_ultimate_guide_to_multi_harness_rl,
+  title={The ultimate guide to multi-harness RL},
+  author={Adithya S Kolavi and Joel Niklaus and Sergio Paniego Blanco and Leonie Monigatti and Amine Dirhoussi and Ben Burtenshaw and Lewis Tunstall and Leandro von Werra},
+  year={2026},
+}</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ben_burtenshaw/status/2105681647018315903?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/adithya_s_k/status/2105684965891703141?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ざっくり言うと、単一のハーネスにoverfitした形でRLするのではなく、複数ハーネスを跨いでRL（+ 複数ハーネスを跨いだ場合特有のreward設計）をすることで、多くのハーネスで高いパフォーマンスを発揮するモデルを学習する（単一ハーネスにoverfitすると特定ハーネスでは高い性能が出るが、他のハーネスでは性能が出ないということがおきる）、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>TIRx Harness: An Open Compiler Harness for Agentic GPU Programming, MLC Community, 2026.09</title>
+<original-paper-blog-link>https://blog.mlc.ai/2026/09/29/tirx-harness-an-open-compiler-harness-for-agentic-gpu-programming</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6748</repo-issue-link>
+<tags>NLP, AIAgents, Blog, SelfImprovement, GPUKernel, autoresearch/RSI, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://blog.mlc.ai/2026/09/29/tirx-harness-an-open-compiler-harness-for-agentic-gpu-programming</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hongyijin258/status/2105012412071997655?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Language Model "Shape", Alex Zhang, 2026.09</title>
+<original-paper-blog-link>https://alexzhang13.github.io/blog/2026/shape/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6660</repo-issue-link>
+<tags>NLP, LanguageModel, Blog, API, Architecture, One-Line Notes, Reading Reflections, AgentHarness</tags>
+<repo-issue-date>2026-09-27</repo-issue-date>
+<issue-body>## URL
+https://alexzhang13.github.io/blog/2026/shape/
+
+## Citation
+article{zhang2026shape,
+  title   = "Language Model \"Shape\"",
+  author  = "Zhang, Alex",
+  year    = "2026",
+  month   = "September",
+  url     = "https://alexzhang13.github.io/blog/2026/shape/"
+}</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/a1zhang/status/2103877248960868749?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>以下記事の内容の（意訳を含む）要約。詳しくは原文を参照のこと。<br><br>- 言語モデルの入出力の形状は、text-to-textのままで長年変化がなかった。<br>- 一方でJevの登場が話題となり、これは特定の特化型のタスクにおいてLLMより好まれる場面がありうる。<br>- Jevは出力が明示的に制約された場合の言語モデルととらえることができ、これによってモデルをprefillのみで、高速に質問に対して応答できるようにしている。<br>- また、AIエージェントは現在はReActに基づいた形式になっており、それはすなわち、エージェントがアクションを実行し、結果を観測し、それらがtrajectoryに蓄積され、次のアクションを決定するという構造となっている。<br>- デコーダのみのtransformerを考えたときに、全てのobservation, actionをコンテキストに入れるというのは自然である一方、履歴の圧縮などのcontext engineering技術が必要となる。これはそもそもエージェントのtrajectoryを処理するうえで、decoder-only transformerが最終的な形態ではなっていないから生じていると見ることもできる。<br>- たとえばAI agentに関して言うと、ツール呼び出し、時間経過に伴うobservationの扱い、アクションの重要性の減衰などに関してより強い仮定をおくことができ、最適な形態が存在する可能性がある。<br>- このような観点では、LLMに対してハーネスを適合させているが、ハーネスに対してLLMの形状を適合させることに価値があるか？という問いも自然に成り立つ。<br>- 特定のものに対してLLMの形状を適合させることで、環境・データ単位から得られる知能のgainやコスト・性能のトレードオフを改善できる可能性があり、これらは探求する価値があるだろう<br><br>という感じの話に見える。</p><p>この話に関連すると、Generative Recommender Systemなどは、推薦システムに対して適合していないなあ、という風に感じた場面があった。理由としては、<br>- decoder-only LLMはデコードの速度が遅く、latencyの制約が厳しいリアルタイム推薦などには根源的に不向き<br>- アイテムIDなどのシンボルは世界知識からは学習のしようがなく、そもそものmodel weightの中にそれらの情報を埋め込む必要がある場合は、ベースモデルに対して追加の学習が必要となる。これはアイテムが頻繁に入れ替わるようなシステムの場合は非常に相性が悪い。<br><br>といったものが主な原因である。たとえば、推薦システムに対して最適な形状とはなんだろうか？という視点で考えるとおもしろそうではある。<br><br>まあでもtwo tower modelはそもそも推薦タスクに特化した形状だよね、という風に考えると、よくわからなくなった。<br><br>しかしまあ整理すると、もともと各タスクには最適なモデルの形状が選択されてきた中で、その後にLLMが登場して多くのタスクがLLMによって代替できるようになった。LLMの強みはスケーリング則に基づく（ある程度予測可能な）性能の向上にあるわけで、このようなスケーリングは色々なタスクでおそらく模索されてこなかったであろう（機械翻訳についてはn-gramをスケーリングするとかはあったと思う）が、スケーリング則が成り立つという強みは残しつつ、各タスクごとに適合するような形状を模索するという思考の方向性になる、という感じだろうか（記事の主眼とずれている気がするが）。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6727" target="_blank" rel="noopener noreferrer">[Paper Note] Actions Speak Louder than Words: Trillion-Parameter Sequential Transducers for Generative Recommendations, Jiaqi Zhai+, ICML'24, 2024.02</a>
+<br><br>でDLRMよりも良好に計算量に対してスケールし、推論速度も高速なGenerative recommendationのモデルが検討されているようである。</p><p>LLMでprefillのみを実施し、その情報を用いて推薦するシステム<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6742" target="_blank" rel="noopener noreferrer">[Paper Note] GenRec: An LLM-Backed Recommendation Ranker at Netflix, Ying Li+, arXiv'26, 2026.08</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Step Code, StepFun, 2026.09</title>
+<original-paper-blog-link>https://github.com/stepfun-ai/Step-Code</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6626</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Coding, SoftwareEngineering, Initial Impression Notes, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body>https://github.com/stepfun-ai/Step-Code</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stepfun_ai/status/2102433493410345273?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>高いトークン効率を持つStepFun製のターミナル向けのコーディング用Agent Harness</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Auto Engineering for Robotics, General Robotics, 2026.09</title>
+<original-paper-blog-link>https://www.generalrobotics.company/post/introducing-auto-engineering-for-robotics?utm_campaign=413704910-Auto%20Engineering%20Announce&utm_source=twitter&utm_medium=social</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6544</repo-issue-link>
+<tags>LanguageModel, AIAgents, SelfImprovement, Robotics, Initial Impression Notes, autoresearch/RSI, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-09-10</repo-issue-date>
+<issue-body>https://www.generalrobotics.company/post/introducing-auto-engineering-for-robotics?utm_campaign=413704910-Auto%20Engineering%20Announce&utm_source=twitter&utm_medium=social</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/genrobotics_ai/status/2097713940893679902?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ロボットにおける実験プロセス全体を自動的にループするハーネスの提案、という話に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>DataSmith: Automating Data Research, datologyai, 2026.08</title>
 <original-paper-blog-link>https://www.datologyai.com/blog/datasmith</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6367</repo-issue-link>
-<tags>LanguageModel, AIAgents, SyntheticData, Blog, One-Line Notes, Reading Reflections, Data, autoresearch, Author Thread-Post, AgentHarness, Creativity</tags>
+<tags>LanguageModel, AIAgents, SyntheticData, Blog, SelfImprovement, One-Line Notes, Reading Reflections, Data, autoresearch/RSI, Author Thread-Post, AgentHarness, Creativity</tags>
 <repo-issue-date>2026-08-19</repo-issue-date>
 <issue-body>https://www.datologyai.com/blog/datasmith</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -1147,6 +2108,31 @@ Hope は公開文書化された Ouroboros のデプロイメントの中で最�
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2087904176357437820?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>VISTA: A Visual Harness for Reasoning in an Interactive World, Han+, 2026.08</title>
+<original-paper-blog-link>https://vista-research.github.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6291</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, AIAgents, Reasoning, read-later, Selected Papers/Blogs, 2D (Image), 3D (Scene), memory, LongHorizon, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-08-10</repo-issue-date>
+<issue-body>## URL
+blog: https://vista-research.github.io/
+code: https://github.com/joshhhhhan/VISTA
+
+## Authors
+Qiushi Han, Keya Hu, Linlu Qiu, Cathy Wu and Kaiming He</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/joshhanhi/status/2085179573621121266?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -1268,7 +2254,7 @@ Zhang, Alex and Khattab, Omar</issue-body>
 <title>AIDE²: The First Evidence of Recursive Self-Improvement, Waco Team, 2026.07</title>
 <original-paper-blog-link>https://www.weco.ai/blog/first-evidence-of-recursive-self-improvement</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6046</repo-issue-link>
-<tags>NLP, SelfImprovement, read-later, autoresearch, Author Thread-Post, AgentHarness</tags>
+<tags>NLP, SelfImprovement, read-later, autoresearch/RSI, Author Thread-Post, AgentHarness</tags>
 <repo-issue-date>2026-07-15</repo-issue-date>
 <issue-body>https://www.weco.ai/blog/first-evidence-of-recursive-self-improvement</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -1405,6 +2391,16 @@ Zhang, Alex and Khattab, Omar</issue-body>
 {% endraw %}
 
 </p><p>GLMのZ.aiによるAgent Harness (Scaffolding)</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Hermes-Agent, Nous Research, 2026.02</title>
+<original-paper-blog-link>https://github.com/nousresearch/hermes-agent</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5887</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, SelfImprovement, One-Line Notes, ContinualLearning, AgentSkills, AgentHarness</tags>
+<repo-issue-date>2026-06-27</repo-issue-date>
+<issue-body>https://github.com/nousresearch/hermes-agent</issue-body>
+<maintainer-comment-text><p>Nous ResearchによるAgentSkillsを自己改善していくタイプのAgent Harness (Scaffolding)。2026.0628現在20k star</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -1571,6 +2567,26 @@ Zhang, Alex and Khattab, Omar</issue-body>
  <br><br><a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4857" target="_blank" rel="noopener noreferrer">Effective harnesses for long-running agents, Anthropic, 2025.11</a>
  が引用され `harness` という用語が用いられている。このブログが起源なのだろうか（勉強不足）。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4591" target="_blank" rel="noopener noreferrer">[Paper Note] SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks, Xiangyi Li+, arXiv'26, 2026.02</a>
  <br><br>でも Agent Harness という用語が使われている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>TAKT, nrslib, 2026.01</title>
+<original-paper-blog-link>https://github.com/nrslib/takt</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4765</repo-issue-link>
+<tags>Tools, NLP, LanguageModel, AIAgents, Coding, SoftwareEngineering, AgentHarness</tags>
+<repo-issue-date>2026-03-01</repo-issue-date>
+<issue-body>https://github.com/nrslib/takt</issue-body>
+<maintainer-comment-text><p>色々使ってみたいなぁ（小並感）</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sakimyto/status/2027744549003792888?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 </paper-list>

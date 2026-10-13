@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-14">
+<paper-list last-updated="2026-09-27">
 <paper-entry>
 <title>[Paper Note] Stealing Reasoning Traces from Proprietary LLM APIs, Alexander Panfilov+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.09867</original-paper-blog-link>
@@ -201,6 +201,38 @@
 </paper-entry>
 
 <paper-entry>
+<title>Language Model "Shape", Alex Zhang, 2026.09</title>
+<original-paper-blog-link>https://alexzhang13.github.io/blog/2026/shape/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6660</repo-issue-link>
+<tags>NLP, LanguageModel, Blog, API, Architecture, One-Line Notes, Reading Reflections, AgentHarness</tags>
+<repo-issue-date>2026-09-27</repo-issue-date>
+<issue-body>## URL
+https://alexzhang13.github.io/blog/2026/shape/
+
+## Citation
+article{zhang2026shape,
+  title   = "Language Model \"Shape\"",
+  author  = "Zhang, Alex",
+  year    = "2026",
+  month   = "September",
+  url     = "https://alexzhang13.github.io/blog/2026/shape/"
+}</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/a1zhang/status/2103877248960868749?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>以下記事の内容の（意訳を含む）要約。詳しくは原文を参照のこと。<br><br>- 言語モデルの入出力の形状は、text-to-textのままで長年変化がなかった。<br>- 一方でJevの登場が話題となり、これは特定の特化型のタスクにおいてLLMより好まれる場面がありうる。<br>- Jevは出力が明示的に制約された場合の言語モデルととらえることができ、これによってモデルをprefillのみで、高速に質問に対して応答できるようにしている。<br>- また、AIエージェントは現在はReActに基づいた形式になっており、それはすなわち、エージェントがアクションを実行し、結果を観測し、それらがtrajectoryに蓄積され、次のアクションを決定するという構造となっている。<br>- デコーダのみのtransformerを考えたときに、全てのobservation, actionをコンテキストに入れるというのは自然である一方、履歴の圧縮などのcontext engineering技術が必要となる。これはそもそもエージェントのtrajectoryを処理するうえで、decoder-only transformerが最終的な形態ではなっていないから生じていると見ることもできる。<br>- たとえばAI agentに関して言うと、ツール呼び出し、時間経過に伴うobservationの扱い、アクションの重要性の減衰などに関してより強い仮定をおくことができ、最適な形態が存在する可能性がある。<br>- このような観点では、LLMに対してハーネスを適合させているが、ハーネスに対してLLMの形状を適合させることに価値があるか？という問いも自然に成り立つ。<br>- 特定のものに対してLLMの形状を適合させることで、環境・データ単位から得られる知能のgainやコスト・性能のトレードオフを改善できる可能性があり、これらは探求する価値があるだろう<br><br>という感じの話に見える。</p><p>この話に関連すると、Generative Recommender Systemなどは、推薦システムに対して適合していないなあ、という風に感じた場面があった。理由としては、<br>- decoder-only LLMはデコードの速度が遅く、latencyの制約が厳しいリアルタイム推薦などには根源的に不向き<br>- アイテムIDなどのシンボルは世界知識からは学習のしようがなく、そもそものmodel weightの中にそれらの情報を埋め込む必要がある場合は、ベースモデルに対して追加の学習が必要となる。これはアイテムが頻繁に入れ替わるようなシステムの場合は非常に相性が悪い。<br><br>といったものが主な原因である。たとえば、推薦システムに対して最適な形状とはなんだろうか？という視点で考えるとおもしろそうではある。<br><br>まあでもtwo tower modelはそもそも推薦タスクに特化した形状だよね、という風に考えると、よくわからなくなった。<br><br>しかしまあ整理すると、もともと各タスクには最適なモデルの形状が選択されてきた中で、その後にLLMが登場して多くのタスクがLLMによって代替できるようになった。LLMの強みはスケーリング則に基づく（ある程度予測可能な）性能の向上にあるわけで、このようなスケーリングは色々なタスクでおそらく模索されてこなかったであろう（機械翻訳についてはn-gramをスケーリングするとかはあったと思う）が、スケーリング則が成り立つという強みは残しつつ、各タスクごとに適合するような形状を模索するという思考の方向性になる、という感じだろうか（記事の主眼とずれている気がするが）。<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6727" target="_blank" rel="noopener noreferrer">[Paper Note] Actions Speak Louder than Words: Trillion-Parameter Sequential Transducers for Generative Recommendations, Jiaqi Zhai+, ICML'24, 2024.02</a>
+<br><br>でDLRMよりも良好に計算量に対してスケールし、推論速度も高速なGenerative recommendationのモデルが検討されているようである。</p><p>LLMでprefillのみを実施し、その情報を用いて推薦するシステム<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6742" target="_blank" rel="noopener noreferrer">[Paper Note] GenRec: An LLM-Backed Recommendation Ranker at Netflix, Ying Li+, arXiv'26, 2026.08</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>細かすぎて伝わらないChat Completions _ Responses APIのモデル間挙動差異, nyanp, 2026.07</title>
 <original-paper-blog-link>https://zenn.dev/nyanp/scraps/d4ee774a66c90b</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6193</repo-issue-link>
@@ -298,7 +330,7 @@
 <title>LiteLLM, BerriAI, 2023.08</title>
 <original-paper-blog-link>https://github.com/BerriAI/litellm</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1651</repo-issue-link>
-<tags>NLP, LanguageModel, Library, python, Repository, API, One-Line Notes</tags>
+<tags>NLP, LanguageModel, Library, python, API, One-Line Notes</tags>
 <repo-issue-date>2025-01-03</repo-issue-date>
 <issue-body>https://github.com/BerriAI/litellm</issue-body>
 <maintainer-comment-text><p>様々なLLMのAPIを共通のインタフェースで呼び出せるライブラリ<br><br></p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1553" target="_blank" rel="noopener noreferrer">aisuite, andrewyng, 2024.11</a>

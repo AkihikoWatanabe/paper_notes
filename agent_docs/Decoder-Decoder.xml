@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-list last-updated="2026-09-24">
+<paper-entry>
+<title>[Paper Note] HySparse2: Hybrid Sparse Attention with Two-Level KV Sharing, Jianyu Wei+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.26368</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6629</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Architecture, KV Cache, Initial Impression Notes, Author Thread-Post, Decoder-Decoder</tags>
+<repo-issue-date>2026-09-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.26368
+# Authors
+  - Jianyu Wei
+  - Yizhao Gao
+  - Qihao Zhang
+  - Shimao Chen
+  - Zhengju Tang
+  - Yu Cheng
+  - Shengjie Zhou
+  - Zihan Jiang
+  - Yifan Song
+  - Hailin Zhang
+  - Liang Zhao
+  - Bo Yang
+  - Gang Wang
+  - Shijie Cao
+  - Fuli Luo
+# Abstract
+  - Long-horizon and multi-turn agents typically generate short actions and process long observations from tools and environments. This growing context demands efficient prefill, compact KV-cache storage, and accurate long-context retrieval. To meet these demands, we introduce HySparse2, a hybrid sparse attention architecture with two-level KV sharing. At the outer level, KV Bridging adopts a YOCO-style self-decoder and cross-decoder structure, but bridges only full-attention layers. The self-decoder uses hybrid sliding-window attention (SWA), while the cross-decoder uses hybrid sparse attention. The KV caches for full-attention layers in the cross-decoder are generated from the hidden states of full-attention layers in the self-decoder. At the inner level, HySparse2 retains HySparse's core KV Reuse design with two refinements. First, it replaces block-level sparsity with token-level sparsity for finer long-context retrieval. Second, it removes the separate SWA branch from sparse layers and instead forces a sliding window of recent tokens into the sparse selection. This two-level KV sharing allows all cross-decoder KV caches to be constructed from self-decoder hidden states. Prefill can therefore exit after the self-decoder, skipping all cross-decoder layers. On an 80B-A3B MoE model, HySparse2 outperforms HySparse and Hybrid SWA on long-context retrieval and multi-turn agentic tasks, while substantially reducing prefill computation and KV-cache storage.
+# Translation (by gpt-5.6-luna)
+- 長期的なホライズンや複数ターンにわたるエージェントは、通常、短いアクションを生成し、ツールや環境から得られる長い観測を処理します。この増大するコンテキストには、効率的なプリフィル、コンパクトなKVキャッシュ格納、そして正確な長文コンテキスト検索が求められます。これらの要求に応えるため、我々は2段階のKV共有を備えたハイブリッド・スパース注意アーキテクチャであるHySparse2を導入します。
+
+外側のレベルでは、KV BridgingがYOCO方式の自己デコーダとクロスデコーダの構造を採用しますが、ブリッジするのはフルアテンション層のみです。自己デコーダはハイブリッドなスライディングウィンドウ注意（SWA）を用い、クロスデコーダはハイブリッド・スパース注意を用います。クロスデコーダのフルアテンション層に対するKVキャッシュは、自己デコーダのフルアテンション層の隠れ状態から生成されます。
+
+内側のレベルでは、HySparse2はHySparseの中核となるKV Reuse設計を維持しつつ、2つの改良を加えています。第一に、よりきめ細かな長文コンテキスト検索を実現するため、ブロックレベルのスパース性をトークンレベルのスパース性に置き換えます。第二に、スパース層から独立したSWA分岐を削除し、その代わりに、直近のトークンをスパース選択に組み込むスライディングウィンドウを強制します。
+
+この2段階のKV共有により、すべてのクロスデコーダのKVキャッシュを自己デコーダの隠れ状態から構築できます。したがって、プリフィルは自己デコーダの処理後に終了でき、すべてのクロスデコーダ層をスキップできます。80B-A3BのMoEモデルにおいて、HySparse2は長文コンテキスト検索および複数ターンのエージェントタスクでHySparseとHybrid SWAを上回りながら、プリフィル計算量とKVキャッシュの格納量を大幅に削減します。
+# Summary (by gpt-5.6-luna)
+- 長期・複数ターンのエージェントに対し、HySparse2は2段階のKV共有を備えたハイブリッド・スパース注意を導入。  
+外側ではKV Bridgingにより、自己デコーダの隠れ状態からクロスデコーダのKVキャッシュを構築する。  
+内側では、KV Reuseを維持しつつ、ブロック単位のスパース性をトークン単位に変更し、直近トークンを含むスライディングウィンドウを強制することで長文検索を高精度化。  
+自己デコーダ処理後にクロスデコーダ層をスキップでき、プリフィル計算量とKVキャッシュ容量を削減。  
+80B-A3B MoEモデルにおいて、長文コンテキスト検索と複数ターンのエージェントタスクでHySparseおよびHybrid SWAを上回る性能を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/_luofuli/status/2102766365190901957?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Mimo-V3ではYOCOスタイルのデコーダ-デコーダモデルで、KVを共有するアーキテクチャになるようである。</p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2103037759829274774?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] You Only Cache Once: Decoder-Decoder Architectures for Language Models, Yutao Sun+, NeurIPS'24, 2024.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2405.05254</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6548</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Architecture, NeurIPS, Decoder-Decoder</tags>
+<repo-issue-date>2026-09-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2405.05254
+# Authors
+  - Yutao Sun
+  - Li Dong
+  - Yi Zhu
+  - Shaohan Huang
+  - Wenhui Wang
+  - Shuming Ma
+  - Quanlu Zhang
+  - Jianyong Wang
+  - Furu Wei
+# Abstract
+  - We introduce a decoder-decoder architecture, YOCO, for large language models, which only caches key-value pairs once. It consists of two components, i.e., a cross-decoder stacked upon a self-decoder. The self-decoder efficiently encodes global key-value (KV) caches that are reused by the cross-decoder via cross-attention. The overall model behaves like a decoder-only Transformer, although YOCO only caches once. The design substantially reduces GPU memory demands, yet retains global attention capability. Additionally, the computation flow enables prefilling to early exit without changing the final output, thereby significantly speeding up the prefill stage. Experimental results demonstrate that YOCO achieves favorable performance compared to Transformer in various settings of scaling up model size and number of training tokens. We also extend YOCO to 1M context length with near-perfect needle retrieval accuracy. The profiling results show that YOCO improves inference memory, prefill latency, and throughput by orders of magnitude across context lengths and model sizes. Code is available at https://aka.ms/YOCO.
+# Translation (by gpt-5-nano)
+- 大規模言語モデルのためのデコーダ-デコーダ型アーキテクチャYOCOを提案します。これは一度だけキー-バリュー（KV）ペアをキャッシュします。二つの構成要素から成り、自己デコーダの上にクロスデコーダを積んだものです。自己デコーダはグローバルKVキャッシュを効率的にエンコードし、それをクロスアテンションを介してクロスデコーダが再利用します。全体のモデルはデコーダーのみの Transformer のように振る舞いますが、YOCOは一度だけキャッシュを行います。この設計はGPUメモリの要求を大幅に削減しつつ、グローバルなアテンション機能を維持します。さらに、計算フローは最終出力を変更することなくプレフィルを早期終了させることを可能にし、プレフィル段階を大幅に高速化します。実験結果は、モデルサイズと学習トークン数を拡大するさまざまな設定において、YOCOがTransformerと比較して好ましい性能を達成することを示しています。 また、YOCOを1Mのコンテキスト長へ拡張し、ほぼ完璧なニードル検索精度を実現します。プロファイリング結果は、コンテキスト長とモデルサイズの両方にわたって、推論時のメモリ使用量、プレフィルの待機時間、スループットを桁違いに改善することを示しています。コードは https://aka.ms/YOCO で入手可能です。
+# Summary (by gpt-4o-mini)
+- YOCOというデコーダ-デコーダ型アーキテクチャを提案。これは一度だけKVペアをキャッシュし、自己デコーダとクロスデコーダから構成される。効率的なKVキャッシュのエンコードにより、クロスアテンションを介して再利用され、GPUメモリを削減しつつグローバルなアテンションを保持。プレフィル段階を早期終了可能にし、計算を高速化。実験により、Transformerと比較して好ましい性能を確認し、1Mのコンテキスト長で高精度を達成。推論時のメモリ使用量やスループットも大幅に改善。コードは https://aka.ms/YOCO で公開。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=25Ioxw576r" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=25Ioxw576r</a>
+{% endraw %}
+
+</p><p>inputをself-decoderと呼ばれる効率的なself-attentionを備えたエンコーダでエンコードしKV Cacheを生成。それを後段のDecoderと共有し、Decoder側はcross-attentionによって参照することで、利用するKV Cache圧縮するアーキテクチャ、に見える。<br><img src="https://github.com/user-attachments/assets/d2e6f594-573c-4bc0-87e7-e881806ab2d0" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br><img src="https://github.com/user-attachments/assets/50a0f3a0-ee39-4368-a321-7c89df157a3b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>ポイント解説: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qingke_ai/status/2101831546215047564?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DeepSeek-V4.1-Flash, DeepSeek AI, 2026.09</title>
+<original-paper-blog-link>https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6545</repo-issue-link>
+<tags>NLP, LanguageModel, OpenWeight, read-later, Selected Papers/Blogs, VisionLanguageModel, Reference Collection, Author Thread-Post, Decoder-Decoder</tags>
+<repo-issue-date>2026-09-10</repo-issue-date>
+<issue-body>https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2097929651238899779?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2097926665892692234?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2097931464344015347?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>え？もしかしてEncoder-Decoder???<br><br>Causal Encoder-Decoderという名称なので、seq2seqのようなBidirectionalなエンコーダを用いたものではなく、<br><br>エンコーダー、デコーダー共にautoregressiveモデルだが、エンコード用途とデコード用途でアーキテクチャやactivation paramなどに違いを持たせた、という感じだろうか。<br><br>デコーダ-デコーダアーキテクチャと呼ぶらしい:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2097937756198449658?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6548" target="_blank" rel="noopener noreferrer">[Paper Note] You Only Cache Once: Decoder-Decoder Architectures for Language Models, Yutao Sun+, NeurIPS'24, 2024.05</a>
+</p><p>公式ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/deepseek_ai/status/2097930608790167907?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>ベンチマークスコアはfrontierモデルに匹敵する<br><br>HBMの使用量はV4-Flashから1/4, SSD使用量は1/8</p><p>合成データはいまだに利用していない:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2097941679105851669?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>事後学習のデータ品質改善のROIがアルゴリズム改善のROIを上回る:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lu__jasper/status/2098081248186888367?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>関連（こちらは事前学習だが）:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6541" target="_blank" rel="noopener noreferrer">Pretraining progress is mostly coming from data, DWARKESH PATEL AND JERRY HAN, 2026.09</a>
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2098193798727909780?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Artificial Analysisによる評価:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/artificialanlys/status/2098148674203488422?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>とそれらに対する所見:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxestex/status/2098157751465603171?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2098275719965184033?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/stochasticchasm/status/2098098053781807215?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>v4.1 flashをhostingするためのコードリポジトリがいくつか新たに公開されたようである:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tianyi/status/2097993855778046379?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2102880947020427547?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+</paper-list>

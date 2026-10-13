@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-14">
+<paper-list last-updated="2026-10-13">
+<paper-entry>
+<title>[Paper Note] ReplaySSM: Cache SSM Inputs, Not State, Ze-Wei Liou+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.13778</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6868</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, SSM (StateSpaceModel), Architecture, ContextEngineering, SpeculativeDecoding, LinearAttention</tags>
+<repo-issue-date>2026-10-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.13778
+# Authors
+  - Ze-Wei Liou
+  - Harris Nover
+  - Amey Naik
+  - Andrii Skliar
+  - Igor Shovkun
+  - Ido Shahaf
+  - Tri Dao
+# Abstract
+  - State-space models (SSMs) maintain a fixed-size recurrent state, but reading and writing it at every decoding step can bottleneck hybrid models. This eager state management causes large state I/O with low arithmetic intensity, leaves speculative decoding no cheap rollback, and feeds state quantization error into subsequent recurrent updates. We introduce ReplaySSM, which unrolls the recurrence to represent the state as a checkpoint and a buffer of recent SSM inputs. This separates output computation from checkpoint updates. By updating the checkpoint periodically, ReplaySSM avoids state writes on most steps and roughly halves the dominant state memory traffic. Keeping recent inputs also makes speculative rollback a buffer-pointer operation and enables output-only verification without materializing intermediate states. The same separation allows a low-precision checkpoint to serve output computation on most steps while a higher-precision checkpoint serves recurrent updates, so rounding error in the low-precision copy never enters later updates. We implement ReplaySSM in vLLM for Mamba-2 and Gated DeltaNet. At serving batch size 256, it accelerates standard decoding by $1.20$--$1.47\times$ over a tuned vLLM baseline across four hybrid models, and delivers about $1.8\times$ the throughput of vLLM's speculative decoding on the two 120B-class models. Separate state precisions also reduce output KL divergence and downstream accuracy losses compared with a shared low-precision checkpoint.
+# Translation (by gpt-5.6-luna)
+- 状態空間モデル（SSM）は固定サイズの再帰状態を保持するが、デコードの各ステップでその状態の読み書きを行うことは、ハイブリッドモデルにおけるボトルネックとなり得る。この逐次的な状態管理は、演算強度が低いにもかかわらず大規模な状態I/Oを引き起こし、投機的デコーディングに低コストなロールバック手段を与えず、さらに状態の量子化誤差を後続の再帰更新へ伝播させる。
+
+本研究ではReplaySSMを提案する。ReplaySSMは、再帰を展開し、状態をチェックポイントと直近のSSM入力のバッファによって表現する。これにより、出力計算とチェックポイント更新が分離される。チェックポイントを定期的に更新することで、ReplaySSMは大半のステップにおける状態書き込みを回避し、支配的な状態メモリトラフィックをおよそ半減させる。直近の入力を保持することで、投機的ロールバックをバッファポインタの操作として実行でき、途中の状態を具体化せずに出力のみを検証することも可能になる。
+
+さらに、この分離により、低精度のチェックポイントを大半のステップでの出力計算に利用しつつ、より高精度のチェックポイントを再帰更新に利用できる。そのため、低精度コピーにおける丸め誤差が後続の更新へ入り込むことはない。Mamba-2およびGated DeltaNetを対象に、ReplaySSMをvLLMへ実装した。サービング時のバッチサイズ256において、4種類のハイブリッドモデル全体で、調整済みvLLMベースラインに対して標準デコーディングを1.20～1.47倍高速化し、120Bクラスの2つのモデルでは、vLLMの投機的デコーディングの約1.8倍のスループットを達成した。状態ごとに精度を分離することで、単一の低精度チェックポイントを共有する場合と比較して、出力のKLダイバージェンスと下流タスクの精度低下も抑制された。
+# Summary (by gpt-5.6-luna)
+- SSMの状態I/Oによるデコードのボトルネック、投機的ロールバックの困難さ、量子化誤差の伝播を解決するため、状態をチェックポイントと直近入力のバッファで表現するReplaySSMを提案。
+再帰を展開して出力計算とチェックポイント更新を分離し、状態書き込みを削減するとともに、バッファポインタ操作による低コストなロールバックを実現。
+さらに、出力計算と再帰更新で異なる精度のチェックポイントを使い分け、量子化誤差の伝播を防ぐ。
+Mamba-2およびGated DeltaNetを用いた実験で、標準デコーディングを1.20～1.47倍高速化し、120BクラスのモデルではvLLMの投機的デコーディングの約1.8倍のスループットを達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2109769886943879676?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Triadic Linear Attention: Three-Dimensional Recurrent States for Long-Context Sequence Modeling, Oliver Sieberling+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.36529</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6783</repo-issue-link>
+<tags>LinearAttention, Author Thread-Post</tags>
+<repo-issue-date>2026-10-10</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.36529
+# Authors
+  - Oliver Sieberling
+  - Bharat Runwal
+  - David Jin
+  - Ryan Chin
+  - Rameswar Panda
+  - Yoon Kim
+# Abstract
+  - Recurrent neural networks (RNNs) compress the historical context into a memory state of fixed size, thus allowing for constant-time inference. The memory state size is a crucial factor in their performance, as exemplified by the strong performance and resurgence of linear attention, which extends the vector-valued hidden states of ordinary RNNs to matrix-valued hidden states. Crucially, linear attention does so in a parameter-efficient way, in particular by using an outer product of the key and value vectors to write to the matrix-valued hidden state. We generalize this construction and propose triadic linear attention, which writes the triadic outer product of a key, a second key, and a value, into a third-order (i.e., 3D) tensor state, and reads from it by contracting both key axes with two queries. An $E$-dimensional second key thus yields an $E$-fold increase in state size while adding only two projections. Triadic linear attention is compatible with data-dependent forgetting, the delta rule, and chunkwise-parallel training. Applied to Gated DeltaNet and scalar-gated linear attention, triadic linear attention substantially improves long-context language modeling and recall, outperforming alternatives that enlarge the state.
+# Translation (by gpt-5.6-luna)
+- 再帰型ニューラルネットワーク（RNN）は、過去の文脈を固定サイズのメモリ状態に圧縮することで、推論を一定時間で実行できるようにする。メモリ状態のサイズは性能を左右する重要な要因であり、通常のRNNにおけるベクトル値の隠れ状態を行列値の隠れ状態へと拡張する線形アテンションが高い性能を示し、再び注目を集めていることからもそれが分かる。重要なのは、線形アテンションが、特にキー・ベクトルと値ベクトルの外積を用いて行列値の隠れ状態に書き込むことで、パラメータ効率よくこれを実現している点である。
+
+本研究ではこの構成を一般化し、三項線形アテンション（triadic linear attention）を提案する。これは、キー、第二のキー、値の三者の外積を第三階テンソル（すなわち3次元）の状態に書き込み、2つのクエリで両方のキー軸を縮約することによって、そこから読み出すものである。第二のキーの次元を \(E\) とすると、追加する射影は2つだけで、状態サイズを \(E\) 倍に拡大できる。三項線形アテンションは、データ依存型の忘却、デルタ則、チャンク単位の並列学習と互換性を持つ。Gated DeltaNetおよびスカラーゲート付き線形アテンションに適用した結果、三項線形アテンションは長文脈の言語モデリングと想起性能を大幅に向上させ、状態を拡大する他の手法を上回った。
+# Summary (by gpt-5.6-luna)
+- RNNの隠れ状態をベクトルから行列、さらに第三階テンソルへ拡張するtriadic linear attentionを提案。
+キー・第二のキー・値の外積を状態に書き込み、2つのクエリで読み出すことで、少数の追加射影により状態サイズをE倍に拡大。
+Gated DeltaNetや線形アテンションに適用し、長文脈の言語モデリングと想起性能で既存の状態拡張手法を上回った。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/osieberling/status/2106855865303339236?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Training nGPT, Ilya Loshchilov+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.01284</original-paper-blog-link>
@@ -930,6 +1010,26 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 </paper-entry>
 
 <paper-entry>
+<title>KDA Doesn't Care About the Future, Nuggets, 2026.09</title>
+<original-paper-blog-link>https://drisspg.github.io/nuggets/KDA-Future-Token-Leakage</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6672</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, Blog, read-later, LinearAttention</tags>
+<repo-issue-date>2026-09-28</repo-issue-date>
+<issue-body>https://drisspg.github.io/nuggets/KDA-Future-Token-Leakage</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/drisspg/status/2102067449885794431?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Reflections on Video DeltaNet, Haoyi Zhu, 2026.08</title>
 <original-paper-blog-link>https://www.haoyizhu.site/blog/video-delta-rule/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6321</repo-issue-link>
@@ -999,7 +1099,7 @@ Kimbo Chen, Shubham Choudhari, Bryan Shan, and Dylan Patel</issue-body>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1620" target="_blank" rel="noopener noreferrer">[Paper Note] DeepSeek-V3 Technical Report, DeepSeek-AI+, arXiv'24, 2024.12</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4915" target="_blank" rel="noopener noreferrer">[Paper Note] Attention Residuals, Kimi Team+, arXiv'26, 2026.03</a>
 <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4310" target="_blank" rel="noopener noreferrer">[Paper Note] LatentMoE: Toward Optimal Accuracy per FLOP and Parameter in Mixture of Experts, Venmugil Elango+, arXiv'26, 2026.01</a>
-</p></maintainer-comment-text>
+</p><p>QBをチェックしたい</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

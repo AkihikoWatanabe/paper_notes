@@ -1,5 +1,324 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-20">
+<paper-list last-updated="2026-10-09">
+<paper-entry>
+<title>[Paper Note] Recursive Self-Improvement via On-Policy Distillation for Reasoning, Shangjian Yin+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.30652</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6731</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Distillation, On-Policy, One-Line Notes, SelfDistillation</tags>
+<repo-issue-date>2026-10-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.30652
+# Authors
+  - Shangjian Yin
+  - Zehao Zhao
+  - Kavosh Asadi
+  - Rui Liu
+  - Yuchen Lu
+  - Shike Mei
+  - Hang Cui
+  - Luke Simon
+  - Zhouxing Shi
+  - Hamed Firooz
+# Abstract
+  - On-policy distillation (OPD) trains a student model by having it generate trajectories, then matching its next-token predictions with an external teacher's next-token predictions. This provides dense, token-level supervision to the student. On-policy self-distillation (OPSD) eliminates the need for the external teacher. Specifically, a second frozen copy of the student model, now given the ground truth in its context, serves as the teacher. The student model only receives the problem and learns to mimic the privileged teacher model, while the teacher remains frozen throughout training. Previous work showed that freezing the teacher is useful for training stability, but we argue that this can prevent the teacher from incorporating the improvements learned by the student during training. Our primary contribution is to address this limitation with a recursive framework built around two complementary components. First, we let the privileged teacher co-evolve with the student so that revision learned in one round can guide the next, a process we refer to as Dynamic Co-Evolution (DCE). Second, because stronger revision can also make responses too verbose and self-critical, we additionally train on shorter, verified rewrites of the model's own on-policy responses. We call this complementary objective Self-Refined Concise Learning (SRCL). Overall, our comprehensive evaluations show that DCE+SRCL outperforms OPSD across multiple model scales and four competition-level mathematics benchmarks. Specifically, on Qwen3-8B, DCE+SRCL reaches 65.97% Average@12, outperforming OPSD by 35.62 percentage points while reducing mean output length by 7.80% relative to DCE alone.
+# Translation (by gpt-5.6-luna)
+- オンポリシー蒸留（OPD）は、学生モデルに軌跡を生成させた後、その次トークン予測を外部教師の次トークン予測と一致させることで、学生モデルを学習する手法である。これにより、学生モデルに対してトークン単位の密な教師信号を与えられる。オンポリシー自己蒸留（OPSD）では、外部教師を必要としない。具体的には、学生モデルの凍結した別コピーに正解をコンテキストとして与え、それを教師として機能させる。学生モデルは問題文のみを受け取り、特権的な教師モデルを模倣するように学習する一方、教師モデルは学習中を通じて凍結されたままである。先行研究では、教師を凍結することが学習の安定性に有効であることが示されている。しかし、これにより、学習中に学生モデルが獲得した改善を教師モデルが取り込めなくなる可能性があると、我々は主張する。
+
+本研究の主な貢献は、相補的な2つの構成要素を中心とする再帰的フレームワークによって、この制約に対処することである。第一に、特権的な教師を学生とともに共進化させることで、あるラウンドで学習された修正が次のラウンドを導くようにする。このプロセスを動的共進化（Dynamic Co-Evolution；DCE）と呼ぶ。第二に、より強力な修正によって、応答が冗長になったり、過度に自己批判的になったりする可能性があるため、モデル自身のオンポリシー応答を、より短く検証済みの書き換えにしたものを用いて追加学習する。この相補的な目的を、自己洗練簡潔学習（Self-Refined Concise Learning；SRCL）と呼ぶ。
+
+総合的な評価の結果、DCE+SRCLは、複数のモデル規模および4つの競技レベル数学ベンチマークにおいて、OPSDを上回ることが示された。具体的には、Qwen3-8Bにおいて、DCE+SRCLはAverage@12で65.97%を達成し、OPSDを35.62パーセントポイント上回った。さらに、DCE単独と比較して、平均出力長を7.80%削減した。
+# Summary (by gpt-5.6-luna)
+- OPSDでは、正解を見た凍結教師モデルを用いて、学生モデルに密な次トークン教師信号を与える。
+教師を固定することで安定性を得る一方、学生の改善を教師に反映できない問題がある。
+そこで、学生と特権的教師を共進化させるDCEと、応答を短く検証済みの形式に洗練するSRCLを提案。
+DCE+SRCLは複数モデル規模・4つの数学ベンチマークでOPSDを上回り、Qwen3-8BではAverage@12で65.97%を達成し、出力長も7.80%削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/2104413129799274526?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>OPSDにおいて、通常はOPSD開始時点の学生モデルθ_0てfreezeするが、<br><br>- 教師モデル（初期の学生モデルでfreezeおよび特権情報）が内省に対してあまりトークンの確率密度を割り当てない一方で、学生モデルは学習が進むにつれて内省の挙動が進むことが観測された<br>- この例は学生モデルが進化するにつれて教師モデルとのミスマッチが広がることを示しており、教師モデルによって学習によって強化される内省的な挙動を抑圧するものであり、教師モデルを固定することの限界を示唆している<br><br>このため、学生モデルθ_kがθ_k+1に更新された時、教師モデルもθ_k+1へと更新する。また、学生モデル自身が自身の応答をrewriteし、そのrewriteがAppendix Mに示されるAcceptanceルール（短く、自然に終了し、reflectionが存在せず、構造的に妥当で、正解であるもの）を満たす場合、そのrewriteの対数尤度を最小化する補助的なlossも導入する（式6)。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1397" target="_blank" rel="noopener noreferrer">[Paper Note] STaR: Bootstrapping Reasoning With Reasoning, Eric Zelikman+, NeurIPS'22, 2022.03</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Spatial-Interactor: Learning Spatial Reasoning through Interaction with the Observable Physical World, Kaixiang Yao+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.23038</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6725</repo-issue-link>
+<tags>ComputerVision, Supervised-FineTuning (SFT), ReinforcementLearning, Distillation, PostTraining, Selected Papers/Blogs, On-Policy, VisionLanguageModel, SpatialUnderstanding, reading, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.23038
+# Authors
+  - Kaixiang Yao
+  - Xu Wang
+  - Miao Pan
+  - Hu Xiyue
+  - Weishi Wang
+  - Daniel Dahlmeier
+  - Jintao Chen
+  - Yongliang Shen
+  - Xuhong Zhang
+  - Wenqi Zhang
+# Abstract
+  - Spatial reasoning is essential for vision-language models (VLMs) to understand and act in the physical world. Reasoning in dynamic environments requires VLMs to perceive local state transitions caused by object motion and viewpoint changes and integrate them over long trajectories to maintain an updated spatial state, yet existing VLMs remain limited in both capabilities. Current spatial training primarily focuses on static questions about object attributes and spatial relations, providing limited direct supervision for state transitions; in contrast, interaction trajectories naturally connect a preceding observation, an action, and a subsequent observation, offering direct supervision for local state transitions, while complete trajectories reveal dependencies among consecutive transitions. We therefore introduce Spatial-Interactor, a framework that trains VLMs to model physical-world state transitions through interaction, organizing this learning process into a three-level curriculum covering L1 passive world-state transitions, L2 active self-state transitions, and L3 long-horizon interaction trajectories. Accordingly, we construct the Learning from Spatial Interaction dataset (LSI-108K) from simulated and real interaction trajectories, with tasks aligned with the objective of each level. Our two-stage training strategy applies Supervised Fine-Tuning (SFT) to L1 and L2 for local transition modeling, and On-Policy Distillation (OPD) then uses privileged self-distillation: a teacher branch given segment-level transition descriptions supervises the student's on-policy CoT, helping the student learn to integrate consecutive transitions over L3 long trajectories. Experiments across multiple VLMs and spatial benchmarks show consistent gains in local transition modeling and long-horizon integration.
+# Translation (by gpt-5.6-luna)
+- 空間推論は、視覚言語モデル（VLM）が物理世界を理解し、そこで行動するために不可欠である。動的環境における推論では、VLMは物体の運動や視点の変化によって生じる局所的な状態遷移を認識し、それらを長い軌跡にわたって統合して、更新された空間状態を維持する必要がある。しかし、既存のVLMはこの両方の能力において依然として限界がある。現在の空間学習は主に、物体の属性や空間関係に関する静的な質問に焦点を当てており、状態遷移に対する直接的な教師信号は限定的である。これに対し、インタラクション軌跡は、前の観測、行動、続く観測を自然に結び付け、局所的な状態遷移に対する直接的な教師信号を提供する。また、完全な軌跡は、連続する遷移間の依存関係を明らかにする。
+
+そこで我々は、インタラクションを通じて物理世界の状態遷移をモデル化するようVLMを訓練するフレームワーク、Spatial-Interactorを導入する。この学習過程は、L1の受動的な世界状態遷移、L2の能動的な自己状態遷移、L3の長期インタラクション軌跡から成る3段階のカリキュラムとして構成される。これに対応して、シミュレーションおよび実環境におけるインタラクション軌跡から、Learning from Spatial Interactionデータセット（LSI-108K）を構築し、各レベルの目的に沿ったタスクを収録した。
+
+我々の2段階学習戦略では、まずL1とL2に対して教師ありファインチューニング（SFT）を適用し、局所的な遷移のモデル化を行う。次に、オンポリシー蒸留（OPD）において特権的自己蒸留を用いる。具体的には、セグメントレベルの遷移記述を与えられた教師ブランチが、学生モデルのオンポリシーCoTを監督することで、学生モデルがL3の長い軌跡にわたって連続する遷移を統合する方法を学習できるようにする。複数のVLMおよび空間ベンチマークを用いた実験により、局所的な遷移モデリングと長期的な統合の双方において、一貫した性能向上が示された。
+# Summary (by gpt-5.6-luna)
+- VLMを用いて、物体の運動や視点変化による局所的な状態遷移と、長期軌跡における空間状態の統合を学習するSpatial-Interactorを提案。
+受動的な世界状態遷移、能動的な自己状態遷移、長期インタラクション軌跡の3段階カリキュラムで訓練し、LSI-108Kデータセットを構築。
+L1・L2ではSFT、L3では特権的自己蒸留を用いたOPDにより、連続する遷移の統合を促進。
+複数のVLMと空間ベンチマークで、局所的遷移モデリングと長期推論の双方において一貫した性能向上を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/spicysweet1859/status/2103547468487229515?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page: 
+
+{% raw %}
+<a href="https://zju-omniai.github.io/Spatial-Interactor/" target="_blank" rel="noopener noreferrer">https://zju-omniai.github.io/Spatial-Interactor/</a>
+{% endraw %}
+
+</p><p>- VLMのspatial understanding能力を向上させるためのSFT+RL (+OPD)手法の提案とデータセットの構築を実施している。<br>- 手法では、まずVision Input V (2つ before-afterを示す画像[^1]), , Question Qを受け取り, 画像の前後の変化を表す選択肢を選択させる (MCQによる) SFTによって、localなspatial understanding能力を醸成する。<br>- localなspatial understanding能力が向上しても、それらが時系列, long-horizonな系列に対して適切に推論できるわけではない。<br>- このため、32 frameの動画と、それらの8 frameごとの変化をテキストで記述したz, それらを時系列に並べたタプル(z_1, z_2, z_3, z_4)、それら動画の時系列に関するQuestion Qが与えられたときに、RLVRで学習をすることで、long-trajectoryに対するspatial understanding能力を高める。<br>- このとき、OPDを用いて、教師モデルには (z_1, z_2, z_3, z_4)を特権情報として与え、生徒モデルのreasoning traceがどれだけ教師に近いかをforward KLに加えることで、reasoning trace中のトークンレベルで特権情報に基づく学習シグナルを供給する。<br><br>[^1]: スタンドライトを点灯させた, 前方に0.8m移動した, 90度右へ回転した, sofaを前方へ移動させた場合のbefore-after画像等</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A Smaller Transformer in Your Transformer, Dhananjay Tomar+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.20100</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6723</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Transformer, Distillation, 2D (Image)</tags>
+<repo-issue-date>2026-10-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.20100
+# Authors
+  - Dhananjay Tomar
+  - Marius Aasan
+  - Andreas Kleppe
+  - Adín Ramírez Rivera
+# Abstract
+  - Recent findings indicate that Vision Transformers settle into locally similar computational phases, implying a level of depthwise computational redundancy. However, existing methods to exploit this redundancy either fail to reduce inference compute or severely degrade model expressivity. In this work, we formalise a unified view of block redundancy that decouples the geometry from specific surrogate interventions. We then introduce Transformer-Within-Transformer (TWT), a post-hoc method that fuses contiguous groups of redundant layers into a single learned surrogate layer. TWT reduces parameter count and inference compute while remaining competitive with original models using half the depth on natural images, and in several downstream histopathology settings, TWT matches or even improves on the original baseline.
+# Translation (by gpt-5.6-luna)
+- 近年の研究により、Vision Transformerは局所的に類似した計算フェーズへ収束することが示されており、深さ方向に計算の冗長性が存在することが示唆されている。しかし、この冗長性を活用する既存手法は、推論時の計算量を削減できないか、モデルの表現力を著しく低下させるかのいずれかである。本研究では、特定の代理介入から幾何学的側面を切り離した、ブロック冗長性に関する統一的な見方を定式化する。さらに、Transformer-Within-Transformer（TWT）を導入する。これは、冗長な層の連続したグループを、学習された単一の代理層へ融合する事後的手法である。TWTはパラメータ数と推論時の計算量を削減しつつ、自然画像において深さを半分にした場合でも元のモデルと競争力のある性能を維持する。また、複数の下流組織病理学タスクにおいて、TWTは元のベースラインと同等、あるいはそれを上回る性能を達成する。
+# Summary (by gpt-5.6-luna)
+- Vision Transformerの深さ方向の計算冗長性に着目し、冗長な層を学習済みの単一代理層へ融合するTWTを提案。
+パラメータ数と推論時の計算量を削減しつつ、深さを半分にしても自然画像で元モデルに匹敵する性能を維持。
+複数の病理組織学タスクで、ベースラインと同等以上の性能を達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2103836737474830492?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Sequential Beats Joint: On the Interplay between On-Policy Distillation and RLVR, Boyan Li+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.04108</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6571</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, ReinforcementLearning, AIAgents, Distillation, PostTraining, Selected Papers/Blogs, On-Policy, reading, One-Line Notes</tags>
+<repo-issue-date>2026-09-16</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.04108
+# Authors
+  - Boyan Li
+  - Bingsen Chen
+  - Chenghao Yang
+  - Ping Nie
+  - Chen Zhao
+  - Xi Ye
+# Abstract
+  - Reinforcement learning with verifiable rewards (RLVR) and on-policy distillation (OPD) have emerged as two dominant methods for post-training reasoning LLMs. Prior work uses OPD's dense token-level supervision to complement the sparse RL reward, fusing the two signals within a single step: either as a \emph{weighted-additive combination} or a \emph{teacher-modulated rescaling} of the RL advantage. In this paper, we show that a simple two-stage scheme, OPD-then-RL, consistently outperforms pure OPD, pure RLVR, and all such joint baselines across logic and math reasoning benchmarks. Beyond the empirical results, we further provide a systematic understanding of this through pass@$k$ behavior, learning dynamics, and parameter updates, yielding a consistent explanation: OPD expands the student's coverage of teacher-supported solutions and RL sharpens within that support, while jointly optimizing the two signals causes them to interfere. To provide a practical recipe, we find that the OPD validation score is the key signal for when to switch to RL, and that OPD is a better cold start for RL than SFT. Together, our results establish OPD-then-RL as a simple yet strong way to combine the two methods, turning two entangled signals into complementary stages.
+# Translation (by gpt-5-nano)
+- 検証可能な報酬を用いた強化学習（RLVR）とオンポリシー蒸留（OPD）は、訓練後の推論を行う大規模言語モデル（LLMs）における二大手法として浮上してきた。先行研究では、OPDの密なトークンレベルの監督を疎なRL報酬を補完する形で用い、両信号を1ステップで統合する。具体的には、重み付き加法的結合または教師によるRL利得の再スケーリングの形である。本論文では、単純な2段階のスキームOPD-then-RLが、論理推論および数学的推論のベンチマーク全体において、純粋なOPD、純粋なRLVR、およびこれらの結合ベースラインを一貫して上回ることを示す。経験的結果を超えて、pass@kの挙動、学習ダイナミクス、およびパラメータ更新を通じた体系的な理解を提供し、一貫した説明を導く。すなわち、OPDは教師支援解法のカバー範囲を拡張し、RLはそのサポート内で解を鋭化させる一方、二つの信号を同時に最適化すると干渉が生じる。実践的なレシピを提供するため、OPDの検証スコアがRLへ切り替えるべき時の鍵となる信号であること、OPDがRLのコールドスタートとしてSFTよりも優れていることを明らかにした。総じて、我々の結果はOPD-then-RLを、二つの手法を組み合わせる、単純でありながら強力な方法として確立し、絡み合った二つの信号を相補的な段階へと変換する。
+# Summary (by gpt-4o-mini)
+- OPDとRLVRを用いて、二段階のスキームOPD-then-RLが論理推論と数学的推論のベンチマークで他の手法を上回ることを示す。OPDはRLの補助として機能し、二つの信号を同時に最適化すると干渉が発生するため、OPDの検証スコアがRLの切り替え時の鍵になることを明らかにした。全体として、OPD-then-RLは信号を相補的に変換するシンプルかつ強力な手法として確立された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xiye_nlp/status/2099898800508944871?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>OPDの後にRLを実施することで、reasoningタスクにおいて性能の向上が見られ、gainはOPDのみの場合、あるいはpureなRLVRの場合よりも大きかった、その理由はOPDはpass_at_kを改善し到達可能な解の集合を拡張し、RLVRは確率を再分配しpass_at_1を改善するから（先鋭化する）、という話らしい。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Breaking the Token Ceiling: Distilling Smaller, Stronger Byte Models, Kalyani Marathe+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.12303</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6568</repo-issue-link>
+<tags>NLP, LanguageModel, action_wanted, Distillation, read-later, Byte-level</tags>
+<repo-issue-date>2026-09-15</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.12303
+# Authors
+  - Kalyani Marathe
+  - Artidoro Pagnoni
+  - Tomasz Limisiewicz
+  - Margaret Li
+  - Mike Lewis
+  - Luke Zettlemoyer
+  - Srinivasan Iyer
+# Abstract
+  - Small models are made more capable through distillation from a larger one that shares their tokenization scheme. However, do distilled byte and token models behave similarly in terms of scaling trends as compute and data increases? To enable this comparison, we introduce two variants to efficiently convert token logits to Byte Logits: 1) approximate: Marginalize-It, and 2) exact: End-Of-Token. We then present the first large scale study of overtraining decoder-only dense transformer models varying two dimensions simultaneously: the tokenization scheme (Tokens, Bytes, Bytes w/ eot) and the training objective (Distillation vs. Cross-Entropy), sweeping layer-parameter-matched models with roughly 1 billion parameters up to 1 trillion bytes of data. Across eight benchmarks spanning three categories: Multiple Choice QA, Language Generation, and Machine Translation, we find that Token-1B models outperform byte models (End-Of-Token-1B and Bytes-1B) in the low-FLOP regime but eventually plateau; byte models start worse yet surpass Token-1B models with more compute, reaching a higher downstream task performance ceiling. Extrapolating the average top-1 error vs. validation BPB scaling laws predicts that, asymptotically, distilled End-Of-Token-1B outperforms distilled Token-1B by up to 4%. They are also far more data efficient, matching the performance of distilled Token-1B using only one-sixth of the training data. Moreover, by operating over a small vocabulary of 256 bytes instead of on the order of 100K tokens, they circumvent the need for top-k truncation during logit dumping, while also reducing logit storage costs to roughly one-fifth. Finally, our downstream performance scaling laws predict that our distilled End-Of-Token-1B models asymptotically surpass the Llama 3.2-1B, Gemma-3-1B-pt, and Gemma 2B models on averaged downstream tasks by up to 6.5%, 8.1%, and 2.1%, respectively.
+# Translation (by gpt-5-nano)
+- 小さなモデルは、同じトークン化スキームを共有する大きなモデルからの蒸留によって能力が高められる。しかし、蒸留済みのバイトモデルとトークンモデルは、計算量とデータ量が増加するにつれてスケーリングの傾向が類似しているだろうか？この比較を可能にするため、トークンのロジットをByteロジットに効率的に変換する2つの派生法を導入する：1) 近似法：Marginalize-It、2) 厳密法：End-Of-Token。続いて、2つの次元を同時に変化させるデコーダーのみの密結合型トランスフォーマーモデルの初の大規模過学習研究を提示する。これらはトークン化スキーム（Tokens、Bytes、Bytes w/ eot）と学習目的（蒸留 vs. クロスエントロピー）を組み合わせて、約10億パラメータの層パラメータを揃えたモデルを、約1兆バイトのデータ量までスイープする。8つのベンチマークにわたり、3つのカテゴリ（多肢選択QA、言語生成、機械翻訳）を横断して、Token-1Bモデルは低FLOP領域でバイトモデル（End-Of-Token-1BおよびBytes-1B）を上回るが、最終的には頭打ちになる。一方、バイトモデルは初期には劣るものの、より大きな計算資源を用いるとToken-1Bモデルを上回り、下流タスクの性能の ceiling を高くする。平均Top-1誤差と検証BPBのスケーリング則を外挿すると、漸近的には蒸留済みEnd-Of-Token-1Bが蒸留済みToken-1Bを最大4%上回ると予測される。彼らはまたデータ効率が格段に高く、蒸留済みToken-1Bと同等の性能を訓練データの約6分の1だけで達成する。さらに、約100K語彙の代わりに256バイトの小さな語彙で動作することで、ロジットダンピング時のtop-k切り捨てを回避し、ロジット格納コストをおよそ5分の1程度に削減する。最後に、下流タスクの性能スケーリング則は、蒸留済みEnd-Of-Token-1Bモデルが漸近的にLlama 3.2-1B、Gemma-3-1B-pt、Gemma 2Bモデルを平均下流タスクで最大でそれぞれ6.5%、8.1%、2.1%上回ると予測する。
+# Summary (by gpt-4o-mini)
+- 小さなモデルは大きなモデルから蒸留されて性能が向上するが、能力のスケールがトークンとバイトの間でどう変わるのかを調査。2つの方法（近似法と厳密法）を使ってトークンロジットをバイトロジットに変換し、初の大規模過学習を行った。Token-1Bモデルは低FLOP地域でバイトモデルを上回るが、最終的には頭打ち。一方、バイトモデルは初期段階では劣るが、大きな計算資源を投入すると性能が向上し下流タスクの上限を高める。最終的に、蒸留済みEnd-Of-Token-1BがToken-1Bを最大4%上回ると予測。また、データ効率も高く、少ないデータで同等の性能を達成し、ロジット格納コストも削減。最終的に、下流タスクにおいて蒸留済みEnd-Of-Token-1Bモデルが他のモデルを上回ると予測される。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2099517031796347388?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Rethinking On-Policy Distillation of Large Language Models: Phenomenology, Mechanism, and Recipe, Yaxuan Li+, arXiv'26, 2026.04</title>
+<original-paper-blog-link>https://arxiv.org/pdf/2604.13016</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6519</repo-issue-link>
+<tags>ReinforcementLearning, Distillation, On-Policy, Author Thread-Post</tags>
+<repo-issue-date>2026-09-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/pdf/2604.13016
+# Authors
+  - Yaxuan Li
+  - Yuxin Zuo
+  - Bingxiang He
+  - Jinqian Zhang
+  - Chaojun Xiao
+  - Cheng Qian
+  - Tianyu Yu
+  - Huan-ang Gao
+  - Wenkai Yang
+  - Zhiyuan Liu
+  - Ning Ding
+# Abstract
+  - On-policy distillation (OPD) has become a core technique in the post-training of large language models, yet its training dynamics remain poorly understood. This paper provides a systematic investigation of OPD dynamics and mechanisms. We first identify that two conditions govern whether OPD succeeds or fails: (i) the student and teacher should share compatible thinking patterns; and (ii) even with consistent thinking patterns and higher scores, the teacher must offer genuinely new capabilities beyond what the student has seen during training. We validate these findings through weak-to-strong reverse distillation, showing that same-family 1.5B and 7B teachers are distributionally indistinguishable from the student's perspective. Probing into the token-level mechanism, we show that successful OPD is characterized by progressive alignment on high-probability tokens at student-visited states, a small shared token set that concentrates most of the probability mass (97%-99%). We further propose two practical strategies to recover failing OPD: off-policy cold start and teacher-aligned prompt selection. Finally, we show that OPD's apparent free lunch of dense token-level reward comes at a cost, raising the question of whether OPD can scale to long-horizon distillation.
+# Translation (by gpt-5-nano)
+- オンポリシー蒸留（OPD）は、大規模言語モデルのポスト訓練における中心的な手法となっているが、その訓練ダイナミクスは依然として十分には理解されていない。本論文はOPDのダイナミクスと機構を体系的に調査する。まず、OPDの成功と失敗を支配する2つの条件を同定する：(i) 学習者と教師が互換性のある思考パターンを共有していること；および (ii) 一貫した思考パターンとより高いスコアを持っていても、教師は学生が訓練中に見たものを超える本当に新しい能力を提供しなければならない。これらの知見は、弱→強の逆蒸留（weak-to-strong reverse distillation）によって検証され、同ファミリーの1.5Bおよび7Bの教師は、学生の視点から分布的に識別不能であることを示す。トークンレベルの機構を掘り下げると、成功するOPDは、学生が訪れる状態における高確率トークンへの段階的な整合と、ほとんどの確率質量を集中させる小さな共有トークン集合（97%–99%）によって特徴づけられる。さらに、OPDの失敗を回復するための実用的戦略を2つ提案する：オフポリシーのコールドスタートと教師に合わせたプロンプト選択。最後に、OPDの密なトークンレベル報酬という一見の“おまけ”が代償を伴うことを示し、OPDが長期的な蒸留へスケールできるかどうかという問題を提起する。
+# Summary (by gpt-4o-mini)
+- OPDは大規模言語モデルのポスト訓練において重要だが、そのダイナミクスは未解明。成功には、学習者と教師の思考パターンの互換性と新しい能力の提供が必要。弱→強逆蒸留で確認された結果、成功するOPDは高確率トークンの整合性と小規模なトークン集合によって特徴付けられる。失敗を回復するための戦略として、オフポリシーのコールドスタートと教師に合わせたプロンプト選択を提案。OPDの報酬メカニズムは代償を伴い、その長期的なスケーラビリティに疑問を投げかける。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hbx_hbx/status/2095716853196747175?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qingke_ai/status/2095773190362718477?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Knowledge Distillation During Mid-Training Favors Reasoning over Factual Recall, Jacqueline He+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.01532</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6506</repo-issue-link>
+<tags>Distillation</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.01532
+# Authors
+  - Jacqueline He
+  - Howard Yen
+  - Shuyue Stella Li
+  - Margaret Li
+  - Hanqing Zeng
+  - Yinglong Xia
+  - Benyu Zhang
+  - Zhuokai Zhao
+  - Qiang Zhang
+  - Pang Wei Koh
+  - Luke Zettlemoyer
+  - Wen-tau Yih
+# Abstract
+  - Logit-based knowledge distillation (KD) is used to train smaller language models (LMs) via supervision from stronger teachers, but whether its benefits are consistent across training stages remains unclear. Through controlled experiments, we find that forward Kullback-Leibler (KL) distillation--the standard KD formulation--with post-trained teachers behaves fundamentally differently during mid-training, an intermediate phase of self-supervised learning on curated corpora. Surprisingly, while forward KD simultaneously improves reasoning and factual recall during pre-training relative to standard next-token prediction (NTP), it instead slows factual recall acquisition during mid-training despite continued reasoning gains. We trace this stage dependence to an asymmetry in teacher confidence across data domains and the student's evolving knowledge state: teachers are more confident on procedural than knowledge-intensive data, while students acquire low-entropy factual knowledge earlier in training. To mitigate this imbalance, we propose Switch Distillation, a simple mid-training objective that distills on tokens where the teacher is confident, using teacher predictive entropy as a lightweight routing signal, and otherwise falls back to cross-entropy. Switch Distillation consistently outperforms existing distillation objectives across teacher sizes. Relative to standard NTP, it achieves 1.61-1.71x the reasoning performance and 1.13-1.19x the knowledge and commonsense performance while preserving 96.7-96.8% of factual recall. Crucially, these benefits persist after post-training: Switch Distillation closes the factual recall gap while maintaining 1.25-1.32x and 1.13-1.20x gains in reasoning and knowledge and commonsense, respectively.
+# Translation (by gpt-5-nano)
+- ロジットベースの知識蒸留（KD）は、強力な教師からの監督を受けて小型言語モデル（LM）を訓練するために用いられるが、その恩恵が訓練の各段階で一貫して現れるかどうかは依然として不明である。制御された実験を通じて、標準的なKDの定式化である前向きKL蒸留を、事後訓練済みの教師とともに用いた場合、キュレーション済みコーパス上での自己教師付き学習の中間段階である中間訓練中には根本的に異なる振る舞いを示すことを発見した。驚くべきことに、前向きKDは、標準の次トークン予測（NTP）と比較して事前訓練中に推論能力と事実の想起を同時に改善する一方で、中間訓練中には推論の向上が継続するにもかかわらず事実の想起獲得を遅らせる。この段階依存性は、データ領域ごとの教師の信頼度の非対称性と、学生の知識状態の進化に起因することを追跡できる。教師は手続き的データに対しては知識集約データより自信が高い一方で、学生は訓練初期に低エントロピーの事実知識を早期に獲得する。この不均衡を緩和するために、Switch Distillationを提案する。これは中間訓練中の簡潔な目的で、教師が自信を持つトークンに対して蒸留を行い、教師の予測エントロピーを軽量なルーティング信号として用い、それ以外の場合はクロスエントロピーにフォールバックするというものだ。Switch Distillationは、教師サイズを問わず、既存の蒸留目的を一貫して上回る。標準のNTPと比較して、推論性能を1.61〜1.71倍、知識および常識の性能を1.13〜1.19倍達成しつつ、事実の想起の保持率は96.7〜96.8%を維持する。重要なのは、これらの利点がポスト訓練後にも持続する点である。Switch Distillationは事実の想起のギャップを埋めつつ、推論の向上を1.25〜1.32倍、知識と常識の向上を1.13〜1.20倍の水準で維持する。
+# Summary (by gpt-4o-mini)
+- ロジットベースの知識蒸留（KD）が中間訓練中に推論能力を向上させつつ事実の想起を遅らせることを発見。これを解決するためにSwitch Distillationを提案し、教師が自信を持つトークンに蒸留を行うことで成果を実現。推論性能を最大1.71倍向上させ、知識の保持率を96.7～96.8%維持。ポスト訓練後もその利点が持続。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2095262303260135772?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Does On-Policy Distillation Really Distill? From Noisy Teacher to Self-Improvement, Yi Ding+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.31046</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6495</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Distillation, PostTraining, On-Policy</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.31046
+# Authors
+  - Yi Ding
+  - Ruqi Zhang
+# Abstract
+  - On-policy distillation (OPD) offers dense token-level supervision as an alternative to the sparse outcome-level advantages of reinforcement learning with verifiable rewards (RLVR). However, the teacher scores student-generated trajectories that are inherently off-policy for it, so the reliability of its supervision, and hence the source of the student's improvement, remains unclear. We quantitatively analyze teacher supervision during OPD training and find substantial noise whose prevalence increases with teacher scale. Surprisingly, the student policy is insensitive to such noise, converging to comparable performance regardless of whether noisy supervision is retained or removed. Does OPD distill at all? By analyzing what drives its gains, we find that learning concentrates on low log-probability tokens, and using a single fixed negative advantage matches the performance of teacher-provided ones. This suggests that OPD works largely by suppressing low log-probability tokens, which requires no teacher. These findings motivate On-Policy Self-Adaptation (OPSA), a supervision-free method using entropy-adaptive negative advantages. It assigns stronger learning signals to high-entropy positions, suppressing tail tokens, and evenly redistributing probability mass among head tokens. Compared with the base \texttt{Qwen3-1.7B}, OPSA improves Avg@32 by 35.41 points on AIME24, corresponding to a 263\% relative gain, and more than doubles Pass@32 across all three benchmarks. It also outperforms OPD by 16.77 points in Avg@32 on AIME24. Extensive experiments and analyses across model families and tasks further demonstrate its effectiveness and generalizability.
+# Translation (by gpt-5-nano)
+- オンポリシー蒸留（OPD）は、検証可能な報酬を伴う強化学習（RLVR）の疎な結果レベルの利点に代わる、密なトークンレベルの監督信号を提供する。しかし、教師はOPDにとって本質的にオフポリシーである学生生成の軌跡をスコア付けするため、その監督信号の信頼性、ひいては学生の改善の源泉は依然として不明である。OPD訓練中の教師信号を定量的に分析すると、かなりのノイズが存在し、その頻度は教師の規模が大きくなるほど増加することが分かった。驚くべきことに、学生ポリシーはこのようなノイズに鈍感であり、ノイズのある監督信号を保持するか除去するかに関係なく、同等の性能に収束する。OPDは本当に蒸留をしているのか？その利得を生み出す要因を分析すると、学習は低い対数確率のトークンに集中しており、単一の固定的な負のアドバンテージを用いると、教師が提供するものと同等の性能に匹敵することが分かった。これは、OPDが主に低い対数確率のトークンを抑制することによって機能しており、それには教師は不要であることを示唆している。これらの発見は、エントロピー適応型の負のアドバンテージを用いる監督なしの手法である On-Policy Self-Adaptation（OPSA）を提案する動機となる。OPSAは高エントロピー位置にはより強い学習信号を割り当て、尾部のトークンを抑制し、先頭トークン間で確率質量を均等に再配分する。基盤モデルの Qwen3-1.7B と比較して、OPSAは AIME24 の Avg@32 を 35.41 ポイント改善し、相対的な利益は 263% に達し、3つのベンチマークすべてで Pass@32 を倍以上に増加させた。さらに、AIME24 の Avg@32 では OPD を 16.77 ポイント上回る。モデルファミリとタスクを横断した包括的な実験と分析は、その有効性と一般化可能性をさらに示している。
+# Summary (by gpt-4o-mini)
+- OPDは密なトークンレベルの監督信号を提供するが、教師信号にはノイズが多く、教師が不要である可能性が示唆される。学生ポリシーはノイズに鈍感で、低い対数確率のトークンに集中することで成果を上げる。これを受け、OPSAでは高エントロピー位置に強い学習信号を割り当て、トークンの再配分を行う。OPSAはQwen3-1.7Bと比較してAIME24のAvg@32を35.41ポイント改善し、すべてのベンチマークでパフォーマンスを倍増させた。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2095048076796756322?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Open-MOPD: Diagnosing and Fixing Capability Imbalance in Multi-Teacher On-Policy Distillation, Huan-ang Gao+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.19098</original-paper-blog-link>
@@ -31,6 +350,47 @@
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2090320049370439680?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Latent On-Policy Self-Distillation, Guibin Zhang+, arXiv'26, 2026.08</title>
+<original-paper-blog-link>https://arxiv.org/abs/2608.13040v1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6353</repo-issue-link>
+<tags>NLP, LanguageModel, Distillation, PostTraining, read-later, On-Policy, SelfDistillation</tags>
+<repo-issue-date>2026-08-17</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2608.13040v1
+# Authors
+  - Guibin Zhang
+  - Jiayang Lyu
+  - Ran Sun
+  - Xinlei Yu
+  - Haoyu Zhao
+  - Qibing Ren
+  - Shuicheng Yan
+# Abstract
+  - Enabling agents to learn from experience and internalize it into their policy has become a central problem in self-evolving AI. On-policy self-distillation (OPSD) offers an effective pathway by using a privileged self-teacher to provide dense supervision on the student's own trajectories; however, existing methods still rely heavily on designer-specified privileged artifacts (e.g., answers, feedback, skills, or trajectories), limiting the end-to-end learnability and scalability required for continual self-improvement. In this work, we introduce Latent On-Policy Self-Distillation (LOPD), which, rather than proposing another hand-crafted OPSD variant with a newly prescribed form of privileged context, makes the teacher's privileged context itself learnable end-to-end from experience. Technically, LOPD retrieves relevant experiences and composes them into continuous latent tokens that condition a self-teacher, while the student generates trajectories from the task and interaction history and receives dense token-level supervision at every visited prefix. We further introduce a privileged-margin objective to stabilize and regulate the learning of latent context. Empirically, LOPD demonstrates (I) strong performance, outperforming RLVR and representative OPSD methods including OPSD, SDPO, and Skill-SD across both agentic tool use and code generation; and (II) high learning efficiency, surpassing GRPO and Skill-SD with less than 30% of their rollout budget. Ablation studies further provide direct evidence that making privileged context learnable is necessary for realizing these gains. Together, these results position LOPD as a step toward a more scalable and self-directed paradigm for agent evolution.
+# Translation (by gpt-5-nano)
+- エージェントが経験から学び、それをポリシーに内在化することは、自己進化型AIの中心的な課題となっている。オンポリシー自己蒸留（OPSD）は、特権的自己教師を用いて学生自身の軌跡に密な監督を提供することで有効な道を開く。しかし、既存の手法は設計者が指定する特権的アーティファクト（例：解答、フィードバック、スキル、または軌跡）に過度に依存しており、継続的な自己改善に必要なエンドツーエンドの学習可能性とスケーラビリティを制限している。  
+本研究では、Latent On-Policy Self-Distillation（LOPD）を導入する。新たに規定された形の特権的文脈を備えた別の手作りOPSDバリアントを提案するのではなく、教師の特権的文脈自体を経験からエンドツーエンドで学習可能にする。  
+技術的には、LOPDは関連する経験を取り出して連続的な潜在トークンへ組み立て、それらが自己教師を条件付ける。一方、学生はタスクと相互作用履歴から軌跡を生成し、訪問した各プレフィックスで密なトークンレベルの監督を受け取る。  
+さらに、潜在文脈の学習を安定化・規制するための特権的マージン目的を導入する。  
+実証的には、LOPDは（I）強力な性能を示し、RLVRおよびOPSD、SDPO、Skill-SDを含む代表的なOPSD法を、エージェント的ツールの使用とコード生成の両方において上回る；（II）高い学習効率を示し、GRPOおよびSkill-SDよりもロールアウト予算の30%未満で上回る。  
+アブレーション研究は、特権的文脈を学習可能にすることが、これらの利得を実現するために必要であるという直接的な証拠をさらに提供する。  
+総じて、これらの結果はLOPDを、エージェント進化のためのよりスケーラブルで自己指向的なパラダイムへの第一歩として位置づける。
+# Summary (by gpt-4o-mini)
+- 自己進化型AIにおいて、エージェントが経験から学ぶためにLatent On-Policy Self-Distillation（LOPD）を導入。LOPDは経験から特権的文脈をエンドツーエンドで学習し、自己教師を生成。実験的に、LOPDは既存のOPSD手法よりも優れた性能と高い学習効率を示し、エージェント進化のためのスケーラブルで自己指向的なアプローチへの進展を支持する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2089221337411670360?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -2222,6 +2582,47 @@ TRACER（Trace-based Adaptive Cost-Efficient Routing）は、LLM自身の本番�
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Lyra: Generative 3D Scene Reconstruction via Video Diffusion Model  Self-Distillation, Sherwin Bahmani+, arXiv'25, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.19296</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3029</repo-issue-link>
+<tags>ComputerVision, DiffusionModel, Distillation, VideoGeneration/Understandings, 3D Reconstruction, SelfDistillation</tags>
+<repo-issue-date>2025-09-29</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.19296
+# Authors
+  - Sherwin Bahmani
+  - Tianchang Shen
+  - Jiawei Ren
+  - Jiahui Huang
+  - Yifeng Jiang
+  - Haithem Turki
+  - Andrea Tagliasacchi
+  - David B. Lindell
+  - Zan Gojcic
+  - Sanja Fidler
+  - Huan Ling
+  - Jun Gao
+  - Xuanchi Ren
+# Abstract
+  - The ability to generate virtual environments is crucial for applications ranging from gaming to physical AI domains such as robotics, autonomous driving, and industrial AI. Current learning-based 3D reconstruction methods rely on the availability of captured real-world multi-view data, which is not always readily available. Recent advancements in video diffusion models have shown remarkable imagination capabilities, yet their 2D nature limits the applications to simulation where a robot needs to navigate and interact with the environment. In this paper, we propose a self-distillation framework that aims to distill the implicit 3D knowledge in the video diffusion models into an explicit 3D Gaussian Splatting (3DGS) representation, eliminating the need for multi-view training data. Specifically, we augment the typical RGB decoder with a 3DGS decoder, which is supervised by the output of the RGB decoder. In this approach, the 3DGS decoder can be purely trained with synthetic data generated by video diffusion models. At inference time, our model can synthesize 3D scenes from either a text prompt or a single image for real-time rendering. Our framework further extends to dynamic 3D scene generation from a monocular input video. Experimental results show that our framework achieves state-of-the-art performance in static and dynamic 3D scene generation.
+# Translation (by gpt-4o-mini)
+- 仮想環境を生成する能力は、ゲームからロボティクス、自動運転、産業AIなどの物理的AIドメインに至るまで、さまざまなアプリケーションにとって重要です。現在の学習ベースの3D再構築手法は、キャプチャされた実世界のマルチビューデータの利用可能性に依存しており、これは常に容易に入手できるわけではありません。最近のビデオ拡散モデルの進展は、驚異的な想像力を示していますが、その2D特性はロボットが環境をナビゲートし、相互作用する必要があるシミュレーションへの応用を制限しています。本論文では、ビデオ拡散モデルにおける暗黙の3D知識を明示的な3Dガウススプラッティング（3DGS）表現に蒸留することを目的とした自己蒸留フレームワークを提案します。これにより、マルチビューのトレーニングデータが不要になります。具体的には、典型的なRGBデコーダに3DGSデコーダを追加し、RGBデコーダの出力によって監視されるようにします。このアプローチでは、3DGSデコーダはビデオ拡散モデルによって生成された合成データのみで純粋にトレーニングできます。推論時には、我々のモデルはテキストプロンプトまたは単一の画像から3Dシーンを合成し、リアルタイムレンダリングを実現します。我々のフレームワークは、単眼入力ビデオからの動的3Dシーン生成にも拡張されます。実験結果は、我々のフレームワークが静的および動的3Dシーン生成において最先端の性能を達成することを示しています。
+# Summary (by gpt-4o-mini)
+- 本研究では、ビデオ拡散モデルの3D知識を明示的な3Dガウススプラッティング（3DGS）表現に蒸留する自己蒸留フレームワークを提案。これにより、マルチビューのトレーニングデータなしで3Dシーンを生成可能にし、リアルタイムレンダリングを実現。実験結果は、静的および動的3Dシーン生成において最先端の性能を達成したことを示す。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/huggingpapers/status/1972332903716606089?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Put Teacher in Student's Shoes: Cross-Distillation for Ultra-compact   Model Compression Framework, Maolin Wang+, KDD'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.04636</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2578</repo-issue-link>
@@ -2347,7 +2748,7 @@ TRACER（Trace-based Adaptive Cost-Efficient Routing）は、LLM自身の本番�
 <title>[Paper Note] NaturalThoughts: Selecting and Distilling Reasoning Traces for General  Reasoning Tasks, Yang Li+, arXiv'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2507.01921</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2129</repo-issue-link>
-<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, Reasoning, Distillation</tags>
+<tags>Analysis, EfficiencyImprovement, NLP, LanguageModel, Reasoning, Distillation, Author Thread-Post</tags>
 <repo-issue-date>2025-07-03</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2507.01921
@@ -2800,6 +3201,89 @@ TRACER（Trace-based Adaptive Cost-Efficient Routing）は、LLM自身の本番�
 </paper-entry>
 
 <paper-entry>
+<title>Self Distillation, Rehaan Ahmad, 2026.09</title>
+<original-paper-blog-link>https://www.alphaxiv.org/wiki/self-distillation</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6760</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, Distillation, PostTraining, On-Policy, SelfDistillation, Author Thread-Post</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://www.alphaxiv.org/wiki/self-distillation</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2105687935446356158?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>When does distillation help reinforcement learning?, Base Labs, 2026.09</title>
+<original-paper-blog-link>https://labs.baseten.co/articles/when-does-distillation-help-reinforcement-learning</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6636</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Blog, Distillation, PostTraining, read-later, One-Line Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-09-25</repo-issue-date>
+<issue-body>https://labs.baseten.co/articles/when-does-distillation-help-reinforcement-learning</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/baselabs/status/2102878688505422095?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>RL前にSFTを通じてオフポリシー蒸留をすることが、どれだけ後段のRL後のパフォーマンスに影響するかを調査したようで、<br>- 小規模モデルには効果的だが大規模なモデルには効果が薄く<br>- ベースモデルに存在しない慣習や理解を必要とするタスクに対して効果的で<br>- 副作用としてポリシーのエントロピーが低減する、すなわちRL中の探索が抑制される<br><br>といった知見が得られたようである。</p><p>一見すると、SLMに関しては<br><br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1887" target="_blank" rel="noopener noreferrer">[Paper Note] A Sober Look at Progress in Language Model Reasoning: Pitfalls and Paths   to Reproducibility, Andreas Hochlehnert+, COLM'25</a>
+<br><br>と対立する知見に見えるが、前提として何が違うだろうか。</p><p>SLMに対しては同様の知見が示されている:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2058" target="_blank" rel="noopener noreferrer">[Paper Note] AceReason-Nemotron 1.1: Advancing Math and Code Reasoning through SFT and RL Synergy, Zihan Liu+, arXiv'25, 2025.06</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>HyperFlow, VideoRebirth, 2026.09</title>
+<original-paper-blog-link>https://github.com/Video-Rebirth/hyperflow</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6627</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, Distillation, OpenWeight, VideoGeneration/Understandings, SelfDistillation, autoresearch/RSI, Author Thread-Post</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body>github:https://github.com/Video-Rebirth/hyperflow
+HF:https://huggingface.co/videorebirth/hyperflow</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/video_rebirth/status/2101009602943098907?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/xieenze_jr/status/2101135711760248879?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>On-Policy Distillation: Full-Vocabulary KL vs. Sampled Trajectory RL, Bhavin Jawade, 2026.09</title>
+<original-paper-blog-link>https://x.com/bhavinjawade/status/2102420342656663599?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6622</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, ReinforcementLearning, Distillation, Post, PostTraining, read-later, On-Policy</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body>https://x.com/bhavinjawade/status/2102420342656663599?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>On-policy distillation isn't a free-lunch, Bhavin Jawade, 2026.07</title>
 <original-paper-blog-link>https://x.com/bhavinjawade/status/2079604860287431061?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6166</repo-issue-link>
@@ -2982,7 +3466,7 @@ Emiliano Penaloza, Dheeraj Vattikonda, Siddarth Venkatraman, Massimo Caccia</iss
 <title>Accelerating Diffusion Models with an Open, Plug-and-Play Offering, Nvidia, 2026.01</title>
 <original-paper-blog-link>https://developer.nvidia.com/blog/accelerating-diffusion-models-with-an-open-plug-and-play-offering/?linkId=100000404691517</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4324</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, Tools, NLP, Library, DiffusionModel, TextToImageGeneration, Distillation, PostTraining, 2D (Image), Editing, 3D (Video), TextToVideoGeneration, ImageToTextGeneration</tags>
+<tags>ComputerVision, EfficiencyImprovement, Tools, NLP, DiffusionModel, TextToImageGeneration, Distillation, PostTraining, 2D (Image), Editing, 3D (Video), TextToVideoGeneration, ImageToTextGeneration, TrainingFramework</tags>
 <repo-issue-date>2026-01-29</repo-issue-date>
 <issue-body>blog: https://developer.nvidia.com/blog/accelerating-diffusion-models-with-an-open-plug-and-play-offering/?linkId=100000404691517
 code: https://github.com/NVlabs/FastGen</issue-body>

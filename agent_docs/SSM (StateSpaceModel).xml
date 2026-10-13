@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-14">
+<paper-list last-updated="2026-10-13">
+<paper-entry>
+<title>[Paper Note] ReplaySSM: Cache SSM Inputs, Not State, Ze-Wei Liou+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.13778</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6868</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, SSM (StateSpaceModel), Architecture, ContextEngineering, SpeculativeDecoding, LinearAttention</tags>
+<repo-issue-date>2026-10-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.13778
+# Authors
+  - Ze-Wei Liou
+  - Harris Nover
+  - Amey Naik
+  - Andrii Skliar
+  - Igor Shovkun
+  - Ido Shahaf
+  - Tri Dao
+# Abstract
+  - State-space models (SSMs) maintain a fixed-size recurrent state, but reading and writing it at every decoding step can bottleneck hybrid models. This eager state management causes large state I/O with low arithmetic intensity, leaves speculative decoding no cheap rollback, and feeds state quantization error into subsequent recurrent updates. We introduce ReplaySSM, which unrolls the recurrence to represent the state as a checkpoint and a buffer of recent SSM inputs. This separates output computation from checkpoint updates. By updating the checkpoint periodically, ReplaySSM avoids state writes on most steps and roughly halves the dominant state memory traffic. Keeping recent inputs also makes speculative rollback a buffer-pointer operation and enables output-only verification without materializing intermediate states. The same separation allows a low-precision checkpoint to serve output computation on most steps while a higher-precision checkpoint serves recurrent updates, so rounding error in the low-precision copy never enters later updates. We implement ReplaySSM in vLLM for Mamba-2 and Gated DeltaNet. At serving batch size 256, it accelerates standard decoding by $1.20$--$1.47\times$ over a tuned vLLM baseline across four hybrid models, and delivers about $1.8\times$ the throughput of vLLM's speculative decoding on the two 120B-class models. Separate state precisions also reduce output KL divergence and downstream accuracy losses compared with a shared low-precision checkpoint.
+# Translation (by gpt-5.6-luna)
+- 状態空間モデル（SSM）は固定サイズの再帰状態を保持するが、デコードの各ステップでその状態の読み書きを行うことは、ハイブリッドモデルにおけるボトルネックとなり得る。この逐次的な状態管理は、演算強度が低いにもかかわらず大規模な状態I/Oを引き起こし、投機的デコーディングに低コストなロールバック手段を与えず、さらに状態の量子化誤差を後続の再帰更新へ伝播させる。
+
+本研究ではReplaySSMを提案する。ReplaySSMは、再帰を展開し、状態をチェックポイントと直近のSSM入力のバッファによって表現する。これにより、出力計算とチェックポイント更新が分離される。チェックポイントを定期的に更新することで、ReplaySSMは大半のステップにおける状態書き込みを回避し、支配的な状態メモリトラフィックをおよそ半減させる。直近の入力を保持することで、投機的ロールバックをバッファポインタの操作として実行でき、途中の状態を具体化せずに出力のみを検証することも可能になる。
+
+さらに、この分離により、低精度のチェックポイントを大半のステップでの出力計算に利用しつつ、より高精度のチェックポイントを再帰更新に利用できる。そのため、低精度コピーにおける丸め誤差が後続の更新へ入り込むことはない。Mamba-2およびGated DeltaNetを対象に、ReplaySSMをvLLMへ実装した。サービング時のバッチサイズ256において、4種類のハイブリッドモデル全体で、調整済みvLLMベースラインに対して標準デコーディングを1.20～1.47倍高速化し、120Bクラスの2つのモデルでは、vLLMの投機的デコーディングの約1.8倍のスループットを達成した。状態ごとに精度を分離することで、単一の低精度チェックポイントを共有する場合と比較して、出力のKLダイバージェンスと下流タスクの精度低下も抑制された。
+# Summary (by gpt-5.6-luna)
+- SSMの状態I/Oによるデコードのボトルネック、投機的ロールバックの困難さ、量子化誤差の伝播を解決するため、状態をチェックポイントと直近入力のバッファで表現するReplaySSMを提案。
+再帰を展開して出力計算とチェックポイント更新を分離し、状態書き込みを削減するとともに、バッファポインタ操作による低コストなロールバックを実現。
+さらに、出力計算と再帰更新で異なる精度のチェックポイントを使い分け、量子化誤差の伝播を防ぐ。
+Mamba-2およびGated DeltaNetを用いた実験で、標準デコーディングを1.20～1.47倍高速化し、120BクラスのモデルではvLLMの投機的デコーディングの約1.8倍のスループットを達成。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2109769886943879676?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Training nGPT, Ilya Loshchilov+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.01284</original-paper-blog-link>
@@ -1633,6 +1675,31 @@ Mambaのような状態空間モデル（SSMs）は、固定サイズの隠れ�
 # Summary (by gpt-4o-mini)
 - 状態空間モデル（SSMs）は、トランスフォーマーの代替として注目されていますが、その表現力はトランスフォーマーと類似の制限があり、特定の状態追跡問題を解決できないことが明らかになりました。特に、SSMsは複雑さクラス$\mathsf{TC}^0$を超える計算を表現できず、実際的な状態追跡能力にも限界があります。形式的分析と実験によって、リカレントな定式化にもかかわらず、SSMにおける「状態」は幻想であり、実際の問題解決において制約があることが示されています。</issue-body>
 <maintainer-comment-text><p>>しかし、SSMが状態追跡の表現力で本当に（トランスフォーマーよりも）優位性を持っているのでしょうか？驚くべきことに、その答えは「いいえ」です。私たちの分析によると、SSMの表現力は、トランスフォーマーと非常に類似して制限されています：SSMは複雑性クラス$\mathsf{TC}^0$の外での計算を表現することができません。特に、これは、置換合成のような単純な状態追跡問題を解決することができないことを意味します。これにより、SSMは、特定の表記法でチェスの手を正確に追跡したり、コードを評価したり、長い物語の中のエンティティを追跡することが証明上できないことが明らかになります。<br><br>なん…だと…</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Rigel Base: Reaching Llama-3.2 Quality with <1% of its Compute, Mayank+, 2026.09</title>
+<original-paper-blog-link>https://open-lm-engine.github.io/blog/rigel/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6625</repo-issue-link>
+<tags>EfficiencyImprovement, Pretraining, NLP, LanguageModel, Blog, OpenWeight, SSM (StateSpaceModel), read-later, DataMixture, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body># URL
+https://open-lm-engine.github.io/blog/rigel/
+
+# Citation
+misc{mishra2026rigel,
+  title  = {Rigel Base: Reaching Llama-3.2 Quality with <1% of its Compute},
+  author = {Mishra, Mayank and Runwal, Bharat and Stoica, Ion and Dao, Tri and Gonzalez, Joseph E.},
+  year   = {2026},
+  url    = {https://open-lm-engine.github.io/blog/
+}</issue-body>
+<maintainer-comment-text><p>NoPEやuPを利用、事前学習では6つのフェースで異なるDataMixtureを利用しそのレシピも記載</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/open-lm-engine/rigel" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/open-lm-engine/rigel</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

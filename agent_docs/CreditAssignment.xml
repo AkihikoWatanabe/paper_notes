@@ -1,5 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-09-01">
+<paper-list last-updated="2026-10-09">
+<paper-entry>
+<title>[Paper Note] Trust the Critic More, Kaiyue Wen+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.39247</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6763</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Actor-Critic, PostTraining, CreditAssignment</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.39247
+# Authors
+  - Kaiyue Wen
+  - Luke Bailey
+  - Arvind Mahankali
+  - Tengyu Ma
+# Abstract
+  - Standard language model RL algorithms credit every token of a long rollout with the same advantage determined by the terminal reward. Actor-critic methods can provide finer-grained credit assignment, but learned critics are generally considered too inaccurate to trust when training LLMs with RL. In recent works, even when a critic is present, it is used only for baseline estimation, so every trajectory must be rolled out to its terminal reward. We introduce Actor-Critic with Action Chunking (AC2) that removes the need to roll every trajectory to completion. AC2 instead assigns credit to action chunks: short continuations of prefixes of past trajectories. A learned critic scores the state reached at the end of each action chunk, allowing the policy to update without observing a terminal reward. We make critic-based credit assignment reliable through three design choices. First, we introduce local readiness which uses critic-based updates on a problem only when the critic is sufficiently accurate on that particular problem. Second, when available, we provide the critic with a reference solution from a previous successful rollout. Third, we assign credit over action chunks of 10k tokens rather than individual tokens, giving the critic a more meaningful portion of the trajectory to evaluate. We train Qwen3-4B on FineProofs-RL using AC2 and evaluate on IMO-ProofBench. AC2 exceeds GRPO's peak validation score of 18.5% using 2.5x fewer decoding FLOPs. This gain comes from two sources, (1) AC2 requires 25% fewer training steps to reach this score, and (2) each step generates fewer tokens because the policy does not need to continue every trajectory to completion. Conceptually, we demonstrate that we can remove the need to roll out every trajectory to completion, opening up a large previously unexplored design space for LLM RL algorithms.
+# Translation (by gpt-5.6-luna)
+- 標準的な言語モデルの強化学習（RL）アルゴリズムでは、長いロールアウト中のすべてのトークンに対して、終端報酬によって決まる同一のアドバンテージを割り当てる。アクター・クリティック法は、よりきめ細かなクレジット割り当てを可能にするが、学習されたクリティックは一般に不正確すぎるため、LLMをRLで学習する際に信頼できないと考えられている。近年の研究では、クリティックが存在する場合でさえ、それはベースライン推定にのみ用いられ、すべての軌跡を終端報酬までロールアウトする必要がある。
+
+本研究では、すべての軌跡を完了までロールアウトする必要をなくす、Action Chunking付きアクター・クリティック（Actor-Critic with Action Chunking; AC2）を導入する。AC2ではその代わりに、アクションチャンク、すなわち過去の軌跡のプレフィックスから続く短い継続に対してクレジットを割り当てる。学習されたクリティックは、各アクションチャンクの終端で到達した状態を評価するため、終端報酬を観測しなくても方策を更新できる。
+
+クリティックに基づくクレジット割り当てを信頼できるものにするため、3つの設計上の工夫を導入する。第一に、ローカル・レディネスを導入する。これは、特定の問題に対してクリティックが十分に正確な場合にのみ、その問題でクリティックに基づく更新を行う仕組みである。第二に、利用可能な場合には、過去の成功したロールアウトから得られた参照解をクリティックに与える。第三に、個々のトークンではなく、1万トークン単位のアクションチャンクに対してクレジットを割り当てる。これにより、クリティックが評価する軌跡の一部を、より意味のあるものにできる。
+
+AC2を用いてQwen3-4BをFineProofs-RL上で学習し、IMO-ProofBenchで評価した。AC2は、デコーディングFLOPsを2.5分の1に削減しながら、GRPOの検証スコアのピークである18.5%を上回った。この向上は2つの要因による。(1) AC2では、このスコアに到達するまでに必要な学習ステップ数が25%少ないこと、(2) 方策がすべての軌跡を完了まで継続する必要がないため、各ステップで生成するトークン数が少ないことである。概念的には、すべての軌跡を完了までロールアウトする必要をなくせることを示し、LLMのRLアルゴリズムにおける、これまで大きく未開拓であった設計空間を切り開くものである。
+# Summary (by gpt-5.6-luna)
+- LLMのRLでは、終端報酬に基づく一様なクレジット割り当てや、不正確なクリティックが課題となる。
+本研究では、全軌跡を完了までロールアウトせず、短いアクションチャンクごとにクレジットを割り当てるActor-Critic with Action Chunking（AC2）を提案。
+ローカル・レディネス、成功ロールアウトの参照解、および長いアクションチャンクを導入することで、クリティックに基づく更新の信頼性を高める。
+Qwen3-4BをFineProofs-RL上で学習した結果、IMO-ProofBenchにおいてGRPOの検証スコアを上回り、デコーディングFLOPsを2.5分の1に削減。
+全軌跡を完了まで生成する必要をなくすことで、LLMのRLにおける効率的なクレジット割り当ての新たな設計空間を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/wenhaocha1/status/2105783824613613626?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] T1: Terminal Agent Reinforcement Learning for Long-Horizon Tasks, Junyao Yang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.11042</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6560</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, AIAgents, action_wanted, Actor-Critic, Coding, OpenWeight, SoftwareEngineering, PostTraining, Author Thread-Post, CreditAssignment</tags>
+<repo-issue-date>2026-09-13</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.11042
+# Authors
+  - Junyao Yang
+  - Yucheng Shi
+  - Zhongzhi Li
+  - Ruhan Wang
+  - Zongxia Li
+  - Haitao Mi
+  - Leowei Liang
+# Abstract
+  - Agent usage is shifting toward long-horizon tasks such as coding and scientific discovery, among which terminal tasks are especially important. We introduce T1, a Mixture-of-Experts model of 122B total trained with reinforcement learning, operating a real shell in a cloud sandbox for up to 300+ tool-call turns per task, rewarded by executing each task's own verifier. We provide a comprehensive recipe: First, an aggressively warm-started to stabilize actor-critic training, with a dense process reward scoring trajectories by the absolute number of passing verifiers. Second, stable optimization through TITO construction, training on the exact sampled token identifiers with drift repair at turn boundaries, and rollout routing replay, recording the sampler's per-token expert choices at every MoE layer and replaying them during training. Third, fully out-of-distribution training corpus: isolated seeds and synthesized tasks disjoint from Terminal-Bench 2.1 ensures gains reflect genuine capability transfer over benchmark overfitting. Together, TITO and R3 cut the training-to-inference log-probability difference from 0.021 to 0.013, with exactly aligned zero token drift in the loss region. On Terminal-Bench 2.1, our post-train pipeline raises initial base model from 43.8% to T1 with 64.0% resolved. On Long-Horizon Terminal Bench, T1 reaches 27.9% and surpasses GPT-5.4 and GLM-5.1.
+# Translation (by gpt-5-nano)
+- エージェントの利用は、コーディングや科学的発見などの長期的タスクへと移行しており、その中でも終端タスクは特に重要である。総計122B規模のMixture-of-Expertsモデルを強化学習で訓練し、クラウドサンドボックス内の実在のシェルを操作して、タスクあたり最大300回を超えるツール呼び出しを行い、各タスクの検証器を実行することによって報酬を得る。包括的なレシピを提示する。第一に、アクター‐クリティック訓練を安定化させるために積極的なウォームスタートを行い、過程報酬の軌跡を、合格した検証器の絶対数で密に評価する。第二に、TITO構成による安定化した最適化を用い、正確にサンプルされたトークン識別子に対して訓練し、ターン境界でのドリフト修復とロールアウト経路のリプレイを行い、MoE層ごとにサンプラーのトークンごとのエキスパート選択を記録して訓練中にリプレイする。第三に、Terminal-Bench 2.1とは完全に分布外の訓練コーパスとして、孤立したシードと合成タスクを用い、ベンチマーク過学習を超えた真の能力移転を反映する。合わせて、TITOとR3は訓練から推論への対数確率差を0.021から0.013へ低減し、損失領域でゼロトークン・ドリフトが正確に整合する。Terminal-Bench 2.1では、ポストトレインのパイプラインが初期ベースモデルを43.8%からT1へ引き上げ、64.0%が解決された。Long-Horizon Terminal Benchでは、T1は27.9%に到達し、GPT-5.4およびGLM-5.1を上回る。
+# Summary (by gpt-4o-mini)
+- エージェントは長期タスクに適応し、122BのMixture-of-Expertsモデルを強化学習で訓練。実際のシェルを操作し、最大300回のツール呼び出しとタスク検証を行う。訓練では、アクター‐クリティック法を安定化し、正確なサンプルリングを行うことで最適化。Terminal-Bench 2.1を用いて真の能力移転を達成し、T1は27.9%に到達し、他のモデルを上回る性能を示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yucheng__shi/status/2098276024324886709?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>pj page:
+
+{% raw %}
+<a href="https://jyyang26.github.io/t1/" target="_blank" rel="noopener noreferrer">https://jyyang26.github.io/t1/</a>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/collections/TberiusJunyao/t1" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/TberiusJunyao/t1</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Long-Horizon Language Model Reinforcement Learning via Progressive Point Matching, Preston Fu+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.07303</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6539</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PostTraining, read-later, Selected Papers/Blogs, CreditAssignment</tags>
+<repo-issue-date>2026-09-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.07303
+# Authors
+  - Preston Fu
+  - Kevin Frans
+  - Oleh Rybkin
+  - Sergey Levine
+  - Aviral Kumar
+# Abstract
+  - Current paradigms for training language models via reinforcement learning rely heavily on sparse outcome rewards. However, as we pursue tasks that require longer and more complicated trajectories, such strategies result in slow learning. Prior work has attempted to address this problem by rewarding partial progress; however, naive formulations are often biased and converge to suboptimal policies. We show that a simple and unbiased dense reward formulation, which we term progressive point matching, scales exponentially more efficiently to long-horizon tasks by rewarding partial progress on a segment level, both theoretically and empirically via synthetic environments. We then show how progressive point matching can be practically instantiated using a single reference trajectory per task. On extremely hard math reasoning problems, sparse outcome rewards cannot make any progress, whereas segment-level rewards enable improvements at larger test-time token budgets when measured by success rate or pass@k.
+# Translation (by gpt-5-nano)
+- 現在、強化学習を用いて言語モデルを訓練する際のパラダイムは、疎なアウトカム報酬に大きく依存している。しかし、より長く複雑な軌道を要するタスクを追求するにつれて、そのような戦略は学習を遅らせる。先行研究は部分的な進捗を報酬することでこの問題に対処しようとしてきたが、単純な定式化はしばしばバイアスを生み出し、最適でない方策へ収束する。我々は、単純で偏りのない密な報酬定式化を progressive point matching と呼び、セグメント単位で部分的な進捗を報酬することにより、長期的なタスクへ理論的にも経験的にも指数関数的に効率よくスケールすることを示す。合成環境を用いた理論的・実証的検証を通じて、これを示す。次に、progressive point matching がタスクごとに1つの参照軌跡を用いるだけで実装可能であることを示す。極めて難しい数学的推論問題では疎なアウトカム報酬は進歩を生み出せない一方で、セグメントレベルの報酬は成功率や pass@k で測定される場合に、より大きなテスト時トークン予算で改善をもたらす。
+# Summary (by gpt-4o-mini)
+- 強化学習における従来の疎なアウトカム報酬の方法は、長く複雑なタスクの学習を遅延させる。部分的な進捗を報酬するアプローチはバイアスを生じることがあるが、我々は「progressive point matching」と呼ぶ新たな密な報酬定式化を提案する。これにより、セグメント単位での進捗報酬が長期タスクに効果的にスケールすることを理論的・実証的に示した。特に、難解な数学的推論問題において、セグメントレベルの報酬が成功率を向上させることがわかった。</issue-body>
+<maintainer-comment-text><p>blog:
+
+{% raw %}
+<a href="https://www.prestonfu.com/notes/ppm/" target="_blank" rel="noopener noreferrer">https://www.prestonfu.com/notes/ppm/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/preston_fu/status/2097390949047664774?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] V-Rubrics: Visual Faithfulness via Rubric-Based Reinforcement Learning, Shulin Tian+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.25580</original-paper-blog-link>
@@ -191,6 +319,47 @@
 {% endraw %}
 
 </p><p>Rubric-basedなRLにおいて、Rubricの有無によって生じるtokenのlog probabilityの差を、当該トークンのルーブリックに対する重要度とみなし、token levelの学習シグナルを供給する。<br><img src="https://github.com/user-attachments/assets/442bb4af-2a7a-44ac-876d-6196c386ab03" /" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>JustRL II:  Scaling Small LLMs to 128K Reasoning with a Critic, MiniCPM RL Team, 2026.09</title>
+<original-paper-blog-link>https://panhaoxuan.notion.site/justrl-ii-scaling-small-llms-to-128k-reasoning-with-a-critic</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6533</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Actor-Critic, PostTraining, read-later, Selected Papers/Blogs, LongHorizon, Author Thread-Post, CreditAssignment</tags>
+<repo-issue-date>2026-09-09</repo-issue-date>
+<issue-body>https://panhaoxuan.notion.site/justrl-ii-scaling-small-llms-to-128k-reasoning-with-a-critic</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hbx_hbx/status/2097249861355933879?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4015" target="_blank" rel="noopener noreferrer">[Paper Note] JustRL: Scaling a 1.5B LLM with a Simple RL Recipe, Bingxiang He+, ICLR'26, 2025.12</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>终局奖励之后：从 Apodex 1.1 看长程 Agentic RL 如何分配 credit, 发布于, 2026.09</title>
+<original-paper-blog-link>https://qingkeai.online/blog/Apodex1.1-credit?utm_source=twitter</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6503</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, read-later, CreditAssignment</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body>https://qingkeai.online/blog/Apodex1.1-credit?utm_source=twitter</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qingke_ai/status/2095176875761189274?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

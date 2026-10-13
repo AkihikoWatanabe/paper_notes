@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2023-08-13">
+<paper-list last-updated="2026-10-02">
+<paper-entry>
+<title>[Paper Note] Contrastive Decoding: Open-ended Text Generation as Optimization, Xiang Lisa Li+, ACL'23, 2022.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2210.15097</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6696</repo-issue-link>
+<tags>NLP, LanguageModel, Coherence, ACL, Decoding, Selected Papers/Blogs, reading, One-Line Notes</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2210.15097
+# Authors
+  - Xiang Lisa Li
+  - Ari Holtzman
+  - Daniel Fried
+  - Percy Liang
+  - Jason Eisner
+  - Tatsunori Hashimoto
+  - Luke Zettlemoyer
+  - Mike Lewis
+# Abstract
+  - Given a language model (LM), maximum probability is a poor decoding objective for open-ended generation, because it produces short and repetitive text. On the other hand, sampling can often produce incoherent text that drifts from the original topics. We propose contrastive decoding (CD), a reliable decoding approach that optimizes a contrastive objective subject to a plausibility constraint. The contrastive objective returns the difference between the likelihood under a large LM (called the expert, e.g. OPT-13B) and a small LM (called the amateur, e.g. OPT-125M), and the constraint ensures that the outputs are plausible. CD is inspired by the fact that the failures of larger LMs (e.g., repetition, incoherence) are even more prevalent in smaller LMs, and that this difference signals which texts should be preferred. CD requires zero additional training, and produces higher quality text than decoding from the larger LM alone. It also works across model scales (OPT-13B and GPT2-1.5B) and significantly outperforms four strong decoding algorithms (e.g., nucleus, top-k) in automatic and human evaluations across wikipedia, news and story domains.
+# Translation (by gpt-5.6-luna)
+- 言語モデル（LM）が与えられたとき、最大確率を用いるデコーディング目的は、短く反復的なテキストを生成するため、自由生成には適していない。一方、サンプリングでは、しばしば首尾一貫性のないテキストが生成され、元のトピックから逸脱することがある。そこで我々は、もっともらしさの制約のもとで対照的な目的関数を最適化する、信頼性の高いデコーディング手法である対照的デコーディング（contrastive decoding; CD）を提案する。対照的目的関数は、大規模LM（エキスパートと呼ぶ。例：OPT-13B）と小規模LM（アマチュアと呼ぶ。例：OPT-125M）における尤度の差を返し、制約によって出力のもっともらしさを保証する。CDは、大規模LMの失敗（反復や非整合性など）が小規模LMではさらに顕著に現れ、その差がどのテキストを優先すべきかを示すという事実に着想を得ている。CDには追加の学習が一切不要であり、大規模LM単独からデコーディングするよりも質の高いテキストを生成する。また、モデルの規模をまたいで機能し（OPT-13BおよびGPT2-1.5B）、Wikipedia、ニュース、物語の各領域における自動評価および人手評価で、4つの強力なデコーディングアルゴリズム（核サンプリング、top-kなど）を大幅に上回る。
+# Summary (by gpt-5.6-luna)
+- LMに対し、大規模LMと小規模LMの尤度差を用いて対照的目的関数を最適化する対照的デコーディング（CD）を提案。
+もっともらしさの制約により、反復や話題逸脱を抑え、一貫性の高いテキストを生成する。
+追加学習なしで、核サンプリングやtop-kなどの既存手法を上回る性能を達成。</issue-body>
+<maintainer-comment-text><p>事前学習済み言語モデルに対してサンプリングを行いテキストを生成するアプローチは、長いシーケンスとなるとエラーが蓄積し一貫性が欠如したり、トピックが逸脱する課題がある。一方、greedyにデコードをするとしばしば短く、多様性に乏しく、同じ語彙が反復的に出現するようなテキストが生成されてしまう。これに対して、本研究はContrastive Decodingと呼ばれる、一貫性を保ちながら、流暢で多様な語彙に基づく生成を可能とするデコーディング手法を提案している。<br><br>Contrastive Decodingでは、エキスパートとアマチュアモデルを用意し（前者は同じシリーズの大規模モデル、後者は小規模モデル）、エキスパートモデルが高い対数尤度を持つという制約のもと、エキスパートとアマチュアモデルの対数尤度の差が最大となるようなテキストを探索する。<br>言語モデルの典型的なfailure modeはエキスパートよりもアマチュアにおいてより表出しやすいため、対数尤度の差分を見ることで、エキスパートがアマチュアと比較してより高い確率質量を割り当てているトークン列を強調する。<br><br>Figure 1がContrastive Decodingの他のデコーディング手法に対する利点を説明した図であり、この例では1961が適切であるが、greedy、サンプリングベースな手法の欠点を説明している。すなわに、エキスパートモデルは直前に出現したトークン、HawaiiやHonoluluに高い確率質量を置いてしまうため、greedyにデコーディングするとそれらが出力され、反復的なテキストが生成される。一方、Washingtonのようなトークンがサンプリングされると、支離滅裂なテキストとなる。Contrastive Decodingでは、これら典型的なfailure modeが抑制され、エキスパートでより高い確率質量を割り当てる傾向が強くなるトークン、たとえばこの例であれば事実に基づく1961というトークンを強調したようなスコアを得ることができる。<br><br><img src="https://github.com/user-attachments/assets/f1a22f6a-0bae-4962-80b9-4b803c82262a" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>DiscoScore: Evaluating Text Generation with BERT and Discourse Coherence, Wei Zhao+, N_A, EACL'23</title>
 <original-paper-blog-link>https://arxiv.org/abs/2201.11176</original-paper-blog-link>

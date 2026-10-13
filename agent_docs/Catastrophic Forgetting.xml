@@ -1,5 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-07-08">
+<paper-list last-updated="2026-10-04">
+<paper-entry>
+<title>[Paper Note] Local Support Learning, Assaf Ben-Kish+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.02126</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6706</repo-issue-link>
+<tags>NLP, LanguageModel, ContrastiveLearning, Catastrophic Forgetting, read-later, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.02126
+# Authors
+  - Assaf Ben-Kish
+  - Akarsh Kumar
+  - James Glass
+  - Raja Giryes
+# Abstract
+  - We explore catastrophic forgetting in the context of large pre-trained models. By considering forgetting as a geometric problem in the input space of each weight matrix, we uncover a natural retention objective under which updates produced by gradient-based optimizers are suboptimal. Following this observation, we propose Local Support Learning (LSL), a general-purpose framework that augments gradient-based training for retention of prior capabilities without access to prior data. During a new learning phase, LSL pairs two components with distinct roles: a standard weight adapter, trained as usual to minimize the loss, and a gating function that enables the adapter only on input activations from its own training distribution, making the update local to that distribution. The key challenge is that this gate must route data from all learning phases while training only on data from the current one. We address this with a gate based on a Gaussian Mixture Model (GMM), whose likelihood decays rapidly away from its training data, giving it a natural tendency to stay closed on data from prior phases. We show that this post-training approach can resolve forgetting in LLMs of up to 7 billion parameters, retaining both pretrained and finetuned capabilities across multiple training phases, while being efficient in memory and compute, robust to hyperparameter choice, and showing scaling potential.
+# Translation (by gpt-5.6-luna)
+- 大規模な事前学習済みモデルにおける壊滅的忘却について検討する。各重み行列の入力空間における忘却を幾何学的問題として捉えることで、勾配ベースの最適化手法によって生成される更新が最適ではないような、自然な保持目的を明らかにする。この知見に基づき、過去のデータにアクセスすることなく既存の能力を保持するため、勾配ベースの学習を拡張する汎用フレームワーク、Local Support Learning（LSL）を提案する。
+
+新たな学習段階において、LSLは異なる役割を持つ2つの構成要素を組み合わせる。1つは、損失を最小化するよう通常どおり学習される標準的な重みアダプターであり、もう1つは、アダプターをその学習分布に由来する入力活性に対してのみ有効化するゲーティング関数である。これにより、更新はその分布に局所化される。ここでの主要な課題は、現在の学習段階のデータだけで学習しながら、すべての学習段階からのデータを適切に振り分けるゲートを構築することである。
+
+この課題に対し、学習データから離れるにつれて尤度が急速に低下し、過去の段階のデータに対して自然に閉じた状態を保つ傾向を持つ、ガウス混合モデル（GMM）に基づくゲートを用いる。実験の結果、この学習後処理によるアプローチは、最大70億パラメータの大規模言語モデル（LLM）における忘却を解消し、複数の学習段階にわたって事前学習済み能力とファインチューニング後の能力の両方を保持できることを示す。さらに、メモリと計算資源の効率性、ハイパーパラメータ選択に対する頑健性、ならびにスケーリングの可能性も確認された。
+# Summary (by gpt-5.6-luna)
+- 大規模事前学習モデルの壊滅的忘却を、重み行列の入力空間における幾何学的問題として捉える。
+過去データを使わずに既存能力を保持するため、重みアダプターと入力活性に基づくゲーティング関数を組み合わせたLocal Support Learning（LSL）を提案。
+GMMベースのゲートにより更新を現在の学習分布に局所化し、過去の能力への干渉を防ぐ。
+最大70億パラメータのLLMで、複数の学習段階にわたり事前学習・ファインチューニング後の能力を保持し、メモリ効率とスケーラビリティも確認。</issue-body>
+<maintainer-comment-text><p>pj page:
+
+{% raw %}
+<a href="https://assafbk.github.io/lsl/" target="_blank" rel="noopener noreferrer">https://assafbk.github.io/lsl/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/abk_tau/status/2106005515532632069?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>おもしろそうだが、ぱっと見でまだ理解できておらず、特に訓練分布でのみアダプタを有効にする、というところがよくわかっていない。Finetuningで入力されるのはそのフェーズの学習データなのだから、常に訓練分布になるのでは？<br><br>あー、つまり、<br>- LLMは複数のフェーズで構成され、通常は重みW全体をΔWで更新するが、これはΔWと直行しない入力全てに影響を与える<br>- これが現在のフェーズとは関係ない入力に対しても影響を与えることがcatastrophic forgettingの原因の一つと仮定している<br>- この影響を最小限にするために、現在の学習フェーズのinputでのみ活性化するLoRAアダプタを用意し、Wはfreezeしアダプタのみを学習することで、Wへの干渉を最小限にする<br>- 推論時はgateを用いて、現在の入力がどのフェーズの入力に対応するかを判断し、アダプタを有効にするか否かをroutingする<br><br>という感じだろうか<br><br>しかし似たような話をどこかで見た気がする。</p><p>アダプタを結合して継続学習する枠組みで、catastrophic forgettingを抑制する、という話がある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4458" target="_blank" rel="noopener noreferrer">[Paper Note] Locas: Your Models are Principled Initializers of Locally-Supported Parametric Memories, Sidi Lu+, arXiv'26, 2026.02</a>
+<br><br>タスク単位の専門家としてのLoRA + 共有LoRA をcatastrophic forgettingとタスク間の転移を実現するような話もある:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3137" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Evolving LLMs via Continual Instruction Tuning, Jiazheng Kang+, WWW'26, 2025.09</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Finetuning with Sampling: SFT Learns Better Than You Think, Aayush Karan+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.02140</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6703</repo-issue-link>
+<tags>NLP, LanguageModel, Supervised-FineTuning (SFT), Catastrophic Forgetting, PostTraining, Generalization, Author Thread-Post</tags>
+<repo-issue-date>2026-10-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.02140
+# Authors
+  - Aayush Karan
+  - Sitan Chen
+  - Yilun Du
+# Abstract
+  - Introducing new capabilities to frontier models has long been the goal of posttraining, which predominantly employs supervised finetuning (SFT) and reinforcement learning (RL) to this end. Conventional wisdom dictates that RL enables strong generalization on new tasks without losing existing capabilities, while SFT is prone to weak generalization and catastrophic forgetting. At the same time, SFT can learn from off-policy expert data, whereas RL must rely on a model's ability to find successful trajectories with repeated sampling. In our work, we seek to leverage the strength of on-policy learning while utilizing the privileged information contained in off-policy data. However, rather than modifying the learning objective to accommodate this data, we instead tailor the data distribution to better suit the learner. We introduce a Markov chain Monte Carlo (MCMC) sampling algorithm that progressively transforms off-policy traces to be more on-policy given a reference model for finetuning. Across tasks like scientific skill acquisition, mathematical reasoning, and open-ended expertise, our sampling algorithm enables SFT to rival prevailing posttraining techniques, often generalizing better and forgetting less than strong on-policy baselines. In addition, the resulting finetuned models exhibit strong distributional performance and are capable of learning beyond sharpening the base model distribution. At a higher level, our approach presents sampling as a model-native operator that shapes data for learnability, offering broader utility as a general-purpose primitive throughout the posttraining stack.
+# Translation (by gpt-5.6-luna)
+- 最先端モデルに新たな能力を導入することは、長らくポストトレーニングの目標であり、そのために主として教師ありファインチューニング（SFT）と強化学習（RL）が用いられてきた。従来の通説では、RLは既存の能力を失うことなく新しいタスクに対して高い汎化性能を実現できる一方、SFTは汎化性能が低く、壊滅的忘却を起こしやすいとされている。同時に、SFTは方策外（off-policy）の専門家データから学習できるのに対し、RLは反復サンプリングによって成功軌跡を見つけるモデルの能力に依存しなければならない。
+
+本研究では、方策内（on-policy）学習の強みを活かしつつ、方策外データに含まれる特権的な情報を利用することを目指す。ただし、このデータに対応するよう学習目的を変更するのではなく、学習器により適したものとなるようデータ分布を調整する。具体的には、ファインチューニングに用いる参照モデルを条件として、方策外の軌跡を徐々により方策内のものへと変換する、マルコフ連鎖モンテカルロ（MCMC）サンプリングアルゴリズムを導入する。
+
+科学的スキルの獲得、数学的推論、オープンエンドな専門知識といったタスクにおいて、提案するサンプリングアルゴリズムにより、SFTは既存の主要なポストトレーニング手法に匹敵する性能を実現する。多くの場合、強力な方策内ベースラインと比べて、より高い汎化性能を示し、忘却も少ない。さらに、この手法でファインチューニングされたモデルは分布上の性能にも優れ、基盤モデルの分布を単に先鋭化する以上の学習が可能である。
+
+より高いレベルでは、本手法はサンプリングを、学習可能性のためにデータを整形するモデル固有の演算子として捉えるものであり、ポストトレーニング全体を通じた汎用的な基本要素として、より広い用途を提供する。
+# Summary (by gpt-5.6-luna)
+- SFTにMCMCサンプリングを導入し、off-policy軌跡を徐々にon-policyデータへ変換。
+方策内学習の汎化性能と忘却抑制を保ちつつ、専門家データの特権的情報を活用する。
+科学的スキル、数学的推論、オープンエンドな専門知識で、主要なポストトレーニング手法に匹敵し、強力なon-policyベースラインを上回る汎化性能と少ない忘却を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aakaran31/status/2106037829059133903?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] A Scalable Measure of Loss Landscape Curvature for Analyzing the Training Dynamics of LLMs, Dayal Singh Kalra+, NeurIPS'26, 2026.01</title>
+<original-paper-blog-link>https://arxiv.org/abs/2601.16979</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6646</repo-issue-link>
+<tags>Analysis, Pretraining, MachineLearning, NLP, LanguageModel, Optimizer, Catastrophic Forgetting, mid-training, PostTraining, Generalization, Author Thread-Post</tags>
+<repo-issue-date>2026-09-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2601.16979
+# Authors
+  - Dayal Singh Kalra
+  - Jean-Christophe Gagnon-Audet
+  - Andrey Gromov
+  - Ishita Mediratta
+  - Kelvin Niu
+  - Alexander H Miller
+  - Michael Shvartsman
+# Abstract
+  - Understanding the curvature evolution of the loss landscape is fundamental to analyzing the training dynamics of neural networks. The most commonly studied measure, Hessian sharpness ($λ_{\max}^H$) -- the largest eigenvalue of the loss Hessian -- determines local training stability and interacts with the learning rate throughout training. Despite its significance in analyzing training dynamics, direct measurement of Hessian sharpness remains prohibitive for Large Language Models (LLMs) due to high computational cost. We analyze $\textit{critical sharpness}$ ($λ_c$), a computationally efficient measure requiring fewer than $10$ forward passes given the update direction $Δ\mathbfθ$. Critically, this measure captures well-documented Hessian sharpness phenomena, including progressive sharpening and Edge of Stability. Using this measure, we provide the first demonstration of these sharpness phenomena at scale, up to $7$B parameters, spanning both pre-training and mid-training of OLMo-2 models. We further introduce $\textit{relative critical sharpness}$ ($λ_c^{1\to 2}$), which quantifies the curvature of one loss landscape while optimizing another, to analyze the transition from pre-training to fine-tuning and guide data mixing strategies. Critical sharpness provides practitioners with a practical tool for diagnosing curvature dynamics and informing data composition choices at scale. More broadly, our work shows that scalable curvature measures can provide actionable insights for large-scale training.
+# Translation (by gpt-5.6-luna)
+- ニューラルネットワークの学習ダイナミクスを分析するうえで、損失ランドスケープの曲率の変化を理解することは極めて重要である。最も一般的に研究されている指標であるヘッセ行列のシャープネス（$λ_{\max}^H$）――すなわち損失ヘッセ行列の最大固有値――は、局所的な学習の安定性を決定し、学習全体を通じて学習率と相互作用する。学習ダイナミクスの分析において重要であるにもかかわらず、ヘッセ行列のシャープネスを直接測定することは、計算コストが高いため、大規模言語モデル（LLM）では依然として現実的でない。
+
+本研究では、更新方向 $Δ\mathbfθ$ が与えられたとき、$10$回未満の順伝播で計算できる効率的な指標である、\textit{critical sharpness}（$λ_c$）を分析する。重要な点として、この指標は、progressive sharpeningやEdge of Stabilityを含む、これまでに詳細に報告されてきたヘッセ行列のシャープネスに関する現象を適切に捉える。さらにこの指標を用いて、最大70億パラメータにおよぶ規模で、OLMo-2モデルの事前学習および中間学習の双方において、これらのシャープネス現象を初めて実証する。
+
+また、事前学習からファインチューニングへの移行を分析し、データ混合戦略を導くために、一方の損失を最適化しながら別の損失ランドスケープの曲率を定量化する、\textit{relative critical sharpness}（$λ_c^{1\to 2}$）を導入する。critical sharpnessは、曲率のダイナミクスを診断し、大規模なスケールでデータ構成の選択に役立つ、実用的なツールを実務者に提供する。より広い観点では、本研究は、スケーラブルな曲率指標が大規模学習に対して実行可能な洞察を提供できることを示している。
+# Summary (by gpt-5.6-luna)
+- ニューラルネットワークの曲率を効率的に測定するため、更新方向から10回未満の順伝播で計算できるcritical sharpnessを導入。  
+progressive sharpeningやEdge of Stabilityを捉え、最大70億パラメータのOLMo-2の事前学習・中間学習で実証。  
+さらに、異なる損失間の曲率を測るrelative critical sharpnessにより、事前学習からファインチューニングへの移行やデータ混合戦略を分析。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dayal_kalra/status/2018720531604726032?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6647" target="_blank" rel="noopener noreferrer">[Paper Note] Understanding Optimization in Deep Learning with Central Flows, Jeremy M. Cohen+, ICLR'25, 2024.10</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6645" target="_blank" rel="noopener noreferrer">[Paper Note] Self-Stabilization: The Implicit Bias of Gradient Descent at the Edge of Stability, Alex Damian+, ICLR'23, 2022.09</a>
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6661" target="_blank" rel="noopener noreferrer">[Paper Note] Sharp Minima Can Generalize For Deep Nets, Laurent Dinh+, ICML'17, 2017.03</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Denser $\neq$ Better: Limits of On-Policy Self-Distillation for Continual Post-Training, Meng Wang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.01763</original-paper-blog-link>
@@ -149,7 +279,7 @@
 <title>[Paper Note] Locas: Your Models are Principled Initializers of Locally-Supported Parametric Memories, Sidi Lu+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.05085</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4458</repo-issue-link>
-<tags>NLP, LanguageModel, Catastrophic Forgetting, memory, Test-time Learning, ContinualLearning</tags>
+<tags>NLP, LanguageModel, Catastrophic Forgetting, memory, Test-time Learning/Adaptation, ContinualLearning</tags>
 <repo-issue-date>2026-02-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.05085
@@ -229,6 +359,41 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Self-Evolving LLMs via Continual Instruction Tuning, Jiazheng Kang+, WWW'26, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.18133</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3137</repo-issue-link>
+<tags>NLP, LanguageModel, GenerativeAdversarialNetwork, PEFT(Adaptor/LoRA), Catastrophic Forgetting, WWW, PostTraining, read-later</tags>
+<repo-issue-date>2025-10-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.18133
+# Authors
+  - Jiazheng Kang
+  - Le Huang
+  - Cheng Hou
+  - Zhe Zhao
+  - Zhenxiang Yan
+  - Chuan Shi
+  - Ting Bai
+# Abstract
+  - In real-world industrial settings, large language models (LLMs) must learn continually to keep pace with diverse and evolving tasks, requiring self-evolution to refine knowledge under dynamic data distributions. However, existing continual learning (CL) approaches, such as replay and parameter isolation, often suffer from catastrophic forgetting: training on new tasks degrades performance on earlier ones by overfitting to the new distribution and weakening generalization.We propose MoE-CL, a parameter-efficient adversarial mixture-of-experts framework for industrial-scale, self-evolving continual instruction tuning of LLMs. MoE-CL uses a dual-expert design: (1) a dedicated LoRA expert per task to preserve task-specific knowledge via parameter independence, mitigating forgetting; and (2) a shared LoRA expert to enable cross-task transfer. To prevent transferring task-irrelevant noise through the shared pathway, we integrate a task-aware discriminator within a GAN. The discriminator encourages the shared expert to pass only task-aligned information during sequential training. Through adversarial learning, the shared expert acquires generalized representations that mimic the discriminator, while dedicated experts retain task-specific details, balancing knowledge retention and cross-task generalization and thereby supporting self-evolution.Extensive experiments on the public MTL5 benchmark and an industrial Tencent3 benchmark validate the effectiveness of MoE-CL for continual instruction tuning. In real-world A/B testing for content compliance review on the Tencent Video platform, MoE-CL reduced manual review costs by 15.3%. These results demonstrate that MoE-CL is practical for large-scale industrial deployment where continual adaptation and stable transfer are critical.
+# Translation (by gpt-4o-mini)
+- 実世界の産業環境において、大規模言語モデル（LLMs）は多様で進化するタスクに対応するために継続的に学習する必要があり、動的なデータ分布の下で知識を洗練するための自己進化が求められます。しかし、既存の継続学習（CL）アプローチ、例えばリプレイやパラメータの隔離は、しばしば壊滅的な忘却に悩まされます。新しいタスクでのトレーニングは、新しい分布に過剰適合し、以前のタスクのパフォーマンスを低下させ、一般化能力を弱めます。そこで、私たちは産業規模の自己進化型継続指示調整のためのパラメータ効率的な敵対的専門家混合フレームワークであるMoE-CLを提案します。MoE-CLは二重専門家設計を採用しています：(1) タスクごとに専用のLoRA専門家を持ち、パラメータの独立性を通じてタスク特有の知識を保持し、忘却を軽減します；(2) クロスタスク転送を可能にする共有LoRA専門家です。共有経路を通じてタスクに無関係なノイズが転送されるのを防ぐために、GAN内にタスク認識型識別器を統合します。この識別器は、連続トレーニング中に共有専門家がタスクに整合した情報のみを通過させるよう促します。敵対的学習を通じて、共有専門家は識別器を模倣する一般化された表現を獲得し、専用専門家はタスク特有の詳細を保持し、知識の保持とクロスタスクの一般化のバランスを取り、自己進化を支援します。公的なMTL5ベンチマークおよび産業用のTencent3ベンチマークにおける広範な実験により、継続的な指示調整に対するMoE-CLの有効性が検証されました。Tencent Videoプラットフォームでのコンテンツコンプライアンスレビューに関する実世界のA/Bテストでは、MoE-CLが手動レビューコストを15.3%削減しました。これらの結果は、MoE-CLが継続的な適応と安定した転送が重要な大規模産業展開において実用的であることを示しています。
+# Summary (by gpt-4o-mini)
+- MoE-CLは、産業環境における大規模言語モデルの継続学習を支援するためのフレームワークで、タスクごとのLoRA専門家と共有LoRA専門家を用いて知識の保持とクロスタスクの一般化を実現。敵対的学習により、タスクに関連する情報のみを通過させる識別器を統合し、自己進化を促進。実験結果では、Tencent Videoプラットフォームでの手動レビューコストを15.3%削減し、実用性が示された。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1975059944815595710?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>continual instruction tuning... そしてGAN!?</p><p>タスク固有の知識を備えたLoRAと、タスク間で共有されるLoRAがクロスタスクの転移を促し、それぞれをMoEにおけるexpertsとして扱うことで、inputに対して動的に必要なLoRA expertsを選択する。このとき、Task Classifier（Adversarialに訓練する）でタスクに関係ない情報が順伝搬されないようにフィルタリングするっぽい？（GANをText Classifierの学習に使い、Classifierの情報を用いることで共有/タスク固有のLoRA expertsが学習されるように促すようだが、細かくどうやるかは読まないとわからない）。<br><br>ドメイン固有のタスクとデータに対して、さまざまなアダプターを追加していき、catastrophic forgettingを防ぎながら、扱えるタスクの幅が広がっていく枠組み自体は面白そう（学習は果たして安定するのだろうか）。<br><br><img src="https://github.com/user-attachments/assets/a09b2021-d487-49d5-9782-35b8e613d0a8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -502,42 +667,13 @@
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Self-Evolving LLMs via Continual Instruction Tuning, Jiazheng Kang+, arXiv'25, 2025.09</title>
-<original-paper-blog-link>https://arxiv.org/abs/2509.18133</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3137</repo-issue-link>
-<tags>NLP, LanguageModel, GenerativeAdversarialNetwork, PEFT(Adaptor/LoRA), Catastrophic Forgetting, PostTraining, read-later</tags>
-<repo-issue-date>2025-10-06</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2509.18133
-# Authors
-  - Jiazheng Kang
-  - Le Huang
-  - Cheng Hou
-  - Zhe Zhao
-  - Zhenxiang Yan
-  - Chuan Shi
-  - Ting Bai
-# Abstract
-  - In real-world industrial settings, large language models (LLMs) must learn continually to keep pace with diverse and evolving tasks, requiring self-evolution to refine knowledge under dynamic data distributions. However, existing continual learning (CL) approaches, such as replay and parameter isolation, often suffer from catastrophic forgetting: training on new tasks degrades performance on earlier ones by overfitting to the new distribution and weakening generalization.We propose MoE-CL, a parameter-efficient adversarial mixture-of-experts framework for industrial-scale, self-evolving continual instruction tuning of LLMs. MoE-CL uses a dual-expert design: (1) a dedicated LoRA expert per task to preserve task-specific knowledge via parameter independence, mitigating forgetting; and (2) a shared LoRA expert to enable cross-task transfer. To prevent transferring task-irrelevant noise through the shared pathway, we integrate a task-aware discriminator within a GAN. The discriminator encourages the shared expert to pass only task-aligned information during sequential training. Through adversarial learning, the shared expert acquires generalized representations that mimic the discriminator, while dedicated experts retain task-specific details, balancing knowledge retention and cross-task generalization and thereby supporting self-evolution.Extensive experiments on the public MTL5 benchmark and an industrial Tencent3 benchmark validate the effectiveness of MoE-CL for continual instruction tuning. In real-world A/B testing for content compliance review on the Tencent Video platform, MoE-CL reduced manual review costs by 15.3%. These results demonstrate that MoE-CL is practical for large-scale industrial deployment where continual adaptation and stable transfer are critical.
-# Translation (by gpt-4o-mini)
-- 実世界の産業環境において、大規模言語モデル（LLMs）は多様で進化するタスクに対応するために継続的に学習する必要があり、動的なデータ分布の下で知識を洗練するための自己進化が求められます。しかし、既存の継続学習（CL）アプローチ、例えばリプレイやパラメータの隔離は、しばしば壊滅的な忘却に悩まされます。新しいタスクでのトレーニングは、新しい分布に過剰適合し、以前のタスクのパフォーマンスを低下させ、一般化能力を弱めます。そこで、私たちは産業規模の自己進化型継続指示調整のためのパラメータ効率的な敵対的専門家混合フレームワークであるMoE-CLを提案します。MoE-CLは二重専門家設計を採用しています：(1) タスクごとに専用のLoRA専門家を持ち、パラメータの独立性を通じてタスク特有の知識を保持し、忘却を軽減します；(2) クロスタスク転送を可能にする共有LoRA専門家です。共有経路を通じてタスクに無関係なノイズが転送されるのを防ぐために、GAN内にタスク認識型識別器を統合します。この識別器は、連続トレーニング中に共有専門家がタスクに整合した情報のみを通過させるよう促します。敵対的学習を通じて、共有専門家は識別器を模倣する一般化された表現を獲得し、専用専門家はタスク特有の詳細を保持し、知識の保持とクロスタスクの一般化のバランスを取り、自己進化を支援します。公的なMTL5ベンチマークおよび産業用のTencent3ベンチマークにおける広範な実験により、継続的な指示調整に対するMoE-CLの有効性が検証されました。Tencent Videoプラットフォームでのコンテンツコンプライアンスレビューに関する実世界のA/Bテストでは、MoE-CLが手動レビューコストを15.3%削減しました。これらの結果は、MoE-CLが継続的な適応と安定した転送が重要な大規模産業展開において実用的であることを示しています。
-# Summary (by gpt-4o-mini)
-- MoE-CLは、産業環境における大規模言語モデルの継続学習を支援するためのフレームワークで、タスクごとのLoRA専門家と共有LoRA専門家を用いて知識の保持とクロスタスクの一般化を実現。敵対的学習により、タスクに関連する情報のみを通過させる識別器を統合し、自己進化を促進。実験結果では、Tencent Videoプラットフォームでの手動レビューコストを15.3%削減し、実用性が示された。</issue-body>
-<maintainer-comment-text><p>元ポスト:
+</p><p>openreview: 
 
 {% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jiqizhixin/status/1975059944815595710?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
+<a href="https://openreview.net/forum?id=LGo7U1m24L" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=LGo7U1m24L</a>
 {% endraw %}
 
-</p><p>continual instruction tuning... そしてGAN!?</p><p>タスク固有の知識を備えたLoRAと、タスク間で共有されるLoRAがクロスタスクの転移を促し、それぞれをMoEにおけるexpertsとして扱うことで、inputに対して動的に必要なLoRA expertsを選択する。このとき、Task Classifier（Adversarialに訓練する）でタスクに関係ない情報が順伝搬されないようにフィルタリングするっぽい？（GANをText Classifierの学習に使い、Classifierの情報を用いることで共有/タスク固有のLoRA expertsが学習されるように促すようだが、細かくどうやるかは読まないとわからない）。<br><br>ドメイン固有のタスクとデータに対して、さまざまなアダプターを追加していき、catastrophic forgettingを防ぎながら、扱えるタスクの幅が広がっていく枠組み自体は面白そう（学習は果たして安定するのだろうか）。<br><br><img src="https://github.com/user-attachments/assets/a09b2021-d487-49d5-9782-35b8e613d0a8" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -591,6 +727,34 @@
   Word Alignment, Zheng Li+, arXiv'25</a>
 </p><p>関連: PLaMo翻訳<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2517" target="_blank" rel="noopener noreferrer">PLaMo Translate: 翻訳特化大規模言語モデルの開発,今城+, Jxiv'25, 2025.08</a>
 <br><br>こちらはSFT->Iterative DPO->Model Mergeを実施し、翻訳に特化した継続事前学習はやっていないように見える。一方、SFT時点で独自のテンプレートを作成し、語彙の指定やスタイル、日本語特有の常体、敬体の指定などを実施できるように翻訳に特化したテンプレートを学習している点が異なるように見える。Hunyuanは多様な翻訳の指示に対応できるように学習しているが、PLaMo翻訳はユースケースを絞り込み、ユースケースに対する性能を高めるような特化型のアプローチをとるといった思想の違いが伺える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Online DPO: Online Direct Preference Optimization with Fast-Slow Chasing, Biqing Qi+, arXiv'24, 2024.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2406.05534</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2126</repo-issue-link>
+<tags>NLP, LanguageModel, PEFT(Adaptor/LoRA), Catastrophic Forgetting, DPO, PostTraining</tags>
+<repo-issue-date>2025-07-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2406.05534
+# Authors
+  - Biqing Qi
+  - Pengfei Li
+  - Fangyuan Li
+  - Junqi Gao
+  - Kaiyan Zhang
+  - Bowen Zhou
+# Abstract
+  - Direct Preference Optimization (DPO) improves the alignment of large language models (LLMs) with human values by training directly on human preference datasets, eliminating the need for reward models. However, due to the presence of cross-domain human preferences, direct continual training can lead to catastrophic forgetting, limiting DPO's performance and efficiency. Inspired by intraspecific competition driving species evolution, we propose a Online Fast-Slow chasing DPO (OFS-DPO) for preference alignment, simulating competition through fast and slow chasing among models to facilitate rapid adaptation. Specifically, we first derive the regret upper bound for online learning, validating our motivation with a min-max optimization pattern. Based on this, we introduce two identical modules using Low-rank Adaptive (LoRA) with different optimization speeds to simulate intraspecific competition, and propose a new regularization term to guide their learning. To further mitigate catastrophic forgetting in cross-domain scenarios, we extend the OFS-DPO with LoRA modules combination strategy, resulting in the Cross domain Online Fast-Slow chasing DPO (COFS-DPO). This method leverages linear combinations of fast modules parameters from different task domains, fully utilizing historical information to achive continual value alignment. Experimental results show that OFS-DPO outperforms DPO in in-domain alignment, while COFS-DPO excels in cross-domain continual learning scenarios.
+# Translation (by gpt-5.6-luna)
+- Direct Preference Optimization（DPO）は、報酬モデルを必要とせず、人間の嗜好データセットを直接用いて学習することで、大規模言語モデル（LLM）と人間の価値観との整合性を向上させる。しかし、異なるドメインにまたがる人間の嗜好が存在するため、継続的な直接学習を行うと壊滅的忘却が生じ、DPOの性能と効率が制限される可能性がある。種内競争が種の進化を促進するという着想に基づき、我々は嗜好整合のためのOnline Fast-Slow Chasing DPO（OFS-DPO）を提案する。これは、モデル間の高速追跡と低速追跡によって競争をシミュレートし、迅速な適応を促進するものである。
+
+具体的には、まずオンライン学習における後悔の上限を導出し、ミニマックス最適化の枠組みによって我々の動機を検証する。これに基づき、異なる最適化速度を持つLow-rank Adaptation（LoRA）を用いた同一の2つのモジュールを導入して種内競争をシミュレートし、それらの学習を導く新たな正則化項を提案する。さらに、異なるドメイン間での壊滅的忘却を軽減するため、LoRAモジュールの組み合わせ戦略をOFS-DPOに拡張し、Cross-domain Online Fast-Slow Chasing DPO（COFS-DPO）を構築する。この手法では、異なるタスクドメインにおける高速モジュールのパラメータを線形結合することで、過去の情報を最大限に活用し、継続的な価値整合を実現する。実験結果は、OFS-DPOがドメイン内の整合においてDPOを上回り、COFS-DPOがドメイン横断的な継続学習シナリオで優れた性能を発揮することを示している。
+# Summary (by gpt-5.6-luna)
+- DPOの継続学習で生じる壊滅的忘却を軽減するため、2つのLoRAモジュールによる高速・低速追跡で競争を模倣するOFS-DPOを提案。  
+さらに、異なるドメインの高速モジュールを線形結合するCOFS-DPOにより、過去の情報を活用した継続的な価値整合を実現。  
+OFS-DPOはドメイン内整合でDPOを上回り、COFS-DPOはドメイン横断的な継続学習で優れた性能を発揮。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-01-09">
+<paper-list last-updated="2026-09-24">
 <paper-entry>
 <title>[Paper Note] How to Set the Batch Size for Large-Scale Pre-training?, Yunhua Zhou+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.05034</original-paper-blog-link>
@@ -89,6 +89,26 @@
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>When Do Larger Batches Help Scale LLM Reinforcement Learning?, Tencent RL Team, 2026.09</title>
+<original-paper-blog-link>https://hy.tencent.ai/research/100116</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6633</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, Blog, PostTraining, Selected Papers/Blogs, One-Line Notes, CriticalBatchSize</tags>
+<repo-issue-date>2026-09-24</repo-issue-date>
+<issue-body>https://hy.tencent.ai/research/100116</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tencenthunyuan/status/2102960123379675423?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>目標性能まで到達するまでに必要なwall-clock timeとLLMでのオンポリシーRLのバッチサイズの関係性を明らかにしているようである。<br><br>LLMのオンポリシーRLでは、生成と学習においてバッチサイズの大きさが非対称に働く（すなわち、生成側の並列数を増やすとモデルの重み転送をより多く共有できるため処理に要する時間が短縮されるが、学習側でバッチサイズが増えると処理時間は増加する）ため、生成側の並列数の変化によるスループットの向上と、学習側のバッチサイズによる更新に必要なサンプル数の両方を考える必要がある。<br><br>このとき、目標性能に到達するまでに必要な累積応答数N（学習側）、エンドツーエンドのスループットq（生成側だけではなくシステム全体）を考える。<br><br>これにより、バッチサイズを変化させた時に必要なサンプル数の変化の比率r_N (=N/N_pivot, r_Nが1より大きい場合は、新たなバッチサイズが基準となるバッチサイズよりも、ある性能に到達するまでより多くの応答を必要とする)、<br><br>スループットの変化の比率r_q(=q/q_pivot, r_q>1の場合は、1秒あたりにより多くの応答を処理できる)を定義でき、<br><br>r_q > r_Nの場合、すなわち、バッチサイズを大きくしたことによる、システムのエンドツーエンドのスループット向上による恩恵が、学習側のサンプルコストの悪化を上回った場合に、バッチサイズを大きくすることで学習が高速化される、このときの改善の度合いは r_N/r_q で測ることができる。例えば、r_N/r_q=0.8の場合、学習時間が20%削減されることを意味する、といったフレームワークを定義でき (The criterion部分を参照）、<br><br>実践的には、<br>- 候補となるバッチサイズについて、学習率や関連するハイパーパラメータを調整し、学習に利用される応答単位での学習に対する寄与を揃え、累積応答数が等しい点での学習曲線を比較することで、r_Nを推定し<br>- 与えられたバッチサイズにおいてシステムのスループットを最大化する設定を探索し、r_qを測定する<br>- その上で、r_N/r_qを測定し、最も学習時間が短縮されるバッチサイズを採用する<br><br>というプロセスにおとしこむことができる（conclusionを参照）<br><br>という感じの話のようにみえる。</p></maintainer-comment-text>
 </paper-entry>
 
 </paper-list>

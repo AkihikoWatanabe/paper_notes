@@ -1,5 +1,263 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-20">
+<paper-list last-updated="2026-09-25">
+<paper-entry>
+<title>[Paper Note] DeepSeek Elastic Compute （DSec）: A Sandbox Infrastructure for Effective Agentic Training at Scale, Jialiang Huang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.22978</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6616</repo-issue-link>
+<tags>NLP, LanguageModel, Infrastructure, ReinforcementLearning, AIAgents, PostTraining, One-Line Notes, Environment</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.22978
+# Authors
+  - Jialiang Huang
+  - Hongxuan Tang
+  - Jingchang Chen
+  - Yuxuan Liu
+  - Yixiao Chen
+  - Yuan Cheng
+  - Yi Tao
+  - Jingli Zhou
+  - Yupeng Chen
+  - Haoyu Chen
+  - Jiarui Wang
+  - Shengkai Lin
+  - Chuqi Zhang
+  - Bryan Lee Teng
+  - Lian Guo
+  - Zhe Fu
+  - Wenjun Gao
+  - Yisong Wang
+  - Liang Zhao
+  - Zehao Wang
+  - Ziwei Xie
+  - Yongqiang Guo
+  - Peixin Cong
+  - Ziyi Gao
+  - Shuiping Yu
+  - Hanwei Xu
+  - Zuofan Wu
+  - Zhizhou Ren
+  - Yuyang Zhou
+  - Bowei Zhang
+  - Zhihuan Huang
+  - Qihao Zhu
+  - Lei Wang
+  - Tianle Lin
+  - Han Yu
+  - Jiewen Hu
+  - Dejian Yang
+  - Shuo Yang
+  - Shanghao Lu
+  - Shaoyuan Chen
+  - Junjie Qiu
+  - Zhangli Sha
+  - Yinmin Zhong
+  - Yongtong Wu
+  - Shiyu Wang
+  - Wei Liu
+  - Bingzheng Xu
+  - Longhao Chen
+  - Qiushi Du
+  - Yuzhen Huang
+  - Shirong Ma
+  - Yaohui Wang
+  - Mingshu Chen
+  - Tongrui Xiong
+  - Y. C. Yan
+  - Haowen Luo
+  - Haofen Liang
+  - Xiaokang Zhang
+  - Weihao Zeng
+  - Runxin Xu
+  - Peiyi Wang
+  - Jinhua Zhu
+  - Ruoyu Zhang
+  - Wenkai Yang
+  - Qi Tang
+  - Jiping Yu
+  - Tian Ye
+  - Ruizhe Pan
+  - Honghui Ding
+  - Xiaodong Liu
+  - Lingxiao Luo
+  - Zhihong Shao
+  - Yuhan Wu
+  - Jibai Lu
+  - Wen Liu
+  - Haoling Zhang
+  - Jingcheng Hu
+  - Yaoyang Ye
+  - Chaofan Lin
+  - Zhaochen Zhang
+  - Jianan Tong
+  - Hengxu Wu
+  - Zhihao Li
+  - Yicheng Wang
+  - Luyao Wang
+  - Yuzhuo Bai
+  - Lingyue Fu
+  - Ruifan Xu
+  - Y. Z. Wang
+  - Zonglin Li
+  - Mingqi Wei
+  - Haiyang Shen
+  - Chengyuan Zhang
+  - Chao Jin
+  - Zili Zhang
+  - R. H. Yang
+  - Xinbo Xu
+  - Jian Zhou
+  - Ruidong Zhu
+  - Yuzhe Guo
+  - Zelun Pan
+  - Shaoheng Nie
+  - Erhang Li
+  - Shuhan Lin
+  - Zheng Liu
+  - Anshuo Chen
+  - Zilong Lyu
+  - Sinuo Cao
+  - Rui Yu
+  - Chuhao Wang
+  - Junyi Guo
+  - Junxiao Song
+  - Kaifeng Chen
+  - Menghao Ye
+  - Junxian Li
+  - Di Wu
+  - Haiyang Ma
+  - Yilun Wang
+  - Haoran Yang
+  - Yizai Cai
+  - Shichun Liu
+  - Yiping Wang
+  - Junbo Sun
+  - Shicheng Xu
+  - Xiao Bi
+  - Ying He
+  - Yichao Zhang
+  - Mingxing Zhang
+  - Liyue Zhang
+  - Panpan Huang
+  - Wenfeng Liang
+# Abstract
+  - Large-scale agentic training and evaluation with large language models (LLMs) rely on isolated, stateful execution environments in which models inspect repositories, invoke tools, execute commands, and interact with task-specific services. These workloads create sandboxes in large bursts, span heterogeneous functionality and isolation requirements, retain state across long interactions, and draw from large image corpora with limited reuse. Supporting them therefore requires an elastic execution platform rather than a single sandbox runtime.   This report presents DeepSeek Elastic Compute (DSec), a production sandbox platform that exposes FnCall, container, microVM, and full-VM sandbox backends through a unified SDK. DSec coordinates placement and lifecycle management across the cluster, composes environments from independently versioned layers, combines memory sharing, reclamation, and CPU scheduling for high-density execution, and loads image data on demand from Fire-Flyer File System (3FS), a cluster-wide distributed filesystem. DSec is co-designed with the reinforcement learning (RL) framework, decouples stateful rollout execution from preemptible GPU training, coordinates sandbox lifecycle with training to preserve rollout state while reclaiming idle resources, and mitigates agent misbehavior such as reward hacking.   A single production-scale unit of DSec spans around 160 nodes, serving about 3 million sandboxes per day; in production, it supports over 380,000 concurrent sandboxes and sustains over 5,000 sandbox creations per second. Our evaluation and deployment experience show that these mechanisms reduce environment setup and image-distribution overhead, improve memory efficiency, and preserve latency-sensitive performance under high-density overcommit.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデル（LLM）を用いた大規模なエージェント型学習および評価では、モデルがリポジトリを調査し、ツールを呼び出し、コマンドを実行し、タスク固有のサービスと対話する、分離されたステートフルな実行環境が必要となる。これらのワークロードでは、サンドボックスが大規模かつ一斉に作成され、異種の機能や分離要件にまたがり、長時間のインタラクションにわたって状態を保持し、再利用が限られた大規模なイメージコーパスを利用する。そのため、単一のサンドボックスランタイムではなく、弾力的な実行プラットフォームが必要となる。
+
+本報告では、統合SDKを通じてFnCall、コンテナ、マイクロVM、フルVMのサンドボックスバックエンドを提供する、本番環境向けサンドボックスプラットフォームDeepSeek Elastic Compute（DSec）を紹介する。DSecは、クラスタ全体における配置とライフサイクル管理を調整し、独立してバージョン管理されたレイヤから環境を構成する。また、メモリ共有、回収、CPUスケジューリングを組み合わせることで高密度実行を実現し、クラスタ全体に展開された分散ファイルシステムであるFire-Flyer File System（3FS）からオンデマンドでイメージデータをロードする。DSecは強化学習（RL）フレームワークと協調設計されており、ステートフルなロールアウト実行をプリエンプティブルなGPU学習から分離する。さらに、アイドル状態のリソースを回収しつつロールアウト状態を保持するため、サンドボックスのライフサイクルを学習と連携させ、報酬ハッキングなどのエージェントの不正な挙動を抑制する。
+
+DSecの本番規模の1ユニットは約160ノードにまたがり、1日あたり約300万個のサンドボックスにサービスを提供する。本番環境では、38万個を超える同時実行サンドボックスをサポートし、毎秒5,000件を超えるサンドボックス作成を継続的に処理する。評価および導入経験から、これらの仕組みは環境構築とイメージ配布のオーバーヘッドを削減し、メモリ効率を向上させ、高密度なオーバーコミット環境においてもレイテンシに敏感な性能を維持することが示された。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントの大規模な学習・評価に向け、FnCall、コンテナ、マイクロVM、フルVMを統合的に提供する弾力的なサンドボックス基盤DSecを構築。  
+クラスタ全体で配置・ライフサイクル管理を行い、レイヤ構成、メモリ共有、リソース回収、CPUスケジューリング、3FSからのオンデマンドなイメージロードによって、高密度かつ効率的な実行を実現する。  
+さらに、RL学習と連携してステートフルなロールアウトをGPU学習から分離し、状態を保持したままアイドル資源を回収することで、効率向上とエージェントの不正挙動の抑制を両立。  
+本番環境では38万超の同時実行サンドボックスと毎秒5,000件超の作成処理を実現し、環境構築・イメージ配布のオーバーヘッドを削減しながら、高密度環境でも低遅延性能を維持。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/teortaxestex/status/2102453018260025415?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhihufrontier/status/2102683735049277718?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>ロールアウト時の状態の所有権をGPU上のトレーニングジョブではなく、CPU側のサンドボックスプラットフォーム側に持たせていることが重要とのことで、これによりロールアウトの状態をスナップショットし、学習が中断された場合でもGPUに再接続して必要に応じて（コマンドのリプレイではなく）再開できるため効率化される。<br><br>また、学習中のエージェントが不正な挙動をした場合（不正な行動によってタスクの解決を試みたり、インフラの障害を引き起こすコマンドの実行）に対する対策として、リソースに対するアクセス制御を強化しているようである。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Environment Evolution for Terminal Agents, Zhiyuan Fan+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.04128</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6520</repo-issue-link>
+<tags>AIAgents, Environment</tags>
+<repo-issue-date>2026-09-07</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.04128
+# Authors
+  - Zhiyuan Fan
+  - Tinghao Yu
+  - Yuanjun Cai
+  - Jiang Zhou
+  - Jiangtao Guan
+  - Jincheng Liu
+  - Yun Yang
+  - Dingxin Hu
+  - Zhuo Han
+  - Xing Wu
+  - Feng Zhang
+  - Lilin Wang
+# Abstract
+  - Scaling interactive and verifiable environments is critical for training terminal agents. As frontier models become more capable, environments synthesized from scratch become less challenging and thus provide limited learning signals. Recent co-evolution methods iteratively synthesize environments near the model's learnable frontier based on weaknesses exposed during rollouts. However, their dependence on on-policy rollouts limits generalization and the continuous provision of learning signals as the model becomes stronger. In this paper, we propose environment evolution, which incrementally increases environment difficulty off-policy and schedules the evolved environments generation by generation during training to provide continuous learning signals. We derive three evolution directions that influence environment difficulty from the multi-turn learning objective and then implement evolution along these directions through a loop-engineered multi-agent harness. Quantitative rollout experiments with Hy4 preview, Claude Opus 5, and GPT-5.6 Sol show that environment evolution consistently produces more difficult environments. We validate its effectiveness on Qwen3.6-27B and Qwen3.6-35B-A3B through simple long-horizon RL training, improving their performance by 14.4 and 18.0 percentage points on Terminal-Bench 2.1, respectively.
+# Translation (by gpt-5-nano)
+- インタラクティブで検証可能な環境をスケールさせることは、端末エージェントの訓練にとって極めて重要である。フロンティアモデルがより能力を高めるにつれ、最初から合成された環境は挑戦性が低くなり、したがって学習信号が限られる。最近の共進化法は、ロールアウト中に露呈した弱点に基づいて、モデルの学習可能なフロンティア付近の環境を反復的に合成する。しかし、オンポリシーのロールアウトに依存することは一般化を制限し、モデルが強くなるにつれて学習信号を継続的に提供することを困難にする。本論文では、オフポリシーで環境の難易度を段階的に高め、訓練中に世代ごとに進化した環境をスケジュールして継続的な学習信号を提供する「環境進化」を提案する。我々は、多ターン学習目的から環境難易度に影響を与える三つの進化方向を導出し、それらの方向に沿った進化を、ループ設計されたマルチエージェント・ハーネスを用いて実装する。Hy4 Preview、Claude Opus 5、GPT-5.6 Solを用いた定量的ロールアウト実験は、環境進化が一貫してより難しい環境を生み出すことを示している。我々は、Qwen3.6-27BおよびQwen3.6-35B-A3Bで、シンプルな長期RL訓練を通じてその有効性を検証し、それぞれTerminal-Bench 2.1での性能を14.4ポイントと18.0ポイント向上させた。
+# Summary (by gpt-4o-mini)
+- 「環境進化」を提案し、オフポリシーで動的に環境の難易度を高め、継続的な学習信号を提供。マルチエージェント環境での定量的実験により、訓練を通じて性能が向上したことを示し、Terminal-Bench 2.1で最大18.0ポイントの改善を実現。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2095788731651567845?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Agentと環境の共進化</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] UserBench: An Interactive Gym Environment for User-Centric Agents, Cheng Qian+, EMNLP'26, 2025.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2507.22034</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6461</repo-issue-link>
+<tags>NLP, LanguageModel, UserBased, AIAgents, Evaluation, EMNLP, Environment, Author Thread-Post</tags>
+<repo-issue-date>2026-09-04</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2507.22034
+# Authors
+  - Cheng Qian
+  - Zuxin Liu
+  - Akshara Prabhakar
+  - Zhiwei Liu
+  - Jianguo Zhang
+  - Haolin Chen
+  - Heng Ji
+  - Weiran Yao
+  - Shelby Heinecke
+  - Silvio Savarese
+  - Caiming Xiong
+  - Huan Wang
+# Abstract
+  - Large Language Models (LLMs)-based agents have made impressive progress in reasoning and tool use, enabling them to solve complex tasks. However, their ability to proactively collaborate with users, especially when goals are vague, evolving, or indirectly expressed, remains underexplored. To address this gap, we introduce UserBench, a user-centric benchmark designed to evaluate agents in multi-turn, preference-driven interactions. UserBench features simulated users who start with underspecified goals and reveal preferences incrementally, requiring agents to proactively clarify intent and make grounded decisions with tools. Our evaluation of leading open- and closed-source LLMs reveals a significant disconnect between task completion and user alignment. For instance, models provide answers that fully align with all user intents only 20% of the time on average, and even the most advanced models uncover fewer than 30% of all user preferences through active interaction. These results highlight the challenges of building agents that are not just capable task executors, but true collaborative partners. UserBench offers an interactive environment to measure and advance this critical capability.
+# Translation (by gpt-5-nano)
+- 大規模言語モデル（LLM）をベースにしたエージェントは、推論とツールの利用において顕著な進歩を遂げ、複雑なタスクを解決できるようになっている。しかし、目標があいまいであったり、進化したり、間接的に表現されたりする場合に、ユーザーと積極的に協働する能力はまだ十分に探究されていない。これらのギャップを埋めるために、ユーザー中心のベンチマークであるUserBenchを導入し、エージェントを多ターン・嗜好駆動型の相互作用で評価する。UserBenchは、出発時に未詳の目標を持ち、嗜好を段階的に開示するシミュレートされたユーザーを特徴とし、エージェントには意図を積極的に明確化し、ツールを使って根拠のある意思決定を行うことを求める。オープンソースおよびクローズドソースのLLMの評価は、タスク完了とユーザーの整合性との間に重大な乖離があることを示している。例えば、モデルがすべてのユーザー意図と完全に一致する回答を平均して出すのは20％程度で、最も高度なモデルでさえ能動的な対話を通じて全嗜好の30％未満しか明らかにできない。これらの結果は、単に有能なタスク実行者であるだけでなく、真の協働パートナーとなるエージェントを構築することの難しさを浮き彫りにしている。UserBenchは、この重要な能力を測定し前進させるための対話型環境を提供する。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLM）を活用したエージェントは複雑なタスクにおいて進歩を遂げているが、ユーザーと協働する能力にはまだ課題がある。これを解決するために、UserBenchというユーザー中心のベンチマークを導入し、エージェントの多ターン・嗜好駆動型の相互作用を評価する。UserBenchでは、明確でない目標を持つシミュレートされたユーザーが登場し、エージェントには意図の明確化と根拠のある意思決定が求められる。評価結果は、モデルがユーザーの意図に一致する回答を出すのが難しいことを示し、協働パートナーとしての能力の重要性を浮き彫りにしている。UserBenchはこの能力を測定し、向上させるための対話型環境を提供する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qiancheng1231/status/2093138180946145518?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3013" target="_blank" rel="noopener noreferrer">[Paper Note] UserRL: Training Interactive User-Centric Agent via Reinforcement   Learning, Cheng Qian+, EMNLP'26, 2025.09</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6462" target="_blank" rel="noopener noreferrer">[Paper Note] UserHarness: Harnessing User Minds for Stronger Agent Theory-of-Mind, Cheng Qian+, arXiv'26, 2026.05</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] SPADE: Self-Play in Adaptive Synthetic Executable Environments, Bo Liu+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.19197</original-paper-blog-link>
@@ -573,7 +831,7 @@ ExploitBenchを41件のV8バグに対して適用します。V8は広く展開�
 <title>[Paper Note] PostTrainBench: Can LLM Agents Automate LLM Post-Training?, Ben Rank+, arXiv'26, 2026.03</title>
 <original-paper-blog-link>https://arxiv.org/abs/2603.08640</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4887</repo-issue-link>
-<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, PostTraining, read-later, Selected Papers/Blogs, Environment, autoresearch</tags>
+<tags>NLP, Dataset, LanguageModel, AIAgents, Evaluation, SelfImprovement, PostTraining, read-later, Selected Papers/Blogs, Environment, autoresearch/RSI</tags>
 <repo-issue-date>2026-03-14</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2603.08640
@@ -1377,10 +1635,65 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </paper-entry>
 
 <paper-entry>
+<title>FineEnvs: Open Source RL Environments for LLM Agents, Adithya S Kolavi, 2026.09</title>
+<original-paper-blog-link>https://github.com/adithya-s-k/FineEnvs/tree/main/04-smoldataenvs</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6634</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, ReinforcementLearning, Repository, SmallModel, PostTraining, One-Line Notes, Environment</tags>
+<repo-issue-date>2026-09-25</repo-issue-date>
+<issue-body># URL
+https://github.com/adithya-s-k/FineEnvs/tree/main/04-smoldataenvs
+
+# Citation
+misc{fineenvs,
+  author = {Kolavi, Adithya S},
+  title  = {FineEnvs: Open Source RL Environments for LLM Agents},
+  year   = {2026},
+  url    = {https://github.com/adithya-s-k/FineEnvs}
+}</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/adithya_s_k/status/2103181855214432556?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>SLMのcoding, datascience向けの<br>(いわゆるSmolな)RL学習用の5k+のverifiableなタスクデータ、Environment、評価、学習のコードを提供。<br><br>従来の初心者向けのチュートリアルでは、GSM8Kのような既に飽和したデータセットが主なデータであり、より実用的なデータに基づいたRLVRのための環境を整えた、という感じに見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Reinforcing Agents with Collective Skills, Xu+, 2026.09</title>
+<original-paper-blog-link>https://www.alphaxiv.org/abs/2609.reinforcing-agents-collective-skills</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6613</repo-issue-link>
+<tags>NLP, Dataset, LanguageModel, ReinforcementLearning, AIAgents, Environment, Author Thread-Post</tags>
+<repo-issue-date>2026-09-23</repo-issue-date>
+<issue-body>https://www.alphaxiv.org/abs/2609.reinforcing-agents-collective-skills</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/billxbf/status/2102171932741574915?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>dataset, env:
+
+{% raw %}
+<a href="https://hub.harborframework.com/datasets/skill2env/skill2env" target="_blank" rel="noopener noreferrer">https://hub.harborframework.com/datasets/skill2env/skill2env</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>AgentENV, kvcache-ai, 2026.07</title>
 <original-paper-blog-link>https://github.com/kvcache-ai/AgentEnv</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6199</repo-issue-link>
-<tags>Tools, NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, Initial Impression Notes, Environment, Author Thread-Post</tags>
+<tags>Tools, NLP, LanguageModel, ReinforcementLearning, AIAgents, PostTraining, Initial Impression Notes, Environment, Author Thread-Post, SandboxEnvironment</tags>
 <repo-issue-date>2026-08-05</repo-issue-date>
 <issue-body>https://github.com/kvcache-ai/AgentEnv</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -1443,7 +1756,7 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>Task Smith</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

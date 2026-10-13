@@ -1,5 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-09">
+<paper-list last-updated="2026-10-02">
+<paper-entry>
+<title>[Paper Note] DepthBench: Measuring How Residual Connections Enable More Computational Depth, Keyu Wang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.32534</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6697</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Transformer, Architecture, ResidualStream, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.32534
+# Authors
+  - Keyu Wang
+  - Yangyi Huang
+  - Jiale Kang
+  - David González-Martínez
+  - Weiyang Liu
+  - Shiwei Liu
+# Abstract
+  - Depth is a natural way to increase the computational capacity in Transformers, yet the contribution of deeper layers can diminish as depth grows larger. Recent approaches enhance normalization (\text{e.g.}, LayerNorm Scaling) or residual connections (\text{e.g.}, mHC, AttnRes) to enable better information flow and depth utilization. However, it remains unclear whether they truly translate increased architectural depth into effective computational depth, and whether their reported gains stem from better access to information across depth, or unaccounted-for confounding factors. In this paper, we introduce \textbf{DepthBench}, a controlled benchmark for studying computational depth across various architectures. We systematically vary the width--depth aspect ratio ($d_{\text{model}}/n_{\text{layer}}$) from shallow--wide to deep--narrow shapes, while keeping the model size and pre-training recipe fixed. Across 10 representative architectures, we find that the benefit of allocating more capacity to depth is strongly architecture-dependent. Standard Pre-LN and most of its norm- and scaling-based variants provide little benefit and can even degrade performance as models become deeper and narrower, whereas HC and Full AttnRes improve consistently even at extreme deep shapes. These gains extend beyond pre-training loss and consistently translate into improved domain-specific performance and effective computation. Controlled layer-level analyses further show that the gains of HC and Full AttnRes are associated with more effective utilization of additional layers, revealing distinct mechanisms of computational depth across architectures. Overall, our results identify residual connection design as a key determinant of whether depth can serve as a meaningful scaling axis by enabling additional architectural depth to translate into effective computation.
+# Translation (by gpt-5.6-luna)
+- 深さはTransformerの計算能力を高める自然な方法であるが、深さが増すにつれて、より深い層の寄与は小さくなり得る。近年の手法では、正規化（\text{例：} LayerNorm Scaling）や残差接続（\text{例：} mHC、AttnRes）を強化することで、情報の流れと深さの活用を改善している。しかし、それらが実際にアーキテクチャ上の深さの増加を有効な計算深度へと変換しているのか、また報告された性能向上が深さ方向にわたる情報へのアクセス改善に由来するのか、それとも考慮されていない交絡因子によるものなのかは、依然として明らかではない。
+
+本論文では、さまざまなアーキテクチャにおける計算深度を研究するための、制御されたベンチマークである\textbf{DepthBench}を導入する。モデルサイズと事前学習のレシピを固定したまま、幅と深さのアスペクト比（$d_{\text{model}}/n_{\text{layer}}$）を、浅く幅広い形状から深く幅の狭い形状まで系統的に変化させる。代表的な10種類のアーキテクチャを比較した結果、容量を深さにより多く割り当てることの利点は、アーキテクチャに強く依存することが分かった。標準的なPre-LNと、その正規化およびスケーリングに基づく派生手法の多くは、ほとんど利点をもたらさず、モデルがより深く、より狭くなるにつれて、性能がむしろ低下する場合さえある。一方、HCとFull AttnResは、極端に深い形状においても一貫して性能を向上させる。
+
+これらの改善は事前学習損失にとどまらず、ドメイン固有の性能および実効計算量の向上へも一貫して結びつく。層レベルで制御したさらなる分析から、HCとFull AttnResによる性能向上は、追加された層をより効果的に活用できることと関連していることが明らかになり、アーキテクチャごとに計算深度を実現する仕組みが異なることが示された。総じて、本研究の結果は、残差接続の設計が、追加されたアーキテクチャ上の深さを実効的な計算へと変換することで、深さを意味のあるスケーリング軸として機能させられるかどうかを決定する主要因であることを示している。
+# Summary (by gpt-5.6-luna)
+- モデルサイズと事前学習条件を固定し、幅と深さの比率を変化させるDepthBenchで、Transformerの計算深度を評価。  
+10種類のアーキテクチャを比較した結果、標準的なPre-LNや正規化・スケーリング系手法は深く狭い構造で性能向上が乏しく、低下する場合もある一方、HCとFull AttnResは極端に深い構造でも一貫して性能を向上。  
+層レベルの分析から、追加層を有効活用できる残差接続の設計が、アーキテクチャ上の深さを実効的な計算深度へ変換する主要因であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2105792392582619523?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>（以下元ポストを参考に自分の言葉でメモ）<br>残差ストリームに対する様々なアーキテクチャを、統一した条件で（1.6B程度のモデルサイズまで）比較した結果、モデルを深くした場合に性能が改善する傾向にあるのはHC, AttnResのみであった。<br><br>その理由として、HCでは複数の残差ストリームを並列に保持すること、AttnResでは層ごとの中間表現を保持し後の層が必要に応じて取り出す、といったメカニズムによって、PreLNなどで典型的に見られる深い層になると残差ストリームが類似する（結果的に層を増やしても新たな情報が蓄積されない）性質が緩和され、深さ方向に追加した層をより有効に活用していることが示唆される、という感じの話に見える。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4109" target="_blank" rel="noopener noreferrer">[Paper Note] mHC: Manifold-Constrained Hyper-Connections, Zhenda Xie+, arXiv'25, 2025.12</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4113" target="_blank" rel="noopener noreferrer">[Paper Note] Hyper-Connections, Defa Zhu+, ICLR'25, 2024.09</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4915" target="_blank" rel="noopener noreferrer">[Paper Note] Attention Residuals, Kimi Team+, arXiv'26, 2026.03</a>
+ <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1900" target="_blank" rel="noopener noreferrer">[Paper Note] DeepNet: Scaling Transformers to 1,000 Layers, Hongyu Wang+, arXiv'22, 2022.03</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4327" target="_blank" rel="noopener noreferrer">[Paper Note] Post-LayerNorm Is Back: Stable, ExpressivE, and Deep, Chen Chen+, arXiv'26, 2026.01</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2131" target="_blank" rel="noopener noreferrer">[Paper Note] The Curse of Depth in Large Language Models, Wenfang Sun+, arXiv'25, 2025.02</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/4923" target="_blank" rel="noopener noreferrer">[Paper Note] Mixture-of-Depths Attention, Lianghui Zhu+, arXiv'26, 2026.03</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2142" target="_blank" rel="noopener noreferrer">[Paper Note] On Layer Normalization in the Transformer Architecture, Ruibin Xiong+, arXiv'20, 2020.02</a>
+</p><p>著者ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/Keyuciallo/status/2105057936166801585?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] xHC: Expanded Hyper-Connections, Xiangdong Zhang+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2607.14530</original-paper-blog-link>
@@ -693,7 +751,7 @@
 <title>[Paper Note] Hyper-Connections, Defa Zhu+, ICLR'25, 2024.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2409.19606</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4113</repo-issue-link>
-<tags>MachineLearning, NLP, LanguageModel, Transformer, Architecture, ICLR, Selected Papers/Blogs, ResidualStream</tags>
+<tags>MachineLearning, NLP, LanguageModel, Transformer, Architecture, ICLR, Selected Papers/Blogs, One-Line Notes, ResidualStream</tags>
 <repo-issue-date>2026-01-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2409.19606
@@ -718,7 +776,7 @@
 <a href="https://openreview.net/forum?id=9FqARW7dwB" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=9FqARW7dwB</a>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>従来は1本しかなかった残差ストリームを、並列にn本保持し、learnableなスカラー(connection weight)によってレイヤーの入力時に混合させ、合流させる際もlayerの計算結果を残差ストリームに混合させる。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

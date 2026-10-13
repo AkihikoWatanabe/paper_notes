@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-25">
+<paper-list last-updated="2026-10-02">
+<paper-entry>
+<title>[Paper Note] PreFT: Prefill-only finetuning for efficient inference, Andrew Lanpouthakoun+, NeurIPS'26, 2026.05</title>
+<original-paper-blog-link>https://arxiv.org/abs/2605.14217</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6639</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Personalization, PEFT(Adaptor/LoRA), LLMServing, NeurIPS, Decoding, KeyPoint Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-09-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2605.14217
+# Authors
+  - Andrew Lanpouthakoun
+  - Aryaman Arora
+  - Zhengxuan Wu
+  - Dhruv Pai
+  - Ben Keigwin
+  - Dan Jurafsky
+  - Christopher Potts
+# Abstract
+  - Large language models can now be personalised efficiently at scale using parameter efficient finetuning methods (PEFTs), but serving user-specific PEFTs harms throughput, even with specialised kernels and memory management techniques. This is because, theoretically and empirically, a mismatch exists between prefill (processing a large number of tokens at once) and decode (generating a single token autoregressively): the latter has far lower throughput when serving multiple adapters. Rather than optimising performance relative to parameter count, for efficient multi-adapter serving, we instead ought to optimise performance relative to serving throughput. We therefore propose PreFT (Prefill-only Finetuning), wherein we only apply the adapter to prefill tokens and discard it afterwards. PreFT significantly increases throughput with minimal effect on performance. We develop and release an efficient implementation of two prefill-only PEFTs, LoRA and ReFT, on the vLLM inference engine. We first show that serving multi-user PreFTs is more efficient than traditional PEFTs ($1.9\times$ the throughput when serving $512$ adapters on Llama 3.1 70B). Then, we compare the performance of prefill-only vs. all-token adapters on a variety of supervised finetuning and reinforcement learning tasks with LMs at varying scales. On SFT, we observe that the evaluation loss of PreFTs is higher than PEFTs, but can be compensated by increasing rank with nearly no reduction in throughput. On RL, we consistently find that PreFTs approach parity with standard PEFTs. Together, this work validates prefill-only adaptation of LLMs as a more favourable accuracy-throughput tradeoff than existing PEFTs for personalised serving.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデルは現在、パラメータ効率的ファインチューニング手法（PEFT）を用いることで、大規模かつ効率的にパーソナライズできる。しかし、ユーザーごとに異なるPEFTを提供すると、専用カーネルやメモリ管理技術を用いた場合でもスループットが低下する。これは、理論的にも実証的にも、プレフィル（大量のトークンを一度に処理する段階）とデコード（自己回帰的に単一のトークンを生成する段階）の間にミスマッチが存在するためである。特に後者では、複数のアダプターを提供する際のスループットがはるかに低くなる。
+
+複数アダプターの効率的な提供においては、パラメータ数に対する性能を最適化するのではなく、提供スループットに対する性能を最適化すべきである。そこで本研究では、PreFT（Prefill-only Finetuning）を提案する。PreFTでは、プレフィル段階のトークンにのみアダプターを適用し、その後は破棄する。PreFTは、性能への影響を最小限に抑えながら、スループットを大幅に向上させる。
+
+また、推論エンジンvLLM上で、プレフィル専用PEFTであるLoRAとReFTの効率的な実装を開発・公開する。まず、複数ユーザー向けのPreFTの提供が従来のPEFTより効率的であることを示す（Llama 3.1 70Bで512個のアダプターを提供する場合、スループットは1.9倍）。次に、さまざまな規模の言語モデルを用い、複数の教師ありファインチューニングおよび強化学習タスクにおいて、プレフィル専用アダプターと全トークン対応アダプターの性能を比較する。
+
+教師ありファインチューニング（SFT）では、PreFTの評価損失はPEFTより高くなるものの、ランクを増加させることで補償でき、その際スループットはほとんど低下しないことを確認した。強化学習（RL）では、PreFTが一貫して標準的なPEFTと同等の性能に近づくことが分かった。以上により、本研究は、LLMのプレフィル専用適応が、パーソナライズされた提供において、既存のPEFTよりも精度とスループットの好ましいトレードオフを実現することを示す。
+# Summary (by gpt-5.6-luna)
+- 複数ユーザー向けのPEFTでは、特にデコード段階でアダプター数に伴いスループットが低下する。
+そこで、プレフィル段階のトークンにのみアダプターを適用するPreFTを提案。
+LoRAとReFTを用いたPreFTをvLLM上に実装し、Llama 3.1 70Bで512個のアダプターを提供する場合、従来のPEFTに対して1.9倍のスループットを達成。
+SFTではランクの増加により性能低下を補償でき、RLでは標準PEFTと同等に近い性能を維持。
+LLMのパーソナライズにおいて、PreFTが精度と提供スループットの優れたトレードオフを実現することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/aslanpouthakoun/status/2060041445420183951?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ユーザごとに最適化されたLoRAアダプタ等を利用して生成する場合にスループットを最大化したい状況を考える。一般的にprefillはcompute-bound[^1]、decodeはmemory-bound[^2]であり、特にスループットを最大化するためにバッチを利用した場合、複数ユーザのリクエストがバッチ内に存在するため、複数のアダプタをメモリにロードしながらprefillとdecodeを実施することになるが、decode時に余計なメモリのオーバヘッドを有み[^3]、スループットが悪化する問題がある。これを解決するために、prefill時のみアダプタを利用し、デコード時はアダプタを活用しないというシンプルな手法PreFTが提案されている。<br><br>つまり、prefill時のKV Cacheはアダプタを通じて計算され、decode時の計算にはアダプタは考慮されないが、prefill時のKV Cacheを通じてアダプタの影響は間接的に保持されるため、アダプタを通じた生成の適応はできるはずだ、という気持ちの手法である。<br><br>PreFT（pが提案手法でprefillのみアダプタ利用、AはAll-positionで全ての位置でアダプタ利用）の結果、提案手法のスループットはアダプタ無しのベースライン（破線）に近いところまで改善した。<br><img src="https://github.com/user-attachments/assets/a6a9056c-c015-432d-98d5-25aabe6577f6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、Table 1, Table 2はそれぞれSFT, RL時の最終的なdownstreamタスクへの影響を調査している。<br><br>結論としては、SFTの場合は、個々のrank設定ごとに有意に性能が劣化するが、全体で見ると有意差はなかった。<br><img src="https://github.com/user-attachments/assets/3312cc66-8d4e-4b0a-93eb-e22391617f0b" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>また、RLではデータセットごとに差が出ておりGSM8Kでは特に性能の劣化が著しい。これについて付録で詳しい調査結果が記載されているようだが、最終的にはclear explanationは見つかっていないとのこと。また、All-positionとPreFTの間に有意差が生じており、平均してに-2ポイント程度性能が悪化する。<br><img src="https://github.com/user-attachments/assets/acda188e-794e-4bea-a4cb-767c75b1fd96" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>[^1]: 単一リクエストの複数トークンを並列に処理する必要があるため<br>[^2]: 単一のリクエストは新たな1つのトークンを生成するが、このときに基本的に巨大なKV Cacheをメモリから読み出す必要があるため<br>[^3]: たとえば、ユーザごとにアダプタが異なるためリクエスト単位でKV Cacheを保持しなければならなかったり、バッチに含まれるユーザのアダプタをメモリにロードしたりする必要がある、またLoRAのdown projection自体もmemory-boundedであることがArithmetic Intensityを計算するとわかる。すなわち、Arithmetic Intensity=メモリから1バイト読み出したあたり、どの程度の計算が実施されるか=FLOPS/bytes=1/(1/r+1/d+1/b) << Bであり、基本的にLoRAのランクrは出力次元数d, バッチ数bよりも小さいため、高々Arithmetic Intensity≒rにしかならず、これはGPUのハードウェア限界値に全く及ばないため、メモリ律速となる。ここでBはハードウェアの計算性能/ハードウェアのメモリ帯域であり、ハードウェア側の計算能力とメモリ帯域の比率を表す。Rooflineモデルに従うとBに近ければ近いほど演算性能が向上する。</p><p>性能の検証について、8Bまでの結果しかないように見えるので、より大きなサイズのモデルに対して提案手法を適用したときに、SFTにおける性能の劣化がどの程度生じるかはよくわからない。Table 1を見る限り、モデルサイズが大きい場合に、全体の傾向として性能が低下していそうにも見える。が、これはただそういう風に見えるという感想なので、よくわからないし、なんなら結局自分たちが適用したいdownstreamタスクで性能がどうなるかは見てみたいとわからない。<br><br>また、personalizationのためにLoRAアダプタを使いたい、という状況がどの程度存在するかもよくわからない。contextに情報をユーザごとに注入するような一時的な個人化で十分という状況は多いのではないだろうか。実用上はアダプタのメンテナンスコストも生じる。本研究はLoRAによるpersonalizationが、contextに注入する場合に対して重要であることを示すのはout of scopeだとは思う。が、このような状況が生じうること動機について、ストーリーとして一定の納得感は欲しいところではある。<br><br>スループットが改善されるというのは魅力的であるため、実際にLoRAをユーザごとに適用した上でサービングしたい、という制約がある場合は試してみる価値はあると思われる。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] A Year in LLM Serving: Workload Evolution, Caching and Load-Balancing, William Nixon+, arXiv'26, 2026.07</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.13573</original-paper-blog-link>
@@ -524,7 +569,7 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 <title>[Paper Note] The Ultimate Guide to Fine-Tuning LLMs from Basics to Breakthroughs: An  Exhaustive Review of Technologies, Research, Best Practices, Applied Research  Challenges and Opportunities, Venkatesh Balavadhani Parthasarathy+, arXiv'24, 2024.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2408.13296</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3292</repo-issue-link>
-<tags>Tutorial, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Evaluation, MultiModal, Pruning, PPO (ProximalPolicyOptimization), PEFT(Adaptor/LoRA), LLMServing, DPO, PostTraining, Selected Papers/Blogs, VisionLanguageModel</tags>
+<tags>Tutorial, MachineLearning, NLP, LanguageModel, Supervised-FineTuning (SFT), ReinforcementLearning, Evaluation, MultiModal, Pruning, Actor-Critic, PEFT(Adaptor/LoRA), LLMServing, DPO, PostTraining, Selected Papers/Blogs, VisionLanguageModel</tags>
 <repo-issue-date>2025-10-17</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2408.13296
@@ -607,6 +652,103 @@ Prefill-as-a-Service（PrfaaS）を提案する。PrfaaSは、長文脈プリフ
 # Summary (by gpt-4o-mini)
 - SARATHIは、LLMの推論効率を向上させる手法で、プレフィルリクエストをチャンクに分割し、デコードマキシマルバッチを構築することで計算利用率を最大化します。これにより、デコードスループットを最大10倍向上させ、エンドツーエンドスループットも改善。特に、A6000 GPU上のLLaMA-13Bモデルで顕著な性能向上を示し、パイプラインバブルを大幅に削減しました。</issue-body>
 <maintainer-comment-text><p>vLLMでも採用されている `Chunked Prefills` と `Decode-Maximal Batching` を提案している。<br>![Image](https://github.com/user-attachments/assets/4db0f73d-bdf4-4c2b-a765-2c9b242904f1)</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>DiffusionGemma-as-Jev, Matt Mastracci, 2026.09</title>
+<original-paper-blog-link>https://x.com/mmastrac/status/2100626193943052784?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6691</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, DiffusionModel, LLMServing, Post, Author Thread-Post, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-10-02</repo-issue-date>
+<issue-body>https://x.com/mmastrac/status/2100626193943052784?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text><p>vLLMのPR番号57250でマージされ、DiffusionGemmaをJev-likeに利用するための機能がプロトタイプとして実装されているようでえる。</p><p>Google Gemmaからも引用されている:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/googlegemma/status/2101069861598482817?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6682" target="_blank" rel="noopener noreferrer">Decision models, SGLang, 2026.09</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Decision models, SGLang, 2026.09</title>
+<original-paper-blog-link>https://docs.sglang.io/docs/supported-models/decision_models#decision-models</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6682</repo-issue-link>
+<tags>NLP, LanguageModel, MultiModal, Blog, LLMServing, VisionLanguageModel, One-Line Notes, Reading Reflections, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-09-30</repo-issue-date>
+<issue-body>https://docs.sglang.io/docs/supported-models/decision_models#decision-models</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sgl_project/status/2105095379272515603?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>SGLangにおいて、Qwen3.8-27B、およびQwen3.5-35B-A3Bを、chat modelからdecision model（System Oneな分類モデル）として利用するためのエンドポイントが追加されたようである。<br><br>ドキュメントを読むと、要は既存のLLMに対してリクエストをreasoning modeをオフでprefillし、応答のトークン位置でのスコアリング、選択肢、yes/noのトークンのlogprobを取得し、たとえばyes/noトークンのprobabilityを計算する場合はyes/noの2 vocabularyのsoftmaxを計算する。つまり、単に通常のLLMの応答の開始位置でのラベルのlogprobを取得して、最もlogprobが高いラベルを返し上述の確率を返すというシンプルな実装に見える。<br><br>System Oneモデル向けの追加のチューニングや、分類headなどが学習されているわけではない（SGLangはLLM Servingエンジンでありモデルの学習そのものはしないだろうから、そりゃそうだ、という話だった）点に注意。シンプルに、LLMのデコード開始位置でのlogprobを用いた分類器であり、これを念頭におけば、このエンドポイントを利用した場合のおおよその性能の見当はつく（性能が悪いと言いたいわけではなく、これまでのLLM利用の経験からあたりをつけやすいという意図である）。<br><br>System One系の話は実装の中身を確認して、どのような原理の元駆動するかを確認しないと、足元をすくわれる気がする。外から見た時の挙動は同じでも、アーキテクチャが結構異なる気がする。あと、アーキテクチャだけでなく、System Oneモデル向けのデータや最適化がされているかによって、そもそもの予測性能やzero-shotでの汎化性能にかなり差が生まれるのではないか、と思っている。しかし、まあ結局自分たちのユースケースに対して必要な性能が出ていて、latencyが必要な水準に達しているかを確認すれば良いだけではある。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>AI Infrastructure at Periodic, Periodic Labs, 2026.09</title>
+<original-paper-blog-link>https://periodic.com/news/ai-infrastructure-at-periodic</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6576</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, ReinforcementLearning, AIAgents, Blog, LLMServing</tags>
+<repo-issue-date>2026-09-16</repo-issue-date>
+<issue-body>https://periodic.com/news/ai-infrastructure-at-periodic</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zephyr_z9/status/2099901755308056840?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Inside the megakernel serving engine for North Mini Code, Cohere, 2026.09</title>
+<original-paper-blog-link>https://cohere.com/blog/megakernels</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6537</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Blog, LLMServing, One-Line Notes, GPUKernel, Author Thread-Post</tags>
+<repo-issue-date>2026-09-09</repo-issue-date>
+<issue-body>https://cohere.com/blog/megakernels</issue-body>
+<maintainer-comment-text><p>github:
+
+{% raw %}
+<a href="https://github.com/cohere-ai/cohere-megakernel" target="_blank" rel="noopener noreferrer">https://github.com/cohere-ai/cohere-megakernel</a>
+{% endraw %}
+
+</p><p>バッチサイズ1, 256k context、単一H100利用の条件下において、vLLM v0.24+FlashAttention3+Triton MoE backendよりも最大1.58倍デコーディングが高速（合成されたKV Cacheによる実験、実プロンプト+バッチサイズ8でも1.25--1.41倍高速）な実験的なLLM Servingエンジンのようである。<br>LLMのデコードを単一のカーネルに集約し、デコーディングのために必要な様々なステップごとの同期のオーバヘッドを削減したのだとか。</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cohere/status/2097410772355666393?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Agentic Kernels in Production, Brian Li, 2026.08</title>
+<original-paper-blog-link>https://x.com/brianli23/status/2093487934448214351?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6477</repo-issue-link>
+<tags>LanguageModel, AIAgents, LLMServing, Post, GPUKernel</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body>https://x.com/brianli23/status/2093487934448214351?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -1122,7 +1264,7 @@ Junda Chen, Yonghao Zhuang, Hao Zhang
 <title>NanoFlow, 2024.08</title>
 <original-paper-blog-link>https://github.com/efeslab/Nanoflow</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1368</repo-issue-link>
-<tags>NLP, LanguageModel, Library, python, Repository, LLMServing, KeyPoint Notes</tags>
+<tags>NLP, LanguageModel, Library, python, LLMServing, KeyPoint Notes</tags>
 <repo-issue-date>2024-08-31</repo-issue-date>
 <issue-body>https://github.com/efeslab/Nanoflow</issue-body>
 <maintainer-comment-text><p>vLLMよりも2倍程度高速なLLM serving framework。<br><br>オフライン評価<br><img src="https://github.com/user-attachments/assets/93d8362d-e0e4-4bdb-9de4-178e1eef2e33" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>オンラインでのlatency評価<br><img src="https://github.com/user-attachments/assets/506ebf39-9c47-4d11-9352-c26f6b0d155c" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>機能はvLLMの方が多いが、速度はこちらの方がかなり速そうではある。latencyのrequirementが厳しい場合などは検討しても良いかもしれない。<br><br>しかしLLM serving frameworkも群雄割拠ですね。</p><p>元ポスト:

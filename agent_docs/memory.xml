@@ -1,10 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-08-30">
+<paper-list last-updated="2026-09-24">
+<paper-entry>
+<title>[Paper Note] Memory Attention, Jiale Kang, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.28399</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6630</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, Architecture, memory, One-Line Notes</tags>
+<repo-issue-date>2026-09-24</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.28399
+# Authors
+  - Jiale Kang
+# Abstract
+  - Language models typically construct attention values from contextual hidden states, even when some of their content may be reusable across contexts. We investigate whether token-indexed memory can replace the dedicated value projection when complemented by contextual information. We propose Memory Attention (MA), which forms values by combining layer-specific token memory with contextual keys. The memory supplies token-specific representations, while the keys preserve context dependence. At inference, normalization can be folded into the memory tables, reducing value construction to lookup and addition. Token-indexed retrieval also enables CPU offloading with prefetching, reducing GPU parameter storage. Under matched training token budgets and with additional memory parameters, experiments across attention configurations show improved language modeling and average downstream performance.
+# Translation (by gpt-5.6-luna)
+- 言語モデルは通常、文脈に応じた隠れ状態からアテンション値を構成しますが、その内容の一部は文脈をまたいで再利用できる可能性があります。本研究では、文脈情報を併用することで、トークンにインデックス付けされたメモリが専用の値射影を置き換えられるかを検討します。そこで、Memory Attention（MA）を提案します。これは、層ごとのトークンメモリと文脈に応じたキーを組み合わせて値を形成します。メモリはトークン固有の表現を提供し、キーは文脈依存性を保持します。推論時には、正規化をメモリテーブルに組み込むことができるため、値の構成をルックアップと加算に削減できます。トークンに基づく検索により、プリフェッチを伴うCPUオフロードも可能になり、GPU上で保持するパラメータ量を削減できます。学習に用いるトークン数を揃え、追加のメモリパラメータを導入した条件で、さまざまなアテンション構成を用いて実験した結果、言語モデリング性能および下流タスクの平均性能が向上することが示されました。
+# Summary (by gpt-5.6-luna)
+- 言語モデルのvalue projectionを、tokenごとのmemoryとcontext依存のkeyを組み合わせるMemory Attention（MA）で置換。
+memoryがtoken固有表現、keyが文脈依存性を担い、推論時はlookupと加算で効率的にvalueを構成。
+token-based検索によりCPU offloadとGPUパラメータ削減も可能。
+言語モデリングおよび下流タスクで性能が向上。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/jo1uck/status/2102986568885834204?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>AttentionにおけるV計算を、Value = Key + Memoryの形式で表現し、MemoryはTokenからのlookupによって計算され、再利用可能なメモリを供給し、KeyによってContextや<br>前段以前の計算結果を供給する。これにより従来のValue projectionは加算+lookupの構造になり、CPUメモリ/SSDにMemoryをオフロードしておき、GPUが他の計算をしている間にGPUへの転送を重複させることで効率化ができる。また、ValueはKeyとtoken IDなら与えられれば再構築が可能なため、永続的にValueをキャッシュせず、必要に応じて検索+再構築という構造にすることもできる。<br><br><img src="https://github.com/user-attachments/assets/88173ee7-5df5-41ea-83aa-5fd153c33c74" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Efficient Test-Time Adaptation through Human-AI Interaction, Zora Zhiruo Wang+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.04141</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6540</repo-issue-link>
+<tags>NLP, LanguageModel, UserBased, AIAgents, DPO, memory, One-Line Notes, AgentSkills, Author Thread-Post</tags>
+<repo-issue-date>2026-09-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.04141
+# Authors
+  - Zora Zhiruo Wang
+  - Apurva Gandhi
+  - Rulin Shao
+  - Aspen Chen
+  - Jonas Mueller
+  - Zhiqi Liang
+  - Jett Chen
+  - Michael Ryan
+  - Qianou Ma
+  - Luxi He
+  - Zhoujun Cheng
+  - Andre He
+  - Seungone Kim
+  - Jiayi Geng
+  - Mingqian Zheng
+  - Weiwei Sun
+  - Zheyuan Zhang
+  - Xinran Zhao
+  - Yike Wang
+  - Abe Hou
+  - Liwei Jiang
+  - Pang Wei Koh
+  - Diyi Yang
+  - Graham Neubig
+  - Daniel Fried
+# Abstract
+  - AI agents are trained on population-scale data to encode broad capabilities spanning those of many practitioners. Yet the artifacts they produce rarely meet the personal bar professionals need to stake their reputation on. On realistic, open-ended tasks where success criteria are heterogeneous and insufficiently documented, individual expertise lives precisely in the elevation and departure from the average. In practice, iterative human-agent interaction surfaces criteria that users cannot fully specify up front, yet apply repeatedly across tasks. We argue this cross-session interaction data is a rich, underused signal for closing the gap to individual expertise. In this work, we propose test-time adaptation through human-agent interaction (TAHI), which integrates these signals into agent context and weights, and crystallizes each user's training and evaluation criteria via an evolving rubric module. We adapt agents to 30 individuals in two high-utility domains, writing and visual creation, on a total of 600 tasks. Our agents improve solo task success by 4.5-20.9% within only tens of tasks. Meanwhile, our evolving rubric module serves as a scalable annotation tool, creating evaluation rubrics that catch 16.0-22.3% more failures than those from LMs or humans alone. While agents are adapted towards individuals, we show these personalized agents also produce improvements in success of up to 8.8% that generalize across users.
+# Translation (by gpt-5-nano)
+- AIエージェントは集団規模のデータで訓練され、多くの実務家の能力を網羅する幅広い能力をエンコードする。しかし、彼らが生み出す成果物は、専門家が名声を賭けて公表する個人的な基準を満たすことは稀である。現実的でオープンエンドなタスクでは、成功基準が多様で十分に文書化されていないため、個別の専門知識は平均からの引き上げと逸脱に正確に宿る。実務の現場では、反復的な人間-エージェントの相互作用が、事前に完全には指定できない基準を浮かび上がらせつつ、タスクを横断して繰り返し適用される。私たちは、このセッションを跨ぐ相互作用データが個人の専門知識へのギャップを埋めるための豊かで十分に活用されていない信号であると主張する。本研究では、人間-エージェント相互作用を通じたテスト時適応（TAHI）を提案し、これらの信号をエージェントの文脈と重みに組み込み、進化するルーブリックモジュールを介して各ユーザーの訓練・評価基準を結晶化する。私たちは、執筆と視覚的創作という二つの高ユーティリティ領域で、計600タスクに対して30名の個人にエージェントを適応させた。私たちのエージェントは、数十のタスクのみで単独タスクの成功率を4.5–20.9％改善した。一方、進化するルーブリックモジュールはスケーラブルな注釈ツールとして機能し、LMや人間のみの場合より16.0–22.3％多くの失敗を検出する評価ルーブリックを作成する。エージェントが個人に適応される一方で、これらの個別化エージェントは、ユーザー間で一般化可能な最大8.8％の成功改善を生み出すことも示している。
+# Summary (by gpt-4o-mini)
+- AIエージェントは集団データで訓練され幅広い能力を持つが、専門的な成果物を満たすことは稀である。本研究では、人間-エージェント相互作用を活用し、テスト時適応（TAHI）を提案する。これにより、ユーザーの基準を反映した進化するルーブリックモジュールを導入し、エージェントを個別化。執筆と視覚的創作分野で600タスクに対し成功率を4.5–20.9％改善し、一般化可能な成功改善も示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/zhiruow/status/2097318532337864969?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>test-timeにuser-centeredなAI Agentを実現するために、セッションを跨いだ人間とLLMのinteractionの情報を活用することを提案。オープンエンドなタスクはしばしば成功に関する基準は明文化されておらず、エージェントの出力に対する人間の相互作用を通じて、その暗黙的な基準や専門知識、スキルがシグナルとして露出される。このシグナルを活用したい、というのが気持ち。<br><br>たとえばシグナルとしては、プランの調整、成果物の修正、テキストでのフィードバック、ルーブリック修正などが挙げられ、最終成果物を得るためにこれらのiterationを繰り返す。<br><br><img src="https://github.com/user-attachments/assets/e3ccf71e-8218-4710-98c0-eb8bd8c3f1c6" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/><br><br>これらの情報を<br>- context-based adaptation (事実情報や好みに関する情報をメモリに蓄積、手続き的な知識をスキル化）、<br>- weight-based adaptation（DPO+LoRA)<br>- verifier(人間とLLMのinteractionを通じて進化する評価ルーブリック）<br><br>によってエージェントに反映させる。<br><br>メモリやスキルに蓄積します、という話はよく見かける一方で、特徴的なのはweight-based adaptationと感じる。これは最初の成果物を得るためのtrajectory tau_0をrejected, 最後のiterationまでに得られたtrajectory t_0:Jが与えられた時に、エージェントが人間とのinteractionに依存することを避けるためにt_0:Jをより簡潔なtrajectoryにした軌跡（readなどの観察的なアクションは除外し、editなどの操作は一つにまとめる）をchosenとして、DPOのためのpreferenceデータを構築し、LoRAを用いて学習する、というものに見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] MemoryWalker: Stop Training Agents on Contexts They Never Saw, Zinco J+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.00865</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6509</repo-issue-link>
+<tags>memory, Compression, train-inference-mismatch, SelfDistillation, AgentHarness</tags>
+<repo-issue-date>2026-09-06</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.00865
+# Authors
+  - Zinco J
+  - Xunjie Zhu
+  - Shen Huang
+  - Zhenyi Wang
+  - Pengjun Xie
+  - Jieping Ye
+# Abstract
+  - Production agent harnesses such as Claude Code and Qwen-Agent compress context during rollout, but training under compression creates a conditioning problem: every eviction branches the effective history, so the learning object is a tree rather than a sequence. Existing linearizations either retain the rightmost path, causing time-travel leakage, or replay a depth-first traversal, causing train-inference mismatch. We introduce two exact, gradient-equivalent corrections: LogitTree, a segmented K-forward traversal, and a packed 4D attention mask. LogitTree requires K+1 backward passes; the 4D mask requires a custom kernel and white-box eviction records. We also propose SDCC (Self-Distillation for Conditioning Consistency), a single-backward-pass variational relaxation. At each eviction, it minimizes forward KL between the compressed student and a stop-gradient teacher on the reconstructed pre-eviction prefix. A residual per-junction KL of epsilon_KL gives an O(sqrt(epsilon_KL)) bound on the train-deployment total-variation gap. SDCC also applies to black-box harnesses. On seven web-search benchmarks with TC-RAG, AgentFold, MemexRL, Claude Code, and OpenCode, naive training inflates the train-rollout log-probability gap, especially on eviction-heavy batches. The exact methods stay at the no-compression floor, and SDCC substantially closes the gap, with lower logit drift and higher rollout rewards.
+# Translation (by gpt-5-nano)
+- プロダクションエージェント用ハーネス（ Claude Code や Qwen-Agent など）はロールアウト時に文脈を圧縮するが、圧縮下での学習は条件付けの問題を生む。エビクションごとに有効な履歴が分岐するため、学習対象はシーケンスではなく木構造になる。既存の線形化は右端の経路を保持して時間遡行のリークを生じさせるか、深さ優先探索を再生して訓練と推論の不一致を起こす。厳密で勾配等価な二つの補正を導入する。LogitTree は分割された K 回の前方伝搬を行い、もう一つは圧縮された 4D アテンションマスクである。LogitTree は K+1 回の逆伝搬を必要とし、4D マスクはカスタムカーネルとホワイトボックスのエビクション記録を必要とする。我々はまた、SDCC（Self-Distillation for Conditioning Consistency、条件付けの一貫性のための自己蒸留）を提案する。単一の逆伝搬パスでの変分緩和である。各エビクション時に、再構成されたエビクション前プレフィックスに対して、圧縮された学生モデルと勾配停止を適用した教師モデルとの間でフォワード KL を最小化する。接合点ごとの KL 残差 epsilon_KL は、訓練とデプロイメントの総変動差の上界を O(√epsilon_KL) にする。SDCC はブラックボックス・ハーネスにも適用される。TC-RAG、AgentFold、MemexRL、Claude Code、OpenCode を用いた七つのウェブ検索ベンチマークにおいて、ナイーブな訓練は訓練ロールアウト対数確率差を増大させ、特にエビクションが多いバッチで顕著である。正確な手法は圧縮なしの基準線のままであり、SDCC はギャップを大幅に縮小し、ロジットのドリフトを抑え、ロールアウト報酬を高める。
+# Summary (by gpt-4o-mini)
+- プロダクションエージェントのハーネスは文脈を圧縮するが、圧縮により学習の条件付けに問題が生じる。エビクションごとに履歴が木構造化され、既存の線形化は推論の不一致を引き起こす。二つの補正法（LogitTreeと4Dアテンションマスク）を用いて、この問題を解決。さらに、自己蒸留手法SDCCを提案し、接合点ごとのKL残差が訓練とデプロイメントの差を抑える。様々なベンチマークでSDCCがロールアウト報酬の向上に寄与することを示し、ナイーブな訓練と比較してパフォーマンスを改善。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sheriyuo/status/2095438351704920505?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Recursive Experiential-Working Memory Evolution for Long-Horizon Agent Harnesses, Zhaochen Yu+, arXiv'26, 2026.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2608.24876</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6448</repo-issue-link>
-<tags>NLP, AIAgents, memory, AgentSkills, autoresearch, Author Thread-Post</tags>
+<tags>NLP, AIAgents, SelfImprovement, memory, AgentSkills, autoresearch/RSI, Author Thread-Post</tags>
 <repo-issue-date>2026-08-30</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2608.24876
@@ -951,7 +1070,7 @@
 <title>[Paper Note] Memory Intelligence Agent, Jingyang Qiao+, arXiv'26, 2026.04</title>
 <original-paper-blog-link>https://arxiv.org/abs/2604.04503</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/5218</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, MultiModal, ContrastiveLearning, VisionLanguageModel, DeepResearch, memory, reading, Test-time Learning, Initial Impression Notes, needs-revision</tags>
+<tags>NLP, LanguageModel, AIAgents, MultiModal, ContrastiveLearning, VisionLanguageModel, DeepResearch, memory, reading, Test-time Learning/Adaptation, Initial Impression Notes, needs-revision</tags>
 <repo-issue-date>2026-04-14</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2604.04503
@@ -1612,7 +1731,7 @@
 <title>[Paper Note] Locas: Your Models are Principled Initializers of Locally-Supported Parametric Memories, Sidi Lu+, arXiv'26, 2026.02</title>
 <original-paper-blog-link>https://arxiv.org/abs/2602.05085</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4458</repo-issue-link>
-<tags>NLP, LanguageModel, Catastrophic Forgetting, memory, Test-time Learning, ContinualLearning</tags>
+<tags>NLP, LanguageModel, Catastrophic Forgetting, memory, Test-time Learning/Adaptation, ContinualLearning</tags>
 <repo-issue-date>2026-02-06</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2602.05085
@@ -1796,7 +1915,7 @@
 <title>[Paper Note] Agentic Reasoning for Large Language Models, Tianxin Wei+, arXiv'26, 2026.01</title>
 <original-paper-blog-link>https://arxiv.org/abs/2601.12538</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4273</repo-issue-link>
-<tags>Survey, NLP, LanguageModel, AIAgents, Planning, Reasoning, SelfImprovement, memory, One-Line Notes, Test-time Learning</tags>
+<tags>Survey, NLP, LanguageModel, AIAgents, Planning, Reasoning, SelfImprovement, memory, One-Line Notes, Test-time Learning/Adaptation</tags>
 <repo-issue-date>2026-01-23</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2601.12538
@@ -2139,6 +2258,64 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory, Siru Ouyang+, ICLR'26, 2025.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2509.25140</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3041</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, SelfImprovement, ICLR, read-later, Selected Papers/Blogs, memory, One-Line Notes, Test-time Learning/Adaptation, autoresearch/RSI</tags>
+<repo-issue-date>2025-09-30</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2509.25140
+# Authors
+  - Siru Ouyang
+  - Jun Yan
+  - I-Hung Hsu
+  - Yanfei Chen
+  - Ke Jiang
+  - Zifeng Wang
+  - Rujun Han
+  - Long T. Le
+  - Samira Daruki
+  - Xiangru Tang
+  - Vishy Tirumalashetty
+  - George Lee
+  - Mahsan Rofouei
+  - Hangfei Lin
+  - Jiawei Han
+  - Chen-Yu Lee
+  - Tomas Pfister
+# Abstract
+  - With the growing adoption of large language model agents in persistent real-world roles, they naturally encounter continuous streams of tasks. A key limitation, however, is their failure to learn from the accumulated interaction history, forcing them to discard valuable insights and repeat past errors. We propose ReasoningBank, a novel memory framework that distills generalizable reasoning strategies from an agent's self-judged successful and failed experiences. At test time, an agent retrieves relevant memories from ReasoningBank to inform its interaction and then integrates new learnings back, enabling it to become more capable over time. Building on this powerful experience learner, we further introduce memory-aware test-time scaling (MaTTS), which accelerates and diversifies this learning process by scaling up the agent's interaction experience. By allocating more compute to each task, the agent generates abundant, diverse experiences that provide rich contrastive signals for synthesizing higher-quality memory. The better memory in turn guides more effective scaling, establishing a powerful synergy between memory and test-time scaling. Across web browsing and software engineering benchmarks, ReasoningBank consistently outperforms existing memory mechanisms that store raw trajectories or only successful task routines, improving both effectiveness and efficiency; MaTTS further amplifies these gains. These findings establish memory-driven experience scaling as a new scaling dimension, enabling agents to self-evolve with emergent behaviors naturally arise.
+# Translation (by gpt-4o-mini)
+- 大規模言語モデルエージェントが持続的な現実世界の役割での採用が進む中、彼らは自然に継続的なタスクの流れに直面します。しかし、重要な制限は、蓄積されたインタラクションの履歴から学ぶことができず、貴重な洞察を捨て、過去のエラーを繰り返すことです。そこで、私たちはReasoningBankという新しいメモリフレームワークを提案します。これは、エージェントが自己判断した成功体験と失敗体験から一般化可能な推論戦略を抽出します。テスト時には、エージェントはReasoningBankから関連するメモリを取得し、それをインタラクションに活用し、新たな学びを統合することで、時間とともにより能力を高めることができます。この強力な経験学習者に基づいて、私たちはさらにメモリを意識したテスト時スケーリング（MaTTS）を導入します。これは、エージェントのインタラクション体験を拡大することで、この学習プロセスを加速し、多様化します。各タスクに対してより多くの計算リソースを割り当てることで、エージェントは豊富で多様な体験を生成し、高品質なメモリを合成するための豊かな対照信号を提供します。より良いメモリは、より効果的なスケーリングを導き、メモリとテスト時スケーリングの間に強力な相乗効果を確立します。ウェブブラウジングやソフトウェアエンジニアリングのベンチマークにおいて、ReasoningBankは、未加工の軌跡や成功したタスクルーチンのみを保存する既存のメモリメカニズムを一貫して上回り、効果と効率の両方を改善します。MaTTSはさらにこれらの利点を増幅します。これらの発見は、メモリ駆動の経験スケーリングを新しいスケーリングの次元として確立し、エージェントが自然に新たな行動を自己進化させることを可能にします。
+# Summary (by gpt-4o-mini)
+- ReasoningBankという新しいメモリフレームワークを提案し、エージェントが成功体験と失敗体験から推論戦略を抽出できるようにする。テスト時には関連メモリを活用し、学びを統合することで能力を向上させる。さらに、メモリを意識したテスト時スケーリング（MaTTS）を導入し、エージェントの体験を多様化・拡大する。これにより、ウェブブラウジングやソフトウェアエンジニアリングのベンチマークで既存のメモリメカニズムを上回る効果と効率を実現。メモリ駆動の経験スケーリングを新たな次元として確立し、エージェントの自己進化を促進する。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1972870229463355677?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>メモリを良質なものに更新、蓄積し続けることで性能がスケールするのであれば、新たなtest-time scalingのパラダイムになりそう。<br><br>ざっくり読んでみると本研究ではこのパラダイムのことをTest-Time Learningと呼称している（先行研究が２つ引用されているがざっと見た限りでは両者はそう言った呼称はしていないように見えた）。<br>すなわち、クエリのストリームが到達した時に将来のクエリを見ることはできずに、過去のクエリに対するtrajectoryや、self-verificationなどによってのみラベル無しで自己進化していくパラダイムのこと。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3052" target="_blank" rel="noopener noreferrer">[Paper Note] M+: Extending MemoryLLM with Scalable Long-Term Memory, Yu Wang+, ICML'25, 2025.02</a>
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=jL7fwchScm" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=jL7fwchScm</a>
+{% endraw %}
+
+</p><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=jL7fwchScm" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=jL7fwchScm</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Memory Decoder: A Pretrained, Plug-and-Play Memory for Large Language Models, Jiaqi Cao+, NeurIPS'25, 2025.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2508.09874</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6238</repo-issue-link>
@@ -2173,7 +2350,7 @@
 <title>[Paper Note] Evo-Memory: Benchmarking LLM Agent Test-time Learning with Self-Evolving Memory, Tianxin Wei+, arXiv'25, 2025.11</title>
 <original-paper-blog-link>https://arxiv.org/abs/2511.20857</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/4428</repo-issue-link>
-<tags>NLP, Dataset, AIAgents, Evaluation, memory, Test-time Learning</tags>
+<tags>NLP, Dataset, AIAgents, Evaluation, memory, Test-time Learning/Adaptation</tags>
 <repo-issue-date>2026-02-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2511.20857
@@ -2474,7 +2651,7 @@
 <title>[Paper Note] Titans: Learning to Memorize at Test Time, Ali Behrouz+, NeurIPS'25, 2024.12</title>
 <original-paper-blog-link>https://arxiv.org/abs/2501.00663</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3587</repo-issue-link>
-<tags>NeuralNetwork, NLP, LongContext, Architecture, NeurIPS, read-later, Selected Papers/Blogs, memory, Test-time Learning</tags>
+<tags>NeuralNetwork, NLP, LongContext, Architecture, NeurIPS, read-later, Selected Papers/Blogs, memory, Test-time Learning/Adaptation</tags>
 <repo-issue-date>2025-11-05</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2501.00663
@@ -2622,6 +2799,12 @@
 </div>
 {% endraw %}
 
+</p><p>openreview: 
+
+{% raw %}
+<a href="https://openreview.net/forum?id=LGo7U1m24L" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=LGo7U1m24L</a>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -2695,7 +2878,7 @@
 <title>[Paper Note] ArcMemo: Abstract Reasoning Composition with Lifelong LLM Memory, Matthew Ho+, arXiv'25, 2025.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.04439</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3236</repo-issue-link>
-<tags>MachineLearning, NLP, Abstractive, LanguageModel, Reasoning, Generalization, memory, One-Line Notes, Test-time Learning</tags>
+<tags>MachineLearning, NLP, Abstractive, LanguageModel, Reasoning, Generalization, memory, One-Line Notes, Test-time Learning/Adaptation</tags>
 <repo-issue-date>2025-10-13</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2509.04439
@@ -2885,58 +3068,6 @@ SWAXに関する直感に反する発見は、より大きなスライディン�
 </paper-entry>
 
 <paper-entry>
-<title>[Paper Note] ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory, Siru Ouyang+, arXiv'25, 2025.09</title>
-<original-paper-blog-link>https://arxiv.org/abs/2509.25140</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/3041</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, read-later, Selected Papers/Blogs, memory, One-Line Notes, Test-time Learning</tags>
-<repo-issue-date>2025-09-30</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2509.25140
-# Authors
-  - Siru Ouyang
-  - Jun Yan
-  - I-Hung Hsu
-  - Yanfei Chen
-  - Ke Jiang
-  - Zifeng Wang
-  - Rujun Han
-  - Long T. Le
-  - Samira Daruki
-  - Xiangru Tang
-  - Vishy Tirumalashetty
-  - George Lee
-  - Mahsan Rofouei
-  - Hangfei Lin
-  - Jiawei Han
-  - Chen-Yu Lee
-  - Tomas Pfister
-# Abstract
-  - With the growing adoption of large language model agents in persistent real-world roles, they naturally encounter continuous streams of tasks. A key limitation, however, is their failure to learn from the accumulated interaction history, forcing them to discard valuable insights and repeat past errors. We propose ReasoningBank, a novel memory framework that distills generalizable reasoning strategies from an agent's self-judged successful and failed experiences. At test time, an agent retrieves relevant memories from ReasoningBank to inform its interaction and then integrates new learnings back, enabling it to become more capable over time. Building on this powerful experience learner, we further introduce memory-aware test-time scaling (MaTTS), which accelerates and diversifies this learning process by scaling up the agent's interaction experience. By allocating more compute to each task, the agent generates abundant, diverse experiences that provide rich contrastive signals for synthesizing higher-quality memory. The better memory in turn guides more effective scaling, establishing a powerful synergy between memory and test-time scaling. Across web browsing and software engineering benchmarks, ReasoningBank consistently outperforms existing memory mechanisms that store raw trajectories or only successful task routines, improving both effectiveness and efficiency; MaTTS further amplifies these gains. These findings establish memory-driven experience scaling as a new scaling dimension, enabling agents to self-evolve with emergent behaviors naturally arise.
-# Translation (by gpt-4o-mini)
-- 大規模言語モデルエージェントが持続的な現実世界の役割での採用が進む中、彼らは自然に継続的なタスクの流れに直面します。しかし、重要な制限は、蓄積されたインタラクションの履歴から学ぶことができず、貴重な洞察を捨て、過去のエラーを繰り返すことです。そこで、私たちはReasoningBankという新しいメモリフレームワークを提案します。これは、エージェントが自己判断した成功体験と失敗体験から一般化可能な推論戦略を抽出します。テスト時には、エージェントはReasoningBankから関連するメモリを取得し、それをインタラクションに活用し、新たな学びを統合することで、時間とともにより能力を高めることができます。この強力な経験学習者に基づいて、私たちはさらにメモリを意識したテスト時スケーリング（MaTTS）を導入します。これは、エージェントのインタラクション体験を拡大することで、この学習プロセスを加速し、多様化します。各タスクに対してより多くの計算リソースを割り当てることで、エージェントは豊富で多様な体験を生成し、高品質なメモリを合成するための豊かな対照信号を提供します。より良いメモリは、より効果的なスケーリングを導き、メモリとテスト時スケーリングの間に強力な相乗効果を確立します。ウェブブラウジングやソフトウェアエンジニアリングのベンチマークにおいて、ReasoningBankは、未加工の軌跡や成功したタスクルーチンのみを保存する既存のメモリメカニズムを一貫して上回り、効果と効率の両方を改善します。MaTTSはさらにこれらの利点を増幅します。これらの発見は、メモリ駆動の経験スケーリングを新しいスケーリングの次元として確立し、エージェントが自然に新たな行動を自己進化させることを可能にします。
-# Summary (by gpt-4o-mini)
-- ReasoningBankという新しいメモリフレームワークを提案し、エージェントが成功体験と失敗体験から推論戦略を抽出できるようにする。テスト時には関連メモリを活用し、学びを統合することで能力を向上させる。さらに、メモリを意識したテスト時スケーリング（MaTTS）を導入し、エージェントの体験を多様化・拡大する。これにより、ウェブブラウジングやソフトウェアエンジニアリングのベンチマークで既存のメモリメカニズムを上回る効果と効率を実現。メモリ駆動の経験スケーリングを新たな次元として確立し、エージェントの自己進化を促進する。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/arankomatsuzaki/status/1972870229463355677?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>メモリを良質なものに更新、蓄積し続けることで性能がスケールするのであれば、新たなtest-time scalingのパラダイムになりそう。<br><br>ざっくり読んでみると本研究ではこのパラダイムのことをTest-Time Learningと呼称している（先行研究が２つ引用されているがざっと見た限りでは両者はそう言った呼称はしていないように見えた）。<br>すなわち、クエリのストリームが到達した時に将来のクエリを見ることはできずに、過去のクエリに対するtrajectoryや、self-verificationなどによってのみラベル無しで自己進化していくパラダイムのこと。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/3052" target="_blank" rel="noopener noreferrer">[Paper Note] M+: Extending MemoryLLM with Scalable Long-Term Memory, Yu Wang+, ICML'25, 2025.02</a>
-</p><p>openreview:
-
-{% raw %}
-<a href="https://openreview.net/forum?id=jL7fwchScm" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=jL7fwchScm</a>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
 <title>[Paper Note] Latent learning: episodic memory complements parametric learning by  enabling flexible reuse of experiences, Andrew Kyle Lampinen+, arXiv'25, 2025.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2509.16189</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2923</repo-issue-link>
@@ -3057,7 +3188,7 @@ SWAXに関する直感に反する発見は、より大きなスライディン�
 <title>[Paper Note] Memento: Fine-tuning LLM Agents without Fine-tuning LLMs, Huichi Zhou+, arXiv'25, 2025.08</title>
 <original-paper-blog-link>https://arxiv.org/abs/2508.16153</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/2650</repo-issue-link>
-<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, memory, Test-time Learning</tags>
+<tags>NLP, LanguageModel, ReinforcementLearning, AIAgents, memory, Test-time Learning/Adaptation</tags>
 <repo-issue-date>2025-09-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2508.16153
@@ -3325,7 +3456,7 @@ SWAXに関する直感に反する発見は、より大きなスライディン�
 <title>[Paper Note] Agent Workflow Memory, Zora Zhiruo Wang+, arXiv'24, 2024.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2409.07429</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1854</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, action_wanted, memory, One-Line Notes, needs-revision</tags>
+<tags>NLP, LanguageModel, AIAgents, Selected Papers/Blogs, memory, One-Line Notes, needs-revision</tags>
 <repo-issue-date>2025-04-02</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2409.07429
@@ -3429,6 +3560,31 @@ Transformerモデルに変更を加えることなく、入力または出力シ
 
 {% raw %}
 <a href="https://neurips.cc/media/neurips-2019/Slides/15837.pdf" target="_blank" rel="noopener noreferrer">https://neurips.cc/media/neurips-2019/Slides/15837.pdf</a>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>VISTA: A Visual Harness for Reasoning in an Interactive World, Han+, 2026.08</title>
+<original-paper-blog-link>https://vista-research.github.io/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6291</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, AIAgents, Reasoning, read-later, Selected Papers/Blogs, 2D (Image), 3D (Scene), memory, LongHorizon, Author Thread-Post, AgentHarness</tags>
+<repo-issue-date>2026-08-10</repo-issue-date>
+<issue-body>## URL
+blog: https://vista-research.github.io/
+code: https://github.com/joshhhhhan/VISTA
+
+## Authors
+Qiushi Han, Keya Hu, Linlu Qiu, Cathy Wu and Kaiming He</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/joshhanhi/status/2085179573621121266?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
 {% endraw %}
 
 </p></maintainer-comment-text>
