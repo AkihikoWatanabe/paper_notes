@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     permissions:
-      contents: read
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: Checkout branch
@@ -26,6 +26,18 @@ jobs:
       run: |
         docker compose -f docker-compose.deploy.yaml build --pull --no-cache
         docker compose -f docker-compose.deploy.yaml up --abort-on-container-exit --exit-code-from temp_container
+
+    - name: Commit generated agent_docs
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add -- agent_docs/
+        if git diff --cached --quiet; then
+          echo "No agent_docs changes to commit."
+          exit 0
+        fi
+        git commit -m "Update agent_docs"
+        git push origin "HEAD:${GITHUB_REF_NAME}"
 
     - name: Upload Pages artifact
       uses: actions/upload-pages-artifact@v4
