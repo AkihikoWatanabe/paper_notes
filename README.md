@@ -168,6 +168,10 @@ It returns a structured document explaining the literature on pretraining, based
 
 ## Updates
 
+**2026.10.14**
+
+- Fixed an issue that had prevented agent_docs from being updated since the September 19 update.
+
 **2026.09.19**
 
 - Implement full text search in the blog.
