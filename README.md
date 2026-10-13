@@ -170,7 +170,7 @@ It returns a structured document explaining the literature on pretraining, based
 
 **2026.10.14**
 
-- The GitHub Actions build now commits and pushes generated `agent_docs/` updates to the source branch.
+- Fixed an issue that had prevented agent_docs from being updated since the September 19 update.
 
 **2026.09.19**
 
