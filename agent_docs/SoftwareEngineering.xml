@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-10-14">
 <paper-entry>
+<title>[Paper Note] Broken Symmetry in BF16 Attention: Why FlashAttention Gradients Blow Up Late in Training, Junlin Chen+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.34272</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6781</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, SoftwareEngineering, Selected Papers/Blogs, One-Line Notes, GPUKernel, LowPrecision, Bug</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.34272
+# Authors
+  - Junlin Chen
+  - Daize Dong
+  - Huanwei Di
+  - Haolong Jia
+  - Jiawei Wu
+  - Haotian Xie
+  - Mingkai Zheng
+  - Yang Li
+  - Leshang Chen
+  - Huishu Wang
+  - Eric P. Xing
+  - Hongyi Wang
+# Abstract
+  - BF16 is now standard in large-scale pretraining, including in fused attention kernels such as FlashAttention, and these kernels are widely trusted. When we used FlashAttention-3 to pretrain a 450M-parameter transformer on 50B tokens, however, we ran into a problem: training was healthy for 25B tokens, then the gradient norm grew a thousandfold and the loss ended 0.2 nats above FP32 attention, without a single NaN. Recomputing the attention backward of just two layers in FP32 removes almost all of the excess gradient. Part of the cause is known: a fused multiply-add in the forward softmax, so far treated as an extreme-input NaN case and never fixed in FlashAttention-3. Repairing it stops the blow-up, but the query gradient is still wrong by more than its own size, and training still drives attention logits to thousands of times their size under accurate gradients. The remaining error comes from a broken conservation law. The softmax score gradient sums to zero along every row, which makes the query gradient blind to where the keys sit as a group; rounding it to BF16 leaves a small nonzero sum that leaks the mean key into the gradient, and the leak grows exactly as late training makes keys large and attention sharp. We introduce GProj (gauge projection), which restores the zero sum after the cast with two rank-one corrections per row. It cuts the remaining median query/key gradient errors from 219%/13% to 0.34%/0.37%, on par with FP32 attention, for 4.7% more time per training step. In matched from-scratch runs it trains to the same loss as FP32 attention, while FlashAttention-3 and key smoothing both destabilize.
+# Translation (by gpt-5.6-luna)
+- BF16は現在、FlashAttentionをはじめとする融合アテンションカーネルを含む大規模事前学習において標準的に用いられており、これらのカーネルは広く信頼されています。しかし、FlashAttention-3を用いて4億5,000万パラメータのTransformerを500億トークンで事前学習したところ、問題に遭遇しました。250億トークンまでは学習は健全に進んでいたにもかかわらず、その後、勾配ノルムが1,000倍に増大し、損失はFP32アテンションより0.2ナット高い値で終わりました。それにもかかわらず、NaNは一度も発生しませんでした。わずか2層のアテンション逆伝播をFP32で再計算するだけで、過剰な勾配のほぼすべてが取り除かれます。
+
+原因の一部は既知のものでした。すなわち、順伝播のsoftmaxにおける融合積和演算です。これはこれまで極端な入力でNaNが生じるケースとして扱われ、FlashAttention-3では修正されていませんでした。この問題を修正すると勾配の爆発は止まりますが、クエリ勾配は依然として自身の大きさを上回る誤差を持ち、正確な勾配を用いた場合でさえ、学習中にアテンション・ロジットが本来の数千倍にまで増大します。
+
+残る誤差の原因は、保存則の破れです。softmaxのスコア勾配は各行に沿って総和がゼロになるため、クエリ勾配はキー全体がどこに位置しているかに影響されません。しかし、それをBF16に丸めると小さな非ゼロの総和が生じ、平均キーの情報が勾配に漏れ込みます。そしてこの漏れは、学習後半でキーが大きくなり、アテンションが鋭くなるにつれて、まさに同じ割合で増大します。
+
+そこで私たちは、キャスト後に各行につき2つのランク1補正を加えて総和ゼロを復元するGProj（ゲージ射影）を導入します。これにより、クエリおよびキー勾配に残る中央値の誤差は、それぞれ219%／13%から0.34%／0.37%へと低下し、FP32アテンションと同等の水準になります。学習ステップあたりの所要時間は4.7%増加します。条件を揃えたゼロからの学習実験では、FP32アテンションと同じ損失まで学習できました。一方、FlashAttention-3とキー平滑化はいずれも学習を不安定化させました。
+# Summary (by gpt-5.6-luna)
+- BF16のFlashAttention-3を用いた事前学習で、後半に勾配ノルムが急増し、損失がFP32より悪化する問題を発見。
+softmaxの融合積和演算と、BF16丸めによるスコア勾配の総和ゼロの破れが原因で、平均キーの情報がクエリ・キー勾配に漏れ込む。
+キャスト後にランク1補正を加えて保存則を復元するGProjを提案し、勾配誤差を大幅に削減。
+計算時間の増加を4.7%に抑えつつ、FP32アテンションと同等の損失で学習可能であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2106875129590698465?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>低精度の学習でFlashAttention3を用いると、実装のバグにより勾配が爆発する場合があり、このような状況が引き起こされる状態（KeyのNormが大きくなる）は、学習の後期に入らないと生じない、という丸め誤差に起因するバグのようである。<br><br>Appendix I 1.3節、式20を見ると、FMAを用いたsoftmax演算でなぜ丸め誤差が生じるかが（わりとわかりやすく？）記述されている。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6782" target="_blank" rel="noopener noreferrer">KohakuFA: Flash attention for Blackwell, with gradients you can trust</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] CodeMidas: Scaling Agentic Coding RL Environments from Code Itself, Bowen Ye+, arXiv'26, 2026.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2609.22068</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6670</repo-issue-link>
@@ -4389,6 +4439,46 @@ LMシステムの自動ソフトウェア工学研究の参入障壁を下げる
 <repo-issue-date>2026-10-14</repo-issue-date>
 <issue-body>https://www.anthropic.com/engineering/redesigning-source-control</issue-body>
 <maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Prime Inference: Fast, Reliable Serving for Frontier Open Models, Prime Intellect, 2026.10</title>
+<original-paper-blog-link>https://www.primeintellect.ai/blog/prime-inference</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6775</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Infrastructure, Blog, LongContext, LLMServing, SoftwareEngineering, KV Cache</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://www.primeintellect.ai/blog/prime-inference</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/PrimeIntellect/status/2106146483003384253?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Expert parallelism at hero scale, Open Athena, 2026.09</title>
+<original-paper-blog-link>https://openathena.ai/blog/expert-parallelism/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6769</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Blog, MoE(Mixture-of-Experts), SoftwareEngineering, Parallelism, GPUKernel, Author Thread-Post</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://openathena.ai/blog/expert-parallelism/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/classiclarryd/status/2105794059424215317?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

@@ -135,6 +135,146 @@ RBFやsoftmax類似カーネルに対応した関数勾配ベースの学習則�
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Broken Symmetry in BF16 Attention: Why FlashAttention Gradients Blow Up Late in Training, Junlin Chen+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.34272</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6781</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, SoftwareEngineering, Selected Papers/Blogs, One-Line Notes, GPUKernel, LowPrecision, Bug</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.34272
+# Authors
+  - Junlin Chen
+  - Daize Dong
+  - Huanwei Di
+  - Haolong Jia
+  - Jiawei Wu
+  - Haotian Xie
+  - Mingkai Zheng
+  - Yang Li
+  - Leshang Chen
+  - Huishu Wang
+  - Eric P. Xing
+  - Hongyi Wang
+# Abstract
+  - BF16 is now standard in large-scale pretraining, including in fused attention kernels such as FlashAttention, and these kernels are widely trusted. When we used FlashAttention-3 to pretrain a 450M-parameter transformer on 50B tokens, however, we ran into a problem: training was healthy for 25B tokens, then the gradient norm grew a thousandfold and the loss ended 0.2 nats above FP32 attention, without a single NaN. Recomputing the attention backward of just two layers in FP32 removes almost all of the excess gradient. Part of the cause is known: a fused multiply-add in the forward softmax, so far treated as an extreme-input NaN case and never fixed in FlashAttention-3. Repairing it stops the blow-up, but the query gradient is still wrong by more than its own size, and training still drives attention logits to thousands of times their size under accurate gradients. The remaining error comes from a broken conservation law. The softmax score gradient sums to zero along every row, which makes the query gradient blind to where the keys sit as a group; rounding it to BF16 leaves a small nonzero sum that leaks the mean key into the gradient, and the leak grows exactly as late training makes keys large and attention sharp. We introduce GProj (gauge projection), which restores the zero sum after the cast with two rank-one corrections per row. It cuts the remaining median query/key gradient errors from 219%/13% to 0.34%/0.37%, on par with FP32 attention, for 4.7% more time per training step. In matched from-scratch runs it trains to the same loss as FP32 attention, while FlashAttention-3 and key smoothing both destabilize.
+# Translation (by gpt-5.6-luna)
+- BF16は現在、FlashAttentionをはじめとする融合アテンションカーネルを含む大規模事前学習において標準的に用いられており、これらのカーネルは広く信頼されています。しかし、FlashAttention-3を用いて4億5,000万パラメータのTransformerを500億トークンで事前学習したところ、問題に遭遇しました。250億トークンまでは学習は健全に進んでいたにもかかわらず、その後、勾配ノルムが1,000倍に増大し、損失はFP32アテンションより0.2ナット高い値で終わりました。それにもかかわらず、NaNは一度も発生しませんでした。わずか2層のアテンション逆伝播をFP32で再計算するだけで、過剰な勾配のほぼすべてが取り除かれます。
+
+原因の一部は既知のものでした。すなわち、順伝播のsoftmaxにおける融合積和演算です。これはこれまで極端な入力でNaNが生じるケースとして扱われ、FlashAttention-3では修正されていませんでした。この問題を修正すると勾配の爆発は止まりますが、クエリ勾配は依然として自身の大きさを上回る誤差を持ち、正確な勾配を用いた場合でさえ、学習中にアテンション・ロジットが本来の数千倍にまで増大します。
+
+残る誤差の原因は、保存則の破れです。softmaxのスコア勾配は各行に沿って総和がゼロになるため、クエリ勾配はキー全体がどこに位置しているかに影響されません。しかし、それをBF16に丸めると小さな非ゼロの総和が生じ、平均キーの情報が勾配に漏れ込みます。そしてこの漏れは、学習後半でキーが大きくなり、アテンションが鋭くなるにつれて、まさに同じ割合で増大します。
+
+そこで私たちは、キャスト後に各行につき2つのランク1補正を加えて総和ゼロを復元するGProj（ゲージ射影）を導入します。これにより、クエリおよびキー勾配に残る中央値の誤差は、それぞれ219%／13%から0.34%／0.37%へと低下し、FP32アテンションと同等の水準になります。学習ステップあたりの所要時間は4.7%増加します。条件を揃えたゼロからの学習実験では、FP32アテンションと同じ損失まで学習できました。一方、FlashAttention-3とキー平滑化はいずれも学習を不安定化させました。
+# Summary (by gpt-5.6-luna)
+- BF16のFlashAttention-3を用いた事前学習で、後半に勾配ノルムが急増し、損失がFP32より悪化する問題を発見。
+softmaxの融合積和演算と、BF16丸めによるスコア勾配の総和ゼロの破れが原因で、平均キーの情報がクエリ・キー勾配に漏れ込む。
+キャスト後にランク1補正を加えて保存則を復元するGProjを提案し、勾配誤差を大幅に削減。
+計算時間の増加を4.7%に抑えつつ、FP32アテンションと同等の損失で学習可能であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2106875129590698465?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>低精度の学習でFlashAttention3を用いると、実装のバグにより勾配が爆発する場合があり、このような状況が引き起こされる状態（KeyのNormが大きくなる）は、学習の後期に入らないと生じない、という丸め誤差に起因するバグのようである。<br><br>Appendix I 1.3節、式20を見ると、FMAを用いたsoftmax演算でなぜ丸め誤差が生じるかが（わりとわかりやすく？）記述されている。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6782" target="_blank" rel="noopener noreferrer">KohakuFA: Flash attention for Blackwell, with gradients you can trust</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] ScholarCatalyst: A Benchmark for Retrieving Papers That Inspire New Research, Sohyeon Kim+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.02202</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6776</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Evaluation, ScientificDiscovery, Selected Papers/Blogs, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.02202
+# Authors
+  - Sohyeon Kim
+  - Yoonho Lee
+  - Bo Liu
+  - Dayoon Ko
+  - Rulin Shao
+  - Seungone Kim
+  - Graham Neubig
+  - Pang Wei Koh
+  - Aakanksha Chowdhery
+  - Akari Asai
+  - Omar Khattab
+  - Yejin Choi
+  - Gunhee Kim
+  - Chelsea Finn
+# Abstract
+  - What makes great scientists great? Even as AI systems start to make progress on open problems, scientists remain far ahead of them at sensing which prior idea, buried in an ever-growing archive of research, a new problem needs. To study this skill, we draw on researchers who know firsthand which earlier work advanced their completed projects, with papers serving as pointers to the ideas within. Using our automated pipeline that makes author annotation scalable, we build ScholarCatalyst by having 184 lead authors of 207 recent computer science papers label which candidates did or could have advanced their project, each with a detailed rationale. We introduce a retrieval task with author-provided judgments: given an initial research question, retrieve these papers from only the literature available when the project began. Agentic search does no better than embedding retrieval (0.42 vs. 0.48 Recall@20) despite calling that same retriever as a tool. Even an agent built on Claude Fable 5.1, which may have seen the completed papers during training, reaches only 0.51 R@20. These results highlight the need for new training recipes that equip models with expert intuition for searching broad corpora. We envision ScholarCatalyst as a step toward scientific agents that can take a half-formed idea and point to the prior research it needs.
+# Translation (by gpt-5.6-luna)
+- 何が優れた科学者を優れた科学者たらしめるのか。AIシステムがオープンな問題に進展をもたらし始めている今でさえ、科学者は、増え続ける研究アーカイブに埋もれた先行研究のうち、新たな問題が必要とするアイデアを見抜く能力において、依然としてAIを大きく上回っている。この能力を研究するため、私たちは、完了した自身の研究プロジェクトを前進させた先行研究を直に知る研究者に着目し、論文をそこに含まれるアイデアへの手がかりとして用いる。著者によるアノテーションを大規模に実施可能にする自動化パイプラインを用いて、コンピュータサイエンス分野の近年の論文207本について、筆頭著者184名に、どの候補論文が自身のプロジェクトを前進させたか、あるいは前進させ得たかを、詳細な根拠とともにラベル付けしてもらい、ScholarCatalystを構築した。さらに、著者が提供した判断を用いる検索タスクを導入する。これは、初期の研究課題が与えられたとき、プロジェクト開始時点で利用可能だった文献だけを対象として、これらの論文を検索するものである。エージェント型検索は、同じ検索器をツールとして呼び出しているにもかかわらず、埋め込み検索を上回らなかった（Recall@20は0.42対0.48）。学習中に完成後の論文を目にしていた可能性のあるClaude Fable 5.1を基盤とするエージェントでさえ、R@20はわずか0.51にとどまった。これらの結果は、広範なコーパスを検索するための専門家の直観をモデルに備えさせる、新たな学習手法が必要であることを示している。私たちは、ScholarCatalystが、形になりきっていないアイデアを受け取り、それに必要な先行研究を指し示せる科学エージェントに向けた一歩となることを期待している。
+# Summary (by gpt-5.6-luna)
+- 科学者は、研究課題に必要な先行研究のアイデアを見抜く能力でAIを依然として上回っている。  
+本研究では、著者アノテーションにより、研究プロジェクトを前進させた論文を収録したScholarCatalystを構築。  
+さらに、初期の研究課題から関連論文を検索するタスクを導入したが、エージェント型検索は埋め込み検索を上回らず、強力なモデルでも性能は限定的だった。  
+専門家の研究直観を学習し、未成熟なアイデアに必要な先行研究を提示する新たな科学エージェントの学習手法が求められる。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/yoonholeee/status/2106036734798725577?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>207の最近の研究の第一著者に、研究を前進させる上で重要だった研究をラベル付けさせ（hapd negativeも定義）、研究課題が与えられた時に、当該研究論文をランキングで上位に位置付けられるかを問うタスクを通じて、自身の研究課題と文献中の内容についてつながりを見出す研究のセンス的な能力を測定する。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] EurekaBench: Measuring Agentic Ability to Discover New Scientific Insights, Jiayi Geng+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.00492</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6773</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, ScientificDiscovery, Selected Papers/Blogs, reading, KeyPoint Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.00492
+# Authors
+  - Jiayi Geng
+  - Zhengxuan Wu
+  - Kevin S. Chen
+  - Seungone Kim
+  - Joseph Janssen
+  - Zora Zhiruo Wang
+  - Bhupalee Kalita
+  - Runtian Gao
+  - Aaron Ho
+  - Andrew Oakleigh Nelson
+  - Olexandr Isayev
+  - Francisco Villaescusa-Navarro
+  - Ching-Yao Lai
+  - Howard Chen
+  - Graham Neubig
+# Abstract
+  - When Isaac Newton discovered the law of gravitation, he did so through an iterative process of analyzing observed data such as planetary patterns, finding the underlying mechanisms by describing patterns in mathematical equations, and refining his theory against the Moon's orbit, revealing the startling insight that the same force governs both falling apples and orbiting planets. Would it be possible for AI agents to make similar discoveries? To measure this ability, we introduce EurekaBench, a cross-domain benchmark that tests AI agents' ability to conduct long-horizon experiments and discover mechanisms that explain observations. We evaluate these mechanisms by the scientific insights that can be derived from them. EurekaBench contains an expert-verified set of 26 long-horizon tasks across neuroscience, computer science, chemistry, astrophysics, geophysics, and plasma physics, with a total of 306 scientific insights that the discovered mechanisms are expected to support. Our evaluation framework tests three axes of scientific discovery: agents' ability to follow known scientific constraints, the predictive accuracy of the discovered mechanisms, and whether these mechanisms yield scientific insights or inform future research. Our results show that current AI agents often overly fixate on predictive accuracy optimization, surpassing human scientists, while falling substantially short in deriving scientific insights.
+# Translation (by gpt-5.6-luna)
+- アイザック・ニュートンが万有引力の法則を発見した際には、惑星の運行パターンなどの観測データを分析し、パターンを数学方程式で記述することによって underlying なメカニズムを見いだし、さらに月の軌道に照らして理論を改良するという反復的なプロセスを経ていた。その結果、落下するリンゴと軌道を回る惑星の双方を同じ力が支配しているという、驚くべき洞察が明らかになった。AIエージェントにも同様の発見は可能だろうか。この能力を測定するため、我々はEurekaBenchを導入する。これは、AIエージェントが長期的な実験を実施し、観測結果を説明するメカニズムを発見する能力を検証する、分野横断型ベンチマークである。これらのメカニズムは、そこから導き出される科学的洞察によって評価する。EurekaBenchには、神経科学、コンピュータサイエンス、化学、天体物理学、地球物理学、プラズマ物理学にまたがる、専門家が検証した26件の長期的タスクが収録されており、発見されたメカニズムが支えることを期待される科学的洞察は合計306件にのぼる。評価フレームワークでは、科学的発見の3つの側面、すなわち、既知の科学的制約に従うエージェントの能力、発見されたメカニズムの予測精度、そしてそれらのメカニズムが科学的洞察をもたらすか、あるいは今後の研究に有益な示唆を与えるかを検証する。結果から、現在のAIエージェントは予測精度の最適化に過度に固執する傾向があり、その点では人間の科学者を上回る一方、科学的洞察を導き出す能力では大きく後れを取っていることが示された。
+# Summary (by gpt-5.6-luna)
+- AIエージェントが長期的な実験を通じて観測結果を説明するメカニズムを発見する能力を評価する、分野横断型ベンチマークEurekaBenchを導入。  
+神経科学や化学、物理学など6分野の26タスク・306件の科学的洞察を対象に、科学的制約への遵守、予測精度、洞察の創出能力を評価する。  
+現在のAIエージェントは予測精度では人間を上回る一方、科学的洞察を導く能力では大きく劣ることが明らかになった。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/JiayiiGeng/status/2106051912491557065?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>単に無数の試行錯誤を実施し最適化を実施することで解決策を見出すことを超えて、<br>AI Agentが、ニュートンが万有引力を発見した時のような科学的な洞察を得る能力をどの程度有するかを測定するために専門家によって構築されたベンチマーク。<br><br>惑星の運動にパターンがあることを発見（観察）->それを数学的に説明するための方程式を構築し、反復的な実験によって洗練化させ（メカニズム）->一見異なる事象でも同じ力によって支配されていて（万有引力の発見）統一的な枠組みで解釈できることを発見（科学的洞察）、のような観察、反復的な実験によるメカニズムの構築、科学的洞察の導出、をAI Agentが実施できるかを測定する。<br><br>ベンチマークは6つのドメイン、306個の科学的洞察を伴う26の専門家が検証した科学的な問題によって構成され、AI Agentは実験のログ　(L) と、メカニズムに関する記述 (M)、およびメカニズムを（test set上で）実践するためのプログラムの提出を行う必要がある。このとき、一連のAgentの思考はtauで表現され、tauから最大1Gまでのmaterialsを提出できる（2節）。<br><br>評価は、judge agentsが、M, L, tauを読み、<br>- scientific constraint tests (SC): メカニズムMが分野において一般的な前提に反していないかを判定<br>- predictive accuracy (PA): Mを実装したプログラムをheld-outされたテストセットで実行し、Accuracyを測定する<br>- scientific insight (SI): メカニズムMから、科学的洞察 i \in C を導くことができるかをjudge agentsによって判定する<br>の3つの軸で評価される。<br><br>また総合的なスコアとして、Conditioned Scoreを定義し、SCを全て通ったメカニズムについてのみ、PA, SIに基づいたスコアを算出している。<br><br>結果が以下であり、フロンティアモデルでさえも、人間の63.7と比較してConditioned Scoreは29.8であった。このことより<br>- 現在のAI Agentは最初の観測結果を説明するメカニズムを見つけることに苦戦することが明らかとなった<br>- また、今回評価したすべてのエージェントについて、SCに反するメカニズムを記述することが明らかとなり、分野における基本的な前提を満たすメカニズムを記述することができない<br><br>このことより、実験のループを通じて観測結果を説明するためのメカニズムを見つける能力が不足していることが実験によって明らかになった。<br>また、PAとSIのgapを見ると、人間と同等のPAをエージェントは達成しているが、SIでは人間よりも大幅に劣っている。これは人間はメカニズムの外挿や解釈に価値を見出しているのに対し、エージェントは最適化問題として扱っていることを示唆しており、PAが高いことは新たな科学的発見をする能力が高いことを示唆しないことを示している。<br><img src="https://github.com/user-attachments/assets/47259e55-03f2-49a6-aa9e-b55ee8267551" /" alt="image" loading="lazy" width="550" height="400"/><br><br>また、failure modeとして、<br>- エージェントが自身が選択した仮説に過剰に固執すること<br>- エージェントが最適化をメカニズムの発見として扱うこと<br>- 不確実性を減らすための実験を積極的に実施できないこと<br>- 観測をした時点で実験を止めてしまい、さらなる深掘りをしないこと<br><br>また、positiveな要素としては、<br>- もっともらしくないメカニズムの候補を実験を通じ棄却できること<br>- metricの背後にある物理的なコンセプトを理解することができる<br><br>などが観察された(Figure 8より)</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Sharpening Tax in Post-Training, Changdae Oh+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.01509</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6764</repo-issue-link>
@@ -35384,6 +35524,41 @@ Tulu 3のモデルウェイトとデモに加えて、私たちは完全なレ�
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Mixture-of-Transformers: A Sparse and Scalable Architecture for   Multi-Modal Foundation Models, Weixin Liang+, TMLR'25</title>
+<original-paper-blog-link>https://arxiv.org/abs/2411.04996</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1505</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, LanguageModel, Transformer, MultiModal, SpeechProcessing, Architecture, TMLR, Selected Papers/Blogs, UMM</tags>
+<repo-issue-date>2024-11-12</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2411.04996
+# Authors
+  - Weixin Liang
+  - Lili Yu
+  - Liang Luo
+  - Srinivasan Iyer
+  - Ning Dong
+  - Chunting Zhou
+  - Gargi Ghosh
+  - Mike Lewis
+  - Wen-tau Yih
+  - Luke Zettlemoyer
+  - Xi Victoria Lin
+# Abstract
+  - The development of large language models (LLMs) has expanded to multi-modal systems capable of processing text, images, and speech within a unified framework. Training these models demands significantly larger datasets and computational resources compared to text-only LLMs. To address the scaling challenges, we introduce Mixture-of-Transformers (MoT), a sparse multi-modal transformer architecture that significantly reduces pretraining computational costs. MoT decouples non-embedding parameters of the model by modality -- including feed-forward networks, attention matrices, and layer normalization -- enabling modality-specific processing with global self-attention over the full input sequence. We evaluate MoT across multiple settings and model scales. In the Chameleon 7B setting (autoregressive text-and-image generation), MoT matches the dense baseline's performance using only 55.8\% of the FLOPs. When extended to include speech, MoT reaches speech performance comparable to the dense baseline with only 37.2\% of the FLOPs. In the Transfusion setting, where text and image are trained with different objectives, a 7B MoT model matches the image modality performance of the dense baseline with one third of the FLOPs, and a 760M MoT model outperforms a 1.4B dense baseline across key image generation metrics. System profiling further highlights MoT's practical benefits, achieving dense baseline image quality in 47.2\% of the wall-clock time and text quality in 75.6\% of the wall-clock time (measured on AWS p4de.24xlarge instances with NVIDIA A100 GPUs).
+# Translation (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）の開発は、テキスト、画像、音声を統一されたフレームワーク内で処理できるマルチモーダルシステムに拡大しています。これらのモデルのトレーニングには、テキストのみのLLMと比較して、はるかに大きなデータセットと計算リソースが必要です。スケーリングの課題に対処するために、我々はMixture-of-Transformers（MoT）を導入します。これは、事前トレーニングの計算コストを大幅に削減するスパースなマルチモーダルトランスフォーマーアーキテクチャです。MoTは、フィードフォワードネットワーク、アテンションマトリックス、レイヤーノーマライゼーションを含むモデルの非埋め込みパラメータをモダリティごとに分離し、全入力シーケンスに対するグローバルな自己注意を用いたモダリティ特有の処理を可能にします。MoTを複数の設定とモデルスケールで評価しました。Chameleon 7B設定（自己回帰的なテキストと画像の生成）では、MoTは55.8%のFLOPsのみを使用して、密なベースラインのパフォーマンスに匹敵します。音声を含むように拡張した場合、MoTは37.2%のFLOPsで密なベースラインに匹敵する音声パフォーマンスを達成します。テキストと画像が異なる目的でトレーニングされるTransfusion設定では、7BのMoTモデルが密なベースラインの画像モダリティパフォーマンスにFLOPsの3分の1で匹敵し、760MのMoTモデルは主要な画像生成指標で1.4Bの密なベースラインを上回ります。システムプロファイリングは、MoTの実用的な利点をさらに強調し、密なベースラインの画像品質を47.2%の経過時間で、テキスト品質を75.6%の経過時間で達成しました（NVIDIA A100 GPUを搭載したAWS p4de.24xlargeインスタンスで測定）。
+# Summary (by gpt-4o-mini)
+- 大規模言語モデル（LLMs）のマルチモーダル処理を効率化するために、Mixture-of-Transformers（MoT）を提案。MoTは計算コストを削減し、モダリティごとにパラメータを分離して特化した処理を実現。Chameleon 7B設定では、55.8%のFLOPsで密なベースラインに匹敵する性能を示し、音声を含む場合も37.2%のFLOPsで同様の結果を達成。さらに、Transfusion設定では、7BのMoTモデルが密なベースラインの画像性能に対してFLOPsの3分の1で匹敵し、760Mのモデルは主要な画像生成指標で上回る結果を得た。MoTは実用的な利点も示し、画像品質を47.2%、テキスト品質を75.6%の経過時間で達成。</issue-body>
+<maintainer-comment-text><p>openreview:
+
+{% raw %}
+<a href="https://openreview.net/forum?id=Nu6N69i8SB" target="_blank" rel="noopener noreferrer">https://openreview.net/forum?id=Nu6N69i8SB</a>
+{% endraw %}
+
+</p><p>以下、openreviewより、<br><br>埋め込み層以外のパラメータに対して、モダリティごとに異なる独立したtrainableなtransformerを用意し（モダリティを分離する）、各transformerから出力されるsequenceを統合し、モダリティを跨いで全トークンに対してattendするglobal self-attentionを適用する。これにより、モダリティごとに選択的に固有のパラメータを活性化することで計算量を削減し、マルチモーダル学習における計算不可が高い課題に対処する。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Differential Transformer, Tianzhu Ye+, N_A, ICLR'25</title>
 <original-paper-blog-link>https://arxiv.org/abs/2410.05258</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/1466</repo-issue-link>
@@ -45035,6 +45210,46 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 {% endraw %}
 
 </p><p>Decision index v0.3.1においてSoTA:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6608" target="_blank" rel="noopener noreferrer">Jev Reproductions Tracker / Decision Index, multimodalart, 2026.09</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SWE-sweep: Can Agents Autonomously Find and Fix Bugs, Lieret+, 2026.10</title>
+<original-paper-blog-link>https://swesweep.com/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6770</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, Selected Papers/Blogs, reading, Security, Author Thread-Post, Bug</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://swesweep.com/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/KLieret/status/2105670833574465933?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>モデルに「コードベースに存在するバグを可能な限り多く修正すること」のみを指示し、他の具体的な情報を一歳与えない時にどの程度潜在的なバグを修正できるかを測定するためのベンチマーク。GPT-5.6-Solが最も性能が良かったが、修正できたバグは全体の5%未満だったとのこと。ベンチマークはgithub上のリポジトリの特定コミット（バグが最も多く含まれているもの）を切り出し、バグが解決されたか否の検証にはリポジトリ中のユニットテストを利用する。また、これらインスタンスは、多くの品質フィルタリングを（正当なバグか、ヒントなしで解決できるか、バグが再現するか、ゴールドとなる修正が機能しているか、テストが適切か、期待される動作が推論可能か、等）かけた上で構築される。100種類のリポジトリ、22言語、4k程度のバグで構成され、最大では一つのコードベース239個のバグが存在する。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>From Sampling to Reinforce, Sasha Rush, 2026.10</title>
+<original-paper-blog-link>https://srush.github.io/sampling-to-reinforce/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6767</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, ReinforcementLearning, Blog, PostTraining, Selected Papers/Blogs, reading</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://srush.github.io/sampling-to-reinforce/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/srush_nlp/status/2105765826691227948?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
 </p></maintainer-comment-text>
 </paper-entry>
 

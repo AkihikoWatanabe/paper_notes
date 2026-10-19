@@ -4,7 +4,7 @@
 <title>[Paper Note] Broken Symmetry in BF16 Attention: Why FlashAttention Gradients Blow Up Late in Training, Junlin Chen+, arXiv'26, 2026.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2609.34272</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6781</repo-issue-link>
-<tags>Bug</tags>
+<tags>NLP, LanguageModel, Attention, SoftwareEngineering, Selected Papers/Blogs, One-Line Notes, GPUKernel, LowPrecision, Bug</tags>
 <repo-issue-date>2026-10-09</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2609.34272
@@ -46,6 +46,7 @@ softmaxの融合積和演算と、BF16丸めによるスコア勾配の総和ゼ
 </div>
 {% endraw %}
 
+</p><p>低精度の学習でFlashAttention3を用いると、実装のバグにより勾配が爆発する場合があり、このような状況が引き起こされる状態（KeyのNormが大きくなる）は、学習の後期に入らないと生じない、という丸め誤差に起因するバグのようである。<br><br>Appendix I 1.3節、式20を見ると、FMAを用いたsoftmax演算でなぜ丸め誤差が生じるかが（わりとわかりやすく？）記述されている。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6782" target="_blank" rel="noopener noreferrer">KohakuFA: Flash attention for Blackwell, with gradients you can trust</a>
 </p></maintainer-comment-text>
 </paper-entry>
 
@@ -53,7 +54,7 @@ softmaxの融合積和演算と、BF16丸めによるスコア勾配の総和ゼ
 <title>KohakuFA: Flash attention for Blackwell, with gradients you can trust</title>
 <original-paper-blog-link>https://github.com/KohakuBlueleaf/KohakuFA</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6782</repo-issue-link>
-<tags>Stability, GPUKernel, Initial Impression Notes, Author Thread-Post, Bug</tags>
+<tags>Pretraining, NLP, LanguageModel, Attention, Blog, Stability, GPUKernel, Initial Impression Notes, Author Thread-Post, Bug</tags>
 <repo-issue-date>2026-10-09</repo-issue-date>
 <issue-body>https://github.com/KohakuBlueleaf/KohakuFA</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -68,6 +69,26 @@ softmaxの融合積和演算と、BF16丸めによるスコア勾配の総和ゼ
 
 </p><p>cuDNN, FA4, flex attentionに、attentionのlogitが大きくなると、backwardでの勾配が本来よりも10--1000倍、最悪の場合はinfとなるバグが見つかった報告のようである。forwardは正常に動作していふように見え、学習の後半にならないと気づけないとのこと。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6781" target="_blank" rel="noopener noreferrer">[Paper Note] Broken Symmetry in BF16 Attention: Why FlashAttention Gradients Blow Up Late in Training, Junlin Chen+, arXiv'26, 2026.09</a>
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>SWE-sweep: Can Agents Autonomously Find and Fix Bugs, Lieret+, 2026.10</title>
+<original-paper-blog-link>https://swesweep.com/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6770</repo-issue-link>
+<tags>NLP, LanguageModel, Evaluation, Selected Papers/Blogs, reading, Security, Author Thread-Post, Bug</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body>https://swesweep.com/</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/KLieret/status/2105670833574465933?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>モデルに「コードベースに存在するバグを可能な限り多く修正すること」のみを指示し、他の具体的な情報を一歳与えない時にどの程度潜在的なバグを修正できるかを測定するためのベンチマーク。GPT-5.6-Solが最も性能が良かったが、修正できたバグは全体の5%未満だったとのこと。ベンチマークはgithub上のリポジトリの特定コミット（バグが最も多く含まれているもの）を切り出し、バグが解決されたか否の検証にはリポジトリ中のユニットテストを利用する。また、これらインスタンスは、多くの品質フィルタリングを（正当なバグか、ヒントなしで解決できるか、バグが再現するか、ゴールドとなる修正が機能しているか、テストが適切か、期待される動作が推論可能か、等）かけた上で構築される。100種類のリポジトリ、22言語、4k程度のバグで構成され、最大では一つのコードベース239個のバグが存在する。</p></maintainer-comment-text>
 </paper-entry>
 
 </paper-list>

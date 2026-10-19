@@ -84,6 +84,95 @@
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] Broken Symmetry in BF16 Attention: Why FlashAttention Gradients Blow Up Late in Training, Junlin Chen+, arXiv'26, 2026.09</title>
+<original-paper-blog-link>https://arxiv.org/abs/2609.34272</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6781</repo-issue-link>
+<tags>NLP, LanguageModel, Attention, SoftwareEngineering, Selected Papers/Blogs, One-Line Notes, GPUKernel, LowPrecision, Bug</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2609.34272
+# Authors
+  - Junlin Chen
+  - Daize Dong
+  - Huanwei Di
+  - Haolong Jia
+  - Jiawei Wu
+  - Haotian Xie
+  - Mingkai Zheng
+  - Yang Li
+  - Leshang Chen
+  - Huishu Wang
+  - Eric P. Xing
+  - Hongyi Wang
+# Abstract
+  - BF16 is now standard in large-scale pretraining, including in fused attention kernels such as FlashAttention, and these kernels are widely trusted. When we used FlashAttention-3 to pretrain a 450M-parameter transformer on 50B tokens, however, we ran into a problem: training was healthy for 25B tokens, then the gradient norm grew a thousandfold and the loss ended 0.2 nats above FP32 attention, without a single NaN. Recomputing the attention backward of just two layers in FP32 removes almost all of the excess gradient. Part of the cause is known: a fused multiply-add in the forward softmax, so far treated as an extreme-input NaN case and never fixed in FlashAttention-3. Repairing it stops the blow-up, but the query gradient is still wrong by more than its own size, and training still drives attention logits to thousands of times their size under accurate gradients. The remaining error comes from a broken conservation law. The softmax score gradient sums to zero along every row, which makes the query gradient blind to where the keys sit as a group; rounding it to BF16 leaves a small nonzero sum that leaks the mean key into the gradient, and the leak grows exactly as late training makes keys large and attention sharp. We introduce GProj (gauge projection), which restores the zero sum after the cast with two rank-one corrections per row. It cuts the remaining median query/key gradient errors from 219%/13% to 0.34%/0.37%, on par with FP32 attention, for 4.7% more time per training step. In matched from-scratch runs it trains to the same loss as FP32 attention, while FlashAttention-3 and key smoothing both destabilize.
+# Translation (by gpt-5.6-luna)
+- BF16は現在、FlashAttentionをはじめとする融合アテンションカーネルを含む大規模事前学習において標準的に用いられており、これらのカーネルは広く信頼されています。しかし、FlashAttention-3を用いて4億5,000万パラメータのTransformerを500億トークンで事前学習したところ、問題に遭遇しました。250億トークンまでは学習は健全に進んでいたにもかかわらず、その後、勾配ノルムが1,000倍に増大し、損失はFP32アテンションより0.2ナット高い値で終わりました。それにもかかわらず、NaNは一度も発生しませんでした。わずか2層のアテンション逆伝播をFP32で再計算するだけで、過剰な勾配のほぼすべてが取り除かれます。
+
+原因の一部は既知のものでした。すなわち、順伝播のsoftmaxにおける融合積和演算です。これはこれまで極端な入力でNaNが生じるケースとして扱われ、FlashAttention-3では修正されていませんでした。この問題を修正すると勾配の爆発は止まりますが、クエリ勾配は依然として自身の大きさを上回る誤差を持ち、正確な勾配を用いた場合でさえ、学習中にアテンション・ロジットが本来の数千倍にまで増大します。
+
+残る誤差の原因は、保存則の破れです。softmaxのスコア勾配は各行に沿って総和がゼロになるため、クエリ勾配はキー全体がどこに位置しているかに影響されません。しかし、それをBF16に丸めると小さな非ゼロの総和が生じ、平均キーの情報が勾配に漏れ込みます。そしてこの漏れは、学習後半でキーが大きくなり、アテンションが鋭くなるにつれて、まさに同じ割合で増大します。
+
+そこで私たちは、キャスト後に各行につき2つのランク1補正を加えて総和ゼロを復元するGProj（ゲージ射影）を導入します。これにより、クエリおよびキー勾配に残る中央値の誤差は、それぞれ219%／13%から0.34%／0.37%へと低下し、FP32アテンションと同等の水準になります。学習ステップあたりの所要時間は4.7%増加します。条件を揃えたゼロからの学習実験では、FP32アテンションと同じ損失まで学習できました。一方、FlashAttention-3とキー平滑化はいずれも学習を不安定化させました。
+# Summary (by gpt-5.6-luna)
+- BF16のFlashAttention-3を用いた事前学習で、後半に勾配ノルムが急増し、損失がFP32より悪化する問題を発見。
+softmaxの融合積和演算と、BF16丸めによるスコア勾配の総和ゼロの破れが原因で、平均キーの情報がクエリ・キー勾配に漏れ込む。
+キャスト後にランク1補正を加えて保存則を復元するGProjを提案し、勾配誤差を大幅に削減。
+計算時間の増加を4.7%に抑えつつ、FP32アテンションと同等の損失で学習可能であることを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2106875129590698465?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>低精度の学習でFlashAttention3を用いると、実装のバグにより勾配が爆発する場合があり、このような状況が引き起こされる状態（KeyのNormが大きくなる）は、学習の後期に入らないと生じない、という丸め誤差に起因するバグのようである。<br><br>Appendix I 1.3節、式20を見ると、FMAを用いたsoftmax演算でなぜ丸め誤差が生じるかが（わりとわかりやすく？）記述されている。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6782" target="_blank" rel="noopener noreferrer">KohakuFA: Flash attention for Blackwell, with gradients you can trust</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Gacha Decoding: Eliciting Diverse Generations Through Instruction Following, Scott Geng+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.01382</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6774</repo-issue-link>
+<tags>NLP, LanguageModel, Decoding, Diversity, One-Line Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-10-09</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.01382
+# Authors
+  - Scott Geng
+  - Yufei Zhang
+  - Joseph Lee
+  - Jerry Li
+  - Marjan Ghazvininejad
+  - Pang Wei Koh
+# Abstract
+  - We introduce Gacha Decoding, an inference-time method for eliciting diverse language model generations that scales with model capability. Across open-ended domains (in-the-wild chat, creative writing, planning for image generation, and protein design), Gacha Decoding significantly outperforms existing generation diversity approaches at equal quality (up to 2.4x Vendi over the next-best prior approach), reaching the same number of high-quality modes with over an order of magnitude fewer samples (11.0x) and discovering novel modes that no other approach surfaces. Our key insight is to treat diversity as an instruction-following problem: rather than relying on the LM's token entropy, we combine its instruction-following capability with randomness from an external RNG tool to scalably identify and realize distinct modes of the response space. This approach of "planning with dice" enables Gacha to invert the long-observed tension between diversity and model capability. As the underlying LM becomes a better instruction follower, diversity under Gacha Decoding consistently improves--even as its token entropy and diversity under prior approaches decline. Together, our results highlight that instruction following, rather than token entropy alone, can drive generation diversity.
+# Translation (by gpt-5.6-luna)
+- Gacha Decodingを導入する。これは、モデルの能力に応じてスケールしながら、多様な言語モデル生成を引き出す推論時手法である。オープンエンドな領域（実環境のチャット、クリエイティブ・ライティング、画像生成のための計画、タンパク質設計）において、Gacha Decodingは、同等の品質を保ちながら、既存の生成多様性手法を大幅に上回る性能を示した（次点の既存手法に対して、Vendiで最大2.4倍）。さらに、10分の1未満のサンプル数（11.0倍少ないサンプル数）で同数の高品質なモードに到達し、他の手法では見いだせない新たなモードも発見した。
+
+本研究の重要な洞察は、多様性を命令追従の問題として扱うことである。言語モデル（LM）のトークンエントロピーに依存するのではなく、LMの命令追従能力と外部RNGツールによる乱数性を組み合わせることで、応答空間における異なるモードを、スケーラブルに特定し具現化する。この「サイコロを使った計画（planning with dice）」というアプローチにより、Gachaは、多様性とモデル能力の間に長年観察されてきた緊張関係を逆転させる。基盤となるLMがより優れた命令追従能力を持つようになるほど、Gacha Decodingにおける多様性は一貫して向上する――一方で、そのトークンエントロピーや従来手法における多様性は低下する場合であっても、である。以上の結果は、トークンエントロピーだけでなく、命令追従能力こそが生成の多様性を促進し得ることを示している。
+# Summary (by gpt-5.6-luna)
+- Gacha Decodingを用いて、LMの命令追従能力と外部RNGによる乱数性から多様な生成モードを引き出す。
+トークンエントロピーに依存せず、planning with diceによって高品質な応答を効率的に探索する。
+実環境チャットや創作、画像生成計画、タンパク質設計で既存手法を最大2.4倍上回り、少ないサンプル数でより多くの新規モードを発見。
+モデルの命令追従能力が高いほど、多様性も向上することを示した。</issue-body>
+<maintainer-comment-text><p>元ポスト: 
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/scottgeng00/status/2106050967959728461?s=20"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>LLMに応答を生成する際に、<br>- どのような意味的な判断が必要かを列挙させ<br>- 各判断における妥当な選択肢を生成させ<br>- 各判断でどの選択肢が選択されるか乱数ツールによって決定し<br><br>最終的に得られた判断に基づいて生成をさせることで、LLMから多様な出力を得る。ポイントは、LLMの出力の多様性をエントロピーの枠組みで扱うのではなく、意味内容の列挙と乱数ツールの利用によって、指示追従の枠組みで扱うことにある。<br><br><img src="https://github.com/user-attachments/assets/19373d70-e3e0-4a2c-aa7c-c44147a27333" alt="image" loading="lazy" width="550" height="400"/" alt="image" loading="lazy" width="550" height="400"/></p><p>幅広い用途で使える汎用的な手法に見えるが、出力されるテキストの自然さに影響はあったりするのだろうか。また、decision sequenceの設計と選択肢の質に生成される応答が大きく依存すると思われるので、部分的に人間が介入して品質をコントロールする、などが実用上は必要なのかな、と思うなどした。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] It's All Training: A Fully Synthetic Single-Stage Recipe for LLMs, Pierre-Carl Langlais+, arXiv'26, 2026.09</title>
 <original-paper-blog-link>https://arxiv.org/abs/2609.37891v1</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6758</repo-issue-link>
