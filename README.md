@@ -207,7 +207,8 @@ It returns a structured document explaining the literature on pretraining, based
 - I reorganized Issue notes into a blog-style format.  
 - The blog is available [here](https://akihikowatanabe.github.io/paper_notes/).
 
-**2022–Early 2023**: Beginning to Systematically Track AI Research on Twitter (X).
+**2022–Early 2023**:
+- Beginning to Systematically Track AI Research on Twitter (X).
 
 **2017.12.28**
 - I started this repository and created the first issue.
