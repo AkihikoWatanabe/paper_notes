@@ -33,7 +33,7 @@ Each issue mainly contains the following information:
 - 🔗 Links to papers, blog posts, or related resources
 - 📄 Paper metadata and abstracts
 - 🌐 **Japanese** translations and summaries of abstracts
-- 📝 Notes based on the maintainer’s understanding
+- 📝 **Notes** based on the maintainer’s understanding
 - 🏷️ **Manually assigned labels** reflecting the maintainer’s interpretation
 - 📚 Useful external references
 
