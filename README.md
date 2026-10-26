@@ -24,6 +24,8 @@ This repository is a human-curated collection of AI research papers and related 
 
 **All content stored in GitHub Issues is exported daily as XML files under `agent_docs/`.** An AI agent can use these files to answer questions across the collection.  See [Conversational Interface](#conversational-interface).
 
+The primary purpose of this repository is to serve as a personal study log and memory aid for the maintainer.  
+
 ---
 
 ## Issue Contents
