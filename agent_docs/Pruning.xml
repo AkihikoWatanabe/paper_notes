@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-02">
+<paper-list last-updated="2026-10-25">
+<paper-entry>
+<title>[Paper Note] TokenGate: Adapting LLMs for Fast and Memory-Efficient Prefill with Learned Token Pruning, Liana Patel+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.26754</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6987</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Pruning, Initial Impression Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.26754
+# Authors
+  - Liana Patel
+  - Rishabh Ranjan
+  - Ion Stoica
+  - Matei Zaharia
+  - Carlos Guestrin
+# Abstract
+  - Expert human readers process large inputs (e.g., code repositories and long documents) by skimming to closely read only what matters. On the other hand, language models process all input tokens through each model layer, resulting in significant processing costs for long-context inputs. We introduce TokenGate, a small, drop-in component that extends existing trained models to enable end-to-end learnable token pruning over long-context inputs for fast and memory-efficient prefill. To enable end-to-end learning despite the non-differentiable top-K operator for token pruning, we introduce token-gated attention, a mechanism inspired by Mixture-of-Experts that re-weights attention logits using token importance scores. Across diverse tasks, TokenGate achieves $1.4$-$11.3\times$ faster time-to-first token (TTFT) and $1.5$-$3.4\times$ lower peak memory at no accuracy degradation for prefill in transformers. Compared to the best-performing prior methods for token-pruning, TokenGate gives up to $6.4\times$ faster prefill and $2\times$ lower peak memory. TokenGate natively extends both standard transformers (e.g., Qwen3) and hybrid-attention models (e.g., Qwen3.5) with simple lightweight adaptation comparable to standard parameter-efficient fine-tuning. We make our code available at: https://github.com/tokengate-models/TokenGate.
+# Translation (by gpt-5.6-luna)
+- 熟練した人間の読者は、コードリポジトリや長文書などの大規模な入力を、重要な箇所だけを精読するようにざっと読むことで処理します。一方、言語モデルは各モデル層を通じて入力中のすべてのトークンを処理するため、長いコンテキスト入力では処理コストが大きくなります。そこで本研究では、既存の学習済みモデルに追加するだけで、長いコンテキスト入力に対するエンドツーエンドで学習可能なトークンプルーニングを実現し、高速かつメモリ効率の高いプリフィルを可能にする小規模なコンポーネント、TokenGateを提案します。
+
+トークンプルーニングに用いる微分不可能なtop-K演算が存在する状況でもエンドツーエンド学習を可能にするため、Mixture-of-Expertsに着想を得たトークンゲート付きアテンションを導入します。これは、トークンの重要度スコアを用いてアテンションのロジットを再重み付けする機構です。多様なタスクにおいて、TokenGateは、トランスフォーマーのプリフィル時に精度を低下させることなく、Time-to-First-Token（TTFT）を1.4～11.3倍高速化し、ピークメモリ使用量を1.5～3.4倍削減します。トークンプルーニングに関する従来の最良手法と比較しても、TokenGateはプリフィルを最大6.4倍高速化し、ピークメモリ使用量を2倍削減します。TokenGateは、標準的なトランスフォーマー（例：Qwen3）とハイブリッド・アテンションモデル（例：Qwen3.5）の双方に対して、標準的なパラメータ効率のよいファインチューニングに匹敵する、単純で軽量な適応によってそのまま拡張できます。コードは以下で公開しています：https://github.com/tokengate-models/TokenGate】【。
+# Summary (by gpt-5.6-luna)
+- 長いコンテキスト入力に対して、TokenGateを追加し、重要なトークンを選択して不要なトークンをプルーニング。
+MoEに着想を得たtoken-gated attentionにより、top-K演算を含むエンドツーエンド学習を実現。
+精度を維持したまま、TTFTを最大11.3倍高速化し、ピークメモリ使用量を最大3.4倍削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lianapatel_/status/2112924355240099875?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>github:
+
+{% raw %}
+<a href="https://github.com/token-gate-llms/TokenGate" target="_blank" rel="noopener noreferrer">https://github.com/token-gate-llms/TokenGate</a>
+{% endraw %}
+
+</p><p>layerの途中でトークンをtop-kの重要なトークンにpruningするgateを学習し、prefillのメモリ効率と速度を改善する。既存のLLMにも適用できる、という話に見える。要は人間の重要な部分以外は読み飛ばすといった挙動を実現したい、という気持ちである。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/82" target="_blank" rel="noopener noreferrer">[Paper Note] Learning to Skim Text, Adams Wei Yu+, ACL'17, 2017.04</a>
+</p><p>Sparse Attentionと本質的に何が違うのか？と思ったが、本研究はトークンそのものを削除するため、削除されたトークンに対する計算やメモリは完全になくなる。Sparse Attentionはそれらは保持されており、Top-kのトークンの選択に利用されたりするため、その点で本研究の方が削減効果は大きそうに感じる。が、トークンの情報を完全に削除することによって、当該トークンは削除されたレイヤー以後では参照できなくなるため、その点は性能が低減する要因となりうる。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] SlimQwen: Exploring the Pruning and Distillation in Large MoE Model Pre-training, Shengkun Tang+, arXiv'26, 2026.05</title>
 <original-paper-blog-link>https://arxiv.org/abs/2605.08738</original-paper-blog-link>

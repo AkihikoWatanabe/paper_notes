@@ -1,5 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-24">
+<paper-list last-updated="2026-10-25">
+<paper-entry>
+<title>[Paper Note] Cache Engineering for Agents, Tianyu Fu+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.28577</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6990</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, KV Cache</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.28577
+# Authors
+  - Tianyu Fu
+  - Ruoxi Wang
+  - Zihan Min
+  - Zhongqi Ren
+  - Zhihao Li
+  - Tengxuan Liu
+  - Shengxu Mu
+  - Hanling Zhang
+  - Yu Wang
+# Abstract
+  - Large Language Model (LLM) agents can handle increasingly complex tasks, navigating long trajectories of observations and actions. As these trajectories grow, key-value (KV) cache I/O and storage become the dominant cost. Trajectories can also exceed the LLM's maximum context length, requiring control over active cache growth. Prior work uses context engineering to reduce cache size by trimming or summarizing history. However, modifying the trajectory prefix invalidates subsequent cached states and triggers costly re-prefilling of retained context. Task accuracy can also suffer when too little context is retained to limit re-prefill costs. We propose cache engineering as a new scheme. It allows agents to directly control their active KV cache without modifying the trajectory or re-prefilling retained context. Specifically, agents can proactively use drop to exclude selected cache from future attention and repos to adjust retained keys' position encodings. We formalize these cache operations and identify history dependence as a serving challenge: identical token sequences can yield different cache states under different cache operation sequences, making prefix matching insufficient for correct cache reuse. Thus, we co-design the AKV serving engine. It provides a stateless interface compatible with existing serving APIs, while internally managing stateful cache reuse, eviction, and restoration. Experiments show that a tool-response rolling-drop cache policy improves average benchmark scores by 1.7 points and reduces average cost by 27.7%, compared with conventional threshold-triggered summarization. With AKV, it achieves up to 1.2x the output throughput and a 1.5x speedup in P95 request latency. Recursive self-improvement of cache policies further reduces cost by 7.1% over expert design. Our code is at https://github.com/thu-nics/AKV.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデル（LLM）エージェントは、観測と行動から成る長大な軌跡をたどりながら、ますます複雑なタスクを処理できるようになっている。こうした軌跡が長くなるにつれて、キー・バリュー（KV）キャッシュの入出力（I/O）および保存が主要なコストとなる。また、軌跡がLLMの最大コンテキスト長を超える場合があり、アクティブなキャッシュの増大を制御する必要がある。従来の研究では、履歴を削除したり要約したりするコンテキストエンジニアリングによって、キャッシュサイズを削減していた。しかし、軌跡の先頭部分を変更すると、それ以降にキャッシュされた状態が無効になり、保持したコンテキストを再プレフィルするための高コストな処理が発生する。また、再プレフィルのコストを抑えるために保持するコンテキストを少なくしすぎると、タスクの精度が低下する可能性もある。
+
+本研究では、新たな方式としてキャッシュエンジニアリングを提案する。これは、軌跡を変更したり、保持したコンテキストを再プレフィルしたりすることなく、エージェントがアクティブなKVキャッシュを直接制御できるようにするものである。具体的には、エージェントは、将来のアテンションから選択したキャッシュを除外するために事前にdropを適用し、保持したキーの位置エンコーディングを調整するためにreposを使用できる。これらのキャッシュ操作を形式化し、提供時における課題として履歴依存性を明らかにする。すなわち、同一のトークン列であっても、キャッシュ操作の系列が異なれば異なるキャッシュ状態が生じるため、正しいキャッシュ再利用にはプレフィックスマッチングだけでは不十分である。
+
+そこで、AKVサービングエンジンを共同設計した。AKVは既存のサービングAPIと互換性のあるステートレスなインターフェースを提供しつつ、内部では状態を持つキャッシュの再利用、退避、復元を管理する。実験の結果、ツール応答に対するローリングdropキャッシュポリシーは、従来のしきい値トリガー型要約と比較して、ベンチマークの平均スコアを1.7ポイント向上させ、平均コストを27.7%削減した。さらにAKVを用いることで、出力スループットは最大1.2倍に向上し、リクエストレイテンシのP95は1.5倍高速化された。キャッシュポリシーを再帰的に自己改善することで、専門家が設計したポリシーと比べてコストをさらに7.1%削減できた。コードは https://github.com/thu-nics/AKV に公開している。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントの長大な軌跡に対して、キャッシュ操作によりアクティブなKVキャッシュを直接制御するキャッシュエンジニアリングを提案。
+dropで将来のアテンションから不要なキャッシュを除外し、reposで保持したキーの位置エンコーディングを調整することで、軌跡の変更や再プレフィルを回避する。
+キャッシュ操作系列によって状態が異なる履歴依存性を明らかにし、状態付きキャッシュの再利用・退避・復元を管理するAKVサービングエンジンを設計。
+ローリングdropにより、要約手法と比べて精度を1.7ポイント向上、コストを27.7%削減し、スループットとレイテンシも改善。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2112968165680640143?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TokenGate: Adapting LLMs for Fast and Memory-Efficient Prefill with Learned Token Pruning, Liana Patel+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.26754</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6987</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Pruning, Initial Impression Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.26754
+# Authors
+  - Liana Patel
+  - Rishabh Ranjan
+  - Ion Stoica
+  - Matei Zaharia
+  - Carlos Guestrin
+# Abstract
+  - Expert human readers process large inputs (e.g., code repositories and long documents) by skimming to closely read only what matters. On the other hand, language models process all input tokens through each model layer, resulting in significant processing costs for long-context inputs. We introduce TokenGate, a small, drop-in component that extends existing trained models to enable end-to-end learnable token pruning over long-context inputs for fast and memory-efficient prefill. To enable end-to-end learning despite the non-differentiable top-K operator for token pruning, we introduce token-gated attention, a mechanism inspired by Mixture-of-Experts that re-weights attention logits using token importance scores. Across diverse tasks, TokenGate achieves $1.4$-$11.3\times$ faster time-to-first token (TTFT) and $1.5$-$3.4\times$ lower peak memory at no accuracy degradation for prefill in transformers. Compared to the best-performing prior methods for token-pruning, TokenGate gives up to $6.4\times$ faster prefill and $2\times$ lower peak memory. TokenGate natively extends both standard transformers (e.g., Qwen3) and hybrid-attention models (e.g., Qwen3.5) with simple lightweight adaptation comparable to standard parameter-efficient fine-tuning. We make our code available at: https://github.com/tokengate-models/TokenGate.
+# Translation (by gpt-5.6-luna)
+- 熟練した人間の読者は、コードリポジトリや長文書などの大規模な入力を、重要な箇所だけを精読するようにざっと読むことで処理します。一方、言語モデルは各モデル層を通じて入力中のすべてのトークンを処理するため、長いコンテキスト入力では処理コストが大きくなります。そこで本研究では、既存の学習済みモデルに追加するだけで、長いコンテキスト入力に対するエンドツーエンドで学習可能なトークンプルーニングを実現し、高速かつメモリ効率の高いプリフィルを可能にする小規模なコンポーネント、TokenGateを提案します。
+
+トークンプルーニングに用いる微分不可能なtop-K演算が存在する状況でもエンドツーエンド学習を可能にするため、Mixture-of-Expertsに着想を得たトークンゲート付きアテンションを導入します。これは、トークンの重要度スコアを用いてアテンションのロジットを再重み付けする機構です。多様なタスクにおいて、TokenGateは、トランスフォーマーのプリフィル時に精度を低下させることなく、Time-to-First-Token（TTFT）を1.4～11.3倍高速化し、ピークメモリ使用量を1.5～3.4倍削減します。トークンプルーニングに関する従来の最良手法と比較しても、TokenGateはプリフィルを最大6.4倍高速化し、ピークメモリ使用量を2倍削減します。TokenGateは、標準的なトランスフォーマー（例：Qwen3）とハイブリッド・アテンションモデル（例：Qwen3.5）の双方に対して、標準的なパラメータ効率のよいファインチューニングに匹敵する、単純で軽量な適応によってそのまま拡張できます。コードは以下で公開しています：https://github.com/tokengate-models/TokenGate】【。
+# Summary (by gpt-5.6-luna)
+- 長いコンテキスト入力に対して、TokenGateを追加し、重要なトークンを選択して不要なトークンをプルーニング。
+MoEに着想を得たtoken-gated attentionにより、top-K演算を含むエンドツーエンド学習を実現。
+精度を維持したまま、TTFTを最大11.3倍高速化し、ピークメモリ使用量を最大3.4倍削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lianapatel_/status/2112924355240099875?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>github:
+
+{% raw %}
+<a href="https://github.com/token-gate-llms/TokenGate" target="_blank" rel="noopener noreferrer">https://github.com/token-gate-llms/TokenGate</a>
+{% endraw %}
+
+</p><p>layerの途中でトークンをtop-kの重要なトークンにpruningするgateを学習し、prefillのメモリ効率と速度を改善する。既存のLLMにも適用できる、という話に見える。要は人間の重要な部分以外は読み飛ばすといった挙動を実現したい、という気持ちである。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/82" target="_blank" rel="noopener noreferrer">[Paper Note] Learning to Skim Text, Adams Wei Yu+, ACL'17, 2017.04</a>
+</p><p>Sparse Attentionと本質的に何が違うのか？と思ったが、本研究はトークンそのものを削除するため、削除されたトークンに対する計算やメモリは完全になくなる。Sparse Attentionはそれらは保持されており、Top-kのトークンの選択に利用されたりするため、その点で本研究の方が削減効果は大きそうに感じる。が、トークンの情報を完全に削除することによって、当該トークンは削除されたレイヤー以後では参照できなくなるため、その点は性能が低減する要因となりうる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Tracing Agentic Failure from the Flow of Success, Samuel Yeh+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.12747</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6972</repo-issue-link>
+<tags>EfficiencyImprovement, Unsupervised, NLP, LanguageModel, AIAgents, NeurIPS, Author Thread-Post, FailureAttribution</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.12747
+# Authors
+  - Samuel Yeh
+  - Yiwen Zhu
+  - Shaleen Deep
+  - Sharon Li
+# Abstract
+  - Failure attribution for LLM-based agentic systems, i.e., identifying which steps in a failure trajectory caused the task to fail, is critical for debugging and improving these systems. Existing approaches either rely on prompting-based pipelines, which are computationally expensive, or require post-training on failure trajectories with step-level error annotations, which are costly to collect and difficult to scale. We argue that a practical failure attribution model should be lightweight and trainable without step-level supervision on failure data. To this end, we address unsupervised failure attribution, i.e., training exclusively on successful trajectories and identifying error steps at inference time given a failure trajectory. We propose OAT, which casts this problem as one-class learning with neural controlled differential equations, modeling the dynamical pattern of successful trajectories in latent space. At inference time, each step in a failure trajectory is assigned an anomaly score based on its deviation from the dynamics learned on successful trajectories, which is then used to form a set of error steps. With training on only 100 successful trajectories, experiments show that OAT is 200--5000 $\times$ faster than prompting-based baselines, and, at the same time, consistently outperforms them in both in-domain and out-of-distribution datasets with +20% and +7% F1 scores, respectively, demonstrating that OAT is a promising and efficient direction for diagnosing agentic system failures.
+# Translation (by gpt-5.6-luna)
+- LLMベースのエージェントシステムにおける失敗の帰属、すなわち、失敗に至った軌跡のうち、どのステップがタスクの失敗を引き起こしたのかを特定することは、これらのシステムのデバッグと改善に不可欠である。既存の手法は、計算コストの高いプロンプトベースのパイプラインに依存するか、ステップレベルのエラーアノテーションを付与した失敗軌跡を用いた事後学習を必要とする。しかし、このようなアノテーションの収集には多大なコストがかかり、規模拡大も困難である。本研究では、実用的な失敗帰属モデルは軽量であり、失敗データに対するステップレベルの教師なしで学習可能であるべきだと主張する。そこで、成功軌跡のみを用いて学習し、推論時に失敗軌跡が与えられた際にエラーステップを特定する、教師なし失敗帰属に取り組む。
+
+提案手法OATでは、この問題をニューラル制御微分方程式を用いた一クラス学習として定式化し、成功軌跡の潜在空間における動的パターンをモデル化する。推論時には、失敗軌跡の各ステップについて、成功軌跡から学習したダイナミクスからの逸脱に基づいて異常スコアを割り当て、そのスコアを用いてエラーステップの集合を構成する。成功軌跡をわずか100件のみ用いて学習した実験では、OATはプロンプトベースのベースラインよりも200～5000倍高速であり、同時に、同一分布内および分布外のデータセットの双方で一貫してベースラインを上回った。F1スコアの向上幅はそれぞれ+20%および+7%であり、OATがエージェントシステムの失敗診断に向けた有望かつ効率的な方向性であることを示している。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントの失敗軌跡から、タスク失敗を引き起こしたエラーステップを特定する教師なし失敗帰属を提案。
+成功軌跡のみを用いて、ニューラル制御微分方程式により潜在空間の動的パターンを学習。
+失敗軌跡では、学習した成功ダイナミクスからの逸脱を異常スコアとして評価し、エラーステップを検出。
+OATは成功軌跡100件のみで学習でき、プロンプトベース手法より200～5000倍高速で、同一分布内外の双方でF1スコアをそれぞれ20%および7%向上。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sharonyixuanli/status/2114017852197929324?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] ReplaySSM: Cache SSM Inputs, Not State, Ze-Wei Liou+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.13778</original-paper-blog-link>
@@ -14411,6 +14536,52 @@ ViLTは、従来のVLPモデルよりも数十倍高速でありながら、競�
  <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2388" target="_blank" rel="noopener noreferrer">[Paper Note] Longformer: The Long-Document Transformer, Iz Beltagy+, arXiv'20</a>
 <br><br>トークン単位などはなくlayerをスキップするとかもある（Layer Skip）。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2610" target="_blank" rel="noopener noreferrer">[Paper Note] Skip a Layer or Loop it? Test-Time Depth Adaptation of Pretrained LLMs, Ziyue Li+, arXiv'25</a>
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>INTRODUCING Phonon: Gradium's open-weight text-to-speech, small enough to ship in any app. Private, and it works offline., Gradium AI, 2026.10</title>
+<original-paper-blog-link>https://gradium.ai/phonon</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6979</repo-issue-link>
+<tags>EfficiencyImprovement, SpeechProcessing, Blog, SmallModel, MultiLingual, OpenWeight, TTS, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://gradium.ai/phonon</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gradiumai/status/2112563128487514512?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/gradium/phonon-31m-en" target="_blank" rel="noopener noreferrer">https://huggingface.co/gradium/phonon-31m-en</a>
+{% endraw %}
+
+<br><br>マルチリンガルなTTS。英語、フランス語、ポルトガル語、スペイン語ドイツ語の5か国語に対応するモデルがあり、5か国語をサポートするマルチリンガルなモデルもある。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Krea3: Frontier Image Editing Model 4x faster than Nano Banana Pro, Krea, 2026.10</title>
+<original-paper-blog-link>https://www.krea.ai/krea-3</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6978</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, TextToImageGeneration, Blog, Proprietary, Editing, ImageSynthesis, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://www.krea.ai/krea-3</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/krea_ai/status/2112567020353102324?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>安い、速い、（パレート最適）、高性能（Arena4位）の画像生成、編集モデル。</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

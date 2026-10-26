@@ -1,5 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-24">
+<paper-list last-updated="2026-10-25">
+<paper-entry>
+<title>[Paper Note] Cache Engineering for Agents, Tianyu Fu+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.28577</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6990</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, KV Cache</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.28577
+# Authors
+  - Tianyu Fu
+  - Ruoxi Wang
+  - Zihan Min
+  - Zhongqi Ren
+  - Zhihao Li
+  - Tengxuan Liu
+  - Shengxu Mu
+  - Hanling Zhang
+  - Yu Wang
+# Abstract
+  - Large Language Model (LLM) agents can handle increasingly complex tasks, navigating long trajectories of observations and actions. As these trajectories grow, key-value (KV) cache I/O and storage become the dominant cost. Trajectories can also exceed the LLM's maximum context length, requiring control over active cache growth. Prior work uses context engineering to reduce cache size by trimming or summarizing history. However, modifying the trajectory prefix invalidates subsequent cached states and triggers costly re-prefilling of retained context. Task accuracy can also suffer when too little context is retained to limit re-prefill costs. We propose cache engineering as a new scheme. It allows agents to directly control their active KV cache without modifying the trajectory or re-prefilling retained context. Specifically, agents can proactively use drop to exclude selected cache from future attention and repos to adjust retained keys' position encodings. We formalize these cache operations and identify history dependence as a serving challenge: identical token sequences can yield different cache states under different cache operation sequences, making prefix matching insufficient for correct cache reuse. Thus, we co-design the AKV serving engine. It provides a stateless interface compatible with existing serving APIs, while internally managing stateful cache reuse, eviction, and restoration. Experiments show that a tool-response rolling-drop cache policy improves average benchmark scores by 1.7 points and reduces average cost by 27.7%, compared with conventional threshold-triggered summarization. With AKV, it achieves up to 1.2x the output throughput and a 1.5x speedup in P95 request latency. Recursive self-improvement of cache policies further reduces cost by 7.1% over expert design. Our code is at https://github.com/thu-nics/AKV.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデル（LLM）エージェントは、観測と行動から成る長大な軌跡をたどりながら、ますます複雑なタスクを処理できるようになっている。こうした軌跡が長くなるにつれて、キー・バリュー（KV）キャッシュの入出力（I/O）および保存が主要なコストとなる。また、軌跡がLLMの最大コンテキスト長を超える場合があり、アクティブなキャッシュの増大を制御する必要がある。従来の研究では、履歴を削除したり要約したりするコンテキストエンジニアリングによって、キャッシュサイズを削減していた。しかし、軌跡の先頭部分を変更すると、それ以降にキャッシュされた状態が無効になり、保持したコンテキストを再プレフィルするための高コストな処理が発生する。また、再プレフィルのコストを抑えるために保持するコンテキストを少なくしすぎると、タスクの精度が低下する可能性もある。
+
+本研究では、新たな方式としてキャッシュエンジニアリングを提案する。これは、軌跡を変更したり、保持したコンテキストを再プレフィルしたりすることなく、エージェントがアクティブなKVキャッシュを直接制御できるようにするものである。具体的には、エージェントは、将来のアテンションから選択したキャッシュを除外するために事前にdropを適用し、保持したキーの位置エンコーディングを調整するためにreposを使用できる。これらのキャッシュ操作を形式化し、提供時における課題として履歴依存性を明らかにする。すなわち、同一のトークン列であっても、キャッシュ操作の系列が異なれば異なるキャッシュ状態が生じるため、正しいキャッシュ再利用にはプレフィックスマッチングだけでは不十分である。
+
+そこで、AKVサービングエンジンを共同設計した。AKVは既存のサービングAPIと互換性のあるステートレスなインターフェースを提供しつつ、内部では状態を持つキャッシュの再利用、退避、復元を管理する。実験の結果、ツール応答に対するローリングdropキャッシュポリシーは、従来のしきい値トリガー型要約と比較して、ベンチマークの平均スコアを1.7ポイント向上させ、平均コストを27.7%削減した。さらにAKVを用いることで、出力スループットは最大1.2倍に向上し、リクエストレイテンシのP95は1.5倍高速化された。キャッシュポリシーを再帰的に自己改善することで、専門家が設計したポリシーと比べてコストをさらに7.1%削減できた。コードは https://github.com/thu-nics/AKV に公開している。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントの長大な軌跡に対して、キャッシュ操作によりアクティブなKVキャッシュを直接制御するキャッシュエンジニアリングを提案。
+dropで将来のアテンションから不要なキャッシュを除外し、reposで保持したキーの位置エンコーディングを調整することで、軌跡の変更や再プレフィルを回避する。
+キャッシュ操作系列によって状態が異なる履歴依存性を明らかにし、状態付きキャッシュの再利用・退避・復元を管理するAKVサービングエンジンを設計。
+ローリングdropにより、要約手法と比べて精度を1.7ポイント向上、コストを27.7%削減し、スループットとレイテンシも改善。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2112968165680640143?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] S-Agent 2.0: Spatial Reasoning with a General Coding Agent, Rui Gong+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.28354</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6982</repo-issue-link>
+<tags>ComputerVision, NLP, AIAgents, Coding, VisionLanguageModel, 3D (Scene), Robotics, SpatialUnderstanding</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.28354
+# Authors
+  - Rui Gong
+  - Ruoyu Wang
+  - Yalun Dai
+  - Hao Li
+  - Sidi Yang
+  - Qihao Zhao
+  - Hongyu Li
+  - Zeyang Guan
+  - Fangzhou Hong
+  - Zhaoxi Chen
+  - Kim-Hui Yap
+  - Ziwei Liu
+# Abstract
+  - Spatial reasoning asks a model to work out where objects are in 3D space, how they relate to one another, and how they move. Agentic VLMs have recently brought large improvements on such tasks by letting the model actively gather evidence with 3D perception tools instead of answering in a single pass. Even so, on many questions the tools return the right evidence and the model still does not arrive at the correct answer: the gap between model and tools, where raw readings become usable conclusions, is left unfilled. We present S-Agent 2.0, a spatial reasoning agent that equips an off-the-shelf general coding agent with a command-line perception toolkit, and we design the interface around one principle: help the VLM close the evidence loop: acquire scene evidence, remember it in a persistent scene memory, and interpret each reading in plain spatial language. This design keeps the full flexibility of a coding agent, and every reading it acts on stays grounded in the tools' geometry. On MMSI-Bench and ReVSI, the toolkit improves a strong open-source model, Qwen3.8-27B, by +13.9 and +20.5 points over the same agent without tools, and a strong closed-source model, Gemini-3.8-Flash, by +11.2 and +9.6 points. With the open backbone S-Agent 2.0 reaches 66.5 on MMSI-Bench and 82.3 on ReVSI, ahead of the specialized system SpatialClaw on the same backbone (62.6 and 74.5), and with Gemini-3.8-Flash it reaches 74.1 and 90.5 against its 67.0 and 79.7. Both tool gains shrink as the backbone grows more capable, but SpatialClaw's shrinks far more on ReVSI, from +13.2 to +2.7, while ours stays at +9.6. S-Agent 2.0 also works across different general coding agent harnesses, such as Codex and Claude Code.
+# Translation (by gpt-5.6-luna)
+- 空間推論とは、モデルが3次元空間内で物体がどこにあるのか、互いにどのような関係にあるのか、そしてどのように動くのかを把握することである。近年、エージェント型VLMは、単一の推論で回答するのではなく、3D知覚ツールを用いてモデルが能動的に証拠を収集できるようにすることで、この種のタスクの性能を大きく向上させてきた。しかし、多くの質問では、ツールが正しい証拠を返しているにもかかわらず、モデルは正解に到達できない。すなわち、生の読み取り結果を利用可能な結論へと変換する、モデルとツールの間の隔たりが埋められていない。
+
+本研究では、コマンドライン型の知覚ツールキットを既製の汎用コーディングエージェントに組み込んだ空間推論エージェント、S-Agent 2.0を提案する。さらに、そのインターフェースを「VLMが証拠のループを閉じるのを支援する」という一つの原則に基づいて設計した。すなわち、シーンの証拠を取得し、それを永続的なシーンメモリに記憶し、各読み取り結果を平易な空間言語で解釈する。この設計により、コーディングエージェントの完全な柔軟性を維持しつつ、エージェントが利用するすべての読み取り結果を、ツールの幾何情報に基づいたものに保つことができる。
+
+MMSI-BenchおよびReVSIにおいて、このツールキットは、強力なオープンソースモデルQwen3.8-27Bの性能を、ツールを持たない同一エージェントと比べてそれぞれ13.9ポイントおよび20.5ポイント向上させた。また、強力なクローズドソースモデルGemini-3.8-Flashでは、それぞれ11.2ポイントおよび9.6ポイント向上した。オープンなバックボーンを用いた場合、S-Agent 2.0はMMSI-Benchで66.5、ReVSIで82.3に達し、同じバックボーン上の専用システムSpatialClaw（62.6および74.5）を上回った。Gemini-3.8-Flashでは、それぞれ74.1および90.5に達し、同システムの67.0および79.7を上回った。
+
+バックボーンの能力が高くなるにつれて、どちらのツールによる性能向上幅も縮小するが、ReVSIにおいてSpatialClawの向上幅は+13.2から+2.7へと大きく縮小するのに対し、我々の手法では+9.6を維持する。さらに、S-Agent 2.0はCodexやClaude Codeなど、異なる汎用コーディングエージェントの実行基盤でも動作する。
+# Summary (by gpt-5.6-luna)
+- 空間推論では、3D知覚ツールが取得した証拠を結論へ変換するモデルとツールの隔たりが課題となる。  
+S-Agent 2.0は、汎用コーディングエージェントにコマンドライン型知覚ツールを統合し、証拠の取得・永続的なシーンメモリへの保存・平易な空間言語による解釈を通じて、証拠のループを閉じる。  
+MMSI-BenchとReVSIで既存のツールなしエージェントおよび専用システムを上回り、オープンソース・クローズドソースの双方で大幅な性能向上を達成。  
+バックボーンが高性能になるほど他手法の改善幅が縮小する中でも、S-Agent 2.0は安定した向上を維持し、CodexやClaude Codeなど複数の汎用コーディングエージェントで利用可能。</issue-body>
+<maintainer-comment-text><p>blog:
+
+{% raw %}
+<a href="https://ropedia.github.io/S-Agent-2.0/" target="_blank" rel="noopener noreferrer">https://ropedia.github.io/S-Agent-2.0/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/10027lifuguan/status/2112788929875505494?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Are Self-Evolving Agents Continual Learners?, Xiaoyin Chen+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.25858</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6980</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Evaluation, ContinualLearning, AgentHarness</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.25858
+# Authors
+  - Xiaoyin Chen
+  - Yizheng Huang
+  - Yinglun Xu
+  - Ziyun Zhao
+  - Emmett McQuinn
+  - Julie Liu
+  - Hope Yao
+# Abstract
+  - Large language model agents are often deployed in environments where new knowledge, tools, and workflows keep arriving. Such an agent is therefore expected to adapt continually, learning new tasks as they arrive without forgetting earlier ones. This resembles the continual learning problem, but at a pace that conventional gradient updates cannot sustain. Nonparametric self-evolving agents are a natural alternative: they adapt by rewriting their own harness, such as prompts, memory, and skills, from task feedback while the model weights stay frozen. We study whether such agents are effective continual learners across four drifting task streams that shift in topic, workflow, or domain (built from BIRD, BFCL, and ScienceWorld). Evaluating three representative methods spanning experience retrieval and self-modification (ReasoningBank, GEPA, and Meta-Harness), we find that although self-evolution improves aggregate performance on most streams, higher plasticity consistently comes at the cost of stability. Specifically, self-modifying methods apply global edits to a shared prompt or workspace, interfering with unseen tasks and overwriting earlier knowledge as the stream shifts. Conversely, similarity-based memory retrieval localizes updates across distant domains, but still retrieves foreign memories on unseen tasks and suffers from retrieval collision when similar queries require conflicting workflows. These findings show that current self-evolving agents remain incomplete continual learners.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデルエージェントは、新たな知識、ツール、ワークフローが継続的に追加される環境に導入されることが多い。そのため、このようなエージェントには、以前のタスクを忘れることなく、新しいタスクが到来するたびに学習し、継続的に適応することが求められる。これは継続学習の問題に類似しているが、従来の勾配更新では維持できない速度で変化する。ノンパラメトリックな自己進化型エージェントは、自然な代替手段である。これらはモデルの重みを固定したまま、タスクからのフィードバックに基づいて、プロンプト、メモリ、スキルなどの自身の実行基盤を書き換えることで適応する。
+
+本研究では、トピック、ワークフロー、またはドメインが変化する4つのドリフト型タスクストリーム（BIRD、BFCL、ScienceWorldから構成）を対象に、このようなエージェントが効果的な継続学習器となるかを検証する。経験検索と自己改変を網羅する代表的な3手法（ReasoningBank、GEPA、Meta-Harness）を評価した結果、自己進化は大半のストリームで総合性能を向上させる一方、可塑性の向上には一貫して安定性の低下が伴うことが分かった。具体的には、自己改変型手法は共有プロンプトやワークスペースに対してグローバルな編集を行うため、未知のタスクに干渉し、ストリームの変化に伴って過去の知識を上書きしてしまう。これに対して、類似度に基づくメモリ検索は、遠く離れたドメイン間で更新を局所化できるものの、未知のタスクに対して無関係なメモリを検索してしまい、また、類似したクエリが相反するワークフローを必要とする場合には、検索衝突の問題に悩まされる。これらの知見は、現在の自己進化型エージェントが、依然として不完全な継続学習器であることを示している。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントを、重みを更新せずにプロンプト・メモリ・スキルを自己改変する継続学習器として評価。  
+BIRD、BFCL、ScienceWorldの4つのドリフト型タスクストリームでReasoningBank、GEPA、Meta-Harnessを比較した結果、自己進化は性能を向上させる一方、可塑性と安定性のトレードオフが生じた。  
+自己改変はグローバル編集による干渉と過去知識の上書き、類似度検索は無関係なメモリの検索や相反するワークフローの衝突を招き、現行手法は不完全な継続学習器に留まる。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2112728082042015769?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Tracing Agentic Failure from the Flow of Success, Samuel Yeh+, arXiv'26, 2026.07</title>
+<original-paper-blog-link>https://arxiv.org/abs/2607.12747</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6972</repo-issue-link>
+<tags>EfficiencyImprovement, Unsupervised, NLP, LanguageModel, AIAgents, NeurIPS, Author Thread-Post, FailureAttribution</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2607.12747
+# Authors
+  - Samuel Yeh
+  - Yiwen Zhu
+  - Shaleen Deep
+  - Sharon Li
+# Abstract
+  - Failure attribution for LLM-based agentic systems, i.e., identifying which steps in a failure trajectory caused the task to fail, is critical for debugging and improving these systems. Existing approaches either rely on prompting-based pipelines, which are computationally expensive, or require post-training on failure trajectories with step-level error annotations, which are costly to collect and difficult to scale. We argue that a practical failure attribution model should be lightweight and trainable without step-level supervision on failure data. To this end, we address unsupervised failure attribution, i.e., training exclusively on successful trajectories and identifying error steps at inference time given a failure trajectory. We propose OAT, which casts this problem as one-class learning with neural controlled differential equations, modeling the dynamical pattern of successful trajectories in latent space. At inference time, each step in a failure trajectory is assigned an anomaly score based on its deviation from the dynamics learned on successful trajectories, which is then used to form a set of error steps. With training on only 100 successful trajectories, experiments show that OAT is 200--5000 $\times$ faster than prompting-based baselines, and, at the same time, consistently outperforms them in both in-domain and out-of-distribution datasets with +20% and +7% F1 scores, respectively, demonstrating that OAT is a promising and efficient direction for diagnosing agentic system failures.
+# Translation (by gpt-5.6-luna)
+- LLMベースのエージェントシステムにおける失敗の帰属、すなわち、失敗に至った軌跡のうち、どのステップがタスクの失敗を引き起こしたのかを特定することは、これらのシステムのデバッグと改善に不可欠である。既存の手法は、計算コストの高いプロンプトベースのパイプラインに依存するか、ステップレベルのエラーアノテーションを付与した失敗軌跡を用いた事後学習を必要とする。しかし、このようなアノテーションの収集には多大なコストがかかり、規模拡大も困難である。本研究では、実用的な失敗帰属モデルは軽量であり、失敗データに対するステップレベルの教師なしで学習可能であるべきだと主張する。そこで、成功軌跡のみを用いて学習し、推論時に失敗軌跡が与えられた際にエラーステップを特定する、教師なし失敗帰属に取り組む。
+
+提案手法OATでは、この問題をニューラル制御微分方程式を用いた一クラス学習として定式化し、成功軌跡の潜在空間における動的パターンをモデル化する。推論時には、失敗軌跡の各ステップについて、成功軌跡から学習したダイナミクスからの逸脱に基づいて異常スコアを割り当て、そのスコアを用いてエラーステップの集合を構成する。成功軌跡をわずか100件のみ用いて学習した実験では、OATはプロンプトベースのベースラインよりも200～5000倍高速であり、同時に、同一分布内および分布外のデータセットの双方で一貫してベースラインを上回った。F1スコアの向上幅はそれぞれ+20%および+7%であり、OATがエージェントシステムの失敗診断に向けた有望かつ効率的な方向性であることを示している。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントの失敗軌跡から、タスク失敗を引き起こしたエラーステップを特定する教師なし失敗帰属を提案。
+成功軌跡のみを用いて、ニューラル制御微分方程式により潜在空間の動的パターンを学習。
+失敗軌跡では、学習した成功ダイナミクスからの逸脱を異常スコアとして評価し、エラーステップを検出。
+OATは成功軌跡100件のみで学習でき、プロンプトベース手法より200～5000倍高速で、同一分布内外の双方でF1スコアをそれぞれ20%および7%向上。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sharonyixuanli/status/2114017852197929324?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] OpenVLHarness: Real World Visual Agentic Tool-Use with Multimodal Memory, Yu Zhou+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.26860</original-paper-blog-link>
@@ -25876,6 +26051,57 @@ AgentBenchのデータセット、環境、および統合評価パッケージ�
 </paper-entry>
 
 <paper-entry>
+<title>Evaluating Agents on Highly Subjective Tasks, CAMERON R. WOLFE, PH.D., 2026.10</title>
+<original-paper-blog-link>https://cameronrwolfe.substack.com/p/subjective-evals</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6984</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, AIAgents, Blog, Subjective, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://cameronrwolfe.substack.com/p/subjective-evals</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/cwolferesearch/status/2112915508148232571?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Ornith-1.5: From Self-Scaffolding to Self-Improvement, Ornith AI, 2026.10</title>
+<original-paper-blog-link>https://ornith.ai/ornith_1_5.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6975</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, OpenWeight, SelfImprovement, One-Line Notes</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>blog:https://ornith.ai/ornith_1_5.html
+HF:https://huggingface.co/ornith-ai/Ornith-1.5-122B</issue-body>
+<maintainer-comment-text><p>self-improvementに基づいて事後学習（RL)されたモデルで、自己生成されたタスクとハーネスで学習される。<br><br>タスクはscaffold（本ブログの定義では、指示、使えるツール、タスクを分解する際の戦略、分解したタスクをどう組み合わせて問題に飛び組むか等）によって条件付けされて取り組まれ、scaffoldも生成対象となる。<br><br>タスクの報酬は、検証可能性（細かく書かれていないが、scaffoldingが機能するか、信頼性の高い解がpassするか、あるいは信頼性の低いものがfailするかなど）、難易度の適切さ(成功率20%)、新規性と多様性（過去のタスクとの類似度）によって定義される。<br><br>ハーネスの報酬は、task alignment（タスクの仕様と整合しているか）、reward fidelity (ハーネスのrewardがsolutionwの質を正しく反映しているか)、hack resistance（evaluatorの失敗、ショートカット、reward hackingなどに対する耐性）などによって決まるようで、こちらは概念的な説明に留まっている。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Nanbeige4.3-33B, Nanbeige, 2026.10</title>
+<original-paper-blog-link>https://huggingface.co/Nanbeige/Nanbeige4.3-33B</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6973</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Blog, OpenWeight, Selected Papers/Blogs</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://huggingface.co/Nanbeige/Nanbeige4.3-33B</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/nanbeige/status/2114328933181333798?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>Pi, Earendil, 2026.10</title>
 <original-paper-blog-link>https://github.com/earendil-works/pi</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6966</repo-issue-link>
@@ -26363,7 +26589,7 @@ misc{khatry-skillrefiner-2025,
 <title>Introducing GPT-6.1-Sol, OpenAI, 2026.09</title>
 <original-paper-blog-link>https://openai.com/ja-JP/index/introducing-gpt-6-1-sol/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6747</repo-issue-link>
-<tags>ComputerVision, NLP, LanguageModel, AIAgents, Blog, Proprietary, VisionLanguageModel, Author Thread-Post</tags>
+<tags>ComputerVision, NLP, LanguageModel, AIAgents, Blog, Proprietary, VisionLanguageModel, Reference Collection, Author Thread-Post</tags>
 <repo-issue-date>2026-10-09</repo-issue-date>
 <issue-body>https://openai.com/ja-JP/index/introducing-gpt-6-1-sol/</issue-body>
 <maintainer-comment-text><p>元ポスト:
@@ -26374,6 +26600,22 @@ misc{khatry-skillrefiner-2025,
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/openai/status/2104986136745767160?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
+{% endraw %}
+
+</p><p>OpenAIが公開したmisalignmentに関するレポートで、GPT-6.1-Sol, AstraのCoTが公開され、それらには単語間のスペースやプログラミング言語のような表記が現れることと、それに対してKarpathy氏がコメントをしたことが話題となっていた:<br>
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/scaling01/status/2112707058558771558?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>Karpathy氏はRLが有効に機能した場合にモデルがCoT中で英語を使うのをやめた時に、RLが適切に行われたことを示すという見解を過去に示しており、そのポストを引用して今回コメントを残している。<br><br>RLを用いるとSFTによってreasoningを学習させる場合などとは異なり、（reasoning traceに対して文法や人間の意味理解に関する報酬を与えない限りは）モデルがreasoning trace中で人間が理解できる言語を話すことで報酬が得られるわけではないため、このような現象が生じてくると推察される。<br><br>レポートはこちら:
+
+{% raw %}
+<a href="https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/" target="_blank" rel="noopener noreferrer">https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/</a>
 {% endraw %}
 
 </p></maintainer-comment-text>

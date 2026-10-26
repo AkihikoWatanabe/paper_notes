@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-24">
+<paper-list last-updated="2026-10-25">
+<paper-entry>
+<title>[Paper Note] SuperMimic: Scaling Humanoid Whole-Body Control with One Differentiable World Model, Qiayuan Liao+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.28480</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6988</repo-issue-link>
+<tags>ComputerVision, ReinforcementLearning, PostTraining, read-later, Selected Papers/Blogs, Robotics, WorldModels, EmbodiedAI, Initial Impression Notes, Model-Based Reinforcement Learining (MBRL)</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.28480
+# Authors
+  - Qiayuan Liao
+  - Yiyang Shao
+  - Junfeng Long
+  - Kevin Zakka
+  - Roberto Horowitz
+  - Pieter Abbeel
+  - Koushil Sreenath
+# Abstract
+  - Tracking large human-motion datasets has become the dominant route to general, expressive humanoid whole-body control, but scaling across many motions is expensive. Current pipelines use model-free reinforcement learning, either merging per-motion specialists through lossy distillation, or brute-forcing a single policy with cluster-scale compute. SuperMimic amortizes learning across all motions with one differentiable world model of their shared dynamics, fit from logged transitions of a standard rigid-body simulator. The world model and the tracking policy train together in one loop, and backpropagation-through-time over short imagined rollouts gives the policy analytic gradients. Fast imagined rollouts and analytic gradients make policy learning efficient. In 3 hours on a single GPU, SuperMimic surpasses the return of a state-of-the-art motion tracker baseline trained for 7 days on 128 GPUs. It reduces GPU-hours by more than $1000\times$ and fails on only 25 of 129,514 benchmark motions, versus 179 failures for the baseline. After 9.8 hours on two GPUs, SuperMimic achieves zero failures. From 1 to 264 hours of motion, the world model's prediction error stays stable, and GPU-hours to a target return grow slowly. Our policy transfers to a physical Unitree G1 across diverse and acrobatic motions. SuperMimic removes compute as the bottleneck to scaling humanoid whole-body control, making it practical to measure motion-tracking scaling laws.
+# Translation (by gpt-5.6-luna)
+- 大規模な人体動作データセットの追跡は、汎用的で表現力豊かなヒューマノイド全身制御を実現するための主流となっているが、多数の動作に対応するよう規模を拡大するには高いコストがかかる。現在のパイプラインでは、モデルフリー強化学習が用いられており、動作ごとの専門方策を損失のある蒸留によって統合するか、あるいはクラスタ規模の計算資源を投入して単一の方策を力ずくで学習している。
+
+SuperMimicは、標準的な剛体シミュレータから記録した遷移データを用いて、動作に共通するダイナミクスを表す単一の微分可能な世界モデルを学習することで、すべての動作にわたる学習を効率よく分散させる。世界モデルと追跡方策は単一のループ内で同時に学習され、短い想像ロールアウトに対する時間方向の逆伝播により、方策に解析的勾配を与える。高速な想像ロールアウトと解析的勾配によって、方策学習は効率化される。
+
+単一のGPU上で3時間学習するだけで、SuperMimicは128基のGPUで7日間学習した最先端の動作追跡ベースラインを上回るリターンを達成する。GPU時間を1000倍以上削減し、ベンチマークの129,514動作のうち失敗はわずか25件であるのに対し、ベースラインでは179件が失敗した。2基のGPUで9.8時間学習すると、SuperMimicは失敗ゼロを達成する。動作時間が1時間から264時間に増加しても、世界モデルの予測誤差は安定しており、目標リターンに到達するためのGPU時間の増加も緩やかである。
+
+また、提案方策は、多様かつアクロバティックな動作において、実機のUnitree G1へ転移できる。SuperMimicは、計算資源をヒューマノイド全身制御のスケーリングにおけるボトルネックから取り除き、動作追跡のスケーリング則を実際に測定することを可能にする。
+# Summary (by gpt-5.6-luna)
+- 大規模な動作データセットに対し、微分可能な世界モデルを用いて動作間で共通するダイナミクスを学習し、単一の追跡方策を効率的に訓練。
+短い想像ロールアウトへの時間方向の逆伝播により解析的勾配を計算し、従来のモデルフリー強化学習と比べて計算コストを大幅に削減。
+129,514動作中の失敗を25件まで抑え、2 GPUでは失敗ゼロを達成するとともに、アクロバティックな動作をUnitree G1へ転移。</issue-body>
+<maintainer-comment-text><p>demo:
+
+{% raw %}
+<a href="https://supermimic.github.io/demo/" target="_blank" rel="noopener noreferrer">https://supermimic.github.io/demo/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qiayuanliao/status/2112936035911135695?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>World Modelをシミュレータ等のデータから学習し（今回はヒューマノイドロボット）、ポリシーが予測したアクションによってstateがどのように変化するかを予測可能にし、到達したstateから得られた累積割引報酬和に対して、BPTTでポリシーを学習することで学習を大幅に効率、という話に見える。<br><br>↑は手法の手続をざっくり述べているだけで、論文の気持ちを全く捉えられていないので、ちゃんと元論文を読んだ方がいい。高速化の度合いが非常に大きく、インパクトが大きそうな研究に見える。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Beyond Action Prediction: Learning Search-Free Planning in Latent Space, Guanchen Du+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.23615</original-paper-blog-link>
@@ -3565,6 +3614,38 @@ WorldMarkの貢献は次の3点である：(1) 共有のWASD風アクション�
 # Summary (by gpt-4o-mini)
 - 本論文では、手作りのデータ拡張に依存せずに意味的な画像表現を学習するI-JEPAという自己教師あり学習アプローチを提案。I-JEPAは、単一のコンテキストブロックから異なるターゲットブロックの表現を予測する。重要な設計選択として、意味的に大きなターゲットブロックと情報量の多いコンテキストブロックのサンプリングが挙げられる。実験により、I-JEPAはVision Transformersと組み合わせることでスケーラブルであり、ImageNet上で強力な下流性能を達成した。</issue-body>
 <maintainer-comment-text><p>Joint-Embedding Predictive Architecture (JEPA)を提案した研究。ピクセルやトークンのreconstruction lossではなく、潜在表現を再構成するようなself-supervised learningによってより意味的な特徴を学習するように誘導するもの（と思われるがこれが本質的な理解として正しいかは自信がない）。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Hy-Nomas, Tencent, 2026.10</title>
+<original-paper-blog-link>https://hy-nomas.hy.tencent.com/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6971</repo-issue-link>
+<tags>ComputerVision, Blog, OpenWeight, VideoGeneration/Understandings, WorldModels, interactive, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://hy-nomas.hy.tencent.com/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tencenthunyuan/status/2113676827114053892?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/tencent/Hy-Nomas" target="_blank" rel="noopener noreferrer">https://huggingface.co/tencent/Hy-Nomas</a>
+{% endraw %}
+
+<br>github:
+
+{% raw %}
+<a href="https://github.com/Tencent-Hunyuan/Hy-Nomas" target="_blank" rel="noopener noreferrer">https://github.com/Tencent-Hunyuan/Hy-Nomas</a>
+{% endraw %}
+
+</p><p>自由記述のテキストとカメラコントロールによるinteractiveな制御と、最大60sの生成をサポート</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

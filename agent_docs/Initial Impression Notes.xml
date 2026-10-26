@@ -1,5 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-24">
+<paper-list last-updated="2026-10-25">
+<paper-entry>
+<title>[Paper Note] SuperMimic: Scaling Humanoid Whole-Body Control with One Differentiable World Model, Qiayuan Liao+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.28480</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6988</repo-issue-link>
+<tags>ComputerVision, ReinforcementLearning, PostTraining, read-later, Selected Papers/Blogs, Robotics, WorldModels, EmbodiedAI, Initial Impression Notes, Model-Based Reinforcement Learining (MBRL)</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.28480
+# Authors
+  - Qiayuan Liao
+  - Yiyang Shao
+  - Junfeng Long
+  - Kevin Zakka
+  - Roberto Horowitz
+  - Pieter Abbeel
+  - Koushil Sreenath
+# Abstract
+  - Tracking large human-motion datasets has become the dominant route to general, expressive humanoid whole-body control, but scaling across many motions is expensive. Current pipelines use model-free reinforcement learning, either merging per-motion specialists through lossy distillation, or brute-forcing a single policy with cluster-scale compute. SuperMimic amortizes learning across all motions with one differentiable world model of their shared dynamics, fit from logged transitions of a standard rigid-body simulator. The world model and the tracking policy train together in one loop, and backpropagation-through-time over short imagined rollouts gives the policy analytic gradients. Fast imagined rollouts and analytic gradients make policy learning efficient. In 3 hours on a single GPU, SuperMimic surpasses the return of a state-of-the-art motion tracker baseline trained for 7 days on 128 GPUs. It reduces GPU-hours by more than $1000\times$ and fails on only 25 of 129,514 benchmark motions, versus 179 failures for the baseline. After 9.8 hours on two GPUs, SuperMimic achieves zero failures. From 1 to 264 hours of motion, the world model's prediction error stays stable, and GPU-hours to a target return grow slowly. Our policy transfers to a physical Unitree G1 across diverse and acrobatic motions. SuperMimic removes compute as the bottleneck to scaling humanoid whole-body control, making it practical to measure motion-tracking scaling laws.
+# Translation (by gpt-5.6-luna)
+- 大規模な人体動作データセットの追跡は、汎用的で表現力豊かなヒューマノイド全身制御を実現するための主流となっているが、多数の動作に対応するよう規模を拡大するには高いコストがかかる。現在のパイプラインでは、モデルフリー強化学習が用いられており、動作ごとの専門方策を損失のある蒸留によって統合するか、あるいはクラスタ規模の計算資源を投入して単一の方策を力ずくで学習している。
+
+SuperMimicは、標準的な剛体シミュレータから記録した遷移データを用いて、動作に共通するダイナミクスを表す単一の微分可能な世界モデルを学習することで、すべての動作にわたる学習を効率よく分散させる。世界モデルと追跡方策は単一のループ内で同時に学習され、短い想像ロールアウトに対する時間方向の逆伝播により、方策に解析的勾配を与える。高速な想像ロールアウトと解析的勾配によって、方策学習は効率化される。
+
+単一のGPU上で3時間学習するだけで、SuperMimicは128基のGPUで7日間学習した最先端の動作追跡ベースラインを上回るリターンを達成する。GPU時間を1000倍以上削減し、ベンチマークの129,514動作のうち失敗はわずか25件であるのに対し、ベースラインでは179件が失敗した。2基のGPUで9.8時間学習すると、SuperMimicは失敗ゼロを達成する。動作時間が1時間から264時間に増加しても、世界モデルの予測誤差は安定しており、目標リターンに到達するためのGPU時間の増加も緩やかである。
+
+また、提案方策は、多様かつアクロバティックな動作において、実機のUnitree G1へ転移できる。SuperMimicは、計算資源をヒューマノイド全身制御のスケーリングにおけるボトルネックから取り除き、動作追跡のスケーリング則を実際に測定することを可能にする。
+# Summary (by gpt-5.6-luna)
+- 大規模な動作データセットに対し、微分可能な世界モデルを用いて動作間で共通するダイナミクスを学習し、単一の追跡方策を効率的に訓練。
+短い想像ロールアウトへの時間方向の逆伝播により解析的勾配を計算し、従来のモデルフリー強化学習と比べて計算コストを大幅に削減。
+129,514動作中の失敗を25件まで抑え、2 GPUでは失敗ゼロを達成するとともに、アクロバティックな動作をUnitree G1へ転移。</issue-body>
+<maintainer-comment-text><p>demo:
+
+{% raw %}
+<a href="https://supermimic.github.io/demo/" target="_blank" rel="noopener noreferrer">https://supermimic.github.io/demo/</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/qiayuanliao/status/2112936035911135695?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>World Modelをシミュレータ等のデータから学習し（今回はヒューマノイドロボット）、ポリシーが予測したアクションによってstateがどのように変化するかを予測可能にし、到達したstateから得られた累積割引報酬和に対して、BPTTでポリシーを学習することで学習を大幅に効率、という話に見える。<br><br>↑は手法の手続をざっくり述べているだけで、論文の気持ちを全く捉えられていないので、ちゃんと元論文を読んだ方がいい。高速化の度合いが非常に大きく、インパクトが大きそうな研究に見える。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] TokenGate: Adapting LLMs for Fast and Memory-Efficient Prefill with Learned Token Pruning, Liana Patel+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.26754</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6987</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Pruning, Initial Impression Notes, Reading Reflections, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.26754
+# Authors
+  - Liana Patel
+  - Rishabh Ranjan
+  - Ion Stoica
+  - Matei Zaharia
+  - Carlos Guestrin
+# Abstract
+  - Expert human readers process large inputs (e.g., code repositories and long documents) by skimming to closely read only what matters. On the other hand, language models process all input tokens through each model layer, resulting in significant processing costs for long-context inputs. We introduce TokenGate, a small, drop-in component that extends existing trained models to enable end-to-end learnable token pruning over long-context inputs for fast and memory-efficient prefill. To enable end-to-end learning despite the non-differentiable top-K operator for token pruning, we introduce token-gated attention, a mechanism inspired by Mixture-of-Experts that re-weights attention logits using token importance scores. Across diverse tasks, TokenGate achieves $1.4$-$11.3\times$ faster time-to-first token (TTFT) and $1.5$-$3.4\times$ lower peak memory at no accuracy degradation for prefill in transformers. Compared to the best-performing prior methods for token-pruning, TokenGate gives up to $6.4\times$ faster prefill and $2\times$ lower peak memory. TokenGate natively extends both standard transformers (e.g., Qwen3) and hybrid-attention models (e.g., Qwen3.5) with simple lightweight adaptation comparable to standard parameter-efficient fine-tuning. We make our code available at: https://github.com/tokengate-models/TokenGate.
+# Translation (by gpt-5.6-luna)
+- 熟練した人間の読者は、コードリポジトリや長文書などの大規模な入力を、重要な箇所だけを精読するようにざっと読むことで処理します。一方、言語モデルは各モデル層を通じて入力中のすべてのトークンを処理するため、長いコンテキスト入力では処理コストが大きくなります。そこで本研究では、既存の学習済みモデルに追加するだけで、長いコンテキスト入力に対するエンドツーエンドで学習可能なトークンプルーニングを実現し、高速かつメモリ効率の高いプリフィルを可能にする小規模なコンポーネント、TokenGateを提案します。
+
+トークンプルーニングに用いる微分不可能なtop-K演算が存在する状況でもエンドツーエンド学習を可能にするため、Mixture-of-Expertsに着想を得たトークンゲート付きアテンションを導入します。これは、トークンの重要度スコアを用いてアテンションのロジットを再重み付けする機構です。多様なタスクにおいて、TokenGateは、トランスフォーマーのプリフィル時に精度を低下させることなく、Time-to-First-Token（TTFT）を1.4～11.3倍高速化し、ピークメモリ使用量を1.5～3.4倍削減します。トークンプルーニングに関する従来の最良手法と比較しても、TokenGateはプリフィルを最大6.4倍高速化し、ピークメモリ使用量を2倍削減します。TokenGateは、標準的なトランスフォーマー（例：Qwen3）とハイブリッド・アテンションモデル（例：Qwen3.5）の双方に対して、標準的なパラメータ効率のよいファインチューニングに匹敵する、単純で軽量な適応によってそのまま拡張できます。コードは以下で公開しています：https://github.com/tokengate-models/TokenGate】【。
+# Summary (by gpt-5.6-luna)
+- 長いコンテキスト入力に対して、TokenGateを追加し、重要なトークンを選択して不要なトークンをプルーニング。
+MoEに着想を得たtoken-gated attentionにより、top-K演算を含むエンドツーエンド学習を実現。
+精度を維持したまま、TTFTを最大11.3倍高速化し、ピークメモリ使用量を最大3.4倍削減。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/lianapatel_/status/2112924355240099875?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>github:
+
+{% raw %}
+<a href="https://github.com/token-gate-llms/TokenGate" target="_blank" rel="noopener noreferrer">https://github.com/token-gate-llms/TokenGate</a>
+{% endraw %}
+
+</p><p>layerの途中でトークンをtop-kの重要なトークンにpruningするgateを学習し、prefillのメモリ効率と速度を改善する。既存のLLMにも適用できる、という話に見える。要は人間の重要な部分以外は読み飛ばすといった挙動を実現したい、という気持ちである。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/82" target="_blank" rel="noopener noreferrer">[Paper Note] Learning to Skim Text, Adams Wei Yu+, ACL'17, 2017.04</a>
+</p><p>Sparse Attentionと本質的に何が違うのか？と思ったが、本研究はトークンそのものを削除するため、削除されたトークンに対する計算やメモリは完全になくなる。Sparse Attentionはそれらは保持されており、Top-kのトークンの選択に利用されたりするため、その点で本研究の方が削減効果は大きそうに感じる。が、トークンの情報を完全に削除することによって、当該トークンは削除されたレイヤー以後では参照できなくなるため、その点は性能が低減する要因となりうる。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] SteerAct: Unlocking Action Models through Few-Shot Temporal Steering, Kaichen Zhou+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.25632</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6981</repo-issue-link>
+<tags>ComputerVision, read-later, Selected Papers/Blogs, Robotics, EmbodiedAI, Steering, Initial Impression Notes, WorldActionModel, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.25632
+# Authors
+  - Kaichen Zhou
+  - Zhiyan Li
+  - Chongkai Gao
+  - Yuhan Wang
+  - Wenlong Huang
+  - Maggie Wang
+  - Fangneng Zhan
+  - Manling Li
+  - Qianqian Wang
+  - Mac Schwager
+  - Zhuang Liu
+  - Li Fei-Fei
+  - Mengyu Wang
+  - Paul Pu Liang
+# Abstract
+  - Improving pretrained robot action models at test time from only a few rollouts remains challenging. Activation steering offers a lightweight approach by modifying feature activations while keeping model weights fixed. However, effective steering requires identifying which features to modify and determining the timing and strength of modification. We introduce SteerAct, a few-shot temporal steering framework that uses a shared temporal descriptor of sparse-feature dynamics for offline feature selection and online control. A pretrained sparse autoencoder provides candidate features, and our temporal descriptor summarizes the distribution of local activation-order patterns for each feature, enabling comparisons across rollouts without requiring timestep alignment. Before steering begins (offline), we use successful and failed reference rollouts to select a single task-specific feature whose temporal descriptors best distinguish the two outcomes and construct its reference banks. During each new execution (online), we compare the feature's evolving temporal descriptor with these references to determine when to intervene and how strongly to increase or decrease its activation via a steering coefficient. Using only 24 outcome-labeled rollouts per task, SteerAct improves task success by approximately 10% relative to unsteered models in evaluations spanning $π_{0.5}$, Fast-WAM, RoboTwin 2.0, DexJoCo, and real-world manipulation, without updating action-model weights. Code and demos are available at: https://steeract.github.io/.
+# Translation (by gpt-5.6-luna)
+- 事前学習済みロボット行動モデルを、わずかなロールアウトのみからテスト時に改善することは、依然として困難である。Activation steeringは、モデルの重みを固定したまま特徴量の活性化を変更する、軽量なアプローチを提供する。しかし、効果的なステアリングには、変更すべき特徴量と、変更のタイミングおよび強度を特定する必要がある。
+
+本研究では、疎な特徴量のダイナミクスを表す共有時系列記述子を用いて、オフラインでの特徴量選択とオンライン制御を行う、少数ショット時系列ステアリング・フレームワークSteerActを提案する。事前学習済みのスパースオートエンコーダによって候補特徴量を得て、各特徴量について、局所的な活性化順序パターンの分布を時系列記述子として要約する。これにより、時刻のアラインメントを必要とせずに、ロールアウト間の比較が可能になる。
+
+ステアリングを開始する前のオフライン段階では、成功および失敗した参照ロールアウトを用いて、両方の結果を最もよく識別する時系列記述子を持つ、タスク固有の単一の特徴量を選択し、その参照バンクを構築する。各新規実行時のオンライン段階では、この特徴量の変化する時系列記述子を参照バンクと比較し、介入のタイミングと、ステアリング係数によってその活性化をどの程度増減させるかを決定する。
+
+タスクごとに結果ラベル付きロールアウトを24件のみ使用した場合でも、SteerActは、π₀.₅、Fast-WAM、RoboTwin 2.0、DexJoCo、および実世界のマニピュレーションを対象とした評価において、ステアリングを行わないモデルと比較してタスク成功率を約10%向上させた。なお、行動モデルの重みは更新していない。コードとデモは https://steeract.github.io/ で公開されている。
+# Summary (by gpt-5.6-luna)
+- 事前学習済みロボット行動モデルに対し、重みを更新せず少数のロールアウトから特徴量活性化を制御するSteerActを提案。
+スパース特徴量の時系列記述子を用いて、成功・失敗ロールアウトを識別するタスク固有の特徴量をオフラインで選択し、オンラインで介入タイミングとステアリング強度を決定。
+わずか24件のラベル付きロールアウトで、π₀.₅、Fast-WAM、RoboTwin 2.0、DexJoCo、実世界マニピュレーションにおいて、ステアリングなしと比べ成功率を約10%向上。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/alex_kai2020/status/2112572125412565053?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>少量の成功、失敗事例からSAEを通じてそれらを区別できる特徴を特定し、時間発展に合わせて適切なタイミングでsteeringの強度を調整することで、モデルの重みを更新することなくテスト時の性能を改善する。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Priming Base Models for Agentic Post-Training: An Open Midtraining Recipe, Soumye Singhal+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.22019</original-paper-blog-link>
@@ -15709,6 +15852,109 @@ MovieLens、Amazon Review、Google Local Reviewのデータセットでの包括
 <issue-body>https://dl.acm.org/doi/10.1145/502716.502737</issue-body>
 <maintainer-comment-text><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/1955" target="_blank" rel="noopener noreferrer">[Paper Note] Exploring the Limits of Transfer Learning with a Unified Text-to-Text  Transformer, Colin Raffel+, JMLR'20 </a>
 <br><br>のOpenReviewで言及されているコールドスタートに関する研究</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Open Language Models, Nathan Lambert, 2026.10</title>
+<original-paper-blog-link>https://natolambert.com/slides/2026/harvard/lecture#1</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6986</repo-issue-link>
+<tags>Tutorial, NLP, LanguageModel, OpenWeight, Slide, Initial Impression Notes</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://natolambert.com/slides/2026/harvard/lecture#1</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/natolambert/status/2112960942078107960?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ざっと見た感じ手法的な話よりも、定義や過去の歴史、主要なモデル、蒸留（およびproprietary modelのtraaeを盗む方法があったこと）とそれに対する見解、オープンモデルの重要性、これまでの動向（性能の変遷、どれまね使われているか）、サイバーセキュリティに関する話題、のようなオープンモデルの意義や動向に時重点が置かれた資料に見えた</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing Ampersand, the first model trained for people to achieve more together. Available today through our API., humans&, 2026.10</title>
+<original-paper-blog-link>https://ampersand.humansand.ai/blog/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6983</repo-issue-link>
+<tags>NLP, LanguageModel, Blog, Proprietary, Initial Impression Notes</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://ampersand.humansand.ai/blog/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/humansand/status/2112674550907552137?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2112852351929196652?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>人間と協働できるようにしようね、みたいな話が少し増えてきた気がする</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6958" target="_blank" rel="noopener noreferrer">Collaborative Intelligence Release: A benchmark for AI agents as teammates, Wu+, 2026.10</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Krea3: Frontier Image Editing Model 4x faster than Nano Banana Pro, Krea, 2026.10</title>
+<original-paper-blog-link>https://www.krea.ai/krea-3</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6978</repo-issue-link>
+<tags>ComputerVision, EfficiencyImprovement, NLP, TextToImageGeneration, Blog, Proprietary, Editing, ImageSynthesis, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://www.krea.ai/krea-3</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/krea_ai/status/2112567020353102324?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>安い、速い、（パレート最適）、高性能（Arena4位）の画像生成、編集モデル。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Hy-Nomas, Tencent, 2026.10</title>
+<original-paper-blog-link>https://hy-nomas.hy.tencent.com/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6971</repo-issue-link>
+<tags>ComputerVision, Blog, OpenWeight, VideoGeneration/Understandings, WorldModels, interactive, Initial Impression Notes, Author Thread-Post</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body>https://hy-nomas.hy.tencent.com/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/tencenthunyuan/status/2113676827114053892?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>HF:
+
+{% raw %}
+<a href="https://huggingface.co/tencent/Hy-Nomas" target="_blank" rel="noopener noreferrer">https://huggingface.co/tencent/Hy-Nomas</a>
+{% endraw %}
+
+<br>github:
+
+{% raw %}
+<a href="https://github.com/Tencent-Hunyuan/Hy-Nomas" target="_blank" rel="noopener noreferrer">https://github.com/Tencent-Hunyuan/Hy-Nomas</a>
+{% endraw %}
+
+</p><p>自由記述のテキストとカメラコントロールによるinteractiveな制御と、最大60sの生成をサポート</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

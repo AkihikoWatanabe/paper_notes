@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-11">
+<paper-list last-updated="2026-10-25">
+<paper-entry>
+<title>[Paper Note] Cache Engineering for Agents, Tianyu Fu+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.28577</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6990</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, AIAgents, KV Cache</tags>
+<repo-issue-date>2026-10-25</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.28577
+# Authors
+  - Tianyu Fu
+  - Ruoxi Wang
+  - Zihan Min
+  - Zhongqi Ren
+  - Zhihao Li
+  - Tengxuan Liu
+  - Shengxu Mu
+  - Hanling Zhang
+  - Yu Wang
+# Abstract
+  - Large Language Model (LLM) agents can handle increasingly complex tasks, navigating long trajectories of observations and actions. As these trajectories grow, key-value (KV) cache I/O and storage become the dominant cost. Trajectories can also exceed the LLM's maximum context length, requiring control over active cache growth. Prior work uses context engineering to reduce cache size by trimming or summarizing history. However, modifying the trajectory prefix invalidates subsequent cached states and triggers costly re-prefilling of retained context. Task accuracy can also suffer when too little context is retained to limit re-prefill costs. We propose cache engineering as a new scheme. It allows agents to directly control their active KV cache without modifying the trajectory or re-prefilling retained context. Specifically, agents can proactively use drop to exclude selected cache from future attention and repos to adjust retained keys' position encodings. We formalize these cache operations and identify history dependence as a serving challenge: identical token sequences can yield different cache states under different cache operation sequences, making prefix matching insufficient for correct cache reuse. Thus, we co-design the AKV serving engine. It provides a stateless interface compatible with existing serving APIs, while internally managing stateful cache reuse, eviction, and restoration. Experiments show that a tool-response rolling-drop cache policy improves average benchmark scores by 1.7 points and reduces average cost by 27.7%, compared with conventional threshold-triggered summarization. With AKV, it achieves up to 1.2x the output throughput and a 1.5x speedup in P95 request latency. Recursive self-improvement of cache policies further reduces cost by 7.1% over expert design. Our code is at https://github.com/thu-nics/AKV.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデル（LLM）エージェントは、観測と行動から成る長大な軌跡をたどりながら、ますます複雑なタスクを処理できるようになっている。こうした軌跡が長くなるにつれて、キー・バリュー（KV）キャッシュの入出力（I/O）および保存が主要なコストとなる。また、軌跡がLLMの最大コンテキスト長を超える場合があり、アクティブなキャッシュの増大を制御する必要がある。従来の研究では、履歴を削除したり要約したりするコンテキストエンジニアリングによって、キャッシュサイズを削減していた。しかし、軌跡の先頭部分を変更すると、それ以降にキャッシュされた状態が無効になり、保持したコンテキストを再プレフィルするための高コストな処理が発生する。また、再プレフィルのコストを抑えるために保持するコンテキストを少なくしすぎると、タスクの精度が低下する可能性もある。
+
+本研究では、新たな方式としてキャッシュエンジニアリングを提案する。これは、軌跡を変更したり、保持したコンテキストを再プレフィルしたりすることなく、エージェントがアクティブなKVキャッシュを直接制御できるようにするものである。具体的には、エージェントは、将来のアテンションから選択したキャッシュを除外するために事前にdropを適用し、保持したキーの位置エンコーディングを調整するためにreposを使用できる。これらのキャッシュ操作を形式化し、提供時における課題として履歴依存性を明らかにする。すなわち、同一のトークン列であっても、キャッシュ操作の系列が異なれば異なるキャッシュ状態が生じるため、正しいキャッシュ再利用にはプレフィックスマッチングだけでは不十分である。
+
+そこで、AKVサービングエンジンを共同設計した。AKVは既存のサービングAPIと互換性のあるステートレスなインターフェースを提供しつつ、内部では状態を持つキャッシュの再利用、退避、復元を管理する。実験の結果、ツール応答に対するローリングdropキャッシュポリシーは、従来のしきい値トリガー型要約と比較して、ベンチマークの平均スコアを1.7ポイント向上させ、平均コストを27.7%削減した。さらにAKVを用いることで、出力スループットは最大1.2倍に向上し、リクエストレイテンシのP95は1.5倍高速化された。キャッシュポリシーを再帰的に自己改善することで、専門家が設計したポリシーと比べてコストをさらに7.1%削減できた。コードは https://github.com/thu-nics/AKV に公開している。
+# Summary (by gpt-5.6-luna)
+- LLMエージェントの長大な軌跡に対して、キャッシュ操作によりアクティブなKVキャッシュを直接制御するキャッシュエンジニアリングを提案。
+dropで将来のアテンションから不要なキャッシュを除外し、reposで保持したキーの位置エンコーディングを調整することで、軌跡の変更や再プレフィルを回避する。
+キャッシュ操作系列によって状態が異なる履歴依存性を明らかにし、状態付きキャッシュの再利用・退避・復元を管理するAKVサービングエンジンを設計。
+ローリングdropにより、要約手法と比べて精度を1.7ポイント向上、コストを27.7%削減し、スループットとレイテンシも改善。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/dair_ai/status/2112968165680640143?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Retrieval-Centric Deep Learning in Growing Nonparametric Neural Networks, Maximilian Schlegel+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.03858</original-paper-blog-link>
