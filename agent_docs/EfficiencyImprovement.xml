@@ -1,5 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-25">
+<paper-list last-updated="2026-10-26">
+<paper-entry>
+<title>[Paper Note] HyScale: Scaling Long-Context Training for Learned Sparse Attention, Yangsheng Deng+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.32057</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7015</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, LongContext, SparseAttention</tags>
+<repo-issue-date>2026-10-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.32057
+# Authors
+  - Yangsheng Deng
+  - Xinjing Huang
+  - Yulong Wang
+  - Yunzhuo Liu
+  - Jun Hu
+  - Shuyong Tang
+  - Junchi Zeng
+  - Mingji Han
+  - Ray Ying
+  - Key Zhang
+  - Luo Mai
+# Abstract
+  - We present HyScale, a long-context training system for learned sparse attention. Learned sparse attention is a promising architecture for million-token contexts, widely adopted in production since DeepSeek-V3.2. Selection, however, grows into the training bottleneck. For each query, it scores every previous token whereas sparse attention reads only $k$; worse, current systems materialize a full score table and repeat selection during recomputation. Our key insight is that the output of selection is not an activation, but rather a set of indices. Building on it, HyScale introduces HyTopK and selection replay. HyTopK finds each query's exact top-$k$ on the fly without a score table, while selection replay reuses forward-pass selection in recomputation. Together with holistic system optimizations tackling end-to-end training challenges, HyScale speeds up GLM-5.1 training on 1M-token sequences by 2.07$\times$ over Megatron-LM on 512 H20 GPUs. It also speeds up the CSA layers of DeepSeek-V4-Flash and the QSA layers of Qwen3.8-Flash-Next by 2.01$\times$ and 1.57$\times$ at 1M tokens on 32 H800 GPUs.
+# Translation (by gpt-5.6-luna)
+- HyScaleを提案する。これは、学習可能なスパースアテンションのための長文脈学習システムである。学習可能なスパースアテンションは、100万トークン規模の文脈に対応する有望なアーキテクチャであり、DeepSeek-V3.2以降、実運用で広く採用されている。しかし、選択処理が学習時のボトルネックとなっている。各クエリについて、選択処理はすべての過去トークンに対してスコアを計算する一方、スパースアテンションが読み取るのはわずか $k$ 個である。さらに悪いことに、既存システムでは完全なスコアテーブルを生成し、再計算時にも選択処理を繰り返している。
+
+我々の重要な洞察は、選択処理の出力がアクティベーションではなく、インデックスの集合であるという点にある。この洞察に基づき、HyScaleはHyTopKとselection replayを導入する。HyTopKはスコアテーブルを生成することなく、各クエリに対する正確な上位 $k$ 件をオンザフライで求める。一方、selection replayは、順方向パスで行った選択結果を再計算時に再利用する。エンドツーエンドの学習における課題に対処する包括的なシステム最適化と組み合わせることで、HyScaleは512台のH20 GPU上で、100万トークンの系列を用いたGLM-5.1の学習を、Megatron-LMと比較して2.07倍高速化する。また、32台のH800 GPU上で100万トークンの場合、DeepSeek-V4-FlashのCSA層およびQwen3.8-Flash-NextのQSA層を、それぞれ2.01倍および1.57倍高速化する。
+# Summary (by gpt-5.6-luna)
+- 学習可能なスパースアテンションにおける選択処理のボトルネックに対し、HyScaleを提案。
+HyTopKで完全なスコアテーブルを生成せずに上位k件を求め、selection replayで再計算時に選択結果を再利用する。
+エンドツーエンドの最適化により、100万トークンの長文脈学習を既存手法より最大2.07倍高速化。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2114641017429184522?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Contextual Correction of Parallel Drafts for Speculative Decoding, Roy Eisenstadt+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.12570</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7008</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, DiffusionModel, read-later, Selected Papers/Blogs, SpeculativeDecoding, Initial Impression Notes</tags>
+<repo-issue-date>2026-10-26</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.12570
+# Authors
+  - Roy Eisenstadt
+  - Harel Lidar
+  - Tal Gonen
+  - Omer Luxembourg
+  - Itamar Zimerman
+  - Lior Wolf
+  - Eli David
+  - Ilan Naiman
+# Abstract
+  - Speculative decoding accelerates large language model inference by using a lightweight drafter to propose multiple tokens that are subsequently verified in parallel by the target model. Recent diffusion-based drafters make this paradigm particularly attractive: deep attention-based neural backbones provide strong predictions, while drafting multiple future positions in parallel avoids the sequential cost of autoregressive generation. This parallelism, however, comes at a cost. Tokens within a draft block are predicted without access to the realized identities of preceding draft tokens, removing intra-block dependencies that would naturally be available under autoregressive generation. We introduce DCOCO (DFlash Contextual Corrector), a lightweight mechanism that restores these dependencies while preserving parallel drafting. Rather than committing to each position's top prediction, DCOCO retains multiple candidate tokens and evaluates their contextual compatibility across adjacent draft positions in parallel, enabling contextually informed token selection at low additional cost. Across four verifier backbones and ten benchmarks, DCOCO achieves the highest average throughput in every evaluated configuration, spanning greedy and stochastic decoding with and without extended reasoning, with speedups of up to 6.6x over vanilla decoding. Its advantage persists under concurrent serving: DCOCO outperforms the strongest competing method by 6-23% across 4-32 concurrent requests, while other sequential correctors fall below uncorrected DFlash at these loads. These results demonstrate that recovering intra-block dependencies through parallel contextual scoring delivers consistent acceleration across decoding regimes and serving loads.
+# Translation (by gpt-5.6-luna)
+- 拡散モデルベースのドラフタを用いた投機的デコーディングは、軽量なドラフタで複数のトークンを提案し、その後、ターゲットモデルによってそれらを並列に検証することで、大規模言語モデルの推論を高速化する。近年の拡散モデルベースのドラフタは、この枠組みを特に魅力的なものにしている。すなわち、深いアテンションベースのニューラルバックボーンが高精度な予測を提供する一方で、未来の複数位置を並列にドラフトすることにより、自己回帰生成に伴う逐次的なコストを回避できる。
+
+しかし、この並列性には代償がある。ドラフトブロック内のトークンは、それより前にあるドラフトトークンの実際の同定結果を参照せずに予測されるため、自己回帰生成であれば自然に利用できるブロック内依存関係が失われる。そこで本研究では、並列ドラフティングを維持しながらこれらの依存関係を復元する軽量な機構、DCOCO（DFlash Contextual Corrector）を導入する。DCOCOは各位置の予測上位トークンを一つに決め打ちするのではなく、複数の候補トークンを保持し、隣接するドラフト位置間における文脈的な整合性を並列に評価することで、追加コストを抑えつつ文脈を考慮したトークン選択を可能にする。
+
+4種類の検証器バックボーンと10種類のベンチマークにわたる評価において、DCOCOは、拡張推論の有無を問わず、貪欲デコーディングおよび確率的デコーディングを含む、評価したすべての構成で最高の平均スループットを達成し、通常のデコーディングに対して最大6.6倍の高速化を実現した。この優位性は同時サービング環境でも維持され、4〜32件の同時リクエストにおいて、DCOCOは最も強力な競合手法を6〜23%上回った。一方、その他の逐次的な補正手法は、これらの負荷条件では補正を行わないDFlashを下回った。これらの結果は、並列的な文脈スコアリングによってブロック内依存関係を復元することで、さまざまなデコーディング方式およびサービング負荷において、一貫した高速化を実現できることを示している。
+# Summary (by gpt-5.6-luna)
+- 拡散モデルベースのドラフタで複数トークンを並列生成し、LLM推論を高速化。
+DCOCOは複数候補を保持し、隣接位置の文脈整合性を並列評価することで、失われたブロック内依存関係を復元。
+4種類の検証器と10種類のベンチマークで最高スループットを達成し、通常のデコーディング比で最大6.6倍、同時サービングでも競合手法比6〜23%の高速化を実現。</issue-body>
+<maintainer-comment-text><p>github:
+
+{% raw %}
+<a href="https://github.com/two-delta/DCOCO" target="_blank" rel="noopener noreferrer">https://github.com/two-delta/DCOCO</a>
+{% endraw %}
+
+<br>pj page:
+
+{% raw %}
+<a href="https://two-delta.github.io/dcoco-blog/" target="_blank" rel="noopener noreferrer">https://two-delta.github.io/dcoco-blog/</a>
+{% endraw %}
+
+<br>models:
+
+{% raw %}
+<a href="https://huggingface.co/collections/TD-Labs/dcoco" target="_blank" rel="noopener noreferrer">https://huggingface.co/collections/TD-Labs/dcoco</a>
+{% endraw %}
+
+</p><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/roy_eisenstadt/status/2114414130190856572?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>DFlashの課題を的確に解決し高速化を実現しているように見え、インパクトが大きそう。</p><p>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6348" target="_blank" rel="noopener noreferrer">[Paper Note] DFlash: Block Diffusion for Flash Speculative Decoding, Jian Chen+, arXiv'26, 2026.02</a>
+<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6371" target="_blank" rel="noopener noreferrer">DFlash 2: Keep Drafting Parallel, Inco AI, 2026.08</a>
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Cache Engineering for Agents, Tianyu Fu+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.28577</original-paper-blog-link>
@@ -14536,6 +14641,26 @@ ViLTは、従来のVLPモデルよりも数十倍高速でありながら、競�
  <br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2388" target="_blank" rel="noopener noreferrer">[Paper Note] Longformer: The Long-Document Transformer, Iz Beltagy+, arXiv'20</a>
 <br><br>トークン単位などはなくlayerをスキップするとかもある（Layer Skip）。<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/2610" target="_blank" rel="noopener noreferrer">[Paper Note] Skip a Layer or Loop it? Test-Time Depth Adaptation of Pretrained LLMs, Ziyue Li+, arXiv'25</a>
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Resin: Experimental library for building inference engines, ekzhang, 2026.10</title>
+<original-paper-blog-link>https://github.com/ekzhang/resin</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7011</repo-issue-link>
+<tags>EfficiencyImprovement, NLP, LanguageModel, Library, AIAgents, LLMServing, SoftwareEngineering, One-Line Notes, Reading Reflections, autoresearch/RSI, Author Thread-Post</tags>
+<repo-issue-date>2026-10-26</repo-issue-date>
+<issue-body>https://github.com/ekzhang/resin</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/ekzhang1/status/2114516258188153215?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>autoresearchによって、特定のモデル、自身のハードウェアに特化したinference engineを構築できる実験的なライブラリで、たとえば12時間業させたところ、DeepSeek-4.1-flashやGLM-5.36-Flashに特化したSGLang, vLLMに匹敵する推論エンジンが構築できたとのこと。ただし本プロジェクトは実験的なものであり、現在のリポジトリの実装もproduction qualityな品質ではない点には注意とのことである。</p><p>定量的に指標を定義でき、かつ最適化によって達成できるものはautoresearchで攻略される時代</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
