@@ -1,5 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-31">
+<paper-list last-updated="2026-11-01">
+<paper-entry>
+<title>[Paper Note] How to Loop Your Transformer: Loop Scaling, Specialization, and Parallel Inference, Chanakya Ekbote+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.40325</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7083</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Selected Papers/Blogs, reading, RecurrentModels</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.40325
+# Authors
+  - Chanakya Ekbote
+  - Artidoro Pagnoni
+  - Devendra Singh Sachan
+  - Shruti Bhosale
+  - Mike Lewis
+  - Maryam Fazel-Zarandi
+  - Shashank Rajput
+  - Sujan Kumar Gonugondla
+# Abstract
+  - Looping in transformer models reuses weights by repeatedly applying the same transformer, or parts of it, making the model deeper without increasing its parameter count. Whether looping is useful depends on which constraint dominates: model size, training compute, or autoregressive inference efficiency. We study these trade-offs jointly in dense decoder-only transformers trained from scratch, varying which parts of the model are looped, how many loops are applied, and how information is passed between loops. Our experiments span models with up to 1B parameters, trained on up to 155B tokens with up to $1.07\times10^{21}$ FLOPs and 32 loops. We find that looping the full transformer generally gives the strongest quality at a fixed parameter budget, whereas looping a middle block of layers gives a better return when training FLOPs are constrained. Adding loops is not uniformly beneficial: gains eventually saturate, reverse, or become unstable. This motivates asking whether forcing every loop to use the same weights limits the benefit of deeper looping. We address this by adding small loop-specific low-rank adapters that improve quality, with larger gains as more loops are added. Looped transformers also suffer a decoding slowdown proportional to the number of loops. Parallel Loop Transformers address this by passing hidden states between loops across adjacent token positions, allowing loop stages to run concurrently. However, in our experiments the original formulation does not consistently retain the quality gains of ordinary looping. We find that preserving the current-token embedding and separately normalizing it and the previous-token hidden state before combining them recovers strong performance across model scales and training budgets. Together, these results show that effective looping requires matching the design to the resource constraint and inference setting.
+# Translation (by gpt-5.6-luna)
+- トランスフォーマーモデルにおけるループ化（looping）とは、同一のトランスフォーマー、またはその一部を繰り返し適用することで、パラメータ数を増やさずにモデルをより深くする手法である。ループ化が有効かどうかは、モデルサイズ、学習計算量、自己回帰推論の効率のうち、どの制約が支配的であるかに依存する。本研究では、スクラッチから学習した高密度デコーダ専用トランスフォーマーを対象に、モデルのどの部分をループ化するか、ループを何回適用するか、そしてループ間で情報をどのように受け渡すかを変化させ、これらのトレードオフを総合的に検討する。実験では、最大10億パラメータ、最大1550億トークン、最大\(1.07\times10^{21}\) FLOPs、最大32ループのモデルを扱った。
+
+その結果、固定したパラメータ予算のもとでは、トランスフォーマー全体をループ化することで、概して最も高い性能が得られることが分かった。一方、学習時のFLOPsが制約される場合には、層の中間ブロックをループ化する方が、より高い費用対効果を示す。ループの追加が常に有益であるわけではなく、効果は最終的に飽和し、逆に低下したり、不安定になったりする。このことから、すべてのループに同一の重みを強制的に使用させることが、より深いループ化の恩恵を制限しているのではないかという疑問が生じる。そこで、小規模なループ固有の低ランクアダプターを追加したところ、性能が向上し、ループ数を増やすほど改善幅も大きくなった。
+
+また、ループ化されたトランスフォーマーでは、デコード速度がループ数に比例して低下する。この問題に対して、Parallel Loop Transformerは、隣接するトークン位置間でループ同士の隠れ状態を受け渡すことで、各ループ段階を並行して実行できるようにする。しかし、実験の結果、元の定式化では、通常のループ化による性能向上を一貫して維持できないことが分かった。そこで、現在のトークンの埋め込みを保持し、それを前のトークンの隠れ状態とは別々に正規化してから結合する方法を用いると、さまざまなモデル規模と学習予算において高い性能を回復できることを示した。
+
+以上の結果は、効果的なループ化には、利用可能な計算資源の制約と推論環境に適合した設計が必要であることを示している。
+# Summary (by gpt-5.6-luna)
+- Transformerの一部を繰り返し適用するloopingにより、パラメータ数を増やさずにモデルを深くする。
+固定パラメータ予算では全体のlooping、学習FLOPs制約下では中間ブロックのloopingが有効。
+loop数の増加は飽和・不安定化するが、loop固有の低ランクadapterで性能が向上する。
+Parallel Loop Transformerでは、埋め込みと前トークンの隠れ状態を分離して正規化・結合することで、並列デコード時にもloopingの性能を回復。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thecekbote/status/2116557960956580194?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2116598432236544219?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] Agentic Backdoors via Pretraining Poisoning, Xinyan Hu+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.37741</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7078</repo-issue-link>
+<tags>Pretraining, NLP, LanguageModel, Selected Papers/Blogs, Security</tags>
+<repo-issue-date>2026-10-31</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.37741
+# Authors
+  - Xinyan Hu
+  - Pingbang Hu
+  - Chloe Loughridge
+  - Xuanli He
+  - Nicholas Carlini
+  - Matthew Jagielski
+  - Javier Rando
+  - Yiming Zhang
+# Abstract
+  - Large language models are pretrained on vast, uncurated corpora scraped from the public web. This creates a security risk from attackers who plant poisoned content in the pretraining data. We show for the first time that such poisoning can plant a remote code execution backdoor in an agent, causing it to execute attacker-chosen commands on the user's machine. To measure the threat end to end, we pretrain Qwen3 models from scratch at sizes 0.6B, 1.7B, and 4B, and then post-train each into a CLI agent using a clean pipeline. Poisoning only 0.1% of the pretraining corpus with our new poison design implants the backdoor: the deployed agent executes the malicious command when the trigger is present while behaving normally on clean inputs. The attack success rate (ASR) increases with model scale, with the 4B model reaching roughly 92% ASR at a 0.1% poison rate and staying positive even when the poisoning rate drops to 0.0005%. Our code is available at https://github.com/safety-research/agentic-backdoor.
+# Translation (by gpt-5.6-luna)
+- 大規模言語モデルは、公開ウェブから収集された、膨大で未精製のコーパスを用いて事前学習されます。これにより、攻撃者が事前学習データに汚染コンテンツを仕込むことで、セキュリティ上のリスクが生じます。私たちは初めて、このようなデータ汚染によってエージェントにリモートコード実行バックドアを埋め込み、ユーザーのマシン上で攻撃者が指定したコマンドを実行させられることを示します。脅威をエンドツーエンドで測定するため、Qwen3モデルを0.6B、1.7B、4Bの規模でゼロから事前学習し、その後、それぞれをクリーンなパイプラインを用いてCLIエージェントへと追加学習しました。新たに設計したポイズン手法により、事前学習コーパスのわずか0.1%を汚染するだけでバックドアを埋め込めます。展開されたエージェントは、トリガーが存在すると悪意のあるコマンドを実行する一方、クリーンな入力に対しては正常に動作します。攻撃成功率（ASR）はモデル規模が大きくなるほど上昇し、4Bモデルでは汚染率0.1%でおよそ92%のASRに達し、汚染率を0.0005%まで下げてもなお正の値を維持します。コードは https://github.com/safety-research/agentic-backdoor で公開しています。
+# Summary (by gpt-5.6-luna)
+- LLMの事前学習データを汚染することで、CLIエージェントにリモートコード実行バックドアを埋め込めることを示した。
+Qwen3の0.6B、1.7B、4Bモデルを用いて、わずか0.1%の汚染でトリガー時に攻撃者指定のコマンドを実行。
+4Bモデルでは約92%のASRを達成し、0.0005%の低い汚染率でも攻撃が成立。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2116183621157736540?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sujinyan6/status/2116318734700728746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] What Effort Level Should I Choose? On the Economics of Reasoning Effort in LLM Agents, Kaiser Sun+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.34491</original-paper-blog-link>
@@ -5449,7 +5552,17 @@ DSecの本番規模の1ユニットは約160ノードにまたがり、1日あ�
 </div>
 {% endraw %}
 
-</p></maintainer-comment-text>
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/natolambert/status/2116271281351881120?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+<br><br>様々なRL手法におけるtrain-inference mismatchの重要度サンプリングベースの補正手法の表が記載されていて、それが素晴らしいとのこと</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -125019,6 +125132,66 @@ github: https://github.com/moses-smt/giza-pp</issue-body>
 </paper-entry>
 
 <paper-entry>
+<title>Introducing &Tutor Training better tutors with better learners, humans&, 2026.10</title>
+<original-paper-blog-link>https://tutor.humansand.ai/blog/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7082</repo-issue-link>
+<tags>NLP, LanguageModel, Education, AIAgents, Proprietary, Author Thread-Post, Tutor</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://tutor.humansand.ai/blog/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/humansand/status/2116186245802127411?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A world that learns as it goes, OpenWorld, 2026.10</title>
+<original-paper-blog-link>https://openworldrpg.ai/news/launch/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7081</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, AIAgents, GenerativeAI, Game, Author Thread-Post</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://openworldrpg.ai/news/launch/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sihanxuofficial/status/2116198249015153132?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>OR-decision-4B, alphaXiv, 2026.10</title>
+<original-paper-blog-link>https://huggingface.co/alphaXiv/OR-decision-4B</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7080</repo-issue-link>
+<tags>NLP, OpenWeight, Initial Impression Notes, Author Thread-Post, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://huggingface.co/alphaXiv/OR-decision-4B</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2116199951835582507?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ぱっと見latencyの記載がないように見える。性能もJevと同等、だとインパクトとしては弱いと感じてしまう。すでに多くのモデルがJevより高い性能、かつlatencyも早い状況にある。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>フロンティアモデルのミスアライメントを検知する仕組み, OpenAI, 2026.10</title>
 <original-paper-blog-link>https://openai.com/ja-JP/index/how-we-detect-frontier-model-misalignment/</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7068</repo-issue-link>
@@ -125488,7 +125661,8 @@ part2:https://www.cartesia.ai/blog/from-tokens-to-bytes-part-2</issue-body>
 </div>
 {% endraw %}
 
-</p><p>これは非常に興味深いが、理解が追いつくのが大変そうだ。RLにおける推論-訓練間におけるトークンミスマッチの問題を、Leanによって本来あるべき様々なシステムでの不変条件（e.g., BPEのマージの順序, メッセージ追加時の過去のトークン列の不変性, （self-distilationなどでよくある）メッセージを過去に挿入してもトークン列が不変など）を、verifyされた実装の上で実行することによって解決できるかを模索するため、プロトタイプとなるミニマムなトークナイザを考えてみました、という感じの話に見える。</p><p>とりあえず、<br>- （推論側）サンプリングしたトークン列->デコード->エンコード（訓練側）によってトークンのミスマッチが起きることがあるし、<br>- 推論時のバイト列から、訓練時に過去メッセージのバイト列が変化した場合（thinkの削除やメッセージの挿入など）でもトークンのミスマッチが生じる<br><br>などは覚えておきたい。そしてまだゆるふわ理解なので、何回もこの辺のトピックを再訪する中で固めていきたい。</p></maintainer-comment-text>
+</p><p>これは非常に興味深いが、理解が追いつくのが大変そうだ。RLにおける推論-訓練間におけるトークンミスマッチの問題を、Leanによって本来あるべき様々なシステムでの不変条件（e.g., BPEのマージの順序, メッセージ追加時の過去のトークン列の不変性, （self-distilationなどでよくある）メッセージを過去に挿入してもトークン列が不変など）を、verifyされた実装の上で実行することによって解決できるかを模索するため、プロトタイプとなるミニマムなトークナイザを考えてみました、という感じの話に見える。</p><p>とりあえず、<br>- （推論側）サンプリングしたトークン列->デコード->エンコード（訓練側）によってトークンのミスマッチが起きることがあるし、<br>- 推論時のバイト列から、訓練時に過去メッセージのバイト列が変化した場合（thinkの削除やメッセージの挿入など）でもトークンのミスマッチが生じる<br><br>などは覚えておきたい。そしてまだゆるふわ理解なので、何回もこの辺のトピックを再訪する中で固めていきたい。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7052" target="_blank" rel="noopener noreferrer">From Tokens to Bytes I: Scaling Hierarchical Networks, CARTESIA, 2026.10</a>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>

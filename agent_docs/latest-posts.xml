@@ -1,10 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-10-31">
+<paper-list last-updated="2026-11-01">
+<paper-entry>
+<title>Telling identical GPUs apart with one line of PyTorch, DIVYANSH AGRAWAL, 2026.10</title>
+<original-paper-blog-link>https://divagr.com/blog/telling-identical-gpus-apart</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7084</repo-issue-link>
+<tags></tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://divagr.com/blog/telling-identical-gpus-apart</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] How to Loop Your Transformer: Loop Scaling, Specialization, and Parallel Inference, Chanakya Ekbote+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.40325</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7083</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Selected Papers/Blogs, reading, RecurrentModels</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.40325
+# Authors
+  - Chanakya Ekbote
+  - Artidoro Pagnoni
+  - Devendra Singh Sachan
+  - Shruti Bhosale
+  - Mike Lewis
+  - Maryam Fazel-Zarandi
+  - Shashank Rajput
+  - Sujan Kumar Gonugondla
+# Abstract
+  - Looping in transformer models reuses weights by repeatedly applying the same transformer, or parts of it, making the model deeper without increasing its parameter count. Whether looping is useful depends on which constraint dominates: model size, training compute, or autoregressive inference efficiency. We study these trade-offs jointly in dense decoder-only transformers trained from scratch, varying which parts of the model are looped, how many loops are applied, and how information is passed between loops. Our experiments span models with up to 1B parameters, trained on up to 155B tokens with up to $1.07\times10^{21}$ FLOPs and 32 loops. We find that looping the full transformer generally gives the strongest quality at a fixed parameter budget, whereas looping a middle block of layers gives a better return when training FLOPs are constrained. Adding loops is not uniformly beneficial: gains eventually saturate, reverse, or become unstable. This motivates asking whether forcing every loop to use the same weights limits the benefit of deeper looping. We address this by adding small loop-specific low-rank adapters that improve quality, with larger gains as more loops are added. Looped transformers also suffer a decoding slowdown proportional to the number of loops. Parallel Loop Transformers address this by passing hidden states between loops across adjacent token positions, allowing loop stages to run concurrently. However, in our experiments the original formulation does not consistently retain the quality gains of ordinary looping. We find that preserving the current-token embedding and separately normalizing it and the previous-token hidden state before combining them recovers strong performance across model scales and training budgets. Together, these results show that effective looping requires matching the design to the resource constraint and inference setting.
+# Translation (by gpt-5.6-luna)
+- トランスフォーマーモデルにおけるループ化（looping）とは、同一のトランスフォーマー、またはその一部を繰り返し適用することで、パラメータ数を増やさずにモデルをより深くする手法である。ループ化が有効かどうかは、モデルサイズ、学習計算量、自己回帰推論の効率のうち、どの制約が支配的であるかに依存する。本研究では、スクラッチから学習した高密度デコーダ専用トランスフォーマーを対象に、モデルのどの部分をループ化するか、ループを何回適用するか、そしてループ間で情報をどのように受け渡すかを変化させ、これらのトレードオフを総合的に検討する。実験では、最大10億パラメータ、最大1550億トークン、最大\(1.07\times10^{21}\) FLOPs、最大32ループのモデルを扱った。
+
+その結果、固定したパラメータ予算のもとでは、トランスフォーマー全体をループ化することで、概して最も高い性能が得られることが分かった。一方、学習時のFLOPsが制約される場合には、層の中間ブロックをループ化する方が、より高い費用対効果を示す。ループの追加が常に有益であるわけではなく、効果は最終的に飽和し、逆に低下したり、不安定になったりする。このことから、すべてのループに同一の重みを強制的に使用させることが、より深いループ化の恩恵を制限しているのではないかという疑問が生じる。そこで、小規模なループ固有の低ランクアダプターを追加したところ、性能が向上し、ループ数を増やすほど改善幅も大きくなった。
+
+また、ループ化されたトランスフォーマーでは、デコード速度がループ数に比例して低下する。この問題に対して、Parallel Loop Transformerは、隣接するトークン位置間でループ同士の隠れ状態を受け渡すことで、各ループ段階を並行して実行できるようにする。しかし、実験の結果、元の定式化では、通常のループ化による性能向上を一貫して維持できないことが分かった。そこで、現在のトークンの埋め込みを保持し、それを前のトークンの隠れ状態とは別々に正規化してから結合する方法を用いると、さまざまなモデル規模と学習予算において高い性能を回復できることを示した。
+
+以上の結果は、効果的なループ化には、利用可能な計算資源の制約と推論環境に適合した設計が必要であることを示している。
+# Summary (by gpt-5.6-luna)
+- Transformerの一部を繰り返し適用するloopingにより、パラメータ数を増やさずにモデルを深くする。
+固定パラメータ予算では全体のlooping、学習FLOPs制約下では中間ブロックのloopingが有効。
+loop数の増加は飽和・不安定化するが、loop固有の低ランクadapterで性能が向上する。
+Parallel Loop Transformerでは、埋め込みと前トークンの隠れ状態を分離して正規化・結合することで、並列デコード時にもloopingの性能を回復。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thecekbote/status/2116557960956580194?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2116598432236544219?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>Introducing &Tutor Training better tutors with better learners, humans&, 2026.10</title>
+<original-paper-blog-link>https://tutor.humansand.ai/blog/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7082</repo-issue-link>
+<tags>NLP, LanguageModel, Education, AIAgents, Proprietary, Author Thread-Post, Tutor</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://tutor.humansand.ai/blog/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/humansand/status/2116186245802127411?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>A world that learns as it goes, OpenWorld, 2026.10</title>
+<original-paper-blog-link>https://openworldrpg.ai/news/launch/</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7081</repo-issue-link>
+<tags>ComputerVision, NLP, LanguageModel, AIAgents, GenerativeAI, Game, Author Thread-Post</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://openworldrpg.ai/news/launch/</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sihanxuofficial/status/2116198249015153132?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>OR-decision-4B, alphaXiv, 2026.10</title>
+<original-paper-blog-link>https://huggingface.co/alphaXiv/OR-decision-4B</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7080</repo-issue-link>
+<tags>NLP, OpenWeight, Initial Impression Notes, Author Thread-Post, SystemOneModel/DecisionModel</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://huggingface.co/alphaXiv/OR-decision-4B</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/askalphaxiv/status/2116199951835582507?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>ぱっと見latencyの記載がないように見える。性能もJevと同等、だとインパクトとしては弱いと感じてしまう。すでに多くのモデルがJevより高い性能、かつlatencyも早い状況にある。</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>文章のAIっぽさを抑えるプロンプト, ImosLab, 2026.10</title>
+<original-paper-blog-link>https://imoz.jp/scraps/202610_humanizer.html</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7079</repo-issue-link>
+<tags></tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body>https://imoz.jp/scraps/202610_humanizer.html</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/imos/status/2116166563414089839?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] Agentic Backdoors via Pretraining Poisoning, Xinyan Hu+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.37741</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7078</repo-issue-link>
-<tags></tags>
+<tags>Pretraining, NLP, LanguageModel, Selected Papers/Blogs, Security</tags>
 <repo-issue-date>2026-10-31</repo-issue-date>
 <issue-body># URL
 - https://arxiv.org/abs/2610.37741
@@ -31,6 +176,16 @@ Qwen3の0.6B、1.7B、4Bモデルを用いて、わずか0.1%の汚染でトリ�
 
 <div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
      data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2116183621157736540?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/sujinyan6/status/2116318734700728746?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
   <div class="tweet-placeholder">Loading…</div>
 </div>
 {% endraw %}
@@ -1466,7 +1621,8 @@ LLM policyが背景やスタイル、服装などの多様性軸に応じたprom
 </div>
 {% endraw %}
 
-</p><p>これは非常に興味深いが、理解が追いつくのが大変そうだ。RLにおける推論-訓練間におけるトークンミスマッチの問題を、Leanによって本来あるべき様々なシステムでの不変条件（e.g., BPEのマージの順序, メッセージ追加時の過去のトークン列の不変性, （self-distilationなどでよくある）メッセージを過去に挿入してもトークン列が不変など）を、verifyされた実装の上で実行することによって解決できるかを模索するため、プロトタイプとなるミニマムなトークナイザを考えてみました、という感じの話に見える。</p><p>とりあえず、<br>- （推論側）サンプリングしたトークン列->デコード->エンコード（訓練側）によってトークンのミスマッチが起きることがあるし、<br>- 推論時のバイト列から、訓練時に過去メッセージのバイト列が変化した場合（thinkの削除やメッセージの挿入など）でもトークンのミスマッチが生じる<br><br>などは覚えておきたい。そしてまだゆるふわ理解なので、何回もこの辺のトピックを再訪する中で固めていきたい。</p></maintainer-comment-text>
+</p><p>これは非常に興味深いが、理解が追いつくのが大変そうだ。RLにおける推論-訓練間におけるトークンミスマッチの問題を、Leanによって本来あるべき様々なシステムでの不変条件（e.g., BPEのマージの順序, メッセージ追加時の過去のトークン列の不変性, （self-distilationなどでよくある）メッセージを過去に挿入してもトークン列が不変など）を、verifyされた実装の上で実行することによって解決できるかを模索するため、プロトタイプとなるミニマムなトークナイザを考えてみました、という感じの話に見える。</p><p>とりあえず、<br>- （推論側）サンプリングしたトークン列->デコード->エンコード（訓練側）によってトークンのミスマッチが起きることがあるし、<br>- 推論時のバイト列から、訓練時に過去メッセージのバイト列が変化した場合（thinkの削除やメッセージの挿入など）でもトークンのミスマッチが生じる<br><br>などは覚えておきたい。そしてまだゆるふわ理解なので、何回もこの辺のトピックを再訪する中で固めていきたい。</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/7052" target="_blank" rel="noopener noreferrer">From Tokens to Bytes I: Scaling Hierarchical Networks, CARTESIA, 2026.10</a>
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -3402,227 +3558,6 @@ video:https://youtu.be/79Pnm5hANsA</issue-body>
 {% endraw %}
 
 </p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Introducing Ampersand, the first model trained for people to achieve more together. Available today through our API., humans&, 2026.10</title>
-<original-paper-blog-link>https://ampersand.humansand.ai/blog/</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6983</repo-issue-link>
-<tags>NLP, LanguageModel, Blog, Proprietary, Initial Impression Notes</tags>
-<repo-issue-date>2026-10-25</repo-issue-date>
-<issue-body>https://ampersand.humansand.ai/blog/</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/humansand/status/2112674550907552137?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>所見:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/eliebakouch/status/2112852351929196652?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>人間と協働できるようにしようね、みたいな話が少し増えてきた気がする</p><p>関連:<br>- <a href="https://github.com/AkihikoWatanabe/paper_notes/issues/6958" target="_blank" rel="noopener noreferrer">Collaborative Intelligence Release: A benchmark for AI agents as teammates, Wu+, 2026.10</a>
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] S-Agent 2.0: Spatial Reasoning with a General Coding Agent, Rui Gong+, arXiv'26, 2026.10</title>
-<original-paper-blog-link>https://arxiv.org/abs/2610.28354</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6982</repo-issue-link>
-<tags>ComputerVision, NLP, AIAgents, Coding, VisionLanguageModel, 3D (Scene), Robotics, SpatialUnderstanding</tags>
-<repo-issue-date>2026-10-25</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2610.28354
-# Authors
-  - Rui Gong
-  - Ruoyu Wang
-  - Yalun Dai
-  - Hao Li
-  - Sidi Yang
-  - Qihao Zhao
-  - Hongyu Li
-  - Zeyang Guan
-  - Fangzhou Hong
-  - Zhaoxi Chen
-  - Kim-Hui Yap
-  - Ziwei Liu
-# Abstract
-  - Spatial reasoning asks a model to work out where objects are in 3D space, how they relate to one another, and how they move. Agentic VLMs have recently brought large improvements on such tasks by letting the model actively gather evidence with 3D perception tools instead of answering in a single pass. Even so, on many questions the tools return the right evidence and the model still does not arrive at the correct answer: the gap between model and tools, where raw readings become usable conclusions, is left unfilled. We present S-Agent 2.0, a spatial reasoning agent that equips an off-the-shelf general coding agent with a command-line perception toolkit, and we design the interface around one principle: help the VLM close the evidence loop: acquire scene evidence, remember it in a persistent scene memory, and interpret each reading in plain spatial language. This design keeps the full flexibility of a coding agent, and every reading it acts on stays grounded in the tools' geometry. On MMSI-Bench and ReVSI, the toolkit improves a strong open-source model, Qwen3.8-27B, by +13.9 and +20.5 points over the same agent without tools, and a strong closed-source model, Gemini-3.8-Flash, by +11.2 and +9.6 points. With the open backbone S-Agent 2.0 reaches 66.5 on MMSI-Bench and 82.3 on ReVSI, ahead of the specialized system SpatialClaw on the same backbone (62.6 and 74.5), and with Gemini-3.8-Flash it reaches 74.1 and 90.5 against its 67.0 and 79.7. Both tool gains shrink as the backbone grows more capable, but SpatialClaw's shrinks far more on ReVSI, from +13.2 to +2.7, while ours stays at +9.6. S-Agent 2.0 also works across different general coding agent harnesses, such as Codex and Claude Code.
-# Translation (by gpt-5.6-luna)
-- 空間推論とは、モデルが3次元空間内で物体がどこにあるのか、互いにどのような関係にあるのか、そしてどのように動くのかを把握することである。近年、エージェント型VLMは、単一の推論で回答するのではなく、3D知覚ツールを用いてモデルが能動的に証拠を収集できるようにすることで、この種のタスクの性能を大きく向上させてきた。しかし、多くの質問では、ツールが正しい証拠を返しているにもかかわらず、モデルは正解に到達できない。すなわち、生の読み取り結果を利用可能な結論へと変換する、モデルとツールの間の隔たりが埋められていない。
-
-本研究では、コマンドライン型の知覚ツールキットを既製の汎用コーディングエージェントに組み込んだ空間推論エージェント、S-Agent 2.0を提案する。さらに、そのインターフェースを「VLMが証拠のループを閉じるのを支援する」という一つの原則に基づいて設計した。すなわち、シーンの証拠を取得し、それを永続的なシーンメモリに記憶し、各読み取り結果を平易な空間言語で解釈する。この設計により、コーディングエージェントの完全な柔軟性を維持しつつ、エージェントが利用するすべての読み取り結果を、ツールの幾何情報に基づいたものに保つことができる。
-
-MMSI-BenchおよびReVSIにおいて、このツールキットは、強力なオープンソースモデルQwen3.8-27Bの性能を、ツールを持たない同一エージェントと比べてそれぞれ13.9ポイントおよび20.5ポイント向上させた。また、強力なクローズドソースモデルGemini-3.8-Flashでは、それぞれ11.2ポイントおよび9.6ポイント向上した。オープンなバックボーンを用いた場合、S-Agent 2.0はMMSI-Benchで66.5、ReVSIで82.3に達し、同じバックボーン上の専用システムSpatialClaw（62.6および74.5）を上回った。Gemini-3.8-Flashでは、それぞれ74.1および90.5に達し、同システムの67.0および79.7を上回った。
-
-バックボーンの能力が高くなるにつれて、どちらのツールによる性能向上幅も縮小するが、ReVSIにおいてSpatialClawの向上幅は+13.2から+2.7へと大きく縮小するのに対し、我々の手法では+9.6を維持する。さらに、S-Agent 2.0はCodexやClaude Codeなど、異なる汎用コーディングエージェントの実行基盤でも動作する。
-# Summary (by gpt-5.6-luna)
-- 空間推論では、3D知覚ツールが取得した証拠を結論へ変換するモデルとツールの隔たりが課題となる。  
-S-Agent 2.0は、汎用コーディングエージェントにコマンドライン型知覚ツールを統合し、証拠の取得・永続的なシーンメモリへの保存・平易な空間言語による解釈を通じて、証拠のループを閉じる。  
-MMSI-BenchとReVSIで既存のツールなしエージェントおよび専用システムを上回り、オープンソース・クローズドソースの双方で大幅な性能向上を達成。  
-バックボーンが高性能になるほど他手法の改善幅が縮小する中でも、S-Agent 2.0は安定した向上を維持し、CodexやClaude Codeなど複数の汎用コーディングエージェントで利用可能。</issue-body>
-<maintainer-comment-text><p>blog:
-
-{% raw %}
-<a href="https://ropedia.github.io/S-Agent-2.0/" target="_blank" rel="noopener noreferrer">https://ropedia.github.io/S-Agent-2.0/</a>
-{% endraw %}
-
-</p><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/10027lifuguan/status/2112788929875505494?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] SteerAct: Unlocking Action Models through Few-Shot Temporal Steering, Kaichen Zhou+, arXiv'26, 2026.10</title>
-<original-paper-blog-link>https://arxiv.org/abs/2610.25632</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6981</repo-issue-link>
-<tags>ComputerVision, read-later, Selected Papers/Blogs, Robotics, EmbodiedAI, Steering, Initial Impression Notes, WorldActionModel, Author Thread-Post</tags>
-<repo-issue-date>2026-10-25</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2610.25632
-# Authors
-  - Kaichen Zhou
-  - Zhiyan Li
-  - Chongkai Gao
-  - Yuhan Wang
-  - Wenlong Huang
-  - Maggie Wang
-  - Fangneng Zhan
-  - Manling Li
-  - Qianqian Wang
-  - Mac Schwager
-  - Zhuang Liu
-  - Li Fei-Fei
-  - Mengyu Wang
-  - Paul Pu Liang
-# Abstract
-  - Improving pretrained robot action models at test time from only a few rollouts remains challenging. Activation steering offers a lightweight approach by modifying feature activations while keeping model weights fixed. However, effective steering requires identifying which features to modify and determining the timing and strength of modification. We introduce SteerAct, a few-shot temporal steering framework that uses a shared temporal descriptor of sparse-feature dynamics for offline feature selection and online control. A pretrained sparse autoencoder provides candidate features, and our temporal descriptor summarizes the distribution of local activation-order patterns for each feature, enabling comparisons across rollouts without requiring timestep alignment. Before steering begins (offline), we use successful and failed reference rollouts to select a single task-specific feature whose temporal descriptors best distinguish the two outcomes and construct its reference banks. During each new execution (online), we compare the feature's evolving temporal descriptor with these references to determine when to intervene and how strongly to increase or decrease its activation via a steering coefficient. Using only 24 outcome-labeled rollouts per task, SteerAct improves task success by approximately 10% relative to unsteered models in evaluations spanning $π_{0.5}$, Fast-WAM, RoboTwin 2.0, DexJoCo, and real-world manipulation, without updating action-model weights. Code and demos are available at: https://steeract.github.io/.
-# Translation (by gpt-5.6-luna)
-- 事前学習済みロボット行動モデルを、わずかなロールアウトのみからテスト時に改善することは、依然として困難である。Activation steeringは、モデルの重みを固定したまま特徴量の活性化を変更する、軽量なアプローチを提供する。しかし、効果的なステアリングには、変更すべき特徴量と、変更のタイミングおよび強度を特定する必要がある。
-
-本研究では、疎な特徴量のダイナミクスを表す共有時系列記述子を用いて、オフラインでの特徴量選択とオンライン制御を行う、少数ショット時系列ステアリング・フレームワークSteerActを提案する。事前学習済みのスパースオートエンコーダによって候補特徴量を得て、各特徴量について、局所的な活性化順序パターンの分布を時系列記述子として要約する。これにより、時刻のアラインメントを必要とせずに、ロールアウト間の比較が可能になる。
-
-ステアリングを開始する前のオフライン段階では、成功および失敗した参照ロールアウトを用いて、両方の結果を最もよく識別する時系列記述子を持つ、タスク固有の単一の特徴量を選択し、その参照バンクを構築する。各新規実行時のオンライン段階では、この特徴量の変化する時系列記述子を参照バンクと比較し、介入のタイミングと、ステアリング係数によってその活性化をどの程度増減させるかを決定する。
-
-タスクごとに結果ラベル付きロールアウトを24件のみ使用した場合でも、SteerActは、π₀.₅、Fast-WAM、RoboTwin 2.0、DexJoCo、および実世界のマニピュレーションを対象とした評価において、ステアリングを行わないモデルと比較してタスク成功率を約10%向上させた。なお、行動モデルの重みは更新していない。コードとデモは https://steeract.github.io/ で公開されている。
-# Summary (by gpt-5.6-luna)
-- 事前学習済みロボット行動モデルに対し、重みを更新せず少数のロールアウトから特徴量活性化を制御するSteerActを提案。
-スパース特徴量の時系列記述子を用いて、成功・失敗ロールアウトを識別するタスク固有の特徴量をオフラインで選択し、オンラインで介入タイミングとステアリング強度を決定。
-わずか24件のラベル付きロールアウトで、π₀.₅、Fast-WAM、RoboTwin 2.0、DexJoCo、実世界マニピュレーションにおいて、ステアリングなしと比べ成功率を約10%向上。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/alex_kai2020/status/2112572125412565053?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>少量の成功、失敗事例からSAEを通じてそれらを区別できる特徴を特定し、時間発展に合わせて適切なタイミングでsteeringの強度を調整することで、モデルの重みを更新することなくテスト時の性能を改善する。</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>[Paper Note] Are Self-Evolving Agents Continual Learners?, Xiaoyin Chen+, arXiv'26, 2026.10</title>
-<original-paper-blog-link>https://arxiv.org/abs/2610.25858</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6980</repo-issue-link>
-<tags>NLP, LanguageModel, AIAgents, Evaluation, ContinualLearning, AgentHarness</tags>
-<repo-issue-date>2026-10-25</repo-issue-date>
-<issue-body># URL
-- https://arxiv.org/abs/2610.25858
-# Authors
-  - Xiaoyin Chen
-  - Yizheng Huang
-  - Yinglun Xu
-  - Ziyun Zhao
-  - Emmett McQuinn
-  - Julie Liu
-  - Hope Yao
-# Abstract
-  - Large language model agents are often deployed in environments where new knowledge, tools, and workflows keep arriving. Such an agent is therefore expected to adapt continually, learning new tasks as they arrive without forgetting earlier ones. This resembles the continual learning problem, but at a pace that conventional gradient updates cannot sustain. Nonparametric self-evolving agents are a natural alternative: they adapt by rewriting their own harness, such as prompts, memory, and skills, from task feedback while the model weights stay frozen. We study whether such agents are effective continual learners across four drifting task streams that shift in topic, workflow, or domain (built from BIRD, BFCL, and ScienceWorld). Evaluating three representative methods spanning experience retrieval and self-modification (ReasoningBank, GEPA, and Meta-Harness), we find that although self-evolution improves aggregate performance on most streams, higher plasticity consistently comes at the cost of stability. Specifically, self-modifying methods apply global edits to a shared prompt or workspace, interfering with unseen tasks and overwriting earlier knowledge as the stream shifts. Conversely, similarity-based memory retrieval localizes updates across distant domains, but still retrieves foreign memories on unseen tasks and suffers from retrieval collision when similar queries require conflicting workflows. These findings show that current self-evolving agents remain incomplete continual learners.
-# Translation (by gpt-5.6-luna)
-- 大規模言語モデルエージェントは、新たな知識、ツール、ワークフローが継続的に追加される環境に導入されることが多い。そのため、このようなエージェントには、以前のタスクを忘れることなく、新しいタスクが到来するたびに学習し、継続的に適応することが求められる。これは継続学習の問題に類似しているが、従来の勾配更新では維持できない速度で変化する。ノンパラメトリックな自己進化型エージェントは、自然な代替手段である。これらはモデルの重みを固定したまま、タスクからのフィードバックに基づいて、プロンプト、メモリ、スキルなどの自身の実行基盤を書き換えることで適応する。
-
-本研究では、トピック、ワークフロー、またはドメインが変化する4つのドリフト型タスクストリーム（BIRD、BFCL、ScienceWorldから構成）を対象に、このようなエージェントが効果的な継続学習器となるかを検証する。経験検索と自己改変を網羅する代表的な3手法（ReasoningBank、GEPA、Meta-Harness）を評価した結果、自己進化は大半のストリームで総合性能を向上させる一方、可塑性の向上には一貫して安定性の低下が伴うことが分かった。具体的には、自己改変型手法は共有プロンプトやワークスペースに対してグローバルな編集を行うため、未知のタスクに干渉し、ストリームの変化に伴って過去の知識を上書きしてしまう。これに対して、類似度に基づくメモリ検索は、遠く離れたドメイン間で更新を局所化できるものの、未知のタスクに対して無関係なメモリを検索してしまい、また、類似したクエリが相反するワークフローを必要とする場合には、検索衝突の問題に悩まされる。これらの知見は、現在の自己進化型エージェントが、依然として不完全な継続学習器であることを示している。
-# Summary (by gpt-5.6-luna)
-- LLMエージェントを、重みを更新せずにプロンプト・メモリ・スキルを自己改変する継続学習器として評価。  
-BIRD、BFCL、ScienceWorldの4つのドリフト型タスクストリームでReasoningBank、GEPA、Meta-Harnessを比較した結果、自己進化は性能を向上させる一方、可塑性と安定性のトレードオフが生じた。  
-自己改変はグローバル編集による干渉と過去知識の上書き、類似度検索は無関係なメモリの検索や相反するワークフローの衝突を招き、現行手法は不完全な継続学習器に留まる。</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/omarsar0/status/2112728082042015769?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>INTRODUCING Phonon: Gradium's open-weight text-to-speech, small enough to ship in any app. Private, and it works offline., Gradium AI, 2026.10</title>
-<original-paper-blog-link>https://gradium.ai/phonon</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6979</repo-issue-link>
-<tags>EfficiencyImprovement, SpeechProcessing, Blog, SmallModel, MultiLingual, OpenWeight, TTS, Author Thread-Post</tags>
-<repo-issue-date>2026-10-25</repo-issue-date>
-<issue-body>https://gradium.ai/phonon</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gradiumai/status/2112563128487514512?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>HF:
-
-{% raw %}
-<a href="https://huggingface.co/gradium/phonon-31m-en" target="_blank" rel="noopener noreferrer">https://huggingface.co/gradium/phonon-31m-en</a>
-{% endraw %}
-
-<br><br>マルチリンガルなTTS。英語、フランス語、ポルトガル語、スペイン語ドイツ語の5か国語に対応するモデルがあり、5か国語をサポートするマルチリンガルなモデルもある。</p></maintainer-comment-text>
-</paper-entry>
-
-<paper-entry>
-<title>Krea3: Frontier Image Editing Model 4x faster than Nano Banana Pro, Krea, 2026.10</title>
-<original-paper-blog-link>https://www.krea.ai/krea-3</original-paper-blog-link>
-<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/6978</repo-issue-link>
-<tags>ComputerVision, EfficiencyImprovement, NLP, TextToImageGeneration, Blog, Proprietary, Editing, ImageSynthesis, Initial Impression Notes, Author Thread-Post</tags>
-<repo-issue-date>2026-10-25</repo-issue-date>
-<issue-body>https://www.krea.ai/krea-3</issue-body>
-<maintainer-comment-text><p>元ポスト:
-
-{% raw %}
-
-<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
-     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/krea_ai/status/2112567020353102324?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
-  <div class="tweet-placeholder">Loading…</div>
-</div>
-{% endraw %}
-
-</p><p>安い、速い、（パレート最適）、高性能（Arena4位）の画像生成、編集モデル。</p></maintainer-comment-text>
 </paper-entry>
 
 </paper-list>
