@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-list last-updated="2026-11-01">
+<paper-list last-updated="2026-11-03">
+<paper-entry>
+<title>[Paper Note] LLM-KT: Aligning Large Language Models with Knowledge Tracing using a Plug-and-Play Instruction, Ziwei Wang+, ACL'26 Findings, 2025.02</title>
+<original-paper-blog-link>https://arxiv.org/abs/2502.02945</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7090</repo-issue-link>
+<tags>NLP, LanguageModel, Education, KnowledgeTracing, ACL, Findings, KeyPoint Notes, Reading Reflections</tags>
+<repo-issue-date>2026-11-02</repo-issue-date>
+<issue-body># URL
+- preprint: https://arxiv.org/abs/2502.02945
+- acl anthology: https://aclanthology.org/2026.findings-acl.1781/
+# Authors
+  - Ziwei Wang
+  - Jie Zhou
+  - Qin Chen
+  - Min Zhang
+  - Bo Jiang
+  - Aimin Zhou
+  - Qinchun Bai
+  - Liang He
+# Abstract
+  - The knowledge tracing (KT) problem is an extremely important topic in personalized education, which aims to predict whether students can correctly answer the next question based on their past question-answer records. Prior work on this task mainly focused on learning the sequence of behaviors based on the IDs or textual information. However, these studies usually fail to capture students' sufficient behavioral patterns without reasoning with rich world knowledge about questions. In this paper, we propose a large language models (LLMs)-based framework for KT, named \texttt{\textbf{LLM-KT}}, to integrate the strengths of LLMs and traditional sequence interaction models. For task-level alignment, we design Plug-and-Play instruction to align LLMs with KT, leveraging LLMs' rich knowledge and powerful reasoning capacity. For modality-level alignment, we design the plug-in context and sequence to integrate multiple modalities learned by traditional methods. To capture the long context of history records, we present a plug-in context to flexibly insert the compressed context embedding into LLMs using question-specific and concept-specific tokens. Furthermore, we introduce a plug-in sequence to enhance LLMs with sequence interaction behavior representation learned by traditional sequence models using a sequence adapter. Extensive experiments show that \texttt{\textbf{LLM-KT}} obtains state-of-the-art performance on four typical datasets by comparing it with approximately 20 strong baselines.
+# Translation (by gpt-5.6-luna)
+- 知識トレーシング（KT）問題は個別化教育における極めて重要な課題であり、過去の問題への解答履歴に基づいて、学生が次の問題に正しく答えられるかどうかを予測することを目的とする。従来の研究では主に、問題のIDやテキスト情報に基づいて行動系列を学習することに焦点が当てられてきた。しかし、これらの研究は通常、問題に関する豊富な世界知識を用いた推論を行わないため、学生の十分な行動パターンを捉えられない。
+
+本論文では、大規模言語モデル（LLM）と従来の系列インタラクションモデルの長所を統合する、LLMベースのKTフレームワーク\(\texttt{\textbf{LLM-KT}}\)を提案する。タスクレベルのアライメントを実現するため、LLMの豊富な知識と強力な推論能力を活用し、LLMをKTに適合させるプラグアンドプレイ型の指示を設計する。モダリティレベルのアライメントにおいては、従来手法で学習された複数のモダリティを統合するため、プラグイン・コンテキストとプラグイン系列を設計する。
+
+履歴記録の長いコンテキストを捉えるため、問題固有トークンおよび概念固有トークンを用いて、圧縮されたコンテキスト埋め込みをLLMに柔軟に挿入するプラグイン・コンテキストを提案する。さらに、系列アダプターを用いて従来の系列モデルから学習された系列インタラクション行動表現によってLLMを強化するプラグイン系列を導入する。広範な実験の結果、約20の強力なベースライン手法との比較において、\(\texttt{\textbf{LLM-KT}}\)は4つの代表的なデータセットで最先端の性能を達成することが示された。
+# Summary (by gpt-5.6-luna)
+- 学生の過去の解答履歴が与えられた時に、LLMと従来の系列モデルを統合して次の問題への正答可能性を予測。
+LLMの知識と推論能力を活用する指示に加え、問題・概念固有トークンによる圧縮履歴と、系列モデルの行動表現をLLMに注入。
+4つのデータセットで約20の強力なベースラインを上回る最先端性能を達成。</issue-body>
+<maintainer-comment-text><p>学習者の学習履歴（問題ID, Knowledge Component ID, 正誤)を与え、新たな問題に対して正解するか否かをbinaryで問うpromptを用いてLoRAでFinetuningをし、この時にquestionとknowledge componentの情報として生のトークン列ではなく、embeddingを直接注入（QuestionEmbed, ConceptEdbed)することでcontext長が肥大する課題に対処する。Embeddingは問題テキスト、KCの定義のテキストから学習する場合（Semantic)と、ユーザの学習履歴のID（qid,<br> cid)の系列に基づいて学習する場合(Behavior)の2種類の手法を用意し、backboneとなるエンコーダを事前に用意する（どのように用意するかは細かいところまではまだよくわかっていない）。後者についてはLLMが学習している埋め込み空間と大きく異なるものが学習されているため、LLMが扱うembedding空間とalignさせるためのprojectionも学習させ、LLMに注入した際にLLMの推論が崩壊するのを防ぐ。<br><br>(LLaMA2に対して）ID列のみを与えてFinetuningする手法でも、既存研究に対してSoTAを達成できるが、LLM-KTについて、QuestionEmbed+ID列、あるいはConceptEmbed+ID列をablationした場合、それぞれについて性能が低下することから双方が性能向上に寄与することも確認。</p><p>Embeddingを直接トークンとして注入することで、contextが肥大化する課題を解決するアプローチは興味深い。実用上はOpenAIのFinetuning APIなどではここまでの作り込みはできなさそうなので、OpenWeightモデルに対してこのような改良を施しservingをする制約が生じる。また、LLaMA2をベースとしたLLM-FT_IDでここまで性能が向上するのであれば、より強力なプロプライエタリモデルをベースとして学習をしたら、性能はどこまで伸びるのだろうか。</p></maintainer-comment-text>
+</paper-entry>
+
 <paper-entry>
 <title>[Paper Note] How to Loop Your Transformer: Loop Scaling, Specialization, and Parallel Inference, Chanakya Ekbote+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.40325</original-paper-blog-link>
@@ -42653,6 +42686,29 @@ demo: https://openscilm.allen.ai/</issue-body>
 {% endraw %}
 
 </p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>[Paper Note] CLST: Cold-Start Mitigation in Knowledge Tracing by Aligning a Generative Language Model as a Students' Knowledge Tracer, Heeseok Jung+, JEDM'25, 2024.06</title>
+<original-paper-blog-link>https://arxiv.org/abs/2406.10296</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7091</repo-issue-link>
+<tags>NLP, LanguageModel, EducationalDataMining, KnowledgeTracing, JEDM</tags>
+<repo-issue-date>2026-11-03</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2406.10296
+# Authors
+  - Heeseok Jung
+  - Jaesang Yoo
+  - Yohaan Yoon
+  - Yeonju Jang
+# Abstract
+  - Knowledge tracing (KT), wherein students' problem-solving histories are used to estimate their current levels of knowledge, has attracted significant interest from researchers. However, most existing KT models were developed with an ID-based paradigm, which exhibits limitations in cold-start performance. These limitations can be mitigated by leveraging the vast quantities of external knowledge possessed by generative large language models (LLMs). In this study, we propose cold-start mitigation in knowledge tracing by aligning a generative language model as a students' knowledge tracer (CLST) as a framework that utilizes a generative LLM as a knowledge tracer. Upon collecting data from math, social studies, and science subjects, we framed the KT task as a natural language processing task, wherein problem-solving data are expressed in natural language, and fine-tuned the generative LLM using the formatted KT dataset. Subsequently, we evaluated the performance of the CLST in situations of data scarcity using various baseline models for comparison. The results indicate that the CLST significantly enhanced performance with a dataset of fewer than 100 students in terms of prediction, reliability, and cross-domain generalization.
+# Translation (by gpt-5.6-luna)
+- 知識トレーシング（KT）は、学生の問題解決履歴を用いて現在の知識レベルを推定するものであり、研究者から大きな注目を集めている。しかし、既存のKTモデルの多くはIDベースのパラダイムで開発されており、コールドスタート時の性能に限界がある。こうした限界は、生成系大規模言語モデル（LLM）が有する膨大な外部知識を活用することで緩和できる。本研究では、生成系言語モデルを学生の知識トレーサーとしてアライメントすることによる知識トレーシングのコールドスタート緩和（CLST）を、生成系LLMを知識トレーサーとして利用する枠組みとして提案する。数学、社会科、理科の科目からデータを収集した上で、問題解決データを自然言語で表現し、整形したKTデータセットを用いて生成系LLMをファインチューニングすることで、KTタスクを自然言語処理タスクとして定式化した。続いて、さまざまなベースラインモデルと比較しながら、データが不足している状況におけるCLSTの性能を評価した。その結果、学生数が100人未満のデータセットにおいて、CLSTは予測性能、信頼性、ドメイン横断的な汎化性能を大幅に向上させることが示された。
+# Summary (by gpt-5.6-luna)
+- 生成系LLMを知識トレーサーとして活用し、問題解決履歴を自然言語で表現してKTタスクとしてファインチューニング。
+学生数が少ないコールドスタート環境でも、予測性能・信頼性・ドメイン横断的な汎化性能を向上。</issue-body>
+<maintainer-comment-text>None</maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
@@ -106784,6 +106840,26 @@ slide: https://www.researchgate.net/profile/Martin-Karafiat/publication/22148992
 {% endraw %}
 
 </p><p>Large Language Modelsという用語が利用されたのはこの研究が初めてなのかも…？</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
+<title>GDPx: Measuring Frontier Model Capabilities Across the Most Valuable Domains, SemiAnalysis, 2026.10</title>
+<original-paper-blog-link>https://newsletter.semianalysis.com/p/gdpx-measuring-frontier-model-capabilities</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7088</repo-issue-link>
+<tags>NLP, LanguageModel, AIAgents, Evaluation, Blog, Author Thread-Post</tags>
+<repo-issue-date>2026-11-02</repo-issue-date>
+<issue-body>https://newsletter.semianalysis.com/p/gdpx-measuring-frontier-model-capabilities</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/semianalysis_/status/2117075900575477855?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p></maintainer-comment-text>
 </paper-entry>
 
 <paper-entry>
