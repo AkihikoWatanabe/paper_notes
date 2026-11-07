@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <paper-list last-updated="2026-11-05">
 <paper-entry>
+<title>[Paper Note] bf16 Rounding Silently Discards Most RL Policy Updates: A Hidden Training-Inference Mismatch and an Unbiased One-Line Fix, Andrew Gao+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.41073</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7086</repo-issue-link>
+<tags>NLP, LanguageModel, ReinforcementLearning, PostTraining, read-later, Selected Papers/Blogs, train-inference-mismatch, Initial Impression Notes</tags>
+<repo-issue-date>2026-11-02</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.41073
+# Authors
+  - Andrew Gao
+  - William Gao
+# Abstract
+  - Reinforcement learning (RL) post-training of language models keeps fp32 master weights in the optimizer and serves rollouts from a bf16 copy produced by round-to-nearest conversion. At the learning rates in common use, most per-step updates are smaller than half a bf16 spacing and the conversion discards them: on Qwen3-1.7B only 0.4-0.5% of served weights change per step, and the policy that generates the training data lags the optimizer by 50-150 steps. Existing mismatch corrections cannot see this lag because they compare two copies downstream of the same rounding. We propose Fair Cast: export the master with an unbiased rounding rule (stochastic rounding or error feedback) and compute the training loss on the served copy. The change is one line at the export call, adds no hyperparameters and costs 22-38 ms per export of 1.7B parameters. Across 25 matched seed-pairs on Qwen3-0.6B to 4B with AdamW and Muon, Fair Cast is ahead on 18, tied on 6 and behind on 1, with a mean gain of 6.1 points; on zebra puzzles it reaches 0.57 +/- 0.16 over four runs where round-to-nearest collapses to 0.33 +/- 0.10. It also makes the saved fp32 checkpoint agree with the served model, and it exposes the implicit lag of round-to-nearest as a regularizer that can be restored explicitly when a task needs it.
+# Translation (by gpt-5.6-luna)
+- 強化学習（RL）における言語モデルの事後学習では、オプティマイザ内に fp32 のマスター重みを保持し、最近傍丸め変換によって生成した bf16 コピーからロールアウトを実行する。一般的に用いられる学習率では、1ステップあたりの更新の大半が bf16 の刻み幅の半分未満であるため、変換時に破棄される。Qwen3-1.7B では、1ステップあたりに変化する提供用重みはわずか 0.4～0.5% であり、学習データを生成するポリシーはオプティマイザに対して 50～150 ステップ遅延する。既存のミスマッチ補正手法では、同じ丸め処理を経た下流の2つのコピーを比較するため、この遅延を検出できない。
+
+そこで我々は Fair Cast を提案する。これは、バイアスのない丸め規則（確率的丸めまたは誤差フィードバック）を用いてマスター重みを書き出し、提供用コピー上で学習損失を計算する手法である。変更は書き出し処理の呼び出し部分の1行だけで、ハイパーパラメータの追加はなく、17億パラメータの書き出し1回あたりのコストは 22～38 ms である。AdamW および Muon を用い、Qwen3-0.6B から 4B までを対象に、同一条件のシードペア25組で評価した結果、Fair Cast は18組で上回り、6組で同等、1組で下回り、平均で6.1ポイントの向上を示した。ゼブラパズルでは、4回の実行において、最近傍丸めが 0.33 ± 0.10 に崩壊したのに対し、Fair Cast は 0.57 ± 0.16 に達した。
+
+さらに、保存された fp32 チェックポイントと提供用モデルが一致するようになり、最近傍丸めによって暗黙に生じる遅延を正則化として明らかにする。これにより、タスク上必要な場合には、その効果を明示的に復元できる。
+# Summary (by gpt-5.6-luna)
+- RLにおける言語モデルの事後学習では、fp32のマスター重みから最近傍丸めで生成したbf16モデルの更新が多く破棄され、ロールアウト方策がオプティマイザに対して遅延する。
+Fair Castは、確率的丸めまたは誤差フィードバックによるバイアスのない重み書き出しを用い、追加のハイパーパラメータなしでこの遅延を軽減する。
+Qwen3-0.6B～4Bを用いた評価で、25組中18組で性能が向上し、平均6.1ポイント改善した。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/rosinality/status/2117165216538501149?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>学習側はFP32で重みを更新するが、重みの更新量が微小なため、推論側でBF16に変換して推論する際にその更新が失われる場合がある（学習側は更新したのに推論側ではなかったことになる）という指摘</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] T-DIG: Text-Conditioned Diversity for Image Generation, Simran Khanuja+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.29003</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7039</repo-issue-link>
