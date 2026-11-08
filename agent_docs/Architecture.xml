@@ -81,6 +81,71 @@ Strideに基づく浅層・中間層のソースペアから深層KVを再構成
 </paper-entry>
 
 <paper-entry>
+<title>[Paper Note] How to Loop Your Transformer: Loop Scaling, Specialization, and Parallel Inference, Chanakya Ekbote+, arXiv'26, 2026.10</title>
+<original-paper-blog-link>https://arxiv.org/abs/2610.40325</original-paper-blog-link>
+<repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7083</repo-issue-link>
+<tags>Analysis, NLP, LanguageModel, Architecture, Selected Papers/Blogs, reading, RecurrentModels</tags>
+<repo-issue-date>2026-11-01</repo-issue-date>
+<issue-body># URL
+- https://arxiv.org/abs/2610.40325
+# Authors
+  - Chanakya Ekbote
+  - Artidoro Pagnoni
+  - Devendra Singh Sachan
+  - Shruti Bhosale
+  - Mike Lewis
+  - Maryam Fazel-Zarandi
+  - Shashank Rajput
+  - Sujan Kumar Gonugondla
+# Abstract
+  - Looping in transformer models reuses weights by repeatedly applying the same transformer, or parts of it, making the model deeper without increasing its parameter count. Whether looping is useful depends on which constraint dominates: model size, training compute, or autoregressive inference efficiency. We study these trade-offs jointly in dense decoder-only transformers trained from scratch, varying which parts of the model are looped, how many loops are applied, and how information is passed between loops. Our experiments span models with up to 1B parameters, trained on up to 155B tokens with up to $1.07\times10^{21}$ FLOPs and 32 loops. We find that looping the full transformer generally gives the strongest quality at a fixed parameter budget, whereas looping a middle block of layers gives a better return when training FLOPs are constrained. Adding loops is not uniformly beneficial: gains eventually saturate, reverse, or become unstable. This motivates asking whether forcing every loop to use the same weights limits the benefit of deeper looping. We address this by adding small loop-specific low-rank adapters that improve quality, with larger gains as more loops are added. Looped transformers also suffer a decoding slowdown proportional to the number of loops. Parallel Loop Transformers address this by passing hidden states between loops across adjacent token positions, allowing loop stages to run concurrently. However, in our experiments the original formulation does not consistently retain the quality gains of ordinary looping. We find that preserving the current-token embedding and separately normalizing it and the previous-token hidden state before combining them recovers strong performance across model scales and training budgets. Together, these results show that effective looping requires matching the design to the resource constraint and inference setting.
+# Translation (by gpt-5.6-luna)
+- トランスフォーマーモデルにおけるループ化（looping）とは、同一のトランスフォーマー、またはその一部を繰り返し適用することで、パラメータ数を増やさずにモデルをより深くする手法である。ループ化が有効かどうかは、モデルサイズ、学習計算量、自己回帰推論の効率のうち、どの制約が支配的であるかに依存する。本研究では、スクラッチから学習した高密度デコーダ専用トランスフォーマーを対象に、モデルのどの部分をループ化するか、ループを何回適用するか、そしてループ間で情報をどのように受け渡すかを変化させ、これらのトレードオフを総合的に検討する。実験では、最大10億パラメータ、最大1550億トークン、最大\(1.07\times10^{21}\) FLOPs、最大32ループのモデルを扱った。
+
+その結果、固定したパラメータ予算のもとでは、トランスフォーマー全体をループ化することで、概して最も高い性能が得られることが分かった。一方、学習時のFLOPsが制約される場合には、層の中間ブロックをループ化する方が、より高い費用対効果を示す。ループの追加が常に有益であるわけではなく、効果は最終的に飽和し、逆に低下したり、不安定になったりする。このことから、すべてのループに同一の重みを強制的に使用させることが、より深いループ化の恩恵を制限しているのではないかという疑問が生じる。そこで、小規模なループ固有の低ランクアダプターを追加したところ、性能が向上し、ループ数を増やすほど改善幅も大きくなった。
+
+また、ループ化されたトランスフォーマーでは、デコード速度がループ数に比例して低下する。この問題に対して、Parallel Loop Transformerは、隣接するトークン位置間でループ同士の隠れ状態を受け渡すことで、各ループ段階を並行して実行できるようにする。しかし、実験の結果、元の定式化では、通常のループ化による性能向上を一貫して維持できないことが分かった。そこで、現在のトークンの埋め込みを保持し、それを前のトークンの隠れ状態とは別々に正規化してから結合する方法を用いると、さまざまなモデル規模と学習予算において高い性能を回復できることを示した。
+
+以上の結果は、効果的なループ化には、利用可能な計算資源の制約と推論環境に適合した設計が必要であることを示している。
+# Summary (by gpt-5.6-luna)
+- Transformerの一部を繰り返し適用するloopingにより、パラメータ数を増やさずにモデルを深くする。
+固定パラメータ予算では全体のlooping、学習FLOPs制約下では中間ブロックのloopingが有効。
+loop数の増加は飽和・不安定化するが、loop固有の低ランクadapterで性能が向上する。
+Parallel Loop Transformerでは、埋め込みと前トークンの隠れ状態を分離して正規化・結合することで、並列デコード時にもloopingの性能を回復。</issue-body>
+<maintainer-comment-text><p>元ポスト:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/thecekbote/status/2116557960956580194?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>所見:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/gabriberton/status/2116598432236544219?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>解説:
+
+{% raw %}
+
+<div class="tweet-embed" style="min-height:400px; max-width:550px; margin:1em auto;" 
+     data-embed='<blockquote class="twitter-tweet"><a href="https://twitter.com/hillbig/status/2117746725901529490?s=46&t=Y6UuIHB0Lv0IpmFAjlc2-Q"></a></blockquote>'>
+  <div class="tweet-placeholder">Loading…</div>
+</div>
+{% endraw %}
+
+</p><p>Parallel Loop Transformer</p></maintainer-comment-text>
+</paper-entry>
+
+<paper-entry>
 <title>[Paper Note] Nested Sparsity for Scalable Pretraining and Continual Learning, Tianzhe Chu+, arXiv'26, 2026.10</title>
 <original-paper-blog-link>https://arxiv.org/abs/2610.31818</original-paper-blog-link>
 <repo-issue-link>https://github.com/AkihikoWatanabe/paper_notes/issues/7042</repo-issue-link>
